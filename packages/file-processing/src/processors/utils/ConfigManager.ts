@@ -1,6 +1,6 @@
 /**
  * Configuration management for file processing pipeline.
- * 
+ *
  * Handles configuration updates and validation for the processing pipeline.
  */
 
@@ -112,11 +112,17 @@ export class ConfigManager {
       errors.push("timeout must be greater than 0");
     }
 
-    if (this.config.defaultThumbnailSize[0] <= 0 || this.config.defaultThumbnailSize[1] <= 0) {
+    if (
+      this.config.defaultThumbnailSize[0] <= 0 ||
+      this.config.defaultThumbnailSize[1] <= 0
+    ) {
       errors.push("defaultThumbnailSize dimensions must be greater than 0");
     }
 
-    if (this.config.defaultPreviewSize[0] <= 0 || this.config.defaultPreviewSize[1] <= 0) {
+    if (
+      this.config.defaultPreviewSize[0] <= 0 ||
+      this.config.defaultPreviewSize[1] <= 0
+    ) {
       errors.push("defaultPreviewSize dimensions must be greater than 0");
     }
 

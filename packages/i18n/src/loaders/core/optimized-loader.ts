@@ -21,18 +21,21 @@ export const createOptimizedLoader = (usedNamespaces: string[]) => {
       }
       return loadNamespace<T>(locale, namespace);
     },
-    loadFull: (locale: LanguageCode) => loadTranslationModuleCore(locale, () => Promise.resolve({ 
-      default: {
-        common: {},
-        themes: {},
-        core: {},
-        components: {},
-        gallery: {},
-        charts: {},
-        auth: {},
-        chat: {},
-        monaco: {},
-      } as any
-    })),
+    loadFull: (locale: LanguageCode) =>
+      loadTranslationModuleCore(locale, () =>
+        Promise.resolve({
+          default: {
+            common: {},
+            themes: {},
+            core: {},
+            components: {},
+            gallery: {},
+            charts: {},
+            auth: {},
+            chat: {},
+            monaco: {},
+          } as any,
+        }),
+      ),
   };
 };

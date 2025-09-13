@@ -1,6 +1,8 @@
 # reynard-features
 
-Advanced feature system for managing application features, dependencies, and capabilities. This package provides a comprehensive framework for feature registration, dependency resolution, and runtime feature management.
+Advanced feature system for managing application features, dependencies, and
+capabilities. This package provides a comprehensive framework for feature registration, dependency resolution, and
+runtime feature management.
 
 ## Features
 

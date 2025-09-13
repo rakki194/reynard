@@ -6,7 +6,13 @@
  */
 
 import { Component, createSignal } from "solid-js";
-import { AppHeader, DemoDescription, DemoInfo, AppFooter, EmbeddingChart } from "./components";
+import {
+  AppHeader,
+  DemoDescription,
+  DemoInfo,
+  AppFooter,
+  EmbeddingChart,
+} from "./components";
 
 export const App: Component = () => {
   const [theme, setTheme] = createSignal<"light" | "dark">("dark");

@@ -5,7 +5,10 @@
  */
 
 import { NLWebToolRegistry } from "./NLWebTool.js";
-import { NLWebSuggestionRequest, NLWebSuggestionResponse } from "./NLWebSuggestion.js";
+import {
+  NLWebSuggestionRequest,
+  NLWebSuggestionResponse,
+} from "./NLWebSuggestion.js";
 import { NLWebHealthStatus, NLWebConfiguration } from "./NLWebHealth.js";
 
 export interface NLWebService {

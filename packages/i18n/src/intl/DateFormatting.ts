@@ -14,27 +14,45 @@ export function createDateFormatter(config: IntlConfig) {
       return formatter.format(date);
     },
     formatShort: (date: Date) => {
-      const formatter = new Intl.DateTimeFormat(config.locale, defaultFormattingPresets.date.short);
+      const formatter = new Intl.DateTimeFormat(
+        config.locale,
+        defaultFormattingPresets.date.short,
+      );
       return formatter.format(date);
     },
     formatMedium: (date: Date) => {
-      const formatter = new Intl.DateTimeFormat(config.locale, defaultFormattingPresets.date.medium);
+      const formatter = new Intl.DateTimeFormat(
+        config.locale,
+        defaultFormattingPresets.date.medium,
+      );
       return formatter.format(date);
     },
     formatLong: (date: Date) => {
-      const formatter = new Intl.DateTimeFormat(config.locale, defaultFormattingPresets.date.long);
+      const formatter = new Intl.DateTimeFormat(
+        config.locale,
+        defaultFormattingPresets.date.long,
+      );
       return formatter.format(date);
     },
     formatFull: (date: Date) => {
-      const formatter = new Intl.DateTimeFormat(config.locale, defaultFormattingPresets.date.full);
+      const formatter = new Intl.DateTimeFormat(
+        config.locale,
+        defaultFormattingPresets.date.full,
+      );
       return formatter.format(date);
     },
     formatTime: (date: Date) => {
-      const formatter = new Intl.DateTimeFormat(config.locale, defaultFormattingPresets.date.time);
+      const formatter = new Intl.DateTimeFormat(
+        config.locale,
+        defaultFormattingPresets.date.time,
+      );
       return formatter.format(date);
     },
     formatDateTime: (date: Date) => {
-      const formatter = new Intl.DateTimeFormat(config.locale, defaultFormattingPresets.date.datetime);
+      const formatter = new Intl.DateTimeFormat(
+        config.locale,
+        defaultFormattingPresets.date.datetime,
+      );
       return formatter.format(date);
     },
   };

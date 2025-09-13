@@ -5,10 +5,7 @@
  * using a factory pattern with specialized extractors.
  */
 
-import {
-  ProcessingResult,
-  FileMetadata,
-} from "../types";
+import { ProcessingResult, FileMetadata } from "../types";
 import { getFileTypeInfo } from "../config/file-types";
 import {
   MetadataExtractorFactory,

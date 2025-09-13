@@ -15,9 +15,7 @@ export interface NLWebHealthUtils {
 /**
  * Create NLWeb health utilities
  */
-export function createNLWebHealthUtils(
-  state: NLWebState,
-): NLWebHealthUtils {
+export function createNLWebHealthUtils(state: NLWebState): NLWebHealthUtils {
   const isHealthy = (): boolean => {
     const healthStatus = state.health();
     return healthStatus?.status === "healthy" || false;

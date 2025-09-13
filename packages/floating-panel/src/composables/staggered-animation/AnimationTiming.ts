@@ -12,12 +12,12 @@ import type { AnimationConfig } from "./AnimationConfig.js";
 export function calculateStaggerDelay(
   index: number,
   totalItems: number,
-  config: AnimationConfig
+  config: AnimationConfig,
 ): number {
   const { baseDelay, staggerStep, maxDelay, direction } = config;
-  
+
   let delay = baseDelay;
-  
+
   switch (direction) {
     case "forward":
       delay += index * staggerStep;
@@ -31,7 +31,6 @@ export function calculateStaggerDelay(
       delay += distance * staggerStep;
       break;
   }
-  
+
   return Math.min(delay, maxDelay);
 }
-

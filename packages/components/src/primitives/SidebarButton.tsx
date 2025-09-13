@@ -7,7 +7,8 @@
 import { Component, JSX, splitProps, mergeProps, For, Show } from "solid-js";
 import { Icon } from "../icons/Icon";
 
-export interface SidebarButtonProps extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+export interface SidebarButtonProps
+  extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
   /** Icon name from the icon registry */
   icon: string;
   /** Icon package ID (optional) */
@@ -15,7 +16,15 @@ export interface SidebarButtonProps extends Omit<JSX.ButtonHTMLAttributes<HTMLBu
   /** Icon size */
   iconSize?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Icon variant */
-  iconVariant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
+  iconVariant?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "muted"
+    | "error"
+    | "warning"
+    | "success"
+    | "info";
   /** Whether the button is active/selected */
   active?: boolean;
   /** Whether the button is disabled */
@@ -31,13 +40,29 @@ export interface SidebarButtonProps extends Omit<JSX.ButtonHTMLAttributes<HTMLBu
   /** Secondary icon (e.g., status indicator) */
   secondaryIcon?: string;
   /** Secondary icon variant */
-  secondaryIconVariant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
+  secondaryIconVariant?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "muted"
+    | "error"
+    | "warning"
+    | "success"
+    | "info";
   /** Whether to show secondary actions */
   showSecondaryActions?: boolean;
   /** Secondary action buttons */
   secondaryActions?: Array<{
     icon: string;
-    variant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
+    variant?:
+      | "default"
+      | "primary"
+      | "secondary"
+      | "muted"
+      | "error"
+      | "warning"
+      | "success"
+      | "info";
     size?: "xs" | "sm" | "md" | "lg" | "xl";
     ariaLabel: string;
     tooltip: string;
@@ -125,7 +150,7 @@ export const SidebarButton: Component<SidebarButtonProps> = (props) => {
       classes.push("reynard-sidebar-button--glow");
     }
 
-    if (typeof local.progress === 'number' && local.progress > 0) {
+    if (typeof local.progress === "number" && local.progress > 0) {
       classes.push("reynard-sidebar-button--with-progress");
     }
 
@@ -172,11 +197,11 @@ export const SidebarButton: Component<SidebarButtonProps> = (props) => {
   });
 
   const getTooltip = () => {
-    return local.tooltip || local['aria-label'] || local.title;
+    return local.tooltip || local["aria-label"] || local.title;
   };
 
   const getAriaLabel = () => {
-    return local['aria-label'] || local.tooltip || local.title || local.label;
+    return local["aria-label"] || local.tooltip || local.title || local.label;
   };
 
   const displayIconSize = () => {
@@ -218,8 +243,8 @@ export const SidebarButton: Component<SidebarButtonProps> = (props) => {
                   onClick={action.onClick}
                   disabled={action.disabled}
                 >
-                  <Icon 
-                    name={action.icon} 
+                  <Icon
+                    name={action.icon}
                     size={action.size === "xs" ? "sm" : action.size || "sm"}
                     variant={action.variant || "default"}
                   />
@@ -231,17 +256,19 @@ export const SidebarButton: Component<SidebarButtonProps> = (props) => {
 
         {/* Content area */}
         <Show when={local.showContent && local.active && local.content}>
-          <div class="reynard-sidebar-button__content">
-            {local.content}
-          </div>
+          <div class="reynard-sidebar-button__content">{local.content}</div>
         </Show>
 
         {/* Progress bar */}
-        <Show when={typeof local.progress === 'number' && local.progress > 0}>
+        <Show when={typeof local.progress === "number" && local.progress > 0}>
           <div class="reynard-sidebar-button__progress">
-            <div 
-              class="reynard-sidebar-button__progress-bar" 
-              style={{ "--progress-width": `${Math.max(0, Math.min(100, local.progress))}%` } as any}
+            <div
+              class="reynard-sidebar-button__progress-bar"
+              style={
+                {
+                  "--progress-width": `${Math.max(0, Math.min(100, local.progress))}%`,
+                } as any
+              }
             />
           </div>
         </Show>

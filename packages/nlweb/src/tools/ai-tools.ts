@@ -1,6 +1,6 @@
 /**
  * AI Tools Configuration
- * 
+ *
  * Defines AI-related tools for the NLWeb service.
  */
 

@@ -104,7 +104,10 @@
     "markdown:sentence:check": "node .husky/validate-sentence-length.js",
     "markdown:sentence:fix": "node .husky/validate-sentence-length.js --fix",
     "markdown:sentence:test": "vitest run .husky/validate-sentence-length.test.js",
-    "markdown:validate": "pnpm run markdown:toc:check && pnpm run markdown:lint && pnpm run markdown:sentence:check"
+    "markdown:validate": "pnpm run markdown:toc:check && pnpm run markdown:lint && pnpm run markdown:sentence:check",
+    "markdown:links:check": "node .husky/validate-markdown-links.js --staged",
+    "markdown:links:check:all": "node .husky/validate-markdown-links.js --all",
+    "markdown:validate:all": "pnpm run markdown:toc:check && pnpm run markdown:lint && pnpm run markdown:sentence:check && pnpm run markdown:links:check:all"
   },
   "devDependencies": {
     "@changesets/cli": "2.29.6",

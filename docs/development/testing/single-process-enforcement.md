@@ -1,10 +1,12 @@
 # 🐺> Single Process Enforcement - Enhanced Solution
 
-*alpha wolf dominance* This document describes the enhanced solution for enforcing exactly ONE vitest process per agent, preventing the spawning of multiple child processes.
+_alpha wolf dominance_ This document describes the enhanced solution for
+enforcing exactly ONE vitest process per agent, preventing the spawning of multiple child processes.
 
 ## Problem Identified
 
-The initial implementation was still allowing vitest to spawn multiple child processes per agent, even with `maxWorkers: 4`. This was because:
+The initial implementation was still allowing vitest to spawn multiple child processes per agent,
+even with `maxWorkers: 4`. This was because:
 
 1. **`maxWorkers` alone wasn't sufficient** - vitest can still spawn child processes
 2. **`poolOptions.forks.maxForks` needed to be set to 1** - to limit child processes
@@ -20,22 +22,22 @@ export default defineConfig({
   test: {
     // Single worker per agent
     maxWorkers: 1,
-    
+
     // Use forks pool for better process isolation and control
-    pool: 'forks',
+    pool: "forks",
     poolOptions: {
       forks: {
-        maxForks: 1,         // Single fork per agent
-        singleFork: true,    // Force single fork
+        maxForks: 1, // Single fork per agent
+        singleFork: true, // Force single fork
       },
     },
-    
+
     // Disable file parallelism to prevent multiple test files running simultaneously
     fileParallelism: false,
-    
+
     // Disable test isolation to reduce process overhead
     isolate: false,
-    
+
     // ... other settings
   },
 });
@@ -73,18 +75,21 @@ isolate: process.env.VITEST_ISOLATE === 'false' ? false : true,
 ## Key Changes Made
 
 ### 1. Configuration Updates
+
 - **`maxWorkers: 1`** - Single worker per agent
-- **`maxForks: 1`** - Single fork per agent  
+- **`maxForks: 1`** - Single fork per agent
 - **`singleFork: true`** - Force single fork
 - **`fileParallelism: false`** - Disable file parallelism
 
 ### 2. Environment Variable Updates
+
 - **`VITEST_MAX_WORKERS=1`** - Single worker
 - **`VITEST_MAX_FORKS=1`** - Single fork
 - **`VITEST_SINGLE_FORK=true`** - Force single fork
 - **`VITEST_FILE_PARALLELISM=false`** - Disable file parallelism
 
 ### 3. Queue Script Updates
+
 - Updated environment variable exports
 - Updated help text
 - Enhanced process monitoring
@@ -100,6 +105,7 @@ Use the new test script to verify single process enforcement:
 ```
 
 This script:
+
 - Starts a single agent
 - Monitors process count for 30 seconds
 - Reports maximum processes seen
@@ -120,11 +126,13 @@ watch -n 1 'pgrep -f vitest | wc -l'
 ## Expected Behavior
 
 ### Before Enhancement
+
 - 1 agent could spawn 8+ vitest processes
 - Multiple child processes per agent
 - Unpredictable process counts
 
 ### After Enhancement
+
 - 1 agent = exactly 1 vitest process
 - No child processes spawned
 - Predictable, controlled process counts
@@ -150,16 +158,19 @@ done
 ## Benefits of Enhanced Solution
 
 ### Resource Management
+
 - **Predictable Memory Usage**: Exactly 1 process per agent
 - **Controlled CPU Usage**: No unexpected child processes
 - **Stable I/O**: Single process per agent
 
 ### Development Experience
+
 - **Predictable Behavior**: Always 1 process per agent
 - **Easy Debugging**: Clear process hierarchy
 - **Reliable Monitoring**: Simple process counting
 
 ### System Stability
+
 - **No Process Explosion**: Prevents runaway process spawning
 - **Resource Bounds**: Known maximum resource usage
 - **Clean Shutdown**: Single process to terminate per agent
@@ -169,6 +180,7 @@ done
 ### If Multiple Processes Still Appear
 
 1. **Check Environment Variables**:
+
    ```bash
    echo $VITEST_MAX_WORKERS
    echo $VITEST_MAX_FORKS
@@ -177,6 +189,7 @@ done
    ```
 
 2. **Verify Configuration**:
+
    ```bash
    # Check if global config is being used
    vitest --config vitest.global.config.ts --help
@@ -202,4 +215,6 @@ done
 
 ---
 
-*🐺> The enhanced solution ensures that each agent runs exactly ONE vitest process, with no child processes spawned. This provides predictable, controlled resource usage across the entire Reynard ecosystem.*
+_🐺> The enhanced solution ensures that each agent runs exactly ONE vitest process,
+with no child processes spawned. This provides predictable,
+controlled resource usage across the entire Reynard ecosystem._

@@ -1,6 +1,6 @@
 /**
  * Waveform rendering utilities for audio thumbnails.
- * 
+ *
  * This module handles drawing audio waveforms on canvas, including both
  * real audio data visualization and fallback synthetic patterns.
  */
@@ -34,14 +34,38 @@ export class WaveformRenderer {
 
       if (hasData) {
         // Draw real audio waveform
-        this.drawRealWaveform(ctx, width, height, audioData!, bars, barWidth, barSpacing);
+        this.drawRealWaveform(
+          ctx,
+          width,
+          height,
+          audioData!,
+          bars,
+          barWidth,
+          barSpacing,
+        );
       } else {
         // No meaningful data, use fallback
-        this.drawFallbackWaveform(ctx, width, height, audio, bars, barWidth, barSpacing);
+        this.drawFallbackWaveform(
+          ctx,
+          width,
+          height,
+          audio,
+          bars,
+          barWidth,
+          barSpacing,
+        );
       }
     } catch (error) {
       // Fallback to synthetic waveform if audio analysis fails
-      this.drawFallbackWaveform(ctx, width, height, audio, bars, barWidth, barSpacing);
+      this.drawFallbackWaveform(
+        ctx,
+        width,
+        height,
+        audio,
+        bars,
+        barWidth,
+        barSpacing,
+      );
     }
   }
 
@@ -61,8 +85,7 @@ export class WaveformRenderer {
       const dataIndex = Math.floor((i / bars) * audioData.length);
       const amplitude = audioData[dataIndex] || 0;
 
-      const barHeight =
-        Math.max(0.1, Math.min(0.9, amplitude)) * height * 0.6;
+      const barHeight = Math.max(0.1, Math.min(0.9, amplitude)) * height * 0.6;
       const x = i * barWidth + barSpacing;
       const y = (height - barHeight) / 2;
 

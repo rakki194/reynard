@@ -2,7 +2,9 @@
 
 ## Overview
 
-The Smart Indexing System provides efficient startup indexing with intelligent change tracking. It ensures that on startup, the system only reindexes files that have changed since the last indexing session, significantly reducing startup time and resource usage.
+The Smart Indexing System provides efficient startup indexing with intelligent change tracking. It ensures that
+on startup, the system only reindexes files that have changed since
+the last indexing session, significantly reducing startup time and resource usage.
 
 ## Key Features
 

@@ -1,6 +1,6 @@
 /**
  * Canvas utility functions for thumbnail generation.
- * 
+ *
  * Provides reusable canvas operations and blob conversion.
  */
 

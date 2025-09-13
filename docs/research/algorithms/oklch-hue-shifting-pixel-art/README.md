@@ -2,7 +2,10 @@
 
 ## Overview
 
-This document presents advanced hue shifting algorithms specifically designed for pixel art games using the OKLCH color space. Unlike traditional RGB-based approaches, OKLCH provides perceptually uniform color manipulation that creates more natural and vibrant pixel art with superior visual appeal.
+This document presents advanced hue shifting algorithms specifically designed for
+pixel art games using the OKLCH color space. Unlike traditional RGB-based approaches,
+OKLCH provides perceptually uniform color manipulation that creates more natural and
+vibrant pixel art with superior visual appeal.
 
 ## Table of Contents
 
@@ -16,7 +19,11 @@ This document presents advanced hue shifting algorithms specifically designed fo
 
 ## Introduction
 
-Hue shifting in pixel art involves adjusting the hue of colors along with their brightness and saturation to create more dynamic and realistic visuals. Traditional approaches using RGB or HSL often produce inconsistent results due to the non-uniform nature of these color spaces. OKLCH (OK Lightness Chroma Hue) provides a perceptually uniform alternative that ensures consistent visual results across all hues.
+Hue shifting in pixel art involves adjusting the hue of colors along with their brightness and
+saturation to create more dynamic and realistic visuals. Traditional approaches using RGB or
+HSL often produce inconsistent results due to the non-uniform nature of
+these color spaces. OKLCH (OK Lightness Chroma Hue) provides a perceptually uniform alternative that
+ensures consistent visual results across all hues.
 
 ### Why OKLCH for Pixel Art?
 
@@ -538,14 +545,16 @@ export const PixelArtPreview: Component<{
 
 ## Conclusion
 
-OKLCH-based hue shifting provides superior results for pixel art games compared to traditional color spaces. The algorithms presented here offer:
+OKLCH-based hue shifting provides superior results for pixel art games compared to
+traditional color spaces. The algorithms presented here offer:
 
 1. **Perceptual Uniformity**: Consistent visual results across all hues
 2. **Material Awareness**: Different shifting patterns for different materials
 3. **Performance Optimization**: Caching and batch processing strategies
 4. **Framework Integration**: Seamless integration with Reynard's OKLCH system
 
-These techniques enable pixel artists and game developers to create more vibrant, realistic, and visually appealing pixel art with minimal effort and maximum consistency.
+These techniques enable pixel artists and game developers to create more vibrant, realistic, and
+visually appealing pixel art with minimal effort and maximum consistency.
 
 ## References
 

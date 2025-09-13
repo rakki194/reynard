@@ -1,10 +1,12 @@
 # Memory Pressure Management
 
-This document describes the enhanced memory pressure management system that provides comprehensive monitoring, alerting, and automatic optimization of memory usage in the lazy loading system.
+This document describes the enhanced memory pressure management system that provides comprehensive monitoring,
+alerting, and automatic optimization of memory usage in the lazy loading system.
 
 ## Overview
 
-The memory pressure management system monitors system memory usage in real-time and automatically takes action to prevent memory exhaustion. It includes:
+The memory pressure management system monitors system memory usage in real-time and
+automatically takes action to prevent memory exhaustion. It includes:
 
 - **System Memory Monitoring**: Real-time monitoring of RAM and swap usage
 - **Memory Pressure Alerts**: Configurable alerts based on memory usage thresholds

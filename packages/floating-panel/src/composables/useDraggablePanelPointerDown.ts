@@ -4,7 +4,10 @@
  * Handles pointer down events for draggable panels.
  */
 
-import type { PanelPosition, DraggablePanelCore } from "./useDraggablePanelCore.js";
+import type {
+  PanelPosition,
+  DraggablePanelCore,
+} from "./useDraggablePanelCore.js";
 
 export interface PointerDownHandler {
   handlePointerDown: (event: globalThis.PointerEvent) => void;

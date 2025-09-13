@@ -6,9 +6,9 @@
  */
 
 import { Component, createSignal, createEffect } from "solid-js";
-import { 
-  AIGalleryProvider, 
-  AIGalleryGrid, 
+import {
+  AIGalleryProvider,
+  AIGalleryGrid,
   AIImageViewer,
   useGalleryAI,
   type AIGalleryConfig,
@@ -34,7 +34,7 @@ const sampleGalleryData: GalleryData = {
       },
     },
     {
-      id: "2", 
+      id: "2",
       name: "sample-image-2.jpg",
       path: "/images/sample-image-2.jpg",
       type: "image/jpeg",
@@ -86,33 +86,40 @@ const aiConfig: Partial<AIGalleryConfig> = {
 // AI Gallery callbacks
 const aiCallbacks = {
   onCaptionGenerationStart: (item: FileItem, generator: string) => {
-    console.log(`Starting caption generation for ${item.name} with ${generator}`);
+    console.log(
+      `Starting caption generation for ${item.name} with ${generator}`,
+    );
   },
-  
-  onCaptionGenerationComplete: (item: FileItem, result: GalleryCaptionResult) => {
+
+  onCaptionGenerationComplete: (
+    item: FileItem,
+    result: GalleryCaptionResult,
+  ) => {
     console.log(`Caption generated for ${item.name}:`, result.caption);
   },
-  
+
   onCaptionGenerationError: (item: FileItem, error: string) => {
     console.error(`Caption generation failed for ${item.name}:`, error);
   },
-  
+
   onBatchProcessingStart: (items: FileItem[], generator: string) => {
-    console.log(`Starting batch processing for ${items.length} items with ${generator}`);
+    console.log(
+      `Starting batch processing for ${items.length} items with ${generator}`,
+    );
   },
-  
+
   onBatchProcessingProgress: (progress: any) => {
     console.log(`Batch progress: ${progress.completed}/${progress.total}`);
   },
-  
+
   onBatchProcessingComplete: (results: GalleryCaptionResult[]) => {
     console.log(`Batch processing completed: ${results.length} results`);
   },
-  
+
   onBatchProcessingError: (error: string) => {
     console.error(`Batch processing failed:`, error);
   },
-  
+
   onAIConfigChange: (config: AIGalleryConfig) => {
     console.log("AI configuration changed:", config);
   },
@@ -120,7 +127,8 @@ const aiCallbacks = {
 
 // Main AI Gallery Example Component
 export const AIGalleryExample: Component = () => {
-  const [galleryData, setGalleryData] = createSignal<GalleryData>(sampleGalleryData);
+  const [galleryData, setGalleryData] =
+    createSignal<GalleryData>(sampleGalleryData);
   const [selectedItem, setSelectedItem] = createSignal<FileItem | null>(null);
   const [showImageViewer, setShowImageViewer] = createSignal(false);
 
@@ -161,7 +169,7 @@ export const AIGalleryExample: Component = () => {
     >
       <div class="ai-gallery-example">
         <h1>AI-Enhanced Gallery Example</h1>
-        
+
         <div class="ai-gallery-example__content">
           {/* AI Gallery Grid */}
           <div class="ai-gallery-example__grid">
@@ -226,48 +234,59 @@ const AIGalleryStatus: Component = () => {
   return (
     <div class="ai-gallery-status">
       <h3>AI Gallery Status</h3>
-      
+
       <div class="ai-gallery-status__info">
         <div class="ai-gallery-status__item">
           <span class="ai-gallery-status__label">AI Enabled:</span>
-          <span class={`ai-gallery-status__value ${ai.aiState().aiEnabled ? "ai-gallery-status__value--enabled" : "ai-gallery-status__value--disabled"}`}>
+          <span
+            class={`ai-gallery-status__value ${ai.aiState().aiEnabled ? "ai-gallery-status__value--enabled" : "ai-gallery-status__value--disabled"}`}
+          >
             {ai.aiState().aiEnabled ? "Yes" : "No"}
           </span>
         </div>
-        
+
         <div class="ai-gallery-status__item">
           <span class="ai-gallery-status__label">Selected Generator:</span>
-          <span class="ai-gallery-status__value">{ai.aiState().selectedGenerator}</span>
+          <span class="ai-gallery-status__value">
+            {ai.aiState().selectedGenerator}
+          </span>
         </div>
-        
+
         <div class="ai-gallery-status__item">
           <span class="ai-gallery-status__label">Available Generators:</span>
-          <span class="ai-gallery-status__value">{ai.getAvailableGenerators().join(", ")}</span>
+          <span class="ai-gallery-status__value">
+            {ai.getAvailableGenerators().join(", ")}
+          </span>
         </div>
-        
+
         <div class="ai-gallery-status__item">
           <span class="ai-gallery-status__label">Operation Status:</span>
-          <span class={`ai-gallery-status__value ai-gallery-status__value--${ai.aiState().operationStatus}`}>
+          <span
+            class={`ai-gallery-status__value ai-gallery-status__value--${ai.aiState().operationStatus}`}
+          >
             {ai.aiState().operationStatus}
           </span>
         </div>
-        
+
         <Show when={ai.aiState().isGenerating}>
           <div class="ai-gallery-status__item">
             <span class="ai-gallery-status__label">Generating:</span>
-            <span class="ai-gallery-status__value ai-gallery-status__value--generating">Yes</span>
+            <span class="ai-gallery-status__value ai-gallery-status__value--generating">
+              Yes
+            </span>
           </div>
         </Show>
-        
+
         <Show when={ai.aiState().batchProgress}>
           <div class="ai-gallery-status__item">
             <span class="ai-gallery-status__label">Batch Progress:</span>
             <span class="ai-gallery-status__value">
-              {ai.aiState().batchProgress?.completed} / {ai.aiState().batchProgress?.total}
+              {ai.aiState().batchProgress?.completed} /{" "}
+              {ai.aiState().batchProgress?.total}
             </span>
           </div>
         </Show>
-        
+
         <Show when={ai.aiState().lastError}>
           <div class="ai-gallery-status__item">
             <span class="ai-gallery-status__label">Last Error:</span>
@@ -277,7 +296,7 @@ const AIGalleryStatus: Component = () => {
           </div>
         </Show>
       </div>
-      
+
       <div class="ai-gallery-status__actions">
         <button
           onClick={() => ai.setAIEnabled(!ai.aiState().aiEnabled)}
@@ -285,7 +304,7 @@ const AIGalleryStatus: Component = () => {
         >
           {ai.aiState().aiEnabled ? "Disable AI" : "Enable AI"}
         </button>
-        
+
         <button
           onClick={() => ai.clearAIState()}
           class="ai-gallery-status__clear-btn"

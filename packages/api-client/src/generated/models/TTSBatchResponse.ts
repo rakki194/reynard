@@ -82,7 +82,9 @@ export function TTSBatchResponseFromJSONTyped(
   }
   return {
     success: json["success"],
-    results: (json["results"] as Array<TTSSynthesisResponse>).map(TTSSynthesisResponseFromJSON),
+    results: (json["results"] as Array<TTSSynthesisResponse>).map(
+      TTSSynthesisResponseFromJSON,
+    ),
     totalProcessingTime: json["total_processing_time"],
     error: json["error"] == null ? undefined : json["error"],
   };
@@ -102,7 +104,9 @@ export function TTSBatchResponseToJSONTyped(
 
   return {
     success: value["success"],
-    results: (value["results"] as Array<TTSSynthesisResponse>).map(TTSSynthesisResponseToJSON),
+    results: (value["results"] as Array<TTSSynthesisResponse>).map(
+      TTSSynthesisResponseToJSON,
+    ),
     total_processing_time: value["totalProcessingTime"],
     error: value["error"],
   };

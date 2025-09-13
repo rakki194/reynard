@@ -1,6 +1,6 @@
 /**
  * File information utilities for thumbnail generation.
- * 
+ *
  * Provides utilities for extracting file metadata and determining
  * file characteristics needed for thumbnail processing.
  */
@@ -47,8 +47,7 @@ export async function getFileInfo(
   } catch (error) {
     return {
       success: false,
-      error:
-        error instanceof Error ? error.message : "Failed to get file info",
+      error: error instanceof Error ? error.message : "Failed to get file info",
       duration: 0,
       timestamp: new Date(),
     };

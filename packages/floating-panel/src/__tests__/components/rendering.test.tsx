@@ -52,18 +52,32 @@ describe("FloatingPanel - Accessibility", () => {
   });
 
   it("should have proper ARIA role", () => {
-    render(() => <FloatingPanel id="test-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>);
+    render(() => (
+      <FloatingPanel id="test-panel" position={{ top: 100, left: 100 }}>
+        {mockContent}
+      </FloatingPanel>
+    ));
 
-    const panel = document.querySelector('[aria-labelledby="panel-title-test-panel"]');
+    const panel = document.querySelector(
+      '[aria-labelledby="panel-title-test-panel"]',
+    );
     expect(panel).toBeTruthy();
   });
 
   it("should support custom ARIA label", () => {
     render(() => (
-      <FloatingPanel id="labeled-panel" position={{ top: 100, left: 100 }} title="Custom Panel">{mockContent}</FloatingPanel>
+      <FloatingPanel
+        id="labeled-panel"
+        position={{ top: 100, left: 100 }}
+        title="Custom Panel"
+      >
+        {mockContent}
+      </FloatingPanel>
     ));
 
-    const panel = document.querySelector('[aria-labelledby="panel-title-labeled-panel"]');
+    const panel = document.querySelector(
+      '[aria-labelledby="panel-title-labeled-panel"]',
+    );
     expect(panel).toBeTruthy();
   });
 
@@ -74,43 +88,61 @@ describe("FloatingPanel - Accessibility", () => {
       </FloatingPanel>
     ));
 
-    const panel = document.querySelector('[aria-labelledby="panel-title-described-panel"]');
+    const panel = document.querySelector(
+      '[aria-labelledby="panel-title-described-panel"]',
+    );
     expect(panel).toBeTruthy();
   });
 
   it("should support ARIA expanded state", () => {
     render(() => (
-      <FloatingPanel id="expanded-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>
+      <FloatingPanel id="expanded-panel" position={{ top: 100, left: 100 }}>
+        {mockContent}
+      </FloatingPanel>
     ));
 
-    const panel = document.querySelector('[aria-labelledby="panel-title-expanded-panel"]');
+    const panel = document.querySelector(
+      '[aria-labelledby="panel-title-expanded-panel"]',
+    );
     expect(panel).toBeTruthy();
   });
 
   it("should support ARIA hidden state", () => {
     render(() => (
-      <FloatingPanel id="hidden-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>
+      <FloatingPanel id="hidden-panel" position={{ top: 100, left: 100 }}>
+        {mockContent}
+      </FloatingPanel>
     ));
 
-    const panel = document.querySelector('[aria-labelledby="panel-title-hidden-panel"]');
+    const panel = document.querySelector(
+      '[aria-labelledby="panel-title-hidden-panel"]',
+    );
     expect(panel).toBeTruthy();
   });
 
   it("should support tab index", () => {
     render(() => (
-      <FloatingPanel id="tabbed-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>
+      <FloatingPanel id="tabbed-panel" position={{ top: 100, left: 100 }}>
+        {mockContent}
+      </FloatingPanel>
     ));
 
-    const panel = document.querySelector('[aria-labelledby="panel-title-tabbed-panel"]');
+    const panel = document.querySelector(
+      '[aria-labelledby="panel-title-tabbed-panel"]',
+    );
     expect(panel).toBeTruthy();
   });
 
   it("should support custom data attributes", () => {
     render(() => (
-      <FloatingPanel id="custom-panel" position={{ top: 100, left: 100 }}>{mockContent}</FloatingPanel>
+      <FloatingPanel id="custom-panel" position={{ top: 100, left: 100 }}>
+        {mockContent}
+      </FloatingPanel>
     ));
 
-    const panel = document.querySelector('[aria-labelledby="panel-title-custom-panel"]');
+    const panel = document.querySelector(
+      '[aria-labelledby="panel-title-custom-panel"]',
+    );
     expect(panel).toBeTruthy();
   });
 });

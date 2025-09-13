@@ -10,4 +10,3 @@ describe("I18n Core", () => {
     expect(true).toBe(true);
   });
 });
-

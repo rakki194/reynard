@@ -217,4 +217,5 @@ reynard-gallery (existing)
 6. **Testing**: Full test coverage across all packages
 
 This architecture provides a solid foundation for a world-class visualization system that combines the best of Reynard's
-existing capabilities with yipyap's advanced features, all while maintaining clean dependencies and excellent performance.
+existing capabilities with yipyap's advanced features, all while maintaining clean dependencies and
+excellent performance.

@@ -2,7 +2,8 @@
 
 ## > What We've Accomplished
 
-The Reynard Basic Backend now has a fully functional SQLite database with persistent user storage and session management. Here's what was implemented:
+The Reynard Basic Backend now has a fully functional SQLite database with persistent user storage and
+session management. Here's what was implemented:
 
 ### 🗄️ Database Models (`models.py`)
 

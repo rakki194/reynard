@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document provides visual examples and detailed explanations of OKLCH hue shifting techniques for pixel art games. Each example demonstrates specific concepts with before/after comparisons and implementation details.
+This document provides visual examples and
+detailed explanations of OKLCH hue shifting techniques for
+pixel art games. Each example demonstrates specific concepts with before/after comparisons and implementation details.
 
 ## Basic Hue Shifting Examples
 
@@ -369,4 +371,8 @@ function createColorCycle(
 
 ## Conclusion
 
-OKLCH hue shifting provides superior results for pixel art games by ensuring perceptually uniform color changes. The examples in this document demonstrate how to apply these techniques effectively across different game elements, from character sprites to environmental tiles. By following the guidelines and using the provided algorithms, developers can create more vibrant and visually appealing pixel art games.
+OKLCH hue shifting provides superior results for pixel art games by
+ensuring perceptually uniform color changes. The examples in this document demonstrate how
+to apply these techniques effectively across different game elements,
+from character sprites to environmental tiles. By following the guidelines and
+using the provided algorithms, developers can create more vibrant and visually appealing pixel art games.

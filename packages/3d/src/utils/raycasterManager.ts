@@ -10,7 +10,10 @@ export function createRaycasterManager() {
   const [mouse, setMouse] = createSignal<Vector2Like | null>(null);
 
   const initialize = (threeJS: unknown): void => {
-    const three = threeJS as { Raycaster: new () => RaycasterLike; Vector2: new () => Vector2Like };
+    const three = threeJS as {
+      Raycaster: new () => RaycasterLike;
+      Vector2: new () => Vector2Like;
+    };
     setRaycaster(new three.Raycaster());
     setMouse(new three.Vector2());
   };
@@ -19,7 +22,9 @@ export function createRaycasterManager() {
     const currentMouse = mouse();
     if (!currentMouse) return;
 
-    const rendererObj = renderer as { domElement?: { getBoundingClientRect: () => DOMRect } };
+    const rendererObj = renderer as {
+      domElement?: { getBoundingClientRect: () => DOMRect };
+    };
     const rect = rendererObj.domElement?.getBoundingClientRect();
     if (!rect) return;
 
@@ -30,7 +35,7 @@ export function createRaycasterManager() {
   const performRaycast = (camera: unknown, pointCloud: unknown) => {
     const currentRaycaster = raycaster();
     const currentMouse = mouse();
-    
+
     if (!currentRaycaster || !currentMouse) return [];
 
     currentRaycaster.setFromCamera(currentMouse, camera);

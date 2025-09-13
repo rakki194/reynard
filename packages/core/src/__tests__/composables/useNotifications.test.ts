@@ -184,10 +184,7 @@ describe("useNotifications Composable", () => {
 
       // Add notifications
       notificationsModule.notify(t("core.notifications.first"), "info");
-      notificationsModule.notify(
-        t("core.notifications.second"),
-        "success",
-      );
+      notificationsModule.notify(t("core.notifications.second"), "success");
 
       expect(notificationsModule.notifications).toHaveLength(2);
 

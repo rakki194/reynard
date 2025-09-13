@@ -6,7 +6,8 @@
 
 ## Context
 
-The Reynard framework's TypeScript codebase was experiencing several critical issues that violated our modularity standards and type safety principles:
+The Reynard framework's TypeScript codebase was experiencing several critical issues that
+violated our modularity standards and type safety principles:
 
 ### Problems Identified
 
@@ -25,7 +26,8 @@ The Reynard framework's TypeScript codebase was experiencing several critical is
 
 ## Decision
 
-We will implement a comprehensive modular refactoring strategy that addresses all identified issues while maintaining backward compatibility and improving overall code quality.
+We will implement a comprehensive modular refactoring strategy that addresses all identified issues while
+maintaining backward compatibility and improving overall code quality.
 
 ### Core Principles
 

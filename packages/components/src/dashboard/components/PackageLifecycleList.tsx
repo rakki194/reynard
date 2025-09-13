@@ -8,47 +8,66 @@ import { Button, TextField, Select } from "reynard-components";
 import { Icon } from "reynard-components/icons";
 import type { PackageLifecycleListProps } from "../types/PackageLifecycleTypes";
 
-export const PackageLifecycleList: Component<PackageLifecycleListProps> = (props) => {
+export const PackageLifecycleList: Component<PackageLifecycleListProps> = (
+  props,
+) => {
   const filteredPackages = () => {
     let filtered = props.packages;
-    
+
     // Filter by search query
     if (props.searchQuery) {
-      filtered = filtered.filter(pkg => 
-        pkg.name.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
-        pkg.description.toLowerCase().includes(props.searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (pkg) =>
+          pkg.name.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
+          pkg.description
+            .toLowerCase()
+            .includes(props.searchQuery.toLowerCase()),
       );
     }
-    
+
     // Filter by status
     if (props.selectedStatus !== "all") {
-      filtered = filtered.filter(pkg => pkg.status === props.selectedStatus);
+      filtered = filtered.filter((pkg) => pkg.status === props.selectedStatus);
     }
-    
+
     return filtered;
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "loaded": return "checkmark-circle";
-      case "unloaded": return "circle";
-      case "loading": return "loading";
-      case "unloading": return "loading";
-      case "reloading": return "refresh";
-      case "error": return "warning";
-      default: return "help";
+      case "loaded":
+        return "checkmark-circle";
+      case "unloaded":
+        return "circle";
+      case "loading":
+        return "loading";
+      case "unloading":
+        return "loading";
+      case "reloading":
+        return "refresh";
+      case "error":
+        return "warning";
+      default:
+        return "help";
     }
   };
 
   const getStatusVariant = (status: string) => {
     switch (status) {
-      case "loaded": return "success";
-      case "unloaded": return "muted";
-      case "loading": return "info";
-      case "unloading": return "info";
-      case "reloading": return "primary";
-      case "error": return "warning";
-      default: return "default";
+      case "loaded":
+        return "success";
+      case "unloaded":
+        return "muted";
+      case "loading":
+        return "info";
+      case "unloading":
+        return "info";
+      case "reloading":
+        return "primary";
+      case "error":
+        return "warning";
+      default:
+        return "default";
     }
   };
 
@@ -78,7 +97,7 @@ export const PackageLifecycleList: Component<PackageLifecycleListProps> = (props
               { value: "loaded", label: "Loaded" },
               { value: "unloaded", label: "Unloaded" },
               { value: "loading", label: "Loading" },
-              { value: "error", label: "Error" }
+              { value: "error", label: "Error" },
             ]}
             size="sm"
           />
@@ -95,7 +114,7 @@ export const PackageLifecycleList: Component<PackageLifecycleListProps> = (props
       </div>
 
       <div class="reynard-package-lifecycle-list__content">
-        <Show 
+        <Show
           when={filteredPackages().length > 0}
           fallback={
             <div class="reynard-package-lifecycle-list__empty">
@@ -110,10 +129,12 @@ export const PackageLifecycleList: Component<PackageLifecycleListProps> = (props
                 <div class="reynard-package-lifecycle-item__header">
                   <div class="reynard-package-lifecycle-item__info">
                     <h4>{pkg.name}</h4>
-                    <span class="reynard-package-lifecycle-item__version">v{pkg.version}</span>
+                    <span class="reynard-package-lifecycle-item__version">
+                      v{pkg.version}
+                    </span>
                     <div class="reynard-package-lifecycle-item__status">
-                      <Icon 
-                        name={getStatusIcon(pkg.status)} 
+                      <Icon
+                        name={getStatusIcon(pkg.status)}
                         variant={getStatusVariant(pkg.status)}
                         size="sm"
                       />
@@ -151,7 +172,9 @@ export const PackageLifecycleList: Component<PackageLifecycleListProps> = (props
                     </Show>
                   </div>
                 </div>
-                <p class="reynard-package-lifecycle-item__description">{pkg.description}</p>
+                <p class="reynard-package-lifecycle-item__description">
+                  {pkg.description}
+                </p>
                 <div class="reynard-package-lifecycle-item__meta">
                   <span>Memory: {formatMemoryUsage(pkg.memoryUsage)}</span>
                   <span>Load Time: {pkg.loadTime}ms</span>
@@ -174,4 +197,3 @@ export const PackageLifecycleList: Component<PackageLifecycleListProps> = (props
     </div>
   );
 };
-

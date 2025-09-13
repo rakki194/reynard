@@ -64,4 +64,3 @@ export interface PerformanceExportState {
   filteredData: PerformanceDataPoint[];
   lastExport: Date | null;
 }
-

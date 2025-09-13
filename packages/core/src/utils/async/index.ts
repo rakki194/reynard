@@ -4,13 +4,7 @@
  */
 
 // Timing utilities
-export {
-  sleep,
-  delay,
-  withTimeout,
-  nextTick,
-  nextFrame,
-} from "./timing";
+export { sleep, delay, withTimeout, nextTick, nextFrame } from "./timing";
 
 // Retry utilities
 export { retry } from "./retry";

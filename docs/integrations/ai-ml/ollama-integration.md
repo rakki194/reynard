@@ -1,6 +1,7 @@
 # Ollama Integration & Reynard Assistant 🦊
 
-This document covers the Ollama integration in Reynard, including the custom Reynard assistant that helps with dataset management tasks.
+This document covers the Ollama integration in Reynard,
+including the custom Reynard assistant that helps with dataset management tasks.
 
 ## Overview
 
@@ -52,7 +53,8 @@ You can also set these in your `.env` file in the project root.
 
 ### Accessing the Assistant
 
-The Reynard assistant (🦊) appears as a floating chat interface in the bottom-right corner of the application when Ollama is connected and running.
+The Reynard assistant (🦊) appears as a floating chat interface in the bottom-right corner of the application when
+Ollama is connected and running.
 
 ### Features
 

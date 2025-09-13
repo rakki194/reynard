@@ -4,7 +4,11 @@
  * Migration utilities for i18next library.
  */
 
-import type { MigrationOptions, MigrationResult, MigrationStatistics } from "./types";
+import type {
+  MigrationOptions,
+  MigrationResult,
+  MigrationStatistics,
+} from "./types";
 import type { Translations } from "../../types";
 
 /**
@@ -26,13 +30,13 @@ export function migrateFromI18next(
   try {
     // i18next already uses nested structure, but we need to validate it
     const translations = sourceTranslations as Record<string, unknown>;
-    
+
     const processTranslations = (obj: unknown, path = ""): void => {
       if (typeof obj === "object" && obj !== null) {
         for (const [key, value] of Object.entries(obj)) {
           const currentPath = path ? `${path}.${key}` : key;
           statistics.totalKeys++;
-          
+
           if (typeof value === "string") {
             statistics.migratedKeys++;
           } else if (typeof value === "object" && value !== null) {
@@ -55,7 +59,9 @@ export function migrateFromI18next(
       statistics,
     };
   } catch (error) {
-    errors.push(`Migration failed: ${error instanceof Error ? error.message : String(error)}`);
+    errors.push(
+      `Migration failed: ${error instanceof Error ? error.message : String(error)}`,
+    );
     return {
       success: false,
       migratedTranslations: {} as Translations,
@@ -65,4 +71,3 @@ export function migrateFromI18next(
     };
   }
 }
-

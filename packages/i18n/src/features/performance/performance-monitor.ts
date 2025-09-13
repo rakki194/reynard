@@ -30,8 +30,12 @@ export function createPerformanceMonitor(): I18nPerformanceMonitor {
       cacheHits,
       cacheMisses,
       loadTimes: [...loadTimes],
-      averageLoadTime: loadTimes.length > 0 ? loadTimes.reduce((a, b) => a + b, 0) / loadTimes.length : 0,
-      cacheHitRate: (cacheHits + cacheMisses) > 0 ? cacheHits / (cacheHits + cacheMisses) : 0,
+      averageLoadTime:
+        loadTimes.length > 0
+          ? loadTimes.reduce((a, b) => a + b, 0) / loadTimes.length
+          : 0,
+      cacheHitRate:
+        cacheHits + cacheMisses > 0 ? cacheHits / (cacheHits + cacheMisses) : 0,
     }),
     reset: () => {
       translationCalls = 0;

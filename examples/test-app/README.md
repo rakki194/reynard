@@ -4,7 +4,9 @@
 
 ## 📋 Overview
 
-The Reynard Test Application is a dedicated testing environment designed to validate and demonstrate the core functionality of the Reynard framework. This application serves as both a development tool for framework testing and a reference implementation for developers learning to use Reynard components and theming systems.
+The Reynard Test Application is a dedicated testing environment designed to validate and
+demonstrate the core functionality of the Reynard framework. This application serves as both a development tool for
+framework testing and a reference implementation for developers learning to use Reynard components and theming systems.
 
 ## 🏗️ Architecture
 
@@ -369,9 +371,9 @@ When adding new test cases:
 
 ## 📚 Related Documentation
 
-- [Reynard Framework README](../reynard/README.md) - Main framework documentation
-- [Reynard Core Package](../reynard/packages/core/README.md) - Core utilities and composables
-- [Reynard Components Package](../reynard/packages/components/README.md) - UI component library
+- [Reynard Framework README](../../README.md) - Main framework documentation
+- [Reynard Core Package](../../packages/core/README.md) - Core utilities and composables
+- [Reynard Components Package](../../packages/components/README.md) - UI component library
 - [SolidJS Documentation](https://www.solidjs.com/docs) - Framework documentation
 
 ## 🏷️ Version Information
@@ -385,4 +387,5 @@ When adding new test cases:
 
 ---
 
-_This test application is part of the Reynard framework ecosystem and serves as both a development tool and reference implementation for building applications with Reynard._
+_This test application is part of the Reynard framework ecosystem and serves as both a development tool and
+reference implementation for building applications with Reynard._

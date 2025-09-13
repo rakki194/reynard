@@ -1,7 +1,13 @@
 // Visualization and cluster types
 // Extracted from rendering.ts for modularity
 
-import type { EmbeddingPoint, EmbeddingRenderingConfig, ClusterData, Vector3Like, ColorLike } from "./core";
+import type {
+  EmbeddingPoint,
+  EmbeddingRenderingConfig,
+  ClusterData,
+  Vector3Like,
+  ColorLike,
+} from "./core";
 import type { SceneLike, CameraLike, RendererLike } from "./threejs";
 
 // Vector visualization props

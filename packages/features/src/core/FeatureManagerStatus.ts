@@ -48,7 +48,7 @@ export function getAllFeatureStatuses(
  */
 export function refreshFeatureStatuses(core: FeatureManagerCore): void {
   const features = core.registry.getAll();
-  
+
   for (const feature of features) {
     const isEnabled = core.registry.isEnabled(feature.id);
     const status: FeatureStatus = {
@@ -61,9 +61,8 @@ export function refreshFeatureStatuses(core: FeatureManagerCore): void {
       degradedServices: [],
       config: {},
       lastUpdated: Date.now(),
-      healthScore: isEnabled ? 100 : 0
+      healthScore: isEnabled ? 100 : 0,
     };
     setFeatureStatus(core, feature.id, status);
   }
 }
-

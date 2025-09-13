@@ -34,5 +34,4 @@ export class CodeMetadataExtractor extends BaseMetadataExtractor {
 
     return metadata;
   }
-
 }

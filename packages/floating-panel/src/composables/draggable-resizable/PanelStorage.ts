@@ -31,4 +31,3 @@ export function loadPanelState(key: string, fallback: PanelState): PanelState {
   }
   return fallback;
 }
-

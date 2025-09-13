@@ -68,7 +68,7 @@ declare global {
       head: JSX.HTMLAttributes<HTMLHeadElement>;
       body: JSX.HTMLAttributes<HTMLBodyElement>;
       html: JSX.HtmlHTMLAttributes<HTMLHtmlElement>;
-      
+
       // SVG elements
       svg: JSX.SVGAttributes<SVGSVGElement>;
       circle: JSX.SVGAttributes<SVGCircleElement>;

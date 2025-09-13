@@ -47,9 +47,7 @@
         "name": "penetration-chromium",
         "testDir": "/home/kade/runeset/reynard/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "penetration-tests.spec.ts"
-        ],
+        "testMatch": ["penetration-tests.spec.ts"],
         "timeout": 300000
       }
     ],

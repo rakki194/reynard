@@ -8,9 +8,20 @@
 import type { NLWebService } from "../types/index.js";
 import type { NLWebAPIHandler } from "./types.js";
 import { createSuggestHandler } from "./handlers/suggestHandler.js";
-import { createHealthHandler, createStatusHandler, createForceHealthCheckHandler } from "./handlers/healthHandler.js";
-import { createGetToolsHandler, createRegisterToolHandler, createUnregisterToolHandler } from "./handlers/toolsHandler.js";
-import { createPerformanceHandler, createRollbackHandler } from "./handlers/performanceHandler.js";
+import {
+  createHealthHandler,
+  createStatusHandler,
+  createForceHealthCheckHandler,
+} from "./handlers/healthHandler.js";
+import {
+  createGetToolsHandler,
+  createRegisterToolHandler,
+  createUnregisterToolHandler,
+} from "./handlers/toolsHandler.js";
+import {
+  createPerformanceHandler,
+  createRollbackHandler,
+} from "./handlers/performanceHandler.js";
 
 export interface NLWebAPIConfig {
   /** Base path for API endpoints */
@@ -52,11 +63,8 @@ function registerCoreHandlers(
     enableCORS,
   );
 
-  handlers[`POST ${basePath}/health/force-check`] = createForceHealthCheckHandler(
-    service,
-    basePath,
-    enableCORS,
-  );
+  handlers[`POST ${basePath}/health/force-check`] =
+    createForceHealthCheckHandler(service, basePath, enableCORS);
 }
 
 /**

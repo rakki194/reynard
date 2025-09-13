@@ -38,7 +38,9 @@ export class FileProcessingPipeline implements ProcessingPipeline {
     file: File | string,
     options?: ProcessingOptions,
   ): Promise<ProcessingResult> {
-    return await this.orchestrator.getFileProcessor().processFile(file, options);
+    return await this.orchestrator
+      .getFileProcessor()
+      .processFile(file, options);
   }
 
   /**
@@ -58,7 +60,9 @@ export class FileProcessingPipeline implements ProcessingPipeline {
     file: File | string,
     options: ThumbnailOptions,
   ): Promise<ProcessingResult<Blob | string>> {
-    return await this.orchestrator.getFileProcessor().generateThumbnail(file, options);
+    return await this.orchestrator
+      .getFileProcessor()
+      .generateThumbnail(file, options);
   }
 
   /**
@@ -75,7 +79,9 @@ export class FileProcessingPipeline implements ProcessingPipeline {
     path: string,
     options?: ProcessingOptions,
   ): Promise<ProcessingResult<DirectoryListing>> {
-    return await this.orchestrator.getDirectoryScanner().scanDirectory(path, options);
+    return await this.orchestrator
+      .getDirectoryScanner()
+      .scanDirectory(path, options);
   }
 
   /**

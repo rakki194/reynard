@@ -46,11 +46,7 @@ export class TranslationAnalytics {
   /**
    * Track translation usage
    */
-  trackUsage(
-    key: string,
-    locale: LanguageCode,
-    context?: string
-  ): void {
+  trackUsage(key: string, locale: LanguageCode, context?: string): void {
     if (!this.options.enableTracking) {
       return;
     }
@@ -75,7 +71,9 @@ export class TranslationAnalytics {
 
     // Keep history size within limits
     if (this.usageHistory.length > this.options.maxUsageHistory) {
-      this.usageHistory = this.usageHistory.slice(-this.options.maxUsageHistory);
+      this.usageHistory = this.usageHistory.slice(
+        -this.options.maxUsageHistory,
+      );
     }
   }
 
@@ -106,14 +104,14 @@ export class TranslationAnalytics {
    * Get usage history for a specific key
    */
   getKeyUsageHistory(key: string): TranslationUsage[] {
-    return this.usageHistory.filter(usage => usage.key === key);
+    return this.usageHistory.filter((usage) => usage.key === key);
   }
 
   /**
    * Get usage history for a specific locale
    */
   getLocaleUsageHistory(locale: LanguageCode): TranslationUsage[] {
-    return this.usageHistory.filter(usage => usage.locale === locale);
+    return this.usageHistory.filter((usage) => usage.locale === locale);
   }
 
   /**
@@ -127,8 +125,8 @@ export class TranslationAnalytics {
    * Get usage patterns by time
    */
   getUsageByTimeRange(startDate: Date, endDate: Date): TranslationUsage[] {
-    return this.usageHistory.filter(usage => 
-      usage.timestamp >= startDate && usage.timestamp <= endDate
+    return this.usageHistory.filter(
+      (usage) => usage.timestamp >= startDate && usage.timestamp <= endDate,
     );
   }
 
@@ -141,19 +139,21 @@ export class TranslationAnalytics {
 
     const recentlyUsedKeys = new Set(
       this.usageHistory
-        .filter(usage => usage.timestamp >= thresholdDate)
-        .map(usage => usage.key)
+        .filter((usage) => usage.timestamp >= thresholdDate)
+        .map((usage) => usage.key),
     );
 
-    return Array.from(this.keyCounts.keys()).filter(key => 
-      !recentlyUsedKeys.has(key)
+    return Array.from(this.keyCounts.keys()).filter(
+      (key) => !recentlyUsedKeys.has(key),
     );
   }
 
   /**
    * Get most active locales
    */
-  getMostActiveLocales(limit: number = 10): Array<{ locale: LanguageCode; count: number }> {
+  getMostActiveLocales(
+    limit: number = 10,
+  ): Array<{ locale: LanguageCode; count: number }> {
     return Array.from(this.localeCounts.entries())
       .map(([locale, count]) => ({ locale, count }))
       .sort((a, b) => b.count - a.count)

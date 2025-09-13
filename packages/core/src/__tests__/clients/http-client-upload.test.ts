@@ -3,7 +3,12 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HTTPClient, HTTPClientConfig, UploadOptions, mockFetch } from "../http-client-setup";
+import {
+  HTTPClient,
+  HTTPClientConfig,
+  UploadOptions,
+  mockFetch,
+} from "../http-client-setup";
 
 describe("HTTPClient Upload Methods", () => {
   let httpClient: HTTPClient;

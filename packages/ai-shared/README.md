@@ -2,7 +2,9 @@
 
 > **The Foundation of Reynard's AI/ML Ecosystem** 🦊
 
-Shared utilities, base classes, and types for all AI/ML packages in the Reynard framework. This package provides the essential building blocks for building consistent, interoperable AI/ML services.
+Shared utilities, base classes, and types for all AI/ML packages in
+the Reynard framework. This package provides the essential building blocks for building consistent,
+interoperable AI/ML services.
 
 ## ✨ Features
 
@@ -327,4 +329,5 @@ MIT License - see LICENSE file for details.
 
 ## Reynard Framework
 
-This package is part of the Reynard framework - a cunning SolidJS framework with modular architecture. Learn more at [(TBD)](https://(TBD)).
+This package is part of the Reynard framework - a cunning SolidJS framework with modular architecture. Learn more at
+[(TBD)](<https://(TBD)>).

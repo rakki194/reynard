@@ -11,7 +11,9 @@ export interface DataTableEmptyStateProps {
   columnCount: number;
 }
 
-export const DataTableEmptyState: Component<DataTableEmptyStateProps> = (props) => {
+export const DataTableEmptyState: Component<DataTableEmptyStateProps> = (
+  props,
+) => {
   return (
     <tr>
       <td

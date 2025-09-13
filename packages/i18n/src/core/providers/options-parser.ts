@@ -3,10 +3,7 @@
  * Parses and validates i18n configuration options
  */
 
-import type {
-  LanguageCode,
-  Translations,
-} from "../../types";
+import type { LanguageCode, Translations } from "../../types";
 import type { IntlConfig } from "../../intl/IntlConfig";
 
 // Enhanced i18n options interface

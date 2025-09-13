@@ -13,7 +13,9 @@ import { GlobalSettingsForm } from "./components/GlobalSettingsForm";
 import { usePackageConfiguration } from "./composables/usePackageConfiguration";
 import type { PackageConfigurationPanelProps } from "./types/PackageConfigurationTypes";
 
-export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps> = (props) => {
+export const PackageConfigurationPanel: Component<
+  PackageConfigurationPanelProps
+> = (props) => {
   const {
     state,
     refreshConfigurationData,
@@ -26,7 +28,9 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
 
   const selectedPackageData = () => {
     const selected = state().selectedPackage;
-    return selected ? state().packages.find(pkg => pkg.name === selected) : null;
+    return selected
+      ? state().packages.find((pkg) => pkg.name === selected)
+      : null;
   };
 
   const handleSavePackageSettings = async (settings: any[]) => {
@@ -57,11 +61,7 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
         </div>
         <div class="reynard-package-configuration-panel__actions">
           <Show when={props.showGlobalSettings}>
-            <Button
-              variant="secondary"
-              size="sm"
-              leftIcon="globe"
-            >
+            <Button variant="secondary" size="sm" leftIcon="globe">
               Global Settings
             </Button>
           </Show>
@@ -78,7 +78,7 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
       </div>
 
       <div class="reynard-package-configuration-panel__content">
-        <Show 
+        <Show
           when={selectedPackageData()}
           fallback={
             <PackageList
@@ -100,17 +100,14 @@ export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps
             onCancel={handleCancelPackageSettings}
             isSaving={state().isSaving}
           />
-                            </Show>
-                          </div>
+        </Show>
+      </div>
 
       <Show when={state().lastUpdate}>
         <div class="reynard-package-configuration-panel__footer">
-          <small>
-            Last updated: {state().lastUpdate?.toLocaleString()}
-          </small>
+          <small>Last updated: {state().lastUpdate?.toLocaleString()}</small>
         </div>
       </Show>
     </div>
   );
 };
-

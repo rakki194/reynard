@@ -1,10 +1,12 @@
 # Reynard ADR System
 
-*Intelligent Architecture Decision Record (ADR) generation, analysis, and management for the Reynard framework*
+_Intelligent Architecture Decision Record (ADR) generation, analysis, and management for the Reynard framework_
 
 ## Overview
 
-The Reynard ADR System is a comprehensive tool for managing Architecture Decision Records (ADRs) in the Reynard framework. It provides intelligent codebase analysis, automated ADR generation, validation, and relationship mapping to help teams maintain high-quality architectural documentation.
+The Reynard ADR System is a comprehensive tool for managing Architecture Decision Records (ADRs) in
+the Reynard framework. It provides intelligent codebase analysis, automated ADR generation, validation, and
+relationship mapping to help teams maintain high-quality architectural documentation.
 
 ## Features
 
@@ -60,18 +62,27 @@ npx adr-analyze relationships --path ./docs/architecture/decisions
 ### Programmatic Usage
 
 ```typescript
-import { CodebaseAnalyzer, ADRGenerator, ADRValidator } from 'reynard-adr-system';
+import {
+  CodebaseAnalyzer,
+  ADRGenerator,
+  ADRValidator,
+} from "reynard-adr-system";
 
 // Analyze codebase
-const analyzer = new CodebaseAnalyzer('./src');
+const analyzer = new CodebaseAnalyzer("./src");
 const analysis = await analyzer.analyzeCodebase();
 
 // Generate ADRs from suggestions
-const generator = new ADRGenerator('./docs/architecture/decisions', './templates');
-const generatedFiles = await generator.generateMultipleADRs(analysis.suggestions);
+const generator = new ADRGenerator(
+  "./docs/architecture/decisions",
+  "./templates",
+);
+const generatedFiles = await generator.generateMultipleADRs(
+  analysis.suggestions,
+);
 
 // Validate ADRs
-const validator = new ADRValidator('./docs/architecture/decisions');
+const validator = new ADRValidator("./docs/architecture/decisions");
 const results = await validator.validateAllADRs();
 ```
 
@@ -167,22 +178,22 @@ The system includes specialized templates for different types of architectural d
 ### Analysis Configuration
 
 ```typescript
-const analyzer = new CodebaseAnalyzer('./src', {
-  supportedExtensions: ['.ts', '.tsx', '.js', '.jsx'],
-  excludePatterns: ['node_modules', '.git', 'dist'],
+const analyzer = new CodebaseAnalyzer("./src", {
+  supportedExtensions: [".ts", ".tsx", ".js", ".jsx"],
+  excludePatterns: ["node_modules", ".git", "dist"],
   maxFileSize: 10000,
-  complexityThreshold: 0.7
+  complexityThreshold: 0.7,
 });
 ```
 
 ### Validation Rules
 
 ```typescript
-const validator = new ADRValidator('./docs/architecture/decisions', {
-  requiredSections: ['status', 'context', 'decision', 'consequences'],
+const validator = new ADRValidator("./docs/architecture/decisions", {
+  requiredSections: ["status", "context", "decision", "consequences"],
   minContentLength: 500,
   allowPlaceholders: false,
-  strictMode: true
+  strictMode: true,
 });
 ```
 
@@ -306,4 +317,4 @@ For questions, issues, or contributions:
 
 ---
 
-*Built with 🦊 fox cunning, 🦦 otter thoroughness, and 🐺 wolf precision for the Reynard framework*
+_Built with 🦊 fox cunning, 🦦 otter thoroughness, and 🐺 wolf precision for the Reynard framework_

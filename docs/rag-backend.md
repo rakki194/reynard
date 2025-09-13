@@ -4,7 +4,9 @@ _Comprehensive Retrieval-Augmented Generation system for Reynard with PostgreSQL
 
 ## Overview
 
-The Reynard RAG backend provides a complete retrieval-augmented generation system built on PostgreSQL with pgvector extensions. The system supports multi-modal embeddings (text, code, captions, images), streaming document ingestion, and sophisticated vector similarity search with HNSW indexing for optimal performance.
+The Reynard RAG backend provides a complete retrieval-augmented generation system built on PostgreSQL with
+pgvector extensions. The system supports multi-modal embeddings (text, code, captions, images),
+streaming document ingestion, and sophisticated vector similarity search with HNSW indexing for optimal performance.
 
 ## Architecture
 
@@ -511,7 +513,10 @@ curl -X GET "http://localhost:8000/api/rag/admin/indexing-status"
 
 ## Conclusion
 
-The Reynard RAG backend provides a production-ready retrieval-augmented generation system with sophisticated vector search capabilities, comprehensive API coverage, and robust error handling. The modular architecture enables easy extension and customization while maintaining high performance and reliability.
+The Reynard RAG backend provides a production-ready retrieval-augmented generation system with
+sophisticated vector search capabilities, comprehensive API coverage, and
+robust error handling. The modular architecture enables easy extension and customization while
+maintaining high performance and reliability.
 
 Key strengths include:
 
@@ -521,4 +526,5 @@ Key strengths include:
 - **Developer-Friendly**: Clean API design with comprehensive documentation
 - **Scalable Architecture**: Asynchronous processing with configurable concurrency
 
-The system is ready for immediate integration with the existing Reynard frontend packages and provides a solid foundation for advanced RAG applications.
+The system is ready for immediate integration with the existing Reynard frontend packages and
+provides a solid foundation for advanced RAG applications.

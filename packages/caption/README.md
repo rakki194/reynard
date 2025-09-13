@@ -1,6 +1,7 @@
 # reynard-caption
 
-Caption editing UI components for Reynard applications - provides textarea and tag bubbles for caption editing with a modern, accessible interface.
+Caption editing UI components for Reynard applications - provides textarea and
+tag bubbles for caption editing with a modern, accessible interface.
 
 ## Features
 

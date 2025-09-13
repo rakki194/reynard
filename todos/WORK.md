@@ -4,7 +4,8 @@
 
 ## 🎯 **Quest Overview**
 
-**Mission**: Transform Reynard from a frontend-only framework into a complete, self-sufficient AI/ML platform with its own backend services.
+**Mission**: Transform Reynard from a frontend-only framework into a complete,
+self-sufficient AI/ML platform with its own backend services.
 
 **Current Status**: 🟡 **Phase 1 - Foundation Building**
 
@@ -778,6 +779,7 @@ _XP Reward: 700 points per task_
 
 ## 🎯 **Next Action**
 
-**Ready to begin your quest?** Start with **Quest 1.1: `reynard-ai-shared`** and begin your journey to become a Master Fox! 🦊
+**Ready to begin your quest?** Start with **Quest 1.1: `reynard-ai-shared`** and
+begin your journey to become a Master Fox! 🦊
 
 _May the cunning of the fox guide your path!_

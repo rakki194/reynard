@@ -617,4 +617,5 @@ export const truncate = (str: string, length: number) => {
 };
 ```
 
-This quick reference provides templates and patterns for common development tasks in modular TypeScript/JavaScript applications.
+This quick reference provides templates and
+patterns for common development tasks in modular TypeScript/JavaScript applications.

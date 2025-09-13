@@ -6,7 +6,9 @@
 
 ## Context
 
-The Reynard codebase was experiencing significant maintainability issues due to large, monolithic files. Several files exceeded 500+ lines, making them difficult to understand, test, and maintain. This led to:
+The Reynard codebase was experiencing significant maintainability issues due to large,
+monolithic files. Several files exceeded 500+ lines, making them difficult to understand, test, and
+maintain. This led to:
 
 - Reduced code readability and comprehension
 - Increased complexity in debugging and testing

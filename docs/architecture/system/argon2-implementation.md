@@ -2,7 +2,9 @@
 
 ## Overview
 
-YipYap now uses `argon2-cffi` as the primary password hashing library, replacing the previous `pwdlib` implementation. This upgrade provides superior performance, enhanced security features, and better control over hashing parameters.
+YipYap now uses `argon2-cffi` as the primary password hashing library,
+replacing the previous `pwdlib` implementation. This upgrade provides superior performance,
+enhanced security features, and better control over hashing parameters.
 
 ## Why Argon2-CFFI?
 
@@ -394,6 +396,10 @@ pip install argon2-cffi bcrypt
 
 ## Conclusion
 
-The argon2-cffi implementation provides a robust, secure, and performant password hashing solution for YipYap. With configurable security levels, automatic migration, and comprehensive error handling, it offers significant improvements over the previous pwdlib implementation while maintaining backward compatibility.
+The argon2-cffi implementation provides a robust, secure, and
+performant password hashing solution for YipYap. With configurable security levels, automatic migration, and
+comprehensive error handling, it offers significant improvements over the previous pwdlib implementation while
+maintaining backward compatibility.
 
-The system is designed to be future-proof, allowing easy parameter updates as security requirements evolve and hardware capabilities improve.
+The system is designed to be future-proof, allowing easy parameter updates as security requirements evolve and
+hardware capabilities improve.

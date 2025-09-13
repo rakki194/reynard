@@ -85,7 +85,10 @@ export class LazyPackageExport {
 
   private async _validateExport(): Promise<void> {
     if (!this._module) {
-      throw new ExportValidationError(t("core.errors.moduleIsNull"), this._packageName);
+      throw new ExportValidationError(
+        t("core.errors.moduleIsNull"),
+        this._packageName,
+      );
     }
 
     if (this._validationLevel >= ExportValidationLevel.BASIC) {

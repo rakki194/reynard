@@ -1,10 +1,12 @@
 # Tool Registry
 
-Central registry for assistant tools. Manages discovery, permissions, validation, execution, metadata, and stats. Exposed both as a service and as HTTP endpoints.
+Central registry for assistant tools. Manages discovery, permissions, validation, execution, metadata, and
+stats. Exposed both as a service and as HTTP endpoints.
 
 ## Registry
 
-The core registry defines tools with typed parameters and validation rules, enforces permission checks, and provides rich introspection:
+The core registry defines tools with typed parameters and validation rules, enforces permission checks, and
+provides rich introspection:
 
 - List/search tools (filter by category/tag/permission)
 - Get categories/tags and stats
@@ -17,7 +19,8 @@ The core registry defines tools with typed parameters and validation rules, enfo
 
 ## Service
 
-`ToolRegistryService` wraps the registry in the service lifecycle and provides health and helper methods (`list_tools`, `get_tool`, `search_tools`, `execute_tool`, etc.).
+`ToolRegistryService` wraps the registry in the service lifecycle and provides health and
+helper methods (`list_tools`, `get_tool`, `search_tools`, `execute_tool`, etc.).
 
 - File: `app/services/integration/tool_registry_service.py`
 

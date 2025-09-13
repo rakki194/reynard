@@ -1,10 +1,13 @@
 # Model Usage Tracker
 
-Tracks usage and auto‑unloads models after inactivity, with configurable timeouts per model type and admin/user APIs to inspect/update settings.
+Tracks usage and auto‑unloads models after inactivity, with configurable timeouts per model type and
+admin/user APIs to inspect/update settings.
 
 ## Overview
 
-The tracker records when a model is loaded/used, preserves per‑model metrics, and runs a background cleanup loop to unload inactive models from VRAM/RAM based on timeouts. Timeouts can be tuned globally per model type and individually per model.
+The tracker records when a model is loaded/used, preserves per‑model metrics, and
+runs a background cleanup loop to unload inactive models from VRAM/RAM based on
+timeouts. Timeouts can be tuned globally per model type and individually per model.
 
 - Files:
   - `app/managers/model_usage_tracker.py`

@@ -1,6 +1,6 @@
 /**
  * NLWeb Initialization Service
- * 
+ *
  * Handles service initialization and shutdown logic for the NLWeb service.
  */
 

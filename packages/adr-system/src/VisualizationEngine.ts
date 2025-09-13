@@ -1,28 +1,33 @@
 /**
  * ADR Relationship Visualization Engine
- * 
+ *
  * This module provides comprehensive visualization capabilities for ADR relationships,
  * including interactive graphs, network diagrams, and relationship maps.
  */
 
-import { KnowledgeNode, KnowledgeEdge, GraphPath, GraphMetrics } from './KnowledgeGraph';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import {
+  KnowledgeNode,
+  KnowledgeEdge,
+  GraphPath,
+  GraphMetrics,
+} from "./KnowledgeGraph";
+import { writeFile } from "fs/promises";
+import { join } from "path";
 
 export interface VisualizationConfig {
   width: number;
   height: number;
-  theme: 'light' | 'dark' | 'colorful';
-  layout: 'force' | 'hierarchical' | 'circular' | 'grid';
-  nodeSize: 'fixed' | 'degree' | 'importance';
-  edgeThickness: 'fixed' | 'weight' | 'type';
+  theme: "light" | "dark" | "colorful";
+  layout: "force" | "hierarchical" | "circular" | "grid";
+  nodeSize: "fixed" | "degree" | "importance";
+  edgeThickness: "fixed" | "weight" | "type";
   showLabels: boolean;
   showTooltips: boolean;
   animation: boolean;
 }
 
 export interface VisualizationOutput {
-  format: 'svg' | 'png' | 'html' | 'json';
+  format: "svg" | "png" | "html" | "json";
   content: string;
   metadata: {
     nodeCount: number;
@@ -39,14 +44,14 @@ export class ADRVisualizationEngine {
     this.config = {
       width: 1200,
       height: 800,
-      theme: 'colorful',
-      layout: 'force',
-      nodeSize: 'importance',
-      edgeThickness: 'weight',
+      theme: "colorful",
+      layout: "force",
+      nodeSize: "importance",
+      edgeThickness: "weight",
       showLabels: true,
       showTooltips: true,
       animation: true,
-      ...config
+      ...config,
     };
   }
 
@@ -56,21 +61,21 @@ export class ADRVisualizationEngine {
   async generateInteractiveVisualization(
     nodes: KnowledgeNode[],
     edges: KnowledgeEdge[],
-    outputPath: string
+    outputPath: string,
   ): Promise<VisualizationOutput> {
     const html = this.createInteractiveHTML(nodes, edges);
-    
-    await writeFile(outputPath, html, 'utf-8');
-    
+
+    await writeFile(outputPath, html, "utf-8");
+
     return {
-      format: 'html',
+      format: "html",
       content: html,
       metadata: {
         nodeCount: nodes.length,
         edgeCount: edges.length,
         generatedAt: new Date().toISOString(),
-        version: '1.0.0'
-      }
+        version: "1.0.0",
+      },
     };
   }
 
@@ -80,84 +85,92 @@ export class ADRVisualizationEngine {
   async generateSVGVisualization(
     nodes: KnowledgeNode[],
     edges: KnowledgeEdge[],
-    outputPath: string
+    outputPath: string,
   ): Promise<VisualizationOutput> {
     const svg = this.createSVG(nodes, edges);
-    
-    await writeFile(outputPath, svg, 'utf-8');
-    
+
+    await writeFile(outputPath, svg, "utf-8");
+
     return {
-      format: 'svg',
+      format: "svg",
       content: svg,
       metadata: {
         nodeCount: nodes.length,
         edgeCount: edges.length,
         generatedAt: new Date().toISOString(),
-        version: '1.0.0'
-      }
+        version: "1.0.0",
+      },
     };
   }
 
   /**
    * Generate Mermaid diagram
    */
-  generateMermaidDiagram(nodes: KnowledgeNode[], edges: KnowledgeEdge[]): string {
-    let mermaid = 'graph TD\n';
-    
+  generateMermaidDiagram(
+    nodes: KnowledgeNode[],
+    edges: KnowledgeEdge[],
+  ): string {
+    let mermaid = "graph TD\n";
+
     // Add nodes
     for (const node of nodes) {
       const nodeId = this.sanitizeId(node.id);
       const label = this.config.showLabels ? node.label : nodeId;
       const shape = this.getNodeShape(node.type);
-      
+
       mermaid += `    ${nodeId}${shape}"${label}"\n`;
     }
-    
+
     // Add edges
     for (const edge of edges) {
       const sourceId = this.sanitizeId(edge.source);
       const targetId = this.sanitizeId(edge.target);
       const edgeLabel = this.getEdgeLabel(edge);
-      
+
       mermaid += `    ${sourceId} -->|"${edgeLabel}"| ${targetId}\n`;
     }
-    
+
     return mermaid;
   }
 
   /**
    * Generate relationship matrix
    */
-  generateRelationshipMatrix(nodes: KnowledgeNode[], edges: KnowledgeEdge[]): string {
+  generateRelationshipMatrix(
+    nodes: KnowledgeNode[],
+    edges: KnowledgeEdge[],
+  ): string {
     const matrix: string[][] = [];
-    const nodeIds = nodes.map(n => n.id);
-    
+    const nodeIds = nodes.map((n) => n.id);
+
     // Initialize matrix
-    matrix.push(['', ...nodeIds]);
-    
+    matrix.push(["", ...nodeIds]);
+
     for (const sourceNode of nodes) {
       const row = [sourceNode.label];
-      
+
       for (const targetNode of nodes) {
-        const edge = edges.find(e => e.source === sourceNode.id && e.target === targetNode.id);
+        const edge = edges.find(
+          (e) => e.source === sourceNode.id && e.target === targetNode.id,
+        );
         if (edge) {
           row.push(edge.type);
         } else {
-          row.push('');
+          row.push("");
         }
       }
-      
+
       matrix.push(row);
     }
-    
+
     // Convert to markdown table
-    let markdown = '| ' + matrix[0].join(' | ') + ' |\n';
-    markdown += '|' + matrix[0].map(() => '---').join('|') + '|\n';
-    
+    let markdown = "| " + matrix[0].join(" | ") + " |\n";
+    markdown += "|" + matrix[0].map(() => "---").join("|") + "|\n";
+
     for (let i = 1; i < matrix.length; i++) {
-      markdown += '| ' + matrix[i].join(' | ') + ' |\n';
+      markdown += "| " + matrix[i].join(" | ") + " |\n";
     }
-    
+
     return markdown;
   }
 
@@ -165,26 +178,26 @@ export class ADRVisualizationEngine {
    * Generate network statistics
    */
   generateNetworkStatistics(metrics: GraphMetrics): string {
-    let stats = '# ADR Network Statistics\n\n';
-    
+    let stats = "# ADR Network Statistics\n\n";
+
     stats += `## Overview\n`;
     stats += `- **Total Nodes**: ${metrics.totalNodes}\n`;
     stats += `- **Total Edges**: ${metrics.totalEdges}\n`;
     stats += `- **Average Degree**: ${metrics.averageDegree.toFixed(2)}\n`;
     stats += `- **Clustering Coefficient**: ${metrics.clusteringCoefficient.toFixed(3)}\n`;
     stats += `- **Connected Components**: ${metrics.connectedComponents}\n\n`;
-    
+
     stats += `## Node Types\n`;
     for (const [type, count] of Object.entries(metrics.nodeTypes)) {
       stats += `- **${type}**: ${count}\n`;
     }
-    stats += '\n';
-    
+    stats += "\n";
+
     stats += `## Edge Types\n`;
     for (const [type, count] of Object.entries(metrics.edgeTypes)) {
       stats += `- **${type}**: ${count}\n`;
     }
-    
+
     return stats;
   }
 
@@ -193,46 +206,49 @@ export class ADRVisualizationEngine {
    */
   generatePathVisualization(path: GraphPath): string {
     let visualization = `# Path: ${path.nodes[0].label} → ${path.nodes[path.nodes.length - 1].label}\n\n`;
-    
+
     visualization += `**Length**: ${path.length} steps\n`;
     visualization += `**Weight**: ${path.weight.toFixed(2)}\n\n`;
-    
+
     visualization += `## Path Details\n\n`;
-    
+
     for (let i = 0; i < path.nodes.length; i++) {
       const node = path.nodes[i];
       visualization += `${i + 1}. **${node.label}** (${node.type})\n`;
-      
+
       if (i < path.edges.length) {
         const edge = path.edges[i];
         visualization += `   → *${edge.type}* (weight: ${edge.weight.toFixed(2)})\n`;
       }
     }
-    
+
     return visualization;
   }
 
   /**
    * Create interactive HTML visualization
    */
-  private createInteractiveHTML(nodes: KnowledgeNode[], edges: KnowledgeEdge[]): string {
-    const nodeData = nodes.map(node => ({
+  private createInteractiveHTML(
+    nodes: KnowledgeNode[],
+    edges: KnowledgeEdge[],
+  ): string {
+    const nodeData = nodes.map((node) => ({
       id: node.id,
       label: node.label,
       type: node.type,
       properties: node.properties,
-      metadata: node.metadata
+      metadata: node.metadata,
     }));
-    
-    const edgeData = edges.map(edge => ({
+
+    const edgeData = edges.map((edge) => ({
       id: edge.id,
       source: edge.source,
       target: edge.target,
       type: edge.type,
       weight: edge.weight,
-      properties: edge.properties
+      properties: edge.properties,
     }));
-    
+
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -605,7 +621,7 @@ export class ADRVisualizationEngine {
   private createSVG(nodes: KnowledgeNode[], edges: KnowledgeEdge[]): string {
     const width = this.config.width;
     const height = this.config.height;
-    
+
     let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
     svg += `<defs>
         <style>
@@ -614,83 +630,97 @@ export class ADRVisualizationEngine {
             .label { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; }
         </style>
     </defs>`;
-    
+
     // Add edges
     for (const edge of edges) {
-      const sourceNode = nodes.find(n => n.id === edge.source);
-      const targetNode = nodes.find(n => n.id === edge.target);
-      
+      const sourceNode = nodes.find((n) => n.id === edge.source);
+      const targetNode = nodes.find((n) => n.id === edge.target);
+
       if (sourceNode && targetNode) {
         const x1 = this.getNodeX(sourceNode, nodes, width);
         const y1 = this.getNodeY(sourceNode, nodes, height);
         const x2 = this.getNodeX(targetNode, nodes, width);
         const y2 = this.getNodeY(targetNode, nodes, height);
-        
+
         svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="link" stroke-width="${edge.weight * 3}"/>`;
       }
     }
-    
+
     // Add nodes
     for (const node of nodes) {
       const x = this.getNodeX(node, nodes, width);
       const y = this.getNodeY(node, nodes, height);
       const radius = this.getNodeRadius(node);
       const color = this.getNodeColor(node.type);
-      
+
       svg += `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" class="node"/>`;
-      
+
       if (this.config.showLabels) {
         svg += `<text x="${x}" y="${y + 5}" class="label">${node.label}</text>`;
       }
     }
-    
-    svg += '</svg>';
+
+    svg += "</svg>";
     return svg;
   }
 
   // Helper methods
   private sanitizeId(id: string): string {
-    return id.replace(/[^a-zA-Z0-9]/g, '_');
+    return id.replace(/[^a-zA-Z0-9]/g, "_");
   }
 
   private getNodeShape(type: string): string {
     const shapes = {
-      'adr': '[',
-      'pattern': '{{',
-      'component': '[[',
-      'dependency': '((',
-      'stakeholder': '{{',
-      'technology': '[['
+      adr: "[",
+      pattern: "{{",
+      component: "[[",
+      dependency: "((",
+      stakeholder: "{{",
+      technology: "[[",
     };
-    return shapes[type as keyof typeof shapes] || '[';
+    return shapes[type as keyof typeof shapes] || "[";
   }
 
   private getEdgeLabel(edge: KnowledgeEdge): string {
-    return edge.type.replace('_', ' ');
+    return edge.type.replace("_", " ");
   }
 
-  private calculateAverageDegree(nodes: KnowledgeNode[], edges: KnowledgeEdge[]): number {
+  private calculateAverageDegree(
+    nodes: KnowledgeNode[],
+    edges: KnowledgeEdge[],
+  ): number {
     const degreeMap = new Map<string, number>();
-    
+
     for (const node of nodes) {
       degreeMap.set(node.id, 0);
     }
-    
+
     for (const edge of edges) {
       degreeMap.set(edge.source, (degreeMap.get(edge.source) || 0) + 1);
       degreeMap.set(edge.target, (degreeMap.get(edge.target) || 0) + 1);
     }
-    
-    const totalDegree = Array.from(degreeMap.values()).reduce((sum, degree) => sum + degree, 0);
+
+    const totalDegree = Array.from(degreeMap.values()).reduce(
+      (sum, degree) => sum + degree,
+      0,
+    );
     return totalDegree / nodes.length;
   }
 
-  private getNodeX(node: KnowledgeNode, allNodes: KnowledgeNode[], width: number): number {
+  private getNodeX(
+    node: KnowledgeNode,
+    allNodes: KnowledgeNode[],
+    width: number,
+  ): number {
     const index = allNodes.indexOf(node);
     return (index / allNodes.length) * width;
   }
 
-  private getNodeY(node: KnowledgeNode, allNodes: KnowledgeNode[], height: number): number {
+  private getNodeY(
+    node: KnowledgeNode,
+    allNodes: KnowledgeNode[],
+    height: number,
+  ): number {
     const index = allNodes.indexOf(node);
     return (index / allNodes.length) * height;
   }
@@ -702,41 +732,41 @@ export class ADRVisualizationEngine {
 
   private getNodeColor(type: string): string {
     const colors = {
-      'adr': '#ff6b6b',
-      'pattern': '#4ecdc4',
-      'component': '#45b7d1',
-      'dependency': '#96ceb4',
-      'stakeholder': '#feca57',
-      'technology': '#ff9ff3'
+      adr: "#ff6b6b",
+      pattern: "#4ecdc4",
+      component: "#45b7d1",
+      dependency: "#96ceb4",
+      stakeholder: "#feca57",
+      technology: "#ff9ff3",
     };
-    return colors[type as keyof typeof colors] || '#999';
+    return colors[type as keyof typeof colors] || "#999";
   }
 
   private getBackgroundColor(): string {
-    return this.config.theme === 'dark' ? '#1a1a1a' : '#f5f5f5';
+    return this.config.theme === "dark" ? "#1a1a1a" : "#f5f5f5";
   }
 
   private getTextColor(): string {
-    return this.config.theme === 'dark' ? '#ffffff' : '#333333';
+    return this.config.theme === "dark" ? "#ffffff" : "#333333";
   }
 
   private getPrimaryColor(): string {
-    return this.config.theme === 'dark' ? '#4ecdc4' : '#2c3e50';
+    return this.config.theme === "dark" ? "#4ecdc4" : "#2c3e50";
   }
 
   private getPrimaryHoverColor(): string {
-    return this.config.theme === 'dark' ? '#45b7d1' : '#34495e';
+    return this.config.theme === "dark" ? "#45b7d1" : "#34495e";
   }
 
   private getSecondaryColor(): string {
-    return this.config.theme === 'dark' ? '#bdc3c7' : '#7f8c8d';
+    return this.config.theme === "dark" ? "#bdc3c7" : "#7f8c8d";
   }
 
   private getAccentColor(): string {
-    return this.config.theme === 'dark' ? '#e74c3c' : '#e67e22';
+    return this.config.theme === "dark" ? "#e74c3c" : "#e67e22";
   }
 
   private getCardBackground(): string {
-    return this.config.theme === 'dark' ? '#2c2c2c' : '#ffffff';
+    return this.config.theme === "dark" ? "#2c2c2c" : "#ffffff";
   }
 }

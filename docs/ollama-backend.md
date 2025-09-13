@@ -1,6 +1,7 @@
 # 🦊> Reynard Ollama Backend Implementation
 
-A complete Ollama local LLM backend system for Reynard, built with ReynardAssistant, tool calling, streaming responses, and context awareness.
+A complete Ollama local LLM backend system for Reynard, built with ReynardAssistant, tool calling,
+streaming responses, and context awareness.
 
 ## Table of Contents
 
@@ -462,7 +463,10 @@ asyncio.run(test())
 
 ## 🎉 Conclusion
 
-The Reynard Ollama backend provides a robust, scalable solution for local LLM integration with advanced assistant capabilities, tool calling, and comprehensive monitoring. The system gracefully handles missing Ollama server and provides fallback functionality for development and testing.
+The Reynard Ollama backend provides a robust,
+scalable solution for local LLM integration with advanced assistant capabilities, tool calling, and
+comprehensive monitoring. The system gracefully handles missing Ollama server and
+provides fallback functionality for development and testing.
 
 Key benefits:
 

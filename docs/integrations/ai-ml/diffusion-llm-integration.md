@@ -1,10 +1,15 @@
 # Diffusion LLM Integration (DreamOn, LLaDA)
 
-This document describes how diffusion-based language models are integrated into Reynard for text generation and infilling, providing real-time streaming, robust model management, and a polished user experience.
+This document describes how diffusion-based language models are integrated into Reynard for text generation and
+infilling, providing real-time streaming, robust model management, and a polished user experience.
 
 ## Architecture and Services
 
-The backend exposes a dedicated API namespace under `/api/diffusion`. The `DiffusionLLMService` is registered with the `ServiceManager` when `diffusion_llm_enabled` is set to true in the app configuration. The service can operate in embedded mode using an internal `DiffusionModelManager`, or in proxy mode (planned for the future). The manager maintains model instances, supports device selection and safe unloading, and automatically falls back to CPU if an out-of-memory condition occurs.
+The backend exposes a dedicated API namespace under `/api/diffusion`. The `DiffusionLLMService` is registered with
+the `ServiceManager` when `diffusion_llm_enabled` is set to true in the app configuration. The service can operate in
+embedded mode using an internal `DiffusionModelManager`, or
+in proxy mode (planned for the future). The manager maintains model instances, supports device selection and
+safe unloading, and automatically falls back to CPU if an out-of-memory condition occurs.
 
 ```mermaid
 flowchart LR
@@ -65,7 +70,9 @@ Events are formatted as JSON frames in `data:` lines.
 
 ## Error Handling and Redaction
 
-Errors are mapped to structured categories: `validation`, `network`, `timeout`, `model_loading`, `model_unavailable`, and `generation`. Sensitive inputs such as `prompt`, `prefix`, and `suffix` are redacted in logs and error payloads. HTTP 429 is returned when per-client rate limits are exceeded on streaming endpoints.
+Errors are mapped to structured categories: `validation`, `network`, `timeout`, `model_loading`, `model_unavailable`,
+and `generation`. Sensitive inputs such as `prompt`, `prefix`, and `suffix` are redacted in logs and
+error payloads. HTTP 429 is returned when per-client rate limits are exceeded on streaming endpoints.
 
 ## Observability and Limits
 
@@ -85,15 +92,24 @@ The diffusion LLM integration uses structured logging with correlation IDs for c
 
 ### Correlation ID Usage
 
-Streaming routes attach an `X-Correlation-ID` header. The start and end of streams are logged with the correlation ID and duration. Stream durations are recorded in the metrics database. Per-client rate limiting is enabled for streaming endpoints to protect the server under load.
+Streaming routes attach an `X-Correlation-ID` header. The start and
+end of streams are logged with the correlation ID and
+duration. Stream durations are recorded in the metrics database. Per-client rate limiting is enabled for
+streaming endpoints to protect the server under load.
 
 ## Model Management and Downloads
 
-DreamOn and LLaDA are registered in the unified model download registry. The system honors HuggingFace cache configuration when downloading model weights. The Model Management settings view displays overall download and cache status and provides quick access to downloads.
+DreamOn and LLaDA are registered in the unified model download registry. The system honors HuggingFace cache
+configuration when downloading model weights. The Model Management settings view displays overall download and cache
+status and provides quick access to downloads.
 
 ## Frontend Composition and Panels
 
-Typed types are provided in `src/types/diffusionLLM.ts`. A Solid composable in `src/composables/useDiffusionLLM.ts` implements model listing, model loading (with device preference), and streaming for generation and infilling. Panels for model selection, generation, and infilling are implemented in `src/components/LLM` and are integrated into the functionality system via `TextLLMFunctionality`.
+Typed types are provided in `src/types/diffusionLLM.ts`. A Solid composable in
+`src/composables/useDiffusionLLM.ts` implements model listing, model loading (with device preference), and
+streaming for generation and infilling. Panels for model selection, generation, and
+infilling are implemented in `src/components/LLM` and
+are integrated into the functionality system via `TextLLMFunctionality`.
 
 ## Settings and Persistence
 
@@ -104,11 +120,17 @@ Additional cleanup flags are supported end-to-end:
 
 These are toggled in Settings and persisted via `localStorage`.
 
-User-facing settings allow configuration of default `max_new_tokens`, request timeout, and preferred device. These settings are persisted in `localStorage` and read on startup via the app context. The composable and panels respect these defaults when calling the API.
+User-facing settings allow configuration of default `max_new_tokens`, request timeout, and
+preferred device. These settings are persisted in `localStorage` and
+read on startup via the app context. The composable and panels respect these defaults when calling the API.
 
 ## Troubleshooting
 
 - If text appears with odd spacing, ensure `Fix punctuation` is enabled in Settings, or send `fix_punctuation: true`.
 - If trailing whitespace appears, enable `Auto-trim`.
 
-If streaming returns no events, verify that the service is enabled and that a model is loaded. If a 429 rate limit is returned, reduce request frequency or wait a few seconds. If model loading fails due to memory constraints, switch the device to CPU or close other GPU workloads. Confirm that HuggingFace cache variables (`HF_HOME`, `HF_CACHE`) are correctly configured when using embedded mode.
+If streaming returns no events, verify that the service is enabled and that a model is loaded. If
+a 429 rate limit is returned, reduce request frequency or wait a few seconds. If
+model loading fails due to memory constraints, switch the device to CPU or
+close other GPU workloads. Confirm that HuggingFace cache variables (`HF_HOME`,
+`HF_CACHE`) are correctly configured when using embedded mode.

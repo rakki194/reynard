@@ -1,6 +1,6 @@
 /**
  * Embedding Visualization Content Component
- * 
+ *
  * Handles the main visualization content area with different tabs.
  */
 
@@ -35,7 +35,9 @@ export interface EmbeddingVisualizationContentProps {
   onRetry: () => void;
 }
 
-export const EmbeddingVisualizationContent: Component<EmbeddingVisualizationContentProps> = (props) => {
+export const EmbeddingVisualizationContent: Component<
+  EmbeddingVisualizationContentProps
+> = (props) => {
   return (
     <div class="dashboard-main">
       <Show when={props.error}>
@@ -48,7 +50,9 @@ export const EmbeddingVisualizationContent: Component<EmbeddingVisualizationCont
 
       <Show when={!props.isLoading && !props.error}>
         <div class="visualization-content">
-          <Show when={props.activeTab === "distribution" && props.embeddingData}>
+          <Show
+            when={props.activeTab === "distribution" && props.embeddingData}
+          >
             <div class="chart-section">
               <h4>Embedding Value Distribution</h4>
               <div class="chart-grid">
@@ -143,12 +147,10 @@ export const EmbeddingVisualizationContent: Component<EmbeddingVisualizationCont
               <Show when={!props.reductionResult}>
                 <div class="three-d-placeholder">
                   <p>
-                    Perform a dimensionality reduction to see 3D
-                    visualization
+                    Perform a dimensionality reduction to see 3D visualization
                   </p>
                   <p>
-                    Use the controls in the sidebar to reduce embeddings to
-                    3D
+                    Use the controls in the sidebar to reduce embeddings to 3D
                   </p>
                 </div>
               </Show>

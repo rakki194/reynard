@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document describes the complete modular reimplementation of Yipyap's sophisticated caption generation system as independent Reynard modules. The system provides a clean separation between backend Python services and frontend TypeScript/SolidJS integration.
+This document describes the complete modular reimplementation of
+Yipyap's sophisticated caption generation system as independent Reynard modules. The system provides a clean separation
+between backend Python services and frontend TypeScript/SolidJS integration.
 
 ## Architecture
 
@@ -411,4 +413,7 @@ packages/
 
 ## Conclusion
 
-This implementation provides a complete, modular, and production-ready caption generation system that reimplements Yipyap's sophisticated capabilities as independent Reynard modules. The system is designed for scalability, maintainability, and ease of use, with clear separation between backend services and frontend integration.
+This implementation provides a complete, modular, and
+production-ready caption generation system that
+reimplements Yipyap's sophisticated capabilities as independent Reynard modules. The system is designed for
+scalability, maintainability, and ease of use, with clear separation between backend services and frontend integration.

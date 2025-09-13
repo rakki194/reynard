@@ -28,8 +28,12 @@ export function createClusterAnimationInstance(
     easing = "easeOutElastic",
   } = options;
 
-  const animations = createClusterPointAnimations(points, center, expansionRadius);
-  
+  const animations = createClusterPointAnimations(
+    points,
+    center,
+    expansionRadius,
+  );
+
   return {
     clusterId,
     points: animations,

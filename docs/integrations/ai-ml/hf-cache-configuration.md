@@ -1,10 +1,13 @@
 # HuggingFace Cache Configuration
 
-This document explains how to configure HuggingFace cache paths for Reynard, including Docker support and environment variable configuration.
+This document explains how to configure HuggingFace cache paths for Reynard, including Docker support and
+environment variable configuration.
 
 ## Overview
 
-Reynard uses HuggingFace Hub for downloading and caching machine learning models. The cache location can be configured using environment variables to support different deployment scenarios, including Docker containers.
+Reynard uses HuggingFace Hub for downloading and
+caching machine learning models. The cache location can be configured using environment variables to
+support different deployment scenarios, including Docker containers.
 
 ## Environment Variables
 

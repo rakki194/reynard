@@ -19,8 +19,8 @@ global.localStorage = localStorageMock as globalThis.Storage;
 
 // Mock document.documentElement for theme tests
 // Fix happy-dom document.body issue
-if (typeof document !== 'undefined' && !document.body) {
-  const body = document.createElement('body');
+if (typeof document !== "undefined" && !document.body) {
+  const body = document.createElement("body");
   document.appendChild(body);
 }
 Object.defineProperty(document, "documentElement", {

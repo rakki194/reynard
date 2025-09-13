@@ -1,6 +1,7 @@
 # Reynard i18n Demo
 
-🦦> A comprehensive demonstration of Reynard's internationalization system with support for 37 languages, advanced pluralization rules, and RTL support.
+🦦> A comprehensive demonstration of Reynard's internationalization system with support for 37 languages,
+advanced pluralization rules, and RTL support.
 
 ## Features
 

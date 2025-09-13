@@ -4,7 +4,12 @@
  * Handles translation actions and locale management.
  */
 
-import type { LanguageCode, TranslationParams, TranslationFunction, Translations } from "../../types";
+import type {
+  LanguageCode,
+  TranslationParams,
+  TranslationFunction,
+  Translations,
+} from "../../types";
 import { getTranslationValue, isRTL } from "../../utils";
 
 export function createI18nActions(

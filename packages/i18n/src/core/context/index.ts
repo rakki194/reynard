@@ -15,7 +15,8 @@ import { createI18nActions } from "./I18nActions";
 export function createCoreI18nModule(
   initialTranslations?: Partial<Translations>,
 ): I18nModule {
-  const { locale, setLocaleSignal, translations } = createI18nState(initialTranslations);
+  const { locale, setLocaleSignal, translations } =
+    createI18nState(initialTranslations);
   const actions = createI18nActions(locale, translations, setLocaleSignal);
 
   return {
@@ -25,7 +26,7 @@ export function createCoreI18nModule(
     // Add missing properties with default implementations
     languages: [],
     isRTL: false,
-    loadTranslations: async () => ({} as Translations),
+    loadTranslations: async () => ({}) as Translations,
   };
 }
 

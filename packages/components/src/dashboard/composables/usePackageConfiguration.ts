@@ -4,10 +4,10 @@
  */
 
 import { createSignal, createEffect, onMount } from "solid-js";
-import type { 
-  PackageConfiguration, 
-  GlobalConfiguration, 
-  PackageConfigurationState 
+import type {
+  PackageConfiguration,
+  GlobalConfiguration,
+  PackageConfigurationState,
 } from "../types/PackageConfigurationTypes";
 
 export function usePackageConfiguration() {
@@ -37,12 +37,12 @@ export function usePackageConfiguration() {
   });
 
   const refreshConfigurationData = async () => {
-    setState(prev => ({ ...prev, isRefreshing: true }));
-    
+    setState((prev) => ({ ...prev, isRefreshing: true }));
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const mockPackages: PackageConfiguration[] = [
         {
           name: "reynard-core",
@@ -51,72 +51,75 @@ export function usePackageConfiguration() {
           settings: [],
           isConfigured: true,
           lastModified: new Date(),
-          category: "core"
-        }
+          category: "core",
+        },
       ];
-      
-      setState(prev => ({ 
-        ...prev, 
+
+      setState((prev) => ({
+        ...prev,
         packages: mockPackages,
         lastUpdate: new Date(),
-        isRefreshing: false 
+        isRefreshing: false,
       }));
     } catch (error) {
       console.error("Failed to refresh configuration data:", error);
-      setState(prev => ({ ...prev, isRefreshing: false }));
+      setState((prev) => ({ ...prev, isRefreshing: false }));
     }
   };
 
-  const savePackageConfiguration = async (packageName: string, settings: any[]) => {
-    setState(prev => ({ ...prev, isSaving: true }));
-    
+  const savePackageConfiguration = async (
+    packageName: string,
+    settings: any[],
+  ) => {
+    setState((prev) => ({ ...prev, isSaving: true }));
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      setState(prev => ({
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      setState((prev) => ({
         ...prev,
-        packages: prev.packages.map(pkg => 
-          pkg.name === packageName 
+        packages: prev.packages.map((pkg) =>
+          pkg.name === packageName
             ? { ...pkg, settings, isConfigured: true, lastModified: new Date() }
-            : pkg
+            : pkg,
         ),
-        isSaving: false
+        isSaving: false,
       }));
     } catch (error) {
       console.error("Failed to save package configuration:", error);
-      setState(prev => ({ ...prev, isSaving: false }));
+      setState((prev) => ({ ...prev, isSaving: false }));
     }
   };
 
   const saveGlobalConfiguration = async (config: GlobalConfiguration) => {
-    setState(prev => ({ ...prev, isSaving: true }));
-    
+    setState((prev) => ({ ...prev, isSaving: true }));
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      setState(prev => ({ 
-        ...prev, 
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      setState((prev) => ({
+        ...prev,
         globalConfig: config,
-        isSaving: false 
+        isSaving: false,
       }));
     } catch (error) {
       console.error("Failed to save global configuration:", error);
-      setState(prev => ({ ...prev, isSaving: false }));
+      setState((prev) => ({ ...prev, isSaving: false }));
     }
   };
 
   const selectPackage = (packageName: string) => {
-    setState(prev => ({ ...prev, selectedPackage: packageName }));
+    setState((prev) => ({ ...prev, selectedPackage: packageName }));
   };
 
   const setSearchQuery = (query: string) => {
-    setState(prev => ({ ...prev, searchQuery: query }));
+    setState((prev) => ({ ...prev, searchQuery: query }));
   };
 
   const setSelectedCategory = (category: string) => {
-    setState(prev => ({ ...prev, selectedCategory: category }));
+    setState((prev) => ({ ...prev, selectedCategory: category }));
   };
 
   onMount(() => {
@@ -133,4 +136,3 @@ export function usePackageConfiguration() {
     setSelectedCategory,
   };
 }
-

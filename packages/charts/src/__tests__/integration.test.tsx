@@ -1,6 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@solidjs/testing-library";
-import { BarChart, LineChart, PieChart, TimeSeriesChart } from "../../components";
+import {
+  BarChart,
+  LineChart,
+  PieChart,
+  TimeSeriesChart,
+} from "../../components";
 import type { ChartConfig, ChartTheme } from "../../types";
 import "./integration.test.css";
 

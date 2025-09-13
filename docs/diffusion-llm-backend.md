@@ -1,6 +1,8 @@
 # 🦊> Reynard Diffusion-LLM Backend Implementation
 
-A complete Diffusion-LLM backend system for Reynard, ported from Yipyap's battle-tested implementation with DreamOn and LLaDA model support, streaming generation, and device management.
+A complete Diffusion-LLM backend system for Reynard,
+ported from Yipyap's battle-tested implementation with DreamOn and LLaDA model support, streaming generation, and
+device management.
 
 ## ✨ Features
 
@@ -398,7 +400,10 @@ asyncio.run(test())
 
 ## 🎉 Conclusion
 
-The Reynard Diffusion-LLM backend provides a robust, scalable solution for advanced text generation with multiple diffusion models, streaming support, and comprehensive monitoring. The system gracefully handles missing models and provides fallback functionality for development and testing.
+The Reynard Diffusion-LLM backend provides a robust,
+scalable solution for advanced text generation with multiple diffusion models, streaming support, and
+comprehensive monitoring. The system gracefully handles missing models and
+provides fallback functionality for development and testing.
 
 Key benefits:
 

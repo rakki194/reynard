@@ -180,5 +180,4 @@ export const coreTranslations = {
       "Ολοκλήρωση εξουσιοδότησης και επαλήθευσης εισόδου",
     "performance-and-security-integration": "Ολοκλήρωση απόδοσης και ασφαλείας",
   },
-
 };

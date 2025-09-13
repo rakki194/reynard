@@ -1,6 +1,7 @@
 # Reynard Algorithm Bench
 
-🦦 Interactive demonstration of AABB collision detection and performance optimization algorithms from the Reynard framework.
+🦦 Interactive demonstration of AABB collision detection and
+performance optimization algorithms from the Reynard framework.
 
 ## Features
 
@@ -120,7 +121,8 @@ Built with:
 
 ## Contributing
 
-This demo showcases the Reynard framework's algorithm capabilities. For contributions to the core algorithms, see the main Reynard repository.
+This demo showcases the Reynard framework's algorithm capabilities. For contributions to the core algorithms,
+see the main Reynard repository.
 
 ## License
 

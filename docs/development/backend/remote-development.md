@@ -4,7 +4,8 @@ This guide explains how to run the frontend locally while connecting to a backen
 
 ## Overview
 
-The Reynard frontend can be configured to connect to a backend running on a different machine (e.g., over SSH). This is useful for development scenarios where you want to:
+The Reynard frontend can be configured to connect to a backend running on a different machine (e.g.,
+over SSH). This is useful for development scenarios where you want to:
 
 - Run the frontend on your local machine for fast development
 - Connect to a powerful remote machine for backend processing
@@ -97,7 +98,8 @@ VITE_API_BASE_URL=http://localhost:7000 npm run dev
 
 ### CORS Issues
 
-If you encounter CORS errors, ensure the backend is configured to accept requests from your local development server. The backend should allow requests from `http://localhost:5173`.
+If you encounter CORS errors, ensure the backend is configured to accept requests from
+your local development server. The backend should allow requests from `http://localhost:5173`.
 
 ### Performance Considerations
 

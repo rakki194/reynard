@@ -2,7 +2,8 @@
 
 > Algorithm primitives and data structures for Reynard applications
 
-A comprehensive collection of reusable algorithmic building blocks with automatic optimization, memory pooling, and performance monitoring. Built with the PAW optimization framework for maximum efficiency.
+A comprehensive collection of reusable algorithmic building blocks with automatic optimization, memory pooling, and
+performance monitoring. Built with the PAW optimization framework for maximum efficiency.
 
 ## Features
 
@@ -90,7 +91,8 @@ const distance = PointOps.distance(point1, point2); // 5
 
 ### Optimized Algorithms
 
-The optimized algorithms module provides automatic algorithm selection, memory pooling, and performance monitoring for maximum efficiency.
+The optimized algorithms module provides automatic algorithm selection, memory pooling, and
+performance monitoring for maximum efficiency.
 
 ```typescript
 import {
@@ -124,7 +126,8 @@ const config = new OptimizationConfig({
 
 ### 🔧 PAW Optimization Framework
 
-The PAW (Performance-Aware Workload) optimization framework provides intelligent algorithm selection and memory management.
+The PAW (Performance-Aware Workload) optimization framework provides intelligent algorithm selection and
+memory management.
 
 ```typescript
 import {
@@ -498,4 +501,4 @@ npm run build
 
 ## License
 
-MIT License - see [LICENSE](../../LICENSE) for details.
+MIT License - see [LICENSE](../../../LICENSE.md) for details.

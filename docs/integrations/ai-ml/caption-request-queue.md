@@ -1,6 +1,8 @@
 # Caption Request Queue
 
-Queues caption generation requests when models aren’t yet available and processes them automatically once downloads complete. Exposes a background service and a manager with query and cancel operations.
+Queues caption generation requests when models aren’t yet available and
+processes them automatically once downloads complete. Exposes a background service and a manager with query and
+cancel operations.
 
 ## Overview
 

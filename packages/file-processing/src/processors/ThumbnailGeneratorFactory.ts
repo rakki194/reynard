@@ -8,7 +8,10 @@
 import { ThumbnailOptions, ProcessingResult } from "../types";
 import { getFileCategory } from "../config/file-types";
 import { getFileInfo, getFileExtension } from "./utils/file-info";
-import { GeneratorRegistry, GeneratorRegistryOptions } from "./utils/generator-registry";
+import {
+  GeneratorRegistry,
+  GeneratorRegistryOptions,
+} from "./utils/generator-registry";
 
 export type ThumbnailGeneratorFactoryOptions = GeneratorRegistryOptions;
 
@@ -30,7 +33,7 @@ export class ThumbnailGeneratorFactory {
       progressive: true,
       ...options,
     };
-    
+
     this.registry = new GeneratorRegistry();
   }
 

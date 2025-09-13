@@ -892,5 +892,6 @@ global.testUtils = {
 };
 ```
 
-This comprehensive testing guide provides patterns for testing all aspects of modular TypeScript/JavaScript modules, from
+This comprehensive testing guide provides patterns for testing all aspects of modular TypeScript/JavaScript modules,
+from
 unit tests to integration tests and performance testing.

@@ -4,7 +4,12 @@ _Comprehensive routing solution for SolidJS applications with universal renderin
 
 ## Overview
 
-Solid Router is the universal router for SolidJS that provides seamless client and server-side rendering capabilities. Built with performance and developer experience in mind, it offers flexible routing patterns that scale from simple single-page applications to complex enterprise solutions. The router integrates deeply with SolidJS's reactive system, providing efficient navigation management while maintaining the feel of traditional multipage applications.
+Solid Router is the universal router for SolidJS that provides seamless client and
+server-side rendering capabilities. Built with performance and
+developer experience in mind, it offers flexible routing patterns that
+scale from simple single-page applications to complex enterprise solutions. The router integrates deeply with
+SolidJS's reactive system, providing efficient navigation management while
+maintaining the feel of traditional multipage applications.
 
 ## Installation
 
@@ -16,7 +21,8 @@ npm i @solidjs/router
 
 ### Package Configuration
 
-In the Reynard ecosystem, Solid Router is typically configured in Vite builds with manual chunk splitting for optimal performance:
+In the Reynard ecosystem, Solid Router is typically configured in Vite builds with manual chunk splitting for
+optimal performance:
 
 ```typescript
 // vite.config.ts
@@ -39,7 +45,9 @@ export default defineConfig({
 
 ### Router Configuration
 
-The `Router` component serves as the root of your routing system, managing URL state and rendering appropriate routes. In production applications, the router is typically wrapped with application providers and context.
+The `Router` component serves as the root of your routing system, managing URL state and
+rendering appropriate routes. In production applications,
+the router is typically wrapped with application providers and context.
 
 **Basic Router Setup:**
 
@@ -100,7 +108,8 @@ render(() => <Router root={Layout}>{routes}</Router>, document.body);
 
 ## Component-Based Routing
 
-Define routes using JSX components for intuitive route management. This approach is ideal for smaller applications or when you prefer declarative route definitions.
+Define routes using JSX components for intuitive route management. This approach is ideal for smaller applications or
+when you prefer declarative route definitions.
 
 ### Single Route
 
@@ -177,7 +186,8 @@ const App: Component = () => {
 
 ## Configuration-Based Routing
 
-Configure routes programmatically for better organization and performance optimization. This approach is preferred for larger applications with complex routing requirements.
+Configure routes programmatically for better organization and
+performance optimization. This approach is preferred for larger applications with complex routing requirements.
 
 ### Reynard CMS Route Configuration
 
@@ -278,7 +288,8 @@ const routes: RouteDefinition[] = [
 
 ## Lazy Loading
 
-Optimize application performance through strategic component loading. Lazy loading is essential for large applications to reduce initial bundle size and improve loading times.
+Optimize application performance through strategic component loading. Lazy loading is essential for
+large applications to reduce initial bundle size and improve loading times.
 
 ### Production Lazy Loading Patterns
 
@@ -360,7 +371,9 @@ const App = () => (
 
 ## Navigation
 
-Implement navigation using multiple approaches for different use cases. Solid Router provides flexible navigation options that integrate seamlessly with SolidJS's reactive system.
+Implement navigation using multiple approaches for
+different use cases. Solid Router provides flexible navigation options that
+integrate seamlessly with SolidJS's reactive system.
 
 ### Standard HTML Links
 
@@ -423,7 +436,8 @@ function Navbar() {
 
 ### Programmatic Navigation
 
-Control navigation programmatically for dynamic user interactions. This is essential for authentication flows, form submissions, and conditional navigation.
+Control navigation programmatically for dynamic user interactions. This is essential for authentication flows,
+form submissions, and conditional navigation.
 
 #### useNavigate Hook
 
@@ -639,7 +653,8 @@ const App = () => (
 
 ## Performance Considerations
 
-Optimize routing performance through strategic code splitting and memory management. Proper performance optimization is crucial for large-scale applications.
+Optimize routing performance through strategic code splitting and
+memory management. Proper performance optimization is crucial for large-scale applications.
 
 ### Code Splitting Strategy
 
@@ -742,7 +757,8 @@ const routes: RouteDefinition[] = [
 
 ## Error Handling
 
-Implement robust error handling for reliable route management. Proper error handling ensures graceful degradation and better user experience.
+Implement robust error handling for reliable route management. Proper error handling ensures graceful degradation and
+better user experience.
 
 ### Route Error Boundaries
 
@@ -840,7 +856,8 @@ const App = () => (
 
 ## Testing Routes
 
-Test routing functionality to ensure reliable navigation behavior. Comprehensive testing is essential for maintaining route reliability in production applications.
+Test routing functionality to ensure reliable navigation behavior. Comprehensive testing is essential for
+maintaining route reliability in production applications.
 
 ### Unit Testing Routes
 
@@ -955,7 +972,8 @@ test("navigates through application routes", async ({ page }) => {
 
 ## Best Practices
 
-Follow established patterns for maintainable and performant routing. These practices are derived from real-world implementations in the Reynard ecosystem.
+Follow established patterns for maintainable and
+performant routing. These practices are derived from real-world implementations in the Reynard ecosystem.
 
 ### Route Organization
 
@@ -1068,7 +1086,8 @@ const AccessibleNav: Component = () => {
 
 ## Troubleshooting
 
-Resolve common routing issues with systematic debugging approaches. These solutions are based on real-world problems encountered in production applications.
+Resolve common routing issues with systematic debugging approaches. These solutions are based on
+real-world problems encountered in production applications.
 
 ### Common Issues
 
@@ -1177,7 +1196,9 @@ const PerformanceMonitor: Component = () => {
 
 ## Conclusion
 
-Solid Router provides a comprehensive routing solution for SolidJS applications with excellent performance and developer experience. Through real-world implementations in the Reynard ecosystem, we've demonstrated how to build scalable, maintainable routing architectures.
+Solid Router provides a comprehensive routing solution for SolidJS applications with excellent performance and
+developer experience. Through real-world implementations in the Reynard ecosystem,
+we've demonstrated how to build scalable, maintainable routing architectures.
 
 ### Key Implementation Patterns
 
@@ -1217,6 +1238,7 @@ The patterns demonstrated in this guide are actively used in:
 - **Reynard CMS**: Media gallery routing with authentication and file handling
 - **Reynard Dashboard**: Multi-page application with settings and analytics
 
-These implementations showcase how Solid Router scales from simple single-page applications to complex enterprise solutions while maintaining excellent performance and developer experience.
+These implementations showcase how Solid Router scales from simple single-page applications to
+complex enterprise solutions while maintaining excellent performance and developer experience.
 
 _Build robust navigation experiences with Solid Router in the Reynard ecosystem._

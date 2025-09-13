@@ -1,6 +1,7 @@
 # 🚀 Reynard Quick Start Guide
 
-Get up and running with Reynard in minutes! This guide will help you install the framework and create your first application.
+Get up and running with Reynard in minutes! This guide will help you install the framework and
+create your first application.
 
 ## Installation
 

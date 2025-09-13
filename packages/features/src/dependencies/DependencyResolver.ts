@@ -5,7 +5,10 @@
  */
 
 import type { FeatureDefinition } from "../core/types.js";
-import { createDependencyResolverCore, DependencyResolverCore } from "./DependencyResolverCore.js";
+import {
+  createDependencyResolverCore,
+  DependencyResolverCore,
+} from "./DependencyResolverCore.js";
 import { getDependencyStats } from "./DependencyResolverStats.js";
 
 /**
@@ -83,13 +86,19 @@ export class DependencyResolver {
   public resolveDependencies(): DependencyResolutionResult {
     const features = this.getAllFeatures();
     const resolvable: FeatureDefinition[] = [];
-    const unresolvable: { feature: FeatureDefinition; missingDependencies: string[] }[] = [];
+    const unresolvable: {
+      feature: FeatureDefinition;
+      missingDependencies: string[];
+    }[] = [];
     const dependencyGraph = new Map<string, string[]>();
     const resolutionOrder: string[] = [];
 
     // Build dependency graph
     features.forEach((feature) => {
-      dependencyGraph.set(feature.id, (feature.dependencies || []).map(dep => dep.services).flat());
+      dependencyGraph.set(
+        feature.id,
+        (feature.dependencies || []).map((dep) => dep.services).flat(),
+      );
     });
 
     // Resolve dependencies
@@ -119,7 +128,7 @@ export class DependencyResolver {
    */
   private getMissingDependencies(feature: FeatureDefinition): string[] {
     const missing: string[] = [];
-    
+
     if (feature.dependencies) {
       feature.dependencies.forEach((dep) => {
         dep.services.forEach((service) => {
@@ -129,7 +138,7 @@ export class DependencyResolver {
         });
       });
     }
-    
+
     return missing;
   }
 

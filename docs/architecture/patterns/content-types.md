@@ -1,6 +1,7 @@
 # Content-Type Headers
 
-The application serves various types of resources, each requiring appropriate Content-Type headers to ensure proper handling by browsers and clients.
+The application serves various types of resources,
+each requiring appropriate Content-Type headers to ensure proper handling by browsers and clients.
 
 ## Table of Contents
 
@@ -49,7 +50,8 @@ The application serves various types of resources, each requiring appropriate Co
 
 ---
 
-The development server is configured to automatically set appropriate Content-Type headers through Vite's server middleware. This configuration is defined in `vite.config.ts`.
+The development server is configured to automatically set appropriate Content-Type headers through
+Vite's server middleware. This configuration is defined in `vite.config.ts`.
 
 The middleware handles common file extensions and sets their corresponding Content-Type headers:
 
@@ -74,7 +76,9 @@ server.middlewares.use((req, res, next) => {
 
 ---
 
-In production, the web server (e.g., Nginx, Apache) should be configured to send appropriate Content-Type headers. The server configuration should include mappings for all media types used by the application.
+In production, the web server (e.g., Nginx,
+Apache) should be configured to send appropriate Content-Type headers. The server configuration should include mappings
+for all media types used by the application.
 
 Example Nginx configuration:
 
@@ -108,12 +112,16 @@ types {
 
 ### Missing Charset
 
-Text-based resources should include the charset parameter to ensure proper character encoding interpretation. The application uses UTF-8 encoding for all text-based resources.
+Text-based resources should include the charset parameter to
+ensure proper character encoding interpretation. The application uses UTF-8 encoding for all text-based resources.
 
 ### Incorrect JavaScript Content-Type
 
-While both `application/javascript` and `text/javascript` are valid, the HTML specification recommends using `text/javascript`. The application follows this recommendation.
+While both `application/javascript` and
+`text/javascript` are valid, the HTML specification recommends using `text/javascript`. The application follows this
+recommendation.
 
 ### SVG Content-Type
 
-SVG files require the `image/svg+xml` content type with UTF-8 charset for proper rendering and script execution within the SVG.
+SVG files require the `image/svg+xml` content type with UTF-8 charset for proper rendering and
+script execution within the SVG.

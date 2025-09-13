@@ -28,7 +28,7 @@ describe("HTML Sanitization", () => {
     it("should remove event handlers", () => {
       const input = '<div onclick="alert(1)">Click me</div>';
       const result = sanitizeHTML(input);
-      expect(result).toBe('<div>Click me</div>');
+      expect(result).toBe("<div>Click me</div>");
     });
 
     it("should remove iframe tags", () => {
@@ -38,13 +38,15 @@ describe("HTML Sanitization", () => {
     });
 
     it("should remove object and embed tags", () => {
-      const input = '<object data="evil.swf"></object><embed src="evil.swf"></embed>Hello';
+      const input =
+        '<object data="evil.swf"></object><embed src="evil.swf"></embed>Hello';
       const result = sanitizeHTML(input);
       expect(result).toBe("Hello");
     });
 
     it("should remove form elements", () => {
-      const input = '<form><input type="text"><button>Submit</button></form>Hello';
+      const input =
+        '<form><input type="text"><button>Submit</button></form>Hello';
       const result = sanitizeHTML(input);
       expect(result).toBe("Hello");
     });

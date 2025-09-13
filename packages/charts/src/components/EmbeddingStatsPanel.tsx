@@ -1,6 +1,6 @@
 /**
  * Embedding Stats Panel Component
- * 
+ *
  * Displays embedding statistics and metrics.
  */
 
@@ -11,7 +11,9 @@ export interface EmbeddingStatsPanelProps {
   stats: any;
 }
 
-export const EmbeddingStatsPanel: Component<EmbeddingStatsPanelProps> = (props) => {
+export const EmbeddingStatsPanel: Component<EmbeddingStatsPanelProps> = (
+  props,
+) => {
   if (!props.stats) return null;
 
   return (

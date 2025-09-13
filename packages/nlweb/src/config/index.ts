@@ -1,6 +1,6 @@
 /**
  * Configuration Barrel Export
- * 
+ *
  * Centralized export for configuration-related modules.
  */
 

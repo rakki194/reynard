@@ -55,7 +55,8 @@ function MyComponent() {
 
 ### reynard-themes
 
-Comprehensive theming and internationalization system with 8 built-in themes, custom theme support, and multi-language capabilities. Uses OKLCH color space for perceptual uniformity and modern color management.
+Comprehensive theming and internationalization system with 8 built-in themes, custom theme support, and
+multi-language capabilities. Uses OKLCH color space for perceptual uniformity and modern color management.
 
 #### Features
 
@@ -154,7 +155,8 @@ function MyApp() {
 
 ### reynard-chat
 
-Production-ready chat messaging system for SolidJS applications with advanced streaming capabilities, markdown parsing, thinking sections, and tool integration.
+Production-ready chat messaging system for SolidJS applications with advanced streaming capabilities,
+markdown parsing, thinking sections, and tool integration.
 
 #### Chat Features
 
@@ -214,7 +216,8 @@ function ChatApp() {
 
 ### reynard-rag
 
-RAG (Retrieval-Augmented Generation) system for SolidJS applications with EmbeddingGemma integration and comprehensive search capabilities.
+RAG (Retrieval-Augmented Generation) system for SolidJS applications with EmbeddingGemma integration and
+comprehensive search capabilities.
 
 #### RAG Features
 
@@ -256,7 +259,8 @@ function RAGApp() {
 
 ### reynard-auth
 
-Complete authentication and user management system with JWT tokens, password strength analysis, and comprehensive security features.
+Complete authentication and user management system with JWT tokens, password strength analysis, and
+comprehensive security features.
 
 #### Auth Features
 
@@ -537,7 +541,8 @@ function App() {
 
 ### reynard-algorithms
 
-Algorithm primitives and data structures for efficient spatial operations, performance monitoring, and geometric calculations.
+Algorithm primitives and data structures for efficient spatial operations, performance monitoring, and
+geometric calculations.
 
 #### Algorithm Types
 
@@ -655,7 +660,8 @@ function FileProcessor() {
 
 ### reynard-annotating
 
-Unified annotation system for Reynard with production features and modular architecture. This package integrates all caption generators into a single, easy-to-use interface.
+Unified annotation system for Reynard with production features and
+modular architecture. This package integrates all caption generators into a single, easy-to-use interface.
 
 > **💡 Architecture Note**: The annotating system follows a modular plugin architecture where each generator (JTP2, JoyCaption, WDv3, Florence2) is a separate package that can be used independently or through the unified interface.
 
@@ -750,7 +756,8 @@ function CaptionGenerator() {
 
 ### reynard-floating-panel
 
-Advanced floating panel system with staggered animations, state management, and sophisticated overlay effects based on Yipyap's BoundingBoxEditor implementation.
+Advanced floating panel system with staggered animations, state management, and
+sophisticated overlay effects based on Yipyap's BoundingBoxEditor implementation.
 
 #### Floating Panel Features
 
@@ -1087,7 +1094,8 @@ function CompleteCaptionWorkflow() {
 
 ### reynard-testing
 
-Comprehensive testing utilities and helpers for SolidJS applications with Vitest integration, mocking capabilities, and assertion utilities.
+Comprehensive testing utilities and helpers for SolidJS applications with Vitest integration, mocking capabilities,
+and assertion utilities.
 
 #### Testing Features
 

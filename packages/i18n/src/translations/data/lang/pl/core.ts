@@ -180,5 +180,4 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Integracja wydajności i bezpieczeństwa",
   },
-
 };

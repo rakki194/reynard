@@ -175,5 +175,4 @@ export const coreTranslations = {
       "Autentificering og input validering integration",
     "performance-and-security-integration": "Ydeevne og sikkerhed integration",
   },
-
 };

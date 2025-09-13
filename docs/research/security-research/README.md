@@ -1,12 +1,17 @@
 # 🔒 Security Research Archive
 
-This directory contains comprehensive security research and penetration testing documentation conducted on the Reynard backend system. The research demonstrates a systematic approach to identifying, analyzing, and mitigating security vulnerabilities in web applications.
+This directory contains comprehensive security research and
+penetration testing documentation conducted on
+the Reynard backend system. The research demonstrates a systematic approach to identifying, analyzing, and
+mitigating security vulnerabilities in web applications.
 
 ## 🎯 Security Assessment Overview
 
 ### Research Scope
 
-The security assessment focused on the Reynard backend system, a Python-based FastAPI application serving image management and caption generation functionalities. The assessment covered:
+The security assessment focused on the Reynard backend system,
+a Python-based FastAPI application serving image management and
+caption generation functionalities. The assessment covered:
 
 - **Authentication and Authorization** mechanisms
 - **Input Validation** and injection vulnerabilities
@@ -263,4 +268,6 @@ Request 6: Status Code: 429, Response: {'detail': 'Too many login attempts. Plea
 
 ---
 
-_This security research archive represents a comprehensive security assessment of the YipYap backend system. The research demonstrates a systematic approach to identifying, analyzing, and mitigating security vulnerabilities, resulting in a robust and secure web application platform._
+_This security research archive represents a comprehensive security assessment of
+the YipYap backend system. The research demonstrates a systematic approach to identifying, analyzing, and
+mitigating security vulnerabilities, resulting in a robust and secure web application platform._

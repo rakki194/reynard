@@ -2,7 +2,9 @@
 
 🦊 **Interactive demonstration of the Reynard feature management system**
 
-This demo application showcases the powerful capabilities of the `reynard-features` package, demonstrating how to build resilient, service-aware applications that gracefully handle various deployment scenarios and service availability states.
+This demo application showcases the powerful capabilities of the `reynard-features` package,
+demonstrating how to build resilient,
+service-aware applications that gracefully handle various deployment scenarios and service availability states.
 
 ## 🎯 What This Demo Shows
 
@@ -226,14 +228,16 @@ This demo is part of the Reynard framework. When contributing:
 
 ## 🎉 Conclusion
 
-This demo showcases how the Reynard features package enables building resilient, service-aware applications that can gracefully handle various deployment scenarios. The system provides:
+This demo showcases how the Reynard features package enables building resilient,
+service-aware applications that can gracefully handle various deployment scenarios. The system provides:
 
 - **Intelligent Feature Management**: Automatic dependency resolution and health monitoring
 - **Graceful Degradation**: Features adapt to service availability without breaking
 - **Real-time Updates**: Live status updates with reactive UI components
 - **Developer Experience**: Simple hooks and clear APIs for feature-aware development
 
-Try toggling different services to see how features adapt in real-time, and explore the various demo components to understand the power of feature-aware application development!
+Try toggling different services to see how features adapt in real-time, and
+explore the various demo components to understand the power of feature-aware application development!
 
 ---
 

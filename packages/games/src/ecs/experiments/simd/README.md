@@ -4,7 +4,8 @@ This experiment compares SIMD-accelerated ECS operations against their non-SIMD 
 
 ## Experiment: Position Update System
 
-We're testing SIMD acceleration on the most computationally intensive ECS operation: position updates with velocity integration.
+We're testing SIMD acceleration on the most computationally intensive ECS operation: position updates with
+velocity integration.
 
 ### Components Tested
 

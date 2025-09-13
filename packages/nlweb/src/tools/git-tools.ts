@@ -1,6 +1,6 @@
 /**
  * Git Tools Configuration
- * 
+ *
  * Defines git-related tools for the NLWeb service.
  */
 

@@ -79,9 +79,7 @@ describe("Async Utilities", () => {
     }, 10000);
 
     it("should handle promise rejection", async () => {
-      const promise = Promise.reject(
-        new Error(t("core.async.original-error")),
-      );
+      const promise = Promise.reject(new Error(t("core.async.original-error")));
       await expect(withTimeout(promise, 1000)).rejects.toThrow(
         t("core.async.original-error"),
       );

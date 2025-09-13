@@ -1,6 +1,6 @@
 /**
  * NLWeb Health Service
- * 
+ *
  * Handles health monitoring and status reporting for the NLWeb service.
  */
 
@@ -21,7 +21,10 @@ export class NLWebHealthService {
   /**
    * Get service health status
    */
-  async getHealthStatus(router: NLWebRouter, initialized: boolean): Promise<NLWebHealthStatus> {
+  async getHealthStatus(
+    router: NLWebRouter,
+    initialized: boolean,
+  ): Promise<NLWebHealthStatus> {
     if (!initialized) {
       return this.getUnhealthyStatus();
     }

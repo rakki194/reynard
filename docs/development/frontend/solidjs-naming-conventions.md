@@ -1,6 +1,8 @@
 # SolidJS Naming Conventions and Official Documentation Guide
 
-This document outlines the official SolidJS naming conventions and provides comprehensive guidance on composables, reactive primitives, and component organization based on the latest 2025 documentation and community standards.
+This document outlines the official SolidJS naming conventions and
+provides comprehensive guidance on composables, reactive primitives, and
+component organization based on the latest 2025 documentation and community standards.
 
 ## Table of Contents
 
@@ -15,7 +17,8 @@ This document outlines the official SolidJS naming conventions and provides comp
 
 ## Core Naming Conventions
 
-SolidJS follows specific naming patterns that enhance code readability and maintainability. While not strictly enforced, these conventions are widely adopted by the community and recommended in official documentation.
+SolidJS follows specific naming patterns that enhance code readability and maintainability. While
+not strictly enforced, these conventions are widely adopted by the community and recommended in official documentation.
 
 ### Function Naming Patterns
 
@@ -57,7 +60,8 @@ const media = useMedia("(max-width: 768px)");
 const listener = useEventListener("click", handler);
 ```
 
-**Purpose**: Indicates that the function utilizes or consumes existing resources without creating new reactive primitives.
+**Purpose**: Indicates that the function utilizes or
+consumes existing resources without creating new reactive primitives.
 
 ## Component Naming
 
@@ -437,7 +441,8 @@ This document complements the existing [composables.md](./composables.md) docume
 
 For specific Reynard composable implementations and patterns, refer to the [composables.md](./composables.md) document.
 
-For TypeScript modularity standards and quick reference, see the [TypeScript Modularity Standards](./typescript-modularity-standards.md) document.
+For TypeScript modularity standards and
+quick reference, see the [TypeScript Modularity Standards](./typescript-modularity-standards.md) document.
 
 ## Conclusion
 
@@ -448,4 +453,5 @@ Following SolidJS naming conventions ensures:
 - **Maintainability**: Easier code navigation and refactoring
 - **Community Alignment**: Compatibility with SolidJS ecosystem tools and libraries
 
-The `create` prefix for reactive primitives and `use` prefix for composables provide clear semantic meaning that enhances developer experience and code comprehension.
+The `create` prefix for reactive primitives and
+`use` prefix for composables provide clear semantic meaning that enhances developer experience and code comprehension.

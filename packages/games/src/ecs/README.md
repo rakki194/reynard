@@ -1,6 +1,8 @@
 # Reynard ECS System
 
-A complete Entity-Component-System (ECS) implementation for TypeScript, inspired by Bevy ECS architecture. This system provides high-performance, type-safe entity management for games and simulations.
+A complete Entity-Component-System (ECS) implementation for TypeScript,
+inspired by Bevy ECS architecture. This system provides high-performance, type-safe entity management for games and
+simulations.
 
 ## Features
 
@@ -16,7 +18,8 @@ A complete Entity-Component-System (ECS) implementation for TypeScript, inspired
 
 ### Entities
 
-Lightweight identifiers that group components together. Entities use generational indexing to prevent bugs when reusing entity IDs.
+Lightweight identifiers that group components together. Entities use generational indexing to prevent bugs when
+reusing entity IDs.
 
 ```typescript
 import { createEntity, entityToString } from "./ecs";

@@ -6,7 +6,10 @@
  * @module algorithms/performance/memory
  */
 
-import type { ExtendedPerformance, PerformanceMemoryInfo } from "../types/performance-types";
+import type {
+  ExtendedPerformance,
+  PerformanceMemoryInfo,
+} from "../types/performance-types";
 
 /**
  * Memory usage monitor

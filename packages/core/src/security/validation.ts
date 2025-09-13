@@ -30,10 +30,7 @@ export {
 } from "./input-validation.js";
 
 // Re-export JSON validation functions
-export {
-  validateJSON,
-  sanitizeJSON,
-} from "./json-validation.js";
+export { validateJSON, sanitizeJSON } from "./json-validation.js";
 
 // Re-export XSS validation functions
 export {

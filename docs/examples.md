@@ -1,6 +1,8 @@
 # 📱 Reynard Examples and Templates
 
-Explore real-world applications and templates built with the Reynard framework. These examples showcase the full spectrum of capabilities, from simple demos to complex multi-modal applications.
+Explore real-world applications and templates built with
+the Reynard framework. These examples showcase the full spectrum of capabilities,
+from simple demos to complex multi-modal applications.
 
 ## 🎯 Real-World Applications
 

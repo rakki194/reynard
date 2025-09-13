@@ -1,6 +1,7 @@
 # reynard-gallery
 
-Advanced file and media management system for SolidJS applications with drag-and-drop, responsive grids, and comprehensive file handling.
+Advanced file and media management system for SolidJS applications with drag-and-drop, responsive grids, and
+comprehensive file handling.
 
 ## 🚀 Features
 

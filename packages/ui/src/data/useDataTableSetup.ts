@@ -16,7 +16,7 @@ export interface DataTableSetup<T = unknown> {
 }
 
 export const useDataTableSetup = <T = unknown>(
-  props: DataTableProps<T>
+  props: DataTableProps<T>,
 ): DataTableSetup<T> => {
   const merged = mergeDataTableProps(props);
   const [local, others] = splitDataTableProps(merged);
@@ -24,7 +24,7 @@ export const useDataTableSetup = <T = unknown>(
   const handlers = useDataTableHandlers(
     local.data,
     local.onRowSelect,
-    local.onSort
+    local.onSort,
   );
 
   const data = useDataTableData(
@@ -34,7 +34,7 @@ export const useDataTableSetup = <T = unknown>(
     handlers.sortDirection,
     local.page!,
     local.pageSize!,
-    local.showPagination!
+    local.showPagination!,
   );
 
   return {

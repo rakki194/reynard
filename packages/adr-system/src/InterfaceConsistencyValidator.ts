@@ -1,16 +1,16 @@
 /**
  * Interface Consistency Validator - Advanced Interface Design and Consistency Analysis
- * 
+ *
  * This module provides comprehensive validation of interface consistency,
  * ensuring proper API design, contract compliance, and architectural patterns.
  */
 
-import { readFile, readdir, stat } from 'fs/promises';
-import { join, dirname, basename } from 'path';
+import { readFile, readdir, stat } from "fs/promises";
+import { join, dirname, basename } from "path";
 
 export interface InterfaceDefinition {
   name: string;
-  type: 'interface' | 'type' | 'class' | 'function' | 'api-endpoint';
+  type: "interface" | "type" | "class" | "function" | "api-endpoint";
   filePath: string;
   lineNumber: number;
   properties: InterfaceProperty[];
@@ -54,8 +54,14 @@ export interface MethodParameter {
 
 export interface ConsistencyViolation {
   id: string;
-  type: 'naming' | 'structure' | 'documentation' | 'versioning' | 'contract' | 'pattern';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+  type:
+    | "naming"
+    | "structure"
+    | "documentation"
+    | "versioning"
+    | "contract"
+    | "pattern";
+  severity: "low" | "medium" | "high" | "critical";
   interface: string;
   description: string;
   suggestion: string;
@@ -91,19 +97,20 @@ export interface ConsistencyReport {
 export class InterfaceConsistencyValidator {
   private readonly codebasePath: string;
   private readonly interfaceCache: Map<string, InterfaceDefinition> = new Map();
-  private readonly violationCache: Map<string, ConsistencyViolation[]> = new Map();
+  private readonly violationCache: Map<string, ConsistencyViolation[]> =
+    new Map();
   private readonly patterns = {
     naming: {
       interfaces: /^I[A-Z][a-zA-Z0-9]*$/,
       types: /^[A-Z][a-zA-Z0-9]*$/,
       methods: /^[a-z][a-zA-Z0-9]*$/,
-      properties: /^[a-z][a-zA-Z0-9]*$/
+      properties: /^[a-z][a-zA-Z0-9]*$/,
     },
     structure: {
       maxProperties: 10,
       maxMethods: 15,
-      maxParameters: 5
-    }
+      maxParameters: 5,
+    },
   };
 
   constructor(codebasePath: string) {
@@ -114,60 +121,74 @@ export class InterfaceConsistencyValidator {
    * Perform comprehensive interface consistency validation
    */
   async validateInterfaceConsistency(): Promise<ConsistencyReport> {
-    console.log('🐺 Starting interface consistency validation...');
-    
+    console.log("🐺 Starting interface consistency validation...");
+
     const interfaces = await this.discoverInterfaces();
     const violations: ConsistencyViolation[] = [];
     const interfaceScores = new Map<string, number>();
-    
+
     // Analyze each interface
     for (const interfaceDef of interfaces) {
       const interfaceViolations = await this.validateInterface(interfaceDef);
       violations.push(...interfaceViolations);
       this.violationCache.set(interfaceDef.name, interfaceViolations);
-      
+
       // Calculate interface score
-      const score = this.calculateInterfaceScore(interfaceDef, interfaceViolations);
+      const score = this.calculateInterfaceScore(
+        interfaceDef,
+        interfaceViolations,
+      );
       interfaceScores.set(interfaceDef.name, score);
     }
-    
+
     // Generate comprehensive report
-    const report = this.generateConsistencyReport(interfaces, violations, interfaceScores);
-    
-    console.log(`✅ Interface consistency validation complete: ${report.overallConsistency.toFixed(1)}% consistency`);
+    const report = this.generateConsistencyReport(
+      interfaces,
+      violations,
+      interfaceScores,
+    );
+
+    console.log(
+      `✅ Interface consistency validation complete: ${report.overallConsistency.toFixed(1)}% consistency`,
+    );
     return report;
   }
 
   /**
    * Validate a specific interface
    */
-  async validateInterface(interfaceDef: InterfaceDefinition): Promise<ConsistencyViolation[]> {
+  async validateInterface(
+    interfaceDef: InterfaceDefinition,
+  ): Promise<ConsistencyViolation[]> {
     const violations: ConsistencyViolation[] = [];
-    
+
     // Naming consistency
     const namingViolations = this.validateNamingConsistency(interfaceDef);
     violations.push(...namingViolations);
-    
+
     // Structure consistency
     const structureViolations = this.validateStructureConsistency(interfaceDef);
     violations.push(...structureViolations);
-    
+
     // Documentation consistency
-    const documentationViolations = this.validateDocumentationConsistency(interfaceDef);
+    const documentationViolations =
+      this.validateDocumentationConsistency(interfaceDef);
     violations.push(...documentationViolations);
-    
+
     // Versioning consistency
-    const versioningViolations = this.validateVersioningConsistency(interfaceDef);
+    const versioningViolations =
+      this.validateVersioningConsistency(interfaceDef);
     violations.push(...versioningViolations);
-    
+
     // Contract consistency
-    const contractViolations = await this.validateContractConsistency(interfaceDef);
+    const contractViolations =
+      await this.validateContractConsistency(interfaceDef);
     violations.push(...contractViolations);
-    
+
     // Pattern consistency
     const patternViolations = this.validatePatternConsistency(interfaceDef);
     violations.push(...patternViolations);
-    
+
     return violations;
   }
 
@@ -176,7 +197,10 @@ export class InterfaceConsistencyValidator {
    */
   getInterfaceScore(interfaceName: string): number {
     const violations = this.violationCache.get(interfaceName) || [];
-    return this.calculateInterfaceScore(this.interfaceCache.get(interfaceName)!, violations);
+    return this.calculateInterfaceScore(
+      this.interfaceCache.get(interfaceName)!,
+      violations,
+    );
   }
 
   /**
@@ -197,20 +221,33 @@ export class InterfaceConsistencyValidator {
   /**
    * Get interfaces that need immediate attention
    */
-  getCriticalInterfaces(): Array<{ interface: InterfaceDefinition; violations: ConsistencyViolation[] }> {
-    const criticalInterfaces: Array<{ interface: InterfaceDefinition; violations: ConsistencyViolation[] }> = [];
-    
+  getCriticalInterfaces(): Array<{
+    interface: InterfaceDefinition;
+    violations: ConsistencyViolation[];
+  }> {
+    const criticalInterfaces: Array<{
+      interface: InterfaceDefinition;
+      violations: ConsistencyViolation[];
+    }> = [];
+
     for (const [interfaceName, violations] of this.violationCache) {
-      const criticalViolations = violations.filter(v => v.severity === 'critical');
+      const criticalViolations = violations.filter(
+        (v) => v.severity === "critical",
+      );
       if (criticalViolations.length > 0) {
         const interfaceDef = this.interfaceCache.get(interfaceName);
         if (interfaceDef) {
-          criticalInterfaces.push({ interface: interfaceDef, violations: criticalViolations });
+          criticalInterfaces.push({
+            interface: interfaceDef,
+            violations: criticalViolations,
+          });
         }
       }
     }
-    
-    return criticalInterfaces.sort((a, b) => b.violations.length - a.violations.length);
+
+    return criticalInterfaces.sort(
+      (a, b) => b.violations.length - a.violations.length,
+    );
   }
 
   /**
@@ -219,38 +256,38 @@ export class InterfaceConsistencyValidator {
   generateImprovementSuggestions(interfaceName: string): string[] {
     const violations = this.getInterfaceViolations(interfaceName);
     const suggestions: string[] = [];
-    
+
     if (violations.length === 0) {
-      suggestions.push('✅ Interface is consistent with standards');
+      suggestions.push("✅ Interface is consistent with standards");
       return suggestions;
     }
-    
-    const violationTypes = new Set(violations.map(v => v.type));
-    
-    if (violationTypes.has('naming')) {
-      suggestions.push('📝 Fix naming convention violations');
+
+    const violationTypes = new Set(violations.map((v) => v.type));
+
+    if (violationTypes.has("naming")) {
+      suggestions.push("📝 Fix naming convention violations");
     }
-    
-    if (violationTypes.has('structure')) {
-      suggestions.push('🏗️ Refactor interface structure');
+
+    if (violationTypes.has("structure")) {
+      suggestions.push("🏗️ Refactor interface structure");
     }
-    
-    if (violationTypes.has('documentation')) {
-      suggestions.push('📚 Add comprehensive documentation');
+
+    if (violationTypes.has("documentation")) {
+      suggestions.push("📚 Add comprehensive documentation");
     }
-    
-    if (violationTypes.has('versioning')) {
-      suggestions.push('🔄 Implement proper versioning');
+
+    if (violationTypes.has("versioning")) {
+      suggestions.push("🔄 Implement proper versioning");
     }
-    
-    if (violationTypes.has('contract')) {
-      suggestions.push('📋 Ensure contract compliance');
+
+    if (violationTypes.has("contract")) {
+      suggestions.push("📋 Ensure contract compliance");
     }
-    
-    if (violationTypes.has('pattern')) {
-      suggestions.push('🎯 Follow established patterns');
+
+    if (violationTypes.has("pattern")) {
+      suggestions.push("🎯 Follow established patterns");
     }
-    
+
     return suggestions;
   }
 
@@ -258,13 +295,13 @@ export class InterfaceConsistencyValidator {
   private async discoverInterfaces(): Promise<InterfaceDefinition[]> {
     const interfaces: InterfaceDefinition[] = [];
     const files = await this.discoverFiles();
-    
+
     for (const file of files) {
       try {
-        const content = await readFile(file, 'utf-8');
+        const content = await readFile(file, "utf-8");
         const fileInterfaces = this.extractInterfaces(content, file);
         interfaces.push(...fileInterfaces);
-        
+
         // Cache interfaces
         for (const interfaceDef of fileInterfaces) {
           this.interfaceCache.set(interfaceDef.name, interfaceDef);
@@ -273,27 +310,31 @@ export class InterfaceConsistencyValidator {
         console.warn(`Failed to analyze file ${file}:`, error);
       }
     }
-    
+
     return interfaces;
   }
 
   private async discoverFiles(): Promise<string[]> {
     const files: string[] = [];
-    
+
     const scanDirectory = async (dir: string): Promise<void> => {
       try {
         const entries = await readdir(dir, { withFileTypes: true });
-        
+
         for (const entry of entries) {
           const fullPath = join(dir, entry.name);
-          
+
           if (entry.isDirectory()) {
-            if (!['node_modules', '.git', 'dist', 'build', 'coverage'].includes(entry.name)) {
+            if (
+              !["node_modules", ".git", "dist", "build", "coverage"].includes(
+                entry.name,
+              )
+            ) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
-            const ext = fullPath.split('.').pop();
-            if (['ts', 'tsx', 'js', 'jsx'].includes(ext || '')) {
+            const ext = fullPath.split(".").pop();
+            if (["ts", "tsx", "js", "jsx"].includes(ext || "")) {
               files.push(fullPath);
             }
           }
@@ -302,84 +343,117 @@ export class InterfaceConsistencyValidator {
         console.warn(`Could not scan directory ${dir}:`, error);
       }
     };
-    
+
     await scanDirectory(this.codebasePath);
     return files;
   }
 
-  private extractInterfaces(content: string, filePath: string): InterfaceDefinition[] {
+  private extractInterfaces(
+    content: string,
+    filePath: string,
+  ): InterfaceDefinition[] {
     const interfaces: InterfaceDefinition[] = [];
-    const lines = content.split('\n');
-    
+    const lines = content.split("\n");
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
-      
+
       // Interface declarations
       const interfaceMatch = line.match(/interface\s+(\w+)/);
       if (interfaceMatch) {
-        const interfaceDef = this.parseInterface(content, filePath, i, 'interface', interfaceMatch[1]);
+        const interfaceDef = this.parseInterface(
+          content,
+          filePath,
+          i,
+          "interface",
+          interfaceMatch[1],
+        );
         interfaces.push(interfaceDef);
       }
-      
+
       // Type declarations
       const typeMatch = line.match(/type\s+(\w+)\s*=/);
       if (typeMatch) {
-        const interfaceDef = this.parseInterface(content, filePath, i, 'type', typeMatch[1]);
+        const interfaceDef = this.parseInterface(
+          content,
+          filePath,
+          i,
+          "type",
+          typeMatch[1],
+        );
         interfaces.push(interfaceDef);
       }
-      
+
       // Class declarations
       const classMatch = line.match(/class\s+(\w+)/);
       if (classMatch) {
-        const interfaceDef = this.parseInterface(content, filePath, i, 'class', classMatch[1]);
+        const interfaceDef = this.parseInterface(
+          content,
+          filePath,
+          i,
+          "class",
+          classMatch[1],
+        );
         interfaces.push(interfaceDef);
       }
-      
+
       // Function declarations
       const functionMatch = line.match(/function\s+(\w+)/);
       if (functionMatch) {
-        const interfaceDef = this.parseInterface(content, filePath, i, 'function', functionMatch[1]);
+        const interfaceDef = this.parseInterface(
+          content,
+          filePath,
+          i,
+          "function",
+          functionMatch[1],
+        );
         interfaces.push(interfaceDef);
       }
     }
-    
+
     return interfaces;
   }
 
-  private parseInterface(content: string, filePath: string, lineNumber: number, type: InterfaceDefinition['type'], name: string): InterfaceDefinition {
-    const lines = content.split('\n');
+  private parseInterface(
+    content: string,
+    filePath: string,
+    lineNumber: number,
+    type: InterfaceDefinition["type"],
+    name: string,
+  ): InterfaceDefinition {
+    const lines = content.split("\n");
     const properties: InterfaceProperty[] = [];
     const methods: InterfaceMethod[] = [];
-    
+
     // Parse interface content (simplified)
     let braceCount = 0;
     let inInterface = false;
-    
+
     for (let i = lineNumber; i < lines.length; i++) {
       const line = lines[i];
-      
-      if (line.includes('{')) {
+
+      if (line.includes("{")) {
         inInterface = true;
         braceCount++;
       }
-      
+
       if (inInterface) {
         braceCount += (line.match(/\{/g) || []).length;
         braceCount -= (line.match(/\}/g) || []).length;
-        
+
         // Parse properties and methods
-        if (line.includes(':') && !line.includes('function')) {
+        if (line.includes(":") && !line.includes("function")) {
           const property = this.parseProperty(line);
           if (property) properties.push(property);
-        } else if (line.includes('(') && line.includes(')')) {
+        } else if (line.includes("(") && line.includes(")")) {
           const method = this.parseMethod(line);
           if (method) methods.push(method);
         }
-        
+
         if (braceCount === 0) break;
       }
     }
-    
+
     return {
       name,
       type,
@@ -392,46 +466,46 @@ export class InterfaceConsistencyValidator {
         isPublic: this.isPublic(content, name),
         documentation: this.extractDocumentation(content, lineNumber),
         tags: this.extractTags(content, lineNumber),
-        version: this.extractVersion(content, lineNumber)
-      }
+        version: this.extractVersion(content, lineNumber),
+      },
     };
   }
 
   private parseProperty(line: string): InterfaceProperty | null {
     const propertyMatch = line.match(/(\w+)(\?)?\s*:\s*([^;]+)/);
     if (!propertyMatch) return null;
-    
+
     return {
       name: propertyMatch[1],
       type: propertyMatch[3].trim(),
       isOptional: !!propertyMatch[2],
-      isReadonly: line.includes('readonly'),
-      documentation: this.extractInlineDocumentation(line)
+      isReadonly: line.includes("readonly"),
+      documentation: this.extractInlineDocumentation(line),
     };
   }
 
   private parseMethod(line: string): InterfaceMethod | null {
     const methodMatch = line.match(/(\w+)(\?)?\s*\(([^)]*)\)\s*:\s*([^{;]+)/);
     if (!methodMatch) return null;
-    
+
     const parameters = this.parseParameters(methodMatch[3]);
-    
+
     return {
       name: methodMatch[1],
       parameters,
       returnType: methodMatch[4].trim(),
-      isAsync: line.includes('async'),
+      isAsync: line.includes("async"),
       isOptional: !!methodMatch[2],
-      documentation: this.extractInlineDocumentation(line)
+      documentation: this.extractInlineDocumentation(line),
     };
   }
 
   private parseParameters(paramString: string): MethodParameter[] {
     if (!paramString.trim()) return [];
-    
+
     const parameters: MethodParameter[] = [];
-    const paramList = paramString.split(',');
-    
+    const paramList = paramString.split(",");
+
     for (const param of paramList) {
       const paramMatch = param.match(/(\w+)(\?)?\s*:\s*([^=]+)(\s*=\s*(.+))?/);
       if (paramMatch) {
@@ -440,23 +514,28 @@ export class InterfaceConsistencyValidator {
           type: paramMatch[3].trim(),
           isOptional: !!paramMatch[2],
           defaultValue: paramMatch[5]?.trim(),
-          documentation: this.extractInlineDocumentation(param)
+          documentation: this.extractInlineDocumentation(param),
         });
       }
     }
-    
+
     return parameters;
   }
 
-  private validateNamingConsistency(interfaceDef: InterfaceDefinition): ConsistencyViolation[] {
+  private validateNamingConsistency(
+    interfaceDef: InterfaceDefinition,
+  ): ConsistencyViolation[] {
     const violations: ConsistencyViolation[] = [];
-    
+
     // Interface naming
-    if (interfaceDef.type === 'interface' && !this.patterns.naming.interfaces.test(interfaceDef.name)) {
+    if (
+      interfaceDef.type === "interface" &&
+      !this.patterns.naming.interfaces.test(interfaceDef.name)
+    ) {
       violations.push({
         id: this.generateViolationId(),
-        type: 'naming',
-        severity: 'medium',
+        type: "naming",
+        severity: "medium",
         interface: interfaceDef.name,
         description: `Interface name '${interfaceDef.name}' doesn't follow naming convention (should start with 'I')`,
         suggestion: `Rename to 'I${interfaceDef.name}'`,
@@ -465,334 +544,405 @@ export class InterfaceConsistencyValidator {
           maintainability: 0.6,
           usability: 0.4,
           consistency: 0.8,
-          reliability: 0.3
-        }
+          reliability: 0.3,
+        },
       });
     }
-    
+
     // Type naming
-    if (interfaceDef.type === 'type' && !this.patterns.naming.types.test(interfaceDef.name)) {
+    if (
+      interfaceDef.type === "type" &&
+      !this.patterns.naming.types.test(interfaceDef.name)
+    ) {
       violations.push({
         id: this.generateViolationId(),
-        type: 'naming',
-        severity: 'low',
+        type: "naming",
+        severity: "low",
         interface: interfaceDef.name,
         description: `Type name '${interfaceDef.name}' doesn't follow PascalCase convention`,
-        suggestion: 'Use PascalCase for type names',
-        examples: [`type ${interfaceDef.name.charAt(0).toUpperCase() + interfaceDef.name.slice(1)} = { ... }`],
+        suggestion: "Use PascalCase for type names",
+        examples: [
+          `type ${interfaceDef.name.charAt(0).toUpperCase() + interfaceDef.name.slice(1)} = { ... }`,
+        ],
         impact: {
           maintainability: 0.4,
           usability: 0.3,
           consistency: 0.6,
-          reliability: 0.2
-        }
+          reliability: 0.2,
+        },
       });
     }
-    
+
     // Method naming
     for (const method of interfaceDef.methods) {
       if (!this.patterns.naming.methods.test(method.name)) {
         violations.push({
           id: this.generateViolationId(),
-          type: 'naming',
-          severity: 'low',
+          type: "naming",
+          severity: "low",
           interface: interfaceDef.name,
           description: `Method name '${method.name}' doesn't follow camelCase convention`,
-          suggestion: 'Use camelCase for method names',
-          examples: [`${method.name.charAt(0).toLowerCase() + method.name.slice(1)}()`],
+          suggestion: "Use camelCase for method names",
+          examples: [
+            `${method.name.charAt(0).toLowerCase() + method.name.slice(1)}()`,
+          ],
           impact: {
             maintainability: 0.3,
             usability: 0.4,
             consistency: 0.5,
-            reliability: 0.2
-          }
+            reliability: 0.2,
+          },
         });
       }
     }
-    
+
     // Property naming
     for (const property of interfaceDef.properties) {
       if (!this.patterns.naming.properties.test(property.name)) {
         violations.push({
           id: this.generateViolationId(),
-          type: 'naming',
-          severity: 'low',
+          type: "naming",
+          severity: "low",
           interface: interfaceDef.name,
           description: `Property name '${property.name}' doesn't follow camelCase convention`,
-          suggestion: 'Use camelCase for property names',
-          examples: [`${property.name.charAt(0).toLowerCase() + property.name.slice(1)}: string`],
+          suggestion: "Use camelCase for property names",
+          examples: [
+            `${property.name.charAt(0).toLowerCase() + property.name.slice(1)}: string`,
+          ],
           impact: {
             maintainability: 0.3,
             usability: 0.4,
             consistency: 0.5,
-            reliability: 0.2
-          }
+            reliability: 0.2,
+          },
         });
       }
     }
-    
+
     return violations;
   }
 
-  private validateStructureConsistency(interfaceDef: InterfaceDefinition): ConsistencyViolation[] {
+  private validateStructureConsistency(
+    interfaceDef: InterfaceDefinition,
+  ): ConsistencyViolation[] {
     const violations: ConsistencyViolation[] = [];
-    
+
     // Too many properties
-    if (interfaceDef.properties.length > this.patterns.structure.maxProperties) {
+    if (
+      interfaceDef.properties.length > this.patterns.structure.maxProperties
+    ) {
       violations.push({
         id: this.generateViolationId(),
-        type: 'structure',
-        severity: 'high',
+        type: "structure",
+        severity: "high",
         interface: interfaceDef.name,
         description: `Interface has too many properties (${interfaceDef.properties.length} > ${this.patterns.structure.maxProperties})`,
-        suggestion: 'Split interface into smaller, focused interfaces',
-        examples: ['Use composition or inheritance to break down large interfaces'],
+        suggestion: "Split interface into smaller, focused interfaces",
+        examples: [
+          "Use composition or inheritance to break down large interfaces",
+        ],
         impact: {
           maintainability: 0.8,
           usability: 0.7,
           consistency: 0.6,
-          reliability: 0.5
-        }
+          reliability: 0.5,
+        },
       });
     }
-    
+
     // Too many methods
     if (interfaceDef.methods.length > this.patterns.structure.maxMethods) {
       violations.push({
         id: this.generateViolationId(),
-        type: 'structure',
-        severity: 'high',
+        type: "structure",
+        severity: "high",
         interface: interfaceDef.name,
         description: `Interface has too many methods (${interfaceDef.methods.length} > ${this.patterns.structure.maxMethods})`,
-        suggestion: 'Split interface into smaller, focused interfaces',
-        examples: ['Use composition or inheritance to break down large interfaces'],
+        suggestion: "Split interface into smaller, focused interfaces",
+        examples: [
+          "Use composition or inheritance to break down large interfaces",
+        ],
         impact: {
           maintainability: 0.8,
           usability: 0.7,
           consistency: 0.6,
-          reliability: 0.5
-        }
+          reliability: 0.5,
+        },
       });
     }
-    
+
     // Methods with too many parameters
     for (const method of interfaceDef.methods) {
       if (method.parameters.length > this.patterns.structure.maxParameters) {
         violations.push({
           id: this.generateViolationId(),
-          type: 'structure',
-          severity: 'medium',
+          type: "structure",
+          severity: "medium",
           interface: interfaceDef.name,
           description: `Method '${method.name}' has too many parameters (${method.parameters.length} > ${this.patterns.structure.maxParameters})`,
-          suggestion: 'Use parameter objects or builder pattern',
-          examples: ['Use options object: method(options: MethodOptions)'],
+          suggestion: "Use parameter objects or builder pattern",
+          examples: ["Use options object: method(options: MethodOptions)"],
           impact: {
             maintainability: 0.6,
             usability: 0.8,
             consistency: 0.4,
-            reliability: 0.3
-          }
+            reliability: 0.3,
+          },
         });
       }
     }
-    
+
     return violations;
   }
 
-  private validateDocumentationConsistency(interfaceDef: InterfaceDefinition): ConsistencyViolation[] {
+  private validateDocumentationConsistency(
+    interfaceDef: InterfaceDefinition,
+  ): ConsistencyViolation[] {
     const violations: ConsistencyViolation[] = [];
-    
+
     // Missing interface documentation
     if (!interfaceDef.metadata.documentation) {
       violations.push({
         id: this.generateViolationId(),
-        type: 'documentation',
-        severity: 'medium',
+        type: "documentation",
+        severity: "medium",
         interface: interfaceDef.name,
-        description: 'Interface lacks documentation',
-        suggestion: 'Add comprehensive JSDoc documentation',
-        examples: ['/**\n * Represents a user in the system\n */\ninterface IUser { ... }'],
+        description: "Interface lacks documentation",
+        suggestion: "Add comprehensive JSDoc documentation",
+        examples: [
+          "/**\n * Represents a user in the system\n */\ninterface IUser { ... }",
+        ],
         impact: {
           maintainability: 0.7,
           usability: 0.8,
           consistency: 0.6,
-          reliability: 0.4
-        }
+          reliability: 0.4,
+        },
       });
     }
-    
+
     // Missing method documentation
     for (const method of interfaceDef.methods) {
       if (!method.documentation) {
         violations.push({
           id: this.generateViolationId(),
-          type: 'documentation',
-          severity: 'low',
+          type: "documentation",
+          severity: "low",
           interface: interfaceDef.name,
           description: `Method '${method.name}' lacks documentation`,
-          suggestion: 'Add JSDoc documentation for the method',
-          examples: ['/**\n * Calculates the total price\n * @param items - Array of items\n * @returns Total price\n */'],
+          suggestion: "Add JSDoc documentation for the method",
+          examples: [
+            "/**\n * Calculates the total price\n * @param items - Array of items\n * @returns Total price\n */",
+          ],
           impact: {
             maintainability: 0.5,
             usability: 0.7,
             consistency: 0.4,
-            reliability: 0.3
-          }
+            reliability: 0.3,
+          },
         });
       }
     }
-    
+
     // Missing property documentation
     for (const property of interfaceDef.properties) {
       if (!property.documentation) {
         violations.push({
           id: this.generateViolationId(),
-          type: 'documentation',
-          severity: 'low',
+          type: "documentation",
+          severity: "low",
           interface: interfaceDef.name,
           description: `Property '${property.name}' lacks documentation`,
-          suggestion: 'Add JSDoc documentation for the property',
-          examples: ['/** User identifier */\nid: string;'],
+          suggestion: "Add JSDoc documentation for the property",
+          examples: ["/** User identifier */\nid: string;"],
           impact: {
             maintainability: 0.4,
             usability: 0.6,
             consistency: 0.3,
-            reliability: 0.2
-          }
+            reliability: 0.2,
+          },
         });
       }
     }
-    
+
     return violations;
   }
 
-  private validateVersioningConsistency(interfaceDef: InterfaceDefinition): ConsistencyViolation[] {
+  private validateVersioningConsistency(
+    interfaceDef: InterfaceDefinition,
+  ): ConsistencyViolation[] {
     const violations: ConsistencyViolation[] = [];
-    
+
     // Missing version information
     if (!interfaceDef.metadata.version) {
       violations.push({
         id: this.generateViolationId(),
-        type: 'versioning',
-        severity: 'low',
+        type: "versioning",
+        severity: "low",
         interface: interfaceDef.name,
-        description: 'Interface lacks version information',
-        suggestion: 'Add version information to interface metadata',
-        examples: ['@version 1.0.0', '@since 1.0.0'],
+        description: "Interface lacks version information",
+        suggestion: "Add version information to interface metadata",
+        examples: ["@version 1.0.0", "@since 1.0.0"],
         impact: {
           maintainability: 0.6,
           usability: 0.4,
           consistency: 0.5,
-          reliability: 0.3
-        }
+          reliability: 0.3,
+        },
       });
     }
-    
+
     return violations;
   }
 
-  private async validateContractConsistency(interfaceDef: InterfaceDefinition): Promise<ConsistencyViolation[]> {
+  private async validateContractConsistency(
+    interfaceDef: InterfaceDefinition,
+  ): Promise<ConsistencyViolation[]> {
     const violations: ConsistencyViolation[] = [];
-    
+
     // Check for contract violations (simplified)
     for (const method of interfaceDef.methods) {
       // Check for void return types without proper documentation
-      if (method.returnType === 'void' && !method.documentation?.includes('side effect')) {
+      if (
+        method.returnType === "void" &&
+        !method.documentation?.includes("side effect")
+      ) {
         violations.push({
           id: this.generateViolationId(),
-          type: 'contract',
-          severity: 'low',
+          type: "contract",
+          severity: "low",
           interface: interfaceDef.name,
           description: `Method '${method.name}' returns void but lacks side effect documentation`,
-          suggestion: 'Document side effects for void methods',
-          examples: ['/**\n * Saves the user data (side effect: updates database)\n */'],
+          suggestion: "Document side effects for void methods",
+          examples: [
+            "/**\n * Saves the user data (side effect: updates database)\n */",
+          ],
           impact: {
             maintainability: 0.4,
             usability: 0.5,
             consistency: 0.3,
-            reliability: 0.4
-          }
+            reliability: 0.4,
+          },
         });
       }
     }
-    
+
     return violations;
   }
 
-  private validatePatternConsistency(interfaceDef: InterfaceDefinition): ConsistencyViolation[] {
+  private validatePatternConsistency(
+    interfaceDef: InterfaceDefinition,
+  ): ConsistencyViolation[] {
     const violations: ConsistencyViolation[] = [];
-    
+
     // Check for common anti-patterns
-    if (interfaceDef.type === 'interface' && interfaceDef.methods.length === 0 && interfaceDef.properties.length === 0) {
+    if (
+      interfaceDef.type === "interface" &&
+      interfaceDef.methods.length === 0 &&
+      interfaceDef.properties.length === 0
+    ) {
       violations.push({
         id: this.generateViolationId(),
-        type: 'pattern',
-        severity: 'medium',
+        type: "pattern",
+        severity: "medium",
         interface: interfaceDef.name,
-        description: 'Empty interface detected',
-        suggestion: 'Remove empty interface or add meaningful members',
-        examples: ['Use type aliases for simple types', 'Add meaningful properties/methods'],
+        description: "Empty interface detected",
+        suggestion: "Remove empty interface or add meaningful members",
+        examples: [
+          "Use type aliases for simple types",
+          "Add meaningful properties/methods",
+        ],
         impact: {
           maintainability: 0.5,
           usability: 0.3,
           consistency: 0.6,
-          reliability: 0.2
-        }
+          reliability: 0.2,
+        },
       });
     }
-    
+
     // Check for God interface pattern
-    if (interfaceDef.properties.length > 15 || interfaceDef.methods.length > 20) {
+    if (
+      interfaceDef.properties.length > 15 ||
+      interfaceDef.methods.length > 20
+    ) {
       violations.push({
         id: this.generateViolationId(),
-        type: 'pattern',
-        severity: 'high',
+        type: "pattern",
+        severity: "high",
         interface: interfaceDef.name,
-        description: 'Interface appears to be a "God interface" (too many responsibilities)',
-        suggestion: 'Apply Single Responsibility Principle and split interface',
-        examples: ['Break into multiple focused interfaces', 'Use composition over large interfaces'],
+        description:
+          'Interface appears to be a "God interface" (too many responsibilities)',
+        suggestion: "Apply Single Responsibility Principle and split interface",
+        examples: [
+          "Break into multiple focused interfaces",
+          "Use composition over large interfaces",
+        ],
         impact: {
           maintainability: 0.9,
           usability: 0.8,
           consistency: 0.7,
-          reliability: 0.6
-        }
+          reliability: 0.6,
+        },
       });
     }
-    
+
     return violations;
   }
 
-  private calculateInterfaceScore(interfaceDef: InterfaceDefinition, violations: ConsistencyViolation[]): number {
+  private calculateInterfaceScore(
+    interfaceDef: InterfaceDefinition,
+    violations: ConsistencyViolation[],
+  ): number {
     if (violations.length === 0) return 100;
-    
+
     let penalty = 0;
     for (const violation of violations) {
       switch (violation.severity) {
-        case 'critical': penalty += 25; break;
-        case 'high': penalty += 15; break;
-        case 'medium': penalty += 8; break;
-        case 'low': penalty += 3; break;
+        case "critical":
+          penalty += 25;
+          break;
+        case "high":
+          penalty += 15;
+          break;
+        case "medium":
+          penalty += 8;
+          break;
+        case "low":
+          penalty += 3;
+          break;
       }
     }
-    
+
     return Math.max(0, 100 - penalty);
   }
 
-  private generateConsistencyReport(interfaces: InterfaceDefinition[], violations: ConsistencyViolation[], interfaceScores: Map<string, number>): ConsistencyReport {
+  private generateConsistencyReport(
+    interfaces: InterfaceDefinition[],
+    violations: ConsistencyViolation[],
+    interfaceScores: Map<string, number>,
+  ): ConsistencyReport {
     const totalInterfaces = interfaces.length;
-    const consistentInterfaces = Array.from(interfaceScores.values()).filter(score => score >= 80).length;
-    const overallConsistency = Array.from(interfaceScores.values()).reduce((sum, score) => sum + score, 0) / totalInterfaces;
-    
+    const consistentInterfaces = Array.from(interfaceScores.values()).filter(
+      (score) => score >= 80,
+    ).length;
+    const overallConsistency =
+      Array.from(interfaceScores.values()).reduce(
+        (sum, score) => sum + score,
+        0,
+      ) / totalInterfaces;
+
     // Group violations by type and severity
     const violationsByType: Record<string, number> = {};
     const violationsBySeverity: Record<string, number> = {};
-    
+
     for (const violation of violations) {
-      violationsByType[violation.type] = (violationsByType[violation.type] || 0) + 1;
-      violationsBySeverity[violation.severity] = (violationsBySeverity[violation.severity] || 0) + 1;
+      violationsByType[violation.type] =
+        (violationsByType[violation.type] || 0) + 1;
+      violationsBySeverity[violation.severity] =
+        (violationsBySeverity[violation.severity] || 0) + 1;
     }
-    
+
     // Get top violations
     const topViolations = violations
       .sort((a, b) => {
@@ -800,13 +950,16 @@ export class InterfaceConsistencyValidator {
         return severityOrder[b.severity] - severityOrder[a.severity];
       })
       .slice(0, 10);
-    
+
     // Generate recommendations
-    const recommendations = this.generateGlobalRecommendations(violations, interfaces);
-    
+    const recommendations = this.generateGlobalRecommendations(
+      violations,
+      interfaces,
+    );
+
     // Detect patterns
     const patterns = this.detectPatterns(interfaces, violations);
-    
+
     return {
       overallConsistency,
       totalInterfaces,
@@ -816,128 +969,158 @@ export class InterfaceConsistencyValidator {
       topViolations,
       interfaceScores,
       recommendations,
-      patterns
+      patterns,
     };
   }
 
-  private generateGlobalRecommendations(violations: ConsistencyViolation[], interfaces: InterfaceDefinition[]): ConsistencyReport['recommendations'] {
+  private generateGlobalRecommendations(
+    violations: ConsistencyViolation[],
+    interfaces: InterfaceDefinition[],
+  ): ConsistencyReport["recommendations"] {
     const immediate: string[] = [];
     const shortTerm: string[] = [];
     const longTerm: string[] = [];
-    
-    const criticalViolations = violations.filter(v => v.severity === 'critical');
-    const highViolations = violations.filter(v => v.severity === 'high');
-    const violationTypes = new Set(violations.map(v => v.type));
-    
+
+    const criticalViolations = violations.filter(
+      (v) => v.severity === "critical",
+    );
+    const highViolations = violations.filter((v) => v.severity === "high");
+    const violationTypes = new Set(violations.map((v) => v.type));
+
     if (criticalViolations.length > 0) {
-      immediate.push(`🚨 Address ${criticalViolations.length} critical interface violations`);
+      immediate.push(
+        `🚨 Address ${criticalViolations.length} critical interface violations`,
+      );
     }
-    
+
     if (highViolations.length > 0) {
-      immediate.push(`⚠️ Fix ${highViolations.length} high-severity interface violations`);
+      immediate.push(
+        `⚠️ Fix ${highViolations.length} high-severity interface violations`,
+      );
     }
-    
-    if (violationTypes.has('naming')) {
-      shortTerm.push('📝 Establish and enforce naming conventions');
+
+    if (violationTypes.has("naming")) {
+      shortTerm.push("📝 Establish and enforce naming conventions");
     }
-    
-    if (violationTypes.has('structure')) {
-      shortTerm.push('🏗️ Refactor large interfaces into smaller, focused ones');
+
+    if (violationTypes.has("structure")) {
+      shortTerm.push("🏗️ Refactor large interfaces into smaller, focused ones");
     }
-    
-    if (violationTypes.has('documentation')) {
-      shortTerm.push('📚 Implement comprehensive documentation standards');
+
+    if (violationTypes.has("documentation")) {
+      shortTerm.push("📚 Implement comprehensive documentation standards");
     }
-    
-    shortTerm.push('🔍 Implement automated interface validation in CI/CD');
-    shortTerm.push('📊 Create interface consistency monitoring');
-    
-    longTerm.push('🎯 Establish interface design patterns and guidelines');
-    longTerm.push('🔄 Implement automated interface refactoring suggestions');
-    longTerm.push('📈 Create interface quality dashboards');
-    longTerm.push('🎓 Conduct interface design training');
-    
+
+    shortTerm.push("🔍 Implement automated interface validation in CI/CD");
+    shortTerm.push("📊 Create interface consistency monitoring");
+
+    longTerm.push("🎯 Establish interface design patterns and guidelines");
+    longTerm.push("🔄 Implement automated interface refactoring suggestions");
+    longTerm.push("📈 Create interface quality dashboards");
+    longTerm.push("🎓 Conduct interface design training");
+
     return { immediate, shortTerm, longTerm };
   }
 
-  private detectPatterns(interfaces: InterfaceDefinition[], violations: ConsistencyViolation[]): ConsistencyReport['patterns'] {
+  private detectPatterns(
+    interfaces: InterfaceDefinition[],
+    violations: ConsistencyViolation[],
+  ): ConsistencyReport["patterns"] {
     const detected: string[] = [];
     const recommended: string[] = [];
     const violations: string[] = [];
-    
+
     // Detect common patterns
-    const interfaceCount = interfaces.filter(i => i.type === 'interface').length;
-    const typeCount = interfaces.filter(i => i.type === 'type').length;
-    
+    const interfaceCount = interfaces.filter(
+      (i) => i.type === "interface",
+    ).length;
+    const typeCount = interfaces.filter((i) => i.type === "type").length;
+
     if (interfaceCount > typeCount) {
-      detected.push('Interface-heavy design');
+      detected.push("Interface-heavy design");
     } else {
-      detected.push('Type-heavy design');
+      detected.push("Type-heavy design");
     }
-    
+
     // Detect anti-patterns
-    const emptyInterfaces = interfaces.filter(i => i.properties.length === 0 && i.methods.length === 0);
+    const emptyInterfaces = interfaces.filter(
+      (i) => i.properties.length === 0 && i.methods.length === 0,
+    );
     if (emptyInterfaces.length > 0) {
-      violations.push('Empty interfaces detected');
+      violations.push("Empty interfaces detected");
     }
-    
-    const largeInterfaces = interfaces.filter(i => i.properties.length > 10 || i.methods.length > 15);
+
+    const largeInterfaces = interfaces.filter(
+      (i) => i.properties.length > 10 || i.methods.length > 15,
+    );
     if (largeInterfaces.length > 0) {
-      violations.push('God interfaces detected');
+      violations.push("God interfaces detected");
     }
-    
+
     // Recommended patterns
-    recommended.push('Single Responsibility Principle');
-    recommended.push('Interface Segregation Principle');
-    recommended.push('Consistent naming conventions');
-    recommended.push('Comprehensive documentation');
-    
+    recommended.push("Single Responsibility Principle");
+    recommended.push("Interface Segregation Principle");
+    recommended.push("Consistent naming conventions");
+    recommended.push("Comprehensive documentation");
+
     return { detected, recommended, violations };
   }
 
   // Helper methods
   private isExported(content: string, name: string): boolean {
-    return content.includes(`export ${name}`) || content.includes(`export { ${name} }`);
+    return (
+      content.includes(`export ${name}`) ||
+      content.includes(`export { ${name} }`)
+    );
   }
 
   private isPublic(content: string, name: string): boolean {
-    return !content.includes(`private ${name}`) && !content.includes(`protected ${name}`);
+    return (
+      !content.includes(`private ${name}`) &&
+      !content.includes(`protected ${name}`)
+    );
   }
 
-  private extractDocumentation(content: string, lineNumber: number): string | undefined {
-    const lines = content.split('\n');
+  private extractDocumentation(
+    content: string,
+    lineNumber: number,
+  ): string | undefined {
+    const lines = content.split("\n");
     const docLines: string[] = [];
-    
+
     // Look for JSDoc comments above the interface
     for (let i = lineNumber - 1; i >= 0; i--) {
       const line = lines[i].trim();
-      if (line.startsWith('*')) {
-        docLines.unshift(line.replace(/^\*\s?/, ''));
-      } else if (line.startsWith('/**')) {
-        docLines.unshift(line.replace(/^\/\*\*\s?/, ''));
+      if (line.startsWith("*")) {
+        docLines.unshift(line.replace(/^\*\s?/, ""));
+      } else if (line.startsWith("/**")) {
+        docLines.unshift(line.replace(/^\/\*\*\s?/, ""));
         break;
-      } else if (line === '' || line.startsWith('//')) {
+      } else if (line === "" || line.startsWith("//")) {
         continue;
       } else {
         break;
       }
     }
-    
-    return docLines.length > 0 ? docLines.join('\n') : undefined;
+
+    return docLines.length > 0 ? docLines.join("\n") : undefined;
   }
 
   private extractTags(content: string, lineNumber: number): string[] {
     const documentation = this.extractDocumentation(content, lineNumber);
     if (!documentation) return [];
-    
+
     const tagMatches = documentation.match(/@(\w+)/g);
-    return tagMatches ? tagMatches.map(tag => tag.substring(1)) : [];
+    return tagMatches ? tagMatches.map((tag) => tag.substring(1)) : [];
   }
 
-  private extractVersion(content: string, lineNumber: number): string | undefined {
+  private extractVersion(
+    content: string,
+    lineNumber: number,
+  ): string | undefined {
     const tags = this.extractTags(content, lineNumber);
-    const versionTag = tags.find(tag => tag.startsWith('version'));
-    return versionTag ? versionTag.split(' ')[1] : undefined;
+    const versionTag = tags.find((tag) => tag.startsWith("version"));
+    return versionTag ? versionTag.split(" ")[1] : undefined;
   }
 
   private extractInlineDocumentation(line: string): string | undefined {

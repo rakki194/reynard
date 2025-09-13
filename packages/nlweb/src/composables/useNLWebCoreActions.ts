@@ -6,10 +6,16 @@
 
 import { NLWebState } from "./useNLWebState.js";
 import { createSuggestionsAction } from "./useNLWebSuggestions.js";
-import { createHealthAction, createConfigurationAction } from "./useNLWebHealthActions.js";
+import {
+  createHealthAction,
+  createConfigurationAction,
+} from "./useNLWebHealthActions.js";
 
 export interface NLWebCoreActions {
-  getSuggestions: (query: string, context?: Record<string, unknown>) => Promise<void>;
+  getSuggestions: (
+    query: string,
+    context?: Record<string, unknown>,
+  ) => Promise<void>;
   getHealth: () => Promise<void>;
   getConfiguration: () => Promise<void>;
 }
@@ -22,9 +28,17 @@ export function createNLWebCoreActions(
   baseUrl: string,
   requestTimeout: number,
 ): NLWebCoreActions {
-  const getSuggestions = createSuggestionsAction(state, baseUrl, requestTimeout);
+  const getSuggestions = createSuggestionsAction(
+    state,
+    baseUrl,
+    requestTimeout,
+  );
   const getHealth = createHealthAction(state, baseUrl, requestTimeout);
-  const getConfiguration = createConfigurationAction(state, baseUrl, requestTimeout);
+  const getConfiguration = createConfigurationAction(
+    state,
+    baseUrl,
+    requestTimeout,
+  );
 
   return {
     getSuggestions,

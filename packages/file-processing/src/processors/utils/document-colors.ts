@@ -1,6 +1,6 @@
 /**
  * Document color utilities for thumbnail generation.
- * 
+ *
  * Provides color schemes for different document types.
  */
 

@@ -1,10 +1,13 @@
 # Summarization System Deployment Guide
 
-This guide covers deploying the Reynard summarization system across different environments, including development, staging, and production configurations.
+This guide covers deploying the Reynard summarization system across different environments, including development,
+staging, and production configurations.
 
 ## Overview
 
-The summarization system is designed to be flexible and scalable across different deployment scenarios. It supports various configurations for different use cases and performance requirements.
+The summarization system is designed to be flexible and
+scalable across different deployment scenarios. It supports various configurations for different use cases and
+performance requirements.
 
 ## Environment Variables
 
@@ -735,4 +738,6 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
    SUMMARIZATION_PROFILING_OUTPUT=/tmp/summarization_profile.json
    ```
 
-This deployment guide provides comprehensive instructions for deploying the summarization system across different environments. Adjust the configurations based on your specific requirements and infrastructure constraints.
+This deployment guide provides comprehensive instructions for
+deploying the summarization system across different environments. Adjust the configurations based on
+your specific requirements and infrastructure constraints.

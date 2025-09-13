@@ -6,12 +6,12 @@
  * @module algorithms/performance/throttle
  */
 
-import type { 
-  ThrottleOptions, 
-  DebounceOptions, 
+import type {
+  ThrottleOptions,
+  DebounceOptions,
   FunctionSignature,
   ThrottledFunction,
-  DebouncedFunction
+  DebouncedFunction,
 } from "../types/performance-types";
 
 /**

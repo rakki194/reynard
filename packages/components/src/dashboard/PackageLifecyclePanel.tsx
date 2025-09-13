@@ -12,7 +12,9 @@ import { PackageLifecycleList } from "./components/PackageLifecycleList";
 import { usePackageLifecycle } from "./composables/usePackageLifecycle";
 import type { PackageLifecyclePanelProps } from "./types/PackageLifecycleTypes";
 
-export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (props) => {
+export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (
+  props,
+) => {
   const {
     state,
     refreshLifecycleData,
@@ -70,9 +72,7 @@ export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (pro
 
       <Show when={state().lastUpdate}>
         <div class="reynard-package-lifecycle-panel__footer">
-          <small>
-            Last updated: {state().lastUpdate?.toLocaleString()}
-          </small>
+          <small>Last updated: {state().lastUpdate?.toLocaleString()}</small>
         </div>
       </Show>
     </div>

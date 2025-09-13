@@ -40,7 +40,10 @@ render(() => <Settings />);
 render(() => <Settings onClose={() => {}} />);
 ```
 
-When working with components, always check the prop types before usage to ensure type safety. In test scenarios, provide mock functions for any event handler props that are required. For callback props where the specific implementation is not important for the test, you can use empty arrow functions to satisfy the type requirements.
+When working with components, always check the prop types before usage to ensure type safety. In test scenarios,
+provide mock functions for any event handler props that are required. For callback props where
+the specific implementation is not important for the test,
+you can use empty arrow functions to satisfy the type requirements.
 
 ## Transformation Type Errors
 
@@ -124,13 +127,23 @@ Wrap your app with the TransformationsProvider:
 ---
 
 **Type Imports**
-When working with transformations, it's important to always import specific transformation types from their source files. Type assertions should be used consistently throughout the codebase to maintain type safety. Type definitions should be kept centralized in dedicated type files to avoid duplication and make maintenance easier.
+When working with transformations, it's important to always import specific transformation types from
+their source files. Type assertions should be used consistently throughout the codebase to
+maintain type safety. Type definitions should be kept centralized in dedicated type files to avoid duplication and
+make maintenance easier.
 
 **Context Usage**
-Proper nesting of providers is crucial for context to work correctly. Always verify that hooks are used within the appropriate provider components in the component hierarchy. The order of providers matters, so maintain a consistent and logical provider ordering based on dependencies.
+Proper nesting of providers is crucial for context to work correctly. Always verify that
+hooks are used within the appropriate provider components in the component hierarchy. The order of providers matters,
+so maintain a consistent and logical provider ordering based on dependencies.
 
 **Type Safety**
-Discriminated unions should be used for transformation types to enable proper type narrowing. Take full advantage of TypeScript's type system for validation by defining strict types. Keep transformation type definitions synchronized across the codebase to prevent type mismatches.
+Discriminated unions should be used for transformation types to enable proper type narrowing. Take full advantage of
+TypeScript's type system for validation by
+defining strict types. Keep transformation type definitions synchronized across the codebase to prevent type mismatches.
 
 **Code Organization**
-Type definitions should be centralized in dedicated files rather than scattered throughout the codebase. Use type assertions consistently to maintain predictable typing behavior. Establish and maintain clear type hierarchies that reflect the logical structure of the data.
+Type definitions should be centralized in
+dedicated files rather than scattered throughout the codebase. Use type assertions consistently to
+maintain predictable typing behavior. Establish and
+maintain clear type hierarchies that reflect the logical structure of the data.

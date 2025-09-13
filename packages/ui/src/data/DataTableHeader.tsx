@@ -19,8 +19,7 @@ const SelectAllCheckbox: Component<SelectAllCheckboxProps> = (props) => (
     <input
       type="checkbox"
       checked={
-        props.selectedRows.size === props.dataLength &&
-        props.dataLength > 0
+        props.selectedRows.size === props.dataLength && props.dataLength > 0
       }
       ref={(el) => {
         if (el) {

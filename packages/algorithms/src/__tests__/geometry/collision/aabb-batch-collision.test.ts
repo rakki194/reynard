@@ -3,7 +3,10 @@ import {
   batchCollisionDetection,
   batchCollisionWithSpatialHash,
 } from "../../../geometry/collision/aabb-batch-collision";
-import type { AABB, AABBSpatialHashConfig } from "../../../geometry/collision/aabb-types";
+import type {
+  AABB,
+  AABBSpatialHashConfig,
+} from "../../../geometry/collision/aabb-types";
 
 // Test helper functions
 const createAABB = (

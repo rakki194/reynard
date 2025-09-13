@@ -9,11 +9,15 @@ On GPU systems, start with moderate CLIP batch sizes and adjust based on memory:
 - GPU (ViT-L/14): start `RAG_CLIP_BATCH_MAX=8`, enable `RAG_CLIP_AUTOSCALE=true`.
 - CPU: start `RAG_CLIP_BATCH_MAX=2–4`, autoscale can remain enabled; throughput will be lower than GPU.
 
-The CLIP service enforces a conservative memory cap and will auto-downscale sub-batches if an OOM is detected (best-effort). You can disable autoscaling by setting `RAG_CLIP_AUTOSCALE=false` and manually tune batch sizes.
+The CLIP service enforces a conservative memory cap and will auto-downscale sub-batches if
+an OOM is detected (best-effort). You can disable autoscaling by setting `RAG_CLIP_AUTOSCALE=false` and
+manually tune batch sizes.
 
 Vector Dimensions
 
-Text/code/captions default to `VECTOR(1024)` and CLIP image embeddings to `VECTOR(768)`. The embedding service validates model dimensions and surfaces mismatches in `/api/rag/ops/metrics` under `dimensions`.
+Text/code/captions default to `VECTOR(1024)` and
+CLIP image embeddings to `VECTOR(768)`. The embedding service validates model dimensions and
+surfaces mismatches in `/api/rag/ops/metrics` under `dimensions`.
 
 Changing Dimensions
 
@@ -25,7 +29,8 @@ To migrate from `VECTOR(1024)` to `VECTOR(768)` (or vice versa):
 4. Switch queries to read from the new columns/tables.
 5. Drop or archive old columns/tables when confident.
 
-Prefer parallel tables for zero-downtime migrations; single-column type changes require exclusive locks and are not recommended in production.
+Prefer parallel tables for zero-downtime migrations; single-column type changes require exclusive locks and
+are not recommended in production.
 
 Maintenance
 
@@ -35,7 +40,9 @@ Maintenance
 
 ## Embeddings and Vector Database
 
-Text and image embeddings are produced by dedicated services and stored in Postgres using `pgvector`. The indexing service ingests documents in a streaming-friendly way, while the RAG service exposes a simple orchestrated flow.
+Text and image embeddings are produced by dedicated services and
+stored in Postgres using `pgvector`. The indexing service ingests documents in a streaming-friendly way, while
+the RAG service exposes a simple orchestrated flow.
 
 ## Configuration
 
@@ -47,14 +54,18 @@ Enable via `AppConfig`:
 
 ## Embedding Service (Text)
 
-`EmbeddingService.embed_texts(model, texts, timeout_s?) -> List[List[float]]` calls Ollama `/api/embed` and preserves input order, with an in-memory cache keyed by `(model,text)` and normalization of whitespace. On errors or when Ollama is unavailable, it falls back to a deterministic hash-based vector with the expected dimension. Basic metrics (`requests`, `errors`, `last_ms`) are tracked.
+`EmbeddingService.embed_texts(model, texts, timeout_s?) -> List[List[float]]` calls Ollama `/api/embed` and
+preserves input order, with an in-memory cache keyed by `(model,text)` and normalization of whitespace. On errors or
+when Ollama is unavailable, it falls back to a deterministic hash-based vector with
+the expected dimension. Basic metrics (`requests`, `errors`, `last_ms`) are tracked.
 
 - Files:
   - `app/services/integration/embedding_service.py`
 
 ## Vector DB Service (pgvector)
 
-`VectorDBService` initializes a SQLAlchemy engine from `pg_dsn` and runs three idempotent migrations: `001_pgvector.sql`, `002_embeddings.sql`, and `003_indexes.sql`. It provides helpers:
+`VectorDBService` initializes a SQLAlchemy engine from `pg_dsn` and
+runs three idempotent migrations: `001_pgvector.sql`, `002_embeddings.sql`, and `003_indexes.sql`. It provides helpers:
 
 - `insert_document_with_chunks(source, content, metadata, chunks)` -> `(document_id, [(chunk_id, chunk_index), ...])`
 - `insert_document_embeddings(rows)` -> inserted row count; rows include `chunk_id`, `embedding`, `model_id`, `dim`, `metric`
@@ -74,14 +85,19 @@ Operational tunables are exposed via env and `AppConfig`:
 
 ## Indexing Service
 
-`EmbeddingIndexService.ingest_documents(items, model, batch_size)` accepts a sequence of `{source, content}` items, chunks each document, stores document/chunk rows, batches text for embeddings, and inserts vectors in groups. Yields progress events `{type: 'progress'|'error'|'complete', ...}` suitable for streaming UIs.
+`EmbeddingIndexService.ingest_documents(items, model, batch_size)` accepts a sequence of `{source, content}` items,
+chunks each document, stores document/chunk rows, batches text for embeddings, and
+inserts vectors in groups. Yields progress events `{type: 'progress'|'error'|'complete',
+...}` suitable for streaming UIs.
 
 - Files:
   - `app/services/background/embedding_index_service.py`
 
 ## RAG Service
 
-`RAGService.ingest_document(source, content, chunks, model, metric)` performs a synchronous ingest and embedding call; `query_similar(vector, top_k)` delegates to the vector DB service. Intended as a minimal orchestrator for early integration.
+`RAGService.ingest_document(source, content, chunks, model, metric)` performs a synchronous ingest and
+embedding call; `query_similar(vector,
+top_k)` delegates to the vector DB service. Intended as a minimal orchestrator for early integration.
 
 - Files:
   - `app/services/integration/rag_service.py`
@@ -99,7 +115,11 @@ The default schema provisions fixed dimensions for vector columns:
 - Documents/code/captions: `VECTOR(1024)`
 - CLIP images: `VECTOR(768)`
 
-Ensure the chosen embedding model dimension matches the table definition. The default text models include a mix of 1024- and 768-dimensional models (e.g., `mxbai-embed-large` 1024, `bge-m3` 1024, `nomic-embed-text` 768). If you select a 768-dim model for documents or captions, adjust the migrations to use `VECTOR(768)` or create a new column/table variant. The runtime also stores `dim` per row for auditing, but Postgres will enforce the declared `VECTOR(n)` arity at insert time.
+Ensure the chosen embedding model dimension matches the table definition. The default text models include a mix of
+1024- and 768-dimensional models (e.g., `mxbai-embed-large` 1024, `bge-m3` 1024, `nomic-embed-text` 768). If
+you select a 768-dim model for documents or captions, adjust the migrations to use `VECTOR(768)` or
+create a new column/table variant. The runtime also stores `dim` per row for auditing, but
+Postgres will enforce the declared `VECTOR(n)` arity at insert time.
 
 - Files:
   - `scripts/db/002_embeddings.sql`
@@ -117,7 +137,8 @@ ORDER BY e.embedding <=> CAST(:vec AS vector)
 LIMIT :k;
 ```
 
-The service uses this pattern for document/code/caption/image searches. When doing brute-force comparisons for recall checks, the session temporarily disables index and bitmap scans.
+The service uses this pattern for document/code/caption/image searches. When
+doing brute-force comparisons for recall checks, the session temporarily disables index and bitmap scans.
 
 - Files:
   - `app/services/integration/vector_db_service.py`
@@ -133,9 +154,12 @@ USING hnsw (embedding vector_cosine_ops)
 WITH (m=16, ef_construction=200);
 ```
 
-At query time, you can tune search quality/latency via `hnsw.ef_search` (session-level). The service exposes `VectorDBService.set_ef_search(ef)` which executes `SET hnsw.ef_search = :ef` best-effort on the engine’s connections.
+At query time, you can tune search quality/latency via `hnsw.ef_search` (session-level). The service exposes
+`VectorDBService.set_ef_search(ef)` which executes `SET hnsw.ef_search = :ef` best-effort on the engine’s connections.
 
-General guidance (see pgvector docs): increase `ef_search` for higher recall at the cost of latency; `m` and `ef_construction` control index build time/memory/recall trade-offs. Run `ANALYZE` regularly so the planner has fresh stats.
+General guidance (see pgvector docs): increase `ef_search` for higher recall at the cost of latency; `m` and
+`ef_construction` control index build time/memory/recall trade-offs. Run `ANALYZE` regularly so
+the planner has fresh stats.
 
 - Files:
   - `scripts/db/003_indexes.sql`
@@ -150,7 +174,8 @@ INSERT INTO rag_document_embeddings (chunk_id, embedding, model_id, dim, metric)
 VALUES (:chunk_id, CAST(:embedding AS vector), :model_id, :dim, :metric);
 ```
 
-The helper `vector_literal(vec)` formats floats with fixed precision and preserves input order. For large ingests, prefer batching and the streaming indexer.
+The helper `vector_literal(vec)` formats floats with fixed precision and
+preserves input order. For large ingests, prefer batching and the streaming indexer.
 
 - Files:
   - `app/services/integration/vector_db_service.py`
@@ -158,7 +183,10 @@ The helper `vector_literal(vec)` formats floats with fixed precision and preserv
 
 ## Recall Sampling and Metrics
 
-To estimate recall, the RAG service compares top-K results from the HNSW index against a sequential-scan query and computes set overlap. Samples may be persisted to `rag_recall_samples` (created idempotently during migrations) with optional `q_hash` and `correlation_id` for later analysis. The vector DB service can also report index sizes and heap stats via `get_pg_metrics()`.
+To estimate recall, the RAG service compares top-K results from the HNSW index against a sequential-scan query and
+computes set overlap. Samples may be persisted to `rag_recall_samples` (created idempotently during migrations) with
+optional `q_hash` and `correlation_id` for later analysis. The vector DB service can also report index sizes and
+heap stats via `get_pg_metrics()`.
 
 - Files:
   - `app/services/integration/rag_service.py`
@@ -166,7 +194,10 @@ To estimate recall, the RAG service compares top-K results from the HNSW index a
 
 ## Ollama Embed API Details
 
-Text/code/caption embeddings are requested from Ollama’s `/api/embed` in ordered batches. Inputs are normalized for whitespace when caching small texts. On non-200 responses or client unavailability, a deterministic hash-based fallback produces vectors of the expected dimension to keep pipelines functional during outages.
+Text/code/caption embeddings are requested from Ollama’s `/api/embed` in ordered batches. Inputs are normalized for
+whitespace when caching small texts. On non-200 responses or
+client unavailability, a deterministic hash-based fallback produces vectors of the expected dimension to
+keep pipelines functional during outages.
 
 Example request payload:
 
@@ -188,7 +219,10 @@ Expected response (shape varies by model/provider):
 
 ## Image Embeddings (CLIP)
 
-Image vectors are stored in `rag_image_embeddings` with default dimension 768 (ViT-L/14). The indexer currently schedules per-image items and inserts rows via `VectorDBService.insert_image_embeddings`. Text→image retrieval uses cosine on the image embedding table. The current wiring uses a placeholder `image_id` until full image metadata integration lands.
+Image vectors are stored in `rag_image_embeddings` with
+default dimension 768 (ViT-L/14). The indexer currently schedules per-image items and
+inserts rows via `VectorDBService.insert_image_embeddings`. Text→image retrieval uses cosine on
+the image embedding table. The current wiring uses a placeholder `image_id` until full image metadata integration lands.
 
 - Files:
   - `scripts/db/002_embeddings.sql`
@@ -210,7 +244,10 @@ Postgres/pgvector tips:
 
 ## Security and Limits
 
-Server-side rate limits and content clamps protect resources during RAG operations. Query/ingest limits, allowed filesystem roots for CLIP image ingestion, and privacy toggles are configured via `AppConfig` (`rag_query_rate_limit_per_minute`, `rag_ingest_*`, `rag_ingest_allowed_roots`, redaction flags). API endpoints enforce these constraints.
+Server-side rate limits and content clamps protect resources during RAG operations. Query/ingest limits,
+allowed filesystem roots for CLIP image ingestion, and
+privacy toggles are configured via `AppConfig` (`rag_query_rate_limit_per_minute`, `rag_ingest_*`,
+`rag_ingest_allowed_roots`, redaction flags). API endpoints enforce these constraints.
 
 - Files:
   - `app/services/core/app_config.py`
@@ -218,9 +255,13 @@ Server-side rate limits and content clamps protect resources during RAG operatio
 
 ## End-to-End Flow (Docs)
 
-Synchronous path (RAG service): store document and chunks, embed synchronously via the text model, insert vectors, then query with `similar_document_chunks` or `hybrid_search_documents`.
+Synchronous path (RAG service): store document and
+chunks, embed synchronously via the text model, insert vectors, then query with `similar_document_chunks` or
+`hybrid_search_documents`.
 
-Streaming path (Indexing service): enqueue documents, chunk, batch-embed, and insert vectors with progress events suitable for SSE-driven UIs. The queue supports pause/resume, retries with exponential backoff, and a dead-letter list.
+Streaming path (Indexing service): enqueue documents, chunk, batch-embed, and
+insert vectors with progress events suitable for SSE-driven UIs. The queue supports pause/resume,
+retries with exponential backoff, and a dead-letter list.
 
 - Files:
   - `app/services/integration/rag_service.py`

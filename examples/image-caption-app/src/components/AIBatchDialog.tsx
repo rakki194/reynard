@@ -1,11 +1,15 @@
 /**
  * AI Batch Processing Dialog Component
- * 
+ *
  * Handles batch processing dialog functionality.
  */
 
 import { Component } from "solid-js";
-import { BatchProcessingDialog, type FileItem, type GalleryCaptionResult } from "reynard-gallery-ai";
+import {
+  BatchProcessingDialog,
+  type FileItem,
+  type GalleryCaptionResult,
+} from "reynard-gallery-ai";
 import { useNotifications } from "reynard-core";
 
 interface AIBatchDialogProps {
@@ -28,7 +32,10 @@ export const AIBatchDialog: Component<AIBatchDialogProps> = (props) => {
       onComplete={(results: GalleryCaptionResult[]) => {
         console.log("Batch processing completed:", results);
         props.onComplete(results);
-        notify(`Batch processing completed: ${results.length} items processed`, "success");
+        notify(
+          `Batch processing completed: ${results.length} items processed`,
+          "success",
+        );
       }}
       onError={(error: string) => {
         console.error("Batch processing error:", error);

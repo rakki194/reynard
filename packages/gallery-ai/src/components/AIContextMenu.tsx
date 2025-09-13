@@ -8,40 +8,38 @@
 
 import { Component, Show, For, createSignal } from "solid-js";
 import { useAIGalleryContext } from "../composables/useGalleryAI";
-import type {
-  AIContextMenuAction,
-  FileItem,
-  FolderItem,
-} from "../types";
+import type { AIContextMenuAction, FileItem, FolderItem } from "../types";
 import { AIContextMenuActionType } from "../types";
 
 export interface AIContextMenuProps {
   /** Whether the menu is visible */
   visible: boolean;
-  
+
   /** Menu position */
   position: { x: number; y: number };
-  
+
   /** Target item */
   item: FileItem | FolderItem;
-  
+
   /** Selected items for batch operations */
   selectedItems: (FileItem | FolderItem)[];
-  
+
   /** Available AI actions */
   actions: AIContextMenuAction[];
-  
+
   /** Event handlers */
   onClose: () => void;
   onActionClick: (action: AIContextMenuAction) => void;
-  
+
   /** Custom class name */
   class?: string;
 }
 
 export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
   const ai = useAIGalleryContext();
-  const [expandedSubmenus, setExpandedSubmenus] = createSignal<Set<string>>(new Set());
+  const [expandedSubmenus, setExpandedSubmenus] = createSignal<Set<string>>(
+    new Set(),
+  );
   const [isProcessing, setIsProcessing] = createSignal(false);
 
   // Handle action execution
@@ -49,7 +47,7 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
     if (action.disabled || isProcessing()) return;
 
     setIsProcessing(true);
-    
+
     try {
       // Handle different action types
       switch (action.aiActionType) {
@@ -78,7 +76,7 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
           // Fallback to custom onClick
           action.onClick?.();
       }
-      
+
       props.onActionClick(action);
     } catch (error) {
       console.error("AI action failed:", error);
@@ -90,10 +88,11 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
   // Generate caption for single item
   const handleGenerateCaption = async (action: AIContextMenuAction) => {
     if (props.item.type === "folder") return;
-    
-    const generator = action.aiConfig?.generator || ai.aiState().selectedGenerator;
+
+    const generator =
+      action.aiConfig?.generator || ai.aiState().selectedGenerator;
     const result = await ai.generateCaption(props.item as FileItem, generator);
-    
+
     if (result.success) {
       console.log("Caption generated:", result.caption);
     }
@@ -101,13 +100,20 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
 
   // Batch annotate multiple items
   const handleBatchAnnotate = async (action: AIContextMenuAction) => {
-    const items = props.selectedItems.filter(item => item.type !== "folder") as FileItem[];
+    const items = props.selectedItems.filter(
+      (item) => item.type !== "folder",
+    ) as FileItem[];
     if (items.length === 0) return;
-    
-    const generator = action.aiConfig?.generator || ai.aiState().selectedGenerator;
+
+    const generator =
+      action.aiConfig?.generator || ai.aiState().selectedGenerator;
     const results = await ai.batchAnnotate(items, generator);
-    
-    console.log("Batch annotation completed:", results.length, "items processed");
+
+    console.log(
+      "Batch annotation completed:",
+      results.length,
+      "items processed",
+    );
   };
 
   // Edit existing caption
@@ -125,10 +131,11 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
   // Regenerate caption
   const handleRegenerateCaption = async (action: AIContextMenuAction) => {
     if (props.item.type === "folder") return;
-    
-    const generator = action.aiConfig?.generator || ai.aiState().selectedGenerator;
+
+    const generator =
+      action.aiConfig?.generator || ai.aiState().selectedGenerator;
     const result = await ai.generateCaption(props.item as FileItem, generator);
-    
+
     console.log("Caption regenerated:", result.caption);
   };
 
@@ -146,7 +153,7 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
 
   // Toggle submenu expansion
   const toggleSubmenu = (actionId: string) => {
-    setExpandedSubmenus(prev => {
+    setExpandedSubmenus((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(actionId)) {
         newSet.delete(actionId);
@@ -161,22 +168,28 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
   const isActionAvailable = (action: AIContextMenuAction): boolean => {
     // Check if AI is enabled
     if (!ai.aiState().aiEnabled) return false;
-    
+
     // Check if generator is available
-    if (action.requiredGenerator && !ai.isGeneratorAvailable(action.requiredGenerator)) {
+    if (
+      action.requiredGenerator &&
+      !ai.isGeneratorAvailable(action.requiredGenerator)
+    ) {
       return false;
     }
-    
+
     // Check if multiple selection is required
     if (action.requiresMultipleSelection && props.selectedItems.length < 2) {
       return false;
     }
-    
+
     // Check if item type is supported
-    if (action.aiActionType === AIContextMenuActionType.GENERATE_CAPTION && props.item.type === "folder") {
+    if (
+      action.aiActionType === AIContextMenuActionType.GENERATE_CAPTION &&
+      props.item.type === "folder"
+    ) {
       return false;
     }
-    
+
     return true;
   };
 
@@ -185,9 +198,11 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
     const available = isActionAvailable(action);
     const hasChildren = action.children && action.children.length > 0;
     const isExpanded = expandedSubmenus().has(action.id);
-    
+
     return (
-      <div class={`ai-context-menu__item ai-context-menu__item--depth-${depth}`}>
+      <div
+        class={`ai-context-menu__item ai-context-menu__item--depth-${depth}`}
+      >
         <button
           class={`ai-context-menu__action ${
             !available ? "ai-context-menu__action--disabled" : ""
@@ -206,12 +221,14 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
           </Show>
           <span class="ai-context-menu__label">{action.label}</span>
           <Show when={hasChildren}>
-            <span class={`ai-context-menu__arrow ${isExpanded ? "ai-context-menu__arrow--expanded" : ""}`}>
+            <span
+              class={`ai-context-menu__arrow ${isExpanded ? "ai-context-menu__arrow--expanded" : ""}`}
+            >
               ▶
             </span>
           </Show>
         </button>
-        
+
         <Show when={hasChildren && isExpanded}>
           <div class="ai-context-menu__submenu">
             <For each={action.children}>
@@ -238,24 +255,23 @@ export const AIContextMenu: Component<AIContextMenuProps> = (props) => {
               <span class="ai-context-menu__processing">Processing...</span>
             </Show>
           </div>
-          
+
           <div class="ai-context-menu__actions">
-            <For each={props.actions}>
-              {(action) => renderAction(action)}
-            </For>
+            <For each={props.actions}>{(action) => renderAction(action)}</For>
           </div>
-          
+
           <Show when={ai.aiState().batchProgress}>
             <div class="ai-context-menu__progress">
               <div class="ai-context-menu__progress-bar">
-                <div 
+                <div
                   class="ai-context-menu__progress-fill"
                   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                   style={`--progress-width: ${ai.aiState().batchProgress?.percentage || 0}%`}
                 />
               </div>
               <span class="ai-context-menu__progress-text">
-                {ai.aiState().batchProgress?.completed || 0} / {ai.aiState().batchProgress?.total || 0}
+                {ai.aiState().batchProgress?.completed || 0} /{" "}
+                {ai.aiState().batchProgress?.total || 0}
               </span>
             </div>
           </Show>

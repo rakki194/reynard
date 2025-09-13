@@ -1,6 +1,7 @@
 # Bevy ECS vs Reynard ECS Comparison
 
-This document compares our TypeScript ECS implementation with Bevy's Rust ECS to identify similarities, differences, and areas for improvement.
+This document compares our TypeScript ECS implementation with Bevy's Rust ECS to identify similarities, differences,
+and areas for improvement.
 
 ## ✅ Implemented Features
 
@@ -203,7 +204,8 @@ This document compares our TypeScript ECS implementation with Bevy's Rust ECS to
 
 ## 🎉 Conclusion
 
-Our TypeScript ECS implementation successfully captures the core architecture and patterns of Bevy ECS while adapting them for the JavaScript/TypeScript ecosystem. The implementation provides:
+Our TypeScript ECS implementation successfully captures the core architecture and patterns of Bevy ECS while
+adapting them for the JavaScript/TypeScript ecosystem. The implementation provides:
 
 - **Complete Core Functionality**: All essential ECS features
 - **Advanced Features**: Parallel execution, system conditions, component hooks, query caching
@@ -212,4 +214,8 @@ Our TypeScript ECS implementation successfully captures the core architecture an
 - **Extensibility**: Easy to add new features and optimizations
 - **Developer Experience**: Clean, intuitive API design with fluent interfaces
 
-The implementation is production-ready for complex use cases and provides a solid foundation for building sophisticated games and simulations in the Reynard framework. With the addition of parallel execution, system conditions, component hooks, and query state management, our ECS now matches the advanced capabilities of Bevy ECS while maintaining the flexibility and ease of use that makes it perfect for the Reynard ecosystem.
+The implementation is production-ready for complex use cases and
+provides a solid foundation for building sophisticated games and
+simulations in the Reynard framework. With the addition of parallel execution, system conditions, component hooks, and
+query state management, our ECS now matches the advanced capabilities of Bevy ECS while
+maintaining the flexibility and ease of use that makes it perfect for the Reynard ecosystem.

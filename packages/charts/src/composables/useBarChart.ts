@@ -12,7 +12,8 @@ import { processBarChartData, BarChartData } from "../utils/barChartData";
 export const useBarChart = (props: BarChartProps) => {
   const { isRegistered } = useChartRegistration();
   const [chartData, setChartData] = createSignal<BarChartData | null>(null);
-  const [chartOptions, setChartOptions] = createSignal<ReturnType<typeof createBarChartOptions>>();
+  const [chartOptions, setChartOptions] =
+    createSignal<ReturnType<typeof createBarChartOptions>>();
 
   createEffect(() => {
     const processedData = processBarChartData({

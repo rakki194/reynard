@@ -49,7 +49,5 @@ export function handleAPIError(
   error: unknown,
   defaultMessage: string,
 ): void {
-  state.setError(
-    error instanceof Error ? error.message : defaultMessage,
-  );
+  state.setError(error instanceof Error ? error.message : defaultMessage);
 }

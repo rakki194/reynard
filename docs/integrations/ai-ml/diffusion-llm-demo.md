@@ -1,6 +1,7 @@
 # Diffusion LLM Demo Walkthrough
 
-This short script demonstrates generating text with Diffusion LLM and inserting it into a caption/text file, with accessibility tips.
+This short script demonstrates generating text with Diffusion LLM and
+inserting it into a caption/text file, with accessibility tips.
 
 ## Prerequisites
 

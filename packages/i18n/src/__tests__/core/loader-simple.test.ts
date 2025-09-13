@@ -48,7 +48,6 @@ describe("Translation Loader System", () => {
       fullTranslations: 1,
       namespaces: [{ name: "common", locales: 1 }],
     });
-
   });
 
   describe("loadTranslationModuleCore", () => {
@@ -57,7 +56,10 @@ describe("Translation Loader System", () => {
 
       const result = await loadTranslationModuleCore("en", vi.fn());
 
-      expect(mockLoadTranslationModuleCore).toHaveBeenCalledWith("en", expect.any(Function));
+      expect(mockLoadTranslationModuleCore).toHaveBeenCalledWith(
+        "en",
+        expect.any(Function),
+      );
       expect(result).toEqual({
         common: { hello: "Hello" },
         themes: { light: "Light" },
@@ -77,7 +79,10 @@ describe("Translation Loader System", () => {
 
       await loadTranslationModuleCore("en", mockImportFn);
 
-      expect(mockLoadTranslationModuleCore).toHaveBeenCalledWith("en", mockImportFn);
+      expect(mockLoadTranslationModuleCore).toHaveBeenCalledWith(
+        "en",
+        mockImportFn,
+      );
     });
   });
 
@@ -135,7 +140,6 @@ describe("Translation Loader System", () => {
     });
   });
 
-
   describe("Error Handling", () => {
     it("should handle loading errors gracefully", async () => {
       mockLoadTranslationModuleCore.mockRejectedValueOnce(
@@ -144,9 +148,9 @@ describe("Translation Loader System", () => {
 
       const { loadTranslationModuleCore } = await import("../../loaders");
 
-      await expect(loadTranslationModuleCore("nonexistent", vi.fn())).rejects.toThrow(
-        "Failed to load",
-      );
+      await expect(
+        loadTranslationModuleCore("nonexistent", vi.fn()),
+      ).rejects.toThrow("Failed to load");
     });
 
     it("should handle namespace loading errors", async () => {

@@ -34,17 +34,12 @@ const safeJsonParse = <T = unknown>(value: string): T => {
       value.includes("constructor") ||
       value.includes("prototype")
     ) {
-      throw new Error(
-        t("core.errors.dangerousJson"),
-      );
+      throw new Error(t("core.errors.dangerousJson"));
     }
 
     return JSON.parse(value) as T;
   } catch (error) {
-    console.warn(
-      t("core.errors.parseJsonFailed"),
-      error,
-    );
+    console.warn(t("core.errors.parseJsonFailed"), error);
     throw error;
   }
 };

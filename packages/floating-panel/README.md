@@ -2,7 +2,8 @@
 
 > Advanced floating panel system with staggered animations and state management for Reynard
 
-A sophisticated floating panel system based on Yipyap's BoundingBoxEditor implementation, featuring staggered animations, state management, draggable panels, and advanced overlay effects.
+A sophisticated floating panel system based on Yipyap's BoundingBoxEditor implementation,
+featuring staggered animations, state management, draggable panels, and advanced overlay effects.
 
 ## ✨ Features
 

@@ -1,6 +1,8 @@
 # 🐺> Global Vitest Process Queue System
 
-*alpha wolf dominance* This system coordinates all vitest processes across the entire Reynard ecosystem, ensuring that no more than 4 vitest processes run concurrently, even when multiple agents are working on the codebase simultaneously.
+_alpha wolf dominance_ This system coordinates all vitest processes across the entire Reynard ecosystem,
+ensuring that no more than 4 vitest processes run concurrently, even when
+multiple agents are working on the codebase simultaneously.
 
 ## Overview
 
@@ -64,16 +66,16 @@ The main configuration file that all processes inherit from:
 ```typescript
 export default defineConfig({
   test: {
-    maxWorkers: 1,           // Single worker per agent
-    pool: 'forks',           // Use forks for better isolation
+    maxWorkers: 1, // Single worker per agent
+    pool: "forks", // Use forks for better isolation
     poolOptions: {
       forks: {
-        maxForks: 1,         // Single fork per agent
-        singleFork: true,    // Force single fork
+        maxForks: 1, // Single fork per agent
+        singleFork: true, // Force single fork
       },
     },
-    fileParallelism: false,  // Disable file parallelism
-    isolate: false,          // Reduce process overhead
+    fileParallelism: false, // Disable file parallelism
+    isolate: false, // Reduce process overhead
     // ... other settings
   },
 });
@@ -149,7 +151,8 @@ tail -f /tmp/vitest-global-queue/vitest-queue.log
 
 ## Integration with Package Configs
 
-All package vitest configurations automatically inherit global settings through environment variables. The base configuration in `packages/testing/src/config/vitest.base.ts` reads these variables:
+All package vitest configurations automatically inherit global settings through
+environment variables. The base configuration in `packages/testing/src/config/vitest.base.ts` reads these variables:
 
 ```typescript
 // Inherits from global environment
@@ -180,7 +183,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
       - run: pnpm install
       - run: |
           source vitest.env.global
@@ -190,26 +193,26 @@ jobs:
 ### Docker Compose Example
 
 ```yaml
-version: '3.8'
+version: "3.8"
 services:
   test-agent-1:
     build: .
     command: >
       bash -c "source vitest.env.global && 
                VITEST_AGENT_ID=agent-1 ./scripts/vitest-global-queue.sh run agent-1 --run"
-    
+
   test-agent-2:
     build: .
     command: >
       bash -c "source vitest.env.global && 
                VITEST_AGENT_ID=agent-2 ./scripts/vitest-global-queue.sh run agent-2 --run"
-    
+
   test-agent-3:
     build: .
     command: >
       bash -c "source vitest.env.global && 
                VITEST_AGENT_ID=agent-3 ./scripts/vitest-global-queue.sh run agent-3 --run"
-    
+
   test-agent-4:
     build: .
     command: >
@@ -274,4 +277,5 @@ rm -rf /tmp/vitest-global-queue
 
 ---
 
-*🐺> This system ensures your testing pack runs with the discipline of a coordinated wolf pack - no more than 4 processes hunting at once, but maximum efficiency when they do!*
+_🐺> This system ensures your testing pack runs with the discipline of
+a coordinated wolf pack - no more than 4 processes hunting at once, but maximum efficiency when they do!_

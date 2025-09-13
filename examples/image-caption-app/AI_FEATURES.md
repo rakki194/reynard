@@ -1,6 +1,7 @@
 # 🤖 AI-Enhanced Image Caption App
 
-*The Image Caption App has been transformed into a comprehensive AI-powered image management system using the Reynard Gallery AI package!*
+_The Image Caption App has been transformed into
+a comprehensive AI-powered image management system using the Reynard Gallery AI package!_
 
 ## ✨ New AI Features
 
@@ -211,4 +212,6 @@ const aiConfig: AIGalleryConfig = {
 
 ---
 
-*The AI-Enhanced Image Caption App represents the future of intelligent image management, combining the power of multiple AI models with an intuitive, modern interface. Experience the next generation of AI-powered image captioning!* 🦊✨
+_The AI-Enhanced Image Caption App represents the future of intelligent image management,
+combining the power of multiple AI models with an intuitive,
+modern interface. Experience the next generation of AI-powered image captioning!_ 🦊✨

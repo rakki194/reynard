@@ -12,7 +12,10 @@ import {
   PerformanceMemoryPoolConfig,
   PooledObject,
 } from "./memory-pool-core";
-import type { SpatialObjectData, MemoryPoolStats } from "../types/spatial-types";
+import type {
+  SpatialObjectData,
+  MemoryPoolStats,
+} from "../types/spatial-types";
 import type { MemoryPoolStats as PerformanceStats } from "../types/performance-types";
 
 /**

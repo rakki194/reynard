@@ -5,7 +5,11 @@
 
 import { Component } from "solid-js";
 import { fluentIconsPackage } from "reynard-fluent-icons";
-import { useOnlineStatus, useCurrentTime, useThemeContext } from "./composables";
+import {
+  useOnlineStatus,
+  useCurrentTime,
+  useThemeContext,
+} from "./composables";
 import { StatusItem } from "./StatusDisplay";
 
 export const SystemStatus: Component = () => {

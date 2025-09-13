@@ -1,6 +1,7 @@
 # 🦊 Python Linting Setup with 250-Line Limits
 
-This document describes the comprehensive Python linting setup for the Reynard framework, including 250-line file limits, similar to the elaborate ESLint configuration for TypeScript.
+This document describes the comprehensive Python linting setup for the Reynard framework,
+including 250-line file limits, similar to the elaborate ESLint configuration for TypeScript.
 
 ## 🎯 Overview
 
@@ -162,7 +163,8 @@ All tools use the Reynard color scheme:
 
 ### Furry Flair
 
-The setup includes whimsical fox-themed messages and emojis throughout the development workflow, maintaining the Reynard brand personality.
+The setup includes whimsical fox-themed messages and
+emojis throughout the development workflow, maintaining the Reynard brand personality.
 
 ## 📁 Project Structure
 
@@ -260,7 +262,7 @@ pip install -r requirements-dev.txt
 
 ## 📞 Getting Help
 
-- **Documentation**: [(TBD)](https://(TBD))
+- **Documentation**: [TBD](https://docs.reynard.dev)
 - **Issues**: [GitHub Issues](https://github.com/rakki194/reynard/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/rakki194/reynard/discussions)
 - **Discord**: [Join our Discord](https://discord.gg/reynard)

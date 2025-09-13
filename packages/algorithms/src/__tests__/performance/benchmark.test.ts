@@ -1,5 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
-import { PerformanceBenchmark, measureAsync, measureSync } from "../../performance/benchmark";
+import {
+  PerformanceBenchmark,
+  measureAsync,
+  measureSync,
+} from "../../performance/benchmark";
 
 describe("PerformanceBenchmark", () => {
   let benchmark: PerformanceBenchmark;

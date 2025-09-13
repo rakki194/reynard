@@ -1,6 +1,7 @@
 # TTS Integration
 
-Text-to-speech endpoints allow synthesis, summary reading, backend/voice discovery, and RVC conversion (when enabled). A minimal fallback TTS also exists under the audio API when TTS is disabled.
+Text-to-speech endpoints allow synthesis, summary reading, backend/voice discovery, and
+RVC conversion (when enabled). A minimal fallback TTS also exists under the audio API when TTS is disabled.
 
 ## Configuration
 
@@ -146,7 +147,8 @@ RVC (Retrieval-based Voice Conversion) allows converting audio to different voic
 
 ## Error Handling
 
-All endpoints require an active user. If `tts_enabled` is false or the service is unavailable, endpoints return 404/500 accordingly.
+All endpoints require an active user. If `tts_enabled` is false or
+the service is unavailable, endpoints return 404/500 accordingly.
 
 ### Common RVC Errors
 

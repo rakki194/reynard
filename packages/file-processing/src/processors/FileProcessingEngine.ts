@@ -1,6 +1,6 @@
 /**
  * Core file processing engine for handling file operations.
- * 
+ *
  * Handles the main processing logic for files including validation,
  * metadata extraction, and thumbnail generation.
  */
@@ -50,7 +50,8 @@ export class FileProcessingEngine {
       }
 
       // Check file size with additional security limits
-      const maxSize = options?.maxFileSize || this.configManager.getMaxFileSize();
+      const maxSize =
+        options?.maxFileSize || this.configManager.getMaxFileSize();
       if (typeof file !== "string" && file.size > maxSize) {
         return this.createErrorResult(
           "File size exceeds maximum allowed size",
@@ -60,7 +61,8 @@ export class FileProcessingEngine {
 
       // Additional security checks for file content
       if (typeof file !== "string") {
-        const contentCheck = await this.securityValidator.validateFileContent(file);
+        const contentCheck =
+          await this.securityValidator.validateFileContent(file);
         if (!contentCheck.isValid) {
           return this.createErrorResult(
             "File content validation failed",

@@ -4,7 +4,12 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { t, isI18nAvailable, getI18nModule, createMockI18n } from "../../utils/optional-i18n";
+import {
+  t,
+  isI18nAvailable,
+  getI18nModule,
+  createMockI18n,
+} from "../../utils/optional-i18n";
 
 describe("Optional i18n functionality with i18n package", () => {
   beforeEach(() => {
@@ -51,7 +56,7 @@ describe("Optional i18n functionality with i18n package", () => {
 
   it("should handle mock i18n module methods", () => {
     const mockI18n = createMockI18n();
-    
+
     expect(mockI18n.t("test.key")).toBe("test.key");
     expect(mockI18n.hasTranslation("core.errors.generic")).toBe(true);
     expect(mockI18n.hasTranslation("nonexistent.key")).toBe(false);

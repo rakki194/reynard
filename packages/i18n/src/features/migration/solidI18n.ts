@@ -4,7 +4,11 @@
  * Migration utilities for solid-i18n library.
  */
 
-import type { MigrationOptions, MigrationResult, MigrationStatistics } from "./types";
+import type {
+  MigrationOptions,
+  MigrationResult,
+  MigrationStatistics,
+} from "./types";
 import type { Translations } from "../../types";
 
 /**
@@ -17,7 +21,7 @@ function convertFlatKeyToNested(
 ): void {
   const keyParts = key.split(".");
   let current = nestedTranslations;
-  
+
   for (let i = 0; i < keyParts.length - 1; i++) {
     const part = keyParts[i];
     if (!current[part]) {
@@ -25,7 +29,7 @@ function convertFlatKeyToNested(
     }
     current = current[part] as Record<string, unknown>;
   }
-  
+
   const finalKey = keyParts[keyParts.length - 1];
   current[finalKey] = value;
 }
@@ -52,7 +56,7 @@ export function migrateFromSolidI18n(
 
     for (const [key, value] of Object.entries(flatTranslations)) {
       statistics.totalKeys++;
-      
+
       if (typeof value !== "string") {
         warnings.push(`Skipping non-string value for key: ${key}`);
         statistics.skippedKeys++;
@@ -71,7 +75,9 @@ export function migrateFromSolidI18n(
       statistics,
     };
   } catch (error) {
-    errors.push(`Migration failed: ${error instanceof Error ? error.message : String(error)}`);
+    errors.push(
+      `Migration failed: ${error instanceof Error ? error.message : String(error)}`,
+    );
     return {
       success: false,
       migratedTranslations: {} as Translations,
@@ -81,4 +87,3 @@ export function migrateFromSolidI18n(
     };
   }
 }
-

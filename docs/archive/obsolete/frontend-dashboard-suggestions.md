@@ -1,10 +1,13 @@
 # Frontend Dashboard Panel Suggestions
 
-This document provides suggestions for frontend dashboard panels to visualize the service resilience metrics and health states.
+This document provides suggestions for frontend dashboard panels to visualize the service resilience metrics and
+health states.
 
 ## Overview
 
-The service metrics system provides rich data for monitoring service health, reconnection patterns, and performance. These suggestions focus on creating actionable dashboards that help operators quickly identify issues and understand system behavior.
+The service metrics system provides rich data for monitoring service health, reconnection patterns, and
+performance. These suggestions focus on creating actionable dashboards that help operators quickly identify issues and
+understand system behavior.
 
 ## Core Metrics Available
 
@@ -36,7 +39,8 @@ The service metrics system provides rich data for monitoring service health, rec
 - Red: `unhealthy=1`
 - Gray: No data
 
-**Layout**: 3x3 grid with service names as rows, health states as columns. Use conditional formatting to highlight problematic services.
+**Layout**: 3x3 grid with service names as rows,
+health states as columns. Use conditional formatting to highlight problematic services.
 
 ### 2. Connection State Heatmap
 
@@ -56,7 +60,8 @@ The service metrics system provides rich data for monitoring service health, rec
 **Panel Type**: Line Chart
 **Metrics**: `rate(yipyap_service_reconnect_attempts_total{service}[5m])`
 
-**Description**: Shows the rate of reconnection attempts over time for each service. Spikes indicate periods of instability.
+**Description**: Shows the rate of reconnection attempts over time for each service. Spikes indicate periods of
+instability.
 
 **Alerting**: Set thresholds to alert when reconnection rate exceeds normal baseline for a service.
 
@@ -78,9 +83,11 @@ The service metrics system provides rich data for monitoring service health, rec
 **Panel Type**: Histogram
 **Metrics**: `yipyap_service_reconnect_delay_seconds_bucket{service}`
 
-**Description**: Distribution of reconnection delays, helping identify if services are experiencing consistent delays or intermittent issues.
+**Description**: Distribution of reconnection delays, helping identify if
+services are experiencing consistent delays or intermittent issues.
 
-**Analysis**: Look for patterns - consistent high delays might indicate network issues, while spikes suggest temporary problems.
+**Analysis**: Look for patterns - consistent high delays might indicate network issues, while
+spikes suggest temporary problems.
 
 ### 6. Service Availability Percentage
 

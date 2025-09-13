@@ -2,13 +2,17 @@
 
 ## Overview
 
-This document outlines modern CSS patterns for responsive design, performance optimization, and accessibility in Reynard. We focus on container queries, reduced motion support, and avoiding expensive animations outside of overlays.
+This document outlines modern CSS patterns for responsive design, performance optimization, and
+accessibility in Reynard. We focus on container queries, reduced motion support, and
+avoiding expensive animations outside of overlays.
 
 ## Container Queries
 
 ### Introduction
 
-Container queries allow components to adapt their layout based on their container's size rather than the viewport size. This provides more granular control and better component reusability.
+Container queries allow components to adapt their layout based on
+their container's size rather than the viewport size. This provides more granular control and
+better component reusability.
 
 ### Basic Container Query Setup
 

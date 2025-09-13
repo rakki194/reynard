@@ -16,7 +16,7 @@ export const ButtonShowcase: Component = () => {
   const startProgress = () => {
     setProgress(0);
     const interval = setInterval(() => {
-      setProgress(prev => {
+      setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
@@ -29,19 +29,33 @@ export const ButtonShowcase: Component = () => {
   return (
     <div style={{ padding: "2rem", "max-width": "1200px", margin: "0 auto" }}>
       <h1>🦊 Reynard Button System Showcase</h1>
-      <p>Enhanced button components with advanced features inspired by Yipyap</p>
+      <p>
+        Enhanced button components with advanced features inspired by Yipyap
+      </p>
 
       {/* Enhanced Icon Component */}
       <section style={{ margin: "2rem 0" }}>
         <h2>Enhanced Icon Component</h2>
-        <div style={{ display: "flex", gap: "1rem", "flex-wrap": "wrap", "align-items": "center" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            "flex-wrap": "wrap",
+            "align-items": "center",
+          }}
+        >
           <Icon name="settings" size="sm" />
           <Icon name="settings" size="md" />
           <Icon name="settings" size="lg" />
           <Icon name="settings" variant="primary" />
           <Icon name="settings" variant="error" />
           <Icon name="settings" variant="success" />
-          <Icon name="settings" interactive tooltip="Click me!" onClick={() => alert("Icon clicked!")} />
+          <Icon
+            name="settings"
+            interactive
+            tooltip="Click me!"
+            onClick={() => alert("Icon clicked!")}
+          />
           <Icon name="settings" active />
           <Icon name="settings" loading />
           <Icon name="settings" glow glowColor="var(--accent)" />
@@ -71,26 +85,51 @@ export const ButtonShowcase: Component = () => {
       <section style={{ margin: "2rem 0" }}>
         <h2>IconButton Component</h2>
         <div style={{ display: "flex", gap: "1rem", "flex-wrap": "wrap" }}>
-          <IconButton icon="save" variant="primary">Save</IconButton>
-          <IconButton icon="delete" variant="danger" iconOnly tooltip="Delete item" />
-          <IconButton icon="upload" variant="success" iconPosition="right">Upload</IconButton>
+          <IconButton icon="save" variant="primary">
+            Save
+          </IconButton>
+          <IconButton
+            icon="delete"
+            variant="danger"
+            iconOnly
+            tooltip="Delete item"
+          />
+          <IconButton icon="upload" variant="success" iconPosition="right">
+            Upload
+          </IconButton>
           <IconButton icon="settings" variant="secondary" iconOnly />
           <IconButton icon="download" variant="primary" loading />
           <IconButton icon="refresh" variant="default" progress={progress()} />
           <IconButton icon="star" variant="warning" glow />
-          <IconButton icon="heart" variant="error" active={activeButton() === "heart"} onClick={() => setActiveButton(activeButton() === "heart" ? null : "heart")} />
+          <IconButton
+            icon="heart"
+            variant="error"
+            active={activeButton() === "heart"}
+            onClick={() =>
+              setActiveButton(activeButton() === "heart" ? null : "heart")
+            }
+          />
         </div>
       </section>
 
       {/* SidebarButton Component */}
       <section style={{ margin: "2rem 0" }}>
         <h2>SidebarButton Component</h2>
-        <div style={{ display: "flex", "flex-direction": "column", gap: "1rem", "max-width": "300px" }}>
+        <div
+          style={{
+            display: "flex",
+            "flex-direction": "column",
+            gap: "1rem",
+            "max-width": "300px",
+          }}
+        >
           <SidebarButton
             icon="home"
             label="Home"
             active={activeButton() === "home"}
-            onClick={() => setActiveButton(activeButton() === "home" ? null : "home")}
+            onClick={() =>
+              setActiveButton(activeButton() === "home" ? null : "home")
+            }
           />
           <SidebarButton
             icon="folder"
@@ -102,14 +141,14 @@ export const ButtonShowcase: Component = () => {
                 icon: "add",
                 ariaLabel: "Add document",
                 tooltip: "Add new document",
-                onClick: () => alert("Add document clicked!")
+                onClick: () => alert("Add document clicked!"),
               },
               {
                 icon: "settings",
                 ariaLabel: "Folder settings",
                 tooltip: "Configure folder",
-                onClick: () => alert("Folder settings clicked!")
-              }
+                onClick: () => alert("Folder settings clicked!"),
+              },
             ]}
           />
           <SidebarButton
@@ -117,7 +156,9 @@ export const ButtonShowcase: Component = () => {
             label="Settings"
             layout="toggle"
             showContent
-            content={<div style={{ padding: "1rem" }}>Settings content goes here</div>}
+            content={
+              <div style={{ padding: "1rem" }}>Settings content goes here</div>
+            }
           />
           <SidebarButton
             icon="upload"
@@ -131,17 +172,39 @@ export const ButtonShowcase: Component = () => {
       {/* BreadcrumbButton Components */}
       <section style={{ margin: "2rem 0" }}>
         <h2>BreadcrumbButton Components</h2>
-        <div style={{ display: "flex", gap: "1rem", "flex-wrap": "wrap", "align-items": "center" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            "flex-wrap": "wrap",
+            "align-items": "center",
+          }}
+        >
           <BreadcrumbButton icon="home" tooltip="Go to home" />
-          <BreadcrumbButton icon="chevron-left" isNavigation tooltip="Go back" />
-          <BreadcrumbButton icon="chevron-right" isNavigation tooltip="Go forward" />
+          <BreadcrumbButton
+            icon="chevron-left"
+            isNavigation
+            tooltip="Go back"
+          />
+          <BreadcrumbButton
+            icon="chevron-right"
+            isNavigation
+            tooltip="Go forward"
+          />
           <BreadcrumbButton icon="refresh" isNavigation tooltip="Refresh" />
           <BreadcrumbButton icon="settings" tooltip="Settings" />
           <BreadcrumbButton icon="search" tooltip="Search" />
         </div>
-        
+
         <h3>BreadcrumbActionButton (Predefined Actions)</h3>
-        <div style={{ display: "flex", gap: "1rem", "flex-wrap": "wrap", "align-items": "center" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            "flex-wrap": "wrap",
+            "align-items": "center",
+          }}
+        >
           <BreadcrumbActionButton action="create" tooltip="Create new item" />
           <BreadcrumbActionButton action="delete" tooltip="Delete item" />
           <BreadcrumbActionButton action="edit" tooltip="Edit item" />
@@ -159,29 +222,31 @@ export const ButtonShowcase: Component = () => {
       <section style={{ margin: "2rem 0" }}>
         <h2>Advanced Features</h2>
         <div style={{ display: "flex", gap: "1rem", "flex-wrap": "wrap" }}>
-          <IconButton 
-            icon="download" 
-            variant="primary" 
-            progress={progress()} 
+          <IconButton
+            icon="download"
+            variant="primary"
+            progress={progress()}
             glow={progress() > 50}
             glowColor="var(--success)"
             tooltip={`Download progress: ${progress()}%`}
           >
             Download
           </IconButton>
-          <IconButton 
-            icon="upload" 
-            variant="success" 
+          <IconButton
+            icon="upload"
+            variant="success"
             loading={progress() > 0 && progress() < 100}
             disabled={progress() > 0 && progress() < 100}
           >
             Upload
           </IconButton>
-          <IconButton 
-            icon="star" 
-            variant="warning" 
+          <IconButton
+            icon="star"
+            variant="warning"
             active={activeButton() === "star"}
-            onClick={() => setActiveButton(activeButton() === "star" ? null : "star")}
+            onClick={() =>
+              setActiveButton(activeButton() === "star" ? null : "star")
+            }
             glow={activeButton() === "star"}
           >
             Favorite
@@ -193,11 +258,24 @@ export const ButtonShowcase: Component = () => {
       <section style={{ margin: "2rem 0" }}>
         <h2>Size Variations</h2>
         <div style={{ display: "flex", gap: "1rem", "align-items": "center" }}>
-          <IconButton icon="settings" size="sm" variant="primary">Small</IconButton>
-          <IconButton icon="settings" size="md" variant="primary">Medium</IconButton>
-          <IconButton icon="settings" size="lg" variant="primary">Large</IconButton>
+          <IconButton icon="settings" size="sm" variant="primary">
+            Small
+          </IconButton>
+          <IconButton icon="settings" size="md" variant="primary">
+            Medium
+          </IconButton>
+          <IconButton icon="settings" size="lg" variant="primary">
+            Large
+          </IconButton>
         </div>
-        <div style={{ display: "flex", gap: "1rem", "align-items": "center", "margin-top": "1rem" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            "align-items": "center",
+            "margin-top": "1rem",
+          }}
+        >
           <BreadcrumbButton icon="settings" size="sm" />
           <BreadcrumbButton icon="settings" size="md" />
           <BreadcrumbButton icon="settings" size="lg" />
@@ -208,13 +286,20 @@ export const ButtonShowcase: Component = () => {
       <section style={{ margin: "2rem 0" }}>
         <h2>Interactive States</h2>
         <div style={{ display: "flex", gap: "1rem", "flex-wrap": "wrap" }}>
-          <IconButton icon="settings" variant="primary">Normal</IconButton>
-          <IconButton icon="settings" variant="primary" disabled>Disabled</IconButton>
-          <IconButton icon="settings" variant="primary" loading>Loading</IconButton>
-          <IconButton icon="settings" variant="primary" active>Active</IconButton>
+          <IconButton icon="settings" variant="primary">
+            Normal
+          </IconButton>
+          <IconButton icon="settings" variant="primary" disabled>
+            Disabled
+          </IconButton>
+          <IconButton icon="settings" variant="primary" loading>
+            Loading
+          </IconButton>
+          <IconButton icon="settings" variant="primary" active>
+            Active
+          </IconButton>
         </div>
       </section>
     </div>
   );
 };
-

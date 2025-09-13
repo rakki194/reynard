@@ -29,7 +29,9 @@ export const AIGalleryGrid: Component<AIGalleryGridProps> = (props) => {
     actions: AIContextMenuAction[];
   } | null>(null);
   const [batchDialog, setBatchDialog] = createSignal(false);
-  const [selectedItems, setSelectedItems] = createSignal<(FileItem | FolderItem)[]>([]);
+  const [selectedItems, setSelectedItems] = createSignal<
+    (FileItem | FolderItem)[]
+  >([]);
 
   // Handle item click
   const handleItemClick = (item: FileItem | FolderItem) => {
@@ -44,21 +46,21 @@ export const AIGalleryGrid: Component<AIGalleryGridProps> = (props) => {
   // Selection change handling will be implemented when GalleryGrid is integrated
 
   // Handle context menu
-  const handleContextMenu = (item: FileItem | FolderItem, x: number, y: number) => {
+  const handleContextMenu = (
+    item: FileItem | FolderItem,
+    x: number,
+    y: number,
+  ) => {
     props.onContextMenu?.(item, x, y);
-    
+
     // Create AI context menu actions
-    const actions = createAIContextMenuActions(
-      item,
-      selectedItems(),
-      {
-        availableGenerators: ai.getAvailableGenerators(),
-        defaultGenerator: ai.aiState().selectedGenerator,
-        aiEnabled: ai.aiState().aiEnabled,
-        enableBatchOperations: true,
-        enableSmartFeatures: true,
-      }
-    );
+    const actions = createAIContextMenuActions(item, selectedItems(), {
+      availableGenerators: ai.getAvailableGenerators(),
+      defaultGenerator: ai.aiState().selectedGenerator,
+      aiEnabled: ai.aiState().aiEnabled,
+      enableBatchOperations: true,
+      enableSmartFeatures: true,
+    });
 
     setContextMenu({
       visible: true,
@@ -71,10 +73,13 @@ export const AIGalleryGrid: Component<AIGalleryGridProps> = (props) => {
   // Handle context menu action
   const handleContextMenuAction = (action: AIContextMenuAction) => {
     // Handle batch operations
-    if (action.aiActionType === "batch_annotate" && selectedItems().length > 1) {
+    if (
+      action.aiActionType === "batch_annotate" &&
+      selectedItems().length > 1
+    ) {
       setBatchDialog(true);
     }
-    
+
     // Close context menu
     setContextMenu(null);
   };
@@ -104,13 +109,16 @@ export const AIGalleryGrid: Component<AIGalleryGridProps> = (props) => {
   const hasAIIndicators = (item: FileItem | FolderItem): boolean => {
     if (item.type === "folder") return false;
     // Check if item has captions or AI metadata
-    return !!(item as FileItem).metadata?.hasCaption || !!(item as FileItem).metadata?.aiProcessed;
+    return (
+      !!(item as FileItem).metadata?.hasCaption ||
+      !!(item as FileItem).metadata?.aiProcessed
+    );
   };
 
   // Get AI indicator type
   const getAIIndicatorType = (item: FileItem | FolderItem): string => {
     if (item.type === "folder") return "";
-    
+
     const fileItem = item as FileItem;
     if (fileItem.metadata?.hasCaption) return "caption";
     if (fileItem.metadata?.aiProcessed) return "processed";
@@ -120,7 +128,9 @@ export const AIGalleryGrid: Component<AIGalleryGridProps> = (props) => {
   return (
     <div class="ai-gallery-grid">
       {/* AI Batch Controls */}
-      <Show when={props.aiProps?.showBatchControls && selectedItems().length > 1}>
+      <Show
+        when={props.aiProps?.showBatchControls && selectedItems().length > 1}
+      >
         <div class="ai-gallery-grid__batch-controls">
           <div class="ai-gallery-grid__batch-info">
             <span class="ai-gallery-grid__batch-count">
@@ -153,14 +163,15 @@ export const AIGalleryGrid: Component<AIGalleryGridProps> = (props) => {
       <Show when={ai.aiState().batchProgress}>
         <div class="ai-gallery-grid__progress">
           <div class="ai-gallery-grid__progress-bar">
-            <div 
+            <div
               class="ai-gallery-grid__progress-fill"
               // eslint-disable-next-line @typescript-eslint/no-unused-expressions
               style={`--progress-width: ${ai.aiState().batchProgress?.percentage || 0}%`}
             />
           </div>
           <span class="ai-gallery-grid__progress-text">
-            {ai.aiState().batchProgress?.completed || 0} / {ai.aiState().batchProgress?.total || 0}
+            {ai.aiState().batchProgress?.completed || 0} /{" "}
+            {ai.aiState().batchProgress?.total || 0}
           </span>
         </div>
       </Show>
@@ -171,8 +182,8 @@ export const AIGalleryGrid: Component<AIGalleryGridProps> = (props) => {
           {(item) => (
             <div
               class={`ai-gallery-grid__item ${
-                selectedItems().some(selected => selected.id === item.id) 
-                  ? "ai-gallery-grid__item--selected" 
+                selectedItems().some((selected) => selected.id === item.id)
+                  ? "ai-gallery-grid__item--selected"
                   : ""
               }`}
               onClick={() => handleItemClick(item)}
@@ -194,14 +205,22 @@ export const AIGalleryGrid: Component<AIGalleryGridProps> = (props) => {
               </div>
 
               {/* AI Indicators */}
-              <Show when={props.aiProps?.showAIIndicators && hasAIIndicators(item)}>
-                <div class={`ai-gallery-grid__ai-indicator ai-gallery-grid__ai-indicator--${getAIIndicatorType(item)}`}>
+              <Show
+                when={props.aiProps?.showAIIndicators && hasAIIndicators(item)}
+              >
+                <div
+                  class={`ai-gallery-grid__ai-indicator ai-gallery-grid__ai-indicator--${getAIIndicatorType(item)}`}
+                >
                   <span class="ai-gallery-grid__ai-icon">🤖</span>
                 </div>
               </Show>
 
               {/* Selection Indicator */}
-              <Show when={selectedItems().some(selected => selected.id === item.id)}>
+              <Show
+                when={selectedItems().some(
+                  (selected) => selected.id === item.id,
+                )}
+              >
                 <div class="ai-gallery-grid__selection-indicator">
                   <span class="ai-gallery-grid__selection-icon">✓</span>
                 </div>
@@ -247,7 +266,9 @@ export const AIGalleryGrid: Component<AIGalleryGridProps> = (props) => {
       {/* Batch Processing Dialog */}
       <BatchProcessingDialog
         visible={batchDialog()}
-        items={selectedItems().filter(item => item.type !== "folder") as FileItem[]}
+        items={
+          selectedItems().filter((item) => item.type !== "folder") as FileItem[]
+        }
         availableGenerators={ai.getAvailableGenerators()}
         onClose={handleBatchDialogClose}
         onComplete={handleBatchComplete}

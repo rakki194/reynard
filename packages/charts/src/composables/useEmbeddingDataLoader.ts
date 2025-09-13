@@ -1,6 +1,6 @@
 /**
  * Embedding Data Loader Composable
- * 
+ *
  * Handles loading and processing of embedding data.
  */
 
@@ -19,7 +19,8 @@ export interface EmbeddingDataLoaderActions {
   loadEmbeddingData: () => Promise<void>;
 }
 
-export function useEmbeddingDataLoader(): EmbeddingDataLoaderState & EmbeddingDataLoaderActions {
+export function useEmbeddingDataLoader(): EmbeddingDataLoaderState &
+  EmbeddingDataLoaderActions {
   const embeddingViz = useEmbeddingVisualization();
 
   // State
@@ -48,19 +49,24 @@ export function useEmbeddingDataLoader(): EmbeddingDataLoaderState & EmbeddingDa
       );
 
       // Process distribution data
-      const distributionData = embeddingViz.processDistributionData(sampleEmbeddings);
+      const distributionData =
+        embeddingViz.processDistributionData(sampleEmbeddings);
       setEmbeddingData(distributionData);
 
       // Process PCA data
-      const pcaVarianceData = embeddingViz.processPCAVarianceData(sampleEmbeddings);
+      const pcaVarianceData =
+        embeddingViz.processPCAVarianceData(sampleEmbeddings);
       setPcaData(pcaVarianceData);
 
       // Process quality data
-      const qualityMetricsData = embeddingViz.processQualityMetricsData(sampleEmbeddings);
+      const qualityMetricsData =
+        embeddingViz.processQualityMetricsData(sampleEmbeddings);
       setQualityData(qualityMetricsData);
     } catch (err) {
       console.error("Error loading embedding data:", err);
-      setError(err instanceof Error ? err.message : "Failed to load embedding data");
+      setError(
+        err instanceof Error ? err.message : "Failed to load embedding data",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +79,7 @@ export function useEmbeddingDataLoader(): EmbeddingDataLoaderState & EmbeddingDa
     qualityData,
     isLoading,
     error,
-    
+
     // Actions
     loadEmbeddingData,
   };

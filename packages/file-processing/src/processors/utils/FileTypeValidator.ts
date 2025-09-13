@@ -1,6 +1,6 @@
 /**
  * File type validation utilities for the processing pipeline.
- * 
+ *
  * Handles file type checking and validation against supported extensions.
  */
 
@@ -14,7 +14,8 @@ export class FileTypeValidator {
   private supportedExtensions: Set<string>;
 
   constructor(supportedExtensions?: Set<string>) {
-    this.supportedExtensions = supportedExtensions || getAllSupportedExtensions();
+    this.supportedExtensions =
+      supportedExtensions || getAllSupportedExtensions();
   }
 
   /**

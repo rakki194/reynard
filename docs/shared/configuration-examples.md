@@ -133,7 +133,9 @@ export default defineConfig({
 
 ## Version Pinning Strategy
 
-Reynard uses precise version pinning for all dependencies to ensure reproducible builds and consistent behavior across environments. This approach eliminates the "works on my machine" problem and provides predictable dependency resolution.
+Reynard uses precise version pinning for all dependencies to ensure reproducible builds and
+consistent behavior across environments. This approach eliminates the "works on my machine" problem and
+provides predictable dependency resolution.
 
 ### Key Principles
 

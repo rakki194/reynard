@@ -13,13 +13,18 @@ export async function loadEnglishFallbackCore(
   return fallbackModule.default;
 }
 
-export function createImportFunction(): (path: string) => Promise<{ default: Translations }> {
+export function createImportFunction(): (
+  path: string,
+) => Promise<{ default: Translations }> {
   if (typeof process !== "undefined" && process.env.NODE_ENV === "test") {
-    const globalImport = (globalThis as { import?: (path: string) => Promise<{ default: Translations }> }).import;
+    const globalImport = (
+      globalThis as {
+        import?: (path: string) => Promise<{ default: Translations }>;
+      }
+    ).import;
     if (globalImport && typeof globalImport === "function") {
       return globalImport;
     }
   }
   return (path: string) => import(path);
 }
-

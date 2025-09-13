@@ -24,11 +24,11 @@ export const COMMON_FEATURES: FeatureDefinition[] = [
  */
 export const FEATURE_CATEGORIES = [
   "core",
-  "ml", 
+  "ml",
   "integration",
   "utility",
   "ui",
-  "data"
+  "data",
 ] as const;
 
 /**
@@ -37,8 +37,8 @@ export const FEATURE_CATEGORIES = [
 export const FEATURE_PRIORITIES = [
   "critical",
   "high",
-  "medium", 
-  "low"
+  "medium",
+  "low",
 ] as const;
 
 // Re-export individual feature categories

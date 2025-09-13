@@ -1,6 +1,7 @@
 # OKLCH Hue Shifting Demo
 
-An interactive demonstration of OKLCH-based hue shifting algorithms for pixel art games, built with SolidJS and integrated with the Reynard framework.
+An interactive demonstration of OKLCH-based hue shifting algorithms for pixel art games, built with SolidJS and
+integrated with the Reynard framework.
 
 ## Features
 
@@ -122,4 +123,4 @@ This project is part of the Reynard framework and follows the same licensing ter
 
 - [OKLCH Hue Shifting Algorithms](../../docs/research/algorithms/oklch-hue-shifting-pixel-art/README.md)
 - [Reynard Color System](../../packages/colors/README.md)
-- [SolidJS Guide](../../docs/development/frontend/solidjs.md)
+- [SolidJS Documentation](https://solidjs.com)

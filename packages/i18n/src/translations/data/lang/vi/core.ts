@@ -174,5 +174,4 @@ export const coreTranslations = {
       "Tích hợp xác thực và xác thực đầu vào",
     "performance-and-security-integration": "Tích hợp hiệu suất và bảo mật",
   },
-
 };

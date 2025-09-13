@@ -1,6 +1,8 @@
 # 🦊 AI-Enhanced Image Caption App - Reynard Framework Example
 
-A comprehensive AI-powered image caption generation application featuring the new **Reynard Gallery AI** package with advanced AI capabilities, smart image management, and production-ready features including usage tracking, health monitoring, circuit breakers, and real-time event logging.
+A comprehensive AI-powered image caption generation application featuring the new **Reynard Gallery AI** package with
+advanced AI capabilities, smart image management, and
+production-ready features including usage tracking, health monitoring, circuit breakers, and real-time event logging.
 
 ## ✨ Features Demonstrated
 

@@ -2,7 +2,10 @@
 
 ## Overview
 
-The TTS and Crawl Integration system brings web crawling and high-quality text-to-speech capabilities to Reynard. This system allows users to crawl web URLs via Firecrawl, summarize content using the existing LLM pipeline, synthesize speech using multiple TTS backends (Coqui, Kokoro, XTTS), and ingest the results into the Audio modality for playback and management.
+The TTS and Crawl Integration system brings web crawling and
+high-quality text-to-speech capabilities to Reynard. This system allows users to crawl web URLs via Firecrawl,
+summarize content using the existing LLM pipeline, synthesize speech using multiple TTS backends (Coqui, Kokoro,
+XTTS), and ingest the results into the Audio modality for playback and management.
 
 ## Architecture
 

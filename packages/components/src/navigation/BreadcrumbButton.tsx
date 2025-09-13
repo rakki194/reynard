@@ -7,7 +7,8 @@
 import { Component, JSX, splitProps, mergeProps } from "solid-js";
 import { Icon } from "../icons/Icon";
 
-export interface BreadcrumbButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface BreadcrumbButtonProps
+  extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Icon name from the icon registry */
   icon: string;
   /** Icon package ID (optional) */
@@ -15,9 +16,25 @@ export interface BreadcrumbButtonProps extends JSX.ButtonHTMLAttributes<HTMLButt
   /** Icon size */
   iconSize?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Icon variant */
-  iconVariant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
+  iconVariant?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "muted"
+    | "error"
+    | "warning"
+    | "success"
+    | "info";
   /** Button variant */
-  variant?: "default" | "primary" | "secondary" | "ghost" | "icon" | "danger" | "success" | "warning";
+  variant?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "ghost"
+    | "icon"
+    | "danger"
+    | "success"
+    | "warning";
   /** Button size */
   size?: "sm" | "md" | "lg";
   /** Icon only button (no text) */
@@ -114,7 +131,7 @@ export const BreadcrumbButton: Component<BreadcrumbButtonProps> = (props) => {
       classes.push("reynard-breadcrumb-button--glow");
     }
 
-    if (typeof local.progress === 'number' && local.progress > 0) {
+    if (typeof local.progress === "number" && local.progress > 0) {
       classes.push("reynard-breadcrumb-button--with-progress");
     }
 
@@ -152,11 +169,11 @@ export const BreadcrumbButton: Component<BreadcrumbButtonProps> = (props) => {
   });
 
   const getTooltip = () => {
-    return local.tooltip || local['aria-label'] || local.title;
+    return local.tooltip || local["aria-label"] || local.title;
   };
 
   const getAriaLabel = () => {
-    return local['aria-label'] || local.tooltip || local.title;
+    return local["aria-label"] || local.tooltip || local.title;
   };
 
   return (
@@ -177,11 +194,15 @@ export const BreadcrumbButton: Component<BreadcrumbButtonProps> = (props) => {
 
       {local.iconOnly && local.children}
 
-      {typeof local.progress === 'number' && local.progress > 0 && (
+      {typeof local.progress === "number" && local.progress > 0 && (
         <div class="reynard-breadcrumb-button__progress">
-          <div 
-            class="reynard-breadcrumb-button__progress-bar" 
-            style={{ "--progress-width": `${Math.max(0, Math.min(100, local.progress))}%` } as any}
+          <div
+            class="reynard-breadcrumb-button__progress-bar"
+            style={
+              {
+                "--progress-width": `${Math.max(0, Math.min(100, local.progress))}%`,
+              } as any
+            }
           />
         </div>
       )}
@@ -193,9 +214,20 @@ export const BreadcrumbButton: Component<BreadcrumbButtonProps> = (props) => {
  * BreadcrumbActionButton Component
  * A specialized breadcrumb button for common actions like create, delete, settings, etc.
  */
-export interface BreadcrumbActionButtonProps extends Omit<BreadcrumbButtonProps, 'icon'> {
+export interface BreadcrumbActionButtonProps
+  extends Omit<BreadcrumbButtonProps, "icon"> {
   /** Action type for predefined styling and behavior */
-  action?: "create" | "delete" | "edit" | "settings" | "refresh" | "upload" | "download" | "search" | "filter" | "sort";
+  action?:
+    | "create"
+    | "delete"
+    | "edit"
+    | "settings"
+    | "refresh"
+    | "upload"
+    | "download"
+    | "search"
+    | "filter"
+    | "sort";
   /** Custom icon name (overrides action icon) */
   icon?: string;
 }
@@ -226,7 +258,9 @@ const actionVariants = {
   sort: "default",
 };
 
-export const BreadcrumbActionButton: Component<BreadcrumbActionButtonProps> = (props) => {
+export const BreadcrumbActionButton: Component<BreadcrumbActionButtonProps> = (
+  props,
+) => {
   const merged = mergeProps(defaultProps, props);
   const [local, others] = splitProps(merged, [
     "action",
@@ -253,27 +287,34 @@ export const BreadcrumbActionButton: Component<BreadcrumbActionButtonProps> = (p
 
   const getIconName = () => {
     if (local.icon) return local.icon;
-    if (local.action && actionIcons[local.action]) return actionIcons[local.action];
+    if (local.action && actionIcons[local.action])
+      return actionIcons[local.action];
     return "settings"; // fallback
   };
 
   const getVariant = () => {
     if (local.variant && local.variant !== "default") return local.variant;
-    if (local.action && actionVariants[local.action]) return actionVariants[local.action];
+    if (local.action && actionVariants[local.action])
+      return actionVariants[local.action];
     return "default";
   };
 
   const getSemanticProps = () => {
     const props: Partial<BreadcrumbButtonProps> = {};
-    
+
     if (local.action === "delete") {
       props.isDestructive = true;
     } else if (local.action === "create" || local.action === "upload") {
       props.isPrimary = true;
-    } else if (local.action === "refresh" || local.action === "search" || local.action === "filter" || local.action === "sort") {
+    } else if (
+      local.action === "refresh" ||
+      local.action === "search" ||
+      local.action === "filter" ||
+      local.action === "sort"
+    ) {
       props.isNavigation = true;
     }
-    
+
     return props;
   };
 

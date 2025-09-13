@@ -2,7 +2,10 @@
 
 ## Overview
 
-This document outlines the preferred patterns for handling component states in YipYap's CSS architecture. We use data attributes and ARIA attributes for state styling to maintain clean separation between logic and presentation, improve accessibility, and reduce specificity conflicts.
+This document outlines the preferred patterns for handling component states in
+YipYap's CSS architecture. We use data attributes and
+ARIA attributes for state styling to maintain clean separation between logic and
+presentation, improve accessibility, and reduce specificity conflicts.
 
 ## Core Principles
 

@@ -13,7 +13,7 @@ export const namespaceCache = new Map<string, Map<string, unknown>>();
 export async function loadTranslationsWithCache(
   locale: LanguageCode,
   useCache: boolean = true,
-  importFn?: (path: string) => Promise<{ default: Translations }>
+  importFn?: (path: string) => Promise<{ default: Translations }>,
 ): Promise<Translations> {
   if (useCache && translationCache.has(locale)) {
     return translationCache.get(locale)!;
@@ -23,11 +23,11 @@ export async function loadTranslationsWithCache(
     // Use provided import function or default
     const defaultImportFn = importFn || ((path: string) => import(path));
     const translations = await defaultImportFn(`./lang/${locale}/index.js`);
-    
+
     if (useCache) {
       translationCache.set(locale, translations.default);
     }
-    
+
     return translations.default;
   } catch (error) {
     // Fallback to English if available
@@ -35,18 +35,21 @@ export async function loadTranslationsWithCache(
       try {
         const defaultImportFn = importFn || ((path: string) => import(path));
         const englishTranslations = await defaultImportFn(`./lang/en/index.js`);
-        
+
         if (useCache) {
           translationCache.set(locale, englishTranslations.default);
         }
-        
+
         return englishTranslations.default;
       } catch (fallbackError) {
-        console.error(`Failed to load translations for locale ${locale} and fallback to English:`, fallbackError);
+        console.error(
+          `Failed to load translations for locale ${locale} and fallback to English:`,
+          fallbackError,
+        );
         throw error;
       }
     }
-    
+
     console.error(`Failed to load translations for locale ${locale}:`, error);
     throw error;
   }

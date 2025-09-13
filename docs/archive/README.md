@@ -1,6 +1,7 @@
 # Archive Documentation
 
-This directory contains archived documentation that is no longer actively maintained or relevant to the current Reynard modular framework.
+This directory contains archived documentation that is no longer actively maintained or
+relevant to the current Reynard modular framework.
 
 ## Structure
 

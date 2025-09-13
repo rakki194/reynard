@@ -5,13 +5,21 @@
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@solidjs/testing-library";
-import { useDraggablePanel, type UseDraggablePanelOptions } from "../../composables/useDraggablePanel";
+import {
+  useDraggablePanel,
+  type UseDraggablePanelOptions,
+} from "../../composables/useDraggablePanel";
 import type { PanelConstraints, PanelPosition } from "../../types.js";
 import type { RenderHookResult } from "@testing-library/react";
 describe("useDraggablePanel - Constraints", () => {
   const mockPanelRef = () => document.createElement("div");
-  const createTestHook = (constraints: PanelConstraints) => renderHook(() => useDraggablePanel(mockPanelRef, { constraints }));
-  const performDrag = (result: RenderHookResult<ReturnType<typeof useDraggablePanel>>, start: PanelPosition, end: PanelPosition) => {
+  const createTestHook = (constraints: PanelConstraints) =>
+    renderHook(() => useDraggablePanel(mockPanelRef, { constraints }));
+  const performDrag = (
+    result: RenderHookResult<ReturnType<typeof useDraggablePanel>>,
+    start: PanelPosition,
+    end: PanelPosition,
+  ) => {
     act(() => {
       result.current.startDrag(start);
       result.current.updateDrag(end);
@@ -35,7 +43,6 @@ describe("useDraggablePanel - Constraints", () => {
       result.current.startDrag({ clientX: 100, clientY: 200 });
 
       result.current.updateDrag({ clientX: -50, clientY: -100 });
-
     });
 
     const position = result.current.position();
@@ -57,7 +64,6 @@ describe("useDraggablePanel - Constraints", () => {
       result.current.startDrag({ clientX: 100, clientY: 200 });
 
       result.current.updateDrag({ clientX: 1000, clientY: 1000 });
-
     });
 
     const position = result.current.position();
@@ -74,7 +80,6 @@ describe("useDraggablePanel - Constraints", () => {
         maxTop: 300,
         maxLeft: 400,
       });
-
     });
 
     expect(result.current.constrainPosition).toBeDefined();
@@ -94,7 +99,6 @@ describe("useDraggablePanel - Constraints", () => {
       result.current.startDrag({ clientX: 100, clientY: 200 });
 
       result.current.updateDrag({ clientX: 150, clientY: 250 });
-
     });
 
     expect(result.current.position()).toBeDefined();
@@ -114,11 +118,9 @@ describe("useDraggablePanel - Constraints", () => {
       result.current.startDrag({ clientX: 100, clientY: 200 });
 
       result.current.updateDrag({ clientX: 150, clientY: 250 });
-
     });
 
     expect(result.current.position()).toEqual({ top: 0, left: 0 });
-
   });
 
   it("should handle negative constraints", () => {
@@ -135,7 +137,6 @@ describe("useDraggablePanel - Constraints", () => {
       result.current.startDrag({ clientX: 100, clientY: 200 });
 
       result.current.updateDrag({ clientX: 150, clientY: 250 });
-
     });
 
     const position = result.current.position();
@@ -144,6 +145,4 @@ describe("useDraggablePanel - Constraints", () => {
     expect(position.top).toBeLessThanOrEqual(-50);
     expect(position.left).toBeLessThanOrEqual(-100);
   });
-
 });
-

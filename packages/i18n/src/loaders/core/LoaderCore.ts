@@ -23,17 +23,16 @@ export function hasMockedImport(): boolean {
   if (!globalImport || typeof globalImport !== "function") {
     return false;
   }
-  
-  const mockImport = globalImport as { 
-    mockImplementation?: unknown; 
-    mockResolvedValue?: unknown; 
-    mockRejectedValue?: unknown; 
+
+  const mockImport = globalImport as {
+    mockImplementation?: unknown;
+    mockResolvedValue?: unknown;
+    mockRejectedValue?: unknown;
   };
-  
+
   return Boolean(
     mockImport.mockImplementation ||
-    mockImport.mockResolvedValue ||
-    mockImport.mockRejectedValue
+      mockImport.mockResolvedValue ||
+      mockImport.mockRejectedValue,
   );
 }
-

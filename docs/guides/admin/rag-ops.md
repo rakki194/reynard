@@ -1,6 +1,7 @@
 # RAG Operations Guide
 
-This document summarizes operational knobs, metrics, and playbooks for Reynard's RAG stack (Postgres + pgvector + embeddings).
+This document summarizes operational knobs, metrics, and
+playbooks for Reynard's RAG stack (Postgres + pgvector + embeddings).
 
 Overview
 
@@ -10,7 +11,9 @@ Overview
 
 Environment and Config
 
-The following tunables control watchdogs and health checks across services. They can be set via environment variables (preferred for ops) and are persisted in the config file via the config manager.
+The following tunables control watchdogs and
+health checks across services. They can be set via environment variables (preferred for ops) and
+are persisted in the config file via the config manager.
 
 - VectorDB (Postgres):
   - `PG_HEALTH_INTERVAL_S` (default 60): health probe cadence for `VectorDBService`

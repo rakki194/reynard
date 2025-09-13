@@ -1,24 +1,29 @@
 /**
  * @fileoverview Type definitions for i18n utilities and tooling infrastructure
- * 
+ *
  * This module contains TypeScript interfaces for the Reynard i18n system's
  * supporting infrastructure, including debugging utilities, performance monitoring,
  * cache management, analytics, and translation management tools.
- * 
+ *
  * These types are used by development tools, debugging systems, and advanced
  * features that extend beyond basic translation functionality.
- * 
+ *
  * @author Reynard Development Team
  * @since 1.0.0
  */
 
 import type { TranslationParams } from "./common-types";
 import type { IntlConfig } from "../../intl/IntlConfig";
-import type { IntlNumberFormatter, IntlDateFormatter, IntlRelativeTimeFormatter, IntlPluralRules } from "./intl-classes";
+import type {
+  IntlNumberFormatter,
+  IntlDateFormatter,
+  IntlRelativeTimeFormatter,
+  IntlPluralRules,
+} from "./intl-classes";
 
 /**
  * Statistics about the i18n cache system
- * 
+ *
  * Provides information about cached translations and namespace distribution
  * for monitoring cache performance and memory usage.
  */
@@ -36,7 +41,7 @@ export interface CacheStats {
 
 /**
  * Debugging statistics for the i18n system
- * 
+ *
  * Tracks key usage, cache performance, and translation coverage
  * to help developers identify missing translations and optimize performance.
  */
@@ -57,7 +62,7 @@ export interface DebugStats {
 
 /**
  * Internationalization formatters for various data types
- * 
+ *
  * Provides access to locale-aware formatters for numbers, dates,
  * and relative time formatting using the Intl API.
  */
@@ -73,30 +78,39 @@ export interface IntlFormatter {
   /** Update configuration */
   updateConfig: (config: Partial<IntlConfig>) => void;
   /** Format translation with parameters */
-  formatTranslation: (translation: string, params?: TranslationParams) => string;
+  formatTranslation: (
+    translation: string,
+    params?: TranslationParams,
+  ) => string;
 }
 
 /**
  * Function type for template-based translation with parameter substitution
- * 
+ *
  * @param key - The translation key to look up
  * @param params - Optional parameters for template substitution
  * @returns The translated string with parameters substituted
  */
-export type TemplateTranslator = (key: string, params?: TranslationParams) => string;
+export type TemplateTranslator = (
+  key: string,
+  params?: TranslationParams,
+) => string;
 
 /**
  * Function type for plural-aware translation
- * 
+ *
  * @param key - The translation key to look up
  * @param params - Optional parameters including count for plural rules
  * @returns The translated string with appropriate plural form
  */
-export type PluralTranslator = (key: string, params?: TranslationParams) => string;
+export type PluralTranslator = (
+  key: string,
+  params?: TranslationParams,
+) => string;
 
 /**
  * Debugging utilities for the i18n system
- * 
+ *
  * Provides comprehensive debugging capabilities including key validation,
  * usage tracking, and performance statistics for development and testing.
  */
@@ -137,7 +151,7 @@ export interface I18nDebugger {
 
 /**
  * Performance monitoring for i18n operations
- * 
+ *
  * Tracks translation call performance, cache efficiency, and load times
  * to help optimize the i18n system's performance characteristics.
  */
@@ -171,7 +185,7 @@ export interface I18nPerformanceMonitor {
 
 /**
  * Translation management and versioning system
- * 
+ *
  * Provides CRUD operations for translations with change tracking,
  * import/export capabilities, and author attribution for collaborative
  * translation workflows.
@@ -180,7 +194,12 @@ export interface TranslationManager {
   /** Get current translation manager configuration */
   getConfig: () => Record<string, unknown>;
   /** Set a translation value with author attribution */
-  setTranslation: (locale: string, key: string, value: string, author: string) => void;
+  setTranslation: (
+    locale: string,
+    key: string,
+    value: string,
+    author: string,
+  ) => void;
   /** Get a translation value for a specific locale and key */
   getTranslation: (locale: string, key: string) => string;
   /** Get the complete change history for all translations */
@@ -197,12 +216,16 @@ export interface TranslationManager {
   /** Export all translations for a specific locale */
   exportTranslations: (locale: string) => Record<string, unknown>;
   /** Import translations for a locale with author attribution */
-  importTranslations: (locale: string, data: Record<string, unknown>, author: string) => void;
+  importTranslations: (
+    locale: string,
+    data: Record<string, unknown>,
+    author: string,
+  ) => void;
 }
 
 /**
  * Analytics and usage tracking for translations
- * 
+ *
  * Monitors translation key usage patterns, locale preferences,
  * and provides insights for translation optimization and maintenance.
  */

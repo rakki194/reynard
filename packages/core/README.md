@@ -2,7 +2,9 @@
 
 > **The Foundation of the Reynard Framework** 🦊
 
-Core utilities, composables, and modules that power the entire Reynard ecosystem. This package provides the essential building blocks for reactive state management, security, HTTP clients, and comprehensive utility functions.
+Core utilities, composables, and modules that
+power the entire Reynard ecosystem. This package provides the essential building blocks for reactive state management,
+security, HTTP clients, and comprehensive utility functions.
 
 ## Table of Contents
 
@@ -25,9 +27,9 @@ Core utilities, composables, and modules that power the entire Reynard ecosystem
     - [Composables](#composables)
       - [`useNotifications()`](#usenotifications)
       - [`useMediaQuery(query)`](#usemediaqueryquery)
-      - [`useLocalStorage<T>(key, options)`](#uselocalstoragetkey-options)
-      - [`useDebounce<T>(value, delay)`](#usedebouncetvalue-delay)
-      - [`useDebouncedCallback<TArgs>(callback, delay)`](#usedebouncedcallbacktargscallback-delay)
+      - [`useLocalStorage<T>(key, options)`](#uselocalstorage)
+      - [`useDebounce<T>(value, delay)`](#usedebounce)
+      - [`useDebouncedCallback<TArgs>(callback, delay)`](#usedebouncedcallback)
     - [Security Functions](#security-functions)
       - [Input Validation](#input-validation)
       - [XSS Protection](#xss-protection)
@@ -159,7 +161,9 @@ function SecurityDemo() {
   });
 
   // HTML sanitization
-  const cleanHTML = sanitizeHTML('<script>alert("xss")</script><p>Safe content</p>');
+  const cleanHTML = sanitizeHTML(
+    '<script>alert("xss")</script><p>Safe content</p>',
+  );
 
   // File validation
   const fileResult = validateFileName("document.pdf", {
@@ -209,10 +213,10 @@ function ApiDemo() {
     try {
       // Using API client
       const users = await apiClient.get("/users");
-      
+
       // Using HTTP client
       const posts = await httpClient.get("/posts");
-      
+
       return { users, posts };
     } catch (error) {
       console.error("API Error:", error);
@@ -498,7 +502,9 @@ const isValidPhone = validatePhoneNumber("+1-555-123-4567"); // true
 import { sanitizeHTML, validateXSSInput, sanitizeXSSInput } from "reynard-core";
 
 // HTML sanitization
-const cleanHTML = sanitizeHTML('<script>alert("xss")</script><p>Safe content</p>');
+const cleanHTML = sanitizeHTML(
+  '<script>alert("xss")</script><p>Safe content</p>',
+);
 // Returns: '<p>Safe content</p>'
 
 // XSS validation
@@ -628,7 +634,9 @@ import {
 const language = detectLanguageFromExtension("test.js"); // "javascript"
 
 // Detect language from content
-const contentLanguage = detectLanguageFromContent("def hello(): print('world')"); // "python"
+const contentLanguage = detectLanguageFromContent(
+  "def hello(): print('world')",
+); // "python"
 
 // Get comprehensive language info
 const info = getLanguageInfo("test.tsx");
@@ -693,7 +701,7 @@ await sleep(1000); // Wait 1 second
 const result = await withTimeout(
   fetch("/api/slow-endpoint"),
   5000, // 5 second timeout
-  "Request timed out"
+  "Request timed out",
 );
 
 // Delay with value
@@ -765,7 +773,8 @@ import { formatDate } from "reynard-core/utils";
 
 ### Security-First Design
 
-The core package prioritizes security with comprehensive validation, sanitization, and protection against common web vulnerabilities:
+The core package prioritizes security with comprehensive validation, sanitization, and
+protection against common web vulnerabilities:
 
 - **XSS Prevention**: HTML sanitization and input validation
 - **SQL Injection Protection**: Parameterized query validation
@@ -832,4 +841,5 @@ pnpm dev
 
 **Built with ❤️ using SolidJS and modern web standards** 🦊
 
-*The Reynard Core package provides the foundation for building secure, performant, and maintainable web applications with the cunning agility of a fox.*
+_The Reynard Core package provides the foundation for building secure, performant, and
+maintainable web applications with the cunning agility of a fox._

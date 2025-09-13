@@ -9,18 +9,14 @@ import {
   createTemplateTranslator,
   createDebugPluralTranslator,
 } from "../../features/debug/DebugTranslation";
-import {
-  validateTranslations,
-} from "../../features/debug/Validation";
+import { validateTranslations } from "../../features/debug/Validation";
 import {
   createDebugStats,
   getDebugStats,
   usedKeys,
   missingKeys,
 } from "../../features/debug/DebugStats";
-import {
-  createPerformanceMonitor,
-} from "../../features/performance/performance-monitor";
+import { createPerformanceMonitor } from "../../features/performance/performance-monitor";
 
 import type { Translations, TranslationParams } from "../../../types";
 
@@ -43,7 +39,7 @@ describe("I18nDebugger", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Clear any existing debug data
     usedKeys.clear();
     missingKeys.clear();
@@ -84,7 +80,9 @@ describe("I18nDebugger", () => {
 
     it("should identify unused keys", () => {
       // This would need to be implemented based on the actual translation structure
-      const unusedKeys = Object.keys(mockTranslations).filter(key => !usedKeys.has(key));
+      const unusedKeys = Object.keys(mockTranslations).filter(
+        (key) => !usedKeys.has(key),
+      );
       expect(Array.isArray(unusedKeys)).toBe(true);
     });
 
@@ -114,7 +112,11 @@ describe("I18nDebugger", () => {
         common: { hello: "Hello" },
       } as any;
 
-      const result = validateTranslations(incompleteTranslations, ["common", "themes", "core"]);
+      const result = validateTranslations(incompleteTranslations, [
+        "common",
+        "themes",
+        "core",
+      ]);
 
       expect(result.isValid).toBe(false);
       expect(result.missingKeys.length).toBeGreaterThan(0);
@@ -133,7 +135,11 @@ describe("I18nDebugger", () => {
         },
       };
 
-      const result = validateTranslations(translationsWithEmpty, ["common", "themes", "core"]);
+      const result = validateTranslations(translationsWithEmpty, [
+        "common",
+        "themes",
+        "core",
+      ]);
 
       // The current implementation doesn't check for empty values, so this should be valid
       expect(result.isValid).toBe(true);
@@ -160,7 +166,7 @@ describe("I18nDebugger", () => {
         usedKeys: Array.from(usedKeys),
         missingKeys: Array.from(missingKeys),
         stats: createDebugStats(),
-        validation: validateTranslations(mockTranslations, [])
+        validation: validateTranslations(mockTranslations, []),
       };
 
       expect(debugData).toHaveProperty("usedKeys");
@@ -343,7 +349,12 @@ describe("Validation Functions", () => {
         components: { button: "Button" },
       } as any;
 
-      const result = validateTranslations(completeTranslations, ["common", "themes", "core", "components"]);
+      const result = validateTranslations(completeTranslations, [
+        "common",
+        "themes",
+        "core",
+        "components",
+      ]);
 
       // The validation should pass since all required namespaces are present
       expect(result.isValid).toBe(true);
@@ -355,7 +366,11 @@ describe("Validation Functions", () => {
         common: { hello: "Hello" },
       } as any;
 
-      const result = validateTranslations(incompleteTranslations, ["common", "themes", "core"]);
+      const result = validateTranslations(incompleteTranslations, [
+        "common",
+        "themes",
+        "core",
+      ]);
 
       expect(result.isValid).toBe(false);
       expect(result.missingKeys.length).toBeGreaterThan(0);
@@ -372,7 +387,10 @@ describe("Validation Functions", () => {
         },
       } as any;
 
-      const result = validateTranslations(translationsWithDuplicates, ["common", "themes"]);
+      const result = validateTranslations(translationsWithDuplicates, [
+        "common",
+        "themes",
+      ]);
 
       // The current implementation doesn't detect duplicates across namespaces
       // It only detects duplicates within the same namespace

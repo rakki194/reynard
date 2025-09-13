@@ -5,7 +5,10 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { BatchUnionFind, BatchOperation } from "../../union-find-batch-operations";
+import {
+  BatchUnionFind,
+  BatchOperation,
+} from "../../union-find-batch-operations";
 
 describe("BatchUnionFind", () => {
   let uf: BatchUnionFind;

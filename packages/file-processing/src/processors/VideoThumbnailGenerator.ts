@@ -60,7 +60,8 @@ export class VideoThumbnailGenerator {
 
     try {
       // Load video and get metadata
-      const { video, duration, width, height } = await this.videoLoader.loadVideo(file);
+      const { video, duration, width, height } =
+        await this.videoLoader.loadVideo(file);
 
       // Calculate capture time and seek to it
       const captureTime = VideoDimensions.calculateCaptureTime(

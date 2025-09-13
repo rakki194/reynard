@@ -181,5 +181,4 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Prestatie en beveiliging integratie",
   },
-
 };

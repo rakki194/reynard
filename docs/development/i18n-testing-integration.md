@@ -1,6 +1,7 @@
 # i18n Testing Integration Guide
 
-_whiskers twitch with satisfaction_ The Reynard i18n testing system provides comprehensive translation validation across all packages, ensuring no hardcoded strings slip through and all translations are complete and properly formatted.
+_whiskers twitch with satisfaction_ The Reynard i18n testing system provides comprehensive translation validation across
+all packages, ensuring no hardcoded strings slip through and all translations are complete and properly formatted.
 
 ## Overview
 
@@ -280,4 +281,5 @@ For issues or questions:
 3. Run validation commands to identify issues
 4. Check the GitHub Actions logs for CI/CD issues
 
-_red fur bristles with excitement_ The i18n testing system ensures that Reynard maintains high-quality internationalization across all packages, making it easier to support users worldwide!
+_red fur bristles with excitement_ The i18n testing system ensures that
+Reynard maintains high-quality internationalization across all packages, making it easier to support users worldwide!

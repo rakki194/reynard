@@ -99,8 +99,10 @@ describe("Security Integration Tests", () => {
             allowXSS: false,
           });
 
-
-          expect(result.isValid).toBe(shouldPass, `Input "${input}" should ${shouldPass ? 'pass' : 'fail'} validation but got ${result.isValid ? 'pass' : 'fail'}. Errors: ${result.errors?.join(', ') || 'none'}`);
+          expect(result.isValid).toBe(
+            shouldPass,
+            `Input "${input}" should ${shouldPass ? "pass" : "fail"} validation but got ${result.isValid ? "pass" : "fail"}. Errors: ${result.errors?.join(", ") || "none"}`,
+          );
         });
       });
     },
@@ -306,46 +308,43 @@ describe("Security Integration Tests", () => {
     });
   });
 
-  describe(
-    t("core.integration.performance-and-security-integration"),
-    () => {
-      it("should maintain security while processing multiple inputs", () => {
-        // Test multiple input validations
-        const inputs = Array.from({ length: 10 }, (_, i) => `test-input-${i}`);
+  describe(t("core.integration.performance-and-security-integration"), () => {
+    it("should maintain security while processing multiple inputs", () => {
+      // Test multiple input validations
+      const inputs = Array.from({ length: 10 }, (_, i) => `test-input-${i}`);
 
-        const startTime = performance.now();
-        const results = inputs.map((input) =>
-          validateInput(input, { maxLength: 100 }),
-        );
-        const endTime = performance.now();
+      const startTime = performance.now();
+      const results = inputs.map((input) =>
+        validateInput(input, { maxLength: 100 }),
+      );
+      const endTime = performance.now();
 
-        expect(results).toHaveLength(10);
-        expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
+      expect(results).toHaveLength(10);
+      expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
 
-        // All inputs should be valid
-        results.forEach((result) => {
-          expect(result.isValid).toBe(true);
-        });
+      // All inputs should be valid
+      results.forEach((result) => {
+        expect(result.isValid).toBe(true);
       });
+    });
 
-      it("should handle concurrent security operations", async () => {
-        const operations = [
-          () => generateCSRFToken(),
-          () => generateSecurePassword(16),
-          () => hashString("test-string"),
-          () => sanitizeInput('<script>alert("xss")</script>'),
-          () => validateInput("test@example.com", { maxLength: 100 }),
-        ];
+    it("should handle concurrent security operations", async () => {
+      const operations = [
+        () => generateCSRFToken(),
+        () => generateSecurePassword(16),
+        () => hashString("test-string"),
+        () => sanitizeInput('<script>alert("xss")</script>'),
+        () => validateInput("test@example.com", { maxLength: 100 }),
+      ];
 
-        const startTime = performance.now();
-        const results = await Promise.all(operations.map((op) => op()));
-        const endTime = performance.now();
+      const startTime = performance.now();
+      const results = await Promise.all(operations.map((op) => op()));
+      const endTime = performance.now();
 
-        expect(results).toHaveLength(5);
-        expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
-      });
-    },
-  );
+      expect(results).toHaveLength(5);
+      expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
+    });
+  });
 
   describe("Real-world Attack Scenarios", () => {
     it("should prevent XSS attacks through multiple vectors", () => {

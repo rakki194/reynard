@@ -88,4 +88,3 @@ export const AI_FEATURES: FeatureDefinition[] = [
     icon: "chat",
   },
 ];
-

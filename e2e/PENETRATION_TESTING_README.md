@@ -1,10 +1,12 @@
 # 🐺 REYNARD PENETRATION TESTING SUITE
 
-*snarls with predatory glee* Welcome to the ultimate security testing framework! This suite integrates the blackhat exploit framework with E2E authentication tests to provide comprehensive penetration testing of the Reynard ecosystem.
+_snarls with predatory glee_ Welcome to
+the ultimate security testing framework! This suite integrates the blackhat exploit framework with
+E2E authentication tests to provide comprehensive penetration testing of the Reynard ecosystem.
 
 ## ⚠️ WARNING: DESTRUCTIVE TESTING
 
-*bares fangs with savage satisfaction* These tests are designed to ACTUALLY BREAK your system. They will:
+_bares fangs with savage satisfaction_ These tests are designed to ACTUALLY BREAK your system. They will:
 
 - **Crash services** with malformed input
 - **Bypass security controls** with encoded payloads
@@ -226,20 +228,20 @@ This penetration testing suite follows Reynard's testing philosophy:
 
 ## 📋 TEST COVERAGE
 
-| Category | Tests | Status |
-|----------|-------|--------|
-| JWT Security | 4 tests | ✅ Ready |
-| SQL Injection | 4 tests | ✅ Ready |
-| Path Traversal | 4 tests | ✅ Ready |
-| Authentication | 3 tests | ✅ Ready |
-| Fuzzing | 2 tests | ✅ Ready |
-| API Security | 1 test | ✅ Ready |
-| CSRF Testing | 1 test | ✅ Ready |
-| SSRF Testing | 1 test | ✅ Ready |
-| Race Conditions | 1 test | ✅ Ready |
-| HTTP Smuggling | 1 test | ✅ Ready |
-| Unicode Security | 1 test | ✅ Ready |
-| Complete Assessment | 1 test | ✅ Ready |
+| Category            | Tests   | Status   |
+| ------------------- | ------- | -------- |
+| JWT Security        | 4 tests | ✅ Ready |
+| SQL Injection       | 4 tests | ✅ Ready |
+| Path Traversal      | 4 tests | ✅ Ready |
+| Authentication      | 3 tests | ✅ Ready |
+| Fuzzing             | 2 tests | ✅ Ready |
+| API Security        | 1 test  | ✅ Ready |
+| CSRF Testing        | 1 test  | ✅ Ready |
+| SSRF Testing        | 1 test  | ✅ Ready |
+| Race Conditions     | 1 test  | ✅ Ready |
+| HTTP Smuggling      | 1 test  | ✅ Ready |
+| Unicode Security    | 1 test  | ✅ Ready |
+| Complete Assessment | 1 test  | ✅ Ready |
 
 ## 🚨 SAFETY WARNINGS
 
@@ -268,5 +270,6 @@ For issues with the penetration testing suite:
 
 ---
 
-*🐺 The Wolf - Security Testing Framework*  
-*"We don't just test security - we hunt it down with the relentless determination of the apex predator of the code jungle!"*
+_🐺 The Wolf - Security Testing Framework_  
+_"We don't just test security - we hunt it down with the relentless determination of the apex predator of
+the code jungle!"_

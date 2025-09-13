@@ -1,6 +1,6 @@
 /**
  * File Operations Tools Configuration
- * 
+ *
  * Defines file and directory operation tools for the NLWeb service.
  */
 
@@ -33,11 +33,7 @@ export const fileTools: NLWebTool[] = [
         },
       },
     ],
-    examples: [
-      "list files",
-      "show directory contents",
-      "what files are here",
-    ],
+    examples: ["list files", "show directory contents", "what files are here"],
     enabled: true,
     priority: 70,
     timeout: 3000,

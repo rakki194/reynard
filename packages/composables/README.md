@@ -1,6 +1,8 @@
 # reynard-composables
 
-Reusable SolidJS composables extracted and refined from the yipyap codebase. This package provides a collection of high-quality, modular composables for common application patterns.
+Reusable SolidJS composables extracted and
+refined from the yipyap codebase. This package provides a collection of high-quality,
+modular composables for common application patterns.
 
 ## Features
 

@@ -363,7 +363,11 @@ describe("World System", () => {
 
     it("should query entities with multiple components", () => {
       const query = world.query(PositionType, VelocityType);
-      const results: Array<{ entity: Entity; position: Position; velocity: Velocity }> = [];
+      const results: Array<{
+        entity: Entity;
+        position: Position;
+        velocity: Velocity;
+      }> = [];
 
       query.forEach((entity, position, velocity) => {
         results.push({ entity, position, velocity });

@@ -1,7 +1,7 @@
 import { createContext, useContext, JSX } from "solid-js";
 import type { FeatureContext, FeatureConfig } from "../core/types";
 import { createFeatureContext } from "./createFeatureContext";
-import { 
+import {
   useFeatureAvailable as useFeatureAvailableBase,
   useFeatureDegraded as useFeatureDegradedBase,
   useFeatureStatus as useFeatureStatusBase,
@@ -9,11 +9,11 @@ import {
   useFeaturesByCategory as useFeaturesByCategoryBase,
   useFeaturesByPriority as useFeaturesByPriorityBase,
   useCriticalFeatures as useCriticalFeaturesBase,
-  useFeaturesByService as useFeaturesByServiceBase
+  useFeaturesByService as useFeaturesByServiceBase,
 } from "./useFeatureHooks";
-import { 
+import {
   useFeatureAware as useFeatureAwareBase,
-  useFeatureConfiguration as useFeatureConfigurationBase
+  useFeatureConfiguration as useFeatureConfigurationBase,
 } from "./useFeatureAware";
 
 // Create feature context

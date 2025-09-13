@@ -1,6 +1,7 @@
 # Reynard Chat System 🦊💬
 
-A comprehensive, production-ready chat messaging system for SolidJS applications with advanced streaming capabilities, markdown parsing, thinking sections, and tool integration.
+A comprehensive, production-ready chat messaging system for SolidJS applications with advanced streaming capabilities,
+markdown parsing, thinking sections, and tool integration.
 
 ## ✨ Features
 

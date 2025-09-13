@@ -6,11 +6,20 @@
  * glow effects, and interactive states.
  */
 
-import { Component, JSX, createMemo, createSignal, onMount, onCleanup, splitProps } from "solid-js";
+import {
+  Component,
+  JSX,
+  createMemo,
+  createSignal,
+  onMount,
+  onCleanup,
+  splitProps,
+} from "solid-js";
 import { getIcon, iconRegistry } from "reynard-fluent-icons";
 
 // Icon component props
-export interface IconProps extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+export interface IconProps
+  extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
   name: string;
   packageId?: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -44,23 +53,23 @@ export interface IconProps extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonEleme
  */
 export const Icon: Component<IconProps> = (props) => {
   const [localProps, buttonProps] = splitProps(props, [
-    'name',
-    'packageId',
-    'size',
-    'variant',
-    'class',
-    'style',
-    'role',
-    'aria-label',
-    'aria-hidden',
-    'title',
-    'active',
-    'loading',
-    'progress',
-    'glow',
-    'glowColor',
-    'tooltip',
-    'interactive',
+    "name",
+    "packageId",
+    "size",
+    "variant",
+    "class",
+    "style",
+    "role",
+    "aria-label",
+    "aria-hidden",
+    "title",
+    "active",
+    "loading",
+    "progress",
+    "glow",
+    "glowColor",
+    "tooltip",
+    "interactive",
   ]);
 
   const [isPressed, setIsPressed] = createSignal(false);
@@ -72,17 +81,17 @@ export const Icon: Component<IconProps> = (props) => {
 
   onMount(() => {
     if (buttonRef && localProps.interactive) {
-      buttonRef.addEventListener('mousedown', handleMouseDown);
-      buttonRef.addEventListener('mouseup', handleMouseUp);
-      buttonRef.addEventListener('mouseleave', handleMouseLeave);
+      buttonRef.addEventListener("mousedown", handleMouseDown);
+      buttonRef.addEventListener("mouseup", handleMouseUp);
+      buttonRef.addEventListener("mouseleave", handleMouseLeave);
     }
   });
 
   onCleanup(() => {
     if (buttonRef && localProps.interactive) {
-      buttonRef.removeEventListener('mousedown', handleMouseDown);
-      buttonRef.removeEventListener('mouseup', handleMouseUp);
-      buttonRef.removeEventListener('mouseleave', handleMouseLeave);
+      buttonRef.removeEventListener("mousedown", handleMouseDown);
+      buttonRef.removeEventListener("mouseup", handleMouseUp);
+      buttonRef.removeEventListener("mouseleave", handleMouseLeave);
     }
   });
 
@@ -92,17 +101,17 @@ export const Icon: Component<IconProps> = (props) => {
       `reynard-icon--${localProps.size || "md"}`,
       `reynard-icon--${localProps.variant || "default"}`,
     ];
-    
+
     if (localProps.class) classes.push(localProps.class);
     if (localProps.active) classes.push("reynard-icon--active");
     if (localProps.loading) classes.push("reynard-icon--loading");
     if (localProps.interactive) classes.push("reynard-icon--interactive");
     if (isPressed()) classes.push("reynard-icon--pressed");
     if (localProps.glow) classes.push("reynard-icon--glow");
-    if (typeof localProps.progress === 'number' && localProps.progress > 0) {
+    if (typeof localProps.progress === "number" && localProps.progress > 0) {
       classes.push("reynard-icon--with-progress");
     }
-    
+
     return classes.filter(Boolean).join(" ");
   });
 
@@ -114,24 +123,24 @@ export const Icon: Component<IconProps> = (props) => {
   });
 
   const getProgressValue = () => {
-    if (typeof localProps.progress === 'number') {
+    if (typeof localProps.progress === "number") {
       return Math.max(0, Math.min(100, localProps.progress));
     }
     return 0;
   };
 
   const shouldShowProgress = () => {
-    return typeof localProps.progress === 'number' && localProps.progress > 0;
+    return typeof localProps.progress === "number" && localProps.progress > 0;
   };
 
   const getGlowStyle = () => {
     if (!localProps.glow) return localProps.style || {};
 
-    const color = localProps.glowColor || 'var(--accent)';
+    const color = localProps.glowColor || "var(--accent)";
     return {
       ...localProps.style,
-      '--glow-color': color,
-      '--glow-intensity': '1',
+      "--glow-color": color,
+      "--glow-intensity": "1",
     } as any;
   };
 
@@ -140,19 +149,17 @@ export const Icon: Component<IconProps> = (props) => {
   };
 
   const getAriaLabel = () => {
-    return localProps['aria-label'] || localProps.tooltip || localProps.title;
+    return localProps["aria-label"] || localProps.tooltip || localProps.title;
   };
 
   const iconContent = (
     <>
-      <div class="reynard-icon__content">
-        {iconElement()}
-      </div>
-      
+      <div class="reynard-icon__content">{iconElement()}</div>
+
       {shouldShowProgress() && (
         <div class="reynard-icon__progress">
-          <div 
-            class="reynard-icon__progress-bar" 
+          <div
+            class="reynard-icon__progress-bar"
             style={{ "--progress-width": `${getProgressValue()}%` } as any}
           />
         </div>
@@ -184,8 +191,8 @@ export const Icon: Component<IconProps> = (props) => {
       style={getGlowStyle()}
       {...(localProps.role && { role: localProps.role as any })}
       aria-label={getAriaLabel()}
-      {...(localProps['aria-hidden'] !== undefined && {
-        "aria-hidden": localProps['aria-hidden'] ? "true" : "false",
+      {...(localProps["aria-hidden"] !== undefined && {
+        "aria-hidden": localProps["aria-hidden"] ? "true" : "false",
       })}
       title={getTooltip()}
       data-testid="reynard-icon"

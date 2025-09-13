@@ -44,15 +44,10 @@ export function createRegisterToolAction(
       state.setLoading(true);
       state.setError(null);
 
-      await makeNLWebRequest(
-        "/tools",
-        baseUrl,
-        requestTimeout,
-        {
-          method: "POST",
-          body: JSON.stringify(tool),
-        },
-      );
+      await makeNLWebRequest("/tools", baseUrl, requestTimeout, {
+        method: "POST",
+        body: JSON.stringify(tool),
+      });
 
       // Refresh tools list
       await getTools();
@@ -78,14 +73,9 @@ export function createUnregisterToolAction(
       state.setLoading(true);
       state.setError(null);
 
-      await makeNLWebRequest(
-        `/tools/${name}`,
-        baseUrl,
-        requestTimeout,
-        {
-          method: "DELETE",
-        },
-      );
+      await makeNLWebRequest(`/tools/${name}`, baseUrl, requestTimeout, {
+        method: "DELETE",
+      });
 
       // Refresh tools list
       await getTools();

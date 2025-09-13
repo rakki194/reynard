@@ -19,7 +19,19 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
   const handlers = createDebugHandlers(props);
 
   // Set up draggable functionality
-  const { isVisible, isDragging } = useDraggablePanel(panelRef, { initialPosition: props.position, enabled: config.draggable, onDragStart: handlers.handleDragStart, onDrag: handlers.handleDrag, onDragEnd: handlers.handleDragEnd, constraints: { minWidth: 200, minHeight: 100, maxWidth: 800, maxHeight: 600 } });
+  const { isVisible, isDragging } = useDraggablePanel(panelRef, {
+    initialPosition: props.position,
+    enabled: config.draggable,
+    onDragStart: handlers.handleDragStart,
+    onDrag: handlers.handleDrag,
+    onDragEnd: handlers.handleDragEnd,
+    constraints: {
+      minWidth: 200,
+      minHeight: 100,
+      maxWidth: 800,
+      maxHeight: 600,
+    },
+  });
 
   // Set up debug logging
   createDebugLogging(props, panelRef, isVisible, isDragging);

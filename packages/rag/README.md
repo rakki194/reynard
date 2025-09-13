@@ -1,6 +1,7 @@
 # Reynard RAG System 🦊🔍
 
-A comprehensive RAG (Retrieval-Augmented Generation) system for SolidJS applications with EmbeddingGemma integration and advanced search capabilities.
+A comprehensive RAG (Retrieval-Augmented Generation) system for SolidJS applications with
+EmbeddingGemma integration and advanced search capabilities.
 
 ## ✨ Features
 

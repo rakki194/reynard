@@ -1,10 +1,14 @@
 # RAG Demo Flows
 
-This document provides a practical ingest walkthrough and a concise hybrid ranking explanation. Query screenshots are pending and will be added once the final search UI is captured.
+This document provides a practical ingest walkthrough and
+a concise hybrid ranking explanation. Query screenshots are pending and
+will be added once the final search UI is captured.
 
 ## Ingest Walkthrough (Streaming NDJSON)
 
-RAG ingestion accepts a compact payload and streams NDJSON events so the UI can present progress in real time. The backend enforces per‑user rate limits, request clamps, and optional privacy redaction.
+RAG ingestion accepts a compact payload and streams NDJSON events so
+the UI can present progress in real time. The backend enforces per‑user rate limits, request clamps, and
+optional privacy redaction.
 
 To ingest a small document set using cURL, provide `items` and a text embedding `model`:
 
@@ -15,7 +19,10 @@ curl -N -s \
   -d '{"items":[{"source":"manual","content":"The quick brown fox jumps over the lazy dog."}],"model":"mxbai-embed-large"}'
 ```
 
-The response streams newline‑delimited objects like `{ "type": "enqueued", "scheduled": 1, "total": 1 }`, `{ "type": "accepted", "total": 1 }`, and errors if any occur. The frontend client in `src/composables/useRAG.ts` parses these chunks and forwards structured events to the caller.
+The response streams newline‑delimited objects like `{ "type": "enqueued", "scheduled": 1, "total": 1 }`,
+`{ "type": "accepted", "total": 1 }`, and errors if
+any occur. The frontend client in `src/composables/useRAG.ts` parses these chunks and
+forwards structured events to the caller.
 
 To wire this into the SolidJS UI with grouped notifications:
 
@@ -52,12 +59,25 @@ app.notify("Ingest complete", "success", group);
 
 ## Hybrid Ranking Explanation
 
-For text, code, and captions, hybrid ranking combines vector similarity from pgvector with a textual ranking signal. Scores are normalized per modality and combined as \( score = w*{vec} \cdot (1 - dist) + w*{text} \cdot rank \). In the current implementation, the text term is a placeholder set to zero while preserving the interface, and vector similarity dominates. The default weights favor vector similarity (docs/code `w_vec=0.7`, `w_text=0.3`; captions `0.8/0.2`). These weights are configurable in `AppConfig` and can be tuned per deployment without changing API contracts.
+For text, code, and captions, hybrid ranking combines vector similarity from pgvector with
+a textual ranking signal. Scores are normalized per modality and
+combined as \( score = w*{vec} \cdot (1 - dist) + w*{text} \cdot rank \). In the current implementation,
+the text term is a placeholder set to zero while preserving the interface, and
+vector similarity dominates. The default weights favor vector similarity (docs/code `w_vec=0.7`, `w_text=0.3`;
+captions `0.8/0.2`). These weights are configurable in `AppConfig` and
+can be tuned per deployment without changing API contracts.
 
-Vector similarity uses cosine distance and returns a normalized score in \([0,1]\). HNSW indexes accelerate nearest‑neighbor search; recall and latency can be traded by setting `hnsw.ef_search` at session time. When textual ranking (e.g., BM25 or `ts_rank`) is introduced, the API shape will remain compatible and weights will blend both signals coherently.
+Vector similarity uses cosine distance and
+returns a normalized score in \([0,1]\). HNSW indexes accelerate nearest‑neighbor search; recall and
+latency can be traded by setting `hnsw.ef_search` at session time. When textual ranking (e.g., BM25 or
+`ts_rank`) is introduced, the API shape will remain compatible and weights will blend both signals coherently.
 
-For images, CLIP text→image retrieval computes cosine similarity in the CLIP space and returns hits with scores. The image embedding table uses `VECTOR(768)` by default (ViT‑L/14), and the text tower or a mapped text embedding is used for compatibility.
+For images, CLIP text→image retrieval computes cosine similarity in the CLIP space and
+returns hits with scores. The image embedding table uses `VECTOR(768)` by default (ViT‑L/14), and the text tower or
+a mapped text embedding is used for compatibility.
 
 ## Notes
 
-Ensure RAG is enabled and the Postgres DSN is provided (`RAG_ENABLED=true`, `PG_DSN=…`). See `docs/rag.md` for architecture, schema, and endpoint details, and `docs/notifications.md` for progress notification patterns.
+Ensure RAG is enabled and the Postgres DSN is provided (`RAG_ENABLED=true`,
+`PG_DSN=…`). See `docs/rag.md` for architecture, schema, and endpoint details, and
+`docs/notifications.md` for progress notification patterns.

@@ -2,7 +2,8 @@
 
 > **Automated documentation generator for Reynard packages** 🦊
 
-Automatically generate beautiful documentation from your Reynard packages with TypeScript analysis, API extraction, and interactive examples.
+Automatically generate beautiful documentation from your Reynard packages with TypeScript analysis, API extraction,
+and interactive examples.
 
 ## ✨ Features
 

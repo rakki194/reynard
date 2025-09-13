@@ -1,6 +1,9 @@
 # Vision Embedding Framework
 
-The Vision Embedding Framework provides a unified interface for managing vision embedding services with automatic memory management, model unloading, and service lifecycle handling. This framework enables easy integration of new vision embedding services while maintaining consistent behavior across all implementations.
+The Vision Embedding Framework provides a unified interface for managing vision embedding services with
+automatic memory management, model unloading, and
+service lifecycle handling. This framework enables easy integration of new vision embedding services while
+maintaining consistent behavior across all implementations.
 
 ## Overview
 
@@ -462,4 +465,8 @@ The framework is designed to be extensible and can be enhanced with:
 
 ## Conclusion
 
-The Vision Embedding Framework provides a robust, extensible foundation for vision embedding services with automatic memory management, unified interfaces, and comprehensive lifecycle management. By following the patterns and best practices outlined in this documentation, you can easily create new vision embedding services that integrate seamlessly with the existing system.
+The Vision Embedding Framework provides a robust,
+extensible foundation for vision embedding services with automatic memory management, unified interfaces, and
+comprehensive lifecycle management. By following the patterns and
+best practices outlined in this documentation,
+you can easily create new vision embedding services that integrate seamlessly with the existing system.

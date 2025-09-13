@@ -1,6 +1,6 @@
 /**
  * Application Header Component
- * 
+ *
  * Handles the main header with theme toggle functionality.
  */
 
@@ -16,10 +16,7 @@ export const AppHeader: Component<AppHeaderProps> = (props) => {
     <header class="app-header">
       <h1>🦊 Reynard Embedding Visualization Demo</h1>
       <div class="header-controls">
-        <button
-          class="theme-toggle"
-          onClick={props.onThemeToggle}
-        >
+        <button class="theme-toggle" onClick={props.onThemeToggle}>
           {props.theme === "dark" ? "☀️ Light" : "🌙 Dark"}
         </button>
       </div>

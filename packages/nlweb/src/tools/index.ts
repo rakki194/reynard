@@ -1,6 +1,6 @@
 /**
  * Tools Configuration Barrel Export
- * 
+ *
  * Centralized export for all tool configurations.
  */
 

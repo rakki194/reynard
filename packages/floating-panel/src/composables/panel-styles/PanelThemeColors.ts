@@ -17,4 +17,3 @@ export function getThemeColors() {
     info: "var(--floating-panel-info, #06b6d4)",
   };
 }
-

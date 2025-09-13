@@ -127,12 +127,11 @@ describe("useOverlayManager - Overlay Management", () => {
       },
     ];
     act(() => {
-      overlays.forEach(overlay => result.current.addOverlay(overlay));
+      overlays.forEach((overlay) => result.current.addOverlay(overlay));
     });
 
     expect(result.current.overlays()).toHaveLength(2);
     expect(result.current.overlays()[0].id).toBe("overlay-2");
     expect(result.current.overlays()[1].id).toBe("overlay-3");
   });
-
 });

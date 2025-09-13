@@ -1,6 +1,7 @@
 # reynard-api-client
 
-Auto-generated TypeScript API client for Reynard backend. This package provides type-safe access to all backend endpoints with SolidJS composables.
+Auto-generated TypeScript API client for Reynard backend. This package provides type-safe access to
+all backend endpoints with SolidJS composables.
 
 ## Features
 

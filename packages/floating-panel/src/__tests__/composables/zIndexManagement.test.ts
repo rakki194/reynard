@@ -31,7 +31,7 @@ describe("useOverlayManager - Z-Index Management", () => {
       },
     ];
     act(() => {
-      overlays.forEach(overlay => result.current.addOverlay(overlay));
+      overlays.forEach((overlay) => result.current.addOverlay(overlay));
     });
 
     const addedOverlays = result.current.overlays();
@@ -59,13 +59,13 @@ describe("useOverlayManager - Z-Index Management", () => {
       },
     ];
     act(() => {
-      overlays.forEach(overlay => result.current.addOverlay(overlay));
+      overlays.forEach((overlay) => result.current.addOverlay(overlay));
       result.current.bringToFront("overlay-1");
     });
 
     const addedOverlays = result.current.overlays();
-    const overlay1 = addedOverlays.find(o => o.id === "overlay-1");
-    const overlay2 = addedOverlays.find(o => o.id === "overlay-2");
+    const overlay1 = addedOverlays.find((o) => o.id === "overlay-1");
+    const overlay2 = addedOverlays.find((o) => o.id === "overlay-2");
     expect(overlay1?.zIndex).toBeGreaterThan(overlay2?.zIndex || 0);
   });
 
@@ -113,7 +113,7 @@ describe("useOverlayManager - Z-Index Management", () => {
       },
     ];
     act(() => {
-      overlays.forEach(overlay => result.current.addOverlay(overlay));
+      overlays.forEach((overlay) => result.current.addOverlay(overlay));
       result.current.removeOverlay("overlay-2");
       result.current.addOverlay({
         id: "overlay-4",
@@ -122,7 +122,6 @@ describe("useOverlayManager - Z-Index Management", () => {
         position: { top: 400, left: 400 },
         size: { width: 300, height: 200 },
       });
-
     });
 
     const addedOverlays = result.current.overlays();
@@ -146,6 +145,4 @@ describe("useOverlayManager - Z-Index Management", () => {
 
     expect(result.current.overlays()[0].zIndex).toBe(-1000);
   });
-
 });
-

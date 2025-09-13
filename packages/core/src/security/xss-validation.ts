@@ -16,42 +16,42 @@ export function validateXSSInput(input: string): boolean {
     // Script tags
     /<script[^>]*>.*?<\/script>/gi,
     /<script[^>]*>/gi,
-    
+
     // Event handlers
     /on\w+\s*=\s*["'][^"']*["']/gi,
     /on\w+\s*=\s*[^>\s]+/gi,
-    
+
     // JavaScript protocols
     /javascript:/gi,
     /vbscript:/gi,
     /data:text\/html/gi,
-    
+
     // Iframe and object tags
     /<iframe[^>]*>.*?<\/iframe>/gi,
     /<object[^>]*>.*?<\/object>/gi,
     /<embed[^>]*>.*?<\/embed>/gi,
-    
+
     // Form elements
     /<form[^>]*>.*?<\/form>/gi,
     /<input[^>]*>/gi,
     /<button[^>]*>.*?<\/button>/gi,
-    
+
     // Style tags with expressions
     /<style[^>]*>.*?<\/style>/gi,
     /expression\s*\(/gi,
-    
+
     // Meta refresh
     /<meta[^>]*http-equiv\s*=\s*["']refresh["'][^>]*>/gi,
-    
+
     // Link tags with javascript
     /<link[^>]*href\s*=\s*["']javascript:/gi,
-    
+
     // Base64 encoded scripts
     /data:text\/html;base64,/gi,
-    
+
     // SVG with scripts
     /<svg[^>]*>.*?<script.*?<\/script>.*?<\/svg>/gi,
-    
+
     // CSS with expressions
     /expression\s*\(/gi,
     /url\s*\(\s*["']?javascript:/gi,
@@ -67,13 +67,13 @@ export function validateXSSInput(input: string): boolean {
   // Check for encoded XSS attempts
   const encodedPatterns = [
     /&#x3c;/gi, // <
-    /&#60;/gi,  // <
-    /%3c/gi,    // <
-    /%3C/gi,    // <
+    /&#60;/gi, // <
+    /%3c/gi, // <
+    /%3C/gi, // <
     /&#x3e;/gi, // >
-    /&#62;/gi,  // >
-    /%3e/gi,    // >
-    /%3E/gi,    // >
+    /&#62;/gi, // >
+    /%3e/gi, // >
+    /%3E/gi, // >
   ];
 
   for (const pattern of encodedPatterns) {
@@ -137,13 +137,13 @@ export function validateHTMLContent(html: string): {
   }
 
   const warnings: string[] = [];
-  
+
   if (!validateXSSInput(html)) {
     warnings.push("Potential XSS content detected");
   }
 
   const sanitized = sanitizeXSSInput(html);
-  
+
   return {
     isValid: warnings.length === 0,
     sanitized,

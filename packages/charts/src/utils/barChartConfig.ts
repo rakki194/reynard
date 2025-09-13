@@ -79,7 +79,9 @@ export const createBarChartOptions = (options: BarChartConfigOptions) => {
         },
         ticks: {
           color: "var(--text-secondary)",
-          ...(categoryAxis === "x" ? options.xAxis?.ticks : options.yAxis?.ticks),
+          ...(categoryAxis === "x"
+            ? options.xAxis?.ticks
+            : options.yAxis?.ticks),
         },
         stacked: options.stacked,
       },

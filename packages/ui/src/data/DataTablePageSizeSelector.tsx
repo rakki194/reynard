@@ -11,7 +11,9 @@ export interface DataTablePageSizeSelectorProps {
   onPageSizeChange?: (pageSize: number) => void;
 }
 
-export const DataTablePageSizeSelector: Component<DataTablePageSizeSelectorProps> = (props) => {
+export const DataTablePageSizeSelector: Component<
+  DataTablePageSizeSelectorProps
+> = (props) => {
   return (
     <div class="reynard-data-table__page-size">
       <label for="page-size-select">Rows per page:</label>

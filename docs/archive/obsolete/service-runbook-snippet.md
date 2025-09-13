@@ -1,6 +1,7 @@
 # Service Operations Runbook Snippet
 
-This document provides operational guidance for interpreting service states, performing restarts, and configuring backoff parameters.
+This document provides operational guidance for interpreting service states, performing restarts, and
+configuring backoff parameters.
 
 ## Service State Interpretation
 

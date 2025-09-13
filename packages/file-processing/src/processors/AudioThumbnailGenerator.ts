@@ -115,7 +115,6 @@ export class AudioThumbnailGenerator {
     }
   }
 
-
   /**
    * Clean up resources
    */

@@ -6,9 +6,19 @@
  */
 
 import { createSignal, createEffect, onCleanup } from "solid-js";
-import { createPanelState, updatePanelState, type PanelState } from "./draggable-resizable/PanelState.js";
-import { applyConstraints, type PanelConstraints } from "./draggable-resizable/PanelConstraints.js";
-import { savePanelState, loadPanelState } from "./draggable-resizable/PanelStorage.js";
+import {
+  createPanelState,
+  updatePanelState,
+  type PanelState,
+} from "./draggable-resizable/PanelState.js";
+import {
+  applyConstraints,
+  type PanelConstraints,
+} from "./draggable-resizable/PanelConstraints.js";
+import {
+  savePanelState,
+  loadPanelState,
+} from "./draggable-resizable/PanelStorage.js";
 
 export interface DraggableResizableOptions extends PanelConstraints {
   initialState: PanelState;
@@ -35,14 +45,25 @@ export interface DraggableResizableReturn {
 export function useDraggableResizable(
   options: DraggableResizableOptions,
 ): DraggableResizableReturn {
-  const { initialState, storageKey, onStateChange, onDrag: _onDrag, onResize: _onResize, onShow, onHide: _onHide, ...constraints } = options;
-  
+  const {
+    initialState,
+    storageKey,
+    onStateChange,
+    onDrag: _onDrag,
+    onResize: _onResize,
+    onShow,
+    onHide: _onHide,
+    ...constraints
+  } = options;
+
   // Load initial state from storage if available
-  const [state, setState] = createPanelState(storageKey ? loadPanelState(storageKey, initialState) : initialState);
+  const [state, setState] = createPanelState(
+    storageKey ? loadPanelState(storageKey, initialState) : initialState,
+  );
   const [isDragging, setIsDragging] = createSignal(false);
   const [isResizing, setIsResizing] = createSignal(false);
   const [ref, setRef] = createSignal<HTMLElement>();
-  
+
   // Save state to storage when it changes
   createEffect(() => {
     if (storageKey) {
@@ -50,7 +71,7 @@ export function useDraggableResizable(
     }
     onStateChange?.(state());
   });
-  
+
   // Apply constraints
   createEffect(() => {
     const constrainedState = applyConstraints(state(), constraints);
@@ -58,22 +79,28 @@ export function useDraggableResizable(
       setState(constrainedState);
     }
   });
-  
+
   const handleMouseDown = (e: MouseEvent, type: "drag" | "resize") => {
     e.preventDefault();
-    if (type === "drag") { setIsDragging(true); onShow?.(); } else { setIsResizing(true); }
+    if (type === "drag") {
+      setIsDragging(true);
+      onShow?.();
+    } else {
+      setIsResizing(true);
+    }
   };
-  
-  const toggleMinimized = () => updatePanelState(setState, { minimized: !state().minimized });
+
+  const toggleMinimized = () =>
+    updatePanelState(setState, { minimized: !state().minimized });
   const resetPosition = () => setState(initialState);
-  
+
   // Cleanup
   onCleanup(() => {
     if (storageKey) {
       savePanelState(storageKey, state());
     }
   });
-  
+
   return {
     state,
     isDragging,

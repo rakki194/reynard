@@ -8,7 +8,11 @@ import { FileProcessingPipeline } from "../../processing-pipeline";
 /**
  * Mock File object for testing
  */
-export const createMockFile = (name: string, size: number, type: string): File => {
+export const createMockFile = (
+  name: string,
+  size: number,
+  type: string,
+): File => {
   const file = new File(["test content"], name, { type });
   Object.defineProperty(file, "size", { value: size });
   return file;
@@ -17,10 +21,12 @@ export const createMockFile = (name: string, size: number, type: string): File =
 /**
  * Create a standard FileProcessingPipeline for testing
  */
-export const createTestPipeline = (config?: Partial<{
-  maxFileSize: number;
-  defaultThumbnailSize: [number, number];
-}>) => {
+export const createTestPipeline = (
+  config?: Partial<{
+    maxFileSize: number;
+    defaultThumbnailSize: [number, number];
+  }>,
+) => {
   return new FileProcessingPipeline({
     maxFileSize: 10 * 1024 * 1024, // 10MB
     defaultThumbnailSize: [200, 200],

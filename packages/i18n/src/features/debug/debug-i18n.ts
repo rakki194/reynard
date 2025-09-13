@@ -3,10 +3,7 @@
  * Debugging, performance monitoring, and development tools for internationalization
  */
 
-import type {
-  LanguageCode,
-  I18nModule,
-} from "../../types";
+import type { LanguageCode, I18nModule } from "../../types";
 
 // Module factory
 import { createBaseI18nModule } from "../../core/providers/module-factory";
@@ -46,7 +43,8 @@ export type { EnhancedI18nOptions } from "../../core/providers/module-factory";
 
 // Debug i18n module creation with all development features
 export function createDebugI18nModule(options: unknown = {}): DebugI18nModule {
-  const { locale, setLocale, translations, translationEngine } = createBaseI18nModule(options);
+  const { locale, setLocale, translations, translationEngine } =
+    createBaseI18nModule(options);
 
   // Initialize debug features
   const i18nDebugger = new I18nDebugger();

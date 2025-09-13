@@ -261,6 +261,51 @@ else
     fi
 fi
 
+# Markdown Link Validation
+echo -e "${BLUE}🔗 Running markdown link validation...${NC}"
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MARKDOWN_LINK_VALIDATOR_SCRIPT="$SCRIPT_DIR/validate-markdown-links.js"
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+# Check if markdown link validator script exists
+if [ ! -f "$MARKDOWN_LINK_VALIDATOR_SCRIPT" ]; then
+    echo -e "${YELLOW}⚠️  Markdown link validator script not found at: $MARKDOWN_LINK_VALIDATOR_SCRIPT${NC}"
+    echo -e "${YELLOW}   Skipping markdown link validation...${NC}"
+else
+    # Check if we have any markdown files staged
+    if [ -z "$STAGED_MARKDOWN_FILES_ALL" ]; then
+        echo -e "${GREEN}✅ No markdown files staged for link validation${NC}"
+    else
+        # Run markdown link validation
+        cd "$PROJECT_ROOT"
+        
+        if node "$MARKDOWN_LINK_VALIDATOR_SCRIPT" --staged; then
+            echo -e "${GREEN}✅ Markdown link validation passed${NC}"
+        else
+            MARKDOWN_LINK_VALIDATION_EXIT_CODE=$?
+            
+            if [ $MARKDOWN_LINK_VALIDATION_EXIT_CODE -eq 1 ]; then
+                echo -e "${RED}❌ Markdown link validation failed${NC}"
+                echo -e "${RED}   Please fix the broken links above before committing${NC}"
+                echo ""
+                echo -e "${YELLOW}💡 Tips:${NC}"
+                echo -e "${YELLOW}   - Check file paths and ensure files exist${NC}"
+                echo -e "${YELLOW}   - Verify anchor names match heading text${NC}"
+                echo -e "${YELLOW}   - Use relative paths for internal links${NC}"
+                echo -e "${YELLOW}   - Test external URLs in a browser${NC}"
+                echo -e "${YELLOW}   - Run 'node .husky/validate-markdown-links.js --all' to validate all files${NC}"
+                echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
+                exit 1
+            else
+                echo -e "${RED}❌ Markdown link validation script failed unexpectedly${NC}"
+                exit 1
+            fi
+        fi
+    fi
+fi
+
 # Python Validation
 echo -e "${BLUE}🐍 Running Python validation...${NC}"
 

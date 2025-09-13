@@ -2,7 +2,8 @@
 
 > **Beautiful documentation site application for Reynard framework** 🦊
 
-A complete documentation site built with Reynard itself, featuring beautiful design, interactive examples, and comprehensive API documentation.
+A complete documentation site built with Reynard itself, featuring beautiful design, interactive examples, and
+comprehensive API documentation.
 
 ## ✨ Features
 

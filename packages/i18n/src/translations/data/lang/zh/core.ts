@@ -166,5 +166,4 @@ export const coreTranslations = {
     "authentication-and-input-validation-integration": "身份验证和输入验证集成",
     "performance-and-security-integration": "性能和安全集成",
   },
-
 };

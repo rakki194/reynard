@@ -14,7 +14,10 @@ import {
 } from "../types/index.js";
 import { createNLWebState, NLWebState } from "./useNLWebState.js";
 import { createNLWebActions, NLWebActions } from "./useNLWebActions.js";
-import { createNLWebHealthManager, NLWebHealthManager } from "./useNLWebHealth.js";
+import {
+  createNLWebHealthManager,
+  NLWebHealthManager,
+} from "./useNLWebHealth.js";
 
 export interface UseNLWebOptions {
   /** Base URL for NLWeb API */
@@ -39,7 +42,10 @@ export interface UseNLWebReturn {
   error: () => string | null;
 
   // Actions
-  getSuggestions: (query: string, context?: Record<string, unknown>) => Promise<void>;
+  getSuggestions: (
+    query: string,
+    context?: Record<string, unknown>,
+  ) => Promise<void>;
   getHealth: () => Promise<void>;
   getConfiguration: () => Promise<void>;
   getTools: () => Promise<void>;

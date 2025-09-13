@@ -3,10 +3,7 @@
  * Core translation logic and namespace management
  */
 
-import type {
-  LanguageCode,
-  Translations,
-} from "../types";
+import type { LanguageCode, Translations } from "../types";
 
 // Core translation functionality
 import {
@@ -60,7 +57,7 @@ export function createTranslationEngine(
     usedNamespaces?: string[];
     preloadLocales?: LanguageCode[];
     initialTranslations?: Partial<Translations>;
-  }
+  },
 ) {
   const {
     enableDebug,
@@ -76,17 +73,24 @@ export function createTranslationEngine(
     enablePerformanceMonitoring,
   });
 
-  const loadingEffect = createTranslationLoadingEffect(locale, setTranslations, {
-    enablePerformanceMonitoring,
-    intlConfig,
-    usedNamespaces,
-    preloadLocales,
-    initialTranslations,
-  });
+  const loadingEffect = createTranslationLoadingEffect(
+    locale,
+    setTranslations,
+    {
+      enablePerformanceMonitoring,
+      intlConfig,
+      usedNamespaces,
+      preloadLocales,
+      initialTranslations,
+    },
+  );
 
   const i18nDebugger = {} as any; // Placeholder - I18nDebugger not available
   const features = createTranslationFeatures(t, locale);
-  const namespaceLoader = createNamespaceLoader(locale, loadingEffect.optimizedLoader);
+  const namespaceLoader = createNamespaceLoader(
+    locale,
+    loadingEffect.optimizedLoader,
+  );
   const cacheManager = createCacheManager();
 
   return {

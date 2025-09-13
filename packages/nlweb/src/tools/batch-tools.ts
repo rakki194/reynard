@@ -1,6 +1,6 @@
 /**
  * Batch Operations Tools Configuration
- * 
+ *
  * Defines batch processing tools for the NLWeb service.
  */
 

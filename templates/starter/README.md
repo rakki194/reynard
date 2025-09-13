@@ -1,6 +1,7 @@
 # 🦊 Reynard Starter Template
 
-A modern, comprehensive SolidJS application template showcasing the full power of the Reynard framework. Experience cutting-edge web development with whimsical charm and professional polish.
+A modern, comprehensive SolidJS application template showcasing the full power of
+the Reynard framework. Experience cutting-edge web development with whimsical charm and professional polish.
 
 ## ✨ Features Demonstrated
 
@@ -134,7 +135,7 @@ npm test:coverage
 
 ## 📚 Learn More
 
-- [Reynard Documentation](../../../docs)
+- [Reynard Documentation](../../docs)
 - [SolidJS Documentation](https://solidjs.com)
 - [Vite Documentation](https://vitejs.dev)
 

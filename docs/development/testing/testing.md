@@ -43,7 +43,8 @@ between source code and test files. Integration tests are also located in the
 
 ---
 
-**IMPORTANT**: The Reynard monorepo does NOT have a root-level `src/` directory. All tests are organized within individual packages under `packages/[package-name]/src/__tests__/`.
+**IMPORTANT**: The Reynard monorepo does NOT have a root-level `src/` directory. All tests are organized within
+individual packages under `packages/[package-name]/src/__tests__/`.
 
 ### Package-Based Test Structure
 

@@ -41,7 +41,10 @@ export async function setupClusterRaycaster(
 
     if (intersects.length > 0) {
       const intersected = intersects[0].object;
-      if (intersected.userData?.clusterId && typeof intersected.userData.clusterId === 'string') {
+      if (
+        intersected.userData?.clusterId &&
+        typeof intersected.userData.clusterId === "string"
+      ) {
         setHoveredCluster(intersected.userData.clusterId);
       }
     } else {
@@ -57,7 +60,11 @@ export async function setupClusterRaycaster(
 
     if (intersects.length > 0) {
       const intersected = intersects[0].object;
-      if (intersected.userData?.clusterId && typeof intersected.userData.clusterId === 'string' && onClusterSelect) {
+      if (
+        intersected.userData?.clusterId &&
+        typeof intersected.userData.clusterId === "string" &&
+        onClusterSelect
+      ) {
         onClusterSelect(intersected.userData.clusterId);
       }
     }

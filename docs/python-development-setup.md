@@ -1,6 +1,7 @@
 # 🦊 Python Development Setup for Reynard
 
-This document describes the professional Python development environment setup for the Reynard framework, including linting, formatting, and validation tools integrated with Husky git hooks.
+This document describes the professional Python development environment setup for the Reynard framework,
+including linting, formatting, and validation tools integrated with Husky git hooks.
 
 ## 🚀 Quick Setup
 
@@ -157,7 +158,8 @@ All tools use the Reynard color scheme:
 
 ### Furry Flair
 
-The setup includes whimsical fox-themed messages and emojis throughout the development workflow, maintaining the Reynard brand personality.
+The setup includes whimsical fox-themed messages and
+emojis throughout the development workflow, maintaining the Reynard brand personality.
 
 ## 📁 Project Structure
 
@@ -245,4 +247,6 @@ npm run python:lint
 
 ## Happy Coding
 
-The Reynard Python development environment is designed to help you write clean, secure, and maintainable Python code while maintaining the framework's playful and professional character. The fox is always watching, so make sure your code is as cunning as it is clean! 🦊✨
+The Reynard Python development environment is designed to help you write clean, secure, and
+maintainable Python code while maintaining the framework's playful and
+professional character. The fox is always watching, so make sure your code is as cunning as it is clean! 🦊✨

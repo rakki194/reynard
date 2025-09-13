@@ -1,6 +1,6 @@
 /**
  * 🐺 PENETRATION TESTING HELPERS
- * 
+ *
  * *snarls with predatory glee* Helper functions for integrating blackhat exploits
  * with E2E authentication tests for comprehensive security testing.
  */
@@ -33,7 +33,7 @@ export interface PenetrationResult {
   vulnerabilitiesFound: number;
   executionTime: number;
   details: any;
-  severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  severity: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
   recommendations?: string[];
 }
 
@@ -68,9 +68,9 @@ export class PenetrationTestHelper {
       verbose: process.env.VERBOSE_TESTING === "true",
       timeout: 60000,
       maxConcurrent: 5,
-      ...config
+      ...config,
     };
-    
+
     this.blackhatPath = path.join(process.cwd(), "..", "blackhat");
   }
 
@@ -80,18 +80,18 @@ export class PenetrationTestHelper {
   async testJWTSecurity(): Promise<PenetrationResult[]> {
     const jwtTests = [
       "jwt_exploits.secret_key_attack",
-      "jwt_exploits.signature_bypass", 
+      "jwt_exploits.signature_bypass",
       "jwt_exploits.timing_attack",
-      "jwt_exploits.token_replay"
+      "jwt_exploits.token_replay",
     ];
 
     const results: PenetrationResult[] = [];
-    
+
     for (const test of jwtTests) {
       const result = await this.runExploit(test, {
         target: this.config.backendUrl,
         verbose: this.config.verbose,
-        destructive: this.config.destructive
+        destructive: this.config.destructive,
       });
       results.push(result);
     }
@@ -107,16 +107,16 @@ export class PenetrationTestHelper {
       "sql_injection.regex_bypass",
       "sql_injection.blind_injection",
       "sql_injection.obfuscated_payloads",
-      "sql_injection.union_attacks"
+      "sql_injection.union_attacks",
     ];
 
     const results: PenetrationResult[] = [];
-    
+
     for (const test of sqlTests) {
       const result = await this.runExploit(test, {
         target: this.config.backendUrl,
         verbose: this.config.verbose,
-        destructive: this.config.destructive
+        destructive: this.config.destructive,
       });
       results.push(result);
     }
@@ -132,16 +132,16 @@ export class PenetrationTestHelper {
       "path_traversal.encoded_traversal",
       "path_traversal.unicode_bypass",
       "path_traversal.double_encoded",
-      "path_traversal.windows_bypass"
+      "path_traversal.windows_bypass",
     ];
 
     const results: PenetrationResult[] = [];
-    
+
     for (const test of pathTests) {
       const result = await this.runExploit(test, {
         target: this.config.backendUrl,
         verbose: this.config.verbose,
-        destructive: this.config.destructive
+        destructive: this.config.destructive,
       });
       results.push(result);
     }
@@ -155,17 +155,17 @@ export class PenetrationTestHelper {
   async testFuzzing(): Promise<PenetrationResult[]> {
     const fuzzingTests = [
       "fuzzing.comprehensive_fuzzer",
-      "fuzzing.endpoint_fuzzer"
+      "fuzzing.endpoint_fuzzer",
     ];
 
     const results: PenetrationResult[] = [];
-    
+
     for (const test of fuzzingTests) {
       const result = await this.runExploit(test, {
         target: this.config.backendUrl,
         verbose: this.config.verbose,
         destructive: this.config.destructive,
-        maxPayloads: 50 // Limit for E2E testing
+        maxPayloads: 50, // Limit for E2E testing
       });
       results.push(result);
     }
@@ -180,16 +180,16 @@ export class PenetrationTestHelper {
     const authTests = [
       "rate_limiting.rate_limit_bypass",
       "cors_exploits.cors_misconfiguration",
-      "csrf_exploits.csrf_attacks"
+      "csrf_exploits.csrf_attacks",
     ];
 
     const results: PenetrationResult[] = [];
-    
+
     for (const test of authTests) {
       const result = await this.runExploit(test, {
         target: this.config.backendUrl,
         verbose: this.config.verbose,
-        destructive: this.config.destructive
+        destructive: this.config.destructive,
       });
       results.push(result);
     }
@@ -202,26 +202,30 @@ export class PenetrationTestHelper {
    */
   async runCompleteSecurityAssessment(): Promise<SecurityAssessment> {
     const startTime = Date.now();
-    
+
     try {
       const pythonPath = process.env.PYTHON_PATH || "python3";
-      const command = `${pythonPath} run_all_exploits.py --url ${this.config.backendUrl} ${this.config.verbose ? '--verbose' : ''} ${this.config.destructive ? '--destructive' : ''}`;
+      const command = `${pythonPath} run_all_exploits.py --url ${this.config.backendUrl} ${this.config.verbose ? "--verbose" : ""} ${this.config.destructive ? "--destructive" : ""}`;
 
-      const { stdout, stderr } = await execAsync(command, { 
+      const { stdout, stderr } = await execAsync(command, {
         timeout: this.config.timeout * 2,
-        cwd: this.blackhatPath 
+        cwd: this.blackhatPath,
       });
 
-      if (stderr && !stderr.includes('Warning')) {
+      if (stderr && !stderr.includes("Warning")) {
         console.warn(`⚠️ Security assessment warning: ${stderr}`);
       }
 
       const executionTime = Date.now() - startTime;
-      
+
       // Parse results from output
-      const vulnerabilityMatch = stdout.match(/Total Vulnerabilities Found: (\d+)/);
-      const totalVulnerabilities = vulnerabilityMatch ? parseInt(vulnerabilityMatch[1]) : 0;
-      
+      const vulnerabilityMatch = stdout.match(
+        /Total Vulnerabilities Found: (\d+)/,
+      );
+      const totalVulnerabilities = vulnerabilityMatch
+        ? parseInt(vulnerabilityMatch[1])
+        : 0;
+
       const exploitsMatch = stdout.match(/Total Exploits Executed: (\d+)/);
       const exploitsRun = exploitsMatch ? parseInt(exploitsMatch[1]) : 0;
 
@@ -244,21 +248,21 @@ export class PenetrationTestHelper {
         highIssues,
         mediumIssues,
         lowIssues,
-        recommendations: this.generateSecurityRecommendations(totalVulnerabilities)
+        recommendations:
+          this.generateSecurityRecommendations(totalVulnerabilities),
       };
-
     } catch (error) {
       console.error(`❌ Security assessment failed:`, error);
-      
+
       return {
         totalVulnerabilities: 0,
         exploitsRun: 0,
-        securityRating: 'ASSESSMENT_FAILED',
+        securityRating: "ASSESSMENT_FAILED",
         criticalIssues: 0,
         highIssues: 0,
         mediumIssues: 0,
         lowIssues: 0,
-        recommendations: ['Fix security assessment infrastructure']
+        recommendations: ["Fix security assessment infrastructure"],
       };
     }
   }
@@ -267,14 +271,14 @@ export class PenetrationTestHelper {
    * Run a specific exploit
    */
   private async runExploit(
-    exploitModule: string, 
-    options: any = {}
+    exploitModule: string,
+    options: any = {},
   ): Promise<PenetrationResult> {
     const startTime = Date.now();
-    
+
     try {
       const pythonPath = process.env.PYTHON_PATH || "python3";
-      
+
       const command = `${pythonPath} -c "
 import sys
 sys.path.append('${this.blackhatPath}')
@@ -294,12 +298,12 @@ print(json.dumps({
 }))
 "`;
 
-      const { stdout, stderr } = await execAsync(command, { 
+      const { stdout, stderr } = await execAsync(command, {
         timeout: this.config.timeout,
-        cwd: this.blackhatPath 
+        cwd: this.blackhatPath,
       });
 
-      if (stderr && !stderr.includes('Warning')) {
+      if (stderr && !stderr.includes("Warning")) {
         console.warn(`⚠️ Exploit ${exploitModule} warning: ${stderr}`);
       }
 
@@ -313,20 +317,22 @@ print(json.dumps({
         executionTime,
         details: result.details || [],
         severity: this.determineSeverity(result.vulnerabilities_found || 0),
-        recommendations: this.generateExploitRecommendations(exploitModule, result.vulnerabilities_found || 0)
+        recommendations: this.generateExploitRecommendations(
+          exploitModule,
+          result.vulnerabilities_found || 0,
+        ),
       };
-
     } catch (error) {
       console.error(`❌ Exploit ${exploitModule} failed:`, error);
-      
+
       return {
         exploitName: exploitModule,
         success: false,
         vulnerabilitiesFound: 0,
         executionTime: Date.now() - startTime,
         details: { error: error.message },
-        severity: 'LOW',
-        recommendations: [`Fix ${exploitModule} execution`]
+        severity: "LOW",
+        recommendations: [`Fix ${exploitModule} execution`],
       };
     }
   }
@@ -335,39 +341,44 @@ print(json.dumps({
    * Get the exploit class name from module path
    */
   private getExploitClassName(modulePath: string): string {
-    const parts = modulePath.split('.');
-    const className = parts[parts.length - 1]
-      .split('_')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join('') + 'Exploit';
-    
+    const parts = modulePath.split(".");
+    const className =
+      parts[parts.length - 1]
+        .split("_")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join("") + "Exploit";
+
     return className;
   }
 
   /**
    * Determine severity based on vulnerability count
    */
-  private determineSeverity(count: number): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' {
-    if (count >= 5) return 'CRITICAL';
-    if (count >= 3) return 'HIGH';
-    if (count >= 1) return 'MEDIUM';
-    return 'LOW';
+  private determineSeverity(
+    count: number,
+  ): "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" {
+    if (count >= 5) return "CRITICAL";
+    if (count >= 3) return "HIGH";
+    if (count >= 1) return "MEDIUM";
+    return "LOW";
   }
 
   /**
    * Determine overall security rating
    */
   private determineSecurityRating(count: number): string {
-    if (count >= 5) return 'CRITICAL - Multiple vulnerabilities found';
-    if (count >= 3) return 'HIGH RISK - Significant vulnerabilities found';
-    if (count >= 1) return 'MEDIUM RISK - Some vulnerabilities found';
-    return 'SECURE - No vulnerabilities found';
+    if (count >= 5) return "CRITICAL - Multiple vulnerabilities found";
+    if (count >= 3) return "HIGH RISK - Significant vulnerabilities found";
+    if (count >= 1) return "MEDIUM RISK - Some vulnerabilities found";
+    return "SECURE - No vulnerabilities found";
   }
 
   /**
    * Generate security recommendations
    */
-  private generateSecurityRecommendations(vulnerabilityCount: number): string[] {
+  private generateSecurityRecommendations(
+    vulnerabilityCount: number,
+  ): string[] {
     const recommendations = [
       "🔐 Authentication & Authorization:",
       "  • Use persistent, secure JWT secret keys",
@@ -397,12 +408,14 @@ print(json.dumps({
       "  • Configure proper CORS policies",
       "  • Use HTTPS in production",
       "  • Implement security headers",
-      "  • Add request validation"
+      "  • Add request validation",
     ];
 
     if (vulnerabilityCount > 0) {
       recommendations.unshift("🚨 IMMEDIATE ACTION REQUIRED:");
-      recommendations.unshift("  • Review and fix all identified vulnerabilities");
+      recommendations.unshift(
+        "  • Review and fix all identified vulnerabilities",
+      );
       recommendations.unshift("  • Implement additional security controls");
       recommendations.unshift("  • Conduct regular security assessments");
     }
@@ -413,42 +426,45 @@ print(json.dumps({
   /**
    * Generate exploit-specific recommendations
    */
-  private generateExploitRecommendations(exploitModule: string, vulnerabilityCount: number): string[] {
+  private generateExploitRecommendations(
+    exploitModule: string,
+    vulnerabilityCount: number,
+  ): string[] {
     if (vulnerabilityCount === 0) {
       return [`✅ ${exploitModule} - No vulnerabilities found`];
     }
 
     const recommendations: string[] = [];
-    
-    if (exploitModule.includes('jwt')) {
+
+    if (exploitModule.includes("jwt")) {
       recommendations.push("🔐 JWT Security Recommendations:");
       recommendations.push("  • Use persistent, secure secret keys");
       recommendations.push("  • Implement proper token rotation");
       recommendations.push("  • Add token validation middleware");
     }
-    
-    if (exploitModule.includes('sql')) {
+
+    if (exploitModule.includes("sql")) {
       recommendations.push("🛡️ SQL Injection Prevention:");
       recommendations.push("  • Use parameterized queries exclusively");
       recommendations.push("  • Implement input validation");
       recommendations.push("  • Add database access controls");
     }
-    
-    if (exploitModule.includes('path')) {
+
+    if (exploitModule.includes("path")) {
       recommendations.push("📁 Path Traversal Prevention:");
       recommendations.push("  • Implement proper path validation");
       recommendations.push("  • Use allowlists for file access");
       recommendations.push("  • Add file system access controls");
     }
-    
-    if (exploitModule.includes('cors')) {
+
+    if (exploitModule.includes("cors")) {
       recommendations.push("🌐 CORS Security:");
       recommendations.push("  • Configure specific allowed origins");
       recommendations.push("  • Avoid wildcard origins");
       recommendations.push("  • Implement proper CORS headers");
     }
-    
-    if (exploitModule.includes('rate')) {
+
+    if (exploitModule.includes("rate")) {
       recommendations.push("⚡ Rate Limiting:");
       recommendations.push("  • Implement proper rate limiting");
       recommendations.push("  • Add IP-based restrictions");
@@ -463,7 +479,7 @@ print(json.dumps({
    */
   async generateSecurityReport(): Promise<string> {
     const assessment = await this.runCompleteSecurityAssessment();
-    
+
     const report = `
 🐺 REYNARD SECURITY ASSESSMENT REPORT
 =====================================
@@ -480,7 +496,7 @@ print(json.dumps({
 - Low Issues: ${assessment.lowIssues}
 
 🛡️ SECURITY RECOMMENDATIONS
-${assessment.recommendations.map(rec => `- ${rec}`).join('\n')}
+${assessment.recommendations.map((rec) => `- ${rec}`).join("\n")}
 
 Generated: ${new Date().toISOString()}
 Target: ${this.config.backendUrl}

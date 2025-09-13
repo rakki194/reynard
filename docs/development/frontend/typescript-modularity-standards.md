@@ -65,7 +65,9 @@
 
 ## Overview
 
-This document outlines the comprehensive approach to maintaining modularity standards and type safety in the Reynard framework's TypeScript codebase. It covers the resolution of common issues including function length violations, type safety problems, and proper AbortSignal handling.
+This document outlines the comprehensive approach to maintaining modularity standards and
+type safety in the Reynard framework's TypeScript codebase. It covers the resolution of common issues including
+function length violations, type safety problems, and proper AbortSignal handling.
 
 ## Quick Reference
 
@@ -307,7 +309,10 @@ Every source file should be under 140 lines (excluding blank lines and comments)
 
 ### Enforcement
 
-The 140-line limit is enforced through ESLint rules and code review processes. When violations occur, the code must be refactored using the modular patterns outlined in this document. This standard is established in [ADR-001: Modularity Standards](../architecture/decisions/001-modularity-standards.md).
+The 140-line limit is enforced through ESLint rules and code review processes. When
+violations occur, the code must be refactored using the modular patterns outlined in
+this document. This standard is established in
+[ADR-001: Modularity Standards](../architecture/decisions/001-modularity-standards.md).
 
 ## Modular Refactoring Strategies
 
@@ -684,7 +689,8 @@ The modular approach to TypeScript development in the Reynard framework ensures:
 - **Scalability**: Easy to extend and modify individual components
 - **Best Practices**: Following 2025 TypeScript standards and patterns
 
-By applying these standards consistently across the codebase, we maintain a high-quality, maintainable, and scalable TypeScript architecture that serves as a foundation for the entire Reynard framework.
+By applying these standards consistently across the codebase, we maintain a high-quality, maintainable, and
+scalable TypeScript architecture that serves as a foundation for the entire Reynard framework.
 
 ## References
 

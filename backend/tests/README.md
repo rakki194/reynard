@@ -336,4 +336,5 @@ When adding new tests:
 
 ---
 
-🦦> Happy testing! Remember, good tests are like a playful otter - thorough, curious, and always exploring new possibilities!
+🦦> Happy testing! Remember, good tests are like a playful otter - thorough, curious, and
+always exploring new possibilities!

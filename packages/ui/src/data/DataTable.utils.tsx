@@ -16,7 +16,10 @@ export const getCellValue = (row: unknown, column: Column): unknown => {
   return undefined;
 };
 
-export const getTableClasses = (loading: boolean, customClass?: string): string => {
+export const getTableClasses = (
+  loading: boolean,
+  customClass?: string,
+): string => {
   const classes = ["reynard-data-table"];
   if (loading) classes.push("reynard-data-table--loading");
   if (customClass) classes.push(customClass);
@@ -26,7 +29,7 @@ export const getTableClasses = (loading: boolean, customClass?: string): string 
 export const getSortIcon = (
   column: Column,
   sortColumn: string | null,
-  sortDirection: SortDirection
+  sortDirection: SortDirection,
 ): JSX.Element | null => {
   if (!column.sortable) return null;
 
@@ -44,9 +47,7 @@ export const getSortIcon = (
           isActive
             ? "reynard-data-table__sort-svg--active"
             : "reynard-data-table__sort-svg--inactive"
-        } ${
-          direction === "desc" ? "reynard-data-table__sort-svg--desc" : ""
-        }`}
+        } ${direction === "desc" ? "reynard-data-table__sort-svg--desc" : ""}`}
       >
         <path d="M6 1l4 4H8v5H4V5H2z" />
       </svg>
@@ -58,7 +59,7 @@ export const sortData = <T,>(
   data: T[],
   columns: Column<T>[],
   sortColumn: string | null,
-  sortDirection: SortDirection
+  sortDirection: SortDirection,
 ): T[] => {
   if (!sortColumn || !sortDirection) return data;
 
@@ -72,10 +73,10 @@ export const sortData = <T,>(
     if (typeof column.accessor === "function") {
       aVal = column.accessor(a);
       bVal = column.accessor(b);
-      } else {
-        aVal = (a as Record<string, unknown>)[column.accessor as string];
-        bVal = (b as Record<string, unknown>)[column.accessor as string];
-      }
+    } else {
+      aVal = (a as Record<string, unknown>)[column.accessor as string];
+      bVal = (b as Record<string, unknown>)[column.accessor as string];
+    }
 
     // Handle null/undefined values
     if (aVal == null && bVal == null) return 0;
@@ -111,7 +112,7 @@ export const paginateData = <T,>(
   data: T[],
   page: number,
   pageSize: number,
-  showPagination: boolean
+  showPagination: boolean,
 ): T[] => {
   if (!showPagination) return data;
   const start = (page - 1) * pageSize;

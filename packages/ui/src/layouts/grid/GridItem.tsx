@@ -35,8 +35,8 @@ export const GridItem: Component<GridItemProps> = (props) => {
         local.colStart,
         local.colEnd,
         local.rowStart,
-        local.rowEnd
-      )
+        local.rowEnd,
+      ),
     );
 
     if (local.class) classes.push(local.class);

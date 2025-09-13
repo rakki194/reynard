@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document outlines the security measures implemented in the Reynard framework and provides guidance for secure development practices.
+This document outlines the security measures implemented in the Reynard framework and
+provides guidance for secure development practices.
 
 ## Security Features
 
@@ -143,7 +144,8 @@ The framework is designed to help applications meet common security standards:
 
 ## Updates
 
-This security policy is regularly updated to reflect new threats and security measures. Please check back periodically for updates.
+This security policy is regularly updated to reflect new threats and
+security measures. Please check back periodically for updates.
 
 ## Contact
 

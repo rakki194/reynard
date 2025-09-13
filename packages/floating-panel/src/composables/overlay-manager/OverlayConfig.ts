@@ -21,7 +21,8 @@ export const DEFAULT_OVERLAY_CONFIG: Required<OverlayConfig> = {
 /**
  * Create overlay configuration
  */
-export function createOverlayConfig(config?: OverlayConfig): Required<OverlayConfig> {
+export function createOverlayConfig(
+  config?: OverlayConfig,
+): Required<OverlayConfig> {
   return { ...DEFAULT_OVERLAY_CONFIG, ...config };
 }
-

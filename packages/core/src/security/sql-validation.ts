@@ -26,36 +26,36 @@ export function validateSQLInput(input: string): {
   const sqlPatterns = [
     // Basic SQL keywords in context
     /\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE|UNION|SCRIPT)\s+/gi,
-    
+
     // Comment patterns
     /--/g,
     /\/\*/g,
     /\*\//g,
-    
+
     // Quote patterns in SQL context
     /'[^']*'/g,
     /"[^"]*"/g,
     /`[^`]*`/g,
-    
+
     // Semicolon patterns
     /;/g,
-    
+
     // OR/AND patterns
     /\bOR\s+1\s*=\s*1\b/gi,
     /\bAND\s+1\s*=\s*1\b/gi,
     /\bOR\s+true\b/gi,
     /\bAND\s+true\b/gi,
-    
+
     // Time-based patterns
     /\bSLEEP\s*\(/gi,
     /\bWAITFOR\s+DELAY\b/gi,
     /\bBENCHMARK\s*\(/gi,
-    
+
     // Information schema patterns
     /\binformation_schema\b/gi,
     /\bsys\./gi,
     /\bmaster\./gi,
-    
+
     // Function patterns
     /\bCONCAT\s*\(/gi,
     /\bSUBSTRING\s*\(/gi,
@@ -63,11 +63,11 @@ export function validateSQLInput(input: string): {
     /\bASCII\s*\(/gi,
     /\bLENGTH\s*\(/gi,
     /\bCOUNT\s*\(/gi,
-    
+
     // Union patterns
     /\bUNION\s+SELECT\b/gi,
     /\bUNION\s+ALL\s+SELECT\b/gi,
-    
+
     // Stacked queries
     /\b;\s*(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER)\b/gi,
   ];
@@ -75,7 +75,9 @@ export function validateSQLInput(input: string): {
   // Check for dangerous patterns
   for (const pattern of sqlPatterns) {
     if (pattern.test(sanitized)) {
-      warnings.push(`Potential SQL injection pattern detected: ${pattern.source}`);
+      warnings.push(
+        `Potential SQL injection pattern detected: ${pattern.source}`,
+      );
     }
   }
 
@@ -84,7 +86,10 @@ export function validateSQLInput(input: string): {
     .replace(/['"`;]/g, "") // Remove quotes and semicolons
     .replace(/--.*$/gm, "") // Remove SQL comments
     .replace(/\/\*.*?\*\//gs, "") // Remove block comments
-    .replace(/\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE|UNION|SCRIPT)\b/gi, ""); // Remove SQL keywords
+    .replace(
+      /\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE|UNION|SCRIPT)\b/gi,
+      "",
+    ); // Remove SQL keywords
 
   // Check for remaining suspicious patterns
   const suspiciousPatterns = [

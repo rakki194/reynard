@@ -63,10 +63,15 @@ class MockHTTPClient {
     this.request = vi.fn().mockImplementation(async (options) => {
       const url = `${this.config.baseUrl}${options.endpoint}`;
       const headers = { ...this.baseHeaders, ...options.headers };
-      
+
       // Don't include body for GET requests
-      const body = options.method === "GET" ? undefined : (options.data ? JSON.stringify(options.data) : undefined);
-      
+      const body =
+        options.method === "GET"
+          ? undefined
+          : options.data
+            ? JSON.stringify(options.data)
+            : undefined;
+
       const response = await mockFetch(url, {
         method: options.method,
         headers,
@@ -74,7 +79,7 @@ class MockHTTPClient {
       });
 
       const responseData = await response.json();
-      
+
       // Throw error for 4xx and 5xx status codes
       if (response.status >= 400) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -92,7 +97,7 @@ class MockHTTPClient {
     this.upload = vi.fn().mockImplementation(async (options) => {
       const url = `${this.config.baseUrl}${options.endpoint}`;
       const headers = { ...this.baseHeaders, ...options.headers };
-      
+
       const response = await mockFetch(url, {
         method: "POST",
         headers,
@@ -100,7 +105,7 @@ class MockHTTPClient {
       });
 
       const responseData = await response.json();
-      
+
       // Throw error for 4xx and 5xx status codes
       if (response.status >= 400) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);

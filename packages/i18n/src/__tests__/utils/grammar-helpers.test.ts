@@ -4,10 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  getHungarianArticle,
-  getHungarianSuffix,
-} from "../../utils";
+import { getHungarianArticle, getHungarianSuffix } from "../../utils";
 
 describe("Hungarian Articles", () => {
   it('should use "az" for words starting with vowels', () => {
@@ -82,7 +79,6 @@ describe("Hungarian Articles", () => {
     expect(getHungarianArticle("  ház  ")).toBe("a");
   });
 });
-
 
 describe("Hungarian Suffix Selection", () => {
   it("should use back suffix for back vowel words", () => {

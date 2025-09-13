@@ -1,10 +1,12 @@
 # Package Export System
 
-The Package Export System provides a comprehensive solution for lazy loading of heavy packages with advanced features including validation, performance monitoring, and specialized exports.
+The Package Export System provides a comprehensive solution for lazy loading of heavy packages with
+advanced features including validation, performance monitoring, and specialized exports.
 
 ## Overview
 
-The system is designed to replace the basic lazy loading functionality in the original `lazy_loader.py` with a more sophisticated approach that includes:
+The system is designed to replace the basic lazy loading functionality in the original `lazy_loader.py` with
+a more sophisticated approach that includes:
 
 - **Proxy-based lazy loading** with automatic cleanup
 - **Export validation and type checking** at multiple levels

@@ -17,7 +17,7 @@ and modularizes YipYap's proven architectural patterns into reusable packages fo
     - [Specialized Packages](#specialized-packages)
   - [🎯 Philosophy](#-philosophy)
   - [🧪 Testing](#-testing)
-  - [� Security Testing with FENRIR](#-security-testing-with-fenrir)
+  - [🐺 Security Testing with FENRIR](#-security-testing-with-fenrir)
   - [🚀 Performance](#-performance)
     - [Bundle Sizes](#bundle-sizes)
   - [📚 Package Documentation](#-package-documentation)
@@ -100,10 +100,29 @@ and modularizes YipYap's proven architectural patterns into reusable packages fo
     - [Code Style](#code-style)
   - [📄 License](#-license)
   - [🙏 Acknowledgments](#-acknowledgments)
-    - [**🦊 Core Framework**](#-core-framework)
+    - [**🦊 Core Framework \& Libraries**](#-core-framework--libraries)
+      - [**Frontend Framework**](#frontend-framework)
+      - [**Data Visualization**](#data-visualization)
+      - [**Code Editing \& Syntax Highlighting**](#code-editing--syntax-highlighting)
+      - [**UI Components \& Icons**](#ui-components--icons)
+      - [**Security \& Authentication**](#security--authentication)
+      - [**Date \& Time Utilities**](#date--time-utilities)
+    - [**🦦 Backend \& AI/ML Infrastructure**](#-backend--aiml-infrastructure)
+      - [**Web Framework**](#web-framework)
+      - [**Database \& Vector Search**](#database--vector-search)
+      - [**AI/ML Models \& Services**](#aiml-models--services)
+      - [**Security \& Cryptography**](#security--cryptography)
     - [**🦦 YipYap Foundation**](#-yipyap-foundation)
+      - [**AI/ML Models \& Integrations**](#aiml-models--integrations)
+      - [**Datasets \& Training Resources**](#datasets--training-resources)
+      - [**Core Capabilities**](#core-capabilities)
+    - [**🧪 Testing \& Development Tools**](#-testing--development-tools)
+      - [**Testing Frameworks**](#testing-frameworks)
+      - [**Development Tools**](#development-tools)
     - [**🎯 Research and Development**](#-research-and-development)
     - [**🐺 Security Research**](#-security-research)
+      - [**CL4R1T4S Research**](#cl4r1t4s-research)
+    - [**📚 Documentation \& Standards**](#-documentation--standards)
   - [📞 Support](#-support)
   - [🚀 The Future of Reynard](#-the-future-of-reynard)
     - [**🦊 Join the Evolution**](#-join-the-evolution)
@@ -142,7 +161,7 @@ function App() {
 
 ## 📚 Documentation
 
-- **[📖 Overview](./docs/overview.md)** - Framework introduction and philosophy
+- **[📖 Overview](./docs/README.md)** - Framework introduction and philosophy
 - **[🚀 Quick Start](./docs/quickstart.md)** - Get up and running in minutes
 - **[📚 Complete Tutorial](./docs/tutorial.md)** - Build your first Reynard app
 - **[📦 Package Documentation](./docs/packages.md)** - Detailed package documentation
@@ -151,7 +170,9 @@ function App() {
 - **[📖 API Reference](./docs/api.md)** - Complete API documentation
 - **[🚀 Performance Guide](./docs/performance.md)** - Optimization and performance tips
 - **[🏗️ Architecture Patterns](./docs/architecture/modularity-patterns.md)** - Modularity patterns and refactoring strategies
-- **[🤝 Contributing](./docs/CONTRIBUTING.md)** - How to contribute to Reynard
+- **[🤝 Contributing](./CONTRIBUTING.md)** - How to contribute to Reynard
+- **[🔒 Security Testing](./blackhat/README.md)** - FENRIR security testing framework
+- **[🐍 Python Development](./docs/python-development-setup.md)** - Backend development setup
 
 ## ✨ Key Features
 
@@ -190,7 +211,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`reynard-monaco`** - Code editor integration
 - **`reynard-games`** - Game development utilities
 
-_[View complete package list and documentation →](./docs/PACKAGES.md)_
+_[View complete package list and documentation →](./docs/packages.md)_
 
 ## 🎯 Philosophy
 
@@ -228,7 +249,7 @@ pnpm run test:e2e
 python -m blackhat.run_all_exploits --target http://localhost:8000
 ```
 
-_[View complete testing guide →](./docs/CONTRIBUTING.md#testing)_
+_[View complete testing guide →](./CONTRIBUTING.md#testing)_
 _[View FENRIR security testing guide →](./blackhat/README.md)_
 
 ## 🐺 Security Testing with FENRIR
@@ -295,7 +316,7 @@ _[View complete bundle sizes and performance guide →](./docs/performance.md)_
 - **`reynard-monaco`** - Code editor integration
 - **`reynard-games`** - Game development utilities
 
-_[View complete package documentation →](./docs/PACKAGES.md)_
+_[View complete package documentation →](./docs/packages.md)_
 
 ## 🎨 Theming System
 
@@ -310,7 +331,7 @@ Reynard includes a comprehensive theming system with 8 built-in themes:
 - **High Contrast Black** - Maximum accessibility
 - **High Contrast Inverse** - Alternative high contrast
 
-_[View complete theming guide →](./docs/PACKAGES.md#reynard-themes)_
+_[View complete theming guide →](./docs/packages.md#reynard-themes)_
 
 ## 📱 Examples and Templates
 
@@ -331,7 +352,7 @@ _[View complete theming guide →](./docs/PACKAGES.md#reynard-themes)_
 - **Dashboard Template** - Dashboard-focused template with charts and analytics
 - **Portfolio Template** - Portfolio website template with gallery and contact forms
 
-_[View complete examples and templates →](./docs/EXAMPLES.md)_
+_[View complete examples and templates →](./docs/examples.md)_
 
 ### reynard-chat
 
@@ -791,14 +812,14 @@ Advanced file processing pipeline with thumbnail generation, metadata extraction
 
 #### Supported File Types
 
-| **Category**      | **Supported File Types**                                                                                                                                                                                                                 |
-|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Images**        | JPG, PNG, GIF, WebP, BMP, TIFF, JXL, AVIF, HEIC, HEIF, JP2, SVG, EPS, AI, CDR, RAW formats                                                                                                        |
-| **Videos**        | MP4, AVI, MOV, MKV, WebM, FLV, WMV, MPG, MPEG, TS, MTS, M2TS, ProRes, DNxHD, Cine, R3D, BRAW                                                                                                     |
-| **Audio**         | MP3, AAC, OGG, WMA, Opus, WAV, FLAC, ALAC, APE, WV, DSD, DFF, DSF                                                                                                                                |
-| **Text & Code**   | TXT, MD, RST, TEX, LOG, JSON, XML, YAML, TOML, CSV, TSV, Parquet, Arrow, Feather, HDF5, NumPy, and programming languages                                                                         |
-| **Documents**     | PDF, DOCX, PPTX, XLSX, ODT, ODP, ODS, EPUB, MOBI, AZW3, KFX, RTF, Pages, Key, Numbers                                                                                                             |
-| **LoRA Models**   | SafeTensors, Checkpoint, PyTorch, ONNX, Bin                                                                                                                                                       |
+| **Category**    | **Supported File Types**                                                                                                 |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Images**      | JPG, PNG, GIF, WebP, BMP, TIFF, JXL, AVIF, HEIC, HEIF, JP2, SVG, EPS, AI, CDR, RAW formats                               |
+| **Videos**      | MP4, AVI, MOV, MKV, WebM, FLV, WMV, MPG, MPEG, TS, MTS, M2TS, ProRes, DNxHD, Cine, R3D, BRAW                             |
+| **Audio**       | MP3, AAC, OGG, WMA, Opus, WAV, FLAC, ALAC, APE, WV, DSD, DFF, DSF                                                        |
+| **Text & Code** | TXT, MD, RST, TEX, LOG, JSON, XML, YAML, TOML, CSV, TSV, Parquet, Arrow, Feather, HDF5, NumPy, and programming languages |
+| **Documents**   | PDF, DOCX, PPTX, XLSX, ODT, ODP, ODS, EPUB, MOBI, AZW3, KFX, RTF, Pages, Key, Numbers                                    |
+| **LoRA Models** | SafeTensors, Checkpoint, PyTorch, ONNX, Bin                                                                              |
 
 #### Core Components
 
@@ -1419,25 +1440,166 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🙏 Acknowledgments
 
-### **🦊 Core Framework**
+Reynard is built upon the foundation of exceptional open-source projects and
+cutting-edge research. We extend our deepest gratitude to the communities and
+contributors who make this framework possible.
 
-- **SolidJS** - The reactive framework that powers Reynard
-- **Chart.js** - Data visualization library for charts
-- **zxcvbn** - Password strength analysis
-- **Vitest** - Testing framework
-- **Playwright** - End-to-end testing
+### **🦊 Core Framework & Libraries**
+
+#### **Frontend Framework**
+
+- **[SolidJS](https://solidjs.com)** ([GitHub](https://github.com/solidjs/solid)) - The reactive framework that powers Reynard with fine-grained reactivity and exceptional performance
+- **[Solid Primitives](https://github.com/solidjs/solid-primitives)** - Comprehensive collection of reactive primitives and utilities for SolidJS applications
+
+#### **Data Visualization**
+
+- **[Chart.js](https://chartjs.org)** ([GitHub](https://github.com/chartjs/Chart.js)) - Powerful, flexible charting library for data visualization components
+- **[Three.js](https://threejs.org)** ([GitHub](https://github.com/mrdoob/three.js)) - Cross-browser JavaScript library for 3D graphics and WebGL rendering
+
+#### **Code Editing & Syntax Highlighting**
+
+- **[Monaco Editor](https://microsoft.github.io/monaco-editor)** ([GitHub](https://github.com/microsoft/monaco-editor)) - The code editor that powers VS Code, providing rich editing capabilities
+- **[Shiki](https://shiki.matsu.io)** ([GitHub](https://github.com/shikijs/shiki)) - Beautiful syntax highlighting powered by the same engine as VS Code
+
+#### **UI Components & Icons**
+
+- **[Fluent UI System Icons](https://github.com/microsoft/fluentui-system-icons)** - Microsoft's comprehensive icon system for modern applications
+- **[Solid ChartJS](https://github.com/orenelbaum/solid-chartjs)** - SolidJS bindings for Chart.js integration
+
+#### **Security & Authentication**
+
+- **[zxcvbn](https://github.com/dropbox/zxcvbn)** - Realistic password strength estimation with intelligent pattern matching
+- **[JWT Decode](https://github.com/auth0/jwt-decode)** - Browser library for decoding JSON Web Tokens
+
+#### **Date & Time Utilities**
+
+- **[date-fns](https://date-fns.org)** ([GitHub](https://github.com/date-fns/date-fns)) - Modern JavaScript date utility library with modular design
+
+### **🦦 Backend & AI/ML Infrastructure**
+
+#### **Web Framework**
+
+- **[FastAPI](https://fastapi.tiangolo.com)** ([GitHub](https://github.com/tiangolo/fastapi)) - Modern, fast web framework for building APIs with Python
+- **[Uvicorn](https://github.com/encode/uvicorn)** - Lightning-fast ASGI server implementation
+
+#### **Database & Vector Search**
+
+- **[SQLAlchemy](https://sqlalchemy.org)** ([GitHub](https://github.com/sqlalchemy/sqlalchemy)) - Python SQL toolkit and Object-Relational Mapping library
+- **[pgvector](https://github.com/pgvector/pgvector)** - Open-source vector similarity search for PostgreSQL
+- **[psycopg2](https://github.com/psycopg/psycopg2)** - PostgreSQL adapter for Python
+
+#### **AI/ML Models & Services**
+
+- **[PyTorch](https://pytorch.org)** ([GitHub](https://github.com/pytorch/pytorch)) - Open source machine learning framework
+- **[Transformers](https://huggingface.co/docs/transformers)** ([GitHub](https://github.com/huggingface/transformers)) - State-of-the-art Machine Learning for PyTorch, TensorFlow, and JAX
+- **[Ollama](https://ollama.ai)** ([GitHub](https://github.com/ollama/ollama)) - Local LLM inference and model management
+
+#### **Security & Cryptography**
+
+- **[Argon2](https://github.com/P-H-C/phc-winner-argon2)** - Password hashing function that won the Password Hashing Competition
+- **[Python-JOSE](https://github.com/mpdavis/python-jose)** - JavaScript Object Signing and Encryption (JOSE) implementation in Python
+- **[Cryptography](https://cryptography.io)** ([GitHub](https://github.com/pyca/cryptography)) - Cryptographic recipes and primitives for Python
 
 ### **🦦 YipYap Foundation**
 
 Reynard builds upon the sophisticated architecture and AI/ML capabilities of YipYap:
 
-- **AI/ML Models**: JTP2, WDv3, Florence-2, JoyCaption, YOLO, OWLv2, and custom model implementations
+#### **AI/ML Models & Integrations**
+
+- **[YOLOv8](https://huggingface.co/ultralytics/yolov8n)** ([Ultralytics](https://github.com/ultralytics/ultralytics)) - Real-time object detection and image segmentation
+- **[OWLv2](https://huggingface.co/google/owlv2-base-patch16)** ([Google Research](https://github.com/google-research/scenic)) - Open-vocabulary object detection
+- **[Florence-2 Models](https://huggingface.co/microsoft/Florence-2-base)** ([Microsoft Research](https://github.com/microsoft/Florence-2)) - Vision-language models for image understanding and captioning:
+  - [Florence-2 Base](https://huggingface.co/microsoft/Florence-2-base-patch16-224) - Base model for general image understanding
+  - [Florence-2 Large](https://huggingface.co/microsoft/Florence-2-large-patch16-224) - Large model for enhanced performance
+  - [Furrence-2 Large](https://huggingface.co/lodestone-horizon/furrence2-large) - Specialized furry content model
+- **[Lodestone Base 4096 v1](https://huggingface.co/Hum-Works/lodestone-base-4096-v1)** ([Hum Works](https://github.com/Griffin-McCauley/lodestone-base-4096-v1)) - Long-context language model for extended text processing
+- **[Lodestone Horizon Models](https://huggingface.co/lodestone-horizon)** - Advanced image generation and processing models
+  - **[Bananastrike XL Lightning](https://huggingface.co/lodestone-horizon/bananastrike-xl-lightning)** - Enhanced image generation with improved background fidelity
+  - **[Chroma1-HD](https://huggingface.co/lodestones/Chroma)** - 8.9B parameter transformer for text-to-image generation
+  - **[Chromafur-Alpha](https://huggingface.co/lodestone-horizon/chromafur-alpha)** - Specialized image-to-text model
+- **Specialized Caption Models**:
+  - **[JTP2 (Joint Tagger Project PILOT2)](https://huggingface.co/RedRocket/JointTaggerProject)** - Specialized tagger for furry artwork and anthropomorphic content
+  - **[JoyCaption Beta One](https://huggingface.co/fancyfeast/llama-joycaption-beta-one-hf-llava)** - Large language model for detailed image captioning
+  - **[WDv3 Tagger Models](https://huggingface.co/SmilingWolf)** - General purpose image taggers with multiple architectures:
+    - [WD ViT Tagger v3](https://huggingface.co/SmilingWolf/wd-vit-tagger-v3) - Vision Transformer architecture
+    - [WD SwinV2 Tagger v3](https://huggingface.co/SmilingWolf/wd-swinv2-tagger-v3) - Swin Transformer v2 architecture
+    - [WD ConvNeXt Tagger v3](https://huggingface.co/SmilingWolf/wd-convnext-tagger-v3) - ConvNeXt architecture
+
+#### **Datasets & Training Resources**
+
+- **[Photo Aesthetics Dataset](https://huggingface.co/datasets/lodestone-horizon/photo-aesthetics)** - High-quality image dataset with aesthetic annotations
+- **[PixelProse Dataset](https://huggingface.co/datasets/lodestone-horizon/pixelprose)** - Comprehensive dataset for image processing tasks
+- **[OpenVid-1M](https://huggingface.co/datasets/lodestone-horizon/OpenVid-1M)** - Large-scale video dataset for multimodal training
+
+#### **Core Capabilities**
+
 - **Multi-Modal Processing**: Advanced image, video, audio, and document processing capabilities
+  - **Unified Processor**: Orchestrates processing across 8+ file types (images, videos, audio, text, code, LoRA, OCR, documents)
+  - **Format Support**: Comprehensive format conversion and metadata extraction
+  - **Streaming Pipeline**: Real-time processing with progress tracking and error recovery
+  - **Cross-Modal Conversion**: Video-to-image, audio-to-text, text-to-speech transformations
+
 - **Enterprise Architecture**: Production-ready service architecture with comprehensive error handling
+  - **Service Lifecycle Management**: Registration, initialization, health monitoring, and graceful shutdown
+  - **Error Recovery**: Multi-layered fallback systems with exponential backoff and retry logic
+  - **Resource Management**: Memory optimization, model loading/unloading, and conflict resolution
+  - **Health Monitoring**: Real-time system health checks and automatic recovery mechanisms
+
 - **RAG System**: Retrieval-Augmented Generation with vector databases and semantic search
+  - **Vector Database**: PostgreSQL + pgvector with HNSW indexing for efficient similarity search
+  - **Multi-Modal Embeddings**: Text, code, caption, and image embeddings (1024D text, 768D images)
+  - **Streaming Ingestion**: Real-time document processing with chunking and batching
+  - **Semantic Search**: Advanced query processing with reranking and similarity thresholds
+
 - **Integration Services**: NLWeb, TTS, Diffusion LLM, and web crawling capabilities
+  - **NLWeb Router**: Natural language web processing with tool suggestion and MCP proxy
+  - **TTS Pipeline**: Multi-backend synthesis (Kokoro, Coqui, XTTS) with voice conversion
+  - **Diffusion LLM**: Text generation and infilling with streaming support
+  - **Web Crawling**: Firecrawl integration with intelligent caching and content summarization
+
+### **🧪 Testing & Development Tools**
+
+#### **Testing Frameworks**
+
+- **[Vitest](https://vitest.dev)** ([GitHub](https://github.com/vitest-dev/vitest)) - Fast unit test framework powered by Vite
+- **[Playwright](https://playwright.dev)** ([GitHub](https://github.com/microsoft/playwright)) - End-to-end testing framework for web applications
+- **[Happy DOM](https://github.com/capricorn86/happy-dom)** - Lightweight DOM implementation for testing
+
+#### **Development Tools**
+
+- **[Vite](https://vitejs.dev)** ([GitHub](https://github.com/vitejs/vite)) - Next generation frontend tooling
+- **[TypeScript](https://typescriptlang.org)** ([GitHub](https://github.com/microsoft/TypeScript)) - Typed superset of JavaScript
+- **[ESLint](https://eslint.org)** ([GitHub](https://github.com/eslint/eslint)) - Pluggable JavaScript linter
+- **[Prettier](https://prettier.io)** ([GitHub](https://github.com/prettier/prettier)) - Opinionated code formatter
 
 ### **🎯 Research and Development**
+
+#### **Academic Papers & Research**
+
+- **RAG & Vector Databases**:
+  - [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401) - Lewis et al., 2020
+  - [pgvector: Open-source vector similarity search for PostgreSQL](https://github.com/pgvector/pgvector) - Official implementation
+
+- **Multi-Modal AI Research**:
+  - [Bifrost-1: Bridging Multimodal LLMs and Diffusion Models with Patch-level CLIP Latents](https://arxiv.org/abs/2508.12528) - 2025
+  - [Qwen-Image Technical Report](https://arxiv.org/abs/2508.11039) - 2025
+  - [UniCode²: Cascaded Large-scale Codebooks for Unified Multimodal Understanding and Generation](https://arxiv.org/abs/2411.07975) - 2024
+
+- **Enterprise Architecture**:
+  - [Microservices Patterns](https://microservices.io/) - Chris Richardson, 2018
+  - [Building Microservices](https://samnewman.io/books/building-microservices/) - Sam Newman, 2021
+
+- **Web Crawling & Processing**:
+  - [Firecrawl](https://firecrawl.dev) - Intelligent web scraping and content extraction
+  - [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/) - HTML/XML parsing library
+
+- **Integration Services**:
+  - [Ollama](https://ollama.ai) - Local LLM inference and embedding generation
+  - [ComfyUI](https://github.com/comfyanonymous/ComfyUI) - Node-based UI for Stable Diffusion workflows
+  - [LangChain](https://github.com/langchain-ai/langchain) - Framework for developing LLM applications
+  - [LlamaIndex](https://github.com/run-llama/llama_index) - Data framework for LLM applications
+
+#### **Development & Architecture**
 
 - **Academic Papers**: Comprehensive research documentation in `docs/research/academic-papers/`
 - **Architecture Decisions**: Detailed architectural patterns and design decisions
@@ -1445,7 +1607,7 @@ Reynard builds upon the sophisticated architecture and AI/ML capabilities of Yip
 
 ### **🐺 Security Research**
 
-**Elder Pliny's CL4R1T4S Research**
+#### **CL4R1T4S Research**
 
 Reynard's advanced security testing capabilities are inspired by
 [Elder Pliny's CL4R1T4S research](https://github.com/elder-plinius/CL4R1T4S) into AI system prompt transparency and
@@ -1457,19 +1619,27 @@ security, directly influencing the development of FENRIR's advanced exploitation
 The CL4R1T4S research has contributed to:
 
 - System prompt extraction methodologies
-- Unicode visual confusability attack vectors  
+- Unicode visual confusability attack vectors
 - AI transparency assessment frameworks
 - Advanced prompt injection techniques
 
 _The Reynard framework acknowledges the scholarly contributions that make our security testing more effective and
 comprehensive._
 
+### **📚 Documentation & Standards**
+
+- **[Markdown](https://daringfireball.net/projects/markdown/)** - Lightweight markup language for documentation
+- **[Mermaid](https://mermaid.js.org)** ([GitHub](https://github.com/mermaid-js/mermaid)) - Diagram and flowchart creation from text
+- **[Conventional Commits](https://conventionalcommits.org)** - Specification for adding human and machine readable meaning to commit messages
+
 ## 📞 Support
 
-- **Documentation** - [(TBD)](https://(TBD))
-- **Issues** - [GitHub Issues](https://github.com/rakki194/reynard/issues)
-- **Discussions** - [GitHub Discussions](https://github.com/rakki194/reynard/discussions)
-- **Discord** - [Join our Discord](https://discord.gg/reynard)
+- **📖 Documentation** - [Complete Documentation](./docs/README.md)
+- **🐛 Issues** - [GitHub Issues](https://github.com/rakki194/reynard/issues)
+- **💬 Discussions** - [GitHub Discussions](https://github.com/rakki194/reynard/discussions)
+- **🔒 Security** - [Security Policy](./docs/SECURITY.md)
+- **🤝 Contributing** - [Contributing Guide](./CONTRIBUTING.md)
+- **📄 License** - [MIT License](./LICENSE.md)
 
 ---
 

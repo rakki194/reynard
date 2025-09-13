@@ -4,7 +4,9 @@ This document describes the metrics collection and export functionality for the 
 
 ## Overview
 
-The Diffusion LLM integration includes comprehensive metrics collection for monitoring performance, usage patterns, and error rates. Metrics are stored in the SQLite metrics database and can be exported in multiple formats for integration with external monitoring systems.
+The Diffusion LLM integration includes comprehensive metrics collection for monitoring performance, usage patterns,
+and error rates. Metrics are stored in the SQLite metrics database and
+can be exported in multiple formats for integration with external monitoring systems.
 
 ## Metrics Collected
 
@@ -153,7 +155,9 @@ Token counts are estimated using a simple character-based approximation:
 token_count = max(1, len(text) // 4)
 ```
 
-This provides a rough approximation where 1 token ≈ 4 characters for English text. In a production environment, you would use the actual model's tokenizer for more accurate counts.
+This provides a rough approximation where
+1 token ≈ 4 characters for English text. In a production environment,
+you would use the actual model's tokenizer for more accurate counts.
 
 ## Monitoring Integration
 
@@ -204,6 +208,7 @@ python -m pytest app/tests/test_diffusion_metrics_unit.py -v
 
 ## Configuration
 
-Metrics collection is enabled by default when the diffusion LLM service is active. No additional configuration is required.
+Metrics collection is enabled by default when
+the diffusion LLM service is active. No additional configuration is required.
 
 The metrics database is stored in `./metrics.db` by default and can be configured via the `MetricsDatabase` class.

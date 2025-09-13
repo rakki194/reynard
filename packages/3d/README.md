@@ -1,6 +1,7 @@
 # Reynard 3D
 
-🦊> A cunning 3D graphics and visualization package for the Reynard framework, powered by Three.js and optimized for SolidJS.
+🦊> A cunning 3D graphics and visualization package for the Reynard framework, powered by Three.js and
+optimized for SolidJS.
 
 ## Features
 

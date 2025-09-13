@@ -4,7 +4,9 @@ This document describes the animated WebP thumbnail processing functionality add
 
 ## Overview
 
-The application now supports generating animated WebP thumbnails from animated source images (GIF, APNG, animated WebP). This provides better visual representation of animated content in the gallery while maintaining efficient file sizes.
+The application now supports generating animated WebP thumbnails from animated source images (GIF, APNG,
+animated WebP). This provides better visual representation of animated content in the gallery while
+maintaining efficient file sizes.
 
 ## Features
 

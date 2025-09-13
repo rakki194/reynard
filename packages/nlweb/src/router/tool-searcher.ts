@@ -31,9 +31,7 @@ export function searchTools(tools: NLWebTool[], query: string): NLWebTool[] {
     }
 
     // Check tag match
-    if (
-      tool.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery))
-    ) {
+    if (tool.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery))) {
       results.push(tool);
       continue;
     }
@@ -56,7 +54,10 @@ export function searchTools(tools: NLWebTool[], query: string): NLWebTool[] {
 /**
  * Get tools by tags with intersection logic
  */
-export function getToolsByTags(tools: NLWebTool[], tags: string[]): NLWebTool[] {
+export function getToolsByTags(
+  tools: NLWebTool[],
+  tags: string[],
+): NLWebTool[] {
   if (tags.length === 0) {
     return tools;
   }

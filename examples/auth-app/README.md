@@ -1,6 +1,7 @@
 # 🦊 Reynard Auth Demo App
 
-A comprehensive authentication demonstration app built with the Reynard framework, featuring PostgreSQL backend integration with the Gatekeeper authentication library.
+A comprehensive authentication demonstration app built with the Reynard framework,
+featuring PostgreSQL backend integration with the Gatekeeper authentication library.
 
 ## 🚀 Features
 
@@ -277,7 +278,8 @@ The FastAPI server is configured with:
 
 ## 🤝 Contributing
 
-This is a demonstration app showcasing Reynard framework capabilities. For contributions to the main Reynard framework, see the main repository.
+This is a demonstration app showcasing Reynard framework capabilities. For contributions to
+the main Reynard framework, see the main repository.
 
 ## 📄 License
 

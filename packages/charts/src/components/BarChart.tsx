@@ -3,11 +3,7 @@
  * A responsive bar chart for categorical data
  */
 
-import {
-  Component,
-  Show,
-  splitProps,
-} from "solid-js";
+import { Component, Show, splitProps } from "solid-js";
 import { Bar } from "solid-chartjs";
 import { Dataset, ChartConfig, ReynardTheme } from "../types";
 import { useBarChart } from "../composables/useBarChart";
@@ -47,7 +43,11 @@ const defaultProps = {
   theme: "light" as ReynardTheme,
 };
 
-const getContainerClasses = (horizontal: boolean, stacked: boolean, customClass?: string) => {
+const getContainerClasses = (
+  horizontal: boolean,
+  stacked: boolean,
+  customClass?: string,
+) => {
   const classes = ["reynard-bar-chart"];
   if (horizontal) classes.push("reynard-bar-chart--horizontal");
   if (stacked) classes.push("reynard-bar-chart--stacked");

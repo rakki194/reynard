@@ -7,7 +7,8 @@
 import { Component, JSX, splitProps, mergeProps } from "solid-js";
 import { Icon } from "../icons/Icon";
 
-export interface IconButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IconButtonProps
+  extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Icon name from the icon registry */
   icon: string;
   /** Icon package ID (optional) */
@@ -17,9 +18,25 @@ export interface IconButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElem
   /** Icon size */
   iconSize?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Icon variant */
-  iconVariant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
+  iconVariant?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "muted"
+    | "error"
+    | "warning"
+    | "success"
+    | "info";
   /** Button variant */
-  variant?: "primary" | "secondary" | "tertiary" | "ghost" | "icon" | "danger" | "success" | "warning";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "ghost"
+    | "icon"
+    | "danger"
+    | "success"
+    | "warning";
   /** Button size */
   size?: "sm" | "md" | "lg";
   /** Icon only button (no text) */
@@ -114,7 +131,7 @@ export const IconButton: Component<IconButtonProps> = (props) => {
       classes.push("reynard-icon-button--glow");
     }
 
-    if (typeof local.progress === 'number' && local.progress > 0) {
+    if (typeof local.progress === "number" && local.progress > 0) {
       classes.push("reynard-icon-button--with-progress");
     }
 
@@ -141,7 +158,9 @@ export const IconButton: Component<IconButtonProps> = (props) => {
   const renderIcon = (position: "left" | "right") => {
     if (local.iconPosition === position) {
       return (
-        <span class={`reynard-icon-button__icon reynard-icon-button__icon--${position}`}>
+        <span
+          class={`reynard-icon-button__icon reynard-icon-button__icon--${position}`}
+        >
           <Icon {...getIconProps()} />
         </span>
       );
@@ -150,11 +169,11 @@ export const IconButton: Component<IconButtonProps> = (props) => {
   };
 
   const getTooltip = () => {
-    return local.tooltip || local['aria-label'] || local.title;
+    return local.tooltip || local["aria-label"] || local.title;
   };
 
   const getAriaLabel = () => {
-    return local['aria-label'] || local.tooltip || local.title;
+    return local["aria-label"] || local.tooltip || local.title;
   };
 
   return (
@@ -175,11 +194,15 @@ export const IconButton: Component<IconButtonProps> = (props) => {
 
       {renderIcon("right")}
 
-      {typeof local.progress === 'number' && local.progress > 0 && (
+      {typeof local.progress === "number" && local.progress > 0 && (
         <div class="reynard-icon-button__progress">
-          <div 
-            class="reynard-icon-button__progress-bar" 
-            style={{ "--progress-width": `${Math.max(0, Math.min(100, local.progress))}%` } as any}
+          <div
+            class="reynard-icon-button__progress-bar"
+            style={
+              {
+                "--progress-width": `${Math.max(0, Math.min(100, local.progress))}%`,
+              } as any
+            }
           />
         </div>
       )}

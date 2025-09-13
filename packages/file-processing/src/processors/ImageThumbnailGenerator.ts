@@ -7,7 +7,10 @@
 
 import { ThumbnailOptions, ProcessingResult } from "../types";
 import { ImageLoader } from "./utils/image-loader";
-import { ImageCanvas, ImageThumbnailGeneratorOptions } from "./utils/image-canvas";
+import {
+  ImageCanvas,
+  ImageThumbnailGeneratorOptions,
+} from "./utils/image-canvas";
 
 export type { ImageThumbnailGeneratorOptions };
 

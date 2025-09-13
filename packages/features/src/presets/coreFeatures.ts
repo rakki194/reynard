@@ -88,4 +88,3 @@ export const CORE_FEATURES: FeatureDefinition[] = [
     icon: "cache",
   },
 ];
-

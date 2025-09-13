@@ -1,10 +1,13 @@
 # Unified Caption Generation – User Guide
 
-This guide explains how to generate captions and tags in Reynard using the unified caption system, how to adjust post‑processing, and how to resolve common issues.
+This guide explains how to generate captions and
+tags in Reynard using the unified caption system, how to adjust post‑processing, and how to resolve common issues.
 
 ## What it does
 
-The unified caption system provides a single, consistent workflow to generate captions or tags using multiple models (e.g., JTP2, WDv3, JoyCaption, Florence2). It automatically handles model loading, download coordination, retries, and optional text cleanup so you can focus on results.
+The unified caption system provides a single, consistent workflow to generate captions or
+tags using multiple models (e.g., JTP2, WDv3, JoyCaption, Florence2). It automatically handles model loading,
+download coordination, retries, and optional text cleanup so you can focus on results.
 
 ## Quick start
 
@@ -17,7 +20,8 @@ The unified caption system provides a single, consistent workflow to generate ca
 - **JTP2, WDv3 (Lightweight)**: Fast taggers best for quick keywords. Output type is typically `tags`.
 - **JoyCaption, Florence2 (Heavy)**: Descriptive captions. Heavier load and download times; recommended for batch runs.
 
-You can switch the model per request. If a heavy model needs to download or load, the UI will notify you and may queue the request until ready.
+You can switch the model per request. If a heavy model needs to download or load, the UI will notify you and
+may queue the request until ready.
 
 ## Post‑processing
 
@@ -27,7 +31,9 @@ Post‑processing cleans up results for readability. Typical rules include:
 - Normalize spacing and punctuation
 - Ensure terminal punctuation for long sentences
 
-You can enable/disable post‑processing per request (e.g., a toggle in dialogs) and configure global rules from Settings → Model Management → Caption Models → Post‑Processing (admin). Generator‑specific overrides allow fine control (e.g., keep underscores for certain models).
+You can enable/disable post‑processing per request (e.g., a toggle in dialogs) and
+configure global rules from Settings → Model Management → Caption Models → Post‑Processing (admin). Generator‑specific
+overrides allow fine control (e.g., keep underscores for certain models).
 
 ## Preloading and unloading (admins)
 

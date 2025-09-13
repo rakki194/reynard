@@ -1,10 +1,14 @@
 # Architecture Decision Records (ADRs)
 
-This directory contains Architecture Decision Records (ADRs) that document important architectural decisions made for the Reynard framework.
+This directory contains Architecture Decision Records (ADRs) that
+document important architectural decisions made for the Reynard framework.
 
 ## What are ADRs?
 
-Architecture Decision Records are documents that capture important architectural decisions along with their context and consequences. They help maintain a historical record of why certain decisions were made and provide guidance for future development.
+Architecture Decision Records are documents that
+capture important architectural decisions along with their context and
+consequences. They help maintain a historical record of why certain decisions were made and
+provide guidance for future development.
 
 ## ADR Format
 
@@ -30,7 +34,8 @@ Each ADR follows this structure:
 
 **Status**: Accepted  
 **Date**: 2025-01-27  
-**Summary**: Defines comprehensive TypeScript modularity standards, type safety practices, and refactoring strategies to address function length violations and type safety issues.
+**Summary**: Defines comprehensive TypeScript modularity standards, type safety practices, and
+refactoring strategies to address function length violations and type safety issues.
 
 [Read Full ADR](./002-typescript-modularity-refactoring.md)
 
@@ -83,7 +88,7 @@ When making significant architectural decisions:
 For specific types of architectural decisions, use these specialized templates:
 
 - **[Security ADR Template](./templates/security-adr-template.md)** - For security-related architectural decisions
-- **[Performance ADR Template](./templates/performance-adr-template.md)** - For performance optimization decisions  
+- **[Performance ADR Template](./templates/performance-adr-template.md)** - For performance optimization decisions
 - **[Scalability ADR Template](./templates/scalability-adr-template.md)** - For scalability and growth decisions
 - **[Integration ADR Template](./templates/integration-adr-template.md)** - For system integration decisions
 
@@ -94,6 +99,7 @@ For specific types of architectural decisions, use these specialized templates:
 ## References
 
 [Links to related documentation and resources]
+
 ```
 
 ## Related Documentation
@@ -101,3 +107,4 @@ For specific types of architectural decisions, use these specialized templates:
 - [Modularity Patterns](../modularity-patterns.md)
 - [TypeScript Modularity Standards](../../development/frontend/typescript-modularity-standards.md)
 - [TypeScript Quick Reference](../../development/frontend/typescript-quick-reference.md)
+```

@@ -1,10 +1,12 @@
 # Plugin Service Integration
 
-This document describes the integration of ultralytics, pillow-jxl, and pillow-avif plugins into the service management system and lazy loading stack.
+This document describes the integration of ultralytics, pillow-jxl, and
+pillow-avif plugins into the service management system and lazy loading stack.
 
 ## Overview
 
-The plugin dependencies (ultralytics, pillow-jxl, pillow-avif) have been moved from direct imports to a service-based management system that provides:
+The plugin dependencies (ultralytics, pillow-jxl,
+pillow-avif) have been moved from direct imports to a service-based management system that provides:
 
 - **Lazy loading** - Plugins are loaded only when needed
 - **Service management** - Centralized plugin availability detection and management
@@ -134,7 +136,8 @@ pillow_avif = LazyPackageExport("pillow_avif")
 
 ### Helper utilities
 
-The lazy loader also exposes helpers that consult `ImageProcessingService` when available and fall back to direct imports:
+The lazy loader also exposes helpers that consult `ImageProcessingService` when available and
+fall back to direct imports:
 
 - `get_pil_image_with_plugins()`
 - `get_pil_imagedraw()`
@@ -323,7 +326,8 @@ if image_service.is_jxl_supported():
     pass
 ```
 
-When working with Pillow directly in new code, prefer the service-aware helpers from `app.services.access` or `app.utils.lazy_loader` to ensure correct plugin handling.
+When working with Pillow directly in new code, prefer the service-aware helpers from `app.services.access` or
+`app.utils.lazy_loader` to ensure correct plugin handling.
 
 ### For Service Integration
 
@@ -364,7 +368,9 @@ if detection_service.is_ultralytics_available():
 
 ## Conclusion
 
-The plugin service integration provides a robust, maintainable, and performant solution for managing plugin dependencies. It maintains backward compatibility while providing a modern service-based architecture for future development.
+The plugin service integration provides a robust, maintainable, and
+performant solution for managing plugin dependencies. It maintains backward compatibility while
+providing a modern service-based architecture for future development.
 
 The implementation successfully addresses the original requirements:
 

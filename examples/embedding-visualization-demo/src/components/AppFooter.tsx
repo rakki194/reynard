@@ -1,6 +1,6 @@
 /**
  * Application Footer Component
- * 
+ *
  * Simple footer with branding information.
  */
 

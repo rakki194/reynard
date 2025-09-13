@@ -56,10 +56,7 @@ export class VideoDimensions {
   /**
    * Calculate optimal capture time for thumbnail
    */
-  static calculateCaptureTime(
-    duration: number,
-    customTime?: number,
-  ): number {
+  static calculateCaptureTime(duration: number, customTime?: number): number {
     if (customTime !== undefined) {
       return Math.min(customTime, duration);
     }

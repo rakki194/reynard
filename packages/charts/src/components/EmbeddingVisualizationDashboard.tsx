@@ -50,7 +50,9 @@ export const EmbeddingVisualizationDashboard: Component<
           reductionParams={dashboard.reductionParams()}
           maxSamples={dashboard.maxSamples()}
           isLoading={dashboard.isLoading()}
-          onMethodChange={(method: string) => dashboard.setReductionMethod(method as "pca" | "tsne" | "umap")}
+          onMethodChange={(method: string) =>
+            dashboard.setReductionMethod(method as "pca" | "tsne" | "umap")
+          }
           onParameterUpdate={dashboard.updateReductionParams}
           onMaxSamplesChange={dashboard.setMaxSamples}
           onPerformReduction={dashboard.performReduction}

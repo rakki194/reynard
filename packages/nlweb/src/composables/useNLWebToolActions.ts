@@ -6,7 +6,11 @@
 
 import { NLWebState } from "./useNLWebState.js";
 import { NLWebTool } from "../types/index.js";
-import { createGetToolsAction, createRegisterToolAction, createUnregisterToolAction } from "./useNLWebToolManagement.js";
+import {
+  createGetToolsAction,
+  createRegisterToolAction,
+  createUnregisterToolAction,
+} from "./useNLWebToolManagement.js";
 
 export interface NLWebToolActions {
   getTools: () => Promise<void>;
@@ -23,8 +27,18 @@ export function createNLWebToolActions(
   requestTimeout: number,
 ): NLWebToolActions {
   const getTools = createGetToolsAction(state, baseUrl, requestTimeout);
-  const registerTool = createRegisterToolAction(state, baseUrl, requestTimeout, getTools);
-  const unregisterTool = createUnregisterToolAction(state, baseUrl, requestTimeout, getTools);
+  const registerTool = createRegisterToolAction(
+    state,
+    baseUrl,
+    requestTimeout,
+    getTools,
+  );
+  const unregisterTool = createUnregisterToolAction(
+    state,
+    baseUrl,
+    requestTimeout,
+    getTools,
+  );
 
   return {
     getTools,

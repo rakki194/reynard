@@ -1,6 +1,7 @@
 # 🦊 Reynard Framework Examples
 
-Welcome to the Reynard framework examples! These practical applications demonstrate the power and flexibility of the Reynard SolidJS framework and UI library.
+Welcome to the Reynard framework examples! These practical applications demonstrate the power and
+flexibility of the Reynard SolidJS framework and UI library.
 
 ## 📱 Available Examples
 
@@ -79,7 +80,8 @@ Comprehensive demonstration of Reynard's theming capabilities.
 
 ### 🎨 [Hue Shifting Demo](./hue-shifting-demo/) - Floating Panel System
 
-An interactive pixel art editor demonstrating Reynard's advanced floating panel system with staggered animations and state management.
+An interactive pixel art editor demonstrating Reynard's advanced floating panel system with staggered animations and
+state management.
 
 **What you'll learn:**
 
@@ -102,7 +104,7 @@ An interactive pixel art editor demonstrating Reynard's advanced floating panel 
 
 ---
 
-### 🌐 [Full-Stack App](./full-stack/) - Complete Application _(Coming Soon)_
+### 🌐 Full-Stack App - Complete Application _(Coming Soon)_
 
 A comprehensive example with frontend, backend, and database integration.
 
@@ -286,8 +288,8 @@ Found a bug or have an improvement idea?
 ## 🔗 Links
 
 - **[Reynard Documentation](../../README.md)** - Framework overview
-- **[Core Package](../../packages/core/)** - Core functionality
-- **[Starter Template](../../templates/starter/)** - Project template
+- **[Core Package](../packages/core/)** - Core functionality
+- **[Starter Template](../templates/starter/)** - Project template
 - **[SolidJS Docs](https://solidjs.com)** - SolidJS framework
 
 ---

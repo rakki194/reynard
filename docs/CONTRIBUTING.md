@@ -1,6 +1,7 @@
 # 🤝 Contributing to Reynard
 
-We welcome contributions to the Reynard framework! This guide will help you get started with development, understand our processes, and contribute effectively.
+We welcome contributions to the Reynard framework! This guide will help you get started with development,
+understand our processes, and contribute effectively.
 
 ## Development Philosophy
 
@@ -47,7 +48,8 @@ pnpm run typecheck
 
 ### Project Structure
 
-**IMPORTANT**: The Reynard monorepo does NOT have a root-level `src/` directory. All source code is organized within individual packages under `packages/`.
+**IMPORTANT**: The Reynard monorepo does NOT have a root-level `src/` directory. All source code is organized within
+individual packages under `packages/`.
 
 ```text
 reynard/                          # Monorepo root (NO src/ here)

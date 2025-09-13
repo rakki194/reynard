@@ -249,7 +249,8 @@ It's particularly useful for:
 - Understanding context when working in multiple directories
 - Improving productivity in complex development environments
 
-The implementation is lightweight, compatible with modern shell enhancements, and follows shell configuration best practices.
+The implementation is lightweight, compatible with modern shell enhancements, and
+follows shell configuration best practices.
 
 ## References
 

@@ -41,4 +41,3 @@ export function getAllFeatureConfigs(
   const [configs] = core.featureConfigsSignal;
   return configs();
 }
-

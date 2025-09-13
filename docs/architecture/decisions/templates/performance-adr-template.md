@@ -67,11 +67,11 @@
 
 ### Risks and Mitigations
 
-| Risk | Impact | Probability | Mitigation |
-|------|--------|-------------|------------|
-| [Performance Regression] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
+| Risk                        | Impact            | Probability       | Mitigation            |
+| --------------------------- | ----------------- | ----------------- | --------------------- |
+| [Performance Regression]    | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
 | [Implementation Complexity] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
-| [Resource Constraints] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
+| [Resource Constraints]      | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
 
 ## Performance Testing
 
@@ -188,4 +188,3 @@ This performance ADR will be reviewed:
 **Stakeholders**: Development Team, Operations Team, Product Team  
 **Review Date**: [Next Review Date]
 **Performance Classification**: [Critical/High/Medium/Low]
-

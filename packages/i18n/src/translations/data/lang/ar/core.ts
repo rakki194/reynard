@@ -177,5 +177,4 @@ export const coreTranslations = {
       "تكامل المصادقة والتحقق من الإدخال",
     "performance-and-security-integration": "تكامل الأداء والأمان",
   },
-
 };

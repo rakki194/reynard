@@ -2,7 +2,9 @@
 
 ## Current Status: Caption Generation Frontend Complete
 
-After analyzing the codebase and documentation, I discovered that the **caption generation system is already fully implemented** in the `packages/annotating` package! This significantly changes our implementation priorities.
+After analyzing the codebase and documentation,
+I discovered that the **caption generation system is already fully implemented** in
+the `packages/annotating` package! This significantly changes our implementation priorities.
 
 ## ✅ What's Already Done
 
@@ -123,7 +125,8 @@ await manager.start();
 
 ## 🎉 Key Insight
 
-The Reynard framework is much further along than initially assessed! The caption generation system is already a comprehensive, production-ready implementation. The main work now is:
+The Reynard framework is much further along than initially assessed! The caption generation system is already a
+comprehensive, production-ready implementation. The main work now is:
 
 1. **Backend Integration** - Connect existing frontend to backend services
 2. **Database Setup** - Add persistence layer

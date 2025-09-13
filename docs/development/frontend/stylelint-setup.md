@@ -4,13 +4,16 @@ This document describes the Stylelint configuration and tooling setup for the CS
 
 ## Overview
 
-The Stylelint configuration enforces CSS best practices and helps maintain consistency across the codebase. It focuses on the core requirements from the CSS cleanup quest while being practical for the existing codebase.
+The Stylelint configuration enforces CSS best practices and
+helps maintain consistency across the codebase. It focuses on the core requirements from the CSS cleanup quest while
+being practical for the existing codebase.
 
 ## Configuration Files
 
 ### Main Configuration: `src/.stylelintrc`
 
-The main Stylelint configuration file extends `stylelint-config-standard` and adds custom rules for the CSS cleanup quest.
+The main Stylelint configuration file extends `stylelint-config-standard` and
+adds custom rules for the CSS cleanup quest.
 
 #### Key Rules
 

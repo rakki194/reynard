@@ -1,6 +1,7 @@
 # RAG Demo App
 
-A demonstration of the RAG (Retrieval-Augmented Generation) system with EmbeddingGemma integration, built using the Reynard framework.
+A demonstration of the RAG (Retrieval-Augmented Generation) system with EmbeddingGemma integration,
+built using the Reynard framework.
 
 ## Features
 

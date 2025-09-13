@@ -1,10 +1,13 @@
 # Embedding Model Management
 
-This document provides comprehensive guidance for managing embedding models in the Reynard RAG system, including automatic unloading, memory optimization, configuration options, and operational best practices.
+This document provides comprehensive guidance for managing embedding models in the Reynard RAG system,
+including automatic unloading, memory optimization, configuration options, and operational best practices.
 
 ## Overview
 
-The embedding model management system transforms the traditional "load once, keep forever" approach into a dynamic, memory-efficient model lifecycle management system. It automatically handles model loading, unloading, and memory optimization based on usage patterns, system resources, and configurable policies.
+The embedding model management system transforms the traditional "load once, keep forever" approach into a dynamic,
+memory-efficient model lifecycle management system. It automatically handles model loading, unloading, and
+memory optimization based on usage patterns, system resources, and configurable policies.
 
 ### Key Features
 
@@ -593,4 +596,4 @@ The system is designed for extensibility:
 - [RAG Documentation](rag.md): General RAG system documentation
 - [Model Usage Tracker Documentation](model-usage-tracker.md): Model usage tracking system
 - [Embeddings and Vector DB Documentation](embeddings-and-vector-db.md): Vector database operations
-- [Memory Pressure Management Documentation](memory-pressure-management.md): Memory management strategies
+- [Model Management Documentation](model-management.md): Model management strategies

@@ -5,5 +5,8 @@
  */
 
 export { VideoLoader, type VideoLoadResult } from "./VideoLoader";
-export { VideoCanvasRenderer, type VideoCanvasOptions } from "./VideoCanvasRenderer";
+export {
+  VideoCanvasRenderer,
+  type VideoCanvasOptions,
+} from "./VideoCanvasRenderer";
 export { VideoDimensions, type DimensionResult } from "./VideoDimensions";

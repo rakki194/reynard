@@ -18,7 +18,8 @@ The router service performs periodic health checks and supports bounded exponent
 - `NLWEB_RECONNECT_BASE_DELAY_MS` (default 200)
 - `NLWEB_RECONNECT_MAX_DELAY_MS` (default 5000)
 
-These are mirrored in `AppConfig` as `nlweb_health_interval_s`, `nlweb_reconnect_max_attempts`, `nlweb_reconnect_base_delay_ms`, and `nlweb_reconnect_max_delay_ms`.
+These are mirrored in `AppConfig` as `nlweb_health_interval_s`, `nlweb_reconnect_max_attempts`,
+`nlweb_reconnect_base_delay_ms`, and `nlweb_reconnect_max_delay_ms`.
 
 ### Rollout and Performance Configuration
 
@@ -67,7 +68,8 @@ NLWEB_ENABLED=true NLWEB_CANARY_ENABLED=true NLWEB_CANARY_PERCENTAGE=5 NLWEB_ROL
 
 ### Canary Rollout
 
-The canary rollout system enables NLWeb for a percentage of users based on their user ID hash. This allows for gradual rollout and monitoring before full deployment.
+The canary rollout system enables NLWeb for a percentage of users based on their user ID hash. This allows for
+gradual rollout and monitoring before full deployment.
 
 - Canary percentage is configurable via `NLWEB_CANARY_PERCENTAGE`
 - User selection is deterministic based on user ID hash

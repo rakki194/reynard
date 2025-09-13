@@ -12,9 +12,9 @@ import type { TagSettingsTranslations } from "./tag-settings-translations";
 import type { AdvancedSettingsTranslations } from "./advanced-settings-translations";
 
 // Main settings translations interface composed from modular interfaces
-export interface SettingsTranslations 
+export interface SettingsTranslations
   extends BaseSettingsTranslations,
-          ModelSettingsTranslations,
-          GallerySettingsTranslations,
-          TagSettingsTranslations,
-          AdvancedSettingsTranslations {}
+    ModelSettingsTranslations,
+    GallerySettingsTranslations,
+    TagSettingsTranslations,
+    AdvancedSettingsTranslations {}

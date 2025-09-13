@@ -1,7 +1,8 @@
 # 🦊 Reynard Monorepo Structure Guide
 
 This guide provides comprehensive documentation of the Reynard monorepo
-tructure, ensuring all agents understand the proper organization and preventing any confusion about source code placement.
+tructure, ensuring all agents understand the proper organization and
+preventing any confusion about source code placement.
 
 ## 🚨 Critical Rule: NO Root-Level `src/` Directory
 
@@ -346,6 +347,6 @@ pnpm run test:e2e
 
 ---
 
-*🦊 This structure ensures the Reynard monorepo remains organized, maintainable, and scalable. By following these*
-*guidelines, all agents can work effectively within the established architecture without confusion about where code*
-*should be placed.*
+_🦊 This structure ensures the Reynard monorepo remains organized, maintainable, and scalable. By following these_
+_guidelines, all agents can work effectively within the established architecture without confusion about where code_
+_should be placed._

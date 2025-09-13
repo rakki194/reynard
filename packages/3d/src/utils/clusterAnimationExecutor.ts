@@ -18,17 +18,17 @@ export function executeClusterAnimation(
   options: AnimationExecutorOptions,
 ): Promise<void> {
   const { duration, easing, onProgress, onComplete } = options;
-  
+
   return new Promise<void>((resolve) => {
     const startTime = performance.now();
-    
+
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const easedProgress = applyEasing(progress, easing);
-      
+
       onProgress(easedProgress);
-      
+
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
@@ -36,7 +36,7 @@ export function executeClusterAnimation(
         resolve();
       }
     };
-    
+
     requestAnimationFrame(animate);
   });
 }

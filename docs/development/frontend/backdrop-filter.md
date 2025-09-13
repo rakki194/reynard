@@ -1,6 +1,8 @@
 # Backdrop Filter Usage Guidelines
 
-The `backdrop-filter` CSS property is used throughout yipyap to create depth and visual hierarchy through blurring and other filter effects on elements' backgrounds. This document outlines the standard practices for using backdrop filters in the application.
+The `backdrop-filter` CSS property is used throughout yipyap to create depth and visual hierarchy through blurring and
+other filter effects on elements' backgrounds. This document outlines the standard practices for
+using backdrop filters in the application.
 
 ## Table of Contents
 
@@ -57,7 +59,8 @@ When applying blur effects, use these standard values (override via tokens when 
 
 ### Theme-Specific Effects
 
-Theme-specific backdrop filters should be defined in the theme's scope and should enhance the theme's visual identity. For example:
+Theme-specific backdrop filters should be defined in the theme's scope and
+should enhance the theme's visual identity. For example:
 
 ```css
 :root[data-theme="christmas"] {
@@ -79,10 +82,18 @@ Always check for support using `@supports` and provide graceful fallbacks:
 }
 ```
 
-When implementing backdrop filters, be mindful of performance implications. Each additional filter increases processing overhead, so combine them judiciously. For elements with animated backdrop filters, enable hardware acceleration by adding `will-change: backdrop-filter` to improve performance. Avoid creating unintended stacking contexts; prefer using z-index tokens such as `var(--z-modal)` when necessary. Always implement appropriate fallback styles where `backdrop-filter` is unsupported.
+When implementing backdrop filters, be mindful of
+performance implications. Each additional filter increases processing overhead, so
+combine them judiciously. For elements with animated backdrop filters,
+enable hardware acceleration by adding `will-change: backdrop-filter` to
+improve performance. Avoid creating unintended stacking contexts;
+prefer using z-index tokens such as `var(--z-modal)` when
+necessary. Always implement appropriate fallback styles where `backdrop-filter` is unsupported.
 
 ## Browser Support
 
 ---
 
-The `backdrop-filter` property is widely supported in modern browsers but may require vendor prefixes in some cases. Always test across different browsers when implementing new backdrop filter effects.
+The `backdrop-filter` property is widely supported in modern browsers but
+may require vendor prefixes in some cases. Always test across different browsers when
+implementing new backdrop filter effects.

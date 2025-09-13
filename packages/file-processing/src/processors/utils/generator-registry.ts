@@ -1,6 +1,6 @@
 /**
  * Generator registry for thumbnail generation.
- * 
+ *
  * Manages the creation and caching of thumbnail generators
  * based on file categories and options.
  */
@@ -12,7 +12,10 @@ import { AudioThumbnailGenerator } from "../AudioThumbnailGenerator";
 import { DocumentThumbnailGenerator } from "../DocumentThumbnailGenerator";
 
 export interface ThumbnailGenerator {
-  generateThumbnail(file: File | string, options: ThumbnailOptions): Promise<any>;
+  generateThumbnail(
+    file: File | string,
+    options: ThumbnailOptions,
+  ): Promise<any>;
   destroy?(): void;
 }
 

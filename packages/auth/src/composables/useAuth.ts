@@ -5,7 +5,12 @@
 
 import { createSignal, onMount, onCleanup } from "solid-js";
 
-import type { AuthState, AuthConfiguration, AuthCallbacks, User } from "../types";
+import type {
+  AuthState,
+  AuthConfiguration,
+  AuthCallbacks,
+  User,
+} from "../types";
 import { createAuthOrchestrator } from "../utils";
 import { DEFAULT_AUTH_CONFIG } from "../types";
 import {
@@ -15,9 +20,11 @@ import {
 } from "reynard-api-client";
 
 // Utility function to convert UserResponse to User
-function convertUserResponseToUser(userResponse: UserResponse | null): User | null {
+function convertUserResponseToUser(
+  userResponse: UserResponse | null,
+): User | null {
   if (!userResponse) return null;
-  
+
   return {
     id: userResponse.id.toString(),
     username: userResponse.username,
@@ -49,9 +56,11 @@ export function useAuth(options: UseAuthOptions = {}) {
   const callbacks = options.callbacks || {};
 
   // Create API client for generated auth
-  const apiClient = options.apiClient || createReynardApiClient({
-    basePath: config.apiBaseUrl,
-  });
+  const apiClient =
+    options.apiClient ||
+    createReynardApiClient({
+      basePath: config.apiBaseUrl,
+    });
 
   // Use generated auth composable
   const generatedAuth = useGeneratedAuth({
@@ -99,7 +108,8 @@ export function useAuth(options: UseAuthOptions = {}) {
   return {
     // State - integrate with generated auth
     authState,
-    user: () => convertUserResponseToUser(generatedAuth.user()) || authState().user,
+    user: () =>
+      convertUserResponseToUser(generatedAuth.user()) || authState().user,
     isAuthenticated: () =>
       generatedAuth.isAuthenticated() || authState().isAuthenticated,
     isLoading: () => authState().isLoading,

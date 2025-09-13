@@ -1,6 +1,7 @@
 # 🎨 Multi-Theme Gallery - Reynard Example
 
-An advanced demonstration of the Reynard framework's theming capabilities with comprehensive component showcases and side-by-side theme comparisons.
+An advanced demonstration of the Reynard framework's theming capabilities with comprehensive component showcases and
+side-by-side theme comparisons.
 
 ## ✨ Features Demonstrated
 

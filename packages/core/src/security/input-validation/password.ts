@@ -55,8 +55,16 @@ export function validatePassword(password: string): {
 
   // Common password check
   const commonPasswords = [
-    "password", "123456", "123456789", "qwerty", "abc123",
-    "password123", "admin", "letmein", "welcome", "monkey"
+    "password",
+    "123456",
+    "123456789",
+    "qwerty",
+    "abc123",
+    "password123",
+    "admin",
+    "letmein",
+    "welcome",
+    "monkey",
   ];
 
   if (commonPasswords.includes(password.toLowerCase())) {

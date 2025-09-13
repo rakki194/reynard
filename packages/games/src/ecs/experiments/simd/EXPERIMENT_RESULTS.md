@@ -2,7 +2,8 @@
 
 ## Overview
 
-This experiment compares SIMD-accelerated ECS operations against their non-SIMD counterparts to determine the performance benefits of using WebAssembly with SIMD instructions in the Reynard ECS system.
+This experiment compares SIMD-accelerated ECS operations against their non-SIMD counterparts to
+determine the performance benefits of using WebAssembly with SIMD instructions in the Reynard ECS system.
 
 ## Experiment Design
 
@@ -55,7 +56,9 @@ This experiment compares SIMD-accelerated ECS operations against their non-SIMD 
 
 ### Mock Implementation
 
-The current SIMD implementation uses mock functions that simulate SIMD behavior but don't provide real performance benefits. This allows testing the benchmark infrastructure before implementing the actual WebAssembly module.
+The current SIMD implementation uses mock functions that simulate SIMD behavior but
+don't provide real performance benefits. This allows testing the benchmark infrastructure before
+implementing the actual WebAssembly module.
 
 ### WebAssembly Compilation
 
@@ -149,6 +152,9 @@ console.log(results);
 
 ## Conclusion
 
-This experiment provides a foundation for evaluating SIMD performance in the Reynard ECS system. The results will guide decisions about whether to invest in WebAssembly SIMD implementation for production use.
+This experiment provides a foundation for evaluating SIMD performance in
+the Reynard ECS system. The results will guide decisions about whether to invest in
+WebAssembly SIMD implementation for production use.
 
-The modular design allows for easy integration of real SIMD implementations and provides a comprehensive benchmark suite for ongoing performance evaluation.
+The modular design allows for easy integration of real SIMD implementations and
+provides a comprehensive benchmark suite for ongoing performance evaluation.

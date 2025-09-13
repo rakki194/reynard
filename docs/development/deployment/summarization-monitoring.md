@@ -1,10 +1,14 @@
 # Summarization System Monitoring and Alerting
 
-This guide covers monitoring, alerting, and observability for the YipYap summarization system, including health checks, metrics collection, logging, and alerting configurations.
+This guide covers monitoring, alerting, and
+observability for the YipYap summarization system, including health checks, metrics collection, logging, and
+alerting configurations.
 
 ## Overview
 
-The summarization system provides comprehensive monitoring capabilities to ensure reliable operation, performance optimization, and early detection of issues. The monitoring system includes health checks, metrics collection, structured logging, and configurable alerting.
+The summarization system provides comprehensive monitoring capabilities to ensure reliable operation,
+performance optimization, and early detection of issues. The monitoring system includes health checks,
+metrics collection, structured logging, and configurable alerting.
 
 ## Health Monitoring
 
@@ -649,4 +653,5 @@ SUMMARIZATION_PROFILING_ENABLED=true
 SUMMARIZATION_PROFILING_OUTPUT=/tmp/summarization_profile.json
 ```
 
-This monitoring and alerting guide provides comprehensive observability for the summarization system. Adjust the configurations based on your specific requirements and infrastructure constraints.
+This monitoring and alerting guide provides comprehensive observability for
+the summarization system. Adjust the configurations based on your specific requirements and infrastructure constraints.

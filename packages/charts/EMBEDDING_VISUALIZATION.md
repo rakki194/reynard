@@ -1,10 +1,13 @@
 # 🦊> Reynard Embedding Visualization System
 
-_Comprehensive embedding analysis and visualization with dimensionality reduction, statistical analysis, and interactive 3D visualization._
+_Comprehensive embedding analysis and visualization with dimensionality reduction, statistical analysis, and
+interactive 3D visualization._
 
 ## Overview
 
-The Reynard Embedding Visualization System provides a complete solution for analyzing and visualizing high-dimensional embedding data. It combines advanced dimensionality reduction techniques (PCA, t-SNE, UMAP) with statistical analysis, quality metrics, and interactive 3D visualization.
+The Reynard Embedding Visualization System provides a complete solution for analyzing and
+visualizing high-dimensional embedding data. It combines advanced dimensionality reduction techniques (PCA, t-SNE,
+UMAP) with statistical analysis, quality metrics, and interactive 3D visualization.
 
 ## Features
 

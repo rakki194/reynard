@@ -177,5 +177,4 @@ export const coreTranslations = {
       "प्रमाणीकरण और इनपुट सत्यापन एकीकरण",
     "performance-and-security-integration": "प्रदर्शन और सुरक्षा एकीकरण",
   },
-
 };

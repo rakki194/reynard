@@ -1,6 +1,6 @@
 /**
  * Spatial Data Types
- * 
+ *
  * Comprehensive type definitions for spatial algorithms and data structures
  */
 
@@ -11,20 +11,20 @@ export interface SpatialData {
 }
 
 export interface SpatialObjectData extends SpatialData {
-  readonly category: 'entity' | 'obstacle' | 'trigger' | 'decoration';
+  readonly category: "entity" | "obstacle" | "trigger" | "decoration";
   readonly properties?: Record<string, unknown>;
 }
 
 export interface GameEntityData extends SpatialData {
-  readonly entityType: 'player' | 'enemy' | 'npc' | 'item' | 'projectile';
+  readonly entityType: "player" | "enemy" | "npc" | "item" | "projectile";
   readonly health?: number;
   readonly damage?: number;
   readonly speed?: number;
 }
 
 export interface CollisionData extends SpatialData {
-  readonly collisionType: 'solid' | 'trigger' | 'platform' | 'oneway';
-  readonly material?: 'metal' | 'wood' | 'stone' | 'fabric' | 'glass';
+  readonly collisionType: "solid" | "trigger" | "platform" | "oneway";
+  readonly material?: "metal" | "wood" | "stone" | "fabric" | "glass";
   readonly friction?: number;
   readonly restitution?: number;
 }
@@ -37,10 +37,10 @@ export interface RenderData extends SpatialData {
   readonly layer?: number;
 }
 
-export type SpatialDataType = 
-  | SpatialObjectData 
-  | GameEntityData 
-  | CollisionData 
+export type SpatialDataType =
+  | SpatialObjectData
+  | GameEntityData
+  | CollisionData
   | RenderData;
 
 export interface SpatialObject<T extends SpatialDataType = SpatialDataType> {
@@ -52,7 +52,9 @@ export interface SpatialObject<T extends SpatialDataType = SpatialDataType> {
   readonly data: T;
 }
 
-export interface SpatialQueryResult<T extends SpatialDataType = SpatialDataType> {
+export interface SpatialQueryResult<
+  T extends SpatialDataType = SpatialDataType,
+> {
   readonly objects: readonly SpatialObject<T>[];
   readonly queryTime: number;
   readonly totalObjects: number;
@@ -73,4 +75,3 @@ export interface MemoryPoolStats {
   readonly deallocationCount: number;
   readonly averageLifetime: number;
 }
-

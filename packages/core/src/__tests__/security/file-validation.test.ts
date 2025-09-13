@@ -3,7 +3,11 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { validateFileName, validateFileSize, validateMimeType } from "../../validation.js";
+import {
+  validateFileName,
+  validateFileSize,
+  validateMimeType,
+} from "../../validation.js";
 
 describe("File Name Validation", () => {
   describe("validateFileName", () => {
@@ -45,7 +49,7 @@ describe("File Name Validation", () => {
         "file|name.txt",
         "file?name.txt",
         "file*name.txt",
-        "file\"name\".txt",
+        'file"name".txt',
       ];
 
       invalidNames.forEach((name) => {
@@ -71,12 +75,7 @@ describe("File Name Validation", () => {
     });
 
     it("should reject hidden files", () => {
-      const hiddenNames = [
-        ".hidden.txt",
-        ".env",
-        ".gitignore",
-        "..hidden.txt",
-      ];
+      const hiddenNames = [".hidden.txt", ".env", ".gitignore", "..hidden.txt"];
 
       hiddenNames.forEach((name) => {
         const result = validateFileName(name);

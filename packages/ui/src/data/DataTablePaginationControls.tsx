@@ -11,7 +11,9 @@ export interface DataTablePaginationControlsProps {
   onPageChange?: (page: number) => void;
 }
 
-export const DataTablePaginationControls: Component<DataTablePaginationControlsProps> = (props) => {
+export const DataTablePaginationControls: Component<
+  DataTablePaginationControlsProps
+> = (props) => {
   const hasNextPage = () => props.page < props.totalPages;
   const hasPrevPage = () => props.page > 1;
 

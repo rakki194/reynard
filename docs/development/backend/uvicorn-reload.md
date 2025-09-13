@@ -1,10 +1,13 @@
 # Uvicorn Development with Auto-Reload 🦊
 
-This guide covers using uvicorn's auto-reload feature for efficient FastAPI development in the Reynard ecosystem. Learn how to configure, optimize, and troubleshoot uvicorn reloading for smooth development workflows.
+This guide covers using uvicorn's auto-reload feature for efficient FastAPI development in
+the Reynard ecosystem. Learn how to configure, optimize, and
+troubleshoot uvicorn reloading for smooth development workflows.
 
 ## Overview
 
-Uvicorn's auto-reload feature automatically restarts your FastAPI server when it detects changes in your Python files. This is essential for rapid development cycles and maintaining productivity.
+Uvicorn's auto-reload feature automatically restarts your FastAPI server when
+it detects changes in your Python files. This is essential for rapid development cycles and maintaining productivity.
 
 ## Quick Start
 
@@ -481,7 +484,8 @@ def monitor_reload_time(func):
 
 ## Example: Complete Development Setup
 
-See the `examples/basic-backend` directory for a complete example of a modular FastAPI backend with optimized uvicorn reload configuration.
+See the `examples/basic-backend` directory for a complete example of a modular FastAPI backend with
+optimized uvicorn reload configuration.
 
 ## Environment Variables
 
@@ -496,6 +500,8 @@ See the `examples/basic-backend` directory for a complete example of a modular F
 
 ## Summary
 
-Uvicorn's auto-reload feature is essential for productive FastAPI development. By following these patterns and best practices, you can create a smooth development experience that automatically restarts your server when you make changes, while avoiding common pitfalls and performance issues.
+Uvicorn's auto-reload feature is essential for productive FastAPI development. By following these patterns and
+best practices, you can create a smooth development experience that automatically restarts your server when
+you make changes, while avoiding common pitfalls and performance issues.
 
 Remember: 🦊 The fox's cunning lies in knowing when to reload quickly and when to take time for proper initialization!

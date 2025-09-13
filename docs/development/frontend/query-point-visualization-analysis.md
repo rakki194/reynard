@@ -2,13 +2,17 @@
 
 ## Executive Summary
 
-The query point visualization in embedding spaces is a critical component for understanding search results in 3D visualizations. However, the original implementation had significant theoretical flaws that made the query point positioning meaningless. This document analyzes the issues and presents an improved, theoretically sound implementation.
+The query point visualization in embedding spaces is a critical component for understanding search results in
+3D visualizations. However, the original implementation had significant theoretical flaws that
+made the query point positioning meaningless. This document analyzes the issues and
+presents an improved, theoretically sound implementation.
 
 ## Theoretical Issues with Original Implementation
 
 ### 1. **Semantic Disconnect**
 
-**Problem**: The original implementation positioned query points based on geometric centrality in the transformed space, not semantic similarity in the original embedding space.
+**Problem**: The original implementation positioned query points based on geometric centrality in
+the transformed space, not semantic similarity in the original embedding space.
 
 **Example**:
 
@@ -27,7 +31,8 @@ query_position = transformed_data[most_central_idx] + random_offset
 
 ### 2. **Loss of Embedding Space Relationships**
 
-**Problem**: The algorithm completely ignored the original high-dimensional embedding space where semantic relationships are defined.
+**Problem**: The algorithm completely ignored the original high-dimensional embedding space where
+semantic relationships are defined.
 
 **Impact**:
 
@@ -207,14 +212,18 @@ The comprehensive test suite validates:
 
 ## Conclusion
 
-The original query point visualization implementation had fundamental theoretical flaws that made it misleading rather than informative. The improved implementation addresses these issues by:
+The original query point visualization implementation had fundamental theoretical flaws that
+made it misleading rather than informative. The improved implementation addresses these issues by:
 
 1. **Preserving semantic relationships** through similarity-based positioning
 2. **Ensuring deterministic behavior** with meaningful offsets
 3. **Providing graceful degradation** for edge cases
 4. **Maintaining performance** while improving semantic value
 
-The comprehensive test suite validates that the improved implementation is theoretically sound and practically effective. Users can now trust that query points appear in meaningful positions relative to their search results, making the 3D visualization a valuable tool for understanding embedding space relationships.
+The comprehensive test suite validates that the improved implementation is theoretically sound and
+practically effective. Users can now trust that
+query points appear in meaningful positions relative to their search results,
+making the 3D visualization a valuable tool for understanding embedding space relationships.
 
 ## Appendix: Mathematical Details
 

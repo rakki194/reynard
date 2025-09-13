@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document outlines the rollout strategy for the TTS and Crawl Integration feature in Reynard. The rollout follows a phased approach with feature flags, canary deployment, and comprehensive monitoring to ensure a smooth transition and quick rollback capability if needed.
+This document outlines the rollout strategy for the TTS and
+Crawl Integration feature in Reynard. The rollout follows a phased approach with feature flags, canary deployment, and
+comprehensive monitoring to ensure a smooth transition and quick rollback capability if needed.
 
 ## Rollout Phases
 

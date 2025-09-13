@@ -1,7 +1,10 @@
 // Camera animation composable for SolidJS
 import { createSignal, createMemo } from "solid-js";
 import type { CameraAnimation, EasingType } from "../types";
-import { createCameraFlyToConfig, calculateCameraAnimationState } from "../utils/cameraAnimationUtils";
+import {
+  createCameraFlyToConfig,
+  calculateCameraAnimationState,
+} from "../utils/cameraAnimationUtils";
 import { createAnimationFrameManager } from "../utils/animationFrameManager";
 
 export function useCameraAnimations() {
@@ -17,8 +20,13 @@ export function useCameraAnimations() {
     duration: number = 1500,
     easing: EasingType = "easeInOutCubic",
   ): Promise<CameraAnimation> => {
-    const animation = createCameraFlyToConfig(targetPosition, targetLookAt, duration, easing);
-    
+    const animation = createCameraFlyToConfig(
+      targetPosition,
+      targetLookAt,
+      duration,
+      easing,
+    );
+
     if (isAnimationsDisabled()) {
       return Promise.resolve(animation);
     }

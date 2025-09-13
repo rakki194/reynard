@@ -1,6 +1,7 @@
 # Reynard Basic Backend
 
-A modular FastAPI backend example demonstrating uvicorn reload best practices and development patterns for the Reynard ecosystem.
+A modular FastAPI backend example demonstrating uvicorn reload best practices and
+development patterns for the Reynard ecosystem.
 
 ## Features
 
@@ -172,7 +173,8 @@ The backend uses environment-based configuration. You can customize behavior usi
 
 ## Professional Logging
 
-This backend includes a comprehensive logging system that unifies FastAPI and Uvicorn logging with professional formatting and configuration options.
+This backend includes a comprehensive logging system that unifies FastAPI and
+Uvicorn logging with professional formatting and configuration options.
 
 ### Logging Features
 
@@ -226,7 +228,8 @@ route_logger.info("User endpoint accessed")
 
 #### Using YAML Configuration (Recommended)
 
-The backend automatically uses `log_conf.yaml` if available. This provides the most comprehensive logging setup with file rotation and multiple formatters.
+The backend automatically uses `log_conf.yaml` if
+available. This provides the most comprehensive logging setup with file rotation and multiple formatters.
 
 #### Using Environment Variables
 
@@ -397,7 +400,8 @@ export LOG_FORMAT="detailed"
 
 ## Contributing
 
-This is an example backend for the Reynard ecosystem. Feel free to use it as a starting point for your own projects or contribute improvements.
+This is an example backend for the Reynard ecosystem. Feel free to use it as a starting point for your own projects or
+contribute improvements.
 
 ## License
 

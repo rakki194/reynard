@@ -3,10 +3,7 @@
  * Factory functions for creating different types of i18n modules
  */
 
-import type {
-  LanguageCode,
-  Translations,
-} from "../../types";
+import type { LanguageCode, Translations } from "../../types";
 import { createSignal } from "solid-js";
 
 // Translation engine
@@ -46,7 +43,7 @@ export function createBaseI18nModule(options: unknown) {
       usedNamespaces,
       preloadLocales,
       initialTranslations,
-    }
+    },
   );
 
   const setLocale = createLocaleManager(setLocaleSignal, translationEngine);

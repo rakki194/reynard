@@ -1,6 +1,7 @@
 # 🦊> Reynard Summarization Backend Implementation
 
-A complete advanced summarization backend system for Reynard, built with specialized summarizers, Ollama integration, and comprehensive API endpoints.
+A complete advanced summarization backend system for Reynard, built with specialized summarizers, Ollama integration,
+and comprehensive API endpoints.
 
 ## Table of Contents
 
@@ -322,4 +323,5 @@ The summarization backend is fully implemented and ready for production use with
 - ✅ **Error Handling**: Robust error handling and graceful fallbacks
 - ✅ **Integration Ready**: Seamless integration with existing Ollama service
 
-**🦊> This comprehensive summarization system transforms Reynard into a powerful text analysis platform with battle-tested summarization capabilities!**
+**🦊> This comprehensive summarization system transforms Reynard into a powerful text analysis platform with
+battle-tested summarization capabilities!**

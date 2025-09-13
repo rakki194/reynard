@@ -4,7 +4,10 @@
  * Core suggestion logic for the NLWeb router.
  */
 
-import { NLWebSuggestionRequest, NLWebSuggestionResponse } from "../types/index.js";
+import {
+  NLWebSuggestionRequest,
+  NLWebSuggestionResponse,
+} from "../types/index.js";
 import { NLWebRouterCache } from "./NLWebRouterCache.js";
 
 export interface SuggestContext {
@@ -55,7 +58,9 @@ export async function generateSuggestion(
 ): Promise<NLWebSuggestionResponse> {
   const { request, cache, toolRegistry, emitEvent } = context;
   const startTime = Date.now();
-  const requestId = request.metadata?.requestId || `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  const requestId =
+    request.metadata?.requestId ||
+    `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
   // Get available tools
   const availableTools = (toolRegistry as any).getAvailableTools();

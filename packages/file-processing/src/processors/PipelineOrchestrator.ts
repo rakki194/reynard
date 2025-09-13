@@ -1,6 +1,6 @@
 /**
  * Pipeline orchestrator for coordinating file processing operations.
- * 
+ *
  * Handles the coordination between different processing modules.
  */
 
@@ -73,7 +73,10 @@ export class PipelineOrchestrator {
     }
 
     this.progressManager.updateProgress(
-      this.progressManager.createCompletionProgress("Processing files", totalFiles),
+      this.progressManager.createCompletionProgress(
+        "Processing files",
+        totalFiles,
+      ),
     );
 
     return results;
@@ -83,8 +86,8 @@ export class PipelineOrchestrator {
    * Get supported file types
    */
   getSupportedTypes(): FileTypeInfo[] {
-    return Array.from(this.fileTypeValidator.getAllSupportedExtensions()).map((ext) =>
-      this.fileTypeValidator.getFileTypeInfo(ext),
+    return Array.from(this.fileTypeValidator.getAllSupportedExtensions()).map(
+      (ext) => this.fileTypeValidator.getFileTypeInfo(ext),
     );
   }
 

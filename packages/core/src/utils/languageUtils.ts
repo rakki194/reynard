@@ -17,10 +17,7 @@ export type {
 } from "./language-types.js";
 
 // Re-export language mappings
-export {
-  WEB_LANGUAGES,
-  PROGRAMMING_LANGUAGES,
-} from "./language-mappings.js";
+export { WEB_LANGUAGES, PROGRAMMING_LANGUAGES } from "./language-mappings.js";
 
 // Re-export language detection functions
 export {
@@ -77,7 +74,7 @@ export function getLanguageInfo(filename: string): {
       category: result.language.category,
     };
   }
-  
+
   return {
     monacoLanguage: "plaintext",
     displayName: "Plain Text",

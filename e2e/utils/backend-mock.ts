@@ -1,6 +1,6 @@
 /**
  * Mock Backend Server for E2E Authentication Testing
- * 
+ *
  * Provides a comprehensive mock backend server that simulates the Reynard backend
  * and Gatekeeper authentication endpoints for testing purposes.
  */
@@ -50,7 +50,7 @@ export class MockBackendServer {
   async start(): Promise<void> {
     this.isRunning = true;
     this.setupDefaultEndpoints();
-    
+
     if (this.config.debug) {
       console.log(`🦊 Mock Backend Server started on port ${this.config.port}`);
     }
@@ -63,7 +63,7 @@ export class MockBackendServer {
     this.isRunning = false;
     this.responses.clear();
     this.requestLog = [];
-    
+
     if (this.config.debug) {
       console.log("🦊 Mock Backend Server stopped");
     }
@@ -128,7 +128,7 @@ export class MockBackendServer {
    */
   mockResponse(endpoint: string, response: MockResponse): void {
     this.responses.set(endpoint, response);
-    
+
     if (this.config.debug) {
       console.log(`🦊 Mocked endpoint: ${endpoint} -> ${response.status}`);
     }
@@ -205,7 +205,9 @@ export class MockBackendServer {
 /**
  * Create a mock backend server instance
  */
-export async function createMockBackendServer(port: number = 8000): Promise<MockBackendServer> {
+export async function createMockBackendServer(
+  port: number = 8000,
+): Promise<MockBackendServer> {
   const server = new MockBackendServer({
     port,
     baseUrl: `http://localhost:${port}`,
@@ -230,28 +232,42 @@ export class MockApiClient {
   /**
    * Mock a GET request
    */
-  async get(endpoint: string, headers?: Record<string, string>): Promise<Response> {
+  async get(
+    endpoint: string,
+    headers?: Record<string, string>,
+  ): Promise<Response> {
     return this.mockRequest("GET", endpoint, undefined, headers);
   }
 
   /**
    * Mock a POST request
    */
-  async post(endpoint: string, body?: any, headers?: Record<string, string>): Promise<Response> {
+  async post(
+    endpoint: string,
+    body?: any,
+    headers?: Record<string, string>,
+  ): Promise<Response> {
     return this.mockRequest("POST", endpoint, body, headers);
   }
 
   /**
    * Mock a PUT request
    */
-  async put(endpoint: string, body?: any, headers?: Record<string, string>): Promise<Response> {
+  async put(
+    endpoint: string,
+    body?: any,
+    headers?: Record<string, string>,
+  ): Promise<Response> {
     return this.mockRequest("PUT", endpoint, body, headers);
   }
 
   /**
    * Mock a DELETE request
    */
-  async delete(endpoint: string, headers?: Record<string, string>): Promise<Response> {
+  async delete(
+    endpoint: string,
+    headers?: Record<string, string>,
+  ): Promise<Response> {
     return this.mockRequest("DELETE", endpoint, undefined, headers);
   }
 
@@ -262,7 +278,7 @@ export class MockApiClient {
     _method: string,
     endpoint: string,
     _body?: any,
-    _headers?: Record<string, string>
+    _headers?: Record<string, string>,
   ): Promise<Response> {
     const response = this.responses.get(endpoint) || {
       status: 404,
@@ -271,7 +287,7 @@ export class MockApiClient {
 
     // Simulate delay
     if (response.delay) {
-      await new Promise(resolve => setTimeout(resolve, response.delay));
+      await new Promise((resolve) => setTimeout(resolve, response.delay));
     }
 
     return new Response(JSON.stringify(response.body), {

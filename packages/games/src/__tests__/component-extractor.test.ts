@@ -18,7 +18,12 @@
  */
 
 import { ComponentExtractor } from "../component-extractor";
-import { Position, Velocity, Acceleration, Mass } from "../../examples/components";
+import {
+  Position,
+  Velocity,
+  Acceleration,
+  Mass,
+} from "../../examples/components";
 
 describe("ComponentExtractor", () => {
   let extractor: ComponentExtractor;

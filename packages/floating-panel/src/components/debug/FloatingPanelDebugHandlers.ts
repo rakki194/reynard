@@ -37,4 +37,3 @@ export function createDebugHandlers(props: FloatingPanelProps) {
     handleDragEnd,
   };
 }
-

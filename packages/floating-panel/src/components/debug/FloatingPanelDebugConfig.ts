@@ -27,4 +27,3 @@ export function createDebugConfig(config?: PanelConfig): Required<PanelConfig> {
     ...config,
   };
 }
-

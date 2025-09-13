@@ -1,6 +1,8 @@
 # Environment-Based Configuration System
 
-The Environment-Based Configuration System provides comprehensive configuration management for the lazy loading system, allowing you to create environment-specific configurations with inheritance, templates, and migration capabilities.
+The Environment-Based Configuration System provides comprehensive configuration management for
+the lazy loading system, allowing you to create environment-specific configurations with inheritance, templates, and
+migration capabilities.
 
 ## Overview
 
@@ -446,4 +448,6 @@ config_engine.create_template(
 )
 ```
 
-This environment-based configuration system provides a powerful and flexible way to manage configurations across different environments while maintaining consistency and enabling easy migration between environments.
+This environment-based configuration system provides a powerful and
+flexible way to manage configurations across different environments while maintaining consistency and
+enabling easy migration between environments.

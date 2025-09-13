@@ -1,6 +1,6 @@
 /**
  * NLWeb Core Service
- * 
+ *
  * Core functionality for the NLWeb service including initialization,
  * health monitoring, and configuration management.
  */
@@ -42,7 +42,10 @@ export class NLWebCoreService implements INLWebService {
       eventEmitter,
     );
     this.healthService = new NLWebHealthService(configuration, eventEmitter);
-    this.initializationService = new NLWebInitializationService(configuration, eventEmitter);
+    this.initializationService = new NLWebInitializationService(
+      configuration,
+      eventEmitter,
+    );
     this.router = new NLWebRouterImpl(this.toolRegistry, eventEmitter);
   }
 
@@ -54,7 +57,10 @@ export class NLWebCoreService implements INLWebService {
       return;
     }
 
-    await this.initializationService.initialize(this.router, this.toolRegistrationService);
+    await this.initializationService.initialize(
+      this.router,
+      this.toolRegistrationService,
+    );
     this.initialized = true;
   }
 

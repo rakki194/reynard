@@ -1,6 +1,7 @@
 # reynard-auth
 
-Complete authentication and user management system for SolidJS applications with JWT tokens, password strength analysis, and comprehensive security features.
+Complete authentication and user management system for SolidJS applications with JWT tokens,
+password strength analysis, and comprehensive security features.
 
 ## 🚀 Features
 

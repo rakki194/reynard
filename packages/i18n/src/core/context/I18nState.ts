@@ -9,7 +9,8 @@ import type { LanguageCode, Translations } from "../../types";
 import { getInitialLocale } from "../../utils";
 
 export function createI18nState(initialTranslations?: Partial<Translations>) {
-  const [locale, setLocaleSignal] = createSignal<LanguageCode>(getInitialLocale());
+  const [locale, setLocaleSignal] =
+    createSignal<LanguageCode>(getInitialLocale());
   const [translations] = createSignal<Translations>(
     (initialTranslations as Translations) || ({} as Translations),
   );

@@ -3,35 +3,35 @@
  * Uses reynard-testing package for consistent testing setup
  */
 
-import { vi, afterEach } from 'vitest';
-import { cleanup } from '@solidjs/testing-library';
-import { extendExpect } from './test-utils';
+import { vi, afterEach } from "vitest";
+import { cleanup } from "@solidjs/testing-library";
+import { extendExpect } from "./test-utils";
 
 // Mock CSS modules
-vi.mock('*.module.css', () => ({}));
+vi.mock("*.module.css", () => ({}));
 
 // Mock CSS files
-vi.mock('*.css', () => ({}));
+vi.mock("*.css", () => ({}));
 
 // Mock fluent-icons package
-vi.mock('reynard-fluent-icons', () => ({
+vi.mock("reynard-fluent-icons", () => ({
   getIcon: vi.fn((name: string) => {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('data-testid', `icon-${name}`);
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("data-testid", `icon-${name}`);
     svg.textContent = name;
     return svg;
   }),
   iconRegistry: {
     getIcon: vi.fn((name: string) => {
-      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('data-testid', `icon-${name}`);
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("data-testid", `icon-${name}`);
       svg.textContent = name;
       return svg;
-    })
+    }),
   },
   searchIcons: vi.fn(() => []),
   getAllIconNames: vi.fn(() => []),
-  getIconPackages: vi.fn(() => [])
+  getIconPackages: vi.fn(() => []),
 }));
 
 // Global test utilities
@@ -49,9 +49,9 @@ global.IntersectionObserver = vi.fn().mockImplementation(() => ({
 }));
 
 // Mock getComputedStyle
-Object.defineProperty(window, 'getComputedStyle', {
+Object.defineProperty(window, "getComputedStyle", {
   value: () => ({
-    getPropertyValue: () => '',
+    getPropertyValue: () => "",
   }),
 });
 

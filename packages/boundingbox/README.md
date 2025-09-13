@@ -2,7 +2,9 @@
 
 > Reusable bounding box and annotation editing components for Reynard
 
-A comprehensive set of tools for creating, editing, and managing bounding box annotations in web applications. Built with SolidJS and designed to be extensible for future annotation types like polygon segmentation.
+A comprehensive set of tools for creating, editing, and
+managing bounding box annotations in web applications. Built with SolidJS and
+designed to be extensible for future annotation types like polygon segmentation.
 
 ## ✨ Features
 
@@ -382,7 +384,7 @@ We welcome contributions! Please see our [Contributing Guide](../../CONTRIBUTING
 
 ## 📄 License
 
-MIT License - see [LICENSE](../../LICENSE) for details.
+MIT License - see [LICENSE](../../../LICENSE.md) for details.
 
 ## 🙏 Acknowledgments
 

@@ -1,10 +1,13 @@
 # Annotating System Architecture
 
-This document provides a comprehensive overview of the Reynard annotating system architecture, including package structure, component relationships, and design patterns.
+This document provides a comprehensive overview of the Reynard annotating system architecture,
+including package structure, component relationships, and design patterns.
 
 ## Overview
 
-The Reynard annotating system is a modular, production-ready framework for AI-powered image caption generation. It provides a unified interface while maintaining clear separation of concerns through a plugin-based architecture.
+The Reynard annotating system is a modular,
+production-ready framework for AI-powered image caption generation. It provides a unified interface while
+maintaining clear separation of concerns through a plugin-based architecture.
 
 ## Package Architecture
 
@@ -137,7 +140,8 @@ annotating/
 
 ### Plugin Architecture
 
-The system uses a plugin-based architecture where each generator is a separate package that registers with the core system:
+The system uses a plugin-based architecture where
+each generator is a separate package that registers with the core system:
 
 ```typescript
 // Plugin registration pattern
@@ -365,6 +369,10 @@ The system supports custom configuration for:
 
 ## Conclusion
 
-The Reynard annotating system provides a robust, scalable, and maintainable architecture for AI-powered image caption generation. Its modular design, comprehensive error handling, and production features make it suitable for both development and production environments.
+The Reynard annotating system provides a robust, scalable, and
+maintainable architecture for AI-powered image caption generation. Its modular design, comprehensive error handling,
+and production features make it suitable for both development and production environments.
 
-The plugin architecture ensures easy extensibility, while the unified interface provides a consistent developer experience across all generators. The system's focus on monitoring, health checks, and fault tolerance makes it production-ready out of the box.
+The plugin architecture ensures easy extensibility, while
+the unified interface provides a consistent developer experience across all generators. The system's focus on
+monitoring, health checks, and fault tolerance makes it production-ready out of the box.

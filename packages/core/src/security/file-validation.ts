@@ -56,9 +56,28 @@ export function validateFileName(filename: string): {
 
   // Check for reserved names (Windows)
   const reservedNames = [
-    "CON", "PRN", "AUX", "NUL",
-    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+    "CON",
+    "PRN",
+    "AUX",
+    "NUL",
+    "COM1",
+    "COM2",
+    "COM3",
+    "COM4",
+    "COM5",
+    "COM6",
+    "COM7",
+    "COM8",
+    "COM9",
+    "LPT1",
+    "LPT2",
+    "LPT3",
+    "LPT4",
+    "LPT5",
+    "LPT6",
+    "LPT7",
+    "LPT8",
+    "LPT9",
   ];
 
   const nameWithoutExt = sanitized.split(".")[0].toUpperCase();
@@ -68,10 +87,25 @@ export function validateFileName(filename: string): {
 
   // Check for executable file extensions (only truly dangerous ones)
   const executableExtensions = [
-    "exe", "bat", "cmd", "com", "scr", "msi", "dll", "sys", "drv",
-    "pif", "vbs", "jar", "app", "deb", "rpm", "sh", "ps1"
+    "exe",
+    "bat",
+    "cmd",
+    "com",
+    "scr",
+    "msi",
+    "dll",
+    "sys",
+    "drv",
+    "pif",
+    "vbs",
+    "jar",
+    "app",
+    "deb",
+    "rpm",
+    "sh",
+    "ps1",
   ];
-  
+
   const extension = sanitized.split(".").pop()?.toLowerCase();
   if (extension && executableExtensions.includes(extension)) {
     return { isValid: false };
@@ -102,7 +136,10 @@ export function validateFileName(filename: string): {
 /**
  * Validate file extension
  */
-export function validateFileExtension(filename: string, allowedExtensions: string[]): boolean {
+export function validateFileExtension(
+  filename: string,
+  allowedExtensions: string[],
+): boolean {
   if (!filename || !allowedExtensions || allowedExtensions.length === 0) {
     return false;
   }
@@ -117,7 +154,7 @@ export function validateFileExtension(filename: string, allowedExtensions: strin
 export function validateFileSize(size: number, maxSize?: number): boolean {
   const defaultMaxSize = 10 * 1024 * 1024; // 10MB default
   const actualMaxSize = maxSize ?? defaultMaxSize;
-  
+
   return size > 0 && size <= actualMaxSize;
 }
 

@@ -33,10 +33,12 @@ describe("useOverlayManager - Event Handling", () => {
 
   it("should handle backdrop click events", () => {
     const onBackdropClick = vi.fn();
-    const { result } = renderHook(() => useOverlayManager({ 
-      closeOnBackdrop: true,
-      onBackdropClick 
-    }));
+    const { result } = renderHook(() =>
+      useOverlayManager({
+        closeOnBackdrop: true,
+        onBackdropClick,
+      }),
+    );
     const overlay = {
       id: "test-overlay",
       component: "TestComponent",
@@ -56,10 +58,12 @@ describe("useOverlayManager - Event Handling", () => {
 
   it("should not close overlay on backdrop click when disabled", () => {
     const onBackdropClick = vi.fn();
-    const { result } = renderHook(() => useOverlayManager({ 
-      closeOnBackdrop: false,
-      onBackdropClick 
-    }));
+    const { result } = renderHook(() =>
+      useOverlayManager({
+        closeOnBackdrop: false,
+        onBackdropClick,
+      }),
+    );
     const overlay = {
       id: "test-overlay",
       component: "TestComponent",
@@ -120,11 +124,13 @@ describe("useOverlayManager - Event Handling", () => {
     const onAdd = vi.fn();
     const onRemove = vi.fn();
     const onUpdate = vi.fn();
-    const { result } = renderHook(() => useOverlayManager({ 
-      onAdd, 
-      onRemove, 
-      onUpdate 
-    }));
+    const { result } = renderHook(() =>
+      useOverlayManager({
+        onAdd,
+        onRemove,
+        onUpdate,
+      }),
+    );
     const overlay = {
       id: "test-overlay",
       component: "TestComponent",
@@ -135,16 +141,20 @@ describe("useOverlayManager - Event Handling", () => {
     };
     act(() => {
       result.current.addOverlay(overlay);
-      result.current.updateOverlay("test-overlay", { ...overlay, props: { title: "Updated" } });
+      result.current.updateOverlay("test-overlay", {
+        ...overlay,
+        props: { title: "Updated" },
+      });
 
       result.current.removeOverlay("test-overlay");
     });
 
     expect(onAdd).toHaveBeenCalledWith(overlay);
-    expect(onUpdate).toHaveBeenCalledWith("test-overlay", { ...overlay, props: { title: "Updated" } });
+    expect(onUpdate).toHaveBeenCalledWith("test-overlay", {
+      ...overlay,
+      props: { title: "Updated" },
+    });
 
     expect(onRemove).toHaveBeenCalledWith("test-overlay");
   });
-
 });
-

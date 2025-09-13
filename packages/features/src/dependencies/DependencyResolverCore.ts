@@ -80,4 +80,3 @@ export function isServiceAvailable(
 ): boolean {
   return core.serviceAvailability.get(serviceId) ?? false;
 }
-

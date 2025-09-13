@@ -30,7 +30,8 @@
     - [Pluralization Tests](#pluralization-tests)
     - [RTL Tests](#rtl-tests)
 
-The translation system in Reynard provides comprehensive internationalization support with type-safe translations, pluralization rules, and RTL language support.
+The translation system in Reynard provides comprehensive internationalization support with type-safe translations,
+pluralization rules, and RTL language support.
 
 ## Directory Structure
 
@@ -44,7 +45,8 @@ The translations are in the `/src/i18n` folder:
 
 ### Translation Interfaces
 
-All language files must follow the type definitions in `/src/i18n/types.ts`, which defines interfaces for different sections:
+All language files must follow the type definitions in `/src/i18n/types.ts`,
+which defines interfaces for different sections:
 
 ```typescript
 export interface Translations {
@@ -119,7 +121,9 @@ const value = getTranslationValue(translations, "gallery.multiSelect.selected");
 
 ### Pluralization Support
 
-The system provides comprehensive pluralization support for different language families through a flexible rule-based system. Each language can define its own plural forms and rules for selecting the appropriate form based on the number.
+The system provides comprehensive pluralization support for different language families through
+a flexible rule-based system. Each language can define its own plural forms and
+rules for selecting the appropriate form based on the number.
 
 #### Plural Forms
 
@@ -252,7 +256,8 @@ describe("Pluralization", () => {
 
 ## RTL Support
 
-The system provides comprehensive RTL (right-to-left) support for languages like Arabic (ar), Hebrew (he), and Persian (fa). This is implemented through several layers:
+The system provides comprehensive RTL (right-to-left) support for languages like Arabic (ar), Hebrew (he), and
+Persian (fa). This is implemented through several layers:
 
 1. Automatic Direction Setting:
 
@@ -311,33 +316,60 @@ The system provides comprehensive RTL (right-to-left) support for languages like
 
 ### Best Practices for RTL Support
 
-When working with RTL languages, it's important to use CSS logical properties like `margin-inline-start` and `padding-inline-end` instead of directional properties like `margin-left` and `padding-right`. The `--start` and `--end` CSS variables should be used for positioning elements that need to flip in RTL layouts. Special attention must be paid to text alignment and icon direction in RTL layouts. All layouts should be thoroughly tested with both LTR and RTL content to ensure proper display. Different scripts require appropriate line heights - Hebrew text works best with 1.7 while Arabic and Persian scripts need 1.8 for optimal readability.
+When working with RTL languages, it's important to use CSS logical properties like `margin-inline-start` and
+`padding-inline-end` instead of directional properties like `margin-left` and `padding-right`. The `--start` and
+`--end` CSS variables should be used for positioning elements that
+need to flip in RTL layouts. Special attention must be paid to text alignment and
+icon direction in RTL layouts. All layouts should be thoroughly tested with both LTR and
+RTL content to ensure proper display. Different scripts require appropriate line heights - Hebrew text works best with
+1.7 while Arabic and Persian scripts need 1.8 for optimal readability.
 
 ### RTL-Aware Components
 
-Components should be designed to handle both LTR and RTL layouts using CSS logical properties (e.g., `padding-inline-start`, `margin-inline-end`) and direction-aware values (`text-align: start|end`). Avoid framework-specific styling examples.
+Components should be designed to handle both LTR and
+RTL layouts using CSS logical properties (e.g., `padding-inline-start`, `margin-inline-end`) and
+direction-aware values (`text-align: start|end`). Avoid framework-specific styling examples.
 
 ## Dynamic Loading
 
-Translations are dynamically imported by their specific language files. See `src/contexts/app.tsx` for how translation modules are loaded using dynamic imports keyed by locale.
+Translations are dynamically imported by their specific language files. See `src/contexts/app.tsx` for how
+translation modules are loaded using dynamic imports keyed by locale.
 
 ## Best Practices
 
 ### Translation Keys
 
-When creating translation keys, it's important to follow consistent naming patterns throughout the codebase. Related translations should be grouped together logically to maintain organization. Keys should be descriptive enough to understand their purpose while remaining concise and avoiding unnecessary verbosity. Using dot notation helps establish clear hierarchical relationships between translations. Dot notation refers to using periods to separate hierarchical levels in translation keys, such as `settings.appearance.theme` or `gallery.images.count`. This creates a clear nested structure that makes it easy to organize and access translations.
+When creating translation keys, it's important to
+follow consistent naming patterns throughout the codebase. Related translations should be grouped together logically to
+maintain organization. Keys should be descriptive enough to understand their purpose while remaining concise and
+avoiding unnecessary verbosity. Using dot notation helps establish clear hierarchical relationships between
+translations. Dot notation refers to using periods to separate hierarchical levels in translation keys, such as
+`settings.appearance.theme` or `gallery.images.count`. This creates a clear nested structure that makes it easy to
+organize and access translations.
 
 ### Translation Content
 
-Translation content should be written in clear, concise language that users can easily understand. Maintain consistent sentence casing across all translations to provide a polished user experience. Technical jargon should be avoided unless absolutely necessary for the target audience. When the meaning or usage of a translation may not be immediately obvious, include context comments to help other developers and translators understand how the text is used.
+Translation content should be written in clear,
+concise language that users can easily understand. Maintain consistent sentence casing across all translations to
+provide a polished user experience. Technical jargon should be avoided unless absolutely necessary for
+the target audience. When the meaning or
+usage of a translation may not be immediately obvious, include context comments to help other developers and
+translators understand how the text is used.
 
 ### Interpolation
 
-The interpolation system relies on named parameters to provide clarity and prevent errors from parameter order changes. All required parameters should be clearly documented so translators understand what values will be inserted. Special attention must be paid to how word order differences between languages affect interpolated values. The system needs to appropriately handle plural forms based on the grammatical rules of each target language.
+The interpolation system relies on named parameters to provide clarity and
+prevent errors from parameter order changes. All required parameters should be clearly documented so
+translators understand what values will be inserted. Special attention must be paid to how
+word order differences between languages affect interpolated values. The system needs to
+appropriately handle plural forms based on the grammatical rules of each target language.
 
 ### Maintenance
 
-Regular maintenance is crucial for keeping translations synchronized across all supported languages. Missing translations should be documented to ensure they get addressed. Type definitions must be updated whenever new translations are added to maintain type safety. Testing translations with different languages helps catch issues early and ensures a consistent experience for all users.
+Regular maintenance is crucial for keeping translations synchronized across all supported languages. Missing
+translations should be documented to ensure they get addressed. Type definitions must be updated whenever new
+translations are added to maintain type safety. Testing translations with different languages helps catch issues early
+and ensures a consistent experience for all users.
 
 ## Testing
 
@@ -383,4 +415,11 @@ describe("RTL Support", () => {
 });
 ```
 
-When working with translations, it's important to keep all translations synchronized across the supported languages to maintain consistency. Testing should be performed with various language contexts to ensure proper functionality in different locales. Special attention must be paid to word order differences between languages, as sentence structure can vary significantly. The system needs to properly handle pluralization rules according to each language's grammatical requirements. RTL language support should be maintained throughout the application to provide a seamless experience for users of those languages. Finally, translation requirements should be thoroughly documented to help translators understand the context and parameters needed for each string.
+When working with translations, it's important to keep all translations synchronized across the supported languages to
+maintain consistency. Testing should be performed with various language contexts to ensure proper functionality in
+different locales. Special attention must be paid to word order differences between languages,
+as sentence structure can vary significantly. The system needs to properly handle pluralization rules according to
+each language's grammatical requirements. RTL language support should be maintained throughout the application to
+provide a seamless experience for users of those languages. Finally,
+translation requirements should be thoroughly documented to help translators understand the context and
+parameters needed for each string.

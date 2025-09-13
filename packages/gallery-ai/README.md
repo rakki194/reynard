@@ -1,6 +1,7 @@
 # reynard-gallery-ai
 
-*AI-enhanced gallery components for the Reynard framework - transforms your gallery into an intelligent media management powerhouse!* 🦊
+_AI-enhanced gallery components for the Reynard framework - transforms your gallery into
+an intelligent media management powerhouse!_ 🦊
 
 ## ✨ Features
 
@@ -82,12 +83,12 @@ function MyAIGallery() {
 
 ### Using AI Features
 
-```tsx
+````tsx
 import { useGalleryAI } from "reynard-gallery-ai";
 
 function MyComponent() {
   const ai = useGalleryAI();
-  
+
   // Generate caption for a single item
   const handleGenerateCaption = async (item: FileItem) => {
     try {
@@ -97,7 +98,7 @@ function MyComponent() {
       console.error("Caption generation failed:", error);
     }
   };
-  
+
   // Batch process multiple items
   const handleBatchProcess = async (items: FileItem[]) => {
     try {
@@ -107,7 +108,7 @@ function MyComponent() {
       console.error("Batch processing failed:", error);
     }
   };
-  
+
   return (
     <div>
       <button onClick={() => handleGenerateCaption(selectedItem)}>
@@ -135,7 +136,7 @@ The main provider component that wraps your gallery and provides AI functionalit
 >
   {/* Your gallery components */}
 </AIGalleryProvider>
-```
+````
 
 ### AIGalleryGrid
 
@@ -351,7 +352,9 @@ const customActions: AIContextMenuAction[] = [
     aiActionType: AIContextMenuActionType.GENERATE_CAPTION,
     aiConfig: {
       generator: "custom-generator",
-      customConfig: { /* your config */ },
+      customConfig: {
+        /* your config */
+      },
     },
   },
 ];
@@ -386,7 +389,7 @@ test("renders AI gallery grid", () => {
       <AIGalleryGrid items={[]} />
     </AIGalleryProvider>
   ));
-  
+
   expect(screen.getByText("No items found")).toBeInTheDocument();
 });
 ```

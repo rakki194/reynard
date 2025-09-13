@@ -1,6 +1,6 @@
 /**
  * Performance and Memory Management Types
- * 
+ *
  * Type definitions for performance monitoring, memory management, and optimization
  */
 
@@ -34,17 +34,26 @@ export interface DebounceOptions {
   readonly maxWait?: number;
 }
 
-export interface FunctionSignature<TArgs extends readonly unknown[] = readonly unknown[], TReturn = unknown> {
+export interface FunctionSignature<
+  TArgs extends readonly unknown[] = readonly unknown[],
+  TReturn = unknown,
+> {
   (...args: TArgs): TReturn;
 }
 
-export interface ThrottledFunction<TArgs extends readonly unknown[] = readonly unknown[], TReturn = unknown> {
+export interface ThrottledFunction<
+  TArgs extends readonly unknown[] = readonly unknown[],
+  TReturn = unknown,
+> {
   (...args: TArgs): TReturn | undefined;
   readonly cancel: () => void;
   readonly flush: () => TReturn | undefined;
 }
 
-export interface DebouncedFunction<TArgs extends readonly unknown[] = readonly unknown[], TReturn = unknown> {
+export interface DebouncedFunction<
+  TArgs extends readonly unknown[] = readonly unknown[],
+  TReturn = unknown,
+> {
   (...args: TArgs): TReturn | undefined;
   readonly cancel: () => void;
   readonly flush: () => TReturn | undefined;
@@ -87,4 +96,3 @@ export interface SpatialHashStats {
   readonly queryCount: number;
   readonly averageQueryTime: number;
 }
-

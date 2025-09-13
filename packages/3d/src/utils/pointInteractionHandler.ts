@@ -14,7 +14,7 @@ export function createPointInteractionHandler() {
 
     const intersect = intersects[0] as { index?: number };
     const pointIndex = intersect.index;
-    
+
     if (pointIndex !== undefined && points[pointIndex]) {
       const point = points[pointIndex];
       onPointSelect?.(point.id);

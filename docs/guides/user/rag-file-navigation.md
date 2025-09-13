@@ -1,10 +1,13 @@
 # RAG File Navigation
 
-This document describes the file navigation feature in the RAG Search & Ingest system, which allows users to navigate to and open source files directly from search results.
+This document describes the file navigation feature in the RAG Search & Ingest system,
+which allows users to navigate to and open source files directly from search results.
 
 ## Overview
 
-The RAG file navigation feature enhances search results by providing direct access to source files. When you perform a search in the RAG system, each result now includes file information and navigation options that allow you to:
+The RAG file navigation feature enhances search results by providing direct access to source files. When
+you perform a search in the RAG system, each result now includes file information and
+navigation options that allow you to:
 
 - View file details and metadata
 - Open files in appropriate modals

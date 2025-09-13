@@ -1,10 +1,14 @@
 # 🏗️ Architecture Research Archive
 
-This directory contains comprehensive architecture documentation and design patterns research for the Reynard platform. The architecture research covers system design, service patterns, integration strategies, and scalability considerations.
+This directory contains comprehensive architecture documentation and
+design patterns research for the Reynard platform. The architecture research covers system design, service patterns,
+integration strategies, and scalability considerations.
 
 ## 🎯 Architecture Overview
 
-The Reynard platform follows a sophisticated service-oriented architecture with clear separation of concerns, modular design patterns, and scalable infrastructure. The architecture research demonstrates proven patterns for building complex web applications with AI/ML capabilities.
+The Reynard platform follows a sophisticated service-oriented architecture with clear separation of concerns,
+modular design patterns, and scalable infrastructure. The architecture research demonstrates proven patterns for
+building complex web applications with AI/ML capabilities.
 
 ## 📋 Architecture Categories
 
@@ -176,4 +180,7 @@ The Reynard platform follows a sophisticated service-oriented architecture with 
 
 ---
 
-_This architecture research archive provides comprehensive insights into the system design, service patterns, and architectural decisions that form the foundation of the Reynard platform. The architecture demonstrates proven patterns for building scalable, maintainable, and secure web applications._
+_This architecture research archive provides comprehensive insights into the system design, service patterns, and
+architectural decisions that form the foundation of
+the Reynard platform. The architecture demonstrates proven patterns for building scalable, maintainable, and
+secure web applications._

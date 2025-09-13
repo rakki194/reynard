@@ -110,7 +110,10 @@ export class SpatialHash<T extends SpatialDataType = SpatialDataType> {
       const cell = this.cells.get(cellKey);
       if (cell) {
         for (const obj of cell) {
-          if (this.isObjectInRect(obj, x, y, width, height) && obj.data !== undefined) {
+          if (
+            this.isObjectInRect(obj, x, y, width, height) &&
+            obj.data !== undefined
+          ) {
             results.set(obj.id, obj as SpatialObject & { data: T });
           }
         }

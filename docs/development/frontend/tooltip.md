@@ -1,6 +1,8 @@
 # Tooltip System Documentation
 
-The Tooltip system in Reynard provides a reusable, accessible, and customizable way to display contextual information when users hover over or focus on elements. The system is built with SolidJS and follows modern accessibility guidelines.
+The Tooltip system in Reynard provides a reusable, accessible, and
+customizable way to display contextual information when users hover over or
+focus on elements. The system is built with SolidJS and follows modern accessibility guidelines.
 
 ## Features
 
@@ -115,11 +117,20 @@ The tooltip's styling uses a modern approach with CSS transitions:
 
 ## Accessibility
 
-The tooltip system implements several accessibility features to ensure a great experience for all users. The system uses proper ARIA attributes including the `role="tooltip"` attribute which helps screen readers identify the tooltip's purpose, and the `aria-hidden` attribute which manages visibility state for assistive technologies.
+The tooltip system implements several accessibility features to ensure a great experience for
+all users. The system uses proper ARIA attributes including the `role="tooltip"` attribute which
+helps screen readers identify the tooltip's purpose, and
+the `aria-hidden` attribute which manages visibility state for assistive technologies.
 
-Keyboard navigation is fully supported, with focus events triggering tooltips in the same way as mouse interactions. The system implements proper focus management to maintain a logical tab order and provides the same smooth delay and animation behavior whether using keyboard or mouse input.
+Keyboard navigation is fully supported,
+with focus events triggering tooltips in
+the same way as mouse interactions. The system implements proper focus management to maintain a logical tab order and
+provides the same smooth delay and animation behavior whether using keyboard or mouse input.
 
-Screen reader support is implemented through semantic HTML structure that clearly conveys the tooltip's content and purpose. The system uses clear, descriptive text content and maintains proper ARIA states to ensure screen readers can accurately announce the tooltip's presence and content to users.
+Screen reader support is implemented through semantic HTML structure that clearly conveys the tooltip's content and
+purpose. The system uses clear, descriptive text content and
+maintains proper ARIA states to ensure screen readers can accurately announce the tooltip's presence and
+content to users.
 
 ## Theme Integration
 
@@ -135,20 +146,37 @@ The tooltip system integrates with the application's theme system through CSS va
 
 ## Performance Considerations
 
-The tooltip system prioritizes efficient updates through several key optimizations. It leverages CSS transitions rather than JavaScript animations for smooth performance. Hardware-accelerated transforms are used to ensure fluid motion, while DOM updates are kept to a minimum to reduce browser reflow.
+The tooltip system prioritizes efficient updates through
+several key optimizations. It leverages CSS transitions rather than JavaScript animations for
+smooth performance. Hardware-accelerated transforms are used to ensure fluid motion, while
+DOM updates are kept to a minimum to reduce browser reflow.
 
-Memory management is carefully implemented to prevent leaks and optimize resource usage. The system properly cleans up timeouts when components unmount. A single tooltip instance is shared across all trigger elements rather than creating multiple instances. Event listeners are efficiently managed to avoid memory bloat.
+Memory management is carefully implemented to prevent leaks and
+optimize resource usage. The system properly cleans up timeouts when
+components unmount. A single tooltip instance is shared across all trigger elements rather than creating multiple
+instances. Event listeners are efficiently managed to avoid memory bloat.
 
-Visual performance is enhanced through carefully tuned transitions with proper timing curves. A backdrop blur effect improves text readability across different backgrounds. Opacity changes are optimized to maintain smooth animations.
+Visual performance is enhanced through carefully tuned transitions with
+proper timing curves. A backdrop blur effect improves text readability across different backgrounds. Opacity changes are
+optimized to maintain smooth animations.
 
 ## Browser Support
 
-The tooltip system provides broad compatibility across modern browsers while gracefully degrading on older ones. It utilizes standard CSS transforms and transitions for animations. The backdrop-filter property adds a frosted glass effect with a solid color fallback for unsupported browsers. Modern JavaScript features power the core functionality while maintaining backwards compatibility. Fixed positioning ensures proper tooltip placement across different viewport sizes.
+The tooltip system provides broad compatibility across modern browsers while
+gracefully degrading on older ones. It utilizes standard CSS transforms and
+transitions for animations. The backdrop-filter property adds a frosted glass effect with a solid color fallback for
+unsupported browsers. Modern JavaScript features power the core functionality while
+maintaining backwards compatibility. Fixed positioning ensures proper tooltip placement across different viewport sizes.
 
 ## Future Improvements
 
-Several enhancements are planned for the tooltip system. The positioning system could be expanded to support both fixed and relative modes depending on the use case. Custom delay configuration would allow fine-tuning of tooltip timing. Rich content support would enable more complex tooltip contents beyond simple text.
+Several enhancements are planned for the tooltip system. The positioning system could be expanded to
+support both fixed and relative modes depending on the use case. Custom delay configuration would allow fine-tuning of
+tooltip timing. Rich content support would enable more complex tooltip contents beyond simple text.
 
-Additional features under consideration include mobile-specific interaction patterns optimized for touch devices. A click-to-pin functionality would allow users to keep tooltips visible. Custom animation patterns could provide more variety in how tooltips appear and disappear.
+Additional features under consideration include mobile-specific interaction patterns optimized for
+touch devices. A click-to-pin functionality would allow users to
+keep tooltips visible. Custom animation patterns could provide more variety in how tooltips appear and disappear.
 
-The system could be enhanced to better handle dynamic content updates. Touch event handling could be further optimized for mobile devices.
+The system could be enhanced to better handle dynamic content updates. Touch event handling could be further optimized
+for mobile devices.

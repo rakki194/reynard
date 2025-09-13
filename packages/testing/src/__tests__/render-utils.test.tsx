@@ -5,7 +5,10 @@
 import { screen } from "@solidjs/testing-library";
 import { Component, createSignal } from "solid-js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { resetBrowserMocks, setupBrowserMocks } from "../../mocks/browser-mocks";
+import {
+  resetBrowserMocks,
+  setupBrowserMocks,
+} from "../../mocks/browser-mocks";
 import {
   renderWithAppContext,
   renderWithProviders,

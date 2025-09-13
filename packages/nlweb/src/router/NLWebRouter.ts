@@ -12,9 +12,18 @@ import {
   NLWebPerformanceStats,
 } from "../types/index.js";
 import { NLWebToolRegistry } from "./NLWebToolRegistry.js";
-import { createNLWebRouterCache, NLWebRouterCache } from "./NLWebRouterCache.js";
-import { createNLWebRouterSuggest, NLWebRouterSuggest } from "./NLWebRouterSuggest.js";
-import { createNLWebRouterScoring, NLWebRouterScoring } from "./NLWebRouterScoring.js";
+import {
+  createNLWebRouterCache,
+  NLWebRouterCache,
+} from "./NLWebRouterCache.js";
+import {
+  createNLWebRouterSuggest,
+  NLWebRouterSuggest,
+} from "./NLWebRouterSuggest.js";
+import {
+  createNLWebRouterScoring,
+  NLWebRouterScoring,
+} from "./NLWebRouterScoring.js";
 
 export interface NLWebRouterConfig {
   /** Cache TTL in milliseconds */
@@ -37,10 +46,7 @@ export class NLWebRouter {
   private eventListeners: Map<string, Array<(data: unknown) => void>>;
   private emergencyRollback: boolean;
 
-  constructor(
-    toolRegistry: NLWebToolRegistry,
-    config: NLWebRouterConfig = {},
-  ) {
+  constructor(toolRegistry: NLWebToolRegistry, config: NLWebRouterConfig = {}) {
     const {
       cacheTtl = 300000, // 5 minutes
       maxCacheSize = 1000,

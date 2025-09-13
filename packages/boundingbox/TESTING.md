@@ -1,6 +1,7 @@
 # BoundingBoxEditor Testing Guide
 
-This document provides a comprehensive overview of the testing strategy and implementation for the BoundingBoxEditor component and its related composables.
+This document provides a comprehensive overview of the testing strategy and
+implementation for the BoundingBoxEditor component and its related composables.
 
 ## Test Structure
 
@@ -55,7 +56,8 @@ The test suite is organized into several categories:
 - **reynard-testing**: Unified testing utilities and configurations
 - **@solidjs/testing-library**: SolidJS component testing utilities
 
-**Note:** This package uses the unified Reynard testing stack with happy-dom instead of jsdom for better performance and reliability.
+**Note:** This package uses the unified Reynard testing stack with happy-dom instead of jsdom for
+better performance and reliability.
 
 ### Setup
 

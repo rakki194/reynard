@@ -11,7 +11,7 @@ import type { IntlFormatter } from "../types";
 
 export function createIntlFormatter(config: IntlConfig): IntlFormatter {
   const relativeFormatter = createRelativeFormatter(config);
-  
+
   return {
     number: createNumberFormatter(config),
     date: createDateFormatter(config),

@@ -6,12 +6,24 @@
 
 import { NLWebState } from "./useNLWebState.js";
 import { NLWebTool } from "../types/index.js";
-import { createNLWebCoreActions, NLWebCoreActions } from "./useNLWebCoreActions.js";
-import { createNLWebToolActions, NLWebToolActions } from "./useNLWebToolActions.js";
-import { createNLWebRollbackActions, NLWebRollbackActions } from "./useNLWebRollbackActions.js";
+import {
+  createNLWebCoreActions,
+  NLWebCoreActions,
+} from "./useNLWebCoreActions.js";
+import {
+  createNLWebToolActions,
+  NLWebToolActions,
+} from "./useNLWebToolActions.js";
+import {
+  createNLWebRollbackActions,
+  NLWebRollbackActions,
+} from "./useNLWebRollbackActions.js";
 
 export interface NLWebActions {
-  getSuggestions: (query: string, context?: Record<string, unknown>) => Promise<void>;
+  getSuggestions: (
+    query: string,
+    context?: Record<string, unknown>,
+  ) => Promise<void>;
   getHealth: () => Promise<void>;
   getConfiguration: () => Promise<void>;
   getTools: () => Promise<void>;

@@ -93,9 +93,7 @@ export const ChartRenderer: Component<ChartRendererProps> = (props) => {
         </div>
       </Show>
 
-      <Show when={props.data && !props.loading}>
-        {renderChart()}
-      </Show>
+      <Show when={props.data && !props.loading}>{renderChart()}</Show>
 
       {/* Performance monitoring overlay */}
       <Show

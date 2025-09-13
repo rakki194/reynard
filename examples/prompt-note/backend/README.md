@@ -1,6 +1,7 @@
 # Reynard Basic Backend
 
-A modular FastAPI backend example demonstrating uvicorn reload best practices and development patterns for the Reynard ecosystem.
+A modular FastAPI backend example demonstrating uvicorn reload best practices and
+development patterns for the Reynard ecosystem.
 
 ## Features
 
@@ -250,7 +251,8 @@ export DEBUG="true"
 
 ## Contributing
 
-This is an example backend for the Reynard ecosystem. Feel free to use it as a starting point for your own projects or contribute improvements.
+This is an example backend for the Reynard ecosystem. Feel free to use it as a starting point for your own projects or
+contribute improvements.
 
 ## License
 

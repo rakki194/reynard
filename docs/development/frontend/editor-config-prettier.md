@@ -1,10 +1,13 @@
 # Editor Config and Prettier Setup
 
-This document describes the Editor Config and Prettier configuration for YipYap, ensuring consistent code formatting across different editors and development environments.
+This document describes the Editor Config and
+Prettier configuration for YipYap, ensuring consistent code formatting across different editors and
+development environments.
 
 ## Overview
 
-The project uses Editor Config for basic editor settings and Prettier for advanced code formatting. This combination ensures:
+The project uses Editor Config for basic editor settings and
+Prettier for advanced code formatting. This combination ensures:
 
 - **Consistent formatting** across all developers and editors
 - **Automatic formatting** on save and commit
@@ -251,7 +254,8 @@ The Vite configuration includes `vite-plugin-stylelint` for development-time lin
 
 ### Other Editors
 
-Most editors support EditorConfig and Prettier through plugins or built-in features. Check the respective editor documentation for setup instructions.
+Most editors support EditorConfig and Prettier through plugins or
+built-in features. Check the respective editor documentation for setup instructions.
 
 ## Workflow
 

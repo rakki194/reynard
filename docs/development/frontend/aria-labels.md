@@ -1,6 +1,7 @@
 # ARIA Labeling Guide for Reynard
 
-This document outlines best practices for ARIA labeling in the Reynard project, focusing on our specific components and use cases.
+This document outlines best practices for ARIA labeling in the Reynard project,
+focusing on our specific components and use cases.
 
 ## Table of Contents
 
@@ -221,4 +222,7 @@ When implementing ARIA labels in Reynard, always consider:
 3. The most natural way to describe the component to a screen reader user
 4. Consistency with similar components elsewhere in the application
 
-Regular testing with screen readers and keyboard navigation is essential to verify that your labeling implementation works as intended. Maintain consistent patterns across similar components to provide a predictable experience.
+Regular testing with screen readers and
+keyboard navigation is essential to verify that
+your labeling implementation works as intended. Maintain consistent patterns across similar components to
+provide a predictable experience.

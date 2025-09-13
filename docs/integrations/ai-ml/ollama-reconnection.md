@@ -1,10 +1,13 @@
 # Ollama Service Reconnection
 
-The Ollama service now includes automatic reconnection functionality with exponential backoff to handle connection failures gracefully.
+The Ollama service now includes automatic reconnection functionality with exponential backoff to
+handle connection failures gracefully.
 
 ## Overview
 
-When the Ollama service connects to the server once and then gets disconnected, it will automatically attempt to reconnect every 5 seconds initially, with exponential timeout increases up to a maximum of 5 minutes between attempts.
+When the Ollama service connects to the server once and
+then gets disconnected, it will automatically attempt to reconnect every 5 seconds initially,
+with exponential timeout increases up to a maximum of 5 minutes between attempts.
 
 ## Features
 

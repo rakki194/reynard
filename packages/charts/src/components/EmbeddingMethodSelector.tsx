@@ -1,6 +1,6 @@
 /**
  * Embedding Method Selector Component
- * 
+ *
  * Handles dimensionality reduction method selection and parameter configuration.
  */
 
@@ -27,7 +27,9 @@ export interface EmbeddingMethodSelectorProps {
   onPerformReduction: () => void;
 }
 
-export const EmbeddingMethodSelector: Component<EmbeddingMethodSelectorProps> = (props) => {
+export const EmbeddingMethodSelector: Component<
+  EmbeddingMethodSelectorProps
+> = (props) => {
   if (!props.availableMethods) return null;
 
   return (
@@ -59,7 +61,9 @@ export const EmbeddingMethodSelector: Component<EmbeddingMethodSelectorProps> = 
             min="100"
             max="10000"
             step="100"
-            onChange={(e) => props.onMaxSamplesChange(parseInt(e.currentTarget.value))}
+            onChange={(e) =>
+              props.onMaxSamplesChange(parseInt(e.currentTarget.value))
+            }
             title="Maximum number of samples"
             placeholder="1000"
           />
@@ -88,7 +92,9 @@ export const EmbeddingMethodSelector: Component<EmbeddingMethodSelectorProps> = 
                 <Show when={paramInfo.type === "integer"}>
                   <input
                     type="number"
-                    value={props.reductionParams[paramName] || paramInfo.default}
+                    value={
+                      props.reductionParams[paramName] || paramInfo.default
+                    }
                     min={paramInfo.min}
                     max={paramInfo.max}
                     onChange={(e) =>
@@ -105,7 +111,9 @@ export const EmbeddingMethodSelector: Component<EmbeddingMethodSelectorProps> = 
                   <input
                     type="number"
                     step="0.1"
-                    value={props.reductionParams[paramName] || paramInfo.default}
+                    value={
+                      props.reductionParams[paramName] || paramInfo.default
+                    }
                     min={paramInfo.min}
                     max={paramInfo.max}
                     onChange={(e) =>
@@ -135,7 +143,9 @@ export const EmbeddingMethodSelector: Component<EmbeddingMethodSelectorProps> = 
                 </Show>
                 <Show when={paramInfo.type === "string" && paramInfo.options}>
                   <select
-                    value={props.reductionParams[paramName] || paramInfo.default}
+                    value={
+                      props.reductionParams[paramName] || paramInfo.default
+                    }
                     onChange={(e) =>
                       props.onParameterUpdate(paramName, e.currentTarget.value)
                     }

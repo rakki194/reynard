@@ -1,6 +1,7 @@
 # reynard-fluent-icons
 
-A comprehensive icon system for Reynard applications, featuring Fluent UI icons and custom SVG assets with a powerful registry system.
+A comprehensive icon system for Reynard applications, featuring Fluent UI icons and
+custom SVG assets with a powerful registry system.
 
 ## Features
 
@@ -183,7 +184,9 @@ interface IconMetadata {
 
 ## Natural Language Captions
 
-Every icon in the Reynard icon system includes a natural language caption designed to help AI and language models understand the icon's purpose and appearance. This makes it easier for AI systems to select appropriate icons for user interfaces.
+Every icon in the Reynard icon system includes a natural language caption designed to help AI and
+language models understand the icon's purpose and
+appearance. This makes it easier for AI systems to select appropriate icons for user interfaces.
 
 ### Using Captions
 

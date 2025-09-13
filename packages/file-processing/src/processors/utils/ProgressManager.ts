@@ -1,6 +1,6 @@
 /**
  * Progress management utilities for file processing operations.
- * 
+ *
  * Handles progress tracking and callback management for long-running
  * file processing tasks.
  */

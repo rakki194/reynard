@@ -1,6 +1,7 @@
 # Reynard Comprehensive Dashboard
 
-A complete showcase of all Reynard framework components and features, demonstrating how to build a modern, fully-featured dashboard application with SolidJS.
+A complete showcase of all Reynard framework components and
+features, demonstrating how to build a modern, fully-featured dashboard application with SolidJS.
 
 ## Features Demonstrated
 

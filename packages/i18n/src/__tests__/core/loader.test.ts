@@ -72,8 +72,10 @@ describe("Translation Loader System", () => {
           key500: "value500",
         },
       };
-      
-      const mockImportFn = vi.fn().mockResolvedValue({ default: mockTranslations });
+
+      const mockImportFn = vi
+        .fn()
+        .mockResolvedValue({ default: mockTranslations });
 
       const result = await loadTranslationModuleCore("en", mockImportFn);
 
@@ -82,9 +84,13 @@ describe("Translation Loader System", () => {
     });
 
     it("should handle import function errors", async () => {
-      const mockImportFn = vi.fn().mockRejectedValue(new Error("Failed to load"));
+      const mockImportFn = vi
+        .fn()
+        .mockRejectedValue(new Error("Failed to load"));
 
-      await expect(loadTranslationModuleCore("es", mockImportFn)).rejects.toThrow("Failed to load");
+      await expect(
+        loadTranslationModuleCore("es", mockImportFn),
+      ).rejects.toThrow("Failed to load");
     });
 
     it("should handle multiple calls with same import function", async () => {
@@ -120,8 +126,10 @@ describe("Translation Loader System", () => {
           key500: "value500",
         },
       };
-      
-      const mockImportFn = vi.fn().mockResolvedValue({ default: mockTranslations });
+
+      const mockImportFn = vi
+        .fn()
+        .mockResolvedValue({ default: mockTranslations });
 
       const result1 = await loadTranslationModuleCore("en", mockImportFn);
       const result2 = await loadTranslationModuleCore("en", mockImportFn);
@@ -252,7 +260,9 @@ describe("Translation Loader System", () => {
   describe("Cache Management", () => {
     it("should clear all cache", async () => {
       const mockTranslations = { common: { hello: "Hello" } };
-      const mockImportFn = vi.fn().mockResolvedValue({ default: mockTranslations });
+      const mockImportFn = vi
+        .fn()
+        .mockResolvedValue({ default: mockTranslations });
 
       await loadTranslationsWithCache("en", true, mockImportFn);
       await loadNamespace("en", "common");
@@ -268,7 +278,9 @@ describe("Translation Loader System", () => {
 
     it("should clear specific locale cache", async () => {
       const mockTranslations = { common: { hello: "Hello" } };
-      const mockImportFn = vi.fn().mockResolvedValue({ default: mockTranslations });
+      const mockImportFn = vi
+        .fn()
+        .mockResolvedValue({ default: mockTranslations });
 
       await loadTranslationsWithCache("en", true, mockImportFn);
       await loadTranslationsWithCache("es", true, mockImportFn);
@@ -281,7 +293,9 @@ describe("Translation Loader System", () => {
 
     it("should provide cache statistics", async () => {
       const mockTranslations = { common: { hello: "Hello" } };
-      const mockImportFn = vi.fn().mockResolvedValue({ default: mockTranslations });
+      const mockImportFn = vi
+        .fn()
+        .mockResolvedValue({ default: mockTranslations });
 
       await loadTranslationsWithCache("en", true, mockImportFn);
       await loadNamespace("en", "common");
@@ -297,12 +311,15 @@ describe("Translation Loader System", () => {
     });
   });
 
-
   describe("Error Handling", () => {
     it("should handle missing translation files", async () => {
-      const mockImportFn = vi.fn().mockRejectedValue(new Error("Module not found"));
+      const mockImportFn = vi
+        .fn()
+        .mockRejectedValue(new Error("Module not found"));
 
-      await expect(loadTranslationModuleCore("nonexistent", mockImportFn)).rejects.toThrow("Module not found");
+      await expect(
+        loadTranslationModuleCore("nonexistent", mockImportFn),
+      ).rejects.toThrow("Module not found");
     });
 
     it("should handle namespace loading errors", async () => {

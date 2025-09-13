@@ -160,7 +160,8 @@ export const coreTranslations = {
     notFound: "Not found",
     mediaQueryNotSupported: "matchMedia not supported",
     loadFailed: "Failed to load module",
-    dangerousJson: "Potentially dangerous JSON detected - contains prototype pollution patterns",
+    dangerousJson:
+      "Potentially dangerous JSON detected - contains prototype pollution patterns",
     parseJsonFailed: "Failed to parse JSON from localStorage:",
     moduleIsNull: "Module is null",
     invalidModuleStructure: "Invalid module structure",
@@ -217,5 +218,4 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Performance and Security Integration",
   },
-
 };

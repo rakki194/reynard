@@ -2,7 +2,9 @@
 
 ## Overview
 
-The ClipEmbeddingService now supports multiple CLIP model variants with intelligent model management, automatic unloading, and concurrent model loading capabilities. This enhancement allows users to switch between different CLIP models based on their specific needs while maintaining optimal memory usage.
+The ClipEmbeddingService now supports multiple CLIP model variants with intelligent model management,
+automatic unloading, and concurrent model loading capabilities. This enhancement allows users to switch between
+different CLIP models based on their specific needs while maintaining optimal memory usage.
 
 ## Features
 
@@ -243,7 +245,8 @@ python -m pytest app/tests/api/test_rag_multi_model_endpoints.py -v
 
 ## Migration from Single Model
 
-The multi-model support is backward compatible. Existing code will continue to work with the default model, but can now take advantage of the new capabilities:
+The multi-model support is backward compatible. Existing code will continue to work with the default model, but
+can now take advantage of the new capabilities:
 
 ```python
 # Old way (still works)

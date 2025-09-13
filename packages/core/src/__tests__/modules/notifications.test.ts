@@ -30,10 +30,7 @@ describe("Notifications Module", () => {
     it("should add notification with notify method", () => {
       const notificationsModule = createNotificationsModule();
 
-      const id = notificationsModule.notify(
-        t("core.test.message"),
-        "success",
-      );
+      const id = notificationsModule.notify(t("core.test.message"), "success");
 
       expect(notificationsModule.notifications).toHaveLength(1);
       expect(notificationsModule.notifications[0]).toMatchObject({

@@ -1,6 +1,7 @@
 # 🎨 OKLCH Color System
 
-Reynard uses the **OKLCH color space** exclusively for all color definitions, providing perceptual uniformity and modern color management capabilities.
+Reynard uses the **OKLCH color space** exclusively for all color definitions, providing perceptual uniformity and
+modern color management capabilities.
 
 ## Why OKLCH?
 
@@ -242,4 +243,5 @@ function ColorGenerator() {
 }
 ```
 
-The OKLCH color system ensures that Reynard applications have consistent, accessible, and visually appealing color schemes across all themes and components.
+The OKLCH color system ensures that Reynard applications have consistent, accessible, and
+visually appealing color schemes across all themes and components.

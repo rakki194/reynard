@@ -1,6 +1,6 @@
 /**
  * MIME type validation utilities for file security.
- * 
+ *
  * Handles MIME type validation and file extension checking.
  */
 
@@ -19,12 +19,27 @@ export class MimeTypeValidator {
   };
 
   private static readonly EXECUTABLE_EXTENSIONS = [
-    ".exe", ".bat", ".cmd", ".com", ".scr", ".pif", ".msi",
-    ".app", ".deb", ".rpm", ".dmg",
+    ".exe",
+    ".bat",
+    ".cmd",
+    ".com",
+    ".scr",
+    ".pif",
+    ".msi",
+    ".app",
+    ".deb",
+    ".rpm",
+    ".dmg",
   ];
 
   private static readonly COMPRESSED_EXTENSIONS = [
-    ".zip", ".rar", ".7z", ".tar", ".gz", ".bz2", ".xz",
+    ".zip",
+    ".rar",
+    ".7z",
+    ".tar",
+    ".gz",
+    ".bz2",
+    ".xz",
   ];
 
   /**

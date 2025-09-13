@@ -1,6 +1,6 @@
 /**
  * AI Viewer Tab Component
- * 
+ *
  * Handles the AI Image Viewer tab functionality.
  */
 
@@ -28,8 +28,8 @@ const convertToFileItem = (image: ImageItem): FileItem => ({
     caption: image.caption,
     tags: image.tags || [],
     model: image.model,
-    generatedAt: image.generatedAt
-  }
+    generatedAt: image.generatedAt,
+  },
 });
 
 export const AIViewerTab: Component<AIViewerTabProps> = (props) => {

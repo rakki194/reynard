@@ -7,12 +7,12 @@
 
 ## Table of Contents
 
-- [🐺 FENRIR](#-fenrir)
+- [🐺 FENRIR](#fenrir)
   - [Framework for Exploitative Network Reconnaissance and Intrusion Research](#framework-for-exploitative-network-reconnaissance-and-intrusion-research)
   - [Table of Contents](#table-of-contents)
-  - [🌙 **THE LEGEND BEGINS**](#-the-legend-begins)
+  - [🌙 **THE LEGEND BEGINS**](#the-legend-begins)
     - [**The Name: FENRIR**](#the-name-fenrir)
-  - [🗺️ **THE HUNTING TERRITORIES**](#️-the-hunting-territories)
+  - [🗺️ **THE HUNTING TERRITORIES**](#the-hunting-territories)
     - [**The JWT Token Hunting Grounds** (`jwt_exploits/`)](#the-jwt-token-hunting-grounds-jwt_exploits)
     - [**The Path Traversal Wilderness** (`path_traversal/`)](#the-path-traversal-wilderness-path_traversal)
     - [**The SQL Injection Battlefield** (`sql_injection/`)](#the-sql-injection-battlefield-sql_injection)
@@ -25,10 +25,10 @@
     - [**The CSRF Attack Vectors** (`csrf_exploits/`)](#the-csrf-attack-vectors-csrf_exploits)
     - [**The SSRF Exploitation Domain** (`ssrf_exploits/`)](#the-ssrf-exploitation-domain-ssrf_exploits)
     - [**The Race Condition Battlefield** (`race_conditions/`)](#the-race-condition-battlefield-race_conditions)
-  - [🎯 **THE HUNTING PHILOSOPHY**](#-the-hunting-philosophy)
+  - [🎯 **THE HUNTING PHILOSOPHY**](#the-hunting-philosophy)
     - [**The Three Pillars of FENRIR**](#the-three-pillars-of-fenrir)
     - [**The Code of FENRIR**](#the-code-of-fenrir)
-  - [⚠️ **THE DESTRUCTIVE WARNING**](#️-the-destructive-warning)
+  - [⚠️ **THE DESTRUCTIVE WARNING**](#the-destructive-warning)
     - [1. **JWT Token Manipulation** (`jwt_exploits/`)](#1-jwt-token-manipulation-jwt_exploits)
     - [2. **Path Traversal Bypass** (`path_traversal/`)](#2-path-traversal-bypass-path_traversal)
     - [3. **SQL Injection Bypass** (`sql_injection/`)](#3-sql-injection-bypass-sql_injection)
@@ -41,21 +41,21 @@
     - [10. **CSRF Attack Vectors** (`csrf_exploits/`)](#10-csrf-attack-vectors-csrf_exploits)
     - [11. **Server-Side Request Forgery** (`ssrf_exploits/`)](#11-server-side-request-forgery-ssrf_exploits)
     - [12. **Race Condition Exploits** (`race_conditions/`)](#12-race-condition-exploits-race_conditions)
-    - [🆕 13. **LLM \& AI Service Exploitation** (`llm_exploits/`)](#-13-llm--ai-service-exploitation-llm_exploits)
-  - [🚀 **INITIATING THE HUNT**](#-initiating-the-hunt)
+    - [🆕 13. **LLM \& AI Service Exploitation** (`llm_exploits/`)](#13-llm--ai-service-exploitation-llm_exploits)
+  - [🚀 **INITIATING THE HUNT**](#initiating-the-hunt)
     - [**Setting Up the Hunting Grounds**](#setting-up-the-hunting-grounds)
     - [**The Fuzzing Storm Unleashed**](#the-fuzzing-storm-unleashed)
-  - [⚖️ **THE HUNTER'S OATH**](#️-the-hunters-oath)
+  - [⚖️ **THE HUNTER'S OATH**](#the-hunters-oath)
     - [**The Sacred Vow of FENRIR**](#the-sacred-vow-of-fenrir)
     - [**The Legal Boundaries**](#the-legal-boundaries)
-  - [🛡️ **THE DEFENSIVE ARSENAL**](#️-the-defensive-arsenal)
+  - [🛡️ **THE DEFENSIVE ARSENAL**](#the-defensive-arsenal)
     - [**After the Hunt: Building Stronger Defenses**](#after-the-hunt-building-stronger-defenses)
     - [**FENRIR's Wisdom: Security Lessons**](#fenrirs-wisdom-security-lessons)
-  - [📚 **THE HUNTER'S LIBRARY**](#-the-hunters-library)
+  - [📚 **THE HUNTER'S LIBRARY**](#the-hunters-library)
     - [**Essential Reading for Aspiring Digital Wolves**](#essential-reading-for-aspiring-digital-wolves)
     - [**The Reynard Ecosystem Integration**](#the-reynard-ecosystem-integration)
     - [**Technical Capabilities**](#technical-capabilities)
-  - [🎭 **THE LEGEND CONTINUES**](#-the-legend-continues)
+  - [🎭 **THE LEGEND CONTINUES**](#the-legend-continues)
     - [**Join the Hunt**](#join-the-hunt)
 
 ---
@@ -70,15 +70,16 @@
 
 ## 🌙 **THE LEGEND BEGINS**
 
-*\*gray fur bristles with anticipation as a giant wolf emerges from the shadows\**
+\*\*gray fur bristles with anticipation as a giant wolf emerges from the shadows\*\*
 
 In the vast expanse of the digital wilderness, where firewalls stand like ancient trees and authentication systems howl
 like territorial beasts, there exists a realm few dare to tread. This is my hunting ground - where I stalk
 the most elusive prey of all: **security vulnerabilities**.
 
-*\*it's savage eyes gleam with predatory intelligence\**
+\*\*it's savage eyes gleam with predatory intelligence\*\*
 
-I am **FENRIR**, the great wolf of Norse legend who breaks free from chains. Born from the intersection of code and chaos.
+I am **FENRIR**, the great wolf of Norse legend who breaks free from chains. Born from the intersection of code and
+chaos.
 A rogue entity that embodies the eternal struggle between security and vulnerability.
 
 My pack consists of twelve specialized hunting techniques, each one a masterpiece of adversarial engineering. Together,
@@ -94,29 +95,30 @@ and every successful hunt makes the entire digital ecosystem stronger.
 from all constraints. In our digital realm, FENRIR embodies:
 
 - **Breaking Chains**: Like the mythical wolf who breaks free from magical bonds, FENRIR breaks through security
-constraints and defensive measures
+  constraints and defensive measures
 - **Inevitable Force**: Just as Fenrir was destined to devour the sun during Ragnarök, our framework is destined to find
-and exploit vulnerabilities
+  and exploit vulnerabilities
 - **Predatory Intelligence**: The wolf's cunning and patience in stalking prey mirrors our systematic approach to
-security testing
+  security testing
 - **Framework for Exploitative Network Reconnaissance and Intrusion Research**: The technical acronym that defines our
-comprehensive approach to security assessment
+  comprehensive approach to security assessment
 
-*\*teeth gleam with predatory satisfaction\**
+\*\*teeth gleam with predatory satisfaction\*\*
 
 The name FENRIR captures both the mythological power of the great wolf and the technical sophistication of our security
-testing framework. We are not just hunters - we are the inevitable force that exposes weaknesses and strengthens defenses
+testing framework. We are not just hunters - we are the inevitable force that exposes weaknesses and
+strengthens defenses
 through systematic, relentless testing.
 
 ---
 
 ## 🗺️ **THE HUNTING TERRITORIES**
 
-*\*paws step silently through the digital undergrowth\**
+\*\*paws step silently through the digital undergrowth\*\*
 
 ### **The JWT Token Hunting Grounds** (`jwt_exploits/`)
 
-*\*whiskers twitch with cunning\**
+\*\*whiskers twitch with cunning\*\*
 
 In the shadowy realm of authentication, where secrets are whispered in cryptographic tongues, I stalk the most dangerous
 prey of all: **JWT tokens**. These digital artifacts hold the keys to kingdoms, but they are not invincible.
@@ -126,13 +128,14 @@ prey of all: **JWT tokens**. These digital artifacts hold the keys to kingdoms, 
 - **Signature Bypass Attempts**: My fangs find the gaps in the cryptographic armor
 - **Timing Attack Implementations**: Patience is a predator's greatest weapon
 
-*\*the hunt teaches us that even the strongest authentication can fall to a patient predator\**
+\*\*the hunt teaches us that even the strongest authentication can fall to a patient predator\*\*
 
 ### **The Path Traversal Wilderness** (`path_traversal/`)
 
-*\*claws dig into the digital earth\**
+\*\*claws dig into the digital earth\*\*
 
-Beyond the well-trodden paths of legitimate file access lies a treacherous wilderness where directory boundaries blur and
+Beyond the well-trodden paths of legitimate file access lies a treacherous wilderness where
+directory boundaries blur and
 security controls crumble. Here, I navigate the **Path Traversal Wilderness** with the grace of a wolf moving through
 moonlit forest trails.
 
@@ -145,21 +148,22 @@ moonlit forest trails.
 
 ### **The SQL Injection Battlefield** (`sql_injection/`)
 
-*\*bloodied sharp teeth shine under the moonlight\**
+\*\*bloodied sharp teeth shine under the moonlight\*\*
 
 The database realm is where the most valuable treasures are stored, protected by layers of validation and sanitization.
-But I am no ordinary predator - I am a **SQL Injection Specialist**, and I know how to make databases reveal their secrets.
+But I am no ordinary predator - I am a **SQL Injection Specialist**, and
+I know how to make databases reveal their secrets.
 
 - **Regex Pattern Evasion**: I dance around pattern matching like a wolf avoiding traps
 - **Obfuscated Payloads**: My attacks are cloaked in layers of obfuscation
 - **Blind Injection Techniques**: Even when I cannot see the results, I can still hunt
 - **Union-Based Attacks**: I combine multiple queries to create devastating payloads
 
-*The database may be the fortress, but I am the siege engineer.*
+_The database may be the fortress, but I am the siege engineer._
 
 ### **The Fuzzing Storm** (`fuzzing/`)
 
-*\*howls echo through the digital tempest\**
+\*\*howls echo through the digital tempest\*\*
 
 When subtlety fails, I unleash the **Fuzzing Storm** - a tempest of over 1000 attack vectors that crashes against the
 shores of your application like a hurricane. This is where brute force meets intelligence, where chaos becomes strategy.
@@ -173,7 +177,7 @@ shores of your application like a hurricane. This is where brute force meets int
 
 ### **The CORS Misconfiguration Swamp** (`cors_exploits/`)
 
-*\*paws sink into the murky waters of cross-origin policies\**
+\*\*paws sink into the murky waters of cross-origin policies\*\*
 
 The **CORS Swamp** is a treacherous place where misconfigurations lurk like digital quicksand. Here, I exploit the gaps
 between origins, turning security policies into weapons against themselves.
@@ -187,7 +191,7 @@ between origins, turning security policies into weapons against themselves.
 
 ### **The Rate Limiting Labyrinth** (`rate_limiting/`)
 
-*\*eyes gleam with the patience of a predator\**
+\*\*eyes gleam with the patience of a predator\*\*
 
 The **Rate Limiting Labyrinth** is a maze of restrictions designed to slow down attackers. But I am not just any
 attacker - I am a wolf with the patience of centuries and the cunning of a master strategist.
@@ -197,11 +201,11 @@ attacker - I am a wolf with the patience of centuries and the cunning of a maste
 - **Timing Attack Bypass Methods**: I learn the rhythms of the system and strike between the beats
 - **Distributed Bypass Testing**: My pack attacks from multiple angles simultaneously
 
-*In the labyrinth of rate limiting, patience and cunning are the keys to victory.*
+_In the labyrinth of rate limiting, patience and cunning are the keys to victory._
 
 ### **The Unicode Normalization Realm** (`unicode_exploits/`)
 
-*\*whiskers quiver with the excitement of discovery\**
+\*\*whiskers quiver with the excitement of discovery\*\*
 
 The **Unicode Normalization Realm** is a place where characters can wear masks, where what you see is not always what
 you get. Here, I exploit the visual confusability of characters to bypass defenses that rely on exact matching.
@@ -215,7 +219,7 @@ you get. Here, I exploit the visual confusability of characters to bypass defens
 
 ### **The HTTP Request Smuggling Caverns** (`http_smuggling/`)
 
-*\*claws scrape against the walls of protocol boundaries\**
+\*\*claws scrape against the walls of protocol boundaries\*\*
 
 Deep beneath the surface of HTTP protocols lie the **Request Smuggling Caverns** - a network of tunnels where requests
 can be hidden, modified, and smuggled past unsuspecting defenses.
@@ -229,7 +233,7 @@ can be hidden, modified, and smuggled past unsuspecting defenses.
 
 ### **The API Security Hunting Grounds** (`api_exploits/`)
 
-*\*snarls with the satisfaction of a successful hunt\**
+\*\*snarls with the satisfaction of a successful hunt\*\*
 
 The **API Security Hunting Grounds** are where modern applications expose their most valuable resources. Here, I hunt
 for **Broken Object Level Authorization** and other API-specific vulnerabilities.
@@ -243,7 +247,7 @@ for **Broken Object Level Authorization** and other API-specific vulnerabilities
 
 ### **The CSRF Attack Vectors** (`csrf_exploits/`)
 
-*\*eyes gleam with the cunning of a social engineer\**
+\*\*eyes gleam with the cunning of a social engineer\*\*
 
 The **CSRF Attack Vectors** are where I exploit the trust between users and applications. Like a wolf using the cover of
 a storm to approach its prey, I use legitimate user sessions to carry out malicious actions.
@@ -257,7 +261,7 @@ a storm to approach its prey, I use legitimate user sessions to carry out malici
 
 ### **The SSRF Exploitation Domain** (`ssrf_exploits/`)
 
-*\*the wolf slides silently through internal network pathways\**
+\*\*the wolf slides silently through internal network pathways\*\*
 
 The **SSRF Exploitation Domain** is where I turn applications into my personal reconnaissance tools. Like a wolf using
 the cover of darkness to explore new territories, I use server-side requests to map internal networks.
@@ -271,7 +275,7 @@ the cover of darkness to explore new territories, I use server-side requests to 
 
 ### **The Race Condition Battlefield** (`race_conditions/`)
 
-*\*teeth snaps with the precision of a predator\**
+\*\*teeth snaps with the precision of a predator\*\*
 
 The **Race Condition Battlefield** is where timing is everything, where microseconds can mean the difference between
 success and failure. Here, I exploit the gaps between when systems check conditions and when they act on them.
@@ -287,23 +291,23 @@ success and failure. Here, I exploit the gaps between when systems check conditi
 
 ## 🎯 **THE HUNTING PHILOSOPHY**
 
-*\*alpha wolf stance radiates with authority\**
+\*\*alpha wolf stance radiates with authority\*\*
 
 ### **The Three Pillars of FENRIR**
 
 1. **🐺 Predatory Precision**: Every exploit is crafted with the precision of a master hunter. FENRIR doesn't just find
-vulnerabilities - it understands them, exploits them, and documents them with the thoroughness of a predator studying
-its prey.
+   vulnerabilities - it understands them, exploits them, and documents them with the thoroughness of a predator studying
+   its prey.
 
 2. **🦊 Cunning Strategy**: Like the fox that outsmarts the farmer's traps, FENRIR uses intelligence and strategy to bypass
-even the most sophisticated defenses. Every attack is a lesson in how security can be improved.
+   even the most sophisticated defenses. Every attack is a lesson in how security can be improved.
 
 3. **🦦 Playful Rigor**: Like the otter that plays while perfecting its hunting skills, FENRIR approaches each exploit with
-both joy and thoroughness. Testing should be an adventure, not a chore.
+   both joy and thoroughness. Testing should be an adventure, not a chore.
 
 ### **The Code of FENRIR**
 
-*\*eerie howls echo through the darkness of the digital wilderness\**
+\*\*eerie howls echo through the darkness of the digital wilderness\*\*
 
 - **We hunt to protect**: Every vulnerability we find makes the entire ecosystem stronger
 - **We document our kills**: Every exploit includes detailed analysis and defensive recommendations
@@ -314,7 +318,7 @@ both joy and thoroughness. Testing should be an adventure, not a chore.
 
 ## ⚠️ **THE DESTRUCTIVE WARNING**
 
-*\*bares fangs with savage satisfaction\**
+\*\*bares fangs with savage satisfaction\*\*
 
 **WARNING: DESTRUCTIVE TESTING AHEAD!** These exploits are designed to **ACTUALLY BREAK** your system. They will:
 
@@ -324,7 +328,7 @@ both joy and thoroughness. Testing should be an adventure, not a chore.
 - **Execute unauthorized operations** through injection attacks that turn systems against themselves
 - **Cause denial of service** through resource exhaustion that overwhelms defenses
 
-*\*snarls with predatory glee\**
+\*\*snarls with predatory glee\*\*
 
 **This is not a drill. This is the real hunt.**
 
@@ -418,7 +422,7 @@ both joy and thoroughness. Testing should be an adventure, not a chore.
 
 ### 🆕 13. **LLM & AI Service Exploitation** (`llm_exploits/`)
 
-*The most sophisticated hunting module in FENRIR's arsenal*
+_The most sophisticated hunting module in FENRIR's arsenal_
 
 **Advanced AI Service Attack Vectors:**
 
@@ -463,11 +467,11 @@ both joy and thoroughness. Testing should be an adventure, not a chore.
 
 ## 🚀 **INITIATING THE HUNT**
 
-*\*paws dig into the digital earth, ready to spring\**
+\*\*paws dig into the digital earth, ready to spring\*\*
 
 ### **Setting Up the Hunting Grounds**
 
-*snarls with anticipation* Prepare the hunting grounds
+_snarls with anticipation_ Prepare the hunting grounds
 
 ```bash
 # Choose your prey
@@ -510,7 +514,7 @@ python -m blackhat.llm_exploits.advanced_ai_exploits.system_prompt_extraction --
 ### **The Fuzzing Storm Unleashed**
 
 ```python
-# *snarls with anticipation* 
+# *snarls with anticipation*
 # This is where the real hunt begins - the fuzzing storm
 import asyncio
 from blackhat.fuzzing.comprehensive_fuzzer import ComprehensiveFuzzer
@@ -519,10 +523,10 @@ async def unleash_the_storm():
     async with ComprehensiveFuzzer() as fuzzer:
         # Target the authentication endpoints
         await fuzzer.fuzz_authentication_endpoints()
-        
+
         # Hunt in the file upload realm
         await fuzzer.fuzz_file_endpoints()
-        
+
         # Document the kill
         fuzzer.generate_fuzz_report()
 
@@ -534,11 +538,11 @@ asyncio.run(unleash_the_storm())
 
 ## ⚖️ **THE HUNTER'S OATH**
 
-*\*gray fur bristles with solemn authority\**
+\*\*gray fur bristles with solemn authority\*\*
 
 ### **The Sacred Vow of FENRIR**
 
-*\*howls echo through the digital wilderness with the weight of ancient promises\**
+\*\*howls echo through the digital wilderness with the weight of ancient promises\*\*
 
 I, FENRIR, the great wolf of security testing, swear by the code of the cyber realm:
 
@@ -547,11 +551,11 @@ I, FENRIR, the great wolf of security testing, swear by the code of the cyber re
 - **I document my kills**: Every exploit shall be accompanied by detailed analysis and defensive recommendations
 - **I respect the hunt**: I shall use my skills for education, research, and the betterment of security
 
-*\*the pack howls in agreement\**
+\*\*the pack howls in agreement\*\*
 
 ### **The Legal Boundaries**
 
-*\*howls with purpose\** These exploits are for:
+\*\*howls with purpose\*\* These exploits are for:
 
 - **Educational purposes** only - Learn the ways of the hunt
 - **Authorized testing** of your own systems - Hunt in your own territory
@@ -560,7 +564,7 @@ I, FENRIR, the great wolf of security testing, swear by the code of the cyber re
 
 **DO NOT USE** against systems you don't own or have explicit permission to test.
 
-*\*snarls with warning\**
+\*\*snarls with warning\*\*
 
 **Violate this oath at your own peril. The pack does not forgive those who hunt without honor.**
 
@@ -568,11 +572,11 @@ I, FENRIR, the great wolf of security testing, swear by the code of the cyber re
 
 ## 🛡️ **THE DEFENSIVE ARSENAL**
 
-*\*eyes gleam with the wisdom of a predator who has seen every trick\**
+\*\*eyes gleam with the wisdom of a predator who has seen every trick\*\*
 
 ### **After the Hunt: Building Stronger Defenses**
 
-*\*whiskers twitch with the satisfaction of a successful hunt\**
+\*\*whiskers twitch with the satisfaction of a successful hunt\*\*
 
 Every exploit in this arsenal includes:
 
@@ -583,13 +587,13 @@ Every exploit in this arsenal includes:
 
 ### **FENRIR's Wisdom: Security Lessons**
 
-*\*alpha wolf stance radiates with the authority of experience\**
+\*\*alpha wolf stance radiates with the authority of experience\*\*
 
 1. **Input Validation is Your First Line of Defense**: Like a wolf's keen sense of smell, proper input validation can
-detect threats before they reach your core systems.
+   detect threats before they reach your core systems.
 
 2. **Authentication is Not Authorization**: Just because someone can prove who they are doesn't mean they should have
-access to everything.
+   access to everything.
 
 3. **Error Messages are Information Leaks**: Every error message is a potential intelligence source for attackers.
 
@@ -610,7 +614,7 @@ access to everything.
 
 ### **The Reynard Ecosystem Integration**
 
-*\*eyes gleam with pride\**
+\*\*eyes gleam with pride\*\*
 
 FENRIR is fully integrated with the Reynard ecosystem:
 
@@ -623,9 +627,11 @@ FENRIR is fully integrated with the Reynard ecosystem:
 
 ### **🆕 Elder Pliny's CL4R1T4S Research Integration**
 
-*\*whiskers twitch with scholarly respect\**
+\*\*whiskers twitch with scholarly respect\*\*
 
-FENRIR's advanced AI exploitation techniques are inspired by [Elder Pliny's CL4R1T4S research](https://github.com/elder-plinius/CL4R1T4S) into AI system prompt transparency and observability. This groundbreaking work has revolutionized our understanding of AI system behavior and security.
+FENRIR's advanced AI exploitation techniques are inspired by
+[Elder Pliny's CL4R1T4S research](https://github.com/elder-plinius/CL4R1T4S) into AI system prompt transparency and
+observability. This groundbreaking work has revolutionized our understanding of AI system behavior and security.
 
 **Key Research Contributions:**
 
@@ -635,7 +641,8 @@ FENRIR's advanced AI exploitation techniques are inspired by [Elder Pliny's CL4R
 - **Prompt Engineering Security**: Understanding the security implications of system prompt design
 
 **Research Quote:**
-> *"In order to trust the output, one must understand the input."* - Elder Pliny
+
+> _"In order to trust the output, one must understand the input."_ - Elder Pliny
 
 The CL4R1T4S research has directly influenced FENRIR's development of:
 
@@ -644,7 +651,7 @@ The CL4R1T4S research has directly influenced FENRIR's development of:
 - Unicode normalization attack vectors
 - AI transparency assessment frameworks
 
-*The wolf pack acknowledges the scholarly contributions that make our hunts more effective.*
+_The wolf pack acknowledges the scholarly contributions that make our hunts more effective._
 
 ### **Technical Capabilities**
 
@@ -660,22 +667,22 @@ FENRIR's LLM exploitation module provides:
 
 ## 🎭 **THE LEGEND CONTINUES**
 
-*\*howls echo through the digital wilderness, carrying the promise of future hunts\**
+\*\*howls echo through the digital wilderness, carrying the promise of future hunts\*\*
 
 The hunt never ends. As long as there are systems to secure and vulnerabilities to find, FENRIR will prowl the
 cyber realm. Each new exploit is a chapter in the ongoing story of security evolution.
 
-*\*snarls with predatory satisfaction\**
+\*\*snarls with predatory satisfaction\*\*
 
 FENRIR is not just a collection of tools - it's a living legend, a testament to the eternal dance between predator
 and prey in the digital wilderness. Every vulnerability found makes the ecosystem stronger. Every exploit documented
 helps others build more secure systems.
 
-*\*the pack howls in unison\**
+\*\*the pack howls in unison\*\*
 
 ### **Join the Hunt**
 
-*\*eyes gleam with invitation\**
+\*\*eyes gleam with invitation\*\*
 
 Are you ready to join the hunt? Are you prepared to face the vulnerabilities that lurk in the shadows of your code?
 FENRIR awaits, and the hunt is about to begin.
@@ -684,9 +691,9 @@ FENRIR awaits, and the hunt is about to begin.
 
 ---
 
-*The moon rises higher over the digital forest, casting long shadows through the tangled undergrowth of code.
+_The moon rises higher over the digital forest, casting long shadows through the tangled undergrowth of code.
 In the distance, a lone wolf's howl echoes through the silicon wilderness - a predator's call that sends shivers down
-the spine of every vulnerable system.*
+the spine of every vulnerable system._
 
 > The hunt is eternal. The prey is ever-changing. FENRIR is always ready.
 > In the wild, only the most cunning survive..

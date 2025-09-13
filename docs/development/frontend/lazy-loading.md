@@ -1,10 +1,13 @@
 # Lazy Loading System
 
-The lazy loading system is a project-wide solution for managing heavy Python packages that slow down startup. Instead of importing everything at once, it lets you import packages only when they're actually needed, so the application starts quickly and loads heavy dependencies in the background.
+The lazy loading system is a project-wide solution for managing heavy Python packages that
+slow down startup. Instead of importing everything at once, it lets you import packages only when
+they're actually needed, so the application starts quickly and loads heavy dependencies in the background.
 
 ## Quick Start
 
-Lazy loading delays importing heavy packages until first use, avoiding the 5–10 second startup penalty from packages like `torch`, `transformers`, and `tensorflow`:
+Lazy loading delays importing heavy packages until first use,
+avoiding the 5–10 second startup penalty from packages like `torch`, `transformers`, and `tensorflow`:
 
 ```python
 # This is fast - no packages are loaded yet

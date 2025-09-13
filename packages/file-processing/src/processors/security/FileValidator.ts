@@ -1,6 +1,6 @@
 /**
  * File validation utilities for security checks.
- * 
+ *
  * Handles file path and file object validation.
  */
 
@@ -24,7 +24,10 @@ export class FileValidator {
   /**
    * Validate File object for security issues
    */
-  static validateFileObject(file: File, maxFileSize: number): FileValidationResult {
+  static validateFileObject(
+    file: File,
+    maxFileSize: number,
+  ): FileValidationResult {
     // Validate file name
     if (!file.name || file.name.length === 0) {
       return { isValid: false, error: "Invalid file name" };

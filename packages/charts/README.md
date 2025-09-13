@@ -1,10 +1,14 @@
 # Reynard Charts
 
-_Professional data visualization components for SolidJS applications with OKLCH color integration and real-time capabilities._
+_Professional data visualization components for SolidJS applications with OKLCH color integration and
+real-time capabilities._
 
 ## Overview
 
-Reynard Charts provides a comprehensive suite of data visualization components built on Chart.js, enhanced with advanced features from yipyap's visualization system. The package features unified OKLCH color management, real-time data streaming, statistical analysis tools, and performance optimization.
+Reynard Charts provides a comprehensive suite of data visualization components built on Chart.js,
+enhanced with advanced features from
+yipyap's visualization system. The package features unified OKLCH color management, real-time data streaming,
+statistical analysis tools, and performance optimization.
 
 ## Installation
 
@@ -434,9 +438,16 @@ To enable OKLCH colors in existing charts:
 
 ## Conclusion
 
-🦊> _Reynard Charts provides a professional, performant, and accessible data visualization solution that combines the best of Chart.js with advanced features from yipyap's visualization system. The unified OKLCH color management ensures consistent, accessible colors across all visualizations, while the real-time capabilities and performance monitoring make it suitable for production applications._
+🦊> _Reynard Charts provides a professional, performant, and
+accessible data visualization solution that
+combines the best of Chart.js with advanced features from
+yipyap's visualization system. The unified OKLCH color management ensures consistent,
+accessible colors across all visualizations, while the real-time capabilities and
+performance monitoring make it suitable for production applications._
 
-Reynard Charts delivers a comprehensive visualization solution that scales from simple dashboards to complex real-time analytics. The modular architecture, OKLCH color integration, and performance optimization make it the ideal choice for modern SolidJS applications.
+Reynard Charts delivers a comprehensive visualization solution that
+scales from simple dashboards to complex real-time analytics. The modular architecture, OKLCH color integration, and
+performance optimization make it the ideal choice for modern SolidJS applications.
 
 Key benefits:
 

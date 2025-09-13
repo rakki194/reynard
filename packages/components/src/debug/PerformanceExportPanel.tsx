@@ -10,7 +10,9 @@ import { Icon } from "reynard-components/icons";
 import { usePerformanceExport } from "./composables/usePerformanceExport";
 import type { PerformanceExportPanelProps } from "./types/PerformanceExportTypes";
 
-export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (props) => {
+export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
+  props,
+) => {
   const {
     state,
     filteredData,
@@ -88,11 +90,14 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
               <Select
                 value={state().exportOptions.format}
                 onChange={(value) => updateExportOptions({ format: value })}
-                options={exportFormats.map(f => ({ value: f.value, label: f.label }))}
+                options={exportFormats.map((f) => ({
+                  value: f.value,
+                  label: f.label,
+                }))}
                 size="sm"
               />
             </div>
-            
+
             <div class="reynard-export-options__section">
               <h4>Include Metrics</h4>
               <div class="reynard-metrics-selection">
@@ -101,12 +106,14 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (p
                     <label class="reynard-metric-option">
                       <input
                         type="checkbox"
-                        checked={state().exportOptions.includeMetrics.includes(metric)}
+                        checked={state().exportOptions.includeMetrics.includes(
+                          metric,
+                        )}
                         onChange={(e) => {
                           const metrics = state().exportOptions.includeMetrics;
                           const newMetrics = e.currentTarget.checked
                             ? [...metrics, metric]
-                            : metrics.filter(m => m !== metric);
+                            : metrics.filter((m) => m !== metric);
                           updateExportOptions({ includeMetrics: newMetrics });
                         }}
                       />

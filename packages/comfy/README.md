@@ -2,7 +2,8 @@
 
 🦊> _Cunning workflow automation for diffusion image generation_
 
-A comprehensive ComfyUI integration package for the Reynard framework, providing workflow automation, queue management, and image generation capabilities.
+A comprehensive ComfyUI integration package for the Reynard framework, providing workflow automation,
+queue management, and image generation capabilities.
 
 ## Features
 

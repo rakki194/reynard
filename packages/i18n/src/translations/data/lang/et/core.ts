@@ -179,5 +179,4 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Jõudluse ja turvalisuse integratsioon",
   },
-
 };

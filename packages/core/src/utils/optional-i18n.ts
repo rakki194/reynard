@@ -19,7 +19,8 @@ interface I18nModule {
 const FALLBACK_TRANSLATIONS: Record<string, string> = {
   "core.errors.moduleIsNull": "Module is null",
   "core.errors.invalidModuleStructure": "Invalid module structure",
-  "core.errors.exportValidationFailed": "Export validation failed for {package}: {errors}",
+  "core.errors.exportValidationFailed":
+    "Export validation failed for {package}: {errors}",
   "core.errors.loadFailed": "Failed to load module",
   "core.errors.mediaQueryNotSupported": "matchMedia not supported",
   "core.errors.generic": "An error occurred",
@@ -29,8 +30,10 @@ const FALLBACK_TRANSLATIONS: Record<string, string> = {
   "core.errors.notFound": "Not found",
   "core.test.notification": "Test notification",
   "core.module.load-failed": "Failed to load module",
-  "core.storage.potentially-dangerous-json-detected": "Potentially dangerous JSON detected",
-  "core.storage.failed-to-parse-json-from-localstorage": "Failed to parse JSON from localStorage:",
+  "core.storage.potentially-dangerous-json-detected":
+    "Potentially dangerous JSON detected",
+  "core.storage.failed-to-parse-json-from-localstorage":
+    "Failed to parse JSON from localStorage:",
 };
 
 // Cache for the i18n module
@@ -82,7 +85,7 @@ export function t(key: string, params?: Record<string, unknown>): string {
 
   // Use fallback translation
   let translation = FALLBACK_TRANSLATIONS[key] || key;
-  
+
   // Simple parameter substitution
   if (params) {
     for (const [paramKey, paramValue] of Object.entries(params)) {

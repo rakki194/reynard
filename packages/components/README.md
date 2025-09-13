@@ -298,7 +298,7 @@ import { ChatContainer } from "reynard-components";
 - **Responsive Design**: Mobile-first with adaptive layouts
 - **Dark Mode**: Built-in dark mode support
 
-[📖 Complete Chat Documentation](src/chat/README.md)
+[📖 Chat Package Documentation](../chat/README.md)
 
 ## 🤝 Contributing
 

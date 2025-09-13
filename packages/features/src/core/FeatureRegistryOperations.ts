@@ -47,9 +47,7 @@ export function getFeature(
 /**
  * Get all features
  */
-export function getAllFeatures(
-  core: FeatureRegistryCore,
-): FeatureDefinition[] {
+export function getAllFeatures(core: FeatureRegistryCore): FeatureDefinition[] {
   const functionalities = core.getFunctionalities();
   return Array.from(functionalities.values());
 }
@@ -86,12 +84,9 @@ export function getFeaturesByStatus(
   status: string,
 ): FeatureDefinition[] {
   const functionalities = core.getFunctionalities();
-  return Array.from(functionalities.values()).filter(
-    (feature) => {
-      if (status === "enabled") return feature.enabled === true;
-      if (status === "disabled") return feature.enabled === false;
-      return false;
-    },
-  );
+  return Array.from(functionalities.values()).filter((feature) => {
+    if (status === "enabled") return feature.enabled === true;
+    if (status === "disabled") return feature.enabled === false;
+    return false;
+  });
 }
-

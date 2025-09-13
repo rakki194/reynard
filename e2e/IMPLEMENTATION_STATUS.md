@@ -75,16 +75,16 @@ npx playwright test --config=playwright.config.simple.ts
 
 ## 📊 Current Test Coverage
 
-| Category | Status | Tests |
-|----------|--------|-------|
-| UI Components | ✅ Working | 7 tests |
-| Form Validation | ✅ Working | 1 test |
-| Accessibility | ✅ Working | 1 test |
-| Responsive Design | ✅ Working | 1 test |
-| User Registration | ⚠️ Partial | 1 test |
-| User Login | ⚠️ Partial | 1 test |
-| Token Management | ❌ Not Ready | 0 tests |
-| Security Testing | ❌ Not Ready | 0 tests |
+| Category            | Status       | Tests   |
+| ------------------- | ------------ | ------- |
+| UI Components       | ✅ Working   | 7 tests |
+| Form Validation     | ✅ Working   | 1 test  |
+| Accessibility       | ✅ Working   | 1 test  |
+| Responsive Design   | ✅ Working   | 1 test  |
+| User Registration   | ⚠️ Partial   | 1 test  |
+| User Login          | ⚠️ Partial   | 1 test  |
+| Token Management    | ❌ Not Ready | 0 tests |
+| Security Testing    | ❌ Not Ready | 0 tests |
 | Integration Testing | ❌ Not Ready | 0 tests |
 
 ## 🎯 Recommendations

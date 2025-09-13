@@ -3,7 +3,7 @@
  * This will be removed once the proper package is built
  */
 
-declare module 'reynard-ai-shared' {
+declare module "reynard-ai-shared" {
   export interface CaptionResult {
     success: boolean;
     caption?: string;
@@ -12,7 +12,7 @@ declare module 'reynard-ai-shared' {
     image_path?: string;
   }
 
-  export type CaptionType = 'CAPTION' | 'TAGS' | 'E621' | 'TOML';
+  export type CaptionType = "CAPTION" | "TAGS" | "E621" | "TOML";
 
   export interface CaptionTask {
     imagePath: string;
@@ -49,9 +49,9 @@ declare module 'reynard-ai-shared' {
 
   // Export as values for enum-like usage
   export const CaptionType: {
-    CAPTION: 'CAPTION';
-    TAGS: 'TAGS';
-    E621: 'E621';
-    TOML: 'TOML';
+    CAPTION: "CAPTION";
+    TAGS: "TAGS";
+    E621: "E621";
+    TOML: "TOML";
   };
 }

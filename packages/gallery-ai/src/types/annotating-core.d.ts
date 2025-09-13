@@ -3,8 +3,8 @@
  * This will be removed once the proper package is built
  */
 
-declare module 'reynard-annotating-core' {
-  import type { CaptionTask } from 'reynard-ai-shared';
+declare module "reynard-annotating-core" {
+  import type { CaptionTask } from "reynard-ai-shared";
 
   export interface BackendAnnotationService {
     initialize(): Promise<void>;
@@ -16,16 +16,23 @@ declare module 'reynard-annotating-core' {
     config: Record<string, any>;
   }
 
-  export interface AISharedBackendAnnotationService extends BackendAnnotationService {
+  export interface AISharedBackendAnnotationService
+    extends BackendAnnotationService {
     name: string;
     status: string;
     startupTime: Date;
     stop(): Promise<void>;
     generateCaption(task: CaptionTask): Promise<any>;
-    generateBatchCaptions(tasks: CaptionTask[], progressCallback?: (progress: any) => void): Promise<any>;
+    generateBatchCaptions(
+      tasks: CaptionTask[],
+      progressCallback?: (progress: any) => void,
+    ): Promise<any>;
     isGeneratorAvailable(generatorName: string): boolean;
   }
 
   export function getAnnotationServiceRegistry(): any;
-  export function createDefaultAnnotationService(backendUrl: string, serviceName: string): any;
+  export function createDefaultAnnotationService(
+    backendUrl: string,
+    serviceName: string,
+  ): any;
 }

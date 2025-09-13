@@ -1,6 +1,8 @@
 # Overlay Transitions
 
-The overlay CSS property is used in yipyap to create smooth transitions for elements that appear in the top layer, such as modals, popovers, and dialogs. This document outlines best practices and implementation details for using overlay transitions in the application.
+The overlay CSS property is used in yipyap to create smooth transitions for elements that appear in the top layer,
+such as modals, popovers, and dialogs. This document outlines best practices and
+implementation details for using overlay transitions in the application.
 
 ## Table of Contents
 
@@ -25,7 +27,9 @@ The overlay CSS property is used in yipyap to create smooth transitions for elem
 
 ---
 
-The `overlay` property specifies whether an element appearing in the top layer is rendered in that layer. While this property cannot be directly set through CSS (it's controlled by the browser), it can be included in transition properties to create smooth animations when elements enter or exit the top layer.
+The `overlay` property specifies whether an element appearing in the top layer is rendered in that layer. While
+this property cannot be directly set through CSS (it's controlled by the browser),
+it can be included in transition properties to create smooth animations when elements enter or exit the top layer.
 
 ## Implementation
 
@@ -33,7 +37,8 @@ The `overlay` property specifies whether an element appearing in the top layer i
 
 ### Basic Structure
 
-To implement an overlay transition, include both `overlay` and `display` in your transition properties with `allow-discrete`:
+To implement an overlay transition, include both `overlay` and
+`display` in your transition properties with `allow-discrete`:
 
 ```css
 .modal {
@@ -87,7 +92,10 @@ For a complete overlay transition, you need:
 
 ---
 
-When implementing overlay transitions, it's essential to include both `overlay` and `display` properties in transitions for top-layer elements, and utilize `@starting-style` rules to ensure smooth entry animations. The transitions should be kept under 400ms to maintain an optimal user experience that feels responsive and natural.
+When implementing overlay transitions, it's essential to include both `overlay` and
+`display` properties in transitions for top-layer elements, and
+utilize `@starting-style` rules to ensure smooth entry animations. The transitions should be kept under 400ms to
+maintain an optimal user experience that feels responsive and natural.
 
 Use motion tokens for timings/easings and z-index tokens for stacking:
 
@@ -108,7 +116,10 @@ Use motion tokens for timings/easings and z-index tokens for stacking:
 }
 ```
 
-For modal elements specifically, consider implementing backdrop transitions to enhance the visual hierarchy, and always test transitions across different browsers since overlay support is still experimental. Proper testing across browsers will help ensure a consistent experience for all users regardless of their browser choice.
+For modal elements specifically, consider implementing backdrop transitions to enhance the visual hierarchy, and
+always test transitions across different browsers since
+overlay support is still experimental. Proper testing across browsers will help ensure a consistent experience for
+all users regardless of their browser choice.
 
 ## Browser Support
 
@@ -130,11 +141,21 @@ For browsers without support, ensure graceful fallbacks are in place.
 
 ### Missing Entry Animation
 
-If your entry animation isn't functioning properly, there are several key things to verify. Make sure you've included the `@starting-style` rule in your CSS, as this is essential for smooth entry animations. Additionally, check that you've added the `allow-discrete` keyword to your transition declaration, which enables proper handling of discrete property animations. Finally, confirm that both the `overlay` and `display` properties are included in your transition list, as these are required for proper top-layer animations.
+If your entry animation isn't functioning properly,
+there are several key things to verify. Make sure you've included the `@starting-style` rule in your CSS,
+as this is essential for smooth entry animations. Additionally,
+check that you've added the `allow-discrete` keyword to your transition declaration,
+which enables proper handling of discrete property animations. Finally, confirm that both the `overlay` and
+`display` properties are included in your transition list, as these are required for proper top-layer animations.
 
 ### Flickering During Exit
 
-Elements flickering during exit animations can be resolved by taking a few key steps. First, make sure that the `display` property is included in your transition declaration, as this is essential for smooth exit animations. Next, carefully check that all properties in the transition have matching durations to ensure synchronized timing. Finally, verify that the `allow-discrete` keyword is properly set in your transition, as this enables proper handling of discrete property animations.
+Elements flickering during exit animations can be resolved by taking a few key steps. First,
+make sure that the `display` property is included in your transition declaration,
+as this is essential for smooth exit animations. Next,
+carefully check that all properties in the transition have matching durations to ensure synchronized timing. Finally,
+verify that the `allow-discrete` keyword is properly set in your transition,
+as this enables proper handling of discrete property animations.
 
 ## Related Documentation
 

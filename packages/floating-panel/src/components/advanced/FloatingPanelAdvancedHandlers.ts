@@ -37,4 +37,3 @@ export function createAdvancedHandlers(props: FloatingPanelProps) {
     handleResize,
   };
 }
-

@@ -1,7 +1,8 @@
 # Composables
 
 SolidJS composables in the Reynard framework live in `packages/composables/` and are prefixed with `use`. They
-hide reusable reactive logic behind typed, minimal APIs and are designed to be modular and reusable across different Reynard applications.
+hide reusable reactive logic behind typed, minimal APIs and are designed to be modular and
+reusable across different Reynard applications.
 
 ## Conventions
 

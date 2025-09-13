@@ -4,7 +4,11 @@
  * Handles tool management requests for the NLWeb API.
  */
 
-import type { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
+import type {
+  NLWebAPIRequest,
+  NLWebAPIResponse,
+  NLWebAPIHandler,
+} from "../types.js";
 import type { NLWebService, NLWebTool } from "../../types/index.js";
 import { getCORSHeaders } from "../utils.js";
 

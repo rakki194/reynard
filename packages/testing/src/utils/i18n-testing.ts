@@ -146,8 +146,8 @@ export function detectHardcodedStrings(
       line.includes("= 7 &&") ||
       line.includes("= min &&") ||
       line.includes("= minLength &&") ||
-      line.includes(":") && line.includes("=") ||
-      line.includes("Hello world") && line.includes("//")
+      (line.includes(":") && line.includes("=")) ||
+      (line.includes("Hello world") && line.includes("//"))
     ) {
       return;
     }
@@ -375,7 +375,9 @@ export async function validateTranslations(
 /**
  * Load translations for a locale (placeholder implementation)
  */
-async function loadTranslations(locale: string): Promise<Record<string, unknown>> {
+async function loadTranslations(
+  locale: string,
+): Promise<Record<string, unknown>> {
   // This would integrate with the actual reynard-i18n package
   try {
     const module = await import(`reynard-i18n/src/lang/${locale}/common.ts`);

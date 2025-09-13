@@ -1,10 +1,13 @@
 # Strategy Configuration System
 
-The Strategy Configuration System provides comprehensive management of package loading strategies with advanced features including performance analysis, intelligent recommendations, and A/B testing capabilities.
+The Strategy Configuration System provides comprehensive management of package loading strategies with
+advanced features including performance analysis, intelligent recommendations, and A/B testing capabilities.
 
 ## Overview
 
-The system allows you to configure different loading strategies for individual packages, compare their performance, receive intelligent recommendations for optimization, and conduct A/B tests to scientifically validate strategy improvements.
+The system allows you to configure different loading strategies for individual packages, compare their performance,
+receive intelligent recommendations for optimization, and
+conduct A/B tests to scientifically validate strategy improvements.
 
 ## Core Features
 

@@ -63,7 +63,12 @@ export class DocumentThumbnailGenerator {
       canvas.height = targetHeight;
 
       // Clear canvas and set background
-      clearCanvas(ctx, targetWidth, targetHeight, mergedOptions.backgroundColor);
+      clearCanvas(
+        ctx,
+        targetWidth,
+        targetHeight,
+        mergedOptions.backgroundColor,
+      );
 
       // Draw document icon based on file type
       drawDocumentIcon(ctx, targetWidth, targetHeight, {

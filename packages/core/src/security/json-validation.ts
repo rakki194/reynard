@@ -17,13 +17,13 @@ export function validateJSON(input: string): {
 
   try {
     const parsed = JSON.parse(input);
-    
+
     // Check for prototype pollution attempts
     if (typeof parsed === "object" && parsed !== null) {
       if ("__proto__" in parsed || "constructor" in parsed) {
         return { isValid: false, errors: ["Prototype pollution detected"] };
       }
-      
+
       // Recursively check nested objects
       if (hasPrototypePollution(parsed)) {
         return { isValid: false, errors: ["Prototype pollution detected"] };
@@ -32,9 +32,11 @@ export function validateJSON(input: string): {
 
     return { isValid: true, parsed };
   } catch (error) {
-    return { 
-      isValid: false, 
-      errors: [`Invalid JSON: ${error instanceof Error ? error.message : "Unknown error"}`] 
+    return {
+      isValid: false,
+      errors: [
+        `Invalid JSON: ${error instanceof Error ? error.message : "Unknown error"}`,
+      ],
     };
   }
 }
@@ -51,7 +53,7 @@ function hasPrototypePollution(obj: Record<string, unknown>): boolean {
     if (key === "__proto__" || key === "constructor") {
       return true;
     }
-    
+
     if (typeof obj[key] === "object" && obj[key] !== null) {
       if (hasPrototypePollution(obj[key])) {
         return true;

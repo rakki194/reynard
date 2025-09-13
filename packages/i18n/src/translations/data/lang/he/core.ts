@@ -172,5 +172,4 @@ export const coreTranslations = {
       "אינטגרציה של אימות ואימות קלט",
     "performance-and-security-integration": "אינטגרציה של ביצועים ואבטחה",
   },
-
 };

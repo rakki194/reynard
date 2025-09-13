@@ -1,6 +1,7 @@
 # 🦊 Reynard Error Boundary Demo
 
-A comprehensive demonstration of the Reynard Error Boundary System, showcasing advanced error handling, recovery strategies, and analytics.
+A comprehensive demonstration of the Reynard Error Boundary System, showcasing advanced error handling,
+recovery strategies, and analytics.
 
 ## 🚀 Quick Start
 
@@ -306,7 +307,7 @@ const customStrategy = createRecoveryStrategy({
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](../../LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](../../../LICENSE.md) file for details.
 
 ---
 

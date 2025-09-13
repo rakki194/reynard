@@ -5,7 +5,14 @@
  * Provides a user-friendly interface for processing multiple images.
  */
 
-import { Component, Show, For, createSignal, createEffect, onMount } from "solid-js";
+import {
+  Component,
+  Show,
+  For,
+  createSignal,
+  createEffect,
+  onMount,
+} from "solid-js";
 import { Button } from "reynard-components";
 import { useAIGalleryContext } from "../composables/useGalleryAI";
 import type {
@@ -17,23 +24,25 @@ import type {
 export interface BatchProcessingDialogProps {
   /** Whether the dialog is visible */
   visible: boolean;
-  
+
   /** Items to process */
   items: FileItem[];
-  
+
   /** Available generators */
   availableGenerators: string[];
-  
+
   /** Event handlers */
   onClose: () => void;
   onComplete?: (results: GalleryCaptionResult[]) => void;
   onError?: (error: string) => void;
-  
+
   /** Custom class name */
   class?: string;
 }
 
-export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (props) => {
+export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
+  props,
+) => {
   const ai = useAIGalleryContext();
   const [selectedGenerator, setSelectedGenerator] = createSignal<string>("");
   const [isProcessing, setIsProcessing] = createSignal(false);
@@ -67,12 +76,16 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (pro
     setShowResults(false);
 
     try {
-      const batchResults = await ai.batchAnnotate(props.items, selectedGenerator());
+      const batchResults = await ai.batchAnnotate(
+        props.items,
+        selectedGenerator(),
+      );
       setResults(batchResults);
       setShowResults(true);
       props.onComplete?.(batchResults);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Batch processing failed";
+      const errorMessage =
+        err instanceof Error ? err.message : "Batch processing failed";
       setError(errorMessage);
       props.onError?.(errorMessage);
     } finally {
@@ -85,7 +98,9 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (pro
   const handleClose = () => {
     if (isProcessing()) {
       // Ask for confirmation if processing is in progress
-      if (confirm("Processing is in progress. Are you sure you want to close?")) {
+      if (
+        confirm("Processing is in progress. Are you sure you want to close?")
+      ) {
         setIsProcessing(false);
         setProgress(null);
         props.onClose();
@@ -114,18 +129,18 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (pro
 
   // Get success count
   const getSuccessCount = (): number => {
-    return results().filter(result => result.success).length;
+    return results().filter((result) => result.success).length;
   };
 
   // Get failure count
   const getFailureCount = (): number => {
-    return results().filter(result => !result.success).length;
+    return results().filter((result) => !result.success).length;
   };
 
   return (
     <Show when={props.visible}>
       <div class="batch-processing-dialog-overlay" onClick={handleClose}>
-        <div 
+        <div
           class={`batch-processing-dialog ${props.class || ""}`}
           onClick={(e) => e.stopPropagation()}
         >
@@ -151,10 +166,14 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (pro
                 </div>
 
                 <div class="batch-processing-dialog__generator-selector">
-                  <label class="batch-processing-dialog__label">Generator:</label>
+                  <label class="batch-processing-dialog__label">
+                    Generator:
+                  </label>
                   <select
                     value={selectedGenerator()}
-                    onChange={(e) => setSelectedGenerator(e.currentTarget.value)}
+                    onChange={(e) =>
+                      setSelectedGenerator(e.currentTarget.value)
+                    }
                     class="batch-processing-dialog__select"
                     title="Select caption generator for batch processing"
                   >
@@ -200,7 +219,7 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (pro
                 <Show when={progress()}>
                   <div class="batch-processing-dialog__progress">
                     <div class="batch-processing-dialog__progress-bar">
-                      <div 
+                      <div
                         class="batch-processing-dialog__progress-fill"
                         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                         style={`--progress-width: ${progress()!.percentage}%`}
@@ -226,28 +245,44 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (pro
             <Show when={showResults()}>
               <div class="batch-processing-dialog__results">
                 <div class="batch-processing-dialog__summary">
-                  <h3 class="batch-processing-dialog__summary-title">Processing Complete</h3>
+                  <h3 class="batch-processing-dialog__summary-title">
+                    Processing Complete
+                  </h3>
                   <div class="batch-processing-dialog__summary-stats">
                     <div class="batch-processing-dialog__stat">
-                      <span class="batch-processing-dialog__stat-label">Total:</span>
-                      <span class="batch-processing-dialog__stat-value">{results().length}</span>
+                      <span class="batch-processing-dialog__stat-label">
+                        Total:
+                      </span>
+                      <span class="batch-processing-dialog__stat-value">
+                        {results().length}
+                      </span>
                     </div>
                     <div class="batch-processing-dialog__stat batch-processing-dialog__stat--success">
-                      <span class="batch-processing-dialog__stat-label">Success:</span>
-                      <span class="batch-processing-dialog__stat-value">{getSuccessCount()}</span>
+                      <span class="batch-processing-dialog__stat-label">
+                        Success:
+                      </span>
+                      <span class="batch-processing-dialog__stat-value">
+                        {getSuccessCount()}
+                      </span>
                     </div>
                     <div class="batch-processing-dialog__stat batch-processing-dialog__stat--error">
-                      <span class="batch-processing-dialog__stat-label">Failed:</span>
-                      <span class="batch-processing-dialog__stat-value">{getFailureCount()}</span>
+                      <span class="batch-processing-dialog__stat-label">
+                        Failed:
+                      </span>
+                      <span class="batch-processing-dialog__stat-value">
+                        {getFailureCount()}
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <Show when={getFailureCount() > 0}>
                   <div class="batch-processing-dialog__failures">
-                    <h4 class="batch-processing-dialog__failures-title">Failed Items:</h4>
+                    <h4 class="batch-processing-dialog__failures-title">
+                      Failed Items:
+                    </h4>
                     <div class="batch-processing-dialog__failures-list">
-                      <For each={results().filter(result => !result.success)}>
+                      <For each={results().filter((result) => !result.success)}>
                         {(result) => (
                           <div class="batch-processing-dialog__failure-item">
                             <span class="batch-processing-dialog__failure-name">
@@ -320,6 +355,6 @@ function getGeneratorDisplayName(generator: string): string {
     joy: "JoyCaption (Detailed)",
     florence2: "Florence2 (General)",
   };
-  
+
   return displayNames[generator] || generator;
 }

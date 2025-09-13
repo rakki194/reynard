@@ -1,13 +1,14 @@
 # E2E Authentication Tests for Reynard
 
-Comprehensive end-to-end authentication testing for the Reynard ecosystem, covering integration between gatekeeper, backend, and auth package components.
+Comprehensive end-to-end authentication testing for the Reynard ecosystem, covering integration between gatekeeper,
+backend, and auth package components.
 
 ## Overview
 
 This E2E test suite provides comprehensive testing of authentication workflows across the entire Reynard stack:
 
 - **Gatekeeper Library**: JWT-based authentication with role-based access control
-- **Backend**: FastAPI authentication endpoints and security features  
+- **Backend**: FastAPI authentication endpoints and security features
 - **Auth Package**: SolidJS frontend authentication components and state management
 
 ## 🚀 Features
@@ -179,12 +180,12 @@ npx playwright test --headed
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PLAYWRIGHT_BASE_URL` | `http://localhost:3000` | Frontend application URL |
-| `PLAYWRIGHT_API_BASE_URL` | `http://localhost:8000` | Backend API URL |
-| `CI` | `false` | CI environment flag |
-| `DEBUG` | `false` | Debug mode flag |
+| Variable                  | Default                 | Description              |
+| ------------------------- | ----------------------- | ------------------------ |
+| `PLAYWRIGHT_BASE_URL`     | `http://localhost:3000` | Frontend application URL |
+| `PLAYWRIGHT_API_BASE_URL` | `http://localhost:8000` | Backend API URL          |
+| `CI`                      | `false`                 | CI environment flag      |
+| `DEBUG`                   | `false`                 | Debug mode flag          |
 
 ### Test Configuration
 

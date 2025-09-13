@@ -2,7 +2,9 @@
 
 ## System Overview
 
-The TTS (Text-to-Speech) system in Reynard is a comprehensive, multi-backend architecture designed for high-performance audio synthesis with intelligent chunking, fallback mechanisms, and robust error handling.
+The TTS (Text-to-Speech) system in Reynard is a comprehensive,
+multi-backend architecture designed for high-performance audio synthesis with intelligent chunking,
+fallback mechanisms, and robust error handling.
 
 ## Detailed Architecture Diagram
 

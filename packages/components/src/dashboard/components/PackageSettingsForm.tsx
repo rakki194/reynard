@@ -8,10 +8,12 @@ import { Button, TextField, Select, Toggle } from "reynard-components";
 import { Icon } from "reynard-components/icons";
 import type { PackageSettingsFormProps } from "../types/PackageConfigurationTypes";
 
-export const PackageSettingsForm: Component<PackageSettingsFormProps> = (props) => {
+export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
+  props,
+) => {
   const handleSettingChange = (key: string, value: any) => {
-    const updatedSettings = props.package.settings.map(setting =>
-      setting.key === key ? { ...setting, value } : setting
+    const updatedSettings = props.package.settings.map((setting) =>
+      setting.key === key ? { ...setting, value } : setting,
     );
     // This would typically update local state, but for now we'll just call onSave
     props.onSave(updatedSettings);
@@ -23,19 +25,23 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (props) 
         return (
           <TextField
             value={setting.value || ""}
-            onInput={(e) => handleSettingChange(setting.key, e.currentTarget.value)}
+            onInput={(e) =>
+              handleSettingChange(setting.key, e.currentTarget.value)
+            }
             placeholder={setting.description}
             required={setting.required}
             size="sm"
           />
         );
-      
+
       case "number":
         return (
           <TextField
             type="number"
             value={setting.value || setting.defaultValue || ""}
-            onInput={(e) => handleSettingChange(setting.key, Number(e.currentTarget.value))}
+            onInput={(e) =>
+              handleSettingChange(setting.key, Number(e.currentTarget.value))
+            }
             min={setting.min}
             max={setting.max}
             step={setting.step}
@@ -43,7 +49,7 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (props) 
             size="sm"
           />
         );
-      
+
       case "boolean":
         return (
           <Toggle
@@ -52,18 +58,23 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (props) 
             size="sm"
           />
         );
-      
+
       case "select":
         return (
           <Select
             value={setting.value || setting.defaultValue || ""}
             onChange={(value) => handleSettingChange(setting.key, value)}
-            options={setting.options?.map((opt: string) => ({ value: opt, label: opt })) || []}
+            options={
+              setting.options?.map((opt: string) => ({
+                value: opt,
+                label: opt,
+              })) || []
+            }
             required={setting.required}
             size="sm"
           />
         );
-      
+
       case "multiselect":
         return (
           <div class="reynard-multiselect">
@@ -87,7 +98,7 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (props) 
             </For>
           </div>
         );
-      
+
       default:
         return <div>Unsupported setting type: {setting.type}</div>;
     }
@@ -103,7 +114,7 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (props) 
       </div>
 
       <div class="reynard-package-settings-form__content">
-        <Show 
+        <Show
           when={props.package.settings.length > 0}
           fallback={
             <div class="reynard-package-settings-form__empty">
@@ -150,4 +161,3 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (props) 
     </div>
   );
 };
-

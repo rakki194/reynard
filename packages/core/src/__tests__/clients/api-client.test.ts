@@ -11,7 +11,13 @@ import { t } from "../../utils/optional-i18n";
 vi.mock("./http-client", () => {
   const mockHTTPClient = vi.fn().mockImplementation((config) => ({
     config,
-    request: vi.fn().mockResolvedValue({ data: { status: "ok", uptime: 12345 }, status: 200, statusText: "OK", headers: {}, config: {} }),
+    request: vi.fn().mockResolvedValue({
+      data: { status: "ok", uptime: 12345 },
+      status: 200,
+      statusText: "OK",
+      headers: {},
+      config: {},
+    }),
     updateConfig: vi.fn(),
   }));
 
@@ -200,9 +206,7 @@ describe("ApiClient", () => {
     });
 
     it("should handle non-Error exceptions", async () => {
-      mockHttpClient.request.mockRejectedValue(
-        t("core.errors.string-error"),
-      );
+      mockHttpClient.request.mockRejectedValue(t("core.errors.string-error"));
 
       const healthStatus = await apiClient.checkHealth();
 

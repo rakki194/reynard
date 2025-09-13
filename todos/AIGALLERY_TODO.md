@@ -159,8 +159,8 @@
 
 ## 🏅 Leaderboard
 
-| Developer   | XP  | Level     | Specialization     |
-| ----------- | --- | --------- | ------------------ |
+| Developer   | XP  | Level     | Specialization    |
+| ----------- | --- | --------- | ----------------- |
 | _Your Name_ | 100 | 🐺 Legend | AI Gallery Master |
 
 ### 🎖️ Levels

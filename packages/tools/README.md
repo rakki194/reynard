@@ -1,6 +1,7 @@
 # reynard-tools
 
-Development and runtime tools for Reynard applications with a comprehensive tool calling system, validation, and execution management.
+Development and runtime tools for Reynard applications with a comprehensive tool calling system, validation, and
+execution management.
 
 ## Features
 

@@ -3,11 +3,7 @@
  * Professional unified chart component with OKLCH color integration and real-time capabilities
  */
 
-import {
-  Component,
-  createEffect,
-  splitProps,
-} from "solid-js";
+import { Component, createEffect, splitProps } from "solid-js";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
 import { ChartConfig, ChartType, Dataset } from "../types";
 import { ChartRenderer } from "./ChartRenderer";
@@ -42,7 +38,6 @@ export interface ChartProps extends ChartConfig {
   /** Performance monitoring */
   enablePerformanceMonitoring?: boolean;
 }
-
 
 export const Chart: Component<ChartProps> = (props) => {
   const [local, others] = splitProps(props, chartPropsToSplit);
@@ -112,4 +107,3 @@ export const Chart: Component<ChartProps> = (props) => {
 
   return <ChartRenderer {...renderProps} />;
 };
-

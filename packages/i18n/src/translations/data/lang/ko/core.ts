@@ -176,5 +176,4 @@ export const coreTranslations = {
       "인증 및 입력 유효성 검사 통합",
     "performance-and-security-integration": "성능 및 보안 통합",
   },
-
 };

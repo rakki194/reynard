@@ -1,6 +1,7 @@
 # Reynard Icons Demo
 
-A comprehensive demonstration application showcasing the `reynard-fluent-icons` package with modern UI components and interactive features.
+A comprehensive demonstration application showcasing the `reynard-fluent-icons` package with modern UI components and
+interactive features.
 
 ## Features
 

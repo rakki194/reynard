@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document provides performance benchmarks and optimization strategies for OKLCH-based hue shifting algorithms in pixel art games. The benchmarks compare different approaches and provide recommendations for optimal performance.
+This document provides performance benchmarks and
+optimization strategies for OKLCH-based hue shifting algorithms in
+pixel art games. The benchmarks compare different approaches and provide recommendations for optimal performance.
 
 ## Benchmark Results
 
@@ -462,4 +464,7 @@ class PerformanceMonitor {
 
 ## Conclusion
 
-OKLCH hue shifting can be implemented efficiently for pixel art games with proper optimization strategies. The key is to balance visual quality with performance requirements based on the specific use case. Caching, batch processing, and appropriate rendering techniques can ensure smooth performance even in complex scenarios.
+OKLCH hue shifting can be implemented efficiently for pixel art games with
+proper optimization strategies. The key is to balance visual quality with performance requirements based on
+the specific use case. Caching, batch processing, and
+appropriate rendering techniques can ensure smooth performance even in complex scenarios.

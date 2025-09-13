@@ -4,7 +4,10 @@
  * Cache management for the NLWeb router.
  */
 
-import { NLWebSuggestionRequest, NLWebSuggestionResponse } from "../types/index.js";
+import {
+  NLWebSuggestionRequest,
+  NLWebSuggestionResponse,
+} from "../types/index.js";
 
 export interface CacheEntry {
   response: NLWebSuggestionResponse;

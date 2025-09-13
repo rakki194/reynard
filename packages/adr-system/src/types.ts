@@ -2,9 +2,20 @@
  * Type definitions for the Reynard ADR System
  */
 
-export type ADRStatus = 'proposed' | 'accepted' | 'rejected' | 'superseded' | 'deprecated';
+export type ADRStatus =
+  | "proposed"
+  | "accepted"
+  | "rejected"
+  | "superseded"
+  | "deprecated";
 
-export type ADRCategory = 'security' | 'performance' | 'scalability' | 'integration' | 'maintainability' | 'general';
+export type ADRCategory =
+  | "security"
+  | "performance"
+  | "scalability"
+  | "integration"
+  | "maintainability"
+  | "general";
 
 export interface ADRDocument {
   id: string;
@@ -21,8 +32,8 @@ export interface ADRDocument {
     negative: string[];
     risks: Array<{
       risk: string;
-      impact: 'low' | 'medium' | 'high';
-      probability: 'low' | 'medium' | 'high';
+      impact: "low" | "medium" | "high";
+      probability: "low" | "medium" | "high";
       mitigation: string;
     }>;
   };
@@ -51,7 +62,7 @@ export interface ADRValidationResult {
 export interface ADRRelationship {
   source: string;
   target: string;
-  type: 'supersedes' | 'related' | 'conflicts' | 'depends_on';
+  type: "supersedes" | "related" | "conflicts" | "depends_on";
   strength: number; // 0-1
   description: string;
 }

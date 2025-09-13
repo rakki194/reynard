@@ -1,10 +1,12 @@
 # tslearn Integration for Training Script Editor
 
-This document describes the integration of tslearn (Time Series LEARNing) library into the Reynard training script editor, providing powerful time series analysis and visualization capabilities.
+This document describes the integration of tslearn (Time Series LEARNing) library into
+the Reynard training script editor, providing powerful time series analysis and visualization capabilities.
 
 ## Overview
 
-tslearn is a Python package that provides machine learning tools for time series analysis. The integration adds visualization capabilities to the training script editor, allowing users to:
+tslearn is a Python package that provides machine learning tools for
+time series analysis. The integration adds visualization capabilities to the training script editor, allowing users to:
 
 - Visualize Dynamic Time Warping (DTW) paths between time series
 - Perform and visualize time series clustering
@@ -357,5 +359,5 @@ To extend the tslearn integration:
 - [tslearn Documentation](https://tslearn.readthedocs.io/)
 - [Time Series Analysis with tslearn](https://tslearn.readthedocs.io/en/stable/auto_examples/index.html)
 - [Dynamic Time Warping](https://en.wikipedia.org/wiki/Dynamic_time_warping)
-- [Shapelet Discovery](<https://en.wikipedia.org/wiki/Shapelet_(time_series)>)
+- [Shapelet Discovery](https://en.wikipedia.org/wiki/Shapelet_(time_series))
 - [Matrix Profile](https://www.cs.ucr.edu/~eamonn/MatrixProfile.html)

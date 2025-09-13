@@ -8,7 +8,9 @@ import { Button, TextField, Select, Toggle } from "reynard-components";
 import { Icon } from "reynard-components/icons";
 import type { GlobalSettingsFormProps } from "../types/PackageConfigurationTypes";
 
-export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) => {
+export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (
+  props,
+) => {
   const handleConfigChange = (key: keyof typeof props.config, value: any) => {
     const updatedConfig = { ...props.config, [key]: value };
     // This would typically update local state, but for now we'll just call onSave
@@ -26,14 +28,16 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) =>
       <div class="reynard-global-settings-form__content">
         <div class="reynard-settings-section">
           <h4>Discovery & Installation</h4>
-          
+
           <div class="reynard-setting-field">
             <div class="reynard-setting-field__label">
               <label>Auto Discovery</label>
             </div>
             <Toggle
               checked={props.config.autoDiscovery}
-              onChange={(checked) => handleConfigChange('autoDiscovery', checked)}
+              onChange={(checked) =>
+                handleConfigChange("autoDiscovery", checked)
+              }
             />
             <div class="reynard-setting-field__description">
               Automatically discover new packages
@@ -46,7 +50,7 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) =>
             </div>
             <Toggle
               checked={props.config.autoInstall}
-              onChange={(checked) => handleConfigChange('autoInstall', checked)}
+              onChange={(checked) => handleConfigChange("autoInstall", checked)}
             />
             <div class="reynard-setting-field__description">
               Automatically install discovered packages
@@ -59,7 +63,7 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) =>
             </div>
             <Toggle
               checked={props.config.autoUpdate}
-              onChange={(checked) => handleConfigChange('autoUpdate', checked)}
+              onChange={(checked) => handleConfigChange("autoUpdate", checked)}
             />
             <div class="reynard-setting-field__description">
               Automatically update packages when new versions are available
@@ -69,7 +73,7 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) =>
 
         <div class="reynard-settings-section">
           <h4>Performance & Limits</h4>
-          
+
           <div class="reynard-setting-field">
             <div class="reynard-setting-field__label">
               <label>Max Concurrent Installs</label>
@@ -77,7 +81,12 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) =>
             <TextField
               type="number"
               value={props.config.maxConcurrentInstalls}
-              onInput={(e) => handleConfigChange('maxConcurrentInstalls', Number(e.currentTarget.value))}
+              onInput={(e) =>
+                handleConfigChange(
+                  "maxConcurrentInstalls",
+                  Number(e.currentTarget.value),
+                )
+              }
               min="1"
               max="10"
               size="sm"
@@ -94,7 +103,9 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) =>
             <TextField
               type="number"
               value={props.config.memoryLimit}
-              onInput={(e) => handleConfigChange('memoryLimit', Number(e.currentTarget.value))}
+              onInput={(e) =>
+                handleConfigChange("memoryLimit", Number(e.currentTarget.value))
+              }
               min="512"
               max="8192"
               step="256"
@@ -108,14 +119,16 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) =>
 
         <div class="reynard-settings-section">
           <h4>Monitoring & Analytics</h4>
-          
+
           <div class="reynard-setting-field">
             <div class="reynard-setting-field__label">
               <label>Enable Analytics</label>
             </div>
             <Toggle
               checked={props.config.enableAnalytics}
-              onChange={(checked) => handleConfigChange('enableAnalytics', checked)}
+              onChange={(checked) =>
+                handleConfigChange("enableAnalytics", checked)
+              }
             />
             <div class="reynard-setting-field__description">
               Collect usage analytics and performance data
@@ -128,12 +141,12 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) =>
             </div>
             <Select
               value={props.config.logLevel}
-              onChange={(value) => handleConfigChange('logLevel', value)}
+              onChange={(value) => handleConfigChange("logLevel", value)}
               options={[
                 { value: "debug", label: "Debug" },
                 { value: "info", label: "Info" },
                 { value: "warn", label: "Warning" },
-                { value: "error", label: "Error" }
+                { value: "error", label: "Error" },
               ]}
               size="sm"
             />
@@ -163,4 +176,3 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (props) =>
     </div>
   );
 };
-

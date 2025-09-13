@@ -1,6 +1,7 @@
 # Breadcrumb Component Documentation
 
-The Breadcrumb component is a crucial navigation element in the yipyap gallery interface. It has been modularized into several focused components for better maintainability and reusability.
+The Breadcrumb component is a crucial navigation element in the yipyap gallery interface. It has been modularized into
+several focused components for better maintainability and reusability.
 
 ## Table of Contents
 
@@ -34,7 +35,9 @@ The Breadcrumb system is organized into the following components:
 
 ### Main Component (`Breadcrumb.tsx`)
 
-The main Breadcrumb component serves as a container and orchestrator for the sub-components. It provides the basic layout structure and manages the overall composition of the breadcrumb interface.
+The main Breadcrumb component serves as a container and
+orchestrator for the sub-components. It provides the basic layout structure and
+manages the overall composition of the breadcrumb interface.
 
 ```tsx
 <nav class="breadcrumb">

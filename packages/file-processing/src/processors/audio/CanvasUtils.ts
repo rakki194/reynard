@@ -1,6 +1,6 @@
 /**
  * Canvas utilities for audio thumbnail generation.
- * 
+ *
  * This module provides canvas management, drawing operations, and blob conversion
  * utilities specifically for audio thumbnail generation.
  */

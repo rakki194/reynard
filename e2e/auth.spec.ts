@@ -1,6 +1,6 @@
 /**
  * E2E Authentication Tests for Reynard
- * 
+ *
  * Comprehensive end-to-end tests for authentication workflows across
  * gatekeeper, backend, and auth package integration.
  */
@@ -32,7 +32,7 @@ test.describe("Authentication E2E Tests", () => {
 
     // Setup mock API responses
     await mockBackend.setupAuthEndpoints();
-    
+
     // Navigate to auth page
     await page.goto("/auth");
   });
@@ -55,24 +55,32 @@ test.describe("Authentication E2E Tests", () => {
 
       // Fill registration form
       await authHelpers.fillRegistrationForm(testUser);
-      
+
       // Submit form
       await authHelpers.submitRegistrationForm();
-      
+
       // Verify success
-      await expect(page.locator("[data-testid='registration-success']")).toBeVisible();
-      await expect(page.locator("[data-testid='user-welcome']")).toContainText(testUser.username);
+      await expect(
+        page.locator("[data-testid='registration-success']"),
+      ).toBeVisible();
+      await expect(page.locator("[data-testid='user-welcome']")).toContainText(
+        testUser.username,
+      );
     });
 
-    test("should show validation errors for invalid registration data", async ({ page }) => {
+    test("should show validation errors for invalid registration data", async ({
+      page,
+    }) => {
       const invalidUser = TestUserData.getInvalidUser();
-      
+
       // Fill form with invalid data
       await authHelpers.fillRegistrationForm(invalidUser);
       await authHelpers.submitRegistrationForm();
-      
+
       // Verify validation errors
-      await expect(page.locator("[data-testid='password-error']")).toBeVisible();
+      await expect(
+        page.locator("[data-testid='password-error']"),
+      ).toBeVisible();
       await expect(page.locator("[data-testid='email-error']")).toBeVisible();
     });
 
@@ -85,16 +93,18 @@ test.describe("Authentication E2E Tests", () => {
 
       await authHelpers.fillRegistrationForm(testUser);
       await authHelpers.submitRegistrationForm();
-      
+
       // Verify error message
-      await expect(page.locator("[data-testid='registration-error']")).toContainText(
-        "Username already registered"
-      );
+      await expect(
+        page.locator("[data-testid='registration-error']"),
+      ).toContainText("Username already registered");
     });
   });
 
   test.describe("User Login", () => {
-    test("should successfully login with valid credentials", async ({ page }) => {
+    test("should successfully login with valid credentials", async ({
+      page,
+    }) => {
       // Mock successful login response
       mockBackend.mockResponse("/api/auth/login", {
         status: 200,
@@ -107,13 +117,17 @@ test.describe("Authentication E2E Tests", () => {
 
       // Fill login form
       await authHelpers.fillLoginForm(testUser);
-      
+
       // Submit form
       await authHelpers.submitLoginForm();
-      
+
       // Verify successful login
-      await expect(page.locator("[data-testid='user-dashboard']")).toBeVisible();
-      await expect(page.locator("[data-testid='user-menu']")).toContainText(testUser.username);
+      await expect(
+        page.locator("[data-testid='user-dashboard']"),
+      ).toBeVisible();
+      await expect(page.locator("[data-testid='user-menu']")).toContainText(
+        testUser.username,
+      );
     });
 
     test("should show error for invalid credentials", async ({ page }) => {
@@ -125,10 +139,10 @@ test.describe("Authentication E2E Tests", () => {
 
       await authHelpers.fillLoginForm(testUser);
       await authHelpers.submitLoginForm();
-      
+
       // Verify error message
       await expect(page.locator("[data-testid='login-error']")).toContainText(
-        "Incorrect username or password"
+        "Incorrect username or password",
       );
     });
 
@@ -141,9 +155,11 @@ test.describe("Authentication E2E Tests", () => {
 
       await authHelpers.fillLoginForm(testUser);
       await authHelpers.submitLoginForm();
-      
+
       // Verify rate limiting message
-      await expect(page.locator("[data-testid='rate-limit-error']")).toBeVisible();
+      await expect(
+        page.locator("[data-testid='rate-limit-error']"),
+      ).toBeVisible();
     });
   });
 
@@ -151,7 +167,7 @@ test.describe("Authentication E2E Tests", () => {
     test("should automatically refresh expired tokens", async ({ page }) => {
       // Login first
       await authHelpers.loginUser(testUser);
-      
+
       // Mock token refresh
       mockBackend.mockResponse("/api/auth/refresh", {
         status: 200,
@@ -165,20 +181,22 @@ test.describe("Authentication E2E Tests", () => {
       // Simulate token expiration by making an API call
       await page.evaluate(() => {
         // Simulate expired token scenario
-        localStorage.setItem('access_token', 'expired-token');
+        localStorage.setItem("access_token", "expired-token");
       });
 
       // Make API request that should trigger token refresh
       await page.click("[data-testid='protected-action']");
-      
+
       // Verify new token is used
-      await expect(page.locator("[data-testid='action-success']")).toBeVisible();
+      await expect(
+        page.locator("[data-testid='action-success']"),
+      ).toBeVisible();
     });
 
     test("should logout when refresh token is invalid", async ({ page }) => {
       // Login first
       await authHelpers.loginUser(testUser);
-      
+
       // Mock invalid refresh token
       mockBackend.mockResponse("/api/auth/refresh", {
         status: 401,
@@ -187,12 +205,12 @@ test.describe("Authentication E2E Tests", () => {
 
       // Simulate token expiration
       await page.evaluate(() => {
-        localStorage.setItem('refresh_token', 'invalid-token');
+        localStorage.setItem("refresh_token", "invalid-token");
       });
 
       // Make API request
       await page.click("[data-testid='protected-action']");
-      
+
       // Verify user is logged out
       await expect(page.locator("[data-testid='login-form']")).toBeVisible();
     });
@@ -202,18 +220,20 @@ test.describe("Authentication E2E Tests", () => {
     test("should maintain session across page refreshes", async ({ page }) => {
       // Login user
       await authHelpers.loginUser(testUser);
-      
+
       // Refresh page
       await page.reload();
-      
+
       // Verify user is still logged in
-      await expect(page.locator("[data-testid='user-dashboard']")).toBeVisible();
+      await expect(
+        page.locator("[data-testid='user-dashboard']"),
+      ).toBeVisible();
     });
 
     test("should logout user and clear session", async ({ page }) => {
       // Login user
       await authHelpers.loginUser(testUser);
-      
+
       // Mock logout response
       mockBackend.mockResponse("/api/auth/logout", {
         status: 200,
@@ -222,16 +242,16 @@ test.describe("Authentication E2E Tests", () => {
 
       // Click logout
       await page.click("[data-testid='logout-button']");
-      
+
       // Verify user is logged out
       await expect(page.locator("[data-testid='login-form']")).toBeVisible();
-      
+
       // Verify tokens are cleared
       const tokens = await page.evaluate(() => ({
-        accessToken: localStorage.getItem('access_token'),
-        refreshToken: localStorage.getItem('refresh_token'),
+        accessToken: localStorage.getItem("access_token"),
+        refreshToken: localStorage.getItem("refresh_token"),
       }));
-      
+
       expect(tokens.accessToken).toBeNull();
       expect(tokens.refreshToken).toBeNull();
     });
@@ -247,28 +267,28 @@ test.describe("Authentication E2E Tests", () => {
 
       await authHelpers.fillRegistrationForm(maliciousUser);
       await authHelpers.submitRegistrationForm();
-      
+
       // Verify no script execution
       await expect(page.locator("script")).toHaveCount(0);
-      
+
       // Verify input is properly escaped
-      await expect(page.locator("[data-testid='username-display']")).toContainText(
-        "&lt;script&gt;alert('xss')&lt;/script&gt;"
-      );
+      await expect(
+        page.locator("[data-testid='username-display']"),
+      ).toContainText("&lt;script&gt;alert('xss')&lt;/script&gt;");
     });
 
     test("should handle CSRF protection", async ({ page }) => {
       // Login user
       await authHelpers.loginUser(testUser);
-      
+
       // Try to make request without CSRF token
       await page.evaluate(() => {
-        fetch('/api/auth/logout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        fetch("/api/auth/logout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
         });
       });
-      
+
       // Verify CSRF protection is working
       await expect(page.locator("[data-testid='csrf-error']")).toBeVisible();
     });
@@ -280,12 +300,16 @@ test.describe("Authentication E2E Tests", () => {
       };
 
       await authHelpers.fillRegistrationForm(weakPasswordUser);
-      
+
       // Verify password strength indicator
-      await expect(page.locator("[data-testid='password-strength']")).toHaveClass(/weak/);
-      
+      await expect(
+        page.locator("[data-testid='password-strength']"),
+      ).toHaveClass(/weak/);
+
       // Verify form cannot be submitted
-      await expect(page.locator("[data-testid='submit-button']")).toBeDisabled();
+      await expect(
+        page.locator("[data-testid='submit-button']"),
+      ).toBeDisabled();
     });
   });
 
@@ -293,9 +317,9 @@ test.describe("Authentication E2E Tests", () => {
     test("should use Gatekeeper authentication endpoints", async ({ page }) => {
       // Verify API calls go to correct endpoints
       const requests: any[] = [];
-      
-      page.on('request', request => {
-        if (request.url().includes('/auth/')) {
+
+      page.on("request", (request) => {
+        if (request.url().includes("/auth/")) {
           requests.push({
             url: request.url(),
             method: request.method(),
@@ -305,30 +329,34 @@ test.describe("Authentication E2E Tests", () => {
       });
 
       await authHelpers.loginUser(testUser);
-      
+
       // Verify requests were made to Gatekeeper endpoints
       expect(requests).toContainEqual(
         expect.objectContaining({
-          url: expect.stringContaining('/auth/login'),
-          method: 'POST',
-        })
+          url: expect.stringContaining("/auth/login"),
+          method: "POST",
+        }),
       );
     });
 
-    test("should handle Gatekeeper role-based access control", async ({ page }) => {
+    test("should handle Gatekeeper role-based access control", async ({
+      page,
+    }) => {
       // Login as admin user
       const adminUser = TestUserData.getAdminUser();
       await authHelpers.loginUser(adminUser);
-      
+
       // Verify admin features are available
       await expect(page.locator("[data-testid='admin-panel']")).toBeVisible();
-      
+
       // Login as regular user
       await authHelpers.logout();
       await authHelpers.loginUser(testUser);
-      
+
       // Verify admin features are hidden
-      await expect(page.locator("[data-testid='admin-panel']")).not.toBeVisible();
+      await expect(
+        page.locator("[data-testid='admin-panel']"),
+      ).not.toBeVisible();
     });
   });
 
@@ -336,10 +364,10 @@ test.describe("Authentication E2E Tests", () => {
     test("should handle network errors gracefully", async ({ page }) => {
       // Mock network error
       mockBackend.mockNetworkError("/api/auth/login");
-      
+
       await authHelpers.fillLoginForm(testUser);
       await authHelpers.submitLoginForm();
-      
+
       // Verify error handling
       await expect(page.locator("[data-testid='network-error']")).toBeVisible();
     });
@@ -353,7 +381,7 @@ test.describe("Authentication E2E Tests", () => {
 
       await authHelpers.fillLoginForm(testUser);
       await authHelpers.submitLoginForm();
-      
+
       // Verify error handling
       await expect(page.locator("[data-testid='server-error']")).toBeVisible();
     });
@@ -367,7 +395,7 @@ test.describe("Authentication E2E Tests", () => {
 
       await authHelpers.fillLoginForm(testUser);
       await authHelpers.submitLoginForm();
-      
+
       // Verify error handling
       await expect(page.locator("[data-testid='parse-error']")).toBeVisible();
     });
@@ -376,27 +404,29 @@ test.describe("Authentication E2E Tests", () => {
   test.describe("Performance", () => {
     test("should complete login within acceptable time", async () => {
       const startTime = Date.now();
-      
+
       await authHelpers.loginUser(testUser);
-      
+
       const endTime = Date.now();
       const loginTime = endTime - startTime;
-      
+
       // Verify login completes within 2 seconds
       expect(loginTime).toBeLessThan(2000);
     });
 
     test("should handle concurrent login attempts", async ({ page }) => {
       // Simulate multiple concurrent login attempts
-      const promises = Array.from({ length: 5 }, () => 
-        authHelpers.loginUser(testUser)
+      const promises = Array.from({ length: 5 }, () =>
+        authHelpers.loginUser(testUser),
       );
-      
+
       // All should complete successfully
       await Promise.all(promises);
-      
+
       // Verify user is logged in
-      await expect(page.locator("[data-testid='user-dashboard']")).toBeVisible();
+      await expect(
+        page.locator("[data-testid='user-dashboard']"),
+      ).toBeVisible();
     });
   });
 });

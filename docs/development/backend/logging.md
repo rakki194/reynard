@@ -1,6 +1,7 @@
 # Reynard Logging System
 
-The Reynard application includes a comprehensive logging system for both frontend and backend components. This document explains how to use the logging system effectively.
+The Reynard application includes a comprehensive logging system for both frontend and
+backend components. This document explains how to use the logging system effectively.
 
 ## Overview
 
@@ -13,7 +14,8 @@ Both log files use daily rotation, keeping 7 days of logs (one week).
 
 ## Backend Logging
 
-The backend uses Python's standard `logging` module with a custom configuration that outputs logs to both the console and log files.
+The backend uses Python's standard `logging` module with a custom configuration that
+outputs logs to both the console and log files.
 
 ### Log Levels
 
@@ -46,7 +48,8 @@ except Exception as e:
 
 ## Frontend Logging
 
-The frontend uses a custom logging utility that logs to both the browser console and sends logs to the backend, which then stores them in the `frontend.log` file.
+The frontend uses a custom logging utility that logs to both the browser console and
+sends logs to the backend, which then stores them in the `frontend.log` file.
 
 ### Log Levels
 

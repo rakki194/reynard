@@ -4,10 +4,20 @@
  */
 
 // Core Panel Types
-export type { FloatingPanel, PanelPosition, PanelSize } from "./types/core/PanelTypes.js";
+export type {
+  FloatingPanel,
+  PanelPosition,
+  PanelSize,
+} from "./types/core/PanelTypes.js";
 export type { PanelConfig, PanelTheme } from "./types/core/PanelConfig.js";
-export type { PanelConstraints, PanelSnapPoints } from "./types/core/PanelConstraints.js";
-export type { PanelEventHandlers, FloatingPanelProps } from "./types/core/PanelEvents.js";
+export type {
+  PanelConstraints,
+  PanelSnapPoints,
+} from "./types/core/PanelConstraints.js";
+export type {
+  PanelEventHandlers,
+  FloatingPanelProps,
+} from "./types/core/PanelEvents.js";
 
 // Re-export for internal use
 import type { FloatingPanel, PanelPosition } from "./types/core/PanelTypes.js";

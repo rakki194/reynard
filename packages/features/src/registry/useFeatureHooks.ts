@@ -10,7 +10,10 @@ import type { FeatureContext } from "../core/types";
 /**
  * Hook to check if a feature is available
  */
-export function useFeatureAvailable(featureId: string, context: FeatureContext) {
+export function useFeatureAvailable(
+  featureId: string,
+  context: FeatureContext,
+) {
   return createMemo(() => context.isFeatureAvailable(featureId));
 }
 
@@ -38,20 +41,26 @@ export function useFeatureConfig(featureId: string, context: FeatureContext) {
 /**
  * Hook to get available features by category
  */
-export function useFeaturesByCategory(category: string, context: FeatureContext) {
+export function useFeaturesByCategory(
+  category: string,
+  context: FeatureContext,
+) {
   return createMemo(() => {
     const available = context.availableFeatures();
-    return available.filter(feature => feature.category === category);
+    return available.filter((feature) => feature.category === category);
   });
 }
 
 /**
  * Hook to get features by priority
  */
-export function useFeaturesByPriority(priority: string, context: FeatureContext) {
+export function useFeaturesByPriority(
+  priority: string,
+  context: FeatureContext,
+) {
   return createMemo(() => {
     const available = context.availableFeatures();
-    return available.filter(feature => feature.priority === priority);
+    return available.filter((feature) => feature.priority === priority);
   });
 }
 
@@ -61,12 +70,16 @@ export function useFeaturesByPriority(priority: string, context: FeatureContext)
 export function useCriticalFeatures(context: FeatureContext) {
   return createMemo(() => {
     const available = context.availableFeatures();
-    const critical = available.filter(feature => feature.priority === "critical");
-    const unavailable = context.degradedFeatures().filter(feature => feature.priority === "critical");
-    
+    const critical = available.filter(
+      (feature) => feature.priority === "critical",
+    );
+    const unavailable = context
+      .degradedFeatures()
+      .filter((feature) => feature.priority === "critical");
+
     return {
       available: critical.length > 0,
-      unavailable: unavailable
+      unavailable: unavailable,
     };
   });
 }
@@ -74,11 +87,14 @@ export function useCriticalFeatures(context: FeatureContext) {
 /**
  * Hook to get features dependent on a service
  */
-export function useFeaturesByService(serviceName: string, context: FeatureContext) {
+export function useFeaturesByService(
+  serviceName: string,
+  context: FeatureContext,
+) {
   return createMemo(() => {
     const available = context.availableFeatures();
-    return available.filter(feature => 
-      feature.dependencies.some(dep => dep.services.includes(serviceName))
+    return available.filter((feature) =>
+      feature.dependencies.some((dep) => dep.services.includes(serviceName)),
     );
   });
 }

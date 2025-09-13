@@ -11,7 +11,11 @@ import type {
 } from "../types/index.js";
 import { validateTool } from "./tool-validator.js";
 import { getContextualTools } from "./context-matcher.js";
-import { searchTools, getToolsByTags, getToolsByCategory } from "./tool-searcher.js";
+import {
+  searchTools,
+  getToolsByTags,
+  getToolsByCategory,
+} from "./tool-searcher.js";
 import { calculateToolStats } from "./tool-stats.js";
 import {
   addToCategoryIndex,
@@ -125,5 +129,4 @@ export class NLWebToolRegistry implements INLWebToolRegistry {
   getContextualTools(context: Record<string, unknown>): NLWebTool[] {
     return getContextualTools(this.getAllTools(), context);
   }
-
 }

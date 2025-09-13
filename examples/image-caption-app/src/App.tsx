@@ -63,7 +63,11 @@ const App: Component = () => {
         </div>
       </header>
 
-      <AIAppContent appState={appState} workflow={workflow} handlers={handlers} />
+      <AIAppContent
+        appState={appState}
+        workflow={workflow}
+        handlers={handlers}
+      />
     </div>
   );
 };

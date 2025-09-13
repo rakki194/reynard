@@ -11,20 +11,23 @@ export function createNumberFormatter(config: IntlConfig) {
   return {
     format: (value: number, options?: Intl.NumberFormatOptions | string) => {
       let formatOptions: Intl.NumberFormatOptions;
-      
-      if (typeof options === 'string') {
+
+      if (typeof options === "string") {
         // Handle string shortcuts
         switch (options) {
-          case 'currency':
-            formatOptions = { ...defaultFormattingPresets.number.currency, currency: 'USD' };
+          case "currency":
+            formatOptions = {
+              ...defaultFormattingPresets.number.currency,
+              currency: "USD",
+            };
             break;
-          case 'percent':
+          case "percent":
             formatOptions = defaultFormattingPresets.number.percent;
             break;
-          case 'decimal':
+          case "decimal":
             formatOptions = defaultFormattingPresets.number.decimal;
             break;
-          case 'integer':
+          case "integer":
             formatOptions = defaultFormattingPresets.number.integer;
             break;
           default:
@@ -33,16 +36,22 @@ export function createNumberFormatter(config: IntlConfig) {
       } else {
         formatOptions = options || {};
       }
-      
+
       const formatter = new Intl.NumberFormat(config.locale, formatOptions);
       return formatter.format(value);
     },
     formatInteger: (value: number) => {
-      const formatter = new Intl.NumberFormat(config.locale, defaultFormattingPresets.number.integer);
+      const formatter = new Intl.NumberFormat(
+        config.locale,
+        defaultFormattingPresets.number.integer,
+      );
       return formatter.format(value);
     },
     formatDecimal: (value: number) => {
-      const formatter = new Intl.NumberFormat(config.locale, defaultFormattingPresets.number.decimal);
+      const formatter = new Intl.NumberFormat(
+        config.locale,
+        defaultFormattingPresets.number.decimal,
+      );
       return formatter.format(value);
     },
     formatCurrency: (value: number, currency?: string) => {
@@ -52,11 +61,17 @@ export function createNumberFormatter(config: IntlConfig) {
       return formatter.format(value);
     },
     formatPercent: (value: number) => {
-      const formatter = new Intl.NumberFormat(config.locale, defaultFormattingPresets.number.percent);
+      const formatter = new Intl.NumberFormat(
+        config.locale,
+        defaultFormattingPresets.number.percent,
+      );
       return formatter.format(value);
     },
     formatCompact: (value: number) => {
-      const formatter = new Intl.NumberFormat(config.locale, defaultFormattingPresets.number.compact);
+      const formatter = new Intl.NumberFormat(
+        config.locale,
+        defaultFormattingPresets.number.compact,
+      );
       return formatter.format(value);
     },
   };

@@ -1,6 +1,7 @@
 # Reynard Annotating
 
-Unified annotation system for Reynard with production features and modular architecture. This package integrates all caption generators into a single, easy-to-use interface.
+Unified annotation system for Reynard with production features and
+modular architecture. This package integrates all caption generators into a single, easy-to-use interface.
 
 ## Features
 

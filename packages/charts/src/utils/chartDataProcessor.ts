@@ -21,7 +21,8 @@ export interface DataProcessorConfig {
  * Process datasets with enhanced color generation
  */
 export function processDatasets(config: DataProcessorConfig): Dataset[] {
-  const { datasets, useOKLCH, colorTheme, colorGenerator, visualization } = config;
+  const { datasets, useOKLCH, colorTheme, colorGenerator, visualization } =
+    config;
 
   return datasets.map((dataset, index) => {
     let backgroundColor: string;
@@ -86,7 +87,7 @@ export function createChartData(labels: string[], datasets: Dataset[]) {
 export function updateChartDataIncremental(
   chart: any,
   labels: string[],
-  datasets: Dataset[]
+  datasets: Dataset[],
 ) {
   // Update labels directly
   if (labels && labels.length > 0) {

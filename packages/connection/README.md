@@ -1,6 +1,7 @@
 # reynard-connection
 
-Enterprise-grade networking for Reynard applications with comprehensive connection management, health monitoring, and recovery strategies.
+Enterprise-grade networking for Reynard applications with comprehensive connection management, health monitoring, and
+recovery strategies.
 
 ## Features
 
@@ -544,4 +545,4 @@ connection.onEvent((event) => {
 
 ## API Reference
 
-See the [API documentation](./docs/api.md) for complete reference of all classes, methods, and types.
+See the source code for complete reference of all classes, methods, and types.

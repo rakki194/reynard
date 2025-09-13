@@ -52,7 +52,10 @@ export type {
 export type { SettingsTranslations } from "../translations/types/settings-translations";
 
 // Import types needed for the main Translations interface
-import type { CommonTranslations, ThemeTranslations } from "./core/common-types";
+import type {
+  CommonTranslations,
+  ThemeTranslations,
+} from "./core/common-types";
 import type {
   CoreTranslations,
   ComponentTranslations,

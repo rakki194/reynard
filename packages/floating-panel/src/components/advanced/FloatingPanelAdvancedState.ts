@@ -24,10 +24,13 @@ export function createAdvancedState(props: FloatingPanelProps) {
  */
 export function createAdvancedConstraints(props: FloatingPanelProps) {
   return {
-    minWidth: typeof props.size?.minWidth === "number" ? props.size.minWidth : 180,
-    minHeight: typeof props.size?.minHeight === "number" ? props.size.minHeight : 120,
-    maxWidth: typeof props.size?.maxWidth === "number" ? props.size.maxWidth : 800,
-    maxHeight: typeof props.size?.maxHeight === "number" ? props.size.maxHeight : 600,
+    minWidth:
+      typeof props.size?.minWidth === "number" ? props.size.minWidth : 180,
+    minHeight:
+      typeof props.size?.minHeight === "number" ? props.size.minHeight : 120,
+    maxWidth:
+      typeof props.size?.maxWidth === "number" ? props.size.maxWidth : 800,
+    maxHeight:
+      typeof props.size?.maxHeight === "number" ? props.size.maxHeight : 600,
   };
 }
-

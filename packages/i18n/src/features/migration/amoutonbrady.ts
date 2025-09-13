@@ -4,7 +4,11 @@
  * Migration utilities for amoutonbrady i18n library.
  */
 
-import type { MigrationOptions, MigrationResult, MigrationStatistics } from "./types";
+import type {
+  MigrationOptions,
+  MigrationResult,
+  MigrationStatistics,
+} from "./types";
 import type { Translations } from "../../types";
 
 /**
@@ -17,7 +21,7 @@ function processNestedTranslations(
   warnings: string[],
 ): Record<string, string> {
   const nestedTranslations: Record<string, string> = {};
-  
+
   for (const [nestedKey, nestedVal] of Object.entries(nestedValue)) {
     if (typeof nestedVal === "string") {
       nestedTranslations[nestedKey] = nestedVal;
@@ -27,7 +31,7 @@ function processNestedTranslations(
       statistics.skippedKeys++;
     }
   }
-  
+
   return nestedTranslations;
 }
 
@@ -53,7 +57,7 @@ export function migrateFromAmoutonbrady(
 
     for (const [key, value] of Object.entries(translations)) {
       statistics.totalKeys++;
-      
+
       if (typeof value === "string") {
         convertedTranslations[key] = value;
         statistics.migratedKeys++;
@@ -78,7 +82,9 @@ export function migrateFromAmoutonbrady(
       statistics,
     };
   } catch (error) {
-    errors.push(`Migration failed: ${error instanceof Error ? error.message : String(error)}`);
+    errors.push(
+      `Migration failed: ${error instanceof Error ? error.message : String(error)}`,
+    );
     return {
       success: false,
       migratedTranslations: {} as Translations,
@@ -88,4 +94,3 @@ export function migrateFromAmoutonbrady(
     };
   }
 }
-

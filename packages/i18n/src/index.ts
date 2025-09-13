@@ -38,9 +38,7 @@ export {
 } from "./features/debug/debug-i18n";
 
 // Analytics i18n features
-export {
-  createAnalyticsI18nModule,
-} from "./features/analytics/analytics-i18n";
+export { createAnalyticsI18nModule } from "./features/analytics/analytics-i18n";
 
 // Legacy exports for backward compatibility
 import { createAnalyticsI18nModule } from "./features/analytics/analytics-i18n";
@@ -94,7 +92,11 @@ export {
   getHungarianSuffix,
 } from "./utils";
 
-export { getPlural, createPluralTranslation, pluralRules } from "./utils/pluralization/plurals";
+export {
+  getPlural,
+  createPluralTranslation,
+  pluralRules,
+} from "./utils/pluralization/plurals";
 
 // Enhanced loading system
 export {
@@ -105,9 +107,7 @@ export {
 } from "./loaders";
 
 // Debugging and validation
-export {
-  createDebugStats,
-} from "./features/debug";
+export { createDebugStats } from "./features/debug";
 export type { DebugStats } from "./features/debug";
 
 // Intl API integration

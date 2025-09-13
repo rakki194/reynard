@@ -1,6 +1,6 @@
 /**
  * Intl Utility Functions
- * 
+ *
  * Standalone utility functions for common Intl formatting operations
  */
 
@@ -23,13 +23,23 @@ export function formatDate(date: Date, locale: LanguageCode): string {
 /**
  * Format currency with the specified locale and currency code
  */
-export function formatCurrency(value: number, locale: LanguageCode, currency: string): string {
-  return new Intl.NumberFormat(locale, { style: "currency", currency }).format(value);
+export function formatCurrency(
+  value: number,
+  locale: LanguageCode,
+  currency: string,
+): string {
+  return new Intl.NumberFormat(locale, { style: "currency", currency }).format(
+    value,
+  );
 }
 
 /**
  * Format relative time with the specified locale
  */
-export function formatRelativeTime(value: number, unit: Intl.RelativeTimeFormatUnit, locale: LanguageCode): string {
+export function formatRelativeTime(
+  value: number,
+  unit: Intl.RelativeTimeFormatUnit,
+  locale: LanguageCode,
+): string {
   return new Intl.RelativeTimeFormat(locale).format(value, unit);
 }

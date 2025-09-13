@@ -1,6 +1,7 @@
 # Runtime Configuration Management
 
-The Runtime Configuration Management system provides comprehensive dynamic configuration management for the lazy loading system, including real-time updates, validation, rollback mechanisms, and change notifications.
+The Runtime Configuration Management system provides comprehensive dynamic configuration management for
+the lazy loading system, including real-time updates, validation, rollback mechanisms, and change notifications.
 
 ## Overview
 

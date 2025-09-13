@@ -52,18 +52,18 @@ export interface AnalyticsEvent {
  */
 export class TranslationManager {
   private config: TranslationManagerConfig;
-  
+
   constructor(config: TranslationManagerConfig) {
     this.config = config;
   }
-  
+
   /**
    * Get the current configuration
    */
   getConfig(): TranslationManagerConfig {
     return this.config;
   }
-  
+
   /**
    * Update configuration
    */
@@ -77,25 +77,25 @@ export class TranslationManager {
  */
 export class TranslationAnalytics {
   private events: AnalyticsEvent[] = [];
-  
+
   constructor() {
     // Initialize analytics
   }
-  
+
   /**
    * Track an analytics event
    */
   track(event: AnalyticsEvent): void {
     this.events.push(event);
   }
-  
+
   /**
    * Get all tracked events
    */
   getEvents(): AnalyticsEvent[] {
     return [...this.events];
   }
-  
+
   /**
    * Clear all events
    */
@@ -120,18 +120,18 @@ export function migrateTranslations(
     case "amoutonbrady":
       return migrateFromAmoutonbrady(sourceTranslations, options);
     default:
-        return {
-          success: false,
-          migratedTranslations: {} as Translations,
-          warnings: [],
-          errors: [`Unsupported source library: ${options.sourceLibrary}`],
-          statistics: {
-            totalKeys: 0,
-            migratedKeys: 0,
-            skippedKeys: 0,
-            errorKeys: 0,
-          },
-        };
+      return {
+        success: false,
+        migratedTranslations: {} as Translations,
+        warnings: [],
+        errors: [`Unsupported source library: ${options.sourceLibrary}`],
+        statistics: {
+          totalKeys: 0,
+          migratedKeys: 0,
+          skippedKeys: 0,
+          errorKeys: 0,
+        },
+      };
   }
 }
 

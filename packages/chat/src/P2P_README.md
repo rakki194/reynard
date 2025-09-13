@@ -1,6 +1,7 @@
 # P2P Chat System
 
-A comprehensive peer-to-peer chat system built on top of the Reynard chat foundation, enabling real-time user-to-user messaging with all the features of modern chat applications.
+A comprehensive peer-to-peer chat system built on top of the Reynard chat foundation,
+enabling real-time user-to-user messaging with all the features of modern chat applications.
 
 ## Features
 

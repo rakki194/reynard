@@ -61,7 +61,10 @@ describe("Package Exports Types", () => {
       );
 
       expect(error.message).toBe(
-        t("core.errors.exportValidationFailed", { package: "test-package", errors: "core.test.error" }),
+        t("core.errors.exportValidationFailed", {
+          package: "test-package",
+          errors: "core.test.error",
+        }),
       );
       expect(error.packageName).toBe("test-package");
       expect(error.name).toBe("Error"); // Custom error classes inherit from Error
@@ -98,7 +101,10 @@ describe("Package Exports Types", () => {
       const error = new ExportValidationError(t("core.test.error"), "");
 
       expect(error.message).toBe(
-        t("core.errors.exportValidationFailed", { package: "", errors: "core.test.error" }),
+        t("core.errors.exportValidationFailed", {
+          package: "",
+          errors: "core.test.error",
+        }),
       );
       expect(error.packageName).toBe("");
     });

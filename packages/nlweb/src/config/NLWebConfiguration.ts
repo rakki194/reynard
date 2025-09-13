@@ -1,6 +1,6 @@
 /**
  * NLWeb Configuration Factory
- * 
+ *
  * Provides default configuration creation for the NLWeb service.
  */
 

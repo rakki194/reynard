@@ -1,6 +1,6 @@
 /**
  * Security validation utilities for file processing.
- * 
+ *
  * Handles file security checks including path traversal prevention,
  * dangerous file detection, and content validation.
  */
@@ -69,7 +69,6 @@ export class SecurityValidator {
     }
   }
 
-
   /**
    * Validate compressed files for zip bombs
    */
@@ -89,7 +88,6 @@ export class SecurityValidator {
 
     return { isValid: true };
   }
-
 
   /**
    * Update security configuration

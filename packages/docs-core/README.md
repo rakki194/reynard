@@ -2,7 +2,8 @@
 
 > **Core documentation rendering engine for Reynard framework** 🦊
 
-The foundational package that powers beautiful documentation rendering using the Reynard framework itself. This package provides the core parsing, rendering, and engine capabilities for building stunning documentation sites.
+The foundational package that powers beautiful documentation rendering using the Reynard framework itself. This package
+provides the core parsing, rendering, and engine capabilities for building stunning documentation sites.
 
 ## ✨ Features
 

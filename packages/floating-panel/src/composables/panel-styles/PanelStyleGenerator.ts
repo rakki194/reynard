@@ -14,10 +14,10 @@ import { getCSSVariables } from "./PanelCSSVariables.js";
 export function generatePanelStyles(
   position: PanelPosition,
   size?: PanelSize,
-  config?: Record<string, unknown>
+  config?: Record<string, unknown>,
 ): JSX.CSSProperties {
   const cssVariables = config ? getCSSVariables(config) : {};
-  
+
   return {
     position: "absolute",
     top: `${position.top || 0}px`,

@@ -1,6 +1,7 @@
 # reynard-model-management
 
-A comprehensive model management system for Reynard applications that handles ML model registration, downloading, loading, and lifecycle management.
+A comprehensive model management system for Reynard applications that handles ML model registration, downloading,
+loading, and lifecycle management.
 
 ## Features
 

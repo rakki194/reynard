@@ -2,17 +2,15 @@
 // Orchestrates modular cluster animation functionality
 
 import { createSignal, createMemo } from "solid-js";
-import type {
-  ClusterAnimation,
-  EasingType,
-  EmbeddingPoint,
-} from "../types";
+import type { ClusterAnimation, EasingType, EmbeddingPoint } from "../types";
 import { executeClusterAnimation } from "../utils/clusterAnimationExecutor";
 import { getInterpolatedClusterPoints } from "../utils/clusterPointInterpolator";
 import { createClusterAnimationInstance } from "../utils/clusterAnimationFactory";
 
 export function useClusterAnimations() {
-  const [clusterAnimations, setClusterAnimations] = createSignal<ClusterAnimation[]>([]);
+  const [clusterAnimations, setClusterAnimations] = createSignal<
+    ClusterAnimation[]
+  >([]);
   const isAnimationsDisabled = createMemo(() => false);
 
   const createClusterAnimation = (
@@ -24,7 +22,7 @@ export function useClusterAnimations() {
     easing: EasingType = "easeOutElastic",
   ): Promise<void> => {
     if (isAnimationsDisabled()) return Promise.resolve();
-    
+
     const clusterAnimation = createClusterAnimationInstance({
       clusterId,
       points,
@@ -60,7 +58,7 @@ export function useClusterAnimations() {
     clusterAnimations,
     isAnimationsDisabled,
     createClusterAnimation,
-    getInterpolatedClusterPoints: (points: EmbeddingPoint[]) => 
+    getInterpolatedClusterPoints: (points: EmbeddingPoint[]) =>
       getInterpolatedClusterPoints(points, clusterAnimations()),
     stopAnimations: () => setClusterAnimations([]),
   };

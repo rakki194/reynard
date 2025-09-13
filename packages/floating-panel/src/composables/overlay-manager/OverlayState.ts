@@ -10,7 +10,9 @@ import type { OverlayState, FloatingPanel } from "../../types.js";
 /**
  * Create initial overlay state
  */
-export function createInitialOverlayState(initialPanels?: FloatingPanel[]): OverlayState {
+export function createInitialOverlayState(
+  initialPanels?: FloatingPanel[],
+): OverlayState {
   return {
     isActive: false,
     transitionPhase: "idle",
@@ -28,4 +30,3 @@ export function createInitialOverlayState(initialPanels?: FloatingPanel[]): Over
 export function createOverlayState(initialPanels?: FloatingPanel[]) {
   return createSignal<OverlayState>(createInitialOverlayState(initialPanels));
 }
-

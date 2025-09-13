@@ -16,22 +16,27 @@ vi.mock("reynard-annotating-core", () => ({
   createDefaultAnnotationService: () => ({
     start: vi.fn().mockResolvedValue(undefined),
     isInitialized: false,
-    getAvailableGenerators: vi.fn().mockResolvedValue([
-      { name: "jtp2" },
-      { name: "wdv3" },
-    ]),
+    getAvailableGenerators: vi
+      .fn()
+      .mockResolvedValue([{ name: "jtp2" }, { name: "wdv3" }]),
   }),
 }));
 
 // Test component that uses the AI gallery context
 const TestComponent = () => {
   const ai = useGalleryAI();
-  
+
   return (
     <div>
-      <span data-testid="ai-enabled">{ai.aiState().aiEnabled ? "enabled" : "disabled"}</span>
-      <span data-testid="selected-generator">{ai.aiState().selectedGenerator}</span>
-      <span data-testid="available-generators">{ai.getAvailableGenerators().join(",")}</span>
+      <span data-testid="ai-enabled">
+        {ai.aiState().aiEnabled ? "enabled" : "disabled"}
+      </span>
+      <span data-testid="selected-generator">
+        {ai.aiState().selectedGenerator}
+      </span>
+      <span data-testid="available-generators">
+        {ai.getAvailableGenerators().join(",")}
+      </span>
     </div>
   );
 };
@@ -71,31 +76,29 @@ describe("AIGalleryProvider", () => {
 
   it("persists state to localStorage", () => {
     render(() => (
-      <AIGalleryProvider
-        persistState={true}
-        storageKey="test-gallery"
-      >
+      <AIGalleryProvider persistState={true} storageKey="test-gallery">
         <TestComponent />
       </AIGalleryProvider>
     ));
 
     // Check that state was persisted
-    const persistedState = localStorage.getItem("test-gallery-selectedGenerator");
+    const persistedState = localStorage.getItem(
+      "test-gallery-selectedGenerator",
+    );
     expect(persistedState).toBe('"jtp2"');
   });
 
   it("does not persist state when persistState is false", () => {
     render(() => (
-      <AIGalleryProvider
-        persistState={false}
-        storageKey="test-gallery"
-      >
+      <AIGalleryProvider persistState={false} storageKey="test-gallery">
         <TestComponent />
       </AIGalleryProvider>
     ));
 
     // Check that state was not persisted
-    const persistedState = localStorage.getItem("test-gallery-selectedGenerator");
+    const persistedState = localStorage.getItem(
+      "test-gallery-selectedGenerator",
+    );
     expect(persistedState).toBeNull();
   });
 });

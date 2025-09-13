@@ -24,12 +24,14 @@ export function validateURL(url: string): {
 
     // Reject localhost and private IP addresses
     const hostname = parsed.hostname.toLowerCase();
-    if (hostname === "localhost" || 
-        hostname === "127.0.0.1" || 
-        hostname === "0.0.0.0" ||
-        hostname.startsWith("192.168.") ||
-        hostname.startsWith("10.") ||
-        hostname.startsWith("172.")) {
+    if (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname === "0.0.0.0" ||
+      hostname.startsWith("192.168.") ||
+      hostname.startsWith("10.") ||
+      hostname.startsWith("172.")
+    ) {
       return { isValid: false };
     }
 
@@ -82,7 +84,7 @@ export function validatePhoneNumber(phone: string): boolean {
 
   // Remove all non-digit characters
   const digits = phone.replace(/\D/g, "");
-  
+
   // Check if it's a valid length (7-15 digits)
   return digits.length >= 7 && digits.length <= 15;
 }

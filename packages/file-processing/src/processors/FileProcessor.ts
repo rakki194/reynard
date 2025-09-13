@@ -1,11 +1,15 @@
 /**
  * Core file processing logic for the pipeline.
- * 
+ *
  * Handles the main processing operations including metadata extraction,
  * thumbnail generation, and content analysis.
  */
 
-import { ProcessingOptions, ProcessingResult, ThumbnailOptions } from "../types";
+import {
+  ProcessingOptions,
+  ProcessingResult,
+  ThumbnailOptions,
+} from "../types";
 import { ThumbnailGenerator } from "./thumbnail-generator";
 import { SecurityValidator } from "./security/SecurityValidator";
 import { FileTypeValidator } from "./utils/FileTypeValidator";
@@ -22,17 +26,17 @@ export class FileProcessor {
     this.thumbnailGenerator = new ThumbnailGenerator(
       configManager.getThumbnailConfig(),
     );
-    
+
     const securityValidator = new SecurityValidator({
       maxFileSize: configManager.getMaxFileSize(),
       allowedExtensions: configManager.getSupportedExtensions(),
       blockedExtensions: new Set(),
     });
-    
+
     const fileTypeValidator = new FileTypeValidator(
       configManager.getSupportedExtensions(),
     );
-    
+
     this.processingEngine = new FileProcessingEngine(
       securityValidator,
       fileTypeValidator,
@@ -48,7 +52,7 @@ export class FileProcessor {
     options?: ProcessingOptions,
   ): Promise<ProcessingResult> {
     const result = await this.processingEngine.processFile(file, options);
-    
+
     // Add thumbnail generation if requested
     if (result.success && options?.generateThumbnails !== false) {
       const thumbnailResult = await this.generateThumbnail(file, {
@@ -58,7 +62,7 @@ export class FileProcessor {
         result.data.thumbnail = thumbnailResult.data;
       }
     }
-    
+
     return result;
   }
 
@@ -85,7 +89,6 @@ export class FileProcessor {
       timestamp: new Date(),
     };
   }
-
 
   /**
    * Update configuration

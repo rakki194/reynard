@@ -177,5 +177,4 @@ export const coreTranslations = {
       "Integrasi autentikasi dan validasi input",
     "performance-and-security-integration": "Integrasi kinerja dan keamanan",
   },
-
 };

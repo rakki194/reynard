@@ -44,7 +44,7 @@ export function createConfigurationAction(
         configuration: NLWebConfiguration;
         tools: unknown[];
       }>("/status", baseUrl, requestTimeout);
-      
+
       state.setConfiguration(response.configuration);
       state.setTools(response.tools || []);
     } catch (error) {

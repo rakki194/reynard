@@ -1,10 +1,12 @@
 # Streaming Tool Execution
 
-This document describes the streaming tool execution functionality in Reynard, which allows tools to emit progress updates and intermediate results during execution.
+This document describes the streaming tool execution functionality in Reynard,
+which allows tools to emit progress updates and intermediate results during execution.
 
 ## Overview
 
-Streaming tool execution enables tools to provide real-time feedback during long-running operations. This is particularly useful for:
+Streaming tool execution enables tools to provide real-time feedback during
+long-running operations. This is particularly useful for:
 
 - File processing operations
 - Data analysis tasks
@@ -145,7 +147,8 @@ The `ProgressReportingMixin` provides several utility methods:
 
 ## Frontend Integration
 
-The frontend automatically handles streaming tool execution through the `useOllama` composable. Tool execution progress is displayed in real-time with:
+The frontend automatically handles streaming tool execution through
+the `useOllama` composable. Tool execution progress is displayed in real-time with:
 
 - Progress indicators
 - Status messages

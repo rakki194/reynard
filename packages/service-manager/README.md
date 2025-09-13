@@ -1,6 +1,7 @@
 # reynard-service-manager
 
-A comprehensive service management system for Reynard applications that handles service lifecycle, dependencies, health monitoring, and parallel initialization.
+A comprehensive service management system for Reynard applications that handles service lifecycle, dependencies,
+health monitoring, and parallel initialization.
 
 ## Features
 

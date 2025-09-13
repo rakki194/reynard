@@ -2,7 +2,9 @@
 
 > _From dataset editor to multi-modal CMS to modular framework: A comprehensive timeline_
 
-This document chronicles the evolution of the Reynard ecosystem, from YipYap's humble beginnings as a dataset editor to its transformation into a sophisticated multi-modal content management system, and finally to Reynard's emergence as a highly modular framework.
+This document chronicles the evolution of the Reynard ecosystem,
+from YipYap's humble beginnings as a dataset editor to its transformation into
+a sophisticated multi-modal content management system, and finally to Reynard's emergence as a highly modular framework.
 
 ## 📊 Project Statistics
 
@@ -349,8 +351,11 @@ This document chronicles the evolution of the Reynard ecosystem, from YipYap's h
 
 ## 🔮 Vision
 
-The evolution from YipYap to Reynard represents a strategic shift from application development to framework development. YipYap proved the viability of multi-modal AI-powered content management, while Reynard makes these capabilities accessible to the broader development community through modular, reusable packages.
+The evolution from YipYap to Reynard represents a strategic shift from application development to
+framework development. YipYap proved the viability of multi-modal AI-powered content management, while
+Reynard makes these capabilities accessible to the broader development community through modular, reusable packages.
 
-**The journey continues**: From dataset editor to multi-modal CMS to universal framework - each phase building upon the lessons and achievements of the previous phase, creating a comprehensive ecosystem for modern web development.
+**The journey continues**: From dataset editor to multi-modal CMS to universal framework - each phase building upon
+the lessons and achievements of the previous phase, creating a comprehensive ecosystem for modern web development.
 
 ---

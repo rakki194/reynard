@@ -1,6 +1,7 @@
 # Summarization API Documentation
 
-The Summarization API provides comprehensive text summarization capabilities powered by Ollama models. The system supports multiple content types, summary levels, streaming responses, and batch processing.
+The Summarization API provides comprehensive text summarization capabilities powered by
+Ollama models. The system supports multiple content types, summary levels, streaming responses, and batch processing.
 
 ## Overview
 

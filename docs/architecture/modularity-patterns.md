@@ -4,7 +4,9 @@ _Strategic architecture patterns for maintainable, scalable code_
 
 ## Overview
 
-Reynard follows the **140-line axiom** - a strategic approach to code organization that emphasizes modularity, maintainability, and clarity. This document outlines the proven patterns and refactoring strategies used throughout the Reynard codebase.
+Reynard follows the **140-line axiom** - a strategic approach to code organization that emphasizes modularity,
+maintainability, and clarity. This document outlines the proven patterns and
+refactoring strategies used throughout the Reynard codebase.
 
 ## Core Principles
 
@@ -528,7 +530,8 @@ The 140-line axiom and modularity patterns in Reynard create a codebase that is:
 - **Testable**: Focused modules are easier to test
 - **Collaborative**: Multiple developers can work efficiently
 
-By following these patterns and guidelines, teams can create code that stands the test of time and scales with the project's growth.
+By following these patterns and guidelines, teams can create code that stands the test of time and
+scales with the project's growth.
 
 ---
 

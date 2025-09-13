@@ -5,7 +5,9 @@
 
 import { DataTableProps } from "./DataTable.types";
 
-export const getDataTableDefaults = <T = unknown>(): Partial<DataTableProps<T>> => ({
+export const getDataTableDefaults = <T = unknown>(): Partial<
+  DataTableProps<T>
+> => ({
   selectable: false,
   selectAll: true,
   page: 1,

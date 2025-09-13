@@ -32,7 +32,9 @@ export const generateGapClasses = (gap?: string | number): string[] => {
   return classes;
 };
 
-export const generateColumnClasses = (columns?: GridProps["columns"]): string[] => {
+export const generateColumnClasses = (
+  columns?: GridProps["columns"],
+): string[] => {
   const classes: string[] = [];
 
   if (typeof columns === "number") {
@@ -71,21 +73,26 @@ export const generateAutoRowsClasses = (autoRows?: string): string[] => {
 
   if (autoRows) {
     if (autoRows === "min-content") classes.push("reynard-grid--auto-rows-min");
-    else if (autoRows === "max-content") classes.push("reynard-grid--auto-rows-max");
+    else if (autoRows === "max-content")
+      classes.push("reynard-grid--auto-rows-max");
     else if (autoRows === "auto") classes.push("reynard-grid--auto-rows-auto");
   }
 
   return classes;
 };
 
-export const generateAutoFlowClasses = (autoFlow?: GridProps["autoFlow"]): string[] => {
+export const generateAutoFlowClasses = (
+  autoFlow?: GridProps["autoFlow"],
+): string[] => {
   const classes: string[] = [];
 
   if (autoFlow) {
     if (autoFlow === "row") classes.push("reynard-grid--flow-row");
     else if (autoFlow === "column") classes.push("reynard-grid--flow-column");
-    else if (autoFlow === "row dense") classes.push("reynard-grid--flow-row-dense");
-    else if (autoFlow === "column dense") classes.push("reynard-grid--flow-column-dense");
+    else if (autoFlow === "row dense")
+      classes.push("reynard-grid--flow-row-dense");
+    else if (autoFlow === "column dense")
+      classes.push("reynard-grid--flow-column-dense");
   }
 
   return classes;
@@ -93,22 +100,28 @@ export const generateAutoFlowClasses = (autoFlow?: GridProps["autoFlow"]): strin
 
 export const generateMinWidthClasses = (
   autoFit?: boolean,
-  minColumnWidth?: string
+  minColumnWidth?: string,
 ): string[] => {
   const classes: string[] = [];
 
   if (autoFit && minColumnWidth) {
     if (minColumnWidth === "200px") classes.push("reynard-grid--min-width-200");
-    else if (minColumnWidth === "250px") classes.push("reynard-grid--min-width-250");
-    else if (minColumnWidth === "300px") classes.push("reynard-grid--min-width-300");
-    else if (minColumnWidth === "400px") classes.push("reynard-grid--min-width-400");
-    else if (minColumnWidth === "500px") classes.push("reynard-grid--min-width-500");
+    else if (minColumnWidth === "250px")
+      classes.push("reynard-grid--min-width-250");
+    else if (minColumnWidth === "300px")
+      classes.push("reynard-grid--min-width-300");
+    else if (minColumnWidth === "400px")
+      classes.push("reynard-grid--min-width-400");
+    else if (minColumnWidth === "500px")
+      classes.push("reynard-grid--min-width-500");
   }
 
   return classes;
 };
 
-export const generateGridItemSpanClasses = (colSpan?: GridItemProps["colSpan"]): string[] => {
+export const generateGridItemSpanClasses = (
+  colSpan?: GridItemProps["colSpan"],
+): string[] => {
   const classes: string[] = [];
 
   if (typeof colSpan === "number") {
@@ -147,7 +160,7 @@ export const generateGridItemPositionClasses = (
   colStart?: number,
   colEnd?: number,
   rowStart?: number,
-  rowEnd?: number
+  rowEnd?: number,
 ): string[] => {
   const classes: string[] = [];
 

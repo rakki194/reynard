@@ -47,7 +47,6 @@ const VOWELS = new Set([
   "ű",
 ]);
 
-
 /**
  * Converts a number to its Hungarian word representation
  */
@@ -144,7 +143,6 @@ export function getHungarianArticle(word: string | number): "a" | "az" {
   // Check if word starts with a vowel
   return VOWELS.has(lowerWord[0]) ? "az" : "a";
 }
-
 
 /**
  * Determines the correct form of a Hungarian suffix based on vowel harmony

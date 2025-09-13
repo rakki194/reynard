@@ -1,6 +1,6 @@
 /**
  * Embedding Dashboard Sidebar Component
- * 
+ *
  * Handles the dashboard sidebar with stats and method selector.
  */
 
@@ -31,7 +31,9 @@ export interface EmbeddingDashboardSidebarProps {
   onPerformReduction: () => void;
 }
 
-export const EmbeddingDashboardSidebar: Component<EmbeddingDashboardSidebarProps> = (props) => {
+export const EmbeddingDashboardSidebar: Component<
+  EmbeddingDashboardSidebarProps
+> = (props) => {
   return (
     <div class="dashboard-sidebar">
       <EmbeddingStatsPanel stats={props.stats} />

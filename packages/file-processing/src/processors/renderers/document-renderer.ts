@@ -1,6 +1,6 @@
 /**
  * Document icon renderer for thumbnail generation.
- * 
+ *
  * Handles drawing document icons with type-specific styling.
  */
 

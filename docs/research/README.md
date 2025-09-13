@@ -1,10 +1,12 @@
 # 🎓 Academic Papers Research Archive
 
-This directory contains formal academic research papers and studies conducted during the development of the Reynard platform. These papers represent rigorous analysis of various aspects of system architecture, user interface design, performance optimization, and algorithmic innovation.
+This directory contains formal academic research papers and
+studies conducted during the development of the Reynard platform. These papers represent rigorous analysis of
+various aspects of system architecture, user interface design, performance optimization, and algorithmic innovation.
 
 ## 📋 Research Papers Overview
 
-### 🏗️ [Modular Architecture Research](./modular/)
+### 🏗️ [Modular Architecture Research](./academic-papers/modular/)
 
 **Status**: Comprehensive Study  
 **Focus**: Complete codebase transformation from monolithic to modular architecture
@@ -28,7 +30,7 @@ This directory contains formal academic research papers and studies conducted du
 - `working_for_points.tex` - Implementation point system
 - Supporting LaTeX files and figures
 
-### 🔢 [Vector Operations Research](./vector/)
+### 🔢 [Vector Operations Research](./algorithms/vector-engagement-tracking/)
 
 **Status**: Algorithm Analysis  
 **Focus**: Vectorized engagement and consumption tracking for optimal reporting
@@ -47,7 +49,7 @@ This directory contains formal academic research papers and studies conducted du
 - `vector_paper.pdf` - Compiled analysis
 - Performance benchmarks and visualizations
 
-### 🎨 [Semantic Diffusion Research](./semantic_diffusion/)
+### 🎨 [Semantic Diffusion Research](./algorithms/semantic-diffusion-analysis/)
 
 **Status**: AI/ML Research  
 **Focus**: Systematic examination of meaning atrophy in networked terminology
@@ -66,7 +68,7 @@ This directory contains formal academic research papers and studies conducted du
 - `semantic_diffusion_paper.pdf` - Compiled study
 - Experimental results and analysis
 
-### 🎭 [Conduct Studies](./conduct/)
+### 🎭 [Conduct Studies](./architecture/conduct-scroll-orchestration/)
 
 **Status**: Behavioral Analysis  
 **Focus**: Coordinated orchestration of navigation dynamics for unified control and tracking
@@ -85,7 +87,7 @@ This directory contains formal academic research papers and studies conducted du
 - `conduct_paper.pdf` - Compiled analysis
 - Performance benchmarks and system architecture
 
-### 🧭 [Navigation Systems Research](./navigate/)
+### 🧭 [Navigation Systems Research](./architecture/navigate-ui-integration/)
 
 **Status**: UI/UX Research  
 **Focus**: Navigation and view integration for guided user experience
@@ -104,7 +106,7 @@ This directory contains formal academic research papers and studies conducted du
 - `navigate_paper.pdf` - Compiled study
 - UI interaction patterns and optimization strategies
 
-### 💎 [Facet Analysis Research](./facet/)
+### 💎 [Facet Analysis Research](./integrations/facet-ai-assistant/)
 
 **Status**: AI Integration Research  
 **Focus**: Fox-guided AI for contextual editing and tagging in interactive image annotation
@@ -123,7 +125,7 @@ This directory contains formal academic research papers and studies conducted du
 - `facet_paper.pdf` - Compiled analysis
 - System architecture diagrams and integration methodologies
 
-### ⚡ [Kinetic Systems Research](./kinetic/)
+### ⚡ [Kinetic Systems Research](./integrations/kinetic-temporal-media/)
 
 **Status**: Dynamic Systems  
 **Focus**: Keyframe integration for networked encoding, temporal indexing, and captioning
@@ -142,7 +144,7 @@ This directory contains formal academic research papers and studies conducted du
 - `kinetic_paper.pdf` - Compiled study
 - Performance metrics and temporal analysis algorithms
 
-### 🔧 [Optimization Studies](./optimus/)
+### 🔧 [Optimization Studies](./architecture/optimus-performance-optimization/)
 
 **Status**: Performance Research  
 **Focus**: Performance-optimized direct API integration with progressive loading
@@ -161,7 +163,7 @@ This directory contains formal academic research papers and studies conducted du
 - `optimus_paper.pdf` - Compiled analysis
 - Performance benchmarks and CSS optimization techniques
 
-### 🎯 [Refinement Research](./refine/)
+### 🎯 [Refinement Research](./integrations/refine-rate-limiting/)
 
 **Status**: Process Improvement  
 **Focus**: Rate-limited event fetching for interactive network experiences
@@ -180,7 +182,7 @@ This directory contains formal academic research papers and studies conducted du
 - `refine_paper.pdf` - Compiled study
 - Network optimization strategies and implementation details
 
-### 🌐 [Nexus Research](./nexus/)
+### 🌐 [Nexus Research](./algorithms/nexus-collision-detection/)
 
 **Status**: Integration Study  
 **Focus**: High-performance collision detection system for interactive image annotation
@@ -199,7 +201,7 @@ This directory contains formal academic research papers and studies conducted du
 - `nexus_paper.pdf` - Compiled analysis
 - Algorithm performance benchmarks and system architecture diagrams
 
-### 🎼 [Opus Research](./opus/)
+### 🎼 [Opus Research](./architecture/opus-optimistic-updates/)
 
 **Status**: Comprehensive Study  
 **Focus**: Optimistic proactive update system for real-time user experience
@@ -218,7 +220,7 @@ This directory contains formal academic research papers and studies conducted du
 - `opus_paper.pdf` - Compiled study
 - System architecture diagrams and implementation patterns
 
-### 📁 [Directory Hashing Research](./directory-hashing/)
+### 📁 [Directory Hashing Research](./algorithms/directory-hashing-algorithm/)
 
 **Status**: Algorithm Research  
 **Focus**: Efficient directory change detection for intelligent file indexing systems
@@ -367,4 +369,8 @@ Research findings contribute to the broader community:
 
 ---
 
-_This academic research archive represents rigorous analysis and innovation conducted during the development of the Reynard platform. Each paper contributes to the broader understanding of system architecture, user experience, and technical innovation in modern web applications, with direct implementation impact and measurable performance improvements._
+_This academic research archive represents rigorous analysis and
+innovation conducted during the development of the Reynard platform. Each paper contributes to
+the broader understanding of system architecture, user experience, and
+technical innovation in modern web applications, with direct implementation impact and
+measurable performance improvements._

@@ -2,7 +2,9 @@
 
 _Common patterns, configurations, and guides used across Reynard documentation_
 
-This directory contains shared documentation that eliminates duplication across the Reynard documentation system. These files provide standardized patterns and configurations that are referenced by multiple other documentation files.
+This directory contains shared documentation that
+eliminates duplication across the Reynard documentation system. These files provide standardized patterns and
+configurations that are referenced by multiple other documentation files.
 
 ## 📁 Contents
 
@@ -58,7 +60,7 @@ These shared documents are referenced throughout the Reynard documentation syste
 These shared documents are referenced by:
 
 - [Quick Start Guide](../quickstart.md)
-- [Backend Services](../rag-backend.md, ../tts-backend.md, ../ollama-backend.md, ../summarization-backend.md)
+- [Backend Services](../rag-backend.md) | [TTS Backend](../tts-backend.md) | [Ollama Backend](../ollama-backend.md) | [Summarization Backend](../summarization-backend.md)
 - [Development Documentation](../development/)
 - [Architecture Documentation](../architecture/)
 

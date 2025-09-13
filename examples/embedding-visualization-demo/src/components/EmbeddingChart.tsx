@@ -1,6 +1,6 @@
 /**
  * Embedding Chart Component
- * 
+ *
  * A simple placeholder chart component for the demo.
  */
 
@@ -16,12 +16,14 @@ interface EmbeddingChartProps {
 
 export const EmbeddingChart: Component<EmbeddingChartProps> = (props) => {
   return (
-    <div 
+    <div
       class={`embedding-chart ${props.theme} ${props.width && props.height ? `size-${props.width}x${props.height}` : "size-default"} ${props.class || ""}`}
     >
       <div class="embedding-chart-content">
         <div class="embedding-chart-icon">📊</div>
-        <div class="embedding-chart-title">Embedding Visualization Dashboard</div>
+        <div class="embedding-chart-title">
+          Embedding Visualization Dashboard
+        </div>
         <div class="embedding-chart-subtitle">
           Advanced 3D point cloud visualization with statistical analysis
         </div>

@@ -6,6 +6,12 @@
 export { TranslationManager } from "./TranslationManager";
 export { TranslationAnalytics } from "./TranslationAnalytics";
 
-export type { TranslationChange, TranslationManagerOptions } from "./TranslationManager";
-export type { UsageStats, TranslationUsage, AnalyticsOptions } from "./TranslationAnalytics";
-
+export type {
+  TranslationChange,
+  TranslationManagerOptions,
+} from "./TranslationManager";
+export type {
+  UsageStats,
+  TranslationUsage,
+  AnalyticsOptions,
+} from "./TranslationAnalytics";

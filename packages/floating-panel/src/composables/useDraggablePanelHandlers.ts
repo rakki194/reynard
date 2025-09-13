@@ -4,7 +4,10 @@
  * Event handlers for draggable panels.
  */
 
-import type { PanelPosition, DraggablePanelCore } from "./useDraggablePanelCore.js";
+import type {
+  PanelPosition,
+  DraggablePanelCore,
+} from "./useDraggablePanelCore.js";
 import { createPointerDownHandler } from "./useDraggablePanelPointerDown.js";
 import { createPointerMoveHandler } from "./useDraggablePanelPointerMove.js";
 

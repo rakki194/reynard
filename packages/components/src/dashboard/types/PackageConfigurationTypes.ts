@@ -86,4 +86,3 @@ export interface PackageConfigurationState {
   selectedCategory: string;
   lastUpdate: Date | null;
 }
-

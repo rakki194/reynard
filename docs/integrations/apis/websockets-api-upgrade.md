@@ -2,11 +2,14 @@
 
 ## Overview
 
-This document describes the successful upgrade of the Reynard WebSocket implementation from the legacy websockets API to the new asyncio implementation.
+This document describes the successful upgrade of the Reynard WebSocket implementation from
+the legacy websockets API to the new asyncio implementation.
 
 ## Background
 
-The websockets library has deprecated its legacy implementation in favor of a new asyncio implementation. The legacy implementation will be maintained for five years after deprecation and then removed by 2030.
+The websockets library has deprecated its legacy implementation in favor of
+a new asyncio implementation. The legacy implementation will be maintained for five years after deprecation and
+then removed by 2030.
 
 ## Migration Details
 
@@ -169,7 +172,8 @@ The WebSockets API upgrade has been successfully completed with:
 - ✅ No breaking changes to existing functionality
 - ✅ Access to new features and performance improvements
 
-The upgrade positions Reynard for long-term maintainability and provides access to the latest WebSocket features and performance improvements.
+The upgrade positions Reynard for long-term maintainability and provides access to the latest WebSocket features and
+performance improvements.
 
 ---
 

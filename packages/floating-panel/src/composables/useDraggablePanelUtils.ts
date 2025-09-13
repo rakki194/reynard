@@ -4,7 +4,11 @@
  * Utility functions for draggable panels.
  */
 
-import type { PanelPosition, PanelConstraints, PanelSnapPoints } from "../types.js";
+import type {
+  PanelPosition,
+  PanelConstraints,
+  PanelSnapPoints,
+} from "../types.js";
 
 /**
  * Constrain position within bounds
@@ -15,7 +19,12 @@ export function constrainPosition(
 ): PanelPosition {
   if (!constraints) return position;
 
-  const { minX = 0, maxX = window.innerWidth, minY = 0, maxY = window.innerHeight } = constraints;
+  const {
+    minX = 0,
+    maxX = window.innerWidth,
+    minY = 0,
+    maxY = window.innerHeight,
+  } = constraints;
 
   return {
     top: Math.max(minY, Math.min(maxY, position.top)),
@@ -34,12 +43,14 @@ export function snapToPoint(
 
   let closestPoint = snapPoints[0];
   let minDistance = Math.sqrt(
-    Math.pow(position.left - closestPoint.left, 2) + Math.pow(position.top - closestPoint.top, 2),
+    Math.pow(position.left - closestPoint.left, 2) +
+      Math.pow(position.top - closestPoint.top, 2),
   );
 
   for (const point of snapPoints) {
     const distance = Math.sqrt(
-      Math.pow(position.left - point.left, 2) + Math.pow(position.top - point.top, 2),
+      Math.pow(position.left - point.left, 2) +
+        Math.pow(position.top - point.top, 2),
     );
     if (distance < minDistance) {
       minDistance = distance;
@@ -58,7 +69,11 @@ export function snapToPoint(
 /**
  * Get drag state
  */
-export function getDragState(isDragging: boolean, startPosition: PanelPosition, currentPosition: PanelPosition) {
+export function getDragState(
+  isDragging: boolean,
+  startPosition: PanelPosition,
+  currentPosition: PanelPosition,
+) {
   return {
     isDragging,
     startPosition,
@@ -69,4 +84,3 @@ export function getDragState(isDragging: boolean, startPosition: PanelPosition, 
     },
   };
 }
-

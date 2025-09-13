@@ -26,7 +26,9 @@ describe("File Validation Security", () => {
     });
 
     it("should reject files with path separators", async () => {
-      const result = await pipeline.processFile(TEST_FILES.DANGEROUS.PATH_SEPARATOR);
+      const result = await pipeline.processFile(
+        TEST_FILES.DANGEROUS.PATH_SEPARATOR,
+      );
       expect(result.success).toBe(false);
       expect(result.error).toBe("File security validation failed");
     });
@@ -45,7 +47,9 @@ describe("File Validation Security", () => {
     });
 
     it("should reject empty file names", async () => {
-      const result = await pipeline.processFile(TEST_FILES.DANGEROUS.EMPTY_NAME);
+      const result = await pipeline.processFile(
+        TEST_FILES.DANGEROUS.EMPTY_NAME,
+      );
       expect(result.success).toBe(false);
       expect(result.error).toBe("File security validation failed");
     });

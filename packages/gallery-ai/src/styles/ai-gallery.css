@@ -821,10 +821,13 @@
    ============================================================================ */
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-
 
 /* Position Styles for Components */
 .ai-gallery-grid__positioned {
@@ -842,7 +845,6 @@
   z-index: 1000;
 }
 
-
 /* Progress Fill with Data Attribute */
 .ai-gallery-grid__progress-fill {
   height: 100%;
@@ -855,7 +857,6 @@
   width: attr(data-width);
 }
 
-
 /* Progress Fill with CSS Custom Property */
 .ai-gallery-grid__progress-fill {
   height: 100%;
@@ -864,7 +865,6 @@
   transition: width 0.3s ease;
   width: var(--progress-width, 0%);
 }
-
 
 /* AI Context Menu Position */
 .ai-context-menu__positioned {

@@ -197,7 +197,8 @@ Try extending the app with:
 
 ## 🤝 Contributing
 
-This app demonstrates the power and flexibility of the Reynard framework. Feel free to use it as a starting point for your own time-related applications!
+This app demonstrates the power and flexibility of the Reynard framework. Feel free to use it as a starting point for
+your own time-related applications!
 
 ## 📄 License
 

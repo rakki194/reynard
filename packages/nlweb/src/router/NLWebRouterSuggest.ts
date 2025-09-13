@@ -4,9 +4,16 @@
  * Suggestion logic for the NLWeb router.
  */
 
-import { NLWebSuggestionRequest, NLWebSuggestionResponse } from "../types/index.js";
+import {
+  NLWebSuggestionRequest,
+  NLWebSuggestionResponse,
+} from "../types/index.js";
 import { NLWebRouterCache } from "./NLWebRouterCache.js";
-import { SuggestContext, checkCache, generateSuggestion } from "./NLWebRouterSuggestCore.js";
+import {
+  SuggestContext,
+  checkCache,
+  generateSuggestion,
+} from "./NLWebRouterSuggestCore.js";
 
 export interface NLWebRouterSuggest {
   processSuggestion: (

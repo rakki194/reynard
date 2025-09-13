@@ -178,5 +178,4 @@ export const coreTranslations = {
       "Autentifikavimo ir įvesties validavimo integracija",
     "performance-and-security-integration": "Veikimo ir saugumo integracija",
   },
-
 };

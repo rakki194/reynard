@@ -11,15 +11,18 @@ import { sanitizeHTML } from "./html.js";
 /**
  * Validate and sanitize general input
  */
-export function validateInput(input: string, options: {
-  maxLength?: number;
-  minLength?: number;
-  allowHTML?: boolean;
-  allowSQL?: boolean;
-  allowXSS?: boolean;
-  allowSpecialChars?: boolean;
-  pattern?: RegExp;
-} = {}): {
+export function validateInput(
+  input: string,
+  options: {
+    maxLength?: number;
+    minLength?: number;
+    allowHTML?: boolean;
+    allowSQL?: boolean;
+    allowXSS?: boolean;
+    allowSpecialChars?: boolean;
+    pattern?: RegExp;
+  } = {},
+): {
   isValid: boolean;
   sanitized?: string;
   errors?: string[];
@@ -65,10 +68,26 @@ export function validateInput(input: string, options: {
 
   // Check for executable file extensions (only if it looks like a filename, not an email)
   const executableExtensions = [
-    "exe", "bat", "cmd", "com", "scr", "msi", "dll", "sys", "drv",
-    "pif", "vbs", "js", "jar", "app", "deb", "rpm", "sh", "ps1"
+    "exe",
+    "bat",
+    "cmd",
+    "com",
+    "scr",
+    "msi",
+    "dll",
+    "sys",
+    "drv",
+    "pif",
+    "vbs",
+    "js",
+    "jar",
+    "app",
+    "deb",
+    "rpm",
+    "sh",
+    "ps1",
   ];
-  
+
   const parts = input.split(".");
   // Only check if it looks like a filename (not an email or complex path)
   // Emails typically have @ symbol, so skip the check if @ is present
@@ -81,9 +100,28 @@ export function validateInput(input: string, options: {
 
   // Check for Windows reserved names
   const reservedNames = [
-    "CON", "PRN", "AUX", "NUL",
-    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+    "CON",
+    "PRN",
+    "AUX",
+    "NUL",
+    "COM1",
+    "COM2",
+    "COM3",
+    "COM4",
+    "COM5",
+    "COM6",
+    "COM7",
+    "COM8",
+    "COM9",
+    "LPT1",
+    "LPT2",
+    "LPT3",
+    "LPT4",
+    "LPT5",
+    "LPT6",
+    "LPT7",
+    "LPT8",
+    "LPT9",
   ];
 
   const nameWithoutExt = input.split(".")[0].toUpperCase();

@@ -22,15 +22,10 @@ export function createNLWebRollbackActions(
 ): NLWebRollbackActions {
   const enableRollback = async (): Promise<void> => {
     try {
-      await makeNLWebRequest(
-        "/rollback",
-        baseUrl,
-        requestTimeout,
-        {
-          method: "POST",
-          body: JSON.stringify({ enable: true }),
-        },
-      );
+      await makeNLWebRequest("/rollback", baseUrl, requestTimeout, {
+        method: "POST",
+        body: JSON.stringify({ enable: true }),
+      });
     } catch (error) {
       handleAPIError(state, error, "Failed to enable rollback");
     }
@@ -38,15 +33,10 @@ export function createNLWebRollbackActions(
 
   const disableRollback = async (): Promise<void> => {
     try {
-      await makeNLWebRequest(
-        "/rollback",
-        baseUrl,
-        requestTimeout,
-        {
-          method: "POST",
-          body: JSON.stringify({ enable: false }),
-        },
-      );
+      await makeNLWebRequest("/rollback", baseUrl, requestTimeout, {
+        method: "POST",
+        body: JSON.stringify({ enable: false }),
+      });
     } catch (error) {
       handleAPIError(state, error, "Failed to disable rollback");
     }

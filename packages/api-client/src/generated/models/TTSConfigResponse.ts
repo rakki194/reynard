@@ -131,7 +131,9 @@ export function TTSConfigResponseFromJSONTyped(
     chunkSize: json["chunk_size"],
     enableAudioProcessing: json["enable_audio_processing"],
     outputDirectory: json["output_directory"],
-    backends: (json["backends"] as Array<TTSBackendInfo>).map(TTSBackendInfoFromJSON),
+    backends: (json["backends"] as Array<TTSBackendInfo>).map(
+      TTSBackendInfoFromJSON,
+    ),
   };
 }
 
@@ -156,6 +158,8 @@ export function TTSConfigResponseToJSONTyped(
     chunk_size: value["chunkSize"],
     enable_audio_processing: value["enableAudioProcessing"],
     output_directory: value["outputDirectory"],
-    backends: (value["backends"] as Array<TTSBackendInfo>).map(TTSBackendInfoToJSON),
+    backends: (value["backends"] as Array<TTSBackendInfo>).map(
+      TTSBackendInfoToJSON,
+    ),
   };
 }

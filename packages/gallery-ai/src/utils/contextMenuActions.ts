@@ -18,16 +18,16 @@ import { CaptionType as AISharedCaptionType } from "reynard-ai-shared";
 export interface ContextMenuActionsConfig {
   /** Available generators */
   availableGenerators: string[];
-  
+
   /** Default generator */
   defaultGenerator: string;
-  
+
   /** Whether AI is enabled */
   aiEnabled: boolean;
-  
+
   /** Whether batch operations are supported */
   enableBatchOperations: boolean;
-  
+
   /** Whether smart features are enabled */
   enableSmartFeatures: boolean;
 }
@@ -45,7 +45,6 @@ export function createSingleItemActions(
   if (item.type === "folder") {
     return actions;
   }
-
 
   // Generate Caption submenu
   if (config.aiEnabled && config.availableGenerators.length > 0) {
@@ -117,8 +116,10 @@ export function createBatchActions(
     return actions;
   }
 
-  const fileItems = items.filter(item => item.type !== "folder") as FileItem[];
-  
+  const fileItems = items.filter(
+    (item) => item.type !== "folder",
+  ) as FileItem[];
+
   if (fileItems.length < 2) {
     return actions;
   }
@@ -213,7 +214,7 @@ function getGeneratorDisplayName(generator: string): string {
     joy: "JoyCaption (Detailed)",
     florence2: "Florence2 (General)",
   };
-  
+
   return displayNames[generator] || generator;
 }
 
@@ -227,7 +228,7 @@ function getGeneratorIcon(generator: string): string {
     joy: "😊",
     florence2: "🏛️",
   };
-  
+
   return icons[generator] || "🤖";
 }
 
@@ -241,6 +242,6 @@ function getDefaultCaptionType(generator: string): CaptionType {
     joy: AISharedCaptionType.CAPTION,
     florence2: AISharedCaptionType.CAPTION,
   };
-  
+
   return captionTypes[generator] || AISharedCaptionType.CAPTION;
 }

@@ -1,6 +1,7 @@
 # Reynard Annotating Core
 
-Core annotation and caption generation system for Reynard with production features including usage tracking, download coordination, request queuing, circuit breakers, and health monitoring.
+Core annotation and caption generation system for Reynard with production features including usage tracking,
+download coordination, request queuing, circuit breakers, and health monitoring.
 
 ## Features
 
@@ -177,7 +178,8 @@ manager.addEventListener((event) => {
 
 ## Plugin System
 
-The core system is designed to work with generator plugins. Each generator package provides a plugin registration function:
+The core system is designed to work with
+generator plugins. Each generator package provides a plugin registration function:
 
 ```typescript
 import { registerJTP2Plugin } from "reynard-annotating-jtp2";

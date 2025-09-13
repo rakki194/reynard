@@ -11,7 +11,7 @@
 ### Security Requirements
 
 - **Confidentiality**: [Data protection requirements]
-- **Integrity**: [Data integrity requirements] 
+- **Integrity**: [Data integrity requirements]
 - **Availability**: [Service availability requirements]
 - **Authentication**: [Identity verification requirements]
 - **Authorization**: [Access control requirements]
@@ -60,9 +60,9 @@
 
 ### Risks and Mitigations
 
-| Risk | Impact | Probability | Mitigation |
-|------|--------|-------------|------------|
-| [Security Risk] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
+| Risk                  | Impact            | Probability       | Mitigation            |
+| --------------------- | ----------------- | ----------------- | --------------------- |
+| [Security Risk]       | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
 | [Implementation Risk] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
 
 ## Security Compliance
@@ -158,4 +158,3 @@ This security ADR will be reviewed:
 **Stakeholders**: Development Team, Operations Team, Compliance Team  
 **Review Date**: [Next Review Date]
 **Security Classification**: [Confidential/Internal/Public]
-

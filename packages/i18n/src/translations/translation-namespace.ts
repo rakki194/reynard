@@ -11,12 +11,15 @@ import { loadNamespace } from "../loaders";
  */
 export function createNamespaceLoader(
   locale: () => LanguageCode,
-  optimizedLoader?: any
+  optimizedLoader?: any,
 ) {
   const loadNamespaceFunc = async <T = any>(namespace: string): Promise<T> => {
     const currentLocale = locale();
     if (optimizedLoader) {
-      return optimizedLoader.loadNamespace(currentLocale, namespace) as Promise<T>;
+      return optimizedLoader.loadNamespace(
+        currentLocale,
+        namespace,
+      ) as Promise<T>;
     }
     return loadNamespace<T>(currentLocale, namespace);
   };

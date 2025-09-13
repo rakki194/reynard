@@ -330,4 +330,5 @@ This release sets the foundation for:
 
 ---
 
-*This changelog represents a major milestone in the Reynard framework's evolution, bringing together months of development work into a cohesive, powerful, and developer-friendly system.*
+*This changelog represents a major milestone in the Reynard framework's evolution,
+bringing together months of development work into a cohesive, powerful, and developer-friendly system.*

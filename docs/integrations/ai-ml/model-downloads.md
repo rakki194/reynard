@@ -1,6 +1,8 @@
 # Unified Model Downloads
 
-A single system orchestrates downloads for captioners, detection models, diffusion LLMs, and generic artifacts. It provides a queue, progress reporting, cache integration with Hugging Face, retry/backoff, and admin APIs.
+A single system orchestrates downloads for captioners, detection models, diffusion LLMs, and
+generic artifacts. It provides a queue, progress reporting, cache integration with Hugging Face, retry/backoff, and
+admin APIs.
 
 ## Overview
 

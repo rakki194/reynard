@@ -1,6 +1,7 @@
 # Reynard NLWeb
 
-Intelligent assistant tooling and routing system for Reynard applications. Provides natural language query processing, tool suggestion, and context-aware routing.
+Intelligent assistant tooling and routing system for Reynard applications. Provides natural language query processing,
+tool suggestion, and context-aware routing.
 
 ## Features
 

@@ -88,4 +88,3 @@ export const UI_FEATURES: FeatureDefinition[] = [
     icon: "breadcrumb",
   },
 ];
-

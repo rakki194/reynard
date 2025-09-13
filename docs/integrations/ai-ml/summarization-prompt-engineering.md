@@ -1,10 +1,14 @@
 # Summarization Prompt Engineering Best Practices
 
-This guide covers best practices for designing and optimizing prompts for the summarization system in Reynard. Effective prompt engineering is crucial for generating high-quality, relevant, and useful summaries.
+This guide covers best practices for designing and
+optimizing prompts for the summarization system in Reynard. Effective prompt engineering is crucial for
+generating high-quality, relevant, and useful summaries.
 
 ## Overview
 
-The summarization system uses a modular prompt architecture with specialized templates for different content types and summary levels. Understanding how to design and optimize these prompts is essential for achieving the best summarization results.
+The summarization system uses a modular prompt architecture with specialized templates for different content types and
+summary levels. Understanding how to design and
+optimize these prompts is essential for achieving the best summarization results.
 
 ## Prompt Architecture
 
@@ -547,6 +551,9 @@ improvement_process = {
 
 ## Conclusion
 
-Effective prompt engineering is crucial for achieving high-quality summarization results. By following these best practices, you can create prompts that produce accurate, relevant, and useful summaries across different content types and use cases.
+Effective prompt engineering is crucial for achieving high-quality summarization results. By
+following these best practices, you can create prompts that produce accurate, relevant, and
+useful summaries across different content types and use cases.
 
-Remember that prompt engineering is an iterative process. Continuously evaluate, test, and improve your prompts based on user feedback and performance metrics to achieve the best possible summarization results.
+Remember that prompt engineering is an iterative process. Continuously evaluate, test, and
+improve your prompts based on user feedback and performance metrics to achieve the best possible summarization results.

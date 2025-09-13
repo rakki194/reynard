@@ -1,6 +1,8 @@
 # Unified WebSocket Configuration System
 
-The Unified WebSocket Configuration System provides comprehensive configuration management for all WebSocket implementations in Reynard. It offers environment-based configuration with defaults, runtime configuration updates with hot-reloading, and extensive validation capabilities.
+The Unified WebSocket Configuration System provides comprehensive configuration management for
+all WebSocket implementations in Reynard. It offers environment-based configuration with defaults,
+runtime configuration updates with hot-reloading, and extensive validation capabilities.
 
 ## Overview
 
@@ -1013,7 +1015,8 @@ manager = WebSocketManager(config=config)
 
 **Problem**: Configuration values are not being loaded from environment variables.
 
-**Solution**: Ensure environment variables have the correct `WEBSOCKET_` prefix and are set before the application starts.
+**Solution**: Ensure environment variables have the correct `WEBSOCKET_` prefix and
+are set before the application starts.
 
 #### Validation Errors
 
@@ -1031,7 +1034,8 @@ manager = WebSocketManager(config=config)
 
 **Problem**: WebSocket performance is degraded after configuration changes.
 
-**Solution**: Use snapshots to rollback to a known good configuration. Monitor performance metrics to identify the cause.
+**Solution**: Use snapshots to rollback to a known good configuration. Monitor performance metrics to
+identify the cause.
 
 ### Debug Mode
 
@@ -1061,10 +1065,12 @@ curl http://localhost:7000/api/websocket-config/validation
 
 ## Conclusion
 
-The Unified WebSocket Configuration System provides a comprehensive, flexible, and robust solution for managing WebSocket configuration across all components of the Reynard application. With its environment-based configuration, runtime updates, validation, and monitoring capabilities, it ensures that WebSocket communication is optimized, secure, and maintainable.
+The Unified WebSocket Configuration System provides a comprehensive, flexible, and
+robust solution for managing WebSocket configuration across all components of the Reynard application. With
+its environment-based configuration, runtime updates, validation, and
+monitoring capabilities, it ensures that WebSocket communication is optimized, secure, and maintainable.
 
-For more information about specific WebSocket components, see:
+For more information about WebSocket components, see:
 
-- [WebSocket Manager Documentation](websocket-manager.md)
-- [WebSocket Analytics Documentation](websocket-analytics.md)
-- [WebSocket Endpoint Documentation](websocket-endpoint.md)
+- [WebSockets API Upgrade Documentation](websockets-api-upgrade.md)
+- [Streaming Tools Documentation](streaming-tools.md)

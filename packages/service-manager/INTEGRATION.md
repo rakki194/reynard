@@ -1,6 +1,7 @@
 # Service Manager & Feature System Integration
 
-This document describes the integration between the `reynard-service-manager` and `reynard-features` packages, providing a seamless bridge between service lifecycle management and feature availability.
+This document describes the integration between the `reynard-service-manager` and
+`reynard-features` packages, providing a seamless bridge between service lifecycle management and feature availability.
 
 ## 🎯 Overview
 
@@ -458,4 +459,5 @@ const bridge = new FeatureServiceBridge({
 - **Easy Testing**: Comprehensive test utilities and examples
 - **Performance**: Efficient event-driven updates with minimal overhead
 
-This integration provides a robust foundation for building feature-aware applications that gracefully handle service dependencies and failures.
+This integration provides a robust foundation for building feature-aware applications that
+gracefully handle service dependencies and failures.

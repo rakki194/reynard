@@ -25,8 +25,16 @@ export interface ChartOptionsConfig {
  * Get default chart options for a given type
  */
 export function getDefaultChartOptions(config: ChartOptionsConfig): any {
-  const { type, theme, showLegend = true, showGrid = true, title, xAxisLabel, yAxisLabel } = config;
-  
+  const {
+    type,
+    theme,
+    showLegend = true,
+    showGrid = true,
+    title,
+    xAxisLabel,
+    yAxisLabel,
+  } = config;
+
   const baseConfig = {
     responsive: true,
     maintainAspectRatio: false,
@@ -158,7 +166,7 @@ export function enhanceChartOptions(
     xAxisLabel?: string;
     yAxisLabel?: string;
     type: ChartType;
-  }
+  },
 ): any {
   const { title, showLegend, showGrid, xAxisLabel, yAxisLabel, type } = config;
 

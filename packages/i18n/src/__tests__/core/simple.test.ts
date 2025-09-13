@@ -21,8 +21,8 @@ vi.mock("../../features/analytics/analytics-i18n", () => ({
     loadTranslations: vi.fn().mockResolvedValue({}),
     templateTranslator: vi.fn().mockImplementation((template, ...values) => {
       return template.reduce((result, string, i) => {
-        return result + string + (values[i] || '');
-      }, '');
+        return result + string + (values[i] || "");
+      }, "");
     }),
     pluralTranslator: vi.fn().mockReturnValue("1 items"),
     analytics: {
@@ -218,7 +218,7 @@ vi.stubGlobal("performance", {
 
 describe("Enhanced I18n Simple Tests", () => {
   it("should create enhanced i18n module with all features", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule({
       enableDebug: true,
@@ -253,7 +253,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide basic i18n module for backward compatibility", async () => {
-      const { createBasicI18nModule } = await import("../../index");
+    const { createBasicI18nModule } = await import("../../index");
 
     const i18n = createBasicI18nModule();
 
@@ -266,7 +266,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide locale switching functionality", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule();
 
@@ -279,7 +279,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide RTL detection", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule();
 
@@ -288,7 +288,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide template translator", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule();
 
@@ -297,7 +297,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide plural translator", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule();
 
@@ -306,7 +306,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide Intl formatting", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule();
 
@@ -321,7 +321,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide debugging capabilities", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule({
       enableDebug: true,
@@ -339,7 +339,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide performance monitoring", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule({
       enablePerformanceMonitoring: true,
@@ -352,7 +352,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide enterprise features", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule();
 
@@ -377,7 +377,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should provide cache management", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule();
 
@@ -390,7 +390,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should load namespaces", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule();
 
@@ -399,7 +399,7 @@ describe("Enhanced I18n Simple Tests", () => {
   });
 
   it("should track translation usage", async () => {
-      const { createI18nModule } = await import("../../index");
+    const { createI18nModule } = await import("../../index");
 
     const i18n = createI18nModule();
 

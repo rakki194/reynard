@@ -146,7 +146,8 @@ const warnings = monitor.warnings();
 
 ## > Next Steps
 
-The composables are now properly organized and ready for use! The system follows the modular architecture principles with:
+The composables are now properly organized and
+ready for use! The system follows the modular architecture principles with:
 
 - **Small, focused modules** (under 100 lines each)
 - **Clear separation of concerns**

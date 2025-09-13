@@ -1,6 +1,7 @@
 # 🦊> Reynard TTS Backend Implementation
 
-A complete Text-to-Speech (TTS) backend system for Reynard, built with multi-backend support and comprehensive audio processing capabilities.
+A complete Text-to-Speech (TTS) backend system for Reynard, built with multi-backend support and
+comprehensive audio processing capabilities.
 
 ## ✨ Features
 
@@ -367,7 +368,10 @@ asyncio.run(test())
 
 ## 🎉 Conclusion
 
-The Reynard TTS backend provides a robust, scalable solution for text-to-speech synthesis with multiple backend support, voice cloning capabilities, and comprehensive monitoring. The system gracefully handles missing dependencies and provides fallback functionality for development and testing.
+The Reynard TTS backend provides a robust,
+scalable solution for text-to-speech synthesis with multiple backend support, voice cloning capabilities, and
+comprehensive monitoring. The system gracefully handles missing dependencies and
+provides fallback functionality for development and testing.
 
 Key benefits:
 

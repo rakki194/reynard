@@ -50,9 +50,7 @@ export const DataTableRow: Component<DataTableRowProps> = (props) => {
             <Show
               when={column.cell}
               fallback={
-                <span>
-                  {String(getCellValue(props.row, column) ?? "")}
-                </span>
+                <span>{String(getCellValue(props.row, column) ?? "")}</span>
               }
             >
               {column.cell!(

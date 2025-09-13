@@ -2,7 +2,11 @@
 
 ## Overview
 
-The Reynard framework uses JWT (JSON Web Tokens) for authentication with both access tokens and refresh tokens for enhanced security. The system employs modern password hashing using PBKDF2 with HMAC-SHA256, providing robust security for the modular framework architecture. This guide explains how to set up secure authentication in your Reynard deployment and provides a detailed technical overview of its implementation.
+The Reynard framework uses JWT (JSON Web Tokens) for authentication with both access tokens and
+refresh tokens for enhanced security. The system employs modern password hashing using PBKDF2 with HMAC-SHA256,
+providing robust security for the modular framework architecture. This guide explains how
+to set up secure authentication in your Reynard deployment and
+provides a detailed technical overview of its implementation.
 
 ## Environment Variables
 
@@ -60,7 +64,8 @@ export REFRESH_TOKEN_EXPIRE_DAYS=7
 
 ## Password Hashing System
 
-YipYap uses the argon2-cffi library for password hashing, which provides a modern, secure approach to password management with configurable security levels:
+YipYap uses the argon2-cffi library for password hashing, which provides a modern,
+secure approach to password management with configurable security levels:
 
 ### Hash Algorithm Configuration
 
@@ -119,18 +124,23 @@ The password verification process supports multiple hash formats:
 
 ## JWT Structure and Claims
 
-JWTs in YipYap are composed of three parts: a header, a payload, and a signature. The payload contains claims, which are statements about an entity (typically, the user) and additional data.
+JWTs in YipYap are composed of three parts: a header, a payload, and
+a signature. The payload contains claims, which are statements about an entity (typically, the user) and
+additional data.
 
 - **`sub` (Subject):** This claim holds the `username` of the authenticated user. It is a unique identifier for the user.
 - **`role`:** This custom claim defines the user's authorization level within the application, corresponding to the `UserRole` enum (e.g., "admin", "regular", "guest"). This claim is crucial for implementing role-based access control (RBAC) on various API endpoints.
 - **`exp` (Expiration Time):** This claim specifies the expiration time on or after which the JWT must not be accepted for processing. It is represented as a Unix timestamp (seconds since epoch). Both access and refresh tokens have this claim to manage their lifecycles.
 - **`type`:** This custom claim distinguishes between "access" tokens and "refresh" tokens, allowing the backend to correctly handle token refreshing.
 
-The server's `JWT_SECRET_KEY` is used to sign these tokens, ensuring their integrity and authenticity. Any modification to the token or a mismatch in the `JWT_SECRET_KEY` will result in validation failure (e.g., `401 Unauthorized`).
+The server's `JWT_SECRET_KEY` is used to sign these tokens, ensuring their integrity and
+authenticity. Any modification to the token or
+a mismatch in the `JWT_SECRET_KEY` will result in validation failure (e.g., `401 Unauthorized`).
 
 ## Backend Dependencies for Access Control
 
-The FastAPI application uses dependency injection to manage user authentication and authorization. The key dependencies involved are:
+The FastAPI application uses dependency injection to manage user authentication and
+authorization. The key dependencies involved are:
 
 - **`get_current_user(token: str = Depends(oauth2_scheme)) -> User`**: This asynchronous dependency retrieves the JWT token from the `Authorization` header, verifies its authenticity using `verify_token`, and extracts the `username` and `role` from its payload. It then fetches the full user profile from the database to ensure the user still exists and their role is current. This is the base dependency for any authenticated endpoint.
 
@@ -138,7 +148,12 @@ The FastAPI application uses dependency injection to manage user authentication 
 
 - **`is_admin(current_user: User = Depends(get_current_user))`**: This dependency also relies on `get_current_user`. It specifically checks if the `current_user`'s `role` is `UserRole.admin`. If the user is not an admin, an `HTTPException` with `403 Forbidden` status is raised, restricting the endpoint to administrators only.
 
-These dependencies are applied to API routes using `Depends()`, enabling fine-grained control over which users can access specific functionalities based on their authenticated status and assigned roles. For example, sensitive configuration endpoints like `/api/index/fast-mode` and `/api/ollama/status` are protected by `is_admin`, while general status checks like `/api/index/status` are accessible to `get_current_active_user`.
+These dependencies are applied to API routes using `Depends()`,
+enabling fine-grained control over which
+users can access specific functionalities based on their authenticated status and
+assigned roles. For example, sensitive configuration endpoints like `/api/index/fast-mode` and
+`/api/ollama/status` are protected by `is_admin`, while
+general status checks like `/api/index/status` are accessible to `get_current_active_user`.
 
 ## Detailed Authentication Implementation
 
@@ -155,7 +170,8 @@ The password hashing system is implemented in `app/utils/password_utils.py` usin
 
 ### Frontend Credential Management (SolidJS)
 
-The SolidJS frontend manages authentication state and tokens primarily through the `src/contexts/app.tsx` context and the `src/composables/useAuthFetch.ts` composable.
+The SolidJS frontend manages authentication state and tokens primarily through the `src/contexts/app.tsx` context and
+the `src/composables/useAuthFetch.ts` composable.
 
 - **`src/contexts/app.tsx`:** This module defines the global application context, which includes reactive signals for `isLoggedIn` (boolean) and `userRole` (string).
   - **`login(token: string, role: string, username: string, refreshToken?: string)`:** This function is invoked upon successful user login. It stores the `access_token` as `jwt_token` and the `refreshToken` (if provided) in `localStorage`. It also updates the `isLoggedIn` and `userRole` signals, making the authentication state available globally to SolidJS components.
@@ -203,7 +219,8 @@ The password change endpoint (`/api/users/me/password`) ensures security:
 
 ### API Integration and Error Handling
 
-YipYap's robust authentication and authorization system integrates seamlessly between the frontend and backend, with a focus on comprehensive error handling.
+YipYap's robust authentication and authorization system integrates seamlessly between the frontend and
+backend, with a focus on comprehensive error handling.
 
 - **Frontend API Calls:**
   - All API calls requiring authentication (e.g., fetching user settings, managing indexing, interacting with Ollama models) are made using the `authFetch` function from `useAuthFetch`. This guarantees that the `Authorization: Bearer <token>` header is consistently included in the request.
@@ -242,7 +259,11 @@ YipYap's robust authentication and authorization system integrates seamlessly be
 
 ### Persistent 401 Unauthorized Errors for GET Requests
 
-If you are logged in as an admin but still receive `401 Unauthorized` errors for specific GET requests (e.g., to index or Ollama status endpoints) while POST requests to other endpoints work, the issue is almost certainly on the frontend. This typically indicates that the GET requests are not including the `Authorization` header.
+If you are logged in as an admin but
+still receive `401 Unauthorized` errors for specific GET requests (e.g., to index or Ollama status endpoints) while
+POST requests to other endpoints work,
+the issue is almost certainly on the frontend. This typically indicates that
+the GET requests are not including the `Authorization` header.
 
 **Steps to diagnose and fix on the frontend:**
 

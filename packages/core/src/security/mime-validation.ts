@@ -6,7 +6,10 @@
 /**
  * Validate MIME type against allowed types
  */
-export function validateMimeType(mimeType: string, allowedTypes: string[]): boolean {
+export function validateMimeType(
+  mimeType: string,
+  allowedTypes: string[],
+): boolean {
   if (!mimeType || typeof mimeType !== "string") {
     return false;
   }
@@ -41,7 +44,7 @@ export function getMimeTypeFromExtension(filename: string): string | null {
     svg: "image/svg+xml",
     bmp: "image/bmp",
     ico: "image/x-icon",
-    
+
     // Documents
     pdf: "application/pdf",
     doc: "application/msword",
@@ -50,7 +53,7 @@ export function getMimeTypeFromExtension(filename: string): string | null {
     xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ppt: "application/vnd.ms-powerpoint",
     pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-    
+
     // Text
     txt: "text/plain",
     html: "text/html",
@@ -60,20 +63,20 @@ export function getMimeTypeFromExtension(filename: string): string | null {
     json: "application/json",
     xml: "application/xml",
     csv: "text/csv",
-    
+
     // Archives
     zip: "application/zip",
     rar: "application/x-rar-compressed",
     "7z": "application/x-7z-compressed",
     tar: "application/x-tar",
     gz: "application/gzip",
-    
+
     // Audio
     mp3: "audio/mpeg",
     wav: "audio/wav",
     ogg: "audio/ogg",
     m4a: "audio/mp4",
-    
+
     // Video
     mp4: "video/mp4",
     avi: "video/x-msvideo",
@@ -89,7 +92,10 @@ export function getMimeTypeFromExtension(filename: string): string | null {
 /**
  * Validate file type by extension
  */
-export function validateFileTypeByExtension(filename: string, allowedExtensions: string[]): boolean {
+export function validateFileTypeByExtension(
+  filename: string,
+  allowedExtensions: string[],
+): boolean {
   if (!filename || typeof filename !== "string") {
     return false;
   }
@@ -138,7 +144,7 @@ export function getFileCategory(mimeType: string): string {
   }
 
   const type = mimeType.toLowerCase();
-  
+
   if (type.startsWith("image/")) {
     return "image";
   } else if (type.startsWith("video/")) {

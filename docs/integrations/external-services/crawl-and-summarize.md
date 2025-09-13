@@ -1,10 +1,13 @@
 # Crawl and Summarize
 
-Fetch markdown content via Firecrawl and summarize it with Ollama. Both systems provide streaming endpoints and cached storage for results.
+Fetch markdown content via Firecrawl and summarize it with Ollama. Both systems provide streaming endpoints and
+cached storage for results.
 
 ## Crawl (Firecrawl)
 
-Feature‑flagged by `crawl_enabled` with base URL `firecrawl_base_url` and cache dir `crawl_cache_dir`. The service caches results per‑URL with a TTL (max_age_days), and exposes helpers to submit jobs, poll status, and direct fetch with polling.
+Feature‑flagged by `crawl_enabled` with base URL `firecrawl_base_url` and
+cache dir `crawl_cache_dir`. The service caches results per‑URL with a TTL (max_age_days), and
+exposes helpers to submit jobs, poll status, and direct fetch with polling.
 
 - Endpoints (prefix `/api/crawl`):
   - `POST /fetch`: `{ url, max_age_days }` → `{ job_id }`
@@ -19,7 +22,8 @@ Feature‑flagged by `crawl_enabled` with base URL `firecrawl_base_url` and cach
 
 ## Summarize
 
-Summarize markdown with Ollama, providing both non‑streaming and streaming variants. Results are normalized and persisted for later retrieval.
+Summarize markdown with Ollama, providing both non‑streaming and streaming variants. Results are normalized and
+persisted for later retrieval.
 
 - Endpoints (prefix `/api/summarize`):
   - `POST /url`: `{ url, max_age_days, include_outline?, include_highlights? }` → normalized summary payload with `summary_id`

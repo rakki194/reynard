@@ -2,7 +2,8 @@
 
 ## 🎯 Project Overview
 
-A comprehensive OneNote-like note-taking application built with the Reynard framework, featuring multi-user support, real-time collaboration, AI-powered features, and gamification elements to make note-taking engaging and productive.
+A comprehensive OneNote-like note-taking application built with the Reynard framework, featuring multi-user support,
+real-time collaboration, AI-powered features, and gamification elements to make note-taking engaging and productive.
 
 ## 📊 Current Progress Summary
 

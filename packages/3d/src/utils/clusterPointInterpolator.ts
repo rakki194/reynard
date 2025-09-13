@@ -14,19 +14,19 @@ export function getInterpolatedClusterPoints(
   if (clusterAnimations.length === 0) {
     return originalPoints;
   }
-  
+
   return originalPoints.map((point) => {
     const clusterAnim = clusterAnimations.find((ca) =>
       ca.points.some((pa) => pa.id === point.id),
     );
-    
+
     if (clusterAnim && clusterAnim.progress !== undefined) {
       const pointAnim = clusterAnim.points.find((pa) => pa.id === point.id);
       if (pointAnim) {
         return interpolateClusterPoint(point, pointAnim, clusterAnim);
       }
     }
-    
+
     return point;
   });
 }

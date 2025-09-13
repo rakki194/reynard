@@ -1,20 +1,20 @@
 /**
  * 🐺 GLOBAL PENETRATION TESTING TEARDOWN
- * 
+ *
  * *snarls with predatory glee* Global teardown for penetration testing suite
  * including cleanup, report generation, and security assessment summary.
  */
 
-import { FullConfig } from '@playwright/test';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import fs from 'fs';
-import path from 'path';
+import { FullConfig } from "@playwright/test";
+import { exec } from "child_process";
+import { promisify } from "util";
+import fs from "fs";
+import path from "path";
 
 const execAsync = promisify(exec);
 
 async function globalTeardown(_config: FullConfig) {
-  console.log('🐺 Starting Penetration Testing Global Teardown...');
+  console.log("🐺 Starting Penetration Testing Global Teardown...");
 
   // Generate comprehensive security report
   await generateSecurityReport();
@@ -25,34 +25,37 @@ async function globalTeardown(_config: FullConfig) {
   // Archive results
   await archiveResults();
 
-  console.log('✅ Penetration testing global teardown completed');
+  console.log("✅ Penetration testing global teardown completed");
 }
 
 /**
  * Generate comprehensive security report
  */
 async function generateSecurityReport(): Promise<void> {
-  console.log('📊 Generating comprehensive security report...');
-  
+  console.log("📊 Generating comprehensive security report...");
+
   try {
-    const resultsPath = path.join(process.cwd(), 'penetration-results.json');
-    
+    const resultsPath = path.join(process.cwd(), "penetration-results.json");
+
     if (fs.existsSync(resultsPath)) {
-      const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
-      
+      const results = JSON.parse(fs.readFileSync(resultsPath, "utf8"));
+
       const report = generateReportContent(results);
-      
-      const reportPath = path.join(process.cwd(), 'penetration-results', 'security-report.md');
+
+      const reportPath = path.join(
+        process.cwd(),
+        "penetration-results",
+        "security-report.md",
+      );
       fs.writeFileSync(reportPath, report);
-      
-      console.log('✅ Security report generated');
+
+      console.log("✅ Security report generated");
       console.log(`   Report location: ${reportPath}`);
     } else {
-      console.log('⚠️ No penetration test results found to generate report');
+      console.log("⚠️ No penetration test results found to generate report");
     }
-    
   } catch (error) {
-    console.error('❌ Failed to generate security report:', error);
+    console.error("❌ Failed to generate security report:", error);
   }
 }
 
@@ -61,16 +64,17 @@ async function generateSecurityReport(): Promise<void> {
  */
 function generateReportContent(results: any): string {
   const timestamp = new Date().toISOString();
-  const targetUrl = process.env.BACKEND_URL || 'http://localhost:8000';
-  
+  const targetUrl = process.env.BACKEND_URL || "http://localhost:8000";
+
   // Analyze results
   const totalTests = results.suites?.length || 0;
-  const passedTests = results.suites?.filter((suite: any) => suite.ok).length || 0;
+  const passedTests =
+    results.suites?.filter((suite: any) => suite.ok).length || 0;
   const failedTests = totalTests - passedTests;
-  
+
   // Count vulnerabilities (this would need to be parsed from actual results)
   const totalVulnerabilities = 0; // Placeholder - would need actual parsing
-  
+
   return `# 🐺 REYNARD PENETRATION TESTING REPORT
 
 ## 📊 Executive Summary
@@ -116,17 +120,19 @@ function generateReportContent(results: any): string {
 
 ## 🚨 Security Assessment
 
-${totalVulnerabilities === 0 ? 
-  '✅ **SECURE** - No critical vulnerabilities found' :
-  `🚨 **VULNERABILITIES DETECTED** - ${totalVulnerabilities} issues found`
+${
+  totalVulnerabilities === 0
+    ? "✅ **SECURE** - No critical vulnerabilities found"
+    : `🚨 **VULNERABILITIES DETECTED** - ${totalVulnerabilities} issues found`
 }
 
 ## 🛡️ Recommendations
 
 ### Immediate Actions
-${totalVulnerabilities > 0 ? 
-  '- Review and fix all identified vulnerabilities\n- Implement additional security controls\n- Conduct regular security assessments' :
-  '- Continue regular security testing\n- Maintain current security posture\n- Monitor for new vulnerabilities'
+${
+  totalVulnerabilities > 0
+    ? "- Review and fix all identified vulnerabilities\n- Implement additional security controls\n- Conduct regular security assessments"
+    : "- Continue regular security testing\n- Maintain current security posture\n- Monitor for new vulnerabilities"
 }
 
 ### Long-term Security Improvements
@@ -151,9 +157,9 @@ This penetration testing suite integrates the blackhat exploit framework with E2
 
 ### Test Environment
 - **Target Backend**: ${targetUrl}
-- **Frontend**: ${process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000'}
-- **Destructive Testing**: ${process.env.DESTRUCTIVE_TESTING || 'false'}
-- **Verbose Output**: ${process.env.VERBOSE_TESTING || 'false'}
+- **Frontend**: ${process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000"}
+- **Destructive Testing**: ${process.env.DESTRUCTIVE_TESTING || "false"}
+- **Verbose Output**: ${process.env.VERBOSE_TESTING || "false"}
 
 ---
 
@@ -167,23 +173,23 @@ This penetration testing suite integrates the blackhat exploit framework with E2
  */
 function generateTestDetails(results: any): string {
   if (!results.suites || results.suites.length === 0) {
-    return 'No test details available';
+    return "No test details available";
   }
-  
-  let details = '';
-  
+
+  let details = "";
+
   results.suites.forEach((suite: any, index: number) => {
-    details += `\n### Test Suite ${index + 1}: ${suite.title || 'Unknown'}\n`;
-    details += `- **Status**: ${suite.ok ? '✅ PASSED' : '❌ FAILED'}\n`;
-    details += `- **Duration**: ${suite.duration || 'Unknown'}ms\n`;
-    
+    details += `\n### Test Suite ${index + 1}: ${suite.title || "Unknown"}\n`;
+    details += `- **Status**: ${suite.ok ? "✅ PASSED" : "❌ FAILED"}\n`;
+    details += `- **Duration**: ${suite.duration || "Unknown"}ms\n`;
+
     if (suite.specs) {
       suite.specs.forEach((spec: any, specIndex: number) => {
-        details += `  - **Test ${specIndex + 1}**: ${spec.title || 'Unknown'} - ${spec.ok ? '✅' : '❌'}\n`;
+        details += `  - **Test ${specIndex + 1}**: ${spec.title || "Unknown"} - ${spec.ok ? "✅" : "❌"}\n`;
       });
     }
   });
-  
+
   return details;
 }
 
@@ -191,21 +197,22 @@ function generateTestDetails(results: any): string {
  * Cleanup temporary files
  */
 async function cleanupTemporaryFiles(): Promise<void> {
-  console.log('🧹 Cleaning up temporary files...');
-  
+  console.log("🧹 Cleaning up temporary files...");
+
   try {
     // Remove temporary Python files
     await execAsync('find . -name "*.pyc" -delete');
-    await execAsync('find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true');
-    
+    await execAsync(
+      'find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true',
+    );
+
     // Remove temporary test files
-    await execAsync('rm -f /tmp/blackhat_*.json 2>/dev/null || true');
-    await execAsync('rm -f /tmp/penetration_*.log 2>/dev/null || true');
-    
-    console.log('✅ Temporary files cleaned up');
-    
+    await execAsync("rm -f /tmp/blackhat_*.json 2>/dev/null || true");
+    await execAsync("rm -f /tmp/penetration_*.log 2>/dev/null || true");
+
+    console.log("✅ Temporary files cleaned up");
   } catch (error) {
-    console.warn('⚠️ Cleanup warning:', error.message);
+    console.warn("⚠️ Cleanup warning:", error.message);
   }
 }
 
@@ -213,22 +220,23 @@ async function cleanupTemporaryFiles(): Promise<void> {
  * Archive results
  */
 async function archiveResults(): Promise<void> {
-  console.log('📦 Archiving penetration test results...');
-  
+  console.log("📦 Archiving penetration test results...");
+
   try {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const archiveName = `penetration-results-${timestamp}.tar.gz`;
-    
-    await execAsync(`tar -czf ${archiveName} penetration-results/ 2>/dev/null || true`);
-    
+
+    await execAsync(
+      `tar -czf ${archiveName} penetration-results/ 2>/dev/null || true`,
+    );
+
     if (fs.existsSync(archiveName)) {
       console.log(`✅ Results archived: ${archiveName}`);
     } else {
-      console.log('⚠️ Archive creation skipped (no results to archive)');
+      console.log("⚠️ Archive creation skipped (no results to archive)");
     }
-    
   } catch (error) {
-    console.warn('⚠️ Archive warning:', error.message);
+    console.warn("⚠️ Archive warning:", error.message);
   }
 }
 

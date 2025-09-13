@@ -46,7 +46,9 @@ export class VideoLoader {
   /**
    * Create and configure video element
    */
-  private async createVideoElement(file: File | string): Promise<HTMLVideoElement> {
+  private async createVideoElement(
+    file: File | string,
+  ): Promise<HTMLVideoElement> {
     const video = document.createElement("video");
     video.crossOrigin = "anonymous";
     video.muted = true;

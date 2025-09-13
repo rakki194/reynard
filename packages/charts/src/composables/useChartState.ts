@@ -19,7 +19,8 @@ export interface ChartStateConfig {
 export function useChartState(config: ChartStateConfig) {
   const [chartData, setChartData] = createSignal<any>(null);
   const [chartOptions, setChartOptions] = createSignal<any>(null);
-  const [updateInterval, setUpdateInterval] = createSignal<NodeJS.Timeout | null>(null);
+  const [updateInterval, setUpdateInterval] =
+    createSignal<NodeJS.Timeout | null>(null);
   const [chartInstance, setChartInstance] = createSignal<any>(null);
 
   const updateChart = (setupData: () => void) => {

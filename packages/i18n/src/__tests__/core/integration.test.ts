@@ -22,8 +22,8 @@ vi.mock("../../features/analytics/analytics-i18n", () => ({
     loadTranslations: vi.fn().mockResolvedValue({}),
     templateTranslator: vi.fn().mockImplementation((template, ...values) => {
       return template.reduce((result, string, i) => {
-        return result + string + (values[i] || '');
-      }, '');
+        return result + string + (values[i] || "");
+      }, "");
     }),
     pluralTranslator: vi.fn().mockReturnValue("1 items"),
     analytics: {

@@ -19,7 +19,9 @@ export interface DataTablePaginationProps {
   onPageSizeChange?: (pageSize: number) => void;
 }
 
-export const DataTablePagination: Component<DataTablePaginationProps> = (props) => {
+export const DataTablePagination: Component<DataTablePaginationProps> = (
+  props,
+) => {
   const totalPages = () => Math.ceil(props.totalItems / props.pageSize);
 
   return (

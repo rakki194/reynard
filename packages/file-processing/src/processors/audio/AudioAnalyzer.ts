@@ -1,6 +1,6 @@
 /**
  * Audio Analysis utilities for extracting waveform data from audio files.
- * 
+ *
  * This module provides Web Audio API integration for analyzing audio content
  * and extracting frequency/amplitude data for visualization.
  */
@@ -48,9 +48,10 @@ export class AudioAnalyzer {
   async analyzeAudioData(audio: HTMLAudioElement): Promise<number[]> {
     return new Promise((resolve, reject) => {
       try {
-        const { audioContext, analyser, dataArray } = this.setupAudioAnalysis(audio);
+        const { audioContext, analyser, dataArray } =
+          this.setupAudioAnalysis(audio);
         const originalTime = audio.currentTime;
-        
+
         this.sampleAudioData(audio, analyser, dataArray, originalTime)
           .then((samples) => {
             const amplitudes = this.processAudioSamples(samples);
@@ -96,12 +97,12 @@ export class AudioAnalyzer {
     audio: HTMLAudioElement,
     analyser: AnalyserNode,
     dataArray: Uint8Array,
-    originalTime: number
+    originalTime: number,
   ): Promise<number[][]> {
     return new Promise((resolve, reject) => {
       audio.muted = true;
       const playPromise = audio.play();
-      
+
       if (playPromise === undefined) {
         reject(new Error("Audio play not supported"));
         return;
@@ -136,10 +137,10 @@ export class AudioAnalyzer {
    */
   private processAudioSamples(samples: number[][]): number[] {
     if (samples.length === 0) return [];
-    
+
     const bufferLength = samples[0].length;
     const averagedData = new Array(bufferLength).fill(0);
-    
+
     // Average the samples for more stable data
     for (let i = 0; i < bufferLength; i++) {
       for (let j = 0; j < samples.length; j++) {

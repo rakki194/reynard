@@ -1,15 +1,15 @@
 /**
  * Global Setup for E2E Authentication Tests
- * 
+ *
  * Performs global setup tasks before running E2E tests including
  * database initialization, test user creation, and environment validation.
  */
 
-import { chromium, FullConfig } from '@playwright/test';
-import { TestUserData } from './fixtures/test-data';
+import { chromium, FullConfig } from "@playwright/test";
+import { TestUserData } from "./fixtures/test-data";
 
 async function globalSetup(_config: FullConfig) {
-  console.log('🦊 Starting E2E Authentication Test Global Setup...');
+  console.log("🦊 Starting E2E Authentication Test Global Setup...");
 
   // Validate environment
   await validateEnvironment();
@@ -26,19 +26,16 @@ async function globalSetup(_config: FullConfig) {
   // Validate frontend connectivity
   await validateFrontendConnectivity();
 
-  console.log('🦊 E2E Authentication Test Global Setup Complete!');
+  console.log("🦊 E2E Authentication Test Global Setup Complete!");
 }
 
 /**
  * Validate test environment
  */
 async function validateEnvironment(): Promise<void> {
-  console.log('🔍 Validating test environment...');
+  console.log("🔍 Validating test environment...");
 
-  const requiredEnvVars = [
-    'PLAYWRIGHT_BASE_URL',
-    'PLAYWRIGHT_API_BASE_URL',
-  ];
+  const requiredEnvVars = ["PLAYWRIGHT_BASE_URL", "PLAYWRIGHT_API_BASE_URL"];
 
   for (const envVar of requiredEnvVars) {
     if (!process.env[envVar]) {
@@ -48,13 +45,15 @@ async function validateEnvironment(): Promise<void> {
 
   // Check if backend is accessible
   try {
-    const response = await fetch(process.env.PLAYWRIGHT_API_BASE_URL || 'http://localhost:8888/');
+    const response = await fetch(
+      process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888/",
+    );
     if (!response.ok) {
       throw new Error(`Backend health check failed: ${response.status}`);
     }
-    console.log('✅ Backend connectivity validated');
+    console.log("✅ Backend connectivity validated");
   } catch (error) {
-    console.error('❌ Backend connectivity validation failed:', error);
+    console.error("❌ Backend connectivity validation failed:", error);
     throw error;
   }
 }
@@ -63,30 +62,33 @@ async function validateEnvironment(): Promise<void> {
  * Setup test database
  */
 async function setupTestDatabase(): Promise<void> {
-  console.log('🗄️  Setting up test database...');
+  console.log("🗄️  Setting up test database...");
 
   try {
     // Initialize test database
-    const response = await fetch(`${process.env.PLAYWRIGHT_API_BASE_URL || 'http://localhost:8000'}/api/setup/test`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000"}/api/setup/test`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reset: true,
+          create_test_users: true,
+        }),
       },
-      body: JSON.stringify({
-        reset: true,
-        create_test_users: true,
-      }),
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`Database setup failed: ${response.status}`);
     }
 
-    console.log('✅ Test database setup complete');
+    console.log("✅ Test database setup complete");
   } catch (error) {
-    console.error('❌ Test database setup failed:', error);
+    console.error("❌ Test database setup failed:", error);
     // Don't throw error as this might not be available in all environments
-    console.warn('⚠️  Continuing without database setup...');
+    console.warn("⚠️  Continuing without database setup...");
   }
 }
 
@@ -94,7 +96,7 @@ async function setupTestDatabase(): Promise<void> {
  * Create test users
  */
 async function createTestUsers(): Promise<void> {
-  console.log('👥 Creating test users...');
+  console.log("👥 Creating test users...");
 
   const testUsers = [
     TestUserData.getValidUser(),
@@ -105,25 +107,30 @@ async function createTestUsers(): Promise<void> {
 
   for (const user of testUsers) {
     try {
-      const response = await fetch(`${process.env.PLAYWRIGHT_API_BASE_URL || 'http://localhost:8000'}/api/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000"}/api/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            full_name: user.fullName,
+          }),
         },
-        body: JSON.stringify({
-          username: user.username,
-          email: user.email,
-          password: user.password,
-          full_name: user.fullName,
-        }),
-      });
+      );
 
       if (response.ok) {
         console.log(`✅ Created test user: ${user.username}`);
       } else if (response.status === 400) {
         console.log(`ℹ️  Test user already exists: ${user.username}`);
       } else {
-        console.warn(`⚠️  Failed to create test user ${user.username}: ${response.status}`);
+        console.warn(
+          `⚠️  Failed to create test user ${user.username}: ${response.status}`,
+        );
       }
     } catch (error) {
       console.warn(`⚠️  Failed to create test user ${user.username}:`, error);
@@ -135,10 +142,11 @@ async function createTestUsers(): Promise<void> {
  * Validate backend connectivity
  */
 async function validateBackendConnectivity(): Promise<void> {
-  console.log('🔗 Validating backend connectivity...');
+  console.log("🔗 Validating backend connectivity...");
 
-  const backendUrl = process.env.PLAYWRIGHT_API_BASE_URL || 'http://localhost:8888';
-  
+  const backendUrl =
+    process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888";
+
   try {
     const response = await fetch(`${backendUrl}/`);
     if (!response.ok) {
@@ -146,9 +154,9 @@ async function validateBackendConnectivity(): Promise<void> {
     }
 
     const healthData = await response.json();
-    console.log('✅ Backend health check passed:', healthData);
+    console.log("✅ Backend health check passed:", healthData);
   } catch (error) {
-    console.error('❌ Backend connectivity validation failed:', error);
+    console.error("❌ Backend connectivity validation failed:", error);
     throw error;
   }
 }
@@ -157,23 +165,24 @@ async function validateBackendConnectivity(): Promise<void> {
  * Validate frontend connectivity
  */
 async function validateFrontendConnectivity(): Promise<void> {
-  console.log('🔗 Validating frontend connectivity...');
+  console.log("🔗 Validating frontend connectivity...");
 
-  const frontendUrl = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000';
-  
+  const frontendUrl =
+    process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
+
   try {
     const browser = await chromium.launch();
     const page = await browser.newPage();
-    
+
     await page.goto(frontendUrl, { timeout: 30000 });
-    
+
     // Check if the page loads successfully
     const title = await page.title();
     console.log(`✅ Frontend loaded successfully: ${title}`);
-    
+
     await browser.close();
   } catch (error) {
-    console.error('❌ Frontend connectivity validation failed:', error);
+    console.error("❌ Frontend connectivity validation failed:", error);
     throw error;
   }
 }

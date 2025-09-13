@@ -174,5 +174,4 @@ export const coreTranslations = {
       "การรวมการรับรองตัวตนและการตรวจสอบอินพุต",
     "performance-and-security-integration": "การรวมประสิทธิภาพและความปลอดภัย",
   },
-
 };

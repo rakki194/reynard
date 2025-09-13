@@ -17,7 +17,7 @@ describe("Optional i18n functionality without i18n package", () => {
   it("should return fallback translations when i18n is not available", () => {
     expect(isI18nAvailable()).toBe(false);
     expect(getI18nModule()).toBe(null);
-    
+
     // Test fallback translations
     expect(t("core.errors.generic")).toBe("An error occurred");
     expect(t("core.errors.network")).toBe("Network error");
@@ -25,11 +25,13 @@ describe("Optional i18n functionality without i18n package", () => {
   });
 
   it("should handle parameter substitution in fallback translations", () => {
-    const result = t("core.errors.exportValidationFailed", { 
-      package: "test-package", 
-      errors: "validation error" 
+    const result = t("core.errors.exportValidationFailed", {
+      package: "test-package",
+      errors: "validation error",
     });
-    expect(result).toBe("Export validation failed for test-package: validation error");
+    expect(result).toBe(
+      "Export validation failed for test-package: validation error",
+    );
   });
 
   it("should return the key when no fallback translation exists", () => {
@@ -39,7 +41,9 @@ describe("Optional i18n functionality without i18n package", () => {
 
   it("should handle null and undefined parameters", () => {
     expect(t("core.errors.generic", null as any)).toBe("An error occurred");
-    expect(t("core.errors.generic", undefined as any)).toBe("An error occurred");
+    expect(t("core.errors.generic", undefined as any)).toBe(
+      "An error occurred",
+    );
   });
 
   it("should handle empty parameter objects", () => {

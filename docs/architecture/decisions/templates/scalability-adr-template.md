@@ -75,12 +75,12 @@
 
 ### Risks and Mitigations
 
-| Risk | Impact | Probability | Mitigation |
-|------|--------|-------------|------------|
-| [Scaling Bottlenecks] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
+| Risk                      | Impact            | Probability       | Mitigation            |
+| ------------------------- | ----------------- | ----------------- | --------------------- |
+| [Scaling Bottlenecks]     | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
 | [Data Consistency Issues] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
-| [Cost Overruns] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
-| [Operational Complexity] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
+| [Cost Overruns]           | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
+| [Operational Complexity]  | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
 
 ## Scalability Testing
 
@@ -213,4 +213,3 @@ This scalability ADR will be reviewed:
 **Stakeholders**: Development Team, Operations Team, Product Team, Finance Team  
 **Review Date**: [Next Review Date]
 **Scalability Classification**: [Critical/High/Medium/Low]
-

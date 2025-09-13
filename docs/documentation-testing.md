@@ -4,7 +4,9 @@
 
 ## 🎯 Overview
 
-The Reynard Documentation Testing System ensures that all code examples in our documentation are not just syntactically correct, but actually executable and working. This system embodies all three aspects of the Reynard philosophy:
+The Reynard Documentation Testing System ensures that
+all code examples in our documentation are not just syntactically correct, but actually executable and
+working. This system embodies all three aspects of the Reynard philosophy:
 
 - **🦊 Strategic**: Automatically validates documentation quality
 - **🦦 Playful**: Makes testing documentation examples fun and interactive
@@ -350,4 +352,7 @@ DEBUG=doc-tests npm run doc-tests
 
 ---
 
-**🦊🦦🐺 The Reynard Documentation Testing System ensures that every code example in our documentation is not just correct, but actually works. This is the cunning fox's strategic approach to quality, the otter's playful exploration of testing, and the wolf's adversarial validation of reliability.**
+**🦊🦦🐺 The Reynard Documentation Testing System ensures that
+every code example in our documentation is not just correct, but
+actually works. This is the cunning fox's strategic approach to quality, the otter's playful exploration of testing,
+and the wolf's adversarial validation of reliability.**

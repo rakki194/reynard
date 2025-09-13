@@ -6,7 +6,10 @@
  */
 
 import { createEffect, onCleanup, batch } from "solid-js";
-import type { UseOverlayManagerOptions, UseOverlayManagerReturn } from "../types.js";
+import type {
+  UseOverlayManagerOptions,
+  UseOverlayManagerReturn,
+} from "../types.js";
 import { createOverlayConfig } from "./overlay-manager/OverlayConfig.js";
 import { createOverlayState } from "./overlay-manager/OverlayState.js";
 import { createOverlayHandlers } from "./overlay-manager/OverlayHandlers.js";
@@ -19,13 +22,22 @@ export function useOverlayManager(
   const autoHideDelay = options.autoHideDelay || 0;
 
   // Core state
-  const [overlayState, setOverlayState] = createOverlayState(options.initialPanels);
+  const [overlayState, setOverlayState] = createOverlayState(
+    options.initialPanels,
+  );
 
   // Auto-hide effect
   createEffect(() => {
     if (autoHideDelay > 0 && overlayState().isActive) {
       const timer = setTimeout(() => {
-        batch(() => setOverlayState(prev => ({ ...prev, isActive: false, transitionPhase: "hiding", backdropVisible: false })));
+        batch(() =>
+          setOverlayState((prev) => ({
+            ...prev,
+            isActive: false,
+            transitionPhase: "hiding",
+            backdropVisible: false,
+          })),
+        );
       }, autoHideDelay);
       return () => clearTimeout(timer);
     }
@@ -35,7 +47,10 @@ export function useOverlayManager(
   createEffect(() => {
     const state = overlayState();
     if (state.transitionPhase === "hiding") {
-      const timer = setTimeout(() => setOverlayState(prev => ({ ...prev, transitionPhase: "idle" })), config.transitionDuration);
+      const timer = setTimeout(
+        () => setOverlayState((prev) => ({ ...prev, transitionPhase: "idle" })),
+        config.transitionDuration,
+      );
       return () => clearTimeout(timer);
     }
   });
@@ -51,17 +66,49 @@ export function useOverlayManager(
     config,
     eventHandlers,
     showPanel: (panelId: string) => {
-      batch(() => setOverlayState(prev => ({ ...prev, isActive: true, activePanelId: panelId, transitionPhase: "showing", backdropVisible: true })));
+      batch(() =>
+        setOverlayState((prev) => ({
+          ...prev,
+          isActive: true,
+          activePanelId: panelId,
+          transitionPhase: "showing",
+          backdropVisible: true,
+        })),
+      );
     },
     hidePanel: (_panelId: string) => {
-      batch(() => setOverlayState(prev => ({ ...prev, isActive: false, activePanelId: undefined, transitionPhase: "hiding", backdropVisible: false })));
+      batch(() =>
+        setOverlayState((prev) => ({
+          ...prev,
+          isActive: false,
+          activePanelId: undefined,
+          transitionPhase: "hiding",
+          backdropVisible: false,
+        })),
+      );
     },
     togglePanel: (panelId: string) => {
       const state = overlayState();
       if (state.activePanelId === panelId) {
-        batch(() => setOverlayState(prev => ({ ...prev, isActive: false, activePanelId: undefined, transitionPhase: "hiding", backdropVisible: false })));
+        batch(() =>
+          setOverlayState((prev) => ({
+            ...prev,
+            isActive: false,
+            activePanelId: undefined,
+            transitionPhase: "hiding",
+            backdropVisible: false,
+          })),
+        );
       } else {
-        batch(() => setOverlayState(prev => ({ ...prev, isActive: true, activePanelId: panelId, transitionPhase: "showing", backdropVisible: true })));
+        batch(() =>
+          setOverlayState((prev) => ({
+            ...prev,
+            isActive: true,
+            activePanelId: panelId,
+            transitionPhase: "showing",
+            backdropVisible: true,
+          })),
+        );
       }
     },
   };

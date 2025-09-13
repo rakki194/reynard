@@ -31,7 +31,6 @@ describe("useDraggablePanel - Snap Points", () => {
 
     const position = result.current.position();
     expect(position).toEqual({ top: 100, left: 100 });
-
   });
 
   it("should handle snap threshold", () => {
@@ -40,7 +39,7 @@ describe("useDraggablePanel - Snap Points", () => {
       { top: 100, left: 100 },
     ];
     const { result } = renderHook(() =>
-      useDraggablePanel(mockPanelRef, { 
+      useDraggablePanel(mockPanelRef, {
         snapPoints,
         snapThreshold: 20,
       }),
@@ -55,7 +54,6 @@ describe("useDraggablePanel - Snap Points", () => {
 
     const position = result.current.position();
     expect(position).toEqual({ top: 100, left: 100 });
-
   });
 
   it("should not snap when beyond threshold", () => {
@@ -64,7 +62,7 @@ describe("useDraggablePanel - Snap Points", () => {
       { top: 100, left: 100 },
     ];
     const { result } = renderHook(() =>
-      useDraggablePanel(mockPanelRef, { 
+      useDraggablePanel(mockPanelRef, {
         snapPoints,
         snapThreshold: 10,
       }),
@@ -79,7 +77,6 @@ describe("useDraggablePanel - Snap Points", () => {
 
     const position = result.current.position();
     expect(position).toEqual({ top: 50, left: 50 });
-
   });
 
   it("should handle empty snap points", () => {
@@ -95,7 +92,6 @@ describe("useDraggablePanel - Snap Points", () => {
     });
 
     expect(result.current.position()).toEqual({ top: 50, left: 50 });
-
   });
 
   it("should handle single snap point", () => {
@@ -112,7 +108,6 @@ describe("useDraggablePanel - Snap Points", () => {
     });
 
     expect(result.current.position()).toEqual({ top: 50, left: 75 });
-
   });
 
   it("should handle snap points with constraints", () => {
@@ -128,7 +123,7 @@ describe("useDraggablePanel - Snap Points", () => {
       maxLeft: 500,
     };
     const { result } = renderHook(() =>
-      useDraggablePanel(mockPanelRef, { 
+      useDraggablePanel(mockPanelRef, {
         snapPoints,
         constraints,
       }),
@@ -143,7 +138,6 @@ describe("useDraggablePanel - Snap Points", () => {
 
     const position = result.current.position();
     expect(position).toEqual({ top: 0, left: 0 });
-
   });
 
   it("should handle dynamic snap points", () => {
@@ -157,6 +151,4 @@ describe("useDraggablePanel - Snap Points", () => {
 
     expect(result.current.snapToNearest).toBeDefined();
   });
-
 });
-

@@ -177,5 +177,4 @@ export const coreTranslations = {
     "performance-and-security-integration":
       "Performans ve güvenlik entegrasyonu",
   },
-
 };

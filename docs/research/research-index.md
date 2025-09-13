@@ -1,6 +1,8 @@
 # 🦊 Reynard Research Index
 
-This comprehensive index provides cross-referenced access to all research conducted during the development of the Reynard platform. Use this index to quickly locate specific research topics, find related work, and understand the relationships between different research areas.
+This comprehensive index provides cross-referenced access to all research conducted during the development of
+the Reynard platform. Use this index to quickly locate specific research topics, find related work, and
+understand the relationships between different research areas.
 
 ## 📚 Research Categories Overview
 
@@ -8,7 +10,7 @@ This comprehensive index provides cross-referenced access to all research conduc
 | ----------------------------------------------- | ------------------------------------------- | ---------------------------------------------------- | ----------- |
 | [🎓 Academic Papers](./academic-papers/)        | Formal research papers and studies          | System architecture, algorithms, user experience     | ✅ Complete |
 | [🔒 Security Research](./security-research/)    | Security assessment and penetration testing | Authentication, API security, vulnerability analysis | ✅ Complete |
-| [🔧 Technical Documentation](./technical-docs/) | Implementation details and system design    | Architecture, integration, performance               | ✅ Complete |
+| [🔧 Technical Documentation](./architecture/) | Implementation details and system design    | Architecture, integration, performance               | ✅ Complete |
 | [🏗️ Architecture](./architecture/)              | System architecture and design patterns     | Service design, scalability, integration             | ✅ Complete |
 | [🧮 Algorithms](./algorithms/)                  | Algorithm research and implementation       | Computer vision, ML, optimization                    | ✅ Complete |
 | [🔗 Integrations](./integrations/)              | Third-party service integration research    | API design, service management, patterns             | ✅ Complete |
@@ -17,14 +19,14 @@ This comprehensive index provides cross-referenced access to all research conduc
 
 ### A
 
-- **Authentication** → [Security Research](./security-research/) | [Technical Documentation](./technical-docs/authentication.md)
+- **Authentication** → [Security Research](./security-research/)
 - **API Security** → [Security Research](./security-research/) | [Integrations](./integrations/)
 - **Architecture Patterns** → [Architecture](./architecture/) | [Academic Papers](./academic-papers/modular/)
-- **AI/ML Integration** → [Technical Documentation](./technical-docs/) | [Algorithms](./algorithms/)
+- **AI/ML Integration** → [Architecture](./architecture/) | [Algorithms](./algorithms/)
 
 ### B
 
-- **Bounding Box Annotation** → [Technical Documentation](./technical-docs/object-detection.md)
+- **Bounding Box Annotation** → [Algorithms](./algorithms/nexus-collision-detection/)
 - **Batch Processing** → [Technical Documentation](./technical-docs/) | [Algorithms](./algorithms/)
 
 ### C
@@ -236,4 +238,7 @@ This comprehensive index provides cross-referenced access to all research conduc
 
 ---
 
-_This research index provides comprehensive access to all research conducted during the development of the Reynard platform. Use this index to navigate the research archive, find related work, and understand the relationships between different research areas. The index is regularly updated to reflect new research and maintain accuracy._
+_This research index provides comprehensive access to all research conducted during the development of
+the Reynard platform. Use this index to navigate the research archive, find related work, and
+understand the relationships between different research areas. The index is regularly updated to
+reflect new research and maintain accuracy._

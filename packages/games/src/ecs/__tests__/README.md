@@ -1,6 +1,8 @@
 # Reynard ECS Test Suite
 
-This directory contains comprehensive tests for the Reynard ECS (Entity-Component-System) implementation. The tests are organized by system component and cover all aspects of the ECS architecture.
+This directory contains comprehensive tests for
+the Reynard ECS (Entity-Component-System) implementation. The tests are organized by system component and
+cover all aspects of the ECS architecture.
 
 ## Test Structure
 

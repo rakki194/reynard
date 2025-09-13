@@ -68,11 +68,11 @@
 
 ### Risks and Mitigations
 
-| Risk | Impact | Probability | Mitigation |
-|------|--------|-------------|------------|
-| [Integration Failures] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
-| [Data Inconsistencies] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
-| [Performance Degradation] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
+| Risk                       | Impact            | Probability       | Mitigation            |
+| -------------------------- | ----------------- | ----------------- | --------------------- |
+| [Integration Failures]     | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
+| [Data Inconsistencies]     | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
+| [Performance Degradation]  | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
 | [Security Vulnerabilities] | [High/Medium/Low] | [High/Medium/Low] | [Mitigation Strategy] |
 
 ## Integration Testing
@@ -206,4 +206,3 @@ This integration ADR will be reviewed:
 **Stakeholders**: Development Team, Operations Team, Product Team, External Partners  
 **Review Date**: [Next Review Date]
 **Integration Classification**: [Critical/High/Medium/Low]
-

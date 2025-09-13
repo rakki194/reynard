@@ -56,7 +56,10 @@ export function detectProgrammingLanguage(extension: string): string {
 /**
  * Extract dependencies from code content based on file type
  */
-export function extractDependencies(content: string, extension: string): string[] {
+export function extractDependencies(
+  content: string,
+  extension: string,
+): string[] {
   const dependencies: string[] = [];
 
   // Extract dependencies based on file type
@@ -111,8 +114,7 @@ export function detectCodePurpose(extension: string): string {
   const filename = extension.replace(".", "");
 
   if (filename.includes("test") || filename.includes("spec")) return "test";
-  if (filename.includes("config") || filename.includes("conf"))
-    return "config";
+  if (filename.includes("config") || filename.includes("conf")) return "config";
   if (filename.includes("readme") || filename.includes("doc"))
     return "documentation";
   if (filename.includes("dockerfile")) return "container";
