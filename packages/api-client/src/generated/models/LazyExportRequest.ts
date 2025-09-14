@@ -36,11 +36,8 @@ export interface LazyExportRequest {
 /**
  * Check if a given object implements the LazyExportRequest interface.
  */
-export function instanceOfLazyExportRequest(
-  value: object,
-): value is LazyExportRequest {
-  if (!("packageName" in value) || value["packageName"] === undefined)
-    return false;
+export function instanceOfLazyExportRequest(value: object): value is LazyExportRequest {
+  if (!("packageName" in value) || value["packageName"] === undefined) return false;
   return true;
 }
 
@@ -48,17 +45,13 @@ export function LazyExportRequestFromJSON(json: any): LazyExportRequest {
   return LazyExportRequestFromJSONTyped(json, false);
 }
 
-export function LazyExportRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): LazyExportRequest {
+export function LazyExportRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): LazyExportRequest {
   if (json == null) {
     return json;
   }
   return {
     packageName: json["package_name"],
-    validationLevel:
-      json["validation_level"] == null ? undefined : json["validation_level"],
+    validationLevel: json["validation_level"] == null ? undefined : json["validation_level"],
   };
 }
 
@@ -68,7 +61,7 @@ export function LazyExportRequestToJSON(json: any): LazyExportRequest {
 
 export function LazyExportRequestToJSONTyped(
   value?: LazyExportRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

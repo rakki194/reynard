@@ -33,33 +33,29 @@ export interface SummarizationConfigResponse {
   message: string;
   /**
    * Current configuration
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof SummarizationConfigResponse
    */
-  config: object;
+  config: { [key: string]: any };
 }
 
 /**
  * Check if a given object implements the SummarizationConfigResponse interface.
  */
-export function instanceOfSummarizationConfigResponse(
-  value: object,
-): value is SummarizationConfigResponse {
+export function instanceOfSummarizationConfigResponse(value: object): value is SummarizationConfigResponse {
   if (!("success" in value) || value["success"] === undefined) return false;
   if (!("message" in value) || value["message"] === undefined) return false;
   if (!("config" in value) || value["config"] === undefined) return false;
   return true;
 }
 
-export function SummarizationConfigResponseFromJSON(
-  json: any,
-): SummarizationConfigResponse {
+export function SummarizationConfigResponseFromJSON(json: any): SummarizationConfigResponse {
   return SummarizationConfigResponseFromJSONTyped(json, false);
 }
 
 export function SummarizationConfigResponseFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): SummarizationConfigResponse {
   if (json == null) {
     return json;
@@ -71,15 +67,13 @@ export function SummarizationConfigResponseFromJSONTyped(
   };
 }
 
-export function SummarizationConfigResponseToJSON(
-  json: any,
-): SummarizationConfigResponse {
+export function SummarizationConfigResponseToJSON(json: any): SummarizationConfigResponse {
   return SummarizationConfigResponseToJSONTyped(json, false);
 }
 
 export function SummarizationConfigResponseToJSONTyped(
   value?: SummarizationConfigResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

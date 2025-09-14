@@ -21,10 +21,10 @@ import { mapValues } from "../runtime";
 export interface ComfyQueueRequest {
   /**
    * ComfyUI workflow definition
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof ComfyQueueRequest
    */
-  workflow: object;
+  workflow: { [key: string]: any };
   /**
    *
    * @type {string}
@@ -36,9 +36,7 @@ export interface ComfyQueueRequest {
 /**
  * Check if a given object implements the ComfyQueueRequest interface.
  */
-export function instanceOfComfyQueueRequest(
-  value: object,
-): value is ComfyQueueRequest {
+export function instanceOfComfyQueueRequest(value: object): value is ComfyQueueRequest {
   if (!("workflow" in value) || value["workflow"] === undefined) return false;
   return true;
 }
@@ -47,10 +45,7 @@ export function ComfyQueueRequestFromJSON(json: any): ComfyQueueRequest {
   return ComfyQueueRequestFromJSONTyped(json, false);
 }
 
-export function ComfyQueueRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ComfyQueueRequest {
+export function ComfyQueueRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ComfyQueueRequest {
   if (json == null) {
     return json;
   }
@@ -66,7 +61,7 @@ export function ComfyQueueRequestToJSON(json: any): ComfyQueueRequest {
 
 export function ComfyQueueRequestToJSONTyped(
   value?: ComfyQueueRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

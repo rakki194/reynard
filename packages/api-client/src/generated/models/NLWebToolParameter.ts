@@ -51,22 +51,19 @@ export interface NLWebToolParameter {
   _default?: null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof NLWebToolParameter
    */
-  constraints?: object | null;
+  constraints?: { [key: string]: any } | null;
 }
 
 /**
  * Check if a given object implements the NLWebToolParameter interface.
  */
-export function instanceOfNLWebToolParameter(
-  value: object,
-): value is NLWebToolParameter {
+export function instanceOfNLWebToolParameter(value: object): value is NLWebToolParameter {
   if (!("name" in value) || value["name"] === undefined) return false;
   if (!("type" in value) || value["type"] === undefined) return false;
-  if (!("description" in value) || value["description"] === undefined)
-    return false;
+  if (!("description" in value) || value["description"] === undefined) return false;
   return true;
 }
 
@@ -74,10 +71,7 @@ export function NLWebToolParameterFromJSON(json: any): NLWebToolParameter {
   return NLWebToolParameterFromJSONTyped(json, false);
 }
 
-export function NLWebToolParameterFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebToolParameter {
+export function NLWebToolParameterFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebToolParameter {
   if (json == null) {
     return json;
   }
@@ -86,7 +80,7 @@ export function NLWebToolParameterFromJSONTyped(
     type: json["type"],
     description: json["description"],
     required: json["required"] == null ? undefined : json["required"],
-    _default: json["default"] == null ? undefined : json["default"],
+    _default: json["default"] == null ? undefined : FromJSON(json["default"]),
     constraints: json["constraints"] == null ? undefined : json["constraints"],
   };
 }
@@ -97,7 +91,7 @@ export function NLWebToolParameterToJSON(json: any): NLWebToolParameter {
 
 export function NLWebToolParameterToJSONTyped(
   value?: NLWebToolParameter | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;
@@ -108,7 +102,7 @@ export function NLWebToolParameterToJSONTyped(
     type: value["type"],
     description: value["description"],
     required: value["required"],
-    default: value["_default"],
+    default: ToJSON(value["_default"]),
     constraints: value["constraints"],
   };
 }

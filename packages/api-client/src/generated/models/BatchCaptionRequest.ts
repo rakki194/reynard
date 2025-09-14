@@ -44,9 +44,7 @@ export interface BatchCaptionRequest {
 /**
  * Check if a given object implements the BatchCaptionRequest interface.
  */
-export function instanceOfBatchCaptionRequest(
-  value: object,
-): value is BatchCaptionRequest {
+export function instanceOfBatchCaptionRequest(value: object): value is BatchCaptionRequest {
   if (!("tasks" in value) || value["tasks"] === undefined) return false;
   return true;
 }
@@ -55,17 +53,13 @@ export function BatchCaptionRequestFromJSON(json: any): BatchCaptionRequest {
   return BatchCaptionRequestFromJSONTyped(json, false);
 }
 
-export function BatchCaptionRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): BatchCaptionRequest {
+export function BatchCaptionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): BatchCaptionRequest {
   if (json == null) {
     return json;
   }
   return {
     tasks: (json["tasks"] as Array<any>).map(CaptionRequestFromJSON),
-    maxConcurrent:
-      json["max_concurrent"] == null ? undefined : json["max_concurrent"],
+    maxConcurrent: json["max_concurrent"] == null ? undefined : json["max_concurrent"],
   };
 }
 
@@ -75,7 +69,7 @@ export function BatchCaptionRequestToJSON(json: any): BatchCaptionRequest {
 
 export function BatchCaptionRequestToJSONTyped(
   value?: BatchCaptionRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

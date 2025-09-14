@@ -72,35 +72,14 @@ export interface TTSStatsResponse {
 /**
  * Check if a given object implements the TTSStatsResponse interface.
  */
-export function instanceOfTTSStatsResponse(
-  value: object,
-): value is TTSStatsResponse {
-  if (
-    !("totalSynthesisRequests" in value) ||
-    value["totalSynthesisRequests"] === undefined
-  )
-    return false;
-  if (
-    !("successfulSynthesis" in value) ||
-    value["successfulSynthesis"] === undefined
-  )
-    return false;
-  if (!("failedSynthesis" in value) || value["failedSynthesis"] === undefined)
-    return false;
-  if (
-    !("averageProcessingTime" in value) ||
-    value["averageProcessingTime"] === undefined
-  )
-    return false;
-  if (
-    !("totalAudioGenerated" in value) ||
-    value["totalAudioGenerated"] === undefined
-  )
-    return false;
-  if (!("backendUsage" in value) || value["backendUsage"] === undefined)
-    return false;
-  if (!("voiceUsage" in value) || value["voiceUsage"] === undefined)
-    return false;
+export function instanceOfTTSStatsResponse(value: object): value is TTSStatsResponse {
+  if (!("totalSynthesisRequests" in value) || value["totalSynthesisRequests"] === undefined) return false;
+  if (!("successfulSynthesis" in value) || value["successfulSynthesis"] === undefined) return false;
+  if (!("failedSynthesis" in value) || value["failedSynthesis"] === undefined) return false;
+  if (!("averageProcessingTime" in value) || value["averageProcessingTime"] === undefined) return false;
+  if (!("totalAudioGenerated" in value) || value["totalAudioGenerated"] === undefined) return false;
+  if (!("backendUsage" in value) || value["backendUsage"] === undefined) return false;
+  if (!("voiceUsage" in value) || value["voiceUsage"] === undefined) return false;
   if (!("errorRate" in value) || value["errorRate"] === undefined) return false;
   return true;
 }
@@ -109,10 +88,7 @@ export function TTSStatsResponseFromJSON(json: any): TTSStatsResponse {
   return TTSStatsResponseFromJSONTyped(json, false);
 }
 
-export function TTSStatsResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TTSStatsResponse {
+export function TTSStatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSStatsResponse {
   if (json == null) {
     return json;
   }
@@ -134,7 +110,7 @@ export function TTSStatsResponseToJSON(json: any): TTSStatsResponse {
 
 export function TTSStatsResponseToJSONTyped(
   value?: TTSStatsResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

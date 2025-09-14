@@ -66,9 +66,7 @@ export interface RAGStatsResponse {
 /**
  * Check if a given object implements the RAGStatsResponse interface.
  */
-export function instanceOfRAGStatsResponse(
-  value: object,
-): value is RAGStatsResponse {
+export function instanceOfRAGStatsResponse(value: object): value is RAGStatsResponse {
   return true;
 }
 
@@ -76,30 +74,17 @@ export function RAGStatsResponseFromJSON(json: any): RAGStatsResponse {
   return RAGStatsResponseFromJSONTyped(json, false);
 }
 
-export function RAGStatsResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): RAGStatsResponse {
+export function RAGStatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGStatsResponse {
   if (json == null) {
     return json;
   }
   return {
-    totalDocuments:
-      json["total_documents"] == null ? undefined : json["total_documents"],
-    totalChunks:
-      json["total_chunks"] == null ? undefined : json["total_chunks"],
-    chunksWithEmbeddings:
-      json["chunks_with_embeddings"] == null
-        ? undefined
-        : json["chunks_with_embeddings"],
-    embeddingCoverage:
-      json["embedding_coverage"] == null
-        ? undefined
-        : json["embedding_coverage"],
-    defaultModel:
-      json["default_model"] == null ? undefined : json["default_model"],
-    vectorDbEnabled:
-      json["vector_db_enabled"] == null ? undefined : json["vector_db_enabled"],
+    totalDocuments: json["total_documents"] == null ? undefined : json["total_documents"],
+    totalChunks: json["total_chunks"] == null ? undefined : json["total_chunks"],
+    chunksWithEmbeddings: json["chunks_with_embeddings"] == null ? undefined : json["chunks_with_embeddings"],
+    embeddingCoverage: json["embedding_coverage"] == null ? undefined : json["embedding_coverage"],
+    defaultModel: json["default_model"] == null ? undefined : json["default_model"],
+    vectorDbEnabled: json["vector_db_enabled"] == null ? undefined : json["vector_db_enabled"],
     cacheSize: json["cache_size"] == null ? undefined : json["cache_size"],
   };
 }
@@ -110,7 +95,7 @@ export function RAGStatsResponseToJSON(json: any): RAGStatsResponse {
 
 export function RAGStatsResponseToJSONTyped(
   value?: RAGStatsResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

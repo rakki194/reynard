@@ -1,0 +1,141 @@
+---
+globs: CHANGELOG.md
+alwaysApply: false
+---
+
+# Changelog Documentation Standards
+
+This document defines the syntax and formatting standards for the Reynard project's `CHANGELOG.md` file, based on the
+official [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) specification and [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## File Structure
+
+### Header
+
+```markdown
+# Changelog
+
+All notable changes to the Reynard framework will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+```
+
+### Version Entries
+
+- **Reverse chronological order**: Latest version at the top
+- **Format**: `## [VERSION] - YYYY-MM-DD`
+- **Version**: Follows Semantic Versioning (MAJOR.MINOR.PATCH)
+- **Date**: ISO 8601 format (YYYY-MM-DD)
+
+### Unreleased Section
+
+```markdown
+## [Unreleased]
+```
+
+Placeholder for upcoming changes not yet released.
+
+## Change Categories
+
+Use these standardized third-level headings to categorize changes:
+
+### Core Categories
+
+- **`### Added`** - New features
+- **`### Changed`** - Changes to existing functionality  
+- **`### Deprecated`** - Features marked for removal
+- **`### Removed`** - Removed features
+- **`### Fixed`** - Bug fixes
+- **`### Security`** - Security vulnerabilities addressed
+
+### Reynard-Specific Categories
+
+- **`### 🧹 Code Quality & Maintenance`** - Code organization, cleanup, refactoring
+- **`### 🧪 Testing & Quality Assurance`** - Test infrastructure, coverage, validation
+- **`### 🔒 Security & Validation`** - Security enhancements, input validation
+- **`### 🌐 Internationalization & Localization`** - i18n system updates
+- **`### 🎨 UI Components & User Experience`** - Component updates, UX improvements
+- **`### 🤖 AI/ML Integration & Services`** - AI/ML features and integrations
+- **`### 🏗️ Backend & Service Architecture`** - Backend services, APIs, infrastructure
+- **`### 📚 Documentation & Research`** - Documentation updates, research papers
+- **`### 🔧 Development Infrastructure`** - Build tools, CI/CD, development workflow
+- **`### 🎯 Third-Party Integrations`** - External service integrations
+- **`### 🚀 Performance Improvements`** - Performance optimizations
+- **`### 🐛 Bug Fixes`** - Bug fixes and issue resolutions
+- **`### 🔄 Breaking Changes`** - Breaking changes requiring migration
+
+## Entry Formatting
+
+### Bullet Points
+
+- Use `-` for bullet points
+- Start with action verb (Added, Fixed, Improved, etc.)
+- Be concise but descriptive
+- Include context when relevant
+
+### Examples
+
+```markdown
+### Added
+- New user authentication module with JWT support
+- Advanced animation system with performance monitoring
+- Comprehensive security testing suite
+
+### Changed
+- Updated database schema to improve query performance
+- Refactored component architecture for better modularity
+- Enhanced API response format for better error handling
+
+### Fixed
+- Resolved memory leak in animation rendering
+- Fixed TypeScript compilation errors in core modules
+- Corrected authentication token expiration handling
+
+### Security
+- Patched XSS vulnerability in user input handling
+- Enhanced JWT secret rotation mechanism
+- Improved input validation for file uploads
+```
+
+## Version Numbering
+
+Follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html):
+
+- **MAJOR** (X.0.0): Breaking changes
+- **MINOR** (0.X.0): New features, backward compatible
+- **PATCH** (0.0.X): Bug fixes, backward compatible
+
+### Pre-release Versions
+
+- **Alpha**: `1.0.0-alpha.1`
+- **Beta**: `1.0.0-beta.1`  
+- **Release Candidate**: `1.0.0-rc.1`
+
+## Best Practices
+
+1. **Consistency**: Use consistent terminology and formatting
+2. **Clarity**: Write clear, actionable descriptions
+3. **Completeness**: Document all notable changes
+4. **Chronological**: Maintain reverse chronological order
+5. **Categorization**: Use appropriate categories for changes
+6. **Links**: Link to related issues, PRs, or documentation when relevant
+
+## Migration Notes
+
+For breaking changes, include migration guidance:
+
+```markdown
+### 🔄 Breaking Changes
+
+- **BREAKING**: i18n system API changes (migration utilities provided)
+- **BREAKING**: Theme system architecture changes (migration guide available)
+
+### 🎯 Migration Guide
+
+For users upgrading from previous versions:
+
+1. **i18n System**: Use the provided migration utilities to update your translation files
+2. **Theme System**: Update your theme configurations to use the new OKLCH-based system
+3. **Component APIs**: Review the updated component documentation for any API changes
+```

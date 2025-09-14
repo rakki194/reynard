@@ -42,10 +42,10 @@ export interface RAGQueryHit {
   highlights?: Array<string> | null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof RAGQueryHit
    */
-  extra?: object | null;
+  extra?: { [key: string]: any } | null;
   /**
    *
    * @type {string}
@@ -60,10 +60,10 @@ export interface RAGQueryHit {
   fileContent?: string | null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof RAGQueryHit
    */
-  fileMetadata?: object | null;
+  fileMetadata?: { [key: string]: any } | null;
   /**
    *
    * @type {number}
@@ -84,10 +84,10 @@ export interface RAGQueryHit {
   chunkTokens?: number | null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof RAGQueryHit
    */
-  chunkMetadata?: object | null;
+  chunkMetadata?: { [key: string]: any } | null;
   /**
    *
    * @type {string}
@@ -114,10 +114,10 @@ export interface RAGQueryHit {
   previewPath?: string | null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof RAGQueryHit
    */
-  imageMetadata?: object | null;
+  imageMetadata?: { [key: string]: any } | null;
   /**
    *
    * @type {{ [key: string]: number; }}
@@ -156,10 +156,7 @@ export function RAGQueryHitFromJSON(json: any): RAGQueryHit {
   return RAGQueryHitFromJSONTyped(json, false);
 }
 
-export function RAGQueryHitFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): RAGQueryHit {
+export function RAGQueryHitFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGQueryHit {
   if (json == null) {
     return json;
   }
@@ -169,31 +166,21 @@ export function RAGQueryHitFromJSONTyped(
     highlights: json["highlights"] == null ? undefined : json["highlights"],
     extra: json["extra"] == null ? undefined : json["extra"],
     filePath: json["file_path"] == null ? undefined : json["file_path"],
-    fileContent:
-      json["file_content"] == null ? undefined : json["file_content"],
-    fileMetadata:
-      json["file_metadata"] == null ? undefined : json["file_metadata"],
+    fileContent: json["file_content"] == null ? undefined : json["file_content"],
+    fileMetadata: json["file_metadata"] == null ? undefined : json["file_metadata"],
     chunkIndex: json["chunk_index"] == null ? undefined : json["chunk_index"],
     chunkText: json["chunk_text"] == null ? undefined : json["chunk_text"],
-    chunkTokens:
-      json["chunk_tokens"] == null ? undefined : json["chunk_tokens"],
-    chunkMetadata:
-      json["chunk_metadata"] == null ? undefined : json["chunk_metadata"],
+    chunkTokens: json["chunk_tokens"] == null ? undefined : json["chunk_tokens"],
+    chunkMetadata: json["chunk_metadata"] == null ? undefined : json["chunk_metadata"],
     imagePath: json["image_path"] == null ? undefined : json["image_path"],
     imageId: json["image_id"] == null ? undefined : json["image_id"],
-    thumbnailPath:
-      json["thumbnail_path"] == null ? undefined : json["thumbnail_path"],
-    previewPath:
-      json["preview_path"] == null ? undefined : json["preview_path"],
-    imageMetadata:
-      json["image_metadata"] == null ? undefined : json["image_metadata"],
-    imageDimensions:
-      json["image_dimensions"] == null ? undefined : json["image_dimensions"],
+    thumbnailPath: json["thumbnail_path"] == null ? undefined : json["thumbnail_path"],
+    previewPath: json["preview_path"] == null ? undefined : json["preview_path"],
+    imageMetadata: json["image_metadata"] == null ? undefined : json["image_metadata"],
+    imageDimensions: json["image_dimensions"] == null ? undefined : json["image_dimensions"],
     imageSize: json["image_size"] == null ? undefined : json["image_size"],
-    imageFormat:
-      json["image_format"] == null ? undefined : json["image_format"],
-    embeddingVector:
-      json["embedding_vector"] == null ? undefined : json["embedding_vector"],
+    imageFormat: json["image_format"] == null ? undefined : json["image_format"],
+    embeddingVector: json["embedding_vector"] == null ? undefined : json["embedding_vector"],
   };
 }
 
@@ -201,10 +188,7 @@ export function RAGQueryHitToJSON(json: any): RAGQueryHit {
   return RAGQueryHitToJSONTyped(json, false);
 }
 
-export function RAGQueryHitToJSONTyped(
-  value?: RAGQueryHit | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function RAGQueryHitToJSONTyped(value?: RAGQueryHit | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

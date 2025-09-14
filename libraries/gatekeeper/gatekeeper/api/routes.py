@@ -5,7 +5,6 @@ This module provides FastAPI routes for authentication operations including
 login, logout, token refresh, and user management.
 """
 
-from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordRequestForm

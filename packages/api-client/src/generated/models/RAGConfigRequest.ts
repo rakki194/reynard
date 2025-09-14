@@ -21,18 +21,16 @@ import { mapValues } from "../runtime";
 export interface RAGConfigRequest {
   /**
    * Configuration updates
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof RAGConfigRequest
    */
-  config: object;
+  config: { [key: string]: any };
 }
 
 /**
  * Check if a given object implements the RAGConfigRequest interface.
  */
-export function instanceOfRAGConfigRequest(
-  value: object,
-): value is RAGConfigRequest {
+export function instanceOfRAGConfigRequest(value: object): value is RAGConfigRequest {
   if (!("config" in value) || value["config"] === undefined) return false;
   return true;
 }
@@ -41,10 +39,7 @@ export function RAGConfigRequestFromJSON(json: any): RAGConfigRequest {
   return RAGConfigRequestFromJSONTyped(json, false);
 }
 
-export function RAGConfigRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): RAGConfigRequest {
+export function RAGConfigRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGConfigRequest {
   if (json == null) {
     return json;
   }
@@ -59,7 +54,7 @@ export function RAGConfigRequestToJSON(json: any): RAGConfigRequest {
 
 export function RAGConfigRequestToJSONTyped(
   value?: RAGConfigRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

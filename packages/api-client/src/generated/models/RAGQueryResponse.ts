@@ -59,18 +59,16 @@ export interface RAGQueryResponse {
   searchTime?: number | null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof RAGQueryResponse
    */
-  metadata?: object | null;
+  metadata?: { [key: string]: any } | null;
 }
 
 /**
  * Check if a given object implements the RAGQueryResponse interface.
  */
-export function instanceOfRAGQueryResponse(
-  value: object,
-): value is RAGQueryResponse {
+export function instanceOfRAGQueryResponse(value: object): value is RAGQueryResponse {
   if (!("hits" in value) || value["hits"] === undefined) return false;
   if (!("total" in value) || value["total"] === undefined) return false;
   return true;
@@ -80,10 +78,7 @@ export function RAGQueryResponseFromJSON(json: any): RAGQueryResponse {
   return RAGQueryResponseFromJSONTyped(json, false);
 }
 
-export function RAGQueryResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): RAGQueryResponse {
+export function RAGQueryResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGQueryResponse {
   if (json == null) {
     return json;
   }
@@ -91,8 +86,7 @@ export function RAGQueryResponseFromJSONTyped(
     hits: (json["hits"] as Array<any>).map(RAGQueryHitFromJSON),
     total: json["total"],
     queryTime: json["query_time"] == null ? undefined : json["query_time"],
-    embeddingTime:
-      json["embedding_time"] == null ? undefined : json["embedding_time"],
+    embeddingTime: json["embedding_time"] == null ? undefined : json["embedding_time"],
     searchTime: json["search_time"] == null ? undefined : json["search_time"],
     metadata: json["metadata"] == null ? undefined : json["metadata"],
   };
@@ -104,7 +98,7 @@ export function RAGQueryResponseToJSON(json: any): RAGQueryResponse {
 
 export function RAGQueryResponseToJSONTyped(
   value?: RAGQueryResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

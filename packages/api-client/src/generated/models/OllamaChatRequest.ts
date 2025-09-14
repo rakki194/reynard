@@ -57,24 +57,22 @@ export interface OllamaChatRequest {
   stream?: boolean;
   /**
    *
-   * @type {Array<object>}
+   * @type {Array<{ [key: string]: any; } | null>}
    * @memberof OllamaChatRequest
    */
-  tools?: Array<object> | null;
+  tools?: Array<{ [key: string]: any } | null> | null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof OllamaChatRequest
    */
-  context?: object | null;
+  context?: { [key: string]: any } | null;
 }
 
 /**
  * Check if a given object implements the OllamaChatRequest interface.
  */
-export function instanceOfOllamaChatRequest(
-  value: object,
-): value is OllamaChatRequest {
+export function instanceOfOllamaChatRequest(value: object): value is OllamaChatRequest {
   if (!("message" in value) || value["message"] === undefined) return false;
   return true;
 }
@@ -83,18 +81,14 @@ export function OllamaChatRequestFromJSON(json: any): OllamaChatRequest {
   return OllamaChatRequestFromJSONTyped(json, false);
 }
 
-export function OllamaChatRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): OllamaChatRequest {
+export function OllamaChatRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): OllamaChatRequest {
   if (json == null) {
     return json;
   }
   return {
     message: json["message"],
     model: json["model"] == null ? undefined : json["model"],
-    systemPrompt:
-      json["system_prompt"] == null ? undefined : json["system_prompt"],
+    systemPrompt: json["system_prompt"] == null ? undefined : json["system_prompt"],
     temperature: json["temperature"] == null ? undefined : json["temperature"],
     maxTokens: json["max_tokens"] == null ? undefined : json["max_tokens"],
     stream: json["stream"] == null ? undefined : json["stream"],
@@ -109,7 +103,7 @@ export function OllamaChatRequestToJSON(json: any): OllamaChatRequest {
 
 export function OllamaChatRequestToJSONTyped(
   value?: OllamaChatRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

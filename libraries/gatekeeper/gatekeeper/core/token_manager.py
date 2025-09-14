@@ -5,19 +5,25 @@ This module provides JWT token creation, validation, and management functionalit
 for the authentication system.
 """
 
+import base64
+import json
 import logging
-import os
 import secrets
 import time
 from collections import defaultdict
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, Optional, Set
+from datetime import UTC, datetime, timedelta
+from typing import Any
 
 from jose import JWTError, jwt
 
 from ..models.token import TokenConfig, TokenData, TokenResponse, TokenValidationResult
 
 logger = logging.getLogger(__name__)
+
+# JWT structure constants
+JWT_PARTS_COUNT = 3  # JWT tokens have exactly 3 parts: header.payload.signature
+TOKEN_TYPE_ACCESS = "access"  # JWT token type constant for access tokens  # noqa: S105
+TOKEN_TYPE_BEARER = "bearer"  # OAuth token type constant  # noqa: S105
 
 
 class TokenManager:
@@ -39,10 +45,10 @@ class TokenManager:
         self._validate_config()
 
         # Token blacklist for revoked tokens
-        self._blacklisted_tokens: Set[str] = set()
+        self._blacklisted_tokens: set[str] = set()
 
         # Rate limiting tracking
-        self._rate_limit_tracker: Dict[str, list] = defaultdict(list)
+        self._rate_limit_tracker: dict[str, list] = defaultdict(list)
         self._max_requests_per_minute = 60
 
         # Cleanup old rate limit entries periodically
@@ -55,17 +61,22 @@ class TokenManager:
 
         if (
             self.config.secret_key
-            == "test-secret-key-for-testing-only-not-for-production"
+            == "test-secret-key-for-testing-only-not-for-production"  # noqa: S105
         ):
             logger.warning("Using test secret key - not suitable for production")
 
     def _cleanup_rate_limits(self) -> None:
         """Clean up old rate limit entries."""
         current_time = time.time()
-        if current_time - self._last_cleanup > 300:  # Clean up every 5 minutes
-            cutoff_time = current_time - 60  # Keep only last minute
+        cleanup_interval_seconds = 300  # Clean up every 5 minutes
+        rate_limit_window_seconds = 60  # Keep only last minute
 
-            for ip_address in list(self._rate_limit_tracker.keys()):
+        if current_time - self._last_cleanup > cleanup_interval_seconds:
+            cutoff_time = current_time - rate_limit_window_seconds
+
+            # Create a copy of keys to avoid modification during iteration
+            ip_addresses = list(self._rate_limit_tracker.keys())
+            for ip_address in ip_addresses:
                 self._rate_limit_tracker[ip_address] = [
                     timestamp
                     for timestamp in self._rate_limit_tracker[ip_address]
@@ -116,7 +127,7 @@ class TokenManager:
             token: The JWT token to blacklist
         """
         self._blacklisted_tokens.add(token)
-        logger.info(f"Token blacklisted (length: {len(token)})")
+        logger.info("Token blacklisted (length: %d)", len(token))
 
     def is_token_blacklisted(self, token: str) -> bool:
         """
@@ -131,7 +142,7 @@ class TokenManager:
         return token in self._blacklisted_tokens
 
     def create_access_token(
-        self, data: Dict[str, Any], expires_delta: Optional[timedelta] = None
+        self, data: dict[str, Any], expires_delta: timedelta | None = None
     ) -> str:
         """
         Creates a JWT access token.
@@ -144,31 +155,26 @@ class TokenManager:
             str: The encoded JWT token
         """
         # Convert TokenData to dict if needed
-        if hasattr(data, "model_dump"):
-            to_encode = data.model_dump()
-        else:
-            to_encode = data.copy()
+        to_encode = data.model_dump() if hasattr(data, "model_dump") else data.copy()
 
         # Only set expiration if not already provided or if expires_delta is specified
         if expires_delta:
-            expire = datetime.now(timezone.utc) + expires_delta
+            expire = datetime.now(UTC) + expires_delta
             to_encode.update(
                 {
                     "exp": expire,
-                    "iat": datetime.now(timezone.utc),
+                    "iat": datetime.now(UTC),
                     "type": "access",
                     "jti": secrets.token_urlsafe(32),
                 }
             )
         elif "exp" not in to_encode:
             # Only set default expiration if not already provided
-            expire = (
-                datetime.now(timezone.utc) + self.config.access_token_expire_timedelta
-            )
+            expire = datetime.now(UTC) + self.config.access_token_expire_timedelta
             to_encode.update(
                 {
                     "exp": expire,
-                    "iat": datetime.now(timezone.utc),
+                    "iat": datetime.now(UTC),
                     "type": "access",
                     "jti": secrets.token_urlsafe(32),
                 }
@@ -177,7 +183,7 @@ class TokenManager:
             # Keep existing exp, just add other fields
             to_encode.update(
                 {
-                    "iat": datetime.now(timezone.utc),
+                    "iat": datetime.now(UTC),
                     "type": "access",
                     "jti": secrets.token_urlsafe(32),
                 }
@@ -192,10 +198,10 @@ class TokenManager:
         encoded_jwt = jwt.encode(
             to_encode, self.config.secret_key, algorithm=self.config.algorithm
         )
-        return encoded_jwt
+        return str(encoded_jwt)
 
     def create_refresh_token(
-        self, data: Dict[str, Any], expires_delta: Optional[timedelta] = None
+        self, data: dict[str, Any], expires_delta: timedelta | None = None
     ) -> str:
         """
         Creates a JWT refresh token.
@@ -208,22 +214,17 @@ class TokenManager:
             str: The encoded JWT refresh token
         """
         # Convert TokenData to dict if needed
-        if hasattr(data, "model_dump"):
-            to_encode = data.model_dump()
-        else:
-            to_encode = data.copy()
+        to_encode = data.model_dump() if hasattr(data, "model_dump") else data.copy()
 
         if expires_delta:
-            expire = datetime.now(timezone.utc) + expires_delta
+            expire = datetime.now(UTC) + expires_delta
         else:
-            expire = (
-                datetime.now(timezone.utc) + self.config.refresh_token_expire_timedelta
-            )
+            expire = datetime.now(UTC) + self.config.refresh_token_expire_timedelta
 
         to_encode.update(
             {
                 "exp": expire,
-                "iat": datetime.now(timezone.utc),
+                "iat": datetime.now(UTC),
                 "type": "refresh",
                 "jti": secrets.token_urlsafe(32),
             }
@@ -238,9 +239,9 @@ class TokenManager:
         encoded_jwt = jwt.encode(
             to_encode, self.config.secret_key, algorithm=self.config.algorithm
         )
-        return encoded_jwt
+        return str(encoded_jwt)
 
-    def create_tokens(self, data: Dict[str, Any]) -> TokenResponse:
+    def create_tokens(self, data: dict[str, Any]) -> TokenResponse:
         """
         Create both access and refresh tokens.
 
@@ -256,13 +257,13 @@ class TokenManager:
         return TokenResponse(
             access_token=access_token,
             refresh_token=refresh_token,
-            token_type="bearer",
+            token_type=TOKEN_TYPE_BEARER,
             expires_in=self.config.access_token_expire_minutes * 60,
             refresh_expires_in=self.config.refresh_token_expire_days * 24 * 60 * 60,
         )
 
     def verify_token(
-        self, token: str, token_type: str = "access"
+        self, token: str, token_type: str = TOKEN_TYPE_ACCESS
     ) -> TokenValidationResult:
         """
         Verify and decode a JWT token.
@@ -280,7 +281,6 @@ class TokenManager:
                 return TokenValidationResult(
                     is_valid=False,
                     error="Token has been revoked",
-                    error_code="TOKEN_REVOKED",
                 )
 
             # Decode and verify token
@@ -297,24 +297,19 @@ class TokenManager:
                 return TokenValidationResult(
                     is_valid=False,
                     error=f"Invalid token type. Expected {token_type}",
-                    error_code="INVALID_TOKEN_TYPE",
                 )
 
             # Check expiration
             exp = payload.get("exp")
-            if exp and datetime.fromtimestamp(exp, tz=timezone.utc) < datetime.now(
-                timezone.utc
-            ):
+            if exp and datetime.fromtimestamp(exp, tz=UTC) < datetime.now(UTC):
                 return TokenValidationResult(
                     is_valid=False,
                     error="Token has expired",
-                    error_code="TOKEN_EXPIRED",
                 )
 
             return TokenValidationResult(
                 is_valid=True,
-                payload=payload,
-                token_data=TokenData(
+                payload=TokenData(
                     sub=payload.get("sub"),
                     role=payload.get("role"),
                     type=payload.get("type"),
@@ -328,18 +323,16 @@ class TokenManager:
             return TokenValidationResult(
                 is_valid=False,
                 error=error_msg,
-                error_code="JWT_ERROR",
                 is_expired=is_expired,
             )
-        except Exception as e:
-            logger.error(f"Unexpected error during token verification: {e}")
+        except (ValueError, TypeError, KeyError):
+            logger.exception("Unexpected error during token verification")
             return TokenValidationResult(
                 is_valid=False,
                 error="Token verification failed",
-                error_code="VERIFICATION_ERROR",
             )
 
-    def refresh_access_token(self, refresh_token: str) -> Optional[str]:
+    def refresh_access_token(self, refresh_token: str) -> str | None:
         """
         Create a new access token using a valid refresh token.
 
@@ -355,16 +348,19 @@ class TokenManager:
 
         # Create new access token with same user data
         payload = result.payload
-        if hasattr(payload, "sub"):
-            # TokenData object
-            user_data = {"sub": payload.sub, "role": payload.role}
-        else:
-            # Dictionary payload
-            user_data = {"sub": payload.get("sub"), "role": payload.get("role")}
+        if payload is None:
+            return None
+
+        # pylint: disable=no-member
+        # Pydantic's dynamic field system confuses static type checkers, which see
+        # FieldInfo objects instead of actual field values. This is a known false
+        # positive - at runtime, payload is guaranteed to be a TokenData object
+        # with .sub and .role attributes after the None check above.
+        user_data = {"sub": payload.sub, "role": payload.role}
 
         return self.create_access_token(user_data)
 
-    def get_token_info(self, token: str) -> Optional[Dict[str, Any]]:
+    def get_token_info(self, token: str) -> dict[str, Any] | None:
         """
         Get information about a token without verifying it.
 
@@ -375,10 +371,21 @@ class TokenManager:
             Optional[Dict[str, Any]]: Token payload if valid format
         """
         try:
-            # Decode without verification to get payload
-            payload = jwt.decode(token, options={"verify_signature": False})
-            return payload
-        except JWTError:
+            # Split token and decode payload directly (bypasses signature verification)
+            # This is safe as we're not using the payload for authentication decisions
+            parts = token.split(".")
+            if len(parts) != JWT_PARTS_COUNT:
+                return None
+
+            # Decode the payload part (base64url)
+            # Add padding if needed
+            payload_part = parts[1]
+            payload_part += "=" * (4 - len(payload_part) % 4)
+
+            payload_bytes = base64.urlsafe_b64decode(payload_part)
+            payload = json.loads(payload_bytes)
+            return dict(payload)
+        except (json.JSONDecodeError, IndexError):
             return None
 
     def revoke_user_tokens(self, username: str) -> None:
@@ -392,7 +399,7 @@ class TokenManager:
         """
         # In a production system, you would track tokens by user
         # and revoke them individually. This is a placeholder.
-        logger.info(f"All tokens for user '{username}' marked for revocation")
+        logger.info("All tokens for user '%s' marked for revocation", username)
 
     def cleanup_expired_blacklist(self) -> None:
         """Clean up expired tokens from blacklist to save memory."""
@@ -401,20 +408,25 @@ class TokenManager:
 
         for token in self._blacklisted_tokens:
             try:
-                payload = jwt.decode(token, options={"verify_signature": False})
-                exp = payload.get("exp")
-                if exp and exp < current_time:
+                # Use get_token_info for safe unverified decode
+                payload = self.get_token_info(token)
+                if payload:
+                    exp = payload.get("exp")
+                    if exp and exp < current_time:
+                        expired_tokens.add(token)
+                else:
+                    # Invalid token format, remove it
                     expired_tokens.add(token)
-            except JWTError:
-                # Invalid token format, remove it
+            except (json.JSONDecodeError, IndexError):
+                # Any error, remove the token
                 expired_tokens.add(token)
 
         # Remove expired tokens
         self._blacklisted_tokens -= expired_tokens
         if expired_tokens:
-            logger.info(f"Cleaned up {len(expired_tokens)} expired blacklisted tokens")
+            logger.info("Cleaned up %d expired blacklisted tokens", len(expired_tokens))
 
-    def get_blacklist_stats(self) -> Dict[str, Any]:
+    def get_blacklist_stats(self) -> dict[str, Any]:
         """
         Get statistics about the token blacklist.
 

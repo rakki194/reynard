@@ -45,47 +45,38 @@ export interface LazyLoadingStatusResponse {
   totalPackages: number;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof LazyLoadingStatusResponse
    */
-  memoryUsage: object;
+  memoryUsage: { [key: string]: any };
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof LazyLoadingStatusResponse
    */
-  performance: object;
+  performance: { [key: string]: any };
 }
 
 /**
  * Check if a given object implements the LazyLoadingStatusResponse interface.
  */
-export function instanceOfLazyLoadingStatusResponse(
-  value: object,
-): value is LazyLoadingStatusResponse {
-  if (!("systemStatus" in value) || value["systemStatus"] === undefined)
-    return false;
+export function instanceOfLazyLoadingStatusResponse(value: object): value is LazyLoadingStatusResponse {
+  if (!("systemStatus" in value) || value["systemStatus"] === undefined) return false;
   if (!("timestamp" in value) || value["timestamp"] === undefined) return false;
-  if (!("loadedPackages" in value) || value["loadedPackages"] === undefined)
-    return false;
-  if (!("totalPackages" in value) || value["totalPackages"] === undefined)
-    return false;
-  if (!("memoryUsage" in value) || value["memoryUsage"] === undefined)
-    return false;
-  if (!("performance" in value) || value["performance"] === undefined)
-    return false;
+  if (!("loadedPackages" in value) || value["loadedPackages"] === undefined) return false;
+  if (!("totalPackages" in value) || value["totalPackages"] === undefined) return false;
+  if (!("memoryUsage" in value) || value["memoryUsage"] === undefined) return false;
+  if (!("performance" in value) || value["performance"] === undefined) return false;
   return true;
 }
 
-export function LazyLoadingStatusResponseFromJSON(
-  json: any,
-): LazyLoadingStatusResponse {
+export function LazyLoadingStatusResponseFromJSON(json: any): LazyLoadingStatusResponse {
   return LazyLoadingStatusResponseFromJSONTyped(json, false);
 }
 
 export function LazyLoadingStatusResponseFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): LazyLoadingStatusResponse {
   if (json == null) {
     return json;
@@ -100,15 +91,13 @@ export function LazyLoadingStatusResponseFromJSONTyped(
   };
 }
 
-export function LazyLoadingStatusResponseToJSON(
-  json: any,
-): LazyLoadingStatusResponse {
+export function LazyLoadingStatusResponseToJSON(json: any): LazyLoadingStatusResponse {
   return LazyLoadingStatusResponseToJSONTyped(json, false);
 }
 
 export function LazyLoadingStatusResponseToJSONTyped(
   value?: LazyLoadingStatusResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

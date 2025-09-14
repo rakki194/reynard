@@ -36,9 +36,7 @@ export interface ValidationResponse {
 /**
  * Check if a given object implements the ValidationResponse interface.
  */
-export function instanceOfValidationResponse(
-  value: object,
-): value is ValidationResponse {
+export function instanceOfValidationResponse(value: object): value is ValidationResponse {
   if (!("valid" in value) || value["valid"] === undefined) return false;
   return true;
 }
@@ -47,10 +45,7 @@ export function ValidationResponseFromJSON(json: any): ValidationResponse {
   return ValidationResponseFromJSONTyped(json, false);
 }
 
-export function ValidationResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ValidationResponse {
+export function ValidationResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidationResponse {
   if (json == null) {
     return json;
   }
@@ -66,7 +61,7 @@ export function ValidationResponseToJSON(json: any): ValidationResponse {
 
 export function ValidationResponseToJSONTyped(
   value?: ValidationResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

@@ -116,49 +116,9 @@ exclude_lines = [
     "@(abc\\.)?abstractmethod",
 ]
 
-[tool.black]
-line-length = 88
-target-version = ['py313']
-include = '\.pyi?$'
-extend-exclude = '''
-/(
-  # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | venv
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
+# Backend package configuration
+# Tooling configuration is inherited from the monorepo root pyproject.toml
+# This file only contains backend-specific project metadata and dependencies
 
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 88
-known_first_party = ["app"]
-known_third_party = ["fastapi", "pydantic", "sqlalchemy", "pytest"]
-
-[tool.mypy]
-python_version = "3.13"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = true
-no_implicit_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_no_return = true
-warn_unreachable = true
-strict_equality = true
-
-[[tool.mypy.overrides]]
-module = ["torch.*", "torchvision.*", "psycopg2.*", "pgvector.*"]
-ignore_missing_imports = true
+# Note: All tooling configuration (black, isort, mypy, ruff, pytest, etc.)
+# is defined in the monorepo root pyproject.toml for consistency across packages

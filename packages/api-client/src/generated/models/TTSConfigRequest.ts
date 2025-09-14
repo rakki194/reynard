@@ -72,9 +72,7 @@ export interface TTSConfigRequest {
 /**
  * Check if a given object implements the TTSConfigRequest interface.
  */
-export function instanceOfTTSConfigRequest(
-  value: object,
-): value is TTSConfigRequest {
+export function instanceOfTTSConfigRequest(value: object): value is TTSConfigRequest {
   return true;
 }
 
@@ -82,31 +80,19 @@ export function TTSConfigRequestFromJSON(json: any): TTSConfigRequest {
   return TTSConfigRequestFromJSONTyped(json, false);
 }
 
-export function TTSConfigRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TTSConfigRequest {
+export function TTSConfigRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSConfigRequest {
   if (json == null) {
     return json;
   }
   return {
-    defaultBackend:
-      json["default_backend"] == null ? undefined : json["default_backend"],
-    defaultVoice:
-      json["default_voice"] == null ? undefined : json["default_voice"],
-    defaultSpeed:
-      json["default_speed"] == null ? undefined : json["default_speed"],
-    defaultLanguage:
-      json["default_language"] == null ? undefined : json["default_language"],
-    maxTextLength:
-      json["max_text_length"] == null ? undefined : json["max_text_length"],
+    defaultBackend: json["default_backend"] == null ? undefined : json["default_backend"],
+    defaultVoice: json["default_voice"] == null ? undefined : json["default_voice"],
+    defaultSpeed: json["default_speed"] == null ? undefined : json["default_speed"],
+    defaultLanguage: json["default_language"] == null ? undefined : json["default_language"],
+    maxTextLength: json["max_text_length"] == null ? undefined : json["max_text_length"],
     chunkSize: json["chunk_size"] == null ? undefined : json["chunk_size"],
-    enableAudioProcessing:
-      json["enable_audio_processing"] == null
-        ? undefined
-        : json["enable_audio_processing"],
-    outputDirectory:
-      json["output_directory"] == null ? undefined : json["output_directory"],
+    enableAudioProcessing: json["enable_audio_processing"] == null ? undefined : json["enable_audio_processing"],
+    outputDirectory: json["output_directory"] == null ? undefined : json["output_directory"],
   };
 }
 
@@ -116,7 +102,7 @@ export function TTSConfigRequestToJSON(json: any): TTSConfigRequest {
 
 export function TTSConfigRequestToJSONTyped(
   value?: TTSConfigRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

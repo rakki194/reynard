@@ -74,7 +74,7 @@ export interface CaptionApiInterface {
    */
   generateBatchCaptionsApiCaptionBatchPostRaw(
     requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<CaptionResponse>>>;
 
   /**
@@ -83,7 +83,7 @@ export interface CaptionApiInterface {
    */
   generateBatchCaptionsApiCaptionBatchPost(
     requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<CaptionResponse>>;
 
   /**
@@ -96,7 +96,7 @@ export interface CaptionApiInterface {
    */
   generateCaptionApiCaptionGeneratePostRaw(
     requestParameters: GenerateCaptionApiCaptionGeneratePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<CaptionResponse>>;
 
   /**
@@ -105,7 +105,7 @@ export interface CaptionApiInterface {
    */
   generateCaptionApiCaptionGeneratePost(
     requestParameters: GenerateCaptionApiCaptionGeneratePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<CaptionResponse>;
 
   /**
@@ -116,7 +116,7 @@ export interface CaptionApiInterface {
    * @memberof CaptionApiInterface
    */
   getAvailableGeneratorsApiCaptionGeneratorsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<{ [key: string]: GeneratorInfo }>>;
 
   /**
@@ -124,7 +124,7 @@ export interface CaptionApiInterface {
    * Get Available Generators
    */
   getAvailableGeneratorsApiCaptionGeneratorsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<{ [key: string]: GeneratorInfo }>;
 
   /**
@@ -137,7 +137,7 @@ export interface CaptionApiInterface {
    */
   getGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRaw(
     requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<GeneratorInfo>>;
 
   /**
@@ -146,7 +146,7 @@ export interface CaptionApiInterface {
    */
   getGeneratorInfoApiCaptionGeneratorsGeneratorNameGet(
     requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<GeneratorInfo>;
 
   /**
@@ -157,16 +157,14 @@ export interface CaptionApiInterface {
    * @memberof CaptionApiInterface
    */
   getLoadedModelsApiCaptionModelsLoadedGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Get list of currently loaded models.
    * Get Loaded Models
    */
-  getLoadedModelsApiCaptionModelsLoadedGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  getLoadedModelsApiCaptionModelsLoadedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Load a specific caption model.
@@ -179,7 +177,7 @@ export interface CaptionApiInterface {
    */
   loadModelApiCaptionModelsModelNameLoadPostRaw(
     requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -188,7 +186,7 @@ export interface CaptionApiInterface {
    */
   loadModelApiCaptionModelsModelNameLoadPost(
     requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -201,7 +199,7 @@ export interface CaptionApiInterface {
    */
   unloadModelApiCaptionModelsModelNameUnloadPostRaw(
     requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -210,7 +208,7 @@ export interface CaptionApiInterface {
    */
   unloadModelApiCaptionModelsModelNameUnloadPost(
     requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 }
 
@@ -224,12 +222,12 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async generateBatchCaptionsApiCaptionBatchPostRaw(
     requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<CaptionResponse>>> {
     if (requestParameters["batchCaptionRequest"] == null) {
       throw new runtime.RequiredError(
         "batchCaptionRequest",
-        'Required parameter "batchCaptionRequest" was null or undefined when calling generateBatchCaptionsApiCaptionBatchPost().',
+        'Required parameter "batchCaptionRequest" was null or undefined when calling generateBatchCaptionsApiCaptionBatchPost().'
       );
     }
 
@@ -247,16 +245,12 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: BatchCaptionRequestToJSON(
-          requestParameters["batchCaptionRequest"],
-        ),
+        body: BatchCaptionRequestToJSON(requestParameters["batchCaptionRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      jsonValue.map(CaptionResponseFromJSON),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => jsonValue.map(CaptionResponseFromJSON));
   }
 
   /**
@@ -265,12 +259,9 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async generateBatchCaptionsApiCaptionBatchPost(
     requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<CaptionResponse>> {
-    const response = await this.generateBatchCaptionsApiCaptionBatchPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.generateBatchCaptionsApiCaptionBatchPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -280,12 +271,12 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async generateCaptionApiCaptionGeneratePostRaw(
     requestParameters: GenerateCaptionApiCaptionGeneratePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<CaptionResponse>> {
     if (requestParameters["captionRequest"] == null) {
       throw new runtime.RequiredError(
         "captionRequest",
-        'Required parameter "captionRequest" was null or undefined when calling generateCaptionApiCaptionGeneratePost().',
+        'Required parameter "captionRequest" was null or undefined when calling generateCaptionApiCaptionGeneratePost().'
       );
     }
 
@@ -305,12 +296,10 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
         query: queryParameters,
         body: CaptionRequestToJSON(requestParameters["captionRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      CaptionResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => CaptionResponseFromJSON(jsonValue));
   }
 
   /**
@@ -319,12 +308,9 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async generateCaptionApiCaptionGeneratePost(
     requestParameters: GenerateCaptionApiCaptionGeneratePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<CaptionResponse> {
-    const response = await this.generateCaptionApiCaptionGeneratePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.generateCaptionApiCaptionGeneratePostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -333,7 +319,7 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    * Get Available Generators
    */
   async getAvailableGeneratorsApiCaptionGeneratorsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<{ [key: string]: GeneratorInfo }>> {
     const queryParameters: any = {};
 
@@ -348,12 +334,10 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      runtime.mapValues(jsonValue, GeneratorInfoFromJSON),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => runtime.mapValues(jsonValue, GeneratorInfoFromJSON));
   }
 
   /**
@@ -361,12 +345,9 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    * Get Available Generators
    */
   async getAvailableGeneratorsApiCaptionGeneratorsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<{ [key: string]: GeneratorInfo }> {
-    const response =
-      await this.getAvailableGeneratorsApiCaptionGeneratorsGetRaw(
-        initOverrides,
-      );
+    const response = await this.getAvailableGeneratorsApiCaptionGeneratorsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -376,12 +357,12 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async getGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRaw(
     requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<GeneratorInfo>> {
     if (requestParameters["generatorName"] == null) {
       throw new runtime.RequiredError(
         "generatorName",
-        'Required parameter "generatorName" was null or undefined when calling getGeneratorInfoApiCaptionGeneratorsGeneratorNameGet().',
+        'Required parameter "generatorName" was null or undefined when calling getGeneratorInfoApiCaptionGeneratorsGeneratorNameGet().'
       );
     }
 
@@ -390,10 +371,7 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/caption/generators/{generator_name}`;
-    urlPath = urlPath.replace(
-      `{${"generator_name"}}`,
-      encodeURIComponent(String(requestParameters["generatorName"])),
-    );
+    urlPath = urlPath.replace(`{${"generator_name"}}`, encodeURIComponent(String(requestParameters["generatorName"])));
 
     const response = await this.request(
       {
@@ -402,12 +380,10 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      GeneratorInfoFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => GeneratorInfoFromJSON(jsonValue));
   }
 
   /**
@@ -416,13 +392,12 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async getGeneratorInfoApiCaptionGeneratorsGeneratorNameGet(
     requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<GeneratorInfo> {
-    const response =
-      await this.getGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -431,7 +406,7 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    * Get Loaded Models
    */
   async getLoadedModelsApiCaptionModelsLoadedGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -446,7 +421,7 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -461,10 +436,9 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    * Get Loaded Models
    */
   async getLoadedModelsApiCaptionModelsLoadedGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getLoadedModelsApiCaptionModelsLoadedGetRaw(initOverrides);
+    const response = await this.getLoadedModelsApiCaptionModelsLoadedGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -474,19 +448,19 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async loadModelApiCaptionModelsModelNameLoadPostRaw(
     requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["modelName"] == null) {
       throw new runtime.RequiredError(
         "modelName",
-        'Required parameter "modelName" was null or undefined when calling loadModelApiCaptionModelsModelNameLoadPost().',
+        'Required parameter "modelName" was null or undefined when calling loadModelApiCaptionModelsModelNameLoadPost().'
       );
     }
 
     if (requestParameters["modelLoadRequest"] == null) {
       throw new runtime.RequiredError(
         "modelLoadRequest",
-        'Required parameter "modelLoadRequest" was null or undefined when calling loadModelApiCaptionModelsModelNameLoadPost().',
+        'Required parameter "modelLoadRequest" was null or undefined when calling loadModelApiCaptionModelsModelNameLoadPost().'
       );
     }
 
@@ -497,10 +471,7 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
     headerParameters["Content-Type"] = "application/json";
 
     let urlPath = `/api/caption/models/{model_name}/load`;
-    urlPath = urlPath.replace(
-      `{${"model_name"}}`,
-      encodeURIComponent(String(requestParameters["modelName"])),
-    );
+    urlPath = urlPath.replace(`{${"model_name"}}`, encodeURIComponent(String(requestParameters["modelName"])));
 
     const response = await this.request(
       {
@@ -510,7 +481,7 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
         query: queryParameters,
         body: ModelLoadRequestToJSON(requestParameters["modelLoadRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -526,12 +497,9 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async loadModelApiCaptionModelsModelNameLoadPost(
     requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.loadModelApiCaptionModelsModelNameLoadPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.loadModelApiCaptionModelsModelNameLoadPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -541,12 +509,12 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async unloadModelApiCaptionModelsModelNameUnloadPostRaw(
     requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["modelName"] == null) {
       throw new runtime.RequiredError(
         "modelName",
-        'Required parameter "modelName" was null or undefined when calling unloadModelApiCaptionModelsModelNameUnloadPost().',
+        'Required parameter "modelName" was null or undefined when calling unloadModelApiCaptionModelsModelNameUnloadPost().'
       );
     }
 
@@ -555,10 +523,7 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/caption/models/{model_name}/unload`;
-    urlPath = urlPath.replace(
-      `{${"model_name"}}`,
-      encodeURIComponent(String(requestParameters["modelName"])),
-    );
+    urlPath = urlPath.replace(`{${"model_name"}}`, encodeURIComponent(String(requestParameters["modelName"])));
 
     const response = await this.request(
       {
@@ -567,7 +532,7 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -583,13 +548,9 @@ export class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
    */
   async unloadModelApiCaptionModelsModelNameUnloadPost(
     requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.unloadModelApiCaptionModelsModelNameUnloadPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.unloadModelApiCaptionModelsModelNameUnloadPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 }

@@ -6,7 +6,7 @@ throughout the authentication system.
 """
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -30,10 +30,10 @@ class TokenData(BaseModel):
     sub: str = Field(..., description="Subject (usually username)")
     role: str = Field(..., description="User role")
     type: str = Field(..., description="Token type (access or refresh)")
-    exp: Optional[datetime] = Field(default=None, description="Expiration time")
-    iat: Optional[datetime] = Field(default=None, description="Issued at time")
-    jti: Optional[str] = Field(default=None, description="JWT ID for token uniqueness")
-    metadata: Dict[str, Any] = Field(
+    exp: datetime | None = Field(default=None, description="Expiration time")
+    iat: datetime | None = Field(default=None, description="Issued at time")
+    jti: str | None = Field(default=None, description="JWT ID for token uniqueness")
+    metadata: dict[str, Any] = Field(
         default_factory=dict, description="Additional metadata"
     )
 
@@ -113,10 +113,10 @@ class TokenValidationResult(BaseModel):
     """
 
     is_valid: bool = Field(..., description="Whether the token is valid")
-    payload: Optional[TokenData] = Field(
+    payload: TokenData | None = Field(
         default=None, description="Token payload if valid"
     )
-    error: Optional[str] = Field(default=None, description="Error message if invalid")
+    error: str | None = Field(default=None, description="Error message if invalid")
     is_expired: bool = Field(default=False, description="Whether the token is expired")
     is_refresh_token: bool = Field(
         default=False, description="Whether this is a refresh token"
@@ -146,8 +146,8 @@ class TokenConfig(BaseModel):
     refresh_token_expire_days: int = Field(
         default=7, description="Refresh token expiration time in days"
     )
-    issuer: Optional[str] = Field(default=None, description="Token issuer")
-    audience: Optional[str] = Field(default=None, description="Token audience")
+    issuer: str | None = Field(default=None, description="Token issuer")
+    audience: str | None = Field(default=None, description="Token audience")
 
     @property
     def access_token_expire_timedelta(self) -> timedelta:

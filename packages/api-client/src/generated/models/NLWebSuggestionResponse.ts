@@ -62,39 +62,24 @@ export interface NLWebSuggestionResponse {
 /**
  * Check if a given object implements the NLWebSuggestionResponse interface.
  */
-export function instanceOfNLWebSuggestionResponse(
-  value: object,
-): value is NLWebSuggestionResponse {
-  if (!("suggestions" in value) || value["suggestions"] === undefined)
-    return false;
+export function instanceOfNLWebSuggestionResponse(value: object): value is NLWebSuggestionResponse {
+  if (!("suggestions" in value) || value["suggestions"] === undefined) return false;
   if (!("query" in value) || value["query"] === undefined) return false;
-  if (!("processingTimeMs" in value) || value["processingTimeMs"] === undefined)
-    return false;
-  if (
-    !("totalToolsConsidered" in value) ||
-    value["totalToolsConsidered"] === undefined
-  )
-    return false;
+  if (!("processingTimeMs" in value) || value["processingTimeMs"] === undefined) return false;
+  if (!("totalToolsConsidered" in value) || value["totalToolsConsidered"] === undefined) return false;
   return true;
 }
 
-export function NLWebSuggestionResponseFromJSON(
-  json: any,
-): NLWebSuggestionResponse {
+export function NLWebSuggestionResponseFromJSON(json: any): NLWebSuggestionResponse {
   return NLWebSuggestionResponseFromJSONTyped(json, false);
 }
 
-export function NLWebSuggestionResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebSuggestionResponse {
+export function NLWebSuggestionResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebSuggestionResponse {
   if (json == null) {
     return json;
   }
   return {
-    suggestions: (json["suggestions"] as Array<any>).map(
-      NLWebSuggestionFromJSON,
-    ),
+    suggestions: (json["suggestions"] as Array<any>).map(NLWebSuggestionFromJSON),
     query: json["query"],
     processingTimeMs: json["processing_time_ms"],
     cacheHit: json["cache_hit"] == null ? undefined : json["cache_hit"],
@@ -102,24 +87,20 @@ export function NLWebSuggestionResponseFromJSONTyped(
   };
 }
 
-export function NLWebSuggestionResponseToJSON(
-  json: any,
-): NLWebSuggestionResponse {
+export function NLWebSuggestionResponseToJSON(json: any): NLWebSuggestionResponse {
   return NLWebSuggestionResponseToJSONTyped(json, false);
 }
 
 export function NLWebSuggestionResponseToJSONTyped(
   value?: NLWebSuggestionResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;
   }
 
   return {
-    suggestions: (value["suggestions"] as Array<any>).map(
-      NLWebSuggestionToJSON,
-    ),
+    suggestions: (value["suggestions"] as Array<any>).map(NLWebSuggestionToJSON),
     query: value["query"],
     processing_time_ms: value["processingTimeMs"],
     cache_hit: value["cacheHit"],

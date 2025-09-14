@@ -62,49 +62,35 @@ export interface NLWebSuggestionRequest {
 /**
  * Check if a given object implements the NLWebSuggestionRequest interface.
  */
-export function instanceOfNLWebSuggestionRequest(
-  value: object,
-): value is NLWebSuggestionRequest {
+export function instanceOfNLWebSuggestionRequest(value: object): value is NLWebSuggestionRequest {
   if (!("query" in value) || value["query"] === undefined) return false;
   return true;
 }
 
-export function NLWebSuggestionRequestFromJSON(
-  json: any,
-): NLWebSuggestionRequest {
+export function NLWebSuggestionRequestFromJSON(json: any): NLWebSuggestionRequest {
   return NLWebSuggestionRequestFromJSONTyped(json, false);
 }
 
-export function NLWebSuggestionRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebSuggestionRequest {
+export function NLWebSuggestionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebSuggestionRequest {
   if (json == null) {
     return json;
   }
   return {
     query: json["query"],
-    context:
-      json["context"] == null
-        ? undefined
-        : NLWebContextFromJSON(json["context"]),
-    maxSuggestions:
-      json["max_suggestions"] == null ? undefined : json["max_suggestions"],
+    context: json["context"] == null ? undefined : NLWebContextFromJSON(json["context"]),
+    maxSuggestions: json["max_suggestions"] == null ? undefined : json["max_suggestions"],
     minScore: json["min_score"] == null ? undefined : json["min_score"],
-    includeReasoning:
-      json["include_reasoning"] == null ? undefined : json["include_reasoning"],
+    includeReasoning: json["include_reasoning"] == null ? undefined : json["include_reasoning"],
   };
 }
 
-export function NLWebSuggestionRequestToJSON(
-  json: any,
-): NLWebSuggestionRequest {
+export function NLWebSuggestionRequestToJSON(json: any): NLWebSuggestionRequest {
   return NLWebSuggestionRequestToJSONTyped(json, false);
 }
 
 export function NLWebSuggestionRequestToJSONTyped(
   value?: NLWebSuggestionRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

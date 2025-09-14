@@ -33,10 +33,10 @@ export interface HealthCheckResponse {
   message: string;
   /**
    * Detailed status information
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof HealthCheckResponse
    */
-  details: object;
+  details: { [key: string]: any };
   /**
    * Health check timestamp
    * @type {string}
@@ -48,9 +48,7 @@ export interface HealthCheckResponse {
 /**
  * Check if a given object implements the HealthCheckResponse interface.
  */
-export function instanceOfHealthCheckResponse(
-  value: object,
-): value is HealthCheckResponse {
+export function instanceOfHealthCheckResponse(value: object): value is HealthCheckResponse {
   if (!("status" in value) || value["status"] === undefined) return false;
   if (!("message" in value) || value["message"] === undefined) return false;
   if (!("details" in value) || value["details"] === undefined) return false;
@@ -62,10 +60,7 @@ export function HealthCheckResponseFromJSON(json: any): HealthCheckResponse {
   return HealthCheckResponseFromJSONTyped(json, false);
 }
 
-export function HealthCheckResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): HealthCheckResponse {
+export function HealthCheckResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): HealthCheckResponse {
   if (json == null) {
     return json;
   }
@@ -83,7 +78,7 @@ export function HealthCheckResponseToJSON(json: any): HealthCheckResponse {
 
 export function HealthCheckResponseToJSONTyped(
   value?: HealthCheckResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

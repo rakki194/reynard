@@ -1,0 +1,16 @@
+[MASTER]
+init-hook = "import sys; sys.path.append('.'); import os; venv_path = os.path.expanduser('~/venv/lib/python3.13/site-packages'); sys.path.insert(0, venv_path)"
+max-module-lines = 250
+
+[MESSAGES CONTROL]
+disable = ""
+
+[FORMAT]
+max-line-length = 88
+
+[DESIGN]
+max-args = 8
+max-locals = 20
+max-returns = 6
+max-branches = 15
+max-statements = 60

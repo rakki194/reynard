@@ -6,8 +6,8 @@ This module provides a PostgreSQL-based user storage backend using SQLAlchemy.
 
 import logging
 import uuid
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from datetime import UTC, datetime
+from typing import Any
 
 from sqlalchemy import (
     JSON,
@@ -45,11 +45,11 @@ class UserModel(Base):
     profile_picture_url = Column(String(500), nullable=True)
     yapcoin_balance = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
     updated_at = Column(
         DateTime,
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(UTC),
+        onupdate=lambda: datetime.now(UTC),
     )
     user_metadata = Column(JSON, default=dict)
 
@@ -122,8 +122,8 @@ class PostgreSQLBackend(UserBackend):
                     password_hash=user.password,  # This should be hashed by the auth manager
                     role=user.role,
                     email=user.email,
-                    created_at=datetime.now(timezone.utc),
-                    updated_at=datetime.now(timezone.utc),
+                    created_at=datetime.now(UTC),
+                    updated_at=datetime.now(UTC),
                 )
 
                 session.add(db_user)
@@ -151,15 +151,14 @@ class PostgreSQLBackend(UserBackend):
                     raise UserAlreadyExistsError(
                         f"Username '{user.username}' already exists"
                     )
-                elif "email" in str(e).lower():
+                if "email" in str(e).lower():
                     raise UserAlreadyExistsError(f"Email '{user.email}' already exists")
-                else:
-                    raise BackendError(f"Database integrity error: {e}")
+                raise BackendError(f"Database integrity error: {e}")
             except SQLAlchemyError as e:
                 session.rollback()
                 raise BackendError(f"Database error: {e}")
 
-    async def get_user_by_username(self, username: str) -> Optional[User]:
+    async def get_user_by_username(self, username: str) -> User | None:
         """Retrieve a user by username."""
         self._initialize_database()
 
@@ -191,7 +190,7 @@ class PostgreSQLBackend(UserBackend):
             except SQLAlchemyError as e:
                 raise BackendError(f"Database error: {e}")
 
-    async def get_user_by_id(self, user_id: str) -> Optional[User]:
+    async def get_user_by_id(self, user_id: str) -> User | None:
         """Retrieve a user by ID."""
         self._initialize_database()
 
@@ -221,7 +220,7 @@ class PostgreSQLBackend(UserBackend):
             except SQLAlchemyError as e:
                 raise BackendError(f"Database error: {e}")
 
-    async def get_user_by_email(self, email: str) -> Optional[User]:
+    async def get_user_by_email(self, email: str) -> User | None:
         """Retrieve a user by email address."""
         self._initialize_database()
 
@@ -312,7 +311,7 @@ class PostgreSQLBackend(UserBackend):
                 if user_update.metadata is not None:
                     db_user.user_metadata = user_update.metadata
 
-                db_user.updated_at = datetime.now(timezone.utc)
+                db_user.updated_at = datetime.now(UTC)
 
                 session.commit()
                 session.refresh(db_user)
@@ -358,7 +357,7 @@ class PostgreSQLBackend(UserBackend):
                 session.rollback()
                 raise BackendError(f"Database error: {e}")
 
-    async def list_users(self, skip: int = 0, limit: int = 100) -> List[UserPublic]:
+    async def list_users(self, skip: int = 0, limit: int = 100) -> list[UserPublic]:
         """List users in the database."""
         self._initialize_database()
 
@@ -414,7 +413,7 @@ class PostgreSQLBackend(UserBackend):
                     return False
 
                 db_user.password_hash = new_password_hash
-                db_user.updated_at = datetime.now(timezone.utc)
+                db_user.updated_at = datetime.now(UTC)
                 session.commit()
                 return True
 
@@ -438,7 +437,7 @@ class PostgreSQLBackend(UserBackend):
                     return False
 
                 db_user.role = new_role
-                db_user.updated_at = datetime.now(timezone.utc)
+                db_user.updated_at = datetime.now(UTC)
                 session.commit()
                 return True
 
@@ -447,7 +446,7 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: Optional[str]
+        self, username: str, profile_picture_url: str | None
     ) -> bool:
         """Update a user's profile picture URL."""
         self._initialize_database()
@@ -464,7 +463,7 @@ class PostgreSQLBackend(UserBackend):
                     return False
 
                 db_user.profile_picture_url = profile_picture_url
-                db_user.updated_at = datetime.now(timezone.utc)
+                db_user.updated_at = datetime.now(UTC)
                 session.commit()
                 return True
 
@@ -473,7 +472,7 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def update_user_metadata(
-        self, username: str, metadata: Dict[str, Any]
+        self, username: str, metadata: dict[str, Any]
     ) -> bool:
         """Update a user's metadata."""
         self._initialize_database()
@@ -490,7 +489,7 @@ class PostgreSQLBackend(UserBackend):
                     return False
 
                 db_user.user_metadata = metadata
-                db_user.updated_at = datetime.now(timezone.utc)
+                db_user.updated_at = datetime.now(UTC)
                 session.commit()
                 return True
 
@@ -500,7 +499,7 @@ class PostgreSQLBackend(UserBackend):
 
     async def search_users(
         self, query: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """Search for users by username or email."""
         self._initialize_database()
 
@@ -541,7 +540,7 @@ class PostgreSQLBackend(UserBackend):
 
     async def get_users_by_role(
         self, role: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """Get users by role."""
         self._initialize_database()
 
@@ -605,7 +604,7 @@ class PostgreSQLBackend(UserBackend):
             except SQLAlchemyError as e:
                 raise BackendError(f"Database error: {e}")
 
-    async def get_user_settings(self, username: str) -> Dict[str, Any]:
+    async def get_user_settings(self, username: str) -> dict[str, Any]:
         """Get user settings."""
         self._initialize_database()
 
@@ -626,7 +625,7 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def update_user_settings(
-        self, username: str, settings: Dict[str, Any]
+        self, username: str, settings: dict[str, Any]
     ) -> bool:
         """Update user settings."""
         self._initialize_database()
@@ -643,7 +642,7 @@ class PostgreSQLBackend(UserBackend):
                     return False
 
                 db_user.user_metadata = settings
-                db_user.updated_at = datetime.now(timezone.utc)
+                db_user.updated_at = datetime.now(UTC)
                 session.commit()
                 return True
 
@@ -676,7 +675,7 @@ class PostgreSQLBackend(UserBackend):
                     return False
 
                 db_user.username = new_username
-                db_user.updated_at = datetime.now(timezone.utc)
+                db_user.updated_at = datetime.now(UTC)
                 session.commit()
                 return True
 
@@ -684,7 +683,7 @@ class PostgreSQLBackend(UserBackend):
                 session.rollback()
                 raise BackendError(f"Database error: {e}")
 
-    async def get_all_users(self) -> List[UserPublic]:
+    async def get_all_users(self) -> list[UserPublic]:
         """Get all users in the database."""
         self._initialize_database()
 
@@ -730,7 +729,7 @@ class PostgreSQLBackend(UserBackend):
                     return False
 
                 db_user.yapcoin_balance = (db_user.yapcoin_balance or 0) + amount
-                db_user.updated_at = datetime.now(timezone.utc)
+                db_user.updated_at = datetime.now(UTC)
                 session.commit()
                 return True
 

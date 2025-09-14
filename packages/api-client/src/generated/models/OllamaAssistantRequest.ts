@@ -57,10 +57,10 @@ export interface OllamaAssistantRequest {
   stream?: boolean;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof OllamaAssistantRequest
    */
-  context?: object | null;
+  context?: { [key: string]: any } | null;
   /**
    * Enable tool calling
    * @type {boolean}
@@ -72,49 +72,38 @@ export interface OllamaAssistantRequest {
 /**
  * Check if a given object implements the OllamaAssistantRequest interface.
  */
-export function instanceOfOllamaAssistantRequest(
-  value: object,
-): value is OllamaAssistantRequest {
+export function instanceOfOllamaAssistantRequest(value: object): value is OllamaAssistantRequest {
   if (!("message" in value) || value["message"] === undefined) return false;
   return true;
 }
 
-export function OllamaAssistantRequestFromJSON(
-  json: any,
-): OllamaAssistantRequest {
+export function OllamaAssistantRequestFromJSON(json: any): OllamaAssistantRequest {
   return OllamaAssistantRequestFromJSONTyped(json, false);
 }
 
-export function OllamaAssistantRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): OllamaAssistantRequest {
+export function OllamaAssistantRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): OllamaAssistantRequest {
   if (json == null) {
     return json;
   }
   return {
     message: json["message"],
-    assistantType:
-      json["assistant_type"] == null ? undefined : json["assistant_type"],
+    assistantType: json["assistant_type"] == null ? undefined : json["assistant_type"],
     model: json["model"] == null ? undefined : json["model"],
     temperature: json["temperature"] == null ? undefined : json["temperature"],
     maxTokens: json["max_tokens"] == null ? undefined : json["max_tokens"],
     stream: json["stream"] == null ? undefined : json["stream"],
     context: json["context"] == null ? undefined : json["context"],
-    toolsEnabled:
-      json["tools_enabled"] == null ? undefined : json["tools_enabled"],
+    toolsEnabled: json["tools_enabled"] == null ? undefined : json["tools_enabled"],
   };
 }
 
-export function OllamaAssistantRequestToJSON(
-  json: any,
-): OllamaAssistantRequest {
+export function OllamaAssistantRequestToJSON(json: any): OllamaAssistantRequest {
   return OllamaAssistantRequestToJSONTyped(json, false);
 }
 
 export function OllamaAssistantRequestToJSONTyped(
   value?: OllamaAssistantRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

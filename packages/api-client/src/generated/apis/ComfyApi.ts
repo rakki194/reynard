@@ -13,11 +13,7 @@
  */
 
 import * as runtime from "../runtime";
-import type {
-  ComfyQueueRequest,
-  ComfyText2ImgRequest,
-  HTTPValidationError,
-} from "../models/index";
+import type { ComfyQueueRequest, ComfyText2ImgRequest, HTTPValidationError } from "../models/index";
 import {
   ComfyQueueRequestFromJSON,
   ComfyQueueRequestToJSON,
@@ -95,7 +91,7 @@ export interface ComfyApiInterface {
    * @memberof ComfyApiInterface
    */
   forceHealthCheckApiComfyHealthForceCheckPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -103,7 +99,7 @@ export interface ComfyApiInterface {
    * Force Health Check
    */
   forceHealthCheckApiComfyHealthForceCheckPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -116,7 +112,7 @@ export interface ComfyApiInterface {
    */
   getHistoryApiComfyHistoryPromptIdGetRaw(
     requestParameters: GetHistoryApiComfyHistoryPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -125,7 +121,7 @@ export interface ComfyApiInterface {
    */
   getHistoryApiComfyHistoryPromptIdGet(
     requestParameters: GetHistoryApiComfyHistoryPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -138,7 +134,7 @@ export interface ComfyApiInterface {
    */
   getObjectInfoApiComfyObjectInfoGetRaw(
     requestParameters: GetObjectInfoApiComfyObjectInfoGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -147,7 +143,7 @@ export interface ComfyApiInterface {
    */
   getObjectInfoApiComfyObjectInfoGet(
     requestParameters: GetObjectInfoApiComfyObjectInfoGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -160,7 +156,7 @@ export interface ComfyApiInterface {
    */
   getStatusApiComfyStatusPromptIdGetRaw(
     requestParameters: GetStatusApiComfyStatusPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -169,7 +165,7 @@ export interface ComfyApiInterface {
    */
   getStatusApiComfyStatusPromptIdGet(
     requestParameters: GetStatusApiComfyStatusPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -180,16 +176,14 @@ export interface ComfyApiInterface {
    * @memberof ComfyApiInterface
    */
   healthCheckApiComfyHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Check ComfyUI service health.
    * Health Check
    */
-  healthCheckApiComfyHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  healthCheckApiComfyHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Ingest a generated image into the gallery.
@@ -204,7 +198,7 @@ export interface ComfyApiInterface {
    */
   ingestGeneratedImageApiComfyIngestPostRaw(
     requestParameters: IngestGeneratedImageApiComfyIngestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -213,7 +207,7 @@ export interface ComfyApiInterface {
    */
   ingestGeneratedImageApiComfyIngestPost(
     requestParameters: IngestGeneratedImageApiComfyIngestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -226,7 +220,7 @@ export interface ComfyApiInterface {
    */
   queuePromptApiComfyQueuePostRaw(
     requestParameters: QueuePromptApiComfyQueuePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -235,7 +229,7 @@ export interface ComfyApiInterface {
    */
   queuePromptApiComfyQueuePost(
     requestParameters: QueuePromptApiComfyQueuePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -248,7 +242,7 @@ export interface ComfyApiInterface {
    */
   streamStatusApiComfyStreamPromptIdGetRaw(
     requestParameters: StreamStatusApiComfyStreamPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -257,7 +251,7 @@ export interface ComfyApiInterface {
    */
   streamStatusApiComfyStreamPromptIdGet(
     requestParameters: StreamStatusApiComfyStreamPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -270,7 +264,7 @@ export interface ComfyApiInterface {
    */
   text2imgApiComfyText2imgPostRaw(
     requestParameters: Text2imgApiComfyText2imgPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -279,7 +273,7 @@ export interface ComfyApiInterface {
    */
   text2imgApiComfyText2imgPost(
     requestParameters: Text2imgApiComfyText2imgPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -292,7 +286,7 @@ export interface ComfyApiInterface {
    */
   validateCheckpointApiComfyValidateCheckpointCheckpointGetRaw(
     requestParameters: ValidateCheckpointApiComfyValidateCheckpointCheckpointGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -301,7 +295,7 @@ export interface ComfyApiInterface {
    */
   validateCheckpointApiComfyValidateCheckpointCheckpointGet(
     requestParameters: ValidateCheckpointApiComfyValidateCheckpointCheckpointGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -314,7 +308,7 @@ export interface ComfyApiInterface {
    */
   validateLoraApiComfyValidateLoraLoraGetRaw(
     requestParameters: ValidateLoraApiComfyValidateLoraLoraGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -323,7 +317,7 @@ export interface ComfyApiInterface {
    */
   validateLoraApiComfyValidateLoraLoraGet(
     requestParameters: ValidateLoraApiComfyValidateLoraLoraGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -336,7 +330,7 @@ export interface ComfyApiInterface {
    */
   validateSamplerApiComfyValidateSamplerSamplerGetRaw(
     requestParameters: ValidateSamplerApiComfyValidateSamplerSamplerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -345,7 +339,7 @@ export interface ComfyApiInterface {
    */
   validateSamplerApiComfyValidateSamplerSamplerGet(
     requestParameters: ValidateSamplerApiComfyValidateSamplerSamplerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -358,7 +352,7 @@ export interface ComfyApiInterface {
    */
   validateSchedulerApiComfyValidateSchedulerSchedulerGetRaw(
     requestParameters: ValidateSchedulerApiComfyValidateSchedulerSchedulerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -367,7 +361,7 @@ export interface ComfyApiInterface {
    */
   validateSchedulerApiComfyValidateSchedulerSchedulerGet(
     requestParameters: ValidateSchedulerApiComfyValidateSchedulerSchedulerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -382,7 +376,7 @@ export interface ComfyApiInterface {
    */
   viewImageApiComfyViewGetRaw(
     requestParameters: ViewImageApiComfyViewGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -391,7 +385,7 @@ export interface ComfyApiInterface {
    */
   viewImageApiComfyViewGet(
     requestParameters: ViewImageApiComfyViewGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 }
 
@@ -404,20 +398,11 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    * Force Health Check
    */
   async forceHealthCheckApiComfyHealthForceCheckPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/comfy/health/force-check`;
 
@@ -428,7 +413,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -443,10 +428,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    * Force Health Check
    */
   async forceHealthCheckApiComfyHealthForceCheckPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.forceHealthCheckApiComfyHealthForceCheckPostRaw(initOverrides);
+    const response = await this.forceHealthCheckApiComfyHealthForceCheckPostRaw(initOverrides);
     return await response.value();
   }
 
@@ -456,12 +440,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async getHistoryApiComfyHistoryPromptIdGetRaw(
     requestParameters: GetHistoryApiComfyHistoryPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["promptId"] == null) {
       throw new runtime.RequiredError(
         "promptId",
-        'Required parameter "promptId" was null or undefined when calling getHistoryApiComfyHistoryPromptIdGet().',
+        'Required parameter "promptId" was null or undefined when calling getHistoryApiComfyHistoryPromptIdGet().'
       );
     }
 
@@ -469,20 +453,8 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/comfy/history/{prompt_id}`;
-    urlPath = urlPath.replace(
-      `{${"prompt_id"}}`,
-      encodeURIComponent(String(requestParameters["promptId"])),
-    );
+    urlPath = urlPath.replace(`{${"prompt_id"}}`, encodeURIComponent(String(requestParameters["promptId"])));
 
     const response = await this.request(
       {
@@ -491,7 +463,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -507,12 +479,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async getHistoryApiComfyHistoryPromptIdGet(
     requestParameters: GetHistoryApiComfyHistoryPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.getHistoryApiComfyHistoryPromptIdGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.getHistoryApiComfyHistoryPromptIdGetRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -522,7 +491,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async getObjectInfoApiComfyObjectInfoGetRaw(
     requestParameters: GetObjectInfoApiComfyObjectInfoGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -531,15 +500,6 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
     }
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/comfy/object-info`;
 
@@ -550,7 +510,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -566,12 +526,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async getObjectInfoApiComfyObjectInfoGet(
     requestParameters: GetObjectInfoApiComfyObjectInfoGetRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.getObjectInfoApiComfyObjectInfoGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.getObjectInfoApiComfyObjectInfoGetRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -581,12 +538,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async getStatusApiComfyStatusPromptIdGetRaw(
     requestParameters: GetStatusApiComfyStatusPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["promptId"] == null) {
       throw new runtime.RequiredError(
         "promptId",
-        'Required parameter "promptId" was null or undefined when calling getStatusApiComfyStatusPromptIdGet().',
+        'Required parameter "promptId" was null or undefined when calling getStatusApiComfyStatusPromptIdGet().'
       );
     }
 
@@ -594,20 +551,8 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/comfy/status/{prompt_id}`;
-    urlPath = urlPath.replace(
-      `{${"prompt_id"}}`,
-      encodeURIComponent(String(requestParameters["promptId"])),
-    );
+    urlPath = urlPath.replace(`{${"prompt_id"}}`, encodeURIComponent(String(requestParameters["promptId"])));
 
     const response = await this.request(
       {
@@ -616,7 +561,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -632,12 +577,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async getStatusApiComfyStatusPromptIdGet(
     requestParameters: GetStatusApiComfyStatusPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.getStatusApiComfyStatusPromptIdGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.getStatusApiComfyStatusPromptIdGetRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -646,20 +588,11 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    * Health Check
    */
   async healthCheckApiComfyHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/comfy/health`;
 
@@ -670,7 +603,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -684,9 +617,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    * Check ComfyUI service health.
    * Health Check
    */
-  async healthCheckApiComfyHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
+  async healthCheckApiComfyHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
     const response = await this.healthCheckApiComfyHealthGetRaw(initOverrides);
     return await response.value();
   }
@@ -697,26 +628,26 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async ingestGeneratedImageApiComfyIngestPostRaw(
     requestParameters: IngestGeneratedImageApiComfyIngestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["file"] == null) {
       throw new runtime.RequiredError(
         "file",
-        'Required parameter "file" was null or undefined when calling ingestGeneratedImageApiComfyIngestPost().',
+        'Required parameter "file" was null or undefined when calling ingestGeneratedImageApiComfyIngestPost().'
       );
     }
 
     if (requestParameters["promptId"] == null) {
       throw new runtime.RequiredError(
         "promptId",
-        'Required parameter "promptId" was null or undefined when calling ingestGeneratedImageApiComfyIngestPost().',
+        'Required parameter "promptId" was null or undefined when calling ingestGeneratedImageApiComfyIngestPost().'
       );
     }
 
     if (requestParameters["workflow"] == null) {
       throw new runtime.RequiredError(
         "workflow",
-        'Required parameter "workflow" was null or undefined when calling ingestGeneratedImageApiComfyIngestPost().',
+        'Required parameter "workflow" was null or undefined when calling ingestGeneratedImageApiComfyIngestPost().'
       );
     }
 
@@ -724,17 +655,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-    const consumes: runtime.Consume[] = [
-      { contentType: "multipart/form-data" },
-    ];
+    const consumes: runtime.Consume[] = [{ contentType: "multipart/form-data" }];
     // @ts-ignore: canConsumeForm may be unused
     const canConsumeForm = runtime.canConsumeForm(consumes);
 
@@ -774,7 +695,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         query: queryParameters,
         body: formParams,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -790,12 +711,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async ingestGeneratedImageApiComfyIngestPost(
     requestParameters: IngestGeneratedImageApiComfyIngestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.ingestGeneratedImageApiComfyIngestPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.ingestGeneratedImageApiComfyIngestPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -805,12 +723,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async queuePromptApiComfyQueuePostRaw(
     requestParameters: QueuePromptApiComfyQueuePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["comfyQueueRequest"] == null) {
       throw new runtime.RequiredError(
         "comfyQueueRequest",
-        'Required parameter "comfyQueueRequest" was null or undefined when calling queuePromptApiComfyQueuePost().',
+        'Required parameter "comfyQueueRequest" was null or undefined when calling queuePromptApiComfyQueuePost().'
       );
     }
 
@@ -819,15 +737,6 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     headerParameters["Content-Type"] = "application/json";
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/comfy/queue`;
 
@@ -839,7 +748,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         query: queryParameters,
         body: ComfyQueueRequestToJSON(requestParameters["comfyQueueRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -855,12 +764,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async queuePromptApiComfyQueuePost(
     requestParameters: QueuePromptApiComfyQueuePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.queuePromptApiComfyQueuePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.queuePromptApiComfyQueuePostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -870,12 +776,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async streamStatusApiComfyStreamPromptIdGetRaw(
     requestParameters: StreamStatusApiComfyStreamPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["promptId"] == null) {
       throw new runtime.RequiredError(
         "promptId",
-        'Required parameter "promptId" was null or undefined when calling streamStatusApiComfyStreamPromptIdGet().',
+        'Required parameter "promptId" was null or undefined when calling streamStatusApiComfyStreamPromptIdGet().'
       );
     }
 
@@ -883,20 +789,8 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/comfy/stream/{prompt_id}`;
-    urlPath = urlPath.replace(
-      `{${"prompt_id"}}`,
-      encodeURIComponent(String(requestParameters["promptId"])),
-    );
+    urlPath = urlPath.replace(`{${"prompt_id"}}`, encodeURIComponent(String(requestParameters["promptId"])));
 
     const response = await this.request(
       {
@@ -905,7 +799,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -921,12 +815,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async streamStatusApiComfyStreamPromptIdGet(
     requestParameters: StreamStatusApiComfyStreamPromptIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.streamStatusApiComfyStreamPromptIdGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.streamStatusApiComfyStreamPromptIdGetRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -936,12 +827,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async text2imgApiComfyText2imgPostRaw(
     requestParameters: Text2imgApiComfyText2imgPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["comfyText2ImgRequest"] == null) {
       throw new runtime.RequiredError(
         "comfyText2ImgRequest",
-        'Required parameter "comfyText2ImgRequest" was null or undefined when calling text2imgApiComfyText2imgPost().',
+        'Required parameter "comfyText2ImgRequest" was null or undefined when calling text2imgApiComfyText2imgPost().'
       );
     }
 
@@ -951,15 +842,6 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     headerParameters["Content-Type"] = "application/json";
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/comfy/text2img`;
 
     const response = await this.request(
@@ -968,11 +850,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ComfyText2ImgRequestToJSON(
-          requestParameters["comfyText2ImgRequest"],
-        ),
+        body: ComfyText2ImgRequestToJSON(requestParameters["comfyText2ImgRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -988,12 +868,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async text2imgApiComfyText2imgPost(
     requestParameters: Text2imgApiComfyText2imgPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.text2imgApiComfyText2imgPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.text2imgApiComfyText2imgPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1003,12 +880,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async validateCheckpointApiComfyValidateCheckpointCheckpointGetRaw(
     requestParameters: ValidateCheckpointApiComfyValidateCheckpointCheckpointGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["checkpoint"] == null) {
       throw new runtime.RequiredError(
         "checkpoint",
-        'Required parameter "checkpoint" was null or undefined when calling validateCheckpointApiComfyValidateCheckpointCheckpointGet().',
+        'Required parameter "checkpoint" was null or undefined when calling validateCheckpointApiComfyValidateCheckpointCheckpointGet().'
       );
     }
 
@@ -1016,20 +893,8 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/comfy/validate/checkpoint/{checkpoint}`;
-    urlPath = urlPath.replace(
-      `{${"checkpoint"}}`,
-      encodeURIComponent(String(requestParameters["checkpoint"])),
-    );
+    urlPath = urlPath.replace(`{${"checkpoint"}}`, encodeURIComponent(String(requestParameters["checkpoint"])));
 
     const response = await this.request(
       {
@@ -1038,7 +903,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1054,13 +919,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async validateCheckpointApiComfyValidateCheckpointCheckpointGet(
     requestParameters: ValidateCheckpointApiComfyValidateCheckpointCheckpointGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.validateCheckpointApiComfyValidateCheckpointCheckpointGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.validateCheckpointApiComfyValidateCheckpointCheckpointGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1070,12 +934,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async validateLoraApiComfyValidateLoraLoraGetRaw(
     requestParameters: ValidateLoraApiComfyValidateLoraLoraGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["lora"] == null) {
       throw new runtime.RequiredError(
         "lora",
-        'Required parameter "lora" was null or undefined when calling validateLoraApiComfyValidateLoraLoraGet().',
+        'Required parameter "lora" was null or undefined when calling validateLoraApiComfyValidateLoraLoraGet().'
       );
     }
 
@@ -1083,20 +947,8 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/comfy/validate/lora/{lora}`;
-    urlPath = urlPath.replace(
-      `{${"lora"}}`,
-      encodeURIComponent(String(requestParameters["lora"])),
-    );
+    urlPath = urlPath.replace(`{${"lora"}}`, encodeURIComponent(String(requestParameters["lora"])));
 
     const response = await this.request(
       {
@@ -1105,7 +957,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1121,12 +973,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async validateLoraApiComfyValidateLoraLoraGet(
     requestParameters: ValidateLoraApiComfyValidateLoraLoraGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.validateLoraApiComfyValidateLoraLoraGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.validateLoraApiComfyValidateLoraLoraGetRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1136,12 +985,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async validateSamplerApiComfyValidateSamplerSamplerGetRaw(
     requestParameters: ValidateSamplerApiComfyValidateSamplerSamplerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["sampler"] == null) {
       throw new runtime.RequiredError(
         "sampler",
-        'Required parameter "sampler" was null or undefined when calling validateSamplerApiComfyValidateSamplerSamplerGet().',
+        'Required parameter "sampler" was null or undefined when calling validateSamplerApiComfyValidateSamplerSamplerGet().'
       );
     }
 
@@ -1149,20 +998,8 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/comfy/validate/sampler/{sampler}`;
-    urlPath = urlPath.replace(
-      `{${"sampler"}}`,
-      encodeURIComponent(String(requestParameters["sampler"])),
-    );
+    urlPath = urlPath.replace(`{${"sampler"}}`, encodeURIComponent(String(requestParameters["sampler"])));
 
     const response = await this.request(
       {
@@ -1171,7 +1008,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1187,13 +1024,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async validateSamplerApiComfyValidateSamplerSamplerGet(
     requestParameters: ValidateSamplerApiComfyValidateSamplerSamplerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.validateSamplerApiComfyValidateSamplerSamplerGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.validateSamplerApiComfyValidateSamplerSamplerGetRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1203,12 +1036,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async validateSchedulerApiComfyValidateSchedulerSchedulerGetRaw(
     requestParameters: ValidateSchedulerApiComfyValidateSchedulerSchedulerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["scheduler"] == null) {
       throw new runtime.RequiredError(
         "scheduler",
-        'Required parameter "scheduler" was null or undefined when calling validateSchedulerApiComfyValidateSchedulerSchedulerGet().',
+        'Required parameter "scheduler" was null or undefined when calling validateSchedulerApiComfyValidateSchedulerSchedulerGet().'
       );
     }
 
@@ -1216,20 +1049,8 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/comfy/validate/scheduler/{scheduler}`;
-    urlPath = urlPath.replace(
-      `{${"scheduler"}}`,
-      encodeURIComponent(String(requestParameters["scheduler"])),
-    );
+    urlPath = urlPath.replace(`{${"scheduler"}}`, encodeURIComponent(String(requestParameters["scheduler"])));
 
     const response = await this.request(
       {
@@ -1238,7 +1059,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1254,13 +1075,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async validateSchedulerApiComfyValidateSchedulerSchedulerGet(
     requestParameters: ValidateSchedulerApiComfyValidateSchedulerSchedulerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.validateSchedulerApiComfyValidateSchedulerSchedulerGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.validateSchedulerApiComfyValidateSchedulerSchedulerGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1270,12 +1090,12 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async viewImageApiComfyViewGetRaw(
     requestParameters: ViewImageApiComfyViewGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["filename"] == null) {
       throw new runtime.RequiredError(
         "filename",
-        'Required parameter "filename" was null or undefined when calling viewImageApiComfyViewGet().',
+        'Required parameter "filename" was null or undefined when calling viewImageApiComfyViewGet().'
       );
     }
 
@@ -1295,15 +1115,6 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/comfy/view`;
 
     const response = await this.request(
@@ -1313,7 +1124,7 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1329,12 +1140,9 @@ export class ComfyApi extends runtime.BaseAPI implements ComfyApiInterface {
    */
   async viewImageApiComfyViewGet(
     requestParameters: ViewImageApiComfyViewGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.viewImageApiComfyViewGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.viewImageApiComfyViewGetRaw(requestParameters, initOverrides);
     return await response.value();
   }
 }

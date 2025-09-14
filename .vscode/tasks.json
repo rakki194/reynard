@@ -1,0 +1,592 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Python: Install Dependencies",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && pip install -r backend/requirements.txt"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: Run Tests",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd backend && python -m pytest tests/ -v"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: Run Tests with Coverage",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "source ~/venv/bin/activate && cd backend && python -m pytest tests/ -v --cov=app --cov-report=html"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: Lint with Ruff",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && ruff check backend/ fenrir/ libraries/"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: Format with Ruff",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && ruff format backend/ fenrir/ libraries/"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: Type Check with mypy",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && mypy backend/ fenrir/ libraries/"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: Start Backend Server",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd backend && python main.py"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Python: Run Security Tests",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd backend && python test_security_direct.py"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: Install Dependencies",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["install"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: Run Tests",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["test"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: Run E2E Tests",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "e2e", "test"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: Build",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["build"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🦊 Format All Files",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "format"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Format all TypeScript, JavaScript, CSS, JSON, and Markdown files using Prettier"
+    },
+    {
+      "label": "🦊 Format Check All Files",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "format:check"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Check formatting of all files without making changes"
+    },
+    {
+      "label": "🦊 Lint All Files",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "lint"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": ["$eslint-stylish"],
+      "detail": "Lint all TypeScript and JavaScript files using ESLint"
+    },
+    {
+      "label": "🦊 Lint Fix All Files",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "lint:fix"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": ["$eslint-stylish"],
+      "detail": "Lint and auto-fix all TypeScript and JavaScript files"
+    },
+    {
+      "label": "🦊 Type Check All Files",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "typecheck"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": ["$tsc"],
+      "detail": "Type check all TypeScript files"
+    },
+    {
+      "label": "📚 Validate Markdown Files",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "markdown:validate"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Validate all Markdown files (ToC, lint, sentence length)"
+    },
+    {
+      "label": "📚 Fix Markdown Files",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "markdown:toc:fix"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Auto-fix Markdown Table of Contents"
+    },
+    {
+      "label": "📚 Fix Markdown Sentence Length",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "markdown:sentence:fix"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Auto-fix Markdown sentence length issues"
+    },
+    {
+      "label": "📚 Check Markdown Links",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "markdown:links:check:all"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Validate all Markdown links"
+    },
+    {
+      "label": "🐺 Validate Shell Scripts",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "shell:check"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Validate all shell scripts using ShellCheck"
+    },
+    {
+      "label": "🐺 Validate Workflow Shell Scripts",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "workflow:shell:extract"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Extract and validate shell scripts from GitHub workflows"
+    },
+    {
+      "label": "🎨 Validate CSS Variables",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/validation/css/validate-css-variables.js", "--strict"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Validate CSS variables across all themes"
+    },
+    {
+      "label": "🦊 Run All Validations",
+      "type": "shell",
+      "command": "pnpm",
+      "args": [
+        "run",
+        "format:check",
+        "&&",
+        "pnpm",
+        "run",
+        "lint",
+        "&&",
+        "pnpm",
+        "run",
+        "typecheck",
+        "&&",
+        "pnpm",
+        "run",
+        "python:validate",
+        "&&",
+        "pnpm",
+        "run",
+        "markdown:validate"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run comprehensive validation across all file types"
+    },
+    {
+      "label": "🦊 Fix All Issues",
+      "type": "shell",
+      "command": "pnpm",
+      "args": [
+        "run",
+        "format",
+        "&&",
+        "pnpm",
+        "run",
+        "lint:fix",
+        "&&",
+        "pnpm",
+        "run",
+        "python:format",
+        "&&",
+        "pnpm",
+        "run",
+        "markdown:toc:fix",
+        "&&",
+        "pnpm",
+        "run",
+        "markdown:sentence:fix"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Auto-fix all fixable issues across all file types"
+    },
+    {
+      "label": "🔄 Queue-Based Validate Current File",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/dev/queue-validation-runner.js", "${file}"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Run queue-based validation with perfect sequencing for current file"
+    },
+    {
+      "label": "🔄 Start Queue-Based Watcher",
+      "type": "shell",
+      "command": "./scripts/dev/start-queue-watcher.sh",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start queue-based watcher with perfect file processing sequencing"
+    },
+    {
+      "label": "🔄 Auto-Start Queue-Based Watcher",
+      "type": "shell",
+      "command": "./scripts/dev/start-queue-watcher.sh",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": [],
+      "detail": "Automatically start queue-based watcher when workspace opens"
+    },
+    {
+      "label": "🧪 Test Markdown Validation",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/testing/test-markdown-validation.js"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Test the markdown validation tools to ensure they're working correctly"
+    },
+    {
+      "label": "🏁 Test Race Condition Prevention",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/testing/test-race-condition.js"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Test race condition prevention between validation tools"
+    },
+    {
+      "label": "📚 Test ToC Conflict Detection",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/testing/test-toc-conflict.js"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Test for ToC conflicts between multiple validators"
+    },
+    {
+      "label": "💾 Test Save Simulation",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/testing/test-save-simulation.js"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Simulate the actual save process to detect ToC conflicts"
+    },
+    {
+      "label": "🔄 Test Queue System",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/testing/test-queue-system.js"],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Test the queue-based file processing system"
+    }
+  ]
+}

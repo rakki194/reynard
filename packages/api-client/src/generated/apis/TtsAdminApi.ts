@@ -40,7 +40,7 @@ export interface TtsAdminApiInterface {
    * @memberof TtsAdminApiInterface
    */
   cleanupAudioFilesApiTtsApiTtsAdminCleanupPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -48,7 +48,7 @@ export interface TtsAdminApiInterface {
    * Cleanup Audio Files
    */
   cleanupAudioFilesApiTtsApiTtsAdminCleanupPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -59,7 +59,7 @@ export interface TtsAdminApiInterface {
    * @memberof TtsAdminApiInterface
    */
   getAvailableBackendsApiTtsApiTtsAdminBackendsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -67,7 +67,7 @@ export interface TtsAdminApiInterface {
    * Get Available Backends
    */
   getAvailableBackendsApiTtsApiTtsAdminBackendsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -78,7 +78,7 @@ export interface TtsAdminApiInterface {
    * @memberof TtsAdminApiInterface
    */
   getTtsStatsApiTtsApiTtsAdminStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSStatsResponse>>;
 
   /**
@@ -86,7 +86,7 @@ export interface TtsAdminApiInterface {
    * Get Tts Stats
    */
   getTtsStatsApiTtsApiTtsAdminStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSStatsResponse>;
 
   /**
@@ -97,16 +97,14 @@ export interface TtsAdminApiInterface {
    * @memberof TtsAdminApiInterface
    */
   healthCheckApiTtsApiTtsAdminHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Perform TTS service health check.
    * Health Check
    */
-  healthCheckApiTtsApiTtsAdminHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  healthCheckApiTtsApiTtsAdminHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Reload a specific TTS backend.
@@ -118,7 +116,7 @@ export interface TtsAdminApiInterface {
    */
   reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
     requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -127,23 +125,20 @@ export interface TtsAdminApiInterface {
    */
   reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost(
     requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 }
 
 /**
  *
  */
-export class TtsAdminApi
-  extends runtime.BaseAPI
-  implements TtsAdminApiInterface
-{
+export class TtsAdminApi extends runtime.BaseAPI implements TtsAdminApiInterface {
   /**
    * Clean up old audio files.
    * Cleanup Audio Files
    */
   async cleanupAudioFilesApiTtsApiTtsAdminCleanupPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -158,7 +153,7 @@ export class TtsAdminApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -173,12 +168,9 @@ export class TtsAdminApi
    * Cleanup Audio Files
    */
   async cleanupAudioFilesApiTtsApiTtsAdminCleanupPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.cleanupAudioFilesApiTtsApiTtsAdminCleanupPostRaw(
-        initOverrides,
-      );
+    const response = await this.cleanupAudioFilesApiTtsApiTtsAdminCleanupPostRaw(initOverrides);
     return await response.value();
   }
 
@@ -187,7 +179,7 @@ export class TtsAdminApi
    * Get Available Backends
    */
   async getAvailableBackendsApiTtsApiTtsAdminBackendsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -202,7 +194,7 @@ export class TtsAdminApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -217,12 +209,9 @@ export class TtsAdminApi
    * Get Available Backends
    */
   async getAvailableBackendsApiTtsApiTtsAdminBackendsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getAvailableBackendsApiTtsApiTtsAdminBackendsGetRaw(
-        initOverrides,
-      );
+    const response = await this.getAvailableBackendsApiTtsApiTtsAdminBackendsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -231,7 +220,7 @@ export class TtsAdminApi
    * Get Tts Stats
    */
   async getTtsStatsApiTtsApiTtsAdminStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSStatsResponse>> {
     const queryParameters: any = {};
 
@@ -246,12 +235,10 @@ export class TtsAdminApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSStatsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSStatsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -259,10 +246,9 @@ export class TtsAdminApi
    * Get Tts Stats
    */
   async getTtsStatsApiTtsApiTtsAdminStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSStatsResponse> {
-    const response =
-      await this.getTtsStatsApiTtsApiTtsAdminStatsGetRaw(initOverrides);
+    const response = await this.getTtsStatsApiTtsApiTtsAdminStatsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -271,7 +257,7 @@ export class TtsAdminApi
    * Health Check
    */
   async healthCheckApiTtsApiTtsAdminHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -286,7 +272,7 @@ export class TtsAdminApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -301,10 +287,9 @@ export class TtsAdminApi
    * Health Check
    */
   async healthCheckApiTtsApiTtsAdminHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.healthCheckApiTtsApiTtsAdminHealthGetRaw(initOverrides);
+    const response = await this.healthCheckApiTtsApiTtsAdminHealthGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -314,12 +299,12 @@ export class TtsAdminApi
    */
   async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
     requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["backendName"] == null) {
       throw new runtime.RequiredError(
         "backendName",
-        'Required parameter "backendName" was null or undefined when calling reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost().',
+        'Required parameter "backendName" was null or undefined when calling reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost().'
       );
     }
 
@@ -328,10 +313,7 @@ export class TtsAdminApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/tts/api/tts/admin/backends/{backend_name}/reload`;
-    urlPath = urlPath.replace(
-      `{${"backend_name"}}`,
-      encodeURIComponent(String(requestParameters["backendName"])),
-    );
+    urlPath = urlPath.replace(`{${"backend_name"}}`, encodeURIComponent(String(requestParameters["backendName"])));
 
     const response = await this.request(
       {
@@ -340,7 +322,7 @@ export class TtsAdminApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -356,13 +338,12 @@ export class TtsAdminApi
    */
   async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost(
     requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 }

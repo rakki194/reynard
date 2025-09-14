@@ -60,35 +60,24 @@ export interface ExecutorConfigRequest {
 /**
  * Check if a given object implements the ExecutorConfigRequest interface.
  */
-export function instanceOfExecutorConfigRequest(
-  value: object,
-): value is ExecutorConfigRequest {
+export function instanceOfExecutorConfigRequest(value: object): value is ExecutorConfigRequest {
   return true;
 }
 
-export function ExecutorConfigRequestFromJSON(
-  json: any,
-): ExecutorConfigRequest {
+export function ExecutorConfigRequestFromJSON(json: any): ExecutorConfigRequest {
   return ExecutorConfigRequestFromJSONTyped(json, false);
 }
 
-export function ExecutorConfigRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ExecutorConfigRequest {
+export function ExecutorConfigRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExecutorConfigRequest {
   if (json == null) {
     return json;
   }
   return {
     maxWorkers: json["max_workers"] == null ? undefined : json["max_workers"],
     enablePerformanceMonitoring:
-      json["enable_performance_monitoring"] == null
-        ? undefined
-        : json["enable_performance_monitoring"],
-    autoCleanup:
-      json["auto_cleanup"] == null ? undefined : json["auto_cleanup"],
-    defaultTimeout:
-      json["default_timeout"] == null ? undefined : json["default_timeout"],
+      json["enable_performance_monitoring"] == null ? undefined : json["enable_performance_monitoring"],
+    autoCleanup: json["auto_cleanup"] == null ? undefined : json["auto_cleanup"],
+    defaultTimeout: json["default_timeout"] == null ? undefined : json["default_timeout"],
     maxRetries: json["max_retries"] == null ? undefined : json["max_retries"],
     retryDelay: json["retry_delay"] == null ? undefined : json["retry_delay"],
   };
@@ -100,7 +89,7 @@ export function ExecutorConfigRequestToJSON(json: any): ExecutorConfigRequest {
 
 export function ExecutorConfigRequestToJSONTyped(
   value?: ExecutorConfigRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

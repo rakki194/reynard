@@ -48,21 +48,17 @@ export interface RAGIndexingStatusResponse {
 /**
  * Check if a given object implements the RAGIndexingStatusResponse interface.
  */
-export function instanceOfRAGIndexingStatusResponse(
-  value: object,
-): value is RAGIndexingStatusResponse {
+export function instanceOfRAGIndexingStatusResponse(value: object): value is RAGIndexingStatusResponse {
   return true;
 }
 
-export function RAGIndexingStatusResponseFromJSON(
-  json: any,
-): RAGIndexingStatusResponse {
+export function RAGIndexingStatusResponseFromJSON(json: any): RAGIndexingStatusResponse {
   return RAGIndexingStatusResponseFromJSONTyped(json, false);
 }
 
 export function RAGIndexingStatusResponseFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): RAGIndexingStatusResponse {
   if (json == null) {
     return json;
@@ -70,24 +66,18 @@ export function RAGIndexingStatusResponseFromJSONTyped(
   return {
     queueDepth: json["queue_depth"] == null ? undefined : json["queue_depth"],
     inFlight: json["in_flight"] == null ? undefined : json["in_flight"],
-    processingRate:
-      json["processing_rate"] == null ? undefined : json["processing_rate"],
-    estimatedCompletion:
-      json["estimated_completion"] == null
-        ? undefined
-        : json["estimated_completion"],
+    processingRate: json["processing_rate"] == null ? undefined : json["processing_rate"],
+    estimatedCompletion: json["estimated_completion"] == null ? undefined : json["estimated_completion"],
   };
 }
 
-export function RAGIndexingStatusResponseToJSON(
-  json: any,
-): RAGIndexingStatusResponse {
+export function RAGIndexingStatusResponseToJSON(json: any): RAGIndexingStatusResponse {
   return RAGIndexingStatusResponseToJSONTyped(json, false);
 }
 
 export function RAGIndexingStatusResponseToJSONTyped(
   value?: RAGIndexingStatusResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

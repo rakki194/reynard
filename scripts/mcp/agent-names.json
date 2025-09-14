@@ -1,0 +1,26 @@
+{
+  "fox-agent-001": {
+    "name": "Fennec-Librarian-3",
+    "assigned_at": 161679.155372215
+  },
+  "otter-agent-002": {
+    "name": "River-Sentinel-35",
+    "assigned_at": 161679.425136284
+  },
+  "wolf-agent-003": {
+    "name": "Alpha-Cyber-Hyper",
+    "assigned_at": 161679.637525199
+  },
+  "reynard-coding-assistant": {
+    "name": "Arctic-Philosopher-89",
+    "assigned_at": 161815.068631341
+  },
+  "assistant": {
+    "name": "Arctic-Prophet-21",
+    "assigned_at": 162926.173775433
+  },
+  "reynard-assistant": {
+    "name": "Vulpine",
+    "assigned_at": 164823.295079833
+  }
+}

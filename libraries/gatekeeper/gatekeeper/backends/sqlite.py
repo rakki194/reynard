@@ -6,8 +6,8 @@ This module provides a SQLite-based user storage backend using SQLAlchemy.
 
 import logging
 import uuid
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from datetime import UTC, datetime
+from typing import Any
 
 from sqlalchemy import (
     JSON,
@@ -19,7 +19,7 @@ from sqlalchemy import (
     create_engine,
     text,
 )
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, declarative_base, sessionmaker
 
 from ..models.user import User, UserCreate, UserPublic, UserRole, UserUpdate
@@ -44,11 +44,11 @@ class UserModel(Base):
     profile_picture_url = Column(String(500), nullable=True)
     yapcoin_balance = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
     updated_at = Column(
         DateTime,
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(UTC),
+        onupdate=lambda: datetime.now(UTC),
     )
     user_metadata = Column(JSON, default=dict)
 
@@ -217,7 +217,7 @@ class SQLiteBackend(UserBackend):
                     raise UserAlreadyExistsError(
                         f"Username '{user.username}' already exists"
                     )
-                elif "email" in str(e):
+                if "email" in str(e):
                     raise UserAlreadyExistsError(f"Email '{user.email}' already exists")
             raise BackendError(f"Database integrity error: {e}")
         except Exception as e:
@@ -227,7 +227,7 @@ class SQLiteBackend(UserBackend):
         finally:
             session.close()
 
-    async def get_user_by_username(self, username: str) -> Optional[User]:
+    async def get_user_by_username(self, username: str) -> User | None:
         """Retrieve a user by username."""
         await self._initialize()
 
@@ -247,7 +247,7 @@ class SQLiteBackend(UserBackend):
         finally:
             session.close()
 
-    async def get_user_by_id(self, user_id: str) -> Optional[User]:
+    async def get_user_by_id(self, user_id: str) -> User | None:
         """Retrieve a user by ID."""
         await self._initialize()
 
@@ -267,7 +267,7 @@ class SQLiteBackend(UserBackend):
         finally:
             session.close()
 
-    async def get_user_by_email(self, email: str) -> Optional[User]:
+    async def get_user_by_email(self, email: str) -> User | None:
         """Retrieve a user by email address."""
         await self._initialize()
 
@@ -310,7 +310,7 @@ class SQLiteBackend(UserBackend):
             if user_update.metadata is not None:
                 user_model.user_metadata = user_update.metadata
 
-            user_model.updated_at = datetime.now(timezone.utc)
+            user_model.updated_at = datetime.now(UTC)
 
             session.commit()
             session.refresh(user_model)
@@ -354,7 +354,7 @@ class SQLiteBackend(UserBackend):
         finally:
             session.close()
 
-    async def list_users(self, skip: int = 0, limit: int = 100) -> List[UserPublic]:
+    async def list_users(self, skip: int = 0, limit: int = 100) -> list[UserPublic]:
         """List users in the backend."""
         await self._initialize()
 
@@ -398,7 +398,7 @@ class SQLiteBackend(UserBackend):
                 return False
 
             user_model.password_hash = new_password_hash
-            user_model.updated_at = datetime.now(timezone.utc)
+            user_model.updated_at = datetime.now(UTC)
 
             session.commit()
 
@@ -426,7 +426,7 @@ class SQLiteBackend(UserBackend):
                 return False
 
             user_model.role = new_role
-            user_model.updated_at = datetime.now(timezone.utc)
+            user_model.updated_at = datetime.now(UTC)
 
             session.commit()
 
@@ -441,7 +441,7 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: Optional[str]
+        self, username: str, profile_picture_url: str | None
     ) -> bool:
         """Update a user's profile picture URL."""
         await self._initialize()
@@ -456,7 +456,7 @@ class SQLiteBackend(UserBackend):
                 return False
 
             user_model.profile_picture_url = profile_picture_url
-            user_model.updated_at = datetime.now(timezone.utc)
+            user_model.updated_at = datetime.now(UTC)
 
             session.commit()
 
@@ -471,7 +471,7 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def update_user_metadata(
-        self, username: str, metadata: Dict[str, Any]
+        self, username: str, metadata: dict[str, Any]
     ) -> bool:
         """Update a user's metadata."""
         await self._initialize()
@@ -486,7 +486,7 @@ class SQLiteBackend(UserBackend):
                 return False
 
             user_model.user_metadata = metadata
-            user_model.updated_at = datetime.now(timezone.utc)
+            user_model.updated_at = datetime.now(UTC)
 
             session.commit()
 
@@ -502,7 +502,7 @@ class SQLiteBackend(UserBackend):
 
     async def search_users(
         self, query: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """Search for users by username or email."""
         await self._initialize()
 
@@ -529,7 +529,7 @@ class SQLiteBackend(UserBackend):
 
     async def get_users_by_role(
         self, role: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """Get users by role."""
         await self._initialize()
 
@@ -587,7 +587,7 @@ class SQLiteBackend(UserBackend):
         finally:
             session.close()
 
-    async def get_user_settings(self, username: str) -> Dict[str, Any]:
+    async def get_user_settings(self, username: str) -> dict[str, Any]:
         """Get user settings."""
         await self._initialize()
 
@@ -611,7 +611,7 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def update_user_settings(
-        self, username: str, settings: Dict[str, Any]
+        self, username: str, settings: dict[str, Any]
     ) -> bool:
         """Update user settings."""
         await self._initialize()
@@ -626,7 +626,7 @@ class SQLiteBackend(UserBackend):
                 return False
 
             user_model.user_metadata = settings
-            user_model.updated_at = datetime.now(timezone.utc)
+            user_model.updated_at = datetime.now(UTC)
 
             session.commit()
 
@@ -665,7 +665,7 @@ class SQLiteBackend(UserBackend):
                 return False
 
             user_model.username = new_username
-            user_model.updated_at = datetime.now(timezone.utc)
+            user_model.updated_at = datetime.now(UTC)
 
             session.commit()
 
@@ -681,7 +681,7 @@ class SQLiteBackend(UserBackend):
         finally:
             session.close()
 
-    async def get_all_users(self) -> List[UserPublic]:
+    async def get_all_users(self) -> list[UserPublic]:
         """Get all users in the backend."""
         await self._initialize()
 
@@ -710,7 +710,7 @@ class SQLiteBackend(UserBackend):
                 return False
 
             user_model.yapcoin_balance = amount
-            user_model.updated_at = datetime.now(timezone.utc)
+            user_model.updated_at = datetime.now(UTC)
 
             session.commit()
 

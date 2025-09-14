@@ -1,6 +1,12 @@
 # My junk
+.agent-name
+.ruff_cache/
+.jwt_secret
 *results/
 *-report/
+core-i18n-results-final.json
+core-i18n-results-final.md
+core-i18n-results-final.xml
 penetration-results-2*
 penetration-results.json
 penetration-results.xml

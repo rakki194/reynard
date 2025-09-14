@@ -57,10 +57,10 @@ export interface GeneratorInfo {
   isLoaded: boolean;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof GeneratorInfo
    */
-  configSchema: object;
+  configSchema: { [key: string]: any };
   /**
    *
    * @type {Array<string>}
@@ -80,19 +80,14 @@ export interface GeneratorInfo {
  */
 export function instanceOfGeneratorInfo(value: object): value is GeneratorInfo {
   if (!("name" in value) || value["name"] === undefined) return false;
-  if (!("description" in value) || value["description"] === undefined)
-    return false;
+  if (!("description" in value) || value["description"] === undefined) return false;
   if (!("version" in value) || value["version"] === undefined) return false;
-  if (!("captionType" in value) || value["captionType"] === undefined)
-    return false;
-  if (!("isAvailable" in value) || value["isAvailable"] === undefined)
-    return false;
+  if (!("captionType" in value) || value["captionType"] === undefined) return false;
+  if (!("isAvailable" in value) || value["isAvailable"] === undefined) return false;
   if (!("isLoaded" in value) || value["isLoaded"] === undefined) return false;
-  if (!("configSchema" in value) || value["configSchema"] === undefined)
-    return false;
+  if (!("configSchema" in value) || value["configSchema"] === undefined) return false;
   if (!("features" in value) || value["features"] === undefined) return false;
-  if (!("modelCategory" in value) || value["modelCategory"] === undefined)
-    return false;
+  if (!("modelCategory" in value) || value["modelCategory"] === undefined) return false;
   return true;
 }
 
@@ -100,10 +95,7 @@ export function GeneratorInfoFromJSON(json: any): GeneratorInfo {
   return GeneratorInfoFromJSONTyped(json, false);
 }
 
-export function GeneratorInfoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): GeneratorInfo {
+export function GeneratorInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GeneratorInfo {
   if (json == null) {
     return json;
   }
@@ -124,10 +116,7 @@ export function GeneratorInfoToJSON(json: any): GeneratorInfo {
   return GeneratorInfoToJSONTyped(json, false);
 }
 
-export function GeneratorInfoToJSONTyped(
-  value?: GeneratorInfo | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function GeneratorInfoToJSONTyped(value?: GeneratorInfo | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

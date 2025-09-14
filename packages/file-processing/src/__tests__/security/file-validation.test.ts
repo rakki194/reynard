@@ -3,8 +3,8 @@
  * Tests for basic file security validation features
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
-import { createTestPipeline, TEST_FILES, createMockFile } from "./test-utils";
+import { beforeEach, describe, expect, it } from "vitest";
+import { TEST_FILES, createMockFile, createTestPipeline } from "./test-utils";
 
 describe("File Validation Security", () => {
   let pipeline: ReturnType<typeof createTestPipeline>;
@@ -26,18 +26,13 @@ describe("File Validation Security", () => {
     });
 
     it("should reject files with path separators", async () => {
-      const result = await pipeline.processFile(
-        TEST_FILES.DANGEROUS.PATH_SEPARATOR,
-      );
+      const result = await pipeline.processFile(TEST_FILES.DANGEROUS.PATH_SEPARATOR);
       expect(result.success).toBe(false);
       expect(result.error).toBe("File security validation failed");
     });
 
     it("should reject dangerous file names", async () => {
-      const dangerousFiles = [
-        TEST_FILES.DANGEROUS.HTACCESS,
-        TEST_FILES.DANGEROUS.WEB_CONFIG,
-      ];
+      const dangerousFiles = [TEST_FILES.DANGEROUS.HTACCESS, TEST_FILES.DANGEROUS.WEB_CONFIG];
 
       for (const file of dangerousFiles) {
         const result = await pipeline.processFile(file);
@@ -47,9 +42,7 @@ describe("File Validation Security", () => {
     });
 
     it("should reject empty file names", async () => {
-      const result = await pipeline.processFile(
-        TEST_FILES.DANGEROUS.EMPTY_NAME,
-      );
+      const result = await pipeline.processFile(TEST_FILES.DANGEROUS.EMPTY_NAME);
       expect(result.success).toBe(false);
       expect(result.error).toBe("File security validation failed");
     });
@@ -63,32 +56,20 @@ describe("File Validation Security", () => {
 
   describe("File Size Validation", () => {
     it("should accept files within size limit", async () => {
-      const normalFile = createMockFile(
-        "test.txt",
-        5 * 1024 * 1024,
-        "text/plain",
-      ); // 5MB
+      const normalFile = createMockFile("test.txt", 5 * 1024 * 1024, "text/plain"); // 5MB
       const result = await pipeline.processFile(normalFile);
       expect(result.success).toBe(true);
     });
 
     it("should reject files exceeding size limit", async () => {
-      const largeFile = createMockFile(
-        "large.txt",
-        15 * 1024 * 1024,
-        "text/plain",
-      ); // 15MB
+      const largeFile = createMockFile("large.txt", 15 * 1024 * 1024, "text/plain"); // 15MB
       const result = await pipeline.processFile(largeFile);
       expect(result.success).toBe(false);
       expect(result.error).toBe("File size exceeds maximum allowed size");
     });
 
     it("should respect custom size limits", async () => {
-      const customFile = createMockFile(
-        "test.txt",
-        2 * 1024 * 1024,
-        "text/plain",
-      ); // 2MB
+      const customFile = createMockFile("test.txt", 2 * 1024 * 1024, "text/plain"); // 2MB
       const result = await pipeline.processFile(customFile, {
         maxFileSize: 1024 * 1024,
       }); // 1MB limit
@@ -105,12 +86,7 @@ describe("File Validation Security", () => {
     });
 
     it("should reject dangerous string paths", async () => {
-      const dangerousPaths = [
-        "../etc/passwd",
-        "~/secret.txt",
-        "/etc/passwd",
-        "..\\..\\windows\\system32",
-      ];
+      const dangerousPaths = ["../etc/passwd", "~/secret.txt", "/etc/passwd", "..\\..\\windows\\system32"];
 
       for (const path of dangerousPaths) {
         const result = await pipeline.processFile(path);
@@ -122,7 +98,7 @@ describe("File Validation Security", () => {
 
   describe("Configuration Security", () => {
     it("should respect security configuration", () => {
-      const securePipeline = new FileProcessingPipeline({
+      const securePipeline = createTestPipeline({
         maxFileSize: 1024 * 1024, // 1MB
         defaultThumbnailSize: [100, 100],
       });

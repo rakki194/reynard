@@ -36,23 +36,18 @@ export interface ContentTypeDetectionResponse {
 /**
  * Check if a given object implements the ContentTypeDetectionResponse interface.
  */
-export function instanceOfContentTypeDetectionResponse(
-  value: object,
-): value is ContentTypeDetectionResponse {
-  if (!("contentType" in value) || value["contentType"] === undefined)
-    return false;
+export function instanceOfContentTypeDetectionResponse(value: object): value is ContentTypeDetectionResponse {
+  if (!("contentType" in value) || value["contentType"] === undefined) return false;
   return true;
 }
 
-export function ContentTypeDetectionResponseFromJSON(
-  json: any,
-): ContentTypeDetectionResponse {
+export function ContentTypeDetectionResponseFromJSON(json: any): ContentTypeDetectionResponse {
   return ContentTypeDetectionResponseFromJSONTyped(json, false);
 }
 
 export function ContentTypeDetectionResponseFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): ContentTypeDetectionResponse {
   if (json == null) {
     return json;
@@ -63,15 +58,13 @@ export function ContentTypeDetectionResponseFromJSONTyped(
   };
 }
 
-export function ContentTypeDetectionResponseToJSON(
-  json: any,
-): ContentTypeDetectionResponse {
+export function ContentTypeDetectionResponseToJSON(json: any): ContentTypeDetectionResponse {
   return ContentTypeDetectionResponseToJSONTyped(json, false);
 }
 
 export function ContentTypeDetectionResponseToJSONTyped(
   value?: ContentTypeDetectionResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

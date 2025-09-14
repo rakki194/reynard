@@ -3,14 +3,14 @@
  * Central engine for managing all visualization types with OKLCH color integration
  */
 
-import { createSignal, createEffect, onCleanup } from "solid-js";
 import {
-  formatOKLCH,
   createTagColorGenerator,
+  formatOKLCH,
   generateColorsWithCache,
   oklchToCSSWithAlpha,
   type ThemeName,
 } from "reynard-colors";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 
 export interface VisualizationConfig {
   /** Theme for color generation */
@@ -115,7 +115,7 @@ export class VisualizationEngine {
       this.config.lightness!,
       opacity,
       this.config.useOKLCH,
-      this.colorCache,
+      this.colorCache
     );
 
     // Update cache stats for performance monitoring
@@ -128,18 +128,11 @@ export class VisualizationEngine {
   /**
    * Generate colors for a specific tag/label
    */
-  public generateTagColors(
-    tags: string[],
-    opacity: number = 1,
-  ): Record<string, string> {
+  public generateTagColors(tags: string[], opacity: number = 1): Record<string, string> {
     const result: Record<string, string> = {};
 
     for (const tag of tags) {
-      const oklchColor = this.tagColorGenerator.getTagColor(
-        this.config.theme!,
-        tag,
-        1.0,
-      );
+      const oklchColor = this.tagColorGenerator.getTagColor(this.config.theme!, tag, 1.0);
 
       if (opacity < 1) {
         result[tag] = oklchToCSSWithAlpha(formatOKLCH(oklchColor), opacity);
@@ -203,10 +196,7 @@ export class VisualizationEngine {
    * Unregister a visualization
    */
   public unregisterVisualization(): void {
-    this.stats.activeVisualizations = Math.max(
-      0,
-      this.stats.activeVisualizations - 1,
-    );
+    this.stats.activeVisualizations = Math.max(0, this.stats.activeVisualizations - 1);
   }
 
   /**
@@ -317,13 +307,11 @@ export function useVisualizationEngine(config?: VisualizationConfig) {
   return {
     engine,
     stats,
-    generateColors: (count: number, opacity?: number) =>
-      engine.generateColors(count, opacity),
-    generateTagColors: (tags: string[], opacity?: number) =>
-      engine.generateTagColors(tags, opacity),
+    generateColors: (count: number, opacity?: number) => engine.generateColors(count, opacity),
+    generateOKLCHColors: (count: number, theme?: string) => engine.generateColors(count, 0.8), // Use existing method with default opacity
+    generateTagColors: (tags: string[], opacity?: number) => engine.generateTagColors(tags, opacity),
     generatePalette: (count: number) => engine.generatePalette(count),
-    updateConfig: (newConfig: Partial<VisualizationConfig>) =>
-      engine.updateConfig(newConfig),
+    updateConfig: (newConfig: Partial<VisualizationConfig>) => engine.updateConfig(newConfig),
     getConfig: () => engine.getConfig(),
     registerVisualization: () => engine.registerVisualization(),
     unregisterVisualization: () => engine.unregisterVisualization(),

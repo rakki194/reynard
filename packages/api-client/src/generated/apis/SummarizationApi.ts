@@ -85,7 +85,7 @@ export interface SummarizationApiInterface {
    */
   detectContentTypeApiSummarizationDetectContentTypePostRaw(
     requestParameters: DetectContentTypeApiSummarizationDetectContentTypePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ContentTypeDetectionResponse>>;
 
   /**
@@ -94,7 +94,7 @@ export interface SummarizationApiInterface {
    */
   detectContentTypeApiSummarizationDetectContentTypePost(
     requestParameters: DetectContentTypeApiSummarizationDetectContentTypePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ContentTypeDetectionResponse>;
 
   /**
@@ -105,16 +105,14 @@ export interface SummarizationApiInterface {
    * @memberof SummarizationApiInterface
    */
   getAvailableModelsApiSummarizationModelsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Get list of available models for summarization.  Returns the list of models that can be used for text summarization.
    * Get Available Models
    */
-  getAvailableModelsApiSummarizationModelsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  getAvailableModelsApiSummarizationModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Get current summarization service configuration.  Returns the current configuration parameters for the summarization service.
@@ -124,7 +122,7 @@ export interface SummarizationApiInterface {
    * @memberof SummarizationApiInterface
    */
   getConfigApiSummarizationConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<SummarizationConfigResponse>>;
 
   /**
@@ -132,7 +130,7 @@ export interface SummarizationApiInterface {
    * Get Config
    */
   getConfigApiSummarizationConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<SummarizationConfigResponse>;
 
   /**
@@ -143,7 +141,7 @@ export interface SummarizationApiInterface {
    * @memberof SummarizationApiInterface
    */
   getPerformanceStatsApiSummarizationStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<SummarizationStatsResponse>>;
 
   /**
@@ -151,7 +149,7 @@ export interface SummarizationApiInterface {
    * Get Performance Stats
    */
   getPerformanceStatsApiSummarizationStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<SummarizationStatsResponse>;
 
   /**
@@ -162,7 +160,7 @@ export interface SummarizationApiInterface {
    * @memberof SummarizationApiInterface
    */
   getSupportedContentTypesApiSummarizationContentTypesGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -170,7 +168,7 @@ export interface SummarizationApiInterface {
    * Get Supported Content Types
    */
   getSupportedContentTypesApiSummarizationContentTypesGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -181,7 +179,7 @@ export interface SummarizationApiInterface {
    * @memberof SummarizationApiInterface
    */
   healthCheckApiSummarizationHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<HealthCheckResponse>>;
 
   /**
@@ -189,7 +187,7 @@ export interface SummarizationApiInterface {
    * Health Check
    */
   healthCheckApiSummarizationHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<HealthCheckResponse>;
 
   /**
@@ -202,7 +200,7 @@ export interface SummarizationApiInterface {
    */
   summarizeBatchApiSummarizationSummarizeBatchPostRaw(
     requestParameters: SummarizeBatchApiSummarizationSummarizeBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -211,7 +209,7 @@ export interface SummarizationApiInterface {
    */
   summarizeBatchApiSummarizationSummarizeBatchPost(
     requestParameters: SummarizeBatchApiSummarizationSummarizeBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -224,7 +222,7 @@ export interface SummarizationApiInterface {
    */
   summarizeTextApiSummarizationSummarizePostRaw(
     requestParameters: SummarizeTextApiSummarizationSummarizePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<SummarizationResponse>>;
 
   /**
@@ -233,7 +231,7 @@ export interface SummarizationApiInterface {
    */
   summarizeTextApiSummarizationSummarizePost(
     requestParameters: SummarizeTextApiSummarizationSummarizePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<SummarizationResponse>;
 
   /**
@@ -246,7 +244,7 @@ export interface SummarizationApiInterface {
    */
   summarizeTextStreamApiSummarizationSummarizeStreamPostRaw(
     requestParameters: SummarizeTextStreamApiSummarizationSummarizeStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -255,7 +253,7 @@ export interface SummarizationApiInterface {
    */
   summarizeTextStreamApiSummarizationSummarizeStreamPost(
     requestParameters: SummarizeTextStreamApiSummarizationSummarizeStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -268,7 +266,7 @@ export interface SummarizationApiInterface {
    */
   updateConfigApiSummarizationConfigPostRaw(
     requestParameters: UpdateConfigApiSummarizationConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<SummarizationConfigResponse>>;
 
   /**
@@ -277,29 +275,26 @@ export interface SummarizationApiInterface {
    */
   updateConfigApiSummarizationConfigPost(
     requestParameters: UpdateConfigApiSummarizationConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<SummarizationConfigResponse>;
 }
 
 /**
  *
  */
-export class SummarizationApi
-  extends runtime.BaseAPI
-  implements SummarizationApiInterface
-{
+export class SummarizationApi extends runtime.BaseAPI implements SummarizationApiInterface {
   /**
    * Automatically detect the content type of text.  This endpoint analyzes text and determines the most appropriate content type for summarization.
    * Detect Content Type
    */
   async detectContentTypeApiSummarizationDetectContentTypePostRaw(
     requestParameters: DetectContentTypeApiSummarizationDetectContentTypePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ContentTypeDetectionResponse>> {
     if (requestParameters["contentTypeDetectionRequest"] == null) {
       throw new runtime.RequiredError(
         "contentTypeDetectionRequest",
-        'Required parameter "contentTypeDetectionRequest" was null or undefined when calling detectContentTypeApiSummarizationDetectContentTypePost().',
+        'Required parameter "contentTypeDetectionRequest" was null or undefined when calling detectContentTypeApiSummarizationDetectContentTypePost().'
       );
     }
 
@@ -317,16 +312,12 @@ export class SummarizationApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ContentTypeDetectionRequestToJSON(
-          requestParameters["contentTypeDetectionRequest"],
-        ),
+        body: ContentTypeDetectionRequestToJSON(requestParameters["contentTypeDetectionRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ContentTypeDetectionResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ContentTypeDetectionResponseFromJSON(jsonValue));
   }
 
   /**
@@ -335,13 +326,12 @@ export class SummarizationApi
    */
   async detectContentTypeApiSummarizationDetectContentTypePost(
     requestParameters: DetectContentTypeApiSummarizationDetectContentTypePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ContentTypeDetectionResponse> {
-    const response =
-      await this.detectContentTypeApiSummarizationDetectContentTypePostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.detectContentTypeApiSummarizationDetectContentTypePostRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -350,7 +340,7 @@ export class SummarizationApi
    * Get Available Models
    */
   async getAvailableModelsApiSummarizationModelsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -365,7 +355,7 @@ export class SummarizationApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -380,10 +370,9 @@ export class SummarizationApi
    * Get Available Models
    */
   async getAvailableModelsApiSummarizationModelsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getAvailableModelsApiSummarizationModelsGetRaw(initOverrides);
+    const response = await this.getAvailableModelsApiSummarizationModelsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -392,7 +381,7 @@ export class SummarizationApi
    * Get Config
    */
   async getConfigApiSummarizationConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<SummarizationConfigResponse>> {
     const queryParameters: any = {};
 
@@ -407,12 +396,10 @@ export class SummarizationApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SummarizationConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => SummarizationConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -420,10 +407,9 @@ export class SummarizationApi
    * Get Config
    */
   async getConfigApiSummarizationConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<SummarizationConfigResponse> {
-    const response =
-      await this.getConfigApiSummarizationConfigGetRaw(initOverrides);
+    const response = await this.getConfigApiSummarizationConfigGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -432,7 +418,7 @@ export class SummarizationApi
    * Get Performance Stats
    */
   async getPerformanceStatsApiSummarizationStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<SummarizationStatsResponse>> {
     const queryParameters: any = {};
 
@@ -447,12 +433,10 @@ export class SummarizationApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SummarizationStatsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => SummarizationStatsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -460,10 +444,9 @@ export class SummarizationApi
    * Get Performance Stats
    */
   async getPerformanceStatsApiSummarizationStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<SummarizationStatsResponse> {
-    const response =
-      await this.getPerformanceStatsApiSummarizationStatsGetRaw(initOverrides);
+    const response = await this.getPerformanceStatsApiSummarizationStatsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -472,7 +455,7 @@ export class SummarizationApi
    * Get Supported Content Types
    */
   async getSupportedContentTypesApiSummarizationContentTypesGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -487,7 +470,7 @@ export class SummarizationApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -502,12 +485,9 @@ export class SummarizationApi
    * Get Supported Content Types
    */
   async getSupportedContentTypesApiSummarizationContentTypesGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getSupportedContentTypesApiSummarizationContentTypesGetRaw(
-        initOverrides,
-      );
+    const response = await this.getSupportedContentTypesApiSummarizationContentTypesGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -516,7 +496,7 @@ export class SummarizationApi
    * Health Check
    */
   async healthCheckApiSummarizationHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<HealthCheckResponse>> {
     const queryParameters: any = {};
 
@@ -531,12 +511,10 @@ export class SummarizationApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      HealthCheckResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => HealthCheckResponseFromJSON(jsonValue));
   }
 
   /**
@@ -544,10 +522,9 @@ export class SummarizationApi
    * Health Check
    */
   async healthCheckApiSummarizationHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<HealthCheckResponse> {
-    const response =
-      await this.healthCheckApiSummarizationHealthGetRaw(initOverrides);
+    const response = await this.healthCheckApiSummarizationHealthGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -557,12 +534,12 @@ export class SummarizationApi
    */
   async summarizeBatchApiSummarizationSummarizeBatchPostRaw(
     requestParameters: SummarizeBatchApiSummarizationSummarizeBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["batchSummarizationRequest"] == null) {
       throw new runtime.RequiredError(
         "batchSummarizationRequest",
-        'Required parameter "batchSummarizationRequest" was null or undefined when calling summarizeBatchApiSummarizationSummarizeBatchPost().',
+        'Required parameter "batchSummarizationRequest" was null or undefined when calling summarizeBatchApiSummarizationSummarizeBatchPost().'
       );
     }
 
@@ -580,11 +557,9 @@ export class SummarizationApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: BatchSummarizationRequestToJSON(
-          requestParameters["batchSummarizationRequest"],
-        ),
+        body: BatchSummarizationRequestToJSON(requestParameters["batchSummarizationRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -600,13 +575,9 @@ export class SummarizationApi
    */
   async summarizeBatchApiSummarizationSummarizeBatchPost(
     requestParameters: SummarizeBatchApiSummarizationSummarizeBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.summarizeBatchApiSummarizationSummarizeBatchPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.summarizeBatchApiSummarizationSummarizeBatchPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -616,12 +587,12 @@ export class SummarizationApi
    */
   async summarizeTextApiSummarizationSummarizePostRaw(
     requestParameters: SummarizeTextApiSummarizationSummarizePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<SummarizationResponse>> {
     if (requestParameters["summarizationRequest"] == null) {
       throw new runtime.RequiredError(
         "summarizationRequest",
-        'Required parameter "summarizationRequest" was null or undefined when calling summarizeTextApiSummarizationSummarizePost().',
+        'Required parameter "summarizationRequest" was null or undefined when calling summarizeTextApiSummarizationSummarizePost().'
       );
     }
 
@@ -639,16 +610,12 @@ export class SummarizationApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: SummarizationRequestToJSON(
-          requestParameters["summarizationRequest"],
-        ),
+        body: SummarizationRequestToJSON(requestParameters["summarizationRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SummarizationResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => SummarizationResponseFromJSON(jsonValue));
   }
 
   /**
@@ -657,12 +624,9 @@ export class SummarizationApi
    */
   async summarizeTextApiSummarizationSummarizePost(
     requestParameters: SummarizeTextApiSummarizationSummarizePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<SummarizationResponse> {
-    const response = await this.summarizeTextApiSummarizationSummarizePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.summarizeTextApiSummarizationSummarizePostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -672,12 +636,12 @@ export class SummarizationApi
    */
   async summarizeTextStreamApiSummarizationSummarizeStreamPostRaw(
     requestParameters: SummarizeTextStreamApiSummarizationSummarizeStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["summarizationRequest"] == null) {
       throw new runtime.RequiredError(
         "summarizationRequest",
-        'Required parameter "summarizationRequest" was null or undefined when calling summarizeTextStreamApiSummarizationSummarizeStreamPost().',
+        'Required parameter "summarizationRequest" was null or undefined when calling summarizeTextStreamApiSummarizationSummarizeStreamPost().'
       );
     }
 
@@ -695,11 +659,9 @@ export class SummarizationApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: SummarizationRequestToJSON(
-          requestParameters["summarizationRequest"],
-        ),
+        body: SummarizationRequestToJSON(requestParameters["summarizationRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -715,13 +677,12 @@ export class SummarizationApi
    */
   async summarizeTextStreamApiSummarizationSummarizeStreamPost(
     requestParameters: SummarizeTextStreamApiSummarizationSummarizeStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.summarizeTextStreamApiSummarizationSummarizeStreamPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.summarizeTextStreamApiSummarizationSummarizeStreamPostRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -731,12 +692,12 @@ export class SummarizationApi
    */
   async updateConfigApiSummarizationConfigPostRaw(
     requestParameters: UpdateConfigApiSummarizationConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<SummarizationConfigResponse>> {
     if (requestParameters["summarizationConfigRequest"] == null) {
       throw new runtime.RequiredError(
         "summarizationConfigRequest",
-        'Required parameter "summarizationConfigRequest" was null or undefined when calling updateConfigApiSummarizationConfigPost().',
+        'Required parameter "summarizationConfigRequest" was null or undefined when calling updateConfigApiSummarizationConfigPost().'
       );
     }
 
@@ -754,16 +715,12 @@ export class SummarizationApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: SummarizationConfigRequestToJSON(
-          requestParameters["summarizationConfigRequest"],
-        ),
+        body: SummarizationConfigRequestToJSON(requestParameters["summarizationConfigRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      SummarizationConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => SummarizationConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -772,12 +729,9 @@ export class SummarizationApi
    */
   async updateConfigApiSummarizationConfigPost(
     requestParameters: UpdateConfigApiSummarizationConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<SummarizationConfigResponse> {
-    const response = await this.updateConfigApiSummarizationConfigPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.updateConfigApiSummarizationConfigPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 }

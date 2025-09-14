@@ -79,31 +79,14 @@ export interface OllamaStats {
  * Check if a given object implements the OllamaStats interface.
  */
 export function instanceOfOllamaStats(value: object): value is OllamaStats {
-  if (!("totalRequests" in value) || value["totalRequests"] === undefined)
-    return false;
-  if (
-    !("successfulRequests" in value) ||
-    value["successfulRequests"] === undefined
-  )
-    return false;
-  if (!("failedRequests" in value) || value["failedRequests"] === undefined)
-    return false;
-  if (
-    !("averageProcessingTime" in value) ||
-    value["averageProcessingTime"] === undefined
-  )
-    return false;
-  if (
-    !("totalTokensGenerated" in value) ||
-    value["totalTokensGenerated"] === undefined
-  )
-    return false;
-  if (!("modelUsage" in value) || value["modelUsage"] === undefined)
-    return false;
-  if (!("assistantUsage" in value) || value["assistantUsage"] === undefined)
-    return false;
-  if (!("toolsUsage" in value) || value["toolsUsage"] === undefined)
-    return false;
+  if (!("totalRequests" in value) || value["totalRequests"] === undefined) return false;
+  if (!("successfulRequests" in value) || value["successfulRequests"] === undefined) return false;
+  if (!("failedRequests" in value) || value["failedRequests"] === undefined) return false;
+  if (!("averageProcessingTime" in value) || value["averageProcessingTime"] === undefined) return false;
+  if (!("totalTokensGenerated" in value) || value["totalTokensGenerated"] === undefined) return false;
+  if (!("modelUsage" in value) || value["modelUsage"] === undefined) return false;
+  if (!("assistantUsage" in value) || value["assistantUsage"] === undefined) return false;
+  if (!("toolsUsage" in value) || value["toolsUsage"] === undefined) return false;
   if (!("errorRate" in value) || value["errorRate"] === undefined) return false;
   return true;
 }
@@ -112,10 +95,7 @@ export function OllamaStatsFromJSON(json: any): OllamaStats {
   return OllamaStatsFromJSONTyped(json, false);
 }
 
-export function OllamaStatsFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): OllamaStats {
+export function OllamaStatsFromJSONTyped(json: any, ignoreDiscriminator: boolean): OllamaStats {
   if (json == null) {
     return json;
   }
@@ -136,10 +116,7 @@ export function OllamaStatsToJSON(json: any): OllamaStats {
   return OllamaStatsToJSONTyped(json, false);
 }
 
-export function OllamaStatsToJSONTyped(
-  value?: OllamaStats | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function OllamaStatsToJSONTyped(value?: OllamaStats | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

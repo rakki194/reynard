@@ -36,9 +36,7 @@ export interface NLWebRollbackRequest {
 /**
  * Check if a given object implements the NLWebRollbackRequest interface.
  */
-export function instanceOfNLWebRollbackRequest(
-  value: object,
-): value is NLWebRollbackRequest {
+export function instanceOfNLWebRollbackRequest(value: object): value is NLWebRollbackRequest {
   if (!("enable" in value) || value["enable"] === undefined) return false;
   return true;
 }
@@ -47,10 +45,7 @@ export function NLWebRollbackRequestFromJSON(json: any): NLWebRollbackRequest {
   return NLWebRollbackRequestFromJSONTyped(json, false);
 }
 
-export function NLWebRollbackRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebRollbackRequest {
+export function NLWebRollbackRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebRollbackRequest {
   if (json == null) {
     return json;
   }
@@ -66,7 +61,7 @@ export function NLWebRollbackRequestToJSON(json: any): NLWebRollbackRequest {
 
 export function NLWebRollbackRequestToJSONTyped(
   value?: NLWebRollbackRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

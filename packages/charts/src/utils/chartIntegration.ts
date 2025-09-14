@@ -3,26 +3,26 @@
  * Provides a clean interface for integrating Chart.js directly with SolidJS
  */
 
-import { onCleanup, createSignal, createEffect } from "solid-js";
 import {
-  Chart as ChartJS,
+  ArcElement,
+  BarElement,
+  CategoryScale,
   ChartConfiguration,
   ChartData,
+  Chart as ChartJS,
   ChartOptions,
-  CategoryScale,
+  Filler,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
   TimeScale,
   TimeSeriesScale,
+  Title,
+  Tooltip,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 
 // Ensure Chart.js is properly loaded
 if (typeof window !== "undefined") {
@@ -51,21 +51,14 @@ if (ChartJS && ChartJS.register) {
       Legend,
       Filler,
       TimeScale,
-      TimeSeriesScale,
+      TimeSeriesScale
     );
-    console.log(
-      "🦊 chartIntegration: Chart.js components registered successfully",
-    );
+    console.log("🦊 chartIntegration: Chart.js components registered successfully");
   } catch (error) {
-    console.error(
-      "🦊 chartIntegration: Error registering Chart.js components",
-      error,
-    );
+    console.error("🦊 chartIntegration: Error registering Chart.js components", error);
   }
 } else {
-  console.error(
-    "🦊 chartIntegration: ChartJS or register function not available",
-  );
+  console.error("🦊 chartIntegration: ChartJS or register function not available");
 }
 
 export interface ChartIntegrationConfig {
@@ -99,9 +92,7 @@ export interface ChartIntegrationResult {
 /**
  * Create a direct Chart.js integration with SolidJS
  */
-export function createChartIntegration(
-  config: ChartIntegrationConfig,
-): ChartIntegrationResult {
+export function createChartIntegration(config: ChartIntegrationConfig): ChartIntegrationResult {
   const [chart, setChart] = createSignal<ChartJS | null>(null);
   let canvasElement: HTMLCanvasElement | null = null;
   let chartCreated = false;
@@ -133,10 +124,7 @@ export function createChartIntegration(
     }
 
     // Ensure canvas has proper document context for Chart.js
-    if (
-      !canvasElement.ownerDocument ||
-      !canvasElement.ownerDocument.defaultView
-    ) {
+    if (!canvasElement.ownerDocument || !canvasElement.ownerDocument.defaultView) {
       console.log("🦊 createChartIntegration: Fixing canvas document context");
       // Force the canvas to have a proper document context
       if (typeof window !== "undefined" && window.document) {
@@ -153,16 +141,11 @@ export function createChartIntegration(
     let originalGetComputedStyle: typeof window.getComputedStyle | undefined;
     if (typeof window !== "undefined" && window.getComputedStyle) {
       originalGetComputedStyle = window.getComputedStyle;
-      window.getComputedStyle = (
-        element: Element,
-        pseudoElt?: string | null,
-      ) => {
+      window.getComputedStyle = (element: Element, pseudoElt?: string | null) => {
         try {
           return originalGetComputedStyle!.call(window, element, pseudoElt);
         } catch (error) {
-          console.log(
-            "🦊 createChartIntegration: getComputedStyle failed, returning mock styles",
-          );
+          console.log("🦊 createChartIntegration: getComputedStyle failed, returning mock styles");
           // Return a mock CSSStyleDeclaration with default values
           return {
             width: "600px",
@@ -176,9 +159,7 @@ export function createChartIntegration(
       };
     }
 
-    console.log(
-      "🦊 createChartIntegration: Attempting chart creation directly",
-    );
+    console.log("🦊 createChartIntegration: Attempting chart creation directly");
 
     if (typeof window === "undefined") {
       console.log("🦊 createChartIntegration: No window object");
@@ -208,32 +189,25 @@ export function createChartIntegration(
     // Only create chart on client side
     if (typeof window !== "undefined" && ChartJS) {
       try {
-        console.log(
-          "🦊 createChartIntegration: About to create ChartJS instance",
-        );
+        console.log("🦊 createChartIntegration: About to create ChartJS instance");
 
         // Add a timeout to prevent hanging
         const timeoutId = setTimeout(() => {
-          console.error(
-            "🦊 createChartIntegration: Chart creation timed out after 5 seconds",
-          );
+          console.error("🦊 createChartIntegration: Chart creation timed out after 5 seconds");
         }, 5000);
 
         const chartInstance = new ChartJS(ctx, chartConfig);
         clearTimeout(timeoutId);
 
-        console.log(
-          "🦊 createChartIntegration: Chart instance created successfully",
-          chartInstance,
-        );
+        console.log("🦊 createChartIntegration: Chart instance created successfully", chartInstance);
         setChart(chartInstance);
         chartCreated = true;
         console.log("🦊 createChartIntegration: Chart creation completed");
       } catch (error) {
         console.error("🦊 createChartIntegration: Error creating chart", error);
         console.error("🦊 createChartIntegration: Error details:", {
-          message: error.message,
-          stack: error.stack,
+          message: (error as any).message,
+          stack: (error as any).stack,
           config: chartConfig,
           canvasElement: canvasElement,
           ctx: ctx,
@@ -245,13 +219,10 @@ export function createChartIntegration(
         }
       }
     } else {
-      console.log(
-        "🦊 createChartIntegration: Not in browser environment or ChartJS not available",
-        {
-          window: typeof window !== "undefined",
-          ChartJS: !!ChartJS,
-        },
-      );
+      console.log("🦊 createChartIntegration: Not in browser environment or ChartJS not available", {
+        window: typeof window !== "undefined",
+        ChartJS: !!ChartJS,
+      });
     }
   };
 
@@ -312,7 +283,7 @@ export function createChartIntegration(
  */
 export function createResponsiveChart(
   config: ChartIntegrationConfig,
-  containerClass: string = "reynard-chart-container",
+  containerClass: string = "reynard-chart-container"
 ) {
   const integration = createChartIntegration(config);
 

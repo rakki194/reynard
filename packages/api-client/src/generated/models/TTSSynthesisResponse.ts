@@ -66,14 +66,10 @@ export interface TTSSynthesisResponse {
 /**
  * Check if a given object implements the TTSSynthesisResponse interface.
  */
-export function instanceOfTTSSynthesisResponse(
-  value: object,
-): value is TTSSynthesisResponse {
+export function instanceOfTTSSynthesisResponse(value: object): value is TTSSynthesisResponse {
   if (!("success" in value) || value["success"] === undefined) return false;
-  if (!("backendUsed" in value) || value["backendUsed"] === undefined)
-    return false;
-  if (!("processingTime" in value) || value["processingTime"] === undefined)
-    return false;
+  if (!("backendUsed" in value) || value["backendUsed"] === undefined) return false;
+  if (!("processingTime" in value) || value["processingTime"] === undefined) return false;
   return true;
 }
 
@@ -81,10 +77,7 @@ export function TTSSynthesisResponseFromJSON(json: any): TTSSynthesisResponse {
   return TTSSynthesisResponseFromJSONTyped(json, false);
 }
 
-export function TTSSynthesisResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TTSSynthesisResponse {
+export function TTSSynthesisResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSSynthesisResponse {
   if (json == null) {
     return json;
   }
@@ -105,7 +98,7 @@ export function TTSSynthesisResponseToJSON(json: any): TTSSynthesisResponse {
 
 export function TTSSynthesisResponseToJSONTyped(
   value?: TTSSynthesisResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

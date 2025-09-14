@@ -23,34 +23,25 @@ export interface ValidationErrorLocInner {}
 /**
  * Check if a given object implements the ValidationErrorLocInner interface.
  */
-export function instanceOfValidationErrorLocInner(
-  value: object,
-): value is ValidationErrorLocInner {
+export function instanceOfValidationErrorLocInner(value: object): value is ValidationErrorLocInner {
   return true;
 }
 
-export function ValidationErrorLocInnerFromJSON(
-  json: any,
-): ValidationErrorLocInner {
+export function ValidationErrorLocInnerFromJSON(json: any): ValidationErrorLocInner {
   return ValidationErrorLocInnerFromJSONTyped(json, false);
 }
 
-export function ValidationErrorLocInnerFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ValidationErrorLocInner {
+export function ValidationErrorLocInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidationErrorLocInner {
   return json;
 }
 
-export function ValidationErrorLocInnerToJSON(
-  json: any,
-): ValidationErrorLocInner {
+export function ValidationErrorLocInnerToJSON(json: any): ValidationErrorLocInner {
   return ValidationErrorLocInnerToJSONTyped(json, false);
 }
 
 export function ValidationErrorLocInnerToJSONTyped(
   value?: ValidationErrorLocInner | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   return value;
 }

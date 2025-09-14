@@ -5,7 +5,6 @@ These tests verify the core functionality of the library.
 """
 
 import asyncio
-from datetime import datetime
 
 import pytest
 
@@ -15,10 +14,12 @@ from gatekeeper import (
     TokenConfig,
     UserAlreadyExistsError,
     UserCreate,
-    UserNotFoundError,
     UserRole,
 )
 from gatekeeper.backends.memory import MemoryBackend
+
+# Test constants
+EXPECTED_USER_COUNT = 2
 
 
 @pytest.fixture
@@ -168,7 +169,7 @@ async def test_list_users(auth_manager, sample_user_data):
 
     users = await auth_manager.list_users()
 
-    assert len(users) == 2
+    assert len(users) == EXPECTED_USER_COUNT
     usernames = [user.username for user in users]
     assert "testuser" in usernames
     assert "testuser2" in usernames

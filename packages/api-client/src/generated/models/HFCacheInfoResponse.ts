@@ -48,14 +48,11 @@ export interface HFCacheInfoResponse {
 /**
  * Check if a given object implements the HFCacheInfoResponse interface.
  */
-export function instanceOfHFCacheInfoResponse(
-  value: object,
-): value is HFCacheInfoResponse {
+export function instanceOfHFCacheInfoResponse(value: object): value is HFCacheInfoResponse {
   if (!("cacheDir" in value) || value["cacheDir"] === undefined) return false;
   if (!("hubDir" in value) || value["hubDir"] === undefined) return false;
   if (!("size" in value) || value["size"] === undefined) return false;
-  if (!("modelCount" in value) || value["modelCount"] === undefined)
-    return false;
+  if (!("modelCount" in value) || value["modelCount"] === undefined) return false;
   return true;
 }
 
@@ -63,10 +60,7 @@ export function HFCacheInfoResponseFromJSON(json: any): HFCacheInfoResponse {
   return HFCacheInfoResponseFromJSONTyped(json, false);
 }
 
-export function HFCacheInfoResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): HFCacheInfoResponse {
+export function HFCacheInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): HFCacheInfoResponse {
   if (json == null) {
     return json;
   }
@@ -84,7 +78,7 @@ export function HFCacheInfoResponseToJSON(json: any): HFCacheInfoResponse {
 
 export function HFCacheInfoResponseToJSONTyped(
   value?: HFCacheInfoResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

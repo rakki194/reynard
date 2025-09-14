@@ -84,13 +84,10 @@ export interface NLWebHealthStatus {
 /**
  * Check if a given object implements the NLWebHealthStatus interface.
  */
-export function instanceOfNLWebHealthStatus(
-  value: object,
-): value is NLWebHealthStatus {
+export function instanceOfNLWebHealthStatus(value: object): value is NLWebHealthStatus {
   if (!("status" in value) || value["status"] === undefined) return false;
   if (!("enabled" in value) || value["enabled"] === undefined) return false;
-  if (!("connectionState" in value) || value["connectionState"] === undefined)
-    return false;
+  if (!("connectionState" in value) || value["connectionState"] === undefined) return false;
   return true;
 }
 
@@ -98,10 +95,7 @@ export function NLWebHealthStatusFromJSON(json: any): NLWebHealthStatus {
   return NLWebHealthStatusFromJSONTyped(json, false);
 }
 
-export function NLWebHealthStatusFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebHealthStatus {
+export function NLWebHealthStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebHealthStatus {
   if (json == null) {
     return json;
   }
@@ -109,25 +103,13 @@ export function NLWebHealthStatusFromJSONTyped(
     status: json["status"],
     enabled: json["enabled"],
     connectionState: json["connection_state"],
-    connectionAttempts:
-      json["connection_attempts"] == null
-        ? undefined
-        : json["connection_attempts"],
-    lastOkTimestamp:
-      json["last_ok_timestamp"] == null
-        ? undefined
-        : new Date(json["last_ok_timestamp"]),
+    connectionAttempts: json["connection_attempts"] == null ? undefined : json["connection_attempts"],
+    lastOkTimestamp: json["last_ok_timestamp"] == null ? undefined : new Date(json["last_ok_timestamp"]),
     baseUrl: json["base_url"] == null ? undefined : json["base_url"],
-    canaryEnabled:
-      json["canary_enabled"] == null ? undefined : json["canary_enabled"],
-    canaryPercentage:
-      json["canary_percentage"] == null ? undefined : json["canary_percentage"],
-    rollbackEnabled:
-      json["rollback_enabled"] == null ? undefined : json["rollback_enabled"],
-    performanceMonitoring:
-      json["performance_monitoring"] == null
-        ? undefined
-        : json["performance_monitoring"],
+    canaryEnabled: json["canary_enabled"] == null ? undefined : json["canary_enabled"],
+    canaryPercentage: json["canary_percentage"] == null ? undefined : json["canary_percentage"],
+    rollbackEnabled: json["rollback_enabled"] == null ? undefined : json["rollback_enabled"],
+    performanceMonitoring: json["performance_monitoring"] == null ? undefined : json["performance_monitoring"],
   };
 }
 
@@ -137,7 +119,7 @@ export function NLWebHealthStatusToJSON(json: any): NLWebHealthStatus {
 
 export function NLWebHealthStatusToJSONTyped(
   value?: NLWebHealthStatus | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;
@@ -148,10 +130,7 @@ export function NLWebHealthStatusToJSONTyped(
     enabled: value["enabled"],
     connection_state: value["connectionState"],
     connection_attempts: value["connectionAttempts"],
-    last_ok_timestamp:
-      value["lastOkTimestamp"] === null
-        ? null
-        : (value["lastOkTimestamp"] as any)?.toISOString(),
+    last_ok_timestamp: value["lastOkTimestamp"] === null ? null : (value["lastOkTimestamp"] as any)?.toISOString(),
     base_url: value["baseUrl"],
     canary_enabled: value["canaryEnabled"],
     canary_percentage: value["canaryPercentage"],

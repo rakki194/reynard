@@ -33,20 +33,17 @@ export interface LazyExportResponse {
   isLoaded: boolean;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof LazyExportResponse
    */
-  metadata: object;
+  metadata: { [key: string]: any };
 }
 
 /**
  * Check if a given object implements the LazyExportResponse interface.
  */
-export function instanceOfLazyExportResponse(
-  value: object,
-): value is LazyExportResponse {
-  if (!("packageName" in value) || value["packageName"] === undefined)
-    return false;
+export function instanceOfLazyExportResponse(value: object): value is LazyExportResponse {
+  if (!("packageName" in value) || value["packageName"] === undefined) return false;
   if (!("isLoaded" in value) || value["isLoaded"] === undefined) return false;
   if (!("metadata" in value) || value["metadata"] === undefined) return false;
   return true;
@@ -56,10 +53,7 @@ export function LazyExportResponseFromJSON(json: any): LazyExportResponse {
   return LazyExportResponseFromJSONTyped(json, false);
 }
 
-export function LazyExportResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): LazyExportResponse {
+export function LazyExportResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): LazyExportResponse {
   if (json == null) {
     return json;
   }
@@ -76,7 +70,7 @@ export function LazyExportResponseToJSON(json: any): LazyExportResponse {
 
 export function LazyExportResponseToJSONTyped(
   value?: LazyExportResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

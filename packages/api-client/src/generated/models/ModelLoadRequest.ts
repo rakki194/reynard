@@ -21,18 +21,16 @@ import { mapValues } from "../runtime";
 export interface ModelLoadRequest {
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof ModelLoadRequest
    */
-  config?: object | null;
+  config?: { [key: string]: any } | null;
 }
 
 /**
  * Check if a given object implements the ModelLoadRequest interface.
  */
-export function instanceOfModelLoadRequest(
-  value: object,
-): value is ModelLoadRequest {
+export function instanceOfModelLoadRequest(value: object): value is ModelLoadRequest {
   return true;
 }
 
@@ -40,10 +38,7 @@ export function ModelLoadRequestFromJSON(json: any): ModelLoadRequest {
   return ModelLoadRequestFromJSONTyped(json, false);
 }
 
-export function ModelLoadRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ModelLoadRequest {
+export function ModelLoadRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ModelLoadRequest {
   if (json == null) {
     return json;
   }
@@ -58,7 +53,7 @@ export function ModelLoadRequestToJSON(json: any): ModelLoadRequest {
 
 export function ModelLoadRequestToJSONTyped(
   value?: ModelLoadRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

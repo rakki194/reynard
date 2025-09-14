@@ -1,13 +1,14 @@
 [flake8]
 max-line-length = 88
-extend-ignore = 
+extend-ignore =
     E203,
     E501,
     W503,
     E402,
     F401,
     F811
-exclude = 
+application-import-names = validation
+exclude =
     .git,
     __pycache__,
     .venv,
@@ -31,9 +32,15 @@ per-file-ignores =
     examples/*:E501,F401
     # Allow some flexibility in scripts
     scripts/*:E501,F401
+    # Allow single blank lines in Python stub files
+    *.pyi:E302
+    # Allow unused arguments in Python stub files (they're just type hints)
+    *.pyi:F841
+    # Allow undefined names in Python stub files (constants may be defined elsewhere)
+    *.pyi:F821
 max-complexity = 10
 max-file-length = 250
-select = 
+select =
     C,  # Complexity
     E,  # pycodestyle errors
     W,  # pycodestyle warnings

@@ -1,0 +1,68 @@
+{
+  "recommendations": [
+    // 🦊 Core Reynard Development Extensions
+
+    // Python Development
+    "charliermarsh.ruff",
+    "ms-python.python",
+    "ms-python.mypy-type-checker",
+    "ms-python.pylint",
+    "ms-python.black-formatter",
+    "ms-python.isort",
+    "ms-python.flake8",
+    "ms-python.bandit",
+
+    // TypeScript/JavaScript Development
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next",
+
+    // Shell Script Development
+    "foxundermoon.shell-format",
+    "timonwong.shellcheck",
+
+    // Markdown Documentation
+    "davidanson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
+    "shd101wyy.markdown-preview-enhanced",
+
+    // Configuration Files
+    "tamasfe.even-better-toml",
+    "redhat.vscode-yaml",
+    "ms-vscode.vscode-json",
+
+    // Git and Version Control
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+
+    // Development Tools
+    "ms-vscode.vscode-json",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-typescript-next",
+
+    // Testing
+    "vitest.explorer",
+    "ms-python.pytest",
+
+    // Docker
+    "ms-azuretools.vscode-docker",
+
+    // File Icons
+    "vscode-icons-team.vscode-icons",
+
+    // Code Quality
+    "sonarsource.sonarlint-vscode",
+    "ms-vscode.vscode-eslint",
+
+    // Utilities
+    "ms-vscode.hexeditor",
+    "ms-vscode.vscode-json",
+    "catppuccin.catppuccin-vsc-icons"
+  ],
+  "unwantedRecommendations": [
+    // Extensions that might conflict with our setup
+    "ms-python.autopep8"
+  ]
+}

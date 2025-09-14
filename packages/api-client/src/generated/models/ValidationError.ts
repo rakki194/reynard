@@ -50,9 +50,7 @@ export interface ValidationError {
 /**
  * Check if a given object implements the ValidationError interface.
  */
-export function instanceOfValidationError(
-  value: object,
-): value is ValidationError {
+export function instanceOfValidationError(value: object): value is ValidationError {
   if (!("loc" in value) || value["loc"] === undefined) return false;
   if (!("msg" in value) || value["msg"] === undefined) return false;
   if (!("type" in value) || value["type"] === undefined) return false;
@@ -63,17 +61,12 @@ export function ValidationErrorFromJSON(json: any): ValidationError {
   return ValidationErrorFromJSONTyped(json, false);
 }
 
-export function ValidationErrorFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ValidationError {
+export function ValidationErrorFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidationError {
   if (json == null) {
     return json;
   }
   return {
-    loc: (json["loc"] as Array<ValidationErrorLocInner>).map(
-      ValidationErrorLocInnerFromJSON,
-    ),
+    loc: (json["loc"] as Array<any>).map(ValidationErrorLocInnerFromJSON),
     msg: json["msg"],
     type: json["type"],
   };
@@ -83,18 +76,13 @@ export function ValidationErrorToJSON(json: any): ValidationError {
   return ValidationErrorToJSONTyped(json, false);
 }
 
-export function ValidationErrorToJSONTyped(
-  value?: ValidationError | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function ValidationErrorToJSONTyped(value?: ValidationError | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }
 
   return {
-    loc: (value["loc"] as Array<ValidationErrorLocInner>).map(
-      ValidationErrorLocInnerToJSON,
-    ),
+    loc: (value["loc"] as Array<any>).map(ValidationErrorLocInnerToJSON),
     msg: value["msg"],
     type: value["type"],
   };

@@ -4,7 +4,7 @@ Tests for edge cases and additional coverage in the Gatekeeper library.
 This module tests edge cases and scenarios that might not be covered by the main tests.
 """
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -17,6 +17,9 @@ from gatekeeper.models.token import TokenData
 from gatekeeper.models.user import User, UserUpdate
 from gatekeeper.utils.security import SecurityUtils
 from gatekeeper.utils.validators import PasswordValidator
+
+# Test constants
+DEFAULT_YAPCOIN_BALANCE = 100
 
 
 @pytest.fixture
@@ -58,27 +61,27 @@ class TestEdgeCases:
     def test_password_manager_high_security(self):
         """Test password manager with high security level."""
         pm = PasswordManager(security_level=SecurityLevel.HIGH)
-        is_strong, reason = pm.validate_password_strength("WeakPass123!")
+        _is_strong, reason = pm.validate_password_strength("WeakPass123!")
         # High security should be more strict
         assert "meets strength requirements" in reason or "too common" in reason
 
     def test_password_manager_medium_security(self):
         """Test password manager with medium security level."""
         pm = PasswordManager(security_level=SecurityLevel.MEDIUM)
-        is_strong, reason = pm.validate_password_strength("StrongPass123!")
+        is_strong, _reason = pm.validate_password_strength("StrongPass123!")
         assert is_strong is True
 
     def test_password_manager_very_high_security(self):
         """Test password manager with very high security level."""
         pm = PasswordManager(security_level=SecurityLevel.HIGH)
-        is_strong, reason = pm.validate_password_strength("WeakPass123!")
+        _is_strong, reason = pm.validate_password_strength("WeakPass123!")
         # High security should be more strict
         assert "meets strength requirements" in reason or "too common" in reason
 
     def test_password_manager_unknown_security(self):
         """Test password manager with unknown security level."""
         pm = PasswordManager(security_level="UNKNOWN")
-        is_strong, reason = pm.validate_password_strength("StrongPass123!")
+        is_strong, _reason = pm.validate_password_strength("StrongPass123!")
         # Should default to LOW security
         assert is_strong is True
 
@@ -371,8 +374,8 @@ class TestModelEdgeCases:
             email="test@example.com",
             role=UserRole.ADMIN,
             is_active=False,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
+            updated_at=datetime.now(UTC),
             password_hash="hash",
             profile_picture_url="https://example.com/avatar.jpg",
             yapcoin_balance=100,
@@ -385,22 +388,24 @@ class TestModelEdgeCases:
         assert user.is_active is False
         assert user.password_hash == "hash"
         assert user.profile_picture_url == "https://example.com/avatar.jpg"
-        assert user.yapcoin_balance == 100
+        assert user.yapcoin_balance == DEFAULT_YAPCOIN_BALANCE
         assert user.metadata == {"key": "value"}
 
     def test_token_model_edge_cases(self):
         """Test token model edge cases."""
         # Test token data with minimal fields - role is required
         token_data = TokenData(
-            sub="testuser", role="regular", type="access"  # Role is required
+            sub="testuser",
+            role="regular",
+            type="access",  # Role is required
         )
         assert token_data.sub == "testuser"
         assert token_data.role == "regular"
         assert token_data.type == "access"
 
         # Test token data with all fields
-        exp = datetime.now(timezone.utc) + timedelta(hours=1)
-        iat = datetime.now(timezone.utc)
+        exp = datetime.now(UTC) + timedelta(hours=1)
+        iat = datetime.now(UTC)
         token_data = TokenData(
             sub="testuser",
             role="admin",

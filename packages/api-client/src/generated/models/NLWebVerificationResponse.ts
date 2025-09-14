@@ -56,27 +56,20 @@ export interface NLWebVerificationResponse {
 /**
  * Check if a given object implements the NLWebVerificationResponse interface.
  */
-export function instanceOfNLWebVerificationResponse(
-  value: object,
-): value is NLWebVerificationResponse {
-  if (!("serviceAvailable" in value) || value["serviceAvailable"] === undefined)
-    return false;
-  if (!("configLoaded" in value) || value["configLoaded"] === undefined)
-    return false;
-  if (!("overallStatus" in value) || value["overallStatus"] === undefined)
-    return false;
+export function instanceOfNLWebVerificationResponse(value: object): value is NLWebVerificationResponse {
+  if (!("serviceAvailable" in value) || value["serviceAvailable"] === undefined) return false;
+  if (!("configLoaded" in value) || value["configLoaded"] === undefined) return false;
+  if (!("overallStatus" in value) || value["overallStatus"] === undefined) return false;
   return true;
 }
 
-export function NLWebVerificationResponseFromJSON(
-  json: any,
-): NLWebVerificationResponse {
+export function NLWebVerificationResponseFromJSON(json: any): NLWebVerificationResponse {
   return NLWebVerificationResponseFromJSONTyped(json, false);
 }
 
 export function NLWebVerificationResponseFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): NLWebVerificationResponse {
   if (json == null) {
     return json;
@@ -84,23 +77,18 @@ export function NLWebVerificationResponseFromJSONTyped(
   return {
     serviceAvailable: json["service_available"],
     configLoaded: json["config_loaded"],
-    checks:
-      json["checks"] == null
-        ? undefined
-        : (json["checks"] as Array<any>).map(NLWebVerificationCheckFromJSON),
+    checks: json["checks"] == null ? undefined : (json["checks"] as Array<any>).map(NLWebVerificationCheckFromJSON),
     overallStatus: json["overall_status"],
   };
 }
 
-export function NLWebVerificationResponseToJSON(
-  json: any,
-): NLWebVerificationResponse {
+export function NLWebVerificationResponseToJSON(json: any): NLWebVerificationResponse {
   return NLWebVerificationResponseToJSONTyped(json, false);
 }
 
 export function NLWebVerificationResponseToJSONTyped(
   value?: NLWebVerificationResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;
@@ -109,10 +97,7 @@ export function NLWebVerificationResponseToJSONTyped(
   return {
     service_available: value["serviceAvailable"],
     config_loaded: value["configLoaded"],
-    checks:
-      value["checks"] == null
-        ? undefined
-        : (value["checks"] as Array<any>).map(NLWebVerificationCheckToJSON),
+    checks: value["checks"] == null ? undefined : (value["checks"] as Array<any>).map(NLWebVerificationCheckToJSON),
     overall_status: value["overallStatus"],
   };
 }

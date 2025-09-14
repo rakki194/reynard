@@ -36,23 +36,19 @@ export interface ResizeDimensionsResponse {
 /**
  * Check if a given object implements the ResizeDimensionsResponse interface.
  */
-export function instanceOfResizeDimensionsResponse(
-  value: object,
-): value is ResizeDimensionsResponse {
+export function instanceOfResizeDimensionsResponse(value: object): value is ResizeDimensionsResponse {
   if (!("width" in value) || value["width"] === undefined) return false;
   if (!("height" in value) || value["height"] === undefined) return false;
   return true;
 }
 
-export function ResizeDimensionsResponseFromJSON(
-  json: any,
-): ResizeDimensionsResponse {
+export function ResizeDimensionsResponseFromJSON(json: any): ResizeDimensionsResponse {
   return ResizeDimensionsResponseFromJSONTyped(json, false);
 }
 
 export function ResizeDimensionsResponseFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): ResizeDimensionsResponse {
   if (json == null) {
     return json;
@@ -63,15 +59,13 @@ export function ResizeDimensionsResponseFromJSONTyped(
   };
 }
 
-export function ResizeDimensionsResponseToJSON(
-  json: any,
-): ResizeDimensionsResponse {
+export function ResizeDimensionsResponseToJSON(json: any): ResizeDimensionsResponse {
   return ResizeDimensionsResponseToJSONTyped(json, false);
 }
 
 export function ResizeDimensionsResponseToJSONTyped(
   value?: ResizeDimensionsResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

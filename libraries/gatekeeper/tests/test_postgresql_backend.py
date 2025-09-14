@@ -2,14 +2,17 @@
 Tests for PostgreSQL backend functionality in the Gatekeeper library.
 """
 
-import asyncio
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 from gatekeeper.backends.postgresql import PostgreSQLBackend
-from gatekeeper.models.user import User, UserCreate, UserPublic, UserRole, UserUpdate
+from gatekeeper.models.user import UserCreate, UserPublic, UserRole, UserUpdate
+
+# Test constants
+EXPECTED_USER_COUNT = 3
+EXPECTED_PAGINATED_COUNT = 5
 
 
 class TestPostgreSQLBackend:
@@ -33,11 +36,11 @@ class TestPostgreSQLBackend:
         mock_user.password_hash = kwargs.get("password_hash", "hashed_password")
         mock_user.role = kwargs.get("role", "regular")
         mock_user.email = kwargs.get("email", "test@example.com")
-        mock_user.profile_picture_url = kwargs.get("profile_picture_url", None)
+        mock_user.profile_picture_url = kwargs.get("profile_picture_url")
         mock_user.yapcoin_balance = kwargs.get("yapcoin_balance", 0)
         mock_user.is_active = kwargs.get("is_active", True)
-        mock_user.created_at = kwargs.get("created_at", datetime.now(timezone.utc))
-        mock_user.updated_at = kwargs.get("updated_at", datetime.now(timezone.utc))
+        mock_user.created_at = kwargs.get("created_at", datetime.now(UTC))
+        mock_user.updated_at = kwargs.get("updated_at", datetime.now(UTC))
         mock_user.user_metadata = kwargs.get("user_metadata", {})
         return mock_user
 
@@ -175,14 +178,12 @@ class TestPostgreSQLBackend:
                 )
                 mock_users.append(mock_user)
 
-            mock_db.query.return_value.offset.return_value.limit.return_value.all.return_value = (
-                mock_users
-            )
+            mock_db.query.return_value.offset.return_value.limit.return_value.all.return_value = mock_users
 
             # Test listing users
             users = await backend.list_users(skip=0, limit=10)
 
-            assert len(users) == 3
+            assert len(users) == EXPECTED_USER_COUNT
             assert all(isinstance(user, UserPublic) for user in users)
 
     @pytest.mark.asyncio
@@ -198,7 +199,7 @@ class TestPostgreSQLBackend:
             # Test counting users
             count = await backend.count_users()
 
-            assert count == 5
+            assert count == EXPECTED_PAGINATED_COUNT
 
     @pytest.mark.asyncio
     async def test_health_check(self, backend):

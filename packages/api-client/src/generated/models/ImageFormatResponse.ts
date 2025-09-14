@@ -48,9 +48,7 @@ export interface ImageFormatResponse {
 /**
  * Check if a given object implements the ImageFormatResponse interface.
  */
-export function instanceOfImageFormatResponse(
-  value: object,
-): value is ImageFormatResponse {
+export function instanceOfImageFormatResponse(value: object): value is ImageFormatResponse {
   if (!("extension" in value) || value["extension"] === undefined) return false;
   if (!("mimeType" in value) || value["mimeType"] === undefined) return false;
   if (!("supported" in value) || value["supported"] === undefined) return false;
@@ -61,10 +59,7 @@ export function ImageFormatResponseFromJSON(json: any): ImageFormatResponse {
   return ImageFormatResponseFromJSONTyped(json, false);
 }
 
-export function ImageFormatResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ImageFormatResponse {
+export function ImageFormatResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageFormatResponse {
   if (json == null) {
     return json;
   }
@@ -72,8 +67,7 @@ export function ImageFormatResponseFromJSONTyped(
     extension: json["extension"],
     mimeType: json["mime_type"],
     supported: json["supported"],
-    requiresPlugin:
-      json["requires_plugin"] == null ? undefined : json["requires_plugin"],
+    requiresPlugin: json["requires_plugin"] == null ? undefined : json["requires_plugin"],
   };
 }
 
@@ -83,7 +77,7 @@ export function ImageFormatResponseToJSON(json: any): ImageFormatResponse {
 
 export function ImageFormatResponseToJSONTyped(
   value?: ImageFormatResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

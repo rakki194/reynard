@@ -1,0 +1,23 @@
+{
+  "name": "reynard-vscode-commands",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Custom VSCode commands for Reynard markdown validation",
+  "main": "index.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "reynard.validateMarkdown",
+        "title": "🦊 Validate Markdown File",
+        "category": "Reynard"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "reynard.validateMarkdown",
+        "key": "ctrl+shift+m",
+        "when": "editorTextFocus && resourceExtname == '.md'"
+      }
+    ]
+  }
+}

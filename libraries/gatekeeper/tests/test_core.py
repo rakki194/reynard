@@ -4,7 +4,7 @@ Tests for core functionality in the Gatekeeper library.
 This module tests the auth manager, password manager, and token manager.
 """
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -105,7 +105,7 @@ class TestTokenManager:
             type="access",
             username="testuser",
             role=UserRole.REGULAR,
-            exp=datetime.now(timezone.utc) + timedelta(hours=1),
+            exp=datetime.now(UTC) + timedelta(hours=1),
         )
 
         token = token_manager.create_access_token(token_data)
@@ -120,7 +120,7 @@ class TestTokenManager:
             type="refresh",
             username="testuser",
             role=UserRole.REGULAR,
-            exp=datetime.now(timezone.utc) + timedelta(days=7),
+            exp=datetime.now(UTC) + timedelta(days=7),
         )
 
         token = token_manager.create_refresh_token(token_data)
@@ -135,7 +135,7 @@ class TestTokenManager:
             type="access",
             username="testuser",
             role=UserRole.REGULAR,
-            exp=datetime.now(timezone.utc) + timedelta(hours=1),
+            exp=datetime.now(UTC) + timedelta(hours=1),
         )
 
         token = token_manager.create_access_token(token_data)
@@ -159,7 +159,7 @@ class TestTokenManager:
             type="access",
             username="testuser",
             role=UserRole.REGULAR,
-            exp=datetime.now(timezone.utc) - timedelta(hours=1),  # Expired
+            exp=datetime.now(UTC) - timedelta(hours=1),  # Expired
         )
 
         token = token_manager.create_access_token(token_data)
@@ -175,7 +175,7 @@ class TestTokenManager:
             type="refresh",
             username="testuser",
             role=UserRole.REGULAR,
-            exp=datetime.now(timezone.utc) + timedelta(days=7),
+            exp=datetime.now(UTC) + timedelta(days=7),
         )
 
         refresh_token = token_manager.create_refresh_token(token_data)
@@ -486,7 +486,7 @@ class TestAuthManager:
         is_strong, reason = auth_manager.validate_password_strength("StrongPass123!")
         assert is_strong is True
 
-        is_strong, reason = auth_manager.validate_password_strength("weak")
+        is_strong, _reason = auth_manager.validate_password_strength("weak")
         assert is_strong is False
 
     @pytest.mark.asyncio

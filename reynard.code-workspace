@@ -1,0 +1,90 @@
+{
+  "folders": [
+    {
+      "name": "🦊 Reynard Root",
+      "path": ".",
+    },
+    {
+      "name": "📦 Packages",
+      "path": "./packages",
+    },
+    {
+      "name": "🎯 Examples",
+      "path": "./examples",
+    },
+    {
+      "name": "📋 Templates",
+      "path": "./templates",
+    },
+    {
+      "name": "🐍 Backend",
+      "path": "./backend",
+    },
+    {
+      "name": "🧪 E2E Tests",
+      "path": "./e2e",
+    },
+    {
+      "name": "📚 Documentation",
+      "path": "./docs",
+    },
+    {
+      "name": "🔧 Scripts",
+      "path": "./scripts",
+    },
+    {
+      "name": "📚 Libraries",
+      "path": "./libraries",
+    },
+  ],
+  "settings": {
+    "task.autoDetect": "on",
+    "task.showDecorations": "always",
+    "files.autoSave": "onFocusChange",
+    "files.autoSaveDelay": 1000,
+  },
+  "extensions": {
+    "recommendations": [
+      "charliermarsh.ruff",
+      "ms-python.python",
+      "ms-python.mypy-type-checker",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "bradlc.vscode-tailwindcss",
+      "ms-vscode.vscode-typescript-next",
+      "foxundermoon.shell-format",
+      "timonwong.shellcheck",
+      "davidanson.vscode-markdownlint",
+      "yzhang.markdown-all-in-one",
+      "tamasfe.even-better-toml",
+      "redhat.vscode-yaml",
+      "ms-vscode.hexeditor",
+      "ms-vscode.vscode-json",
+    ],
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🔄 Auto-Start Queue-Based Watcher",
+        "type": "shell",
+        "command": "./.vscode/start-queue-watcher.sh",
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "never",
+          "focus": false,
+          "panel": "dedicated",
+          "showReuseMessage": false,
+          "clear": false,
+        },
+        "isBackground": true,
+        "runOptions": {
+          "runOn": "folderOpen",
+        },
+        "problemMatcher": [],
+        "detail": "Automatically start queue-based watcher when workspace opens",
+      },
+    ],
+  },
+}

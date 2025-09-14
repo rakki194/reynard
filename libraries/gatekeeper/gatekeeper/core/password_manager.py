@@ -6,22 +6,29 @@ supporting modern Argon2 hashing with optimal security parameters.
 """
 
 import logging
-import os
-import re
 import secrets
 from enum import Enum
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 try:
     from argon2 import PasswordHasher
     from argon2.exceptions import VerificationError
-except ImportError:
+except ImportError as exc:
     raise ImportError(
         "argon2-cffi is required for password hashing. "
         "Install with: pip install argon2-cffi"
-    )
+    ) from exc
 
 logger = logging.getLogger(__name__)
+
+# Constants for hash parsing
+ARGON2_HASH_MIN_PARTS = 5
+ARGON2_PARAMS_COUNT = 3
+ARGON2_MIN_PARTS = 2
+
+# Password validation constants
+MIN_PASSWORD_LENGTH = 8
+MAX_PASSWORD_LENGTH = 128
 
 
 class Argon2Variant(Enum):
@@ -90,7 +97,7 @@ class PasswordManager:
             security_level: The security level to use for password hashing
         """
         self.security_level = security_level
-        self._password_hasher: Optional[PasswordHasher] = None
+        self._password_hasher: PasswordHasher | None = None
 
     def get_security_level(self) -> SecurityLevel:
         """
@@ -101,12 +108,12 @@ class PasswordManager:
         """
         return self.security_level
 
-    def get_argon2_params(self) -> Dict[str, Any]:
+    def get_argon2_params(self) -> dict[str, Any]:
         """
         Get Argon2 parameters based on the current security level.
 
         Returns:
-            Dict[str, Any]: Argon2 parameters dictionary
+            dict[str, Any]: Argon2 parameters dictionary
         """
         return SECURITY_PARAMS[self.security_level].copy()
 
@@ -132,9 +139,11 @@ class PasswordManager:
             )
 
             logger.info(
-                f"Initialized Argon2 password hasher with {self.security_level.value} "
-                f"security level (t={params['time_cost']}, m={params['memory_cost']}, "
-                f"p={params['parallelism']})"
+                "Initialized Argon2 password hasher with %s security level (t=%d, m=%d, p=%d)",
+                self.security_level.value,
+                params["time_cost"],
+                params["memory_cost"],
+                params["parallelism"],
             )
 
         return self._password_hasher
@@ -183,19 +192,16 @@ class PasswordManager:
             except VerificationError:
                 return False
             except Exception as e:
-                logger.warning(f"Error verifying Argon2 hash: {e}")
+                logger.warning("Error verifying Argon2 hash: %s", e)
                 return False
 
         # Unknown hash format
-        else:
-            logger.warning(
-                f"Unknown hash format encountered: {hashed_password[:20]}..."
-            )
-            return False
+        logger.warning("Unknown hash format encountered: %s...", hashed_password[:20])
+        return False
 
     def verify_and_update_password(
         self, password: str, hashed_password: str
-    ) -> Tuple[bool, Optional[str]]:
+    ) -> tuple[bool, str | None]:
         """
         Verify a password and return updated hash if needed.
 
@@ -208,7 +214,7 @@ class PasswordManager:
             hashed_password: Stored password hash
 
         Returns:
-            Tuple[bool, Optional[str]]: (is_valid, new_hash_if_needed)
+            tuple[bool, str | None]: (is_valid, new_hash_if_needed)
         """
         if not password or not hashed_password:
             return False, None
@@ -230,15 +236,12 @@ class PasswordManager:
             except VerificationError:
                 return False, None
             except Exception as e:
-                logger.warning(f"Error verifying Argon2 hash: {e}")
+                logger.warning("Error verifying Argon2 hash: %s", e)
                 return False, None
 
         # Unknown hash format
-        else:
-            logger.warning(
-                f"Unknown hash format encountered: {hashed_password[:20]}..."
-            )
-            return False, None
+        logger.warning("Unknown hash format encountered: %s...", hashed_password[:20])
+        return False, None
 
     def _needs_argon2_update(self, hashed_password: str) -> bool:
         """
@@ -253,17 +256,15 @@ class PasswordManager:
         try:
             # Parse the hash to extract parameters
             parts = hashed_password.split("$")
-            if len(parts) < 5:
+            if len(parts) < ARGON2_HASH_MIN_PARTS:
                 return True
 
             # Extract parameters from hash
-            variant = parts[1]
-            version = parts[2]
             params_str = parts[3]
 
             # Parse memory, time, and parallelism from params
             param_parts = params_str.split(",")
-            if len(param_parts) != 3:
+            if len(param_parts) != ARGON2_PARAMS_COUNT:
                 return True
 
             try:
@@ -277,17 +278,14 @@ class PasswordManager:
             current_params = self.get_argon2_params()
 
             # Check if any parameters need updating
-            if (
+            return bool(
                 memory_cost != current_params["memory_cost"]
                 or time_cost != current_params["time_cost"]
                 or parallelism != current_params["parallelism"]
-            ):
-                return True
-
-            return False
+            )
 
         except Exception as e:
-            logger.warning(f"Error parsing Argon2 hash parameters: {e}")
+            logger.warning("Error parsing Argon2 hash parameters: %s", e)
             return True
 
     def is_argon2_hash(self, hashed_password: str) -> bool:
@@ -314,10 +312,9 @@ class PasswordManager:
         """
         if self.is_argon2_hash(hashed_password):
             return "argon2"
-        else:
-            return "unknown"
+        return "unknown"
 
-    def get_hash_variant(self, hashed_password: str) -> Optional[str]:
+    def get_hash_variant(self, hashed_password: str) -> str | None:
         """
         Get the specific Argon2 variant used in a hash.
 
@@ -332,10 +329,10 @@ class PasswordManager:
 
         try:
             parts = hashed_password.split("$")
-            if len(parts) >= 2:
+            if len(parts) >= ARGON2_MIN_PARTS:
                 return parts[1]
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug("Error parsing hash variant: %s", e)
 
         return None
 
@@ -353,7 +350,7 @@ class PasswordManager:
 
     def benchmark_hash_time(
         self, password: str, iterations: int = 10
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """
         Benchmark hash performance for different security levels.
 
@@ -362,7 +359,7 @@ class PasswordManager:
             iterations: Number of iterations to run
 
         Returns:
-            Dict[str, float]: Average time per hash for each security level
+            dict[str, float]: Average time per hash for each security level
         """
         results = {}
 
@@ -389,7 +386,7 @@ class PasswordManager:
 
         return results
 
-    def validate_password_strength(self, password: str) -> Tuple[bool, str]:
+    def validate_password_strength(self, password: str) -> tuple[bool, str]:
         """
         Validate password strength according to modern security standards.
 
@@ -397,16 +394,22 @@ class PasswordManager:
             password: Password to validate
 
         Returns:
-            Tuple[bool, str]: (is_strong, reason)
+            tuple[bool, str]: (is_strong, reason)
         """
         if not password:
             return False, "Password cannot be empty"
 
-        if len(password) < 8:
-            return False, "Password must be at least 8 characters long"
+        if len(password) < MIN_PASSWORD_LENGTH:
+            return (
+                False,
+                f"Password must be at least {MIN_PASSWORD_LENGTH} characters long",
+            )
 
-        if len(password) > 128:
-            return False, "Password must be no more than 128 characters long"
+        if len(password) > MAX_PASSWORD_LENGTH:
+            return (
+                False,
+                f"Password must be no more than {MAX_PASSWORD_LENGTH} characters long",
+            )
 
         # Check for common weak patterns
         common_passwords = {
@@ -429,7 +432,6 @@ class PasswordManager:
         has_lower = any(c.islower() for c in password)
         has_upper = any(c.isupper() for c in password)
         has_digit = any(c.isdigit() for c in password)
-        has_special = any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password)
 
         if not (has_lower and has_upper and has_digit):
             return (
@@ -439,7 +441,7 @@ class PasswordManager:
 
         return True, "Password meets strength requirements"
 
-    def get_hash_info(self, hashed_password: str) -> Dict[str, Any]:
+    def get_hash_info(self, hashed_password: str) -> dict[str, Any]:
         """
         Get detailed information about a password hash.
 
@@ -447,9 +449,9 @@ class PasswordManager:
             hashed_password: Password hash to analyze
 
         Returns:
-            Dict[str, Any]: Hash information including algorithm, parameters, etc.
+            dict[str, Any]: Hash information including algorithm, parameters, etc.
         """
-        info = {
+        info: dict[str, Any] = {
             "algorithm": self.get_hash_algorithm(hashed_password),
             "variant": None,
             "parameters": {},
@@ -463,16 +465,16 @@ class PasswordManager:
             # Parse Argon2 parameters
             try:
                 parts = hashed_password.split("$")
-                if len(parts) >= 5:
+                if len(parts) >= ARGON2_HASH_MIN_PARTS:
                     params_str = parts[3]
                     param_parts = params_str.split(",")
-                    if len(param_parts) == 3:
+                    if len(param_parts) == ARGON2_PARAMS_COUNT:
                         info["parameters"] = {
                             "memory_cost": int(param_parts[0].split("=")[1]),
                             "time_cost": int(param_parts[1].split("=")[1]),
                             "parallelism": int(param_parts[2].split("=")[1]),
                         }
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug("Error parsing Argon2 parameters: %s", e)
 
         return info

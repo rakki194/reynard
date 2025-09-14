@@ -50,7 +50,7 @@ export interface CaptionUploadApiInterface {
    */
   uploadAndGenerateCaptionApiCaptionUploadPostRaw(
     requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<CaptionResponse>>;
 
   /**
@@ -59,36 +59,33 @@ export interface CaptionUploadApiInterface {
    */
   uploadAndGenerateCaptionApiCaptionUploadPost(
     requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<CaptionResponse>;
 }
 
 /**
  *
  */
-export class CaptionUploadApi
-  extends runtime.BaseAPI
-  implements CaptionUploadApiInterface
-{
+export class CaptionUploadApi extends runtime.BaseAPI implements CaptionUploadApiInterface {
   /**
    * Upload an image and generate a caption for it.
    * Upload And Generate Caption
    */
   async uploadAndGenerateCaptionApiCaptionUploadPostRaw(
     requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<CaptionResponse>> {
     if (requestParameters["file"] == null) {
       throw new runtime.RequiredError(
         "file",
-        'Required parameter "file" was null or undefined when calling uploadAndGenerateCaptionApiCaptionUploadPost().',
+        'Required parameter "file" was null or undefined when calling uploadAndGenerateCaptionApiCaptionUploadPost().'
       );
     }
 
     if (requestParameters["generatorName"] == null) {
       throw new runtime.RequiredError(
         "generatorName",
-        'Required parameter "generatorName" was null or undefined when calling uploadAndGenerateCaptionApiCaptionUploadPost().',
+        'Required parameter "generatorName" was null or undefined when calling uploadAndGenerateCaptionApiCaptionUploadPost().'
       );
     }
 
@@ -96,9 +93,7 @@ export class CaptionUploadApi
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    const consumes: runtime.Consume[] = [
-      { contentType: "multipart/form-data" },
-    ];
+    const consumes: runtime.Consume[] = [{ contentType: "multipart/form-data" }];
     // @ts-ignore: canConsumeForm may be unused
     const canConsumeForm = runtime.canConsumeForm(consumes);
 
@@ -117,10 +112,7 @@ export class CaptionUploadApi
     }
 
     if (requestParameters["generatorName"] != null) {
-      formParams.append(
-        "generator_name",
-        requestParameters["generatorName"] as any,
-      );
+      formParams.append("generator_name", requestParameters["generatorName"] as any);
     }
 
     if (requestParameters["config"] != null) {
@@ -132,10 +124,7 @@ export class CaptionUploadApi
     }
 
     if (requestParameters["postProcess"] != null) {
-      formParams.append(
-        "post_process",
-        requestParameters["postProcess"] as any,
-      );
+      formParams.append("post_process", requestParameters["postProcess"] as any);
     }
 
     let urlPath = `/api/caption/upload`;
@@ -148,12 +137,10 @@ export class CaptionUploadApi
         query: queryParameters,
         body: formParams,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      CaptionResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => CaptionResponseFromJSON(jsonValue));
   }
 
   /**
@@ -162,12 +149,9 @@ export class CaptionUploadApi
    */
   async uploadAndGenerateCaptionApiCaptionUploadPost(
     requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<CaptionResponse> {
-    const response = await this.uploadAndGenerateCaptionApiCaptionUploadPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.uploadAndGenerateCaptionApiCaptionUploadPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 }

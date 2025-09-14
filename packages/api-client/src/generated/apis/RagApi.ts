@@ -92,16 +92,14 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   clearCacheApiRagApiRagAdminClearCachePostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Clear the RAG system cache.
    * Clear Cache
    */
-  clearCacheApiRagApiRagAdminClearCachePost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  clearCacheApiRagApiRagAdminClearCachePost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Clear the RAG system cache.
@@ -111,16 +109,14 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   clearCacheApiRagApiRagAdminClearCachePost_1Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Clear the RAG system cache.
    * Clear Cache
    */
-  clearCacheApiRagApiRagAdminClearCachePost_1(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  clearCacheApiRagApiRagAdminClearCachePost_1(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Get current indexing status.
@@ -130,7 +126,7 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   getIndexingStatusApiRagApiRagAdminIndexingStatusGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGIndexingStatusResponse>>;
 
   /**
@@ -138,7 +134,7 @@ export interface RagApiInterface {
    * Get Indexing Status
    */
   getIndexingStatusApiRagApiRagAdminIndexingStatusGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGIndexingStatusResponse>;
 
   /**
@@ -149,7 +145,7 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   getIndexingStatusApiRagApiRagAdminIndexingStatusGet_2Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGIndexingStatusResponse>>;
 
   /**
@@ -157,7 +153,7 @@ export interface RagApiInterface {
    * Get Indexing Status
    */
   getIndexingStatusApiRagApiRagAdminIndexingStatusGet_2(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGIndexingStatusResponse>;
 
   /**
@@ -168,7 +164,7 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   getRagConfigApiRagApiRagConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGConfigResponse>>;
 
   /**
@@ -176,7 +172,7 @@ export interface RagApiInterface {
    * Get Rag Config
    */
   getRagConfigApiRagApiRagConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGConfigResponse>;
 
   /**
@@ -187,7 +183,7 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   getRagConfigApiRagApiRagConfigGet_3Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGConfigResponse>>;
 
   /**
@@ -195,7 +191,7 @@ export interface RagApiInterface {
    * Get Rag Config
    */
   getRagConfigApiRagApiRagConfigGet_3(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGConfigResponse>;
 
   /**
@@ -206,7 +202,7 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   getRagStatsApiRagApiRagAdminStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGStatsResponse>>;
 
   /**
@@ -214,7 +210,7 @@ export interface RagApiInterface {
    * Get Rag Stats
    */
   getRagStatsApiRagApiRagAdminStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGStatsResponse>;
 
   /**
@@ -225,7 +221,7 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   getRagStatsApiRagApiRagAdminStatsGet_4Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGStatsResponse>>;
 
   /**
@@ -233,7 +229,7 @@ export interface RagApiInterface {
    * Get Rag Stats
    */
   getRagStatsApiRagApiRagAdminStatsGet_4(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGStatsResponse>;
 
   /**
@@ -246,7 +242,7 @@ export interface RagApiInterface {
    */
   ingestDocumentsApiRagApiRagIngestPostRaw(
     requestParameters: IngestDocumentsApiRagApiRagIngestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGIngestResponse>>;
 
   /**
@@ -255,7 +251,7 @@ export interface RagApiInterface {
    */
   ingestDocumentsApiRagApiRagIngestPost(
     requestParameters: IngestDocumentsApiRagApiRagIngestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGIngestResponse>;
 
   /**
@@ -268,7 +264,7 @@ export interface RagApiInterface {
    */
   ingestDocumentsApiRagApiRagIngestPost_5Raw(
     requestParameters: IngestDocumentsApiRagApiRagIngestPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGIngestResponse>>;
 
   /**
@@ -277,7 +273,7 @@ export interface RagApiInterface {
    */
   ingestDocumentsApiRagApiRagIngestPost_5(
     requestParameters: IngestDocumentsApiRagApiRagIngestPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGIngestResponse>;
 
   /**
@@ -290,7 +286,7 @@ export interface RagApiInterface {
    */
   ingestDocumentsStreamApiRagApiRagIngestStreamPostRaw(
     requestParameters: IngestDocumentsStreamApiRagApiRagIngestStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -299,7 +295,7 @@ export interface RagApiInterface {
    */
   ingestDocumentsStreamApiRagApiRagIngestStreamPost(
     requestParameters: IngestDocumentsStreamApiRagApiRagIngestStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -312,7 +308,7 @@ export interface RagApiInterface {
    */
   ingestDocumentsStreamApiRagApiRagIngestStreamPost_6Raw(
     requestParameters: IngestDocumentsStreamApiRagApiRagIngestStreamPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -321,7 +317,7 @@ export interface RagApiInterface {
    */
   ingestDocumentsStreamApiRagApiRagIngestStreamPost_6(
     requestParameters: IngestDocumentsStreamApiRagApiRagIngestStreamPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -334,7 +330,7 @@ export interface RagApiInterface {
    */
   queryRagApiRagApiRagQueryPostRaw(
     requestParameters: QueryRagApiRagApiRagQueryPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGQueryResponse>>;
 
   /**
@@ -343,7 +339,7 @@ export interface RagApiInterface {
    */
   queryRagApiRagApiRagQueryPost(
     requestParameters: QueryRagApiRagApiRagQueryPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGQueryResponse>;
 
   /**
@@ -356,7 +352,7 @@ export interface RagApiInterface {
    */
   queryRagApiRagApiRagQueryPost_7Raw(
     requestParameters: QueryRagApiRagApiRagQueryPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGQueryResponse>>;
 
   /**
@@ -365,7 +361,7 @@ export interface RagApiInterface {
    */
   queryRagApiRagApiRagQueryPost_7(
     requestParameters: QueryRagApiRagApiRagQueryPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGQueryResponse>;
 
   /**
@@ -376,7 +372,7 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   rebuildIndexApiRagApiRagAdminRebuildIndexPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -384,7 +380,7 @@ export interface RagApiInterface {
    * Rebuild Index
    */
   rebuildIndexApiRagApiRagAdminRebuildIndexPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -395,7 +391,7 @@ export interface RagApiInterface {
    * @memberof RagApiInterface
    */
   rebuildIndexApiRagApiRagAdminRebuildIndexPost_8Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -403,7 +399,7 @@ export interface RagApiInterface {
    * Rebuild Index
    */
   rebuildIndexApiRagApiRagAdminRebuildIndexPost_8(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -416,7 +412,7 @@ export interface RagApiInterface {
    */
   updateRagConfigApiRagApiRagConfigPostRaw(
     requestParameters: UpdateRagConfigApiRagApiRagConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGConfigResponse>>;
 
   /**
@@ -425,7 +421,7 @@ export interface RagApiInterface {
    */
   updateRagConfigApiRagApiRagConfigPost(
     requestParameters: UpdateRagConfigApiRagApiRagConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGConfigResponse>;
 
   /**
@@ -438,7 +434,7 @@ export interface RagApiInterface {
    */
   updateRagConfigApiRagApiRagConfigPost_9Raw(
     requestParameters: UpdateRagConfigApiRagApiRagConfigPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGConfigResponse>>;
 
   /**
@@ -447,7 +443,7 @@ export interface RagApiInterface {
    */
   updateRagConfigApiRagApiRagConfigPost_9(
     requestParameters: UpdateRagConfigApiRagApiRagConfigPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGConfigResponse>;
 }
 
@@ -460,7 +456,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Clear Cache
    */
   async clearCacheApiRagApiRagAdminClearCachePostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -475,7 +471,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -490,10 +486,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Clear Cache
    */
   async clearCacheApiRagApiRagAdminClearCachePost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.clearCacheApiRagApiRagAdminClearCachePostRaw(initOverrides);
+    const response = await this.clearCacheApiRagApiRagAdminClearCachePostRaw(initOverrides);
     return await response.value();
   }
 
@@ -502,7 +497,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Clear Cache
    */
   async clearCacheApiRagApiRagAdminClearCachePost_1Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -517,7 +512,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -532,10 +527,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Clear Cache
    */
   async clearCacheApiRagApiRagAdminClearCachePost_1(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.clearCacheApiRagApiRagAdminClearCachePost_1Raw(initOverrides);
+    const response = await this.clearCacheApiRagApiRagAdminClearCachePost_1Raw(initOverrides);
     return await response.value();
   }
 
@@ -544,7 +538,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Indexing Status
    */
   async getIndexingStatusApiRagApiRagAdminIndexingStatusGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGIndexingStatusResponse>> {
     const queryParameters: any = {};
 
@@ -559,12 +553,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGIndexingStatusResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGIndexingStatusResponseFromJSON(jsonValue));
   }
 
   /**
@@ -572,12 +564,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Indexing Status
    */
   async getIndexingStatusApiRagApiRagAdminIndexingStatusGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGIndexingStatusResponse> {
-    const response =
-      await this.getIndexingStatusApiRagApiRagAdminIndexingStatusGetRaw(
-        initOverrides,
-      );
+    const response = await this.getIndexingStatusApiRagApiRagAdminIndexingStatusGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -586,7 +575,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Indexing Status
    */
   async getIndexingStatusApiRagApiRagAdminIndexingStatusGet_2Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGIndexingStatusResponse>> {
     const queryParameters: any = {};
 
@@ -601,12 +590,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGIndexingStatusResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGIndexingStatusResponseFromJSON(jsonValue));
   }
 
   /**
@@ -614,12 +601,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Indexing Status
    */
   async getIndexingStatusApiRagApiRagAdminIndexingStatusGet_2(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGIndexingStatusResponse> {
-    const response =
-      await this.getIndexingStatusApiRagApiRagAdminIndexingStatusGet_2Raw(
-        initOverrides,
-      );
+    const response = await this.getIndexingStatusApiRagApiRagAdminIndexingStatusGet_2Raw(initOverrides);
     return await response.value();
   }
 
@@ -628,7 +612,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Rag Config
    */
   async getRagConfigApiRagApiRagConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGConfigResponse>> {
     const queryParameters: any = {};
 
@@ -643,12 +627,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -656,10 +638,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Rag Config
    */
   async getRagConfigApiRagApiRagConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGConfigResponse> {
-    const response =
-      await this.getRagConfigApiRagApiRagConfigGetRaw(initOverrides);
+    const response = await this.getRagConfigApiRagApiRagConfigGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -668,7 +649,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Rag Config
    */
   async getRagConfigApiRagApiRagConfigGet_3Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGConfigResponse>> {
     const queryParameters: any = {};
 
@@ -683,12 +664,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -696,10 +675,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Rag Config
    */
   async getRagConfigApiRagApiRagConfigGet_3(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGConfigResponse> {
-    const response =
-      await this.getRagConfigApiRagApiRagConfigGet_3Raw(initOverrides);
+    const response = await this.getRagConfigApiRagApiRagConfigGet_3Raw(initOverrides);
     return await response.value();
   }
 
@@ -708,7 +686,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Rag Stats
    */
   async getRagStatsApiRagApiRagAdminStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGStatsResponse>> {
     const queryParameters: any = {};
 
@@ -723,12 +701,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGStatsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGStatsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -736,10 +712,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Rag Stats
    */
   async getRagStatsApiRagApiRagAdminStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGStatsResponse> {
-    const response =
-      await this.getRagStatsApiRagApiRagAdminStatsGetRaw(initOverrides);
+    const response = await this.getRagStatsApiRagApiRagAdminStatsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -748,7 +723,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Rag Stats
    */
   async getRagStatsApiRagApiRagAdminStatsGet_4Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGStatsResponse>> {
     const queryParameters: any = {};
 
@@ -763,12 +738,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGStatsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGStatsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -776,10 +749,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Get Rag Stats
    */
   async getRagStatsApiRagApiRagAdminStatsGet_4(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGStatsResponse> {
-    const response =
-      await this.getRagStatsApiRagApiRagAdminStatsGet_4Raw(initOverrides);
+    const response = await this.getRagStatsApiRagApiRagAdminStatsGet_4Raw(initOverrides);
     return await response.value();
   }
 
@@ -789,12 +761,12 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async ingestDocumentsApiRagApiRagIngestPostRaw(
     requestParameters: IngestDocumentsApiRagApiRagIngestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGIngestResponse>> {
     if (requestParameters["rAGIngestRequest"] == null) {
       throw new runtime.RequiredError(
         "rAGIngestRequest",
-        'Required parameter "rAGIngestRequest" was null or undefined when calling ingestDocumentsApiRagApiRagIngestPost().',
+        'Required parameter "rAGIngestRequest" was null or undefined when calling ingestDocumentsApiRagApiRagIngestPost().'
       );
     }
 
@@ -814,12 +786,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         query: queryParameters,
         body: RAGIngestRequestToJSON(requestParameters["rAGIngestRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGIngestResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGIngestResponseFromJSON(jsonValue));
   }
 
   /**
@@ -828,12 +798,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async ingestDocumentsApiRagApiRagIngestPost(
     requestParameters: IngestDocumentsApiRagApiRagIngestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGIngestResponse> {
-    const response = await this.ingestDocumentsApiRagApiRagIngestPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.ingestDocumentsApiRagApiRagIngestPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -843,12 +810,12 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async ingestDocumentsApiRagApiRagIngestPost_5Raw(
     requestParameters: IngestDocumentsApiRagApiRagIngestPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGIngestResponse>> {
     if (requestParameters["rAGIngestRequest"] == null) {
       throw new runtime.RequiredError(
         "rAGIngestRequest",
-        'Required parameter "rAGIngestRequest" was null or undefined when calling ingestDocumentsApiRagApiRagIngestPost_5().',
+        'Required parameter "rAGIngestRequest" was null or undefined when calling ingestDocumentsApiRagApiRagIngestPost_5().'
       );
     }
 
@@ -868,12 +835,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         query: queryParameters,
         body: RAGIngestRequestToJSON(requestParameters["rAGIngestRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGIngestResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGIngestResponseFromJSON(jsonValue));
   }
 
   /**
@@ -882,12 +847,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async ingestDocumentsApiRagApiRagIngestPost_5(
     requestParameters: IngestDocumentsApiRagApiRagIngestPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGIngestResponse> {
-    const response = await this.ingestDocumentsApiRagApiRagIngestPost_5Raw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.ingestDocumentsApiRagApiRagIngestPost_5Raw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -897,12 +859,12 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async ingestDocumentsStreamApiRagApiRagIngestStreamPostRaw(
     requestParameters: IngestDocumentsStreamApiRagApiRagIngestStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["rAGIngestRequest"] == null) {
       throw new runtime.RequiredError(
         "rAGIngestRequest",
-        'Required parameter "rAGIngestRequest" was null or undefined when calling ingestDocumentsStreamApiRagApiRagIngestStreamPost().',
+        'Required parameter "rAGIngestRequest" was null or undefined when calling ingestDocumentsStreamApiRagApiRagIngestStreamPost().'
       );
     }
 
@@ -922,7 +884,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         query: queryParameters,
         body: RAGIngestRequestToJSON(requestParameters["rAGIngestRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -938,13 +900,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async ingestDocumentsStreamApiRagApiRagIngestStreamPost(
     requestParameters: IngestDocumentsStreamApiRagApiRagIngestStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.ingestDocumentsStreamApiRagApiRagIngestStreamPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.ingestDocumentsStreamApiRagApiRagIngestStreamPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -954,12 +912,12 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async ingestDocumentsStreamApiRagApiRagIngestStreamPost_6Raw(
     requestParameters: IngestDocumentsStreamApiRagApiRagIngestStreamPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["rAGIngestRequest"] == null) {
       throw new runtime.RequiredError(
         "rAGIngestRequest",
-        'Required parameter "rAGIngestRequest" was null or undefined when calling ingestDocumentsStreamApiRagApiRagIngestStreamPost_6().',
+        'Required parameter "rAGIngestRequest" was null or undefined when calling ingestDocumentsStreamApiRagApiRagIngestStreamPost_6().'
       );
     }
 
@@ -979,7 +937,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         query: queryParameters,
         body: RAGIngestRequestToJSON(requestParameters["rAGIngestRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -995,13 +953,12 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async ingestDocumentsStreamApiRagApiRagIngestStreamPost_6(
     requestParameters: IngestDocumentsStreamApiRagApiRagIngestStreamPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.ingestDocumentsStreamApiRagApiRagIngestStreamPost_6Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.ingestDocumentsStreamApiRagApiRagIngestStreamPost_6Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1011,12 +968,12 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async queryRagApiRagApiRagQueryPostRaw(
     requestParameters: QueryRagApiRagApiRagQueryPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGQueryResponse>> {
     if (requestParameters["rAGQueryRequest"] == null) {
       throw new runtime.RequiredError(
         "rAGQueryRequest",
-        'Required parameter "rAGQueryRequest" was null or undefined when calling queryRagApiRagApiRagQueryPost().',
+        'Required parameter "rAGQueryRequest" was null or undefined when calling queryRagApiRagApiRagQueryPost().'
       );
     }
 
@@ -1036,12 +993,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         query: queryParameters,
         body: RAGQueryRequestToJSON(requestParameters["rAGQueryRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGQueryResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGQueryResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1050,12 +1005,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async queryRagApiRagApiRagQueryPost(
     requestParameters: QueryRagApiRagApiRagQueryPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGQueryResponse> {
-    const response = await this.queryRagApiRagApiRagQueryPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.queryRagApiRagApiRagQueryPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1065,12 +1017,12 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async queryRagApiRagApiRagQueryPost_7Raw(
     requestParameters: QueryRagApiRagApiRagQueryPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGQueryResponse>> {
     if (requestParameters["rAGQueryRequest"] == null) {
       throw new runtime.RequiredError(
         "rAGQueryRequest",
-        'Required parameter "rAGQueryRequest" was null or undefined when calling queryRagApiRagApiRagQueryPost_7().',
+        'Required parameter "rAGQueryRequest" was null or undefined when calling queryRagApiRagApiRagQueryPost_7().'
       );
     }
 
@@ -1090,12 +1042,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         query: queryParameters,
         body: RAGQueryRequestToJSON(requestParameters["rAGQueryRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGQueryResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGQueryResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1104,12 +1054,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async queryRagApiRagApiRagQueryPost_7(
     requestParameters: QueryRagApiRagApiRagQueryPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGQueryResponse> {
-    const response = await this.queryRagApiRagApiRagQueryPost_7Raw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.queryRagApiRagApiRagQueryPost_7Raw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1118,7 +1065,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Rebuild Index
    */
   async rebuildIndexApiRagApiRagAdminRebuildIndexPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -1133,7 +1080,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1148,12 +1095,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Rebuild Index
    */
   async rebuildIndexApiRagApiRagAdminRebuildIndexPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.rebuildIndexApiRagApiRagAdminRebuildIndexPostRaw(
-        initOverrides,
-      );
+    const response = await this.rebuildIndexApiRagApiRagAdminRebuildIndexPostRaw(initOverrides);
     return await response.value();
   }
 
@@ -1162,7 +1106,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Rebuild Index
    */
   async rebuildIndexApiRagApiRagAdminRebuildIndexPost_8Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -1177,7 +1121,7 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1192,12 +1136,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    * Rebuild Index
    */
   async rebuildIndexApiRagApiRagAdminRebuildIndexPost_8(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.rebuildIndexApiRagApiRagAdminRebuildIndexPost_8Raw(
-        initOverrides,
-      );
+    const response = await this.rebuildIndexApiRagApiRagAdminRebuildIndexPost_8Raw(initOverrides);
     return await response.value();
   }
 
@@ -1207,12 +1148,12 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async updateRagConfigApiRagApiRagConfigPostRaw(
     requestParameters: UpdateRagConfigApiRagApiRagConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGConfigResponse>> {
     if (requestParameters["rAGConfigRequest"] == null) {
       throw new runtime.RequiredError(
         "rAGConfigRequest",
-        'Required parameter "rAGConfigRequest" was null or undefined when calling updateRagConfigApiRagApiRagConfigPost().',
+        'Required parameter "rAGConfigRequest" was null or undefined when calling updateRagConfigApiRagApiRagConfigPost().'
       );
     }
 
@@ -1232,12 +1173,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         query: queryParameters,
         body: RAGConfigRequestToJSON(requestParameters["rAGConfigRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1246,12 +1185,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async updateRagConfigApiRagApiRagConfigPost(
     requestParameters: UpdateRagConfigApiRagApiRagConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGConfigResponse> {
-    const response = await this.updateRagConfigApiRagApiRagConfigPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.updateRagConfigApiRagApiRagConfigPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1261,12 +1197,12 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async updateRagConfigApiRagApiRagConfigPost_9Raw(
     requestParameters: UpdateRagConfigApiRagApiRagConfigPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<RAGConfigResponse>> {
     if (requestParameters["rAGConfigRequest"] == null) {
       throw new runtime.RequiredError(
         "rAGConfigRequest",
-        'Required parameter "rAGConfigRequest" was null or undefined when calling updateRagConfigApiRagApiRagConfigPost_9().',
+        'Required parameter "rAGConfigRequest" was null or undefined when calling updateRagConfigApiRagApiRagConfigPost_9().'
       );
     }
 
@@ -1286,12 +1222,10 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
         query: queryParameters,
         body: RAGConfigRequestToJSON(requestParameters["rAGConfigRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      RAGConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => RAGConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1300,12 +1234,9 @@ export class RagApi extends runtime.BaseAPI implements RagApiInterface {
    */
   async updateRagConfigApiRagApiRagConfigPost_9(
     requestParameters: UpdateRagConfigApiRagApiRagConfigPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<RAGConfigResponse> {
-    const response = await this.updateRagConfigApiRagApiRagConfigPost_9Raw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.updateRagConfigApiRagApiRagConfigPost_9Raw(requestParameters, initOverrides);
     return await response.value();
   }
 }

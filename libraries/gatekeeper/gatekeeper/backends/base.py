@@ -5,7 +5,7 @@ This module defines the abstract base classes that all user backends must implem
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..models.user import User, UserCreate, UserPublic, UserUpdate
 
@@ -60,7 +60,7 @@ class UserBackend(ABC):
         pass
 
     @abstractmethod
-    async def get_user_by_username(self, username: str) -> Optional[User]:
+    async def get_user_by_username(self, username: str) -> User | None:
         """
         Retrieve a user by username.
 
@@ -73,7 +73,7 @@ class UserBackend(ABC):
         pass
 
     @abstractmethod
-    async def get_user_by_id(self, user_id: str) -> Optional[User]:
+    async def get_user_by_id(self, user_id: str) -> User | None:
         """
         Retrieve a user by ID.
 
@@ -86,7 +86,7 @@ class UserBackend(ABC):
         pass
 
     @abstractmethod
-    async def get_user_by_email(self, email: str) -> Optional[User]:
+    async def get_user_by_email(self, email: str) -> User | None:
         """
         Retrieve a user by email address.
 
@@ -130,7 +130,7 @@ class UserBackend(ABC):
         pass
 
     @abstractmethod
-    async def list_users(self, skip: int = 0, limit: int = 100) -> List[UserPublic]:
+    async def list_users(self, skip: int = 0, limit: int = 100) -> list[UserPublic]:
         """
         List users in the backend.
 
@@ -189,7 +189,7 @@ class UserBackend(ABC):
 
     @abstractmethod
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: Optional[str]
+        self, username: str, profile_picture_url: str | None
     ) -> bool:
         """
         Update a user's profile picture URL.
@@ -208,7 +208,7 @@ class UserBackend(ABC):
 
     @abstractmethod
     async def update_user_metadata(
-        self, username: str, metadata: Dict[str, Any]
+        self, username: str, metadata: dict[str, Any]
     ) -> bool:
         """
         Update a user's metadata.
@@ -228,7 +228,7 @@ class UserBackend(ABC):
     @abstractmethod
     async def search_users(
         self, query: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """
         Search for users by username or email.
 
@@ -245,7 +245,7 @@ class UserBackend(ABC):
     @abstractmethod
     async def get_users_by_role(
         self, role: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """
         Get users by role.
 
@@ -286,7 +286,7 @@ class UserBackend(ABC):
         pass
 
     @abstractmethod
-    async def get_user_settings(self, username: str) -> Dict[str, Any]:
+    async def get_user_settings(self, username: str) -> dict[str, Any]:
         """
         Get user settings.
 
@@ -303,7 +303,7 @@ class UserBackend(ABC):
 
     @abstractmethod
     async def update_user_settings(
-        self, username: str, settings: Dict[str, Any]
+        self, username: str, settings: dict[str, Any]
     ) -> bool:
         """
         Update user settings.
@@ -338,7 +338,7 @@ class UserBackend(ABC):
         pass
 
     @abstractmethod
-    async def get_all_users(self) -> List[UserPublic]:
+    async def get_all_users(self) -> list[UserPublic]:
         """
         Get all users in the backend.
 

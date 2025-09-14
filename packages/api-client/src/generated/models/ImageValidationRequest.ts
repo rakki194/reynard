@@ -30,23 +30,16 @@ export interface ImageValidationRequest {
 /**
  * Check if a given object implements the ImageValidationRequest interface.
  */
-export function instanceOfImageValidationRequest(
-  value: object,
-): value is ImageValidationRequest {
+export function instanceOfImageValidationRequest(value: object): value is ImageValidationRequest {
   if (!("filePath" in value) || value["filePath"] === undefined) return false;
   return true;
 }
 
-export function ImageValidationRequestFromJSON(
-  json: any,
-): ImageValidationRequest {
+export function ImageValidationRequestFromJSON(json: any): ImageValidationRequest {
   return ImageValidationRequestFromJSONTyped(json, false);
 }
 
-export function ImageValidationRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ImageValidationRequest {
+export function ImageValidationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageValidationRequest {
   if (json == null) {
     return json;
   }
@@ -55,15 +48,13 @@ export function ImageValidationRequestFromJSONTyped(
   };
 }
 
-export function ImageValidationRequestToJSON(
-  json: any,
-): ImageValidationRequest {
+export function ImageValidationRequestToJSON(json: any): ImageValidationRequest {
   return ImageValidationRequestToJSONTyped(json, false);
 }
 
 export function ImageValidationRequestToJSONTyped(
   value?: ImageValidationRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

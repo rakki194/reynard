@@ -13,26 +13,31 @@
  */
 
 import { mapValues } from "../runtime";
+import type { UserRole } from "./UserRole";
+import { UserRoleFromJSON, UserRoleFromJSONTyped, UserRoleToJSON, UserRoleToJSONTyped } from "./UserRole";
+
 /**
+ * User model for registration requests.
  *
+ * Accepts a plain password which will be hashed by the server.
+ *
+ * Attributes:
+ *     username (str): Unique username for the user
+ *     password (str): Plain text password for registration
+ *     email (Optional[str]): User's email address
+ *     role (UserRole): The role of the user (admin, regular, guest). Defaults to regular.
  * @export
  * @interface UserCreate
  */
 export interface UserCreate {
   /**
-   *
+   * Unique username for the user. Alphanumeric, underscores, and hyphens only.
    * @type {string}
    * @memberof UserCreate
    */
   username: string;
   /**
-   *
-   * @type {string}
-   * @memberof UserCreate
-   */
-  email: string;
-  /**
-   *
+   * Plain text password for registration. Must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.
    * @type {string}
    * @memberof UserCreate
    */
@@ -42,7 +47,13 @@ export interface UserCreate {
    * @type {string}
    * @memberof UserCreate
    */
-  fullName?: string | null;
+  email?: string | null;
+  /**
+   *
+   * @type {UserRole}
+   * @memberof UserCreate
+   */
+  role?: UserRole;
 }
 
 /**
@@ -50,7 +61,6 @@ export interface UserCreate {
  */
 export function instanceOfUserCreate(value: object): value is UserCreate {
   if (!("username" in value) || value["username"] === undefined) return false;
-  if (!("email" in value) || value["email"] === undefined) return false;
   if (!("password" in value) || value["password"] === undefined) return false;
   return true;
 }
@@ -59,18 +69,15 @@ export function UserCreateFromJSON(json: any): UserCreate {
   return UserCreateFromJSONTyped(json, false);
 }
 
-export function UserCreateFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): UserCreate {
+export function UserCreateFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserCreate {
   if (json == null) {
     return json;
   }
   return {
     username: json["username"],
-    email: json["email"],
     password: json["password"],
-    fullName: json["full_name"] == null ? undefined : json["full_name"],
+    email: json["email"] == null ? undefined : json["email"],
+    role: json["role"] == null ? undefined : UserRoleFromJSON(json["role"]),
   };
 }
 
@@ -78,18 +85,15 @@ export function UserCreateToJSON(json: any): UserCreate {
   return UserCreateToJSONTyped(json, false);
 }
 
-export function UserCreateToJSONTyped(
-  value?: UserCreate | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function UserCreateToJSONTyped(value?: UserCreate | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }
 
   return {
     username: value["username"],
-    email: value["email"],
     password: value["password"],
-    full_name: value["fullName"],
+    email: value["email"],
+    role: UserRoleToJSON(value["role"]),
   };
 }

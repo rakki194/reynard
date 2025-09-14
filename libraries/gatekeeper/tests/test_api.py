@@ -8,7 +8,6 @@ from unittest.mock import patch
 
 import pytest
 from fastapi import HTTPException, status
-from fastapi.security import HTTPAuthorizationCredentials
 
 from gatekeeper import AuthManager, SecurityLevel, TokenConfig, UserCreate, UserRole
 from gatekeeper.api.dependencies import (
@@ -234,7 +233,6 @@ class TestDependencies:
         # Now test the active user check
         get_active_user_sse_dep = get_current_active_user_sse()
         # We need to mock the dependency injection for testing
-        from unittest.mock import patch
 
         with patch(
             "gatekeeper.api.dependencies.get_current_user_sse",
@@ -279,7 +277,6 @@ class TestDependencies:
         # Now test the active user check - should fail for guest
         get_active_user_sse_dep = get_current_active_user_sse()
         # We need to mock the dependency injection for testing
-        from unittest.mock import patch
 
         with patch(
             "gatekeeper.api.dependencies.get_current_user_sse",

@@ -57,7 +57,7 @@ export interface PullModelApiOllamaAdminModelsModelNamePullPostRequest {
 }
 
 export interface UpdateConfigApiOllamaConfigPostRequest {
-  body: object;
+  requestBody: { [key: string]: any };
 }
 
 /**
@@ -77,7 +77,7 @@ export interface OllamaApiInterface {
    */
   assistantChatApiOllamaAssistantPostRaw(
     requestParameters: AssistantChatApiOllamaAssistantPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<OllamaAssistantResponse>>;
 
   /**
@@ -86,7 +86,7 @@ export interface OllamaApiInterface {
    */
   assistantChatApiOllamaAssistantPost(
     requestParameters: AssistantChatApiOllamaAssistantPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<OllamaAssistantResponse>;
 
   /**
@@ -99,7 +99,7 @@ export interface OllamaApiInterface {
    */
   assistantChatStreamApiOllamaAssistantStreamPostRaw(
     requestParameters: AssistantChatStreamApiOllamaAssistantStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -108,7 +108,7 @@ export interface OllamaApiInterface {
    */
   assistantChatStreamApiOllamaAssistantStreamPost(
     requestParameters: AssistantChatStreamApiOllamaAssistantStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -121,7 +121,7 @@ export interface OllamaApiInterface {
    */
   chatApiOllamaChatPostRaw(
     requestParameters: ChatApiOllamaChatPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<OllamaChatResponse>>;
 
   /**
@@ -130,7 +130,7 @@ export interface OllamaApiInterface {
    */
   chatApiOllamaChatPost(
     requestParameters: ChatApiOllamaChatPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<OllamaChatResponse>;
 
   /**
@@ -143,7 +143,7 @@ export interface OllamaApiInterface {
    */
   chatStreamApiOllamaChatStreamPostRaw(
     requestParameters: ChatStreamApiOllamaChatStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -152,7 +152,7 @@ export interface OllamaApiInterface {
    */
   chatStreamApiOllamaChatStreamPost(
     requestParameters: ChatStreamApiOllamaChatStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -163,16 +163,14 @@ export interface OllamaApiInterface {
    * @memberof OllamaApiInterface
    */
   cleanupApiOllamaAdminCleanupPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Cleanup service resources.
    * Cleanup
    */
-  cleanupApiOllamaAdminCleanupPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  cleanupApiOllamaAdminCleanupPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Get current configuration.
@@ -182,16 +180,14 @@ export interface OllamaApiInterface {
    * @memberof OllamaApiInterface
    */
   getConfigApiOllamaConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Get current configuration.
    * Get Config
    */
-  getConfigApiOllamaConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  getConfigApiOllamaConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Get available models with detailed information.
@@ -201,16 +197,14 @@ export interface OllamaApiInterface {
    * @memberof OllamaApiInterface
    */
   getModelsApiOllamaAdminModelsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Get available models with detailed information.
    * Get Models
    */
-  getModelsApiOllamaAdminModelsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  getModelsApiOllamaAdminModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Get available Ollama models.
@@ -220,16 +214,14 @@ export interface OllamaApiInterface {
    * @memberof OllamaApiInterface
    */
   getModelsApiOllamaModelsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Get available Ollama models.
    * Get Models
    */
-  getModelsApiOllamaModelsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  getModelsApiOllamaModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Get service statistics.
@@ -239,16 +231,14 @@ export interface OllamaApiInterface {
    * @memberof OllamaApiInterface
    */
   getStatsApiOllamaAdminStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<OllamaStats>>;
 
   /**
    * Get service statistics.
    * Get Stats
    */
-  getStatsApiOllamaAdminStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<OllamaStats>;
+  getStatsApiOllamaAdminStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OllamaStats>;
 
   /**
    * Check service health.
@@ -258,16 +248,14 @@ export interface OllamaApiInterface {
    * @memberof OllamaApiInterface
    */
   healthCheckApiOllamaAdminHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Check service health.
    * Health Check
    */
-  healthCheckApiOllamaAdminHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  healthCheckApiOllamaAdminHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Pull a model from Ollama registry.
@@ -279,7 +267,7 @@ export interface OllamaApiInterface {
    */
   pullModelApiOllamaAdminModelsModelNamePullPostRaw(
     requestParameters: PullModelApiOllamaAdminModelsModelNamePullPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -288,20 +276,20 @@ export interface OllamaApiInterface {
    */
   pullModelApiOllamaAdminModelsModelNamePullPost(
     requestParameters: PullModelApiOllamaAdminModelsModelNamePullPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
    * Update configuration.
    * @summary Update Config
-   * @param {object} body
+   * @param {{ [key: string]: any; }} requestBody
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
    * @memberof OllamaApiInterface
    */
   updateConfigApiOllamaConfigPostRaw(
     requestParameters: UpdateConfigApiOllamaConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -310,7 +298,7 @@ export interface OllamaApiInterface {
    */
   updateConfigApiOllamaConfigPost(
     requestParameters: UpdateConfigApiOllamaConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 }
 
@@ -324,12 +312,12 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async assistantChatApiOllamaAssistantPostRaw(
     requestParameters: AssistantChatApiOllamaAssistantPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<OllamaAssistantResponse>> {
     if (requestParameters["ollamaAssistantRequest"] == null) {
       throw new runtime.RequiredError(
         "ollamaAssistantRequest",
-        'Required parameter "ollamaAssistantRequest" was null or undefined when calling assistantChatApiOllamaAssistantPost().',
+        'Required parameter "ollamaAssistantRequest" was null or undefined when calling assistantChatApiOllamaAssistantPost().'
       );
     }
 
@@ -347,16 +335,12 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: OllamaAssistantRequestToJSON(
-          requestParameters["ollamaAssistantRequest"],
-        ),
+        body: OllamaAssistantRequestToJSON(requestParameters["ollamaAssistantRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      OllamaAssistantResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => OllamaAssistantResponseFromJSON(jsonValue));
   }
 
   /**
@@ -365,12 +349,9 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async assistantChatApiOllamaAssistantPost(
     requestParameters: AssistantChatApiOllamaAssistantPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<OllamaAssistantResponse> {
-    const response = await this.assistantChatApiOllamaAssistantPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.assistantChatApiOllamaAssistantPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -380,12 +361,12 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async assistantChatStreamApiOllamaAssistantStreamPostRaw(
     requestParameters: AssistantChatStreamApiOllamaAssistantStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["ollamaAssistantRequest"] == null) {
       throw new runtime.RequiredError(
         "ollamaAssistantRequest",
-        'Required parameter "ollamaAssistantRequest" was null or undefined when calling assistantChatStreamApiOllamaAssistantStreamPost().',
+        'Required parameter "ollamaAssistantRequest" was null or undefined when calling assistantChatStreamApiOllamaAssistantStreamPost().'
       );
     }
 
@@ -403,11 +384,9 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: OllamaAssistantRequestToJSON(
-          requestParameters["ollamaAssistantRequest"],
-        ),
+        body: OllamaAssistantRequestToJSON(requestParameters["ollamaAssistantRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -423,13 +402,9 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async assistantChatStreamApiOllamaAssistantStreamPost(
     requestParameters: AssistantChatStreamApiOllamaAssistantStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.assistantChatStreamApiOllamaAssistantStreamPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.assistantChatStreamApiOllamaAssistantStreamPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -439,12 +414,12 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async chatApiOllamaChatPostRaw(
     requestParameters: ChatApiOllamaChatPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<OllamaChatResponse>> {
     if (requestParameters["ollamaChatRequest"] == null) {
       throw new runtime.RequiredError(
         "ollamaChatRequest",
-        'Required parameter "ollamaChatRequest" was null or undefined when calling chatApiOllamaChatPost().',
+        'Required parameter "ollamaChatRequest" was null or undefined when calling chatApiOllamaChatPost().'
       );
     }
 
@@ -464,12 +439,10 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         query: queryParameters,
         body: OllamaChatRequestToJSON(requestParameters["ollamaChatRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      OllamaChatResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => OllamaChatResponseFromJSON(jsonValue));
   }
 
   /**
@@ -478,12 +451,9 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async chatApiOllamaChatPost(
     requestParameters: ChatApiOllamaChatPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<OllamaChatResponse> {
-    const response = await this.chatApiOllamaChatPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.chatApiOllamaChatPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -493,12 +463,12 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async chatStreamApiOllamaChatStreamPostRaw(
     requestParameters: ChatStreamApiOllamaChatStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["ollamaChatRequest"] == null) {
       throw new runtime.RequiredError(
         "ollamaChatRequest",
-        'Required parameter "ollamaChatRequest" was null or undefined when calling chatStreamApiOllamaChatStreamPost().',
+        'Required parameter "ollamaChatRequest" was null or undefined when calling chatStreamApiOllamaChatStreamPost().'
       );
     }
 
@@ -518,7 +488,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         query: queryParameters,
         body: OllamaChatRequestToJSON(requestParameters["ollamaChatRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -534,12 +504,9 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async chatStreamApiOllamaChatStreamPost(
     requestParameters: ChatStreamApiOllamaChatStreamPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.chatStreamApiOllamaChatStreamPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.chatStreamApiOllamaChatStreamPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -548,7 +515,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Cleanup
    */
   async cleanupApiOllamaAdminCleanupPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -563,7 +530,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -577,11 +544,8 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Cleanup service resources.
    * Cleanup
    */
-  async cleanupApiOllamaAdminCleanupPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
-    const response =
-      await this.cleanupApiOllamaAdminCleanupPostRaw(initOverrides);
+  async cleanupApiOllamaAdminCleanupPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
+    const response = await this.cleanupApiOllamaAdminCleanupPostRaw(initOverrides);
     return await response.value();
   }
 
@@ -590,7 +554,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Get Config
    */
   async getConfigApiOllamaConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -605,7 +569,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -619,9 +583,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Get current configuration.
    * Get Config
    */
-  async getConfigApiOllamaConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
+  async getConfigApiOllamaConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
     const response = await this.getConfigApiOllamaConfigGetRaw(initOverrides);
     return await response.value();
   }
@@ -631,7 +593,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Get Models
    */
   async getModelsApiOllamaAdminModelsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -646,7 +608,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -660,11 +622,8 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Get available models with detailed information.
    * Get Models
    */
-  async getModelsApiOllamaAdminModelsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
-    const response =
-      await this.getModelsApiOllamaAdminModelsGetRaw(initOverrides);
+  async getModelsApiOllamaAdminModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
+    const response = await this.getModelsApiOllamaAdminModelsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -673,7 +632,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Get Models
    */
   async getModelsApiOllamaModelsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -688,7 +647,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -702,9 +661,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Get available Ollama models.
    * Get Models
    */
-  async getModelsApiOllamaModelsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
+  async getModelsApiOllamaModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
     const response = await this.getModelsApiOllamaModelsGetRaw(initOverrides);
     return await response.value();
   }
@@ -714,7 +671,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Get Stats
    */
   async getStatsApiOllamaAdminStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<OllamaStats>> {
     const queryParameters: any = {};
 
@@ -729,12 +686,10 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      OllamaStatsFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => OllamaStatsFromJSON(jsonValue));
   }
 
   /**
@@ -742,10 +697,9 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Get Stats
    */
   async getStatsApiOllamaAdminStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<OllamaStats> {
-    const response =
-      await this.getStatsApiOllamaAdminStatsGetRaw(initOverrides);
+    const response = await this.getStatsApiOllamaAdminStatsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -754,7 +708,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Health Check
    */
   async healthCheckApiOllamaAdminHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -769,7 +723,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -783,11 +737,8 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    * Check service health.
    * Health Check
    */
-  async healthCheckApiOllamaAdminHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
-    const response =
-      await this.healthCheckApiOllamaAdminHealthGetRaw(initOverrides);
+  async healthCheckApiOllamaAdminHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
+    const response = await this.healthCheckApiOllamaAdminHealthGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -797,12 +748,12 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async pullModelApiOllamaAdminModelsModelNamePullPostRaw(
     requestParameters: PullModelApiOllamaAdminModelsModelNamePullPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["modelName"] == null) {
       throw new runtime.RequiredError(
         "modelName",
-        'Required parameter "modelName" was null or undefined when calling pullModelApiOllamaAdminModelsModelNamePullPost().',
+        'Required parameter "modelName" was null or undefined when calling pullModelApiOllamaAdminModelsModelNamePullPost().'
       );
     }
 
@@ -811,10 +762,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/ollama/admin/models/{model_name}/pull`;
-    urlPath = urlPath.replace(
-      `{${"model_name"}}`,
-      encodeURIComponent(String(requestParameters["modelName"])),
-    );
+    urlPath = urlPath.replace(`{${"model_name"}}`, encodeURIComponent(String(requestParameters["modelName"])));
 
     const response = await this.request(
       {
@@ -823,7 +771,7 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -839,13 +787,9 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async pullModelApiOllamaAdminModelsModelNamePullPost(
     requestParameters: PullModelApiOllamaAdminModelsModelNamePullPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.pullModelApiOllamaAdminModelsModelNamePullPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.pullModelApiOllamaAdminModelsModelNamePullPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -855,12 +799,12 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async updateConfigApiOllamaConfigPostRaw(
     requestParameters: UpdateConfigApiOllamaConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
-    if (requestParameters["body"] == null) {
+    if (requestParameters["requestBody"] == null) {
       throw new runtime.RequiredError(
-        "body",
-        'Required parameter "body" was null or undefined when calling updateConfigApiOllamaConfigPost().',
+        "requestBody",
+        'Required parameter "requestBody" was null or undefined when calling updateConfigApiOllamaConfigPost().'
       );
     }
 
@@ -878,9 +822,9 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: requestParameters["body"] as any,
+        body: requestParameters["requestBody"],
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -896,12 +840,9 @@ export class OllamaApi extends runtime.BaseAPI implements OllamaApiInterface {
    */
   async updateConfigApiOllamaConfigPost(
     requestParameters: UpdateConfigApiOllamaConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.updateConfigApiOllamaConfigPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.updateConfigApiOllamaConfigPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 }

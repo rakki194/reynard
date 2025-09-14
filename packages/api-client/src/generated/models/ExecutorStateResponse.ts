@@ -36,25 +36,17 @@ export interface ExecutorStateResponse {
 /**
  * Check if a given object implements the ExecutorStateResponse interface.
  */
-export function instanceOfExecutorStateResponse(
-  value: object,
-): value is ExecutorStateResponse {
+export function instanceOfExecutorStateResponse(value: object): value is ExecutorStateResponse {
   if (!("state" in value) || value["state"] === undefined) return false;
-  if (!("initialized" in value) || value["initialized"] === undefined)
-    return false;
+  if (!("initialized" in value) || value["initialized"] === undefined) return false;
   return true;
 }
 
-export function ExecutorStateResponseFromJSON(
-  json: any,
-): ExecutorStateResponse {
+export function ExecutorStateResponseFromJSON(json: any): ExecutorStateResponse {
   return ExecutorStateResponseFromJSONTyped(json, false);
 }
 
-export function ExecutorStateResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ExecutorStateResponse {
+export function ExecutorStateResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExecutorStateResponse {
   if (json == null) {
     return json;
   }
@@ -70,7 +62,7 @@ export function ExecutorStateResponseToJSON(json: any): ExecutorStateResponse {
 
 export function ExecutorStateResponseToJSONTyped(
   value?: ExecutorStateResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

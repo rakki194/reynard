@@ -5,14 +5,18 @@ This module provides validation utilities for passwords, emails, and other data.
 """
 
 import re
-from typing import Tuple
 
 
 class PasswordValidator:
     """Password validation utilities."""
 
+    # Password validation constants
+    MIN_PASSWORD_LENGTH = 8
+    MIN_USERNAME_LENGTH = 3
+    MAX_USERNAME_LENGTH = 30
+
     @staticmethod
-    def validate_password_strength(password: str) -> Tuple[bool, str]:
+    def validate_password_strength(password: str) -> tuple[bool, str]:
         """
         Validate password strength.
 
@@ -22,7 +26,7 @@ class PasswordValidator:
         Returns:
             Tuple of (is_strong, reason)
         """
-        if len(password) < 8:
+        if len(password) < PasswordValidator.MIN_PASSWORD_LENGTH:
             return False, "Password must be at least 8 characters long"
 
         if not re.search(r"[A-Z]", password):
@@ -40,7 +44,7 @@ class PasswordValidator:
         return True, "Password meets strength requirements"
 
     @staticmethod
-    def validate_email(email: str) -> Tuple[bool, str]:
+    def validate_email(email: str) -> tuple[bool, str]:
         """
         Validate email format.
 
@@ -62,7 +66,7 @@ class PasswordValidator:
         return True, "Email format is valid"
 
     @staticmethod
-    def validate_username(username: str) -> Tuple[bool, str]:
+    def validate_username(username: str) -> tuple[bool, str]:
         """
         Validate username format.
 
@@ -75,10 +79,10 @@ class PasswordValidator:
         if not username:
             return False, "Username cannot be empty"
 
-        if len(username) < 3:
+        if len(username) < PasswordValidator.MIN_USERNAME_LENGTH:
             return False, "Username must be at least 3 characters long"
 
-        if len(username) > 30:
+        if len(username) > PasswordValidator.MAX_USERNAME_LENGTH:
             return False, "Username must be no more than 30 characters long"
 
         # Only allow alphanumeric characters, underscores, and hyphens

@@ -21,10 +21,10 @@ import { mapValues } from "../runtime";
 export interface BatchSummarizationRequest {
   /**
    * List of summarization requests
-   * @type {Array<object>}
+   * @type {Array<{ [key: string]: any; }>}
    * @memberof BatchSummarizationRequest
    */
-  requests: Array<object>;
+  requests: Array<{ [key: string]: any }>;
   /**
    * Whether to stream progress updates
    * @type {boolean}
@@ -36,42 +36,35 @@ export interface BatchSummarizationRequest {
 /**
  * Check if a given object implements the BatchSummarizationRequest interface.
  */
-export function instanceOfBatchSummarizationRequest(
-  value: object,
-): value is BatchSummarizationRequest {
+export function instanceOfBatchSummarizationRequest(value: object): value is BatchSummarizationRequest {
   if (!("requests" in value) || value["requests"] === undefined) return false;
   return true;
 }
 
-export function BatchSummarizationRequestFromJSON(
-  json: any,
-): BatchSummarizationRequest {
+export function BatchSummarizationRequestFromJSON(json: any): BatchSummarizationRequest {
   return BatchSummarizationRequestFromJSONTyped(json, false);
 }
 
 export function BatchSummarizationRequestFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): BatchSummarizationRequest {
   if (json == null) {
     return json;
   }
   return {
     requests: json["requests"],
-    enableStreaming:
-      json["enable_streaming"] == null ? undefined : json["enable_streaming"],
+    enableStreaming: json["enable_streaming"] == null ? undefined : json["enable_streaming"],
   };
 }
 
-export function BatchSummarizationRequestToJSON(
-  json: any,
-): BatchSummarizationRequest {
+export function BatchSummarizationRequestToJSON(json: any): BatchSummarizationRequest {
   return BatchSummarizationRequestToJSONTyped(json, false);
 }
 
 export function BatchSummarizationRequestToJSONTyped(
   value?: BatchSummarizationRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

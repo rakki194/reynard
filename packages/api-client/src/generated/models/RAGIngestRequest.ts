@@ -56,9 +56,7 @@ export interface RAGIngestRequest {
 /**
  * Check if a given object implements the RAGIngestRequest interface.
  */
-export function instanceOfRAGIngestRequest(
-  value: object,
-): value is RAGIngestRequest {
+export function instanceOfRAGIngestRequest(value: object): value is RAGIngestRequest {
   if (!("items" in value) || value["items"] === undefined) return false;
   return true;
 }
@@ -67,10 +65,7 @@ export function RAGIngestRequestFromJSON(json: any): RAGIngestRequest {
   return RAGIngestRequestFromJSONTyped(json, false);
 }
 
-export function RAGIngestRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): RAGIngestRequest {
+export function RAGIngestRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGIngestRequest {
   if (json == null) {
     return json;
   }
@@ -78,8 +73,7 @@ export function RAGIngestRequestFromJSONTyped(
     items: (json["items"] as Array<any>).map(RAGIngestItemFromJSON),
     model: json["model"] == null ? undefined : json["model"],
     batchSize: json["batch_size"] == null ? undefined : json["batch_size"],
-    forceReindex:
-      json["force_reindex"] == null ? undefined : json["force_reindex"],
+    forceReindex: json["force_reindex"] == null ? undefined : json["force_reindex"],
   };
 }
 
@@ -89,7 +83,7 @@ export function RAGIngestRequestToJSON(json: any): RAGIngestRequest {
 
 export function RAGIngestRequestToJSONTyped(
   value?: RAGIngestRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

@@ -9,7 +9,7 @@ automatic validation for data passing between components.
 import re
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -49,18 +49,18 @@ class User(BaseModel):
         permissions (Dict[str, Any]): User permissions for backward compatibility
     """
 
-    id: Optional[str] = Field(default=None)
+    id: str | None = Field(default=None)
     username: str = Field(..., min_length=3, max_length=50)
     password_hash: str
     role: UserRole = Field(UserRole.REGULAR)
-    email: Optional[str] = Field(default=None)
-    profile_picture_url: Optional[str] = Field(default=None)
-    yapcoin_balance: Optional[int] = Field(default=0)
+    email: str | None = Field(default=None)
+    profile_picture_url: str | None = Field(default=None)
+    yapcoin_balance: int | None = Field(default=0)
     is_active: bool = Field(default=True)
-    created_at: Optional[datetime] = Field(default=None)
-    updated_at: Optional[datetime] = Field(default=None)
-    metadata: Dict[str, Any] = Field(default_factory=dict)
-    permissions: Dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime | None = Field(default=None)
+    updated_at: datetime | None = Field(default=None)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    permissions: dict[str, Any] = Field(default_factory=dict)
 
     @field_validator("username")
     @classmethod
@@ -74,7 +74,7 @@ class User(BaseModel):
 
     @field_validator("email")
     @classmethod
-    def validate_email(cls, value: Optional[str]) -> Optional[str]:
+    def validate_email(cls, value: str | None) -> str | None:
         """Validate email format if provided."""
         if value is not None:
             email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -90,16 +90,16 @@ class UserPublic(BaseModel):
     Used for API responses where sensitive data like password_hash should not be exposed.
     """
 
-    id: Optional[str] = None
+    id: str | None = None
     username: str
     role: UserRole
-    email: Optional[str] = None
-    profile_picture_url: Optional[str] = None
-    yapcoin_balance: Optional[int] = Field(default=0)
+    email: str | None = None
+    profile_picture_url: str | None = None
+    yapcoin_balance: int | None = Field(default=0)
     is_active: bool
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
-    metadata: Dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
 
     @classmethod
     def from_user(cls, user: "User") -> "UserPublic":
@@ -151,7 +151,7 @@ class UserCreate(BaseModel):
         min_length=8,
         description="Plain text password for registration. Must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.",
     )
-    email: Optional[str] = Field(default=None)
+    email: str | None = Field(default=None)
     role: UserRole = Field(UserRole.REGULAR)
 
     @field_validator("password")
@@ -178,7 +178,7 @@ class UserCreate(BaseModel):
 
     @field_validator("email")
     @classmethod
-    def validate_email(cls, value: Optional[str]) -> Optional[str]:
+    def validate_email(cls, value: str | None) -> str | None:
         """Validate email format if provided."""
         if value is not None:
             email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -202,21 +202,21 @@ class UserUpdate(BaseModel):
         metadata (Optional[Dict[str, Any]]): Additional user metadata
     """
 
-    username: Optional[str] = Field(
+    username: str | None = Field(
         default=None,
         min_length=3,
         max_length=50,
         pattern=r"^[a-zA-Z0-9_-]+$",
     )
-    email: Optional[str] = Field(default=None)
-    role: Optional[UserRole] = Field(default=None)
-    is_active: Optional[bool] = Field(default=None)
-    profile_picture_url: Optional[str] = Field(default=None)
-    metadata: Optional[Dict[str, Any]] = Field(default=None)
+    email: str | None = Field(default=None)
+    role: UserRole | None = Field(default=None)
+    is_active: bool | None = Field(default=None)
+    profile_picture_url: str | None = Field(default=None)
+    metadata: dict[str, Any] | None = Field(default=None)
 
     @field_validator("username")
     @classmethod
-    def validate_username(cls, value: Optional[str]) -> Optional[str]:
+    def validate_username(cls, value: str | None) -> str | None:
         """Validate username format if provided."""
         if value is not None and not re.match(r"^[a-zA-Z0-9_-]+$", value):
             raise ValueError(
@@ -226,7 +226,7 @@ class UserUpdate(BaseModel):
 
     @field_validator("email")
     @classmethod
-    def validate_email(cls, value: Optional[str]) -> Optional[str]:
+    def validate_email(cls, value: str | None) -> str | None:
         """Validate email format if provided."""
         if value is not None:
             email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
@@ -347,6 +347,6 @@ class PasswordResetResponse(BaseModel):
     """
 
     message: str = Field(..., description="Success message")
-    token: Optional[str] = Field(
+    token: str | None = Field(
         None, description="Reset token (for development/testing)"
     )

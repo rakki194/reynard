@@ -60,27 +60,19 @@ export interface ModelCacheInfoResponse {
 /**
  * Check if a given object implements the ModelCacheInfoResponse interface.
  */
-export function instanceOfModelCacheInfoResponse(
-  value: object,
-): value is ModelCacheInfoResponse {
+export function instanceOfModelCacheInfoResponse(value: object): value is ModelCacheInfoResponse {
   if (!("repoId" in value) || value["repoId"] === undefined) return false;
   if (!("cachePath" in value) || value["cachePath"] === undefined) return false;
-  if (!("snapshotPath" in value) || value["snapshotPath"] === undefined)
-    return false;
+  if (!("snapshotPath" in value) || value["snapshotPath"] === undefined) return false;
   if (!("isCached" in value) || value["isCached"] === undefined) return false;
   return true;
 }
 
-export function ModelCacheInfoResponseFromJSON(
-  json: any,
-): ModelCacheInfoResponse {
+export function ModelCacheInfoResponseFromJSON(json: any): ModelCacheInfoResponse {
   return ModelCacheInfoResponseFromJSONTyped(json, false);
 }
 
-export function ModelCacheInfoResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ModelCacheInfoResponse {
+export function ModelCacheInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ModelCacheInfoResponse {
   if (json == null) {
     return json;
   }
@@ -90,20 +82,17 @@ export function ModelCacheInfoResponseFromJSONTyped(
     snapshotPath: json["snapshot_path"],
     isCached: json["is_cached"],
     size: json["size"] == null ? undefined : json["size"],
-    lastModified:
-      json["last_modified"] == null ? undefined : json["last_modified"],
+    lastModified: json["last_modified"] == null ? undefined : json["last_modified"],
   };
 }
 
-export function ModelCacheInfoResponseToJSON(
-  json: any,
-): ModelCacheInfoResponse {
+export function ModelCacheInfoResponseToJSON(json: any): ModelCacheInfoResponse {
   return ModelCacheInfoResponseToJSONTyped(json, false);
 }
 
 export function ModelCacheInfoResponseToJSONTyped(
   value?: ModelCacheInfoResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

@@ -86,27 +86,15 @@ export interface TTSConfigResponse {
 /**
  * Check if a given object implements the TTSConfigResponse interface.
  */
-export function instanceOfTTSConfigResponse(
-  value: object,
-): value is TTSConfigResponse {
-  if (!("defaultBackend" in value) || value["defaultBackend"] === undefined)
-    return false;
-  if (!("defaultVoice" in value) || value["defaultVoice"] === undefined)
-    return false;
-  if (!("defaultSpeed" in value) || value["defaultSpeed"] === undefined)
-    return false;
-  if (!("defaultLanguage" in value) || value["defaultLanguage"] === undefined)
-    return false;
-  if (!("maxTextLength" in value) || value["maxTextLength"] === undefined)
-    return false;
+export function instanceOfTTSConfigResponse(value: object): value is TTSConfigResponse {
+  if (!("defaultBackend" in value) || value["defaultBackend"] === undefined) return false;
+  if (!("defaultVoice" in value) || value["defaultVoice"] === undefined) return false;
+  if (!("defaultSpeed" in value) || value["defaultSpeed"] === undefined) return false;
+  if (!("defaultLanguage" in value) || value["defaultLanguage"] === undefined) return false;
+  if (!("maxTextLength" in value) || value["maxTextLength"] === undefined) return false;
   if (!("chunkSize" in value) || value["chunkSize"] === undefined) return false;
-  if (
-    !("enableAudioProcessing" in value) ||
-    value["enableAudioProcessing"] === undefined
-  )
-    return false;
-  if (!("outputDirectory" in value) || value["outputDirectory"] === undefined)
-    return false;
+  if (!("enableAudioProcessing" in value) || value["enableAudioProcessing"] === undefined) return false;
+  if (!("outputDirectory" in value) || value["outputDirectory"] === undefined) return false;
   if (!("backends" in value) || value["backends"] === undefined) return false;
   return true;
 }
@@ -115,10 +103,7 @@ export function TTSConfigResponseFromJSON(json: any): TTSConfigResponse {
   return TTSConfigResponseFromJSONTyped(json, false);
 }
 
-export function TTSConfigResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TTSConfigResponse {
+export function TTSConfigResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSConfigResponse {
   if (json == null) {
     return json;
   }
@@ -131,9 +116,7 @@ export function TTSConfigResponseFromJSONTyped(
     chunkSize: json["chunk_size"],
     enableAudioProcessing: json["enable_audio_processing"],
     outputDirectory: json["output_directory"],
-    backends: (json["backends"] as Array<TTSBackendInfo>).map(
-      TTSBackendInfoFromJSON,
-    ),
+    backends: (json["backends"] as Array<any>).map(TTSBackendInfoFromJSON),
   };
 }
 
@@ -143,7 +126,7 @@ export function TTSConfigResponseToJSON(json: any): TTSConfigResponse {
 
 export function TTSConfigResponseToJSONTyped(
   value?: TTSConfigResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;
@@ -158,8 +141,6 @@ export function TTSConfigResponseToJSONTyped(
     chunk_size: value["chunkSize"],
     enable_audio_processing: value["enableAudioProcessing"],
     output_directory: value["outputDirectory"],
-    backends: (value["backends"] as Array<TTSBackendInfo>).map(
-      TTSBackendInfoToJSON,
-    ),
+    backends: (value["backends"] as Array<any>).map(TTSBackendInfoToJSON),
   };
 }

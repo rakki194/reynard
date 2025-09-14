@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reynard-scripts"
+version = "0.1.0"
+description = "Reynard framework validation and utility scripts"
+authors = [{ name = "Balazs Horvath", email = "acsipont@gmail.com" }]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.13"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["black", "isort", "flake8", "mypy", "pylint", "bandit"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["validation*"]
+
+[tool.setuptools.package-data]
+"validation.python.python_validation" = ["*.pyi"]

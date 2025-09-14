@@ -1,8 +1,8 @@
 import js from "@eslint/js";
 import typescript from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
-import solid from "eslint-plugin-solid/configs/typescript";
 import jsxA11y from "eslint-plugin-jsx-a11y";
+import solid from "eslint-plugin-solid/configs/typescript";
 
 export default [
   // Base configuration for all files
@@ -140,14 +140,8 @@ export default [
       "no-redeclare": "error",
       "no-import-assign": "error",
       // Modularity enforcement rules
-      "max-lines": [
-        "error",
-        { max: 140, skipBlankLines: true, skipComments: true },
-      ],
-      "max-lines-per-function": [
-        "error",
-        { max: 50, skipBlankLines: true, skipComments: true },
-      ],
+      "max-lines": ["error", { max: 140, skipBlankLines: true, skipComments: true }],
+      "max-lines-per-function": ["error", { max: 50, skipBlankLines: true, skipComments: true }],
     },
   },
 
@@ -192,25 +186,38 @@ export default [
     },
   },
 
+  // Script files - Node.js environment
+  {
+    files: ["scripts/**/*.js", ".vscode/**/*.js"],
+    languageOptions: {
+      globals: {
+        console: "readonly",
+        process: "readonly",
+        global: "readonly",
+        NodeJS: "readonly",
+        require: "readonly",
+        module: "readonly",
+        exports: "readonly",
+        __dirname: "readonly",
+        __filename: "readonly",
+        Buffer: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+      },
+    },
+  },
+
   // Test files configuration - more lenient
   {
-    files: [
-      "**/*.test.{ts,tsx}",
-      "**/__tests__/**/*.{ts,tsx}",
-      "**/test/**/*.{ts,tsx}",
-    ],
+    files: ["**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}", "**/test/**/*.{ts,tsx}"],
     rules: {
       "@typescript-eslint/no-unused-vars": "off", // Allow unused vars in tests
       "@typescript-eslint/no-explicit-any": "off", // Allow any in tests
       // Test files can be longer but still have reasonable limits
-      "max-lines": [
-        "error",
-        { max: 200, skipBlankLines: true, skipComments: true },
-      ],
-      "max-lines-per-function": [
-        "error",
-        { max: 100, skipBlankLines: true, skipComments: true },
-      ],
+      "max-lines": ["error", { max: 200, skipBlankLines: true, skipComments: true }],
+      "max-lines-per-function": ["error", { max: 100, skipBlankLines: true, skipComments: true }],
     },
   },
 

@@ -8,6 +8,6 @@ from .security import SecurityUtils
 from .validators import PasswordValidator
 
 __all__ = [
-    "SecurityUtils",
     "PasswordValidator",
+    "SecurityUtils",
 ]

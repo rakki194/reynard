@@ -35,7 +35,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest",
-    "lint": "eslint src --ext .ts,.tsx",
+    "lint": "eslint src",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -48,15 +48,7 @@
     "typescript": "5.9.2",
     "vitest": "3.2.4"
   },
-  "keywords": [
-    "animation",
-    "solidjs",
-    "reynard",
-    "easing",
-    "performance",
-    "3d",
-    "staggered"
-  ],
+  "keywords": ["animation", "solidjs", "reynard", "easing", "performance", "3d", "staggered"],
   "author": "Reynard Team",
   "license": "MIT"
 }

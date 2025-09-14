@@ -14,12 +14,7 @@
 
 import { mapValues } from "../runtime";
 import type { Value } from "./Value";
-import {
-  ValueFromJSON,
-  ValueFromJSONTyped,
-  ValueToJSON,
-  ValueToJSONTyped,
-} from "./Value";
+import { ValueFromJSON, ValueFromJSONTyped, ValueToJSON, ValueToJSONTyped } from "./Value";
 
 /**
  * Individual verification check.
@@ -62,28 +57,20 @@ export interface NLWebVerificationCheck {
 /**
  * Check if a given object implements the NLWebVerificationCheck interface.
  */
-export function instanceOfNLWebVerificationCheck(
-  value: object,
-): value is NLWebVerificationCheck {
+export function instanceOfNLWebVerificationCheck(value: object): value is NLWebVerificationCheck {
   if (!("name" in value) || value["name"] === undefined) return false;
-  if (!("description" in value) || value["description"] === undefined)
-    return false;
+  if (!("description" in value) || value["description"] === undefined) return false;
   if (!("status" in value) || value["status"] === undefined) return false;
   if (!("value" in value) || value["value"] === undefined) return false;
   if (!("threshold" in value) || value["threshold"] === undefined) return false;
   return true;
 }
 
-export function NLWebVerificationCheckFromJSON(
-  json: any,
-): NLWebVerificationCheck {
+export function NLWebVerificationCheckFromJSON(json: any): NLWebVerificationCheck {
   return NLWebVerificationCheckFromJSONTyped(json, false);
 }
 
-export function NLWebVerificationCheckFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebVerificationCheck {
+export function NLWebVerificationCheckFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebVerificationCheck {
   if (json == null) {
     return json;
   }
@@ -96,15 +83,13 @@ export function NLWebVerificationCheckFromJSONTyped(
   };
 }
 
-export function NLWebVerificationCheckToJSON(
-  json: any,
-): NLWebVerificationCheck {
+export function NLWebVerificationCheckToJSON(json: any): NLWebVerificationCheck {
   return NLWebVerificationCheckToJSONTyped(json, false);
 }
 
 export function NLWebVerificationCheckToJSONTyped(
   value?: NLWebVerificationCheck | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

@@ -120,9 +120,7 @@ export interface ComfyText2ImgRequest {
 /**
  * Check if a given object implements the ComfyText2ImgRequest interface.
  */
-export function instanceOfComfyText2ImgRequest(
-  value: object,
-): value is ComfyText2ImgRequest {
+export function instanceOfComfyText2ImgRequest(value: object): value is ComfyText2ImgRequest {
   if (!("caption" in value) || value["caption"] === undefined) return false;
   return true;
 }
@@ -131,10 +129,7 @@ export function ComfyText2ImgRequestFromJSON(json: any): ComfyText2ImgRequest {
   return ComfyText2ImgRequestFromJSONTyped(json, false);
 }
 
-export function ComfyText2ImgRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ComfyText2ImgRequest {
+export function ComfyText2ImgRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ComfyText2ImgRequest {
   if (json == null) {
     return json;
   }
@@ -145,8 +140,7 @@ export function ComfyText2ImgRequestFromJSONTyped(
     height: json["height"] == null ? undefined : json["height"],
     checkpoint: json["checkpoint"] == null ? undefined : json["checkpoint"],
     loras: json["loras"] == null ? undefined : json["loras"],
-    loraWeights:
-      json["lora_weights"] == null ? undefined : json["lora_weights"],
+    loraWeights: json["lora_weights"] == null ? undefined : json["lora_weights"],
     sampler: json["sampler"] == null ? undefined : json["sampler"],
     scheduler: json["scheduler"] == null ? undefined : json["scheduler"],
     steps: json["steps"] == null ? undefined : json["steps"],
@@ -154,10 +148,8 @@ export function ComfyText2ImgRequestFromJSONTyped(
     seed: json["seed"] == null ? undefined : json["seed"],
     pag: json["pag"] == null ? undefined : json["pag"],
     deepshrink: json["deepshrink"] == null ? undefined : json["deepshrink"],
-    detailDaemon:
-      json["detail_daemon"] == null ? undefined : json["detail_daemon"],
-    splitSigmas:
-      json["split_sigmas"] == null ? undefined : json["split_sigmas"],
+    detailDaemon: json["detail_daemon"] == null ? undefined : json["detail_daemon"],
+    splitSigmas: json["split_sigmas"] == null ? undefined : json["split_sigmas"],
   };
 }
 
@@ -167,7 +159,7 @@ export function ComfyText2ImgRequestToJSON(json: any): ComfyText2ImgRequest {
 
 export function ComfyText2ImgRequestToJSONTyped(
   value?: ComfyText2ImgRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

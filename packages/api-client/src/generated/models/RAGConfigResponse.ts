@@ -21,10 +21,10 @@ import { mapValues } from "../runtime";
 export interface RAGConfigResponse {
   /**
    * Current configuration
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof RAGConfigResponse
    */
-  config: object;
+  config: { [key: string]: any };
   /**
    * Whether configuration was updated
    * @type {boolean}
@@ -36,9 +36,7 @@ export interface RAGConfigResponse {
 /**
  * Check if a given object implements the RAGConfigResponse interface.
  */
-export function instanceOfRAGConfigResponse(
-  value: object,
-): value is RAGConfigResponse {
+export function instanceOfRAGConfigResponse(value: object): value is RAGConfigResponse {
   if (!("config" in value) || value["config"] === undefined) return false;
   return true;
 }
@@ -47,10 +45,7 @@ export function RAGConfigResponseFromJSON(json: any): RAGConfigResponse {
   return RAGConfigResponseFromJSONTyped(json, false);
 }
 
-export function RAGConfigResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): RAGConfigResponse {
+export function RAGConfigResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGConfigResponse {
   if (json == null) {
     return json;
   }
@@ -66,7 +61,7 @@ export function RAGConfigResponseToJSON(json: any): RAGConfigResponse {
 
 export function RAGConfigResponseToJSONTyped(
   value?: RAGConfigResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

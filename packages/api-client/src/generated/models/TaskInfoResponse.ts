@@ -60,18 +60,13 @@ export interface TaskInfoResponse {
 /**
  * Check if a given object implements the TaskInfoResponse interface.
  */
-export function instanceOfTaskInfoResponse(
-  value: object,
-): value is TaskInfoResponse {
+export function instanceOfTaskInfoResponse(value: object): value is TaskInfoResponse {
   if (!("taskId" in value) || value["taskId"] === undefined) return false;
-  if (!("functionName" in value) || value["functionName"] === undefined)
-    return false;
+  if (!("functionName" in value) || value["functionName"] === undefined) return false;
   if (!("startTime" in value) || value["startTime"] === undefined) return false;
   if (!("timeout" in value) || value["timeout"] === undefined) return false;
-  if (!("retryCount" in value) || value["retryCount"] === undefined)
-    return false;
-  if (!("maxRetries" in value) || value["maxRetries"] === undefined)
-    return false;
+  if (!("retryCount" in value) || value["retryCount"] === undefined) return false;
+  if (!("maxRetries" in value) || value["maxRetries"] === undefined) return false;
   return true;
 }
 
@@ -79,10 +74,7 @@ export function TaskInfoResponseFromJSON(json: any): TaskInfoResponse {
   return TaskInfoResponseFromJSONTyped(json, false);
 }
 
-export function TaskInfoResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TaskInfoResponse {
+export function TaskInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskInfoResponse {
   if (json == null) {
     return json;
   }
@@ -102,7 +94,7 @@ export function TaskInfoResponseToJSON(json: any): TaskInfoResponse {
 
 export function TaskInfoResponseToJSONTyped(
   value?: TaskInfoResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

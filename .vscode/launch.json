@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🦊 Debug Frontend (Vite Dev Server)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/vite",
+      "args": ["--mode", "development"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    {
+      "name": "🐍 Debug Python Backend",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/app/main.py",
+      "cwd": "${workspaceFolder}/backend",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "🦊 Debug Full Stack",
+      "configurations": ["🦊 Debug Frontend (Vite Dev Server)", "🐍 Debug Python Backend"],
+      "stopAll": true
+    }
+  ]
+}

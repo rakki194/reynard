@@ -30,7 +30,7 @@ export const createBarChartOptions = (options: BarChartConfigOptions) => {
 
   return {
     ...baseConfig,
-    indexAxis: options.horizontal ? "y" : "x",
+    indexAxis: (options.horizontal ? "y" : "x") as "x" | "y",
     responsive: options.responsive,
     maintainAspectRatio: options.maintainAspectRatio,
     animation: options.animation || (baseConfig as any).animation,
@@ -42,7 +42,7 @@ export const createBarChartOptions = (options: BarChartConfigOptions) => {
         color: "var(--text-primary)",
         font: {
           size: 16,
-          weight: "600",
+          weight: "bold" as const,
         },
         padding: {
           top: 10,
@@ -61,17 +61,10 @@ export const createBarChartOptions = (options: BarChartConfigOptions) => {
     scales: {
       [categoryAxis]: {
         type: "category",
-        display:
-          categoryAxis === "x"
-            ? options.xAxis?.display !== false
-            : options.yAxis?.display !== false,
+        display: categoryAxis === "x" ? options.xAxis?.display !== false : options.yAxis?.display !== false,
         title: {
-          display:
-            categoryAxis === "x"
-              ? !!options.xAxis?.label
-              : !!options.yAxis?.label,
-          text:
-            categoryAxis === "x" ? options.xAxis?.label : options.yAxis?.label,
+          display: categoryAxis === "x" ? !!options.xAxis?.label : !!options.yAxis?.label,
+          text: categoryAxis === "x" ? options.xAxis?.label : options.yAxis?.label,
           color: "var(--text-primary)",
         },
         grid: {
@@ -79,25 +72,16 @@ export const createBarChartOptions = (options: BarChartConfigOptions) => {
         },
         ticks: {
           color: "var(--text-secondary)",
-          ...(categoryAxis === "x"
-            ? options.xAxis?.ticks
-            : options.yAxis?.ticks),
+          ...(categoryAxis === "x" ? options.xAxis?.ticks : options.yAxis?.ticks),
         },
         stacked: options.stacked,
       },
       [valueAxis]: {
         type: "linear",
-        display:
-          valueAxis === "x"
-            ? options.xAxis?.display !== false
-            : options.yAxis?.display !== false,
-        position:
-          valueAxis === "y"
-            ? options.yAxis?.position || "left"
-            : options.xAxis?.position || "bottom",
+        display: valueAxis === "x" ? options.xAxis?.display !== false : options.yAxis?.display !== false,
+        position: valueAxis === "y" ? options.yAxis?.position || "left" : options.xAxis?.position || "bottom",
         title: {
-          display:
-            valueAxis === "x" ? !!options.xAxis?.label : !!options.yAxis?.label,
+          display: valueAxis === "x" ? !!options.xAxis?.label : !!options.yAxis?.label,
           text: valueAxis === "x" ? options.xAxis?.label : options.yAxis?.label,
           color: "var(--text-primary)",
         },

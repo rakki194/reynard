@@ -5,10 +5,11 @@
  */
 
 import { Component, Show } from "solid-js";
-import { EmbeddingDistributionChart } from "./EmbeddingDistributionChart";
-import { PCAVarianceChart } from "./PCAVarianceChart";
-import { EmbeddingQualityChart } from "./EmbeddingQualityChart";
+import { ReynardTheme } from "../types";
 import { Embedding3DVisualization } from "./Embedding3DVisualization";
+import { EmbeddingDistributionChart } from "./EmbeddingDistributionChart";
+import { EmbeddingQualityChart } from "./EmbeddingQualityChart";
+import { PCAVarianceChart } from "./PCAVarianceChart";
 
 export interface EmbeddingVisualizationContentProps {
   /** Active tab */
@@ -35,9 +36,7 @@ export interface EmbeddingVisualizationContentProps {
   onRetry: () => void;
 }
 
-export const EmbeddingVisualizationContent: Component<
-  EmbeddingVisualizationContentProps
-> = (props) => {
+export const EmbeddingVisualizationContent: Component<EmbeddingVisualizationContentProps> = props => {
   return (
     <div class="dashboard-main">
       <Show when={props.error}>
@@ -50,9 +49,7 @@ export const EmbeddingVisualizationContent: Component<
 
       <Show when={!props.isLoading && !props.error}>
         <div class="visualization-content">
-          <Show
-            when={props.activeTab === "distribution" && props.embeddingData}
-          >
+          <Show when={props.activeTab === "distribution" && props.embeddingData}>
             <div class="chart-section">
               <h4>Embedding Value Distribution</h4>
               <div class="chart-grid">
@@ -65,7 +62,7 @@ export const EmbeddingVisualizationContent: Component<
                   xAxisLabel="Embedding Value"
                   yAxisLabel="Frequency"
                   showStatistics={true}
-                  theme={props.theme}
+                  theme={props.theme as ReynardTheme}
                 />
                 <EmbeddingDistributionChart
                   title="Embedding Value Box Plot"
@@ -76,7 +73,7 @@ export const EmbeddingVisualizationContent: Component<
                   xAxisLabel="Statistic"
                   yAxisLabel="Value"
                   showStatistics={true}
-                  theme={props.theme}
+                  theme={props.theme as ReynardTheme}
                 />
               </div>
             </div>
@@ -93,7 +90,7 @@ export const EmbeddingVisualizationContent: Component<
                 showCumulative={true}
                 showRecommendations={true}
                 maxComponents={20}
-                theme={props.theme}
+                theme={props.theme as ReynardTheme}
               />
             </div>
           </Show>
@@ -109,7 +106,7 @@ export const EmbeddingVisualizationContent: Component<
                   width={props.width || 400}
                   height={props.height || 300}
                   showAssessment={true}
-                  theme={props.theme}
+                  theme={props.theme as ReynardTheme}
                 />
                 <EmbeddingQualityChart
                   title="Overall Quality Score"
@@ -118,7 +115,7 @@ export const EmbeddingVisualizationContent: Component<
                   width={props.width || 400}
                   height={props.height || 300}
                   showAssessment={true}
-                  theme={props.theme}
+                  theme={props.theme as ReynardTheme}
                 />
               </div>
             </div>
@@ -135,7 +132,7 @@ export const EmbeddingVisualizationContent: Component<
                   pointSize={2}
                   enableHighlighting={true}
                   showSimilarityPaths={true}
-                  theme={props.theme}
+                  theme={props.theme as ReynardTheme}
                   onPointClick={(index, data) => {
                     console.log("Point clicked:", index, data);
                   }}
@@ -146,12 +143,8 @@ export const EmbeddingVisualizationContent: Component<
               </Show>
               <Show when={!props.reductionResult}>
                 <div class="three-d-placeholder">
-                  <p>
-                    Perform a dimensionality reduction to see 3D visualization
-                  </p>
-                  <p>
-                    Use the controls in the sidebar to reduce embeddings to 3D
-                  </p>
+                  <p>Perform a dimensionality reduction to see 3D visualization</p>
+                  <p>Use the controls in the sidebar to reduce embeddings to 3D</p>
                 </div>
               </Show>
             </div>

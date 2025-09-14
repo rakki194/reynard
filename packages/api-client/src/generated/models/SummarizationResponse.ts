@@ -27,10 +27,10 @@ export interface SummarizationResponse {
   success: boolean;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof SummarizationResponse
    */
-  result?: object | null;
+  result?: { [key: string]: any } | null;
   /**
    *
    * @type {string}
@@ -54,25 +54,17 @@ export interface SummarizationResponse {
 /**
  * Check if a given object implements the SummarizationResponse interface.
  */
-export function instanceOfSummarizationResponse(
-  value: object,
-): value is SummarizationResponse {
+export function instanceOfSummarizationResponse(value: object): value is SummarizationResponse {
   if (!("success" in value) || value["success"] === undefined) return false;
-  if (!("processingTime" in value) || value["processingTime"] === undefined)
-    return false;
+  if (!("processingTime" in value) || value["processingTime"] === undefined) return false;
   return true;
 }
 
-export function SummarizationResponseFromJSON(
-  json: any,
-): SummarizationResponse {
+export function SummarizationResponseFromJSON(json: any): SummarizationResponse {
   return SummarizationResponseFromJSONTyped(json, false);
 }
 
-export function SummarizationResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): SummarizationResponse {
+export function SummarizationResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): SummarizationResponse {
   if (json == null) {
     return json;
   }
@@ -91,7 +83,7 @@ export function SummarizationResponseToJSON(json: any): SummarizationResponse {
 
 export function SummarizationResponseToJSONTyped(
   value?: SummarizationResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

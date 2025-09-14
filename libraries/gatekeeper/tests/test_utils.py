@@ -9,6 +9,10 @@ import re
 from gatekeeper.utils.security import SecurityUtils
 from gatekeeper.utils.validators import PasswordValidator
 
+# Test constants
+MIN_TOKEN_LENGTH = 16
+MAX_TOKEN_LENGTH = 20
+
 
 class TestSecurityUtils:
     """Test the SecurityUtils class."""
@@ -26,7 +30,7 @@ class TestSecurityUtils:
         """Test secure password generation."""
         password = SecurityUtils.generate_secure_password(16)
 
-        assert len(password) == 16
+        assert len(password) == MIN_TOKEN_LENGTH
         assert re.search(r"[a-z]", password)  # lowercase
         assert re.search(r"[A-Z]", password)  # uppercase
         assert re.search(r"\d", password)  # digit
@@ -35,7 +39,7 @@ class TestSecurityUtils:
     def test_generate_secure_password_custom_length(self):
         """Test secure password generation with custom length."""
         password = SecurityUtils.generate_secure_password(20)
-        assert len(password) == 20
+        assert len(password) == MAX_TOKEN_LENGTH
 
     def test_generate_api_key(self):
         """Test API key generation."""

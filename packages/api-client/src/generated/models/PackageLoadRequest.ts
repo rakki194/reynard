@@ -30,11 +30,8 @@ export interface PackageLoadRequest {
 /**
  * Check if a given object implements the PackageLoadRequest interface.
  */
-export function instanceOfPackageLoadRequest(
-  value: object,
-): value is PackageLoadRequest {
-  if (!("packageName" in value) || value["packageName"] === undefined)
-    return false;
+export function instanceOfPackageLoadRequest(value: object): value is PackageLoadRequest {
+  if (!("packageName" in value) || value["packageName"] === undefined) return false;
   return true;
 }
 
@@ -42,10 +39,7 @@ export function PackageLoadRequestFromJSON(json: any): PackageLoadRequest {
   return PackageLoadRequestFromJSONTyped(json, false);
 }
 
-export function PackageLoadRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): PackageLoadRequest {
+export function PackageLoadRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PackageLoadRequest {
   if (json == null) {
     return json;
   }
@@ -60,7 +54,7 @@ export function PackageLoadRequestToJSON(json: any): PackageLoadRequest {
 
 export function PackageLoadRequestToJSONTyped(
   value?: PackageLoadRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

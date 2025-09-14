@@ -202,7 +202,7 @@ pip install -r requirements-dev.txt
 
 ```bash
 # Check Python validation script
-python3 .husky/validate-python.py
+python3 scripts/validate_python.py
 
 # Fix formatting issues
 npm run python:format

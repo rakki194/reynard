@@ -48,48 +48,35 @@ export interface ResizeDimensionsRequest {
 /**
  * Check if a given object implements the ResizeDimensionsRequest interface.
  */
-export function instanceOfResizeDimensionsRequest(
-  value: object,
-): value is ResizeDimensionsRequest {
-  if (!("originalWidth" in value) || value["originalWidth"] === undefined)
-    return false;
-  if (!("originalHeight" in value) || value["originalHeight"] === undefined)
-    return false;
+export function instanceOfResizeDimensionsRequest(value: object): value is ResizeDimensionsRequest {
+  if (!("originalWidth" in value) || value["originalWidth"] === undefined) return false;
+  if (!("originalHeight" in value) || value["originalHeight"] === undefined) return false;
   return true;
 }
 
-export function ResizeDimensionsRequestFromJSON(
-  json: any,
-): ResizeDimensionsRequest {
+export function ResizeDimensionsRequestFromJSON(json: any): ResizeDimensionsRequest {
   return ResizeDimensionsRequestFromJSONTyped(json, false);
 }
 
-export function ResizeDimensionsRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ResizeDimensionsRequest {
+export function ResizeDimensionsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResizeDimensionsRequest {
   if (json == null) {
     return json;
   }
   return {
     originalWidth: json["original_width"],
     originalHeight: json["original_height"],
-    targetWidth:
-      json["target_width"] == null ? undefined : json["target_width"],
-    targetHeight:
-      json["target_height"] == null ? undefined : json["target_height"],
+    targetWidth: json["target_width"] == null ? undefined : json["target_width"],
+    targetHeight: json["target_height"] == null ? undefined : json["target_height"],
   };
 }
 
-export function ResizeDimensionsRequestToJSON(
-  json: any,
-): ResizeDimensionsRequest {
+export function ResizeDimensionsRequestToJSON(json: any): ResizeDimensionsRequest {
   return ResizeDimensionsRequestToJSONTyped(json, false);
 }
 
 export function ResizeDimensionsRequestToJSONTyped(
   value?: ResizeDimensionsRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

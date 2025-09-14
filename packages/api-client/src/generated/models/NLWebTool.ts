@@ -100,8 +100,7 @@ export interface NLWebTool {
  */
 export function instanceOfNLWebTool(value: object): value is NLWebTool {
   if (!("name" in value) || value["name"] === undefined) return false;
-  if (!("description" in value) || value["description"] === undefined)
-    return false;
+  if (!("description" in value) || value["description"] === undefined) return false;
   if (!("category" in value) || value["category"] === undefined) return false;
   if (!("path" in value) || value["path"] === undefined) return false;
   return true;
@@ -111,10 +110,7 @@ export function NLWebToolFromJSON(json: any): NLWebTool {
   return NLWebToolFromJSONTyped(json, false);
 }
 
-export function NLWebToolFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebTool {
+export function NLWebToolFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebTool {
   if (json == null) {
     return json;
   }
@@ -126,9 +122,7 @@ export function NLWebToolFromJSONTyped(
     path: json["path"],
     method: json["method"] == null ? undefined : json["method"],
     parameters:
-      json["parameters"] == null
-        ? undefined
-        : (json["parameters"] as Array<any>).map(NLWebToolParameterFromJSON),
+      json["parameters"] == null ? undefined : (json["parameters"] as Array<any>).map(NLWebToolParameterFromJSON),
     examples: json["examples"] == null ? undefined : json["examples"],
     enabled: json["enabled"] == null ? undefined : json["enabled"],
     priority: json["priority"] == null ? undefined : json["priority"],
@@ -140,10 +134,7 @@ export function NLWebToolToJSON(json: any): NLWebTool {
   return NLWebToolToJSONTyped(json, false);
 }
 
-export function NLWebToolToJSONTyped(
-  value?: NLWebTool | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function NLWebToolToJSONTyped(value?: NLWebTool | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }
@@ -156,9 +147,7 @@ export function NLWebToolToJSONTyped(
     path: value["path"],
     method: value["method"],
     parameters:
-      value["parameters"] == null
-        ? undefined
-        : (value["parameters"] as Array<any>).map(NLWebToolParameterToJSON),
+      value["parameters"] == null ? undefined : (value["parameters"] as Array<any>).map(NLWebToolParameterToJSON),
     examples: value["examples"],
     enabled: value["enabled"],
     priority: value["priority"],

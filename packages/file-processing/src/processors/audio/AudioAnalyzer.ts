@@ -48,17 +48,16 @@ export class AudioAnalyzer {
   async analyzeAudioData(audio: HTMLAudioElement): Promise<number[]> {
     return new Promise((resolve, reject) => {
       try {
-        const { audioContext, analyser, dataArray } =
-          this.setupAudioAnalysis(audio);
+        const { audioContext, analyser, dataArray } = this.setupAudioAnalysis(audio);
         const originalTime = audio.currentTime;
 
         this.sampleAudioData(audio, analyser, dataArray, originalTime)
-          .then((samples) => {
+          .then(samples => {
             const amplitudes = this.processAudioSamples(samples);
             audioContext.close();
             resolve(amplitudes);
           })
-          .catch((error) => {
+          .catch(error => {
             audioContext.close();
             reject(error);
           });
@@ -72,8 +71,7 @@ export class AudioAnalyzer {
    * Setup audio context and analyser for analysis
    */
   private setupAudioAnalysis(audio: HTMLAudioElement) {
-    const audioContext = new (window.AudioContext ||
-      (window as any).webkitAudioContext)();
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     const source = audioContext.createMediaElementSource(audio);
     const analyser = audioContext.createAnalyser();
 
@@ -97,7 +95,7 @@ export class AudioAnalyzer {
     audio: HTMLAudioElement,
     analyser: AnalyserNode,
     dataArray: Uint8Array,
-    originalTime: number,
+    originalTime: number
   ): Promise<number[][]> {
     return new Promise((resolve, reject) => {
       audio.muted = true;
@@ -110,12 +108,12 @@ export class AudioAnalyzer {
 
       playPromise
         .then(() => {
-          let samples: number[][] = [];
+          const samples: number[][] = [];
           let sampleCount = 0;
           const maxSamples = 5;
 
           const sampleInterval = setInterval(() => {
-            analyser.getByteFrequencyData(dataArray);
+            analyser.getByteFrequencyData(dataArray as Uint8Array<ArrayBuffer>);
             samples.push(Array.from(dataArray));
             sampleCount++;
 
@@ -150,7 +148,7 @@ export class AudioAnalyzer {
     }
 
     // Convert to amplitude values and normalize
-    return averagedData.map((value) => Math.min(1, value / 128));
+    return averagedData.map(value => Math.min(1, value / 128));
   }
 
   /**

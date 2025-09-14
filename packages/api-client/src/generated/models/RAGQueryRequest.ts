@@ -54,9 +54,7 @@ export interface RAGQueryRequest {
 /**
  * Check if a given object implements the RAGQueryRequest interface.
  */
-export function instanceOfRAGQueryRequest(
-  value: object,
-): value is RAGQueryRequest {
+export function instanceOfRAGQueryRequest(value: object): value is RAGQueryRequest {
   if (!("q" in value) || value["q"] === undefined) return false;
   return true;
 }
@@ -65,10 +63,7 @@ export function RAGQueryRequestFromJSON(json: any): RAGQueryRequest {
   return RAGQueryRequestFromJSONTyped(json, false);
 }
 
-export function RAGQueryRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): RAGQueryRequest {
+export function RAGQueryRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGQueryRequest {
   if (json == null) {
     return json;
   }
@@ -76,12 +71,8 @@ export function RAGQueryRequestFromJSONTyped(
     q: json["q"],
     modality: json["modality"] == null ? undefined : json["modality"],
     topK: json["top_k"] == null ? undefined : json["top_k"],
-    similarityThreshold:
-      json["similarity_threshold"] == null
-        ? undefined
-        : json["similarity_threshold"],
-    enableReranking:
-      json["enable_reranking"] == null ? undefined : json["enable_reranking"],
+    similarityThreshold: json["similarity_threshold"] == null ? undefined : json["similarity_threshold"],
+    enableReranking: json["enable_reranking"] == null ? undefined : json["enable_reranking"],
   };
 }
 
@@ -89,10 +80,7 @@ export function RAGQueryRequestToJSON(json: any): RAGQueryRequest {
   return RAGQueryRequestToJSONTyped(json, false);
 }
 
-export function RAGQueryRequestToJSONTyped(
-  value?: RAGQueryRequest | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function RAGQueryRequestToJSONTyped(value?: RAGQueryRequest | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

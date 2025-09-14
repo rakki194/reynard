@@ -27,10 +27,10 @@ export interface NLWebMCPRequest {
   method: string;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof NLWebMCPRequest
    */
-  params?: object | null;
+  params?: { [key: string]: any } | null;
   /**
    * Request ID for the MCP call
    * @type {string}
@@ -42,9 +42,7 @@ export interface NLWebMCPRequest {
 /**
  * Check if a given object implements the NLWebMCPRequest interface.
  */
-export function instanceOfNLWebMCPRequest(
-  value: object,
-): value is NLWebMCPRequest {
+export function instanceOfNLWebMCPRequest(value: object): value is NLWebMCPRequest {
   if (!("method" in value) || value["method"] === undefined) return false;
   return true;
 }
@@ -53,10 +51,7 @@ export function NLWebMCPRequestFromJSON(json: any): NLWebMCPRequest {
   return NLWebMCPRequestFromJSONTyped(json, false);
 }
 
-export function NLWebMCPRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebMCPRequest {
+export function NLWebMCPRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebMCPRequest {
   if (json == null) {
     return json;
   }
@@ -71,10 +66,7 @@ export function NLWebMCPRequestToJSON(json: any): NLWebMCPRequest {
   return NLWebMCPRequestToJSONTyped(json, false);
 }
 
-export function NLWebMCPRequestToJSONTyped(
-  value?: NLWebMCPRequest | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function NLWebMCPRequestToJSONTyped(value?: NLWebMCPRequest | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

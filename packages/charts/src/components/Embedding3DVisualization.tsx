@@ -5,16 +5,8 @@
  * Integrates with existing Reynard 3D package for advanced visualization.
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-  Show,
-  splitProps,
-} from "solid-js";
-import { useEmbeddingVisualization } from "../composables/useEmbeddingVisualization";
+import { Component, Show, createEffect, createSignal, onCleanup, onMount, splitProps } from "solid-js";
+import * as THREE from "three";
 import { EmbeddingReductionResponse } from "../composables/useEmbeddingVisualization";
 
 export interface Embedding3DVisualizationProps {
@@ -54,9 +46,7 @@ const defaultProps = {
   loading: false,
 };
 
-export const Embedding3DVisualization: Component<
-  Embedding3DVisualizationProps
-> = (props) => {
+export const Embedding3DVisualization: Component<Embedding3DVisualizationProps> = props => {
   const [local, others] = splitProps(props, [
     "data",
     "loading",
@@ -110,12 +100,7 @@ export const Embedding3DVisualization: Component<
       scene.background = new THREE.Color(0x1a1a1a);
 
       // Create camera
-      camera = new THREE.PerspectiveCamera(
-        75,
-        others.width! / others.height!,
-        0.1,
-        1000,
-      );
+      camera = new THREE.PerspectiveCamera(75, others.width! / others.height!, 0.1, 1000);
       camera.position.set(0, 0, 10);
 
       // Create renderer
@@ -133,9 +118,7 @@ export const Embedding3DVisualization: Component<
       scene.add(directionalLight);
 
       // Add orbit controls
-      const { OrbitControls } = await import(
-        "three/examples/jsm/controls/OrbitControls.js"
-      );
+      const { OrbitControls } = await import("three/examples/jsm/controls/OrbitControls.js");
       controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
@@ -182,9 +165,7 @@ export const Embedding3DVisualization: Component<
         positions[index * 3 + 2] = point[2];
 
         // Color based on position (distance from center)
-        const distance = Math.sqrt(
-          point[0] ** 2 + point[1] ** 2 + point[2] ** 2,
-        );
+        const distance = Math.sqrt(point[0] ** 2 + point[1] ** 2 + point[2] ** 2);
         const normalizedDistance = Math.min(distance / 5, 1);
 
         // Color gradient from blue to red
@@ -196,7 +177,7 @@ export const Embedding3DVisualization: Component<
         colors[index * 3 + 2] = color.b;
 
         // Size based on distance
-        sizes[index] = others.pointSize! * (1 + normalizedDistance * 0.5);
+        sizes[index] = local.pointSize! * (1 + normalizedDistance * 0.5);
       }
     });
 
@@ -206,7 +187,7 @@ export const Embedding3DVisualization: Component<
 
     // Create material
     const material = new THREE.PointsMaterial({
-      size: others.pointSize!,
+      size: local.pointSize!,
       vertexColors: true,
       transparent: true,
       opacity: 0.8,
@@ -218,7 +199,7 @@ export const Embedding3DVisualization: Component<
     scene.add(points);
 
     // Add click and hover interactions
-    if (others.onPointClick || others.onPointHover) {
+    if (local.onPointClick || local.onPointHover) {
       addInteractions();
     }
 
@@ -242,13 +223,15 @@ export const Embedding3DVisualization: Component<
 
       if (intersects.length > 0) {
         const pointIndex = intersects[0].index;
-        setHoveredPoint(pointIndex);
+        if (pointIndex !== undefined) {
+          setHoveredPoint(pointIndex);
 
-        if (others.onPointHover) {
-          others.onPointHover(pointIndex, {
-            position: intersects[0].point,
-            data: local.data?.original_embeddings?.[pointIndex],
-          });
+          if (local.onPointHover) {
+            local.onPointHover(pointIndex, {
+              position: intersects[0].point,
+              data: local.data?.original_embeddings?.[pointIndex],
+            });
+          }
         }
       } else {
         setHoveredPoint(null);
@@ -265,13 +248,15 @@ export const Embedding3DVisualization: Component<
 
       if (intersects.length > 0) {
         const pointIndex = intersects[0].index;
-        setSelectedPoint(pointIndex);
+        if (pointIndex !== undefined) {
+          setSelectedPoint(pointIndex);
 
-        if (others.onPointClick) {
-          others.onPointClick(pointIndex, {
-            position: intersects[0].point,
-            data: local.data?.original_embeddings?.[pointIndex],
-          });
+          if (local.onPointClick) {
+            local.onPointClick(pointIndex, {
+              position: intersects[0].point,
+              data: local.data?.original_embeddings?.[pointIndex],
+            });
+          }
         }
       }
     };
@@ -302,7 +287,7 @@ export const Embedding3DVisualization: Component<
     let minZ = Infinity,
       maxZ = -Infinity;
 
-    data.forEach((point) => {
+    data.forEach(point => {
       if (point.length >= 3) {
         minX = Math.min(minX, point[0]);
         maxX = Math.max(maxX, point[0]);
@@ -379,10 +364,8 @@ export const Embedding3DVisualization: Component<
             color: "var(--text-muted, #666)",
           }}
         >
-          <div class="loading-spinner"></div>
-          <span style={{ "margin-left": "10px" }}>
-            Loading 3D visualization...
-          </span>
+          <div class="loading-spinner" />
+          <span style={{ "margin-left": "10px" }}>Loading 3D visualization...</span>
         </div>
       </Show>
 
@@ -422,17 +405,13 @@ export const Embedding3DVisualization: Component<
 
           <Show when={hoveredPoint() !== null}>
             <div class="hover-info">
-              Point {hoveredPoint()}:{" "}
-              {local.data?.original_embeddings?.[hoveredPoint()!]?.id ||
-                "Unknown"}
+              Point {hoveredPoint()}: {local.data?.original_embeddings?.[hoveredPoint()!]?.id || "Unknown"}
             </div>
           </Show>
 
           <Show when={selectedPoint() !== null}>
             <div class="selected-info">
-              Selected Point {selectedPoint()}:{" "}
-              {local.data?.original_embeddings?.[selectedPoint()!]?.id ||
-                "Unknown"}
+              Selected Point {selectedPoint()}: {local.data?.original_embeddings?.[selectedPoint()!]?.id || "Unknown"}
             </div>
           </Show>
         </div>

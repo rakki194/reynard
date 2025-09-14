@@ -62,9 +62,7 @@ export interface NLWebAskRequest {
 /**
  * Check if a given object implements the NLWebAskRequest interface.
  */
-export function instanceOfNLWebAskRequest(
-  value: object,
-): value is NLWebAskRequest {
+export function instanceOfNLWebAskRequest(value: object): value is NLWebAskRequest {
   if (!("query" in value) || value["query"] === undefined) return false;
   return true;
 }
@@ -73,19 +71,13 @@ export function NLWebAskRequestFromJSON(json: any): NLWebAskRequest {
   return NLWebAskRequestFromJSONTyped(json, false);
 }
 
-export function NLWebAskRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebAskRequest {
+export function NLWebAskRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebAskRequest {
   if (json == null) {
     return json;
   }
   return {
     query: json["query"],
-    context:
-      json["context"] == null
-        ? undefined
-        : NLWebContextFromJSON(json["context"]),
+    context: json["context"] == null ? undefined : NLWebContextFromJSON(json["context"]),
     stream: json["stream"] == null ? undefined : json["stream"],
     maxTokens: json["max_tokens"] == null ? undefined : json["max_tokens"],
     temperature: json["temperature"] == null ? undefined : json["temperature"],
@@ -96,10 +88,7 @@ export function NLWebAskRequestToJSON(json: any): NLWebAskRequest {
   return NLWebAskRequestToJSONTyped(json, false);
 }
 
-export function NLWebAskRequestToJSONTyped(
-  value?: NLWebAskRequest | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function NLWebAskRequestToJSONTyped(value?: NLWebAskRequest | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

@@ -49,28 +49,22 @@ export interface ImageProcessingServiceInfoResponse {
  * Check if a given object implements the ImageProcessingServiceInfoResponse interface.
  */
 export function instanceOfImageProcessingServiceInfoResponse(
-  value: object,
+  value: object
 ): value is ImageProcessingServiceInfoResponse {
-  if (!("jxlSupported" in value) || value["jxlSupported"] === undefined)
-    return false;
-  if (!("avifSupported" in value) || value["avifSupported"] === undefined)
-    return false;
-  if (!("supportedFormats" in value) || value["supportedFormats"] === undefined)
-    return false;
-  if (!("totalFormats" in value) || value["totalFormats"] === undefined)
-    return false;
+  if (!("jxlSupported" in value) || value["jxlSupported"] === undefined) return false;
+  if (!("avifSupported" in value) || value["avifSupported"] === undefined) return false;
+  if (!("supportedFormats" in value) || value["supportedFormats"] === undefined) return false;
+  if (!("totalFormats" in value) || value["totalFormats"] === undefined) return false;
   return true;
 }
 
-export function ImageProcessingServiceInfoResponseFromJSON(
-  json: any,
-): ImageProcessingServiceInfoResponse {
+export function ImageProcessingServiceInfoResponseFromJSON(json: any): ImageProcessingServiceInfoResponse {
   return ImageProcessingServiceInfoResponseFromJSONTyped(json, false);
 }
 
 export function ImageProcessingServiceInfoResponseFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): ImageProcessingServiceInfoResponse {
   if (json == null) {
     return json;
@@ -83,15 +77,13 @@ export function ImageProcessingServiceInfoResponseFromJSONTyped(
   };
 }
 
-export function ImageProcessingServiceInfoResponseToJSON(
-  json: any,
-): ImageProcessingServiceInfoResponse {
+export function ImageProcessingServiceInfoResponseToJSON(json: any): ImageProcessingServiceInfoResponse {
   return ImageProcessingServiceInfoResponseToJSONTyped(json, false);
 }
 
 export function ImageProcessingServiceInfoResponseToJSONTyped(
   value?: ImageProcessingServiceInfoResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

@@ -77,7 +77,7 @@ export interface ExecutorApiInterface {
    */
   executeTaskApiExecutorApiExecutorExecutePostRaw(
     requestParameters: ExecuteTaskApiExecutorApiExecutorExecutePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -86,7 +86,7 @@ export interface ExecutorApiInterface {
    */
   executeTaskApiExecutorApiExecutorExecutePost(
     requestParameters: ExecuteTaskApiExecutorApiExecutorExecutePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -99,7 +99,7 @@ export interface ExecutorApiInterface {
    */
   executeTaskApiExecutorApiExecutorExecutePost_1Raw(
     requestParameters: ExecuteTaskApiExecutorApiExecutorExecutePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -108,7 +108,7 @@ export interface ExecutorApiInterface {
    */
   executeTaskApiExecutorApiExecutorExecutePost_1(
     requestParameters: ExecuteTaskApiExecutorApiExecutorExecutePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -119,7 +119,7 @@ export interface ExecutorApiInterface {
    * @memberof ExecutorApiInterface
    */
   getActiveTasksApiExecutorApiExecutorActiveTasksGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<TaskInfoResponse>>>;
 
   /**
@@ -127,7 +127,7 @@ export interface ExecutorApiInterface {
    * Get Active Tasks
    */
   getActiveTasksApiExecutorApiExecutorActiveTasksGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<TaskInfoResponse>>;
 
   /**
@@ -138,7 +138,7 @@ export interface ExecutorApiInterface {
    * @memberof ExecutorApiInterface
    */
   getActiveTasksApiExecutorApiExecutorActiveTasksGet_2Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<TaskInfoResponse>>>;
 
   /**
@@ -146,7 +146,7 @@ export interface ExecutorApiInterface {
    * Get Active Tasks
    */
   getActiveTasksApiExecutorApiExecutorActiveTasksGet_2(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<TaskInfoResponse>>;
 
   /**
@@ -157,7 +157,7 @@ export interface ExecutorApiInterface {
    * @memberof ExecutorApiInterface
    */
   getExecutorStateApiExecutorApiExecutorStateGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ExecutorStateResponse>>;
 
   /**
@@ -165,7 +165,7 @@ export interface ExecutorApiInterface {
    * Get Executor State
    */
   getExecutorStateApiExecutorApiExecutorStateGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ExecutorStateResponse>;
 
   /**
@@ -176,7 +176,7 @@ export interface ExecutorApiInterface {
    * @memberof ExecutorApiInterface
    */
   getExecutorStateApiExecutorApiExecutorStateGet_3Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ExecutorStateResponse>>;
 
   /**
@@ -184,7 +184,7 @@ export interface ExecutorApiInterface {
    * Get Executor State
    */
   getExecutorStateApiExecutorApiExecutorStateGet_3(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ExecutorStateResponse>;
 
   /**
@@ -195,7 +195,7 @@ export interface ExecutorApiInterface {
    * @memberof ExecutorApiInterface
    */
   getExecutorStatsApiExecutorApiExecutorStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ExecutorStatsResponse>>;
 
   /**
@@ -203,7 +203,7 @@ export interface ExecutorApiInterface {
    * Get Executor Stats
    */
   getExecutorStatsApiExecutorApiExecutorStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ExecutorStatsResponse>;
 
   /**
@@ -214,7 +214,7 @@ export interface ExecutorApiInterface {
    * @memberof ExecutorApiInterface
    */
   getExecutorStatsApiExecutorApiExecutorStatsGet_4Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ExecutorStatsResponse>>;
 
   /**
@@ -222,7 +222,7 @@ export interface ExecutorApiInterface {
    * Get Executor Stats
    */
   getExecutorStatsApiExecutorApiExecutorStatsGet_4(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ExecutorStatsResponse>;
 
   /**
@@ -233,16 +233,14 @@ export interface ExecutorApiInterface {
    * @memberof ExecutorApiInterface
    */
   healthCheckApiExecutorApiExecutorHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Health check endpoint for the executor service.
    * Health Check
    */
-  healthCheckApiExecutorApiExecutorHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  healthCheckApiExecutorApiExecutorHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Health check endpoint for the executor service.
@@ -252,7 +250,7 @@ export interface ExecutorApiInterface {
    * @memberof ExecutorApiInterface
    */
   healthCheckApiExecutorApiExecutorHealthGet_5Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -260,7 +258,7 @@ export interface ExecutorApiInterface {
    * Health Check
    */
   healthCheckApiExecutorApiExecutorHealthGet_5(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -273,7 +271,7 @@ export interface ExecutorApiInterface {
    */
   initializeExecutorApiExecutorApiExecutorInitializePostRaw(
     requestParameters: InitializeExecutorApiExecutorApiExecutorInitializePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -282,7 +280,7 @@ export interface ExecutorApiInterface {
    */
   initializeExecutorApiExecutorApiExecutorInitializePost(
     requestParameters: InitializeExecutorApiExecutorApiExecutorInitializePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -295,7 +293,7 @@ export interface ExecutorApiInterface {
    */
   initializeExecutorApiExecutorApiExecutorInitializePost_6Raw(
     requestParameters: InitializeExecutorApiExecutorApiExecutorInitializePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -304,7 +302,7 @@ export interface ExecutorApiInterface {
    */
   initializeExecutorApiExecutorApiExecutorInitializePost_6(
     requestParameters: InitializeExecutorApiExecutorApiExecutorInitializePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -317,7 +315,7 @@ export interface ExecutorApiInterface {
    */
   shutdownExecutorApiExecutorApiExecutorShutdownPostRaw(
     requestParameters: ShutdownExecutorApiExecutorApiExecutorShutdownPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -326,7 +324,7 @@ export interface ExecutorApiInterface {
    */
   shutdownExecutorApiExecutorApiExecutorShutdownPost(
     requestParameters: ShutdownExecutorApiExecutorApiExecutorShutdownPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -339,7 +337,7 @@ export interface ExecutorApiInterface {
    */
   shutdownExecutorApiExecutorApiExecutorShutdownPost_7Raw(
     requestParameters: ShutdownExecutorApiExecutorApiExecutorShutdownPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -348,29 +346,26 @@ export interface ExecutorApiInterface {
    */
   shutdownExecutorApiExecutorApiExecutorShutdownPost_7(
     requestParameters: ShutdownExecutorApiExecutorApiExecutorShutdownPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 }
 
 /**
  *
  */
-export class ExecutorApi
-  extends runtime.BaseAPI
-  implements ExecutorApiInterface
-{
+export class ExecutorApi extends runtime.BaseAPI implements ExecutorApiInterface {
   /**
    * Execute a task in the thread pool.  Note: This is a simplified endpoint for demonstration. In practice, you\'d want to implement proper task serialization and execution mechanisms.
    * Execute Task
    */
   async executeTaskApiExecutorApiExecutorExecutePostRaw(
     requestParameters: ExecuteTaskApiExecutorApiExecutorExecutePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["taskExecutionRequest"] == null) {
       throw new runtime.RequiredError(
         "taskExecutionRequest",
-        'Required parameter "taskExecutionRequest" was null or undefined when calling executeTaskApiExecutorApiExecutorExecutePost().',
+        'Required parameter "taskExecutionRequest" was null or undefined when calling executeTaskApiExecutorApiExecutorExecutePost().'
       );
     }
 
@@ -388,11 +383,9 @@ export class ExecutorApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: TaskExecutionRequestToJSON(
-          requestParameters["taskExecutionRequest"],
-        ),
+        body: TaskExecutionRequestToJSON(requestParameters["taskExecutionRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -408,12 +401,9 @@ export class ExecutorApi
    */
   async executeTaskApiExecutorApiExecutorExecutePost(
     requestParameters: ExecuteTaskApiExecutorApiExecutorExecutePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.executeTaskApiExecutorApiExecutorExecutePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.executeTaskApiExecutorApiExecutorExecutePostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -423,12 +413,12 @@ export class ExecutorApi
    */
   async executeTaskApiExecutorApiExecutorExecutePost_1Raw(
     requestParameters: ExecuteTaskApiExecutorApiExecutorExecutePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["taskExecutionRequest"] == null) {
       throw new runtime.RequiredError(
         "taskExecutionRequest",
-        'Required parameter "taskExecutionRequest" was null or undefined when calling executeTaskApiExecutorApiExecutorExecutePost_1().',
+        'Required parameter "taskExecutionRequest" was null or undefined when calling executeTaskApiExecutorApiExecutorExecutePost_1().'
       );
     }
 
@@ -446,11 +436,9 @@ export class ExecutorApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: TaskExecutionRequestToJSON(
-          requestParameters["taskExecutionRequest"],
-        ),
+        body: TaskExecutionRequestToJSON(requestParameters["taskExecutionRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -466,13 +454,9 @@ export class ExecutorApi
    */
   async executeTaskApiExecutorApiExecutorExecutePost_1(
     requestParameters: ExecuteTaskApiExecutorApiExecutorExecutePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.executeTaskApiExecutorApiExecutorExecutePost_1Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.executeTaskApiExecutorApiExecutorExecutePost_1Raw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -481,7 +465,7 @@ export class ExecutorApi
    * Get Active Tasks
    */
   async getActiveTasksApiExecutorApiExecutorActiveTasksGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<TaskInfoResponse>>> {
     const queryParameters: any = {};
 
@@ -496,12 +480,10 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      jsonValue.map(TaskInfoResponseFromJSON),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => jsonValue.map(TaskInfoResponseFromJSON));
   }
 
   /**
@@ -509,12 +491,9 @@ export class ExecutorApi
    * Get Active Tasks
    */
   async getActiveTasksApiExecutorApiExecutorActiveTasksGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<TaskInfoResponse>> {
-    const response =
-      await this.getActiveTasksApiExecutorApiExecutorActiveTasksGetRaw(
-        initOverrides,
-      );
+    const response = await this.getActiveTasksApiExecutorApiExecutorActiveTasksGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -523,7 +502,7 @@ export class ExecutorApi
    * Get Active Tasks
    */
   async getActiveTasksApiExecutorApiExecutorActiveTasksGet_2Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<TaskInfoResponse>>> {
     const queryParameters: any = {};
 
@@ -538,12 +517,10 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      jsonValue.map(TaskInfoResponseFromJSON),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => jsonValue.map(TaskInfoResponseFromJSON));
   }
 
   /**
@@ -551,12 +528,9 @@ export class ExecutorApi
    * Get Active Tasks
    */
   async getActiveTasksApiExecutorApiExecutorActiveTasksGet_2(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<TaskInfoResponse>> {
-    const response =
-      await this.getActiveTasksApiExecutorApiExecutorActiveTasksGet_2Raw(
-        initOverrides,
-      );
+    const response = await this.getActiveTasksApiExecutorApiExecutorActiveTasksGet_2Raw(initOverrides);
     return await response.value();
   }
 
@@ -565,7 +539,7 @@ export class ExecutorApi
    * Get Executor State
    */
   async getExecutorStateApiExecutorApiExecutorStateGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ExecutorStateResponse>> {
     const queryParameters: any = {};
 
@@ -580,12 +554,10 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ExecutorStateResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ExecutorStateResponseFromJSON(jsonValue));
   }
 
   /**
@@ -593,12 +565,9 @@ export class ExecutorApi
    * Get Executor State
    */
   async getExecutorStateApiExecutorApiExecutorStateGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ExecutorStateResponse> {
-    const response =
-      await this.getExecutorStateApiExecutorApiExecutorStateGetRaw(
-        initOverrides,
-      );
+    const response = await this.getExecutorStateApiExecutorApiExecutorStateGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -607,7 +576,7 @@ export class ExecutorApi
    * Get Executor State
    */
   async getExecutorStateApiExecutorApiExecutorStateGet_3Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ExecutorStateResponse>> {
     const queryParameters: any = {};
 
@@ -622,12 +591,10 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ExecutorStateResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ExecutorStateResponseFromJSON(jsonValue));
   }
 
   /**
@@ -635,12 +602,9 @@ export class ExecutorApi
    * Get Executor State
    */
   async getExecutorStateApiExecutorApiExecutorStateGet_3(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ExecutorStateResponse> {
-    const response =
-      await this.getExecutorStateApiExecutorApiExecutorStateGet_3Raw(
-        initOverrides,
-      );
+    const response = await this.getExecutorStateApiExecutorApiExecutorStateGet_3Raw(initOverrides);
     return await response.value();
   }
 
@@ -649,7 +613,7 @@ export class ExecutorApi
    * Get Executor Stats
    */
   async getExecutorStatsApiExecutorApiExecutorStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ExecutorStatsResponse>> {
     const queryParameters: any = {};
 
@@ -664,12 +628,10 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ExecutorStatsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ExecutorStatsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -677,12 +639,9 @@ export class ExecutorApi
    * Get Executor Stats
    */
   async getExecutorStatsApiExecutorApiExecutorStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ExecutorStatsResponse> {
-    const response =
-      await this.getExecutorStatsApiExecutorApiExecutorStatsGetRaw(
-        initOverrides,
-      );
+    const response = await this.getExecutorStatsApiExecutorApiExecutorStatsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -691,7 +650,7 @@ export class ExecutorApi
    * Get Executor Stats
    */
   async getExecutorStatsApiExecutorApiExecutorStatsGet_4Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ExecutorStatsResponse>> {
     const queryParameters: any = {};
 
@@ -706,12 +665,10 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ExecutorStatsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ExecutorStatsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -719,12 +676,9 @@ export class ExecutorApi
    * Get Executor Stats
    */
   async getExecutorStatsApiExecutorApiExecutorStatsGet_4(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ExecutorStatsResponse> {
-    const response =
-      await this.getExecutorStatsApiExecutorApiExecutorStatsGet_4Raw(
-        initOverrides,
-      );
+    const response = await this.getExecutorStatsApiExecutorApiExecutorStatsGet_4Raw(initOverrides);
     return await response.value();
   }
 
@@ -733,7 +687,7 @@ export class ExecutorApi
    * Health Check
    */
   async healthCheckApiExecutorApiExecutorHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -748,7 +702,7 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -763,10 +717,9 @@ export class ExecutorApi
    * Health Check
    */
   async healthCheckApiExecutorApiExecutorHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.healthCheckApiExecutorApiExecutorHealthGetRaw(initOverrides);
+    const response = await this.healthCheckApiExecutorApiExecutorHealthGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -775,7 +728,7 @@ export class ExecutorApi
    * Health Check
    */
   async healthCheckApiExecutorApiExecutorHealthGet_5Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -790,7 +743,7 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -805,10 +758,9 @@ export class ExecutorApi
    * Health Check
    */
   async healthCheckApiExecutorApiExecutorHealthGet_5(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.healthCheckApiExecutorApiExecutorHealthGet_5Raw(initOverrides);
+    const response = await this.healthCheckApiExecutorApiExecutorHealthGet_5Raw(initOverrides);
     return await response.value();
   }
 
@@ -818,7 +770,7 @@ export class ExecutorApi
    */
   async initializeExecutorApiExecutorApiExecutorInitializePostRaw(
     requestParameters: InitializeExecutorApiExecutorApiExecutorInitializePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -834,11 +786,9 @@ export class ExecutorApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ExecutorConfigRequestToJSON(
-          requestParameters["executorConfigRequest"],
-        ),
+        body: ExecutorConfigRequestToJSON(requestParameters["executorConfigRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -854,13 +804,12 @@ export class ExecutorApi
    */
   async initializeExecutorApiExecutorApiExecutorInitializePost(
     requestParameters: InitializeExecutorApiExecutorApiExecutorInitializePostRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.initializeExecutorApiExecutorApiExecutorInitializePostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.initializeExecutorApiExecutorApiExecutorInitializePostRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -870,7 +819,7 @@ export class ExecutorApi
    */
   async initializeExecutorApiExecutorApiExecutorInitializePost_6Raw(
     requestParameters: InitializeExecutorApiExecutorApiExecutorInitializePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -886,11 +835,9 @@ export class ExecutorApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ExecutorConfigRequestToJSON(
-          requestParameters["executorConfigRequest"],
-        ),
+        body: ExecutorConfigRequestToJSON(requestParameters["executorConfigRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -906,13 +853,12 @@ export class ExecutorApi
    */
   async initializeExecutorApiExecutorApiExecutorInitializePost_6(
     requestParameters: InitializeExecutorApiExecutorApiExecutorInitializePost0Request = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.initializeExecutorApiExecutorApiExecutorInitializePost_6Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.initializeExecutorApiExecutorApiExecutorInitializePost_6Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -922,7 +868,7 @@ export class ExecutorApi
    */
   async shutdownExecutorApiExecutorApiExecutorShutdownPostRaw(
     requestParameters: ShutdownExecutorApiExecutorApiExecutorShutdownPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -941,7 +887,7 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -957,13 +903,9 @@ export class ExecutorApi
    */
   async shutdownExecutorApiExecutorApiExecutorShutdownPost(
     requestParameters: ShutdownExecutorApiExecutorApiExecutorShutdownPostRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.shutdownExecutorApiExecutorApiExecutorShutdownPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.shutdownExecutorApiExecutorApiExecutorShutdownPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -973,7 +915,7 @@ export class ExecutorApi
    */
   async shutdownExecutorApiExecutorApiExecutorShutdownPost_7Raw(
     requestParameters: ShutdownExecutorApiExecutorApiExecutorShutdownPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -992,7 +934,7 @@ export class ExecutorApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1008,13 +950,12 @@ export class ExecutorApi
    */
   async shutdownExecutorApiExecutorApiExecutorShutdownPost_7(
     requestParameters: ShutdownExecutorApiExecutorApiExecutorShutdownPost0Request = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.shutdownExecutorApiExecutorApiExecutorShutdownPost_7Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.shutdownExecutorApiExecutorApiExecutorShutdownPost_7Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 }

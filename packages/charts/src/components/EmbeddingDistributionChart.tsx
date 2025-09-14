@@ -3,23 +3,9 @@
  * Advanced embedding distribution analysis with histogram and box plot visualization
  */
 
-import { Component, onMount, createSignal, Show, createMemo } from "solid-js";
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  Colors,
-  CategoryScale,
-  LinearScale,
-  BarController,
-  BarElement,
-  PointElement,
-  LineElement,
-  LineController,
-} from "chart.js";
-import { ChartConfig, ReynardTheme } from "../types";
+import { Component, Show, createMemo } from "solid-js";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
+import { ChartConfig } from "../types";
 
 export interface EmbeddingDistributionData {
   /** Embedding values for histogram */
@@ -69,9 +55,7 @@ export interface EmbeddingDistributionChartProps extends ChartConfig {
   emptyMessage?: string;
 }
 
-export const EmbeddingDistributionChart: Component<
-  EmbeddingDistributionChartProps
-> = (props) => {
+export const EmbeddingDistributionChart: Component<EmbeddingDistributionChartProps> = props => {
   const visualizationEngine = useVisualizationEngine();
 
   // Calculate histogram bins and counts using createMemo
@@ -81,8 +65,7 @@ export const EmbeddingDistributionChart: Component<
     }
 
     const values = props.data.values;
-    const numBins =
-      props.numBins || Math.min(20, Math.ceil(Math.sqrt(values.length)));
+    const numBins = props.numBins || Math.min(20, Math.ceil(Math.sqrt(values.length)));
 
     // Calculate bin edges
     const min = Math.min(...values);
@@ -100,7 +83,7 @@ export const EmbeddingDistributionChart: Component<
     for (let i = 0; i < numBins; i++) {
       const binStart = bins[i];
       const binEnd = bins[i + 1];
-      const count = values.filter((v) => v >= binStart && v < binEnd).length;
+      const count = values.filter(v => v >= binStart && v < binEnd).length;
       binCounts.push(count);
     }
 
@@ -145,8 +128,7 @@ export const EmbeddingDistributionChart: Component<
     const median = values[Math.floor(n * 0.5)];
     const q3 = values[Math.floor(n * 0.75)];
     const mean = values.reduce((sum, val) => sum + val, 0) / n;
-    const variance =
-      values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / n;
+    const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / n;
     const std = Math.sqrt(variance);
 
     // Create box plot data points
@@ -164,11 +146,11 @@ export const EmbeddingDistributionChart: Component<
       : [props.color || "rgba(255, 99, 132, 0.6)"];
 
     return {
-      labels: boxPlotPoints.map((p) => p.label),
+      labels: boxPlotPoints.map(p => p.label),
       datasets: [
         {
           label: "Value",
-          data: boxPlotPoints.map((p) => p.value),
+          data: boxPlotPoints.map(p => p.value),
           backgroundColor: colors[0],
           borderColor: colors[0]?.replace("0.6", "1"),
           borderWidth: 2,
@@ -220,8 +202,7 @@ export const EmbeddingDistributionChart: Component<
           display: true,
           title: {
             display: !!props.xAxisLabel,
-            text:
-              props.xAxisLabel || (isHistogram ? "Value Range" : "Statistic"),
+            text: props.xAxisLabel || (isHistogram ? "Value Range" : "Statistic"),
           },
           grid: {
             display: props.showGrid !== false,
@@ -298,37 +279,23 @@ export const EmbeddingDistributionChart: Component<
     <div class="embedding-distribution-chart">
       <Show when={props.loading}>
         <div class="chart-loading">
-          <div class="loading-spinner"></div>
+          <div class="loading-spinner" />
           <p>Loading embedding distribution data...</p>
         </div>
       </Show>
 
-      <Show
-        when={
-          !props.loading &&
-          (!props.data.values || props.data.values.length === 0)
-        }
-      >
+      <Show when={!props.loading && (!props.data.values || props.data.values.length === 0)}>
         <div class="chart-empty">
-          <p>
-            {props.emptyMessage || "No embedding distribution data available"}
-          </p>
+          <p>{props.emptyMessage || "No embedding distribution data available"}</p>
         </div>
       </Show>
 
-      <Show
-        when={
-          !props.loading && props.data.values && props.data.values.length > 0
-        }
-      >
-        <div
-          class="reynard-chart-container"
-          style={{ position: "relative", width: "100%", height: "100%" }}
-        >
+      <Show when={!props.loading && props.data.values && props.data.values.length > 0}>
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
           <canvas
             width={props.width || 400}
             height={props.height || 300}
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            style={{ "max-width": "100%", "max-height": "100%" }}
             data-testid="embedding-distribution-chart-canvas"
           />
         </div>

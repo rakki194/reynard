@@ -1,0 +1,63 @@
+{
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": false,
+  "printWidth": 120,
+  "tabWidth": 2,
+  "useTabs": false,
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "avoid",
+  "endOfLine": "lf",
+  "quoteProps": "as-needed",
+  "jsxSingleQuote": false,
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "css",
+  "embeddedLanguageFormatting": "auto",
+  "overrides": [
+    {
+      "files": "*.py",
+      "options": {
+        "parser": "python",
+        "printWidth": 88,
+        "tabWidth": 4,
+        "useTabs": false
+      }
+    },
+    {
+      "files": ["*.md", "*.markdown"],
+      "options": {
+        "parser": "markdown",
+        "printWidth": 120,
+        "proseWrap": "preserve",
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": ["*.yml", "*.yaml"],
+      "options": {
+        "parser": "yaml",
+        "printWidth": 120,
+        "tabWidth": 2,
+        "singleQuote": true
+      }
+    },
+    {
+      "files": ["*.json", "*.jsonc"],
+      "options": {
+        "parser": "json",
+        "printWidth": 120,
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": ["*.toml"],
+      "options": {
+        "parser": "toml",
+        "printWidth": 120,
+        "tabWidth": 4
+      }
+    }
+  ]
+}
+

@@ -5,7 +5,6 @@ This module provides dependency injection functions for authentication,
 authorization, and role-based access control.
 """
 
-from typing import Optional
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
@@ -17,7 +16,7 @@ from ..models.user import User, UserRole
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 # Global auth manager instance
-_auth_manager: Optional[AuthManager] = None
+_auth_manager: AuthManager | None = None
 
 
 def get_auth_manager() -> AuthManager:
@@ -251,7 +250,7 @@ def require_active_user_legacy():
     return _require_active_user_legacy
 
 
-async def get_current_user_optional(request: Request) -> Optional[User]:
+async def get_current_user_optional(request: Request) -> User | None:
     """
     Optional dependency to get the current user if a token is provided.
 
@@ -286,7 +285,7 @@ async def get_current_user_sse(request: Request) -> User:
       - Query params: ?token=<access_token> or ?access_token=<access_token>
     """
     # Try Authorization header first
-    token: Optional[str] = None
+    token: str | None = None
     auth_header = request.headers.get("Authorization")
     if auth_header and auth_header.lower().startswith("bearer "):
         token = auth_header.split(" ", 1)[1].strip()
@@ -341,7 +340,7 @@ def get_current_active_user_sse():
     return _get_current_active_user_sse
 
 
-async def validate_token(token: str, required_role: Optional[UserRole] = None) -> bool:
+async def validate_token(token: str, required_role: UserRole | None = None) -> bool:
     """
     Validate a token and optionally check role requirements.
 

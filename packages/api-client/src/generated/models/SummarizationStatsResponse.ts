@@ -72,48 +72,25 @@ export interface SummarizationStatsResponse {
 /**
  * Check if a given object implements the SummarizationStatsResponse interface.
  */
-export function instanceOfSummarizationStatsResponse(
-  value: object,
-): value is SummarizationStatsResponse {
-  if (!("totalRequests" in value) || value["totalRequests"] === undefined)
-    return false;
+export function instanceOfSummarizationStatsResponse(value: object): value is SummarizationStatsResponse {
+  if (!("totalRequests" in value) || value["totalRequests"] === undefined) return false;
   if (!("cacheHits" in value) || value["cacheHits"] === undefined) return false;
-  if (!("cacheMisses" in value) || value["cacheMisses"] === undefined)
-    return false;
-  if (!("cacheHitRate" in value) || value["cacheHitRate"] === undefined)
-    return false;
-  if (
-    !("averageProcessingTime" in value) ||
-    value["averageProcessingTime"] === undefined
-  )
-    return false;
-  if (
-    !("totalProcessingTime" in value) ||
-    value["totalProcessingTime"] === undefined
-  )
-    return false;
-  if (
-    !("availableSummarizers" in value) ||
-    value["availableSummarizers"] === undefined
-  )
-    return false;
-  if (
-    !("supportedContentTypes" in value) ||
-    value["supportedContentTypes"] === undefined
-  )
-    return false;
+  if (!("cacheMisses" in value) || value["cacheMisses"] === undefined) return false;
+  if (!("cacheHitRate" in value) || value["cacheHitRate"] === undefined) return false;
+  if (!("averageProcessingTime" in value) || value["averageProcessingTime"] === undefined) return false;
+  if (!("totalProcessingTime" in value) || value["totalProcessingTime"] === undefined) return false;
+  if (!("availableSummarizers" in value) || value["availableSummarizers"] === undefined) return false;
+  if (!("supportedContentTypes" in value) || value["supportedContentTypes"] === undefined) return false;
   return true;
 }
 
-export function SummarizationStatsResponseFromJSON(
-  json: any,
-): SummarizationStatsResponse {
+export function SummarizationStatsResponseFromJSON(json: any): SummarizationStatsResponse {
   return SummarizationStatsResponseFromJSONTyped(json, false);
 }
 
 export function SummarizationStatsResponseFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): SummarizationStatsResponse {
   if (json == null) {
     return json;
@@ -130,15 +107,13 @@ export function SummarizationStatsResponseFromJSONTyped(
   };
 }
 
-export function SummarizationStatsResponseToJSON(
-  json: any,
-): SummarizationStatsResponse {
+export function SummarizationStatsResponseToJSON(json: any): SummarizationStatsResponse {
   return SummarizationStatsResponseToJSONTyped(json, false);
 }
 
 export function SummarizationStatsResponseToJSONTyped(
   value?: SummarizationStatsResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

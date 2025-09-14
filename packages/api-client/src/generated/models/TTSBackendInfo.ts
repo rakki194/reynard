@@ -68,20 +68,13 @@ export interface TTSBackendInfo {
 /**
  * Check if a given object implements the TTSBackendInfo interface.
  */
-export function instanceOfTTSBackendInfo(
-  value: object,
-): value is TTSBackendInfo {
+export function instanceOfTTSBackendInfo(value: object): value is TTSBackendInfo {
   if (!("name" in value) || value["name"] === undefined) return false;
   if (!("enabled" in value) || value["enabled"] === undefined) return false;
   if (!("available" in value) || value["available"] === undefined) return false;
   if (!("voices" in value) || value["voices"] === undefined) return false;
-  if (
-    !("supportedLanguages" in value) ||
-    value["supportedLanguages"] === undefined
-  )
-    return false;
-  if (!("supportedFormats" in value) || value["supportedFormats"] === undefined)
-    return false;
+  if (!("supportedLanguages" in value) || value["supportedLanguages"] === undefined) return false;
+  if (!("supportedFormats" in value) || value["supportedFormats"] === undefined) return false;
   return true;
 }
 
@@ -89,10 +82,7 @@ export function TTSBackendInfoFromJSON(json: any): TTSBackendInfo {
   return TTSBackendInfoFromJSONTyped(json, false);
 }
 
-export function TTSBackendInfoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TTSBackendInfo {
+export function TTSBackendInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSBackendInfo {
   if (json == null) {
     return json;
   }
@@ -110,10 +100,7 @@ export function TTSBackendInfoToJSON(json: any): TTSBackendInfo {
   return TTSBackendInfoToJSONTyped(json, false);
 }
 
-export function TTSBackendInfoToJSONTyped(
-  value?: TTSBackendInfo | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function TTSBackendInfoToJSONTyped(value?: TTSBackendInfo | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

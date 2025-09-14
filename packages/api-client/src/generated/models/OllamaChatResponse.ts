@@ -56,23 +56,26 @@ export interface OllamaChatResponse {
    */
   toolsUsed?: Array<string>;
   /**
-   * Additional metadata
-   * @type {object}
+   * Tool calls made by the model
+   * @type {Array<{ [key: string]: any; } | null>}
    * @memberof OllamaChatResponse
    */
-  metadata?: object;
+  toolCalls?: Array<{ [key: string]: any } | null>;
+  /**
+   * Additional metadata
+   * @type {{ [key: string]: any; }}
+   * @memberof OllamaChatResponse
+   */
+  metadata?: { [key: string]: any };
 }
 
 /**
  * Check if a given object implements the OllamaChatResponse interface.
  */
-export function instanceOfOllamaChatResponse(
-  value: object,
-): value is OllamaChatResponse {
+export function instanceOfOllamaChatResponse(value: object): value is OllamaChatResponse {
   if (!("success" in value) || value["success"] === undefined) return false;
   if (!("model" in value) || value["model"] === undefined) return false;
-  if (!("processingTime" in value) || value["processingTime"] === undefined)
-    return false;
+  if (!("processingTime" in value) || value["processingTime"] === undefined) return false;
   return true;
 }
 
@@ -80,10 +83,7 @@ export function OllamaChatResponseFromJSON(json: any): OllamaChatResponse {
   return OllamaChatResponseFromJSONTyped(json, false);
 }
 
-export function OllamaChatResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): OllamaChatResponse {
+export function OllamaChatResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): OllamaChatResponse {
   if (json == null) {
     return json;
   }
@@ -92,9 +92,9 @@ export function OllamaChatResponseFromJSONTyped(
     response: json["response"] == null ? undefined : json["response"],
     model: json["model"],
     processingTime: json["processing_time"],
-    tokensGenerated:
-      json["tokens_generated"] == null ? undefined : json["tokens_generated"],
+    tokensGenerated: json["tokens_generated"] == null ? undefined : json["tokens_generated"],
     toolsUsed: json["tools_used"] == null ? undefined : json["tools_used"],
+    toolCalls: json["tool_calls"] == null ? undefined : json["tool_calls"],
     metadata: json["metadata"] == null ? undefined : json["metadata"],
   };
 }
@@ -105,7 +105,7 @@ export function OllamaChatResponseToJSON(json: any): OllamaChatResponse {
 
 export function OllamaChatResponseToJSONTyped(
   value?: OllamaChatResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;
@@ -118,6 +118,7 @@ export function OllamaChatResponseToJSONTyped(
     processing_time: value["processingTime"],
     tokens_generated: value["tokensGenerated"],
     tools_used: value["toolsUsed"],
+    tool_calls: value["toolCalls"],
     metadata: value["metadata"],
   };
 }

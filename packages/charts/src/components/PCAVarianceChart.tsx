@@ -3,21 +3,9 @@
  * Principal Component Analysis variance visualization with recommendations
  */
 
-import { Component, onMount, createSignal, Show, createMemo } from "solid-js";
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  Colors,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  LineController,
-} from "chart.js";
-import { ChartConfig, ReynardTheme } from "../types";
+import { Component, Show, createMemo } from "solid-js";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
+import { ChartConfig } from "../types";
 
 export interface PCAVarianceData {
   /** Component numbers (1, 2, 3, ...) */
@@ -68,7 +56,7 @@ export interface PCAVarianceChartProps extends ChartConfig {
   emptyMessage?: string;
 }
 
-export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
+export const PCAVarianceChart: Component<PCAVarianceChartProps> = props => {
   const visualizationEngine = useVisualizationEngine();
 
   // Prepare chart data using createMemo for better performance
@@ -76,17 +64,11 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
     const maxComps = props.maxComponents || props.data.components.length;
     const components = props.data.components.slice(0, maxComps);
     const varianceRatio = props.data.explainedVarianceRatio.slice(0, maxComps);
-    const cumulativeRatio = props.data.cumulativeVarianceRatio.slice(
-      0,
-      maxComps,
-    );
+    const cumulativeRatio = props.data.cumulativeVarianceRatio.slice(0, maxComps);
 
     const colors = props.useOKLCH
       ? visualizationEngine.generateOKLCHColors(2, props.colorTheme || "dark")
-      : [
-          props.varianceColor || "rgba(54, 162, 235, 0.2)",
-          props.cumulativeColor || "rgba(255, 99, 132, 0.2)",
-        ];
+      : [props.varianceColor || "rgba(54, 162, 235, 0.2)", props.cumulativeColor || "rgba(255, 99, 132, 0.2)"];
 
     const datasets = [
       {
@@ -123,7 +105,7 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
     }
 
     return {
-      labels: components.map((c) => `PC${c}`),
+      labels: components.map(c => `PC${c}`),
       datasets,
     };
   });
@@ -221,10 +203,7 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
 
   // Summary statistics
   const summaryStats = () => {
-    const totalVariance =
-      props.data.cumulativeVarianceRatio[
-        props.data.cumulativeVarianceRatio.length - 1
-      ];
+    const totalVariance = props.data.cumulativeVarianceRatio[props.data.cumulativeVarianceRatio.length - 1];
     const topComponents = props.data.components.slice(0, 5);
     const topVariance = props.data.explainedVarianceRatio.slice(0, 5);
 
@@ -237,11 +216,7 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
         <div class="stat-item">
           <span class="stat-label">Top 5 Components:</span>
           <span class="stat-value">
-            {topComponents
-              .map(
-                (comp, i) => `PC${comp}(${(topVariance[i] * 100).toFixed(1)}%)`,
-              )
-              .join(", ")}
+            {topComponents.map((comp, i) => `PC${comp}(${(topVariance[i] * 100).toFixed(1)}%)`).join(", ")}
           </span>
         </div>
       </div>
@@ -252,37 +227,23 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
     <div class="pca-variance-chart">
       <Show when={props.loading}>
         <div class="chart-loading">
-          <div class="loading-spinner"></div>
+          <div class="loading-spinner" />
           <p>Loading PCA variance data...</p>
         </div>
       </Show>
 
-      <Show
-        when={
-          !props.loading &&
-          (!props.data.components || props.data.components.length === 0)
-        }
-      >
+      <Show when={!props.loading && (!props.data.components || props.data.components.length === 0)}>
         <div class="chart-empty">
           <p>{props.emptyMessage || "No PCA variance data available"}</p>
         </div>
       </Show>
 
-      <Show
-        when={
-          !props.loading &&
-          props.data.components &&
-          props.data.components.length > 0
-        }
-      >
-        <div
-          class="reynard-chart-container"
-          style={{ position: "relative", width: "100%", height: "100%" }}
-        >
+      <Show when={!props.loading && props.data.components && props.data.components.length > 0}>
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
           <canvas
             width={props.width || 600}
             height={props.height || 400}
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            style={{ "max-width": "100%", "max-height": "100%" }}
             data-testid="pca-variance-chart-canvas"
           />
         </div>

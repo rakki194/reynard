@@ -3,29 +3,11 @@
  * A responsive bar chart for categorical data
  */
 
-import {
-  Component,
-  Show,
-  splitProps,
-  createMemo,
-  onMount,
-  onCleanup,
-  createSignal,
-  createEffect,
-} from "solid-js";
-import {
-  Chart,
-  Title,
-  Tooltip,
-  Legend,
-  BarController,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-} from "chart.js";
-import { Dataset, ChartConfig, ReynardTheme } from "../types";
-import { processBarChartData } from "../utils/barChartData";
+import { BarController, BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from "chart.js";
+import { Component, Show, createEffect, createMemo, createSignal, onCleanup, onMount, splitProps } from "solid-js";
+import { ChartConfig, Dataset, ReynardTheme } from "../types";
 import { createBarChartOptions } from "../utils/barChartConfig";
+import { BarChartData, processBarChartData } from "../utils/barChartData";
 import "./BarChart.css";
 
 export interface BarChartProps extends ChartConfig {
@@ -60,11 +42,7 @@ const defaultProps = {
   theme: "light" as ReynardTheme,
 };
 
-const getContainerClasses = (
-  horizontal: boolean,
-  stacked: boolean,
-  customClass?: string,
-) => {
+const getContainerClasses = (horizontal: boolean, stacked: boolean, customClass?: string) => {
   const classes = ["reynard-bar-chart"];
   if (horizontal) classes.push("reynard-bar-chart--horizontal");
   if (stacked) classes.push("reynard-bar-chart--stacked");
@@ -79,21 +57,13 @@ const BarChartContent: Component<{
   width: number;
   height: number;
   options: ReturnType<typeof createBarChartOptions>;
-}> = (props) => {
+}> = props => {
   const [isRegistered, setIsRegistered] = createSignal(false);
   const [chartInstance, setChartInstance] = createSignal<Chart | null>(null);
 
   // Register Chart.js components on mount
   onMount(() => {
-    Chart.register(
-      Title,
-      Tooltip,
-      Legend,
-      BarController,
-      CategoryScale,
-      LinearScale,
-      BarElement,
-    );
+    Chart.register(Title, Tooltip, Legend, BarController, CategoryScale, LinearScale, BarElement);
     setIsRegistered(true);
   });
 
@@ -163,15 +133,12 @@ const BarChartContent: Component<{
       </Show>
 
       <Show when={!props.loading && props.chartData}>
-        <div
-          class="reynard-chart-container"
-          style={{ position: "relative", width: "100%", height: "100%" }}
-        >
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
           <canvas
             ref={canvasRef}
             width={props.width}
             height={props.height}
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            style={{ "max-width": "100%", "max-height": "100%" }}
             data-testid="bar-chart-canvas"
           />
         </div>
@@ -180,7 +147,7 @@ const BarChartContent: Component<{
   );
 };
 
-export const BarChart: Component<BarChartProps> = (props) => {
+export const BarChart: Component<BarChartProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local, others] = splitProps(merged, [
     "labels",
@@ -207,12 +174,7 @@ export const BarChart: Component<BarChartProps> = (props) => {
 
   // Create chart data and options directly
   const chartData = createMemo(() => {
-    if (
-      !local.labels ||
-      !local.datasets ||
-      local.labels.length === 0 ||
-      local.datasets.length === 0
-    ) {
+    if (!local.labels || !local.datasets || local.labels.length === 0 || local.datasets.length === 0) {
       return null;
     }
 
@@ -228,6 +190,8 @@ export const BarChart: Component<BarChartProps> = (props) => {
       stacked: local.stacked,
       showGrid: local.showGrid,
       showLegend: local.showLegend,
+      responsive: local.responsive,
+      maintainAspectRatio: local.maintainAspectRatio,
       title: local.title,
       theme: local.theme,
     });

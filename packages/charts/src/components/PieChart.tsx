@@ -3,28 +3,11 @@
  * A responsive pie/doughnut chart for proportional data
  */
 
-import {
-  Component,
-  onMount,
-  onCleanup,
-  createSignal,
-  createEffect,
-  Show,
-  splitProps,
-  createMemo,
-} from "solid-js";
-import {
-  Chart,
-  Title,
-  Tooltip,
-  Legend,
-  DoughnutController,
-  PieController,
-  ArcElement,
-} from "chart.js";
-import { Dataset, ChartConfig, ReynardTheme } from "../types";
-import { getDefaultConfig } from "../utils";
+import { ArcElement, Chart, DoughnutController, Legend, PieController, Title, Tooltip } from "chart.js";
 import { generateColorsWithCache } from "reynard-colors";
+import { Component, Show, createEffect, createSignal, onCleanup, onMount, splitProps } from "solid-js";
+import { ChartConfig, Dataset, ReynardTheme } from "../types";
+import { getDefaultConfig } from "../utils";
 import "./PieChart.css";
 
 export interface PieChartProps extends ChartConfig {
@@ -63,7 +46,7 @@ const defaultProps = {
   theme: "light" as ReynardTheme,
 };
 
-export const PieChart: Component<PieChartProps> = (props) => {
+export const PieChart: Component<PieChartProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local, others] = splitProps(merged, [
     "labels",
@@ -95,14 +78,7 @@ export const PieChart: Component<PieChartProps> = (props) => {
 
   // Register Chart.js components on mount
   onMount(() => {
-    Chart.register(
-      Title,
-      Tooltip,
-      Legend,
-      DoughnutController,
-      PieController,
-      ArcElement,
-    );
+    Chart.register(Title, Tooltip, Legend, DoughnutController, PieController, ArcElement);
     setIsRegistered(true);
   });
 
@@ -128,7 +104,7 @@ export const PieChart: Component<PieChartProps> = (props) => {
     }
 
     const config = {
-      type: local.variant === "doughnut" ? "doughnut" : "pie",
+      type: (local.variant === "doughnut" ? "doughnut" : "pie") as "pie" | "doughnut",
       data: chartData()!,
       options: getChartOptions(),
     };
@@ -151,12 +127,8 @@ export const PieChart: Component<PieChartProps> = (props) => {
   createEffect(() => {
     if (local.labels && local.data && local.data.length > 0) {
       if (local.labels.length === local.data.length) {
-        const colors =
-          local.colors ||
-          generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 0.8);
-        const borderColors =
-          local.colors ||
-          generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 1);
+        const colors = local.colors || generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 0.8);
+        const borderColors = local.colors || generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 1);
 
         const dataset: Dataset = {
           label: "Data",
@@ -238,19 +210,13 @@ export const PieChart: Component<PieChartProps> = (props) => {
                 const dataset = data.datasets[0];
                 return data.labels.map((label: string, i: number) => {
                   const value = dataset.data[i];
-                  const total = dataset.data.reduce(
-                    (sum: number, val: number) => sum + val,
-                    0,
-                  );
+                  const total = dataset.data.reduce((sum: number, val: number) => sum + val, 0);
                   const percentage = ((value / total) * 100).toFixed(1);
 
                   return {
                     text: local.showValues ? `${label}: ${percentage}%` : label,
                     fillStyle: dataset.backgroundColor?.[i] || "#000000",
-                    strokeStyle:
-                      dataset.borderColor?.[i] ||
-                      dataset.backgroundColor?.[i] ||
-                      "#000000",
+                    strokeStyle: dataset.borderColor?.[i] || dataset.backgroundColor?.[i] || "#000000",
                     lineWidth: dataset.borderWidth || 0,
                     hidden: false,
                     index: i,
@@ -265,17 +231,10 @@ export const PieChart: Component<PieChartProps> = (props) => {
           ...baseConfig.plugins?.tooltip,
           ...local.tooltip,
           callbacks: {
-            label: (context: {
-              label?: string;
-              parsed: number;
-              dataset: { data: number[] };
-            }) => {
+            label: (context: { label?: string; parsed: number; dataset: { data: number[] } }) => {
               const label = context.label || "";
               const value = context.parsed;
-              const total = context.dataset.data.reduce(
-                (sum: number, val: number) => sum + val,
-                0,
-              );
+              const total = context.dataset.data.reduce((sum: number, val: number) => sum + val, 0);
               const percentage = ((value / total) * 100).toFixed(1);
               return `${label}: ${value} (${percentage}%)`;
             },
@@ -286,10 +245,7 @@ export const PieChart: Component<PieChartProps> = (props) => {
   };
 
   const getContainerClasses = () => {
-    const classes = [
-      "reynard-pie-chart",
-      `reynard-pie-chart--${local.variant}`,
-    ];
+    const classes = ["reynard-pie-chart", `reynard-pie-chart--${local.variant}`];
 
     if (local.responsive) {
       classes.push("reynard-pie-chart--responsive");
@@ -340,15 +296,12 @@ export const PieChart: Component<PieChartProps> = (props) => {
       </Show>
 
       <Show when={!local.loading && chartData()}>
-        <div
-          class="reynard-chart-container"
-          style={{ position: "relative", width: "100%", height: "100%" }}
-        >
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
           <canvas
             ref={canvasRef}
             width={local.width}
             height={local.height}
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            style={{ "max-width": "100%", "max-height": "100%" }}
             data-testid={`${local.variant}-chart-canvas`}
           />
         </div>

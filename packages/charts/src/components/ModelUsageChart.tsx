@@ -4,8 +4,8 @@
  */
 
 import { Component, Show, createMemo } from "solid-js";
-import { ChartConfig } from "../types";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
+import { ChartConfig } from "../types";
 import { t } from "../utils/i18n";
 
 export interface ModelUsageData {
@@ -57,7 +57,7 @@ const defaultColors = [
   "rgba(255, 159, 64, 0.8)",
 ];
 
-export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
+export const ModelUsageChart: Component<ModelUsageChartProps> = props => {
   const visualizationEngine = useVisualizationEngine();
 
   const chartData = createMemo(() => {
@@ -76,10 +76,7 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
       });
 
       const colors = props.useOKLCH
-        ? visualizationEngine.generateOKLCHColors(
-            Object.keys(modelTypeData).length,
-            props.colorTheme || "dark",
-          )
+        ? visualizationEngine.generateOKLCHColors(Object.keys(modelTypeData).length, props.colorTheme || "dark")
         : props.colors || defaultColors;
 
       return {
@@ -89,7 +86,7 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
             label: "Usage Count",
             data: Object.values(modelTypeData),
             backgroundColor: colors,
-            borderColor: colors.map((c) => c.replace("0.8", "1")),
+            borderColor: colors.map((c: string) => c.replace("0.8", "1")),
             borderWidth: 2,
           },
         ],
@@ -114,11 +111,7 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
           break;
         case "timeout_ratio":
           data = dataEntries.map(([_, info]) => {
-            return (
-              Math.round(
-                (info.vram_unload_timeout / info.ram_unload_timeout) * 100,
-              ) / 100
-            );
+            return Math.round((info.vram_unload_timeout / info.ram_unload_timeout) * 100) / 100;
           });
           label = "VRAM/RAM Timeout Ratio";
           break;
@@ -216,7 +209,7 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
     <div class="model-usage-chart">
       <Show when={props.loading}>
         <div class="chart-loading">
-          <div class="loading-spinner"></div>
+          <div class="loading-spinner" />
           <p>Loading model usage data...</p>
         </div>
       </Show>
@@ -228,10 +221,7 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
       </Show>
 
       <Show when={!props.loading && Object.keys(props.data).length > 0}>
-        <div
-          class="reynard-chart-container"
-          style={{ position: "relative", width: "100%", height: "100%" }}
-        >
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
           <canvas
             width={props.width || 400}
             height={props.height || 300}

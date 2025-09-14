@@ -66,48 +66,22 @@ export interface ExecutorStatsResponse {
 /**
  * Check if a given object implements the ExecutorStatsResponse interface.
  */
-export function instanceOfExecutorStatsResponse(
-  value: object,
-): value is ExecutorStatsResponse {
-  if (!("activeTasks" in value) || value["activeTasks"] === undefined)
-    return false;
-  if (!("completedTasks" in value) || value["completedTasks"] === undefined)
-    return false;
-  if (!("failedTasks" in value) || value["failedTasks"] === undefined)
-    return false;
-  if (
-    !("averageExecutionTime" in value) ||
-    value["averageExecutionTime"] === undefined
-  )
-    return false;
-  if (
-    !("totalExecutionTime" in value) ||
-    value["totalExecutionTime"] === undefined
-  )
-    return false;
-  if (
-    !("maxConcurrentTasks" in value) ||
-    value["maxConcurrentTasks"] === undefined
-  )
-    return false;
-  if (
-    !("currentConcurrentTasks" in value) ||
-    value["currentConcurrentTasks"] === undefined
-  )
-    return false;
+export function instanceOfExecutorStatsResponse(value: object): value is ExecutorStatsResponse {
+  if (!("activeTasks" in value) || value["activeTasks"] === undefined) return false;
+  if (!("completedTasks" in value) || value["completedTasks"] === undefined) return false;
+  if (!("failedTasks" in value) || value["failedTasks"] === undefined) return false;
+  if (!("averageExecutionTime" in value) || value["averageExecutionTime"] === undefined) return false;
+  if (!("totalExecutionTime" in value) || value["totalExecutionTime"] === undefined) return false;
+  if (!("maxConcurrentTasks" in value) || value["maxConcurrentTasks"] === undefined) return false;
+  if (!("currentConcurrentTasks" in value) || value["currentConcurrentTasks"] === undefined) return false;
   return true;
 }
 
-export function ExecutorStatsResponseFromJSON(
-  json: any,
-): ExecutorStatsResponse {
+export function ExecutorStatsResponseFromJSON(json: any): ExecutorStatsResponse {
   return ExecutorStatsResponseFromJSONTyped(json, false);
 }
 
-export function ExecutorStatsResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ExecutorStatsResponse {
+export function ExecutorStatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExecutorStatsResponse {
   if (json == null) {
     return json;
   }
@@ -128,7 +102,7 @@ export function ExecutorStatsResponseToJSON(json: any): ExecutorStatsResponse {
 
 export function ExecutorStatsResponseToJSONTyped(
   value?: ExecutorStatsResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

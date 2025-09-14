@@ -4,19 +4,19 @@ Test script for the Reynard FastAPI backend
 This script tests the authentication endpoints and JWT functionality
 """
 
-import json
 import sys
-from typing import Any, Dict
+from typing import Any, Dict, cast
 
 import requests
 
 BASE_URL = "http://localhost:8000"
+REQUEST_TIMEOUT = 10  # seconds
 
 
 def test_health_check() -> bool:
     """Test the health check endpoint"""
     try:
-        response = requests.get(f"{BASE_URL}/api/health")
+        response = requests.get(f"{BASE_URL}/api/health", timeout=REQUEST_TIMEOUT)
         if response.status_code == 200:
             print("✅ Health check passed")
             return True
@@ -28,7 +28,7 @@ def test_health_check() -> bool:
         return False
 
 
-def test_user_registration() -> Dict[str, Any]:
+def test_user_registration() -> Dict[str, Any] | None:
     """Test user registration"""
     user_data = {
         "username": "testuser",
@@ -37,35 +37,35 @@ def test_user_registration() -> Dict[str, Any]:
     }
 
     try:
-        response = requests.post(f"{BASE_URL}/api/auth/register", json=user_data)
+        response = requests.post(f"{BASE_URL}/api/auth/register", json=user_data, timeout=REQUEST_TIMEOUT)
         if response.status_code == 200:
             print("✅ User registration passed")
-            return response.json()
+            return cast(Dict[str, Any], response.json())
         else:
             print(
                 f"❌ User registration failed: {response.status_code} - {response.text}"
             )
-            return {}
-    except Exception as e:
+            return None
+    except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
         print(f"❌ User registration error: {e}")
-        return {}
+        return None
 
 
-def test_user_login() -> Dict[str, Any]:
+def test_user_login() -> Dict[str, Any] | None:
     """Test user login"""
     login_data = {"username": "testuser", "password": "testpassword123"}
 
     try:
-        response = requests.post(f"{BASE_URL}/api/auth/login", json=login_data)
+        response = requests.post(f"{BASE_URL}/api/auth/login", json=login_data, timeout=REQUEST_TIMEOUT)
         if response.status_code == 200:
             print("✅ User login passed")
-            return response.json()
+            return cast(Dict[str, Any], response.json())
         else:
             print(f"❌ User login failed: {response.status_code} - {response.text}")
-            return {}
-    except Exception as e:
+            return None
+    except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
         print(f"❌ User login error: {e}")
-        return {}
+        return None
 
 
 def test_protected_route(access_token: str) -> bool:
@@ -73,7 +73,7 @@ def test_protected_route(access_token: str) -> bool:
     headers = {"Authorization": f"Bearer {access_token}"}
 
     try:
-        response = requests.get(f"{BASE_URL}/api/protected", headers=headers)
+        response = requests.get(f"{BASE_URL}/api/protected", headers=headers, timeout=REQUEST_TIMEOUT)
         if response.status_code == 200:
             print("✅ Protected route access passed")
             return True
@@ -82,7 +82,7 @@ def test_protected_route(access_token: str) -> bool:
                 f"❌ Protected route access failed: {response.status_code} - {response.text}"
             )
             return False
-    except Exception as e:
+    except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
         print(f"❌ Protected route error: {e}")
         return False
 
@@ -92,7 +92,7 @@ def test_user_info(access_token: str) -> bool:
     headers = {"Authorization": f"Bearer {access_token}"}
 
     try:
-        response = requests.get(f"{BASE_URL}/api/auth/me", headers=headers)
+        response = requests.get(f"{BASE_URL}/api/auth/me", headers=headers, timeout=REQUEST_TIMEOUT)
         if response.status_code == 200:
             print("✅ User info retrieval passed")
             return True
@@ -101,7 +101,7 @@ def test_user_info(access_token: str) -> bool:
                 f"❌ User info retrieval failed: {response.status_code} - {response.text}"
             )
             return False
-    except Exception as e:
+    except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
         print(f"❌ User info error: {e}")
         return False
 
@@ -111,19 +111,19 @@ def test_token_refresh(refresh_token: str) -> bool:
     refresh_data = {"refresh_token": refresh_token}
 
     try:
-        response = requests.post(f"{BASE_URL}/api/auth/refresh", json=refresh_data)
+        response = requests.post(f"{BASE_URL}/api/auth/refresh", json=refresh_data, timeout=REQUEST_TIMEOUT)
         if response.status_code == 200:
             print("✅ Token refresh passed")
             return True
         else:
             print(f"❌ Token refresh failed: {response.status_code} - {response.text}")
             return False
-    except Exception as e:
+    except (requests.exceptions.RequestException, requests.exceptions.Timeout) as e:
         print(f"❌ Token refresh error: {e}")
         return False
 
 
-def main():
+def main() -> None:
     """Run all tests"""
     print("🦊 Testing Reynard FastAPI Backend")
     print("=" * 50)
@@ -134,12 +134,12 @@ def main():
 
     # Test user registration
     user_info = test_user_registration()
-    if not user_info:
+    if user_info is None:
         sys.exit(1)
 
     # Test user login
     login_response = test_user_login()
-    if not login_response:
+    if login_response is None:
         sys.exit(1)
 
     access_token = login_response.get("access_token")

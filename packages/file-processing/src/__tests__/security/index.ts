@@ -3,10 +3,5 @@
  * Centralized exports for all security test modules
  */
 
-// Re-export all security test modules
-export * from "./file-validation.test";
-export * from "./file-type-validation.test";
-export * from "./error-handling.test";
-
-// Re-export shared utilities
+// Re-export shared utilities only (test files are excluded from TypeScript compilation)
 export * from "./test-utils";

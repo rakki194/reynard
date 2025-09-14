@@ -6,7 +6,6 @@ This module provides security-related utilities and helper functions.
 
 import secrets
 import string
-from typing import Optional
 
 
 class SecurityUtils:
@@ -62,7 +61,7 @@ class SecurityUtils:
         return "".join(password_list)
 
     @staticmethod
-    def generate_api_key(prefix: Optional[str] = None) -> str:
+    def generate_api_key(prefix: str | None = None) -> str:
         """
         Generate a secure API key.
 

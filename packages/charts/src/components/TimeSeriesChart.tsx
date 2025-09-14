@@ -4,30 +4,21 @@
  */
 
 import {
-  Component,
-  onMount,
-  createSignal,
-  createEffect,
-  Show,
-  splitProps,
-  onCleanup,
-  untrack,
-} from "solid-js";
-import {
+  CategoryScale,
   Chart,
-  Title,
-  Tooltip,
   Legend,
   LineController,
-  CategoryScale,
-  PointElement,
   LineElement,
   LinearScale,
+  PointElement,
   TimeScale,
+  Title,
+  Tooltip,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
-import { ChartConfig, TimeSeriesDataPoint, ReynardTheme } from "../types";
-import { getDefaultConfig, formatTimestamp, debounce } from "../utils";
+import { Component, Show, createEffect, createSignal, onCleanup, onMount, splitProps, untrack } from "solid-js";
+import { ChartConfig, ReynardTheme, TimeSeriesDataPoint } from "../types";
+import { formatTimestamp, getDefaultConfig } from "../utils";
 import "./TimeSeriesChart.css";
 
 export interface TimeSeriesChartProps extends ChartConfig {
@@ -79,7 +70,7 @@ const defaultProps = {
   theme: "light" as ReynardTheme,
 };
 
-export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
+export const TimeSeriesChart: Component<TimeSeriesChartProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local, others] = splitProps(merged, [
     "data",
@@ -143,7 +134,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
       PointElement,
       LineElement,
       LinearScale,
-      TimeScale,
+      TimeScale
     );
     setIsRegistered(true);
   });
@@ -171,9 +162,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     if (local.timeRange) {
       const now = Date.now();
       const cutoff = now - local.timeRange;
-      dataToProcess = dataToProcess.filter(
-        (point) => point.timestamp >= cutoff,
-      );
+      dataToProcess = dataToProcess.filter(point => point.timestamp >= cutoff);
     }
 
     // Limit data points
@@ -187,19 +176,15 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     }
 
     // Prepare chart data
-    const labels = dataToProcess.map((point) =>
-      formatTimestamp(point.timestamp, "time"),
-    );
-    const values = dataToProcess.map((point) => point.value);
+    const labels = dataToProcess.map(point => formatTimestamp(point.timestamp, "time"));
+    const values = dataToProcess.map(point => point.value);
 
     // Generate point colors if function provided
     let pointBackgroundColors: string[] | undefined;
     let pointBorderColors: string[] | undefined;
 
     if (local.pointColors) {
-      pointBackgroundColors = dataToProcess.map((point) =>
-        local.pointColors!(point.value, point.timestamp),
-      );
+      pointBackgroundColors = dataToProcess.map(point => local.pointColors!(point.value, point.timestamp));
       pointBorderColors = pointBackgroundColors;
     }
 
@@ -228,18 +213,11 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
   };
 
   // Aggregate data by intervals
-  const aggregateData = (
-    data: TimeSeriesDataPoint[],
-    intervalMs: number,
-  ): TimeSeriesDataPoint[] => {
-    const aggregated = new Map<
-      number,
-      { sum: number; count: number; label: string }
-    >();
+  const aggregateData = (data: TimeSeriesDataPoint[], intervalMs: number): TimeSeriesDataPoint[] => {
+    const aggregated = new Map<number, { sum: number; count: number; label: string }>();
 
     for (const point of data) {
-      const intervalStart =
-        Math.floor(point.timestamp / intervalMs) * intervalMs;
+      const intervalStart = Math.floor(point.timestamp / intervalMs) * intervalMs;
       const existing = aggregated.get(intervalStart) || {
         sum: 0,
         count: 0,
@@ -324,14 +302,9 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
           ...baseConfig.plugins?.tooltip,
           ...local.tooltip,
           callbacks: {
-            label: (context: {
-              parsed: { y: number };
-              dataset: { label: string };
-            }) => {
+            label: (context: { parsed: { y: number }; dataset: { label: string } }) => {
               const value = context.parsed.y;
-              const formattedValue = local.valueFormatter
-                ? local.valueFormatter(value)
-                : value.toLocaleString();
+              const formattedValue = local.valueFormatter ? local.valueFormatter(value) : value.toLocaleString();
               return `${context.dataset.label}: ${formattedValue}`;
             },
           },
@@ -382,9 +355,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
           ticks: {
             color: "var(--text-secondary)",
             callback: (value: number) => {
-              return local.valueFormatter
-                ? local.valueFormatter(value)
-                : value.toLocaleString();
+              return local.valueFormatter ? local.valueFormatter(value) : value.toLocaleString();
             },
             ...local.yAxis?.ticks,
           },
@@ -405,12 +376,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
   };
 
   return (
-    <div
-      class={getContainerClasses()}
-      role="img"
-      aria-label={local.title || "time series chart"}
-      {...others}
-    >
+    <div class={getContainerClasses()} role="img" aria-label={local.title || "time series chart"} {...others}>
       <Show when={local.title}>
         <div class="reynard-chart-title">{local.title}</div>
       </Show>
@@ -428,14 +394,11 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
       </Show>
 
       <Show when={!local.loading && processedData()}>
-        <div
-          class="reynard-chart-container"
-          style={{ position: "relative", width: "100%", height: "100%" }}
-        >
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
           <canvas
             width={local.width}
             height={local.height}
-            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            style={{ "max-width": "100%", "max-height": "100%" }}
             data-testid="timeseries-chart-canvas"
           />
         </div>

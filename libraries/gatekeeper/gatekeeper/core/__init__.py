@@ -9,9 +9,9 @@ from .password_manager import Argon2Variant, PasswordManager, SecurityLevel
 from .token_manager import TokenManager
 
 __all__ = [
+    "Argon2Variant",
     "AuthManager",
     "PasswordManager",
     "SecurityLevel",
-    "Argon2Variant",
     "TokenManager",
 ]

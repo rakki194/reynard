@@ -77,7 +77,7 @@ async def main():
         # Authenticate the user
         print("\n🔑 Authenticating user...")
         tokens = await auth_manager.authenticate("postgres_user", "SecurePass123!")
-        print(f"✅ Authentication successful!")
+        print("✅ Authentication successful!")
         print(f"   Access token: {tokens.access_token[:20]}...")
         print(f"   Refresh token: {tokens.refresh_token[:20]}...")
 

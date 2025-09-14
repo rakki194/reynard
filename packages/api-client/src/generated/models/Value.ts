@@ -31,10 +31,7 @@ export function ValueFromJSON(json: any): Value {
   return ValueFromJSONTyped(json, false);
 }
 
-export function ValueFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): Value {
+export function ValueFromJSONTyped(json: any, ignoreDiscriminator: boolean): Value {
   return json;
 }
 
@@ -42,9 +39,6 @@ export function ValueToJSON(json: any): Value {
   return ValueToJSONTyped(json, false);
 }
 
-export function ValueToJSONTyped(
-  value?: Value | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function ValueToJSONTyped(value?: Value | null, ignoreDiscriminator: boolean = false): any {
   return value;
 }

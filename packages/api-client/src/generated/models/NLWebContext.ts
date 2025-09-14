@@ -33,22 +33,22 @@ export interface NLWebContext {
   selectedItems?: Array<string> | null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof NLWebContext
    */
-  gitStatus?: object | null;
+  gitStatus?: { [key: string]: any } | null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof NLWebContext
    */
-  userPreferences?: object | null;
+  userPreferences?: { [key: string]: any } | null;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof NLWebContext
    */
-  applicationState?: object | null;
+  applicationState?: { [key: string]: any } | null;
   /**
    *
    * @type {string}
@@ -74,23 +74,16 @@ export function NLWebContextFromJSON(json: any): NLWebContext {
   return NLWebContextFromJSONTyped(json, false);
 }
 
-export function NLWebContextFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebContext {
+export function NLWebContextFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebContext {
   if (json == null) {
     return json;
   }
   return {
-    currentPath:
-      json["current_path"] == null ? undefined : json["current_path"],
-    selectedItems:
-      json["selected_items"] == null ? undefined : json["selected_items"],
+    currentPath: json["current_path"] == null ? undefined : json["current_path"],
+    selectedItems: json["selected_items"] == null ? undefined : json["selected_items"],
     gitStatus: json["git_status"] == null ? undefined : json["git_status"],
-    userPreferences:
-      json["user_preferences"] == null ? undefined : json["user_preferences"],
-    applicationState:
-      json["application_state"] == null ? undefined : json["application_state"],
+    userPreferences: json["user_preferences"] == null ? undefined : json["user_preferences"],
+    applicationState: json["application_state"] == null ? undefined : json["application_state"],
     userId: json["user_id"] == null ? undefined : json["user_id"],
     sessionId: json["session_id"] == null ? undefined : json["session_id"],
   };
@@ -100,10 +93,7 @@ export function NLWebContextToJSON(json: any): NLWebContext {
   return NLWebContextToJSONTyped(json, false);
 }
 
-export function NLWebContextToJSONTyped(
-  value?: NLWebContext | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function NLWebContextToJSONTyped(value?: NLWebContext | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

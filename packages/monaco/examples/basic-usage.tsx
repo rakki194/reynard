@@ -1,8 +1,8 @@
+import { Toggle } from "reynard-components";
+import { useI18n } from "reynard-i18n";
 import { createSignal } from "solid-js";
 import { CodeEditor } from "../src/components/CodeEditor";
-import { useI18n } from "reynard-i18n";
 import "./basic-usage.css";
-import { Toggle } from "reynard-components";
 
 export function BasicUsageExample() {
   const { t } = useI18n();
@@ -25,7 +25,7 @@ console.log(fibonacci(10)); // 55`);
       <div class="example-controls">
         <label>
           {t("monaco.theme")}:
-          <select value={theme()} onChange={(e) => setTheme(e.target.value)}>
+          <select value={theme()} onChange={e => setTheme(e.target.value)}>
             <option value="light">{t("monaco.light")}</option>
             <option value="dark">{t("monaco.dark")}</option>
             <option value="gray">{t("monaco.gray")}</option>
@@ -34,10 +34,7 @@ console.log(fibonacci(10)); // 55`);
 
         <label>
           {t("monaco.language")}:
-          <select
-            value={language()}
-            onChange={(e) => setLanguage(e.target.value)}
-          >
+          <select value={language()} onChange={e => setLanguage(e.target.value)}>
             <option value="javascript">{t("monaco.javascript")}</option>
             <option value="typescript">{t("monaco.typescript")}</option>
             <option value="python">{t("monaco.python")}</option>
@@ -51,10 +48,7 @@ console.log(fibonacci(10)); // 55`);
         </label>
 
         <label>
-          <Toggle
-    size="sm"
-  /> setReadOnly(e.target.checked)}
-          />
+          <Toggle size="sm" checked={readOnly()} onChange={e => setReadOnly(e.target.checked)} />
           {t("monaco.readOnly")}
         </label>
       </div>

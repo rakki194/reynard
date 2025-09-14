@@ -1,0 +1,309 @@
+{
+  // 🦊 Reynard VSCode Auto-Formatting Configuration
+  // Three spirits, one mission: automatic code perfection!
+
+  "python.defaultInterpreterPath": "~/venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+
+  // Python Auto-Formatting with Ruff (Primary linter/formatter)
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    },
+    "editor.rulers": [88],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+
+  "ruff.importStrategy": "fromEnvironment",
+  "ruff.lint.enable": true,
+  "ruff.format.enable": true,
+  "ruff.organizeImports": true,
+
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy-type-checker.args": ["--config-file=${workspaceFolder}/pyproject.toml"],
+
+  // Pylint Configuration
+  "pylint.importStrategy": "fromEnvironment",
+  "pylint.args": ["--rcfile=${workspaceFolder}/pyproject.toml"],
+  "pylint.path": ["${workspaceFolder}/scripts"],
+
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  // JavaScript/JSX Auto-Formatting
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[less]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      // Disable built-in markdownlint to prevent race conditions with custom validators
+      // Our custom watcher handles all markdown validation
+    },
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[yml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.shellcheck": "explicit"
+    },
+    "editor.rulers": [120],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+
+  "[bash]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.shellcheck": "explicit"
+    },
+    "editor.rulers": [120],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+
+  "editor.rulers": [88, 120],
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  "files.associations": {
+    "*.py": "python",
+    "pyproject.toml": "toml",
+    "*.toml": "toml",
+    "*.tsx": "typescriptreact",
+    "*.jsx": "javascriptreact",
+    "*.yml": "yaml",
+    "*.yaml": "yaml",
+    "*.sh": "shellscript",
+    "*.bash": "bash",
+    "*.zsh": "shellscript",
+    "Dockerfile": "dockerfile",
+    "*.dockerfile": "dockerfile",
+    "*.md": "markdown",
+    "*.mdc": "markdown"
+  },
+
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
+    "**/venv": true,
+    "**/.venv": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/coverage": true,
+    "**/htmlcov": true,
+    "**/.git": true,
+    "**/third_party": true
+  },
+
+  "search.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
+    "**/venv": true,
+    "**/.venv": true,
+    "**/node_modules": true,
+    "**/third_party": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/coverage": true,
+    "**/htmlcov": true
+  },
+
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${workspaceFolder}/backend:${workspaceFolder}/fenrir:${workspaceFolder}/libraries:${workspaceFolder}/scripts"
+  },
+
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": ["backend/tests"],
+
+  "git.ignoreLimitWarning": true,
+
+  "eslint.enable": true,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.workingDirectories": [".", "packages/*", "examples/*", "templates/*"],
+
+  "prettier.enable": true,
+  "prettier.requireConfig": false,
+  "prettier.useEditorConfig": false,
+  "prettier.configPath": ".prettierrc",
+
+  "markdownlint.config": {
+    "MD013": { "line_length": 120 },
+    "MD033": false,
+    "MD041": false
+  },
+
+  // Enable Markdown All in One extension for proper ToC handling
+  "markdown.extension.toc.updateOnSave": true,
+  "markdown.extension.toc.levels": "1..6",
+  "markdown.extension.toc.orderedList": false,
+  "markdown.extension.toc.plaintext": false,
+  "markdown.extension.toc.omittedFromToc": {},
+
+  "shellcheck.enable": true,
+  "shellcheck.executablePath": "shellcheck",
+  "shellcheck.run": "onSave",
+
+  // =============================================================================
+  // MARKDOWN VALIDATION ON SAVE
+  // =============================================================================
+
+  // Enable auto-save for markdown files to trigger validation
+  "files.autoSave": "onFocusChange",
+  "files.autoSaveDelay": 1000,
+
+  // Auto-start markdown watcher when VSCode opens
+  "task.autoDetect": "on",
+  "task.showDecorations": "always",
+
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  }
+}

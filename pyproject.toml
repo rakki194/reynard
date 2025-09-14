@@ -1,3 +1,138 @@
+# Reynard Monorepo Python Configuration
+# Unified tooling configuration for all Python packages in the monorepo
+# Covers: backend/, fenrir/, libraries/gatekeeper/
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reynard-monorepo"
+version = "0.1.0"
+description = "Reynard Monorepo - Unified Python development environment"
+authors = [{ name = "Balazs Horvath", email = "acsipont@gmail.com" }]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.13"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+
+# Development dependencies for the entire monorepo
+dependencies = [
+    # Core development tools
+    "black",
+    "isort",
+    "mypy",
+    "ruff",
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
+    "pre-commit",
+    # Security tools
+    "bandit",
+    "safety",
+    # Documentation
+    "sphinx",
+    "sphinx-rtd-theme",
+    "myst-parser",
+]
+
+[project.optional-dependencies]
+# Backend-specific dependencies
+backend = [
+    "fastapi",
+    "uvicorn[standard]",
+    "python-jose[cryptography]",
+    "python-dotenv",
+    "python-multipart",
+    "email-validator",
+    "pydantic[email]",
+    "slowapi",
+    "limits",
+    "torch",
+    "torchvision",
+    "pillow",
+    "pillow-jxl-plugin",
+    "pillow-avif-plugin",
+    "numpy",
+    "asyncio",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "aiohttp",
+    "pgvector",
+    "argon2-cffi",
+    "cryptography",
+]
+
+# Gatekeeper-specific dependencies
+gatekeeper = [
+    "fastapi",
+    "pydantic",
+    "python-jose[cryptography]",
+    "argon2-cffi",
+    "python-multipart",
+    "passlib",
+]
+
+# Fenrir-specific dependencies
+fenrir = [
+    "requests",
+    "aiohttp",
+    "websockets",
+    "cryptography",
+    "pyjwt",
+    "beautifulsoup4",
+    "lxml",
+    "faker",
+    "factory-boy",
+    "freezegun",
+    "responses",
+]
+
+# Testing dependencies
+test = [
+    "pytest",
+    "pytest-asyncio",
+    "pytest-cov",
+    "httpx",
+    "pytest-mock",
+    "pytest-xdist",
+    "factory-boy",
+    "faker",
+    "freezegun",
+    "responses",
+]
+
+# All development tools
+dev = [
+    "reynard-monorepo[backend,gatekeeper,fenrir,test]",
+    "black",
+    "isort",
+    "mypy",
+    "ruff",
+    "pre-commit",
+    "bandit",
+    "safety",
+]
+
+[project.urls]
+Homepage = "https://github.com/rakki194/reynard"
+Documentation = "https://(TBD)"
+Repository = "https://github.com/rakki194/reynard.git"
+Issues = "https://github.com/rakki194/reynard/issues"
+
+# =============================================================================
+# UNIFIED TOOLING CONFIGURATION
+# =============================================================================
+
 [tool.black]
 line-length = 88
 target-version = ['py313']
@@ -25,10 +160,40 @@ extend-exclude = '''
 profile = "black"
 multi_line_output = 3
 line_length = 88
-known_first_party = ["reynard", "gatekeeper", "beacon"]
-known_third_party = ["fastapi", "uvicorn", "pydantic", "sqlalchemy"]
+known_first_party = [
+    "reynard",
+    "gatekeeper",
+    "beacon",
+    "fenrir",
+    "app",             # backend app module
+    "validation",      # validation scripts
+    "reynard_scripts", # scripts package
+]
+known_third_party = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "sqlalchemy",
+    "pytest",
+    "requests",
+    "aiohttp",
+    "websockets",
+    "cryptography",
+    "pyjwt",
+    "beautifulsoup4",
+    "lxml",
+    "faker",
+    "factory_boy",
+    "freezegun",
+    "responses",
+]
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
-skip_glob = ["**/node_modules/**", "**/venv/**", "**/.venv/**", "**/third_party/**"]
+skip_glob = [
+    "**/node_modules/**",
+    "**/venv/**",
+    "**/.venv/**",
+    "**/third_party/**",
+]
 
 [tool.mypy]
 python_version = "3.13"
@@ -45,7 +210,9 @@ warn_no_return = true
 warn_unreachable = true
 strict_equality = true
 show_error_codes = true
+mypy_path = "scripts"
 
+# Module-specific overrides for external libraries
 [[tool.mypy.overrides]]
 module = [
     "fastapi.*",
@@ -54,16 +221,102 @@ module = [
     "sqlalchemy.*",
     "jose.*",
     "email_validator.*",
+    "torch.*",
+    "torchvision.*",
+    "psycopg2.*",
+    "pgvector.*",
+    "requests.*",
+    "aiohttp.*",
+    "websockets.*",
+    "cryptography.*",
+    "pyjwt.*",
+    "beautifulsoup4.*",
+    "lxml.*",
+    "faker.*",
+    "factory_boy.*",
+    "freezegun.*",
+    "responses.*",
+    "passlib.*",
+    "argon2.*",
+    "python_validation",
 ]
 ignore_missing_imports = true
 
-[tool.pylint.messages_control]
-disable = [
-    "C0114", # missing-module-docstring
-    "C0116", # missing-function-docstring
-    "R0903", # too-few-public-methods
-    "R0913", # too-many-arguments
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+src = ["scripts"]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "UP",   # pyupgrade
+    "N",    # pep8-naming
+    "S",    # flake8-bandit
+    "T20",  # flake8-print
+    "SIM",  # flake8-simplify
+    "RET",  # flake8-return
+    "ARG",  # flake8-unused-arguments
+    "PTH",  # flake8-use-pathlib
+    "ERA",  # eradicate
+    "PD",   # pandas-vet
+    "PGH",  # pygrep-hooks
+    "PL",   # pylint
+    "TRY",  # tryceratops
+    "FLY",  # flynt
+    "NPY",  # numpy
+    "AIR",  # airflow
+    "PERF", # perflint
+    "FURB", # refurb
+    "RUF",  # ruff-specific rules
 ]
+ignore = [
+    "E501",    # line too long, handled by black
+    "B008",    # do not perform function calls in argument defaults
+    "C901",    # too complex
+    "S101",    # use of assert (allow in tests)
+    "S104",    # hardcoded bind all interfaces
+    "S603",    # subprocess call (allow in security tools)
+    "S607",    # subprocess call with shell (allow in security tools)
+    "PLR0913", # too many arguments
+    "PLR0912", # too many branches
+    "PLR0915", # too many statements
+    "TRY003",  # avoid specifying long messages outside exception class
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"] # unused imports in __init__.py
+"tests/**/*.py" = [
+    "S101",
+    "S106",
+    "S108",
+] # allow assert, hardcoded temp files in tests
+"**/test_*.py" = ["S101", "S106", "S108"]
+"**/*_test.py" = ["S101", "S106", "S108"]
+"fenrir/**/*.py" = [
+    "S603",
+    "S607",
+    "S104",
+] # allow subprocess and network calls in security tools
+
+[tool.ruff.isort]
+known-first-party = [
+    "reynard",
+    "gatekeeper",
+    "beacon",
+    "fenrir",
+    "app",
+    "validation",
+    "reynard_scripts",
+]
+
+[tool.pylint.master]
+init-hook = "import sys; import os; sys.path.append('scripts'); venv_path = os.path.expanduser('~/venv/lib/python3.13/site-packages'); sys.path.insert(0, venv_path)"
+max-module-lines = 250
 
 [tool.pylint.format]
 max-line-length = 88
@@ -75,12 +328,38 @@ max-returns = 6
 max-branches = 15
 max-statements = 60
 
-[tool.pylint.master]
-max-module-lines = 250
+[tool.pylint.messages_control]
+disable = []
+
+[tool.pylint."messages_control.overrides"]
+"*.pyi" = [
+    "undefined-variable", # Allow undefined variables in .pyi files
+]
 
 [tool.bandit]
-exclude_dirs = ["tests", "test_*", "venv", ".venv", "node_modules", "third_party"]
-skips = ["B101", "B601"]                                            # Skip assert_used and shell_injection for tests
+exclude_dirs = [
+    "tests",
+    "test_*",
+    "venv",
+    ".venv",
+    "node_modules",
+    "third_party",
+]
+skips = [
+    "B101",
+    "B601",
+    "B603",
+    "B607",
+] # Skip assert_used, shell_injection, subprocess calls for tests and security tools
+
+[tool.safety]
+# Security vulnerability scanning
+output = "json"
+full_report = true
+
+# =============================================================================
+# UNIFIED TESTING CONFIGURATION
+# =============================================================================
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "test_*"]
@@ -96,9 +375,57 @@ addopts = [
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-report=xml",
+    "--cov-report=json",
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "unit: marks tests as unit tests",
+    "security: marks tests as security-related tests",
+    "penetration: marks tests as penetration tests",
+    "fuzzing: marks tests as fuzzing tests",
 ]
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["backend/app", "libraries/gatekeeper/gatekeeper", "fenrir"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/env/*",
+    "*/migrations/*",
+    "*/node_modules/*",
+    "*/third_party/*",
+    "*/build/*",
+    "*/dist/*",
+    "*/htmlcov/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+    "# type: ignore",
+    "# noqa",
+    "# fmt: skip",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+# =============================================================================
+# PACKAGE-SPECIFIC CONFIGURATIONS
+# =============================================================================
+
+# Note: Package-specific build configurations are handled in individual
+# package pyproject.toml files. The monorepo root focuses on unified tooling.

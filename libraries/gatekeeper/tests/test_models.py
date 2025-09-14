@@ -4,12 +4,15 @@ Tests for data models in the Gatekeeper library.
 This module tests the Pydantic models used for data validation.
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
 from gatekeeper.models.token import TokenData
 from gatekeeper.models.user import User, UserCreate, UserPublic, UserRole, UserUpdate
+
+# Test constants
+DEFAULT_YAPCOIN_BALANCE = 100
 
 
 class TestUserModels:
@@ -23,11 +26,11 @@ class TestUserModels:
             email="test@example.com",
             role=UserRole.REGULAR,
             is_active=True,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
+            updated_at=datetime.now(UTC),
             password_hash="hashed_password",
             profile_picture_url="https://example.com/avatar.jpg",
-            yapcoin_balance=100,
+            yapcoin_balance=DEFAULT_YAPCOIN_BALANCE,
             metadata={"theme": "dark", "language": "en"},
         )
 
@@ -38,7 +41,7 @@ class TestUserModels:
         assert user.is_active is True
         assert user.password_hash == "hashed_password"
         assert user.profile_picture_url == "https://example.com/avatar.jpg"
-        assert user.yapcoin_balance == 100
+        assert user.yapcoin_balance == DEFAULT_YAPCOIN_BALANCE
         assert user.metadata == {"theme": "dark", "language": "en"}
 
     def test_user_creation_minimal(self):
@@ -133,7 +136,7 @@ class TestUserModels:
             is_active=True,
             password_hash="hashed_password",
             profile_picture_url="https://example.com/avatar.jpg",
-            yapcoin_balance=100,
+            yapcoin_balance=DEFAULT_YAPCOIN_BALANCE,
             metadata={"theme": "dark"},
         )
 
@@ -262,7 +265,7 @@ class TestTokenModels:
 
     def test_token_data_creation(self):
         """Test creating TokenData with all fields."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         exp = now.replace(year=now.year + 1)  # Expire in 1 year
 
         token_data = TokenData(
@@ -311,15 +314,13 @@ class TestTokenModels:
         assert token_data.sub == "user123"
 
         # Test with expired token
-        past_exp = datetime.now(timezone.utc).replace(
-            year=datetime.now(timezone.utc).year - 1
-        )
+        past_exp = datetime.now(UTC).replace(year=datetime.now(UTC).year - 1)
         token_data = TokenData(
             sub="user123",
             role="regular",
             type="access",
             exp=past_exp,
-            iat=datetime.now(timezone.utc),
+            iat=datetime.now(UTC),
         )
         # Should not raise error as validation is not enforced in the model
 
@@ -345,7 +346,7 @@ class TestTokenModels:
             "device_info": {"type": "mobile", "os": "iOS", "version": "15.0"},
             "session": {
                 "id": "session123",
-                "created": datetime.now(timezone.utc).isoformat(),
+                "created": datetime.now(UTC).isoformat(),
             },
         }
         token_data = TokenData(

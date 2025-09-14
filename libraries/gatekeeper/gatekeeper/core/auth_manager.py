@@ -6,25 +6,13 @@ user authentication, authorization, and management operations.
 """
 
 import logging
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
+import secrets
+from datetime import UTC, datetime, timedelta
+from typing import Any
 
-from ..backends.base import (
-    BackendError,
-    InvalidCredentialsError,
-    UserAlreadyExistsError,
-    UserBackend,
-    UserNotFoundError,
-)
+from ..backends.base import UserAlreadyExistsError, UserBackend, UserNotFoundError
 from ..models.token import TokenConfig, TokenResponse
-from ..models.user import (
-    User,
-    UserCreate,
-    UserLogin,
-    UserPasswordChange,
-    UserPublic,
-    UserUpdate,
-)
+from ..models.user import User, UserCreate, UserPublic, UserUpdate
 from .password_manager import PasswordManager, SecurityLevel
 from .token_manager import TokenManager
 
@@ -88,8 +76,8 @@ class AuthManager:
         return created_user
 
     async def authenticate(
-        self, username: str, password: str, client_ip: str = None
-    ) -> Optional[TokenResponse]:
+        self, username: str, password: str, client_ip: str | None = None
+    ) -> TokenResponse | None:
         """
         Authenticate a user with username and password.
 
@@ -99,7 +87,7 @@ class AuthManager:
             client_ip: Client IP address for rate limiting
 
         Returns:
-            Optional[TokenResponse]: Token response if authentication successful, None otherwise
+            TokenResponse | None: Token response if authentication successful, None otherwise
         """
         # Rate limiting check
         if client_ip and not self.token_manager.check_rate_limit(client_ip):
@@ -134,7 +122,7 @@ class AuthManager:
             logger.info(f"Password hash updated for user '{username}'")
 
         # Create tokens
-        token_data = {
+        token_data: dict[str, Any] = {
             "sub": user.username,
             "role": user.role.value,
             "permissions": user.permissions or [],
@@ -150,7 +138,7 @@ class AuthManager:
 
     async def authenticate_by_email(
         self, email: str, password: str
-    ) -> Optional[TokenResponse]:
+    ) -> TokenResponse | None:
         """
         Authenticate a user with email and password.
 
@@ -159,7 +147,7 @@ class AuthManager:
             password: The plain text password
 
         Returns:
-            Optional[TokenResponse]: Token response if authentication successful, None otherwise
+            TokenResponse | None: Token response if authentication successful, None otherwise
         """
         try:
             # Get user from backend by email
@@ -194,9 +182,13 @@ class AuthManager:
                 logger.info(f"Updated password hash for user '{user.username}'")
 
             # Create token pair
-            tokens = self.token_manager.create_token_pair(
-                user.username, user.role.value
-            )
+            token_data: dict[str, Any] = {
+                "sub": user.username,
+                "role": user.role.value,
+                "permissions": user.permissions or [],
+                "user_id": str(user.id),
+            }
+            tokens = self.token_manager.create_tokens(token_data)
 
             logger.info(f"User with email '{email}' authenticated successfully")
             return tokens
@@ -206,8 +198,8 @@ class AuthManager:
             return None
 
     async def refresh_tokens(
-        self, refresh_token: str, client_ip: str = None
-    ) -> Optional[TokenResponse]:
+        self, refresh_token: str, client_ip: str | None = None
+    ) -> TokenResponse | None:
         """
         Refresh access token using a valid refresh token.
 
@@ -216,7 +208,7 @@ class AuthManager:
             client_ip: Client IP address for rate limiting
 
         Returns:
-            Optional[TokenResponse]: New tokens if refresh successful, None otherwise
+            TokenResponse | None: New tokens if refresh successful, None otherwise
         """
         # Rate limiting check
         if client_ip and not self.token_manager.check_rate_limit(client_ip):
@@ -244,7 +236,7 @@ class AuthManager:
             return None
 
         # Create new tokens
-        token_data = {
+        token_data: dict[str, Any] = {
             "sub": user.username,
             "role": user.role.value,
             "permissions": user.permissions or [],
@@ -257,7 +249,7 @@ class AuthManager:
         return tokens
 
     # Backward-compatible alias for tests
-    async def refresh_token(self, refresh_token: str) -> Optional[TokenResponse]:
+    async def refresh_token(self, refresh_token: str) -> TokenResponse | None:
         """
         Backward-compatible alias for refresh_tokens.
 
@@ -265,11 +257,11 @@ class AuthManager:
             refresh_token: The refresh token
 
         Returns:
-            Optional[TokenResponse]: New tokens if refresh successful, None otherwise
+            TokenResponse | None: New tokens if refresh successful, None otherwise
         """
         return await self.refresh_tokens(refresh_token)
 
-    async def revoke_tokens(self, username: str, token: str = None) -> bool:
+    async def revoke_tokens(self, username: str, token: str | None = None) -> bool:
         """
         Revoke tokens for a user.
 
@@ -311,7 +303,7 @@ class AuthManager:
         logger.info(f"User '{username}' logged out successfully")
         return True
 
-    async def get_current_user(self, token: str) -> Optional[User]:
+    async def get_current_user(self, token: str) -> User | None:
         """
         Get the current user from a valid token.
 
@@ -319,7 +311,7 @@ class AuthManager:
             token: The JWT token
 
         Returns:
-            Optional[User]: The user if token is valid, None otherwise
+            User | None: The user if token is valid, None otherwise
         """
         # Verify the token
         result = self.token_manager.verify_token(token, "access")
@@ -343,7 +335,9 @@ class AuthManager:
 
         return user
 
-    async def validate_token(self, token: str, required_role: str = None) -> bool:
+    async def validate_token(
+        self, token: str, required_role: str | None = None
+    ) -> bool:
         """
         Validate a token and optionally check role requirements.
 
@@ -367,12 +361,12 @@ class AuthManager:
 
         return True
 
-    async def get_token_stats(self) -> Dict[str, Any]:
+    async def get_token_stats(self) -> dict[str, Any]:
         """
         Get statistics about token usage and blacklist.
 
         Returns:
-            Dict[str, Any]: Token statistics
+            dict[str, Any]: Token statistics
         """
         return self.token_manager.get_blacklist_stats()
 
@@ -418,9 +412,7 @@ class AuthManager:
 
         return success
 
-    async def update_user(
-        self, username: str, user_update: UserUpdate
-    ) -> Optional[User]:
+    async def update_user(self, username: str, user_update: UserUpdate) -> User | None:
         """
         Update user information.
 
@@ -429,7 +421,7 @@ class AuthManager:
             user_update: The update data
 
         Returns:
-            Optional[User]: The updated user if successful, None otherwise
+            User | None: The updated user if successful, None otherwise
         """
         try:
             updated_user = await self.backend.update_user(username, user_update)
@@ -456,7 +448,7 @@ class AuthManager:
 
         return success
 
-    async def list_users(self, skip: int = 0, limit: int = 100) -> List[UserPublic]:
+    async def list_users(self, skip: int = 0, limit: int = 100) -> list[UserPublic]:
         """
         List users in the system.
 
@@ -465,11 +457,11 @@ class AuthManager:
             limit: Maximum number of users to return
 
         Returns:
-            List[UserPublic]: List of users (public data only)
+            list[UserPublic]: List of users (public data only)
         """
         return await self.backend.list_users(skip=skip, limit=limit)
 
-    async def get_user_by_username(self, username: str) -> Optional[User]:
+    async def get_user_by_username(self, username: str) -> User | None:
         """
         Get a user by username.
 
@@ -477,13 +469,13 @@ class AuthManager:
             username: The username to search for
 
         Returns:
-            Optional[User]: The user if found, None otherwise
+            User | None: The user if found, None otherwise
         """
         return await self.backend.get_user_by_username(username)
 
     async def search_users(
         self, query: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """
         Search for users.
 
@@ -493,13 +485,13 @@ class AuthManager:
             limit: Maximum number of users to return
 
         Returns:
-            List[UserPublic]: List of matching users
+            list[UserPublic]: List of matching users
         """
         return await self.backend.search_users(query, skip=skip, limit=limit)
 
     async def get_users_by_role(
         self, role: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """
         Get users by role.
 
@@ -509,7 +501,7 @@ class AuthManager:
             limit: Maximum number of users to return
 
         Returns:
-            List[UserPublic]: List of users with the specified role
+            list[UserPublic]: List of users with the specified role
         """
         return await self.backend.get_users_by_role(role, skip=skip, limit=limit)
 
@@ -532,7 +524,7 @@ class AuthManager:
         return success
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: Optional[str]
+        self, username: str, profile_picture_url: str | None
     ) -> bool:
         """
         Update a user's profile picture.
@@ -548,7 +540,7 @@ class AuthManager:
             username, profile_picture_url
         )
 
-    async def get_user_settings(self, username: str) -> Dict[str, Any]:
+    async def get_user_settings(self, username: str) -> dict[str, Any]:
         """
         Get user settings.
 
@@ -556,12 +548,12 @@ class AuthManager:
             username: The username of the user
 
         Returns:
-            Dict[str, Any]: User settings dictionary
+            dict[str, Any]: User settings dictionary
         """
         return await self.backend.get_user_settings(username)
 
     async def update_user_settings(
-        self, username: str, settings: Dict[str, Any]
+        self, username: str, settings: dict[str, Any]
     ) -> bool:
         """
         Update user settings.
@@ -593,12 +585,12 @@ class AuthManager:
 
         return success
 
-    async def get_all_users(self) -> List[UserPublic]:
+    async def get_all_users(self) -> list[UserPublic]:
         """
         Get all users in the system.
 
         Returns:
-            List[UserPublic]: List of all users (public data only)
+            list[UserPublic]: List of all users (public data only)
         """
         return await self.backend.get_all_users()
 
@@ -690,7 +682,7 @@ class AuthManager:
         result = self.token_manager.verify_token(token, "access")
         return result.is_valid
 
-    async def request_password_reset(self, email: str) -> Optional[str]:
+    async def request_password_reset(self, email: str) -> str | None:
         """
         Request a password reset for a user.
 
@@ -701,7 +693,7 @@ class AuthManager:
             email: The email address of the user requesting password reset
 
         Returns:
-            Optional[str]: Reset token if successful, None if user not found
+            str | None: Reset token if successful, None if user not found
         """
         try:
             # Find user by email
@@ -717,7 +709,8 @@ class AuthManager:
                 return None
 
             # Generate a secure reset token
-            reset_token = self.token_manager.create_reset_token(email)
+            # TODO: Implement create_reset_token method in TokenManager
+            reset_token = f"reset_{secrets.token_urlsafe(32)}"
 
             # Store the reset token in user metadata (in production, this would be in a separate table)
             if not user.metadata:
@@ -725,7 +718,7 @@ class AuthManager:
 
             user.metadata["reset_token"] = reset_token
             user.metadata["reset_token_expires"] = (
-                datetime.now(timezone.utc) + timedelta(hours=24)
+                datetime.now(UTC) + timedelta(hours=24)
             ).isoformat()
 
             # Update user with reset token
@@ -755,25 +748,36 @@ class AuthManager:
             bool: True if password was reset successfully, False otherwise
         """
         try:
-            # Verify the reset token
-            token_data = self.token_manager.verify_reset_token(reset_token)
-            if not token_data or not token_data.is_valid:
-                logger.warning("Invalid reset token used")
+            # Verify the reset token format
+            # TODO: Implement proper reset token verification in TokenManager
+            if not reset_token.startswith("reset_"):
+                logger.warning("Invalid reset token format")
                 return False
 
-            email = token_data.payload.sub if token_data.payload else None
-            if not email:
-                logger.warning("Reset token missing email payload")
-                return False
+            # For now, we need to find the user by searching for the reset token in metadata
+            # In a proper implementation, the token would contain the email
+            # This is a simplified implementation - in production, you'd have a separate reset token table
+            user = None
+            # We'll need to search through users to find one with this reset token
+            # This is not efficient but works for the current implementation
+            try:
+                # Get all users and find the one with this reset token
+                all_users = await self.backend.get_all_users()
+                for u in all_users:
+                    if u.metadata and u.metadata.get("reset_token") == reset_token:
+                        user = await self.backend.get_user_by_username(u.username)
+                        break
+            except Exception:
+                pass
 
-            # Find user by email
-            user = await self.backend.get_user_by_email(email)
             if not user:
-                logger.warning(f"User not found for reset token: {email}")
+                logger.warning("User not found for reset token")
                 return False
 
             if not user.is_active:
-                logger.warning(f"Password reset attempted for inactive user: {email}")
+                logger.warning(
+                    f"Password reset attempted for inactive user: {user.username}"
+                )
                 return False
 
             # Verify the token matches what's stored in user metadata
@@ -786,7 +790,7 @@ class AuthManager:
             if token_expires:
                 try:
                     expires_dt = datetime.fromisoformat(token_expires)
-                    if datetime.now(timezone.utc) > expires_dt:
+                    if datetime.now(UTC) > expires_dt:
                         logger.warning(f"Reset token expired for user: {user.username}")
                         return False
                 except Exception as e:

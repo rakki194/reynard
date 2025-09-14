@@ -48,12 +48,9 @@ export interface PackageLoadResponse {
 /**
  * Check if a given object implements the PackageLoadResponse interface.
  */
-export function instanceOfPackageLoadResponse(
-  value: object,
-): value is PackageLoadResponse {
+export function instanceOfPackageLoadResponse(value: object): value is PackageLoadResponse {
   if (!("success" in value) || value["success"] === undefined) return false;
-  if (!("packageName" in value) || value["packageName"] === undefined)
-    return false;
+  if (!("packageName" in value) || value["packageName"] === undefined) return false;
   return true;
 }
 
@@ -61,10 +58,7 @@ export function PackageLoadResponseFromJSON(json: any): PackageLoadResponse {
   return PackageLoadResponseFromJSONTyped(json, false);
 }
 
-export function PackageLoadResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): PackageLoadResponse {
+export function PackageLoadResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): PackageLoadResponse {
   if (json == null) {
     return json;
   }
@@ -82,7 +76,7 @@ export function PackageLoadResponseToJSON(json: any): PackageLoadResponse {
 
 export function PackageLoadResponseToJSONTyped(
   value?: PackageLoadResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

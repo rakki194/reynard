@@ -54,52 +54,37 @@ export interface SummarizationConfigRequest {
 /**
  * Check if a given object implements the SummarizationConfigRequest interface.
  */
-export function instanceOfSummarizationConfigRequest(
-  value: object,
-): value is SummarizationConfigRequest {
+export function instanceOfSummarizationConfigRequest(value: object): value is SummarizationConfigRequest {
   return true;
 }
 
-export function SummarizationConfigRequestFromJSON(
-  json: any,
-): SummarizationConfigRequest {
+export function SummarizationConfigRequestFromJSON(json: any): SummarizationConfigRequest {
   return SummarizationConfigRequestFromJSONTyped(json, false);
 }
 
 export function SummarizationConfigRequestFromJSONTyped(
   json: any,
-  ignoreDiscriminator: boolean,
+  ignoreDiscriminator: boolean
 ): SummarizationConfigRequest {
   if (json == null) {
     return json;
   }
   return {
-    defaultModel:
-      json["default_model"] == null ? undefined : json["default_model"],
-    defaultContentType:
-      json["default_content_type"] == null
-        ? undefined
-        : json["default_content_type"],
-    defaultSummaryLevel:
-      json["default_summary_level"] == null
-        ? undefined
-        : json["default_summary_level"],
-    maxTextLength:
-      json["max_text_length"] == null ? undefined : json["max_text_length"],
-    enableCaching:
-      json["enable_caching"] == null ? undefined : json["enable_caching"],
+    defaultModel: json["default_model"] == null ? undefined : json["default_model"],
+    defaultContentType: json["default_content_type"] == null ? undefined : json["default_content_type"],
+    defaultSummaryLevel: json["default_summary_level"] == null ? undefined : json["default_summary_level"],
+    maxTextLength: json["max_text_length"] == null ? undefined : json["max_text_length"],
+    enableCaching: json["enable_caching"] == null ? undefined : json["enable_caching"],
   };
 }
 
-export function SummarizationConfigRequestToJSON(
-  json: any,
-): SummarizationConfigRequest {
+export function SummarizationConfigRequestToJSON(json: any): SummarizationConfigRequest {
   return SummarizationConfigRequestToJSONTyped(json, false);
 }
 
 export function SummarizationConfigRequestToJSONTyped(
   value?: SummarizationConfigRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

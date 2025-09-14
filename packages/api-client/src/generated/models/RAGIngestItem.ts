@@ -45,10 +45,7 @@ export function RAGIngestItemFromJSON(json: any): RAGIngestItem {
   return RAGIngestItemFromJSONTyped(json, false);
 }
 
-export function RAGIngestItemFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): RAGIngestItem {
+export function RAGIngestItemFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGIngestItem {
   if (json == null) {
     return json;
   }
@@ -62,10 +59,7 @@ export function RAGIngestItemToJSON(json: any): RAGIngestItem {
   return RAGIngestItemToJSONTyped(json, false);
 }
 
-export function RAGIngestItemToJSONTyped(
-  value?: RAGIngestItem | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function RAGIngestItemToJSONTyped(value?: RAGIngestItem | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

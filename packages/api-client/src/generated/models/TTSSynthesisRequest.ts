@@ -66,9 +66,7 @@ export interface TTSSynthesisRequest {
 /**
  * Check if a given object implements the TTSSynthesisRequest interface.
  */
-export function instanceOfTTSSynthesisRequest(
-  value: object,
-): value is TTSSynthesisRequest {
+export function instanceOfTTSSynthesisRequest(value: object): value is TTSSynthesisRequest {
   if (!("text" in value) || value["text"] === undefined) return false;
   return true;
 }
@@ -77,10 +75,7 @@ export function TTSSynthesisRequestFromJSON(json: any): TTSSynthesisRequest {
   return TTSSynthesisRequestFromJSONTyped(json, false);
 }
 
-export function TTSSynthesisRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TTSSynthesisRequest {
+export function TTSSynthesisRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSSynthesisRequest {
   if (json == null) {
     return json;
   }
@@ -101,7 +96,7 @@ export function TTSSynthesisRequestToJSON(json: any): TTSSynthesisRequest {
 
 export function TTSSynthesisRequestToJSONTyped(
   value?: TTSSynthesisRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

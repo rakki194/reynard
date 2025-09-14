@@ -108,64 +108,33 @@ export interface NLWebPerformanceStats {
 /**
  * Check if a given object implements the NLWebPerformanceStats interface.
  */
-export function instanceOfNLWebPerformanceStats(
-  value: object,
-): value is NLWebPerformanceStats {
+export function instanceOfNLWebPerformanceStats(value: object): value is NLWebPerformanceStats {
   return true;
 }
 
-export function NLWebPerformanceStatsFromJSON(
-  json: any,
-): NLWebPerformanceStats {
+export function NLWebPerformanceStatsFromJSON(json: any): NLWebPerformanceStats {
   return NLWebPerformanceStatsFromJSONTyped(json, false);
 }
 
-export function NLWebPerformanceStatsFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebPerformanceStats {
+export function NLWebPerformanceStatsFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebPerformanceStats {
   if (json == null) {
     return json;
   }
   return {
-    totalRequests:
-      json["total_requests"] == null ? undefined : json["total_requests"],
-    successfulRequests:
-      json["successful_requests"] == null
-        ? undefined
-        : json["successful_requests"],
-    failedRequests:
-      json["failed_requests"] == null ? undefined : json["failed_requests"],
-    avgProcessingTimeMs:
-      json["avg_processing_time_ms"] == null
-        ? undefined
-        : json["avg_processing_time_ms"],
-    p95ProcessingTimeMs:
-      json["p95_processing_time_ms"] == null
-        ? undefined
-        : json["p95_processing_time_ms"],
-    p99ProcessingTimeMs:
-      json["p99_processing_time_ms"] == null
-        ? undefined
-        : json["p99_processing_time_ms"],
-    cacheHitRate:
-      json["cache_hit_rate"] == null ? undefined : json["cache_hit_rate"],
+    totalRequests: json["total_requests"] == null ? undefined : json["total_requests"],
+    successfulRequests: json["successful_requests"] == null ? undefined : json["successful_requests"],
+    failedRequests: json["failed_requests"] == null ? undefined : json["failed_requests"],
+    avgProcessingTimeMs: json["avg_processing_time_ms"] == null ? undefined : json["avg_processing_time_ms"],
+    p95ProcessingTimeMs: json["p95_processing_time_ms"] == null ? undefined : json["p95_processing_time_ms"],
+    p99ProcessingTimeMs: json["p99_processing_time_ms"] == null ? undefined : json["p99_processing_time_ms"],
+    cacheHitRate: json["cache_hit_rate"] == null ? undefined : json["cache_hit_rate"],
     cacheHits: json["cache_hits"] == null ? undefined : json["cache_hits"],
-    cacheMisses:
-      json["cache_misses"] == null ? undefined : json["cache_misses"],
+    cacheMisses: json["cache_misses"] == null ? undefined : json["cache_misses"],
     cacheSize: json["cache_size"] == null ? undefined : json["cache_size"],
-    maxCacheSize:
-      json["max_cache_size"] == null ? undefined : json["max_cache_size"],
-    rateLimitHits:
-      json["rate_limit_hits"] == null ? undefined : json["rate_limit_hits"],
-    staleServedCount:
-      json["stale_served_count"] == null
-        ? undefined
-        : json["stale_served_count"],
-    degradationEvents:
-      json["degradation_events"] == null
-        ? undefined
-        : json["degradation_events"],
+    maxCacheSize: json["max_cache_size"] == null ? undefined : json["max_cache_size"],
+    rateLimitHits: json["rate_limit_hits"] == null ? undefined : json["rate_limit_hits"],
+    staleServedCount: json["stale_served_count"] == null ? undefined : json["stale_served_count"],
+    degradationEvents: json["degradation_events"] == null ? undefined : json["degradation_events"],
   };
 }
 
@@ -175,7 +144,7 @@ export function NLWebPerformanceStatsToJSON(json: any): NLWebPerformanceStats {
 
 export function NLWebPerformanceStatsToJSONTyped(
   value?: NLWebPerformanceStats | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

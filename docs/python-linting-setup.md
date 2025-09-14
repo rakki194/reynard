@@ -190,7 +190,7 @@ reynard/
 
 ```bash
 # Check specific file line count
-python3 .husky/validate-python.py
+python3 scripts/validate_python.py
 
 # See detailed line count breakdown
 npm run python:linecheck

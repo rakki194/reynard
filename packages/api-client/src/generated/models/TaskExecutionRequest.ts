@@ -42,11 +42,8 @@ export interface TaskExecutionRequest {
 /**
  * Check if a given object implements the TaskExecutionRequest interface.
  */
-export function instanceOfTaskExecutionRequest(
-  value: object,
-): value is TaskExecutionRequest {
-  if (!("functionName" in value) || value["functionName"] === undefined)
-    return false;
+export function instanceOfTaskExecutionRequest(value: object): value is TaskExecutionRequest {
+  if (!("functionName" in value) || value["functionName"] === undefined) return false;
   return true;
 }
 
@@ -54,10 +51,7 @@ export function TaskExecutionRequestFromJSON(json: any): TaskExecutionRequest {
   return TaskExecutionRequestFromJSONTyped(json, false);
 }
 
-export function TaskExecutionRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TaskExecutionRequest {
+export function TaskExecutionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskExecutionRequest {
   if (json == null) {
     return json;
   }
@@ -74,7 +68,7 @@ export function TaskExecutionRequestToJSON(json: any): TaskExecutionRequest {
 
 export function TaskExecutionRequestToJSONTyped(
   value?: TaskExecutionRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

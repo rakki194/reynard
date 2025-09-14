@@ -14,10 +14,7 @@
 
 import * as runtime from "../runtime";
 import type { HTTPValidationError } from "../models/index";
-import {
-  HTTPValidationErrorFromJSON,
-  HTTPValidationErrorToJSON,
-} from "../models/index";
+import { HTTPValidationErrorFromJSON, HTTPValidationErrorToJSON } from "../models/index";
 
 export interface GetCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGetRequest {
   modelName: string;
@@ -48,7 +45,7 @@ export interface CaptionMonitoringApiInterface {
    */
   getCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGetRaw(
     requestParameters: GetCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -57,7 +54,7 @@ export interface CaptionMonitoringApiInterface {
    */
   getCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGet(
     requestParameters: GetCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -68,16 +65,14 @@ export interface CaptionMonitoringApiInterface {
    * @memberof CaptionMonitoringApiInterface
    */
   getHealthStatusApiCaptionHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Get system health status.
    * Get Health Status
    */
-  getHealthStatusApiCaptionHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  getHealthStatusApiCaptionHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Get health status for a specific model.
@@ -89,7 +84,7 @@ export interface CaptionMonitoringApiInterface {
    */
   getModelHealthStatusApiCaptionModelsModelNameHealthGetRaw(
     requestParameters: GetModelHealthStatusApiCaptionModelsModelNameHealthGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -98,7 +93,7 @@ export interface CaptionMonitoringApiInterface {
    */
   getModelHealthStatusApiCaptionModelsModelNameHealthGet(
     requestParameters: GetModelHealthStatusApiCaptionModelsModelNameHealthGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -111,7 +106,7 @@ export interface CaptionMonitoringApiInterface {
    */
   getModelUsageStatsApiCaptionModelsModelNameStatsGetRaw(
     requestParameters: GetModelUsageStatsApiCaptionModelsModelNameStatsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -120,7 +115,7 @@ export interface CaptionMonitoringApiInterface {
    */
   getModelUsageStatsApiCaptionModelsModelNameStatsGet(
     requestParameters: GetModelUsageStatsApiCaptionModelsModelNameStatsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -131,16 +126,14 @@ export interface CaptionMonitoringApiInterface {
    * @memberof CaptionMonitoringApiInterface
    */
   getQueueStatusApiCaptionQueueGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Get request queue status.
    * Get Queue Status
    */
-  getQueueStatusApiCaptionQueueGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  getQueueStatusApiCaptionQueueGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Get comprehensive system statistics and usage metrics.
@@ -150,37 +143,32 @@ export interface CaptionMonitoringApiInterface {
    * @memberof CaptionMonitoringApiInterface
    */
   getSystemStatisticsApiCaptionStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Get comprehensive system statistics and usage metrics.
    * Get System Statistics
    */
-  getSystemStatisticsApiCaptionStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  getSystemStatisticsApiCaptionStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 }
 
 /**
  *
  */
-export class CaptionMonitoringApi
-  extends runtime.BaseAPI
-  implements CaptionMonitoringApiInterface
-{
+export class CaptionMonitoringApi extends runtime.BaseAPI implements CaptionMonitoringApiInterface {
   /**
    * Get circuit breaker state for a specific model.
    * Get Circuit Breaker State
    */
   async getCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGetRaw(
     requestParameters: GetCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["modelName"] == null) {
       throw new runtime.RequiredError(
         "modelName",
-        'Required parameter "modelName" was null or undefined when calling getCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGet().',
+        'Required parameter "modelName" was null or undefined when calling getCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGet().'
       );
     }
 
@@ -189,10 +177,7 @@ export class CaptionMonitoringApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/caption/models/{model_name}/circuit-breaker`;
-    urlPath = urlPath.replace(
-      `{${"model_name"}}`,
-      encodeURIComponent(String(requestParameters["modelName"])),
-    );
+    urlPath = urlPath.replace(`{${"model_name"}}`, encodeURIComponent(String(requestParameters["modelName"])));
 
     const response = await this.request(
       {
@@ -201,7 +186,7 @@ export class CaptionMonitoringApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -217,13 +202,12 @@ export class CaptionMonitoringApi
    */
   async getCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGet(
     requestParameters: GetCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getCircuitBreakerStateApiCaptionModelsModelNameCircuitBreakerGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -232,7 +216,7 @@ export class CaptionMonitoringApi
    * Get Health Status
    */
   async getHealthStatusApiCaptionHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -247,7 +231,7 @@ export class CaptionMonitoringApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -261,11 +245,8 @@ export class CaptionMonitoringApi
    * Get system health status.
    * Get Health Status
    */
-  async getHealthStatusApiCaptionHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
-    const response =
-      await this.getHealthStatusApiCaptionHealthGetRaw(initOverrides);
+  async getHealthStatusApiCaptionHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
+    const response = await this.getHealthStatusApiCaptionHealthGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -275,12 +256,12 @@ export class CaptionMonitoringApi
    */
   async getModelHealthStatusApiCaptionModelsModelNameHealthGetRaw(
     requestParameters: GetModelHealthStatusApiCaptionModelsModelNameHealthGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["modelName"] == null) {
       throw new runtime.RequiredError(
         "modelName",
-        'Required parameter "modelName" was null or undefined when calling getModelHealthStatusApiCaptionModelsModelNameHealthGet().',
+        'Required parameter "modelName" was null or undefined when calling getModelHealthStatusApiCaptionModelsModelNameHealthGet().'
       );
     }
 
@@ -289,10 +270,7 @@ export class CaptionMonitoringApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/caption/models/{model_name}/health`;
-    urlPath = urlPath.replace(
-      `{${"model_name"}}`,
-      encodeURIComponent(String(requestParameters["modelName"])),
-    );
+    urlPath = urlPath.replace(`{${"model_name"}}`, encodeURIComponent(String(requestParameters["modelName"])));
 
     const response = await this.request(
       {
@@ -301,7 +279,7 @@ export class CaptionMonitoringApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -317,13 +295,12 @@ export class CaptionMonitoringApi
    */
   async getModelHealthStatusApiCaptionModelsModelNameHealthGet(
     requestParameters: GetModelHealthStatusApiCaptionModelsModelNameHealthGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getModelHealthStatusApiCaptionModelsModelNameHealthGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getModelHealthStatusApiCaptionModelsModelNameHealthGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -333,12 +310,12 @@ export class CaptionMonitoringApi
    */
   async getModelUsageStatsApiCaptionModelsModelNameStatsGetRaw(
     requestParameters: GetModelUsageStatsApiCaptionModelsModelNameStatsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["modelName"] == null) {
       throw new runtime.RequiredError(
         "modelName",
-        'Required parameter "modelName" was null or undefined when calling getModelUsageStatsApiCaptionModelsModelNameStatsGet().',
+        'Required parameter "modelName" was null or undefined when calling getModelUsageStatsApiCaptionModelsModelNameStatsGet().'
       );
     }
 
@@ -347,10 +324,7 @@ export class CaptionMonitoringApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/caption/models/{model_name}/stats`;
-    urlPath = urlPath.replace(
-      `{${"model_name"}}`,
-      encodeURIComponent(String(requestParameters["modelName"])),
-    );
+    urlPath = urlPath.replace(`{${"model_name"}}`, encodeURIComponent(String(requestParameters["modelName"])));
 
     const response = await this.request(
       {
@@ -359,7 +333,7 @@ export class CaptionMonitoringApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -375,13 +349,12 @@ export class CaptionMonitoringApi
    */
   async getModelUsageStatsApiCaptionModelsModelNameStatsGet(
     requestParameters: GetModelUsageStatsApiCaptionModelsModelNameStatsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getModelUsageStatsApiCaptionModelsModelNameStatsGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getModelUsageStatsApiCaptionModelsModelNameStatsGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -390,7 +363,7 @@ export class CaptionMonitoringApi
    * Get Queue Status
    */
   async getQueueStatusApiCaptionQueueGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -405,7 +378,7 @@ export class CaptionMonitoringApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -419,11 +392,8 @@ export class CaptionMonitoringApi
    * Get request queue status.
    * Get Queue Status
    */
-  async getQueueStatusApiCaptionQueueGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
-    const response =
-      await this.getQueueStatusApiCaptionQueueGetRaw(initOverrides);
+  async getQueueStatusApiCaptionQueueGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
+    const response = await this.getQueueStatusApiCaptionQueueGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -432,7 +402,7 @@ export class CaptionMonitoringApi
    * Get System Statistics
    */
   async getSystemStatisticsApiCaptionStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -447,7 +417,7 @@ export class CaptionMonitoringApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -462,10 +432,9 @@ export class CaptionMonitoringApi
    * Get System Statistics
    */
   async getSystemStatisticsApiCaptionStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getSystemStatisticsApiCaptionStatsGetRaw(initOverrides);
+    const response = await this.getSystemStatisticsApiCaptionStatsGetRaw(initOverrides);
     return await response.value();
   }
 }

@@ -4,40 +4,20 @@
  */
 
 import {
-  Component,
-  onMount,
-  onCleanup,
-  createSignal,
-  createEffect,
-  Show,
-  splitProps,
-  createMemo,
-} from "solid-js";
-import {
+  CategoryScale,
   Chart,
-  Title,
-  Tooltip,
   Legend,
   LineController,
-  CategoryScale,
-  PointElement,
   LineElement,
   LinearScale,
+  PointElement,
   TimeScale,
+  Title,
+  Tooltip,
 } from "chart.js";
-import {
-  Dataset,
-  ChartConfig,
-  TimeSeriesDataPoint,
-  ReynardTheme,
-  ChartOptions,
-} from "../types";
-import {
-  getDefaultConfig,
-  prepareDatasets,
-  processTimeSeriesData,
-  validateChartData,
-} from "../utils";
+import { Component, Show, createEffect, createMemo, createSignal, onCleanup, onMount, splitProps } from "solid-js";
+import { ChartConfig, ChartOptions, Dataset, ReynardTheme, TimeSeriesDataPoint } from "../types";
+import { getDefaultConfig, prepareDatasets, processTimeSeriesData, validateChartData } from "../utils";
 import "./LineChart.css";
 
 export interface LineChartProps extends ChartConfig {
@@ -74,7 +54,7 @@ const defaultProps = {
   theme: "light" as ReynardTheme,
 };
 
-export const LineChart: Component<LineChartProps> = (props) => {
+export const LineChart: Component<LineChartProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local, others] = splitProps(merged, [
     "labels",
@@ -104,10 +84,7 @@ export const LineChart: Component<LineChartProps> = (props) => {
   const chartData = createMemo(() => {
     if (local.timeSeriesData && local.timeSeriesData.length > 0) {
       // Process time series data
-      const processed = processTimeSeriesData(
-        local.timeSeriesData,
-        local.maxDataPoints,
-      );
+      const processed = processTimeSeriesData(local.timeSeriesData, local.maxDataPoints);
       const datasets = prepareDatasets([
         {
           label: "Value",
@@ -148,7 +125,7 @@ export const LineChart: Component<LineChartProps> = (props) => {
       PointElement,
       LineElement,
       LinearScale,
-      TimeScale,
+      TimeScale
     );
     setIsRegistered(true);
   });
@@ -210,7 +187,43 @@ export const LineChart: Component<LineChartProps> = (props) => {
       ...baseConfig,
       responsive: local.responsive,
       maintainAspectRatio: local.maintainAspectRatio,
-      animation: local.animation || (baseConfig as ChartOptions).animation,
+      animation: local.animation
+        ? {
+            duration: local.animation.duration,
+            easing: local.animation.easing as
+              | "linear"
+              | "easeInQuad"
+              | "easeOutQuad"
+              | "easeInOutQuad"
+              | "easeInCubic"
+              | "easeOutCubic"
+              | "easeInOutCubic"
+              | "easeInQuart"
+              | "easeOutQuart"
+              | "easeInOutQuart"
+              | "easeInQuint"
+              | "easeOutQuint"
+              | "easeInOutQuint"
+              | "easeInSine"
+              | "easeOutSine"
+              | "easeInOutSine"
+              | "easeInExpo"
+              | "easeOutExpo"
+              | "easeInOutExpo"
+              | "easeInCirc"
+              | "easeOutCirc"
+              | "easeInOutCirc"
+              | "easeInElastic"
+              | "easeOutElastic"
+              | "easeInOutElastic"
+              | "easeInBack"
+              | "easeOutBack"
+              | "easeInOutBack"
+              | "easeInBounce"
+              | "easeOutBounce"
+              | "easeInOutBounce",
+          }
+        : (baseConfig as ChartOptions).animation,
       plugins: {
         ...baseConfig.plugins,
         title: {
@@ -326,15 +339,12 @@ export const LineChart: Component<LineChartProps> = (props) => {
         </Show>
 
         <Show when={!local.loading && chartData()}>
-          <div
-            class="reynard-chart-container"
-            style={{ position: "relative", width: "100%", height: "100%" }}
-          >
+          <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
             <canvas
               ref={canvasRef}
               width={local.width}
               height={local.height}
-              style={{ maxWidth: "100%", maxHeight: "100%" }}
+              style={{ "max-width": "100%", "max-height": "100%" }}
               data-testid="line-chart-canvas"
             />
           </div>

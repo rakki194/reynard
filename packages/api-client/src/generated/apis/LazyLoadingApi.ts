@@ -88,7 +88,7 @@ export interface LazyLoadingApiInterface {
    * @memberof LazyLoadingApiInterface
    */
   clearRegistryEndpointApiLazyLoadingRegistryDeleteRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -96,7 +96,7 @@ export interface LazyLoadingApiInterface {
    * Clear Registry Endpoint
    */
   clearRegistryEndpointApiLazyLoadingRegistryDelete(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -109,7 +109,7 @@ export interface LazyLoadingApiInterface {
    */
   createLazyExportEndpointApiLazyLoadingExportsPostRaw(
     requestParameters: CreateLazyExportEndpointApiLazyLoadingExportsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<LazyExportResponse>>;
 
   /**
@@ -118,7 +118,7 @@ export interface LazyLoadingApiInterface {
    */
   createLazyExportEndpointApiLazyLoadingExportsPost(
     requestParameters: CreateLazyExportEndpointApiLazyLoadingExportsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<LazyExportResponse>;
 
   /**
@@ -131,7 +131,7 @@ export interface LazyLoadingApiInterface {
    */
   forceCleanupEndpointApiLazyLoadingCleanupPostRaw(
     requestParameters: ForceCleanupEndpointApiLazyLoadingCleanupPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -140,7 +140,7 @@ export interface LazyLoadingApiInterface {
    */
   forceCleanupEndpointApiLazyLoadingCleanupPost(
     requestParameters: ForceCleanupEndpointApiLazyLoadingCleanupPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -151,7 +151,7 @@ export interface LazyLoadingApiInterface {
    * @memberof LazyLoadingApiInterface
    */
   getAllPackagesEndpointApiLazyLoadingPackagesGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<PackageInfoResponse>>>;
 
   /**
@@ -159,7 +159,7 @@ export interface LazyLoadingApiInterface {
    * Get All Packages Endpoint
    */
   getAllPackagesEndpointApiLazyLoadingPackagesGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<PackageInfoResponse>>;
 
   /**
@@ -170,7 +170,7 @@ export interface LazyLoadingApiInterface {
    * @memberof LazyLoadingApiInterface
    */
   getConfigEndpointApiLazyLoadingConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ConfigResponse>>;
 
   /**
@@ -178,7 +178,7 @@ export interface LazyLoadingApiInterface {
    * Get Config Endpoint
    */
   getConfigEndpointApiLazyLoadingConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ConfigResponse>;
 
   /**
@@ -191,7 +191,7 @@ export interface LazyLoadingApiInterface {
    */
   getLazyExportEndpointApiLazyLoadingExportsPackageNameGetRaw(
     requestParameters: GetLazyExportEndpointApiLazyLoadingExportsPackageNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<LazyExportResponse>>;
 
   /**
@@ -200,7 +200,7 @@ export interface LazyLoadingApiInterface {
    */
   getLazyExportEndpointApiLazyLoadingExportsPackageNameGet(
     requestParameters: GetLazyExportEndpointApiLazyLoadingExportsPackageNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<LazyExportResponse>;
 
   /**
@@ -211,7 +211,7 @@ export interface LazyLoadingApiInterface {
    * @memberof LazyLoadingApiInterface
    */
   getLazyLoadingStatusApiLazyLoadingStatusGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<LazyLoadingStatusResponse>>;
 
   /**
@@ -219,7 +219,7 @@ export interface LazyLoadingApiInterface {
    * Get Lazy Loading Status
    */
   getLazyLoadingStatusApiLazyLoadingStatusGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<LazyLoadingStatusResponse>;
 
   /**
@@ -232,7 +232,7 @@ export interface LazyLoadingApiInterface {
    */
   getPackageInfoEndpointApiLazyLoadingPackagesPackageNameGetRaw(
     requestParameters: GetPackageInfoEndpointApiLazyLoadingPackagesPackageNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<PackageInfoResponse>>;
 
   /**
@@ -241,7 +241,7 @@ export interface LazyLoadingApiInterface {
    */
   getPackageInfoEndpointApiLazyLoadingPackagesPackageNameGet(
     requestParameters: GetPackageInfoEndpointApiLazyLoadingPackagesPackageNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<PackageInfoResponse>;
 
   /**
@@ -254,7 +254,7 @@ export interface LazyLoadingApiInterface {
    */
   loadPackageEndpointApiLazyLoadingPackagesLoadPostRaw(
     requestParameters: LoadPackageEndpointApiLazyLoadingPackagesLoadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<PackageLoadResponse>>;
 
   /**
@@ -263,7 +263,7 @@ export interface LazyLoadingApiInterface {
    */
   loadPackageEndpointApiLazyLoadingPackagesLoadPost(
     requestParameters: LoadPackageEndpointApiLazyLoadingPackagesLoadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<PackageLoadResponse>;
 
   /**
@@ -276,7 +276,7 @@ export interface LazyLoadingApiInterface {
    */
   unloadPackageEndpointApiLazyLoadingPackagesPackageNameDeleteRaw(
     requestParameters: UnloadPackageEndpointApiLazyLoadingPackagesPackageNameDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -285,7 +285,7 @@ export interface LazyLoadingApiInterface {
    */
   unloadPackageEndpointApiLazyLoadingPackagesPackageNameDelete(
     requestParameters: UnloadPackageEndpointApiLazyLoadingPackagesPackageNameDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -298,7 +298,7 @@ export interface LazyLoadingApiInterface {
    */
   updateConfigEndpointApiLazyLoadingConfigPutRaw(
     requestParameters: UpdateConfigEndpointApiLazyLoadingConfigPutRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -307,23 +307,20 @@ export interface LazyLoadingApiInterface {
    */
   updateConfigEndpointApiLazyLoadingConfigPut(
     requestParameters: UpdateConfigEndpointApiLazyLoadingConfigPutRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 }
 
 /**
  *
  */
-export class LazyLoadingApi
-  extends runtime.BaseAPI
-  implements LazyLoadingApiInterface
-{
+export class LazyLoadingApi extends runtime.BaseAPI implements LazyLoadingApiInterface {
   /**
    * Clear the export registry.
    * Clear Registry Endpoint
    */
   async clearRegistryEndpointApiLazyLoadingRegistryDeleteRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -338,7 +335,7 @@ export class LazyLoadingApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -353,12 +350,9 @@ export class LazyLoadingApi
    * Clear Registry Endpoint
    */
   async clearRegistryEndpointApiLazyLoadingRegistryDelete(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.clearRegistryEndpointApiLazyLoadingRegistryDeleteRaw(
-        initOverrides,
-      );
+    const response = await this.clearRegistryEndpointApiLazyLoadingRegistryDeleteRaw(initOverrides);
     return await response.value();
   }
 
@@ -368,12 +362,12 @@ export class LazyLoadingApi
    */
   async createLazyExportEndpointApiLazyLoadingExportsPostRaw(
     requestParameters: CreateLazyExportEndpointApiLazyLoadingExportsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<LazyExportResponse>> {
     if (requestParameters["lazyExportRequest"] == null) {
       throw new runtime.RequiredError(
         "lazyExportRequest",
-        'Required parameter "lazyExportRequest" was null or undefined when calling createLazyExportEndpointApiLazyLoadingExportsPost().',
+        'Required parameter "lazyExportRequest" was null or undefined when calling createLazyExportEndpointApiLazyLoadingExportsPost().'
       );
     }
 
@@ -393,12 +387,10 @@ export class LazyLoadingApi
         query: queryParameters,
         body: LazyExportRequestToJSON(requestParameters["lazyExportRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      LazyExportResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => LazyExportResponseFromJSON(jsonValue));
   }
 
   /**
@@ -407,13 +399,9 @@ export class LazyLoadingApi
    */
   async createLazyExportEndpointApiLazyLoadingExportsPost(
     requestParameters: CreateLazyExportEndpointApiLazyLoadingExportsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<LazyExportResponse> {
-    const response =
-      await this.createLazyExportEndpointApiLazyLoadingExportsPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.createLazyExportEndpointApiLazyLoadingExportsPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -423,7 +411,7 @@ export class LazyLoadingApi
    */
   async forceCleanupEndpointApiLazyLoadingCleanupPostRaw(
     requestParameters: ForceCleanupEndpointApiLazyLoadingCleanupPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -442,7 +430,7 @@ export class LazyLoadingApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -458,13 +446,9 @@ export class LazyLoadingApi
    */
   async forceCleanupEndpointApiLazyLoadingCleanupPost(
     requestParameters: ForceCleanupEndpointApiLazyLoadingCleanupPostRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.forceCleanupEndpointApiLazyLoadingCleanupPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.forceCleanupEndpointApiLazyLoadingCleanupPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -473,7 +457,7 @@ export class LazyLoadingApi
    * Get All Packages Endpoint
    */
   async getAllPackagesEndpointApiLazyLoadingPackagesGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<PackageInfoResponse>>> {
     const queryParameters: any = {};
 
@@ -488,12 +472,10 @@ export class LazyLoadingApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      jsonValue.map(PackageInfoResponseFromJSON),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => jsonValue.map(PackageInfoResponseFromJSON));
   }
 
   /**
@@ -501,12 +483,9 @@ export class LazyLoadingApi
    * Get All Packages Endpoint
    */
   async getAllPackagesEndpointApiLazyLoadingPackagesGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<PackageInfoResponse>> {
-    const response =
-      await this.getAllPackagesEndpointApiLazyLoadingPackagesGetRaw(
-        initOverrides,
-      );
+    const response = await this.getAllPackagesEndpointApiLazyLoadingPackagesGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -515,7 +494,7 @@ export class LazyLoadingApi
    * Get Config Endpoint
    */
   async getConfigEndpointApiLazyLoadingConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ConfigResponse>> {
     const queryParameters: any = {};
 
@@ -530,12 +509,10 @@ export class LazyLoadingApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -543,10 +520,9 @@ export class LazyLoadingApi
    * Get Config Endpoint
    */
   async getConfigEndpointApiLazyLoadingConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ConfigResponse> {
-    const response =
-      await this.getConfigEndpointApiLazyLoadingConfigGetRaw(initOverrides);
+    const response = await this.getConfigEndpointApiLazyLoadingConfigGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -556,12 +532,12 @@ export class LazyLoadingApi
    */
   async getLazyExportEndpointApiLazyLoadingExportsPackageNameGetRaw(
     requestParameters: GetLazyExportEndpointApiLazyLoadingExportsPackageNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<LazyExportResponse>> {
     if (requestParameters["packageName"] == null) {
       throw new runtime.RequiredError(
         "packageName",
-        'Required parameter "packageName" was null or undefined when calling getLazyExportEndpointApiLazyLoadingExportsPackageNameGet().',
+        'Required parameter "packageName" was null or undefined when calling getLazyExportEndpointApiLazyLoadingExportsPackageNameGet().'
       );
     }
 
@@ -570,10 +546,7 @@ export class LazyLoadingApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/lazy-loading/exports/{package_name}`;
-    urlPath = urlPath.replace(
-      `{${"package_name"}}`,
-      encodeURIComponent(String(requestParameters["packageName"])),
-    );
+    urlPath = urlPath.replace(`{${"package_name"}}`, encodeURIComponent(String(requestParameters["packageName"])));
 
     const response = await this.request(
       {
@@ -582,12 +555,10 @@ export class LazyLoadingApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      LazyExportResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => LazyExportResponseFromJSON(jsonValue));
   }
 
   /**
@@ -596,13 +567,12 @@ export class LazyLoadingApi
    */
   async getLazyExportEndpointApiLazyLoadingExportsPackageNameGet(
     requestParameters: GetLazyExportEndpointApiLazyLoadingExportsPackageNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<LazyExportResponse> {
-    const response =
-      await this.getLazyExportEndpointApiLazyLoadingExportsPackageNameGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getLazyExportEndpointApiLazyLoadingExportsPackageNameGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -611,7 +581,7 @@ export class LazyLoadingApi
    * Get Lazy Loading Status
    */
   async getLazyLoadingStatusApiLazyLoadingStatusGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<LazyLoadingStatusResponse>> {
     const queryParameters: any = {};
 
@@ -626,12 +596,10 @@ export class LazyLoadingApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      LazyLoadingStatusResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => LazyLoadingStatusResponseFromJSON(jsonValue));
   }
 
   /**
@@ -639,10 +607,9 @@ export class LazyLoadingApi
    * Get Lazy Loading Status
    */
   async getLazyLoadingStatusApiLazyLoadingStatusGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<LazyLoadingStatusResponse> {
-    const response =
-      await this.getLazyLoadingStatusApiLazyLoadingStatusGetRaw(initOverrides);
+    const response = await this.getLazyLoadingStatusApiLazyLoadingStatusGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -652,12 +619,12 @@ export class LazyLoadingApi
    */
   async getPackageInfoEndpointApiLazyLoadingPackagesPackageNameGetRaw(
     requestParameters: GetPackageInfoEndpointApiLazyLoadingPackagesPackageNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<PackageInfoResponse>> {
     if (requestParameters["packageName"] == null) {
       throw new runtime.RequiredError(
         "packageName",
-        'Required parameter "packageName" was null or undefined when calling getPackageInfoEndpointApiLazyLoadingPackagesPackageNameGet().',
+        'Required parameter "packageName" was null or undefined when calling getPackageInfoEndpointApiLazyLoadingPackagesPackageNameGet().'
       );
     }
 
@@ -666,10 +633,7 @@ export class LazyLoadingApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/lazy-loading/packages/{package_name}`;
-    urlPath = urlPath.replace(
-      `{${"package_name"}}`,
-      encodeURIComponent(String(requestParameters["packageName"])),
-    );
+    urlPath = urlPath.replace(`{${"package_name"}}`, encodeURIComponent(String(requestParameters["packageName"])));
 
     const response = await this.request(
       {
@@ -678,12 +642,10 @@ export class LazyLoadingApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PackageInfoResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => PackageInfoResponseFromJSON(jsonValue));
   }
 
   /**
@@ -692,13 +654,12 @@ export class LazyLoadingApi
    */
   async getPackageInfoEndpointApiLazyLoadingPackagesPackageNameGet(
     requestParameters: GetPackageInfoEndpointApiLazyLoadingPackagesPackageNameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<PackageInfoResponse> {
-    const response =
-      await this.getPackageInfoEndpointApiLazyLoadingPackagesPackageNameGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getPackageInfoEndpointApiLazyLoadingPackagesPackageNameGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -708,12 +669,12 @@ export class LazyLoadingApi
    */
   async loadPackageEndpointApiLazyLoadingPackagesLoadPostRaw(
     requestParameters: LoadPackageEndpointApiLazyLoadingPackagesLoadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<PackageLoadResponse>> {
     if (requestParameters["packageLoadRequest"] == null) {
       throw new runtime.RequiredError(
         "packageLoadRequest",
-        'Required parameter "packageLoadRequest" was null or undefined when calling loadPackageEndpointApiLazyLoadingPackagesLoadPost().',
+        'Required parameter "packageLoadRequest" was null or undefined when calling loadPackageEndpointApiLazyLoadingPackagesLoadPost().'
       );
     }
 
@@ -733,12 +694,10 @@ export class LazyLoadingApi
         query: queryParameters,
         body: PackageLoadRequestToJSON(requestParameters["packageLoadRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      PackageLoadResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => PackageLoadResponseFromJSON(jsonValue));
   }
 
   /**
@@ -747,13 +706,9 @@ export class LazyLoadingApi
    */
   async loadPackageEndpointApiLazyLoadingPackagesLoadPost(
     requestParameters: LoadPackageEndpointApiLazyLoadingPackagesLoadPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<PackageLoadResponse> {
-    const response =
-      await this.loadPackageEndpointApiLazyLoadingPackagesLoadPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.loadPackageEndpointApiLazyLoadingPackagesLoadPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -763,12 +718,12 @@ export class LazyLoadingApi
    */
   async unloadPackageEndpointApiLazyLoadingPackagesPackageNameDeleteRaw(
     requestParameters: UnloadPackageEndpointApiLazyLoadingPackagesPackageNameDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["packageName"] == null) {
       throw new runtime.RequiredError(
         "packageName",
-        'Required parameter "packageName" was null or undefined when calling unloadPackageEndpointApiLazyLoadingPackagesPackageNameDelete().',
+        'Required parameter "packageName" was null or undefined when calling unloadPackageEndpointApiLazyLoadingPackagesPackageNameDelete().'
       );
     }
 
@@ -777,10 +732,7 @@ export class LazyLoadingApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/lazy-loading/packages/{package_name}`;
-    urlPath = urlPath.replace(
-      `{${"package_name"}}`,
-      encodeURIComponent(String(requestParameters["packageName"])),
-    );
+    urlPath = urlPath.replace(`{${"package_name"}}`, encodeURIComponent(String(requestParameters["packageName"])));
 
     const response = await this.request(
       {
@@ -789,7 +741,7 @@ export class LazyLoadingApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -805,13 +757,12 @@ export class LazyLoadingApi
    */
   async unloadPackageEndpointApiLazyLoadingPackagesPackageNameDelete(
     requestParameters: UnloadPackageEndpointApiLazyLoadingPackagesPackageNameDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.unloadPackageEndpointApiLazyLoadingPackagesPackageNameDeleteRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.unloadPackageEndpointApiLazyLoadingPackagesPackageNameDeleteRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -821,12 +772,12 @@ export class LazyLoadingApi
    */
   async updateConfigEndpointApiLazyLoadingConfigPutRaw(
     requestParameters: UpdateConfigEndpointApiLazyLoadingConfigPutRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["configUpdateRequest"] == null) {
       throw new runtime.RequiredError(
         "configUpdateRequest",
-        'Required parameter "configUpdateRequest" was null or undefined when calling updateConfigEndpointApiLazyLoadingConfigPut().',
+        'Required parameter "configUpdateRequest" was null or undefined when calling updateConfigEndpointApiLazyLoadingConfigPut().'
       );
     }
 
@@ -844,11 +795,9 @@ export class LazyLoadingApi
         method: "PUT",
         headers: headerParameters,
         query: queryParameters,
-        body: ConfigUpdateRequestToJSON(
-          requestParameters["configUpdateRequest"],
-        ),
+        body: ConfigUpdateRequestToJSON(requestParameters["configUpdateRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -864,12 +813,9 @@ export class LazyLoadingApi
    */
   async updateConfigEndpointApiLazyLoadingConfigPut(
     requestParameters: UpdateConfigEndpointApiLazyLoadingConfigPutRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.updateConfigEndpointApiLazyLoadingConfigPutRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.updateConfigEndpointApiLazyLoadingConfigPutRaw(requestParameters, initOverrides);
     return await response.value();
   }
 }

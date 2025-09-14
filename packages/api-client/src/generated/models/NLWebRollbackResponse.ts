@@ -48,27 +48,19 @@ export interface NLWebRollbackResponse {
 /**
  * Check if a given object implements the NLWebRollbackResponse interface.
  */
-export function instanceOfNLWebRollbackResponse(
-  value: object,
-): value is NLWebRollbackResponse {
+export function instanceOfNLWebRollbackResponse(value: object): value is NLWebRollbackResponse {
   if (!("success" in value) || value["success"] === undefined) return false;
-  if (!("rollbackEnabled" in value) || value["rollbackEnabled"] === undefined)
-    return false;
+  if (!("rollbackEnabled" in value) || value["rollbackEnabled"] === undefined) return false;
   if (!("reason" in value) || value["reason"] === undefined) return false;
   if (!("timestamp" in value) || value["timestamp"] === undefined) return false;
   return true;
 }
 
-export function NLWebRollbackResponseFromJSON(
-  json: any,
-): NLWebRollbackResponse {
+export function NLWebRollbackResponseFromJSON(json: any): NLWebRollbackResponse {
   return NLWebRollbackResponseFromJSONTyped(json, false);
 }
 
-export function NLWebRollbackResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebRollbackResponse {
+export function NLWebRollbackResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebRollbackResponse {
   if (json == null) {
     return json;
   }
@@ -86,7 +78,7 @@ export function NLWebRollbackResponseToJSON(json: any): NLWebRollbackResponse {
 
 export function NLWebRollbackResponseToJSONTyped(
   value?: NLWebRollbackResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

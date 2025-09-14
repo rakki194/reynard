@@ -13,11 +13,7 @@
  */
 
 import * as runtime from "../runtime";
-import type {
-  HFCacheInfoResponse,
-  HTTPValidationError,
-  ModelCacheInfoResponse,
-} from "../models/index";
+import type { HFCacheInfoResponse, HTTPValidationError, ModelCacheInfoResponse } from "../models/index";
 import {
   HFCacheInfoResponseFromJSON,
   HFCacheInfoResponseToJSON,
@@ -62,7 +58,7 @@ export interface HfCacheApiInterface {
    */
   checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGetRaw(
     requestParameters: CheckModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -71,7 +67,7 @@ export interface HfCacheApiInterface {
    */
   checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet(
     requestParameters: CheckModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -84,7 +80,7 @@ export interface HfCacheApiInterface {
    */
   checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet_1Raw(
     requestParameters: CheckModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -93,7 +89,7 @@ export interface HfCacheApiInterface {
    */
   checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet_1(
     requestParameters: CheckModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -104,7 +100,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   clearCacheEndpointApiHfCacheApiHfCacheClearDeleteRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -112,7 +108,7 @@ export interface HfCacheApiInterface {
    * Clear Cache Endpoint
    */
   clearCacheEndpointApiHfCacheApiHfCacheClearDelete(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -123,7 +119,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   clearCacheEndpointApiHfCacheApiHfCacheClearDelete_2Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -131,7 +127,7 @@ export interface HfCacheApiInterface {
    * Clear Cache Endpoint
    */
   clearCacheEndpointApiHfCacheApiHfCacheClearDelete_2(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -142,7 +138,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -150,7 +146,7 @@ export interface HfCacheApiInterface {
    * Ensure Cache Directory
    */
   ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -161,7 +157,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPost_3Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -169,7 +165,7 @@ export interface HfCacheApiInterface {
    * Ensure Cache Directory
    */
   ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPost_3(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -180,7 +176,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   getCacheDirectoryApiHfCacheApiHfCacheCacheDirGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -188,7 +184,7 @@ export interface HfCacheApiInterface {
    * Get Cache Directory
    */
   getCacheDirectoryApiHfCacheApiHfCacheCacheDirGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -199,7 +195,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   getCacheDirectoryApiHfCacheApiHfCacheCacheDirGet_4Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -207,7 +203,7 @@ export interface HfCacheApiInterface {
    * Get Cache Directory
    */
   getCacheDirectoryApiHfCacheApiHfCacheCacheDirGet_4(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -218,7 +214,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   getCacheInfoApiHfCacheApiHfCacheInfoGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<HFCacheInfoResponse>>;
 
   /**
@@ -226,7 +222,7 @@ export interface HfCacheApiInterface {
    * Get Cache Info
    */
   getCacheInfoApiHfCacheApiHfCacheInfoGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<HFCacheInfoResponse>;
 
   /**
@@ -237,7 +233,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   getCacheInfoApiHfCacheApiHfCacheInfoGet_5Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<HFCacheInfoResponse>>;
 
   /**
@@ -245,7 +241,7 @@ export interface HfCacheApiInterface {
    * Get Cache Info
    */
   getCacheInfoApiHfCacheApiHfCacheInfoGet_5(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<HFCacheInfoResponse>;
 
   /**
@@ -256,7 +252,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   getCacheSizeEndpointApiHfCacheApiHfCacheSizeGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -264,7 +260,7 @@ export interface HfCacheApiInterface {
    * Get Cache Size Endpoint
    */
   getCacheSizeEndpointApiHfCacheApiHfCacheSizeGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -275,7 +271,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   getCacheSizeEndpointApiHfCacheApiHfCacheSizeGet_6Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -283,7 +279,7 @@ export interface HfCacheApiInterface {
    * Get Cache Size Endpoint
    */
   getCacheSizeEndpointApiHfCacheApiHfCacheSizeGet_6(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -294,7 +290,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   getHubDirectoryApiHfCacheApiHfCacheHubDirGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -302,7 +298,7 @@ export interface HfCacheApiInterface {
    * Get Hub Directory
    */
   getHubDirectoryApiHfCacheApiHfCacheHubDirGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -313,7 +309,7 @@ export interface HfCacheApiInterface {
    * @memberof HfCacheApiInterface
    */
   getHubDirectoryApiHfCacheApiHfCacheHubDirGet_7Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -321,7 +317,7 @@ export interface HfCacheApiInterface {
    * Get Hub Directory
    */
   getHubDirectoryApiHfCacheApiHfCacheHubDirGet_7(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -335,7 +331,7 @@ export interface HfCacheApiInterface {
    */
   getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGetRaw(
     requestParameters: GetModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ModelCacheInfoResponse>>;
 
   /**
@@ -344,7 +340,7 @@ export interface HfCacheApiInterface {
    */
   getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet(
     requestParameters: GetModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ModelCacheInfoResponse>;
 
   /**
@@ -358,7 +354,7 @@ export interface HfCacheApiInterface {
    */
   getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet_8Raw(
     requestParameters: GetModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ModelCacheInfoResponse>>;
 
   /**
@@ -367,7 +363,7 @@ export interface HfCacheApiInterface {
    */
   getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet_8(
     requestParameters: GetModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ModelCacheInfoResponse>;
 }
 
@@ -381,12 +377,12 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    */
   async checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGetRaw(
     requestParameters: CheckModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["repoId"] == null) {
       throw new runtime.RequiredError(
         "repoId",
-        'Required parameter "repoId" was null or undefined when calling checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet().',
+        'Required parameter "repoId" was null or undefined when calling checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet().'
       );
     }
 
@@ -395,10 +391,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/hf-cache/api/hf-cache/model/{repo_id}/cached`;
-    urlPath = urlPath.replace(
-      `{${"repo_id"}}`,
-      encodeURIComponent(String(requestParameters["repoId"])),
-    );
+    urlPath = urlPath.replace(`{${"repo_id"}}`, encodeURIComponent(String(requestParameters["repoId"])));
 
     const response = await this.request(
       {
@@ -407,7 +400,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -423,13 +416,12 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    */
   async checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet(
     requestParameters: CheckModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -439,12 +431,12 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    */
   async checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet_1Raw(
     requestParameters: CheckModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["repoId"] == null) {
       throw new runtime.RequiredError(
         "repoId",
-        'Required parameter "repoId" was null or undefined when calling checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet_1().',
+        'Required parameter "repoId" was null or undefined when calling checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet_1().'
       );
     }
 
@@ -453,10 +445,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/hf-cache/api/hf-cache/model/{repo_id}/cached`;
-    urlPath = urlPath.replace(
-      `{${"repo_id"}}`,
-      encodeURIComponent(String(requestParameters["repoId"])),
-    );
+    urlPath = urlPath.replace(`{${"repo_id"}}`, encodeURIComponent(String(requestParameters["repoId"])));
 
     const response = await this.request(
       {
@@ -465,7 +454,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -481,13 +470,12 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    */
   async checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet_1(
     requestParameters: CheckModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet_1Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.checkModelCachedApiHfCacheApiHfCacheModelRepoIdCachedGet_1Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -496,7 +484,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Clear Cache Endpoint
    */
   async clearCacheEndpointApiHfCacheApiHfCacheClearDeleteRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -511,7 +499,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -526,12 +514,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Clear Cache Endpoint
    */
   async clearCacheEndpointApiHfCacheApiHfCacheClearDelete(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.clearCacheEndpointApiHfCacheApiHfCacheClearDeleteRaw(
-        initOverrides,
-      );
+    const response = await this.clearCacheEndpointApiHfCacheApiHfCacheClearDeleteRaw(initOverrides);
     return await response.value();
   }
 
@@ -540,7 +525,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Clear Cache Endpoint
    */
   async clearCacheEndpointApiHfCacheApiHfCacheClearDelete_2Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -555,7 +540,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -570,12 +555,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Clear Cache Endpoint
    */
   async clearCacheEndpointApiHfCacheApiHfCacheClearDelete_2(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.clearCacheEndpointApiHfCacheApiHfCacheClearDelete_2Raw(
-        initOverrides,
-      );
+    const response = await this.clearCacheEndpointApiHfCacheApiHfCacheClearDelete_2Raw(initOverrides);
     return await response.value();
   }
 
@@ -584,7 +566,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Ensure Cache Directory
    */
   async ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -599,7 +581,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -614,12 +596,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Ensure Cache Directory
    */
   async ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPostRaw(
-        initOverrides,
-      );
+    const response = await this.ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPostRaw(initOverrides);
     return await response.value();
   }
 
@@ -628,7 +607,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Ensure Cache Directory
    */
   async ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPost_3Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -643,7 +622,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -658,12 +637,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Ensure Cache Directory
    */
   async ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPost_3(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPost_3Raw(
-        initOverrides,
-      );
+    const response = await this.ensureCacheDirectoryApiHfCacheApiHfCacheEnsureCacheDirPost_3Raw(initOverrides);
     return await response.value();
   }
 
@@ -672,7 +648,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Directory
    */
   async getCacheDirectoryApiHfCacheApiHfCacheCacheDirGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -687,7 +663,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -702,12 +678,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Directory
    */
   async getCacheDirectoryApiHfCacheApiHfCacheCacheDirGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getCacheDirectoryApiHfCacheApiHfCacheCacheDirGetRaw(
-        initOverrides,
-      );
+    const response = await this.getCacheDirectoryApiHfCacheApiHfCacheCacheDirGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -716,7 +689,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Directory
    */
   async getCacheDirectoryApiHfCacheApiHfCacheCacheDirGet_4Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -731,7 +704,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -746,12 +719,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Directory
    */
   async getCacheDirectoryApiHfCacheApiHfCacheCacheDirGet_4(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getCacheDirectoryApiHfCacheApiHfCacheCacheDirGet_4Raw(
-        initOverrides,
-      );
+    const response = await this.getCacheDirectoryApiHfCacheApiHfCacheCacheDirGet_4Raw(initOverrides);
     return await response.value();
   }
 
@@ -760,7 +730,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Info
    */
   async getCacheInfoApiHfCacheApiHfCacheInfoGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<HFCacheInfoResponse>> {
     const queryParameters: any = {};
 
@@ -775,12 +745,10 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      HFCacheInfoResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => HFCacheInfoResponseFromJSON(jsonValue));
   }
 
   /**
@@ -788,10 +756,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Info
    */
   async getCacheInfoApiHfCacheApiHfCacheInfoGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<HFCacheInfoResponse> {
-    const response =
-      await this.getCacheInfoApiHfCacheApiHfCacheInfoGetRaw(initOverrides);
+    const response = await this.getCacheInfoApiHfCacheApiHfCacheInfoGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -800,7 +767,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Info
    */
   async getCacheInfoApiHfCacheApiHfCacheInfoGet_5Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<HFCacheInfoResponse>> {
     const queryParameters: any = {};
 
@@ -815,12 +782,10 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      HFCacheInfoResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => HFCacheInfoResponseFromJSON(jsonValue));
   }
 
   /**
@@ -828,10 +793,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Info
    */
   async getCacheInfoApiHfCacheApiHfCacheInfoGet_5(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<HFCacheInfoResponse> {
-    const response =
-      await this.getCacheInfoApiHfCacheApiHfCacheInfoGet_5Raw(initOverrides);
+    const response = await this.getCacheInfoApiHfCacheApiHfCacheInfoGet_5Raw(initOverrides);
     return await response.value();
   }
 
@@ -840,7 +804,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Size Endpoint
    */
   async getCacheSizeEndpointApiHfCacheApiHfCacheSizeGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -855,7 +819,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -870,12 +834,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Size Endpoint
    */
   async getCacheSizeEndpointApiHfCacheApiHfCacheSizeGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getCacheSizeEndpointApiHfCacheApiHfCacheSizeGetRaw(
-        initOverrides,
-      );
+    const response = await this.getCacheSizeEndpointApiHfCacheApiHfCacheSizeGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -884,7 +845,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Size Endpoint
    */
   async getCacheSizeEndpointApiHfCacheApiHfCacheSizeGet_6Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -899,7 +860,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -914,12 +875,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Cache Size Endpoint
    */
   async getCacheSizeEndpointApiHfCacheApiHfCacheSizeGet_6(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getCacheSizeEndpointApiHfCacheApiHfCacheSizeGet_6Raw(
-        initOverrides,
-      );
+    const response = await this.getCacheSizeEndpointApiHfCacheApiHfCacheSizeGet_6Raw(initOverrides);
     return await response.value();
   }
 
@@ -928,7 +886,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Hub Directory
    */
   async getHubDirectoryApiHfCacheApiHfCacheHubDirGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -943,7 +901,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -958,10 +916,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Hub Directory
    */
   async getHubDirectoryApiHfCacheApiHfCacheHubDirGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getHubDirectoryApiHfCacheApiHfCacheHubDirGetRaw(initOverrides);
+    const response = await this.getHubDirectoryApiHfCacheApiHfCacheHubDirGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -970,7 +927,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Hub Directory
    */
   async getHubDirectoryApiHfCacheApiHfCacheHubDirGet_7Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -985,7 +942,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1000,12 +957,9 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    * Get Hub Directory
    */
   async getHubDirectoryApiHfCacheApiHfCacheHubDirGet_7(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getHubDirectoryApiHfCacheApiHfCacheHubDirGet_7Raw(
-        initOverrides,
-      );
+    const response = await this.getHubDirectoryApiHfCacheApiHfCacheHubDirGet_7Raw(initOverrides);
     return await response.value();
   }
 
@@ -1015,12 +969,12 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    */
   async getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGetRaw(
     requestParameters: GetModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ModelCacheInfoResponse>> {
     if (requestParameters["repoId"] == null) {
       throw new runtime.RequiredError(
         "repoId",
-        'Required parameter "repoId" was null or undefined when calling getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet().',
+        'Required parameter "repoId" was null or undefined when calling getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet().'
       );
     }
 
@@ -1033,10 +987,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/hf-cache/api/hf-cache/model/{repo_id}`;
-    urlPath = urlPath.replace(
-      `{${"repo_id"}}`,
-      encodeURIComponent(String(requestParameters["repoId"])),
-    );
+    urlPath = urlPath.replace(`{${"repo_id"}}`, encodeURIComponent(String(requestParameters["repoId"])));
 
     const response = await this.request(
       {
@@ -1045,12 +996,10 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ModelCacheInfoResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ModelCacheInfoResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1059,13 +1008,12 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    */
   async getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet(
     requestParameters: GetModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ModelCacheInfoResponse> {
-    const response =
-      await this.getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1075,12 +1023,12 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    */
   async getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet_8Raw(
     requestParameters: GetModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ModelCacheInfoResponse>> {
     if (requestParameters["repoId"] == null) {
       throw new runtime.RequiredError(
         "repoId",
-        'Required parameter "repoId" was null or undefined when calling getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet_8().',
+        'Required parameter "repoId" was null or undefined when calling getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet_8().'
       );
     }
 
@@ -1093,10 +1041,7 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/hf-cache/api/hf-cache/model/{repo_id}`;
-    urlPath = urlPath.replace(
-      `{${"repo_id"}}`,
-      encodeURIComponent(String(requestParameters["repoId"])),
-    );
+    urlPath = urlPath.replace(`{${"repo_id"}}`, encodeURIComponent(String(requestParameters["repoId"])));
 
     const response = await this.request(
       {
@@ -1105,12 +1050,10 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ModelCacheInfoResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ModelCacheInfoResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1119,13 +1062,12 @@ export class HfCacheApi extends runtime.BaseAPI implements HfCacheApiInterface {
    */
   async getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet_8(
     requestParameters: GetModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ModelCacheInfoResponse> {
-    const response =
-      await this.getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet_8Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getModelCacheInfoApiHfCacheApiHfCacheModelRepoIdGet_8Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 }

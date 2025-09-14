@@ -54,9 +54,7 @@ export interface RAGIngestResponse {
 /**
  * Check if a given object implements the RAGIngestResponse interface.
  */
-export function instanceOfRAGIngestResponse(
-  value: object,
-): value is RAGIngestResponse {
+export function instanceOfRAGIngestResponse(value: object): value is RAGIngestResponse {
   if (!("processed" in value) || value["processed"] === undefined) return false;
   if (!("total" in value) || value["total"] === undefined) return false;
   return true;
@@ -66,10 +64,7 @@ export function RAGIngestResponseFromJSON(json: any): RAGIngestResponse {
   return RAGIngestResponseFromJSONTyped(json, false);
 }
 
-export function RAGIngestResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): RAGIngestResponse {
+export function RAGIngestResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGIngestResponse {
   if (json == null) {
     return json;
   }
@@ -77,8 +72,7 @@ export function RAGIngestResponseFromJSONTyped(
     processed: json["processed"],
     total: json["total"],
     failures: json["failures"] == null ? undefined : json["failures"],
-    processingTime:
-      json["processing_time"] == null ? undefined : json["processing_time"],
+    processingTime: json["processing_time"] == null ? undefined : json["processing_time"],
     message: json["message"] == null ? undefined : json["message"],
   };
 }
@@ -89,7 +83,7 @@ export function RAGIngestResponseToJSON(json: any): RAGIngestResponse {
 
 export function RAGIngestResponseToJSONTyped(
   value?: RAGIngestResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

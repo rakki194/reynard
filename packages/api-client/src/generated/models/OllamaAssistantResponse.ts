@@ -62,6 +62,12 @@ export interface OllamaAssistantResponse {
    */
   toolsUsed?: Array<string>;
   /**
+   * Tool calls made by the assistant
+   * @type {Array<{ [key: string]: any; } | null>}
+   * @memberof OllamaAssistantResponse
+   */
+  toolCalls?: Array<{ [key: string]: any } | null>;
+  /**
    *
    * @type {string}
    * @memberof OllamaAssistantResponse
@@ -69,37 +75,28 @@ export interface OllamaAssistantResponse {
   reasoning?: string | null;
   /**
    * Additional metadata
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof OllamaAssistantResponse
    */
-  metadata?: object;
+  metadata?: { [key: string]: any };
 }
 
 /**
  * Check if a given object implements the OllamaAssistantResponse interface.
  */
-export function instanceOfOllamaAssistantResponse(
-  value: object,
-): value is OllamaAssistantResponse {
+export function instanceOfOllamaAssistantResponse(value: object): value is OllamaAssistantResponse {
   if (!("success" in value) || value["success"] === undefined) return false;
-  if (!("assistantType" in value) || value["assistantType"] === undefined)
-    return false;
+  if (!("assistantType" in value) || value["assistantType"] === undefined) return false;
   if (!("model" in value) || value["model"] === undefined) return false;
-  if (!("processingTime" in value) || value["processingTime"] === undefined)
-    return false;
+  if (!("processingTime" in value) || value["processingTime"] === undefined) return false;
   return true;
 }
 
-export function OllamaAssistantResponseFromJSON(
-  json: any,
-): OllamaAssistantResponse {
+export function OllamaAssistantResponseFromJSON(json: any): OllamaAssistantResponse {
   return OllamaAssistantResponseFromJSONTyped(json, false);
 }
 
-export function OllamaAssistantResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): OllamaAssistantResponse {
+export function OllamaAssistantResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): OllamaAssistantResponse {
   if (json == null) {
     return json;
   }
@@ -109,23 +106,21 @@ export function OllamaAssistantResponseFromJSONTyped(
     assistantType: json["assistant_type"],
     model: json["model"],
     processingTime: json["processing_time"],
-    tokensGenerated:
-      json["tokens_generated"] == null ? undefined : json["tokens_generated"],
+    tokensGenerated: json["tokens_generated"] == null ? undefined : json["tokens_generated"],
     toolsUsed: json["tools_used"] == null ? undefined : json["tools_used"],
+    toolCalls: json["tool_calls"] == null ? undefined : json["tool_calls"],
     reasoning: json["reasoning"] == null ? undefined : json["reasoning"],
     metadata: json["metadata"] == null ? undefined : json["metadata"],
   };
 }
 
-export function OllamaAssistantResponseToJSON(
-  json: any,
-): OllamaAssistantResponse {
+export function OllamaAssistantResponseToJSON(json: any): OllamaAssistantResponse {
   return OllamaAssistantResponseToJSONTyped(json, false);
 }
 
 export function OllamaAssistantResponseToJSONTyped(
   value?: OllamaAssistantResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;
@@ -139,6 +134,7 @@ export function OllamaAssistantResponseToJSONTyped(
     processing_time: value["processingTime"],
     tokens_generated: value["tokensGenerated"],
     tools_used: value["toolsUsed"],
+    tool_calls: value["toolCalls"],
     reasoning: value["reasoning"],
     metadata: value["metadata"],
   };

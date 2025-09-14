@@ -66,9 +66,7 @@ export interface TTSBatchRequest {
 /**
  * Check if a given object implements the TTSBatchRequest interface.
  */
-export function instanceOfTTSBatchRequest(
-  value: object,
-): value is TTSBatchRequest {
+export function instanceOfTTSBatchRequest(value: object): value is TTSBatchRequest {
   if (!("texts" in value) || value["texts"] === undefined) return false;
   return true;
 }
@@ -77,10 +75,7 @@ export function TTSBatchRequestFromJSON(json: any): TTSBatchRequest {
   return TTSBatchRequestFromJSONTyped(json, false);
 }
 
-export function TTSBatchRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TTSBatchRequest {
+export function TTSBatchRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSBatchRequest {
   if (json == null) {
     return json;
   }
@@ -99,10 +94,7 @@ export function TTSBatchRequestToJSON(json: any): TTSBatchRequest {
   return TTSBatchRequestToJSONTyped(json, false);
 }
 
-export function TTSBatchRequestToJSONTyped(
-  value?: TTSBatchRequest | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function TTSBatchRequestToJSONTyped(value?: TTSBatchRequest | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

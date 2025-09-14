@@ -281,15 +281,7 @@ export interface FileTypeInfo {
   /** MIME type */
   mimeType: string;
   /** File category */
-  category:
-    | "image"
-    | "video"
-    | "audio"
-    | "text"
-    | "code"
-    | "document"
-    | "archive"
-    | "other";
+  category: "image" | "video" | "audio" | "text" | "code" | "document" | "archive" | "other";
   /** Whether type is supported */
   isSupported: boolean;
   /** Processing capabilities */
@@ -348,47 +340,47 @@ export interface ProcessingError {
   recoverable: boolean;
 }
 
-export type FileProcessor<T = any> = (
-  file: File | string,
-  options?: ProcessingOptions,
-) => Promise<ProcessingResult<T>>;
+export type FileProcessor<T = any> = (file: File | string, options?: ProcessingOptions) => Promise<ProcessingResult<T>>;
 
 export type ThumbnailGenerator = (
   file: File | string,
-  options: ThumbnailOptions,
+  options: ThumbnailOptions
 ) => Promise<ProcessingResult<Blob | string>>;
 
-export type MetadataExtractor<T = any> = (
-  file: File | string,
-) => Promise<ProcessingResult<T>>;
+export type MetadataExtractor<T = any> = (file: File | string) => Promise<ProcessingResult<T>>;
 
 export interface ProcessingPipeline {
   /** Process a single file */
-  processFile(
-    file: File | string,
-    options?: ProcessingOptions,
-  ): Promise<ProcessingResult>;
+  processFile(file: File | string, options?: ProcessingOptions): Promise<ProcessingResult>;
   /** Process multiple files */
-  processFiles(
-    files: (File | string)[],
-    options?: ProcessingOptions,
-  ): Promise<ProcessingResult[]>;
+  processFiles(files: (File | string)[], options?: ProcessingOptions): Promise<ProcessingResult[]>;
   /** Generate thumbnail for a file */
-  generateThumbnail(
-    file: File | string,
-    options: ThumbnailOptions,
-  ): Promise<ProcessingResult<Blob | string>>;
+  generateThumbnail(file: File | string, options: ThumbnailOptions): Promise<ProcessingResult<Blob | string>>;
   /** Extract metadata from a file */
   extractMetadata(file: File | string): Promise<ProcessingResult>;
   /** Scan directory contents */
-  scanDirectory(
-    path: string,
-    options?: ProcessingOptions,
-  ): Promise<ProcessingResult<DirectoryListing>>;
+  scanDirectory(path: string, options?: ProcessingOptions): Promise<ProcessingResult<DirectoryListing>>;
   /** Get supported file types */
   getSupportedTypes(): FileTypeInfo[];
   /** Check if file type is supported */
   isSupported(file: File | string): boolean;
+}
+
+export interface MetadataExtractionOptions {
+  /** Whether to extract EXIF data */
+  extractExif?: boolean;
+  /** Whether to perform OCR */
+  performOCR?: boolean;
+  /** Whether to analyze content */
+  analyzeContent?: boolean;
+  /** Whether to extract embedded metadata */
+  extractEmbedded?: boolean;
+  /** Whether to detect language */
+  detectLanguage?: boolean;
+  /** Maximum file size for extraction */
+  maxFileSize?: number;
+  /** Extraction timeout */
+  timeout?: number;
 }
 
 export interface ProcessingConfig {

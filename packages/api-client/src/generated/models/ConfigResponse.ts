@@ -54,28 +54,12 @@ export interface ConfigResponse {
 /**
  * Check if a given object implements the ConfigResponse interface.
  */
-export function instanceOfConfigResponse(
-  value: object,
-): value is ConfigResponse {
-  if (
-    !("enablePerformanceMonitoring" in value) ||
-    value["enablePerformanceMonitoring"] === undefined
-  )
-    return false;
-  if (!("autoCleanup" in value) || value["autoCleanup"] === undefined)
-    return false;
-  if (
-    !("defaultValidationLevel" in value) ||
-    value["defaultValidationLevel"] === undefined
-  )
-    return false;
-  if (
-    !("maxConcurrentLoads" in value) ||
-    value["maxConcurrentLoads"] === undefined
-  )
-    return false;
-  if (!("memoryThreshold" in value) || value["memoryThreshold"] === undefined)
-    return false;
+export function instanceOfConfigResponse(value: object): value is ConfigResponse {
+  if (!("enablePerformanceMonitoring" in value) || value["enablePerformanceMonitoring"] === undefined) return false;
+  if (!("autoCleanup" in value) || value["autoCleanup"] === undefined) return false;
+  if (!("defaultValidationLevel" in value) || value["defaultValidationLevel"] === undefined) return false;
+  if (!("maxConcurrentLoads" in value) || value["maxConcurrentLoads"] === undefined) return false;
+  if (!("memoryThreshold" in value) || value["memoryThreshold"] === undefined) return false;
   return true;
 }
 
@@ -83,10 +67,7 @@ export function ConfigResponseFromJSON(json: any): ConfigResponse {
   return ConfigResponseFromJSONTyped(json, false);
 }
 
-export function ConfigResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ConfigResponse {
+export function ConfigResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfigResponse {
   if (json == null) {
     return json;
   }
@@ -103,10 +84,7 @@ export function ConfigResponseToJSON(json: any): ConfigResponse {
   return ConfigResponseToJSONTyped(json, false);
 }
 
-export function ConfigResponseToJSONTyped(
-  value?: ConfigResponse | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function ConfigResponseToJSONTyped(value?: ConfigResponse | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

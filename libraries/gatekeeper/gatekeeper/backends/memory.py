@@ -7,8 +7,8 @@ testing, development, and small-scale applications.
 
 import logging
 import uuid
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from datetime import UTC, datetime
+from typing import Any
 
 from ..models.user import User, UserCreate, UserPublic, UserUpdate
 from .base import BackendError, UserAlreadyExistsError, UserBackend, UserNotFoundError
@@ -27,10 +27,10 @@ class MemoryBackend(UserBackend):
 
     def __init__(self):
         """Initialize the in-memory backend."""
-        self._users: Dict[str, User] = {}
-        self._usernames: Dict[str, str] = {}  # username -> user_id mapping
-        self._emails: Dict[str, str] = {}  # email -> user_id mapping
-        self._settings: Dict[str, Dict[str, Any]] = {}  # user_id -> settings mapping
+        self._users: dict[str, User] = {}
+        self._usernames: dict[str, str] = {}  # username -> user_id mapping
+        self._emails: dict[str, str] = {}  # email -> user_id mapping
+        self._settings: dict[str, dict[str, Any]] = {}  # user_id -> settings mapping
         self._closed = False
 
     async def create_user(self, user: UserCreate) -> User:
@@ -63,7 +63,7 @@ class MemoryBackend(UserBackend):
 
         # Generate user ID
         user_id = str(uuid.uuid4())
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
 
         # Create user object
         new_user = User(
@@ -87,7 +87,7 @@ class MemoryBackend(UserBackend):
         logger.info(f"Created user '{user.username}' with ID '{user_id}'")
         return new_user
 
-    async def get_user_by_username(self, username: str) -> Optional[User]:
+    async def get_user_by_username(self, username: str) -> User | None:
         """
         Retrieve a user by username.
 
@@ -105,7 +105,7 @@ class MemoryBackend(UserBackend):
             return self._users.get(user_id)
         return None
 
-    async def get_user_by_id(self, user_id: str) -> Optional[User]:
+    async def get_user_by_id(self, user_id: str) -> User | None:
         """
         Retrieve a user by ID.
 
@@ -120,7 +120,7 @@ class MemoryBackend(UserBackend):
 
         return self._users.get(user_id)
 
-    async def get_user_by_email(self, email: str) -> Optional[User]:
+    async def get_user_by_email(self, email: str) -> User | None:
         """
         Retrieve a user by email address.
 
@@ -198,7 +198,7 @@ class MemoryBackend(UserBackend):
         if user_update.metadata is not None:
             user.metadata.update(user_update.metadata)
 
-        user.updated_at = datetime.now(timezone.utc)
+        user.updated_at = datetime.now(UTC)
 
         logger.info(f"Updated user '{user.username}'")
         return user
@@ -231,7 +231,7 @@ class MemoryBackend(UserBackend):
         logger.info(f"Deleted user '{username}'")
         return True
 
-    async def list_users(self, skip: int = 0, limit: int = 100) -> List[UserPublic]:
+    async def list_users(self, skip: int = 0, limit: int = 100) -> list[UserPublic]:
         """
         List users in the in-memory storage.
 
@@ -247,7 +247,7 @@ class MemoryBackend(UserBackend):
 
         users = list(self._users.values())
         users.sort(
-            key=lambda u: u.created_at or datetime.min.replace(tzinfo=timezone.utc)
+            key=lambda u: u.created_at or datetime.min.replace(tzinfo=UTC)
         )
 
         paginated_users = users[skip : skip + limit]
@@ -284,7 +284,7 @@ class MemoryBackend(UserBackend):
             return False
 
         user.password_hash = new_password_hash
-        user.updated_at = datetime.now(timezone.utc)
+        user.updated_at = datetime.now(UTC)
 
         logger.info(f"Updated password for user '{username}'")
         return True
@@ -308,13 +308,13 @@ class MemoryBackend(UserBackend):
             return False
 
         user.role = new_role
-        user.updated_at = datetime.now(timezone.utc)
+        user.updated_at = datetime.now(UTC)
 
         logger.info(f"Updated role for user '{username}' to '{new_role}'")
         return True
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: Optional[str]
+        self, username: str, profile_picture_url: str | None
     ) -> bool:
         """
         Update a user's profile picture URL.
@@ -334,13 +334,13 @@ class MemoryBackend(UserBackend):
             return False
 
         user.profile_picture_url = profile_picture_url
-        user.updated_at = datetime.now(timezone.utc)
+        user.updated_at = datetime.now(UTC)
 
         logger.info(f"Updated profile picture for user '{username}'")
         return True
 
     async def update_user_metadata(
-        self, username: str, metadata: Dict[str, Any]
+        self, username: str, metadata: dict[str, Any]
     ) -> bool:
         """
         Update a user's metadata.
@@ -360,14 +360,14 @@ class MemoryBackend(UserBackend):
             return False
 
         user.metadata.update(metadata)
-        user.updated_at = datetime.now(timezone.utc)
+        user.updated_at = datetime.now(UTC)
 
         logger.info(f"Updated metadata for user '{username}'")
         return True
 
     async def search_users(
         self, query: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """
         Search for users by username or email.
 
@@ -392,7 +392,7 @@ class MemoryBackend(UserBackend):
                 matching_users.append(user)
 
         matching_users.sort(
-            key=lambda u: u.created_at or datetime.min.replace(tzinfo=timezone.utc)
+            key=lambda u: u.created_at or datetime.min.replace(tzinfo=UTC)
         )
         paginated_users = matching_users[skip : skip + limit]
 
@@ -400,7 +400,7 @@ class MemoryBackend(UserBackend):
 
     async def get_users_by_role(
         self, role: str, skip: int = 0, limit: int = 100
-    ) -> List[UserPublic]:
+    ) -> list[UserPublic]:
         """
         Get users by role.
 
@@ -417,7 +417,7 @@ class MemoryBackend(UserBackend):
 
         matching_users = [user for user in self._users.values() if user.role == role]
         matching_users.sort(
-            key=lambda u: u.created_at or datetime.min.replace(tzinfo=timezone.utc)
+            key=lambda u: u.created_at or datetime.min.replace(tzinfo=UTC)
         )
 
         paginated_users = matching_users[skip : skip + limit]
@@ -453,7 +453,7 @@ class MemoryBackend(UserBackend):
 
         return email in self._emails
 
-    async def get_user_settings(self, username: str) -> Dict[str, Any]:
+    async def get_user_settings(self, username: str) -> dict[str, Any]:
         """
         Get user settings.
 
@@ -476,7 +476,7 @@ class MemoryBackend(UserBackend):
         return self._settings.get(user.id, {})
 
     async def update_user_settings(
-        self, username: str, settings: Dict[str, Any]
+        self, username: str, settings: dict[str, Any]
     ) -> bool:
         """
         Update user settings.
@@ -539,7 +539,7 @@ class MemoryBackend(UserBackend):
         logger.info(f"Updated username from '{old_username}' to '{new_username}'")
         return True
 
-    async def get_all_users(self) -> List[UserPublic]:
+    async def get_all_users(self) -> list[UserPublic]:
         """
         Get all users in the backend.
 
@@ -587,8 +587,7 @@ class MemoryBackend(UserBackend):
         user.yapcoin_balance += amount
 
         # Ensure balance doesn't go negative
-        if user.yapcoin_balance < 0:
-            user.yapcoin_balance = 0
+        user.yapcoin_balance = max(user.yapcoin_balance, 0)
 
         logger.info(
             f"Updated YapCoin balance for user '{username}' by {amount} (new balance: {user.yapcoin_balance})"

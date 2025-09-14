@@ -30,11 +30,8 @@ export interface AspectRatioResponse {
 /**
  * Check if a given object implements the AspectRatioResponse interface.
  */
-export function instanceOfAspectRatioResponse(
-  value: object,
-): value is AspectRatioResponse {
-  if (!("aspectRatio" in value) || value["aspectRatio"] === undefined)
-    return false;
+export function instanceOfAspectRatioResponse(value: object): value is AspectRatioResponse {
+  if (!("aspectRatio" in value) || value["aspectRatio"] === undefined) return false;
   return true;
 }
 
@@ -42,10 +39,7 @@ export function AspectRatioResponseFromJSON(json: any): AspectRatioResponse {
   return AspectRatioResponseFromJSONTyped(json, false);
 }
 
-export function AspectRatioResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): AspectRatioResponse {
+export function AspectRatioResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AspectRatioResponse {
   if (json == null) {
     return json;
   }
@@ -60,7 +54,7 @@ export function AspectRatioResponseToJSON(json: any): AspectRatioResponse {
 
 export function AspectRatioResponseToJSONTyped(
   value?: AspectRatioResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

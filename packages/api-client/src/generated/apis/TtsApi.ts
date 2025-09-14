@@ -50,7 +50,7 @@ export interface GetAudioFileApiTtsApiTtsAudioFilenameGet0Request {
   filename: string;
 }
 
-export interface ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts {
+export interface ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest {
   backendName: string;
 }
 
@@ -107,7 +107,7 @@ export interface TtsApiInterface {
    * @memberof TtsApiInterface
    */
   cleanupAudioFilesApiTtsApiTtsAdminCleanupPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -115,7 +115,7 @@ export interface TtsApiInterface {
    * Cleanup Audio Files
    */
   cleanupAudioFilesApiTtsApiTtsAdminCleanupPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -128,7 +128,7 @@ export interface TtsApiInterface {
    */
   getAudioFileApiTtsApiTtsAudioFilenameGetRaw(
     requestParameters: GetAudioFileApiTtsApiTtsAudioFilenameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -137,7 +137,7 @@ export interface TtsApiInterface {
    */
   getAudioFileApiTtsApiTtsAudioFilenameGet(
     requestParameters: GetAudioFileApiTtsApiTtsAudioFilenameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -150,7 +150,7 @@ export interface TtsApiInterface {
    */
   getAudioFileApiTtsApiTtsAudioFilenameGet_1Raw(
     requestParameters: GetAudioFileApiTtsApiTtsAudioFilenameGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -159,7 +159,7 @@ export interface TtsApiInterface {
    */
   getAudioFileApiTtsApiTtsAudioFilenameGet_1(
     requestParameters: GetAudioFileApiTtsApiTtsAudioFilenameGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -170,7 +170,7 @@ export interface TtsApiInterface {
    * @memberof TtsApiInterface
    */
   getAvailableBackendsApiTtsApiTtsAdminBackendsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -178,7 +178,7 @@ export interface TtsApiInterface {
    * Get Available Backends
    */
   getAvailableBackendsApiTtsApiTtsAdminBackendsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -189,7 +189,7 @@ export interface TtsApiInterface {
    * @memberof TtsApiInterface
    */
   getTtsConfigApiTtsApiTtsConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSConfigResponse>>;
 
   /**
@@ -197,7 +197,7 @@ export interface TtsApiInterface {
    * Get Tts Config
    */
   getTtsConfigApiTtsApiTtsConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSConfigResponse>;
 
   /**
@@ -208,7 +208,7 @@ export interface TtsApiInterface {
    * @memberof TtsApiInterface
    */
   getTtsConfigApiTtsApiTtsConfigGet_2Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSConfigResponse>>;
 
   /**
@@ -216,7 +216,7 @@ export interface TtsApiInterface {
    * Get Tts Config
    */
   getTtsConfigApiTtsApiTtsConfigGet_2(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSConfigResponse>;
 
   /**
@@ -227,7 +227,7 @@ export interface TtsApiInterface {
    * @memberof TtsApiInterface
    */
   getTtsStatsApiTtsApiTtsAdminStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSStatsResponse>>;
 
   /**
@@ -235,7 +235,7 @@ export interface TtsApiInterface {
    * Get Tts Stats
    */
   getTtsStatsApiTtsApiTtsAdminStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSStatsResponse>;
 
   /**
@@ -246,16 +246,14 @@ export interface TtsApiInterface {
    * @memberof TtsApiInterface
    */
   healthCheckApiTtsApiTtsAdminHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Perform TTS service health check.
    * Health Check
    */
-  healthCheckApiTtsApiTtsAdminHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  healthCheckApiTtsApiTtsAdminHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Reload a specific TTS backend.
@@ -266,8 +264,8 @@ export interface TtsApiInterface {
    * @memberof TtsApiInterface
    */
   reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
-    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -275,8 +273,8 @@ export interface TtsApiInterface {
    * Reload Backend
    */
   reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost(
-    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -289,7 +287,7 @@ export interface TtsApiInterface {
    */
   synthesizeBatchApiTtsApiTtsSynthesizeBatchPostRaw(
     requestParameters: SynthesizeBatchApiTtsApiTtsSynthesizeBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSBatchResponse>>;
 
   /**
@@ -298,7 +296,7 @@ export interface TtsApiInterface {
    */
   synthesizeBatchApiTtsApiTtsSynthesizeBatchPost(
     requestParameters: SynthesizeBatchApiTtsApiTtsSynthesizeBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSBatchResponse>;
 
   /**
@@ -311,7 +309,7 @@ export interface TtsApiInterface {
    */
   synthesizeBatchApiTtsApiTtsSynthesizeBatchPost_3Raw(
     requestParameters: SynthesizeBatchApiTtsApiTtsSynthesizeBatchPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSBatchResponse>>;
 
   /**
@@ -320,7 +318,7 @@ export interface TtsApiInterface {
    */
   synthesizeBatchApiTtsApiTtsSynthesizeBatchPost_3(
     requestParameters: SynthesizeBatchApiTtsApiTtsSynthesizeBatchPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSBatchResponse>;
 
   /**
@@ -333,7 +331,7 @@ export interface TtsApiInterface {
    */
   synthesizeTextApiTtsApiTtsSynthesizePostRaw(
     requestParameters: SynthesizeTextApiTtsApiTtsSynthesizePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSSynthesisResponse>>;
 
   /**
@@ -342,7 +340,7 @@ export interface TtsApiInterface {
    */
   synthesizeTextApiTtsApiTtsSynthesizePost(
     requestParameters: SynthesizeTextApiTtsApiTtsSynthesizePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSSynthesisResponse>;
 
   /**
@@ -355,7 +353,7 @@ export interface TtsApiInterface {
    */
   synthesizeTextApiTtsApiTtsSynthesizePost_4Raw(
     requestParameters: SynthesizeTextApiTtsApiTtsSynthesizePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSSynthesisResponse>>;
 
   /**
@@ -364,7 +362,7 @@ export interface TtsApiInterface {
    */
   synthesizeTextApiTtsApiTtsSynthesizePost_4(
     requestParameters: SynthesizeTextApiTtsApiTtsSynthesizePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSSynthesisResponse>;
 
   /**
@@ -380,7 +378,7 @@ export interface TtsApiInterface {
    */
   synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePostRaw(
     requestParameters: SynthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -389,7 +387,7 @@ export interface TtsApiInterface {
    */
   synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost(
     requestParameters: SynthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -405,7 +403,7 @@ export interface TtsApiInterface {
    */
   synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5Raw(
     requestParameters: SynthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -414,7 +412,7 @@ export interface TtsApiInterface {
    */
   synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5(
     requestParameters: SynthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -427,7 +425,7 @@ export interface TtsApiInterface {
    */
   updateTtsConfigApiTtsApiTtsConfigPostRaw(
     requestParameters: UpdateTtsConfigApiTtsApiTtsConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSConfigResponse>>;
 
   /**
@@ -436,7 +434,7 @@ export interface TtsApiInterface {
    */
   updateTtsConfigApiTtsApiTtsConfigPost(
     requestParameters: UpdateTtsConfigApiTtsApiTtsConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSConfigResponse>;
 
   /**
@@ -449,7 +447,7 @@ export interface TtsApiInterface {
    */
   updateTtsConfigApiTtsApiTtsConfigPost_6Raw(
     requestParameters: UpdateTtsConfigApiTtsApiTtsConfigPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSConfigResponse>>;
 
   /**
@@ -458,7 +456,7 @@ export interface TtsApiInterface {
    */
   updateTtsConfigApiTtsApiTtsConfigPost_6(
     requestParameters: UpdateTtsConfigApiTtsApiTtsConfigPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSConfigResponse>;
 }
 
@@ -471,7 +469,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Cleanup Audio Files
    */
   async cleanupAudioFilesApiTtsApiTtsAdminCleanupPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -486,7 +484,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -501,12 +499,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Cleanup Audio Files
    */
   async cleanupAudioFilesApiTtsApiTtsAdminCleanupPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.cleanupAudioFilesApiTtsApiTtsAdminCleanupPostRaw(
-        initOverrides,
-      );
+    const response = await this.cleanupAudioFilesApiTtsApiTtsAdminCleanupPostRaw(initOverrides);
     return await response.value();
   }
 
@@ -516,12 +511,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async getAudioFileApiTtsApiTtsAudioFilenameGetRaw(
     requestParameters: GetAudioFileApiTtsApiTtsAudioFilenameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["filename"] == null) {
       throw new runtime.RequiredError(
         "filename",
-        'Required parameter "filename" was null or undefined when calling getAudioFileApiTtsApiTtsAudioFilenameGet().',
+        'Required parameter "filename" was null or undefined when calling getAudioFileApiTtsApiTtsAudioFilenameGet().'
       );
     }
 
@@ -530,10 +525,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/tts/api/tts/audio/{filename}`;
-    urlPath = urlPath.replace(
-      `{${"filename"}}`,
-      encodeURIComponent(String(requestParameters["filename"])),
-    );
+    urlPath = urlPath.replace(`{${"filename"}}`, encodeURIComponent(String(requestParameters["filename"])));
 
     const response = await this.request(
       {
@@ -542,7 +534,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -558,12 +550,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async getAudioFileApiTtsApiTtsAudioFilenameGet(
     requestParameters: GetAudioFileApiTtsApiTtsAudioFilenameGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.getAudioFileApiTtsApiTtsAudioFilenameGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.getAudioFileApiTtsApiTtsAudioFilenameGetRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -573,12 +562,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async getAudioFileApiTtsApiTtsAudioFilenameGet_1Raw(
     requestParameters: GetAudioFileApiTtsApiTtsAudioFilenameGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["filename"] == null) {
       throw new runtime.RequiredError(
         "filename",
-        'Required parameter "filename" was null or undefined when calling getAudioFileApiTtsApiTtsAudioFilenameGet_1().',
+        'Required parameter "filename" was null or undefined when calling getAudioFileApiTtsApiTtsAudioFilenameGet_1().'
       );
     }
 
@@ -587,10 +576,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/tts/api/tts/audio/{filename}`;
-    urlPath = urlPath.replace(
-      `{${"filename"}}`,
-      encodeURIComponent(String(requestParameters["filename"])),
-    );
+    urlPath = urlPath.replace(`{${"filename"}}`, encodeURIComponent(String(requestParameters["filename"])));
 
     const response = await this.request(
       {
@@ -599,7 +585,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -615,12 +601,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async getAudioFileApiTtsApiTtsAudioFilenameGet_1(
     requestParameters: GetAudioFileApiTtsApiTtsAudioFilenameGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.getAudioFileApiTtsApiTtsAudioFilenameGet_1Raw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.getAudioFileApiTtsApiTtsAudioFilenameGet_1Raw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -629,7 +612,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Get Available Backends
    */
   async getAvailableBackendsApiTtsApiTtsAdminBackendsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -644,7 +627,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -659,12 +642,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Get Available Backends
    */
   async getAvailableBackendsApiTtsApiTtsAdminBackendsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getAvailableBackendsApiTtsApiTtsAdminBackendsGetRaw(
-        initOverrides,
-      );
+    const response = await this.getAvailableBackendsApiTtsApiTtsAdminBackendsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -673,7 +653,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Get Tts Config
    */
   async getTtsConfigApiTtsApiTtsConfigGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSConfigResponse>> {
     const queryParameters: any = {};
 
@@ -688,12 +668,10 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -701,10 +679,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Get Tts Config
    */
   async getTtsConfigApiTtsApiTtsConfigGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSConfigResponse> {
-    const response =
-      await this.getTtsConfigApiTtsApiTtsConfigGetRaw(initOverrides);
+    const response = await this.getTtsConfigApiTtsApiTtsConfigGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -713,7 +690,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Get Tts Config
    */
   async getTtsConfigApiTtsApiTtsConfigGet_2Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSConfigResponse>> {
     const queryParameters: any = {};
 
@@ -728,12 +705,10 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -741,10 +716,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Get Tts Config
    */
   async getTtsConfigApiTtsApiTtsConfigGet_2(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSConfigResponse> {
-    const response =
-      await this.getTtsConfigApiTtsApiTtsConfigGet_2Raw(initOverrides);
+    const response = await this.getTtsConfigApiTtsApiTtsConfigGet_2Raw(initOverrides);
     return await response.value();
   }
 
@@ -753,7 +727,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Get Tts Stats
    */
   async getTtsStatsApiTtsApiTtsAdminStatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSStatsResponse>> {
     const queryParameters: any = {};
 
@@ -768,12 +742,10 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSStatsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSStatsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -781,10 +753,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Get Tts Stats
    */
   async getTtsStatsApiTtsApiTtsAdminStatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSStatsResponse> {
-    const response =
-      await this.getTtsStatsApiTtsApiTtsAdminStatsGetRaw(initOverrides);
+    const response = await this.getTtsStatsApiTtsApiTtsAdminStatsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -793,7 +764,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Health Check
    */
   async healthCheckApiTtsApiTtsAdminHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -808,7 +779,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -823,10 +794,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Health Check
    */
   async healthCheckApiTtsApiTtsAdminHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.healthCheckApiTtsApiTtsAdminHealthGetRaw(initOverrides);
+    const response = await this.healthCheckApiTtsApiTtsAdminHealthGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -835,13 +805,13 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Reload Backend
    */
   async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
-    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["backendName"] == null) {
       throw new runtime.RequiredError(
         "backendName",
-        'Required parameter "backendName" was null or undefined when calling reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost().',
+        'Required parameter "backendName" was null or undefined when calling reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost().'
       );
     }
 
@@ -850,10 +820,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/tts/api/tts/admin/backends/{backend_name}/reload`;
-    urlPath = urlPath.replace(
-      `{${"backend_name"}}`,
-      encodeURIComponent(String(requestParameters["backendName"])),
-    );
+    urlPath = urlPath.replace(`{${"backend_name"}}`, encodeURIComponent(String(requestParameters["backendName"])));
 
     const response = await this.request(
       {
@@ -862,7 +829,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -877,14 +844,13 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    * Reload Backend
    */
   async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost(
-    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequestTts,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -894,12 +860,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeBatchApiTtsApiTtsSynthesizeBatchPostRaw(
     requestParameters: SynthesizeBatchApiTtsApiTtsSynthesizeBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSBatchResponse>> {
     if (requestParameters["tTSBatchRequest"] == null) {
       throw new runtime.RequiredError(
         "tTSBatchRequest",
-        'Required parameter "tTSBatchRequest" was null or undefined when calling synthesizeBatchApiTtsApiTtsSynthesizeBatchPost().',
+        'Required parameter "tTSBatchRequest" was null or undefined when calling synthesizeBatchApiTtsApiTtsSynthesizeBatchPost().'
       );
     }
 
@@ -919,12 +885,10 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         query: queryParameters,
         body: TTSBatchRequestToJSON(requestParameters["tTSBatchRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSBatchResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSBatchResponseFromJSON(jsonValue));
   }
 
   /**
@@ -933,13 +897,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeBatchApiTtsApiTtsSynthesizeBatchPost(
     requestParameters: SynthesizeBatchApiTtsApiTtsSynthesizeBatchPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSBatchResponse> {
-    const response =
-      await this.synthesizeBatchApiTtsApiTtsSynthesizeBatchPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.synthesizeBatchApiTtsApiTtsSynthesizeBatchPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -949,12 +909,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeBatchApiTtsApiTtsSynthesizeBatchPost_3Raw(
     requestParameters: SynthesizeBatchApiTtsApiTtsSynthesizeBatchPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSBatchResponse>> {
     if (requestParameters["tTSBatchRequest"] == null) {
       throw new runtime.RequiredError(
         "tTSBatchRequest",
-        'Required parameter "tTSBatchRequest" was null or undefined when calling synthesizeBatchApiTtsApiTtsSynthesizeBatchPost_3().',
+        'Required parameter "tTSBatchRequest" was null or undefined when calling synthesizeBatchApiTtsApiTtsSynthesizeBatchPost_3().'
       );
     }
 
@@ -974,12 +934,10 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         query: queryParameters,
         body: TTSBatchRequestToJSON(requestParameters["tTSBatchRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSBatchResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSBatchResponseFromJSON(jsonValue));
   }
 
   /**
@@ -988,13 +946,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeBatchApiTtsApiTtsSynthesizeBatchPost_3(
     requestParameters: SynthesizeBatchApiTtsApiTtsSynthesizeBatchPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSBatchResponse> {
-    const response =
-      await this.synthesizeBatchApiTtsApiTtsSynthesizeBatchPost_3Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.synthesizeBatchApiTtsApiTtsSynthesizeBatchPost_3Raw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1004,12 +958,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeTextApiTtsApiTtsSynthesizePostRaw(
     requestParameters: SynthesizeTextApiTtsApiTtsSynthesizePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSSynthesisResponse>> {
     if (requestParameters["tTSSynthesisRequest"] == null) {
       throw new runtime.RequiredError(
         "tTSSynthesisRequest",
-        'Required parameter "tTSSynthesisRequest" was null or undefined when calling synthesizeTextApiTtsApiTtsSynthesizePost().',
+        'Required parameter "tTSSynthesisRequest" was null or undefined when calling synthesizeTextApiTtsApiTtsSynthesizePost().'
       );
     }
 
@@ -1027,16 +981,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: TTSSynthesisRequestToJSON(
-          requestParameters["tTSSynthesisRequest"],
-        ),
+        body: TTSSynthesisRequestToJSON(requestParameters["tTSSynthesisRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSSynthesisResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSSynthesisResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1045,12 +995,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeTextApiTtsApiTtsSynthesizePost(
     requestParameters: SynthesizeTextApiTtsApiTtsSynthesizePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSSynthesisResponse> {
-    const response = await this.synthesizeTextApiTtsApiTtsSynthesizePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.synthesizeTextApiTtsApiTtsSynthesizePostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1060,12 +1007,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeTextApiTtsApiTtsSynthesizePost_4Raw(
     requestParameters: SynthesizeTextApiTtsApiTtsSynthesizePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSSynthesisResponse>> {
     if (requestParameters["tTSSynthesisRequest"] == null) {
       throw new runtime.RequiredError(
         "tTSSynthesisRequest",
-        'Required parameter "tTSSynthesisRequest" was null or undefined when calling synthesizeTextApiTtsApiTtsSynthesizePost_4().',
+        'Required parameter "tTSSynthesisRequest" was null or undefined when calling synthesizeTextApiTtsApiTtsSynthesizePost_4().'
       );
     }
 
@@ -1083,16 +1030,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: TTSSynthesisRequestToJSON(
-          requestParameters["tTSSynthesisRequest"],
-        ),
+        body: TTSSynthesisRequestToJSON(requestParameters["tTSSynthesisRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSSynthesisResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSSynthesisResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1101,12 +1044,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeTextApiTtsApiTtsSynthesizePost_4(
     requestParameters: SynthesizeTextApiTtsApiTtsSynthesizePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSSynthesisResponse> {
-    const response = await this.synthesizeTextApiTtsApiTtsSynthesizePost_4Raw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.synthesizeTextApiTtsApiTtsSynthesizePost_4Raw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1116,19 +1056,19 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePostRaw(
     requestParameters: SynthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["text"] == null) {
       throw new runtime.RequiredError(
         "text",
-        'Required parameter "text" was null or undefined when calling synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost().',
+        'Required parameter "text" was null or undefined when calling synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost().'
       );
     }
 
     if (requestParameters["referenceAudio"] == null) {
       throw new runtime.RequiredError(
         "referenceAudio",
-        'Required parameter "referenceAudio" was null or undefined when calling synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost().',
+        'Required parameter "referenceAudio" was null or undefined when calling synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost().'
       );
     }
 
@@ -1136,9 +1076,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    const consumes: runtime.Consume[] = [
-      { contentType: "multipart/form-data" },
-    ];
+    const consumes: runtime.Consume[] = [{ contentType: "multipart/form-data" }];
     // @ts-ignore: canConsumeForm may be unused
     const canConsumeForm = runtime.canConsumeForm(consumes);
 
@@ -1157,10 +1095,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
     }
 
     if (requestParameters["referenceAudio"] != null) {
-      formParams.append(
-        "reference_audio",
-        requestParameters["referenceAudio"] as any,
-      );
+      formParams.append("reference_audio", requestParameters["referenceAudio"] as any);
     }
 
     if (requestParameters["speed"] != null) {
@@ -1181,7 +1116,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         query: queryParameters,
         body: formParams,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1197,13 +1132,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost(
     requestParameters: SynthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1213,19 +1144,19 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5Raw(
     requestParameters: SynthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["text"] == null) {
       throw new runtime.RequiredError(
         "text",
-        'Required parameter "text" was null or undefined when calling synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5().',
+        'Required parameter "text" was null or undefined when calling synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5().'
       );
     }
 
     if (requestParameters["referenceAudio"] == null) {
       throw new runtime.RequiredError(
         "referenceAudio",
-        'Required parameter "referenceAudio" was null or undefined when calling synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5().',
+        'Required parameter "referenceAudio" was null or undefined when calling synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5().'
       );
     }
 
@@ -1233,9 +1164,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    const consumes: runtime.Consume[] = [
-      { contentType: "multipart/form-data" },
-    ];
+    const consumes: runtime.Consume[] = [{ contentType: "multipart/form-data" }];
     // @ts-ignore: canConsumeForm may be unused
     const canConsumeForm = runtime.canConsumeForm(consumes);
 
@@ -1254,10 +1183,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
     }
 
     if (requestParameters["referenceAudio"] != null) {
-      formParams.append(
-        "reference_audio",
-        requestParameters["referenceAudio"] as any,
-      );
+      formParams.append("reference_audio", requestParameters["referenceAudio"] as any);
     }
 
     if (requestParameters["speed"] != null) {
@@ -1278,7 +1204,7 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         query: queryParameters,
         body: formParams,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1294,13 +1220,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5(
     requestParameters: SynthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.synthesizeWithVoiceCloneApiTtsApiTtsVoiceClonePost_5Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1310,12 +1235,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async updateTtsConfigApiTtsApiTtsConfigPostRaw(
     requestParameters: UpdateTtsConfigApiTtsApiTtsConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSConfigResponse>> {
     if (requestParameters["tTSConfigRequest"] == null) {
       throw new runtime.RequiredError(
         "tTSConfigRequest",
-        'Required parameter "tTSConfigRequest" was null or undefined when calling updateTtsConfigApiTtsApiTtsConfigPost().',
+        'Required parameter "tTSConfigRequest" was null or undefined when calling updateTtsConfigApiTtsApiTtsConfigPost().'
       );
     }
 
@@ -1335,12 +1260,10 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         query: queryParameters,
         body: TTSConfigRequestToJSON(requestParameters["tTSConfigRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1349,12 +1272,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async updateTtsConfigApiTtsApiTtsConfigPost(
     requestParameters: UpdateTtsConfigApiTtsApiTtsConfigPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSConfigResponse> {
-    const response = await this.updateTtsConfigApiTtsApiTtsConfigPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.updateTtsConfigApiTtsApiTtsConfigPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1364,12 +1284,12 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async updateTtsConfigApiTtsApiTtsConfigPost_6Raw(
     requestParameters: UpdateTtsConfigApiTtsApiTtsConfigPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<TTSConfigResponse>> {
     if (requestParameters["tTSConfigRequest"] == null) {
       throw new runtime.RequiredError(
         "tTSConfigRequest",
-        'Required parameter "tTSConfigRequest" was null or undefined when calling updateTtsConfigApiTtsApiTtsConfigPost_6().',
+        'Required parameter "tTSConfigRequest" was null or undefined when calling updateTtsConfigApiTtsApiTtsConfigPost_6().'
       );
     }
 
@@ -1389,12 +1309,10 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
         query: queryParameters,
         body: TTSConfigRequestToJSON(requestParameters["tTSConfigRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      TTSConfigResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => TTSConfigResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1403,12 +1321,9 @@ export class TtsApi extends runtime.BaseAPI implements TtsApiInterface {
    */
   async updateTtsConfigApiTtsApiTtsConfigPost_6(
     requestParameters: UpdateTtsConfigApiTtsApiTtsConfigPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<TTSConfigResponse> {
-    const response = await this.updateTtsConfigApiTtsApiTtsConfigPost_6Raw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.updateTtsConfigApiTtsApiTtsConfigPost_6Raw(requestParameters, initOverrides);
     return await response.value();
   }
 }

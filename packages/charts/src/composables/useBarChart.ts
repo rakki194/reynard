@@ -3,17 +3,16 @@
  * Handles bar chart data processing and configuration
  */
 
-import { createSignal, createEffect } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { BarChartProps } from "../components/BarChart";
-import { useChartRegistration } from "./useChartRegistration";
 import { createBarChartOptions } from "../utils/barChartConfig";
-import { processBarChartData, BarChartData } from "../utils/barChartData";
+import { BarChartData, processBarChartData } from "../utils/barChartData";
+import { useChartRegistration } from "./useChartRegistration";
 
 export const useBarChart = (props: BarChartProps) => {
   const { isRegistered } = useChartRegistration();
   const [chartData, setChartData] = createSignal<BarChartData | null>(null);
-  const [chartOptions, setChartOptions] =
-    createSignal<ReturnType<typeof createBarChartOptions>>();
+  const [chartOptions, setChartOptions] = createSignal<ReturnType<typeof createBarChartOptions>>();
 
   createEffect(() => {
     const processedData = processBarChartData({
@@ -26,12 +25,12 @@ export const useBarChart = (props: BarChartProps) => {
   createEffect(() => {
     const options = createBarChartOptions({
       title: props.title,
-      showGrid: props.showGrid,
-      showLegend: props.showLegend,
-      responsive: props.responsive,
-      maintainAspectRatio: props.maintainAspectRatio,
-      horizontal: props.horizontal,
-      stacked: props.stacked,
+      showGrid: props.showGrid ?? true,
+      showLegend: props.showLegend ?? true,
+      responsive: props.responsive ?? true,
+      maintainAspectRatio: props.maintainAspectRatio ?? true,
+      horizontal: props.horizontal ?? false,
+      stacked: props.stacked ?? false,
       xAxis: props.xAxis,
       yAxis: props.yAxis,
       animation: props.animation,

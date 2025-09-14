@@ -130,7 +130,7 @@ export interface ImageUtilsApiInterface {
    */
   calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPostRaw(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ResizeDimensionsResponse>>;
 
   /**
@@ -139,7 +139,7 @@ export interface ImageUtilsApiInterface {
    */
   calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ResizeDimensionsResponse>;
 
   /**
@@ -152,7 +152,7 @@ export interface ImageUtilsApiInterface {
    */
   calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_1Raw(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ResizeDimensionsResponse>>;
 
   /**
@@ -161,7 +161,7 @@ export interface ImageUtilsApiInterface {
    */
   calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_1(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ResizeDimensionsResponse>;
 
   /**
@@ -174,7 +174,7 @@ export interface ImageUtilsApiInterface {
    */
   calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_2Raw(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ResizeDimensionsResponse>>;
 
   /**
@@ -183,7 +183,7 @@ export interface ImageUtilsApiInterface {
    */
   calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_2(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ResizeDimensionsResponse>;
 
   /**
@@ -196,7 +196,7 @@ export interface ImageUtilsApiInterface {
    */
   getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPostRaw(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<AspectRatioResponse>>;
 
   /**
@@ -205,7 +205,7 @@ export interface ImageUtilsApiInterface {
    */
   getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<AspectRatioResponse>;
 
   /**
@@ -218,7 +218,7 @@ export interface ImageUtilsApiInterface {
    */
   getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_3Raw(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<AspectRatioResponse>>;
 
   /**
@@ -227,7 +227,7 @@ export interface ImageUtilsApiInterface {
    */
   getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_3(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<AspectRatioResponse>;
 
   /**
@@ -240,7 +240,7 @@ export interface ImageUtilsApiInterface {
    */
   getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_4Raw(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<AspectRatioResponse>>;
 
   /**
@@ -249,7 +249,7 @@ export interface ImageUtilsApiInterface {
    */
   getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_4(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<AspectRatioResponse>;
 
   /**
@@ -262,7 +262,7 @@ export interface ImageUtilsApiInterface {
    */
   getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGetRaw(
     requestParameters: GetDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -271,7 +271,7 @@ export interface ImageUtilsApiInterface {
    */
   getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet(
     requestParameters: GetDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -284,7 +284,7 @@ export interface ImageUtilsApiInterface {
    */
   getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet_5Raw(
     requestParameters: GetDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -293,7 +293,7 @@ export interface ImageUtilsApiInterface {
    */
   getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet_5(
     requestParameters: GetDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -306,7 +306,7 @@ export interface ImageUtilsApiInterface {
    */
   getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGetRaw(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageFormatResponse>>;
 
   /**
@@ -315,7 +315,7 @@ export interface ImageUtilsApiInterface {
    */
   getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageFormatResponse>;
 
   /**
@@ -328,7 +328,7 @@ export interface ImageUtilsApiInterface {
    */
   getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_6Raw(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageFormatResponse>>;
 
   /**
@@ -337,7 +337,7 @@ export interface ImageUtilsApiInterface {
    */
   getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_6(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageFormatResponse>;
 
   /**
@@ -350,7 +350,7 @@ export interface ImageUtilsApiInterface {
    */
   getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_7Raw(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageFormatResponse>>;
 
   /**
@@ -359,7 +359,7 @@ export interface ImageUtilsApiInterface {
    */
   getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_7(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageFormatResponse>;
 
   /**
@@ -370,7 +370,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageProcessingServiceInfoResponse>>;
 
   /**
@@ -378,7 +378,7 @@ export interface ImageUtilsApiInterface {
    * Get Service Info
    */
   getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageProcessingServiceInfoResponse>;
 
   /**
@@ -389,7 +389,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_8Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageProcessingServiceInfoResponse>>;
 
   /**
@@ -397,7 +397,7 @@ export interface ImageUtilsApiInterface {
    * Get Service Info
    */
   getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_8(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageProcessingServiceInfoResponse>;
 
   /**
@@ -408,7 +408,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_9Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageProcessingServiceInfoResponse>>;
 
   /**
@@ -416,7 +416,7 @@ export interface ImageUtilsApiInterface {
    * Get Service Info
    */
   getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_9(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageProcessingServiceInfoResponse>;
 
   /**
@@ -427,7 +427,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<string | null>>>;
 
   /**
@@ -435,7 +435,7 @@ export interface ImageUtilsApiInterface {
    * Get Supported Formats
    */
   getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<string | null>>;
 
   /**
@@ -446,7 +446,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_10Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<string | null>>>;
 
   /**
@@ -454,7 +454,7 @@ export interface ImageUtilsApiInterface {
    * Get Supported Formats
    */
   getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_10(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<string | null>>;
 
   /**
@@ -465,7 +465,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_11Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<string | null>>>;
 
   /**
@@ -473,7 +473,7 @@ export interface ImageUtilsApiInterface {
    * Get Supported Formats
    */
   getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_11(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<string | null>>;
 
   /**
@@ -484,7 +484,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   healthCheckApiImageUtilsApiImageUtilsHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -492,7 +492,7 @@ export interface ImageUtilsApiInterface {
    * Health Check
    */
   healthCheckApiImageUtilsApiImageUtilsHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -503,7 +503,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   healthCheckApiImageUtilsApiImageUtilsHealthGet_12Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -511,7 +511,7 @@ export interface ImageUtilsApiInterface {
    * Health Check
    */
   healthCheckApiImageUtilsApiImageUtilsHealthGet_12(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -522,7 +522,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -530,7 +530,7 @@ export interface ImageUtilsApiInterface {
    * Is Avif Supported
    */
   isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -541,7 +541,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGet_13Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -549,7 +549,7 @@ export interface ImageUtilsApiInterface {
    * Is Avif Supported
    */
   isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGet_13(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -560,7 +560,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -568,7 +568,7 @@ export interface ImageUtilsApiInterface {
    * Is Jxl Supported
    */
   isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -579,7 +579,7 @@ export interface ImageUtilsApiInterface {
    * @memberof ImageUtilsApiInterface
    */
   isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGet_14Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -587,7 +587,7 @@ export interface ImageUtilsApiInterface {
    * Is Jxl Supported
    */
   isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGet_14(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -600,7 +600,7 @@ export interface ImageUtilsApiInterface {
    */
   validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPostRaw(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>>;
 
   /**
@@ -609,7 +609,7 @@ export interface ImageUtilsApiInterface {
    */
   validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse>;
 
   /**
@@ -622,7 +622,7 @@ export interface ImageUtilsApiInterface {
    */
   validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_15Raw(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>>;
 
   /**
@@ -631,7 +631,7 @@ export interface ImageUtilsApiInterface {
    */
   validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_15(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse>;
 
   /**
@@ -644,7 +644,7 @@ export interface ImageUtilsApiInterface {
    */
   validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_16Raw(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>>;
 
   /**
@@ -653,7 +653,7 @@ export interface ImageUtilsApiInterface {
    */
   validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_16(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse>;
 
   /**
@@ -666,7 +666,7 @@ export interface ImageUtilsApiInterface {
    */
   validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPostRaw(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>>;
 
   /**
@@ -675,7 +675,7 @@ export interface ImageUtilsApiInterface {
    */
   validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse>;
 
   /**
@@ -688,7 +688,7 @@ export interface ImageUtilsApiInterface {
    */
   validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_17Raw(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>>;
 
   /**
@@ -697,7 +697,7 @@ export interface ImageUtilsApiInterface {
    */
   validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_17(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse>;
 
   /**
@@ -710,7 +710,7 @@ export interface ImageUtilsApiInterface {
    */
   validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_18Raw(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>>;
 
   /**
@@ -719,29 +719,26 @@ export interface ImageUtilsApiInterface {
    */
   validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_18(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse>;
 }
 
 /**
  *
  */
-export class ImageUtilsApi
-  extends runtime.BaseAPI
-  implements ImageUtilsApiInterface
-{
+export class ImageUtilsApi extends runtime.BaseAPI implements ImageUtilsApiInterface {
   /**
    * Calculate resize dimensions maintaining aspect ratio.
    * Calculate Resize Dimensions
    */
   async calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPostRaw(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ResizeDimensionsResponse>> {
     if (requestParameters["resizeDimensionsRequest"] == null) {
       throw new runtime.RequiredError(
         "resizeDimensionsRequest",
-        'Required parameter "resizeDimensionsRequest" was null or undefined when calling calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost().',
+        'Required parameter "resizeDimensionsRequest" was null or undefined when calling calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost().'
       );
     }
 
@@ -759,16 +756,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ResizeDimensionsRequestToJSON(
-          requestParameters["resizeDimensionsRequest"],
-        ),
+        body: ResizeDimensionsRequestToJSON(requestParameters["resizeDimensionsRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ResizeDimensionsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ResizeDimensionsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -777,13 +770,12 @@ export class ImageUtilsApi
    */
   async calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ResizeDimensionsResponse> {
-    const response =
-      await this.calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPostRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -793,12 +785,12 @@ export class ImageUtilsApi
    */
   async calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_1Raw(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ResizeDimensionsResponse>> {
     if (requestParameters["resizeDimensionsRequest"] == null) {
       throw new runtime.RequiredError(
         "resizeDimensionsRequest",
-        'Required parameter "resizeDimensionsRequest" was null or undefined when calling calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_1().',
+        'Required parameter "resizeDimensionsRequest" was null or undefined when calling calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_1().'
       );
     }
 
@@ -816,16 +808,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ResizeDimensionsRequestToJSON(
-          requestParameters["resizeDimensionsRequest"],
-        ),
+        body: ResizeDimensionsRequestToJSON(requestParameters["resizeDimensionsRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ResizeDimensionsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ResizeDimensionsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -834,12 +822,12 @@ export class ImageUtilsApi
    */
   async calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_1(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ResizeDimensionsResponse> {
     const response =
       await this.calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_1Raw(
         requestParameters,
-        initOverrides,
+        initOverrides
       );
     return await response.value();
   }
@@ -850,12 +838,12 @@ export class ImageUtilsApi
    */
   async calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_2Raw(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ResizeDimensionsResponse>> {
     if (requestParameters["resizeDimensionsRequest"] == null) {
       throw new runtime.RequiredError(
         "resizeDimensionsRequest",
-        'Required parameter "resizeDimensionsRequest" was null or undefined when calling calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_2().',
+        'Required parameter "resizeDimensionsRequest" was null or undefined when calling calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_2().'
       );
     }
 
@@ -873,16 +861,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ResizeDimensionsRequestToJSON(
-          requestParameters["resizeDimensionsRequest"],
-        ),
+        body: ResizeDimensionsRequestToJSON(requestParameters["resizeDimensionsRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ResizeDimensionsResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ResizeDimensionsResponseFromJSON(jsonValue));
   }
 
   /**
@@ -891,12 +875,12 @@ export class ImageUtilsApi
    */
   async calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_2(
     requestParameters: CalculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ResizeDimensionsResponse> {
     const response =
       await this.calculateResizeDimensionsApiImageUtilsApiImageUtilsApiImageUtilsResizeDimensionsPost_2Raw(
         requestParameters,
-        initOverrides,
+        initOverrides
       );
     return await response.value();
   }
@@ -907,12 +891,12 @@ export class ImageUtilsApi
    */
   async getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPostRaw(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<AspectRatioResponse>> {
     if (requestParameters["imageDimensionsRequest"] == null) {
       throw new runtime.RequiredError(
         "imageDimensionsRequest",
-        'Required parameter "imageDimensionsRequest" was null or undefined when calling getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost().',
+        'Required parameter "imageDimensionsRequest" was null or undefined when calling getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost().'
       );
     }
 
@@ -930,16 +914,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ImageDimensionsRequestToJSON(
-          requestParameters["imageDimensionsRequest"],
-        ),
+        body: ImageDimensionsRequestToJSON(requestParameters["imageDimensionsRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AspectRatioResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => AspectRatioResponseFromJSON(jsonValue));
   }
 
   /**
@@ -948,13 +928,12 @@ export class ImageUtilsApi
    */
   async getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<AspectRatioResponse> {
-    const response =
-      await this.getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPostRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -964,12 +943,12 @@ export class ImageUtilsApi
    */
   async getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_3Raw(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<AspectRatioResponse>> {
     if (requestParameters["imageDimensionsRequest"] == null) {
       throw new runtime.RequiredError(
         "imageDimensionsRequest",
-        'Required parameter "imageDimensionsRequest" was null or undefined when calling getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_3().',
+        'Required parameter "imageDimensionsRequest" was null or undefined when calling getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_3().'
       );
     }
 
@@ -987,16 +966,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ImageDimensionsRequestToJSON(
-          requestParameters["imageDimensionsRequest"],
-        ),
+        body: ImageDimensionsRequestToJSON(requestParameters["imageDimensionsRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AspectRatioResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => AspectRatioResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1005,13 +980,12 @@ export class ImageUtilsApi
    */
   async getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_3(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<AspectRatioResponse> {
-    const response =
-      await this.getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_3Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_3Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1021,12 +995,12 @@ export class ImageUtilsApi
    */
   async getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_4Raw(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<AspectRatioResponse>> {
     if (requestParameters["imageDimensionsRequest"] == null) {
       throw new runtime.RequiredError(
         "imageDimensionsRequest",
-        'Required parameter "imageDimensionsRequest" was null or undefined when calling getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_4().',
+        'Required parameter "imageDimensionsRequest" was null or undefined when calling getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_4().'
       );
     }
 
@@ -1044,16 +1018,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ImageDimensionsRequestToJSON(
-          requestParameters["imageDimensionsRequest"],
-        ),
+        body: ImageDimensionsRequestToJSON(requestParameters["imageDimensionsRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      AspectRatioResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => AspectRatioResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1062,13 +1032,12 @@ export class ImageUtilsApi
    */
   async getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_4(
     requestParameters: GetAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<AspectRatioResponse> {
-    const response =
-      await this.getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_4Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getAspectRatioApiImageUtilsApiImageUtilsApiImageUtilsAspectRatioPost_4Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1078,12 +1047,12 @@ export class ImageUtilsApi
    */
   async getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGetRaw(
     requestParameters: GetDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["modelType"] == null) {
       throw new runtime.RequiredError(
         "modelType",
-        'Required parameter "modelType" was null or undefined when calling getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet().',
+        'Required parameter "modelType" was null or undefined when calling getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet().'
       );
     }
 
@@ -1092,10 +1061,7 @@ export class ImageUtilsApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/image-utils/api/image-utils/normalization/{model_type}`;
-    urlPath = urlPath.replace(
-      `{${"model_type"}}`,
-      encodeURIComponent(String(requestParameters["modelType"])),
-    );
+    urlPath = urlPath.replace(`{${"model_type"}}`, encodeURIComponent(String(requestParameters["modelType"])));
 
     const response = await this.request(
       {
@@ -1104,7 +1070,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1120,13 +1086,12 @@ export class ImageUtilsApi
    */
   async getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet(
     requestParameters: GetDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1136,12 +1101,12 @@ export class ImageUtilsApi
    */
   async getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet_5Raw(
     requestParameters: GetDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["modelType"] == null) {
       throw new runtime.RequiredError(
         "modelType",
-        'Required parameter "modelType" was null or undefined when calling getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet_5().',
+        'Required parameter "modelType" was null or undefined when calling getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet_5().'
       );
     }
 
@@ -1150,10 +1115,7 @@ export class ImageUtilsApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/image-utils/api/image-utils/normalization/{model_type}`;
-    urlPath = urlPath.replace(
-      `{${"model_type"}}`,
-      encodeURIComponent(String(requestParameters["modelType"])),
-    );
+    urlPath = urlPath.replace(`{${"model_type"}}`, encodeURIComponent(String(requestParameters["modelType"])));
 
     const response = await this.request(
       {
@@ -1162,7 +1124,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1178,13 +1140,12 @@ export class ImageUtilsApi
    */
   async getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet_5(
     requestParameters: GetDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet_5Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getDefaultNormalizationApiImageUtilsApiImageUtilsNormalizationModelTypeGet_5Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1194,12 +1155,12 @@ export class ImageUtilsApi
    */
   async getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGetRaw(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageFormatResponse>> {
     if (requestParameters["extension"] == null) {
       throw new runtime.RequiredError(
         "extension",
-        'Required parameter "extension" was null or undefined when calling getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet().',
+        'Required parameter "extension" was null or undefined when calling getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet().'
       );
     }
 
@@ -1208,10 +1169,7 @@ export class ImageUtilsApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/image-utils/api/image-utils/api/image-utils/format/{extension}`;
-    urlPath = urlPath.replace(
-      `{${"extension"}}`,
-      encodeURIComponent(String(requestParameters["extension"])),
-    );
+    urlPath = urlPath.replace(`{${"extension"}}`, encodeURIComponent(String(requestParameters["extension"])));
 
     const response = await this.request(
       {
@@ -1220,12 +1178,10 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ImageFormatResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ImageFormatResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1234,13 +1190,12 @@ export class ImageUtilsApi
    */
   async getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageFormatResponse> {
-    const response =
-      await this.getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGetRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGetRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1250,12 +1205,12 @@ export class ImageUtilsApi
    */
   async getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_6Raw(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageFormatResponse>> {
     if (requestParameters["extension"] == null) {
       throw new runtime.RequiredError(
         "extension",
-        'Required parameter "extension" was null or undefined when calling getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_6().',
+        'Required parameter "extension" was null or undefined when calling getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_6().'
       );
     }
 
@@ -1264,10 +1219,7 @@ export class ImageUtilsApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/image-utils/api/image-utils/api/image-utils/format/{extension}`;
-    urlPath = urlPath.replace(
-      `{${"extension"}}`,
-      encodeURIComponent(String(requestParameters["extension"])),
-    );
+    urlPath = urlPath.replace(`{${"extension"}}`, encodeURIComponent(String(requestParameters["extension"])));
 
     const response = await this.request(
       {
@@ -1276,12 +1228,10 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ImageFormatResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ImageFormatResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1290,13 +1240,12 @@ export class ImageUtilsApi
    */
   async getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_6(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageFormatResponse> {
-    const response =
-      await this.getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_6Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_6Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1306,12 +1255,12 @@ export class ImageUtilsApi
    */
   async getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_7Raw(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageFormatResponse>> {
     if (requestParameters["extension"] == null) {
       throw new runtime.RequiredError(
         "extension",
-        'Required parameter "extension" was null or undefined when calling getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_7().',
+        'Required parameter "extension" was null or undefined when calling getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_7().'
       );
     }
 
@@ -1320,10 +1269,7 @@ export class ImageUtilsApi
     const headerParameters: runtime.HTTPHeaders = {};
 
     let urlPath = `/api/image-utils/api/image-utils/api/image-utils/format/{extension}`;
-    urlPath = urlPath.replace(
-      `{${"extension"}}`,
-      encodeURIComponent(String(requestParameters["extension"])),
-    );
+    urlPath = urlPath.replace(`{${"extension"}}`, encodeURIComponent(String(requestParameters["extension"])));
 
     const response = await this.request(
       {
@@ -1332,12 +1278,10 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ImageFormatResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ImageFormatResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1346,13 +1290,12 @@ export class ImageUtilsApi
    */
   async getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_7(
     requestParameters: GetFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageFormatResponse> {
-    const response =
-      await this.getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_7Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.getFormatInfoApiImageUtilsApiImageUtilsApiImageUtilsFormatExtensionGet_7Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1361,7 +1304,7 @@ export class ImageUtilsApi
    * Get Service Info
    */
   async getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageProcessingServiceInfoResponse>> {
     const queryParameters: any = {};
 
@@ -1376,12 +1319,10 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ImageProcessingServiceInfoResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ImageProcessingServiceInfoResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1389,12 +1330,9 @@ export class ImageUtilsApi
    * Get Service Info
    */
   async getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageProcessingServiceInfoResponse> {
-    const response =
-      await this.getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGetRaw(
-        initOverrides,
-      );
+    const response = await this.getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -1403,7 +1341,7 @@ export class ImageUtilsApi
    * Get Service Info
    */
   async getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_8Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageProcessingServiceInfoResponse>> {
     const queryParameters: any = {};
 
@@ -1418,12 +1356,10 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ImageProcessingServiceInfoResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ImageProcessingServiceInfoResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1431,12 +1367,9 @@ export class ImageUtilsApi
    * Get Service Info
    */
   async getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_8(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageProcessingServiceInfoResponse> {
-    const response =
-      await this.getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_8Raw(
-        initOverrides,
-      );
+    const response = await this.getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_8Raw(initOverrides);
     return await response.value();
   }
 
@@ -1445,7 +1378,7 @@ export class ImageUtilsApi
    * Get Service Info
    */
   async getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_9Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ImageProcessingServiceInfoResponse>> {
     const queryParameters: any = {};
 
@@ -1460,12 +1393,10 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ImageProcessingServiceInfoResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ImageProcessingServiceInfoResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1473,12 +1404,9 @@ export class ImageUtilsApi
    * Get Service Info
    */
   async getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_9(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ImageProcessingServiceInfoResponse> {
-    const response =
-      await this.getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_9Raw(
-        initOverrides,
-      );
+    const response = await this.getServiceInfoApiImageUtilsApiImageUtilsApiImageUtilsServiceInfoGet_9Raw(initOverrides);
     return await response.value();
   }
 
@@ -1487,7 +1415,7 @@ export class ImageUtilsApi
    * Get Supported Formats
    */
   async getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<string | null>>> {
     const queryParameters: any = {};
 
@@ -1502,7 +1430,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     return new runtime.JSONApiResponse<any>(response);
@@ -1513,12 +1441,10 @@ export class ImageUtilsApi
    * Get Supported Formats
    */
   async getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<string | null>> {
     const response =
-      await this.getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGetRaw(
-        initOverrides,
-      );
+      await this.getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -1527,7 +1453,7 @@ export class ImageUtilsApi
    * Get Supported Formats
    */
   async getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_10Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<string | null>>> {
     const queryParameters: any = {};
 
@@ -1542,7 +1468,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     return new runtime.JSONApiResponse<any>(response);
@@ -1553,12 +1479,10 @@ export class ImageUtilsApi
    * Get Supported Formats
    */
   async getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_10(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<string | null>> {
     const response =
-      await this.getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_10Raw(
-        initOverrides,
-      );
+      await this.getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_10Raw(initOverrides);
     return await response.value();
   }
 
@@ -1567,7 +1491,7 @@ export class ImageUtilsApi
    * Get Supported Formats
    */
   async getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_11Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Array<string | null>>> {
     const queryParameters: any = {};
 
@@ -1582,7 +1506,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     return new runtime.JSONApiResponse<any>(response);
@@ -1593,12 +1517,10 @@ export class ImageUtilsApi
    * Get Supported Formats
    */
   async getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_11(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Array<string | null>> {
     const response =
-      await this.getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_11Raw(
-        initOverrides,
-      );
+      await this.getSupportedFormatsApiImageUtilsApiImageUtilsApiImageUtilsSupportedFormatsGet_11Raw(initOverrides);
     return await response.value();
   }
 
@@ -1607,7 +1529,7 @@ export class ImageUtilsApi
    * Health Check
    */
   async healthCheckApiImageUtilsApiImageUtilsHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -1622,7 +1544,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1637,12 +1559,9 @@ export class ImageUtilsApi
    * Health Check
    */
   async healthCheckApiImageUtilsApiImageUtilsHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.healthCheckApiImageUtilsApiImageUtilsHealthGetRaw(
-        initOverrides,
-      );
+    const response = await this.healthCheckApiImageUtilsApiImageUtilsHealthGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -1651,7 +1570,7 @@ export class ImageUtilsApi
    * Health Check
    */
   async healthCheckApiImageUtilsApiImageUtilsHealthGet_12Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -1666,7 +1585,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1681,12 +1600,9 @@ export class ImageUtilsApi
    * Health Check
    */
   async healthCheckApiImageUtilsApiImageUtilsHealthGet_12(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.healthCheckApiImageUtilsApiImageUtilsHealthGet_12Raw(
-        initOverrides,
-      );
+    const response = await this.healthCheckApiImageUtilsApiImageUtilsHealthGet_12Raw(initOverrides);
     return await response.value();
   }
 
@@ -1695,7 +1611,7 @@ export class ImageUtilsApi
    * Is Avif Supported
    */
   async isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -1710,7 +1626,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1725,12 +1641,9 @@ export class ImageUtilsApi
    * Is Avif Supported
    */
   async isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGetRaw(
-        initOverrides,
-      );
+    const response = await this.isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -1739,7 +1652,7 @@ export class ImageUtilsApi
    * Is Avif Supported
    */
   async isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGet_13Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -1754,7 +1667,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1769,12 +1682,9 @@ export class ImageUtilsApi
    * Is Avif Supported
    */
   async isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGet_13(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGet_13Raw(
-        initOverrides,
-      );
+    const response = await this.isAvifSupportedApiImageUtilsApiImageUtilsAvifSupportedGet_13Raw(initOverrides);
     return await response.value();
   }
 
@@ -1783,7 +1693,7 @@ export class ImageUtilsApi
    * Is Jxl Supported
    */
   async isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -1798,7 +1708,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1813,12 +1723,9 @@ export class ImageUtilsApi
    * Is Jxl Supported
    */
   async isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGetRaw(
-        initOverrides,
-      );
+    const response = await this.isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -1827,7 +1734,7 @@ export class ImageUtilsApi
    * Is Jxl Supported
    */
   async isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGet_14Raw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -1842,7 +1749,7 @@ export class ImageUtilsApi
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1857,12 +1764,9 @@ export class ImageUtilsApi
    * Is Jxl Supported
    */
   async isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGet_14(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGet_14Raw(
-        initOverrides,
-      );
+    const response = await this.isJxlSupportedApiImageUtilsApiImageUtilsJxlSupportedGet_14Raw(initOverrides);
     return await response.value();
   }
 
@@ -1872,12 +1776,12 @@ export class ImageUtilsApi
    */
   async validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPostRaw(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>> {
     if (requestParameters["imageDimensionsRequest"] == null) {
       throw new runtime.RequiredError(
         "imageDimensionsRequest",
-        'Required parameter "imageDimensionsRequest" was null or undefined when calling validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost().',
+        'Required parameter "imageDimensionsRequest" was null or undefined when calling validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost().'
       );
     }
 
@@ -1895,16 +1799,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ImageDimensionsRequestToJSON(
-          requestParameters["imageDimensionsRequest"],
-        ),
+        body: ImageDimensionsRequestToJSON(requestParameters["imageDimensionsRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ValidationResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ValidationResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1913,13 +1813,12 @@ export class ImageUtilsApi
    */
   async validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse> {
-    const response =
-      await this.validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPostRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1929,12 +1828,12 @@ export class ImageUtilsApi
    */
   async validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_15Raw(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>> {
     if (requestParameters["imageDimensionsRequest"] == null) {
       throw new runtime.RequiredError(
         "imageDimensionsRequest",
-        'Required parameter "imageDimensionsRequest" was null or undefined when calling validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_15().',
+        'Required parameter "imageDimensionsRequest" was null or undefined when calling validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_15().'
       );
     }
 
@@ -1952,16 +1851,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ImageDimensionsRequestToJSON(
-          requestParameters["imageDimensionsRequest"],
-        ),
+        body: ImageDimensionsRequestToJSON(requestParameters["imageDimensionsRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ValidationResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ValidationResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1970,13 +1865,12 @@ export class ImageUtilsApi
    */
   async validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_15(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse> {
-    const response =
-      await this.validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_15Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_15Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -1986,12 +1880,12 @@ export class ImageUtilsApi
    */
   async validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_16Raw(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>> {
     if (requestParameters["imageDimensionsRequest"] == null) {
       throw new runtime.RequiredError(
         "imageDimensionsRequest",
-        'Required parameter "imageDimensionsRequest" was null or undefined when calling validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_16().',
+        'Required parameter "imageDimensionsRequest" was null or undefined when calling validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_16().'
       );
     }
 
@@ -2009,16 +1903,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ImageDimensionsRequestToJSON(
-          requestParameters["imageDimensionsRequest"],
-        ),
+        body: ImageDimensionsRequestToJSON(requestParameters["imageDimensionsRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ValidationResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ValidationResponseFromJSON(jsonValue));
   }
 
   /**
@@ -2027,13 +1917,12 @@ export class ImageUtilsApi
    */
   async validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_16(
     requestParameters: ValidateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse> {
-    const response =
-      await this.validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_16Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.validateDimensionsApiImageUtilsApiImageUtilsApiImageUtilsValidateDimensionsPost_16Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -2043,12 +1932,12 @@ export class ImageUtilsApi
    */
   async validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPostRaw(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>> {
     if (requestParameters["imageValidationRequest"] == null) {
       throw new runtime.RequiredError(
         "imageValidationRequest",
-        'Required parameter "imageValidationRequest" was null or undefined when calling validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost().',
+        'Required parameter "imageValidationRequest" was null or undefined when calling validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost().'
       );
     }
 
@@ -2066,16 +1955,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ImageValidationRequestToJSON(
-          requestParameters["imageValidationRequest"],
-        ),
+        body: ImageValidationRequestToJSON(requestParameters["imageValidationRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ValidationResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ValidationResponseFromJSON(jsonValue));
   }
 
   /**
@@ -2084,13 +1969,12 @@ export class ImageUtilsApi
    */
   async validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse> {
-    const response =
-      await this.validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPostRaw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPostRaw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -2100,12 +1984,12 @@ export class ImageUtilsApi
    */
   async validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_17Raw(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>> {
     if (requestParameters["imageValidationRequest"] == null) {
       throw new runtime.RequiredError(
         "imageValidationRequest",
-        'Required parameter "imageValidationRequest" was null or undefined when calling validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_17().',
+        'Required parameter "imageValidationRequest" was null or undefined when calling validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_17().'
       );
     }
 
@@ -2123,16 +2007,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ImageValidationRequestToJSON(
-          requestParameters["imageValidationRequest"],
-        ),
+        body: ImageValidationRequestToJSON(requestParameters["imageValidationRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ValidationResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ValidationResponseFromJSON(jsonValue));
   }
 
   /**
@@ -2141,13 +2021,12 @@ export class ImageUtilsApi
    */
   async validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_17(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost0Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse> {
-    const response =
-      await this.validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_17Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_17Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 
@@ -2157,12 +2036,12 @@ export class ImageUtilsApi
    */
   async validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_18Raw(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<ValidationResponse>> {
     if (requestParameters["imageValidationRequest"] == null) {
       throw new runtime.RequiredError(
         "imageValidationRequest",
-        'Required parameter "imageValidationRequest" was null or undefined when calling validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_18().',
+        'Required parameter "imageValidationRequest" was null or undefined when calling validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_18().'
       );
     }
 
@@ -2180,16 +2059,12 @@ export class ImageUtilsApi
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: ImageValidationRequestToJSON(
-          requestParameters["imageValidationRequest"],
-        ),
+        body: ImageValidationRequestToJSON(requestParameters["imageValidationRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      ValidationResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => ValidationResponseFromJSON(jsonValue));
   }
 
   /**
@@ -2198,13 +2073,12 @@ export class ImageUtilsApi
    */
   async validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_18(
     requestParameters: ValidateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost1Request,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<ValidationResponse> {
-    const response =
-      await this.validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_18Raw(
-        requestParameters,
-        initOverrides,
-      );
+    const response = await this.validateImagePathApiImageUtilsApiImageUtilsApiImageUtilsValidatePathPost_18Raw(
+      requestParameters,
+      initOverrides
+    );
     return await response.value();
   }
 }

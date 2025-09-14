@@ -56,16 +56,10 @@ export interface TTSBatchResponse {
 /**
  * Check if a given object implements the TTSBatchResponse interface.
  */
-export function instanceOfTTSBatchResponse(
-  value: object,
-): value is TTSBatchResponse {
+export function instanceOfTTSBatchResponse(value: object): value is TTSBatchResponse {
   if (!("success" in value) || value["success"] === undefined) return false;
   if (!("results" in value) || value["results"] === undefined) return false;
-  if (
-    !("totalProcessingTime" in value) ||
-    value["totalProcessingTime"] === undefined
-  )
-    return false;
+  if (!("totalProcessingTime" in value) || value["totalProcessingTime"] === undefined) return false;
   return true;
 }
 
@@ -73,18 +67,13 @@ export function TTSBatchResponseFromJSON(json: any): TTSBatchResponse {
   return TTSBatchResponseFromJSONTyped(json, false);
 }
 
-export function TTSBatchResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TTSBatchResponse {
+export function TTSBatchResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSBatchResponse {
   if (json == null) {
     return json;
   }
   return {
     success: json["success"],
-    results: (json["results"] as Array<TTSSynthesisResponse>).map(
-      TTSSynthesisResponseFromJSON,
-    ),
+    results: (json["results"] as Array<any>).map(TTSSynthesisResponseFromJSON),
     totalProcessingTime: json["total_processing_time"],
     error: json["error"] == null ? undefined : json["error"],
   };
@@ -96,7 +85,7 @@ export function TTSBatchResponseToJSON(json: any): TTSBatchResponse {
 
 export function TTSBatchResponseToJSONTyped(
   value?: TTSBatchResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;
@@ -104,9 +93,7 @@ export function TTSBatchResponseToJSONTyped(
 
   return {
     success: value["success"],
-    results: (value["results"] as Array<TTSSynthesisResponse>).map(
-      TTSSynthesisResponseToJSON,
-    ),
+    results: (value["results"] as Array<any>).map(TTSSynthesisResponseToJSON),
     total_processing_time: value["totalProcessingTime"],
     error: value["error"],
   };

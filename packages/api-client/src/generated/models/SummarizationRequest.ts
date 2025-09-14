@@ -78,9 +78,7 @@ export interface SummarizationRequest {
 /**
  * Check if a given object implements the SummarizationRequest interface.
  */
-export function instanceOfSummarizationRequest(
-  value: object,
-): value is SummarizationRequest {
+export function instanceOfSummarizationRequest(value: object): value is SummarizationRequest {
   if (!("text" in value) || value["text"] === undefined) return false;
   return true;
 }
@@ -89,26 +87,17 @@ export function SummarizationRequestFromJSON(json: any): SummarizationRequest {
   return SummarizationRequestFromJSONTyped(json, false);
 }
 
-export function SummarizationRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): SummarizationRequest {
+export function SummarizationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SummarizationRequest {
   if (json == null) {
     return json;
   }
   return {
     text: json["text"],
-    contentType:
-      json["content_type"] == null ? undefined : json["content_type"],
-    summaryLevel:
-      json["summary_level"] == null ? undefined : json["summary_level"],
+    contentType: json["content_type"] == null ? undefined : json["content_type"],
+    summaryLevel: json["summary_level"] == null ? undefined : json["summary_level"],
     maxLength: json["max_length"] == null ? undefined : json["max_length"],
-    includeOutline:
-      json["include_outline"] == null ? undefined : json["include_outline"],
-    includeHighlights:
-      json["include_highlights"] == null
-        ? undefined
-        : json["include_highlights"],
+    includeOutline: json["include_outline"] == null ? undefined : json["include_outline"],
+    includeHighlights: json["include_highlights"] == null ? undefined : json["include_highlights"],
     model: json["model"] == null ? undefined : json["model"],
     temperature: json["temperature"] == null ? undefined : json["temperature"],
     topP: json["top_p"] == null ? undefined : json["top_p"],
@@ -121,7 +110,7 @@ export function SummarizationRequestToJSON(json: any): SummarizationRequest {
 
 export function SummarizationRequestToJSONTyped(
   value?: SummarizationRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

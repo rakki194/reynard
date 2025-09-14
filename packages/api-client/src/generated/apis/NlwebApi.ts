@@ -106,16 +106,14 @@ export interface NlwebApiInterface {
    * @memberof NlwebApiInterface
    */
   clearCacheApiNlwebCacheClearPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Clear the NLWeb suggestion cache.
    * Clear Cache
    */
-  clearCacheApiNlwebCacheClearPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  clearCacheApiNlwebCacheClearPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Disable an NLWeb tool.
@@ -127,7 +125,7 @@ export interface NlwebApiInterface {
    */
   disableToolApiNlwebToolsToolNameDisablePostRaw(
     requestParameters: DisableToolApiNlwebToolsToolNameDisablePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -136,7 +134,7 @@ export interface NlwebApiInterface {
    */
   disableToolApiNlwebToolsToolNameDisablePost(
     requestParameters: DisableToolApiNlwebToolsToolNameDisablePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -149,7 +147,7 @@ export interface NlwebApiInterface {
    */
   enableRollbackApiNlwebRollbackPostRaw(
     requestParameters: EnableRollbackApiNlwebRollbackPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebRollbackResponse>>;
 
   /**
@@ -158,7 +156,7 @@ export interface NlwebApiInterface {
    */
   enableRollbackApiNlwebRollbackPost(
     requestParameters: EnableRollbackApiNlwebRollbackPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebRollbackResponse>;
 
   /**
@@ -171,7 +169,7 @@ export interface NlwebApiInterface {
    */
   enableToolApiNlwebToolsToolNameEnablePostRaw(
     requestParameters: EnableToolApiNlwebToolsToolNameEnablePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -180,7 +178,7 @@ export interface NlwebApiInterface {
    */
   enableToolApiNlwebToolsToolNameEnablePost(
     requestParameters: EnableToolApiNlwebToolsToolNameEnablePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -191,7 +189,7 @@ export interface NlwebApiInterface {
    * @memberof NlwebApiInterface
    */
   forceHealthCheckApiNlwebHealthForceCheckPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -199,7 +197,7 @@ export interface NlwebApiInterface {
    * Force Health Check
    */
   forceHealthCheckApiNlwebHealthForceCheckPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -210,16 +208,14 @@ export interface NlwebApiInterface {
    * @memberof NlwebApiInterface
    */
   getHealthApiNlwebHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebHealthStatus>>;
 
   /**
    * Get NLWeb service health status.
    * Get Health
    */
-  getHealthApiNlwebHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<NLWebHealthStatus>;
+  getHealthApiNlwebHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NLWebHealthStatus>;
 
   /**
    * Get NLWeb service performance statistics.
@@ -229,7 +225,7 @@ export interface NlwebApiInterface {
    * @memberof NlwebApiInterface
    */
   getPerformanceStatsApiNlwebPerformanceGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebPerformanceStats>>;
 
   /**
@@ -237,7 +233,7 @@ export interface NlwebApiInterface {
    * Get Performance Stats
    */
   getPerformanceStatsApiNlwebPerformanceGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebPerformanceStats>;
 
   /**
@@ -248,16 +244,14 @@ export interface NlwebApiInterface {
    * @memberof NlwebApiInterface
    */
   getStatusApiNlwebStatusGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
    * Get NLWeb integration status and performance metrics.
    * Get Status
    */
-  getStatusApiNlwebStatusGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any>;
+  getStatusApiNlwebStatusGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 
   /**
    * Get available NLWeb tools, optionally filtered by category or tags.
@@ -270,7 +264,7 @@ export interface NlwebApiInterface {
    */
   getToolsApiNlwebToolsGetRaw(
     requestParameters: GetToolsApiNlwebToolsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -279,7 +273,7 @@ export interface NlwebApiInterface {
    */
   getToolsApiNlwebToolsGet(
     requestParameters: GetToolsApiNlwebToolsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -290,7 +284,7 @@ export interface NlwebApiInterface {
    * @memberof NlwebApiInterface
    */
   getVerificationChecklistApiNlwebVerificationGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebVerificationResponse>>;
 
   /**
@@ -298,7 +292,7 @@ export interface NlwebApiInterface {
    * Get Verification Checklist
    */
   getVerificationChecklistApiNlwebVerificationGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebVerificationResponse>;
 
   /**
@@ -311,7 +305,7 @@ export interface NlwebApiInterface {
    */
   proxyAskApiNlwebAskPostRaw(
     requestParameters: ProxyAskApiNlwebAskPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -320,7 +314,7 @@ export interface NlwebApiInterface {
    */
   proxyAskApiNlwebAskPost(
     requestParameters: ProxyAskApiNlwebAskPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -333,7 +327,7 @@ export interface NlwebApiInterface {
    */
   proxyMcpApiNlwebMcpPostRaw(
     requestParameters: ProxyMcpApiNlwebMcpPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -342,7 +336,7 @@ export interface NlwebApiInterface {
    */
   proxyMcpApiNlwebMcpPost(
     requestParameters: ProxyMcpApiNlwebMcpPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -353,16 +347,14 @@ export interface NlwebApiInterface {
    * @memberof NlwebApiInterface
    */
   proxySitesApiNlwebSitesGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebSitesResponse>>;
 
   /**
    * Proxy NLWeb /sites endpoint to list available sites.
    * Proxy Sites
    */
-  proxySitesApiNlwebSitesGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<NLWebSitesResponse>;
+  proxySitesApiNlwebSitesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NLWebSitesResponse>;
 
   /**
    * Register a new NLWeb tool.
@@ -374,7 +366,7 @@ export interface NlwebApiInterface {
    */
   registerToolApiNlwebToolsPostRaw(
     requestParameters: RegisterToolApiNlwebToolsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -383,7 +375,7 @@ export interface NlwebApiInterface {
    */
   registerToolApiNlwebToolsPost(
     requestParameters: RegisterToolApiNlwebToolsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 
   /**
@@ -396,7 +388,7 @@ export interface NlwebApiInterface {
    */
   suggestToolsApiNlwebSuggestPostRaw(
     requestParameters: SuggestToolsApiNlwebSuggestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebSuggestionResponse>>;
 
   /**
@@ -405,7 +397,7 @@ export interface NlwebApiInterface {
    */
   suggestToolsApiNlwebSuggestPost(
     requestParameters: SuggestToolsApiNlwebSuggestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebSuggestionResponse>;
 
   /**
@@ -418,7 +410,7 @@ export interface NlwebApiInterface {
    */
   unregisterToolApiNlwebToolsToolNameDeleteRaw(
     requestParameters: UnregisterToolApiNlwebToolsToolNameDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
   /**
@@ -427,7 +419,7 @@ export interface NlwebApiInterface {
    */
   unregisterToolApiNlwebToolsToolNameDelete(
     requestParameters: UnregisterToolApiNlwebToolsToolNameDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 }
 
@@ -440,20 +432,11 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Clear Cache
    */
   async clearCacheApiNlwebCacheClearPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/cache/clear`;
 
@@ -464,7 +447,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -478,11 +461,8 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Clear the NLWeb suggestion cache.
    * Clear Cache
    */
-  async clearCacheApiNlwebCacheClearPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
-    const response =
-      await this.clearCacheApiNlwebCacheClearPostRaw(initOverrides);
+  async clearCacheApiNlwebCacheClearPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
+    const response = await this.clearCacheApiNlwebCacheClearPostRaw(initOverrides);
     return await response.value();
   }
 
@@ -492,12 +472,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async disableToolApiNlwebToolsToolNameDisablePostRaw(
     requestParameters: DisableToolApiNlwebToolsToolNameDisablePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["toolName"] == null) {
       throw new runtime.RequiredError(
         "toolName",
-        'Required parameter "toolName" was null or undefined when calling disableToolApiNlwebToolsToolNameDisablePost().',
+        'Required parameter "toolName" was null or undefined when calling disableToolApiNlwebToolsToolNameDisablePost().'
       );
     }
 
@@ -505,20 +485,8 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/nlweb/tools/{tool_name}/disable`;
-    urlPath = urlPath.replace(
-      `{${"tool_name"}}`,
-      encodeURIComponent(String(requestParameters["toolName"])),
-    );
+    urlPath = urlPath.replace(`{${"tool_name"}}`, encodeURIComponent(String(requestParameters["toolName"])));
 
     const response = await this.request(
       {
@@ -527,7 +495,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -543,12 +511,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async disableToolApiNlwebToolsToolNameDisablePost(
     requestParameters: DisableToolApiNlwebToolsToolNameDisablePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.disableToolApiNlwebToolsToolNameDisablePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.disableToolApiNlwebToolsToolNameDisablePostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -558,12 +523,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async enableRollbackApiNlwebRollbackPostRaw(
     requestParameters: EnableRollbackApiNlwebRollbackPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebRollbackResponse>> {
     if (requestParameters["nLWebRollbackRequest"] == null) {
       throw new runtime.RequiredError(
         "nLWebRollbackRequest",
-        'Required parameter "nLWebRollbackRequest" was null or undefined when calling enableRollbackApiNlwebRollbackPost().',
+        'Required parameter "nLWebRollbackRequest" was null or undefined when calling enableRollbackApiNlwebRollbackPost().'
       );
     }
 
@@ -573,15 +538,6 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
 
     headerParameters["Content-Type"] = "application/json";
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/nlweb/rollback`;
 
     const response = await this.request(
@@ -590,16 +546,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: NLWebRollbackRequestToJSON(
-          requestParameters["nLWebRollbackRequest"],
-        ),
+        body: NLWebRollbackRequestToJSON(requestParameters["nLWebRollbackRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      NLWebRollbackResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => NLWebRollbackResponseFromJSON(jsonValue));
   }
 
   /**
@@ -608,12 +560,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async enableRollbackApiNlwebRollbackPost(
     requestParameters: EnableRollbackApiNlwebRollbackPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebRollbackResponse> {
-    const response = await this.enableRollbackApiNlwebRollbackPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.enableRollbackApiNlwebRollbackPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -623,12 +572,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async enableToolApiNlwebToolsToolNameEnablePostRaw(
     requestParameters: EnableToolApiNlwebToolsToolNameEnablePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["toolName"] == null) {
       throw new runtime.RequiredError(
         "toolName",
-        'Required parameter "toolName" was null or undefined when calling enableToolApiNlwebToolsToolNameEnablePost().',
+        'Required parameter "toolName" was null or undefined when calling enableToolApiNlwebToolsToolNameEnablePost().'
       );
     }
 
@@ -636,20 +585,8 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/nlweb/tools/{tool_name}/enable`;
-    urlPath = urlPath.replace(
-      `{${"tool_name"}}`,
-      encodeURIComponent(String(requestParameters["toolName"])),
-    );
+    urlPath = urlPath.replace(`{${"tool_name"}}`, encodeURIComponent(String(requestParameters["toolName"])));
 
     const response = await this.request(
       {
@@ -658,7 +595,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -674,12 +611,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async enableToolApiNlwebToolsToolNameEnablePost(
     requestParameters: EnableToolApiNlwebToolsToolNameEnablePostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.enableToolApiNlwebToolsToolNameEnablePostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.enableToolApiNlwebToolsToolNameEnablePostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -688,20 +622,11 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Force Health Check
    */
   async forceHealthCheckApiNlwebHealthForceCheckPostRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/health/force-check`;
 
@@ -712,7 +637,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -727,10 +652,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Force Health Check
    */
   async forceHealthCheckApiNlwebHealthForceCheckPost(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response =
-      await this.forceHealthCheckApiNlwebHealthForceCheckPostRaw(initOverrides);
+    const response = await this.forceHealthCheckApiNlwebHealthForceCheckPostRaw(initOverrides);
     return await response.value();
   }
 
@@ -739,20 +663,11 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Get Health
    */
   async getHealthApiNlwebHealthGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebHealthStatus>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/health`;
 
@@ -763,12 +678,10 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      NLWebHealthStatusFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => NLWebHealthStatusFromJSON(jsonValue));
   }
 
   /**
@@ -776,7 +689,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Get Health
    */
   async getHealthApiNlwebHealthGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebHealthStatus> {
     const response = await this.getHealthApiNlwebHealthGetRaw(initOverrides);
     return await response.value();
@@ -787,20 +700,11 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Get Performance Stats
    */
   async getPerformanceStatsApiNlwebPerformanceGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebPerformanceStats>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/performance`;
 
@@ -811,12 +715,10 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      NLWebPerformanceStatsFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => NLWebPerformanceStatsFromJSON(jsonValue));
   }
 
   /**
@@ -824,10 +726,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Get Performance Stats
    */
   async getPerformanceStatsApiNlwebPerformanceGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebPerformanceStats> {
-    const response =
-      await this.getPerformanceStatsApiNlwebPerformanceGetRaw(initOverrides);
+    const response = await this.getPerformanceStatsApiNlwebPerformanceGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -836,20 +737,11 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Get Status
    */
   async getStatusApiNlwebStatusGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/status`;
 
@@ -860,7 +752,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -874,9 +766,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Get NLWeb integration status and performance metrics.
    * Get Status
    */
-  async getStatusApiNlwebStatusGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<any> {
+  async getStatusApiNlwebStatusGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any> {
     const response = await this.getStatusApiNlwebStatusGetRaw(initOverrides);
     return await response.value();
   }
@@ -887,7 +777,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async getToolsApiNlwebToolsGetRaw(
     requestParameters: GetToolsApiNlwebToolsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     const queryParameters: any = {};
 
@@ -901,15 +791,6 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/nlweb/tools`;
 
     const response = await this.request(
@@ -919,7 +800,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -935,12 +816,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async getToolsApiNlwebToolsGet(
     requestParameters: GetToolsApiNlwebToolsGetRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.getToolsApiNlwebToolsGetRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.getToolsApiNlwebToolsGetRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -949,20 +827,11 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Get Verification Checklist
    */
   async getVerificationChecklistApiNlwebVerificationGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebVerificationResponse>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/verification`;
 
@@ -973,12 +842,10 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      NLWebVerificationResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => NLWebVerificationResponseFromJSON(jsonValue));
   }
 
   /**
@@ -986,12 +853,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Get Verification Checklist
    */
   async getVerificationChecklistApiNlwebVerificationGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebVerificationResponse> {
-    const response =
-      await this.getVerificationChecklistApiNlwebVerificationGetRaw(
-        initOverrides,
-      );
+    const response = await this.getVerificationChecklistApiNlwebVerificationGetRaw(initOverrides);
     return await response.value();
   }
 
@@ -1001,12 +865,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async proxyAskApiNlwebAskPostRaw(
     requestParameters: ProxyAskApiNlwebAskPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["nLWebAskRequest"] == null) {
       throw new runtime.RequiredError(
         "nLWebAskRequest",
-        'Required parameter "nLWebAskRequest" was null or undefined when calling proxyAskApiNlwebAskPost().',
+        'Required parameter "nLWebAskRequest" was null or undefined when calling proxyAskApiNlwebAskPost().'
       );
     }
 
@@ -1015,15 +879,6 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     headerParameters["Content-Type"] = "application/json";
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/ask`;
 
@@ -1035,7 +890,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         query: queryParameters,
         body: NLWebAskRequestToJSON(requestParameters["nLWebAskRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1051,12 +906,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async proxyAskApiNlwebAskPost(
     requestParameters: ProxyAskApiNlwebAskPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.proxyAskApiNlwebAskPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.proxyAskApiNlwebAskPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1066,12 +918,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async proxyMcpApiNlwebMcpPostRaw(
     requestParameters: ProxyMcpApiNlwebMcpPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["nLWebMCPRequest"] == null) {
       throw new runtime.RequiredError(
         "nLWebMCPRequest",
-        'Required parameter "nLWebMCPRequest" was null or undefined when calling proxyMcpApiNlwebMcpPost().',
+        'Required parameter "nLWebMCPRequest" was null or undefined when calling proxyMcpApiNlwebMcpPost().'
       );
     }
 
@@ -1080,15 +932,6 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     headerParameters["Content-Type"] = "application/json";
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/mcp`;
 
@@ -1100,7 +943,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         query: queryParameters,
         body: NLWebMCPRequestToJSON(requestParameters["nLWebMCPRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1116,12 +959,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async proxyMcpApiNlwebMcpPost(
     requestParameters: ProxyMcpApiNlwebMcpPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.proxyMcpApiNlwebMcpPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.proxyMcpApiNlwebMcpPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1130,20 +970,11 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Proxy Sites
    */
   async proxySitesApiNlwebSitesGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebSitesResponse>> {
     const queryParameters: any = {};
 
     const headerParameters: runtime.HTTPHeaders = {};
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/sites`;
 
@@ -1154,12 +985,10 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      NLWebSitesResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => NLWebSitesResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1167,7 +996,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    * Proxy Sites
    */
   async proxySitesApiNlwebSitesGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebSitesResponse> {
     const response = await this.proxySitesApiNlwebSitesGetRaw(initOverrides);
     return await response.value();
@@ -1179,12 +1008,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async registerToolApiNlwebToolsPostRaw(
     requestParameters: RegisterToolApiNlwebToolsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["nLWebTool"] == null) {
       throw new runtime.RequiredError(
         "nLWebTool",
-        'Required parameter "nLWebTool" was null or undefined when calling registerToolApiNlwebToolsPost().',
+        'Required parameter "nLWebTool" was null or undefined when calling registerToolApiNlwebToolsPost().'
       );
     }
 
@@ -1193,15 +1022,6 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
     const headerParameters: runtime.HTTPHeaders = {};
 
     headerParameters["Content-Type"] = "application/json";
-
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
 
     let urlPath = `/api/nlweb/tools`;
 
@@ -1213,7 +1033,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         query: queryParameters,
         body: NLWebToolToJSON(requestParameters["nLWebTool"]),
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1229,12 +1049,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async registerToolApiNlwebToolsPost(
     requestParameters: RegisterToolApiNlwebToolsPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.registerToolApiNlwebToolsPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.registerToolApiNlwebToolsPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1244,12 +1061,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async suggestToolsApiNlwebSuggestPostRaw(
     requestParameters: SuggestToolsApiNlwebSuggestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<NLWebSuggestionResponse>> {
     if (requestParameters["nLWebSuggestionRequest"] == null) {
       throw new runtime.RequiredError(
         "nLWebSuggestionRequest",
-        'Required parameter "nLWebSuggestionRequest" was null or undefined when calling suggestToolsApiNlwebSuggestPost().',
+        'Required parameter "nLWebSuggestionRequest" was null or undefined when calling suggestToolsApiNlwebSuggestPost().'
       );
     }
 
@@ -1259,15 +1076,6 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
 
     headerParameters["Content-Type"] = "application/json";
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/nlweb/suggest`;
 
     const response = await this.request(
@@ -1276,16 +1084,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: NLWebSuggestionRequestToJSON(
-          requestParameters["nLWebSuggestionRequest"],
-        ),
+        body: NLWebSuggestionRequestToJSON(requestParameters["nLWebSuggestionRequest"]),
       },
-      initOverrides,
+      initOverrides
     );
 
-    return new runtime.JSONApiResponse(response, (jsonValue) =>
-      NLWebSuggestionResponseFromJSON(jsonValue),
-    );
+    return new runtime.JSONApiResponse(response, jsonValue => NLWebSuggestionResponseFromJSON(jsonValue));
   }
 
   /**
@@ -1294,12 +1098,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async suggestToolsApiNlwebSuggestPost(
     requestParameters: SuggestToolsApiNlwebSuggestPostRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<NLWebSuggestionResponse> {
-    const response = await this.suggestToolsApiNlwebSuggestPostRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.suggestToolsApiNlwebSuggestPostRaw(requestParameters, initOverrides);
     return await response.value();
   }
 
@@ -1309,12 +1110,12 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async unregisterToolApiNlwebToolsToolNameDeleteRaw(
     requestParameters: UnregisterToolApiNlwebToolsToolNameDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["toolName"] == null) {
       throw new runtime.RequiredError(
         "toolName",
-        'Required parameter "toolName" was null or undefined when calling unregisterToolApiNlwebToolsToolNameDelete().',
+        'Required parameter "toolName" was null or undefined when calling unregisterToolApiNlwebToolsToolNameDelete().'
       );
     }
 
@@ -1322,20 +1123,8 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
 
     const headerParameters: runtime.HTTPHeaders = {};
 
-    if (this.configuration && this.configuration.accessToken) {
-      const token = this.configuration.accessToken;
-      const tokenString = await token("HTTPBearer", []);
-
-      if (tokenString) {
-        headerParameters["Authorization"] = `Bearer ${tokenString}`;
-      }
-    }
-
     let urlPath = `/api/nlweb/tools/{tool_name}`;
-    urlPath = urlPath.replace(
-      `{${"tool_name"}}`,
-      encodeURIComponent(String(requestParameters["toolName"])),
-    );
+    urlPath = urlPath.replace(`{${"tool_name"}}`, encodeURIComponent(String(requestParameters["toolName"])));
 
     const response = await this.request(
       {
@@ -1344,7 +1133,7 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides,
+      initOverrides
     );
 
     if (this.isJsonMime(response.headers.get("content-type"))) {
@@ -1360,12 +1149,9 @@ export class NlwebApi extends runtime.BaseAPI implements NlwebApiInterface {
    */
   async unregisterToolApiNlwebToolsToolNameDelete(
     requestParameters: UnregisterToolApiNlwebToolsToolNameDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
-    const response = await this.unregisterToolApiNlwebToolsToolNameDeleteRaw(
-      requestParameters,
-      initOverrides,
-    );
+    const response = await this.unregisterToolApiNlwebToolsToolNameDeleteRaw(requestParameters, initOverrides);
     return await response.value();
   }
 }

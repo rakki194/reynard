@@ -7,7 +7,7 @@
  */
 
 import { vi } from "vitest";
-import type { PerformanceBudget, PerformanceMetrics } from "../types";
+import type { PerformanceBudget, PerformanceMetrics } from "./types";
 
 // ============================================================================
 // Performance Budget Testing Utilities
@@ -16,9 +16,7 @@ import type { PerformanceBudget, PerformanceMetrics } from "../types";
 /**
  * Creates a standard performance budget for testing
  */
-export function createTestBudget(
-  overrides: Partial<PerformanceBudget> = {},
-): PerformanceBudget {
+export function createTestBudget(overrides: Partial<PerformanceBudget> = {}): PerformanceBudget {
   return {
     maxDuration: 100,
     maxMemoryUsage: 1024,
@@ -31,9 +29,7 @@ export function createTestBudget(
 /**
  * Creates standard performance metrics for testing
  */
-export function createTestMetrics(
-  overrides: Partial<PerformanceMetrics> = {},
-): PerformanceMetrics {
+export function createTestMetrics(overrides: Partial<PerformanceMetrics> = {}): PerformanceMetrics {
   return {
     duration: 50,
     memoryBefore: 0,

@@ -78,13 +78,10 @@ export interface CaptionResponse {
 /**
  * Check if a given object implements the CaptionResponse interface.
  */
-export function instanceOfCaptionResponse(
-  value: object,
-): value is CaptionResponse {
+export function instanceOfCaptionResponse(value: object): value is CaptionResponse {
   if (!("success" in value) || value["success"] === undefined) return false;
   if (!("imagePath" in value) || value["imagePath"] === undefined) return false;
-  if (!("generatorName" in value) || value["generatorName"] === undefined)
-    return false;
+  if (!("generatorName" in value) || value["generatorName"] === undefined) return false;
   return true;
 }
 
@@ -92,10 +89,7 @@ export function CaptionResponseFromJSON(json: any): CaptionResponse {
   return CaptionResponseFromJSONTyped(json, false);
 }
 
-export function CaptionResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): CaptionResponse {
+export function CaptionResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): CaptionResponse {
   if (json == null) {
     return json;
   }
@@ -107,10 +101,8 @@ export function CaptionResponseFromJSONTyped(
     error: json["error"] == null ? undefined : json["error"],
     errorType: json["error_type"] == null ? undefined : json["error_type"],
     retryable: json["retryable"] == null ? undefined : json["retryable"],
-    processingTime:
-      json["processing_time"] == null ? undefined : json["processing_time"],
-    captionType:
-      json["caption_type"] == null ? undefined : json["caption_type"],
+    processingTime: json["processing_time"] == null ? undefined : json["processing_time"],
+    captionType: json["caption_type"] == null ? undefined : json["caption_type"],
   };
 }
 
@@ -118,10 +110,7 @@ export function CaptionResponseToJSON(json: any): CaptionResponse {
   return CaptionResponseToJSONTyped(json, false);
 }
 
-export function CaptionResponseToJSONTyped(
-  value?: CaptionResponse | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function CaptionResponseToJSONTyped(value?: CaptionResponse | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

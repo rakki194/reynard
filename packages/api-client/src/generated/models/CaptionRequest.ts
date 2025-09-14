@@ -33,10 +33,10 @@ export interface CaptionRequest {
   generatorName: string;
   /**
    *
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof CaptionRequest
    */
-  config?: object | null;
+  config?: { [key: string]: any } | null;
   /**
    * Force regeneration even if caption exists
    * @type {boolean}
@@ -54,12 +54,9 @@ export interface CaptionRequest {
 /**
  * Check if a given object implements the CaptionRequest interface.
  */
-export function instanceOfCaptionRequest(
-  value: object,
-): value is CaptionRequest {
+export function instanceOfCaptionRequest(value: object): value is CaptionRequest {
   if (!("imagePath" in value) || value["imagePath"] === undefined) return false;
-  if (!("generatorName" in value) || value["generatorName"] === undefined)
-    return false;
+  if (!("generatorName" in value) || value["generatorName"] === undefined) return false;
   return true;
 }
 
@@ -67,10 +64,7 @@ export function CaptionRequestFromJSON(json: any): CaptionRequest {
   return CaptionRequestFromJSONTyped(json, false);
 }
 
-export function CaptionRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): CaptionRequest {
+export function CaptionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): CaptionRequest {
   if (json == null) {
     return json;
   }
@@ -79,8 +73,7 @@ export function CaptionRequestFromJSONTyped(
     generatorName: json["generator_name"],
     config: json["config"] == null ? undefined : json["config"],
     force: json["force"] == null ? undefined : json["force"],
-    postProcess:
-      json["post_process"] == null ? undefined : json["post_process"],
+    postProcess: json["post_process"] == null ? undefined : json["post_process"],
   };
 }
 
@@ -88,10 +81,7 @@ export function CaptionRequestToJSON(json: any): CaptionRequest {
   return CaptionRequestToJSONTyped(json, false);
 }
 
-export function CaptionRequestToJSONTyped(
-  value?: CaptionRequest | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function CaptionRequestToJSONTyped(value?: CaptionRequest | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

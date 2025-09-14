@@ -14,12 +14,7 @@
 
 import { mapValues } from "../runtime";
 import type { NLWebTool } from "./NLWebTool";
-import {
-  NLWebToolFromJSON,
-  NLWebToolFromJSONTyped,
-  NLWebToolToJSON,
-  NLWebToolToJSONTyped,
-} from "./NLWebTool";
+import { NLWebToolFromJSON, NLWebToolFromJSONTyped, NLWebToolToJSON, NLWebToolToJSONTyped } from "./NLWebTool";
 
 /**
  * Tool suggestion with confidence scoring.
@@ -41,10 +36,10 @@ export interface NLWebSuggestion {
   score: number;
   /**
    * Suggested parameters for the tool
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof NLWebSuggestion
    */
-  parameters?: object;
+  parameters?: { [key: string]: any };
   /**
    * Reasoning for why this tool was suggested
    * @type {string}
@@ -53,18 +48,16 @@ export interface NLWebSuggestion {
   reasoning: string;
   /**
    * Parameter hints for better execution
-   * @type {object}
+   * @type {{ [key: string]: any; }}
    * @memberof NLWebSuggestion
    */
-  parameterHints?: object;
+  parameterHints?: { [key: string]: any };
 }
 
 /**
  * Check if a given object implements the NLWebSuggestion interface.
  */
-export function instanceOfNLWebSuggestion(
-  value: object,
-): value is NLWebSuggestion {
+export function instanceOfNLWebSuggestion(value: object): value is NLWebSuggestion {
   if (!("tool" in value) || value["tool"] === undefined) return false;
   if (!("score" in value) || value["score"] === undefined) return false;
   if (!("reasoning" in value) || value["reasoning"] === undefined) return false;
@@ -75,10 +68,7 @@ export function NLWebSuggestionFromJSON(json: any): NLWebSuggestion {
   return NLWebSuggestionFromJSONTyped(json, false);
 }
 
-export function NLWebSuggestionFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebSuggestion {
+export function NLWebSuggestionFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebSuggestion {
   if (json == null) {
     return json;
   }
@@ -87,8 +77,7 @@ export function NLWebSuggestionFromJSONTyped(
     score: json["score"],
     parameters: json["parameters"] == null ? undefined : json["parameters"],
     reasoning: json["reasoning"],
-    parameterHints:
-      json["parameter_hints"] == null ? undefined : json["parameter_hints"],
+    parameterHints: json["parameter_hints"] == null ? undefined : json["parameter_hints"],
   };
 }
 
@@ -96,10 +85,7 @@ export function NLWebSuggestionToJSON(json: any): NLWebSuggestion {
   return NLWebSuggestionToJSONTyped(json, false);
 }
 
-export function NLWebSuggestionToJSONTyped(
-  value?: NLWebSuggestion | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function NLWebSuggestionToJSONTyped(value?: NLWebSuggestion | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }

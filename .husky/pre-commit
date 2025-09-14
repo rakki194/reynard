@@ -20,34 +20,34 @@ echo -e "${BLUE}📏 Checking file line counts...${NC}"
 # Check for files that exceed our modularity standards
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ts|tsx|js|jsx)$' || true)
 
-if [ -n "$STAGED_FILES" ]; then
+if [[ -n "${STAGED_FILES}" ]]; then
     VIOLATIONS_FOUND=false
-    
-    for file in $STAGED_FILES; do
-        if [ -f "$file" ]; then
+
+    for file in ${STAGED_FILES}; do
+        if [[ -f "${file}" ]]; then
             # Count non-empty, non-comment lines
-            LINE_COUNT=$(grep -v '^\s*$' "$file" | grep -v '^\s*//' | grep -v '^\s*/\*' | grep -v '^\s*\*' | wc -l)
-            
+            LINE_COUNT=$(grep -v '^\s*$' "${file}" | grep -v '^\s*//' | grep -v '^\s*/\*' | grep -v '^\s*\*' | wc -l)
+
             # Check if it's a test file
-            if [[ "$file" =~ \.(test|spec)\.(ts|tsx|js|jsx)$ ]] || [[ "$file" =~ /(test|__tests__)/ ]]; then
+            if [[ "${file}" =~ \.(test|spec)\.(ts|tsx|js|jsx)$ ]] || [[ "${file}" =~ /(test|__tests__)/ ]]; then
                 MAX_LINES=200
                 FILE_TYPE="test"
             else
                 MAX_LINES=100
                 FILE_TYPE="source"
             fi
-            
-            if [ "$LINE_COUNT" -gt "$MAX_LINES" ]; then
-                if [ "$VIOLATIONS_FOUND" = false ]; then
+
+            if [[ "${LINE_COUNT}" -gt "${MAX_LINES}" ]]; then
+                if [[ "${VIOLATIONS_FOUND}" = false ]]; then
                     echo -e "${RED}❌ Modularity violations detected:${NC}"
                     VIOLATIONS_FOUND=true
                 fi
-                echo -e "${RED}   $file: $LINE_COUNT lines (max: $MAX_LINES for $FILE_TYPE files)${NC}"
+                echo -e "${RED}   ${file}: ${LINE_COUNT} lines (max: ${MAX_LINES} for ${FILE_TYPE} files)${NC}"
             fi
         fi
     done
-    
-    if [ "$VIOLATIONS_FOUND" = true ]; then
+
+    if [[ "${VIOLATIONS_FOUND}" = true ]]; then
         echo ""
         echo -e "${YELLOW}💡 Tips:${NC}"
         echo -e "${YELLOW}   - Split large files into smaller, focused modules${NC}"
@@ -70,56 +70,56 @@ echo -e "${BLUE}🎨 Running CSS variable validation...${NC}"
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VALIDATOR_SCRIPT="$SCRIPT_DIR/validate-css-variables.js"
+VALIDATOR_SCRIPT="${PROJECT_ROOT}/scripts/validation/css/validate-css-variables.js"
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 
 # Check if validator script exists
-if [ ! -f "$VALIDATOR_SCRIPT" ]; then
-    echo -e "${YELLOW}⚠️  CSS validator script not found at: $VALIDATOR_SCRIPT${NC}"
+if [[ ! -f "${VALIDATOR_SCRIPT}" ]]; then
+    echo -e "${YELLOW}⚠️  CSS validator script not found at: ${VALIDATOR_SCRIPT}${NC}"
     echo -e "${YELLOW}   Skipping CSS validation...${NC}"
 else
     # Check if we're in a Reynard project
-    if [ ! -f "$PROJECT_ROOT/package.json" ]; then
+    if [[ ! -f "${PROJECT_ROOT}/package.json" ]]; then
         echo -e "${YELLOW}⚠️  Not in a Reynard project, skipping CSS validation${NC}"
-    elif ! grep -q "reynard" "$PROJECT_ROOT/package.json" 2>/dev/null; then
+    elif ! grep -q "reynard" "${PROJECT_ROOT}/package.json" 2>/dev/null; then
         echo -e "${YELLOW}⚠️  Not a Reynard project, skipping CSS validation${NC}"
     else
         # Get list of staged CSS files
         STAGED_CSS_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.css$' || true)
 
-        if [ -z "$STAGED_CSS_FILES" ]; then
+        if [[ -z "${STAGED_CSS_FILES}" ]]; then
             echo -e "${GREEN}✅ No CSS files staged for commit${NC}"
         else
             echo -e "${BLUE}📁 Staged CSS files:${NC}"
-            echo "$STAGED_CSS_FILES" | sed 's/^/  - /'
+            echo "${STAGED_CSS_FILES}" | sed 's/^/  - /'
             echo ""
 
             # Run CSS validation
             echo -e "${BLUE}🔍 Running CSS variable validation...${NC}"
 
-            cd "$PROJECT_ROOT"
+            cd "${PROJECT_ROOT}"
 
             # Run the validator with strict mode for pre-commit
-            if node "$VALIDATOR_SCRIPT" --strict; then
+            if node "${VALIDATOR_SCRIPT}" --strict; then
                 echo -e "${GREEN}✅ CSS validation passed${NC}"
             else
                 VALIDATION_EXIT_CODE=$?
-                
-                if [ $VALIDATION_EXIT_CODE -eq 1 ]; then
+
+                if [[ "${VALIDATION_EXIT_CODE}" -eq 1 ]]; then
                     echo -e "${RED}❌ CSS validation failed with errors${NC}"
                     echo -e "${RED}   Please fix the issues above before committing${NC}"
                     echo ""
                     echo -e "${YELLOW}💡 Tips:${NC}"
                     echo -e "${YELLOW}   - Check the css-validation-report.md file for details${NC}"
-                    echo -e "${YELLOW}   - Run 'node .husky/validate-css-variables.js' to see full report${NC}"
+                    echo -e "${YELLOW}   - Run 'node scripts/validation/css/validate-css-variables.js' to see full report${NC}"
                     echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
                     exit 1
-                elif [ $VALIDATION_EXIT_CODE -eq 2 ]; then
+                elif [[ "${VALIDATION_EXIT_CODE}" -eq 2 ]]; then
                     echo -e "${YELLOW}⚠️  CSS validation passed with warnings${NC}"
                     echo -e "${YELLOW}   Consider fixing the warnings above${NC}"
                     echo ""
                     echo -e "${BLUE}💡 To see full details, run:${NC}"
-                    echo -e "${BLUE}   node .husky/validate-css-variables.js${NC}"
+                    echo -e "${BLUE}   node scripts/validation/css/validate-css-variables.js${NC}"
                     echo ""
                     echo -e "${YELLOW}   Continuing with commit...${NC}"
                 else
@@ -136,40 +136,40 @@ echo -e "${BLUE}📚 Running Markdown ToC validation...${NC}"
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MARKDOWN_TOC_VALIDATOR_SCRIPT="$SCRIPT_DIR/validate-markdown-toc.js"
+MARKDOWN_TOC_VALIDATOR_SCRIPT="${PROJECT_ROOT}/scripts/validation/markdown/validate-markdown-toc.js"
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 
 # Check if Markdown ToC validator script exists
-if [ ! -f "$MARKDOWN_TOC_VALIDATOR_SCRIPT" ]; then
-    echo -e "${YELLOW}⚠️  Markdown ToC validator script not found at: $MARKDOWN_TOC_VALIDATOR_SCRIPT${NC}"
+if [[ ! -f "${MARKDOWN_TOC_VALIDATOR_SCRIPT}" ]]; then
+    echo -e "${YELLOW}⚠️  Markdown ToC validator script not found at: ${MARKDOWN_TOC_VALIDATOR_SCRIPT}${NC}"
     echo -e "${YELLOW}   Skipping Markdown ToC validation...${NC}"
 else
     # Check if we have any markdown files staged in target directories
     STAGED_MARKDOWN_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^(backend|docs|src)/.*\.md$' || true)
 
-    if [ -z "$STAGED_MARKDOWN_FILES" ]; then
+    if [[ -z "${STAGED_MARKDOWN_FILES}" ]]; then
         echo -e "${GREEN}✅ No markdown files staged for commit in backend/, docs/, or src/${NC}"
     else
         echo -e "${BLUE}📁 Staged markdown files:${NC}"
-        echo "$STAGED_MARKDOWN_FILES" | sed 's/^/  - /'
+        echo "${STAGED_MARKDOWN_FILES}" | sed 's/^/  - /'
         echo ""
 
         # Run Markdown ToC validation
-        cd "$PROJECT_ROOT"
-        
-        if node "$MARKDOWN_TOC_VALIDATOR_SCRIPT"; then
+        cd "${PROJECT_ROOT}"
+
+        if node "${MARKDOWN_TOC_VALIDATOR_SCRIPT}"; then
             echo -e "${GREEN}✅ Markdown ToC validation passed${NC}"
         else
             MARKDOWN_TOC_VALIDATION_EXIT_CODE=$?
-            
-            if [ $MARKDOWN_TOC_VALIDATION_EXIT_CODE -eq 1 ]; then
+
+            if [[ "${MARKDOWN_TOC_VALIDATION_EXIT_CODE}" -eq 1 ]]; then
                 echo -e "${RED}❌ Markdown ToC validation failed${NC}"
                 echo -e "${RED}   Please fix the issues above before committing${NC}"
                 echo ""
                 echo -e "${YELLOW}💡 Tips:${NC}"
                 echo -e "${YELLOW}   - Add '## Table of Contents' after your first H2 heading${NC}"
                 echo -e "${YELLOW}   - Update ToC when adding/removing/renaming headings${NC}"
-                echo -e "${YELLOW}   - Run 'node .husky/validate-markdown-toc.js --fix' to auto-fix some issues${NC}"
+                echo -e "${YELLOW}   - Run 'node scripts/validation/markdown/validate-markdown-toc.js --fix' to auto-fix some issues${NC}"
                 echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
                 exit 1
             else
@@ -186,22 +186,22 @@ echo -e "${BLUE}📝 Running Markdown linting...${NC}"
 # Check if we have any markdown files staged
 STAGED_MARKDOWN_FILES_ALL=$(git diff --cached --name-only --diff-filter=ACM | grep '\.md$' || true)
 
-if [ -z "$STAGED_MARKDOWN_FILES_ALL" ]; then
+if [[ -z "${STAGED_MARKDOWN_FILES_ALL}" ]]; then
     echo -e "${GREEN}✅ No markdown files staged for commit${NC}"
 else
     echo -e "${BLUE}📁 Staged markdown files:${NC}"
-    echo "$STAGED_MARKDOWN_FILES_ALL" | sed 's/^/  - /'
+    echo "${STAGED_MARKDOWN_FILES_ALL}" | sed 's/^/  - /'
     echo ""
 
     # Run markdownlint
-    cd "$PROJECT_ROOT"
-    
-    if npx markdownlint $STAGED_MARKDOWN_FILES_ALL; then
+    cd "${PROJECT_ROOT}"
+
+    if npx markdownlint "${STAGED_MARKDOWN_FILES_ALL}"; then
         echo -e "${GREEN}✅ Markdown linting passed${NC}"
     else
         MARKDOWN_LINT_EXIT_CODE=$?
-        
-        if [ $MARKDOWN_LINT_EXIT_CODE -eq 1 ]; then
+
+        if [[ "${MARKDOWN_LINT_EXIT_CODE}" -eq 1 ]]; then
             echo -e "${RED}❌ Markdown linting failed${NC}"
             echo -e "${RED}   Please fix the issues above before committing${NC}"
             echo ""
@@ -222,27 +222,27 @@ echo -e "${BLUE}📏 Running sentence length validation...${NC}"
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SENTENCE_LENGTH_VALIDATOR_SCRIPT="$SCRIPT_DIR/validate-sentence-length.js"
+SENTENCE_LENGTH_VALIDATOR_SCRIPT="${PROJECT_ROOT}/scripts/validation/markdown/validate-sentence-length.js"
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 
 # Check if sentence length validator script exists
-if [ ! -f "$SENTENCE_LENGTH_VALIDATOR_SCRIPT" ]; then
-    echo -e "${YELLOW}⚠️  Sentence length validator script not found at: $SENTENCE_LENGTH_VALIDATOR_SCRIPT${NC}"
+if [[ ! -f "${SENTENCE_LENGTH_VALIDATOR_SCRIPT}" ]]; then
+    echo -e "${YELLOW}⚠️  Sentence length validator script not found at: ${SENTENCE_LENGTH_VALIDATOR_SCRIPT}${NC}"
     echo -e "${YELLOW}   Skipping sentence length validation...${NC}"
 else
     # Check if we have any markdown files staged
-    if [ -z "$STAGED_MARKDOWN_FILES_ALL" ]; then
+    if [[ -z "${STAGED_MARKDOWN_FILES_ALL}" ]]; then
         echo -e "${GREEN}✅ No markdown files staged for sentence length validation${NC}"
     else
         # Run sentence length validation
-        cd "$PROJECT_ROOT"
-        
-        if node "$SENTENCE_LENGTH_VALIDATOR_SCRIPT"; then
+        cd "${PROJECT_ROOT}"
+
+        if node "${SENTENCE_LENGTH_VALIDATOR_SCRIPT}"; then
             echo -e "${GREEN}✅ Sentence length validation passed${NC}"
         else
             SENTENCE_LENGTH_VALIDATION_EXIT_CODE=$?
-            
-            if [ $SENTENCE_LENGTH_VALIDATION_EXIT_CODE -eq 1 ]; then
+
+            if [[ "${SENTENCE_LENGTH_VALIDATION_EXIT_CODE}" -eq 1 ]]; then
                 echo -e "${RED}❌ Sentence length validation failed${NC}"
                 echo -e "${RED}   Please fix the issues above before committing${NC}"
                 echo ""
@@ -250,7 +250,7 @@ else
                 echo -e "${YELLOW}   - Break long sentences at conjunctions (and, but, while, because)${NC}"
                 echo -e "${YELLOW}   - Use commas and semicolons as natural break points${NC}"
                 echo -e "${YELLOW}   - Break after prepositions when possible${NC}"
-                echo -e "${YELLOW}   - Run 'node .husky/validate-sentence-length.js --fix' to auto-fix${NC}"
+                echo -e "${YELLOW}   - Run 'node scripts/validation/markdown/validate-sentence-length.js --fix' to auto-fix${NC}"
                 echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
                 exit 1
             else
@@ -266,27 +266,27 @@ echo -e "${BLUE}🔗 Running markdown link validation...${NC}"
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-MARKDOWN_LINK_VALIDATOR_SCRIPT="$SCRIPT_DIR/validate-markdown-links.js"
+MARKDOWN_LINK_VALIDATOR_SCRIPT="${PROJECT_ROOT}/scripts/validation/markdown/validate-markdown-links.js"
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 
 # Check if markdown link validator script exists
-if [ ! -f "$MARKDOWN_LINK_VALIDATOR_SCRIPT" ]; then
-    echo -e "${YELLOW}⚠️  Markdown link validator script not found at: $MARKDOWN_LINK_VALIDATOR_SCRIPT${NC}"
+if [[ ! -f "${MARKDOWN_LINK_VALIDATOR_SCRIPT}" ]]; then
+    echo -e "${YELLOW}⚠️  Markdown link validator script not found at: ${MARKDOWN_LINK_VALIDATOR_SCRIPT}${NC}"
     echo -e "${YELLOW}   Skipping markdown link validation...${NC}"
 else
     # Check if we have any markdown files staged
-    if [ -z "$STAGED_MARKDOWN_FILES_ALL" ]; then
+    if [[ -z "${STAGED_MARKDOWN_FILES_ALL}" ]]; then
         echo -e "${GREEN}✅ No markdown files staged for link validation${NC}"
     else
         # Run markdown link validation
-        cd "$PROJECT_ROOT"
-        
-        if node "$MARKDOWN_LINK_VALIDATOR_SCRIPT" --staged; then
+        cd "${PROJECT_ROOT}"
+
+        if node "${MARKDOWN_LINK_VALIDATOR_SCRIPT}" --staged; then
             echo -e "${GREEN}✅ Markdown link validation passed${NC}"
         else
             MARKDOWN_LINK_VALIDATION_EXIT_CODE=$?
-            
-            if [ $MARKDOWN_LINK_VALIDATION_EXIT_CODE -eq 1 ]; then
+
+            if [[ "${MARKDOWN_LINK_VALIDATION_EXIT_CODE}" -eq 1 ]]; then
                 echo -e "${RED}❌ Markdown link validation failed${NC}"
                 echo -e "${RED}   Please fix the broken links above before committing${NC}"
                 echo ""
@@ -295,7 +295,7 @@ else
                 echo -e "${YELLOW}   - Verify anchor names match heading text${NC}"
                 echo -e "${YELLOW}   - Use relative paths for internal links${NC}"
                 echo -e "${YELLOW}   - Test external URLs in a browser${NC}"
-                echo -e "${YELLOW}   - Run 'node .husky/validate-markdown-links.js --all' to validate all files${NC}"
+                echo -e "${YELLOW}   - Run 'node scripts/validation/markdown/validate-markdown-links.js --all' to validate all files${NC}"
                 echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
                 exit 1
             else
@@ -311,33 +311,33 @@ echo -e "${BLUE}📝 Running italic-to-blockquote conversion...${NC}"
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ITALIC_TO_BLOCKQUOTE_SCRIPT="$SCRIPT_DIR/validate-italic-to-blockquote.js"
+ITALIC_TO_BLOCKQUOTE_SCRIPT="${PROJECT_ROOT}/scripts/validation/markdown/validate-italic-to-blockquote.js"
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 
 # Check if italic-to-blockquote script exists
-if [ ! -f "$ITALIC_TO_BLOCKQUOTE_SCRIPT" ]; then
-    echo -e "${YELLOW}⚠️  Italic-to-blockquote script not found at: $ITALIC_TO_BLOCKQUOTE_SCRIPT${NC}"
+if [[ ! -f "${ITALIC_TO_BLOCKQUOTE_SCRIPT}" ]]; then
+    echo -e "${YELLOW}⚠️  Italic-to-blockquote script not found at: ${ITALIC_TO_BLOCKQUOTE_SCRIPT}${NC}"
     echo -e "${YELLOW}   Skipping italic-to-blockquote conversion...${NC}"
 else
     # Check if we have any markdown files staged
-    if [ -z "$STAGED_MARKDOWN_FILES_ALL" ]; then
+    if [[ -z "${STAGED_MARKDOWN_FILES_ALL}" ]]; then
         echo -e "${GREEN}✅ No markdown files staged for italic-to-blockquote conversion${NC}"
     else
         # Run italic-to-blockquote conversion
-        cd "$PROJECT_ROOT"
-        
-        if node "$ITALIC_TO_BLOCKQUOTE_SCRIPT" --fix; then
+        cd "${PROJECT_ROOT}"
+
+        if node "${ITALIC_TO_BLOCKQUOTE_SCRIPT}" --fix; then
             echo -e "${GREEN}✅ Italic-to-blockquote conversion passed${NC}"
         else
             ITALIC_TO_BLOCKQUOTE_EXIT_CODE=$?
-            
-            if [ $ITALIC_TO_BLOCKQUOTE_EXIT_CODE -eq 1 ]; then
+
+            if [[ "${ITALIC_TO_BLOCKQUOTE_EXIT_CODE}" -eq 1 ]]; then
                 echo -e "${RED}❌ Italic-to-blockquote conversion failed${NC}"
                 echo -e "${RED}   Please fix the italic formatting issues above before committing${NC}"
                 echo ""
                 echo -e "${YELLOW}💡 Tips:${NC}"
                 echo -e "${YELLOW}   - Convert italic text (*text*) to blockquotes (>text) for better readability${NC}"
-                echo -e "${YELLOW}   - Run 'node .husky/validate-italic-to-blockquote.js --fix' to auto-fix${NC}"
+                echo -e "${YELLOW}   - Run 'node scripts/validation/markdown/validate-italic-to-blockquote.js --fix' to auto-fix${NC}"
                 echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
                 exit 1
             else
@@ -353,33 +353,33 @@ echo -e "${BLUE}🐍 Running Python validation...${NC}"
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PYTHON_VALIDATOR_SCRIPT="$SCRIPT_DIR/validate-python.py"
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+PYTHON_VALIDATOR_SCRIPT="${PROJECT_ROOT}/scripts/validation/python/validate_python.py"
 
 # Check if Python validator script exists
-if [ ! -f "$PYTHON_VALIDATOR_SCRIPT" ]; then
-    echo -e "${YELLOW}⚠️  Python validator script not found at: $PYTHON_VALIDATOR_SCRIPT${NC}"
+if [[ ! -f "${PYTHON_VALIDATOR_SCRIPT}" ]]; then
+    echo -e "${YELLOW}⚠️  Python validator script not found at: ${PYTHON_VALIDATOR_SCRIPT}${NC}"
     echo -e "${YELLOW}   Skipping Python validation...${NC}"
 else
     # Check if we have any Python files staged
     STAGED_PYTHON_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$' || true)
 
-    if [ -z "$STAGED_PYTHON_FILES" ]; then
+    if [[ -z "${STAGED_PYTHON_FILES}" ]]; then
         echo -e "${GREEN}✅ No Python files staged for commit${NC}"
     else
         echo -e "${BLUE}📁 Staged Python files:${NC}"
-        echo "$STAGED_PYTHON_FILES" | sed 's/^/  - /'
+        echo "${STAGED_PYTHON_FILES}" | sed 's/^/  - /'
         echo ""
 
         # Run Python validation
-        cd "$PROJECT_ROOT"
-        
-        if python3 "$PYTHON_VALIDATOR_SCRIPT"; then
+        cd "${PROJECT_ROOT}"
+
+        if python3 "${PYTHON_VALIDATOR_SCRIPT}"; then
             echo -e "${GREEN}✅ Python validation passed${NC}"
         else
             PYTHON_VALIDATION_EXIT_CODE=$?
-            
-            if [ $PYTHON_VALIDATION_EXIT_CODE -eq 1 ]; then
+
+            if [[ "${PYTHON_VALIDATION_EXIT_CODE}" -eq 1 ]]; then
                 echo -e "${RED}❌ Python validation failed${NC}"
                 echo -e "${RED}   Please fix the issues above before committing${NC}"
                 echo ""
@@ -404,7 +404,7 @@ echo -e "${BLUE}🐺 Running workflow shell script validation...${NC}"
 
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORKFLOW_SHELL_VALIDATOR_SCRIPT="$SCRIPT_DIR/pre-commit-workflow-shell-validation"
+WORKFLOW_SHELL_VALIDATOR_SCRIPT="${PROJECT_ROOT}/scripts/validation/workflows/pre-commit-workflow-shell-validation"
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 
 # Check if workflow shell validator script exists
@@ -420,18 +420,18 @@ else
     else
         # Run workflow shell validation
         cd "${PROJECT_ROOT}"
-        
+
         if bash "${WORKFLOW_SHELL_VALIDATOR_SCRIPT}"; then
             echo -e "${GREEN}✅ Workflow shell validation passed${NC}"
         else
             WORKFLOW_SHELL_VALIDATION_EXIT_CODE=$?
-            
+
             if [[ "${WORKFLOW_SHELL_VALIDATION_EXIT_CODE}" -eq 1 ]]; then
                 echo -e "${RED}❌ Workflow shell validation failed${NC}"
                 echo -e "${RED}   Please fix the shell script issues above before committing${NC}"
                 echo ""
                 echo -e "${YELLOW}💡 Tips:${NC}"
-                echo -e "${YELLOW}   - Run 'node .husky/extract-workflow-shell.js --fix' to auto-fix common issues${NC}"
+                echo -e "${YELLOW}   - Run 'node scripts/validation/workflows/extract-workflow-shell.js --fix' to auto-fix common issues${NC}"
                 echo -e "${YELLOW}   - Use '[[ ]]' instead of '[ ]' for bash tests${NC}"
                 echo -e "${YELLOW}   - Add braces around variables: \${VAR} instead of \$VAR${NC}"
                 echo -e "${YELLOW}   - Check .shellcheckrc configuration for rules${NC}"
@@ -451,51 +451,51 @@ echo -e "${BLUE}🧪 Running package tests...${NC}"
 # Check if we have any TypeScript/JavaScript files staged in packages
 STAGED_PACKAGE_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^packages/.*\.(ts|tsx|js|jsx)$' || true)
 
-if [ -n "$STAGED_PACKAGE_FILES" ]; then
+if [[ -n "${STAGED_PACKAGE_FILES}" ]]; then
     echo -e "${BLUE}📁 Staged package files:${NC}"
-    echo "$STAGED_PACKAGE_FILES" | sed 's/^/  - /'
+    echo "${STAGED_PACKAGE_FILES}" | sed 's/^/  - /'
     echo ""
-    
+
     # Get unique packages that have staged files
-    AFFECTED_PACKAGES=$(echo "$STAGED_PACKAGE_FILES" | sed 's|^packages/\([^/]*\)/.*|\1|' | sort -u)
-    
+    AFFECTED_PACKAGES=$(echo "${STAGED_PACKAGE_FILES}" | sed 's|^packages/\([^/]*\)/.*|\1|' | sort -u)
+
     echo -e "${BLUE}🎯 Affected packages:${NC}"
-    echo "$AFFECTED_PACKAGES" | sed 's/^/  - /'
+    echo "${AFFECTED_PACKAGES}" | sed 's/^/  - /'
     echo ""
-    
+
     # Run tests for each affected package using the queue system
-    for package in $AFFECTED_PACKAGES; do
-        if [ -d "packages/$package" ] && [ -f "packages/$package/package.json" ]; then
-            echo -e "${BLUE}🧪 Testing package: $package${NC}"
-            
+    for package in ${AFFECTED_PACKAGES}; do
+        if [[ -d "packages/${package}" ]] && [[ -f "packages/${package}/package.json" ]]; then
+            echo -e "${BLUE}🧪 Testing package: ${package}${NC}"
+
             # Check if package has test script
-            if grep -q '"test"' "packages/$package/package.json"; then
-                cd "packages/$package"
-                
+            if grep -q '"test"' "packages/${package}/package.json"; then
+                cd "packages/${package}"
+
                 # Run the package's test script (which should use the queue system)
                 if npm run test; then
-                    echo -e "${GREEN}✅ Package $package tests passed${NC}"
+                    echo -e "${GREEN}✅ Package ${package} tests passed${NC}"
                 else
                     PACKAGE_TEST_EXIT_CODE=$?
-                    echo -e "${RED}❌ Package $package tests failed${NC}"
+                    echo -e "${RED}❌ Package ${package} tests failed${NC}"
                     echo -e "${RED}   Please fix the test failures above before committing${NC}"
                     echo ""
                     echo -e "${YELLOW}💡 Tips:${NC}"
-                    echo -e "${YELLOW}   - Run 'cd packages/$package && npm run test' to see full test output${NC}"
-                    echo -e "${YELLOW}   - Check test files in packages/$package/src/__tests__/${NC}"
+                    echo -e "${YELLOW}   - Run 'cd packages/${package} && npm run test' to see full test output${NC}"
+                    echo -e "${YELLOW}   - Check test files in packages/${package}/src/__tests__/${NC}"
                     echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
                     exit 1
                 fi
-                
+
                 cd - > /dev/null
             else
-                echo -e "${YELLOW}⚠️  Package $package has no test script, skipping${NC}"
+                echo -e "${YELLOW}⚠️  Package ${package} has no test script, skipping${NC}"
             fi
         else
-            echo -e "${YELLOW}⚠️  Package $package not found or invalid, skipping${NC}"
+            echo -e "${YELLOW}⚠️  Package ${package} not found or invalid, skipping${NC}"
         fi
     done
-    
+
     echo -e "${GREEN}✅ All package tests passed!${NC}"
 else
     echo -e "${GREEN}✅ No package files staged for testing${NC}"

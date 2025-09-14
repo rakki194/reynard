@@ -4,7 +4,7 @@ Tests for backend functionality in the Gatekeeper library.
 This module tests the memory backend and base backend classes.
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -15,6 +15,9 @@ from gatekeeper.backends.base import (
 )
 from gatekeeper.backends.memory import MemoryBackend
 from gatekeeper.models.user import User, UserRole
+
+# Test constants
+EXPECTED_USER_COUNT = 2
 
 
 @pytest.fixture
@@ -32,8 +35,8 @@ def sample_user():
         email="test@example.com",
         role=UserRole.REGULAR,
         is_active=True,
-        created_at=datetime.now(timezone.utc),
-        updated_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
         password_hash="hashed_password",
     )
 
@@ -197,7 +200,7 @@ class TestMemoryBackend:
 
         users = await memory_backend.list_users()
 
-        assert len(users) == 2
+        assert len(users) == EXPECTED_USER_COUNT
         usernames = [user.username for user in users]
         assert "user1" in usernames
         assert "user2" in usernames
@@ -218,7 +221,7 @@ class TestMemoryBackend:
 
         # Test pagination
         users = await memory_backend.list_users(skip=1, limit=2)
-        assert len(users) == 2
+        assert len(users) == EXPECTED_USER_COUNT
 
     @pytest.mark.asyncio
     async def test_count_users(self, memory_backend):

@@ -54,9 +54,7 @@ export interface ConfigUpdateRequest {
 /**
  * Check if a given object implements the ConfigUpdateRequest interface.
  */
-export function instanceOfConfigUpdateRequest(
-  value: object,
-): value is ConfigUpdateRequest {
+export function instanceOfConfigUpdateRequest(value: object): value is ConfigUpdateRequest {
   return true;
 }
 
@@ -64,30 +62,17 @@ export function ConfigUpdateRequestFromJSON(json: any): ConfigUpdateRequest {
   return ConfigUpdateRequestFromJSONTyped(json, false);
 }
 
-export function ConfigUpdateRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ConfigUpdateRequest {
+export function ConfigUpdateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfigUpdateRequest {
   if (json == null) {
     return json;
   }
   return {
     enablePerformanceMonitoring:
-      json["enable_performance_monitoring"] == null
-        ? undefined
-        : json["enable_performance_monitoring"],
-    autoCleanup:
-      json["auto_cleanup"] == null ? undefined : json["auto_cleanup"],
-    defaultValidationLevel:
-      json["default_validation_level"] == null
-        ? undefined
-        : json["default_validation_level"],
-    maxConcurrentLoads:
-      json["max_concurrent_loads"] == null
-        ? undefined
-        : json["max_concurrent_loads"],
-    memoryThreshold:
-      json["memory_threshold"] == null ? undefined : json["memory_threshold"],
+      json["enable_performance_monitoring"] == null ? undefined : json["enable_performance_monitoring"],
+    autoCleanup: json["auto_cleanup"] == null ? undefined : json["auto_cleanup"],
+    defaultValidationLevel: json["default_validation_level"] == null ? undefined : json["default_validation_level"],
+    maxConcurrentLoads: json["max_concurrent_loads"] == null ? undefined : json["max_concurrent_loads"],
+    memoryThreshold: json["memory_threshold"] == null ? undefined : json["memory_threshold"],
   };
 }
 
@@ -97,7 +82,7 @@ export function ConfigUpdateRequestToJSON(json: any): ConfigUpdateRequest {
 
 export function ConfigUpdateRequestToJSONTyped(
   value?: ConfigUpdateRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

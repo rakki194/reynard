@@ -72,17 +72,12 @@ export interface PackageInfoResponse {
 /**
  * Check if a given object implements the PackageInfoResponse interface.
  */
-export function instanceOfPackageInfoResponse(
-  value: object,
-): value is PackageInfoResponse {
+export function instanceOfPackageInfoResponse(value: object): value is PackageInfoResponse {
   if (!("name" in value) || value["name"] === undefined) return false;
   if (!("isLoaded" in value) || value["isLoaded"] === undefined) return false;
-  if (!("accessCount" in value) || value["accessCount"] === undefined)
-    return false;
-  if (!("errorCount" in value) || value["errorCount"] === undefined)
-    return false;
-  if (!("dependencies" in value) || value["dependencies"] === undefined)
-    return false;
+  if (!("accessCount" in value) || value["accessCount"] === undefined) return false;
+  if (!("errorCount" in value) || value["errorCount"] === undefined) return false;
+  if (!("dependencies" in value) || value["dependencies"] === undefined) return false;
   return true;
 }
 
@@ -90,10 +85,7 @@ export function PackageInfoResponseFromJSON(json: any): PackageInfoResponse {
   return PackageInfoResponseFromJSONTyped(json, false);
 }
 
-export function PackageInfoResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): PackageInfoResponse {
+export function PackageInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): PackageInfoResponse {
   if (json == null) {
     return json;
   }
@@ -101,8 +93,7 @@ export function PackageInfoResponseFromJSONTyped(
     name: json["name"],
     isLoaded: json["is_loaded"],
     loadTime: json["load_time"] == null ? undefined : json["load_time"],
-    memoryUsage:
-      json["memory_usage"] == null ? undefined : json["memory_usage"],
+    memoryUsage: json["memory_usage"] == null ? undefined : json["memory_usage"],
     accessCount: json["access_count"],
     lastAccess: json["last_access"] == null ? undefined : json["last_access"],
     errorCount: json["error_count"],
@@ -116,7 +107,7 @@ export function PackageInfoResponseToJSON(json: any): PackageInfoResponse {
 
 export function PackageInfoResponseToJSONTyped(
   value?: PackageInfoResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

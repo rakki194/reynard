@@ -5,8 +5,31 @@
  * Ported from Yipyap's useEmbeddingReduction with Reynard integration.
  */
 
-import { createSignal, createResource, createEffect } from "solid-js";
 import { useApiClient } from "reynard-core";
+import { createResource, createSignal } from "solid-js";
+
+// Simple HTTP client wrapper for API calls
+const createHttpClient = (baseUrl: string) => ({
+  async get(url: string) {
+    const response = await fetch(`${baseUrl}${url}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    return { data: await response.json() };
+  },
+  async post(url: string, data: any) {
+    const response = await fetch(`${baseUrl}${url}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    return { data: await response.json() };
+  },
+  async delete(url: string) {
+    const response = await fetch(`${baseUrl}${url}`, { method: "DELETE" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    return { data: await response.json() };
+  },
+});
 
 export interface EmbeddingReductionRequest {
   method: "pca" | "tsne" | "umap";
@@ -89,16 +112,14 @@ export interface AvailableMethods {
 
 export function useEmbeddingVisualization() {
   const apiClient = useApiClient();
-  const [currentRequest, setCurrentRequest] =
-    createSignal<EmbeddingReductionRequest | null>(null);
+  const httpClient = createHttpClient("http://localhost:8000");
+  const [currentRequest, setCurrentRequest] = createSignal<EmbeddingReductionRequest | null>(null);
   const [currentJobId, setCurrentJobId] = createSignal<string | null>(null);
 
   // Fetch embedding statistics
   const [stats] = createResource<EmbeddingStats>(async () => {
     try {
-      const response = await apiClient.get(
-        "/api/embedding-visualization/stats",
-      );
+      const response = await httpClient.get("/api/embedding-visualization/stats");
       return response.data;
     } catch (error) {
       console.error("Failed to fetch embedding stats:", error);
@@ -109,9 +130,7 @@ export function useEmbeddingVisualization() {
   // Fetch available methods
   const [availableMethods] = createResource<AvailableMethods>(async () => {
     try {
-      const response = await apiClient.get(
-        "/api/embedding-visualization/methods",
-      );
+      const response = await httpClient.get("/api/embedding-visualization/methods");
       return response.data;
     } catch (error) {
       console.error("Failed to fetch available methods:", error);
@@ -120,33 +139,25 @@ export function useEmbeddingVisualization() {
   });
 
   // Fetch cache statistics
-  const [cacheStats, { refetch: refetchCacheStats }] =
-    createResource<CacheStats>(async () => {
-      try {
-        const response = await apiClient.get(
-          "/api/embedding-visualization/cache/stats",
-        );
-        return response.data;
-      } catch (error) {
-        console.error("Failed to fetch cache stats:", error);
-        throw new Error("Failed to load cache statistics");
-      }
-    });
+  const [cacheStats, { refetch: refetchCacheStats }] = createResource<CacheStats>(async () => {
+    try {
+      const response = await httpClient.get("/api/embedding-visualization/cache/stats");
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch cache stats:", error);
+      throw new Error("Failed to load cache statistics");
+    }
+  });
 
   // Perform embedding reduction
   const [reductionResult, { refetch: refetchReduction }] = createResource(
     currentRequest,
-    async (
-      request: EmbeddingReductionRequest,
-    ): Promise<EmbeddingReductionResponse> => {
+    async (request: EmbeddingReductionRequest): Promise<EmbeddingReductionResponse> => {
       console.log("=== FRONTEND EMBEDDING REDUCTION REQUEST ===");
       console.log("Request:", request);
 
       try {
-        const response = await apiClient.post(
-          "/api/embedding-visualization/reduce",
-          request,
-        );
+        const response = await httpClient.post("/api/embedding-visualization/reduce", request);
         const result = response.data;
 
         console.log("=== FRONTEND EMBEDDING REDUCTION RESPONSE ===");
@@ -160,39 +171,28 @@ export function useEmbeddingVisualization() {
         return result;
       } catch (error) {
         console.error("Embedding reduction failed:", error);
-        throw new Error(
-          error.response?.data?.detail || "Embedding reduction failed",
-        );
+        throw new Error((error as any).response?.data?.detail || "Embedding reduction failed");
       }
-    },
+    }
   );
 
   // Analyze embedding quality
-  const analyzeQuality = async (
-    embeddings: number[][],
-  ): Promise<EmbeddingQualityMetrics> => {
+  const analyzeQuality = async (embeddings: number[][]): Promise<EmbeddingQualityMetrics> => {
     try {
-      const response = await apiClient.post(
-        "/api/embedding-visualization/quality",
-        {
-          embeddings,
-        },
-      );
+      const response = await httpClient.post("/api/embedding-visualization/quality", {
+        embeddings,
+      });
       return response.data;
     } catch (error) {
       console.error("Failed to analyze embedding quality:", error);
-      throw new Error(
-        error.response?.data?.detail || "Failed to analyze embedding quality",
-      );
+      throw new Error((error as any).response?.data?.detail || "Failed to analyze embedding quality");
     }
   };
 
   // Clear cache
   const clearCache = async () => {
     try {
-      const response = await apiClient.delete(
-        "/api/embedding-visualization/cache",
-      );
+      const response = await httpClient.delete("/api/embedding-visualization/cache");
       await refetchCacheStats();
       return response.data;
     } catch (error) {
@@ -210,15 +210,13 @@ export function useEmbeddingVisualization() {
   // Get health status
   const getHealthStatus = async () => {
     try {
-      const response = await apiClient.get(
-        "/api/embedding-visualization/health",
-      );
+      const response = await httpClient.get("/api/embedding-visualization/health");
       return response.data;
     } catch (error) {
       console.error("Failed to get health status:", error);
       return {
         status: "unhealthy",
-        error: error.response?.data?.detail || "Service unavailable",
+        error: (error as any).response?.data?.detail || "Service unavailable",
       };
     }
   };
@@ -234,7 +232,7 @@ export function useEmbeddingVisualization() {
       console.log("Connected to embedding visualization progress WebSocket");
     };
 
-    ws.onmessage = (event) => {
+    ws.onmessage = event => {
       try {
         const data = JSON.parse(event.data);
         if (data.type === "progress") {
@@ -246,12 +244,10 @@ export function useEmbeddingVisualization() {
     };
 
     ws.onclose = () => {
-      console.log(
-        "Disconnected from embedding visualization progress WebSocket",
-      );
+      console.log("Disconnected from embedding visualization progress WebSocket");
     };
 
-    ws.onerror = (error) => {
+    ws.onerror = error => {
       console.error("WebSocket error:", error);
     };
 
@@ -259,10 +255,7 @@ export function useEmbeddingVisualization() {
   };
 
   // Utility functions for data processing
-  const generateSampleEmbeddings = (
-    count: number,
-    dimensions: number = 768,
-  ): number[][] => {
+  const generateSampleEmbeddings = (count: number, dimensions: number = 768): number[][] => {
     const embeddings: number[][] = [];
 
     for (let i = 0; i < count; i++) {
@@ -285,11 +278,8 @@ export function useEmbeddingVisualization() {
     const allValues = embeddings.flat();
 
     // Calculate statistics
-    const mean =
-      allValues.reduce((sum, val) => sum + val, 0) / allValues.length;
-    const variance =
-      allValues.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) /
-      allValues.length;
+    const mean = allValues.reduce((sum, val) => sum + val, 0) / allValues.length;
+    const variance = allValues.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / allValues.length;
     const std = Math.sqrt(variance);
     const sorted = [...allValues].sort((a, b) => a - b);
 
@@ -332,8 +322,7 @@ export function useEmbeddingVisualization() {
     }
 
     // Find optimal components (95% variance)
-    const optimalComponents =
-      cumulativeVariance.findIndex((v) => v >= 0.95) + 1;
+    const optimalComponents = cumulativeVariance.findIndex(v => v >= 0.95) + 1;
 
     return {
       explained_variance_ratio: explainedVarianceRatio,
@@ -383,25 +372,12 @@ export function useEmbeddingVisualization() {
       },
     ];
 
-    const overallScore =
-      (metrics.reduce((sum, metric) => sum + metric.value, 0) /
-        metrics.length) *
-      100;
+    const overallScore = (metrics.reduce((sum, metric) => sum + metric.value, 0) / metrics.length) * 100;
 
     const assessment = {
-      status:
-        overallScore >= 80
-          ? "excellent"
-          : overallScore >= 60
-            ? "good"
-            : overallScore >= 40
-              ? "fair"
-              : "poor",
+      status: overallScore >= 80 ? "excellent" : overallScore >= 60 ? "good" : overallScore >= 40 ? "fair" : "poor",
       issues: overallScore < 60 ? ["Low overall quality score"] : [],
-      recommendations:
-        overallScore < 80
-          ? ["Consider improving embedding quality"]
-          : ["Quality is good"],
+      recommendations: overallScore < 80 ? ["Consider improving embedding quality"] : ["Quality is good"],
     };
 
     return {

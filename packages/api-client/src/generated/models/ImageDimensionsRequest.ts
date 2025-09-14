@@ -36,24 +36,17 @@ export interface ImageDimensionsRequest {
 /**
  * Check if a given object implements the ImageDimensionsRequest interface.
  */
-export function instanceOfImageDimensionsRequest(
-  value: object,
-): value is ImageDimensionsRequest {
+export function instanceOfImageDimensionsRequest(value: object): value is ImageDimensionsRequest {
   if (!("width" in value) || value["width"] === undefined) return false;
   if (!("height" in value) || value["height"] === undefined) return false;
   return true;
 }
 
-export function ImageDimensionsRequestFromJSON(
-  json: any,
-): ImageDimensionsRequest {
+export function ImageDimensionsRequestFromJSON(json: any): ImageDimensionsRequest {
   return ImageDimensionsRequestFromJSONTyped(json, false);
 }
 
-export function ImageDimensionsRequestFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): ImageDimensionsRequest {
+export function ImageDimensionsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageDimensionsRequest {
   if (json == null) {
     return json;
   }
@@ -63,15 +56,13 @@ export function ImageDimensionsRequestFromJSONTyped(
   };
 }
 
-export function ImageDimensionsRequestToJSON(
-  json: any,
-): ImageDimensionsRequest {
+export function ImageDimensionsRequestToJSON(json: any): ImageDimensionsRequest {
   return ImageDimensionsRequestToJSONTyped(json, false);
 }
 
 export function ImageDimensionsRequestToJSONTyped(
   value?: ImageDimensionsRequest | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

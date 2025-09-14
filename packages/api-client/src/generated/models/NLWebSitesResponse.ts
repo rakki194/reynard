@@ -21,10 +21,10 @@ import { mapValues } from "../runtime";
 export interface NLWebSitesResponse {
   /**
    * List of available sites
-   * @type {Array<object>}
+   * @type {Array<{ [key: string]: any; } | null>}
    * @memberof NLWebSitesResponse
    */
-  sites: Array<object>;
+  sites: Array<{ [key: string]: any } | null>;
   /**
    * Total number of sites
    * @type {number}
@@ -36,12 +36,9 @@ export interface NLWebSitesResponse {
 /**
  * Check if a given object implements the NLWebSitesResponse interface.
  */
-export function instanceOfNLWebSitesResponse(
-  value: object,
-): value is NLWebSitesResponse {
+export function instanceOfNLWebSitesResponse(value: object): value is NLWebSitesResponse {
   if (!("sites" in value) || value["sites"] === undefined) return false;
-  if (!("totalSites" in value) || value["totalSites"] === undefined)
-    return false;
+  if (!("totalSites" in value) || value["totalSites"] === undefined) return false;
   return true;
 }
 
@@ -49,10 +46,7 @@ export function NLWebSitesResponseFromJSON(json: any): NLWebSitesResponse {
   return NLWebSitesResponseFromJSONTyped(json, false);
 }
 
-export function NLWebSitesResponseFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): NLWebSitesResponse {
+export function NLWebSitesResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebSitesResponse {
   if (json == null) {
     return json;
   }
@@ -68,7 +62,7 @@ export function NLWebSitesResponseToJSON(json: any): NLWebSitesResponse {
 
 export function NLWebSitesResponseToJSONTyped(
   value?: NLWebSitesResponse | null,
-  ignoreDiscriminator: boolean = false,
+  ignoreDiscriminator: boolean = false
 ): any {
   if (value == null) {
     return value;

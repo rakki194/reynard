@@ -65,10 +65,7 @@ export function TTSVoiceInfoFromJSON(json: any): TTSVoiceInfo {
   return TTSVoiceInfoFromJSONTyped(json, false);
 }
 
-export function TTSVoiceInfoFromJSONTyped(
-  json: any,
-  ignoreDiscriminator: boolean,
-): TTSVoiceInfo {
+export function TTSVoiceInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSVoiceInfo {
   if (json == null) {
     return json;
   }
@@ -85,10 +82,7 @@ export function TTSVoiceInfoToJSON(json: any): TTSVoiceInfo {
   return TTSVoiceInfoToJSONTyped(json, false);
 }
 
-export function TTSVoiceInfoToJSONTyped(
-  value?: TTSVoiceInfo | null,
-  ignoreDiscriminator: boolean = false,
-): any {
+export function TTSVoiceInfoToJSONTyped(value?: TTSVoiceInfo | null, ignoreDiscriminator: boolean = false): any {
   if (value == null) {
     return value;
   }
