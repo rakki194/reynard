@@ -276,60 +276,132 @@ on:
   pull_request:
     branches: [ main, develop ]
 
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8.15.0'
+
 jobs:
   i18n-checks:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
       with:
-        node-version: '18'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Run i18n linting
-      run: npx i18n-lint --packages packages/* --locales en,es,fr,de,ru,ar
-    
-    - name: Run i18n tests
-      run: npx vitest run packages/i18n --coverage
-    
-    - name: Upload coverage
-      uses: codecov/codecov-action@v3
+        fetch-depth: 0
+        
+    - name: 🏗️ Setup pnpm
+      uses: pnpm/action-setup@v4
       with:
-        file: ./coverage/lcov.info
-        flags: i18n
-        name: i18n-coverage
+        version: \$\{{ env.PNPM_VERSION \}\}
+        
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: \$\{{ env.NODE_VERSION \}\}
+        cache: 'pnpm'
+        
+    - name: 💾 Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pnpm-store
+          node_modules
+          packages/*/node_modules
+        key: \$\{{ runner.os \}\}-pnpm-\$\{{ hashFiles('**/pnpm-lock.yaml') \}\}
+        restore-keys: |
+          \$\{{ runner.os \}\}-pnpm-
+        
+    - name: 📦 Install dependencies
+      run: pnpm install --frozen-lockfile
     
-    - name: Comment PR with i18n results
+    - name: 🏗️ Build testing package
+      run: |
+        cd packages/testing
+        pnpm build
+        
+    - name: ✅ Validate i18n setup
+      run: |
+        cd packages/testing
+        pnpm i18n:validate
+    
+    - name: 🔍 Run i18n linting
+      run: |
+        cd packages/testing
+        pnpm i18n:eslint
+    
+    - name: 🧪 Run i18n tests
+      run: |
+        cd packages/testing
+        pnpm i18n:test --output ../../i18n-results.json --report ../../i18n-report.md
+    
+    - name: 📤 Upload i18n results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: i18n-results
+        path: |
+          i18n-results.json
+          i18n-report.md
+        retention-days: 30
+    
+    - name: 💬 Comment PR with i18n results
       if: github.event_name == 'pull_request'
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       with:
         script: |
           const fs = require('fs');
-          const results = fs.readFileSync('i18n-results.json', 'utf8');
-          const data = JSON.parse(results);
           
-          const comment = \`## 🌍 i18n Check Results
+          try {
+            const results = JSON.parse(fs.readFileSync('i18n-results.json', 'utf8'));
+            const report = fs.readFileSync('i18n-report.md', 'utf8');
+            
+            const comment = \`## 🌍 i18n Check Results
+            
+            ### Summary
+            - **Total Packages**: \$\{results.summary.totalPackages\}
+            - **Successful**: \$\{results.summary.successfulPackages\}
+            - **Failed**: \$\{results.summary.failedPackages\}
+            - **Hardcoded Strings**: \$\{results.summary.totalHardcodedStrings\}
+            - **Missing Translations**: \$\{results.summary.totalMissingTranslations\}
+            - **RTL Issues**: \$\{results.summary.totalRTLIssues\}
+            - **Duration**: \$\{results.duration\}ms
+            
+            ### Status
+            \$\{results.overallSuccess ? '✅ All i18n checks passed!' : '❌ Some i18n checks failed.'\}
+            
+            <details>
+            <summary>📊 Detailed Report</summary>
+            
+            \`\`\`markdown
+            \$\{report\}
+            \`\`\`
+            
+            </details>
+            \`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          } catch (error) {
+            console.error('Failed to create i18n comment:', error);
+          }
           
-          - **Hardcoded strings**: \${data.hardcodedStrings}
-          - **Missing translations**: \${data.missingTranslations}
-          - **RTL issues**: \${data.rtlIssues}
-          - **Coverage**: \${data.coverage}%
-          
-          \${data.success ? '✅ All checks passed!' : '❌ Some checks failed.'}
-          \`;
-          
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: comment
-          });
+    - name: 🚪 Fail on i18n issues
+      run: |
+        if [[ -f "i18n-results.json" ]]; then
+          SUCCESS=$(jq -r '.overallSuccess' i18n-results.json)
+          if [[ "\\\${SUCCESS}" != "true" ]]; then
+            echo "❌ i18n checks failed"
+            exit 1
+          fi
+        else
+          echo "❌ i18n results file not found"
+          exit 1
+        fi
 `;
 }
 

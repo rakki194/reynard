@@ -1,0 +1,90 @@
+/**
+ * 🐺 Fenrir Class Mapper
+ * 
+ * *snarls with systematic precision* Maps fenrir exploit module names
+ * to their corresponding class names for dynamic instantiation.
+ */
+
+/**
+ * Get the exploit class name from module path
+ */
+export function getExploitClassName(modulePath: string): string {
+  const parts = modulePath.split(".");
+  const moduleName = parts[parts.length - 1];
+
+  // Map of module names to actual class names
+  const classMap: Record<string, string> = {
+    // Fuzzing modules
+    comprehensive_fuzzer: "ComprehensiveFuzzerExploit",
+    endpoint_fuzzer: "EndpointFuzzerExploit",
+    exploit_wrappers: "ComprehensiveFuzzerExploit", // Default to comprehensive fuzzer
+
+    // SQL Injection modules
+    basic_injection: "BasicInjectionExploit",
+    blind_injection: "BlindInjectionExploit",
+    time_based_injection: "TimeBasedInjectionExploit",
+    union_injection: "UnionInjectionExploit",
+    obfuscated_payloads: "ObfuscatedPayloadExploit",
+    regex_bypass: "RegexBypassExploit",
+
+    // API Exploits
+    bola_attacks: "BolaAttacksExploit",
+    idor_attacks: "IdorAttacksExploit",
+
+    // CSRF Exploits
+    csrf_attacks: "CsrfAttacksExploit",
+    csrf_bypass: "CsrfBypassExploit",
+
+    // Path Traversal
+    basic_traversal: "BasicTraversalExploit",
+    encoded_traversal: "EncodedPathTraversalExploit",
+    unicode_bypass: "UnicodeBypassExploit",
+    null_byte_injection: "NullByteInjectionExploit",
+    double_encoding: "DoubleEncodingExploit",
+
+    // SSRF Exploits
+    ssrf_attacks: "SsrfAttacksExploit",
+    ssrf_bypass: "SsrfBypassExploit",
+
+    // Race Conditions
+    race_exploits: "RaceExploitsExploit",
+    concurrent_attacks: "ConcurrentAttacksExploit",
+
+    // CORS Exploits
+    cors_misconfiguration: "CorsMisconfigurationExploit",
+    cors_bypass: "CorsBypassExploit",
+
+    // HTTP Smuggling
+    request_smuggling: "RequestSmugglingExploit",
+    response_smuggling: "ResponseSmugglingExploit",
+
+    // Unicode Exploits
+    normalization_bypass: "NormalizationBypassExploit",
+    unicode_attacks: "UnicodeAttacksExploit",
+
+    // Rate Limiting
+    rate_limit_bypass: "RateLimitBypassExploit",
+    rate_limit_attacks: "RateLimitAttacksExploit",
+
+    // JWT Exploits
+    secret_key_attack: "SecretKeyVulnerabilityExploit",
+    algorithm_confusion: "AlgorithmConfusionExploit",
+    kid_manipulation: "KidManipulationExploit",
+    jwt_replay: "JwtReplayExploit",
+    jwt_injection: "JwtInjectionExploit",
+  };
+
+  // Return mapped class name or generate default
+  if (classMap[moduleName]) {
+    return classMap[moduleName];
+  }
+
+  // Fallback: generate class name without "Exploit" suffix
+  const className = moduleName
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("");
+
+  return className;
+}
+

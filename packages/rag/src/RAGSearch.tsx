@@ -31,7 +31,9 @@ import "./styles.css";
 const getIcon = (name: string) => {
   const icon = getIconFromRegistry(name);
   if (icon) {
-    return <div innerHTML={icon as unknown as string} />;
+    // Use the proper Reynard pattern for rendering SVG icons
+    // eslint-disable-next-line solid/no-innerhtml
+    return <div class="icon-wrapper" innerHTML={icon.outerHTML} />;
   }
   return null;
 };

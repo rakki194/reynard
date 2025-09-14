@@ -10,7 +10,7 @@ on:
       skip_tests:
         description: 'Skip i18n tests (for debugging)'
         required: false
-        default: 'false'
+        default: false
         type: boolean
       packages_only:
         description: 'Test specific packages (comma-separated)'

@@ -5,13 +5,18 @@
   "type": "module",
   "scripts": {
     "test": "playwright test",
-    "test:simple": "playwright test --config=playwright.config.simple.ts",
+    "test:auth": "playwright test --config=playwright.config.dom.ts",
     "test:penetration": "playwright test --config=playwright.config.penetration.ts",
+    "test:dom": "playwright test --config=playwright.config.dom.ts",
+    "test:auth:headed": "playwright test --config=playwright.config.dom.ts --headed",
+    "test:auth:debug": "playwright test --config=playwright.config.dom.ts --debug",
+    "test:auth:ui": "playwright test --config=playwright.config.dom.ts --ui",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:ui": "playwright test --ui",
     "test:report": "playwright show-report",
     "test:penetration-report": "playwright show-report --config=playwright.config.penetration.ts",
+    "test:auth-report": "playwright show-report --config=playwright.config.dom.ts",
     "install:browsers": "playwright install",
     "fenrir:test": "cd ../fenrir && python3 run_all_exploits.py",
     "fenrir:test:destructive": "cd ../fenrir && python3 run_all_exploits.py --destructive",
@@ -20,10 +25,10 @@
     "security:assess:destructive": "npm run test:penetration && npm run fenrir:test:destructive"
   },
   "devDependencies": {
-    "@playwright/test": "^1.55.0",
-    "reynard-testing": "workspace:*",
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "@playwright/test": "1.55.0",
+    "reynard-testing": "0.1.2",
+    "typescript": "5.9.2",
+    "@types/node": "24.4.0"
   },
   "engines": {
     "node": ">=18.0.0"

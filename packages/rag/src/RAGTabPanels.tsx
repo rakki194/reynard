@@ -10,13 +10,7 @@ import { SearchTab } from "./SearchTab";
 import { DocumentsTab } from "./DocumentsTab";
 import { UploadTab } from "./UploadTab";
 import { SettingsTab } from "./SettingsTab";
-import type { RAGSearchProps } from "./types";
-
-export interface RAGTabPanelsProps {
-  activeTab: string;
-  ragState: any;
-  handlers: any;
-}
+import type { RAGTabPanelsProps } from "./types/rag-tab-panels";
 
 /**
  * Renders the tab panels for RAG search interface
@@ -45,7 +39,7 @@ export function RAGTabPanels(props: RAGTabPanelsProps) {
       {/* Documents Tab */}
       <TabPanel tabId="documents" activeTab={props.activeTab}>
         <DocumentsTab
-          documents={props.ragState.documents}
+          documents={props.ragState.documents()}
           onRefresh={props.ragState.loadDocuments}
           onDeleteDocument={props.ragState.deleteDocument}
         />

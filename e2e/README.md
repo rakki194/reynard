@@ -25,8 +25,12 @@ This E2E test suite provides comprehensive testing of authentication workflows a
 
 ```text
 e2e/
-├── auth.spec.ts              # Main authentication test suite
-├── playwright.config.ts      # Playwright configuration
+├── auth.spec.ts       # Basic authentication tests
+├── penetration-tests.spec.ts # Comprehensive penetration tests
+├── dom-*.spec.ts            # DOM assertion tests
+├── playwright.config.ts     # Main comprehensive configuration
+├── playwright.config.dom.ts # DOM and auth test configuration
+├── playwright.config.penetration.ts # Penetration test configuration
 ├── global-setup.ts          # Global test setup
 ├── global-teardown.ts       # Global test cleanup
 ├── utils/
@@ -88,6 +92,8 @@ npx playwright test
 
 ```bash
 npx playwright test auth.spec.ts
+npx playwright test penetration-tests.spec.ts
+npx playwright test assertions-simple.spec.ts
 ```
 
 ### Run Tests in Specific Browser
@@ -235,6 +241,7 @@ npx playwright show-report
 
 ```bash
 npx playwright test --debug auth.spec.ts
+npx playwright test --debug penetration-tests.spec.ts
 ```
 
 ### Take Screenshots

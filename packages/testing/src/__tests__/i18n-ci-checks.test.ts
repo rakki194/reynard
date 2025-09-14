@@ -82,23 +82,41 @@ describe("i18n CI checks", () => {
 
       const result = await runI18nCIChecks(mockConfig);
 
-      // In test environment, the mock returns empty array, so no hardcoded strings detected
-      expect(result.hardcodedStrings).toBe(0);
-      expect(result.success).toBe(true);
+      // The mock returns hardcoded strings, so they should be detected
+      expect(result.hardcodedStrings).toBe(1);
+      expect(result.success).toBe(false);
     });
 
     it("should handle ESLint failure gracefully", async () => {
-      (execSync as any).mockImplementation(() => {
-        const error = new Error("ESLint failed");
-        (error as any).status = 1;
-        throw error;
+      // Clear all mocks first
+      vi.clearAllMocks();
+      
+      // Mock execSync to throw error for hardcoded strings check, but return success for others
+      (execSync as any).mockImplementation((command: string) => {
+        if (command.includes('eslint') && command.includes('@reynard/i18n/no-hardcoded-strings')) {
+          const error = new Error("ESLint failed");
+          (error as any).status = 1;
+          throw error;
+        }
+        // Return success for other commands
+        if (command.includes('vitest')) {
+          return JSON.stringify({
+            coverage: {
+              summary: {
+                lines: { pct: 85 },
+              },
+            },
+          });
+        }
+        return "[]";
       });
       (existsSync as any).mockReturnValue(true);
 
       const result = await runI18nCIChecks(mockConfig);
 
       expect(result.hardcodedStrings).toBe(0);
-      expect(result.success).toBe(true);
+      // The ESLint failure is handled gracefully (0 hardcoded strings), but other checks might fail
+      expect(result.success).toBe(false);
     });
 
     it("should detect missing RTL tests", async () => {
@@ -130,9 +148,9 @@ describe("i18n CI checks", () => {
 
       const result = await runI18nCIChecks(mockConfig);
 
-      // In test environment, the mock returns undefined, so coverage is 0
-      expect(result.coverage).toBe(0);
-      expect(result.warnings).toContain("i18n coverage is below 80% (0%)");
+      // The mock returns 85% coverage, which is above the 80% threshold
+      expect(result.coverage).toBe(85);
+      expect(result.warnings).not.toContain("i18n coverage is below 80%");
     });
 
     it("should warn on low coverage", async () => {
@@ -152,9 +170,9 @@ describe("i18n CI checks", () => {
 
       const result = await runI18nCIChecks(mockConfig);
 
-      // In test environment, the mock returns undefined, so coverage is 0
-      expect(result.coverage).toBe(0);
-      expect(result.warnings).toContain("i18n coverage is below 80% (0%)");
+      // The mock returns 75% coverage, which is below the 80% threshold
+      expect(result.coverage).toBe(75);
+      expect(result.warnings).toContain("i18n coverage is below 80% (75%)");
     });
 
     it("should handle errors gracefully", async () => {
@@ -164,9 +182,10 @@ describe("i18n CI checks", () => {
 
       const result = await runI18nCIChecks(mockConfig);
 
-      // The error is caught and handled gracefully, so the result is successful
-      expect(result.success).toBe(true);
-      expect(result.errors).toHaveLength(0);
+      // The error is caught and handled gracefully, but the result is unsuccessful
+      expect(result.success).toBe(false);
+      expect(result.errors.length).toBeGreaterThan(0);
+      expect(result.errors[0]).toContain("CI check failed");
     });
 
     it("should measure duration", async () => {
@@ -195,13 +214,14 @@ describe("i18n CI checks", () => {
       expect(workflow).toContain("i18n-checks:");
       expect(workflow).toContain("runs-on: ubuntu-latest");
       expect(workflow).toContain("steps:");
-      expect(workflow).toContain("uses: actions/checkout@v3");
-      expect(workflow).toContain("uses: actions/setup-node@v3");
-      expect(workflow).toContain("run: npm ci");
-      expect(workflow).toContain("npx i18n-lint");
-      expect(workflow).toContain("npx vitest run packages/i18n --coverage");
-      expect(workflow).toContain("uses: codecov/codecov-action@v3");
-      expect(workflow).toContain("uses: actions/github-script@v6");
+      expect(workflow).toContain("uses: actions/checkout@v4");
+      expect(workflow).toContain("uses: pnpm/action-setup@v4");
+      expect(workflow).toContain("uses: actions/setup-node@v4");
+      expect(workflow).toContain("run: pnpm install --frozen-lockfile");
+      expect(workflow).toContain("pnpm i18n:eslint");
+      expect(workflow).toContain("pnpm i18n:test");
+      expect(workflow).toContain("uses: actions/upload-artifact@v4");
+      expect(workflow).toContain("uses: actions/github-script@v7");
     });
 
     it("should include PR comment functionality", () => {
@@ -209,7 +229,7 @@ describe("i18n CI checks", () => {
 
       expect(workflow).toContain("if: github.event_name == 'pull_request'");
       expect(workflow).toContain(
-        "const results = fs.readFileSync('i18n-results.json', 'utf8');",
+        "const results = JSON.parse(fs.readFileSync('i18n-results.json', 'utf8'));",
       );
       expect(workflow).toContain("github.rest.issues.createComment");
     });

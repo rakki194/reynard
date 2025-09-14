@@ -13,6 +13,11 @@ import { detectAuthAppPort } from "./utils/port-detector";
  */
 export default defineConfig({
   testDir: "./",
+  testMatch: [
+    "**/*.spec.ts",
+    "!**/penetration-tests.spec.ts", // Exclude penetration tests from main config
+    "!**/simple-penetration.spec.ts" // Exclude simple penetration tests
+  ],
 
   /* Run tests in files in parallel */
   fullyParallel: true,

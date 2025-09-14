@@ -2,22 +2,21 @@
 # Inherits from main backend requirements
 
 # FastAPI and server
-fastapi>=0.104.0
-uvicorn[standard]>=0.24.0
+fastapi
+uvicorn[standard]
 
 # Database
-sqlalchemy>=2.0.0
-alembic>=1.12.0
+sqlalchemy
+alembic
 
 # Authentication
-python-jose[cryptography]>=3.3.0
-passlib[bcrypt]>=1.7.4
-python-multipart>=0.0.6
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
 
 # Environment and configuration
-python-dotenv>=1.0.0
+python-dotenv
 
 # Testing utilities
-pytest>=7.4.0
-httpx>=0.25.0
-
+pytest
+httpx

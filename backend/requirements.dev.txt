@@ -2,25 +2,38 @@
 # Generated from pyproject.toml for compatibility
 
 # Test dependencies
-pytest>=7.0.0
-pytest-asyncio>=0.21.0
-pytest-cov>=4.0.0
-pytest-mock>=3.10.0
-pytest-xdist>=3.0.0
-httpx>=0.24.0
-factory-boy>=3.2.0
-faker>=18.0.0
-freezegun>=1.2.0
-responses>=0.23.0
+pytest
+pytest-asyncio
+pytest-cov
+pytest-mock
+pytest-xdist
+httpx
+factory-boy
+faker
+freezegun
+responses
 
 # Development tools
-black>=23.0.0
-isort>=5.12.0
-flake8>=6.0.0
-mypy>=1.0.0
-pre-commit>=3.0.0
+black
+isort
+flake8
+mypy
+pylint
+pre-commit
+
+# Security and code quality tools
+bandit
+safety
 
 # Additional testing utilities
-pytest-benchmark>=4.0.0
-pytest-html>=3.1.0
-pytest-json-report>=1.5.0
+pytest-benchmark
+pytest-html
+pytest-json-report
+
+# Documentation
+sphinx
+sphinx-rtd-theme
+
+# Type checking and imports
+types-requests
+types-python-dateutil

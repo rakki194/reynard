@@ -5,6 +5,47 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### 🧹 Major Codebase Cleanup & Architecture Refactoring
+
+#### 🗂️ File Organization & Cleanup
+- **REMOVED**: Obsolete LICENSE.txt (replaced by LICENSE.md)
+- **REMOVED**: Duplicate requirements-dev.txt (consolidated into backend/requirements.dev.txt)
+- **REMOVED**: Outdated docs/CHANGELOG.md (consolidated into root CHANGELOG.md)
+- **REMOVED**: Legacy e2e test files and reports (playwright-report/, e2e-results.json/xml)
+- **REMOVED**: Deprecated penetration testing documentation and simple test files
+- **IMPROVED**: Enhanced .gitignore with better exclusion patterns
+
+#### 🧪 Testing Infrastructure Overhaul
+- **REFACTORED**: Complete e2e testing architecture with modular test suites
+- **NEW**: Comprehensive DOM testing suite with accessibility, assertions, attributes, focus, forms, presence, and visibility tests
+- **NEW**: Advanced auth testing with core operations, element verification, flow scenarios, and form handlers
+- **NEW**: Enhanced penetration testing utilities with exploit runners and security assessment tools
+- **NEW**: Mock backend server with comprehensive API client and endpoint configurations
+- **IMPROVED**: Streamlined test fixtures with better organization and type safety
+- **IMPROVED**: Enhanced playwright configuration with specialized DOM testing setup
+
+#### 📦 RAG Package Component Architecture
+- **REFACTORED**: Complete RAG component modularization with dedicated component directories
+- **NEW**: Specialized components for file handling, image display, search functionality, and 3D visualization
+- **NEW**: Advanced search history management with filtering, pagination, and statistics
+- **NEW**: Comprehensive file and image modal systems with metadata display
+- **NEW**: Enhanced search form with settings and query statistics
+- **NEW**: Dedicated composables and utilities for better code organization
+- **IMPROVED**: Better separation of concerns with type-safe interfaces
+
+#### 🔧 Testing Package Enhancements
+- **REMOVED**: Deprecated dom-assertions test file (moved to e2e suite)
+- **NEW**: DOM debugging utilities and test environment management
+- **IMPROVED**: Enhanced i18n CI checks with better validation
+- **IMPROVED**: Streamlined test setup and assertion utilities
+
+#### 📚 Documentation & Configuration
+- **IMPROVED**: Comprehensive README.md with enhanced project documentation
+- **IMPROVED**: Updated backend requirements with latest dependencies
+- **IMPROVED**: Enhanced GitHub workflow configuration for i18n checks
+
 ## [0.4.0] - 2025-09-14
 
 ### 🚀 Major Framework Expansion & New Package Ecosystem

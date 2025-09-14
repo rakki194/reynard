@@ -8,16 +8,14 @@
 import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
 import type { TabItem } from "./types";
 
-// Helper function to get icon as JSX element
-const getIcon = (name: string) => {
+// Helper function to get icon as HTML element
+const getIcon = (name: string): HTMLElement | null => {
   const icon = getIconFromRegistry(name);
   if (icon) {
-    return (
-      <div
-        // eslint-disable-next-line solid/no-innerhtml
-        innerHTML={icon.outerHTML}
-      />
-    );
+    // Create a wrapper div and return the actual HTML element
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = icon.outerHTML;
+    return wrapper.firstElementChild as HTMLElement;
   }
   return null;
 };

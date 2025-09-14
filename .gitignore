@@ -1,4 +1,6 @@
 # My junk
+*results/
+*-report/
 penetration-results-2*
 penetration-results.json
 penetration-results.xml
