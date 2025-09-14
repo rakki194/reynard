@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2025-09-14
+
 ### 🧹 Major Codebase Cleanup & Architecture Refactoring
 
 #### 🗂️ File Organization & Cleanup
+
 - **REMOVED**: Obsolete LICENSE.txt (replaced by LICENSE.md)
 - **REMOVED**: Duplicate requirements-dev.txt (consolidated into backend/requirements.dev.txt)
 - **REMOVED**: Outdated docs/CHANGELOG.md (consolidated into root CHANGELOG.md)
@@ -18,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **IMPROVED**: Enhanced .gitignore with better exclusion patterns
 
 #### 🧪 Testing Infrastructure Overhaul
+
 - **REFACTORED**: Complete e2e testing architecture with modular test suites
 - **NEW**: Comprehensive DOM testing suite with accessibility, assertions, attributes, focus, forms, presence, and visibility tests
 - **NEW**: Advanced auth testing with core operations, element verification, flow scenarios, and form handlers
@@ -27,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **IMPROVED**: Enhanced playwright configuration with specialized DOM testing setup
 
 #### 📦 RAG Package Component Architecture
+
 - **REFACTORED**: Complete RAG component modularization with dedicated component directories
 - **NEW**: Specialized components for file handling, image display, search functionality, and 3D visualization
 - **NEW**: Advanced search history management with filtering, pagination, and statistics
@@ -36,12 +41,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **IMPROVED**: Better separation of concerns with type-safe interfaces
 
 #### 🔧 Testing Package Enhancements
+
 - **REMOVED**: Deprecated dom-assertions test file (moved to e2e suite)
 - **NEW**: DOM debugging utilities and test environment management
 - **IMPROVED**: Enhanced i18n CI checks with better validation
 - **IMPROVED**: Streamlined test setup and assertion utilities
 
 #### 📚 Documentation & Configuration
+
 - **IMPROVED**: Comprehensive README.md with enhanced project documentation
 - **IMPROVED**: Updated backend requirements with latest dependencies
 - **IMPROVED**: Enhanced GitHub workflow configuration for i18n checks
