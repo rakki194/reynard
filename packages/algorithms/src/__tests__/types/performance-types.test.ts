@@ -13,7 +13,7 @@ import type {
   PooledObject,
   MemoryPoolStats,
   SpatialHashConfig,
-  SpatialHashStats
+  SpatialHashStats,
 } from "../../types/performance-types";
 
 describe("Performance Types", () => {
@@ -22,7 +22,7 @@ describe("Performance Types", () => {
       const memoryInfo: PerformanceMemoryInfo = {
         usedJSHeapSize: 1000000,
         totalJSHeapSize: 2000000,
-        jsHeapSizeLimit: 4000000
+        jsHeapSizeLimit: 4000000,
       };
 
       expect(memoryInfo.usedJSHeapSize).toBe(1000000);
@@ -34,7 +34,7 @@ describe("Performance Types", () => {
       const memoryInfo: PerformanceMemoryInfo = {
         usedJSHeapSize: 1000000,
         totalJSHeapSize: 2000000,
-        jsHeapSizeLimit: 4000000
+        jsHeapSizeLimit: 4000000,
       };
 
       // TypeScript compile-time check - readonly properties can't be reassigned
@@ -51,8 +51,8 @@ describe("Performance Types", () => {
         memory: {
           usedJSHeapSize: 1000000,
           totalJSHeapSize: 2000000,
-          jsHeapSizeLimit: 4000000
-        }
+          jsHeapSizeLimit: 4000000,
+        },
       };
 
       const apiWithoutMemory: PerformanceMemoryAPI = {};
@@ -67,7 +67,7 @@ describe("Performance Types", () => {
       const options: ThrottleOptions = {
         leading: true,
         trailing: false,
-        maxWait: 1000
+        maxWait: 1000,
       };
 
       expect(options.leading).toBe(true);
@@ -97,7 +97,7 @@ describe("Performance Types", () => {
       const options: DebounceOptions = {
         leading: false,
         trailing: true,
-        maxWait: 2000
+        maxWait: 2000,
       };
 
       expect(options.leading).toBe(false);
@@ -114,7 +114,10 @@ describe("Performance Types", () => {
   describe("FunctionSignature", () => {
     it("should define function types correctly", () => {
       const simpleFunction: FunctionSignature<[], number> = () => 42;
-      const functionWithArgs: FunctionSignature<[number, string], boolean> = (a, b) => a > 0 && b.length > 0;
+      const functionWithArgs: FunctionSignature<[number, string], boolean> = (
+        a,
+        b,
+      ) => a > 0 && b.length > 0;
 
       expect(simpleFunction()).toBe(42);
       expect(functionWithArgs(5, "test")).toBe(true);
@@ -128,8 +131,8 @@ describe("Performance Types", () => {
         (x: number) => x.toString(),
         {
           cancel: () => {},
-          flush: () => "42" as string | undefined
-        }
+          flush: () => "42" as string | undefined,
+        },
       );
 
       expect(typeof throttled).toBe("function");
@@ -145,8 +148,8 @@ describe("Performance Types", () => {
         (s: string) => s.length,
         {
           cancel: () => {},
-          flush: () => 0 as number | undefined
-        }
+          flush: () => 0 as number | undefined,
+        },
       );
 
       expect(typeof debounced).toBe("function");
@@ -163,7 +166,7 @@ describe("Performance Types", () => {
         maxSize: 100,
         growthFactor: 2.0,
         enableStats: true,
-        enableOptimization: true
+        enableOptimization: true,
       };
 
       expect(config.initialSize).toBe(10);
@@ -177,7 +180,7 @@ describe("Performance Types", () => {
       const minimalConfig: MemoryPoolConfig = {};
       const partialConfig: MemoryPoolConfig = {
         initialSize: 5,
-        enableStats: true
+        enableStats: true,
       };
 
       expect(minimalConfig).toEqual({});
@@ -190,7 +193,7 @@ describe("Performance Types", () => {
   describe("PooledObject", () => {
     it("should define pooled object interface", () => {
       const pooledObj: PooledObject = {
-        reset: () => {}
+        reset: () => {},
       };
 
       expect(typeof pooledObj.reset).toBe("function");
@@ -207,7 +210,7 @@ describe("Performance Types", () => {
         peakUsage: 90,
         allocationCount: 500,
         deallocationCount: 425,
-        averageLifetime: 1500
+        averageLifetime: 1500,
       };
 
       expect(stats.totalObjects).toBe(100);
@@ -227,11 +230,15 @@ describe("Performance Types", () => {
         peakUsage: 45,
         allocationCount: 200,
         deallocationCount: 170,
-        averageLifetime: 2000
+        averageLifetime: 2000,
       };
 
-      expect(stats.activeObjects + stats.availableObjects).toBe(stats.totalObjects);
-      expect(stats.allocationCount - stats.deallocationCount).toBe(stats.activeObjects);
+      expect(stats.activeObjects + stats.availableObjects).toBe(
+        stats.totalObjects,
+      );
+      expect(stats.allocationCount - stats.deallocationCount).toBe(
+        stats.activeObjects,
+      );
     });
   });
 
@@ -240,7 +247,7 @@ describe("Performance Types", () => {
       const config: SpatialHashConfig = {
         cellSize: 32,
         maxObjectsPerCell: 10,
-        enableOptimization: true
+        enableOptimization: true,
       };
 
       expect(config.cellSize).toBe(32);
@@ -252,17 +259,19 @@ describe("Performance Types", () => {
       const smallConfig: SpatialHashConfig = {
         cellSize: 8,
         maxObjectsPerCell: 5,
-        enableOptimization: false
+        enableOptimization: false,
       };
 
       const largeConfig: SpatialHashConfig = {
         cellSize: 128,
         maxObjectsPerCell: 50,
-        enableOptimization: true
+        enableOptimization: true,
       };
 
       expect(smallConfig.cellSize).toBeLessThan(largeConfig.cellSize);
-      expect(smallConfig.maxObjectsPerCell).toBeLessThan(largeConfig.maxObjectsPerCell);
+      expect(smallConfig.maxObjectsPerCell).toBeLessThan(
+        largeConfig.maxObjectsPerCell,
+      );
     });
   });
 
@@ -275,7 +284,7 @@ describe("Performance Types", () => {
         averageObjectsPerCell: 2.0,
         maxObjectsPerCell: 8,
         queryCount: 1500,
-        averageQueryTime: 0.5
+        averageQueryTime: 0.5,
       };
 
       expect(stats.totalCells).toBe(1000);
@@ -295,12 +304,17 @@ describe("Performance Types", () => {
         averageObjectsPerCell: 2.0,
         maxObjectsPerCell: 5,
         queryCount: 200,
-        averageQueryTime: 1.2
+        averageQueryTime: 1.2,
       };
 
       expect(stats.occupiedCells).toBeLessThanOrEqual(stats.totalCells);
-      expect(stats.averageObjectsPerCell).toBeLessThanOrEqual(stats.maxObjectsPerCell);
-      expect(stats.totalObjects / stats.occupiedCells).toBeCloseTo(stats.averageObjectsPerCell, 1);
+      expect(stats.averageObjectsPerCell).toBeLessThanOrEqual(
+        stats.maxObjectsPerCell,
+      );
+      expect(stats.totalObjects / stats.occupiedCells).toBeCloseTo(
+        stats.averageObjectsPerCell,
+        1,
+      );
     });
   });
 
@@ -324,7 +338,7 @@ describe("Performance Types", () => {
         peakUsage: 80,
         allocationCount: 150,
         deallocationCount: 75,
-        averageLifetime: 1000
+        averageLifetime: 1000,
       };
 
       expect(processMemoryStats(mockStats)).toBe(0.75);
@@ -335,7 +349,7 @@ describe("Performance Types", () => {
         return {
           initialSize: 10,
           maxSize: 100,
-          enableStats: true
+          enableStats: true,
         };
       }
 
@@ -347,7 +361,7 @@ describe("Performance Types", () => {
           averageObjectsPerCell: 0,
           maxObjectsPerCell: 0,
           queryCount: 0,
-          averageQueryTime: 0
+          averageQueryTime: 0,
         };
       }
 

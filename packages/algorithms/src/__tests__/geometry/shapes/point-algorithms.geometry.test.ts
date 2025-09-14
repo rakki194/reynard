@@ -1,5 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { PointOps, type Point } from "../../../geometry/shapes/point-algorithms";
+import {
+  PointOps,
+  type Point,
+} from "../../../geometry/shapes/point-algorithms";
 
 describe("PointOps - Geometry Operations", () => {
   describe("distance", () => {

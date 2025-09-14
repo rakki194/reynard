@@ -34,7 +34,7 @@ describe("EnhancedMemoryPool", () => {
     it("should get and return spatial hash pools", () => {
       const spatialHash = memoryPool.getSpatialHash({ cellSize: 100 });
       expect(spatialHash).toBeDefined();
-      
+
       memoryPool.returnSpatialHash(spatialHash);
       const stats = memoryPool.getStatistics();
       expect(stats.poolHits).toBeGreaterThan(0);
@@ -43,7 +43,7 @@ describe("EnhancedMemoryPool", () => {
     it("should get and return union-find pools", () => {
       const unionFind = memoryPool.getUnionFind(10);
       expect(unionFind).toBeDefined();
-      
+
       memoryPool.returnUnionFind(unionFind);
       const stats = memoryPool.getStatistics();
       expect(stats.poolHits).toBeGreaterThan(0);
@@ -53,7 +53,7 @@ describe("EnhancedMemoryPool", () => {
       const collisionArray = memoryPool.getCollisionArray();
       expect(collisionArray).toBeDefined();
       expect(Array.isArray(collisionArray)).toBe(true);
-      
+
       memoryPool.returnCollisionArray(collisionArray);
       const stats = memoryPool.getStatistics();
       expect(stats.poolHits).toBeGreaterThan(0);
@@ -63,7 +63,7 @@ describe("EnhancedMemoryPool", () => {
       const processedSet = memoryPool.getProcessedSet();
       expect(processedSet).toBeDefined();
       expect(processedSet instanceof Set).toBe(true);
-      
+
       memoryPool.returnProcessedSet(processedSet);
       const stats = memoryPool.getStatistics();
       expect(stats.poolHits).toBeGreaterThan(0);
@@ -80,7 +80,7 @@ describe("EnhancedMemoryPool", () => {
     it("should record performance metrics", () => {
       const spatialHash = memoryPool.getSpatialHash({ cellSize: 100 });
       memoryPool.returnSpatialHash(spatialHash);
-      
+
       const history = memoryPool.getPerformanceHistory();
       expect(history.length).toBeGreaterThan(0);
     });
@@ -93,7 +93,7 @@ describe("EnhancedMemoryPool", () => {
         ...config,
         cleanupInterval: 100,
       });
-      
+
       expect(setIntervalSpy).toHaveBeenCalled();
     });
 
@@ -101,17 +101,17 @@ describe("EnhancedMemoryPool", () => {
       // Get and return a pool to create some history
       const spatialHash = memoryPool.getSpatialHash({ cellSize: 100 });
       memoryPool.returnSpatialHash(spatialHash);
-      
+
       // Mock Date.now to simulate time passing
       const originalNow = Date.now;
       vi.spyOn(Date, "now").mockImplementation(() => originalNow() + 400000); // 6+ minutes later
-      
+
       // Manually trigger cleanup
       (memoryPool as any).cleanupUnusedPools();
-      
+
       // Restore Date.now
       vi.restoreAllMocks();
-      
+
       const stats = memoryPool.getStatistics();
       expect(stats.poolHits).toBeGreaterThan(0);
     });
@@ -155,7 +155,7 @@ describe("EnhancedMemoryPool", () => {
       const processedSet = memoryPool.getProcessedSet();
 
       const stats = memoryPool.getStatistics();
-      
+
       expect(stats.totalAllocations).toBeGreaterThanOrEqual(0);
       expect(stats.totalDeallocations).toBeGreaterThanOrEqual(0);
       expect(stats.poolHits).toBeGreaterThanOrEqual(0);
@@ -178,14 +178,16 @@ describe("EnhancedMemoryPool", () => {
 
       const finalStats = memoryPool.getStatistics();
       expect(finalStats.totalAllocations).toBeGreaterThan(initialAllocations);
-      expect(finalStats.totalDeallocations).toBeGreaterThan(initialDeallocations);
+      expect(finalStats.totalDeallocations).toBeGreaterThan(
+        initialDeallocations,
+      );
     });
   });
 
   describe("Error Handling", () => {
     it("should handle invalid pool returns gracefully", () => {
       const invalidPool = {} as any;
-      
+
       expect(() => memoryPool.returnSpatialHash(invalidPool)).not.toThrow();
       expect(() => memoryPool.returnUnionFind(invalidPool)).not.toThrow();
       expect(() => memoryPool.returnCollisionArray(invalidPool)).not.toThrow();
@@ -209,7 +211,7 @@ describe("EnhancedMemoryPool", () => {
 
       const customPool = new EnhancedMemoryPool(customConfig);
       const stats = customPool.getStatistics();
-      
+
       expect(stats.totalAllocations).toBeGreaterThanOrEqual(0);
       expect(stats.totalDeallocations).toBeGreaterThanOrEqual(0);
     });

@@ -25,14 +25,8 @@
   .segmentation-editor {
     border-radius: 0;
   }
-  
+
   .segmentation-editor-main {
     flex-direction: column;
   }
 }
-
-
-
-
-
-

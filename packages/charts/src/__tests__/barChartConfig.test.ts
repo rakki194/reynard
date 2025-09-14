@@ -1,5 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { createBarChartOptions, BarChartConfigOptions } from "../utils/barChartConfig";
+import {
+  createBarChartOptions,
+  BarChartConfigOptions,
+} from "../utils/barChartConfig";
 
 describe("Bar Chart Configuration", () => {
   const defaultOptions: BarChartConfigOptions = {
@@ -205,7 +208,7 @@ describe("Bar Chart Configuration", () => {
       });
 
       expect(options.plugins?.tooltip).toEqual(
-        expect.objectContaining(tooltipConfig)
+        expect.objectContaining(tooltipConfig),
       );
     });
 

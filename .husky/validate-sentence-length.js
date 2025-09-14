@@ -380,13 +380,16 @@ function getAllMarkdownFiles() {
       'find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" -not -path "./third_party/*"',
       { encoding: "utf8" },
     );
-    
+
     return allFiles
       .trim()
       .split("\n")
       .filter((f) => f && f.trim());
   } catch (error) {
-    printColored(`❌ Failed to get all markdown files: ${error.message}`, Colors.RED);
+    printColored(
+      `❌ Failed to get all markdown files: ${error.message}`,
+      Colors.RED,
+    );
     return [];
   }
 }
@@ -398,8 +401,13 @@ function getAllMarkdownFiles() {
  * @param {boolean} allFiles - Whether to process all markdown files
  * @returns {boolean} True if all validations pass
  */
-function validateSentenceLengths(files = null, maxLength = 120, allFiles = false) {
-  const filesToCheck = files || (allFiles ? getAllMarkdownFiles() : getStagedMarkdownFiles());
+function validateSentenceLengths(
+  files = null,
+  maxLength = 120,
+  allFiles = false,
+) {
+  const filesToCheck =
+    files || (allFiles ? getAllMarkdownFiles() : getStagedMarkdownFiles());
 
   if (filesToCheck.length === 0) {
     if (allFiles) {
@@ -488,8 +496,13 @@ function validateSentenceLengths(files = null, maxLength = 120, allFiles = false
  * @param {number} maxLength - Maximum line length
  * @param {boolean} allFiles - Whether to process all markdown files
  */
-function autoFixSentenceLengths(files = null, maxLength = 120, allFiles = false) {
-  const filesToCheck = files || (allFiles ? getAllMarkdownFiles() : getStagedMarkdownFiles());
+function autoFixSentenceLengths(
+  files = null,
+  maxLength = 120,
+  allFiles = false,
+) {
+  const filesToCheck =
+    files || (allFiles ? getAllMarkdownFiles() : getStagedMarkdownFiles());
 
   if (filesToCheck.length === 0) {
     if (allFiles) {
@@ -535,7 +548,10 @@ function main() {
     printColored("", Colors.NC);
     printColored("Options:", Colors.BLUE);
     printColored("  --fix        Auto-fix sentence length issues", Colors.CYAN);
-    printColored("  --all        Process all markdown files (skips node_modules, .git, third_party)", Colors.CYAN);
+    printColored(
+      "  --all        Process all markdown files (skips node_modules, .git, third_party)",
+      Colors.CYAN,
+    );
     printColored(
       "  --length N   Set maximum line length (default: 120)",
       Colors.CYAN,
@@ -577,19 +593,27 @@ function main() {
 
   // Check for --all option
   const allFiles = args.includes("--all");
-  
+
   if (args.includes("--fix")) {
     const files = args.filter(
       (arg) => !arg.startsWith("--") && arg !== maxLength.toString(),
     );
-    return autoFixSentenceLengths(files.length > 0 ? files : null, maxLength, allFiles)
+    return autoFixSentenceLengths(
+      files.length > 0 ? files : null,
+      maxLength,
+      allFiles,
+    )
       ? 0
       : 1;
   } else {
     const files = args.filter(
       (arg) => !arg.startsWith("--") && arg !== maxLength.toString(),
     );
-    return validateSentenceLengths(files.length > 0 ? files : null, maxLength, allFiles)
+    return validateSentenceLengths(
+      files.length > 0 ? files : null,
+      maxLength,
+      allFiles,
+    )
       ? 0
       : 1;
   }

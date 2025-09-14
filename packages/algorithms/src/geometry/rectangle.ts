@@ -2,7 +2,7 @@
  * Rectangle geometry operations and utilities
  */
 
-import type { Point } from './point';
+import type { Point } from "./point";
 
 export interface Rectangle {
   x: number;
@@ -12,7 +12,12 @@ export interface Rectangle {
 }
 
 export class RectangleOps {
-  static create(x: number, y: number, width: number, height: number): Rectangle {
+  static create(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+  ): Rectangle {
     return { x, y, width, height };
   }
 
@@ -25,8 +30,12 @@ export class RectangleOps {
   }
 
   static containsPoint(rect: Rectangle, point: Point): boolean {
-    return point.x >= rect.x && point.x <= rect.x + rect.width &&
-           point.y >= rect.y && point.y <= rect.y + rect.height;
+    return (
+      point.x >= rect.x &&
+      point.x <= rect.x + rect.width &&
+      point.y >= rect.y &&
+      point.y <= rect.y + rect.height
+    );
   }
 
   static intersection(rect1: Rectangle, rect2: Rectangle): Rectangle | null {

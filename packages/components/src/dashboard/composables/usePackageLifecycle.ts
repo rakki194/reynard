@@ -114,7 +114,11 @@ export function usePackageLifecycle(refreshInterval?: number) {
         ...prev,
         packages: prev.packages.map((pkg) =>
           pkg.name === packageName
-            ? { ...pkg, status: "error" as const, error: (error as Error).message }
+            ? {
+                ...pkg,
+                status: "error" as const,
+                error: (error as Error).message,
+              }
             : pkg,
         ),
       }));
@@ -153,7 +157,11 @@ export function usePackageLifecycle(refreshInterval?: number) {
         ...prev,
         packages: prev.packages.map((pkg) =>
           pkg.name === packageName
-            ? { ...pkg, status: "error" as const, error: (error as Error).message }
+            ? {
+                ...pkg,
+                status: "error" as const,
+                error: (error as Error).message,
+              }
             : pkg,
         ),
       }));

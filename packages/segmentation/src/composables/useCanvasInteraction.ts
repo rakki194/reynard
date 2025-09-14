@@ -7,7 +7,10 @@
 
 import { createSignal, onCleanup } from "solid-js";
 import { PointOps, type Point, type Polygon } from "reynard-algorithms";
-import { SegmentationEditorConfig, SegmentationEditorState } from "../types/index.js";
+import {
+  SegmentationEditorConfig,
+  SegmentationEditorState,
+} from "../types/index.js";
 
 export interface UseCanvasInteractionOptions {
   canvas: () => HTMLCanvasElement | undefined;
@@ -35,10 +38,13 @@ export interface UseCanvasInteractionReturn {
  * Canvas interaction composable with robust event handling
  */
 export function useCanvasInteraction(
-  options: UseCanvasInteractionOptions
+  options: UseCanvasInteractionOptions,
 ): UseCanvasInteractionReturn {
   const [isDragging, setIsDragging] = createSignal(false);
-  const [lastMousePosition, setLastMousePosition] = createSignal<Point>({ x: 0, y: 0 });
+  const [lastMousePosition, setLastMousePosition] = createSignal<Point>({
+    x: 0,
+    y: 0,
+  });
   const [isZooming, setIsZooming] = createSignal(false);
   const [currentPolygon, setCurrentPolygon] = createSignal<Point[]>([]);
   const [lastTouchDistance, setLastTouchDistance] = createSignal<number>(0);
@@ -46,7 +52,7 @@ export function useCanvasInteraction(
   // Get mouse position relative to canvas
   const getMousePosition = (event: MouseEvent): Point => {
     if (!event) return { x: 0, y: 0 };
-    
+
     const canvas = options.canvas();
     if (!canvas) return { x: 0, y: 0 };
 
@@ -67,12 +73,12 @@ export function useCanvasInteraction(
       x: screenPoint.x / zoom - panOffset.x,
       y: screenPoint.y / zoom - panOffset.y,
     };
-    
+
     // Apply grid snapping if enabled
     if (options.config.snapToGrid) {
       return snapToGrid(worldPoint, options.config.gridSize);
     }
-    
+
     return worldPoint;
   };
 
@@ -96,10 +102,10 @@ export function useCanvasInteraction(
   // Handle mouse move
   const handleMouseMove = (event: MouseEvent) => {
     if (!options.config.enabled || !event) return;
-    
+
     const mousePos = getMousePosition(event);
     const worldPos = screenToWorld(mousePos);
-    
+
     setLastMousePosition(mousePos);
     options.onMouseMove?.(worldPos);
 
@@ -107,12 +113,12 @@ export function useCanvasInteraction(
     if (isDragging() && event.buttons === 1) {
       const deltaX = mousePos.x - lastMousePosition().x;
       const deltaY = mousePos.y - lastMousePosition().y;
-      
+
       const newPanOffset = {
         x: options.state.panOffset.x + deltaX / options.state.zoom,
         y: options.state.panOffset.y + deltaY / options.state.zoom,
       };
-      
+
       options.onPanChange?.(newPanOffset);
     }
   };
@@ -120,21 +126,21 @@ export function useCanvasInteraction(
   // Handle mouse wheel for zooming
   const handleWheel = (event: WheelEvent) => {
     if (!options.config.enabled || !event) return;
-    
+
     event.preventDefault();
-    
+
     const mousePos = getMousePosition(event);
     const worldPos = screenToWorld(mousePos);
-    
+
     const zoomFactor = event.deltaY > 0 ? 0.9 : 1.1;
     const newZoom = Math.max(0.1, Math.min(5, options.state.zoom * zoomFactor));
-    
+
     // Zoom towards mouse position
     const newPanOffset = {
-      x: worldPos.x - (mousePos.x / newZoom),
-      y: worldPos.y - (mousePos.y / newZoom),
+      x: worldPos.x - mousePos.x / newZoom,
+      y: worldPos.y - mousePos.y / newZoom,
     };
-    
+
     options.onZoomChange?.(newZoom);
     options.onPanChange?.(newPanOffset);
   };
@@ -142,30 +148,39 @@ export function useCanvasInteraction(
   // Handle mouse down
   const handleMouseDown = (event: MouseEvent) => {
     if (!options.config.enabled || !event) return;
-    
+
     const mousePos = getMousePosition(event);
     const worldPos = screenToWorld(mousePos);
-    
-    if (event.button === 0) { // Left click
+
+    if (event.button === 0) {
+      // Left click
       if (options.state.isCreating) {
         // Add point to current polygon
         const newPolygon = [...currentPolygon(), worldPos];
         setCurrentPolygon(newPolygon);
         options.onPolygonUpdate?.(newPolygon);
-      } else if (options.state.isEditing && options.state.selectedSegmentation) {
+      } else if (
+        options.state.isEditing &&
+        options.state.selectedSegmentation
+      ) {
         // Handle editing existing polygon
         const newPolygon = [...currentPolygon(), worldPos];
         setCurrentPolygon(newPolygon);
-        options.onPolygonUpdate?.(newPolygon, options.state.selectedSegmentation);
+        options.onPolygonUpdate?.(
+          newPolygon,
+          options.state.selectedSegmentation,
+        );
       } else {
         // Handle selection
         setIsDragging(true);
       }
-    } else if (event.button === 1) { // Middle click
+    } else if (event.button === 1) {
+      // Middle click
       // Start panning
       setIsDragging(true);
       setLastMousePosition(mousePos);
-    } else if (event.button === 2) { // Right click
+    } else if (event.button === 2) {
+      // Right click
       if (options.state.isCreating) {
         // Complete polygon creation on right click
         const polygon = currentPolygon();
@@ -180,9 +195,9 @@ export function useCanvasInteraction(
   // Handle mouse up
   const handleMouseUp = (event: MouseEvent) => {
     if (!event) return;
-    
+
     setIsDragging(false);
-    
+
     if (event.button === 0 && options.state.isCreating) {
       // Check if polygon should be completed (minimum 3 points)
       const polygon = currentPolygon();
@@ -196,10 +211,10 @@ export function useCanvasInteraction(
   // Handle double click
   const handleDoubleClick = (event: MouseEvent) => {
     if (!options.config.enabled || !event) return;
-    
+
     const mousePos = getMousePosition(event);
     const worldPos = screenToWorld(mousePos);
-    
+
     if (options.state.isCreating) {
       // Complete polygon creation on double click
       const polygon = currentPolygon();
@@ -213,9 +228,9 @@ export function useCanvasInteraction(
   // Handle touch start
   const handleTouchStart = (event: TouchEvent) => {
     if (!options.config.enabled || !event) return;
-    
+
     event.preventDefault();
-    
+
     if (event.touches.length === 1) {
       const touch = event.touches[0];
       const mouseEvent = new MouseEvent("mousedown", {
@@ -231,7 +246,7 @@ export function useCanvasInteraction(
       const touch2 = event.touches[1];
       const distance = Math.sqrt(
         Math.pow(touch2.clientX - touch1.clientX, 2) +
-        Math.pow(touch2.clientY - touch1.clientY, 2)
+          Math.pow(touch2.clientY - touch1.clientY, 2),
       );
       setLastTouchDistance(distance);
     }
@@ -240,9 +255,9 @@ export function useCanvasInteraction(
   // Handle touch move
   const handleTouchMove = (event: TouchEvent) => {
     if (!options.config.enabled || !event) return;
-    
+
     event.preventDefault();
-    
+
     if (event.touches.length === 1 && !isZooming()) {
       const touch = event.touches[0];
       const mouseEvent = new MouseEvent("mousemove", {
@@ -254,19 +269,22 @@ export function useCanvasInteraction(
       // Handle pinch zoom
       const touch1 = event.touches[0];
       const touch2 = event.touches[1];
-      
+
       const distance = Math.sqrt(
         Math.pow(touch2.clientX - touch1.clientX, 2) +
-        Math.pow(touch2.clientY - touch1.clientY, 2)
+          Math.pow(touch2.clientY - touch1.clientY, 2),
       );
-      
+
       const lastDistance = lastTouchDistance();
       if (lastDistance > 0) {
         const zoomFactor = distance / lastDistance;
-        const newZoom = Math.max(0.1, Math.min(5, options.state.zoom * zoomFactor));
+        const newZoom = Math.max(
+          0.1,
+          Math.min(5, options.state.zoom * zoomFactor),
+        );
         options.onZoomChange?.(newZoom);
       }
-      
+
       setLastTouchDistance(distance);
     }
   };
@@ -274,13 +292,13 @@ export function useCanvasInteraction(
   // Handle touch end
   const handleTouchEnd = (event: TouchEvent) => {
     if (!options.config.enabled || !event) return;
-    
+
     event.preventDefault();
-    
+
     if (event.touches.length === 0) {
       setIsDragging(false);
       setIsZooming(false);
-      
+
       const mouseEvent = new MouseEvent("mouseup", {
         button: 0,
       });
@@ -309,4 +327,3 @@ export function useCanvasInteraction(
     handleTouchEnd,
   };
 }
-

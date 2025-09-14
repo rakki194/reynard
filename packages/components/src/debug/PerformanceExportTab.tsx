@@ -417,7 +417,10 @@ export const PerformanceExportTab: Component<PerformanceExportTabProps> = (
             <TextField
               value={exportOptions().filename}
               onInput={(e) =>
-                setExportOptions((prev) => ({ ...prev, filename: e.target.value }))
+                setExportOptions((prev) => ({
+                  ...prev,
+                  filename: e.target.value,
+                }))
               }
               placeholder="Enter filename"
             />

@@ -123,9 +123,7 @@ export const ThemeComparison: Component = () => {
                   </div>
 
                   <label class="sample-checkbox">
-                    <Toggle
-    size="sm"
-  />
+                    <Toggle size="sm" />
                     <span class="checkmark"></span>
                     Checkbox option
                   </label>

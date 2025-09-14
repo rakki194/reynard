@@ -6,7 +6,12 @@
  */
 
 import { createSignal, onMount, Show } from "solid-js";
-import type { BoundingBox, ImageInfo, EditorConfig, AnnotationEventHandlers } from "../types";
+import type {
+  BoundingBox,
+  ImageInfo,
+  EditorConfig,
+  AnnotationEventHandlers,
+} from "../types";
 import { useBoundingBoxes } from "../composables/useBoundingBoxes";
 import { useLabelManagement } from "../composables/useLabelManagement";
 
@@ -39,7 +44,7 @@ export function BoundingBoxEditor(props: BoundingBoxEditorProps) {
 
   onMount(() => {
     setIsClient(true);
-    
+
     // Initialize composables after mounting
     boundingBoxes = useBoundingBoxes({
       initialBoxes,
@@ -48,7 +53,12 @@ export function BoundingBoxEditor(props: BoundingBoxEditorProps) {
     });
 
     labelManagement = useLabelManagement({
-      labelClasses: config.labelClasses || ["person", "vehicle", "animal", "object"],
+      labelClasses: config.labelClasses || [
+        "person",
+        "vehicle",
+        "animal",
+        "object",
+      ],
       defaultLabelClass: config.defaultLabelClass || "person",
     });
   });
@@ -104,7 +114,9 @@ export function BoundingBoxEditor(props: BoundingBoxEditorProps) {
               <select
                 id="label-select"
                 value={labelManagement!.selectedLabelClass()}
-                onChange={(e) => labelManagement!.setSelectedLabelClass(e.target.value)}
+                onChange={(e) =>
+                  labelManagement!.setSelectedLabelClass(e.target.value)
+                }
               >
                 {labelManagement!.availableLabels().map((label) => (
                   <option value={label}>{label}</option>
@@ -121,7 +133,7 @@ export function BoundingBoxEditor(props: BoundingBoxEditorProps) {
               Clear All
             </button>
           </div>
-          
+
           <div class="editor-main">
             <div class="editor-canvas-container">
               <canvas
@@ -134,11 +146,9 @@ export function BoundingBoxEditor(props: BoundingBoxEditorProps) {
                 }}
               />
             </div>
-            
+
             <div class="editor-info-panel">
-              <div class="box-count">
-                Boxes: {boundingBoxes!.boxCount()}
-              </div>
+              <div class="box-count">Boxes: {boundingBoxes!.boxCount()}</div>
               <div class="selected-box">
                 <Show when={boundingBoxes!.selectedBox()}>
                   Selected: {boundingBoxes!.selectedBox()?.label}

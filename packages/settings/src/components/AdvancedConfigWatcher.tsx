@@ -173,7 +173,6 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
                 value={watchInterval()}
                 onChange={(value) => setWatchInterval(parseInt(value) || 5000)}
                 helperText="How often to check for configuration changes"
-               
                 disabled={!enableWatching()}
               />
             </div>
@@ -234,7 +233,6 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
                     setBackupInterval(parseInt(value) || 3600000)
                   }
                   helperText="How often to create configuration backups"
-                 
                   disabled={!enableBackups()}
                 />
               </div>
@@ -246,7 +244,6 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
                   value={maxBackups()}
                   onChange={(value) => setMaxBackups(parseInt(value) || 10)}
                   helperText="Maximum number of backups to retain"
-                 
                   disabled={!enableBackups()}
                 />
               </div>
@@ -318,7 +315,6 @@ export const AdvancedConfigWatcher: Component<AdvancedConfigWatcherProps> = (
                     setScheduleInterval(parseInt(value) || 86400000)
                   }
                   helperText="Default interval for scheduled operations"
-                 
                   disabled={!enableScheduling()}
                 />
               </div>

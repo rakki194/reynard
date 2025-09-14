@@ -6,14 +6,14 @@ understand the relationships between different research areas.
 
 ## 📚 Research Categories Overview
 
-| Category                                        | Description                                 | Key Focus Areas                                      | Status      |
-| ----------------------------------------------- | ------------------------------------------- | ---------------------------------------------------- | ----------- |
-| [🎓 Academic Papers](./academic-papers/)        | Formal research papers and studies          | System architecture, algorithms, user experience     | ✅ Complete |
-| [🔒 Security Research](./security-research/)    | Security assessment and penetration testing | Authentication, API security, vulnerability analysis | ✅ Complete |
+| Category                                      | Description                                 | Key Focus Areas                                      | Status      |
+| --------------------------------------------- | ------------------------------------------- | ---------------------------------------------------- | ----------- |
+| [🎓 Academic Papers](./academic-papers/)      | Formal research papers and studies          | System architecture, algorithms, user experience     | ✅ Complete |
+| [🔒 Security Research](./security-research/)  | Security assessment and penetration testing | Authentication, API security, vulnerability analysis | ✅ Complete |
 | [🔧 Technical Documentation](./architecture/) | Implementation details and system design    | Architecture, integration, performance               | ✅ Complete |
-| [🏗️ Architecture](./architecture/)              | System architecture and design patterns     | Service design, scalability, integration             | ✅ Complete |
-| [🧮 Algorithms](./algorithms/)                  | Algorithm research and implementation       | Computer vision, ML, optimization                    | ✅ Complete |
-| [🔗 Integrations](./integrations/)              | Third-party service integration research    | API design, service management, patterns             | ✅ Complete |
+| [🏗️ Architecture](./architecture/)            | System architecture and design patterns     | Service design, scalability, integration             | ✅ Complete |
+| [🧮 Algorithms](./algorithms/)                | Algorithm research and implementation       | Computer vision, ML, optimization                    | ✅ Complete |
+| [🔗 Integrations](./integrations/)            | Third-party service integration research    | API design, service management, patterns             | ✅ Complete |
 
 ## 🔍 Research Topic Index
 

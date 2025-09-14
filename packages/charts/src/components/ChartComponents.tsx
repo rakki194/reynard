@@ -24,17 +24,15 @@ export const getTestId = (type: ChartType) => {
 
 export const LoadingOverlay: Component<{ loading: boolean }> = (props) => (
   <Show when={props.loading}>
-    <div class="chart-loading-overlay">
-      {t("loading")}
-    </div>
+    <div class="chart-loading-overlay">{t("loading")}</div>
   </Show>
 );
 
-export const EmptyState: Component<{ 
-  loading: boolean; 
-  data: unknown; 
-  height?: number; 
-  emptyMessage?: string; 
+export const EmptyState: Component<{
+  loading: boolean;
+  data: unknown;
+  height?: number;
+  emptyMessage?: string;
 }> = (props) => {
   const isEmpty = () => {
     if (!props.data) return true;

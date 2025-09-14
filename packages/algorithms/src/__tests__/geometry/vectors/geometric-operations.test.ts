@@ -1,5 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { VectorOps, type Vector } from "../../../geometry/vectors/vector-algorithms";
+import {
+  VectorOps,
+  type Vector,
+} from "../../../geometry/vectors/vector-algorithms";
 
 describe("VectorOps - Geometric Operations", () => {
   describe("normalize", () => {

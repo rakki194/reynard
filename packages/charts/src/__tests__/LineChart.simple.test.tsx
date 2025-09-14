@@ -29,23 +29,13 @@ describe("LineChart - Simple Tests", () => {
 
   it("should render with minimal props", () => {
     expect(() => {
-      render(() => (
-        <LineChart
-          data={mockDatasets}
-          labels={mockLabels}
-        />
-      ));
+      render(() => <LineChart data={mockDatasets} labels={mockLabels} />);
     }).not.toThrow();
   });
 
   it("should handle empty data gracefully", () => {
     expect(() => {
-      render(() => (
-        <LineChart
-          data={[]}
-          labels={[]}
-        />
-      ));
+      render(() => <LineChart data={[]} labels={[]} />);
     }).not.toThrow();
   });
 });

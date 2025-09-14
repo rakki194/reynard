@@ -62,7 +62,7 @@ export class VisualizationCore {
    */
   generateColors(dataPoints: DataPoint[]): ColorMapping[] {
     const cacheKey = this.getCacheKey(dataPoints);
-    
+
     if (this.colorCache.has(cacheKey)) {
       return this.colorCache.get(cacheKey)!;
     }
@@ -83,7 +83,11 @@ export class VisualizationCore {
   /**
    * Calculate color for a specific data point
    */
-  private calculatePointColor(point: DataPoint, index: number, allPoints: DataPoint[]): OKLCHColor {
+  private calculatePointColor(
+    point: DataPoint,
+    index: number,
+    allPoints: DataPoint[],
+  ): OKLCHColor {
     const { baseHue, saturation, lightness } = this.config;
 
     switch (this.config.colorMapping) {
@@ -99,7 +103,7 @@ export class VisualizationCore {
         return {
           l: lightness,
           c: saturation,
-          h: (baseHue + (index * 30)) % 360,
+          h: (baseHue + index * 30) % 360,
         };
     }
   }
@@ -107,16 +111,19 @@ export class VisualizationCore {
   /**
    * Value-based color mapping
    */
-  private getValueBasedColor(point: DataPoint, allPoints: DataPoint[]): OKLCHColor {
-    const values = allPoints.map(p => p.value);
+  private getValueBasedColor(
+    point: DataPoint,
+    allPoints: DataPoint[],
+  ): OKLCHColor {
+    const values = allPoints.map((p) => p.value);
     const minValue = Math.min(...values);
     const maxValue = Math.max(...values);
     const normalizedValue = (point.value - minValue) / (maxValue - minValue);
 
     return {
-      l: 0.3 + (normalizedValue * 0.4), // Lightness from 0.3 to 0.7
+      l: 0.3 + normalizedValue * 0.4, // Lightness from 0.3 to 0.7
       c: this.config.saturation,
-      h: this.config.baseHue + (normalizedValue * 120), // Hue shift
+      h: this.config.baseHue + normalizedValue * 120, // Hue shift
     };
   }
 
@@ -125,7 +132,7 @@ export class VisualizationCore {
    */
   private getClusterBasedColor(_point: DataPoint, index: number): OKLCHColor {
     const clusterHue = (index * 137.5) % 360; // Golden angle distribution
-    
+
     return {
       l: this.config.lightness,
       c: this.config.saturation,
@@ -137,9 +144,9 @@ export class VisualizationCore {
    * Category-based color mapping
    */
   private getCategoryBasedColor(point: DataPoint): OKLCHColor {
-    const category = point.metadata?.category as string || "default";
+    const category = (point.metadata?.category as string) || "default";
     const categoryHash = this.hashString(category);
-    
+
     return {
       l: this.config.lightness,
       c: this.config.saturation,
@@ -150,19 +157,28 @@ export class VisualizationCore {
   /**
    * Gradient-based color mapping
    */
-  private getGradientBasedColor(point: DataPoint, allPoints: DataPoint[]): OKLCHColor {
-    const centerX = allPoints.reduce((sum, p) => sum + p.x, 0) / allPoints.length;
-    const centerY = allPoints.reduce((sum, p) => sum + p.y, 0) / allPoints.length;
-    const distance = Math.sqrt((point.x - centerX) ** 2 + (point.y - centerY) ** 2);
-    const maxDistance = Math.max(...allPoints.map(p => 
-      Math.sqrt((p.x - centerX) ** 2 + (p.y - centerY) ** 2)
-    ));
+  private getGradientBasedColor(
+    point: DataPoint,
+    allPoints: DataPoint[],
+  ): OKLCHColor {
+    const centerX =
+      allPoints.reduce((sum, p) => sum + p.x, 0) / allPoints.length;
+    const centerY =
+      allPoints.reduce((sum, p) => sum + p.y, 0) / allPoints.length;
+    const distance = Math.sqrt(
+      (point.x - centerX) ** 2 + (point.y - centerY) ** 2,
+    );
+    const maxDistance = Math.max(
+      ...allPoints.map((p) =>
+        Math.sqrt((p.x - centerX) ** 2 + (p.y - centerY) ** 2),
+      ),
+    );
     const normalizedDistance = distance / maxDistance;
 
     return {
-      l: 0.4 + (normalizedDistance * 0.3),
+      l: 0.4 + normalizedDistance * 0.3,
       c: this.config.saturation,
-      h: this.config.baseHue + (normalizedDistance * 180),
+      h: this.config.baseHue + normalizedDistance * 180,
     };
   }
 
@@ -170,7 +186,7 @@ export class VisualizationCore {
    * Calculate intensity for visual effects
    */
   private calculateIntensity(point: DataPoint, allPoints: DataPoint[]): number {
-    const values = allPoints.map(p => p.value);
+    const values = allPoints.map((p) => p.value);
     const minValue = Math.min(...values);
     const maxValue = Math.max(...values);
     return (point.value - minValue) / (maxValue - minValue);
@@ -190,7 +206,7 @@ export class VisualizationCore {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32-bit integer
     }
     return Math.abs(hash);

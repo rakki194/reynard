@@ -8,7 +8,7 @@ describe("CircleOps", () => {
       const center: Point = { x: 5, y: 10 };
       const radius = 3;
       const circle = CircleOps.create(center, radius);
-      
+
       expect(circle.center).toEqual(center);
       expect(circle.radius).toBe(radius);
     });
@@ -17,7 +17,7 @@ describe("CircleOps", () => {
       const center: Point = { x: 0, y: 0 };
       const radius = 0;
       const circle = CircleOps.create(center, radius);
-      
+
       expect(circle.center).toEqual(center);
       expect(circle.radius).toBe(0);
     });
@@ -26,7 +26,7 @@ describe("CircleOps", () => {
       const center: Point = { x: -5, y: -3 };
       const radius = 2.5;
       const circle = CircleOps.create(center, radius);
-      
+
       expect(circle.center).toEqual(center);
       expect(circle.radius).toBe(radius);
     });

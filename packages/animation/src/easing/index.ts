@@ -4,7 +4,7 @@
  */
 
 // Re-export everything from the main easing file
-export * from './easing';
+export * from "./easing";
 
 // Re-export types
-export type { EasingType } from '../types';
+export type { EasingType } from "../types";

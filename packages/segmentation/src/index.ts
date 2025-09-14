@@ -21,16 +21,16 @@ export type {
   SegmentationOptions,
   SegmentationProcessingInfo,
   SegmentationQualityMetrics,
-  
+
   // Editor types
   SegmentationEditorConfig,
   SegmentationEditorState,
   SegmentationEditorEvents,
-  
+
   // Export/Import types
   SegmentationExportFormat,
   SegmentationExportData,
-  
+
   // Service types
   SegmentationService as ISegmentationService,
   SegmentationManager as ISegmentationManager,
@@ -90,9 +90,3 @@ export const PACKAGE_NAME = "reynard-segmentation";
 
 // Main component for easy importing
 export { SegmentationEditor as default } from "./components/SegmentationEditor.js";
-
-
-
-
-
-

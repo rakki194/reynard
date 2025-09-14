@@ -245,7 +245,7 @@ await manager.initialize();
 />
 ```
 
-> *Batch Processing Features:*
+> _Batch Processing Features:_
 
 - **Drag & Drop Upload**: Intuitive file selection with visual feedback
 - **Real-time Progress**: Live updates during batch processing with progress bars

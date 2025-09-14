@@ -1,6 +1,6 @@
 # 🦊 The Modular Fuzzing Storm
 
-> *whiskers twitch with cunning intelligence* *howls echo through the digital tempest*
+> _whiskers twitch with cunning intelligence_ _howls echo through the digital tempest_
 
 Welcome to the most advanced **modular** fuzzing arsenal in the Reynard ecosystem. This directory contains a comprehensive
 **clean** fuzzing framework that orchestrates specialized attack engines with **eliminated code duplication** and
@@ -8,7 +8,7 @@ Welcome to the most advanced **modular** fuzzing arsenal in the Reynard ecosyste
 
 ## 🦊 Clean Architecture Achieved
 
-*red fur gleams with intelligence* The fuzzing framework has been completely cleaned and modularized:
+_red fur gleams with intelligence_ The fuzzing framework has been completely cleaned and modularized:
 
 - **🦊 Modular Architecture**: Eliminated code duplication with reusable base classes and composables
 - **🎯 Strategic Base Classes**: `BaseFuzzer` provides common functionality with escape hatches
@@ -147,7 +147,7 @@ Welcome to the most advanced **modular** fuzzing arsenal in the Reynard ecosyste
 
 ## 🏗️ Clean Modular Architecture
 
-*whiskers twitch with cunning intelligence* The fuzzing framework has been completely cleaned and refactored into a modular architecture that eliminates code duplication while maintaining specialized attack capabilities:
+_whiskers twitch with cunning intelligence_ The fuzzing framework has been completely cleaned and refactored into a modular architecture that eliminates code duplication while maintaining specialized attack capabilities:
 
 ### Core Modules (`core/`) - Enhanced
 
@@ -205,18 +205,18 @@ Specialized fuzzers for specific endpoint types with **clean modular architectur
 
 ## 🦊 Modular Components Deep Dive
 
-*red fur gleams with intelligence* Here's how the new modular architecture eliminates duplication and improves maintainability:
+_red fur gleams with intelligence_ Here's how the new modular architecture eliminates duplication and improves maintainability:
 
 ### BaseFuzzer - Strategic Foundation
 
-*whiskers twitch with cunning* The `BaseFuzzer` class provides all the common functionality that was previously duplicated across fuzzers:
+_whiskers twitch with cunning_ The `BaseFuzzer` class provides all the common functionality that was previously duplicated across fuzzers:
 
 ```python
 class EmbeddingVisualizationFuzzerV2(BaseFuzzer):
     def __init__(self, base_url: str = "http://localhost:8000", max_concurrent: int = 10):
         super().__init__(base_url, max_concurrent)  # Gets all common functionality
         self.payload_composables = PayloadComposables()  # Gets organized payloads
-    
+
     def _analyze_response(self, response, request_kwargs: dict):
         # Only implement specialized analysis - common detection is inherited
         return self._detect_common_vulnerabilities(response.text)
@@ -231,7 +231,7 @@ class EmbeddingVisualizationFuzzerV2(BaseFuzzer):
 
 ### PayloadComposables - Attack Vector Library
 
-*sleek fur glistens* The `PayloadComposables` class provides organized, reusable attack vectors:
+_sleek fur glistens_ The `PayloadComposables` class provides organized, reusable attack vectors:
 
 ```python
 composables = PayloadComposables()
@@ -255,7 +255,7 @@ for payload in sql_payloads.payloads:
 
 ### EndpointOrchestrator - Coordination Hub
 
-*pack coordination* The `EndpointOrchestrator` coordinates all specialized fuzzers:
+_pack coordination_ The `EndpointOrchestrator` coordinates all specialized fuzzers:
 
 ```python
 orchestrator = create_endpoint_orchestrator(base_url, max_concurrent)
@@ -279,16 +279,16 @@ orchestrator.print_comprehensive_report()
 
 ### FuzzyV2 - Modular Main Framework
 
-*alpha wolf dominance* The `FuzzyV2` class demonstrates the power of the modular approach:
+_alpha wolf dominance_ The `FuzzyV2` class demonstrates the power of the modular approach:
 
 ```python
 async with FuzzyV2() as fuzzer:
     # Traditional fuzzing (inherited from base)
     await fuzzer.fuzz_authentication_endpoints()
-    
+
     # Specialized fuzzing (orchestrated)
     await fuzzer.fuzz_all_specialized_endpoints()
-    
+
     # Comprehensive reporting (modular)
     fuzzer.generate_fuzz_report()
 ```
@@ -302,19 +302,19 @@ async with FuzzyV2() as fuzzer:
 
 ## 🎯 Code Duplication Elimination Results
 
-*fox efficiency metrics* The modular refactoring has achieved significant improvements:
+_fox efficiency metrics_ The modular refactoring has achieved significant improvements:
 
-| Component | Before (Lines) | After (Lines) | Reduction |
-|-----------|----------------|---------------|-----------|
-| Base Functionality | ~200 per fuzzer | ~50 per fuzzer | 75% |
-| Payload Generation | ~150 per fuzzer | ~10 per fuzzer | 93% |
-| Coordination Logic | ~100 per fuzzer | ~5 per fuzzer | 95% |
-| Main Framework | ~500 total | ~200 total | 60% |
-| **Total Reduction** | **~1000+ lines** | **~300 lines** | **70%** |
+| Component           | Before (Lines)   | After (Lines)  | Reduction |
+| ------------------- | ---------------- | -------------- | --------- |
+| Base Functionality  | ~200 per fuzzer  | ~50 per fuzzer | 75%       |
+| Payload Generation  | ~150 per fuzzer  | ~10 per fuzzer | 93%       |
+| Coordination Logic  | ~100 per fuzzer  | ~5 per fuzzer  | 95%       |
+| Main Framework      | ~500 total       | ~200 total     | 60%       |
+| **Total Reduction** | **~1000+ lines** | **~300 lines** | **70%**   |
 
 ## 🔧 Refactored `fuzz_missing_endpoints` Function
 
-*whiskers twitch with strategic intelligence* The monolithic `fuzz_missing_endpoints` function has been completely refactored using the new modular architecture:
+_whiskers twitch with strategic intelligence_ The monolithic `fuzz_missing_endpoints` function has been completely refactored using the new modular architecture:
 
 ### Before (Monolithic Approach)
 
@@ -336,17 +336,17 @@ async def fuzz_all_specialized_endpoints(self) -> Dict[str, List[FuzzResult]]:
         "FUZZING ALL SPECIALIZED ENDPOINTS",
         "Time to attack all the specialized surfaces with modular efficiency!"
     )
-    
+
     # Use the endpoint orchestrator to coordinate all specialized fuzzing
     results = await self.endpoint_orchestrator.fuzz_all_categories()
     self.specialized_endpoint_results = results
-    
+
     return results
 ```
 
 ### Benefits of the Refactored Approach
 
-*red fur gleams with satisfaction* The new modular approach provides:
+_red fur gleams with satisfaction_ The new modular approach provides:
 
 - ✅ **Eliminated Duplication**: No more repetitive fuzzer instantiation code
 - ✅ **Automatic Coordination**: Endpoint orchestrator handles all coordination
@@ -357,7 +357,7 @@ async def fuzz_all_specialized_endpoints(self) -> Dict[str, List[FuzzResult]]:
 
 ### Individual Endpoint Category Fuzzing
 
-*fox precision hunting* You can now fuzz individual endpoint categories:
+_fox precision hunting_ You can now fuzz individual endpoint categories:
 
 ```python
 # Fuzz specific categories
@@ -418,32 +418,32 @@ await fuzzer.fuzz_all_specialized_endpoints()
 
 ## **Complete API Surface Coverage**
 
-| **API Module** | **Endpoints** | **Fuzzy** | **EndpointFuzzer** | **Total Coverage** |
-|----------------|---------------|-------------------------|-------------------|-------------------|
-| **Core API** | 5 endpoints | ✅ 25 payloads each | ❌ Not targeted | 125 requests |
-| **Authentication** | 6 endpoints | ✅ 50 payloads each | ✅ 50 specialized | 350 requests |
-| **NLWeb** | 15 endpoints | ✅ 25-50 payloads each | ❌ Not targeted | 450 requests |
-| **Ollama** | 7 endpoints | ✅ 25-50 payloads each | ❌ Not targeted | 300 requests |
-| **ComfyUI** | 12 endpoints | ✅ 25-50 payloads each | ❌ Not targeted | 400 requests |
-| **Summarization** | 10 endpoints | ✅ 25-50 payloads each | ❌ Not targeted | 350 requests |
-| **TTS** | 6 endpoints | ✅ 25-50 payloads each | ❌ Not targeted | 250 requests |
-| **RAG** | 8 endpoints | ✅ 25-50 payloads each | ❌ Not targeted | 300 requests |
-| **Caption** | 12 endpoints | ✅ 25-50 payloads each | ❌ Not targeted | 500 requests |
-| **Image Utils** | 14 endpoints | ✅ 25-50 payloads each | ❌ Not targeted | 525 requests |
-| **Executor** | 12 endpoints | ✅ 25-50 payloads each | ❌ Not targeted | 450 requests |
-| **Admin** | 4 endpoints | ✅ 25 payloads each | ❌ Not targeted | 100 requests |
-| **🚨 Embedding Visualization** | 8 endpoints | ❌ **NOT FUZZED** | ❌ Not targeted | **0 requests** |
-| **🚨 Diffusion** | 10 endpoints | ❌ **NOT FUZZED** | ❌ Not targeted | **0 requests** |
-| **🚨 Lazy Loading** | 12 endpoints | ❌ **NOT FUZZED** | ❌ Not targeted | **0 requests** |
-| **🚨 HuggingFace Cache** | 8 endpoints | ❌ **NOT FUZZED** | ❌ Not targeted | **0 requests** |
-| **🚨 Secure Auth Routes** | 6 endpoints | ❌ **NOT FUZZED** | ❌ Not targeted | **0 requests** |
-| **🚨 Secure Ollama Routes** | 7 endpoints | ❌ **NOT FUZZED** | ❌ Not targeted | **0 requests** |
-| **🚨 Secure Summarization Routes** | 10 endpoints | ❌ **NOT FUZZED** | ❌ Not targeted | **0 requests** |
-| **🚨 WebSocket Endpoints** | 1 endpoint | ❌ **NOT FUZZED** | ❌ Not targeted | **0 requests** |
-| **File Upload** | 3 endpoints | ✅ 75 payloads each | ✅ 35 specialized | 260 requests |
-| **Search** | 2 endpoints | ✅ 30 payloads each | ✅ 120+ specialized | 180 requests |
-| **JSON APIs** | 20+ endpoints | ✅ 30 payloads each | ✅ 15 specialized | 750 requests |
-| **Header Injection** | 15+ endpoints | ✅ 30 payloads each | ✅ 19 specialized | 570 requests |
+| **API Module**                     | **Endpoints** | **Fuzzy**              | **EndpointFuzzer**  | **Total Coverage** |
+| ---------------------------------- | ------------- | ---------------------- | ------------------- | ------------------ |
+| **Core API**                       | 5 endpoints   | ✅ 25 payloads each    | ❌ Not targeted     | 125 requests       |
+| **Authentication**                 | 6 endpoints   | ✅ 50 payloads each    | ✅ 50 specialized   | 350 requests       |
+| **NLWeb**                          | 15 endpoints  | ✅ 25-50 payloads each | ❌ Not targeted     | 450 requests       |
+| **Ollama**                         | 7 endpoints   | ✅ 25-50 payloads each | ❌ Not targeted     | 300 requests       |
+| **ComfyUI**                        | 12 endpoints  | ✅ 25-50 payloads each | ❌ Not targeted     | 400 requests       |
+| **Summarization**                  | 10 endpoints  | ✅ 25-50 payloads each | ❌ Not targeted     | 350 requests       |
+| **TTS**                            | 6 endpoints   | ✅ 25-50 payloads each | ❌ Not targeted     | 250 requests       |
+| **RAG**                            | 8 endpoints   | ✅ 25-50 payloads each | ❌ Not targeted     | 300 requests       |
+| **Caption**                        | 12 endpoints  | ✅ 25-50 payloads each | ❌ Not targeted     | 500 requests       |
+| **Image Utils**                    | 14 endpoints  | ✅ 25-50 payloads each | ❌ Not targeted     | 525 requests       |
+| **Executor**                       | 12 endpoints  | ✅ 25-50 payloads each | ❌ Not targeted     | 450 requests       |
+| **Admin**                          | 4 endpoints   | ✅ 25 payloads each    | ❌ Not targeted     | 100 requests       |
+| **🚨 Embedding Visualization**     | 8 endpoints   | ❌ **NOT FUZZED**      | ❌ Not targeted     | **0 requests**     |
+| **🚨 Diffusion**                   | 10 endpoints  | ❌ **NOT FUZZED**      | ❌ Not targeted     | **0 requests**     |
+| **🚨 Lazy Loading**                | 12 endpoints  | ❌ **NOT FUZZED**      | ❌ Not targeted     | **0 requests**     |
+| **🚨 HuggingFace Cache**           | 8 endpoints   | ❌ **NOT FUZZED**      | ❌ Not targeted     | **0 requests**     |
+| **🚨 Secure Auth Routes**          | 6 endpoints   | ❌ **NOT FUZZED**      | ❌ Not targeted     | **0 requests**     |
+| **🚨 Secure Ollama Routes**        | 7 endpoints   | ❌ **NOT FUZZED**      | ❌ Not targeted     | **0 requests**     |
+| **🚨 Secure Summarization Routes** | 10 endpoints  | ❌ **NOT FUZZED**      | ❌ Not targeted     | **0 requests**     |
+| **🚨 WebSocket Endpoints**         | 1 endpoint    | ❌ **NOT FUZZED**      | ❌ Not targeted     | **0 requests**     |
+| **File Upload**                    | 3 endpoints   | ✅ 75 payloads each    | ✅ 35 specialized   | 260 requests       |
+| **Search**                         | 2 endpoints   | ✅ 30 payloads each    | ✅ 120+ specialized | 180 requests       |
+| **JSON APIs**                      | 20+ endpoints | ✅ 30 payloads each    | ✅ 15 specialized   | 750 requests       |
+| **Header Injection**               | 15+ endpoints | ✅ 30 payloads each    | ✅ 19 specialized   | 570 requests       |
 
 - **Massive Scale Attacks**: 50+ endpoints with 1000+ payloads across 12 attack phases
 - **Advanced Payload Generation**: Each payload crafted with the precision of a master hunter
@@ -454,17 +454,17 @@ await fuzzer.fuzz_all_specialized_endpoints()
 
 #### **EndpointFuzzer Specialized Attacks**
 
-| **Attack Type** | **Payloads** | **Target Endpoints** | **Coverage** |
-|-----------------|--------------|---------------------|--------------|
-| **Authentication Bypass** | 50 payloads | `/api/auth/login`, `/api/auth/register` | SQL injection, XSS, command injection, special chars, common credentials |
-| **File Upload Exploits** | 35 payloads | `/api/files/upload`, `/api/caption/upload` | Web shells, fake images, path traversal, oversized files, dangerous extensions |
-| **Search Injection** | 120+ payloads | `/api/search`, `/api/rag/query` | SQL, XSS, path traversal, command injection, NoSQL, LDAP, special chars |
-| **JSON Parsing** | 15 payloads | All POST endpoints | Malformed JSON, unclosed strings, trailing commas, duplicate keys |
-| **Header Injection** | 19 payloads | All endpoints | X-Forwarded-For, X-Real-IP, Host header, XSS in headers, authorization bypass |
+| **Attack Type**           | **Payloads**  | **Target Endpoints**                       | **Coverage**                                                                   |
+| ------------------------- | ------------- | ------------------------------------------ | ------------------------------------------------------------------------------ |
+| **Authentication Bypass** | 50 payloads   | `/api/auth/login`, `/api/auth/register`    | SQL injection, XSS, command injection, special chars, common credentials       |
+| **File Upload Exploits**  | 35 payloads   | `/api/files/upload`, `/api/caption/upload` | Web shells, fake images, path traversal, oversized files, dangerous extensions |
+| **Search Injection**      | 120+ payloads | `/api/search`, `/api/rag/query`            | SQL, XSS, path traversal, command injection, NoSQL, LDAP, special chars        |
+| **JSON Parsing**          | 15 payloads   | All POST endpoints                         | Malformed JSON, unclosed strings, trailing commas, duplicate keys              |
+| **Header Injection**      | 19 payloads   | All endpoints                              | X-Forwarded-For, X-Real-IP, Host header, XSS in headers, authorization bypass  |
 
 ## 🦊 The Alpha: Fuzzy
 
-*snarls with predatory glee* The ultimate fuzzing engine for tearing apart your entire API surface!
+_snarls with predatory glee_ The ultimate fuzzing engine for tearing apart your entire API surface!
 
 ### **Modular Attack Phases**
 
@@ -488,23 +488,23 @@ async def unleash_the_alpha_wolf():
         # Traditional fuzzing
         await fuzzer.fuzz_authentication_endpoints()
         await fuzzer.fuzz_file_endpoints()
-        
+
         # Grammar-based fuzzing with learning
         await fuzzer.fuzz_with_grammar("/api/auth/login", "POST", 50)
-        
+
         # WebSocket fuzzing
         await fuzzer.fuzz_websocket_endpoint("/api/progress", ["message_injection"])
-        
+
         # ML model fuzzing
         await fuzzer.fuzz_ml_endpoint("/api/embedding-visualization/reduce", "POST")
-        
+
         # Authentication bypass
         await fuzzer.fuzz_auth_bypass("/api/auth/login", "POST")
-        
+
         # 🆕 Comprehensive missing endpoints fuzzing
         # This now includes ALL specialized fuzzers:
         # - Embedding Visualization (8 endpoints)
-        # - Diffusion Models (10 endpoints) 
+        # - Diffusion Models (10 endpoints)
         # - Lazy Loading (12 endpoints)
         # - HuggingFace Cache (8 endpoints)
         # - Secure Authentication (6 endpoints)
@@ -512,7 +512,7 @@ async def unleash_the_alpha_wolf():
         # - Secure Summarization (10 endpoints)
         # - WebSocket Endpoints (real-time progress)
         await fuzzer.fuzz_missing_endpoints()
-        
+
         # Generate comprehensive report
         fuzzer.generate_fuzz_report()
 
@@ -549,7 +549,7 @@ Each endpoint category now has its own specialized fuzzer with targeted attack v
 
 #### **⚡ Lazy Loading Fuzzer**
 
-- **Target**: 12 lazy loading endpoints  
+- **Target**: 12 lazy loading endpoints
 - **Attacks**: Resource exhaustion, timing attacks, load manipulation
 - **Vulnerabilities**: DoS, resource abuse, timing-based attacks
 
@@ -605,7 +605,7 @@ async with MLFuzzer() as fuzzer:
 
 ## 🐺 The Specialized Hunter: EndpointFuzzer
 
-*circles with menacing intent* Targeted fuzzing for specific endpoint types with specialized attack vectors!
+_circles with menacing intent_ Targeted fuzzing for specific endpoint types with specialized attack vectors!
 
 ### **Capabilities**
 
@@ -676,19 +676,19 @@ async def unleash_the_specialized_hunter():
     async with EndpointFuzzer() as fuzzer:
         # Phase 1: Authentication bypass attacks
         auth_results = await fuzzer.fuzz_login_endpoint("/api/auth/login")
-        
+
         # Phase 2: File upload exploits
         file_results = await fuzzer.fuzz_file_upload_endpoint("/api/files/upload")
-        
+
         # Phase 3: Search injection attacks
         search_results = await fuzzer.fuzz_search_endpoint("/api/search")
-        
+
         # Phase 4: JSON parsing attacks
         json_results = await fuzzer.fuzz_json_endpoint("/api/auth/login", "POST")
-        
+
         # Phase 5: Header injection attacks
         header_results = await fuzzer.fuzz_headers_endpoint("/api/protected", "GET")
-        
+
         print(f"🐺 Specialized Hunter completed {len(auth_results + file_results + search_results + json_results + header_results)} targeted attacks!")
 
 asyncio.run(unleash_the_specialized_hunter())
@@ -723,13 +723,13 @@ async def unleash_the_alpha_pack():
         await comprehensive_fuzzer.fuzz_authentication_endpoints()
         await comprehensive_fuzzer.fuzz_file_endpoints()
         comprehensive_fuzzer.generate_fuzz_report()
-    
+
     # Then, the Specialized Hunter exploits specific vulnerabilities
     async with EndpointFuzzer() as endpoint_fuzzer:
         await endpoint_fuzzer.fuzz_login_endpoint()
         await endpoint_fuzzer.fuzz_file_upload_endpoint()
         await endpoint_fuzzer.fuzz_search_endpoint()
-    
+
     print("🐺 Alpha Pack hunt completed - no vulnerability can hide!")
 
 asyncio.run(unleash_the_alpha_pack())
@@ -1027,7 +1027,7 @@ asyncio.run(unleash_the_alpha_pack())
 
 ### **Critical Security Gaps**
 
-*snarls with predatory intelligence* The following attack surfaces are completely unprotected and represent massive security vulnerabilities:
+_snarls with predatory intelligence_ The following attack surfaces are completely unprotected and represent massive security vulnerabilities:
 
 #### **1. WebSocket Fuzzing**
 
@@ -1066,7 +1066,7 @@ asyncio.run(unleash_the_alpha_pack())
 ```python
 class WebSocketFuzzer:
     """Specialized WebSocket fuzzing for real-time endpoints"""
-    
+
     async def fuzz_websocket_endpoint(self, endpoint: str):
         # WebSocket-specific payloads
         # Connection flooding attacks
@@ -1079,7 +1079,7 @@ class WebSocketFuzzer:
 ```python
 class SecureRouteFuzzer:
     """Targeted fuzzing for secure authentication contexts"""
-    
+
     async def fuzz_secure_auth_bypass(self):
         # JWT manipulation
         # Session hijacking attempts
@@ -1092,7 +1092,7 @@ class SecureRouteFuzzer:
 ```python
 class MLModelFuzzer:
     """AI/ML specific attack vectors"""
-    
+
     async def fuzz_model_endpoints(self):
         # Parameter injection
         # Model poisoning attempts
@@ -1104,7 +1104,7 @@ class MLModelFuzzer:
 
 ### **Missing Router Registrations**
 
-*alpha wolf dominance radiates* The backend application factory is missing critical router registrations that expose additional attack surfaces:
+_alpha wolf dominance radiates_ The backend application factory is missing critical router registrations that expose additional attack surfaces:
 
 #### **Unregistered Routers in App Factory**
 
@@ -1130,7 +1130,7 @@ from app.api.embedding_visualization import router as embedding_viz_router
 ```python
 def _setup_routers(app: FastAPI) -> None:
     # ... existing routers ...
-    
+
     # MISSING: Add these critical routers
     app.include_router(diffusion_router)
     app.include_router(embedding_viz_router)
@@ -1143,7 +1143,7 @@ The secure routers are loaded dynamically during application lifespan, creating 
 ```python
 # These are added at runtime, not startup:
 # - /api/secure/auth/* (6 endpoints)
-# - /api/secure/ollama/* (7 endpoints) 
+# - /api/secure/ollama/* (7 endpoints)
 # - /api/secure/summarization/* (10 endpoints)
 ```
 

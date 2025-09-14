@@ -1,5 +1,4 @@
-References
-==========
+# References
 
 This document describes links to resources.
 

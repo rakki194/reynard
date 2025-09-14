@@ -318,12 +318,13 @@ export const EmbeddingDistributionChart: Component<
 
       <Show
         when={
-          !props.loading &&
-          props.data.values &&
-          props.data.values.length > 0
+          !props.loading && props.data.values && props.data.values.length > 0
         }
       >
-        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
+        <div
+          class="reynard-chart-container"
+          style={{ position: "relative", width: "100%", height: "100%" }}
+        >
           <canvas
             width={props.width || 400}
             height={props.height || 300}

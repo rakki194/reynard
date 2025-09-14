@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   expectComponentToRender,
   expectComponentToThrow,
-  } from "../utils/assertion-utils.js";
+} from "../utils/assertion-utils.js";
 
 describe("Component Assertions", () => {
   beforeEach(() => {

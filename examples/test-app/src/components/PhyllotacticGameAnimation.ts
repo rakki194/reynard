@@ -13,24 +13,45 @@ export function createAnimationFunctions(
   config: () => any,
   spiralPoints: () => SpiralPoint[],
   setSpiralPoints: (points: SpiralPoint[]) => void,
-  spiralLogic: { updateSpiralPoints: (points: SpiralPoint[], angle: number) => SpiralPoint[] } | undefined
+  spiralLogic:
+    | {
+        updateSpiralPoints: (
+          points: SpiralPoint[],
+          angle: number,
+        ) => SpiralPoint[];
+      }
+    | undefined,
 ) {
   const updateSpiral = (deltaTime: number) => {
     if (!isRunning() || !spiralLogic) {
-      console.log("🦊 PhyllotacticGameAnimation: updateSpiral skipped", { isRunning: isRunning(), hasSpiralLogic: !!spiralLogic });
+      console.log("🦊 PhyllotacticGameAnimation: updateSpiral skipped", {
+        isRunning: isRunning(),
+        hasSpiralLogic: !!spiralLogic,
+      });
       return;
     }
 
-    const newAngle = currentAngle() + (config().rotationSpeed * deltaTime / 16.67);
+    const newAngle =
+      currentAngle() + (config().rotationSpeed * deltaTime) / 16.67;
     setCurrentAngle(newAngle);
-    const updatedPoints = spiralLogic.updateSpiralPoints(spiralPoints(), newAngle);
+    const updatedPoints = spiralLogic.updateSpiralPoints(
+      spiralPoints(),
+      newAngle,
+    );
     setSpiralPoints(updatedPoints);
-    console.log("🦊 PhyllotacticGameAnimation: Spiral updated", { deltaTime, newAngle, pointsCount: updatedPoints.length });
+    console.log("🦊 PhyllotacticGameAnimation: Spiral updated", {
+      deltaTime,
+      newAngle,
+      pointsCount: updatedPoints.length,
+    });
   };
 
   const toggleAnimation = () => {
     const newRunningState = !isRunning();
-    console.log("🦊 PhyllotacticGameAnimation: Toggling animation", { from: isRunning(), to: newRunningState });
+    console.log("🦊 PhyllotacticGameAnimation: Toggling animation", {
+      from: isRunning(),
+      to: newRunningState,
+    });
     setIsRunning(newRunningState);
   };
 

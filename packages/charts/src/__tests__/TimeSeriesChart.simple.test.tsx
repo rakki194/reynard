@@ -12,32 +12,20 @@ describe("TimeSeriesChart - Simple Tests", () => {
   it("should render without crashing", () => {
     expect(() => {
       render(() => (
-        <TimeSeriesChart
-          data={mockData}
-          width={400}
-          height={300}
-        />
+        <TimeSeriesChart data={mockData} width={400} height={300} />
       ));
     }).not.toThrow();
   });
 
   it("should render with minimal props", () => {
     expect(() => {
-      render(() => (
-        <TimeSeriesChart
-          data={mockData}
-        />
-      ));
+      render(() => <TimeSeriesChart data={mockData} />);
     }).not.toThrow();
   });
 
   it("should handle empty data gracefully", () => {
     expect(() => {
-      render(() => (
-        <TimeSeriesChart
-          data={[]}
-        />
-      ));
+      render(() => <TimeSeriesChart data={[]} />);
     }).not.toThrow();
   });
 });

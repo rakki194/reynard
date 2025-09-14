@@ -13,7 +13,7 @@ export function createThrottledAnimationEngine(
     enableVSync: true,
     enablePerformanceMonitoring: true,
     throttleInterval: 16, // ~60fps
-  }
+  },
 ) {
   const engine = createAnimationCore(config);
   let lastThrottledTime = 0;

@@ -3,12 +3,7 @@
  * Helper functions for chart configuration and data processing
  */
 
-import {
-  ChartType,
-  ChartTheme,
-  Dataset,
-  DEFAULT_THEME,
-} from "../types";
+import { ChartType, ChartTheme, Dataset, DEFAULT_THEME } from "../types";
 import { generateColorsWithCache } from "reynard-colors";
 
 // Export specialized chart utilities
@@ -18,7 +13,6 @@ export * from "./barChartData";
 
 // Export i18n utilities
 export * from "./i18n";
-
 
 /**
  * Apply theme colors to chart configuration
@@ -38,7 +32,7 @@ export function formatValue(
   if (value == null || value === undefined) {
     return "0";
   }
-  
+
   // Handle special cases
   if (value === Infinity) {
     return "∞";
@@ -49,7 +43,7 @@ export function formatValue(
   if (isNaN(value)) {
     return "NaN";
   }
-  
+
   switch (type) {
     case "currency":
       return new Intl.NumberFormat("en-US", {
@@ -87,7 +81,13 @@ export function formatTimestamp(
  */
 export function prepareDatasets(datasets: Partial<Dataset>[]): Dataset[] {
   const colors = generateColorsWithCache(datasets.length, 0, 0.3, 0.6, 1);
-  const backgroundColors = generateColorsWithCache(datasets.length, 0, 0.3, 0.6, 0.6);
+  const backgroundColors = generateColorsWithCache(
+    datasets.length,
+    0,
+    0.3,
+    0.6,
+    0.6,
+  );
 
   return datasets.map(
     (dataset, index) =>

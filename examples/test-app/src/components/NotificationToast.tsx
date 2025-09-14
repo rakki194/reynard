@@ -20,32 +20,40 @@ export function NotificationToast() {
           >
             <div class="notification-toast__icon">
               {notification.type === "success" && (
-                <span innerHTML={(() => {
-                  const icon = getIcon("checkmark");
-                  if (!icon) return "";
-                  return typeof icon === "string" ? icon : icon.outerHTML;
-                })()}></span>
+                <span
+                  innerHTML={(() => {
+                    const icon = getIcon("checkmark");
+                    if (!icon) return "";
+                    return typeof icon === "string" ? icon : icon.outerHTML;
+                  })()}
+                ></span>
               )}
               {notification.type === "error" && (
-                <span innerHTML={(() => {
-                  const icon = getIcon("error");
-                  if (!icon) return "";
-                  return typeof icon === "string" ? icon : icon.outerHTML;
-                })()}></span>
+                <span
+                  innerHTML={(() => {
+                    const icon = getIcon("error");
+                    if (!icon) return "";
+                    return typeof icon === "string" ? icon : icon.outerHTML;
+                  })()}
+                ></span>
               )}
               {notification.type === "warning" && (
-                <span innerHTML={(() => {
-                  const icon = getIcon("warning");
-                  if (!icon) return "";
-                  return typeof icon === "string" ? icon : icon.outerHTML;
-                })()}></span>
+                <span
+                  innerHTML={(() => {
+                    const icon = getIcon("warning");
+                    if (!icon) return "";
+                    return typeof icon === "string" ? icon : icon.outerHTML;
+                  })()}
+                ></span>
               )}
               {notification.type === "info" && (
-                <span innerHTML={(() => {
-                  const icon = getIcon("info");
-                  if (!icon) return "";
-                  return typeof icon === "string" ? icon : icon.outerHTML;
-                })()}></span>
+                <span
+                  innerHTML={(() => {
+                    const icon = getIcon("info");
+                    if (!icon) return "";
+                    return typeof icon === "string" ? icon : icon.outerHTML;
+                  })()}
+                ></span>
               )}
             </div>
             <div class="notification-toast__content">

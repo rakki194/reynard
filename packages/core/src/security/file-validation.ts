@@ -23,7 +23,7 @@ function _checkPathTraversal(filename: string): boolean {
     /\.\.%255C/gi,
   ];
 
-  return pathTraversalPatterns.some(pattern => pattern.test(filename));
+  return pathTraversalPatterns.some((pattern) => pattern.test(filename));
 }
 
 /**
@@ -31,9 +31,28 @@ function _checkPathTraversal(filename: string): boolean {
  */
 function _isReservedName(filename: string): boolean {
   const reservedNames = [
-    "CON", "PRN", "AUX", "NUL",
-    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
-    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9",
+    "CON",
+    "PRN",
+    "AUX",
+    "NUL",
+    "COM1",
+    "COM2",
+    "COM3",
+    "COM4",
+    "COM5",
+    "COM6",
+    "COM7",
+    "COM8",
+    "COM9",
+    "LPT1",
+    "LPT2",
+    "LPT3",
+    "LPT4",
+    "LPT5",
+    "LPT6",
+    "LPT7",
+    "LPT8",
+    "LPT9",
   ];
 
   const nameWithoutExt = filename.split(".")[0].toUpperCase();
@@ -45,8 +64,23 @@ function _isReservedName(filename: string): boolean {
  */
 function _isExecutableExtension(filename: string): boolean {
   const executableExtensions = [
-    "exe", "bat", "cmd", "com", "scr", "msi", "dll", "sys", "drv", "pif",
-    "vbs", "jar", "app", "deb", "rpm", "sh", "ps1",
+    "exe",
+    "bat",
+    "cmd",
+    "com",
+    "scr",
+    "msi",
+    "dll",
+    "sys",
+    "drv",
+    "pif",
+    "vbs",
+    "jar",
+    "app",
+    "deb",
+    "rpm",
+    "sh",
+    "ps1",
   ];
 
   const extension = filename.split(".").pop()?.toLowerCase();

@@ -3,9 +3,9 @@
  * Type definitions for the rose petal growth animation system
  */
 
-export type PetalShape = 'inner' | 'middle' | 'outer' | 'bud';
-export type GrowthMode = 'gaussian' | 'natural' | 'hybrid';
-export type PetalUnfoldPhase = 'closed' | 'unfolding' | 'open' | 'mature';
+export type PetalShape = "inner" | "middle" | "outer" | "bud";
+export type GrowthMode = "gaussian" | "natural" | "hybrid";
+export type PetalUnfoldPhase = "closed" | "unfolding" | "open" | "mature";
 
 export interface RosePetal {
   id: number;
@@ -49,4 +49,4 @@ export interface RosePetalConfig {
   sepalVisibility: boolean; // Whether to show sepals as green points
 }
 
-export type GrowthPhase = 'bud' | 'blooming' | 'full' | 'wilting';
+export type GrowthPhase = "bud" | "blooming" | "full" | "wilting";

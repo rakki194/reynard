@@ -22,7 +22,7 @@ Based on the research paper "The Mathematics of Phyllotactic Spirals and Their A
 Advanced stroboscopic animation effects based on mathematical research.
 
 ```typescript
-import { StroboscopicEngine } from '../utils/animation/StroboscopicEngine';
+import { StroboscopicEngine } from "../utils/animation/StroboscopicEngine";
 
 const stroboscopicEngine = new StroboscopicEngine({
   frameRate: 60,
@@ -45,10 +45,10 @@ const stroboscopicEngine = new StroboscopicEngine({
 Implements cutting-edge research models for phyllotactic pattern generation.
 
 ```typescript
-import { AdvancedPatternGenerator } from '../utils/phyllotactic/AdvancedPatternGenerator';
+import { AdvancedPatternGenerator } from "../utils/phyllotactic/AdvancedPatternGenerator";
 
 const patternGenerator = new AdvancedPatternGenerator({
-  patternType: 'rotase', // 'vogel' | 'rotase' | 'bernoulli' | 'fibonacci-sibling'
+  patternType: "rotase", // 'vogel' | 'rotase' | 'bernoulli' | 'fibonacci-sibling'
   pointCount: 1000,
   baseRadius: 10,
   growthFactor: 1.0,
@@ -69,7 +69,7 @@ const patternGenerator = new AdvancedPatternGenerator({
 Extends phyllotactic patterns into 3D space with advanced rendering.
 
 ```typescript
-import { Phyllotactic3DSystem } from '../utils/phyllotactic/Phyllotactic3D';
+import { Phyllotactic3DSystem } from "../utils/phyllotactic/Phyllotactic3D";
 
 const phyllotactic3D = new Phyllotactic3DSystem({
   pointCount: 1000,
@@ -96,7 +96,7 @@ const phyllotactic3D = new Phyllotactic3DSystem({
 Advanced performance optimizations for large-scale phyllotactic animations.
 
 ```typescript
-import { PerformanceOptimizedEngine } from '../utils/animation/PerformanceOptimizedEngine';
+import { PerformanceOptimizedEngine } from "../utils/animation/PerformanceOptimizedEngine";
 
 const performanceEngine = new PerformanceOptimizedEngine({
   maxPoints: 10000,
@@ -122,7 +122,7 @@ const performanceEngine = new PerformanceOptimizedEngine({
 Demonstrates advanced stroboscopic animation effects:
 
 ```typescript
-import { StroboscopicDemo } from '../components/StroboscopicDemo';
+import { StroboscopicDemo } from "../components/StroboscopicDemo";
 
 // Features:
 // - Real-time stroboscopic calculations
@@ -137,7 +137,7 @@ import { StroboscopicDemo } from '../components/StroboscopicDemo';
 Showcases all research-based pattern types:
 
 ```typescript
-import { AdvancedPatternDemo } from '../components/AdvancedPatternDemo';
+import { AdvancedPatternDemo } from "../components/AdvancedPatternDemo";
 
 // Features:
 // - ROTASE, Bernoulli, and enhanced Vogel patterns
@@ -152,7 +152,7 @@ import { AdvancedPatternDemo } from '../components/AdvancedPatternDemo';
 Demonstrates full 3D capabilities:
 
 ```typescript
-import { Phyllotactic3DDemo } from '../components/Phyllotactic3DDemo';
+import { Phyllotactic3DDemo } from "../components/Phyllotactic3DDemo";
 
 // Features:
 // - 3D spiral generation
@@ -167,7 +167,7 @@ import { Phyllotactic3DDemo } from '../components/Phyllotactic3DDemo';
 Shows advanced performance features:
 
 ```typescript
-import { PerformanceDemo } from '../components/PerformanceDemo';
+import { PerformanceDemo } from "../components/PerformanceDemo";
 
 // Features:
 // - Adaptive quality levels
@@ -182,7 +182,7 @@ import { PerformanceDemo } from '../components/PerformanceDemo';
 Brings all features together:
 
 ```typescript
-import { EnhancedIntegrationDemo } from '../components/EnhancedIntegrationDemo';
+import { EnhancedIntegrationDemo } from "../components/EnhancedIntegrationDemo";
 
 // Features:
 // - Unified system
@@ -206,8 +206,8 @@ const GOLDEN_ANGLE = 360 / Math.pow(GOLDEN_RATIO, 2); // ≈ 137.50776°
 ```typescript
 function calculateSpiralPosition(index: number, rotationAngle: number = 0) {
   const radius = baseRadius * Math.sqrt(index);
-  const angle = index * GOLDEN_ANGLE * Math.PI / 180 + rotationAngle;
-  
+  const angle = (index * GOLDEN_ANGLE * Math.PI) / 180 + rotationAngle;
+
   return {
     x: centerX + Math.cos(angle) * radius,
     y: centerY + Math.sin(angle) * radius,
@@ -224,15 +224,20 @@ function calculateStroboscopicEffect(deltaTime: number) {
   const frameTime = deltaTime;
   const angularVelocity = rotationSpeed * (Math.PI / 180);
   const anglePerFrame = angularVelocity * frameTime;
-  
-  const stroboscopicPhase = (anglePerFrame / (GOLDEN_ANGLE * Math.PI / 180)) % 1;
-  const isStroboscopic = Math.abs(stroboscopicPhase - 0.5) < stroboscopicThreshold;
-  
+
+  const stroboscopicPhase =
+    (anglePerFrame / ((GOLDEN_ANGLE * Math.PI) / 180)) % 1;
+  const isStroboscopic =
+    Math.abs(stroboscopicPhase - 0.5) < stroboscopicThreshold;
+
   return {
     isStroboscopic,
     stroboscopicPhase,
-    apparentMotion: isStroboscopic ? 
-      (stroboscopicPhase > 0.5 ? 'growing' : 'shrinking') : 'frozen',
+    apparentMotion: isStroboscopic
+      ? stroboscopicPhase > 0.5
+        ? "growing"
+        : "shrinking"
+      : "frozen",
     temporalAliasing: Math.sin(stroboscopicPhase * Math.PI * 2) * 0.5 + 0.5,
   };
 }

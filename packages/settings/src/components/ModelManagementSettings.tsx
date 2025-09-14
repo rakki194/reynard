@@ -43,22 +43,16 @@ export const ModelManagementSettings: Component<
     try {
       setAutoDownload(settings.getSetting("models.auto_download") || true);
       setPreloadModels(settings.getSetting("models.preload") || false);
-      setMaxConcurrentModels(
-        settings.getSetting("models.max_concurrent") || 3,
-      );
+      setMaxConcurrentModels(settings.getSetting("models.max_concurrent") || 3);
       setModelCacheSize(settings.getSetting("models.cache_size") || 10);
       setEnableModelSharing(
         settings.getSetting("models.enable_sharing") || true,
       );
-      setDefaultDevice(
-        settings.getSetting("models.default_device") || "auto",
-      );
+      setDefaultDevice(settings.getSetting("models.default_device") || "auto");
       setEnableQuantization(
         settings.getSetting("models.enable_quantization") || true,
       );
-      setQuantizationBits(
-        settings.getSetting("models.quantization_bits") || 8,
-      );
+      setQuantizationBits(settings.getSetting("models.quantization_bits") || 8);
     } catch (error) {
       console.error("Failed to load model management settings:", error);
     } finally {
@@ -71,24 +65,15 @@ export const ModelManagementSettings: Component<
     try {
       await settings.setSetting("models.auto_download", autoDownload());
       await settings.setSetting("models.preload", preloadModels());
-      await settings.setSetting(
-        "models.max_concurrent",
-        maxConcurrentModels(),
-      );
+      await settings.setSetting("models.max_concurrent", maxConcurrentModels());
       await settings.setSetting("models.cache_size", modelCacheSize());
-      await settings.setSetting(
-        "models.enable_sharing",
-        enableModelSharing(),
-      );
+      await settings.setSetting("models.enable_sharing", enableModelSharing());
       await settings.setSetting("models.default_device", defaultDevice());
       await settings.setSetting(
         "models.enable_quantization",
         enableQuantization(),
       );
-      await settings.setSetting(
-        "models.quantization_bits",
-        quantizationBits(),
-      );
+      await settings.setSetting("models.quantization_bits", quantizationBits());
 
       await settings.saveSettings();
     } catch (error) {
@@ -204,7 +189,6 @@ export const ModelManagementSettings: Component<
                     setMaxConcurrentModels(parseInt(value) || 3)
                   }
                   helperText="Maximum number of models to load simultaneously"
-                 
                 />
               </div>
 
@@ -246,9 +230,10 @@ export const ModelManagementSettings: Component<
                   label="Model Cache Size (GB)"
                   type="number"
                   value={modelCacheSize()}
-                  onChange={(e) => setModelCacheSize(parseInt(e.target.value) || 10)}
+                  onChange={(e) =>
+                    setModelCacheSize(parseInt(e.target.value) || 10)
+                  }
                   helperText="Maximum disk space for model cache"
-                 
                 />
               </div>
 

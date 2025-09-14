@@ -8,7 +8,7 @@ import {
   runAllPackageI18nTests,
   validatePackageI18nSetup,
   createPackageI18nTestFiles,
-  } from "../utils/i18n-package-orchestrator.js";
+} from "../utils/i18n-package-orchestrator.js";
 import {
   defaultI18nTestingConfig,
   getEnabledPackages,

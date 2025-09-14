@@ -10,18 +10,24 @@ import type { SpellEffect } from "./SpellEffectTypes";
 
 interface SpellCasterCanvasProps {
   activeSpells: SpellEffect[];
-  onAnimationEngineReady: (engine: ReturnType<typeof createAnimationEngine>) => void;
+  onAnimationEngineReady: (
+    engine: ReturnType<typeof createAnimationEngine>,
+  ) => void;
 }
 
 export const SpellCasterCanvas: Component<SpellCasterCanvasProps> = (props) => {
-  console.log("🦊 SpellCasterCanvas: Component initializing with props", { activeSpellsCount: props.activeSpells.length });
+  console.log("🦊 SpellCasterCanvas: Component initializing with props", {
+    activeSpellsCount: props.activeSpells.length,
+  });
   let canvasRef: HTMLCanvasElement | undefined;
   let spellRenderer: SpellRenderer | undefined;
   let animationEngine: ReturnType<typeof createAnimationEngine> | undefined;
 
   // Create animation engine
   onMount(() => {
-    console.log("🦊 SpellCasterCanvas: onMount - setting up canvas and animation");
+    console.log(
+      "🦊 SpellCasterCanvas: onMount - setting up canvas and animation",
+    );
     if (canvasRef) {
       console.log("🦊 SpellCasterCanvas: Creating spell renderer");
       spellRenderer = new SpellRenderer(canvasRef);
@@ -34,7 +40,9 @@ export const SpellCasterCanvas: Component<SpellCasterCanvasProps> = (props) => {
       });
 
       // Notify parent that animation engine is ready
-      console.log("🦊 SpellCasterCanvas: Notifying parent that animation engine is ready");
+      console.log(
+        "🦊 SpellCasterCanvas: Notifying parent that animation engine is ready",
+      );
       props.onAnimationEngineReady(animationEngine);
 
       // Start animation loop immediately
@@ -42,13 +50,18 @@ export const SpellCasterCanvas: Component<SpellCasterCanvasProps> = (props) => {
       animationEngine.start({
         onUpdate: (deltaTime: number) => {
           if (spellRenderer) {
-            console.log("🦊 SpellCasterCanvas: Updating spells", { deltaTime, activeSpellsCount: props.activeSpells.length });
+            console.log("🦊 SpellCasterCanvas: Updating spells", {
+              deltaTime,
+              activeSpellsCount: props.activeSpells.length,
+            });
             spellRenderer.updateSpells(performance.now());
           }
         },
         onRender: () => {
           if (spellRenderer) {
-            console.log("🦊 SpellCasterCanvas: Rendering spells", { activeSpellsCount: props.activeSpells.length });
+            console.log("🦊 SpellCasterCanvas: Rendering spells", {
+              activeSpellsCount: props.activeSpells.length,
+            });
             spellRenderer.renderSpells(props.activeSpells);
           }
         },
@@ -74,18 +87,17 @@ export const SpellCasterCanvas: Component<SpellCasterCanvasProps> = (props) => {
 
   return (
     <div class="spell-canvas-container">
-      <canvas
-        ref={canvasRef}
-        class="spell-canvas"
-        width={600}
-        height={400}
-      />
-      
+      <canvas ref={canvasRef} class="spell-canvas" width={600} height={400} />
+
       {/* Spell info overlay */}
       <div class="spell-overlay">
         <div class="spell-stats">
           <span>Active Spells: {props.activeSpells.length}</span>
-          <span>FPS: {animationEngine?.getPerformanceStats().currentFPS.toFixed(1) || "0"}</span>
+          <span>
+            FPS:{" "}
+            {animationEngine?.getPerformanceStats().currentFPS.toFixed(1) ||
+              "0"}
+          </span>
         </div>
       </div>
     </div>

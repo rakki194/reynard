@@ -4,7 +4,10 @@
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { AlgorithmSelector } from "../../../optimization/core/algorithm-selector";
-import type { WorkloadCharacteristics, PerformanceRecord } from "../../../optimization/core/algorithm-selector";
+import type {
+  WorkloadCharacteristics,
+  PerformanceRecord,
+} from "../../../optimization/core/algorithm-selector";
 
 describe("Algorithm Selector Extended Coverage", () => {
   let selector: AlgorithmSelector;
@@ -28,13 +31,13 @@ describe("Algorithm Selector Extended Coverage", () => {
       };
 
       const selection = selector.selectCollisionAlgorithm(workload);
-      
+
       expect(selection).toBeDefined();
       expect(selection.algorithm).toBeDefined();
       expect(selection.confidence).toBeGreaterThan(0);
       expect(selection.expectedPerformance).toBeDefined();
       expect(selection.reasoning).toBeDefined();
-      
+
       // Should have recorded the selection
       const stats = selector.getSelectionStats();
       expect(stats).toBeDefined();
@@ -65,12 +68,12 @@ describe("Algorithm Selector Extended Coverage", () => {
         },
       ];
 
-      workloads.forEach(workload => {
+      workloads.forEach((workload) => {
         const selection = selector.selectCollisionAlgorithm(workload);
         expect(selection).toBeDefined();
         expect(selection.algorithm).toBeDefined();
       });
-      
+
       // Should have recorded multiple selections
       const stats = selector.getSelectionStats();
       expect(stats).toBeDefined();
@@ -98,7 +101,7 @@ describe("Algorithm Selector Extended Coverage", () => {
       };
 
       selector.updatePerformanceModel(performanceRecord);
-      
+
       const updatedHistory = selector.getPerformanceHistory();
       expect(updatedHistory.length).toBe(1);
       expect(updatedHistory[0]).toEqual(performanceRecord);
@@ -121,10 +124,10 @@ describe("Algorithm Selector Extended Coverage", () => {
             queryPattern: "random",
           },
         };
-        
+
         selector.updatePerformanceModel(performanceRecord);
       }
-      
+
       const history = selector.getPerformanceHistory();
       expect(history.length).toBe(1000);
     });
@@ -146,10 +149,10 @@ describe("Algorithm Selector Extended Coverage", () => {
             queryPattern: "random",
           },
         };
-        
+
         selector.updatePerformanceModel(performanceRecord);
       }
-      
+
       // Add one more record
       const latestRecord: PerformanceRecord = {
         algorithm: "spatial",
@@ -165,9 +168,9 @@ describe("Algorithm Selector Extended Coverage", () => {
           queryPattern: "clustered",
         },
       };
-      
+
       selector.updatePerformanceModel(latestRecord);
-      
+
       const history = selector.getPerformanceHistory();
       expect(history.length).toBe(1000);
       expect(history[history.length - 1]).toEqual(latestRecord);
@@ -190,7 +193,7 @@ describe("Algorithm Selector Extended Coverage", () => {
       };
 
       selector.updatePerformanceModel(performanceRecord);
-      
+
       // Should have updated selection statistics
       const stats = selector.getSelectionStats();
       expect(stats).toBeDefined();
@@ -216,7 +219,7 @@ describe("Algorithm Selector Extended Coverage", () => {
 
       // This should trigger updateSelectionStats internally
       selector.updatePerformanceModel(performanceRecord);
-      
+
       // Should not throw and should update stats
       const stats = selector.getSelectionStats();
       expect(stats).toBeDefined();
@@ -268,10 +271,10 @@ describe("Algorithm Selector Extended Coverage", () => {
         },
       ];
 
-      performanceRecords.forEach(record => {
+      performanceRecords.forEach((record) => {
         selector.updatePerformanceModel(record);
       });
-      
+
       // Should handle multiple calls without issues
       const stats = selector.getSelectionStats();
       expect(stats).toBeDefined();
@@ -296,7 +299,7 @@ describe("Algorithm Selector Extended Coverage", () => {
       };
 
       selector.updatePerformanceModel(performanceRecord);
-      
+
       const history = selector.getPerformanceHistory();
       expect(history.length).toBe(1);
       expect(history[0]).toEqual(performanceRecord);
@@ -319,7 +322,7 @@ describe("Algorithm Selector Extended Coverage", () => {
       };
 
       selector.updatePerformanceModel(performanceRecord);
-      
+
       const history = selector.getPerformanceHistory();
       expect(history.length).toBe(1);
       expect(history[0]).toEqual(performanceRecord);
@@ -342,7 +345,7 @@ describe("Algorithm Selector Extended Coverage", () => {
       };
 
       selector.updatePerformanceModel(performanceRecord);
-      
+
       const history = selector.getPerformanceHistory();
       expect(history.length).toBe(1);
       expect(history[0]).toEqual(performanceRecord);
@@ -365,7 +368,7 @@ describe("Algorithm Selector Extended Coverage", () => {
       };
 
       selector.updatePerformanceModel(performanceRecord);
-      
+
       const history = selector.getPerformanceHistory();
       expect(history.length).toBe(1);
       expect(history[0]).toEqual(performanceRecord);
@@ -388,7 +391,7 @@ describe("Algorithm Selector Extended Coverage", () => {
       };
 
       selector.updatePerformanceModel(performanceRecord);
-      
+
       const history = selector.getPerformanceHistory();
       expect(history.length).toBe(1);
       expect(history[0]).toEqual(performanceRecord);
@@ -398,11 +401,12 @@ describe("Algorithm Selector Extended Coverage", () => {
   describe("Performance and Memory Management", () => {
     it("should handle large number of performance records efficiently", () => {
       const startTime = Date.now();
-      
+
       // Add 1000 performance records
       for (let i = 0; i < 1000; i++) {
         const performanceRecord: PerformanceRecord = {
-          algorithm: i % 3 === 0 ? "naive" : i % 3 === 1 ? "spatial" : "optimized",
+          algorithm:
+            i % 3 === 0 ? "naive" : i % 3 === 1 ? "spatial" : "optimized",
           objectCount: 100 + i,
           executionTime: 5.2 + i * 0.01,
           memoryUsage: 1024 + i * 10,
@@ -415,16 +419,16 @@ describe("Algorithm Selector Extended Coverage", () => {
             queryPattern: i % 2 === 0 ? "random" : "clustered",
           },
         };
-        
+
         selector.updatePerformanceModel(performanceRecord);
       }
-      
+
       const endTime = Date.now();
       const executionTime = endTime - startTime;
-      
+
       // Should complete within reasonable time (less than 1 second)
       expect(executionTime).toBeLessThan(1000);
-      
+
       const history = selector.getPerformanceHistory();
       expect(history.length).toBe(1000);
     });
@@ -446,10 +450,10 @@ describe("Algorithm Selector Extended Coverage", () => {
             queryPattern: "random",
           },
         };
-        
+
         selector.updatePerformanceModel(performanceRecord);
       }
-      
+
       // Add one more record to trigger cleanup
       const latestRecord: PerformanceRecord = {
         algorithm: "spatial",
@@ -465,12 +469,12 @@ describe("Algorithm Selector Extended Coverage", () => {
           queryPattern: "clustered",
         },
       };
-      
+
       selector.updatePerformanceModel(latestRecord);
-      
+
       const history = selector.getPerformanceHistory();
       expect(history.length).toBe(1000);
-      
+
       // Should have cleaned up old records
       expect(history[0].timestamp).toBeGreaterThan(0);
     });

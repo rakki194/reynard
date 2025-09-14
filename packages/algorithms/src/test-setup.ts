@@ -6,7 +6,7 @@
 import { vi } from "vitest";
 
 // Simple performance API mocking that works with vitest fake timers
-if (typeof globalThis.performance === 'undefined') {
+if (typeof globalThis.performance === "undefined") {
   globalThis.performance = {
     now: vi.fn(() => Date.now()),
     mark: vi.fn(),
@@ -23,6 +23,6 @@ if (typeof globalThis.performance === 'undefined') {
 }
 
 // Ensure performance.now is available
-if (typeof performance.now !== 'function') {
+if (typeof performance.now !== "function") {
   performance.now = vi.fn(() => Date.now());
 }

@@ -557,14 +557,14 @@ async def unleash_the_alpha_wolf():
         await fuzzer.fuzz_endpoint("/", "GET", payload_count=25)
         await fuzzer.fuzz_endpoint("/api/health", "GET", payload_count=25)
         await fuzzer.fuzz_endpoint("/api/health/detailed", "GET", payload_count=25)
-        
+
         # Phase 2: Authentication endpoints (50 payloads each)
         await fuzzer.fuzz_endpoint("/api/auth/login", "POST", payload_count=50)
         await fuzzer.fuzz_endpoint("/api/auth/register", "POST", payload_count=50)
-        
+
         # Phase 3-12: All other API endpoints (25-50 payloads each)
         # NLWeb, Ollama, ComfyUI, Summarization, TTS, RAG, Caption, Image Utils, Executor, Admin
-        
+
         # Document the kill
         fuzzer.generate_fuzz_report()
 
@@ -584,19 +584,19 @@ async def unleash_the_specialized_hunter():
     async with EndpointOrchestrator() as fuzzer:
         # Phase 1: Authentication bypass attacks (50 payloads)
         auth_results = await fuzzer.fuzz_login_endpoint("/api/auth/login")
-        
+
         # Phase 2: File upload exploits (35 payloads)
         file_results = await fuzzer.fuzz_file_upload_endpoint("/api/files/upload")
-        
+
         # Phase 3: Search injection attacks (120+ payloads)
         search_results = await fuzzer.fuzz_search_endpoint("/api/search")
-        
+
         # Phase 4: JSON parsing attacks (15 payloads)
         json_results = await fuzzer.fuzz_json_endpoint("/api/auth/login", "POST")
-        
+
         # Phase 5: Header injection attacks (19 payloads)
         header_results = await fuzzer.fuzz_headers_endpoint("/api/protected", "GET")
-        
+
         # Analyze all results
         total_requests = len(auth_results) + len(file_results) + len(search_results) + len(json_results) + len(header_results)
         print(f"🐺 Specialized Hunter completed {total_requests} targeted attacks!")
@@ -620,13 +620,13 @@ async def unleash_the_alpha_pack():
         await comprehensive_fuzzer.fuzz_authentication_endpoints()
         await comprehensive_fuzzer.fuzz_file_endpoints()
         comprehensive_fuzzer.generate_fuzz_report()
-    
+
     # Then, the Specialized Hunter exploits specific vulnerabilities
     async with EndpointOrchestrator() as endpoint_fuzzer:
         await endpoint_fuzzer.fuzz_login_endpoint()
         await endpoint_fuzzer.fuzz_file_upload_endpoint()
         await endpoint_fuzzer.fuzz_search_endpoint()
-    
+
     print("🐺 Alpha Pack hunt completed - no vulnerability can hide!")
 
 # Execute the ultimate hunt

@@ -351,11 +351,15 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
                     {message.thinking && (
                       <div class="message-thinking">
                         <div class="thinking-indicator">
-                          <span innerHTML={(() => {
-                            const icon = getIcon("brain");
-                            if (!icon) return "";
-                            return typeof icon === "string" ? icon : icon.outerHTML;
-                          })()}></span>{" "}
+                          <span
+                            innerHTML={(() => {
+                              const icon = getIcon("brain");
+                              if (!icon) return "";
+                              return typeof icon === "string"
+                                ? icon
+                                : icon.outerHTML;
+                            })()}
+                          ></span>{" "}
                           {message.thinking}
                         </div>
                       </div>

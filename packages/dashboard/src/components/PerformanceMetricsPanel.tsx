@@ -486,14 +486,18 @@ export const PerformanceMetricsPanel: Component<
         <h4>{getMetricLabel(selectedMetric())}</h4>
         <Chart
           type="line"
-          labels={getChartData().map(entry => new Date(entry.timestamp).toLocaleTimeString())}
-          datasets={[{
-            label: getMetricLabel(selectedMetric()),
-            data: getChartData().map(entry => entry.value),
-            borderColor: "oklch(0.7 0.15 200)",
-            backgroundColor: "oklch(0.7 0.15 200 / 0.1)",
-            tension: 0.1,
-          }]}
+          labels={getChartData().map((entry) =>
+            new Date(entry.timestamp).toLocaleTimeString(),
+          )}
+          datasets={[
+            {
+              label: getMetricLabel(selectedMetric()),
+              data: getChartData().map((entry) => entry.value),
+              borderColor: "oklch(0.7 0.15 200)",
+              backgroundColor: "oklch(0.7 0.15 200 / 0.1)",
+              tension: 0.1,
+            },
+          ]}
           width={800}
           height={300}
           useOKLCH={true}

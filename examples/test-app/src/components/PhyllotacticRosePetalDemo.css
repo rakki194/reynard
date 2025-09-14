@@ -249,11 +249,11 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .demo-controls {
     order: 2;
   }
-  
+
   .demo-visualization {
     order: 1;
   }
@@ -263,25 +263,25 @@
   .phyllotactic-rose-demo {
     padding: 0.5rem;
   }
-  
+
   .demo-header h2 {
     font-size: 2rem;
   }
-  
+
   .demo-header p {
     font-size: 1rem;
   }
-  
+
   .demo-canvas {
     width: 100%;
     max-width: 400px;
     height: 300px;
   }
-  
+
   .feature-descriptions {
     grid-template-columns: 1fr;
   }
-  
+
   .canvas-overlay {
     position: static;
     margin-top: 1rem;
@@ -291,7 +291,8 @@
 
 /* Animation Effects */
 @keyframes petalGlow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
   }
   50% {

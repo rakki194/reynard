@@ -44,11 +44,11 @@ function MySegmentationApp() {
       }}
       events={{
         onSegmentationCreate: (segmentation) => {
-          setSegmentations(prev => [...prev, segmentation]);
+          setSegmentations((prev) => [...prev, segmentation]);
         },
         onSegmentationUpdate: (segmentation) => {
-          setSegmentations(prev => 
-            prev.map(s => s.id === segmentation.id ? segmentation : s)
+          setSegmentations((prev) =>
+            prev.map((s) => (s.id === segmentation.id ? segmentation : s)),
           );
         },
       }}
@@ -70,7 +70,7 @@ The segmentation package is designed to work harmoniously with existing Reynard 
 │   ├── reynard-ai-shared/           # BaseAIService, ServiceRegistry
 │   └── reynard-algorithms/          # PolygonOps, PointOps, geometric operations
 │
-├── 🏗️ ANNOTATION CORE LAYER  
+├── 🏗️ ANNOTATION CORE LAYER
 │   ├── reynard-annotating-core/     # BackendAnnotationService, task management
 │   └── reynard-annotating/          # Unified interface, generator coordination
 │
@@ -127,15 +127,15 @@ const customConfig = {
   imageSrc="/path/to/image.jpg"
   config={customConfig}
   // ... other props
-/>
+/>;
 ```
 
 ### Service Integration
 
 ```tsx
-import { 
-  SegmentationManager, 
-  initializeSegmentationManager 
+import {
+  SegmentationManager,
+  initializeSegmentationManager,
 } from "reynard-segmentation";
 
 // Initialize the segmentation manager
@@ -162,9 +162,18 @@ console.log("Generated segmentation:", result.segmentation);
 import { SegmentationExportFormat } from "reynard-segmentation";
 
 // Export to different formats
-const cocoData = manager.exportSegmentation(segmentation, SegmentationExportFormat.COCO);
-const yoloData = manager.exportSegmentation(segmentation, SegmentationExportFormat.YOLO);
-const reynardData = manager.exportSegmentation(segmentation, SegmentationExportFormat.REYNARD);
+const cocoData = manager.exportSegmentation(
+  segmentation,
+  SegmentationExportFormat.COCO,
+);
+const yoloData = manager.exportSegmentation(
+  segmentation,
+  SegmentationExportFormat.YOLO,
+);
+const reynardData = manager.exportSegmentation(
+  segmentation,
+  SegmentationExportFormat.REYNARD,
+);
 
 // Import segmentation data
 const importedSegmentation = manager.importSegmentation(cocoData);
@@ -204,36 +213,36 @@ npm run test:ui
 
 ### SegmentationEditor Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `imageSrc` | `string` | - | Image source for segmentation |
-| `segmentations` | `SegmentationData[]` | `[]` | Initial segmentations |
-| `config` | `Partial<SegmentationEditorConfig>` | `{}` | Editor configuration |
-| `state` | `SegmentationEditorState` | `{}` | Editor state |
-| `events` | `SegmentationEditorEvents` | `{}` | Event handlers |
-| `enabled` | `boolean` | `true` | Whether editor is enabled |
+| Prop            | Type                                | Default | Description                   |
+| --------------- | ----------------------------------- | ------- | ----------------------------- |
+| `imageSrc`      | `string`                            | -       | Image source for segmentation |
+| `segmentations` | `SegmentationData[]`                | `[]`    | Initial segmentations         |
+| `config`        | `Partial<SegmentationEditorConfig>` | `{}`    | Editor configuration          |
+| `state`         | `SegmentationEditorState`           | `{}`    | Editor state                  |
+| `events`        | `SegmentationEditorEvents`          | `{}`    | Event handlers                |
+| `enabled`       | `boolean`                           | `true`  | Whether editor is enabled     |
 
 ### SegmentationEditorConfig
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `enabled` | `boolean` | `true` | Whether editing is enabled |
-| `showGrid` | `boolean` | `true` | Whether to show grid |
-| `gridSize` | `number` | `20` | Grid size in pixels |
-| `snapToGrid` | `boolean` | `true` | Whether to snap to grid |
-| `showVertices` | `boolean` | `true` | Whether to show polygon vertices |
-| `vertexSize` | `number` | `8` | Vertex size in pixels |
-| `showEdges` | `boolean` | `true` | Whether to show polygon edges |
-| `edgeThickness` | `number` | `2` | Edge thickness in pixels |
-| `showFill` | `boolean` | `true` | Whether to show polygon fill |
-| `fillOpacity` | `number` | `0.3` | Fill opacity (0-1) |
-| `allowVertexEdit` | `boolean` | `true` | Whether to allow vertex editing |
-| `allowEdgeEdit` | `boolean` | `true` | Whether to allow edge editing |
-| `allowPolygonCreation` | `boolean` | `true` | Whether to allow polygon creation |
-| `allowPolygonDeletion` | `boolean` | `true` | Whether to allow polygon deletion |
-| `maxPolygons` | `number` | `50` | Maximum number of polygons |
-| `minPolygonArea` | `number` | `100` | Minimum polygon area |
-| `maxPolygonArea` | `number` | `1000000` | Maximum polygon area |
+| Option                 | Type      | Default   | Description                       |
+| ---------------------- | --------- | --------- | --------------------------------- |
+| `enabled`              | `boolean` | `true`    | Whether editing is enabled        |
+| `showGrid`             | `boolean` | `true`    | Whether to show grid              |
+| `gridSize`             | `number`  | `20`      | Grid size in pixels               |
+| `snapToGrid`           | `boolean` | `true`    | Whether to snap to grid           |
+| `showVertices`         | `boolean` | `true`    | Whether to show polygon vertices  |
+| `vertexSize`           | `number`  | `8`       | Vertex size in pixels             |
+| `showEdges`            | `boolean` | `true`    | Whether to show polygon edges     |
+| `edgeThickness`        | `number`  | `2`       | Edge thickness in pixels          |
+| `showFill`             | `boolean` | `true`    | Whether to show polygon fill      |
+| `fillOpacity`          | `number`  | `0.3`     | Fill opacity (0-1)                |
+| `allowVertexEdit`      | `boolean` | `true`    | Whether to allow vertex editing   |
+| `allowEdgeEdit`        | `boolean` | `true`    | Whether to allow edge editing     |
+| `allowPolygonCreation` | `boolean` | `true`    | Whether to allow polygon creation |
+| `allowPolygonDeletion` | `boolean` | `true`    | Whether to allow polygon deletion |
+| `maxPolygons`          | `number`  | `50`      | Maximum number of polygons        |
+| `minPolygonArea`       | `number`  | `100`     | Minimum polygon area              |
+| `maxPolygonArea`       | `number`  | `1000000` | Maximum polygon area              |
 
 ## 🔧 Development
 
@@ -314,12 +323,6 @@ MIT License - see LICENSE file for details.
 
 ---
 
-*"In the realm of code, legends are not born—they are forged through the wise use of existing tools and the strategic extension of proven patterns."* 🦊
+_"In the realm of code, legends are not born—they are forged through the wise use of existing tools and the strategic extension of proven patterns."_ 🦊
 
 **May your segmentations be precise, your polygons be valid, and your architecture be magnificent!** 🍀
-
-
-
-
-
-

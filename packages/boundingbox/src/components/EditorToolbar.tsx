@@ -28,7 +28,9 @@ export const EditorToolbar: Component<EditorToolbarProps> = (props) => {
       <div class="toolbar-section">
         <label for="label-selector">Label Class:</label>
         <LabelSelector
-          availableLabels={config.labelClasses || ["person", "vehicle", "animal", "object"]}
+          availableLabels={
+            config.labelClasses || ["person", "vehicle", "animal", "object"]
+          }
           selectedLabel={selectedLabelClass}
           onLabelChange={onLabelClassChange}
           className="label-selector"

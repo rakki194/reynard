@@ -8,40 +8,40 @@ import { t as coreTranslate, registerFallbackTranslations } from "reynard-core";
 // Register charts-specific fallback translations
 registerFallbackTranslations("charts", {
   // Loading states
-  "loading": "Loading...",
-  "loadingData": "Loading Data...",
-  "loadingStatisticalData": "Loading statistical data...",
-  "loadingEmbeddingQuality": "Loading embedding quality analysis...",
-  
+  loading: "Loading...",
+  loadingData: "Loading Data...",
+  loadingStatisticalData: "Loading statistical data...",
+  loadingEmbeddingQuality: "Loading embedding quality analysis...",
+
   // Data states
-  "noData": "No Data Available",
-  "error": "Error Loading Data",
-  "refresh": "Refresh Data",
-  
+  noData: "No Data Available",
+  error: "Error Loading Data",
+  refresh: "Refresh Data",
+
   // Export options
-  "exportImage": "Export as Image",
-  "exportCsv": "Export as CSV",
-  "exportPdf": "Export as PDF",
-  
+  exportImage: "Export as Image",
+  exportCsv: "Export as CSV",
+  exportPdf: "Export as PDF",
+
   // Legend controls
-  "showLegend": "Show Legend",
-  "hideLegend": "Hide Legend",
-  "legendPosition": "Legend Position",
-  
+  showLegend: "Show Legend",
+  hideLegend: "Hide Legend",
+  legendPosition: "Legend Position",
+
   // Axes
-  "xAxis": "X Axis",
-  "yAxis": "Y Axis",
-  "axisTitle": "Axis Title",
-  "axisLabel": "Axis Label",
-  "valueRange": "Value Range",
-  "frequency": "Frequency",
-  "metric": "Metric",
-  "value": "Value",
-  "qualityMetrics": "Quality Metrics",
-  "score": "Score",
-  "models": "Models",
-  "hoursAgo": "hours ago",
-  
+  xAxis: "X Axis",
+  yAxis: "Y Axis",
+  axisTitle: "Axis Title",
+  axisLabel: "Axis Label",
+  valueRange: "Value Range",
+  frequency: "Frequency",
+  metric: "Metric",
+  value: "Value",
+  qualityMetrics: "Quality Metrics",
+  score: "Score",
+  models: "Models",
+  hoursAgo: "hours ago",
+
   // Chart types
   "chartTypes.line": "Line Chart",
   "chartTypes.bar": "Bar Chart",
@@ -53,7 +53,7 @@ registerFallbackTranslations("charts", {
   "chartTypes.boxplot": "Box Plot",
   "chartTypes.qualityBar": "Quality Bar",
   "chartTypes.qualityGauge": "Quality Gauge",
-  
+
   // Statistics
   "statistics.mean": "Mean",
   "statistics.median": "Median",
@@ -65,7 +65,7 @@ registerFallbackTranslations("charts", {
   "statistics.max": "Maximum",
   "statistics.count": "Count",
   "statistics.sum": "Sum",
-  
+
   // Quality assessments
   "quality.excellent": "Excellent",
   "quality.good": "Good",
@@ -74,12 +74,12 @@ registerFallbackTranslations("charts", {
   "quality.assessment": "Quality Assessment",
   "quality.metrics": "Quality Metrics",
   "quality.overall": "Overall Quality",
-  
+
   // Performance metrics
   "performance.fps": "FPS",
   "performance.renderTime": "Render Time",
   "performance.dataPoints": "Data Points",
-  "performance.activeVisualizations": "Active Visualizations"
+  "performance.activeVisualizations": "Active Visualizations",
 });
 
 /**
@@ -90,12 +90,12 @@ export function t(key: string, params?: Record<string, unknown>): string {
   // Try charts-specific key first
   const chartsKey = `charts.${key}`;
   const result = coreTranslate(chartsKey, params);
-  
+
   // If we got the key back (no translation found), try without prefix
   if (result === chartsKey) {
     return coreTranslate(key, params);
   }
-  
+
   return result;
 }
 
@@ -133,7 +133,9 @@ export function getLoadingMessage(chartType?: string): string {
 /**
  * Get quality assessment text
  */
-export function getQualityText(quality: "excellent" | "good" | "fair" | "poor"): string {
+export function getQualityText(
+  quality: "excellent" | "good" | "fair" | "poor",
+): string {
   return t(`quality.${quality}`);
 }
 

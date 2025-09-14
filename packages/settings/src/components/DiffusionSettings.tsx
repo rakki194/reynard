@@ -68,16 +68,10 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
     setIsSaving(true);
     try {
       await settings.setSetting("diffusion.max_new_tokens", maxNewTokens());
-      await settings.setSetting(
-        "diffusion.timeout_seconds",
-        timeoutSeconds(),
-      );
+      await settings.setSetting("diffusion.timeout_seconds", timeoutSeconds());
       await settings.setSetting("diffusion.device", device());
       await settings.setSetting("diffusion.auto_trim", autoTrim());
-      await settings.setSetting(
-        "diffusion.fix_punctuation",
-        fixPunctuation(),
-      );
+      await settings.setSetting("diffusion.fix_punctuation", fixPunctuation());
       await settings.setSetting("diffusion.temperature", temperature());
       await settings.setSetting("diffusion.top_p", topP());
       await settings.setSetting(
@@ -128,9 +122,10 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
                 label="Max New Tokens"
                 type="number"
                 value={maxNewTokens()}
-                onChange={(e) => setMaxNewTokens(parseInt(e.target.value) || 64)}
+                onChange={(e) =>
+                  setMaxNewTokens(parseInt(e.target.value) || 64)
+                }
                 helperText="Maximum number of tokens to generate in a single response"
-               
               />
             </div>
 
@@ -139,9 +134,10 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
                 label="Request Timeout (seconds)"
                 type="number"
                 value={timeoutSeconds()}
-                onChange={(e) => setTimeoutSeconds(parseInt(e.target.value) || 120)}
+                onChange={(e) =>
+                  setTimeoutSeconds(parseInt(e.target.value) || 120)
+                }
                 helperText="Maximum time to wait for a response from the text generation model"
-               
               />
             </div>
 
@@ -151,9 +147,10 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
                 type="number"
                 step="0.1"
                 value={temperature()}
-                onChange={(e) => setTemperature(parseFloat(e.target.value) || 0.7)}
+                onChange={(e) =>
+                  setTemperature(parseFloat(e.target.value) || 0.7)
+                }
                 helperText="Controls randomness in generation (0.0 = deterministic, 1.0 = very random)"
-               
               />
             </div>
 
@@ -165,7 +162,6 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
                 value={topP()}
                 onChange={(e) => setTopP(parseFloat(e.target.value) || 0.9)}
                 helperText="Nucleus sampling parameter (0.0 = very focused, 1.0 = very diverse)"
-               
               />
             </div>
 
@@ -179,7 +175,6 @@ export const DiffusionSettings: Component<DiffusionSettingsProps> = (props) => {
                   setRepetitionPenalty(parseFloat(value) || 1.1)
                 }
                 helperText="Penalty for repeating tokens (1.0 = no penalty, >1.0 = reduce repetition)"
-               
               />
             </div>
           </div>

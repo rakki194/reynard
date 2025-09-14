@@ -10,15 +10,20 @@ interface Phyllotactic3DCanvasProps {
   currentPoints: () => any[];
   height: () => number;
   spiralPitch: () => number;
-  onCanvasReady: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => void;
+  onCanvasReady: (
+    canvas: HTMLCanvasElement,
+    ctx: CanvasRenderingContext2D,
+  ) => void;
 }
 
-export const Phyllotactic3DCanvas: Component<Phyllotactic3DCanvasProps> = (props) => {
+export const Phyllotactic3DCanvas: Component<Phyllotactic3DCanvasProps> = (
+  props,
+) => {
   let canvas: HTMLCanvasElement | undefined;
 
   onMount(() => {
     if (canvas) {
-      const ctx = canvas.getContext('2d')!;
+      const ctx = canvas.getContext("2d")!;
       canvas.width = 800;
       canvas.height = 600;
       props.onCanvasReady(canvas, ctx);
@@ -32,7 +37,9 @@ export const Phyllotactic3DCanvas: Component<Phyllotactic3DCanvasProps> = (props
         <div class="overlay-info">
           <h4>3D Phyllotactic Spiral</h4>
           <p>{props.currentPoints().length} points in 3D space</p>
-          <p>Height: {props.height()}, Pitch: {props.spiralPitch().toFixed(2)}</p>
+          <p>
+            Height: {props.height()}, Pitch: {props.spiralPitch().toFixed(2)}
+          </p>
         </div>
       </div>
     </Card>

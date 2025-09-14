@@ -56,7 +56,7 @@ export default defineConfig({
     fakeTimers: {
       toFake: [
         "setTimeout",
-        "clearTimeout", 
+        "clearTimeout",
         "setInterval",
         "clearInterval",
         "setImmediate",
@@ -66,7 +66,7 @@ export default defineConfig({
         "requestAnimationFrame",
         "cancelAnimationFrame",
         "requestIdleCallback",
-        "cancelIdleCallback"
+        "cancelIdleCallback",
       ],
       advanceTimers: true,
       now: 0,
@@ -74,13 +74,13 @@ export default defineConfig({
 
     // File patterns - look for tests in current directory and subdirectories
     // Filter by VITEST_AGENT_ID if set
-    include: process.env.VITEST_AGENT_ID 
+    include: process.env.VITEST_AGENT_ID
       ? [`packages/${process.env.VITEST_AGENT_ID}/**/*.{test,spec}.{js,ts,tsx}`]
       : [
           "**/*.{test,spec}.{js,ts,tsx}",
           "**/__tests__/**/*.{js,ts,tsx}",
           "src/**/*.{test,spec}.{js,ts,tsx}",
-          "src/__tests__/**/*.{js,ts,tsx}"
+          "src/__tests__/**/*.{js,ts,tsx}",
         ],
     exclude: [
       "node_modules",

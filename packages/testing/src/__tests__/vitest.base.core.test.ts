@@ -4,7 +4,7 @@ import {
   createComponentTestConfig,
   createUtilityTestConfig,
   createIntegrationTestConfig,
-  } from "../config/vitest.base.js";
+} from "../config/vitest.base.js";
 
 describe("Vitest Configuration Core Functions", () => {
   describe("createBaseVitestConfig", () => {

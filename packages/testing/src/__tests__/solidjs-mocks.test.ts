@@ -3,7 +3,7 @@ import {
   mockRouter,
   mockContext,
   createMockSolidResource,
-  } from "../mocks/solidjs-mocks.js";
+} from "../mocks/solidjs-mocks.js";
 
 describe("SolidJS Mocks", () => {
   beforeEach(() => {

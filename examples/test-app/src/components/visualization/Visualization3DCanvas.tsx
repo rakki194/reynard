@@ -3,9 +3,19 @@
  * Canvas component for 3D visualization
  */
 
-import { Component, createSignal, onMount, onCleanup, createMemo } from "solid-js";
+import {
+  Component,
+  createSignal,
+  onMount,
+  onCleanup,
+  createMemo,
+} from "solid-js";
 import { useOKLCHColors } from "reynard-themes";
-import { VisualizationCore, type DataPoint, type VisualizationConfig } from "./VisualizationCore";
+import {
+  VisualizationCore,
+  type DataPoint,
+  type VisualizationConfig,
+} from "./VisualizationCore";
 import { DataProcessor, type ProcessedData } from "./DataProcessor";
 import { createAnimationEngine } from "../../utils/animationEngine";
 import { oklchToRgbString } from "./colorUtils";
@@ -24,13 +34,17 @@ interface Visualization3DCanvasProps {
   onInitializationComplete?: () => void;
 }
 
-export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (props) => {
+export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (
+  props,
+) => {
   const oklchColors = useOKLCHColors();
-  
+
   // State
   const [visualizationCore] = createSignal(new VisualizationCore(props.config));
   const [isInitializing, setIsInitializing] = createSignal(false);
-  const [initializationError, setInitializationError] = createSignal<string | null>(null);
+  const [initializationError, setInitializationError] = createSignal<
+    string | null
+  >(null);
 
   // Refs
   let containerRef: HTMLDivElement | undefined;
@@ -43,12 +57,11 @@ export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (pro
   // Create animation engine at component level to ensure proper cleanup
   const animationEngine = createAnimationEngine();
 
-
   // Generate colors for data points
   const pointColors = createMemo(() => {
     const data = props.processedData();
     if (!data) return [];
-    
+
     return visualizationCore().generateColors(data.points);
   });
 
@@ -62,7 +75,7 @@ export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (pro
 
       const backgroundOklch = oklchColors.getColor("background");
       const backgroundColor = oklchToRgbString(backgroundOklch);
-      
+
       const result = await initializeThreeJS({
         width: props.width || 800,
         height: props.height || 600,
@@ -89,7 +102,10 @@ export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (pro
       props.onInitializationComplete?.();
     } catch (error) {
       console.error("Failed to initialize Three.js:", error);
-      const errorMessage = error instanceof Error ? error.message : "Failed to initialize 3D scene";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to initialize 3D scene";
       setInitializationError(errorMessage);
       setIsInitializing(false);
       props.onInitializationError?.(errorMessage);
@@ -102,7 +118,7 @@ export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (pro
 
     const data = props.processedData();
     const colors = pointColors();
-    
+
     if (data && colors.length > 0) {
       pointCloud3D.createPointCloud(data, colors);
     }
@@ -127,17 +143,20 @@ export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (pro
 
     // Render scene
     renderer.render(scene, camera);
-    
+
     // Debug: Log render info occasionally
-    if (Math.random() < 0.01) { // 1% chance to log
+    if (Math.random() < 0.01) {
+      // 1% chance to log
       console.log("🦊 Rendering scene:", {
         sceneChildren: scene.children.length,
         cameraPosition: camera.position,
-        rendererSize: { width: renderer.domElement.width, height: renderer.domElement.height }
+        rendererSize: {
+          width: renderer.domElement.width,
+          height: renderer.domElement.height,
+        },
       });
     }
   };
-
 
   // Reset camera
   const resetCamera = () => {
@@ -156,15 +175,15 @@ export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (pro
     if (animationEngine) {
       animationEngine.stop();
     }
-    
+
     if (pointCloud3D) {
       pointCloud3D.dispose();
     }
-    
+
     if (renderer && containerRef) {
       containerRef.removeChild(renderer.domElement);
     }
-    
+
     if (renderer) {
       renderer.dispose();
     }
@@ -188,9 +207,9 @@ export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (pro
       <div
         ref={containerRef}
         class="threejs-container"
-        style={{ 
-          width: '800px',
-          height: '600px'
+        style={{
+          width: "800px",
+          height: "600px",
         }}
       />
     </div>

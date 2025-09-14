@@ -24,7 +24,7 @@ describe("throttle", () => {
     expect(mockFn).toHaveBeenCalledTimes(1);
 
     // Wait for throttle delay
-    await new Promise(resolve => setTimeout(resolve, 110));
+    await new Promise((resolve) => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(2);
 
     // Call again after throttle period
@@ -68,7 +68,7 @@ describe("throttle", () => {
     expect(mockFn).toHaveBeenCalledTimes(1);
 
     // Wait for throttle delay
-    await new Promise(resolve => setTimeout(resolve, 110));
+    await new Promise((resolve) => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
@@ -87,7 +87,7 @@ describe("throttle", () => {
     expect(mockFn).toHaveBeenCalledTimes(0);
 
     // Wait for throttle delay
-    await new Promise(resolve => setTimeout(resolve, 110));
+    await new Promise((resolve) => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 });
@@ -115,7 +115,7 @@ describe("debounce", () => {
     expect(mockFn).toHaveBeenCalledTimes(0);
 
     // Wait for debounce delay
-    await new Promise(resolve => setTimeout(resolve, 110));
+    await new Promise((resolve) => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
@@ -124,7 +124,7 @@ describe("debounce", () => {
     const debouncedFn = debounce(mockFn, 100);
 
     debouncedFn("arg1", "arg2");
-    await new Promise(resolve => setTimeout(resolve, 110));
+    await new Promise((resolve) => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledWith("arg1", "arg2");
   });
 
@@ -138,7 +138,7 @@ describe("debounce", () => {
 
     const debouncedMethod = debounce(obj.method.bind(obj), 100);
     debouncedMethod();
-    await new Promise(resolve => setTimeout(resolve, 110));
+    await new Promise((resolve) => setTimeout(resolve, 110));
     expect(obj.method).toHaveBeenCalled();
   });
 
@@ -156,7 +156,7 @@ describe("debounce", () => {
     debouncedFn();
     expect(mockFn).toHaveBeenCalledTimes(1);
 
-    await new Promise(resolve => setTimeout(resolve, 110));
+    await new Promise((resolve) => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
@@ -174,7 +174,7 @@ describe("debounce", () => {
     debouncedFn();
     expect(mockFn).toHaveBeenCalledTimes(0);
 
-    await new Promise(resolve => setTimeout(resolve, 110));
+    await new Promise((resolve) => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
@@ -183,13 +183,13 @@ describe("debounce", () => {
     const debouncedFn = debounce(mockFn, 100);
 
     debouncedFn();
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
 
     debouncedFn(); // This should cancel the previous call and start a new timer
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
     expect(mockFn).toHaveBeenCalledTimes(0); // Still shouldn't be called yet
 
-    await new Promise(resolve => setTimeout(resolve, 60)); // Wait for the new timer
+    await new Promise((resolve) => setTimeout(resolve, 60)); // Wait for the new timer
     expect(mockFn).toHaveBeenCalledTimes(1); // Now it should be called
   });
 });

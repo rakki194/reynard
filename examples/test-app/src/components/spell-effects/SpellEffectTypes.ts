@@ -15,14 +15,14 @@ export interface SpellEffect {
   speed: number;
 }
 
-export type SpellType = 
-  | "fire" 
-  | "ice" 
-  | "lightning" 
-  | "earth" 
-  | "water" 
-  | "wind" 
-  | "light" 
+export type SpellType =
+  | "fire"
+  | "ice"
+  | "lightning"
+  | "earth"
+  | "water"
+  | "wind"
+  | "light"
   | "shadow"
   | "healing"
   | "chaos";

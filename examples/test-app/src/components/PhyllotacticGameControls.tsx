@@ -15,24 +15,38 @@ interface PhyllotacticGameControlsProps {
   onToggleSpellCaster: () => void;
 }
 
-export const PhyllotacticGameControls: Component<PhyllotacticGameControlsProps> = (props) => {
-  console.log("🦊 PhyllotacticGameControls: Component rendering with props", { 
-    isRunning: props.isRunning, 
+export const PhyllotacticGameControls: Component<
+  PhyllotacticGameControlsProps
+> = (props) => {
+  console.log("🦊 PhyllotacticGameControls: Component rendering with props", {
+    isRunning: props.isRunning,
     showSpellCaster: props.showSpellCaster,
     hasOnToggleAnimation: !!props.onToggleAnimation,
-    hasOnToggleSpellCaster: !!props.onToggleSpellCaster
+    hasOnToggleSpellCaster: !!props.onToggleSpellCaster,
   });
-  
+
   return (
     <div class="controls-panel">
       <div class="pattern-buttons">
-        <Button variant="secondary" size="sm" onClick={() => props.onApplyPattern("sunflower")}>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => props.onApplyPattern("sunflower")}
+        >
           🌻 Sunflower
         </Button>
-        <Button variant="secondary" size="sm" onClick={() => props.onApplyPattern("pinecone")}>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => props.onApplyPattern("pinecone")}
+        >
           🌲 Pinecone
         </Button>
-        <Button variant="secondary" size="sm" onClick={() => props.onApplyPattern("cactus")}>
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => props.onApplyPattern("cactus")}
+        >
           🌵 Cactus
         </Button>
       </div>
@@ -41,10 +55,13 @@ export const PhyllotacticGameControls: Component<PhyllotacticGameControlsProps> 
         <Button
           variant={props.isRunning ? "danger" : "success"}
           onClick={() => {
-            console.log("🦊 PhyllotacticGameControls: Play/Pause button clicked", { 
-              currentState: props.isRunning, 
-              onToggleAnimation: props.onToggleAnimation 
-            });
+            console.log(
+              "🦊 PhyllotacticGameControls: Play/Pause button clicked",
+              {
+                currentState: props.isRunning,
+                onToggleAnimation: props.onToggleAnimation,
+              },
+            );
             props.onToggleAnimation();
           }}
           leftIcon={getIcon(props.isRunning ? "pause" : "play")}
@@ -57,10 +74,13 @@ export const PhyllotacticGameControls: Component<PhyllotacticGameControlsProps> 
         <Button
           variant="primary"
           onClick={() => {
-            console.log("🦊 PhyllotacticGameControls: Spell Caster toggle button clicked", { 
-              currentState: props.showSpellCaster, 
-              onToggleSpellCaster: props.onToggleSpellCaster 
-            });
+            console.log(
+              "🦊 PhyllotacticGameControls: Spell Caster toggle button clicked",
+              {
+                currentState: props.showSpellCaster,
+                onToggleSpellCaster: props.onToggleSpellCaster,
+              },
+            );
             props.onToggleSpellCaster();
           }}
           leftIcon={getIcon("sparkle")}

@@ -283,33 +283,27 @@
   .segmentation-panel-header {
     padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
   }
-  
+
   .segmentation-panel-controls {
     padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
   }
-  
+
   .segmentation-panel-item {
     padding: var(--spacing-sm, 8px);
   }
-  
+
   .segmentation-panel-item-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--spacing-xs, 4px);
   }
-  
+
   .segmentation-panel-item-date {
     margin-left: 0;
   }
-  
+
   .segmentation-panel-item-meta {
     flex-wrap: wrap;
     gap: var(--spacing-xs, 4px);
   }
 }
-
-
-
-
-
-

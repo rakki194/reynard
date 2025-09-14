@@ -13,7 +13,7 @@ export interface ESLintCommandOptions {
 
 export const createESLintCommand = (): Command => {
   const command = new Command("eslint");
-  
+
   command
     .description("Run ESLint with i18n rules on all packages")
     .option("-f, --fix", "Fix auto-fixable issues")
@@ -27,7 +27,9 @@ export const createESLintCommand = (): Command => {
 
         const command = [
           "npx eslint",
-          packagePaths.map(path => `${path}/src/**/*.{ts,tsx,js,jsx}`).join(" "),
+          packagePaths
+            .map((path) => `${path}/src/**/*.{ts,tsx,js,jsx}`)
+            .join(" "),
           "--config packages/testing/src/eslint/i18n-eslint-config.js",
           `--format ${options.format}`,
           options.fix ? "--fix" : "",

@@ -3,11 +3,11 @@
  * Orchestrates beautiful organic rose petal growth patterns using phyllotactic mathematics
  */
 
-import type { RosePetal, RosePetalConfig } from './RosePetalTypes';
-import { RosePetalFactory } from './RosePetalFactory';
-import { RosePetalAnimator } from './RosePetalAnimator';
+import type { RosePetal, RosePetalConfig } from "./RosePetalTypes";
+import { RosePetalFactory } from "./RosePetalFactory";
+import { RosePetalAnimator } from "./RosePetalAnimator";
 
-export { type RosePetal, type RosePetalConfig } from './RosePetalTypes';
+export { type RosePetal, type RosePetalConfig } from "./RosePetalTypes";
 
 export class RosePetalGrowthSystem {
   private config: RosePetalConfig;
@@ -29,14 +29,14 @@ export class RosePetalGrowthSystem {
       petalLayers: 3,
       animationSpeed: 1.0,
       // Natural growth defaults
-      growthMode: 'gaussian',
+      growthMode: "gaussian",
       unfoldSpeed: 0.03,
       lobeSeparationSpeed: 0.01,
       bundleGrowthDelay: 0.2,
       sepalVisibility: true,
-      ...config
+      ...config,
     };
-    
+
     this.factory = new RosePetalFactory(this.config);
     this.animator = new RosePetalAnimator(this.config);
   }
@@ -70,13 +70,15 @@ export class RosePetalGrowthSystem {
   private addNewPetals(): void {
     const currentPetalCount = this.petals.length;
     const targetPetalCount = this.animator.getTargetPetalCount();
-    
+
     if (currentPetalCount < targetPetalCount) {
       const newPetalCount = Math.min(3, targetPetalCount - currentPetalCount);
-      
+
       for (let i = 0; i < newPetalCount; i++) {
         const shape = this.factory.determinePetalShape(currentPetalCount + i);
-        this.petals.push(this.factory.createPetal(currentPetalCount + i, shape));
+        this.petals.push(
+          this.factory.createPetal(currentPetalCount + i, shape),
+        );
       }
     }
   }

@@ -50,7 +50,7 @@ function createEngineComponents(
   locale: () => LanguageCode,
   translations: () => Translations,
   setTranslations: (translations: Translations) => void,
-  options: ReturnType<typeof extractEngineOptions>
+  options: ReturnType<typeof extractEngineOptions>,
 ) {
   const t = createCoreTranslationFunction(locale, translations, {
     enableDebug: options.enableDebug,

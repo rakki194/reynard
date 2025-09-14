@@ -4,7 +4,7 @@ import {
   createCollisionResult,
   executeNaiveCollisionDetection,
   executeSpatialCollisionDetection,
-  executeOptimizedCollisionDetection
+  executeOptimizedCollisionDetection,
 } from "../../../optimization/adapters/collision-algorithms";
 import type { AABB } from "../../../geometry/collision/aabb-types";
 
@@ -110,7 +110,7 @@ describe("Collision Algorithms", () => {
       const aabbs: AABB[] = [
         { x: 0, y: 0, width: 10, height: 10 },
         { x: 5, y: 5, width: 10, height: 10 },
-        { x: 20, y: 20, width: 10, height: 10 }
+        { x: 20, y: 20, width: 10, height: 10 },
       ];
 
       const result = executeNaiveCollisionDetection(aabbs);
@@ -141,7 +141,7 @@ describe("Collision Algorithms", () => {
       const aabbs: AABB[] = [
         { x: 0, y: 0, width: 10, height: 10 },
         { x: 20, y: 20, width: 10, height: 10 },
-        { x: 40, y: 40, width: 10, height: 10 }
+        { x: 40, y: 40, width: 10, height: 10 },
       ];
 
       const result = executeNaiveCollisionDetection(aabbs);
@@ -155,7 +155,7 @@ describe("Collision Algorithms", () => {
       const aabbs: AABB[] = [
         { x: 0, y: 0, width: 10, height: 10 },
         { x: 5, y: 5, width: 10, height: 10 },
-        { x: 20, y: 20, width: 10, height: 10 }
+        { x: 20, y: 20, width: 10, height: 10 },
       ];
 
       // Create a mock memory pool for testing
@@ -163,12 +163,15 @@ describe("Collision Algorithms", () => {
         getSpatialHash: () => ({
           insert: () => {},
           query: () => [],
-          clear: () => {}
+          clear: () => {},
         }),
-        getCollisionArray: () => []
+        getCollisionArray: () => [],
       };
 
-      const result = executeSpatialCollisionDetection(aabbs, mockMemoryPool as any);
+      const result = executeSpatialCollisionDetection(
+        aabbs,
+        mockMemoryPool as any,
+      );
 
       expect(result).toHaveLength(1);
       expect(result[0].a).toBe(0);
@@ -181,12 +184,15 @@ describe("Collision Algorithms", () => {
         getSpatialHash: () => ({
           insert: () => {},
           query: () => [],
-          clear: () => {}
+          clear: () => {},
         }),
-        getCollisionArray: () => []
+        getCollisionArray: () => [],
       };
 
-      const result = executeSpatialCollisionDetection(aabbs, mockMemoryPool as any);
+      const result = executeSpatialCollisionDetection(
+        aabbs,
+        mockMemoryPool as any,
+      );
 
       expect(result).toHaveLength(0);
     });
@@ -197,12 +203,15 @@ describe("Collision Algorithms", () => {
         getSpatialHash: () => ({
           insert: () => {},
           query: () => [],
-          clear: () => {}
+          clear: () => {},
         }),
-        getCollisionArray: () => []
+        getCollisionArray: () => [],
       };
 
-      const result = executeSpatialCollisionDetection(aabbs, mockMemoryPool as any);
+      const result = executeSpatialCollisionDetection(
+        aabbs,
+        mockMemoryPool as any,
+      );
 
       expect(result).toHaveLength(0);
     });
@@ -213,13 +222,13 @@ describe("Collision Algorithms", () => {
       const aabbs: AABB[] = [
         { x: 0, y: 0, width: 10, height: 10 },
         { x: 5, y: 5, width: 10, height: 10 },
-        { x: 20, y: 20, width: 10, height: 10 }
+        { x: 20, y: 20, width: 10, height: 10 },
       ];
 
       const result = executeOptimizedCollisionDetection(aabbs, {
         enableMemoryPooling: true,
         enableSpatialHashing: true,
-        cellSize: 16
+        cellSize: 16,
       });
 
       expect(result).toHaveLength(1);
@@ -233,7 +242,7 @@ describe("Collision Algorithms", () => {
       const result = executeOptimizedCollisionDetection(aabbs, {
         enableMemoryPooling: true,
         enableSpatialHashing: true,
-        cellSize: 16
+        cellSize: 16,
       });
 
       expect(result).toHaveLength(0);
@@ -242,13 +251,13 @@ describe("Collision Algorithms", () => {
     it("should work without memory pooling", () => {
       const aabbs: AABB[] = [
         { x: 0, y: 0, width: 10, height: 10 },
-        { x: 5, y: 5, width: 10, height: 10 }
+        { x: 5, y: 5, width: 10, height: 10 },
       ];
 
       const result = executeOptimizedCollisionDetection(aabbs, {
         enableMemoryPooling: false,
         enableSpatialHashing: true,
-        cellSize: 16
+        cellSize: 16,
       });
 
       expect(result).toHaveLength(1);
@@ -257,13 +266,13 @@ describe("Collision Algorithms", () => {
     it("should work without spatial hashing", () => {
       const aabbs: AABB[] = [
         { x: 0, y: 0, width: 10, height: 10 },
-        { x: 5, y: 5, width: 10, height: 10 }
+        { x: 5, y: 5, width: 10, height: 10 },
       ];
 
       const result = executeOptimizedCollisionDetection(aabbs, {
         enableMemoryPooling: true,
         enableSpatialHashing: false,
-        cellSize: 16
+        cellSize: 16,
       });
 
       expect(result).toHaveLength(1);
@@ -272,7 +281,7 @@ describe("Collision Algorithms", () => {
     it("should work with minimal configuration", () => {
       const aabbs: AABB[] = [
         { x: 0, y: 0, width: 10, height: 10 },
-        { x: 5, y: 5, width: 10, height: 10 }
+        { x: 5, y: 5, width: 10, height: 10 },
       ];
 
       const result = executeOptimizedCollisionDetection(aabbs, {});
@@ -312,8 +321,18 @@ describe("Collision Algorithms", () => {
     });
 
     it("should handle very large coordinate values", () => {
-      const a: AABB = { x: Number.MAX_SAFE_INTEGER, y: Number.MAX_SAFE_INTEGER, width: 10, height: 10 };
-      const b: AABB = { x: Number.MAX_SAFE_INTEGER - 5, y: Number.MAX_SAFE_INTEGER - 5, width: 10, height: 10 };
+      const a: AABB = {
+        x: Number.MAX_SAFE_INTEGER,
+        y: Number.MAX_SAFE_INTEGER,
+        width: 10,
+        height: 10,
+      };
+      const b: AABB = {
+        x: Number.MAX_SAFE_INTEGER - 5,
+        y: Number.MAX_SAFE_INTEGER - 5,
+        width: 10,
+        height: 10,
+      };
 
       const result = checkCollision(a, b);
 

@@ -77,7 +77,7 @@
   padding: 0.5rem 0.75rem;
   border-radius: var(--border-radius);
   font-size: 0.875rem;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-weight: 600;
 }
 
@@ -152,7 +152,7 @@
   background: var(--color-background-secondary);
   padding: 0.5rem;
   border-radius: 0.25rem;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
   font-size: 0.875rem;
   color: var(--color-accent);
   margin: 0.5rem 0;
@@ -180,11 +180,11 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .controls-panel {
     max-height: none;
   }
-  
+
   .math-grid {
     grid-template-columns: 1fr;
   }
@@ -194,26 +194,26 @@
   .phyllotactic-game {
     padding: 0.5rem;
   }
-  
+
   .game-content {
     padding: 1rem;
   }
-  
+
   .controls-panel {
     padding: 1rem;
   }
-  
+
   .spiral-canvas {
     width: 100%;
     height: auto;
     max-width: 100%;
   }
-  
+
   .pattern-buttons {
     flex-direction: row;
     flex-wrap: wrap;
   }
-  
+
   .control-row {
     flex-direction: column;
   }

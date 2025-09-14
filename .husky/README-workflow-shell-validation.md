@@ -109,12 +109,12 @@ workflow-shell-validation:
   name: 🐺 Workflow Shell Script Validation
   runs-on: ubuntu-latest
   if: github.event.inputs.lint_type == '' || github.event.inputs.lint_type == 'all' || github.event.inputs.lint_type == 'workflow-shell'
-  
+
   steps:
-  - name: 🐺 Extract and validate workflow shell scripts
-    run: |
-      echo "🐺 Extracting and validating shell scripts from GitHub workflows..."
-      node .husky/extract-workflow-shell.js --verbose
+    - name: 🐺 Extract and validate workflow shell scripts
+      run: |
+        echo "🐺 Extracting and validating shell scripts from GitHub workflows..."
+        node .husky/extract-workflow-shell.js --verbose
 ```
 
 ## 🚨 Common Issues and Fixes
@@ -268,4 +268,4 @@ shellcheck --rcfile=.shellcheckrc <extracted-script.sh>
 
 ---
 
-*This toolkit is part of the Reynard project's commitment to code quality and security. For questions or contributions, please refer to the main project documentation.*
+_This toolkit is part of the Reynard project's commitment to code quality and security. For questions or contributions, please refer to the main project documentation._

@@ -52,13 +52,13 @@ pnpm add reynard-animation
 ### Basic Animation
 
 ```typescript
-import { createAnimationCore } from 'reynard-animation';
+import { createAnimationCore } from "reynard-animation";
 
 const engine = createAnimationCore({
   frameRate: 60,
   maxFPS: 120,
   enableVSync: true,
-  enablePerformanceMonitoring: true
+  enablePerformanceMonitoring: true,
 });
 
 engine.start({
@@ -67,20 +67,20 @@ engine.start({
   },
   onRender: (deltaTime) => {
     // Render your animation
-  }
+  },
 });
 ```
 
 ### Staggered Animation
 
 ```typescript
-import { useStaggeredAnimation } from 'reynard-animation';
+import { useStaggeredAnimation } from "reynard-animation";
 
 const { start, items, isAnimating } = useStaggeredAnimation({
   duration: 500,
   stagger: 100,
-  easing: 'easeOutCubic',
-  direction: 'forward'
+  easing: "easeOutCubic",
+  direction: "forward",
 });
 
 // Start animation for 5 items
@@ -90,12 +90,12 @@ await start(5);
 ### Adaptive Quality
 
 ```typescript
-import { createAdaptiveAnimationEngine } from 'reynard-animation';
+import { createAdaptiveAnimationEngine } from "reynard-animation";
 
 const engine = createAdaptiveAnimationEngine({
   targetFPS: 60,
   qualityLevels: [1, 0.75, 0.5, 0.25],
-  adaptationThreshold: 5
+  adaptationThreshold: 5,
 });
 
 // Engine automatically adjusts quality based on performance
@@ -104,20 +104,20 @@ const engine = createAdaptiveAnimationEngine({
 ### Easing Functions
 
 ```typescript
-import { Easing, interpolate, interpolateVector3 } from 'reynard-animation';
+import { Easing, interpolate, interpolateVector3 } from "reynard-animation";
 
 // Use built-in easing
 const easedValue = Easing.easeOutCubic(0.5);
 
 // Interpolate with easing
-const value = interpolate(0, 100, 0.5, 'easeInOutCubic');
+const value = interpolate(0, 100, 0.5, "easeInOutCubic");
 
 // Interpolate 3D vectors
 const position = interpolateVector3(
   [0, 0, 0],
   [100, 100, 100],
   0.5,
-  'easeOutElastic'
+  "easeOutElastic",
 );
 ```
 

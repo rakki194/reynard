@@ -227,12 +227,11 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
         </div>
       </Show>
 
-      <Show
-        when={
-          !props.loading && Object.keys(props.data).length > 0
-        }
-      >
-        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
+      <Show when={!props.loading && Object.keys(props.data).length > 0}>
+        <div
+          class="reynard-chart-container"
+          style={{ position: "relative", width: "100%", height: "100%" }}
+        >
           <canvas
             width={props.width || 400}
             height={props.height || 300}

@@ -50,15 +50,15 @@ export interface SegmentationMetadata {
  */
 export enum SegmentationSource {
   MANUAL = "manual",
-  AI_GENERATED = "ai_generated", 
+  AI_GENERATED = "ai_generated",
   IMPORTED = "imported",
-  REFINED = "refined"
+  REFINED = "refined",
 }
 
 /**
  * Segmentation task for processing
  */
-export interface SegmentationTask extends Omit<CaptionTask, 'type'> {
+export interface SegmentationTask extends Omit<CaptionTask, "type"> {
   /** Task type identifier */
   type: "segmentation";
   /** Image path or URL to segment */
@@ -92,7 +92,7 @@ export interface SegmentationOptions {
 /**
  * Segmentation result from processing
  */
-export interface SegmentationResult extends Omit<CaptionResult, 'type'> {
+export interface SegmentationResult extends Omit<CaptionResult, "type"> {
   /** Result type identifier */
   type: "segmentation";
   /** Generated segmentation data */
@@ -233,10 +233,10 @@ export interface SegmentationEditorEvents {
  */
 export enum SegmentationExportFormat {
   COCO = "coco",
-  YOLO = "yolo", 
+  YOLO = "yolo",
   PASCAL_VOC = "pascal_voc",
   LABELME = "labelme",
-  REYNARD = "reynard"
+  REYNARD = "reynard",
 }
 
 /**
@@ -268,24 +268,22 @@ export interface SegmentationService {
   /** Generate multiple segmentations */
   generateBatchSegmentations(
     tasks: SegmentationTask[],
-    progressCallback?: (progress: number) => void
+    progressCallback?: (progress: number) => void,
   ): Promise<SegmentationResult[]>;
   /** Refine existing segmentation */
   refineSegmentation(
     segmentation: SegmentationData,
-    options?: SegmentationOptions
+    options?: SegmentationOptions,
   ): Promise<SegmentationResult>;
   /** Validate segmentation geometry */
   validateSegmentation(segmentation: SegmentationData): boolean;
   /** Export segmentation data */
   exportSegmentation(
     segmentation: SegmentationData,
-    format: SegmentationExportFormat
+    format: SegmentationExportFormat,
   ): SegmentationExportData;
   /** Import segmentation data */
-  importSegmentation(
-    data: SegmentationExportData
-  ): SegmentationData;
+  importSegmentation(data: SegmentationExportData): SegmentationData;
 }
 
 /**
@@ -330,9 +328,3 @@ export interface SegmentationStatistics {
     averageArea: number;
   };
 }
-
-
-
-
-
-

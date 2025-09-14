@@ -24,7 +24,7 @@ import {
   mockWindow,
   resetBrowserMocks,
   setupBrowserMocks,
-  } from "../mocks/browser-mocks.js";
+} from "../mocks/browser-mocks.js";
 
 describe("Browser Mocks", () => {
   beforeEach(() => {

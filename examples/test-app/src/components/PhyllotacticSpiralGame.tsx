@@ -20,7 +20,9 @@ export const PhyllotacticSpiralGame: Component = () => {
 
   // Lifecycle
   onMount(() => {
-    console.log("🦊 PhyllotacticSpiralGame: onMount - initializing spiral logic");
+    console.log(
+      "🦊 PhyllotacticSpiralGame: onMount - initializing spiral logic",
+    );
     gameLogic.initializeSpiralLogic();
     console.log("🦊 PhyllotacticSpiralGame: Spiral logic initialized");
   });
@@ -44,17 +46,23 @@ export const PhyllotacticSpiralGame: Component = () => {
           <PhyllotacticGameControls
             isRunning={gameLogic.isRunning()}
             onToggleAnimation={() => {
-              console.log("🦊 PhyllotacticSpiralGame: onToggleAnimation called from controls", { 
-                currentIsRunning: gameLogic.isRunning() 
-              });
+              console.log(
+                "🦊 PhyllotacticSpiralGame: onToggleAnimation called from controls",
+                {
+                  currentIsRunning: gameLogic.isRunning(),
+                },
+              );
               gameLogic.toggleAnimation();
             }}
             onApplyPattern={gameLogic.applyPattern}
             showSpellCaster={gameLogic.showSpellCaster()}
             onToggleSpellCaster={() => {
-              console.log("🦊 PhyllotacticSpiralGame: onToggleSpellCaster called from controls", { 
-                currentShowSpellCaster: gameLogic.showSpellCaster() 
-              });
+              console.log(
+                "🦊 PhyllotacticSpiralGame: onToggleSpellCaster called from controls",
+                {
+                  currentShowSpellCaster: gameLogic.showSpellCaster(),
+                },
+              );
               gameLogic.setShowSpellCaster(!gameLogic.showSpellCaster());
             }}
           />

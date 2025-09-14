@@ -8,7 +8,7 @@ import type { ApiResponse, AuthConfiguration } from "../types";
 import type { TokenManager } from "./token-utils";
 import { buildAuthHeaders } from "./auth-headers";
 import { handleUnauthorizedResponse } from "./auth-retry";
-import { 
+import {
   HTTPClient,
   createAuthMiddleware,
   createTokenRefreshMiddleware,

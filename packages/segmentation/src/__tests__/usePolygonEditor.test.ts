@@ -387,8 +387,3 @@ describe("usePolygonEditor", () => {
     });
   });
 });
-
-
-
-
-

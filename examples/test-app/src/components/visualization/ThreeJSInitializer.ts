@@ -26,7 +26,7 @@ export interface ThreeJSInitializerResult {
 }
 
 export async function initializeThreeJS(
-  config: ThreeJSInitializerConfig
+  config: ThreeJSInitializerConfig,
 ): Promise<ThreeJSInitializerResult> {
   const { width, height, backgroundColor, container } = config;
 
@@ -39,7 +39,7 @@ export async function initializeThreeJS(
 
   // Force a layout calculation to ensure dimensions are available
   container.offsetHeight;
-  
+
   // Debug container dimensions
   console.log("🦊 Container dimensions before initialization:", {
     clientWidth: container.clientWidth,
@@ -50,8 +50,8 @@ export async function initializeThreeJS(
       width: window.getComputedStyle(container).width,
       height: window.getComputedStyle(container).height,
       display: window.getComputedStyle(container).display,
-      visibility: window.getComputedStyle(container).visibility
-    }
+      visibility: window.getComputedStyle(container).visibility,
+    },
   });
 
   // Initialize the scene with the container
@@ -62,7 +62,7 @@ export async function initializeThreeJS(
     return new Promise<void>((resolve, reject) => {
       let attempts = 0;
       const maxAttempts = 100; // 1 second timeout
-      
+
       const checkCamera = () => {
         attempts++;
         const cameraInstance = threeJS.camera();
@@ -107,7 +107,7 @@ export async function initializeThreeJS(
     width: renderer.domElement.width,
     height: renderer.domElement.height,
     clientWidth: renderer.domElement.clientWidth,
-    clientHeight: renderer.domElement.clientHeight
+    clientHeight: renderer.domElement.clientHeight,
   });
 
   return {

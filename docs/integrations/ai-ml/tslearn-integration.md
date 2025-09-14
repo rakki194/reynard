@@ -359,5 +359,5 @@ To extend the tslearn integration:
 - [tslearn Documentation](https://tslearn.readthedocs.io/)
 - [Time Series Analysis with tslearn](https://tslearn.readthedocs.io/en/stable/auto_examples/index.html)
 - [Dynamic Time Warping](https://en.wikipedia.org/wiki/Dynamic_time_warping)
-- [Shapelet Discovery](https://en.wikipedia.org/wiki/Shapelet_(time_series))
+- [Shapelet Discovery](<https://en.wikipedia.org/wiki/Shapelet_(time_series)>)
 - [Matrix Profile](https://www.cs.ucr.edu/~eamonn/MatrixProfile.html)

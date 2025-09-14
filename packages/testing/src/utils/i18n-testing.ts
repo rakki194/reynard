@@ -397,7 +397,7 @@ function findMissingKeys(
   const missing: string[] = [];
 
   function compareObjects(ref: unknown, tar: unknown, path: string = "") {
-    for (const key in (ref as any)) {
+    for (const key in ref as any) {
       const currentPath = path ? `${path}.${key}` : key;
 
       if (typeof (ref as any)[key] === "object" && (ref as any)[key] !== null) {
@@ -426,7 +426,7 @@ function findUnusedKeys(
   const unused: string[] = [];
 
   function findUnusedInObject(ref: unknown, tar: unknown, path: string = "") {
-    for (const key in (tar as any)) {
+    for (const key in tar as any) {
       const currentPath = path ? `${path}.${key}` : key;
 
       if (typeof (tar as any)[key] === "object" && (tar as any)[key] !== null) {
@@ -454,7 +454,7 @@ function findIncompleteTranslations(
   const incomplete: string[] = [];
 
   function checkObject(obj: unknown, path: string = "") {
-    for (const key in (obj as any)) {
+    for (const key in obj as any) {
       const currentPath = path ? `${path}.${key}` : key;
 
       if (typeof (obj as any)[key] === "object" && (obj as any)[key] !== null) {

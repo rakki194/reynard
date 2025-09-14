@@ -29,10 +29,10 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Should use naive algorithm
       const stats = adapter.getPerformanceStats();
       expect(stats.algorithmUsage.naive).toBeGreaterThan(0);
@@ -48,10 +48,10 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Should use spatial algorithm
       const stats = adapter.getPerformanceStats();
       expect(stats.algorithmUsage.spatial).toBeGreaterThan(0);
@@ -67,10 +67,10 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Should use optimized algorithm
       const stats = adapter.getPerformanceStats();
       expect(stats.algorithmUsage.optimized).toBeGreaterThan(0);
@@ -87,16 +87,18 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const initialStats = adapter.getMemoryPoolStats();
-      
+
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       const finalStats = adapter.getMemoryPoolStats();
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Memory pool should have been used
-      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(initialStats.totalAllocations);
+      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(
+        initialStats.totalAllocations,
+      );
     });
 
     it("should handle overlapping AABBs in naive execution", () => {
@@ -108,10 +110,10 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       ];
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Should detect collision between first two AABBs
       expect(collisions.length).toBeGreaterThan(0);
     });
@@ -125,11 +127,11 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const initialStats = adapter.getMemoryPoolStats();
-      
+
       adapter.detectCollisions(aabbs);
-      
+
       const finalStats = adapter.getMemoryPoolStats();
-      
+
       // Pool should be in a clean state
       expect(finalStats).toBeDefined();
     });
@@ -146,7 +148,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -161,7 +163,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -176,7 +178,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -191,7 +193,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -206,7 +208,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -223,7 +225,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -238,7 +240,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -253,7 +255,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -269,13 +271,17 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const initialStats = adapter.getPerformanceStats();
-      
+
       adapter.detectCollisions(aabbs);
-      
+
       const finalStats = adapter.getPerformanceStats();
-      
-      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(initialStats.totalQueries);
-      expect(finalStats.algorithmUsage.naive).toBeGreaterThanOrEqual(initialStats.algorithmUsage.naive);
+
+      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(
+        initialStats.totalQueries,
+      );
+      expect(finalStats.algorithmUsage.naive).toBeGreaterThanOrEqual(
+        initialStats.algorithmUsage.naive,
+      );
     });
 
     it("should record performance metrics for spatial algorithm", () => {
@@ -287,13 +293,17 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const initialStats = adapter.getPerformanceStats();
-      
+
       adapter.detectCollisions(aabbs);
-      
+
       const finalStats = adapter.getPerformanceStats();
-      
-      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(initialStats.totalQueries);
-      expect(finalStats.algorithmUsage.spatial).toBeGreaterThanOrEqual(initialStats.algorithmUsage.spatial);
+
+      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(
+        initialStats.totalQueries,
+      );
+      expect(finalStats.algorithmUsage.spatial).toBeGreaterThanOrEqual(
+        initialStats.algorithmUsage.spatial,
+      );
     });
 
     it("should record performance metrics for optimized algorithm", () => {
@@ -305,13 +315,17 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const initialStats = adapter.getPerformanceStats();
-      
+
       adapter.detectCollisions(aabbs);
-      
+
       const finalStats = adapter.getPerformanceStats();
-      
-      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(initialStats.totalQueries);
-      expect(finalStats.algorithmUsage.optimized).toBeGreaterThanOrEqual(initialStats.algorithmUsage.optimized);
+
+      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(
+        initialStats.totalQueries,
+      );
+      expect(finalStats.algorithmUsage.optimized).toBeGreaterThanOrEqual(
+        initialStats.algorithmUsage.optimized,
+      );
     });
 
     it("should update memory pool stats", () => {
@@ -323,13 +337,15 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const initialStats = adapter.getPerformanceStats();
-      
+
       adapter.detectCollisions(aabbs);
-      
+
       const finalStats = adapter.getPerformanceStats();
-      
+
       expect(finalStats.memoryPoolStats).toBeDefined();
-      expect(finalStats.memoryPoolStats.totalAllocations).toBeGreaterThanOrEqual(0);
+      expect(
+        finalStats.memoryPoolStats.totalAllocations,
+      ).toBeGreaterThanOrEqual(0);
     });
   });
 
@@ -413,16 +429,18 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const initialStats = adapter.getMemoryPoolStats();
-      
+
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       const finalStats = adapter.getMemoryPoolStats();
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Memory pool should have been used
-      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(initialStats.totalAllocations);
+      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(
+        initialStats.totalAllocations,
+      );
     });
 
     it("should handle memory pool cleanup after errors", () => {
@@ -435,10 +453,10 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       }));
 
       const collisions = adapter.detectCollisions(aabbs);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Memory pool should be in a clean state
       const stats = adapter.getMemoryPoolStats();
       expect(stats).toBeDefined();

@@ -197,7 +197,9 @@ export function NotificationsDemo() {
                 max="10000"
                 step="500"
                 value={duration()}
-                onInput={(e: any) => setDuration(parseInt(e.currentTarget.value))}
+                onInput={(e: any) =>
+                  setDuration(parseInt(e.currentTarget.value))
+                }
                 disabled={!autoClose()}
                 aria-label="Notification duration in milliseconds"
               />

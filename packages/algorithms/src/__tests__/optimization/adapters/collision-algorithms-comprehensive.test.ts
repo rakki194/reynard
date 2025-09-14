@@ -31,7 +31,7 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeSpatialCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -46,7 +46,7 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeSpatialCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -61,10 +61,10 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeSpatialCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Should detect some collisions due to overlapping grid
       expect(collisions.length).toBeGreaterThanOrEqual(0);
     });
@@ -79,7 +79,7 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeSpatialCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -94,7 +94,7 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeSpatialCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -109,10 +109,10 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeSpatialCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Verify collision structure
       if (collisions.length > 0) {
         const collision = collisions[0];
@@ -134,10 +134,10 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeSpatialCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Memory pool should be in a clean state after execution
       const stats = memoryPool.getStatistics();
       expect(stats).toBeDefined();
@@ -155,7 +155,7 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeOptimizedCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
     });
@@ -170,10 +170,10 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeOptimizedCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Should detect some collisions due to overlapping grid
       expect(collisions.length).toBeGreaterThanOrEqual(0);
     });
@@ -188,10 +188,10 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeOptimizedCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Memory pool should be in a clean state after execution
       const stats = memoryPool.getStatistics();
       expect(stats).toBeDefined();
@@ -278,16 +278,18 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const initialStats = memoryPool.getStatistics();
-      
+
       const collisions = executeSpatialCollisionDetection(aabbs, memoryPool);
-      
+
       const finalStats = memoryPool.getStatistics();
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Memory pool should have been used
-      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(initialStats.totalAllocations);
+      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(
+        initialStats.totalAllocations,
+      );
     });
 
     it("should handle memory pool cleanup after errors", () => {
@@ -300,10 +302,10 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       }));
 
       const collisions = executeSpatialCollisionDetection(aabbs, memoryPool);
-      
+
       expect(collisions).toBeDefined();
       expect(Array.isArray(collisions)).toBe(true);
-      
+
       // Memory pool should be in a clean state
       const stats = memoryPool.getStatistics();
       expect(stats).toBeDefined();

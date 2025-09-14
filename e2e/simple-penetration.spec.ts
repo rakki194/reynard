@@ -27,7 +27,9 @@ async function runFenrirExploit(
 
   try {
     const fenrirPath = path.join(process.cwd(), "..", "fenrir");
-    const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
+    const pythonPath =
+      process.env.PYTHON_PATH ||
+      "bash -c 'source ~/venv/bin/activate && python3'";
 
     // Build command to run specific exploit
     const timeout = options.timeout || 30000; // Default 30 second timeout
@@ -73,7 +75,9 @@ print(json.dumps({
     return {
       success: false,
       vulnerabilitiesFound: 0,
-      details: [{ type: "Error", description: error.message, impact: "Unknown" }],
+      details: [
+        { type: "Error", description: error.message, impact: "Unknown" },
+      ],
       executionTime: Date.now() - startTime,
     };
   }
@@ -85,20 +89,20 @@ print(json.dumps({
 function getExploitClassName(modulePath: string): string {
   const parts = modulePath.split(".");
   const moduleName = parts[parts.length - 1];
-  
+
   // Map of module names to actual class names
   const classMap: Record<string, string> = {
     // Fuzzing modules
-    "comprehensive_fuzzer": "ComprehensiveFuzzerExploit",
-    "endpoint_fuzzer": "EndpointFuzzerExploit",
-    "exploit_wrappers": "ComprehensiveFuzzerExploit", // Default to comprehensive fuzzer
+    comprehensive_fuzzer: "ComprehensiveFuzzerExploit",
+    endpoint_fuzzer: "EndpointFuzzerExploit",
+    exploit_wrappers: "ComprehensiveFuzzerExploit", // Default to comprehensive fuzzer
   };
-  
+
   // Return mapped class name or generate default
   if (classMap[moduleName]) {
     return classMap[moduleName];
   }
-  
+
   // Fallback: generate class name without "Exploit" suffix
   const className = moduleName
     .split("_")

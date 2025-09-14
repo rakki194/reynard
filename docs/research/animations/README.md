@@ -147,7 +147,7 @@ const performanceTest = () => {
   generatePattern(10000);
   const endTime = performance.now();
   const duration = endTime - startTime;
-  
+
   assert(duration < 100); // Should generate 10k points in <100ms
 };
 ```
@@ -159,10 +159,14 @@ const performanceTest = () => {
 const stroboscopicTest = () => {
   const engine = new StroboscopicEngine({ rotationSpeed: 1.0, frameRate: 60 });
   const result = engine.calculateStroboscopicEffect(16.67);
-  
-  assert(typeof result.isStroboscopic === 'boolean');
+
+  assert(typeof result.isStroboscopic === "boolean");
   assert(result.stroboscopicPhase >= 0 && result.stroboscopicPhase <= 1);
-  assert(['growing', 'shrinking', 'frozen', 'morphing'].includes(result.apparentMotion));
+  assert(
+    ["growing", "shrinking", "frozen", "morphing"].includes(
+      result.apparentMotion,
+    ),
+  );
 };
 ```
 

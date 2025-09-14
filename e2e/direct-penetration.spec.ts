@@ -9,7 +9,7 @@ test.describe("🐺 Direct Penetration Testing", () => {
   test("should run fuzzing exploit directly", async () => {
     const fenrirPath = path.join(process.cwd(), "..", "fenrir");
     const pythonPath = "bash -c 'source ~/venv/bin/activate && python3'";
-    
+
     const command = `${pythonPath} -c "
 import sys
 sys.path.append('${fenrirPath}')
@@ -39,7 +39,7 @@ print(json.dumps({
     }
 
     const result = JSON.parse(stdout.trim());
-    
+
     expect(result.success).toBe(true);
     expect(result.vulnerabilities_found).toBeGreaterThanOrEqual(0);
     console.log(`✅ Fuzzing completed successfully`);

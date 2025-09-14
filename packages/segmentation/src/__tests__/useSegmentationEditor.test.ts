@@ -6,10 +6,10 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useSegmentationEditor } from "../composables/useSegmentationEditor.js";
-import type { 
-  SegmentationData, 
-  SegmentationEditorConfig, 
-  SegmentationEditorState 
+import type {
+  SegmentationData,
+  SegmentationEditorConfig,
+  SegmentationEditorState,
 } from "../types/index.js";
 
 describe("useSegmentationEditor", () => {
@@ -93,7 +93,9 @@ describe("useSegmentationEditor", () => {
 
       expect(editor.state().zoom).toBe(2);
       expect(editor.state().panOffset).toEqual({ x: 10, y: 20 });
-      expect(mockOnStateChange).toHaveBeenCalledWith(expect.objectContaining(updates));
+      expect(mockOnStateChange).toHaveBeenCalledWith(
+        expect.objectContaining(updates),
+      );
     });
 
     it("should update state without callback", () => {
@@ -264,7 +266,11 @@ describe("useSegmentationEditor", () => {
     it("should stop editing", () => {
       const editor = useSegmentationEditor({
         config,
-        state: { ...initialState, isEditing: true, selectedSegmentation: "test-seg" },
+        state: {
+          ...initialState,
+          isEditing: true,
+          selectedSegmentation: "test-seg",
+        },
         onStateChange: mockOnStateChange,
       });
 
@@ -292,7 +298,11 @@ describe("useSegmentationEditor", () => {
     it("should handle creating when already editing", () => {
       const editor = useSegmentationEditor({
         config,
-        state: { ...initialState, isEditing: true, selectedSegmentation: "test-seg" },
+        state: {
+          ...initialState,
+          isEditing: true,
+          selectedSegmentation: "test-seg",
+        },
         onStateChange: mockOnStateChange,
       });
 
@@ -501,7 +511,13 @@ describe("useSegmentationEditor", () => {
 
       const segmentation: SegmentationData = {
         id: "test-seg",
-        polygon: { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }] },
+        polygon: {
+          points: [
+            { x: 0, y: 0 },
+            { x: 100, y: 0 },
+            { x: 100, y: 100 },
+          ],
+        },
         metadata: { source: "manual" },
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -544,8 +560,3 @@ describe("useSegmentationEditor", () => {
     });
   });
 });
-
-
-
-
-

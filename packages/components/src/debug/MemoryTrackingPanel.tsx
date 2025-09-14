@@ -544,14 +544,18 @@ export const MemoryTrackingPanel: Component<MemoryTrackingPanelProps> = (
         <h4>Memory Usage Over Time</h4>
         <Chart
           type="line"
-          labels={getMemoryChartData().map(entry => new Date(entry.timestamp).toLocaleTimeString())}
-          datasets={[{
-            label: "Memory Usage",
-            data: getMemoryChartData().map(entry => entry.value),
-            borderColor: "oklch(0.7 0.15 200)",
-            backgroundColor: "oklch(0.7 0.15 200 / 0.1)",
-            tension: 0.1,
-          }]}
+          labels={getMemoryChartData().map((entry) =>
+            new Date(entry.timestamp).toLocaleTimeString(),
+          )}
+          datasets={[
+            {
+              label: "Memory Usage",
+              data: getMemoryChartData().map((entry) => entry.value),
+              borderColor: "oklch(0.7 0.15 200)",
+              backgroundColor: "oklch(0.7 0.15 200 / 0.1)",
+              tension: 0.1,
+            },
+          ]}
           width={800}
           height={300}
           useOKLCH={true}

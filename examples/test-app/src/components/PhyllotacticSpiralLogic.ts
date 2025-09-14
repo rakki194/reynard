@@ -3,7 +3,12 @@
  * Core logic for spiral generation and animation
  */
 
-import { calculateSpiralPosition, generateGoldenColor, type SpiralConfig, type ColorConfig } from "../utils/phyllotacticMath";
+import {
+  calculateSpiralPosition,
+  generateGoldenColor,
+  type SpiralConfig,
+  type ColorConfig,
+} from "../utils/phyllotacticMath";
 
 export interface SpiralPoint {
   id: number;
@@ -41,7 +46,10 @@ export class PhyllotacticSpiralLogic {
   private config: GameConfig;
 
   constructor(config: GameConfig) {
-    console.log("🦊 PhyllotacticSpiralLogic: Constructor called with config", config);
+    console.log(
+      "🦊 PhyllotacticSpiralLogic: Constructor called with config",
+      config,
+    );
     this.config = config;
   }
 
@@ -54,10 +62,13 @@ export class PhyllotacticSpiralLogic {
       saturation: this.config.colorSaturation,
       lightness: this.config.colorLightness,
     };
-    
+
     const color = generateGoldenColor(index, colorConfig);
     const oklchString = `oklch(${color.lightness * 100}% ${color.saturation * 100}% ${color.hue})`;
-    console.log(`🦊 PhyllotacticSpiralLogic: Generated color for index ${index}`, { colorConfig, color, oklchString });
+    console.log(
+      `🦊 PhyllotacticSpiralLogic: Generated color for index ${index}`,
+      { colorConfig, color, oklchString },
+    );
     return oklchString;
   }
 
@@ -71,7 +82,7 @@ export class PhyllotacticSpiralLogic {
       centerX: 400,
       centerY: 300,
     };
-    
+
     return calculateSpiralPosition(index, rotationAngle, spiralConfig);
   }
 
@@ -79,7 +90,9 @@ export class PhyllotacticSpiralLogic {
    * Initialize spiral points
    */
   initializeSpiral(): SpiralPoint[] {
-    console.log("🦊 PhyllotacticSpiralLogic: initializeSpiral called", { pointCount: this.config.pointCount });
+    console.log("🦊 PhyllotacticSpiralLogic: initializeSpiral called", {
+      pointCount: this.config.pointCount,
+    });
     const points: SpiralPoint[] = [];
     for (let i = 0; i < this.config.pointCount; i++) {
       const position = this.calculateSpiralPointPosition(i);
@@ -91,20 +104,33 @@ export class PhyllotacticSpiralLogic {
         color,
         size: this.config.dotSize,
       });
-      if (i < 3) { // Log first few points for debugging
-        console.log(`🦊 PhyllotacticSpiralLogic: Point ${i}`, { x: position.x, y: position.y, color });
+      if (i < 3) {
+        // Log first few points for debugging
+        console.log(`🦊 PhyllotacticSpiralLogic: Point ${i}`, {
+          x: position.x,
+          y: position.y,
+          color,
+        });
       }
     }
-    console.log("🦊 PhyllotacticSpiralLogic: Spiral initialized", { totalPoints: points.length });
+    console.log("🦊 PhyllotacticSpiralLogic: Spiral initialized", {
+      totalPoints: points.length,
+    });
     return points;
   }
 
   /**
    * Update spiral points with new rotation
    */
-  updateSpiralPoints(points: SpiralPoint[], rotationAngle: number): SpiralPoint[] {
+  updateSpiralPoints(
+    points: SpiralPoint[],
+    rotationAngle: number,
+  ): SpiralPoint[] {
     return points.map((point, index) => {
-      const newPosition = this.calculateSpiralPointPosition(index, rotationAngle);
+      const newPosition = this.calculateSpiralPointPosition(
+        index,
+        rotationAngle,
+      );
       return {
         ...point,
         x: newPosition.x,
@@ -119,9 +145,9 @@ export class PhyllotacticSpiralLogic {
   updateConfig(newConfig: Partial<GameConfig>): void {
     const oldConfig = { ...this.config };
     this.config = { ...this.config, ...newConfig };
-    
+
     // Check if any parameters that affect spiral generation have changed
-    const needsRegeneration = (
+    const needsRegeneration =
       newConfig.pointCount !== undefined ||
       newConfig.spiralGrowth !== undefined ||
       newConfig.baseRadius !== undefined ||
@@ -129,15 +155,17 @@ export class PhyllotacticSpiralLogic {
       newConfig.colorSaturation !== undefined ||
       newConfig.colorLightness !== undefined ||
       newConfig.angleFraction !== undefined ||
-      newConfig.step !== undefined
-    );
-    
+      newConfig.step !== undefined;
+
     if (needsRegeneration) {
-      console.log("🦊 PhyllotacticSpiralLogic: Config changed, regenerating spiral", { 
-        oldConfig, 
-        newConfig: this.config,
-        changedParams: Object.keys(newConfig)
-      });
+      console.log(
+        "🦊 PhyllotacticSpiralLogic: Config changed, regenerating spiral",
+        {
+          oldConfig,
+          newConfig: this.config,
+          changedParams: Object.keys(newConfig),
+        },
+      );
       // The spiral will be regenerated when initializeSpiral is called
     }
   }

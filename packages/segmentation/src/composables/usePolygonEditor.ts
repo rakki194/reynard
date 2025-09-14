@@ -7,7 +7,13 @@
  */
 
 import { createSignal, createEffect, onCleanup } from "solid-js";
-import { PolygonOps, PointOps, LineOps, type Point, type Polygon } from "reynard-algorithms";
+import {
+  PolygonOps,
+  PointOps,
+  LineOps,
+  type Point,
+  type Polygon,
+} from "reynard-algorithms";
 import { SegmentationEditorConfig } from "../types/index.js";
 
 export interface UsePolygonEditorOptions {
@@ -34,8 +40,14 @@ export interface UsePolygonEditorReturn {
   getPolygonCenter: (polygon: Polygon) => Point;
   getPolygonBounds: (polygon: Polygon) => { min: Point; max: Point };
   isPointInPolygon: (polygon: Polygon, point: Point) => boolean;
-  getClosestVertex: (polygon: Polygon, point: Point) => { index: number; distance: number };
-  getClosestEdge: (polygon: Polygon, point: Point) => { index: number; distance: number; point: Point };
+  getClosestVertex: (
+    polygon: Polygon,
+    point: Point,
+  ) => { index: number; distance: number };
+  getClosestEdge: (
+    polygon: Polygon,
+    point: Point,
+  ) => { index: number; distance: number; point: Point };
 
   // Cleanup
   cleanup: () => void;
@@ -45,13 +57,21 @@ export interface UsePolygonEditorReturn {
  * Polygon editor composable leveraging reynard-algorithms
  */
 export function usePolygonEditor(
-  options: UsePolygonEditorOptions
+  options: UsePolygonEditorOptions,
 ): UsePolygonEditorReturn {
-  const [editingPolygon, setEditingPolygon] = createSignal<Polygon | undefined>();
-  const [editingSegmentationId, setEditingSegmentationId] = createSignal<string | undefined>();
+  const [editingPolygon, setEditingPolygon] = createSignal<
+    Polygon | undefined
+  >();
+  const [editingSegmentationId, setEditingSegmentationId] = createSignal<
+    string | undefined
+  >();
 
   // Add a vertex to the polygon
-  const addVertex = (polygon: Polygon, point: Point, index?: number): Polygon => {
+  const addVertex = (
+    polygon: Polygon,
+    point: Point,
+    index?: number,
+  ): Polygon => {
     const newPoints = [...polygon.points];
     if (index !== undefined && index >= 0 && index <= newPoints.length) {
       newPoints.splice(index, 0, point);
@@ -73,14 +93,22 @@ export function usePolygonEditor(
   };
 
   // Move a vertex to a new position
-  const moveVertex = (polygon: Polygon, index: number, point: Point): Polygon => {
+  const moveVertex = (
+    polygon: Polygon,
+    index: number,
+    point: Point,
+  ): Polygon => {
     const newPoints = [...polygon.points];
     newPoints[index] = point;
     return PolygonOps.create(newPoints);
   };
 
   // Insert a vertex on an edge
-  const insertVertex = (polygon: Polygon, edgeIndex: number, point: Point): Polygon => {
+  const insertVertex = (
+    polygon: Polygon,
+    edgeIndex: number,
+    point: Point,
+  ): Polygon => {
     const newPoints = [...polygon.points];
     const insertIndex = (edgeIndex + 1) % newPoints.length;
     newPoints.splice(insertIndex, 0, point);
@@ -88,7 +116,10 @@ export function usePolygonEditor(
   };
 
   // Simplify polygon using Douglas-Peucker algorithm
-  const simplifyPolygon = (polygon: Polygon, tolerance: number = 1.0): Polygon => {
+  const simplifyPolygon = (
+    polygon: Polygon,
+    tolerance: number = 1.0,
+  ): Polygon => {
     if (polygon.points.length <= 3) return polygon;
 
     // Simple implementation - remove points that are too close to the line between adjacent points
@@ -99,9 +130,9 @@ export function usePolygonEditor(
       const curr = polygon.points[i];
       const next = polygon.points[i + 1];
 
-        // Calculate distance from current point to line between prev and next
-        const line = LineOps.create(prev, next);
-        const distance = LineOps.distanceToPoint(line, curr);
+      // Calculate distance from current point to line between prev and next
+      const line = LineOps.create(prev, next);
+      const distance = LineOps.distanceToPoint(line, curr);
 
       if (distance > tolerance) {
         newPoints.push(curr);
@@ -141,9 +172,13 @@ export function usePolygonEditor(
   };
 
   // Scale polygon around a center point
-  const scalePolygon = (polygon: Polygon, scale: number, center?: Point): Polygon => {
+  const scalePolygon = (
+    polygon: Polygon,
+    scale: number,
+    center?: Point,
+  ): Polygon => {
     const centerPoint = center || getPolygonCenter(polygon);
-    const newPoints = polygon.points.map(point => ({
+    const newPoints = polygon.points.map((point) => ({
       x: centerPoint.x + (point.x - centerPoint.x) * scale,
       y: centerPoint.y + (point.y - centerPoint.y) * scale,
     }));
@@ -151,12 +186,16 @@ export function usePolygonEditor(
   };
 
   // Rotate polygon around a center point
-  const rotatePolygon = (polygon: Polygon, angle: number, center?: Point): Polygon => {
+  const rotatePolygon = (
+    polygon: Polygon,
+    angle: number,
+    center?: Point,
+  ): Polygon => {
     const centerPoint = center || getPolygonCenter(polygon);
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
 
-    const newPoints = polygon.points.map(point => {
+    const newPoints = polygon.points.map((point) => {
       const dx = point.x - centerPoint.x;
       const dy = point.y - centerPoint.y;
 
@@ -171,7 +210,7 @@ export function usePolygonEditor(
 
   // Translate polygon by an offset
   const translatePolygon = (polygon: Polygon, offset: Point): Polygon => {
-    const newPoints = polygon.points.map(point => ({
+    const newPoints = polygon.points.map((point) => ({
       x: point.x + offset.x,
       y: point.y + offset.y,
     }));
@@ -201,7 +240,10 @@ export function usePolygonEditor(
 
     // Check area constraints if config is provided
     if (options.config) {
-      if (area < options.config.minPolygonArea || area > options.config.maxPolygonArea) {
+      if (
+        area < options.config.minPolygonArea ||
+        area > options.config.maxPolygonArea
+      ) {
         return false;
       }
     }
@@ -257,7 +299,10 @@ export function usePolygonEditor(
   };
 
   // Get closest vertex to a point
-  const getClosestVertex = (polygon: Polygon, point: Point): { index: number; distance: number } => {
+  const getClosestVertex = (
+    polygon: Polygon,
+    point: Point,
+  ): { index: number; distance: number } => {
     let closestIndex = 0;
     let closestDistance = PointOps.distance(polygon.points[0], point);
 
@@ -273,7 +318,10 @@ export function usePolygonEditor(
   };
 
   // Get closest edge to a point
-  const getClosestEdge = (polygon: Polygon, point: Point): { index: number; distance: number; point: Point } => {
+  const getClosestEdge = (
+    polygon: Polygon,
+    point: Point,
+  ): { index: number; distance: number; point: Point } => {
     let closestIndex = 0;
     let closestDistance = Infinity;
     let closestPoint = polygon.points[0];
@@ -299,12 +347,16 @@ export function usePolygonEditor(
         const param = lenSq === 0 ? 0 : Math.max(0, Math.min(1, dot / lenSq));
         closestPoint = {
           x: p1.x + param * C,
-          y: p1.y + param * D
+          y: p1.y + param * D,
         };
       }
     }
 
-    return { index: closestIndex, distance: closestDistance, point: closestPoint };
+    return {
+      index: closestIndex,
+      distance: closestDistance,
+      point: closestPoint,
+    };
   };
 
   // Cleanup function

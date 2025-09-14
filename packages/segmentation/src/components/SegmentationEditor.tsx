@@ -24,7 +24,12 @@ import {
   type FloatingPanel as FloatingPanelType,
 } from "reynard-floating-panel";
 import { CaptionInput } from "reynard-caption";
-import { PolygonOps, PointOps, type Point, type Polygon } from "reynard-algorithms";
+import {
+  PolygonOps,
+  PointOps,
+  type Point,
+  type Polygon,
+} from "reynard-algorithms";
 import {
   SegmentationData,
   SegmentationEditorConfig,
@@ -83,7 +88,9 @@ const DEFAULT_CONFIG: SegmentationEditorConfig = {
 /**
  * Segmentation Editor Component with sophisticated floating panel integration
  */
-export const SegmentationEditor: Component<SegmentationEditorProps> = (props) => {
+export const SegmentationEditor: Component<SegmentationEditorProps> = (
+  props,
+) => {
   // Merge configuration with defaults
   const config = createMemo(() => ({
     ...DEFAULT_CONFIG,
@@ -105,7 +112,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
 
   // Initialize segmentations
   const [segmentations, setSegmentations] = createSignal<SegmentationData[]>(
-    props.segmentations || []
+    props.segmentations || [],
   );
 
   // Initialize overlay manager for floating panels
@@ -126,17 +133,17 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
       props.events?.onStateChange?.(newState);
     },
     onSegmentationCreate: (segmentation) => {
-      setSegmentations(prev => [...prev, segmentation]);
+      setSegmentations((prev) => [...prev, segmentation]);
       props.events?.onSegmentationCreate?.(segmentation);
     },
     onSegmentationUpdate: (segmentation) => {
-      setSegmentations(prev => 
-        prev.map(s => s.id === segmentation.id ? segmentation : s)
+      setSegmentations((prev) =>
+        prev.map((s) => (s.id === segmentation.id ? segmentation : s)),
       );
       props.events?.onSegmentationUpdate?.(segmentation);
     },
     onSegmentationDelete: (segmentationId) => {
-      setSegmentations(prev => prev.filter(s => s.id !== segmentationId));
+      setSegmentations((prev) => prev.filter((s) => s.id !== segmentationId));
       props.events?.onSegmentationDelete?.(segmentationId);
     },
   });
@@ -145,7 +152,9 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
     config: config(),
     onPolygonChange: (polygon, segmentationId) => {
       if (segmentationId) {
-        const segmentation = segmentations().find(s => s.id === segmentationId);
+        const segmentation = segmentations().find(
+          (s) => s.id === segmentationId,
+        );
         if (segmentation) {
           const updatedSegmentation: SegmentationData = {
             ...segmentation,
@@ -161,18 +170,20 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
   // Computed values
   const selectedSegmentation = createMemo(() => {
     const selectedId = editorState().selectedSegmentation;
-    return selectedId ? segmentations().find(s => s.id === selectedId) : undefined;
+    return selectedId
+      ? segmentations().find((s) => s.id === selectedId)
+      : undefined;
   });
 
-  const isEditorActive = createMemo(() => 
-    config().enabled && overlayManager.isActive()
+  const isEditorActive = createMemo(
+    () => config().enabled && overlayManager.isActive(),
   );
 
   // Create floating panels
   const panels = createMemo((): FloatingPanelType[] => {
     const currentSegmentations = segmentations();
     const currentState = editorState();
-    
+
     return [
       // Main segmentation panel
       {
@@ -184,11 +195,11 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
             segmentations={currentSegmentations}
             selectedSegmentation={currentState.selectedSegmentation}
             onSegmentationSelect={(id) => {
-              setEditorState(prev => ({ ...prev, selectedSegmentation: id }));
+              setEditorState((prev) => ({ ...prev, selectedSegmentation: id }));
               props.events?.onSegmentationSelect?.(id);
             }}
             onSegmentationCreate={() => {
-              setEditorState(prev => ({ ...prev, isCreating: true }));
+              setEditorState((prev) => ({ ...prev, isCreating: true }));
             }}
             onSegmentationDelete={(id) => {
               editor.deleteSegmentation(id);
@@ -202,42 +213,51 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
           theme: "accent",
         },
       },
-      
+
       // Caption editing panel (shown when segmentation is selected)
-      ...(selectedSegmentation() ? [{
-        id: "caption-panel",
-        position: { top: 20, right: 20 },
-        size: { width: 250, height: 200 },
-        content: (
-          <CaptionInput
-            caption={selectedSegmentation()!.caption || { type: "caption", content: "" }}
-            state="expanded"
-            onCaptionChange={(caption) => {
-              const updatedSegmentation: SegmentationData = {
-                ...selectedSegmentation()!,
-                caption,
-                updatedAt: new Date(),
-              };
-              editor.updateSegmentation(updatedSegmentation);
-            }}
-            onSave={async (caption) => {
-              const updatedSegmentation: SegmentationData = {
-                ...selectedSegmentation()!,
-                caption,
-                updatedAt: new Date(),
-              };
-              editor.updateSegmentation(updatedSegmentation);
-            }}
-            placeholder="Enter caption for this segmentation..."
-          />
-        ),
-        config: {
-          draggable: true,
-          resizable: true,
-          closable: true,
-          theme: "info",
-        },
-      }] : []),
+      ...(selectedSegmentation()
+        ? [
+            {
+              id: "caption-panel",
+              position: { top: 20, right: 20 },
+              size: { width: 250, height: 200 },
+              content: (
+                <CaptionInput
+                  caption={
+                    selectedSegmentation()!.caption || {
+                      type: "caption",
+                      content: "",
+                    }
+                  }
+                  state="expanded"
+                  onCaptionChange={(caption) => {
+                    const updatedSegmentation: SegmentationData = {
+                      ...selectedSegmentation()!,
+                      caption,
+                      updatedAt: new Date(),
+                    };
+                    editor.updateSegmentation(updatedSegmentation);
+                  }}
+                  onSave={async (caption) => {
+                    const updatedSegmentation: SegmentationData = {
+                      ...selectedSegmentation()!,
+                      caption,
+                      updatedAt: new Date(),
+                    };
+                    editor.updateSegmentation(updatedSegmentation);
+                  }}
+                  placeholder="Enter caption for this segmentation..."
+                />
+              ),
+              config: {
+                draggable: true,
+                resizable: true,
+                closable: true,
+                theme: "info",
+              },
+            },
+          ]
+        : []),
     ];
   });
 
@@ -250,7 +270,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
 
   createEffect(() => {
     if (props.state) {
-      setEditorState(prev => ({ ...prev, ...props.state }));
+      setEditorState((prev) => ({ ...prev, ...props.state }));
     }
   });
 
@@ -260,23 +280,23 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
   };
 
   const handleMouseMove = (position: Point) => {
-    setEditorState(prev => ({ ...prev, mousePosition: position }));
+    setEditorState((prev) => ({ ...prev, mousePosition: position }));
     props.events?.onMouseMove?.(position);
   };
 
   const handleZoomChange = (zoom: number) => {
-    setEditorState(prev => ({ ...prev, zoom }));
+    setEditorState((prev) => ({ ...prev, zoom }));
     props.events?.onZoomChange?.(zoom);
   };
 
   const handlePanChange = (offset: Point) => {
-    setEditorState(prev => ({ ...prev, panOffset: offset }));
+    setEditorState((prev) => ({ ...prev, panOffset: offset }));
     props.events?.onPanChange?.(offset);
   };
 
   const handleKeyboardShortcuts = (event: KeyboardEvent) => {
     if (!isEditorActive()) return;
-    
+
     switch (event.key) {
       case "Escape":
         overlayManager.toggleOverlay();
@@ -345,7 +365,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
           onZoomChange={handleZoomChange}
           onPanChange={handlePanChange}
           onSegmentationSelect={(id) => {
-            setEditorState(prev => ({ ...prev, selectedSegmentation: id }));
+            setEditorState((prev) => ({ ...prev, selectedSegmentation: id }));
             props.events?.onSegmentationSelect?.(id);
           }}
           onSegmentationCreate={(polygon) => {
@@ -362,7 +382,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
             editor.createSegmentation(newSegmentation);
           }}
           onSegmentationUpdate={(id, polygon) => {
-            const segmentation = segmentations().find(s => s.id === id);
+            const segmentation = segmentations().find((s) => s.id === id);
             if (segmentation) {
               const updatedSegmentation: SegmentationData = {
                 ...segmentation,
@@ -396,4 +416,3 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (props) =>
     </div>
   );
 };
-

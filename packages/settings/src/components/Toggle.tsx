@@ -6,7 +6,8 @@
 import { Component, JSX, splitProps } from "solid-js";
 import { Toggle } from "reynard-components";
 
-export interface ToggleProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type"> {
+export interface ToggleProps
+  extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type"> {
   /** Button state */
   checked: boolean;
   /** Change handler */
@@ -35,11 +36,7 @@ export const Toggle: Component<ToggleProps> = (props) => {
 
   return (
     <div class="toggle-container">
-      {local.label && (
-        <label class="toggle-label">
-          {local.label}
-        </label>
-      )}
+      {local.label && <label class="toggle-label">{local.label}</label>}
       <div class="toggle-wrapper">
         <input
           type="checkbox"
@@ -52,9 +49,7 @@ export const Toggle: Component<ToggleProps> = (props) => {
         <span class="toggle-slider"></span>
       </div>
       {local.helperText && (
-        <div class="toggle-helper-text">
-          {local.helperText}
-        </div>
+        <div class="toggle-helper-text">{local.helperText}</div>
       )}
     </div>
   );

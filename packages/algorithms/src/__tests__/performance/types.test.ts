@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import type { 
-  PerformanceMetrics, 
-  PerformanceBudget, 
-  PerformanceWarning, 
-  ThrottleOptions, 
-  DebounceOptions, 
-  FrameRateMetrics 
+import type {
+  PerformanceMetrics,
+  PerformanceBudget,
+  PerformanceWarning,
+  ThrottleOptions,
+  DebounceOptions,
+  FrameRateMetrics,
 } from "../../performance/types";
 
 describe("Performance Types", () => {
@@ -21,7 +21,7 @@ describe("Performance Types", () => {
         averageTime: 0.1,
         minTime: 0.05,
         maxTime: 0.2,
-        standardDeviation: 0.02
+        standardDeviation: 0.02,
       };
 
       expect(metrics.duration).toBe(100.5);
@@ -47,7 +47,7 @@ describe("Performance Types", () => {
         averageTime: 0,
         minTime: 0,
         maxTime: 0,
-        standardDeviation: 0
+        standardDeviation: 0,
       };
 
       expect(metrics.duration).toBe(0);
@@ -73,7 +73,7 @@ describe("Performance Types", () => {
         averageTime: 0.1,
         minTime: 0.05,
         maxTime: 0.15,
-        standardDeviation: 0.01
+        standardDeviation: 0.01,
       };
 
       expect(metrics.memoryDelta).toBe(-1024);
@@ -86,7 +86,7 @@ describe("Performance Types", () => {
         maxDuration: 16.67, // 60fps
         maxMemoryUsage: 50 * 1024 * 1024, // 50MB
         maxIterations: 10000,
-        warningThreshold: 0.8
+        warningThreshold: 0.8,
       };
 
       expect(budget.maxDuration).toBe(16.67);
@@ -100,7 +100,7 @@ describe("Performance Types", () => {
         maxDuration: 8.33, // 120fps
         maxMemoryUsage: 10 * 1024 * 1024, // 10MB
         maxIterations: 1000,
-        warningThreshold: 0.9
+        warningThreshold: 0.9,
       };
 
       expect(budget.maxDuration).toBe(8.33);
@@ -114,7 +114,7 @@ describe("Performance Types", () => {
         maxDuration: 33.33, // 30fps
         maxMemoryUsage: 100 * 1024 * 1024, // 100MB
         maxIterations: 100000,
-        warningThreshold: 0.5
+        warningThreshold: 0.5,
       };
 
       expect(budget.maxDuration).toBe(33.33);
@@ -132,7 +132,7 @@ describe("Performance Types", () => {
         message: "Memory usage exceeded threshold",
         value: 60 * 1024 * 1024,
         threshold: 50 * 1024 * 1024,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(warning.type).toBe("memory");
@@ -150,7 +150,7 @@ describe("Performance Types", () => {
         message: "CSS processing time exceeded",
         value: 20,
         threshold: 16.67,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(warning.type).toBe("css");
@@ -167,7 +167,7 @@ describe("Performance Types", () => {
         message: "DOM manipulation slow",
         value: 10,
         threshold: 8,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(warning.type).toBe("dom");
@@ -184,7 +184,7 @@ describe("Performance Types", () => {
         message: "Rendering performance critical",
         value: 50,
         threshold: 16.67,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(warning.type).toBe("rendering");
@@ -201,7 +201,7 @@ describe("Performance Types", () => {
         message: "Main thread frozen",
         value: 100,
         threshold: 50,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(warning.type).toBe("freeze");
@@ -217,7 +217,7 @@ describe("Performance Types", () => {
       const options: ThrottleOptions = {
         leading: true,
         trailing: false,
-        maxWait: 1000
+        maxWait: 1000,
       };
 
       expect(options.leading).toBe(true);
@@ -236,7 +236,7 @@ describe("Performance Types", () => {
     it("should handle partial throttle options", () => {
       const options: ThrottleOptions = {
         leading: false,
-        maxWait: 500
+        maxWait: 500,
       };
 
       expect(options.leading).toBe(false);
@@ -250,7 +250,7 @@ describe("Performance Types", () => {
       const options: DebounceOptions = {
         leading: false,
         trailing: true,
-        maxWait: 2000
+        maxWait: 2000,
       };
 
       expect(options.leading).toBe(false);
@@ -268,7 +268,7 @@ describe("Performance Types", () => {
 
     it("should handle partial debounce options", () => {
       const options: DebounceOptions = {
-        trailing: false
+        trailing: false,
       };
 
       expect(options.leading).toBeUndefined();
@@ -284,7 +284,7 @@ describe("Performance Types", () => {
         frameTime: 16.67,
         droppedFrames: 2,
         averageFrameTime: 16.5,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(metrics.fps).toBe(60);
@@ -300,7 +300,7 @@ describe("Performance Types", () => {
         frameTime: 33.33,
         droppedFrames: 10,
         averageFrameTime: 35,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(metrics.fps).toBe(30);
@@ -315,7 +315,7 @@ describe("Performance Types", () => {
         frameTime: 8.33,
         droppedFrames: 0,
         averageFrameTime: 8.2,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(metrics.fps).toBe(120);
@@ -330,7 +330,7 @@ describe("Performance Types", () => {
         frameTime: 16.67,
         droppedFrames: 0,
         averageFrameTime: 16.67,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(metrics.droppedFrames).toBe(0);
@@ -343,7 +343,7 @@ describe("Performance Types", () => {
         maxDuration: 16.67,
         maxMemoryUsage: 50 * 1024 * 1024,
         maxIterations: 10000,
-        warningThreshold: 0.8
+        warningThreshold: 0.8,
       };
 
       const metrics: PerformanceMetrics = {
@@ -356,7 +356,7 @@ describe("Performance Types", () => {
         averageTime: 0.003,
         minTime: 0.002,
         maxTime: 0.005,
-        standardDeviation: 0.001
+        standardDeviation: 0.001,
       };
 
       expect(metrics.duration).toBeLessThan(budget.maxDuration);
@@ -369,7 +369,7 @@ describe("Performance Types", () => {
         maxDuration: 16.67,
         maxMemoryUsage: 50 * 1024 * 1024,
         maxIterations: 10000,
-        warningThreshold: 0.8
+        warningThreshold: 0.8,
       };
 
       const warning: PerformanceWarning = {
@@ -378,7 +378,7 @@ describe("Performance Types", () => {
         message: "Memory usage exceeded",
         value: 60 * 1024 * 1024,
         threshold: budget.maxMemoryUsage,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
 
       expect(warning.value).toBeGreaterThan(warning.threshold);

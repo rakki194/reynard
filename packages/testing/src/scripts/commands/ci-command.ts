@@ -33,10 +33,7 @@ const handleCICommand = async (options: CICommandOptions): Promise<void> => {
     }
 
     // Check missing translations
-    if (
-      options.failOnMissing &&
-      result.summary.totalMissingTranslations > 0
-    ) {
+    if (options.failOnMissing && result.summary.totalMissingTranslations > 0) {
       console.log(
         `❌ Found ${result.summary.totalMissingTranslations} missing translations`,
       );
@@ -73,7 +70,7 @@ const handleCICommand = async (options: CICommandOptions): Promise<void> => {
 
 export const createCICommand = (): Command => {
   const command = new Command("ci");
-  
+
   command
     .description("Run i18n checks suitable for CI/CD")
     .option("--fail-on-hardcoded", "Fail on hardcoded strings", true)

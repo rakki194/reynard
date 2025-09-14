@@ -26,7 +26,9 @@ describe("Basic Package Tests", () => {
   it("should have correct composables structure", async () => {
     // Test that we can import our composables
     await expect(async () => {
-      const composables = await import("../composables/useSegmentationEditor.js");
+      const composables = await import(
+        "../composables/useSegmentationEditor.js"
+      );
       expect(composables).toBeDefined();
     }).not.toThrow();
   }, 5000);
@@ -50,8 +52,10 @@ describe("Basic Package Tests", () => {
   it("should have correct type definitions", () => {
     // Test basic type structure
     const testPoint = { x: 0, y: 0 };
-    const testPolygon = { points: [testPoint, { x: 100, y: 0 }, { x: 100, y: 100 }] };
-    
+    const testPolygon = {
+      points: [testPoint, { x: 100, y: 0 }, { x: 100, y: 100 }],
+    };
+
     expect(testPoint).toHaveProperty("x");
     expect(testPoint).toHaveProperty("y");
     expect(testPolygon).toHaveProperty("points");
@@ -176,7 +180,13 @@ describe("Basic Package Tests", () => {
       type: "segmentation",
       segmentation: {
         id: "test-seg",
-        polygon: { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }] },
+        polygon: {
+          points: [
+            { x: 0, y: 0 },
+            { x: 100, y: 0 },
+            { x: 100, y: 100 },
+          ],
+        },
         metadata: { source: "manual" },
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -329,8 +339,8 @@ describe("Basic Package Tests", () => {
     expect(polygon).toHaveProperty("points");
     expect(Array.isArray(polygon.points)).toBe(true);
     expect(polygon.points.length).toBeGreaterThan(2);
-    
-    polygon.points.forEach(point => {
+
+    polygon.points.forEach((point) => {
       expect(point).toHaveProperty("x");
       expect(point).toHaveProperty("y");
       expect(typeof point.x).toBe("number");
@@ -392,8 +402,8 @@ describe("Basic Package Tests", () => {
   it("should have correct export format types", () => {
     // Test export format types
     const formats = ["coco", "yolo", "pascal-voc", "reynard"];
-    
-    formats.forEach(format => {
+
+    formats.forEach((format) => {
       expect(typeof format).toBe("string");
       expect(format.length).toBeGreaterThan(0);
     });
@@ -402,8 +412,8 @@ describe("Basic Package Tests", () => {
   it("should have correct source types", () => {
     // Test source types
     const sources = ["manual", "ai", "imported", "refined"];
-    
-    sources.forEach(source => {
+
+    sources.forEach((source) => {
       expect(typeof source).toBe("string");
       expect(source.length).toBeGreaterThan(0);
     });
@@ -412,8 +422,8 @@ describe("Basic Package Tests", () => {
   it("should have correct task types", () => {
     // Test task types
     const taskTypes = ["segmentation", "refinement", "validation"];
-    
-    taskTypes.forEach(taskType => {
+
+    taskTypes.forEach((taskType) => {
       expect(typeof taskType).toBe("string");
       expect(taskType.length).toBeGreaterThan(0);
     });
@@ -422,8 +432,8 @@ describe("Basic Package Tests", () => {
   it("should have correct result types", () => {
     // Test result types
     const resultTypes = ["segmentation", "refinement", "validation"];
-    
-    resultTypes.forEach(resultType => {
+
+    resultTypes.forEach((resultType) => {
       expect(typeof resultType).toBe("string");
       expect(resultType.length).toBeGreaterThan(0);
     });
@@ -432,8 +442,8 @@ describe("Basic Package Tests", () => {
   it("should have correct status types", () => {
     // Test status types
     const statusTypes = ["initializing", "healthy", "unhealthy", "stopped"];
-    
-    statusTypes.forEach(statusType => {
+
+    statusTypes.forEach((statusType) => {
       expect(typeof statusType).toBe("string");
       expect(statusType.length).toBeGreaterThan(0);
     });
@@ -442,8 +452,8 @@ describe("Basic Package Tests", () => {
   it("should have correct health types", () => {
     // Test health types
     const healthTypes = ["healthy", "unhealthy", "degraded"];
-    
-    healthTypes.forEach(healthType => {
+
+    healthTypes.forEach((healthType) => {
       expect(typeof healthType).toBe("string");
       expect(healthType.length).toBeGreaterThan(0);
     });
@@ -458,8 +468,8 @@ describe("Basic Package Tests", () => {
       "SEGMENTATION_EXPORT_ERROR",
       "SEGMENTATION_IMPORT_ERROR",
     ];
-    
-    errorTypes.forEach(errorType => {
+
+    errorTypes.forEach((errorType) => {
       expect(typeof errorType).toBe("string");
       expect(errorType.length).toBeGreaterThan(0);
     });
@@ -569,8 +579,3 @@ describe("Basic Package Tests", () => {
     expect(typeof executionTargets.maxPerformanceTestTime).toBe("number");
   });
 });
-
-
-
-
-

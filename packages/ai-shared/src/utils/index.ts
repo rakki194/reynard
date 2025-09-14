@@ -7,10 +7,7 @@
  * data processing.
  */
 
-import {
-  PerformanceMetrics,
-  ProgressCallback,
-} from "../types/index.js";
+import { PerformanceMetrics, ProgressCallback } from "../types/index.js";
 
 // Re-export consolidated utilities from reynard-connection
 export {
@@ -159,11 +156,11 @@ export class DataUtils {
    */
   static formatBytes(bytes: number): string {
     if (bytes === 0) return "0 Bytes";
-    
+
     const k = 1024;
     const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   }
 
@@ -174,17 +171,17 @@ export class DataUtils {
     if (milliseconds < 1000) {
       return `${milliseconds}ms`;
     }
-    
+
     const seconds = milliseconds / 1000;
     if (seconds < 60) {
       return `${seconds.toFixed(2)}s`;
     }
-    
+
     const minutes = seconds / 60;
     if (minutes < 60) {
       return `${minutes.toFixed(2)}m`;
     }
-    
+
     const hours = minutes / 60;
     return `${hours.toFixed(2)}h`;
   }
@@ -203,15 +200,15 @@ export class DataUtils {
     if (obj === null || typeof obj !== "object") {
       return obj;
     }
-    
+
     if (obj instanceof Date) {
       return new Date(obj.getTime()) as T;
     }
-    
+
     if (obj instanceof Array) {
-      return obj.map(item => this.deepClone(item)) as T;
+      return obj.map((item) => this.deepClone(item)) as T;
     }
-    
+
     if (typeof obj === "object") {
       const cloned = {} as T;
       for (const key in obj) {
@@ -221,7 +218,7 @@ export class DataUtils {
       }
       return cloned;
     }
-    
+
     return obj;
   }
 }
@@ -312,7 +309,7 @@ export class ProgressTracker {
   }
 
   private _notifyCallbacks(): void {
-    this._callbacks.forEach(callback => {
+    this._callbacks.forEach((callback) => {
       try {
         callback(this._progress);
       } catch (error) {

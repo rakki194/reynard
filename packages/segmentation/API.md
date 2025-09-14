@@ -46,20 +46,20 @@ const segmentation: SegmentationData = {
       { x: 0, y: 0 },
       { x: 100, y: 0 },
       { x: 100, y: 100 },
-      { x: 0, y: 100 }
-    ]
+      { x: 0, y: 100 },
+    ],
   },
   caption: {
     type: "caption",
-    content: "A square object"
+    content: "A square object",
   },
   metadata: {
     source: SegmentationSource.MANUAL,
     confidence: 0.95,
-    category: "object"
+    category: "object",
   },
   createdAt: new Date(),
-  updatedAt: new Date()
+  updatedAt: new Date(),
 };
 ```
 
@@ -91,8 +91,8 @@ const task: SegmentationTask = {
     maxArea: 1000000,
     validateGeometry: true,
     simplifyPolygons: true,
-    simplificationTolerance: 2.0
-  }
+    simplificationTolerance: 2.0,
+  },
 };
 ```
 
@@ -167,25 +167,30 @@ interface SegmentationEditorConfig {
 Core service for polygon segmentation operations that integrates with the Reynard AI-shared and annotating-core systems.
 
 ```typescript
-class SegmentationService extends BaseAIService implements ISegmentationService {
+class SegmentationService
+  extends BaseAIService
+  implements ISegmentationService
+{
   constructor(config: SegmentationServiceConfig);
-  
+
   // Core operations
-  async generateSegmentation(task: SegmentationTask): Promise<SegmentationResult>;
+  async generateSegmentation(
+    task: SegmentationTask,
+  ): Promise<SegmentationResult>;
   async generateBatchSegmentations(
     tasks: SegmentationTask[],
-    progressCallback?: (progress: number) => void
+    progressCallback?: (progress: number) => void,
   ): Promise<SegmentationResult[]>;
   async refineSegmentation(
     segmentation: SegmentationData,
-    options?: SegmentationOptions
+    options?: SegmentationOptions,
   ): Promise<SegmentationResult>;
-  
+
   // Validation and utilities
   validateSegmentation(segmentation: SegmentationData): boolean;
   exportSegmentation(
     segmentation: SegmentationData,
-    format: string
+    format: string,
   ): Record<string, unknown>;
   importSegmentation(data: Record<string, unknown>): SegmentationData;
 }
@@ -204,7 +209,7 @@ const service = new SegmentationService({
   simplifyPolygons: true,
   simplificationTolerance: 2.0,
   timeout: 30000,
-  retries: 3
+  retries: 3,
 });
 
 await service.initialize();
@@ -214,8 +219,8 @@ const result = await service.generateSegmentation({
   imagePath: "/path/to/image.jpg",
   options: {
     minArea: 100,
-    validateGeometry: true
-  }
+    validateGeometry: true,
+  },
 });
 
 console.log("Generated segmentation:", result.segmentation);
@@ -229,39 +234,41 @@ Central manager for segmentation services that coordinates multiple services and
 class SegmentationManager implements ISegmentationManager {
   constructor(
     serviceRegistry?: ServiceRegistry,
-    annotationServiceRegistry?: AnnotationServiceRegistry
+    annotationServiceRegistry?: AnnotationServiceRegistry,
   );
-  
+
   // Lifecycle
   async initialize(): Promise<void>;
   async cleanup(): Promise<void>;
-  
+
   // Service management
   async registerSegmentationService(
     name: string,
-    config: SegmentationServiceConfig
+    config: SegmentationServiceConfig,
   ): Promise<SegmentationService>;
   async unregisterSegmentationService(name: string): Promise<void>;
-  
+
   // Operations
-  async generateSegmentation(task: SegmentationTask): Promise<SegmentationResult>;
+  async generateSegmentation(
+    task: SegmentationTask,
+  ): Promise<SegmentationResult>;
   async generateBatchSegmentations(
     tasks: SegmentationTask[],
-    progressCallback?: (progress: number) => void
+    progressCallback?: (progress: number) => void,
   ): Promise<SegmentationResult[]>;
   async refineSegmentation(
     segmentation: SegmentationData,
-    options?: SegmentationOptions
+    options?: SegmentationOptions,
   ): Promise<SegmentationResult>;
-  
+
   // Utilities
   validateSegmentation(segmentation: SegmentationData): boolean;
   exportSegmentation(
     segmentation: SegmentationData,
-    format: SegmentationExportFormat
+    format: SegmentationExportFormat,
   ): SegmentationExportData;
   importSegmentation(data: SegmentationExportData): SegmentationData;
-  
+
   // Statistics
   async getStatistics(): Promise<SegmentationStatistics>;
   getAvailableServices(): Promise<string[]>;
@@ -273,7 +280,10 @@ class SegmentationManager implements ISegmentationManager {
 **Example:**
 
 ```typescript
-import { SegmentationManager, initializeSegmentationManager } from "reynard-segmentation";
+import {
+  SegmentationManager,
+  initializeSegmentationManager,
+} from "reynard-segmentation";
 
 // Initialize the global manager
 const manager = await initializeSegmentationManager();
@@ -283,13 +293,13 @@ await manager.registerSegmentationService("custom-ai", {
   name: "custom-ai",
   minArea: 100,
   maxArea: 1000000,
-  validateGeometry: true
+  validateGeometry: true,
 });
 
 // Generate segmentation
 const result = await manager.generateSegmentation({
   type: "segmentation",
-  imagePath: "/path/to/image.jpg"
+  imagePath: "/path/to/image.jpg",
 });
 
 // Get statistics
@@ -354,26 +364,28 @@ function MySegmentationApp() {
         allowPolygonDeletion: true,
         maxPolygons: 50,
         minPolygonArea: 100,
-        maxPolygonArea: 1000000
+        maxPolygonArea: 1000000,
       }}
       events={{
         onSegmentationCreate: (segmentation) => {
-          setSegmentations(prev => [...prev, segmentation]);
+          setSegmentations((prev) => [...prev, segmentation]);
         },
         onSegmentationUpdate: (segmentation) => {
-          setSegmentations(prev => 
-            prev.map(s => s.id === segmentation.id ? segmentation : s)
+          setSegmentations((prev) =>
+            prev.map((s) => (s.id === segmentation.id ? segmentation : s)),
           );
         },
         onSegmentationDelete: (segmentationId) => {
-          setSegmentations(prev => prev.filter(s => s.id !== segmentationId));
+          setSegmentations((prev) =>
+            prev.filter((s) => s.id !== segmentationId),
+          );
         },
         onSegmentationSelect: (segmentationId) => {
           console.log("Selected segmentation:", segmentationId);
         },
         onStateChange: (state) => {
           console.log("Editor state changed:", state);
-        }
+        },
       }}
     />
   );
@@ -479,29 +491,29 @@ interface UseSegmentationEditorReturn {
   // State management
   state: () => SegmentationEditorState;
   updateState: (updates: Partial<SegmentationEditorState>) => void;
-  
+
   // Segmentation operations
   createSegmentation: (segmentation: SegmentationData) => void;
   updateSegmentation: (segmentation: SegmentationData) => void;
   deleteSegmentation: (segmentationId: string) => void;
   selectSegmentation: (segmentationId: string | undefined) => void;
-  
+
   // Editor operations
   startCreating: () => void;
   stopCreating: () => void;
   startEditing: (segmentationId: string) => void;
   stopEditing: () => void;
-  
+
   // Validation
   validateSegmentation: (segmentation: SegmentationData) => boolean;
   validatePolygon: (polygon: Polygon) => boolean;
-  
+
   // Cleanup
   cleanup: () => void;
 }
 
 function useSegmentationEditor(
-  options: UseSegmentationEditorOptions
+  options: UseSegmentationEditorOptions,
 ): UseSegmentationEditorReturn;
 ```
 
@@ -567,28 +579,34 @@ interface UsePolygonEditorReturn {
   removeVertex: (polygon: Polygon, index: number) => Polygon;
   moveVertex: (polygon: Polygon, index: number, point: Point) => Polygon;
   insertVertex: (polygon: Polygon, edgeIndex: number, point: Point) => Polygon;
-  
+
   // Geometric operations
   simplifyPolygon: (polygon: Polygon, tolerance?: number) => Polygon;
   smoothPolygon: (polygon: Polygon, iterations?: number) => Polygon;
   scalePolygon: (polygon: Polygon, scale: number, center?: Point) => Polygon;
   rotatePolygon: (polygon: Polygon, angle: number, center?: Point) => Polygon;
   translatePolygon: (polygon: Polygon, offset: Point) => Polygon;
-  
+
   // Validation and utilities
   validatePolygon: (polygon: Polygon) => boolean;
   getPolygonCenter: (polygon: Polygon) => Point;
   getPolygonBounds: (polygon: Polygon) => { min: Point; max: Point };
   isPointInPolygon: (polygon: Polygon, point: Point) => boolean;
-  getClosestVertex: (polygon: Polygon, point: Point) => { index: number; distance: number };
-  getClosestEdge: (polygon: Polygon, point: Point) => { index: number; distance: number; point: Point };
-  
+  getClosestVertex: (
+    polygon: Polygon,
+    point: Point,
+  ) => { index: number; distance: number };
+  getClosestEdge: (
+    polygon: Polygon,
+    point: Point,
+  ) => { index: number; distance: number; point: Point };
+
   // Cleanup
   cleanup: () => void;
 }
 
 function usePolygonEditor(
-  options: UsePolygonEditorOptions
+  options: UsePolygonEditorOptions,
 ): UsePolygonEditorReturn;
 ```
 
@@ -663,7 +681,7 @@ interface UseCanvasInteractionReturn {
 }
 
 function useCanvasInteraction(
-  options: UseCanvasInteractionOptions
+  options: UseCanvasInteractionOptions,
 ): UseCanvasInteractionReturn;
 ```
 
@@ -690,7 +708,10 @@ async function initializeSegmentationManager(): Promise<SegmentationManager>;
 **Example:**
 
 ```typescript
-import { getSegmentationManager, initializeSegmentationManager } from "reynard-segmentation";
+import {
+  getSegmentationManager,
+  initializeSegmentationManager,
+} from "reynard-segmentation";
 
 // Initialize the global manager
 const manager = await initializeSegmentationManager();
@@ -717,12 +738,12 @@ function BasicSegmentationApp() {
       config={{
         enabled: true,
         showGrid: true,
-        allowPolygonCreation: true
+        allowPolygonCreation: true,
       }}
       events={{
         onSegmentationCreate: (segmentation) => {
-          setSegmentations(prev => [...prev, segmentation]);
-        }
+          setSegmentations((prev) => [...prev, segmentation]);
+        },
       }}
     />
   );
@@ -732,10 +753,10 @@ function BasicSegmentationApp() {
 ### Advanced Usage with AI Integration
 
 ```tsx
-import { 
-  SegmentationEditor, 
-  SegmentationManager, 
-  initializeSegmentationManager 
+import {
+  SegmentationEditor,
+  SegmentationManager,
+  initializeSegmentationManager,
 } from "reynard-segmentation";
 
 function AdvancedSegmentationApp() {
@@ -754,21 +775,19 @@ function AdvancedSegmentationApp() {
       imagePath: "/path/to/image.jpg",
       options: {
         minArea: 100,
-        validateGeometry: true
-      }
+        validateGeometry: true,
+      },
     });
 
     if (result.success) {
-      setSegmentations(prev => [...prev, result.segmentation]);
+      setSegmentations((prev) => [...prev, result.segmentation]);
     }
   };
 
   return (
     <div>
-      <button onClick={generateAISegmentation}>
-        Generate AI Segmentation
-      </button>
-      
+      <button onClick={generateAISegmentation}>Generate AI Segmentation</button>
+
       <SegmentationEditor
         imageSrc="/path/to/image.jpg"
         segmentations={segmentations}
@@ -777,17 +796,17 @@ function AdvancedSegmentationApp() {
           showGrid: true,
           allowPolygonCreation: true,
           allowVertexEdit: true,
-          allowEdgeEdit: true
+          allowEdgeEdit: true,
         }}
         events={{
           onSegmentationCreate: (segmentation) => {
-            setSegmentations(prev => [...prev, segmentation]);
+            setSegmentations((prev) => [...prev, segmentation]);
           },
           onSegmentationUpdate: (segmentation) => {
-            setSegmentations(prev => 
-              prev.map(s => s.id === segmentation.id ? segmentation : s)
+            setSegmentations((prev) =>
+              prev.map((s) => (s.id === segmentation.id ? segmentation : s)),
             );
-          }
+          },
         }}
       />
     </div>
@@ -804,12 +823,12 @@ function ExportImportExample() {
   const [manager] = useState(() => new SegmentationManager());
 
   const exportSegmentations = (segmentations: SegmentationData[]) => {
-    const exportData = segmentations.map(seg => 
-      manager.exportSegmentation(seg, "coco")
+    const exportData = segmentations.map((seg) =>
+      manager.exportSegmentation(seg, "coco"),
     );
 
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: "application/json"
+      type: "application/json",
     });
 
     const url = URL.createObjectURL(blob);
@@ -824,8 +843,8 @@ function ExportImportExample() {
     const reader = new FileReader();
     reader.onload = (e) => {
       const data = JSON.parse(e.target?.result as string);
-      const imported = data.map((item: any) => 
-        manager.importSegmentation(item)
+      const imported = data.map((item: any) =>
+        manager.importSegmentation(item),
       );
       console.log("Imported segmentations:", imported);
     };
@@ -875,7 +894,7 @@ console.log("Performance stats:", stats);
 const result = await manager.refineSegmentation(segmentation, {
   simplify: true,
   simplificationTolerance: 2.0,
-  validateGeometry: true
+  validateGeometry: true,
 });
 ```
 
@@ -886,7 +905,7 @@ const config = {
   minPolygonArea: 100, // Filter out tiny polygons
   maxPolygonArea: 1000000, // Limit maximum size
   validateGeometry: true, // Ensure valid polygons
-  simplifyPolygons: true // Reduce complexity
+  simplifyPolygons: true, // Reduce complexity
 };
 ```
 
@@ -900,6 +919,6 @@ const config = {
 
 ---
 
-*"In the realm of code, legends are not born—they are forged through the wise use of existing tools and the strategic extension of proven patterns."* 🦊
+_"In the realm of code, legends are not born—they are forged through the wise use of existing tools and the strategic extension of proven patterns."_ 🦊
 
 **May your API usage be efficient, your performance be optimal, and your segmentation be magnificent!** 🍀

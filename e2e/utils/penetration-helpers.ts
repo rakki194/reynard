@@ -204,7 +204,9 @@ export class PenetrationTestHelper {
     const startTime = Date.now();
 
     try {
-      const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
+      const pythonPath =
+        process.env.PYTHON_PATH ||
+        "bash -c 'source ~/venv/bin/activate && python3'";
       const command = `${pythonPath} run_all_exploits.py --url ${this.config.backendUrl} ${this.config.verbose ? "--verbose" : ""} ${this.config.destructive ? "--destructive" : ""}`;
 
       const { stdout, stderr } = await execAsync(command, {
@@ -277,10 +279,14 @@ export class PenetrationTestHelper {
     const startTime = Date.now();
 
     try {
-      const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
+      const pythonPath =
+        process.env.PYTHON_PATH ||
+        "bash -c 'source ~/venv/bin/activate && python3'";
 
-      const quickTestFlag = options.quickTest ? "quick_test=True" : "quick_test=False";
-      
+      const quickTestFlag = options.quickTest
+        ? "quick_test=True"
+        : "quick_test=False";
+
       const command = `${pythonPath} -c "
 import sys
 sys.path.append('${this.fenrirPath}')
@@ -345,74 +351,74 @@ print(json.dumps({
   private getExploitClassName(modulePath: string): string {
     const parts = modulePath.split(".");
     const moduleName = parts[parts.length - 1];
-    
+
     // Map of module names to actual class names
     const classMap: Record<string, string> = {
       // Fuzzing modules
-      "comprehensive_fuzzer": "ComprehensiveFuzzerExploit",
-      "endpoint_fuzzer": "EndpointFuzzerExploit",
-      "exploit_wrappers": "ComprehensiveFuzzerExploit", // Default to comprehensive fuzzer
-      
+      comprehensive_fuzzer: "ComprehensiveFuzzerExploit",
+      endpoint_fuzzer: "EndpointFuzzerExploit",
+      exploit_wrappers: "ComprehensiveFuzzerExploit", // Default to comprehensive fuzzer
+
       // SQL Injection modules
-      "basic_injection": "BasicInjectionExploit",
-      "blind_injection": "BlindInjectionExploit", 
-      "time_based_injection": "TimeBasedInjectionExploit",
-      "union_injection": "UnionInjectionExploit",
-      "obfuscated_payloads": "ObfuscatedPayloadExploit",
-      "regex_bypass": "RegexBypassExploit",
-      
+      basic_injection: "BasicInjectionExploit",
+      blind_injection: "BlindInjectionExploit",
+      time_based_injection: "TimeBasedInjectionExploit",
+      union_injection: "UnionInjectionExploit",
+      obfuscated_payloads: "ObfuscatedPayloadExploit",
+      regex_bypass: "RegexBypassExploit",
+
       // API Exploits
-      "bola_attacks": "BolaAttacksExploit",
-      "idor_attacks": "IdorAttacksExploit",
-      
+      bola_attacks: "BolaAttacksExploit",
+      idor_attacks: "IdorAttacksExploit",
+
       // CSRF Exploits
-      "csrf_attacks": "CsrfAttacksExploit",
-      "csrf_bypass": "CsrfBypassExploit",
-      
+      csrf_attacks: "CsrfAttacksExploit",
+      csrf_bypass: "CsrfBypassExploit",
+
       // Path Traversal
-      "basic_traversal": "BasicTraversalExploit",
-      "encoded_traversal": "EncodedPathTraversalExploit",
-      "unicode_bypass": "UnicodeBypassExploit",
-      "null_byte_injection": "NullByteInjectionExploit",
-      "double_encoding": "DoubleEncodingExploit",
-      
+      basic_traversal: "BasicTraversalExploit",
+      encoded_traversal: "EncodedPathTraversalExploit",
+      unicode_bypass: "UnicodeBypassExploit",
+      null_byte_injection: "NullByteInjectionExploit",
+      double_encoding: "DoubleEncodingExploit",
+
       // SSRF Exploits
-      "ssrf_attacks": "SsrfAttacksExploit",
-      "ssrf_bypass": "SsrfBypassExploit",
-      
+      ssrf_attacks: "SsrfAttacksExploit",
+      ssrf_bypass: "SsrfBypassExploit",
+
       // Race Conditions
-      "race_exploits": "RaceExploitsExploit",
-      "concurrent_attacks": "ConcurrentAttacksExploit",
-      
+      race_exploits: "RaceExploitsExploit",
+      concurrent_attacks: "ConcurrentAttacksExploit",
+
       // CORS Exploits
-      "cors_misconfiguration": "CorsMisconfigurationExploit",
-      "cors_bypass": "CorsBypassExploit",
-      
+      cors_misconfiguration: "CorsMisconfigurationExploit",
+      cors_bypass: "CorsBypassExploit",
+
       // HTTP Smuggling
-      "request_smuggling": "RequestSmugglingExploit",
-      "response_smuggling": "ResponseSmugglingExploit",
-      
+      request_smuggling: "RequestSmugglingExploit",
+      response_smuggling: "ResponseSmugglingExploit",
+
       // Unicode Exploits
-      "normalization_bypass": "NormalizationBypassExploit",
-      "unicode_attacks": "UnicodeAttacksExploit",
-      
+      normalization_bypass: "NormalizationBypassExploit",
+      unicode_attacks: "UnicodeAttacksExploit",
+
       // Rate Limiting
-      "rate_limit_bypass": "RateLimitBypassExploit",
-      "rate_limit_attacks": "RateLimitAttacksExploit",
-      
+      rate_limit_bypass: "RateLimitBypassExploit",
+      rate_limit_attacks: "RateLimitAttacksExploit",
+
       // JWT Exploits
-      "secret_key_attack": "SecretKeyVulnerabilityExploit",
-      "algorithm_confusion": "AlgorithmConfusionExploit",
-      "kid_manipulation": "KidManipulationExploit",
-      "jwt_replay": "JwtReplayExploit",
-      "jwt_injection": "JwtInjectionExploit",
+      secret_key_attack: "SecretKeyVulnerabilityExploit",
+      algorithm_confusion: "AlgorithmConfusionExploit",
+      kid_manipulation: "KidManipulationExploit",
+      jwt_replay: "JwtReplayExploit",
+      jwt_injection: "JwtInjectionExploit",
     };
-    
+
     // Return mapped class name or generate default
     if (classMap[moduleName]) {
       return classMap[moduleName];
     }
-    
+
     // Fallback: generate class name without "Exploit" suffix
     const className = moduleName
       .split("_")

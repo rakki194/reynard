@@ -43,7 +43,9 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
     className = "",
   } = props;
 
-  const [canvasRef, setCanvasRef] = createSignal<HTMLCanvasElement | null>(null);
+  const [canvasRef, setCanvasRef] = createSignal<HTMLCanvasElement | null>(
+    null,
+  );
 
   onMount(() => {
     const canvas = canvasRef();

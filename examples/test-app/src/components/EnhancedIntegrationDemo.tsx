@@ -11,19 +11,19 @@ import "./EnhancedIntegrationDemo.css";
 
 export const EnhancedIntegrationDemo: Component = () => {
   console.log("🦊 EnhancedIntegrationDemo: Initializing");
-  
+
   const integration = useEnhancedIntegration();
-  
+
   // Lifecycle
   onMount(() => {
     integration.initializeSystem();
     integration.generatePattern();
   });
-  
+
   onCleanup(() => {
     integration.engines.stopAnimation();
   });
-  
+
   return (
     <>
       <EnhancedHeader />

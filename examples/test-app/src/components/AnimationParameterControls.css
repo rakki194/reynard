@@ -200,11 +200,11 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .parameter-controls {
     padding: 1rem;
   }
-  
+
   .control-group {
     padding: 0.75rem;
   }

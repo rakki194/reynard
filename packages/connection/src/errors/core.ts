@@ -72,7 +72,11 @@ export class ReynardError extends Error {
   public readonly timestamp: number;
   public readonly stack?: string;
 
-  constructor(message: string, code: string, context: Partial<BaseErrorContext> = {}) {
+  constructor(
+    message: string,
+    code: string,
+    context: Partial<BaseErrorContext> = {},
+  ) {
     super(message);
     this.name = "ReynardError";
     this.code = code;
@@ -151,7 +155,10 @@ export class NetworkError extends ReynardError {
 export class AuthenticationError extends ReynardError {
   public readonly context: AuthenticationErrorContext;
 
-  constructor(message: string, context: Partial<AuthenticationErrorContext> = {}) {
+  constructor(
+    message: string,
+    context: Partial<AuthenticationErrorContext> = {},
+  ) {
     super(message, "AUTHENTICATION_ERROR", context);
     this.name = "AuthenticationError";
     this.context = {
@@ -168,7 +175,10 @@ export class AuthenticationError extends ReynardError {
 export class AuthorizationError extends ReynardError {
   public readonly context: AuthenticationErrorContext;
 
-  constructor(message: string, context: Partial<AuthenticationErrorContext> = {}) {
+  constructor(
+    message: string,
+    context: Partial<AuthenticationErrorContext> = {},
+  ) {
     super(message, "AUTHORIZATION_ERROR", context);
     this.name = "AuthorizationError";
     this.context = {
@@ -219,7 +229,10 @@ export class DatabaseError extends ReynardError {
 export class ConfigurationError extends ReynardError {
   public readonly context: ConfigurationErrorContext;
 
-  constructor(message: string, context: Partial<ConfigurationErrorContext> = {}) {
+  constructor(
+    message: string,
+    context: Partial<ConfigurationErrorContext> = {},
+  ) {
     super(message, "CONFIGURATION_ERROR", context);
     this.name = "ConfigurationError";
     this.context = {
@@ -254,7 +267,11 @@ export class RateLimitError extends ReynardError {
   public readonly context: BaseErrorContext;
   public readonly retryAfter?: number;
 
-  constructor(message: string, retryAfter?: number, context: Partial<BaseErrorContext> = {}) {
+  constructor(
+    message: string,
+    retryAfter?: number,
+    context: Partial<BaseErrorContext> = {},
+  ) {
     super(message, "RATE_LIMIT_ERROR", context);
     this.name = "RateLimitError";
     this.retryAfter = retryAfter;
@@ -428,14 +445,18 @@ export function isNetworkError(error: unknown): error is NetworkError {
 /**
  * Check if error is an authentication error
  */
-export function isAuthenticationError(error: unknown): error is AuthenticationError {
+export function isAuthenticationError(
+  error: unknown,
+): error is AuthenticationError {
   return error instanceof AuthenticationError;
 }
 
 /**
  * Check if error is an authorization error
  */
-export function isAuthorizationError(error: unknown): error is AuthorizationError {
+export function isAuthorizationError(
+  error: unknown,
+): error is AuthorizationError {
   return error instanceof AuthorizationError;
 }
 
@@ -456,7 +477,9 @@ export function isDatabaseError(error: unknown): error is DatabaseError {
 /**
  * Check if error is a configuration error
  */
-export function isConfigurationError(error: unknown): error is ConfigurationError {
+export function isConfigurationError(
+  error: unknown,
+): error is ConfigurationError {
   return error instanceof ConfigurationError;
 }
 
@@ -485,11 +508,11 @@ export function getErrorCode(error: unknown): string {
   if (isReynardError(error)) {
     return error.code;
   }
-  
+
   if (error instanceof Error) {
     return error.name;
   }
-  
+
   return "UNKNOWN_ERROR";
 }
 
@@ -500,11 +523,11 @@ export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
   }
-  
+
   if (typeof error === "string") {
     return error;
   }
-  
+
   return "Unknown error";
 }
 
@@ -515,26 +538,29 @@ export function getErrorContext(error: unknown): BaseErrorContext | null {
   if (isReynardError(error)) {
     return error.context;
   }
-  
+
   return null;
 }
 
 /**
  * Convert any error to a Reynard error
  */
-export function toReynardError(error: unknown, source = "reynard"): ReynardError {
+export function toReynardError(
+  error: unknown,
+  source = "reynard",
+): ReynardError {
   if (isReynardError(error)) {
     return error;
   }
-  
+
   if (error instanceof Error) {
     return new ReynardError(error.message, error.name, { source });
   }
-  
+
   if (typeof error === "string") {
     return new ReynardError(error, "STRING_ERROR", { source });
   }
-  
+
   return new ReynardError("Unknown error", "UNKNOWN_ERROR", { source });
 }
 
@@ -552,7 +578,7 @@ export function extractErrorDetails(error: unknown): Record<string, unknown> {
       stack: error.stack,
     };
   }
-  
+
   if (error instanceof Error) {
     return {
       name: error.name,
@@ -560,7 +586,7 @@ export function extractErrorDetails(error: unknown): Record<string, unknown> {
       stack: error.stack,
     };
   }
-  
+
   return {
     error: String(error),
   };

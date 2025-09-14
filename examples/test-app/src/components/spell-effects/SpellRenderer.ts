@@ -24,7 +24,10 @@ export class SpellRenderer {
     }
     this.ctx = context;
     this.effectsRenderer = new SpellEffectsRenderer(this.ctx);
-    console.log("🦊 SpellRenderer: Constructor complete", { canvasWidth: canvas.width, canvasHeight: canvas.height });
+    console.log("🦊 SpellRenderer: Constructor complete", {
+      canvasWidth: canvas.width,
+      canvasHeight: canvas.height,
+    });
   }
 
   /**
@@ -40,7 +43,10 @@ export class SpellRenderer {
       intensity: spell.intensity,
     };
     this.activeSpells.set(spell.id, animation);
-    console.log("🦊 SpellRenderer: Spell animation started", { spellId: spell.id, activeSpellsCount: this.activeSpells.size });
+    console.log("🦊 SpellRenderer: Spell animation started", {
+      spellId: spell.id,
+      activeSpellsCount: this.activeSpells.size,
+    });
   }
 
   /**
@@ -57,7 +63,7 @@ export class SpellRenderer {
     for (const [spellId, animation] of this.activeSpells) {
       const elapsed = currentTime - animation.startTime;
       animation.progress = Math.min(elapsed / animation.duration, 1);
-      
+
       if (animation.progress >= 1) {
         this.activeSpells.delete(spellId);
       }
@@ -68,11 +74,14 @@ export class SpellRenderer {
    * Render all active spells
    */
   renderSpells(spells: SpellEffect[]): void {
-    console.log("🦊 SpellRenderer: renderSpells called", { spellsCount: spells.length, activeSpellsCount: this.activeSpells.size });
-    
+    console.log("🦊 SpellRenderer: renderSpells called", {
+      spellsCount: spells.length,
+      activeSpellsCount: this.activeSpells.size,
+    });
+
     // Clear canvas with a visible background
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    
+
     // Set a more visible background
     this.ctx.fillStyle = "rgba(20, 20, 40, 0.8)";
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -89,10 +98,16 @@ export class SpellRenderer {
     for (const spell of spells) {
       const animation = this.activeSpells.get(spell.id);
       if (animation && animation.isActive) {
-        console.log("🦊 SpellRenderer: Rendering spell", { spellId: spell.id, progress: animation.progress });
+        console.log("🦊 SpellRenderer: Rendering spell", {
+          spellId: spell.id,
+          progress: animation.progress,
+        });
         this.renderSpell(spell, animation);
       } else {
-        console.log("🦊 SpellRenderer: Skipping spell - no active animation", { spellId: spell.id, hasAnimation: !!animation });
+        console.log("🦊 SpellRenderer: Skipping spell - no active animation", {
+          spellId: spell.id,
+          hasAnimation: !!animation,
+        });
       }
     }
   }
@@ -115,45 +130,62 @@ export class SpellRenderer {
     };
 
     // Calculate rotation angle based on time and speed
-    const rotationAngle = (performance.now() * 0.001 * pattern.rotationSpeed) % (Math.PI * 2);
+    const rotationAngle =
+      (performance.now() * 0.001 * pattern.rotationSpeed) % (Math.PI * 2);
 
     // Render spiral points
     for (let i = 0; i < pattern.pointCount; i++) {
       const position = calculateSpiralPosition(i, rotationAngle, spiralConfig);
-      
+
       // Calculate point properties based on progress and intensity
       const pointProgress = Math.min(i / pattern.pointCount, 1);
       const pointIntensity = intensity * (1 - pointProgress * 0.5);
       const pointAlpha = (1 - progress) * pointIntensity;
-      
+
       // Skip if point is too transparent
       if (pointAlpha < 0.01) continue;
 
       // Set up rendering context
       this.ctx.save();
       this.ctx.globalAlpha = pointAlpha;
-      
+
       // Create gradient for glow effect
       const gradient = this.ctx.createRadialGradient(
-        position.x, position.y, 0,
-        position.x, position.y, pattern.baseRadius * 0.5
+        position.x,
+        position.y,
+        0,
+        position.x,
+        position.y,
+        pattern.baseRadius * 0.5,
       );
       gradient.addColorStop(0, colors.glow);
       gradient.addColorStop(1, colors.primary);
-      
+
       // Draw point with glow - make it more visible
       this.ctx.fillStyle = gradient;
       this.ctx.beginPath();
-      this.ctx.arc(position.x, position.y, 5 + pointIntensity * 3, 0, Math.PI * 2);
+      this.ctx.arc(
+        position.x,
+        position.y,
+        5 + pointIntensity * 3,
+        0,
+        Math.PI * 2,
+      );
       this.ctx.fill();
-      
+
       // Draw outer glow - make it more visible
       this.ctx.strokeStyle = colors.accent;
       this.ctx.lineWidth = 2;
       this.ctx.beginPath();
-      this.ctx.arc(position.x, position.y, 8 + pointIntensity * 4, 0, Math.PI * 2);
+      this.ctx.arc(
+        position.x,
+        position.y,
+        8 + pointIntensity * 4,
+        0,
+        Math.PI * 2,
+      );
       this.ctx.stroke();
-      
+
       this.ctx.restore();
     }
 

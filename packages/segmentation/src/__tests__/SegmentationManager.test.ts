@@ -7,11 +7,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { SegmentationManager } from "../services/SegmentationManager.js";
 import { SegmentationService } from "../services/SegmentationService.js";
-import type { 
-  SegmentationTask, 
-  SegmentationData, 
+import type {
+  SegmentationTask,
+  SegmentationData,
   SegmentationServiceConfig,
-  SegmentationStatistics 
+  SegmentationStatistics,
 } from "../types/index.js";
 
 // Mock dependencies
@@ -20,14 +20,22 @@ vi.mock("reynard-ai-shared", () => ({
     constructor() {}
     async register() {}
     async unregister() {}
-    get() { return undefined; }
-    getAll() { return []; }
-    isRegistered() { return false; }
+    get() {
+      return undefined;
+    }
+    getAll() {
+      return [];
+    }
+    isRegistered() {
+      return false;
+    }
   },
   BaseAIService: class MockBaseAIService {
     constructor() {}
     async initialize() {}
-    async getHealthInfo() { return { status: "healthy", details: {} }; }
+    async getHealthInfo() {
+      return { status: "healthy", details: {} };
+    }
     async cleanup() {}
     setStatus() {}
   },
@@ -63,9 +71,15 @@ vi.mock("reynard-annotating-core", () => ({
     constructor() {}
     async register() {}
     async unregister() {}
-    get() { return undefined; }
-    getAll() { return []; }
-    isRegistered() { return false; }
+    get() {
+      return undefined;
+    }
+    getAll() {
+      return [];
+    }
+    isRegistered() {
+      return false;
+    }
     async initialize() {}
   },
   BackendAnnotationService: class MockBackendAnnotationService {
@@ -97,7 +111,13 @@ vi.mock("../services/SegmentationService.js", () => ({
         type: "segmentation",
         segmentation: {
           id: "test-seg",
-          polygon: { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }] },
+          polygon: {
+            points: [
+              { x: 0, y: 0 },
+              { x: 100, y: 0 },
+              { x: 100, y: 100 },
+            ],
+          },
           metadata: { source: "manual" },
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -112,7 +132,13 @@ vi.mock("../services/SegmentationService.js", () => ({
           type: "segmentation",
           segmentation: {
             id: "test-seg-1",
-            polygon: { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }] },
+            polygon: {
+              points: [
+                { x: 0, y: 0 },
+                { x: 100, y: 0 },
+                { x: 100, y: 100 },
+              ],
+            },
             metadata: { source: "manual" },
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -124,7 +150,13 @@ vi.mock("../services/SegmentationService.js", () => ({
           type: "segmentation",
           segmentation: {
             id: "test-seg-2",
-            polygon: { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }] },
+            polygon: {
+              points: [
+                { x: 0, y: 0 },
+                { x: 100, y: 0 },
+                { x: 100, y: 100 },
+              ],
+            },
             metadata: { source: "manual" },
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -139,7 +171,13 @@ vi.mock("../services/SegmentationService.js", () => ({
         type: "segmentation",
         segmentation: {
           id: "refined-seg",
-          polygon: { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }] },
+          polygon: {
+            points: [
+              { x: 0, y: 0 },
+              { x: 100, y: 0 },
+              { x: 100, y: 100 },
+            ],
+          },
           metadata: { source: "refined" },
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -147,18 +185,30 @@ vi.mock("../services/SegmentationService.js", () => ({
         timestamp: new Date(),
       };
     }
-    validateSegmentation() { return true; }
-    exportSegmentation() { return { id: "exported", format: "test" }; }
+    validateSegmentation() {
+      return true;
+    }
+    exportSegmentation() {
+      return { id: "exported", format: "test" };
+    }
     importSegmentation() {
       return {
         id: "imported",
-        polygon: { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }] },
+        polygon: {
+          points: [
+            { x: 0, y: 0 },
+            { x: 100, y: 0 },
+            { x: 100, y: 100 },
+          ],
+        },
         metadata: { source: "imported" },
         createdAt: new Date(),
         updatedAt: new Date(),
       };
     }
-    async getHealthInfo() { return { status: "healthy", details: {} }; }
+    async getHealthInfo() {
+      return { status: "healthy", details: {} };
+    }
   },
 }));
 
@@ -184,7 +234,9 @@ describe("SegmentationManager", () => {
         register: vi.fn().mockRejectedValue(new Error("Registry error")),
       });
 
-      await expect(manager.initialize()).rejects.toThrow("Failed to initialize segmentation manager");
+      await expect(manager.initialize()).rejects.toThrow(
+        "Failed to initialize segmentation manager",
+      );
     });
   });
 
@@ -199,7 +251,10 @@ describe("SegmentationManager", () => {
         validateGeometry: true,
       };
 
-      const service = await manager.registerSegmentationService("test-service", config);
+      const service = await manager.registerSegmentationService(
+        "test-service",
+        config,
+      );
 
       expect(service).toBeDefined();
       expect(service.config.name).toBe("test-service");
@@ -216,7 +271,9 @@ describe("SegmentationManager", () => {
       };
 
       await manager.registerSegmentationService("test-service", config);
-      await expect(manager.unregisterSegmentationService("test-service")).resolves.not.toThrow();
+      await expect(
+        manager.unregisterSegmentationService("test-service"),
+      ).resolves.not.toThrow();
     });
 
     it("should get available services", async () => {
@@ -327,7 +384,10 @@ describe("SegmentationManager", () => {
       ];
 
       const progressCallback = vi.fn();
-      const results = await manager.generateBatchSegmentations(tasks, progressCallback);
+      const results = await manager.generateBatchSegmentations(
+        tasks,
+        progressCallback,
+      );
 
       expect(results).toHaveLength(2);
       expect(progressCallback).toHaveBeenCalled();
@@ -505,7 +565,9 @@ describe("SegmentationManager", () => {
       // Mock no available services
       vi.spyOn(manager, "getAvailableServices").mockResolvedValue([]);
 
-      await expect(manager.generateSegmentation(task)).rejects.toThrow("No segmentation services available");
+      await expect(manager.generateSegmentation(task)).rejects.toThrow(
+        "No segmentation services available",
+      );
     });
 
     it("should handle service generation error", async () => {
@@ -516,11 +578,15 @@ describe("SegmentationManager", () => {
 
       // Mock service generation failure
       const mockService = {
-        generateSegmentation: vi.fn().mockRejectedValue(new Error("Service error")),
+        generateSegmentation: vi
+          .fn()
+          .mockRejectedValue(new Error("Service error")),
       };
       vi.spyOn(manager, "getService").mockReturnValue(mockService as any);
 
-      await expect(manager.generateSegmentation(task)).rejects.toThrow("Failed to generate segmentation");
+      await expect(manager.generateSegmentation(task)).rejects.toThrow(
+        "Failed to generate segmentation",
+      );
     });
 
     it("should handle batch processing errors", async () => {
@@ -537,11 +603,15 @@ describe("SegmentationManager", () => {
 
       // Mock service generation failure
       const mockService = {
-        generateBatchSegmentations: vi.fn().mockRejectedValue(new Error("Batch error")),
+        generateBatchSegmentations: vi
+          .fn()
+          .mockRejectedValue(new Error("Batch error")),
       };
       vi.spyOn(manager, "getService").mockReturnValue(mockService as any);
 
-      await expect(manager.generateBatchSegmentations(tasks)).rejects.toThrow("Failed to generate batch segmentations");
+      await expect(manager.generateBatchSegmentations(tasks)).rejects.toThrow(
+        "Failed to generate batch segmentations",
+      );
     });
   });
 
@@ -553,7 +623,7 @@ describe("SegmentationManager", () => {
 
     it("should handle cleanup errors gracefully", async () => {
       await manager.initialize();
-      
+
       // Mock cleanup failure
       vi.spyOn(manager as any, "serviceRegistry", "get").mockReturnValue({
         unregister: vi.fn().mockRejectedValue(new Error("Cleanup error")),

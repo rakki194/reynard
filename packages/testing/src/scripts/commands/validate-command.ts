@@ -8,7 +8,7 @@ import { validatePackageI18nSetup } from "../../utils/i18n-package-orchestrator"
 
 export const createValidateCommand = (): Command => {
   const command = new Command("validate");
-  
+
   command
     .description("Validate i18n setup for all packages")
     .action(async () => {

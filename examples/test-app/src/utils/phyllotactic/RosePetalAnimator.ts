@@ -3,13 +3,13 @@
  * Handles animation and growth logic for rose petals
  */
 
-import type { RosePetal, RosePetalConfig, GrowthPhase } from './RosePetalTypes';
-import { RosePetalNaturalGrowth } from './RosePetalNaturalGrowth';
+import type { RosePetal, RosePetalConfig, GrowthPhase } from "./RosePetalTypes";
+import { RosePetalNaturalGrowth } from "./RosePetalNaturalGrowth";
 
 export class RosePetalAnimator {
   private config: RosePetalConfig;
   private time: number = 0;
-  private growthPhase: GrowthPhase = 'bud';
+  private growthPhase: GrowthPhase = "bud";
   private naturalGrowth: RosePetalNaturalGrowth;
 
   constructor(config: RosePetalConfig) {
@@ -23,8 +23,8 @@ export class RosePetalAnimator {
   updatePetals(petals: RosePetal[], deltaTime: number): void {
     this.time += deltaTime * this.config.animationSpeed;
     this.updateGrowthPhase();
-    
-    petals.forEach(petal => {
+
+    petals.forEach((petal) => {
       this.updatePetal(petal, deltaTime);
     });
   }
@@ -35,9 +35,12 @@ export class RosePetalAnimator {
   private updatePetal(petal: RosePetal, deltaTime: number): void {
     // Use the natural growth system for all growth modes
     this.naturalGrowth.updatePetal(petal, deltaTime);
-    
+
     // Update growth progress for compatibility
-    petal.growthProgress = Math.min(1, petal.growthProgress + this.config.growthSpeed * deltaTime);
+    petal.growthProgress = Math.min(
+      1,
+      petal.growthProgress + this.config.growthSpeed * deltaTime,
+    );
   }
 
   /**
@@ -45,15 +48,15 @@ export class RosePetalAnimator {
    */
   private updateGrowthPhase(): void {
     const totalTime = this.config.petalCount * 0.1;
-    
+
     if (this.time < totalTime * 0.3) {
-      this.growthPhase = 'bud';
+      this.growthPhase = "bud";
     } else if (this.time < totalTime * 0.7) {
-      this.growthPhase = 'blooming';
+      this.growthPhase = "blooming";
     } else if (this.time < totalTime * 0.9) {
-      this.growthPhase = 'full';
+      this.growthPhase = "full";
     } else {
-      this.growthPhase = 'wilting';
+      this.growthPhase = "wilting";
     }
   }
 
@@ -70,13 +73,13 @@ export class RosePetalAnimator {
    */
   getTargetPetalCount(): number {
     switch (this.growthPhase) {
-      case 'bud':
+      case "bud":
         return Math.floor(this.config.petalCount * 0.1);
-      case 'blooming':
+      case "blooming":
         return Math.floor(this.config.petalCount * 0.6);
-      case 'full':
+      case "full":
         return this.config.petalCount;
-      case 'wilting':
+      case "wilting":
         return Math.floor(this.config.petalCount * 0.8);
       default:
         return this.config.petalCount;
@@ -109,7 +112,7 @@ export class RosePetalAnimator {
    */
   reset(): void {
     this.time = 0;
-    this.growthPhase = 'bud';
+    this.growthPhase = "bud";
   }
 
   /**

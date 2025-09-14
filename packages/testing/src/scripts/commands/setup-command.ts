@@ -12,7 +12,7 @@ export interface SetupCommandOptions {
 
 export const createSetupCommand = (): Command => {
   const command = new Command("setup");
-  
+
   command
     .description("Set up i18n test files for all packages")
     .option("--force", "Overwrite existing test files")

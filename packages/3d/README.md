@@ -146,7 +146,7 @@ function Custom3DComponent() {
 
 Base 3D scene component with camera controls and lighting.
 
-> *Props:*
+> _Props:_
 
 - `width?: number` - Canvas width (default: 800)
 - `height?: number` - Canvas height (default: 600)
@@ -160,7 +160,7 @@ Base 3D scene component with camera controls and lighting.
 
 Advanced point cloud rendering with interaction support.
 
-> *Props:*
+> _Props:_
 
 - `points: Point3D[]` - Array of 3D points to render
 - `settings?: PointCloudSettings` - Visualization settings

@@ -89,7 +89,7 @@ export interface StaggeredAnimationConfig {
   delay: number;
   stagger: number;
   easing: EasingType;
-  direction: 'forward' | 'reverse' | 'center' | 'random';
+  direction: "forward" | "reverse" | "center" | "random";
   onStart?: () => void;
   onComplete?: () => void;
   onItemStart?: (index: number) => void;
@@ -108,7 +108,7 @@ export interface UseStaggeredAnimationOptions {
   delay?: number;
   stagger?: number;
   easing?: EasingType;
-  direction?: 'forward' | 'reverse' | 'center' | 'random';
+  direction?: "forward" | "reverse" | "center" | "random";
   onStart?: () => void;
   onComplete?: () => void;
   onItemStart?: (index: number) => void;
@@ -159,7 +159,7 @@ export interface StroboscopicConfig {
 export interface StroboscopicState {
   isStroboscopic: boolean;
   stroboscopicPhase: number;
-  apparentMotion: 'growing' | 'shrinking' | 'frozen' | 'morphing';
+  apparentMotion: "growing" | "shrinking" | "frozen" | "morphing";
   temporalAliasing: number;
   morphingIntensity: number;
 }
@@ -206,5 +206,10 @@ export interface InterpolationOptions {
 }
 
 export interface AnimationInterpolator<T> {
-  interpolate: (start: T, end: T, progress: number, options?: InterpolationOptions) => T;
+  interpolate: (
+    start: T,
+    end: T,
+    progress: number,
+    options?: InterpolationOptions,
+  ) => T;
 }

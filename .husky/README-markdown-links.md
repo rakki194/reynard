@@ -125,7 +125,7 @@ These directories are automatically excluded:
 <tel:+1234567890>
 ```
 
-> *Validation:*
+> _Validation:_
 
 - URL format validation
 - Protocol checking (HTTP/HTTPS preferred)
@@ -141,7 +141,7 @@ These directories are automatically excluded:
 [Absolute Path](/docs/guide.md)
 ```
 
-> *Validation:*
+> _Validation:_
 
 - File existence checking
 - Path resolution
@@ -155,7 +155,7 @@ These directories are automatically excluded:
 [Another Section](#another-section)
 ```
 
-> *Validation:*
+> _Validation:_
 
 - Heading extraction and anchor generation
 - GitHub-style anchor ID matching
@@ -169,7 +169,7 @@ These directories are automatically excluded:
 ![External Image](https://example.com/image.jpg)
 ```
 
-> *Validation:*
+> _Validation:_
 
 - Same validation as regular links
 - File existence for local images
@@ -359,4 +359,3 @@ The validator enforces Reynard's documentation standards:
 ---
 
 _🦊 Built with the cunning of a fox, the thoroughness of an otter, and the precision of a wolf - the Reynard way!_
-

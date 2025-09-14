@@ -179,7 +179,6 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                 value={chunkSize()}
                 onChange={(e) => setChunkSize(parseInt(e.target.value) || 1000)}
                 helperText="Maximum number of characters per document chunk"
-               
               />
             </div>
 
@@ -188,9 +187,10 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                 label="Chunk Overlap"
                 type="number"
                 value={chunkOverlap()}
-                onChange={(e) => setChunkOverlap(parseInt(e.target.value) || 200)}
+                onChange={(e) =>
+                  setChunkOverlap(parseInt(e.target.value) || 200)
+                }
                 helperText="Number of characters to overlap between chunks"
-               
               />
             </div>
           </div>
@@ -209,7 +209,6 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                 value={topK()}
                 onChange={(e) => setTopK(parseInt(e.target.value) || 10)}
                 helperText="Maximum number of results to return per search"
-               
               />
             </div>
 
@@ -223,7 +222,6 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                   setSimilarityThreshold(parseFloat(value) || 0.7)
                 }
                 helperText="Minimum similarity score for search results (0.0 - 1.0)"
-               
               />
             </div>
           </div>
@@ -259,9 +257,10 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                   label="Cache Size"
                   type="number"
                   value={cacheSize()}
-                  onChange={(e) => setCacheSize(parseInt(e.target.value) || 1000)}
+                  onChange={(e) =>
+                    setCacheSize(parseInt(e.target.value) || 1000)
+                  }
                   helperText="Maximum number of items to cache"
-                 
                 />
               </div>
             </Show>

@@ -3,9 +3,9 @@
  * Provides hardcoded string detection and translation validation
  */
 
-import js from '@eslint/js';
-import typescript from '@typescript-eslint/eslint-plugin';
-import typescriptParser from '@typescript-eslint/parser';
+import js from "@eslint/js";
+import typescript from "@typescript-eslint/eslint-plugin";
+import typescriptParser from "@typescript-eslint/parser";
 
 export default [
   js.configs.recommended,
@@ -30,7 +30,7 @@ export default [
       "no-debugger": "warn",
     },
   },
-  
+
   {
     files: ["**/*.{js,jsx}"],
     languageOptions: {
@@ -47,7 +47,7 @@ export default [
       "no-debugger": "warn",
     },
   },
-  
+
   // Test files - more lenient rules
   {
     files: [

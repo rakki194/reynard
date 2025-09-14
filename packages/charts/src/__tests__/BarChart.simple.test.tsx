@@ -29,23 +29,13 @@ describe("BarChart - Simple Tests", () => {
 
   it("should render with minimal props", () => {
     expect(() => {
-      render(() => (
-        <BarChart
-          data={mockDatasets}
-          labels={mockLabels}
-        />
-      ));
+      render(() => <BarChart data={mockDatasets} labels={mockLabels} />);
     }).not.toThrow();
   });
 
   it("should handle empty data gracefully", () => {
     expect(() => {
-      render(() => (
-        <BarChart
-          data={[]}
-          labels={[]}
-        />
-      ));
+      render(() => <BarChart data={[]} labels={[]} />);
     }).not.toThrow();
   });
 });

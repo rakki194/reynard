@@ -4,7 +4,7 @@
  */
 
 import { createSignal, createMemo } from "solid-js";
-import type { EasingType } from '../types';
+import type { EasingType } from "../types";
 
 export interface AnimationState {
   isAnimating: boolean;

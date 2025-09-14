@@ -41,7 +41,7 @@ export interface ChartProps extends ChartConfig {
 
 export const Chart: Component<ChartProps> = (props) => {
   console.log("🦊 Chart: Component initialized with props", props);
-  
+
   const [local, others] = splitProps(props, chartPropsToSplit);
 
   console.log("🦊 Chart: Split props", { local, others });
@@ -85,7 +85,7 @@ export const Chart: Component<ChartProps> = (props) => {
     chartState.setChartOptions(options);
     console.log("🦊 Chart: Chart state after update", {
       chartData: chartState.chartData(),
-      chartOptions: chartState.chartOptions()
+      chartOptions: chartState.chartOptions(),
     });
   };
 
@@ -115,7 +115,10 @@ export const Chart: Component<ChartProps> = (props) => {
     onChartRef: chartState.setChartInstance,
   });
 
-  console.log("🦊 Chart: About to render ChartRenderer with props", renderProps());
-  
+  console.log(
+    "🦊 Chart: About to render ChartRenderer with props",
+    renderProps(),
+  );
+
   return <ChartRenderer {...renderProps()} />;
 };

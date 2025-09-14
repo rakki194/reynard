@@ -15,7 +15,12 @@ import {
   Show,
   For,
 } from "solid-js";
-import { PolygonOps, PointOps, type Point, type Polygon } from "reynard-algorithms";
+import {
+  PolygonOps,
+  PointOps,
+  type Point,
+  type Polygon,
+} from "reynard-algorithms";
 import {
   SegmentationData,
   SegmentationEditorConfig,
@@ -52,10 +57,12 @@ export interface SegmentationCanvasProps {
 /**
  * Segmentation Canvas Component with comprehensive rendering capabilities
  */
-export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) => {
+export const SegmentationCanvas: Component<SegmentationCanvasProps> = (
+  props,
+) => {
   let canvasRef: HTMLCanvasElement | undefined;
   let imageRef: HTMLImageElement | undefined;
-  
+
   const [canvasSize, setCanvasSize] = createSignal({ width: 800, height: 600 });
   const [imageLoaded, setImageLoaded] = createSignal(false);
   const [isDrawing, setIsDrawing] = createSignal(false);
@@ -155,15 +162,15 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
   const drawGrid = (ctx: CanvasRenderingContext2D) => {
     const { gridSize } = props.config;
     const { zoom, panOffset } = props.state;
-    
+
     ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
     ctx.lineWidth = 1 / zoom;
-    
+
     const startX = Math.floor(panOffset.x / gridSize) * gridSize;
     const startY = Math.floor(panOffset.y / gridSize) * gridSize;
     const endX = startX + canvasSize().width / zoom;
     const endY = startY + canvasSize().height / zoom;
-    
+
     // Draw vertical lines
     for (let x = startX; x <= endX; x += gridSize) {
       ctx.beginPath();
@@ -171,7 +178,7 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
       ctx.lineTo(x, endY);
       ctx.stroke();
     }
-    
+
     // Draw horizontal lines
     for (let y = startY; y <= endY; y += gridSize) {
       ctx.beginPath();
@@ -182,11 +189,14 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
   };
 
   // Draw segmentation
-  const drawSegmentation = (ctx: CanvasRenderingContext2D, segmentation: SegmentationData) => {
+  const drawSegmentation = (
+    ctx: CanvasRenderingContext2D,
+    segmentation: SegmentationData,
+  ) => {
     const { polygon } = segmentation;
     const isSelected = segmentation.id === props.state.selectedSegmentation;
     const isHovered = segmentation.id === props.state.hoveredSegmentation;
-    
+
     // Set styles based on state
     if (isSelected) {
       ctx.strokeStyle = "#3b82f6";
@@ -198,9 +208,9 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
       ctx.strokeStyle = "#6b7280";
       ctx.fillStyle = "rgba(107, 114, 128, 0.2)";
     }
-    
+
     ctx.lineWidth = props.config.edgeThickness / props.state.zoom;
-    
+
     // Draw polygon fill
     if (props.config.showFill) {
       ctx.globalAlpha = props.config.fillOpacity;
@@ -208,18 +218,18 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
       ctx.fill();
       ctx.globalAlpha = 1;
     }
-    
+
     // Draw polygon edges
     if (props.config.showEdges) {
       drawPolygon(ctx, polygon.points);
       ctx.stroke();
     }
-    
+
     // Draw vertices
     if (props.config.showVertices) {
       drawVertices(ctx, polygon.points, isSelected);
     }
-    
+
     // Draw bounding box
     if (props.config.showBoundingBox) {
       drawBoundingBox(ctx, polygon);
@@ -229,23 +239,27 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
   // Draw polygon path
   const drawPolygon = (ctx: CanvasRenderingContext2D, points: Point[]) => {
     if (points.length === 0) return;
-    
+
     ctx.beginPath();
     ctx.moveTo(points[0].x, points[0].y);
-    
+
     for (let i = 1; i < points.length; i++) {
       ctx.lineTo(points[i].x, points[i].y);
     }
-    
+
     ctx.closePath();
   };
 
   // Draw vertices
-  const drawVertices = (ctx: CanvasRenderingContext2D, points: Point[], isSelected: boolean) => {
+  const drawVertices = (
+    ctx: CanvasRenderingContext2D,
+    points: Point[],
+    isSelected: boolean,
+  ) => {
     const vertexSize = props.config.vertexSize / props.state.zoom;
-    
+
     ctx.fillStyle = isSelected ? "#3b82f6" : "#6b7280";
-    
+
     for (const point of points) {
       ctx.beginPath();
       ctx.arc(point.x, point.y, vertexSize, 0, 2 * Math.PI);
@@ -256,13 +270,18 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
   // Draw bounding box
   const drawBoundingBox = (ctx: CanvasRenderingContext2D, polygon: Polygon) => {
     const bounds = getPolygonBounds(polygon);
-    
+
     ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
     ctx.lineWidth = 1 / props.state.zoom;
     ctx.setLineDash([5 / props.state.zoom, 5 / props.state.zoom]);
-    
-    ctx.strokeRect(bounds.min.x, bounds.min.y, bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y);
-    
+
+    ctx.strokeRect(
+      bounds.min.x,
+      bounds.min.y,
+      bounds.max.x - bounds.min.x,
+      bounds.max.y - bounds.min.y,
+    );
+
     ctx.setLineDash([]);
   };
 
@@ -270,19 +289,19 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
   const drawCurrentPolygon = (ctx: CanvasRenderingContext2D) => {
     const points = currentPolygon();
     if (points.length === 0) return;
-    
+
     ctx.strokeStyle = "#f59e0b";
     ctx.fillStyle = "rgba(245, 158, 11, 0.2)";
     ctx.lineWidth = props.config.edgeThickness / props.state.zoom;
-    
+
     // Draw polygon
     drawPolygon(ctx, points);
     ctx.fill();
     ctx.stroke();
-    
+
     // Draw vertices
     drawVertices(ctx, points, true);
-    
+
     // Draw line to mouse position
     if (props.state.mousePosition) {
       ctx.strokeStyle = "#f59e0b";
@@ -298,9 +317,9 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
   // Get polygon bounds
   const getPolygonBounds = (polygon: Polygon): { min: Point; max: Point } => {
     const points = polygon.points;
-    const xs = points.map(p => p.x);
-    const ys = points.map(p => p.y);
-    
+    const xs = points.map((p) => p.x);
+    const ys = points.map((p) => p.y);
+
     return {
       min: { x: Math.min(...xs), y: Math.min(...ys) },
       max: { x: Math.max(...xs), y: Math.max(...ys) },
@@ -310,18 +329,20 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
   // Handle mouse events
   const handleMouseDown = (event: MouseEvent) => {
     if (!props.config.enabled) return;
-    
+
     const rect = canvasRef?.getBoundingClientRect();
     if (!rect) return;
-    
-    const x = (event.clientX - rect.left) / props.state.zoom - props.state.panOffset.x;
-    const y = (event.clientY - rect.top) / props.state.zoom - props.state.panOffset.y;
-    
+
+    const x =
+      (event.clientX - rect.left) / props.state.zoom - props.state.panOffset.x;
+    const y =
+      (event.clientY - rect.top) / props.state.zoom - props.state.panOffset.y;
+
     const point = { x, y };
-    
+
     if (props.state.isCreating) {
       // Add point to current polygon
-      setCurrentPolygon(prev => [...prev, point]);
+      setCurrentPolygon((prev) => [...prev, point]);
       setIsDrawing(true);
     } else {
       // Check for vertex/edge selection
@@ -344,7 +365,7 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
       setCurrentPolygon([]);
       setIsDrawing(false);
     }
-    
+
     // Handle dragging
     if (isDragging()) {
       setIsDragging(false);
@@ -365,7 +386,9 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
   };
 
   // Find segmentation at point
-  const findSegmentationAtPoint = (point: Point): SegmentationData | undefined => {
+  const findSegmentationAtPoint = (
+    point: Point,
+  ): SegmentationData | undefined => {
     for (const segmentation of props.segmentations) {
       if (PolygonOps.contains(segmentation.polygon, point)) {
         return segmentation;
@@ -418,20 +441,17 @@ export const SegmentationCanvas: Component<SegmentationCanvasProps> = (props) =>
         onWheel={canvasInteraction.handleWheel}
         class="segmentation-canvas-element"
       />
-      
+
       <img
         ref={imageRef}
         src={props.imageSrc}
         style={{ display: "none" }}
         alt="Segmentation target"
       />
-      
+
       <Show when={!imageLoaded()}>
-        <div class="segmentation-canvas-loading">
-          Loading image...
-        </div>
+        <div class="segmentation-canvas-loading">Loading image...</div>
       </Show>
     </div>
   );
 };
-

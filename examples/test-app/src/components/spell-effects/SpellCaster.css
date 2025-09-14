@@ -72,7 +72,7 @@
   padding: 0.75rem;
   border-radius: var(--border-radius);
   font-size: 0.875rem;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
 }
 
 .spell-controls {
@@ -198,11 +198,11 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .spell-controls {
     max-height: none;
   }
-  
+
   .spell-buttons {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -212,25 +212,25 @@
   .spell-caster {
     padding: 0.5rem;
   }
-  
+
   .spell-caster-content {
     padding: 1rem;
   }
-  
+
   .spell-controls {
     padding: 1rem;
   }
-  
+
   .spell-canvas {
     width: 100%;
     height: auto;
     max-width: 100%;
   }
-  
+
   .spell-buttons {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .spell-details {
     grid-template-columns: 1fr;
   }

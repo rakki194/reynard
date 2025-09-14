@@ -63,7 +63,7 @@ export async function expectPromiseToReject(
   } catch (error) {
     // If the promise rejected, check if it matches expected error
     if (expectedError) {
-      if (typeof expectedError === 'string') {
+      if (typeof expectedError === "string") {
         expect(error.message).toContain(expectedError);
       } else if (expectedError instanceof RegExp) {
         expect(error.message).toMatch(expectedError);

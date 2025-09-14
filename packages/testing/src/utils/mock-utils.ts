@@ -83,7 +83,9 @@ export function createMockFetch(
       return Promise.reject(response);
     }
 
-    return Promise.resolve(createMockResponse((response as any).data, (response as any).options));
+    return Promise.resolve(
+      createMockResponse((response as any).data, (response as any).options),
+    );
   });
 }
 

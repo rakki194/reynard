@@ -43,10 +43,7 @@ describe("PieChart Component", () => {
 
     it("should render without title", () => {
       render(() => (
-        <PieChart
-          labels={mockPieData.labels}
-          data={mockPieData.data}
-        />
+        <PieChart labels={mockPieData.labels} data={mockPieData.data} />
       ));
 
       expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
@@ -84,11 +81,7 @@ describe("PieChart Component", () => {
   describe("Empty States", () => {
     it("should show empty message when no data", () => {
       render(() => (
-        <PieChart
-          labels={[]}
-          data={[]}
-          emptyMessage="No data available"
-        />
+        <PieChart labels={[]} data={[]} emptyMessage="No data available" />
       ));
 
       expect(screen.getByText("No data available")).toBeInTheDocument();
@@ -97,11 +90,7 @@ describe("PieChart Component", () => {
 
     it("should show custom empty message", () => {
       render(() => (
-        <PieChart
-          labels={[]}
-          data={[]}
-          emptyMessage="Custom empty message"
-        />
+        <PieChart labels={[]} data={[]} emptyMessage="Custom empty message" />
       ));
 
       expect(screen.getByText("Custom empty message")).toBeInTheDocument();
@@ -111,10 +100,7 @@ describe("PieChart Component", () => {
   describe("Chart Variants", () => {
     it("should render pie chart by default", () => {
       render(() => (
-        <PieChart
-          labels={mockPieData.labels}
-          data={mockPieData.data}
-        />
+        <PieChart labels={mockPieData.labels} data={mockPieData.data} />
       ));
 
       expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
@@ -143,7 +129,9 @@ describe("PieChart Component", () => {
         />
       ));
 
-      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      const container = screen
+        .getByTestId("pie-chart-canvas")
+        .closest("div").parentElement;
       expect(container).toHaveClass("reynard-pie-chart--responsive");
     });
 
@@ -158,7 +146,9 @@ describe("PieChart Component", () => {
         />
       ));
 
-      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      const container = screen
+        .getByTestId("pie-chart-canvas")
+        .closest("div").parentElement;
       expect(container).toHaveClass("reynard-pie-chart--fixed-400x300");
     });
   });
@@ -173,20 +163,21 @@ describe("PieChart Component", () => {
         />
       ));
 
-      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      const container = screen
+        .getByTestId("pie-chart-canvas")
+        .closest("div").parentElement;
       expect(container).toHaveAttribute("role", "img");
       expect(container).toHaveAttribute("aria-label", "Accessible Chart");
     });
 
     it("should have default ARIA label when no title", () => {
       render(() => (
-        <PieChart
-          labels={mockPieData.labels}
-          data={mockPieData.data}
-        />
+        <PieChart labels={mockPieData.labels} data={mockPieData.data} />
       ));
 
-      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      const container = screen
+        .getByTestId("pie-chart-canvas")
+        .closest("div").parentElement;
       expect(container).toHaveAttribute("aria-label", "pie chart");
     });
 
@@ -199,44 +190,34 @@ describe("PieChart Component", () => {
         />
       ));
 
-      const container = screen.getByTestId("doughnut-chart-canvas").closest("div").parentElement;
+      const container = screen
+        .getByTestId("doughnut-chart-canvas")
+        .closest("div").parentElement;
       expect(container).toHaveAttribute("aria-label", "doughnut chart");
     });
   });
 
   describe("Data Handling", () => {
     it("should handle single data point", () => {
-      render(() => (
-        <PieChart
-          labels={["Single"]}
-          data={[100]}
-        />
-      ));
+      render(() => <PieChart labels={["Single"]} data={[100]} />);
 
       expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
 
     it("should handle large datasets", () => {
-      const largeLabels = Array.from({ length: 20 }, (_, i) => `Label ${i + 1}`);
+      const largeLabels = Array.from(
+        { length: 20 },
+        (_, i) => `Label ${i + 1}`,
+      );
       const largeData = Array.from({ length: 20 }, (_, i) => i + 1);
 
-      render(() => (
-        <PieChart
-          labels={largeLabels}
-          data={largeData}
-        />
-      ));
+      render(() => <PieChart labels={largeLabels} data={largeData} />);
 
       expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
 
     it("should handle zero values", () => {
-      render(() => (
-        <PieChart
-          labels={["Zero", "Non-zero"]}
-          data={[0, 10]}
-        />
-      ));
+      render(() => <PieChart labels={["Zero", "Non-zero"]} data={[0, 10]} />);
 
       expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
@@ -252,7 +233,9 @@ describe("PieChart Component", () => {
         />
       ));
 
-      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      const container = screen
+        .getByTestId("pie-chart-canvas")
+        .closest("div").parentElement;
       expect(container).toHaveClass("custom-pie-chart");
     });
 
@@ -288,10 +271,7 @@ describe("PieChart Component", () => {
 
     it("should handle negative values", () => {
       render(() => (
-        <PieChart
-          labels={["Positive", "Negative"]}
-          data={[10, -5]}
-        />
+        <PieChart labels={["Positive", "Negative"]} data={[10, -5]} />
       ));
 
       expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
@@ -299,10 +279,7 @@ describe("PieChart Component", () => {
 
     it("should handle very small values", () => {
       render(() => (
-        <PieChart
-          labels={["Small", "Tiny"]}
-          data={[0.001, 0.0001]}
-        />
+        <PieChart labels={["Small", "Tiny"]} data={[0.001, 0.0001]} />
       ));
 
       expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();

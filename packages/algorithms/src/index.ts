@@ -7,13 +7,13 @@
  */
 
 // Core algorithm classes, geometry operations, and performance utilities
-export { 
-  UnionFind, 
-  SpatialHash, 
-  PointOps, 
+export {
+  UnionFind,
+  SpatialHash,
+  PointOps,
   LineOps,
-  RectangleOps, 
-  CircleOps, 
+  RectangleOps,
+  CircleOps,
   PolygonOps,
   PerformanceTimer,
   MemoryMonitor,
@@ -26,5 +26,5 @@ export {
   type Circle,
   type Polygon,
   type AABB,
-  type CollisionResult
+  type CollisionResult,
 } from "./exports";

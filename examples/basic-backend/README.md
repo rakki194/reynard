@@ -188,7 +188,7 @@ Uvicorn logging with professional formatting and configuration options.
 
 ### Log Output Examples
 
-> *Before (default Uvicorn logging):*
+> _Before (default Uvicorn logging):_
 
 ```
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
@@ -196,7 +196,7 @@ INFO:     Started reloader process [34318] using StatReload
 INFO:     127.0.0.1:50062 - "GET / HTTP/1.1" 200 OK
 ```
 
-> *After (professional logging):*
+> _After (professional logging):_
 
 ```
 2023-03-08 15:40:41,170 - uvicorn.error - INFO - Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)

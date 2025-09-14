@@ -10,13 +10,14 @@
 export const PHYLLOTACTIC_CONSTANTS = {
   // Golden ratio: φ = (1 + √5) / 2
   GOLDEN_RATIO: (1 + Math.sqrt(5)) / 2,
-  
+
   // Golden angle: ψ = 360° / φ²
   GOLDEN_ANGLE_DEGREES: 360 / Math.pow((1 + Math.sqrt(5)) / 2, 2),
-  
+
   // Golden angle in radians
-  GOLDEN_ANGLE_RADIANS: (360 / Math.pow((1 + Math.sqrt(5)) / 2, 2)) * Math.PI / 180,
-  
+  GOLDEN_ANGLE_RADIANS:
+    ((360 / Math.pow((1 + Math.sqrt(5)) / 2, 2)) * Math.PI) / 180,
+
   // Vogel's model constants
   VOGEL_SCALING_FACTOR: 1.0,
 } as const;

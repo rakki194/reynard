@@ -55,7 +55,9 @@
   border-radius: 50%;
   transform: translate(-50%, -50%);
   box-shadow: var(--slider-thumb-shadow, 0 1px 3px rgba(0, 0, 0, 0.1));
-  transition: box-shadow 0.2s ease, transform 0.1s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.1s ease;
 }
 
 .slider:hover .slider-thumb {
@@ -74,11 +76,11 @@
   .slider-track {
     background: var(--slider-track-bg-dark, #374151);
   }
-  
+
   .slider-track-fill {
     background: var(--slider-fill-bg-dark, #60a5fa);
   }
-  
+
   .slider-thumb {
     background: var(--slider-thumb-bg-dark, #60a5fa);
     border-color: var(--slider-thumb-border-dark, #1f2937);

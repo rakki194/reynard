@@ -17,7 +17,7 @@ import {
   createMockResizeObserver,
   createMockResponse,
   createMockWebSocket,
-  } from "../utils/mock-utils.js";
+} from "../utils/mock-utils.js";
 
 describe("Mock Utilities", () => {
   beforeEach(() => {

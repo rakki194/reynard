@@ -106,7 +106,8 @@ expect.extend({
     const pass = value ? actualValue === value : actualValue !== null;
     return {
       pass,
-      message: () => `expected ${received} to have attribute ${attribute}${value ? ` with value ${value}` : ""}`,
+      message: () =>
+        `expected ${received} to have attribute ${attribute}${value ? ` with value ${value}` : ""}`,
     };
   },
   toHaveStyle(received, style) {
@@ -121,7 +122,8 @@ expect.extend({
     const pass = actualValue === value;
     return {
       pass,
-      message: () => `expected ${received} to have style ${style}, but got ${property}: ${actualValue}`,
+      message: () =>
+        `expected ${received} to have style ${style}, but got ${property}: ${actualValue}`,
     };
   },
 });

@@ -300,7 +300,7 @@ Toast notification system with queue management and auto-dismiss.
 const { notify, dismiss, clear, notifications } = useNotifications();
 ```
 
-> *Methods:*
+> _Methods:_
 
 - `notify(message, type?, options?)`: Show notification
 - `dismiss(id)`: Dismiss specific notification
@@ -308,7 +308,7 @@ const { notify, dismiss, clear, notifications } = useNotifications();
 
 **Types:** `"success" | "error" | "warning" | "info"`
 
-> *Example:*
+> _Example:_
 
 ```tsx
 function NotificationDemo() {
@@ -336,7 +336,7 @@ const isMobile = useMediaQuery("(max-width: 768px)");
 const isDark = useMediaQuery("(prefers-color-scheme: dark)");
 ```
 
-> *Example:*
+> _Example:_
 
 ```tsx
 function ResponsiveComponent() {
@@ -361,13 +361,13 @@ Reactive localStorage with type safety and cross-tab synchronization.
 const [value, setValue] = useLocalStorage<T>(key, defaultValue, options);
 ```
 
-> *Options:*
+> _Options:_
 
 - `defaultValue`: Default value if key doesn't exist
 - `serializer`: Custom serialization functions
 - `syncAcrossTabs`: Enable cross-tab synchronization (default: true)
 
-> *Example:*
+> _Example:_
 
 ```tsx
 function UserPreferences() {
@@ -404,7 +404,7 @@ Debounced reactive values for performance optimization.
 const debouncedValue = useDebounce(value, delay);
 ```
 
-> *Example:*
+> _Example:_
 
 ```tsx
 function SearchComponent() {
@@ -435,7 +435,7 @@ Debounced function calls to prevent excessive execution.
 const debouncedCallback = useDebouncedCallback(callback, delay);
 ```
 
-> *Example:*
+> _Example:_
 
 ```tsx
 function AutoSaveComponent() {
@@ -759,8 +759,8 @@ When optional dependencies are not available, the core package gracefully falls 
 - **With i18n**: +~8 kB (gzipped)
 - **With connection**: +~5 kB (gzipped)
 
-> *Modular Loading:*
-The package supports tree-shaking, so you only include what you use. Individual modules can be imported separately:
+> _Modular Loading:_
+> The package supports tree-shaking, so you only include what you use. Individual modules can be imported separately:
 
 ```tsx
 // Import only what you need

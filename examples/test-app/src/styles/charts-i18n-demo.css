@@ -7,7 +7,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .demo-header {
@@ -113,7 +114,7 @@
   padding: 1rem;
   border-radius: 8px;
   border-left: 4px solid #4299e1;
-  font-family: 'Monaco', 'Menlo', monospace;
+  font-family: "Monaco", "Menlo", monospace;
   font-size: 0.9rem;
 }
 
@@ -135,7 +136,7 @@
   padding: 1rem;
   border-radius: 8px;
   border-left: 4px solid #48bb78;
-  font-family: 'Monaco', 'Menlo', monospace;
+  font-family: "Monaco", "Menlo", monospace;
   font-size: 0.9rem;
 }
 
@@ -157,7 +158,7 @@
   padding: 1rem;
   border-radius: 8px;
   border-left: 4px solid #f56565;
-  font-family: 'Monaco', 'Menlo', monospace;
+  font-family: "Monaco", "Menlo", monospace;
   font-size: 0.9rem;
 }
 
@@ -179,7 +180,7 @@
   padding: 1rem;
   border-radius: 8px;
   border-left: 4px solid #ed8936;
-  font-family: 'Monaco', 'Menlo', monospace;
+  font-family: "Monaco", "Menlo", monospace;
   font-size: 0.9rem;
 }
 
@@ -199,7 +200,7 @@
 .quality-item {
   padding: 1rem;
   border-radius: 8px;
-  font-family: 'Monaco', 'Menlo', monospace;
+  font-family: "Monaco", "Menlo", monospace;
   font-size: 0.9rem;
   border-left: 4px solid;
 }
@@ -242,7 +243,7 @@
   padding: 1rem;
   border-radius: 8px;
   border-left: 4px solid #805ad5;
-  font-family: 'Monaco', 'Menlo', monospace;
+  font-family: "Monaco", "Menlo", monospace;
   font-size: 0.9rem;
 }
 
@@ -307,7 +308,7 @@
   padding: 1rem;
   border-radius: 8px;
   border-left: 4px solid #48bb78;
-  font-family: 'Monaco', 'Menlo', monospace;
+  font-family: "Monaco", "Menlo", monospace;
   font-size: 0.9rem;
 }
 
@@ -322,19 +323,19 @@
   .charts-i18n-demo {
     padding: 1rem;
   }
-  
+
   .demo-header {
     padding: 1.5rem;
   }
-  
+
   .demo-header h1 {
     font-size: 2rem;
   }
-  
+
   .demo-section {
     padding: 1.5rem;
   }
-  
+
   .translation-grid,
   .chart-types,
   .axis-labels,
@@ -344,12 +345,12 @@
   .performance-metrics {
     grid-template-columns: 1fr;
   }
-  
+
   .chart-controls {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .chart-container {
     padding: 1rem;
   }
@@ -362,12 +363,12 @@
     border-color: #2d3748;
     color: #e2e8f0;
   }
-  
+
   .demo-section h2 {
     color: #e2e8f0;
     border-bottom-color: #4a5568;
   }
-  
+
   .translation-item,
   .chart-type-item,
   .axis-item,
@@ -377,7 +378,7 @@
     background: #2d3748;
     color: #e2e8f0;
   }
-  
+
   .translation-item strong,
   .chart-type-item strong,
   .axis-item strong,
@@ -386,21 +387,21 @@
   .metric-item strong {
     color: #e2e8f0;
   }
-  
+
   .chart-controls {
     background: #2d3748;
   }
-  
+
   .chart-controls label {
     color: #e2e8f0;
   }
-  
+
   .chart-controls select {
     background: #1a202c;
     border-color: #4a5568;
     color: #e2e8f0;
   }
-  
+
   .chart-container {
     background: #2d3748;
     border-color: #4a5568;

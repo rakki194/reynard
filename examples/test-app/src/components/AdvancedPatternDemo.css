@@ -203,7 +203,7 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .demo-controls {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -215,22 +215,22 @@
   .advanced-pattern-demo {
     padding: 0.5rem;
   }
-  
+
   .demo-controls {
     grid-template-columns: 1fr;
   }
-  
+
   .demo-canvas {
     height: 400px;
   }
-  
+
   .canvas-overlay {
     position: static;
     margin: 1rem;
     background: var(--oklch-surface-secondary);
     color: var(--oklch-text);
   }
-  
+
   .pattern-descriptions {
     grid-template-columns: 1fr;
   }

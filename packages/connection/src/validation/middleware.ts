@@ -15,17 +15,29 @@ export interface ValidationMiddleware {
   /**
    * Process validation before the main validation logic
    */
-  before?: (value: unknown, schema: ValidationSchema, fieldName: string) => ValidationResult | null;
-  
+  before?: (
+    value: unknown,
+    schema: ValidationSchema,
+    fieldName: string,
+  ) => ValidationResult | null;
+
   /**
    * Process validation after the main validation logic
    */
-  after?: (result: ValidationResult, value: unknown, schema: ValidationSchema, fieldName: string) => ValidationResult;
-  
+  after?: (
+    result: ValidationResult,
+    value: unknown,
+    schema: ValidationSchema,
+    fieldName: string,
+  ) => ValidationResult;
+
   /**
    * Process multiple field validation
    */
-  multiple?: (results: Record<string, ValidationResult>, data: Record<string, unknown>) => Record<string, ValidationResult>;
+  multiple?: (
+    results: Record<string, ValidationResult>,
+    data: Record<string, unknown>,
+  ) => Record<string, ValidationResult>;
 }
 
 export interface ValidationContext {
@@ -118,7 +130,12 @@ export class ValidationMiddlewareSystem {
 
     // Validate each field
     for (const [fieldName, schema] of Object.entries(schemas)) {
-      results[fieldName] = this.validate(data[fieldName], schema, fieldName, data);
+      results[fieldName] = this.validate(
+        data[fieldName],
+        schema,
+        fieldName,
+        data,
+      );
     }
 
     // Run multiple field middleware
@@ -233,7 +250,11 @@ export function createLoggingMiddleware(
  * Middleware for custom business rules
  */
 export function createBusinessRuleMiddleware(
-  rule: (value: unknown, fieldName: string, data?: Record<string, unknown>) => ValidationResult | null,
+  rule: (
+    value: unknown,
+    fieldName: string,
+    data?: Record<string, unknown>,
+  ) => ValidationResult | null,
 ): ValidationMiddleware {
   return {
     before: (value, schema, fieldName) => {
@@ -249,38 +270,42 @@ export function createBusinessRuleMiddleware(
 /**
  * Password confirmation validation
  */
-export const passwordConfirmationMiddleware = createCrossFieldMiddleware((data) => {
-  const password = data.password;
-  const confirmPassword = data.confirmPassword;
-  
-  if (password && confirmPassword && password !== confirmPassword) {
-    return {
-      isValid: false,
-      error: "Passwords do not match",
-      field: "confirmPassword",
-    };
-  }
-  
-  return { isValid: true };
-});
+export const passwordConfirmationMiddleware = createCrossFieldMiddleware(
+  (data) => {
+    const password = data.password;
+    const confirmPassword = data.confirmPassword;
+
+    if (password && confirmPassword && password !== confirmPassword) {
+      return {
+        isValid: false,
+        error: "Passwords do not match",
+        field: "confirmPassword",
+      };
+    }
+
+    return { isValid: true };
+  },
+);
 
 /**
  * Email confirmation validation
  */
-export const emailConfirmationMiddleware = createCrossFieldMiddleware((data) => {
-  const email = data.email;
-  const confirmEmail = data.confirmEmail;
-  
-  if (email && confirmEmail && email !== confirmEmail) {
-    return {
-      isValid: false,
-      error: "Email addresses do not match",
-      field: "confirmEmail",
-    };
-  }
-  
-  return { isValid: true };
-});
+export const emailConfirmationMiddleware = createCrossFieldMiddleware(
+  (data) => {
+    const email = data.email;
+    const confirmEmail = data.confirmEmail;
+
+    if (email && confirmEmail && email !== confirmEmail) {
+      return {
+        isValid: false,
+        error: "Email addresses do not match",
+        field: "confirmEmail",
+      };
+    }
+
+    return { isValid: true };
+  },
+);
 
 /**
  * Date range validation
@@ -288,11 +313,16 @@ export const emailConfirmationMiddleware = createCrossFieldMiddleware((data) => 
 export const dateRangeMiddleware = createCrossFieldMiddleware((data) => {
   const startDate = data.startDate;
   const endDate = data.endDate;
-  
-  if (startDate && endDate && typeof startDate === "string" && typeof endDate === "string") {
+
+  if (
+    startDate &&
+    endDate &&
+    typeof startDate === "string" &&
+    typeof endDate === "string"
+  ) {
     const start = new Date(startDate);
     const end = new Date(endDate);
-    
+
     if (start >= end) {
       return {
         isValid: false,
@@ -301,7 +331,7 @@ export const dateRangeMiddleware = createCrossFieldMiddleware((data) => {
       };
     }
   }
-  
+
   return { isValid: true };
 });
 
@@ -311,15 +341,21 @@ export const dateRangeMiddleware = createCrossFieldMiddleware((data) => {
 export const numericRangeMiddleware = createCrossFieldMiddleware((data) => {
   const min = data.min;
   const max = data.max;
-  
-  if (min !== undefined && max !== undefined && typeof min === "number" && typeof max === "number" && min >= max) {
+
+  if (
+    min !== undefined &&
+    max !== undefined &&
+    typeof min === "number" &&
+    typeof max === "number" &&
+    min >= max
+  ) {
     return {
       isValid: false,
       error: "Maximum value must be greater than minimum value",
       field: "max",
     };
   }
-  
+
   return { isValid: true };
 });
 
@@ -330,42 +366,50 @@ export const numericRangeMiddleware = createCrossFieldMiddleware((data) => {
 /**
  * Trim string values
  */
-export const trimSanitization = createSanitizationMiddleware((value, fieldName) => {
-  if (typeof value === "string") {
-    return value.trim();
-  }
-  return value;
-});
+export const trimSanitization = createSanitizationMiddleware(
+  (value, fieldName) => {
+    if (typeof value === "string") {
+      return value.trim();
+    }
+    return value;
+  },
+);
 
 /**
  * Convert to lowercase
  */
-export const lowercaseSanitization = createSanitizationMiddleware((value, fieldName) => {
-  if (typeof value === "string") {
-    return value.toLowerCase();
-  }
-  return value;
-});
+export const lowercaseSanitization = createSanitizationMiddleware(
+  (value, fieldName) => {
+    if (typeof value === "string") {
+      return value.toLowerCase();
+    }
+    return value;
+  },
+);
 
 /**
  * Convert to uppercase
  */
-export const uppercaseSanitization = createSanitizationMiddleware((value, fieldName) => {
-  if (typeof value === "string") {
-    return value.toUpperCase();
-  }
-  return value;
-});
+export const uppercaseSanitization = createSanitizationMiddleware(
+  (value, fieldName) => {
+    if (typeof value === "string") {
+      return value.toUpperCase();
+    }
+    return value;
+  },
+);
 
 /**
  * Remove HTML tags
  */
-export const htmlSanitization = createSanitizationMiddleware((value, fieldName) => {
-  if (typeof value === "string") {
-    return value.replace(/<[^>]*>/g, "");
-  }
-  return value;
-});
+export const htmlSanitization = createSanitizationMiddleware(
+  (value, fieldName) => {
+    if (typeof value === "string") {
+      return value.replace(/<[^>]*>/g, "");
+    }
+    return value;
+  },
+);
 
 // ============================================================================
 // Global Middleware Instance

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import type { 
-  AABB, 
-  CollisionResult, 
-  CollisionPair, 
-  CollisionStats, 
-  AABBSpatialHashConfig 
+import type {
+  AABB,
+  CollisionResult,
+  CollisionPair,
+  CollisionStats,
+  AABBSpatialHashConfig,
 } from "../../geometry/collision/aabb-types";
 
 describe("AABB Types", () => {
@@ -14,7 +14,7 @@ describe("AABB Types", () => {
         x: 10,
         y: 20,
         width: 100,
-        height: 50
+        height: 50,
       };
 
       expect(aabb.x).toBe(10);
@@ -28,7 +28,7 @@ describe("AABB Types", () => {
         x: 0,
         y: 0,
         width: 0,
-        height: 0
+        height: 0,
       };
 
       expect(aabb.x).toBe(0);
@@ -42,7 +42,7 @@ describe("AABB Types", () => {
         x: -10,
         y: -20,
         width: 100,
-        height: 50
+        height: 50,
       };
 
       expect(aabb.x).toBe(-10);
@@ -56,7 +56,7 @@ describe("AABB Types", () => {
         x: 10.5,
         y: 20.7,
         width: 100.3,
-        height: 50.9
+        height: 50.9,
       };
 
       expect(aabb.x).toBe(10.5);
@@ -72,7 +72,7 @@ describe("AABB Types", () => {
         colliding: true,
         overlap: { x: 10, y: 10, width: 20, height: 20 },
         overlapArea: 400,
-        distance: 0
+        distance: 0,
       };
 
       expect(result.colliding).toBe(true);
@@ -86,7 +86,7 @@ describe("AABB Types", () => {
         colliding: false,
         overlap: null,
         overlapArea: 0,
-        distance: 15.5
+        distance: 15.5,
       };
 
       expect(result.colliding).toBe(false);
@@ -100,7 +100,7 @@ describe("AABB Types", () => {
         colliding: true,
         overlap: { x: 0, y: 0, width: 0, height: 0 },
         overlapArea: 0,
-        distance: Number.MAX_SAFE_INTEGER
+        distance: Number.MAX_SAFE_INTEGER,
       };
 
       expect(result.colliding).toBe(true);
@@ -119,8 +119,8 @@ describe("AABB Types", () => {
           colliding: true,
           overlap: { x: 10, y: 10, width: 20, height: 20 },
           overlapArea: 400,
-          distance: 0
-        }
+          distance: 0,
+        },
       };
 
       expect(pair.a).toBe(0);
@@ -137,8 +137,8 @@ describe("AABB Types", () => {
           colliding: false,
           overlap: null,
           overlapArea: 0,
-          distance: 50
-        }
+          distance: 50,
+        },
       };
 
       expect(pair.a).toBe(999);
@@ -154,7 +154,7 @@ describe("AABB Types", () => {
         collisionsFound: 150,
         averageCheckTime: 0.5,
         spatialHashHits: 800,
-        spatialHashMisses: 200
+        spatialHashMisses: 200,
       };
 
       expect(stats.totalChecks).toBe(1000);
@@ -170,7 +170,7 @@ describe("AABB Types", () => {
         collisionsFound: 0,
         averageCheckTime: 0,
         spatialHashHits: 0,
-        spatialHashMisses: 0
+        spatialHashMisses: 0,
       };
 
       expect(stats.totalChecks).toBe(0);
@@ -186,7 +186,7 @@ describe("AABB Types", () => {
         collisionsFound: 150,
         averageCheckTime: 0.123456789,
         spatialHashHits: 800,
-        spatialHashMisses: 200
+        spatialHashMisses: 200,
       };
 
       expect(stats.averageCheckTime).toBe(0.123456789);
@@ -198,7 +198,7 @@ describe("AABB Types", () => {
       const config: AABBSpatialHashConfig = {
         cellSize: 64,
         maxObjectsPerCell: 10,
-        enableOptimization: true
+        enableOptimization: true,
       };
 
       expect(config.cellSize).toBe(64);
@@ -210,7 +210,7 @@ describe("AABB Types", () => {
       const config: AABBSpatialHashConfig = {
         cellSize: 32,
         maxObjectsPerCell: 5,
-        enableOptimization: false
+        enableOptimization: false,
       };
 
       expect(config.enableOptimization).toBe(false);
@@ -222,7 +222,7 @@ describe("AABB Types", () => {
       const config: AABBSpatialHashConfig = {
         cellSize: 1,
         maxObjectsPerCell: 1,
-        enableOptimization: true
+        enableOptimization: true,
       };
 
       expect(config.cellSize).toBe(1);
@@ -237,7 +237,7 @@ describe("AABB Types", () => {
         colliding: true,
         overlap: aabb,
         overlapArea: 400,
-        distance: 0
+        distance: 0,
       };
 
       expect(result.overlap).toBe(aabb);
@@ -248,13 +248,13 @@ describe("AABB Types", () => {
         colliding: true,
         overlap: { x: 10, y: 10, width: 20, height: 20 },
         overlapArea: 400,
-        distance: 0
+        distance: 0,
       };
 
       const pair: CollisionPair = {
         a: 0,
         b: 1,
-        result: collisionResult
+        result: collisionResult,
       };
 
       expect(pair.result).toBe(collisionResult);

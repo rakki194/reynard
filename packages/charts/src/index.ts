@@ -6,7 +6,12 @@
 // Export core components only for now
 export { Chart } from "./components/Chart";
 export { ChartRenderer } from "./components/ChartRenderer";
-export { LoadingOverlay, EmptyState, PerformanceOverlay, getTestId } from "./components/ChartComponents";
+export {
+  LoadingOverlay,
+  EmptyState,
+  PerformanceOverlay,
+  getTestId,
+} from "./components/ChartComponents";
 
 // Export additional components that are being imported
 export { RealTimeChart } from "./components/RealTimeChart";

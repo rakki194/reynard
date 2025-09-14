@@ -90,11 +90,11 @@ The system validates:
 
 ## 🔧 Available Scripts
 
-| Script | Description |
-|--------|-------------|
+| Script                       | Description                          |
+| ---------------------------- | ------------------------------------ |
 | `pnpm run workflow:validate` | Full validation with detailed report |
-| `pnpm run workflow:lint` | Quick lint check |
-| `pnpm run workflow:check` | Alias for validate |
+| `pnpm run workflow:lint`     | Quick lint check                     |
+| `pnpm run workflow:check`    | Alias for validate                   |
 
 ## 🐛 Troubleshooting
 

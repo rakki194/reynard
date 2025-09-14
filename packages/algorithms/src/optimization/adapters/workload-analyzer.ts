@@ -146,7 +146,8 @@ export function getAlgorithmRecommendation(
     return {
       preferredAlgorithm: "optimized",
       confidence: 0.75,
-      reasoning: "High overlap ratio benefits from optimized collision detection",
+      reasoning:
+        "High overlap ratio benefits from optimized collision detection",
     };
   }
 

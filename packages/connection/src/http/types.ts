@@ -60,22 +60,28 @@ export interface HTTPMiddleware {
   /**
    * Process request before sending
    */
-  request?: (config: HTTPRequestOptions) => HTTPRequestOptions | Promise<HTTPRequestOptions>;
-  
+  request?: (
+    config: HTTPRequestOptions,
+  ) => HTTPRequestOptions | Promise<HTTPRequestOptions>;
+
   /**
    * Process response after receiving
    */
   response?: (response: HTTPResponse) => HTTPResponse | Promise<HTTPResponse>;
-  
+
   /**
    * Process errors
    */
   error?: (error: HTTPError) => HTTPError | Promise<HTTPError>;
-  
+
   /**
    * Process request completion (success or error)
    */
-  complete?: (config: HTTPRequestOptions, response?: HTTPResponse, error?: HTTPError) => void | Promise<void>;
+  complete?: (
+    config: HTTPRequestOptions,
+    response?: HTTPResponse,
+    error?: HTTPError,
+  ) => void | Promise<void>;
 }
 
 export interface HTTPMiddlewareContext {
@@ -152,7 +158,9 @@ export interface RequestMetrics {
 // ============================================================================
 
 export interface HTTPInterceptor {
-  request?: (config: HTTPRequestOptions) => HTTPRequestOptions | Promise<HTTPRequestOptions>;
+  request?: (
+    config: HTTPRequestOptions,
+  ) => HTTPRequestOptions | Promise<HTTPRequestOptions>;
   response?: (response: HTTPResponse) => HTTPResponse | Promise<HTTPResponse>;
   error?: (error: HTTPError) => HTTPError | Promise<HTTPError>;
 }
@@ -187,7 +195,7 @@ export const HTTP_PRESETS: Record<string, HTTPPreset> = {
     },
     middleware: [],
   },
-  
+
   api: {
     name: "api",
     config: {
@@ -198,12 +206,12 @@ export const HTTP_PRESETS: Record<string, HTTPPreset> = {
       enableMetrics: true,
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
     },
     middleware: [],
   },
-  
+
   upload: {
     name: "upload",
     config: {
@@ -215,7 +223,7 @@ export const HTTP_PRESETS: Record<string, HTTPPreset> = {
     },
     middleware: [],
   },
-  
+
   download: {
     name: "download",
     config: {

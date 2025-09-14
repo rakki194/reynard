@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { registerChartComponents, isChartRegistered, defaultChartProps, chartPropsToSplit } from "../utils/chartConfig";
+import {
+  registerChartComponents,
+  isChartRegistered,
+  defaultChartProps,
+  chartPropsToSplit,
+} from "../utils/chartConfig";
 import { Chart } from "chart.js";
 
 // Mock Chart.js
@@ -48,7 +53,7 @@ describe("Chart Configuration", () => {
         "Legend",
         "Filler",
         "registerable1",
-        "registerable2"
+        "registerable2",
       );
     });
 

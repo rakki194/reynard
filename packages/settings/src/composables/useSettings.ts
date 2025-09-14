@@ -15,11 +15,7 @@ import type {
 } from "../types";
 import { DEFAULT_SETTINGS_CONFIG } from "../types";
 import { StorageManager } from "../storage";
-import {
-  validateSetting,
-  validateSettings,
-  migrateSettings,
-} from "../utils";
+import { validateSetting, validateSettings, migrateSettings } from "../utils";
 
 export interface UseSettingsOptions extends Partial<SettingsManagerOptions> {
   /** Initial settings values */

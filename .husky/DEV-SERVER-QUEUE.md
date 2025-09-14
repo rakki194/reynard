@@ -197,4 +197,4 @@ pnpm run dev  # Starts on port 3001
 # Auto-reload handles code changes automatically
 ```
 
-🦊 *The fox has outfoxed development server conflicts!*
+🦊 _The fox has outfoxed development server conflicts!_

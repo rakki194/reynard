@@ -8,7 +8,7 @@
 
 import type { ValidationRules, PasswordStrength } from "../types";
 import { DEFAULT_VALIDATION_RULES } from "../types";
-import { 
+import {
   validateEmail as validateEmailCore,
   validateUsername as validateUsernameCore,
   validatePassword as validatePasswordCore,
@@ -40,7 +40,7 @@ export function validatePassword(
 ): PasswordStrength {
   // Use consolidated validation for basic password validation
   const basicResult = validatePasswordCore(password);
-  
+
   const errors: string[] = [];
   let score = 0;
 

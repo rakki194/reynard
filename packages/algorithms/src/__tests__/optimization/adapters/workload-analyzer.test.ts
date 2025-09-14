@@ -180,7 +180,7 @@ describe("WorkloadAnalyzer", () => {
       ];
 
       const characteristics = analyzeWorkload(aabbs);
-      
+
       expect(characteristics.objectCount).toBe(3);
       expect(characteristics.spatialDensity).toBeGreaterThan(0);
       expect(characteristics.overlapRatio).toBeGreaterThan(0);
@@ -190,7 +190,7 @@ describe("WorkloadAnalyzer", () => {
 
     it("should handle empty workload", () => {
       const characteristics = analyzeWorkload([]);
-      
+
       expect(characteristics.objectCount).toBe(0);
       expect(characteristics.spatialDensity).toBe(0);
       expect(characteristics.overlapRatio).toBe(0);
@@ -201,7 +201,7 @@ describe("WorkloadAnalyzer", () => {
     it("should handle single object workload", () => {
       const aabbs: AABB[] = [{ x: 0, y: 0, width: 10, height: 10 }];
       const characteristics = analyzeWorkload(aabbs);
-      
+
       expect(characteristics.objectCount).toBe(1);
       expect(characteristics.spatialDensity).toBeGreaterThanOrEqual(0);
       expect(characteristics.overlapRatio).toBe(0);

@@ -3,8 +3,8 @@
  * Unified animation loop system from 3D package
  */
 
-import type { EasingType } from '../types';
-import { applyEasing } from '../easing/easing';
+import type { EasingType } from "../types";
+import { applyEasing } from "../easing/easing";
 
 export interface AnimationState {
   isAnimating: boolean;
@@ -86,7 +86,7 @@ export function createSimpleAnimationLoop(
 ): Promise<void> {
   return new Promise<void>((resolve) => {
     const startTime = performance.now();
-    
+
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
@@ -118,27 +118,27 @@ export function createRepeatingAnimationLoop(
 ): () => void {
   let cycleCount = 0;
   let isRunning = true;
-  
+
   const runCycle = () => {
     if (!isRunning) return;
-    
+
     createSimpleAnimationLoop(duration, easing, onUpdate, () => {
       cycleCount++;
       onCycleComplete?.();
-      
+
       if (maxCycles && cycleCount >= maxCycles) {
         isRunning = false;
         return;
       }
-      
+
       if (isRunning) {
         runCycle();
       }
     });
   };
-  
+
   runCycle();
-  
+
   // Return stop function
   return () => {
     isRunning = false;
@@ -157,14 +157,14 @@ export function createPingPongAnimationLoop(
   return new Promise<void>((resolve) => {
     let isForward = true;
     let cycleCount = 0;
-    
+
     const runCycle = () => {
       const startTime = performance.now();
-      
+
       const animate = (currentTime: number) => {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         let easedProgress: number;
         if (isForward) {
           easedProgress = applyEasing(progress, easing);
@@ -172,9 +172,9 @@ export function createPingPongAnimationLoop(
           // Reverse the easing for backward motion
           easedProgress = applyEasing(1 - progress, easing);
         }
-        
+
         onUpdate(easedProgress);
-        
+
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
@@ -187,10 +187,10 @@ export function createPingPongAnimationLoop(
           }
         }
       };
-      
+
       requestAnimationFrame(animate);
     };
-    
+
     runCycle();
   });
 }

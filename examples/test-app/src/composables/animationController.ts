@@ -9,13 +9,17 @@ import type { Point } from "./types";
 
 export const generatePattern = (
   engines: EngineInstances,
-  config: EngineConfig
+  config: EngineConfig,
 ): Point[] => {
-  console.log("🦊 AnimationController: Generating pattern", config.mode, config.patternType);
+  console.log(
+    "🦊 AnimationController: Generating pattern",
+    config.mode,
+    config.patternType,
+  );
 
   let points: Point[];
 
-  if (config.mode === '3d') {
+  if (config.mode === "3d") {
     points = engines.phyllotactic3D.generate3DSpiral();
   } else {
     points = engines.patternGenerator.generatePattern();
@@ -26,7 +30,7 @@ export const generatePattern = (
 
 export const startAnimation = (
   engines: EngineInstances,
-  onUpdate: (deltaTime: number) => void
+  onUpdate: (deltaTime: number) => void,
 ): void => {
   engines.animationCore.start({
     onUpdate,

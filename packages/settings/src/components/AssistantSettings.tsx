@@ -46,8 +46,7 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
     try {
       setEnabled(settings.getSetting("assistant.enabled") || false);
       setOllamaUrl(
-        settings.getSetting("assistant.ollama_url") ||
-          "http://localhost:11434",
+        settings.getSetting("assistant.ollama_url") || "http://localhost:11434",
       );
       setDefaultModel(
         settings.getSetting("assistant.default_model") || "llama3.2",
@@ -61,12 +60,8 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
       setTimeoutSeconds(
         settings.getSetting("assistant.timeout_seconds") || 120,
       );
-      setEnableContext(
-        settings.getSetting("assistant.enable_context") || true,
-      );
-      setContextWindow(
-        settings.getSetting("assistant.context_window") || 4096,
-      );
+      setEnableContext(settings.getSetting("assistant.enable_context") || true);
+      setContextWindow(settings.getSetting("assistant.context_window") || 4096);
       setEnableMemory(settings.getSetting("assistant.enable_memory") || true);
       setMemorySize(settings.getSetting("assistant.memory_size") || 100);
     } catch (error) {
@@ -89,10 +84,7 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
       await settings.setSetting("assistant.max_tokens", maxTokens());
       await settings.setSetting("assistant.temperature", temperature());
       await settings.setSetting("assistant.top_p", topP());
-      await settings.setSetting(
-        "assistant.timeout_seconds",
-        timeoutSeconds(),
-      );
+      await settings.setSetting("assistant.timeout_seconds", timeoutSeconds());
       await settings.setSetting("assistant.enable_context", enableContext());
       await settings.setSetting("assistant.context_window", contextWindow());
       await settings.setSetting("assistant.enable_memory", enableMemory());
@@ -214,7 +206,6 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 value={maxTokens()}
                 onChange={(e) => setMaxTokens(parseInt(e.target.value) || 2048)}
                 helperText="Maximum number of tokens to generate in a response"
-               
                 disabled={!enabled()}
               />
             </div>
@@ -225,9 +216,10 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 type="number"
                 step="0.1"
                 value={temperature()}
-                onChange={(e) => setTemperature(parseFloat(e.target.value) || 0.7)}
+                onChange={(e) =>
+                  setTemperature(parseFloat(e.target.value) || 0.7)
+                }
                 helperText="Controls randomness in responses (0.0 = deterministic, 1.0 = very random)"
-               
                 disabled={!enabled()}
               />
             </div>
@@ -240,7 +232,6 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 value={topP()}
                 onChange={(e) => setTopP(parseFloat(e.target.value) || 0.9)}
                 helperText="Nucleus sampling parameter (0.0 = very focused, 1.0 = very diverse)"
-               
                 disabled={!enabled()}
               />
             </div>
@@ -273,7 +264,6 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                     setContextWindow(parseInt(value) || 4096)
                   }
                   helperText="Maximum number of tokens to keep in conversation context"
-                 
                   disabled={!enabled()}
                 />
               </div>
@@ -295,9 +285,10 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                   label="Memory Size"
                   type="number"
                   value={memorySize()}
-                  onChange={(e) => setMemorySize(parseInt(e.target.value) || 100)}
+                  onChange={(e) =>
+                    setMemorySize(parseInt(e.target.value) || 100)
+                  }
                   helperText="Maximum number of conversation memories to retain"
-                 
                   disabled={!enabled()}
                 />
               </div>
@@ -316,9 +307,10 @@ export const AssistantSettings: Component<AssistantSettingsProps> = (props) => {
                 label="Request Timeout (seconds)"
                 type="number"
                 value={timeoutSeconds()}
-                onChange={(e) => setTimeoutSeconds(parseInt(e.target.value) || 120)}
+                onChange={(e) =>
+                  setTimeoutSeconds(parseInt(e.target.value) || 120)
+                }
                 helperText="Maximum time to wait for a response from the assistant"
-               
                 disabled={!enabled()}
               />
             </div>

@@ -90,7 +90,9 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
               <h4>Export Format</h4>
               <Select
                 value={state().exportOptions.format}
-                onChange={(e) => updateExportOptions({ format: e.target.value })}
+                onChange={(e) =>
+                  updateExportOptions({ format: e.target.value })
+                }
                 options={exportFormats.map((f) => ({
                   value: f.value,
                   label: f.label,
@@ -106,7 +108,9 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
                   {(metric) => (
                     <label class="reynard-metric-option">
                       <Toggle
-                        checked={state().exportOptions.includeMetrics.includes(metric)}
+                        checked={state().exportOptions.includeMetrics.includes(
+                          metric,
+                        )}
                         onChange={(checked) => {
                           const metrics = state().exportOptions.includeMetrics;
                           const newMetrics = checked

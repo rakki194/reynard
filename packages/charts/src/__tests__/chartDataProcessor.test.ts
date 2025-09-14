@@ -1,5 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
-import { processDatasets, createChartData, updateChartDataIncremental, DataProcessorConfig, ColorGenerator } from "../utils/chartDataProcessor";
+import {
+  processDatasets,
+  createChartData,
+  updateChartDataIncremental,
+  DataProcessorConfig,
+  ColorGenerator,
+} from "../utils/chartDataProcessor";
 import type { Dataset } from "../types";
 
 describe("Chart Data Processor", () => {
@@ -23,11 +29,13 @@ describe("Chart Data Processor", () => {
   const mockLabels = ["Label 1", "Label 2", "Label 3"];
 
   const mockColorGenerator: ColorGenerator = {
-    generateColors: vi.fn().mockReturnValue([
-      "rgba(54, 162, 235, 1)",
-      "rgba(255, 99, 132, 1)",
-      "rgba(75, 192, 192, 1)",
-    ]),
+    generateColors: vi
+      .fn()
+      .mockReturnValue([
+        "rgba(54, 162, 235, 1)",
+        "rgba(255, 99, 132, 1)",
+        "rgba(75, 192, 192, 1)",
+      ]),
   };
 
   describe("processDatasets", () => {

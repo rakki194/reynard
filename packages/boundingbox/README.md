@@ -81,7 +81,7 @@ function MyApp() {
 
 The main component for bounding box editing.
 
-> *Props:*
+> _Props:_
 
 | Prop              | Type                      | Default | Description                                          |
 | ----------------- | ------------------------- | ------- | ---------------------------------------------------- |

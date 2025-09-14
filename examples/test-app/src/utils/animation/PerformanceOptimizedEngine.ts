@@ -117,7 +117,7 @@ export class PerformanceOptimizedEngine {
         description: "Minimal Quality",
       },
     ];
-    
+
     return this.qualityLevels;
   }
 
@@ -128,22 +128,24 @@ export class PerformanceOptimizedEngine {
     frameTime: number,
     renderTime: number,
     updateTime: number,
-    pointCount: number
+    pointCount: number,
   ): void {
     const currentTime = performance.now();
     const deltaTime = currentTime - this.lastUpdateTime;
-    
+
     if (deltaTime > 0) {
       const currentFPS = 1000 / deltaTime;
       this.frameHistory.push(currentFPS);
-      
+
       // Keep only last 60 frames
       if (this.frameHistory.length > 60) {
         this.frameHistory.shift();
       }
-      
-      const averageFPS = this.frameHistory.reduce((sum, fps) => sum + fps, 0) / this.frameHistory.length;
-      
+
+      const averageFPS =
+        this.frameHistory.reduce((sum, fps) => sum + fps, 0) /
+        this.frameHistory.length;
+
       this.metrics = {
         currentFPS,
         averageFPS,
@@ -155,18 +157,18 @@ export class PerformanceOptimizedEngine {
         qualityLevel: this.currentQualityLevel,
         isThrottled: this.isThrottled,
       };
-      
+
       this.performanceHistory.push({ ...this.metrics });
       if (this.performanceHistory.length > 100) {
         this.performanceHistory.shift();
       }
-      
+
       // Adaptive quality adjustment
       if (this.config.enableAdaptiveQuality) {
         this.adjustQualityLevel();
       }
     }
-    
+
     this.lastUpdateTime = currentTime;
   }
 
@@ -177,18 +179,25 @@ export class PerformanceOptimizedEngine {
     const targetFPS = this.config.targetFPS;
     const currentFPS = this.metrics.averageFPS;
     const fpsRatio = currentFPS / targetFPS;
-    
+
     // If performance is poor, reduce quality
-    if (fpsRatio < 0.8 && this.currentQualityLevel < this.qualityLevels.length - 1) {
+    if (
+      fpsRatio < 0.8 &&
+      this.currentQualityLevel < this.qualityLevels.length - 1
+    ) {
       this.currentQualityLevel++;
       this.isThrottled = true;
-      console.log(`🦊 PerformanceOptimizedEngine: Reducing quality to level ${this.currentQualityLevel}`);
+      console.log(
+        `🦊 PerformanceOptimizedEngine: Reducing quality to level ${this.currentQualityLevel}`,
+      );
     }
     // If performance is good, increase quality
     else if (fpsRatio > 1.2 && this.currentQualityLevel > 0) {
       this.currentQualityLevel--;
       this.isThrottled = false;
-      console.log(`🦊 PerformanceOptimizedEngine: Increasing quality to level ${this.currentQualityLevel}`);
+      console.log(
+        `🦊 PerformanceOptimizedEngine: Increasing quality to level ${this.currentQualityLevel}`,
+      );
     }
   }
 
@@ -207,31 +216,32 @@ export class PerformanceOptimizedEngine {
    */
   applySpatialCulling(
     points: Array<{ x: number; y: number; z?: number }>,
-    viewport: { x: number; y: number; width: number; height: number }
+    viewport: { x: number; y: number; width: number; height: number },
   ): Array<{ x: number; y: number; z?: number }> {
     if (!this.config.enableSpatialCulling) return points;
-    
+
     const qualityLevel = this.qualityLevels[this.currentQualityLevel];
     const maxPoints = qualityLevel.pointCount;
-    
+
     if (points.length <= maxPoints) return points;
-    
+
     // Simple distance-based culling
     const centerX = viewport.x + viewport.width / 2;
     const centerY = viewport.y + viewport.height / 2;
-    
-    const pointsWithDistance = points.map(point => ({
+
+    const pointsWithDistance = points.map((point) => ({
       ...point,
       distance: Math.sqrt(
-        Math.pow(point.x - centerX, 2) + 
-        Math.pow(point.y - centerY, 2)
+        Math.pow(point.x - centerX, 2) + Math.pow(point.y - centerY, 2),
       ),
     }));
-    
+
     // Sort by distance and take closest points
     pointsWithDistance.sort((a, b) => a.distance - b.distance);
-    
-    return pointsWithDistance.slice(0, maxPoints).map(({ distance, ...point }) => point);
+
+    return pointsWithDistance
+      .slice(0, maxPoints)
+      .map(({ distance, ...point }) => point);
   }
 
   /**
@@ -239,14 +249,14 @@ export class PerformanceOptimizedEngine {
    */
   applyLOD(
     points: Array<{ x: number; y: number; z?: number; size?: number }>,
-    _cameraDistance: number = 1
+    _cameraDistance: number = 1,
   ): Array<{ x: number; y: number; z?: number; size?: number }> {
     if (!this.config.enableLOD) return points;
-    
+
     const qualityLevel = this.qualityLevels[this.currentQualityLevel];
     const lodFactor = qualityLevel.renderQuality;
-    
-    return points.map(point => ({
+
+    return points.map((point) => ({
       ...point,
       size: (point.size || 1) * lodFactor,
     }));
@@ -257,10 +267,10 @@ export class PerformanceOptimizedEngine {
    */
   shouldSkipUpdate(): boolean {
     if (!this.isThrottled) return false;
-    
+
     const qualityLevel = this.qualityLevels[this.currentQualityLevel];
     this.updateCounter++;
-    
+
     return this.updateCounter % qualityLevel.updateFrequency !== 0;
   }
 
@@ -292,7 +302,9 @@ export class PerformanceOptimizedEngine {
     if (level >= 0 && level < this.qualityLevels.length) {
       this.currentQualityLevel = level;
       this.isThrottled = level > 0;
-      console.log(`🦊 PerformanceOptimizedEngine: Quality level set to ${level}`);
+      console.log(
+        `🦊 PerformanceOptimizedEngine: Quality level set to ${level}`,
+      );
     }
   }
 

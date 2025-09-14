@@ -46,12 +46,20 @@ function convertItalicToBlockquote(filePath, fix = false) {
       const trimmedLine = line.trim();
 
       // Check if line starts with * and contains italic text (but not bold text)
-      if (trimmedLine.startsWith("*") && trimmedLine.endsWith("*") && trimmedLine.length > 2) {
+      if (
+        trimmedLine.startsWith("*") &&
+        trimmedLine.endsWith("*") &&
+        trimmedLine.length > 2
+      ) {
         // Extract the text between the asterisks
         const italicText = trimmedLine.slice(1, -1);
-        
+
         // Skip if it's already a blockquote, if it's just a single asterisk, or if it's bold text
-        if (!italicText.startsWith(">") && italicText.length > 0 && !italicText.startsWith("*")) {
+        if (
+          !italicText.startsWith(">") &&
+          italicText.length > 0 &&
+          !italicText.startsWith("*")
+        ) {
           if (fix) {
             // Convert to blockquote, preserving indentation
             const indentation = line.match(/^\s*/)[0];
@@ -59,11 +67,17 @@ function convertItalicToBlockquote(filePath, fix = false) {
             newLines.push(newLine);
             modified = true;
             changesCount++;
-            printColored(`  🔄 Line ${i + 1}: "*${italicText}*" → "> ${italicText}"`, Colors.YELLOW);
+            printColored(
+              `  🔄 Line ${i + 1}: "*${italicText}*" → "> ${italicText}"`,
+              Colors.YELLOW,
+            );
           } else {
             // Just report the issue
             newLines.push(line);
-            printColored(`  ⚠️  Line ${i + 1}: "*${italicText}*" should be "> ${italicText}"`, Colors.YELLOW);
+            printColored(
+              `  ⚠️  Line ${i + 1}: "*${italicText}*" should be "> ${italicText}"`,
+              Colors.YELLOW,
+            );
             modified = true;
             changesCount++;
           }
@@ -78,7 +92,10 @@ function convertItalicToBlockquote(filePath, fix = false) {
     if (fix && modified) {
       const newContent = newLines.join("\n");
       fs.writeFileSync(filePath, newContent, "utf8");
-      printColored(`  ✅ Fixed ${changesCount} italic-to-blockquote conversion(s)`, Colors.GREEN);
+      printColored(
+        `  ✅ Fixed ${changesCount} italic-to-blockquote conversion(s)`,
+        Colors.GREEN,
+      );
     }
 
     return {
@@ -88,7 +105,10 @@ function convertItalicToBlockquote(filePath, fix = false) {
       needsFix: modified && !fix,
     };
   } catch (error) {
-    printColored(`  ❌ Error processing ${filePath}: ${error.message}`, Colors.RED);
+    printColored(
+      `  ❌ Error processing ${filePath}: ${error.message}`,
+      Colors.RED,
+    );
     return {
       success: false,
       modified: false,
@@ -105,7 +125,9 @@ function convertItalicToBlockquote(filePath, fix = false) {
  */
 function getStagedMarkdownFiles() {
   try {
-    const output = execSync("git diff --cached --name-only --diff-filter=ACM", { encoding: "utf8" });
+    const output = execSync("git diff --cached --name-only --diff-filter=ACM", {
+      encoding: "utf8",
+    });
     return output
       .split("\n")
       .filter((file) => file.trim() && file.endsWith(".md"))
@@ -122,13 +144,19 @@ function getStagedMarkdownFiles() {
  */
 function getAllMarkdownFiles() {
   try {
-    const output = execSync("find . -name '*.md' -not -path './node_modules/*' -not -path './third_party/*' -not -path './backend/venv/*'", { encoding: "utf8" });
+    const output = execSync(
+      "find . -name '*.md' -not -path './node_modules/*' -not -path './third_party/*' -not -path './backend/venv/*'",
+      { encoding: "utf8" },
+    );
     return output
       .split("\n")
       .filter((file) => file.trim())
       .map((file) => file.trim());
   } catch (error) {
-    printColored(`Error getting all markdown files: ${error.message}`, Colors.RED);
+    printColored(
+      `Error getting all markdown files: ${error.message}`,
+      Colors.RED,
+    );
     return [];
   }
 }
@@ -140,8 +168,13 @@ function getAllMarkdownFiles() {
  * @param {boolean} fix - Whether to apply fixes
  * @returns {boolean} True if all validations pass
  */
-function validateItalicToBlockquote(files = null, allFiles = false, fix = false) {
-  const filesToCheck = files || (allFiles ? getAllMarkdownFiles() : getStagedMarkdownFiles());
+function validateItalicToBlockquote(
+  files = null,
+  allFiles = false,
+  fix = false,
+) {
+  const filesToCheck =
+    files || (allFiles ? getAllMarkdownFiles() : getStagedMarkdownFiles());
 
   if (filesToCheck.length === 0) {
     if (allFiles) {
@@ -181,7 +214,10 @@ function validateItalicToBlockquote(files = null, allFiles = false, fix = false)
     }
 
     if (result.success && !result.modified) {
-      printColored(`  ✅ No italic-to-blockquote conversions needed`, Colors.GREEN);
+      printColored(
+        `  ✅ No italic-to-blockquote conversions needed`,
+        Colors.GREEN,
+      );
     }
     printColored("", Colors.NC);
   }
@@ -189,14 +225,26 @@ function validateItalicToBlockquote(files = null, allFiles = false, fix = false)
   // Summary
   if (fix) {
     if (totalChanges > 0) {
-      printColored(`🦊 Successfully converted ${totalChanges} italic text(s) to blockquotes!`, Colors.GREEN);
+      printColored(
+        `🦊 Successfully converted ${totalChanges} italic text(s) to blockquotes!`,
+        Colors.GREEN,
+      );
     } else {
-      printColored(`🦊 No italic-to-blockquote conversions needed.`, Colors.GREEN);
+      printColored(
+        `🦊 No italic-to-blockquote conversions needed.`,
+        Colors.GREEN,
+      );
     }
   } else {
     if (totalChanges > 0) {
-      printColored(`🦊 Found ${totalChanges} italic text(s) that should be converted to blockquotes.`, Colors.YELLOW);
-      printColored(`   Run with --fix to automatically convert them.`, Colors.YELLOW);
+      printColored(
+        `🦊 Found ${totalChanges} italic text(s) that should be converted to blockquotes.`,
+        Colors.YELLOW,
+      );
+      printColored(
+        `   Run with --fix to automatically convert them.`,
+        Colors.YELLOW,
+      );
     } else {
       printColored(`🦊 All italic text formatting is correct!`, Colors.GREEN);
     }
@@ -213,22 +261,40 @@ function main() {
   const help = args.includes("--help") || args.includes("-h");
 
   if (help) {
-    printColored("🦊 Italic to Blockquote Converter for Reynard Framework", Colors.PURPLE);
+    printColored(
+      "🦊 Italic to Blockquote Converter for Reynard Framework",
+      Colors.PURPLE,
+    );
     printColored("", Colors.NC);
     printColored("Usage:", Colors.WHITE);
-    printColored("  node .husky/validate-italic-to-blockquote.js [options]", Colors.CYAN);
+    printColored(
+      "  node .husky/validate-italic-to-blockquote.js [options]",
+      Colors.CYAN,
+    );
     printColored("", Colors.NC);
     printColored("Options:", Colors.WHITE);
     printColored("  --fix     Apply fixes automatically", Colors.CYAN);
-    printColored("  --all     Process all markdown files (default: staged files only)", Colors.CYAN);
+    printColored(
+      "  --all     Process all markdown files (default: staged files only)",
+      Colors.CYAN,
+    );
     printColored("  --help    Show this help message", Colors.CYAN);
     printColored("", Colors.NC);
     printColored("Examples:", Colors.WHITE);
     printColored("  node .husky/validate-italic-to-blockquote.js", Colors.CYAN);
-    printColored("  node .husky/validate-italic-to-blockquote.js --fix", Colors.CYAN);
-    printColored("  node .husky/validate-italic-to-blockquote.js --fix --all", Colors.CYAN);
+    printColored(
+      "  node .husky/validate-italic-to-blockquote.js --fix",
+      Colors.CYAN,
+    );
+    printColored(
+      "  node .husky/validate-italic-to-blockquote.js --fix --all",
+      Colors.CYAN,
+    );
     printColored("", Colors.NC);
-    printColored("🦊 This script converts italic text (*text*) to blockquotes (>text) in markdown files.", Colors.PURPLE);
+    printColored(
+      "🦊 This script converts italic text (*text*) to blockquotes (>text) in markdown files.",
+      Colors.PURPLE,
+    );
     return;
   }
 

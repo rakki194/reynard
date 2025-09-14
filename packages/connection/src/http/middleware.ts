@@ -17,11 +17,7 @@ import {
 } from "./types";
 
 // Re-export types that are used in this module
-export type {
-  HTTPMiddleware,
-  AuthConfig,
-  TokenRefreshConfig,
-} from "./types";
+export type { HTTPMiddleware, AuthConfig, TokenRefreshConfig } from "./types";
 
 // ============================================================================
 // Authentication Middleware
@@ -41,21 +37,23 @@ export function createAuthMiddleware(authConfig: AuthConfig): HTTPMiddleware {
             headers.Authorization = `Bearer ${authConfig.token}`;
           }
           break;
-        
+
         case "basic":
           if (authConfig.username && authConfig.password) {
-            const credentials = btoa(`${authConfig.username}:${authConfig.password}`);
+            const credentials = btoa(
+              `${authConfig.username}:${authConfig.password}`,
+            );
             headers.Authorization = `Basic ${credentials}`;
           }
           break;
-        
+
         case "api-key":
           if (authConfig.apiKey) {
             const headerName = authConfig.apiKeyHeader || "X-API-Key";
             headers[headerName] = authConfig.apiKey;
           }
           break;
-        
+
         case "custom":
           if (authConfig.customHeaders) {
             Object.assign(headers, authConfig.customHeaders);
@@ -71,7 +69,9 @@ export function createAuthMiddleware(authConfig: AuthConfig): HTTPMiddleware {
 /**
  * Create token refresh middleware
  */
-export function createTokenRefreshMiddleware(refreshConfig: TokenRefreshConfig): HTTPMiddleware {
+export function createTokenRefreshMiddleware(
+  refreshConfig: TokenRefreshConfig,
+): HTTPMiddleware {
   let isRefreshing = false;
   let refreshPromise: Promise<string> | null = null;
 
@@ -102,11 +102,11 @@ export function createTokenRefreshMiddleware(refreshConfig: TokenRefreshConfig):
       if (error.status === 401 && !isRefreshing) {
         isRefreshing = true;
         refreshPromise = refreshToken(refreshConfig);
-        
+
         try {
           const newToken = await refreshPromise;
           refreshConfig.onTokenRefresh(newToken);
-          
+
           // Retry the original request with new token
           // This would need to be handled by the client
           return error;
@@ -156,7 +156,9 @@ export interface LoggingConfig {
 /**
  * Create logging middleware
  */
-export function createLoggingMiddleware(config: LoggingConfig = {}): HTTPMiddleware {
+export function createLoggingMiddleware(
+  config: LoggingConfig = {},
+): HTTPMiddleware {
   const {
     logRequests = true,
     logResponses = true,
@@ -213,7 +215,9 @@ export function createLoggingMiddleware(config: LoggingConfig = {}): HTTPMiddlew
 /**
  * Create retry middleware with custom retry logic
  */
-export function createRetryMiddleware(retryConfig: RetryConfig): HTTPMiddleware {
+export function createRetryMiddleware(
+  retryConfig: RetryConfig,
+): HTTPMiddleware {
   return {
     error: (error) => {
       // This middleware would work with the client's retry logic
@@ -230,7 +234,9 @@ export function createRetryMiddleware(retryConfig: RetryConfig): HTTPMiddleware 
 /**
  * Create circuit breaker middleware
  */
-export function createCircuitBreakerMiddleware(circuitConfig: CircuitBreakerConfig): HTTPMiddleware {
+export function createCircuitBreakerMiddleware(
+  circuitConfig: CircuitBreakerConfig,
+): HTTPMiddleware {
   return {
     error: (error) => {
       // Circuit breaker logic is implemented in the client
@@ -279,7 +285,9 @@ export interface CacheConfig {
 /**
  * Create caching middleware
  */
-export function createCacheMiddleware(cacheConfig: CacheConfig = {}): HTTPMiddleware {
+export function createCacheMiddleware(
+  cacheConfig: CacheConfig = {},
+): HTTPMiddleware {
   const cache = new Map<string, { data: HTTPResponse; timestamp: number }>();
   const {
     ttl = 300000, // 5 minutes default
@@ -312,7 +320,7 @@ export function createCacheMiddleware(cacheConfig: CacheConfig = {}): HTTPMiddle
       }
 
       const key = keyGenerator(response.config);
-      
+
       // Clean up old entries if cache is full
       if (cache.size >= maxSize) {
         const oldestKey = cache.keys().next().value;
@@ -343,7 +351,9 @@ export interface RateLimitConfig {
 /**
  * Create rate limiting middleware
  */
-export function createRateLimitMiddleware(rateConfig: RateLimitConfig): HTTPMiddleware {
+export function createRateLimitMiddleware(
+  rateConfig: RateLimitConfig,
+): HTTPMiddleware {
   const requests: number[] = [];
   const { requestsPerMinute, burstLimit = requestsPerMinute * 2 } = rateConfig;
 
@@ -361,15 +371,19 @@ export function createRateLimitMiddleware(rateConfig: RateLimitConfig): HTTPMidd
       if (requests.length >= requestsPerMinute) {
         const oldestRequest = requests[0];
         const waitTime = oldestRequest + 60000 - now;
-        
+
         if (waitTime > 0) {
-          throw new Error(`Rate limit exceeded. Wait ${waitTime}ms before retrying.`);
+          throw new Error(
+            `Rate limit exceeded. Wait ${waitTime}ms before retrying.`,
+          );
         }
       }
 
       // Check burst limit
       if (requests.length >= burstLimit) {
-        throw new Error("Burst limit exceeded. Too many requests in a short time.");
+        throw new Error(
+          "Burst limit exceeded. Too many requests in a short time.",
+        );
       }
 
       requests.push(now);
@@ -496,10 +510,12 @@ export function createUploadMiddlewareStack(options: {
 
   // Add logging (without request data for large uploads)
   if (options.logging) {
-    middleware.push(createLoggingMiddleware({
-      ...options.logging,
-      logRequests: false, // Don't log large request bodies
-    }));
+    middleware.push(
+      createLoggingMiddleware({
+        ...options.logging,
+        logRequests: false, // Don't log large request bodies
+      }),
+    );
   }
 
   return middleware;

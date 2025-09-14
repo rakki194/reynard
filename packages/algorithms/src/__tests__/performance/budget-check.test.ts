@@ -13,7 +13,7 @@ import {
   createTestMetrics,
   createExceedingMetrics,
   createAtLimitMetrics,
-  } from "../../performance/test-utils";
+} from "../../performance/test-utils";
 
 describe("PerformanceBudgetChecker - Check", () => {
   let checker: PerformanceBudgetChecker;

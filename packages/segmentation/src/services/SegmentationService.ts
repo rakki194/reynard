@@ -91,11 +91,12 @@ export class SegmentationService
       this.setStatus(ServiceStatus.READY);
     } catch (error) {
       this.isBackendConnected = false;
-      this.lastBackendError = error instanceof Error ? error.message : "Unknown error";
+      this.lastBackendError =
+        error instanceof Error ? error.message : "Unknown error";
       this.setStatus(ServiceStatus.ERROR);
       throw new ServiceError(
         `Failed to initialize segmentation service: ${this.lastBackendError}`,
-        "INITIALIZATION_ERROR"
+        "INITIALIZATION_ERROR",
       );
     }
   }
@@ -105,10 +106,12 @@ export class SegmentationService
    */
   async getHealthInfo(): Promise<ServiceHealthInfo> {
     const baseHealth = await super.getHealthInfo();
-    
+
     return {
       ...baseHealth,
-      status: this.isBackendConnected ? ServiceHealth.HEALTHY : ServiceHealth.UNHEALTHY,
+      status: this.isBackendConnected
+        ? ServiceHealth.HEALTHY
+        : ServiceHealth.UNHEALTHY,
       details: {
         ...baseHealth.details,
         backendConnected: this.isBackendConnected,
@@ -138,37 +141,40 @@ export class SegmentationService
   /**
    * Generate segmentation for an image
    */
-  async generateSegmentation(task: SegmentationTask): Promise<SegmentationResult> {
+  async generateSegmentation(
+    task: SegmentationTask,
+  ): Promise<SegmentationResult> {
     const startTime = Date.now();
-    
+
     try {
       // Validate task
       this.validateSegmentationTask(task);
-      
+
       // Convert to caption task for backend processing
       const captionTask = this.convertToCaptionTask(task);
-      
+
       // Process through backend service
-      const captionResult = await this.backendService.generateCaption(captionTask);
-      
+      const captionResult =
+        await this.backendService.generateCaption(captionTask);
+
       // Convert result back to segmentation format
       const segmentationResult = await this.convertToSegmentationResult(
         captionResult,
         task,
-        startTime
+        startTime,
       );
-      
+
       // Update processing stats
       this.updateProcessingStats(Date.now() - startTime, true);
-      
+
       return segmentationResult;
     } catch (error) {
       const processingTime = Date.now() - startTime;
       this.updateProcessingStats(processingTime, false);
-      
+
       throw new ServiceError(
         `Segmentation generation failed: ${error instanceof Error ? error.message : "Unknown error"}`,
-        "SEGMENTATION_GENERATION_ERROR"
+        "SEGMENTATION_GENERATION_ERROR",
       );
     }
   }
@@ -178,16 +184,16 @@ export class SegmentationService
    */
   async generateBatchSegmentations(
     tasks: SegmentationTask[],
-    progressCallback?: (progress: number) => void
+    progressCallback?: (progress: number) => void,
   ): Promise<SegmentationResult[]> {
     const results: SegmentationResult[] = [];
     const total = tasks.length;
-    
+
     for (let i = 0; i < tasks.length; i++) {
       try {
         const result = await this.generateSegmentation(tasks[i]);
         results.push(result);
-        
+
         if (progressCallback) {
           progressCallback((i + 1) / total);
         }
@@ -196,7 +202,7 @@ export class SegmentationService
         // Continue with remaining tasks
       }
     }
-    
+
     return results;
   }
 
@@ -205,14 +211,17 @@ export class SegmentationService
    */
   async refineSegmentation(
     segmentation: SegmentationData,
-    options?: SegmentationOptions
+    options?: SegmentationOptions,
   ): Promise<SegmentationResult> {
     const startTime = Date.now();
-    
+
     try {
       // Validate and optimize polygon
-      const optimizedPolygon = this.optimizePolygon(segmentation.polygon, options);
-      
+      const optimizedPolygon = this.optimizePolygon(
+        segmentation.polygon,
+        options,
+      );
+
       // Create refined segmentation data
       const refinedSegmentation: SegmentationData = {
         ...segmentation,
@@ -224,17 +233,17 @@ export class SegmentationService
         },
         updatedAt: new Date(),
       };
-      
+
       // Create processing info
       const processingInfo: SegmentationProcessingInfo = {
         processingTime: Date.now() - startTime,
         algorithm: "polygon_optimization",
         qualityMetrics: this.calculateQualityMetrics(optimizedPolygon),
       };
-      
+
       // Update processing stats
       this.updateProcessingStats(Date.now() - startTime, true);
-      
+
       return {
         success: true,
         type: "segmentation",
@@ -245,10 +254,10 @@ export class SegmentationService
     } catch (error) {
       const processingTime = Date.now() - startTime;
       this.updateProcessingStats(processingTime, false);
-      
+
       throw new ServiceError(
         `Segmentation refinement failed: ${error instanceof Error ? error.message : "Unknown error"}`,
-        "SEGMENTATION_REFINEMENT_ERROR"
+        "SEGMENTATION_REFINEMENT_ERROR",
       );
     }
   }
@@ -259,23 +268,23 @@ export class SegmentationService
   validateSegmentation(segmentation: SegmentationData): boolean {
     try {
       const polygon = segmentation.polygon;
-      
+
       // Check minimum points
       if (polygon.points.length < 3) {
         return false;
       }
-      
+
       // Check for valid polygon area
       const area = PolygonOps.area(polygon);
       if (area <= 0) {
         return false;
       }
-      
+
       // Check for self-intersections (basic check)
       if (this.hasSelfIntersections(polygon)) {
         return false;
       }
-      
+
       return true;
     } catch (error) {
       return false;
@@ -287,7 +296,7 @@ export class SegmentationService
    */
   exportSegmentation(
     segmentation: SegmentationData,
-    format: string
+    format: string,
   ): Record<string, unknown> {
     switch (format.toLowerCase()) {
       case "coco":
@@ -301,7 +310,7 @@ export class SegmentationService
       default:
         throw new ServiceError(
           `Unsupported export format: ${format}`,
-          "UNSUPPORTED_EXPORT_FORMAT"
+          "UNSUPPORTED_EXPORT_FORMAT",
         );
     }
   }
@@ -336,9 +345,12 @@ export class SegmentationService
     if (!task.imagePath) {
       throw new ServiceError("Image path is required", "INVALID_TASK");
     }
-    
+
     if (task.type !== "segmentation") {
-      throw new ServiceError("Task type must be 'segmentation'", "INVALID_TASK");
+      throw new ServiceError(
+        "Task type must be 'segmentation'",
+        "INVALID_TASK",
+      );
     }
   }
 
@@ -363,7 +375,7 @@ export class SegmentationService
   private async convertToSegmentationResult(
     captionResult: Record<string, unknown>,
     _originalTask: SegmentationTask,
-    startTime: number
+    startTime: number,
   ): Promise<SegmentationResult> {
     // This is a placeholder - in a real implementation, you would
     // parse the caption result to extract polygon information
@@ -375,7 +387,7 @@ export class SegmentationService
         { x: 100, y: 200 },
       ],
     };
-    
+
     const segmentation: SegmentationData = {
       id: `seg_${Date.now()}`,
       polygon: mockPolygon,
@@ -388,14 +400,14 @@ export class SegmentationService
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    
+
     const processingInfo: SegmentationProcessingInfo = {
       processingTime: Date.now() - startTime,
       algorithm: "ai_segmentation",
       modelVersion: "1.0.0",
       qualityMetrics: this.calculateQualityMetrics(mockPolygon),
     };
-    
+
     return {
       success: true,
       type: "segmentation",
@@ -408,28 +420,33 @@ export class SegmentationService
   /**
    * Optimize polygon geometry
    */
-  private optimizePolygon(polygon: Polygon, options?: SegmentationOptions): Polygon {
+  private optimizePolygon(
+    polygon: Polygon,
+    options?: SegmentationOptions,
+  ): Polygon {
     let optimized = { ...polygon };
-    
+
     // Simplify if requested
     if (options?.simplify && options.simplificationTolerance) {
       // Use algorithms package for simplification
       // This is a placeholder - implement actual simplification
       optimized = PolygonOps.create(optimized.points);
     }
-    
+
     // Validate geometry if requested
     if (options?.validateGeometry) {
-      if (!this.validateSegmentation({ 
-        id: "temp", 
-        polygon: optimized, 
-        createdAt: new Date(), 
-        updatedAt: new Date() 
-      })) {
+      if (
+        !this.validateSegmentation({
+          id: "temp",
+          polygon: optimized,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+      ) {
         throw new ServiceError("Invalid polygon geometry", "INVALID_GEOMETRY");
       }
     }
-    
+
     return optimized;
   }
 
@@ -439,12 +456,12 @@ export class SegmentationService
   private calculateConfidence(polygon: Polygon): number {
     const area = PolygonOps.area(polygon);
     const perimeter = this.calculatePerimeter(polygon);
-    
+
     // Simple confidence calculation based on area and complexity
     const complexity = polygon.points.length;
     const areaScore = Math.min(area / 10000, 1); // Normalize area
     const complexityScore = Math.min(complexity / 20, 1); // Normalize complexity
-    
+
     return (areaScore + complexityScore) / 2;
   }
 
@@ -453,37 +470,39 @@ export class SegmentationService
    */
   private calculatePerimeter(polygon: Polygon): number {
     if (polygon.points.length < 2) return 0;
-    
+
     let _perimeter = 0;
     for (let i = 0; i < polygon.points.length; i++) {
       const current = polygon.points[i];
       const next = polygon.points[(i + 1) % polygon.points.length];
       _perimeter += PointOps.distance(current, next);
     }
-    
+
     return _perimeter;
   }
 
   /**
    * Calculate quality metrics for polygon
    */
-  private calculateQualityMetrics(polygon: Polygon): SegmentationQualityMetrics {
+  private calculateQualityMetrics(
+    polygon: Polygon,
+  ): SegmentationQualityMetrics {
     const area = PolygonOps.area(polygon);
     const perimeter = this.calculatePerimeter(polygon);
     const complexity = polygon.points.length;
-    
+
     // Calculate bounding box
-    const xs = polygon.points.map(p => p.x);
-    const ys = polygon.points.map(p => p.y);
+    const xs = polygon.points.map((p) => p.x);
+    const ys = polygon.points.map((p) => p.y);
     const minX = Math.min(...xs);
     const maxX = Math.max(...xs);
     const minY = Math.min(...ys);
     const maxY = Math.max(...ys);
-    
+
     const width = maxX - minX;
     const height = maxY - minY;
     const aspectRatio = width / height;
-    
+
     return {
       area,
       perimeter,
@@ -500,61 +519,71 @@ export class SegmentationService
     // Basic self-intersection check
     // This is a simplified implementation
     const points = polygon.points;
-    
+
     for (let i = 0; i < points.length; i++) {
       for (let j = i + 2; j < points.length; j++) {
-        if (this.linesIntersect(
-          points[i], points[(i + 1) % points.length],
-          points[j], points[(j + 1) % points.length]
-        )) {
+        if (
+          this.linesIntersect(
+            points[i],
+            points[(i + 1) % points.length],
+            points[j],
+            points[(j + 1) % points.length],
+          )
+        ) {
           return true;
         }
       }
     }
-    
+
     return false;
   }
 
   /**
    * Check if two line segments intersect
    */
-  private linesIntersect(
-    p1: Point, p2: Point,
-    p3: Point, p4: Point
-  ): boolean {
+  private linesIntersect(p1: Point, p2: Point, p3: Point, p4: Point): boolean {
     // Line intersection algorithm
     const denom = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x);
     if (Math.abs(denom) < 1e-10) return false; // Lines are parallel
-    
-    const t = ((p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)) / denom;
-    const u = -((p1.x - p2.x) * (p1.y - p3.y) - (p1.y - p2.y) * (p1.x - p3.x)) / denom;
-    
+
+    const t =
+      ((p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)) / denom;
+    const u =
+      -((p1.x - p2.x) * (p1.y - p3.y) - (p1.y - p2.y) * (p1.x - p3.x)) / denom;
+
     return t >= 0 && t <= 1 && u >= 0 && u <= 1;
   }
 
   /**
    * Update processing statistics
    */
-  private updateProcessingStats(processingTime: number, success: boolean = true): void {
+  private updateProcessingStats(
+    processingTime: number,
+    success: boolean = true,
+  ): void {
     this.processingStats.totalProcessed++;
     this.processingStats.lastProcessingTime = processingTime;
-    this.processingStats.averageProcessingTime = 
-      (this.processingStats.averageProcessingTime * (this.processingStats.totalProcessed - 1) + processingTime) /
+    this.processingStats.averageProcessingTime =
+      (this.processingStats.averageProcessingTime *
+        (this.processingStats.totalProcessed - 1) +
+        processingTime) /
       this.processingStats.totalProcessed;
-    
+
     if (!success) {
       this.processingStats.errorCount++;
     }
-    
-    this.processingStats.successRate = 
-      (this.processingStats.totalProcessed - this.processingStats.errorCount) / 
+
+    this.processingStats.successRate =
+      (this.processingStats.totalProcessed - this.processingStats.errorCount) /
       this.processingStats.totalProcessed;
   }
 
   /**
    * Export to COCO format
    */
-  private exportToCOCO(segmentation: SegmentationData): Record<string, unknown> {
+  private exportToCOCO(
+    segmentation: SegmentationData,
+  ): Record<string, unknown> {
     return {
       id: segmentation.id,
       category_id: 1, // Default category
@@ -571,7 +600,9 @@ export class SegmentationService
   /**
    * Export to YOLO format
    */
-  private exportToYOLO(segmentation: SegmentationData): Record<string, unknown> {
+  private exportToYOLO(
+    segmentation: SegmentationData,
+  ): Record<string, unknown> {
     const bbox = this.polygonToBBox(segmentation.polygon);
     return {
       class_id: 0, // Default class
@@ -585,7 +616,9 @@ export class SegmentationService
   /**
    * Export to Pascal VOC format
    */
-  private exportToPascalVOC(segmentation: SegmentationData): Record<string, unknown> {
+  private exportToPascalVOC(
+    segmentation: SegmentationData,
+  ): Record<string, unknown> {
     return {
       object: {
         name: segmentation.metadata?.category || "object",
@@ -598,7 +631,9 @@ export class SegmentationService
   /**
    * Export to Reynard format
    */
-  private exportToReynard(segmentation: SegmentationData): Record<string, unknown> {
+  private exportToReynard(
+    segmentation: SegmentationData,
+  ): Record<string, unknown> {
     return {
       id: segmentation.id,
       polygon: segmentation.polygon,
@@ -622,14 +657,19 @@ export class SegmentationService
   /**
    * Convert polygon to bounding box
    */
-  private polygonToBBox(polygon: Polygon): { x: number; y: number; width: number; height: number } {
-    const xs = polygon.points.map(p => p.x);
-    const ys = polygon.points.map(p => p.y);
+  private polygonToBBox(polygon: Polygon): {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } {
+    const xs = polygon.points.map((p) => p.x);
+    const ys = polygon.points.map((p) => p.y);
     const minX = Math.min(...xs);
     const maxX = Math.max(...xs);
     const minY = Math.min(...ys);
     const maxY = Math.max(...ys);
-    
+
     return {
       x: minX,
       y: minY,

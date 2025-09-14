@@ -5,12 +5,16 @@
 
 import { Component, createSignal, onMount, onCleanup } from "solid-js";
 import { Card, Button } from "reynard-components";
-import { RosePetalGrowthSystem, RosePetalRenderer, type RosePetal } from "../utils/phyllotactic";
+import {
+  RosePetalGrowthSystem,
+  RosePetalRenderer,
+  type RosePetal,
+} from "../utils/phyllotactic";
 import "./PhyllotacticRosePetalDemo.css";
 
 export const PhyllotacticRosePetalDemo: Component = () => {
   console.log("🌹 PhyllotacticRosePetalDemo: Initializing");
-  
+
   // State
   const [isGrowing, setIsGrowing] = createSignal(false);
   const [petalCount, setPetalCount] = createSignal(200);
@@ -21,15 +25,15 @@ export const PhyllotacticRosePetalDemo: Component = () => {
   const [enableOrganicMovement, setEnableOrganicMovement] = createSignal(true);
   const [enablePetalRotation, setEnablePetalRotation] = createSignal(true);
   const [currentPetals, setCurrentPetals] = createSignal<RosePetal[]>([]);
-  const [growthPhase, setGrowthPhase] = createSignal('bud');
+  const [growthPhase, setGrowthPhase] = createSignal("bud");
   const [fps, setFps] = createSignal(60);
-  
+
   // Natural growth state
-  const [growthMode, setGrowthMode] = createSignal('gaussian');
+  const [growthMode, setGrowthMode] = createSignal("gaussian");
   const [unfoldSpeed, setUnfoldSpeed] = createSignal(0.03);
   const [bundleGrowthDelay, setBundleGrowthDelay] = createSignal(0.2);
   const [sepalVisibility, setSepalVisibility] = createSignal(true);
-  
+
   // System
   let roseSystem: RosePetalGrowthSystem;
   let renderer: RosePetalRenderer;
@@ -38,11 +42,11 @@ export const PhyllotacticRosePetalDemo: Component = () => {
   let lastTime = 0;
   let frameCount = 0;
   let lastFpsTime = 0;
-  
+
   // Initialize the rose system
   const initializeRoseSystem = () => {
     console.log("🌹 PhyllotacticRosePetalDemo: Initializing rose system");
-    
+
     roseSystem = new RosePetalGrowthSystem({
       petalCount: petalCount(),
       growthSpeed: growthSpeed(),
@@ -51,27 +55,30 @@ export const PhyllotacticRosePetalDemo: Component = () => {
       animationSpeed: animationSpeed(),
       centerX: 400,
       centerY: 300,
-      baseRadius: 20
+      baseRadius: 20,
     });
-    
+
     renderer = new RosePetalRenderer(canvas);
     roseSystem.initializeRose();
   };
-  
+
   // Render petals with beautiful organic shapes
   const renderPetals = (petals: RosePetal[]) => {
     if (!renderer) return;
-    
+
     renderer.renderPetals(petals);
-    renderer.drawGrowthPhaseIndicator(growthPhase(), currentPetals().length, fps());
+    renderer.drawGrowthPhaseIndicator(
+      growthPhase(),
+      currentPetals().length,
+      fps(),
+    );
   };
-  
-  
+
   // Animation loop
   const animate = (currentTime: number) => {
     const deltaTime = (currentTime - lastTime) / 1000;
     lastTime = currentTime;
-    
+
     // Update FPS counter
     frameCount++;
     if (currentTime - lastFpsTime >= 1000) {
@@ -79,22 +86,22 @@ export const PhyllotacticRosePetalDemo: Component = () => {
       frameCount = 0;
       lastFpsTime = currentTime;
     }
-    
+
     if (isGrowing()) {
       // Update rose system
       roseSystem.update(deltaTime);
-      
+
       // Get current state
       setCurrentPetals(roseSystem.getPetals());
       setGrowthPhase(roseSystem.getGrowthPhase());
-      
+
       // Render
       renderPetals(currentPetals());
     }
-    
+
     animationId = requestAnimationFrame(animate);
   };
-  
+
   // Start/stop animation
   const toggleGrowth = () => {
     if (isGrowing()) {
@@ -110,7 +117,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
       animationId = requestAnimationFrame(animate);
     }
   };
-  
+
   // Reset the rose
   const resetRose = () => {
     roseSystem.reset();
@@ -118,7 +125,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
     setGrowthPhase(roseSystem.getGrowthPhase());
     renderPetals(currentPetals());
   };
-  
+
   // Update configuration
   const updateConfig = () => {
     roseSystem.updateConfig({
@@ -130,43 +137,46 @@ export const PhyllotacticRosePetalDemo: Component = () => {
       growthMode: growthMode() as any,
       unfoldSpeed: unfoldSpeed(),
       bundleGrowthDelay: bundleGrowthDelay(),
-      sepalVisibility: sepalVisibility()
+      sepalVisibility: sepalVisibility(),
     });
   };
-  
+
   // Lifecycle
   onMount(() => {
     console.log("🌹 PhyllotacticRosePetalDemo: onMount - setting up canvas");
-    canvas = document.getElementById('rose-canvas') as HTMLCanvasElement;
+    canvas = document.getElementById("rose-canvas") as HTMLCanvasElement;
     if (canvas) {
       canvas.width = 800;
       canvas.height = 600;
     }
-    
+
     initializeRoseSystem();
     setCurrentPetals(roseSystem.getPetals());
     setGrowthPhase(roseSystem.getGrowthPhase());
     renderPetals(currentPetals());
   });
-  
+
   onCleanup(() => {
     if (animationId) {
       cancelAnimationFrame(animationId);
     }
   });
-  
+
   return (
     <div class="phyllotactic-rose-demo">
       <div class="demo-header">
         <h2>🌹 Phyllotactic Rose Petal Growth</h2>
-        <p>Beautiful organic rose petal growth animation using phyllotactic mathematics</p>
+        <p>
+          Beautiful organic rose petal growth animation using phyllotactic
+          mathematics
+        </p>
       </div>
-      
+
       <div class="demo-content">
         <div class="demo-controls">
           <Card class="growth-controls">
             <h3>Growth Configuration</h3>
-            
+
             <div class="control-group">
               <label>Petal Count: {petalCount()}</label>
               <input
@@ -181,7 +191,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                 }}
               />
             </div>
-            
+
             <div class="control-group">
               <label>Growth Speed: {growthSpeed().toFixed(3)}</label>
               <input
@@ -196,7 +206,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                 }}
               />
             </div>
-            
+
             <div class="control-group">
               <label>Max Petal Size: {maxPetalSize()}</label>
               <input
@@ -211,7 +221,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                 }}
               />
             </div>
-            
+
             <div class="control-group">
               <label>Color Variation: {colorVariation().toFixed(2)}</label>
               <input
@@ -226,7 +236,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                 }}
               />
             </div>
-            
+
             <div class="control-group">
               <label>Animation Speed: {animationSpeed().toFixed(1)}x</label>
               <input
@@ -241,7 +251,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                 }}
               />
             </div>
-            
+
             <div class="control-group">
               <label>Growth Mode</label>
               <select
@@ -256,7 +266,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                 <option value="hybrid">Hybrid (Smooth Natural)</option>
               </select>
             </div>
-            
+
             <div class="control-group">
               <label>Unfold Speed: {unfoldSpeed().toFixed(3)}</label>
               <input
@@ -271,9 +281,11 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                 }}
               />
             </div>
-            
+
             <div class="control-group">
-              <label>Bundle Growth Delay: {bundleGrowthDelay().toFixed(2)}s</label>
+              <label>
+                Bundle Growth Delay: {bundleGrowthDelay().toFixed(2)}s
+              </label>
               <input
                 type="range"
                 min="0.1"
@@ -286,7 +298,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                 }}
               />
             </div>
-            
+
             <div class="control-group">
               <input
                 type="checkbox"
@@ -299,30 +311,34 @@ export const PhyllotacticRosePetalDemo: Component = () => {
               <label>Show Sepals (Green Points)</label>
             </div>
           </Card>
-          
+
           <Card class="animation-controls">
             <h3>Animation Effects</h3>
-            
+
             <div class="control-group">
               <input
                 type="checkbox"
                 checked={enableOrganicMovement()}
-                onChange={(e) => setEnableOrganicMovement(e.currentTarget.checked)}
+                onChange={(e) =>
+                  setEnableOrganicMovement(e.currentTarget.checked)
+                }
               />
               <label>Enable Organic Movement</label>
             </div>
-            
+
             <div class="control-group">
               <input
                 type="checkbox"
                 checked={enablePetalRotation()}
-                onChange={(e) => setEnablePetalRotation(e.currentTarget.checked)}
+                onChange={(e) =>
+                  setEnablePetalRotation(e.currentTarget.checked)
+                }
               />
               <label>Enable Petal Rotation</label>
             </div>
-            
+
             <div class="control-group">
-              <Button 
+              <Button
                 variant="secondary"
                 onClick={resetRose}
                 class="control-button"
@@ -330,9 +346,9 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                 🌱 Reset Rose
               </Button>
             </div>
-            
+
             <div class="control-group">
-              <Button 
+              <Button
                 variant={isGrowing() ? "danger" : "primary"}
                 onClick={toggleGrowth}
                 class="control-button"
@@ -341,13 +357,16 @@ export const PhyllotacticRosePetalDemo: Component = () => {
               </Button>
             </div>
           </Card>
-          
+
           <Card class="info-panel">
             <h3>Rose Information</h3>
             <div class="info-content">
               <div class="info-item">
                 <span class="info-label">Growth Phase:</span>
-                <span class="info-value">{growthPhase().charAt(0).toUpperCase() + growthPhase().slice(1)}</span>
+                <span class="info-value">
+                  {growthPhase().charAt(0).toUpperCase() +
+                    growthPhase().slice(1)}
+                </span>
               </div>
               <div class="info-item">
                 <span class="info-label">Petal Count:</span>
@@ -360,7 +379,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
             </div>
           </Card>
         </div>
-        
+
         <div class="demo-visualization">
           <Card class="canvas-container">
             <canvas id="rose-canvas" class="demo-canvas"></canvas>
@@ -374,26 +393,38 @@ export const PhyllotacticRosePetalDemo: Component = () => {
           </Card>
         </div>
       </div>
-      
+
       <div class="demo-info">
         <Card class="info-panel">
           <h3>Phyllotactic Rose Features</h3>
           <div class="feature-descriptions">
             <div class="feature-description">
               <h4>🌱 Organic Growth</h4>
-              <p>Petals grow naturally following the golden angle (137.5°) creating the perfect spiral pattern found in nature.</p>
+              <p>
+                Petals grow naturally following the golden angle (137.5°)
+                creating the perfect spiral pattern found in nature.
+              </p>
             </div>
             <div class="feature-description">
               <h4>🎨 Dynamic Colors</h4>
-              <p>Each petal has unique colors that transition from deep purples in the center to vibrant reds and oranges on the outer edges.</p>
+              <p>
+                Each petal has unique colors that transition from deep purples
+                in the center to vibrant reds and oranges on the outer edges.
+              </p>
             </div>
             <div class="feature-description">
               <h4>🌊 Organic Movement</h4>
-              <p>Subtle organic movement and rotation make each petal feel alive and natural, just like a real rose in a gentle breeze.</p>
+              <p>
+                Subtle organic movement and rotation make each petal feel alive
+                and natural, just like a real rose in a gentle breeze.
+              </p>
             </div>
             <div class="feature-description">
               <h4>⏱️ Growth Phases</h4>
-              <p>Watch the rose progress through bud, blooming, full bloom, and wilting phases with realistic timing and behavior.</p>
+              <p>
+                Watch the rose progress through bud, blooming, full bloom, and
+                wilting phases with realistic timing and behavior.
+              </p>
             </div>
           </div>
         </Card>

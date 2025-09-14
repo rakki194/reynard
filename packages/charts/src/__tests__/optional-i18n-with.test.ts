@@ -4,16 +4,16 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { 
-  t, 
-  getChartTypeName, 
-  getAxisLabel, 
-  getLoadingMessage, 
-  getQualityText, 
+import {
+  t,
+  getChartTypeName,
+  getAxisLabel,
+  getLoadingMessage,
+  getQualityText,
   getStatisticsLabel,
-  isI18nAvailable, 
+  isI18nAvailable,
   getI18nModule,
-  createMockI18n 
+  createMockI18n,
 } from "../utils/i18n";
 
 describe("Charts optional i18n functionality with i18n package", () => {
@@ -86,8 +86,12 @@ describe("Charts optional i18n functionality with i18n package", () => {
 
   it("should handle loading messages with fallback", () => {
     expect(getLoadingMessage()).toBe("Loading Data...");
-    expect(getLoadingMessage("statistical")).toBe("Loading statistical data...");
-    expect(getLoadingMessage("embedding-quality")).toBe("Loading embedding quality analysis...");
+    expect(getLoadingMessage("statistical")).toBe(
+      "Loading statistical data...",
+    );
+    expect(getLoadingMessage("embedding-quality")).toBe(
+      "Loading embedding quality analysis...",
+    );
   });
 
   it("should handle quality assessments with fallback", () => {
@@ -106,7 +110,9 @@ describe("Charts optional i18n functionality with i18n package", () => {
 
   it("should handle all chart-specific translations", () => {
     expect(t("loadingStatisticalData")).toBe("Loading statistical data...");
-    expect(t("loadingEmbeddingQuality")).toBe("Loading embedding quality analysis...");
+    expect(t("loadingEmbeddingQuality")).toBe(
+      "Loading embedding quality analysis...",
+    );
     expect(t("exportImage")).toBe("Export as Image");
     expect(t("exportCsv")).toBe("Export as CSV");
     expect(t("exportPdf")).toBe("Export as PDF");

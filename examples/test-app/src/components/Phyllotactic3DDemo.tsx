@@ -10,11 +10,11 @@ import "./Phyllotactic3DDemo.css";
 
 export const Phyllotactic3DDemo: Component = () => {
   console.log("🦊 Phyllotactic3DDemo: Initializing");
-  
+
   const demo = usePhyllotactic3DDemo();
-  
+
   // Lifecycle
   onCleanup(demo.cleanup);
-  
+
   return <Phyllotactic3DDemoLayout demo={demo} />;
 };

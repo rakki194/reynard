@@ -50,14 +50,14 @@ npm install reynard-connection
 ### HTTP Client
 
 ```typescript
-import { 
-  HTTPClient, 
-  createAuthMiddleware, 
+import {
+  HTTPClient,
+  createAuthMiddleware,
   createLoggingMiddleware,
   createCacheMiddleware,
   createRateLimitMiddleware,
   createApiMiddlewareStack,
-  HTTP_PRESETS
+  HTTP_PRESETS,
 } from "reynard-connection";
 
 // Using presets for common configurations
@@ -92,13 +92,13 @@ const user = await client.post("/users", { name: "John Doe" });
 ### Advanced HTTP Client with Custom Middleware
 
 ```typescript
-import { 
-  HTTPClient, 
+import {
+  HTTPClient,
   createAuthMiddleware,
   createTokenRefreshMiddleware,
   createErrorHandlingMiddleware,
   createRequestIdMiddleware,
-  createUserAgentMiddleware
+  createUserAgentMiddleware,
 } from "reynard-connection";
 
 // Create a sophisticated HTTP client for authentication flows
@@ -136,15 +136,15 @@ const authClient = new HTTPClient({
 ### Validation
 
 ```typescript
-import { 
-  ValidationUtils, 
-  validateEmail, 
+import {
+  ValidationUtils,
+  validateEmail,
   validatePassword,
   emailSchema,
   passwordSchema,
   createCrossFieldMiddleware,
   createSanitizationMiddleware,
-  passwordConfirmationMiddleware
+  passwordConfirmationMiddleware,
 } from "reynard-connection";
 
 // Simple validation
@@ -175,13 +175,13 @@ const validationMiddleware = [
 ];
 
 const result = ValidationUtils.validateMultiple(
-  { 
-    email: "  USER@EXAMPLE.COM  ", 
+  {
+    email: "  USER@EXAMPLE.COM  ",
     password: "SecurePass123!",
-    confirmPassword: "SecurePass123!"
+    confirmPassword: "SecurePass123!",
   },
   userSchema,
-  { middleware: validationMiddleware }
+  { middleware: validationMiddleware },
 );
 
 console.log(result.isValid); // true
@@ -191,14 +191,14 @@ console.log(result.data); // { email: "user@example.com", password: "SecurePass1
 ### Error Handling
 
 ```typescript
-import { 
-  errorHandler, 
-  ValidationError, 
+import {
+  errorHandler,
+  ValidationError,
   NetworkError,
   retryWithExponentialBackoff,
   createErrorHandlerSystem,
   setupGlobalErrorReporting,
-  ErrorReporter
+  ErrorReporter,
 } from "reynard-connection";
 
 // Set up global error handling
@@ -246,7 +246,7 @@ try {
     (error) => {
       // Custom retry condition
       return error.status >= 500 || error.status === 429;
-    }
+    },
   );
 } catch (error) {
   console.error("Failed after retries:", error);
@@ -259,11 +259,11 @@ try {
 
 ```typescript
 // packages/auth/src/utils/api-utils.ts
-import { 
-  HTTPClient, 
-  createAuthMiddleware, 
+import {
+  HTTPClient,
+  createAuthMiddleware,
   createTokenRefreshMiddleware,
-  createErrorHandlingMiddleware
+  createErrorHandlingMiddleware,
 } from "reynard-connection";
 
 export const createAuthHTTPClient = (
@@ -307,12 +307,12 @@ export const createAuthHTTPClient = (
 
 ```typescript
 // packages/settings/src/utils/index.ts
-import { 
-  ValidationUtils, 
+import {
+  ValidationUtils,
   validateEmail,
   validateUrl,
   validateTheme,
-  type ValidationSchema 
+  type ValidationSchema,
 } from "reynard-connection";
 
 export function validateSetting(
@@ -323,17 +323,21 @@ export function validateSetting(
   const schemaMap: Record<string, ValidationSchema> = {
     email: { type: "email", required: definition.required },
     url: { type: "url", required: definition.required },
-    theme: { type: "string", enum: ["light", "dark", "auto"], required: definition.required },
+    theme: {
+      type: "string",
+      enum: ["light", "dark", "auto"],
+      required: definition.required,
+    },
     // ... other mappings
   };
 
-  const schema = schemaMap[definition.type] || { 
-    type: definition.type as any, 
-    required: definition.required 
+  const schema = schemaMap[definition.type] || {
+    type: definition.type as any,
+    required: definition.required,
   };
 
-  return ValidationUtils.validateValue(value, schema, { 
-    field: definition.key 
+  return ValidationUtils.validateValue(value, schema, {
+    field: definition.key,
   });
 }
 ```
@@ -342,17 +346,14 @@ export function validateSetting(
 
 ```typescript
 // packages/tools/src/core/BaseTool.ts
-import { 
-  ValidationUtils, 
+import {
+  ValidationUtils,
   ValidationError,
-  type ValidationSchema 
+  type ValidationSchema,
 } from "reynard-connection";
 
 export abstract class BaseTool {
-  protected validateParameter(
-    param: ToolParameter, 
-    value: any
-  ): void {
+  protected validateParameter(param: ToolParameter, value: any): void {
     const schema: ValidationSchema = {
       type: this.mapParameterType(param.type),
       required: param.required,
@@ -401,23 +402,41 @@ export abstract class BaseTool {
 ```typescript
 class HTTPClient {
   constructor(config: HTTPClientConfig);
-  
+
   // Request methods
   request<T>(options: HTTPRequestOptions): Promise<HTTPResponse<T>>;
-  get<T>(endpoint: string, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
-  post<T>(endpoint: string, data?: unknown, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
-  put<T>(endpoint: string, data?: unknown, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
-  patch<T>(endpoint: string, data?: unknown, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
-  delete<T>(endpoint: string, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
-  
+  get<T>(
+    endpoint: string,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>>;
+  post<T>(
+    endpoint: string,
+    data?: unknown,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>>;
+  put<T>(
+    endpoint: string,
+    data?: unknown,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>>;
+  patch<T>(
+    endpoint: string,
+    data?: unknown,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>>;
+  delete<T>(
+    endpoint: string,
+    options?: Partial<HTTPRequestOptions>,
+  ): Promise<HTTPResponse<T>>;
+
   // Middleware management
   addMiddleware(middleware: HTTPMiddleware): void;
   removeMiddleware(middleware: HTTPMiddleware): void;
   clearMiddleware(): void;
-  
+
   // Configuration
   updateConfig(newConfig: Partial<HTTPClientConfig>): void;
-  
+
   // Metrics
   getMetrics(): HTTPMetrics;
   resetMetrics(): void;
@@ -509,9 +528,17 @@ const uploadStack = createUploadMiddlewareStack({
 ```typescript
 class ValidationUtils {
   // Core validation
-  static validateValue(value: unknown, schema: ValidationSchema, options?: FieldValidationOptions): ValidationResult;
-  static validateMultiple(data: Record<string, unknown>, schemas: Record<string, ValidationSchema>, options?: FieldValidationOptions): MultiValidationResult;
-  
+  static validateValue(
+    value: unknown,
+    schema: ValidationSchema,
+    options?: FieldValidationOptions,
+  ): ValidationResult;
+  static validateMultiple(
+    data: Record<string, unknown>,
+    schemas: Record<string, ValidationSchema>,
+    options?: FieldValidationOptions,
+  ): MultiValidationResult;
+
   // Helper methods
   private static isEmpty(value: unknown): boolean;
   private static isValidType(value: unknown, type: string): boolean;
@@ -583,7 +610,7 @@ const crossFieldMiddleware = createCrossFieldMiddleware((data) => {
 // Conditional validation
 const conditionalMiddleware = createConditionalMiddleware(
   (data) => data.role === "admin",
-  { permissions: { type: "array", required: true } }
+  { permissions: { type: "array", required: true } },
 );
 
 // Sanitization

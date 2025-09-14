@@ -9,7 +9,7 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 10, y: 0 },
         { x: 10, y: 10 },
-        { x: 0, y: 10 }
+        { x: 0, y: 10 },
       ];
 
       const polygon = PolygonOps.create(points);
@@ -25,16 +25,16 @@ describe("Polygon Operations", () => {
     it("should create a copy of the points array", () => {
       const points: Point[] = [
         { x: 0, y: 0 },
-        { x: 5, y: 5 }
+        { x: 5, y: 5 },
       ];
 
       const polygon = PolygonOps.create(points);
-      
+
       // The polygon should have the same structure
       expect(polygon.points).toHaveLength(2);
       expect(polygon.points[0]).toEqual({ x: 0, y: 0 });
       expect(polygon.points[1]).toEqual({ x: 5, y: 5 });
-      
+
       // Note: The current implementation creates a shallow copy of the array
       // but not a deep copy of the point objects
     });
@@ -57,7 +57,7 @@ describe("Polygon Operations", () => {
     it("should handle two points", () => {
       const points: Point[] = [
         { x: 0, y: 0 },
-        { x: 10, y: 10 }
+        { x: 10, y: 10 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -73,7 +73,7 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 10, y: 0 },
         { x: 10, y: 10 },
-        { x: 0, y: 10 }
+        { x: 0, y: 10 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -86,7 +86,7 @@ describe("Polygon Operations", () => {
       const points: Point[] = [
         { x: 0, y: 0 },
         { x: 10, y: 0 },
-        { x: 5, y: 10 }
+        { x: 5, y: 10 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -100,7 +100,7 @@ describe("Polygon Operations", () => {
       const points2: Point[] = [{ x: 0, y: 0 }];
       const points3: Point[] = [
         { x: 0, y: 0 },
-        { x: 10, y: 10 }
+        { x: 10, y: 10 },
       ];
 
       const polygon1 = PolygonOps.create(points1);
@@ -117,7 +117,7 @@ describe("Polygon Operations", () => {
         { x: -5, y: -5 },
         { x: 5, y: -5 },
         { x: 5, y: 5 },
-        { x: -5, y: 5 }
+        { x: -5, y: 5 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -131,7 +131,7 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 5.5, y: 0 },
         { x: 5.5, y: 5.5 },
-        { x: 0, y: 5.5 }
+        { x: 0, y: 5.5 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -147,7 +147,7 @@ describe("Polygon Operations", () => {
         { x: 15, y: 5 },
         { x: 10, y: 10 },
         { x: 0, y: 10 },
-        { x: -5, y: 5 }
+        { x: -5, y: 5 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -162,7 +162,7 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 0, y: 10 },
         { x: 10, y: 10 },
-        { x: 10, y: 0 }
+        { x: 10, y: 0 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -178,7 +178,7 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 10, y: 0 },
         { x: 10, y: 10 },
-        { x: 0, y: 10 }
+        { x: 0, y: 10 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -193,7 +193,7 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 10, y: 0 },
         { x: 10, y: 10 },
-        { x: 0, y: 10 }
+        { x: 0, y: 10 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -208,7 +208,7 @@ describe("Polygon Operations", () => {
       const points2: Point[] = [{ x: 0, y: 0 }];
       const points3: Point[] = [
         { x: 0, y: 0 },
-        { x: 10, y: 10 }
+        { x: 10, y: 10 },
       ];
 
       const polygon1 = PolygonOps.create(points1);
@@ -227,7 +227,7 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 10, y: 0 },
         { x: 10, y: 10 },
-        { x: 0, y: 10 }
+        { x: 0, y: 10 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -243,7 +243,7 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 10, y: 0 },
         { x: 10, y: 10 },
-        { x: 0, y: 10 }
+        { x: 0, y: 10 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -258,7 +258,7 @@ describe("Polygon Operations", () => {
       const points: Point[] = [
         { x: 0, y: 0 },
         { x: 10, y: 0 },
-        { x: 5, y: 10 }
+        { x: 5, y: 10 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -274,7 +274,7 @@ describe("Polygon Operations", () => {
         { x: -5, y: -5 },
         { x: 5, y: -5 },
         { x: 5, y: 5 },
-        { x: -5, y: 5 }
+        { x: -5, y: 5 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -292,7 +292,7 @@ describe("Polygon Operations", () => {
         { x: 15, y: 5 },
         { x: 10, y: 10 },
         { x: 0, y: 10 },
-        { x: -5, y: 5 }
+        { x: -5, y: 5 },
       ];
       const polygon = PolygonOps.create(points);
 
@@ -310,12 +310,15 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 0.1, y: 0 },
         { x: 0.1, y: 0.1 },
-        { x: 0, y: 0.1 }
+        { x: 0, y: 0.1 },
       ];
       const polygon = PolygonOps.create(points);
 
       const area = PolygonOps.area(polygon);
-      const containsPoint = PolygonOps.containsPoint(polygon, { x: 0.05, y: 0.05 });
+      const containsPoint = PolygonOps.containsPoint(polygon, {
+        x: 0.05,
+        y: 0.05,
+      });
 
       expect(area).toBeCloseTo(0.01, 3);
       expect(containsPoint).toBe(true);
@@ -326,12 +329,15 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 },
         { x: 1000000, y: 0 },
         { x: 1000000, y: 1000000 },
-        { x: 0, y: 1000000 }
+        { x: 0, y: 1000000 },
       ];
       const polygon = PolygonOps.create(points);
 
       const area = PolygonOps.area(polygon);
-      const containsPoint = PolygonOps.containsPoint(polygon, { x: 500000, y: 500000 });
+      const containsPoint = PolygonOps.containsPoint(polygon, {
+        x: 500000,
+        y: 500000,
+      });
 
       expect(area).toBe(1000000000000);
       expect(containsPoint).toBe(true);
@@ -343,7 +349,7 @@ describe("Polygon Operations", () => {
         { x: 0, y: 0 }, // Duplicate
         { x: 10, y: 0 },
         { x: 10, y: 10 },
-        { x: 0, y: 10 }
+        { x: 0, y: 10 },
       ];
       const polygon = PolygonOps.create(points);
 

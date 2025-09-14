@@ -18,7 +18,7 @@ describe("Memory Pool Utils Extended Coverage", () => {
     it("should create spatial object pool with default config", () => {
       const pool = createSpatialObjectPool();
       const obj = pool.acquire();
-      
+
       expect(obj).toBeDefined();
       expect(obj.id).toBe("");
       expect(obj.x).toBe(0);
@@ -36,10 +36,10 @@ describe("Memory Pool Utils Extended Coverage", () => {
         enableStats: true,
         enableOptimization: true,
       };
-      
+
       const pool = createSpatialObjectPool(config);
       const obj = pool.acquire();
-      
+
       expect(obj).toBeDefined();
       expect(obj.id).toBe("");
       expect(obj.x).toBe(0);
@@ -52,7 +52,7 @@ describe("Memory Pool Utils Extended Coverage", () => {
     it("should reset spatial object properly", () => {
       const pool = createSpatialObjectPool();
       const obj = pool.acquire();
-      
+
       // Modify the object
       obj.id = "test-id";
       obj.x = 10;
@@ -60,11 +60,11 @@ describe("Memory Pool Utils Extended Coverage", () => {
       obj.width = 30;
       obj.height = 40;
       obj.data = { id: "data-id", type: "test", category: "entity" };
-      
+
       // Return and get again
       pool.release(obj);
       const newObj = pool.acquire();
-      
+
       expect(newObj.id).toBe("");
       expect(newObj.x).toBe(0);
       expect(newObj.y).toBe(0);
@@ -78,7 +78,7 @@ describe("Memory Pool Utils Extended Coverage", () => {
     it("should create AABB pool with default config", () => {
       const pool = createAABBPool();
       const obj = pool.acquire();
-      
+
       expect(obj).toBeDefined();
       expect(obj.x).toBe(0);
       expect(obj.y).toBe(0);
@@ -94,10 +94,10 @@ describe("Memory Pool Utils Extended Coverage", () => {
         enableStats: false,
         enableOptimization: false,
       };
-      
+
       const pool = createAABBPool(config);
       const obj = pool.acquire();
-      
+
       expect(obj).toBeDefined();
       expect(obj.x).toBe(0);
       expect(obj.y).toBe(0);
@@ -108,17 +108,17 @@ describe("Memory Pool Utils Extended Coverage", () => {
     it("should reset AABB object properly", () => {
       const pool = createAABBPool();
       const obj = pool.acquire();
-      
+
       // Modify the object
       obj.x = 100;
       obj.y = 200;
       obj.width = 300;
       obj.height = 400;
-      
+
       // Return and get again
       pool.release(obj);
       const newObj = pool.acquire();
-      
+
       expect(newObj.x).toBe(0);
       expect(newObj.y).toBe(0);
       expect(newObj.width).toBe(0);
@@ -130,7 +130,7 @@ describe("Memory Pool Utils Extended Coverage", () => {
     it("should create point pool with default config", () => {
       const pool = createPointPool();
       const obj = pool.acquire();
-      
+
       expect(obj).toBeDefined();
       expect(obj.x).toBe(0);
       expect(obj.y).toBe(0);
@@ -144,10 +144,10 @@ describe("Memory Pool Utils Extended Coverage", () => {
         enableStats: true,
         enableOptimization: true,
       };
-      
+
       const pool = createPointPool(config);
       const obj = pool.acquire();
-      
+
       expect(obj).toBeDefined();
       expect(obj.x).toBe(0);
       expect(obj.y).toBe(0);
@@ -156,15 +156,15 @@ describe("Memory Pool Utils Extended Coverage", () => {
     it("should reset point object properly", () => {
       const pool = createPointPool();
       const obj = pool.acquire();
-      
+
       // Modify the object
       obj.x = 50;
       obj.y = 75;
-      
+
       // Return and get again
       pool.release(obj);
       const newObj = pool.acquire();
-      
+
       expect(newObj.x).toBe(0);
       expect(newObj.y).toBe(0);
     });
@@ -174,7 +174,7 @@ describe("Memory Pool Utils Extended Coverage", () => {
     it("should create vector pool with default config", () => {
       const pool = createVectorPool();
       const obj = pool.acquire();
-      
+
       expect(obj).toBeDefined();
       expect(obj.x).toBe(0);
       expect(obj.y).toBe(0);
@@ -189,10 +189,10 @@ describe("Memory Pool Utils Extended Coverage", () => {
         enableStats: false,
         enableOptimization: true,
       };
-      
+
       const pool = createVectorPool(config);
       const obj = pool.acquire();
-      
+
       expect(obj).toBeDefined();
       expect(obj.x).toBe(0);
       expect(obj.y).toBe(0);
@@ -202,16 +202,16 @@ describe("Memory Pool Utils Extended Coverage", () => {
     it("should reset vector object properly", () => {
       const pool = createVectorPool();
       const obj = pool.acquire();
-      
+
       // Modify the object
       obj.x = 1.5;
       obj.y = 2.5;
       obj.magnitude = 3.5;
-      
+
       // Return and get again
       pool.release(obj);
       const newObj = pool.acquire();
-      
+
       expect(newObj.x).toBe(0);
       expect(newObj.y).toBe(0);
       expect(newObj.magnitude).toBe(0);
@@ -340,19 +340,27 @@ describe("Memory Pool Utils Extended Coverage", () => {
         enableOptimization: false,
       };
 
-      const pool1 = manager.createPool("pool1", () => ({
-        value: 0,
-        reset() {
-          this.value = 0;
-        },
-      }), config1);
+      const pool1 = manager.createPool(
+        "pool1",
+        () => ({
+          value: 0,
+          reset() {
+            this.value = 0;
+          },
+        }),
+        config1,
+      );
 
-      const pool2 = manager.createPool("pool2", () => ({
-        value: 0,
-        reset() {
-          this.value = 0;
-        },
-      }), config2);
+      const pool2 = manager.createPool(
+        "pool2",
+        () => ({
+          value: 0,
+          reset() {
+            this.value = 0;
+          },
+        }),
+        config2,
+      );
 
       expect(pool1).toBeDefined();
       expect(pool2).toBeDefined();
@@ -423,7 +431,7 @@ describe("Memory Pool Utils Extended Coverage", () => {
   describe("Edge Cases and Error Handling", () => {
     it("should handle empty pool configurations", () => {
       const config: PerformanceMemoryPoolConfig = {};
-      
+
       const spatialPool = createSpatialObjectPool(config);
       const aabbPool = createAABBPool(config);
       const pointPool = createPointPool(config);
@@ -443,10 +451,10 @@ describe("Memory Pool Utils Extended Coverage", () => {
         enableStats: true,
         enableOptimization: true,
       };
-      
+
       const pool = createSpatialObjectPool(config);
       const obj = pool.acquire();
-      
+
       expect(obj).toBeDefined();
       expect(obj.id).toBe("");
     });
@@ -454,19 +462,19 @@ describe("Memory Pool Utils Extended Coverage", () => {
     it("should handle pool manager with no pools", () => {
       const manager = new MemoryPoolManager();
       const stats = manager.getAllStats();
-      
+
       expect(stats).toEqual({});
     });
 
     it("should handle pool manager operations on empty manager", () => {
       const manager = new MemoryPoolManager();
-      
+
       const pool = manager.getPool("non-existent");
       expect(pool).toBeUndefined();
-      
+
       const removed = manager.removePool("non-existent");
       expect(removed).toBe(false);
-      
+
       manager.clearAllPools(); // Should not throw
     });
   });

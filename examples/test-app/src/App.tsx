@@ -53,13 +53,33 @@ function App() {
     },
     { id: "chat", label: "Chat", icon: getIcon("chat") },
     { id: "algorithms", label: "Algorithms", icon: getIcon("calculator") },
-    { id: "phyllotactic", label: "Phyllotactic Spirals", icon: getIcon("sparkle") },
-    { id: "stroboscopic", label: "Stroboscopic Effects", icon: getIcon("sparkle") },
-    { id: "advanced-patterns", label: "Advanced Patterns", icon: getIcon("sparkle") },
-    { id: "phyllotactic-3d", label: "3D Phyllotactic", icon: getIcon("sparkle") },
+    {
+      id: "phyllotactic",
+      label: "Phyllotactic Spirals",
+      icon: getIcon("sparkle"),
+    },
+    {
+      id: "stroboscopic",
+      label: "Stroboscopic Effects",
+      icon: getIcon("sparkle"),
+    },
+    {
+      id: "advanced-patterns",
+      label: "Advanced Patterns",
+      icon: getIcon("sparkle"),
+    },
+    {
+      id: "phyllotactic-3d",
+      label: "3D Phyllotactic",
+      icon: getIcon("sparkle"),
+    },
     { id: "rose-petal", label: "Rose Petal Growth", icon: getIcon("sparkle") },
     { id: "performance", label: "Performance Demo", icon: getIcon("sparkle") },
-    { id: "enhanced-integration", label: "Enhanced Integration", icon: getIcon("sparkle") },
+    {
+      id: "enhanced-integration",
+      label: "Enhanced Integration",
+      icon: getIcon("sparkle"),
+    },
     { id: "data-viz", label: "Data Visualization", icon: getIcon("chart") },
     { id: "charts-i18n", label: "Charts i18n Demo", icon: getIcon("globe") },
     { id: "unused-vars", label: "Unused Variables", icon: getIcon("palette") },
@@ -145,7 +165,10 @@ function App() {
                     <PerformanceDemo />
                   </TabPanel>
 
-                  <TabPanel tabId="enhanced-integration" activeTab={activeTab()}>
+                  <TabPanel
+                    tabId="enhanced-integration"
+                    activeTab={activeTab()}
+                  >
                     <EnhancedIntegrationDemo />
                   </TabPanel>
 

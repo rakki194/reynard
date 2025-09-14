@@ -19,10 +19,10 @@ export interface PasswordStrength {
  */
 export function validatePassword(password: string): PasswordStrength {
   if (!password || typeof password !== "string") {
-    return { 
-      isValid: false, 
-      score: 0, 
-      feedback: [t("core.password.passwordIsRequired")] 
+    return {
+      isValid: false,
+      score: 0,
+      feedback: [t("core.password.passwordIsRequired")],
     };
   }
 
@@ -66,9 +66,21 @@ export function validatePassword(password: string): PasswordStrength {
 
   // Common password check
   const commonPasswords = [
-    "password", "123456", "123456789", "qwerty", "abc123",
-    "password123", "admin", "letmein", "welcome", "monkey",
-    "12345678", "1234567890", "qwerty123", "password1", "123123"
+    "password",
+    "123456",
+    "123456789",
+    "qwerty",
+    "abc123",
+    "password123",
+    "admin",
+    "letmein",
+    "welcome",
+    "monkey",
+    "12345678",
+    "1234567890",
+    "qwerty123",
+    "password1",
+    "123123",
   ];
 
   if (commonPasswords.includes(password.toLowerCase())) {
@@ -83,10 +95,8 @@ export function validatePassword(password: string): PasswordStrength {
   }
 
   // Keyboard pattern check
-  const keyboardPatterns = [
-    "qwerty", "asdfgh", "zxcvbn", "123456", "abcdef"
-  ];
-  
+  const keyboardPatterns = ["qwerty", "asdfgh", "zxcvbn", "123456", "abcdef"];
+
   for (const pattern of keyboardPatterns) {
     if (password.toLowerCase().includes(pattern)) {
       feedback.push(t("core.password.noKeyboardPatterns"));

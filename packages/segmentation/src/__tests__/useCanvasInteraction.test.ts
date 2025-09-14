@@ -6,10 +6,10 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useCanvasInteraction } from "../composables/useCanvasInteraction.js";
-import type { 
-  SegmentationEditorConfig, 
+import type {
+  SegmentationEditorConfig,
   SegmentationEditorState,
-  Point 
+  Point,
 } from "../types/index.js";
 
 describe("useCanvasInteraction", () => {
@@ -55,7 +55,7 @@ describe("useCanvasInteraction", () => {
     mockCanvas = document.createElement("canvas");
     mockCanvas.width = 800;
     mockCanvas.height = 600;
-    
+
     // Mock getBoundingClientRect to return proper bounds
     mockCanvas.getBoundingClientRect = vi.fn(() => ({
       left: 0,
@@ -131,7 +131,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: expect.any(Number),
           y: expect.any(Number),
-        })
+        }),
       );
     });
 
@@ -337,7 +337,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: expect.any(Number),
           y: expect.any(Number),
-        })
+        }),
       );
     });
   });
@@ -393,7 +393,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: expect.any(Number),
           y: expect.any(Number),
-        })
+        }),
       );
     });
 
@@ -479,7 +479,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: expect.any(Number),
           y: expect.any(Number),
-        })
+        }),
       );
     });
 
@@ -523,7 +523,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: 100,
           y: 200,
-        })
+        }),
       );
     });
 
@@ -546,7 +546,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: 105,
           y: 205,
-        })
+        }),
       );
     });
   });
@@ -591,7 +591,7 @@ describe("useCanvasInteraction", () => {
       // Should update existing polygon
       expect(mockOnPolygonUpdate).toHaveBeenCalledWith(
         expect.any(Array),
-        "test-seg"
+        "test-seg",
       );
     });
 
@@ -715,8 +715,3 @@ describe("useCanvasInteraction", () => {
     });
   });
 });
-
-
-
-
-

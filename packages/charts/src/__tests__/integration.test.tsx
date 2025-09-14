@@ -1,11 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@solidjs/testing-library";
-import {
-  BarChart,
-  LineChart,
-  PieChart,
-  TimeSeriesChart,
-} from "../components";
+import { BarChart, LineChart, PieChart, TimeSeriesChart } from "../components";
 import type { ChartConfig, ChartTheme } from "../types";
 import "./integration.test.css";
 
@@ -82,8 +77,15 @@ describe("Chart Integration Tests", () => {
             datasets={mockLineData.datasets}
             title="Line Chart"
           />
-          <PieChart labels={mockPieLabels} data={mockPieData} title="Pie Chart" />
-          <TimeSeriesChart data={mockTimeSeriesData} title="Time Series Chart" />
+          <PieChart
+            labels={mockPieLabels}
+            data={mockPieData}
+            title="Pie Chart"
+          />
+          <TimeSeriesChart
+            data={mockTimeSeriesData}
+            title="Time Series Chart"
+          />
         </div>
       ));
 
@@ -207,8 +209,15 @@ describe("Chart Integration Tests", () => {
             datasets={mockLineData.datasets}
             title="Line Chart"
           />
-          <PieChart labels={mockPieLabels} data={mockPieData} title="Pie Chart" />
-          <TimeSeriesChart data={mockTimeSeriesData} title="Time Series Chart" />
+          <PieChart
+            labels={mockPieLabels}
+            data={mockPieData}
+            title="Pie Chart"
+          />
+          <TimeSeriesChart
+            data={mockTimeSeriesData}
+            title="Time Series Chart"
+          />
         </div>
       ));
 
@@ -509,10 +518,17 @@ describe("Chart Integration Tests", () => {
       ));
 
       // Test accessibility attributes on chart containers
-      const barChart = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
-      const lineChart = screen.getByTestId("line-chart-canvas").closest("div")?.parentElement?.parentElement;
-      const pieChart = screen.getByTestId("pie-chart-canvas").closest("div")?.parentElement;
-      const timeSeriesChart = screen.getByTestId("timeseries-chart-canvas").closest("div")?.parentElement;
+      const barChart = screen
+        .getByTestId("bar-chart-canvas")
+        .closest("div")?.parentElement;
+      const lineChart = screen.getByTestId("line-chart-canvas").closest("div")
+        ?.parentElement?.parentElement;
+      const pieChart = screen
+        .getByTestId("pie-chart-canvas")
+        .closest("div")?.parentElement;
+      const timeSeriesChart = screen
+        .getByTestId("timeseries-chart-canvas")
+        .closest("div")?.parentElement;
 
       expect(barChart).toHaveAttribute("role", "img");
       expect(barChart).toHaveAttribute("aria-label");

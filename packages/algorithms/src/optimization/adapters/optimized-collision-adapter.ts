@@ -14,10 +14,7 @@ import {
   type MemoryPoolStats,
   type OptimizationRecommendation,
 } from "../core/enhanced-memory-pool";
-import type {
-  AABB,
-  CollisionPair,
-} from "../../geometry/collision/aabb-types";
+import type { AABB, CollisionPair } from "../../geometry/collision/aabb-types";
 import {
   executeNaiveCollisionDetection,
   executeSpatialCollisionDetection,
@@ -47,7 +44,10 @@ export interface OptimizedCollisionConfig {
 }
 
 // Re-export types from performance monitor
-export type { CollisionPerformanceStats, PerformanceReport } from "./performance-monitor";
+export type {
+  CollisionPerformanceStats,
+  PerformanceReport,
+} from "./performance-monitor";
 
 /**
  * Optimized collision detection adapter with automatic algorithm selection
@@ -73,16 +73,18 @@ export class OptimizedCollisionAdapter {
     };
     this.algorithmSelector = new AlgorithmSelector();
     this.memoryPool = new EnhancedMemoryPool(this.config.memoryPoolConfig);
-    this.performanceMonitor = new PerformanceMonitor(this.config.performanceThresholds);
+    this.performanceMonitor = new PerformanceMonitor(
+      this.config.performanceThresholds,
+    );
   }
 
   detectCollisions(aabbs: AABB[]): CollisionPair[] {
     const startTime = performance.now();
     const startMemory = this.getCurrentMemoryUsage();
-    
+
     let result: CollisionPair[];
     let algorithm: string;
-    
+
     // Ultra-fast path: use the fastest algorithm for each size based on actual benchmarks
     if (aabbs.length < 400) {
       // Naive is fastest for small-medium datasets (up to ~400 objects)
@@ -97,34 +99,36 @@ export class OptimizedCollisionAdapter {
       result = this.executeOptimizedDirect(aabbs);
       algorithm = "optimized";
     }
-    
+
     const endTime = performance.now();
     const endMemory = this.getCurrentMemoryUsage();
     const executionTime = endTime - startTime;
     const memoryUsage = endMemory - startMemory;
-    
+
     // Record performance metrics
     this.performanceMonitor.recordPerformance(
       algorithm,
       aabbs.length,
       executionTime,
       memoryUsage,
-      this.memoryPool.getStatistics().hitRate
+      this.memoryPool.getStatistics().hitRate,
     );
-    
+
     // Update memory pool stats
-    this.performanceMonitor.updateMemoryPoolStats(this.memoryPool.getStatistics());
-    
+    this.performanceMonitor.updateMemoryPoolStats(
+      this.memoryPool.getStatistics(),
+    );
+
     return result;
   }
 
   private executeNaiveWithPool(aabbs: AABB[]): CollisionPair[] {
     const collisions = this.memoryPool.getCollisionArray();
-    
+
     try {
       // Clear the array
       collisions.length = 0;
-      
+
       // Perform naive collision detection using pooled array
       for (let i = 0; i < aabbs.length; i++) {
         for (let j = i + 1; j < aabbs.length; j++) {
@@ -137,7 +141,7 @@ export class OptimizedCollisionAdapter {
           }
         }
       }
-      
+
       // Return a copy of the results
       return [...collisions];
     } finally {
@@ -300,7 +304,8 @@ export class OptimizedCollisionAdapter {
     memoryStart: number,
   ): void {
     const executionTime = performance.now() - startTime;
-    const memoryUsage = this.performanceMonitor.getCurrentMemoryUsage() - memoryStart;
+    const memoryUsage =
+      this.performanceMonitor.getCurrentMemoryUsage() - memoryStart;
     const hitRate = this.memoryPool.getStatistics().hitRate;
     this.algorithmSelector.updatePerformanceModel({
       algorithm,

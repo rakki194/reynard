@@ -3,9 +3,9 @@
  * Creates adaptive callbacks for the animation engine
  */
 
-import type { AnimationCallbacks } from '../types';
-import type { QualityManager } from './QualityManager';
-import type { AdaptiveConfig } from './AdaptiveConfig';
+import type { AnimationCallbacks } from "../types";
+import type { QualityManager } from "./QualityManager";
+import type { AdaptiveConfig } from "./AdaptiveConfig";
 
 export function createAdaptiveCallbacks(
   callbacks: AnimationCallbacks,
@@ -20,7 +20,10 @@ export function createAdaptiveCallbacks(
         qualityManager.adaptQuality(stats.currentFPS);
         callbacks.onFrameEnd?.(frameTime, frameCount);
       } catch (error) {
-        console.error("🦊 AdaptiveCallbacks: Error in onFrameEnd callback", error);
+        console.error(
+          "🦊 AdaptiveCallbacks: Error in onFrameEnd callback",
+          error,
+        );
       }
     },
   };

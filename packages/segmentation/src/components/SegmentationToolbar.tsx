@@ -5,14 +5,12 @@
  * Features sophisticated UI patterns inspired by the Reynard caption system.
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  Show,
-} from "solid-js";
+import { Component, createSignal, createEffect, Show } from "solid-js";
 import { getIcon } from "reynard-fluent-icons";
-import { SegmentationEditorConfig, SegmentationEditorState } from "../types/index.js";
+import {
+  SegmentationEditorConfig,
+  SegmentationEditorState,
+} from "../types/index.js";
 import "./SegmentationToolbar.css";
 
 export interface SegmentationToolbarProps {
@@ -35,7 +33,9 @@ export interface SegmentationToolbarProps {
 /**
  * Segmentation Toolbar Component with comprehensive controls
  */
-export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) => {
+export const SegmentationToolbar: Component<SegmentationToolbarProps> = (
+  props,
+) => {
   const [zoom, setZoom] = createSignal(props.state.zoom);
   const [panOffset, setPanOffset] = createSignal(props.state.panOffset);
   const [showAdvanced, setShowAdvanced] = createSignal(false);
@@ -143,11 +143,11 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
         >
           {getIcon("ZoomOut")}
         </button>
-        
+
         <span class="segmentation-toolbar-zoom-display">
           {Math.round(zoom() * 100)}%
         </span>
-        
+
         <button
           class="segmentation-toolbar-button"
           onClick={zoomIn}
@@ -155,7 +155,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
         >
           {getIcon("ZoomIn")}
         </button>
-        
+
         <button
           class="segmentation-toolbar-button"
           onClick={resetZoom}
@@ -163,7 +163,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
         >
           {getIcon("ZoomToFit")}
         </button>
-        
+
         <button
           class="segmentation-toolbar-button"
           onClick={fitToScreen}
@@ -182,7 +182,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
         >
           {getIcon("ChevronUp")}
         </button>
-        
+
         <div class="segmentation-toolbar-pan-controls">
           <button
             class="segmentation-toolbar-button"
@@ -191,7 +191,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
           >
             {getIcon("ChevronLeft")}
           </button>
-          
+
           <button
             class="segmentation-toolbar-button"
             onClick={resetPan}
@@ -199,7 +199,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
           >
             {getIcon("Home")}
           </button>
-          
+
           <button
             class="segmentation-toolbar-button"
             onClick={panRight}
@@ -208,7 +208,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
             {getIcon("ChevronRight")}
           </button>
         </div>
-        
+
         <button
           class="segmentation-toolbar-button"
           onClick={panDown}
@@ -227,7 +227,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
         >
           {getIcon("Grid")}
         </button>
-        
+
         <button
           class={`segmentation-toolbar-button ${props.config.showVertices ? "active" : ""}`}
           onClick={toggleVertices}
@@ -235,7 +235,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
         >
           {getIcon("Circle")}
         </button>
-        
+
         <button
           class={`segmentation-toolbar-button ${props.config.showEdges ? "active" : ""}`}
           onClick={toggleEdges}
@@ -243,7 +243,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
         >
           {getIcon("Line")}
         </button>
-        
+
         <button
           class={`segmentation-toolbar-button ${props.config.showFill ? "active" : ""}`}
           onClick={toggleFill}
@@ -251,7 +251,7 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
         >
           {getIcon("Shape")}
         </button>
-        
+
         <button
           class={`segmentation-toolbar-button ${props.config.showBoundingBox ? "active" : ""}`}
           onClick={toggleBoundingBox}
@@ -282,12 +282,16 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
               min="10"
               max="50"
               value={props.config.gridSize}
-              onChange={(e) => props.onConfigChange?.({ gridSize: parseInt(e.target.value) })}
+              onChange={(e) =>
+                props.onConfigChange?.({ gridSize: parseInt(e.target.value) })
+              }
               class="segmentation-toolbar-slider"
             />
-            <span class="segmentation-toolbar-value">{props.config.gridSize}px</span>
+            <span class="segmentation-toolbar-value">
+              {props.config.gridSize}px
+            </span>
           </div>
-          
+
           <div class="segmentation-toolbar-control-group">
             <label class="segmentation-toolbar-label">Vertex Size:</label>
             <input
@@ -295,12 +299,16 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
               min="4"
               max="16"
               value={props.config.vertexSize}
-              onChange={(e) => props.onConfigChange?.({ vertexSize: parseInt(e.target.value) })}
+              onChange={(e) =>
+                props.onConfigChange?.({ vertexSize: parseInt(e.target.value) })
+              }
               class="segmentation-toolbar-slider"
             />
-            <span class="segmentation-toolbar-value">{props.config.vertexSize}px</span>
+            <span class="segmentation-toolbar-value">
+              {props.config.vertexSize}px
+            </span>
           </div>
-          
+
           <div class="segmentation-toolbar-control-group">
             <label class="segmentation-toolbar-label">Edge Thickness:</label>
             <input
@@ -308,12 +316,18 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
               min="1"
               max="8"
               value={props.config.edgeThickness}
-              onChange={(e) => props.onConfigChange?.({ edgeThickness: parseInt(e.target.value) })}
+              onChange={(e) =>
+                props.onConfigChange?.({
+                  edgeThickness: parseInt(e.target.value),
+                })
+              }
               class="segmentation-toolbar-slider"
             />
-            <span class="segmentation-toolbar-value">{props.config.edgeThickness}px</span>
+            <span class="segmentation-toolbar-value">
+              {props.config.edgeThickness}px
+            </span>
           </div>
-          
+
           <div class="segmentation-toolbar-control-group">
             <label class="segmentation-toolbar-label">Fill Opacity:</label>
             <input
@@ -322,10 +336,16 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
               max="1"
               step="0.1"
               value={props.config.fillOpacity}
-              onChange={(e) => props.onConfigChange?.({ fillOpacity: parseFloat(e.target.value) })}
+              onChange={(e) =>
+                props.onConfigChange?.({
+                  fillOpacity: parseFloat(e.target.value),
+                })
+              }
               class="segmentation-toolbar-slider"
             />
-            <span class="segmentation-toolbar-value">{Math.round(props.config.fillOpacity * 100)}%</span>
+            <span class="segmentation-toolbar-value">
+              {Math.round(props.config.fillOpacity * 100)}%
+            </span>
           </div>
         </div>
       </Show>
@@ -340,7 +360,8 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
         </span>
         <Show when={props.state.mousePosition}>
           <span class="segmentation-toolbar-status-item">
-            Mouse: ({Math.round(props.state.mousePosition!.x)}, {Math.round(props.state.mousePosition!.y)})
+            Mouse: ({Math.round(props.state.mousePosition!.x)},{" "}
+            {Math.round(props.state.mousePosition!.y)})
           </span>
         </Show>
         <Show when={props.state.selectedSegmentation}>
@@ -352,4 +373,3 @@ export const SegmentationToolbar: Component<SegmentationToolbarProps> = (props) 
     </div>
   );
 };
-

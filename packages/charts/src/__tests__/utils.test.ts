@@ -9,7 +9,7 @@ import {
   aggregateByInterval,
   calculateDimensions,
   getDefaultConfig,
-  applyTheme
+  applyTheme,
 } from "../utils";
 import type { Dataset } from "../types";
 
@@ -23,7 +23,7 @@ describe("Chart Utilities", () => {
         },
       ];
       const labels = ["A", "B", "C"];
-      
+
       const result = validateChartData(datasets, labels);
       expect(result).toBe(true);
     });
@@ -47,7 +47,7 @@ describe("Chart Utilities", () => {
           data: [1, 2, 3],
         },
       ];
-      
+
       const result = prepareDatasets(input);
       expect(result).toHaveLength(1);
       expect(result[0].label).toBe("Test");
@@ -122,10 +122,7 @@ describe("Chart Utilities", () => {
     });
 
     it("should assign default labels for datasets without labels", () => {
-      const partialDatasets = [
-        { data: [1, 2, 3] },
-        { data: [4, 5, 6] },
-      ];
+      const partialDatasets = [{ data: [1, 2, 3] }, { data: [4, 5, 6] }];
 
       const result = prepareDatasets(partialDatasets);
 

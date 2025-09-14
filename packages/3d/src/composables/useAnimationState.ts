@@ -1,5 +1,5 @@
 // Animation state management composable
-// 
+//
 // @deprecated Use reynard-animation package instead
 // This file is kept for backward compatibility
 import { createSignal, createMemo } from "solid-js";

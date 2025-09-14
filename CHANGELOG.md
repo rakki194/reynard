@@ -5,7 +5,7 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.4.0] - 2025-09-14
 
 ### 🚀 Major Framework Expansion & New Package Ecosystem
 
@@ -41,6 +41,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **NEW**: Workload analyzer for dynamic algorithm optimization
 - **NEW**: Comprehensive performance benchmarking and analysis tools
 - **IMPROVED**: Enhanced spatial hash implementation and union-find algorithms
+
+#### 🎯 New Segmentation Package - v0.1.0
+
+- **NEW**: Complete `reynard-segmentation` package with polygon-based image segmentation
+- **NEW**: Advanced canvas interaction system with mouse and touch support
+- **NEW**: Polygon editor with vertex manipulation and edge editing capabilities
+- **NEW**: Segmentation service with comprehensive polygon management
+- **NEW**: Interactive segmentation toolbar with drawing tools and controls
+- **NEW**: Performance-optimized canvas rendering with efficient polygon operations
+- **NEW**: Comprehensive test suite with unit, integration, and performance tests
+- **NEW**: Type-safe segmentation data structures and API interfaces
 
 #### 🔒 Backend Security Overhaul - v2.0.0
 

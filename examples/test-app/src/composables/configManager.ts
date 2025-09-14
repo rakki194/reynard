@@ -8,7 +8,7 @@ import type { EngineInstances } from "./engineFactory";
 
 export const updateEngineConfigs = (
   engines: EngineInstances,
-  config: EngineConfig
+  config: EngineConfig,
 ): void => {
   console.log("🦊 ConfigManager: Updating engine configurations");
 

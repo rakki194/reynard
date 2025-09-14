@@ -50,7 +50,7 @@ export class DataProcessor {
    */
   static processData(
     rawData: DataPoint[],
-    options: Partial<ProcessingOptions> = {}
+    options: Partial<ProcessingOptions> = {},
   ): ProcessedData {
     const opts: ProcessingOptions = {
       normalize: true,
@@ -67,7 +67,10 @@ export class DataProcessor {
 
     // Remove outliers if enabled
     if (opts.removeOutliers) {
-      processedPoints = this.removeOutliers(processedPoints, opts.outlierThreshold);
+      processedPoints = this.removeOutliers(
+        processedPoints,
+        opts.outlierThreshold,
+      );
     }
 
     // Normalize data if enabled
@@ -77,7 +80,10 @@ export class DataProcessor {
 
     // Apply smoothing if enabled
     if (opts.enableSmoothing) {
-      processedPoints = this.applySmoothing(processedPoints, opts.smoothingFactor);
+      processedPoints = this.applySmoothing(
+        processedPoints,
+        opts.smoothingFactor,
+      );
     }
 
     // Calculate bounds
@@ -87,7 +93,7 @@ export class DataProcessor {
     const statistics = this.calculateStatistics(processedPoints);
 
     // Perform clustering if enabled
-    const clusters = opts.enableClustering 
+    const clusters = opts.enableClustering
       ? this.performClustering(processedPoints, opts.clusterCount)
       : undefined;
 
@@ -102,15 +108,18 @@ export class DataProcessor {
   /**
    * Remove outliers using statistical methods
    */
-  private static removeOutliers(points: DataPoint[], threshold: number): DataPoint[] {
-    const values = points.map(p => p.value);
+  private static removeOutliers(
+    points: DataPoint[],
+    threshold: number,
+  ): DataPoint[] {
+    const values = points.map((p) => p.value);
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
     const std = Math.sqrt(
-      values.reduce((sum, val) => sum + (val - mean) ** 2, 0) / values.length
+      values.reduce((sum, val) => sum + (val - mean) ** 2, 0) / values.length,
     );
 
-    return points.filter(point => 
-      Math.abs(point.value - mean) <= threshold * std
+    return points.filter(
+      (point) => Math.abs(point.value - mean) <= threshold * std,
     );
   }
 
@@ -118,10 +127,10 @@ export class DataProcessor {
    * Normalize data to 0-1 range
    */
   private static normalizeData(points: DataPoint[]): DataPoint[] {
-    const xValues = points.map(p => p.x);
-    const yValues = points.map(p => p.y);
-    const zValues = points.map(p => p.z || 0);
-    const valueValues = points.map(p => p.value);
+    const xValues = points.map((p) => p.x);
+    const yValues = points.map((p) => p.y);
+    const zValues = points.map((p) => p.z || 0);
+    const valueValues = points.map((p) => p.value);
 
     const minX = Math.min(...xValues);
     const maxX = Math.max(...xValues);
@@ -132,7 +141,7 @@ export class DataProcessor {
     const minValue = Math.min(...valueValues);
     const maxValue = Math.max(...valueValues);
 
-    return points.map(point => ({
+    return points.map((point) => ({
       ...point,
       x: (point.x - minX) / (maxX - minX),
       y: (point.y - minY) / (maxY - minY),
@@ -144,7 +153,10 @@ export class DataProcessor {
   /**
    * Apply smoothing to reduce noise
    */
-  private static applySmoothing(points: DataPoint[], factor: number): DataPoint[] {
+  private static applySmoothing(
+    points: DataPoint[],
+    factor: number,
+  ): DataPoint[] {
     return points.map((point, index) => {
       if (index === 0 || index === points.length - 1) {
         return point;
@@ -157,8 +169,12 @@ export class DataProcessor {
         ...point,
         x: point.x + (prev.x + next.x - 2 * point.x) * factor,
         y: point.y + (prev.y + next.y - 2 * point.y) * factor,
-        z: point.z ? point.z + ((prev.z || 0) + (next.z || 0) - 2 * (point.z || 0)) * factor : undefined,
-        value: point.value + (prev.value + next.value - 2 * point.value) * factor,
+        z: point.z
+          ? point.z +
+            ((prev.z || 0) + (next.z || 0) - 2 * (point.z || 0)) * factor
+          : undefined,
+        value:
+          point.value + (prev.value + next.value - 2 * point.value) * factor,
       };
     });
   }
@@ -167,9 +183,9 @@ export class DataProcessor {
    * Calculate data bounds
    */
   private static calculateBounds(points: DataPoint[]) {
-    const xValues = points.map(p => p.x);
-    const yValues = points.map(p => p.y);
-    const zValues = points.map(p => p.z || 0);
+    const xValues = points.map((p) => p.x);
+    const yValues = points.map((p) => p.y);
+    const zValues = points.map((p) => p.z || 0);
 
     return {
       minX: Math.min(...xValues),
@@ -185,13 +201,13 @@ export class DataProcessor {
    * Calculate statistical measures
    */
   private static calculateStatistics(points: DataPoint[]) {
-    const values = points.map(p => p.value);
+    const values = points.map((p) => p.value);
     const sortedValues = [...values].sort((a, b) => a - b);
-    
+
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length;
     const median = sortedValues[Math.floor(sortedValues.length / 2)];
     const std = Math.sqrt(
-      values.reduce((sum, val) => sum + (val - mean) ** 2, 0) / values.length
+      values.reduce((sum, val) => sum + (val - mean) ** 2, 0) / values.length,
     );
 
     return {
@@ -207,7 +223,10 @@ export class DataProcessor {
   /**
    * Perform K-means clustering
    */
-  private static performClustering(points: DataPoint[], clusterCount: number): ClusterInfo[] {
+  private static performClustering(
+    points: DataPoint[],
+    clusterCount: number,
+  ): ClusterInfo[] {
     if (points.length === 0 || clusterCount <= 0) return [];
 
     // Initialize cluster centers randomly
@@ -226,12 +245,12 @@ export class DataProcessor {
     // K-means iteration
     for (let iter = 0; iter < 10; iter++) {
       // Assign points to nearest cluster
-      clusters.forEach(cluster => cluster.points = []);
-      
-      points.forEach(point => {
+      clusters.forEach((cluster) => (cluster.points = []));
+
+      points.forEach((point) => {
         let nearestCluster = clusters[0];
         let minDistance = this.calculateDistance(point, nearestCluster.center);
-        
+
         for (let i = 1; i < clusters.length; i++) {
           const distance = this.calculateDistance(point, clusters[i].center);
           if (distance < minDistance) {
@@ -239,21 +258,29 @@ export class DataProcessor {
             nearestCluster = clusters[i];
           }
         }
-        
+
         nearestCluster.points.push(point);
       });
 
       // Update cluster centers
-      clusters.forEach(cluster => {
+      clusters.forEach((cluster) => {
         if (cluster.points.length > 0) {
-          cluster.center.x = cluster.points.reduce((sum, p) => sum + p.x, 0) / cluster.points.length;
-          cluster.center.y = cluster.points.reduce((sum, p) => sum + p.y, 0) / cluster.points.length;
-          cluster.center.z = cluster.points.reduce((sum, p) => sum + (p.z || 0), 0) / cluster.points.length;
-          
+          cluster.center.x =
+            cluster.points.reduce((sum, p) => sum + p.x, 0) /
+            cluster.points.length;
+          cluster.center.y =
+            cluster.points.reduce((sum, p) => sum + p.y, 0) /
+            cluster.points.length;
+          cluster.center.z =
+            cluster.points.reduce((sum, p) => sum + (p.z || 0), 0) /
+            cluster.points.length;
+
           // Calculate cluster radius
-          cluster.radius = Math.max(...cluster.points.map(p => 
-            this.calculateDistance(p, cluster.center)
-          ));
+          cluster.radius = Math.max(
+            ...cluster.points.map((p) =>
+              this.calculateDistance(p, cluster.center),
+            ),
+          );
         }
       });
     }
@@ -265,8 +292,8 @@ export class DataProcessor {
    * Calculate distance between two points
    */
   private static calculateDistance(
-    point: DataPoint, 
-    center: { x: number; y: number; z?: number }
+    point: DataPoint,
+    center: { x: number; y: number; z?: number },
   ): number {
     const dx = point.x - center.x;
     const dy = point.y - center.y;
@@ -277,7 +304,10 @@ export class DataProcessor {
   /**
    * Generate sample data for testing
    */
-  static generateSampleData(count: number, type: "random" | "spiral" | "clusters" = "random"): DataPoint[] {
+  static generateSampleData(
+    count: number,
+    type: "random" | "spiral" | "clusters" = "random",
+  ): DataPoint[] {
     const points: DataPoint[] = [];
 
     switch (type) {
@@ -312,15 +342,15 @@ export class DataProcessor {
       case "clusters":
         const clusterCount = 3;
         const pointsPerCluster = Math.floor(count / clusterCount);
-        
+
         for (let c = 0; c < clusterCount; c++) {
-          const centerX = 0.2 + (c * 0.3);
-          const centerY = 0.2 + (c * 0.3);
-          
+          const centerX = 0.2 + c * 0.3;
+          const centerY = 0.2 + c * 0.3;
+
           for (let i = 0; i < pointsPerCluster; i++) {
             const angle = Math.random() * Math.PI * 2;
             const radius = Math.random() * 0.1;
-            
+
             points.push({
               id: `cluster-${c}-${i}`,
               x: centerX + Math.cos(angle) * radius,

@@ -12,7 +12,7 @@ import {
   Show,
   createMemo,
 } from "solid-js";
-import { Modal, Button, Select, Slider, Toggle } from "reynard-components";;
+import { Modal, Button, Select, Slider, Toggle } from "reynard-components";
 import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
 import type { ThreeDModalState, RAGQueryHit, EmbeddingPoint } from "../types";
 
@@ -212,8 +212,9 @@ export const RAG3DVisualizationModal: Component<
           <div class="control-group">
             <label>
               <Toggle
-    size="sm"
-  /> setEnableHighlighting(e.target.checked)}
+                size="sm"
+                checked={enableHighlighting()}
+                onChange={(e) => setEnableHighlighting(e.target.checked)}
               />
               Enable Highlighting
             </label>
@@ -222,8 +223,9 @@ export const RAG3DVisualizationModal: Component<
           <div class="control-group">
             <label>
               <Toggle
-    size="sm"
-  /> setShowSimilarityPaths(e.target.checked)}
+                size="sm"
+                checked={showSimilarityPaths()}
+                onChange={(e) => setShowSimilarityPaths(e.target.checked)}
               />
               Show Similarity Paths
             </label>
@@ -232,8 +234,9 @@ export const RAG3DVisualizationModal: Component<
           <div class="control-group">
             <label>
               <Toggle
-    size="sm"
-  /> setShowSimilarityRadius(e.target.checked)}
+                size="sm"
+                checked={showSimilarityRadius()}
+                onChange={(e) => setShowSimilarityRadius(e.target.checked)}
               />
               Show Similarity Radius
             </label>

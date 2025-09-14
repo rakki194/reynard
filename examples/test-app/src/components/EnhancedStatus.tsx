@@ -7,8 +7,8 @@ import { Component } from "solid-js";
 import { Card } from "reynard-components";
 
 export interface StatusProps {
-  mode: () => '2d' | '3d';
-  patternType: () => 'vogel' | 'rotase' | 'bernoulli' | 'fibonacci-sibling';
+  mode: () => "2d" | "3d";
+  patternType: () => "vogel" | "rotase" | "bernoulli" | "fibonacci-sibling";
   currentPoints: () => any[];
   stroboscopicState: () => any;
   qualityLevel: () => any;
@@ -34,8 +34,10 @@ export const EnhancedStatus: Component<StatusProps> = (props) => {
         </div>
         <div class="status-item">
           <span class="status-label">Stroboscopic:</span>
-          <span class={`status-value ${props.stroboscopicState()?.isStroboscopic ? 'active' : 'inactive'}`}>
-            {props.stroboscopicState()?.isStroboscopic ? 'Active' : 'Inactive'}
+          <span
+            class={`status-value ${props.stroboscopicState()?.isStroboscopic ? "active" : "inactive"}`}
+          >
+            {props.stroboscopicState()?.isStroboscopic ? "Active" : "Inactive"}
           </span>
         </div>
         <div class="status-item">
@@ -44,8 +46,10 @@ export const EnhancedStatus: Component<StatusProps> = (props) => {
         </div>
         <div class="status-item">
           <span class="status-label">Performance:</span>
-          <span class={`status-value ${props.enablePerformanceOptimization() ? 'optimized' : 'normal'}`}>
-            {props.enablePerformanceOptimization() ? 'Optimized' : 'Normal'}
+          <span
+            class={`status-value ${props.enablePerformanceOptimization() ? "optimized" : "normal"}`}
+          >
+            {props.enablePerformanceOptimization() ? "Optimized" : "Normal"}
           </span>
         </div>
       </div>

@@ -10,7 +10,7 @@ import type {
   SpatialObject,
   SpatialQueryResult,
   SpatialHashConfig,
-  MemoryPoolStats
+  MemoryPoolStats,
 } from "../../types/spatial-types";
 
 describe("Spatial Types", () => {
@@ -19,7 +19,7 @@ describe("Spatial Types", () => {
       const spatialData: SpatialData = {
         id: "test-1",
         type: "basic",
-        metadata: { priority: 1 }
+        metadata: { priority: 1 },
       };
 
       expect(spatialData.id).toBe("test-1");
@@ -30,7 +30,7 @@ describe("Spatial Types", () => {
     it("should allow numeric IDs", () => {
       const spatialData: SpatialData = {
         id: 42,
-        type: "numbered"
+        type: "numbered",
       };
 
       expect(spatialData.id).toBe(42);
@@ -40,7 +40,7 @@ describe("Spatial Types", () => {
     it("should work without optional metadata", () => {
       const spatialData: SpatialData = {
         id: "minimal",
-        type: "simple"
+        type: "simple",
       };
 
       expect(spatialData.metadata).toBeUndefined();
@@ -53,7 +53,7 @@ describe("Spatial Types", () => {
         id: "entity-1",
         type: "object",
         category: "entity",
-        properties: { health: 100 }
+        properties: { health: 100 },
       };
 
       expect(objectData.category).toBe("entity");
@@ -61,13 +61,18 @@ describe("Spatial Types", () => {
     });
 
     it("should support all category types", () => {
-      const categories: SpatialObjectData["category"][] = ["entity", "obstacle", "trigger", "decoration"];
-      
-      categories.forEach(category => {
+      const categories: SpatialObjectData["category"][] = [
+        "entity",
+        "obstacle",
+        "trigger",
+        "decoration",
+      ];
+
+      categories.forEach((category) => {
         const data: SpatialObjectData = {
           id: `test-${category}`,
           type: "object",
-          category
+          category,
         };
         expect(data.category).toBe(category);
       });
@@ -82,7 +87,7 @@ describe("Spatial Types", () => {
         entityType: "player",
         health: 100,
         damage: 25,
-        speed: 5.0
+        speed: 5.0,
       };
 
       expect(entityData.entityType).toBe("player");
@@ -92,13 +97,19 @@ describe("Spatial Types", () => {
     });
 
     it("should support all entity types", () => {
-      const entityTypes: GameEntityData["entityType"][] = ["player", "enemy", "npc", "item", "projectile"];
-      
-      entityTypes.forEach(entityType => {
+      const entityTypes: GameEntityData["entityType"][] = [
+        "player",
+        "enemy",
+        "npc",
+        "item",
+        "projectile",
+      ];
+
+      entityTypes.forEach((entityType) => {
         const data: GameEntityData = {
           id: `test-${entityType}`,
           type: "entity",
-          entityType
+          entityType,
         };
         expect(data.entityType).toBe(entityType);
       });
@@ -108,7 +119,7 @@ describe("Spatial Types", () => {
       const entityData: GameEntityData = {
         id: "simple-npc",
         type: "entity",
-        entityType: "npc"
+        entityType: "npc",
       };
 
       expect(entityData.health).toBeUndefined();
@@ -125,7 +136,7 @@ describe("Spatial Types", () => {
         collisionType: "solid",
         material: "stone",
         friction: 0.8,
-        restitution: 0.2
+        restitution: 0.2,
       };
 
       expect(collisionData.collisionType).toBe("solid");
@@ -135,27 +146,38 @@ describe("Spatial Types", () => {
     });
 
     it("should support all collision types", () => {
-      const collisionTypes: CollisionData["collisionType"][] = ["solid", "trigger", "platform", "oneway"];
-      
-      collisionTypes.forEach(collisionType => {
+      const collisionTypes: CollisionData["collisionType"][] = [
+        "solid",
+        "trigger",
+        "platform",
+        "oneway",
+      ];
+
+      collisionTypes.forEach((collisionType) => {
         const data: CollisionData = {
           id: `test-${collisionType}`,
           type: "collision",
-          collisionType
+          collisionType,
         };
         expect(data.collisionType).toBe(collisionType);
       });
     });
 
     it("should support all material types", () => {
-      const materials: NonNullable<CollisionData["material"]>[] = ["metal", "wood", "stone", "fabric", "glass"];
-      
-      materials.forEach(material => {
+      const materials: NonNullable<CollisionData["material"]>[] = [
+        "metal",
+        "wood",
+        "stone",
+        "fabric",
+        "glass",
+      ];
+
+      materials.forEach((material) => {
         const data: CollisionData = {
           id: `test-${material}`,
           type: "collision",
           collisionType: "solid",
-          material
+          material,
         };
         expect(data.material).toBe(material);
       });
@@ -171,7 +193,7 @@ describe("Spatial Types", () => {
         texture: "metal.jpg",
         color: "#FF0000",
         opacity: 0.8,
-        layer: 2
+        layer: 2,
       };
 
       expect(renderData.sprite).toBe("player.png");
@@ -184,7 +206,7 @@ describe("Spatial Types", () => {
     it("should work with minimal render data", () => {
       const renderData: RenderData = {
         id: "minimal-render",
-        type: "render"
+        type: "render",
       };
 
       expect(renderData.sprite).toBeUndefined();
@@ -202,9 +224,9 @@ describe("Spatial Types", () => {
           x: 10,
           y: 20,
           width: 30,
-          height: 40
+          height: 40,
         },
-        index: 5
+        index: 5,
       };
 
       expect(collisionObjectData.aabb.x).toBe(10);
@@ -219,7 +241,7 @@ describe("Spatial Types", () => {
         id: "test",
         type: "collision-object",
         aabb: { x: 0, y: 0, width: 10, height: 10 },
-        index: 0
+        index: 0,
       };
 
       // TypeScript compile-time check - readonly properties can't be reassigned
@@ -235,31 +257,31 @@ describe("Spatial Types", () => {
       const spatialObjectData: SpatialDataType = {
         id: "obj-1",
         type: "object",
-        category: "entity"
+        category: "entity",
       };
 
       const gameEntityData: SpatialDataType = {
         id: "entity-1",
         type: "entity",
-        entityType: "player"
+        entityType: "player",
       };
 
       const collisionData: SpatialDataType = {
         id: "collision-1",
         type: "collision",
-        collisionType: "solid"
+        collisionType: "solid",
       };
 
       const renderData: SpatialDataType = {
         id: "render-1",
-        type: "render"
+        type: "render",
       };
 
       const collisionObjectData: SpatialDataType = {
         id: "col-obj-1",
         type: "collision-object",
         aabb: { x: 0, y: 0, width: 10, height: 10 },
-        index: 0
+        index: 0,
       };
 
       expect(spatialObjectData.id).toBe("obj-1");
@@ -282,8 +304,8 @@ describe("Spatial Types", () => {
           id: "data-1",
           type: "entity",
           entityType: "player",
-          health: 100
-        }
+          health: 100,
+        },
       };
 
       expect(spatialObject.x).toBe(100);
@@ -305,8 +327,8 @@ describe("Spatial Types", () => {
           type: "entity",
           entityType: "player",
           health: 100,
-          damage: 25
-        }
+          damage: 25,
+        },
       };
 
       expect(spatialObject.data.entityType).toBe("player");
@@ -327,12 +349,12 @@ describe("Spatial Types", () => {
             data: {
               id: "data-1",
               type: "entity",
-              entityType: "player"
-            }
-          }
+              entityType: "player",
+            },
+          },
         ],
         queryTime: 1.5,
-        totalObjects: 1
+        totalObjects: 1,
       };
 
       expect(queryResult.objects.length).toBe(1);
@@ -353,12 +375,12 @@ describe("Spatial Types", () => {
               id: "collision-data",
               type: "collision",
               collisionType: "solid",
-              material: "stone"
-            }
-          }
+              material: "stone",
+            },
+          },
         ],
         queryTime: 0.8,
-        totalObjects: 1
+        totalObjects: 1,
       };
 
       expect(queryResult.objects[0].data.collisionType).toBe("solid");
@@ -369,7 +391,7 @@ describe("Spatial Types", () => {
       const emptyResult: SpatialQueryResult = {
         objects: [],
         queryTime: 0.1,
-        totalObjects: 0
+        totalObjects: 0,
       };
 
       expect(emptyResult.objects.length).toBe(0);
@@ -382,7 +404,7 @@ describe("Spatial Types", () => {
       const config: SpatialHashConfig = {
         cellSize: 64,
         maxObjectsPerCell: 20,
-        enableOptimization: true
+        enableOptimization: true,
       };
 
       expect(config.cellSize).toBe(64);
@@ -394,17 +416,19 @@ describe("Spatial Types", () => {
       const smallConfig: SpatialHashConfig = {
         cellSize: 16,
         maxObjectsPerCell: 5,
-        enableOptimization: false
+        enableOptimization: false,
       };
 
       const largeConfig: SpatialHashConfig = {
         cellSize: 256,
         maxObjectsPerCell: 100,
-        enableOptimization: true
+        enableOptimization: true,
       };
 
       expect(smallConfig.cellSize).toBeLessThan(largeConfig.cellSize);
-      expect(smallConfig.maxObjectsPerCell).toBeLessThan(largeConfig.maxObjectsPerCell);
+      expect(smallConfig.maxObjectsPerCell).toBeLessThan(
+        largeConfig.maxObjectsPerCell,
+      );
     });
   });
 
@@ -417,7 +441,7 @@ describe("Spatial Types", () => {
         peakUsage: 900,
         allocationCount: 5000,
         deallocationCount: 4250,
-        averageLifetime: 2500
+        averageLifetime: 2500,
       };
 
       expect(stats.totalObjects).toBe(1000);
@@ -437,15 +461,19 @@ describe("Spatial Types", () => {
         peakUsage: 180,
         allocationCount: 1000,
         deallocationCount: 880,
-        averageLifetime: 1500
+        averageLifetime: 1500,
       };
 
       // Active + Available should equal Total
-      expect(stats.activeObjects + stats.availableObjects).toBe(stats.totalObjects);
-      
+      expect(stats.activeObjects + stats.availableObjects).toBe(
+        stats.totalObjects,
+      );
+
       // Allocation - Deallocation should equal Active
-      expect(stats.allocationCount - stats.deallocationCount).toBe(stats.activeObjects);
-      
+      expect(stats.allocationCount - stats.deallocationCount).toBe(
+        stats.activeObjects,
+      );
+
       // Peak usage should not exceed total capacity
       expect(stats.peakUsage).toBeLessThanOrEqual(stats.totalObjects);
     });
@@ -467,13 +495,13 @@ describe("Spatial Types", () => {
         y: 20,
         width: 30,
         height: 40,
-        data: { id: "data", type: "entity", entityType: "player" }
+        data: { id: "data", type: "entity", entityType: "player" },
       };
 
       const testResult: SpatialQueryResult = {
         objects: [testObject],
         queryTime: 1.0,
-        totalObjects: 1
+        totalObjects: 1,
       };
 
       expect(processSpatialObject(testObject)).toBe(30);
@@ -484,7 +512,7 @@ describe("Spatial Types", () => {
       function createTypedSpatialObject<T extends SpatialDataType>(
         x: number,
         y: number,
-        data: T
+        data: T,
       ): SpatialObject<T> {
         return {
           id: data.id,
@@ -492,7 +520,7 @@ describe("Spatial Types", () => {
           y,
           width: 32,
           height: 32,
-          data
+          data,
         };
       }
 
@@ -500,11 +528,11 @@ describe("Spatial Types", () => {
         id: "player",
         type: "entity",
         entityType: "player",
-        health: 100
+        health: 100,
       };
 
       const spatialEntity = createTypedSpatialObject(50, 75, entityData);
-      
+
       expect(spatialEntity.data.entityType).toBe("player");
       expect(spatialEntity.data.health).toBe(100);
     });

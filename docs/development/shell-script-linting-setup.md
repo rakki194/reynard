@@ -84,11 +84,11 @@ The system validates:
 
 ## 🔧 Available Scripts
 
-| Script | Description |
-|--------|-------------|
+| Script                    | Description                          |
+| ------------------------- | ------------------------------------ |
 | `pnpm run shell:validate` | Full validation with detailed report |
-| `pnpm run shell:lint` | Quick lint check |
-| `pnpm run shell:check` | Alias for validate |
+| `pnpm run shell:lint`     | Quick lint check                     |
+| `pnpm run shell:check`    | Alias for validate                   |
 
 ## 🐛 Troubleshooting
 

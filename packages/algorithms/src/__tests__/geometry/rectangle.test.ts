@@ -6,7 +6,7 @@ describe("RectangleOps", () => {
   describe("create", () => {
     it("should create a rectangle with given dimensions", () => {
       const rect = RectangleOps.create(2, 3, 5, 7);
-      
+
       expect(rect.x).toBe(2);
       expect(rect.y).toBe(3);
       expect(rect.width).toBe(5);
@@ -15,7 +15,7 @@ describe("RectangleOps", () => {
 
     it("should create a rectangle at origin", () => {
       const rect = RectangleOps.create(0, 0, 10, 15);
-      
+
       expect(rect.x).toBe(0);
       expect(rect.y).toBe(0);
       expect(rect.width).toBe(10);
@@ -24,7 +24,7 @@ describe("RectangleOps", () => {
 
     it("should create a rectangle with negative coordinates", () => {
       const rect = RectangleOps.create(-5, -3, 8, 6);
-      
+
       expect(rect.x).toBe(-5);
       expect(rect.y).toBe(-3);
       expect(rect.width).toBe(8);
@@ -33,7 +33,7 @@ describe("RectangleOps", () => {
 
     it("should create a rectangle with zero dimensions", () => {
       const rect = RectangleOps.create(1, 2, 0, 0);
-      
+
       expect(rect.x).toBe(1);
       expect(rect.y).toBe(2);
       expect(rect.width).toBe(0);
@@ -42,7 +42,7 @@ describe("RectangleOps", () => {
 
     it("should create a rectangle with fractional values", () => {
       const rect = RectangleOps.create(1.5, 2.7, 3.2, 4.8);
-      
+
       expect(rect.x).toBe(1.5);
       expect(rect.y).toBe(2.7);
       expect(rect.width).toBe(3.2);
@@ -92,7 +92,7 @@ describe("RectangleOps", () => {
     it("should calculate center correctly", () => {
       const rect: Rectangle = { x: 2, y: 3, width: 6, height: 8 };
       const center = RectangleOps.center(rect);
-      
+
       expect(center.x).toBe(5); // 2 + 6/2
       expect(center.y).toBe(7); // 3 + 8/2
     });
@@ -100,7 +100,7 @@ describe("RectangleOps", () => {
     it("should calculate center for rectangle at origin", () => {
       const rect: Rectangle = { x: 0, y: 0, width: 10, height: 6 };
       const center = RectangleOps.center(rect);
-      
+
       expect(center.x).toBe(5);
       expect(center.y).toBe(3);
     });
@@ -108,7 +108,7 @@ describe("RectangleOps", () => {
     it("should calculate center with negative coordinates", () => {
       const rect: Rectangle = { x: -4, y: -6, width: 8, height: 12 };
       const center = RectangleOps.center(rect);
-      
+
       expect(center.x).toBe(0); // -4 + 8/2
       expect(center.y).toBe(0); // -6 + 12/2
     });
@@ -116,7 +116,7 @@ describe("RectangleOps", () => {
     it("should calculate center for square", () => {
       const rect: Rectangle = { x: 1, y: 1, width: 4, height: 4 };
       const center = RectangleOps.center(rect);
-      
+
       expect(center.x).toBe(3);
       expect(center.y).toBe(3);
     });
@@ -124,7 +124,7 @@ describe("RectangleOps", () => {
     it("should calculate center with fractional values", () => {
       const rect: Rectangle = { x: 1.5, y: 2.5, width: 3.0, height: 5.0 };
       const center = RectangleOps.center(rect);
-      
+
       expect(center.x).toBe(3.0); // 1.5 + 3.0/2
       expect(center.y).toBe(5.0); // 2.5 + 5.0/2
     });
@@ -132,7 +132,7 @@ describe("RectangleOps", () => {
     it("should handle zero dimensions", () => {
       const rect: Rectangle = { x: 5, y: 7, width: 0, height: 0 };
       const center = RectangleOps.center(rect);
-      
+
       expect(center.x).toBe(5);
       expect(center.y).toBe(7);
     });
@@ -195,16 +195,20 @@ describe("RectangleOps", () => {
 
     it("should handle rectangle at origin", () => {
       const originRect: Rectangle = { x: 0, y: 0, width: 5, height: 3 };
-      
+
       expect(RectangleOps.containsPoint(originRect, { x: 2, y: 1 })).toBe(true);
-      expect(RectangleOps.containsPoint(originRect, { x: -1, y: 1 })).toBe(false);
+      expect(RectangleOps.containsPoint(originRect, { x: -1, y: 1 })).toBe(
+        false,
+      );
     });
 
     it("should handle zero-size rectangle", () => {
       const zeroRect: Rectangle = { x: 3, y: 4, width: 0, height: 0 };
-      
+
       expect(RectangleOps.containsPoint(zeroRect, { x: 3, y: 4 })).toBe(true);
-      expect(RectangleOps.containsPoint(zeroRect, { x: 3.1, y: 4 })).toBe(false);
+      expect(RectangleOps.containsPoint(zeroRect, { x: 3.1, y: 4 })).toBe(
+        false,
+      );
     });
   });
 
@@ -213,7 +217,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 2, y: 3, width: 6, height: 4 };
       const rect2: Rectangle = { x: 5, y: 4, width: 4, height: 5 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).not.toBeNull();
       expect(intersection!.x).toBe(5);
       expect(intersection!.y).toBe(4);
@@ -225,7 +229,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 0, y: 0, width: 3, height: 3 };
       const rect2: Rectangle = { x: 5, y: 5, width: 2, height: 2 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).toBeNull();
     });
 
@@ -233,7 +237,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 0, y: 0, width: 3, height: 3 };
       const rect2: Rectangle = { x: 3, y: 0, width: 2, height: 2 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).toBeNull();
     });
 
@@ -241,7 +245,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 2, y: 3, width: 5, height: 4 };
       const rect2: Rectangle = { x: 2, y: 3, width: 5, height: 4 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).toEqual(rect1);
     });
 
@@ -249,7 +253,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 1, y: 1, width: 8, height: 6 };
       const rect2: Rectangle = { x: 3, y: 2, width: 2, height: 3 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).toEqual(rect2);
     });
 
@@ -257,7 +261,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 0, y: 0, width: 4, height: 4 };
       const rect2: Rectangle = { x: 2, y: 2, width: 4, height: 4 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).not.toBeNull();
       expect(intersection!.x).toBe(2);
       expect(intersection!.y).toBe(2);
@@ -269,7 +273,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: -2, y: -3, width: 5, height: 4 };
       const rect2: Rectangle = { x: 1, y: -1, width: 3, height: 3 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).not.toBeNull();
       expect(intersection!.x).toBe(1);
       expect(intersection!.y).toBe(-1);
@@ -281,7 +285,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 0, y: 0, width: 2, height: 4 };
       const rect2: Rectangle = { x: 5, y: 0, width: 2, height: 4 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).toBeNull();
     });
 
@@ -289,7 +293,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 0, y: 0, width: 4, height: 2 };
       const rect2: Rectangle = { x: 0, y: 5, width: 4, height: 2 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).toBeNull();
     });
 
@@ -297,7 +301,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 2, y: 2, width: 0, height: 4 };
       const rect2: Rectangle = { x: 1, y: 3, width: 3, height: 2 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).toBeNull();
     });
 
@@ -305,7 +309,7 @@ describe("RectangleOps", () => {
       const rect1: Rectangle = { x: 2, y: 2, width: 4, height: 0 };
       const rect2: Rectangle = { x: 3, y: 1, width: 2, height: 3 };
       const intersection = RectangleOps.intersection(rect1, rect2);
-      
+
       expect(intersection).toBeNull();
     });
   });

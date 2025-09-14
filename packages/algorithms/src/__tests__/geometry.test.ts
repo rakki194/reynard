@@ -64,21 +64,21 @@ describe("Geometry Module", () => {
       const point1 = Geometry.PointOps.create(1, 2);
       const point2 = Geometry.PointOps.create(4, 6);
       const distance = Geometry.PointOps.distance(point1, point2);
-      
+
       expect(distance).toBe(5); // 3-4-5 triangle
     });
 
     it("should allow creating and using geometric shapes", () => {
       const circle = Geometry.CircleOps.create({ x: 0, y: 0 }, 5);
       const area = Geometry.CircleOps.area(circle);
-      
+
       expect(area).toBeCloseTo(Math.PI * 25, 10);
     });
 
     it("should allow collision detection with exported functions", () => {
       const aabb1 = { x: 0, y: 0, width: 10, height: 10 };
       const aabb2 = { x: 5, y: 5, width: 10, height: 10 };
-      
+
       const collision = Geometry.checkCollision(aabb1, aabb2);
       // checkCollision returns CollisionResult object
       expect(collision.colliding).toBe(true);

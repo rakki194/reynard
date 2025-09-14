@@ -280,4 +280,4 @@ This package is part of the Reynard ECS system and follows the same license term
 
 ---
 
-> *🦊 Built with cunning agility by the Reynard team*
+> _🦊 Built with cunning agility by the Reynard team_

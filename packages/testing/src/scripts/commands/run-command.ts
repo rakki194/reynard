@@ -77,7 +77,7 @@ const handleRunCommand = async (options: RunCommandOptions): Promise<void> => {
 
 export const createRunCommand = (): Command => {
   const command = new Command("run");
-  
+
   command
     .description("Run i18n tests for all enabled packages")
     .option(

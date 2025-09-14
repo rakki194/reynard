@@ -61,9 +61,7 @@ export const ServiceManagementSettings: Component<
       setEnableNotifications(
         settings.getSetting("services.enable_notifications") || true,
       );
-      setEnableLogging(
-        settings.getSetting("services.enable_logging") || true,
-      );
+      setEnableLogging(settings.getSetting("services.enable_logging") || true);
       setLogLevel(settings.getSetting("services.log_level") || "info");
     } catch (error) {
       console.error("Failed to load service management settings:", error);
@@ -76,10 +74,7 @@ export const ServiceManagementSettings: Component<
     setIsSaving(true);
     try {
       await settings.setSetting("services.auto_refresh", autoRefresh());
-      await settings.setSetting(
-        "services.refresh_interval",
-        refreshInterval(),
-      );
+      await settings.setSetting("services.refresh_interval", refreshInterval());
       await settings.setSetting(
         "services.enable_health_checks",
         enableHealthChecks(),
@@ -159,7 +154,6 @@ export const ServiceManagementSettings: Component<
                   setRefreshInterval(parseInt(value) || 5000)
                 }
                 helperText="How often to refresh service status (in milliseconds)"
-               
                 disabled={!autoRefresh()}
               />
             </div>
@@ -182,7 +176,6 @@ export const ServiceManagementSettings: Component<
                   setHealthCheckInterval(parseInt(value) || 30000)
                 }
                 helperText="How often to perform health checks (in milliseconds)"
-               
                 disabled={!enableHealthChecks()}
               />
             </div>
@@ -210,9 +203,10 @@ export const ServiceManagementSettings: Component<
                   label="Restart Delay (ms)"
                   type="number"
                   value={restartDelay()}
-                  onChange={(e) => setRestartDelay(parseInt(e.target.value) || 5000)}
+                  onChange={(e) =>
+                    setRestartDelay(parseInt(e.target.value) || 5000)
+                  }
                   helperText="Delay before attempting to restart a failed service"
-                 
                 />
               </div>
 
@@ -225,7 +219,6 @@ export const ServiceManagementSettings: Component<
                     setMaxRestartAttempts(parseInt(value) || 3)
                   }
                   helperText="Maximum number of restart attempts before giving up"
-                 
                 />
               </div>
             </Show>

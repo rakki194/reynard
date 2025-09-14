@@ -104,7 +104,7 @@ interface ReynardProviderProps {
 }
 ```
 
-> *Props:*
+> _Props:_
 
 - `defaultTheme`: Initial theme (default: "light")
 - `defaultLocale`: Initial language (default: "en")
@@ -124,7 +124,7 @@ interface ThemeContext {
 }
 ```
 
-> *Returns:*
+> _Returns:_
 
 - `theme`: Current theme signal
 - `setTheme`: Function to change theme
@@ -146,7 +146,7 @@ interface TranslationContext {
 }
 ```
 
-> *Returns:*
+> _Returns:_
 
 - `t`: Translation function with type safety
 - `locale`: Current locale signal

@@ -1,5 +1,4 @@
-Installation
-============
+# Installation
 
 This document describes how to install [actionlint](../docs).
 
@@ -88,6 +87,7 @@ Prebuilt binaries are built at each release by CI for the following OS and arch:
 Note: `darwin/arm64` and `windows/arm64` target binaries are not tested since the author doesn't have the environments.
 
 <a name="download-script"></a>
+
 ## Download script
 
 To install `actionlint` executable with one command, [the download script](../scripts/download-actionlint.bash) is available.

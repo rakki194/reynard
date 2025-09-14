@@ -8,7 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   resetBrowserMocks,
   setupBrowserMocks,
-  } from "../mocks/browser-mocks.js";
+} from "../mocks/browser-mocks.js";
 import {
   renderWithAppContext,
   renderWithProviders,

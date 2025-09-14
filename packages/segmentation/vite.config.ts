@@ -15,7 +15,7 @@ export default defineConfig({
         "solid-js/web",
         "solid-js/store",
         "reynard-ai-shared",
-        "reynard-algorithms", 
+        "reynard-algorithms",
         "reynard-annotating-core",
         "reynard-floating-panel",
         "reynard-caption",
@@ -38,9 +38,3 @@ export default defineConfig({
     },
   },
 });
-
-
-
-
-
-

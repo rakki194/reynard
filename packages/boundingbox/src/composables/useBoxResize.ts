@@ -42,7 +42,11 @@ export interface UseBoxResizeReturn {
   resizingBoxId: () => string | null;
   resizeState: () => any;
   handles: () => ResizeHandle[];
-  startResize: (boxId: string, handle: string, startDimensions: ResizeDimensions) => void;
+  startResize: (
+    boxId: string,
+    handle: string,
+    startDimensions: ResizeDimensions,
+  ) => void;
   updateResize: (dimensions: ResizeDimensions) => void;
   endResize: () => void;
   cancelResize: () => void;
@@ -70,25 +74,25 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
 
   const handles = (): ResizeHandle[] => {
     const handleList: ResizeHandle[] = [];
-    
+
     if (enableCornerHandles) {
       handleList.push(
         { position: "bottom-right", cursor: "se-resize" },
         { position: "bottom-left", cursor: "sw-resize" },
         { position: "top-right", cursor: "ne-resize" },
-        { position: "top-left", cursor: "nw-resize" }
+        { position: "top-left", cursor: "nw-resize" },
       );
     }
-    
+
     if (enableEdgeHandles) {
       handleList.push(
         { position: "top", cursor: "n-resize" },
         { position: "bottom", cursor: "s-resize" },
         { position: "left", cursor: "w-resize" },
-        { position: "right", cursor: "e-resize" }
+        { position: "right", cursor: "e-resize" },
       );
     }
-    
+
     return handleList;
   };
 
@@ -107,12 +111,18 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
     if (enableProportionalResizing && resizeState()) {
       const originalState = resizeState();
       if (originalState.originalDimensions) {
-        const aspectRatio = originalState.originalDimensions.width / originalState.originalDimensions.height;
-        
+        const aspectRatio =
+          originalState.originalDimensions.width /
+          originalState.originalDimensions.height;
+
         // Determine which dimension changed more
-        const widthChange = Math.abs(width - originalState.originalDimensions.width);
-        const heightChange = Math.abs(height - originalState.originalDimensions.height);
-        
+        const widthChange = Math.abs(
+          width - originalState.originalDimensions.width,
+        );
+        const heightChange = Math.abs(
+          height - originalState.originalDimensions.height,
+        );
+
         if (widthChange > heightChange) {
           height = width / aspectRatio;
         } else {
@@ -124,7 +134,11 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
     return { width, height, x, y };
   };
 
-  const startResize = (boxId: string, handle: string, startDimensions: ResizeDimensions) => {
+  const startResize = (
+    boxId: string,
+    handle: string,
+    startDimensions: ResizeDimensions,
+  ) => {
     setIsResizing(true);
     setResizingBoxId(boxId);
     setResizeState({
@@ -141,7 +155,7 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
     if (!isResizing() || !resizeState()) return;
 
     const constrainedDimensions = applyConstraints(dimensions);
-    
+
     setResizeState((prev: any) => ({
       ...prev,
       currentDimensions: constrainedDimensions,
@@ -153,8 +167,9 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
   const endResize = () => {
     if (!isResizing() || !resizeState()) return;
 
-    const finalDimensions = resizeState().currentDimensions || resizeState().startDimensions;
-    
+    const finalDimensions =
+      resizeState().currentDimensions || resizeState().startDimensions;
+
     onResizeEnd?.(resizingBoxId()!, finalDimensions);
 
     // Clean up state

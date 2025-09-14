@@ -12,10 +12,13 @@ describe("Throttle Extended Coverage", () => {
   describe("throttle - Advanced Scenarios", () => {
     it("should handle leading edge execution with immediate call", () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const throttled = throttle(mockFn, 100, { leading: true, trailing: false });
+      const throttled = throttle(mockFn, 100, {
+        leading: true,
+        trailing: false,
+      });
 
       const result = throttled("arg1");
-      
+
       expect(result).toBe("result");
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
@@ -23,57 +26,70 @@ describe("Throttle Extended Coverage", () => {
 
     it("should handle trailing edge execution only", async () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const throttled = throttle(mockFn, 100, { leading: false, trailing: true });
+      const throttled = throttle(mockFn, 100, {
+        leading: false,
+        trailing: true,
+      });
 
       const result1 = throttled("arg1");
       const result2 = throttled("arg2");
-      
+
       expect(result1).toBeUndefined();
       expect(result2).toBeUndefined();
       expect(mockFn).not.toHaveBeenCalled();
 
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       expect(mockFn).toHaveBeenCalledWith("arg2");
       expect(mockFn).toHaveBeenCalledTimes(1);
     });
 
     it("should handle maxWait option", async () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const throttled = throttle(mockFn, 100, { leading: true, trailing: true, maxWait: 50 });
+      const throttled = throttle(mockFn, 100, {
+        leading: true,
+        trailing: true,
+        maxWait: 50,
+      });
 
       throttled("arg1");
-      await new Promise(resolve => setTimeout(resolve, 30));
+      await new Promise((resolve) => setTimeout(resolve, 30));
       throttled("arg2");
-      
+
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
 
-      await new Promise(resolve => setTimeout(resolve, 20)); // Total 50ms, should trigger maxWait
-      
+      await new Promise((resolve) => setTimeout(resolve, 20)); // Total 50ms, should trigger maxWait
+
       expect(mockFn).toHaveBeenCalledWith("arg2");
       expect(mockFn).toHaveBeenCalledTimes(2);
     });
 
     it("should handle cancel method", async () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const throttled = throttle(mockFn, 100, { leading: false, trailing: true });
+      const throttled = throttle(mockFn, 100, {
+        leading: false,
+        trailing: true,
+      });
 
       throttled("arg1");
       throttled.cancel();
-      
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       expect(mockFn).not.toHaveBeenCalled();
     });
 
     it("should handle flush method with pending calls", () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const throttled = throttle(mockFn, 100, { leading: false, trailing: true });
+      const throttled = throttle(mockFn, 100, {
+        leading: false,
+        trailing: true,
+      });
 
       throttled("arg1");
       const result = throttled.flush();
-      
+
       expect(result).toBe("result");
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
@@ -81,11 +97,14 @@ describe("Throttle Extended Coverage", () => {
 
     it("should handle flush method without pending calls", () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const throttled = throttle(mockFn, 100, { leading: true, trailing: true });
+      const throttled = throttle(mockFn, 100, {
+        leading: true,
+        trailing: true,
+      });
 
       const result1 = throttled("arg1");
       const result2 = throttled.flush();
-      
+
       expect(result1).toBe("result");
       expect(result2).toBe("result");
       expect(mockFn).toHaveBeenCalledTimes(1);
@@ -93,20 +112,23 @@ describe("Throttle Extended Coverage", () => {
 
     it("should handle multiple rapid calls with leading and trailing", async () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const throttled = throttle(mockFn, 100, { leading: true, trailing: true });
+      const throttled = throttle(mockFn, 100, {
+        leading: true,
+        trailing: true,
+      });
 
       const result1 = throttled("arg1");
       const result2 = throttled("arg2");
       const result3 = throttled("arg3");
-      
+
       expect(result1).toBe("result");
       expect(result2).toBe("result");
       expect(result3).toBe("result");
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
 
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       expect(mockFn).toHaveBeenCalledWith("arg3");
       expect(mockFn).toHaveBeenCalledTimes(2);
     });
@@ -117,7 +139,7 @@ describe("Throttle Extended Coverage", () => {
 
       const result1 = throttled("arg1");
       const result2 = throttled("arg2");
-      
+
       expect(result1).toBe("result");
       expect(result2).toBe("result");
       expect(mockFn).toHaveBeenCalledWith("arg1");
@@ -129,10 +151,13 @@ describe("Throttle Extended Coverage", () => {
   describe("debounce - Advanced Scenarios", () => {
     it("should handle leading edge execution with immediate call", () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const debounced = debounce(mockFn, 100, { leading: true, trailing: false });
+      const debounced = debounce(mockFn, 100, {
+        leading: true,
+        trailing: false,
+      });
 
       const result = debounced("arg1");
-      
+
       expect(result).toBe("result");
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
@@ -140,57 +165,70 @@ describe("Throttle Extended Coverage", () => {
 
     it("should handle trailing edge execution only", async () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const debounced = debounce(mockFn, 100, { leading: false, trailing: true });
+      const debounced = debounce(mockFn, 100, {
+        leading: false,
+        trailing: true,
+      });
 
       const result1 = debounced("arg1");
       const result2 = debounced("arg2");
-      
+
       expect(result1).toBeUndefined();
       expect(result2).toBeUndefined();
       expect(mockFn).not.toHaveBeenCalled();
 
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       expect(mockFn).toHaveBeenCalledWith("arg2");
       expect(mockFn).toHaveBeenCalledTimes(1);
     });
 
     it("should handle maxWait option", async () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const debounced = debounce(mockFn, 100, { leading: true, trailing: true, maxWait: 50 });
+      const debounced = debounce(mockFn, 100, {
+        leading: true,
+        trailing: true,
+        maxWait: 50,
+      });
 
       debounced("arg1");
-      await new Promise(resolve => setTimeout(resolve, 30));
+      await new Promise((resolve) => setTimeout(resolve, 30));
       debounced("arg2");
-      
+
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
 
-      await new Promise(resolve => setTimeout(resolve, 20)); // Total 50ms, should trigger maxWait
-      
+      await new Promise((resolve) => setTimeout(resolve, 20)); // Total 50ms, should trigger maxWait
+
       expect(mockFn).toHaveBeenCalledWith("arg2");
       expect(mockFn).toHaveBeenCalledTimes(2);
     });
 
     it("should handle cancel method", async () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const debounced = debounce(mockFn, 100, { leading: false, trailing: true });
+      const debounced = debounce(mockFn, 100, {
+        leading: false,
+        trailing: true,
+      });
 
       debounced("arg1");
       debounced.cancel();
-      
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       expect(mockFn).not.toHaveBeenCalled();
     });
 
     it("should handle flush method with pending calls", () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const debounced = debounce(mockFn, 100, { leading: false, trailing: true });
+      const debounced = debounce(mockFn, 100, {
+        leading: false,
+        trailing: true,
+      });
 
       debounced("arg1");
       const result = debounced.flush();
-      
+
       expect(result).toBe("result");
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
@@ -198,32 +236,38 @@ describe("Throttle Extended Coverage", () => {
 
     it("should handle flush method without pending calls", () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const debounced = debounce(mockFn, 100, { leading: true, trailing: true });
+      const debounced = debounce(mockFn, 100, {
+        leading: true,
+        trailing: true,
+      });
 
       const result1 = debounced("arg1");
       const result2 = debounced.flush();
-      
+
       expect(result1).toBe("result");
       expect(result2).toBe("result");
       expect(mockFn).toHaveBeenCalledTimes(1);
     });
 
-    it("should handle multiple rapid calls with leading and trailing", () => {
+    it("should handle multiple rapid calls with leading and trailing", async () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const debounced = debounce(mockFn, 100, { leading: true, trailing: true });
+      const debounced = debounce(mockFn, 100, {
+        leading: true,
+        trailing: true,
+      });
 
       const result1 = debounced("arg1");
       const result2 = debounced("arg2");
       const result3 = debounced("arg3");
-      
+
       expect(result1).toBe("result");
       expect(result2).toBe("result");
       expect(result3).toBe("result");
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
 
-      vi.advanceTimersByTime(100);
-      
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
       expect(mockFn).toHaveBeenCalledWith("arg3");
       expect(mockFn).toHaveBeenCalledTimes(2);
     });
@@ -234,7 +278,7 @@ describe("Throttle Extended Coverage", () => {
 
       const result1 = debounced("arg1");
       const result2 = debounced("arg2");
-      
+
       expect(result1).toBe("result");
       expect(result2).toBe("result");
       expect(mockFn).toHaveBeenCalledWith("arg1");
@@ -242,9 +286,13 @@ describe("Throttle Extended Coverage", () => {
       expect(mockFn).toHaveBeenCalledTimes(2);
     });
 
-    it("should handle complex timing scenarios", () => {
+    it("should handle complex timing scenarios", async () => {
       const mockFn = vi.fn().mockReturnValue("result");
-      const debounced = debounce(mockFn, 100, { leading: true, trailing: true, maxWait: 150 });
+      const debounced = debounce(mockFn, 100, {
+        leading: true,
+        trailing: true,
+        maxWait: 150,
+      });
 
       // First call - should execute immediately (leading)
       const result1 = debounced("arg1");
@@ -253,16 +301,16 @@ describe("Throttle Extended Coverage", () => {
       expect(mockFn).toHaveBeenCalledTimes(1);
 
       // Rapid calls within wait period
-      vi.advanceTimersByTime(50);
+      await new Promise((resolve) => setTimeout(resolve, 50));
       debounced("arg2");
-      vi.advanceTimersByTime(30);
+      await new Promise((resolve) => setTimeout(resolve, 30));
       debounced("arg3");
-      
+
       // Should not execute yet
       expect(mockFn).toHaveBeenCalledTimes(1);
 
       // Advance to trigger maxWait
-      vi.advanceTimersByTime(70); // Total 150ms
+      await new Promise((resolve) => setTimeout(resolve, 70)); // Total 150ms
       expect(mockFn).toHaveBeenCalledWith("arg3");
       expect(mockFn).toHaveBeenCalledTimes(2);
     });

@@ -23,7 +23,10 @@ export {
 } from "../../security/input-validation";
 
 // File validation utilities (consolidated)
-export { isValidFileType, isValidFileSize } from "../../security/file-validation";
+export {
+  isValidFileType,
+  isValidFileSize,
+} from "../../security/file-validation";
 
 // Financial validation utilities
 export { isValidCreditCard, isValidPostalCode, isValidSSN } from "./financial";

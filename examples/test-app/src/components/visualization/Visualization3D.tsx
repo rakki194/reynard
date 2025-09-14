@@ -26,16 +26,15 @@ export const Visualization3D: Component<Visualization3DProps> = (props) => {
   // Process data when props change
   const processedDataMemo = createMemo(() => {
     if (!props.data.length) return null;
-    
+
     const processed = DataProcessor.processData(props.data, {
       normalize: true,
       enableClustering: true,
       clusterCount: 5,
     });
-    
+
     return processed;
   });
-
 
   // Animation controls
   const startAnimation = () => {

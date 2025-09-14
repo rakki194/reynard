@@ -151,9 +151,12 @@ export const PieChart: Component<PieChartProps> = (props) => {
   createEffect(() => {
     if (local.labels && local.data && local.data.length > 0) {
       if (local.labels.length === local.data.length) {
-        const colors = local.colors || generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 0.8);
+        const colors =
+          local.colors ||
+          generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 0.8);
         const borderColors =
-          local.colors || generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 1);
+          local.colors ||
+          generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 1);
 
         const dataset: Dataset = {
           label: "Data",
@@ -337,7 +340,10 @@ export const PieChart: Component<PieChartProps> = (props) => {
       </Show>
 
       <Show when={!local.loading && chartData()}>
-        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>                                                                         
+        <div
+          class="reynard-chart-container"
+          style={{ position: "relative", width: "100%", height: "100%" }}
+        >
           <canvas
             ref={canvasRef}
             width={local.width}

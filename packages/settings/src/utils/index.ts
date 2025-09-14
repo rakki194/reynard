@@ -112,7 +112,9 @@ export function migrateSettings(
 /**
  * Validate settings schema
  */
-export function validateSettingsSchema(schema: SettingsSchema): ValidationResult {
+export function validateSettingsSchema(
+  schema: SettingsSchema,
+): ValidationResult {
   const errors: string[] = [];
 
   for (const [key, definition] of Object.entries(schema)) {
@@ -126,8 +128,12 @@ export function validateSettingsSchema(schema: SettingsSchema): ValidationResult
 
     if (definition.validation) {
       const { minLength, maxLength, min, max } = definition.validation;
-      
-      if (minLength !== undefined && maxLength !== undefined && minLength > maxLength) {
+
+      if (
+        minLength !== undefined &&
+        maxLength !== undefined &&
+        minLength > maxLength
+      ) {
         errors.push(`Setting '${key}' has invalid length constraints`);
       }
 
@@ -188,8 +194,8 @@ export function isSettingVisible(
     return true;
   }
 
-  return definition.conditions.every(condition => 
-    evaluateCondition(condition, settings)
+  return definition.conditions.every((condition) =>
+    evaluateCondition(condition, settings),
   );
 }
 
@@ -214,7 +220,9 @@ export function isSettingEnabled(
 /**
  * Get default values for all settings in a schema
  */
-export function getDefaultSettings(schema: SettingsSchema): Record<string, any> {
+export function getDefaultSettings(
+  schema: SettingsSchema,
+): Record<string, any> {
   const defaults: Record<string, any> = {};
 
   for (const [key, definition] of Object.entries(schema)) {
@@ -255,7 +263,9 @@ export function deserializeSettings(data: string): Record<string, any> {
   try {
     return JSON.parse(data);
   } catch (error) {
-    throw new Error(`Failed to deserialize settings: ${error instanceof Error ? error.message : "Unknown error"}`);
+    throw new Error(
+      `Failed to deserialize settings: ${error instanceof Error ? error.message : "Unknown error"}`,
+    );
   }
 }
 
@@ -272,38 +282,40 @@ export const SettingValidationSchemas = {
     required: true,
     errorMessage: "Must be a valid email address",
   },
-  
+
   password: {
     type: "string" as const,
     required: true,
     minLength: 8,
     maxLength: 128,
     pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-    errorMessage: "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
+    errorMessage:
+      "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
   },
-  
+
   url: {
     type: "url" as const,
     required: true,
     errorMessage: "Must be a valid URL",
   },
-  
+
   theme: {
     type: "string" as const,
     required: true,
     enum: ["light", "dark", "auto"],
     errorMessage: "Theme must be light, dark, or auto",
   },
-  
+
   language: {
     type: "string" as const,
     required: true,
     minLength: 2,
     maxLength: 5,
     pattern: /^[a-z]{2}(-[A-Z]{2})?$/,
-    errorMessage: "Language must be a valid locale code (e.g., 'en' or 'en-US')",
+    errorMessage:
+      "Language must be a valid locale code (e.g., 'en' or 'en-US')",
   },
-  
+
   port: {
     type: "number" as const,
     required: true,
@@ -311,7 +323,7 @@ export const SettingValidationSchemas = {
     max: 65535,
     errorMessage: "Port must be between 1 and 65535",
   },
-  
+
   timeout: {
     type: "number" as const,
     required: true,

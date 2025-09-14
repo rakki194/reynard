@@ -24,7 +24,7 @@ export const Toggle: Component<ToggleProps> = (props) => {
     "size",
     "class",
     "aria-label",
-    "id"
+    "id",
   ]);
 
   const handleChange = (event: Event) => {

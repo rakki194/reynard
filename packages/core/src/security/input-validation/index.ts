@@ -7,7 +7,12 @@
 export { sanitizeHTML } from "./html";
 
 // URL validation utilities
-export { validateURL, validateEmail, validatePhoneNumber, isValidUrl } from "./url";
+export {
+  validateURL,
+  validateEmail,
+  validatePhoneNumber,
+  isValidUrl,
+} from "./url";
 
 // Password validation utilities
 export { validatePassword } from "./password";

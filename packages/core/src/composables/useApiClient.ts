@@ -1,11 +1,15 @@
 /**
  * useApiClient Composable
- * 
+ *
  * Provides a reactive API client for SolidJS applications
  */
 
 import { createSignal, createEffect, onCleanup } from "solid-js";
-import { ApiClient, type ApiClientConfig, type HealthStatus } from "../clients/api-client.js";
+import {
+  ApiClient,
+  type ApiClientConfig,
+  type HealthStatus,
+} from "../clients/api-client.js";
 
 export interface UseApiClientOptions extends Partial<ApiClientConfig> {
   autoHealthCheck?: boolean;
@@ -26,10 +30,14 @@ export interface UseApiClientReturn {
 /**
  * Creates a reactive API client with health monitoring
  */
-export function useApiClient(options: UseApiClientOptions = {}): UseApiClientReturn {
+export function useApiClient(
+  options: UseApiClientOptions = {},
+): UseApiClientReturn {
   const [client, setClient] = createSignal<ApiClient | null>(null);
   const [isConnected, setIsConnected] = createSignal(false);
-  const [healthStatus, setHealthStatus] = createSignal<HealthStatus | null>(null);
+  const [healthStatus, setHealthStatus] = createSignal<HealthStatus | null>(
+    null,
+  );
   const [error, setError] = createSignal<string | null>(null);
   const [isLoading, setIsLoading] = createSignal(false);
 
@@ -59,7 +67,9 @@ export function useApiClient(options: UseApiClientOptions = {}): UseApiClientRet
               timestamp: Date.now(),
               serviceName: this.config.serviceName,
               version: this.config.version,
-              details: { error: err instanceof Error ? err.message : "Unknown error" },
+              details: {
+                error: err instanceof Error ? err.message : "Unknown error",
+              },
             };
           }
         }
@@ -84,7 +94,9 @@ export function useApiClient(options: UseApiClientOptions = {}): UseApiClientRet
             setHealthStatus(health);
             setIsConnected(health.isHealthy);
           } catch (err) {
-            setError(err instanceof Error ? err.message : "Health check failed");
+            setError(
+              err instanceof Error ? err.message : "Health check failed",
+            );
             setIsConnected(false);
           }
         }, interval);
@@ -113,7 +125,7 @@ export function useApiClient(options: UseApiClientOptions = {}): UseApiClientRet
     if (!currentClient) {
       throw new Error("Client not connected");
     }
-    
+
     try {
       // Cast to any to access the healthCheck method we added
       const health = await (currentClient as any).healthCheck();
@@ -121,7 +133,8 @@ export function useApiClient(options: UseApiClientOptions = {}): UseApiClientRet
       setIsConnected(health.isHealthy);
       return health;
     } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : "Health check failed";
+      const errorMsg =
+        err instanceof Error ? err.message : "Health check failed";
       setError(errorMsg);
       setIsConnected(false);
       throw err;

@@ -12,9 +12,7 @@ import {
   getServiceRegistry,
   ServiceError,
 } from "reynard-ai-shared";
-import {
-  AnnotationServiceRegistry,
-} from "reynard-annotating-core";
+import { AnnotationServiceRegistry } from "reynard-annotating-core";
 import {
   SegmentationService,
   SegmentationServiceConfig,
@@ -57,10 +55,12 @@ export class SegmentationManager implements ISegmentationManager {
 
   constructor(
     serviceRegistry?: ServiceRegistry,
-    annotationServiceRegistry?: AnnotationServiceRegistry
+    annotationServiceRegistry?: AnnotationServiceRegistry,
   ) {
     this.serviceRegistry = serviceRegistry || getServiceRegistry();
-    this.annotationServiceRegistry = annotationServiceRegistry || new AnnotationServiceRegistry(this.serviceRegistry);
+    this.annotationServiceRegistry =
+      annotationServiceRegistry ||
+      new AnnotationServiceRegistry(this.serviceRegistry);
   }
 
   // ========================================================================
@@ -78,13 +78,13 @@ export class SegmentationManager implements ISegmentationManager {
     try {
       // Initialize the service registry
       await this.serviceRegistry.initialize();
-      
+
       // Initialize the annotation service registry
       await this.annotationServiceRegistry.initialize();
-      
+
       // Register default segmentation services
       await this.registerDefaultServices();
-      
+
       this.isInitialized = true;
       console.log("🦊 Segmentation manager initialized successfully");
     } catch (error) {
@@ -93,7 +93,7 @@ export class SegmentationManager implements ISegmentationManager {
       console.error("Failed to initialize segmentation manager:", error);
       throw new ServiceError(
         `Segmentation manager initialization failed: ${this.lastError}`,
-        "MANAGER_INITIALIZATION_ERROR"
+        "MANAGER_INITIALIZATION_ERROR",
       );
     }
   }
@@ -126,11 +126,11 @@ export class SegmentationManager implements ISegmentationManager {
    */
   async getStatistics(): Promise<SegmentationStatistics> {
     await this.ensureInitialized();
-    
+
     // Update statistics from all services
     await this.updateStatistics();
-    
-    return { 
+
+    return {
       ...this.statistics,
       errorCount: this.errorCount,
       lastError: this.lastError,
@@ -151,10 +151,10 @@ export class SegmentationManager implements ISegmentationManager {
           console.error(`Failed to cleanup service ${name}:`, error);
         }
       }
-      
+
       this.segmentationServices.clear();
       this.isInitialized = false;
-      
+
       console.log("🦊 Segmentation manager cleaned up successfully");
     } catch (error) {
       console.error("Error during segmentation manager cleanup:", error);
@@ -170,29 +170,32 @@ export class SegmentationManager implements ISegmentationManager {
    */
   async registerSegmentationService(
     name: string,
-    config: SegmentationServiceConfig
+    config: SegmentationServiceConfig,
   ): Promise<SegmentationService> {
     await this.ensureInitialized();
-    
+
     if (this.segmentationServices.has(name)) {
       throw new Error(`Segmentation service '${name}' is already registered`);
     }
-    
+
     try {
       // Create and initialize the service
       const service = new SegmentationService(config);
       await service.initialize();
-      
+
       // Register with the service registry
       this.serviceRegistry.registerService(name, service);
-      
+
       // Store in our local map
       this.segmentationServices.set(name, service);
-      
+
       console.log(`🦊 Registered segmentation service: ${name}`);
       return service;
     } catch (error) {
-      console.error(`Failed to register segmentation service '${name}':`, error);
+      console.error(
+        `Failed to register segmentation service '${name}':`,
+        error,
+      );
       throw error;
     }
   }
@@ -206,20 +209,23 @@ export class SegmentationManager implements ISegmentationManager {
       console.warn(`Segmentation service '${name}' is not registered`);
       return;
     }
-    
+
     try {
       // Cleanup the service
       await service.cleanup();
-      
+
       // Unregister from service registry
       this.serviceRegistry.unregisterService(name);
-      
+
       // Remove from local map
       this.segmentationServices.delete(name);
-      
+
       console.log(`🦊 Unregistered segmentation service: ${name}`);
     } catch (error) {
-      console.error(`Failed to unregister segmentation service '${name}':`, error);
+      console.error(
+        `Failed to unregister segmentation service '${name}':`,
+        error,
+      );
       throw error;
     }
   }
@@ -231,20 +237,22 @@ export class SegmentationManager implements ISegmentationManager {
   /**
    * Generate segmentation using the best available service
    */
-  async generateSegmentation(task: SegmentationTask): Promise<SegmentationResult> {
+  async generateSegmentation(
+    task: SegmentationTask,
+  ): Promise<SegmentationResult> {
     await this.ensureInitialized();
-    
+
     const service = this.getBestAvailableService();
     if (!service) {
       throw new Error("No segmentation services are available");
     }
-    
+
     try {
       const result = await service.generateSegmentation(task);
-      
+
       // Update statistics
       this.updateStatisticsFromResult(result);
-      
+
       return result;
     } catch (error) {
       console.error("Failed to generate segmentation:", error);
@@ -257,23 +265,26 @@ export class SegmentationManager implements ISegmentationManager {
    */
   async generateBatchSegmentations(
     tasks: SegmentationTask[],
-    progressCallback?: (progress: number) => void
+    progressCallback?: (progress: number) => void,
   ): Promise<SegmentationResult[]> {
     await this.ensureInitialized();
-    
+
     const service = this.getBestAvailableService();
     if (!service) {
       throw new Error("No segmentation services are available");
     }
-    
+
     try {
-      const results = await service.generateBatchSegmentations(tasks, progressCallback);
-      
+      const results = await service.generateBatchSegmentations(
+        tasks,
+        progressCallback,
+      );
+
       // Update statistics
       for (const result of results) {
         this.updateStatisticsFromResult(result);
       }
-      
+
       return results;
     } catch (error) {
       console.error("Failed to generate batch segmentations:", error);
@@ -286,21 +297,21 @@ export class SegmentationManager implements ISegmentationManager {
    */
   async refineSegmentation(
     segmentation: SegmentationData,
-    options?: SegmentationOptions
+    options?: SegmentationOptions,
   ): Promise<SegmentationResult> {
     await this.ensureInitialized();
-    
+
     const service = this.getBestAvailableService();
     if (!service) {
       throw new Error("No segmentation services are available");
     }
-    
+
     try {
       const result = await service.refineSegmentation(segmentation, options);
-      
+
       // Update statistics
       this.updateStatisticsFromResult(result);
-      
+
       return result;
     } catch (error) {
       console.error("Failed to refine segmentation:", error);
@@ -316,7 +327,7 @@ export class SegmentationManager implements ISegmentationManager {
     if (!service) {
       return false;
     }
-    
+
     return service.validateSegmentation(segmentation);
   }
 
@@ -325,16 +336,16 @@ export class SegmentationManager implements ISegmentationManager {
    */
   exportSegmentation(
     segmentation: SegmentationData,
-    format: SegmentationExportFormat
+    format: SegmentationExportFormat,
   ): SegmentationExportData {
     const service = this.getBestAvailableService();
     if (!service) {
       throw new Error("No segmentation services are available");
     }
-    
+
     try {
       const data = service.exportSegmentation(segmentation, format);
-      
+
       return {
         format,
         data,
@@ -358,10 +369,10 @@ export class SegmentationManager implements ISegmentationManager {
     if (!service) {
       throw new Error("No segmentation services are available");
     }
-    
+
     try {
       const segmentation = service.importSegmentation(data.data);
-      
+
       // Update statistics
       this.statistics.totalSegmentations++;
       if (segmentation.metadata?.source === "manual") {
@@ -369,7 +380,7 @@ export class SegmentationManager implements ISegmentationManager {
       } else if (segmentation.metadata?.source === "ai_generated") {
         this.statistics.aiGeneratedSegmentations++;
       }
-      
+
       return segmentation;
     } catch (error) {
       console.error("Failed to import segmentation:", error);
@@ -406,9 +417,9 @@ export class SegmentationManager implements ISegmentationManager {
         timeout: 30000,
         retries: 3,
       };
-      
+
       await this.registerSegmentationService("default", defaultConfig);
-      
+
       console.log("🦊 Registered default segmentation service");
     } catch (error) {
       console.error("Failed to register default services:", error);
@@ -427,7 +438,7 @@ export class SegmentationManager implements ISegmentationManager {
         return service;
       }
     }
-    
+
     return undefined;
   }
 
@@ -438,63 +449,76 @@ export class SegmentationManager implements ISegmentationManager {
     if (!result.success || !result.segmentation) {
       return;
     }
-    
+
     const segmentation = result.segmentation;
-    
+
     // Update total count
     this.statistics.totalSegmentations++;
-    
+
     // Update source-specific counts
     if (segmentation.metadata?.source === "manual") {
       this.statistics.manualSegmentations++;
     } else if (segmentation.metadata?.source === "ai_generated") {
       this.statistics.aiGeneratedSegmentations++;
     }
-    
+
     // Update processing time
     if (result.processingInfo) {
       const processingTime = result.processingInfo.processingTime;
-      this.statistics.averageProcessingTime = 
-        (this.statistics.averageProcessingTime * (this.statistics.totalSegmentations - 1) + processingTime) /
+      this.statistics.averageProcessingTime =
+        (this.statistics.averageProcessingTime *
+          (this.statistics.totalSegmentations - 1) +
+          processingTime) /
         this.statistics.totalSegmentations;
     }
-    
+
     // Update quality metrics
     if (result.processingInfo?.qualityMetrics) {
       const metrics = result.processingInfo.qualityMetrics;
-      
+
       // Update average confidence
       if (segmentation.metadata?.confidence !== undefined) {
-        this.statistics.qualityMetrics.averageConfidence = 
-          (this.statistics.qualityMetrics.averageConfidence * (this.statistics.totalSegmentations - 1) + segmentation.metadata.confidence) /
+        this.statistics.qualityMetrics.averageConfidence =
+          (this.statistics.qualityMetrics.averageConfidence *
+            (this.statistics.totalSegmentations - 1) +
+            segmentation.metadata.confidence) /
           this.statistics.totalSegmentations;
       }
-      
+
       // Update average complexity
-      this.statistics.qualityMetrics.averageComplexity = 
-        (this.statistics.qualityMetrics.averageComplexity * (this.statistics.totalSegmentations - 1) + metrics.complexity) /
+      this.statistics.qualityMetrics.averageComplexity =
+        (this.statistics.qualityMetrics.averageComplexity *
+          (this.statistics.totalSegmentations - 1) +
+          metrics.complexity) /
         this.statistics.totalSegmentations;
-      
+
       // Update average area
-      this.statistics.qualityMetrics.averageArea = 
-        (this.statistics.qualityMetrics.averageArea * (this.statistics.totalSegmentations - 1) + metrics.area) /
+      this.statistics.qualityMetrics.averageArea =
+        (this.statistics.qualityMetrics.averageArea *
+          (this.statistics.totalSegmentations - 1) +
+          metrics.area) /
         this.statistics.totalSegmentations;
     }
-    
+
     // Update category statistics
     if (segmentation.metadata?.category) {
       const category = segmentation.metadata.category;
-      const existingCategory = this.statistics.topCategories.find(c => c.category === category);
-      
+      const existingCategory = this.statistics.topCategories.find(
+        (c) => c.category === category,
+      );
+
       if (existingCategory) {
         existingCategory.count++;
       } else {
         this.statistics.topCategories.push({ category, count: 1 });
       }
-      
+
       // Sort by count and keep top 10
       this.statistics.topCategories.sort((a, b) => b.count - a.count);
-      this.statistics.topCategories = this.statistics.topCategories.slice(0, 10);
+      this.statistics.topCategories = this.statistics.topCategories.slice(
+        0,
+        10,
+      );
     }
   }
 
@@ -530,4 +554,3 @@ export async function initializeSegmentationManager(): Promise<SegmentationManag
   await manager.initialize();
   return manager;
 }
-

@@ -326,7 +326,10 @@ export const LineChart: Component<LineChartProps> = (props) => {
         </Show>
 
         <Show when={!local.loading && chartData()}>
-          <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>                                                                       
+          <div
+            class="reynard-chart-container"
+            style={{ position: "relative", width: "100%", height: "100%" }}
+          >
             <canvas
               ref={canvasRef}
               width={local.width}

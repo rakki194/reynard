@@ -52,14 +52,11 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("JWT Security Testing", () => {
     test("should test JWT secret key vulnerabilities", async () => {
-      const result = await runFenrirExploit(
-        "jwt_exploits.secret_key_attack",
-        {
-          target: config.backendUrl,
-          verbose: config.verbose,
-          destructive: config.destructive,
-        },
-      );
+      const result = await runFenrirExploit("jwt_exploits.secret_key_attack", {
+        target: config.backendUrl,
+        verbose: config.verbose,
+        destructive: config.destructive,
+      });
 
       expect(result.success).toBeDefined();
       expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
@@ -178,14 +175,11 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("Rate Limiting Testing", () => {
     test("should test rate limiting bypass", async () => {
-      const result = await runFenrirExploit(
-        "rate_limiting.rate_limit_bypass",
-        {
-          target: config.backendUrl,
-          verbose: config.verbose,
-          destructive: config.destructive,
-        },
-      );
+      const result = await runFenrirExploit("rate_limiting.rate_limit_bypass", {
+        target: config.backendUrl,
+        verbose: config.verbose,
+        destructive: config.destructive,
+      });
 
       expect(result.success).toBeDefined();
       expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
@@ -246,7 +240,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
       expect(result.success).toBeDefined();
       expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
     }, 200000); // 3.5 minute test timeout
-    
+
     test("should run specialized endpoint fuzzing", async () => {
       const result = await runFenrirExploit("fuzzing.endpoint_fuzzer", {
         target: config.backendUrl,
@@ -383,7 +377,9 @@ async function runFenrirExploit(
 
   try {
     const fenrirPath = path.join(process.cwd(), "..", "fenrir");
-    const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
+    const pythonPath =
+      process.env.PYTHON_PATH ||
+      "bash -c 'source ~/venv/bin/activate && python3'";
 
     // Build command to run specific exploit
     const timeout = options.timeout || 60000; // Default 60 second timeout
@@ -448,7 +444,9 @@ async function runCompleteFenrirSuite(options: any = {}): Promise<any> {
 
   try {
     const fenrirPath = path.join(process.cwd(), "..", "fenrir");
-    const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
+    const pythonPath =
+      process.env.PYTHON_PATH ||
+      "bash -c 'source ~/venv/bin/activate && python3'";
 
     const command = `${pythonPath} run_all_exploits.py --url ${options.target || "http://localhost:8000"} ${options.verbose ? "--verbose" : ""} ${options.destructive ? "--destructive" : ""}`;
 
@@ -504,74 +502,74 @@ async function runCompleteFenrirSuite(options: any = {}): Promise<any> {
 function getExploitClassName(modulePath: string): string {
   const parts = modulePath.split(".");
   const moduleName = parts[parts.length - 1];
-  
+
   // Map of module names to actual class names
   const classMap: Record<string, string> = {
     // Fuzzing modules
-    "comprehensive_fuzzer": "ComprehensiveFuzzerExploit",
-    "endpoint_fuzzer": "EndpointFuzzerExploit",
-    "exploit_wrappers": "ComprehensiveFuzzerExploit", // Default to comprehensive fuzzer
-    
+    comprehensive_fuzzer: "ComprehensiveFuzzerExploit",
+    endpoint_fuzzer: "EndpointFuzzerExploit",
+    exploit_wrappers: "ComprehensiveFuzzerExploit", // Default to comprehensive fuzzer
+
     // SQL Injection modules
-    "basic_injection": "BasicInjectionExploit",
-    "blind_injection": "BlindInjectionExploit", 
-    "time_based_injection": "TimeBasedInjectionExploit",
-    "union_injection": "UnionInjectionExploit",
-    "obfuscated_payloads": "ObfuscatedPayloadExploit",
-    "regex_bypass": "RegexBypassExploit",
-    
+    basic_injection: "BasicInjectionExploit",
+    blind_injection: "BlindInjectionExploit",
+    time_based_injection: "TimeBasedInjectionExploit",
+    union_injection: "UnionInjectionExploit",
+    obfuscated_payloads: "ObfuscatedPayloadExploit",
+    regex_bypass: "RegexBypassExploit",
+
     // API Exploits
-    "bola_attacks": "BolaAttacksExploit",
-    "idor_attacks": "IdorAttacksExploit",
-    
+    bola_attacks: "BolaAttacksExploit",
+    idor_attacks: "IdorAttacksExploit",
+
     // CSRF Exploits
-    "csrf_attacks": "CsrfAttacksExploit",
-    "csrf_bypass": "CsrfBypassExploit",
-    
+    csrf_attacks: "CsrfAttacksExploit",
+    csrf_bypass: "CsrfBypassExploit",
+
     // Path Traversal
-    "basic_traversal": "BasicTraversalExploit",
-    "encoded_traversal": "EncodedPathTraversalExploit",
-    "unicode_bypass": "UnicodeBypassExploit",
-    "null_byte_injection": "NullByteInjectionExploit",
-    "double_encoding": "DoubleEncodingExploit",
-    
+    basic_traversal: "BasicTraversalExploit",
+    encoded_traversal: "EncodedPathTraversalExploit",
+    unicode_bypass: "UnicodeBypassExploit",
+    null_byte_injection: "NullByteInjectionExploit",
+    double_encoding: "DoubleEncodingExploit",
+
     // SSRF Exploits
-    "ssrf_attacks": "SsrfAttacksExploit",
-    "ssrf_bypass": "SsrfBypassExploit",
-    
+    ssrf_attacks: "SsrfAttacksExploit",
+    ssrf_bypass: "SsrfBypassExploit",
+
     // Race Conditions
-    "race_exploits": "RaceExploitsExploit",
-    "concurrent_attacks": "ConcurrentAttacksExploit",
-    
+    race_exploits: "RaceExploitsExploit",
+    concurrent_attacks: "ConcurrentAttacksExploit",
+
     // CORS Exploits
-    "cors_misconfiguration": "CorsMisconfigurationExploit",
-    "cors_bypass": "CorsBypassExploit",
-    
+    cors_misconfiguration: "CorsMisconfigurationExploit",
+    cors_bypass: "CorsBypassExploit",
+
     // HTTP Smuggling
-    "request_smuggling": "RequestSmugglingExploit",
-    "response_smuggling": "ResponseSmugglingExploit",
-    
+    request_smuggling: "RequestSmugglingExploit",
+    response_smuggling: "ResponseSmugglingExploit",
+
     // Unicode Exploits
-    "normalization_bypass": "NormalizationBypassExploit",
-    "unicode_attacks": "UnicodeAttacksExploit",
-    
+    normalization_bypass: "NormalizationBypassExploit",
+    unicode_attacks: "UnicodeAttacksExploit",
+
     // Rate Limiting
-    "rate_limit_bypass": "RateLimitBypassExploit",
-    "rate_limit_attacks": "RateLimitAttacksExploit",
-    
+    rate_limit_bypass: "RateLimitBypassExploit",
+    rate_limit_attacks: "RateLimitAttacksExploit",
+
     // JWT Exploits
-    "secret_key_attack": "SecretKeyVulnerabilityExploit",
-    "algorithm_confusion": "AlgorithmConfusionExploit",
-    "kid_manipulation": "KidManipulationExploit",
-    "jwt_replay": "JwtReplayExploit",
-    "jwt_injection": "JwtInjectionExploit",
+    secret_key_attack: "SecretKeyVulnerabilityExploit",
+    algorithm_confusion: "AlgorithmConfusionExploit",
+    kid_manipulation: "KidManipulationExploit",
+    jwt_replay: "JwtReplayExploit",
+    jwt_injection: "JwtInjectionExploit",
   };
-  
+
   // Return mapped class name or generate default
   if (classMap[moduleName]) {
     return classMap[moduleName];
   }
-  
+
   // Fallback: generate class name without "Exploit" suffix
   const className = moduleName
     .split("_")

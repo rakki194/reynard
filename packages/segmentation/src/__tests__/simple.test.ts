@@ -19,8 +19,3 @@ describe("Simple Test", () => {
     expect(typeof point.y).toBe("number");
   });
 });
-
-
-
-
-

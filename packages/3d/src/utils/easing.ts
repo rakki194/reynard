@@ -1,6 +1,6 @@
 // Easing functions for smooth 3D animations
 // Adapted from yipyap's animation system
-// 
+//
 // @deprecated Use reynard-animation package instead
 // This file is kept for backward compatibility
 

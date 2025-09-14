@@ -86,11 +86,7 @@ testDescribe("LineChart", () => {
 
     it("should show empty state when no data", () => {
       render(() => (
-        <LineChart
-          labels={[]}
-          datasets={[]}
-          emptyMessage="No data available"
-        />
+        <LineChart labels={[]} datasets={[]} emptyMessage="No data available" />
       ));
 
       expect(screen.getByText("No data available")).toBeInTheDocument();
@@ -117,10 +113,7 @@ testDescribe("LineChart", () => {
 
     it("should show empty state when time series data is empty", () => {
       render(() => (
-        <LineChart
-          timeSeriesData={[]}
-          emptyMessage="No time series data"
-        />
+        <LineChart timeSeriesData={[]} emptyMessage="No time series data" />
       ));
 
       expect(screen.getByText("No time series data")).toBeInTheDocument();
@@ -138,7 +131,8 @@ testDescribe("LineChart", () => {
         />
       ));
 
-      const container = screen.getByTestId("line-chart-canvas").closest("div")?.parentElement?.parentElement;
+      const container = screen.getByTestId("line-chart-canvas").closest("div")
+        ?.parentElement?.parentElement;
       expect(container).toHaveClass("responsive");
     });
 
@@ -153,7 +147,8 @@ testDescribe("LineChart", () => {
         />
       ));
 
-      const container = screen.getByTestId("line-chart-canvas").closest("div")?.parentElement?.parentElement;
+      const container = screen.getByTestId("line-chart-canvas").closest("div")
+        ?.parentElement?.parentElement;
       expect(container).toHaveClass("fixed-size");
     });
 
@@ -168,7 +163,8 @@ testDescribe("LineChart", () => {
         />
       ));
 
-      const container = screen.getByTestId("line-chart-canvas").closest("div")?.parentElement?.parentElement;
+      const container = screen.getByTestId("line-chart-canvas").closest("div")
+        ?.parentElement?.parentElement;
       expect(container).toHaveClass("size-small");
     });
   });
@@ -183,7 +179,8 @@ testDescribe("LineChart", () => {
         />
       ));
 
-      const container = screen.getByTestId("line-chart-canvas").closest("div")?.parentElement?.parentElement;
+      const container = screen.getByTestId("line-chart-canvas").closest("div")
+        ?.parentElement?.parentElement;
       expect(container).toHaveAttribute("role", "img");
       expect(container).toHaveAttribute("aria-label", "Accessible Chart");
     });
@@ -196,7 +193,8 @@ testDescribe("LineChart", () => {
         />
       ));
 
-      const container = screen.getByTestId("line-chart-canvas").closest("div")?.parentElement?.parentElement;
+      const container = screen.getByTestId("line-chart-canvas").closest("div")
+        ?.parentElement?.parentElement;
       expect(container).toHaveAttribute("aria-label", "line chart");
     });
   });
@@ -223,16 +221,16 @@ testDescribe("LineChart", () => {
     });
 
     it("should handle time series data with maxDataPoints", () => {
-      const largeTimeSeriesData: TimeSeriesDataPoint[] = Array.from({ length: 150 }, (_, i) => ({
-        timestamp: new Date(2023, 0, i + 1),
-        value: Math.random() * 100,
-      }));
+      const largeTimeSeriesData: TimeSeriesDataPoint[] = Array.from(
+        { length: 150 },
+        (_, i) => ({
+          timestamp: new Date(2023, 0, i + 1),
+          value: Math.random() * 100,
+        }),
+      );
 
       render(() => (
-        <LineChart
-          timeSeriesData={largeTimeSeriesData}
-          maxDataPoints={100}
-        />
+        <LineChart timeSeriesData={largeTimeSeriesData} maxDataPoints={100} />
       ));
 
       expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
@@ -240,10 +238,7 @@ testDescribe("LineChart", () => {
 
     it("should handle time scale configuration", () => {
       render(() => (
-        <LineChart
-          timeSeriesData={mockTimeSeriesData}
-          useTimeScale={true}
-        />
+        <LineChart timeSeriesData={mockTimeSeriesData} useTimeScale={true} />
       ));
 
       expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
@@ -260,7 +255,8 @@ testDescribe("LineChart", () => {
         />
       ));
 
-      const container = screen.getByTestId("line-chart-canvas").closest("div")?.parentElement?.parentElement;
+      const container = screen.getByTestId("line-chart-canvas").closest("div")
+        ?.parentElement?.parentElement;
       expect(container).toHaveClass("custom-line-chart");
     });
 
@@ -273,7 +269,8 @@ testDescribe("LineChart", () => {
         />
       ));
 
-      const container = screen.getByTestId("line-chart-canvas").closest("div")?.parentElement?.parentElement;
+      const container = screen.getByTestId("line-chart-canvas").closest("div")
+        ?.parentElement?.parentElement;
       expect(container).toHaveAttribute("data-testid", "custom-test-id");
     });
   });

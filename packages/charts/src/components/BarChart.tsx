@@ -3,7 +3,16 @@
  * A responsive bar chart for categorical data
  */
 
-import { Component, Show, splitProps, createMemo, onMount, onCleanup, createSignal, createEffect } from "solid-js";
+import {
+  Component,
+  Show,
+  splitProps,
+  createMemo,
+  onMount,
+  onCleanup,
+  createSignal,
+  createEffect,
+} from "solid-js";
 import {
   Chart,
   Title,
@@ -154,7 +163,10 @@ const BarChartContent: Component<{
       </Show>
 
       <Show when={!props.loading && props.chartData}>
-        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>                                                                         
+        <div
+          class="reynard-chart-container"
+          style={{ position: "relative", width: "100%", height: "100%" }}
+        >
           <canvas
             ref={canvasRef}
             width={props.width}
@@ -195,7 +207,12 @@ export const BarChart: Component<BarChartProps> = (props) => {
 
   // Create chart data and options directly
   const chartData = createMemo(() => {
-    if (!local.labels || !local.datasets || local.labels.length === 0 || local.datasets.length === 0) {
+    if (
+      !local.labels ||
+      !local.datasets ||
+      local.labels.length === 0 ||
+      local.datasets.length === 0
+    ) {
       return null;
     }
 

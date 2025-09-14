@@ -49,10 +49,8 @@ export const EditorInfoPanel: Component<EditorInfoPanelProps> = (props) => {
 
   return (
     <div class={`info-panel ${className}`}>
-      <div class="box-count">
-        Bounding Boxes ({boundingBoxes.length})
-      </div>
-      
+      <div class="box-count">Bounding Boxes ({boundingBoxes.length})</div>
+
       <div class="boxes-list">
         <For each={boundingBoxes}>
           {(box) => (

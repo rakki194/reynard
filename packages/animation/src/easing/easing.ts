@@ -3,7 +3,7 @@
  * Consolidated easing functions from across the Reynard codebase
  */
 
-import type { EasingType } from '../types';
+import type { EasingType } from "../types";
 
 /**
  * Comprehensive easing functions collection
@@ -166,7 +166,9 @@ export function createCustomEasing(
 /**
  * Reverse an easing function
  */
-export function reverseEasing(easing: (t: number) => number): (t: number) => number {
+export function reverseEasing(
+  easing: (t: number) => number,
+): (t: number) => number {
   return (t: number) => easing(1 - t);
 }
 

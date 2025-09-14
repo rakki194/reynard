@@ -136,11 +136,11 @@ export async function retry<T>(
 
   for (let attempt = 0; attempt <= config.maxRetries; attempt++) {
     attempts = attempt + 1;
-    
+
     try {
       const result = await fn();
       const totalTime = Date.now() - startTime;
-      
+
       return {
         success: true,
         data: result,
@@ -148,14 +148,19 @@ export async function retry<T>(
         totalTime,
       };
     } catch (error) {
-      lastError = isReynardError(error) ? error : new ReynardError(
-        error instanceof Error ? error.message : "Unknown error",
-        "RETRY_ERROR",
-        { source: "retry" }
-      );
+      lastError = isReynardError(error)
+        ? error
+        : new ReynardError(
+            error instanceof Error ? error.message : "Unknown error",
+            "RETRY_ERROR",
+            { source: "retry" },
+          );
 
       // Check if we should retry
-      if (attempt < config.maxRetries && config.retryCondition(lastError, attempt)) {
+      if (
+        attempt < config.maxRetries &&
+        config.retryCondition(lastError, attempt)
+      ) {
         const delay = calculateDelay(attempt, config);
         await sleep(delay);
         continue;
@@ -167,7 +172,7 @@ export async function retry<T>(
   }
 
   const totalTime = Date.now() - startTime;
-  
+
   return {
     success: false,
     error: lastError!,
@@ -249,16 +254,16 @@ export async function retryWithFixedDelay<T>(
  */
 export function calculateDelay(attempt: number, config: RetryConfig): number {
   let delay = config.baseDelay * Math.pow(config.backoffFactor, attempt);
-  
+
   // Apply maximum delay limit
   delay = Math.min(delay, config.maxDelay);
-  
+
   // Apply jitter to prevent thundering herd
   if (config.jitter) {
     const jitterAmount = delay * 0.1; // 10% jitter
     delay += (Math.random() - 0.5) * 2 * jitterAmount;
   }
-  
+
   return Math.max(0, delay);
 }
 
@@ -266,7 +271,7 @@ export function calculateDelay(attempt: number, config: RetryConfig): number {
  * Sleep for specified milliseconds
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -276,15 +281,15 @@ export function isRetryableError(error: unknown): boolean {
   if (isNetworkError(error)) {
     return true;
   }
-  
+
   if (isTimeoutError(error)) {
     return true;
   }
-  
+
   if (isRateLimitError(error)) {
     return true;
   }
-  
+
   if (isReynardError(error)) {
     // Check for specific retryable error codes
     const retryableCodes = [
@@ -294,10 +299,10 @@ export function isRetryableError(error: unknown): boolean {
       "TEMPORARY_ERROR",
       "SERVICE_UNAVAILABLE",
     ];
-    
+
     return retryableCodes.includes(error.code);
   }
-  
+
   return false;
 }
 
@@ -314,13 +319,17 @@ export function createRetryCondition(
       if (errorTypes.includes(error.code)) {
         return true;
       }
-      
+
       // Check status code if available
-      if (statusCodes && "status" in error.context && typeof error.context.status === "number") {
+      if (
+        statusCodes &&
+        "status" in error.context &&
+        typeof error.context.status === "number"
+      ) {
         return statusCodes.includes(error.context.status);
       }
     }
-    
+
     return false;
   };
 }
@@ -328,21 +337,30 @@ export function createRetryCondition(
 /**
  * Create retry condition for network errors only
  */
-export function createNetworkRetryCondition(): (error: unknown, attempt: number) => boolean {
+export function createNetworkRetryCondition(): (
+  error: unknown,
+  attempt: number,
+) => boolean {
   return (error: unknown) => isNetworkError(error);
 }
 
 /**
  * Create retry condition for timeout errors only
  */
-export function createTimeoutRetryCondition(): (error: unknown, attempt: number) => boolean {
+export function createTimeoutRetryCondition(): (
+  error: unknown,
+  attempt: number,
+) => boolean {
   return (error: unknown) => isTimeoutError(error);
 }
 
 /**
  * Create retry condition for rate limit errors only
  */
-export function createRateLimitRetryCondition(): (error: unknown, attempt: number) => boolean {
+export function createRateLimitRetryCondition(): (
+  error: unknown,
+  attempt: number,
+) => boolean {
   return (error: unknown) => isRateLimitError(error);
 }
 
@@ -359,11 +377,11 @@ export function withRetry<T extends (...args: any[]) => Promise<any>>(
   return (fn: T) => {
     return (async (...args: Parameters<T>) => {
       const result = await retry(() => fn(...args), config);
-      
+
       if (result.success) {
         return result.data;
       }
-      
+
       throw result.error;
     }) as T;
   };
@@ -372,10 +390,9 @@ export function withRetry<T extends (...args: any[]) => Promise<any>>(
 /**
  * Decorator for retrying with exponential backoff
  */
-export function withExponentialBackoff<T extends (...args: any[]) => Promise<any>>(
-  maxRetries: number = 3,
-  baseDelay: number = 1000,
-): (fn: T) => T {
+export function withExponentialBackoff<
+  T extends (...args: any[]) => Promise<any>,
+>(maxRetries: number = 3, baseDelay: number = 1000): (fn: T) => T {
   return withRetry({
     ...exponentialBackoffStrategy,
     maxRetries,
@@ -433,21 +450,28 @@ export class RetryMonitor {
     retryReasons: {},
   };
 
-  recordAttempt(success: boolean, retryReason?: string, duration?: number): void {
+  recordAttempt(
+    success: boolean,
+    retryReason?: string,
+    duration?: number,
+  ): void {
     this.metrics.totalAttempts++;
-    
+
     if (success) {
       this.metrics.successfulAttempts++;
     } else {
       this.metrics.failedAttempts++;
     }
-    
+
     if (retryReason) {
-      this.metrics.retryReasons[retryReason] = (this.metrics.retryReasons[retryReason] || 0) + 1;
+      this.metrics.retryReasons[retryReason] =
+        (this.metrics.retryReasons[retryReason] || 0) + 1;
     }
-    
+
     if (duration !== undefined) {
-      const totalTime = this.metrics.averageRetryTime * (this.metrics.totalAttempts - 1) + duration;
+      const totalTime =
+        this.metrics.averageRetryTime * (this.metrics.totalAttempts - 1) +
+        duration;
       this.metrics.averageRetryTime = totalTime / this.metrics.totalAttempts;
     }
   }

@@ -7,7 +7,7 @@ This guide helps you migrate from scattered animation code to the unified `reyna
 The new `reynard-animation` package consolidates animation code from:
 
 - **packages/3d/** - 3D animations, easing, loops, composables
-- **packages/colors/** - Hue shifting animations  
+- **packages/colors/** - Hue shifting animations
 - **packages/floating-panel/** - Staggered animations
 - **packages/themes/** - Theme-based animations
 - **examples/test-app/** - Core animation engines
@@ -26,43 +26,46 @@ pnpm add reynard-animation
 
 ```typescript
 // Old
-import { Easing, applyEasing } from 'packages/3d/src/utils/easing';
-import { useAnimationState } from 'packages/3d/src/composables/useAnimationState';
+import { Easing, applyEasing } from "packages/3d/src/utils/easing";
+import { useAnimationState } from "packages/3d/src/composables/useAnimationState";
 
 // New
-import { Easing, applyEasing, useAnimationState } from 'reynard-animation';
+import { Easing, applyEasing, useAnimationState } from "reynard-animation";
 ```
 
 #### From packages/floating-panel
 
 ```typescript
 // Old
-import { useStaggeredAnimation } from 'packages/floating-panel/src/composables/useStaggeredAnimation';
+import { useStaggeredAnimation } from "packages/floating-panel/src/composables/useStaggeredAnimation";
 
 // New
-import { useStaggeredAnimation } from 'reynard-animation';
+import { useStaggeredAnimation } from "reynard-animation";
 ```
 
 #### From examples/test-app
 
 ```typescript
 // Old
-import { createAnimationCore } from './utils/animation/AnimationCore';
-import { createAdaptiveAnimationEngine } from './utils/animation/AdaptiveAnimation';
+import { createAnimationCore } from "./utils/animation/AnimationCore";
+import { createAdaptiveAnimationEngine } from "./utils/animation/AdaptiveAnimation";
 
 // New
-import { createAnimationCore, createAdaptiveAnimationEngine } from 'reynard-animation';
+import {
+  createAnimationCore,
+  createAdaptiveAnimationEngine,
+} from "reynard-animation";
 ```
 
 ### 3. Update Type Imports
 
 ```typescript
 // Old
-import type { EasingType } from 'packages/3d/src/types';
-import type { AnimationConfig } from './utils/animation/AnimationTypes';
+import type { EasingType } from "packages/3d/src/types";
+import type { AnimationConfig } from "./utils/animation/AnimationTypes";
 
 // New
-import type { EasingType, AnimationConfig } from 'reynard-animation';
+import type { EasingType, AnimationConfig } from "reynard-animation";
 ```
 
 ## Package Structure
@@ -111,13 +114,13 @@ reynard-animation/
 ### Basic Animation
 
 ```typescript
-import { createAnimationCore } from 'reynard-animation';
+import { createAnimationCore } from "reynard-animation";
 
 const engine = createAnimationCore({
   frameRate: 60,
   maxFPS: 120,
   enableVSync: true,
-  enablePerformanceMonitoring: true
+  enablePerformanceMonitoring: true,
 });
 
 engine.start({
@@ -126,20 +129,20 @@ engine.start({
   },
   onRender: (deltaTime) => {
     // Your rendering logic
-  }
+  },
 });
 ```
 
 ### Staggered Animation
 
 ```typescript
-import { useStaggeredAnimation } from 'reynard-animation';
+import { useStaggeredAnimation } from "reynard-animation";
 
 const { start, items, isAnimating } = useStaggeredAnimation({
   duration: 500,
   stagger: 100,
-  easing: 'easeOutCubic',
-  direction: 'forward'
+  easing: "easeOutCubic",
+  direction: "forward",
 });
 
 // Start animation for 5 items
@@ -149,12 +152,12 @@ await start(5);
 ### Adaptive Animation
 
 ```typescript
-import { createAdaptiveAnimationEngine } from 'reynard-animation';
+import { createAdaptiveAnimationEngine } from "reynard-animation";
 
 const engine = createAdaptiveAnimationEngine({
   targetFPS: 60,
   qualityLevels: [1, 0.75, 0.5, 0.25],
-  adaptationThreshold: 5
+  adaptationThreshold: 5,
 });
 ```
 

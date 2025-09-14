@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { getDefaultChartOptions, enhanceChartOptions, ChartTheme, ChartOptionsConfig } from "../utils/chartOptions";
+import {
+  getDefaultChartOptions,
+  enhanceChartOptions,
+  ChartTheme,
+  ChartOptionsConfig,
+} from "../utils/chartOptions";
 
 describe("Chart Options", () => {
   const mockTheme: ChartTheme = {

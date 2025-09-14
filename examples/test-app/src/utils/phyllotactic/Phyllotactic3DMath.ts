@@ -3,8 +3,11 @@
  * Mathematical operations for 3D phyllotactic transformations
  */
 
-import { GOLDEN_ANGLE } from '../phyllotactic-constants';
-import type { Phyllotactic3DConfig, RotationState } from './Phyllotactic3DConfig';
+import { GOLDEN_ANGLE } from "../phyllotactic-constants";
+import type {
+  Phyllotactic3DConfig,
+  RotationState,
+} from "./Phyllotactic3DConfig";
 
 export class Phyllotactic3DMath {
   /**
@@ -12,14 +15,14 @@ export class Phyllotactic3DMath {
    * Inspired by spherical phyllotaxis research
    */
   static projectToSphere(
-    x: number, 
-    y: number, 
-    z: number, 
-    sphereRadius: number
+    x: number,
+    y: number,
+    z: number,
+    sphereRadius: number,
   ): { x: number; y: number; z: number } {
     const distance = Math.sqrt(x * x + y * y + z * z);
     const scale = sphereRadius / distance;
-    
+
     return {
       x: x * scale,
       y: y * scale,
@@ -31,10 +34,10 @@ export class Phyllotactic3DMath {
    * Apply 3D rotation transformation
    */
   static applyRotation(
-    x: number, 
-    y: number, 
-    z: number, 
-    rotation: RotationState
+    x: number,
+    y: number,
+    z: number,
+    rotation: RotationState,
   ): { x: number; y: number; z: number } {
     // Rotation around X axis
     const cosX = Math.cos(rotation.x);
@@ -64,20 +67,20 @@ export class Phyllotactic3DMath {
   static calculate3DStroboscopicIntensity(
     _index: number,
     rotation: RotationState,
-    config: Phyllotactic3DConfig
+    config: Phyllotactic3DConfig,
   ): number {
     if (!config.enableStroboscopic3D) return 0;
 
-    const goldenAngle = GOLDEN_ANGLE * Math.PI / 180;
+    const goldenAngle = (GOLDEN_ANGLE * Math.PI) / 180;
     const totalRotation = Math.sqrt(
-      rotation.x * rotation.x + 
-      rotation.y * rotation.y + 
-      rotation.z * rotation.z
+      rotation.x * rotation.x +
+        rotation.y * rotation.y +
+        rotation.z * rotation.z,
     );
-    
+
     const stroboscopicPhase = (totalRotation / goldenAngle) % 1;
     const intensity = Math.abs(Math.sin(stroboscopicPhase * Math.PI * 2));
-    
+
     return intensity > config.stroboscopicThreshold ? intensity : 0;
   }
 
@@ -86,14 +89,14 @@ export class Phyllotactic3DMath {
    */
   static generate3DSpiralCoordinates(
     index: number,
-    config: Phyllotactic3DConfig
+    config: Phyllotactic3DConfig,
   ): { x: number; y: number; z: number; radius: number; angle: number } {
-    const goldenAngle = GOLDEN_ANGLE * Math.PI / 180;
-    
+    const goldenAngle = (GOLDEN_ANGLE * Math.PI) / 180;
+
     // Calculate 2D spiral position
     const radius = config.baseRadius * Math.sqrt(index);
     const angle = index * goldenAngle;
-    
+
     // Calculate 3D position
     let x = Math.cos(angle) * radius;
     let y = Math.sin(angle) * radius;
@@ -101,7 +104,12 @@ export class Phyllotactic3DMath {
 
     // Apply spherical projection if enabled
     if (config.enableSphericalProjection) {
-      const sphericalCoords = this.projectToSphere(x, y, z, config.sphereRadius);
+      const sphericalCoords = this.projectToSphere(
+        x,
+        y,
+        z,
+        config.sphereRadius,
+      );
       x = sphericalCoords.x;
       y = sphericalCoords.y;
       z = sphericalCoords.z;
@@ -116,7 +124,7 @@ export class Phyllotactic3DMath {
   static updateRotation(
     currentRotation: RotationState,
     config: Phyllotactic3DConfig,
-    deltaTime: number
+    deltaTime: number,
   ): RotationState {
     return {
       x: currentRotation.x + config.rotationSpeedX * deltaTime,

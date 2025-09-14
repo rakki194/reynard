@@ -21,7 +21,7 @@ import {
   expectElementToHaveRole,
   expectElementToHaveAccessibleName,
   expectElementToHaveAccessibleDescription,
-  } from "../utils/assertion-utils.js";
+} from "../utils/assertion-utils.js";
 
 describe("DOM Element Assertions", () => {
   let container: HTMLElement;

@@ -32,28 +32,34 @@ export const EnhancedLayout: Component<LayoutProps> = (props) => {
             setEnableStroboscopic={props.integration.setEnableStroboscopic}
             enableMorphing={props.integration.enableMorphing}
             setEnableMorphing={props.integration.setEnableMorphing}
-            enablePerformanceOptimization={props.integration.enablePerformanceOptimization}
-            setEnablePerformanceOptimization={props.integration.setEnablePerformanceOptimization}
+            enablePerformanceOptimization={
+              props.integration.enablePerformanceOptimization
+            }
+            setEnablePerformanceOptimization={
+              props.integration.setEnablePerformanceOptimization
+            }
             isRunning={props.integration.isRunning}
             onRegeneratePattern={props.integration.generatePattern}
             onToggleAnimation={props.integration.toggleAnimation}
             onConfigUpdate={props.integration.updateConfig}
           />
-          
+
           <EnhancedStatus
             mode={props.integration.mode}
             patternType={props.integration.patternType}
             currentPoints={props.integration.engines.currentPoints}
             stroboscopicState={props.integration.engines.stroboscopicState}
             qualityLevel={props.integration.engines.qualityLevel}
-            enablePerformanceOptimization={props.integration.enablePerformanceOptimization}
+            enablePerformanceOptimization={
+              props.integration.enablePerformanceOptimization
+            }
           />
-          
+
           <EnhancedMetrics
             performanceMetrics={props.integration.engines.performanceMetrics}
           />
         </div>
-        
+
         <EnhancedVisualization
           mode={props.integration.mode}
           patternType={props.integration.patternType}
@@ -62,7 +68,7 @@ export const EnhancedLayout: Component<LayoutProps> = (props) => {
           stroboscopicState={props.integration.engines.stroboscopicState}
         />
       </div>
-      
+
       <EnhancedInfo />
     </div>
   );

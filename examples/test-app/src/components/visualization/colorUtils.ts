@@ -21,8 +21,8 @@ export interface RGBColor {
 export function oklchToRgb(oklch: any): RGBColor {
   // Handle different OKLCH formats
   let l, c, h;
-  
-  if (typeof oklch === 'string') {
+
+  if (typeof oklch === "string") {
     // Parse OKLCH string like "oklch(95% 0.05 340)"
     const match = oklch.match(/oklch\(([^)]+)\)/);
     if (match) {
@@ -34,7 +34,7 @@ export function oklchToRgb(oklch: any): RGBColor {
       // Fallback to white
       return { r: 1, g: 1, b: 1 };
     }
-  } else if (oklch && typeof oklch === 'object') {
+  } else if (oklch && typeof oklch === "object") {
     l = oklch.l || oklch.lightness || 0.5;
     c = oklch.c || oklch.chroma || 0;
     h = oklch.h || oklch.hue || 0;
@@ -51,8 +51,14 @@ export function oklchToRgb(oklch: any): RGBColor {
 
   // Convert to RGB (simplified approximation)
   const r = Math.max(0, Math.min(1, lightness + chroma * Math.cos(hueRad)));
-  const g = Math.max(0, Math.min(1, lightness + chroma * Math.cos(hueRad - (2 * Math.PI) / 3)));
-  const b = Math.max(0, Math.min(1, lightness + chroma * Math.cos(hueRad + (2 * Math.PI) / 3)));
+  const g = Math.max(
+    0,
+    Math.min(1, lightness + chroma * Math.cos(hueRad - (2 * Math.PI) / 3)),
+  );
+  const b = Math.max(
+    0,
+    Math.min(1, lightness + chroma * Math.cos(hueRad + (2 * Math.PI) / 3)),
+  );
 
   return { r, g, b };
 }

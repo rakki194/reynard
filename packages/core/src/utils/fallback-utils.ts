@@ -12,7 +12,7 @@ import { FALLBACK_TRANSLATIONS } from "./fallback-translations";
  */
 export function registerFallbackTranslations(
   packageName: string,
-  translations: Record<string, string>
+  translations: Record<string, string>,
 ): void {
   for (const [key, value] of Object.entries(translations)) {
     const prefixedKey = `${packageName}.${key}`;
@@ -42,14 +42,17 @@ export function createMockI18n(): I18nModule {
     t: (key: string, params?: Record<string, unknown>) => {
       // Use fallback translation directly to avoid recursion
       let translation = FALLBACK_TRANSLATIONS[key] || key;
-      
+
       // Simple parameter substitution
       if (params) {
         for (const [paramKey, paramValue] of Object.entries(params)) {
-          translation = translation.replace(`{${paramKey}}`, String(paramValue));
+          translation = translation.replace(
+            `{${paramKey}}`,
+            String(paramValue),
+          );
         }
       }
-      
+
       return translation;
     },
     setLocale: () => {},

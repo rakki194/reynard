@@ -6,7 +6,7 @@ import {
   setupPerformanceMock,
   teardownPerformanceMock,
   resetPerformanceMock,
-  } from "../../performance/test-utils";
+} from "../../performance/test-utils";
 
 beforeEach(() => {
   setupPerformanceMock();

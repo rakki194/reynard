@@ -173,9 +173,10 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                 label="Request Timeout (seconds)"
                 type="number"
                 value={timeoutSeconds()}
-                onChange={(e) => setTimeoutSeconds(parseInt(e.target.value) || 300)}
+                onChange={(e) =>
+                  setTimeoutSeconds(parseInt(e.target.value) || 300)
+                }
                 helperText="Maximum time to wait for ComfyUI workflow completion"
-               
                 disabled={!enabled()}
               />
             </div>
@@ -185,9 +186,10 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                 label="Retry Attempts"
                 type="number"
                 value={retryAttempts()}
-                onChange={(e) => setRetryAttempts(parseInt(e.target.value) || 3)}
+                onChange={(e) =>
+                  setRetryAttempts(parseInt(e.target.value) || 3)
+                }
                 helperText="Number of retry attempts for failed requests"
-               
                 disabled={!enabled()}
               />
             </div>
@@ -216,9 +218,10 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                   label="Max Queue Size"
                   type="number"
                   value={maxQueueSize()}
-                  onChange={(e) => setMaxQueueSize(parseInt(e.target.value) || 10)}
+                  onChange={(e) =>
+                    setMaxQueueSize(parseInt(e.target.value) || 10)
+                  }
                   helperText="Maximum number of workflows in queue"
-                 
                   disabled={!enabled()}
                 />
               </div>
@@ -247,9 +250,10 @@ export const ComfySettings: Component<ComfySettingsProps> = (props) => {
                 label="Model Cache Size (GB)"
                 type="number"
                 value={modelCacheSize()}
-                onChange={(e) => setModelCacheSize(parseInt(e.target.value) || 5)}
+                onChange={(e) =>
+                  setModelCacheSize(parseInt(e.target.value) || 5)
+                }
                 helperText="Maximum disk space for model cache"
-               
                 disabled={!enabled()}
               />
             </div>

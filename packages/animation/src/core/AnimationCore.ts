@@ -4,11 +4,16 @@
  */
 
 import { createSignal, onCleanup } from "solid-js";
-import type { AnimationConfig, AnimationState, AnimationCallbacks, PerformanceStats } from '../types';
+import type {
+  AnimationConfig,
+  AnimationState,
+  AnimationCallbacks,
+  PerformanceStats,
+} from "../types";
 
 export function createAnimationCore(initialConfig: AnimationConfig) {
   let config = { ...initialConfig };
-  
+
   const [animationState, setAnimationState] = createSignal<AnimationState>({
     isRunning: false,
     frameCount: 0,
@@ -45,7 +50,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     // Safety check: prevent infinite loops
     if (!animationId) {
       console.warn("🦊 AnimationCore: Animation ID is undefined, stopping");
-      setAnimationState(prev => ({ ...prev, isRunning: false }));
+      setAnimationState((prev) => ({ ...prev, isRunning: false }));
       return;
     }
 
@@ -56,7 +61,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     const deltaTime = currentTime - lastFrameTime;
     const targetFrameTime = 1000 / config.frameRate;
-    
+
     // FPS limiting: only render if enough time has passed
     if (deltaTime < targetFrameTime) {
       animationId = window.requestAnimationFrame(animate);
@@ -69,24 +74,26 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     // Safety check: prevent runaway animations
     if (frameCount > maxFramesPerSecond) {
-      console.warn("🦊 AnimationCore: Frame count exceeded safety limit, stopping animation");
+      console.warn(
+        "🦊 AnimationCore: Frame count exceeded safety limit, stopping animation",
+      );
       stop();
       return;
     }
 
     // Performance monitoring
     const frameStartTime = performance.now();
-    
+
     // Update FPS calculation (optimized)
     const currentFPS = 1000 / deltaTime;
     fpsHistory.push(currentFPS);
     fpsSum += currentFPS;
-    
+
     if (fpsHistory.length > maxFPSHistory) {
       const removedFPS = fpsHistory.shift()!;
       fpsSum -= removedFPS;
     }
-    
+
     const averageFPS = fpsSum / fpsHistory.length;
 
     // Call frame start callback
@@ -97,7 +104,10 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     if (callbacks.onUpdate) {
       try {
         if (config.enablePerformanceMonitoring) {
-          console.log("🦊 AnimationCore: Calling onUpdate", { deltaTime, frameCount: state.frameCount });
+          console.log("🦊 AnimationCore: Calling onUpdate", {
+            deltaTime,
+            frameCount: state.frameCount,
+          });
         }
         callbacks.onUpdate(deltaTime, state.frameCount);
       } catch (error) {
@@ -111,7 +121,10 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     if (callbacks.onRender) {
       try {
         if (config.enablePerformanceMonitoring) {
-          console.log("🦊 AnimationCore: Calling onRender", { deltaTime, frameCount: state.frameCount });
+          console.log("🦊 AnimationCore: Calling onRender", {
+            deltaTime,
+            frameCount: state.frameCount,
+          });
         }
         callbacks.onRender(deltaTime, state.frameCount);
       } catch (error) {
@@ -121,7 +134,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     const renderTime = performance.now() - renderStartTime;
 
     // Update state
-    setAnimationState(prev => ({
+    setAnimationState((prev) => ({
       ...prev,
       frameCount: prev.frameCount + 1,
       lastFrameTime: currentTime,
@@ -148,19 +161,23 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
   const start = (newCallbacks: AnimationCallbacks) => {
     const state = animationState();
     if (state.isRunning) {
-      console.warn("🦊 AnimationCore: Animation already running, ignoring start request");
+      console.warn(
+        "🦊 AnimationCore: Animation already running, ignoring start request",
+      );
       return;
     }
 
     callbacks = { ...callbacks, ...newCallbacks };
-    
+
     // Set up safety timeout
     safetyTimeout = window.setTimeout(() => {
-      console.warn("🦊 AnimationCore: Safety timeout reached, stopping animation");
+      console.warn(
+        "🦊 AnimationCore: Safety timeout reached, stopping animation",
+      );
       stop();
     }, 30000); // 30 second safety timeout
 
-    setAnimationState(prev => ({ ...prev, isRunning: true }));
+    setAnimationState((prev) => ({ ...prev, isRunning: true }));
     animationId = window.requestAnimationFrame(animate);
     console.log("🦊 AnimationCore: Animation started with ID", animationId);
   };
@@ -179,7 +196,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
       safetyTimeout = undefined;
     }
 
-    setAnimationState(prev => ({
+    setAnimationState((prev) => ({
       ...prev,
       isRunning: false,
     }));

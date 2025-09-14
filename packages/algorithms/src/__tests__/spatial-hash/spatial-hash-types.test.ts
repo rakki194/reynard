@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import type { 
-  SpatialHashConfig, 
-  SpatialHashStats, 
-  SpatialObject, 
-  QueryResult 
+import type {
+  SpatialHashConfig,
+  SpatialHashStats,
+  SpatialObject,
+  QueryResult,
 } from "../../spatial-hash/spatial-hash-types";
 
 describe("Spatial Hash Types", () => {
@@ -14,7 +14,7 @@ describe("Spatial Hash Types", () => {
         maxObjectsPerCell: 10,
         enableAutoResize: true,
         resizeThreshold: 0.8,
-        cleanupInterval: 1000
+        cleanupInterval: 1000,
       };
 
       expect(config.cellSize).toBe(64);
@@ -30,7 +30,7 @@ describe("Spatial Hash Types", () => {
         maxObjectsPerCell: 5,
         enableAutoResize: false,
         resizeThreshold: 0.5,
-        cleanupInterval: 500
+        cleanupInterval: 500,
       };
 
       expect(config.enableAutoResize).toBe(false);
@@ -44,7 +44,7 @@ describe("Spatial Hash Types", () => {
         maxObjectsPerCell: 1,
         enableAutoResize: true,
         resizeThreshold: 0,
-        cleanupInterval: 0
+        cleanupInterval: 0,
       };
 
       expect(config.cellSize).toBe(1);
@@ -59,7 +59,7 @@ describe("Spatial Hash Types", () => {
         maxObjectsPerCell: 20,
         enableAutoResize: true,
         resizeThreshold: 0.75,
-        cleanupInterval: 2000
+        cleanupInterval: 2000,
       };
 
       expect(config.resizeThreshold).toBe(0.75);
@@ -77,7 +77,7 @@ describe("Spatial Hash Types", () => {
         memoryUsage: 1024,
         queryCount: 1000,
         insertCount: 500,
-        removeCount: 50
+        removeCount: 50,
       };
 
       expect(stats.totalCells).toBe(100);
@@ -101,7 +101,7 @@ describe("Spatial Hash Types", () => {
         memoryUsage: 0,
         queryCount: 0,
         insertCount: 0,
-        removeCount: 0
+        removeCount: 0,
       };
 
       expect(stats.totalCells).toBe(0);
@@ -125,7 +125,7 @@ describe("Spatial Hash Types", () => {
         memoryUsage: 2048,
         queryCount: 500,
         insertCount: 33,
-        removeCount: 5
+        removeCount: 5,
       };
 
       expect(stats.averageObjectsPerCell).toBe(3.3);
@@ -140,7 +140,7 @@ describe("Spatial Hash Types", () => {
         y: 200,
         width: 50,
         height: 75,
-        data: "test-data"
+        data: "test-data",
       };
 
       expect(obj.id).toBe("object-1");
@@ -156,7 +156,7 @@ describe("Spatial Hash Types", () => {
         id: 123,
         x: 0,
         y: 0,
-        data: { type: "player", health: 100 }
+        data: { type: "player", health: 100 },
       };
 
       expect(obj.id).toBe(123);
@@ -170,7 +170,7 @@ describe("Spatial Hash Types", () => {
         id: "point-object",
         x: 50,
         y: 75,
-        data: "point-data"
+        data: "point-data",
       };
 
       expect(obj.id).toBe("point-object");
@@ -188,7 +188,7 @@ describe("Spatial Hash Types", () => {
         y: -200,
         width: 50,
         height: 75,
-        data: "negative-data"
+        data: "negative-data",
       };
 
       expect(obj.x).toBe(-100);
@@ -204,7 +204,7 @@ describe("Spatial Hash Types", () => {
         y: 20.7,
         width: 30.3,
         height: 40.9,
-        data: "fractional-data"
+        data: "fractional-data",
       };
 
       expect(obj.x).toBe(10.5);
@@ -222,13 +222,13 @@ describe("Spatial Hash Types", () => {
         y: 200,
         width: 50,
         height: 75,
-        data: "test-data"
+        data: "test-data",
       };
 
       const result: QueryResult = {
         object: spatialObject,
         distance: 25.5,
-        cellKey: "cell-1-2"
+        cellKey: "cell-1-2",
       };
 
       expect(result.object).toBe(spatialObject);
@@ -241,13 +241,13 @@ describe("Spatial Hash Types", () => {
         id: "zero-distance",
         x: 0,
         y: 0,
-        data: "zero-data"
+        data: "zero-data",
       };
 
       const result: QueryResult = {
         object: spatialObject,
         distance: 0,
-        cellKey: "cell-0-0"
+        cellKey: "cell-0-0",
       };
 
       expect(result.distance).toBe(0);
@@ -259,13 +259,13 @@ describe("Spatial Hash Types", () => {
         id: "far-object",
         x: 1000,
         y: 2000,
-        data: "far-data"
+        data: "far-data",
       };
 
       const result: QueryResult = {
         object: spatialObject,
         distance: Number.MAX_SAFE_INTEGER,
-        cellKey: "cell-100-200"
+        cellKey: "cell-100-200",
       };
 
       expect(result.distance).toBe(Number.MAX_SAFE_INTEGER);
@@ -277,13 +277,13 @@ describe("Spatial Hash Types", () => {
         id: "complex-key",
         x: -100,
         y: -200,
-        data: "complex-data"
+        data: "complex-data",
       };
 
       const result: QueryResult = {
         object: spatialObject,
         distance: 15.7,
-        cellKey: "cell--2--4"
+        cellKey: "cell--2--4",
       };
 
       expect(result.cellKey).toBe("cell--2--4");
@@ -296,13 +296,13 @@ describe("Spatial Hash Types", () => {
         id: "compatibility-test",
         x: 100,
         y: 200,
-        data: "compatibility-data"
+        data: "compatibility-data",
       };
 
       const result: QueryResult = {
         object: spatialObject,
         distance: 10,
-        cellKey: "test-cell"
+        cellKey: "test-cell",
       };
 
       expect(result.object).toBe(spatialObject);
@@ -319,13 +319,13 @@ describe("Spatial Hash Types", () => {
         id: "custom-object",
         x: 50,
         y: 75,
-        data: { type: "custom", value: 42 }
+        data: { type: "custom", value: 42 },
       };
 
       const result: QueryResult<CustomData> = {
         object: customObject,
         distance: 5,
-        cellKey: "custom-cell"
+        cellKey: "custom-cell",
       };
 
       expect(result.object.data.type).toBe("custom");

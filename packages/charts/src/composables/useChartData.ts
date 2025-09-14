@@ -31,7 +31,7 @@ export interface ChartDataConfig {
 export function useChartData(config: ChartDataConfig) {
   const setupChartData = () => {
     console.log("🦊 useChartData: setupChartData called with config", config);
-    
+
     // Process datasets with enhanced color generation
     const enhancedDatasets = processDatasets({
       datasets: config.datasets,
@@ -44,7 +44,7 @@ export function useChartData(config: ChartDataConfig) {
     console.log("🦊 useChartData: Enhanced datasets", enhancedDatasets);
 
     const data = createChartData(config.labels, enhancedDatasets);
-    
+
     console.log("🦊 useChartData: Created chart data", data);
 
     // Generate chart options
@@ -78,7 +78,10 @@ export function useChartData(config: ChartDataConfig) {
       type: config.type,
     });
 
-    console.log("🦊 useChartData: Final result", { data, options: enhancedOptions });
+    console.log("🦊 useChartData: Final result", {
+      data,
+      options: enhancedOptions,
+    });
 
     return { data, options: enhancedOptions };
   };

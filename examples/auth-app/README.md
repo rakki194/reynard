@@ -124,13 +124,13 @@ npm run backend
 
 After running the database setup, you can use these accounts:
 
-> *Admin User:*
+> _Admin User:_
 
 - Username: `admin`
 - Password: `Admin123!`
 - Role: Administrator
 
-> *Demo User:*
+> _Demo User:_
 
 - Username: `demo`
 - Password: `Demo123!`

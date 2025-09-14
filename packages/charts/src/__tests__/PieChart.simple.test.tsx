@@ -25,23 +25,13 @@ testDescribe("PieChart - Simple Tests", () => {
 
   it("should render with minimal props", () => {
     expect(() => {
-      render(() => (
-        <PieChart
-          data={mockData}
-          labels={mockLabels}
-        />
-      ));
+      render(() => <PieChart data={mockData} labels={mockLabels} />);
     }).not.toThrow();
   });
 
   it("should handle empty data gracefully", () => {
     expect(() => {
-      render(() => (
-        <PieChart
-          data={[]}
-          labels={[]}
-        />
-      ));
+      render(() => <PieChart data={[]} labels={[]} />);
     }).not.toThrow();
   });
 });

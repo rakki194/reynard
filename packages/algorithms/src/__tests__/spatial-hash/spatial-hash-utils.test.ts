@@ -3,7 +3,7 @@ import {
   createOptimizedSpatialHash,
   calculateOptimalCellSize,
   estimateMemoryUsage,
-  } from "../../spatial-hash/spatial-hash-utils";
+} from "../../spatial-hash/spatial-hash-utils";
 import type { SpatialObject } from "../../spatial-hash/spatial-hash-types";
 
 describe("Spatial Hash Utils", () => {

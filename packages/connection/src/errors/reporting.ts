@@ -5,11 +5,7 @@
  * errors across the Reynard framework.
  */
 
-import {
-  ReynardError,
-  isReynardError,
-  extractErrorDetails,
-} from "./core";
+import { ReynardError, isReynardError, extractErrorDetails } from "./core";
 
 // ============================================================================
 // Error Report Types
@@ -104,11 +100,13 @@ export class ErrorReporter {
       return;
     }
 
-    const reynardError = isReynardError(error) ? error : new ReynardError(
-      error instanceof Error ? error.message : "Unknown error",
-      "UNKNOWN_ERROR",
-      { source: "error-reporter" }
-    );
+    const reynardError = isReynardError(error)
+      ? error
+      : new ReynardError(
+          error instanceof Error ? error.message : "Unknown error",
+          "UNKNOWN_ERROR",
+          { source: "error-reporter" },
+        );
 
     // Apply filters
     const filterResult = this.applyFilters(reynardError);
@@ -116,7 +114,8 @@ export class ErrorReporter {
       return;
     }
 
-    if (filterResult === "sample" && Math.random() > 0.1) { // 10% sample rate
+    if (filterResult === "sample" && Math.random() > 0.1) {
+      // 10% sample rate
       return;
     }
 
@@ -179,13 +178,19 @@ export class ErrorReporter {
     const topErrors = aggregations
       .sort((a, b) => b.count - a.count)
       .slice(0, 10)
-      .map(agg => ({ code: agg.errorCode, count: agg.count }));
+      .map((agg) => ({ code: agg.errorCode, count: agg.count }));
 
     return {
       totalErrors,
       uniqueErrors,
       topErrors,
-      errorRate: totalErrors / Math.max(1, Date.now() - Math.min(...aggregations.map(agg => agg.firstOccurrence))),
+      errorRate:
+        totalErrors /
+        Math.max(
+          1,
+          Date.now() -
+            Math.min(...aggregations.map((agg) => agg.firstOccurrence)),
+        ),
     };
   }
 
@@ -194,7 +199,7 @@ export class ErrorReporter {
    */
   updateConfig(newConfig: Partial<ErrorReportingConfig>): void {
     this.config = { ...this.config, ...newConfig };
-    
+
     if (this.config.enabled && !this.flushTimer) {
       this.startFlushTimer();
     } else if (!this.config.enabled && this.flushTimer) {
@@ -215,7 +220,10 @@ export class ErrorReporter {
   // Private Methods
   // ============================================================================
 
-  private createErrorReport(error: ReynardError, metadata?: Record<string, unknown>): ErrorReport {
+  private createErrorReport(
+    error: ReynardError,
+    metadata?: Record<string, unknown>,
+  ): ErrorReport {
     const report: ErrorReport = {
       id: crypto.randomUUID(),
       timestamp: Date.now(),
@@ -265,7 +273,7 @@ export class ErrorReporter {
       existing.count++;
       existing.lastOccurrence = report.timestamp;
       existing.samples.push(report);
-      
+
       // Keep only the most recent samples
       if (existing.samples.length > 10) {
         existing.samples = existing.samples.slice(-10);
@@ -295,13 +303,17 @@ export class ErrorReporter {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(this.config.apiKey && { "Authorization": `Bearer ${this.config.apiKey}` }),
+        ...(this.config.apiKey && {
+          Authorization: `Bearer ${this.config.apiKey}`,
+        }),
       },
       body: JSON.stringify({ reports }),
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to send error reports: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Failed to send error reports: ${response.status} ${response.statusText}`,
+      );
     }
   }
 
@@ -401,14 +413,19 @@ export const globalErrorReporter = new ErrorReporter({
 /**
  * Report an error using the global reporter
  */
-export function reportError(error: unknown, metadata?: Record<string, unknown>): void {
+export function reportError(
+  error: unknown,
+  metadata?: Record<string, unknown>,
+): void {
   globalErrorReporter.report(error, metadata);
 }
 
 /**
  * Set up global error reporting
  */
-export function setupGlobalErrorReporting(config: Partial<ErrorReportingConfig> = {}): void {
+export function setupGlobalErrorReporting(
+  config: Partial<ErrorReportingConfig> = {},
+): void {
   globalErrorReporter.updateConfig(config);
 }
 
@@ -419,12 +436,17 @@ export function setupGlobalErrorReporting(config: Partial<ErrorReportingConfig> 
 /**
  * Create error report from any error
  */
-export function createErrorReport(error: unknown, metadata?: Record<string, unknown>): ErrorReport {
-  const reynardError = isReynardError(error) ? error : new ReynardError(
-    error instanceof Error ? error.message : "Unknown error",
-    "UNKNOWN_ERROR",
-    { source: "error-reporter" }
-  );
+export function createErrorReport(
+  error: unknown,
+  metadata?: Record<string, unknown>,
+): ErrorReport {
+  const reynardError = isReynardError(error)
+    ? error
+    : new ReynardError(
+        error instanceof Error ? error.message : "Unknown error",
+        "UNKNOWN_ERROR",
+        { source: "error-reporter" },
+      );
 
   return {
     id: crypto.randomUUID(),

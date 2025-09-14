@@ -8,8 +8,8 @@ import { cleanup } from "@solidjs/testing-library";
 import { afterEach, vi } from "vitest";
 
 // Ensure DOM is properly initialized
-if (typeof document === 'undefined') {
-  throw new Error('DOM environment not properly initialized');
+if (typeof document === "undefined") {
+  throw new Error("DOM environment not properly initialized");
 }
 
 // Mock localStorage for tests

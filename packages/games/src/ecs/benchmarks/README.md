@@ -1,8 +1,8 @@
 # ECS Performance Benchmark Suite
 
 🦊> A comprehensive performance testing framework for the Reynard ECS system,
-    designed to measure and optimize critical operations with the cunning
-    precision of a fox!
+designed to measure and optimize critical operations with the cunning
+precision of a fox!
 
 ## Overview
 
@@ -21,7 +21,7 @@ This benchmark suite provides thorough performance testing for all critical ECS 
 ### Basic Usage
 
 ```typescript
-import { runECSBenchmarks } from './ecs-benchmark';
+import { runECSBenchmarks } from "./ecs-benchmark";
 
 // Run all benchmarks with default settings
 const results = await runECSBenchmarks();
@@ -54,7 +54,7 @@ npx ts-node run-benchmarks.ts --export results.json --memory
 Tests entity creation, component addition, and component removal performance:
 
 ```typescript
-import { runEntityBenchmarks } from './ecs-benchmark';
+import { runEntityBenchmarks } from "./ecs-benchmark";
 
 const results = await runEntityBenchmarks({
   entityCounts: [100, 500, 1000, 5000, 10000],
@@ -62,7 +62,7 @@ const results = await runEntityBenchmarks({
 });
 ```
 
-> *Operations Tested:*
+> _Operations Tested:_
 
 - Entity spawning with multiple components
 - Component addition to existing entities
@@ -74,7 +74,7 @@ const results = await runEntityBenchmarks({
 Measures query performance with various component combinations:
 
 ```typescript
-import { runQueryBenchmarks } from './ecs-benchmark';
+import { runQueryBenchmarks } from "./ecs-benchmark";
 
 const results = await runQueryBenchmarks({
   entityCounts: [1000, 5000, 10000, 25000],
@@ -82,7 +82,7 @@ const results = await runQueryBenchmarks({
 });
 ```
 
-> *Query Types:*
+> _Query Types:_
 
 - Simple queries (single component)
 - Complex queries (multiple components)
@@ -94,7 +94,7 @@ const results = await runQueryBenchmarks({
 Tests system execution timing and efficiency:
 
 ```typescript
-import { runSystemBenchmarks } from './ecs-benchmark';
+import { runSystemBenchmarks } from "./ecs-benchmark";
 
 const results = await runSystemBenchmarks({
   entityCounts: [1000, 5000, 10000],
@@ -102,7 +102,7 @@ const results = await runSystemBenchmarks({
 });
 ```
 
-> *System Types:*
+> _System Types:_
 
 - Movement systems (Position + Velocity)
 - Health systems (Health + Damage)
@@ -114,7 +114,7 @@ const results = await runSystemBenchmarks({
 High entity count scenarios to find performance limits:
 
 ```typescript
-import { runStressTests } from './ecs-benchmark';
+import { runStressTests } from "./ecs-benchmark";
 
 const results = await runStressTests({
   entityCounts: [10000, 25000, 50000, 100000],
@@ -122,7 +122,7 @@ const results = await runStressTests({
 });
 ```
 
-> *Stress Scenarios:*
+> _Stress Scenarios:_
 
 - Massive entity creation
 - Complex query operations
@@ -135,9 +135,9 @@ const results = await runStressTests({
 
 ```typescript
 interface BenchmarkConfig {
-  entityCounts: number[];        // Entity counts to test
-  iterations: number;            // Iterations per benchmark
-  warmupIterations: number;      // Warmup iterations
+  entityCounts: number[]; // Entity counts to test
+  iterations: number; // Iterations per benchmark
+  warmupIterations: number; // Warmup iterations
   enableMemoryTracking: boolean; // Track memory usage
   enableDetailedLogging: boolean; // Verbose output
 }
@@ -160,7 +160,7 @@ const DEFAULT_CONFIG: BenchmarkConfig = {
 ### Custom Benchmark Runner
 
 ```typescript
-import { ECSBenchmarkRunner } from './ecs-benchmark';
+import { ECSBenchmarkRunner } from "./ecs-benchmark";
 
 const runner = new ECSBenchmarkRunner({
   entityCounts: [1000, 5000, 10000],
@@ -173,7 +173,7 @@ const entityResults = await runner.benchmarkEntityCreation();
 const queryResults = await runner.benchmarkQueries();
 
 // Export results
-const jsonData = runner.exportResults('my-benchmark.json');
+const jsonData = runner.exportResults("my-benchmark.json");
 ```
 
 ### Performance Regression Testing
@@ -187,10 +187,13 @@ const baselineData = {
   timestamp: new Date().toISOString(),
   results: baselineResults,
   summary: {
-    avgTimeUs: baselineResults.reduce((sum, r) => sum + r.averageTimeUs, 0) /
+    avgTimeUs:
+      baselineResults.reduce((sum, r) => sum + r.averageTimeUs, 0) /
       baselineResults.length,
-    totalMemoryMB: baselineResults.reduce((sum, r) => 
-      sum + (r.memoryUsageMB || 0), 0),
+    totalMemoryMB: baselineResults.reduce(
+      (sum, r) => sum + (r.memoryUsageMB || 0),
+      0,
+    ),
   },
 };
 
@@ -212,16 +215,16 @@ if (timeDiffPercent > 10) {
 
 ```typescript
 interface BenchmarkResult {
-  name: string;              // Benchmark name
-  operation: string;         // Operation type
-  entityCount: number;       // Number of entities tested
-  iterations: number;        // Number of iterations
-  totalTimeMs: number;       // Total execution time
-  averageTimeMs: number;     // Average time per iteration
-  averageTimeUs: number;     // Average time in microseconds
+  name: string; // Benchmark name
+  operation: string; // Operation type
+  entityCount: number; // Number of entities tested
+  iterations: number; // Number of iterations
+  totalTimeMs: number; // Total execution time
+  averageTimeMs: number; // Average time per iteration
+  averageTimeUs: number; // Average time in microseconds
   operationsPerSecond: number; // Operations per second
-  memoryUsageMB?: number;    // Memory usage (if enabled)
-  notes?: string;            // Additional notes
+  memoryUsageMB?: number; // Memory usage (if enabled)
+  notes?: string; // Additional notes
 }
 ```
 
@@ -334,7 +337,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '18'
+          node-version: "18"
       - run: npm install
       - run: npx ts-node packages/games/src/ecs/benchmarks/run-benchmarks.ts
           --export benchmark-results.json

@@ -3,7 +3,7 @@
  * Default configuration for adaptive animation engine
  */
 
-import type { AnimationConfig } from '../types';
+import type { AnimationConfig } from "../types";
 
 export interface AdaptiveConfig extends AnimationConfig {
   targetFPS: number;

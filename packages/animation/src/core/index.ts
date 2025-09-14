@@ -3,15 +3,15 @@
  * Core animation functionality exports
  */
 
-export { createAnimationCore } from './AnimationCore';
-export { PerformanceMonitor } from './PerformanceMonitor';
+export { createAnimationCore } from "./AnimationCore";
+export { PerformanceMonitor } from "./PerformanceMonitor";
 
 // Re-export types
-export type { 
-  AnimationConfig, 
-  AnimationState, 
-  AnimationCallbacks, 
+export type {
+  AnimationConfig,
+  AnimationState,
+  AnimationCallbacks,
   PerformanceStats,
   PerformanceMetrics,
-  PerformanceThresholds
-} from '../types';
+  PerformanceThresholds,
+} from "../types";

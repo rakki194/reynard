@@ -5,15 +5,18 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { SegmentationManager, initializeSegmentationManager } from "../services/SegmentationManager.js";
+import {
+  SegmentationManager,
+  initializeSegmentationManager,
+} from "../services/SegmentationManager.js";
 import { SegmentationService } from "../services/SegmentationService.js";
 import { useSegmentationEditor } from "../composables/useSegmentationEditor.js";
 import { usePolygonEditor } from "../composables/usePolygonEditor.js";
-import type { 
-  SegmentationData, 
-  SegmentationTask, 
+import type {
+  SegmentationData,
+  SegmentationTask,
   SegmentationServiceConfig,
-  SegmentationEditorConfig 
+  SegmentationEditorConfig,
 } from "../types/index.js";
 
 // Mock dependencies
@@ -22,14 +25,22 @@ vi.mock("reynard-ai-shared", () => ({
     constructor() {}
     async register() {}
     async unregister() {}
-    get() { return undefined; }
-    getAll() { return []; }
-    isRegistered() { return false; }
+    get() {
+      return undefined;
+    }
+    getAll() {
+      return [];
+    }
+    isRegistered() {
+      return false;
+    }
   },
   BaseAIService: class MockBaseAIService {
     constructor() {}
     async initialize() {}
-    async getHealthInfo() { return { status: "healthy", details: {} }; }
+    async getHealthInfo() {
+      return { status: "healthy", details: {} };
+    }
     async cleanup() {}
     setStatus() {}
   },
@@ -64,9 +75,15 @@ vi.mock("reynard-annotating-core", () => ({
     constructor() {}
     async register() {}
     async unregister() {}
-    get() { return undefined; }
-    getAll() { return []; }
-    isRegistered() { return false; }
+    get() {
+      return undefined;
+    }
+    getAll() {
+      return [];
+    }
+    isRegistered() {
+      return false;
+    }
   },
   BackendAnnotationService: class MockBackendAnnotationService {
     constructor() {}
@@ -114,7 +131,10 @@ describe("Segmentation System Integration", () => {
         validateGeometry: true,
       };
 
-      const registeredService = await manager.registerSegmentationService("test-service", config);
+      const registeredService = await manager.registerSegmentationService(
+        "test-service",
+        config,
+      );
 
       expect(registeredService).toBeDefined();
       expect(manager.isServiceAvailable("test-service")).toBe(true);
@@ -293,7 +313,10 @@ describe("Segmentation System Integration", () => {
       const rotatedPolygon = polygonEditor.rotatePolygon(polygon, Math.PI / 2);
       expect(rotatedPolygon).toBeDefined();
 
-      const translatedPolygon = polygonEditor.translatePolygon(polygon, { x: 50, y: 50 });
+      const translatedPolygon = polygonEditor.translatePolygon(polygon, {
+        x: 50,
+        y: 50,
+      });
       expect(translatedPolygon.points[0]).toEqual({ x: 50, y: 50 });
     });
   });
@@ -401,11 +424,11 @@ describe("Segmentation System Integration", () => {
       const startTime = performance.now();
 
       // Run operations concurrently
-      const promises = Array.from({ length: 5 }, (_, i) => 
+      const promises = Array.from({ length: 5 }, (_, i) =>
         manager.generateSegmentation({
           type: "segmentation",
           imagePath: `/test/image${i}.jpg`,
-        })
+        }),
       );
 
       const results = await Promise.all(promises);
@@ -414,7 +437,7 @@ describe("Segmentation System Integration", () => {
       const executionTime = endTime - startTime;
 
       expect(results).toHaveLength(5);
-      expect(results.every(r => r.success)).toBe(true);
+      expect(results.every((r) => r.success)).toBe(true);
       expect(executionTime).toBeLessThan(500); // Should complete in less than 500ms
     });
   });
@@ -463,14 +486,24 @@ describe("Segmentation System Integration", () => {
     it("should handle export format errors", () => {
       const segmentation: SegmentationData = {
         id: "test",
-        polygon: { points: [{ x: 0, y: 0 }, { x: 100, y: 0 }, { x: 100, y: 100 }] },
+        polygon: {
+          points: [
+            { x: 0, y: 0 },
+            { x: 100, y: 0 },
+            { x: 100, y: 100 },
+          ],
+        },
         metadata: { source: "manual" },
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
-      expect(() => service.exportSegmentation(segmentation, "unsupported")).toThrow();
-      expect(() => manager.exportSegmentation(segmentation, "unsupported")).toThrow();
+      expect(() =>
+        service.exportSegmentation(segmentation, "unsupported"),
+      ).toThrow();
+      expect(() =>
+        manager.exportSegmentation(segmentation, "unsupported"),
+      ).toThrow();
     });
   });
 

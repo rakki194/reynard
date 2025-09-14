@@ -3,11 +3,21 @@
  * Canvas-based 2D visualization with OKLCH colors and Three.js integration
  */
 
-import { Component, createSignal, onMount, onCleanup, createMemo } from "solid-js";
+import {
+  Component,
+  createSignal,
+  onMount,
+  onCleanup,
+  createMemo,
+} from "solid-js";
 import { Card, Button } from "reynard-components";
 import { getIcon } from "reynard-fluent-icons";
 import { useOKLCHColors } from "reynard-themes";
-import { VisualizationCore, type DataPoint, type VisualizationConfig } from "./VisualizationCore";
+import {
+  VisualizationCore,
+  type DataPoint,
+  type VisualizationConfig,
+} from "./VisualizationCore";
 import { DataProcessor, type ProcessedData } from "./DataProcessor";
 import { createAnimationEngine } from "../../utils/animationEngine";
 
@@ -22,9 +32,11 @@ interface Visualization2DProps {
 
 export const Visualization2D: Component<Visualization2DProps> = (props) => {
   const oklchColors = useOKLCHColors();
-  
+
   // State
-  const [processedData, setProcessedData] = createSignal<ProcessedData | null>(null);
+  const [processedData, setProcessedData] = createSignal<ProcessedData | null>(
+    null,
+  );
   const [visualizationCore] = createSignal(new VisualizationCore(props.config));
   const [isAnimating, setIsAnimating] = createSignal(false);
   const [zoom, setZoom] = createSignal(1);
@@ -39,13 +51,13 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
   // Process data when props change
   const processedDataMemo = createMemo(() => {
     if (!props.data.length) return null;
-    
+
     const processed = DataProcessor.processData(props.data, {
       normalize: true,
       enableClustering: true,
       clusterCount: 5,
     });
-    
+
     setProcessedData(processed);
     return processed;
   });
@@ -54,7 +66,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
   const colors = createMemo(() => {
     const data = processedDataMemo();
     if (!data) return [];
-    
+
     return visualizationCore().generateColors(data.points);
   });
 
@@ -64,7 +76,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
 
     const data = processedData()!;
     const pointColors = colors();
-    
+
     // Clear canvas
     ctx.fillStyle = oklchColors.getColor("background");
     ctx.fillRect(0, 0, canvasRef.width, canvasRef.height);
@@ -102,7 +114,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
 
     const gridSize = 0.1;
     const gridColor = oklchColors.getColor("border");
-    
+
     ctx.strokeStyle = gridColor;
     ctx.lineWidth = 0.5;
     ctx.globalAlpha = 0.3;
@@ -130,7 +142,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
   const drawClusters = (clusters: any[]) => {
     if (!ctx) return;
 
-    clusters.forEach(cluster => {
+    clusters.forEach((cluster) => {
       if (!ctx) return;
       ctx.strokeStyle = cluster.color;
       ctx.fillStyle = cluster.color;
@@ -138,7 +150,13 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
       ctx.lineWidth = 2;
 
       ctx.beginPath();
-      ctx.arc(cluster.center.x - 0.5, cluster.center.y - 0.5, cluster.radius, 0, Math.PI * 2);
+      ctx.arc(
+        cluster.center.x - 0.5,
+        cluster.center.y - 0.5,
+        cluster.radius,
+        0,
+        Math.PI * 2,
+      );
       ctx.fill();
       ctx.stroke();
 
@@ -152,7 +170,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
 
     const x = (point.x - 0.5) * 2; // Convert to -1 to 1 range
     const y = (point.y - 0.5) * 2;
-    const size = 3 + (color.intensity * 5);
+    const size = 3 + color.intensity * 5;
 
     ctx.fillStyle = color.css;
     ctx.beginPath();
@@ -175,7 +193,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
     ctx.fillStyle = oklchColors.getColor("text");
     ctx.font = "12px monospace";
     ctx.textAlign = "left";
-    
+
     const statsText = [
       `Points: ${stats.count}`,
       `Mean: ${stats.mean.toFixed(3)}`,
@@ -185,7 +203,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
 
     statsText.forEach((text, index) => {
       if (!ctx) return;
-      ctx.fillText(text, -0.9, -0.9 + (index * 0.05));
+      ctx.fillText(text, -0.9, -0.9 + index * 0.05);
     });
   };
 
@@ -193,12 +211,12 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
   const handleMouseWheel = (e: WheelEvent) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    setZoom(prev => Math.max(0.1, Math.min(5, prev * delta)));
+    setZoom((prev) => Math.max(0.1, Math.min(5, prev * delta)));
   };
 
   const handleMouseDown = (e: MouseEvent) => {
     if (!canvasRef) return;
-    
+
     const rect = canvasRef.getBoundingClientRect();
     const startX = e.clientX - rect.left;
     const startY = e.clientY - rect.top;
@@ -224,7 +242,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
   // Animation
   const startAnimation = () => {
     if (isAnimating()) return;
-    
+
     setIsAnimating(true);
     animationEngine?.start({
       onRender: render,
@@ -242,13 +260,13 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
       ctx = canvasRef.getContext("2d")!;
       canvasRef.width = props.width || 800;
       canvasRef.height = props.height || 600;
-      
+
       animationEngine = createAnimationEngine();
-      
+
       // Add event listeners
       canvasRef.addEventListener("wheel", handleMouseWheel);
       canvasRef.addEventListener("mousedown", handleMouseDown);
-      
+
       // Initial render
       render();
     }
@@ -272,10 +290,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
 
         <div class="visualization-content">
           <div class="canvas-wrapper">
-            <canvas
-              ref={canvasRef}
-              class="visualization-canvas"
-            />
+            <canvas ref={canvasRef} class="visualization-canvas" />
           </div>
 
           {props.showControls && (
@@ -289,7 +304,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
                 >
                   {isAnimating() ? "Stop" : "Animate"}
                 </Button>
-                
+
                 <Button
                   variant="secondary"
                   size="sm"
@@ -309,19 +324,27 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
                   <div class="stats-grid">
                     <div class="stat-item">
                       <span class="stat-label">Points:</span>
-                      <span class="stat-value">{processedData()!.statistics.count}</span>
+                      <span class="stat-value">
+                        {processedData()!.statistics.count}
+                      </span>
                     </div>
                     <div class="stat-item">
                       <span class="stat-label">Mean:</span>
-                      <span class="stat-value">{processedData()!.statistics.mean.toFixed(3)}</span>
+                      <span class="stat-value">
+                        {processedData()!.statistics.mean.toFixed(3)}
+                      </span>
                     </div>
                     <div class="stat-item">
                       <span class="stat-label">Std Dev:</span>
-                      <span class="stat-value">{processedData()!.statistics.std.toFixed(3)}</span>
+                      <span class="stat-value">
+                        {processedData()!.statistics.std.toFixed(3)}
+                      </span>
                     </div>
                     <div class="stat-item">
                       <span class="stat-label">Clusters:</span>
-                      <span class="stat-value">{processedData()!.clusters?.length || 0}</span>
+                      <span class="stat-value">
+                        {processedData()!.clusters?.length || 0}
+                      </span>
                     </div>
                   </div>
                 )}

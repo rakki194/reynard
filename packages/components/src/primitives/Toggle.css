@@ -132,11 +132,15 @@
   transform: translateX(1.6em) translateY(-50%) scale(0.95);
 }
 
-.toggle.sm:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
+.toggle.sm:not(.disabled):active
+  .toggle__input:checked
+  + .toggle__slider::before {
   transform: translateX(1.2em) translateY(-50%) scale(0.95);
 }
 
-.toggle.lg:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
+.toggle.lg:not(.disabled):active
+  .toggle__input:checked
+  + .toggle__slider::before {
   transform: translateX(1.8em) translateY(-50%) scale(0.95);
 }
 
@@ -163,23 +167,23 @@
   .toggle__slider {
     background: var(--toggle-bg-default-dark, #374151);
   }
-  
+
   .toggle__slider::before {
     background: var(--toggle-knob-default-dark, #f9fafb);
   }
-  
+
   .toggle__input:checked + .toggle__slider {
     background: var(--toggle-bg-checked-dark, #60a5fa);
   }
-  
+
   .toggle__input:checked + .toggle__slider::before {
     background: var(--toggle-knob-checked-dark, #ffffff);
   }
-  
+
   .toggle:not(.disabled):hover .toggle__slider {
     background: var(--toggle-bg-hover-dark, #4b5563);
   }
-  
+
   .toggle:not(.disabled):hover .toggle__input:checked + .toggle__slider {
     background: var(--toggle-bg-checked-hover-dark, #3b82f6);
   }
@@ -203,14 +207,23 @@
   transform: translateX(-1.8em) translateY(-50%);
 }
 
-:root[dir="rtl"] .toggle:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
+:root[dir="rtl"]
+  .toggle:not(.disabled):active
+  .toggle__input:checked
+  + .toggle__slider::before {
   transform: translateX(-1.6em) translateY(-50%) scale(0.95);
 }
 
-:root[dir="rtl"] .toggle.sm:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
+:root[dir="rtl"]
+  .toggle.sm:not(.disabled):active
+  .toggle__input:checked
+  + .toggle__slider::before {
   transform: translateX(-1.2em) translateY(-50%) scale(0.95);
 }
 
-:root[dir="rtl"] .toggle.lg:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
+:root[dir="rtl"]
+  .toggle.lg:not(.disabled):active
+  .toggle__input:checked
+  + .toggle__slider::before {
   transform: translateX(-1.8em) translateY(-50%) scale(0.95);
 }

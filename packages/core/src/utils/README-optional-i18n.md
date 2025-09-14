@@ -1,6 +1,6 @@
 # Centralized Optional i18n System
 
-🦊 *whiskers twitch with intelligence* The centralized optional i18n system provides a unified way for all Reynard
+🦊 _whiskers twitch with intelligence_ The centralized optional i18n system provides a unified way for all Reynard
 packages to gracefully fall back from full i18n support to simple fallback translations when the i18n package is not available.
 
 ## Overview
@@ -50,11 +50,15 @@ const mockI18n = createMockI18n();
 
 // Use it in your components
 const translationContext = {
-  get locale() { return mockI18n.locale as any; },
+  get locale() {
+    return mockI18n.locale as any;
+  },
   setLocale: mockI18n.setLocale as any,
   t: mockI18n.t,
   languages: mockI18n.languages as any,
-  get isRTL() { return mockI18n.isRTL; },
+  get isRTL() {
+    return mockI18n.isRTL;
+  },
 };
 ```
 

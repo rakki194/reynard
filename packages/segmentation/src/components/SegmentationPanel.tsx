@@ -6,13 +6,7 @@
  * user experience and follows Reynard design patterns.
  */
 
-import {
-  Component,
-  createSignal,
-  createMemo,
-  For,
-  Show,
-} from "solid-js";
+import { Component, createSignal, createMemo, For, Show } from "solid-js";
 import { getIcon } from "reynard-fluent-icons";
 import { PolygonOps } from "reynard-algorithms";
 import { SegmentationData, SegmentationSource } from "../types/index.js";
@@ -41,31 +35,36 @@ export const SegmentationPanel: Component<SegmentationPanelProps> = (props) => {
   const [sortBy, setSortBy] = createSignal<"name" | "date" | "area">("date");
   const [sortOrder, setSortOrder] = createSignal<"asc" | "desc">("desc");
   const [showFilters, setShowFilters] = createSignal(false);
-  const [filterSource, setFilterSource] = createSignal<SegmentationSource | "all">("all");
+  const [filterSource, setFilterSource] = createSignal<
+    SegmentationSource | "all"
+  >("all");
 
   // Filtered and sorted segmentations
   const filteredSegmentations = createMemo(() => {
     let filtered = props.segmentations;
-    
+
     // Filter by search term
     if (searchTerm()) {
       const term = searchTerm().toLowerCase();
-      filtered = filtered.filter(seg => 
-        seg.id.toLowerCase().includes(term) ||
-        seg.caption?.content.toLowerCase().includes(term) ||
-        seg.metadata?.category?.toLowerCase().includes(term)
+      filtered = filtered.filter(
+        (seg) =>
+          seg.id.toLowerCase().includes(term) ||
+          seg.caption?.content.toLowerCase().includes(term) ||
+          seg.metadata?.category?.toLowerCase().includes(term),
       );
     }
-    
+
     // Filter by source
     if (filterSource() !== "all") {
-      filtered = filtered.filter(seg => seg.metadata?.source === filterSource());
+      filtered = filtered.filter(
+        (seg) => seg.metadata?.source === filterSource(),
+      );
     }
-    
+
     // Sort segmentations
     filtered.sort((a, b) => {
       let comparison = 0;
-      
+
       switch (sortBy()) {
         case "name":
           comparison = a.id.localeCompare(b.id);
@@ -79,10 +78,10 @@ export const SegmentationPanel: Component<SegmentationPanelProps> = (props) => {
           comparison = areaA - areaB;
           break;
       }
-      
+
       return sortOrder() === "asc" ? comparison : -comparison;
     });
-    
+
     return filtered;
   });
 
@@ -166,7 +165,9 @@ export const SegmentationPanel: Component<SegmentationPanelProps> = (props) => {
         <div class="segmentation-panel-sort">
           <select
             value={sortBy()}
-            onChange={(e) => setSortBy(e.currentTarget.value as "name" | "date" | "area")}
+            onChange={(e) =>
+              setSortBy(e.currentTarget.value as "name" | "date" | "area")
+            }
             class="segmentation-panel-sort-select"
             title="Sort segmentations by"
             aria-label="Sort segmentations by"
@@ -175,7 +176,7 @@ export const SegmentationPanel: Component<SegmentationPanelProps> = (props) => {
             <option value="name">Name</option>
             <option value="area">Area</option>
           </select>
-          
+
           <button
             onClick={() => setSortOrder(sortOrder() === "asc" ? "desc" : "asc")}
             class="segmentation-panel-sort-button"
@@ -212,12 +213,18 @@ export const SegmentationPanel: Component<SegmentationPanelProps> = (props) => {
             <label class="segmentation-panel-filter-label">Source:</label>
             <select
               value={filterSource()}
-              onChange={(e) => setFilterSource(e.currentTarget.value as SegmentationSource | "all")}
+              onChange={(e) =>
+                setFilterSource(
+                  e.currentTarget.value as SegmentationSource | "all",
+                )
+              }
               class="segmentation-panel-filter-select"
             >
               <option value="all">All Sources</option>
               <option value={SegmentationSource.MANUAL}>Manual</option>
-              <option value={SegmentationSource.AI_GENERATED}>AI Generated</option>
+              <option value={SegmentationSource.AI_GENERATED}>
+                AI Generated
+              </option>
               <option value={SegmentationSource.IMPORTED}>Imported</option>
               <option value={SegmentationSource.REFINED}>Refined</option>
             </select>
@@ -249,17 +256,28 @@ export const SegmentationPanel: Component<SegmentationPanelProps> = (props) => {
             {(segmentation) => (
               <div
                 class={`segmentation-panel-item ${
-                  segmentation.id === props.selectedSegmentation ? "selected" : ""
+                  segmentation.id === props.selectedSegmentation
+                    ? "selected"
+                    : ""
                 }`}
                 onClick={() => props.onSegmentationSelect?.(segmentation.id)}
               >
                 {/* Source indicator */}
                 <div
                   class="segmentation-panel-item-source"
-                  style={{ color: getSourceColor(segmentation.metadata?.source || SegmentationSource.MANUAL) }}
-                  title={segmentation.metadata?.source || SegmentationSource.MANUAL}
+                  style={{
+                    color: getSourceColor(
+                      segmentation.metadata?.source ||
+                        SegmentationSource.MANUAL,
+                    ),
+                  }}
+                  title={
+                    segmentation.metadata?.source || SegmentationSource.MANUAL
+                  }
                 >
-                  {getSourceIcon(segmentation.metadata?.source || SegmentationSource.MANUAL)}
+                  {getSourceIcon(
+                    segmentation.metadata?.source || SegmentationSource.MANUAL,
+                  )}
                 </div>
 
                 {/* Content */}
@@ -272,13 +290,13 @@ export const SegmentationPanel: Component<SegmentationPanelProps> = (props) => {
                       {formatDate(segmentation.createdAt)}
                     </div>
                   </div>
-                  
+
                   <Show when={segmentation.caption?.content}>
                     <div class="segmentation-panel-item-caption">
                       {segmentation.caption?.content}
                     </div>
                   </Show>
-                  
+
                   <Show when={segmentation.metadata?.category}>
                     <div class="segmentation-panel-item-category">
                       <span class="segmentation-panel-item-category-tag">
@@ -286,7 +304,7 @@ export const SegmentationPanel: Component<SegmentationPanelProps> = (props) => {
                       </span>
                     </div>
                   </Show>
-                  
+
                   <div class="segmentation-panel-item-meta">
                     <span class="segmentation-panel-item-area">
                       {formatArea(calculateArea(segmentation))}
@@ -296,7 +314,10 @@ export const SegmentationPanel: Component<SegmentationPanelProps> = (props) => {
                     </span>
                     <Show when={segmentation.metadata?.confidence}>
                       <span class="segmentation-panel-item-confidence">
-                        {Math.round((segmentation.metadata?.confidence || 0) * 100)}%
+                        {Math.round(
+                          (segmentation.metadata?.confidence || 0) * 100,
+                        )}
+                        %
                       </span>
                     </Show>
                   </div>

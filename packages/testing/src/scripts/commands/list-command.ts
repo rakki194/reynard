@@ -12,7 +12,7 @@ export interface ListCommandOptions {
 
 export const createListCommand = (): Command => {
   const command = new Command("list");
-  
+
   command
     .description("List all packages and their i18n configuration")
     .option("--enabled-only", "Show only enabled packages")

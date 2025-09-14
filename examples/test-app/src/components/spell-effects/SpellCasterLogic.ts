@@ -10,21 +10,27 @@ import { getSpellColors } from "./SpellColors";
 import type { SpellRenderer } from "./SpellRenderer";
 
 export function createSpellCasterLogic(spellRenderer?: SpellRenderer) {
-  console.log("🦊 SpellCasterLogic: Creating spell caster logic", { hasSpellRenderer: !!spellRenderer });
+  console.log("🦊 SpellCasterLogic: Creating spell caster logic", {
+    hasSpellRenderer: !!spellRenderer,
+  });
   const [activeSpells, setActiveSpells] = createSignal<SpellEffect[]>([]);
-  const [selectedSpellType, setSelectedSpellType] = createSignal<SpellType>("fire");
+  const [selectedSpellType, setSelectedSpellType] =
+    createSignal<SpellType>("fire");
   const [isCasting, setIsCasting] = createSignal(false);
   const [spellIntensity, setSpellIntensity] = createSignal(1.0);
   const [spellDuration, setSpellDuration] = createSignal(3000);
-  console.log("🦊 SpellCasterLogic: Signals created", { 
-    activeSpellsCount: activeSpells().length, 
-    selectedSpellType: selectedSpellType(), 
-    isCasting: isCasting() 
+  console.log("🦊 SpellCasterLogic: Signals created", {
+    activeSpellsCount: activeSpells().length,
+    selectedSpellType: selectedSpellType(),
+    isCasting: isCasting(),
   });
 
   // Spell casting functions
   const castSpell = (spellType: SpellType) => {
-    console.log("🦊 SpellCasterLogic: castSpell called", { spellType, isCasting: isCasting() });
+    console.log("🦊 SpellCasterLogic: castSpell called", {
+      spellType,
+      isCasting: isCasting(),
+    });
     if (isCasting()) {
       console.log("🦊 SpellCasterLogic: Already casting, ignoring request");
       return;
@@ -32,11 +38,14 @@ export function createSpellCasterLogic(spellRenderer?: SpellRenderer) {
 
     setIsCasting(true);
     console.log("🦊 SpellCasterLogic: Set isCasting to true");
-    
+
     const pattern = getSpellPattern(spellType);
     const colors = getSpellColors(spellType);
-    console.log("🦊 SpellCasterLogic: Got pattern and colors", { pattern, colors });
-    
+    console.log("🦊 SpellCasterLogic: Got pattern and colors", {
+      pattern,
+      colors,
+    });
+
     const spell: SpellEffect = {
       id: `spell-${Date.now()}-${Math.random()}`,
       name: `${spellType} spell`,
@@ -50,12 +59,14 @@ export function createSpellCasterLogic(spellRenderer?: SpellRenderer) {
     };
     console.log("🦊 SpellCasterLogic: Created spell", spell);
 
-    setActiveSpells(prev => {
+    setActiveSpells((prev) => {
       const newSpells = [...prev, spell];
-      console.log("🦊 SpellCasterLogic: Added spell to active spells", { count: newSpells.length });
+      console.log("🦊 SpellCasterLogic: Added spell to active spells", {
+        count: newSpells.length,
+      });
       return newSpells;
     });
-    
+
     if (spellRenderer) {
       console.log("🦊 SpellCasterLogic: Starting spell in renderer");
       spellRenderer.startSpell(spell);
@@ -65,8 +76,11 @@ export function createSpellCasterLogic(spellRenderer?: SpellRenderer) {
 
     // Remove spell after duration
     setTimeout(() => {
-      console.log("🦊 SpellCasterLogic: Spell duration expired, removing", spell.id);
-      setActiveSpells(prev => prev.filter(s => s.id !== spell.id));
+      console.log(
+        "🦊 SpellCasterLogic: Spell duration expired, removing",
+        spell.id,
+      );
+      setActiveSpells((prev) => prev.filter((s) => s.id !== spell.id));
       if (spellRenderer) {
         spellRenderer.stopSpell(spell.id);
       }

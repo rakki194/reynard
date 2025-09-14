@@ -60,9 +60,10 @@ export function SettingsTab(props: SettingsTabProps) {
           <div class="setting-group">
             <label>Max Results: {props.maxResults}</label>
             <Slider
-    min={1}
-    max={50}
-  />
+              min={1}
+              max={50}
+              value={props.maxResults}
+              onChange={(e) =>
                 props.onMaxResultsChange(parseInt(e.currentTarget.value))
               }
               class="range-slider"
@@ -77,10 +78,11 @@ export function SettingsTab(props: SettingsTabProps) {
               {(props.similarityThreshold * 100).toFixed(0)}%
             </label>
             <Slider
-    min={0.1}
-    max={1.0}
-    step={0.05}
-  />
+              min={0.1}
+              max={1.0}
+              step={0.05}
+              value={props.similarityThreshold}
+              onChange={(e) =>
                 props.onSimilarityThresholdChange(
                   parseFloat(e.currentTarget.value),
                 )
@@ -94,8 +96,9 @@ export function SettingsTab(props: SettingsTabProps) {
           <div class="setting-group">
             <label class="checkbox-label">
               <Toggle
-    size="sm"
-  />
+                size="sm"
+                checked={props.enableReranking}
+                onChange={(e) =>
                   props.onEnableRerankingChange(e.currentTarget.checked)
                 }
               />

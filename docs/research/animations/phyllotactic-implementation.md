@@ -28,8 +28,8 @@ The core phyllotactic pattern generation follows Vogel's mathematical model:
 function calculateSpiralPosition(index: number, rotationAngle: number = 0) {
   // Vogel's model: r = c√n, θ = n × 137.5°
   const radius = baseRadius * Math.sqrt(index);
-  const angle = index * GOLDEN_ANGLE * Math.PI / 180 + rotationAngle;
-  
+  const angle = (index * GOLDEN_ANGLE * Math.PI) / 180 + rotationAngle;
+
   return {
     x: centerX + Math.cos(angle) * radius,
     y: centerY + Math.sin(angle) * radius,
@@ -52,7 +52,7 @@ const radius = baseRadius * Math.sqrt(galacticIndex) * galacticSpiralFactor;
 const angle = galacticIndex * goldenAngle;
 
 // Apply galactic spiral transformation
-const galacticAngle = angle + (galacticIndex * 0.1 * galacticSpiralFactor);
+const galacticAngle = angle + galacticIndex * 0.1 * galacticSpiralFactor;
 const galacticRadius = radius * (1 + Math.sin(galacticIndex * 0.05) * 0.1);
 ```
 
@@ -86,23 +86,25 @@ function calculateStroboscopicEffect(deltaTime: number) {
   const frameTime = deltaTime;
   const angularVelocity = rotationSpeed * (Math.PI / 180);
   const anglePerFrame = angularVelocity * frameTime;
-  
+
   // Stroboscopic phase calculation
-  const stroboscopicPhase = (anglePerFrame / (GOLDEN_ANGLE * Math.PI / 180)) % 1;
-  
+  const stroboscopicPhase =
+    (anglePerFrame / ((GOLDEN_ANGLE * Math.PI) / 180)) % 1;
+
   // Determine stroboscopic effect
-  const isStroboscopic = Math.abs(stroboscopicPhase - 0.5) < stroboscopicThreshold;
-  
+  const isStroboscopic =
+    Math.abs(stroboscopicPhase - 0.5) < stroboscopicThreshold;
+
   // Calculate apparent motion
-  let apparentMotion = 'frozen';
+  let apparentMotion = "frozen";
   if (isStroboscopic) {
     if (stroboscopicPhase > 0.5) {
-      apparentMotion = 'growing';
+      apparentMotion = "growing";
     } else if (stroboscopicPhase < 0.5) {
-      apparentMotion = 'shrinking';
+      apparentMotion = "shrinking";
     }
   }
-  
+
   return {
     isStroboscopic,
     stroboscopicPhase,
@@ -118,7 +120,7 @@ Implementation of temporal aliasing effects for enhanced visual perception:
 
 ```typescript
 // Temporal aliasing calculation
-const temporalAliasing = enableTemporalAliasing 
+const temporalAliasing = enableTemporalAliasing
   ? Math.sin(stroboscopicPhase * Math.PI * 2) * 0.5 + 0.5
   : 0;
 
@@ -138,7 +140,7 @@ Implementation of spherical phyllotaxis based on research in 3D pattern generati
 function projectToSphere(x: number, y: number, z: number) {
   const distance = Math.sqrt(x * x + y * y + z * z);
   const scale = sphereRadius / distance;
-  
+
   return {
     x: x * scale,
     y: y * scale,
@@ -154,14 +156,12 @@ Extension of stroboscopic effects to 3D space:
 ```typescript
 function calculate3DStroboscopicIntensity(index: number) {
   const totalRotation = Math.sqrt(
-    rotationX * rotationX + 
-    rotationY * rotationY + 
-    rotationZ * rotationZ
+    rotationX * rotationX + rotationY * rotationY + rotationZ * rotationZ,
   );
-  
+
   const stroboscopicPhase = (totalRotation / GOLDEN_ANGLE) % 1;
   const intensity = Math.abs(Math.sin(stroboscopicPhase * Math.PI * 2));
-  
+
   return intensity > stroboscopicThreshold ? intensity : 0;
 }
 ```
@@ -177,7 +177,7 @@ function adjustQualityLevel() {
   const targetFPS = config.targetFPS;
   const currentFPS = metrics.averageFPS;
   const fpsRatio = currentFPS / targetFPS;
-  
+
   // If performance is poor, reduce quality
   if (fpsRatio < 0.8 && currentQualityLevel < qualityLevels.length - 1) {
     currentQualityLevel++;
@@ -199,19 +199,20 @@ Implementation of spatial culling for large-scale patterns:
 function applySpatialCulling(points: Point[], viewport: Viewport) {
   const centerX = viewport.x + viewport.width / 2;
   const centerY = viewport.y + viewport.height / 2;
-  
-  const pointsWithDistance = points.map(point => ({
+
+  const pointsWithDistance = points.map((point) => ({
     ...point,
     distance: Math.sqrt(
-      Math.pow(point.x - centerX, 2) + 
-      Math.pow(point.y - centerY, 2)
+      Math.pow(point.x - centerX, 2) + Math.pow(point.y - centerY, 2),
     ),
   }));
-  
+
   // Sort by distance and take closest points
   pointsWithDistance.sort((a, b) => a.distance - b.distance);
-  
-  return pointsWithDistance.slice(0, maxPoints).map(({ distance, ...point }) => point);
+
+  return pointsWithDistance
+    .slice(0, maxPoints)
+    .map(({ distance, ...point }) => point);
 }
 ```
 
@@ -228,13 +229,13 @@ function generateAdvancedColor(index: number, patternType: string) {
   let lightness: number;
 
   switch (patternType) {
-    case 'rotase':
+    case "rotase":
       // ROTASE color harmonics
       hue = (index * 137.5 + Math.sin(index * 0.1) * 30) % 360;
       saturation = 80 + Math.sin(index * 0.05) * 20;
       lightness = 50 + Math.cos(index * 0.08) * 20;
       break;
-    case 'bernoulli':
+    case "bernoulli":
       // Bernoulli lattice color harmonics
       hue = (index * 137.5 + Math.cos(index * 0.15) * 45) % 360;
       saturation = 70 + Math.cos(index * 0.12) * 30;
@@ -297,7 +298,7 @@ const performanceTest = () => {
   generatePattern(10000);
   const endTime = performance.now();
   const duration = endTime - startTime;
-  
+
   assert(duration < 100); // Should generate 10k points in <100ms
 };
 ```
@@ -309,10 +310,14 @@ const performanceTest = () => {
 const stroboscopicTest = () => {
   const engine = new StroboscopicEngine({ rotationSpeed: 1.0, frameRate: 60 });
   const result = engine.calculateStroboscopicEffect(16.67);
-  
-  assert(typeof result.isStroboscopic === 'boolean');
+
+  assert(typeof result.isStroboscopic === "boolean");
   assert(result.stroboscopicPhase >= 0 && result.stroboscopicPhase <= 1);
-  assert(['growing', 'shrinking', 'frozen', 'morphing'].includes(result.apparentMotion));
+  assert(
+    ["growing", "shrinking", "frozen", "morphing"].includes(
+      result.apparentMotion,
+    ),
+  );
 };
 ```
 
@@ -363,9 +368,9 @@ The system's modular design and comprehensive documentation make it an ideal fou
 
 ## References
 
-1. Vogel, H. (1979). A better way to construct the sunflower head. *Mathematical Biosciences*, 44(3-4), 179-189.
-2. Jean, R. V. (1994). *Phyllotaxis: A Systemic Study in Plant Morphogenesis*. Cambridge University Press.
-3. Livio, M. (2003). *The Golden Ratio: The Story of Phi, the World's Most Astonishing Number*. Broadway Books.
-4. Pan, H. (2024). ROTASE model with galactic spiral equations. *Academic Research*.
-5. Sushida, T., & Yamagishi, Y. (2024). Bernoulli spiral lattice research. *Mathematical Research*.
+1. Vogel, H. (1979). A better way to construct the sunflower head. _Mathematical Biosciences_, 44(3-4), 179-189.
+2. Jean, R. V. (1994). _Phyllotaxis: A Systemic Study in Plant Morphogenesis_. Cambridge University Press.
+3. Livio, M. (2003). _The Golden Ratio: The Story of Phi, the World's Most Astonishing Number_. Broadway Books.
+4. Pan, H. (2024). ROTASE model with galactic spiral equations. _Academic Research_.
+5. Sushida, T., & Yamagishi, Y. (2024). Bernoulli spiral lattice research. _Mathematical Research_.
 6. Reynard Project (2025). "The Mathematics of Phyllotactic Spirals and Their Animated Perception" - Research Paper.

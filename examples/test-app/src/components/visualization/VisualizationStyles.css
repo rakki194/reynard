@@ -207,7 +207,7 @@
   font-size: 0.875rem;
   color: var(--color-accent);
   font-weight: 600;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
 }
 
 /* Demo Styles */
@@ -397,21 +397,21 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .visualization-controls {
     max-height: none;
   }
-  
+
   .visualization-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .control-row {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .control-item {
     min-width: auto;
   }
@@ -423,22 +423,22 @@
   .visualization-3d {
     padding: 0.5rem;
   }
-  
+
   .demo-header,
   .demo-controls,
   .demo-content,
   .demo-info {
     padding: 1rem;
   }
-  
+
   .visualization-content {
     padding: 1rem;
   }
-  
+
   .visualization-controls {
     padding: 1rem;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr;
   }

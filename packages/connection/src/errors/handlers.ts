@@ -41,13 +41,16 @@ export interface ErrorHandler {
   /**
    * Handle an error
    */
-  handle(error: unknown, context?: Record<string, unknown>): Promise<void> | void;
-  
+  handle(
+    error: unknown,
+    context?: Record<string, unknown>,
+  ): Promise<void> | void;
+
   /**
    * Check if this handler can handle the error
    */
   canHandle(error: unknown): boolean;
-  
+
   /**
    * Get handler priority (higher numbers are handled first)
    */
@@ -90,7 +93,10 @@ export class ErrorHandlerSystem {
   /**
    * Handle an error using registered handlers
    */
-  async handleError(error: unknown, context?: Record<string, unknown>): Promise<void> {
+  async handleError(
+    error: unknown,
+    context?: Record<string, unknown>,
+  ): Promise<void> {
     for (const handler of this.handlers) {
       if (handler.canHandle(error)) {
         try {
@@ -102,7 +108,7 @@ export class ErrorHandlerSystem {
         }
       }
     }
-    
+
     // If no handler could handle the error, log it
     console.error("Unhandled error:", extractErrorDetails(error));
   }
@@ -129,7 +135,7 @@ export class ConsoleErrorHandler implements ErrorHandler {
   handle(error: unknown, context?: Record<string, unknown>): void {
     const details = extractErrorDetails(error);
     const message = `[${this.logLevel.toUpperCase()}] ${details.name}: ${details.message}`;
-    
+
     switch (this.logLevel) {
       case "error":
         console.error(message, { error: details, context });
@@ -148,9 +154,7 @@ export class ConsoleErrorHandler implements ErrorHandler {
  * Validation error handler
  */
 export class ValidationErrorHandler implements ErrorHandler {
-  constructor(
-    private onValidationError?: (error: ValidationError) => void,
-  ) {}
+  constructor(private onValidationError?: (error: ValidationError) => void) {}
 
   canHandle(error: unknown): boolean {
     return isValidationError(error);
@@ -180,9 +184,7 @@ export class ValidationErrorHandler implements ErrorHandler {
  * Network error handler
  */
 export class NetworkErrorHandler implements ErrorHandler {
-  constructor(
-    private onNetworkError?: (error: NetworkError) => void,
-  ) {}
+  constructor(private onNetworkError?: (error: NetworkError) => void) {}
 
   canHandle(error: unknown): boolean {
     return isNetworkError(error);
@@ -274,9 +276,7 @@ export class AuthorizationErrorHandler implements ErrorHandler {
  * Processing error handler
  */
 export class ProcessingErrorHandler implements ErrorHandler {
-  constructor(
-    private onProcessingError?: (error: ProcessingError) => void,
-  ) {}
+  constructor(private onProcessingError?: (error: ProcessingError) => void) {}
 
   canHandle(error: unknown): boolean {
     return isProcessingError(error);
@@ -306,9 +306,7 @@ export class ProcessingErrorHandler implements ErrorHandler {
  * Database error handler
  */
 export class DatabaseErrorHandler implements ErrorHandler {
-  constructor(
-    private onDatabaseError?: (error: DatabaseError) => void,
-  ) {}
+  constructor(private onDatabaseError?: (error: DatabaseError) => void) {}
 
   canHandle(error: unknown): boolean {
     return isDatabaseError(error);
@@ -370,9 +368,7 @@ export class ConfigurationErrorHandler implements ErrorHandler {
  * Timeout error handler
  */
 export class TimeoutErrorHandler implements ErrorHandler {
-  constructor(
-    private onTimeoutError?: (error: TimeoutError) => void,
-  ) {}
+  constructor(private onTimeoutError?: (error: TimeoutError) => void) {}
 
   canHandle(error: unknown): boolean {
     return isTimeoutError(error);
@@ -400,9 +396,7 @@ export class TimeoutErrorHandler implements ErrorHandler {
  * Rate limit error handler
  */
 export class RateLimitErrorHandler implements ErrorHandler {
-  constructor(
-    private onRateLimitError?: (error: RateLimitError) => void,
-  ) {}
+  constructor(private onRateLimitError?: (error: RateLimitError) => void) {}
 
   canHandle(error: unknown): boolean {
     return isRateLimitError(error);
@@ -462,11 +456,15 @@ export function createErrorHandlerSystem(options: {
   }
 
   if (options.onAuthenticationError) {
-    system.addHandler(new AuthenticationErrorHandler(options.onAuthenticationError));
+    system.addHandler(
+      new AuthenticationErrorHandler(options.onAuthenticationError),
+    );
   }
 
   if (options.onAuthorizationError) {
-    system.addHandler(new AuthorizationErrorHandler(options.onAuthorizationError));
+    system.addHandler(
+      new AuthorizationErrorHandler(options.onAuthorizationError),
+    );
   }
 
   if (options.onProcessingError) {
@@ -478,7 +476,9 @@ export function createErrorHandlerSystem(options: {
   }
 
   if (options.onConfigurationError) {
-    system.addHandler(new ConfigurationErrorHandler(options.onConfigurationError));
+    system.addHandler(
+      new ConfigurationErrorHandler(options.onConfigurationError),
+    );
   }
 
   if (options.onTimeoutError) {
@@ -506,7 +506,10 @@ export const globalErrorHandler = createErrorHandlerSystem({
 /**
  * Handle an error using the global error handler
  */
-export async function errorHandler(error: unknown, context?: Record<string, unknown>): Promise<void> {
+export async function errorHandler(
+  error: unknown,
+  context?: Record<string, unknown>,
+): Promise<void> {
   await globalErrorHandler.handleError(error, context);
 }
 
@@ -517,11 +520,16 @@ export function wrapAsync<T>(
   fn: () => Promise<T>,
   errorMessage: string,
   context?: Record<string, unknown>,
-): Promise<{ success: true; data: T } | { success: false; error: ReynardError }> {
+): Promise<
+  { success: true; data: T } | { success: false; error: ReynardError }
+> {
   return fn()
-    .then(data => ({ success: true as const, data }))
-    .catch(error => {
-      const reynardError = toReynardError(error, context?.source as string || "reynard");
+    .then((data) => ({ success: true as const, data }))
+    .catch((error) => {
+      const reynardError = toReynardError(
+        error,
+        (context?.source as string) || "reynard",
+      );
       errorHandler(reynardError, context);
       return { success: false as const, error: reynardError };
     });

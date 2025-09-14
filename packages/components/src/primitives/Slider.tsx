@@ -151,15 +151,9 @@ export const Slider: Component<SliderProps> = (props) => {
       onTouchEnd={onTouchEnd}
     >
       <div class="slider-track" ref={setTrackRef}>
-        <div 
-          class="slider-track-fill" 
-          style={`width: ${percentage()}%`}
-        />
+        <div class="slider-track-fill" style={`width: ${percentage()}%`} />
       </div>
-      <div 
-        class="slider-thumb" 
-        style={`left: ${percentage()}%`}
-      />
+      <div class="slider-thumb" style={`left: ${percentage()}%`} />
     </div>
   );
 };

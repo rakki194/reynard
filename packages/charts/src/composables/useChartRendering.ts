@@ -22,14 +22,17 @@ export interface ChartRenderingConfig {
 
 export function useChartRendering(config: ChartRenderingConfig) {
   console.log("🦊 useChartRendering: Called with config", config);
-  
+
   // Make the result reactive to chart state changes
   const result = () => {
     const chartData = config.chartData();
     const chartOptions = config.chartOptions();
-    
-    console.log("🦊 useChartRendering: Getting current chart state", { chartData, chartOptions });
-    
+
+    console.log("🦊 useChartRendering: Getting current chart state", {
+      chartData,
+      chartOptions,
+    });
+
     return {
       type: config.type,
       data: chartData,
@@ -47,8 +50,8 @@ export function useChartRendering(config: ChartRenderingConfig) {
       },
     };
   };
-  
+
   console.log("🦊 useChartRendering: Returning reactive render props function");
-  
+
   return result;
 }

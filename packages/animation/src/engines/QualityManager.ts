@@ -3,7 +3,7 @@
  * Manages quality levels and adaptation logic for adaptive animation
  */
 
-import type { AdaptiveConfig } from './AdaptiveConfig';
+import type { AdaptiveConfig } from "./AdaptiveConfig";
 
 export interface QualityManager {
   getCurrentQuality: () => number;
@@ -22,23 +22,33 @@ export function createQualityManager(config: AdaptiveConfig): QualityManager {
     if (currentFPS < config.targetFPS) {
       lowFPSFrames++;
       highFPSFrames = 0;
-      
-      if (lowFPSFrames >= config.adaptationThreshold && currentQualityIndex < config.qualityLevels.length - 1) {
+
+      if (
+        lowFPSFrames >= config.adaptationThreshold &&
+        currentQualityIndex < config.qualityLevels.length - 1
+      ) {
         currentQualityIndex++;
         lowFPSFrames = 0;
         if (config.enablePerformanceMonitoring) {
-          console.log(`🦊 QualityManager: Reduced quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`);
+          console.log(
+            `🦊 QualityManager: Reduced quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`,
+          );
         }
       }
     } else if (currentFPS > config.targetFPS + 10) {
       highFPSFrames++;
       lowFPSFrames = 0;
-      
-      if (highFPSFrames >= config.adaptationThreshold && currentQualityIndex > 0) {
+
+      if (
+        highFPSFrames >= config.adaptationThreshold &&
+        currentQualityIndex > 0
+      ) {
         currentQualityIndex--;
         highFPSFrames = 0;
         if (config.enablePerformanceMonitoring) {
-          console.log(`🦊 QualityManager: Increased quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`);
+          console.log(
+            `🦊 QualityManager: Increased quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`,
+          );
         }
       }
     }

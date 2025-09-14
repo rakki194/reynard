@@ -3,8 +3,8 @@
  * Performance-optimized animation engine with throttling
  */
 
-import type { AnimationConfig, AnimationCallbacks } from '../types';
-import { createAnimationCore } from '../core/AnimationCore';
+import type { AnimationConfig, AnimationCallbacks } from "../types";
+import { createAnimationCore } from "../core/AnimationCore";
 
 export function createThrottledAnimationEngine(
   config: AnimationConfig & { throttleInterval: number } = {
@@ -13,7 +13,7 @@ export function createThrottledAnimationEngine(
     enableVSync: true,
     enablePerformanceMonitoring: true,
     throttleInterval: 16, // ~60fps
-  }
+  },
 ) {
   const engine = createAnimationCore(config);
   let lastThrottledTime = 0;

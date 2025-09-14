@@ -26,7 +26,7 @@ export interface StroboscopicState {
 }
 
 export interface QualityLevel {
-  level: 'low' | 'medium' | 'high' | 'ultra';
+  level: "low" | "medium" | "high" | "ultra";
   pointCount: number;
   renderDistance: number;
   effectsEnabled: boolean;

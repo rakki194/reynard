@@ -9,14 +9,20 @@ import { SegmentationService } from "../services/SegmentationService.js";
 import { SegmentationManager } from "../services/SegmentationManager.js";
 import { usePolygonEditor } from "../composables/usePolygonEditor.js";
 import { PolygonOps, type Polygon } from "reynard-algorithms";
-import type { SegmentationData, SegmentationTask, SegmentationSource } from "../types/index.js";
+import type {
+  SegmentationData,
+  SegmentationTask,
+  SegmentationSource,
+} from "../types/index.js";
 
 // Mock dependencies for performance testing
 vi.mock("reynard-ai-shared", () => ({
   BaseAIService: class MockBaseAIService {
     constructor() {}
     async initialize() {}
-    async getHealthInfo() { return { status: "healthy", details: {} }; }
+    async getHealthInfo() {
+      return { status: "healthy", details: {} };
+    }
     async cleanup() {}
     setStatus() {}
   },
@@ -52,9 +58,15 @@ vi.mock("reynard-annotating-core", () => ({
     constructor() {}
     async register() {}
     async unregister() {}
-    get() { return undefined; }
-    getAll() { return []; }
-    isRegistered() { return false; }
+    get() {
+      return undefined;
+    }
+    getAll() {
+      return [];
+    }
+    isRegistered() {
+      return false;
+    }
     async initialize() {}
   },
   BackendAnnotationService: class MockBackendAnnotationService {
@@ -190,7 +202,7 @@ describe("Performance Benchmarks", () => {
 
       const formats = ["coco", "yolo", "pascal_voc", "reynard"];
 
-      formats.forEach(format => {
+      formats.forEach((format) => {
         const startTime = performance.now();
         const exportData = service.exportSegmentation(segmentation, format);
         const endTime = performance.now();
@@ -214,14 +226,14 @@ describe("Performance Benchmarks", () => {
       };
 
       const startTime = performance.now();
-      
+
       // Perform multiple vertex operations
       for (let i = 0; i < 100; i++) {
         polygonEditor.addVertex(polygon, { x: i, y: i });
         polygonEditor.removeVertex(polygon, 0);
         polygonEditor.moveVertex(polygon, 0, { x: i * 2, y: i * 2 });
       }
-      
+
       const endTime = performance.now();
       const executionTime = endTime - startTime;
       const averageTime = executionTime / 300; // 100 operations × 3 types
@@ -240,7 +252,7 @@ describe("Performance Benchmarks", () => {
       };
 
       const startTime = performance.now();
-      
+
       // Perform multiple transformations
       for (let i = 0; i < 50; i++) {
         polygonEditor.scalePolygon(polygon, 1.1);
@@ -248,7 +260,7 @@ describe("Performance Benchmarks", () => {
         polygonEditor.translatePolygon(polygon, { x: 1, y: 1 });
         polygonEditor.simplifyPolygon(polygon, 1.0);
       }
-      
+
       const endTime = performance.now();
       const executionTime = endTime - startTime;
       const averageTime = executionTime / 200; // 50 iterations × 4 operations
@@ -267,11 +279,11 @@ describe("Performance Benchmarks", () => {
       }));
 
       const startTime = performance.now();
-      
-      polygons.forEach(polygon => {
+
+      polygons.forEach((polygon) => {
         polygonEditor.validatePolygon(polygon);
       });
-      
+
       const endTime = performance.now();
       const executionTime = endTime - startTime;
       const averageTime = executionTime / polygons.length;
@@ -290,7 +302,7 @@ describe("Performance Benchmarks", () => {
       };
 
       const startTime = performance.now();
-      
+
       // Perform multiple calculations
       for (let i = 0; i < 1000; i++) {
         polygonEditor.getPolygonCenter(polygon);
@@ -299,7 +311,7 @@ describe("Performance Benchmarks", () => {
         polygonEditor.getClosestVertex(polygon, { x: 25, y: 25 });
         polygonEditor.getClosestEdge(polygon, { x: 75, y: 75 });
       }
-      
+
       const endTime = performance.now();
       const executionTime = endTime - startTime;
       const averageTime = executionTime / 5000; // 1000 iterations × 5 operations
@@ -318,7 +330,7 @@ describe("Performance Benchmarks", () => {
           type: "segmentation",
           imagePath: `/test/image${i}.jpg`,
         };
-        
+
         await service.generateSegmentation(task);
       }
 
@@ -344,13 +356,13 @@ describe("Performance Benchmarks", () => {
       };
 
       const startTime = performance.now();
-      
+
       // Perform operations on large polygon
       polygonEditor.validatePolygon(largePolygon);
       polygonEditor.getPolygonCenter(largePolygon);
       polygonEditor.getPolygonBounds(largePolygon);
       polygonEditor.simplifyPolygon(largePolygon, 5.0);
-      
+
       const endTime = performance.now();
       const executionTime = endTime - startTime;
 
@@ -366,11 +378,11 @@ describe("Performance Benchmarks", () => {
       }));
 
       const startTime = performance.now();
-      
+
       // Run all tasks concurrently
-      const promises = tasks.map(task => service.generateSegmentation(task));
+      const promises = tasks.map((task) => service.generateSegmentation(task));
       const results = await Promise.all(promises);
-      
+
       const endTime = performance.now();
       const executionTime = endTime - startTime;
 
@@ -389,7 +401,7 @@ describe("Performance Benchmarks", () => {
       };
 
       const startTime = performance.now();
-      
+
       // Run multiple operations concurrently
       const operations = [
         () => polygonEditor.scalePolygon(polygon, 1.1),
@@ -402,8 +414,8 @@ describe("Performance Benchmarks", () => {
         () => polygonEditor.isPointInPolygon(polygon, { x: 50, y: 50 }),
       ];
 
-      operations.forEach(operation => operation());
-      
+      operations.forEach((operation) => operation());
+
       const endTime = performance.now();
       const executionTime = endTime - startTime;
 
@@ -414,17 +426,17 @@ describe("Performance Benchmarks", () => {
   describe("Stress Testing", () => {
     it("should handle high-frequency operations", async () => {
       const startTime = performance.now();
-      
+
       // Perform many operations in rapid succession
       for (let i = 0; i < 100; i++) {
         const task: SegmentationTask = {
           type: "segmentation",
           imagePath: `/test/image${i}.jpg`,
         };
-        
+
         await service.generateSegmentation(task);
       }
-      
+
       const endTime = performance.now();
       const executionTime = endTime - startTime;
       const averageTime = executionTime / 100;
@@ -443,17 +455,18 @@ describe("Performance Benchmarks", () => {
       };
 
       const times: number[] = [];
-      
+
       // Measure performance over many iterations
       for (let i = 0; i < 1000; i++) {
         const startTime = performance.now();
         polygonEditor.validatePolygon(polygon);
         const endTime = performance.now();
-        
+
         times.push(endTime - startTime);
       }
 
-      const averageTime = times.reduce((sum, time) => sum + time, 0) / times.length;
+      const averageTime =
+        times.reduce((sum, time) => sum + time, 0) / times.length;
       const maxTime = Math.max(...times);
       const minTime = Math.min(...times);
 

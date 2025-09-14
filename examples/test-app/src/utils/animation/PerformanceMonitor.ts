@@ -106,20 +106,30 @@ export class PerformanceMonitor {
 
     // Check FPS
     if (averageFPS < this.thresholds.minFPS) {
-      issues.push(`Low FPS: ${averageFPS.toFixed(1)} (target: ${this.thresholds.minFPS})`);
-      recommendations.push("Reduce animation complexity or enable quality scaling");
+      issues.push(
+        `Low FPS: ${averageFPS.toFixed(1)} (target: ${this.thresholds.minFPS})`,
+      );
+      recommendations.push(
+        "Reduce animation complexity or enable quality scaling",
+      );
     }
 
     // Check frame time
     if (averageFrameTime > this.thresholds.maxFrameTime) {
-      issues.push(`High frame time: ${averageFrameTime.toFixed(1)}ms (max: ${this.thresholds.maxFrameTime}ms)`);
+      issues.push(
+        `High frame time: ${averageFrameTime.toFixed(1)}ms (max: ${this.thresholds.maxFrameTime}ms)`,
+      );
       recommendations.push("Optimize rendering or reduce update frequency");
     }
 
     // Check stability
     if (stability < 0.8) {
-      issues.push(`Unstable performance: ${(stability * 100).toFixed(1)}% stability`);
-      recommendations.push("Implement frame rate smoothing or adaptive quality");
+      issues.push(
+        `Unstable performance: ${(stability * 100).toFixed(1)}% stability`,
+      );
+      recommendations.push(
+        "Implement frame rate smoothing or adaptive quality",
+      );
     }
 
     return {
@@ -135,15 +145,18 @@ export class PerformanceMonitor {
    * Get performance trend over time
    */
   getTrend(): {
-    direction: 'improving' | 'degrading' | 'stable';
+    direction: "improving" | "degrading" | "stable";
     change: number;
     confidence: number;
   } {
     if (this.metrics.length < 20) {
-      return { direction: 'stable', change: 0, confidence: 0 };
+      return { direction: "stable", change: 0, confidence: 0 };
     }
 
-    const firstHalf = this.metrics.slice(0, Math.floor(this.metrics.length / 2));
+    const firstHalf = this.metrics.slice(
+      0,
+      Math.floor(this.metrics.length / 2),
+    );
     const secondHalf = this.metrics.slice(Math.floor(this.metrics.length / 2));
 
     const firstAvg = this.calculateAverageFPS(firstHalf);
@@ -152,9 +165,9 @@ export class PerformanceMonitor {
     const change = ((secondAvg - firstAvg) / firstAvg) * 100;
     const confidence = Math.min(this.metrics.length / 60, 1); // More data = higher confidence
 
-    let direction: 'improving' | 'degrading' | 'stable' = 'stable';
-    if (change > 5) direction = 'improving';
-    else if (change < -5) direction = 'degrading';
+    let direction: "improving" | "degrading" | "stable" = "stable";
+    if (change > 5) direction = "improving";
+    else if (change < -5) direction = "degrading";
 
     return { direction, change, confidence };
   }
@@ -164,7 +177,7 @@ export class PerformanceMonitor {
    */
   calculateOptimalQuality(): number {
     const status = this.getStatus();
-    
+
     if (status.isHealthy) return 1.0;
     if (status.averageFPS > 45) return 0.8;
     if (status.averageFPS > 30) return 0.6;
@@ -185,20 +198,23 @@ export class PerformanceMonitor {
   private calculateStability(metrics: PerformanceMetrics[]): number {
     if (metrics.length < 2) return 1;
 
-    const fpsValues = metrics.map(m => m.fps);
-    const mean = fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length;
-    const variance = fpsValues.reduce((sum, fps) => sum + Math.pow(fps - mean, 2), 0) / fpsValues.length;
+    const fpsValues = metrics.map((m) => m.fps);
+    const mean =
+      fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length;
+    const variance =
+      fpsValues.reduce((sum, fps) => sum + Math.pow(fps - mean, 2), 0) /
+      fpsValues.length;
     const standardDeviation = Math.sqrt(variance);
 
     // Stability is inverse of coefficient of variation
-    return Math.max(0, 1 - (standardDeviation / mean));
+    return Math.max(0, 1 - standardDeviation / mean);
   }
 
   /**
    * Get memory usage (if available)
    */
   getMemoryUsage(): number {
-    if ('memory' in performance) {
+    if ("memory" in performance) {
       const memory = (performance as any).memory;
       return memory.usedJSHeapSize;
     }

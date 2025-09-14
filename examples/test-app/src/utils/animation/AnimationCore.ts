@@ -1,17 +1,22 @@
 /**
  * 🦊 Animation Core
  * Core animation loop and state management
- * 
+ *
  * @deprecated Use reynard-animation package instead
  * This file is kept for backward compatibility
  */
 
 import { createSignal, onCleanup } from "solid-js";
-import type { AnimationConfig, AnimationState, AnimationCallbacks, PerformanceStats } from "./AnimationTypes";
+import type {
+  AnimationConfig,
+  AnimationState,
+  AnimationCallbacks,
+  PerformanceStats,
+} from "./AnimationTypes";
 
 export function createAnimationCore(initialConfig: AnimationConfig) {
   let config = { ...initialConfig }; // Make config mutable
-  
+
   const [animationState, setAnimationState] = createSignal<AnimationState>({
     isRunning: false,
     frameCount: 0,
@@ -48,7 +53,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     // Safety check: prevent infinite loops
     if (!animationId) {
       console.warn("🦊 AnimationCore: Animation ID is undefined, stopping");
-      setAnimationState(prev => ({ ...prev, isRunning: false }));
+      setAnimationState((prev) => ({ ...prev, isRunning: false }));
       return;
     }
 
@@ -59,7 +64,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     const deltaTime = currentTime - lastFrameTime;
     const targetFrameTime = 1000 / config.frameRate;
-    
+
     // FPS limiting: only render if enough time has passed
     if (deltaTime < targetFrameTime) {
       animationId = window.requestAnimationFrame(animate);
@@ -72,24 +77,26 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     // Safety check: prevent runaway animations
     if (frameCount > maxFramesPerSecond) {
-      console.warn("🦊 AnimationCore: Frame count exceeded safety limit, stopping animation");
+      console.warn(
+        "🦊 AnimationCore: Frame count exceeded safety limit, stopping animation",
+      );
       stop();
       return;
     }
 
     // Performance monitoring
     const frameStartTime = performance.now();
-    
+
     // Update FPS calculation (optimized)
     const currentFPS = 1000 / deltaTime;
     fpsHistory.push(currentFPS);
     fpsSum += currentFPS;
-    
+
     if (fpsHistory.length > maxFPSHistory) {
       const removedFPS = fpsHistory.shift()!;
       fpsSum -= removedFPS;
     }
-    
+
     const averageFPS = fpsSum / fpsHistory.length;
 
     // Call frame start callback
@@ -124,7 +131,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     const renderTime = performance.now() - renderStartTime;
 
     // Update state
-    setAnimationState(prev => ({
+    setAnimationState((prev) => ({
       ...prev,
       frameCount: prev.frameCount + 1,
       lastFrameTime: currentTime,
@@ -153,24 +160,28 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
   const start = (newCallbacks: AnimationCallbacks = {}) => {
     // Safety check: prevent starting if already running
     if (animationState().isRunning) {
-      console.warn("🦊 AnimationCore: Animation already running, ignoring start request");
+      console.warn(
+        "🦊 AnimationCore: Animation already running, ignoring start request",
+      );
       return;
     }
-    
+
     callbacks = { ...callbacks, ...newCallbacks };
 
-    setAnimationState(prev => ({
+    setAnimationState((prev) => ({
       ...prev,
       isRunning: true,
       lastFrameTime: performance.now(),
     }));
-    
+
     // Reset frame counter for safety
     frameCount = 0;
 
     // Set safety timeout to prevent runaway animations
     safetyTimeout = window.setTimeout(() => {
-      console.warn("🦊 AnimationCore: Safety timeout reached, stopping animation");
+      console.warn(
+        "🦊 AnimationCore: Safety timeout reached, stopping animation",
+      );
       stop();
     }, 30000); // 30 second safety timeout
 
@@ -192,7 +203,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
       safetyTimeout = undefined;
     }
 
-    setAnimationState(prev => ({
+    setAnimationState((prev) => ({
       ...prev,
       isRunning: false,
     }));

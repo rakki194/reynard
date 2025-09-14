@@ -13,7 +13,7 @@ The Reynard Animation Utilities provide a comprehensive suite of tools for creat
 Creates a high-performance animation engine with built-in safety checks and performance monitoring.
 
 ```typescript
-import { createAnimationCore } from '../utils/animation/AnimationCore';
+import { createAnimationCore } from "../utils/animation/AnimationCore";
 
 const animationCore = createAnimationCore({
   frameRate: 60,
@@ -69,7 +69,7 @@ interface AnimationCore {
 Advanced stroboscopic animation effects based on mathematical research.
 
 ```typescript
-import { StroboscopicEngine } from '../utils/animation/StroboscopicEngine';
+import { StroboscopicEngine } from "../utils/animation/StroboscopicEngine";
 
 const stroboscopicEngine = new StroboscopicEngine({
   frameRate: 60,
@@ -117,7 +117,7 @@ interface StroboscopicConfig {
 interface StroboscopicState {
   isStroboscopic: boolean;
   stroboscopicPhase: number;
-  apparentMotion: 'growing' | 'shrinking' | 'frozen' | 'morphing';
+  apparentMotion: "growing" | "shrinking" | "frozen" | "morphing";
   temporalAliasing: number;
   morphingIntensity: number;
 }
@@ -130,10 +130,10 @@ interface StroboscopicState {
 Implements cutting-edge research models for phyllotactic pattern generation.
 
 ```typescript
-import { AdvancedPatternGenerator } from '../utils/phyllotactic/AdvancedPatternGenerator';
+import { AdvancedPatternGenerator } from "../utils/phyllotactic/AdvancedPatternGenerator";
 
 const patternGenerator = new AdvancedPatternGenerator({
-  patternType: 'rotase',
+  patternType: "rotase",
   pointCount: 1000,
   baseRadius: 10,
   growthFactor: 1.0,
@@ -153,7 +153,7 @@ const patternGenerator = new AdvancedPatternGenerator({
 
 ```typescript
 interface AdvancedPatternConfig {
-  patternType: 'vogel' | 'rotase' | 'bernoulli' | 'fibonacci-sibling';
+  patternType: "vogel" | "rotase" | "bernoulli" | "fibonacci-sibling";
   pointCount: number;
   baseRadius: number;
   growthFactor: number;
@@ -208,7 +208,7 @@ interface AdvancedPatternPoint {
 Extends phyllotactic patterns into 3D space with advanced rendering capabilities.
 
 ```typescript
-import { Phyllotactic3DSystem } from '../utils/phyllotactic/Phyllotactic3D';
+import { Phyllotactic3DSystem } from "../utils/phyllotactic/Phyllotactic3D";
 
 const phyllotactic3D = new Phyllotactic3DSystem({
   pointCount: 1000,
@@ -296,7 +296,7 @@ interface Phyllotactic3DPoint {
 Advanced performance optimizations for large-scale animations.
 
 ```typescript
-import { PerformanceOptimizedEngine } from '../utils/animation/PerformanceOptimizedEngine';
+import { PerformanceOptimizedEngine } from "../utils/animation/PerformanceOptimizedEngine";
 
 const performanceEngine = new PerformanceOptimizedEngine({
   maxPoints: 10000,
@@ -369,19 +369,25 @@ interface AdaptiveQualityLevel {
 ### Phyllotactic Constants
 
 ```typescript
-import { PHYLLOTACTIC_CONSTANTS, GOLDEN_ANGLE } from '../utils/phyllotactic-constants';
+import {
+  PHYLLOTACTIC_CONSTANTS,
+  GOLDEN_ANGLE,
+} from "../utils/phyllotactic-constants";
 
 // Available constants:
-PHYLLOTACTIC_CONSTANTS.GOLDEN_RATIO        // φ = (1 + √5) / 2
-PHYLLOTACTIC_CONSTANTS.GOLDEN_ANGLE_DEGREES // ψ = 360° / φ²
-PHYLLOTACTIC_CONSTANTS.GOLDEN_ANGLE_RADIANS // ψ in radians
-PHYLLOTACTIC_CONSTANTS.VOGEL_SCALING_FACTOR // Scaling factor for Vogel's model
+PHYLLOTACTIC_CONSTANTS.GOLDEN_RATIO; // φ = (1 + √5) / 2
+PHYLLOTACTIC_CONSTANTS.GOLDEN_ANGLE_DEGREES; // ψ = 360° / φ²
+PHYLLOTACTIC_CONSTANTS.GOLDEN_ANGLE_RADIANS; // ψ in radians
+PHYLLOTACTIC_CONSTANTS.VOGEL_SCALING_FACTOR; // Scaling factor for Vogel's model
 ```
 
 ### Spiral Calculations
 
 ```typescript
-import { calculateSpiralPosition, generatePhyllotacticPattern } from '../utils/spiral-calculations';
+import {
+  calculateSpiralPosition,
+  generatePhyllotacticPattern,
+} from "../utils/spiral-calculations";
 
 // Calculate individual spiral position
 const position = calculateSpiralPosition(index, rotationAngle, config);
@@ -393,7 +399,7 @@ const pattern = generatePhyllotacticPattern(pointCount, config, rotationAngle);
 ### Color Generation
 
 ```typescript
-import { generateGoldenColor } from '../utils/phyllotactic-colors';
+import { generateGoldenColor } from "../utils/phyllotactic-colors";
 
 const color = generateGoldenColor(index, {
   baseHue: 0,
@@ -408,7 +414,7 @@ const color = generateGoldenColor(index, {
 ### StroboscopicDemo
 
 ```typescript
-import { StroboscopicDemo } from '../components/StroboscopicDemo';
+import { StroboscopicDemo } from "../components/StroboscopicDemo";
 
 // Features:
 // - Real-time stroboscopic calculations
@@ -420,7 +426,7 @@ import { StroboscopicDemo } from '../components/StroboscopicDemo';
 ### AdvancedPatternDemo
 
 ```typescript
-import { AdvancedPatternDemo } from '../components/AdvancedPatternDemo';
+import { AdvancedPatternDemo } from "../components/AdvancedPatternDemo";
 
 // Features:
 // - Multiple pattern types
@@ -432,7 +438,7 @@ import { AdvancedPatternDemo } from '../components/AdvancedPatternDemo';
 ### Phyllotactic3DDemo
 
 ```typescript
-import { Phyllotactic3DDemo } from '../components/Phyllotactic3DDemo';
+import { Phyllotactic3DDemo } from "../components/Phyllotactic3DDemo";
 
 // Features:
 // - 3D spiral generation
@@ -444,7 +450,7 @@ import { Phyllotactic3DDemo } from '../components/Phyllotactic3DDemo';
 ### PerformanceDemo
 
 ```typescript
-import { PerformanceDemo } from '../components/PerformanceDemo';
+import { PerformanceDemo } from "../components/PerformanceDemo";
 
 // Features:
 // - Adaptive quality demonstration
@@ -456,7 +462,7 @@ import { PerformanceDemo } from '../components/PerformanceDemo';
 ### EnhancedIntegrationDemo
 
 ```typescript
-import { EnhancedIntegrationDemo } from '../components/EnhancedIntegrationDemo';
+import { EnhancedIntegrationDemo } from "../components/EnhancedIntegrationDemo";
 
 // Features:
 // - All features integrated
@@ -615,11 +621,11 @@ if (pointCount > maxPoints) {
 ### Unit Tests
 
 ```typescript
-import { describe, it, expect } from 'vitest';
-import { StroboscopicEngine } from '../utils/animation/StroboscopicEngine';
+import { describe, it, expect } from "vitest";
+import { StroboscopicEngine } from "../utils/animation/StroboscopicEngine";
 
-describe('StroboscopicEngine', () => {
-  it('should calculate stroboscopic effects correctly', () => {
+describe("StroboscopicEngine", () => {
+  it("should calculate stroboscopic effects correctly", () => {
     const engine = new StroboscopicEngine();
     const result = engine.calculateStroboscopicEffect(16.67);
     expect(result.isStroboscopic).toBeDefined();

@@ -2,8 +2,8 @@
  * Circle geometry operations and utilities
  */
 
-import type { Point } from './point';
-import { PointOps } from './point';
+import type { Point } from "./point";
+import { PointOps } from "./point";
 
 export interface Circle {
   center: Point;

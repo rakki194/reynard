@@ -428,7 +428,10 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
       </Show>
 
       <Show when={!local.loading && processedData()}>
-        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
+        <div
+          class="reynard-chart-container"
+          style={{ position: "relative", width: "100%", height: "100%" }}
+        >
           <canvas
             width={local.width}
             height={local.height}

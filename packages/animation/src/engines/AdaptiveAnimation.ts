@@ -3,14 +3,14 @@
  * Quality-adaptive animation engine that adjusts based on performance
  */
 
-import type { AnimationCallbacks } from '../types';
-import { createAnimationCore } from '../core/AnimationCore';
-import { createQualityManager } from './QualityManager';
-import { createAdaptiveCallbacks } from './AdaptiveCallbacks';
-import { DEFAULT_ADAPTIVE_CONFIG } from './AdaptiveConfig';
+import type { AnimationCallbacks } from "../types";
+import { createAnimationCore } from "../core/AnimationCore";
+import { createQualityManager } from "./QualityManager";
+import { createAdaptiveCallbacks } from "./AdaptiveCallbacks";
+import { DEFAULT_ADAPTIVE_CONFIG } from "./AdaptiveConfig";
 
 export function createAdaptiveAnimationEngine(
-  config = DEFAULT_ADAPTIVE_CONFIG
+  config = DEFAULT_ADAPTIVE_CONFIG,
 ) {
   const engine = createAnimationCore(config);
   const qualityManager = createQualityManager(config);
@@ -18,12 +18,18 @@ export function createAdaptiveAnimationEngine(
 
   const adaptiveStart = (callbacks: AnimationCallbacks) => {
     if (isInitialized) {
-      console.warn("🦊 AdaptiveAnimation: Already initialized, ignoring start request");
+      console.warn(
+        "🦊 AdaptiveAnimation: Already initialized, ignoring start request",
+      );
       return;
     }
-    
+
     isInitialized = true;
-    const adaptiveCallbacks = createAdaptiveCallbacks(callbacks, qualityManager, engine);
+    const adaptiveCallbacks = createAdaptiveCallbacks(
+      callbacks,
+      qualityManager,
+      engine,
+    );
     engine.start(adaptiveCallbacks);
   };
 

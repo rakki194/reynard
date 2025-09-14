@@ -11,14 +11,17 @@ import { EnhancedRenderer } from "../utils/rendering/EnhancedRenderer";
 export function useEnhancedIntegration() {
   // State
   const [isRunning, setIsRunning] = createSignal(false);
-  const [mode, setMode] = createSignal<'2d' | '3d'>('2d');
-  const [patternType, setPatternType] = createSignal<'vogel' | 'rotase' | 'bernoulli' | 'fibonacci-sibling'>('vogel');
+  const [mode, setMode] = createSignal<"2d" | "3d">("2d");
+  const [patternType, setPatternType] = createSignal<
+    "vogel" | "rotase" | "bernoulli" | "fibonacci-sibling"
+  >("vogel");
   const [pointCount, setPointCount] = createSignal(2000);
   const [rotationSpeed, setRotationSpeed] = createSignal(1.0);
   const [enableStroboscopic, setEnableStroboscopic] = createSignal(true);
   const [enableMorphing, setEnableMorphing] = createSignal(true);
-  const [enablePerformanceOptimization, setEnablePerformanceOptimization] = createSignal(true);
-  
+  const [enablePerformanceOptimization, setEnablePerformanceOptimization] =
+    createSignal(true);
+
   // Engine configuration
   const engineConfig = (): EngineConfig => ({
     mode: mode(),
@@ -29,11 +32,11 @@ export function useEnhancedIntegration() {
     enableMorphing: enableMorphing(),
     enablePerformanceOptimization: enablePerformanceOptimization(),
   });
-  
+
   // Composables
   const engines = useEnhancedEngines(engineConfig);
   const animation = useEnhancedAnimation(engineConfig);
-  
+
   // Renderer
   let renderer: EnhancedRenderer;
 
@@ -41,12 +44,14 @@ export function useEnhancedIntegration() {
   const initializeSystem = () => {
     console.log("🦊 useEnhancedIntegration: Initializing system");
     engines.initializeEngines();
-    const canvas = document.getElementById('integration-canvas') as HTMLCanvasElement;
+    const canvas = document.getElementById(
+      "integration-canvas",
+    ) as HTMLCanvasElement;
     if (canvas) {
       renderer = new EnhancedRenderer(canvas);
     }
   };
-  
+
   // Generate pattern
   const generatePattern = () => {
     const points = engines.generatePattern();
@@ -57,10 +62,14 @@ export function useEnhancedIntegration() {
         enablePerformanceOptimization: enablePerformanceOptimization(),
         stroboscopicState: engines.stroboscopicState(),
       };
-      renderer.renderPoints(points, renderConfig, engines.getEngines().performanceEngine);
+      renderer.renderPoints(
+        points,
+        renderConfig,
+        engines.getEngines().performanceEngine,
+      );
     }
   };
-  
+
   // Toggle animation
   const toggleAnimation = () => {
     if (isRunning()) {
@@ -73,12 +82,12 @@ export function useEnhancedIntegration() {
         renderer,
         (_frameTime, _renderTime, _updateTime, _pointCount) => {
           // Metrics update handled in animation loop
-        }
+        },
       );
       engines.startAnimation(animationLoop);
     }
   };
-  
+
   // Update configuration
   const updateConfig = () => {
     engines.updateConfig();
@@ -103,10 +112,10 @@ export function useEnhancedIntegration() {
     setEnableMorphing,
     enablePerformanceOptimization,
     setEnablePerformanceOptimization,
-    
+
     // Engines
     engines,
-    
+
     // Methods
     initializeSystem,
     generatePattern,

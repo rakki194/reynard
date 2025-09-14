@@ -3,7 +3,7 @@
  * Core functions for calculating phyllotactic spiral positions
  */
 
-import { GOLDEN_ANGLE_RADIANS } from './phyllotactic-constants';
+import { GOLDEN_ANGLE_RADIANS } from "./phyllotactic-constants";
 
 /**
  * Configuration for spiral generation
@@ -25,11 +25,11 @@ export interface SpiralConfig {
 export function calculateSpiralPosition(
   index: number,
   rotationAngle: number = 0,
-  config: SpiralConfig
+  config: SpiralConfig,
 ): { x: number; y: number; radius: number; angle: number } {
   const angle = (index * GOLDEN_ANGLE_RADIANS + rotationAngle) % (2 * Math.PI);
   const radius = config.baseRadius + Math.sqrt(index) * config.growthFactor;
-  
+
   return {
     x: config.centerX + Math.cos(angle) * radius,
     y: config.centerY + Math.sin(angle) * radius,
@@ -47,7 +47,7 @@ export function calculateSpiralPosition(
 export function generatePhyllotacticPattern(
   pointCount: number,
   config: SpiralConfig,
-  rotationAngle: number = 0
+  rotationAngle: number = 0,
 ): Array<{
   index: number;
   x: number;
@@ -56,7 +56,7 @@ export function generatePhyllotacticPattern(
   angle: number;
 }> {
   const points = [];
-  
+
   for (let i = 0; i < pointCount; i++) {
     const position = calculateSpiralPosition(i, rotationAngle, config);
     points.push({
@@ -64,6 +64,6 @@ export function generatePhyllotacticPattern(
       ...position,
     });
   }
-  
+
   return points;
 }

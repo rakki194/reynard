@@ -22,17 +22,18 @@ interface Phyllotactic3DControlsProps {
   onConfigUpdate: () => void;
 }
 
-export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (props) => {
+export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (
+  props,
+) => {
   const handleSliderChange = (setter: (value: number) => void) => (e: any) => {
     setter(parseFloat(e.currentTarget.value));
     props.onConfigUpdate();
   };
 
-
   return (
     <Card class="3d-controls">
       <h3>3D Configuration</h3>
-      
+
       <div class="control-group">
         <label>Point Count: {props.pointCount()}</label>
         <Slider
@@ -43,7 +44,7 @@ export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (p
           onChange={handleSliderChange(props.setPointCount)}
         />
       </div>
-      
+
       <div class="control-group">
         <label>Base Radius: {props.baseRadius()}</label>
         <Slider
@@ -54,7 +55,7 @@ export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (p
           onChange={handleSliderChange(props.setBaseRadius)}
         />
       </div>
-      
+
       <div class="control-group">
         <label>Height: {props.height()}</label>
         <Slider
@@ -65,7 +66,7 @@ export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (p
           onChange={handleSliderChange(props.setHeight)}
         />
       </div>
-      
+
       <div class="control-group">
         <label>Spiral Pitch: {props.spiralPitch().toFixed(2)}</label>
         <Slider
@@ -76,7 +77,7 @@ export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (p
           onChange={handleSliderChange(props.setSpiralPitch)}
         />
       </div>
-      
+
       <div class="control-group">
         <input
           type="checkbox"
@@ -88,7 +89,7 @@ export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (p
         />
         <label>Enable Spherical Projection</label>
       </div>
-      
+
       <div class="control-group">
         <input
           type="checkbox"

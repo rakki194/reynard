@@ -14,15 +14,19 @@ import { HTTPRequestOptions, HTTPResponse, HTTPError } from "./types";
 /**
  * Build a complete URL from base URL and endpoint
  */
-export function buildUrl(baseUrl: string, endpoint: string, params?: Record<string, string | number | boolean>): string {
+export function buildUrl(
+  baseUrl: string,
+  endpoint: string,
+  params?: Record<string, string | number | boolean>,
+): string {
   const url = new URL(endpoint, baseUrl);
-  
+
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.append(key, String(value));
     });
   }
-  
+
   return url.toString();
 }
 
@@ -32,24 +36,27 @@ export function buildUrl(baseUrl: string, endpoint: string, params?: Record<stri
 export function parseQueryParams(url: string): Record<string, string> {
   const urlObj = new URL(url);
   const params: Record<string, string> = {};
-  
+
   urlObj.searchParams.forEach((value, key) => {
     params[key] = value;
   });
-  
+
   return params;
 }
 
 /**
  * Add query parameters to a URL
  */
-export function addQueryParams(url: string, params: Record<string, string | number | boolean>): string {
+export function addQueryParams(
+  url: string,
+  params: Record<string, string | number | boolean>,
+): string {
   const urlObj = new URL(url);
-  
+
   Object.entries(params).forEach(([key, value]) => {
     urlObj.searchParams.set(key, String(value));
   });
-  
+
   return urlObj.toString();
 }
 
@@ -60,45 +67,59 @@ export function addQueryParams(url: string, params: Record<string, string | numb
 /**
  * Merge headers with priority (later headers override earlier ones)
  */
-export function mergeHeaders(...headerObjects: Array<Record<string, string> | undefined>): Record<string, string> {
+export function mergeHeaders(
+  ...headerObjects: Array<Record<string, string> | undefined>
+): Record<string, string> {
   const merged: Record<string, string> = {};
-  
+
   for (const headers of headerObjects) {
     if (headers) {
       Object.assign(merged, headers);
     }
   }
-  
+
   return merged;
 }
 
 /**
  * Normalize header names (convert to lowercase)
  */
-export function normalizeHeaders(headers: Record<string, string>): Record<string, string> {
+export function normalizeHeaders(
+  headers: Record<string, string>,
+): Record<string, string> {
   const normalized: Record<string, string> = {};
-  
+
   Object.entries(headers).forEach(([key, value]) => {
     normalized[key.toLowerCase()] = value;
   });
-  
+
   return normalized;
 }
 
 /**
  * Check if headers contain a specific header
  */
-export function hasHeader(headers: Record<string, string>, headerName: string): boolean {
+export function hasHeader(
+  headers: Record<string, string>,
+  headerName: string,
+): boolean {
   const normalizedName = headerName.toLowerCase();
-  return Object.keys(headers).some(key => key.toLowerCase() === normalizedName);
+  return Object.keys(headers).some(
+    (key) => key.toLowerCase() === normalizedName,
+  );
 }
 
 /**
  * Get header value (case-insensitive)
  */
-export function getHeader(headers: Record<string, string>, headerName: string): string | undefined {
+export function getHeader(
+  headers: Record<string, string>,
+  headerName: string,
+): string | undefined {
   const normalizedName = headerName.toLowerCase();
-  const entry = Object.entries(headers).find(([key]) => key.toLowerCase() === normalizedName);
+  const entry = Object.entries(headers).find(
+    ([key]) => key.toLowerCase() === normalizedName,
+  );
   return entry?.[1];
 }
 
@@ -124,7 +145,9 @@ export function createRequestOptions(
 /**
  * Clone request options
  */
-export function cloneRequestOptions(options: HTTPRequestOptions): HTTPRequestOptions {
+export function cloneRequestOptions(
+  options: HTTPRequestOptions,
+): HTTPRequestOptions {
   return {
     ...options,
     headers: { ...options.headers },
@@ -137,23 +160,23 @@ export function cloneRequestOptions(options: HTTPRequestOptions): HTTPRequestOpt
  */
 export function validateRequestOptions(options: HTTPRequestOptions): string[] {
   const errors: string[] = [];
-  
+
   if (!options.method) {
     errors.push("Method is required");
   }
-  
+
   if (!options.endpoint) {
     errors.push("Endpoint is required");
   }
-  
+
   if (options.timeout !== undefined && options.timeout <= 0) {
     errors.push("Timeout must be positive");
   }
-  
+
   if (options.retries !== undefined && options.retries < 0) {
     errors.push("Retries must be non-negative");
   }
-  
+
   return errors;
 }
 
@@ -231,7 +254,9 @@ export function createErrorFromResponse(
   response: HTTPResponse,
   message?: string,
 ): HTTPError {
-  const error = new Error(message || `HTTP ${response.status}: ${response.statusText}`) as HTTPError;
+  const error = new Error(
+    message || `HTTP ${response.status}: ${response.statusText}`,
+  ) as HTTPError;
   error.status = response.status;
   error.statusText = response.statusText;
   error.response = response;
@@ -273,15 +298,15 @@ export function getErrorMessage(error: HTTPError): string {
   if (isNetworkError(error)) {
     return "Network error: Unable to connect to server";
   }
-  
+
   if (isTimeoutError(error)) {
     return "Request timeout: Server did not respond in time";
   }
-  
+
   if (error.status) {
     return `HTTP ${error.status}: ${error.statusText || error.message}`;
   }
-  
+
   return error.message;
 }
 
@@ -296,15 +321,15 @@ export function serializeData(data: unknown): string | FormData {
   if (data instanceof FormData) {
     return data;
   }
-  
+
   if (data instanceof URLSearchParams) {
     return data.toString();
   }
-  
+
   if (typeof data === "string") {
     return data;
   }
-  
+
   return JSON.stringify(data);
 }
 
@@ -313,19 +338,19 @@ export function serializeData(data: unknown): string | FormData {
  */
 export async function parseResponseData<T>(response: Response): Promise<T> {
   const contentType = response.headers.get("content-type");
-  
+
   if (contentType?.includes("application/json")) {
     return response.json();
   }
-  
+
   if (contentType?.includes("text/")) {
     return response.text() as T;
   }
-  
+
   if (contentType?.includes("application/octet-stream")) {
     return response.arrayBuffer() as T;
   }
-  
+
   // Default to text
   return response.text() as T;
 }
@@ -335,26 +360,28 @@ export async function parseResponseData<T>(response: Response): Promise<T> {
  */
 export function formDataToObject(formData: FormData): Record<string, string> {
   const obj: Record<string, string> = {};
-  
+
   formData.forEach((value, key) => {
     if (typeof value === "string") {
       obj[key] = value;
     }
   });
-  
+
   return obj;
 }
 
 /**
  * Convert object to FormData
  */
-export function objectToFormData(obj: Record<string, string | File | Blob>): FormData {
+export function objectToFormData(
+  obj: Record<string, string | File | Blob>,
+): FormData {
   const formData = new FormData();
-  
+
   Object.entries(obj).forEach(([key, value]) => {
     formData.append(key, value);
   });
-  
+
   return formData;
 }
 
@@ -369,8 +396,8 @@ export function measureRequest<T>(
   requestFn: () => Promise<T>,
 ): Promise<{ result: T; duration: number }> {
   const startTime = performance.now();
-  
-  return requestFn().then(result => {
+
+  return requestFn().then((result) => {
     const endTime = performance.now();
     return {
       result,
@@ -384,7 +411,7 @@ export function measureRequest<T>(
  */
 export function createTimer(): { start: () => void; stop: () => number } {
   let startTime: number;
-  
+
   return {
     start: () => {
       startTime = performance.now();
@@ -414,8 +441,18 @@ export function isValidUrl(url: string): boolean {
 /**
  * Validate HTTP method
  */
-export function isValidHttpMethod(method: string): method is HTTPRequestOptions["method"] {
-  const validMethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"];
+export function isValidHttpMethod(
+  method: string,
+): method is HTTPRequestOptions["method"] {
+  const validMethods = [
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE",
+    "PATCH",
+    "HEAD",
+    "OPTIONS",
+  ];
   return validMethods.includes(method.toUpperCase());
 }
 
@@ -435,11 +472,11 @@ export function isValidStatusCode(status: number): boolean {
  */
 export function formatBytes(bytes: number): string {
   if (bytes === 0) return "0 Bytes";
-  
+
   const k = 1024;
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 }
 
@@ -450,17 +487,17 @@ export function formatDuration(milliseconds: number): string {
   if (milliseconds < 1000) {
     return `${milliseconds}ms`;
   }
-  
+
   const seconds = milliseconds / 1000;
   if (seconds < 60) {
     return `${seconds.toFixed(2)}s`;
   }
-  
+
   const minutes = seconds / 60;
   if (minutes < 60) {
     return `${minutes.toFixed(2)}m`;
   }
-  
+
   const hours = minutes / 60;
   return `${hours.toFixed(2)}h`;
 }

@@ -18,25 +18,25 @@ export const EnhancedMetrics: Component<MetricsProps> = (props) => {
         <div class="metrics-item">
           <span class="metrics-label">FPS:</span>
           <span class="metrics-value">
-            {props.performanceMetrics()?.currentFPS?.toFixed(1) || '0.0'}
+            {props.performanceMetrics()?.currentFPS?.toFixed(1) || "0.0"}
           </span>
         </div>
         <div class="metrics-item">
           <span class="metrics-label">Frame Time:</span>
           <span class="metrics-value">
-            {props.performanceMetrics()?.frameTime?.toFixed(2) || '0.00'}ms
+            {props.performanceMetrics()?.frameTime?.toFixed(2) || "0.00"}ms
           </span>
         </div>
         <div class="metrics-item">
           <span class="metrics-label">Render Time:</span>
           <span class="metrics-value">
-            {props.performanceMetrics()?.renderTime?.toFixed(2) || '0.00'}ms
+            {props.performanceMetrics()?.renderTime?.toFixed(2) || "0.00"}ms
           </span>
         </div>
         <div class="metrics-item">
           <span class="metrics-label">Memory:</span>
           <span class="metrics-value">
-            {props.performanceMetrics()?.memoryUsage?.toFixed(1) || '0.0'}MB
+            {props.performanceMetrics()?.memoryUsage?.toFixed(1) || "0.0"}MB
           </span>
         </div>
       </div>

@@ -46,9 +46,7 @@ export const LabelSelector: Component<LabelSelectorProps> = (props) => {
         aria-label="Select label class for new bounding boxes"
       >
         <For each={props.availableLabels}>
-          {(label) => (
-            <option value={label}>{label}</option>
-          )}
+          {(label) => <option value={label}>{label}</option>}
         </For>
       </select>
 

@@ -16,7 +16,7 @@ i18n-results.json
 unsloth_compiled_cache/
 *-report.md
 *-report.json
-
+.mypy_cache/
 .benchmarks/
 htmlcov/
 .coverage.*

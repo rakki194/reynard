@@ -21,10 +21,16 @@ export interface LabelManagement {
   handleAddLabel: (label: string) => void;
 }
 
-export const useLabelManagement = (options: LabelManagementOptions = {}): LabelManagement => {
-  const { labelClasses = ["person", "vehicle", "animal", "object"], defaultLabelClass = "person" } = options;
-  
-  const [selectedLabelClass, setSelectedLabelClass] = createSignal(defaultLabelClass);
+export const useLabelManagement = (
+  options: LabelManagementOptions = {},
+): LabelManagement => {
+  const {
+    labelClasses = ["person", "vehicle", "animal", "object"],
+    defaultLabelClass = "person",
+  } = options;
+
+  const [selectedLabelClass, setSelectedLabelClass] =
+    createSignal(defaultLabelClass);
   const [availableLabels, setAvailableLabels] = createSignal(labelClasses);
 
   const handleLabelChange = (label: string) => {

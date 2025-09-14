@@ -3,7 +3,7 @@
  * Dynamic form control based on setting type
  */
 import { createMemo, Show, For, splitProps } from "solid-js";
-import { Button, TextField, Select, Slider, Toggle } from "reynard-components";;
+import { Button, TextField, Select, Slider, Toggle } from "reynard-components";
 export const SettingControl = (props) => {
   const [local, others] = splitProps(props, [
     "definition",
@@ -58,12 +58,9 @@ export const SettingControl = (props) => {
       case "boolean":
         return (
           <label class="setting-control__toggle">
-            <Toggle
-    size="sm"
-  /> handleChange(e.target.checked)}
-              disabled={isDisabled}
-              class="setting-control__checkbox"
-            />
+            <Toggle size="sm" /> handleChange(e.target.checked)} disabled=
+            {isDisabled}
+            class="setting-control__checkbox" />
             <span class="setting-control__slider"></span>
           </label>
         );

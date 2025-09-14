@@ -195,12 +195,15 @@ export class ValidationUtils {
       const customResult = schema.customValidator(value);
       if (!customResult.isValid) {
         if (context && strict) {
-          throw new ValidationError(customResult.error || "Custom validation failed", {
-            ...context,
-            field: fieldName,
-            value,
-            constraint: "custom",
-          });
+          throw new ValidationError(
+            customResult.error || "Custom validation failed",
+            {
+              ...context,
+              field: fieldName,
+              value,
+              constraint: "custom",
+            },
+          );
         }
         errors.push(customResult.error || "Custom validation failed");
       }
@@ -273,7 +276,9 @@ export class ValidationUtils {
       case "boolean":
         return typeof value === "boolean";
       case "object":
-        return typeof value === "object" && value !== null && !Array.isArray(value);
+        return (
+          typeof value === "object" && value !== null && !Array.isArray(value)
+        );
       case "array":
         return Array.isArray(value);
       case "email":
@@ -481,7 +486,7 @@ export class ValidationUtils {
     strict = false,
   ): void {
     let date: Date;
-    
+
     if (value instanceof Date) {
       date = value;
     } else if (typeof value === "string") {

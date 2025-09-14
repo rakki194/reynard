@@ -1,8 +1,8 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import { 
-  AlgorithmSelector, 
-  WorkloadCharacteristics, 
-  AlgorithmSelection
+import {
+  AlgorithmSelector,
+  WorkloadCharacteristics,
+  AlgorithmSelection,
 } from "../../optimization/core/algorithm-selector";
 
 describe("AlgorithmSelector", () => {
@@ -19,14 +19,16 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.1,
         overlapRatio: 0.05,
         updateFrequency: 0.2,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectCollisionAlgorithm(workload);
-      
+
       expect(selection.algorithm).toBe("naive");
       expect(selection.confidence).toBe(0.9);
-      expect(selection.reasoning).toContain("Small object count favors naive approach");
+      expect(selection.reasoning).toContain(
+        "Small object count favors naive approach",
+      );
       expect(selection.expectedPerformance.executionTime).toBeGreaterThan(0);
       expect(selection.expectedPerformance.memoryUsage).toBeGreaterThan(0);
     });
@@ -37,14 +39,16 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.3,
         overlapRatio: 0.1,
         updateFrequency: 0.5,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectCollisionAlgorithm(workload);
-      
+
       expect(selection.algorithm).toBe("spatial");
       expect(selection.confidence).toBe(0.8);
-      expect(selection.reasoning).toContain("Medium object count benefits from spatial optimization");
+      expect(selection.reasoning).toContain(
+        "Medium object count benefits from spatial optimization",
+      );
       expect(selection.expectedPerformance.executionTime).toBeGreaterThan(0);
       expect(selection.expectedPerformance.memoryUsage).toBeGreaterThan(0);
     });
@@ -55,14 +59,16 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.5,
         overlapRatio: 0.2,
         updateFrequency: 0.8,
-        queryPattern: "clustered"
+        queryPattern: "clustered",
       };
 
       const selection = selector.selectCollisionAlgorithm(workload);
-      
+
       expect(selection.algorithm).toBe("optimized");
       expect(selection.confidence).toBe(0.95);
-      expect(selection.reasoning).toContain("Large object count requires optimization");
+      expect(selection.reasoning).toContain(
+        "Large object count requires optimization",
+      );
       expect(selection.expectedPerformance.executionTime).toBeGreaterThan(0);
       expect(selection.expectedPerformance.memoryUsage).toBeGreaterThan(0);
     });
@@ -73,11 +79,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.2,
         overlapRatio: 0.08,
         updateFrequency: 0.3,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectCollisionAlgorithm(workloadAt100);
-      
+
       expect(selection.algorithm).toBeOneOf(["naive", "spatial"]);
       expect(selection.confidence).toBeGreaterThan(0.5);
     });
@@ -91,12 +97,12 @@ describe("AlgorithmSelector", () => {
         queryPattern: "random",
         memoryConstraints: {
           maxMemoryUsage: 1024,
-          gcPressure: 0.8
-        }
+          gcPressure: 0.8,
+        },
       };
 
       const selection = selector.selectCollisionAlgorithm(constrainedWorkload);
-      
+
       expect(selection).toBeDefined();
       // The algorithm selector considers memory constraints but doesn't strictly enforce them
       // in the returned performance estimates. Just verify it provides reasonable estimates.
@@ -111,14 +117,16 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.8,
         overlapRatio: 0.3,
         updateFrequency: 0.7,
-        queryPattern: "clustered"
+        queryPattern: "clustered",
       };
 
       const selection = selector.selectSpatialAlgorithm(highDensityWorkload);
-      
+
       expect(selection.algorithm).toBe("optimized-spatial");
       expect(selection.confidence).toBe(0.9);
-      expect(selection.reasoning).toContain("High spatial density benefits from optimization");
+      expect(selection.reasoning).toContain(
+        "High spatial density benefits from optimization",
+      );
     });
 
     it("should select standard spatial for low density workloads", () => {
@@ -127,14 +135,16 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.3,
         overlapRatio: 0.1,
         updateFrequency: 0.4,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectSpatialAlgorithm(lowDensityWorkload);
-      
+
       expect(selection.algorithm).toBe("spatial");
       expect(selection.confidence).toBe(0.8);
-      expect(selection.reasoning).toContain("Low spatial density allows standard spatial hashing");
+      expect(selection.reasoning).toContain(
+        "Low spatial density allows standard spatial hashing",
+      );
     });
 
     it("should handle edge case at density threshold", () => {
@@ -143,11 +153,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.7,
         overlapRatio: 0.2,
         updateFrequency: 0.5,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectSpatialAlgorithm(thresholdWorkload);
-      
+
       expect(selection.algorithm).toBeOneOf(["spatial", "optimized-spatial"]);
       expect(selection.confidence).toBeGreaterThan(0.5);
     });
@@ -160,14 +170,16 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.2,
         overlapRatio: 0.1,
         updateFrequency: 0.3,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectUnionFindAlgorithm(smallWorkload);
-      
+
       expect(selection.algorithm).toBe("union-find");
       expect(selection.confidence).toBe(0.9);
-      expect(selection.reasoning).toContain("Small dataset size optimal for standard Union-Find");
+      expect(selection.reasoning).toContain(
+        "Small dataset size optimal for standard Union-Find",
+      );
     });
 
     it("should select batch union-find for large datasets", () => {
@@ -176,14 +188,16 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.4,
         overlapRatio: 0.2,
         updateFrequency: 0.6,
-        queryPattern: "sequential"
+        queryPattern: "sequential",
       };
 
       const selection = selector.selectUnionFindAlgorithm(largeWorkload);
-      
+
       expect(selection.algorithm).toBe("batch-union-find");
       expect(selection.confidence).toBe(0.9);
-      expect(selection.reasoning).toContain("Large dataset benefits from batch operations");
+      expect(selection.reasoning).toContain(
+        "Large dataset benefits from batch operations",
+      );
     });
 
     it("should handle threshold boundary", () => {
@@ -192,11 +206,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.3,
         overlapRatio: 0.15,
         updateFrequency: 0.4,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectUnionFindAlgorithm(thresholdWorkload);
-      
+
       expect(selection.algorithm).toBeOneOf(["union-find", "batch-union-find"]);
       expect(selection.confidence).toBe(0.9);
     });
@@ -209,11 +223,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.3,
         overlapRatio: 0.1,
         updateFrequency: 0.5,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectCollisionAlgorithm(randomWorkload);
-      
+
       expect(selection).toBeDefined();
       expect(selection.algorithm).toBeOneOf(["naive", "spatial", "optimized"]);
     });
@@ -224,11 +238,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.6,
         overlapRatio: 0.25,
         updateFrequency: 0.7,
-        queryPattern: "clustered"
+        queryPattern: "clustered",
       };
 
       const selection = selector.selectCollisionAlgorithm(clusteredWorkload);
-      
+
       expect(selection).toBeDefined();
       expect(selection.algorithm).toBeOneOf(["naive", "spatial", "optimized"]);
     });
@@ -239,11 +253,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.2,
         overlapRatio: 0.08,
         updateFrequency: 0.3,
-        queryPattern: "sequential"
+        queryPattern: "sequential",
       };
 
       const selection = selector.selectCollisionAlgorithm(sequentialWorkload);
-      
+
       expect(selection).toBeDefined();
       expect(selection.algorithm).toBeOneOf(["naive", "spatial", "optimized"]);
     });
@@ -256,11 +270,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.2,
         overlapRatio: 0.1,
         updateFrequency: 0.4,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectCollisionAlgorithm(workload);
-      
+
       expect(selection.expectedPerformance.executionTime).toBeGreaterThan(0);
       expect(selection.expectedPerformance.executionTime).toBeLessThan(1000); // Reasonable upper bound
     });
@@ -271,11 +285,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.3,
         overlapRatio: 0.15,
         updateFrequency: 0.5,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectCollisionAlgorithm(workload);
-      
+
       expect(selection.expectedPerformance.memoryUsage).toBeGreaterThan(0);
       expect(selection.expectedPerformance.memoryUsage).toBeLessThan(100000); // Reasonable upper bound
     });
@@ -286,7 +300,7 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.2,
         overlapRatio: 0.1,
         updateFrequency: 0.4,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const largeWorkload: WorkloadCharacteristics = {
@@ -294,14 +308,14 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.2,
         overlapRatio: 0.1,
         updateFrequency: 0.4,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const smallSelection = selector.selectCollisionAlgorithm(smallWorkload);
       const largeSelection = selector.selectCollisionAlgorithm(largeWorkload);
-      
+
       expect(largeSelection.expectedPerformance.executionTime).toBeGreaterThan(
-        smallSelection.expectedPerformance.executionTime
+        smallSelection.expectedPerformance.executionTime,
       );
     });
   });
@@ -313,11 +327,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0,
         overlapRatio: 0,
         updateFrequency: 0,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectCollisionAlgorithm(zeroWorkload);
-      
+
       expect(selection).toBeDefined();
       expect(selection.algorithm).toBe("naive");
     });
@@ -328,11 +342,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 1.0,
         overlapRatio: 1.0,
         updateFrequency: 1.0,
-        queryPattern: "clustered"
+        queryPattern: "clustered",
       };
 
       const selection = selector.selectCollisionAlgorithm(maxWorkload);
-      
+
       expect(selection).toBeDefined();
       expect(selection.algorithm).toBe("optimized");
     });
@@ -343,11 +357,11 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.456,
         overlapRatio: 0.789,
         updateFrequency: 0.321,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection = selector.selectCollisionAlgorithm(fractionalWorkload);
-      
+
       expect(selection).toBeDefined();
       expect(selection.confidence).toBeGreaterThan(0);
       expect(selection.confidence).toBeLessThanOrEqual(1);
@@ -361,32 +375,52 @@ describe("AlgorithmSelector", () => {
         spatialDensity: 0.3,
         overlapRatio: 0.15,
         updateFrequency: 0.5,
-        queryPattern: "random"
+        queryPattern: "random",
       };
 
       const selection1 = selector.selectCollisionAlgorithm(workload);
       const selection2 = selector.selectCollisionAlgorithm(workload);
-      
+
       expect(selection1.algorithm).toBe(selection2.algorithm);
       expect(selection1.confidence).toBe(selection2.confidence);
       expect(selection1.expectedPerformance.executionTime).toBe(
-        selection2.expectedPerformance.executionTime
+        selection2.expectedPerformance.executionTime,
       );
     });
 
     it("should provide valid reasoning for all selections", () => {
       const workloads: WorkloadCharacteristics[] = [
-        { objectCount: 50, spatialDensity: 0.1, overlapRatio: 0.05, updateFrequency: 0.2, queryPattern: "random" },
-        { objectCount: 200, spatialDensity: 0.3, overlapRatio: 0.1, updateFrequency: 0.5, queryPattern: "clustered" },
-        { objectCount: 1000, spatialDensity: 0.6, overlapRatio: 0.3, updateFrequency: 0.8, queryPattern: "sequential" }
+        {
+          objectCount: 50,
+          spatialDensity: 0.1,
+          overlapRatio: 0.05,
+          updateFrequency: 0.2,
+          queryPattern: "random",
+        },
+        {
+          objectCount: 200,
+          spatialDensity: 0.3,
+          overlapRatio: 0.1,
+          updateFrequency: 0.5,
+          queryPattern: "clustered",
+        },
+        {
+          objectCount: 1000,
+          spatialDensity: 0.6,
+          overlapRatio: 0.3,
+          updateFrequency: 0.8,
+          queryPattern: "sequential",
+        },
       ];
 
-      workloads.forEach(workload => {
+      workloads.forEach((workload) => {
         const selection = selector.selectCollisionAlgorithm(workload);
-        
+
         expect(selection.reasoning).toBeInstanceOf(Array);
         expect(selection.reasoning.length).toBeGreaterThan(0);
-        expect(selection.reasoning.every(reason => typeof reason === "string")).toBe(true);
+        expect(
+          selection.reasoning.every((reason) => typeof reason === "string"),
+        ).toBe(true);
       });
     });
   });

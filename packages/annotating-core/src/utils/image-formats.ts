@@ -127,7 +127,7 @@ export class ImageFormatUtils {
       }
 
       const serviceInfo = await response.json();
-      
+
       // Update cache
       this.pluginSupportCache = {
         jxlSupported: serviceInfo.jxl_supported || false,
@@ -172,7 +172,7 @@ export class ImageFormatUtils {
   static async getSupportedFormats(): Promise<Set<string>> {
     // Update plugin support before returning
     await this.updatePluginSupport();
-    
+
     const formats = new Set<string>();
     for (const [ext, info] of Object.entries(SUPPORTED_IMAGE_FORMATS)) {
       if (info.supported) {
@@ -190,12 +190,12 @@ export class ImageFormatUtils {
    */
   static async isSupportedFormat(extension: string): Promise<boolean> {
     const normalizedExt = extension.toLowerCase();
-    
+
     // For plugin formats, check runtime availability
     if (normalizedExt in PLUGIN_IMAGE_FORMATS) {
       await this.updatePluginSupport();
     }
-    
+
     const format = SUPPORTED_IMAGE_FORMATS[normalizedExt];
     return format?.supported ?? false;
   }
@@ -206,14 +206,16 @@ export class ImageFormatUtils {
    * @param extension - File extension
    * @returns Format information or undefined
    */
-  static async getFormatInfo(extension: string): Promise<ImageFormatInfo | undefined> {
+  static async getFormatInfo(
+    extension: string,
+  ): Promise<ImageFormatInfo | undefined> {
     const normalizedExt = extension.toLowerCase();
-    
+
     // For plugin formats, check runtime availability
     if (normalizedExt in PLUGIN_IMAGE_FORMATS) {
       await this.updatePluginSupport();
     }
-    
+
     return SUPPORTED_IMAGE_FORMATS[normalizedExt];
   }
 
@@ -226,12 +228,12 @@ export class ImageFormatUtils {
   static async validateImagePath(filePath: string): Promise<boolean> {
     const path = filePath.toLowerCase();
     const extension = this.getFileExtension(filePath);
-    
+
     // Check if it's a plugin format and update support
     if (extension in PLUGIN_IMAGE_FORMATS) {
       await this.updatePluginSupport();
     }
-    
+
     return Object.keys(SUPPORTED_IMAGE_FORMATS).some((ext) =>
       path.endsWith(ext),
     );

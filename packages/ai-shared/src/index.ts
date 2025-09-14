@@ -75,5 +75,4 @@ export {
   getModelRegistry,
 } from "./models/index.js";
 
-
 // All types are already exported via the wildcard export above

@@ -13,10 +13,10 @@ the otter's thorough testing, and the wolf's adversarial analysis.
 
 #### 1. `pre-commit` - The Master Orchestrator
 
-*red fur bristles with intelligence* The pre-commit hook is the apex predator of code quality,
+_red fur bristles with intelligence_ The pre-commit hook is the apex predator of code quality,
 coordinating all validation tools in perfect harmony.
 
-> *What it validates:*
+> _What it validates:_
 
 - **Formatting**: Code style consistency (`npm run format:check`)
 - **Linting**: Code quality and best practices (`npm run lint`)
@@ -31,7 +31,7 @@ coordinating all validation tools in perfect harmony.
 
 #### 2. `commit-msg` - The Message Guardian
 
-*whiskers twitch with precision* Ensures all commit messages follow conventional commit format using commitlint.
+_whiskers twitch with precision_ Ensures all commit messages follow conventional commit format using commitlint.
 
 ```bash
 # Validates commit messages like:
@@ -44,10 +44,10 @@ docs: update API documentation
 
 #### `validate-css-variables.js` - Theme Consistency Guardian
 
-*sleek fur glistens with precision* A comprehensive CSS variable validator that
+_sleek fur glistens with precision_ A comprehensive CSS variable validator that
 ensures theme consistency across the entire Reynard ecosystem.
 
-> *Features:*
+> _Features:_
 
 - **Cross-file Analysis**: Scans all CSS files in packages, examples, and templates
 - **Import Resolution**: Follows CSS imports to validate complete dependency chains
@@ -57,7 +57,7 @@ ensures theme consistency across the entire Reynard ecosystem.
 - **Typo Detection**: Catches common spelling mistakes in variable names
 - **Multi-line Support**: Handles complex CSS variable definitions
 
-> *Usage:*
+> _Usage:_
 
 ```bash
 # Basic validation
@@ -70,7 +70,7 @@ node .husky/validate-css-variables.js --strict
 node .husky/validate-css-variables.js --verbose
 ```
 
-> *Critical Variables Monitored:*
+> _Critical Variables Monitored:_
 
 - `--accent`, `--bg-color`, `--secondary-bg`, `--card-bg`
 - `--text-primary`, `--text-secondary`, `--text-tertiary`
@@ -80,10 +80,10 @@ node .husky/validate-css-variables.js --verbose
 
 #### `validate-markdown-links.js` - Link Integrity Sentinel
 
-*webbed paws clap with enthusiasm* Comprehensive markdown link validation ensuring all documentation links are
+_webbed paws clap with enthusiasm_ Comprehensive markdown link validation ensuring all documentation links are
 functional and properly formatted.
 
-> *Link Types Supported:*
+> _Link Types Supported:_
 
 - **External URLs**: HTTP/HTTPS validation with protocol checking
 - **Internal Links**: File existence and path resolution
@@ -92,14 +92,14 @@ functional and properly formatted.
 - **Auto-links**: Angle-bracket wrapped URLs
 - **Reference Links**: Markdown reference-style links
 
-> *Smart Features:*
+> _Smart Features:_
 
 - **Code Block Awareness**: Skips links inside code blocks
 - **Anchor Generation**: GitHub-compatible anchor ID generation
 - **Fragment Handling**: Proper URL fragment validation
 - **Staged File Support**: Pre-commit integration for efficiency
 
-> *Usage:*
+> _Usage:_
 
 ```bash
 # Validate staged files (pre-commit default)
@@ -114,9 +114,9 @@ node .husky/validate-markdown-links.js --help
 
 #### `validate-markdown-toc.js` - Table of Contents Guardian
 
-*splashes with documentation enthusiasm* Ensures all markdown files have proper, up-to-date Table of Contents sections.
+_splashes with documentation enthusiasm_ Ensures all markdown files have proper, up-to-date Table of Contents sections.
 
-> *Validation Rules:*
+> _Validation Rules:_
 
 - **H2 Requirement**: First H2 heading must exist
 - **ToC Placement**: Table of Contents must appear after first H2
@@ -124,7 +124,7 @@ node .husky/validate-markdown-links.js --help
 - **Hierarchy Support**: Proper nesting of H2, H3, H4+ headings
 - **Auto-fix Capability**: Can automatically generate/update ToCs
 
-> *Usage:*
+> _Usage:_
 
 ```bash
 # Validate staged files
@@ -139,10 +139,10 @@ node .husky/validate-markdown-toc.js docs/README.md
 
 #### `validate-sentence-length.js` - Readability Optimizer
 
-*whiskers quiver with writing precision* Implements 2025 best practices for
+_whiskers quiver with writing precision_ Implements 2025 best practices for
 technical documentation sentence breaking and line length management.
 
-> *Intelligent Breaking:*
+> _Intelligent Breaking:_
 
 - **Conjunction Priority**: Breaks at "and", "but", "while", "because"
 - **Punctuation Awareness**: Uses commas and semicolons as natural breaks
@@ -150,7 +150,7 @@ technical documentation sentence breaking and line length management.
 - **Relative Pronouns**: Uses "which", "that", "who", "where" as break points
 - **Context Preservation**: Maintains proper indentation and formatting
 
-> *Special Element Recognition:*
+> _Special Element Recognition:_
 
 - **Code Blocks**: Preserves ``` code blocks
 - **Tables**: Maintains table formatting
@@ -158,7 +158,7 @@ technical documentation sentence breaking and line length management.
 - **Lists**: Maintains list structure
 - **URLs**: Preserves long URLs
 
-> *Usage:*
+> _Usage:_
 
 ```bash
 # Validate staged files (120 char limit)
@@ -178,10 +178,10 @@ node .husky/validate-sentence-length.js --fix --all
 
 #### `validate_python.py` - Python Code Guardian
 
-*snarls with Python precision* Comprehensive Python validation ensuring code quality, security, and
+_snarls with Python precision_ Comprehensive Python validation ensuring code quality, security, and
 modularity standards.
 
-> *Validation Checks:*
+> _Validation Checks:_
 
 - **Formatting**: Black code formatting validation
 - **Import Sorting**: isort import organization
@@ -190,14 +190,14 @@ modularity standards.
 - **Security**: Bandit security vulnerability scanning (non-blocking)
 - **Modularity**: File length limits (250 lines source, 300 lines tests)
 
-> *Smart Features:*
+> _Smart Features:_
 
 - **Virtual Environment**: Automatically sources `~/venv/bin/activate`
 - **Staged Files**: Only validates files being committed
 - **Type Detection**: Identifies files likely to contain type hints
 - **Non-blocking Checks**: Type hints and security warnings don't block commits
 
-> *Usage:*
+> _Usage:_
 
 ```bash
 # Run validation (called by pre-commit hook)
@@ -213,9 +213,9 @@ flake8 .
 
 #### `vitest.config.js` - Test Configuration
 
-*otter enthusiasm bubbles* Vitest configuration for running validation script tests.
+_otter enthusiasm bubbles_ Vitest configuration for running validation script tests.
 
-> *Features:*
+> _Features:_
 
 - **Node Environment**: Tests run in Node.js environment
 - **Global Test Access**: Globals enabled for test utilities
@@ -226,7 +226,7 @@ flake8 .
 
 ### 🔄 Automatic Integration
 
-> *Pre-commit Hook (Default Behavior):*
+> _Pre-commit Hook (Default Behavior):_
 
 ```bash
 # All validations run automatically on commit
@@ -235,7 +235,7 @@ git commit -m "feat: add new feature"
 # → Runs all validation tools on staged files
 ```
 
-> *Manual Validation:*
+> _Manual Validation:_
 
 ```bash
 # CSS validation
@@ -272,7 +272,7 @@ Add to your project's `package.json`:
 
 ### 🔧 CI/CD Integration
 
-> *GitHub Actions Example:*
+> _GitHub Actions Example:_
 
 ```yaml
 - name: Validate CSS Variables
@@ -289,11 +289,11 @@ Add to your project's `package.json`:
 
 ### Exit Code Meanings
 
-| Code | Meaning | Action |
-|------|---------|--------|
-| `0` | Success | All validations passed |
-| `1` | Errors | Block commit/deployment |
-| `2` | Warnings | Allow but notify (CSS only) |
+| Code | Meaning  | Action                      |
+| ---- | -------- | --------------------------- |
+| `0`  | Success  | All validations passed      |
+| `1`  | Errors   | Block commit/deployment     |
+| `2`  | Warnings | Allow but notify (CSS only) |
 
 ### Pre-commit Integration
 
@@ -308,39 +308,39 @@ The pre-commit hook automatically:
 
 ### 📏 File Size Limits
 
-> *TypeScript/JavaScript:*
+> _TypeScript/JavaScript:_
 
 - Source files: 100 lines maximum
 - Test files: 200 lines maximum
 
-> *Python:*
+> _Python:_
 
-- Source files: 250 lines maximum  
+- Source files: 250 lines maximum
 - Test files: 300 lines maximum
 
 ### 🎨 CSS Variable Standards
 
-> *Critical Variables (Must Be Consistent):*
+> _Critical Variables (Must Be Consistent):_
 
 - Theme colors: `--accent`, `--bg-color`, `--secondary-bg`, `--card-bg`
 - Text colors: `--text-primary`, `--text-secondary`, `--text-tertiary`
 - UI elements: `--border-color`, `--success`, `--error`, `--warning`, `--info`, `--danger`
 
-> *Theme Variables (Should Differ Per Theme):*
+> _Theme Variables (Should Differ Per Theme):_
 
 - All critical variables should have different values across themes
 - Values are validated for consistency within each theme
 
 ### 📚 Documentation Standards
 
-> *Markdown Requirements:*
+> _Markdown Requirements:_
 
 - **Table of Contents**: Required after first H2 heading
 - **Link Integrity**: All links must be valid and functional
 - **Sentence Length**: Maximum 120 characters per line
 - **Structure**: Proper heading hierarchy (H2 → H3 → H4)
 
-> *Link Validation:*
+> _Link Validation:_
 
 - **Internal Links**: Must point to existing files
 - **Anchor Links**: Must match actual headings
@@ -349,7 +349,7 @@ The pre-commit hook automatically:
 
 ### 🐍 Python Standards
 
-> *Code Quality:*
+> _Code Quality:_
 
 - **Formatting**: Black code formatting required
 - **Imports**: isort import organization required
@@ -361,7 +361,7 @@ The pre-commit hook automatically:
 
 ### Common Issues
 
-> *Hook Not Running:*
+> _Hook Not Running:_
 
 ```bash
 # Check if hook is installed
@@ -371,7 +371,7 @@ ls -la .git/hooks/pre-commit
 npx husky install
 ```
 
-> *Validation Failing:*
+> _Validation Failing:_
 
 ```bash
 # Check detailed reports
@@ -381,7 +381,7 @@ cat css-validation-report.md
 node .husky/validate-css-variables.js --verbose
 ```
 
-> *Skip Validation (Not Recommended):*
+> _Skip Validation (Not Recommended):_
 
 ```bash
 # Skip pre-commit hook for one commit
@@ -390,19 +390,19 @@ git commit --no-verify -m "Emergency fix"
 
 ### Debug Mode
 
-> *CSS Variables:*
+> _CSS Variables:_
 
 ```bash
 node .husky/validate-css-variables.js --verbose --list-files
 ```
 
-> *Markdown Links:*
+> _Markdown Links:_
 
 ```bash
 node .husky/validate-markdown-links.js --all
 ```
 
-> *Python Validation:*
+> _Python Validation:_
 
 ```bash
 # Check individual tools
@@ -436,7 +436,7 @@ reynard/.husky/
 ├── node_modules/              # Node dependencies
 ├── validate-css-variables.js   # CSS variable validation
 ├── validate-css-variables.test.js
-├── validate-markdown-links.js  # Markdown link validation  
+├── validate-markdown-links.js  # Markdown link validation
 ├── validate-markdown-links.test.js
 ├── validate-markdown-toc.js    # Table of contents validation
 ├── validate-markdown-toc.test.js

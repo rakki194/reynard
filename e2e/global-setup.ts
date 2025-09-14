@@ -65,20 +65,20 @@ async function setupTestDatabase(): Promise<void> {
   console.log("🗄️  Setting up test database...");
 
   try {
-      // Initialize test database (skip if endpoint doesn't exist)
-      const response = await fetch(
-        `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/setup/test`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            reset: true,
-            create_test_users: true,
-          }),
+    // Initialize test database (skip if endpoint doesn't exist)
+    const response = await fetch(
+      `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/setup/test`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          reset: true,
+          create_test_users: true,
+        }),
+      },
+    );
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -111,8 +111,8 @@ async function createTestUsers(): Promise<void> {
 
   for (const user of testUsers) {
     try {
-        const response = await fetch(
-          `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/auth/register`,
+      const response = await fetch(
+        `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/auth/register`,
         {
           method: "POST",
           headers: {

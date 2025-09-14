@@ -116,11 +116,11 @@ function createTranslationEffect(
   initialTranslations?: Partial<Translations>,
 ) {
   let isEffectRunning = false;
-  
+
   createEffect(async () => {
     if (isEffectRunning) return; // Prevent recursion
     isEffectRunning = true;
-    
+
     try {
       const currentLocale = locale();
       if (typeof window !== "undefined") {

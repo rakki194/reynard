@@ -4,10 +4,10 @@
  * Based on latest academic research on phyllotactic spirals
  */
 
-import { GOLDEN_RATIO, GOLDEN_ANGLE } from '../phyllotactic-constants';
+import { GOLDEN_RATIO, GOLDEN_ANGLE } from "../phyllotactic-constants";
 
 export interface AdvancedPatternConfig {
-  patternType: 'vogel' | 'rotase' | 'bernoulli' | 'fibonacci-sibling';
+  patternType: "vogel" | "rotase" | "bernoulli" | "fibonacci-sibling";
   pointCount: number;
   baseRadius: number;
   growthFactor: number;
@@ -42,7 +42,7 @@ export class AdvancedPatternGenerator {
 
   constructor(config: Partial<AdvancedPatternConfig> = {}) {
     this.config = {
-      patternType: 'vogel',
+      patternType: "vogel",
       pointCount: 1000,
       baseRadius: 10,
       growthFactor: 1.0,
@@ -75,17 +75,22 @@ export class AdvancedPatternGenerator {
    */
   private generateROTASEPattern(): AdvancedPatternPoint[] {
     const points: AdvancedPatternPoint[] = [];
-    const goldenAngle = GOLDEN_ANGLE * Math.PI / 180;
+    const goldenAngle = (GOLDEN_ANGLE * Math.PI) / 180;
 
     for (let i = 0; i < this.config.pointCount; i++) {
       // ROTASE galactic spiral equation
       const galacticIndex = this.generateFibonacciSibling(i);
-      const radius = this.config.baseRadius * Math.sqrt(galacticIndex) * this.config.galacticSpiralFactor;
+      const radius =
+        this.config.baseRadius *
+        Math.sqrt(galacticIndex) *
+        this.config.galacticSpiralFactor;
       const angle = galacticIndex * goldenAngle;
-      
+
       // Apply galactic spiral transformation
-      const galacticAngle = angle + (galacticIndex * 0.1 * this.config.galacticSpiralFactor);
-      const galacticRadius = radius * (1 + Math.sin(galacticIndex * 0.05) * 0.1);
+      const galacticAngle =
+        angle + galacticIndex * 0.1 * this.config.galacticSpiralFactor;
+      const galacticRadius =
+        radius * (1 + Math.sin(galacticIndex * 0.05) * 0.1);
 
       const x = this.config.centerX + Math.cos(galacticAngle) * galacticRadius;
       const y = this.config.centerY + Math.sin(galacticAngle) * galacticRadius;
@@ -96,9 +101,9 @@ export class AdvancedPatternGenerator {
         y,
         radius: galacticRadius,
         angle: galacticAngle,
-        color: this.generateAdvancedColor(i, 'rotase'),
+        color: this.generateAdvancedColor(i, "rotase"),
         size: this.calculateAdvancedSize(i),
-        patternType: 'rotase',
+        patternType: "rotase",
         morphingPhase: this.calculateMorphingPhase(i),
       });
     }
@@ -112,14 +117,15 @@ export class AdvancedPatternGenerator {
    */
   private generateBernoulliLattice(): AdvancedPatternPoint[] {
     const points: AdvancedPatternPoint[] = [];
-    const goldenAngle = GOLDEN_ANGLE * Math.PI / 180;
+    const goldenAngle = (GOLDEN_ANGLE * Math.PI) / 180;
 
     for (let i = 0; i < this.config.pointCount; i++) {
       // Bernoulli spiral lattice equation
-      const latticeIndex = i * this.config.latticeDensity + this.config.latticeOffset;
+      const latticeIndex =
+        i * this.config.latticeDensity + this.config.latticeOffset;
       const radius = this.config.baseRadius * Math.sqrt(latticeIndex);
       const angle = latticeIndex * goldenAngle;
-      
+
       // Apply lattice transformation
       const latticeAngle = angle + Math.sin(latticeIndex * 0.1) * 0.2;
       const latticeRadius = radius * (1 + Math.cos(latticeIndex * 0.15) * 0.1);
@@ -133,9 +139,9 @@ export class AdvancedPatternGenerator {
         y,
         radius: latticeRadius,
         angle: latticeAngle,
-        color: this.generateAdvancedColor(i, 'bernoulli'),
+        color: this.generateAdvancedColor(i, "bernoulli"),
         size: this.calculateAdvancedSize(i),
-        patternType: 'bernoulli',
+        patternType: "bernoulli",
         morphingPhase: this.calculateMorphingPhase(i),
       });
     }
@@ -148,16 +154,18 @@ export class AdvancedPatternGenerator {
    */
   private generateEnhancedVogelPattern(): AdvancedPatternPoint[] {
     const points: AdvancedPatternPoint[] = [];
-    const goldenAngle = GOLDEN_ANGLE * Math.PI / 180;
+    const goldenAngle = (GOLDEN_ANGLE * Math.PI) / 180;
 
     for (let i = 0; i < this.config.pointCount; i++) {
-      const radius = this.config.baseRadius * Math.sqrt(i) * this.config.growthFactor;
+      const radius =
+        this.config.baseRadius * Math.sqrt(i) * this.config.growthFactor;
       let angle = i * goldenAngle;
-      
+
       // Apply morphing if enabled
       if (this.config.enableMorphing) {
         const morphingPhase = this.calculateMorphingPhase(i);
-        angle += Math.sin(morphingPhase * Math.PI * 2) * this.config.morphingIntensity;
+        angle +=
+          Math.sin(morphingPhase * Math.PI * 2) * this.config.morphingIntensity;
       }
 
       const x = this.config.centerX + Math.cos(angle) * radius;
@@ -169,9 +177,9 @@ export class AdvancedPatternGenerator {
         y,
         radius,
         angle,
-        color: this.generateAdvancedColor(i, 'vogel'),
+        color: this.generateAdvancedColor(i, "vogel"),
         size: this.calculateAdvancedSize(i),
-        patternType: 'vogel',
+        patternType: "vogel",
         morphingPhase: this.calculateMorphingPhase(i),
       });
     }
@@ -184,7 +192,7 @@ export class AdvancedPatternGenerator {
    */
   private generateAdvancedColor(index: number, patternType: string): string {
     if (!this.config.enableColorHarmonics) {
-      return `hsl(${index * 137.5 % 360}, 70%, 50%)`;
+      return `hsl(${(index * 137.5) % 360}, 70%, 50%)`;
     }
 
     let hue: number;
@@ -192,13 +200,13 @@ export class AdvancedPatternGenerator {
     let lightness: number;
 
     switch (patternType) {
-      case 'rotase':
+      case "rotase":
         // ROTASE color harmonics
         hue = (index * 137.5 + Math.sin(index * 0.1) * 30) % 360;
         saturation = 80 + Math.sin(index * 0.05) * 20;
         lightness = 50 + Math.cos(index * 0.08) * 20;
         break;
-      case 'bernoulli':
+      case "bernoulli":
         // Bernoulli lattice color harmonics
         hue = (index * 137.5 + Math.cos(index * 0.15) * 45) % 360;
         saturation = 70 + Math.cos(index * 0.12) * 30;
@@ -235,11 +243,11 @@ export class AdvancedPatternGenerator {
    */
   generatePattern(): AdvancedPatternPoint[] {
     switch (this.config.patternType) {
-      case 'rotase':
+      case "rotase":
         return this.generateROTASEPattern();
-      case 'bernoulli':
+      case "bernoulli":
         return this.generateBernoulliLattice();
-      case 'fibonacci-sibling':
+      case "fibonacci-sibling":
         return this.generateROTASEPattern(); // Uses Fibonacci sibling sequence
       default:
         return this.generateEnhancedVogelPattern();
@@ -268,8 +276,10 @@ export class AdvancedPatternGenerator {
     renderingCost: number;
     memoryUsage: number;
   } {
-    const complexity = this.config.pointCount * (this.config.enableMorphing ? 2 : 1);
-    const renderingCost = complexity * (this.config.enableColorHarmonics ? 1.5 : 1);
+    const complexity =
+      this.config.pointCount * (this.config.enableMorphing ? 2 : 1);
+    const renderingCost =
+      complexity * (this.config.enableColorHarmonics ? 1.5 : 1);
     const memoryUsage = this.config.pointCount * 64; // Approximate bytes per point
 
     return {

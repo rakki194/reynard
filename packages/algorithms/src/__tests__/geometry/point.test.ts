@@ -33,7 +33,7 @@ describe("PointOps", () => {
       const a: Point = { x: 2, y: 3 };
       const b: Point = { x: 4, y: 5 };
       const result = PointOps.add(a, b);
-      
+
       expect(result.x).toBe(6);
       expect(result.y).toBe(8);
     });
@@ -42,7 +42,7 @@ describe("PointOps", () => {
       const a: Point = { x: 2, y: -3 };
       const b: Point = { x: -4, y: 5 };
       const result = PointOps.add(a, b);
-      
+
       expect(result.x).toBe(-2);
       expect(result.y).toBe(2);
     });
@@ -51,7 +51,7 @@ describe("PointOps", () => {
       const a: Point = { x: 5, y: 7 };
       const b: Point = { x: 0, y: 0 };
       const result = PointOps.add(a, b);
-      
+
       expect(result.x).toBe(5);
       expect(result.y).toBe(7);
     });
@@ -60,7 +60,7 @@ describe("PointOps", () => {
       const a: Point = { x: 1.5, y: 2.3 };
       const b: Point = { x: 0.7, y: 1.2 };
       const result = PointOps.add(a, b);
-      
+
       expect(result.x).toBeCloseTo(2.2, 10);
       expect(result.y).toBeCloseTo(3.5, 10);
     });
@@ -71,7 +71,7 @@ describe("PointOps", () => {
       const a: Point = { x: 7, y: 5 };
       const b: Point = { x: 3, y: 2 };
       const result = PointOps.subtract(a, b);
-      
+
       expect(result.x).toBe(4);
       expect(result.y).toBe(3);
     });
@@ -80,7 +80,7 @@ describe("PointOps", () => {
       const a: Point = { x: 2, y: -3 };
       const b: Point = { x: -4, y: 5 };
       const result = PointOps.subtract(a, b);
-      
+
       expect(result.x).toBe(6);
       expect(result.y).toBe(-8);
     });
@@ -89,7 +89,7 @@ describe("PointOps", () => {
       const a: Point = { x: 5, y: 7 };
       const b: Point = { x: 5, y: 7 };
       const result = PointOps.subtract(a, b);
-      
+
       expect(result.x).toBe(0);
       expect(result.y).toBe(0);
     });
@@ -98,7 +98,7 @@ describe("PointOps", () => {
       const a: Point = { x: 3.7, y: 8.2 };
       const b: Point = { x: 1.2, y: 3.5 };
       const result = PointOps.subtract(a, b);
-      
+
       expect(result.x).toBeCloseTo(2.5, 10);
       expect(result.y).toBeCloseTo(4.7, 10);
     });
@@ -109,7 +109,7 @@ describe("PointOps", () => {
       const a: Point = { x: 0, y: 0 };
       const b: Point = { x: 3, y: 4 };
       const distance = PointOps.distance(a, b);
-      
+
       expect(distance).toBe(5); // 3-4-5 triangle
     });
 
@@ -117,7 +117,7 @@ describe("PointOps", () => {
       const a: Point = { x: 5, y: 7 };
       const b: Point = { x: 5, y: 7 };
       const distance = PointOps.distance(a, b);
-      
+
       expect(distance).toBe(0);
     });
 
@@ -125,7 +125,7 @@ describe("PointOps", () => {
       const a: Point = { x: -1, y: -1 };
       const b: Point = { x: 2, y: 3 };
       const distance = PointOps.distance(a, b);
-      
+
       expect(distance).toBe(5); // sqrt((3)^2 + (4)^2) = 5
     });
 
@@ -133,7 +133,7 @@ describe("PointOps", () => {
       const a: Point = { x: 1, y: 5 };
       const b: Point = { x: 8, y: 5 };
       const distance = PointOps.distance(a, b);
-      
+
       expect(distance).toBe(7);
     });
 
@@ -141,7 +141,7 @@ describe("PointOps", () => {
       const a: Point = { x: 3, y: 2 };
       const b: Point = { x: 3, y: 9 };
       const distance = PointOps.distance(a, b);
-      
+
       expect(distance).toBe(7);
     });
 
@@ -149,14 +149,14 @@ describe("PointOps", () => {
       const a: Point = { x: 1.5, y: 2.0 };
       const b: Point = { x: 4.5, y: 6.0 };
       const distance = PointOps.distance(a, b);
-      
+
       expect(distance).toBe(5); // sqrt(3^2 + 4^2) = 5
     });
 
     it("should be symmetric", () => {
       const a: Point = { x: 2, y: 3 };
       const b: Point = { x: 8, y: 7 };
-      
+
       expect(PointOps.distance(a, b)).toBe(PointOps.distance(b, a));
     });
   });
@@ -166,7 +166,7 @@ describe("PointOps", () => {
       const a: Point = { x: 2, y: 4 };
       const b: Point = { x: 8, y: 10 };
       const midpoint = PointOps.midpoint(a, b);
-      
+
       expect(midpoint.x).toBe(5);
       expect(midpoint.y).toBe(7);
     });
@@ -175,7 +175,7 @@ describe("PointOps", () => {
       const a: Point = { x: 3, y: 5 };
       const b: Point = { x: 3, y: 5 };
       const midpoint = PointOps.midpoint(a, b);
-      
+
       expect(midpoint.x).toBe(3);
       expect(midpoint.y).toBe(5);
     });
@@ -184,7 +184,7 @@ describe("PointOps", () => {
       const a: Point = { x: -2, y: -6 };
       const b: Point = { x: 4, y: 2 };
       const midpoint = PointOps.midpoint(a, b);
-      
+
       expect(midpoint.x).toBe(1);
       expect(midpoint.y).toBe(-2);
     });
@@ -193,7 +193,7 @@ describe("PointOps", () => {
       const a: Point = { x: 1.5, y: 3.7 };
       const b: Point = { x: 4.3, y: 7.1 };
       const midpoint = PointOps.midpoint(a, b);
-      
+
       expect(midpoint.x).toBeCloseTo(2.9, 10);
       expect(midpoint.y).toBeCloseTo(5.4, 10);
     });
@@ -201,10 +201,10 @@ describe("PointOps", () => {
     it("should be symmetric", () => {
       const a: Point = { x: 1, y: 2 };
       const b: Point = { x: 7, y: 8 };
-      
+
       const midpoint1 = PointOps.midpoint(a, b);
       const midpoint2 = PointOps.midpoint(b, a);
-      
+
       expect(midpoint1.x).toBe(midpoint2.x);
       expect(midpoint1.y).toBe(midpoint2.y);
     });
@@ -213,7 +213,7 @@ describe("PointOps", () => {
       const a: Point = { x: 0, y: 0 };
       const b: Point = { x: 6, y: 8 };
       const midpoint = PointOps.midpoint(a, b);
-      
+
       expect(midpoint.x).toBe(3);
       expect(midpoint.y).toBe(4);
     });
