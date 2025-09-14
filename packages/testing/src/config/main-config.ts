@@ -3,9 +3,9 @@
  * Central configuration for translation testing across all Reynard packages
  */
 
-import type { I18nTestingConfig } from "./types";
-import { allPackages } from "./packages";
-import { BASE_IGNORE_PATTERNS } from "./ignore-patterns";
+import type { I18nTestingConfig } from "./types.js";
+import { allPackages } from "./packages/index.js";
+import { BASE_IGNORE_PATTERNS } from "./ignore-patterns.js";
 
 export const defaultI18nTestingConfig: I18nTestingConfig = {
   packages: allPackages,

@@ -10,8 +10,8 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createRoot } from "solid-js";
-import { useBoxResize } from "../useBoxResize";
-import type { BoundingBox, ImageInfo } from "../../types";
+import { useBoxResize } from "../composables/useBoxResize";
+import type { BoundingBox, ImageInfo } from "../types";
 
 // Mock data
 const mockImageInfo: ImageInfo = {

@@ -7,6 +7,11 @@ import { cleanup } from "@solidjs/testing-library";
 // Using unified testing setup instead of jest-dom
 import { afterEach, vi } from "vitest";
 
+// Ensure DOM is properly initialized
+if (typeof document === 'undefined') {
+  throw new Error('DOM environment not properly initialized');
+}
+
 // Mock localStorage for tests
 const localStorageMock = {
   getItem: vi.fn(),

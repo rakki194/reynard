@@ -7,7 +7,7 @@
   "scripts": {
     "start": "python main.py",
     "dev": "python main.py",
-    "test": "python test_caption_integration.py",
+    "test": "bash -c \"source venv/bin/activate && python -m pytest tests/test_api/test_caption_endpoints.py\"",
     "test:all": "./scripts/run-tests.sh",
     "test:unit": "./scripts/run-tests.sh -t unit",
     "test:integration": "./scripts/run-tests.sh -t integration",

@@ -1,88 +1,127 @@
-// Using reynard-testing instead of jest-dom
 import { vi } from "vitest";
 
-// Mock Chart.js to avoid canvas issues in jsdom
+// Mock Chart.js with comprehensive exports
+vi.mock("chart.js", async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    Chart: {
+      ...actual.Chart,
+      register: vi.fn(),
+    },
+  };
+});
+
+// Mock Chart.js directly
 vi.mock("chart.js", () => ({
+  default: {
+    Chart: vi.fn().mockImplementation(() => ({
+      destroy: vi.fn(),
+      update: vi.fn(),
+      data: {},
+      options: {},
+    })),
+    register: vi.fn(),
+    CategoryScale: {},
+    LinearScale: {},
+    PointElement: {},
+    LineElement: {},
+    BarElement: {},
+    ArcElement: {},
+    Title: {},
+    Tooltip: {},
+    Legend: {},
+    Filler: {},
+    TimeScale: {},
+    TimeSeriesScale: {},
+    LineController: {},
+    BarController: {},
+    PieController: {},
+    DoughnutController: {},
+  },
   Chart: {
     register: vi.fn(),
-    unregister: vi.fn(),
   },
-  Title: vi.fn(),
-  Tooltip: vi.fn(),
-  Legend: vi.fn(),
-  BarController: vi.fn(),
-  CategoryScale: vi.fn(),
-  LinearScale: vi.fn(),
-  BarElement: vi.fn(),
-  LineController: vi.fn(),
-  LineElement: vi.fn(),
-  PointElement: vi.fn(),
-  ArcElement: vi.fn(),
-  DoughnutController: vi.fn(),
-  PieController: vi.fn(),
-  TimeScale: vi.fn(),
-}));
-
-// Mock solid-chartjs
-vi.mock("solid-chartjs", () => ({
-  Bar: vi.fn(() => "Bar Chart"),
-  Line: vi.fn(() => "Line Chart"),
-  Pie: vi.fn(() => "Pie Chart"),
-  Doughnut: vi.fn(() => "Doughnut Chart"),
+  register: vi.fn(),
+  CategoryScale: {},
+  LinearScale: {},
+  PointElement: {},
+  LineElement: {},
+  BarElement: {},
+  ArcElement: {},
+  Title: {},
+  Tooltip: {},
+  Legend: {},
+  Filler: {},
+  TimeScale: {},
+  TimeSeriesScale: {},
+  LineController: {},
+  BarController: {},
+  PieController: {},
+  DoughnutController: {},
 }));
 
 // Mock chartjs-adapter-date-fns
 vi.mock("chartjs-adapter-date-fns", () => ({}));
 
-// Mock ResizeObserver
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock console methods to reduce noise in tests
+// Suppress console warnings during tests
 global.console = {
   ...console,
   warn: vi.fn(),
   error: vi.fn(),
 };
 
-// Mock onMount to ensure Chart.js registration works in tests
-vi.mock("solid-js", async () => {
-  const actual = await vi.importActual("solid-js");
-  return {
-    ...actual,
-    onMount: (fn: () => void) => {
-      // Call the function immediately in test environment
-      fn();
-    },
-    createEffect: (fn: () => void) => {
-      // Call the function immediately in test environment
-      fn();
-    },
-  };
+// Extend expect with custom matchers
+import { expect } from "vitest";
+
+expect.extend({
+  toBeInTheDocument(received) {
+    const pass = received !== null && received !== undefined;
+    return {
+      pass,
+      message: () => `expected ${received} to be in the document`,
+    };
+  },
+  toHaveClass(received, className) {
+    if (!received || typeof received.classList === "undefined") {
+      return {
+        pass: false,
+        message: () => `expected ${received} to have class ${className}`,
+      };
+    }
+    const pass = received.classList.contains(className);
+    return {
+      pass,
+      message: () => `expected ${received} to have class ${className}`,
+    };
+  },
+  toHaveAttribute(received, attribute, value) {
+    if (!received || typeof received.getAttribute === "undefined") {
+      return {
+        pass: false,
+        message: () => `expected ${received} to have attribute ${attribute}`,
+      };
+    }
+    const actualValue = received.getAttribute(attribute);
+    const pass = value ? actualValue === value : actualValue !== null;
+    return {
+      pass,
+      message: () => `expected ${received} to have attribute ${attribute}${value ? ` with value ${value}` : ""}`,
+    };
+  },
+  toHaveStyle(received, style) {
+    if (!received || typeof received.style === "undefined") {
+      return {
+        pass: false,
+        message: () => `expected ${received} to have style ${style}`,
+      };
+    }
+    const [property, value] = style.split(": ");
+    const actualValue = received.style.getPropertyValue(property);
+    const pass = actualValue === value;
+    return {
+      pass,
+      message: () => `expected ${received} to have style ${style}, but got ${property}: ${actualValue}`,
+    };
+  },
 });
-
-// Mock window.setInterval to work in test environment
-global.setInterval = vi.fn((fn: any) => {
-  // Call immediately in test environment
-  if (typeof fn === "function") {
-    fn();
-  }
-  return 1 as any;
-});
-
-global.clearInterval = vi.fn();
-
-// Mock the problematic import
-vi.doMock("chartjs-adapter-date-fns", () => ({}));
-
-// Remove the problematic utils mock to allow debounce to work properly

@@ -1,0 +1,73 @@
+/**
+ * Segmentation Canvas Styles
+ */
+
+.segmentation-canvas {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-background-secondary, #f8f9fa);
+  overflow: hidden;
+}
+
+.segmentation-canvas-element {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: crosshair;
+  border-radius: var(--border-radius, 4px);
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+}
+
+.segmentation-canvas-element:not([draggable="true"]) {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.segmentation-canvas-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: var(--spacing-md, 16px);
+  background: var(--color-background, #ffffff);
+  border-radius: var(--border-radius, 8px);
+  box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+  color: var(--color-text-secondary, #6b7280);
+  font-size: var(--font-size-sm, 14px);
+  z-index: 10;
+}
+
+/* Canvas interaction states */
+.segmentation-canvas-element.creating {
+  cursor: crosshair;
+}
+
+.segmentation-canvas-element.editing {
+  cursor: grab;
+}
+
+.segmentation-canvas-element.editing:active {
+  cursor: grabbing;
+}
+
+.segmentation-canvas-element.panning {
+  cursor: grab;
+}
+
+.segmentation-canvas-element.panning:active {
+  cursor: grabbing;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .segmentation-canvas {
+    min-height: 300px;
+  }
+  
+  .segmentation-canvas-element {
+    border-radius: 0;
+  }
+}

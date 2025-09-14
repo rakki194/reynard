@@ -21,11 +21,11 @@ def get_client_identifier(request: Request) -> str:
     
     Special handling for development bypass:
     - If bypass_rate_limiting is set in request.state, return a special identifier
-    - This allows the blackhat testing suite to bypass rate limiting in dev mode
+    - This allows the fenrir testing suite to bypass rate limiting in dev mode
     """
     # Check for development bypass flag
     if hasattr(request.state, 'bypass_rate_limiting') and request.state.bypass_rate_limiting:
-        return "dev-bypass-blackhat-testing"
+        return "dev-bypass-fenrir-testing"
     
     # Try to get real IP from headers (for reverse proxy setups)
     forwarded_for = request.headers.get("X-Forwarded-For")
@@ -51,7 +51,7 @@ def setup_rate_limiting(app: FastAPI) -> Limiter:
     - Authentication endpoints: 5 requests per minute
     - Registration endpoints: 3 requests per minute
     - Password reset: 2 requests per minute
-    - Development bypass: Unlimited (for blackhat testing suite)
+    - Development bypass: Unlimited (for fenrir testing suite)
     """
     limiter = Limiter(
         key_func=get_client_identifier,
@@ -60,8 +60,8 @@ def setup_rate_limiting(app: FastAPI) -> Limiter:
     )
     
     # Add special rate limit for development bypass
-    # This gives unlimited access to the blackhat testing suite in dev mode
-    limiter.limit("10000/minute", key_func=lambda request: "dev-bypass-blackhat-testing")
+    # This gives unlimited access to the fenrir testing suite in dev mode
+    limiter.limit("10000/minute", key_func=lambda request: "dev-bypass-fenrir-testing")
     
     # Add rate limiter to app
     app.state.limiter = limiter

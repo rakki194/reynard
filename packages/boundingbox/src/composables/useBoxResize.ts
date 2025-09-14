@@ -1,30 +1,27 @@
 /**
  * useBoxResize composable
  *
- * Orchestrates resize functionality for bounding boxes by coordinating:
- * - Resize handle generation
- * - Resize operations and state management
- * - Constraint application
- * - Event callbacks
+ * Provides resize functionality for bounding boxes with support for:
+ * - Corner and edge resize handles
+ * - Constraint enforcement (min/max dimensions)
+ * - Proportional resizing
+ * - Performance optimization
  */
 
-import { createSignal, createMemo } from "solid-js";
-import type { ResizeHandle } from "../types";
-import type { ResizeDimensions } from "./resize-constraints";
-import type { ResizeState, ResizeCallbacks } from "./resize-operations";
+import { createSignal } from "solid-js";
+import type { BoundingBox } from "../types";
 
-// Re-export types for external use
-export type { ResizeState };
-import { generateResizeHandles } from "./resize-handles";
-import {
-  createInitialResizeState,
-  startResizeOperation,
-  updateResizeOperation,
-  endResizeOperation,
-  cancelResizeOperation,
-  isResizing as checkIsResizing,
-  getActiveHandle as getActiveResizeHandle,
-} from "./resize-operations";
+export interface ResizeDimensions {
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+}
+
+export interface ResizeHandle {
+  position: string;
+  cursor: string;
+}
 
 export interface ResizeOptions {
   minWidth?: number;
@@ -34,26 +31,21 @@ export interface ResizeOptions {
   enableProportionalResizing?: boolean;
   enableCornerHandles?: boolean;
   enableEdgeHandles?: boolean;
-  onResizeStart?: (boxId: string, handle: ResizeHandle) => void;
+  onResizeStart?: (boxId: string, handle: string) => void;
   onResizeMove?: (boxId: string, dimensions: ResizeDimensions) => void;
   onResizeEnd?: (boxId: string, finalDimensions: ResizeDimensions) => void;
   onResizeCancel?: (boxId: string) => void;
 }
 
 export interface UseBoxResizeReturn {
-  resizeState: () => ResizeState;
+  isResizing: () => boolean;
+  resizingBoxId: () => string | null;
+  resizeState: () => any;
   handles: () => ResizeHandle[];
-  startResize: (
-    boxId: string,
-    handle: ResizeHandle,
-    startDimensions: ResizeDimensions,
-  ) => void;
-  updateResize: (newDimensions: ResizeDimensions) => void;
+  startResize: (boxId: string, handle: string, startDimensions: ResizeDimensions) => void;
+  updateResize: (dimensions: ResizeDimensions) => void;
   endResize: () => void;
   cancelResize: () => void;
-  isResizing: () => boolean;
-  getActiveHandle: () => ResizeHandle | null;
-  setCurrentBoxId: (boxId: string | null) => void;
   getCurrentBoxId: () => string | null;
 }
 
@@ -61,9 +53,9 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
   const {
     minWidth = 10,
     minHeight = 10,
-    maxWidth = Infinity,
-    maxHeight = Infinity,
-    enableProportionalResizing = true,
+    maxWidth = 1000,
+    maxHeight = 1000,
+    enableProportionalResizing = false,
     enableCornerHandles = true,
     enableEdgeHandles = true,
     onResizeStart,
@@ -72,103 +64,127 @@ export function useBoxResize(options: ResizeOptions = {}): UseBoxResizeReturn {
     onResizeCancel,
   } = options;
 
-  const [resizeState, setResizeState] = createSignal<ResizeState>(
-    createInitialResizeState(),
-  );
-  const [currentBoxId, setCurrentBoxId] = createSignal<string | null>(null);
+  const [isResizing, setIsResizing] = createSignal(false);
+  const [resizingBoxId, setResizingBoxId] = createSignal<string | null>(null);
+  const [resizeState, setResizeState] = createSignal<any>(null);
 
-  // Generate resize handles using the extracted module
-  const handles = createMemo((): ResizeHandle[] => {
-    return generateResizeHandles({
-      minWidth,
-      minHeight,
-      maxWidth,
-      maxHeight,
-      enableProportionalResizing,
-      enableCornerHandles,
-      enableEdgeHandles,
-    });
-  });
-
-  // Create callbacks object for resize operations
-  const callbacks: ResizeCallbacks = {
-    onResizeStart,
-    onResizeMove,
-    onResizeEnd,
-    onResizeCancel,
+  const handles = (): ResizeHandle[] => {
+    const handleList: ResizeHandle[] = [];
+    
+    if (enableCornerHandles) {
+      handleList.push(
+        { position: "bottom-right", cursor: "se-resize" },
+        { position: "bottom-left", cursor: "sw-resize" },
+        { position: "top-right", cursor: "ne-resize" },
+        { position: "top-left", cursor: "nw-resize" }
+      );
+    }
+    
+    if (enableEdgeHandles) {
+      handleList.push(
+        { position: "top", cursor: "n-resize" },
+        { position: "bottom", cursor: "s-resize" },
+        { position: "left", cursor: "w-resize" },
+        { position: "right", cursor: "e-resize" }
+      );
+    }
+    
+    return handleList;
   };
 
-  function startResize(
-    boxId: string,
-    handle: ResizeHandle,
-    startDimensions: ResizeDimensions,
-  ) {
-    setCurrentBoxId(boxId);
-    const newState = startResizeOperation(
+  const applyConstraints = (dimensions: ResizeDimensions): ResizeDimensions => {
+    let { width, height, x, y } = dimensions;
+
+    // Apply minimum constraints
+    width = Math.max(width, minWidth);
+    height = Math.max(height, minHeight);
+
+    // Apply maximum constraints
+    width = Math.min(width, maxWidth);
+    height = Math.min(height, maxHeight);
+
+    // Apply proportional resizing if enabled
+    if (enableProportionalResizing && resizeState()) {
+      const originalState = resizeState();
+      if (originalState.originalDimensions) {
+        const aspectRatio = originalState.originalDimensions.width / originalState.originalDimensions.height;
+        
+        // Determine which dimension changed more
+        const widthChange = Math.abs(width - originalState.originalDimensions.width);
+        const heightChange = Math.abs(height - originalState.originalDimensions.height);
+        
+        if (widthChange > heightChange) {
+          height = width / aspectRatio;
+        } else {
+          width = height * aspectRatio;
+        }
+      }
+    }
+
+    return { width, height, x, y };
+  };
+
+  const startResize = (boxId: string, handle: string, startDimensions: ResizeDimensions) => {
+    setIsResizing(true);
+    setResizingBoxId(boxId);
+    setResizeState({
       boxId,
       handle,
-      startDimensions,
-      callbacks,
-    );
-    setResizeState(newState);
-  }
+      originalDimensions: { ...startDimensions },
+      startDimensions: { ...startDimensions },
+    });
 
-  function updateResize(newDimensions: ResizeDimensions) {
-    const state = resizeState();
-    const boxId = currentBoxId();
+    onResizeStart?.(boxId, handle);
+  };
 
-    if (!boxId) return;
+  const updateResize = (dimensions: ResizeDimensions) => {
+    if (!isResizing() || !resizeState()) return;
 
-    const newState = updateResizeOperation(newDimensions, state, callbacks);
-    setResizeState(newState);
+    const constrainedDimensions = applyConstraints(dimensions);
+    
+    setResizeState((prev: any) => ({
+      ...prev,
+      currentDimensions: constrainedDimensions,
+    }));
 
-    if (newState.currentDimensions) {
-      onResizeMove?.(boxId, newState.currentDimensions);
-    }
-  }
+    onResizeMove?.(resizingBoxId()!, constrainedDimensions);
+  };
 
-  function endResize() {
-    const state = resizeState();
-    const boxId = currentBoxId();
+  const endResize = () => {
+    if (!isResizing() || !resizeState()) return;
 
-    if (!boxId) return;
+    const finalDimensions = resizeState().currentDimensions || resizeState().startDimensions;
+    
+    onResizeEnd?.(resizingBoxId()!, finalDimensions);
 
-    const { state: newState } = endResizeOperation(state, boxId, callbacks);
-    setResizeState(newState);
-    setCurrentBoxId(null);
-  }
+    // Clean up state
+    setIsResizing(false);
+    setResizingBoxId(null);
+    setResizeState(null);
+  };
 
-  function cancelResize() {
-    const state = resizeState();
-    const boxId = currentBoxId();
+  const cancelResize = () => {
+    if (!isResizing()) return;
 
-    const newState = cancelResizeOperation(state, boxId || "", callbacks);
-    setResizeState(newState);
-    setCurrentBoxId(null);
-  }
+    onResizeCancel?.(resizingBoxId()!);
 
-  function isResizing(): boolean {
-    return checkIsResizing(resizeState());
-  }
+    // Clean up state
+    setIsResizing(false);
+    setResizingBoxId(null);
+    setResizeState(null);
+  };
 
-  function getActiveHandle(): ResizeHandle | null {
-    return getActiveResizeHandle(resizeState());
-  }
-
-  function getCurrentBoxId(): string | null {
-    return currentBoxId();
-  }
+  const getCurrentBoxId = () => resizingBoxId();
 
   return {
+    isResizing,
+    resizingBoxId,
     resizeState,
     handles,
     startResize,
     updateResize,
     endResize,
     cancelResize,
-    isResizing,
-    getActiveHandle,
-    setCurrentBoxId,
     getCurrentBoxId,
   };
 }

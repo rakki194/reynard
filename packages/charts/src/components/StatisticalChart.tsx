@@ -15,6 +15,7 @@ import {
 import { Chart } from "./Chart";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
 import { ChartConfig, Dataset, ReynardTheme } from "../types";
+import { t, getAxisLabel, getLoadingMessage } from "../utils/i18n";
 
 export interface StatisticalData {
   /** Raw values for histogram */
@@ -430,7 +431,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
         >
           <div class="loading-spinner"></div>
           <span style={{ "margin-left": "10px" }}>
-            Loading statistical data...
+            {t("loadingStatisticalData")}
           </span>
         </div>
       </Show>
@@ -460,11 +461,11 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
           title={others.title}
           xAxisLabel={
             others.xAxisLabel ||
-            (local.type === "histogram" ? "Value Range" : "Metric")
+            (local.type === "histogram" ? t("valueRange") : t("metric"))
           }
           yAxisLabel={
             others.yAxisLabel ||
-            (local.type === "histogram" ? "Frequency" : "Value")
+            (local.type === "histogram" ? t("frequency") : t("value"))
           }
           showGrid={others.showGrid}
           showLegend={others.showLegend}

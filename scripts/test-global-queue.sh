@@ -14,7 +14,9 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 log() {
-    echo -e "${BLUE}[$(date '+%H:%M:%S')]${NC} $1"
+    local timestamp
+    timestamp=$(date '+%H:%M:%S')
+    echo -e "${BLUE}[${timestamp}]${NC} $1"
 }
 
 success() {
@@ -58,12 +60,12 @@ log "Test 2: Starting 5 test agents simultaneously..."
 
 # Start agents in background
 for i in {1..5}; do
-    log "Starting agent-$i..."
+    log "Starting agent-${i}..."
     (
-        VITEST_AGENT_ID="test-agent-$i" \
-        ./scripts/vitest-global-queue.sh run "test-agent-$i" --run --reporter=verbose \
+        VITEST_AGENT_ID="test-agent-${i}" \
+        ./scripts/vitest-global-queue.sh run "test-agent-${i}" --run --reporter=verbose \
         packages/core/src/__tests__/index.test.ts 2>&1 | \
-        sed "s/^/[Agent-$i] /"
+        sed "s/^/[Agent-${i}] /"
     ) &
     sleep 1  # Small delay between starts
 done
@@ -72,7 +74,7 @@ done
 log "Test 3: Monitoring queue status for 30 seconds..."
 for i in {1..6}; do
     echo ""
-    log "Status check $i/6:"
+    log "Status check ${i}/6:"
     ./scripts/vitest-global-queue.sh status
     sleep 5
 done

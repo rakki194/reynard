@@ -1,15 +1,7 @@
 """
-Mock core package for the Gatekeeper authentication library.
+Mock gatekeeper core package.
 """
 
-from .password_manager import PasswordManager, SecurityLevel, Argon2Variant
-from .auth_manager import AuthManager
-from .token_manager import TokenManager
+from ..main import MockAuthManager, MockPasswordManager, MockTokenManager
 
-__all__ = [
-    "AuthManager",
-    "PasswordManager", 
-    "SecurityLevel",
-    "Argon2Variant",
-    "TokenManager",
-]
+__all__ = ["MockAuthManager", "MockPasswordManager", "MockTokenManager"]

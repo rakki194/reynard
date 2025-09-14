@@ -3,7 +3,7 @@
  * Principal Component Analysis variance visualization with recommendations
  */
 
-import { Component, onMount, createSignal, Show } from "solid-js";
+import { Component, onMount, createSignal, Show, createMemo } from "solid-js";
 import {
   Chart as ChartJS,
   Title,
@@ -16,22 +16,8 @@ import {
   LineElement,
   LineController,
 } from "chart.js";
-import { Line } from "solid-chartjs";
 import { ChartConfig, ReynardTheme } from "../types";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
-
-// Register Chart.js components
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  Colors,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  LineController,
-);
 
 export interface PCAVarianceData {
   /** Component numbers (1, 2, 3, ...) */
@@ -83,16 +69,10 @@ export interface PCAVarianceChartProps extends ChartConfig {
 }
 
 export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
-  const [isRegistered, setIsRegistered] = createSignal(false);
   const visualizationEngine = useVisualizationEngine();
 
-  // Register Chart.js components on mount
-  onMount(() => {
-    setIsRegistered(true);
-  });
-
-  // Prepare chart data
-  const chartData = () => {
+  // Prepare chart data using createMemo for better performance
+  const chartData = createMemo(() => {
     const maxComps = props.maxComponents || props.data.components.length;
     const components = props.data.components.slice(0, maxComps);
     const varianceRatio = props.data.explainedVarianceRatio.slice(0, maxComps);
@@ -146,7 +126,7 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
       labels: components.map((c) => `PC${c}`),
       datasets,
     };
-  };
+  });
 
   // Chart options
   const chartOptions = () => ({
@@ -292,16 +272,17 @@ export const PCAVarianceChart: Component<PCAVarianceChartProps> = (props) => {
         when={
           !props.loading &&
           props.data.components &&
-          props.data.components.length > 0 &&
-          isRegistered()
+          props.data.components.length > 0
         }
       >
-        <Line
-          data={chartData()}
-          options={chartOptions()}
-          width={props.width || 600}
-          height={props.height || 400}
-        />
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
+          <canvas
+            width={props.width || 600}
+            height={props.height || 400}
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            data-testid="pca-variance-chart-canvas"
+          />
+        </div>
         {recommendationsOverlay()}
         {summaryStats()}
       </Show>

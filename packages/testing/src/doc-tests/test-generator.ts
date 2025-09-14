@@ -4,7 +4,7 @@
  * Creates testable code from documentation examples
  */
 
-import type { CodeExample } from "./code-parser";
+import type { CodeExample } from "./code-parser.js";
 
 /**
  * Extract component name from code

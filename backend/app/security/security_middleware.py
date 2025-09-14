@@ -107,6 +107,46 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             r"(\b(\.\.%2f|\.\.%5c|\.\.%c0%af|\.\.%c1%9c)\b)",
         ]
         
+        # Null byte injection patterns
+        self.null_byte_patterns = [
+            r"(\x00)",  # Null byte
+            r"(%00)",   # URL encoded null byte
+            r"(\u0000)", # Unicode null
+        ]
+        
+        # LDAP injection patterns
+        self.ldap_patterns = [
+            r"(\*\)\()",  # *)(uid=*
+            r"(\*\)\()",  # *)(|(uid=*
+            r"(\*\)\)\()", # *))(|(uid=*
+            r"(\*\)\)\()", # *))(|(objectClass=*
+            r"(\*\)\)\()", # *))(|(objectClass=user
+            r"(\*\)\)\()", # *))(|(objectClass=person
+            r"(\*\)\)\()", # *))(|(objectClass=organizationalPerson
+            r"(\*\)\)\()", # *))(|(objectClass=inetOrgPerson
+        ]
+        
+        # NoSQL injection patterns
+        self.nosql_patterns = [
+            r"(\$\w+\s*:\s*[^}]+)",  # MongoDB operators like $ne, $gt, $regex
+            r"(\$\w+\s*:\s*null)",   # $ne: null
+            r"(\$\w+\s*:\s*\"\")",   # $gt: ""
+            r"(\$\w+\s*:\s*\".*?\")", # $regex: ".*"
+            r"(\$\w+\s*:\s*\"[^\"]*?\")", # $where: "this.username == 'admin'"
+            r"(\$\w+\s*:\s*\[)",     # $or: [
+            r"(\$\w+\s*:\s*\{)",     # $and: {
+            r"(\$\w+\s*:\s*true)",   # $exists: true
+            r"(\$\w+\s*:\s*\"string\")", # $type: "string"
+            r"(\$\w+\s*:\s*\d+)",    # $size: 0, $mod: [10, 0]
+        ]
+        
+        # Control character patterns
+        self.control_char_patterns = [
+            r"(\x00|\x01|\x02|\x03|\x04|\x05|\x06|\x07|\x08|\x0B|\x0C|\x0E|\x0F)",  # Control chars
+            r"(\x10|\x11|\x12|\x13|\x14|\x15|\x16|\x17|\x18|\x19|\x1A|\x1B|\x1C|\x1D|\x1E|\x1F)",  # More control chars
+            r"(\n|\r|\t|\b|\f|\v)",  # Common control characters
+        ]
+        
         # Dangerous file extensions
         self.dangerous_extensions = [
             '.exe', '.bat', '.cmd', '.com', '.pif', '.scr', '.vbs', '.js',
@@ -183,13 +223,26 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             'x-remote-ip', 'x-remote-addr', 'x-client-ip'
         ]
         
+        # Headers that should be excluded from SQL injection checks
+        safe_headers = {
+            'accept', 'accept-encoding', 'accept-language', 'cache-control',
+            'connection', 'content-type', 'content-length', 'host',
+            'user-agent', 'referer', 'origin', 'upgrade-insecure-requests'
+        }
+        
         for header_name, header_value in headers.items():
+            header_lower = header_name.lower()
+            
             # Skip validation for user-agent header with legitimate tools
-            if header_name.lower() == 'user-agent':
+            if header_lower == 'user-agent':
                 if self._is_legitimate_user_agent(header_value):
                     continue
             
-            # Check for SQL injection in headers
+            # Skip SQL injection checks for safe HTTP headers
+            if header_lower in safe_headers:
+                continue
+            
+            # Check for SQL injection in headers (only for non-safe headers)
             for pattern in self.sql_patterns:
                 if re.search(pattern, header_value, re.IGNORECASE):
                     logger.warning(f"SQL injection attempt in header {header_name}: {header_value}")
@@ -275,6 +328,36 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         for pattern in self.xss_patterns:
             if re.search(pattern, content, re.IGNORECASE):
                 logger.warning(f"XSS attempt detected: {content[:100]}...")
+                return False
+        
+        # Check for path traversal
+        for pattern in self.path_traversal_patterns:
+            if re.search(pattern, content, re.IGNORECASE):
+                logger.warning(f"Path traversal attempt detected: {content[:100]}...")
+                return False
+        
+        # Check for null byte injection
+        for pattern in self.null_byte_patterns:
+            if re.search(pattern, content, re.IGNORECASE):
+                logger.warning(f"Null byte injection attempt detected: {content[:100]}...")
+                return False
+        
+        # Check for LDAP injection
+        for pattern in self.ldap_patterns:
+            if re.search(pattern, content, re.IGNORECASE):
+                logger.warning(f"LDAP injection attempt detected: {content[:100]}...")
+                return False
+        
+        # Check for NoSQL injection
+        for pattern in self.nosql_patterns:
+            if re.search(pattern, content, re.IGNORECASE):
+                logger.warning(f"NoSQL injection attempt detected: {content[:100]}...")
+                return False
+        
+        # Check for control characters
+        for pattern in self.control_char_patterns:
+            if re.search(pattern, content, re.IGNORECASE):
+                logger.warning(f"Control character injection attempt detected: {content[:100]}...")
                 return False
         
         return True

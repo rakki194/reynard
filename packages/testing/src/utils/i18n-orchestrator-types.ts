@@ -2,7 +2,7 @@
  * Types for i18n Package Testing Orchestrator
  */
 
-import type { I18nTestResult } from "./i18n-testing";
+import type { I18nTestResult } from "./i18n-testing.js";
 
 export interface PackageI18nTestResult {
   packageName: string;

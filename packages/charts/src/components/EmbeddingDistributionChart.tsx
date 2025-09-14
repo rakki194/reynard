@@ -3,7 +3,7 @@
  * Advanced embedding distribution analysis with histogram and box plot visualization
  */
 
-import { Component, onMount, createSignal, Show } from "solid-js";
+import { Component, onMount, createSignal, Show, createMemo } from "solid-js";
 import {
   Chart as ChartJS,
   Title,
@@ -18,24 +18,8 @@ import {
   LineElement,
   LineController,
 } from "chart.js";
-import { Bar, Line } from "solid-chartjs";
 import { ChartConfig, ReynardTheme } from "../types";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
-
-// Register Chart.js components
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  Colors,
-  CategoryScale,
-  LinearScale,
-  BarController,
-  BarElement,
-  PointElement,
-  LineElement,
-  LineController,
-);
 
 export interface EmbeddingDistributionData {
   /** Embedding values for histogram */
@@ -88,16 +72,10 @@ export interface EmbeddingDistributionChartProps extends ChartConfig {
 export const EmbeddingDistributionChart: Component<
   EmbeddingDistributionChartProps
 > = (props) => {
-  const [isRegistered, setIsRegistered] = createSignal(false);
   const visualizationEngine = useVisualizationEngine();
 
-  // Register Chart.js components on mount
-  onMount(() => {
-    setIsRegistered(true);
-  });
-
-  // Calculate histogram bins and counts
-  const histogramData = () => {
+  // Calculate histogram bins and counts using createMemo
+  const histogramData = createMemo(() => {
     if (props.type !== "histogram" || !props.data.values.length) {
       return { labels: [], datasets: [] };
     }
@@ -149,10 +127,10 @@ export const EmbeddingDistributionChart: Component<
         },
       ],
     };
-  };
+  });
 
-  // Calculate box plot data
-  const boxPlotData = () => {
+  // Calculate box plot data using createMemo
+  const boxPlotData = createMemo(() => {
     if (props.type !== "boxplot" || !props.data.values.length) {
       return { labels: [], datasets: [] };
     }
@@ -202,7 +180,7 @@ export const EmbeddingDistributionChart: Component<
         },
       ],
     };
-  };
+  });
 
   // Chart options
   const chartOptions = () => {
@@ -342,26 +320,17 @@ export const EmbeddingDistributionChart: Component<
         when={
           !props.loading &&
           props.data.values &&
-          props.data.values.length > 0 &&
-          isRegistered()
+          props.data.values.length > 0
         }
       >
-        <Show when={props.type === "histogram"}>
-          <Bar
-            data={histogramData()}
-            options={chartOptions()}
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
+          <canvas
             width={props.width || 400}
             height={props.height || 300}
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            data-testid="embedding-distribution-chart-canvas"
           />
-        </Show>
-        <Show when={props.type === "boxplot"}>
-          <Bar
-            data={boxPlotData()}
-            options={chartOptions()}
-            width={props.width || 400}
-            height={props.height || 300}
-          />
-        </Show>
+        </div>
         {statisticsOverlay()}
       </Show>
     </div>

@@ -9,8 +9,8 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { useBoxMove } from "../useBoxMove";
-import type { BoundingBox, ImageInfo } from "../../types";
+import { useBoxMove } from "../composables/useBoxMove";
+import type { BoundingBox, ImageInfo } from "../types";
 
 // Mock data
 const mockImageInfo: ImageInfo = {

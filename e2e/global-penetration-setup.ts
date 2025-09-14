@@ -2,7 +2,7 @@
  * 🐺 GLOBAL PENETRATION TESTING SETUP
  *
  * *snarls with predatory glee* Global setup for penetration testing suite
- * including blackhat exploit validation and environment preparation.
+ * including fenrir exploit validation and environment preparation.
  */
 
 import { chromium, FullConfig } from "@playwright/test";
@@ -15,8 +15,8 @@ const execAsync = promisify(exec);
 async function globalSetup(_config: FullConfig) {
   console.log("🐺 Starting Penetration Testing Global Setup...");
 
-  // Validate blackhat suite availability
-  await validateBlackhatSuite();
+  // Validate fenrir suite availability
+  await validateFenrirSuite();
 
   // Validate target environment
   await validateTargetEnvironment();
@@ -28,23 +28,23 @@ async function globalSetup(_config: FullConfig) {
 }
 
 /**
- * Validate blackhat suite is available and functional
+ * Validate fenrir suite is available and functional
  */
-async function validateBlackhatSuite(): Promise<void> {
-  console.log("🔍 Validating blackhat exploit suite...");
+async function validateFenrirSuite(): Promise<void> {
+  console.log("🔍 Validating fenrir exploit suite...");
 
-  const blackhatPath = path.join(process.cwd(), "..", "blackhat");
+  const fenrirPath = path.join(process.cwd(), "..", "fenrir");
 
   try {
-    // Check if blackhat directory exists
-    const { stdout } = await execAsync(`ls -la "${blackhatPath}"`);
-    console.log("✅ Blackhat directory found");
+    // Check if fenrir directory exists
+    const { stdout } = await execAsync(`ls -la "${fenrirPath}"`);
+    console.log("✅ Fenrir directory found");
 
     // Simplified validation - just check if the directory exists
-    console.log("✅ Blackhat suite validation completed");
+    console.log("✅ Fenrir suite validation completed");
   } catch (error) {
-    console.error("❌ Blackhat suite validation failed:", error);
-    throw new Error("Blackhat suite validation failed");
+    console.error("❌ Fenrir suite validation failed:", error);
+    throw new Error("Fenrir suite validation failed");
   }
 }
 

@@ -1,0 +1,418 @@
+---
+globs: package.json,pnpm-workspace.yaml
+alwaysApply: false
+---
+
+# 🦊 Reynard pnpm & Development Server Queue Guide
+
+*Comprehensive package management and development server orchestration for the Reynard monorepo*
+
+## Overview
+
+The Reynard project uses pnpm for efficient package management and includes a sophisticated development server queue system that prevents port conflicts and provides multi-agent support. This guide covers all pnpm commands, Husky linting, and the development server management system.
+
+## Development Server Queue System
+
+### 🚀 Quick Start
+
+```bash
+# Check what's running
+pnpm run dev:status
+
+# List all available projects
+pnpm run dev:list
+
+# Start a specific project
+cd examples/test-app && pnpm run dev
+
+# Stop all servers
+pnpm run dev:stop-all
+```
+
+### Port Configuration
+
+| Category | Project | Port | Description |
+|----------|---------|------|-------------|
+| **Packages** | reynard-core | 3000 | Core utilities and modules |
+| | reynard-components | 3001 | UI component library |
+| | reynard-charts | 3002 | Chart components and visualizations |
+| | reynard-themes | 3003 | Theme system and styling |
+| | reynard-fluent-icons | 3004 | Fluent UI icon components |
+| | reynard-3d | 3005 | 3D graphics and WebGL components |
+| | reynard-algorithms | 3006 | Algorithm implementations and utilities |
+| | reynard-colors | 3007 | Color system and utilities |
+| **Examples** | basic-app | 3008 | Basic application example |
+| | auth-app | 3009 | Authentication example |
+| | i18n-demo | 3010 | Internationalization demo |
+| | comprehensive-dashboard | 3011 | Full-featured dashboard example |
+| | clock | 3012 | Clock application example |
+| | 3d-demo | 3013 | 3D graphics demonstration |
+| | algo-bench | 3014 | Algorithm benchmarking tool |
+| **Backend** | main | 8000 | Main Python backend server |
+| **E2E** | playwright | 3015 | End-to-end testing suite |
+
+### Development Server Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run dev:status` | Show all running development servers | `pnpm run dev:status` |
+| `pnpm run dev:check` | Check for port conflicts before starting | `pnpm run dev:check` |
+| `pnpm run dev:list` | List all available projects and ports | `pnpm run dev:list` |
+| `pnpm run dev:stop-all` | Stop all running development servers | `pnpm run dev:stop-all` |
+
+### Global Server Manager
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `bash scripts/dev-server-manager.sh status` | Show server status | `bash scripts/dev-server-manager.sh status` |
+| `bash scripts/dev-server-manager.sh start <project>` | Start specific project | `bash scripts/dev-server-manager.sh start test-app` |
+| `bash scripts/dev-server-manager.sh stop <project>` | Stop specific project | `bash scripts/dev-server-manager.sh stop test-app` |
+| `bash scripts/dev-server-manager.sh stop-all` | Stop all servers | `bash scripts/dev-server-manager.sh stop-all` |
+| `bash scripts/dev-server-manager.sh list` | List available projects | `bash scripts/dev-server-manager.sh list` |
+| `bash scripts/dev-server-manager.sh help` | Show help | `bash scripts/dev-server-manager.sh help` |
+
+## Core pnpm Commands
+
+### Development Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run dev` | Start starter template dev server | `pnpm run dev` |
+| `pnpm run dev:backend` | Start Python backend server | `pnpm run dev:backend` |
+| `pnpm run dev:frontend` | Start frontend dev server | `pnpm run dev:frontend` |
+| `pnpm run dev:both` | Start both backend and frontend | `pnpm run dev:both` |
+| `pnpm run dev:full` | Start full stack with API generation | `pnpm run dev:full` |
+
+### Build Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run build` | Build all packages | `pnpm run build` |
+| `pnpm run build:all` | Build all packages (alias) | `pnpm run build:all` |
+| `pnpm run build:backend` | Build Python backend | `pnpm run build:backend` |
+
+### Testing Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run test` | Run main workspace tests | `pnpm run test` |
+| `pnpm run test:global` | Run global test queue | `pnpm run test:global` |
+| `pnpm run test:global:watch` | Run global tests in watch mode | `pnpm run test:global:watch` |
+| `pnpm run test:global:coverage` | Run tests with coverage | `pnpm run test:global:coverage` |
+| `pnpm run test:global:status` | Show test queue status | `pnpm run test:global:status` |
+| `pnpm run test:global:cleanup` | Cleanup test queue | `pnpm run test:global:cleanup` |
+| `pnpm run test:security` | Run security tests | `pnpm run test:security` |
+| `pnpm run test:backend` | Run Python backend tests | `pnpm run test:backend` |
+| `pnpm run test:coverage` | Run tests with coverage | `pnpm run test:coverage` |
+| `pnpm run test:coverage:check` | Check coverage thresholds | `pnpm run test:coverage:check` |
+
+### Linting & Formatting Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run lint` | Lint all packages | `pnpm run lint` |
+| `pnpm run lint:fix` | Fix linting issues | `pnpm run lint:fix` |
+| `pnpm run format` | Format all files | `pnpm run format` |
+| `pnpm run format:check` | Check formatting | `pnpm run format:check` |
+| `pnpm run typecheck` | Type check all packages | `pnpm run typecheck` |
+
+### API Generation Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run api:generate` | Generate API client | `pnpm run api:generate` |
+| `pnpm run api:watch` | Watch and regenerate API | `pnpm run api:watch` |
+
+### Documentation Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run docs:generate` | Generate documentation | `pnpm run docs:generate` |
+| `pnpm run docs:watch` | Watch and regenerate docs | `pnpm run docs:watch` |
+| `pnpm run docs:dev` | Start docs dev server | `pnpm run docs:dev` |
+| `pnpm run docs:build` | Build documentation site | `pnpm run docs:build` |
+| `pnpm run docs:serve` | Serve built documentation | `pnpm run docs:serve` |
+
+### Python Development Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run python:setup` | Setup Python development environment | `pnpm run python:setup` |
+| `pnpm run python:format` | Format Python code | `pnpm run python:format` |
+| `pnpm run python:format:check` | Check Python formatting | `pnpm run python:format:check` |
+| `pnpm run python:lint` | Lint Python code | `pnpm run python:lint` |
+| `pnpm run python:typecheck` | Type check Python code | `pnpm run python:typecheck` |
+| `pnpm run python:security` | Security scan Python code | `pnpm run python:security` |
+| `pnpm run python:check` | Run all Python checks | `pnpm run python:check` |
+| `pnpm run python:linecheck` | Check Python line counts | `pnpm run python:linecheck` |
+| `pnpm run python:validate` | Validate Python code | `pnpm run python:validate` |
+| `pnpm run python:test` | Run Python tests | `pnpm run python:test` |
+| `pnpm run python:test:coverage` | Run Python tests with coverage | `pnpm run python:test:coverage` |
+
+### Internationalization Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run i18n:test` | Test all i18n implementations | `pnpm run i18n:test` |
+| `pnpm run i18n:setup` | Setup i18n testing environment | `pnpm run i18n:setup` |
+| `pnpm run i18n:validate` | Validate i18n implementations | `pnpm run i18n:validate` |
+| `pnpm run i18n:list` | List available languages | `pnpm run i18n:list` |
+| `pnpm run i18n:eslint` | Lint i18n files | `pnpm run i18n:eslint` |
+| `pnpm run i18n:ci` | Run i18n CI checks | `pnpm run i18n:ci` |
+
+### Markdown Validation Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run markdown:toc:check` | Check markdown TOC | `pnpm run markdown:toc:check` |
+| `pnpm run markdown:toc:fix` | Fix markdown TOC | `pnpm run markdown:toc:fix` |
+| `pnpm run markdown:lint` | Lint markdown files | `pnpm run markdown:lint` |
+| `pnpm run markdown:lint:fix` | Fix markdown linting | `pnpm run markdown:lint:fix` |
+| `pnpm run markdown:sentence:check` | Check sentence length | `pnpm run markdown:sentence:check` |
+| `pnpm run markdown:sentence:fix` | Fix sentence length | `pnpm run markdown:sentence:fix` |
+| `pnpm run markdown:sentence:test` | Test sentence validation | `pnpm run markdown:sentence:test` |
+| `pnpm run markdown:validate` | Validate all markdown | `pnpm run markdown:validate` |
+| `pnpm run markdown:links:check` | Check markdown links (staged) | `pnpm run markdown:links:check` |
+| `pnpm run markdown:links:check:all` | Check all markdown links | `pnpm run markdown:links:check:all` |
+| `pnpm run markdown:italic:check` | Check italic formatting | `pnpm run markdown:italic:check` |
+| `pnpm run markdown:italic:fix` | Fix italic formatting | `pnpm run markdown:italic:fix` |
+| `pnpm run markdown:italic:fix:all` | Fix all italic formatting | `pnpm run markdown:italic:fix:all` |
+| `pnpm run markdown:italic:test` | Test italic validation | `pnpm run markdown:italic:test` |
+| `pnpm run markdown:validate:all` | Validate all markdown files | `pnpm run markdown:validate:all` |
+
+### Workflow & Shell Validation Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run workflow:validate` | Validate GitHub workflows | `pnpm run workflow:validate` |
+| `pnpm run workflow:lint` | Lint GitHub workflows | `pnpm run workflow:lint` |
+| `pnpm run workflow:check` | Check workflows | `pnpm run workflow:check` |
+| `pnpm run workflow:shell:extract` | Extract shell scripts from workflows | `pnpm run workflow:shell:extract` |
+| `pnpm run workflow:shell:extract:fix` | Extract and auto-fix workflow shell scripts | `pnpm run workflow:shell:extract:fix` |
+| `pnpm run workflow:shell:validate` | Validate workflow shell scripts with verbose output | `pnpm run workflow:shell:validate` |
+| `pnpm run shell:validate` | Validate shell scripts | `pnpm run shell:validate` |
+| `pnpm run shell:lint` | Lint shell scripts | `pnpm run shell:lint` |
+| `pnpm run shell:check` | Check shell scripts | `pnpm run shell:check` |
+
+### Husky Toolkit Management Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run husky:toolkit` | Show Husky toolkit help | `pnpm run husky:toolkit` |
+| `pnpm run husky:toolkit:list` | List all Husky tools and their status | `pnpm run husky:toolkit:list` |
+| `pnpm run husky:toolkit:run-all` | Run all available Husky tools | `pnpm run husky:toolkit:run-all` |
+| `pnpm run husky:toolkit:install-deps` | Install missing dependencies for Husky tools | `pnpm run husky:toolkit:install-deps` |
+
+### Documentation Testing Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run doc-tests` | Run documentation tests | `pnpm run doc-tests` |
+| `pnpm run doc-tests:generate` | Generate doc tests | `pnpm run doc-tests:generate` |
+| `pnpm run doc-tests:validate` | Validate doc tests | `pnpm run doc-tests:validate` |
+| `pnpm run doc-tests:test` | Test documentation | `pnpm run doc-tests:test` |
+| `pnpm run doc-tests:demo` | Demo doc tests | `pnpm run doc-tests:demo` |
+| `pnpm run doc-tests:validate-simple` | Simple doc validation | `pnpm run doc-tests:validate-simple` |
+
+### Setup & Maintenance Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run clean` | Clean all packages and node_modules | `pnpm run clean` |
+| `pnpm run setup` | Install and build all packages | `pnpm run setup` |
+| `pnpm run setup:dev` | Setup development environment | `pnpm run setup:dev` |
+| `pnpm run setup:nginx` | Setup nginx for development | `pnpm run setup:nginx` |
+
+### Docker Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run docker:dev` | Start development containers | `pnpm run docker:dev` |
+| `pnpm run docker:build` | Build development containers | `pnpm run docker:build` |
+| `pnpm run docker:down` | Stop development containers | `pnpm run docker:down` |
+
+### Security & Audit Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run audit` | Audit dependencies | `pnpm run audit` |
+| `pnpm run audit:fix` | Fix audit issues | `pnpm run audit:fix` |
+| `pnpm run security:check` | Comprehensive security check | `pnpm run security:check` |
+| `pnpm run security:scan` | Security scan with audit-ci | `pnpm run security:scan` |
+
+### Release & Versioning Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `pnpm run changeset` | Create changeset | `pnpm run changeset` |
+| `pnpm run version-packages` | Version packages | `pnpm run version-packages` |
+| `pnpm run release` | Build and publish packages | `pnpm run release` |
+
+## Husky Git Hooks & Validation
+
+### Pre-commit Hooks
+
+The pre-commit hook runs comprehensive validation including:
+
+| Validation | Script | Description |
+|------------|--------|-------------|
+| **Formatting** | `npm run format:check` | Check code formatting |
+| **Linting** | `npm run lint` | Lint all packages |
+| **Line Count** | Custom validation | Check file line counts (140-line axiom) |
+| **Python Validation** | `python3 .husky/validate-python.py` | Python code validation |
+| **Markdown TOC** | `node .husky/validate-markdown-toc.js` | Validate markdown table of contents |
+| **Markdown Links** | `node .husky/validate-markdown-links.js` | Validate markdown links |
+| **Markdown Sentences** | `node .husky/validate-sentence-length.js` | Validate sentence length |
+| **Markdown Italic** | `node .husky/validate-italic-to-blockquote.js` | Convert italic to blockquote |
+| **CSS Variables** | `node .husky/validate-css-variables.js` | Validate CSS custom properties |
+| **Shell Scripts** | `./scripts/validate-shell-scripts.sh` | Validate shell scripts |
+| **Workflows** | `./scripts/validate-workflows.sh` | Validate GitHub workflows |
+| **🐺 Workflow Shell Scripts** | `node .husky/extract-workflow-shell.js` | Extract and validate shell scripts from GitHub workflows |
+
+### Pre-dev Hook
+
+The pre-dev hook runs before starting development servers:
+
+| Function | Description |
+|----------|-------------|
+| **Port Conflict Detection** | Checks if port is already in use |
+| **Project Identification** | Identifies project type and configuration |
+| **Auto-reload Reminder** | Reminds about auto-reload capabilities |
+| **Helpful Tips** | Provides development guidance |
+
+### Validation Scripts
+
+| Script | Purpose | Location |
+|--------|---------|----------|
+| `validate-python.py` | Python code validation | `.husky/validate-python.py` |
+| `validate-markdown-toc.js` | Markdown TOC validation | `.husky/validate-markdown-toc.js` |
+| `validate-markdown-links.js` | Markdown link validation | `.husky/validate-markdown-links.js` |
+| `validate-sentence-length.js` | Sentence length validation | `.husky/validate-sentence-length.js` |
+| `validate-italic-to-blockquote.js` | Italic to blockquote conversion | `.husky/validate-italic-to-blockquote.js` |
+| `validate-css-variables.js` | CSS variable validation | `.husky/validate-css-variables.js` |
+| `validate-shell-scripts.sh` | Shell script validation | `scripts/validate-shell-scripts.sh` |
+| `validate-workflows.sh` | Workflow validation | `scripts/validate-workflows.sh` |
+| `extract-workflow-shell.js` | Workflow shell script extraction and validation | `.husky/extract-workflow-shell.js` |
+| `husky-toolkit-manager.js` | Centralized Husky toolkit management | `.husky/husky-toolkit-manager.js` |
+| `pre-commit-workflow-shell-validation` | Pre-commit workflow shell validation hook | `.husky/pre-commit-workflow-shell-validation` |
+
+## 🐺 Workflow Shell Script Validation Toolkit
+
+The Reynard project includes a comprehensive toolkit for validating shell scripts embedded in GitHub Actions workflows, ensuring bulletproof CI/CD security.
+
+### Core Components
+
+| Component | Purpose | Usage |
+|-----------|---------|-------|
+| **Workflow Shell Extractor** | Extracts and validates shell scripts from GitHub workflows | `node .husky/extract-workflow-shell.js` |
+| **Husky Toolkit Manager** | Centralized management for all Husky validation tools | `node .husky/husky-toolkit-manager.js` |
+| **Pre-commit Hook** | Automatically validates workflow shell scripts before commits | Integrated into `.husky/pre-commit` |
+
+### Key Features
+
+- **🔍 Systematic Extraction**: Automatically finds and extracts all shell scripts from workflow files
+- **🛡️ Comprehensive Validation**: Uses shellcheck with strict rules to catch vulnerabilities
+- **🔧 Auto-fix Capability**: Automatically fixes common issues like `[ ]` vs `[[ ]]` and variable braces
+- **📊 Detailed Reporting**: Provides specific error messages, line numbers, and fix suggestions
+- **⚡ Seamless Integration**: Works with existing pre-commit hooks and GitHub Actions workflows
+
+### Common Issues Fixed
+
+| Issue | Auto-fix | Description |
+|-------|----------|-------------|
+| **SC2292** | ✅ | Replace `[ ]` with `[[ ]]` for bash tests |
+| **SC2250** | ✅ | Add braces around variables: `${VAR}` instead of `$VAR` |
+| **SC2154** | ✅ | Fix variable references like `${GITHUB_OUTPUT}` |
+| **SC2164** | ✅ | Add `|| exit` to `cd` commands |
+| **SC2312** | ✅ | Handle command substitution masking return values |
+
+### Usage Examples
+
+```bash
+# Extract and validate all workflow shell scripts
+pnpm run workflow:shell:extract
+
+# Extract with auto-fix for common issues
+pnpm run workflow:shell:extract:fix
+
+# Validate with verbose output showing all details
+pnpm run workflow:shell:validate
+
+# List all Husky tools and their status
+pnpm run husky:toolkit:list
+
+# Run all available Husky tools
+pnpm run husky:toolkit:run-all
+
+# Install missing dependencies for Husky tools
+pnpm run husky:toolkit:install-deps
+```
+
+### Integration with GitHub Actions
+
+The toolkit is integrated into the comprehensive linting workflow (`.github/workflows/comprehensive-linting.yml`) as a separate job that:
+
+- Runs on all workflow file changes
+- Extracts and validates shell scripts from all workflow files
+- Provides detailed reports with fix suggestions
+- Integrates with the final gatekeeper validation
+
+### Quality of Life Improvements
+
+- **Automated Detection**: Automatically finds shell scripts in workflow files
+- **Smart Fixes**: Auto-fixes common issues without manual intervention
+- **Comprehensive Coverage**: Validates all workflow files systematically
+- **Developer-Friendly**: Clear error messages with specific fix suggestions
+- **CI/CD Integration**: Runs automatically in GitHub Actions workflows
+
+## Best Practices
+
+### Development Server Management
+
+1. **Always check status first**: `pnpm run dev:status`
+2. **Use dedicated ports**: Each project has its own port to prevent conflicts
+3. **Leverage auto-reload**: No need to restart servers when making changes
+4. **Stop servers when done**: Use `pnpm run dev:stop-all` to clean up
+
+### Multi-agent Development
+
+1. **Coordinate port usage**: Check what's running before starting new servers
+2. **Use the queue system**: Let the system handle port conflicts
+3. **Share status**: Use `pnpm run dev:status` to see what others are working on
+4. **Clean up**: Stop servers when switching projects
+
+### Code Quality
+
+1. **Run pre-commit checks**: All validation runs automatically on commit
+2. **Fix issues early**: Address linting and formatting issues immediately
+3. **Follow the 140-line axiom**: Keep files modular and focused
+4. **Validate documentation**: Ensure markdown and documentation quality
+
+## Troubleshooting
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| **Port already in use** | Use `pnpm run dev:status` to see what's running, then stop conflicting servers |
+| **Pre-commit fails** | Run `pnpm run lint:fix` and `pnpm run format` to fix issues |
+| **Python validation fails** | Run `pnpm run python:validate` to check Python code |
+| **Markdown validation fails** | Run `pnpm run markdown:validate:all` to fix markdown issues |
+| **Shell script validation fails** | Run `pnpm run shell:check` to validate shell scripts |
+| **Workflow shell validation fails** | Run `pnpm run workflow:shell:extract:fix` to auto-fix common issues |
+| **Husky toolkit issues** | Run `pnpm run husky:toolkit:install-deps` to install missing dependencies |
+
+### Getting Help
+
+- **Development server issues**: Check `.husky/DEV-SERVER-QUEUE.md`
+- **Validation failures**: Run the specific validation command to see details
+- **Port conflicts**: Use `pnpm run dev:status` to identify conflicts
+- **General help**: Use `bash scripts/dev-server-manager.sh help`
+
+## Conclusion
+
+The Reynard project's pnpm and development server queue system provides a robust foundation for multi-agent development with comprehensive validation and conflict prevention. The system ensures code quality through automated checks while enabling efficient collaboration through smart port management and auto-reload capabilities.
+
+The **🐺 Workflow Shell Script Validation Toolkit** adds an additional layer of security by systematically hunting down and validating every shell script vulnerability in GitHub Actions workflows, ensuring bulletproof CI/CD security across the entire project.
+
+*The fox has outfoxed development complexity, and the wolf has secured the CI/CD pipeline!* 🦊🐺

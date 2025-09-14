@@ -19,7 +19,7 @@
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=boundingbox-package ../../scripts/vitest-global-queue.sh run boundingbox-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=boundingbox ../../scripts/vitest-global-queue.sh run boundingbox",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -48,9 +48,9 @@
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",
     "@types/fabric": "5.3.10",
-    "@typescript-eslint/eslint-plugin": "8.42.0",
-    "@typescript-eslint/parser": "8.42.0",
-    "eslint": "9.35.0",
+    "@typescript-eslint/eslint-plugin": "8.43.0",
+    "@typescript-eslint/parser": "8.43.0",
+    "eslint": "8.57.1",
     "happy-dom": "^18.0.1",
     "reynard-testing": "workspace:*",
     "typescript": "5.9.2",

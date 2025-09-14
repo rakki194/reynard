@@ -161,7 +161,7 @@ Examples:
 
   describe("integration with i18n testing", () => {
     it("should call runI18nTests with correct configuration", async () => {
-      const { runI18nTests } = await import("../i18n-testing");
+        const { runI18nTests } = await import("../utils/i18n-testing.js");
 
       const mockResult = {
         hardcodedStrings: [],
@@ -177,7 +177,7 @@ Examples:
     });
 
     it("should generate report using generateI18nReport", async () => {
-      const { generateI18nReport } = await import("../i18n-testing");
+        const { generateI18nReport } = await import("../utils/i18n-testing.js");
 
       const mockResult = {
         hardcodedStrings: [],

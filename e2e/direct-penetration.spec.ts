@@ -7,12 +7,12 @@ const execAsync = promisify(exec);
 
 test.describe("🐺 Direct Penetration Testing", () => {
   test("should run fuzzing exploit directly", async () => {
-    const blackhatPath = path.join(process.cwd(), "..", "blackhat");
+    const fenrirPath = path.join(process.cwd(), "..", "fenrir");
     const pythonPath = "bash -c 'source ~/venv/bin/activate && python3'";
     
     const command = `${pythonPath} -c "
 import sys
-sys.path.append('${blackhatPath}')
+sys.path.append('${fenrirPath}')
 from fuzzing.exploit_wrappers import ComprehensiveFuzzerExploit
 import json
 
@@ -31,7 +31,7 @@ print(json.dumps({
 
     const { stdout, stderr } = await execAsync(command, {
       timeout: 30000, // 30 second timeout
-      cwd: blackhatPath,
+      cwd: fenrirPath,
     });
 
     if (stderr && !stderr.includes("Warning")) {

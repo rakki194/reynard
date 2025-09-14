@@ -1,16 +1,17 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { throttle, debounce } from "../../performance/throttle";
 
 describe("throttle", () => {
   beforeEach(() => {
-    vi.useFakeTimers();
+    // Use real timers instead of fake timers for now
+    // vi.useFakeTimers();
   });
 
   afterEach(() => {
-    vi.useRealTimers();
+    // vi.useRealTimers();
   });
 
-  it("should throttle function calls", () => {
+  it("should throttle function calls", async () => {
     const mockFn = vi.fn();
     const throttledFn = throttle(mockFn, 100);
 
@@ -22,8 +23,8 @@ describe("throttle", () => {
     // Only first call should execute immediately
     expect(mockFn).toHaveBeenCalledTimes(1);
 
-    // Fast forward time
-    vi.advanceTimersByTime(100);
+    // Wait for throttle delay
+    await new Promise(resolve => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(2);
 
     // Call again after throttle period
@@ -52,7 +53,7 @@ describe("throttle", () => {
     expect(result).toBe(42);
   });
 
-  it("should handle immediate execution option", () => {
+  it("should handle immediate execution option", async () => {
     const mockFn = vi.fn();
     const throttledFn = throttle(mockFn, 100, {
       leading: true,
@@ -66,11 +67,12 @@ describe("throttle", () => {
     throttledFn();
     expect(mockFn).toHaveBeenCalledTimes(1);
 
-    vi.advanceTimersByTime(100);
+    // Wait for throttle delay
+    await new Promise(resolve => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
-  it("should handle trailing execution option", () => {
+  it("should handle trailing execution option", async () => {
     const mockFn = vi.fn();
     const throttledFn = throttle(mockFn, 100, {
       leading: false,
@@ -84,21 +86,23 @@ describe("throttle", () => {
     throttledFn();
     expect(mockFn).toHaveBeenCalledTimes(0);
 
-    vi.advanceTimersByTime(100);
+    // Wait for throttle delay
+    await new Promise(resolve => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 });
 
 describe("debounce", () => {
   beforeEach(() => {
-    vi.useFakeTimers();
+    // Use real timers instead of fake timers for now
+    // vi.useFakeTimers();
   });
 
   afterEach(() => {
-    vi.useRealTimers();
+    // vi.useRealTimers();
   });
 
-  it("should debounce function calls", () => {
+  it("should debounce function calls", async () => {
     const mockFn = vi.fn();
     const debouncedFn = debounce(mockFn, 100);
 
@@ -110,21 +114,21 @@ describe("debounce", () => {
     // Function should not be called yet
     expect(mockFn).toHaveBeenCalledTimes(0);
 
-    // Fast forward time
-    vi.advanceTimersByTime(100);
+    // Wait for debounce delay
+    await new Promise(resolve => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
-  it("should pass arguments to debounced function", () => {
+  it("should pass arguments to debounced function", async () => {
     const mockFn = vi.fn();
     const debouncedFn = debounce(mockFn, 100);
 
     debouncedFn("arg1", "arg2");
-    vi.advanceTimersByTime(100);
+    await new Promise(resolve => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledWith("arg1", "arg2");
   });
 
-  it("should maintain context (this)", () => {
+  it("should maintain context (this)", async () => {
     const obj = {
       value: 42,
       method: vi.fn(function () {
@@ -134,11 +138,11 @@ describe("debounce", () => {
 
     const debouncedMethod = debounce(obj.method.bind(obj), 100);
     debouncedMethod();
-    vi.advanceTimersByTime(100);
+    await new Promise(resolve => setTimeout(resolve, 110));
     expect(obj.method).toHaveBeenCalled();
   });
 
-  it("should handle immediate execution option", () => {
+  it("should handle immediate execution option", async () => {
     const mockFn = vi.fn();
     const debouncedFn = debounce(mockFn, 100, {
       leading: true,
@@ -152,11 +156,11 @@ describe("debounce", () => {
     debouncedFn();
     expect(mockFn).toHaveBeenCalledTimes(1);
 
-    vi.advanceTimersByTime(100);
+    await new Promise(resolve => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
-  it("should handle trailing execution option", () => {
+  it("should handle trailing execution option", async () => {
     const mockFn = vi.fn();
     const debouncedFn = debounce(mockFn, 100, {
       leading: false,
@@ -170,22 +174,22 @@ describe("debounce", () => {
     debouncedFn();
     expect(mockFn).toHaveBeenCalledTimes(0);
 
-    vi.advanceTimersByTime(100);
+    await new Promise(resolve => setTimeout(resolve, 110));
     expect(mockFn).toHaveBeenCalledTimes(1);
   });
 
-  it("should cancel previous calls when new call is made", () => {
+  it("should cancel previous calls when new call is made", async () => {
     const mockFn = vi.fn();
     const debouncedFn = debounce(mockFn, 100);
 
     debouncedFn();
-    vi.advanceTimersByTime(50);
+    await new Promise(resolve => setTimeout(resolve, 50));
 
-    debouncedFn(); // This should cancel the previous call
-    vi.advanceTimersByTime(50);
-    expect(mockFn).toHaveBeenCalledTimes(0);
+    debouncedFn(); // This should cancel the previous call and start a new timer
+    await new Promise(resolve => setTimeout(resolve, 50));
+    expect(mockFn).toHaveBeenCalledTimes(0); // Still shouldn't be called yet
 
-    vi.advanceTimersByTime(50);
-    expect(mockFn).toHaveBeenCalledTimes(1);
+    await new Promise(resolve => setTimeout(resolve, 60)); // Wait for the new timer
+    expect(mockFn).toHaveBeenCalledTimes(1); // Now it should be called
   });
 });

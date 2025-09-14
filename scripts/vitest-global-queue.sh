@@ -9,9 +9,9 @@ set -euo pipefail
 # Configuration
 MAX_PROCESSES=4
 QUEUE_DIR="/tmp/vitest-global-queue"
-LOCK_FILE="$QUEUE_DIR/vitest.lock"
-PID_FILE="$QUEUE_DIR/vitest.pids"
-LOG_FILE="$QUEUE_DIR/vitest-queue.log"
+LOCK_FILE="${QUEUE_DIR}/vitest.lock"
+PID_FILE="${QUEUE_DIR}/vitest.pids"
+LOG_FILE="${QUEUE_DIR}/vitest-queue.log"
 
 # Colors for output
 RED='\033[0;31m'
@@ -21,52 +21,64 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Create queue directory if it doesn't exist
-mkdir -p "$QUEUE_DIR"
+mkdir -p "${QUEUE_DIR}"
 
 # Logging function
 log() {
-    echo -e "${BLUE}[$(date '+%Y-%m-%d %H:%M:%S')]${NC} $1" | tee -a "$LOG_FILE"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${BLUE}[${timestamp}]${NC} $1" | tee -a "${LOG_FILE}"
 }
 
 error() {
-    echo -e "${RED}[ERROR]${NC} $1" | tee -a "$LOG_FILE"
+    echo -e "${RED}[ERROR]${NC} $1" | tee -a "${LOG_FILE}"
 }
 
 success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1" | tee -a "$LOG_FILE"
+    echo -e "${GREEN}[SUCCESS]${NC} $1" | tee -a "${LOG_FILE}"
 }
 
 warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1" | tee -a "$LOG_FILE"
+    echo -e "${YELLOW}[WARNING]${NC} $1" | tee -a "${LOG_FILE}"
 }
 
 # Function to get current vitest process count
 get_vitest_count() {
-    pgrep -f "vitest" | wc -l
+    local count
+    count=$(pgrep -f "vitest" | wc -l)
+    # Don't log here as it interferes with command substitution
+    echo "${count}"
 }
+
 
 # Function to wait for available slot
 wait_for_slot() {
     local agent_id="${1:-unknown}"
     local timeout="${2:-300}" # 5 minute timeout
     
-    log "Agent $agent_id waiting for available vitest slot..."
+    log "Agent ${agent_id} waiting for available vitest slot..."
     
-    local start_time=$(date +%s)
-    while [ $(get_vitest_count) -ge $MAX_PROCESSES ]; do
-        local current_time=$(date +%s)
+    local start_time
+    start_time=$(date +%s)
+    
+    while [[ $(get_vitest_count) -ge "${MAX_PROCESSES}" ]]; do
+        local current_time
+        current_time=$(date +%s)
         local elapsed=$((current_time - start_time))
         
-        if [ $elapsed -gt $timeout ]; then
-            error "Agent $agent_id timed out waiting for vitest slot after ${timeout}s"
+        if [[ "${elapsed}" -gt "${timeout}" ]]; then
+            error "Agent ${agent_id} timed out waiting for vitest slot after ${timeout}s"
             return 1
         fi
         
-        log "Agent $agent_id waiting... (${elapsed}s elapsed, $(get_vitest_count)/$MAX_PROCESSES processes running)"
+        local current_count
+        current_count=$(get_vitest_count)
+        log "Agent ${agent_id} waiting... (${elapsed}s elapsed, ${current_count}/${MAX_PROCESSES} processes running)"
+        
         sleep 5
     done
     
-    success "Agent $agent_id acquired vitest slot!"
+    success "Agent ${agent_id} acquired vitest slot!"
     return 0
 }
 
@@ -75,8 +87,10 @@ register_process() {
     local agent_id="${1:-unknown}"
     local pid=$$
     
-    echo "$pid:$agent_id:$(date)" >> "$PID_FILE"
-    log "Agent $agent_id registered vitest process (PID: $pid)"
+    local timestamp
+    timestamp=$(date)
+    echo "${pid}:${agent_id}:${timestamp}" >> "${PID_FILE}"
+    log "Agent ${agent_id} registered vitest process (PID: ${pid})"
 }
 
 # Function to unregister vitest process
@@ -85,50 +99,53 @@ unregister_process() {
     local pid=$$
     
     # Remove this process from the PID file
-    sed -i "/^$pid:/d" "$PID_FILE" 2>/dev/null || true
-    log "Agent $agent_id unregistered vitest process (PID: $pid)"
+    sed -i "/^${pid}:/d" "${PID_FILE}" 2>/dev/null || true
+    log "Agent ${agent_id} unregistered vitest process (PID: ${pid})"
 }
 
 # Function to show queue status
 show_status() {
-    local count=$(get_vitest_count)
-    local registered_count=$(wc -l < "$PID_FILE" 2>/dev/null || echo "0")
+    local count
+    local registered_count
+    count=$(get_vitest_count)
+    registered_count=$(wc -l < "${PID_FILE}" 2>/dev/null || echo "0")
     
     echo -e "${BLUE}=== Vitest Global Queue Status ===${NC}"
-    echo -e "Current vitest processes: ${GREEN}$count${NC}/$MAX_PROCESSES"
-    echo -e "Registered processes: ${GREEN}$registered_count${NC}"
+    echo -e "Current vitest processes: ${GREEN}${count}${NC}/${MAX_PROCESSES}"
+    echo -e "Registered processes: ${GREEN}${registered_count}${NC}"
     
-    if [ -f "$PID_FILE" ] && [ -s "$PID_FILE" ]; then
+    if [[ -f "${PID_FILE}" ]] && [[ -s "${PID_FILE}" ]]; then
         echo -e "\n${YELLOW}Active processes:${NC}"
         while IFS=':' read -r pid agent timestamp; do
-            if kill -0 "$pid" 2>/dev/null; then
-                echo -e "  PID $pid (Agent: $agent, Started: $timestamp)"
+            if kill -0 "${pid}" 2>/dev/null; then
+                echo -e "  PID ${pid} (Agent: ${agent}, Started: ${timestamp})"
             else
-                echo -e "  PID $pid (Agent: $agent, Started: $timestamp) ${RED}[DEAD]${NC}"
+                echo -e "  PID ${pid} (Agent: ${agent}, Started: ${timestamp}) ${RED}[DEAD]${NC}"
             fi
-        done < "$PID_FILE"
+        done < "${PID_FILE}"
     fi
     
-    echo -e "\n${BLUE}Queue directory: $QUEUE_DIR${NC}"
-    echo -e "${BLUE}Log file: $LOG_FILE${NC}"
+    echo -e "\n${BLUE}Queue directory: ${QUEUE_DIR}${NC}"
+    echo -e "${BLUE}Log file: ${LOG_FILE}${NC}"
 }
 
 # Function to clean up dead processes
 cleanup_dead_processes() {
-    if [ ! -f "$PID_FILE" ]; then
+    if [[ ! -f "${PID_FILE}" ]]; then
         return 0
     fi
     
-    local temp_file=$(mktemp)
+    local temp_file
+    temp_file=$(mktemp)
     while IFS=':' read -r pid agent timestamp; do
-        if kill -0 "$pid" 2>/dev/null; then
-            echo "$pid:$agent:$timestamp" >> "$temp_file"
+        if kill -0 "${pid}" 2>/dev/null; then
+            echo "${pid}:${agent}:${timestamp}" >> "${temp_file}"
         else
-            log "Cleaned up dead process PID $pid (Agent: $agent)"
+            log "Cleaned up dead process PID ${pid} (Agent: ${agent})"
         fi
-    done < "$PID_FILE"
+    done < "${PID_FILE}"
     
-    mv "$temp_file" "$PID_FILE"
+    mv "${temp_file}" "${PID_FILE}"
 }
 
 # Function to run vitest with queue management
@@ -140,18 +157,19 @@ run_vitest() {
     cleanup_dead_processes
     
     # Wait for available slot
-    if ! wait_for_slot "$agent_id"; then
+    if ! wait_for_slot "${agent_id}"; then
+        error "Failed to acquire slot for agent ${agent_id}"
         return 1
     fi
     
     # Register this process
-    register_process "$agent_id"
+    register_process "${agent_id}"
     
     # Set up cleanup trap
-    trap "unregister_process '$agent_id'" EXIT INT TERM
+    trap "unregister_process '${agent_id}'" EXIT INT TERM
     
     # Run vitest with global configuration
-    log "Agent $agent_id starting vitest with global config..."
+    log "Agent ${agent_id} starting vitest with global config..."
     
     # Set environment variables for global control - FORCE SINGLE PROCESS
     export VITEST_MAX_WORKERS=1
@@ -159,10 +177,36 @@ run_vitest() {
     export VITEST_SINGLE_FORK=true
     export VITEST_FILE_PARALLELISM=false
     export VITEST_GLOBAL_QUEUE=1
-    export VITEST_AGENT_ID="$agent_id"
+    export VITEST_AGENT_ID="${agent_id}"
     
     # Run vitest with the global config from root directory
-    exec vitest --config ../../vitest.global.config.ts "$@"
+    # Change to root directory to ensure proper file resolution
+    local root_dir
+    root_dir="$(dirname "$0")/.."
+    cd "${root_dir}"
+    
+    # Check if vitest.global.config.ts exists
+    if [[ ! -f "vitest.global.config.ts" ]]; then
+        error "vitest.global.config.ts not found in $(pwd)"
+        return 1
+    fi
+    
+    # Check if pnpm is available
+    if ! command -v pnpm >/dev/null 2>&1; then
+        error "pnpm command not found in PATH"
+        return 1
+    fi
+    
+    # Check if vitest is available via pnpm
+    if ! pnpm exec vitest --version >/dev/null 2>&1; then
+        error "vitest not available via pnpm exec"
+        return 1
+    fi
+    
+    # Run vitest with the global config from root directory
+    # Use exec to replace the current process, but ensure output goes to terminal
+    # The exec will replace this process, so vitest output should appear directly
+    exec pnpm exec vitest --config vitest.global.config.ts "$@"
 }
 
 # Main script logic
@@ -175,10 +219,11 @@ case "${1:-}" in
         success "Cleaned up dead processes"
         ;;
     "run")
-        if [ $# -lt 2 ]; then
+        if [[ $# -lt 2 ]]; then
             error "Usage: $0 run <agent_id> [vitest_args...]"
             exit 1
         fi
+        shift # Remove "run" from arguments
         run_vitest "$@"
         ;;
     *)

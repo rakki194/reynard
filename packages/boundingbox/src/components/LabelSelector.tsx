@@ -39,18 +39,18 @@ export const LabelSelector: Component<LabelSelectorProps> = (props) => {
 
   return (
     <div class={`label-selector ${props.className || ""}`}>
-      <div class="label-list">
+      <select
+        id="label-selector"
+        value={props.selectedLabel}
+        onChange={(e) => handleLabelSelect(e.currentTarget.value)}
+        aria-label="Select label class for new bounding boxes"
+      >
         <For each={props.availableLabels}>
           {(label) => (
-            <button
-              class={`label-button ${props.selectedLabel === label ? "selected" : ""}`}
-              onClick={() => handleLabelSelect(label)}
-            >
-              {label}
-            </button>
+            <option value={label}>{label}</option>
           )}
         </For>
-      </div>
+      </select>
 
       <Show when={props.onAddLabel}>
         <div class="add-label-section">

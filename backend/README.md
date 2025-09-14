@@ -31,7 +31,7 @@ A secure, JWT-based authentication backend for the Reynard project, built with F
 
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   bash -c "source venv/bin/activate && ..."  # On Windows: venv\Scripts\activate
    ```
 
 3. **Install dependencies**:
@@ -193,15 +193,15 @@ For production deployment:
 
 ### Project Structure
 
-```
+```text
 backend/
-├── main.py              # FastAPI application
-├── requirements.txt     # Python dependencies
-├── .env                 # Environment variables
-├── .env.example         # Environment variables template
-├── README.md           # This file
+├── main.py               # FastAPI application
+├── requirements.txt       # Python dependencies
+├── .env                  # Environment variables
+├── .env.example          # Environment variables template
+├── README.md             # This file
 └── scripts/
-    └── test-backend.py # Test script
+    └── test-backend.py   # Test script
 ```
 
 ### Adding New Endpoints

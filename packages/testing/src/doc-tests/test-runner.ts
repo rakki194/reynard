@@ -7,8 +7,8 @@
 import { cleanup, render, screen } from "@solidjs/testing-library";
 import { createEffect, createSignal, onCleanup } from "solid-js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { extractCodeExamples } from "./code-parser";
-import { createTestableCode } from "./test-generator";
+import { extractCodeExamples } from "./code-parser.js";
+import { createTestableCode } from "./test-generator.js";
 
 export interface DocTestConfig {
   /** Path to the documentation file */

@@ -14,7 +14,9 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 
 log() {
-    echo -e "${BLUE}[$(date '+%H:%M:%S')]${NC} $1"
+    local timestamp
+    timestamp=$(date '+%H:%M:%S')
+    echo -e "${BLUE}[${timestamp}]${NC} $1"
 }
 
 success() {
@@ -37,9 +39,11 @@ count_vitest_processes() {
 # Function to show detailed process info
 show_vitest_processes() {
     echo -e "${BLUE}=== Current Vitest Processes ===${NC}"
-    pgrep -f "vitest" | while read pid; do
-        if [ -n "$pid" ]; then
-            echo -e "PID: ${GREEN}$pid${NC} - $(ps -p $pid -o cmd= 2>/dev/null || echo 'Process not found')"
+    pgrep -f "vitest" | while read -r pid; do
+        if [[ -n "${pid}" ]]; then
+            local cmd_output
+            cmd_output=$(ps -p "${pid}" -o cmd= 2>/dev/null || echo 'Process not found')
+            echo -e "PID: ${GREEN}${pid}${NC} - ${cmd_output}"
         fi
     done
     echo ""
@@ -66,7 +70,7 @@ source vitest.env.global
 # Test 1: Check initial state
 log "Test 1: Checking initial process count..."
 initial_count=$(count_vitest_processes)
-log "Initial vitest processes: $initial_count"
+log "Initial vitest processes: ${initial_count}"
 show_vitest_processes
 
 # Test 2: Start a single agent and monitor
@@ -79,7 +83,7 @@ log "Test 2: Starting single agent and monitoring process count..."
 ) &
 
 agent_pid=$!
-log "Agent started with PID: $agent_pid"
+log "Agent started with PID: ${agent_pid}"
 
 # Monitor process count for 30 seconds
 log "Test 3: Monitoring process count for 30 seconds..."
@@ -87,36 +91,36 @@ max_processes=0
 for i in {1..6}; do
     sleep 5
     current_count=$(count_vitest_processes)
-    if [ $current_count -gt $max_processes ]; then
-        max_processes=$current_count
+    if [[ "${current_count}" -gt "${max_processes}" ]]; then
+        max_processes=${current_count}
     fi
     
-    log "Check $i/6: $current_count vitest processes (max seen: $max_processes)"
+    log "Check ${i}/6: ${current_count} vitest processes (max seen: ${max_processes})"
     show_vitest_processes
     
-    if [ $current_count -gt 1 ]; then
+    if [[ "${current_count}" -gt 1 ]]; then
         warning "WARNING: More than 1 vitest process detected!"
     fi
 done
 
 # Test 4: Wait for completion
 log "Test 4: Waiting for agent to complete..."
-wait $agent_pid
+wait "${agent_pid}"
 
 # Test 5: Final verification
 echo ""
 log "Test 5: Final verification..."
 final_count=$(count_vitest_processes)
-log "Final vitest processes: $final_count"
+log "Final vitest processes: ${final_count}"
 
 echo ""
-if [ $max_processes -le 1 ]; then
+if [[ "${max_processes}" -le 1 ]]; then
     success "🐺> SINGLE PROCESS ENFORCEMENT WORKING!"
-    log "Maximum processes seen: $max_processes"
+    log "Maximum processes seen: ${max_processes}"
     log "Each agent is properly limited to 1 vitest process!"
 else
     error "🐺> SINGLE PROCESS ENFORCEMENT FAILED!"
-    error "Maximum processes seen: $max_processes"
+    error "Maximum processes seen: ${max_processes}"
     error "Expected maximum: 1"
     error "The global queue system needs further tuning!"
 fi

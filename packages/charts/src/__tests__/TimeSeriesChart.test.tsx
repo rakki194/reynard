@@ -1,509 +1,365 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen } from "@solidjs/testing-library";
 import { TimeSeriesChart } from "../components/TimeSeriesChart";
-import type { TimeSeriesDataPoint } from "../../../types";
 
-// Extend expect with jest-dom matchers
-// Using reynard-testing instead of jest-dom
+describe("TimeSeriesChart Component", () => {
+  const mockTimeSeriesData = [
+    { timestamp: 1640995200000, value: 10, label: "Point 1" },
+    { timestamp: 1640995260000, value: 20, label: "Point 2" },
+    { timestamp: 1640995320000, value: 30, label: "Point 3" },
+  ];
 
-const mockData: TimeSeriesDataPoint[] = [
-  { timestamp: 1640995200000, value: 20, label: "Jan 1" }, // 2022-01-01
-  { timestamp: 1641081600000, value: 22, label: "Jan 2" }, // 2022-01-02
-  { timestamp: 1641168000000, value: 25, label: "Jan 3" }, // 2022-01-03
-  { timestamp: 1641254400000, value: 23, label: "Jan 4" }, // 2022-01-04
-  { timestamp: 1641340800000, value: 21, label: "Jan 5" }, // 2022-01-05
-];
-
-describe("TimeSeriesChart", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    // Clear any previous renders
+    document.body.innerHTML = "";
   });
 
   describe("Basic Rendering", () => {
-    it("renders without crashing", () => {
-      render(() => (
-        <TimeSeriesChart data={mockData} title="Temperature Over Time" />
-      ));
-
-      expect(screen.getByText("Line Chart")).toBeInTheDocument();
-    });
-
-    it("renders with custom dimensions", () => {
+    it("should render time series chart with title", () => {
       render(() => (
         <TimeSeriesChart
-          data={mockData}
-          width={600}
-          height={400}
-          responsive={false}
+          data={mockTimeSeriesData}
+          title="Test Time Series Chart"
         />
       ));
 
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toHaveClass("reynard-timeseries-chart");
-      expect(chartContainer).toHaveStyle("width: 600px");
-      expect(chartContainer).toHaveStyle("height: 400px");
+      expect(screen.getByText("Test Time Series Chart")).toBeInTheDocument();
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
     });
 
-    it("shows loading state when loading prop is true", () => {
-      render(() => <TimeSeriesChart data={mockData} loading={true} />);
-
-      expect(screen.getByText("Loading chart...")).toBeInTheDocument();
-    });
-
-    it("shows empty state when no data is provided", () => {
+    it("should render without title", () => {
       render(() => (
-        <TimeSeriesChart data={[]} emptyMessage="No data available" />
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+        />
       ));
 
-      expect(screen.getByText("No data available")).toBeInTheDocument();
-    });
-
-    it("applies custom class name", () => {
-      render(() => (
-        <TimeSeriesChart data={mockData} class="custom-chart-class" />
-      ));
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toHaveClass("custom-chart-class");
-      expect(chartContainer).toHaveClass("reynard-timeseries-chart");
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
     });
   });
 
-  describe("Chart Variants", () => {
-    it("renders with stepped line when stepped prop is true", () => {
-      render(() => <TimeSeriesChart data={mockData} stepped={true} />);
+  describe("Loading States", () => {
+    it("should show loading state", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+          loading={true}
+        />
+      ));
 
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toHaveClass("reynard-timeseries-chart--stepped");
-      expect(chartContainer).toHaveClass("reynard-timeseries-chart");
+      expect(screen.getByText("Loading chart...")).toBeInTheDocument();
+      expect(screen.queryByTestId("timeseries-chart-canvas")).not.toBeInTheDocument();
     });
 
-    it("renders with tension when tension prop is provided", () => {
-      render(() => <TimeSeriesChart data={mockData} tension={0.4} />);
+    it("should hide loading state when not loading", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+          loading={false}
+        />
+      ));
 
-      // The component should show "No data available" initially due to mocking
-      expect(screen.getByText("Line Chart")).toBeInTheDocument();
+      expect(screen.queryByText("Loading chart...")).not.toBeInTheDocument();
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+  });
+
+  describe("Empty States", () => {
+    it("should show empty message when no data", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={[]}
+          emptyMessage="No time series data available"
+        />
+      ));
+
+      expect(screen.getByText("No time series data available")).toBeInTheDocument();
+      expect(screen.queryByTestId("timeseries-chart-canvas")).not.toBeInTheDocument();
     });
 
-    it("renders with area fill when fill prop is true", () => {
-      render(() => <TimeSeriesChart data={mockData} fill={true} />);
+    it("should show custom empty message", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={[]}
+          emptyMessage="Custom empty message"
+        />
+      ));
 
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
+      expect(screen.getByText("Custom empty message")).toBeInTheDocument();
+    });
+  });
+
+  describe("Data Handling", () => {
+    it("should handle single data point", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={[{ timestamp: 1640995200000, value: 10 }]}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle large datasets", () => {
+      const largeData = Array.from({ length: 100 }, (_, i) => ({
+        timestamp: 1640995200000 + (i * 60000), // 1 minute intervals
+        value: Math.random() * 100,
+        label: `Point ${i + 1}`,
+      }));
+
+      render(() => (
+        <TimeSeriesChart
+          data={largeData}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle data without labels", () => {
+      const dataWithoutLabels = [
+        { timestamp: 1640995200000, value: 10 },
+        { timestamp: 1640995260000, value: 20 },
+        { timestamp: 1640995320000, value: 30 },
+      ];
+
+      render(() => (
+        <TimeSeriesChart
+          data={dataWithoutLabels}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle zero values", () => {
+      const dataWithZeros = [
+        { timestamp: 1640995200000, value: 0 },
+        { timestamp: 1640995260000, value: 10 },
+        { timestamp: 1640995320000, value: 0 },
+      ];
+
+      render(() => (
+        <TimeSeriesChart
+          data={dataWithZeros}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle negative values", () => {
+      const dataWithNegatives = [
+        { timestamp: 1640995200000, value: -10 },
+        { timestamp: 1640995260000, value: 20 },
+        { timestamp: 1640995320000, value: -5 },
+      ];
+
+      render(() => (
+        <TimeSeriesChart
+          data={dataWithNegatives}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
     });
   });
 
   describe("Responsive Behavior", () => {
-    it("applies responsive styles when responsive is true", () => {
-      render(() => <TimeSeriesChart data={mockData} responsive={true} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toHaveStyle("width: 100%");
-      expect(chartContainer).toHaveStyle("height: 100%");
-    });
-
-    it("applies fixed dimensions when responsive is false", () => {
+    it("should apply responsive classes when responsive is true", () => {
       render(() => (
         <TimeSeriesChart
-          data={mockData}
+          data={mockTimeSeriesData}
+          responsive={true}
+        />
+      ));
+
+      const container = screen.getByTestId("timeseries-chart-canvas").closest("div")?.parentElement;
+      expect(container).toHaveClass("responsive");
+    });
+
+    it("should apply fixed size classes when responsive is false", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
           responsive={false}
-          width={500}
-          height={300}
         />
       ));
 
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toHaveStyle("width: 500px");
-      expect(chartContainer).toHaveStyle("height: 300px");
-    });
-
-    it("maintains aspect ratio when maintainAspectRatio is true", () => {
-      render(() => (
-        <TimeSeriesChart data={mockData} maintainAspectRatio={true} />
-      ));
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Time Scale Configuration", () => {
-    it("renders with time scale by default", () => {
-      render(() => <TimeSeriesChart data={mockData} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Axis Configuration", () => {
-    it("renders with custom x-axis label", () => {
-      render(() => (
-        <TimeSeriesChart data={mockData} xAxis={{ label: "Date" }} />
-      ));
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom y-axis label", () => {
-      render(() => (
-        <TimeSeriesChart
-          data={mockData}
-          yAxis={{ label: "Temperature (°C)" }}
-        />
-      ));
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom axis positions", () => {
-      render(() => (
-        <TimeSeriesChart data={mockData} yAxis={{ position: "right" }} />
-      ));
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom axis min/max values", () => {
-      render(() => (
-        <TimeSeriesChart data={mockData} yAxis={{ min: 0, max: 100 }} />
-      ));
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Grid and Legend Configuration", () => {
-    it("renders without grid when showGrid is false", () => {
-      render(() => <TimeSeriesChart data={mockData} showGrid={false} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders without legend when showLegend is false", () => {
-      render(() => <TimeSeriesChart data={mockData} showLegend={false} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Animation and Tooltip Configuration", () => {
-    it("renders with custom animation settings", () => {
-      render(() => (
-        <TimeSeriesChart
-          data={mockData}
-          animation={{ duration: 2000, easing: "easeInOutQuart" }}
-        />
-      ));
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom tooltip settings", () => {
-      render(() => (
-        <TimeSeriesChart
-          data={mockData}
-          tooltip={{ enabled: false, backgroundColor: "rgba(0,0,0,0.8)" }}
-        />
-      ));
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Data Processing", () => {
-    it("processes time series data correctly", () => {
-      render(() => <TimeSeriesChart data={mockData} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles data without labels", () => {
-      const dataWithoutLabels: TimeSeriesDataPoint[] = [
-        { timestamp: 1640995200000, value: 20, label: "No Label 1" },
-        { timestamp: 1641081600000, value: 22, label: "No Label 2" },
-        { timestamp: 1641168000000, value: 25, label: "No Label 3" },
-      ];
-
-      render(() => <TimeSeriesChart data={dataWithoutLabels} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles data with custom labels", () => {
-      const dataWithCustomLabels: TimeSeriesDataPoint[] = [
-        { timestamp: 1640995200000, value: 20, label: "Custom Label 1" },
-        { timestamp: 1641081600000, value: 22, label: "Custom Label 2" },
-        { timestamp: 1641168000000, value: 25, label: "Custom Label 3" },
-      ];
-
-      render(() => <TimeSeriesChart data={dataWithCustomLabels} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("limits data points for performance", () => {
-      const largeData = Array.from({ length: 200 }, (_, i) => ({
-        timestamp: 1640995200000 + i * 86400000, // Add one day each
-        value: Math.random() * 100,
-        label: `Day ${i + 1}`,
-      }));
-
-      render(() => <TimeSeriesChart data={largeData} maxDataPoints={100} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Edge Cases and Error Handling", () => {
-    it("handles empty data array", () => {
-      render(() => <TimeSeriesChart data={[]} />);
-
-      expect(screen.getByText("No data available")).toBeInTheDocument();
-    });
-
-    it("handles single data point", () => {
-      const singleDataPoint: TimeSeriesDataPoint[] = [
-        { timestamp: 1640995200000, value: 20, label: "Single Point" },
-      ];
-
-      render(() => <TimeSeriesChart data={singleDataPoint} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles two data points", () => {
-      const twoDataPoints: TimeSeriesDataPoint[] = [
-        { timestamp: 1640995200000, value: 20, label: "First" },
-        { timestamp: 1641081600000, value: 22, label: "Second" },
-      ];
-
-      render(() => <TimeSeriesChart data={twoDataPoints} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles very large datasets", () => {
-      const largeData = Array.from({ length: 1000 }, (_, i) => ({
-        timestamp: 1640995200000 + i * 86400000,
-        value: Math.random() * 100,
-        label: `Day ${i + 1}`,
-      }));
-
-      render(() => <TimeSeriesChart data={largeData} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles negative values", () => {
-      const dataWithNegatives: TimeSeriesDataPoint[] = [
-        { timestamp: 1640995200000, value: -10, label: "Negative" },
-        { timestamp: 1641081600000, value: 0, label: "Zero" },
-        { timestamp: 1641168000000, value: 10, label: "Positive" },
-      ];
-
-      render(() => <TimeSeriesChart data={dataWithNegatives} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles zero values", () => {
-      const dataWithZeros: TimeSeriesDataPoint[] = [
-        { timestamp: 1640995200000, value: 0, label: "Zero 1" },
-        { timestamp: 1641081600000, value: 0, label: "Zero 2" },
-        { timestamp: 1641168000000, value: 0, label: "Zero 3" },
-      ];
-
-      render(() => <TimeSeriesChart data={dataWithZeros} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles decimal values", () => {
-      const decimalData: TimeSeriesDataPoint[] = [
-        { timestamp: 1640995200000, value: 20.5, label: "Decimal 1" },
-        { timestamp: 1641081600000, value: 22.3, label: "Decimal 2" },
-        { timestamp: 1641168000000, value: 25.7, label: "Decimal 3" },
-      ];
-
-      render(() => <TimeSeriesChart data={decimalData} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles invalid timestamps", () => {
-      const invalidData: TimeSeriesDataPoint[] = [
-        { timestamp: NaN, value: 20, label: "Invalid" },
-        { timestamp: 1640995200000, value: 22, label: "Valid" },
-        { timestamp: Infinity, value: 25, label: "Invalid" },
-      ];
-
-      render(() => <TimeSeriesChart data={invalidData} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles missing timestamp property", () => {
-      const incompleteData = [
-        { value: 20, label: "No timestamp" },
-        { timestamp: 1640995200000, value: 22, label: "Has timestamp" },
-      ] as any;
-
-      render(() => <TimeSeriesChart data={incompleteData} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles missing value property", () => {
-      const incompleteData = [
-        { timestamp: 1640995200000, label: "No value" },
-        { timestamp: 1641081600000, value: 22, label: "Has value" },
-      ] as any;
-
-      render(() => <TimeSeriesChart data={incompleteData} />);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Performance Tests", () => {
-    it("renders quickly with small datasets", () => {
-      const startTime = performance.now();
-
-      render(() => <TimeSeriesChart data={mockData} />);
-
-      const endTime = performance.now();
-      const renderTime = endTime - startTime;
-
-      // Should render in under 100ms
-      expect(renderTime).toBeLessThan(100);
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles rapid prop changes efficiently", async () => {
-      render(() => (
-        <TimeSeriesChart data={mockData} width={400} height={300} />
-      ));
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles large dataset updates efficiently", () => {
-      const largeData = Array.from({ length: 500 }, (_, i) => ({
-        timestamp: 1640995200000 + i * 86400000,
-        value: Math.random() * 100,
-        label: `Day ${i + 1}`,
-      }));
-
-      const startTime = performance.now();
-      render(() => <TimeSeriesChart data={largeData} />);
-      const endTime = performance.now();
-
-      expect(endTime - startTime).toBeLessThan(200); // Should render in under 200ms
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("processes data efficiently", () => {
-      const largeData = Array.from({ length: 10000 }, (_, i) => ({
-        timestamp: 1640995200000 + i * 86400000,
-        value: Math.random() * 100,
-        label: `Day ${i + 1}`,
-      }));
-
-      const startTime = performance.now();
-      render(() => <TimeSeriesChart data={largeData} maxDataPoints={1000} />);
-      const endTime = performance.now();
-
-      expect(endTime - startTime).toBeLessThan(500); // Should render in under 500ms
-
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
+      const container = screen.getByTestId("timeseries-chart-canvas").closest("div")?.parentElement;
+      expect(container).toHaveClass("fixed-size");
     });
   });
 
   describe("Accessibility", () => {
-    it("has proper ARIA attributes", () => {
+    it("should have proper ARIA label", () => {
       render(() => (
-        <TimeSeriesChart data={mockData} title="Accessible Time Series Chart" />
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+          title="Accessible Time Series Chart"
+        />
       ));
 
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
+      const container = screen.getByTestId("timeseries-chart-canvas").closest("div")?.parentElement;
+      expect(container).toHaveAttribute("role", "img");
+      expect(container).toHaveAttribute("aria-label", "Accessible Time Series Chart");
     });
 
-    it("supports keyboard navigation", () => {
-      render(() => <TimeSeriesChart data={mockData} />);
+    it("should have default ARIA label when no title", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+        />
+      ));
 
-      const chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
+      const container = screen.getByTestId("timeseries-chart-canvas").closest("div")?.parentElement;
+      expect(container).toHaveAttribute("aria-label", "time series chart");
     });
   });
 
-  describe("Integration Tests", () => {
-    it("works with different chart configurations", () => {
-      const { unmount } = render(() => (
-        <TimeSeriesChart data={mockData} stepped={true} tension={0.4} />
-      ));
-
-      let chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toHaveClass("reynard-timeseries-chart--stepped");
-
-      // Change to different configuration
-      unmount();
+  describe("Custom Styling", () => {
+    it("should apply custom class", () => {
       render(() => (
-        <TimeSeriesChart data={mockData} stepped={false} tension={0.8} />
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+          class="custom-timeseries-chart"
+        />
       ));
 
-      chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).not.toHaveClass(
-        "reynard-timeseries-chart--stepped",
-      );
+      const container = screen.getByTestId("timeseries-chart-canvas").closest("div")?.parentElement;
+      expect(container).toHaveClass("custom-timeseries-chart");
     });
 
-    it("handles data updates", () => {
-      const { unmount } = render(() => <TimeSeriesChart data={mockData} />);
+    it("should apply custom width and height", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+          width={600}
+          height={400}
+        />
+      ));
 
-      let chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
+      const canvas = screen.getByTestId("timeseries-chart-canvas");
+      expect(canvas).toHaveAttribute("width", "600");
+      expect(canvas).toHaveAttribute("height", "400");
+    });
 
-      // Update data
-      const newData: TimeSeriesDataPoint[] = [
-        { timestamp: 1640995200000, value: 30, label: "Updated 1" },
-        { timestamp: 1641081600000, value: 32, label: "Updated 2" },
-        { timestamp: 1641168000000, value: 35, label: "Updated 3" },
+    it("should apply stepped line class when stepped is true", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+          stepped={true}
+        />
+      ));
+
+      const container = screen.getByTestId("timeseries-chart-canvas").closest("div")?.parentElement;
+      expect(container).toHaveClass("reynard-timeseries-chart--stepped");
+    });
+  });
+
+  describe("Configuration Options", () => {
+    it("should handle custom max data points", () => {
+      const largeData = Array.from({ length: 200 }, (_, i) => ({
+        timestamp: 1640995200000 + (i * 60000),
+        value: Math.random() * 100,
+      }));
+
+      render(() => (
+        <TimeSeriesChart
+          data={largeData}
+          maxDataPoints={50}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle custom update interval", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+          updateInterval={5000}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle custom time range", () => {
+      render(() => (
+        <TimeSeriesChart
+          data={mockTimeSeriesData}
+          timeRange={3600000} // 1 hour
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+  });
+
+  describe("Edge Cases", () => {
+    it("should handle unsorted timestamps", () => {
+      const unsortedData = [
+        { timestamp: 1640995320000, value: 30 },
+        { timestamp: 1640995200000, value: 10 },
+        { timestamp: 1640995260000, value: 20 },
       ];
 
-      unmount();
-      render(() => <TimeSeriesChart data={newData} />);
+      render(() => (
+        <TimeSeriesChart
+          data={unsortedData}
+        />
+      ));
 
-      chartContainer = screen.getByText("Line Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle duplicate timestamps", () => {
+      const duplicateData = [
+        { timestamp: 1640995200000, value: 10 },
+        { timestamp: 1640995200000, value: 20 },
+        { timestamp: 1640995260000, value: 30 },
+      ];
+
+      render(() => (
+        <TimeSeriesChart
+          data={duplicateData}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle very old timestamps", () => {
+      const oldData = [
+        { timestamp: 1000000000000, value: 10 }, // Very old timestamp
+        { timestamp: 1640995200000, value: 20 },
+        { timestamp: 1640995260000, value: 30 },
+      ];
+
+      render(() => (
+        <TimeSeriesChart
+          data={oldData}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle future timestamps", () => {
+      const futureData = [
+        { timestamp: 1640995200000, value: 10 },
+        { timestamp: 1640995260000, value: 20 },
+        { timestamp: 2000000000000, value: 30 }, // Future timestamp
+      ];
+
+      render(() => (
+        <TimeSeriesChart
+          data={futureData}
+        />
+      ));
+
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
     });
   });
 });

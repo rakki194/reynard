@@ -7,6 +7,11 @@
 import { createSignal } from "solid-js";
 import type { EditorConfig } from "../types";
 
+export interface LabelManagementOptions {
+  labelClasses?: string[];
+  defaultLabelClass?: string;
+}
+
 export interface LabelManagement {
   selectedLabelClass: () => string;
   setSelectedLabelClass: (label: string) => void;
@@ -16,13 +21,11 @@ export interface LabelManagement {
   handleAddLabel: (label: string) => void;
 }
 
-export const useLabelManagement = (config: EditorConfig): LabelManagement => {
-  const [selectedLabelClass, setSelectedLabelClass] = createSignal(
-    config.defaultLabel || "default",
-  );
-  const [availableLabels, setAvailableLabels] = createSignal(
-    config.availableLabels || ["default", "person", "object", "vehicle"],
-  );
+export const useLabelManagement = (options: LabelManagementOptions = {}): LabelManagement => {
+  const { labelClasses = ["person", "vehicle", "animal", "object"], defaultLabelClass = "person" } = options;
+  
+  const [selectedLabelClass, setSelectedLabelClass] = createSignal(defaultLabelClass);
+  const [availableLabels, setAvailableLabels] = createSignal(labelClasses);
 
   const handleLabelChange = (label: string) => {
     setSelectedLabelClass(label);

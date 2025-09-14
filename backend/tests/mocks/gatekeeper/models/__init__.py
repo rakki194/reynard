@@ -1,13 +1,25 @@
 """
-Mock models package for the Gatekeeper authentication library.
+Mock gatekeeper models package.
 """
 
-from .user import User
-from .token import TokenData, TokenConfig, TokenValidationResult
+from ..main import (
+    MockUser,
+    MockUserCreate,
+    MockUserPublic,
+    MockUserUpdate,
+    MockTokenResponse,
+    TokenConfig,
+    TokenData,
+    TokenValidationResult
+)
 
 __all__ = [
-    "User",
-    "TokenData", 
+    "MockUser",
+    "MockUserCreate",
+    "MockUserPublic", 
+    "MockUserUpdate",
+    "MockTokenResponse",
     "TokenConfig",
-    "TokenValidationResult",
+    "TokenData",
+    "TokenValidationResult"
 ]

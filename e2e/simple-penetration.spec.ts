@@ -17,23 +17,23 @@ interface PenetrationTestResult {
 }
 
 /**
- * Run a blackhat exploit and return structured results
+ * Run a fenrir exploit and return structured results
  */
-async function runBlackhatExploit(
+async function runFenrirExploit(
   exploitModule: string,
   options: any = {},
 ): Promise<PenetrationTestResult> {
   const startTime = Date.now();
 
   try {
-    const blackhatPath = path.join(process.cwd(), "..", "blackhat");
+    const fenrirPath = path.join(process.cwd(), "..", "fenrir");
     const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
 
     // Build command to run specific exploit
     const timeout = options.timeout || 30000; // Default 30 second timeout
     const command = `${pythonPath} -c "
 import sys
-sys.path.append('${blackhatPath}')
+sys.path.append('${fenrirPath}')
 from ${exploitModule} import *
 import json
 
@@ -52,7 +52,7 @@ print(json.dumps({
 
     const { stdout, stderr } = await execAsync(command, {
       timeout: timeout,
-      cwd: blackhatPath,
+      cwd: fenrirPath,
     });
 
     if (stderr && !stderr.includes("Warning")) {
@@ -110,7 +110,7 @@ function getExploitClassName(modulePath: string): string {
 
 test.describe("🐺 Simple Penetration Testing", () => {
   test("should run fuzzing exploit successfully", async () => {
-    const result = await runBlackhatExploit("fuzzing.exploit_wrappers", {
+    const result = await runFenrirExploit("fuzzing.exploit_wrappers", {
       target: "http://localhost:8888",
       timeout: 30000, // 30 second timeout
     });

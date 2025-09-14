@@ -109,26 +109,26 @@ importers:
         version: link:packages/ui
     devDependencies:
       '@changesets/cli':
-        specifier: 2.29.6
-        version: 2.29.6(@types/node@24.3.1)
+        specifier: 2.29.7
+        version: 2.29.7(@types/node@24.4.0)
       '@commitlint/cli':
         specifier: 19.8.1
-        version: 19.8.1(@types/node@24.3.1)(typescript@5.9.2)
+        version: 19.8.1(@types/node@24.4.0)(typescript@5.9.2)
       '@commitlint/config-conventional':
         specifier: 19.8.1
         version: 19.8.1
       '@playwright/test':
-        specifier: ^1.55.0
+        specifier: 1.55.0
         version: 1.55.0
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@typescript-eslint/eslint-plugin':
-        specifier: 8.42.0
-        version: 8.42.0(@typescript-eslint/parser@8.42.0)(eslint@9.35.0)(typescript@5.9.2)
+        specifier: 8.43.0
+        version: 8.43.0(@typescript-eslint/parser@8.43.0)(eslint@8.57.1)(typescript@5.9.2)
       '@typescript-eslint/parser':
-        specifier: 8.42.0
-        version: 8.42.0(eslint@9.35.0)(typescript@5.9.2)
+        specifier: 8.43.0
+        version: 8.43.0(eslint@8.57.1)(typescript@5.9.2)
       audit-ci:
         specifier: 7.1.0
         version: 7.1.0
@@ -136,14 +136,14 @@ importers:
         specifier: 9.2.1
         version: 9.2.1
       eslint:
-        specifier: 9.35.0
-        version: 9.35.0
+        specifier: 8.57.1
+        version: 8.57.1
       eslint-plugin-jsx-a11y:
         specifier: 6.10.2
-        version: 6.10.2(eslint@9.35.0)
+        version: 6.10.2(eslint@8.57.1)
       eslint-plugin-solid:
         specifier: 0.14.5
-        version: 0.14.5(eslint@9.35.0)(typescript@5.9.2)
+        version: 0.14.5(eslint@8.57.1)(typescript@5.9.2)
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -151,7 +151,7 @@ importers:
         specifier: 16.1.6
         version: 16.1.6
       markdownlint-cli:
-        specifier: ^0.45.0
+        specifier: 0.45.0
         version: 0.45.0
       prettier:
         specifier: 3.6.2
@@ -160,8 +160,8 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
       vitest:
-        specifier: ^3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   examples/3d-demo:
     dependencies:
@@ -191,14 +191,14 @@ importers:
         version: 0.180.0
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -225,14 +225,14 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -259,8 +259,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
@@ -269,7 +269,7 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -299,14 +299,14 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -336,14 +336,14 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -368,7 +368,7 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: ^2.8.0
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -401,20 +401,20 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   examples/embedding-visualization-demo:
     dependencies:
@@ -439,7 +439,7 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -463,8 +463,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       concurrently:
         specifier: 9.2.1
         version: 9.2.1
@@ -473,7 +473,7 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -503,14 +503,14 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -540,14 +540,14 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -577,26 +577,26 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@typescript-eslint/eslint-plugin':
         specifier: 8.43.0
-        version: 8.43.0(@typescript-eslint/parser@8.43.0)(eslint@9.35.0)(typescript@5.9.2)
+        version: 8.43.0(@typescript-eslint/parser@8.43.0)(eslint@8.57.1)(typescript@5.9.2)
       '@typescript-eslint/parser':
         specifier: 8.43.0
-        version: 8.43.0(eslint@9.35.0)(typescript@5.9.2)
+        version: 8.43.0(eslint@8.57.1)(typescript@5.9.2)
       eslint:
-        specifier: 9.35.0
-        version: 9.35.0
+        specifier: 8.57.1
+        version: 8.57.1
       eslint-plugin-solid:
         specifier: 0.14.5
-        version: 0.14.5(eslint@9.35.0)(typescript@5.9.2)
+        version: 0.14.5(eslint@8.57.1)(typescript@5.9.2)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -629,20 +629,20 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   examples/icons-demo:
     dependencies:
@@ -669,14 +669,14 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -715,14 +715,14 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -752,14 +752,14 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -798,8 +798,8 @@ importers:
         version: 13.0.0
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@types/uuid':
         specifier: 10.0.0
         version: 10.0.0
@@ -811,7 +811,7 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -847,26 +847,41 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
 
   examples/test-app:
     dependencies:
+      chart.js:
+        specifier: 4.5.0
+        version: 4.5.0
+      chartjs-adapter-date-fns:
+        specifier: 3.0.0
+        version: 3.0.0(chart.js@4.5.0)(date-fns@4.1.0)
+      date-fns:
+        specifier: 4.1.0
+        version: 4.1.0
       reynard-3d:
         specifier: workspace:*
         version: link:../../packages/3d
       reynard-algorithms:
         specifier: workspace:*
         version: link:../../packages/algorithms
+      reynard-charts:
+        specifier: workspace:*
+        version: link:../../packages/charts
+      reynard-colors:
+        specifier: workspace:*
+        version: link:../../packages/colors
       reynard-components:
         specifier: workspace:*
         version: link:../../packages/components
@@ -887,8 +902,8 @@ importers:
         version: 0.180.0
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@types/three':
         specifier: 0.180.0
         version: 0.180.0
@@ -906,13 +921,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   examples/tutorial-app:
     dependencies:
@@ -933,14 +948,14 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
@@ -970,8 +985,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -989,44 +1004,44 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/adr-system:
     dependencies:
       fs-extra:
-        specifier: ^11.0.0
+        specifier: 11.3.1
         version: 11.3.1
       glob:
-        specifier: ^10.0.0
-        version: 10.4.5
+        specifier: 11.0.3
+        version: 11.0.3
       typescript:
-        specifier: ^5.0.0
+        specifier: 5.9.2
         version: 5.9.2
       yaml:
-        specifier: ^2.0.0
+        specifier: 2.8.1
         version: 2.8.1
     devDependencies:
       '@types/fs-extra':
-        specifier: ^11.0.0
+        specifier: 11.0.4
         version: 11.0.4
       '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.13
+        specifier: 24.4.0
+        version: 24.4.0
       eslint:
-        specifier: ^8.0.0
-        version: 8.57.1
+        specifier: 9.35.0
+        version: 9.35.0
       reynard-testing:
-        specifier: workspace:*
-        version: link:../testing
+        specifier: 0.1.2
+        version: 0.1.2(@testing-library/dom@10.4.1)(solid-js@1.9.9)(vitest@3.2.4)
       vitest:
-        specifier: ^1.0.0
-        version: 1.6.1(@types/node@20.19.13)
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.4.0)(yaml@2.8.1)
 
   packages/ai-shared:
     dependencies:
@@ -1041,8 +1056,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1057,13 +1072,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/algorithms:
     dependencies:
@@ -1072,8 +1087,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1091,35 +1106,35 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/animation:
     dependencies:
       solid-js:
-        specifier: ^1.8.0
+        specifier: 1.9.9
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.13
+        specifier: 24.4.0
+        version: 24.4.0
       eslint:
-        specifier: ^8.0.0
-        version: 8.57.1
+        specifier: 9.35.0
+        version: 9.35.0
       tsup:
-        specifier: ^8.0.0
+        specifier: 8.5.0
         version: 8.5.0(typescript@5.9.2)
       typescript:
-        specifier: ^5.0.0
+        specifier: 5.9.2
         version: 5.9.2
       vitest:
-        specifier: ^1.0.0
-        version: 1.6.1(@types/node@20.19.13)
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/annotating:
     dependencies:
@@ -1152,8 +1167,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1171,13 +1186,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/annotating-core:
     dependencies:
@@ -1195,8 +1210,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1211,13 +1226,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/annotating-florence2:
     dependencies:
@@ -1229,8 +1244,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1242,13 +1257,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/annotating-joy:
     dependencies:
@@ -1260,8 +1275,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1273,13 +1288,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/annotating-jtp2:
     dependencies:
@@ -1291,8 +1306,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1304,13 +1319,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/annotating-wdv3:
     dependencies:
@@ -1322,8 +1337,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1335,13 +1350,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/api-client:
     dependencies:
@@ -1354,10 +1369,10 @@ importers:
     devDependencies:
       '@openapitools/openapi-generator-cli':
         specifier: 2.23.1
-        version: 2.23.1(@types/node@24.3.1)
+        version: 2.23.1(@types/node@24.4.0)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       nodemon:
         specifier: 3.1.10
         version: 3.1.10
@@ -1381,8 +1396,8 @@ importers:
         version: link:../themes
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -1391,13 +1406,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/auth:
     dependencies:
@@ -1430,8 +1445,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1452,13 +1467,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/boundingbox:
     dependencies:
@@ -1485,14 +1500,14 @@ importers:
         specifier: 5.3.10
         version: 5.3.10
       '@typescript-eslint/eslint-plugin':
-        specifier: 8.42.0
-        version: 8.42.0(@typescript-eslint/parser@8.42.0)(eslint@9.35.0)(typescript@5.9.2)
+        specifier: 8.43.0
+        version: 8.43.0(@typescript-eslint/parser@8.43.0)(eslint@8.57.1)(typescript@5.9.2)
       '@typescript-eslint/parser':
-        specifier: 8.42.0
-        version: 8.42.0(eslint@9.35.0)(typescript@5.9.2)
+        specifier: 8.43.0
+        version: 8.43.0(eslint@8.57.1)(typescript@5.9.2)
       eslint:
-        specifier: 9.35.0
-        version: 9.35.0
+        specifier: 8.57.1
+        version: 8.57.1
       happy-dom:
         specifier: ^18.0.1
         version: 18.0.1
@@ -1504,13 +1519,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/caption:
     dependencies:
@@ -1552,8 +1567,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1571,13 +1586,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/charts:
     dependencies:
@@ -1596,9 +1611,6 @@ importers:
       reynard-themes:
         specifier: workspace:*
         version: link:../themes
-      solid-chartjs:
-        specifier: 1.3.11
-        version: 1.3.11(chart.js@4.5.0)(solid-js@1.9.9)
       three:
         specifier: 0.180.0
         version: 0.180.0
@@ -1607,8 +1619,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@types/three':
         specifier: 0.180.0
         version: 0.180.0
@@ -1635,13 +1647,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/chat:
     dependencies:
@@ -1662,8 +1674,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1684,13 +1696,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/colors:
     dependencies:
@@ -1702,8 +1714,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       happy-dom:
         specifier: 18.0.1
         version: 18.0.1
@@ -1715,10 +1727,10 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/comfy:
     dependencies:
@@ -1761,8 +1773,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@types/three':
         specifier: 0.180.0
         version: 0.180.0
@@ -1786,13 +1798,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/composables:
     dependencies:
@@ -1804,8 +1816,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1817,13 +1829,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/config:
     dependencies:
@@ -1832,8 +1844,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1845,13 +1857,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/connection:
     dependencies:
@@ -1860,8 +1872,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1876,13 +1888,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/core:
     dependencies:
@@ -1901,8 +1913,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1920,13 +1932,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/dashboard:
     dependencies:
@@ -1953,8 +1965,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -1975,13 +1987,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/docs-components:
     dependencies:
@@ -2002,8 +2014,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2015,13 +2027,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/docs-core:
     dependencies:
@@ -2051,8 +2063,8 @@ importers:
         specifier: 5.0.2
         version: 5.0.2
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2064,13 +2076,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/docs-generator:
     dependencies:
@@ -2106,8 +2118,8 @@ importers:
         specifier: 11.0.4
         version: 11.0.4
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2116,13 +2128,13 @@ importers:
         version: 3.2.4(vitest@3.2.4)
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/docs-site:
     dependencies:
@@ -2152,8 +2164,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2165,13 +2177,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/error-boundaries:
     dependencies:
@@ -2183,8 +2195,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2202,23 +2214,23 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/features:
     dependencies:
       reynard-composables:
-        specifier: workspace:*
+        specifier: 0.1.2
         version: link:../composables
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       eslint:
         specifier: 9.35.0
         version: 9.35.0
@@ -2233,13 +2245,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/file-processing:
     dependencies:
@@ -2251,8 +2263,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2273,13 +2285,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/floating-panel:
     dependencies:
@@ -2294,14 +2306,14 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@typescript-eslint/eslint-plugin':
-        specifier: 8.42.0
-        version: 8.42.0(@typescript-eslint/parser@8.42.0)(eslint@9.35.0)(typescript@5.9.2)
+        specifier: 8.43.0
+        version: 8.43.0(@typescript-eslint/parser@8.43.0)(eslint@8.57.1)(typescript@5.9.2)
       '@typescript-eslint/parser':
-        specifier: 8.42.0
-        version: 8.42.0(eslint@9.35.0)(typescript@5.9.2)
+        specifier: 8.43.0
+        version: 8.43.0(eslint@8.57.1)(typescript@5.9.2)
       eslint:
-        specifier: 9.35.0
-        version: 9.35.0
+        specifier: 8.57.1
+        version: 8.57.1
       happy-dom:
         specifier: 18.0.1
         version: 18.0.1
@@ -2316,16 +2328,16 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-dts:
         specifier: 4.5.4
-        version: 4.5.4(@types/node@24.3.1)(typescript@5.9.2)(vite@7.1.5)
+        version: 4.5.4(@types/node@24.4.0)(typescript@5.9.2)(vite@7.1.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(happy-dom@18.0.1)(jsdom@26.1.0)
+        version: 3.2.4(@types/node@24.4.0)(happy-dom@18.0.1)(jsdom@26.1.0)
 
   packages/fluent-icons:
     dependencies:
@@ -2337,8 +2349,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2350,13 +2362,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/gallery:
     dependencies:
@@ -2383,8 +2395,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2405,13 +2417,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/gallery-ai:
     dependencies:
@@ -2450,8 +2462,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2472,13 +2484,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/games:
     dependencies:
@@ -2502,8 +2514,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2521,13 +2533,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/i18n:
     dependencies:
@@ -2536,20 +2548,20 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
       eslint:
-        specifier: 9.35.0
-        version: 9.35.0
+        specifier: 8.57.1
+        version: 8.57.1
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/image:
     dependencies:
@@ -2595,8 +2607,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2608,13 +2620,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/monaco:
     dependencies:
@@ -2635,14 +2647,14 @@ importers:
         version: 3.12.2
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/ui':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
       eslint:
-        specifier: 9.35.0
-        version: 9.35.0
+        specifier: 8.57.1
+        version: 8.57.1
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -2651,13 +2663,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/multimodal:
     dependencies:
@@ -2715,17 +2727,17 @@ importers:
         version: 0.1.0(solid-js@1.9.9)
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       eslint:
-        specifier: 9.35.0
-        version: 9.35.0
+        specifier: 8.57.1
+        version: 8.57.1
       typescript:
         specifier: 5.9.2
         version: 5.9.2
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/rag:
     dependencies:
@@ -2752,8 +2764,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2771,13 +2783,65 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
+  packages/segmentation:
+    dependencies:
+      reynard-ai-shared:
+        specifier: workspace:*
+        version: link:../ai-shared
+      reynard-algorithms:
+        specifier: workspace:*
+        version: link:../algorithms
+      reynard-annotating-core:
+        specifier: workspace:*
+        version: link:../annotating-core
+      reynard-boundingbox:
+        specifier: workspace:*
+        version: link:../boundingbox
+      reynard-caption:
+        specifier: workspace:*
+        version: link:../caption
+      reynard-floating-panel:
+        specifier: workspace:*
+        version: link:../floating-panel
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+    devDependencies:
+      '@types/node':
+        specifier: 24.4.0
+        version: 24.4.0
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      eslint:
+        specifier: 9.35.0
+        version: 9.35.0
+      happy-dom:
+        specifier: 18.0.1
+        version: 18.0.1
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.5
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/service-manager:
     dependencies:
@@ -2792,8 +2856,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2805,13 +2869,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/settings:
     dependencies:
@@ -2832,8 +2896,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2854,13 +2918,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/testing:
     dependencies:
@@ -2877,9 +2941,12 @@ importers:
         specifier: 1.9.9
         version: 1.9.9
     devDependencies:
+      '@types/eslint':
+        specifier: ^9.6.1
+        version: 9.6.1
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2897,13 +2964,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(tsx@4.20.5)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(tsx@4.20.5)
 
   packages/themes:
     dependencies:
@@ -2915,8 +2982,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2931,13 +2998,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/tools:
     dependencies:
@@ -2946,8 +3013,8 @@ importers:
         version: 1.9.9
     devDependencies:
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -2959,13 +3026,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/ui:
     dependencies:
@@ -2980,8 +3047,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@vitest/coverage-v8':
         specifier: 3.2.4
         version: 3.2.4(vitest@3.2.4)
@@ -3002,13 +3069,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   packages/video:
     dependencies:
@@ -3069,8 +3136,8 @@ importers:
         specifier: 0.8.10
         version: 0.8.10(solid-js@1.9.9)
       '@types/node':
-        specifier: 24.3.1
-        version: 24.3.1
+        specifier: 24.4.0
+        version: 24.4.0
       '@types/three':
         specifier: 0.180.0
         version: 0.180.0
@@ -3088,15 +3155,19 @@ importers:
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
         specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
         specifier: 3.2.4
-        version: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
 packages:
+
+  /@adobe/css-tools@4.4.4:
+    resolution: {integrity: sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==}
+    dev: true
 
   /@ampproject/remapping@2.3.0:
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -3335,8 +3406,8 @@ packages:
       '@changesets/types': 6.1.0
     dev: true
 
-  /@changesets/cli@2.29.6(@types/node@24.3.1):
-    resolution: {integrity: sha512-6qCcVsIG1KQLhpQ5zE8N0PckIx4+9QlHK3z6/lwKnw7Tir71Bjw8BeOZaxA/4Jt00pcgCnCSWZnyuZf5Il05QQ==}
+  /@changesets/cli@2.29.7(@types/node@24.4.0):
+    resolution: {integrity: sha512-R7RqWoaksyyKXbKXBTbT4REdy22yH81mcFK6sWtqSanxUCbUi9Uf+6aqxZtDQouIqPdem2W56CdxXgsxdq7FLQ==}
     hasBin: true
     dependencies:
       '@changesets/apply-release-plan': 7.0.13
@@ -3353,7 +3424,7 @@ packages:
       '@changesets/should-skip-package': 0.1.2
       '@changesets/types': 6.1.0
       '@changesets/write': 0.4.0
-      '@inquirer/external-editor': 1.0.1(@types/node@24.3.1)
+      '@inquirer/external-editor': 1.0.1(@types/node@24.4.0)
       '@manypkg/get-packages': 1.1.3
       ansi-colors: 4.1.3
       ci-info: 3.9.0
@@ -3481,14 +3552,14 @@ packages:
       prettier: 2.8.8
     dev: true
 
-  /@commitlint/cli@19.8.1(@types/node@24.3.1)(typescript@5.9.2):
+  /@commitlint/cli@19.8.1(@types/node@24.4.0)(typescript@5.9.2):
     resolution: {integrity: sha512-LXUdNIkspyxrlV6VDHWBmCZRtkEVRpBKxi2Gtw3J54cGWhLCTouVD/Q6ZSaSvd2YaDObWK8mDjrz3TIKtaQMAA==}
     engines: {node: '>=v18'}
     hasBin: true
     dependencies:
       '@commitlint/format': 19.8.1
       '@commitlint/lint': 19.8.1
-      '@commitlint/load': 19.8.1(@types/node@24.3.1)(typescript@5.9.2)
+      '@commitlint/load': 19.8.1(@types/node@24.4.0)(typescript@5.9.2)
       '@commitlint/read': 19.8.1
       '@commitlint/types': 19.8.1
       tinyexec: 1.0.1
@@ -3557,7 +3628,7 @@ packages:
       '@commitlint/types': 19.8.1
     dev: true
 
-  /@commitlint/load@19.8.1(@types/node@24.3.1)(typescript@5.9.2):
+  /@commitlint/load@19.8.1(@types/node@24.4.0)(typescript@5.9.2):
     resolution: {integrity: sha512-9V99EKG3u7z+FEoe4ikgq7YGRCSukAcvmKQuTtUyiYPnOd9a2/H9Ak1J9nJA1HChRQp9OA/sIKPugGS+FK/k1A==}
     engines: {node: '>=v18'}
     dependencies:
@@ -3567,7 +3638,7 @@ packages:
       '@commitlint/types': 19.8.1
       chalk: 5.6.2
       cosmiconfig: 9.0.0(typescript@5.9.2)
-      cosmiconfig-typescript-loader: 6.1.0(@types/node@24.3.1)(cosmiconfig@9.0.0)(typescript@5.9.2)
+      cosmiconfig-typescript-loader: 6.1.0(@types/node@24.4.0)(cosmiconfig@9.0.0)(typescript@5.9.2)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -4279,7 +4350,7 @@ packages:
     engines: {node: '>=18.18'}
     dev: true
 
-  /@inquirer/external-editor@1.0.1(@types/node@24.3.1):
+  /@inquirer/external-editor@1.0.1(@types/node@24.4.0):
     resolution: {integrity: sha512-Oau4yL24d2B5IL4ma4UpbQigkVhzPDXLoqy1ggK4gnHg/stmkffJE4oOXHXF3uz0UEpywG68KcyXsyYpA1Re/Q==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -4288,7 +4359,7 @@ packages:
       '@types/node':
         optional: true
     dependencies:
-      '@types/node': 24.3.1
+      '@types/node': 24.4.0
       chardet: 2.1.0
       iconv-lite: 0.6.3
     dev: true
@@ -4404,27 +4475,27 @@ packages:
     dev: false
     optional: true
 
-  /@microsoft/api-extractor-model@7.30.7(@types/node@24.3.1):
+  /@microsoft/api-extractor-model@7.30.7(@types/node@24.4.0):
     resolution: {integrity: sha512-TBbmSI2/BHpfR9YhQA7nH0nqVmGgJ0xH0Ex4D99/qBDAUpnhA2oikGmdXanbw9AWWY/ExBYIpkmY8dBHdla3YQ==}
     dependencies:
       '@microsoft/tsdoc': 0.15.1
       '@microsoft/tsdoc-config': 0.17.1
-      '@rushstack/node-core-library': 5.14.0(@types/node@24.3.1)
+      '@rushstack/node-core-library': 5.14.0(@types/node@24.4.0)
     transitivePeerDependencies:
       - '@types/node'
     dev: true
 
-  /@microsoft/api-extractor@7.52.12(@types/node@24.3.1):
+  /@microsoft/api-extractor@7.52.12(@types/node@24.4.0):
     resolution: {integrity: sha512-f1UNgOLCMydwCJ+eZvH0dMxMq3lEEvXsLqlvDOdx136cRITK6xPES2xxgN/0NPCFpQad2HtMHxtPM9oGuqQx6g==}
     hasBin: true
     dependencies:
-      '@microsoft/api-extractor-model': 7.30.7(@types/node@24.3.1)
+      '@microsoft/api-extractor-model': 7.30.7(@types/node@24.4.0)
       '@microsoft/tsdoc': 0.15.1
       '@microsoft/tsdoc-config': 0.17.1
-      '@rushstack/node-core-library': 5.14.0(@types/node@24.3.1)
+      '@rushstack/node-core-library': 5.14.0(@types/node@24.4.0)
       '@rushstack/rig-package': 0.5.3
-      '@rushstack/terminal': 0.16.0(@types/node@24.3.1)
-      '@rushstack/ts-command-line': 5.0.3(@types/node@24.3.1)
+      '@rushstack/terminal': 0.16.0(@types/node@24.4.0)
+      '@rushstack/ts-command-line': 5.0.3(@types/node@24.4.0)
       lodash: 4.17.21
       minimatch: 10.0.3
       resolve: 1.22.10
@@ -4561,7 +4632,7 @@ packages:
       - encoding
     dev: true
 
-  /@openapitools/openapi-generator-cli@2.23.1(@types/node@24.3.1):
+  /@openapitools/openapi-generator-cli@2.23.1(@types/node@24.4.0):
     resolution: {integrity: sha512-Kd5EZqzbcIXf6KRlpUrheHMzQNRHsJWzAGrm4ncWCNhnQl+Mh6TsFcqq+hIetgiFCknWBH6cZ2f37SxPxaon4w==}
     engines: {node: '>=16'}
     hasBin: true
@@ -4579,7 +4650,7 @@ packages:
       console.table: 0.10.0
       fs-extra: 11.3.1
       glob: 11.0.3
-      inquirer: 8.2.7(@types/node@24.3.1)
+      inquirer: 8.2.7(@types/node@24.4.0)
       proxy-agent: 6.5.0
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
@@ -4600,6 +4671,7 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
     requiresBuild: true
+    dev: true
     optional: true
 
   /@playwright/test@1.55.0:
@@ -4796,7 +4868,7 @@ packages:
     dev: true
     optional: true
 
-  /@rushstack/node-core-library@5.14.0(@types/node@24.3.1):
+  /@rushstack/node-core-library@5.14.0(@types/node@24.4.0):
     resolution: {integrity: sha512-eRong84/rwQUlATGFW3TMTYVyqL1vfW9Lf10PH+mVGfIb9HzU3h5AASNIw+axnBLjnD0n3rT5uQBwu9fvzATrg==}
     peerDependencies:
       '@types/node': '*'
@@ -4804,7 +4876,7 @@ packages:
       '@types/node':
         optional: true
     dependencies:
-      '@types/node': 24.3.1
+      '@types/node': 24.4.0
       ajv: 8.13.0
       ajv-draft-04: 1.0.0(ajv@8.13.0)
       ajv-formats: 3.0.1(ajv@8.13.0)
@@ -4822,7 +4894,7 @@ packages:
       strip-json-comments: 3.1.1
     dev: true
 
-  /@rushstack/terminal@0.16.0(@types/node@24.3.1):
+  /@rushstack/terminal@0.16.0(@types/node@24.4.0):
     resolution: {integrity: sha512-WEvNuKkoR1PXorr9SxO0dqFdSp1BA+xzDrIm/Bwlc5YHg2FFg6oS+uCTYjerOhFuqCW+A3vKBm6EmKWSHfgx/A==}
     peerDependencies:
       '@types/node': '*'
@@ -4830,15 +4902,15 @@ packages:
       '@types/node':
         optional: true
     dependencies:
-      '@rushstack/node-core-library': 5.14.0(@types/node@24.3.1)
-      '@types/node': 24.3.1
+      '@rushstack/node-core-library': 5.14.0(@types/node@24.4.0)
+      '@types/node': 24.4.0
       supports-color: 8.1.1
     dev: true
 
-  /@rushstack/ts-command-line@5.0.3(@types/node@24.3.1):
+  /@rushstack/ts-command-line@5.0.3(@types/node@24.4.0):
     resolution: {integrity: sha512-bgPhQEqLVv/2hwKLYv/XvsTWNZ9B/+X1zJ7WgQE9rO5oiLzrOZvkIW4pk13yOQBhHyjcND5qMOa6p83t+Z66iQ==}
     dependencies:
-      '@rushstack/terminal': 0.16.0(@types/node@24.3.1)
+      '@rushstack/terminal': 0.16.0(@types/node@24.4.0)
       '@types/argparse': 1.0.38
       argparse: 1.0.10
       string-argv: 0.3.2
@@ -4995,6 +5067,18 @@ packages:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
+  /@testing-library/jest-dom@6.8.0:
+    resolution: {integrity: sha512-WgXcWzVM6idy5JaftTVC8Vs83NKRmGJz4Hqs4oyOuO2J4r/y79vvKZsb+CaGyCSEbUPI6OsewfPd0G1A0/TUZQ==}
+    engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
+    dependencies:
+      '@adobe/css-tools': 4.4.4
+      aria-query: 5.3.2
+      css.escape: 1.5.1
+      dom-accessibility-api: 0.6.3
+      picocolors: 1.1.1
+      redent: 3.0.0
+    dev: true
+
   /@testing-library/user-event@14.6.1(@testing-library/dom@10.4.1):
     resolution: {integrity: sha512-vq7fv0rnt+QTXgPxr5Hjc210p6YKq2kmdziLgnsZGgLJ9e6VAShx1pACLuRjd/AS/sr7phAR58OIIpf0LlmQNw==}
     engines: {node: '>=12', npm: '>=6'}
@@ -5002,7 +5086,6 @@ packages:
       '@testing-library/dom': '>=7.21.4'
     dependencies:
       '@testing-library/dom': 10.4.1
-    dev: false
 
   /@tokenizer/inflate@0.2.7:
     resolution: {integrity: sha512-MADQgmZT1eKjp06jpI2yozxaU9uVs4GzzgSL+uEq7bVcJ9V1ZXQkeGNql1fsSI0gMy1vhvNTNbUqrx+pZfJVmg==}
@@ -5091,6 +5174,13 @@ packages:
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
     dev: true
 
+  /@types/eslint@9.6.1:
+    resolution: {integrity: sha512-FXx2pKgId/WyYo2jXw63kk7/+TY7u7AziEJxJAnSFzHlqTAS3Ync6SvgYAN/k4/PQpnnVuzoMuVnByKK2qp0ag==}
+    dependencies:
+      '@types/estree': 1.0.8
+      '@types/json-schema': 7.0.15
+    dev: true
+
   /@types/estree@1.0.8:
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
     dev: true
@@ -5154,10 +5244,10 @@ packages:
       undici-types: 6.21.0
     dev: true
 
-  /@types/node@24.3.1:
-    resolution: {integrity: sha512-3vXmQDXy+woz+gnrTvuvNrPzekOi+Ds0ReMxw0LzBiK3a+1k0kQn9f2NWk+lgD4rJehFUmYy2gMhJ2ZI+7YP9g==}
+  /@types/node@24.4.0:
+    resolution: {integrity: sha512-gUuVEAK4/u6F9wRLznPUU4WGUacSEBDPoC2TrBkw3GAnOLHBL45QdfHOXp1kJ4ypBGLxTOB+t7NJLpKoC3gznQ==}
     dependencies:
-      undici-types: 7.10.0
+      undici-types: 7.11.0
     dev: true
 
   /@types/stats.js@0.17.4:
@@ -5193,31 +5283,7 @@ packages:
     resolution: {integrity: sha512-c2AKvDT8ToxLIOUlN51gTiHXflsfIFisS4pO7pDPoKouJCESkhZnEy623gwP9laCy5lnLDAw1vAzu2vM2YLOrA==}
     dev: true
 
-  /@typescript-eslint/eslint-plugin@8.42.0(@typescript-eslint/parser@8.42.0)(eslint@9.35.0)(typescript@5.9.2):
-    resolution: {integrity: sha512-Aq2dPqsQkxHOLfb2OPv43RnIvfj05nw8v/6n3B2NABIPpHnjQnaLo9QGMTvml+tv4korl/Cjfrb/BYhoL8UUTQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      '@typescript-eslint/parser': ^8.42.0
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <6.0.0'
-    dependencies:
-      '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.42.0(eslint@9.35.0)(typescript@5.9.2)
-      '@typescript-eslint/scope-manager': 8.42.0
-      '@typescript-eslint/type-utils': 8.42.0(eslint@9.35.0)(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.42.0(eslint@9.35.0)(typescript@5.9.2)
-      '@typescript-eslint/visitor-keys': 8.42.0
-      eslint: 9.35.0
-      graphemer: 1.4.0
-      ignore: 7.0.5
-      natural-compare: 1.4.0
-      ts-api-utils: 2.1.0(typescript@5.9.2)
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /@typescript-eslint/eslint-plugin@8.43.0(@typescript-eslint/parser@8.43.0)(eslint@9.35.0)(typescript@5.9.2):
+  /@typescript-eslint/eslint-plugin@8.43.0(@typescript-eslint/parser@8.43.0)(eslint@8.57.1)(typescript@5.9.2):
     resolution: {integrity: sha512-8tg+gt7ENL7KewsKMKDHXR1vm8tt9eMxjJBYINf6swonlWgkYn5NwyIgXpbbDxTNU5DgpDFfj95prcTq2clIQQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
@@ -5226,12 +5292,12 @@ packages:
       typescript: '>=4.8.4 <6.0.0'
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.43.0(eslint@9.35.0)(typescript@5.9.2)
+      '@typescript-eslint/parser': 8.43.0(eslint@8.57.1)(typescript@5.9.2)
       '@typescript-eslint/scope-manager': 8.43.0
-      '@typescript-eslint/type-utils': 8.43.0(eslint@9.35.0)(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.43.0(eslint@9.35.0)(typescript@5.9.2)
+      '@typescript-eslint/type-utils': 8.43.0(eslint@8.57.1)(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.43.0(eslint@8.57.1)(typescript@5.9.2)
       '@typescript-eslint/visitor-keys': 8.43.0
-      eslint: 9.35.0
+      eslint: 8.57.1
       graphemer: 1.4.0
       ignore: 7.0.5
       natural-compare: 1.4.0
@@ -5241,25 +5307,7 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/parser@8.42.0(eslint@9.35.0)(typescript@5.9.2):
-    resolution: {integrity: sha512-r1XG74QgShUgXph1BYseJ+KZd17bKQib/yF3SR+demvytiRXrwd12Blnz5eYGm8tXaeRdd4x88MlfwldHoudGg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <6.0.0'
-    dependencies:
-      '@typescript-eslint/scope-manager': 8.42.0
-      '@typescript-eslint/types': 8.42.0
-      '@typescript-eslint/typescript-estree': 8.42.0(typescript@5.9.2)
-      '@typescript-eslint/visitor-keys': 8.42.0
-      debug: 4.4.1(supports-color@5.5.0)
-      eslint: 9.35.0
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /@typescript-eslint/parser@8.43.0(eslint@9.35.0)(typescript@5.9.2):
+  /@typescript-eslint/parser@8.43.0(eslint@8.57.1)(typescript@5.9.2):
     resolution: {integrity: sha512-B7RIQiTsCBBmY+yW4+ILd6mF5h1FUwJsVvpqkrgpszYifetQ2Ke+Z4u6aZh0CblkUGIdR59iYVyXqqZGkZ3aBw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
@@ -5271,21 +5319,7 @@ packages:
       '@typescript-eslint/typescript-estree': 8.43.0(typescript@5.9.2)
       '@typescript-eslint/visitor-keys': 8.43.0
       debug: 4.4.1(supports-color@5.5.0)
-      eslint: 9.35.0
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /@typescript-eslint/project-service@8.42.0(typescript@5.9.2):
-    resolution: {integrity: sha512-vfVpLHAhbPjilrabtOSNcUDmBboQNrJUiNAGoImkZKnMjs2TIcWG33s4Ds0wY3/50aZmTMqJa6PiwkwezaAklg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
-    dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.42.0(typescript@5.9.2)
-      '@typescript-eslint/types': 8.43.0
-      debug: 4.4.1(supports-color@5.5.0)
+      eslint: 8.57.1
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
@@ -5305,29 +5339,12 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/scope-manager@8.42.0:
-    resolution: {integrity: sha512-51+x9o78NBAVgQzOPd17DkNTnIzJ8T/O2dmMBLoK9qbY0Gm52XJcdJcCl18ExBMiHo6jPMErUQWUv5RLE51zJw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    dependencies:
-      '@typescript-eslint/types': 8.42.0
-      '@typescript-eslint/visitor-keys': 8.42.0
-    dev: true
-
   /@typescript-eslint/scope-manager@8.43.0:
     resolution: {integrity: sha512-daSWlQ87ZhsjrbMLvpuuMAt3y4ba57AuvadcR7f3nl8eS3BjRc8L9VLxFLk92RL5xdXOg6IQ+qKjjqNEimGuAg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dependencies:
       '@typescript-eslint/types': 8.43.0
       '@typescript-eslint/visitor-keys': 8.43.0
-    dev: true
-
-  /@typescript-eslint/tsconfig-utils@8.42.0(typescript@5.9.2):
-    resolution: {integrity: sha512-kHeFUOdwAJfUmYKjR3CLgZSglGHjbNTi1H8sTYRYV2xX6eNz4RyJ2LIgsDLKf8Yi0/GL1WZAC/DgZBeBft8QAQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
-    dependencies:
-      typescript: 5.9.2
     dev: true
 
   /@typescript-eslint/tsconfig-utils@8.43.0(typescript@5.9.2):
@@ -5339,25 +5356,7 @@ packages:
       typescript: 5.9.2
     dev: true
 
-  /@typescript-eslint/type-utils@8.42.0(eslint@9.35.0)(typescript@5.9.2):
-    resolution: {integrity: sha512-9KChw92sbPTYVFw3JLRH1ockhyR3zqqn9lQXol3/YbI6jVxzWoGcT3AsAW0mu1MY0gYtsXnUGV/AKpkAj5tVlQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <6.0.0'
-    dependencies:
-      '@typescript-eslint/types': 8.42.0
-      '@typescript-eslint/typescript-estree': 8.42.0(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.42.0(eslint@9.35.0)(typescript@5.9.2)
-      debug: 4.4.1(supports-color@5.5.0)
-      eslint: 9.35.0
-      ts-api-utils: 2.1.0(typescript@5.9.2)
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /@typescript-eslint/type-utils@8.43.0(eslint@9.35.0)(typescript@5.9.2):
+  /@typescript-eslint/type-utils@8.43.0(eslint@8.57.1)(typescript@5.9.2):
     resolution: {integrity: sha512-qaH1uLBpBuBBuRf8c1mLJ6swOfzCXryhKND04Igr4pckzSEW9JX5Aw9AgW00kwfjWJF0kk0ps9ExKTfvXfw4Qg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
@@ -5366,44 +5365,18 @@ packages:
     dependencies:
       '@typescript-eslint/types': 8.43.0
       '@typescript-eslint/typescript-estree': 8.43.0(typescript@5.9.2)
-      '@typescript-eslint/utils': 8.43.0(eslint@9.35.0)(typescript@5.9.2)
+      '@typescript-eslint/utils': 8.43.0(eslint@8.57.1)(typescript@5.9.2)
       debug: 4.4.1(supports-color@5.5.0)
-      eslint: 9.35.0
+      eslint: 8.57.1
       ts-api-utils: 2.1.0(typescript@5.9.2)
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@typescript-eslint/types@8.42.0:
-    resolution: {integrity: sha512-LdtAWMiFmbRLNP7JNeY0SqEtJvGMYSzfiWBSmx+VSZ1CH+1zyl8Mmw1TT39OrtsRvIYShjJWzTDMPWZJCpwBlw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dev: true
 
   /@typescript-eslint/types@8.43.0:
     resolution: {integrity: sha512-vQ2FZaxJpydjSZJKiSW/LJsabFFvV7KgLC5DiLhkBcykhQj8iK9BOaDmQt74nnKdLvceM5xmhaTF+pLekrxEkw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    dev: true
-
-  /@typescript-eslint/typescript-estree@8.42.0(typescript@5.9.2):
-    resolution: {integrity: sha512-ku/uYtT4QXY8sl9EDJETD27o3Ewdi72hcXg1ah/kkUgBvAYHLwj2ofswFFNXS+FL5G+AGkxBtvGt8pFBHKlHsQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
-    dependencies:
-      '@typescript-eslint/project-service': 8.42.0(typescript@5.9.2)
-      '@typescript-eslint/tsconfig-utils': 8.42.0(typescript@5.9.2)
-      '@typescript-eslint/types': 8.42.0
-      '@typescript-eslint/visitor-keys': 8.42.0
-      debug: 4.4.1(supports-color@5.5.0)
-      fast-glob: 3.3.3
-      is-glob: 4.0.3
-      minimatch: 9.0.5
-      semver: 7.7.2
-      ts-api-utils: 2.1.0(typescript@5.9.2)
-      typescript: 5.9.2
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /@typescript-eslint/typescript-estree@8.43.0(typescript@5.9.2):
@@ -5427,18 +5400,18 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/utils@8.42.0(eslint@9.35.0)(typescript@5.9.2):
-    resolution: {integrity: sha512-JnIzu7H3RH5BrKC4NoZqRfmjqCIS1u3hGZltDYJgkVdqAezl4L9d1ZLw+36huCujtSBSAirGINF/S4UxOcR+/g==}
+  /@typescript-eslint/utils@8.43.0(eslint@8.57.1)(typescript@5.9.2):
+    resolution: {integrity: sha512-S1/tEmkUeeswxd0GGcnwuVQPFWo8NzZTOMxCvw8BX7OMxnNae+i8Tm7REQen/SwUIPoPqfKn7EaZ+YLpiB3k9g==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
     dependencies:
-      '@eslint-community/eslint-utils': 4.9.0(eslint@9.35.0)
-      '@typescript-eslint/scope-manager': 8.42.0
-      '@typescript-eslint/types': 8.42.0
-      '@typescript-eslint/typescript-estree': 8.42.0(typescript@5.9.2)
-      eslint: 9.35.0
+      '@eslint-community/eslint-utils': 4.9.0(eslint@8.57.1)
+      '@typescript-eslint/scope-manager': 8.43.0
+      '@typescript-eslint/types': 8.43.0
+      '@typescript-eslint/typescript-estree': 8.43.0(typescript@5.9.2)
+      eslint: 8.57.1
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
@@ -5459,14 +5432,6 @@ packages:
       typescript: 5.9.2
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@typescript-eslint/visitor-keys@8.42.0:
-    resolution: {integrity: sha512-3WbiuzoEowaEn8RSnhJBrxSwX8ULYE9CXaPepS2C2W3NSA5NNIvBaslpBSBElPq0UGr0xVJlXFWOAKIkyylydQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    dependencies:
-      '@typescript-eslint/types': 8.42.0
-      eslint-visitor-keys: 4.2.1
     dev: true
 
   /@typescript-eslint/visitor-keys@8.43.0:
@@ -5502,7 +5467,7 @@ packages:
       std-env: 3.9.0
       test-exclude: 7.0.1
       tinyrainbow: 2.0.0
-      vitest: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+      vitest: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -5539,7 +5504,7 @@ packages:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
       magic-string: 0.30.19
-      vite: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
     dev: true
 
   /@vitest/pretty-format@3.2.4:
@@ -5604,7 +5569,7 @@ packages:
       sirv: 3.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 2.0.0
-      vitest: 3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+      vitest: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
     dev: true
 
   /@vitest/utils@1.6.1:
@@ -6137,6 +6102,7 @@ packages:
     resolution: {integrity: sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ==}
     dependencies:
       balanced-match: 1.0.2
+    dev: true
 
   /braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
@@ -6553,7 +6519,7 @@ packages:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
     dev: true
 
-  /cosmiconfig-typescript-loader@6.1.0(@types/node@24.3.1)(cosmiconfig@9.0.0)(typescript@5.9.2):
+  /cosmiconfig-typescript-loader@6.1.0(@types/node@24.4.0)(cosmiconfig@9.0.0)(typescript@5.9.2):
     resolution: {integrity: sha512-tJ1w35ZRUiM5FeTzT7DtYWAFFv37ZLqSRkGi2oeCK1gPhvaWjkAtfXvLmvE1pRfxxp9aQo6ba/Pvg1dKj05D4g==}
     engines: {node: '>=v18'}
     peerDependencies:
@@ -6561,7 +6527,7 @@ packages:
       cosmiconfig: '>=9'
       typescript: '>=5'
     dependencies:
-      '@types/node': 24.3.1
+      '@types/node': 24.4.0
       cosmiconfig: 9.0.0(typescript@5.9.2)
       jiti: 2.5.1
       typescript: 5.9.2
@@ -6590,6 +6556,10 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  /css.escape@1.5.1:
+    resolution: {integrity: sha512-YUifsXXuknHlUsmlgyY0PKzgPOr7/FjCePfHNt0jxm83wHZi44VDMQ7/fGNkjY3/jV1MC+1CmZbaHzugyeRtpg==}
+    dev: true
 
   /cssom@0.3.8:
     resolution: {integrity: sha512-b0tGHbfegbhPJpxpiBPU2sCkigAqtM9O121le6bbOlgyV+NyGyCmVfJ6QW9eRjz8CpNfWEOYBIMIGRYkLwsIYg==}
@@ -6842,6 +6812,10 @@ packages:
 
   /dom-accessibility-api@0.5.16:
     resolution: {integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==}
+
+  /dom-accessibility-api@0.6.3:
+    resolution: {integrity: sha512-7ZgogeTnjuHbo+ct10G9Ffp0mif17idi0IyWNVA/wcwcm7NPOD/WEHVP3n7n3MhXqxoIYm8d6MuZohYWIZ4T3w==}
+    dev: true
 
   /domexception@4.0.0:
     resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==}
@@ -7123,7 +7097,7 @@ packages:
     optionalDependencies:
       source-map: 0.6.1
 
-  /eslint-plugin-jsx-a11y@6.10.2(eslint@9.35.0):
+  /eslint-plugin-jsx-a11y@6.10.2(eslint@8.57.1):
     resolution: {integrity: sha512-scB3nz4WmG75pV8+3eRUQOHZlNSUhFNq37xnpgRkCCELU3XMvXAxLk1eqWWyE22Ki4Q01Fnsw9BA3cJHDPgn2Q==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -7137,7 +7111,7 @@ packages:
       axobject-query: 4.1.0
       damerau-levenshtein: 1.0.8
       emoji-regex: 9.2.2
-      eslint: 9.35.0
+      eslint: 8.57.1
       hasown: 2.0.2
       jsx-ast-utils: 3.3.5
       language-tags: 1.0.9
@@ -7145,6 +7119,25 @@ packages:
       object.fromentries: 2.0.8
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
+    dev: true
+
+  /eslint-plugin-solid@0.14.5(eslint@8.57.1)(typescript@5.9.2):
+    resolution: {integrity: sha512-nfuYK09ah5aJG/oEN6P1qziy1zLgW4PDWe75VNPi4CEFYk1x2AEqwFeQfEPR7gNn0F2jOeqKhx2E+5oNCOBYWQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
+      typescript: '>=4.8.4'
+    dependencies:
+      '@typescript-eslint/utils': 8.43.0(eslint@8.57.1)(typescript@5.9.2)
+      eslint: 8.57.1
+      estraverse: 5.3.0
+      is-html: 2.0.0
+      kebab-case: 1.0.2
+      known-css-properties: 0.30.0
+      style-to-object: 1.0.9
+      typescript: 5.9.2
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /eslint-plugin-solid@0.14.5(eslint@9.35.0)(typescript@5.9.2):
@@ -7815,6 +7808,7 @@ packages:
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
+    dev: true
 
   /glob@11.0.3:
     resolution: {integrity: sha512-2Nim7dha1KVkaiF4q6Dj+ngPPMdfvLJEOpZk/jKiUAkqKebpGAWQXAq9z1xu9HKu5lWfqw/FASuccEjyznjPaA==}
@@ -8130,6 +8124,11 @@ packages:
     engines: {node: '>=0.8.19'}
     dev: true
 
+  /indent-string@4.0.0:
+    resolution: {integrity: sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==}
+    engines: {node: '>=8'}
+    dev: true
+
   /inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
     deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
@@ -8150,11 +8149,11 @@ packages:
     resolution: {integrity: sha512-0aO8FkhNZlj/ZIbNi7Lxxr12obT7cL1moPfE4tg1LkX7LlLfC6DeX4l2ZEud1ukP9jNQyNnfzQVqwbwmAATY4Q==}
     dev: true
 
-  /inquirer@8.2.7(@types/node@24.3.1):
+  /inquirer@8.2.7(@types/node@24.4.0):
     resolution: {integrity: sha512-UjOaSel/iddGZJ5xP/Eixh6dY1XghiBw4XK13rCCIJcJfyhhoul/7KhLLUGtebEj6GDYM6Vnx/mVsjx2L/mFIA==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      '@inquirer/external-editor': 1.0.1(@types/node@24.3.1)
+      '@inquirer/external-editor': 1.0.1(@types/node@24.4.0)
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       cli-cursor: 3.1.0
@@ -8531,6 +8530,7 @@ packages:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
+    dev: true
 
   /jackspeak@4.1.1:
     resolution: {integrity: sha512-zptv57P3GpL+O0I7VdMJNBZCu+BPHVQUk55Ft8/QCJjTVxrnJHuVuX/0Bl2A6/+2oyR/ZMEuFKwmzqqZ/U5nPQ==}
@@ -8953,6 +8953,7 @@ packages:
 
   /lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
+    dev: true
 
   /lru-cache@11.2.1:
     resolution: {integrity: sha512-r8LA6i4LP4EeWOhqBaZZjDWwehd1xUJPCJd9Sv300H0ZmcUER4+JPh7bqqZeqs1o5pgtgvXm+d9UGrB5zZGDiQ==}
@@ -9373,6 +9374,11 @@ packages:
     dev: false
     optional: true
 
+  /min-indent@1.0.1:
+    resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
+    engines: {node: '>=4'}
+    dev: true
+
   /minimatch@10.0.3:
     resolution: {integrity: sha512-IPZ167aShDZZUMdRk66cyQAW3qr0WzbHkPdMYa8bzZhlHhO3jALbKdxcaak7W9FfT2rZNpQuUu4Od7ILEpXSaw==}
     engines: {node: 20 || >=22}
@@ -9389,6 +9395,7 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
       brace-expansion: 2.0.2
+    dev: true
 
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
@@ -9883,6 +9890,7 @@ packages:
     dependencies:
       lru-cache: 10.4.3
       minipass: 7.1.2
+    dev: true
 
   /path-scurry@2.0.0:
     resolution: {integrity: sha512-ypGJsmGtdXUOeM5u93TyeIEfEhM6s+ljAhrk5vAvSx8uyY/02OvrZnA0YNGUrPXfpJMgI1ODd3nwz8Npx4O4cg==}
@@ -10154,6 +10162,14 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /redent@3.0.0:
+    resolution: {integrity: sha512-6tDA8g98We0zd0GvVeMT9arEOnTw9qM03L9cJXaCjrip1OO764RDBLBfrB4cwzNGDj5OA5ioymC9GkizgWJDUg==}
+    engines: {node: '>=8'}
+    dependencies:
+      indent-string: 4.0.0
+      strip-indent: 3.0.0
+    dev: true
+
   /reflect-metadata@0.2.2:
     resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
     dev: true
@@ -10324,6 +10340,22 @@ packages:
       '@reynard/core': file:packages/core(solid-js@1.9.9)
       solid-js: 1.9.9
     dev: false
+
+  /reynard-testing@0.1.2(@testing-library/dom@10.4.1)(solid-js@1.9.9)(vitest@3.2.4):
+    resolution: {integrity: sha512-tqu0u6uTnVLlfdCWp2kHuy3yUlLWbO7E8ov5zzbUCmCXYZHaXFhPlziZOQyarCpXWOgcsyJkCWGQTwep/Te5ng==}
+    peerDependencies:
+      solid-js: 1.9.9
+      vitest: 3.2.4
+    dependencies:
+      '@solidjs/testing-library': 0.8.10(solid-js@1.9.9)
+      '@testing-library/jest-dom': 6.8.0
+      '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
+      solid-js: 1.9.9
+      vitest: 3.2.4(@types/node@24.4.0)(yaml@2.8.1)
+    transitivePeerDependencies:
+      - '@solidjs/router'
+      - '@testing-library/dom'
+    dev: true
 
   /reynard-themes@0.1.1(solid-js@1.9.9):
     resolution: {integrity: sha512-9uRJp0UinEvJEq9QGvW52B3p340EEwB8ap7CnmxVaXZlrUzwrJZ1ae2G89labNo5Fp4gE+UxD703GldXplY+lQ==}
@@ -10692,16 +10724,6 @@ packages:
       smart-buffer: 4.2.0
     dev: true
 
-  /solid-chartjs@1.3.11(chart.js@4.5.0)(solid-js@1.9.9):
-    resolution: {integrity: sha512-m8j4xRTAK/AGwTvyXtUhExZh7CtwvDd6Ad2l3IxDCH/ertPPO0MWn8LhajkKnE2KQP74+4o2sVg8FAMNxitIGw==}
-    peerDependencies:
-      chart.js: ^4.3.0
-      solid-js: ^1.7.5
-    dependencies:
-      chart.js: 4.5.0
-      solid-js: 1.9.9
-    dev: false
-
   /solid-js@1.9.9:
     resolution: {integrity: sha512-A0ZBPJQldAeGCTW0YRYJmt7RCeh5rbFfPZ2aOttgYnctHE7HgKeHCBB/PVc2P7eOfmNXqMFFFoYYdm3S4dcbkA==}
     dependencies:
@@ -10904,6 +10926,13 @@ packages:
   /strip-final-newline@3.0.0:
     resolution: {integrity: sha512-dOESqjYr96iWYylGObzd39EuNTa5VJxyvVAEm5Jnh7KGo75V43Hk1odPQkNDyXNmUR6k+gEiDVXnjB8HJ3crXw==}
     engines: {node: '>=12'}
+    dev: true
+
+  /strip-indent@3.0.0:
+    resolution: {integrity: sha512-laJTa3Jb+VQpaC6DseHhF7dXVqHTfJPCRDaEbid/drOhgitgYku/letMUqOXFoWV0zIIUbjpdH2t+tYj4bQMRQ==}
+    engines: {node: '>=8'}
+    dependencies:
+      min-indent: 1.0.1
     dev: true
 
   /strip-json-comments@3.1.1:
@@ -11367,8 +11396,8 @@ packages:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
     dev: true
 
-  /undici-types@7.10.0:
-    resolution: {integrity: sha512-t5Fy/nfn+14LuOc2KNYg75vZqClpAiqscVvMygNnlsHBFpSXdJaYtXMcdNLpl/Qvc3P2cB3s6lOV51nqsFq4ag==}
+  /undici-types@7.11.0:
+    resolution: {integrity: sha512-kt1ZriHTi7MU+Z/r9DOdAI3ONdaR3M3csEaRc6ewa4f4dTvX4cQCbJ4NkEn0ohE4hHtq85+PhPSTY+pO/1PwgA==}
     dev: true
 
   /unicorn-magic@0.1.0:
@@ -11499,7 +11528,7 @@ packages:
       - terser
     dev: true
 
-  /vite-node@3.2.4(@types/node@24.3.1)(tsx@4.20.5):
+  /vite-node@3.2.4(@types/node@24.4.0):
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
@@ -11508,7 +11537,7 @@ packages:
       debug: 4.4.1(supports-color@5.5.0)
       es-module-lexer: 1.7.0
       pathe: 2.0.3
-      vite: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -11524,7 +11553,57 @@ packages:
       - yaml
     dev: true
 
-  /vite-plugin-dts@4.5.4(@types/node@24.3.1)(typescript@5.9.2)(vite@7.1.5):
+  /vite-node@3.2.4(@types/node@24.4.0)(tsx@4.20.5):
+    resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    hasBin: true
+    dependencies:
+      cac: 6.7.14
+      debug: 4.4.1(supports-color@5.5.0)
+      es-module-lexer: 1.7.0
+      pathe: 2.0.3
+      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
+    transitivePeerDependencies:
+      - '@types/node'
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - yaml
+    dev: true
+
+  /vite-node@3.2.4(@types/node@24.4.0)(yaml@2.8.1):
+    resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    hasBin: true
+    dependencies:
+      cac: 6.7.14
+      debug: 4.4.1(supports-color@5.5.0)
+      es-module-lexer: 1.7.0
+      pathe: 2.0.3
+      vite: 7.1.5(@types/node@24.4.0)(yaml@2.8.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - jiti
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - yaml
+    dev: true
+
+  /vite-plugin-dts@4.5.4(@types/node@24.4.0)(typescript@5.9.2)(vite@7.1.5):
     resolution: {integrity: sha512-d4sOM8M/8z7vRXHHq/ebbblfaxENjogAAekcfcDCCwAyvGqnPrc7f4NZbvItS+g4WTgerW0xDwSz5qz11JT3vg==}
     peerDependencies:
       typescript: '*'
@@ -11533,7 +11612,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      '@microsoft/api-extractor': 7.52.12(@types/node@24.3.1)
+      '@microsoft/api-extractor': 7.52.12(@types/node@24.4.0)
       '@rollup/pluginutils': 5.3.0
       '@volar/typescript': 2.4.23
       '@vue/language-core': 2.2.0(typescript@5.9.2)
@@ -11543,7 +11622,7 @@ packages:
       local-pkg: 1.1.2
       magic-string: 0.30.19
       typescript: 5.9.2
-      vite: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
     transitivePeerDependencies:
       - '@types/node'
       - rollup
@@ -11566,7 +11645,7 @@ packages:
       merge-anything: 5.1.7
       solid-js: 1.9.9
       solid-refresh: 0.6.3(solid-js@1.9.9)
-      vite: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vitefu: 1.1.1(vite@7.1.5)
     transitivePeerDependencies:
       - supports-color
@@ -11662,7 +11741,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vite@7.1.5(@types/node@24.3.1)(tsx@4.20.5):
+  /vite@7.1.5(@types/node@24.4.0)(tsx@4.20.5):
     resolution: {integrity: sha512-4cKBO9wR75r0BeIWWWId9XK9Lj6La5X846Zw9dFfzMRw38IlTk2iCcUt6hsyiDRcPidc55ZParFYDXi0nXOeLQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
@@ -11702,7 +11781,7 @@ packages:
       yaml:
         optional: true
     dependencies:
-      '@types/node': 24.3.1
+      '@types/node': 24.4.0
       esbuild: 0.25.9
       fdir: 6.5.0(picomatch@4.0.3)
       picomatch: 4.0.3
@@ -11710,6 +11789,58 @@ packages:
       rollup: 4.50.1
       tinyglobby: 0.2.15
       tsx: 4.20.5
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: true
+
+  /vite@7.1.5(@types/node@24.4.0)(yaml@2.8.1):
+    resolution: {integrity: sha512-4cKBO9wR75r0BeIWWWId9XK9Lj6La5X846Zw9dFfzMRw38IlTk2iCcUt6hsyiDRcPidc55ZParFYDXi0nXOeLQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^20.19.0 || >=22.12.0
+      jiti: '>=1.21.0'
+      less: ^4.0.0
+      lightningcss: ^1.21.0
+      sass: ^1.70.0
+      sass-embedded: ^1.70.0
+      stylus: '>=0.54.8'
+      sugarss: ^5.0.0
+      terser: ^5.16.0
+      tsx: ^4.8.1
+      yaml: ^2.4.2
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      jiti:
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      sass-embedded:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+      tsx:
+        optional: true
+      yaml:
+        optional: true
+    dependencies:
+      '@types/node': 24.4.0
+      esbuild: 0.25.9
+      fdir: 6.5.0(picomatch@4.0.3)
+      picomatch: 4.0.3
+      postcss: 8.5.6
+      rollup: 4.50.1
+      tinyglobby: 0.2.15
+      yaml: 2.8.1
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
@@ -11722,7 +11853,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
+      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
     dev: true
 
   /vitest@1.6.1(@types/node@20.19.13):
@@ -11782,7 +11913,7 @@ packages:
       - terser
     dev: true
 
-  /vitest@3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1):
+  /vitest@3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1):
     resolution: {integrity: sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
@@ -11811,7 +11942,7 @@ packages:
         optional: true
     dependencies:
       '@types/chai': 5.2.2
-      '@types/node': 24.3.1
+      '@types/node': 24.4.0
       '@vitest/expect': 3.2.4
       '@vitest/mocker': 3.2.4(vite@7.1.5)
       '@vitest/pretty-format': 3.2.4
@@ -11833,8 +11964,8 @@ packages:
       tinyglobby: 0.2.15
       tinypool: 1.1.1
       tinyrainbow: 2.0.0
-      vite: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
-      vite-node: 3.2.4(@types/node@24.3.1)(tsx@4.20.5)
+      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
+      vite-node: 3.2.4(@types/node@24.4.0)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
       - jiti
@@ -11851,7 +11982,7 @@ packages:
       - yaml
     dev: true
 
-  /vitest@3.2.4(@types/node@24.3.1)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(tsx@4.20.5):
+  /vitest@3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(tsx@4.20.5):
     resolution: {integrity: sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
@@ -11880,7 +12011,7 @@ packages:
         optional: true
     dependencies:
       '@types/chai': 5.2.2
-      '@types/node': 24.3.1
+      '@types/node': 24.4.0
       '@vitest/expect': 3.2.4
       '@vitest/mocker': 3.2.4(vite@7.1.5)
       '@vitest/pretty-format': 3.2.4
@@ -11902,8 +12033,8 @@ packages:
       tinyglobby: 0.2.15
       tinypool: 1.1.1
       tinyrainbow: 2.0.0
-      vite: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
-      vite-node: 3.2.4(@types/node@24.3.1)(tsx@4.20.5)
+      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
+      vite-node: 3.2.4(@types/node@24.4.0)(tsx@4.20.5)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
       - jiti
@@ -11920,7 +12051,7 @@ packages:
       - yaml
     dev: true
 
-  /vitest@3.2.4(@types/node@24.3.1)(happy-dom@18.0.1)(jsdom@26.1.0):
+  /vitest@3.2.4(@types/node@24.4.0)(happy-dom@18.0.1)(jsdom@26.1.0):
     resolution: {integrity: sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
@@ -11949,7 +12080,7 @@ packages:
         optional: true
     dependencies:
       '@types/chai': 5.2.2
-      '@types/node': 24.3.1
+      '@types/node': 24.4.0
       '@vitest/expect': 3.2.4
       '@vitest/mocker': 3.2.4(vite@7.1.5)
       '@vitest/pretty-format': 3.2.4
@@ -11971,8 +12102,75 @@ packages:
       tinyglobby: 0.2.15
       tinypool: 1.1.1
       tinyrainbow: 2.0.0
-      vite: 7.1.5(@types/node@24.3.1)(tsx@4.20.5)
-      vite-node: 3.2.4(@types/node@24.3.1)(tsx@4.20.5)
+      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
+      vite-node: 3.2.4(@types/node@24.4.0)
+      why-is-node-running: 2.3.0
+    transitivePeerDependencies:
+      - jiti
+      - less
+      - lightningcss
+      - msw
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - yaml
+    dev: true
+
+  /vitest@3.2.4(@types/node@24.4.0)(yaml@2.8.1):
+    resolution: {integrity: sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@types/debug': ^4.1.12
+      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
+      '@vitest/browser': 3.2.4
+      '@vitest/ui': 3.2.4
+      happy-dom: '*'
+      jsdom: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@types/debug':
+        optional: true
+      '@types/node':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+    dependencies:
+      '@types/chai': 5.2.2
+      '@types/node': 24.4.0
+      '@vitest/expect': 3.2.4
+      '@vitest/mocker': 3.2.4(vite@7.1.5)
+      '@vitest/pretty-format': 3.2.4
+      '@vitest/runner': 3.2.4
+      '@vitest/snapshot': 3.2.4
+      '@vitest/spy': 3.2.4
+      '@vitest/utils': 3.2.4
+      chai: 5.3.3
+      debug: 4.4.1(supports-color@5.5.0)
+      expect-type: 1.2.2
+      magic-string: 0.30.19
+      pathe: 2.0.3
+      picomatch: 4.0.3
+      std-env: 3.9.0
+      tinybench: 2.9.0
+      tinyexec: 0.3.2
+      tinyglobby: 0.2.15
+      tinypool: 1.1.1
+      tinyrainbow: 2.0.0
+      vite: 7.1.5(@types/node@24.4.0)(yaml@2.8.1)
+      vite-node: 3.2.4(@types/node@24.4.0)(yaml@2.8.1)
       why-is-node-running: 2.3.0
     transitivePeerDependencies:
       - jiti

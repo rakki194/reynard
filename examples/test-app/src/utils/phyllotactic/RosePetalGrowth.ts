@@ -28,6 +28,12 @@ export class RosePetalGrowthSystem {
       colorVariation: 0.3,
       petalLayers: 3,
       animationSpeed: 1.0,
+      // Natural growth defaults
+      growthMode: 'gaussian',
+      unfoldSpeed: 0.03,
+      lobeSeparationSpeed: 0.01,
+      bundleGrowthDelay: 0.2,
+      sepalVisibility: true,
       ...config
     };
     

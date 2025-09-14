@@ -6,40 +6,33 @@
 
 import type { Component } from "solid-js";
 import { LabelSelector } from "./LabelSelector";
+import type { EditorConfig } from "../types";
 
 export interface EditorToolbarProps {
-  availableLabels: string[];
-  selectedLabel: string;
-  onLabelChange: (label: string) => void;
-  onAddLabel: (label: string) => void;
-  onClearAll: () => void;
+  config: EditorConfig;
+  selectedLabelClass: string;
+  onLabelClassChange: (label: string) => void;
   className?: string;
 }
 
 export const EditorToolbar: Component<EditorToolbarProps> = (props) => {
   const {
-    availableLabels,
-    selectedLabel,
-    onLabelChange,
-    onAddLabel,
-    onClearAll,
+    config,
+    selectedLabelClass,
+    onLabelClassChange,
     className = "",
   } = props;
 
   return (
     <div class={`editor-toolbar ${className}`}>
-      <LabelSelector
-        availableLabels={availableLabels}
-        selectedLabel={selectedLabel}
-        onLabelChange={onLabelChange}
-        onAddLabel={onAddLabel}
-        className="label-selector"
-      />
-
-      <div class="toolbar-actions">
-        <button class="clear-button" onClick={onClearAll}>
-          Clear All
-        </button>
+      <div class="toolbar-section">
+        <label for="label-selector">Label Class:</label>
+        <LabelSelector
+          availableLabels={config.labelClasses || ["person", "vehicle", "animal", "object"]}
+          selectedLabel={selectedLabelClass}
+          onLabelChange={onLabelClassChange}
+          className="label-selector"
+        />
       </div>
     </div>
   );

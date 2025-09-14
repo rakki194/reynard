@@ -94,6 +94,17 @@ def create_access_token_sync(
         # Use username as sub if available, otherwise use a default
         token_data["sub"] = token_data.get("username", "anonymous")
     
+    # Store custom fields in metadata to preserve them through Gatekeeper verification
+    metadata = {}
+    gatekeeper_fields = {"sub", "role", "type", "exp", "iat", "jti", "metadata"}
+    for key, value in token_data.items():
+        if key not in gatekeeper_fields and key != "sub":
+            metadata[key] = value
+    
+    # Add metadata to token data
+    if metadata:
+        token_data["metadata"] = metadata
+    
     # Filter out sensitive fields that shouldn't be in tokens
     sensitive_fields = {"password", "secret_key", "secret", "api_key", "private_key"}
     for field in sensitive_fields:
@@ -131,6 +142,17 @@ def create_refresh_token_sync(
         # Use username as sub if available, otherwise use a default
         token_data["sub"] = token_data.get("username", "anonymous")
     
+    # Store custom fields in metadata to preserve them through Gatekeeper verification
+    metadata = {}
+    gatekeeper_fields = {"sub", "role", "type", "exp", "iat", "jti", "metadata"}
+    for key, value in token_data.items():
+        if key not in gatekeeper_fields and key != "sub":
+            metadata[key] = value
+    
+    # Add metadata to token data
+    if metadata:
+        token_data["metadata"] = metadata
+    
     # Filter out sensitive fields that shouldn't be in tokens
     sensitive_fields = {"password", "secret_key", "secret", "api_key", "private_key"}
     for field in sensitive_fields:
@@ -165,6 +187,11 @@ def verify_token_sync(token: str, token_type: str = "access") -> Optional[Dict[s
         # Get the raw JWT payload from model_dump() which contains all fields
         result_dict = result.model_dump()
         payload_dict = result_dict.get('payload', {})
+        
+        # Extract custom fields from metadata
+        metadata = payload_dict.get('metadata', {})
+        for key, value in metadata.items():
+            payload_dict[key] = value
         
         # Add username field for backward compatibility if it's not present
         # Only add if username wasn't in the original token data

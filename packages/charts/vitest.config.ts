@@ -1,8 +1,54 @@
-import { createComponentTestConfig } from "reynard-testing/config";
 import { defineConfig } from "vitest/config";
 import solid from "vite-plugin-solid";
 
-const baseConfig = createComponentTestConfig("reynard-charts");
+// Base configuration for component testing
+const baseConfig = {
+  plugins: [solid()],
+  test: {
+    environment: "happy-dom",
+    globals: true,
+    setupFiles: ["./test/setup.ts"],
+    environmentOptions: {
+      happyDOM: {
+        url: "http://localhost:3000",
+        settings: {
+          disableJavaScriptFileLoading: true,
+          disableJavaScriptEvaluation: true,
+          disableCSSFileLoading: true,
+        },
+      },
+    },
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html", "lcov"],
+      thresholds: {
+        global: {
+          branches: 85,
+          functions: 90,
+          lines: 90,
+          statements: 90,
+        },
+      },
+      exclude: [
+        "node_modules/",
+        "dist/",
+        "coverage/",
+        "**/*.d.ts",
+        "**/*.config.*",
+        "**/test-setup.ts",
+        "**/fixtures/**",
+        "**/mocks/**",
+      ],
+    },
+    testTimeout: 10000,
+    hookTimeout: 10000,
+  },
+  resolve: {
+    alias: {
+      "~": new URL("./src", import.meta.url).pathname,
+    },
+  },
+};
 
 export default defineConfig({
   ...baseConfig,

@@ -9,7 +9,7 @@ import re
 import html
 import logging
 from typing import Any, Dict, List, Optional, Union
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 logger = logging.getLogger(__name__)
 
@@ -146,15 +146,16 @@ def validate_input_security(input_string: str, field_name: str) -> str:
 class SecureModel(BaseModel):
     """Base model with security enhancements."""
     
-    class Config:
+    model_config = ConfigDict(
         # Prevent arbitrary types
-        arbitrary_types_allowed = False
+        arbitrary_types_allowed=False,
         # Validate assignment
-        validate_assignment = True
+        validate_assignment=True,
         # Use enum values
-        use_enum_values = True
+        use_enum_values=True,
         # Extra fields not allowed
-        extra = 'forbid'
+        extra='forbid'
+    )
 
 
 class SecureUserCreate(SecureModel):

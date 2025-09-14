@@ -3,7 +3,7 @@
  */
 
 import { vi } from "vitest";
-import { setupBaseTest } from "./base-setup";
+import { setupBaseTest } from "./base-setup.js";
 
 /**
  * Create a mock storage implementation

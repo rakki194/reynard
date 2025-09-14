@@ -9,7 +9,7 @@ import {
   isI18nAvailable,
   getI18nModule,
   createMockI18n,
-} from "../../utils/optional-i18n";
+} from "../utils/optional-i18n";
 
 describe("Optional i18n functionality with i18n package", () => {
   beforeEach(() => {
@@ -49,7 +49,7 @@ describe("Optional i18n functionality with i18n package", () => {
     expect(mockI18n.t).toBeDefined();
     expect(mockI18n.setLocale).toBeDefined();
     expect(mockI18n.getLocale).toBeDefined();
-    expect(mockI18n.locale).toBe("en");
+    expect(mockI18n.locale()).toBe("en");
     expect(mockI18n.isRTL).toBe(false);
     expect(mockI18n.languages).toEqual(["en"]);
   });

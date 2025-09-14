@@ -57,7 +57,7 @@
     "reynard-ai-shared": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "24.3.1",
+    "@types/node": "24.4.0",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
     "reynard-testing": "workspace:*",

@@ -31,7 +31,7 @@ print_error() {
 }
 
 # Check if we're in the right directory
-if [ ! -f "package.json" ]; then
+if [[ ! -f "package.json" ]]; then
     print_error "Please run this script from the Reynard root directory"
     exit 1
 fi
@@ -46,12 +46,13 @@ print_status "Setting up Python backend environment..."
 cd backend
 
 # Create virtual environment if it doesn't exist
-if [ ! -d "venv" ]; then
+if [[ ! -d "venv" ]]; then
     python -m venv venv
     print_success "Created Python virtual environment"
 fi
 
 # Activate virtual environment and install dependencies
+# shellcheck source=venv/bin/activate
 source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
@@ -63,10 +64,10 @@ cd ..
 print_status "Setting up environment files..."
 
 # Create backend .env if it doesn't exist
-if [ ! -f "backend/.env" ]; then
+if [[ ! -f "backend/.env" ]]; then
     cat > backend/.env << EOF
 # JWT Configuration
-JWT_SECRET_KEY=$(openssl rand -base64 32)
+JWT_SECRET_KEY=$(openssl rand -base64 32 || echo "fallback-secret-key")
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 REFRESH_TOKEN_EXPIRE_DAYS=7
 
@@ -81,7 +82,7 @@ EOF
 fi
 
 # Create frontend .env if it doesn't exist
-if [ ! -f ".env" ]; then
+if [[ ! -f ".env" ]]; then
     cat > .env << EOF
 # Frontend Environment
 VITE_API_BASE_URL=http://localhost:8000

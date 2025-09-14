@@ -131,7 +131,7 @@ GET requests. Implements adaptive polling intervals and centralized control over
 
 ### 15. **whirling-valley-security-assessment**
 
-**Original:** `blackhat-paper/`  
+**Original:** `fenrir-paper/`  
 **Title:** The Whirling Valley of Crooked Fools  
 **Description:** Automated security assessment conducted on
 the Reynard backend system. Documents penetration testing methodology, vulnerability identification, and

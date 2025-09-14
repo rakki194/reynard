@@ -40,7 +40,11 @@ export interface ChartProps extends ChartConfig {
 }
 
 export const Chart: Component<ChartProps> = (props) => {
+  console.log("🦊 Chart: Component initialized with props", props);
+  
   const [local, others] = splitProps(props, chartPropsToSplit);
+
+  console.log("🦊 Chart: Split props", { local, others });
 
   // Initialize visualization engine
   const visualization = useVisualizationEngine({
@@ -74,9 +78,15 @@ export const Chart: Component<ChartProps> = (props) => {
   const chartData = useChartData(config.chartDataConfig);
 
   const updateChart = () => {
+    console.log("🦊 Chart: updateChart called");
     const { data, options } = chartData.setupChartData();
+    console.log("🦊 Chart: Setting chart data", { data, options });
     chartState.setChartData(data);
     chartState.setChartOptions(options);
+    console.log("🦊 Chart: Chart state after update", {
+      chartData: chartState.chartData(),
+      chartOptions: chartState.chartOptions()
+    });
   };
 
   // Initialize chart lifecycle
@@ -105,5 +115,7 @@ export const Chart: Component<ChartProps> = (props) => {
     onChartRef: chartState.setChartInstance,
   });
 
-  return <ChartRenderer {...renderProps} />;
+  console.log("🦊 Chart: About to render ChartRenderer with props", renderProps());
+  
+  return <ChartRenderer {...renderProps()} />;
 };

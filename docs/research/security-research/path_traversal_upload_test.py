@@ -12,9 +12,9 @@ USERNAME = os.environ.get("YIPYAP_USERNAME", "")  # set or pass via env/args
 PASSWORD = os.environ.get("YIPYAP_PASSWORD", "")  # set or pass via env/args
 
 # Target write outside ROOT_DIR (PoC targets project folder to avoid system files)
-POC_ABS_TARGET = "/home/kade/code/yipyap/blackhat/traversal_poc.png"
+POC_ABS_TARGET = "/home/kade/code/yipyap/fenrir/traversal_poc.png"
 # From default ROOT_DIR (/home/kade/datasets) this should be reachable with one '..'
-TRAVERSAL_FILENAME = "../code/yipyap/blackhat/traversal_poc.png"
+TRAVERSAL_FILENAME = "../code/yipyap/fenrir/traversal_poc.png"
 
 # Minimal valid PNG bytes (1x1)
 DUMMY_PNG = (

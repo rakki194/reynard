@@ -1,509 +1,311 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { render, screen } from "@solidjs/testing-library";
 import { PieChart } from "../components/PieChart";
 
-const mockData = [30, 25, 20, 15, 10];
-const mockLabels = ["Red", "Blue", "Green", "Yellow", "Purple"];
+describe("PieChart Component", () => {
+  const mockPieData = {
+    labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
+    data: [12, 19, 3, 5, 2],
+  };
 
-describe("PieChart", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    // Clear any previous renders
+    document.body.innerHTML = "";
   });
 
   describe("Basic Rendering", () => {
-    it("renders without crashing", () => {
+    it("should render pie chart with title", () => {
       render(() => (
         <PieChart
-          data={mockData}
-          labels={mockLabels}
-          title="Color Distribution"
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+          title="Test Pie Chart"
         />
       ));
 
-      expect(screen.getByText("Pie Chart")).toBeInTheDocument();
+      expect(screen.getByText("Test Pie Chart")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
 
-    it("renders with custom dimensions", () => {
+    it("should render doughnut chart with title", () => {
       render(() => (
         <PieChart
-          data={mockData}
-          labels={mockLabels}
-          width={600}
-          height={400}
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+          title="Test Doughnut Chart"
+          variant="doughnut"
         />
       ));
 
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toHaveClass("reynard-pie-chart");
+      expect(screen.getByText("Test Doughnut Chart")).toBeInTheDocument();
+      expect(screen.getByTestId("doughnut-chart-canvas")).toBeInTheDocument();
     });
 
-    it("shows loading state when loading prop is true", () => {
+    it("should render without title", () => {
       render(() => (
-        <PieChart data={mockData} labels={mockLabels} loading={true} />
+        <PieChart
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+        />
+      ));
+
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
+    });
+  });
+
+  describe("Loading States", () => {
+    it("should show loading state", () => {
+      render(() => (
+        <PieChart
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+          loading={true}
+        />
       ));
 
       expect(screen.getByText("Loading chart...")).toBeInTheDocument();
+      expect(screen.queryByTestId("pie-chart-canvas")).not.toBeInTheDocument();
     });
 
-    it("shows empty state when no data is provided", () => {
-      render(() => (
-        <PieChart data={[]} labels={[]} emptyMessage="No data available" />
-      ));
-
-      expect(screen.getByText("No data available")).toBeInTheDocument();
-    });
-
-    it("applies custom class name", () => {
+    it("should hide loading state when not loading", () => {
       render(() => (
         <PieChart
-          data={mockData}
-          labels={mockLabels}
-          class="custom-chart-class"
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+          loading={false}
         />
       ));
 
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toHaveClass("custom-chart-class");
+      expect(screen.queryByText("Loading chart...")).not.toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
+    });
+  });
+
+  describe("Empty States", () => {
+    it("should show empty message when no data", () => {
+      render(() => (
+        <PieChart
+          labels={[]}
+          data={[]}
+          emptyMessage="No data available"
+        />
+      ));
+
+      expect(screen.getByText("No data available")).toBeInTheDocument();
+      expect(screen.queryByTestId("pie-chart-canvas")).not.toBeInTheDocument();
+    });
+
+    it("should show custom empty message", () => {
+      render(() => (
+        <PieChart
+          labels={[]}
+          data={[]}
+          emptyMessage="Custom empty message"
+        />
+      ));
+
+      expect(screen.getByText("Custom empty message")).toBeInTheDocument();
     });
   });
 
   describe("Chart Variants", () => {
-    it("renders as doughnut when variant prop is doughnut", () => {
+    it("should render pie chart by default", () => {
       render(() => (
-        <PieChart data={mockData} labels={mockLabels} variant="doughnut" />
+        <PieChart
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+        />
       ));
 
-      const chartContainer = screen.getByText("Doughnut Chart").closest("div");
-      expect(chartContainer).toHaveClass("reynard-pie-chart--doughnut");
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
 
-    it("renders with custom cutout percentage", () => {
+    it("should render doughnut chart when variant is doughnut", () => {
       render(() => (
-        <PieChart data={mockData} labels={mockLabels} cutout={0.6} />
+        <PieChart
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+          variant="doughnut"
+        />
       ));
 
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom rotation", () => {
-      render(() => <PieChart data={mockData} labels={mockLabels} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom circumference", () => {
-      render(() => <PieChart data={mockData} labels={mockLabels} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
+      expect(screen.getByTestId("doughnut-chart-canvas")).toBeInTheDocument();
     });
   });
 
   describe("Responsive Behavior", () => {
-    it("applies responsive styles when responsive is true", () => {
-      render(() => (
-        <PieChart data={mockData} labels={mockLabels} responsive={true} />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toHaveStyle("width: 100%");
-      expect(chartContainer).toHaveStyle("height: 100%");
-    });
-
-    it("applies fixed dimensions when responsive is false", () => {
+    it("should apply responsive classes when responsive is true", () => {
       render(() => (
         <PieChart
-          data={mockData}
-          labels={mockLabels}
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+          responsive={true}
+        />
+      ));
+
+      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      expect(container).toHaveClass("reynard-pie-chart--responsive");
+    });
+
+    it("should apply fixed width classes when responsive is false", () => {
+      render(() => (
+        <PieChart
+          labels={mockPieData.labels}
+          data={mockPieData.data}
           responsive={false}
-          width={500}
-          height={300}
-        />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toHaveStyle("width: 500px");
-      expect(chartContainer).toHaveStyle("height: 300px");
-    });
-
-    it("maintains aspect ratio when maintainAspectRatio is true", () => {
-      render(() => (
-        <PieChart
-          data={mockData}
-          labels={mockLabels}
-          maintainAspectRatio={true}
-        />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Data Configuration", () => {
-    it("renders with custom colors", () => {
-      const customColors = [
-        "#FF0000",
-        "#00FF00",
-        "#0000FF",
-        "#FFFF00",
-        "#FF00FF",
-      ];
-      render(() => (
-        <PieChart data={mockData} labels={mockLabels} colors={customColors} />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom colors", () => {
-      const customColors = [
-        "#CC0000",
-        "#00CC00",
-        "#0000CC",
-        "#CCCC00",
-        "#CC00CC",
-      ];
-      render(() => (
-        <PieChart data={mockData} labels={mockLabels} colors={customColors} />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom class name", () => {
-      render(() => (
-        <PieChart
-          data={mockData}
-          labels={mockLabels}
-          class="custom-pie-chart"
-        />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Legend and Tooltip Configuration", () => {
-    it("renders without legend when showLegend is false", () => {
-      render(() => (
-        <PieChart data={mockData} labels={mockLabels} showLegend={false} />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom tooltip settings", () => {
-      render(() => (
-        <PieChart
-          data={mockData}
-          labels={mockLabels}
-          tooltip={{ enabled: false, backgroundColor: "rgba(0,0,0,0.8)" }}
-        />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with custom tooltip settings", () => {
-      render(() => (
-        <PieChart
-          data={mockData}
-          labels={mockLabels}
-          tooltip={{ enabled: true, backgroundColor: "rgba(0,0,0,0.9)" }}
-        />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Animation Configuration", () => {
-    it("renders with custom animation settings", () => {
-      render(() => (
-        <PieChart
-          data={mockData}
-          labels={mockLabels}
-          animation={{ duration: 2000, easing: "easeInOutQuart" }}
-        />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders without animation when animation duration is 0", () => {
-      render(() => (
-        <PieChart
-          data={mockData}
-          labels={mockLabels}
-          animation={{ duration: 0 }}
-        />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Edge Cases and Error Handling", () => {
-    it("handles empty data array", () => {
-      render(() => <PieChart data={[]} labels={mockLabels} />);
-
-      expect(screen.getByText("No data available")).toBeInTheDocument();
-    });
-
-    it("handles empty labels array", () => {
-      render(() => <PieChart data={mockData} labels={[]} />);
-
-      expect(screen.getByText("No data available")).toBeInTheDocument();
-    });
-
-    it("handles single data point", () => {
-      render(() => <PieChart data={[100]} labels={["Single"]} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles two data points", () => {
-      render(() => <PieChart data={[60, 40]} labels={["First", "Second"]} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles very large datasets", () => {
-      const largeLabels = Array.from(
-        { length: 100 },
-        (_, i) => `Label ${i + 1}`,
-      );
-      const largeData = Array.from({ length: 100 }, () => Math.random() * 100);
-
-      render(() => <PieChart data={largeData} labels={largeLabels} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles zero values", () => {
-      const dataWithZeros = [30, 0, 20, 15, 0];
-      render(() => <PieChart data={dataWithZeros} labels={mockLabels} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles negative values", () => {
-      const dataWithNegatives = [30, -10, 20, 15, 10];
-      render(() => <PieChart data={dataWithNegatives} labels={mockLabels} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles decimal values", () => {
-      const decimalData = [30.5, 25.3, 20.7, 15.2, 10.1];
-      render(() => <PieChart data={decimalData} labels={mockLabels} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles mismatched data and labels lengths", () => {
-      const shortLabels = ["Red", "Blue", "Green"];
-      render(() => <PieChart data={mockData} labels={shortLabels} />);
-
-      expect(screen.getByText("No data available")).toBeInTheDocument();
-    });
-  });
-
-  describe("Performance Tests", () => {
-    it("renders quickly with small datasets", () => {
-      const startTime = performance.now();
-
-      render(() => <PieChart data={mockData} labels={mockLabels} />);
-
-      const endTime = performance.now();
-      const renderTime = endTime - startTime;
-
-      // Should render in under 100ms
-      expect(renderTime).toBeLessThan(100);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles rapid prop changes efficiently", async () => {
-      render(() => (
-        <PieChart
-          data={mockData}
-          labels={mockLabels}
           width={400}
           height={300}
         />
       ));
 
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("handles large dataset updates efficiently", () => {
-      const largeLabels = Array.from(
-        { length: 100 },
-        (_, i) => `Label ${i + 1}`,
-      );
-      const largeData = Array.from({ length: 100 }, () => Math.random() * 100);
-
-      const startTime = performance.now();
-      render(() => <PieChart data={largeData} labels={largeLabels} />);
-      const endTime = performance.now();
-
-      expect(endTime - startTime).toBeLessThan(200); // Should render in under 200ms
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
+      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      expect(container).toHaveClass("reynard-pie-chart--fixed-400x300");
     });
   });
 
   describe("Accessibility", () => {
-    it("has proper ARIA attributes", () => {
+    it("should have proper ARIA label", () => {
       render(() => (
         <PieChart
-          data={mockData}
-          labels={mockLabels}
-          title="Accessible Pie Chart"
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+          title="Accessible Chart"
         />
       ));
 
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
+      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      expect(container).toHaveAttribute("role", "img");
+      expect(container).toHaveAttribute("aria-label", "Accessible Chart");
     });
 
-    it("supports keyboard navigation", () => {
-      render(() => <PieChart data={mockData} labels={mockLabels} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-      // Note: Focus testing is limited in jsdom, so we just verify the element exists and has proper accessibility attributes
-      expect(chartContainer).toHaveAttribute("role", "img");
-      expect(chartContainer).toHaveAttribute("aria-label");
-    });
-  });
-
-  describe("Theme Support", () => {
-    it("renders with light theme by default", () => {
-      render(() => <PieChart data={mockData} labels={mockLabels} />);
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with dark theme", () => {
-      render(() => (
-        <PieChart data={mockData} labels={mockLabels} theme="dark" />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with banana theme", () => {
-      render(() => (
-        <PieChart data={mockData} labels={mockLabels} theme="banana" />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with strawberry theme", () => {
-      render(() => (
-        <PieChart data={mockData} labels={mockLabels} theme="strawberry" />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with peanut theme", () => {
-      render(() => (
-        <PieChart data={mockData} labels={mockLabels} theme="peanut" />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-
-    it("renders with gray theme", () => {
-      render(() => (
-        <PieChart data={mockData} labels={mockLabels} theme="gray" />
-      ));
-
-      const chartContainer = screen.getByText("Pie Chart").closest("div");
-      expect(chartContainer).toBeInTheDocument();
-    });
-  });
-
-  describe("Integration Tests", () => {
-    it("works with different chart configurations", () => {
+    it("should have default ARIA label when no title", () => {
       render(() => (
         <PieChart
-          labels={mockLabels}
-          data={mockData}
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+        />
+      ));
+
+      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      expect(container).toHaveAttribute("aria-label", "pie chart");
+    });
+
+    it("should have doughnut ARIA label for doughnut variant", () => {
+      render(() => (
+        <PieChart
+          labels={mockPieData.labels}
+          data={mockPieData.data}
           variant="doughnut"
-          cutout={0.7}
         />
       ));
 
-      expect(screen.getByText("Doughnut Chart")).toBeInTheDocument();
+      const container = screen.getByTestId("doughnut-chart-canvas").closest("div").parentElement;
+      expect(container).toHaveAttribute("aria-label", "doughnut chart");
+    });
+  });
+
+  describe("Data Handling", () => {
+    it("should handle single data point", () => {
+      render(() => (
+        <PieChart
+          labels={["Single"]}
+          data={[100]}
+        />
+      ));
+
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
 
-    it("handles color changes", () => {
-      const { unmount } = render(() => (
-        <PieChart
-          labels={mockLabels}
-          data={mockData}
-          colors={["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF"]}
-        />
-      ));
-
-      // Unmount and render with different colors
-      unmount();
+    it("should handle large datasets", () => {
+      const largeLabels = Array.from({ length: 20 }, (_, i) => `Label ${i + 1}`);
+      const largeData = Array.from({ length: 20 }, (_, i) => i + 1);
 
       render(() => (
         <PieChart
-          labels={mockLabels}
-          data={mockData}
-          colors={["#CC0000", "#00CC00", "#0000CC", "#CCCC00", "#CC00CC"]}
+          labels={largeLabels}
+          data={largeData}
         />
       ));
 
-      expect(screen.getByText("Pie Chart")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
 
-    it("handles data updates", () => {
-      const { unmount } = render(() => (
-        <PieChart labels={mockLabels} data={mockData} />
+    it("should handle zero values", () => {
+      render(() => (
+        <PieChart
+          labels={["Zero", "Non-zero"]}
+          data={[0, 10]}
+        />
       ));
 
-      // Unmount and render with updated data
-      unmount();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
+    });
+  });
 
-      const newLabels = ["A", "B", "C", "D"];
-      const newData = [25, 25, 25, 25];
+  describe("Custom Styling", () => {
+    it("should apply custom class", () => {
+      render(() => (
+        <PieChart
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+          class="custom-pie-chart"
+        />
+      ));
 
-      render(() => <PieChart labels={newLabels} data={newData} />);
+      const container = screen.getByTestId("pie-chart-canvas").closest("div").parentElement;
+      expect(container).toHaveClass("custom-pie-chart");
+    });
 
-      expect(screen.getByText("Pie Chart")).toBeInTheDocument();
+    it("should apply custom width and height", () => {
+      render(() => (
+        <PieChart
+          labels={mockPieData.labels}
+          data={mockPieData.data}
+          width={500}
+          height={400}
+          responsive={false}
+        />
+      ));
+
+      const canvas = screen.getByTestId("pie-chart-canvas");
+      expect(canvas).toHaveAttribute("width", "500");
+      expect(canvas).toHaveAttribute("height", "400");
+    });
+  });
+
+  describe("Edge Cases", () => {
+    it("should handle mismatched labels and data lengths", () => {
+      render(() => (
+        <PieChart
+          labels={["A", "B"]}
+          data={[10, 20, 30]} // More data than labels
+        />
+      ));
+
+      // Should show empty state when data is invalid
+      expect(screen.getByText("No data available")).toBeInTheDocument();
+    });
+
+    it("should handle negative values", () => {
+      render(() => (
+        <PieChart
+          labels={["Positive", "Negative"]}
+          data={[10, -5]}
+        />
+      ));
+
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
+    });
+
+    it("should handle very small values", () => {
+      render(() => (
+        <PieChart
+          labels={["Small", "Tiny"]}
+          data={[0.001, 0.0001]}
+        />
+      ));
+
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
   });
 });

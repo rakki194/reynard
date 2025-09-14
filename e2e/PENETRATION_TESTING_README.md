@@ -1,7 +1,7 @@
 # 🐺 REYNARD PENETRATION TESTING SUITE
 
 _snarls with predatory glee_ Welcome to
-the ultimate security testing framework! This suite integrates the blackhat exploit framework with
+the ultimate security testing framework! This suite integrates the fenrir exploit framework with
 E2E authentication tests to provide comprehensive penetration testing of the Reynard ecosystem.
 
 ## ⚠️ WARNING: DESTRUCTIVE TESTING
@@ -46,10 +46,19 @@ _bares fangs with savage satisfaction_ These tests are designed to ACTUALLY BREA
 
 ### 5. **Comprehensive Fuzzing**
 
-- Advanced payload generation with 1000+ attack vectors
-- Endpoint-specific fuzzing for authentication, file uploads, and search
-- SQL injection, XSS, path traversal, and command injection payloads
-- Asynchronous testing with concurrent request handling
+- **Modular Fuzzing Framework**: Clean, organized structure with specialized fuzzers
+- **Specialized Attack Modules**:
+  - Embedding Visualization Fuzzer (8 endpoints)
+  - Diffusion Fuzzer (10 endpoints)
+  - Lazy Loading Fuzzer (12 endpoints)
+  - HuggingFace Cache Fuzzer (8 endpoints)
+  - Secure Authentication Fuzzer (6 endpoints)
+  - Secure Ollama Fuzzer (7 endpoints)
+  - Secure Summarization Fuzzer (10 endpoints)
+  - WebSocket Fuzzer (real-time endpoints)
+- **Advanced Payload Generation**: 1000+ attack vectors with specialized targeting
+- **Comprehensive Coverage**: All previously unfuzzed endpoints now covered
+- **Asynchronous Testing**: Concurrent request handling with coordinated attacks
 
 ### 6. **API Security Testing**
 
@@ -83,8 +92,8 @@ npm install
 # Install Playwright browsers
 npm run install:browsers
 
-# Install Python dependencies for blackhat suite
-cd ../blackhat
+# Install Python dependencies for fenrir suite
+cd ../fenrir
 pip install -r requirements.txt
 cd ../e2e
 ```
@@ -114,17 +123,17 @@ VERBOSE_TESTING=true npm run test:penetration
 DESTRUCTIVE_TESTING=true npm run test:penetration
 ```
 
-#### 3. **Blackhat Suite Only**
+#### 3. **Fenrir Suite Only**
 
 ```bash
-# Run blackhat exploits directly
-npm run blackhat:test
+# Run fenrir exploits directly
+npm run fenrir:test
 
 # Run with verbose output
-npm run blackhat:test:verbose
+npm run fenrir:test:verbose
 
 # Run destructive tests
-npm run blackhat:test:destructive
+npm run fenrir:test:destructive
 ```
 
 #### 4. **Complete Security Assessment**
@@ -199,10 +208,10 @@ npm run test:report
 - **Penetration Tests**: `penetration-tests.spec.ts`
 - **Helpers**: `utils/penetration-helpers.ts`
 
-### Blackhat Integration
+### Fenrir Integration
 
-- **Exploit Suite**: `../blackhat/run_all_exploits.py`
-- **Individual Exploits**: `../blackhat/[category]/[exploit].py`
+- **Exploit Suite**: `../fenrir/run_all_exploits.py`
+- **Individual Exploits**: `../fenrir/[category]/[exploit].py`
 
 ## 🐺 REYNARD INTEGRATION
 
@@ -234,7 +243,7 @@ This penetration testing suite follows Reynard's testing philosophy:
 | SQL Injection       | 4 tests | ✅ Ready |
 | Path Traversal      | 4 tests | ✅ Ready |
 | Authentication      | 3 tests | ✅ Ready |
-| Fuzzing             | 2 tests | ✅ Ready |
+| Fuzzing             | 8 tests | ✅ Ready |
 | API Security        | 1 test  | ✅ Ready |
 | CSRF Testing        | 1 test  | ✅ Ready |
 | SSRF Testing        | 1 test  | ✅ Ready |
@@ -265,7 +274,7 @@ For issues with the penetration testing suite:
 
 1. Check the logs in `penetration-results/`
 2. Review the security report
-3. Verify blackhat suite dependencies
+3. Verify fenrir suite dependencies
 4. Ensure target environment is properly configured
 
 ---

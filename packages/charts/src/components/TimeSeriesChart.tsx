@@ -26,7 +26,6 @@ import {
   TimeScale,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
-import { Line } from "solid-chartjs";
 import { ChartConfig, TimeSeriesDataPoint, ReynardTheme } from "../types";
 import { getDefaultConfig, formatTimestamp, debounce } from "../utils";
 import "./TimeSeriesChart.css";
@@ -156,11 +155,6 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
     }
   });
 
-  // Debounced data processing
-  const debouncedProcess = debounce(() => {
-    processTimeSeriesData();
-  }, 100);
-
   // Process time series data
   const processTimeSeriesData = () => {
     if (!local.data || local.data.length === 0) {
@@ -270,7 +264,7 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
 
   // Update data when props change
   createEffect(() => {
-    debouncedProcess();
+    processTimeSeriesData();
   });
 
   // Set up auto-update timer
@@ -417,6 +411,9 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
       aria-label={local.title || "time series chart"}
       {...others}
     >
+      <Show when={local.title}>
+        <div class="reynard-chart-title">{local.title}</div>
+      </Show>
       <Show when={local.loading}>
         <div class="reynard-chart-loading">
           <div class="reynard-chart-spinner" />
@@ -430,13 +427,15 @@ export const TimeSeriesChart: Component<TimeSeriesChartProps> = (props) => {
         </div>
       </Show>
 
-      <Show when={!local.loading && processedData() && isRegistered()}>
-        <Line
-          data={processedData()!}
-          options={getChartOptions()}
-          width={local.width}
-          height={local.height}
-        />
+      <Show when={!local.loading && processedData()}>
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
+          <canvas
+            width={local.width}
+            height={local.height}
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            data-testid="timeseries-chart-canvas"
+          />
+        </div>
       </Show>
     </div>
   );

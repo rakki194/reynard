@@ -30,7 +30,7 @@ export function throttle<TArgs extends readonly unknown[], TReturn>(
   const { leading = true, trailing = true, maxWait } = options;
 
   const throttled = ((...args: TArgs): TReturn | undefined => {
-    const now = Date.now();
+    const now = performance.now();
     const timeSinceLastExec = now - lastExecTime;
 
     if (timeoutId) {
@@ -52,7 +52,7 @@ export function throttle<TArgs extends readonly unknown[], TReturn>(
 
       timeoutId = window.setTimeout(() => {
         if (lastArgs) {
-          lastExecTime = Date.now();
+          lastExecTime = performance.now();
           lastResult = func(...lastArgs);
           lastArgs = null;
         }
@@ -72,7 +72,7 @@ export function throttle<TArgs extends readonly unknown[], TReturn>(
 
   throttled.flush = () => {
     if (lastArgs) {
-      lastExecTime = Date.now();
+      lastExecTime = performance.now();
       lastResult = func(...lastArgs);
       lastArgs = null;
       return lastResult;
@@ -99,7 +99,7 @@ export function debounce<TArgs extends readonly unknown[], TReturn>(
   const { leading = false, trailing = true, maxWait } = options;
 
   const debounced = ((...args: TArgs): TReturn | undefined => {
-    const now = Date.now();
+    const now = performance.now();
     const timeSinceLastExec = now - lastExecTime;
 
     if (timeoutId) {
@@ -121,7 +121,7 @@ export function debounce<TArgs extends readonly unknown[], TReturn>(
 
       timeoutId = window.setTimeout(() => {
         if (lastArgs) {
-          lastExecTime = Date.now();
+          lastExecTime = performance.now();
           lastResult = func(...lastArgs);
           lastArgs = null;
         }
@@ -141,7 +141,7 @@ export function debounce<TArgs extends readonly unknown[], TReturn>(
 
   debounced.flush = () => {
     if (lastArgs) {
-      lastExecTime = Date.now();
+      lastExecTime = performance.now();
       lastResult = func(...lastArgs);
       lastArgs = null;
       return lastResult;

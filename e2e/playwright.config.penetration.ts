@@ -2,7 +2,7 @@
  * 🐺 PENETRATION TESTING PLAYWRIGHT CONFIGURATION
  *
  * *snarls with predatory glee* Configuration for running penetration tests
- * with blackhat exploits integrated into E2E authentication testing.
+ * with fenrir exploits integrated into E2E authentication testing.
  */
 
 import { defineConfig, devices } from "@playwright/test";

@@ -1,0 +1,50 @@
+# 🐺 RUTHLESS ShellCheck Configuration for Reynard
+# NO MERCY - MAXIMUM PEDANTRY MODE ACTIVATED!
+
+# Shell dialect
+shell=bash
+
+# MINIMUM SEVERITY: STYLE (Catch EVERYTHING!)
+severity=style
+
+# Output format (tty, gcc, json, checkstyle, diff, json1, quiet)
+format=tty
+
+# ENABLE ALL CHECKS - NO EXCEPTIONS!
+enable=all
+
+# DISABLE NOTHING - WE HUNT EVERY VULNERABILITY!
+# disable=
+
+# Exclude patterns (files to skip) - ONLY THIRD PARTY
+exclude-dir=node_modules,.git,venv,backend/venv,third_party,packages/*/node_modules,examples/*/node_modules,templates/*/node_modules
+
+# External sources (for sourced files) - FOLLOW EVERYTHING!
+external-sources=true
+
+# Follow sourced files - NO HIDING!
+follow-sources=true
+
+# Check for unused variables - HUNT DEAD CODE!
+check-unused-vars=true
+
+# Check for unused functions - ELIMINATE WASTE!
+check-unused-functions=true
+
+# Check for unused imports - NO BLOAT!
+check-unused-imports=true
+
+# Enable strict mode suggestions - MAXIMUM STRICTNESS!
+strict-mode=true
+
+# Check for common security issues - HUNT VULNERABILITIES!
+security-checks=true
+
+# Performance optimizations - ELIMINATE SLOW CODE!
+performance-checks=true
+
+# Style suggestions - PERFECT FORMATTING!
+style-checks=true
+
+# Documentation suggestions - DOCUMENT EVERYTHING!
+doc-checks=true

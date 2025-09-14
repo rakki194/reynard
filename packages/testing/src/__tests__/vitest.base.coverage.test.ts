@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { defineConfig } from "vitest/config";
-import { createBaseVitestConfig } from "../vitest.base";
+import { createBaseVitestConfig } from "../config/vitest.base.js";
 
 describe("Vitest Configuration Coverage", () => {
   describe("coverage exclusions", () => {

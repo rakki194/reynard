@@ -16,7 +16,7 @@ ENDPOINTS = [
         "/api/audio/generate-waveform",
         {
             "audio_path": "nonexistent.wav",
-            "output_path": "/home/kade/code/yipyap/blackhat/out_waveform.png",
+            "output_path": "/home/kade/code/yipyap/fenrir/out_waveform.png",
             "width": 10,
             "height": 10,
         },
@@ -25,7 +25,7 @@ ENDPOINTS = [
         "/api/audio/convert",
         {
             "source_path": "nonexistent.wav",
-            "output_path": "/home/kade/code/yipyap/blackhat/out_audio.mp3",
+            "output_path": "/home/kade/code/yipyap/fenrir/out_audio.mp3",
             "target_format": "mp3",
         },
     ),
@@ -33,7 +33,7 @@ ENDPOINTS = [
         "/api/video/generate-thumbnail",
         {
             "video_path": "nonexistent.mp4",
-            "output_path": "/home/kade/code/yipyap/blackhat/out_thumb.jpg",
+            "output_path": "/home/kade/code/yipyap/fenrir/out_thumb.jpg",
             "time": 0.0,
             "width": 2,
             "height": 2,
@@ -43,17 +43,17 @@ ENDPOINTS = [
         "/api/text/convert",
         {
             "source_path": "nonexistent.txt",
-            "output_path": "/home/kade/code/yipyap/blackhat/out_text.html",
+            "output_path": "/home/kade/code/yipyap/fenrir/out_text.html",
             "target_format": "html",
         },
     ),
 ]
 
 TARGETS = [
-    "/home/kade/code/yipyap/blackhat/out_waveform.png",
-    "/home/kade/code/yipyap/blackhat/out_audio.mp3",
-    "/home/kade/code/yipyap/blackhat/out_thumb.jpg",
-    "/home/kade/code/yipyap/blackhat/out_text.html",
+    "/home/kade/code/yipyap/fenrir/out_waveform.png",
+    "/home/kade/code/yipyap/fenrir/out_audio.mp3",
+    "/home/kade/code/yipyap/fenrir/out_thumb.jpg",
+    "/home/kade/code/yipyap/fenrir/out_text.html",
 ]
 
 

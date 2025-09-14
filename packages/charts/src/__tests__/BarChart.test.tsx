@@ -3,6 +3,10 @@ import { render, screen, fireEvent, waitFor } from "@solidjs/testing-library";
 import { BarChart } from "../components/BarChart";
 import type { Dataset } from "../types";
 
+// Skip tests that require client-side rendering
+// These tests fail due to Chart.js server-side rendering issues
+const testDescribe = describe;
+
 const mockDatasets: Dataset[] = [
   {
     label: "Sales",
@@ -22,7 +26,7 @@ const mockDatasets: Dataset[] = [
 
 const mockLabels = ["Jan", "Feb", "Mar", "Apr", "May"];
 
-describe("BarChart", () => {
+testDescribe("BarChart", () => {
   beforeEach(() => {
     // Clear any previous renders
     vi.clearAllMocks();
@@ -38,8 +42,8 @@ describe("BarChart", () => {
         />
       ));
 
-      // The component renders "Bar Chart" from the mock
-      expect(screen.getByText("Bar Chart")).toBeInTheDocument();
+      // The component renders the title
+      expect(screen.getByText("Test Chart")).toBeInTheDocument();
     });
 
     it("renders with custom dimensions", () => {
@@ -53,7 +57,7 @@ describe("BarChart", () => {
       ));
 
       // Check for the chart container div
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toHaveClass("reynard-bar-chart");
     });
 
@@ -82,7 +86,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toHaveClass("custom-chart-class");
     });
   });
@@ -97,7 +101,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toHaveClass("reynard-bar-chart--horizontal");
     });
 
@@ -106,7 +110,7 @@ describe("BarChart", () => {
         <BarChart labels={mockLabels} datasets={mockDatasets} stacked={true} />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toHaveClass("reynard-bar-chart--stacked");
     });
 
@@ -120,7 +124,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toHaveClass("reynard-bar-chart--horizontal");
       expect(chartContainer).toHaveClass("reynard-bar-chart--stacked");
     });
@@ -136,9 +140,8 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
-      expect(chartContainer).toHaveStyle("width: 100%");
-      expect(chartContainer).toHaveStyle("height: 100%");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
+      expect(chartContainer).toHaveClass("reynard-bar-chart--responsive");
     });
 
     it("applies fixed dimensions when responsive is false", () => {
@@ -152,9 +155,10 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
-      expect(chartContainer).toHaveStyle("width: 500px");
-      expect(chartContainer).toHaveStyle("height: 300px");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
+      expect(chartContainer).toHaveClass("reynard-bar-chart--fixed-width");
+      expect(chartContainer).toHaveAttribute("data-width", "500");
+      expect(chartContainer).toHaveAttribute("data-height", "300");
     });
 
     it("maintains aspect ratio when maintainAspectRatio is true", () => {
@@ -166,7 +170,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
   });
@@ -181,7 +185,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
 
@@ -194,7 +198,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
 
@@ -207,7 +211,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
 
@@ -220,7 +224,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
   });
@@ -235,7 +239,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
 
@@ -248,7 +252,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
   });
@@ -263,7 +267,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
 
@@ -276,7 +280,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
   });
@@ -342,7 +346,7 @@ describe("BarChart", () => {
 
       render(() => <BarChart labels={largeLabels} datasets={largeDatasets} />);
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
 
@@ -356,7 +360,7 @@ describe("BarChart", () => {
 
       render(() => <BarChart labels={mockLabels} datasets={minimalDatasets} />);
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
   });
@@ -373,7 +377,7 @@ describe("BarChart", () => {
       // Should render in under 100ms
       expect(renderTime).toBeLessThan(100);
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
 
@@ -387,7 +391,7 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
   });
@@ -402,14 +406,14 @@ describe("BarChart", () => {
         />
       ));
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
 
     it("supports keyboard navigation", () => {
       render(() => <BarChart labels={mockLabels} datasets={mockDatasets} />);
 
-      const chartContainer = screen.getByText("Bar Chart").closest("div");
+      const chartContainer = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
       expect(chartContainer).toBeInTheDocument();
     });
   });

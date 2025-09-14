@@ -3,7 +3,7 @@
  */
 
 import { afterAll, beforeAll, beforeEach } from "vitest";
-import { setupCoreTest } from "./core-setup";
+import { setupCoreTest } from "./core-setup.js";
 
 /**
  * Mock backend server for testing

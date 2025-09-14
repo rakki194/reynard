@@ -33,6 +33,9 @@ export class RosePetalFactory {
     const angle = (index * this.config.goldenAngle) * (Math.PI / 180);
     const radius = this.calculatePetalRadius(index);
     
+    // Calculate which 5-petal bundle this belongs to
+    const petalBundle = Math.floor(index / 5);
+    
     return {
       id: index,
       x: this.config.centerX + Math.cos(angle) * radius,
@@ -47,7 +50,13 @@ export class RosePetalFactory {
       maxAge: 100 + Math.random() * 50,
       rotation: Math.random() * Math.PI * 2,
       scale: 0.1,
-      opacity: 0.8
+      opacity: 0.8,
+      // Natural growth properties
+      unfoldPhase: 'closed',
+      lobeSeparation: 0,
+      petalBundle,
+      sepalVisible: false,
+      naturalGrowthProgress: 0
     };
   }
 

@@ -24,7 +24,6 @@ venv/
 .pytest_cache/
 
 # Ignore IDE and OS files
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -57,3 +56,6 @@ temp/
 # This overrides any .gitignore patterns for Cursor indexing
 !third_party/
 !third_party/**/*
+
+!.vscode/
+!.vscode/**/*

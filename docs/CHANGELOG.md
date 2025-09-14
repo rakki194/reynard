@@ -198,7 +198,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive backend infrastructure with caption generation
 - Enhanced ECS architecture with better type safety and performance
 - Gallery-AI package for AI-powered image gallery functionality
-- Blackhat security testing framework with exploit modules
+- Fenrir security testing framework with exploit modules
 - Comprehensive research documentation and algorithm analysis
 - Enhanced package documentation with optimization guides
 - New dashboard components and theme showcase functionality

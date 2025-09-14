@@ -1,7 +1,7 @@
 """
 Penetration Testing Mode Coordinator
 
-This module provides coordination between the backend and blackhat testing suite
+This module provides coordination between the backend and fenrir testing suite
 to ensure that auto-reloading is disabled during penetration testing sessions.
 
 Features:
@@ -27,7 +27,7 @@ from app.core.config import get_config
 
 class PenetrationTestingCoordinator:
     """
-    Coordinates penetration testing sessions between backend and blackhat suite.
+    Coordinates penetration testing sessions between backend and fenrir suite.
     
     This class manages the penetration testing mode state and provides
     methods to control auto-reloading during security testing sessions.
@@ -218,7 +218,7 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
     """
     Middleware to handle penetration testing mode coordination.
     
-    This middleware provides HTTP endpoints for the blackhat suite to
+    This middleware provides HTTP endpoints for the fenrir suite to
     control penetration testing mode and checks for active sessions.
     """
     

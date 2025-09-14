@@ -1,7 +1,8 @@
 """
-Image Processing Service for Reynard Backend
+Legacy Image Processing Service for Reynard Backend
 
-Service for managing image processing capabilities with plugin support.
+This module provides backward compatibility while redirecting to the new
+enhanced image processing service.
 """
 
 import logging
@@ -13,92 +14,98 @@ logger = logging.getLogger("uvicorn")
 
 
 class ImageProcessingService:
-    """Image processing service with plugin support."""
+    """
+    Legacy image processing service - redirects to enhanced service.
+    
+    This class provides backward compatibility while using the new
+    enhanced image processing service under the hood.
+    """
     
     def __init__(self):
-        self._pillow_jxl_available = False
-        self._pillow_avif_available = False
-        self._supported_formats: Set[str] = set()
-        self._format_info: Dict[str, Dict[str, any]] = {}
+        self._enhanced_service = None
+    
+    async def _get_enhanced_service(self):
+        """Get the enhanced image processing service."""
+        if self._enhanced_service is None:
+            from app.services.image_processing_service import get_image_processing_service
+            self._enhanced_service = await get_image_processing_service()
+        return self._enhanced_service
     
     async def initialize(self) -> bool:
         """Initialize the image processing service."""
         try:
-            logger.info("Initializing image processing service")
-            
-            # Try to load pillow-jxl plugin
-            try:
-                import pillow_jxl
-                self._pillow_jxl_available = True
-                logger.info("pillow-jxl loaded and available for JXL image support")
-            except ImportError:
-                self._pillow_jxl_available = False
-                logger.warning("pillow-jxl not available - JXL images will not be supported")
-            
-            # Try to load pillow-avif plugin
-            try:
-                import pillow_avif
-                self._pillow_avif_available = True
-                logger.info("pillow-avif loaded and available for AVIF image support")
-            except ImportError:
-                self._pillow_avif_available = False
-                logger.warning("pillow-avif not available - AVIF images will not be supported")
-            
-            # Initialize supported formats
-            self._initialize_supported_formats()
-            
-            logger.info(
-                f"Image processing service initialized - JXL: {self._pillow_jxl_available}, "
-                f"AVIF: {self._pillow_avif_available}, "
-                f"Total formats: {len(self._supported_formats)}"
-            )
-            return True
-            
+            enhanced_service = await self._get_enhanced_service()
+            return enhanced_service._initialized
         except Exception as e:
-            logger.error(f"Failed to initialize image processing service: {e}")
+            logger.error(f"Failed to initialize legacy image processing service: {e}")
             return False
-    
-    def _initialize_supported_formats(self):
-        """Initialize supported formats based on available plugins."""
-        # Base formats
-        self._supported_formats = {
-            'image/jpeg', 'image/jpg', 'image/png', 'image/bmp', 
-            'image/tiff', 'image/webp', 'image/gif'
-        }
-        
-        # Add plugin-specific formats
-        if self._pillow_jxl_available:
-            self._supported_formats.add('image/jxl')
-        
-        if self._pillow_avif_available:
-            self._supported_formats.add('image/avif')
     
     def is_jxl_supported(self) -> bool:
         """Check if JXL format is supported."""
-        return self._pillow_jxl_available
+        try:
+            import asyncio
+            loop = asyncio.get_event_loop()
+            enhanced_service = loop.run_until_complete(self._get_enhanced_service())
+            return enhanced_service.is_jxl_supported()
+        except Exception:
+            return False
     
     def is_avif_supported(self) -> bool:
         """Check if AVIF format is supported."""
-        return self._pillow_avif_available
+        try:
+            import asyncio
+            loop = asyncio.get_event_loop()
+            enhanced_service = loop.run_until_complete(self._get_enhanced_service())
+            return enhanced_service.is_avif_supported()
+        except Exception:
+            return False
     
     def get_supported_formats_for_inference(self) -> List[str]:
         """Get all supported image formats for inference."""
-        return list(self._supported_formats)
+        try:
+            import asyncio
+            loop = asyncio.get_event_loop()
+            enhanced_service = loop.run_until_complete(self._get_enhanced_service())
+            return enhanced_service.get_supported_formats_for_inference()
+        except Exception:
+            # Fallback to basic formats
+            return [
+                'image/jpeg', 'image/jpg', 'image/png', 'image/bmp', 
+                'image/tiff', 'image/webp', 'image/gif'
+            ]
     
     def get_pil_image(self):
         """Get PIL.Image with plugin support."""
-        from PIL import Image
-        return Image
+        try:
+            import asyncio
+            loop = asyncio.get_event_loop()
+            enhanced_service = loop.run_until_complete(self._get_enhanced_service())
+            return enhanced_service.get_pil_image()
+        except Exception:
+            from PIL import Image
+            return Image
     
     def get_pil_imagedraw(self):
         """Get PIL.ImageDraw with plugin support."""
-        from PIL import ImageDraw
-        return ImageDraw
+        try:
+            import asyncio
+            loop = asyncio.get_event_loop()
+            enhanced_service = loop.run_until_complete(self._get_enhanced_service())
+            return enhanced_service.get_pil_imagedraw()
+        except Exception:
+            from PIL import ImageDraw
+            return ImageDraw
     
     def get_pil_imagefont(self):
         """Get PIL.ImageFont with plugin support."""
-        from PIL import ImageFont
-        return ImageFont
+        try:
+            import asyncio
+            loop = asyncio.get_event_loop()
+            enhanced_service = loop.run_until_complete(self._get_enhanced_service())
+            return enhanced_service.get_pil_imagefont()
+        except Exception:
+            from PIL import ImageFont
+            return ImageFont
 
 
 # Global image processing service instance

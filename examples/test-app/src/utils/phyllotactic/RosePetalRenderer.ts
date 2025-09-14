@@ -74,44 +74,131 @@ export class RosePetalRenderer {
   }
 
   /**
-   * Draw individual petal shape using bezier curves
+   * Draw individual petal shape with natural lobe separation
    */
   private drawPetalShape(petal: RosePetal): void {
     const size = petal.size;
     const width = size * 0.6;
     const height = size;
     
+    // Draw sepals if visible
+    if (petal.sepalVisible) {
+      this.drawSepal(petal);
+    }
+    
+    // Draw petal with lobe separation
+    if (petal.lobeSeparation > 0.1) {
+      this.drawPetalWithLobes(petal, width, height);
+    } else {
+      this.drawClosedPetal(petal, width, height);
+    }
+  }
+
+  /**
+   * Draw closed petal (bud phase)
+   */
+  private drawClosedPetal(petal: RosePetal, width: number, height: number): void {
     this.ctx.beginPath();
     
-    // Create organic petal shape using bezier curves
-    this.ctx.moveTo(0, -height * 0.3);
-    
-    // Top curve
+    // Create closed bud shape
+    this.ctx.moveTo(0, -height * 0.2);
     this.ctx.bezierCurveTo(
-      width * 0.3, -height * 0.5,
-      width * 0.5, -height * 0.2,
-      width * 0.2, 0
+      width * 0.2, -height * 0.3,
+      width * 0.3, -height * 0.1,
+      width * 0.1, 0
+    );
+    this.ctx.bezierCurveTo(
+      width * 0.2, height * 0.1,
+      width * 0.1, height * 0.2,
+      0, height * 0.1
+    );
+    this.ctx.bezierCurveTo(
+      -width * 0.1, height * 0.2,
+      -width * 0.2, height * 0.1,
+      -width * 0.1, 0
+    );
+    this.ctx.bezierCurveTo(
+      -width * 0.3, -height * 0.1,
+      -width * 0.2, -height * 0.3,
+      0, -height * 0.2
     );
     
-    // Right side
+    this.ctx.closePath();
+    this.ctx.fill();
+  }
+
+  /**
+   * Draw petal with separated lobes (natural growth)
+   */
+  private drawPetalWithLobes(petal: RosePetal, width: number, height: number): void {
+    const lobeSeparation = petal.lobeSeparation;
+    const separationWidth = width * 0.1 * lobeSeparation;
+    
+    // Draw left lobe
+    this.ctx.beginPath();
+    this.ctx.moveTo(-separationWidth, -height * 0.3);
+    
+    // Left lobe top curve
     this.ctx.bezierCurveTo(
-      width * 0.4, height * 0.2,
-      width * 0.3, height * 0.4,
-      width * 0.1, height * 0.6
+      -width * 0.3 + separationWidth, -height * 0.5,
+      -width * 0.5 + separationWidth, -height * 0.2,
+      -width * 0.2 + separationWidth, 0
     );
     
-    // Bottom curve
+    // Left lobe right side
     this.ctx.bezierCurveTo(
-      -width * 0.1, height * 0.6,
-      -width * 0.3, height * 0.4,
-      -width * 0.4, height * 0.2
+      -width * 0.4 + separationWidth, height * 0.2,
+      -width * 0.3 + separationWidth, height * 0.4,
+      -width * 0.1 + separationWidth, height * 0.6
     );
     
-    // Left side
+    // Left lobe bottom curve
     this.ctx.bezierCurveTo(
-      -width * 0.2, 0,
-      -width * 0.5, -height * 0.2,
-      -width * 0.3, -height * 0.5
+      -separationWidth, height * 0.6,
+      -separationWidth, height * 0.4,
+      -separationWidth, height * 0.2
+    );
+    
+    // Left lobe left side
+    this.ctx.bezierCurveTo(
+      -separationWidth, 0,
+      -width * 0.5 + separationWidth, -height * 0.2,
+      -width * 0.3 + separationWidth, -height * 0.5
+    );
+    
+    this.ctx.closePath();
+    this.ctx.fill();
+    
+    // Draw right lobe
+    this.ctx.beginPath();
+    this.ctx.moveTo(separationWidth, -height * 0.3);
+    
+    // Right lobe top curve
+    this.ctx.bezierCurveTo(
+      width * 0.3 - separationWidth, -height * 0.5,
+      width * 0.5 - separationWidth, -height * 0.2,
+      width * 0.2 - separationWidth, 0
+    );
+    
+    // Right lobe left side
+    this.ctx.bezierCurveTo(
+      width * 0.4 - separationWidth, height * 0.2,
+      width * 0.3 - separationWidth, height * 0.4,
+      width * 0.1 - separationWidth, height * 0.6
+    );
+    
+    // Right lobe bottom curve
+    this.ctx.bezierCurveTo(
+      separationWidth, height * 0.6,
+      separationWidth, height * 0.4,
+      separationWidth, height * 0.2
+    );
+    
+    // Right lobe right side
+    this.ctx.bezierCurveTo(
+      separationWidth, 0,
+      width * 0.5 - separationWidth, -height * 0.2,
+      width * 0.3 - separationWidth, -height * 0.5
     );
     
     this.ctx.closePath();
@@ -122,6 +209,27 @@ export class RosePetalRenderer {
     this.ctx.globalAlpha = petal.opacity * 0.3;
     this.ctx.lineWidth = 0.5;
     this.ctx.stroke();
+  }
+
+  /**
+   * Draw sepal (green point alternating with petals)
+   */
+  private drawSepal(petal: RosePetal): void {
+    this.ctx.save();
+    
+    // Position sepal at petal base
+    const sepalOffset = petal.size * 0.3;
+    this.ctx.translate(0, sepalOffset);
+    
+    // Draw green sepal
+    this.ctx.fillStyle = '#4a7c59';
+    this.ctx.globalAlpha = petal.opacity * 0.8;
+    
+    this.ctx.beginPath();
+    this.ctx.arc(0, 0, petal.size * 0.15, 0, Math.PI * 2);
+    this.ctx.fill();
+    
+    this.ctx.restore();
   }
 
   /**

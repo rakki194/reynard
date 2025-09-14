@@ -10,7 +10,7 @@
 
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@solidjs/testing-library";
-import { BoundingBoxEditor } from "../BoundingBoxEditor";
+import { BoundingBoxEditor } from "../components/BoundingBoxEditor";
 import type {
   BoundingBox,
   ImageInfo,

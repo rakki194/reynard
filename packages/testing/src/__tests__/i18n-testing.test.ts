@@ -11,7 +11,7 @@ import {
   generateI18nReport,
   type I18nTestConfig,
   type I18nTestResult,
-} from "../../i18n-testing";
+  } from "../utils/i18n-testing.js";
 
 describe("i18n testing utilities", () => {
   const mockConfig: I18nTestConfig = {

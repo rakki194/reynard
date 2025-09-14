@@ -61,6 +61,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **NEW**: Advanced fuzzing capabilities with exploit wrappers
 - **IMPROVED**: Comprehensive security testing across all attack vectors
 
+#### 🐺 Fuzzing Framework Modularization - v2.1.0
+
+- **NEW**: Complete modular reorganization of fuzzing framework
+- **NEW**: Specialized fuzzers for each endpoint category:
+  - Embedding Visualization Fuzzer (8 endpoints)
+  - Diffusion Fuzzer (10 endpoints)
+  - Lazy Loading Fuzzer (12 endpoints)
+  - HuggingFace Cache Fuzzer (8 endpoints)
+  - Secure Authentication Fuzzer (6 endpoints)
+  - Secure Ollama Fuzzer (7 endpoints)
+  - Secure Summarization Fuzzer (10 endpoints)
+  - WebSocket Fuzzer (real-time endpoints)
+- **NEW**: Clean directory structure with only `fuzzy.py` and `README.md` in root
+- **NEW**: Comprehensive coverage of all previously unfuzzed endpoints
+- **IMPROVED**: Integration with main `run_all_exploits.py` suite
+- **IMPROVED**: Modular architecture for better maintainability and extensibility
+
 #### 🎯 Component Library Updates - v0.3.0
 
 - **NEW**: Advanced slider and toggle components with theme integration
@@ -205,7 +222,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### 🔒 Security & Penetration Testing - v1.0.0
 
-- **NEW**: Comprehensive blackhat security testing suite
+- **NEW**: Comprehensive fenrir security testing suite
 - **NEW**: JWT exploitation tools and secret key attack vectors
 - **NEW**: API security testing with CORS, CSRF, and SSRF exploits
 - **NEW**: LLM-specific security testing and prompt injection detection

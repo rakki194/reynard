@@ -112,6 +112,16 @@ export default [
     },
     rules: {
       ...typescript.configs.recommended.rules,
+      // Disable the base rule and use TypeScript version
+      "no-unused-expressions": "off",
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+          allowTaggedTemplates: true,
+        },
+      ],
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

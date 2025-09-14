@@ -13,11 +13,11 @@
     "test:report": "playwright show-report",
     "test:penetration-report": "playwright show-report --config=playwright.config.penetration.ts",
     "install:browsers": "playwright install",
-    "blackhat:test": "cd ../blackhat && python3 run_all_exploits.py",
-    "blackhat:test:destructive": "cd ../blackhat && python3 run_all_exploits.py --destructive",
-    "blackhat:test:verbose": "cd ../blackhat && python3 run_all_exploits.py --verbose",
-    "security:assess": "npm run test:penetration && npm run blackhat:test",
-    "security:assess:destructive": "npm run test:penetration && npm run blackhat:test:destructive"
+    "fenrir:test": "cd ../fenrir && python3 run_all_exploits.py",
+    "fenrir:test:destructive": "cd ../fenrir && python3 run_all_exploits.py --destructive",
+    "fenrir:test:verbose": "cd ../fenrir && python3 run_all_exploits.py --verbose",
+    "security:assess": "npm run test:penetration && npm run fenrir:test",
+    "security:assess:destructive": "npm run test:penetration && npm run fenrir:test:destructive"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",

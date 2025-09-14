@@ -14,7 +14,8 @@ export interface ImageFormatInfo {
   description: string;
 }
 
-export const SUPPORTED_IMAGE_FORMATS: Record<string, ImageFormatInfo> = {
+// Base supported formats (always available)
+export const BASE_IMAGE_FORMATS: Record<string, ImageFormatInfo> = {
   ".jpg": {
     extension: ".jpg",
     mimeType: "image/jpeg",
@@ -63,6 +64,10 @@ export const SUPPORTED_IMAGE_FORMATS: Record<string, ImageFormatInfo> = {
     supported: true,
     description: "WebP image format",
   },
+};
+
+// Plugin-dependent formats (updated at runtime)
+export const PLUGIN_IMAGE_FORMATS: Record<string, ImageFormatInfo> = {
   ".jxl": {
     extension: ".jxl",
     mimeType: "image/jxl",
@@ -79,13 +84,95 @@ export const SUPPORTED_IMAGE_FORMATS: Record<string, ImageFormatInfo> = {
   },
 };
 
+// Combined formats (updated at runtime)
+export const SUPPORTED_IMAGE_FORMATS: Record<string, ImageFormatInfo> = {
+  ...BASE_IMAGE_FORMATS,
+  ...PLUGIN_IMAGE_FORMATS,
+};
+
 export class ImageFormatUtils {
+  private static pluginSupportCache: {
+    jxlSupported: boolean | null;
+    avifSupported: boolean | null;
+    lastChecked: number | null;
+  } = {
+    jxlSupported: null,
+    avifSupported: null,
+    lastChecked: null,
+  };
+
+  private static readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
   /**
-   * Get supported image file extensions.
+   * Update plugin support based on backend API response.
+   */
+  static async updatePluginSupport(): Promise<void> {
+    try {
+      // Check cache first
+      const now = Date.now();
+      if (
+        this.pluginSupportCache.lastChecked &&
+        now - this.pluginSupportCache.lastChecked < this.CACHE_DURATION &&
+        this.pluginSupportCache.jxlSupported !== null &&
+        this.pluginSupportCache.avifSupported !== null
+      ) {
+        return; // Use cached values
+      }
+
+      // Fetch from backend API
+      const response = await fetch("/api/image-utils/service-info");
+      if (!response.ok) {
+        console.warn("Failed to fetch image processing service info");
+        return;
+      }
+
+      const serviceInfo = await response.json();
+      
+      // Update cache
+      this.pluginSupportCache = {
+        jxlSupported: serviceInfo.jxl_supported || false,
+        avifSupported: serviceInfo.avif_supported || false,
+        lastChecked: now,
+      };
+
+      // Update format support
+      if (this.pluginSupportCache.jxlSupported) {
+        SUPPORTED_IMAGE_FORMATS[".jxl"] = {
+          ...PLUGIN_IMAGE_FORMATS[".jxl"],
+          supported: true,
+        };
+      } else {
+        SUPPORTED_IMAGE_FORMATS[".jxl"] = {
+          ...PLUGIN_IMAGE_FORMATS[".jxl"],
+          supported: false,
+        };
+      }
+
+      if (this.pluginSupportCache.avifSupported) {
+        SUPPORTED_IMAGE_FORMATS[".avif"] = {
+          ...PLUGIN_IMAGE_FORMATS[".avif"],
+          supported: true,
+        };
+      } else {
+        SUPPORTED_IMAGE_FORMATS[".avif"] = {
+          ...PLUGIN_IMAGE_FORMATS[".avif"],
+          supported: false,
+        };
+      }
+    } catch (error) {
+      console.warn("Failed to update plugin support:", error);
+    }
+  }
+
+  /**
+   * Get supported image file extensions with runtime plugin detection.
    *
    * @returns Set of supported file extensions (lowercase, with dot)
    */
-  static getSupportedFormats(): Set<string> {
+  static async getSupportedFormats(): Promise<Set<string>> {
+    // Update plugin support before returning
+    await this.updatePluginSupport();
+    
     const formats = new Set<string>();
     for (const [ext, info] of Object.entries(SUPPORTED_IMAGE_FORMATS)) {
       if (info.supported) {
@@ -101,8 +188,14 @@ export class ImageFormatUtils {
    * @param extension - File extension to check
    * @returns True if the extension is supported
    */
-  static isSupportedFormat(extension: string): boolean {
+  static async isSupportedFormat(extension: string): Promise<boolean> {
     const normalizedExt = extension.toLowerCase();
+    
+    // For plugin formats, check runtime availability
+    if (normalizedExt in PLUGIN_IMAGE_FORMATS) {
+      await this.updatePluginSupport();
+    }
+    
     const format = SUPPORTED_IMAGE_FORMATS[normalizedExt];
     return format?.supported ?? false;
   }
@@ -113,8 +206,15 @@ export class ImageFormatUtils {
    * @param extension - File extension
    * @returns Format information or undefined
    */
-  static getFormatInfo(extension: string): ImageFormatInfo | undefined {
-    return SUPPORTED_IMAGE_FORMATS[extension.toLowerCase()];
+  static async getFormatInfo(extension: string): Promise<ImageFormatInfo | undefined> {
+    const normalizedExt = extension.toLowerCase();
+    
+    // For plugin formats, check runtime availability
+    if (normalizedExt in PLUGIN_IMAGE_FORMATS) {
+      await this.updatePluginSupport();
+    }
+    
+    return SUPPORTED_IMAGE_FORMATS[normalizedExt];
   }
 
   /**
@@ -123,8 +223,15 @@ export class ImageFormatUtils {
    * @param filePath - Path to validate
    * @returns True if the path appears to be a supported image
    */
-  static validateImagePath(filePath: string): boolean {
+  static async validateImagePath(filePath: string): Promise<boolean> {
     const path = filePath.toLowerCase();
+    const extension = this.getFileExtension(filePath);
+    
+    // Check if it's a plugin format and update support
+    if (extension in PLUGIN_IMAGE_FORMATS) {
+      await this.updatePluginSupport();
+    }
+    
     return Object.keys(SUPPORTED_IMAGE_FORMATS).some((ext) =>
       path.endsWith(ext),
     );

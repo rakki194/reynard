@@ -1,0 +1,45 @@
+# CPU-only requirements for Reynard Backend
+# Generated for 2025 with latest stable versions
+# This version excludes GPU dependencies for CPU-only environments
+
+# Core dependencies
+fastapi
+uvicorn[standard]
+python-jose[cryptography]
+python-dotenv
+python-multipart
+email-validator
+pydantic[email]
+slowapi
+limits
+
+# CPU-only PyTorch ecosystem (2025 latest stable)
+# Using PyTorch with CPU-only support
+torch+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+torchvision+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+torchaudio+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+
+# Image processing and scientific computing
+pillow
+numpy
+
+# Database and async
+sqlalchemy
+psycopg2-binary
+aiohttp
+pgvector
+
+# Security and authentication
+argon2-cffi
+cryptography
+
+# Additional ML packages (CPU-only versions)
+# Note: These are CPU-only by default, no GPU variants
+scikit-learn
+transformers
+datasets
+accelerate
+
+# Optional: For CPU-optimized inference
+# onnxruntime  # Uncomment if using ONNX models
+# openvino     # Uncomment if using OpenVINO for Intel optimization

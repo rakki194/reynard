@@ -164,20 +164,9 @@ if [[ ! -d "$HOME/venv" ]]; then
     python -m venv "$HOME/venv"
 fi
 
-# Activate virtual environment
-print_status "Activating virtual environment..."
-source "$HOME/venv/bin/activate"
-
-# Install/upgrade dependencies
-print_status "Installing core dependencies..."
-pip install -q -r requirements.txt
-
-print_status "Installing development dependencies..."
-pip install -q -r requirements.dev.txt
-
-# Install the app in development mode (without gatekeeper for now)
-print_status "Installing app in development mode..."
-pip install -q -e . --no-deps
+# Activate virtual environment and install dependencies
+print_status "Activating virtual environment and installing dependencies..."
+bash -c "source $HOME/venv/bin/activate && pip install -q -r requirements.txt && pip install -q -r requirements.dev.txt && pip install -q -e . --no-deps"
 
 # Clean up previous test artifacts
 if [[ "$CLEANUP" == "true" ]]; then
@@ -260,8 +249,8 @@ PYTEST_CMD="$PYTEST_CMD --tb=short --strict-markers --asyncio-mode=auto"
 print_status "Running NLWeb tests..."
 print_info "Command: $PYTEST_CMD"
 
-# Execute the test command
-if eval $PYTEST_CMD; then
+# Execute the test command with proper venv activation
+if bash -c "source $HOME/venv/bin/activate && $PYTEST_CMD"; then
     print_success "All NLWeb tests passed! 🎉"
     
     if [[ "$COVERAGE" == "true" && "$REPORT_FORMAT" == "html" ]]; then

@@ -57,7 +57,7 @@ logger = logging.getLogger(__name__)
 async def _setup_secure_routers(app: FastAPI, registry) -> None:
     """
     Set up secure routers after services are initialized.
-    
+
     Args:
         app: The FastAPI application instance
         registry: The service registry with initialized services
@@ -67,36 +67,38 @@ async def _setup_secure_routers(app: FastAPI, registry) -> None:
         try:
             from gatekeeper.api.dependencies import get_auth_manager
             from app.security.secure_auth_routes import create_secure_auth_router
-            
+
             auth_manager = get_auth_manager()
             secure_auth_router = create_secure_auth_router(auth_manager)
             app.include_router(secure_auth_router, prefix="/api/secure")
             logger.info("✅ Secure auth router added successfully")
         except Exception as e:
             logger.warning(f"Failed to add secure auth router: {e}")
-        
+
         # Set up secure ollama router
         try:
             from app.api.ollama.service import get_ollama_service
             from app.security.secure_ollama_routes import create_secure_ollama_router
-            
+
             ollama_service = get_ollama_service()
             secure_ollama_router = create_secure_ollama_router(ollama_service)
             app.include_router(secure_ollama_router, prefix="/api/secure")
             logger.info("✅ Secure ollama router added successfully")
         except Exception as e:
             logger.warning(f"Failed to add secure ollama router: {e}")
-        
+
         # Set up secure summarization router
         try:
-            from app.security.secure_summarization_routes import create_secure_summarization_router
-            
+            from app.security.secure_summarization_routes import (
+                create_secure_summarization_router,
+            )
+
             secure_summarization_router = create_secure_summarization_router()
             app.include_router(secure_summarization_router, prefix="/api/secure")
             logger.info("✅ Secure summarization router added successfully")
         except Exception as e:
             logger.warning(f"Failed to add secure summarization router: {e}")
-            
+
     except Exception as e:
         logger.error(f"Failed to set up secure routers: {e}")
 
@@ -105,31 +107,31 @@ async def _setup_secure_routers(app: FastAPI, registry) -> None:
 async def lifespan(app: FastAPI):
     """
     Sophisticated service lifecycle management with parallel initialization.
-    
+
     This context manager orchestrates the complete lifecycle of all backend services,
     implementing priority-based startup sequencing, parallel initialization within
     priority groups, comprehensive error handling, and graceful shutdown procedures.
-    
+
     The initialization process follows a dependency-aware approach:
     1. Register all services with their respective priorities and configurations
     2. Initialize services in parallel within priority groups (highest priority first)
     3. Handle initialization failures gracefully with proper error reporting
     4. Provide the service registry to the FastAPI application
     5. Perform graceful shutdown of all services in reverse order on exit
-    
+
     Args:
         app: The FastAPI application instance requiring service orchestration.
-        
+
     Yields:
         Dict[str, Any]: A dictionary containing the initialized service registry.
-        
+
     Raises:
         RuntimeError: If critical service initialization fails and prevents application startup.
     """
     config = get_config()
     service_configs = get_service_configs()
     registry = get_service_registry()
-    
+
     # Register services with priority-based initialization
     registry.register_service(
         "gatekeeper",
@@ -137,84 +139,140 @@ async def lifespan(app: FastAPI):
         init_gatekeeper_service,
         shutdown_gatekeeper_service,
         health_check_gatekeeper,
-        startup_priority=100  # Highest priority
+        startup_priority=100,  # Highest priority
     )
-    
+
     registry.register_service(
         "comfy",
         service_configs["comfy"],
         init_comfy_service,
         shutdown_comfy_service_func,
         health_check_comfy,
-        startup_priority=50
+        startup_priority=50,
     )
-    
+
     registry.register_service(
         "nlweb",
         service_configs["nlweb"],
         init_nlweb_service,
         shutdown_nlweb_service_func,
         health_check_nlweb,
-        startup_priority=50
+        startup_priority=50,
     )
-    
+
     registry.register_service(
         "rag",
         service_configs["rag"],
         init_rag_service,
         None,  # No shutdown function yet
         None,  # No health check yet
-        startup_priority=25
+        startup_priority=25,
     )
-    
+
     registry.register_service(
         "ollama",
         service_configs["ollama"],
         init_ollama_service,
         None,  # No shutdown function yet
         None,  # No health check yet
-        startup_priority=25
+        startup_priority=25,
     )
-    
+
     registry.register_service(
         "tts",
         service_configs["tts"],
         init_tts_service,
         None,  # No shutdown function yet
         None,  # No health check yet
-        startup_priority=10
+        startup_priority=10,
     )
-    
+
+    # Register image processing service
+    registry.register_service(
+        "image_processing",
+        {"enabled": True},  # Simple config for now
+        _init_image_processing_service,
+        _shutdown_image_processing_service,
+        _health_check_image_processing_service,
+        startup_priority=75,  # High priority for image support
+    )
+
     # Initialize all services
     logger.info("🚀 Starting Reynard API services...")
     start_time = time.time()
-    
+
     try:
         success = await registry.initialize_all(timeout=config.startup_timeout)
         if not success:
             raise RuntimeError("Service initialization failed")
-        
+
         total_time = time.time() - start_time
         logger.info(f"✅ All services initialized successfully in {total_time:.2f}s")
-        
+
         # Set up secure routers now that services are initialized
         await _setup_secure_routers(app, registry)
-        
+
         # FastAPI expects a mapping/dictionary, not a ServiceRegistry object
         yield {"service_registry": registry}
-        
+
     except Exception as e:
         logger.error(f"❌ Service initialization failed: {e}")
         raise
-    
+
     finally:
         # Graceful shutdown
         logger.info("🛑 Shutting down Reynard API services...")
         shutdown_start = time.time()
-        
+
         try:
             await registry.shutdown_all(timeout=config.shutdown_timeout)
             shutdown_time = time.time() - shutdown_start
-            logger.info(f"✅ All services shutdown successfully in {shutdown_time:.2f}s")
+            logger.info(
+                f"✅ All services shutdown successfully in {shutdown_time:.2f}s"
+            )
         except Exception as e:
             logger.error(f"❌ Service shutdown failed: {e}")
+
+
+# Image Processing Service Functions
+async def _init_image_processing_service(config: Dict[str, Any]) -> bool:
+    """Initialize the image processing service."""
+    try:
+        from app.services.image_processing_service import (
+            initialize_image_processing_service,
+        )
+
+        success = await initialize_image_processing_service()
+        if success:
+            logger.info("✅ Image processing service initialized successfully")
+        else:
+            logger.warning("⚠️ Image processing service initialization failed")
+        return success
+    except Exception as e:
+        logger.error(f"❌ Image processing service initialization error: {e}")
+        return False
+
+
+async def _shutdown_image_processing_service() -> None:
+    """Shutdown the image processing service."""
+    try:
+        from app.services.image_processing_service import (
+            shutdown_image_processing_service,
+        )
+
+        await shutdown_image_processing_service()
+        logger.info("✅ Image processing service shutdown successfully")
+    except Exception as e:
+        logger.error(f"❌ Image processing service shutdown error: {e}")
+
+
+async def _health_check_image_processing_service() -> bool:
+    """Health check for the image processing service."""
+    try:
+        from app.services.image_processing_service import get_image_processing_service
+
+        service = await get_image_processing_service()
+        return await service.health_check()
+    except Exception as e:
+        logger.error(f"❌ Image processing service health check error: {e}")
+        return False

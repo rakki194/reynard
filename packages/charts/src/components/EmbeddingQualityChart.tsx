@@ -16,6 +16,7 @@ import {
 import { Chart } from "./Chart";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
 import { ChartConfig, Dataset, ReynardTheme } from "../types";
+import { t, getLoadingMessage } from "../utils/i18n";
 
 export interface QualityMetric {
   /** Metric name */
@@ -339,7 +340,7 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
         >
           <div class="loading-spinner"></div>
           <span style={{ "margin-left": "10px" }}>
-            Loading embedding quality analysis...
+            {t("loadingEmbeddingQuality")}
           </span>
         </div>
       </Show>
@@ -368,8 +369,8 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
             width={others.width}
             height={others.height}
             title={others.title}
-            xAxisLabel={others.xAxisLabel || "Quality Metrics"}
-            yAxisLabel={others.yAxisLabel || "Score"}
+            xAxisLabel={others.xAxisLabel || t("qualityMetrics")}
+            yAxisLabel={others.yAxisLabel || t("score")}
             showGrid={others.showGrid}
             showLegend={others.showLegend}
             useOKLCH={true}

@@ -74,6 +74,91 @@
   height: 600px;
 }
 
+.threejs-container.hidden {
+  display: none;
+}
+
+.threejs-container.visible {
+  display: block;
+}
+
+/* Loading and Error States */
+.loading-overlay,
+.error-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-background);
+  border-radius: var(--border-radius);
+  z-index: 10;
+}
+
+.loading-spinner {
+  font-size: 3rem;
+  animation: spin 2s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.loading-overlay p {
+  color: var(--color-text-secondary);
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.error-overlay {
+  background: var(--color-error-background, #fee);
+  border: 2px solid var(--color-error, #f56565);
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.error-overlay p {
+  color: var(--color-error, #f56565);
+  font-size: 1.125rem;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  max-width: 300px;
+}
+
+.error-overlay button {
+  background: var(--color-error, #f56565);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-overlay button:hover {
+  background: var(--color-error-hover, #e53e3e);
+  transform: translateY(-1px);
+}
+
+.error-overlay button:active {
+  transform: translateY(0);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .visualization-controls {
   display: flex;
   flex-direction: column;

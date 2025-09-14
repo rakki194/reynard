@@ -3,7 +3,7 @@
  * Configuration for packages that don't require i18n testing
  */
 
-import type { PackageI18nConfig } from "../types";
+import type { PackageI18nConfig } from "../types.js";
 
 export const disabledPackages: PackageI18nConfig[] = [
   {

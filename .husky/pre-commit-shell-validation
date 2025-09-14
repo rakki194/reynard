@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# 🔍 Pre-commit Shell Script Validation Hook
+# Validates shell scripts before commit
+
+echo "🔍 Validating shell scripts..."
+
+# Check if shellcheck is installed
+if ! command -v shellcheck &> /dev/null; then
+    echo "❌ shellcheck is not installed!"
+    echo "📦 Install it with: sudo pacman -S shellcheck"
+    exit 1
+fi
+
+# Get list of staged shell files
+STAGED_SHELL_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(sh|bash|zsh)$' || true)
+
+if [ -z "$STAGED_SHELL_FILES" ]; then
+    echo "✅ No shell scripts staged for commit"
+    exit 0
+fi
+
+echo "📊 Found $(echo "$STAGED_SHELL_FILES" | wc -l) staged shell scripts"
+
+# Validate each staged shell file
+VALIDATION_FAILED=false
+
+for script in $STAGED_SHELL_FILES; do
+    echo "🔍 Validating $script..."
+    
+    if shellcheck --rcfile=.shellcheckrc "$script"; then
+        echo "✅ $script - Valid"
+    else
+        echo "❌ $script - Issues found"
+        VALIDATION_FAILED=true
+    fi
+done
+
+if [ "$VALIDATION_FAILED" = true ]; then
+    echo ""
+    echo "❌ Shell script validation failed!"
+    echo "🔧 Fix the issues above before committing."
+    echo "💡 Run 'pnpm run shell:validate' to see all issues."
+    exit 1
+else
+    echo ""
+    echo "✅ All staged shell scripts are valid!"
+fi

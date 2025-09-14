@@ -6,6 +6,7 @@
 import {
   Component,
   onMount,
+  onCleanup,
   createSignal,
   createEffect,
   Show,
@@ -21,9 +22,9 @@ import {
   PieController,
   ArcElement,
 } from "chart.js";
-import { Pie, Doughnut } from "solid-chartjs";
 import { Dataset, ChartConfig, ReynardTheme } from "../types";
-import { getDefaultConfig, generateColors } from "../utils";
+import { getDefaultConfig } from "../utils";
+import { generateColorsWithCache } from "reynard-colors";
 import "./PieChart.css";
 
 export interface PieChartProps extends ChartConfig {
@@ -90,6 +91,7 @@ export const PieChart: Component<PieChartProps> = (props) => {
     labels: string[];
     datasets: Dataset[];
   } | null>(null);
+  const [chartInstance, setChartInstance] = createSignal<Chart | null>(null);
 
   // Register Chart.js components on mount
   onMount(() => {
@@ -104,13 +106,54 @@ export const PieChart: Component<PieChartProps> = (props) => {
     setIsRegistered(true);
   });
 
+  // Cleanup chart on unmount
+  onCleanup(() => {
+    const chart = chartInstance();
+    if (chart) {
+      chart.destroy();
+    }
+  });
+
+  // Create chart instance
+  const createChart = (canvas: HTMLCanvasElement) => {
+    if (!isRegistered() || !chartData()) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Destroy existing chart if it exists
+    const existingChart = chartInstance();
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    const config = {
+      type: local.variant === "doughnut" ? "doughnut" : "pie",
+      data: chartData()!,
+      options: getChartOptions(),
+    };
+
+    // Only create chart on client side
+    if (typeof window !== "undefined") {
+      const newChart = new Chart(ctx, config);
+      setChartInstance(newChart);
+    }
+  };
+
+  // Canvas ref function
+  const canvasRef = (canvas: HTMLCanvasElement) => {
+    if (canvas && chartData()) {
+      createChart(canvas);
+    }
+  };
+
   // Process data
   createEffect(() => {
     if (local.labels && local.data && local.data.length > 0) {
       if (local.labels.length === local.data.length) {
-        const colors = local.colors || generateColors(local.data.length, 0.8);
+        const colors = local.colors || generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 0.8);
         const borderColors =
-          local.colors || generateColors(local.data.length, 1);
+          local.colors || generateColorsWithCache(local.data.length, 0, 0.3, 0.6, 1);
 
         const dataset: Dataset = {
           label: "Data",
@@ -129,6 +172,15 @@ export const PieChart: Component<PieChartProps> = (props) => {
       }
     } else {
       setChartData(null);
+    }
+  });
+
+  // Update chart when data changes
+  createEffect(() => {
+    const chart = chartInstance();
+    if (chart && chartData()) {
+      chart.data = chartData()!;
+      chart.update();
     }
   });
 
@@ -259,10 +311,6 @@ export const PieChart: Component<PieChartProps> = (props) => {
     return classes.join(" ");
   };
 
-  const ChartComponent = createMemo(() =>
-    local.variant === "doughnut" ? Doughnut : Pie,
-  );
-
   return (
     <div
       class={getContainerClasses()}
@@ -272,6 +320,9 @@ export const PieChart: Component<PieChartProps> = (props) => {
       aria-label={local.title || `${local.variant} chart`}
       {...others}
     >
+      <Show when={local.title}>
+        <div class="reynard-chart-title">{local.title}</div>
+      </Show>
       <Show when={local.loading}>
         <div class="reynard-chart-loading">
           <div class="reynard-chart-spinner" />
@@ -285,13 +336,16 @@ export const PieChart: Component<PieChartProps> = (props) => {
         </div>
       </Show>
 
-      <Show when={!local.loading && chartData() && isRegistered()}>
-        {ChartComponent()({
-          data: chartData()!,
-          options: getChartOptions(),
-          width: local.width,
-          height: local.height,
-        })}
+      <Show when={!local.loading && chartData()}>
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>                                                                         
+          <canvas
+            ref={canvasRef}
+            width={local.width}
+            height={local.height}
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            data-testid={`${local.variant}-chart-canvas`}
+          />
+        </div>
       </Show>
     </div>
   );

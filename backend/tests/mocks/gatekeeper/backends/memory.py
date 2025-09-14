@@ -1,19 +1,41 @@
 """
-Mock memory backend for gatekeeper.
+Mock memory backend.
 """
 
-class MemoryBackend:
-    """Mock memory backend."""
+from typing import Dict, Any, Optional
+from ..main import MockUser
+
+
+class MockMemoryBackend:
+    """Mock memory backend for testing."""
     
     def __init__(self):
-        self.data = {}
+        self.users: Dict[str, MockUser] = {}
     
-    def get(self, key):
-        return self.data.get(key)
+    async def create_user(self, user_data: Dict[str, Any]) -> MockUser:
+        """Create a user in memory."""
+        user = MockUser(
+            id=len(self.users) + 1,
+            username=user_data["username"],
+            email=user_data["email"],
+            is_active=True
+        )
+        self.users[user_data["username"]] = user
+        return user
     
-    def set(self, key, value):
-        self.data[key] = value
+    async def get_user_by_username(self, username: str) -> Optional[MockUser]:
+        """Get user by username."""
+        return self.users.get(username)
     
-    def delete(self, key):
-        if key in self.data:
-            del self.data[key]
+    async def get_user_by_email(self, email: str) -> Optional[MockUser]:
+        """Get user by email."""
+        for user in self.users.values():
+            if user.email == email:
+                return user
+        return None
+
+
+# Alias for compatibility
+MemoryBackend = MockMemoryBackend
+
+__all__ = ["MockMemoryBackend", "MemoryBackend"]

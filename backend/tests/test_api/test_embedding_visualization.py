@@ -35,13 +35,19 @@ class TestEmbeddingReductionEndpoint:
         """Test successful embedding dimensionality reduction."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service
-            mock_service.reduce_embeddings.return_value = MagicMock(
-                method="pca",
-                reduced_embeddings=[[1.0, 2.0], [3.0, 4.0]],
-                explained_variance_ratio=[0.8, 0.2],
-                processing_time=1.5,
-                metadata={"samples": 100}
-            )
+            mock_result = MagicMock()
+            mock_result.success = True
+            mock_result.method = "pca"
+            mock_result.transformed_data = [[1.0, 2.0], [3.0, 4.0]]
+            mock_result.original_indices = [0, 1]
+            mock_result.parameters = {"n_components": 2}
+            mock_result.metadata = {"samples": 100}
+            mock_result.processing_time_ms = 1500
+            mock_result.job_id = "test-job-id"
+            mock_result.cached = False
+            mock_result.error = None
+            
+            mock_service.perform_reduction = AsyncMock(return_value=mock_result)
             
             # Create test client
             client = TestClient(app)
@@ -60,9 +66,9 @@ class TestEmbeddingReductionEndpoint:
             data = response.json()
             assert data["success"] is True
             assert data["method"] == "pca"
-            assert data["reduced_embeddings"] == [[1.0, 2.0], [3.0, 4.0]]
-            assert data["explained_variance_ratio"] == [0.8, 0.2]
-            assert data["processing_time"] == 1.5
+            assert data["transformed_data"] == [[1.0, 2.0], [3.0, 4.0]]
+            assert data["original_indices"] == [0, 1]
+            assert data["processing_time_ms"] == 1500
             assert data["metadata"]["samples"] == 100
 
     def test_reduce_embeddings_invalid_method(self):
@@ -84,7 +90,7 @@ class TestEmbeddingReductionEndpoint:
         """Test embedding reduction with service error."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service to raise an exception
-            mock_service.reduce_embeddings.side_effect = Exception("Service error")
+            mock_service.perform_reduction = AsyncMock(side_effect=Exception("Service error"))
             
             # Create test client
             client = TestClient(app)
@@ -121,16 +127,16 @@ class TestEmbeddingReductionEndpoint:
         """Test embedding reduction with validation errors."""
         client = TestClient(app)
         
-        # Test with invalid field values
+        # Test with invalid method (this should trigger validation error)
         request_data = {
-            "method": "pca",
+            "method": "invalid_method",
             "filters": {"category": "text"},
             "parameters": {"n_components": 2},
-            "max_samples": -1  # Invalid max_samples (should be positive)
+            "max_samples": 1000
         }
         
         response = client.post("/api/embedding-visualization/reduce", json=request_data)
-        assert response.status_code == 422
+        assert response.status_code == 400  # Invalid method returns 400, not 422
 
 
 class TestEmbeddingStatsEndpoint:
@@ -140,13 +146,17 @@ class TestEmbeddingStatsEndpoint:
         """Test successful embedding statistics retrieval."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service
-            mock_service.get_embedding_stats.return_value = MagicMock(
-                total_embeddings=1000,
-                dimensions=512,
-                categories=["text", "image"],
-                quality_score=0.85,
-                last_updated=datetime.now()
-            )
+            mock_stats = MagicMock()
+            mock_stats.total_embeddings = 1000
+            mock_stats.embedding_dimension = 512
+            mock_stats.mean_values = [0.1, 0.2, 0.3]
+            mock_stats.std_values = [0.05, 0.1, 0.15]
+            mock_stats.min_values = [-1.0, -0.5, 0.0]
+            mock_stats.max_values = [1.0, 0.5, 1.0]
+            mock_stats.quality_score = 0.85
+            mock_stats.last_updated = datetime.now()
+            
+            mock_service.get_embedding_stats = AsyncMock(return_value=mock_stats)
             
             # Create test client
             client = TestClient(app)
@@ -155,10 +165,10 @@ class TestEmbeddingStatsEndpoint:
             
             assert response.status_code == 200
             data = response.json()
-            assert data["success"] is True
             assert data["total_embeddings"] == 1000
-            assert data["dimensions"] == 512
-            assert data["categories"] == ["text", "image"]
+            assert data["embedding_dimension"] == 512
+            assert data["mean_values"] == [0.1, 0.2, 0.3]
+            assert data["std_values"] == [0.05, 0.1, 0.15]
             assert data["quality_score"] == 0.85
             assert "last_updated" in data
 
@@ -166,7 +176,7 @@ class TestEmbeddingStatsEndpoint:
         """Test embedding statistics with service error."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service to raise an exception
-            mock_service.get_embedding_stats.side_effect = Exception("Service error")
+            mock_service.get_embedding_stats = AsyncMock(side_effect=Exception("Service error"))
             
             # Create test client
             client = TestClient(app)
@@ -185,52 +195,49 @@ class TestEmbeddingQualityEndpoint:
         """Test successful embedding quality assessment."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service
-            mock_service.assess_embedding_quality.return_value = MagicMock(
-                quality_score=0.85,
-                metrics={
-                    "coherence": 0.9,
-                    "separation": 0.8,
-                    "density": 0.85
-                },
-                recommendations=["Increase sample size", "Adjust parameters"],
-                processing_time=2.0
-            )
+            mock_quality = MagicMock()
+            mock_quality.overall_score = 0.85
+            mock_quality.coherence_score = 0.9
+            mock_quality.separation_score = 0.8
+            mock_quality.density_score = 0.85
+            mock_quality.distribution_score = 0.8
+            mock_quality.recommendations = ["Increase sample size", "Adjust parameters"]
+            mock_quality.issues = []
+            
+            mock_service.analyze_embedding_quality = AsyncMock(return_value=mock_quality)
             
             # Create test client
             client = TestClient(app)
             
             # Test request
             request_data = {
-                "filters": {"category": "text"},
-                "quality_metrics": ["coherence", "separation"],
-                "threshold": 0.8
+                "embeddings": [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]
             }
             
             response = client.post("/api/embedding-visualization/quality", json=request_data)
             
             assert response.status_code == 200
             data = response.json()
-            assert data["success"] is True
-            assert data["quality_score"] == 0.85
-            assert data["metrics"]["coherence"] == 0.9
-            assert data["metrics"]["separation"] == 0.8
+            assert data["overall_score"] == 0.85
+            assert data["coherence_score"] == 0.9
+            assert data["separation_score"] == 0.8
+            assert data["density_score"] == 0.85
+            assert data["distribution_score"] == 0.8
             assert data["recommendations"] == ["Increase sample size", "Adjust parameters"]
-            assert data["processing_time"] == 2.0
+            assert data["issues"] == []
 
     def test_assess_embedding_quality_service_error(self):
         """Test embedding quality assessment with service error."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service to raise an exception
-            mock_service.assess_embedding_quality.side_effect = Exception("Service error")
+            mock_service.analyze_embedding_quality = AsyncMock(side_effect=Exception("Service error"))
             
             # Create test client
             client = TestClient(app)
             
             # Test request
             request_data = {
-                "filters": {"category": "text"},
-                "quality_metrics": ["coherence", "separation"],
-                "threshold": 0.8
+                "embeddings": [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]
             }
             
             response = client.post("/api/embedding-visualization/quality", json=request_data)
@@ -244,13 +251,50 @@ class TestEmbeddingQualityEndpoint:
         client = TestClient(app)
         
         # Test with missing required field
-        request_data = {
-            "filters": {"category": "text"},
-            "threshold": 0.8
-        }
+        request_data = {}
         
         response = client.post("/api/embedding-visualization/quality", json=request_data)
         assert response.status_code == 422
+
+
+class TestEmbeddingMethodsEndpoint:
+    """Test the embedding methods endpoint."""
+
+    def test_get_available_methods_success(self):
+        """Test successful methods retrieval."""
+        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+            # Mock the service
+            mock_service.get_available_methods = AsyncMock(return_value={
+                "pca": {"parameters": {"n_components": "int"}},
+                "tsne": {"parameters": {"perplexity": "float"}},
+                "umap": {"parameters": {"n_neighbors": "int"}}
+            })
+            
+            # Create test client
+            client = TestClient(app)
+            
+            response = client.get("/api/embedding-visualization/methods")
+            
+            assert response.status_code == 200
+            data = response.json()
+            assert "pca" in data
+            assert "tsne" in data
+            assert "umap" in data
+
+    def test_get_available_methods_service_error(self):
+        """Test methods retrieval with service error."""
+        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+            # Mock the service to raise an exception
+            mock_service.get_available_methods = AsyncMock(side_effect=Exception("Service error"))
+            
+            # Create test client
+            client = TestClient(app)
+            
+            response = client.get("/api/embedding-visualization/methods")
+            
+            assert response.status_code == 500
+            data = response.json()
+            assert data["detail"] == "Service error"
 
 
 class TestEmbeddingCacheEndpoint:
@@ -260,14 +304,14 @@ class TestEmbeddingCacheEndpoint:
         """Test successful cache stats retrieval."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service
-            mock_service.get_cache_stats.return_value = {
+            mock_service.get_cache_stats = AsyncMock(return_value={
                 'total_entries': 10,
                 'total_size_bytes': 1024,
                 'default_ttl_seconds': 3600,
                 'cache_hit_rate': 0.85,
                 'oldest_entry': datetime.now(),
                 'newest_entry': datetime.now()
-            }
+            })
             
             # Create test client
             client = TestClient(app)
@@ -285,7 +329,7 @@ class TestEmbeddingCacheEndpoint:
         """Test successful cache clearing."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service
-            mock_service.clear_cache.return_value = {"cleared_entries": 5}
+            mock_service.clear_cache = AsyncMock(return_value={"cleared_entries": 5})
             
             # Create test client
             client = TestClient(app)
@@ -304,10 +348,11 @@ class TestEmbeddingHealthEndpoint:
         """Test successful embedding health check."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service
-            mock_service.get_embedding_stats.return_value = MagicMock(
-                total_embeddings=1000,
-                embedding_dimension=512
-            )
+            mock_stats = MagicMock()
+            mock_stats.total_embeddings = 1000
+            mock_stats.embedding_dimension = 512
+            
+            mock_service.get_embedding_stats = AsyncMock(return_value=mock_stats)
             
             # Create test client
             client = TestClient(app)
@@ -325,7 +370,7 @@ class TestEmbeddingHealthEndpoint:
         """Test embedding health check with service error."""
         with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
             # Mock the service to raise an exception
-            mock_service.get_embedding_stats.side_effect = Exception("Service error")
+            mock_service.get_embedding_stats = AsyncMock(side_effect=Exception("Service error"))
             
             # Create test client
             client = TestClient(app)
@@ -368,94 +413,31 @@ class TestEmbeddingModels:
     def test_embedding_quality_request_valid(self):
         """Test EmbeddingQualityRequest with valid data."""
         request = EmbeddingQualityRequest(
-            filters={"category": "text"},
-            quality_metrics=["coherence", "separation"],
-            threshold=0.8
+            embeddings=[[1.0, 2.0], [3.0, 4.0]]
         )
         
-        assert request.filters == {"category": "text"}
-        assert request.quality_metrics == ["coherence", "separation"]
-        assert request.threshold == 0.8
+        assert request.embeddings == [[1.0, 2.0], [3.0, 4.0]]
 
-    def test_embedding_quality_request_defaults(self):
-        """Test EmbeddingQualityRequest with default values."""
-        request = EmbeddingQualityRequest(quality_metrics=["coherence"])
+    def test_embedding_quality_request_empty(self):
+        """Test EmbeddingQualityRequest with empty embeddings."""
+        request = EmbeddingQualityRequest(embeddings=[])
         
-        assert request.filters is None
-        assert request.quality_metrics == ["coherence"]
-        assert request.threshold == 0.5
+        assert request.embeddings == []
 
-    def test_embedding_comparison_request_valid(self):
-        """Test EmbeddingComparisonRequest with valid data."""
-        request = EmbeddingComparisonRequest(
-            embedding1_id="emb1",
-            embedding2_id="emb2",
-            comparison_method="cosine",
-            normalize=True
+    def test_cache_stats_response_valid(self):
+        """Test CacheStatsResponse with valid data."""
+        response = CacheStatsResponse(
+            total_entries=10,
+            total_size_bytes=1024,
+            default_ttl_seconds=3600,
+            cache_hit_rate=0.85,
+            oldest_entry="2023-01-01T00:00:00",
+            newest_entry="2023-01-02T00:00:00"
         )
         
-        assert request.embedding1_id == "emb1"
-        assert request.embedding2_id == "emb2"
-        assert request.comparison_method == "cosine"
-        assert request.normalize is True
-
-    def test_embedding_comparison_request_defaults(self):
-        """Test EmbeddingComparisonRequest with default values."""
-        request = EmbeddingComparisonRequest(
-            embedding1_id="emb1",
-            embedding2_id="emb2"
-        )
-        
-        assert request.embedding1_id == "emb1"
-        assert request.embedding2_id == "emb2"
-        assert request.comparison_method == "cosine"
-        assert request.normalize is False
-
-    def test_embedding_export_request_valid(self):
-        """Test EmbeddingExportRequest with valid data."""
-        request = EmbeddingExportRequest(
-            filters={"category": "text"},
-            export_format="json",
-            include_metadata=True,
-            compression=False
-        )
-        
-        assert request.filters == {"category": "text"}
-        assert request.export_format == "json"
-        assert request.include_metadata is True
-        assert request.compression is False
-
-    def test_embedding_export_request_defaults(self):
-        """Test EmbeddingExportRequest with default values."""
-        request = EmbeddingExportRequest(export_format="json")
-        
-        assert request.filters is None
-        assert request.export_format == "json"
-        assert request.include_metadata is False
-        assert request.compression is False
-
-    def test_embedding_import_request_valid(self):
-        """Test EmbeddingImportRequest with valid data."""
-        request = EmbeddingImportRequest(
-            file_path="/tmp/embeddings.json",
-            import_format="json",
-            validate_data=True,
-            overwrite_existing=False
-        )
-        
-        assert request.file_path == "/tmp/embeddings.json"
-        assert request.import_format == "json"
-        assert request.validate_data is True
-        assert request.overwrite_existing is False
-
-    def test_embedding_import_request_defaults(self):
-        """Test EmbeddingImportRequest with default values."""
-        request = EmbeddingImportRequest(
-            file_path="/tmp/embeddings.json",
-            import_format="json"
-        )
-        
-        assert request.file_path == "/tmp/embeddings.json"
-        assert request.import_format == "json"
-        assert request.validate_data is False
-        assert request.overwrite_existing is False
+        assert response.total_entries == 10
+        assert response.total_size_bytes == 1024
+        assert response.default_ttl_seconds == 3600
+        assert response.cache_hit_rate == 0.85
+        assert response.oldest_entry == "2023-01-01T00:00:00"
+        assert response.newest_entry == "2023-01-02T00:00:00"

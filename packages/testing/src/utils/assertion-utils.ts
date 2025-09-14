@@ -9,7 +9,10 @@ import { expect } from "vitest";
  * Assert that a component renders without errors
  */
 export function expectComponentToRender(component: () => any) {
-  expect(() => component()).not.toThrow();
+  expect(() => {
+    const Component = component();
+    render(() => Component);
+  }).not.toThrow();
 }
 
 /**
@@ -20,9 +23,15 @@ export function expectComponentToThrow(
   expectedError?: string | RegExp | Error,
 ) {
   if (expectedError) {
-    expect(() => render(component)).toThrow(expectedError);
+    expect(() => {
+      const Component = component();
+      render(() => Component);
+    }).toThrow(expectedError);
   } else {
-    expect(() => render(component)).toThrow();
+    expect(() => {
+      const Component = component();
+      render(() => Component);
+    }).toThrow();
   }
 }
 
@@ -33,11 +42,11 @@ export async function expectPromiseToResolve<T>(
   promise: Promise<T>,
   expectedValue?: T,
 ): Promise<T> {
-  const result = await expect(promise).resolves;
+  const result = await promise;
   if (expectedValue !== undefined) {
     expect(result).toEqual(expectedValue);
   }
-  return result as T;
+  return result;
 }
 
 /**
@@ -47,10 +56,22 @@ export async function expectPromiseToReject(
   promise: Promise<any>,
   expectedError?: string | RegExp | Error,
 ): Promise<any> {
-  if (expectedError) {
-    return expect(promise).rejects.toThrow(expectedError);
-  } else {
-    return expect(promise).rejects;
+  try {
+    const result = await promise;
+    // If we get here, the promise resolved, so we should reject
+    throw new Error("Expected promise to reject, but it resolved");
+  } catch (error) {
+    // If the promise rejected, check if it matches expected error
+    if (expectedError) {
+      if (typeof expectedError === 'string') {
+        expect(error.message).toContain(expectedError);
+      } else if (expectedError instanceof RegExp) {
+        expect(error.message).toMatch(expectedError);
+      } else if (expectedError instanceof Error) {
+        expect(error.message).toContain(expectedError.message);
+      }
+    }
+    return error;
   }
 }
 

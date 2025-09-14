@@ -3,8 +3,8 @@
  * Configuration for UI-focused packages that require i18n testing
  */
 
-import type { PackageI18nConfig } from "../types";
-import { createIgnorePatterns } from "../ignore-patterns";
+import type { PackageI18nConfig } from "../types.js";
+import { createIgnorePatterns } from "../ignore-patterns.js";
 
 export const uiPackages: PackageI18nConfig[] = [
   {

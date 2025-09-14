@@ -4,14 +4,17 @@
  */
 
 import type { RosePetal, RosePetalConfig, GrowthPhase } from './RosePetalTypes';
+import { RosePetalNaturalGrowth } from './RosePetalNaturalGrowth';
 
 export class RosePetalAnimator {
   private config: RosePetalConfig;
   private time: number = 0;
   private growthPhase: GrowthPhase = 'bud';
+  private naturalGrowth: RosePetalNaturalGrowth;
 
   constructor(config: RosePetalConfig) {
     this.config = config;
+    this.naturalGrowth = new RosePetalNaturalGrowth(config);
   }
 
   /**
@@ -27,32 +30,14 @@ export class RosePetalAnimator {
   }
 
   /**
-   * Update individual petal
+   * Update individual petal using natural growth system
    */
   private updatePetal(petal: RosePetal, deltaTime: number): void {
-    // Increase growth progress
+    // Use the natural growth system for all growth modes
+    this.naturalGrowth.updatePetal(petal, deltaTime);
+    
+    // Update growth progress for compatibility
     petal.growthProgress = Math.min(1, petal.growthProgress + this.config.growthSpeed * deltaTime);
-    
-    // Update size based on growth progress
-    const growthCurve = this.easeOutCubic(petal.growthProgress);
-    petal.size = 2 + (this.config.maxPetalSize - 2) * growthCurve;
-    
-    // Update scale for smooth appearance
-    petal.scale = 0.1 + 0.9 * growthCurve;
-    
-    // Update opacity based on age and growth phase
-    petal.opacity = this.calculatePetalOpacity(petal);
-    
-    // Age the petal
-    petal.age += deltaTime;
-    
-    // Gentle rotation
-    petal.rotation += deltaTime * 0.1;
-    
-    // Subtle position variation for organic movement
-    const timeVariation = Math.sin(this.time * 0.5 + petal.id * 0.1) * 0.5;
-    petal.x = this.config.centerX + Math.cos(petal.angle) * (petal.radius + timeVariation);
-    petal.y = this.config.centerY + Math.sin(petal.angle) * (petal.radius + timeVariation);
   }
 
   /**
@@ -73,17 +58,11 @@ export class RosePetalAnimator {
   }
 
   /**
-   * Calculate petal opacity based on age and growth phase
+   * Update configuration for both animator and natural growth system
    */
-  private calculatePetalOpacity(petal: RosePetal): number {
-    const ageRatio = petal.age / petal.maxAge;
-    const growthOpacity = 0.3 + 0.7 * this.easeOutCubic(petal.growthProgress);
-    
-    if (this.growthPhase === 'wilting' && ageRatio > 0.7) {
-      return growthOpacity * (1 - (ageRatio - 0.7) / 0.3);
-    }
-    
-    return growthOpacity;
+  updateConfig(config: Partial<RosePetalConfig>): void {
+    this.config = { ...this.config, ...config };
+    this.naturalGrowth.updateConfig(this.config);
   }
 
   /**

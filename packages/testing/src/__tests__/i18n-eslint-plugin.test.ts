@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { i18nPlugin, i18nRules } from "../../i18n-eslint-plugin";
+import { i18nPlugin, i18nRules } from "../utils/i18n-eslint-plugin.js";
 
 describe("i18n ESLint plugin", () => {
   describe("i18nRules", () => {

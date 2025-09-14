@@ -21,38 +21,43 @@ from httpx import AsyncClient
 sys.path.insert(0, str(Path(__file__).parent.parent / "app"))
 
 # Mock gatekeeper for API tests (but not for auth unit tests)
-# Check if we're running auth unit tests by looking at the test path
-import inspect
-current_frame = inspect.currentframe()
-test_file = None
-while current_frame:
-    filename = current_frame.f_code.co_filename
-    if 'test_' in filename:
-        test_file = filename
-        break
-    current_frame = current_frame.f_back
+# Use environment variable to control mocking
+import os
+SKIP_GATEKEEPER_MOCK = os.getenv('SKIP_GATEKEEPER_MOCK', 'false').lower() == 'true'
 
-# Only mock gatekeeper for non-auth and non-security unit tests
-if test_file is None or ('test_auth' not in test_file and 'test_security' not in test_file):
+# Only mock gatekeeper if not explicitly disabled
+if not SKIP_GATEKEEPER_MOCK:
     import tests.mocks.gatekeeper as mock_gatekeeper
     import tests.mocks.gatekeeper.api as mock_gatekeeper_api
+    import tests.mocks.gatekeeper.api.routes as mock_routes
+    import tests.mocks.gatekeeper.api.dependencies as mock_dependencies
+    import tests.mocks.gatekeeper.models as mock_models
+    import tests.mocks.gatekeeper.models.user as mock_user_models
+    import tests.mocks.gatekeeper.models.token as mock_token_models
+    import tests.mocks.gatekeeper.backends as mock_backends
+    import tests.mocks.gatekeeper.backends.memory as mock_memory_backend
+    import tests.mocks.gatekeeper.backends.postgresql as mock_postgresql_backend
+    import tests.mocks.gatekeeper.backends.sqlite as mock_sqlite_backend
+    import tests.mocks.gatekeeper.core as mock_core
+    import tests.mocks.gatekeeper.core.password_manager as mock_password_manager
+    import tests.mocks.gatekeeper.core.auth_manager as mock_auth_manager
+    import tests.mocks.gatekeeper.core.token_manager as mock_token_manager
+    
     sys.modules['gatekeeper'] = mock_gatekeeper
     sys.modules['gatekeeper.api'] = mock_gatekeeper_api
-    sys.modules['gatekeeper.api.routes'] = mock_gatekeeper_api.routes
-    sys.modules['gatekeeper.api.dependencies'] = mock_gatekeeper
-    sys.modules['gatekeeper.models'] = mock_gatekeeper
-    sys.modules['gatekeeper.models.user'] = mock_gatekeeper
-    import tests.mocks.gatekeeper.backends as mock_backends
-    import tests.mocks.gatekeeper.core as mock_core
+    sys.modules['gatekeeper.api.routes'] = mock_routes
+    sys.modules['gatekeeper.api.dependencies'] = mock_dependencies
+    sys.modules['gatekeeper.models'] = mock_models
+    sys.modules['gatekeeper.models.user'] = mock_user_models
+    sys.modules['gatekeeper.models.token'] = mock_token_models
     sys.modules['gatekeeper.backends'] = mock_backends
-    sys.modules['gatekeeper.backends.memory'] = mock_backends.memory
-    sys.modules['gatekeeper.backends.postgresql'] = mock_backends.postgresql
-    sys.modules['gatekeeper.backends.sqlite'] = mock_backends.sqlite
+    sys.modules['gatekeeper.backends.memory'] = mock_memory_backend
+    sys.modules['gatekeeper.backends.postgresql'] = mock_postgresql_backend
+    sys.modules['gatekeeper.backends.sqlite'] = mock_sqlite_backend
     sys.modules['gatekeeper.core'] = mock_core
-    sys.modules['gatekeeper.core.password_manager'] = mock_core.password_manager
-    sys.modules['gatekeeper.core.auth_manager'] = mock_core.auth_manager
-    sys.modules['gatekeeper.core.token_manager'] = mock_core.token_manager
-    sys.modules['gatekeeper.models.token'] = mock_gatekeeper.models.token
+    sys.modules['gatekeeper.core.password_manager'] = mock_password_manager
+    sys.modules['gatekeeper.core.auth_manager'] = mock_auth_manager
+    sys.modules['gatekeeper.core.token_manager'] = mock_token_manager
 
 from main import create_app
 
@@ -94,9 +99,11 @@ def test_app() -> FastAPI:
     # Store the mock registry in the app state
     app.state.service_registry = mock_registry
     
-    # Configure middleware and routers
-    _setup_middleware(app, config)
+    # Configure routers (before middleware wrapping)
     _setup_routers(app)
+    
+    # Configure middleware (last to wrap everything)
+    app = _setup_middleware(app, config)
     
     return app
 

@@ -6,10 +6,12 @@
 import {
   Component,
   onMount,
+  onCleanup,
   createSignal,
   createEffect,
   Show,
   splitProps,
+  createMemo,
 } from "solid-js";
 import {
   Chart,
@@ -23,7 +25,6 @@ import {
   LinearScale,
   TimeScale,
 } from "chart.js";
-import { Line } from "solid-chartjs";
 import {
   Dataset,
   ChartConfig,
@@ -99,11 +100,42 @@ export const LineChart: Component<LineChartProps> = (props) => {
     "theme",
   ]);
 
+  // Process data using createMemo for better performance
+  const chartData = createMemo(() => {
+    if (local.timeSeriesData && local.timeSeriesData.length > 0) {
+      // Process time series data
+      const processed = processTimeSeriesData(
+        local.timeSeriesData,
+        local.maxDataPoints,
+      );
+      const datasets = prepareDatasets([
+        {
+          label: "Value",
+          data: processed.data,
+          fill: false,
+          tension: 0.4,
+        },
+      ]);
+
+      return {
+        labels: processed.labels,
+        datasets,
+      };
+    } else if (local.labels && local.datasets) {
+      // Use provided labels and datasets
+      if (validateChartData(local.datasets, local.labels)) {
+        const processedDatasets = prepareDatasets(local.datasets);
+        return {
+          labels: local.labels,
+          datasets: processedDatasets,
+        };
+      }
+    }
+    return null;
+  });
+
   const [isRegistered, setIsRegistered] = createSignal(false);
-  const [chartData, setChartData] = createSignal<{
-    labels: string[];
-    datasets: Dataset[];
-  } | null>(null);
+  const [chartInstance, setChartInstance] = createSignal<Chart | null>(null);
 
   // Register Chart.js components on mount
   onMount(() => {
@@ -121,40 +153,53 @@ export const LineChart: Component<LineChartProps> = (props) => {
     setIsRegistered(true);
   });
 
-  // Process data
-  createEffect(() => {
-    if (local.timeSeriesData && local.timeSeriesData.length > 0) {
-      // Process time series data
-      const processed = processTimeSeriesData(
-        local.timeSeriesData,
-        local.maxDataPoints,
-      );
-      const datasets = prepareDatasets([
-        {
-          label: "Value",
-          data: processed.data,
-          fill: false,
-          tension: 0.4,
-        },
-      ]);
+  // Cleanup chart on unmount
+  onCleanup(() => {
+    const chart = chartInstance();
+    if (chart) {
+      chart.destroy();
+    }
+  });
 
-      setChartData({
-        labels: processed.labels,
-        datasets,
-      });
-    } else if (local.labels && local.datasets) {
-      // Use provided labels and datasets
-      if (validateChartData(local.datasets, local.labels)) {
-        const processedDatasets = prepareDatasets(local.datasets);
-        setChartData({
-          labels: local.labels,
-          datasets: processedDatasets,
-        });
-      } else {
-        setChartData(null);
-      }
-    } else {
-      setChartData(null);
+  // Create chart instance
+  const createChart = (canvas: HTMLCanvasElement) => {
+    if (!isRegistered() || !chartData()) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Destroy existing chart if it exists
+    const existingChart = chartInstance();
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    const config = {
+      type: "line" as const,
+      data: chartData()!,
+      options: getChartOptions(),
+    };
+
+    // Only create chart on client side
+    if (typeof window !== "undefined") {
+      const newChart = new Chart(ctx, config);
+      setChartInstance(newChart);
+    }
+  };
+
+  // Canvas ref function
+  const canvasRef = (canvas: HTMLCanvasElement) => {
+    if (canvas && chartData()) {
+      createChart(canvas);
+    }
+  };
+
+  // Update chart when data changes
+  createEffect(() => {
+    const chart = chartInstance();
+    if (chart && chartData()) {
+      chart.data = chartData()!;
+      chart.update();
     }
   });
 
@@ -263,6 +308,9 @@ export const LineChart: Component<LineChartProps> = (props) => {
       aria-label={local.title || "line chart"}
       {...others}
     >
+      <Show when={local.title}>
+        <div class="reynard-chart-title">{local.title}</div>
+      </Show>
       <div class="reynard-chart-wrapper">
         <Show when={local.loading}>
           <div class="reynard-chart-loading">
@@ -277,13 +325,16 @@ export const LineChart: Component<LineChartProps> = (props) => {
           </div>
         </Show>
 
-        <Show when={!local.loading && chartData() && isRegistered()}>
-          <Line
-            data={chartData()!}
-            options={getChartOptions()}
-            width={local.width}
-            height={local.height}
-          />
+        <Show when={!local.loading && chartData()}>
+          <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>                                                                       
+            <canvas
+              ref={canvasRef}
+              width={local.width}
+              height={local.height}
+              style={{ maxWidth: "100%", maxHeight: "100%" }}
+              data-testid="line-chart-canvas"
+            />
+          </div>
         </Show>
       </div>
     </div>

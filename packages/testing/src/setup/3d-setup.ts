@@ -3,7 +3,7 @@
  */
 
 import { vi } from "vitest";
-import { setupBrowserTest } from "./browser-setup";
+import { setupBrowserTest } from "./browser-setup.js";
 
 /**
  * Setup for 3D packages (reynard-3d, etc.)

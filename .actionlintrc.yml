@@ -1,0 +1,114 @@
+# 🔍 Actionlint Configuration for Reynard
+# Comprehensive workflow validation settings
+
+# Enable all checks
+enable:
+  - action
+  - runner
+  - job
+  - step
+  - expression
+  - shellcheck
+  - pyflakes
+
+# Shellcheck configuration
+shellcheck:
+  # Enable shellcheck for shell scripts
+  enabled: true
+  # Ignore specific shellcheck warnings
+  ignore:
+    - SC1090  # Can't follow non-constant source
+    - SC1091  # Not following sourced file
+    - SC2034  # Variable appears unused
+    - SC2086  # Double quote to prevent globbing (handled by our fixes)
+    - SC2129  # Consider using { cmd1; cmd2; } >> file (handled by our fixes)
+    - SC2144  # -f doesn't work with globs (handled by our fixes)
+
+# Pyflakes configuration for Python scripts
+pyflakes:
+  enabled: true
+  # Ignore specific pyflakes warnings
+  ignore:
+    - F401  # Imported but unused
+    - F841  # Local variable assigned but never used
+
+# Expression validation
+expression:
+  # Enable expression validation
+  enabled: true
+  # Allow specific contexts
+  allow_contexts:
+    - github
+    - runner
+    - secrets
+    - vars
+    - inputs
+    - needs
+    - strategy
+    - matrix
+
+# Job validation
+job:
+  # Enable job validation
+  enabled: true
+  # Check for required fields
+  required_fields:
+    - runs-on
+    - steps
+
+# Step validation
+step:
+  # Enable step validation
+  enabled: true
+  # Check for required fields
+  required_fields:
+    - name
+    - uses  # or run
+
+# Action validation
+action:
+  # Enable action validation
+  enabled: true
+  # Check for valid action versions
+  check_versions: true
+  # Allow specific action patterns
+  allow_patterns:
+    - "actions/*@*"
+    - "pnpm/*@*"
+    - "rhysd/*@*"
+    - "matheusjardimb/*@*"
+    - "alexkiro/*@*"
+
+# Runner validation
+runner:
+  # Enable runner validation
+  enabled: true
+  # Allowed runners
+  allowed_runners:
+    - ubuntu-latest
+    - ubuntu-22.04
+    - ubuntu-20.04
+    - windows-latest
+    - windows-2022
+    - macos-latest
+    - macos-12
+    - macos-13
+
+# File patterns to check
+files:
+  - ".github/workflows/*.yml"
+  - ".github/workflows/*.yaml"
+
+# Exclude patterns
+exclude:
+  - ".github/workflows/*.example.yml"
+  - ".github/workflows/*.template.yml"
+
+# Output format
+format: "github"
+
+# Verbose output
+verbose: false
+
+# Color output
+color: true

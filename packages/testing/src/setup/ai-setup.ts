@@ -3,7 +3,7 @@
  */
 
 import { vi } from "vitest";
-import { setupCoreTest } from "./core-setup";
+import { setupCoreTest } from "./core-setup.js";
 
 /**
  * Setup for AI packages (reynard-ai-shared, etc.)

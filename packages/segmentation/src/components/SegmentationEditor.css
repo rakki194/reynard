@@ -1,0 +1,38 @@
+/**
+ * Segmentation Editor Styles
+ */
+
+.segmentation-editor {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background, #ffffff);
+  border-radius: var(--border-radius, 8px);
+  overflow: hidden;
+}
+
+.segmentation-editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .segmentation-editor {
+    border-radius: 0;
+  }
+  
+  .segmentation-editor-main {
+    flex-direction: column;
+  }
+}
+
+
+
+
+
+

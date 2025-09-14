@@ -3,4 +3,4 @@
  * Configuration for translation testing across all Reynard packages
  */
 
-export * from "./index";
+export * from "./index.js";

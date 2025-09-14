@@ -9,7 +9,7 @@ def test_login_endpoint():
     print("--- Testing /api/login endpoint ---")
 
     # Test case 1: Valid credentials (replace with actual valid credentials if known, or skip if not for now)
-    # For a blackhat test, we'd typically try to bypass, so we'll focus on that.
+    # For a fenrir test, we'd typically try to bypass, so we'll focus on that.
     print("\n[+] Attempting login with invalid credentials...")
     invalid_credentials = {"username": "nonexistentuser", "password": "wrongpassword"}
     try:

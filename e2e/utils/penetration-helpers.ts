@@ -1,7 +1,7 @@
 /**
  * 🐺 PENETRATION TESTING HELPERS
  *
- * *snarls with predatory glee* Helper functions for integrating blackhat exploits
+ * *snarls with predatory glee* Helper functions for integrating fenrir exploits
  * with E2E authentication tests for comprehensive security testing.
  */
 
@@ -57,7 +57,7 @@ export interface SecurityAssessment {
 export class PenetrationTestHelper {
   private page: Page;
   private config: PenetrationConfig;
-  private blackhatPath: string;
+  private fenrirPath: string;
 
   constructor(page: Page, config: Partial<PenetrationConfig> = {}) {
     this.page = page;
@@ -71,7 +71,7 @@ export class PenetrationTestHelper {
       ...config,
     };
 
-    this.blackhatPath = path.join(process.cwd(), "..", "blackhat");
+    this.fenrirPath = path.join(process.cwd(), "..", "fenrir");
   }
 
   /**
@@ -209,7 +209,7 @@ export class PenetrationTestHelper {
 
       const { stdout, stderr } = await execAsync(command, {
         timeout: this.config.timeout * 2,
-        cwd: this.blackhatPath,
+        cwd: this.fenrirPath,
       });
 
       if (stderr && !stderr.includes("Warning")) {
@@ -283,7 +283,7 @@ export class PenetrationTestHelper {
       
       const command = `${pythonPath} -c "
 import sys
-sys.path.append('${this.blackhatPath}')
+sys.path.append('${this.fenrirPath}')
 from ${exploitModule} import *
 import json
 
@@ -302,7 +302,7 @@ print(json.dumps({
 
       const { stdout, stderr } = await execAsync(command, {
         timeout: this.config.timeout,
-        cwd: this.blackhatPath,
+        cwd: this.fenrirPath,
       });
 
       if (stderr && !stderr.includes("Warning")) {

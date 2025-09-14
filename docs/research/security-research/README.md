@@ -32,7 +32,7 @@ The security research employed a systematic approach:
 
 ## 📋 Key Research Documents
 
-### 🛡️ [Main Security Paper](./blackhat.tex)
+### 🛡️ [Main Security Paper](./fenrir.tex)
 
 **Title**: "The Whirling Valley of Crooked Fools"  
 **Status**: Comprehensive Security Assessment  
@@ -133,7 +133,7 @@ Request 6: Status Code: 429, Response: {'detail': 'Too many login attempts. Plea
 
 ### Input Validation Testing
 
-- **`fuzz_test.py`**: Automated input fuzzing and validation testing
+- **`fuzzy.py`**: Comprehensive modular fuzzing framework with specialized attack modules
 - **`exploit_script.py`**: Advanced exploitation attempt testing
 
 ### System Security Testing

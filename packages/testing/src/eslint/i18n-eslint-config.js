@@ -1,183 +1,108 @@
 /**
- * ESLint Configuration for i18n Rules
+ * ESLint Configuration for i18n Rules (Flat Config)
  * Provides hardcoded string detection and translation validation
  */
 
-module.exports = {
-  plugins: ["@reynard/i18n"],
-  rules: {
-    // Detect hardcoded strings in JSX and regular code
-    "@reynard/i18n/no-hardcoded-strings": [
-      "error",
-      {
-        minLength: 3,
-        ignorePatterns: [
-          "^[a-z]+[A-Z][a-z]*$", // camelCase
-          "^[A-Z_]+$", // CONSTANTS
-          "^[0-9]+$", // numbers
-          "^[a-z]{1,2}$", // short strings
-          "^(id|class|type|name|value|key|index|count|size|width|height|color|url|path|file|dir|src|alt|title|role|aria|data|test|spec|mock|stub|fixture)$",
-        ],
-        allowedInFiles: [
-          "**/*.test.ts",
-          "**/*.test.tsx",
-          "**/*.spec.ts",
-          "**/*.spec.tsx",
-          "**/test-utils.ts",
-          "**/test-utils.tsx",
-        ],
-      },
-    ],
+import js from '@eslint/js';
+import typescript from '@typescript-eslint/eslint-plugin';
+import typescriptParser from '@typescript-eslint/parser';
 
-    // Detect untranslated keys
-    "@reynard/i18n/no-untranslated-keys": [
-      "warn",
-      {
-        namespaces: [
-          "common",
-          "components",
-          "ui",
-          "auth",
-          "chat",
-          "gallery",
-          "settings",
-          "themes",
-          "charts",
-          "floating-panel",
-          "caption",
-          "boundingbox",
-          "audio",
-          "video",
-          "image",
-          "multimodal",
-          "rag",
-          "monaco",
-          "3d",
-          "games",
-          "i18n",
-        ],
-        locales: [
-          "en",
-          "es",
-          "fr",
-          "de",
-          "ru",
-          "ar",
-          "zh",
-          "ja",
-          "ko",
-          "pt",
-          "it",
-          "nl",
-          "sv",
-          "no",
-          "da",
-          "fi",
-          "pl",
-          "cs",
-          "hu",
-          "tr",
-        ],
+export default [
+  js.configs.recommended,
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
-    ],
-
-    // Detect missing pluralization
-    "@reynard/i18n/require-pluralization": [
-      "warn",
-      {
-        locales: [
-          "en",
-          "es",
-          "fr",
-          "de",
-          "ru",
-          "ar",
-          "zh",
-          "ja",
-          "ko",
-          "pt",
-          "it",
-          "nl",
-          "sv",
-          "no",
-          "da",
-          "fi",
-          "pl",
-          "cs",
-          "hu",
-          "tr",
-        ],
+    },
+    plugins: {
+      "@typescript-eslint": typescript,
+    },
+    rules: {
+      ...typescript.configs.recommended.rules,
+      "no-console": "warn",
+      "no-debugger": "warn",
+    },
+  },
+  
+  {
+    files: ["**/*.{js,jsx}"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
       },
+    },
+    rules: {
+      "no-console": "warn",
+      "no-debugger": "warn",
+    },
+  },
+  
+  // Test files - more lenient rules
+  {
+    files: [
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/*.spec.ts",
+      "**/*.spec.tsx",
+      "**/test-utils.ts",
+      "**/test-utils.tsx",
     ],
-
-    // Detect RTL issues
-    "@reynard/i18n/rtl-support": [
-      "warn",
-      {
-        rtlLocales: ["ar", "he", "fa", "ur"],
-      },
-    ],
+    rules: {
+      "no-console": "off",
+      "no-debugger": "off",
+    },
   },
 
-  overrides: [
-    // Test files - more lenient rules
-    {
-      files: [
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "**/*.spec.ts",
-        "**/*.spec.tsx",
-        "**/test-utils.ts",
-        "**/test-utils.tsx",
-      ],
-      rules: {
-        "@reynard/i18n/no-hardcoded-strings": "off",
-        "@reynard/i18n/no-untranslated-keys": "off",
-      },
+  // Configuration files - more lenient rules
+  {
+    files: [
+      "**/*.config.js",
+      "**/*.config.ts",
+      "**/*.config.json",
+      "**/package.json",
+      "**/tsconfig.json",
+    ],
+    rules: {
+      "no-console": "off",
+      "no-debugger": "off",
     },
+  },
 
-    // Configuration files - more lenient rules
-    {
-      files: [
-        "**/*.config.js",
-        "**/*.config.ts",
-        "**/*.config.json",
-        "**/package.json",
-        "**/tsconfig.json",
-      ],
-      rules: {
-        "@reynard/i18n/no-hardcoded-strings": "off",
-        "@reynard/i18n/no-untranslated-keys": "off",
-      },
+  // Documentation files - more lenient rules
+  {
+    files: ["**/*.md", "**/*.mdx", "**/README.md", "**/CHANGELOG.md"],
+    rules: {
+      "no-console": "off",
+      "no-debugger": "off",
     },
+  },
 
-    // Documentation files - more lenient rules
-    {
-      files: ["**/*.md", "**/*.mdx", "**/README.md", "**/CHANGELOG.md"],
-      rules: {
-        "@reynard/i18n/no-hardcoded-strings": "off",
-        "@reynard/i18n/no-untranslated-keys": "off",
-      },
+  // Core packages that don't need i18n
+  {
+    files: [
+      "packages/algorithms/**/*",
+      "packages/api-client/**/*",
+      "packages/colors/**/*",
+      "packages/composables/**/*",
+      "packages/config/**/*",
+      "packages/connection/**/*",
+      "packages/core/**/*",
+      "packages/fluent-icons/**/*",
+    ],
+    rules: {
+      "no-console": "off",
+      "no-debugger": "off",
     },
-
-    // Core packages that don't need i18n
-    {
-      files: [
-        "packages/algorithms/**/*",
-        "packages/api-client/**/*",
-        "packages/colors/**/*",
-        "packages/composables/**/*",
-        "packages/config/**/*",
-        "packages/connection/**/*",
-        "packages/core/**/*",
-        "packages/fluent-icons/**/*",
-      ],
-      rules: {
-        "@reynard/i18n/no-hardcoded-strings": "off",
-        "@reynard/i18n/no-untranslated-keys": "off",
-        "@reynard/i18n/require-pluralization": "off",
-        "@reynard/i18n/rtl-support": "off",
-      },
-    },
-  ],
-};
+  },
+];

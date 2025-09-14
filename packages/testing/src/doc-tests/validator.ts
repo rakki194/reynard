@@ -4,7 +4,7 @@
  * Validates code examples and generates reports
  */
 
-import { extractCodeExamples } from "./code-parser";
+import { extractCodeExamples } from "./code-parser.js";
 
 export interface ValidationResult {
   valid: number;

@@ -24,6 +24,12 @@ export const PhyllotacticRosePetalDemo: Component = () => {
   const [growthPhase, setGrowthPhase] = createSignal('bud');
   const [fps, setFps] = createSignal(60);
   
+  // Natural growth state
+  const [growthMode, setGrowthMode] = createSignal('gaussian');
+  const [unfoldSpeed, setUnfoldSpeed] = createSignal(0.03);
+  const [bundleGrowthDelay, setBundleGrowthDelay] = createSignal(0.2);
+  const [sepalVisibility, setSepalVisibility] = createSignal(true);
+  
   // System
   let roseSystem: RosePetalGrowthSystem;
   let renderer: RosePetalRenderer;
@@ -120,7 +126,11 @@ export const PhyllotacticRosePetalDemo: Component = () => {
       growthSpeed: growthSpeed(),
       maxPetalSize: maxPetalSize(),
       colorVariation: colorVariation(),
-      animationSpeed: animationSpeed()
+      animationSpeed: animationSpeed(),
+      growthMode: growthMode() as any,
+      unfoldSpeed: unfoldSpeed(),
+      bundleGrowthDelay: bundleGrowthDelay(),
+      sepalVisibility: sepalVisibility()
     });
   };
   
@@ -230,6 +240,63 @@ export const PhyllotacticRosePetalDemo: Component = () => {
                   updateConfig();
                 }}
               />
+            </div>
+            
+            <div class="control-group">
+              <label>Growth Mode</label>
+              <select
+                value={growthMode()}
+                onChange={(e: any) => {
+                  setGrowthMode(e.currentTarget.value);
+                  updateConfig();
+                }}
+              >
+                <option value="gaussian">Gaussian (Original)</option>
+                <option value="natural">Natural (Botanical)</option>
+                <option value="hybrid">Hybrid (Smooth Natural)</option>
+              </select>
+            </div>
+            
+            <div class="control-group">
+              <label>Unfold Speed: {unfoldSpeed().toFixed(3)}</label>
+              <input
+                type="range"
+                min="0.01"
+                max="0.05"
+                step="0.005"
+                value={unfoldSpeed()}
+                onInput={(e: any) => {
+                  setUnfoldSpeed(parseFloat(e.currentTarget.value));
+                  updateConfig();
+                }}
+              />
+            </div>
+            
+            <div class="control-group">
+              <label>Bundle Growth Delay: {bundleGrowthDelay().toFixed(2)}s</label>
+              <input
+                type="range"
+                min="0.1"
+                max="0.5"
+                step="0.05"
+                value={bundleGrowthDelay()}
+                onInput={(e: any) => {
+                  setBundleGrowthDelay(parseFloat(e.currentTarget.value));
+                  updateConfig();
+                }}
+              />
+            </div>
+            
+            <div class="control-group">
+              <input
+                type="checkbox"
+                checked={sepalVisibility()}
+                onChange={(e) => {
+                  setSepalVisibility(e.currentTarget.checked);
+                  updateConfig();
+                }}
+              />
+              <label>Show Sepals (Green Points)</label>
             </div>
           </Card>
           

@@ -3,11 +3,14 @@
  * Data visualization components for SolidJS applications
  */
 
-// Export components
-export * from "./components";
+// Export core components only for now
+export { Chart } from "./components/Chart";
+export { ChartRenderer } from "./components/ChartRenderer";
+export { LoadingOverlay, EmptyState, PerformanceOverlay, getTestId } from "./components/ChartComponents";
 
-// Export composables
-export * from "./composables";
+// Export additional components that are being imported
+export { RealTimeChart } from "./components/RealTimeChart";
+export { StatisticalChart } from "./components/StatisticalChart";
 
 // Export types
 export * from "./types";

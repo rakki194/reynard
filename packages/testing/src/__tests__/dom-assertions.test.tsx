@@ -21,7 +21,7 @@ import {
   expectElementToHaveRole,
   expectElementToHaveAccessibleName,
   expectElementToHaveAccessibleDescription,
-} from "../assertion-utils";
+  } from "../utils/assertion-utils.js";
 
 describe("DOM Element Assertions", () => {
   let container: HTMLElement;
@@ -32,7 +32,9 @@ describe("DOM Element Assertions", () => {
   });
 
   afterEach(() => {
-    document.body.removeChild(container);
+    if (container && container.parentNode) {
+      document.body.removeChild(container);
+    }
   });
 
   describe("expectElementToHaveAttributes", () => {

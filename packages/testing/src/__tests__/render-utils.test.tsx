@@ -8,13 +8,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   resetBrowserMocks,
   setupBrowserMocks,
-} from "../../mocks/browser-mocks";
+  } from "../mocks/browser-mocks.js";
 import {
   renderWithAppContext,
   renderWithProviders,
   renderWithRouter,
   renderWithTheme,
-} from "../../test-utils";
+} from "../test-utils";
 
 describe("Render Utilities", () => {
   const TestComponent: Component = () => (

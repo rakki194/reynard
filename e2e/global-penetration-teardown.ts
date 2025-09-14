@@ -147,10 +147,10 @@ ${generateTestDetails(results)}
 
 ## 🔍 Methodology
 
-This penetration testing suite integrates the blackhat exploit framework with E2E authentication testing to provide comprehensive security assessment of the Reynard ecosystem.
+This penetration testing suite integrates the fenrir exploit framework with E2E authentication testing to provide comprehensive security assessment of the Reynard ecosystem.
 
 ### Tools Used
-- **Blackhat Exploit Suite**: Custom penetration testing framework
+- **Fenrir Exploit Suite**: Custom penetration testing framework
 - **Playwright**: E2E testing framework
 - **Python**: Exploit execution environment
 - **Node.js**: Test orchestration
@@ -207,7 +207,7 @@ async function cleanupTemporaryFiles(): Promise<void> {
     );
 
     // Remove temporary test files
-    await execAsync("rm -f /tmp/blackhat_*.json 2>/dev/null || true");
+    await execAsync("rm -f /tmp/fenrir_*.json 2>/dev/null || true");
     await execAsync("rm -f /tmp/penetration_*.log 2>/dev/null || true");
 
     console.log("✅ Temporary files cleaned up");

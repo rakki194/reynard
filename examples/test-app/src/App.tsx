@@ -21,12 +21,14 @@ import { PhyllotacticRosePetalDemo } from "./components/PhyllotacticRosePetalDem
 import { PerformanceDemo } from "./components/PerformanceDemo";
 import { EnhancedIntegrationDemo } from "./components/EnhancedIntegrationDemo";
 import { DataVisualizationDemo } from "./components/visualization/DataVisualizationDemo";
+import { ChartsI18nDemo } from "./pages/ChartsI18nDemo";
 import ReynardTutorial from "./components/ReynardAdventure";
 import "./App.css";
 import "./styles/streaming-demo.css";
 import "./components/PhyllotacticSpiralGame.css";
 import "./components/spell-effects/SpellCaster.css";
 import "./components/visualization/VisualizationStyles.css";
+import "./styles/charts-i18n-demo.css";
 // Import Reynard component styles
 import "reynard-components/styles";
 // Import Reynard games styles
@@ -59,6 +61,7 @@ function App() {
     { id: "performance", label: "Performance Demo", icon: getIcon("sparkle") },
     { id: "enhanced-integration", label: "Enhanced Integration", icon: getIcon("sparkle") },
     { id: "data-viz", label: "Data Visualization", icon: getIcon("chart") },
+    { id: "charts-i18n", label: "Charts i18n Demo", icon: getIcon("globe") },
     { id: "unused-vars", label: "Unused Variables", icon: getIcon("palette") },
   ];
 
@@ -148,6 +151,10 @@ function App() {
 
                   <TabPanel tabId="data-viz" activeTab={activeTab()}>
                     <DataVisualizationDemo />
+                  </TabPanel>
+
+                  <TabPanel tabId="charts-i18n" activeTab={activeTab()}>
+                    <ChartsI18nDemo />
                   </TabPanel>
 
                   <TabPanel tabId="unused-vars" activeTab={activeTab()}>

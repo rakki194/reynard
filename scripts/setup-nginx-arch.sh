@@ -8,13 +8,13 @@ set -e
 echo "🦊 Setting up Nginx with Let's Encrypt for Reynard on Arch Linux..."
 
 # Check if running as root
-if [ "$EUID" -ne 0 ]; then
+if [[ "${EUID}" -ne 0 ]]; then
     echo "❌ Please run this script as root (use sudo)"
     exit 1
 fi
 
 # Check if we're in the right directory
-if [ ! -f "nginx/reynard.conf" ]; then
+if [[ ! -f "nginx/reynard.conf" ]]; then
     echo "❌ Error: Please run this script from the Reynard project root directory"
     exit 1
 fi
@@ -49,15 +49,13 @@ cp nginx/reynard.conf /etc/nginx/sites-available/reynard.conf
 ln -sf /etc/nginx/sites-available/reynard.conf /etc/nginx/sites-enabled/reynard.conf
 
 # Remove default Nginx site if it exists
-if [ -f "/etc/nginx/sites-enabled/default" ]; then
+if [[ -f "/etc/nginx/sites-enabled/default" ]]; then
     rm /etc/nginx/sites-enabled/default
 fi
 
 # Test Nginx configuration
 echo "🔍 Testing Nginx configuration..."
-nginx -t
-
-if [ $? -eq 0 ]; then
+if nginx -t; then
     echo "✅ Nginx configuration is valid"
 else
     echo "❌ Nginx configuration test failed"

@@ -1,4 +1,4 @@
-name: i18n Checks
+name: 🌍 i18n Checks
 
 on:
   push:
@@ -7,49 +7,68 @@ on:
     branches: [ main, develop ]
   workflow_dispatch:
 
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8.15.0'
+
 jobs:
   i18n-checks:
     runs-on: ubuntu-latest
-    name: i18n Translation Checks
+    name: 🌍 i18n Translation Checks
     
     steps:
-    - name: Checkout code
+    - name: 📥 Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for better caching
       
-    - name: Install pnpm
+    - name: 🏗️ Setup pnpm
       uses: pnpm/action-setup@v4
+      with:
+        version: ${{ env.PNPM_VERSION }}
         
-    - name: Setup Node.js
+    - name: 🟢 Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: ${{ env.NODE_VERSION }}
         cache: 'pnpm'
         
-    - name: Install dependencies
-      run: pnpm install
+    - name: 💾 Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pnpm-store
+          node_modules
+          packages/*/node_modules
+        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-
+        
+    - name: 📦 Install dependencies
+      run: pnpm install --frozen-lockfile
       
-    - name: Build testing package
+    - name: 🏗️ Build testing package
       run: |
         cd packages/testing
         pnpm build
         
-    - name: Validate i18n setup
+    - name: ✅ Validate i18n setup
       run: |
         cd packages/testing
         pnpm i18n:validate
         
-    - name: Run ESLint with i18n rules
+    - name: 🔍 Run ESLint with i18n rules
       run: |
         cd packages/testing
         pnpm i18n:eslint
       continue-on-error: true
       
-    - name: Run comprehensive i18n tests
+    - name: 🧪 Run comprehensive i18n tests
       run: |
         cd packages/testing
         pnpm i18n:test --output ../../i18n-results.json --report ../../i18n-report.md
         
-    - name: Upload i18n results
+    - name: 📤 Upload i18n results
       uses: actions/upload-artifact@v4
       if: always()
       with:
@@ -59,7 +78,7 @@ jobs:
           i18n-report.md
         retention-days: 30
         
-    - name: Comment PR with i18n results
+    - name: 💬 Comment PR with i18n results
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v7
       with:
@@ -104,11 +123,11 @@ jobs:
             console.error('Failed to create i18n comment:', error);
           }
           
-    - name: Fail on i18n issues
+    - name: 🚪 Fail on i18n issues
       run: |
-        if [ -f "i18n-results.json" ]; then
+        if [[ -f "i18n-results.json" ]]; then
           SUCCESS=$(jq -r '.overallSuccess' i18n-results.json)
-          if [ "$SUCCESS" != "true" ]; then
+          if [[ "${SUCCESS}" != "true" ]]; then
             echo "❌ i18n checks failed"
             exit 1
           fi

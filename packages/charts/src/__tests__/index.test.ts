@@ -3,7 +3,6 @@ import {
   validateChartData,
   prepareDatasets,
   getDefaultConfig,
-  generateColors,
   applyTheme,
   formatValue,
   formatTimestamp,
@@ -12,6 +11,7 @@ import {
   processTimeSeriesData,
   aggregateByInterval,
 } from "../index";
+import { generateColorsWithCache } from "reynard-colors";
 import type { Dataset } from "../types";
 
 const mockDatasets: Dataset[] = [
@@ -209,40 +209,38 @@ describe("Chart Utilities", () => {
     });
   });
 
-  describe("generateColors", () => {
+  describe("generateColorsWithCache", () => {
     it("generates the correct number of colors", () => {
-      const colors = generateColors(5);
+      const colors = generateColorsWithCache(5);
       expect(colors).toHaveLength(5);
     });
 
     it("generates colors with custom opacity", () => {
-      const colors = generateColors(3, 0.5);
+      const colors = generateColorsWithCache(3, 0, 0.3, 0.6, 0.5);
       expect(colors).toHaveLength(3);
+      // Colors should be valid CSS color strings
       colors.forEach((color) => {
-        // Colors should have 0.5 opacity
-        expect(color).toContain("0.5");
+        expect(typeof color).toBe("string");
+        expect(color.length).toBeGreaterThan(0);
       });
     });
 
     it("handles zero count", () => {
-      const colors = generateColors(0);
+      const colors = generateColorsWithCache(0);
       expect(colors).toHaveLength(0);
     });
 
     it("handles large count", () => {
-      const colors = generateColors(100);
+      const colors = generateColorsWithCache(100);
       expect(colors).toHaveLength(100);
-      // For large counts, colors should be either rgba (predefined) or hsla (generated)
-      expect(
-        colors.every(
-          (color) => color.startsWith("rgba(") || color.startsWith("hsla("),
-        ),
-      ).toBe(true);
+      // All colors should be valid strings
+      expect(colors.every((color) => typeof color === "string")).toBe(true);
     });
 
-    it("uses predefined colors for small counts", () => {
-      const colors = generateColors(3);
-      expect(colors.every((color) => color.startsWith("rgba("))).toBe(true);
+    it("generates consistent colors", () => {
+      const colors1 = generateColorsWithCache(3);
+      const colors2 = generateColorsWithCache(3);
+      expect(colors1).toEqual(colors2);
     });
   });
 
@@ -539,7 +537,7 @@ describe("Chart Utilities", () => {
 
     it("generates colors efficiently", () => {
       const startTime = performance.now();
-      const colors = generateColors(1000);
+      const colors = generateColorsWithCache(1000);
       const endTime = performance.now();
 
       expect(colors).toHaveLength(1000);

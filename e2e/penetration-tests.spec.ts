@@ -1,7 +1,7 @@
 /**
  * 🐺 PENETRATION TESTING E2E SUITE
  *
- * *snarls with predatory glee* Integration of blackhat exploits with E2E authentication tests
+ * *snarls with predatory glee* Integration of fenrir exploits with E2E authentication tests
  * for comprehensive security testing of the Reynard ecosystem.
  */
 
@@ -45,14 +45,14 @@ test.describe("🐺 Penetration Testing Suite", () => {
   };
 
   test.beforeAll(async () => {
-    // Verify blackhat suite is available
-    const blackhatPath = path.join(process.cwd(), "..", "blackhat");
-    console.log(`🐺 Blackhat suite path: ${blackhatPath}`);
+    // Verify fenrir suite is available
+    const fenrirPath = path.join(process.cwd(), "..", "fenrir");
+    console.log(`🐺 Fenrir suite path: ${fenrirPath}`);
   });
 
   test.describe("JWT Security Testing", () => {
     test("should test JWT secret key vulnerabilities", async () => {
-      const result = await runBlackhatExploit(
+      const result = await runFenrirExploit(
         "jwt_exploits.secret_key_attack",
         {
           target: config.backendUrl,
@@ -73,7 +73,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
     });
 
     test("should test JWT signature bypass attempts", async () => {
-      const result = await runBlackhatExploit("jwt_exploits.signature_bypass", {
+      const result = await runFenrirExploit("jwt_exploits.signature_bypass", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -84,7 +84,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
     });
 
     test("should test JWT timing attacks", async () => {
-      const result = await runBlackhatExploit("jwt_exploits.timing_attack", {
+      const result = await runFenrirExploit("jwt_exploits.timing_attack", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -97,7 +97,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("SQL Injection Testing", () => {
     test("should test SQL injection regex bypass", async () => {
-      const result = await runBlackhatExploit("sql_injection.regex_bypass", {
+      const result = await runFenrirExploit("sql_injection.regex_bypass", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -108,7 +108,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
     });
 
     test("should test blind SQL injection", async () => {
-      const result = await runBlackhatExploit("sql_injection.blind_injection", {
+      const result = await runFenrirExploit("sql_injection.blind_injection", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -119,7 +119,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
     });
 
     test("should test obfuscated SQL payloads", async () => {
-      const result = await runBlackhatExploit(
+      const result = await runFenrirExploit(
         "sql_injection.obfuscated_payloads",
         {
           target: config.backendUrl,
@@ -135,7 +135,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("Path Traversal Testing", () => {
     test("should test encoded path traversal", async () => {
-      const result = await runBlackhatExploit(
+      const result = await runFenrirExploit(
         "path_traversal.encoded_traversal",
         {
           target: config.backendUrl,
@@ -149,7 +149,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
     });
 
     test("should test unicode path traversal bypass", async () => {
-      const result = await runBlackhatExploit("path_traversal.unicode_bypass", {
+      const result = await runFenrirExploit("path_traversal.unicode_bypass", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -162,7 +162,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("CORS Security Testing", () => {
     test("should test CORS misconfiguration", async () => {
-      const result = await runBlackhatExploit(
+      const result = await runFenrirExploit(
         "cors_exploits.cors_misconfiguration",
         {
           target: config.backendUrl,
@@ -178,7 +178,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("Rate Limiting Testing", () => {
     test("should test rate limiting bypass", async () => {
-      const result = await runBlackhatExploit(
+      const result = await runFenrirExploit(
         "rate_limiting.rate_limit_bypass",
         {
           target: config.backendUrl,
@@ -194,7 +194,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("Quick Fuzzing Tests", () => {
     test("should run quick authentication fuzzing", async () => {
-      const result = await runBlackhatExploit("fuzzing.endpoint_fuzzer", {
+      const result = await runFenrirExploit("fuzzing.endpoint_fuzzer", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -207,7 +207,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
     }, 90000); // 1.5 minute test timeout
 
     test("should run quick search fuzzing", async () => {
-      const result = await runBlackhatExploit("fuzzing.endpoint_fuzzer", {
+      const result = await runFenrirExploit("fuzzing.endpoint_fuzzer", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -222,7 +222,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("Comprehensive Fuzzing", () => {
     test("should run comprehensive fuzzing framework", async () => {
-      const result = await runBlackhatExploit("fuzzing.exploit_wrappers", {
+      const result = await runFenrirExploit("fuzzing.exploit_wrappers", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -235,7 +235,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
     }, 400000); // 6.5 minute test timeout
 
     test("should run endpoint-specific fuzzing", async () => {
-      const result = await runBlackhatExploit("fuzzing.exploit_wrappers", {
+      const result = await runFenrirExploit("fuzzing.exploit_wrappers", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -248,7 +248,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
     }, 200000); // 3.5 minute test timeout
     
     test("should run specialized endpoint fuzzing", async () => {
-      const result = await runBlackhatExploit("fuzzing.endpoint_fuzzer", {
+      const result = await runFenrirExploit("fuzzing.endpoint_fuzzer", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -262,7 +262,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("API Security Testing", () => {
     test("should test BOLA (Broken Object Level Authorization)", async () => {
-      const result = await runBlackhatExploit("api_exploits.bola_attacks", {
+      const result = await runFenrirExploit("api_exploits.bola_attacks", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -275,7 +275,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("CSRF Testing", () => {
     test("should test CSRF attack vectors", async () => {
-      const result = await runBlackhatExploit("csrf_exploits.csrf_attacks", {
+      const result = await runFenrirExploit("csrf_exploits.csrf_attacks", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -288,7 +288,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("SSRF Testing", () => {
     test("should test Server-Side Request Forgery", async () => {
-      const result = await runBlackhatExploit("ssrf_exploits.ssrf_attacks", {
+      const result = await runFenrirExploit("ssrf_exploits.ssrf_attacks", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -301,7 +301,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("Race Condition Testing", () => {
     test("should test race condition exploits", async () => {
-      const result = await runBlackhatExploit("race_conditions.race_exploits", {
+      const result = await runFenrirExploit("race_conditions.race_exploits", {
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -314,7 +314,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("HTTP Request Smuggling", () => {
     test("should test HTTP request smuggling", async () => {
-      const result = await runBlackhatExploit(
+      const result = await runFenrirExploit(
         "http_smuggling.request_smuggling",
         {
           target: config.backendUrl,
@@ -330,7 +330,7 @@ test.describe("🐺 Penetration Testing Suite", () => {
 
   test.describe("Unicode Security Testing", () => {
     test("should test unicode normalization bypass", async () => {
-      const result = await runBlackhatExploit(
+      const result = await runFenrirExploit(
         "unicode_exploits.normalization_bypass",
         {
           target: config.backendUrl,
@@ -345,8 +345,8 @@ test.describe("🐺 Penetration Testing Suite", () => {
   });
 
   test.describe("Comprehensive Security Assessment", () => {
-    test("should run complete blackhat exploit suite", async () => {
-      const result = await runCompleteBlackhatSuite({
+    test("should run complete fenrir exploit suite", async () => {
+      const result = await runCompleteFenrirSuite({
         target: config.backendUrl,
         verbose: config.verbose,
         destructive: config.destructive,
@@ -373,23 +373,23 @@ test.describe("🐺 Penetration Testing Suite", () => {
 });
 
 /**
- * Run a specific blackhat exploit
+ * Run a specific fenrir exploit
  */
-async function runBlackhatExploit(
+async function runFenrirExploit(
   exploitModule: string,
   options: any = {},
 ): Promise<PenetrationTestResult> {
   const startTime = Date.now();
 
   try {
-    const blackhatPath = path.join(process.cwd(), "..", "blackhat");
+    const fenrirPath = path.join(process.cwd(), "..", "fenrir");
     const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
 
     // Build command to run specific exploit
     const timeout = options.timeout || 60000; // Default 60 second timeout
     const command = `${pythonPath} -c "
 import sys
-sys.path.append('${blackhatPath}')
+sys.path.append('${fenrirPath}')
 from ${exploitModule} import *
 import json
 
@@ -408,7 +408,7 @@ print(json.dumps({
 
     const { stdout, stderr } = await execAsync(command, {
       timeout: timeout,
-      cwd: blackhatPath,
+      cwd: fenrirPath,
     });
 
     if (stderr && !stderr.includes("Warning")) {
@@ -441,20 +441,20 @@ print(json.dumps({
 }
 
 /**
- * Run the complete blackhat exploit suite
+ * Run the complete fenrir exploit suite
  */
-async function runCompleteBlackhatSuite(options: any = {}): Promise<any> {
+async function runCompleteFenrirSuite(options: any = {}): Promise<any> {
   const startTime = Date.now();
 
   try {
-    const blackhatPath = path.join(process.cwd(), "..", "blackhat");
+    const fenrirPath = path.join(process.cwd(), "..", "fenrir");
     const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
 
     const command = `${pythonPath} run_all_exploits.py --url ${options.target || "http://localhost:8000"} ${options.verbose ? "--verbose" : ""} ${options.destructive ? "--destructive" : ""}`;
 
     const { stdout, stderr } = await execAsync(command, {
       timeout: 120000, // Longer timeout for full suite
-      cwd: blackhatPath,
+      cwd: fenrirPath,
     });
 
     if (stderr && !stderr.includes("Warning")) {

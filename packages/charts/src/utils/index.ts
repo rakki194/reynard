@@ -8,22 +8,17 @@ import {
   ChartTheme,
   Dataset,
   DEFAULT_THEME,
-  DEFAULT_COLORS,
 } from "../types";
 import { generateColorsWithCache } from "reynard-colors";
 
 // Export specialized chart utilities
 export * from "./barChartConfig";
 export * from "./barChartData";
+// export * from "./chartIntegration"; // Temporarily disabled for testing
 
-/**
- * Generate a color palette for datasets
- * @deprecated Use generateColorsWithCache from reynard-colors instead
- */
-export function generateColors(count: number, opacity: number = 1): string[] {
-  // Use centralized color generation with default parameters
-  return generateColorsWithCache(count, 0, 0.3, 0.6, opacity, true);
-}
+// Export i18n utilities
+export * from "./i18n";
+
 
 /**
  * Apply theme colors to chart configuration
@@ -39,6 +34,22 @@ export function formatValue(
   value: number,
   type: "number" | "currency" | "percentage" = "number",
 ): string {
+  // Handle null/undefined values first
+  if (value == null || value === undefined) {
+    return "0";
+  }
+  
+  // Handle special cases
+  if (value === Infinity) {
+    return "∞";
+  }
+  if (value === -Infinity) {
+    return "-∞";
+  }
+  if (isNaN(value)) {
+    return "NaN";
+  }
+  
   switch (type) {
     case "currency":
       return new Intl.NumberFormat("en-US", {
@@ -75,8 +86,8 @@ export function formatTimestamp(
  * Prepare datasets with automatic color assignment
  */
 export function prepareDatasets(datasets: Partial<Dataset>[]): Dataset[] {
-  const colors = generateColors(datasets.length);
-  const backgroundColors = generateColors(datasets.length, 0.6);
+  const colors = generateColorsWithCache(datasets.length, 0, 0.3, 0.6, 1);
+  const backgroundColors = generateColorsWithCache(datasets.length, 0, 0.3, 0.6, 0.6);
 
   return datasets.map(
     (dataset, index) =>

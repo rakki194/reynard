@@ -19,6 +19,8 @@ export interface ChartStateConfig {
 export function useChartState(config: ChartStateConfig) {
   const [chartData, setChartData] = createSignal<any>(null);
   const [chartOptions, setChartOptions] = createSignal<any>(null);
+  
+  console.log("🦊 useChartState: Initialized with config", config);
   const [updateInterval, setUpdateInterval] =
     createSignal<NodeJS.Timeout | null>(null);
   const [chartInstance, setChartInstance] = createSignal<any>(null);
@@ -71,9 +73,15 @@ export function useChartState(config: ChartStateConfig) {
 
   return {
     chartData,
-    setChartData,
+    setChartData: (data: any) => {
+      console.log("🦊 useChartState: setChartData called with", data);
+      setChartData(data);
+    },
     chartOptions,
-    setChartOptions,
+    setChartOptions: (options: any) => {
+      console.log("🦊 useChartState: setChartOptions called with", options);
+      setChartOptions(options);
+    },
     chartInstance,
     setChartInstance,
     updateChart,

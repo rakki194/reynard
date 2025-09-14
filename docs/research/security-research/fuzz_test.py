@@ -1682,7 +1682,7 @@ def fuzz_generate_caption():
         fuzzed_path = generate_malicious_path()
         url = f"{BASE_URL}/api/generate-caption/{fuzzed_path}"
         try:
-            response = httpx.post(url, timeout=5)  # Use POST as per blackhat.tex
+            response = httpx.post(url, timeout=5)  # Use POST as per fenrir.tex
             print(
                 f"Path: '{fuzzed_path}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}..."
             )

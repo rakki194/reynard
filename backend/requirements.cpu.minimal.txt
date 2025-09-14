@@ -1,0 +1,36 @@
+# Minimal CPU-only requirements for Reynard Backend
+# Essential packages only for basic functionality
+# Generated for 2025 with latest stable versions
+
+# Core web framework
+fastapi
+uvicorn[standard]
+pydantic[email]
+
+# Authentication and security
+python-jose[cryptography]
+python-dotenv
+python-multipart
+email-validator
+argon2-cffi
+cryptography
+
+# Rate limiting
+slowapi
+limits
+
+# CPU-only PyTorch (minimal version)
+torch+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+torchvision+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+
+# Essential image processing
+pillow
+numpy
+
+# Database
+sqlalchemy
+psycopg2-binary
+pgvector
+
+# HTTP client
+aiohttp

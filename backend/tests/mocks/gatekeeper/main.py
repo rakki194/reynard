@@ -1,20 +1,55 @@
 """
-Mock gatekeeper module for testing.
+Comprehensive mock gatekeeper module for testing.
+
+This mock provides a complete authentication system that works with
+the security middleware and properly handles malicious input validation.
 """
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
-class User(BaseModel):
+class MockUser(BaseModel):
     """Mock user model."""
     id: int
     username: str
     email: str
     is_active: bool = True
+
+
+class MockUserCreate(BaseModel):
+    """Mock user creation model."""
+    username: str
+    email: EmailStr
+    password: str
+    full_name: Optional[str] = None
+
+
+class MockUserPublic(BaseModel):
+    """Mock public user model."""
+    id: int
+    username: str
+    email: str
+    is_active: bool
+
+
+class MockUserUpdate(BaseModel):
+    """Mock user update model."""
+    username: Optional[str] = None
+    email: Optional[EmailStr] = None
+    full_name: Optional[str] = None
+    is_active: Optional[bool] = None
+
+
+class MockTokenResponse(BaseModel):
+    """Mock token response model."""
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"
+    expires_in: int = 1800
 
 
 # Mock token models
@@ -119,11 +154,46 @@ class SecurityLevel:
 
 
 class MockAuthManager:
-    """Mock auth manager."""
+    """Mock authentication manager."""
     
     def __init__(self):
-        self.token_manager = MockTokenManager(TokenConfig())
         self.password_manager = MockPasswordManager()
+        self.token_manager = MockTokenManager(TokenConfig())
+    
+    async def authenticate(self, username: str, password: str, client_ip: Optional[str] = None) -> MockTokenResponse:
+        """Authenticate a user."""
+        if username == "testuser" and password == "testpassword":
+            return MockTokenResponse(
+                access_token="mock_access_token",
+                refresh_token="mock_refresh_token",
+                token_type="bearer",
+                expires_in=1800
+            )
+        else:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid credentials"
+            )
+    
+    async def create_user(self, user_data: MockUserCreate) -> MockUser:
+        """Create a new user."""
+        return MockUser(
+            id=1,
+            username=user_data.username,
+            email=user_data.email,
+            is_active=True
+        )
+    
+    async def get_user_by_username(self, username: str) -> Optional[MockUser]:
+        """Get user by username."""
+        if username == "testuser":
+            return MockUser(
+                id=1,
+                username="testuser",
+                email="test@example.com",
+                is_active=True
+            )
+        return None
 
 
 # Alias for compatibility
@@ -139,38 +209,9 @@ def get_auth_manager() -> MockAuthManager:
     return _mock_auth_manager
 
 
-def set_auth_manager(auth_manager: MockAuthManager) -> None:
-    """Set the mock auth manager."""
-    global _mock_auth_manager
-    _mock_auth_manager = auth_manager
-
-
-class MockUserService:
-    """Mock user service."""
-    
-    def __init__(self):
-        self.users: Dict[str, User] = {}
-    
-    def get_user(self, user_id: str) -> Optional[User]:
-        """Get user by ID."""
-        return self.users.get(user_id)
-    
-    def create_user(self, username: str, email: str, password: str) -> User:
-        """Create a new user."""
-        user_id = len(self.users) + 1
-        user = User(id=user_id, username=username, email=email)
-        self.users[str(user_id)] = user
-        return user
-
-
-# Global mock user service
-_mock_user_service = MockUserService()
-
-
-def get_current_user():
-    """Mock dependency to get current user."""
-    # Return a default test user
-    return User(
+def get_current_user() -> MockUser:
+    """Get the current user (for dependency injection)."""
+    return MockUser(
         id=1,
         username="testuser",
         email="test@example.com",
@@ -178,254 +219,41 @@ def get_current_user():
     )
 
 
-def require_active_user():
-    """Mock dependency to require active user."""
-    def _require_active_user():
-        user = get_current_user()
-        if not user.is_active:
-            raise HTTPException(status_code=403, detail="User is not active")
-        return user
-    return _require_active_user
+def require_role(required_role: str = "user"):
+    """Require a specific role (for dependency injection)."""
+    def role_checker(current_user: MockUser = Depends(get_current_user)) -> MockUser:
+        return current_user
+    return role_checker
 
 
 def create_auth_router() -> APIRouter:
-    """Create mock auth router."""
-    router = APIRouter(prefix="/auth", tags=["auth"])
+    """
+    Create and return the authentication router.
     
-    @router.post("/register")
-    async def register(user_data: dict):
-        """Mock registration endpoint."""
-        username = user_data.get("username")
-        email = user_data.get("email")
-        password = user_data.get("password")
-        full_name = user_data.get("full_name", "")
-        
-        if not username or not email or not password:
-            raise HTTPException(status_code=422, detail="Missing required fields")
-        
-        user = _mock_user_service.create_user(username, email, password)
-        return {
-            "username": user.username,
-            "email": user.email,
-            "full_name": full_name,
-            "is_active": user.is_active,
-            "created_at": "2024-01-01T00:00:00Z",
-            "message": "User created successfully"
-        }
-    
-    @router.post("/login")
-    async def login(login_data: dict):
-        """Mock login endpoint."""
-        username = login_data.get("username")
-        password = login_data.get("password")
-        
-        if not username or not password:
-            raise HTTPException(status_code=422, detail="Missing username or password")
-        
-        return {
-            "access_token": "mock_access_token",
-            "refresh_token": "mock_refresh_token",
-            "token_type": "bearer"
-        }
-    
-    @router.get("/me")
-    async def me(current_user: User = Depends(get_current_user)):
-        """Mock current user endpoint."""
-        return {
-            "id": current_user.id,
-            "username": current_user.username,
-            "email": current_user.email,
-            "full_name": "Test User",
-            "is_active": current_user.is_active,
-            "created_at": "2024-01-01T00:00:00Z"
-        }
-    
-    @router.post("/refresh")
-    async def refresh_token(refresh_data: dict):
-        """Mock refresh token endpoint."""
-        refresh_token = refresh_data.get("refresh_token")
-        
-        if not refresh_token:
-            raise HTTPException(status_code=422, detail="Missing refresh token")
-        
-        if refresh_token != "mock_refresh_token":
-            raise HTTPException(status_code=401, detail="Invalid refresh token")
-        
-        return {
-            "access_token": "new_mock_access_token",
-            "refresh_token": "new_mock_refresh_token",
-            "token_type": "bearer"
-        }
-    
-    @router.post("/logout")
-    async def logout():
-        """Mock logout endpoint."""
-        return {"message": "Successfully logged out"}
-    
-    return router
+    Returns:
+        APIRouter: Configured authentication router
+    """
+    from .api.routes import auth_router
+    return auth_router
 
 
-# Mock gatekeeper API routes
-class MockGatekeeperAPI:
-    """Mock gatekeeper API."""
-    
-    @staticmethod
-    def create_auth_router():
-        return create_auth_router()
-
-
-# Mock backends module
-class MockMemoryBackend:
-    """Mock memory backend."""
-    
-    def __init__(self):
-        self.data = {}
-    
-    def get(self, key):
-        return self.data.get(key)
-    
-    def set(self, key, value):
-        self.data[key] = value
-    
-    def delete(self, key):
-        if key in self.data:
-            del self.data[key]
-
-
-class MockPostgreSQLBackend:
-    """Mock PostgreSQL backend."""
-    
-    def __init__(self, connection_string=None):
-        self.connection_string = connection_string
-        self.data = {}
-    
-    def get(self, key):
-        return self.data.get(key)
-    
-    def set(self, key, value):
-        self.data[key] = value
-    
-    def delete(self, key):
-        if key in self.data:
-            del self.data[key]
-
-
-class MockSQLiteBackend:
-    """Mock SQLite backend."""
-    
-    def __init__(self, db_path=None):
-        self.db_path = db_path
-        self.data = {}
-    
-    def get(self, key):
-        return self.data.get(key)
-    
-    def set(self, key, value):
-        self.data[key] = value
-    
-    def delete(self, key):
-        if key in self.data:
-            del self.data[key]
-
-
-# Create mock module structure
-api = MockGatekeeperAPI()
-routes = MockGatekeeperAPI()
-
-# Mock core module
-class MockCore:
-    """Mock core module."""
-    
-    class MockTokenManager:
-        def __init__(self, config):
-            self.config = config
-        
-        def create_access_token(self, data, expires_delta=None):
-            return "mock_access_token"
-        
-        def create_refresh_token(self, data, expires_delta=None):
-            return "mock_refresh_token"
-        
-        def verify_token(self, token, token_type="access"):
-            return TokenValidationResult(
-                is_valid=True,
-                payload=TokenData(
-                    sub="testuser",
-                    role="user",
-                    type=token_type,
-                    exp=datetime.now() + timedelta(minutes=30),
-                    iat=datetime.now(),
-                    jti="mock_jti"
-                )
-            )
-    
-    class MockPasswordManager:
-        def __init__(self, security_level=None):
-            self.security_level = security_level
-        
-        def hash_password(self, password):
-            return f"mock_hash_{password}"
-        
-        def verify_password(self, password, hashed_password):
-            return hashed_password == f"mock_hash_{password}"
-    
-    token_manager = MockTokenManager
-    password_manager = MockPasswordManager
-
-# Mock models module
-class MockModels:
-    """Mock models module."""
-    
-    class MockToken:
-        TokenConfig = TokenConfig
-        TokenData = TokenData
-        TokenValidationResult = TokenValidationResult
-    
-    token = MockToken()
-
-# Mock backends module
-class MockBackends:
-    """Mock backends module."""
-    
-    class MockMemoryBackend:
-        def __init__(self):
-            self.data = {}
-        
-        def get(self, key):
-            return self.data.get(key)
-        
-        def set(self, key, value):
-            self.data[key] = value
-        
-        def delete(self, key):
-            if key in self.data:
-                del self.data[key]
-    
-    class MockPostgreSQLBackend:
-        def __init__(self, connection_string=None):
-            self.connection_string = connection_string
-            self.data = {}
-        
-        def get(self, key):
-            return self.data.get(key)
-        
-        def set(self, key, value):
-            self.data[key] = value
-        
-        def delete(self, key):
-            if key in self.data:
-                del self.data[key]
-    
-    memory = MockMemoryBackend
-    postgresql = MockPostgreSQLBackend
-    sqlite = MockSQLiteBackend
-
-# Create module structure
-core = MockCore()
-models = MockModels()
-backends = MockBackends()
-
-# Add backends to the module for direct import
-MemoryBackend = MockMemoryBackend
-PostgreSQLBackend = MockPostgreSQLBackend
-SQLiteBackend = MockSQLiteBackend
+# Export all the classes for easy importing
+__all__ = [
+    "MockUser",
+    "MockUserCreate", 
+    "MockUserPublic",
+    "MockUserUpdate",
+    "MockTokenResponse",
+    "MockTokenManager",
+    "MockPasswordManager",
+    "MockAuthManager",
+    "TokenConfig",
+    "TokenData",
+    "TokenValidationResult",
+    "SecurityLevel",
+    "AuthManager",
+    "get_auth_manager",
+    "get_current_user",
+    "require_role",
+    "create_auth_router"
+]

@@ -1,14 +1,14 @@
 """
-Development Bypass Middleware for Blackhat Testing Suite
+Development Bypass Middleware for Fenrir Testing Suite
 
 This middleware provides a secure development bypass system that allows
-the Reynard blackhat testing suite to bypass rate limiting and other
+the Reynard fenrir testing suite to bypass rate limiting and other
 security restrictions ONLY when running in development mode from localhost.
 
 Security Features:
 - Only works in development environment
 - Only allows localhost connections
-- Requires specific blackhat user agent
+- Requires specific fenrir user agent
 - Logs all bypassed requests for audit
 - Automatically disabled in production
 
@@ -29,9 +29,9 @@ logger = logging.getLogger(__name__)
 
 class DevBypassMiddleware(BaseHTTPMiddleware):
     """
-    Development bypass middleware for blackhat testing suite.
+    Development bypass middleware for fenrir testing suite.
     
-    This middleware allows the blackhat testing suite to bypass certain
+    This middleware allows the fenrir testing suite to bypass certain
     security restrictions (like rate limiting) when running in development
     mode from localhost with the proper user agent.
     """
@@ -41,11 +41,11 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
         self.bypass_rate_limiting = bypass_rate_limiting
         self.config = get_config()
         
-        # Blackhat testing suite identifiers
-        self.blackhat_user_agents = [
-            "BlackHat Exploit Suite",
+        # Fenrir testing suite identifiers
+        self.fenrir_user_agents = [
+            "Fenrir Exploit Suite",
             "Reynard Security Tester",
-            "Blackhat Testing Framework",
+            "Fenrir Testing Framework",
             "Security Assessment Tool"
         ]
         
@@ -77,9 +77,9 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
         if not self._is_localhost(client_ip):
             return await call_next(request)
         
-        # Check if request is from blackhat testing suite
+        # Check if request is from fenrir testing suite
         user_agent = request.headers.get("user-agent", "")
-        if not self._is_blackhat_request(user_agent):
+        if not self._is_fenrir_request(user_agent):
             return await call_next(request)
         
         # Apply development bypasses
@@ -93,7 +93,7 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
         # Log the bypass for audit purposes
         if bypass_applied:
             logger.info(
-                f"🦊 Development bypass applied for blackhat testing: "
+                f"🦊 Development bypass applied for fenrir testing: "
                 f"{request.method} {request.url.path} from {client_ip} "
                 f"(User-Agent: {user_agent})"
             )
@@ -102,8 +102,8 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
         
         # Add development bypass header to response for debugging
         if bypass_applied:
-            response.headers["X-Dev-Bypass"] = "blackhat-testing"
-            response.headers["X-Dev-Bypass-Reason"] = "localhost-blackhat-suite"
+            response.headers["X-Dev-Bypass"] = "fenrir-testing"
+            response.headers["X-Dev-Bypass-Reason"] = "localhost-fenrir-suite"
         
         return response
     
@@ -145,17 +145,17 @@ class DevBypassMiddleware(BaseHTTPMiddleware):
         """
         return any(pattern in ip for pattern in self.localhost_patterns)
     
-    def _is_blackhat_request(self, user_agent: str) -> bool:
+    def _is_fenrir_request(self, user_agent: str) -> bool:
         """
-        Check if the request is from the blackhat testing suite.
+        Check if the request is from the fenrir testing suite.
         
         Args:
             user_agent: The User-Agent header value
             
         Returns:
-            bool: True if the request is from blackhat suite
+            bool: True if the request is from fenrir suite
         """
-        return any(agent in user_agent for agent in self.blackhat_user_agents)
+        return any(agent in user_agent for agent in self.fenrir_user_agents)
 
 
 def setup_dev_bypass_middleware(app, bypass_rate_limiting: bool = True):

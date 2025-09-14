@@ -8,7 +8,7 @@ set -e
 echo "🦊 Setting up Reynard development environment..."
 
 # Check if we're in the right directory
-if [ ! -f "package.json" ]; then
+if [[ ! -f "package.json" ]]; then
     echo "❌ Error: Please run this script from the Reynard project root directory"
     exit 1
 fi
@@ -26,11 +26,12 @@ echo "🐍 Setting up Python virtual environment..."
 cd backend
 
 # Create virtual environment if it doesn't exist
-if [ ! -d "venv" ]; then
+if [[ ! -d "venv" ]]; then
     python -m venv venv
 fi
 
 # Activate virtual environment
+# shellcheck source=venv/bin/activate
 source venv/bin/activate
 
 # Install Python dependencies
@@ -38,11 +39,11 @@ echo "📦 Installing Python dependencies..."
 pip install -r requirements.txt
 
 # Create .env file if it doesn't exist
-if [ ! -f ".env" ]; then
+if [[ ! -f ".env" ]]; then
     echo "🔐 Creating .env file..."
     cat > .env << EOF
 # JWT Secret Key (generate a secure random key)
-SECRET_KEY=$(python -c "import secrets; print(secrets.token_urlsafe(32))")
+SECRET_KEY=$(python -c "import secrets; print(secrets.token_urlsafe(32))" || echo "fallback-secret-key")
 
 # Database settings (for future use)
 DATABASE_URL=sqlite:///./reynard.db
@@ -61,7 +62,7 @@ cd ..
 
 # Set up Nginx for development (optional)
 echo "🌐 Setting up Nginx configuration..."
-if [ -f "nginx/reynard.conf" ]; then
+if [[ -f "nginx/reynard.conf" ]]; then
     echo "📝 Nginx configuration file exists at nginx/reynard.conf"
     echo "   To use it, copy it to /etc/nginx/sites-available/ and enable it"
     echo "   For development, you can run the backend directly with:"

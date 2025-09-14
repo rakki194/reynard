@@ -14,7 +14,8 @@ i18n-report.md
 i18n-results.json
 *.db
 unsloth_compiled_cache/
-css-validation-report.md
+*-report.md
+*-report.json
 
 .benchmarks/
 htmlcov/
@@ -66,7 +67,7 @@ src/**/*.d.ts.map
 .env.production.local
 
 # IDE files
-.vscode/
+!.vscode/
 .idea/
 *.swp
 *.swo

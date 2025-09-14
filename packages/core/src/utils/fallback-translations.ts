@@ -119,4 +119,6 @@ export const FALLBACK_TRANSLATIONS: Record<string, string> = {
   "monaco.failedToLoadMonacoEditor": "Failed to load Monaco Editor",
   "monaco.failedToCreateMonacoEditor": "Failed to create Monaco Editor",
   "monaco.failedToCreateEditor": "Failed to create editor",
+
+  // Charts package translations - moved to charts package i18n module
 };

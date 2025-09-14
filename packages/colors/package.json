@@ -54,7 +54,7 @@
     "colorizr": "3.0.8"
   },
   "devDependencies": {
-    "@types/node": "24.3.1",
+    "@types/node": "24.4.0",
     "happy-dom": "18.0.1",
     "reynard-testing": "workspace:*",
     "typescript": "5.9.2",

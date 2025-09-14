@@ -1,9 +1,9 @@
 """
-Mock gatekeeper backends module.
+Mock gatekeeper backends package.
 """
 
-from .memory import MemoryBackend
-from .postgresql import PostgreSQLBackend
-from .sqlite import SQLiteBackend
+from .memory import MockMemoryBackend
+from .postgresql import MockPostgreSQLBackend
+from .sqlite import MockSQLiteBackend
 
-__all__ = ["MemoryBackend", "PostgreSQLBackend", "SQLiteBackend"]
+__all__ = ["MockMemoryBackend", "MockPostgreSQLBackend", "MockSQLiteBackend"]

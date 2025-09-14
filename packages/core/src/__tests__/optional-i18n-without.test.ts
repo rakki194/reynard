@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { t, isI18nAvailable, getI18nModule } from "../../utils/optional-i18n";
+import { t, isI18nAvailable, getI18nModule } from "../utils/optional-i18n";
 
 describe("Optional i18n functionality without i18n package", () => {
   beforeEach(() => {

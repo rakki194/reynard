@@ -75,21 +75,23 @@ describe("Chart Integration Tests", () => {
           <BarChart
             labels={mockBarData.labels}
             datasets={mockBarData.datasets}
+            title="Bar Chart"
           />
           <LineChart
             labels={mockLineData.labels}
             datasets={mockLineData.datasets}
+            title="Line Chart"
           />
-          <PieChart labels={mockPieLabels} data={mockPieData} />
-          <TimeSeriesChart data={mockTimeSeriesData} />
+          <PieChart labels={mockPieLabels} data={mockPieData} title="Pie Chart" />
+          <TimeSeriesChart data={mockTimeSeriesData} title="Time Series Chart" />
         </div>
       ));
 
-      expect(screen.getByText("Bar Chart")).toBeInTheDocument();
-      const lineCharts = screen.getAllByText("Line Chart");
-      expect(lineCharts).toHaveLength(2); // LineChart and TimeSeriesChart both render "Line Chart"
-      expect(screen.getByText("Pie Chart")).toBeInTheDocument();
-      // TimeSeriesChart renders a chart with the provided data, not empty state
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
     });
 
     it("handles different chart configurations in the same container", () => {
@@ -98,30 +100,28 @@ describe("Chart Integration Tests", () => {
           <BarChart
             labels={mockBarData.labels}
             datasets={mockBarData.datasets}
+            title="Bar Chart"
             horizontal={true}
             stacked={true}
           />
           <LineChart
             labels={mockLineData.labels}
             datasets={mockLineData.datasets}
+            title="Line Chart"
           />
           <PieChart
             labels={mockPieLabels}
             data={mockPieData}
+            title="Doughnut Chart"
             variant="doughnut"
           />
         </div>
       ));
 
-      const barChart = screen.getByText("Bar Chart").closest("div");
-      const lineChart = screen.getByText("Line Chart").closest("div");
-      const pieChart = screen.getByText("Doughnut Chart").closest("div");
-
-      expect(barChart).toHaveClass("reynard-bar-chart--horizontal");
-      expect(barChart).toHaveClass("reynard-bar-chart--stacked");
-      // Note: LineChart and PieChart classes are not applied in mocked environment
-      expect(lineChart).toBeInTheDocument();
-      expect(pieChart).toBeInTheDocument();
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("doughnut-chart-canvas")).toBeInTheDocument();
     });
   });
 
@@ -132,23 +132,28 @@ describe("Chart Integration Tests", () => {
           <BarChart
             labels={mockBarData.labels}
             datasets={mockBarData.datasets}
+            title="Bar Chart"
             responsive={true}
           />
           <LineChart
             labels={mockLineData.labels}
             datasets={mockLineData.datasets}
+            title="Line Chart"
             responsive={true}
           />
           <PieChart
             labels={mockPieLabels}
             data={mockPieData}
+            title="Pie Chart"
             responsive={true}
           />
         </div>
       ));
 
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(3);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
 
     it("maintains aspect ratios across different chart types", () => {
@@ -157,6 +162,7 @@ describe("Chart Integration Tests", () => {
           <BarChart
             labels={mockBarData.labels}
             datasets={mockBarData.datasets}
+            title="Bar Chart"
             maintainAspectRatio={true}
             width={400}
             height={300}
@@ -164,6 +170,7 @@ describe("Chart Integration Tests", () => {
           <LineChart
             labels={mockLineData.labels}
             datasets={mockLineData.datasets}
+            title="Line Chart"
             maintainAspectRatio={true}
             width={400}
             height={300}
@@ -171,6 +178,7 @@ describe("Chart Integration Tests", () => {
           <PieChart
             labels={mockPieLabels}
             data={mockPieData}
+            title="Pie Chart"
             maintainAspectRatio={true}
             width={400}
             height={300}
@@ -178,8 +186,10 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(3);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
   });
 
@@ -190,19 +200,23 @@ describe("Chart Integration Tests", () => {
           <BarChart
             labels={mockBarData.labels}
             datasets={mockBarData.datasets}
+            title="Bar Chart"
           />
           <LineChart
             labels={mockLineData.labels}
             datasets={mockLineData.datasets}
+            title="Line Chart"
           />
-          <PieChart labels={mockPieLabels} data={mockPieData} />
-          <TimeSeriesChart data={mockTimeSeriesData} />
+          <PieChart labels={mockPieLabels} data={mockPieData} title="Pie Chart" />
+          <TimeSeriesChart data={mockTimeSeriesData} title="Time Series Chart" />
         </div>
       ));
 
-      // TimeSeriesChart renders a chart, so we expect 4 charts total
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(4);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
     });
 
     it("uses mockConfig and mockTheme for chart configuration", () => {
@@ -234,8 +248,10 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(3);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
 
     it("handles theme switching across all charts", () => {
@@ -288,8 +304,10 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(3);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
   });
 
@@ -336,8 +354,10 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(3);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
 
     it("handles different data types across chart types", () => {
@@ -356,9 +376,11 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      // TimeSeriesChart renders a chart, so we expect 4 charts total
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(4);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
     });
   });
 
@@ -384,9 +406,11 @@ describe("Chart Integration Tests", () => {
       const endTime = performance.now();
       const renderTime = endTime - startTime;
 
-      // TimeSeriesChart renders a chart, so we expect 4 charts total
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(4);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("timeseries-chart-canvas")).toBeInTheDocument();
       expect(renderTime).toBeLessThan(1000); // Should render in under 1 second
     });
 
@@ -425,8 +449,10 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(3);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
   });
 
@@ -460,8 +486,8 @@ describe("Chart Integration Tests", () => {
       ));
 
       // Should render 1 valid chart + 3 empty states
-      const charts = screen.getAllByText(/Chart|No data available/);
-      expect(charts).toHaveLength(4);
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getAllByText("No data available")).toHaveLength(3);
     });
   });
 
@@ -482,11 +508,11 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      // Test only the charts that are actually rendering (not showing empty state)
-      const barChart = screen.getByText("Bar Chart").closest("div");
-      const lineCharts = screen.getAllByText("Line Chart");
-      const lineChart = lineCharts[0].closest("div"); // First LineChart
-      const pieChart = screen.getByText("Pie Chart").closest("div");
+      // Test accessibility attributes on chart containers
+      const barChart = screen.getByTestId("bar-chart-canvas").closest("div")?.parentElement;
+      const lineChart = screen.getByTestId("line-chart-canvas").closest("div")?.parentElement?.parentElement;
+      const pieChart = screen.getByTestId("pie-chart-canvas").closest("div")?.parentElement;
+      const timeSeriesChart = screen.getByTestId("timeseries-chart-canvas").closest("div")?.parentElement;
 
       expect(barChart).toHaveAttribute("role", "img");
       expect(barChart).toHaveAttribute("aria-label");
@@ -494,6 +520,8 @@ describe("Chart Integration Tests", () => {
       expect(lineChart).toHaveAttribute("aria-label");
       expect(pieChart).toHaveAttribute("role", "img");
       expect(pieChart).toHaveAttribute("aria-label");
+      expect(timeSeriesChart).toHaveAttribute("role", "img");
+      expect(timeSeriesChart).toHaveAttribute("aria-label");
     });
 
     it("supports keyboard navigation across all charts", () => {
@@ -511,12 +539,11 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      const charts = screen.getAllByText(/Chart/);
-      charts.forEach((chart) => {
-        const container = chart.closest("div");
-        expect(container).toBeInTheDocument();
-        // Note: Focus testing is limited in jsdom, so we just verify the element exists
-      });
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
+      // Note: Focus testing is limited in jsdom, so we just verify the elements exist
     });
   });
 
@@ -543,7 +570,7 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      expect(screen.getByText("Line Chart")).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart-canvas")).toBeInTheDocument();
     });
 
     it("handles dynamic data updates across chart types", () => {
@@ -575,8 +602,9 @@ describe("Chart Integration Tests", () => {
         </div>
       ));
 
-      const charts = screen.getAllByText(/Chart/);
-      expect(charts).toHaveLength(2);
+      // Check that all chart canvases are rendered
+      expect(screen.getByTestId("bar-chart-canvas")).toBeInTheDocument();
+      expect(screen.getByTestId("pie-chart-canvas")).toBeInTheDocument();
     });
   });
 });

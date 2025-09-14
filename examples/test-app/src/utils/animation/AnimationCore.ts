@@ -99,9 +99,9 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     const updateStartTime = performance.now();
     if (callbacks.onUpdate) {
       try {
-        if (config.enablePerformanceMonitoring) {
-          console.log("🦊 AnimationCore: Calling onUpdate", { deltaTime, frameCount: state.frameCount });
-        }
+        // if (config.enablePerformanceMonitoring) {
+        //   console.log("🦊 AnimationCore: Calling onUpdate", { deltaTime, frameCount: state.frameCount });
+        // }
         callbacks.onUpdate(deltaTime, state.frameCount);
       } catch (error) {
         console.error("🦊 AnimationCore: Error in onUpdate callback", error);
@@ -113,9 +113,9 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     const renderStartTime = performance.now();
     if (callbacks.onRender) {
       try {
-        if (config.enablePerformanceMonitoring) {
-          console.log("🦊 AnimationCore: Calling onRender", { deltaTime, frameCount: state.frameCount });
-        }
+        // if (config.enablePerformanceMonitoring) {
+        //   console.log("🦊 AnimationCore: Calling onRender", { deltaTime, frameCount: state.frameCount });
+        // }
         callbacks.onRender(deltaTime, state.frameCount);
       } catch (error) {
         console.error("🦊 AnimationCore: Error in onRender callback", error);
@@ -175,7 +175,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     }, 30000); // 30 second safety timeout
 
     animationId = window.requestAnimationFrame(animate);
-    console.log("🦊 AnimationCore: Animation started with ID", animationId);
+    // console.log("🦊 AnimationCore: Animation started with ID", animationId);
   };
 
   /**

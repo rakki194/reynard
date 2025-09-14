@@ -8,7 +8,7 @@ set -e
 echo "🦊 Setting up Nginx for Reynard development..."
 
 # Check if we're in the right directory
-if [ ! -f "nginx/reynard-dev.conf" ]; then
+if [[ ! -f "nginx/reynard-dev.conf" ]]; then
     echo "❌ Error: Please run this script from the Reynard project root directory"
     exit 1
 fi
@@ -42,11 +42,12 @@ echo "To use this configuration:"
 echo "1. Build your frontend: pnpm run build"
 echo "2. Copy the built files to: ./dist/frontend/"
 echo "3. Start your FastAPI backend: cd backend && python main.py"
-echo "4. Test the configuration: nginx -t -c $(pwd)/nginx/reynard-dev-local.conf"
-echo "5. Start Nginx: nginx -c $(pwd)/nginx/reynard-dev-local.conf"
+current_dir=$(pwd)
+echo "4. Test the configuration: nginx -t -c ${current_dir}/nginx/reynard-dev-local.conf"
+echo "5. Start Nginx: nginx -c ${current_dir}/nginx/reynard-dev-local.conf"
 echo ""
 echo "Your site will be available at: http://localhost"
 echo "Backend API will be available at: http://localhost/api/"
 echo ""
 echo "To stop Nginx: nginx -s quit"
-echo "To reload configuration: nginx -s reload -c $(pwd)/nginx/reynard-dev-local.conf"
+echo "To reload configuration: nginx -s reload -c ${current_dir}/nginx/reynard-dev-local.conf"

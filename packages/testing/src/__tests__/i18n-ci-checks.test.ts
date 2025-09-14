@@ -10,7 +10,7 @@ import {
   createGitHubActionsWorkflow,
   createGitLabCIConfig,
   type I18nCIConfig,
-} from "../../i18n-ci-checks";
+} from "../utils/i18n-ci-checks.js";
 
 // Mock child_process
 vi.mock("child_process", () => ({

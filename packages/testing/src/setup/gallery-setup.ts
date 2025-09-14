@@ -2,7 +2,7 @@
  * Gallery Test Setup - For packages that need gallery and media display functionality
  */
 
-import { setupBrowserTest } from "./browser-setup";
+import { setupBrowserTest } from "./browser-setup.js";
 
 /**
  * Setup for gallery packages (reynard-gallery-ai, etc.)

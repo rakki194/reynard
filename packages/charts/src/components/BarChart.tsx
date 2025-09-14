@@ -3,11 +3,19 @@
  * A responsive bar chart for categorical data
  */
 
-import { Component, Show, splitProps } from "solid-js";
-import { Bar } from "solid-chartjs";
+import { Component, Show, splitProps, createMemo, onMount, onCleanup, createSignal, createEffect } from "solid-js";
+import {
+  Chart,
+  Title,
+  Tooltip,
+  Legend,
+  BarController,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+} from "chart.js";
 import { Dataset, ChartConfig, ReynardTheme } from "../types";
-import { useBarChart } from "../composables/useBarChart";
-import { BarChartData } from "../utils/barChartData";
+import { processBarChartData } from "../utils/barChartData";
 import { createBarChartOptions } from "../utils/barChartConfig";
 import "./BarChart.css";
 
@@ -57,13 +65,79 @@ const getContainerClasses = (
 
 const BarChartContent: Component<{
   chartData: BarChartData | null;
-  isRegistered: boolean;
   loading: boolean;
   emptyMessage: string;
   width: number;
   height: number;
   options: ReturnType<typeof createBarChartOptions>;
 }> = (props) => {
+  const [isRegistered, setIsRegistered] = createSignal(false);
+  const [chartInstance, setChartInstance] = createSignal<Chart | null>(null);
+
+  // Register Chart.js components on mount
+  onMount(() => {
+    Chart.register(
+      Title,
+      Tooltip,
+      Legend,
+      BarController,
+      CategoryScale,
+      LinearScale,
+      BarElement,
+    );
+    setIsRegistered(true);
+  });
+
+  // Cleanup chart on unmount
+  onCleanup(() => {
+    const chart = chartInstance();
+    if (chart) {
+      chart.destroy();
+    }
+  });
+
+  // Create chart instance
+  const createChart = (canvas: HTMLCanvasElement) => {
+    if (!isRegistered() || !props.chartData) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Destroy existing chart if it exists
+    const existingChart = chartInstance();
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    const config = {
+      type: "bar" as const,
+      data: props.chartData,
+      options: props.options,
+    };
+
+    // Only create chart on client side
+    if (typeof window !== "undefined") {
+      const newChart = new Chart(ctx, config);
+      setChartInstance(newChart);
+    }
+  };
+
+  // Canvas ref function
+  const canvasRef = (canvas: HTMLCanvasElement) => {
+    if (canvas && props.chartData) {
+      createChart(canvas);
+    }
+  };
+
+  // Update chart when data changes
+  createEffect(() => {
+    const chart = chartInstance();
+    if (chart && props.chartData) {
+      chart.data = props.chartData;
+      chart.update();
+    }
+  });
+
   return (
     <>
       <Show when={props.loading}>
@@ -79,13 +153,16 @@ const BarChartContent: Component<{
         </div>
       </Show>
 
-      <Show when={!props.loading && props.chartData && props.isRegistered}>
-        <Bar
-          data={props.chartData!}
-          options={props.options}
-          width={props.width}
-          height={props.height}
-        />
+      <Show when={!props.loading && props.chartData}>
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>                                                                         
+          <canvas
+            ref={canvasRef}
+            width={props.width}
+            height={props.height}
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+            data-testid="bar-chart-canvas"
+          />
+        </div>
       </Show>
     </>
   );
@@ -116,7 +193,30 @@ export const BarChart: Component<BarChartProps> = (props) => {
     "theme",
   ]);
 
-  const { isRegistered, chartData, chartOptions } = useBarChart(merged);
+  // Create chart data and options directly
+  const chartData = createMemo(() => {
+    if (!local.labels || !local.datasets || local.labels.length === 0 || local.datasets.length === 0) {
+      return null;
+    }
+
+    return processBarChartData({
+      labels: local.labels,
+      datasets: local.datasets,
+    });
+  });
+
+  const chartOptions = createMemo(() => {
+    const barOptions = createBarChartOptions({
+      horizontal: local.horizontal,
+      stacked: local.stacked,
+      showGrid: local.showGrid,
+      showLegend: local.showLegend,
+      title: local.title,
+      theme: local.theme,
+    });
+
+    return barOptions;
+  });
 
   return (
     <div
@@ -131,9 +231,11 @@ export const BarChart: Component<BarChartProps> = (props) => {
       aria-label={local.title || "bar chart"}
       {...others}
     >
+      <Show when={local.title}>
+        <div class="reynard-chart-title">{local.title}</div>
+      </Show>
       <BarChartContent
         chartData={chartData()}
-        isRegistered={isRegistered()}
         loading={local.loading || false}
         emptyMessage={local.emptyMessage}
         width={local.width}

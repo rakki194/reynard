@@ -3,8 +3,8 @@
  * Helper functions for working with i18n testing configuration
  */
 
-import type { PackageI18nConfig } from "./types";
-import { defaultI18nTestingConfig } from "./main-config";
+import type { PackageI18nConfig } from "./types.js";
+import { defaultI18nTestingConfig } from "./main-config.js";
 import { resolve } from "path";
 
 /**

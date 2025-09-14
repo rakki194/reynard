@@ -399,4 +399,106 @@ else
     fi
 fi
 
+# Workflow Shell Script Validation
+echo -e "${BLUE}🐺 Running workflow shell script validation...${NC}"
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKFLOW_SHELL_VALIDATOR_SCRIPT="$SCRIPT_DIR/pre-commit-workflow-shell-validation"
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+# Check if workflow shell validator script exists
+if [[ ! -f "${WORKFLOW_SHELL_VALIDATOR_SCRIPT}" ]]; then
+    echo -e "${YELLOW}⚠️  Workflow shell validator script not found at: ${WORKFLOW_SHELL_VALIDATOR_SCRIPT}${NC}"
+    echo -e "${YELLOW}   Skipping workflow shell validation...${NC}"
+else
+    # Check if we have any workflow files staged
+    STAGED_WORKFLOW_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.github/workflows/.*\.(yml|yaml)$' || true)
+
+    if [[ -z "${STAGED_WORKFLOW_FILES}" ]]; then
+        echo -e "${GREEN}✅ No workflow files staged for shell validation${NC}"
+    else
+        # Run workflow shell validation
+        cd "${PROJECT_ROOT}"
+        
+        if bash "${WORKFLOW_SHELL_VALIDATOR_SCRIPT}"; then
+            echo -e "${GREEN}✅ Workflow shell validation passed${NC}"
+        else
+            WORKFLOW_SHELL_VALIDATION_EXIT_CODE=$?
+            
+            if [[ "${WORKFLOW_SHELL_VALIDATION_EXIT_CODE}" -eq 1 ]]; then
+                echo -e "${RED}❌ Workflow shell validation failed${NC}"
+                echo -e "${RED}   Please fix the shell script issues above before committing${NC}"
+                echo ""
+                echo -e "${YELLOW}💡 Tips:${NC}"
+                echo -e "${YELLOW}   - Run 'node .husky/extract-workflow-shell.js --fix' to auto-fix common issues${NC}"
+                echo -e "${YELLOW}   - Use '[[ ]]' instead of '[ ]' for bash tests${NC}"
+                echo -e "${YELLOW}   - Add braces around variables: \${VAR} instead of \$VAR${NC}"
+                echo -e "${YELLOW}   - Check .shellcheckrc configuration for rules${NC}"
+                echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
+                exit 1
+            else
+                echo -e "${RED}❌ Workflow shell validation script failed unexpectedly${NC}"
+                exit 1
+            fi
+        fi
+    fi
+fi
+
+# Package Testing
+echo -e "${BLUE}🧪 Running package tests...${NC}"
+
+# Check if we have any TypeScript/JavaScript files staged in packages
+STAGED_PACKAGE_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^packages/.*\.(ts|tsx|js|jsx)$' || true)
+
+if [ -n "$STAGED_PACKAGE_FILES" ]; then
+    echo -e "${BLUE}📁 Staged package files:${NC}"
+    echo "$STAGED_PACKAGE_FILES" | sed 's/^/  - /'
+    echo ""
+    
+    # Get unique packages that have staged files
+    AFFECTED_PACKAGES=$(echo "$STAGED_PACKAGE_FILES" | sed 's|^packages/\([^/]*\)/.*|\1|' | sort -u)
+    
+    echo -e "${BLUE}🎯 Affected packages:${NC}"
+    echo "$AFFECTED_PACKAGES" | sed 's/^/  - /'
+    echo ""
+    
+    # Run tests for each affected package using the queue system
+    for package in $AFFECTED_PACKAGES; do
+        if [ -d "packages/$package" ] && [ -f "packages/$package/package.json" ]; then
+            echo -e "${BLUE}🧪 Testing package: $package${NC}"
+            
+            # Check if package has test script
+            if grep -q '"test"' "packages/$package/package.json"; then
+                cd "packages/$package"
+                
+                # Run the package's test script (which should use the queue system)
+                if npm run test; then
+                    echo -e "${GREEN}✅ Package $package tests passed${NC}"
+                else
+                    PACKAGE_TEST_EXIT_CODE=$?
+                    echo -e "${RED}❌ Package $package tests failed${NC}"
+                    echo -e "${RED}   Please fix the test failures above before committing${NC}"
+                    echo ""
+                    echo -e "${YELLOW}💡 Tips:${NC}"
+                    echo -e "${YELLOW}   - Run 'cd packages/$package && npm run test' to see full test output${NC}"
+                    echo -e "${YELLOW}   - Check test files in packages/$package/src/__tests__/${NC}"
+                    echo -e "${YELLOW}   - Use 'git commit --no-verify' to skip this check (not recommended)${NC}"
+                    exit 1
+                fi
+                
+                cd - > /dev/null
+            else
+                echo -e "${YELLOW}⚠️  Package $package has no test script, skipping${NC}"
+            fi
+        else
+            echo -e "${YELLOW}⚠️  Package $package not found or invalid, skipping${NC}"
+        fi
+    done
+    
+    echo -e "${GREEN}✅ All package tests passed!${NC}"
+else
+    echo -e "${GREEN}✅ No package files staged for testing${NC}"
+fi
+
 echo -e "${GREEN}✅ All pre-commit checks passed!${NC}"

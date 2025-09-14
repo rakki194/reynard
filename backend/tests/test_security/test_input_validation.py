@@ -60,8 +60,8 @@ class TestInputValidation:
                 "full_name": "Test User"
             }
             response = client.post("/api/auth/register", json=user_data)
-            # Should fail validation or be sanitized
-            assert response.status_code in [422, 400]
+            # Should fail validation or be blocked by security middleware
+            assert response.status_code in [422, 400, 403]
 
     def test_email_validation(self, client: TestClient, clean_databases):
         """Test email validation with various inputs."""
@@ -104,7 +104,7 @@ class TestInputValidation:
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should fail validation
-            assert response.status_code == 422
+            assert response.status_code in [422, 400, 403]
 
     def test_password_validation(self, client: TestClient, clean_databases):
         """Test password validation with various inputs."""
@@ -221,8 +221,8 @@ class TestInputValidation:
                 "full_name": name
             }
             response = client.post("/api/auth/register", json=user_data)
-            # Should fail validation or be sanitized
-            assert response.status_code in [422, 400]
+            # Should fail validation or be blocked by security middleware
+            assert response.status_code in [422, 400, 403]
 
     def test_unicode_input_handling(self, client: TestClient, clean_databases):
         """Test handling of unicode characters in input fields."""
@@ -264,7 +264,7 @@ class TestInputValidation:
         
         response = client.post("/api/auth/register", json=user_data)
         # Should handle long inputs appropriately (likely fail validation)
-        assert response.status_code in [422, 400, 413]
+        assert response.status_code in [422, 400, 403, 413]
 
     def test_null_byte_injection(self, client: TestClient, clean_databases):
         """Test null byte injection attempts."""

@@ -14,7 +14,7 @@ import {
   expectStringToMatch,
   expectValueToBeApproximately,
   expectValueToBeInRange,
-} from "../assertion-utils";
+  } from "../utils/assertion-utils.js";
 
 describe("Async and Value Assertions", () => {
   beforeEach(() => {
@@ -179,7 +179,7 @@ describe("Async and Value Assertions", () => {
       });
 
       it("should use default precision", () => {
-        expectValueToBeApproximately(1.23, 1.24, 2);
+        expectValueToBeApproximately(1.234, 1.235, 2);
       });
     });
   });

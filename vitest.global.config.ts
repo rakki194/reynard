@@ -52,16 +52,46 @@ export default defineConfig({
     environment: "happy-dom",
     globals: true,
 
-    // File patterns
-    include: ["**/*.{test,spec}.{js,ts,tsx}"],
+    // 2025 Fake timers configuration for performance.now support
+    fakeTimers: {
+      toFake: [
+        "setTimeout",
+        "clearTimeout", 
+        "setInterval",
+        "clearInterval",
+        "setImmediate",
+        "clearImmediate",
+        "performance", // Include performance.now in fake timers
+        "Date",
+        "requestAnimationFrame",
+        "cancelAnimationFrame",
+        "requestIdleCallback",
+        "cancelIdleCallback"
+      ],
+      advanceTimers: true,
+      now: 0,
+    },
+
+    // File patterns - look for tests in current directory and subdirectories
+    // Filter by VITEST_AGENT_ID if set
+    include: process.env.VITEST_AGENT_ID 
+      ? [`packages/${process.env.VITEST_AGENT_ID}/**/*.{test,spec}.{js,ts,tsx}`]
+      : [
+          "**/*.{test,spec}.{js,ts,tsx}",
+          "**/__tests__/**/*.{js,ts,tsx}",
+          "src/**/*.{test,spec}.{js,ts,tsx}",
+          "src/__tests__/**/*.{js,ts,tsx}"
+        ],
     exclude: [
       "node_modules",
+      "**/node_modules/**",
       "dist",
       ".git",
       ".cache",
       "coverage",
       ".vitest-reports",
       ".vitest-coverage",
+      "**/node_modules/**/*.{test,spec}.{js,ts,tsx}",
     ],
   },
 

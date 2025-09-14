@@ -3,39 +3,10 @@
  * Advanced model usage analytics and performance tracking with OKLCH color integration
  */
 
-import { Component, createSignal, onMount, Show } from "solid-js";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-  registerables,
-} from "chart.js";
-import { Line, Bar, Doughnut, Pie } from "solid-chartjs";
-import { ChartConfig, ReynardTheme } from "../types";
+import { Component, Show, createMemo } from "solid-js";
+import { ChartConfig } from "../types";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
-
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-  ...registerables,
-);
+import { t } from "../utils/i18n";
 
 export interface ModelUsageData {
   /** Model identifier */
@@ -87,14 +58,9 @@ const defaultColors = [
 ];
 
 export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
-  const [isRegistered, setIsRegistered] = createSignal(false);
   const visualizationEngine = useVisualizationEngine();
 
-  onMount(() => {
-    setIsRegistered(true);
-  });
-
-  const chartData = () => {
+  const chartData = createMemo(() => {
     const dataEntries = Object.entries(props.data);
 
     if (props.type === "doughnut" || props.type === "pie") {
@@ -180,9 +146,9 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
         ],
       };
     }
-  };
+  });
 
-  const chartOptions = () => {
+  const _chartOptions = () => {
     const baseOptions = {
       responsive: true,
       maintainAspectRatio: false,
@@ -208,7 +174,7 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
               const value = context.parsed.y || context.parsed;
 
               if (props.metric === "last_used") {
-                return `${label}: ${value} hours ago`;
+                return `${label}: ${value} ${t("hoursAgo")}`;
               } else if (props.metric === "timeout_ratio") {
                 return `${label}: ${value}`;
               } else {
@@ -228,7 +194,7 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
             display: true,
             title: {
               display: true,
-              text: "Models",
+              text: t("models"),
             },
           },
           y: {
@@ -263,41 +229,17 @@ export const ModelUsageChart: Component<ModelUsageChartProps> = (props) => {
 
       <Show
         when={
-          !props.loading && Object.keys(props.data).length > 0 && isRegistered()
+          !props.loading && Object.keys(props.data).length > 0
         }
       >
-        <Show when={props.type === "line"}>
-          <Line
-            data={chartData()}
-            options={chartOptions()}
+        <div class="reynard-chart-container" style={{ position: "relative", width: "100%", height: "100%" }}>
+          <canvas
             width={props.width || 400}
             height={props.height || 300}
+            style={{ "max-width": "100%", "max-height": "100%" }}
+            data-testid="model-usage-chart-canvas"
           />
-        </Show>
-        <Show when={props.type === "bar"}>
-          <Bar
-            data={chartData()}
-            options={chartOptions()}
-            width={props.width || 400}
-            height={props.height || 300}
-          />
-        </Show>
-        <Show when={props.type === "doughnut"}>
-          <Doughnut
-            data={chartData()}
-            options={chartOptions()}
-            width={props.width || 400}
-            height={props.height || 300}
-          />
-        </Show>
-        <Show when={props.type === "pie"}>
-          <Pie
-            data={chartData()}
-            options={chartOptions()}
-            width={props.width || 400}
-            height={props.height || 300}
-          />
-        </Show>
+        </div>
       </Show>
     </div>
   );

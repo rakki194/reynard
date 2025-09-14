@@ -1,10 +1,9 @@
 #!/bin/bash
-"""
-Test runner script for Reynard Backend
-
-This script provides a comprehensive test runner with various options
-for running different types of tests and generating reports.
-"""
+#
+# Test runner script for Reynard Backend
+#
+# This script provides a comprehensive test runner with various options
+# for running different types of tests and generating reports.
 
 set -e  # Exit on any error
 
@@ -144,14 +143,9 @@ if [[ ! -d "venv" ]]; then
     python -m venv venv
 fi
 
-# Activate virtual environment
-print_status "Activating virtual environment..."
-source venv/bin/activate
-
-# Install/upgrade dependencies
-print_status "Installing dependencies..."
-pip install -q -r requirements.txt
-pip install -q -r requirements-test.txt
+# Activate virtual environment and install dependencies
+#print_status "Activating virtual environment and installing dependencies..."
+#bash -c "source venv/bin/activate && pip install -q -r requirements.txt && pip install -q -r requirements-test.txt"
 
 # Clean up previous test artifacts
 if [[ "$CLEANUP" == "true" ]]; then
@@ -221,8 +215,8 @@ PYTEST_CMD="$PYTEST_CMD --tb=short --strict-markers"
 print_status "Running tests..."
 print_status "Command: $PYTEST_CMD"
 
-# Execute the test command
-if eval $PYTEST_CMD; then
+# Execute the test command with proper venv activation
+if bash -c "source venv/bin/activate && $PYTEST_CMD"; then
     print_success "All tests passed!"
     
     # Show coverage summary if enabled

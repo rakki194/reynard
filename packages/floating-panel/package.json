@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",
-    "@typescript-eslint/eslint-plugin": "8.42.0",
-    "@typescript-eslint/parser": "8.42.0",
-    "eslint": "9.35.0",
+    "@typescript-eslint/eslint-plugin": "8.43.0",
+    "@typescript-eslint/parser": "8.43.0",
+    "eslint": "8.57.1",
     "happy-dom": "18.0.1",
     "jsdom": "^26.1.0",
     "reynard-testing": "workspace:*",
