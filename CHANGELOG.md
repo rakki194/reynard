@@ -5,9 +5,35 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - 2025-09-??
+
+### Added
+
+- **Enhanced Trace Testing**: Improved E2E trace demo with comprehensive trace analyzer setup and action performance (Snuggles-Prophet-25)
+- **Video Package Configuration**: Added test setup, Vite configuration, and modernized Vitest setup for video package
+- **Performance Validation**: Enhanced layout shift validator and global performance setup improvements
+
+### Changed
+
+- **Security Framework Rename**: Renamed blackhat security testing framework to FENRIR (Framework for Exploitative Network Reconnaissance and Intrusion Research) (Cedar-Mediator-3)
+  - **Updated Documentation**: All references to blackhat in README.md, validation scripts, and documentation updated to reflect FENRIR naming
+  - **Maintained Functionality**: All security testing capabilities preserved with updated command-line interfaces
+  - **Enhanced Branding**: FENRIR name better reflects the comprehensive security testing framework's capabilities and Norse mythology inspiration
+
+### Fixed
+
+- **Performance Testing**: Resolved ES module compatibility issues and configuration validation in E2E testing
+- **Validation Scripts**: Enhanced markdown link validation with improved error handling
+
+### Removed
+
+- **Cleanup**: Removed outdated performance result files and benchmark configurations
+
 ## [0.5.0] - 2025-09-15
 
 ### Added
+
+- **Performance Testing Refactor**: Modularized browser validation functions to comply with 50-line limit (Creek-Historian-35)
 - **Comprehensive Trace Analyzer**: Advanced Playwright trace analysis system with performance bottleneck detection
   - **Core Analysis Engine**: `TraceAnalyzer` class with automatic trace extraction, network resource parsing, console log analysis, and screenshot processing
   - **Performance Metrics**: Calculates Core Web Vitals (FCP, LCP, CLS, TBT) and identifies server delays, critical path resources, and bottlenecks
@@ -17,17 +43,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Package Integration**: Added `trace:analyze` and `trace:compare` npm scripts with tsx dependency
 
 ### Changed
+
 - **E2E Testing Framework**: Enhanced performance testing capabilities with advanced tracing and layout monitoring
 - **Package Dependencies**: Added tsx dependency for TypeScript execution in E2E testing scripts
 - **Performance Configuration**: Optimized Playwright performance testing configuration
 
 ### Fixed
+
 - **Performance Setup**: Resolved ES module compatibility issues in global performance setup
 - **Configuration Validation**: Fixed Playwright configuration options and removed unsupported properties
 
-## [Unreleased]
+## [0.4.99] - 2025-09-15
 
 ### Added
+
 - **REFACTOR Paper Update**: Synchronized LaTeX paper with current 16% progress status and Silver Tier achievements (Lontra-Arbiter-35)
 
 - **Package Configuration Modernization**: Comprehensive package updates across ai-shared, audio, auth, connection, and core packages with modernized TypeScript and Vitest configurations (Crimson-Guide-89)

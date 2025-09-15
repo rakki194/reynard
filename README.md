@@ -152,9 +152,7 @@ function App() {
   return (
     <Card padding="lg">
       <h1>Welcome to Reynard!</h1>
-      <Button onClick={() => notify("Hello from Reynard!", "success")}>
-        Get Started
-      </Button>
+      <Button onClick={() => notify("Hello from Reynard!", "success")}>Get Started</Button>
     </Card>
   );
 }
@@ -172,7 +170,7 @@ function App() {
 - **[🚀 Performance Guide](./docs/performance.md)** - Optimization and performance tips
 - **[🏗️ Architecture Patterns](./docs/architecture/modularity-patterns.md)** - Modularity patterns and refactoring strategies
 - **[🤝 Contributing](./CONTRIBUTING.md)** - How to contribute to Reynard
-- **[🔒 Security Testing](./blackhat/README.md)** - FENRIR security testing framework
+- **[🔒 Security Testing](./fenrir/README.md)** - FENRIR security testing framework
 - **[🐍 Python Development](./docs/python-development-setup.md)** - Backend development setup
 
 ## ✨ Key Features
@@ -247,11 +245,11 @@ pnpm test:ui
 pnpm run test:e2e
 
 # 🐺 Run FENRIR security testing
-python -m blackhat.run_all_exploits --target http://localhost:8000
+python -m fenrir.run_all_exploits --target http://localhost:8000
 ```
 
 _[View complete testing guide →](./CONTRIBUTING.md#testing)_
-_[View FENRIR security testing guide →](./blackhat/README.md)_
+_[View FENRIR security testing guide →](./fenrir/README.md)_
 
 ## 🐺 Security Testing with FENRIR
 
@@ -271,16 +269,16 @@ Intrusion Research), a sophisticated security testing arsenal inspired by Elder 
 
 ```bash
 # Run comprehensive security testing
-python -m blackhat.run_all_exploits --target http://localhost:8000
+python -m fenrir.run_all_exploits --target http://localhost:8000
 
 # LLM-specific security testing
-python -m blackhat.run_llm_exploits --target http://localhost:8000
+python -m fenrir.run_llm_exploits --target http://localhost:8000
 
 # Vaporwave aesthetic exploitation
-python -m blackhat.llm_exploits.advanced_ai_exploits.vaporwave_aesthetic_exploits --target http://localhost:8000
+python -m fenrir.llm_exploits.advanced_ai_exploits.vaporwave_aesthetic_exploits --target http://localhost:8000
 ```
 
-_[View complete FENRIR security testing guide →](./blackhat/README.md)_
+_[View complete FENRIR security testing guide →](./fenrir/README.md)_
 
 ## 🚀 Performance
 
@@ -399,8 +397,8 @@ function ChatApp() {
           enableTools: true,
           showTimestamps: true,
         }}
-        onMessageSent={(message) => console.log("Sent:", message)}
-        onMessageReceived={(message) => console.log("Received:", message)}
+        onMessageSent={message => console.log("Sent:", message)}
+        onMessageReceived={message => console.log("Received:", message)}
       />
 
       <P2PChatContainer
@@ -452,8 +450,8 @@ function RAGApp() {
         maxResults: 20,
         similarityThreshold: 0.7,
       }}
-      onSearch={(query) => console.log("Searching:", query)}
-      onResultClick={(result) => console.log("Selected:", result)}
+      onSearch={query => console.log("Searching:", query)}
+      onResultClick={result => console.log("Selected:", result)}
     />
   );
 }
@@ -489,12 +487,7 @@ security features.
 #### Auth Example Usage
 
 ```tsx
-import {
-  AuthProvider,
-  LoginForm,
-  RegisterForm,
-  useAuthContext,
-} from "reynard-auth";
+import { AuthProvider, LoginForm, RegisterForm, useAuthContext } from "reynard-auth";
 
 function App() {
   return (
@@ -596,7 +589,7 @@ function Dashboard() {
         data={performanceData}
         autoScroll
         maxDataPoints={50}
-        valueFormatter={(value) => `${value}%`}
+        valueFormatter={value => `${value}%`}
       />
     </div>
   );
@@ -651,9 +644,9 @@ function FileManager() {
   return (
     <Gallery
       data={galleryData()}
-      onFileSelect={(file) => console.log("Selected:", file)}
-      onFolderNavigate={(path) => console.log("Navigate to:", path)}
-      onFileUpload={(files) => console.log("Upload:", files)}
+      onFileSelect={file => console.log("Selected:", file)}
+      onFolderNavigate={path => console.log("Navigate to:", path)}
+      onFileUpload={files => console.log("Upload:", files)}
       showUpload={true}
       showBreadcrumbs={true}
       enableDragAndDrop={true}
@@ -730,12 +723,7 @@ const settingsSchema = {
 function App() {
   return (
     <SettingsProvider config={{ schema: settingsSchema }}>
-      <SettingsPanel
-        title="Application Settings"
-        showSearch={true}
-        showCategories={true}
-        showImportExport={true}
-      />
+      <SettingsPanel title="Application Settings" showSearch={true} showCategories={true} showImportExport={true} />
     </SettingsProvider>
   );
 }
@@ -832,11 +820,7 @@ Advanced file processing pipeline with thumbnail generation, metadata extraction
 #### File Processing Example Usage
 
 ```tsx
-import {
-  ThumbnailGenerator,
-  MetadataExtractor,
-  useFileProcessing,
-} from "reynard-file-processing";
+import { ThumbnailGenerator, MetadataExtractor, useFileProcessing } from "reynard-file-processing";
 
 function FileProcessor() {
   const { generateThumbnail, extractMetadata } = useFileProcessing();
@@ -856,9 +840,7 @@ function FileProcessor() {
     console.log("Metadata:", metadata);
   };
 
-  return (
-    <input type="file" onChange={(e) => handleFileUpload(e.target.files[0])} />
-  );
+  return <input type="file" onChange={e => handleFileUpload(e.target.files[0])} />;
 }
 ```
 
@@ -902,8 +884,8 @@ function CaptionGenerator() {
 
     // Generate captions with progress tracking
     const results = await annotationService.generateCaptions(images, {
-      onProgress: (progress) => console.log(`Progress: ${progress}%`),
-      onComplete: (result) => console.log("Generation complete:", result),
+      onProgress: progress => console.log(`Progress: ${progress}%`),
+      onComplete: result => console.log("Generation complete:", result),
     });
 
     return results;
@@ -911,12 +893,7 @@ function CaptionGenerator() {
 
   return (
     <div>
-      <input
-        type="file"
-        multiple
-        accept="image/*"
-        onChange={(e) => generateCaptions(Array.from(e.target.files))}
-      />
+      <input type="file" multiple accept="image/*" onChange={e => generateCaptions(Array.from(e.target.files))} />
     </div>
   );
 }
@@ -955,12 +932,7 @@ function CaptionEditor() {
 
   return (
     <div>
-      <CaptionInput
-        value={caption()}
-        onInput={setCaption}
-        captionType="CAPTION"
-        placeholder="Enter your caption..."
-      />
+      <CaptionInput value={caption()} onInput={setCaption} captionType="CAPTION" placeholder="Enter your caption..." />
 
       <TagBubble
         tags={tags()}
@@ -1017,9 +989,7 @@ function CompleteCaptionWorkflow() {
       setEditedCaption(caption);
 
       // Extract tags from generated caption
-      const extractedTags = caption
-        .split(/[,\s]+/)
-        .filter((tag) => tag.length > 2);
+      const extractedTags = caption.split(/[,\s]+/).filter(tag => tag.length > 2);
       setTags(extractedTags);
 
       notify("Caption generated successfully!", "success");
@@ -1048,21 +1018,13 @@ function CompleteCaptionWorkflow() {
 
       {/* Image Upload */}
       <div style="margin-bottom: 1rem;">
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files?.[0] || null)}
-        />
+        <input type="file" accept="image/*" onChange={e => setImage(e.target.files?.[0] || null)} />
         {image() && <p>Selected: {image()!.name}</p>}
       </div>
 
       {/* AI Generation */}
       <div style="margin-bottom: 1rem;">
-        <Button
-          onClick={generateCaption}
-          disabled={!image() || isGenerating()}
-          loading={isGenerating()}
-        >
+        <Button onClick={generateCaption} disabled={!image() || isGenerating()} loading={isGenerating()}>
           {isGenerating() ? "Generating..." : "Generate Caption with AI"}
         </Button>
       </div>
@@ -1071,9 +1033,7 @@ function CompleteCaptionWorkflow() {
       {generatedCaption() && (
         <div style="margin-bottom: 1rem; padding: 1rem; background: var(--secondary-bg); border-radius: 6px;">
           <h4>AI Generated Caption:</h4>
-          <p style="font-style: italic; color: var(--text-secondary);">
-            {generatedCaption()}
-          </p>
+          <p style="font-style: italic; color: var(--text-secondary);">{generatedCaption()}</p>
         </div>
       )}
 
@@ -1093,14 +1053,7 @@ function CompleteCaptionWorkflow() {
         <TagBubble
           tags={tags()}
           onTagsChange={setTags}
-          suggestions={[
-            "portrait",
-            "landscape",
-            "abstract",
-            "nature",
-            "art",
-            "photography",
-          ]}
+          suggestions={["portrait", "landscape", "abstract", "nature", "art", "photography"]}
           maxTags={15}
           label="Tags"
         />
@@ -1118,11 +1071,7 @@ function CompleteCaptionWorkflow() {
       />
 
       {/* Save Button */}
-      <Button
-        onClick={saveCaption}
-        disabled={!editedCaption().trim()}
-        variant="primary"
-      >
+      <Button onClick={saveCaption} disabled={!editedCaption().trim()} variant="primary">
         Save Caption
       </Button>
     </Card>

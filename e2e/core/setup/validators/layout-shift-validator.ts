@@ -18,8 +18,7 @@ export async function validateLayoutShiftAPI(page: Page): Promise<LayoutShiftAPI
   const layoutShiftAPI = await page.evaluate(() => {
     return {
       layoutShift:
-        typeof PerformanceObserver !== "undefined" &&
-        PerformanceObserver.supportedEntryTypes?.includes("layout-shift"),
+        typeof PerformanceObserver !== "undefined" && PerformanceObserver.supportedEntryTypes?.includes("layout-shift"),
     };
   });
 

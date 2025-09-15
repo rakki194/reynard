@@ -8,8 +8,8 @@
 import { chromium, FullConfig } from "@playwright/test";
 import * as fs from "fs";
 import * as os from "os";
-import { validatePerformanceAPI, validateMemoryAPI, validateLayoutShiftAPI } from "./validators";
 import { setupPerformanceDataCollection } from "./performance-data-collector";
+import { validateLayoutShiftAPI, validateMemoryAPI, validatePerformanceAPI } from "./validators";
 
 async function globalSetup(_config: FullConfig) {
   console.log("🦦 Starting Performance Testing Global Setup...");
@@ -139,11 +139,7 @@ async function validateBrowserPerformance(): Promise<void> {
     ]);
 
     // Check if all required APIs are available
-    const requiredAPIs = [
-      perfAPI.performance,
-      perfAPI.performanceObserver,
-      layoutShiftAPI.layoutShift,
-    ];
+    const requiredAPIs = [perfAPI.performance, perfAPI.performanceObserver, layoutShiftAPI.layoutShift];
 
     if (!requiredAPIs.every(Boolean)) {
       throw new Error("Required performance APIs are not available in this browser");
@@ -154,6 +150,5 @@ async function validateBrowserPerformance(): Promise<void> {
     await browser.close();
   }
 }
-
 
 export default globalSetup;

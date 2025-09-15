@@ -50,7 +50,7 @@ const Config = {
     "e2e/",
     "scripts/",
     "libraries/",
-    "blackhat/",
+    "fenrir/",
     "todos/",
   ],
 
