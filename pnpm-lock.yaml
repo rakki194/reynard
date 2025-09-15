@@ -163,25 +163,6 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
-  e2e:
-    dependencies:
-      tsx:
-        specifier: 4.20.5
-        version: 4.20.5
-    devDependencies:
-      '@playwright/test':
-        specifier: 1.55.0
-        version: 1.55.0
-      '@types/node':
-        specifier: 24.4.0
-        version: 24.4.0
-      reynard-testing:
-        specifier: 0.1.2
-        version: 0.1.2(@testing-library/dom@10.4.1)(solid-js@1.9.9)(vitest@3.2.4)
-      typescript:
-        specifier: 5.9.2
-        version: 5.9.2
-
   examples/3d-demo:
     dependencies:
       '@types/three':
@@ -1070,6 +1051,9 @@ importers:
       reynard-core:
         specifier: workspace:*
         version: link:../core
+      reynard-validation:
+        specifier: workspace:*
+        version: link:../validation
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -1413,13 +1397,28 @@ importers:
       reynard-themes:
         specifier: workspace:*
         version: link:../themes
-    devDependencies:
-      '@types/node':
-        specifier: 24.4.0
-        version: 24.4.0
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
+    devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(solid-js@1.9.9)
+      '@types/node':
+        specifier: 24.4.0
+        version: 24.4.0
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: ^18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../testing
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -1459,6 +1458,9 @@ importers:
       reynard-core:
         specifier: workspace:*
         version: link:../core
+      reynard-validation:
+        specifier: workspace:*
+        version: link:../validation
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -1723,6 +1725,46 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
+  packages/code-quality:
+    dependencies:
+      chokidar:
+        specifier: ^3.5.3
+        version: 3.6.0
+      commander:
+        specifier: ^11.1.0
+        version: 11.1.0
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+    devDependencies:
+      '@types/node':
+        specifier: 24.4.0
+        version: 24.4.0
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: ^18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../testing
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.5
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
   packages/colors:
     dependencies:
       colorizr:
@@ -1886,6 +1928,9 @@ importers:
 
   packages/connection:
     dependencies:
+      reynard-validation:
+        specifier: workspace:*
+        version: link:../validation
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -1920,6 +1965,9 @@ importers:
       reynard-connection:
         specifier: workspace:*
         version: link:../connection
+      reynard-validation:
+        specifier: workspace:*
+        version: link:../validation
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -3147,25 +3195,40 @@ importers:
       reynard-file-processing:
         specifier: workspace:*
         version: link:../file-processing
-    devDependencies:
-      '@types/node':
-        specifier: ^20.0.0
-        version: 20.19.13
       solid-js:
-        specifier: ^1.8.0
+        specifier: 1.9.9
         version: 1.9.9
+    devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(solid-js@1.9.9)
+      '@types/node':
+        specifier: 24.4.0
+        version: 24.4.0
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: ^18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../testing
       typescript:
-        specifier: ^5.0.0
+        specifier: 5.9.2
         version: 5.9.2
       vite:
         specifier: 7.1.5
-        version: 7.1.5(@types/node@20.19.13)
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
       vite-plugin-solid:
-        specifier: ^2.8.0
+        specifier: 2.11.8
         version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
       vitest:
-        specifier: ^1.0.0
-        version: 1.6.1(@types/node@20.19.13)
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
   templates/starter:
     dependencies:
@@ -3834,6 +3897,7 @@ packages:
     cpu: [ppc64]
     os: [aix]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/android-arm64@0.21.5:
@@ -3851,6 +3915,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/android-arm@0.21.5:
@@ -3868,6 +3933,7 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/android-x64@0.21.5:
@@ -3885,6 +3951,7 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/darwin-arm64@0.21.5:
@@ -3902,6 +3969,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/darwin-x64@0.21.5:
@@ -3919,6 +3987,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/freebsd-arm64@0.21.5:
@@ -3936,6 +4005,7 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/freebsd-x64@0.21.5:
@@ -3953,6 +4023,7 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-arm64@0.21.5:
@@ -3970,6 +4041,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-arm@0.21.5:
@@ -3987,6 +4059,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-ia32@0.21.5:
@@ -4004,6 +4077,7 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-loong64@0.21.5:
@@ -4021,6 +4095,7 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-mips64el@0.21.5:
@@ -4038,6 +4113,7 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-ppc64@0.21.5:
@@ -4055,6 +4131,7 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-riscv64@0.21.5:
@@ -4072,6 +4149,7 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-s390x@0.21.5:
@@ -4089,6 +4167,7 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/linux-x64@0.21.5:
@@ -4106,6 +4185,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/netbsd-arm64@0.25.9:
@@ -4114,6 +4194,7 @@ packages:
     cpu: [arm64]
     os: [netbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/netbsd-x64@0.21.5:
@@ -4131,6 +4212,7 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/openbsd-arm64@0.25.9:
@@ -4139,6 +4221,7 @@ packages:
     cpu: [arm64]
     os: [openbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/openbsd-x64@0.21.5:
@@ -4156,6 +4239,7 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/openharmony-arm64@0.25.9:
@@ -4164,6 +4248,7 @@ packages:
     cpu: [arm64]
     os: [openharmony]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/sunos-x64@0.21.5:
@@ -4181,6 +4266,7 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/win32-arm64@0.21.5:
@@ -4198,6 +4284,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/win32-ia32@0.21.5:
@@ -4215,6 +4302,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@esbuild/win32-x64@0.21.5:
@@ -4232,6 +4320,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@eslint-community/eslint-utils@4.9.0(eslint@8.57.1):
@@ -5883,7 +5972,6 @@ packages:
     dependencies:
       normalize-path: 3.0.0
       picomatch: 2.3.1
-    dev: true
 
   /aproba@2.1.0:
     resolution: {integrity: sha512-tLIEcj5GuR2RSTnxNKdkK0dJ/GrC7P38sUkiDmDuHfsHmbagTFAxDVIBltoklXEVIQ/f14IL8IMJ5pn9Hez1Ew==}
@@ -6115,7 +6203,6 @@ packages:
   /binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
-    dev: true
 
   /bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
@@ -6142,7 +6229,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.1.1
-    dev: true
 
   /browserslist@4.25.4:
     resolution: {integrity: sha512-4jYpcjabC606xJ3kw2QwGEZKX0Aw7sgQdZCvIK9dhVSPh76BKo+C+btT1RRofH7B+8iNpEbgGNVWiLki5q93yg==}
@@ -6325,7 +6411,6 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.3
-    dev: true
 
   /chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
@@ -6425,6 +6510,11 @@ packages:
 
   /comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
+    dev: false
+
+  /commander@11.1.0:
+    resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
+    engines: {node: '>=16'}
     dev: false
 
   /commander@13.1.0:
@@ -6704,18 +6794,6 @@ packages:
 
   /de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
-    dev: true
-
-  /debug@4.4.1:
-    resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.1.3
     dev: true
 
   /debug@4.4.1(supports-color@5.5.0):
@@ -7113,6 +7191,7 @@ packages:
       '@esbuild/win32-arm64': 0.25.9
       '@esbuild/win32-ia32': 0.25.9
       '@esbuild/win32-x64': 0.25.9
+    dev: true
 
   /escalade@3.2.0:
     resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
@@ -7552,7 +7631,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       to-regex-range: 5.0.1
-    dev: true
 
   /find-up@4.1.0:
     resolution: {integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==}
@@ -7804,6 +7882,7 @@ packages:
     resolution: {integrity: sha512-auHyJ4AgMz7vgS8Hp3N6HXSmlMdUyhSUrfBF16w153rxtLIEOE+HGqaBppczZvnHLqQJfiHotCYpNhl0lUROFQ==}
     dependencies:
       resolve-pkg-maps: 1.0.0
+    dev: true
 
   /get-uri@6.0.5:
     resolution: {integrity: sha512-b1O07XYq8eRuVzBNgJLstU6FYc1tS6wnMtF1I1D9lE8LxZSOGZ7LhxN54yPP6mGw5f2CkXY2BQUL9Fx41qvcIg==}
@@ -7831,7 +7910,6 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       is-glob: 4.0.3
-    dev: true
 
   /glob-parent@6.0.2:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
@@ -8275,7 +8353,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       binary-extensions: 2.3.0
-    dev: true
 
   /is-boolean-object@1.2.2:
     resolution: {integrity: sha512-wa56o2/ElJMYqjCjGkXri7it5FbebW5usLw/nPmCMs5DeZ7eziSYZhSmPRn0txqeW4LnAmQQU7FgqLpsEFKM4A==}
@@ -8326,7 +8403,6 @@ packages:
   /is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /is-finalizationregistry@1.1.1:
     resolution: {integrity: sha512-1pC6N8qWJbWoPtEjgcL2xyhQOP491EQjeUo3qTKcmV8YSDDJrOepfG8pcC7h/QgnQHYSv0mJ3Z/ZWxmatVrysg==}
@@ -8366,7 +8442,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       is-extglob: 2.1.1
-    dev: true
 
   /is-hexadecimal@2.0.1:
     resolution: {integrity: sha512-DgZQp241c8oO6cA1SbTEWiXeoxV42vlcJxgH+B3hi1AiqqKruZR3ZGF8In3fj4+/y/7rHvlOZLZtgJ/4ttYGZg==}
@@ -8405,7 +8480,6 @@ packages:
   /is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
-    dev: true
 
   /is-obj@2.0.0:
     resolution: {integrity: sha512-drqDG3cbczxxEJRoOXcOjtdp1J/lyp1mNn0xaznRs8+muBhgQcrnbspox5X5fOw0HnMnbfDzvnEMEtqDEJEo8w==}
@@ -9610,7 +9684,6 @@ packages:
   /normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /npm-run-path@5.3.0:
     resolution: {integrity: sha512-ppwTtiJZq0O/ai0z7yfudtBpWIoxM8yE6nHi1X47eFR2EWORqfbu6CnPlNsjeN683eT0qG6H/Pyf9fCcvjnnnQ==}
@@ -9980,7 +10053,6 @@ packages:
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
-    dev: true
 
   /picomatch@4.0.3:
     resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
@@ -10193,7 +10265,6 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.1
-    dev: true
 
   /readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
@@ -10286,6 +10357,7 @@ packages:
 
   /resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
+    dev: true
 
   /resolve@1.22.10:
     resolution: {integrity: sha512-NPRy+/ncIMeDlTAsuqwKIiferiawhefFJtkNSW0qZJEqMEb+qBt/77B/jGeeek+F0uOeN05CDa6HXbbIgtVX4w==}
@@ -10392,7 +10464,7 @@ packages:
       '@testing-library/jest-dom': 6.8.0
       '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
       solid-js: 1.9.9
-      vitest: 3.2.4(@types/node@24.4.0)(tsx@4.20.5)
+      vitest: 3.2.4(@types/node@24.4.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - '@solidjs/router'
       - '@testing-library/dom'
@@ -11174,7 +11246,6 @@ packages:
     engines: {node: '>=8.0'}
     dependencies:
       is-number: 7.0.0
-    dev: true
 
   /token-types@6.1.1:
     resolution: {integrity: sha512-kh9LVIWH5CnL63Ipf0jhlBIy0UsrMj/NJDfpsy1SqOXlLKEVyXXYrnFxFT1yOOYVGBSApeVnjPw/sBz5BfEjAQ==}
@@ -11319,6 +11390,7 @@ packages:
       get-tsconfig: 4.10.1
     optionalDependencies:
       fsevents: 2.3.3
+    dev: true
 
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -11599,7 +11671,7 @@ packages:
     hasBin: true
     dependencies:
       cac: 6.7.14
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@5.5.0)
       es-module-lexer: 1.7.0
       pathe: 2.0.3
       vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
@@ -12160,73 +12232,6 @@ packages:
       - yaml
     dev: true
 
-  /vitest@3.2.4(@types/node@24.4.0)(tsx@4.20.5):
-    resolution: {integrity: sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@types/debug': ^4.1.12
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
-      '@vitest/browser': 3.2.4
-      '@vitest/ui': 3.2.4
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@types/debug':
-        optional: true
-      '@types/node':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-    dependencies:
-      '@types/chai': 5.2.2
-      '@types/node': 24.4.0
-      '@vitest/expect': 3.2.4
-      '@vitest/mocker': 3.2.4(vite@7.1.5)
-      '@vitest/pretty-format': 3.2.4
-      '@vitest/runner': 3.2.4
-      '@vitest/snapshot': 3.2.4
-      '@vitest/spy': 3.2.4
-      '@vitest/utils': 3.2.4
-      chai: 5.3.3
-      debug: 4.4.1
-      expect-type: 1.2.2
-      magic-string: 0.30.19
-      pathe: 2.0.3
-      picomatch: 4.0.3
-      std-env: 3.9.0
-      tinybench: 2.9.0
-      tinyexec: 0.3.2
-      tinyglobby: 0.2.15
-      tinypool: 1.1.1
-      tinyrainbow: 2.0.0
-      vite: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
-      vite-node: 3.2.4(@types/node@24.4.0)(tsx@4.20.5)
-      why-is-node-running: 2.3.0
-    transitivePeerDependencies:
-      - jiti
-      - less
-      - lightningcss
-      - msw
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
-      - yaml
-    dev: true
-
   /vitest@3.2.4(@types/node@24.4.0)(yaml@2.8.1):
     resolution: {integrity: sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -12604,6 +12609,7 @@ packages:
       solid-js: 1.9.9
     dependencies:
       reynard-connection: link:packages/connection
+      reynard-validation: link:packages/validation
       solid-js: 1.9.9
     optionalDependencies:
       reynard-i18n: link:packages/i18n

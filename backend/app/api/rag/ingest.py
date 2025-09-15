@@ -5,21 +5,28 @@ Endpoints for document ingestion and indexing operations.
 """
 
 import logging
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.responses import StreamingResponse
 
 from .models import RAGIngestRequest, RAGIngestResponse
 from .service import get_rag_service
+from ..security.mcp_auth import (
+    require_rag_ingest,
+    MCPTokenData
+)
 
 logger = logging.getLogger("uvicorn")
 
-router = APIRouter(prefix="/api/rag", tags=["rag"])
+router = APIRouter(tags=["rag"])
 
 
 @router.post("/ingest", response_model=RAGIngestResponse)
-async def ingest_documents(request: RAGIngestRequest):
+async def ingest_documents(
+    request: RAGIngestRequest,
+    mcp_client: MCPTokenData = Depends(require_rag_ingest)
+):
     """Ingest documents into the RAG system."""
     try:
         service = get_rag_service()
@@ -27,40 +34,43 @@ async def ingest_documents(request: RAGIngestRequest):
             items=request.items,
             model=request.model,
             batch_size=request.batch_size,
-            force_reindex=request.force_reindex
+            force_reindex=request.force_reindex,
         )
         return RAGIngestResponse(**result)
     except Exception as e:
         logger.error(f"Failed to ingest documents: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to ingest documents: {str(e)}"
+            detail=f"Failed to ingest documents: {e!s}",
         )
 
 
 @router.post("/ingest/stream")
-async def ingest_documents_stream(request: RAGIngestRequest):
+async def ingest_documents_stream(
+    request: RAGIngestRequest,
+    mcp_client: MCPTokenData = Depends(require_rag_ingest)
+):
     """Stream document ingestion progress."""
     try:
         service = get_rag_service()
-        
-        async def generate_stream() -> AsyncGenerator[str, None]:
+
+        async def generate_stream() -> AsyncGenerator[str]:
             async for event in service.ingest_documents_stream(
                 items=request.items,
                 model=request.model,
                 batch_size=request.batch_size,
-                force_reindex=request.force_reindex
+                force_reindex=request.force_reindex,
             ):
                 yield f"data: {event}\n\n"
-        
+
         return StreamingResponse(
             generate_stream(),
             media_type="text/plain",
-            headers={"Cache-Control": "no-cache", "Connection": "keep-alive"}
+            headers={"Cache-Control": "no-cache", "Connection": "keep-alive"},
         )
     except Exception as e:
         logger.error(f"Failed to stream document ingestion: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to stream document ingestion: {str(e)}"
+            detail=f"Failed to stream document ingestion: {e!s}",
         )

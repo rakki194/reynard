@@ -57,8 +57,8 @@ def setup_logging(log_file: str = "mcp-agent-namer.log") -> logging.Logger:
         "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
 
-    # Console handler with colors
-    console_handler = logging.StreamHandler(sys.stdout)
+    # Console handler with colors (use stderr for MCP protocol)
+    console_handler = logging.StreamHandler(sys.stderr)
     console_handler.setFormatter(colored_formatter)
     logger.addHandler(console_handler)
 

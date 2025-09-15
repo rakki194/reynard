@@ -6,18 +6,25 @@ Administrative endpoints for RAG system management and monitoring.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 
-from .models import RAGStatsResponse, RAGIndexingStatusResponse
+from .models import RAGIndexingStatusResponse, RAGStatsResponse
 from .service import get_rag_service
+from ..security.mcp_auth import (
+    require_rag_stats,
+    require_mcp_permission,
+    MCPTokenData
+)
 
 logger = logging.getLogger("uvicorn")
 
-router = APIRouter(prefix="/api/rag", tags=["rag"])
+router = APIRouter(tags=["rag"])
 
 
 @router.get("/admin/stats", response_model=RAGStatsResponse)
-async def get_rag_stats():
+async def get_rag_stats(
+    mcp_client: MCPTokenData = Depends(require_rag_stats)
+):
     """Get RAG system statistics."""
     try:
         service = get_rag_service()
@@ -27,12 +34,14 @@ async def get_rag_stats():
         logger.error(f"Failed to get RAG stats: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get RAG stats: {str(e)}"
+            detail=f"Failed to get RAG stats: {e!s}",
         )
 
 
 @router.get("/admin/indexing-status", response_model=RAGIndexingStatusResponse)
-async def get_indexing_status():
+async def get_indexing_status(
+    mcp_client: MCPTokenData = Depends(require_rag_stats)
+):
     """Get current indexing status."""
     try:
         service = get_rag_service()
@@ -42,12 +51,14 @@ async def get_indexing_status():
         logger.error(f"Failed to get indexing status: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get indexing status: {str(e)}"
+            detail=f"Failed to get indexing status: {e!s}",
         )
 
 
 @router.post("/admin/rebuild-index")
-async def rebuild_index():
+async def rebuild_index(
+    mcp_client: MCPTokenData = Depends(require_mcp_permission("rag:admin"))
+):
     """Rebuild the vector index."""
     try:
         service = get_rag_service()
@@ -57,12 +68,14 @@ async def rebuild_index():
         logger.error(f"Failed to rebuild index: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to rebuild index: {str(e)}"
+            detail=f"Failed to rebuild index: {e!s}",
         )
 
 
 @router.post("/admin/clear-cache")
-async def clear_cache():
+async def clear_cache(
+    mcp_client: MCPTokenData = Depends(require_mcp_permission("rag:admin"))
+):
     """Clear the RAG system cache."""
     try:
         service = get_rag_service()
@@ -72,5 +85,5 @@ async def clear_cache():
         logger.error(f"Failed to clear cache: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to clear cache: {str(e)}"
+            detail=f"Failed to clear cache: {e!s}",
         )

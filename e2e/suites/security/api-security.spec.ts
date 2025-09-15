@@ -1,13 +1,12 @@
 /**
  * 🐺 API Security Testing Suite
- * 
+ *
  * *snarls with predatory intelligence* Comprehensive API security
  * vulnerability testing for the Reynard backend endpoints.
  */
 
-import { test, expect } from "@playwright/test";
-import { runFenrirExploit } from "../../modules/security";
-import { createDefaultConfig } from "../../modules/security";
+import { expect, test } from "@playwright/test";
+import { createDefaultConfig, runFenrirExploit } from "../../modules/security";
 
 test.describe("🐺 API Security Testing", () => {
   const config = createDefaultConfig();
@@ -24,14 +23,11 @@ test.describe("🐺 API Security Testing", () => {
   });
 
   test("should test CORS misconfiguration", async () => {
-    const result = await runFenrirExploit(
-      "cors_exploits.cors_misconfiguration",
-      {
-        target: config.backendUrl,
-        verbose: config.verbose,
-        destructive: config.destructive,
-      },
-    );
+    const result = await runFenrirExploit("cors_exploits.cors_misconfiguration", {
+      target: config.backendUrl,
+      verbose: config.verbose,
+      destructive: config.destructive,
+    });
 
     expect(result.success).toBeDefined();
     expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
@@ -48,4 +44,3 @@ test.describe("🐺 API Security Testing", () => {
     expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
   });
 });
-

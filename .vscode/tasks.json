@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Python: Install Dependencies",
+      "label": "🐍: Install Dependencies",
       "type": "shell",
       "command": "bash",
       "args": ["-c", "source ~/venv/bin/activate && pip install -r backend/requirements.txt"],
@@ -16,7 +16,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Python: Run Tests",
+      "label": "🐍: Run Tests",
       "type": "shell",
       "command": "bash",
       "args": ["-c", "source ~/venv/bin/activate && cd backend && python -m pytest tests/ -v"],
@@ -30,7 +30,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Python: Run Tests with Coverage",
+      "label": "🐍: Run Tests with Coverage",
       "type": "shell",
       "command": "bash",
       "args": [
@@ -47,7 +47,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Python: Lint with Ruff",
+      "label": "🐍: Lint with Ruff",
       "type": "shell",
       "command": "bash",
       "args": ["-c", "source ~/venv/bin/activate && ruff check backend/ fenrir/ libraries/"],
@@ -61,7 +61,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Python: Format with Ruff",
+      "label": "🐍: Format with Ruff",
       "type": "shell",
       "command": "bash",
       "args": ["-c", "source ~/venv/bin/activate && ruff format backend/ fenrir/ libraries/"],
@@ -75,7 +75,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Python: Type Check with mypy",
+      "label": "🐍: Type Check with mypy",
       "type": "shell",
       "command": "bash",
       "args": ["-c", "source ~/venv/bin/activate && mypy backend/ fenrir/ libraries/"],
@@ -91,8 +91,7 @@
     {
       "label": "Python: Start Backend Server",
       "type": "shell",
-      "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd backend && python main.py"],
+      "command": "./scripts/dev/start-backend.sh",
       "group": "build",
       "presentation": {
         "echo": true,
@@ -104,7 +103,27 @@
       "problemMatcher": []
     },
     {
-      "label": "Python: Run Security Tests",
+      "label": "🐍 Auto-Start Backend Server",
+      "type": "shell",
+      "command": "./scripts/dev/start-backend.sh",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": [],
+      "detail": "Automatically start Python backend server when workspace opens"
+    },
+    {
+      "label": "🐍: Run Security Tests",
       "type": "shell",
       "command": "bash",
       "args": ["-c", "source ~/venv/bin/activate && cd backend && python test_security_direct.py"],

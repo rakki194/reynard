@@ -1,0 +1,353 @@
+name: 🦊 Reynard Code Quality Analysis
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment for quality gates'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '20'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  code-quality-analysis:
+    name: 🦊 Code Quality Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better analysis
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: 📦 Install Dependencies
+        run: |
+          # Install Node.js dependencies
+          npm install -g pnpm
+          pnpm install
+
+          # Install Python dependencies
+          pip install -r backend/requirements.txt
+          pip install bandit flake8 mypy black isort
+
+      - name: 🔧 Setup Reynard Code Quality
+        run: |
+          # Build the code quality package
+          cd packages/code-quality
+          pnpm build
+
+          # Initialize quality gates
+          node dist/quality-gate.js --init
+
+      - name: 🦊 Run Code Quality Analysis
+        id: analysis
+        run: |
+          cd packages/code-quality
+
+          # Run comprehensive analysis
+          node dist/cli.js analyze \
+            --project ../../ \
+            --environment ${{ github.event.inputs.environment || 'development' }} \
+            --output ../../analysis-results.json \
+            --format summary
+
+          # Check exit code
+          ANALYSIS_EXIT_CODE=$?
+          echo "analysis_exit_code=$ANALYSIS_EXIT_CODE" >> $GITHUB_OUTPUT
+
+          # Parse results for summary
+          if [ -f "../../analysis-results.json" ]; then
+            ISSUES_COUNT=$(node -e "const data = require('../../analysis-results.json'); console.log(data.analysis.issues.length)")
+            VULNERABILITIES_COUNT=$(node -e "const data = require('../../analysis-results.json'); console.log(data.security?.summary?.totalVulnerabilities || 0)")
+            CRITICAL_VULNERABILITIES=$(node -e "const data = require('../../analysis-results.json'); console.log(data.security?.summary?.criticalVulnerabilities || 0)")
+            HIGH_VULNERABILITIES=$(node -e "const data = require('../../analysis-results.json'); console.log(data.security?.summary?.highVulnerabilities || 0)")
+
+            echo "issues_count=$ISSUES_COUNT" >> $GITHUB_OUTPUT
+            echo "vulnerabilities_count=$VULNERABILITIES_COUNT" >> $GITHUB_OUTPUT
+            echo "critical_vulnerabilities=$CRITICAL_VULNERABILITIES" >> $GITHUB_OUTPUT
+            echo "high_vulnerabilities=$HIGH_VULNERABILITIES" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🐺 Run Security Analysis
+        id: security
+        run: |
+          cd packages/code-quality
+
+          # Run security analysis
+          node dist/cli.js security \
+            --project ../../ \
+            --output ../../security-results.json \
+            --format summary
+
+          # Check exit code
+          SECURITY_EXIT_CODE=$?
+          echo "security_exit_code=$SECURITY_EXIT_CODE" >> $GITHUB_OUTPUT
+
+      - name: 🚪 Evaluate Quality Gates
+        id: quality-gates
+        run: |
+          cd packages/code-quality
+
+          # Evaluate quality gates
+          node dist/cli.js quality-gate \
+            --project ../../ \
+            --environment ${{ github.event.inputs.environment || 'development' }} \
+            --metrics ../../analysis-results.json
+
+          # Check exit code
+          QUALITY_GATE_EXIT_CODE=$?
+          echo "quality_gate_exit_code=$QUALITY_GATE_EXIT_CODE" >> $GITHUB_OUTPUT
+
+      - name: 📊 Upload Analysis Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: code-quality-results
+          path: |
+            analysis-results.json
+            security-results.json
+          retention-days: 30
+
+      - name: 📈 Generate Quality Report
+        if: always()
+        run: |
+          # Create a summary report
+          cat > quality-report.md << EOF
+          # 🦊 Reynard Code Quality Analysis Report
+
+          **Analysis Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          **Environment:** ${{ github.event.inputs.environment || 'development' }}
+          **Branch:** ${{ github.ref_name }}
+          **Commit:** ${{ github.sha }}
+
+          ## 📊 Analysis Summary
+
+          - **Issues Found:** ${{ steps.analysis.outputs.issues_count || 0 }}
+          - **Vulnerabilities:** ${{ steps.analysis.outputs.vulnerabilities_count || 0 }}
+          - **Critical Vulnerabilities:** ${{ steps.analysis.outputs.critical_vulnerabilities || 0 }}
+          - **High Vulnerabilities:** ${{ steps.analysis.outputs.high_vulnerabilities || 0 }}
+
+          ## 🚪 Quality Gate Status
+
+          - **Code Quality Analysis:** ${{ steps.analysis.outputs.analysis_exit_code == 0 && '✅ PASSED' || '❌ FAILED' }}
+          - **Security Analysis:** ${{ steps.security.outputs.security_exit_code == 0 && '✅ PASSED' || '❌ FAILED' }}
+          - **Quality Gates:** ${{ steps.quality-gates.outputs.quality_gate_exit_code == 0 && '✅ PASSED' || '❌ FAILED' }}
+
+          ## 📁 Artifacts
+
+          - Analysis Results: \`analysis-results.json\`
+          - Security Results: \`security-results.json\`
+
+          ## 🔗 Links
+
+          - [Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          - [Commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+
+          EOF
+
+          # Upload report as artifact
+          echo "quality-report.md" >> $GITHUB_STEP_SUMMARY
+
+      - name: 🚨 Comment on PR
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let comment = '## 🦊 Code Quality Analysis Results\n\n';
+
+            // Read analysis results if available
+            if (fs.existsSync('analysis-results.json')) {
+              const analysisData = JSON.parse(fs.readFileSync('analysis-results.json', 'utf8'));
+
+              comment += `### 📊 Analysis Summary\n`;
+              comment += `- **Issues Found:** ${analysisData.analysis.issues.length}\n`;
+              comment += `- **Lines of Code:** ${analysisData.analysis.metrics.linesOfCode.toLocaleString()}\n`;
+              comment += `- **Complexity:** ${analysisData.analysis.metrics.cyclomaticComplexity.toFixed(0)}\n`;
+              comment += `- **Maintainability:** ${analysisData.analysis.metrics.maintainabilityIndex.toFixed(0)}\n\n`;
+
+              // Quality Gates
+              if (analysisData.qualityGates && analysisData.qualityGates.length > 0) {
+                comment += `### 🚪 Quality Gates\n`;
+                for (const gate of analysisData.qualityGates) {
+                  const status = gate.status === 'PASSED' ? '✅' :
+                                gate.status === 'WARN' ? '⚠️' : '❌';
+                  comment += `- ${status} **${gate.gateName}:** ${gate.status} (${gate.overallScore.toFixed(1)}%)\n`;
+                }
+                comment += '\n';
+              }
+
+              // Security
+              if (analysisData.security) {
+                comment += `### 🔒 Security Analysis\n`;
+                comment += `- **Security Rating:** ${analysisData.security.summary.securityRating}\n`;
+                comment += `- **Vulnerabilities:** ${analysisData.security.summary.totalVulnerabilities}\n`;
+                comment += `- **Critical:** ${analysisData.security.summary.criticalVulnerabilities}\n`;
+                comment += `- **High:** ${analysisData.security.summary.highVulnerabilities}\n`;
+                comment += `- **Security Hotspots:** ${analysisData.security.summary.totalHotspots}\n\n`;
+              }
+
+              // Show critical issues
+              const criticalIssues = analysisData.analysis.issues.filter(issue =>
+                issue.severity === 'CRITICAL' || issue.severity === 'BLOCKER'
+              );
+
+              if (criticalIssues.length > 0) {
+                comment += `### 🚨 Critical Issues\n`;
+                for (const issue of criticalIssues.slice(0, 10)) { // Limit to 10 issues
+                  comment += `- **${issue.severity}:** ${issue.message} (${issue.file}:${issue.line})\n`;
+                }
+                if (criticalIssues.length > 10) {
+                  comment += `- ... and ${criticalIssues.length - 10} more critical issues\n`;
+                }
+                comment += '\n';
+              }
+            }
+
+            comment += `### 📁 Artifacts\n`;
+            comment += `- [Analysis Results](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\n`;
+            comment += `- [Security Results](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\n\n`;
+
+            comment += `---\n`;
+            comment += `*Generated by Reynard Code Quality Analysis* 🦊`;
+
+            // Post comment
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: 🚨 Fail on Critical Issues
+        if: always()
+        run: |
+          # Fail the workflow if there are critical security issues
+          if [ "${{ steps.analysis.outputs.critical_vulnerabilities }}" -gt 0 ]; then
+            echo "❌ Critical vulnerabilities found. Failing workflow."
+            exit 1
+          fi
+
+          if [ "${{ steps.analysis.outputs.high_vulnerabilities }}" -gt 5 ]; then
+            echo "❌ Too many high-severity vulnerabilities found. Failing workflow."
+            exit 1
+          fi
+
+          # Fail if quality gates failed
+          if [ "${{ steps.quality-gates.outputs.quality_gate_exit_code }}" -ne 0 ]; then
+            echo "❌ Quality gates failed. Failing workflow."
+            exit 1
+          fi
+
+          echo "✅ All quality checks passed!"
+
+  security-scan:
+    name: 🐺 Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: 📦 Install Security Tools
+        run: |
+          pip install bandit safety semgrep
+
+      - name: 🐺 Run Bandit Security Scan
+        run: |
+          bandit -r backend/ -f json -o bandit-results.json || true
+
+      - name: 🔍 Run Semgrep Security Scan
+        run: |
+          semgrep --config=auto --json --output=semgrep-results.json . || true
+
+      - name: 📊 Upload Security Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-scan-results
+          path: |
+            bandit-results.json
+            semgrep-results.json
+          retention-days: 30
+
+  dependency-check:
+    name: 📦 Dependency Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: 📦 Install Dependencies
+        run: |
+          npm install -g pnpm
+          pnpm install
+          pip install safety
+
+      - name: 🔍 Check Node.js Dependencies
+        run: |
+          pnpm audit --audit-level moderate
+
+      - name: 🔍 Check Python Dependencies
+        run: |
+          safety check --json --output safety-results.json || true
+
+      - name: 📊 Upload Dependency Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-check-results
+          path: |
+            safety-results.json
+          retention-days: 30
+

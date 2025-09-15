@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "reynard-agent-namer": {
+    "reynard-mcp": {
       "command": "bash",
       "args": ["-c", "source ~/venv/bin/activate && cd /home/kade/runeset/reynard/scripts/mcp && python3 main.py"],
       "env": {

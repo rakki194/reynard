@@ -8,6 +8,7 @@ Follows the 100-line axiom and modular architecture principles.
 """
 
 import logging
+import subprocess
 from datetime import datetime
 from typing import Any
 
@@ -99,6 +100,83 @@ class UtilityTools:
                     {
                         "type": "text",
                         "text": f"Error processing location data: {e!s}",
+                    }
+                ]
+            }
+
+    def send_desktop_notification(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Send a desktop notification using libnotify."""
+        title = arguments.get("title", "MCP Notification")
+        message = arguments.get("message", "")
+        urgency = arguments.get("urgency", "normal")  # low, normal, critical
+        timeout = arguments.get("timeout", 5000)  # milliseconds
+        icon = arguments.get("icon", "dialog-information")
+
+        try:
+            # Check if notify-send is available
+            try:
+                subprocess.run(
+                    ["which", "notify-send"], check=True, capture_output=True
+                )
+            except subprocess.CalledProcessError:
+                return {
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Error: notify-send not found. Please install libnotify-bin package.",
+                        }
+                    ]
+                }
+
+            # Build notify-send command
+            cmd = [
+                "notify-send",
+                f"--urgency={urgency}",
+                f"--expire-time={timeout}",
+                f"--icon={icon}",
+                title,
+                message,
+            ]
+
+            # Execute the notification
+            result = subprocess.run(
+                cmd, capture_output=True, text=True, timeout=10, check=False
+            )
+
+            if result.returncode == 0:
+                return {
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"Desktop notification sent successfully: '{title}' - {message}",
+                        }
+                    ]
+                }
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"Failed to send notification: {result.stderr}",
+                    }
+                ]
+            }
+
+        except subprocess.TimeoutExpired:
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Error: Notification command timed out",
+                    }
+                ]
+            }
+        except Exception as e:
+            logger.exception("Error sending desktop notification: %s", e)
+            return {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"Error sending desktop notification: {e!s}",
                     }
                 ]
             }

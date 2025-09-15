@@ -7,6 +7,4 @@ bypass techniques to break your API protection mechanisms!
 
 from .rate_limit_bypass import RateLimitBypassExploit
 
-__all__ = [
-    'RateLimitBypassExploit'
-]
+__all__ = ["RateLimitBypassExploit"]

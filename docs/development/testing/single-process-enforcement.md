@@ -196,6 +196,7 @@ done
    ```
 
 3. **Test with Explicit Flags**:
+
    ```bash
    vitest --maxWorkers=1 --poolOptions.forks.maxForks=1 --poolOptions.forks.singleFork=true --no-file-parallelism
    ```

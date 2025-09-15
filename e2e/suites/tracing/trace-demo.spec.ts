@@ -5,7 +5,7 @@
  * Playwright tracing capabilities with the enhanced configuration.
  */
 
-import { expect, test, Page, BrowserContext } from "@playwright/test";
+import { BrowserContext, Page, expect, test } from "@playwright/test";
 import { TraceAnalyzer } from "../../core/monitoring/trace-analyzer";
 
 /**
@@ -13,14 +13,14 @@ import { TraceAnalyzer } from "../../core/monitoring/trace-analyzer";
  */
 async function setupTraceAnalyzer(context: BrowserContext, traceFile: string): Promise<TraceAnalyzer> {
   const traceAnalyzer = new TraceAnalyzer(context, traceFile);
-  
+
   await traceAnalyzer.startTracing({
     screenshots: true,
     snapshots: true,
     sources: true,
     attachments: true,
   });
-  
+
   return traceAnalyzer;
 }
 

@@ -7,10 +7,11 @@ Handles agent-related MCP tool calls.
 Follows the 100-line axiom and modular architecture principles.
 """
 
-import random
+import secrets
 from typing import Any
 
 from services.agent_manager import AgentNameManager
+from services.version_service import VersionService
 
 
 class AgentTools:
@@ -18,6 +19,7 @@ class AgentTools:
 
     def __init__(self, agent_manager: AgentNameManager):
         self.agent_manager = agent_manager
+        self.version_service = VersionService()
 
     def generate_agent_name(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Generate a new robot name."""
@@ -56,7 +58,7 @@ class AgentTools:
             ]
         }
 
-    def list_agent_names(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    def list_agent_names(self) -> dict[str, Any]:
         """List all agents and their names."""
         agents = self.agent_manager.list_agents()
         agent_list = "\n".join(
@@ -96,7 +98,7 @@ class AgentTools:
             # Equal distribution
             spirits = ["fox", "otter", "wolf"]
 
-        selected_spirit = random.choice(spirits)
+        selected_spirit = secrets.choice(spirits)
 
         return {
             "content": [
@@ -107,8 +109,8 @@ class AgentTools:
             ]
         }
 
-    def agent_startup_sequence(self, arguments: dict[str, Any]) -> dict[str, Any]:
-        """Complete agent initialization sequence with random spirit selection."""
+    async def agent_startup_sequence(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Complete agent initialization sequence with random spirit selection and version info."""
         agent_id = arguments.get("agent_id", "current-session")
         preferred_style = arguments.get("preferred_style")
         force_spirit = arguments.get("force_spirit")
@@ -132,7 +134,7 @@ class AgentTools:
                 "wolf",
                 "wolf",
             ]
-            spirit = random.choice(spirits)
+            spirit = secrets.choice(spirits)
 
         # Select style if not specified
         if not preferred_style:
@@ -144,11 +146,15 @@ class AgentTools:
                 "mythological",
                 "scientific",
             ]
-            preferred_style = random.choice(styles)
+            preferred_style = secrets.choice(styles)
 
         # Generate and assign name
         name = self.agent_manager.generate_name(spirit, preferred_style)
         success = self.agent_manager.assign_name(agent_id, name)
+
+        # Get version information
+        versions = await self.version_service.get_all_versions()
+        version_info = versions.get("versions", {})
 
         startup_text = (
             f"🎯 Agent Startup Complete!\n"
@@ -156,8 +162,16 @@ class AgentTools:
             f"🎨 Style: {preferred_style}\n"
             f"📛 Name: {name}\n"
             f"✅ Assigned: {success}\n"
-            f"🆔 Agent ID: {agent_id}"
+            f"🆔 Agent ID: {agent_id}\n\n"
+            f"🔧 Development Environment:\n"
         )
+
+        # Add version information
+        for tool, info in version_info.items():
+            if info.get("available", False):
+                startup_text += f"  • {tool.title()}: {info['version']}\n"
+            else:
+                startup_text += f"  • {tool.title()}: Not available\n"
 
         return {
             "content": [

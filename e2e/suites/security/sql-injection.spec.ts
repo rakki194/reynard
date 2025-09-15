@@ -1,13 +1,12 @@
 /**
  * 🐺 SQL Injection Testing Suite
- * 
+ *
  * *snarls with predatory determination* Comprehensive SQL injection
  * vulnerability testing for the Reynard backend.
  */
 
-import { test, expect } from "@playwright/test";
-import { runFenrirExploit } from "../../modules/security";
-import { createDefaultConfig } from "../../modules/security";
+import { expect, test } from "@playwright/test";
+import { createDefaultConfig, runFenrirExploit } from "../../modules/security";
 
 test.describe("🐺 SQL Injection Testing", () => {
   const config = createDefaultConfig();
@@ -35,17 +34,13 @@ test.describe("🐺 SQL Injection Testing", () => {
   });
 
   test("should test obfuscated SQL payloads", async () => {
-    const result = await runFenrirExploit(
-      "sql_injection.obfuscated_payloads",
-      {
-        target: config.backendUrl,
-        verbose: config.verbose,
-        destructive: config.destructive,
-      },
-    );
+    const result = await runFenrirExploit("sql_injection.obfuscated_payloads", {
+      target: config.backendUrl,
+      verbose: config.verbose,
+      destructive: config.destructive,
+    });
 
     expect(result.success).toBeDefined();
     expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
   });
 });
-

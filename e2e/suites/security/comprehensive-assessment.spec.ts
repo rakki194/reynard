@@ -6,8 +6,7 @@
  */
 
 import { expect, test } from "@playwright/test";
-import { runCompleteFenrirSuite } from "../../modules/security";
-import { createDefaultConfig } from "../../modules/security";
+import { createDefaultConfig, runCompleteFenrirSuite } from "../../modules/security";
 
 test.describe("🐺 Comprehensive Security Assessment", () => {
   const config = createDefaultConfig();

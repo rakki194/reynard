@@ -25,7 +25,12 @@ except ImportError as exc:
 
     spec = importlib.util.spec_from_file_location(
         "robot_name_generator",
-        "../../scripts/utils/agent-naming/robot_name_generator.py",
+        str(
+            Path(__file__).parent.parent.parent
+            / "utils"
+            / "agent-naming"
+            / "robot_name_generator.py"
+        ),
     )
     if spec is None or spec.loader is None:
         raise ImportError("Could not load robot name generator module") from exc

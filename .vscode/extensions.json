@@ -37,7 +37,6 @@
     "github.vscode-pull-request-github",
 
     // Development Tools
-    "ms-vscode.vscode-json",
     "formulahendry.auto-rename-tag",
     "christian-kohler.path-intellisense",
     "ms-vscode.vscode-typescript-next",

@@ -26,15 +26,18 @@ To know all flags and options, see an output of `actionlint -h` or [the online c
 
 ### Ignore some errors
 
-To ignore some errors, `-ignore` option offers to filter errors by messages using regular expression. The option is repeatable.
+To ignore some errors, `-ignore` option offers to filter errors by
+messages using regular expression. The option is repeatable.
 The regular expression syntax is the same as [RE2][re2].
 
 ```sh
 actionlint -ignore 'label ".+" is unknown' -ignore '".+" is potentially untrusted'
 ```
 
-`-shellcheck` and `-pyflakes` specifies file paths of executables. Setting empty string to them disables `shellcheck` and
-`pyflakes` rules. As a bonus, disabling them makes actionlint much faster Since these external linter integrations spawn many
+`-shellcheck` and `-pyflakes` specifies file paths of executables. Setting empty string to
+them disables `shellcheck` and
+`pyflakes` rules. As a bonus, disabling them makes actionlint much faster Since
+these external linter integrations spawn many
 processes.
 
 ```sh
@@ -104,7 +107,8 @@ Output:
 
 <img src="https://github.com/rhysd/ss/blob/master/actionlint/ga-annotate.png?raw=true" alt="annotations on GitHub Actions" width="731" height="522"/>
 
-To include newlines in the annotation body, it prints `%0A`. (ref [actions/toolkit#193](https://github.com/actions/toolkit/issues/193)).
+To include newlines in the annotation body,
+it prints `%0A`. (ref [actions/toolkit#193](https://github.com/actions/toolkit/issues/193)).
 And it suppresses `SC2016` shellcheck rule error since it complains about the template argument.
 
 Basically it is more recommended to use [Problem Matchers](#problem-matchers) or reviewdog as explained in
@@ -112,16 +116,19 @@ Basically it is more recommended to use [Problem Matchers](#problem-matchers) or
 
 #### Example: [SARIF format][sarif]
 
-[The Static Analysis Results Interchange Format (SARIF)][sarif] is a standardized format for the results of static analysis tools.
+[The Static Analysis Results Interchange Format (SARIF)][sarif] is a standardized format for the results of
+static analysis tools.
 
 Since this practical format is much more complex than the above examples, the template is not written here. Please read
 [the template file in test data](../testdata/format/sarif_template.txt).
 
-Outputs are also too large to be written here. Please read [the output example in test data](../testdata/format/test.sarif).
+Outputs are also too large to be written here. Please read [the output example in
+test data](../testdata/format/test.sarif).
 
 #### Formatting syntax
 
-In [Go template syntax][go-template], `.` within `{{ }}` means the target object. Here, the target object is a sequence of error
+In [Go template syntax][go-template], `.` within `{{ }}` means the target object. Here,
+the target object is a sequence of error
 objects.
 
 The sequence can be traversed with `range` action, which is like `for ... = range ... {}` in Go.
@@ -135,15 +142,17 @@ The error object has the following fields.
 | Field                | Description                                           | Example                                                          |
 | -------------------- | ----------------------------------------------------- | ---------------------------------------------------------------- |
 | `{{$err.Message}}`   | Body of error message                                 | `property "platform" is not defined in object type {os: string}` |
-| `{{$err.Snippet}}`   | Code snippet to indicate error position               | `          node_version: 16.x\n          ^~~~~~~~~~~~~`          |
+| `{{$err.Snippet}}`   | Code snippet to indicate error position               | `node_version: 16.x\n          ^~~~~~~~~~~~~`          |
 | `{{$err.Kind}}`      | Name of rule the error belongs to                     | `expression`                                                     |
 | `{{$err.Filepath}}`  | Canonical relative file path of the error position    | `.github/workflows/ci.yaml`                                      |
 | `{{$err.Line}}`      | Line number of the error position (1-based)           | `9`                                                              |
 | `{{$err.Column}}`    | Column number of the error's start position (1-based) | `11`                                                             |
 | `{{$err.EndColumn}}` | Column number of the error's end position (1-based)   | `23`                                                             |
 
-Functions called in `{{ }}` placeholder are template actions. There are many actions defined by Go standard library. In addition,
-there are a few custom actions defined by actionlint. Most useful action would be `json` as we already used it in the above JSON
+Functions called in `{{ }}` placeholder are template actions. There are many actions defined by
+Go standard library. In addition,
+there are a few custom actions defined by actionlint. Most useful action would be `json` as we already used it in
+the above JSON
 example. List of all custom actions are as follows:
 
 | Action           | Description                                                                      | Example usage                             |
@@ -173,7 +182,8 @@ will produce output like below.
 line is 21, col is 20, message is "property \"platform\" is not defined in object type {os: string}"
 ```
 
-In `{{ }}` placeholder, input can be piped and action can be used to transform texts. In above example, the message is piped with
+In `{{ }}` placeholder, input can be piped and
+action can be used to transform texts. In above example, the message is piped with
 `|` and transformed with `printf "%q"`.
 
 Note that special characters escaped with back slash like `\n` in the format string are automatically unespcaed.
@@ -193,8 +203,10 @@ Note that special characters escaped with back slash like `\n` in the format str
 
 ## Use actionlint on GitHub Actions
 
-Preparing `actionlint` executable with the download script is recommended. See [the instruction](install.md#download-script) for
-more details. It sets an absolute file path of downloaded executable to `executable` output in order to use the executable in the
+Preparing `actionlint` executable with
+the download script is recommended. See [the instruction](install.md#download-script) for
+more details. It sets an absolute file path of downloaded executable to `executable` output in order to
+use the executable in the
 following steps easily.
 
 Here is an example of simple workflow to run actionlint on GitHub Actions. Please ensure `shell: bash` since the default
@@ -228,16 +240,19 @@ Or simply download the executable and run it in one step:
   shell: bash
 ```
 
-The download script allows to specify the version of actionlint and the download directory. Try to give `--help` argument
+The download script allows to specify the version of actionlint and
+the download directory. Try to give `--help` argument
 to the script for more usage details.
 
-If you want to enable [shellcheck integration](checks.md#check-shellcheck-integ), install `shellcheck` command. Note that
+If you want to enable [shellcheck integration](checks.md#check-shellcheck-integ),
+install `shellcheck` command. Note that
 shellcheck is [pre-installed on Ubuntu worker][preinstall-ubuntu].
 
 If you want to [annotate errors][ga-annotate-error] from actionlint on GitHub, consider to use
 [Problem Matchers](#problem-matchers).
 
-If you prefer Docker image to running a downloaded executable, using [actionlint Docker image](#docker) is another option.
+If you prefer Docker image to running a downloaded executable,
+using [actionlint Docker image](#docker) is another option.
 
 ```yaml
 name: Lint GitHub Actions workflows
@@ -256,19 +271,23 @@ jobs:
 
 ## Online playground
 
-Thanks to WebAssembly, actionlint playground is available on your browser. It never sends any data to outside of your browser.
+Thanks to WebAssembly, actionlint playground is available on your browser. It never sends any data to outside of
+your browser.
 
-https://rhysd.github.io/actionlint/
+<https://rhysd.github.io/actionlint/>
 
-Paste your workflow content to the code editor at left pane. It automatically shows the results at right pane. When editing
-the workflow content in the code editor, the results will be updated on the fly. Clicking an error message in the results
+Paste your workflow content to the code editor at left pane. It automatically shows the results at right pane. When
+editing
+the workflow content in the code editor,
+the results will be updated on the fly. Clicking an error message in the results
 table moves a cursor to position of the error in the code editor.
 
 <a name="docker"></a>
 
 ## [Docker][docker] image
 
-[Official Docker image][docker-image] is available. The image contains `actionlint` executable and all dependencies (shellcheck
+[Official Docker image][docker-image] is available. The image contains `actionlint` executable and
+all dependencies (shellcheck
 and pyflakes).
 
 Available tags are:
@@ -282,7 +301,8 @@ Just run the image with `docker run`:
 docker run --rm rhysd/actionlint:latest -version
 ```
 
-To check all workflows in your repository, mount your repository's root directory as a volume and run actionlint in the mounted
+To check all workflows in your repository, mount your repository's root directory as a volume and
+run actionlint in the mounted
 directory. When you are at a root directory of your repository:
 
 ```sh
@@ -311,7 +331,8 @@ Go APIs are available. See [the Go API document](api.md) for more details.
 
 ### reviewdog
 
-[reviewdog][] is an automated review tool for various code hosting services. It officially [supports actionlint][reviewdog-actionlint].
+[reviewdog][] is an automated review tool for
+various code hosting services. It officially [supports actionlint][reviewdog-actionlint].
 You can check errors from actionlint easily with inline review comments at pull request review.
 
 The usage is easy. Run `reviewdog/action-actionlint` action in your workflow as follows.
@@ -331,7 +352,8 @@ jobs:
 
 ### Problem Matchers
 
-[Problem Matchers][problem-matchers] is a feature to extract GitHub Actions annotations from terminal outputs of linters.
+[Problem Matchers][problem-matchers] is a feature to extract GitHub Actions annotations from terminal outputs of
+linters.
 
 Copy [actionlint-matcher.json][actionlint-matcher] to `.github/actionlint-matcher.json` in your repository.
 
@@ -346,21 +368,26 @@ Then enable the matcher using `add-matcher` command before running `actionlint` 
   shell: bash
 ```
 
-When you change your workflow and the changed line causes a new error, CI will annotate the diff with the extracted error message.
+When you change your workflow and the changed line causes a new error,
+CI will annotate the diff with the extracted error message.
 
 <img src="https://github.com/rhysd/ss/blob/master/actionlint/problem-matcher.png?raw=true" alt="annotation by Problem Matchers" width="715" height="221"/>
 
 ### super-linter
 
-[super-linter][] is a Bash script for a simple combination of various linters, provided by GitHub. It has support for actionlint.
+[super-linter][] is a Bash script for a simple combination of various linters,
+provided by GitHub. It has support for actionlint.
 Running super-linter in your repository automatically runs actionlint.
 
-To ignore some errors, please add `-ignore` option by using [`GITHUB_ACTIONS_COMMAND_ARGS` environment variable][super-linter-env-var].
-Please see [super-linter/super-linter#1852](https://github.com/super-linter/super-linter/issues/1852) for the discussion.
+To ignore some errors, please add `-ignore` option by
+using [`GITHUB_ACTIONS_COMMAND_ARGS` environment variable][super-linter-env-var].
+Please see [super-linter/super-linter#1852](https://github.com/super-linter/super-linter/issues/1852) for
+the discussion.
 
 ### pre-commit
 
-[pre-commit][] is a framework for managing and maintaining multi-language Git pre-commit hooks. actionlint is available as a
+[pre-commit][] is a framework for managing and
+maintaining multi-language Git pre-commit hooks. actionlint is available as a
 pre-commit hook to check workflow files in `.github/workflows/` directory.
 
 Add this to your `.pre-commit-config.yaml` in your repository:
@@ -384,20 +411,24 @@ As alternatives to `actionlint` hook, `actionlint-docker` or `actionlint-system`
 
 ### VS Code
 
-[Linter extension][vsc-extension] for [VS Code][vscode] is available. The extension automatically detects `.github/workflows`
+[Linter extension][vsc-extension] for
+[VS Code][vscode] is available. The extension automatically detects `.github/workflows`
 directory, runs `actionlint` command, and reports errors in the code editor while editing workflow files.
 
 ### Nova
 
-[Nova.app][nova] is a MacOS only editor and IDE. The [Actionlint for Nova][nova-extension] allows you to get inline feedback
+[Nova.app][nova] is a MacOS only editor and
+IDE. The [Actionlint for Nova][nova-extension] allows you to get inline feedback
 while editing actions.
 
 ### trunk
 
-[trunk][trunk-io] is an extendable superlinter with a builtin language server and preexisting issue detection. Actionlint is
+[trunk][trunk-io] is an extendable superlinter with a builtin language server and
+preexisting issue detection. Actionlint is
 integrated [here](https://github.com/trunk-io/plugins).
 
-Once you have [initialized trunk in your repo](https://docs.trunk.io/docs/check-get-started), to enable at the latest actionlint
+Once you have [initialized trunk in your repo](https://docs.trunk.io/docs/check-get-started),
+to enable at the latest actionlint
 version, just run:
 
 ```bash
@@ -424,14 +455,16 @@ Then just run:
 trunk check
 ```
 
-and it will check your modified files via actionlint, if applicable, and show you the results. Trunk also will detect preexisting
+and it will check your modified files via actionlint, if applicable, and
+show you the results. Trunk also will detect preexisting
 issues and highlight only the newly added actionlint issues. For more information, check the [trunk docs][trunk-docs].
 
 You can also see actionlint issues inline in VS Code via the [Trunk VS Code extension][trunk-vscode].
 
 ---
 
-[Checks](checks.md) | [Installation](install.md) | [Configuration](config.md) | [Go API](api.md) | [References](reference.md)
+[Checks](checks.md) | [Installation](install.md) | [Configuration](config.md) | [Go API](api.md) |
+[References](reference.md)
 
 [reviewdog-actionlint]: https://github.com/reviewdog/action-actionlint
 [reviewdog]: https://github.com/reviewdog/reviewdog
@@ -439,7 +472,8 @@ You can also see actionlint issues inline in VS Code via the [Trunk VS Code exte
 [re2]: https://golang.org/s/re2syntax
 [go-template]: https://pkg.go.dev/text/template
 [jsonl]: https://jsonlines.org/
-[ga-annotate-error]: https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#setting-an-error-message
+[ga-annotate-error]:
+https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#setting-an-error-message
 [sarif]: https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html
 [problem-matchers]: https://github.com/actions/toolkit/blob/master/docs/problem-matchers.md
 [super-linter]: https://github.com/github/super-linter

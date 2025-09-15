@@ -2,85 +2,122 @@
 Pydantic models for Ollama API endpoints.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
 class OllamaChatRequest(BaseModel):
     """Request model for Ollama chat."""
-    message: str = Field(..., description="User message", min_length=1, max_length=10000)
-    model: str = Field("qwen3:latest", description="Ollama model to use")
-    system_prompt: Optional[str] = Field(None, description="System prompt for context")
+
+    message: str = Field(
+        ..., description="User message", min_length=1, max_length=10000
+    )
+    model: str = Field("embeddinggemma:latest", description="Ollama model to use")
+    system_prompt: str | None = Field(None, description="System prompt for context")
     temperature: float = Field(0.7, description="Sampling temperature", ge=0.1, le=2.0)
-    max_tokens: int = Field(2048, description="Maximum tokens to generate", ge=1, le=8192)
+    max_tokens: int = Field(
+        2048, description="Maximum tokens to generate", ge=1, le=8192
+    )
     stream: bool = Field(True, description="Enable streaming response")
-    tools: Optional[List[Dict[str, Any]]] = Field(None, description="Available tools for the assistant")
-    context: Optional[Dict[str, Any]] = Field(None, description="Additional context")
+    tools: list[dict[str, Any]] | None = Field(
+        None, description="Available tools for the assistant"
+    )
+    context: dict[str, Any] | None = Field(None, description="Additional context")
 
 
 class OllamaChatResponse(BaseModel):
     """Response model for Ollama chat."""
+
     success: bool = Field(..., description="Whether chat was successful")
     response: str = Field("", description="Assistant response")
     model: str = Field(..., description="Model used for generation")
     processing_time: float = Field(..., description="Processing time in seconds")
     tokens_generated: int = Field(0, description="Number of tokens generated")
-    tools_used: List[str] = Field(default_factory=list, description="Tools used during conversation")
-    tool_calls: List[Dict[str, Any]] = Field(default_factory=list, description="Tool calls made by the model")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
+    tools_used: list[str] = Field(
+        default_factory=list, description="Tools used during conversation"
+    )
+    tool_calls: list[dict[str, Any]] = Field(
+        default_factory=list, description="Tool calls made by the model"
+    )
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Additional metadata"
+    )
 
 
 class OllamaStreamEvent(BaseModel):
     """Event model for streaming Ollama responses."""
+
     type: str = Field(..., description="Event type (token, tool_call, complete, error)")
     data: str = Field("", description="Event data (token text or tool call)")
     timestamp: float = Field(..., description="Event timestamp")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Additional metadata"
+    )
 
 
 class OllamaModelInfo(BaseModel):
     """Information about an Ollama model."""
+
     name: str = Field(..., description="Model name")
     size: int = Field(..., description="Model size in bytes")
     digest: str = Field(..., description="Model digest")
     modified_at: str = Field(..., description="Last modified timestamp")
     is_available: bool = Field(..., description="Whether model is currently available")
     context_length: int = Field(4096, description="Model context length")
-    capabilities: List[str] = Field(default_factory=list, description="Model capabilities")
+    capabilities: list[str] = Field(
+        default_factory=list, description="Model capabilities"
+    )
 
 
 class OllamaAssistantRequest(BaseModel):
     """Request model for ReynardAssistant."""
-    message: str = Field(..., description="User message", min_length=1, max_length=10000)
-    assistant_type: str = Field("reynard", description="Assistant type (reynard, codewolf)")
-    model: str = Field("qwen3:latest", description="Ollama model to use")
+
+    message: str = Field(
+        ..., description="User message", min_length=1, max_length=10000
+    )
+    assistant_type: str = Field(
+        "reynard", description="Assistant type (reynard, codewolf)"
+    )
+    model: str = Field("embeddinggemma:latest", description="Ollama model to use")
     temperature: float = Field(0.7, description="Sampling temperature", ge=0.1, le=2.0)
-    max_tokens: int = Field(2048, description="Maximum tokens to generate", ge=1, le=8192)
+    max_tokens: int = Field(
+        2048, description="Maximum tokens to generate", ge=1, le=8192
+    )
     stream: bool = Field(True, description="Enable streaming response")
-    context: Optional[Dict[str, Any]] = Field(None, description="Additional context")
+    context: dict[str, Any] | None = Field(None, description="Additional context")
     tools_enabled: bool = Field(True, description="Enable tool calling")
 
 
 class OllamaAssistantResponse(BaseModel):
     """Response model for ReynardAssistant."""
+
     success: bool = Field(..., description="Whether assistant response was successful")
     response: str = Field("", description="Assistant response")
     assistant_type: str = Field(..., description="Assistant type used")
     model: str = Field(..., description="Model used for generation")
     processing_time: float = Field(..., description="Processing time in seconds")
     tokens_generated: int = Field(0, description="Number of tokens generated")
-    tools_used: List[str] = Field(default_factory=list, description="Tools used during conversation")
-    tool_calls: List[Dict[str, Any]] = Field(default_factory=list, description="Tool calls made by the assistant")
-    reasoning: Optional[str] = Field(None, description="Assistant reasoning process")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
+    tools_used: list[str] = Field(
+        default_factory=list, description="Tools used during conversation"
+    )
+    tool_calls: list[dict[str, Any]] = Field(
+        default_factory=list, description="Tool calls made by the assistant"
+    )
+    reasoning: str | None = Field(None, description="Assistant reasoning process")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Additional metadata"
+    )
 
 
 class OllamaConfig(BaseModel):
     """Configuration for Ollama service."""
+
     enabled: bool = Field(True, description="Whether Ollama service is enabled")
     base_url: str = Field("http://localhost:11434", description="Ollama server URL")
-    default_model: str = Field("qwen3:latest", description="Default model for generation")
+    default_model: str = Field(
+        "embeddinggemma:latest", description="Default model for generation"
+    )
     timeout_seconds: int = Field(300, description="Request timeout in seconds")
     max_concurrent_requests: int = Field(5, description="Maximum concurrent requests")
     assistant_enabled: bool = Field(True, description="Enable ReynardAssistant")
@@ -90,14 +127,21 @@ class OllamaConfig(BaseModel):
 
 class OllamaStats(BaseModel):
     """Statistics for Ollama service."""
+
     model_config = ConfigDict(protected_namespaces=())
-    
+
     total_requests: int = Field(..., description="Total chat requests")
     successful_requests: int = Field(..., description="Successful chat requests")
     failed_requests: int = Field(..., description="Failed chat requests")
-    average_processing_time: float = Field(..., description="Average processing time in seconds")
+    average_processing_time: float = Field(
+        ..., description="Average processing time in seconds"
+    )
     total_tokens_generated: int = Field(..., description="Total tokens generated")
-    usage_stats: Dict[str, int] = Field(..., description="Model usage statistics", alias="model_usage")
-    assistant_usage: Dict[str, int] = Field(..., description="Assistant usage statistics")
-    tools_usage: Dict[str, int] = Field(..., description="Tools usage statistics")
+    usage_stats: dict[str, int] = Field(
+        ..., description="Model usage statistics", alias="model_usage"
+    )
+    assistant_usage: dict[str, int] = Field(
+        ..., description="Assistant usage statistics"
+    )
+    tools_usage: dict[str, int] = Field(..., description="Tools usage statistics")
     error_rate: float = Field(..., description="Error rate percentage")

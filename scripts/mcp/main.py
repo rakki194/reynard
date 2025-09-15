@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-MCP Agent Namer Server - Main Entry Point
-==========================================
+MCP Reynard Linting Server - Main Entry Point
+==============================================
 
-A modular Model Context Protocol (MCP) server that provides tools for agents
-to generate and assign themselves custom names using the Reynard robot name generator.
+A modular Model Context Protocol (MCP) server that provides comprehensive
+linting, formatting, validation, and security tools for the Reynard ecosystem.
 
-This refactored version follows the 100-line axiom and modular architecture principles.
+This enhanced version includes agent naming plus all project quality tools.
 """
 
 import asyncio
@@ -17,7 +17,15 @@ from typing import Any
 from protocol.mcp_handler import MCPHandler
 from services.agent_manager import AgentNameManager
 from tools.agent_tools import AgentTools
+from tools.file_search_tools import FileSearchTools
+from tools.image_viewer_tools import ImageViewerTools
+from tools.linting_tools import LintingTools
+from tools.mermaid_tools import MermaidTools
+from tools.semantic_file_search_tools import SemanticFileSearchTools
 from tools.utility_tools import UtilityTools
+from tools.version_vscode_tools import VersionVSCodeTools
+from tools.vscode_tasks_tools import VSCodeTasksTools
+
 from utils.logging_config import setup_logging
 
 logger = setup_logging()
@@ -33,9 +41,26 @@ class MCPServer:
         # Initialize tool handlers
         self.agent_tools = AgentTools(self.agent_manager)
         self.utility_tools = UtilityTools()
+        self.linting_tools = LintingTools()
+        self.version_vscode_tools = VersionVSCodeTools()
+        self.file_search_tools = FileSearchTools()
+        self.semantic_file_search_tools = SemanticFileSearchTools()
+        self.image_viewer_tools = ImageViewerTools()
+        self.mermaid_tools = MermaidTools()
+        self.vscode_tasks_tools = VSCodeTasksTools()
 
         # Initialize MCP protocol handler
-        self.mcp_handler = MCPHandler(self.agent_tools, self.utility_tools)
+        self.mcp_handler = MCPHandler(
+            self.agent_tools,
+            self.utility_tools,
+            self.linting_tools,
+            self.version_vscode_tools,
+            self.file_search_tools,
+            self.semantic_file_search_tools,
+            self.image_viewer_tools,
+            self.mermaid_tools,
+            self.vscode_tasks_tools,
+        )
 
     async def handle_request(self, request: dict[str, Any]) -> dict[str, Any]:
         """Handle incoming MCP requests."""
@@ -54,7 +79,7 @@ class MCPServer:
             if method == "tools/call":
                 tool_name = params.get("name")
                 arguments = params.get("arguments", {})
-                return self.mcp_handler.handle_tool_call(
+                return await self.mcp_handler.handle_tool_call(
                     tool_name, arguments, request_id
                 )
 
@@ -68,7 +93,7 @@ class MCPServer:
 
     async def run(self):
         """Run the MCP server."""
-        logger.info("Starting MCP Agent Namer Server...")
+        logger.info("Starting MCP Reynard Linting Server...")
 
         # Read from stdin and write to stdout (MCP protocol)
         while True:

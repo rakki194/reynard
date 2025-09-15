@@ -1,13 +1,12 @@
 /**
  * 🐺 SSRF Attack Testing
- * 
+ *
  * *snarls with predatory intelligence* Server-Side Request Forgery
  * attack vectors for testing internal network access and data exfiltration.
  */
 
-import { test, expect } from "@playwright/test";
-import { runFenrirExploit } from "../../modules/security";
-import { createDefaultConfig } from "../../modules/security";
+import { expect, test } from "@playwright/test";
+import { createDefaultConfig, runFenrirExploit } from "../../modules/security";
 
 test.describe("🐺 SSRF Attack Testing", () => {
   const config = createDefaultConfig();

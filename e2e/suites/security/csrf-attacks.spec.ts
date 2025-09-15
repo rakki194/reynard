@@ -1,13 +1,12 @@
 /**
  * 🐺 CSRF Attack Testing
- * 
+ *
  * *snarls with predatory focus* Cross-Site Request Forgery attack
  * vectors for testing authentication bypass and state manipulation.
  */
 
-import { test, expect } from "@playwright/test";
-import { runFenrirExploit } from "../../modules/security";
-import { createDefaultConfig } from "../../modules/security";
+import { expect, test } from "@playwright/test";
+import { createDefaultConfig, runFenrirExploit } from "../../modules/security";
 
 test.describe("🐺 CSRF Attack Testing", () => {
   const config = createDefaultConfig();

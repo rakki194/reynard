@@ -7,8 +7,7 @@
  */
 
 import { test } from "@playwright/test";
-import { createDOMAssertions } from "../../modules/dom";
-import { createTestPage } from "../../modules/dom";
+import { createDOMAssertions, createTestPage } from "../../modules/dom";
 
 test.describe("Element Text Content", () => {
   let dom: ReturnType<typeof createDOMAssertions>;

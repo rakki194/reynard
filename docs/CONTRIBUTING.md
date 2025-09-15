@@ -20,6 +20,7 @@ Reynard follows the "cunning fox" philosophy:
 
 - **Node.js** 18+ and pnpm
 - **Git** for version control
+- **Delta** for enhanced diff viewing (recommended)
 - **TypeScript** knowledge
 - **SolidJS** experience (helpful but not required)
 
@@ -45,6 +46,41 @@ pnpm run build
 # Type check
 pnpm run typecheck
 ```
+
+### Enhanced Git Setup with Delta
+
+For improved code diff viewing and analysis, install and configure Delta:
+
+```bash
+# Install delta (Arch Linux)
+sudo pacman -S git-delta
+
+# Install delta (Ubuntu/Debian)
+sudo apt install git-delta
+
+# Install delta (macOS)
+brew install git-delta
+
+# Install delta (Windows)
+choco install delta
+
+# Configure delta with git
+git config --global core.pager delta
+git config --global interactive.diffFilter "delta --color-only"
+git config --global delta.navigate true
+git config --global delta.side-by-side true
+git config --global delta.line-numbers true
+git config --global delta.syntax-theme "Monokai Extended"
+git config --global merge.conflictstyle zdiff3
+```
+
+Delta provides:
+
+- **Syntax highlighting** for better code readability
+- **Side-by-side diffs** for easier comparison
+- **Word-level highlighting** for precise change detection
+- **Navigation controls** (n/N keys) for large diffs
+- **Enhanced merge conflict display**
 
 ### Project Structure
 
@@ -198,15 +234,12 @@ interface MyComponentProps {
   onAction?: () => void;
 }
 
-export const MyComponent: Component<MyComponentProps> = (props) => {
+export const MyComponent: Component<MyComponentProps> = props => {
   const { theme } = useTheme();
   const [isActive, setIsActive] = createSignal(false);
 
   return (
-    <div
-      class={`my-component my-component--${props.variant || "primary"}`}
-      data-theme={theme()}
-    >
+    <div class={`my-component my-component--${props.variant || "primary"}`} data-theme={theme()}>
       <h3>{props.title}</h3>
       <button
         onClick={() => {

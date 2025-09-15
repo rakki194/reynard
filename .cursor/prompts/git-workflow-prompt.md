@@ -2,11 +2,59 @@
 
 ## Task Description
 
-Execute a comprehensive Git workflow that analyzes code changes, creates meaningful commit messages, updates documentation, and manages versioning across the Reynard monorepo.
+Execute a comprehensive Git workflow that analyzes code changes, creates meaningful commit messages, updates
+documentation, and manages versioning across the Reynard monorepo.
 
 ## Complete Workflow Steps
 
 ### 1. Analyze Source Code Changes
+
+#### Enhanced Diff Analysis with Delta
+
+**Prerequisites - Delta Setup:**
+
+Delta is a syntax-highlighting pager for Git that significantly enhances diff readability. Install and configure it:
+
+```bash
+# Install delta (Arch Linux)
+sudo pacman -S git-delta
+
+# Install delta (Ubuntu/Debian)
+sudo apt install git-delta
+
+# Install delta (macOS)
+brew install git-delta
+
+# Install delta (Windows)
+choco install delta
+```
+
+**Configure Delta with Git:**
+
+```bash
+# Set delta as the default pager
+git config --global core.pager delta
+
+# Configure delta for interactive diffs
+git config --global interactive.diffFilter "delta --color-only"
+
+# Enable navigation between diff sections (use n/N keys)
+git config --global delta.navigate true
+
+# Enable side-by-side view for better comparison
+git config --global delta.side-by-side true
+
+# Show line numbers for better context
+git config --global delta.line-numbers true
+
+# Set syntax highlighting theme
+git config --global delta.syntax-theme "Monokai Extended"
+
+# Configure merge conflict display
+git config --global merge.conflictstyle zdiff3
+```
+
+#### Advanced Diff Commands for AI Agents
 
 ```bash
 # Get comprehensive diff of all changes
@@ -14,9 +62,31 @@ git diff --stat
 git diff --name-only
 git diff --name-status
 
-# Analyze specific change types
+# Enhanced diff analysis with word-level changes
+git diff --word-diff
+git diff --word-diff-regex='[^[:space:]]'
+
+# Ignore whitespace changes for cleaner analysis
+git diff -w
+git diff --ignore-space-change
+git diff --ignore-all-space
+
+# Compare specific file types or directories
 git diff --stat | grep -E "(packages/|backend/|e2e/|docs/)"
+git diff --name-only -- '*.ts' '*.tsx' '*.py'
+
+# Analyze staged vs unstaged changes
+git diff --staged
+git diff --cached
 git status --porcelain
+
+# Compare between commits with enhanced output
+git diff HEAD~1..HEAD
+git diff --stat HEAD~5..HEAD
+
+# Branch comparison with detailed analysis
+git diff --stat main..feature-branch
+git diff --name-status main..feature-branch
 ```
 
 **Analysis Requirements:**
@@ -27,11 +97,85 @@ git status --porcelain
 - Assess the scope and impact of changes
 - Identify any breaking changes or major features
 
+#### AI Agent Diffing Best Practices
+
+**Strategic Diff Analysis:**
+
+```bash
+# Focus on semantic changes, not formatting
+git diff -w --word-diff
+
+# Analyze changes by impact level
+git diff --stat --find-renames --find-copies
+
+# Identify potential breaking changes
+git diff --name-only | xargs -I {} git log -1 --oneline -- {}
+
+# Check for security-sensitive changes
+git diff --name-only | grep -E "(auth|security|password|token|key)"
+
+# Analyze test coverage changes
+git diff --stat | grep -E "(test|spec|__tests__)"
+```
+
+**Change Impact Assessment:**
+
+```bash
+# High-impact changes (breaking, security, architecture)
+git diff --name-only | grep -E "(package\.json|tsconfig|config|schema)"
+
+# Medium-impact changes (features, APIs)
+git diff --name-only | grep -E "(api|service|component|util)"
+
+# Low-impact changes (docs, tests, styling)
+git diff --name-only | grep -E "(\.md$|\.test\.|\.spec\.|\.css$)"
+```
+
+**Delta Configuration for AI Agents:**
+
+```ini
+# ~/.gitconfig - Optimized for AI analysis
+[delta]
+    # Enhanced readability for automated analysis
+    side-by-side = true
+    line-numbers = true
+    syntax-theme = "Monokai Extended"
+    navigate = true
+
+    # Word-level highlighting for precise change detection
+    word-diff = true
+    word-diff-regex = '[^[:space:]]'
+
+    # Clean output for parsing
+    hunk-header-style = "bold yellow"
+    file-style = "bold blue"
+    file-decoration-style = "blue ul"
+
+    # Merge conflict enhancement
+    merge-conflict-begin-symbol = "◀"
+    merge-conflict-end-symbol = "▶"
+    merge-conflict-ours-diff-header-style = "bold red"
+    merge-conflict-theirs-diff-header-style = "bold green"
+```
+
+#### Documentation Word Diffing
+
+For comprehensive word-level diffing of documentation files (Markdown, reStructuredText, AsciiDoc, DOCX),
+refer to the [Documentation Word Diffing Guide](../../docs/development/documentation-word-diffing-guide.md) which covers:
+
+- **Semantic change detection** for documentation content
+- **Cross-reference analysis** for link and reference changes
+- **Content quality analysis** for spelling, grammar, and formatting
+- **Documentation structure analysis** for organization changes
+- **AI agent optimization** for automated documentation review
+- **Binary format support** (DOCX, ODT, PDF) with Pandoc integration
+- **Pre-commit validation** and automated review workflows
+
 ### 2. Generate Comprehensive Commit Message
 
 **Commit Message Structure:**
 
-```
+```text
 <type>[optional scope]: <description>
 
 [optional body with detailed explanation]
@@ -49,7 +193,7 @@ git status --porcelain
 
 **Example Format:**
 
-```
+```text
 feat: comprehensive codebase modernization and documentation overhaul
 
 - Enhanced Husky pre-commit hooks with markdown link validation
@@ -239,20 +383,51 @@ git push origin main
 ```bash
 #!/bin/bash
 
-# Git Workflow Automation Script
+# Git Workflow Automation Script with Delta Enhancement
 set -e
 
-echo "🦊 Starting Reynard Git Workflow Automation..."
+echo "🦦 Starting Reynard Git Workflow Automation with Delta..."
 
-# Step 1: Analyze changes
-echo "📊 Analyzing source code changes..."
+# Verify delta is installed and configured
+if ! command -v delta &> /dev/null; then
+    echo "⚠️  Delta not found. Installing..."
+    # Auto-detect package manager and install delta
+    if command -v pacman &> /dev/null; then
+        sudo pacman -S git-delta --noconfirm
+    elif command -v apt &> /dev/null; then
+        sudo apt install git-delta -y
+    elif command -v brew &> /dev/null; then
+        brew install git-delta
+    else
+        echo "❌ Please install delta manually for your system"
+        exit 1
+    fi
+fi
+
+# Step 1: Enhanced change analysis with delta
+echo "📊 Analyzing source code changes with delta..."
 git diff --stat > /tmp/git-changes-stat.txt
 git diff --name-only > /tmp/git-changes-files.txt
 git diff --name-status > /tmp/git-changes-status.txt
 
-# Step 2: Generate commit message based on analysis
+# Enhanced analysis for AI agents
+echo "🔍 Performing semantic change analysis..."
+git diff -w --word-diff > /tmp/git-changes-semantic.txt
+git diff --stat --find-renames --find-copies > /tmp/git-changes-detailed.txt
+
+# Security and impact analysis
+echo "🛡️  Analyzing security and impact..."
+git diff --name-only | grep -E "(auth|security|password|token|key)" > /tmp/git-changes-security.txt || true
+git diff --name-only | grep -E "(package\.json|tsconfig|config|schema)" > /tmp/git-changes-high-impact.txt || true
+git diff --name-only | grep -E "(\.md$|\.test\.|\.spec\.|\.css$)" > /tmp/git-changes-low-impact.txt || true
+
+# Test coverage analysis
+echo "🧪 Analyzing test coverage changes..."
+git diff --stat | grep -E "(test|spec|__tests__)" > /tmp/git-changes-tests.txt || true
+
+# Step 2: Generate commit message based on enhanced analysis
 echo "📝 Generating commit message..."
-# Analysis logic here
+# Enhanced analysis logic here using the generated files
 
 # Step 3: Update CHANGELOG.md
 echo "📚 Updating CHANGELOG.md..."
@@ -262,13 +437,16 @@ echo "📚 Updating CHANGELOG.md..."
 echo "📦 Updating package versions..."
 # Version bump logic here
 
-# Step 5: Execute git operations
+# Step 5: Execute git operations with delta preview
 echo "🚀 Executing git operations..."
+echo "📋 Previewing changes with delta..."
+git diff --staged | delta --side-by-side || git diff --staged
+
 git add .
 git commit --no-verify -m "$COMMIT_MESSAGE"
 git push origin main
 
-echo "✅ Git workflow completed successfully!"
+echo "✅ Git workflow completed successfully with delta enhancement!"
 ```
 
 ## Quality Assurance Checklist
@@ -294,14 +472,14 @@ echo "✅ Git workflow completed successfully!"
 
 ### Common Issues and Solutions
 
-**Issue: Pre-commit hooks failing**
+#### Issue: Pre-commit hooks failing
 
 ```bash
 # Use --no-verify flag
 git commit --no-verify -m "commit message"
 ```
 
-**Issue: Merge conflicts**
+#### Issue: Merge conflicts
 
 ```bash
 # Resolve conflicts first
@@ -316,11 +494,54 @@ git commit -m "resolve: merge conflicts"
 git lfs track "*.large"
 ```
 
-**Issue: Version conflicts**
+#### Issue: Version conflicts
 
 ```bash
 # Ensure consistent versioning across packages
 npm version patch --workspaces
+```
+
+#### Issue: Delta not displaying properly
+
+```bash
+# Check delta installation
+which delta
+delta --version
+
+# Verify git configuration
+git config --list | grep delta
+
+# Test delta with a simple diff
+echo "test" > test.txt && git add test.txt && git diff --staged | delta
+
+# Reset to default pager if needed
+git config --global --unset core.pager
+```
+
+#### Issue: Delta performance issues with large diffs
+
+```bash
+# Configure delta for better performance
+git config --global delta.max-line-distance 0.6
+git config --global delta.max-line-length 1000
+
+# Use minimal delta configuration for large repos
+git config --global delta.minus-style "red"
+git config --global delta.plus-style "green"
+git config --global delta.side-by-side false
+```
+
+#### Issue: Delta syntax highlighting not working
+
+```bash
+# Check available themes
+delta --list-syntax-themes
+
+# Set a different theme
+git config --global delta.syntax-theme "GitHub"
+
+# Disable syntax highlighting if problematic
+git config --global delta.syntax-theme "none"
 ```
 
 ## Success Criteria
@@ -352,4 +573,5 @@ The workflow is successful when:
 
 ---
 
-_This prompt provides a comprehensive framework for automating Git workflows in the Reynard monorepo, ensuring consistent, high-quality commits with proper documentation and versioning._
+_This prompt provides a comprehensive framework for automating Git workflows in the Reynard monorepo, ensuring_
+_consistent, high-quality commits with proper documentation and versioning._

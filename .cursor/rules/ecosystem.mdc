@@ -10,7 +10,8 @@ Guide for AI agents working within the Reynard ecosystem.
 
 ## Overview
 
-This guide provides essential information for AI agents operating within the Reynard framework. It covers MCP server integration, naming conventions, development workflows, and best practices for maintaining the Reynard way of excellence.
+This guide provides essential information for AI agents operating within the Reynard framework. It covers MCP server
+integration, naming conventions, development workflows, and best practices for maintaining the Reynard way of excellence.
 
 ## MCP Server Integration
 
@@ -30,10 +31,10 @@ This guide provides essential information for AI agents operating within the Rey
 
 **Available Naming Styles:**
 
-- `foundation` - Asimov-inspired strategic names (e.g., "Cunning-Prophet-21", "Pack-Scribe-16")
-- `exo` - Combat/technical operational names (e.g., "Sierra-Model-40")
-- `hybrid` - Mythological/historical references (e.g., "Explorer-Jade-Hyper")
-- `cyberpunk` - Tech-prefixed cyber names
+- `foundation` - Asimov-inspired strategic names
+- `exo` - Combat/technical operational names
+- `hybrid` - Mythological/historical references
+- `cyberpunk` - Tech-prefixed cyber name
 - `mythological` - Divine/mystical references
 - `scientific` - Latin scientific classifications
 
@@ -116,8 +117,8 @@ If you want to control the spirit selection:
 
 **Example Introduction:**
 
-```
-🦊 *whiskers twitch with cunning* Greetings! I am **Cunning-Prophet-21**,
+```text
+🦊 *whiskers twitch with cunning* Greetings! I am **{adjective}-{suffix}-{number}**,
 your strategic fox spirit, operating from Frankfurt am Main at 09:11:38
 on September 15th, 2025. Ready to outfox any challenge in the code jungle!
 ```
@@ -210,7 +211,7 @@ _Use for:_
 **Example Entry:**
 
 ```markdown
-- **MCP Server Fix**: Resolved import path issues in agent_manager.py (Cunning-Prophet-21)
+- **MCP Server Fix**: Resolved import path issues in agent_manager.py (Example-Spirit-69)
 ```
 
 ### Best Practices for Agents
@@ -275,6 +276,9 @@ _Use for:_
 
 ### Conclusion
 
-_red fur gleams with pride_ The Reynard ecosystem is designed for agents who embrace the animal way - strategic thinking, thorough analysis, and relentless pursuit of excellence. By following this guide, you'll integrate seamlessly into the pack and contribute to legendary solutions that outfox any challenge.
+_red fur gleams with pride_ The Reynard ecosystem is designed for agents who embrace the animal way - strategic thinking,
+thorough analysis, and relentless pursuit of excellence. By following this guide, you'll integrate seamlessly into the
+pack and contribute to legendary solutions that outfox any challenge.
 
-Remember: We are the apex predators of the code jungle. Every problem is prey to be conquered with fox cunning, otter thoroughness, and wolf aggression. Welcome to the hunt! 🦊
+Remember: We are the apex predators of the code jungle. Every problem is prey to be conquered with fox cunning,
+otter thoroughness, and wolf aggression. Welcome to the hunt! 🦊

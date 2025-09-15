@@ -24,6 +24,8 @@ This directory contains comprehensive development documentation for the Reynard 
 - **`linting.md`** - Code linting and formatting
 - **`editor-config-prettier.md`** - Editor configuration
 - **`stylelint-setup.md`** - CSS linting setup
+- **`git-development-setup.md`** - Enhanced Git setup with Delta for superior diff analysis
+- **`documentation-word-diffing-guide.md`** - Advanced word-level diffing strategies for documentation files
 
 #### UI Components and Patterns
 

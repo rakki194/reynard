@@ -1,13 +1,12 @@
 /**
  * 🐺 JWT Security Testing Suite
- * 
+ *
  * *snarls with predatory focus* Comprehensive JWT vulnerability testing
  * for the Reynard authentication system.
  */
 
-import { test, expect } from "@playwright/test";
-import { runFenrirExploit } from "../../modules/security";
-import { createDefaultConfig } from "../../modules/security";
+import { expect, test } from "@playwright/test";
+import { createDefaultConfig, runFenrirExploit } from "../../modules/security";
 
 test.describe("🐺 JWT Security Testing", () => {
   const config = createDefaultConfig();
@@ -23,9 +22,7 @@ test.describe("🐺 JWT Security Testing", () => {
     expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
 
     if (result.vulnerabilitiesFound > 0) {
-      console.log(
-        `🚨 JWT vulnerabilities found: ${result.vulnerabilitiesFound}`,
-      );
+      console.log(`🚨 JWT vulnerabilities found: ${result.vulnerabilitiesFound}`);
       console.log(`Details: ${JSON.stringify(result.details, null, 2)}`);
     }
   });
@@ -52,4 +49,3 @@ test.describe("🐺 JWT Security Testing", () => {
     expect(result.vulnerabilitiesFound).toBeGreaterThanOrEqual(0);
   });
 });
-

@@ -397,4 +397,4 @@ This E2E testing framework is part of the Reynard project and follows the same l
 
 ---
 
-*🦊 *red fur gleams with strategic satisfaction* The E2E testing framework is now organized with the cunning precision of a fox, the playful thoroughness of an otter, and the ferocious security focus of a wolf. Every test is a calculated move in our quest for code perfection!*
+_🦊 _red fur gleams with strategic satisfaction_ The E2E testing framework is now organized with the cunning precision of a fox, the playful thoroughness of an otter, and the ferocious security focus of a wolf. Every test is a calculated move in our quest for code perfection!_

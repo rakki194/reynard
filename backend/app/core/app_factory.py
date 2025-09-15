@@ -34,6 +34,7 @@ from app.api.ollama import router as ollama_router
 from app.api.rag import router as rag_router
 from app.api.summarization import router as summarization_router
 from app.api.tts import router as tts_router
+from app.api.mcp import endpoints as mcp_endpoints
 
 # Core API endpoints
 from app.core.api_endpoints import router as core_router
@@ -167,6 +168,7 @@ def _setup_routers(app: FastAPI) -> None:
     app.include_router(image_utils_router)
     app.include_router(rag_router)
     app.include_router(tts_router)
+    app.include_router(mcp_endpoints.router, prefix="/api")
     
     # Ollama Router (use original for now, secure version will be added after service initialization)
     app.include_router(ollama_router)
