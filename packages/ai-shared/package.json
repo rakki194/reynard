@@ -28,9 +28,7 @@
       "import": "./dist/models/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
@@ -41,18 +39,11 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "ai",
-    "ml",
-    "shared",
-    "utilities",
-    "base-classes",
-    "types",
-    "reynard"
-  ],
+  "keywords": ["ai", "ml", "shared", "utilities", "base-classes", "types", "reynard"],
   "dependencies": {
     "reynard-core": "workspace:*",
-    "reynard-connection": "workspace:*"
+    "reynard-connection": "workspace:*",
+    "reynard-validation": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.4.0",

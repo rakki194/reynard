@@ -1,10 +1,34 @@
 /**
  * Consolidated Validation System for Reynard Framework
  *
- * This module provides unified validation patterns that eliminate
- * duplication across Reynard packages. It consolidates validation
- * logic, schemas, and utilities from multiple packages.
+ * This module re-exports validation utilities from reynard-validation
+ * for backward compatibility while consolidating all validation logic.
+ *
+ * @deprecated Use reynard-validation package directly
  */
+
+// Re-export from reynard-validation for backward compatibility
+export {
+  CommonSchemas,
+  FormSchemas,
+  ValidationError,
+  ValidationUtils,
+  validateApiKey,
+  validateEmail,
+  validatePassword,
+  validatePasswordStrength,
+  validateToken,
+  validateUrl,
+  validateUrlSecurity,
+  validateUsername,
+  type FieldValidationOptions,
+  type MultiValidationResult,
+  type PasswordStrength,
+  type ValidationErrorContext,
+  type ValidationResult,
+  type ValidationRules,
+  type ValidationSchema,
+} from "reynard-validation";
 
 import { ValidationError, ValidationErrorContext } from "./errors";
 
@@ -28,15 +52,7 @@ export interface MultiValidationResult {
 }
 
 export interface ValidationSchema {
-  type:
-    | "string"
-    | "number"
-    | "boolean"
-    | "object"
-    | "array"
-    | "email"
-    | "url"
-    | "date";
+  type: "string" | "number" | "boolean" | "object" | "array" | "email" | "url" | "date";
   required?: boolean;
   minLength?: number;
   maxLength?: number;
@@ -68,7 +84,7 @@ export class ValidationUtils {
   static validateValue(
     value: unknown,
     schema: ValidationSchema,
-    options: FieldValidationOptions = {},
+    options: FieldValidationOptions = {}
   ): ValidationResult {
     const { fieldName = "field", context, strict = false } = options;
     const errors: string[] = [];
@@ -109,44 +125,16 @@ export class ValidationUtils {
     // Type-specific validation
     switch (schema.type) {
       case "string":
-        this.validateString(
-          value as string,
-          schema,
-          fieldName,
-          errors,
-          context,
-          strict,
-        );
+        this.validateString(value as string, schema, fieldName, errors, context, strict);
         break;
       case "number":
-        this.validateNumber(
-          value as number,
-          schema,
-          fieldName,
-          errors,
-          context,
-          strict,
-        );
+        this.validateNumber(value as number, schema, fieldName, errors, context, strict);
         break;
       case "array":
-        this.validateArray(
-          value as unknown[],
-          schema,
-          fieldName,
-          errors,
-          context,
-          strict,
-        );
+        this.validateArray(value as unknown[], schema, fieldName, errors, context, strict);
         break;
       case "object":
-        this.validateObject(
-          value as Record<string, unknown>,
-          schema,
-          fieldName,
-          errors,
-          context,
-          strict,
-        );
+        this.validateObject(value as Record<string, unknown>, schema, fieldName, errors, context, strict);
         break;
       case "email":
         this.validateEmail(value as string, fieldName, errors, context, strict);
@@ -160,11 +148,7 @@ export class ValidationUtils {
     }
 
     // Pattern validation
-    if (
-      schema.pattern &&
-      typeof value === "string" &&
-      !schema.pattern.test(value)
-    ) {
+    if (schema.pattern && typeof value === "string" && !schema.pattern.test(value)) {
       const error = schema.errorMessage || `${fieldName} format is invalid`;
       if (context && strict) {
         throw new ValidationError(error, {
@@ -196,15 +180,12 @@ export class ValidationUtils {
       const customResult = schema.customValidator(value);
       if (!customResult.isValid) {
         if (context && strict) {
-          throw new ValidationError(
-            customResult.error || "Custom validation failed",
-            {
-              ...context,
-              field: fieldName,
-              value,
-              constraint: "custom",
-            },
-          );
+          throw new ValidationError(customResult.error || "Custom validation failed", {
+            ...context,
+            field: fieldName,
+            value,
+            constraint: "custom",
+          });
         }
         errors.push(customResult.error || "Custom validation failed");
       }
@@ -225,7 +206,7 @@ export class ValidationUtils {
   static validateMultiple(
     values: Record<string, unknown>,
     schema: Record<string, ValidationSchema>,
-    context?: ValidationErrorContext,
+    context?: ValidationErrorContext
   ): MultiValidationResult {
     const results: Record<string, ValidationResult> = {};
     const errors: string[] = [];
@@ -293,9 +274,7 @@ export class ValidationUtils {
       case "boolean":
         return typeof value === "boolean";
       case "object":
-        return (
-          typeof value === "object" && value !== null && !Array.isArray(value)
-        );
+        return typeof value === "object" && value !== null && !Array.isArray(value);
       case "array":
         return Array.isArray(value);
       case "email":
@@ -314,7 +293,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     if (typeof value !== "string") return;
 
@@ -351,7 +330,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     if (typeof value !== "number" || isNaN(value)) return;
 
@@ -388,7 +367,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     if (!Array.isArray(value)) return;
 
@@ -439,10 +418,9 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
-    if (typeof value !== "object" || value === null || Array.isArray(value))
-      return;
+    if (typeof value !== "object" || value === null || Array.isArray(value)) return;
 
     // Validate object properties if schema provided
     if (schema.properties) {
@@ -464,7 +442,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
@@ -486,7 +464,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     try {
       new URL(value);
@@ -509,7 +487,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     let date: Date;
 
@@ -563,8 +541,7 @@ export const CommonSchemas = {
     minLength: 8,
     maxLength: 128,
     pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-    errorMessage:
-      "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
+    errorMessage: "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
   },
 
   username: {
@@ -573,8 +550,7 @@ export const CommonSchemas = {
     minLength: 3,
     maxLength: 30,
     pattern: /^[a-zA-Z0-9_-]+$/,
-    errorMessage:
-      "Username must be 3-30 characters with only letters, numbers, hyphens, and underscores",
+    errorMessage: "Username must be 3-30 characters with only letters, numbers, hyphens, and underscores",
   },
 
   url: {
@@ -608,7 +584,7 @@ export const CommonSchemas = {
 export function validateValue(
   value: unknown,
   schema: ValidationSchema,
-  options?: FieldValidationOptions,
+  options?: FieldValidationOptions
 ): ValidationResult {
   return ValidationUtils.validateValue(value, schema, options);
 }
@@ -619,7 +595,7 @@ export function validateValue(
 export function validateMultiple(
   values: Record<string, unknown>,
   schema: Record<string, ValidationSchema>,
-  context?: ValidationErrorContext,
+  context?: ValidationErrorContext
 ): MultiValidationResult {
   return ValidationUtils.validateMultiple(values, schema, context);
 }
@@ -627,30 +603,21 @@ export function validateMultiple(
 /**
  * Validate email address
  */
-export function validateEmail(
-  email: string,
-  fieldName = "email",
-): ValidationResult {
+export function validateEmail(email: string, fieldName = "email"): ValidationResult {
   return validateValue(email, CommonSchemas.email, { fieldName });
 }
 
 /**
  * Validate password
  */
-export function validatePassword(
-  password: string,
-  fieldName = "password",
-): ValidationResult {
+export function validatePassword(password: string, fieldName = "password"): ValidationResult {
   return validateValue(password, CommonSchemas.password, { fieldName });
 }
 
 /**
  * Validate username
  */
-export function validateUsername(
-  username: string,
-  fieldName = "username",
-): ValidationResult {
+export function validateUsername(username: string, fieldName = "username"): ValidationResult {
   return validateValue(username, CommonSchemas.username, { fieldName });
 }
 

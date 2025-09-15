@@ -3077,6 +3077,46 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
+  packages/validation:
+    dependencies:
+      reynard-core:
+        specifier: workspace:*
+        version: link:../core
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+    devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(solid-js@1.9.9)
+      '@types/node':
+        specifier: 24.4.0
+        version: 24.4.0
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: ^18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../testing
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.5
+        version: 7.1.5(@types/node@24.4.0)(tsx@4.20.5)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.5)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
   packages/video:
     dependencies:
       reynard-components:

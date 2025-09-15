@@ -12,9 +12,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc --build",
@@ -24,19 +22,12 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "connection",
-    "networking",
-    "websocket",
-    "http",
-    "sse",
-    "reynard",
-    "enterprise"
-  ],
+  "keywords": ["connection", "networking", "websocket", "http", "sse", "reynard", "enterprise"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
-    "solid-js": "1.9.9"
+    "solid-js": "1.9.9",
+    "reynard-validation": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "24.4.0",

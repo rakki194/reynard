@@ -9,50 +9,50 @@
 
 import { PerformanceMetrics, ProgressCallback } from "../types/index.js";
 
-// Re-export consolidated utilities from reynard-connection
+// Re-export consolidated utilities from reynard-validation
 export {
   ValidationUtils,
+  validateApiKey,
   validateEmail,
+  validateMaxTokens,
+  validateModelName,
   validatePassword,
+  validatePrompt,
+  validateTemperature,
+  validateToken,
   validateUrl,
   validateUsername,
   validateValue,
-  validateApiKey,
-  validateToken,
-  validateModelName,
-  validatePrompt,
-  validateTemperature,
-  validateMaxTokens,
-  type ValidationResult,
-  type MultiValidationResult,
-  type ValidationSchema,
   type FieldValidationOptions,
-} from "reynard-connection";
+  type MultiValidationResult,
+  type ValidationResult,
+  type ValidationSchema,
+} from "reynard-validation";
 
 export {
-  errorHandler,
-  NetworkError,
-  retry,
-  retryWithExponentialBackoff,
-  retryWithLinearBackoff,
-  retryWithFixedDelay,
-  ReynardError,
-  ValidationError,
   AuthenticationError,
   AuthorizationError,
-  ProcessingError,
-  DatabaseError,
   ConfigurationError,
-  TimeoutError,
+  DatabaseError,
+  NetworkError,
+  ProcessingError,
   RateLimitError,
+  ReynardError,
+  TimeoutError,
+  ValidationError,
+  errorHandler,
+  retry,
+  retryWithExponentialBackoff,
+  retryWithFixedDelay,
+  retryWithLinearBackoff,
   wrapAsync,
-  type BaseErrorContext,
-  type ValidationErrorContext,
-  type NetworkErrorContext,
   type AuthenticationErrorContext,
-  type ProcessingErrorContext,
-  type DatabaseErrorContext,
+  type BaseErrorContext,
   type ConfigurationErrorContext,
+  type DatabaseErrorContext,
+  type NetworkErrorContext,
+  type ProcessingErrorContext,
+  type ValidationErrorContext,
 } from "reynard-connection";
 
 // ============================================================================
@@ -95,7 +95,7 @@ export class PerformanceMonitor {
         cpuUsage: (acc.cpuUsage || 0) + metric.cpuUsage,
         gpuUsage: (acc.gpuUsage || 0) + (metric.gpuUsage || 0),
       }),
-      {} as Partial<PerformanceMetrics>,
+      {} as Partial<PerformanceMetrics>
     );
 
     const count = this._metrics.length;
@@ -206,7 +206,7 @@ export class DataUtils {
     }
 
     if (obj instanceof Array) {
-      return obj.map((item) => this.deepClone(item)) as T;
+      return obj.map(item => this.deepClone(item)) as T;
     }
 
     if (typeof obj === "object") {
@@ -309,7 +309,7 @@ export class ProgressTracker {
   }
 
   private _notifyCallbacks(): void {
-    this._callbacks.forEach((callback) => {
+    this._callbacks.forEach(callback => {
       try {
         callback(this._progress);
       } catch (error) {

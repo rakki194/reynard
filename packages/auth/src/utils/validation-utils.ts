@@ -3,17 +3,19 @@
  *
  * This module contains validation functions for user inputs,
  * email addresses, usernames, and other authentication data.
- * Uses the consolidated validation system from reynard-connection.
+ * Uses the consolidated validation system from reynard-validation.
+ *
+ * @deprecated Use reynard-validation package directly
  */
 
-import type { ValidationRules, PasswordStrength } from "../types";
-import { DEFAULT_VALIDATION_RULES } from "../types";
 import {
   validateEmail as validateEmailCore,
-  validateUsername as validateUsernameCore,
   validatePassword as validatePasswordCore,
-  ValidationResult,
-} from "reynard-connection";
+  validateUsername as validateUsernameCore,
+  type ValidationResult,
+} from "reynard-validation";
+import type { PasswordStrength, ValidationRules } from "../types";
+import { DEFAULT_VALIDATION_RULES } from "../types";
 
 /**
  * Validate email address format using consolidated validation
@@ -36,7 +38,7 @@ export function validateUsername(username: string): boolean {
  */
 export function validatePassword(
   password: string,
-  rules: ValidationRules = DEFAULT_VALIDATION_RULES,
+  rules: ValidationRules = DEFAULT_VALIDATION_RULES
 ): PasswordStrength {
   // Use consolidated validation for basic password validation
   const basicResult = validatePasswordCore(password);
@@ -73,15 +75,9 @@ export function validatePassword(
   }
 
   // Special character check
-  if (
-    rules.requireSpecialChar &&
-    !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
-  ) {
+  if (rules.requireSpecialChar && !/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
     errors.push("Password must contain at least one special character");
-  } else if (
-    rules.requireSpecialChar &&
-    /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
-  ) {
+  } else if (rules.requireSpecialChar && /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
     score += 1;
   }
 
