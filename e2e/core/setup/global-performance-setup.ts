@@ -6,13 +6,11 @@
  */
 
 import { chromium, FullConfig } from "@playwright/test";
-import { exec } from "child_process";
 import * as fs from "fs";
-import { promisify } from "util";
+import * as os from "os";
+import { validatePerformanceAPI, validateMemoryAPI, validateLayoutShiftAPI } from "./validators";
 
-const execAsync = promisify(exec);
-
-async function globalSetup(config: FullConfig) {
+async function globalSetup(_config: FullConfig) {
   console.log("🦦 Starting Performance Testing Global Setup...");
 
   // Validate performance testing environment
@@ -45,8 +43,8 @@ async function validatePerformanceEnvironment(): Promise<void> {
   }
 
   // Check available memory
-  const totalMemory = require("os").totalmem();
-  const freeMemory = require("os").freemem();
+  const totalMemory = os.totalmem();
+  const freeMemory = os.freemem();
   const memoryUsagePercent = ((totalMemory - freeMemory) / totalMemory) * 100;
 
   console.log(
@@ -58,7 +56,7 @@ async function validatePerformanceEnvironment(): Promise<void> {
   }
 
   // Check CPU cores
-  const cpuCount = require("os").cpus().length;
+  const cpuCount = os.cpus().length;
   console.log(`🖥️ CPU Cores: ${cpuCount}`);
 
   if (cpuCount < 4) {
@@ -132,45 +130,17 @@ async function validateBrowserPerformance(): Promise<void> {
   const page = await context.newPage();
 
   try {
-    // Test performance API availability
-    const perfAPIAvailable = await page.evaluate(() => {
-      return {
-        performance: typeof performance !== "undefined",
-        performanceObserver: typeof PerformanceObserver !== "undefined",
-        performanceNavigationTiming: typeof PerformanceNavigationTiming !== "undefined",
-        performanceResourceTiming: typeof PerformanceResourceTiming !== "undefined",
-        performancePaintTiming: typeof PerformancePaintTiming !== "undefined",
-        performanceLongTaskTiming: typeof PerformanceLongTaskTiming !== "undefined",
-      };
-    });
+    // Validate all required APIs using modular validators
+    const [perfAPI, , layoutShiftAPI] = await Promise.all([
+      validatePerformanceAPI(page),
+      validateMemoryAPI(page),
+      validateLayoutShiftAPI(page),
+    ]);
 
-    console.log("📊 Performance API Availability:", perfAPIAvailable);
-
-    // Test memory API
-    const memoryAPI = await page.evaluate(() => {
-      return {
-        memory: typeof (performance as any).memory !== "undefined",
-        memoryInfo: typeof (performance as any).memory?.usedJSHeapSize !== "undefined",
-      };
-    });
-
-    console.log("🧠 Memory API Availability:", memoryAPI);
-
-    // Test layout shift API
-    const layoutShiftAPI = await page.evaluate(() => {
-      return {
-        layoutShift:
-          typeof PerformanceObserver !== "undefined" &&
-          PerformanceObserver.supportedEntryTypes?.includes("layout-shift"),
-      };
-    });
-
-    console.log("🔄 Layout Shift API Availability:", layoutShiftAPI);
-
-    // Validate all required APIs are available
+    // Check if all required APIs are available
     const requiredAPIs = [
-      perfAPIAvailable.performance,
-      perfAPIAvailable.performanceObserver,
+      perfAPI.performance,
+      perfAPI.performanceObserver,
       layoutShiftAPI.layoutShift,
     ];
 
@@ -199,10 +169,10 @@ async function setupPerformanceDataCollection(): Promise<void> {
       platform: process.platform,
       arch: process.arch,
       memory: {
-        total: require("os").totalmem(),
-        free: require("os").freemem(),
+        total: os.totalmem(),
+        free: os.freemem(),
       },
-      cpus: require("os").cpus().length,
+      cpus: os.cpus().length,
     },
     metrics: {
       layoutShifts: {

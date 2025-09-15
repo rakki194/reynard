@@ -5,9 +5,30 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-09-15
+
+### Added
+- **Comprehensive Trace Analyzer**: Advanced Playwright trace analysis system with performance bottleneck detection
+  - **Core Analysis Engine**: `TraceAnalyzer` class with automatic trace extraction, network resource parsing, console log analysis, and screenshot processing
+  - **Performance Metrics**: Calculates Core Web Vitals (FCP, LCP, CLS, TBT) and identifies server delays, critical path resources, and bottlenecks
+  - **Multi-format Reporting**: Console output, Markdown reports, and JSON export with detailed recommendations
+  - **CLI Interface**: `trace-analyzer-cli.ts` with comparison mode, verbose output, and flexible formatting options
+  - **Smart Recommendations**: Actionable optimization suggestions based on performance thresholds and resource analysis
+  - **Package Integration**: Added `trace:analyze` and `trace:compare` npm scripts with tsx dependency
+
+### Changed
+- **E2E Testing Framework**: Enhanced performance testing capabilities with advanced tracing and layout monitoring
+- **Package Dependencies**: Added tsx dependency for TypeScript execution in E2E testing scripts
+- **Performance Configuration**: Optimized Playwright performance testing configuration
+
+### Fixed
+- **Performance Setup**: Resolved ES module compatibility issues in global performance setup
+- **Configuration Validation**: Fixed Playwright configuration options and removed unsupported properties
+
 ## [Unreleased]
 
 ### Added
+- **REFACTOR Paper Update**: Synchronized LaTeX paper with current 16% progress status and Silver Tier achievements (Lontra-Arbiter-35)
 
 - **Package Configuration Modernization**: Comprehensive package updates across ai-shared, audio, auth, connection, and core packages with modernized TypeScript and Vitest configurations (Crimson-Guide-89)
 - **Backend Foundation Infrastructure**: Created comprehensive backend refactoring foundation with centralized error handling, base router infrastructure, logging standardization, and configuration management (Copse-Counselor-55)

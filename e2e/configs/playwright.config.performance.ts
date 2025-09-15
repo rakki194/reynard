@@ -29,27 +29,12 @@ export default defineConfig({
 
     // Enhanced tracing configuration
     trace: "on", // Always capture traces for performance analysis
-    traceOptions: {
-      screenshots: true,
-      snapshots: true,
-      sources: true,
-      attachments: true,
-      mode: "retain-on-failure", // Keep traces for analysis
-    },
 
     // Enhanced video recording
     video: "on", // Always record for performance analysis
-    videoOptions: {
-      mode: "retain-on-failure",
-      size: { width: 1920, height: 1080 },
-    },
 
     // Enhanced screenshot capture
     screenshot: "on", // Capture at every step for layout analysis
-    screenshotOptions: {
-      fullPage: true,
-      animations: "disabled", // Disable animations for consistent screenshots
-    },
 
     // Performance-optimized timeouts
     actionTimeout: 30000,
@@ -80,7 +65,6 @@ export default defineConfig({
         // Additional performance monitoring
         launchOptions: {
           args: [
-            ...(devices["Desktop Chrome"].launchOptions?.args || []),
             "--enable-precise-memory-info",
             "--enable-gpu-benchmarking",
             "--enable-threaded-compositing",

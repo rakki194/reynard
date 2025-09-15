@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 4
+      "actualWorkers": 2
     },
     "preserveOutput": "always",
     "reporter": [
@@ -37,7 +37,7 @@
         "repeatEach": 1,
         "retries": 0,
         "metadata": {
-          "actualWorkers": 4
+          "actualWorkers": 2
         },
         "id": "chromium",
         "name": "chromium",
@@ -45,7 +45,8 @@
         "testIgnore": [],
         "testMatch": [
           "dom/*.spec.ts",
-          "auth/*.spec.ts"
+          "auth/*.spec.ts",
+          "tracing/*.spec.ts"
         ],
         "timeout": 30000
       }
@@ -59,21 +60,21 @@
   },
   "suites": [
     {
-      "title": "dom/dom-accessibility.spec.ts",
-      "file": "dom/dom-accessibility.spec.ts",
+      "title": "tracing/trace-demo.spec.ts",
+      "file": "tracing/trace-demo.spec.ts",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "DOM Element Roles",
-          "file": "dom/dom-accessibility.spec.ts",
-          "line": 12,
+          "title": "Tracing Demo",
+          "file": "tracing/trace-demo.spec.ts",
+          "line": 11,
           "column": 6,
           "specs": [
             {
-              "title": "should detect element roles",
-              "ok": true,
+              "title": "Basic tracing demonstration",
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -86,27 +87,110 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 915,
-                      "errors": [],
-                      "stdout": [],
+                      "status": "failed",
+                      "duration": 5488,
+                      "error": {
+                        "message": "Error: ENOENT: no such file or directory, open './results/reports/trace-demo-report-1757926508888.md'",
+                        "stack": "Error: ENOENT: no such file or directory, open './results/reports/trace-demo-report-1757926508888.md'\n    at TraceAnalyzer.saveReport (/home/kade/runeset/reynard/e2e/core/monitoring/trace-analyzer.ts:312:8)\n    at /home/kade/runeset/reynard/e2e/suites/tracing/trace-demo.spec.ts:72:5",
+                        "location": {
+                          "file": "/home/kade/runeset/reynard/e2e/core/monitoring/trace-analyzer.ts",
+                          "column": 8,
+                          "line": 312
+                        },
+                        "snippet": "   at ../core/monitoring/trace-analyzer.ts:312\n\n  310 |   async saveReport(outputPath: string): Promise<void> {\n  311 |     const report = await this.generateReport();\n> 312 |     fs.writeFileSync(outputPath, report);\n      |        ^\n  313 |     console.log(`✅ Trace analysis report saved to: ${outputPath}`);\n  314 |   }\n  315 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/core/monitoring/trace-analyzer.ts",
+                            "column": 8,
+                            "line": 312
+                          },
+                          "message": "Error: ENOENT: no such file or directory, open './results/reports/trace-demo-report-1757926508888.md'\n\n   at ../core/monitoring/trace-analyzer.ts:312\n\n  310 |   async saveReport(outputPath: string): Promise<void> {\n  311 |     const report = await this.generateReport();\n> 312 |     fs.writeFileSync(outputPath, report);\n      |        ^\n  313 |     console.log(`✅ Trace analysis report saved to: ${outputPath}`);\n  314 |   }\n  315 |\n    at TraceAnalyzer.saveReport (/home/kade/runeset/reynard/e2e/core/monitoring/trace-analyzer.ts:312:8)\n    at /home/kade/runeset/reynard/e2e/suites/tracing/trace-demo.spec.ts:72:5"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🦦 Starting trace demo...\n"
+                        },
+                        {
+                          "text": "🦦 Starting comprehensive tracing...\n"
+                        },
+                        {
+                          "text": "🦦 Performing actions for trace data...\n"
+                        },
+                        {
+                          "text": "✅ Clicked button\n"
+                        },
+                        {
+                          "text": "✅ Filled input\n"
+                        },
+                        {
+                          "text": "✅ Screenshot taken\n"
+                        },
+                        {
+                          "text": "🦦 Stopping tracing and saving to file...\n"
+                        },
+                        {
+                          "text": "✅ Trace saved to: /home/kade/runeset/reynard/e2e/results/traces/trace-demo-1757926504359.zip\n"
+                        },
+                        {
+                          "text": "✅ Trace saved to: /home/kade/runeset/reynard/e2e/results/traces/trace-demo-1757926504359.zip\n"
+                        },
+                        {
+                          "text": "🦦 Analyzing trace...\n"
+                        },
+                        {
+                          "text": "🦦 Analyzing trace file...\n"
+                        },
+                        {
+                          "text": "🦦 Extracting trace data...\n"
+                        },
+                        {
+                          "text": "📊 Trace Analysis Report:\n"
+                        },
+                        {
+                          "text": "\n# 🦦 Trace Analysis Report\n\n## Trace Information\n- **File**: ./results/traces/trace-demo-1757926504359.zip\n- **Duration**: 0.00ms\n\n## Performance Metrics\n### Navigation Timing\n- **Navigation Start**: 0ms\n- **Load Event End**: 0ms\n- **DOM Content Loaded**: 0ms\n- **First Byte**: 0ms\n- **DOM Interactive**: 0ms\n\n### Paint Timing\n- **First Paint**: 0ms\n- **First Contentful Paint**: 0ms\n- **Largest Contentful Paint**: 0ms\n\n## Network Analysis\n- **Total Requests**: 0\n- **Slow Requests (>1s)**: 0\n- **Failed Requests**: 0\n\n## Layout Stability\n- **Total Layout Shifts**: 0\n- **Significant Shifts (>0.1)**: 0\n\n## Console & Errors\n- **Console Logs**: 0\n- **Errors**: 0\n\n## Screenshots\n- **Total Screenshots**: 0\n\n## Recommendations\n\n\n## Next Steps\n1. Review slow network requests and optimize loading\n2. Address layout shifts for better visual stability\n3. Fix JavaScript errors for improved reliability\n4. Consider implementing performance budgets\n5. Set up continuous performance monitoring\n\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-09-15T06:25:46.462Z",
+                      "startTime": "2025-09-15T08:55:03.230Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/tracing-trace-demo-Tracing-Demo-Basic-tracing-demonstration-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/tracing-trace-demo-Tracing-Demo-Basic-tracing-demonstration-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/kade/runeset/reynard/e2e/results/dom-assertions-results/tracing-trace-demo-Tracing-Demo-Basic-tracing-demonstration-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/kade/runeset/reynard/e2e/core/monitoring/trace-analyzer.ts",
+                        "column": 8,
+                        "line": 312
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
-              "id": "1c7622ecbc4a5a55255c-ac7a79be545352554de4",
-              "file": "dom/dom-accessibility.spec.ts",
-              "line": 17,
+              "id": "cdcb70a84637adb0c452-0b3d623a6741bac74429",
+              "file": "tracing/trace-demo.spec.ts",
+              "line": 12,
               "column": 3
             },
             {
-              "title": "should detect different roles",
+              "title": "Trace with performance monitoring",
               "ok": true,
               "tags": [],
               "tests": [
@@ -121,12 +205,43 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 928,
+                      "duration": 3695,
                       "errors": [],
-                      "stdout": [],
+                      "stdout": [
+                        {
+                          "text": "🦦 Starting performance trace demo...\n"
+                        },
+                        {
+                          "text": "🦦 Starting comprehensive tracing...\n"
+                        },
+                        {
+                          "text": "🦦 JavaScript execution took: 289ms\n"
+                        },
+                        {
+                          "text": "🦦 Stopping tracing and saving to file...\n"
+                        },
+                        {
+                          "text": "✅ Trace saved to: /home/kade/runeset/reynard/e2e/results/traces/performance-demo-1757926504331.zip\n"
+                        },
+                        {
+                          "text": "🦦 Analyzing trace file...\n"
+                        },
+                        {
+                          "text": "🦦 Extracting trace data...\n"
+                        },
+                        {
+                          "text": "📊 Performance Trace Report:\n"
+                        },
+                        {
+                          "text": "\n# 🦦 Trace Analysis Report\n\n## Trace Information\n- **File**: ./results/traces/performance-demo-1757926504331.zip\n- **Duration**: 0.00ms\n\n## Performance Metrics\n### Navigation Timing\n- **Navigation Start**: 0ms\n- **Load Event End**: 0ms\n- **DOM Content Loaded**: 0ms\n- **First Byte**: 0ms\n- **DOM Interactive**: 0ms\n\n### Paint Timing\n- **First Paint**: 0ms\n- **First Contentful Paint**: 0ms\n- **Largest Contentful Paint**: 0ms\n\n## Network Analysis\n- **Total Requests**: 0\n- **Slow Requests (>1s)**: 0\n- **Failed Requests**: 0\n\n## Layout Stability\n- **Total Layout Shifts**: 0\n- **Significant Shifts (>0.1)**: 0\n\n## Console & Errors\n- **Console Logs**: 0\n- **Errors**: 0\n\n## Screenshots\n- **Total Screenshots**: 0\n\n## Recommendations\n\n\n## Next Steps\n1. Review slow network requests and optimize loading\n2. Address layout shifts for better visual stability\n3. Fix JavaScript errors for improved reliability\n4. Consider implementing performance budgets\n5. Set up continuous performance monitoring\n\n"
+                        },
+                        {
+                          "text": "🎉 Performance trace demo completed!\n"
+                        }
+                      ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-09-15T06:25:46.507Z",
+                      "startTime": "2025-09-15T08:55:03.229Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -134,161 +249,9 @@
                   "status": "expected"
                 }
               ],
-              "id": "1c7622ecbc4a5a55255c-2a7b890b5ed6efe90aab",
-              "file": "dom/dom-accessibility.spec.ts",
-              "line": 22,
-              "column": 3
-            }
-          ]
-        },
-        {
-          "title": "DOM Accessible Names",
-          "file": "dom/dom-accessibility.spec.ts",
-          "line": 28,
-          "column": 6,
-          "specs": [
-            {
-              "title": "should detect aria-label",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
-                      "status": "passed",
-                      "duration": 874,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-15T06:25:46.467Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "1c7622ecbc4a5a55255c-132b7a18a7272fc84ddf",
-              "file": "dom/dom-accessibility.spec.ts",
-              "line": 33,
-              "column": 3
-            },
-            {
-              "title": "should detect labeled inputs",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 874,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-15T06:25:46.429Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "1c7622ecbc4a5a55255c-cf3fc62385c865bfa728",
-              "file": "dom/dom-accessibility.spec.ts",
-              "line": 38,
-              "column": 3
-            }
-          ]
-        },
-        {
-          "title": "DOM Accessible Descriptions",
-          "file": "dom/dom-accessibility.spec.ts",
-          "line": 44,
-          "column": 6,
-          "specs": [
-            {
-              "title": "should detect aria-describedby",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 2,
-                      "status": "passed",
-                      "duration": 293,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-15T06:25:48.004Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "1c7622ecbc4a5a55255c-e73b414fe2176f913a35",
-              "file": "dom/dom-accessibility.spec.ts",
-              "line": 49,
-              "column": 3
-            },
-            {
-              "title": "should detect title attributes",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 30000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium",
-                  "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 3,
-                      "status": "passed",
-                      "duration": 251,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-15T06:25:48.019Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "1c7622ecbc4a5a55255c-2b9a362664b6857cd911",
-              "file": "dom/dom-accessibility.spec.ts",
-              "line": 58,
+              "id": "cdcb70a84637adb0c452-7d7e83bb0857221ed963",
+              "file": "tracing/trace-demo.spec.ts",
+              "line": 82,
               "column": 3
             }
           ]
@@ -298,11 +261,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-09-15T06:25:45.146Z",
-    "duration": 3234.451,
-    "expected": 6,
+    "startTime": "2025-09-15T08:55:01.902Z",
+    "duration": 7605.772000000001,
+    "expected": 1,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 1,
     "flaky": 0
   }
 }

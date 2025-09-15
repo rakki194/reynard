@@ -33,8 +33,8 @@
     "test:performance:report": "playwright show-report --config=configs/playwright.config.performance.ts",
     "test:layout": "playwright test --config=configs/playwright.config.performance.ts suites/performance/layout-stability.spec.ts",
     "test:tracing": "playwright test --config=configs/playwright.config.performance.ts suites/tracing/",
-    "trace:analyze": "node scripts/analyze-traces.js",
-    "trace:compare": "node scripts/compare-traces.js",
+    "trace:analyze": "tsx scripts/trace-analyzer-cli.ts",
+    "trace:compare": "tsx scripts/trace-analyzer-cli.ts --compare",
     "performance:baseline": "node scripts/generate-baseline.js",
     "install:browsers": "playwright install",
     "fenrir:test": "cd ../fenrir && python3 run_all_exploits.py",
@@ -45,9 +45,9 @@
   },
   "devDependencies": {
     "@playwright/test": "1.55.0",
+    "@types/node": "24.4.0",
     "reynard-testing": "0.1.2",
-    "typescript": "5.9.2",
-    "@types/node": "24.4.0"
+    "typescript": "5.9.2"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -64,5 +64,8 @@
     "reynard"
   ],
   "author": "🦊 Reynard-Chancellor-89",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "tsx": "4.20.5"
+  }
 }

@@ -11,6 +11,7 @@ export default defineConfig({
   testMatch: [
     "dom/*.spec.ts",
     "auth/*.spec.ts", // Include auth tests in DOM config
+    "tracing/*.spec.ts", // Include tracing tests
   ],
 
   fullyParallel: true,
