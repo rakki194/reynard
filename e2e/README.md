@@ -1,358 +1,400 @@
-# E2E Authentication Tests for Reynard
+# E2E Testing Framework for Reynard
 
-Comprehensive end-to-end authentication testing for the Reynard ecosystem, covering integration between gatekeeper,
-backend, and auth package components.
+🦊 _red fur gleams with strategic organization_ Comprehensive end-to-end testing framework for the Reynard ecosystem, featuring modular architecture, domain-specific testing modules, and advanced security testing capabilities.
 
-## Overview
+## 🏗️ Architecture Overview
 
-This E2E test suite provides comprehensive testing of authentication workflows across the entire Reynard stack:
+The E2E testing framework is organized into a clean, modular structure that separates concerns and provides clear boundaries between different testing domains:
 
-- **Gatekeeper Library**: JWT-based authentication with role-based access control
-- **Backend**: FastAPI authentication endpoints and security features
-- **Auth Package**: SolidJS frontend authentication components and state management
+```
+e2e/
+├── core/                    # Core testing infrastructure
+│   ├── setup/              # Global setup and teardown
+│   ├── config/             # Configuration management
+│   └── types/              # Shared type definitions
+├── modules/                # Domain-specific testing modules
+│   ├── auth/               # Authentication testing
+│   ├── dom/                # DOM testing utilities
+│   ├── i18n/               # Internationalization testing
+│   ├── security/           # Security and penetration testing
+│   └── mock/               # Mock server utilities
+├── suites/                 # Test suites (organized by domain)
+│   ├── auth/               # Authentication test suites
+│   ├── dom/                # DOM assertion test suites
+│   ├── i18n/               # I18n benchmark test suites
+│   └── security/           # Security test suites
+├── fixtures/               # Test data and fixtures
+├── results/                # Test results and reports
+├── configs/                # Playwright configurations
+└── backend/                # E2E test backend
+```
 
 ## 🚀 Features
 
+### 🦊 Authentication Testing
+
 - **Complete Auth Flows**: Registration, login, logout, password change, profile updates
-- **Security Testing**: XSS protection, CSRF protection, rate limiting, input validation
 - **Token Management**: Access token refresh, expiration handling, secure storage
 - **Session Management**: Session persistence, concurrent logins, state management
-- **Integration Testing**: Cross-component communication and data flow
-- **Performance Testing**: Response times, concurrent user scenarios
-- **Error Handling**: Network errors, server errors, malformed responses
+- **Security Testing**: XSS protection, CSRF protection, rate limiting, input validation
 
-## 📁 Structure
+### 🦦 DOM Testing
 
-```text
-e2e/
-├── auth.spec.ts       # Basic authentication tests
-├── penetration-tests.spec.ts # Comprehensive penetration tests
-├── dom-*.spec.ts            # DOM assertion tests
-├── playwright.config.ts     # Main comprehensive configuration
-├── playwright.config.dom.ts # DOM and auth test configuration
-├── playwright.config.penetration.ts # Penetration test configuration
-├── global-setup.ts          # Global test setup
-├── global-teardown.ts       # Global test cleanup
-├── utils/
-│   ├── e2e-setup.ts         # E2E test environment setup
-│   ├── backend-mock.ts      # Mock backend server
-│   └── auth-helpers.ts      # Authentication test helpers
-├── fixtures/
-│   └── test-data.ts         # Test data and scenarios
-└── README.md                # This file
-```
+- **Comprehensive Assertions**: Visibility, presence, attributes, focus, forms
+- **Accessibility Testing**: ARIA attributes, keyboard navigation, screen reader support
+- **Responsive Testing**: Mobile viewport testing, responsive design validation
+- **Interactive Testing**: Form interactions, button states, dynamic content
 
-## 🛠️ Setup
+### 🌍 I18n Testing
+
+- **Performance Benchmarking**: Load times, render times, memory usage analysis
+- **Language Switching**: Multi-language support testing, RTL language support
+- **Bundle Analysis**: Size impact analysis, compression effectiveness
+- **Pluralization Testing**: Complex pluralization rules, edge case handling
+
+### 🐺 Security Testing
+
+- **Penetration Testing**: Comprehensive security assessment with Fenrir integration
+- **Vulnerability Scanning**: SQL injection, XSS, CSRF, path traversal, SSRF
+- **Attack Simulation**: Advanced attack patterns, race conditions, HTTP smuggling
+- **Security Assessment**: Automated security recommendations and reporting
+
+### 🎭 Mock Testing
+
+- **API Mocking**: Comprehensive mock server with configurable endpoints
+- **Response Simulation**: Success, error, and edge case response handling
+- **Performance Testing**: Load testing with mock backends
+- **Integration Testing**: Frontend-backend integration with controlled responses
+
+## 📁 Module Structure
+
+### Core Infrastructure (`core/`)
+
+#### Setup (`core/setup/`)
+
+- `global-setup.ts` - Main global test setup
+- `global-teardown.ts` - Main global test cleanup
+- `global-i18n-setup.ts` - I18n-specific setup
+- `global-i18n-teardown.ts` - I18n-specific cleanup
+- `global-penetration-setup.ts` - Security testing setup
+- `global-penetration-teardown.ts` - Security testing cleanup
+
+#### Configuration (`core/config/`)
+
+- `port-detector.ts` - Automatic port detection for test servers
+
+#### Types (`core/types/`)
+
+- `index.ts` - Shared type definitions for all testing modules
+
+### Testing Modules (`modules/`)
+
+#### Authentication Module (`modules/auth/`)
+
+- `auth-helpers.ts` - Main authentication test helpers class
+- `auth-core-operations.ts` - Core authentication operations
+- `auth-form-handlers.ts` - Form interaction handlers
+- `auth-verification-helpers.ts` - Authentication state verification
+- `auth-flow-scenarios.ts` - Complete authentication flow scenarios
+- `auth-utility-helpers.ts` - Utility functions and environment setup
+- `auth-token-manager.ts` - Token management utilities
+- `auth-form-utilities.ts` - Form-specific utilities
+- `auth-element-verification.ts` - Element verification helpers
+- `auth-mock-helpers.ts` - Mock authentication helpers
+
+#### DOM Testing Module (`modules/dom/`)
+
+- `dom-test-helpers.ts` - Core DOM testing utilities
+- `dom-assertion-helpers.ts` - DOM assertion utilities
+- `dom-element-assertions.ts` - Element-specific assertions
+- `dom-test-page-utils.ts` - Test page management utilities
+
+#### I18n Testing Module (`modules/i18n/`)
+
+- `i18n-benchmark-helpers.ts` - Main i18n benchmark helper class
+- `i18n-benchmark-types.ts` - I18n benchmark type definitions
+- `i18n-cache-utils.ts` - I18n caching utilities
+- `i18n-memory-utils.ts` - Memory usage analysis
+- `i18n-translation-utils.ts` - Translation testing utilities
+- `i18n-test-data-utils.ts` - Test data generation
+- `i18n-reporting-utils.ts` - Report generation utilities
+- `i18n-file-manager.ts` - File management utilities
+- `i18n-json-generator.ts` - JSON report generation
+- `i18n-markdown-generator.ts` - Markdown report generation
+- `i18n-performance-analyzer.ts` - Performance analysis
+- `i18n-performance-reporter.ts` - Performance reporting
+- `i18n-performance-types.ts` - Performance type definitions
+- `i18n-report-generator.ts` - Report generation
+- `i18n-section-generator.ts` - Section generation
+- `i18n-table-generator.ts` - Table generation
+
+#### Security Testing Module (`modules/security/`)
+
+- `security-assessor.ts` - Main security assessment class
+- `penetration-helpers.ts` - Penetration testing utilities
+- `penetration-test-config.ts` - Security test configuration
+- `penetration-types.ts` - Security testing type definitions
+- `exploit-class-mapper.ts` - Exploit class mapping
+- `exploit-recommendations.ts` - Security recommendations
+- `exploit-runner.ts` - Exploit execution utilities
+- `fenrir-class-mapper.ts` - Fenrir integration mapping
+- `fenrir-runner.ts` - Fenrir execution utilities
+- `fenrir-suite-runner.ts` - Fenrir test suite runner
+
+#### Mock Testing Module (`modules/mock/`)
+
+- `mock-backend-server.ts` - Mock backend server implementation
+- `mock-server-factory.ts` - Mock server factory
+- `backend-mock.ts` - Backend mocking utilities
+- `mock-api-client.ts` - Mock API client
+- `mock-endpoint-configs.ts` - Endpoint configuration
+- `mock-types.ts` - Mock type definitions
+
+## 🧪 Test Suites
+
+### Authentication Suites (`suites/auth/`)
+
+- `auth.spec.ts` - Basic authentication tests
+
+### DOM Testing Suites (`suites/dom/`)
+
+- `dom-accessibility.spec.ts` - Accessibility testing
+- `dom-attributes.spec.ts` - Attribute testing
+- `dom-content.spec.ts` - Content testing
+- `dom-focus.spec.ts` - Focus testing
+- `dom-forms.spec.ts` - Form testing
+- `dom-interactions.spec.ts` - Interaction testing
+- `dom-presence.spec.ts` - Presence testing
+- `dom-text.spec.ts` - Text testing
+- `dom-visibility.spec.ts` - Visibility testing
+
+### I18n Testing Suites (`suites/i18n/`)
+
+- `i18n-benchmark.spec.ts` - Core i18n benchmarks
+- `i18n-bundle-analysis.spec.ts` - Bundle size analysis
+- `i18n-rendering-approaches.spec.ts` - Rendering approach comparison
+
+### Security Testing Suites (`suites/security/`)
+
+- `penetration-tests.spec.ts` - Main penetration tests
+- `direct-penetration.spec.ts` - Direct penetration tests
+- `advanced-attacks.spec.ts` - Advanced attack patterns
+- `api-security.spec.ts` - API security testing
+- `comprehensive-assessment.spec.ts` - Comprehensive security assessment
+- `csrf-attacks.spec.ts` - CSRF attack testing
+- `fuzzing-tests.spec.ts` - Fuzzing tests
+- `fuzzing-quick-tests.spec.ts` - Quick fuzzing tests
+- `fuzzing-comprehensive-tests.spec.ts` - Comprehensive fuzzing
+- `http-smuggling-attacks.spec.ts` - HTTP smuggling tests
+- `jwt-security.spec.ts` - JWT security testing
+- `path-traversal.spec.ts` - Path traversal testing
+- `race-condition-attacks.spec.ts` - Race condition testing
+- `sql-injection.spec.ts` - SQL injection testing
+- `ssrf-attacks.spec.ts` - SSRF attack testing
+- `unicode-attacks.spec.ts` - Unicode attack testing
+
+## ⚙️ Configuration
+
+### Playwright Configurations (`configs/`)
+
+#### Main Configuration (`configs/playwright.config.ts`)
+
+- **Purpose**: General E2E testing for auth and DOM
+- **Test Directory**: `../suites`
+- **Excludes**: Security and I18n tests
+- **Output**: `../results/e2e-results/`
+
+#### DOM Configuration (`configs/playwright.config.dom.ts`)
+
+- **Purpose**: DOM and basic auth testing
+- **Test Directory**: `../suites`
+- **Includes**: DOM and auth tests
+- **Output**: `../results/dom-assertions-results/`
+
+#### I18n Configuration (`configs/playwright.config.i18n.ts`)
+
+- **Purpose**: I18n performance benchmarking
+- **Test Directory**: `../suites`
+- **Includes**: I18n tests only
+- **Output**: `../results/i18n-benchmark-results/`
+- **Features**: Performance-optimized settings, extended timeouts
+
+#### Security Configuration (`configs/playwright.config.penetration.ts`)
+
+- **Purpose**: Security and penetration testing
+- **Test Directory**: `../suites`
+- **Includes**: Security tests only
+- **Output**: `../results/penetration-results/`
+- **Features**: Sequential execution, extended timeouts, security-focused settings
+
+## 🛠️ Setup and Usage
 
 ### Prerequisites
 
 - Node.js 18+
 - Python 3.13
-- Docker (optional, for containerized testing)
+- pnpm package manager
 
 ### Installation
 
-1. **Install dependencies**:
-
-   ```bash
-   npm install @playwright/test
-   npx playwright install
-   ```
-
-2. **Setup environment variables**:
-
-   ```bash
-   export PLAYWRIGHT_BASE_URL="http://localhost:3000"
-   export PLAYWRIGHT_API_BASE_URL="http://localhost:8000"
-   ```
-
-3. **Start backend server**:
-
-   ```bash
-   cd backend
-   python main.py
-   ```
-
-4. **Start frontend server**:
-
-   ```bash
-   cd examples/auth-app
-   npm run dev
-   ```
-
-## 🧪 Running Tests
-
-### Run All Tests
-
 ```bash
-npx playwright test
+# Install dependencies
+pnpm install
+
+# Install Playwright browsers
+pnpm exec playwright install
 ```
 
-### Run Specific Test File
+### Running Tests
+
+#### All Tests
 
 ```bash
-npx playwright test auth.spec.ts
-npx playwright test penetration-tests.spec.ts
-npx playwright test assertions-simple.spec.ts
+# Run all tests with main configuration
+pnpm exec playwright test --config=configs/playwright.config.ts
 ```
 
-### Run Tests in Specific Browser
+#### Domain-Specific Tests
 
 ```bash
-npx playwright test --project=chromium
-npx playwright test --project=firefox
-npx playwright test --project=webkit
+# Authentication and DOM tests
+pnpm exec playwright test --config=configs/playwright.config.dom.ts
+
+# I18n performance benchmarks
+pnpm exec playwright test --config=configs/playwright.config.i18n.ts
+
+# Security and penetration tests
+pnpm exec playwright test --config=configs/playwright.config.penetration.ts
 ```
 
-### Run Tests with Debug Mode
+#### Specific Test Suites
 
 ```bash
-npx playwright test --debug
+# Run specific test suite
+pnpm exec playwright test suites/auth/auth.spec.ts
+pnpm exec playwright test suites/dom/dom-accessibility.spec.ts
+pnpm exec playwright test suites/i18n/i18n-benchmark.spec.ts
+pnpm exec playwright test suites/security/penetration-tests.spec.ts
 ```
 
-### Run Tests in Headed Mode
+### Development Mode
 
 ```bash
-npx playwright test --headed
+# Run tests in headed mode
+pnpm exec playwright test --headed
+
+# Run tests in debug mode
+pnpm exec playwright test --debug
+
+# Run tests with UI
+pnpm exec playwright test --ui
 ```
 
-## 📊 Test Categories
+## 📊 Test Results
 
-### 1. User Registration Tests
+All test results are organized in the `results/` directory:
 
-- ✅ Valid user registration
-- ✅ Validation error handling
-- ✅ Duplicate username handling
-- ✅ Password strength requirements
-- ✅ Email format validation
+- `e2e-results/` - Main E2E test results
+- `dom-assertions-results/` - DOM testing results
+- `i18n-benchmark-results/` - I18n performance results
+- `penetration-results/` - Security testing results
 
-### 2. User Login Tests
-
-- ✅ Valid credentials login
-- ✅ Invalid credentials handling
-- ✅ Rate limiting protection
-- ✅ Account lockout scenarios
-- ✅ Remember me functionality
-
-### 3. Token Management Tests
-
-- ✅ Automatic token refresh
-- ✅ Token expiration handling
-- ✅ Invalid token scenarios
-- ✅ Secure token storage
-- ✅ Token cleanup on logout
-
-### 4. Session Management Tests
-
-- ✅ Session persistence across page refreshes
-- ✅ Concurrent login handling
-- ✅ Session timeout scenarios
-- ✅ Cross-tab session synchronization
-- ✅ Logout and session cleanup
-
-### 5. Security Tests
-
-- ✅ XSS attack prevention
-- ✅ CSRF protection
-- ✅ SQL injection prevention
-- ✅ Input sanitization
-- ✅ Password strength enforcement
-
-### 6. Integration Tests
-
-- ✅ Frontend ↔ Backend communication
-- ✅ Gatekeeper ↔ Backend integration
-- ✅ Auth package ↔ API client integration
-- ✅ Cross-browser compatibility
-- ✅ Mobile responsiveness
-
-### 7. Performance Tests
-
-- ✅ Login response times
-- ✅ Token refresh performance
-- ✅ Concurrent user scenarios
-- ✅ Memory leak detection
-- ✅ Network optimization
-
-### 8. Error Handling Tests
-
-- ✅ Network error scenarios
-- ✅ Server error handling
-- ✅ Malformed response handling
-- ✅ Timeout scenarios
-- ✅ Graceful degradation
-
-## 🔧 Configuration
-
-### Environment Variables
-
-| Variable                  | Default                 | Description              |
-| ------------------------- | ----------------------- | ------------------------ |
-| `PLAYWRIGHT_BASE_URL`     | `http://localhost:3000` | Frontend application URL |
-| `PLAYWRIGHT_API_BASE_URL` | `http://localhost:8000` | Backend API URL          |
-| `CI`                      | `false`                 | CI environment flag      |
-| `DEBUG`                   | `false`                 | Debug mode flag          |
-
-### Test Configuration
-
-The test configuration is defined in `playwright.config.ts`:
-
-- **Browsers**: Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari
-- **Reporters**: HTML, JSON, JUnit
-- **Artifacts**: Screenshots, videos, traces on failure
-- **Timeouts**: 30s global, 10s per action
-- **Retries**: 2 retries on CI, 0 locally
-
-## 📈 Test Data
-
-### Test Users
-
-The test suite includes various test user types:
-
-- **Valid User**: Standard user with valid credentials
-- **Admin User**: Administrator with elevated permissions
-- **Moderator User**: Moderator with limited admin access
-- **Invalid User**: User with validation errors
-- **Weak Password User**: User with weak password
-- **Special Character User**: User with special characters
-- **Unicode User**: User with Unicode characters
-- **Inactive User**: Disabled user account
-
-### Mock Responses
-
-Comprehensive mock API responses for:
-
-- Successful registration/login
-- Authentication failures
-- Rate limiting responses
-- Token refresh scenarios
-- User profile data
-- Error responses
-
-## 🐛 Debugging
-
-### View Test Results
+### Viewing Results
 
 ```bash
-npx playwright show-report
+# View HTML report
+pnpm exec playwright show-report
+
+# View specific test results
+pnpm exec playwright show-report results/e2e-results/
+pnpm exec playwright show-report results/i18n-benchmark-results/
+pnpm exec playwright show-report results/penetration-results/
 ```
 
-### Debug Failed Tests
-
-```bash
-npx playwright test --debug auth.spec.ts
-npx playwright test --debug penetration-tests.spec.ts
-```
-
-### Take Screenshots
-
-Screenshots are automatically taken on test failures and saved to `e2e-results/`.
-
-### View Traces
-
-Traces are collected on first retry and can be viewed with:
-
-```bash
-npx playwright show-trace e2e-results/trace.zip
-```
-
-## 🔒 Security Considerations
-
-### Test Data Security
-
-- All test passwords are clearly marked as test data
-- No real credentials are used in tests
-- Test database is isolated from production
-- All test data is cleaned up after tests
-
-### Network Security
-
-- Tests run against localhost by default
-- No external network calls in test environment
-- Mock responses prevent data leakage
-- Secure token handling in tests
-
-## 📝 Best Practices
-
-### Writing Tests
-
-1. **Use descriptive test names** that explain the scenario
-2. **Keep tests independent** - each test should be able to run in isolation
-3. **Use page objects** for complex interactions
-4. **Add proper waits** for dynamic content
-5. **Use data attributes** for selectors when possible
-6. **Clean up test data** in `afterEach` or `afterAll` hooks
-
-### Test Organization
-
-1. **Group related tests** using `test.describe()`
-2. **Use consistent naming** conventions
-3. **Separate concerns** - unit tests vs integration tests
-4. **Mock external dependencies** appropriately
-5. **Test edge cases** and error scenarios
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-#### Tests Failing with Timeout
-
-```bash
-# Increase timeout in playwright.config.ts
-timeout: 60 * 1000, // 60 seconds
-```
-
-#### Backend Not Starting
-
-```bash
-# Check if port 8000 is available
-netstat -tulpn | grep :8000
-
-# Start backend manually
-cd backend && python main.py
-```
-
-#### Frontend Not Loading
-
-```bash
-# Check if port 3000 is available
-netstat -tulpn | grep :3000
-
-# Start frontend manually
-cd examples/auth-app && npm run dev
-```
-
-#### Browser Installation Issues
-
-```bash
-# Reinstall browsers
-npx playwright install --force
-```
-
-### Getting Help
-
-1. Check the [Playwright documentation](https://playwright.dev/)
-2. Review test logs in `e2e-results/`
-3. Use debug mode to step through tests
-4. Check browser console for errors
-
-## 🤝 Contributing
+## 🔧 Development
 
 ### Adding New Tests
 
-1. Create test file in appropriate directory
-2. Follow existing naming conventions
-3. Add test data to `fixtures/test-data.ts`
-4. Update this README with new test categories
-5. Ensure tests pass in all browsers
+1. **Choose the appropriate module** based on functionality
+2. **Create test file** in the corresponding suite directory
+3. **Import utilities** from the appropriate module
+4. **Follow naming conventions** for consistency
+5. **Update documentation** if adding new functionality
 
-### Test Data Management
+### Module Development
 
-1. Add new test users to `TestUserData` class
-2. Add new mock responses to `MockApiResponses` class
-3. Add new scenarios to `TestScenarios` class
-4. Ensure all test data is cleaned up
+1. **Create utility files** in the appropriate module directory
+2. **Export from module index** for clean imports
+3. **Add type definitions** to `core/types/` if needed
+4. **Update main module index** for global exports
+5. **Add tests** for new utilities
+
+### Configuration Updates
+
+1. **Modify appropriate config** in `configs/` directory
+2. **Update test paths** if moving files
+3. **Adjust output directories** if needed
+4. **Update global setup/teardown** paths if moved
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### Import Errors
+
+- Check that module index files are properly exporting utilities
+- Verify import paths match the new structure
+- Ensure all dependencies are properly installed
+
+#### Test Failures
+
+- Check that test servers are running on correct ports
+- Verify test data is properly loaded
+- Check browser console for JavaScript errors
+
+#### Configuration Issues
+
+- Verify Playwright configuration paths are correct
+- Check that output directories exist
+- Ensure global setup/teardown files are accessible
+
+### Debug Mode
+
+```bash
+# Run specific test in debug mode
+pnpm exec playwright test --debug suites/auth/auth.spec.ts
+
+# Run with trace viewer
+pnpm exec playwright test --trace on
+```
+
+## 🤝 Contributing
+
+### Code Style
+
+- Follow the existing naming conventions
+- Use TypeScript for all new code
+- Add comprehensive JSDoc comments
+- Include error handling and validation
+
+### Testing
+
+- Add tests for new utilities
+- Ensure all tests pass in CI
+- Update documentation for new features
+- Follow the modular architecture principles
+
+### Documentation
+
+- Update README files for new functionality
+- Add examples for complex features
+- Document configuration changes
+- Maintain the animal spirit theme in comments
 
 ## 📄 License
 
-This E2E test suite is part of the Reynard project and follows the same license terms.
+This E2E testing framework is part of the Reynard project and follows the same license terms.
+
+---
+
+*🦊 *red fur gleams with strategic satisfaction* The E2E testing framework is now organized with the cunning precision of a fox, the playful thoroughness of an otter, and the ferocious security focus of a wolf. Every test is a calculated move in our quest for code perfection!*

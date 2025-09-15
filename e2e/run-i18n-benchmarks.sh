@@ -33,7 +33,7 @@ print_error() {
 }
 
 # Check if we're in the right directory
-if [ ! -f "package.json" ] || [ ! -d "e2e" ]; then
+if [[ ! -f "package.json" ]] || [[ ! -d "e2e" ]]; then
     print_error "Please run this script from the Reynard project root directory"
     exit 1
 fi
@@ -42,12 +42,12 @@ fi
 check_service() {
     local url=$1
     local name=$2
-    
-    if curl -s --head "$url" > /dev/null; then
-        print_success "$name is running at $url"
+
+    if curl -s --head "${url}" > /dev/null; then
+        print_success "${name} is running at ${url}"
         return 0
     else
-        print_warning "$name is not running at $url"
+        print_warning "${name} is not running at ${url}"
         return 1
     fi
 }
@@ -55,18 +55,34 @@ check_service() {
 print_status "Checking required services..."
 
 # Check backend
+# shellcheck disable=SC2310
+# SC2310: "This function is invoked in an 'if' condition so set -e will be disabled"
+#
+# DETAILED REASONING:
+# 1. We use "if ! check_service" (ShellCheck SC2181 recommended pattern) instead of
+#    "check_service; if [ $? -ne 0 ]" (which SC2181 warns against)
+# 2. The "if !" pattern disables set -e for this specific command, which is INTENTIONAL
+# 3. We want explicit error handling here - if the service check fails, we want to:
+#    - Print a specific error message
+#    - Exit with code 1
+#    - Not rely on set -e to terminate the script
+# 4. This gives us precise control over error handling and user messaging
+# 5. The alternative (separate function call + $? check) is discouraged by SC2181
+# 6. Therefore, we disable SC2310 to use the SC2181-recommended pattern
 if ! check_service "http://localhost:8888" "Backend"; then
     print_error "Backend is not running. Please start it with: cd backend && ./start.sh"
     exit 1
 fi
 
 # Check i18n demo
+# shellcheck disable=SC2310  # set -e is intentionally disabled for explicit error handling
 if ! check_service "http://localhost:5173" "I18n Demo"; then
     print_error "I18n demo is not running. Please start it with: cd examples/i18n-demo && pnpm run dev"
     exit 1
 fi
 
 # Check basic app
+# shellcheck disable=SC2310  # set -e is intentionally disabled for explicit error handling
 if ! check_service "http://localhost:5174" "Basic App"; then
     print_error "Basic app is not running. Please start it with: cd examples/basic-app && pnpm run dev"
     exit 1
@@ -90,14 +106,14 @@ print_status "Results will be saved to: $(pwd)/i18n-benchmark-results/"
 run_benchmark() {
     local benchmark_name=$1
     local command=$2
-    
-    print_status "Running $benchmark_name..."
-    
-    if eval "$command"; then
-        print_success "$benchmark_name completed successfully"
+
+    print_status "Running ${benchmark_name}..."
+
+    if eval "${command}"; then
+        print_success "${benchmark_name} completed successfully"
         return 0
     else
-        print_error "$benchmark_name failed"
+        print_error "${benchmark_name} failed"
         return 1
     fi
 }
@@ -110,6 +126,7 @@ echo ""
 failed_benchmarks=0
 
 # Core i18n benchmarks
+# shellcheck disable=SC2310  # set -e is intentionally disabled for explicit error handling
 if ! run_benchmark "Core I18n Benchmarks" "pnpm run benchmark:i18n"; then
     ((failed_benchmarks++))
 fi
@@ -117,6 +134,7 @@ fi
 echo ""
 
 # Rendering approaches benchmarks
+# shellcheck disable=SC2310  # set -e is intentionally disabled for explicit error handling
 if ! run_benchmark "Rendering Approaches Benchmarks" "pnpm run benchmark:i18n:rendering"; then
     ((failed_benchmarks++))
 fi
@@ -124,6 +142,7 @@ fi
 echo ""
 
 # Bundle analysis benchmarks
+# shellcheck disable=SC2310  # set -e is intentionally disabled for explicit error handling
 if ! run_benchmark "Bundle Analysis Benchmarks" "pnpm run benchmark:i18n:bundles"; then
     ((failed_benchmarks++))
 fi
@@ -134,6 +153,7 @@ echo ""
 print_status "Generating comprehensive report..."
 
 # Combine all reports
+execution_time=$(date)
 cat > i18n-benchmark-results/COMPREHENSIVE-REPORT.md << EOF
 # Comprehensive I18n Performance Benchmark Report
 
@@ -141,9 +161,9 @@ cat > i18n-benchmark-results/COMPREHENSIVE-REPORT.md << EOF
 
 ## Benchmark Execution Summary
 
-- **Execution Time**: $(date)
+- **Execution Time**: ${execution_time}
 - **Total Benchmarks**: 3
-- **Failed Benchmarks**: $failed_benchmarks
+- **Failed Benchmarks**: ${failed_benchmarks}
 - **Success Rate**: $(( (3 - failed_benchmarks) * 100 / 3 ))%
 
 ## Individual Reports
@@ -151,25 +171,31 @@ cat > i18n-benchmark-results/COMPREHENSIVE-REPORT.md << EOF
 EOF
 
 # Add individual reports if they exist
-if [ -f "i18n-benchmark-results.md" ]; then
-    echo "### Core I18n Benchmarks" >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
-    echo "" >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
-    cat i18n-benchmark-results.md >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
-    echo "" >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
+if [[ -f "i18n-benchmark-results.md" ]]; then
+    {
+        echo "### Core I18n Benchmarks"
+        echo ""
+        cat i18n-benchmark-results.md
+        echo ""
+    } >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
 fi
 
-if [ -f "i18n-rendering-approaches-report.md" ]; then
-    echo "### Rendering Approaches Benchmarks" >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
-    echo "" >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
-    cat i18n-rendering-approaches-report.md >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
-    echo "" >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
+if [[ -f "i18n-rendering-approaches-report.md" ]]; then
+    {
+        echo "### Rendering Approaches Benchmarks"
+        echo ""
+        cat i18n-rendering-approaches-report.md
+        echo ""
+    } >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
 fi
 
-if [ -f "i18n-bundle-analysis-report.md" ]; then
-    echo "### Bundle Analysis Benchmarks" >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
-    echo "" >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
-    cat i18n-bundle-analysis-report.md >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
-    echo "" >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
+if [[ -f "i18n-bundle-analysis-report.md" ]]; then
+    {
+        echo "### Bundle Analysis Benchmarks"
+        echo ""
+        cat i18n-bundle-analysis-report.md
+        echo ""
+    } >> i18n-benchmark-results/COMPREHENSIVE-REPORT.md
 fi
 
 # Add conclusion
@@ -211,17 +237,18 @@ echo ""
 print_status "Benchmark Results Summary:"
 echo "================================"
 
-if [ $failed_benchmarks -eq 0 ]; then
+if [[ "${failed_benchmarks}" -eq 0 ]]; then
     print_success "All benchmarks completed successfully! 🎉"
 else
-    print_warning "$failed_benchmarks benchmark(s) failed"
+    print_warning "${failed_benchmarks} benchmark(s) failed"
 fi
 
 echo ""
 print_status "Results saved to:"
-echo "  📊 Comprehensive Report: $(pwd)/i18n-benchmark-results/COMPREHENSIVE-REPORT.md"
-echo "  📈 HTML Report: $(pwd)/i18n-benchmark-results/index.html"
-echo "  📋 JSON Results: $(pwd)/i18n-benchmark-results/i18n-benchmark-results.json"
+current_dir=$(pwd)
+echo "  📊 Comprehensive Report: ${current_dir}/i18n-benchmark-results/COMPREHENSIVE-REPORT.md"
+echo "  📈 HTML Report: ${current_dir}/i18n-benchmark-results/index.html"
+echo "  📋 JSON Results: ${current_dir}/i18n-benchmark-results/i18n-benchmark-results.json"
 
 echo ""
 print_status "To view the HTML report, run:"

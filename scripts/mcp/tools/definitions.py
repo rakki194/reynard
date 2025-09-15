@@ -9,6 +9,9 @@ Follows the 100-line axiom and modular architecture principles.
 
 from typing import Any
 
+# Constants for repeated strings
+AGENT_ID_DESCRIPTION = "Unique identifier for the agent"
+
 
 def get_tool_definitions() -> dict[str, dict[str, Any]]:
     """Get all MCP tool definitions."""
@@ -40,7 +43,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "agent_id": {
                         "type": "string",
-                        "description": "Unique identifier for the agent",
+                        "description": AGENT_ID_DESCRIPTION,
                     },
                     "name": {
                         "type": "string",
@@ -58,7 +61,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "agent_id": {
                         "type": "string",
-                        "description": "Unique identifier for the agent",
+                        "description": AGENT_ID_DESCRIPTION,
                     }
                 },
                 "required": ["agent_id"],
@@ -94,6 +97,51 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
                         "description": "Include latitude and longitude coordinates",
                         "default": True,
                     }
+                },
+            },
+        },
+        "roll_agent_spirit": {
+            "name": "roll_agent_spirit",
+            "description": "Randomly select an animal spirit for agent initialization",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "weighted": {
+                        "type": "boolean",
+                        "description": "Use weighted distribution favoring fox (40%), otter (35%), wolf (25%)",
+                        "default": True,
+                    }
+                },
+            },
+        },
+        "agent_startup_sequence": {
+            "name": "agent_startup_sequence",
+            "description": "Complete agent initialization sequence with random spirit selection",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string",
+                        "description": AGENT_ID_DESCRIPTION,
+                        "default": "current-session",
+                    },
+                    "preferred_style": {
+                        "type": "string",
+                        "enum": [
+                            "foundation",
+                            "exo",
+                            "hybrid",
+                            "cyberpunk",
+                            "mythological",
+                            "scientific",
+                        ],
+                        "description": "Preferred naming style (random if not specified)",
+                    },
+                    "force_spirit": {
+                        "type": "string",
+                        "enum": ["fox", "wolf", "otter"],
+                        "description": "Force a specific spirit (overrides random selection)",
+                    },
                 },
             },
         },

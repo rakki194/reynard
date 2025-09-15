@@ -3,45 +3,39 @@
  * Allows users to switch between available languages
  */
 
-import { Component, For } from "solid-js";
+import { Select } from "reynard-components";
 import { useI18n, type LanguageCode } from "reynard-themes";
+import { Component } from "solid-js";
 
 interface LanguageSelectorProps {
   setLocale?: (locale: LanguageCode) => void;
 }
 
-export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
+export const LanguageSelector: Component<LanguageSelectorProps> = props => {
   const { locale, setLocale: themeSetLocale, languages } = useI18n();
-  const setLocale = props.setLocale || themeSetLocale;
 
   // For demo, show just a few languages
-  const availableLanguages = languages.filter(
-    (lang: { code: LanguageCode; name: string }) =>
-      (["en", "es", "fr"] as LanguageCode[]).includes(lang.code),
+  const availableLanguages = languages.filter(lang =>
+    (["en", "es", "fr"] as LanguageCode[]).includes(lang.code as LanguageCode)
   );
 
   return (
-    <select
-      class="language-selector"
+    <Select
       value={locale}
-      onChange={(e) => {
+      onChange={e => {
         const newLocale = e.currentTarget.value as LanguageCode;
         console.log("Language selector changing locale to:", newLocale);
+        // Use custom setLocale if provided, otherwise use theme setLocale
+        const setLocale = props.setLocale || themeSetLocale;
         setLocale(newLocale);
       }}
+      options={availableLanguages.map(lang => ({
+        value: lang.code,
+        label: `🌐 ${lang.name}`,
+      }))}
+      size="sm"
+      variant="outlined"
       aria-label="Select language"
-      title="Select language"
-    >
-      <For each={availableLanguages}>
-        {(lang) => (
-          <option value={lang.code}>
-            <span class="language-option">
-              <span class="language-icon">🌐</span>
-              {lang.name}
-            </span>
-          </option>
-        )}
-      </For>
-    </select>
+    />
   );
 };

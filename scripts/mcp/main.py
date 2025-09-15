@@ -84,13 +84,14 @@ class MCPServer:
 
                 # Only send response if it's not None (notifications don't need responses)
                 if response is not None:
-                    print(json.dumps(response))
+                    logger.debug("Sending response: %s", json.dumps(response))
+                    sys.stdout.write(json.dumps(response) + "\n")
                     sys.stdout.flush()
 
-            except json.JSONDecodeError as e:
-                logger.exception("Invalid JSON received: %s", e)
-            except Exception as e:
-                logger.exception("Unexpected error: %s", e)
+            except json.JSONDecodeError:
+                logger.exception("Invalid JSON received")
+            except Exception:
+                logger.exception("Unexpected error")
 
 
 def main():
@@ -101,8 +102,8 @@ def main():
         asyncio.run(server.run())
     except KeyboardInterrupt:
         logger.info("Server stopped by user")
-    except Exception as e:
-        logger.exception("Server error: %s", e)
+    except Exception:
+        logger.exception("Server error")
         sys.exit(1)
 
 

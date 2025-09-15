@@ -7,6 +7,7 @@ Handles agent-related MCP tool calls.
 Follows the 100-line axiom and modular architecture principles.
 """
 
+import random
 from typing import Any
 
 from services.agent_manager import AgentNameManager
@@ -67,6 +68,102 @@ class AgentTools:
                 {
                     "type": "text",
                     "text": f"Assigned agent names:\n{agent_list or 'No agents assigned'}",
+                }
+            ]
+        }
+
+    def roll_agent_spirit(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Randomly select an animal spirit for agent initialization."""
+        weighted = arguments.get("weighted", True)
+
+        if weighted:
+            # Weighted distribution: fox 40%, otter 35%, wolf 25%
+            spirits = [
+                "fox",
+                "fox",
+                "fox",
+                "fox",
+                "otter",
+                "otter",
+                "otter",
+                "otter",
+                "otter",
+                "wolf",
+                "wolf",
+                "wolf",
+            ]
+        else:
+            # Equal distribution
+            spirits = ["fox", "otter", "wolf"]
+
+        selected_spirit = random.choice(spirits)
+
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"Rolled spirit: {selected_spirit}",
+                }
+            ]
+        }
+
+    def agent_startup_sequence(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Complete agent initialization sequence with random spirit selection."""
+        agent_id = arguments.get("agent_id", "current-session")
+        preferred_style = arguments.get("preferred_style")
+        force_spirit = arguments.get("force_spirit")
+
+        # Roll spirit if not forced
+        if force_spirit:
+            spirit = force_spirit
+        else:
+            # Use weighted distribution for natural balance
+            spirits = [
+                "fox",
+                "fox",
+                "fox",
+                "fox",
+                "otter",
+                "otter",
+                "otter",
+                "otter",
+                "otter",
+                "wolf",
+                "wolf",
+                "wolf",
+            ]
+            spirit = random.choice(spirits)
+
+        # Select style if not specified
+        if not preferred_style:
+            styles = [
+                "foundation",
+                "exo",
+                "hybrid",
+                "cyberpunk",
+                "mythological",
+                "scientific",
+            ]
+            preferred_style = random.choice(styles)
+
+        # Generate and assign name
+        name = self.agent_manager.generate_name(spirit, preferred_style)
+        success = self.agent_manager.assign_name(agent_id, name)
+
+        startup_text = (
+            f"🎯 Agent Startup Complete!\n"
+            f"🦊 Spirit: {spirit}\n"
+            f"🎨 Style: {preferred_style}\n"
+            f"📛 Name: {name}\n"
+            f"✅ Assigned: {success}\n"
+            f"🆔 Agent ID: {agent_id}"
+        )
+
+        return {
+            "content": [
+                {
+                    "type": "text",
+                    "text": startup_text,
                 }
             ]
         }

@@ -1,6 +1,6 @@
 # Error Handling Issues Guide
 
-*Implementing robust error handling for reliable and maintainable Python applications*
+Implementing robust error handling for reliable and maintainable Python applications.
 
 ## Overview
 
@@ -188,21 +188,21 @@ class ApplicationError(Exception):
 
 class ValidationError(ApplicationError):
     """Raised when data validation fails."""
-    
+
     def __init__(self, message: str, field: str = None):
         super().__init__(message)
         self.field = field
 
 class DatabaseError(ApplicationError):
     """Raised when database operations fail."""
-    
+
     def __init__(self, message: str, operation: str = None):
         super().__init__(message)
         self.operation = operation
 
 class ExternalServiceError(ApplicationError):
     """Raised when external service calls fail."""
-    
+
     def __init__(self, message: str, service: str = None, status_code: int = None):
         super().__init__(message)
         self.service = service
@@ -213,10 +213,10 @@ def validate_user_data(user_data: dict) -> None:
     """Validate user data with custom exceptions."""
     if not user_data.get('email'):
         raise ValidationError("Email is required", field="email")
-    
+
     if '@' not in user_data['email']:
         raise ValidationError("Invalid email format", field="email")
-    
+
     if not user_data.get('name'):
         raise ValidationError("Name is required", field="name")
 
@@ -239,14 +239,14 @@ from typing import Optional
 
 class ErrorContext:
     """Context manager for error handling."""
-    
+
     def __init__(self, operation: str, context: dict = None):
         self.operation = operation
         self.context = context or {}
-    
+
     def __enter__(self):
         return self
-    
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         if exc_type is not None:
             logger.error(
@@ -262,13 +262,13 @@ def process_user_registration(user_data: dict) -> dict:
     """Process user registration with error context."""
     with ErrorContext("user_registration", {"user_email": user_data.get('email')}):
         validate_user_data(user_data)
-        
+
         with ErrorContext("database_save", {"user_id": user_data.get('id')}):
             save_user_to_database(user_data)
-        
+
         with ErrorContext("email_notification", {"recipient": user_data['email']}):
             send_welcome_email(user_data['email'])
-        
+
         return {"status": "success", "user_id": user_data['id']}
 ```
 
@@ -287,38 +287,38 @@ def retry(
     exceptions: Tuple[Type[Exception], ...] = (Exception,)
 ):
     """Decorator for retrying functions with exponential backoff."""
-    
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs):
             last_exception = None
-            
+
             for attempt in range(max_attempts):
                 try:
                     return func(*args, **kwargs)
                 except exceptions as e:
                     last_exception = e
-                    
+
                     if attempt == max_attempts - 1:
                         logger.error(
                             "Function %s failed after %d attempts: %s",
                             func.__name__, max_attempts, e
                         )
                         raise
-                    
+
                     wait_time = delay * (backoff_factor ** attempt)
                     jitter = random.uniform(0, wait_time * 0.1)
                     total_wait = wait_time + jitter
-                    
+
                     logger.warning(
                         "Function %s failed (attempt %d/%d), retrying in %.2f seconds: %s",
                         func.__name__, attempt + 1, max_attempts, total_wait, e
                     )
-                    
+
                     time.sleep(total_wait)
-            
+
             raise last_exception
-        
+
         return wrapper
     return decorator
 
@@ -350,7 +350,7 @@ class CircuitState(Enum):
 
 class CircuitBreaker:
     """Circuit breaker for handling external service failures."""
-    
+
     def __init__(
         self,
         failure_threshold: int = 5,
@@ -360,11 +360,11 @@ class CircuitBreaker:
         self.failure_threshold = failure_threshold
         self.recovery_timeout = recovery_timeout
         self.expected_exception = expected_exception
-        
+
         self.failure_count = 0
         self.last_failure_time = None
         self.state = CircuitState.CLOSED
-    
+
     def call(self, func: Callable, *args, **kwargs) -> Any:
         """Call function through circuit breaker."""
         if self.state == CircuitState.OPEN:
@@ -372,7 +372,7 @@ class CircuitBreaker:
                 self.state = CircuitState.HALF_OPEN
             else:
                 raise Exception("Circuit breaker is OPEN")
-        
+
         try:
             result = func(*args, **kwargs)
             self._on_success()
@@ -380,24 +380,24 @@ class CircuitBreaker:
         except self.expected_exception as e:
             self._on_failure()
             raise
-    
+
     def _should_attempt_reset(self) -> bool:
         """Check if we should attempt to reset the circuit."""
         return (
             self.last_failure_time and
             time.time() - self.last_failure_time >= self.recovery_timeout
         )
-    
+
     def _on_success(self):
         """Handle successful call."""
         self.failure_count = 0
         self.state = CircuitState.CLOSED
-    
+
     def _on_failure(self):
         """Handle failed call."""
         self.failure_count += 1
         self.last_failure_time = time.time()
-        
+
         if self.failure_count >= self.failure_threshold:
             self.state = CircuitState.OPEN
 
@@ -423,13 +423,13 @@ def process_user_data(user_data: dict) -> dict:
     """Process user data with fail-fast validation."""
     if not user_data:
         raise ValueError("User data cannot be empty")
-    
+
     if not user_data.get('email'):
         raise ValueError("Email is required")
-    
+
     if not user_data.get('name'):
         raise ValueError("Name is required")
-    
+
     # Process valid data
     return {"status": "processed", "user": user_data}
 
@@ -438,10 +438,10 @@ def process_user_data(user_data: dict) -> dict:
     """Process user data with silent failures."""
     if not user_data:
         return {"error": "No data"}
-    
+
     if not user_data.get('email'):
         return {"error": "No email"}
-    
+
     # Continue processing even with missing data
     return {"status": "processed"}
 ```
@@ -454,10 +454,10 @@ def validate_email(email: str) -> None:
     """Validate email with specific exceptions."""
     if not email:
         raise ValueError("Email cannot be empty")
-    
+
     if '@' not in email:
         raise ValueError("Email must contain @ symbol")
-    
+
     if '.' not in email.split('@')[1]:
         raise ValueError("Email must have valid domain")
 
@@ -541,7 +541,7 @@ def get_user_preferences(user_id: str) -> dict:
             return preferences
     except Exception as e:
         logger.warning("Cache lookup failed: %s", e)
-    
+
     try:
         # Try to get from database
         preferences = get_from_database(user_id)
@@ -567,13 +567,13 @@ def send_notification(user_id: str, message: str) -> bool:
         return send_via_primary_service(user_id, message)
     except ServiceUnavailableError:
         logger.warning("Primary notification service unavailable")
-    
+
     # Try secondary notification service
     try:
         return send_via_secondary_service(user_id, message)
     except ServiceUnavailableError:
         logger.warning("Secondary notification service unavailable")
-    
+
     # Try email as fallback
     try:
         user_email = get_user_email(user_id)
@@ -589,7 +589,7 @@ def send_notification(user_id: str, message: str) -> bool:
 def sanitize_user_input(data: dict) -> dict:
     """Sanitize user input with error handling."""
     sanitized = {}
-    
+
     for key, value in data.items():
         try:
             if isinstance(value, str):
@@ -603,14 +603,14 @@ def sanitize_user_input(data: dict) -> dict:
         except Exception as e:
             logger.warning("Failed to sanitize field %s: %s", key, e)
             sanitized[key] = ""  # Default to empty string
-    
+
     return sanitized
 ```
 
 ## Conclusion
 
-🐺 *Error handling requires the ferocity of a wolf - hunting down every possible failure mode and
-eliminating weaknesses with relentless determination.*
+🐺 _Error handling requires the ferocity of a wolf - hunting down every possible failure mode and
+eliminating weaknesses with relentless determination._
 
 Implementing proper error handling provides:
 
@@ -630,4 +630,4 @@ Key principles:
 - **Use retry mechanisms** for transient failures
 - **Apply circuit breakers** for external service calls
 
-*Build code that howls with confidence, knowing every error has been hunted down and handled.* 🐺
+_Build code that howls with confidence, knowing every error has been hunted down and handled._ 🐺

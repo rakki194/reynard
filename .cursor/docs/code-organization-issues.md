@@ -1,6 +1,6 @@
 # Code Organization Issues Guide
 
-*Structuring code for maintainability, readability, and scalability*
+Structuring code for maintainability, readability, and scalability.
 
 ## Overview
 
@@ -211,10 +211,10 @@ class UserService:
 # Presentation Layer
 class UserController:
     """Handles HTTP requests for user operations."""
-    
+
     def __init__(self, user_service: UserService):
         self.user_service = user_service
-    
+
     def create_user(self, request_data: dict) -> dict:
         """Handle user creation request."""
         try:
@@ -229,34 +229,34 @@ class UserController:
 # Business Logic Layer
 class UserService:
     """Contains business logic for user operations."""
-    
+
     def __init__(self, repository: UserRepository, validator: UserValidator):
         self.repository = repository
         self.validator = validator
-    
+
     def create_user(self, user_data: dict) -> dict:
         """Create user with business logic."""
         if not self.validator.validate_user_data(user_data):
             raise ValidationError("Invalid user data")
-        
+
         # Business logic: check for duplicate emails
         if self.repository.email_exists(user_data['email']):
             raise ValidationError("Email already exists")
-        
+
         user = self.repository.create_user(user_data)
         return user.to_dict()
 
 # Data Access Layer
 class UserRepository:
     """Handles data persistence for users."""
-    
+
     def __init__(self, database: Database):
         self.database = database
-    
+
     def create_user(self, user_data: dict) -> User:
         """Create user in database."""
         return self.database.create_user(user_data)
-    
+
     def email_exists(self, email: str) -> bool:
         """Check if email already exists."""
         return self.database.email_exists(email)
@@ -268,29 +268,29 @@ class UserRepository:
 # Domain Models
 class User:
     """User domain model."""
-    
+
     def __init__(self, email: str, name: str, password_hash: str):
         self.email = email
         self.name = name
         self.password_hash = password_hash
         self.created_at = datetime.now()
         self.is_active = True
-    
+
     def activate(self) -> None:
         """Activate user account."""
         self.is_active = True
-    
+
     def deactivate(self) -> None:
         """Deactivate user account."""
         self.is_active = False
-    
+
     def change_password(self, new_password_hash: str) -> None:
         """Change user password."""
         self.password_hash = new_password_hash
 
 class UserFactory:
     """Factory for creating user objects."""
-    
+
     @staticmethod
     def create_user(email: str, name: str, password: str) -> User:
         """Create new user with hashed password."""
@@ -300,28 +300,28 @@ class UserFactory:
 # Domain Services
 class UserDomainService:
     """Domain service for user operations."""
-    
+
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
-    
+
     def register_user(self, email: str, name: str, password: str) -> User:
         """Register new user with domain logic."""
         if self.user_repository.email_exists(email):
             raise DomainError("Email already registered")
-        
+
         user = UserFactory.create_user(email, name, password)
         self.user_repository.save(user)
         return user
-    
+
     def authenticate_user(self, email: str, password: str) -> User:
         """Authenticate user with domain logic."""
         user = self.user_repository.find_by_email(email)
         if not user or not verify_password(password, user.password_hash):
             raise DomainError("Invalid credentials")
-        
+
         if not user.is_active:
             raise DomainError("Account is deactivated")
-        
+
         return user
 ```
 
@@ -338,7 +338,7 @@ class Command(ABC):
 
 class CreateUserCommand(Command):
     """Command to create a user."""
-    
+
     def __init__(self, email: str, name: str, password: str):
         self.email = email
         self.name = name
@@ -346,7 +346,7 @@ class CreateUserCommand(Command):
 
 class UpdateUserCommand(Command):
     """Command to update a user."""
-    
+
     def __init__(self, user_id: str, updates: Dict[str, Any]):
         self.user_id = user_id
         self.updates = updates
@@ -358,20 +358,20 @@ class Query(ABC):
 
 class GetUserQuery(Query):
     """Query to get a user."""
-    
+
     def __init__(self, user_id: str):
         self.user_id = user_id
 
 class GetUsersByRoleQuery(Query):
     """Query to get users by role."""
-    
+
     def __init__(self, role: str):
         self.role = role
 
 # Command Handlers
 class CommandHandler(ABC):
     """Base class for command handlers."""
-    
+
     @abstractmethod
     def handle(self, command: Command) -> Any:
         """Handle a command."""
@@ -379,10 +379,10 @@ class CommandHandler(ABC):
 
 class CreateUserCommandHandler(CommandHandler):
     """Handler for create user command."""
-    
+
     def __init__(self, user_service: UserService):
         self.user_service = user_service
-    
+
     def handle(self, command: CreateUserCommand) -> Dict[str, Any]:
         """Handle create user command."""
         return self.user_service.create_user({
@@ -394,7 +394,7 @@ class CreateUserCommandHandler(CommandHandler):
 # Query Handlers
 class QueryHandler(ABC):
     """Base class for query handlers."""
-    
+
     @abstractmethod
     def handle(self, query: Query) -> Any:
         """Handle a query."""
@@ -402,10 +402,10 @@ class QueryHandler(ABC):
 
 class GetUserQueryHandler(QueryHandler):
     """Handler for get user query."""
-    
+
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
-    
+
     def handle(self, query: GetUserQuery) -> Dict[str, Any]:
         """Handle get user query."""
         user = self.user_repository.get_user(query.user_id)
@@ -421,18 +421,18 @@ from typing import Protocol
 # Interfaces/Protocols
 class UserRepositoryProtocol(Protocol):
     """Protocol for user repository."""
-    
+
     def create_user(self, user_data: dict) -> User:
         """Create user."""
         ...
-    
+
     def get_user(self, user_id: str) -> User:
         """Get user by ID."""
         ...
 
 class EmailServiceProtocol(Protocol):
     """Protocol for email service."""
-    
+
     def send_email(self, to: str, subject: str, body: str) -> bool:
         """Send email."""
         ...
@@ -440,26 +440,26 @@ class EmailServiceProtocol(Protocol):
 # Dependency Injection Container
 class DIContainer:
     """Simple dependency injection container."""
-    
+
     def __init__(self):
         self._services = {}
         self._singletons = {}
-    
+
     def register(self, interface: type, implementation: type, singleton: bool = False):
         """Register a service."""
         self._services[interface] = implementation
         if singleton:
             self._singletons[interface] = None
-    
+
     def get(self, interface: type):
         """Get service instance."""
         if interface in self._singletons:
             if self._singletons[interface] is None:
                 self._singletons[interface] = self._create_instance(interface)
             return self._singletons[interface]
-        
+
         return self._create_instance(interface)
-    
+
     def _create_instance(self, interface: type):
         """Create instance of service."""
         implementation = self._services[interface]
@@ -473,11 +473,11 @@ container.register(EmailServiceProtocol, EmailService, singleton=True)
 # Service with injected dependencies
 class UserService:
     """User service with injected dependencies."""
-    
+
     def __init__(self, container: DIContainer):
         self.user_repository = container.get(UserRepositoryProtocol)
         self.email_service = container.get(EmailServiceProtocol)
-    
+
     def create_user(self, user_data: dict) -> dict:
         """Create user using injected services."""
         user = self.user_repository.create_user(user_data)
@@ -580,12 +580,12 @@ from typing import Dict, Any
 
 class BaseConfig:
     """Base configuration class."""
-    
+
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key')
     DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///app.db')
     DEBUG = False
     TESTING = False
-    
+
     # Email settings
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT', 587))
@@ -598,7 +598,7 @@ from .base import BaseConfig
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
-    
+
     DEBUG = True
     DATABASE_URL = 'sqlite:///dev.db'
 
@@ -607,7 +607,7 @@ from .base import BaseConfig
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""
-    
+
     DEBUG = False
     DATABASE_URL = os.environ.get('DATABASE_URL')
 
@@ -639,17 +639,17 @@ def get_config():
 # ✅ Good: Single responsibility
 class EmailValidator:
     """Validates email addresses."""
-    
+
     def is_valid(self, email: str) -> bool:
         return '@' in email and '.' in email.split('@')[1]
 
 class PasswordHasher:
     """Handles password hashing."""
-    
+
     def hash(self, password: str) -> str:
         # Hashing logic
         pass
-    
+
     def verify(self, password: str, hash: str) -> bool:
         # Verification logic
         pass
@@ -657,15 +657,15 @@ class PasswordHasher:
 # ❌ Bad: Multiple responsibilities
 class UserManager:
     """Manages users, validates emails, hashes passwords, sends emails..."""
-    
+
     def validate_email(self, email: str) -> bool:
         # Email validation
         pass
-    
+
     def hash_password(self, password: str) -> str:
         # Password hashing
         pass
-    
+
     def send_email(self, to: str, message: str) -> None:
         # Email sending
         pass
@@ -677,21 +677,21 @@ class UserManager:
 # ✅ Good: Depend on abstractions
 class UserService:
     """User service depending on abstractions."""
-    
+
     def __init__(self, repository: UserRepositoryProtocol, validator: UserValidatorProtocol):
         self.repository = repository
         self.validator = validator
-    
+
     def create_user(self, user_data: dict) -> User:
         if not self.validator.validate(user_data):
             raise ValidationError("Invalid user data")
-        
+
         return self.repository.create_user(user_data)
 
 # ❌ Bad: Depend on concrete implementations
 class UserService:
     """User service depending on concrete implementations."""
-    
+
     def __init__(self):
         self.repository = DatabaseUserRepository()  # Concrete dependency
         self.validator = EmailUserValidator()       # Concrete dependency
@@ -703,22 +703,22 @@ class UserService:
 # ✅ Good: Focused interfaces
 class ReadableRepository(Protocol):
     """Interface for read operations."""
-    
+
     def get(self, id: str) -> Any:
         """Get entity by ID."""
         ...
-    
+
     def find_all(self) -> List[Any]:
         """Find all entities."""
         ...
 
 class WritableRepository(Protocol):
     """Interface for write operations."""
-    
+
     def save(self, entity: Any) -> Any:
         """Save entity."""
         ...
-    
+
     def delete(self, id: str) -> None:
         """Delete entity by ID."""
         ...
@@ -726,23 +726,23 @@ class WritableRepository(Protocol):
 # ❌ Bad: Fat interface
 class Repository(Protocol):
     """Interface with too many responsibilities."""
-    
+
     def get(self, id: str) -> Any:
         """Get entity by ID."""
         ...
-    
+
     def find_all(self) -> List[Any]:
         """Find all entities."""
         ...
-    
+
     def save(self, entity: Any) -> Any:
         """Save entity."""
         ...
-    
+
     def delete(self, id: str) -> None:
         """Delete entity by ID."""
         ...
-    
+
     def send_email(self, to: str, message: str) -> None:
         """Send email - not repository responsibility!"""
         ...
@@ -750,8 +750,8 @@ class Repository(Protocol):
 
 ## Conclusion
 
-🦊 *Code organization requires the cunning of a fox - knowing how to structure complexity, separate concerns, and
-create maintainable architectures.*
+🦊 _Code organization requires the cunning of a fox - knowing how to structure complexity, separate concerns, and
+create maintainable architectures._
 
 Proper code organization provides:
 
@@ -770,5 +770,5 @@ Key principles:
 - **Layered Architecture**: Organize code into logical layers
 - **Modular Design**: Break large systems into smaller, manageable modules
 
-*Build code that flows like a well-organized fox den - every entrance has a purpose, every chamber serves a function,
-and the whole structure supports the pack's success.* 🦊
+_Build code that flows like a well-organized fox den - every entrance has a purpose, every chamber serves a function,
+and the whole structure supports the pack's success._ 🦊

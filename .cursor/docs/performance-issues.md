@@ -1,6 +1,6 @@
 # Performance Issues Guide
 
-*Optimizing Python code for better runtime performance and efficiency*
+Optimizing Python code for better runtime performance and efficiency.
 
 ## Overview
 
@@ -53,7 +53,7 @@ def format_user_info(users: list[dict]) -> str:
 # Even better with list comprehension
 def format_user_info(users: list[dict]) -> str:
     return "\n".join(
-        f"Name: {user['name']}, Email: {user['email']}" 
+        f"Name: {user['name']}, Email: {user['email']}"
         for user in users
     )
 ```
@@ -67,13 +67,13 @@ from typing import List, Dict, Any
 def build_large_report(data: List[Dict[str, Any]]) -> str:
     """Build large report efficiently."""
     buffer = StringIO()
-    
+
     for item in data:
         buffer.write(f"ID: {item['id']}\n")
         buffer.write(f"Name: {item['name']}\n")
         buffer.write(f"Status: {item['status']}\n")
         buffer.write("-" * 40 + "\n")
-    
+
     return buffer.getvalue()
 
 # Using f-strings for better performance
@@ -132,7 +132,7 @@ def find_matching_items(items: list[dict], key: str, value: str) -> list[dict]:
 def process_large_dataset(data: list[dict]) -> None:
     """Process large dataset without loading all into memory."""
     processed = (transform_item(item) for item in data if is_valid(item))
-    
+
     for item in processed:
         save_item(item)
 
@@ -228,12 +228,12 @@ def group_items_by_category(items: list[dict]) -> dict:
 def process_large_file(file_path: str) -> list[str]:
     with open(file_path, 'r') as f:
         lines = f.readlines()  # Loads entire file into memory
-    
+
     processed = []
     for line in lines:
         if line.strip():
             processed.append(line.strip().upper())
-    
+
     return processed
 
 # ✅ Memory efficient with generators
@@ -322,15 +322,15 @@ def fibonacci(n: int) -> int:
 # Manual caching for complex cases
 class DataProcessor:
     """Data processor with manual caching."""
-    
+
     def __init__(self):
         self._cache: dict = {}
-    
+
     def process_data(self, data: str) -> str:
         """Process data with manual caching."""
         if data in self._cache:
             return self._cache[data]
-        
+
         # Expensive processing
         result = data.upper() + "_processed"
         self._cache[data] = result
@@ -357,13 +357,13 @@ def find_duplicates(items: list[str]) -> list[str]:
     """Find duplicates using set (O(n))."""
     seen = set()
     duplicates = set()
-    
+
     for item in items:
         if item in seen:
             duplicates.add(item)
         else:
             seen.add(item)
-    
+
     return list(duplicates)
 
 # Use collections.Counter for counting
@@ -463,10 +463,10 @@ def profile_function():
     """Profile function with cProfile."""
     profiler = cProfile.Profile()
     profiler.enable()
-    
+
     # Your code here
     slow_function()
-    
+
     profiler.disable()
     stats = pstats.Stats(profiler)
     stats.sort_stats('cumulative')
@@ -483,14 +483,14 @@ import os
 def profile_memory():
     """Profile memory usage."""
     tracemalloc.start()
-    
+
     # Your code here
     data = [i for i in range(1000000)]
-    
+
     current, peak = tracemalloc.get_traced_memory()
     print(f"Current memory usage: {current / 1024 / 1024:.2f} MB")
     print(f"Peak memory usage: {peak / 1024 / 1024:.2f} MB")
-    
+
     tracemalloc.stop()
 
 def get_memory_usage():
@@ -508,14 +508,14 @@ from typing import Callable, Any
 def benchmark_functions(functions: list[Callable], *args, **kwargs) -> dict[str, float]:
     """Benchmark multiple functions."""
     results = {}
-    
+
     for func in functions:
         time_taken = timeit.timeit(
             lambda: func(*args, **kwargs),
             number=1000
         )
         results[func.__name__] = time_taken
-    
+
     return results
 
 # Example usage
@@ -600,8 +600,8 @@ def check_all_true(conditions: list[bool]) -> bool:
 
 ## Conclusion
 
-🦊 *Performance optimization requires the cunning of a fox - knowing when to optimize, what to measure, and
-how to balance readability with efficiency.*
+🦊 _Performance optimization requires the cunning of a fox - knowing when to optimize, what to measure, and
+how to balance readability with efficiency._
 
 Optimizing Python performance provides:
 
@@ -620,4 +620,4 @@ Key principles:
 - **Profile regularly** to identify bottlenecks
 - **Optimize the critical path** first
 
-*Build code that runs like a fox - fast, efficient, and purposeful.* 🦊
+_Build code that runs like a fox - fast, efficient, and purposeful._ 🦊

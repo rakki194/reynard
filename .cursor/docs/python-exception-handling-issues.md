@@ -1,6 +1,6 @@
 # Python Exception Handling Issues
 
-_Comprehensive guide to exception handling warnings and errors in Python development_
+Guide to exception handling warnings and errors in Python development.
 
 ## Overview
 
@@ -12,7 +12,7 @@ practical solutions with real-world examples from the Reynard project.
 
 ### Error Message
 
-```
+```text
 Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
 ```
 
@@ -71,7 +71,7 @@ except ImportError as exc:
 
 ### Warning Message
 
-```
+```text
 Catching too general exception Exception
 ```
 
@@ -140,7 +140,7 @@ finally:
 
 ### Warning Message
 
-```
+```text
 `try`-`except`-`pass` detected, consider logging the exception
 ```
 

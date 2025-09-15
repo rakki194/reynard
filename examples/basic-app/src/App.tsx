@@ -3,32 +3,18 @@
  * Demonstrates core Reynard features in a simple, practical application
  */
 
-import {
-  Component,
-  createSignal,
-  For,
-  createResource,
-  createContext,
-  useContext,
-} from "solid-js";
-import {
-  ReynardProvider,
-  useTheme,
-  useI18n,
-  type LanguageCode,
-} from "reynard-themes";
-import { loadTranslations } from "./translations";
-import {
-  NotificationsProvider,
-  useNotifications,
-  createNotificationsModule,
-} from "reynard-core";
-import { TodoItem } from "./components/TodoItem";
+import { Card } from "reynard-components";
+import "reynard-components/styles";
+import { NotificationsProvider, createNotificationsModule, useNotifications } from "reynard-core";
+import { ReynardProvider, useI18n, useTheme, type LanguageCode } from "reynard-themes";
+import "reynard-themes/themes.css";
+import { Component, For, createContext, createResource, createSignal, useContext } from "solid-js";
 import { AddTodo } from "./components/AddTodo";
-import { ThemeToggle } from "./components/ThemeToggle";
 import { LanguageSelector } from "./components/LanguageSelector";
-import "reynard-themes/reynard-themes.css";
+import { ThemeToggle } from "./components/ThemeToggle";
+import { TodoItem } from "./components/TodoItem";
 import "./styles.css";
+import { loadTranslations } from "./translations";
 
 interface Todo {
   id: number;
@@ -44,9 +30,7 @@ const CustomTranslationContext = createContext<
 export const useCustomTranslation = () => {
   const context = useContext(CustomTranslationContext);
   if (!context) {
-    throw new Error(
-      "useCustomTranslation must be used within a CustomTranslationProvider",
-    );
+    throw new Error("useCustomTranslation must be used within a CustomTranslationProvider");
   }
   return context;
 };
@@ -81,14 +65,7 @@ const TodoApp: Component = () => {
   // Create a custom translation function that uses our app's translations
   const customT = (key: string, params?: Record<string, string>) => {
     const translations = translationsResource();
-    console.log(
-      "customT called with key:",
-      key,
-      "translations:",
-      translations,
-      "locale:",
-      currentLocale(),
-    );
+    console.log("customT called with key:", key, "translations:", translations, "locale:", currentLocale());
 
     if (!translations) {
       console.log("No translations loaded, returning key:", key);
@@ -122,82 +99,82 @@ const TodoApp: Component = () => {
       text,
       completed: false,
     };
-    setTodos((prev) => [...prev, newTodo]);
-    setNextId((prev) => prev + 1);
+    setTodos(prev => [...prev, newTodo]);
+    setNextId(prev => prev + 1);
     notify(customT("todo.added", { text }), "success");
   };
 
   const toggleTodo = (id: number) => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    );
+    setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
   };
 
   const deleteTodo = (id: number) => {
-    const todo = todos().find((t) => t.id === id);
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    const todo = todos().find(t => t.id === id);
+    setTodos(prev => prev.filter(todo => todo.id !== id));
     if (todo) {
       notify(customT("todo.deleted", { text: todo.text }), "info");
     }
   };
 
-  const completedCount = () => todos().filter((todo) => todo.completed).length;
+  const completedCount = () => todos().filter(todo => todo.completed).length;
   const totalCount = () => todos().length;
 
   return (
     <div class="app">
       <header class="app-header">
-        <h1>
-          <span class="reynard-logo">🦊</span>
-          {customT("app.title")}
-        </h1>
-        <p>{customT("app.subtitle")}</p>
-        <div class="header-controls">
-          <div class="theme-info">
-            {customT("theme.current", { theme: customT(`theme.${theme}`) })}
+        <Card variant="elevated" padding="lg" class="header-card">
+          <h1>
+            <span class="reynard-logo">🦊</span>
+            {customT("app.title")}
+          </h1>
+          <p>{customT("app.subtitle")}</p>
+          <div class="header-controls">
+            <div class="theme-info">{customT("theme.current", { theme: customT(`theme.${theme}`) })}</div>
+            <CustomTranslationContext.Provider value={customT}>
+              <ThemeToggle />
+            </CustomTranslationContext.Provider>
+            <LanguageSelector setLocale={customSetLocale} />
           </div>
-          <CustomTranslationContext.Provider value={customT}>
-            <ThemeToggle />
-          </CustomTranslationContext.Provider>
-          <LanguageSelector setLocale={customSetLocale} />
-        </div>
+        </Card>
       </header>
 
       <main class="app-main">
         <div class="todo-container">
-          <div class="todo-stats">
-            <span class="stat">
-              {completedCount()} / {totalCount()} {customT("todo.completed")}
-            </span>
-          </div>
+          <Card variant="default" padding="md" class="stats-card">
+            <div class="todo-stats">
+              <span class="stat">
+                {completedCount()} / {totalCount()} {customT("todo.completed")}
+              </span>
+            </div>
+          </Card>
 
-          <CustomTranslationContext.Provider value={customT}>
-            <AddTodo onAdd={addTodo} />
-          </CustomTranslationContext.Provider>
+          <Card variant="elevated" padding="lg" class="add-todo-card">
+            <CustomTranslationContext.Provider value={customT}>
+              <AddTodo onAdd={addTodo} />
+            </CustomTranslationContext.Provider>
+          </Card>
 
-          <div class="todo-list">
-            <For each={todos()}>
-              {(todo) => (
-                <TodoItem
-                  todo={todo}
-                  onToggle={() => toggleTodo(todo.id)}
-                  onDelete={() => deleteTodo(todo.id)}
-                />
+          <Card variant="default" padding="md" class="todo-list-card">
+            <div class="todo-list">
+              <For each={todos()}>
+                {todo => (
+                  <TodoItem todo={todo} onToggle={() => toggleTodo(todo.id)} onDelete={() => deleteTodo(todo.id)} />
+                )}
+              </For>
+              {todos().length === 0 && (
+                <div class="empty-state">
+                  <p>{customT("todo.empty")}</p>
+                </div>
               )}
-            </For>
-            {todos().length === 0 && (
-              <div class="empty-state">
-                <p>{customT("todo.empty")}</p>
-              </div>
-            )}
-          </div>
+            </div>
+          </Card>
         </div>
       </main>
 
       <footer class="app-footer">
-        <p>{customT("footer.text")}</p>
+        <Card variant="outlined" padding="sm" class="footer-card">
+          <p>{customT("footer.text")}</p>
+        </Card>
       </footer>
     </div>
   );

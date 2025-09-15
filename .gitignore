@@ -1,4 +1,6 @@
 # My junk
+coverage.json
+agent-names.json
 .agent-name
 .ruff_cache/
 .jwt_secret

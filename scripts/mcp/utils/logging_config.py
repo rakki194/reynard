@@ -22,7 +22,7 @@ class ColoredFormatter(logging.Formatter):
     YELLOW = "\033[93m"  # WARNING
     RESET = "\033[0m"  # Reset
 
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
         # Add color based on log level
         if record.levelno == logging.INFO:
             record.levelname = f"{self.BLUE}[INFO]{self.RESET}"

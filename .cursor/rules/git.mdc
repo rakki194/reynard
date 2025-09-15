@@ -1,0 +1,515 @@
+---
+alwaysApply: false
+---
+
+# Git Workflow Guide for Reynard
+
+_Comprehensive Git practices and workflows for the Reynard monorepo ecosystem_
+
+## Overview
+
+This guide establishes Git best practices, workflows, and conventions specifically tailored for the Reynard framework. It covers everything from basic operations to advanced monorepo management, ensuring consistent development practices across the entire ecosystem.
+
+## Core Git Principles
+
+### The Reynard Way of Git
+
+- **Strategic Commits**: Every commit should tell a story and be atomic
+- **Clear Communication**: Commit messages should be descriptive and follow conventional format
+- **Branch Strategy**: Use feature branches with clear naming conventions
+- **Code Quality**: Never commit broken code - use pre-commit hooks
+- **Documentation**: Keep documentation in sync with code changes
+
+## Branch Strategy
+
+### Main Branches
+
+```bash
+# Primary development branch
+main                    # Production-ready code
+develop                 # Integration branch for features
+```
+
+### Feature Branches
+
+```bash
+# Feature development
+feature/package-name    # New package development
+feature/component-name  # Component-specific features
+feature/api-endpoint    # API-related features
+feature/security-fix    # Security improvements
+```
+
+### Release Branches
+
+```bash
+# Release management
+release/v0.3.1         # Release preparation
+hotfix/critical-bug    # Emergency fixes
+```
+
+### Naming Conventions
+
+```bash
+# Package-specific features
+feature/reynard-core/authentication
+feature/reynard-components/data-table
+feature/reynard-i18n/translation-cache
+
+# Component-specific features
+feature/floating-panel/accessibility
+feature/gallery-ai/batch-processing
+feature/charts/embedding-visualization
+
+# System-wide improvements
+feature/security/input-validation
+feature/performance/memory-optimization
+feature/testing/vitest-integration
+```
+
+## Commit Message Standards
+
+### Conventional Commits Format
+
+```bash
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Commit Types
+
+```bash
+feat:     # New feature
+fix:      # Bug fix
+docs:     # Documentation changes
+style:    # Code style changes (formatting, etc.)
+refactor: # Code refactoring
+test:     # Adding or updating tests
+chore:    # Maintenance tasks
+perf:     # Performance improvements
+ci:       # CI/CD changes
+build:    # Build system changes
+```
+
+### Examples
+
+```bash
+# Feature commits
+feat(reynard-core): add authentication middleware
+feat(components): implement draggable floating panels
+feat(i18n): add Hungarian language support
+
+# Bug fixes
+fix(security): resolve XSS vulnerability in input validation
+fix(components): correct data table pagination edge case
+fix(backend): handle null pointer in caption generation
+
+# Documentation
+docs: update API documentation for RAG endpoints
+docs(architecture): add decision record for modularity standards
+docs(examples): improve getting started guide
+
+# Refactoring
+refactor(packages): extract shared validation utilities
+refactor(components): simplify floating panel state management
+refactor(backend): optimize database query performance
+
+# Testing
+test(components): add accessibility tests for floating panels
+test(security): add penetration tests for JWT validation
+test(integration): add E2E tests for caption generation
+
+# Performance
+perf(algorithms): optimize spatial hash collision detection
+perf(components): implement virtual scrolling for data tables
+perf(backend): add connection pooling for database queries
+```
+
+## Monorepo Git Workflow
+
+### Package-Specific Changes
+
+```bash
+# Working on a specific package
+git checkout -b feature/reynard-core/authentication
+cd packages/core
+# Make changes
+git add packages/core/
+git commit -m "feat(reynard-core): add JWT authentication middleware"
+git push origin feature/reynard-core/authentication
+```
+
+### Cross-Package Changes
+
+```bash
+# Changes affecting multiple packages
+git checkout -b feature/security/input-validation
+# Edit files in multiple packages
+git add packages/core/src/security/
+git add packages/file-processing/src/processors/security/
+git add packages/components/src/security/
+git commit -m "feat(security): implement comprehensive input validation
+
+- Add XSS protection to core security module
+- Enhance file validation in file-processing package
+- Update component security utilities
+- Add comprehensive test coverage"
+```
+
+### Documentation Updates
+
+```bash
+# Documentation changes
+git checkout -b docs/update-api-documentation
+# Update documentation files
+git add docs/
+git add README.md
+git add CHANGELOG.md
+git commit -m "docs: update API documentation and examples
+
+- Add comprehensive RAG API documentation
+- Update installation guides for new packages
+- Improve troubleshooting sections
+- Add performance optimization examples"
+```
+
+## Pre-commit Hooks
+
+### Husky Configuration
+
+The Reynard project uses Husky for pre-commit validation:
+
+```bash
+# Pre-commit hooks run automatically
+.husky/pre-commit
+```
+
+### Validation Checks
+
+```bash
+# Code quality checks
+- ESLint validation
+- TypeScript compilation
+- Test execution
+- Markdown link validation
+- CSS variable validation
+- Sentence length validation
+```
+
+### Bypassing Hooks (When Necessary)
+
+```bash
+# Skip pre-commit hooks (use sparingly)
+git commit --no-verify -m "feat: comprehensive codebase modernization
+
+This commit represents a major modernization effort across the entire
+Reynard framework. Pre-commit hooks are bypassed due to the extensive
+nature of changes affecting 690+ files."
+```
+
+## Advanced Git Operations
+
+### Interactive Rebase
+
+```bash
+# Clean up commit history
+git rebase -i HEAD~3
+
+# Squash commits
+pick abc1234 feat: add authentication
+squash def5678 fix: resolve linting errors
+squash ghi9012 docs: update authentication docs
+```
+
+### Cherry-picking
+
+```bash
+# Apply specific commits to different branches
+git checkout main
+git cherry-pick abc1234
+git cherry-pick def5678
+```
+
+### Stashing
+
+```bash
+# Save work in progress
+git stash push -m "WIP: authentication middleware"
+git stash list
+git stash pop
+```
+
+### Submodules (If Used)
+
+```bash
+# Initialize submodules
+git submodule update --init --recursive
+
+# Update submodules
+git submodule update --remote
+```
+
+## Conflict Resolution
+
+### Merge Conflicts
+
+```bash
+# Resolve conflicts
+git status
+# Edit conflicted files
+git add resolved-file.ts
+git commit -m "resolve: merge conflicts in authentication module"
+```
+
+### Rebase Conflicts
+
+```bash
+# During interactive rebase
+git rebase --continue
+# Or abort if needed
+git rebase --abort
+```
+
+## Release Management
+
+### Creating Releases
+
+```bash
+# Create release branch
+git checkout -b release/v0.3.1
+# Update version numbers
+# Update CHANGELOG.md
+git commit -m "chore: prepare release v0.3.1"
+git push origin release/v0.3.1
+```
+
+### Tagging Releases
+
+```bash
+# Create annotated tag
+git tag -a v0.3.1 -m "Release version 0.3.1
+
+Major features:
+- Enhanced security validation
+- Improved component architecture
+- Updated documentation"
+git push origin v0.3.1
+```
+
+## Git Configuration
+
+### Recommended Settings
+
+```bash
+# Global Git configuration
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+git config --global init.defaultBranch main
+git config --global pull.rebase false
+git config --global push.default simple
+```
+
+### Reynard-Specific Settings
+
+```bash
+# Repository-specific settings
+git config core.autocrlf input
+git config core.safecrlf true
+git config core.ignorecase false
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### Issue: Pre-commit hooks failing
+
+**Symptoms**: `git commit` fails with validation errors
+**Causes**: Code doesn't pass linting, tests, or other validation
+**Solutions**:
+
+```bash
+# Fix linting issues
+pnpm lint:fix
+
+# Run tests
+pnpm test
+
+# Check specific validation
+pnpm validate:markdown
+pnpm validate:css-variables
+```
+
+#### Issue: Merge conflicts in monorepo
+
+**Symptoms**: Conflicts when merging feature branches
+**Causes**: Multiple developers working on same files
+**Solutions**:
+
+```bash
+# Pull latest changes
+git pull origin main
+
+# Resolve conflicts manually
+# Use merge tools if available
+git mergetool
+
+# Complete merge
+git add .
+git commit -m "resolve: merge conflicts in package files"
+```
+
+#### Issue: Large file commits
+
+**Symptoms**: Repository size growing rapidly
+**Causes**: Binary files or large assets committed
+**Solutions**:
+
+```bash
+# Remove large files from history
+git filter-branch --tree-filter 'rm -f path/to/large/file' HEAD
+
+# Use Git LFS for large files
+git lfs track "*.psd"
+git lfs track "*.zip"
+```
+
+#### Issue: Accidentally committed sensitive data
+
+**Symptoms**: API keys or secrets in commit history
+**Causes**: Forgot to add files to .gitignore
+**Solutions**:
+
+```bash
+# Remove from history
+git filter-branch --force --index-filter \
+'git rm --cached --ignore-unmatch path/to/sensitive/file' \
+--prune-empty --tag-name-filter cat -- --all
+
+# Force push (dangerous - coordinate with team)
+git push origin --force --all
+```
+
+### Debug Mode
+
+```bash
+# Enable verbose Git output
+export GIT_TRACE=1
+export GIT_CURL_VERBOSE=1
+
+# Debug pre-commit hooks
+GIT_TRACE=1 git commit -m "test commit"
+```
+
+### Log Analysis
+
+```bash
+# View commit history
+git log --oneline --graph --decorate
+
+# View file history
+git log --follow path/to/file
+
+# View changes in specific commit
+git show commit-hash
+
+# View changes between commits
+git diff commit1..commit2
+```
+
+## Best Practices
+
+### Commit Best Practices
+
+- **Atomic Commits**: Each commit should represent one logical change
+- **Descriptive Messages**: Write clear, concise commit messages
+- **Test Before Commit**: Ensure all tests pass before committing
+- **Review Changes**: Use `git diff` to review changes before committing
+- **Small, Frequent Commits**: Better than large, infrequent commits
+
+### Branch Best Practices
+
+- **Feature Branches**: Always use feature branches for new development
+- **Clear Naming**: Use descriptive branch names that indicate purpose
+- **Regular Updates**: Keep feature branches up to date with main
+- **Clean History**: Use interactive rebase to clean up commit history
+- **Delete Merged Branches**: Clean up merged branches regularly
+
+### Monorepo Best Practices
+
+- **Package Isolation**: Keep package changes isolated when possible
+- **Cross-Package Coordination**: Coordinate changes that affect multiple packages
+- **Documentation Updates**: Update documentation with code changes
+- **Version Synchronization**: Keep package versions in sync
+- **Dependency Management**: Manage dependencies carefully across packages
+
+### Security Best Practices
+
+- **Never Commit Secrets**: Use environment variables and .gitignore
+- **Review Changes**: Always review changes before merging
+- **Use Signed Commits**: Sign commits for authenticity
+- **Regular Updates**: Keep Git and tools updated
+- **Access Control**: Use proper repository access controls
+
+## Integration with Reynard Tools
+
+### Package Management
+
+```bash
+# Install dependencies
+pnpm install
+
+# Add new package
+pnpm add package-name --filter reynard-core
+
+# Update dependencies
+pnpm update
+```
+
+### Testing Integration
+
+```bash
+# Run all tests
+pnpm test
+
+# Run tests for specific package
+pnpm test --filter reynard-core
+
+# Run E2E tests
+pnpm test:e2e
+```
+
+### Linting Integration
+
+```bash
+# Run linting
+pnpm lint
+
+# Fix linting issues
+pnpm lint:fix
+
+# Check specific packages
+pnpm lint --filter reynard-components
+```
+
+## Conclusion
+
+🦊 _Mastering Git in the Reynard ecosystem requires strategic thinking and attention to detail - just like the cunning fox who plans every move with precision._
+
+Effective Git usage in the Reynard monorepo requires understanding both Git fundamentals and the specific patterns that work best for large-scale TypeScript projects. By following these guidelines, you'll maintain a clean, organized repository that supports collaborative development and enables rapid iteration.
+
+Key principles to remember:
+
+- **Strategic Commits**: Every commit should tell a clear story
+- **Clear Communication**: Use conventional commit messages
+- **Quality First**: Never commit broken code
+- **Documentation Sync**: Keep docs in sync with code changes
+- **Security Awareness**: Never commit sensitive information
+- **Monorepo Coordination**: Understand how changes affect the entire ecosystem
+
+The Reynard project's success depends on maintaining high code quality and clear development practices. These Git guidelines ensure that every contributor can work effectively while maintaining the project's standards of excellence.
+
+_Build with the precision of a fox - every commit should be a calculated move toward better software._ 🦊

@@ -1,10 +1,10 @@
 /**
  * TodoItem Component
- * Individual todo item with toggle and delete functionality
+ * Individual todo item with modern checkbox and smooth strikeout animation
  */
 
+import { Button, Card, Checkbox } from "reynard-components";
 import { Component } from "solid-js";
-import { Toggle } from "reynard-components";
 
 interface Todo {
   id: number;
@@ -18,27 +18,32 @@ interface TodoItemProps {
   onDelete: () => void;
 }
 
-export const TodoItem: Component<TodoItemProps> = (props) => {
+export const TodoItem: Component<TodoItemProps> = props => {
   return (
-    <div class={`todo-item ${props.todo.completed ? "completed" : ""}`}>
-      <label class="todo-checkbox" for={`todo-${props.todo.id}`}>
-        <Toggle
-    size="sm"
-  /> props.onToggle()}
+    <Card
+      variant={props.todo.completed ? "outlined" : "elevated"}
+      padding="md"
+      class={`todo-item ${props.todo.completed ? "completed" : ""}`}
+      interactive
+    >
+      <div class="todo-item-content">
+        <Checkbox
+          size="md"
+          checked={props.todo.completed}
+          onChange={props.onToggle}
+          variant="primary"
           aria-label={`Mark "${props.todo.text}" as ${props.todo.completed ? "incomplete" : "complete"}`}
         />
-        <span class="checkmark" />
-      </label>
 
-      <span class="todo-text">{props.todo.text}</span>
+        <div class="todo-text-container">
+          <span class="todo-text">{props.todo.text}</span>
+          {props.todo.completed && <div class="todo-strikeout-line" />}
+        </div>
 
-      <button
-        class="todo-delete"
-        onClick={() => props.onDelete()}
-        title="Delete todo"
-      >
-        ×
-      </button>
-    </div>
+        <Button variant="danger" size="sm" iconOnly onClick={() => props.onDelete()} title="Delete todo">
+          ×
+        </Button>
+      </div>
+    </Card>
   );
 };

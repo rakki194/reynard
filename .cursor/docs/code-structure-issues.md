@@ -1,6 +1,6 @@
 # Code Structure Issues Guide
 
-*Simplifying control flow and eliminating unnecessary complexity*
+Simplifying control flow and eliminating unnecessary complexity.
 
 ## Overview
 
@@ -176,22 +176,22 @@ def process_order(order: dict) -> dict:
     """Process order with guard clauses."""
     if not order:
         return {"error": "No order data"}
-    
+
     if not order.get('items'):
         return {"error": "Missing items"}
-    
+
     if len(order['items']) == 0:
         return {"error": "No items"}
-    
+
     if not order.get('customer_id'):
         return {"error": "Missing customer ID"}
-    
+
     if not order.get('total'):
         return {"error": "Missing total"}
-    
+
     if order['total'] <= 0:
         return {"error": "Invalid total"}
-    
+
     # Process order
     return {"status": "processed", "order_id": "123"}
 ```
@@ -201,8 +201,8 @@ def process_order(order: dict) -> dict:
 ```python
 # ❌ Complex inline conditions
 def can_access_resource(user: dict, resource: dict) -> bool:
-    if (user.get('role') == 'admin' or 
-        (user.get('role') == 'user' and user.get('permissions', {}).get('read') and 
+    if (user.get('role') == 'admin' or
+        (user.get('role') == 'user' and user.get('permissions', {}).get('read') and
          resource.get('owner_id') == user.get('id')) or
         (user.get('role') == 'guest' and resource.get('public'))):
         return True
@@ -213,13 +213,13 @@ def can_access_resource(user: dict, resource: dict) -> bool:
     """Check if user can access resource."""
     if is_admin(user):
         return True
-    
+
     if is_owner(user, resource):
         return True
-    
+
     if is_public_resource(resource):
         return True
-    
+
     return False
 
 def is_admin(user: dict) -> bool:
@@ -228,7 +228,7 @@ def is_admin(user: dict) -> bool:
 
 def is_owner(user: dict, resource: dict) -> bool:
     """Check if user owns resource."""
-    return (user.get('role') == 'user' and 
+    return (user.get('role') == 'user' and
             user.get('permissions', {}).get('read') and
             resource.get('owner_id') == user.get('id'))
 
@@ -245,7 +245,7 @@ def calculate_shipping_cost(order: dict) -> float:
     weight = order.get('weight', 0)
     distance = order.get('distance', 0)
     priority = order.get('priority', 'standard')
-    
+
     if priority == 'express':
         if weight <= 1:
             return 15.0 + (distance * 0.5)
@@ -274,7 +274,7 @@ from typing import Dict, Any
 
 class ShippingStrategy(ABC):
     """Abstract shipping strategy."""
-    
+
     @abstractmethod
     def calculate_cost(self, weight: float, distance: float) -> float:
         """Calculate shipping cost."""
@@ -282,7 +282,7 @@ class ShippingStrategy(ABC):
 
 class ExpressShipping(ShippingStrategy):
     """Express shipping strategy."""
-    
+
     def calculate_cost(self, weight: float, distance: float) -> float:
         if weight <= 1:
             return 15.0 + (distance * 0.5)
@@ -293,7 +293,7 @@ class ExpressShipping(ShippingStrategy):
 
 class StandardShipping(ShippingStrategy):
     """Standard shipping strategy."""
-    
+
     def calculate_cost(self, weight: float, distance: float) -> float:
         if weight <= 1:
             return 8.0 + (distance * 0.3)
@@ -304,7 +304,7 @@ class StandardShipping(ShippingStrategy):
 
 class EconomyShipping(ShippingStrategy):
     """Economy shipping strategy."""
-    
+
     def calculate_cost(self, weight: float, distance: float) -> float:
         if weight <= 1:
             return 5.0 + (distance * 0.2)
@@ -315,20 +315,20 @@ class EconomyShipping(ShippingStrategy):
 
 class ShippingCalculator:
     """Shipping cost calculator."""
-    
+
     def __init__(self):
         self.strategies = {
             'express': ExpressShipping(),
             'standard': StandardShipping(),
             'economy': EconomyShipping()
         }
-    
+
     def calculate_shipping_cost(self, order: dict) -> float:
         """Calculate shipping cost for order."""
         weight = order.get('weight', 0)
         distance = order.get('distance', 0)
         priority = order.get('priority', 'standard')
-        
+
         strategy = self.strategies.get(priority, self.strategies['standard'])
         return strategy.calculate_cost(weight, distance)
 ```
@@ -369,25 +369,25 @@ def process_data(data: dict) -> dict:
     """Process data with flattened structure."""
     if not data:
         return {"error": "No data"}
-    
+
     if not data.get('type'):
         return {"error": "Missing type"}
-    
+
     if data['type'] != 'user':
         return {"error": "Invalid type"}
-    
+
     if not data.get('email'):
         return {"error": "Missing email"}
-    
+
     if '@' not in data['email']:
         return {"error": "Invalid email"}
-    
+
     if not data.get('name'):
         return {"error": "Missing name"}
-    
+
     if len(data['name']) == 0:
         return {"error": "Empty name"}
-    
+
     # Process user data
     return {"status": "success"}
 ```
@@ -426,7 +426,7 @@ def get_status_message(status: str) -> str:
         'failed': "Your request has failed",
         'cancelled': "Your request has been cancelled"
     }
-    
+
     return messages.get(status, "Unknown status")
 ```
 
@@ -434,26 +434,26 @@ def get_status_message(status: str) -> str:
 
 ```python
 # ❌ Boolean trap
-def create_user(name: str, email: str, is_admin: bool, is_active: bool, 
+def create_user(name: str, email: str, is_admin: bool, is_active: bool,
                 send_welcome: bool, create_profile: bool) -> dict:
     user = {"name": name, "email": email}
-    
+
     if is_admin:
         user["role"] = "admin"
     else:
         user["role"] = "user"
-    
+
     if is_active:
         user["status"] = "active"
     else:
         user["status"] = "inactive"
-    
+
     if send_welcome:
         send_welcome_email(email)
-    
+
     if create_profile:
         create_user_profile(user)
-    
+
     return user
 
 # ✅ Enum or named constants
@@ -476,13 +476,13 @@ def create_user(name: str, email: str, role: UserRole, status: UserStatus,
         "role": role.value,
         "status": status.value
     }
-    
+
     if send_welcome:
         send_welcome_email(email)
-    
+
     if create_profile:
         create_user_profile(user)
-    
+
     return user
 ```
 
@@ -496,21 +496,21 @@ def process_order(order: dict) -> dict:
     # Validate order
     if not order:
         return {"error": "No order"}
-    
+
     if not order.get('items'):
         return {"error": "No items"}
-    
+
     # Calculate total
     total = 0
     for item in order['items']:
         total += item.get('price', 0) * item.get('quantity', 0)
-    
+
     # Apply discounts
     if total > 100:
         total *= 0.9  # 10% discount
     elif total > 50:
         total *= 0.95  # 5% discount
-    
+
     # Calculate shipping
     weight = sum(item.get('weight', 0) for item in order['items'])
     if weight > 10:
@@ -519,7 +519,7 @@ def process_order(order: dict) -> dict:
         shipping = 10.0
     else:
         shipping = 5.0
-    
+
     return {"total": total, "shipping": shipping, "final": total + shipping}
 
 # After: Extracted methods
@@ -528,13 +528,13 @@ def process_order(order: dict) -> dict:
     validation_result = validate_order(order)
     if not validation_result['valid']:
         return {"error": validation_result['message']}
-    
+
     subtotal = calculate_subtotal(order['items'])
     discount = calculate_discount(subtotal)
     shipping = calculate_shipping(order['items'])
-    
+
     final_total = subtotal - discount + shipping
-    
+
     return {
         "subtotal": subtotal,
         "discount": discount,
@@ -546,10 +546,10 @@ def validate_order(order: dict) -> dict:
     """Validate order data."""
     if not order:
         return {"valid": False, "message": "No order"}
-    
+
     if not order.get('items'):
         return {"valid": False, "message": "No items"}
-    
+
     return {"valid": True, "message": "Valid"}
 
 def calculate_subtotal(items: list) -> float:
@@ -567,7 +567,7 @@ def calculate_discount(subtotal: float) -> float:
 def calculate_shipping(items: list) -> float:
     """Calculate shipping cost."""
     weight = sum(item.get('weight', 0) for item in items)
-    
+
     if weight > 10:
         return 15.0
     elif weight > 5:
@@ -583,7 +583,7 @@ def calculate_shipping(items: list) -> float:
 class OrderProcessor:
     def process_order(self, order: dict) -> dict:
         order_type = order.get('type')
-        
+
         if order_type == 'physical':
             return self.process_physical_order(order)
         elif order_type == 'digital':
@@ -598,10 +598,10 @@ from abc import ABC, abstractmethod
 
 class Order(ABC):
     """Abstract order class."""
-    
+
     def __init__(self, data: dict):
         self.data = data
-    
+
     @abstractmethod
     def process(self) -> dict:
         """Process the order."""
@@ -609,33 +609,33 @@ class Order(ABC):
 
 class PhysicalOrder(Order):
     """Physical order processing."""
-    
+
     def process(self) -> dict:
         # Process physical order
         return {"type": "physical", "status": "processed"}
 
 class DigitalOrder(Order):
     """Digital order processing."""
-    
+
     def process(self) -> dict:
         # Process digital order
         return {"type": "digital", "status": "processed"}
 
 class SubscriptionOrder(Order):
     """Subscription order processing."""
-    
+
     def process(self) -> dict:
         # Process subscription order
         return {"type": "subscription", "status": "processed"}
 
 class OrderFactory:
     """Factory for creating order objects."""
-    
+
     @staticmethod
     def create_order(order_data: dict) -> Order:
         """Create appropriate order type."""
         order_type = order_data.get('type')
-        
+
         if order_type == 'physical':
             return PhysicalOrder(order_data)
         elif order_type == 'digital':
@@ -647,7 +647,7 @@ class OrderFactory:
 
 class OrderProcessor:
     """Order processor using polymorphism."""
-    
+
     def process_order(self, order_data: dict) -> dict:
         """Process order using appropriate handler."""
         try:
@@ -667,35 +667,35 @@ from typing import List, Dict, Any
 
 class ComplexityAnalyzer(ast.NodeVisitor):
     """Analyze cyclomatic complexity of Python code."""
-    
+
     def __init__(self):
         self.complexity = 1  # Base complexity
         self.complex_nodes = []
-    
+
     def visit_If(self, node):
         """Count if statements."""
         self.complexity += 1
         self.complex_nodes.append(("if", node.lineno))
         self.generic_visit(node)
-    
+
     def visit_For(self, node):
         """Count for loops."""
         self.complexity += 1
         self.complex_nodes.append(("for", node.lineno))
         self.generic_visit(node)
-    
+
     def visit_While(self, node):
         """Count while loops."""
         self.complexity += 1
         self.complex_nodes.append(("while", node.lineno))
         self.generic_visit(node)
-    
+
     def visit_ExceptHandler(self, node):
         """Count exception handlers."""
         self.complexity += 1
         self.complex_nodes.append(("except", node.lineno))
         self.generic_visit(node)
-    
+
     def visit_BoolOp(self, node):
         """Count boolean operations."""
         self.complexity += len(node.values) - 1
@@ -706,10 +706,10 @@ def analyze_complexity(file_path: str) -> Dict[str, Any]:
     """Analyze cyclomatic complexity of a file."""
     with open(file_path, 'r') as f:
         tree = ast.parse(f.read())
-    
+
     analyzer = ComplexityAnalyzer()
     analyzer.visit(tree)
-    
+
     return {
         'complexity': analyzer.complexity,
         'complex_nodes': analyzer.complex_nodes,
@@ -735,10 +735,10 @@ def get_complexity_recommendation(complexity: int) -> str:
 def process_data(data: dict) -> dict:
     if not data:
         return {"error": "No data"}
-    
+
     if not data.get('required_field'):
         return {"error": "Missing required field"}
-    
+
     # Main processing logic
     return {"result": "processed"}
 
@@ -759,14 +759,14 @@ def process_data(data: dict) -> dict:
 ```python
 # ✅ Good: Extracted conditions
 def can_edit_post(user: dict, post: dict) -> bool:
-    return (is_post_owner(user, post) or 
-            is_admin(user) or 
+    return (is_post_owner(user, post) or
+            is_admin(user) or
             is_moderator(user))
 
 # ❌ Bad: Complex inline condition
 def can_edit_post(user: dict, post: dict) -> bool:
-    return (user.get('id') == post.get('author_id') or 
-            user.get('role') == 'admin' or 
+    return (user.get('id') == post.get('author_id') or
+            user.get('role') == 'admin' or
             (user.get('role') == 'moderator' and user.get('permissions', {}).get('edit')))
 ```
 
@@ -777,21 +777,21 @@ def can_edit_post(user: dict, post: dict) -> bool:
 def validate_user(user_data: dict) -> dict:
     if not user_data:
         return {"valid": False, "error": "No data"}
-    
+
     if not user_data.get('email'):
         return {"valid": False, "error": "Missing email"}
-    
+
     if not user_data.get('name'):
         return {"valid": False, "error": "Missing name"}
-    
+
     # Validation passed
     return {"valid": True}
 ```
 
 ## Conclusion
 
-🦊 *Mastering code structure requires the cunning of a fox - knowing when to simplify, how to flatten complexity, and
-where to extract meaningful abstractions.*
+🦊 _Mastering code structure requires the cunning of a fox - knowing when to simplify, how to flatten complexity, and
+where to extract meaningful abstractions._
 
 Improving code structure provides:
 
@@ -810,4 +810,4 @@ Key principles:
 - **Use polymorphism** instead of type checking
 - **Keep functions focused** on single responsibilities
 
-*Build code that flows like a fox through the forest - elegant, direct, and purposeful.* 🦊
+_Build code that flows like a fox through the forest - elegant, direct, and purposeful._ 🦊

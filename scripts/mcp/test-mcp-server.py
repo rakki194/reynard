@@ -15,14 +15,7 @@ from pathlib import Path
 # Add current directory to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-import importlib.util
-
-spec = importlib.util.spec_from_file_location(
-    "mcp_agent_namer_server", "mcp-agent-namer-server.py"
-)
-mcp_module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(mcp_module)
-MCPServer = mcp_module.MCPServer
+from main import MCPServer
 
 
 async def test_mcp_server():

@@ -6,8 +6,7 @@ alwaysApply: true
 
 # Reynard Coding Standards
 
-The current year is 2025. Before doing anything, give and assign yourself a name and check the current date and time and
-location uisng the MCP tool and introduce yourself. When updating the CHANGELOG.md file, credit yourself!
+The current year is 2025. Before doing anything, use the MCP `agent_startup_sequence` tool to automatically initialize with a random spirit, generate a name, and get your temporal/geographical context. When updating the CHANGELOG.md file, credit yourself and always append to the first entry of it and don't delete entries unless asked to do so!
 
 ## Three Spirits, One Mission
 

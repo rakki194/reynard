@@ -61,6 +61,10 @@ class MCPHandler:
             result = self.agent_tools.get_agent_name(arguments)
         elif tool_name == "list_agent_names":
             result = self.agent_tools.list_agent_names(arguments)
+        elif tool_name == "roll_agent_spirit":
+            result = self.agent_tools.roll_agent_spirit(arguments)
+        elif tool_name == "agent_startup_sequence":
+            result = self.agent_tools.agent_startup_sequence(arguments)
         # Utility tools
         elif tool_name == "get_current_time":
             result = self.utility_tools.get_current_time(arguments)

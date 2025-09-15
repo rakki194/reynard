@@ -5,6 +5,7 @@
 
 export { useAnimationState } from "./useAnimationState";
 export { useStaggeredAnimation } from "./useStaggeredAnimation";
+export { useStrikeoutAnimation } from "./useStrikeoutAnimation";
 
 // Re-export types
 export type {
@@ -14,3 +15,5 @@ export type {
   UseStaggeredAnimationOptions,
   UseStaggeredAnimationReturn,
 } from "../types";
+
+export type { StrikeoutAnimationOptions, StrikeoutAnimationState } from "./useStrikeoutAnimation";

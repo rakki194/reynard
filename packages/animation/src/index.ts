@@ -11,20 +11,20 @@
  */
 
 // Core exports
+export * from "./composables";
 export * from "./core";
 export * from "./easing/easing";
 export * from "./engines";
-export * from "./composables";
 // Note: utils exports are included in composables to avoid conflicts
 
 // Main types
 export type * from "./types";
 
 // Convenience exports for common use cases
+export { useAnimationState, useStaggeredAnimation, useStrikeoutAnimation } from "./composables";
 export { createAnimationCore } from "./core/AnimationCore";
 export { PerformanceMonitor } from "./core/PerformanceMonitor";
-export { createAdaptiveAnimationEngine } from "./engines/AdaptiveAnimation";
-export { createThrottledAnimationEngine } from "./engines/ThrottledAnimation";
-export { StroboscopicEngine } from "./engines/StroboscopicEngine";
-export { useAnimationState, useStaggeredAnimation } from "./composables";
 export { Easing, applyEasing, interpolate } from "./easing/easing";
+export { createAdaptiveAnimationEngine } from "./engines/AdaptiveAnimation";
+export { StroboscopicEngine } from "./engines/StroboscopicEngine";
+export { createThrottledAnimationEngine } from "./engines/ThrottledAnimation";

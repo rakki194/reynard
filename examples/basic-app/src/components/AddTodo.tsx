@@ -3,6 +3,7 @@
  * Form for adding new todos
  */
 
+import { Button, TextField } from "reynard-components";
 import { Component, createSignal } from "solid-js";
 import { useCustomTranslation } from "../App";
 
@@ -10,7 +11,7 @@ interface AddTodoProps {
   onAdd: (text: string) => void;
 }
 
-export const AddTodo: Component<AddTodoProps> = (props) => {
+export const AddTodo: Component<AddTodoProps> = props => {
   const [input, setInput] = createSignal("");
   const t = useCustomTranslation();
 
@@ -25,16 +26,18 @@ export const AddTodo: Component<AddTodoProps> = (props) => {
 
   return (
     <form class="add-todo" onSubmit={handleSubmit}>
-      <input
+      <TextField
         type="text"
-        class="todo-input"
         placeholder={t("todo.placeholder")}
         value={input()}
-        onInput={(e) => setInput(e.currentTarget.value)}
+        onInput={e => setInput(e.currentTarget.value)}
+        fullWidth
+        variant="outlined"
+        size="md"
       />
-      <button type="submit" class="add-button" disabled={!input().trim()}>
+      <Button type="submit" variant="primary" size="md" disabled={!input().trim()} fullWidth>
         {t("todo.addButton")}
-      </button>
+      </Button>
     </form>
   );
 };

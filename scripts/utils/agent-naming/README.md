@@ -1,6 +1,7 @@
 # Agent Naming Utilities
 
-This directory contains utilities for generating and managing agent names with animal spirit themes inspired by the Reynard framework.
+This directory contains utilities for generating and managing agent names with animal spirit themes inspired by the
+Reynard framework.
 
 ## Files
 

@@ -16,11 +16,35 @@
     "assigned_at": 161815.068631341
   },
   "assistant": {
-    "name": "Arctic-Prophet-21",
-    "assigned_at": 162926.173775433
+    "name": "Vulpine",
+    "assigned_at": 175428.887335651
   },
   "reynard-assistant": {
     "name": "Vulpine",
-    "assigned_at": 164823.295079833
+    "assigned_at": 174540.154857818
+  },
+  "claude-3-5-sonnet-20241022": {
+    "name": "Vulpine-Architect-7",
+    "assigned_at": 165738.503372319
+  },
+  "current_session": {
+    "name": "Pteronura-Scientist-35",
+    "assigned_at": 168181.286038494
+  },
+  "test-agent-001": {
+    "name": "Reynard-Orion-Meta",
+    "assigned_at": 174980.114814423
+  },
+  "current-session": {
+    "name": "Lupin-Teacher-32",
+    "assigned_at": 179994.356342392
+  },
+  "claude-assistant": {
+    "name": "Graceful-Strategist-55",
+    "assigned_at": 176363.882238391
+  },
+  "test-agent": {
+    "name": "Gentle-Grandmaster-35",
+    "assigned_at": 176625.117255798
   }
 }

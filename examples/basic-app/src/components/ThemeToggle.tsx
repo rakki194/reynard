@@ -3,8 +3,9 @@
  * Simple theme switching for the basic app
  */
 
+import { Button } from "reynard-components";
+import { getAvailableThemes, useTheme, type ThemeName } from "reynard-themes";
 import { Component } from "solid-js";
-import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 import { useCustomTranslation } from "../App";
 
 export const ThemeToggle: Component = () => {
@@ -14,7 +15,7 @@ export const ThemeToggle: Component = () => {
   const theme = () => themeContext.theme;
 
   const nextTheme = () => {
-    const themes = getAvailableThemes().map((theme) => theme.name as ThemeName);
+    const themes = getAvailableThemes().map(theme => theme.name as ThemeName);
     const currentIndex = themes.indexOf(theme());
     const nextIndex = (currentIndex + 1) % themes.length;
     themeContext.setTheme(themes[nextIndex]);
@@ -44,12 +45,13 @@ export const ThemeToggle: Component = () => {
   };
 
   return (
-    <button
-      class="theme-toggle"
+    <Button
+      variant="secondary"
+      size="sm"
       onClick={nextTheme}
       title={t("theme.switchTo", { theme: t(`theme.${theme()}`) })}
     >
       {getThemeEmoji()} {t(`theme.${theme()}`)}
-    </button>
+    </Button>
   );
 };

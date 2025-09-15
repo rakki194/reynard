@@ -1,29 +1,9 @@
 /**
  * Basic Todo App Styles
- * Demonstrates Reynard theming with a practical application
+ * Modern styling using Reynard components and theme system
  */
 
-/* Reynard Theme Variables - using proper theme system */
-:root {
-  /* Map Reynard theme variables to app-specific names */
-  --accent: var(--color-accent);
-  --bg-color: var(--color-background);
-  --secondary-bg: var(--color-background-secondary);
-  --card-bg: var(--color-surface);
-  --text-primary: var(--color-text);
-  --text-secondary: var(--color-text-secondary);
-  --border-color: var(--color-border);
-  --success: var(--color-success);
-  --danger: var(--color-danger);
-
-  /* Spacing and layout */
-  --spacing: var(--spacing-base);
-  --border-radius: var(--border-radius-lg);
-  --shadow: var(--elevation-2);
-  --transition: var(--duration-base) var(--easing-standard);
-}
-
-/* All theme-specific variables are now handled by reynard-themes.css */
+/* App-specific customizations for the todo app */
 
 /* Reset and base styles */
 * {
@@ -31,18 +11,13 @@
 }
 
 html {
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  line-height: 1.5;
-  color: var(--text-primary);
-  background-color: var(--bg-color);
+  font-family: var(--font-family-primary);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
   transition:
-    background-color var(--transition),
-    color var(--transition);
+    background-color var(--duration-base) var(--easing-standard),
+    color var(--duration-base) var(--easing-standard);
 }
 
 body {
@@ -56,23 +31,30 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--color-background);
 }
 
 .app-header {
-  background: var(--secondary-bg);
-  padding: var(--spacing) calc(var(--spacing) * 2);
-  text-align: center;
-  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: center;
 }
 
-.app-header h1 {
-  margin: 0 0 calc(var(--spacing) / 2) 0;
-  font-size: 2rem;
-  color: var(--accent);
+.header-card {
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+}
+
+.header-card h1 {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: var(--font-size-3xl);
+  color: var(--color-accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
 .reynard-logo {
@@ -81,163 +63,73 @@ body {
   justify-content: center;
   width: 48px;
   height: 48px;
+  font-size: 2rem;
 }
 
-.reynard-logo svg {
-  width: 48px;
-  height: 48px;
-  fill: currentColor;
-}
-
-.app-header p {
-  margin: 0 0 var(--spacing) 0;
-  color: var(--text-secondary);
+.header-card p {
+  margin: 0 0 var(--space-md) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-lg);
 }
 
 .header-controls {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: var(--spacing);
+  gap: var(--space-md);
   flex-wrap: wrap;
 }
 
 .theme-info {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
 }
 
-.theme-toggle {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: calc(var(--spacing) / 2) var(--spacing);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition:
-    transform var(--transition),
-    box-shadow var(--transition);
-}
-
-.theme-toggle:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow);
-}
-
-.language-selector {
-  background: var(--card-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  padding: calc(var(--spacing) / 2) var(--spacing);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all var(--transition);
-}
-
-.language-selector:hover {
-  background: var(--accent);
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow);
-}
-
-.language-selector:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
-}
-
+/* Main content area */
 .app-main {
   flex: 1;
-  padding: calc(var(--spacing) * 2);
   display: flex;
   justify-content: center;
 }
 
 .todo-container {
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
 }
 
-.todo-stats {
+/* Stats card */
+.stats-card {
   text-align: center;
-  margin-bottom: calc(var(--spacing) * 2);
 }
 
 .stat {
-  background: var(--card-bg);
-  padding: calc(var(--spacing) / 2) var(--spacing);
-  border-radius: var(--border-radius);
-  font-weight: 500;
-  color: var(--text-primary);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
 }
 
 /* Add todo form */
 .add-todo {
   display: flex;
-  gap: calc(var(--spacing) / 2);
-  margin-bottom: calc(var(--spacing) * 2);
-}
-
-.todo-input {
-  flex: 1;
-  padding: var(--spacing);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  background: var(--card-bg);
-  color: var(--text-primary);
-  font-size: 1rem;
-}
-
-.todo-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
-}
-
-.add-button {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: var(--spacing) calc(var(--spacing) * 1.5);
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-weight: 500;
-  transition: all var(--transition);
-}
-
-.add-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow);
-}
-
-.add-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  flex-direction: column;
+  gap: var(--space-md);
 }
 
 /* Todo list */
 .todo-list {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--spacing) / 2);
+  gap: var(--space-sm);
 }
 
 .todo-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing);
-  background: var(--card-bg);
-  padding: var(--spacing);
-  border-radius: var(--border-radius);
-  transition: all var(--transition);
-}
-
-.todo-item:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow);
+  transition: all var(--duration-base) var(--easing-standard);
 }
 
 .todo-item.completed {
@@ -246,120 +138,98 @@ body {
 
 .todo-item.completed .todo-text {
   text-decoration: line-through;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
-/* Custom checkbox */
-.todo-checkbox {
-  position: relative;
-  cursor: pointer;
+.todo-item-content {
   display: flex;
   align-items: center;
+  gap: var(--space-md);
+  width: 100%;
 }
 
-.todo-checkbox input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.checkmark {
-  height: 20px;
-  width: 20px;
-  background-color: var(--bg-color);
-  border: 2px solid var(--border-color);
-  border-radius: 4px;
-  transition: all var(--transition);
-}
-
-.todo-checkbox:hover .checkmark {
-  border-color: var(--accent);
-}
-
-.todo-checkbox input:checked ~ .checkmark {
-  background-color: var(--accent);
-  border-color: var(--accent);
-}
-
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.todo-checkbox input:checked ~ .checkmark:after {
-  display: block;
+.todo-text-container {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .todo-text {
-  flex: 1;
-  font-size: 1rem;
-  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  transition: all var(--duration-base) var(--easing-standard);
+  position: relative;
+  z-index: 1;
 }
 
-.todo-delete {
-  background: var(--danger);
-  color: white;
-  border: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--transition);
+.todo-strikeout-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 2px;
+  background-color: var(--color-text-secondary);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left center;
+  border-radius: 1px;
+  z-index: 2;
+  animation: strikeout var(--duration-slow) var(--easing-standard) forwards;
 }
 
-.todo-delete:hover {
-  transform: scale(1.1);
+@keyframes strikeout {
+  from {
+    transform: translateY(-50%) scaleX(0);
+  }
+  to {
+    transform: translateY(-50%) scaleX(1);
+  }
 }
+
+/* Empty state */
 
 .empty-state {
   text-align: center;
-  padding: calc(var(--spacing) * 3);
-  color: var(--text-secondary);
+  padding: var(--space-2xl);
+  color: var(--color-text-secondary);
   font-style: italic;
+  font-size: var(--font-size-lg);
 }
 
+/* Footer */
 .app-footer {
-  background: var(--secondary-bg);
-  padding: var(--spacing);
+  display: flex;
+  justify-content: center;
+}
+
+.footer-card {
   text-align: center;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  border-top: 1px solid var(--border-color);
+  max-width: 800px;
+  width: 100%;
+}
+
+.footer-card p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
 }
 
 /* Responsive design */
-@media (max-width: 480px) {
-  .app-header {
-    padding: var(--spacing);
+@media (max-width: 768px) {
+  .app {
+    padding: var(--space-sm);
+    gap: var(--space-sm);
   }
 
-  .app-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .app-main {
-    padding: var(--spacing);
+  .header-card h1 {
+    font-size: var(--font-size-2xl);
   }
 
   .header-controls {
     flex-direction: column;
-    gap: calc(var(--spacing) / 2);
+    gap: var(--space-sm);
   }
 
-  .add-todo {
-    flex-direction: column;
+  .todo-container {
+    max-width: 100%;
   }
 }

@@ -1,0 +1,1439 @@
+{
+  "config": {
+    "configFile": "/home/kade/runeset/reynard/e2e/playwright.config.i18n.ts",
+    "rootDir": "/home/kade/runeset/reynard/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": "/home/kade/runeset/reynard/e2e/global-i18n-setup.ts",
+    "globalTeardown": "/home/kade/runeset/reynard/e2e/global-i18n-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "i18n-benchmark-results"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "i18n-benchmark-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "i18n-benchmark-results.xml"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-performance",
+        "name": "chromium-performance",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "i18n-benchmark.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "firefox-performance",
+        "name": "firefox-performance",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "i18n-benchmark.spec.ts"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit-performance",
+        "name": "webkit-performance",
+        "testDir": "/home/kade/runeset/reynard/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "i18n-benchmark.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "i18n-benchmark.spec.ts",
+      "file": "i18n-benchmark.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "I18n Performance Benchmarks",
+          "file": "i18n-benchmark.spec.ts",
+          "line": 133,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Hardcoded Strings Baseline Performance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-performance",
+                  "projectName": "chromium-performance",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 652,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:38:00.175Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-a746e-trings-Baseline-Performance-chromium-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-performance",
+                  "projectName": "firefox-performance",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:06.975Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-a746e-trings-Baseline-Performance-firefox-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-performance",
+                  "projectName": "webkit-performance",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:20.099Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-a746e-trings-Baseline-Performance-webkit-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4f09b1dc6b814a82afd3-685fe78f9a0e0a8c1c41",
+              "file": "i18n-benchmark.spec.ts",
+              "line": 153,
+              "column": 3
+            },
+            {
+              "title": "Dynamic I18n Loading Performance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-performance",
+                  "projectName": "chromium-performance",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 602,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:38:00.931Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-1d9a4-ic-I18n-Loading-Performance-chromium-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-performance",
+                  "projectName": "firefox-performance",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:08.856Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-1d9a4-ic-I18n-Loading-Performance-firefox-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-performance",
+                  "projectName": "webkit-performance",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:21.686Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-1d9a4-ic-I18n-Loading-Performance-webkit-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4f09b1dc6b814a82afd3-537cf4f8f585ff69fd9d",
+              "file": "i18n-benchmark.spec.ts",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "Language Switching Performance",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-performance",
+                  "projectName": "chromium-performance",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 31897,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:238:18",
+                        "location": {
+                          "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                          "column": 18,
+                          "line": 238
+                        },
+                        "snippet": "  236 |       \n  237 |       // Switch language\n> 238 |       await page.click(`[data-testid=\"language-selector\"]`);\n      |                  ^\n  239 |       await page.click(`[data-testid=\"language-${language}\"]`);\n  240 |       \n  241 |       // Wait for translations to load"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 18,
+                            "line": 238
+                          },
+                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n\n\n  236 |       \n  237 |       // Switch language\n> 238 |       await page.click(`[data-testid=\"language-selector\"]`);\n      |                  ^\n  239 |       await page.click(`[data-testid=\"language-${language}\"]`);\n  240 |       \n  241 |       // Wait for translations to load\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:238:18"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 16,
+                            "line": 447
+                          },
+                          "message": "ReferenceError: require is not defined\n\n  445 |     \n  446 |     // Save report to file\n> 447 |     const fs = require('fs');\n      |                ^\n  448 |     const path = require('path');\n  449 |     const reportPath = path.join(__dirname, 'i18n-benchmark-results.md');\n  450 |     fs.writeFileSync(reportPath, report);\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:447:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n# I18n Benchmark Results\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:38:01.573Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-58c3e-guage-Switching-Performance-chromium-performance/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-58c3e-guage-Switching-Performance-chromium-performance/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-58c3e-guage-Switching-Performance-chromium-performance/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-58c3e-guage-Switching-Performance-chromium-performance/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                        "column": 18,
+                        "line": 238
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-performance",
+                  "projectName": "firefox-performance",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:10.672Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-58c3e-guage-Switching-Performance-firefox-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-performance",
+                  "projectName": "webkit-performance",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:23.246Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-58c3e-guage-Switching-Performance-webkit-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4f09b1dc6b814a82afd3-0a325c0383d2c22c0c17",
+              "file": "i18n-benchmark.spec.ts",
+              "line": 230,
+              "column": 3
+            },
+            {
+              "title": "Cached vs Uncached I18n Performance",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-performance",
+                  "projectName": "chromium-performance",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 32153,
+                      "error": {
+                        "message": "TimeoutError: page.waitForSelector: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"translated-content\"]') to be visible\u001b[22m\n",
+                        "stack": "TimeoutError: page.waitForSelector: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"translated-content\"]') to be visible\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:268:20\n    at I18nBenchmarkRunner.runBenchmark (/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:58:7)\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:262:28",
+                        "location": {
+                          "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                          "column": 20,
+                          "line": 268
+                        },
+                        "snippet": "  266 |       async () => {\n  267 |         await page.reload();\n> 268 |         await page.waitForSelector('[data-testid=\"translated-content\"]');\n      |                    ^\n  269 |       }\n  270 |     );\n  271 |     "
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 20,
+                            "line": 268
+                          },
+                          "message": "TimeoutError: page.waitForSelector: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"translated-content\"]') to be visible\u001b[22m\n\n\n  266 |       async () => {\n  267 |         await page.reload();\n> 268 |         await page.waitForSelector('[data-testid=\"translated-content\"]');\n      |                    ^\n  269 |       }\n  270 |     );\n  271 |     \n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:268:20\n    at I18nBenchmarkRunner.runBenchmark (/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:58:7)\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:262:28"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 16,
+                            "line": 447
+                          },
+                          "message": "ReferenceError: require is not defined\n\n  445 |     \n  446 |     // Save report to file\n> 447 |     const fs = require('fs');\n      |                ^\n  448 |     const path = require('path');\n  449 |     const reportPath = path.join(__dirname, 'i18n-benchmark-results.md');\n  450 |     fs.writeFileSync(reportPath, report);\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:447:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n# I18n Benchmark Results\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:38:35.149Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-3e222-s-Uncached-I18n-Performance-chromium-performance/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-3e222-s-Uncached-I18n-Performance-chromium-performance/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-3e222-s-Uncached-I18n-Performance-chromium-performance/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-3e222-s-Uncached-I18n-Performance-chromium-performance/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                        "column": 20,
+                        "line": 268
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-performance",
+                  "projectName": "firefox-performance",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:12.225Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-3e222-s-Uncached-I18n-Performance-firefox-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-performance",
+                  "projectName": "webkit-performance",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:24.831Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-3e222-s-Uncached-I18n-Performance-webkit-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4f09b1dc6b814a82afd3-f02a6bb3acaafb18d9ab",
+              "file": "i18n-benchmark.spec.ts",
+              "line": 258,
+              "column": 3
+            },
+            {
+              "title": "Memory Usage Comparison",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-performance",
+                  "projectName": "chromium-performance",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 47240,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n\n    at testFn (/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:317:24)\n    at I18nBenchmarkRunner.runBenchmark (/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:58:7)\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:327:22",
+                        "location": {
+                          "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                          "column": 24,
+                          "line": 317
+                        },
+                        "snippet": "  315 |           // Load multiple languages\n  316 |           for (const lang of ['en', 'ja', 'fr']) {\n> 317 |             await page.click(`[data-testid=\"language-selector\"]`);\n      |                        ^\n  318 |             await page.click(`[data-testid=\"language-${lang}\"]`);\n  319 |             await page.waitForTimeout(100);\n  320 |           }"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 24,
+                            "line": 317
+                          },
+                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n\n\n  315 |           // Load multiple languages\n  316 |           for (const lang of ['en', 'ja', 'fr']) {\n> 317 |             await page.click(`[data-testid=\"language-selector\"]`);\n      |                        ^\n  318 |             await page.click(`[data-testid=\"language-${lang}\"]`);\n  319 |             await page.waitForTimeout(100);\n  320 |           }\n    at testFn (/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:317:24)\n    at I18nBenchmarkRunner.runBenchmark (/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:58:7)\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:327:22"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 16,
+                            "line": 447
+                          },
+                          "message": "ReferenceError: require is not defined\n\n  445 |     \n  446 |     // Save report to file\n> 447 |     const fs = require('fs');\n      |                ^\n  448 |     const path = require('path');\n  449 |     const reportPath = path.join(__dirname, 'i18n-benchmark-results.md');\n  450 |     fs.writeFileSync(reportPath, report);\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:447:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "Hardcoded Strings Memory Usage: 8.94MB\n"
+                        },
+                        {
+                          "text": "Single Language I18n Memory Usage: 7.17MB\n"
+                        },
+                        {
+                          "text": "\n# I18n Benchmark Results\n\n## Hardcoded Strings - baseline\n- Load Time: 5657.82ms\n- Render Time: 0.00ms\n- Memory Usage: 8.94MB\n- Language Switch Time: N/Ams\n- Timestamp: 2025-09-14T23:39:16.823Z\n\n\n## Single Language I18n - single-lang\n- Load Time: 5970.78ms\n- Render Time: 0.00ms\n- Memory Usage: 7.17MB\n- Language Switch Time: N/Ams\n- Timestamp: 2025-09-14T23:39:24.477Z\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:39:09.041Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-b4959-rks-Memory-Usage-Comparison-chromium-performance/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-b4959-rks-Memory-Usage-Comparison-chromium-performance/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-b4959-rks-Memory-Usage-Comparison-chromium-performance/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-b4959-rks-Memory-Usage-Comparison-chromium-performance/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                        "column": 24,
+                        "line": 317
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-performance",
+                  "projectName": "firefox-performance",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:13.762Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-b4959-rks-Memory-Usage-Comparison-firefox-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-performance",
+                  "projectName": "webkit-performance",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:26.405Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-b4959-rks-Memory-Usage-Comparison-webkit-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4f09b1dc6b814a82afd3-e81fe01cd3e01d90b54c",
+              "file": "i18n-benchmark.spec.ts",
+              "line": 289,
+              "column": 3
+            },
+            {
+              "title": "Bundle Size Impact Analysis",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-performance",
+                  "projectName": "chromium-performance",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 611,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Bundle Analysis: [\n  {\n    name: \u001b[32m'http://localhost:3000/node_modules/.vite/deps/solid-js_web.js?v=02409738'\u001b[39m,\n    size: \u001b[33m10411\u001b[39m,\n    duration: \u001b[33m4.100000023841858\u001b[39m\n  },\n  {\n    name: \u001b[32m'http://localhost:3000/@fs/home/kade/runeset/reynard/packages/themes/dist/index.js'\u001b[39m,\n    size: \u001b[33m435772\u001b[39m,\n    duration: \u001b[33m18.299999982118607\u001b[39m\n  },\n  {\n    name: \u001b[32m'http://localhost:3000/src/styles.css'\u001b[39m,\n    size: \u001b[33m18417\u001b[39m,\n    duration: \u001b[33m17.400000005960464\u001b[39m\n  },\n  {\n    name: \u001b[32m'http://localhost:3000/node_modules/.vite/deps/chunk-SR6W7FD5.js?v=02409738'\u001b[39m,\n    size: \u001b[33m32324\u001b[39m,\n    duration: \u001b[33m9.599999994039536\u001b[39m\n  },\n  {\n    name: \u001b[32m'http://localhost:3000/node_modules/.vite/deps/chunk-ZRV3NALM.js?v=02409738'\u001b[39m,\n    size: \u001b[33m54292\u001b[39m,\n    duration: \u001b[33m36.89999997615814\u001b[39m\n  },\n  {\n    name: \u001b[32m'http://localhost:3000/node_modules/.vite/deps/solid-js.js?v=02409738'\u001b[39m,\n    size: \u001b[33m7594\u001b[39m,\n    duration: \u001b[33m13.899999976158142\u001b[39m\n  },\n  {\n    name: \u001b[32m'http://localhost:3000/src/App.css'\u001b[39m,\n    size: \u001b[33m6113\u001b[39m,\n    duration: \u001b[33m40.70000001788139\u001b[39m\n  }\n]\n"
+                        },
+                        {
+                          "text": "Total i18n bundle size: 0.00KB\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:39:58.793Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-a7311-Bundle-Size-Impact-Analysis-chromium-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-performance",
+                  "projectName": "firefox-performance",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 4,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:15.391Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-a7311-Bundle-Size-Impact-Analysis-firefox-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-performance",
+                  "projectName": "webkit-performance",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:28.026Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-a7311-Bundle-Size-Impact-Analysis-webkit-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4f09b1dc6b814a82afd3-22d116266a0434093160",
+              "file": "i18n-benchmark.spec.ts",
+              "line": 339,
+              "column": 3
+            },
+            {
+              "title": "RTL Language Performance",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-performance",
+                  "projectName": "chromium-performance",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 32050,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:377:18",
+                        "location": {
+                          "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                          "column": 18,
+                          "line": 377
+                        },
+                        "snippet": "  375 |       \n  376 |       // Switch to RTL language\n> 377 |       await page.click(`[data-testid=\"language-selector\"]`);\n      |                  ^\n  378 |       await page.click(`[data-testid=\"language-${language}\"]`);\n  379 |       \n  380 |       // Wait for RTL layout to apply"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 18,
+                            "line": 377
+                          },
+                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n\n\n  375 |       \n  376 |       // Switch to RTL language\n> 377 |       await page.click(`[data-testid=\"language-selector\"]`);\n      |                  ^\n  378 |       await page.click(`[data-testid=\"language-${language}\"]`);\n  379 |       \n  380 |       // Wait for RTL layout to apply\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:377:18"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 16,
+                            "line": 447
+                          },
+                          "message": "ReferenceError: require is not defined\n\n  445 |     \n  446 |     // Save report to file\n> 447 |     const fs = require('fs');\n      |                ^\n  448 |     const path = require('path');\n  449 |     const reportPath = path.join(__dirname, 'i18n-benchmark-results.md');\n  450 |     fs.writeFileSync(reportPath, report);\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:447:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n# I18n Benchmark Results\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:39:59.639Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-86ab2-ks-RTL-Language-Performance-chromium-performance/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-86ab2-ks-RTL-Language-Performance-chromium-performance/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-86ab2-ks-RTL-Language-Performance-chromium-performance/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-86ab2-ks-RTL-Language-Performance-chromium-performance/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                        "column": 18,
+                        "line": 377
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-performance",
+                  "projectName": "firefox-performance",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:16.943Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-86ab2-ks-RTL-Language-Performance-firefox-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-performance",
+                  "projectName": "webkit-performance",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:29.580Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-86ab2-ks-RTL-Language-Performance-webkit-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4f09b1dc6b814a82afd3-ee13fff508638abce94e",
+              "file": "i18n-benchmark.spec.ts",
+              "line": 368,
+              "column": 3
+            },
+            {
+              "title": "Pluralization Performance",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-performance",
+                  "projectName": "chromium-performance",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 31978,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:418:18",
+                        "location": {
+                          "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                          "column": 18,
+                          "line": 418
+                        },
+                        "snippet": "  416 |       \n  417 |       // Switch to test language\n> 418 |       await page.click(`[data-testid=\"language-selector\"]`);\n      |                  ^\n  419 |       await page.click(`[data-testid=\"language-${test.lang}\"]`);\n  420 |       \n  421 |       // Test pluralization"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 18,
+                            "line": 418
+                          },
+                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-testid=\"language-selector\"]')\u001b[22m\n\n\n  416 |       \n  417 |       // Switch to test language\n> 418 |       await page.click(`[data-testid=\"language-selector\"]`);\n      |                  ^\n  419 |       await page.click(`[data-testid=\"language-${test.lang}\"]`);\n  420 |       \n  421 |       // Test pluralization\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:418:18"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 16,
+                            "line": 447
+                          },
+                          "message": "ReferenceError: require is not defined\n\n  445 |     \n  446 |     // Save report to file\n> 447 |     const fs = require('fs');\n      |                ^\n  448 |     const path = require('path');\n  449 |     const reportPath = path.join(__dirname, 'i18n-benchmark-results.md');\n  450 |     fs.writeFileSync(reportPath, report);\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:447:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n# I18n Benchmark Results\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:40:33.281Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-84660-s-Pluralization-Performance-chromium-performance/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-84660-s-Pluralization-Performance-chromium-performance/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-84660-s-Pluralization-Performance-chromium-performance/error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-84660-s-Pluralization-Performance-chromium-performance/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                        "column": 18,
+                        "line": 418
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox-performance",
+                  "projectName": "firefox-performance",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/firefox-1490/firefox/firefox\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:18.496Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-84660-s-Pluralization-Performance-firefox-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit-performance",
+                  "projectName": "webkit-performance",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3,
+                      "error": {
+                        "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
+                        "stack": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: browserType.launch: Executable doesn't exist at /home/kade/.cache/ms-playwright/webkit_ubuntu20.04_x64_special-2092/pw_run.sh\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     pnpm exec playwright install                                        ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
+                        },
+                        {
+                          "location": {
+                            "file": "/home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts",
+                            "column": 36,
+                            "line": 443
+                          },
+                          "message": "TypeError: Cannot read properties of undefined (reading 'generateReport')\n\n  441 |   test.afterAll(async () => {\n  442 |     // Generate and save benchmark report\n> 443 |     const report = benchmarkRunner.generateReport();\n      |                                    ^\n  444 |     console.log('\\n' + report);\n  445 |     \n  446 |     // Save report to file\n    at /home/kade/runeset/reynard/e2e/i18n-benchmark.spec.ts:443:36"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T23:41:31.656Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/kade/runeset/reynard/e2e/i18n-benchmark-results/i18n-benchmark-I18n-Perfor-84660-s-Pluralization-Performance-webkit-performance/trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "4f09b1dc6b814a82afd3-15d50b8e555302b17ebd",
+              "file": "i18n-benchmark.spec.ts",
+              "line": 397,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-09-14T23:37:44.331Z",
+    "duration": 227464.54499999998,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 21,
+    "flaky": 0
+  }
+}

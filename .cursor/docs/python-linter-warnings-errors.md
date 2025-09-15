@@ -1,6 +1,6 @@
 # Python Linter Warnings & Errors Guide
 
-_Comprehensive guide to common Python linter warnings and errors with practical solutions_
+Guide to common Python linter warnings and errors with practical solutions.
 
 ## Overview
 
