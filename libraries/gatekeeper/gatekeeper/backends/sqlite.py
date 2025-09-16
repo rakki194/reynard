@@ -30,6 +30,9 @@ logger = logging.getLogger(__name__)
 # SQLAlchemy base class
 Base = declarative_base()
 
+# Type alias for the base class
+BaseType = type[Base]
+
 
 class UserModel(Base):
     """SQLAlchemy model for users table."""
@@ -90,8 +93,8 @@ class SQLiteBackend(UserBackend):
         else:
             self.async_database_url = database_url
 
-        self.engine = None
-        self.session_factory = None
+        self.engine: Engine | None = None
+        self.session_factory: sessionmaker[Session] | None = None
         self._initialized = False
 
     async def _initialize(self) -> None:
@@ -126,39 +129,39 @@ class SQLiteBackend(UserBackend):
 
     def _get_session(self) -> Session:
         """Get a database session."""
-        if not self._initialized:
+        if not self._initialized or self.session_factory is None:
             raise BackendError("Backend not initialized")
         return self.session_factory()
 
     def _model_to_user(self, model: UserModel) -> User:
         """Convert SQLAlchemy model to User object."""
         return User(
-            id=model.id,
-            username=model.username,
-            password_hash=model.password_hash,
-            role=UserRole(model.role),
-            email=model.email,
-            profile_picture_url=model.profile_picture_url,
-            yapcoin_balance=model.yapcoin_balance,
-            is_active=model.is_active,
-            created_at=model.created_at,
-            updated_at=model.updated_at,
-            metadata=model.user_metadata or {},
+            id=model.id,  # type: ignore[arg-type]
+            username=model.username,  # type: ignore[arg-type]
+            password_hash=model.password_hash,  # type: ignore[arg-type]
+            role=UserRole(model.role),  # type: ignore[arg-type]
+            email=model.email,  # type: ignore[arg-type]
+            profile_picture_url=model.profile_picture_url,  # type: ignore[arg-type]
+            yapcoin_balance=model.yapcoin_balance,  # type: ignore[arg-type]
+            is_active=model.is_active,  # type: ignore[arg-type]
+            created_at=model.created_at,  # type: ignore[arg-type]
+            updated_at=model.updated_at,  # type: ignore[arg-type]
+            metadata=model.user_metadata or {},  # type: ignore[arg-type]
         )
 
     def _model_to_user_public(self, model: UserModel) -> UserPublic:
         """Convert SQLAlchemy model to UserPublic object."""
         return UserPublic(
-            id=model.id,
-            username=model.username,
-            role=UserRole(model.role),
-            email=model.email,
-            profile_picture_url=model.profile_picture_url,
-            yapcoin_balance=model.yapcoin_balance,
-            is_active=model.is_active,
-            created_at=model.created_at,
-            updated_at=model.updated_at,
-            metadata=model.user_metadata or {},
+            id=model.id,  # type: ignore[arg-type]
+            username=model.username,  # type: ignore[arg-type]
+            role=UserRole(model.role),  # type: ignore[arg-type]
+            email=model.email,  # type: ignore[arg-type]
+            profile_picture_url=model.profile_picture_url,  # type: ignore[arg-type]
+            yapcoin_balance=model.yapcoin_balance,  # type: ignore[arg-type]
+            is_active=model.is_active,  # type: ignore[arg-type]
+            created_at=model.created_at,  # type: ignore[arg-type]
+            updated_at=model.updated_at,  # type: ignore[arg-type]
+            metadata=model.user_metadata or {},  # type: ignore[arg-type]
         )
 
     async def create_user(self, user: UserCreate) -> User:
@@ -302,15 +305,15 @@ class SQLiteBackend(UserBackend):
 
             # Update fields if provided
             if user_update.email is not None:
-                user_model.email = user_update.email
+                user_model.email = user_update.email  # type: ignore[assignment]
             if user_update.profile_picture_url is not None:
-                user_model.profile_picture_url = user_update.profile_picture_url
+                user_model.profile_picture_url = user_update.profile_picture_url  # type: ignore[assignment]
             if user_update.is_active is not None:
-                user_model.is_active = user_update.is_active
+                user_model.is_active = user_update.is_active  # type: ignore[assignment]
             if user_update.metadata is not None:
-                user_model.user_metadata = user_update.metadata
+                user_model.user_metadata = user_update.metadata  # type: ignore[assignment]
 
-            user_model.updated_at = datetime.now(UTC)
+            user_model.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
             session.commit()
             session.refresh(user_model)
@@ -397,8 +400,8 @@ class SQLiteBackend(UserBackend):
             if not user_model:
                 return False
 
-            user_model.password_hash = new_password_hash
-            user_model.updated_at = datetime.now(UTC)
+            user_model.password_hash = new_password_hash  # type: ignore[assignment]
+            user_model.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
             session.commit()
 
@@ -425,8 +428,8 @@ class SQLiteBackend(UserBackend):
             if not user_model:
                 return False
 
-            user_model.role = new_role
-            user_model.updated_at = datetime.now(UTC)
+            user_model.role = new_role  # type: ignore[assignment]
+            user_model.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
             session.commit()
 
@@ -455,8 +458,8 @@ class SQLiteBackend(UserBackend):
             if not user_model:
                 return False
 
-            user_model.profile_picture_url = profile_picture_url
-            user_model.updated_at = datetime.now(UTC)
+            user_model.profile_picture_url = profile_picture_url  # type: ignore[assignment]
+            user_model.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
             session.commit()
 
@@ -485,8 +488,8 @@ class SQLiteBackend(UserBackend):
             if not user_model:
                 return False
 
-            user_model.user_metadata = metadata
-            user_model.updated_at = datetime.now(UTC)
+            user_model.user_metadata = metadata  # type: ignore[assignment]
+            user_model.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
             session.commit()
 
@@ -600,7 +603,7 @@ class SQLiteBackend(UserBackend):
             if not user_model:
                 raise UserNotFoundError(f"User '{username}' not found")
 
-            return user_model.user_metadata or {}
+            return user_model.user_metadata or {}  # type: ignore[return-value]
 
         except UserNotFoundError:
             raise
@@ -625,8 +628,8 @@ class SQLiteBackend(UserBackend):
             if not user_model:
                 return False
 
-            user_model.user_metadata = settings
-            user_model.updated_at = datetime.now(UTC)
+            user_model.user_metadata = settings  # type: ignore[assignment]
+            user_model.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
             session.commit()
 
@@ -664,8 +667,8 @@ class SQLiteBackend(UserBackend):
             if not user_model:
                 return False
 
-            user_model.username = new_username
-            user_model.updated_at = datetime.now(UTC)
+            user_model.username = new_username  # type: ignore[assignment]
+            user_model.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
             session.commit()
 
@@ -709,8 +712,8 @@ class SQLiteBackend(UserBackend):
             if not user_model:
                 return False
 
-            user_model.yapcoin_balance = amount
-            user_model.updated_at = datetime.now(UTC)
+            user_model.yapcoin_balance = amount  # type: ignore[assignment]
+            user_model.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
             session.commit()
 
@@ -722,7 +725,7 @@ class SQLiteBackend(UserBackend):
             logger.error(f"Failed to update YapCoin balance for user {username}: {e}")
             raise BackendError(f"Failed to update YapCoin balance: {e}")
         finally:
-            session.close()
+            session.close()  # type: ignore[unreachable]
 
     async def close(self) -> None:
         """Close the backend connection and clean up resources."""

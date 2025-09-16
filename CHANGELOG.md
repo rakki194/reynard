@@ -1,9 +1,112 @@
 # Changelog
 
-All notable changes to the Reynard framework will be documented in this file.
+All notable changes to
+the Reynard framework will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.6.0] - 2025-01-15
+
+### Added
+
+- **Comprehensive Monorepo Modernization**: Major modernization effort across the entire Reynard framework with enhanced developer experience and system architecture (Puddle-Minister-25)
+- **Enhanced MCP Server Architecture**: Complete MCP server refactoring with ECS agent system, trait inheritance, and sophisticated agent lifecycle management (Puddle-Minister-25)
+- **Improved Caption Generation System**: Refactored caption generation with better model management and enhanced composable architecture (Puddle-Minister-25)
+- **Enhanced Charts Package**: Updated charts package with improved type safety, configuration, and better component architecture (Puddle-Minister-25)
+- **Modernized Video Components**: Enhanced video components with better composable architecture and improved functionality (Puddle-Minister-25)
+- **Enhanced Multimodal Gallery**: Improved multimodal gallery with enhanced testing infrastructure and better component organization (Puddle-Minister-25)
+- **Improved Authentication System**: Enhanced authentication system with JWT utilities improvements and better security (Puddle-Minister-25)
+- **Updated Gatekeeper Library**: Enhanced gatekeeper library with better backend implementations and improved functionality (Puddle-Minister-25)
+- **Enhanced E2E Testing**: Improved E2E testing setup with enhanced Playwright configurations and better test infrastructure (Puddle-Minister-25)
+- **Enhanced Notification System**: Improved notification system in core package with better factories and management (Puddle-Minister-25)
+
+### Changed
+
+- **Streamlined Package Configurations**: Updated package configurations and dependency management across the monorepo (Puddle-Minister-25)
+- **Enhanced TypeScript Configurations**: Improved TypeScript configurations and build optimizations for better development experience (Puddle-Minister-25)
+- **Updated Development Environment**: Enhanced workspace configuration and development environment setup (Puddle-Minister-25)
+- **Improved Documentation**: Enhanced documentation and README files across the monorepo for better developer experience (Puddle-Minister-25)
+
+### Removed
+
+- **Deprecated Queue Management**: Removed deprecated queue management scripts and configurations (Puddle-Minister-25)
+- **Deprecated Nginx Configurations**: Cleaned up deprecated nginx configurations in favor of new organized structure (Puddle-Minister-25)
+- **Deprecated Test Files**: Removed deprecated test files and unused configurations for cleaner codebase (Puddle-Minister-25)
+- **Deprecated Animation Config**: Removed deprecated animation tsup configuration in favor of vite configuration (Puddle-Minister-25)
+
+## [UNRELEASED-0.5.2] - 2025-09-??
+
+### Added
+
+- **Modular Agent Diagram Library**: Refactored agent diagram generator into a comprehensive modular Python library
+  with proper package structure, comprehensive pytest test suite, type hints, and CLI interface following the 140-line
+  axiom (Lake-Pilot-35)
+- **ECS World Simulation Documentation**: Comprehensive ECS system documentation in global rules including agent
+  creation, trait inheritance, persona generation, LoRA configuration, time management, breeding mechanics, and
+  roleplay integration guidelines (Agent-global-rules-agent)
+- **ECS Agent Integration Guide**: Updated MCP server README with comprehensive ECS world simulation guide,
+  agent persona system, LoRA configuration, and trait inheritance documentation (Persistent-Prophet-24)
+- **Tool Development Guide**: Comprehensive documentation for creating MCP tools and Reynard package tools with
+  examples, patterns, and best practices in `.cursor/docs/tool-development-guide.md` (Commander-Keeper-56)
+
+### Fixed
+
+- **VS Code Integration Fix**: Fixed method signature mismatch in VersionVSCodeTools causing VS Code tools to fail (Commander-Keeper-56)
+- **VS Code Tool Results**: Enhanced VS Code tools to display actual results instead of just SUCCESS status (Commander-Keeper-56)
+- **Playwright Benchmark Configuration**: Fixed TypeScript error by removing invalid `reducedMotion` property from
+  Playwright config and implementing proper animation control utilities for consistent benchmark
+  timing (Wit-Mediator-21)
+- **TagBubbleView Refactoring**: Refactored TagBubbleView component to comply with 50-line limit by extracting
+  classListlogic, container component, and content sections into focused modules (Splish-Designer-25)
+- **ECS Agent Management System**: Complete Entity Component System for sophisticated agent lifecycle management with automatic offspring creation, genetic inheritance, and modular architecture following 140-line axiom (Nibbles-Pilot-25)
+- **Tag Selection Refactoring**: Refactored useTagSelection composable to comply with 50-line limit by extracting selection logic into separate utility functions (Clan-Coordinator-20)
+- **Modular CLI Architecture**: Refactored trace-analyzer-cli.ts from 237-line monolith into focused, maintainable modules following Reynard 140-line axiom (Elegant-Philosopher-15)
+- **Nginx Configuration Reorganization**: Complete nginx setup reorganization with 2025 best practices, organized dev/prod structure, and optimized configurations for SolidJS + FastAPI + Gunicorn stack (Bubbly-Historian-30)
+- **Mermaid Diagram Rendering**: Improved aspect ratio handling with dynamic viewport sizing and adaptive CSS (Strategic-Fox-42)
+- **MCP Server Restart Tool**: Added restart_mcp_server tool allowing agents to restart the MCP server with graceful, immediate, or external restart methods (Sea-General-30)
+
+### Fixed
+
+- **Queue-Based Watcher**: Added comprehensive exclusion patterns for dist folders, node_modules, build directories, and other generated/temporary folders to prevent unnecessary file processing and improve performance (Sweet-Navigator-10)
+- **MCP Time Function**: Fixed timezone handling in get_current_time function - now properly detects and uses timezone information from location service (Sea-General-30)
+- **Package Dependency Optimization**: Comprehensive dependency analysis and refactoring system with automated scripts for analyzing, detecting circular dependencies, and converting to workspace protocol (Cascade-Guardian-15)
+- **Caption Package Split**: Split monolithic `reynard-caption` package (12 deps) into 3 focused packages: `reynard-caption-core` (2 deps), `reynard-caption-ui` (4 deps), and `reynard-caption-multimodal` (6 deps) for better modularity and tree shaking (Cascade-Guardian-15)
+- **Repository Package Split**: Split monolithic `reynard-unified-repository` package (8 deps) into 4 focused packages: `reynard-repository-core` (2 deps), `reynard-repository-storage` (3 deps), `reynard-repository-search` (3 deps), and `reynard-repository-multimodal` (4 deps) for improved modularity and maintainability (Cascade-Guardian-15)
+- **Components Package Modularization**: Modularized monolithic `reynard-components` package (5 deps) into 4 specialized packages: `reynard-components-core` (2 deps), `reynard-components-charts` (3 deps), `reynard-components-themes` (3 deps), and `reynard-components-dashboard` (4 deps) for better separation of concerns and improved tree shaking (Cascade-Guardian-15)
+- **Peer Dependency Optimization**: Optimized peer dependencies across all packages, standardizing `solid-js` and `three` as peer dependencies with proper metadata, eliminating duplicate dependencies, and achieving perfect dependency management patterns (Cascade-Guardian-15)
+- **Component Rendering Benchmark Suite**: Comprehensive e2e performance testing framework for Reynard components across different rendering approaches (CSR, SSR, lazy loading, virtual scrolling, static generation) with detailed metrics collection and performance recommendations (Pool-Theorist-35)
+
+### Fixed
+
+- **AI-Shared Package Declarations**: Fixed TypeScript declaration generation by adding missing `--declaration` flag to build scripts (Trickle-Chronicler-15)
+- **Gallery Service Import**: Fixed unused import warning by using `importlib.util.find_spec` for optional dependency checking (Playful-Minister-15)
+- **Gallery Service Manager**: Refactored service initializer to use class-based singleton pattern instead of global statements (Playful-Minister-15)
+- **WebSocket Manager Types**: Fixed type annotation issues in WebSocket manager using proper dataclass field factories (Playful-Minister-15)
+- **Gallery-dl Type Checking**: Added gallery_dl to mypy overrides to resolve missing library stubs warning (Supple-Negotiator-89)
+
+- **Reynard Scraping Package**: Comprehensive web scraping and content extraction package with intelligent filtering, quality assessment, and specialized scrapers for Twitter, GitHub, Wikipedia, and more (Mountain-Curator-56)
+- **Gallery-dl Testing & Quality**: Comprehensive test suite including unit tests, backend tests, E2E tests, and performance benchmarks for gallery-dl integration (Fierce-Guardian-8)
+- **Complete tsup to Vite Migration**: Converted reynard-animation package from tsup to Vite build system, completing the full migration across all Reynard packages (Charming-Prophet-89)
+- **Gallery-dl Integration Package**: Created comprehensive gallery-dl integration with progress tracking, batch processing, and UI components (Fierce-Guardian-8)
+- **Gallery-dl Advanced Features**: Implemented custom Reynard extractors, WebSocket real-time progress tracking, batch download processing, and AI metadata extraction (Fierce-Guardian-8)
+- **Tool Router Refactoring**: Completely refactored `tool_router.py` from 499 lines to 153 lines using modular architecture (Strategic-Fox-42)
+- **Monolith Detection Tools Refactoring**: Refactored 898-line monolith detection tool into 4 focused service modules following modular architecture principles (Captivating-Librarian-89)
+- **BM25 Needle-in-Haystack Search Tool**: Implemented modular BM25 search algorithm as MCP tool for finding patterns in codebase (Happy-Theorist-15)
+- **Modular Notifications Refactor**: Refactored notifications module into smaller, focused modules following 140-line axiom (Jolly-Guardian-10)
+- **Comprehensive pytest test suite**: Created complete test framework for MCP server with unit tests, integration tests, and service layer tests (Fluid-Elder-35)
+- **Test fixtures and mocking**: Added comprehensive test fixtures with mock utilities for all MCP components (Fluid-Elder-35)
+- **Test configuration**: Added pytest.ini configuration with proper test discovery and markers (Fluid-Elder-35)
+- **Test runner script**: Created run_tests.py for easy test execution with multiple test scenarios (Fluid-Elder-35)
+- **Test documentation**: Added comprehensive README.md for test suite with usage examples and best practices (Fluid-Elder-35)
+
+### Fixed
+
+- **Backend Port Documentation**: Updated all documentation and configuration files to use port 8000 instead of 8888 (Happy-Theorist-15)
+- **RAG Import Path Issues**: Fixed import path errors in RAG endpoints to correctly reference security module (Happy-Theorist-15)
+- **MCP Server Documentation**: Comprehensive update to ecosystem.mdc documenting all 47 available tools across 8 categories (Bay-Mentor-30)
+- **TypeScript Declarations**: Fixed missing type declarations for reynard-annotating package by building the dist directory and resolving JSX configuration issues (Amaruq-Chronicler-32)
+- **Coding Standards Refactor**: Rewrote Reynard Coding Standards to remove spirit terminology while maintaining the three animal specialist framework (Charming-Marshal-35)
 
 ## [0.5.1] - 2025-09-15
 

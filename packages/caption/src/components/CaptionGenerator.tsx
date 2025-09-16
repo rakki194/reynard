@@ -13,15 +13,11 @@
  * - Integration with existing BackendAnnotationManager
  */
 
+import { type CaptionResult } from "reynard-annotating-core";
 import { Component, createEffect } from "solid-js";
-import { type CaptionResult } from "reynard-annotating";
-import { CaptionGeneratorView } from "./CaptionGeneratorView";
-import {
-  useCaptionGeneratorState,
-  useCaptionGeneratorHandlers,
-  useCaptionGeneratorBackend,
-} from "../composables";
+import { useCaptionGeneratorBackend, useCaptionGeneratorHandlers, useCaptionGeneratorState } from "../composables";
 import "./CaptionGenerator.css";
+import { CaptionGeneratorView } from "./CaptionGeneratorView";
 
 export interface CaptionGeneratorProps {
   /** Initial image path (optional) */
@@ -41,7 +37,7 @@ export interface CaptionGeneratorProps {
   className?: string;
 }
 
-export const CaptionGenerator: Component<CaptionGeneratorProps> = (props) => {
+export const CaptionGenerator: Component<CaptionGeneratorProps> = props => {
   // Initialize composables
   const state = useCaptionGeneratorState();
 
@@ -51,22 +47,12 @@ export const CaptionGenerator: Component<CaptionGeneratorProps> = (props) => {
   // Track reactive props and recreate backend and handlers when they change
   createEffect(() => {
     backend = useCaptionGeneratorBackend(state, props.backendConfig);
-    handlers = useCaptionGeneratorHandlers(
-      state,
-      backend.manager,
-      props.onCaptionGenerated,
-      props.onGenerationError,
-    );
+    handlers = useCaptionGeneratorHandlers(state, backend.manager, props.onCaptionGenerated, props.onGenerationError);
   });
 
   let fileInputRef: HTMLInputElement | undefined;
 
   return (
-    <CaptionGeneratorView
-      state={state}
-      handlers={handlers!}
-      class={props.className}
-      fileInputRef={fileInputRef}
-    />
+    <CaptionGeneratorView state={state} handlers={handlers!} class={props.className} fileInputRef={fileInputRef} />
   );
 };

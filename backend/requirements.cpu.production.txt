@@ -1,0 +1,44 @@
+# CPU-Only Production Requirements for Reynard Backend
+# Optimized for production deployment without CUDA dependencies
+
+# Core FastAPI dependencies
+fastapi
+uvicorn[standard]
+gunicorn
+
+# Authentication and security
+python-jose[cryptography]
+python-dotenv
+python-multipart
+email-validator
+pydantic[email]
+slowapi
+limits
+
+# CPU-only PyTorch (no CUDA)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+torchvision
+
+# Image processing
+pillow
+numpy
+
+# Database
+sqlalchemy
+psycopg2-binary
+pgvector
+
+# HTTP client
+aiohttp
+
+# Password hashing
+argon2-cffi
+cryptography
+
+# Production monitoring
+prometheus-client
+structlog
+
+# Health checks
+psutil

@@ -11,9 +11,7 @@ import { MultiModalGallery } from "../../MultiModalGallery";
 
 // Mock the child components
 vi.mock("../MultiModalGalleryView", () => ({
-  MultiModalGalleryView: (props: any) => (
-    <div data-testid="multimodal-gallery-view" {...props} />
-  ),
+  MultiModalGalleryView: (props: any) => <div data-testid="multimodal-gallery-view" {...props} />,
 }));
 
 // Mock the composables
@@ -82,41 +80,25 @@ describe("MultiModalGallery", () => {
 
   describe("Rendering", () => {
     it("should render with initial files", () => {
-      render(() => (
-        <MultiModalGallery
-          initialFiles={mockInitialFiles}
-          callbacks={mockCallbacks}
-        />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} callbacks={mockCallbacks} />);
 
       expect(screen.getByTestId("multimodal-gallery-view")).toBeInTheDocument();
     });
 
     it("should render with custom class name", () => {
-      render(() => (
-        <MultiModalGallery
-          initialFiles={mockInitialFiles}
-          class="custom-gallery"
-        />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} class="custom-gallery" />);
 
-      expect(screen.getByTestId("multimodal-gallery-view")).toHaveClass(
-        "custom-gallery",
-      );
+      expect(screen.getByTestId("multimodal-gallery-view")).toHaveClass("custom-gallery");
     });
 
     it("should render with default view", () => {
-      render(() => (
-        <MultiModalGallery initialFiles={mockInitialFiles} defaultView="list" />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} defaultView="list" />);
 
       expect(screen.getByTestId("multimodal-gallery-view")).toBeInTheDocument();
     });
 
     it("should render with max files limit", () => {
-      render(() => (
-        <MultiModalGallery initialFiles={mockInitialFiles} maxFiles={5} />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} maxFiles={5} />);
 
       expect(screen.getByTestId("multimodal-gallery-view")).toBeInTheDocument();
     });
@@ -124,12 +106,7 @@ describe("MultiModalGallery", () => {
 
   describe("File Management", () => {
     it("should handle file selection", () => {
-      render(() => (
-        <MultiModalGallery
-          initialFiles={mockInitialFiles}
-          callbacks={mockCallbacks}
-        />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} callbacks={mockCallbacks} />);
 
       // Simulate file selection through gallery view
       const galleryView = screen.getByTestId("multimodal-gallery-view");
@@ -139,12 +116,7 @@ describe("MultiModalGallery", () => {
     });
 
     it("should handle file removal", () => {
-      render(() => (
-        <MultiModalGallery
-          initialFiles={mockInitialFiles}
-          callbacks={mockCallbacks}
-        />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} callbacks={mockCallbacks} />);
 
       // Simulate file removal through gallery view
       const galleryView = screen.getByTestId("multimodal-gallery-view");
@@ -154,12 +126,7 @@ describe("MultiModalGallery", () => {
     });
 
     it("should handle file modification", () => {
-      render(() => (
-        <MultiModalGallery
-          initialFiles={mockInitialFiles}
-          callbacks={mockCallbacks}
-        />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} callbacks={mockCallbacks} />);
 
       // Simulate file modification through gallery view
       const galleryView = screen.getByTestId("multimodal-gallery-view");
@@ -171,18 +138,14 @@ describe("MultiModalGallery", () => {
 
   describe("View Management", () => {
     it("should switch between grid and list views", () => {
-      render(() => (
-        <MultiModalGallery initialFiles={mockInitialFiles} defaultView="grid" />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} defaultView="grid" />);
 
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
 
     it("should handle view changes", () => {
-      render(() => (
-        <MultiModalGallery initialFiles={mockInitialFiles} defaultView="grid" />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} defaultView="grid" />);
 
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       fireEvent.click(galleryView);
@@ -213,9 +176,7 @@ describe("MultiModalGallery", () => {
 
   describe("File Upload", () => {
     it("should handle file upload", () => {
-      render(() => (
-        <MultiModalGallery initialFiles={mockInitialFiles} maxFiles={10} />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} maxFiles={10} />);
 
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       fireEvent.click(galleryView);
@@ -225,9 +186,7 @@ describe("MultiModalGallery", () => {
     });
 
     it("should respect max files limit", () => {
-      render(() => (
-        <MultiModalGallery initialFiles={mockInitialFiles} maxFiles={2} />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} maxFiles={2} />);
 
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
@@ -236,18 +195,14 @@ describe("MultiModalGallery", () => {
 
   describe("Loading States", () => {
     it("should show loading state", () => {
-      render(() => (
-        <MultiModalGallery initialFiles={mockInitialFiles} loading={true} />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} loading={true} />);
 
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
     });
 
     it("should show error state", () => {
-      render(() => (
-        <MultiModalGallery initialFiles={mockInitialFiles} error="Test error" />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} error="Test error" />);
 
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();
@@ -280,12 +235,7 @@ describe("MultiModalGallery", () => {
         autoUpload: false,
       };
 
-      render(() => (
-        <MultiModalGallery
-          initialFiles={mockInitialFiles}
-          config={customConfig}
-        />
-      ));
+      render(() => <MultiModalGallery initialFiles={mockInitialFiles} config={customConfig} />);
 
       const galleryView = screen.getByTestId("multimodal-gallery-view");
       expect(galleryView).toBeInTheDocument();

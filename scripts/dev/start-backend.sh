@@ -20,5 +20,5 @@ fi
 cd backend || exit
 
 # Start the Python server
-echo "🐍 Starting Python backend on port 8888..."
+echo "🐍 Starting Python backend on port 8000..."
 python main.py

@@ -87,12 +87,12 @@ export default defineConfig({
   webServer: [
     {
       command: "cd backend && ./start.sh",
-      url: "http://localhost:8888",
+      url: "http://localhost:8000",
       reuseExistingServer: !process.env.CI,
       timeout: 120 * 1000,
     },
     {
-      command: "cd ../examples/auth-app && E2E_BACKEND_URL=http://localhost:8888 pnpm run dev",
+      command: "cd ../examples/auth-app && E2E_BACKEND_URL=http://localhost:8000 pnpm run dev",
       url: `http://localhost:${detectAuthAppPort()}`,
       reuseExistingServer: !process.env.CI,
       timeout: 120 * 1000,

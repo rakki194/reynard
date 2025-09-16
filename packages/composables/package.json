@@ -12,9 +12,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
@@ -24,17 +22,10 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "composables",
-    "solidjs",
-    "reactive",
-    "hooks",
-    "reynard"
-  ],
+  "keywords": ["composables", "solidjs", "reactive", "hooks", "reynard"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
-    "solid-js": "1.9.9",
     "reynard-core": "workspace:*"
   },
   "devDependencies": {

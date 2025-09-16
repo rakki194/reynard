@@ -4,7 +4,7 @@
 
 export interface DataPoint {
   /** X-axis value or timestamp */
-  x?: number | string;
+  x: number | string;
   /** Y-axis value */
   y: number;
   /** Optional label for the data point */
@@ -23,7 +23,7 @@ export interface TimeSeriesDataPoint {
 export interface Dataset {
   /** Dataset label */
   label: string;
-  /** Data values */
+  /** Data values - can be numbers for simple charts or DataPoints for complex charts */
   data: number[] | DataPoint[];
   /** Background color */
   backgroundColor?: string | string[];
@@ -69,7 +69,38 @@ export interface ChartOptions {
   /** Animation options */
   animation?: {
     duration?: number;
-    easing?: string;
+    easing?:
+      | "linear"
+      | "easeInQuad"
+      | "easeOutQuad"
+      | "easeInOutQuad"
+      | "easeInCubic"
+      | "easeOutCubic"
+      | "easeInOutCubic"
+      | "easeInQuart"
+      | "easeOutQuart"
+      | "easeInOutQuart"
+      | "easeInQuint"
+      | "easeOutQuint"
+      | "easeInOutQuint"
+      | "easeInSine"
+      | "easeOutSine"
+      | "easeInOutSine"
+      | "easeInExpo"
+      | "easeOutExpo"
+      | "easeInOutExpo"
+      | "easeInCirc"
+      | "easeOutCirc"
+      | "easeInOutCirc"
+      | "easeInElastic"
+      | "easeOutElastic"
+      | "easeInOutElastic"
+      | "easeInBack"
+      | "easeOutBack"
+      | "easeInOutBack"
+      | "easeInBounce"
+      | "easeOutBounce"
+      | "easeInOutBounce";
   };
 }
 
@@ -97,7 +128,7 @@ export interface AxisOptions {
     font?: {
       size?: number;
       family?: string;
-      weight?: string | number;
+      weight?: "normal" | "bold" | "lighter" | "bolder" | number;
     };
     callback?: (value: any, index: number, values: any[]) => string;
   };
@@ -127,24 +158,10 @@ export interface ChartConfig extends ChartOptions {
   theme?: ReynardTheme;
 }
 
-export type ChartType =
-  | "line"
-  | "bar"
-  | "doughnut"
-  | "pie"
-  | "radar"
-  | "polarArea"
-  | "scatter"
-  | "bubble";
+export type ChartType = "line" | "bar" | "doughnut" | "pie" | "radar" | "polarArea" | "scatter" | "bubble";
 
 /** Reynard theme options */
-export type ReynardTheme =
-  | "light"
-  | "dark"
-  | "gray"
-  | "banana"
-  | "strawberry"
-  | "peanut";
+export type ReynardTheme = "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut";
 
 export interface ChartTheme {
   /** Primary color */

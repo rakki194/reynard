@@ -5,6 +5,7 @@ This module provides FastAPI routes for authentication operations including
 login, logout, token refresh, and user management.
 """
 
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -20,10 +21,10 @@ auth_router = APIRouter(prefix="/auth", tags=["authentication"])
 
 @auth_router.post("/login", response_model=TokenResponse)
 async def login(
+    request: Request,
     form_data: OAuth2PasswordRequestForm = Depends(),
-    request: Request = None,
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> TokenResponse:
     """
     Authenticate user and return access/refresh tokens.
 
@@ -39,9 +40,7 @@ async def login(
         HTTPException: If authentication fails
     """
     # Extract client IP for rate limiting
-    client_ip = None
-    if request:
-        client_ip = request.client.host if request.client else None
+    client_ip = request.client.host if request.client else None
 
     # Authenticate user
     tokens = await auth_manager.authenticate(
@@ -60,10 +59,10 @@ async def login(
 
 @auth_router.post("/refresh", response_model=TokenResponse)
 async def refresh_tokens(
+    request: Request,
     refresh_token: str,
-    request: Request = None,
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> TokenResponse:
     """
     Refresh access token using a valid refresh token.
 
@@ -79,9 +78,7 @@ async def refresh_tokens(
         HTTPException: If refresh token is invalid
     """
     # Extract client IP for rate limiting
-    client_ip = None
-    if request:
-        client_ip = request.client.host if request.client else None
+    client_ip = request.client.host if request.client else None
 
     # Refresh tokens
     tokens = await auth_manager.refresh_tokens(
@@ -99,7 +96,9 @@ async def refresh_tokens(
 
 
 @auth_router.post("/logout")
-async def logout(token: str, auth_manager: AuthManager = Depends(get_auth_manager)):
+async def logout(
+    token: str, auth_manager: AuthManager = Depends(get_auth_manager)
+) -> dict[str, str]:
     """
     Logout user by revoking their token.
 
@@ -123,7 +122,7 @@ async def logout(token: str, auth_manager: AuthManager = Depends(get_auth_manage
 @auth_router.post("/register", response_model=UserPublic)
 async def register(
     user_data: UserCreate, auth_manager: AuthManager = Depends(get_auth_manager)
-):
+) -> UserPublic:
     """
     Register a new user.
 
@@ -145,7 +144,9 @@ async def register(
 
 
 @auth_router.get("/me", response_model=UserPublic)
-async def get_current_user_info(current_user: User = Depends(get_current_user)):
+async def get_current_user_info(
+    current_user: User = Depends(get_current_user),
+) -> UserPublic:
     """
     Get current user information.
 
@@ -163,7 +164,7 @@ async def update_current_user(
     user_update: UserUpdate,
     current_user: User = Depends(get_current_user),
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> UserPublic:
     """
     Update current user information.
 
@@ -179,6 +180,10 @@ async def update_current_user(
         updated_user = await auth_manager.update_user(
             current_user.username, user_update
         )
+        if not updated_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            )
         return UserPublic.from_user(updated_user)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
@@ -190,7 +195,7 @@ async def change_password(
     new_password: str,
     current_user: User = Depends(get_current_user),
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> dict[str, str]:
     """
     Change current user's password.
 
@@ -225,7 +230,7 @@ async def change_password(
 async def list_users(
     current_user: User = Depends(require_role(UserRole.ADMIN)),
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> list[UserPublic]:
     """
     List all users (admin only).
 
@@ -237,7 +242,7 @@ async def list_users(
         list[UserPublic]: List of all users
     """
     users = await auth_manager.list_users()
-    return [UserPublic.from_user(user) for user in users]
+    return users
 
 
 @auth_router.get("/users/{username}", response_model=UserPublic)
@@ -245,7 +250,7 @@ async def get_user(
     username: str,
     current_user: User = Depends(require_role(UserRole.ADMIN)),
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> UserPublic:
     """
     Get user by username (admin only).
 
@@ -275,7 +280,7 @@ async def update_user(
     user_update: UserUpdate,
     current_user: User = Depends(require_role(UserRole.ADMIN)),
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> UserPublic:
     """
     Update user by username (admin only).
 
@@ -293,6 +298,10 @@ async def update_user(
     """
     try:
         updated_user = await auth_manager.update_user(username, user_update)
+        if not updated_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            )
         return UserPublic.from_user(updated_user)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
@@ -303,7 +312,7 @@ async def delete_user(
     username: str,
     current_user: User = Depends(require_role(UserRole.ADMIN)),
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> dict[str, str]:
     """
     Delete user by username (admin only).
 
@@ -335,7 +344,7 @@ async def revoke_user_tokens(
     username: str,
     current_user: User = Depends(require_role(UserRole.ADMIN)),
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> dict[str, str]:
     """
     Revoke all tokens for a user (admin only).
 
@@ -361,7 +370,7 @@ async def revoke_user_tokens(
 async def get_auth_stats(
     current_user: User = Depends(require_role(UserRole.ADMIN)),
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> dict[str, Any]:
     """
     Get authentication statistics (admin only).
 
@@ -380,7 +389,7 @@ async def get_auth_stats(
 async def cleanup_expired_tokens(
     current_user: User = Depends(require_role(UserRole.ADMIN)),
     auth_manager: AuthManager = Depends(get_auth_manager),
-):
+) -> dict[str, str]:
     """
     Clean up expired tokens (admin only).
 

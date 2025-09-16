@@ -17,7 +17,7 @@ from services.vscode_service import VSCodeService
 class VersionVSCodeTools:
     """Handles version detection and VS Code integration tool operations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.version_service = VersionService()
         self.vscode_service = VSCodeService()
         self.security_service = SecurityService()
@@ -41,6 +41,23 @@ class VersionVSCodeTools:
         if result.get("stderr") and not result.get("success", False):
             output_lines.append(f"\n⚠️ Errors:\n{result['stderr']}")
 
+        # Show actual result data for VS Code tools
+        if result.get("success", False):
+            # Remove success flag and show actual data
+            result_data = {
+                k: v
+                for k, v in result.items()
+                if k not in ["success", "stdout", "stderr", "summary"]
+            }
+            if result_data:
+                import json
+
+                output_lines.append(
+                    f"\n📋 Results:\n{json.dumps(result_data, indent=2)}"
+                )
+        elif result.get("error"):
+            output_lines.append(f"\n❌ Error: {result['error']}")
+
         return {"content": [{"type": "text", "text": "\n".join(output_lines)}]}
 
     async def get_versions(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
@@ -63,17 +80,23 @@ class VersionVSCodeTools:
         result = await self.version_service.get_typescript_version()
         return self._format_result(result, "TypeScript Version")
 
-    def get_vscode_active_file(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    def get_vscode_active_file(
+        self, tool_name: str, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Get currently active file path in VS Code."""
         result = self.vscode_service.get_active_file_path()
         return self._format_result(result, "VS Code Active File")
 
-    def get_vscode_workspace_info(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    def get_vscode_workspace_info(
+        self, tool_name: str, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Get VS Code workspace information."""
         result = self.vscode_service.get_workspace_info()
         return self._format_result(result, "VS Code Workspace Info")
 
-    def get_vscode_extensions(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    def get_vscode_extensions(
+        self, tool_name: str, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Get list of installed VS Code extensions."""
         result = self.vscode_service.get_vscode_extensions()
         return self._format_result(result, "VS Code Extensions")

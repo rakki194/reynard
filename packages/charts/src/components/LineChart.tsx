@@ -159,7 +159,7 @@ export const LineChart: Component<LineChartProps> = props => {
 
     // Only create chart on client side
     if (typeof window !== "undefined") {
-      const newChart = new Chart(ctx, config);
+      const newChart = new Chart(ctx, config as any);
       setChartInstance(newChart);
     }
   };
@@ -175,7 +175,7 @@ export const LineChart: Component<LineChartProps> = props => {
   createEffect(() => {
     const chart = chartInstance();
     if (chart && chartData()) {
-      chart.data = chartData()!;
+      chart.data = chartData()! as any;
       chart.update();
     }
   });

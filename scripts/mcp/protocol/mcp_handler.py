@@ -11,11 +11,16 @@ import logging
 from typing import Any
 
 from tools.agent_tools import AgentTools
+from tools.bm25_search_tools import BM25SearchTools
 from tools.definitions import get_tool_definitions
+from tools.ecs_agent_tools import ECSAgentTools
+from tools.enhanced_bm25_search_tools import EnhancedBM25SearchTools
 from tools.file_search_tools import FileSearchTools
 from tools.image_viewer_tools import ImageViewerTools
 from tools.linting_tools import LintingTools
 from tools.mermaid_tools import MermaidTools
+from tools.monolith_detection_tools import MonolithDetectionTools
+from tools.playwright_tools import PlaywrightTools
 from tools.semantic_file_search_tools import SemanticFileSearchTools
 from tools.utility_tools import UtilityTools
 from tools.version_vscode_tools import VersionVSCodeTools
@@ -32,6 +37,8 @@ class MCPHandler:
     def __init__(
         self,
         agent_tools: AgentTools,
+        bm25_search_tools: BM25SearchTools,
+        enhanced_bm25_search_tools: EnhancedBM25SearchTools,
         utility_tools: UtilityTools,
         linting_tools: LintingTools,
         version_vscode_tools: VersionVSCodeTools,
@@ -39,11 +46,16 @@ class MCPHandler:
         semantic_file_search_tools: SemanticFileSearchTools,
         image_viewer_tools: ImageViewerTools,
         mermaid_tools: MermaidTools,
+        monolith_detection_tools: MonolithDetectionTools,
+        playwright_tools: PlaywrightTools,
         vscode_tasks_tools: VSCodeTasksTools,
+        ecs_agent_tools: ECSAgentTools,
     ):
         self.tools = get_tool_definitions()
         self.tool_router = ToolRouter(
             agent_tools,
+            bm25_search_tools,
+            enhanced_bm25_search_tools,
             utility_tools,
             linting_tools,
             version_vscode_tools,
@@ -51,7 +63,10 @@ class MCPHandler:
             semantic_file_search_tools,
             image_viewer_tools,
             mermaid_tools,
+            monolith_detection_tools,
+            playwright_tools,
             vscode_tasks_tools,
+            ecs_agent_tools,
         )
 
     def handle_initialize(self, request_id: Any) -> dict[str, Any]:

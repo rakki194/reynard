@@ -5,21 +5,21 @@
  * under the 140-line limit.
  */
 
-import { Component, Show, For } from "solid-js";
+import type { CaptionResult } from "reynard-annotating-core";
+import { Component, For, Show } from "solid-js";
 import type { GeneratorInfo } from "../composables";
-import type { CaptionResult } from "reynard-annotating";
 
 // Model Selection Component
 export const ModelSelection: Component<{
   generators: GeneratorInfo[];
   selectedModel: string;
   onModelSelect: (model: string) => void;
-}> = (props) => (
+}> = props => (
   <div class="model-selection">
     <label class="model-label">Select Model:</label>
     <div class="model-grid">
       <For each={props.generators}>
-        {(generator) => (
+        {generator => (
           <button
             type="button"
             class="model-card"
@@ -27,9 +27,7 @@ export const ModelSelection: Component<{
               "model-card--selected": props.selectedModel === generator.name,
               "model-card--unavailable": !generator.available,
             }}
-            onClick={() =>
-              generator.available && props.onModelSelect(generator.name)
-            }
+            onClick={() => generator.available && props.onModelSelect(generator.name)}
             disabled={!generator.available}
           >
             <div class="model-name">{generator.displayName}</div>
@@ -55,7 +53,7 @@ export const ImageUpload: Component<{
   onDrop: (e: DragEvent) => void;
   onFileInputClick: () => void;
   fileInputRef: HTMLInputElement | undefined;
-}> = (props) => (
+}> = props => (
   <div class="image-upload">
     <label class="upload-label">Upload Image:</label>
     <div
@@ -64,9 +62,9 @@ export const ImageUpload: Component<{
         "upload-area--drag-over": props.isDragOver,
         "upload-area--has-file": !!props.imageFile,
       }}
-      onDragOver={(e) => props.onDragOver(e)}
-      onDragLeave={(e) => props.onDragLeave(e)}
-      onDrop={(e) => props.onDrop(e)}
+      onDragOver={e => props.onDragOver(e)}
+      onDragLeave={e => props.onDragLeave(e)}
+      onDrop={e => props.onDrop(e)}
       onClick={() => props.onFileInputClick()}
     >
       <input
@@ -74,7 +72,7 @@ export const ImageUpload: Component<{
         type="file"
         accept="image/*"
         style={{ display: "none" }}
-        onChange={(e) => {
+        onChange={e => {
           const file = e.target.files?.[0];
           if (file) props.onFileSelect(file);
         }}
@@ -96,12 +94,7 @@ export const ImageUpload: Component<{
           <img src={props.imagePreview!} alt="Preview" />
           <div class="image-info">
             <div class="image-name">{props.imageFile?.name}</div>
-            <div class="image-size">
-              {props.imageFile
-                ? (props.imageFile.size / 1024 / 1024).toFixed(2)
-                : "0"}{" "}
-              MB
-            </div>
+            <div class="image-size">{props.imageFile ? (props.imageFile.size / 1024 / 1024).toFixed(2) : "0"} MB</div>
           </div>
         </div>
       </Show>
@@ -114,7 +107,7 @@ export const GenerationResults: Component<{
   result: CaptionResult;
   selectedModel: string;
   captionData: unknown;
-}> = (props) => (
+}> = props => (
   <div class="generation-results">
     <h4 class="results-title">Generated Caption:</h4>
     <div class="results-content">
@@ -130,9 +123,7 @@ export const GenerationResults: Component<{
       </div>
       <div class="result-info">
         <span class="result-label">Processing Time:</span>
-        <span class="result-value">
-          {props.result.processingTime?.toFixed(2)}s
-        </span>
+        <span class="result-value">{props.result.processingTime?.toFixed(2)}s</span>
       </div>
       <div class="result-info">
         <span class="result-label">Success:</span>

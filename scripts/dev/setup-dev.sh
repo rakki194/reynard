@@ -62,9 +62,9 @@ cd ..
 
 # Set up Nginx for development (optional)
 echo "🌐 Setting up Nginx configuration..."
-if [[ -f "nginx/reynard.conf" ]]; then
-    echo "📝 Nginx configuration file exists at nginx/reynard.conf"
-    echo "   To use it, copy it to /etc/nginx/sites-available/ and enable it"
+if [[ -f "nginx/dev/reynard-dev.conf" ]]; then
+    echo "📝 Development Nginx configuration file exists at nginx/dev/reynard-dev.conf"
+    echo "   To use it, run: ./scripts/dev/setup-dev-nginx.sh"
     echo "   For development, you can run the backend directly with:"
     echo "   cd backend && source venv/bin/activate && python main.py"
 fi

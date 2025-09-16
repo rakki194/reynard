@@ -7,7 +7,8 @@
 // Core Caption Components
 export { CaptionGenerator } from "./CaptionGenerator";
 export { CaptionGeneratorView } from "./CaptionGeneratorView";
-export { CaptionGeneratorComponents } from "./CaptionGeneratorComponents";
+// Sub-components from CaptionGeneratorComponents
+export { GenerationResults, ImageUpload, ModelSelection } from "./CaptionGeneratorComponents";
 export { CaptionGeneratorControls } from "./CaptionGeneratorControls";
 export { CaptionGeneratorResults } from "./CaptionGeneratorResults";
 export { CaptionInput } from "./CaptionInput";
@@ -15,8 +16,8 @@ export { CaptionInput } from "./CaptionInput";
 // Text Components
 export { TextEditor } from "./TextEditor";
 export { TextFileCard } from "./TextFileCard";
-export { TextFilesGrid } from "./TextFilesGrid";
 export { TextFileUpload } from "./TextFileUpload";
+export { TextFilesGrid } from "./TextFilesGrid";
 export { TextGrid } from "./TextGrid";
 
 // Tag Management Components
@@ -26,16 +27,17 @@ export { TagManagement } from "./TagManagement";
 
 // JSON/TOML Editors
 export { JSONEditor } from "./JSONEditor";
-export { JSONEditorComponents } from "./JSONEditorComponents";
+// Sub-components from JSONEditorComponents
+export { EditorHeader, ErrorDetails } from "./JSONEditorComponents";
 export { TOMLEditor } from "./TOMLEditor";
 
 // Re-export types for convenience
 export type {
-  TextFile,
-  TextMetadata,
-  TextGridState,
-  TextProcessingOptions,
-  TextGridProps,
-  TextFileCardProps,
   TextEditorProps,
+  TextFile,
+  TextFileCardProps,
+  TextGridProps,
+  TextGridState,
+  TextMetadata,
+  TextProcessingOptions,
 } from "../types/TextTypes";

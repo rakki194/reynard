@@ -8,14 +8,14 @@
  */
 
 import {
-  ServiceStatus,
-  ServiceHealth,
-  ServiceHealthInfo,
+  HealthCheckCallback,
+  InitializationCallback,
   ServiceConfig,
   ServiceError,
-  HealthCheckCallback,
+  ServiceHealth,
+  ServiceHealthInfo,
+  ServiceStatus,
   ShutdownCallback,
-  InitializationCallback,
 } from "../types/index.js";
 
 // ============================================================================
@@ -203,11 +203,7 @@ export abstract class BaseAIService {
       this._status = ServiceStatus.ERROR;
       this._health = ServiceHealth.UNHEALTHY;
       this._lastError = error instanceof Error ? error.message : String(error);
-      throw new ServiceError(
-        `Failed to start service ${this._name}: ${this._lastError}`,
-        this._name,
-        { error },
-      );
+      throw new ServiceError(`Failed to start service ${this._name}: ${this._lastError}`, this._name, { error });
     }
   }
 
@@ -235,11 +231,7 @@ export abstract class BaseAIService {
       this._status = ServiceStatus.ERROR;
       this._health = ServiceHealth.UNHEALTHY;
       this._lastError = error instanceof Error ? error.message : String(error);
-      throw new ServiceError(
-        `Failed to stop service ${this._name}: ${this._lastError}`,
-        this._name,
-        { error },
-      );
+      throw new ServiceError(`Failed to stop service ${this._name}: ${this._lastError}`, this._name, { error });
     }
   }
 
@@ -271,8 +263,7 @@ export abstract class BaseAIService {
         this._lastError = undefined;
       } catch (error) {
         this._health = ServiceHealth.UNHEALTHY;
-        this._lastError =
-          error instanceof Error ? error.message : String(error);
+        this._lastError = error instanceof Error ? error.message : String(error);
       }
     }, 30000); // Check every 30 seconds
   }
@@ -434,7 +425,7 @@ export class ServiceRegistry {
     services.sort((a, b) => a.startupPriority - b.startupPriority);
 
     // TODO: Implement dependency resolution for proper startup order
-    this._startupOrder = services.map((service) => service.name);
+    this._startupOrder = services.map(service => service.name);
   }
 
   /**
@@ -496,5 +487,3 @@ export function resetServiceRegistry(): void {
 // ============================================================================
 // Export all services
 // ============================================================================
-
-export * from "./index";

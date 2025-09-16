@@ -8,7 +8,7 @@ set -e
 echo "🦊 Setting up Nginx for Reynard development..."
 
 # Check if we're in the right directory
-if [[ ! -f "nginx/reynard-dev.conf" ]]; then
+if [[ ! -f "nginx/dev/reynard-dev.conf" ]]; then
     echo "❌ Error: Please run this script from the Reynard project root directory"
     exit 1
 fi
@@ -29,7 +29,7 @@ mkdir -p logs/nginx
 
 # Copy development Nginx configuration
 echo "📝 Setting up development Nginx configuration..."
-cp nginx/reynard-dev.conf nginx/reynard-dev-local.conf
+cp nginx/dev/reynard-dev.conf nginx/reynard-dev-local.conf
 
 # Update paths in the configuration for local development
 sed -i 's|/usr/share/nginx/html/frontend|./dist/frontend|g' nginx/reynard-dev-local.conf

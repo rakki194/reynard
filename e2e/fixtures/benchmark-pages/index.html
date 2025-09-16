@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reynard Component Benchmark Suite</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      .benchmark-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      }
+
+      .benchmark-header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+
+      .benchmark-title {
+        font-size: 2.5rem;
+        color: #333;
+        margin: 0 0 10px 0;
+      }
+
+      .benchmark-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        margin: 0;
+      }
+
+      .benchmark-content {
+        min-height: 400px;
+        position: relative;
+      }
+
+      .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 200px;
+        font-size: 1.1rem;
+        color: #666;
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #e0e0e0;
+        border-top: 2px solid #007acc;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .component-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .reynard-button {
+        background: #007acc;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .reynard-button:hover {
+        background: #005a9e;
+      }
+
+      .reynard-card {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .reynard-grid-item {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 15px;
+        text-align: center;
+      }
+
+      .reynard-data-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        margin-bottom: 8px;
+      }
+
+      .reynard-overlay {
+        position: relative;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .lazy-placeholder {
+        background: #f0f0f0;
+        border: 2px dashed #ccc;
+        border-radius: 6px;
+        padding: 20px;
+        text-align: center;
+        color: #666;
+      }
+
+      .virtual-scroll-container {
+        height: 400px;
+        overflow-y: auto;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+      }
+
+      .virtual-item {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .benchmark-stats {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+
+      .stat-card {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 6px;
+        text-align: center;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #007acc;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="benchmark-container">
+      <div class="benchmark-header">
+        <h1 class="benchmark-title">🦦 Reynard Component Benchmark</h1>
+        <p class="benchmark-subtitle">Performance testing for different rendering approaches</p>
+      </div>
+
+      <div class="benchmark-content" data-testid="benchmark-container">
+        <div class="loading">
+          <div class="spinner"></div>
+          Loading benchmark components...
+        </div>
+      </div>
+
+      <div class="benchmark-stats" id="benchmark-stats">
+        <!-- Stats will be populated by JavaScript -->
+      </div>
+    </div>
+
+    <script>
+      // Benchmark configuration
+      const BENCHMARK_CONFIG = {
+        categories: ["primitives", "layouts", "data", "overlays"],
+        approaches: ["csr", "ssr", "lazy", "virtual", "static"],
+        componentCounts: [1, 10, 50, 100, 500],
+      };
+
+      // Performance measurement utilities
+      class PerformanceMonitor {
+        constructor() {
+          this.startTime = 0;
+          this.endTime = 0;
+          this.memoryStart = 0;
+          this.memoryEnd = 0;
+        }
+
+        start() {
+          this.startTime = performance.now();
+          this.memoryStart = performance.memory ? performance.memory.usedJSHeapSize : 0;
+        }
+
+        end() {
+          this.endTime = performance.now();
+          this.memoryEnd = performance.memory ? performance.memory.usedJSHeapSize : 0;
+        }
+
+        getRenderTime() {
+          return this.endTime - this.startTime;
+        }
+
+        getMemoryDelta() {
+          return this.memoryEnd - this.memoryStart;
+        }
+      }
+
+      // Component generators
+      class ComponentGenerator {
+        static generatePrimitive(index) {
+          const button = document.createElement("button");
+          button.className = "reynard-button";
+          button.textContent = `Button ${index}`;
+          button.setAttribute("data-testid", `button-${index}`);
+          return button;
+        }
+
+        static generateLayout(index) {
+          const item = document.createElement("div");
+          item.className = "reynard-grid-item";
+          item.innerHTML = `<div class="content">Grid Item ${index}</div>`;
+          item.setAttribute("data-testid", `grid-item-${index}`);
+          return item;
+        }
+
+        static generateData(index) {
+          const item = document.createElement("div");
+          item.className = "reynard-data-item";
+          item.innerHTML = `
+                    <span class="label">Item ${index}</span>
+                    <span class="value">Value ${index}</span>
+                `;
+          item.setAttribute("data-testid", `data-item-${index}`);
+          return item;
+        }
+
+        static generateOverlay(index) {
+          const overlay = document.createElement("div");
+          overlay.className = "reynard-overlay";
+          overlay.innerHTML = `<div class="overlay-content">Overlay ${index}</div>`;
+          overlay.setAttribute("data-testid", `overlay-${index}`);
+          return overlay;
+        }
+      }
+
+      // Rendering approaches
+      class RenderingApproaches {
+        static async renderCSR(category, count) {
+          const container = document.querySelector('[data-testid="benchmark-container"]');
+          container.innerHTML = "";
+
+          const grid = document.createElement("div");
+          grid.className = "component-grid";
+
+          for (let i = 0; i < count; i++) {
+            const component = this.generateComponent(category, i);
+            grid.appendChild(component);
+          }
+
+          container.appendChild(grid);
+        }
+
+        static async renderLazy(category, count) {
+          const container = document.querySelector('[data-testid="benchmark-container"]');
+          container.innerHTML = "";
+
+          const grid = document.createElement("div");
+          grid.className = "component-grid";
+
+          for (let i = 0; i < count; i++) {
+            const lazyComponent = this.createLazyComponent(category, i);
+            grid.appendChild(lazyComponent);
+          }
+
+          container.appendChild(grid);
+
+          // Set up intersection observer for lazy loading
+          const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const placeholder = entry.target.querySelector(".lazy-placeholder");
+                const component = this.generateComponent(category, entry.target.dataset.index);
+                entry.target.replaceChild(component, placeholder);
+                observer.unobserve(entry.target);
+              }
+            });
+          });
+
+          grid.querySelectorAll("[data-lazy]").forEach(el => observer.observe(el));
+        }
+
+        static async renderVirtual(category, count) {
+          const container = document.querySelector('[data-testid="benchmark-container"]');
+          container.innerHTML = "";
+
+          const virtualContainer = document.createElement("div");
+          virtualContainer.className = "virtual-scroll-container";
+          virtualContainer.setAttribute("data-virtual", "true");
+
+          const itemHeight = 50;
+          const containerHeight = 400;
+          const visibleItems = Math.ceil(containerHeight / itemHeight);
+          const buffer = 5;
+
+          let scrollTop = 0;
+          let startIndex = 0;
+          let endIndex = Math.min(startIndex + visibleItems + buffer, count);
+
+          const renderItems = () => {
+            virtualContainer.innerHTML = "";
+
+            // Top spacer
+            const topSpacer = document.createElement("div");
+            topSpacer.style.height = `${startIndex * itemHeight}px`;
+            virtualContainer.appendChild(topSpacer);
+
+            // Visible items
+            for (let i = startIndex; i < endIndex; i++) {
+              const item = document.createElement("div");
+              item.className = "virtual-item";
+              item.textContent = `${category} Item ${i}`;
+              item.setAttribute("data-testid", `virtual-item-${i}`);
+              virtualContainer.appendChild(item);
+            }
+
+            // Bottom spacer
+            const bottomSpacer = document.createElement("div");
+            bottomSpacer.style.height = `${(count - endIndex) * itemHeight}px`;
+            virtualContainer.appendChild(bottomSpacer);
+          };
+
+          virtualContainer.addEventListener("scroll", () => {
+            scrollTop = virtualContainer.scrollTop;
+            startIndex = Math.floor(scrollTop / itemHeight);
+            endIndex = Math.min(startIndex + visibleItems + buffer, count);
+            renderItems();
+          });
+
+          renderItems();
+          container.appendChild(virtualContainer);
+        }
+
+        static generateComponent(category, index) {
+          switch (category) {
+            case "primitives":
+              return ComponentGenerator.generatePrimitive(index);
+            case "layouts":
+              return ComponentGenerator.generateLayout(index);
+            case "data":
+              return ComponentGenerator.generateData(index);
+            case "overlays":
+              return ComponentGenerator.generateOverlay(index);
+            default:
+              const div = document.createElement("div");
+              div.textContent = `Component ${index}`;
+              return div;
+          }
+        }
+
+        static createLazyComponent(category, index) {
+          const container = document.createElement("div");
+          container.setAttribute("data-lazy", "true");
+          container.setAttribute("data-index", index);
+
+          const placeholder = document.createElement("div");
+          placeholder.className = "lazy-placeholder";
+          placeholder.textContent = `Loading ${category} ${index}...`;
+
+          container.appendChild(placeholder);
+          return container;
+        }
+      }
+
+      // Benchmark runner
+      class BenchmarkRunner {
+        constructor() {
+          this.monitor = new PerformanceMonitor();
+          this.results = [];
+        }
+
+        async runBenchmark(category, approach, count) {
+          this.monitor.start();
+
+          try {
+            switch (approach) {
+              case "csr":
+                await RenderingApproaches.renderCSR(category, count);
+                break;
+              case "lazy":
+                await RenderingApproaches.renderLazy(category, count);
+                break;
+              case "virtual":
+                await RenderingApproaches.renderVirtual(category, count);
+                break;
+              case "ssr":
+              case "static":
+                // These would be handled by server-side rendering
+                await this.simulateSSR(category, count);
+                break;
+            }
+          } catch (error) {
+            console.error("Benchmark error:", error);
+          }
+
+          this.monitor.end();
+
+          const result = {
+            category,
+            approach,
+            count,
+            renderTime: this.monitor.getRenderTime(),
+            memoryDelta: this.monitor.getMemoryDelta(),
+            timestamp: Date.now(),
+          };
+
+          this.results.push(result);
+          this.updateStats(result);
+
+          return result;
+        }
+
+        async simulateSSR(category, count) {
+          // Simulate server-side rendered content
+          const container = document.querySelector('[data-testid="benchmark-container"]');
+          container.innerHTML = "";
+
+          const grid = document.createElement("div");
+          grid.className = "component-grid";
+
+          // Simulate pre-rendered HTML
+          for (let i = 0; i < count; i++) {
+            const component = RenderingApproaches.generateComponent(category, i);
+            grid.appendChild(component);
+          }
+
+          container.appendChild(grid);
+        }
+
+        updateStats(result) {
+          const statsContainer = document.getElementById("benchmark-stats");
+          if (!statsContainer) return;
+
+          statsContainer.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-value">${result.renderTime.toFixed(2)}ms</div>
+                        <div class="stat-label">Render Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${(result.memoryDelta / 1024 / 1024).toFixed(2)}MB</div>
+                        <div class="stat-label">Memory Delta</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${result.count}</div>
+                        <div class="stat-label">Components</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${result.approach.toUpperCase()}</div>
+                        <div class="stat-label">Approach</div>
+                    </div>
+                `;
+        }
+      }
+
+      // Initialize benchmark runner
+      const benchmarkRunner = new BenchmarkRunner();
+
+      // URL parameter parsing
+      function getUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+          category: params.get("category") || "primitives",
+          approach: params.get("approach") || "csr",
+          count: parseInt(params.get("count") || "10"),
+        };
+      }
+
+      // Auto-run benchmark on page load
+      window.addEventListener("load", async () => {
+        const params = getUrlParams();
+        console.log("Running benchmark with params:", params);
+
+        await benchmarkRunner.runBenchmark(params.category, params.approach, params.count);
+      });
+
+      // Expose for testing
+      window.benchmarkRunner = benchmarkRunner;
+      window.RenderingApproaches = RenderingApproaches;
+    </script>
+  </body>
+</html>

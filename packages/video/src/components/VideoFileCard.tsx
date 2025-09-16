@@ -4,9 +4,9 @@
  * Displays individual video file information with thumbnail and metadata.
  */
 
-import { Component, createSignal, createEffect, Show } from "solid-js";
-import { VideoFile } from "./types/VideoTypes";
 import { useI18n } from "reynard-i18n";
+import { Component, Show, createEffect, createSignal } from "solid-js";
+import { VideoFile } from "../types";
 
 export interface VideoFileCardProps {
   file: VideoFile;
@@ -16,7 +16,7 @@ export interface VideoFileCardProps {
   showMetadata?: boolean;
 }
 
-export const VideoFileCard: Component<VideoFileCardProps> = (props) => {
+export const VideoFileCard: Component<VideoFileCardProps> = props => {
   const { t } = useI18n();
   const [thumbnailUrl, setThumbnailUrl] = createSignal<string | null>(null);
 
@@ -30,19 +30,11 @@ export const VideoFileCard: Component<VideoFileCardProps> = (props) => {
   });
 
   return (
-    <div
-      class="video-file-card"
-      classList={{ selected: props.isSelected }}
-      onClick={props.onSelect}
-    >
+    <div class="video-file-card" classList={{ selected: props.isSelected }} onClick={props.onSelect}>
       <div class="video-thumbnail">
         <Show
           when={thumbnailUrl()}
-          fallback={
-            <div class="thumbnail-placeholder">
-              {t("video.thumbnailPlaceholder")}
-            </div>
-          }
+          fallback={<div class="thumbnail-placeholder">{t("video.thumbnailPlaceholder")}</div>}
         >
           <img src={thumbnailUrl()!} alt={props.file.name} />
         </Show>
@@ -55,9 +47,7 @@ export const VideoFileCard: Component<VideoFileCardProps> = (props) => {
         <h4 class="video-name" title={props.file.name}>
           {props.file.name}
         </h4>
-        <div class="video-size">
-          {(props.file.size / (1024 * 1024)).toFixed(2)} MB
-        </div>
+        <div class="video-size">{(props.file.size / (1024 * 1024)).toFixed(2)} MB</div>
 
         <Show when={props.showMetadata && props.file.metadata}>
           <div class="video-metadata">
@@ -86,7 +76,7 @@ export const VideoFileCard: Component<VideoFileCardProps> = (props) => {
 
       <button
         class="remove-button"
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
           props.onRemove();
         }}

@@ -1,0 +1,118 @@
+services:
+  # Reynard Backend API (CPU-only)
+  reynard-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.cpu.production
+    container_name: reynard-backend-cpu
+    ports:
+      - '8000:8000'
+    environment:
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - REFRESH_TOKEN_EXPIRE_DAYS=7
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - TORCH_DEVICE=cpu
+    volumes:
+      - backend-logs:/app/logs
+    networks:
+      - reynard-network
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8000/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+
+  # Reynard Frontend
+  reynard-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend.production
+    container_name: reynard-frontend
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - certbot-webroot:/var/www/certbot
+      - certbot-certs:/etc/letsencrypt
+    networks:
+      - reynard-network
+    depends_on:
+      - reynard-backend
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '--quiet', '--tries=1', '--spider', 'http://localhost/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis for session storage and caching
+  redis:
+    image: redis:7-alpine
+    container_name: reynard-redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+    networks:
+      - reynard-network
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+
+  # PostgreSQL for user data
+  postgres:
+    image: postgres:15-alpine
+    container_name: reynard-postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - reynard-network
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER}']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Certbot for SSL certificates
+  certbot:
+    image: certbot/certbot
+    container_name: reynard-certbot
+    volumes:
+      - certbot-webroot:/var/www/certbot
+      - certbot-certs:/etc/letsencrypt
+    command: certonly --webroot --webroot-path=/var/www/certbot --email ${SSL_EMAIL} --agree-tos --no-eff-email --staging -d ${DOMAIN}
+    networks:
+      - reynard-network
+    profiles:
+      - ssl
+
+volumes:
+  certbot-webroot:
+  certbot-certs:
+  redis-data:
+  postgres-data:
+  backend-logs:
+
+networks:
+  reynard-network:
+    driver: bridge

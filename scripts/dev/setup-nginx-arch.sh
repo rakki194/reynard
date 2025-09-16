@@ -14,7 +14,7 @@ if [[ "${EUID}" -ne 0 ]]; then
 fi
 
 # Check if we're in the right directory
-if [[ ! -f "nginx/reynard.conf" ]]; then
+if [[ ! -f "nginx/prod/reynard-prod.conf" ]]; then
     echo "❌ Error: Please run this script from the Reynard project root directory"
     exit 1
 fi
@@ -43,7 +43,7 @@ mkdir -p /var/log/nginx/reynard
 
 # Copy Nginx configuration
 echo "📝 Setting up Nginx configuration..."
-cp nginx/reynard.conf /etc/nginx/sites-available/reynard.conf
+cp nginx/prod/reynard-prod.conf /etc/nginx/sites-available/reynard.conf
 
 # Create symlink to enable the site
 ln -sf /etc/nginx/sites-available/reynard.conf /etc/nginx/sites-enabled/reynard.conf

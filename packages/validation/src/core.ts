@@ -2,7 +2,13 @@
  * Core validation utilities and engine
  */
 
-import { ValidationError, type FieldValidationOptions, type ValidationResult, type ValidationSchema } from "./types.js";
+import {
+  ValidationError,
+  type FieldValidationOptions,
+  type MultiValidationResult,
+  type ValidationResult,
+  type ValidationSchema,
+} from "./types.js";
 
 // ============================================================================
 // Core Validation Engine
@@ -156,7 +162,7 @@ export class ValidationUtils {
     data: Record<string, unknown>,
     schemas: Record<string, ValidationSchema>,
     options: FieldValidationOptions = {}
-  ): ValidationResult {
+  ): MultiValidationResult {
     const errors: Record<string, string[]> = {};
     const validFields: string[] = [];
     const invalidFields: string[] = [];

@@ -17,9 +17,7 @@
     },
     "./styles": "./dist/styles.css"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
@@ -30,15 +28,10 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "caption",
-    "ui",
-    "components",
-    "textarea",
-    "tags",
-    "editing"
-  ],
+  "keywords": ["caption", "ui", "components", "textarea", "tags", "editing"],
   "dependencies": {
+    "reynard-annotating": "workspace:*",
+    "reynard-annotating-core": "workspace:*",
     "reynard-api-client": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-components": "workspace:*",

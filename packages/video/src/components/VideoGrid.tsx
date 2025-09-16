@@ -4,16 +4,16 @@
  * Orchestrates video file management with modular components.
  */
 
-import { Component, createSignal, createEffect } from "solid-js";
-import { VideoFile, VideoGridProps } from "./types/VideoTypes";
-import { VideoGridContent } from "./VideoGridContent";
+import { Component, createEffect, createSignal } from "solid-js";
 import { useVideoProcessing } from "../composables/useVideoProcessing";
+import { VideoFile, VideoGridProps } from "../types";
+import { VideoGridContent } from "./VideoGridContent";
 
 // File upload handler
 const createFileUploadHandler = (
   processVideoFile: (file: File) => Promise<VideoFile>,
   setVideoFiles: (fn: (prev: VideoFile[]) => VideoFile[]) => void,
-  maxFiles: number,
+  maxFiles: number
 ) => {
   return async (event: Event) => {
     const input = event.target as HTMLInputElement;
@@ -24,20 +24,16 @@ const createFileUploadHandler = (
     const filesToProcess = Array.from(files).slice(0, maxFiles);
 
     try {
-      const processedFiles = await Promise.all(
-        filesToProcess.map(processVideoFile),
-      );
-      setVideoFiles((prev) => [...prev, ...processedFiles]);
+      const processedFiles = await Promise.all(filesToProcess.map(processVideoFile));
+      setVideoFiles(prev => [...prev, ...processedFiles]);
     } catch (err) {
       console.error("Failed to process video files:", err);
     }
   };
 };
 
-export const VideoGrid: Component<VideoGridProps> = (props) => {
-  const [videoFiles, setVideoFiles] = createSignal<VideoFile[]>(
-    props.initialFiles || [],
-  );
+export const VideoGrid: Component<VideoGridProps> = props => {
+  const [videoFiles, setVideoFiles] = createSignal<VideoFile[]>(props.initialFiles || []);
   const [selectedFile, setSelectedFile] = createSignal<VideoFile | null>(null);
 
   // Use video processing composable
@@ -57,7 +53,7 @@ export const VideoGrid: Component<VideoGridProps> = (props) => {
 
   // Handle file removal
   const handleFileRemove = (fileId: string) => {
-    setVideoFiles((prev) => prev.filter((f) => f.id !== fileId));
+    setVideoFiles(prev => prev.filter(f => f.id !== fileId));
     if (selectedFile()?.id === fileId) {
       setSelectedFile(null);
     }
@@ -66,11 +62,7 @@ export const VideoGrid: Component<VideoGridProps> = (props) => {
 
   // Create file upload handler
   const maxFiles = () => props.maxFiles || 10;
-  const handleFileUpload = createFileUploadHandler(
-    processVideoFile,
-    setVideoFiles,
-    maxFiles(),
-  );
+  const handleFileUpload = createFileUploadHandler(processVideoFile, setVideoFiles, maxFiles());
 
   // Cleanup on unmount
   createEffect(() => {

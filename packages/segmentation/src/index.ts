@@ -12,39 +12,33 @@
 // ========================================================================
 
 export type {
+  SegmentationManager as ISegmentationManager,
+  // Service types
+  SegmentationService as ISegmentationService,
   // Core segmentation types
   SegmentationData,
+  // Editor types
+  SegmentationEditorConfig,
+  SegmentationEditorEvents,
+  SegmentationEditorState,
+  SegmentationExportData,
+  // Export/Import types
+  SegmentationExportFormat,
   SegmentationMetadata,
-  SegmentationSource,
-  SegmentationTask,
-  SegmentationResult,
   SegmentationOptions,
   SegmentationProcessingInfo,
   SegmentationQualityMetrics,
-
-  // Editor types
-  SegmentationEditorConfig,
-  SegmentationEditorState,
-  SegmentationEditorEvents,
-
-  // Export/Import types
-  SegmentationExportFormat,
-  SegmentationExportData,
-
-  // Service types
-  SegmentationService as ISegmentationService,
-  SegmentationManager as ISegmentationManager,
+  SegmentationResult,
+  SegmentationSource,
   SegmentationStatistics,
+  SegmentationTask,
 } from "./types/index.js";
 
 // ========================================================================
 // Services
 // ========================================================================
 
-export {
-  SegmentationService,
-  type SegmentationServiceConfig,
-} from "./services/SegmentationService.js";
+export { SegmentationService, type SegmentationServiceConfig } from "./services/SegmentationService.js";
 
 export {
   SegmentationManager,
@@ -56,18 +50,18 @@ export {
 // Components
 // ========================================================================
 
-export { SegmentationEditor } from "./components/SegmentationEditor.js";
 export { SegmentationCanvas } from "./components/SegmentationCanvas.js";
-export { SegmentationToolbar } from "./components/SegmentationToolbar.js";
+export { SegmentationEditor } from "./components/SegmentationEditor.js";
 export { SegmentationPanel } from "./components/SegmentationPanel.js";
+export { SegmentationToolbar } from "./components/SegmentationToolbar.js";
 
 // ========================================================================
 // Composables
 // ========================================================================
 
-export { useSegmentationEditor } from "./composables/useSegmentationEditor.js";
-export { usePolygonEditor } from "./composables/usePolygonEditor.js";
 export { useCanvasInteraction } from "./composables/useCanvasInteraction.js";
+export { usePolygonEditor } from "./composables/usePolygonEditor.js";
+export { useSegmentationEditor } from "./composables/useSegmentationEditor.js";
 
 // ========================================================================
 // Utilities and Helpers
@@ -75,7 +69,7 @@ export { useCanvasInteraction } from "./composables/useCanvasInteraction.js";
 
 // Re-export commonly used types from dependencies
 export type { Point, Polygon } from "reynard-algorithms";
-export type { CaptionData, CaptionType } from "reynard-caption";
+export type { CaptionData, CaptionType } from "reynard-caption-core";
 
 // ========================================================================
 // Version Information

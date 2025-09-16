@@ -8,5 +8,5 @@ source ~/venv/bin/activate
 # Change to the correct directory
 cd /home/kade/runeset/reynard/scripts/mcp || exit
 
-# Start the MCP server
-exec python3 main.py
+# Start the MCP server with banner
+exec python3 main.py --banner

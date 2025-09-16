@@ -5,13 +5,13 @@
  * progress tracking, and comprehensive result management.
  */
 
-import { Component, createSignal, createEffect } from "solid-js";
+import type { AnnotationProgress, CaptionResult, CaptionTask } from "reynard-annotating-core";
+import { Component, createEffect, createSignal } from "solid-js";
 import type { BackendAnnotationManager } from "../BackendAnnotationManager";
-import type { CaptionTask, CaptionResult } from "reynard-annotating-core";
-import { BatchFileUpload } from "./BatchFileUpload";
 import { BatchConfiguration } from "./BatchConfiguration";
-import { BatchProgress as BatchProgressComponent } from "./BatchProgress";
 import { BatchFileList } from "./BatchFileList";
+import { BatchFileUpload } from "./BatchFileUpload";
+import { BatchProgress as BatchProgressComponent } from "./BatchProgress";
 import { BatchResults } from "./BatchResults";
 
 export interface BatchCaptionProcessorProps {
@@ -45,9 +45,7 @@ export interface BatchProgress {
   estimatedTimeRemaining?: number;
 }
 
-export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = (
-  props,
-) => {
+export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = props => {
   const [files, setFiles] = createSignal<BatchFile[]>([]);
   const [isProcessing, setIsProcessing] = createSignal(false);
   const [progress, setProgress] = createSignal<BatchProgress>({
@@ -57,11 +55,8 @@ export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = (
     errors: 0,
     percentage: 0,
   });
-  const [selectedGenerator, setSelectedGenerator] =
-    createSignal<string>("jtp2");
-  const [availableGenerators, setAvailableGenerators] = createSignal<string[]>(
-    [],
-  );
+  const [selectedGenerator, setSelectedGenerator] = createSignal<string>("jtp2");
+  const [availableGenerators, setAvailableGenerators] = createSignal<string[]>([]);
   const [showResults, setShowResults] = createSignal(false);
   const [batchConfig, setBatchConfig] = createSignal({
     maxConcurrent: 4,
@@ -81,7 +76,7 @@ export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = (
 
   // Add files to batch
   const addFiles = (newFiles: File[]) => {
-    const batchFiles: BatchFile[] = newFiles.map((file) => ({
+    const batchFiles: BatchFile[] = newFiles.map(file => ({
       id: `${file.name}-${Date.now()}-${Math.random()}`,
       file,
       path: file.name,
@@ -92,30 +87,28 @@ export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = (
       status: "pending",
     }));
 
-    setFiles((prev) => [...prev, ...batchFiles]);
+    setFiles(prev => [...prev, ...batchFiles]);
     updateProgress();
   };
 
   // Remove file from batch
   const removeFile = (fileId: string) => {
-    setFiles((prev) => prev.filter((f) => f.id !== fileId));
+    setFiles(prev => prev.filter(f => f.id !== fileId));
     updateProgress();
   };
 
   // Update file configuration
   const updateFileConfig = (fileId: string, updates: Partial<BatchFile>) => {
-    setFiles((prev) =>
-      prev.map((f) => (f.id === fileId ? { ...f, ...updates } : f)),
-    );
+    setFiles(prev => prev.map(f => (f.id === fileId ? { ...f, ...updates } : f)));
   };
 
   // Update progress calculation
   const updateProgress = () => {
     const fileList = files();
     const total = fileList.length;
-    const completed = fileList.filter((f) => f.status === "completed").length;
-    const processing = fileList.filter((f) => f.status === "processing").length;
-    const errors = fileList.filter((f) => f.status === "error").length;
+    const completed = fileList.filter(f => f.status === "completed").length;
+    const processing = fileList.filter(f => f.status === "processing").length;
+    const errors = fileList.filter(f => f.status === "error").length;
     const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
     setProgress({
@@ -137,12 +130,10 @@ export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = (
 
     try {
       // Reset all file statuses
-      setFiles((prev) =>
-        prev.map((f) => ({ ...f, status: "pending" as const })),
-      );
+      setFiles(prev => prev.map(f => ({ ...f, status: "pending" as const })));
 
       // Create tasks for batch processing
-      const tasks: CaptionTask[] = fileList.map((file) => ({
+      const tasks: CaptionTask[] = fileList.map(file => ({
         imagePath: file.path,
         generatorName: file.generatorName,
         config: file.config || {},
@@ -151,58 +142,31 @@ export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = (
       }));
 
       // Progress callback for real-time updates
-      const progressCallback = (progressData: Record<string, unknown>) => {
-        if (progressData.type === "progress" && progressData.item) {
-          const fileIndex = fileList.findIndex(
-            (f) => f.path === progressData.item,
-          );
-          if (fileIndex >= 0) {
-            updateFileConfig(fileList[fileIndex].id, {
-              status: "processing",
-              progress: progressData.progress as number,
-            });
-          }
-        } else if (progressData.type === "completed" && progressData.item) {
-          const fileIndex = fileList.findIndex(
-            (f) => f.path === progressData.item,
-          );
-          if (fileIndex >= 0) {
-            updateFileConfig(fileList[fileIndex].id, {
-              status: "completed",
-              result: progressData.result as CaptionResult,
-            });
-          }
-        } else if (progressData.type === "error" && progressData.item) {
-          const fileIndex = fileList.findIndex(
-            (f) => f.path === progressData.item,
-          );
-          if (fileIndex >= 0) {
-            updateFileConfig(fileList[fileIndex].id, {
-              status: "error",
-              error: progressData.message as string,
-            });
-          }
-        }
+      const progressCallback = (progressData: AnnotationProgress) => {
+        // Update overall progress
+        setProgress({
+          total: progressData.total,
+          completed: progressData.completed,
+          processing: progressData.total - progressData.completed - progressData.failed,
+          errors: progressData.failed,
+          percentage: progressData.progress,
+          currentFile: progressData.current,
+          estimatedTimeRemaining: progressData.estimatedTimeRemaining,
+        });
         updateProgress();
       };
 
       // Process batch with progress tracking
-      const results = await props.manager
-        .getService()
-        .generateBatchCaptions(
-          tasks,
-          progressCallback,
-          batchConfig().maxConcurrent,
-        );
+      const results = await props.manager.getService().generateBatchCaptions(tasks, progressCallback);
 
       // Update final results
-      setFiles((prev) =>
+      setFiles(prev =>
         prev.map((file, index) => ({
           ...file,
           status: results[index]?.success ? "completed" : "error",
           result: results[index],
           error: results[index]?.error,
-        })),
+        }))
       );
 
       setShowResults(true);
@@ -231,10 +195,8 @@ export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = (
 
   // Export results
   const exportResults = () => {
-    const completedFiles = files().filter(
-      (f) => f.status === "completed" && f.result,
-    );
-    const exportData = completedFiles.map((file) => ({
+    const completedFiles = files().filter(f => f.status === "completed" && f.result);
+    const exportData = completedFiles.map(file => ({
       filename: file.file.name,
       generator: file.generatorName,
       caption: file.result?.caption,
@@ -275,15 +237,9 @@ export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = (
         postProcess={batchConfig().postProcess}
         disabled={isProcessing()}
         onGeneratorChange={setSelectedGenerator}
-        onMaxConcurrentChange={(value) =>
-          setBatchConfig((prev) => ({ ...prev, maxConcurrent: value }))
-        }
-        onForceChange={(force) =>
-          setBatchConfig((prev) => ({ ...prev, force }))
-        }
-        onPostProcessChange={(postProcess) =>
-          setBatchConfig((prev) => ({ ...prev, postProcess }))
-        }
+        onMaxConcurrentChange={value => setBatchConfig(prev => ({ ...prev, maxConcurrent: value }))}
+        onForceChange={force => setBatchConfig(prev => ({ ...prev, force }))}
+        onPostProcessChange={postProcess => setBatchConfig(prev => ({ ...prev, postProcess }))}
       />
 
       {/* File Upload Area */}
@@ -312,11 +268,7 @@ export const BatchCaptionProcessor: Component<BatchCaptionProcessorProps> = (
       )}
 
       {/* Results Section */}
-      <BatchResults
-        files={files()}
-        showResults={showResults()}
-        onExportResults={exportResults}
-      />
+      <BatchResults files={files()} showResults={showResults()} onExportResults={exportResults} />
     </div>
   );
 };

@@ -1,0 +1,134 @@
+[
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:01:13.417571",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.05,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:04:00.259954",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.1,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:22:56.221346",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 969.7920489311218,
+      "simulation_time": 969.7920489311218,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:22:56.224840",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 969.8420489311218,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "agent_created",
+    "timestamp": "2025-09-16T16:36:38.036984",
+    "agent_id": "agent-1758033398-4541",
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "spirit": "fox",
+      "style": "foundation",
+      "name": "Amber-Strategist-89",
+      "is_offspring": false
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:36:38.041242",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.1,
+      "simulation_time": 0.1,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:36:38.042589",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.15000000000000002,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "agent_created",
+    "timestamp": "2025-09-16T16:44:43.424425",
+    "agent_id": "git-workflow-executor",
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "spirit": "otter",
+      "style": "foundation",
+      "name": "Puddle-Minister-25",
+      "is_offspring": false
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:44:43.425281",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.1,
+      "simulation_time": 0.25,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:44:43.425746",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.3,
+      "time_acceleration": 10.0
+    }
+  }
+]

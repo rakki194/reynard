@@ -9,5 +9,5 @@ echo "🦦 Starting E2E Test Backend..."
 cd "$(dirname "$0")"
 
 # Start the backend server
-echo "🚀 Starting backend server on port 8888..."
+echo "🚀 Starting backend server on port 8000..."
 python3 main.py

@@ -35,15 +35,23 @@
   },
   "keywords": ["solidjs", "ui", "components", "design-system", "accessibility", "responsive"],
   "peerDependencies": {
-    "solid-js": "1.9.9"
+    "solid-js": "1.9.9",
+    "three": "^0.180.0"
+  },
+  "peerDependenciesMeta": {
+    "solid-js": {
+      "optional": false
+    },
+    "three": {
+      "optional": true
+    }
   },
   "dependencies": {
     "reynard-charts": "workspace:*",
     "reynard-colors": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
-    "reynard-themes": "workspace:*",
-    "three": "^0.180.0"
+    "reynard-themes": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",

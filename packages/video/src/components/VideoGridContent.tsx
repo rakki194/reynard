@@ -5,7 +5,7 @@
  */
 
 import { Component, For, Show } from "solid-js";
-import { VideoFile } from "./types/VideoTypes";
+import { VideoFile } from "../types";
 import { VideoFileCard } from "./VideoFileCard";
 import { VideoPlayer } from "./VideoPlayer";
 
@@ -22,7 +22,7 @@ export interface VideoGridContentProps {
   onClosePlayer: () => void;
 }
 
-export const VideoGridContent: Component<VideoGridContentProps> = (props) => {
+export const VideoGridContent: Component<VideoGridContentProps> = props => {
   return (
     <div class={`video-grid ${props.class || ""}`}>
       {/* File Upload */}
@@ -48,7 +48,7 @@ export const VideoGridContent: Component<VideoGridContentProps> = (props) => {
       {/* Video Files Grid */}
       <div class="video-files-grid">
         <For each={props.videoFiles()}>
-          {(file) => (
+          {file => (
             <VideoFileCard
               file={file}
               isSelected={props.selectedFile()?.id === file.id}
@@ -62,10 +62,7 @@ export const VideoGridContent: Component<VideoGridContentProps> = (props) => {
 
       {/* Selected Video Player */}
       <Show when={props.selectedFile()}>
-        <VideoPlayer
-          file={props.selectedFile()!}
-          onClose={props.onClosePlayer}
-        />
+        <VideoPlayer file={props.selectedFile()!} onClose={props.onClosePlayer} />
       </Show>
     </div>
   );

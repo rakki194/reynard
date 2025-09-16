@@ -60,7 +60,7 @@ export const createBarChartOptions = (options: BarChartConfigOptions) => {
     },
     scales: {
       [categoryAxis]: {
-        type: "category",
+        type: "category" as const,
         display: categoryAxis === "x" ? options.xAxis?.display !== false : options.yAxis?.display !== false,
         title: {
           display: categoryAxis === "x" ? !!options.xAxis?.label : !!options.yAxis?.label,
@@ -77,7 +77,7 @@ export const createBarChartOptions = (options: BarChartConfigOptions) => {
         stacked: options.stacked,
       },
       [valueAxis]: {
-        type: "linear",
+        type: "linear" as const,
         display: valueAxis === "x" ? options.xAxis?.display !== false : options.yAxis?.display !== false,
         position: valueAxis === "y" ? options.yAxis?.position || "left" : options.xAxis?.position || "bottom",
         title: {

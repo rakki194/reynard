@@ -1,0 +1,46 @@
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN pnpm run build
+
+# Production stage
+FROM nginx:alpine
+
+# Copy built files
+COPY --from=builder /app/templates/starter/dist /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx/prod/frontend-only.conf /etc/nginx/conf.d/default.conf
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S reynard -u 1001
+
+# Set ownership
+RUN chown -R reynard:nodejs /usr/share/nginx/html
+RUN chown -R reynard:nodejs /var/cache/nginx
+RUN chown -R reynard:nodejs /var/log/nginx
+RUN chown -R reynard:nodejs /etc/nginx/conf.d
+RUN touch /var/run/nginx.pid
+RUN chown -R reynard:nodejs /var/run/nginx.pid
+
+USER reynard
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

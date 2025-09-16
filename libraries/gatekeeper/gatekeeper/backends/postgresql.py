@@ -31,6 +31,9 @@ logger = logging.getLogger(__name__)
 # SQLAlchemy base class
 Base = declarative_base()
 
+# Type alias for the base class
+BaseType = type[Base]
+
 
 class UserModel(Base):
     """SQLAlchemy model for users table."""
@@ -80,7 +83,7 @@ class PostgreSQLBackend(UserBackend):
         """Get a database session."""
         return self.SessionLocal()
 
-    def _initialize_database(self):
+    def _initialize_database(self) -> None:
         """Initialize the database by creating tables."""
         if not self._initialized:
             Base.metadata.create_all(bind=self.engine)
@@ -132,17 +135,17 @@ class PostgreSQLBackend(UserBackend):
 
                 # Convert to User model
                 return User(
-                    id=str(db_user.id),
-                    username=db_user.username,
-                    password_hash=db_user.password_hash,
-                    role=UserRole(db_user.role),
-                    email=db_user.email,
-                    profile_picture_url=db_user.profile_picture_url,
-                    yapcoin_balance=db_user.yapcoin_balance,
-                    is_active=db_user.is_active,
-                    created_at=db_user.created_at,
-                    updated_at=db_user.updated_at,
-                    metadata=db_user.user_metadata or {},
+                    id=str(db_user.id),  # type: ignore[arg-type]
+                    username=db_user.username,  # type: ignore[arg-type]
+                    password_hash=db_user.password_hash,  # type: ignore[arg-type]
+                    role=UserRole(db_user.role),  # type: ignore[arg-type]
+                    email=db_user.email,  # type: ignore[arg-type]
+                    profile_picture_url=db_user.profile_picture_url,  # type: ignore[arg-type]
+                    yapcoin_balance=db_user.yapcoin_balance,  # type: ignore[arg-type]
+                    is_active=db_user.is_active,  # type: ignore[arg-type]
+                    created_at=db_user.created_at,  # type: ignore[arg-type]
+                    updated_at=db_user.updated_at,  # type: ignore[arg-type]
+                    metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
                 )
 
             except IntegrityError as e:
@@ -174,17 +177,17 @@ class PostgreSQLBackend(UserBackend):
                     return None
 
                 return User(
-                    id=str(db_user.id),
-                    username=db_user.username,
-                    password_hash=db_user.password_hash,
-                    role=UserRole(db_user.role),
-                    email=db_user.email,
-                    profile_picture_url=db_user.profile_picture_url,
-                    yapcoin_balance=db_user.yapcoin_balance,
-                    is_active=db_user.is_active,
-                    created_at=db_user.created_at,
-                    updated_at=db_user.updated_at,
-                    metadata=db_user.user_metadata or {},
+                    id=str(db_user.id),  # type: ignore[arg-type]
+                    username=db_user.username,  # type: ignore[arg-type]
+                    password_hash=db_user.password_hash,  # type: ignore[arg-type]
+                    role=UserRole(db_user.role),  # type: ignore[arg-type]
+                    email=db_user.email,  # type: ignore[arg-type]
+                    profile_picture_url=db_user.profile_picture_url,  # type: ignore[arg-type]
+                    yapcoin_balance=db_user.yapcoin_balance,  # type: ignore[arg-type]
+                    is_active=db_user.is_active,  # type: ignore[arg-type]
+                    created_at=db_user.created_at,  # type: ignore[arg-type]
+                    updated_at=db_user.updated_at,  # type: ignore[arg-type]
+                    metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
                 )
 
             except SQLAlchemyError as e:
@@ -204,17 +207,17 @@ class PostgreSQLBackend(UserBackend):
                     return None
 
                 return User(
-                    id=str(db_user.id),
-                    username=db_user.username,
-                    password_hash=db_user.password_hash,
-                    role=UserRole(db_user.role),
-                    email=db_user.email,
-                    profile_picture_url=db_user.profile_picture_url,
-                    yapcoin_balance=db_user.yapcoin_balance,
-                    is_active=db_user.is_active,
-                    created_at=db_user.created_at,
-                    updated_at=db_user.updated_at,
-                    metadata=db_user.user_metadata or {},
+                    id=str(db_user.id),  # type: ignore[arg-type]
+                    username=db_user.username,  # type: ignore[arg-type]
+                    password_hash=db_user.password_hash,  # type: ignore[arg-type]
+                    role=UserRole(db_user.role),  # type: ignore[arg-type]
+                    email=db_user.email,  # type: ignore[arg-type]
+                    profile_picture_url=db_user.profile_picture_url,  # type: ignore[arg-type]
+                    yapcoin_balance=db_user.yapcoin_balance,  # type: ignore[arg-type]
+                    is_active=db_user.is_active,  # type: ignore[arg-type]
+                    created_at=db_user.created_at,  # type: ignore[arg-type]
+                    updated_at=db_user.updated_at,  # type: ignore[arg-type]
+                    metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
                 )
 
             except SQLAlchemyError as e:
@@ -234,17 +237,17 @@ class PostgreSQLBackend(UserBackend):
                     return None
 
                 return User(
-                    id=str(db_user.id),
-                    username=db_user.username,
-                    password_hash=db_user.password_hash,
-                    role=UserRole(db_user.role),
-                    email=db_user.email,
-                    profile_picture_url=db_user.profile_picture_url,
-                    yapcoin_balance=db_user.yapcoin_balance,
-                    is_active=db_user.is_active,
-                    created_at=db_user.created_at,
-                    updated_at=db_user.updated_at,
-                    metadata=db_user.user_metadata or {},
+                    id=str(db_user.id),  # type: ignore[arg-type]
+                    username=db_user.username,  # type: ignore[arg-type]
+                    password_hash=db_user.password_hash,  # type: ignore[arg-type]
+                    role=UserRole(db_user.role),  # type: ignore[arg-type]
+                    email=db_user.email,  # type: ignore[arg-type]
+                    profile_picture_url=db_user.profile_picture_url,  # type: ignore[arg-type]
+                    yapcoin_balance=db_user.yapcoin_balance,  # type: ignore[arg-type]
+                    is_active=db_user.is_active,  # type: ignore[arg-type]
+                    created_at=db_user.created_at,  # type: ignore[arg-type]
+                    updated_at=db_user.updated_at,  # type: ignore[arg-type]
+                    metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
                 )
 
             except SQLAlchemyError as e:
@@ -280,7 +283,7 @@ class PostgreSQLBackend(UserBackend):
                         raise UserAlreadyExistsError(
                             f"Username '{user_update.username}' already exists"
                         )
-                    db_user.username = user_update.username
+                    db_user.username = user_update.username  # type: ignore[assignment]
 
                 if user_update.email is not None:
                     # Check if new email is already taken
@@ -297,37 +300,37 @@ class PostgreSQLBackend(UserBackend):
                             raise UserAlreadyExistsError(
                                 f"Email '{user_update.email}' already exists"
                             )
-                    db_user.email = user_update.email
+                    db_user.email = user_update.email  # type: ignore[assignment]
 
                 if user_update.role is not None:
-                    db_user.role = user_update.role
+                    db_user.role = user_update.role  # type: ignore[assignment]
 
                 if user_update.is_active is not None:
-                    db_user.is_active = user_update.is_active
+                    db_user.is_active = user_update.is_active  # type: ignore[assignment]
 
                 if user_update.profile_picture_url is not None:
-                    db_user.profile_picture_url = user_update.profile_picture_url
+                    db_user.profile_picture_url = user_update.profile_picture_url  # type: ignore[assignment]
 
                 if user_update.metadata is not None:
-                    db_user.user_metadata = user_update.metadata
+                    db_user.user_metadata = user_update.metadata  # type: ignore[assignment]
 
-                db_user.updated_at = datetime.now(UTC)
+                db_user.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
                 session.commit()
                 session.refresh(db_user)
 
                 return User(
-                    id=str(db_user.id),
-                    username=db_user.username,
-                    password_hash=db_user.password_hash,
-                    role=UserRole(db_user.role),
-                    email=db_user.email,
-                    profile_picture_url=db_user.profile_picture_url,
-                    yapcoin_balance=db_user.yapcoin_balance,
-                    is_active=db_user.is_active,
-                    created_at=db_user.created_at,
-                    updated_at=db_user.updated_at,
-                    metadata=db_user.user_metadata or {},
+                    id=str(db_user.id),  # type: ignore[arg-type]
+                    username=db_user.username,  # type: ignore[arg-type]
+                    password_hash=db_user.password_hash,  # type: ignore[arg-type]
+                    role=UserRole(db_user.role),  # type: ignore[arg-type]
+                    email=db_user.email,  # type: ignore[arg-type]
+                    profile_picture_url=db_user.profile_picture_url,  # type: ignore[arg-type]
+                    yapcoin_balance=db_user.yapcoin_balance,  # type: ignore[arg-type]
+                    is_active=db_user.is_active,  # type: ignore[arg-type]
+                    created_at=db_user.created_at,  # type: ignore[arg-type]
+                    updated_at=db_user.updated_at,  # type: ignore[arg-type]
+                    metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
                 )
 
             except SQLAlchemyError as e:
@@ -412,8 +415,8 @@ class PostgreSQLBackend(UserBackend):
                 if not db_user:
                     return False
 
-                db_user.password_hash = new_password_hash
-                db_user.updated_at = datetime.now(UTC)
+                db_user.password_hash = new_password_hash  # type: ignore[assignment]
+                db_user.updated_at = datetime.now(UTC)  # type: ignore[assignment]
                 session.commit()
                 return True
 
@@ -436,8 +439,8 @@ class PostgreSQLBackend(UserBackend):
                 if not db_user:
                     return False
 
-                db_user.role = new_role
-                db_user.updated_at = datetime.now(UTC)
+                db_user.role = new_role  # type: ignore[assignment]
+                db_user.updated_at = datetime.now(UTC)  # type: ignore[assignment]
                 session.commit()
                 return True
 
@@ -462,8 +465,8 @@ class PostgreSQLBackend(UserBackend):
                 if not db_user:
                     return False
 
-                db_user.profile_picture_url = profile_picture_url
-                db_user.updated_at = datetime.now(UTC)
+                db_user.profile_picture_url = profile_picture_url  # type: ignore[assignment]
+                db_user.updated_at = datetime.now(UTC)  # type: ignore[assignment]
                 session.commit()
                 return True
 
@@ -488,8 +491,8 @@ class PostgreSQLBackend(UserBackend):
                 if not db_user:
                     return False
 
-                db_user.user_metadata = metadata
-                db_user.updated_at = datetime.now(UTC)
+                db_user.user_metadata = metadata  # type: ignore[assignment]
+                db_user.updated_at = datetime.now(UTC)  # type: ignore[assignment]
                 session.commit()
                 return True
 
@@ -619,7 +622,7 @@ class PostgreSQLBackend(UserBackend):
                 if not db_user:
                     raise UserNotFoundError(f"User '{username}' not found")
 
-                return db_user.user_metadata or {}
+                return db_user.user_metadata or {}  # type: ignore[return-value]
 
             except SQLAlchemyError as e:
                 raise BackendError(f"Database error: {e}")
@@ -641,8 +644,8 @@ class PostgreSQLBackend(UserBackend):
                 if not db_user:
                     return False
 
-                db_user.user_metadata = settings
-                db_user.updated_at = datetime.now(UTC)
+                db_user.user_metadata = settings  # type: ignore[assignment]
+                db_user.updated_at = datetime.now(UTC)  # type: ignore[assignment]
                 session.commit()
                 return True
 
@@ -674,8 +677,8 @@ class PostgreSQLBackend(UserBackend):
                 if not db_user:
                     return False
 
-                db_user.username = new_username
-                db_user.updated_at = datetime.now(UTC)
+                db_user.username = new_username  # type: ignore[assignment]
+                db_user.updated_at = datetime.now(UTC)  # type: ignore[assignment]
                 session.commit()
                 return True
 
@@ -728,8 +731,8 @@ class PostgreSQLBackend(UserBackend):
                 if not db_user:
                     return False
 
-                db_user.yapcoin_balance = (db_user.yapcoin_balance or 0) + amount
-                db_user.updated_at = datetime.now(UTC)
+                db_user.yapcoin_balance = (db_user.yapcoin_balance or 0) + amount  # type: ignore[assignment]
+                db_user.updated_at = datetime.now(UTC)  # type: ignore[assignment]
                 session.commit()
                 return True
 

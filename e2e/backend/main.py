@@ -7,13 +7,14 @@ Dedicated backend instance for end-to-end testing
 import os
 import sys
 from pathlib import Path
+
 import uvicorn
 
 
 def main() -> None:
     """Start the e2e test backend server"""
     print("🦦 Starting E2E Test Backend Server...")
-    print("📍 Port: 8888")
+    print("📍 Port: 8000")
     print("🔧 Environment: e2e-testing")
     print("🎯 Purpose: End-to-end authentication testing")
 
@@ -22,7 +23,7 @@ def main() -> None:
     os.environ["DATABASE_URL"] = "sqlite:///./e2e-test.db"
     os.environ["JWT_SECRET_KEY"] = "e2e-test-secret-key-not-for-production"
     os.environ["CORS_ORIGINS"] = "http://localhost:3001,http://localhost:3000"
-    os.environ["PORT"] = "8888"
+    os.environ["PORT"] = "8000"
 
     # Get the main backend path
     backend_path = Path(__file__).parent.parent.parent / "backend"
@@ -46,6 +47,7 @@ def main() -> None:
     try:
         # Import the main backend app (avoiding circular import)
         import importlib.util
+
         spec = importlib.util.spec_from_file_location(
             "backend_main", backend_path / "main.py"
         )
@@ -62,7 +64,7 @@ def main() -> None:
         uvicorn.run(
             app,
             host="0.0.0.0",
-            port=8888,
+            port=8000,
             log_level="info",
             reload=False,  # Disable reload for e2e testing
             access_log=True,

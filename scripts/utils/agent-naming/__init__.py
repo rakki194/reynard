@@ -62,6 +62,17 @@ from .reynard_namer import (
     get_system_info,
 )
 
+# Import inheritance system modules
+try:
+    from .agent_lineage import LineageManager
+    from .agent_traits import AgentTraits
+    from .enhanced_agent_manager import EnhancedAgentManager
+    from .inherited_name_generator import InheritedNameGenerator
+
+    INHERITANCE_AVAILABLE = True
+except ImportError:
+    INHERITANCE_AVAILABLE = False
+
 __version__ = "2.0.0"
 __author__ = "Reynard Development Team"
 __description__ = "Modular robot name generator with animal spirit themes"
@@ -99,4 +110,17 @@ __all__ = [
     "ScientificClassifications",
     # Generation numbers
     "GenerationNumbers",
+    # Inheritance system
+    "INHERITANCE_AVAILABLE",
 ]
+
+# Add inheritance modules to __all__ if available
+if INHERITANCE_AVAILABLE:
+    __all__.extend(
+        [
+            "AgentTraits",
+            "EnhancedAgentManager",
+            "InheritedNameGenerator",
+            "LineageManager",
+        ]
+    )

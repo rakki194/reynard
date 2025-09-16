@@ -69,7 +69,7 @@ print_status "Checking required services..."
 # 4. This gives us precise control over error handling and user messaging
 # 5. The alternative (separate function call + $? check) is discouraged by SC2181
 # 6. Therefore, we disable SC2310 to use the SC2181-recommended pattern
-if ! check_service "http://localhost:8888" "Backend"; then
+if ! check_service "http://localhost:8000" "Backend"; then
     print_error "Backend is not running. Please start it with: cd backend && ./start.sh"
     exit 1
 fi

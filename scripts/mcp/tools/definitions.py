@@ -9,10 +9,14 @@ Follows the 100-line axiom and modular architecture principles.
 
 from typing import Any
 
+from .bm25_search_definitions import get_bm25_search_tool_definitions
+from .ecs_definitions import get_ecs_tool_definitions
+from .enhanced_bm25_search_definitions import ENHANCED_BM25_SEARCH_TOOLS
 from .file_search_definitions import get_file_search_tool_definitions
 from .image_viewer_definitions import get_image_viewer_tool_definitions
 from .linting_definitions import get_linting_tool_definitions
 from .mermaid_definitions import get_mermaid_tool_definitions
+from .monolith_detection_definitions import get_monolith_detection_tool_definitions
 from .semantic_file_search_definitions import get_semantic_file_search_tool_definitions
 from .version_vscode_definitions import get_version_vscode_tool_definitions
 from .vscode_tasks_definitions import get_vscode_tasks_tool_definitions
@@ -81,9 +85,87 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
             "description": "List all agents and their assigned names",
             "inputSchema": {"type": "object", "properties": {}},
         },
+        "create_offspring": {
+            "name": "create_offspring",
+            "description": "Create offspring agent from two parent agents with inherited traits",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "parent1_id": {
+                        "type": "string",
+                        "description": "First parent agent ID",
+                    },
+                    "parent2_id": {
+                        "type": "string",
+                        "description": "Second parent agent ID",
+                    },
+                    "offspring_id": {
+                        "type": "string",
+                        "description": "New offspring agent ID",
+                    },
+                },
+                "required": ["parent1_id", "parent2_id", "offspring_id"],
+            },
+        },
+        "get_agent_lineage": {
+            "name": "get_agent_lineage",
+            "description": "Get family tree and lineage information for an agent",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string",
+                        "description": "Agent ID to get lineage for",
+                    },
+                    "depth": {
+                        "type": "integer",
+                        "description": "Depth of family tree to show",
+                        "default": 3,
+                    },
+                },
+                "required": ["agent_id"],
+            },
+        },
+        "analyze_genetic_compatibility": {
+            "name": "analyze_genetic_compatibility",
+            "description": "Analyze genetic compatibility between two agents",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "agent1_id": {
+                        "type": "string",
+                        "description": "First agent ID",
+                    },
+                    "agent2_id": {
+                        "type": "string",
+                        "description": "Second agent ID",
+                    },
+                },
+                "required": ["agent1_id", "agent2_id"],
+            },
+        },
+        "find_compatible_mates": {
+            "name": "find_compatible_mates",
+            "description": "Find agents with compatible traits for breeding",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string",
+                        "description": "Agent ID to find mates for",
+                    },
+                    "max_results": {
+                        "type": "integer",
+                        "description": "Maximum number of results to return",
+                        "default": 5,
+                    },
+                },
+                "required": ["agent_id"],
+            },
+        },
         "get_current_time": {
             "name": "get_current_time",
-            "description": "Get the current date and time",
+            "description": "Get the current date and time with timezone support",
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -91,7 +173,11 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
                         "type": "string",
                         "description": "Time format (default: ISO format)",
                         "default": "iso",
-                    }
+                    },
+                    "timezone": {
+                        "type": "string",
+                        "description": "Timezone (e.g., 'Europe/Berlin', 'America/New_York'). If not provided, will auto-detect from location.",
+                    },
                 },
             },
         },
@@ -144,6 +230,21 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
                 },
             },
         },
+        "restart_mcp_server": {
+            "name": "restart_mcp_server",
+            "description": "Restart the MCP server with different restart methods",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "method": {
+                        "type": "string",
+                        "enum": ["graceful", "immediate", "external"],
+                        "description": "Restart method: 'graceful' (SIGTERM), 'immediate' (SIGKILL), or 'external' (via script)",
+                        "default": "graceful",
+                    },
+                },
+            },
+        },
         "roll_agent_spirit": {
             "name": "roll_agent_spirit",
             "description": "Randomly select an animal spirit for agent initialization",
@@ -160,7 +261,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
         },
         "agent_startup_sequence": {
             "name": "agent_startup_sequence",
-            "description": "Complete agent initialization sequence with random spirit selection",
+            "description": "Complete agent initialization sequence with ECS integration and trait inheritance",
             "inputSchema": {
                 "type": "object",
                 "properties": {
@@ -189,16 +290,90 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
                 },
             },
         },
+        "get_agent_persona": {
+            "name": "get_agent_persona",
+            "description": "Get comprehensive agent persona from ECS system",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string",
+                        "description": AGENT_ID_DESCRIPTION,
+                    },
+                },
+                "required": ["agent_id"],
+            },
+        },
+        "get_lora_config": {
+            "name": "get_lora_config",
+            "description": "Get LoRA configuration for agent persona",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string",
+                        "description": AGENT_ID_DESCRIPTION,
+                    },
+                },
+                "required": ["agent_id"],
+            },
+        },
+        "get_simulation_status": {
+            "name": "get_simulation_status",
+            "description": "Get comprehensive ECS world simulation status",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+            },
+        },
+        "accelerate_time": {
+            "name": "accelerate_time",
+            "description": "Adjust time acceleration factor for world simulation",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "factor": {
+                        "type": "number",
+                        "description": "Time acceleration factor (0.1 to 100.0)",
+                        "default": 10.0,
+                        "minimum": 0.1,
+                        "maximum": 100.0,
+                    },
+                },
+            },
+        },
+        "nudge_time": {
+            "name": "nudge_time",
+            "description": "Nudge simulation time forward (for MCP actions)",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number",
+                        "description": "Amount to nudge time forward",
+                        "default": 0.1,
+                        "minimum": 0.01,
+                        "maximum": 1.0,
+                    },
+                },
+            },
+        },
     }
 
-    # Get linting, version/vscode, file search, semantic search, image viewer, mermaid, and VS Code tasks tools
+    # Get linting, version/vscode, file search, semantic search, image viewer, mermaid, BM25 search, and VS Code tasks tools
     linting_tools = get_linting_tool_definitions()
     version_vscode_tools = get_version_vscode_tool_definitions()
     file_search_tools = get_file_search_tool_definitions()
     semantic_file_search_tools = get_semantic_file_search_tool_definitions()
     image_viewer_tools = get_image_viewer_tool_definitions()
     mermaid_tools = get_mermaid_tool_definitions()
+    monolith_detection_tools = get_monolith_detection_tool_definitions()
+    bm25_search_tools = get_bm25_search_tool_definitions()
+    enhanced_bm25_search_tools = {
+        tool["name"]: tool for tool in ENHANCED_BM25_SEARCH_TOOLS
+    }
     vscode_tasks_tools = get_vscode_tasks_tool_definitions()
+    ecs_tools = get_ecs_tool_definitions()
 
     # Return combined tool definitions
     return {
@@ -208,6 +383,10 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
         **file_search_tools,
         **semantic_file_search_tools,
         **image_viewer_tools,
+        **enhanced_bm25_search_tools,
         **mermaid_tools,
+        **monolith_detection_tools,
+        **bm25_search_tools,
         **vscode_tasks_tools,
+        **ecs_tools,
     }

@@ -7,42 +7,23 @@
  * editing, and seamless integration with the Reynard ecosystem.
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  createMemo,
-  onMount,
-  onCleanup,
-  Show,
-  For,
-} from "solid-js";
-import {
-  FloatingPanelOverlay,
-  FloatingPanel,
-  useOverlayManager,
-  type FloatingPanel as FloatingPanelType,
-} from "reynard-floating-panel";
-import { CaptionInput } from "reynard-caption";
-import {
-  PolygonOps,
-  PointOps,
-  type Point,
-  type Polygon,
-} from "reynard-algorithms";
+import { type Point } from "reynard-algorithms";
+import { CaptionInput } from "reynard-caption-ui";
+import { FloatingPanel, FloatingPanelOverlay, useOverlayManager } from "reynard-floating-panel";
+import { Component, For, createEffect, createMemo, createSignal, onCleanup, onMount } from "solid-js";
+import { usePolygonEditor } from "../composables/usePolygonEditor.js";
+import { useSegmentationEditor } from "../composables/useSegmentationEditor.js";
 import {
   SegmentationData,
   SegmentationEditorConfig,
-  SegmentationEditorState,
   SegmentationEditorEvents,
+  SegmentationEditorState,
   SegmentationSource,
 } from "../types/index.js";
-import { useSegmentationEditor } from "../composables/useSegmentationEditor.js";
-import { usePolygonEditor } from "../composables/usePolygonEditor.js";
 import { SegmentationCanvas } from "./SegmentationCanvas.js";
-import { SegmentationToolbar } from "./SegmentationToolbar.js";
-import { SegmentationPanel } from "./SegmentationPanel.js";
 import "./SegmentationEditor.css";
+import { SegmentationPanel } from "./SegmentationPanel.js";
+import { SegmentationToolbar } from "./SegmentationToolbar.js";
 
 export interface SegmentationEditorProps {
   /** Image source for segmentation */
@@ -88,9 +69,7 @@ const DEFAULT_CONFIG: SegmentationEditorConfig = {
 /**
  * Segmentation Editor Component with sophisticated floating panel integration
  */
-export const SegmentationEditor: Component<SegmentationEditorProps> = (
-  props,
-) => {
+export const SegmentationEditor: Component<SegmentationEditorProps> = props => {
   // Merge configuration with defaults
   const config = createMemo(() => ({
     ...DEFAULT_CONFIG,
@@ -111,9 +90,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
   });
 
   // Initialize segmentations
-  const [segmentations, setSegmentations] = createSignal<SegmentationData[]>(
-    props.segmentations || [],
-  );
+  const [segmentations, setSegmentations] = createSignal<SegmentationData[]>(props.segmentations || []);
 
   // Initialize overlay manager for floating panels
   const overlayManager = useOverlayManager({
@@ -128,22 +105,20 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
   const editor = useSegmentationEditor({
     config: config(),
     state: editorState(),
-    onStateChange: (newState) => {
+    onStateChange: newState => {
       setEditorState(newState);
       props.events?.onStateChange?.(newState);
     },
-    onSegmentationCreate: (segmentation) => {
-      setSegmentations((prev) => [...prev, segmentation]);
+    onSegmentationCreate: segmentation => {
+      setSegmentations(prev => [...prev, segmentation]);
       props.events?.onSegmentationCreate?.(segmentation);
     },
-    onSegmentationUpdate: (segmentation) => {
-      setSegmentations((prev) =>
-        prev.map((s) => (s.id === segmentation.id ? segmentation : s)),
-      );
+    onSegmentationUpdate: segmentation => {
+      setSegmentations(prev => prev.map(s => (s.id === segmentation.id ? segmentation : s)));
       props.events?.onSegmentationUpdate?.(segmentation);
     },
-    onSegmentationDelete: (segmentationId) => {
-      setSegmentations((prev) => prev.filter((s) => s.id !== segmentationId));
+    onSegmentationDelete: segmentationId => {
+      setSegmentations(prev => prev.filter(s => s.id !== segmentationId));
       props.events?.onSegmentationDelete?.(segmentationId);
     },
   });
@@ -152,9 +127,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
     config: config(),
     onPolygonChange: (polygon, segmentationId) => {
       if (segmentationId) {
-        const segmentation = segmentations().find(
-          (s) => s.id === segmentationId,
-        );
+        const segmentation = segmentations().find(s => s.id === segmentationId);
         if (segmentation) {
           const updatedSegmentation: SegmentationData = {
             ...segmentation,
@@ -170,14 +143,10 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
   // Computed values
   const selectedSegmentation = createMemo(() => {
     const selectedId = editorState().selectedSegmentation;
-    return selectedId
-      ? segmentations().find((s) => s.id === selectedId)
-      : undefined;
+    return selectedId ? segmentations().find(s => s.id === selectedId) : undefined;
   });
 
-  const isEditorActive = createMemo(
-    () => config().enabled && overlayManager.isActive(),
-  );
+  const isEditorActive = createMemo(() => config().enabled && overlayManager.isActive());
 
   // Create floating panels
   const panels = createMemo((): FloatingPanelType[] => {
@@ -194,14 +163,14 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
           <SegmentationPanel
             segmentations={currentSegmentations}
             selectedSegmentation={currentState.selectedSegmentation}
-            onSegmentationSelect={(id) => {
-              setEditorState((prev) => ({ ...prev, selectedSegmentation: id }));
+            onSegmentationSelect={id => {
+              setEditorState(prev => ({ ...prev, selectedSegmentation: id }));
               props.events?.onSegmentationSelect?.(id);
             }}
             onSegmentationCreate={() => {
-              setEditorState((prev) => ({ ...prev, isCreating: true }));
+              setEditorState(prev => ({ ...prev, isCreating: true }));
             }}
-            onSegmentationDelete={(id) => {
+            onSegmentationDelete={id => {
               editor.deleteSegmentation(id);
             }}
           />
@@ -230,7 +199,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
                     }
                   }
                   state="expanded"
-                  onCaptionChange={(caption) => {
+                  onCaptionChange={caption => {
                     const updatedSegmentation: SegmentationData = {
                       ...selectedSegmentation()!,
                       caption,
@@ -238,7 +207,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
                     };
                     editor.updateSegmentation(updatedSegmentation);
                   }}
-                  onSave={async (caption) => {
+                  onSave={async caption => {
                     const updatedSegmentation: SegmentationData = {
                       ...selectedSegmentation()!,
                       caption,
@@ -270,7 +239,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
 
   createEffect(() => {
     if (props.state) {
-      setEditorState((prev) => ({ ...prev, ...props.state }));
+      setEditorState(prev => ({ ...prev, ...props.state }));
     }
   });
 
@@ -280,17 +249,17 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
   };
 
   const handleMouseMove = (position: Point) => {
-    setEditorState((prev) => ({ ...prev, mousePosition: position }));
+    setEditorState(prev => ({ ...prev, mousePosition: position }));
     props.events?.onMouseMove?.(position);
   };
 
   const handleZoomChange = (zoom: number) => {
-    setEditorState((prev) => ({ ...prev, zoom }));
+    setEditorState(prev => ({ ...prev, zoom }));
     props.events?.onZoomChange?.(zoom);
   };
 
   const handlePanChange = (offset: Point) => {
-    setEditorState((prev) => ({ ...prev, panOffset: offset }));
+    setEditorState(prev => ({ ...prev, panOffset: offset }));
     props.events?.onPanChange?.(offset);
   };
 
@@ -364,11 +333,11 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
           onMouseMove={handleMouseMove}
           onZoomChange={handleZoomChange}
           onPanChange={handlePanChange}
-          onSegmentationSelect={(id) => {
-            setEditorState((prev) => ({ ...prev, selectedSegmentation: id }));
+          onSegmentationSelect={id => {
+            setEditorState(prev => ({ ...prev, selectedSegmentation: id }));
             props.events?.onSegmentationSelect?.(id);
           }}
-          onSegmentationCreate={(polygon) => {
+          onSegmentationCreate={polygon => {
             const newSegmentation: SegmentationData = {
               id: `seg_${Date.now()}`,
               polygon,
@@ -382,7 +351,7 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
             editor.createSegmentation(newSegmentation);
           }}
           onSegmentationUpdate={(id, polygon) => {
-            const segmentation = segmentations().find((s) => s.id === id);
+            const segmentation = segmentations().find(s => s.id === id);
             if (segmentation) {
               const updatedSegmentation: SegmentationData = {
                 ...segmentation,
@@ -396,18 +365,10 @@ export const SegmentationEditor: Component<SegmentationEditorProps> = (
       </div>
 
       {/* Floating panels overlay */}
-      <FloatingPanelOverlay
-        isActive={isEditorActive()}
-        transitionPhase={overlayManager.overlayState().transitionPhase}
-      >
+      <FloatingPanelOverlay isActive={isEditorActive()} transitionPhase={overlayManager.overlayState().transitionPhase}>
         <For each={panels()}>
-          {(panel) => (
-            <FloatingPanel
-              id={panel.id}
-              position={panel.position}
-              size={panel.size}
-              config={panel.config}
-            >
+          {panel => (
+            <FloatingPanel id={panel.id} position={panel.position} size={panel.size} config={panel.config}>
               {panel.content}
             </FloatingPanel>
           )}

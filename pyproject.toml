@@ -239,6 +239,7 @@ module = [
     "passlib.*",
     "argon2.*",
     "python_validation",
+    "gallery_dl.*",
 ]
 ignore_missing_imports = true
 

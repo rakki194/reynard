@@ -25,15 +25,7 @@ export interface ChartOptionsConfig {
  * Get default chart options for a given type
  */
 export function getDefaultChartOptions(config: ChartOptionsConfig): any {
-  const {
-    type,
-    theme,
-    showLegend = true,
-    showGrid = true,
-    title,
-    xAxisLabel,
-    yAxisLabel,
-  } = config;
+  const { type, theme, showLegend = true, showGrid = true, title, xAxisLabel, yAxisLabel } = config;
 
   const baseConfig = {
     responsive: true,
@@ -75,6 +67,7 @@ export function getDefaultChartOptions(config: ChartOptionsConfig): any {
         },
         scales: {
           x: {
+            type: "linear" as const,
             grid: {
               color: theme.grid,
               display: showGrid,
@@ -88,6 +81,7 @@ export function getDefaultChartOptions(config: ChartOptionsConfig): any {
             },
           },
           y: {
+            type: "linear" as const,
             grid: {
               color: theme.grid,
               display: showGrid,
@@ -108,6 +102,7 @@ export function getDefaultChartOptions(config: ChartOptionsConfig): any {
         ...baseConfig,
         scales: {
           x: {
+            type: "category" as const,
             grid: {
               display: false,
             },
@@ -120,6 +115,7 @@ export function getDefaultChartOptions(config: ChartOptionsConfig): any {
             },
           },
           y: {
+            type: "linear" as const,
             grid: {
               color: theme.grid,
               display: showGrid,
@@ -166,7 +162,7 @@ export function enhanceChartOptions(
     xAxisLabel?: string;
     yAxisLabel?: string;
     type: ChartType;
-  },
+  }
 ): any {
   const { title, showLegend, showGrid, xAxisLabel, yAxisLabel, type } = config;
 
@@ -174,7 +170,7 @@ export function enhanceChartOptions(
     ...baseOptions,
     animation: {
       duration: 0, // Disable animations for real-time updates
-    },
+    } as const,
     plugins: {
       ...baseOptions.plugins,
       title: {
@@ -182,7 +178,7 @@ export function enhanceChartOptions(
         text: title || "",
         font: {
           size: 16,
-          weight: "bold",
+          weight: "bold" as const,
         },
       },
       legend: {

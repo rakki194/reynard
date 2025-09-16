@@ -5,7 +5,7 @@
  */
 
 import { Component, createSignal } from "solid-js";
-import { VideoFile } from "./types/VideoTypes";
+import { VideoFile } from "../types";
 
 export interface VideoPlayerProps {
   file: VideoFile;
@@ -74,7 +74,7 @@ const renderVideoPlayerContent = (
   handleLoadedMetadata: () => void,
   formatTime: (seconds: number) => string,
   setIsPlaying: (playing: boolean) => void,
-  handleClose: () => void,
+  handleClose: () => void
 ) => {
   return (
     <div class="video-player-modal">
@@ -108,8 +108,7 @@ const renderVideoPlayerContent = (
           <div class="video-info">
             <h3>{props.file.name}</h3>
             <div class="video-details">
-              {props.file.metadata.width}×{props.file.metadata.height} •
-              {props.file.metadata.fps} FPS •
+              {props.file.metadata.width}×{props.file.metadata.height} •{props.file.metadata.fps} FPS •
               {(props.file.size / (1024 * 1024)).toFixed(2)} MB
             </div>
           </div>
@@ -119,7 +118,7 @@ const renderVideoPlayerContent = (
   );
 };
 
-export const VideoPlayer: Component<VideoPlayerProps> = (props) => {
+export const VideoPlayer: Component<VideoPlayerProps> = props => {
   let videoRef: HTMLVideoElement | undefined;
 
   const {
@@ -148,6 +147,6 @@ export const VideoPlayer: Component<VideoPlayerProps> = (props) => {
     handleLoadedMetadata,
     formatTime,
     setIsPlaying,
-    handleClose,
+    handleClose
   );
 };

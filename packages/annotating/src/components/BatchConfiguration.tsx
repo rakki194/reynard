@@ -4,8 +4,8 @@
  * Configuration panel for batch processing options.
  */
 
-import { Component, For } from "solid-js";
 import { Toggle } from "reynard-components";
+import { Component, For } from "solid-js";
 
 export interface BatchConfigurationProps {
   selectedGenerator: string;
@@ -21,9 +21,7 @@ export interface BatchConfigurationProps {
   class?: string;
 }
 
-export const BatchConfiguration: Component<BatchConfigurationProps> = (
-  props,
-) => {
+export const BatchConfiguration: Component<BatchConfigurationProps> = props => {
   return (
     <div class={`batch-config ${props.class || ""}`}>
       <div class="config-group">
@@ -31,13 +29,11 @@ export const BatchConfiguration: Component<BatchConfigurationProps> = (
         <select
           id="generator-select"
           value={props.selectedGenerator}
-          onChange={(e) => props.onGeneratorChange(e.currentTarget.value)}
+          onChange={e => props.onGeneratorChange(e.currentTarget.value)}
           disabled={props.disabled}
           aria-label="Select default caption generator"
         >
-          <For each={props.availableGenerators}>
-            {(generator) => <option value={generator}>{generator}</option>}
-          </For>
+          <For each={props.availableGenerators}>{generator => <option value={generator}>{generator}</option>}</For>
         </select>
       </div>
 
@@ -49,9 +45,7 @@ export const BatchConfiguration: Component<BatchConfigurationProps> = (
           min="1"
           max="8"
           value={props.maxConcurrent}
-          onChange={(e) =>
-            props.onMaxConcurrentChange(parseInt(e.currentTarget.value) || 4)
-          }
+          onChange={e => props.onMaxConcurrentChange(parseInt(e.currentTarget.value) || 4)}
           disabled={props.disabled}
           aria-label="Maximum concurrent processing tasks"
         />
@@ -60,8 +54,9 @@ export const BatchConfiguration: Component<BatchConfigurationProps> = (
       <div class="config-group">
         <label>
           <Toggle
-    size="sm"
-  /> props.onForceChange(e.currentTarget.checked)}
+            size="sm"
+            checked={props.force}
+            onChange={props.onForceChange}
             disabled={props.disabled}
             aria-label="Force regeneration of existing captions"
           />
@@ -72,8 +67,9 @@ export const BatchConfiguration: Component<BatchConfigurationProps> = (
       <div class="config-group">
         <label>
           <Toggle
-    size="sm"
-  /> props.onPostProcessChange(e.currentTarget.checked)}
+            size="sm"
+            checked={props.postProcess}
+            onChange={props.onPostProcessChange}
             disabled={props.disabled}
             aria-label="Apply post-processing to generated captions"
           />

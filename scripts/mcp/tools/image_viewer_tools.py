@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 class ImageViewerTools:
     """Handles image viewing tool operations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the image viewer tools."""
         self.supported_formats = {
             ".jpg",

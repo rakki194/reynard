@@ -15,7 +15,7 @@ from services.vscode_tasks_service import VSCodeTasksService
 class VSCodeTasksTools:
     """Handles VS Code task tool operations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.tasks_service = VSCodeTasksService()
 
     def _format_result(self, result: dict[str, Any], operation: str) -> dict[str, Any]:
@@ -110,4 +110,3 @@ class VSCodeTasksTools:
 
             return {"content": [{"type": "text", "text": info_text}]}
         return self._format_result(result, f"Get Task Info: {task_name}")
-

@@ -6,9 +6,9 @@
  * the standard model lifecycle management.
  */
 
-import { BaseModel } from "./index.js";
-import { ModelType, ModelInfo } from "../types/model-management.js";
-import { CaptionTask, CaptionResult, CaptionType } from "../types/index.js";
+import { CaptionResult, CaptionTask, CaptionType } from "../types/index.js";
+import { ModelInfo, ModelType } from "../types/model-management.js";
+import { BaseModel } from "./BaseModel.js";
 
 /**
  * Abstract base class for caption generation models
@@ -26,17 +26,9 @@ export abstract class BaseCaptionModel extends BaseModel {
     description: string,
     supportedCaptionTypes: CaptionType[] = [CaptionType.CAPTION],
     configSchema: Record<string, any> = {},
-    metadata: Record<string, any> = {},
+    metadata: Record<string, any> = {}
   ) {
-    super(
-      id,
-      name,
-      ModelType.CAPTION,
-      version,
-      description,
-      configSchema,
-      metadata,
-    );
+    super(id, name, ModelType.CAPTION, version, description, configSchema, metadata);
 
     this._supportedCaptionTypes = supportedCaptionTypes;
     this._supportedFormats = ["jpg", "jpeg", "png", "webp"];
@@ -123,9 +115,7 @@ export abstract class BaseCaptionModel extends BaseModel {
 
     // Check if caption type is supported
     if (task.captionType && !this.supportsCaptionType(task.captionType)) {
-      errors.push(
-        `Caption type ${task.captionType} is not supported by this model`,
-      );
+      errors.push(`Caption type ${task.captionType} is not supported by this model`);
     }
 
     // Check if image format is supported
@@ -211,7 +201,7 @@ export abstract class BaseCaptionModel extends BaseModel {
    * Set supported image formats
    */
   setSupportedImageFormats(formats: string[]): void {
-    this._supportedFormats = formats.map((f) => f.toLowerCase());
+    this._supportedFormats = formats.map(f => f.toLowerCase());
   }
 
   // ========================================================================
@@ -253,8 +243,6 @@ export abstract class BaseCaptionModel extends BaseModel {
    * Get all supported caption types as display names
    */
   getSupportedCaptionTypeDisplayNames(): string[] {
-    return this._supportedCaptionTypes.map((type) =>
-      this.getCaptionTypeDisplayName(type),
-    );
+    return this._supportedCaptionTypes.map(type => this.getCaptionTypeDisplayName(type));
   }
 }

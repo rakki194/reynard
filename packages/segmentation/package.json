@@ -12,10 +12,7 @@
     },
     "./styles.css": "./dist/styles.css"
   },
-  "files": [
-    "dist",
-    "README.md"
-  ],
+  "files": ["dist", "README.md"],
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
@@ -31,14 +28,7 @@
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist coverage"
   },
-  "keywords": [
-    "reynard",
-    "segmentation",
-    "polygon",
-    "annotation",
-    "computer-vision",
-    "image-processing"
-  ],
+  "keywords": ["reynard", "segmentation", "polygon", "annotation", "computer-vision", "image-processing"],
   "author": "Reynard Team",
   "license": "MIT",
   "dependencies": {
@@ -46,7 +36,8 @@
     "reynard-algorithms": "workspace:*",
     "reynard-annotating-core": "workspace:*",
     "reynard-floating-panel": "workspace:*",
-    "reynard-caption": "workspace:*",
+    "reynard-caption-core": "workspace:*",
+    "reynard-caption-ui": "workspace:*",
     "reynard-boundingbox": "workspace:*",
     "solid-js": "1.9.9"
   },

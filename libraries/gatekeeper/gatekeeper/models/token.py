@@ -42,7 +42,7 @@ class TokenData(BaseModel):
         """Get username from subject field for backward compatibility."""
         return self.sub
 
-    def update(self, **kwargs) -> "TokenData":
+    def update(self, **kwargs: Any) -> "TokenData":
         """Update token data for backward compatibility with tests."""
         return self.model_copy(update=kwargs)
 

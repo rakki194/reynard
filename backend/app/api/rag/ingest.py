@@ -12,7 +12,7 @@ from fastapi.responses import StreamingResponse
 
 from .models import RAGIngestRequest, RAGIngestResponse
 from .service import get_rag_service
-from ..security.mcp_auth import (
+from ...security.mcp_auth import (
     require_rag_ingest,
     MCPTokenData
 )

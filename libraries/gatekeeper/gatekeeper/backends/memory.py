@@ -25,7 +25,7 @@ class MemoryBackend(UserBackend):
     application restarts.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the in-memory backend."""
         self._users: dict[str, User] = {}
         self._usernames: dict[str, str] = {}  # username -> user_id mapping
@@ -169,7 +169,8 @@ class MemoryBackend(UserBackend):
 
             # Update username mapping
             del self._usernames[username]
-            self._usernames[user_update.username] = user.id
+            if user.id is not None:
+                self._usernames[user_update.username] = user.id
             user.username = user_update.username
 
         if user_update.email is not None and user_update.email != user.email:
@@ -182,7 +183,7 @@ class MemoryBackend(UserBackend):
             # Update email mapping
             if user.email:
                 del self._emails[user.email]
-            if user_update.email:
+            if user_update.email and user.id is not None:
                 self._emails[user_update.email] = user.id
             user.email = user_update.email
 
@@ -246,9 +247,7 @@ class MemoryBackend(UserBackend):
             raise BackendError("Backend is closed")
 
         users = list(self._users.values())
-        users.sort(
-            key=lambda u: u.created_at or datetime.min.replace(tzinfo=UTC)
-        )
+        users.sort(key=lambda u: u.created_at or datetime.min.replace(tzinfo=UTC))
 
         paginated_users = users[skip : skip + limit]
         return [UserPublic.from_user(user) for user in paginated_users]
@@ -307,7 +306,9 @@ class MemoryBackend(UserBackend):
         if not user:
             return False
 
-        user.role = new_role
+        from ..models.user import UserRole
+
+        user.role = UserRole(new_role)
         user.updated_at = datetime.now(UTC)
 
         logger.info(f"Updated role for user '{username}' to '{new_role}'")
@@ -473,6 +474,8 @@ class MemoryBackend(UserBackend):
         if not user:
             raise UserNotFoundError(f"User '{username}' not found")
 
+        if user.id is None:
+            return {}
         return self._settings.get(user.id, {})
 
     async def update_user_settings(
@@ -493,6 +496,9 @@ class MemoryBackend(UserBackend):
 
         user = await self.get_user_by_username(username)
         if not user:
+            return False
+
+        if user.id is None:
             return False
 
         if user.id not in self._settings:
@@ -551,10 +557,16 @@ class MemoryBackend(UserBackend):
 
         return [
             UserPublic(
+                id=user.id,
                 username=user.username,
                 role=user.role,
-                yapcoin_balance=user.yapcoin_balance or 0,
+                email=user.email,
                 profile_picture_url=user.profile_picture_url,
+                yapcoin_balance=user.yapcoin_balance or 0,
+                is_active=user.is_active,
+                created_at=user.created_at,
+                updated_at=user.updated_at,
+                metadata=user.metadata,
             )
             for user in self._users.values()
         ]

@@ -471,8 +471,8 @@
     {
       "label": "🔄 Queue-Based Validate Current File",
       "type": "shell",
-      "command": "node",
-      "args": ["scripts/dev/queue-validation-runner.js", "${file}"],
+      "command": "pnpm",
+      "args": ["--filter", "reynard-queue-watcher", "start", "process", "${file}"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -488,7 +488,17 @@
     {
       "label": "🔄 Start Queue-Based Watcher",
       "type": "shell",
-      "command": "./scripts/dev/start-queue-watcher.sh",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "reynard-queue-watcher",
+        "watch",
+        "-d",
+        "../../docs",
+        "../../packages",
+        "../../examples",
+        "../../templates"
+      ],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -505,7 +515,17 @@
     {
       "label": "🔄 Auto-Start Queue-Based Watcher",
       "type": "shell",
-      "command": "./scripts/dev/start-queue-watcher.sh",
+      "command": "pnpm",
+      "args": [
+        "--filter",
+        "reynard-queue-watcher",
+        "watch",
+        "-d",
+        "../../docs",
+        "../../packages",
+        "../../examples",
+        "../../templates"
+      ],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -606,6 +626,93 @@
       },
       "problemMatcher": [],
       "detail": "Test the queue-based file processing system"
+    },
+    {
+      "label": "🦊 CHANGELOG.md Codebase Scanner",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "cd /home/kade/runeset/reynard && python3 scripts/efficient-changelog-scanner.py"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Comprehensive codebase scan using efficient file operations"
+    },
+    {
+      "label": "🦊 Quick CHANGELOG.md Scan",
+      "type": "shell",
+      "command": "./scripts/trigger-changelog-scan.sh",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Quick trigger script for CHANGELOG.md codebase scanning"
+    },
+    {
+      "label": "🦊 CHANGELOG.md Queue Watcher",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["--filter", "reynard-queue-watcher", "start", "CHANGELOG.md"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": [],
+      "detail": "Queue-based validation specifically for CHANGELOG.md file"
+    },
+    {
+      "label": "🦊 Start CHANGELOG.md File Watcher",
+      "type": "shell",
+      "command": "./scripts/changelog-watcher.sh",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Start file watcher that triggers codebase scan when CHANGELOG.md is saved"
+    },
+    {
+      "label": "🦊 Auto-Start CHANGELOG.md Watcher",
+      "type": "shell",
+      "command": "./scripts/changelog-watcher.sh",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "never",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": [],
+      "detail": "Automatically start CHANGELOG.md file watcher when workspace opens"
     }
   ]
 }

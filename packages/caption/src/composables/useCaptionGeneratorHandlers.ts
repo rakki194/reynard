@@ -20,13 +20,9 @@ export interface CaptionGeneratorHandlers {
  */
 export function useCaptionGeneratorHandlers(
   state: CaptionGeneratorState,
-  manager: ReturnType<
-    typeof import("reynard-annotating").createBackendAnnotationManager
-  > | null,
-  onCaptionGenerated?: (
-    result: import("reynard-annotating").CaptionResult,
-  ) => void,
-  onGenerationError?: (error: Error) => void,
+  manager: import("reynard-annotating").BackendAnnotationManager | null,
+  onCaptionGenerated?: (result: import("reynard-annotating-core").CaptionResult) => void,
+  onGenerationError?: (error: Error) => void
 ): CaptionGeneratorHandlers {
   const handleFileSelect = (file: File) => {
     if (!file.type.startsWith("image/")) {
@@ -37,7 +33,7 @@ export function useCaptionGeneratorHandlers(
     state.setError(null);
     state.setResult(null);
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       state.setImagePreview((e.target?.result as string) || null);
     };
     reader.readAsDataURL(file);
@@ -70,7 +66,7 @@ export function useCaptionGeneratorHandlers(
     state.setResult(null);
 
     try {
-      const task: import("reynard-annotating").CaptionTask = {
+      const task: import("reynard-annotating-core").CaptionTask = {
         imagePath: state.imageFile()!.name,
         generatorName: state.selectedModel(),
         config: { threshold: 0.2 },
@@ -78,9 +74,7 @@ export function useCaptionGeneratorHandlers(
       };
 
       const progressInterval = setInterval(() => {
-        state.setGenerationProgress(
-          Math.min(state.generationProgress() + 10, 90),
-        );
+        state.setGenerationProgress(Math.min(state.generationProgress() + 10, 90));
       }, 200);
 
       const captionResult = await manager.getService().generateCaption(task);
@@ -89,9 +83,7 @@ export function useCaptionGeneratorHandlers(
       state.setResult(captionResult);
       onCaptionGenerated?.(captionResult);
     } catch (err) {
-      state.setError(
-        `Generation failed: ${err instanceof Error ? err.message : "Unknown error"}`,
-      );
+      state.setError(`Generation failed: ${err instanceof Error ? err.message : "Unknown error"}`);
       onGenerationError?.(err as Error);
     } finally {
       state.setIsGenerating(false);

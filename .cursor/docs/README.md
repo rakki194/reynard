@@ -270,6 +270,28 @@ Building reliable, maintainable applications through comprehensive testing
 - Test coverage analysis and quality gates
 - Performance testing and benchmarking
 
+### 🔍 Code Analysis & Monolith Detection
+
+#### 🦊 [Monolith Detection Tools](./monolith-detection-tools.md)
+
+Comprehensive codebase analysis and monolith detection system for the Reynard MCP server
+
+- AST-based line counting excluding comments and docstrings
+- Smart file filtering based on .gitignore patterns
+- Complexity scoring and metrics analysis
+- Multi-language support (Python, TypeScript, JavaScript)
+- Real-time codebase health monitoring
+- Refactoring recommendations and technical debt tracking
+
+#### 📋 [Monolith Detection Quick Reference](./monolith-detection-quick-reference.md)
+
+Quick reference guide for monolith detection tool usage
+
+- MCP tool command examples
+- Common use cases and parameters
+- Threshold guidelines and best practices
+- Recent analysis results from Reynard codebase
+
 ### 🎨 Frontend & UI
 
 #### 🎨 [Icon System Architecture](./icon-system-architecture.md)
@@ -546,8 +568,80 @@ When adding new shell scripts to the project:
 - [Python Testing Best Practices](https://docs.python.org/3/library/unittest.html)
 - [Coverage.py](https://coverage.readthedocs.io/)
 
+### 🖥️ Disk Usage Analysis Tools
+
+#### 🦊 [Dust - Modern Disk Usage Analyzer](./dust-disk-usage-analyzer.md)
+
+Modern, Rust-based alternative to traditional `du` command with intuitive visual interface
+
+- Color-coded visual representation of directory sizes
+- Fast Rust-based implementation optimized for modern systems
+- Interactive navigation and depth control
+- Advanced filtering and exclusion options
+- Performance optimization for large filesystems
+
+#### 📊 [Ncdu - NCurses Disk Usage Analyzer](./ncdu-disk-usage-analyzer.md)
+
+Interactive disk usage analyzer with ncurses interface for comprehensive file management
+
+- Full-featured interactive interface with file deletion capabilities
+- Export/import functionality for scan results
+- Mature and reliable C-based implementation
+- Advanced filtering and performance options
+- Comprehensive troubleshooting and integration guides
+
+#### ⚡ [Gdu - Fast Go-based Disk Usage Analyzer](./gdu-disk-usage-analyzer.md)
+
+Extremely fast, SSD-optimized disk usage analyzer written in Go
+
+- Optimized for modern SSD storage with efficient I/O patterns
+- Low memory footprint and streaming processing
+- Interactive terminal interface with file management
+- Performance benchmarking and optimization strategies
+- Advanced usage patterns for large filesystems
+
+#### ⏰ [Agedu - Time-based Disk Usage Analyzer](./agedu-disk-usage-analyzer.md)
+
+Specialized tool for identifying unused files through access time analysis
+
+- Time-based analysis to find truly unused files
+- Web-based interface for detailed exploration
+- Export capabilities in multiple formats (CSV, JSON)
+- Trend analysis and historical comparison
+- Automated monitoring and cleanup strategies
+
+#### 🎨 [Diskonaut - Visual Disk Space Navigator](./diskonaut-disk-usage-analyzer.md)
+
+Visual disk space navigator with intuitive interface and multiple view modes
+
+- Visual representation with tree, list, and bar chart views
+- Interactive navigation with file deletion capabilities
+- Rust-based implementation with modern interface design
+- Performance optimization for different filesystem types
+- Advanced visual features and customization options
+
+#### 🧹 [Arch Linux Disk Cleanup](./arch-linux-disk-cleanup.md)
+
+Comprehensive disk cleanup strategies specifically for Arch Linux systems
+
+- Package management cleanup (orphaned packages, cache management)
+- System maintenance procedures and automated cleanup scripts
+- Integration with disk usage analysis tools
+- Performance monitoring and maintenance scheduling
+- Best practices for system optimization
+
+#### 📈 [Disk Usage Tools Comparison](./disk-usage-tools-comparison.md)
+
+Comprehensive comparison guide for choosing the right disk usage analysis tool
+
+- Detailed feature comparison matrix with performance benchmarks
+- Use case recommendations and tool selection guide
+- Integration strategies and workflow optimization
+- Best practices for each tool with troubleshooting guides
+- Performance testing and benchmarking methodologies
+
 ---
 
 _These guides are based on real-world experience solving development issues across the Reynard ecosystem. Every pattern
 has been tested and validated in production environments, from shell scripting to Python development, code quality
-improvements, and project management workflows._
+improvements, project management workflows, and system administration tasks._

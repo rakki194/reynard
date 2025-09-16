@@ -10,7 +10,7 @@ from fastapi import APIRouter, HTTPException, status, Depends
 
 from .models import RAGIndexingStatusResponse, RAGStatsResponse
 from .service import get_rag_service
-from ..security.mcp_auth import (
+from ...security.mcp_auth import (
     require_rag_stats,
     require_mcp_permission,
     MCPTokenData

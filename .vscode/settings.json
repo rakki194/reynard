@@ -22,7 +22,6 @@
 
   "ruff.importStrategy": "fromEnvironment",
   "ruff.lint.enable": true,
-  "ruff.format.enable": true,
   "ruff.organizeImports": true,
 
   "mypy-type-checker.importStrategy": "fromEnvironment",
@@ -32,6 +31,8 @@
   "pylint.importStrategy": "fromEnvironment",
   "pylint.args": ["--rcfile=${workspaceFolder}/pyproject.toml"],
   "pylint.path": ["${workspaceFolder}/scripts"],
+
+  "vitest.maximumConfigs": 100,
 
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -286,17 +287,19 @@
   "shellcheck.executablePath": "shellcheck",
   "shellcheck.run": "onSave",
 
-  // =============================================================================
-  // MARKDOWN VALIDATION ON SAVE
-  // =============================================================================
-
   // Enable auto-save for markdown files to trigger validation
   "files.autoSave": "onFocusChange",
   "files.autoSaveDelay": 1000,
 
-  // Auto-start markdown watcher when VSCode opens
   "task.autoDetect": "on",
-  "task.showDecorations": "always",
+
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.git/**": true,
+    "**/third_party/**": true
+  },
 
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,

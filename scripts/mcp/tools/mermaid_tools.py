@@ -7,7 +7,6 @@ Handles mermaid diagram-related MCP tool calls.
 Follows the 100-line axiom and modular architecture principles.
 """
 
-import base64
 import logging
 import sys
 from pathlib import Path
@@ -26,7 +25,7 @@ logger = logging.getLogger(__name__)
 class MermaidTools:
     """Handles mermaid diagram tool operations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.mermaid_service = MermaidService()
 
     def validate_mermaid_diagram(self, arguments: dict[str, Any]) -> dict[str, Any]:
@@ -104,23 +103,37 @@ class MermaidTools:
                 ]
             }
 
-        success, png_content, error = self.mermaid_service.render_diagram_to_png(
+        success, png_path, error = self.mermaid_service.render_diagram_to_png(
             diagram_content
         )
 
         if success:
-            # Encode PNG as base64 for transmission
-            png_base64 = base64.b64encode(png_content).decode("utf-8")
+            # Open the image with imv
+            import subprocess
 
-            return {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": f"✅ Successfully rendered diagram to PNG ({len(png_content)} bytes)",
-                    },
-                    {"type": "text", "text": f"data:image/png;base64,{png_base64}"},
-                ]
-            }
+            try:
+                subprocess.Popen(
+                    ["imv", png_path],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+                return {
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"✅ Successfully rendered diagram to PNG and opened with imv\n📁 Saved to: {png_path}",
+                        }
+                    ]
+                }
+            except Exception as e:
+                return {
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"✅ Successfully rendered diagram to PNG\n📁 Saved to: {png_path}\n⚠️ Could not open with imv: {e}",
+                        }
+                    ]
+                }
         return {
             "content": [
                 {"type": "text", "text": f"❌ Failed to render diagram: {error}"}

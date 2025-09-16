@@ -5,6 +5,7 @@ This module provides dependency injection functions for authentication,
 authorization, and role-based access control.
 """
 
+from collections.abc import Callable
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
@@ -75,7 +76,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
     return user
 
 
-def require_role(required_role: UserRole):
+def require_role(required_role: UserRole) -> Callable[[User], User]:
     """
     Dependency factory to require a specific user role.
 
@@ -109,7 +110,7 @@ def require_role(required_role: UserRole):
     return _require_role
 
 
-def require_roles(required_roles: list[UserRole]):
+def require_roles(required_roles: list[UserRole]) -> Callable[[User], User]:
     """
     Dependency factory to require one of several user roles.
 
@@ -144,7 +145,7 @@ def require_roles(required_roles: list[UserRole]):
     return _require_roles
 
 
-def require_active_user():
+def require_active_user() -> Callable[[User], User]:
     """
     Dependency factory to require an active (non-guest) user.
 
@@ -177,7 +178,7 @@ def require_active_user():
     return _require_active_user
 
 
-def require_admin():
+def require_admin() -> Callable[[User], User]:
     """
     Dependency factory to require an admin user.
 
@@ -188,17 +189,17 @@ def require_admin():
 
 
 # Backward-compatible version for tests
-def require_admin_legacy():
+def require_admin_legacy() -> Callable[[User], User]:
     """
     Legacy version of require_admin for backward compatibility with tests.
 
     Returns:
         Dependency function that checks if the user is an admin
     """
-    return require_role_legacy(UserRole.ADMIN)
+    return require_role(UserRole.ADMIN)
 
 
-def require_regular_user():
+def require_regular_user() -> Callable[[User], User]:
     """
     Dependency factory to require a regular user.
 
@@ -208,7 +209,7 @@ def require_regular_user():
     return require_role(UserRole.REGULAR)
 
 
-def require_guest():
+def require_guest() -> Callable[[User], User]:
     """
     Dependency factory to require a guest user.
 
@@ -219,7 +220,7 @@ def require_guest():
 
 
 # Backward-compatible version for tests
-def require_active_user_legacy():
+def require_active_user_legacy() -> Callable[[User], User]:
     """
     Legacy version of require_active_user for backward compatibility with tests.
 
@@ -316,7 +317,7 @@ async def get_current_user_sse(request: Request) -> User:
     return user
 
 
-def get_current_active_user_sse():
+def get_current_active_user_sse() -> Callable[[User], User]:
     """
     Active-user variant for SSE routes.
 

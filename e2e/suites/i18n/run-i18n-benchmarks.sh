@@ -55,7 +55,7 @@ check_service() {
 print_status "Checking required services..."
 
 # Check backend
-if ! check_service "http://localhost:8888" "Backend"; then
+if ! check_service "http://localhost:8000" "Backend"; then
     print_error "Backend is not running. Please start it with: cd backend && ./start.sh"
     exit 1
 fi
@@ -211,7 +211,7 @@ echo ""
 print_status "Benchmark Results Summary:"
 echo "================================"
 
-if [[ "$failed_benchmarks" -eq 0 ]]; then
+if [[ "${failed_benchmarks}" -eq 0 ]]; then
     print_success "All benchmarks completed successfully! 🎉"
 else
     print_warning "${failed_benchmarks} benchmark(s) failed"

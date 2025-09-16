@@ -3,12 +3,20 @@ import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
 
 export default defineConfig({
-  plugins: [solid()],
+  plugins: [
+    solid({
+      // Disable the use primitive to avoid compatibility issues with SolidJS 1.9.9
+      solid: {
+        generate: "dom",
+        hydratable: false,
+      },
+    }),
+  ],
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardCharts",
-      fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
+      fileName: format => (format === "es" ? "index.js" : `index.${format}`),
     },
     rollupOptions: {
       external: [

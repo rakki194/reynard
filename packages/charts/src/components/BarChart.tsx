@@ -96,7 +96,7 @@ const BarChartContent: Component<{
 
     // Only create chart on client side
     if (typeof window !== "undefined") {
-      const newChart = new Chart(ctx, config);
+      const newChart = new Chart(ctx, config as any);
       setChartInstance(newChart);
     }
   };
@@ -112,7 +112,7 @@ const BarChartContent: Component<{
   createEffect(() => {
     const chart = chartInstance();
     if (chart && props.chartData) {
-      chart.data = props.chartData;
+      chart.data = props.chartData as any;
       chart.update();
     }
   });

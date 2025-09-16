@@ -17,22 +17,55 @@ if str(mcp_dir) not in sys.path:
     sys.path.insert(0, str(mcp_dir))
 
 from tools.agent_tools import AgentTools
+from tools.bm25_search_tools import BM25SearchTools
+from tools.ecs_agent_tools import ECSAgentTools
+from tools.enhanced_bm25_search_tools import EnhancedBM25SearchTools
 from tools.file_search_tools import FileSearchTools
 from tools.image_viewer_tools import ImageViewerTools
 from tools.linting_tools import LintingTools
 from tools.mermaid_tools import MermaidTools
+from tools.monolith_detection_tools import MonolithDetectionTools
+from tools.playwright_tools import PlaywrightTools
 from tools.semantic_file_search_tools import SemanticFileSearchTools
 from tools.utility_tools import UtilityTools
 from tools.version_vscode_tools import VersionVSCodeTools
 from tools.vscode_tasks_tools import VSCodeTasksTools
 
+from .tool_config import (
+    AGENT_TOOLS,
+    BM25_SEARCH_TOOLS,
+    ECS_AGENT_TOOLS,
+    ENHANCED_BM25_SEARCH_TOOLS,
+    ENHANCED_TOOLS,
+    FILE_SEARCH_TOOLS,
+    IMAGE_VIEWER_TOOLS,
+    LINTING_TOOLS,
+    MERMAID_TOOLS,
+    MONOLITH_DETECTION_TOOLS,
+    PLAYWRIGHT_TOOLS,
+    SEMANTIC_FILE_SEARCH_TOOLS,
+    TOOL_EXECUTION_TYPES,
+    UTILITY_TOOLS,
+    VSCODE_TASKS_TOOLS,
+)
+from .tool_handlers import (
+    AgentToolHandler,
+    ECSAgentToolHandler,
+    LintingToolHandler,
+    MermaidToolHandler,
+    UtilityToolHandler,
+)
+from .tool_registry import ToolExecutionType, ToolRegistry
+
 
 class ToolRouter:
-    """Routes tool calls to appropriate handlers."""
+    """Routes tool calls to appropriate handlers using modular architecture."""
 
     def __init__(
         self,
         agent_tools: AgentTools,
+        bm25_search_tools: BM25SearchTools,
+        enhanced_bm25_search_tools: EnhancedBM25SearchTools,
         utility_tools: UtilityTools,
         linting_tools: LintingTools,
         version_vscode_tools: VersionVSCodeTools,
@@ -40,291 +73,132 @@ class ToolRouter:
         semantic_file_search_tools: SemanticFileSearchTools,
         image_viewer_tools: ImageViewerTools,
         mermaid_tools: MermaidTools,
+        monolith_detection_tools: MonolithDetectionTools,
+        playwright_tools: PlaywrightTools,
         vscode_tasks_tools: VSCodeTasksTools,
+        ecs_agent_tools: ECSAgentTools,
     ):
         self.agent_tools = agent_tools
+        self.bm25_search_tools = bm25_search_tools
+        self.enhanced_bm25_search_tools = enhanced_bm25_search_tools
         self.utility_tools = utility_tools
         self.linting_tools = linting_tools
         self.version_vscode_tools = version_vscode_tools
+        self.monolith_detection_tools = monolith_detection_tools
         self.file_search_tools = file_search_tools
         self.semantic_file_search_tools = semantic_file_search_tools
         self.image_viewer_tools = image_viewer_tools
         self.mermaid_tools = mermaid_tools
+        self.playwright_tools = playwright_tools
         self.vscode_tasks_tools = vscode_tasks_tools
+        self.ecs_agent_tools = ecs_agent_tools
 
-        # Define tool routing map
-        self.agent_tool_names = {
-            "generate_agent_name",
-            "assign_agent_name",
-            "get_agent_name",
-            "list_agent_names",
-            "roll_agent_spirit",
-            "agent_startup_sequence",
-        }
+        # Initialize tool registry
+        self.registry = ToolRegistry()
+        self._register_all_tools()
 
-        self.utility_tool_names = {
-            "get_current_time",
-            "get_current_location",
-            "send_desktop_notification",
-        }
+    def _register_all_tools(self) -> None:
+        """Register all tools with the registry."""
+        # Register agent tools individually
+        agent_handler = self._get_agent_handler()
+        for tool_name in AGENT_TOOLS:
+            # Get the specific method for each tool
+            method = getattr(agent_handler.agent_tools, tool_name, None)
+            if method is not None:
+                # Create a wrapper that matches the expected signature
+                def create_wrapper(original_method):
+                    def wrapper(tool_name, arguments):
+                        return original_method(arguments)
 
-        self.linting_tool_names = {
-            "lint_frontend",
-            "format_frontend",
-            "lint_python",
-            "format_python",
-            "lint_markdown",
-            "validate_comprehensive",
-            "scan_security",
-            "run_all_linting",
-        }
+                    return wrapper
 
-        self.enhanced_tool_names = {
-            "get_versions",
-            "get_python_version",
-            "get_node_version",
-            "get_typescript_version",
-            "get_vscode_active_file",
-            "get_vscode_workspace_info",
-            "get_vscode_extensions",
-            "scan_security_fast",
-            "scan_security_full",
-        }
+                wrapped_method = create_wrapper(method)
+                self.registry.register_tool(
+                    tool_name,
+                    wrapped_method,
+                    TOOL_EXECUTION_TYPES[tool_name],
+                    "agent",
+                )
 
-        self.file_search_tool_names = {
-            "search_files",
-            "list_files",
-            "search_code_patterns",
-        }
+        # Register other tool categories
+        self._register_tool_category(BM25_SEARCH_TOOLS, "bm25_search")
+        self._register_tool_category(ENHANCED_BM25_SEARCH_TOOLS, "enhanced_bm25_search")
+        self._register_tool_category(UTILITY_TOOLS, "utility")
+        self._register_tool_category(LINTING_TOOLS, "linting")
+        self._register_tool_category(ENHANCED_TOOLS, "enhanced")
+        self._register_tool_category(FILE_SEARCH_TOOLS, "file_search")
+        self._register_tool_category(SEMANTIC_FILE_SEARCH_TOOLS, "semantic_search")
+        self._register_tool_category(IMAGE_VIEWER_TOOLS, "image_viewer")
+        self._register_tool_category(MERMAID_TOOLS, "mermaid")
+        self._register_tool_category(PLAYWRIGHT_TOOLS, "playwright")
+        self._register_tool_category(MONOLITH_DETECTION_TOOLS, "monolith_detection")
+        self._register_tool_category(VSCODE_TASKS_TOOLS, "vscode_tasks")
+        self._register_tool_category(ECS_AGENT_TOOLS, "ecs_agent")
 
-        self.semantic_file_search_tool_names = {
-            "semantic_search",
-            "hybrid_search",
-            "embed_text",
-            "index_documents",
-            "get_search_stats",
-        }
+    def _register_tool_category(self, tools: set, category: str) -> None:
+        """Register a category of tools."""
+        handler = self._get_category_handler(category)
+        for tool_name in tools:
+            if hasattr(handler, "handle_tool"):
+                method = handler.handle_tool
+            elif hasattr(handler, "call_tool"):
+                method = handler.call_tool
+            else:
+                method = getattr(handler, tool_name, None)
+                if method is None:
+                    continue
 
-        self.image_viewer_tool_names = {
-            "open_image",
-            "search_images",
-            "get_image_info",
-        }
+            self.registry.register_tool(
+                tool_name,
+                method,
+                TOOL_EXECUTION_TYPES[tool_name],
+                category,
+            )
 
-        self.mermaid_tool_names = {
-            "validate_mermaid_diagram",
-            "render_mermaid_to_svg",
-            "render_mermaid_to_png",
-            "get_mermaid_diagram_stats",
-            "test_mermaid_render",
-        }
+    def _get_agent_handler(self) -> AgentToolHandler:
+        """Get agent tool handler."""
+        return AgentToolHandler(self.agent_tools)
 
-        self.vscode_tasks_tool_names = {
-            "discover_vscode_tasks",
-            "validate_vscode_task",
-            "execute_vscode_task",
-            "get_vscode_task_info",
+    def _get_category_handler(self, category: str) -> Any:
+        """Get handler for a tool category."""
+        handler_map = {
+            "utility": UtilityToolHandler(self.utility_tools),
+            "linting": LintingToolHandler(self.linting_tools),
+            "mermaid": MermaidToolHandler(self.mermaid_tools),
+            "playwright": self.playwright_tools,
+            "ecs_agent": ECSAgentToolHandler(self.ecs_agent_tools),
         }
+        return handler_map.get(category, self._get_generic_handler(category))
+
+    def _get_generic_handler(self, category: str) -> Any:
+        """Get generic handler for tool categories."""
+        tool_service_map = {
+            "bm25_search": self.bm25_search_tools,
+            "enhanced_bm25_search": self.enhanced_bm25_search_tools,
+            "enhanced": self.version_vscode_tools,
+            "file_search": self.file_search_tools,
+            "semantic_search": self.semantic_file_search_tools,
+            "image_viewer": self.image_viewer_tools,
+            "mermaid": self.mermaid_tools,
+            "monolith_detection": self.monolith_detection_tools,
+            "vscode_tasks": self.vscode_tasks_tools,
+        }
+        return tool_service_map.get(category)
 
     async def route_tool_call(
         self, tool_name: str, arguments: dict[str, Any]
     ) -> dict[str, Any]:
-        """Route tool call to appropriate handler."""
+        """Route tool call to appropriate handler using registry."""
+        handler_info = self.registry.get_handler(tool_name)
 
-        # Agent tools
-        if tool_name in self.agent_tool_names:
-            return await self._route_agent_tool(tool_name, arguments)
+        # Handle different execution types
+        if handler_info.execution_type == ToolExecutionType.ASYNC:
+            result = await handler_info.handler_method(tool_name, arguments)
+        else:
+            result = handler_info.handler_method(tool_name, arguments)
 
-        # Utility tools
-        if tool_name in self.utility_tool_names:
-            return self._route_utility_tool(tool_name, arguments)
+        # Ensure result is a dictionary
+        if not isinstance(result, dict):
+            raise TypeError(f"Tool {tool_name} returned {type(result)}, expected dict")
 
-        # Linting tools (async)
-        if tool_name in self.linting_tool_names:
-            return await self._route_linting_tool(tool_name, arguments)
-
-        # Enhanced tools (mixed sync/async)
-        if tool_name in self.enhanced_tool_names:
-            return await self._route_enhanced_tool(tool_name, arguments)
-
-        # File search tools (async)
-        if tool_name in self.file_search_tool_names:
-            return await self._route_file_search_tool(tool_name, arguments)
-
-        # Semantic file search tools (async)
-        if tool_name in self.semantic_file_search_tool_names:
-            return await self._route_semantic_file_search_tool(tool_name, arguments)
-
-        # Image viewer tools (async)
-        if tool_name in self.image_viewer_tool_names:
-            return await self._route_image_viewer_tool(tool_name, arguments)
-
-        # Mermaid tools (sync)
-        if tool_name in self.mermaid_tool_names:
-            return self._route_mermaid_tool(tool_name, arguments)
-
-        # VS Code tasks tools (sync)
-        if tool_name in self.vscode_tasks_tool_names:
-            return self._route_vscode_tasks_tool(tool_name, arguments)
-
-        raise ValueError(f"Unknown tool: {tool_name}")
-
-    async def _route_agent_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Route agent tool calls."""
-        if tool_name == "generate_agent_name":
-            result: dict[str, Any] = self.agent_tools.generate_agent_name(arguments)
-            return result
-        if tool_name == "assign_agent_name":
-            result: dict[str, Any] = self.agent_tools.assign_agent_name(arguments)
-            return result
-        if tool_name == "get_agent_name":
-            result: dict[str, Any] = self.agent_tools.get_agent_name(arguments)
-            return result
-        if tool_name == "list_agent_names":
-            result: dict[str, Any] = self.agent_tools.list_agent_names()
-            return result
-        if tool_name == "roll_agent_spirit":
-            result: dict[str, Any] = self.agent_tools.roll_agent_spirit(arguments)
-            return result
-        if tool_name == "agent_startup_sequence":
-            result: dict[str, Any] = await self.agent_tools.agent_startup_sequence(
-                arguments
-            )
-            return result
-        raise ValueError(f"Unknown agent tool: {tool_name}")
-
-    def _route_utility_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Route utility tool calls."""
-        if tool_name == "get_current_time":
-            return self.utility_tools.get_current_time(arguments)
-        if tool_name == "get_current_location":
-            return self.utility_tools.get_current_location(arguments)
-        if tool_name == "send_desktop_notification":
-            return self.utility_tools.send_desktop_notification(arguments)
-        raise ValueError(f"Unknown utility tool: {tool_name}")
-
-    async def _route_linting_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Route linting tool calls (async)."""
-        if tool_name == "lint_frontend":
-            return await self.linting_tools.lint_frontend(arguments)
-        if tool_name == "format_frontend":
-            return await self.linting_tools.format_frontend(arguments)
-        if tool_name == "lint_python":
-            return await self.linting_tools.lint_python(arguments)
-        if tool_name == "format_python":
-            return await self.linting_tools.format_python(arguments)
-        if tool_name == "lint_markdown":
-            return await self.linting_tools.lint_markdown(arguments)
-        if tool_name == "validate_comprehensive":
-            return await self.linting_tools.validate_comprehensive(arguments)
-        if tool_name == "scan_security":
-            return await self.linting_tools.scan_security(arguments)
-        if tool_name == "run_all_linting":
-            return await self.linting_tools.run_all_linting(arguments)
-        raise ValueError(f"Unknown linting tool: {tool_name}")
-
-    async def _route_enhanced_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Route enhanced tool calls (mixed sync/async)."""
-        # Version tools (async)
-        if tool_name == "get_versions":
-            return await self.version_vscode_tools.get_versions(arguments)
-        if tool_name == "get_python_version":
-            return await self.version_vscode_tools.get_python_version(arguments)
-        if tool_name == "get_node_version":
-            return await self.version_vscode_tools.get_node_version(arguments)
-        if tool_name == "get_typescript_version":
-            return await self.version_vscode_tools.get_typescript_version(arguments)
-
-        # VS Code tools (sync)
-        if tool_name == "get_vscode_active_file":
-            return self.version_vscode_tools.get_vscode_active_file(arguments)
-        if tool_name == "get_vscode_workspace_info":
-            return self.version_vscode_tools.get_vscode_workspace_info(arguments)
-        if tool_name == "get_vscode_extensions":
-            return self.version_vscode_tools.get_vscode_extensions(arguments)
-
-        # Security tools (async)
-        if tool_name == "scan_security_fast":
-            return await self.version_vscode_tools.scan_security_fast(arguments)
-        if tool_name == "scan_security_full":
-            return await self.version_vscode_tools.scan_security_full(arguments)
-
-        raise ValueError(f"Unknown enhanced tool: {tool_name}")
-
-    async def _route_file_search_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Route file search tool calls (async)."""
-        if tool_name == "search_files":
-            return await self.file_search_tools.search_files(arguments)
-        if tool_name == "list_files":
-            return await self.file_search_tools.list_files(arguments)
-        if tool_name == "search_code_patterns":
-            return await self.file_search_tools.search_code_patterns(arguments)
-        raise ValueError(f"Unknown file search tool: {tool_name}")
-
-    async def _route_semantic_file_search_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Route semantic file search tool calls (async)."""
-        if tool_name == "semantic_search":
-            return await self.semantic_file_search_tools.semantic_search(arguments)
-        if tool_name == "hybrid_search":
-            return await self.semantic_file_search_tools.hybrid_search(arguments)
-        if tool_name == "embed_text":
-            return await self.semantic_file_search_tools.embed_text(arguments)
-        if tool_name == "index_documents":
-            return await self.semantic_file_search_tools.index_documents(arguments)
-        if tool_name == "get_search_stats":
-            return await self.semantic_file_search_tools.get_search_stats(arguments)
-        raise ValueError(f"Unknown semantic file search tool: {tool_name}")
-
-    async def _route_image_viewer_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Route image viewer tool calls (async)."""
-        if tool_name == "open_image":
-            return await self.image_viewer_tools.open_image(arguments)
-        if tool_name == "search_images":
-            return await self.image_viewer_tools.search_images(arguments)
-        if tool_name == "get_image_info":
-            return await self.image_viewer_tools.get_image_info(arguments)
-        raise ValueError(f"Unknown image viewer tool: {tool_name}")
-
-    def _route_mermaid_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Route mermaid tool calls (sync)."""
-        if tool_name == "validate_mermaid_diagram":
-            return self.mermaid_tools.validate_mermaid_diagram(arguments)
-        if tool_name == "render_mermaid_to_svg":
-            return self.mermaid_tools.render_mermaid_to_svg(arguments)
-        if tool_name == "render_mermaid_to_png":
-            return self.mermaid_tools.render_mermaid_to_png(arguments)
-        if tool_name == "get_mermaid_diagram_stats":
-            return self.mermaid_tools.get_mermaid_diagram_stats(arguments)
-        if tool_name == "test_mermaid_render":
-            return self.mermaid_tools.test_mermaid_render(arguments)
-        raise ValueError(f"Unknown mermaid tool: {tool_name}")
-
-    def _route_vscode_tasks_tool(
-        self, tool_name: str, arguments: dict[str, Any]
-    ) -> dict[str, Any]:
-        """Route VS Code tasks tool calls (sync)."""
-        if tool_name == "discover_vscode_tasks":
-            return self.vscode_tasks_tools.discover_tasks(arguments)
-        if tool_name == "validate_vscode_task":
-            return self.vscode_tasks_tools.validate_task(arguments)
-        if tool_name == "execute_vscode_task":
-            return self.vscode_tasks_tools.execute_task(arguments)
-        if tool_name == "get_vscode_task_info":
-            return self.vscode_tasks_tools.get_task_info(arguments)
-        raise ValueError(f"Unknown VS Code tasks tool: {tool_name}")
+        return result

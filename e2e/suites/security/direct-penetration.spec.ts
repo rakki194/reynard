@@ -1,7 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { exec } from "child_process";
-import { promisify } from "util";
 import path from "path";
+import { promisify } from "util";
 
 const execAsync = promisify(exec);
 
@@ -17,7 +17,7 @@ from fuzzing.exploit_wrappers import ComprehensiveFuzzerExploit
 import json
 
 # Run the exploit
-exploit = ComprehensiveFuzzerExploit('http://localhost:8888')
+exploit = ComprehensiveFuzzerExploit('http://localhost:8000')
 result = exploit.run_exploit()
 
 # Return results as JSON

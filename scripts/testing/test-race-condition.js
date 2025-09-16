@@ -46,7 +46,7 @@ try {
         setTimeout(() => {
           try {
             console.log(`🔄 Running validation ${i + 1}/5...`);
-            execSync(`node scripts/dev/queue-validation-runner.js "${testFilePath}"`, {
+            execSync(`pnpm --filter reynard-queue-watcher start "${testFilePath}"`, {
               stdio: "pipe",
               cwd: process.cwd(),
             });

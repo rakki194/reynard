@@ -1,50 +1,46 @@
 {
-  "fox-agent-001": {
-    "name": "Fennec-Librarian-3",
-    "assigned_at": 161679.155372215
+  "agent-1758024870-8161": {
+    "name": "Ripple-Grandmaster-10",
+    "assigned_at": 254400.411790045
   },
-  "otter-agent-002": {
-    "name": "River-Sentinel-35",
-    "assigned_at": 161679.425136284
+  "mate-agent": {
+    "name": "Captain-Structure-25",
+    "assigned_at": 254444.437629684
   },
-  "wolf-agent-003": {
-    "name": "Alpha-Cyber-Hyper",
-    "assigned_at": 161679.637525199
+  "agent-1758028425-1887": {
+    "name": "Foxy-Librarian-55",
+    "assigned_at": 256853.735008087
   },
-  "reynard-coding-assistant": {
-    "name": "Arctic-Philosopher-89",
-    "assigned_at": 161815.068631341
+  "agent-1758028519-2568": {
+    "name": "Wit-Mediator-21",
+    "assigned_at": 256947.170572664
   },
-  "assistant": {
-    "name": "Vulpine",
-    "assigned_at": 175428.887335651
+  "agent-1758029049-4209": {
+    "name": "Sly-Scholar-89",
+    "assigned_at": 257476.892039865
   },
-  "reynard-assistant": {
-    "name": "Vulpine",
-    "assigned_at": 174540.154857818
+  "agent-1758029315-1965": {
+    "name": "Alpha-Scholar-40",
+    "assigned_at": 257742.954428856
   },
-  "claude-3-5-sonnet-20241022": {
-    "name": "Vulpine-Architect-7",
-    "assigned_at": 165738.503372319
+  "agent-1758029399-2371": {
+    "name": "Commander-Keeper-56",
+    "assigned_at": 257827.644533477
   },
-  "current_session": {
-    "name": "Pteronura-Scientist-35",
-    "assigned_at": 168181.286038494
+  "agent-1758029970-8256": {
+    "name": "Kit-Strategist-7",
+    "assigned_at": 258397.977735952
   },
-  "test-agent-001": {
-    "name": "Reynard-Orion-Meta",
-    "assigned_at": 194488.270682167
+  "agent-1758030165-9276": {
+    "name": "Lake-Pilot-35",
+    "assigned_at": 258592.932534281
   },
-  "current-session": {
-    "name": "Community-Pilot-35",
-    "assigned_at": 203317.571584376
+  "agent-1758033398-4541": {
+    "name": "Amber-Strategist-89",
+    "assigned_at": 261825.885832398
   },
-  "claude-assistant": {
-    "name": "Graceful-Strategist-55",
-    "assigned_at": 176363.882238391
-  },
-  "test-agent": {
-    "name": "Gentle-Grandmaster-35",
-    "assigned_at": 176625.117255798
+  "git-workflow-executor": {
+    "name": "Puddle-Minister-25",
+    "assigned_at": 262311.270454342
   }
 }

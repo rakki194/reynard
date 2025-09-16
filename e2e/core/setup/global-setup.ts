@@ -45,9 +45,7 @@ async function validateEnvironment(): Promise<void> {
 
   // Check if backend is accessible
   try {
-    const response = await fetch(
-      process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888/",
-    );
+    const response = await fetch(process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000/");
     if (!response.ok) {
       throw new Error(`Backend health check failed: ${response.status}`);
     }
@@ -66,19 +64,16 @@ async function setupTestDatabase(): Promise<void> {
 
   try {
     // Initialize test database (skip if endpoint doesn't exist)
-    const response = await fetch(
-      `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/setup/test`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          reset: true,
-          create_test_users: true,
-        }),
+    const response = await fetch(`${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000"}/api/setup/test`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({
+        reset: true,
+        create_test_users: true,
+      }),
+    });
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -112,7 +107,7 @@ async function createTestUsers(): Promise<void> {
   for (const user of testUsers) {
     try {
       const response = await fetch(
-        `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/auth/register`,
+        `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000"}/api/auth/register`,
         {
           method: "POST",
           headers: {
@@ -124,7 +119,7 @@ async function createTestUsers(): Promise<void> {
             password: user.password,
             full_name: user.fullName,
           }),
-        },
+        }
       );
 
       if (response.ok) {
@@ -132,9 +127,7 @@ async function createTestUsers(): Promise<void> {
       } else if (response.status === 400) {
         console.log(`ℹ️  Test user already exists: ${user.username}`);
       } else {
-        console.warn(
-          `⚠️  Failed to create test user ${user.username}: ${response.status}`,
-        );
+        console.warn(`⚠️  Failed to create test user ${user.username}: ${response.status}`);
       }
     } catch (error) {
       console.warn(`⚠️  Failed to create test user ${user.username}:`, error);
@@ -148,8 +141,7 @@ async function createTestUsers(): Promise<void> {
 async function validateBackendConnectivity(): Promise<void> {
   console.log("🔗 Validating backend connectivity...");
 
-  const backendUrl =
-    process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888";
+  const backendUrl = process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000";
 
   try {
     const response = await fetch(`${backendUrl}/`);
@@ -171,8 +163,7 @@ async function validateBackendConnectivity(): Promise<void> {
 async function validateFrontendConnectivity(): Promise<void> {
   console.log("🔗 Validating frontend connectivity...");
 
-  const frontendUrl =
-    process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
+  const frontendUrl = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
 
   try {
     const browser = await chromium.launch();

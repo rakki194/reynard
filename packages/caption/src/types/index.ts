@@ -21,9 +21,7 @@ export interface TagBubbleProps {
   index: number;
   onRemove: () => void;
   onEdit: (newTag: string) => void;
-  onNavigate?: (
-    direction: "left" | "right" | "up" | "down" | "start" | "end",
-  ) => void;
+  onNavigate?: (direction: "left" | "right" | "up" | "down" | "start" | "end") => void;
   editable?: boolean;
   removable?: boolean;
   color?: string;

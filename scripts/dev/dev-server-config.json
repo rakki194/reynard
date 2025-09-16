@@ -47,6 +47,12 @@
       "description": "Color system and utilities",
       "autoReload": true,
       "hotReload": true
+    },
+    "reynard-unified-repository": {
+      "port": 3008,
+      "description": "Unified repository and multimodal dataset management system",
+      "autoReload": true,
+      "hotReload": true
     }
   },
   "examples": {
@@ -57,43 +63,43 @@
       "hotReload": true
     },
     "basic-app": {
-      "port": 3008,
+      "port": 3016,
       "description": "Basic application example",
       "autoReload": true,
       "hotReload": true
     },
     "auth-app": {
-      "port": 3009,
+      "port": 3017,
       "description": "Authentication example",
       "autoReload": true,
       "hotReload": true
     },
     "i18n-demo": {
-      "port": 3010,
+      "port": 3018,
       "description": "Internationalization demo",
       "autoReload": true,
       "hotReload": true
     },
     "comprehensive-dashboard": {
-      "port": 3011,
+      "port": 3019,
       "description": "Full-featured dashboard example",
       "autoReload": true,
       "hotReload": true
     },
     "clock": {
-      "port": 3012,
+      "port": 3020,
       "description": "Clock application example",
       "autoReload": true,
       "hotReload": true
     },
     "3d-demo": {
-      "port": 3013,
+      "port": 3021,
       "description": "3D graphics demonstration",
       "autoReload": true,
       "hotReload": true
     },
     "algo-bench": {
-      "port": 3014,
+      "port": 3022,
       "description": "Algorithm benchmarking tool",
       "autoReload": true,
       "hotReload": true
@@ -109,7 +115,7 @@
   },
   "e2e": {
     "playwright": {
-      "port": 3015,
+      "port": 3023,
       "description": "End-to-end testing suite",
       "autoReload": false,
       "hotReload": false

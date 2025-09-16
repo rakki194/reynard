@@ -8,7 +8,7 @@ import logging
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from ..security.mcp_auth import MCPTokenData, require_rag_config, require_rag_query
+from ...security.mcp_auth import MCPTokenData, require_rag_config, require_rag_query
 from .models import (
     RAGConfigRequest,
     RAGConfigResponse,

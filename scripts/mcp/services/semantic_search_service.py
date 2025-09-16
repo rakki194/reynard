@@ -318,7 +318,8 @@ class SemanticSearchService:
                 ) as response,
             ):
                 if response.status == 200:
-                    return await response.json()
+                    result: dict[str, Any] = await response.json()
+                    return result
                 return {
                     "success": False,
                     "error": f"Stats request failed: {response.status}",

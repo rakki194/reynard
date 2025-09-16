@@ -111,7 +111,7 @@ export const PieChart: Component<PieChartProps> = props => {
 
     // Only create chart on client side
     if (typeof window !== "undefined") {
-      const newChart = new Chart(ctx, config);
+      const newChart = new Chart(ctx, config as any);
       setChartInstance(newChart);
     }
   };
@@ -154,7 +154,7 @@ export const PieChart: Component<PieChartProps> = props => {
   createEffect(() => {
     const chart = chartInstance();
     if (chart && chartData()) {
-      chart.data = chartData()!;
+      chart.data = chartData()! as any;
       chart.update();
     }
   });

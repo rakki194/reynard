@@ -3,32 +3,29 @@
  */
 
 // Main manager class and factory
-export {
-  BackendAnnotationManager,
-  createAnnotationManager,
-} from "./BackendAnnotationManager";
+export { BackendAnnotationManager, createAnnotationManager } from "./BackendAnnotationManager";
 
 // Configuration types and constants
-export type { BackendAnnotationManagerConfig } from "./config";
 export { DEFAULT_BACKEND_CONFIG } from "./config";
+export type { BackendAnnotationManagerConfig } from "./config";
 
 // Caption generation utilities
 export {
-  generateFurryTags,
-  generateDetailedCaption,
   generateAnimeTags,
+  generateDetailedCaption,
+  generateFurryTags,
   generateGeneralCaption,
 } from "./caption-generators";
 
 // Batch processing components
 export { BatchCaptionProcessor } from "./components/BatchCaptionProcessor";
-export { BatchFileUpload } from "./components/BatchFileUpload";
-export { BatchConfiguration } from "./components/BatchConfiguration";
-export { BatchProgress } from "./components/BatchProgress";
-export { BatchFileList } from "./components/BatchFileList";
-export { BatchResults } from "./components/BatchResults";
 export type {
   BatchCaptionProcessorProps,
   BatchFile,
-  BatchProgress,
+  BatchProgress as BatchProgressType,
 } from "./components/BatchCaptionProcessor";
+export { BatchConfiguration } from "./components/BatchConfiguration";
+export { BatchFileList } from "./components/BatchFileList";
+export { BatchFileUpload } from "./components/BatchFileUpload";
+export { BatchProgress } from "./components/BatchProgress";
+export { BatchResults } from "./components/BatchResults";

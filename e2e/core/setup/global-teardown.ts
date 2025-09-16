@@ -32,19 +32,16 @@ async function cleanupTestDatabase(): Promise<void> {
   console.log("🗄️  Cleaning up test database...");
 
   try {
-    const response = await fetch(
-      `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/cleanup/test`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          remove_test_users: true,
-          reset_database: false, // Don't reset the entire database
-        }),
+    const response = await fetch(`${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000"}/api/cleanup/test`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({
+        remove_test_users: true,
+        reset_database: false, // Don't reset the entire database
+      }),
+    });
 
     if (response.ok) {
       console.log("✅ Test database cleanup complete");
@@ -64,26 +61,18 @@ async function cleanupTestDatabase(): Promise<void> {
 async function removeTestUsers(): Promise<void> {
   console.log("👥 Removing test users...");
 
-  const testUsernames = [
-    "testuser",
-    "admin",
-    "moderator",
-    "inactive",
-    "weakuser",
-    "specialuser",
-    "unicodeuser",
-  ];
+  const testUsernames = ["testuser", "admin", "moderator", "inactive", "weakuser", "specialuser", "unicodeuser"];
 
   for (const username of testUsernames) {
     try {
       const response = await fetch(
-        `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8888"}/api/auth/users/${username}`,
+        `${process.env.PLAYWRIGHT_API_BASE_URL || "http://localhost:8000"}/api/auth/users/${username}`,
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       if (response.ok) {
@@ -93,9 +82,7 @@ async function removeTestUsers(): Promise<void> {
       } else if (response.status === 401) {
         console.log(`ℹ️  User deletion requires authentication: ${username}`);
       } else {
-        console.warn(
-          `⚠️  Failed to remove test user ${username}: ${response.status}`,
-        );
+        console.warn(`⚠️  Failed to remove test user ${username}: ${response.status}`);
       }
     } catch (error) {
       console.warn(`⚠️  Failed to remove test user ${username}:`, error);

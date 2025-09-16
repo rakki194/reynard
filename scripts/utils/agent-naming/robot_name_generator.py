@@ -1239,9 +1239,13 @@ class ReynardRobotNamer:
         if not spirit:
             spirit = random.choice(list(self.animal_spirits.keys()))  # nosec B311
 
+        # Ensure spirit exists in our data
+        if spirit not in self.animal_spirits:
+            spirit = "fox"  # Default fallback
+
         base_name = random.choice(self.animal_spirits[spirit])  # nosec B311
         suffix = random.choice(self.foundation_suffixes)  # nosec B311
-        generation = random.choice(self.generation_numbers[spirit])  # nosec B311
+        generation = random.choice(self.generation_numbers.get(spirit, [1, 2, 3, 4, 5]))  # nosec B311
 
         return f"{base_name}-{suffix}-{generation}"
 
@@ -1250,9 +1254,13 @@ class ReynardRobotNamer:
         if not spirit:
             spirit = random.choice(list(self.animal_spirits.keys()))  # nosec B311
 
+        # Ensure spirit exists in our data
+        if spirit not in self.animal_spirits:
+            spirit = "fox"  # Default fallback
+
         base_name = random.choice(self.animal_spirits[spirit])  # nosec B311
         suffix = random.choice(self.exo_suffixes)  # nosec B311
-        model = random.choice(self.generation_numbers[spirit])  # nosec B311
+        model = random.choice(self.generation_numbers.get(spirit, [1, 2, 3, 4, 5]))  # nosec B311
 
         return f"{base_name}-{suffix}-{model}"
 
@@ -1260,6 +1268,10 @@ class ReynardRobotNamer:
         """Generate Hybrid-style names: [Spirit] + [Reference] + [Designation]"""
         if not spirit:
             spirit = random.choice(list(self.animal_spirits.keys()))  # nosec B311
+
+        # Ensure spirit exists in our data
+        if spirit not in self.animal_spirits:
+            spirit = "fox"  # Default fallback
 
         base_name = random.choice(self.animal_spirits[spirit])  # nosec B311
         reference = random.choice(self.hybrid_references)  # nosec B311
@@ -1272,6 +1284,10 @@ class ReynardRobotNamer:
         if not spirit:
             spirit = random.choice(list(self.animal_spirits.keys()))  # nosec B311
 
+        # Ensure spirit exists in our data
+        if spirit not in self.animal_spirits:
+            spirit = "fox"  # Default fallback
+
         prefix = random.choice(self.cyberpunk_prefixes)  # nosec B311
         base_name = random.choice(self.animal_spirits[spirit])  # nosec B311
         suffix = random.choice(self.cyberpunk_suffixes)  # nosec B311
@@ -1282,6 +1298,10 @@ class ReynardRobotNamer:
         """Generate Mythological-style names: [Mythological Reference] + [Animal Spirit] + [Divine Suffix]"""
         if not spirit:
             spirit = random.choice(list(self.animal_spirits.keys()))  # nosec B311
+
+        # Ensure spirit exists in our data
+        if spirit not in self.animal_spirits:
+            spirit = "fox"  # Default fallback
 
         myth_ref = random.choice(self.mythological_references)  # nosec B311
         base_name = random.choice(self.animal_spirits[spirit])  # nosec B311
@@ -1421,35 +1441,52 @@ class ReynardRobotNamer:
         ]
         return random.choice(styles)(spirit)  # nosec B311
 
+    def _generate_single_name(
+        self, spirit: str | None, style: str | None
+    ) -> str | None:
+        """Generate a single name based on style."""
+        try:
+            style_generators = {
+                "foundation": self.generate_foundation_style,
+                "exo": self.generate_exo_style,
+                "hybrid": self.generate_hybrid_style,
+                "cyberpunk": self.generate_cyberpunk_style,
+                "mythological": self.generate_mythological_style,
+                "scientific": self.generate_scientific_style,
+            }
+
+            generator = style_generators.get(style, self.generate_random)
+            return generator(spirit)
+        except Exception:
+            return None
+
+    def _add_fallback_names(self, result: list[str], count: int) -> list[str]:
+        """Add fallback names to reach the requested count."""
+        while len(result) < count:
+            fallback_name = f"Agent-{len(result) + 1}"
+            if fallback_name not in result:
+                result.append(fallback_name)
+        return result
+
     def generate_batch(
         self, count: int = 10, spirit: str | None = None, style: str | None = None
     ) -> list[str]:
         """Generate multiple unique names."""
         names: set[str] = set()
         attempts = 0
-        max_attempts = count * 10  # Prevent infinite loops
+        # Increase max attempts and add fallback for small counts
+        max_attempts = max(count * 20, 100)  # More generous limit
 
         while len(names) < count and attempts < max_attempts:
             attempts += 1
+            name = self._generate_single_name(spirit, style)
+            if name and name.strip():
+                names.add(name)
 
-            if style == "foundation":
-                name = self.generate_foundation_style(spirit)
-            elif style == "exo":
-                name = self.generate_exo_style(spirit)
-            elif style == "hybrid":
-                name = self.generate_hybrid_style(spirit)
-            elif style == "cyberpunk":
-                name = self.generate_cyberpunk_style(spirit)
-            elif style == "mythological":
-                name = self.generate_mythological_style(spirit)
-            elif style == "scientific":
-                name = self.generate_scientific_style(spirit)
-            else:
-                name = self.generate_random(spirit)
-
-            names.add(name)
-
-        return list(names)
+        # If we couldn't generate enough unique names, return what we have
+        # and add some fallback names to reach the requested count
+        result = list(names)
+        return self._add_fallback_names(result, count)
 
     def _detect_spirit(self, name: str) -> tuple[str, list[str]]:
         """Detect animal spirit from name components."""
