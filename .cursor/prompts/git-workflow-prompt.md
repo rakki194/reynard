@@ -284,28 +284,44 @@ All notable changes to this project will be documented in this file.
 
    # Add new [Unreleased] section after the header (line 8)
    sed -i '8a\
-\
-## [Unreleased]\
-\
-### Added\
-\
-### Changed\
-\
-### Deprecated\
-\
-### Removed\
-\
-### Fixed\
-\
-### Security\
-' CHANGELOG.md
+   \
    ```
 
+## [Unreleased]\
+
+\
+
+### Added\
+
+\
+
+### Changed\
+
+\
+
+### Deprecated\
+
+\
+
+### Removed\
+
+\
+
+### Fixed\
+
+\
+
+### Security\
+
+' CHANGELOG.md
+
+````bash
+
 3. **Preserve Existing Entries:**
-   - Never overwrite existing changelog content
-   - Only promote "Unreleased" section to versioned release
-   - Add new "Unreleased" section for future changes
-   - Maintain chronological order (newest first)
+- Never overwrite existing changelog content
+- Only promote "Unreleased" section to versioned release
+- Add new "Unreleased" section for future changes
+- Maintain chronological order (newest first)
 
 **CHANGELOG Entry Requirements:**
 
@@ -317,6 +333,8 @@ All notable changes to this project will be documented in this file.
 - Reference commit hash and date in versioned releases
 
 **CHANGELOG.md Structure Explanation:**
+
+> **Note**: The sed commands in this documentation use specific formatting that may trigger markdown linting warnings. This formatting is intentional and necessary for the commands to work correctly across different systems.
 
 The Reynard CHANGELOG.md follows the [Keep a Changelog](https://keepachangelog.com/) format with this specific structure:
 
@@ -337,7 +355,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 [Released changes go here]
-```
+````
 
 **Critical Positioning Rules:**
 
@@ -349,6 +367,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Common CHANGELOG.md Issues and Solutions:**
 
 **Issue: Malformed version entries**
+
 ```bash
 # BAD: Concatenated versions like "## [0.7.0] - 2025-09-16 [0.6.1] - 2025-09-16"
 # GOOD: Separate entries
@@ -357,12 +376,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ```
 
 **Issue: `[Unreleased]` section in wrong position**
+
 ```bash
 # BAD: [Unreleased] section appears after versioned releases
 # GOOD: [Unreleased] section is always first (after header)
 ```
 
 **Issue: Incorrect sed command syntax**
+
 ```bash
 # BAD: Using a\\n which doesn't work in all sed implementations
 sed -i '/^# Changelog/a\\n## [Unreleased]' CHANGELOG.md
@@ -704,9 +725,57 @@ echo "✅ Git workflow completed successfully with version v$NEW_VERSION and Git
 - [ ] Commit message follows conventional format
 - [ ] Version bump type determined (major/minor/patch)
 - [ ] CHANGELOG.md [Unreleased] section has content
+- [ ] CHANGELOG.md structure is valid (see validation commands below)
 - [ ] Package versions will be bumped appropriately
 - [ ] No sensitive data in commits
 - [ ] All files properly staged
+
+### CHANGELOG.md Validation Commands
+
+```bash
+# Validate CHANGELOG.md structure
+echo "🔍 Validating CHANGELOG.md structure..."
+
+# Check if [Unreleased] section exists and is in correct position
+UNRELEASED_LINE=$(grep -n "## \[Unreleased\]" CHANGELOG.md | cut -d: -f1)
+if [ -z "$UNRELEASED_LINE" ]; then
+    echo "❌ [Unreleased] section not found"
+    exit 1
+elif [ "$UNRELEASED_LINE" -ne 9 ]; then
+    echo "❌ [Unreleased] section at line $UNRELEASED_LINE, should be at line 9"
+    exit 1
+else
+    echo "✅ [Unreleased] section correctly positioned at line $UNRELEASED_LINE"
+fi
+
+# Check for malformed version entries
+MALFORMED_ENTRIES=$(grep -n "## \[.*\] - .* \[.*\] -" CHANGELOG.md)
+if [ -n "$MALFORMED_ENTRIES" ]; then
+    echo "❌ Malformed version entries found:"
+    echo "$MALFORMED_ENTRIES"
+    exit 1
+else
+    echo "✅ No malformed version entries found"
+fi
+
+# Check version entry format
+VERSION_ENTRIES=$(grep -n "## \[[0-9]" CHANGELOG.md)
+if [ -n "$VERSION_ENTRIES" ]; then
+    echo "📋 Version entries found:"
+    echo "$VERSION_ENTRIES"
+
+    # Validate each version entry has proper date format
+    while IFS= read -r line; do
+        if ! echo "$line" | grep -q "## \[[0-9]\+\.[0-9]\+\.[0-9]\+\] - [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}$"; then
+            echo "❌ Invalid version entry format: $line"
+            exit 1
+        fi
+    done <<< "$VERSION_ENTRIES"
+    echo "✅ All version entries have correct format"
+fi
+
+echo "✅ CHANGELOG.md structure validation passed"
+```
 
 ### Post-Commit Verification
 

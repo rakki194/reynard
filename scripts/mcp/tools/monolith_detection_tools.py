@@ -30,7 +30,7 @@ class MonolithDetectionTools:
 
         self.tools = self._get_tool_definitions()
 
-    def _get_tool_definitions(self) -> List[Dict[str, Any]]:
+    def _get_tool_definitions(self) -> list[dict[str, Any]]:
         """Get list of available monolith detection tools."""
         return [
             {
@@ -116,11 +116,11 @@ class MonolithDetectionTools:
             },
         ]
 
-    def get_tools(self) -> List[Dict[str, Any]]:
+    def get_tools(self) -> list[dict[str, Any]]:
         """Get list of available monolith detection tools."""
         return self.tools
 
-    def call_tool(self, name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def call_tool(self, name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """
         Call a monolith detection tool.
 
@@ -140,7 +140,7 @@ class MonolithDetectionTools:
         else:
             raise ValueError(f"Unknown tool: {name}")
 
-    def _detect_monoliths(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def _detect_monoliths(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Detect large monolithic files."""
         max_lines = arguments.get("max_lines", 140)
         exclude_comments = arguments.get("exclude_comments", True)
@@ -209,7 +209,7 @@ class MonolithDetectionTools:
                 ]
             }
 
-    def _analyze_file_complexity(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def _analyze_file_complexity(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Analyze complexity metrics for a specific file."""
         file_path = arguments["file_path"]
         include_ast_analysis = arguments.get("include_ast_analysis", True)
@@ -263,7 +263,7 @@ class MonolithDetectionTools:
                 ]
             }
 
-    def _get_code_metrics_summary(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def _get_code_metrics_summary(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Get summary of code metrics across the codebase."""
         directories = arguments.get("directories", ["../../"])
         file_types = arguments.get("file_types", [".py", ".ts", ".tsx", ".js", ".jsx"])

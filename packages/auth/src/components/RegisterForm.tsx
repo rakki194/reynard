@@ -352,8 +352,9 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
             <Show when={local.showTermsAcceptance}>
               <label class="register-form__checkbox">
                 <Toggle
-    size="sm"
-  /> setAcceptTerms(e.target.checked)}
+                  size="sm"
+                  checked={acceptTerms()}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
                   disabled={local.loading}
                   required
                 />

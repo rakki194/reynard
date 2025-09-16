@@ -57,9 +57,9 @@ class PlaywrightBrowserService:
 
     async def _create_browser_page(
         self,
-        viewport_size: Optional[Dict[str, int]] = None,
-        user_agent: Optional[str] = None,
-    ) -> Tuple[Browser, Page]:
+        viewport_size: dict[str, int | None] = None,
+        user_agent: str | None = None,
+    ) -> tuple[Browser, Page]:
         """Create a browser and page with specified settings."""
         if not self.playwright_available:
             raise RuntimeError(
@@ -83,12 +83,12 @@ class PlaywrightBrowserService:
     async def render_html_to_png_adaptive(
         self,
         html_content: str,
-        output_path: Optional[str] = None,
-        viewport_size: Optional[Dict[str, int]] = None,
+        output_path: str | None = None,
+        viewport_size: dict[str, int | None] = None,
         full_page: bool = True,
         quality: int = 100,
-        content_selector: Optional[str] = None,
-    ) -> Tuple[bool, str, str]:
+        content_selector: str | None = None,
+    ) -> tuple[bool, str, str]:
         """
         Render HTML content to PNG with adaptive viewport sizing.
 
@@ -185,11 +185,11 @@ class PlaywrightBrowserService:
     async def render_html_to_png(
         self,
         html_content: str,
-        output_path: Optional[str] = None,
-        viewport_size: Optional[Dict[str, int]] = None,
+        output_path: str | None = None,
+        viewport_size: dict[str, int | None] = None,
         full_page: bool = True,
         quality: int = 100,
-    ) -> Tuple[bool, str, str]:
+    ) -> tuple[bool, str, str]:
         """
         Render HTML content to PNG image.
 
@@ -253,8 +253,8 @@ class PlaywrightBrowserService:
         self,
         html_content: str,
         selector: str = "svg",
-        viewport_size: Optional[Dict[str, int]] = None,
-    ) -> Tuple[bool, str, str]:
+        viewport_size: dict[str, int | None] = None,
+    ) -> tuple[bool, str, str]:
         """
         Extract SVG content from HTML.
 
@@ -311,10 +311,10 @@ class PlaywrightBrowserService:
     async def scrape_webpage(
         self,
         url: str,
-        selector: Optional[str] = None,
-        viewport_size: Optional[Dict[str, int]] = None,
-        wait_for: Optional[str] = None,
-    ) -> Tuple[bool, str, str]:
+        selector: str | None = None,
+        viewport_size: dict[str, int | None] = None,
+        wait_for: str | None = None,
+    ) -> tuple[bool, str, str]:
         """
         Scrape content from a webpage.
 
@@ -377,11 +377,11 @@ class PlaywrightBrowserService:
     async def take_screenshot(
         self,
         url: str,
-        output_path: Optional[str] = None,
-        viewport_size: Optional[Dict[str, int]] = None,
+        output_path: str | None = None,
+        viewport_size: dict[str, int | None] = None,
         full_page: bool = True,
-        selector: Optional[str] = None,
-    ) -> Tuple[bool, str, str]:
+        selector: str | None = None,
+    ) -> tuple[bool, str, str]:
         """
         Take a screenshot of a webpage.
 
@@ -453,11 +453,11 @@ class PlaywrightBrowserService:
     def render_html_to_png_adaptive_sync(
         self,
         html_content: str,
-        output_path: Optional[str] = None,
-        viewport_size: Optional[Dict[str, int]] = None,
+        output_path: str | None = None,
+        viewport_size: dict[str, int | None] = None,
         full_page: bool = True,
-        content_selector: Optional[str] = None,
-    ) -> Tuple[bool, str, str]:
+        content_selector: str | None = None,
+    ) -> tuple[bool, str, str]:
         """Synchronous wrapper for render_html_to_png_adaptive."""
         return self._run_async_operation(
             self.render_html_to_png_adaptive(
@@ -473,10 +473,10 @@ class PlaywrightBrowserService:
     def render_html_to_png_sync(
         self,
         html_content: str,
-        output_path: Optional[str] = None,
-        viewport_size: Optional[Dict[str, int]] = None,
+        output_path: str | None = None,
+        viewport_size: dict[str, int | None] = None,
         full_page: bool = True,
-    ) -> Tuple[bool, str, str]:
+    ) -> tuple[bool, str, str]:
         """Synchronous wrapper for render_html_to_png."""
         return self._run_async_operation(
             self.render_html_to_png(html_content, output_path, viewport_size, full_page)
@@ -486,8 +486,8 @@ class PlaywrightBrowserService:
         self,
         html_content: str,
         selector: str = "svg",
-        viewport_size: Optional[Dict[str, int]] = None,
-    ) -> Tuple[bool, str, str]:
+        viewport_size: dict[str, int | None] = None,
+    ) -> tuple[bool, str, str]:
         """Synchronous wrapper for render_html_to_svg."""
         return self._run_async_operation(
             self.render_html_to_svg(html_content, selector, viewport_size)
@@ -496,10 +496,10 @@ class PlaywrightBrowserService:
     def scrape_webpage_sync(
         self,
         url: str,
-        selector: Optional[str] = None,
-        viewport_size: Optional[Dict[str, int]] = None,
-        wait_for: Optional[str] = None,
-    ) -> Tuple[bool, str, str]:
+        selector: str | None = None,
+        viewport_size: dict[str, int | None] = None,
+        wait_for: str | None = None,
+    ) -> tuple[bool, str, str]:
         """Synchronous wrapper for scrape_webpage."""
         return self._run_async_operation(
             self.scrape_webpage(url, selector, viewport_size, wait_for)
@@ -508,11 +508,11 @@ class PlaywrightBrowserService:
     def take_screenshot_sync(
         self,
         url: str,
-        output_path: Optional[str] = None,
-        viewport_size: Optional[Dict[str, int]] = None,
+        output_path: str | None = None,
+        viewport_size: dict[str, int | None] = None,
         full_page: bool = True,
-        selector: Optional[str] = None,
-    ) -> Tuple[bool, str, str]:
+        selector: str | None = None,
+    ) -> tuple[bool, str, str]:
         """Synchronous wrapper for take_screenshot."""
         return self._run_async_operation(
             self.take_screenshot(url, output_path, viewport_size, full_page, selector)

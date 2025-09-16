@@ -3,71 +3,30 @@
 MCP Protocol Handler
 ====================
 
-Handles MCP protocol requests and responses.
-Follows the 100-line axiom and modular architecture principles.
+Handles MCP protocol requests and responses with modular tool registry.
+Follows the 140-line axiom and modular architecture principles.
 """
 
 import logging
 from typing import Any
 
-from tools.agent_tools import AgentTools
-from tools.bm25_search_tools import BM25SearchTools
 from tools.definitions import get_tool_definitions
-from tools.ecs_agent_tools import ECSAgentTools
-from tools.enhanced_bm25_search_tools import EnhancedBM25SearchTools
-from tools.file_search_tools import FileSearchTools
-from tools.image_viewer_tools import ImageViewerTools
-from tools.linting_tools import LintingTools
-from tools.mermaid_tools import MermaidTools
-from tools.monolith_detection_tools import MonolithDetectionTools
-from tools.playwright_tools import PlaywrightTools
-from tools.semantic_file_search_tools import SemanticFileSearchTools
-from tools.utility_tools import UtilityTools
-from tools.version_vscode_tools import VersionVSCodeTools
-from tools.vscode_tasks_tools import VSCodeTasksTools
+from tools.config_definitions import get_config_tool_definitions
 
 from .tool_router import ToolRouter
+from .tool_registry import ToolRegistry
 
 logger = logging.getLogger(__name__)
 
 
 class MCPHandler:
-    """Handles MCP protocol requests and responses."""
+    """Handles MCP protocol requests and responses with modular tool registry."""
 
-    def __init__(
-        self,
-        agent_tools: AgentTools,
-        bm25_search_tools: BM25SearchTools,
-        enhanced_bm25_search_tools: EnhancedBM25SearchTools,
-        utility_tools: UtilityTools,
-        linting_tools: LintingTools,
-        version_vscode_tools: VersionVSCodeTools,
-        file_search_tools: FileSearchTools,
-        semantic_file_search_tools: SemanticFileSearchTools,
-        image_viewer_tools: ImageViewerTools,
-        mermaid_tools: MermaidTools,
-        monolith_detection_tools: MonolithDetectionTools,
-        playwright_tools: PlaywrightTools,
-        vscode_tasks_tools: VSCodeTasksTools,
-        ecs_agent_tools: ECSAgentTools,
-    ):
-        self.tools = get_tool_definitions()
-        self.tool_router = ToolRouter(
-            agent_tools,
-            bm25_search_tools,
-            enhanced_bm25_search_tools,
-            utility_tools,
-            linting_tools,
-            version_vscode_tools,
-            file_search_tools,
-            semantic_file_search_tools,
-            image_viewer_tools,
-            mermaid_tools,
-            monolith_detection_tools,
-            playwright_tools,
-            vscode_tasks_tools,
-            ecs_agent_tools,
-        )
+    def __init__(self, tool_registry: ToolRegistry) -> None:
+        self.tool_registry = tool_registry
+
+        # Initialize tool router with registry
+        self.tool_router = ToolRouter(tool_registry)
 
     def handle_initialize(self, request_id: Any) -> dict[str, Any]:
         """Handle MCP initialization request."""
@@ -85,11 +44,24 @@ class MCPHandler:
         }
 
     def handle_tools_list(self, request_id: Any) -> dict[str, Any]:
-        """Handle tools list request."""
+        """Handle tools list request - only return enabled tools."""
+        # Get all tool definitions
+        all_tools = get_tool_definitions()
+        config_tools = get_config_tool_definitions()
+        
+        # Combine all tools
+        combined_tools = {**all_tools, **config_tools}
+        
+        # Filter to only enabled tools
+        enabled_tools = {}
+        for tool_name, tool_def in combined_tools.items():
+            if self.tool_registry.is_tool_enabled(tool_name):
+                enabled_tools[tool_name] = tool_def
+        
         return {
             "jsonrpc": "2.0",
             "id": request_id,
-            "result": {"tools": list(self.tools.values())},
+            "result": {"tools": list(enabled_tools.values())},
         }
 
     async def handle_tool_call(
@@ -97,6 +69,17 @@ class MCPHandler:
     ) -> dict[str, Any]:
         """Handle tool call request."""
         try:
+            # Check if tool is enabled
+            if not self.tool_registry.is_tool_enabled(tool_name):
+                return {
+                    "jsonrpc": "2.0",
+                    "id": request_id,
+                    "error": {
+                        "code": -32601, 
+                        "message": f"Tool '{tool_name}' is disabled"
+                    },
+                }
+            
             result = await self.tool_router.route_tool_call(tool_name, arguments)
         except ValueError as e:
             return {

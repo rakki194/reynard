@@ -35,6 +35,8 @@ from app.api.rag import router as rag_router
 from app.api.summarization import router as summarization_router
 from app.api.tts import router as tts_router
 from app.api.mcp import endpoints as mcp_endpoints
+from app.api.mcp import tools_endpoints as mcp_tools_endpoints
+from app.api.mcp import tool_config_endpoints as mcp_tool_config_endpoints
 
 # Core API endpoints
 from app.core.api_endpoints import router as core_router
@@ -51,7 +53,10 @@ from app.middleware.rate_limiting import setup_rate_limiting
 from app.middleware.security_headers import add_security_headers
 from app.middleware.input_validation_middleware import setup_input_validation_middleware
 from app.middleware.dev_bypass_middleware import setup_dev_bypass_middleware
-from app.core.penetration_testing import setup_penetration_testing_middleware, check_penetration_testing_state
+from app.core.penetration_testing import (
+    setup_penetration_testing_middleware,
+    check_penetration_testing_state,
+)
 
 # Security components
 from app.security.security_middleware import setup_security_middleware
@@ -59,6 +64,10 @@ from app.security.error_handler import setup_error_handlers
 from app.security.secure_auth_routes import create_secure_auth_router
 from app.security.secure_ollama_routes import create_secure_ollama_router
 from app.security.secure_summarization_routes import create_secure_summarization_router
+
+# ECS World integration
+from app.ecs.service import register_ecs_service
+from app.ecs.endpoints import router as ecs_router
 
 
 def create_app() -> FastAPI:
@@ -95,6 +104,9 @@ def create_app() -> FastAPI:
     # Configure routers (before middleware wrapping)
     _setup_routers(app)
 
+    # Register ECS world service
+    register_ecs_service(app)
+
     # Configure middleware (last to wrap everything)
     app = _setup_middleware(app, config)
 
@@ -111,19 +123,19 @@ def _setup_middleware(app: FastAPI, config: AppConfig) -> FastAPI:
     Args:
         app: The FastAPI application instance.
         config: The application configuration object.
-        
+
     Returns:
         FastAPI: The configured application with all middleware.
     """
     # Penetration testing middleware (first to handle session control)
     setup_penetration_testing_middleware(app)
-    
+
     # Development bypass middleware (second to set bypass flags)
     setup_dev_bypass_middleware(app)
-    
+
     # Input validation middleware (third to validate input)
     setup_input_validation_middleware(app)
-    
+
     # CORS configuration
     setup_cors_middleware(app)
 
@@ -136,10 +148,10 @@ def _setup_middleware(app: FastAPI, config: AppConfig) -> FastAPI:
         TrustedHostMiddleware,
         allowed_hosts=config.allowed_hosts,
     )
-    
+
     # Security middleware (last to wrap everything)
     app = setup_security_middleware(app)
-    
+
     return app
 
 
@@ -169,13 +181,18 @@ def _setup_routers(app: FastAPI) -> None:
     app.include_router(rag_router)
     app.include_router(tts_router)
     app.include_router(mcp_endpoints.router, prefix="/api")
-    
+    app.include_router(mcp_tools_endpoints.router, prefix="/api")
+    app.include_router(mcp_tool_config_endpoints.router, prefix="/api")
+
     # Ollama Router (use original for now, secure version will be added after service initialization)
     app.include_router(ollama_router)
-    
+
     app.include_router(comfy_router)
-    
+
     # Summarization Router (use original for now, secure version will be added after service initialization)
     app.include_router(summarization_router)
-    
+
     app.include_router(nlweb_router)
+    
+    # ECS World Router
+    app.include_router(ecs_router, prefix="/api")

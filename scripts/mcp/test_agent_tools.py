@@ -3,7 +3,7 @@
 
 import asyncio
 
-from services.agent_manager import AgentNameManager
+from agent_naming import AgentNameManager
 from tools.agent_tools import AgentTools
 
 

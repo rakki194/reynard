@@ -5,12 +5,7 @@
  */
 
 import { Component, Show } from "solid-js";
-import type {
-  MultiModalFile,
-  MediaType,
-  GalleryView,
-  FileCounts,
-} from "../types/MultiModalTypes";
+import type { MultiModalFile, MediaType, GalleryView, FileCounts } from "../types";
 import { MultiModalGalleryHeader } from "./MultiModalGalleryHeader";
 import { MultiModalGalleryContent } from "./MultiModalGalleryContent";
 import { MultiModalDetail } from "./MultiModalDetail";
@@ -28,16 +23,14 @@ interface MultiModalGalleryViewProps {
   filteredFiles: MultiModalFile[];
   selectedFile: MultiModalFile | null;
   onFileSelect: (file: MultiModalFile) => void;
-  onFileRemove: (fileId: string) => void;
-  onFileModify: (fileId: string, content: unknown) => void;
+  onFileRemove: (file: MultiModalFile) => void;
+  onFileModify: (file: MultiModalFile) => void;
   onCloseDetail: () => void;
   showMetadata?: boolean;
   editable?: boolean;
 }
 
-export const MultiModalGalleryView: Component<MultiModalGalleryViewProps> = (
-  props,
-) => {
+export const MultiModalGalleryView: Component<MultiModalGalleryViewProps> = props => {
   return (
     <div class={`multi-modal-gallery ${props.class || ""}`}>
       <MultiModalGalleryHeader
@@ -72,9 +65,7 @@ export const MultiModalGalleryView: Component<MultiModalGalleryViewProps> = (
         <MultiModalDetail
           file={props.selectedFile!}
           onClose={props.onCloseDetail}
-          onModify={(content) =>
-            props.onFileModify(props.selectedFile!.id, content)
-          }
+          onModify={() => props.onFileModify(props.selectedFile!)}
           editable={props.editable}
         />
       </Show>

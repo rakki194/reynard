@@ -60,8 +60,8 @@ vi.spyOn(console, "info").mockImplementation(mockConsole.info);
 
 // Mock process
 vi.spyOn(process, "cwd").mockImplementation(mockProcess.cwd);
-vi.spyOn(process, "exit").mockImplementation(mockProcess.exit);
-vi.spyOn(process, "on").mockImplementation(mockProcess.on);
+vi.spyOn(process, "exit").mockImplementation(mockProcess.exit as any);
+vi.spyOn(process, "on").mockImplementation(mockProcess.on as any);
 
 // Set default mock implementations
 mockFs.existsSync.mockReturnValue(true);

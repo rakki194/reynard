@@ -24,8 +24,8 @@ class FileDiscoveryService:
         self.skip_files = self._get_skip_files()
 
     def discover_files(
-        self, directories: List[str], file_types: List[str]
-    ) -> List[str]:
+        self, directories: list[str], file_types: list[str]
+    ) -> list[str]:
         """Discover all files from directories matching file types."""
         all_files = []
         for directory in directories:
@@ -33,9 +33,9 @@ class FileDiscoveryService:
                 all_files.extend(self._get_files_recursive(directory, file_types))
         return all_files
 
-    def _get_files_recursive(self, directory: str, file_types: List[str]) -> List[str]:
+    def _get_files_recursive(self, directory: str, file_types: list[str]) -> list[str]:
         """Get all files recursively matching the given extensions."""
-        files: List[str] = []
+        files: list[str] = []
 
         # Resolve relative paths from current working directory
         directory = self._resolve_directory_path(directory)
@@ -122,7 +122,7 @@ class FileDiscoveryService:
         file_path_lower = file_path.lower()
         return any(pattern in file_path_lower for pattern in generated_patterns)
 
-    def _get_skip_directories(self) -> Set[str]:
+    def _get_skip_directories(self) -> set[str]:
         """Get set of directories to skip during file discovery."""
         return {
             # Git and version control
@@ -182,7 +182,7 @@ class FileDiscoveryService:
             "*.bak",
         }
 
-    def _get_skip_files(self) -> Set[str]:
+    def _get_skip_files(self) -> set[str]:
         """Get set of files to skip during file discovery."""
         return {
             # Build artifacts

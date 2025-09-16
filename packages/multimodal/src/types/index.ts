@@ -5,13 +5,7 @@
  * leveraging existing file processing infrastructure.
  */
 
-export type MediaType =
-  | "image"
-  | "video"
-  | "audio"
-  | "text"
-  | "document"
-  | "unknown";
+export type MediaType = "image" | "video" | "audio" | "text" | "document" | "unknown";
 
 export type GalleryView = "grid" | "list" | "timeline";
 
@@ -191,12 +185,7 @@ export interface BatchOperation {
 
 export interface GalleryEvent {
   /** Event type */
-  type:
-    | "fileSelect"
-    | "fileRemove"
-    | "fileModify"
-    | "viewChange"
-    | "filterChange";
+  type: "fileSelect" | "fileRemove" | "fileModify" | "viewChange" | "filterChange";
   /** Event data */
   data: any;
   /** Event timestamp */
@@ -224,6 +213,9 @@ export interface GalleryStats {
     percentage: number;
   }>;
 }
+
+/** File counts by type */
+export type FileCounts = Record<MediaType, number>;
 
 /**
  * Represents a content modality (image, video, text, audio, etc.)
@@ -303,5 +295,4 @@ export type ModalityId = (typeof MODALITY_IDS)[keyof typeof MODALITY_IDS];
 /**
  * Type for functionality ID
  */
-export type FunctionalityId =
-  (typeof FUNCTIONALITY_IDS)[keyof typeof FUNCTIONALITY_IDS];
+export type FunctionalityId = (typeof FUNCTIONALITY_IDS)[keyof typeof FUNCTIONALITY_IDS];

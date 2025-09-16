@@ -2,15 +2,54 @@ import type { MCPResponse } from "../types";
 
 // MCP Server communication
 export class MCPServer {
+  // Note: requestId could be used for request tracking in the future
+
   public async callMCPTool(toolName: string, arguments_: Record<string, any> = {}): Promise<MCPResponse> {
+    console.log(`🔧 Calling MCP tool: ${toolName}`, arguments_);
     try {
-      // In a real implementation, this would communicate with the MCP server
-      // For now, we'll simulate the responses
-      return await this.simulateMCPCall(toolName, arguments_);
+      // Try to use real MCP server first, fallback to simulation
+      const result = await this.callRealMCPServer(toolName, arguments_);
+      console.log(`✅ MCP tool ${toolName} succeeded:`, result);
+      return result;
     } catch (error) {
-      console.error(`MCP call failed for ${toolName}:`, error);
-      throw error;
+      console.warn(`⚠️ Real MCP server failed for ${toolName}, falling back to simulation:`, error);
+      const fallback = await this.simulateMCPCall(toolName, arguments_);
+      console.log(`🔄 Fallback simulation for ${toolName}:`, fallback);
+      return fallback;
     }
+  }
+
+  private async callRealMCPServer(toolName: string, arguments_: Record<string, any>): Promise<MCPResponse> {
+    console.log(`🌐 Making HTTP request to /api/mcp/tools/call for ${toolName}`);
+
+    // Connect to the FastAPI backend MCP tools endpoint
+    const response = await fetch("/api/mcp/tools/call", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        method: toolName,
+        params: arguments_,
+      }),
+    });
+
+    console.log(`📡 HTTP response status: ${response.status}`);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`❌ HTTP error response:`, errorText);
+      throw new Error(`MCP server responded with ${response.status}: ${errorText}`);
+    }
+
+    const result = await response.json();
+    console.log(`📊 HTTP response body:`, result);
+
+    if (!result.success) {
+      throw new Error(`MCP error: ${result.error || "Unknown error"}`);
+    }
+
+    return result.result;
   }
 
   private async simulateMCPCall(toolName: string, arguments_: Record<string, any>): Promise<MCPResponse> {
@@ -24,6 +63,59 @@ export class MCPServer {
             {
               type: "text",
               text: `Total agents: 5\nMature agents: 3\nAutomatic reproduction: enabled`,
+            },
+          ],
+        };
+
+      case "get_ecs_agent_positions":
+        // Return mock position data
+        const mockPositions = [
+          {
+            id: "agent-1",
+            name: "Strategic-Fox-7",
+            spirit: "fox",
+            style: "foundation",
+            position: { x: 150, y: 200 },
+            target: { x: 180, y: 220 },
+          },
+          {
+            id: "agent-2",
+            name: "Pack-Wolf-12",
+            spirit: "wolf",
+            style: "exo",
+            position: { x: 300, y: 150 },
+            target: { x: 320, y: 170 },
+          },
+          {
+            id: "agent-3",
+            name: "Playful-Otter-3",
+            spirit: "otter",
+            style: "hybrid",
+            position: { x: 450, y: 300 },
+            target: { x: 470, y: 320 },
+          },
+          {
+            id: "agent-4",
+            name: "Soaring-Eagle-9",
+            spirit: "eagle",
+            style: "mythological",
+            position: { x: 600, y: 100 },
+            target: { x: 620, y: 120 },
+          },
+          {
+            id: "agent-5",
+            name: "Regal-Lion-15",
+            spirit: "lion",
+            style: "scientific",
+            position: { x: 750, y: 250 },
+            target: { x: 770, y: 270 },
+          },
+        ];
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(mockPositions),
             },
           ],
         };

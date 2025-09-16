@@ -2,9 +2,9 @@ name: 🌍 Comprehensive i18n & Linting Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   workflow_dispatch:
     inputs:
       skip_tests:
@@ -20,7 +20,7 @@ on:
 
 env:
   NODE_VERSION: '20'
-  PNPM_VERSION: '8.15.0'
+  PNPM_VERSION: '8.15.1'
 
 jobs:
   # 🦊 Strategic Setup & Validation
@@ -30,60 +30,60 @@ jobs:
     outputs:
       cache-hit: ${{ steps.cache-deps.outputs.cache-hit }}
       packages-to-test: ${{ steps.determine-packages.outputs.packages }}
-    
+
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Full history for better caching
-        
-    - name: 🏗️ Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: ${{ env.PNPM_VERSION }}
-        
-    - name: 🟢 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'pnpm'
-        
-    - name: 💾 Cache dependencies
-      id: cache-deps
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.pnpm-store
-          node_modules
-          packages/*/node_modules
-        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-
-          
-    - name: 📦 Install dependencies
-      if: steps.cache-deps.outputs.cache-hit != 'true'
-      run: pnpm install --frozen-lockfile
-      
-    - name: 🔍 Determine packages to test
-      id: determine-packages
-      run: |
-        if [[ -n "${{ github.event.inputs.packages_only }}" ]]; then
-          echo "packages=${{ github.event.inputs.packages_only }}" >> "${GITHUB_OUTPUT}"
-        else
-          # Get all packages with i18n support
-          PACKAGES=$(find packages -name "package.json" -exec grep -l "i18n" {} \; | sed 's|/package.json||' | tr '\n' ',' | sed 's/,$//')
-          echo "packages=${PACKAGES}" >> "${GITHUB_OUTPUT}"
-        fi
-        
-    - name: 🏗️ Build testing package
-      run: |
-        cd packages/testing
-        pnpm build
-        
-    - name: ✅ Validate i18n setup
-      run: |
-        cd packages/testing
-        pnpm i18n:validate
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history for better caching
+
+      - name: 🏗️ Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 💾 Cache dependencies
+        id: cache-deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            packages/*/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: 📦 Install dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔍 Determine packages to test
+        id: determine-packages
+        run: |
+          if [[ -n "${{ github.event.inputs.packages_only }}" ]]; then
+            echo "packages=${{ github.event.inputs.packages_only }}" >> "${GITHUB_OUTPUT}"
+          else
+            # Get all packages with i18n support
+            PACKAGES=$(find packages -name "package.json" -exec grep -l "i18n" {} \; | sed 's|/package.json||' | tr '\n' ',' | sed 's/,$//')
+            echo "packages=${PACKAGES}" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: 🏗️ Build testing package
+        run: |
+          cd packages/testing
+          pnpm build
+
+      - name: ✅ Validate i18n setup
+        run: |
+          cd packages/testing
+          pnpm i18n:validate
 
   # 🦦 Comprehensive i18n Testing
   i18n-testing:
@@ -91,202 +91,202 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup-validation
     if: github.event.inputs.skip_tests != 'true'
-    
+
     strategy:
       matrix:
         node-version: [18, 20]
         test-type: [comprehensive, ci, eslint]
-        
+
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: ${{ env.PNPM_VERSION }}
-        
-    - name: 🟢 Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
-        
-    - name: 💾 Restore dependencies
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.pnpm-store
-          node_modules
-          packages/*/node_modules
-        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-
-          
-    - name: 📦 Install dependencies
-      run: pnpm install --frozen-lockfile
-      
-    - name: 🏗️ Build testing package
-      run: |
-        cd packages/testing
-        pnpm build
-        
-    - name: 🧪 Run i18n tests (${{ matrix.test-type }})
-      id: i18n-tests
-      run: |
-        cd packages/testing
-        case "${{ matrix.test-type }}" in
-          "comprehensive")
-            pnpm i18n:test --output ../../i18n-results-${{ matrix.node-version }}.json --report ../../i18n-report-${{ matrix.node-version }}.md
-            ;;
-          "ci")
-            pnpm i18n:ci --fail-on-hardcoded --fail-on-missing --fail-on-rtl --coverage-threshold 80
-            ;;
-          "eslint")
-            pnpm i18n:eslint
-            ;;
-        esac
-      continue-on-error: true
-      
-    - name: 📊 Generate i18n report
-      if: always() && matrix.test-type == 'comprehensive'
-      run: |
-        cd packages/testing
-        pnpm i18n:test --output ../../i18n-results-${{ matrix.node-version }}.json --report ../../i18n-report-${{ matrix.node-version }}.md
-        
-    - name: 📤 Upload i18n results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: i18n-results-${{ matrix.node-version }}-${{ matrix.test-type }}
-        path: |
-          i18n-results-${{ matrix.node-version }}.json
-          i18n-report-${{ matrix.node-version }}.md
-        retention-days: 30
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: 💾 Restore dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            packages/*/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build testing package
+        run: |
+          cd packages/testing
+          pnpm build
+
+      - name: 🧪 Run i18n tests (${{ matrix.test-type }})
+        id: i18n-tests
+        run: |
+          cd packages/testing
+          case "${{ matrix.test-type }}" in
+            "comprehensive")
+              pnpm i18n:test --output ../../i18n-results-${{ matrix.node-version }}.json --report ../../i18n-report-${{ matrix.node-version }}.md
+              ;;
+            "ci")
+              pnpm i18n:ci --fail-on-hardcoded --fail-on-missing --fail-on-rtl --coverage-threshold 80
+              ;;
+            "eslint")
+              pnpm i18n:eslint
+              ;;
+          esac
+        continue-on-error: true
+
+      - name: 📊 Generate i18n report
+        if: always() && matrix.test-type == 'comprehensive'
+        run: |
+          cd packages/testing
+          pnpm i18n:test --output ../../i18n-results-${{ matrix.node-version }}.json --report ../../i18n-report-${{ matrix.node-version }}.md
+
+      - name: 📤 Upload i18n results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-results-${{ matrix.node-version }}-${{ matrix.test-type }}
+          path: |
+            i18n-results-${{ matrix.node-version }}.json
+            i18n-report-${{ matrix.node-version }}.md
+          retention-days: 30
 
   # 🐺 Security & Linting Analysis
   security-linting:
     name: 🐺 Security & Linting Analysis
     runs-on: ubuntu-latest
     needs: setup-validation
-    
+
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: ${{ env.PNPM_VERSION }}
-        
-    - name: 🟢 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'pnpm'
-        
-    - name: 💾 Restore dependencies
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.pnpm-store
-          node_modules
-          packages/*/node_modules
-        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-
-          
-    - name: 📦 Install dependencies
-      run: pnpm install --frozen-lockfile
-      
-    - name: 🔍 Run ESLint with i18n rules
-      run: |
-        cd packages/testing
-        pnpm i18n:eslint
-      continue-on-error: true
-      
-    - name: 🧹 Run general linting
-      run: pnpm lint
-      continue-on-error: true
-      
-    - name: 🎨 Check formatting
-      run: pnpm format:check
-      continue-on-error: true
-      
-    - name: 🔒 Security audit
-      run: |
-        pnpm audit --audit-level=moderate
-        pnpm run security:scan
-      continue-on-error: true
-      
-    - name: 📋 Validate GitHub Actions workflows
-      uses: rhysd/actionlint@v1.6.26
-      with:
-        ignore: |
-          SC2015
-          SC2086
-      continue-on-error: true
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 💾 Restore dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            packages/*/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔍 Run ESLint with i18n rules
+        run: |
+          cd packages/testing
+          pnpm i18n:eslint
+        continue-on-error: true
+
+      - name: 🧹 Run general linting
+        run: pnpm lint
+        continue-on-error: true
+
+      - name: 🎨 Check formatting
+        run: pnpm format:check
+        continue-on-error: true
+
+      - name: 🔒 Security audit
+        run: |
+          pnpm audit --audit-level=moderate
+          pnpm run security:scan
+        continue-on-error: true
+
+      - name: 📋 Validate GitHub Actions workflows
+        uses: rhysd/actionlint@v1.6.26
+        with:
+          ignore: |
+            SC2015
+            SC2086
+        continue-on-error: true
 
   # 🦊 Advanced i18n Validation
   i18n-validation:
     name: 🦊 Advanced i18n Validation
     runs-on: ubuntu-latest
     needs: setup-validation
-    
+
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      
-    - name: 🏗️ Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: ${{ env.PNPM_VERSION }}
-        
-    - name: 🟢 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'pnpm'
-        
-    - name: 💾 Restore dependencies
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.pnpm-store
-          node_modules
-          packages/*/node_modules
-        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-
-          
-    - name: 📦 Install dependencies
-      run: pnpm install --frozen-lockfile
-      
-    - name: 🏗️ Build testing package
-      run: |
-        cd packages/testing
-        pnpm build
-        
-    - name: 🌍 Validate i18next resources
-      uses: matheusjardimb/i18next-resources-validator@latest
-      with:
-        resources_path: './packages/i18n/src/translations'
-        quiet: 'false'
-      continue-on-error: true
-      
-    - name: 📊 Measure i18n coverage
-      uses: alexkiro/i18n-coverage@v1.0.0
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        translations-path: 'packages/i18n/src/translations/**/*.ts'
-        ignore-languages: 'en'
-      continue-on-error: true
-      
-    - name: 🔍 Check for hardcoded strings
-      run: |
-        cd packages/testing
-        pnpm i18n:eslint --fail-on-hardcoded
-      continue-on-error: true
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🏗️ Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 💾 Restore dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules
+            packages/*/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build testing package
+        run: |
+          cd packages/testing
+          pnpm build
+
+      - name: 🌍 Validate i18next resources
+        uses: matheusjardimb/i18next-resources-validator@latest
+        with:
+          resources_path: './packages/i18n/src/translations'
+          quiet: 'false'
+        continue-on-error: true
+
+      - name: 📊 Measure i18n coverage
+        uses: alexkiro/i18n-coverage@v1.0.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          translations-path: 'packages/i18n/src/translations/**/*.ts'
+          ignore-languages: 'en'
+        continue-on-error: true
+
+      - name: 🔍 Check for hardcoded strings
+        run: |
+          cd packages/testing
+          pnpm i18n:eslint --fail-on-hardcoded
+        continue-on-error: true
 
   # 🦦 Results Aggregation & Reporting
   results-aggregation:
@@ -294,110 +294,110 @@ jobs:
     runs-on: ubuntu-latest
     needs: [i18n-testing, security-linting, i18n-validation]
     if: always()
-    
+
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      
-    - name: 📥 Download all artifacts
-      uses: actions/download-artifact@v4
-      with:
-        path: ./artifacts
-        
-    - name: 📊 Aggregate results
-      run: |
-        echo "🦊 Aggregating i18n test results..."
-        
-        # Create summary file
-        cat > i18n-summary.md << 'EOF'
-        # 🌍 i18n Test Results Summary
-        
-        ## Test Matrix Results
-        
-        EOF
-        
-        # Process each artifact
-        for artifact in ./artifacts/*/; do
-          if [ -d "$artifact" ]; then
-            artifact_name=$(basename "$artifact")
-            {
-              echo "### $artifact_name"
-              echo ""
-              
-            # Look for JSON results
-            found_results=false
-            for json_file in "$artifact"/i18n-results*.json; do
-              if [ -f "$json_file" ]; then
-                found_results=true
-                break
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📥 Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: 📊 Aggregate results
+        run: |
+          echo "🦊 Aggregating i18n test results..."
+
+          # Create summary file
+          cat > i18n-summary.md << 'EOF'
+          # 🌍 i18n Test Results Summary
+
+          ## Test Matrix Results
+
+          EOF
+
+          # Process each artifact
+          for artifact in ./artifacts/*/; do
+            if [ -d "$artifact" ]; then
+              artifact_name=$(basename "$artifact")
+              {
+                echo "### $artifact_name"
+                echo ""
+
+              # Look for JSON results
+              found_results=false
+              for json_file in "$artifact"/i18n-results*.json; do
+                if [ -f "$json_file" ]; then
+                  found_results=true
+                  break
+                fi
+              done
+
+              if [ "$found_results" = true ]; then
+                echo "✅ Results found for $artifact_name"
+              else
+                echo "❌ No results found for $artifact_name"
               fi
-            done
-            
-            if [ "$found_results" = true ]; then
-              echo "✅ Results found for $artifact_name"
-            else
-              echo "❌ No results found for $artifact_name"
+                echo ""
+              } >> i18n-summary.md
             fi
-              echo ""
-            } >> i18n-summary.md
+          done
+
+          # Add overall status
+          echo "## Overall Status" >> i18n-summary.md
+          echo "" >> i18n-summary.md
+
+          if [ "${{ needs.i18n-testing.result }}" == "success" ] && [ "${{ needs.security-linting.result }}" == "success" ] && [ "${{ needs.i18n-validation.result }}" == "success" ]; then
+            echo "✅ All i18n checks passed!" >> i18n-summary.md
+          else
+            echo "❌ Some i18n checks failed. Please review the details above." >> i18n-summary.md
           fi
-        done
-        
-        # Add overall status
-        echo "## Overall Status" >> i18n-summary.md
-        echo "" >> i18n-summary.md
-        
-        if [ "${{ needs.i18n-testing.result }}" == "success" ] && [ "${{ needs.security-linting.result }}" == "success" ] && [ "${{ needs.i18n-validation.result }}" == "success" ]; then
-          echo "✅ All i18n checks passed!" >> i18n-summary.md
-        else
-          echo "❌ Some i18n checks failed. Please review the details above." >> i18n-summary.md
-        fi
-        
-    - name: 📤 Upload aggregated results
-      uses: actions/upload-artifact@v4
-      with:
-        name: i18n-aggregated-results
-        path: |
-          i18n-summary.md
-        retention-days: 30
-        
-    - name: 💬 Comment PR with results
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const fs = require('fs');
-          const path = require('path');
-          
-          try {
-            // Read summary file
-            const summaryPath = 'i18n-summary.md';
-            let summary = '';
-            
-            if (fs.existsSync(summaryPath)) {
-              summary = fs.readFileSync(summaryPath, 'utf8');
-            } else {
-              summary = `## 🌍 i18n Test Results
-              
-              **Status:** ${{ needs.i18n-testing.result == 'success' && needs.security-linting.result == 'success' && needs.i18n-validation.result == 'success' && '✅ PASSED' || '❌ FAILED' }}
-              
-              ### Test Results:
-              - 🦦 i18n Testing: ${{ needs.i18n-testing.result }}
-              - 🐺 Security & Linting: ${{ needs.security-linting.result }}
-              - 🦊 i18n Validation: ${{ needs.i18n-validation.result }}
-              
-              *Detailed results available in the artifacts.*`;
+
+      - name: 📤 Upload aggregated results
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-aggregated-results
+          path: |
+            i18n-summary.md
+          retention-days: 30
+
+      - name: 💬 Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            try {
+              // Read summary file
+              const summaryPath = 'i18n-summary.md';
+              let summary = '';
+
+              if (fs.existsSync(summaryPath)) {
+                summary = fs.readFileSync(summaryPath, 'utf8');
+              } else {
+                summary = `## 🌍 i18n Test Results
+
+                **Status:** ${{ needs.i18n-testing.result == 'success' && needs.security-linting.result == 'success' && needs.i18n-validation.result == 'success' && '✅ PASSED' || '❌ FAILED' }}
+
+                ### Test Results:
+                - 🦦 i18n Testing: ${{ needs.i18n-testing.result }}
+                - 🐺 Security & Linting: ${{ needs.security-linting.result }}
+                - 🦊 i18n Validation: ${{ needs.i18n-validation.result }}
+
+                *Detailed results available in the artifacts.*`;
+              }
+
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summary
+              });
+            } catch (error) {
+              console.log('Could not create comment:', error);
             }
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: summary
-            });
-          } catch (error) {
-            console.log('Could not create comment:', error);
-          }
 
   # 🐺 Final Gatekeeper
   final-validation:
@@ -405,23 +405,22 @@ jobs:
     runs-on: ubuntu-latest
     needs: [i18n-testing, security-linting, i18n-validation, results-aggregation]
     if: always()
-    
-    steps:
-    - name: 🚪 Final validation gate
-      run: |
-        echo "🐺 Final gatekeeper validation..."
-        
-        # Check if any critical jobs failed
-        if [[ "${{ needs.i18n-testing.result }}" == "failure" ]] || [[ "${{ needs.security-linting.result }}" == "failure" ]] || [[ "${{ needs.i18n-validation.result }}" == "failure" ]]; then
-          echo "❌ Critical i18n checks failed. Blocking merge."
-          exit 1
-        fi
-        
-        # Check if any jobs were cancelled
-        if [[ "${{ needs.i18n-testing.result }}" == "cancelled" ]] || [[ "${{ needs.security-linting.result }}" == "cancelled" ]] || [[ "${{ needs.i18n-validation.result }}" == "cancelled" ]]; then
-          echo "⚠️ Some i18n checks were cancelled. Please re-run the workflow."
-          exit 1
-        fi
-        
-        echo "✅ All i18n checks passed! Ready for merge."
 
+    steps:
+      - name: 🚪 Final validation gate
+        run: |
+          echo "🐺 Final gatekeeper validation..."
+
+          # Check if any critical jobs failed
+          if [[ "${{ needs.i18n-testing.result }}" == "failure" ]] || [[ "${{ needs.security-linting.result }}" == "failure" ]] || [[ "${{ needs.i18n-validation.result }}" == "failure" ]]; then
+            echo "❌ Critical i18n checks failed. Blocking merge."
+            exit 1
+          fi
+
+          # Check if any jobs were cancelled
+          if [[ "${{ needs.i18n-testing.result }}" == "cancelled" ]] || [[ "${{ needs.security-linting.result }}" == "cancelled" ]] || [[ "${{ needs.i18n-validation.result }}" == "cancelled" ]]; then
+            echo "⚠️ Some i18n checks were cancelled. Please re-run the workflow."
+            exit 1
+          fi
+
+          echo "✅ All i18n checks passed! Ready for merge."

@@ -1,15 +1,16 @@
 # 🦊 ECS Agent Tracker
 
-A visual 2D grid system for tracking Reynard agents using the ECS (Entity Component System) world simulation. This example demonstrates how to integrate with the Reynard MCP server's ECS system to create an interactive agent management interface.
+A visual 2D grid system for tracking Reynard agents using the **real** ECS (Entity Component System) world simulation. This example demonstrates how to integrate with the Reynard MCP server's ECS system to create an interactive agent management interface with **actual position tracking and time progression**.
 
 ## Features
 
 ### 🎯 Visual Agent Tracking
 
-- **2D Grid Visualization**: Interactive grid showing agent positions and movements
-- **Real-time Updates**: Live tracking of agent positions and status changes
+- **2D Grid Visualization**: Interactive grid showing **real** agent positions and movements from the ECS system
+- **Real-time Updates**: Live tracking of agent positions and status changes with **actual time progression**
 - **Spirit-based Colors**: Each agent spirit (fox, wolf, otter, etc.) has distinct visual representation
 - **Lineage Visualization**: Connection lines showing parent-child relationships
+- **Position Simulation**: Agents move autonomously based on their traits and behavior patterns
 
 ### 🧬 Agent Management
 
@@ -59,14 +60,25 @@ A visual 2D grid system for tracking Reynard agents using the ECS (Entity Compon
 
 ### ECS Integration
 
-The application integrates with the Reynard ECS system through MCP tools:
+The application integrates with the **real** Reynard ECS system through MCP tools:
 
 - **`get_ecs_agent_status`**: Retrieve current agent population
-- **`create_ecs_agent`**: Create new agents with traits
-- **`create_ecs_offspring`**: Generate offspring from parents
-- **`accelerate_time`**: Control simulation speed
+- **`get_ecs_agent_positions`**: Get real-time agent positions and movement data
+- **`create_ecs_agent`**: Create new agents with traits and position components
+- **`create_ecs_offspring`**: Generate offspring from parents with inherited traits
+- **`accelerate_time`**: Control simulation speed (0.1x to 100x)
 - **`enable_automatic_reproduction`**: Toggle breeding automation
-- **`update_ecs_world`**: Step simulation forward
+- **`update_ecs_world`**: Step simulation forward with **real time progression**
+
+### Position System
+
+The ECS system now includes:
+
+- **PositionComponent**: Tracks agent x/y coordinates, velocity, and movement targets
+- **MovementSystem**: Handles autonomous agent movement based on behavior traits
+- **Time-based Updates**: Agents move and age in real-time as the simulation progresses
+- **Boundary Enforcement**: Agents stay within the 900x700 grid boundaries
+- **Behavior-driven Movement**: More active agents move more frequently and over longer distances
 
 ## Usage
 

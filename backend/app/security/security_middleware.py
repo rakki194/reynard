@@ -165,6 +165,11 @@ class SecurityMiddleware(BaseHTTPMiddleware):
                 response = await call_next(request)
                 return self._sanitize_response_headers(response)
             
+            # Allow ECS API endpoints to bypass security validation (they have their own validation)
+            if request.url.path.startswith('/api/ecs/'):
+                response = await call_next(request)
+                return self._sanitize_response_headers(response)
+            
             # Validate request path
             if not self._validate_path(request.url.path):
                 logger.warning(f"Path validation failed for: {request.url.path}")
@@ -290,7 +295,8 @@ class SecurityMiddleware(BaseHTTPMiddleware):
             '/api/ollama/chat',
             '/api/ollama/assistant',
             '/api/summarization/summarize',
-            '/api/rag/query'
+            '/api/rag/query',
+            '/api/mcp/tools/call'
         ]
         
         if any(skip_path in path for skip_path in skip_validation_paths):

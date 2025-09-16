@@ -17,14 +17,15 @@ mcp_dir = Path(__file__).parent
 if str(mcp_dir) not in sys.path:
     sys.path.insert(0, str(mcp_dir))
 
-from ecs.components import (
+from reynard_ecs_world import (
     AgentComponent,
     LifecycleComponent,
     ReproductionComponent,
     TraitComponent,
+    ECSWorld,
+    Entity,
+    AgentTraits,
 )
-from ecs.core import ECSWorld, Entity
-from ecs.traits import AgentTraits
 
 
 class SimpleTraitSimulation:
@@ -44,7 +45,7 @@ class SimpleTraitSimulation:
 
     def run_simulation(
         self, years: int = 20, initial_population: int = 6
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Run a simple trait-based simulation."""
         print(
             f"🦦 Starting {years}-year trait simulation with {initial_population} initial agents..."

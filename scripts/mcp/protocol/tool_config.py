@@ -12,7 +12,7 @@ from typing import Dict, Set
 from .tool_registry import ToolExecutionType
 
 # Tool category definitions
-AGENT_TOOLS: Set[str] = {
+AGENT_TOOLS: set[str] = {
     "generate_agent_name",
     "assign_agent_name",
     "get_agent_name",
@@ -26,11 +26,11 @@ AGENT_TOOLS: Set[str] = {
     "nudge_time",
 }
 
-BM25_SEARCH_TOOLS: Set[str] = {
+BM25_SEARCH_TOOLS: set[str] = {
     "search_needle_in_haystack",
 }
 
-ENHANCED_BM25_SEARCH_TOOLS: Set[str] = {
+ENHANCED_BM25_SEARCH_TOOLS: set[str] = {
     "search_enhanced",
     "get_query_suggestions",
     "get_search_analytics",
@@ -40,13 +40,13 @@ ENHANCED_BM25_SEARCH_TOOLS: Set[str] = {
     "search_in_directory",
 }
 
-UTILITY_TOOLS: Set[str] = {
+UTILITY_TOOLS: set[str] = {
     "get_current_time",
     "get_current_location",
     "send_desktop_notification",
 }
 
-LINTING_TOOLS: Set[str] = {
+LINTING_TOOLS: set[str] = {
     "lint_frontend",
     "format_frontend",
     "lint_python",
@@ -57,7 +57,7 @@ LINTING_TOOLS: Set[str] = {
     "run_all_linting",
 }
 
-ENHANCED_TOOLS: Set[str] = {
+ENHANCED_TOOLS: set[str] = {
     "get_versions",
     "get_python_version",
     "get_node_version",
@@ -69,13 +69,13 @@ ENHANCED_TOOLS: Set[str] = {
     "scan_security_full",
 }
 
-FILE_SEARCH_TOOLS: Set[str] = {
+FILE_SEARCH_TOOLS: set[str] = {
     "search_files",
     "list_files",
     "search_code_patterns",
 }
 
-SEMANTIC_FILE_SEARCH_TOOLS: Set[str] = {
+SEMANTIC_FILE_SEARCH_TOOLS: set[str] = {
     "semantic_search",
     "hybrid_search",
     "embed_text",
@@ -83,13 +83,13 @@ SEMANTIC_FILE_SEARCH_TOOLS: Set[str] = {
     "get_search_stats",
 }
 
-IMAGE_VIEWER_TOOLS: Set[str] = {
+IMAGE_VIEWER_TOOLS: set[str] = {
     "open_image",
     "search_images",
     "get_image_info",
 }
 
-MERMAID_TOOLS: Set[str] = {
+MERMAID_TOOLS: set[str] = {
     "validate_mermaid_diagram",
     "render_mermaid_to_svg",
     "render_mermaid_to_png",
@@ -97,7 +97,7 @@ MERMAID_TOOLS: Set[str] = {
     "test_mermaid_render",
 }
 
-PLAYWRIGHT_TOOLS: Set[str] = {
+PLAYWRIGHT_TOOLS: set[str] = {
     "take_webpage_screenshot",
     "scrape_webpage_content",
     "render_html_to_image",
@@ -105,38 +105,39 @@ PLAYWRIGHT_TOOLS: Set[str] = {
     "test_playwright_connection",
 }
 
-MONOLITH_DETECTION_TOOLS: Set[str] = {
+MONOLITH_DETECTION_TOOLS: set[str] = {
     "detect_monoliths",
     "analyze_file_complexity",
     "get_code_metrics_summary",
 }
 
-VSCODE_TASKS_TOOLS: Set[str] = {
+VSCODE_TASKS_TOOLS: set[str] = {
     "discover_vscode_tasks",
     "validate_vscode_task",
     "execute_vscode_task",
     "get_vscode_task_info",
 }
 
-ECS_AGENT_TOOLS: Set[str] = {
+ECS_AGENT_TOOLS: set[str] = {
     "create_ecs_agent",
     "create_ecs_offspring",
     "enable_automatic_reproduction",
     "get_ecs_agent_status",
+    "get_ecs_agent_positions",
     "find_ecs_compatible_mates",
     "analyze_ecs_compatibility",
     "get_ecs_lineage",
     "update_ecs_world",
+    "search_agents_by_proximity",
+    "search_agents_by_region",
+    "get_agent_movement_path",
+    "get_spatial_analytics",
 }
 
 # Tool execution type mapping
-TOOL_EXECUTION_TYPES: Dict[str, ToolExecutionType] = {
+TOOL_EXECUTION_TYPES: dict[str, ToolExecutionType] = {
     # Async tools
-    **{
-        tool: ToolExecutionType.ASYNC
-        for tool in AGENT_TOOLS
-        if tool in ["agent_startup_sequence"]
-    },
+    **{tool: ToolExecutionType.ASYNC for tool in AGENT_TOOLS if tool in ["agent_startup_sequence"]},
     **dict.fromkeys(LINTING_TOOLS, ToolExecutionType.ASYNC),
     **{
         tool: ToolExecutionType.ASYNC
@@ -156,11 +157,7 @@ TOOL_EXECUTION_TYPES: Dict[str, ToolExecutionType] = {
     **dict.fromkeys(IMAGE_VIEWER_TOOLS, ToolExecutionType.ASYNC),
     **dict.fromkeys(PLAYWRIGHT_TOOLS, ToolExecutionType.SYNC),
     # Sync tools
-    **{
-        tool: ToolExecutionType.SYNC
-        for tool in AGENT_TOOLS
-        if tool != "agent_startup_sequence"
-    },
+    **{tool: ToolExecutionType.SYNC for tool in AGENT_TOOLS if tool != "agent_startup_sequence"},
     **dict.fromkeys(BM25_SEARCH_TOOLS, ToolExecutionType.SYNC),
     **dict.fromkeys(ENHANCED_BM25_SEARCH_TOOLS, ToolExecutionType.SYNC),
     **dict.fromkeys(UTILITY_TOOLS, ToolExecutionType.SYNC),

@@ -14,9 +14,7 @@ import pytest
 # Add the MCP scripts directory to Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from ecs.event_system import ECSEvent, ECSEventSystem, ECSEventType
-from ecs.notification_handler import ECSNotificationHandler
-from ecs.queue_watcher_integration import ECSQueueWatcher
+from reynard_ecs_world import ECSEvent, ECSEventSystem, ECSEventType, ECSNotificationHandler, ECSQueueWatcher
 
 
 class TestECSNotifications:

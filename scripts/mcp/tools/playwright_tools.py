@@ -25,7 +25,7 @@ class PlaywrightTools:
         """Initialize Playwright tools."""
         self.browser_service = PlaywrightBrowserService()
 
-    def take_webpage_screenshot(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def take_webpage_screenshot(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """
         Take a screenshot of a webpage.
 
@@ -102,7 +102,7 @@ class PlaywrightTools:
                 ]
             }
 
-    def scrape_webpage_content(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def scrape_webpage_content(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """
         Scrape content from a webpage.
 
@@ -147,7 +147,7 @@ class PlaywrightTools:
                 ]
             }
 
-    def render_html_to_image(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def render_html_to_image(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """
         Render HTML content to PNG image.
 
@@ -225,7 +225,7 @@ class PlaywrightTools:
                 ]
             }
 
-    def extract_svg_from_html(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def extract_svg_from_html(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """
         Extract SVG content from HTML.
 
@@ -270,7 +270,7 @@ class PlaywrightTools:
                 ]
             }
 
-    def test_playwright_connection(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def test_playwright_connection(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """
         Test Playwright browser connection and capabilities.
 

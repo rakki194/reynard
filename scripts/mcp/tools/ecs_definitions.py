@@ -12,7 +12,7 @@ Follows the 140-line axiom and modular architecture principles.
 from typing import Any, Dict
 
 
-def get_ecs_tool_definitions() -> Dict[str, Dict[str, Any]]:
+def get_ecs_tool_definitions() -> dict[str, Dict[str, Any]]:
     """Get ECS tool definitions for MCP server."""
     return {
         "create_ecs_agent": {
@@ -91,6 +91,11 @@ def get_ecs_tool_definitions() -> Dict[str, Dict[str, Any]]:
             "description": "Get status of all agents in the ECS system",
             "inputSchema": {"type": "object", "properties": {}},
         },
+        "get_ecs_agent_positions": {
+            "name": "get_ecs_agent_positions",
+            "description": "Get positions of all agents in the ECS system",
+            "inputSchema": {"type": "object", "properties": {}},
+        },
         "find_ecs_compatible_mates": {
             "name": "find_ecs_compatible_mates",
             "description": "Find compatible mates for an agent using ECS compatibility system",
@@ -153,6 +158,110 @@ def get_ecs_tool_definitions() -> Dict[str, Dict[str, Any]]:
                         "default": 1.0,
                     }
                 },
+            },
+        },
+        "search_agents_by_proximity": {
+            "name": "search_agents_by_proximity",
+            "description": "Find agents within a specified distance of a target position",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "x": {
+                        "type": "number",
+                        "description": "Target X coordinate",
+                        "default": 0.0,
+                    },
+                    "y": {
+                        "type": "number",
+                        "description": "Target Y coordinate",
+                        "default": 0.0,
+                    },
+                    "max_distance": {
+                        "type": "number",
+                        "description": "Maximum distance to search within",
+                        "default": 100.0,
+                    },
+                    "max_results": {
+                        "type": "integer",
+                        "description": "Maximum number of results to return",
+                        "default": 10,
+                    },
+                },
+            },
+        },
+        "search_agents_by_region": {
+            "name": "search_agents_by_region",
+            "description": "Find agents within a rectangular region",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "min_x": {
+                        "type": "number",
+                        "description": "Minimum X coordinate",
+                        "default": 0.0,
+                    },
+                    "min_y": {
+                        "type": "number",
+                        "description": "Minimum Y coordinate",
+                        "default": 0.0,
+                    },
+                    "max_x": {
+                        "type": "number",
+                        "description": "Maximum X coordinate",
+                        "default": 1000.0,
+                    },
+                    "max_y": {
+                        "type": "number",
+                        "description": "Maximum Y coordinate",
+                        "default": 1000.0,
+                    },
+                },
+            },
+        },
+        "get_agent_movement_path": {
+            "name": "get_agent_movement_path",
+            "description": "Get the movement path and trajectory for a specific agent",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "agent_id": {
+                        "type": "string",
+                        "description": "Agent ID to get movement path for",
+                    },
+                },
+                "required": ["agent_id"],
+            },
+        },
+        "get_spatial_analytics": {
+            "name": "get_spatial_analytics",
+            "description": "Get comprehensive spatial analytics for all agents",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+            },
+        },
+        "start_global_breeding": {
+            "name": "start_global_breeding",
+            "description": "Start the global breeding scheduler for automatic agent reproduction",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+            },
+        },
+        "stop_global_breeding": {
+            "name": "stop_global_breeding",
+            "description": "Stop the global breeding scheduler",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
+            },
+        },
+        "get_breeding_statistics": {
+            "name": "get_breeding_statistics",
+            "description": "Get breeding statistics and history",
+            "inputSchema": {
+                "type": "object",
+                "properties": {},
             },
         },
     }

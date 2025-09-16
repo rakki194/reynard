@@ -497,7 +497,12 @@
         "../../docs",
         "../../packages",
         "../../examples",
-        "../../templates"
+        "../../templates",
+        "../../backend",
+        "../../scripts",
+        "../../e2e",
+        "../../libraries",
+        "../../fenrir"
       ],
       "group": "build",
       "presentation": {
@@ -510,7 +515,7 @@
       },
       "isBackground": true,
       "problemMatcher": [],
-      "detail": "Start queue-based watcher with perfect file processing sequencing"
+      "detail": "Start queue-based watcher with perfect file processing sequencing - includes all Python directories"
     },
     {
       "label": "🔄 Auto-Start Queue-Based Watcher",
@@ -524,7 +529,12 @@
         "../../docs",
         "../../packages",
         "../../examples",
-        "../../templates"
+        "../../templates",
+        "../../backend",
+        "../../scripts",
+        "../../e2e",
+        "../../libraries",
+        "../../fenrir"
       ],
       "group": "build",
       "presentation": {
@@ -540,7 +550,7 @@
         "runOn": "folderOpen"
       },
       "problemMatcher": [],
-      "detail": "Automatically start queue-based watcher when workspace opens"
+      "detail": "Automatically start queue-based watcher when workspace opens - includes all Python directories"
     },
     {
       "label": "🧪 Test Markdown Validation",

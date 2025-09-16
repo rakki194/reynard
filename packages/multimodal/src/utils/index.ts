@@ -5,3 +5,4 @@
  */
 
 export * from "./modalityUtils";
+export * from "./FileProcessingUtils";

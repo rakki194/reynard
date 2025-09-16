@@ -30,7 +30,6 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "reynard-connection": "workspace:*",
     "reynard-validation": "workspace:*"
   },
   "optionalDependencies": {

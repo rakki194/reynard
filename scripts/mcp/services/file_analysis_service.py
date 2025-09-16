@@ -12,7 +12,6 @@ an otter explores a stream - every metric is a treasure to discover!
 
 import os
 from pathlib import Path
-from typing import Dict
 
 
 class FileAnalysisService:
@@ -112,7 +111,7 @@ class FileAnalysisService:
 
         return False
 
-    def get_directory_stats(self, directory: str) -> Dict[str, int]:
+    def get_directory_stats(self, directory: str) -> dict[str, int]:
         """Get statistics for a directory."""
         stats = {
             "total_files": 0,

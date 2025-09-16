@@ -90,7 +90,7 @@ class QueryExpander:
             "should",
         }
 
-    def expand_query(self, query: str) -> List[str]:
+    def expand_query(self, query: str) -> list[str]:
         """Expand query with synonyms and related terms."""
         tokens = self._tokenize(query)
         expanded_terms = set(tokens)
@@ -101,7 +101,7 @@ class QueryExpander:
 
         return list(expanded_terms)
 
-    def suggest_queries(self, query: str, max_suggestions: int = 5) -> List[str]:
+    def suggest_queries(self, query: str, max_suggestions: int = 5) -> list[str]:
         """Generate query suggestions based on common patterns."""
         suggestions = []
         tokens = self._tokenize(query)
@@ -125,7 +125,7 @@ class QueryExpander:
 
         return suggestions[:max_suggestions]
 
-    def _tokenize(self, text: str) -> List[str]:
+    def _tokenize(self, text: str) -> list[str]:
         """Tokenize text for processing."""
         return re.findall(r"\b\w+\b", text.lower())
 
@@ -134,11 +134,11 @@ class SearchCache:
     """Intelligent caching system for search results."""
 
     def __init__(self, max_size: int = 1000, ttl: int = 3600):
-        self.cache: Dict[str, Tuple[Any, float]] = {}
+        self.cache: dict[str, tuple[Any, float]] = {}
         self.max_size = max_size
         self.ttl = ttl  # Time to live in seconds
 
-    def get(self, key: str) -> Optional[Any]:
+    def get(self, key: str) -> Any | None:
         """Get cached result if still valid."""
         if key in self.cache:
             result, timestamp = self.cache[key]
@@ -168,19 +168,19 @@ class EnhancedBM25Engine:
     def __init__(self, k1: float = 1.2, b: float = 0.75):
         self.k1 = k1
         self.b = b
-        self.documents: List[str] = []
-        self.doc_paths: List[str] = []
-        self.doc_freqs: List[Dict[str, int]] = []
-        self.idf: Dict[str, float] = {}
-        self.doc_len: List[int] = []
+        self.documents: list[str] = []
+        self.doc_paths: list[str] = []
+        self.doc_freqs: list[dict[str, int]] = []
+        self.idf: dict[str, float] = {}
+        self.doc_len: list[int] = []
         self.corpus_size: int = 0
         self.avgdl: float = 0.0
 
         # Enhanced features
         self.query_expander = QueryExpander()
         self.cache = SearchCache()
-        self.file_types: Dict[str, int] = defaultdict(int)
-        self.directory_stats: Dict[str, int] = defaultdict(int)
+        self.file_types: dict[str, int] = defaultdict(int)
+        self.directory_stats: dict[str, int] = defaultdict(int)
 
         # Performance tracking
         self.search_stats = {
@@ -189,7 +189,7 @@ class EnhancedBM25Engine:
             "avg_search_time": 0.0,
         }
 
-    def _tokenize(self, text: str) -> List[str]:
+    def _tokenize(self, text: str) -> list[str]:
         """Enhanced tokenization with better handling of code patterns."""
         # Handle code-specific patterns
         text = re.sub(r"([a-z])([A-Z])", r"\1 \2", text)  # camelCase
@@ -225,7 +225,7 @@ class EnhancedBM25Engine:
 
         return enhanced_content
 
-    def add_documents(self, documents: List[str], paths: List[str]) -> None:
+    def add_documents(self, documents: list[str], paths: list[str]) -> None:
         """Add documents with enhanced indexing."""
         if len(documents) != len(paths):
             raise ValueError("Documents and paths must have the same length")
@@ -267,9 +267,9 @@ class EnhancedBM25Engine:
         query: str,
         top_k: int = 10,
         expand_query: bool = True,
-        file_types: Optional[List[str]] = None,
-        directories: Optional[List[str]] = None,
-    ) -> List[Tuple[str, float, str, Dict[str, Any]]]:
+        file_types: list[str | None] = None,
+        directories: list[str | None] = None,
+    ) -> list[tuple[str, float, str, dict[str, Any]]]:
         """
         Enhanced search with query expansion and filtering.
 
@@ -367,17 +367,17 @@ class EnhancedBM25Engine:
 
         return result
 
-    def _matches_file_type(self, file_path: str, file_types: List[str]) -> bool:
+    def _matches_file_type(self, file_path: str, file_types: list[str]) -> bool:
         """Check if file matches any of the specified types."""
         file_ext = Path(file_path).suffix.lower()
         return any(ft.lower() in file_ext for ft in file_types)
 
-    def _matches_directory(self, file_path: str, directories: List[str]) -> bool:
+    def _matches_directory(self, file_path: str, directories: list[str]) -> bool:
         """Check if file is in any of the specified directories."""
         file_dir = str(Path(file_path).parent)
         return any(dir_path.lower() in file_dir.lower() for dir_path in directories)
 
-    def _create_snippet(self, content: str, query_terms: List[str]) -> str:
+    def _create_snippet(self, content: str, query_terms: list[str]) -> str:
         """Create intelligent snippet highlighting matched terms."""
         # Find the best context around matched terms
         best_context = ""
@@ -414,11 +414,11 @@ class EnhancedBM25Engine:
         else:
             return "Very Low"
 
-    def get_suggestions(self, query: str, max_suggestions: int = 5) -> List[str]:
+    def get_suggestions(self, query: str, max_suggestions: int = 5) -> list[str]:
         """Get query suggestions."""
         return self.query_expander.suggest_queries(query, max_suggestions)
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         """Get search engine statistics."""
         return {
             "corpus_size": self.corpus_size,
@@ -447,7 +447,7 @@ class EnhancedReynardBM25Search:
         }
 
     def index_project(
-        self, project_root: str, file_patterns: Optional[List[str]] = None
+        self, project_root: str, file_patterns: list[str | None] = None
     ) -> None:
         """Index the entire Reynard project with enhanced features."""
         start_time = time.time()
@@ -533,9 +533,9 @@ class EnhancedReynardBM25Search:
         query: str,
         top_k: int = 20,
         expand_query: bool = True,
-        file_types: Optional[List[str]] = None,
-        directories: Optional[List[str]] = None,
-    ) -> List[Dict[str, Any]]:
+        file_types: list[str | None] = None,
+        directories: list[str | None] = None,
+    ) -> list[dict[str, Any]]:
         """
         Enhanced search with all features.
 
@@ -577,11 +577,11 @@ class EnhancedReynardBM25Search:
 
         return formatted_results
 
-    def get_query_suggestions(self, query: str, max_suggestions: int = 5) -> List[str]:
+    def get_query_suggestions(self, query: str, max_suggestions: int = 5) -> list[str]:
         """Get intelligent query suggestions."""
         return self.engine.get_suggestions(query, max_suggestions)
 
-    def get_search_stats(self) -> Dict[str, Any]:
+    def get_search_stats(self) -> dict[str, Any]:
         """Get comprehensive search statistics."""
         engine_stats = self.engine.get_stats()
         return {
@@ -607,12 +607,12 @@ enhanced_bm25_search = EnhancedReynardBM25Search()
 
 def search_enhanced(
     needle: str,
-    project_root: Optional[str] = None,
+    project_root: str | None = None,
     top_k: int = 20,
     expand_query: bool = True,
-    file_types: Optional[List[str]] = None,
-    directories: Optional[List[str]] = None,
-) -> List[Dict[str, Any]]:
+    file_types: list[str | None] = None,
+    directories: list[str | None] = None,
+) -> list[dict[str, Any]]:
     """
     Enhanced search function with all features.
 
@@ -644,12 +644,12 @@ def search_enhanced(
     )
 
 
-def get_query_suggestions(query: str, max_suggestions: int = 5) -> List[str]:
+def get_query_suggestions(query: str, max_suggestions: int = 5) -> list[str]:
     """Get query suggestions for better search experience."""
     return enhanced_bm25_search.get_query_suggestions(query, max_suggestions)
 
 
-def get_search_stats() -> Dict[str, Any]:
+def get_search_stats() -> dict[str, Any]:
     """Get comprehensive search statistics."""
     return enhanced_bm25_search.get_search_stats()
 
@@ -659,7 +659,7 @@ def clear_search_cache() -> None:
     enhanced_bm25_search.clear_cache()
 
 
-def reindex_project(project_root: Optional[str] = None) -> None:
+def reindex_project(project_root: str | None = None) -> None:
     """Reindex the project for updated content."""
     if project_root is None:
         current_dir = os.getcwd()

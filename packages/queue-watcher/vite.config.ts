@@ -19,6 +19,7 @@ export default defineConfig({
     rollupOptions: {
       external: ["chokidar", "fs", "path", "events", "child_process", "commander"],
       output: {
+        exports: "named",
         globals: {
           chokidar: "chokidar",
           fs: "fs",

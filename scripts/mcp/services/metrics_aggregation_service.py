@@ -21,8 +21,8 @@ class MetricsAggregationService:
         """Initialize the metrics aggregation service."""
 
     def analyze_all_files(
-        self, all_files: List[str], analysis_service: Any
-    ) -> Dict[str, Any]:
+        self, all_files: list[str], analysis_service: Any
+    ) -> dict[str, Any]:
         """Analyze all files and return aggregated metrics data."""
         total_files = len(all_files)
         total_lines = 0
@@ -58,7 +58,7 @@ class MetricsAggregationService:
             "language_stats": language_stats,
         }
 
-    def format_metrics_summary(self, metrics_data: Dict[str, Any]) -> str:
+    def format_metrics_summary(self, metrics_data: dict[str, Any]) -> str:
         """Format the metrics summary into a readable string."""
         result_text = "🦊 Codebase Metrics Summary\n\n"
         result_text += "📊 Overall Statistics:\n"
@@ -83,7 +83,7 @@ class MetricsAggregationService:
         return result_text
 
     def format_file_metrics(
-        self, files: List[Dict[str, Any]], include_metrics: bool
+        self, files: list[dict[str, Any]], include_metrics: bool
     ) -> str:
         """Format file metrics for display."""
         if not files:
@@ -102,14 +102,14 @@ class MetricsAggregationService:
         return result
 
     def filter_monoliths(
-        self, file_metrics: List[Dict[str, Any]], max_lines: int
-    ) -> List[Dict[str, Any]]:
+        self, file_metrics: list[dict[str, Any]], max_lines: int
+    ) -> list[dict[str, Any]]:
         """Filter files that exceed the monolith threshold."""
         return [f for f in file_metrics if f["lines_of_code"] > max_lines]
 
     def sort_by_size(
-        self, file_metrics: List[Dict[str, Any]], top_n: int
-    ) -> List[Dict[str, Any]]:
+        self, file_metrics: list[dict[str, Any]], top_n: int
+    ) -> list[dict[str, Any]]:
         """Sort files by lines of code and return top N."""
         file_metrics.sort(key=lambda x: x["lines_of_code"], reverse=True)
         return file_metrics[:top_n]

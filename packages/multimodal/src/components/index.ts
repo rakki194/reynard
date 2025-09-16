@@ -19,16 +19,4 @@ export { MultiModalFileRow } from "./MultiModalFileRow";
 export { MultiModalDetail } from "./MultiModalDetail";
 
 // Re-export types for convenience
-export type {
-  MultiModalGalleryProps,
-  MultiModalGridProps,
-  MultiModalListProps,
-  MultiModalTimelineProps,
-  MultiModalFileCardProps,
-  MultiModalFileRowProps,
-  MultiModalDetailProps,
-  MultiModalFile,
-  MediaType,
-  GalleryView,
-  FileCounts,
-} from "../types";
+export type { MultiModalGalleryProps, MultiModalFile, MediaType, GalleryView, FileCounts } from "../types";

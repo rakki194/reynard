@@ -14,14 +14,14 @@ import pytest
 # Add the MCP scripts directory to Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from ecs.components import (
+from reynard_ecs_world import (
     AgentComponent,
     LifecycleComponent,
     LineageComponent,
     ReproductionComponent,
     TraitComponent,
+    WorldSimulation,
 )
-from ecs.world_simulation import WorldSimulation
 
 
 class TestECSSimple:

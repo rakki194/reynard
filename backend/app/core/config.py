@@ -118,6 +118,17 @@ class AppConfig:
     port: int = 8000
     reload: bool = field(default_factory=lambda: os.getenv("ENVIRONMENT", "development") == "development")
     
+    # Reload settings
+    reload_debounce_delay: float = field(default_factory=lambda: float(os.getenv("RELOAD_DEBOUNCE_DELAY", "10.0")))
+    reload_include_patterns: List[str] = field(default_factory=lambda: ["*.py", "*.env", "*.json"])
+    reload_exclude_patterns: List[str] = field(default_factory=lambda: [
+        "*.db", "*.log", "generated/*", "__pycache__/*", ".mypy_cache/*", 
+        "*.pyc", "*.pyo", "*.pyd", ".pytest_cache/*", ".coverage", 
+        "htmlcov/*", ".tox/*", "venv/*", "env/*", ".venv/*", 
+        "node_modules/*", ".git/*", "*.tmp", "*.temp", "*.swp", 
+        "*.swo", "*~", ".DS_Store", "Thumbs.db"
+    ])
+    
     # API settings
     title: str = "Reynard API"
     description: str = "Secure API backend for Reynard applications"

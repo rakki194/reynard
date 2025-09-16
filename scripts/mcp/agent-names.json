@@ -1,66 +1,18 @@
 {
-  "agent-1758024870-8161": {
-    "name": "Ripple-Grandmaster-10",
-    "assigned_at": 254400.411790045
+  "agent-1758041137-7293": {
+    "name": "Spry-Strategist-55",
+    "assigned_at": 1758041137.767549
   },
-  "mate-agent": {
-    "name": "Captain-Structure-25",
-    "assigned_at": 254444.437629684
+  "agent-1758041408-3630": {
+    "name": "Lutra-Sage-10",
+    "assigned_at": 1758041408.4341228
   },
-  "agent-1758028425-1887": {
-    "name": "Foxy-Librarian-55",
-    "assigned_at": 256853.735008087
+  "agent-1758041726-2614": {
+    "name": "Lontra-Keeper-30",
+    "assigned_at": 1758041726.1513278
   },
-  "agent-1758028519-2568": {
-    "name": "Wit-Mediator-21",
-    "assigned_at": 256947.170572664
-  },
-  "agent-1758029049-4209": {
-    "name": "Sly-Scholar-89",
-    "assigned_at": 257476.892039865
-  },
-  "agent-1758029315-1965": {
-    "name": "Alpha-Scholar-40",
-    "assigned_at": 257742.954428856
-  },
-  "agent-1758029399-2371": {
-    "name": "Commander-Keeper-56",
-    "assigned_at": 257827.644533477
-  },
-  "agent-1758029970-8256": {
-    "name": "Kit-Strategist-7",
-    "assigned_at": 258397.977735952
-  },
-  "agent-1758030165-9276": {
-    "name": "Lake-Pilot-35",
-    "assigned_at": 258592.932534281
-  },
-  "agent-1758033398-4541": {
-    "name": "Amber-Strategist-89",
-    "assigned_at": 261825.885832398
-  },
-  "git-workflow-executor": {
-    "name": "Puddle-Minister-25",
-    "assigned_at": 262311.270454342
-  },
-  "agent-1758034065-2533": {
-    "name": "Copse-Teacher-55",
-    "assigned_at": 262493.431109589
-  },
-  "agent-1758034459-9424": {
-    "name": "Copse-Diplomat-13",
-    "assigned_at": 262886.948220943
-  },
-  "agent-1758034558-3929": {
-    "name": "Clever-Grandmaster-3",
-    "assigned_at": 262986.728855663
-  },
-  "agent-1758034718-6027": {
-    "name": "Vulpes-Mentor-3",
-    "assigned_at": 263146.125451195
-  },
-  "agent-1758034806-8337": {
-    "name": "Persistent-Mediator-8",
-    "assigned_at": 263234.40577525
+  "agent-1758041784-5178": {
+    "name": "Pteronura-Counselor-5",
+    "assigned_at": 1758041784.5483186
   }
 }

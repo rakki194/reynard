@@ -27,23 +27,23 @@ except ImportError:
     def clear_search_cache():
         pass
 
-    def get_query_suggestions(query: str, max_suggestions: int = 5) -> List[str]:
+    def get_query_suggestions(query: str, max_suggestions: int = 5) -> list[str]:
         return []
 
-    def get_search_stats() -> Dict[str, Any]:
+    def get_search_stats() -> dict[str, Any]:
         return {}
 
-    def reindex_project(project_root: Optional[str] = None):
+    def reindex_project(project_root: str | None = None):
         pass
 
     def search_enhanced(
         needle: str,
-        project_root: Optional[str] = None,
+        project_root: str | None = None,
         top_k: int = 20,
         expand_query: bool = True,
-        file_types: Optional[List[str]] = None,
-        directories: Optional[List[str]] = None,
-    ) -> List[Dict[str, Any]]:
+        file_types: list[str | None] = None,
+        directories: list[str | None] = None,
+    ) -> list[dict[str, Any]]:
         return []
 
 
@@ -92,6 +92,15 @@ class EnhancedBM25SearchTools:
                             "items": {"type": "string"},
                             "description": "Filter results by directories (e.g., ['packages/', 'examples/'])",
                             "default": None,
+                        },
+                        "include_agent_context": {
+                            "type": "boolean",
+                            "description": "Include ECS agent spatial context in search results",
+                            "default": False,
+                        },
+                        "agent_id": {
+                            "type": "string",
+                            "description": "Agent ID to include spatial context for (requires include_agent_context=true)",
                         },
                     },
                     "required": ["query"],
@@ -199,11 +208,11 @@ class EnhancedBM25SearchTools:
             },
         ]
 
-    def get_tools(self) -> List[Dict[str, Any]]:
+    def get_tools(self) -> list[dict[str, Any]]:
         """Get list of available enhanced BM25 search tools."""
         return self.tools
 
-    def call_tool(self, name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def call_tool(self, name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """
         Call an enhanced BM25 search tool.
 
@@ -236,14 +245,16 @@ class EnhancedBM25SearchTools:
             logger.error(f"Error calling enhanced BM25 search tool {name}: {e}")
             return {"error": f"Tool execution failed: {str(e)}"}
 
-    def _handle_search_enhanced(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
-        """Handle enhanced search requests."""
+    def _handle_search_enhanced(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Handle enhanced search requests with optional ECS position context."""
         query = arguments.get("query", "")
         project_root = arguments.get("project_root")
         top_k = arguments.get("top_k", 20)
         expand_query = arguments.get("expand_query", True)
         file_types = arguments.get("file_types")
         directories = arguments.get("directories")
+        include_agent_context = arguments.get("include_agent_context", False)
+        agent_id = arguments.get("agent_id")
 
         if not query:
             return {"error": "Missing required parameter: query"}
@@ -257,6 +268,11 @@ class EnhancedBM25SearchTools:
             directories=directories,
         )
 
+        # Add ECS agent context if requested
+        agent_context = None
+        if include_agent_context and agent_id:
+            agent_context = self._get_agent_spatial_context(agent_id)
+
         return {
             "success": True,
             "results": results,
@@ -267,12 +283,12 @@ class EnhancedBM25SearchTools:
                 "file_types": file_types,
                 "directories": directories,
                 "top_k": top_k,
+                "include_agent_context": include_agent_context,
             },
+            "agent_context": agent_context,
         }
 
-    def _handle_get_query_suggestions(
-        self, arguments: Dict[str, Any]
-    ) -> Dict[str, Any]:
+    def _handle_get_query_suggestions(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Handle query suggestions requests."""
         query = arguments.get("query", "")
         max_suggestions = arguments.get("max_suggestions", 5)
@@ -289,7 +305,7 @@ class EnhancedBM25SearchTools:
             "total_suggestions": len(suggestions),
         }
 
-    def _handle_get_search_analytics(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def _handle_get_search_analytics(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Handle search analytics requests."""
         stats = get_search_stats()
 
@@ -299,17 +315,13 @@ class EnhancedBM25SearchTools:
             "summary": {
                 "total_files_indexed": stats.get("corpus_size", 0),
                 "avg_document_length": stats.get("avg_document_length", 0),
-                "total_searches": stats.get("search_stats", {}).get(
-                    "total_searches", 0
-                ),
+                "total_searches": stats.get("search_stats", {}).get("total_searches", 0),
                 "cache_hit_rate": self._calculate_cache_hit_rate(stats),
-                "avg_search_time": stats.get("search_stats", {}).get(
-                    "avg_search_time", 0
-                ),
+                "avg_search_time": stats.get("search_stats", {}).get("avg_search_time", 0),
             },
         }
 
-    def _handle_clear_search_cache(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def _handle_clear_search_cache(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Handle cache clearing requests."""
         clear_search_cache()
 
@@ -318,7 +330,7 @@ class EnhancedBM25SearchTools:
             "message": "Search cache cleared successfully",
         }
 
-    def _handle_reindex_project(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def _handle_reindex_project(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Handle project reindexing requests."""
         project_root = arguments.get("project_root")
         reindex_project(project_root)
@@ -328,7 +340,7 @@ class EnhancedBM25SearchTools:
             "message": "Project reindexed successfully",
         }
 
-    def _handle_search_by_file_type(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def _handle_search_by_file_type(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Handle file type specific search requests."""
         query = arguments.get("query", "")
         file_types = arguments.get("file_types", [])
@@ -353,7 +365,7 @@ class EnhancedBM25SearchTools:
             "file_types": file_types,
         }
 
-    def _handle_search_in_directory(self, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def _handle_search_in_directory(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Handle directory specific search requests."""
         query = arguments.get("query", "")
         directories = arguments.get("directories", [])
@@ -378,7 +390,7 @@ class EnhancedBM25SearchTools:
             "directories": directories,
         }
 
-    def _calculate_cache_hit_rate(self, stats: Dict[str, Any]) -> float:
+    def _calculate_cache_hit_rate(self, stats: dict[str, Any]) -> float:
         """Calculate cache hit rate percentage."""
         search_stats = stats.get("search_stats", {})
         total_searches = search_stats.get("total_searches", 0)
@@ -388,3 +400,37 @@ class EnhancedBM25SearchTools:
             return 0.0
 
         return round((cache_hits / total_searches) * 100, 2)
+
+    def _get_agent_spatial_context(self, agent_id: str) -> dict[str, Any] | None:
+        """Get spatial context for an agent from ECS system."""
+        try:
+            # Import here to avoid circular imports
+            from .ecs_agent_tools import ECSAgentTools
+
+            # Create a temporary ECS tools instance to get agent data
+            ecs_tools = ECSAgentTools()
+
+            # Get agent positions
+            positions_result = ecs_tools.get_ecs_agent_positions({})
+            if positions_result.get("content"):
+                import json
+
+                positions_data = json.loads(positions_result["content"][0]["text"])
+
+                # Find the specific agent
+                for agent_data in positions_data:
+                    if agent_data.get("id") == agent_id:
+                        return {
+                            "agent_id": agent_id,
+                            "position": agent_data.get("position"),
+                            "target": agent_data.get("target"),
+                            "velocity": agent_data.get("velocity"),
+                            "movement_speed": agent_data.get("movement_speed"),
+                            "spirit": agent_data.get("spirit"),
+                            "name": agent_data.get("name"),
+                        }
+
+            return None
+        except Exception as e:
+            logger.warning(f"Failed to get agent spatial context: {e}")
+            return None

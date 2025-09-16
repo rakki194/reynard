@@ -19,9 +19,7 @@ from pathlib import Path
 # Add the MCP scripts directory to Python path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from ecs.event_system import ECSEventType
-from ecs.notification_handler import ECSNotificationHandler
-from ecs.world_simulation import WorldSimulation
+from reynard_ecs_world import ECSEventType, ECSNotificationHandler, WorldSimulation
 
 # Configure logging
 logging.basicConfig(

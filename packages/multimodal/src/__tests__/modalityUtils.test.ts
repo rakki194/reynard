@@ -6,11 +6,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  BaseModality,
-  ModalityManager,
-  detectFileModality,
-} from "../../modalityUtils";
+import { BaseModality, ModalityManager, detectFileModality } from "../utils/modalityUtils";
 
 // Mock modality classes for testing
 class MockImageModality extends BaseModality {
@@ -62,7 +58,7 @@ describe("BaseModality", () => {
         new File(["content"], "test.webp", { type: "image/webp" }),
       ];
 
-      supportedFiles.forEach((file) => {
+      supportedFiles.forEach(file => {
         expect(imageModality.validateFile(file)).toBe(true);
       });
     });
@@ -74,7 +70,7 @@ describe("BaseModality", () => {
         new File(["content"], "test.mp4", { type: "video/mp4" }),
       ];
 
-      unsupportedFiles.forEach((file) => {
+      unsupportedFiles.forEach(file => {
         expect(imageModality.validateFile(file)).toBe(false);
       });
     });
@@ -86,7 +82,7 @@ describe("BaseModality", () => {
         new File(["content"], "test.GIF", { type: "image/gif" }),
       ];
 
-      caseVariations.forEach((file) => {
+      caseVariations.forEach(file => {
         expect(imageModality.validateFile(file)).toBe(true);
       });
     });
@@ -102,13 +98,7 @@ describe("BaseModality", () => {
   describe("File Type Support", () => {
     it("should return supported file types", () => {
       const supportedTypes = imageModality.getSupportedFileTypes();
-      expect(supportedTypes).toEqual([
-        ".jpg",
-        ".jpeg",
-        ".png",
-        ".gif",
-        ".webp",
-      ]);
+      expect(supportedTypes).toEqual([".jpg", ".jpeg", ".png", ".gif", ".webp"]);
     });
 
     it("should return supported MIME types", () => {
@@ -287,13 +277,7 @@ describe("ModalityManager", () => {
 
     it("should get supported extensions for specific modality", () => {
       const imageExtensions = manager.getSupportedExtensions("image");
-      expect(imageExtensions).toEqual([
-        ".jpg",
-        ".jpeg",
-        ".png",
-        ".gif",
-        ".webp",
-      ]);
+      expect(imageExtensions).toEqual([".jpg", ".jpeg", ".png", ".gif", ".webp"]);
     });
 
     it("should return empty array for non-existent modality", () => {

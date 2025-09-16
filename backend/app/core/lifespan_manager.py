@@ -197,6 +197,16 @@ async def lifespan(app: FastAPI):
         startup_priority=75,  # High priority for image support
     )
 
+    # Register ECS world service
+    registry.register_service(
+        "ecs_world",
+        {"enabled": True},  # Simple config for now
+        _init_ecs_world_service,
+        _shutdown_ecs_world_service,
+        _health_check_ecs_world_service,
+        startup_priority=90,  # High priority for agent simulation
+    )
+
     # Initialize all services
     logger.info("🚀 Starting Reynard API services...")
     start_time = time.time()
@@ -275,4 +285,48 @@ async def _health_check_image_processing_service() -> bool:
         return await service.health_check()
     except Exception as e:
         logger.error(f"❌ Image processing service health check error: {e}")
+        return False
+
+
+# ECS World Service Functions
+async def _init_ecs_world_service(config: Dict[str, Any]) -> bool:
+    """Initialize the ECS world service."""
+    try:
+        from app.ecs.service import get_ecs_service
+
+        service = get_ecs_service()
+        await service.startup()
+        logger.info("✅ ECS world service initialized successfully")
+        return True
+    except Exception as e:
+        logger.error(f"❌ ECS world service initialization error: {e}")
+        return False
+
+
+async def _shutdown_ecs_world_service() -> None:
+    """Shutdown the ECS world service."""
+    try:
+        from app.ecs.service import get_ecs_service
+
+        service = get_ecs_service()
+        await service.shutdown()
+        logger.info("✅ ECS world service shutdown successfully")
+    except Exception as e:
+        logger.error(f"❌ ECS world service shutdown error: {e}")
+
+
+async def _health_check_ecs_world_service() -> bool:
+    """Health check for the ECS world service."""
+    try:
+        from app.ecs.service import get_ecs_service
+
+        service = get_ecs_service()
+        # Check if the world is initialized
+        try:
+            world = service.get_world()
+            return world is not None
+        except RuntimeError:
+            return False
+    except Exception as e:
+        logger.error(f"❌ ECS world service health check error: {e}")
         return False

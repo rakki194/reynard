@@ -9,11 +9,12 @@ Follows the 100-line axiom and modular architecture principles.
 
 import asyncio
 import fnmatch
+import logging
 import re
 from pathlib import Path
 from typing import Any
 
-logger = __import__("logging").getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class FileSearchTools:

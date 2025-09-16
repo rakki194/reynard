@@ -11,7 +11,7 @@ if str(mcp_dir) not in sys.path:
 
 try:
     print("Testing imports...")
-    from services.agent_manager import AgentNameManager
+    from agent_naming import AgentNameManager
 
     print("✓ AgentNameManager imported")
 

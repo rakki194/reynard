@@ -19,15 +19,15 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from ecs.components import (
+from reynard_ecs_world import (
     AgentComponent,
     LifecycleComponent,
     LineageComponent,
     ReproductionComponent,
+    ReproductionSystem,
+    WorldSimulation,
 )
-from ecs.systems import ReproductionSystem
-from ecs.world_simulation import WorldSimulation
-from services.agent_manager import AgentNameManager
+from agent_naming import AgentNameManager
 
 
 class TestECSAutomaticBreeding:

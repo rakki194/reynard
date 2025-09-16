@@ -308,4 +308,5 @@ setInterval(() => {
   queueManager.cleanup();
 }, 30000);
 
-export default queueManager;
+// Export as named export instead of default
+export { queueManager as default };

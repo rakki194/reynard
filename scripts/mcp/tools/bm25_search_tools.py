@@ -44,11 +44,11 @@ class BM25SearchTools:
             }
         ]
 
-    def get_tools(self) -> List[Dict[str, Any]]:
+    def get_tools(self) -> list[dict[str, Any]]:
         """Get list of available BM25 search tools."""
         return self.tools
 
-    def call_tool(self, name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def call_tool(self, name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """
         Call a BM25 search tool.
 

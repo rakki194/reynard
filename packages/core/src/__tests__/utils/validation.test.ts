@@ -1,23 +1,31 @@
 import { describe, it, expect } from "vitest";
 import {
   isValidEmail,
-  isValidUrl,
   isValidPhoneNumber,
   validatePasswordStrength,
+  isValidUrl,
+} from "../../security/input-validation";
+import {
+  isValidFileType,
+  isValidFileSize,
+} from "../../security/file-validation";
+import {
   isValidCreditCard,
   isValidPostalCode,
-  isValidUsername,
-  isValidHexColor,
-  isValidIPAddress,
+  isValidSSN,
+} from "../../utils/validation/financial";
+import {
+  isValidDate,
+  isValidAge,
+} from "../../utils/validation/date";
+import {
   isInRange,
   isValidLength,
   isRequired,
-  isValidFileType,
-  isValidFileSize,
-  isValidDate,
-  isValidAge,
-  isValidSSN,
-} from "../../utils/validation";
+  isValidUsername,
+  isValidHexColor,
+  isValidIPAddress,
+} from "../../utils/validation/basic";
 
 describe("validation", () => {
   describe("isValidEmail", () => {

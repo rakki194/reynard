@@ -16,8 +16,8 @@ class BaseToolHandler(ABC):
 
     @abstractmethod
     async def handle_tool(
-        self, tool_name: str, arguments: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, tool_name: str, arguments: dict[str, Any]
+    ) -> dict[str, Any]:
         """Handle a tool call."""
         pass
 
@@ -29,8 +29,8 @@ class AgentToolHandler(BaseToolHandler):
         self.agent_tools = agent_tools
 
     async def handle_tool(
-        self, tool_name: str, arguments: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, tool_name: str, arguments: dict[str, Any]
+    ) -> dict[str, Any]:
         """Handle agent tool calls."""
         method_map = {
             "generate_agent_name": self.agent_tools.generate_agent_name,
@@ -65,13 +65,21 @@ class ECSAgentToolHandler(BaseToolHandler):
     def __init__(self, ecs_agent_tools: Any) -> None:
         self.ecs_agent_tools = ecs_agent_tools
 
-    def handle_tool(self, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def handle_tool(self, tool_name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """Handle ECS agent tool calls."""
         method_map = {
             "create_ecs_agent": self.ecs_agent_tools.create_ecs_agent,
             "create_ecs_offspring": self.ecs_agent_tools.create_ecs_offspring,
             "enable_automatic_reproduction": self.ecs_agent_tools.enable_automatic_reproduction,
             "get_ecs_agent_status": self.ecs_agent_tools.get_ecs_agent_status,
+            "get_ecs_agent_positions": self.ecs_agent_tools.get_ecs_agent_positions,
+            "search_agents_by_proximity": self.ecs_agent_tools.search_agents_by_proximity,
+            "search_agents_by_region": self.ecs_agent_tools.search_agents_by_region,
+            "get_agent_movement_path": self.ecs_agent_tools.get_agent_movement_path,
+            "get_spatial_analytics": self.ecs_agent_tools.get_spatial_analytics,
+            "start_global_breeding": self.ecs_agent_tools.start_global_breeding,
+            "stop_global_breeding": self.ecs_agent_tools.stop_global_breeding,
+            "get_breeding_statistics": self.ecs_agent_tools.get_breeding_statistics,
             "find_ecs_compatible_mates": self.ecs_agent_tools.find_ecs_compatible_mates,
             "analyze_ecs_compatibility": self.ecs_agent_tools.analyze_ecs_compatibility,
             "get_ecs_lineage": self.ecs_agent_tools.get_ecs_lineage,
@@ -92,7 +100,7 @@ class UtilityToolHandler(BaseToolHandler):
     def __init__(self, utility_tools: Any) -> None:
         self.utility_tools = utility_tools
 
-    def handle_tool(self, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def handle_tool(self, tool_name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """Handle utility tool calls."""
         method_map = {
             "get_current_time": self.utility_tools.get_current_time,
@@ -114,8 +122,8 @@ class LintingToolHandler(BaseToolHandler):
         self.linting_tools = linting_tools
 
     async def handle_tool(
-        self, tool_name: str, arguments: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, tool_name: str, arguments: dict[str, Any]
+    ) -> dict[str, Any]:
         """Handle linting tool calls."""
         method_map = {
             "lint_frontend": self.linting_tools.lint_frontend,
@@ -141,7 +149,7 @@ class MermaidToolHandler(BaseToolHandler):
     def __init__(self, mermaid_tools: Any) -> None:
         self.mermaid_tools = mermaid_tools
 
-    def handle_tool(self, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+    def handle_tool(self, tool_name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         """Handle mermaid tool calls."""
         method_map = {
             "validate_mermaid_diagram": self.mermaid_tools.validate_mermaid_diagram,

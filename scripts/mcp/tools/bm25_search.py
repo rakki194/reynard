@@ -34,15 +34,15 @@ class BM25SearchEngine:
         """
         self.k1 = k1
         self.b = b
-        self.documents: List[str] = []
-        self.doc_paths: List[str] = []
-        self.doc_freqs: List[Dict[str, int]] = []
-        self.idf: Dict[str, float] = {}
-        self.doc_len: List[int] = []
+        self.documents: list[str] = []
+        self.doc_paths: list[str] = []
+        self.doc_freqs: list[dict[str, int]] = []
+        self.idf: dict[str, float] = {}
+        self.doc_len: list[int] = []
         self.corpus_size: int = 0
         self.avgdl: float = 0.0
 
-    def _tokenize(self, text: str) -> List[str]:
+    def _tokenize(self, text: str) -> list[str]:
         """
         Tokenize text for BM25 processing.
 
@@ -71,7 +71,7 @@ class BM25SearchEngine:
         return content
 
     def add_documents(
-        self, documents: List[str], paths: List[str] | None = None
+        self, documents: list[str], paths: list[str] | None = None
     ) -> None:
         """
         Add documents to the search index.
@@ -113,7 +113,7 @@ class BM25SearchEngine:
         for term, freq in doc_freq.items():
             self.idf[term] = math.log((self.corpus_size - freq + 0.5) / (freq + 0.5))
 
-    def search(self, query: str, top_k: int = 10) -> List[Tuple[str, float, str]]:
+    def search(self, query: str, top_k: int = 10) -> list[tuple[str, float, str]]:
         """
         Search for documents using BM25 scoring with fuzzy matching.
 
@@ -184,7 +184,7 @@ class ReynardBM25Search:
         self.indexed = False
 
     def index_project(
-        self, project_root: str, file_patterns: List[str] | None = None
+        self, project_root: str, file_patterns: list[str] | None = None
     ) -> None:
         """
         Index the entire Reynard project for search.
@@ -254,7 +254,7 @@ class ReynardBM25Search:
 
     def search_needle_in_haystack(
         self, needle: str, top_k: int = 20
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """
         Find a specific pattern (needle) in the codebase (haystack).
 
@@ -303,7 +303,7 @@ bm25_search = ReynardBM25Search()
 
 def search_needle_in_haystack(
     needle: str, project_root: str | None = None, top_k: int = 20
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """
     Main function to search for a needle in the haystack.
 

@@ -136,7 +136,7 @@ export function validateDependencies(dependencies = {}) {
 
   for (const command of commands) {
     try {
-      const { execSync } = await import("child_process");
+      const { execSync } = require("child_process");
       execSync(`which ${command}`, { stdio: "ignore" });
       printColored(`✅ ${command} found`, Colors.GREEN);
     } catch {

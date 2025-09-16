@@ -459,10 +459,11 @@ export const AudioPlayer: Component<AudioPlayerProps> = (props) => {
             <div class="volume-control">
               <span class="volume-icon">🔊</span>
               <Slider
-    min={0}
-    max={1}
-    step={0.1}
-  /> setVolumeLevel(parseFloat(e.target.value))}
+                min={0}
+                max={1}
+                step={0.1}
+                value={volumeLevel()}
+                onChange={(e) => setVolumeLevel(parseFloat(e.target.value))}
                 class="volume-slider"
                 title="Volume (↑/↓)"
               />

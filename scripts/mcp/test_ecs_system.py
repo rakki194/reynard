@@ -17,7 +17,7 @@ mcp_dir = Path(__file__).parent
 if str(mcp_dir) not in sys.path:
     sys.path.insert(0, str(mcp_dir))
 
-from ecs.world import AgentWorld
+from reynard_ecs_world import AgentWorld
 from tools.ecs_agent_tools import ECSAgentTools
 
 

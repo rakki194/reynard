@@ -7,6 +7,11 @@ interface HeaderProps {
   onTimeAcceleration: (factor: number) => void;
   onToggleReproduction: (enabled: boolean) => void;
   onUpdateSimulation: (deltaTime?: number) => void;
+  onStartGlobalBreeding: () => void;
+  onStopGlobalBreeding: () => void;
+  onGetBreedingStatistics: () => void;
+  currentPage: "tracker" | "config";
+  onPageChange: (page: "tracker" | "config") => void;
 }
 
 export function Header(props: HeaderProps) {
@@ -23,18 +28,35 @@ export function Header(props: HeaderProps) {
 
   return (
     <header class="header">
-      <h1>
-        🦊 ECS Agent Tracker
-        <span
-          style={{
-            color: props.isConnected ? "#48bb78" : "#f56565",
-            "font-size": "0.8rem",
-            "margin-left": "0.5rem",
-          }}
-        >
-          {props.isConnected ? "● Connected" : "● Disconnected"}
-        </span>
-      </h1>
+      <div class="header-left">
+        <h1>
+          🦊 ECS Agent Tracker
+          <span
+            style={{
+              color: props.isConnected ? "#48bb78" : "#f56565",
+              "font-size": "0.8rem",
+              "margin-left": "0.5rem",
+            }}
+          >
+            {props.isConnected ? "● Connected" : "● Disconnected"}
+          </span>
+        </h1>
+
+        <nav class="nav-tabs">
+          <button
+            class={`nav-tab ${props.currentPage === "tracker" ? "active" : ""}`}
+            onClick={() => props.onPageChange("tracker")}
+          >
+            🌍 Agent Tracker
+          </button>
+          <button
+            class={`nav-tab ${props.currentPage === "config" ? "active" : ""}`}
+            onClick={() => props.onPageChange("config")}
+          >
+            🛠️ Tool Config
+          </button>
+        </nav>
+      </div>
 
       <div class="controls">
         <div style={{ display: "flex", "align-items": "center", gap: "0.5rem" }}>
@@ -63,6 +85,18 @@ export function Header(props: HeaderProps) {
 
         <button class="button" onClick={() => props.onUpdateSimulation(1.0)} style={{ "background-color": "#4299e1" }}>
           ⏭️ Step
+        </button>
+
+        <button class="button" onClick={props.onStartGlobalBreeding} style={{ "background-color": "#9f7aea" }}>
+          🌱 Start Breeding
+        </button>
+
+        <button class="button" onClick={props.onStopGlobalBreeding} style={{ "background-color": "#ed8936" }}>
+          🛑 Stop Breeding
+        </button>
+
+        <button class="button" onClick={props.onGetBreedingStatistics} style={{ "background-color": "#38b2ac" }}>
+          📊 Breeding Stats
         </button>
 
         <div

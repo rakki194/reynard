@@ -8,7 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Processors } from "../processors.js";
 import { FileQueueManager } from "../queue-manager.js";
 import { mockExecSync, mockFs } from "./setup.js";
-import { createTestDirectory, createTestFile, mockFileWatcher, testData, waitFor } from "./test-utils.js";
+import { createTestDirectory, createTestFile, mockFileWatcher, setupMocks, testData, waitFor } from "./test-utils.js";
 
 describe("Queue Watcher Integration", () => {
   let manager: FileQueueManager;
@@ -221,6 +221,9 @@ describe("Queue Watcher Integration", () => {
         return { close: vi.fn() };
       });
 
+      // Actually call the mocked fs.watch to trigger the mock
+      mockFs.watch(watchDir, { recursive: true }, () => {});
+
       // Verify watcher was set up
       expect(mockFs.watch).toHaveBeenCalledWith(watchDir, expect.any(Object), expect.any(Function));
     });
@@ -246,6 +249,9 @@ describe("Queue Watcher Integration", () => {
         }
         return { close: vi.fn() };
       });
+
+      // Actually call the mocked fs.watch to trigger the mock
+      mockFs.watch(watchDir, { recursive: true }, () => {});
 
       expect(mockFs.watch).toHaveBeenCalled();
     });

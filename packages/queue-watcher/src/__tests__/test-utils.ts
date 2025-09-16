@@ -5,7 +5,7 @@
  */
 
 import path from "path";
-import { vi } from "vitest";
+import { vi, expect } from "vitest";
 
 // Mock file system operations
 export const mockFs = {
@@ -61,8 +61,8 @@ export function setupMocks() {
 
   // Mock process
   vi.spyOn(process, "cwd").mockImplementation(mockProcess.cwd);
-  vi.spyOn(process, "exit").mockImplementation(mockProcess.exit);
-  vi.spyOn(process, "on").mockImplementation(mockProcess.on);
+  vi.spyOn(process, "exit").mockImplementation(mockProcess.exit as any);
+  vi.spyOn(process, "on").mockImplementation(mockProcess.on as any);
 
   // Set default mock implementations
   mockFs.existsSync.mockReturnValue(true);

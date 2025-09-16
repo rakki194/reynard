@@ -25,7 +25,7 @@ class MonolithAnalysisService:
 
     def analyze_file_metrics(
         self, file_path: str, exclude_comments: bool = True, include_ast: bool = True
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Analyze metrics for a single file."""
         try:
             with open(file_path, encoding="utf-8") as f:
@@ -151,7 +151,7 @@ class MonolithAnalysisService:
 
         return len(loc_lines)
 
-    def _analyze_ast_metrics(self, content: str, file_path: str) -> Dict[str, int]:
+    def _analyze_ast_metrics(self, content: str, file_path: str) -> dict[str, int]:
         """Analyze AST metrics for complexity scoring."""
         ext = Path(file_path).suffix.lower()
 
@@ -168,7 +168,7 @@ class MonolithAnalysisService:
                 "complexity": 0,
             }
 
-    def _analyze_python_ast(self, content: str) -> Dict[str, int]:
+    def _analyze_python_ast(self, content: str) -> dict[str, int]:
         """Analyze Python AST for complexity metrics."""
         try:
             tree = ast.parse(content)
@@ -204,7 +204,7 @@ class MonolithAnalysisService:
                 "complexity": 0,
             }
 
-    def _analyze_typescript_ast(self, content: str) -> Dict[str, int]:
+    def _analyze_typescript_ast(self, content: str) -> dict[str, int]:
         """Analyze TypeScript/JavaScript AST for complexity metrics using regex."""
         functions = 0
         classes = 0

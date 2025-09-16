@@ -92,7 +92,7 @@ export const Processors = {
    */
   async formatWithPrettier(filePath: string): Promise<void> {
     try {
-      execSync(`npx prettier --write "${filePath}"`, {
+      execSync(`pnpm exec prettier --write "${filePath}"`, {
         stdio: "inherit",
         cwd: process.cwd(),
       });
@@ -108,7 +108,7 @@ export const Processors = {
    */
   async fixWithESLint(filePath: string): Promise<void> {
     try {
-      execSync(`npx eslint --fix "${filePath}"`, {
+      execSync(`pnpm exec eslint --fix "${filePath}"`, {
         stdio: "inherit",
         cwd: process.cwd(),
       });
@@ -135,5 +135,3 @@ export const Processors = {
     }
   },
 } as const;
-
-export default Processors;

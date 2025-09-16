@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from services.agent_manager import AgentNameManager
+from agent_naming import AgentNameManager
 
 
 class TestAgentNameManager:
@@ -21,12 +21,12 @@ class TestAgentNameManager:
 
     def test_init_with_default_data_dir(self):
         """Test initialization with default data directory."""
-        with patch("services.agent_manager.Path") as mock_path:
+        with patch("agent_naming.manager.Path") as mock_path:
             mock_path.return_value.parent.parent = Path("/test/path")
             manager = AgentNameManager()
             assert manager.data_dir == Path("/test/path")
 
-    @patch("services.agent_manager.ReynardRobotNamer")
+    @patch("agent_naming.ReynardRobotNamer")
     def test_init_with_mock_namer(self, mock_namer_class, temp_dir: Path):
         """Test initialization with mocked robot namer."""
         mock_namer = MagicMock()
@@ -47,13 +47,13 @@ class TestAgentNameManager:
         with open(agents_file, "w") as f:
             json.dump(test_agents, f)
 
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
             assert manager.agents == test_agents
 
     def test_load_agents_file_not_exists(self, temp_dir: Path):
         """Test loading agents when file doesn't exist."""
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
             assert manager.agents == {}
 
@@ -63,13 +63,13 @@ class TestAgentNameManager:
         with open(agents_file, "w") as f:
             f.write("invalid json")
 
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
             assert manager.agents == {}
 
     def test_save_agents(self, temp_dir: Path):
         """Test saving agents to file."""
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
             manager.agents = {
                 "test-agent": {"name": "Test-Fox-42", "assigned_at": 1234567890.0}
@@ -86,7 +86,7 @@ class TestAgentNameManager:
 
     def test_save_agents_io_error(self, temp_dir: Path):
         """Test saving agents with IO error."""
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
             manager.agents = {
                 "test-agent": {"name": "Test-Fox-42", "assigned_at": 1234567890.0}
@@ -94,7 +94,7 @@ class TestAgentNameManager:
 
             # Mock open to raise IOError
             with patch("builtins.open", side_effect=OSError("Permission denied")):
-                with patch("services.agent_manager.logger") as mock_logger:
+                with patch("agent_naming.manager.logger") as mock_logger:
                     manager._save_agents()
                     mock_logger.exception.assert_called_once()
 
@@ -103,7 +103,7 @@ class TestAgentNameManager:
         mock_namer = MagicMock()
         mock_namer.generate_batch.return_value = ["Test-Fox-42"]
 
-        with patch("services.agent_manager.ReynardRobotNamer", return_value=mock_namer):
+        with patch("agent_naming.ReynardRobotNamer", return_value=mock_namer):
             manager = AgentNameManager(data_dir=str(temp_dir))
             name = manager.generate_name("fox", "foundation")
 
@@ -115,7 +115,7 @@ class TestAgentNameManager:
         mock_namer = MagicMock()
         mock_namer.generate_batch.return_value = []
 
-        with patch("services.agent_manager.ReynardRobotNamer", return_value=mock_namer):
+        with patch("agent_naming.ReynardRobotNamer", return_value=mock_namer):
             manager = AgentNameManager(data_dir=str(temp_dir))
             name = manager.generate_name("fox", "foundation")
 
@@ -123,7 +123,7 @@ class TestAgentNameManager:
 
     def test_assign_name(self, temp_dir: Path):
         """Test assigning name to agent."""
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
 
             with patch.object(manager, "_save_agents") as mock_save:
@@ -137,7 +137,7 @@ class TestAgentNameManager:
 
     def test_get_name_exists(self, temp_dir: Path):
         """Test getting name for existing agent."""
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
             manager.agents = {
                 "test-agent": {"name": "Test-Fox-42", "assigned_at": 1234567890.0}
@@ -148,7 +148,7 @@ class TestAgentNameManager:
 
     def test_get_name_not_exists(self, temp_dir: Path):
         """Test getting name for non-existing agent."""
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
 
             name = manager.get_name("non-existing-agent")
@@ -156,7 +156,7 @@ class TestAgentNameManager:
 
     def test_list_agents(self, temp_dir: Path):
         """Test listing all agents."""
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
             manager.agents = {
                 "test-agent-1": {"name": "Test-Fox-42", "assigned_at": 1234567890.0},
@@ -169,7 +169,7 @@ class TestAgentNameManager:
 
     def test_list_agents_empty(self, temp_dir: Path):
         """Test listing agents when none exist."""
-        with patch("services.agent_manager.ReynardRobotNamer"):
+        with patch("agent_naming.ReynardRobotNamer"):
             manager = AgentNameManager(data_dir=str(temp_dir))
 
             agents = manager.list_agents()
@@ -180,7 +180,7 @@ class TestAgentNameManager:
         mock_namer = MagicMock()
         mock_namer.roll_spirit.return_value = "fox"
 
-        with patch("services.agent_manager.ReynardRobotNamer", return_value=mock_namer):
+        with patch("agent_naming.ReynardRobotNamer", return_value=mock_namer):
             manager = AgentNameManager(data_dir=str(temp_dir))
             spirit = manager.roll_spirit(weighted=True)
 
@@ -192,7 +192,7 @@ class TestAgentNameManager:
         mock_namer = MagicMock()
         mock_namer.roll_spirit.return_value = "otter"
 
-        with patch("services.agent_manager.ReynardRobotNamer", return_value=mock_namer):
+        with patch("agent_naming.ReynardRobotNamer", return_value=mock_namer):
             manager = AgentNameManager(data_dir=str(temp_dir))
             spirit = manager.roll_spirit(weighted=False)
 

@@ -1,0 +1,34 @@
+{
+  "name": "reynard-ecs-world",
+  "version": "1.0.0",
+  "description": "ECS World Simulation System for Reynard - Entity Component System with agent management, trait inheritance, and world simulation",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write src"
+  },
+  "keywords": [
+    "ecs",
+    "entity-component-system",
+    "simulation",
+    "agents",
+    "reynard",
+    "world-simulation"
+  ],
+  "author": "Reynard Framework",
+  "license": "MIT",
+  "dependencies": {
+    "reynard-core": "workspace:*"
+  },
+  "devDependencies": {
+    "reynard-testing": "workspace:*",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  }
+}
