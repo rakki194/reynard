@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- **ECS Agent Tracker Example**: Created comprehensive 2D grid visualization system for tracking Reynard agents using ECS world simulation (Persistent-Mediator-8)
+
 ### Added
 
 ## [0.7.0] - 2025-09-16

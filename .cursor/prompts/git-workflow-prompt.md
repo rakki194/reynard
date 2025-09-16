@@ -282,8 +282,23 @@ All notable changes to this project will be documented in this file.
    TODAY=$(date +%Y-%m-%d)
    sed -i "s/## \[Unreleased\]/## \[$NEXT_VERSION\] - $TODAY/" CHANGELOG.md
 
-   # Add new [Unreleased] section at the top
-   sed -i '/^# Changelog/a\\n## [Unreleased]\n\n### Added\n\n### Changed\n\n### Deprecated\n\n### Removed\n\n### Fixed\n\n### Security\n' CHANGELOG.md
+   # Add new [Unreleased] section after the header (line 8)
+   sed -i '8a\
+\
+## [Unreleased]\
+\
+### Added\
+\
+### Changed\
+\
+### Deprecated\
+\
+### Removed\
+\
+### Fixed\
+\
+### Security\
+' CHANGELOG.md
    ```
 
 3. **Preserve Existing Entries:**
@@ -300,6 +315,64 @@ All notable changes to this project will be documented in this file.
 - Include detailed descriptions of significant changes
 - Mention any breaking changes prominently
 - Reference commit hash and date in versioned releases
+
+**CHANGELOG.md Structure Explanation:**
+
+The Reynard CHANGELOG.md follows the [Keep a Changelog](https://keepachangelog.com/) format with this specific structure:
+
+```markdown
+# Changelog
+
+All notable changes to the Reynard framework will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+[Future changes go here]
+
+## [X.Y.Z] - YYYY-MM-DD
+
+### Added
+[Released changes go here]
+```
+
+**Critical Positioning Rules:**
+
+1. **`[Unreleased]` section MUST be at the top** (after the header, before any versioned releases)
+2. **Versioned releases are in reverse chronological order** (newest first)
+3. **Each version entry has the format**: `## [VERSION] - YYYY-MM-DD`
+4. **The sed command targets line 8** because that's where the new `[Unreleased]` section should be inserted
+
+**Common CHANGELOG.md Issues and Solutions:**
+
+**Issue: Malformed version entries**
+```bash
+# BAD: Concatenated versions like "## [0.7.0] - 2025-09-16 [0.6.1] - 2025-09-16"
+# GOOD: Separate entries
+## [0.7.0] - 2025-09-16
+## [0.6.1] - 2025-09-16
+```
+
+**Issue: `[Unreleased]` section in wrong position**
+```bash
+# BAD: [Unreleased] section appears after versioned releases
+# GOOD: [Unreleased] section is always first (after header)
+```
+
+**Issue: Incorrect sed command syntax**
+```bash
+# BAD: Using a\\n which doesn't work in all sed implementations
+sed -i '/^# Changelog/a\\n## [Unreleased]' CHANGELOG.md
+
+# GOOD: Using proper sed append syntax with line numbers
+sed -i '8a\
+\
+## [Unreleased]\
+' CHANGELOG.md
+```
 
 ### 4. Update Package Versions and Create Git Tags
 
@@ -375,8 +448,23 @@ NEW_VERSION=$(node -p "require('./package.json').version")
 TODAY=$(date +%Y-%m-%d)
 sed -i "s/## \[Unreleased\]/## \[$NEW_VERSION\] - $TODAY/" CHANGELOG.md
 
-# Step 7: Add new [Unreleased] section at the top
-sed -i '/^# Changelog/a\\n## [Unreleased]\n\n### Added\n\n### Changed\n\n### Deprecated\n\n### Removed\n\n### Fixed\n\n### Security\n' CHANGELOG.md
+# Step 7: Add new [Unreleased] section after the header (line 8)
+sed -i '8a\
+\
+## [Unreleased]\
+\
+### Added\
+\
+### Changed\
+\
+### Deprecated\
+\
+### Removed\
+\
+### Fixed\
+\
+### Security\
+' CHANGELOG.md
 
 # Step 8: Stage CHANGELOG.md changes
 git add CHANGELOG.md
@@ -549,8 +637,23 @@ echo "🎯 New version: $NEW_VERSION"
 TODAY=$(date +%Y-%m-%d)
 sed -i "s/## \[Unreleased\]/## \[$NEW_VERSION\] - $TODAY/" CHANGELOG.md
 
-# Add new [Unreleased] section at the top
-sed -i '/^# Changelog/a\\n## [Unreleased]\n\n### Added\n\n### Changed\n\n### Deprecated\n\n### Removed\n\n### Fixed\n\n### Security\n' CHANGELOG.md
+# Add new [Unreleased] section after the header (line 8)
+sed -i '8a\
+\
+## [Unreleased]\
+\
+### Added\
+\
+### Changed\
+\
+### Deprecated\
+\
+### Removed\
+\
+### Fixed\
+\
+### Security\
+' CHANGELOG.md
 
 echo "📝 CHANGELOG.md updated: promoted [Unreleased] to [$NEW_VERSION] - $TODAY"
 
@@ -666,6 +769,76 @@ grep -A 5 "## \[Unreleased\]" CHANGELOG.md
 # Fix malformed CHANGELOG.md structure
 sed -i '/^## \[Unreleased\]/,$d' CHANGELOG.md
 echo -e "\n## [Unreleased]\n\n### Added\n\n### Changed\n\n### Deprecated\n\n### Removed\n\n### Fixed\n\n### Security\n" >> CHANGELOG.md
+```
+
+#### Issue: Concatenated version entries in CHANGELOG.md
+
+```bash
+# Check for malformed entries like "## [0.7.0] - 2025-09-16 [0.6.1] - 2025-09-16"
+grep -n "## \[.*\] - .* \[.*\] -" CHANGELOG.md
+
+# Fix concatenated version entries
+sed -i 's/## \[\([0-9]\+\.[0-9]\+\.[0-9]\+\)\] - \([0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\) \[\([0-9]\+\.[0-9]\+\.[0-9]\+\)\] - \([0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\)/## [\1] - \2/' CHANGELOG.md
+
+# Verify the fix
+grep -n "## \[" CHANGELOG.md
+```
+
+#### Issue: [Unreleased] section in wrong position
+
+```bash
+# Check if [Unreleased] is in the correct position (should be line 9)
+grep -n "## \[Unreleased\]" CHANGELOG.md
+
+# If [Unreleased] is not at line 9, fix the positioning
+# First, remove the misplaced [Unreleased] section
+sed -i '/^## \[Unreleased\]/,/^## \[/ { /^## \[Unreleased\]/d; /^## \[/!d; }' CHANGELOG.md
+
+# Then add it in the correct position (after line 8)
+sed -i '8a\
+\
+## [Unreleased]\
+\
+### Added\
+\
+### Changed\
+\
+### Deprecated\
+\
+### Removed\
+\
+### Fixed\
+\
+### Security\
+' CHANGELOG.md
+```
+
+#### Issue: Sed command not working on macOS/BSD
+
+```bash
+# macOS/BSD sed requires different syntax
+# Use this instead of the Linux sed commands:
+
+# For promoting [Unreleased] to versioned release
+sed -i '' "s/## \[Unreleased\]/## \[$NEW_VERSION\] - $TODAY/" CHANGELOG.md
+
+# For adding new [Unreleased] section
+sed -i '' '8a\
+\
+## [Unreleased]\
+\
+### Added\
+\
+### Changed\
+\
+### Deprecated\
+\
+### Removed\
+\
+### Fixed\
+\
+### Security\
+' CHANGELOG.md
 ```
 
 #### Issue: Git tag already exists

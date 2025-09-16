@@ -1021,5 +1021,71 @@
     ],
     "created_at": 1758034558.8739028,
     "last_updated": 1758034558.8739028
+  },
+  "agent-1758034718-6027": {
+    "agent_id": "agent-1758034718-6027",
+    "spirit": "fox",
+    "style": "foundation",
+    "dominant_traits": [
+      "aggression",
+      "playfulness",
+      "perfectionism"
+    ],
+    "personality_summary": "Strategic and cunning, with a focus on elegant solutions and clever problem-solving. Shows unique personality traits.",
+    "behavioral_patterns": {
+      "activity_level": 0.0,
+      "social_tendency": 0.3673026610413445,
+      "learning_rate": 0.7634323314428271,
+      "creativity_index": 0.5086964046844161,
+      "aggression_level": 1.0,
+      "cooperation_tendency": 0.8560263759736255
+    },
+    "communication_style": {
+      "tone": "strategic and cunning",
+      "approach": "calculated and precise",
+      "emphasis": "elegant solutions and clever insights",
+      "charisma_level": 0.9200666183587272,
+      "formality": 0.7,
+      "directness": 0.0
+    },
+    "specializations": [
+      "healer",
+      "scout"
+    ],
+    "created_at": 1758034718.273727,
+    "last_updated": 1758034718.2737272
+  },
+  "agent-1758034806-8337": {
+    "agent_id": "agent-1758034806-8337",
+    "spirit": "wolf",
+    "style": "foundation",
+    "dominant_traits": [
+      "loyalty",
+      "intelligence",
+      "dominance"
+    ],
+    "personality_summary": "Relentless and protective, with strong pack instincts and adversarial thinking. Shows unique personality traits.",
+    "behavioral_patterns": {
+      "activity_level": 0.9360552139350857,
+      "social_tendency": 0.9296724305521518,
+      "learning_rate": 1.0,
+      "creativity_index": 0.7320231426601974,
+      "aggression_level": 0.4504556123193721,
+      "cooperation_tendency": 0.15769718885949058
+    },
+    "communication_style": {
+      "tone": "direct and determined",
+      "approach": "relentless and protective",
+      "emphasis": "security and pack coordination",
+      "charisma_level": 0.3501037172782454,
+      "formality": 0.5,
+      "directness": 0.9360552139350857
+    },
+    "specializations": [
+      "artist",
+      "strategist"
+    ],
+    "created_at": 1758034806.5505507,
+    "last_updated": 1758034806.550551
   }
 }

@@ -54,5 +54,13 @@
   "agent-1758034558-3929": {
     "name": "Clever-Grandmaster-3",
     "assigned_at": 262986.728855663
+  },
+  "agent-1758034718-6027": {
+    "name": "Vulpes-Mentor-3",
+    "assigned_at": 263146.125451195
+  },
+  "agent-1758034806-8337": {
+    "name": "Persistent-Mediator-8",
+    "assigned_at": 263234.40577525
   }
 }

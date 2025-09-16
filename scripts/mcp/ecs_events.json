@@ -289,5 +289,98 @@
       "simulation_time": 0.9000000000000001,
       "time_acceleration": 10.0
     }
+  },
+  {
+    "event_type": "agent_created",
+    "timestamp": "2025-09-16T16:58:38.279316",
+    "agent_id": "agent-1758034718-6027",
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "spirit": "fox",
+      "style": "foundation",
+      "name": "Vulpes-Mentor-3",
+      "is_offspring": false
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:58:38.280040",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.1,
+      "simulation_time": 1.0000000000000002,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:58:38.280922",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 1.0500000000000003,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "agent_created",
+    "timestamp": "2025-09-16T17:00:06.559593",
+    "agent_id": "agent-1758034806-8337",
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "spirit": "wolf",
+      "style": "foundation",
+      "name": "Persistent-Mediator-8",
+      "is_offspring": false
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T17:00:06.560373",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.1,
+      "simulation_time": 1.1500000000000004,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T17:00:06.561221",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 1.2000000000000004,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T17:06:36.548983",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 1.2500000000000004,
+      "time_acceleration": 10.0
+    }
   }
 ]

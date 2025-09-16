@@ -1,0 +1,32 @@
+{
+  "name": "ecs-agent-tracker",
+  "version": "0.1.0",
+  "description": "🦊 ECS Agent Tracker - Visual 2D grid system for tracking Reynard agents using the ECS world simulation",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=ecs-agent-tracker ../../scripts/vitest-global-queue.sh run ecs-agent-tracker"
+  },
+  "dependencies": {
+    "solid-js": "1.9.9",
+    "reynard-games": "workspace:*",
+    "reynard-animation": "workspace:*",
+    "reynard-components": "workspace:*",
+    "reynard-charts": "workspace:*",
+    "reynard-themes": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-core": "workspace:*",
+    "reynard-colors": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "24.4.0",
+    "typescript": "5.9.2",
+    "vite": "7.1.5",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4",
+    "reynard-testing": "workspace:*"
+  }
+}
