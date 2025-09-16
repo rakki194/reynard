@@ -378,8 +378,9 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
             <Show when={local.showPrivacyAcceptance}>
               <label class="register-form__checkbox">
                 <Toggle
-    size="sm"
-  /> setAcceptPrivacy(e.target.checked)}
+                  size="sm"
+                  checked={local.acceptPrivacy}
+                  onChange={(e) => setAcceptPrivacy(e.target.checked)}
                   disabled={local.loading}
                   required
                 />

@@ -6,8 +6,8 @@
  */
 
 import { Component, Show } from "solid-js";
-import type {
 import { Slider } from "reynard-components";
+import type {
   AudioWaveformVisualizerProps,
   WaveformData,
 } from "./AudioWaveformVisualizer";
