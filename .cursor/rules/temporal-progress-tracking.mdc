@@ -1,0 +1,36 @@
+---
+alwaysApply: true
+---
+
+# Temporal Progress Tracking
+
+**CRITICAL**: Always use the MCP `get_current_time` tool to track temporal progress and maintain awareness of the
+current date/time context. This is essential for:
+
+- **Version Management**: Ensuring proper date stamps in CHANGELOG.md entries
+- **Release Coordination**: Tracking when releases and tags are created
+- **Development Timeline**: Maintaining awareness of project progression
+- **Context Awareness**: Understanding temporal relationships between changes
+
+**Usage Pattern:**
+
+```bash
+# Get current time before major operations
+mcp_reynard-mcp_get_current_time
+
+# Use time information for:
+# - CHANGELOG.md date stamps
+# - Git tag creation timestamps
+# - Release coordination
+# - Development milestone tracking
+```
+
+**Temporal Context Requirements:**
+
+- Always check current time before creating releases or tags
+- Use proper date formatting (YYYY-MM-DD) for CHANGELOG.md entries
+- Maintain temporal awareness throughout development sessions
+- Track progression of changes over time for better project management
+
+_\*whiskers twitch with temporal precision\*_ Time is the foundation of all development - track it, respect it, and use
+it to create legendary solutions that stand the test of time! 🦊

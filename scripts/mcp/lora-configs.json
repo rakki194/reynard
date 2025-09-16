@@ -1398,5 +1398,155 @@
     },
     "created_at": 1758033883.4211094,
     "last_updated": 1758033883.4211102
+  },
+  "agent-1758034065-2533": {
+    "agent_id": "agent-1758034065-2533",
+    "base_model": "reynard-agent-base",
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "target_modules": [
+      "q_proj",
+      "v_proj",
+      "k_proj",
+      "o_proj"
+    ],
+    "personality_weights": {
+      "dominance": 0.3101587317518944,
+      "loyalty": 0.08292023933597338,
+      "cunning": 0.8615558203697788,
+      "aggression": 0.09872842667092267,
+      "intelligence": 0.7281383694353849,
+      "creativity": 0.06089536884638708,
+      "playfulness": 0.8403892710294052,
+      "protectiveness": 0.8954439679815992,
+      "empathy": 0.7771213943467653,
+      "charisma": 0.7823568627459841,
+      "independence": 0.168432804400713,
+      "cooperation": 0.6501438911252408,
+      "curiosity": 0.4521787709054675,
+      "patience": 0.7650896843140684,
+      "adaptability": 0.8476241824870786,
+      "perfectionism": 0.8493522591440061
+    },
+    "physical_weights": {
+      "size": 0.8636558797667462,
+      "strength": 0.25850886717392707,
+      "agility": 0.3306498936709211,
+      "endurance": 0.21796266381915952,
+      "fur_density": 0.83261526966678,
+      "marking_intensity": 0.47170148885881447,
+      "eye_color_intensity": 0.9026560373387054,
+      "tail_length": 0.04745997217194564,
+      "hearing": 0.8826358780699393,
+      "sight": 0.041957980170477804,
+      "smell": 0.7970148618470502,
+      "touch": 0.10317878535367364
+    },
+    "ability_weights": {
+      "strategist": 1.0,
+      "scout": 1.0
+    },
+    "created_at": 1758034065.5821712,
+    "last_updated": 1758034065.582172
+  },
+  "agent-1758034459-9424": {
+    "agent_id": "agent-1758034459-9424",
+    "base_model": "reynard-agent-base",
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "target_modules": [
+      "q_proj",
+      "v_proj",
+      "k_proj",
+      "o_proj"
+    ],
+    "personality_weights": {
+      "dominance": 0.15230236006500175,
+      "loyalty": 0.7491463587737996,
+      "cunning": 0.07642000919325806,
+      "aggression": 0.7381975216356264,
+      "intelligence": 0.30897040677745,
+      "creativity": 0.41952729982046644,
+      "playfulness": 0.8222018518701422,
+      "protectiveness": 0.4538093382513402,
+      "empathy": 0.8688180140169779,
+      "charisma": 0.5854817669344614,
+      "independence": 0.5135903835727529,
+      "cooperation": 0.5180103405336166,
+      "curiosity": 0.25572432345978746,
+      "patience": 0.6000068142629941,
+      "adaptability": 0.7613656877167747,
+      "perfectionism": 0.0
+    },
+    "physical_weights": {
+      "size": 0.5346825813651309,
+      "strength": 0.5170470204695339,
+      "agility": 0.27508837947971054,
+      "endurance": 0.36563025138194327,
+      "fur_density": 0.12340896469936491,
+      "marking_intensity": 0.643436613214786,
+      "eye_color_intensity": 0.6556011524077351,
+      "tail_length": 0.4281257576871683,
+      "hearing": 0.27651468445157534,
+      "sight": 0.7706220312224803,
+      "smell": 0.43714168158448485,
+      "touch": 0.5949273620224338
+    },
+    "ability_weights": {
+      "hunter": 1.0,
+      "scout": 1.0
+    },
+    "created_at": 1758034459.0993004,
+    "last_updated": 1758034459.099301
+  },
+  "agent-1758034558-3929": {
+    "agent_id": "agent-1758034558-3929",
+    "base_model": "reynard-agent-base",
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "target_modules": [
+      "q_proj",
+      "v_proj",
+      "k_proj",
+      "o_proj"
+    ],
+    "personality_weights": {
+      "dominance": 0.1937687385801231,
+      "loyalty": 0.8437136134688771,
+      "cunning": 0.44457906190212526,
+      "aggression": 0.8484370928846805,
+      "intelligence": 0.19027115710380177,
+      "creativity": 0.8663233793790648,
+      "playfulness": 0.48483734037674797,
+      "protectiveness": 0.8035196048465341,
+      "empathy": 0.7607761205305787,
+      "charisma": 0.0742928231159733,
+      "independence": 0.14826074978030945,
+      "cooperation": 0.2128466267454672,
+      "curiosity": 0.4615651533062192,
+      "patience": 0.03400003589109135,
+      "adaptability": 0.001810211376065296,
+      "perfectionism": 0.8325655974992835
+    },
+    "physical_weights": {
+      "size": 0.43123788773590077,
+      "strength": 0.34903408864665986,
+      "agility": 0.4972571674561337,
+      "endurance": 0.853222855903461,
+      "fur_density": 0.4682219021415036,
+      "marking_intensity": 0.05637803882563919,
+      "eye_color_intensity": 0.1170047207001278,
+      "tail_length": 0.4450870135286248,
+      "hearing": 0.5182109500824374,
+      "sight": 0.6933538864297618,
+      "smell": 0.6707600555715381,
+      "touch": 0.07223337583744716
+    },
+    "ability_weights": {
+      "healer": 1.0,
+      "artist": 1.0
+    },
+    "created_at": 1758034558.877196,
+    "last_updated": 1758034558.8771963
   }
 }

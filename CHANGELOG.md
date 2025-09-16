@@ -6,36 +6,19 @@ the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.0] - 2025-01-15
+## [Unreleased]
 
 ### Added
 
-- **Comprehensive Monorepo Modernization**: Major modernization effort across the entire Reynard framework with enhanced developer experience and system architecture (Puddle-Minister-25)
-- **Enhanced MCP Server Architecture**: Complete MCP server refactoring with ECS agent system, trait inheritance, and sophisticated agent lifecycle management (Puddle-Minister-25)
-- **Improved Caption Generation System**: Refactored caption generation with better model management and enhanced composable architecture (Puddle-Minister-25)
-- **Enhanced Charts Package**: Updated charts package with improved type safety, configuration, and better component architecture (Puddle-Minister-25)
-- **Modernized Video Components**: Enhanced video components with better composable architecture and improved functionality (Puddle-Minister-25)
-- **Enhanced Multimodal Gallery**: Improved multimodal gallery with enhanced testing infrastructure and better component organization (Puddle-Minister-25)
-- **Improved Authentication System**: Enhanced authentication system with JWT utilities improvements and better security (Puddle-Minister-25)
-- **Updated Gatekeeper Library**: Enhanced gatekeeper library with better backend implementations and improved functionality (Puddle-Minister-25)
-- **Enhanced E2E Testing**: Improved E2E testing setup with enhanced Playwright configurations and better test infrastructure (Puddle-Minister-25)
-- **Enhanced Notification System**: Improved notification system in core package with better factories and management (Puddle-Minister-25)
+## [0.7.0] - 2025-09-16
 
-### Changed
+### Added
 
-- **Streamlined Package Configurations**: Updated package configurations and dependency management across the monorepo (Puddle-Minister-25)
-- **Enhanced TypeScript Configurations**: Improved TypeScript configurations and build optimizations for better development experience (Puddle-Minister-25)
-- **Updated Development Environment**: Enhanced workspace configuration and development environment setup (Puddle-Minister-25)
-- **Improved Documentation**: Enhanced documentation and README files across the monorepo for better developer experience (Puddle-Minister-25)
+- **Enhanced Git Workflow Automation**: Comprehensive Git workflow automation with CHANGELOG.md version management,
+  semantic versioning, and Git tagging. Promotes [Unreleased] sections to versioned releases, creates annotated tags
+  with release notes, and maintains proper version history (Copse-Teacher-55)
 
-### Removed
-
-- **Deprecated Queue Management**: Removed deprecated queue management scripts and configurations (Puddle-Minister-25)
-- **Deprecated Nginx Configurations**: Cleaned up deprecated nginx configurations in favor of new organized structure (Puddle-Minister-25)
-- **Deprecated Test Files**: Removed deprecated test files and unused configurations for cleaner codebase (Puddle-Minister-25)
-- **Deprecated Animation Config**: Removed deprecated animation tsup configuration in favor of vite configuration (Puddle-Minister-25)
-
-## [UNRELEASED-0.5.2] - 2025-09-??
+## [0.6.0] - 2025-09-16
 
 ### Added
 
@@ -84,7 +67,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Gallery Service Manager**: Refactored service initializer to use class-based singleton pattern instead of global statements (Playful-Minister-15)
 - **WebSocket Manager Types**: Fixed type annotation issues in WebSocket manager using proper dataclass field factories (Playful-Minister-15)
 - **Gallery-dl Type Checking**: Added gallery_dl to mypy overrides to resolve missing library stubs warning (Supple-Negotiator-89)
-
 - **Reynard Scraping Package**: Comprehensive web scraping and content extraction package with intelligent filtering, quality assessment, and specialized scrapers for Twitter, GitHub, Wikipedia, and more (Mountain-Curator-56)
 - **Gallery-dl Testing & Quality**: Comprehensive test suite including unit tests, backend tests, E2E tests, and performance benchmarks for gallery-dl integration (Fierce-Guardian-8)
 - **Complete tsup to Vite Migration**: Converted reynard-animation package from tsup to Vite build system, completing the full migration across all Reynard packages (Charming-Prophet-89)

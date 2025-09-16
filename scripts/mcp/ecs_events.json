@@ -130,5 +130,164 @@
       "simulation_time": 0.3,
       "time_acceleration": 10.0
     }
+  },
+  {
+    "event_type": "agent_created",
+    "timestamp": "2025-09-16T16:47:45.585114",
+    "agent_id": "agent-1758034065-2533",
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "spirit": "fox",
+      "style": "foundation",
+      "name": "Copse-Teacher-55",
+      "is_offspring": false
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:47:45.585738",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.1,
+      "simulation_time": 0.4,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:47:45.586253",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.45,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:51:04.178037",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.5,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "agent_created",
+    "timestamp": "2025-09-16T16:54:19.101842",
+    "agent_id": "agent-1758034459-9424",
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "spirit": "fox",
+      "style": "foundation",
+      "name": "Copse-Diplomat-13",
+      "is_offspring": false
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:54:19.103871",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.1,
+      "simulation_time": 0.6,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:54:19.104348",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.65,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:54:23.263260",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.7000000000000001,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "agent_created",
+    "timestamp": "2025-09-16T16:55:58.882524",
+    "agent_id": "agent-1758034558-3929",
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "spirit": "fox",
+      "style": "foundation",
+      "name": "Clever-Grandmaster-3",
+      "is_offspring": false
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:55:58.883503",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.1,
+      "simulation_time": 0.8,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:55:58.884164",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.8500000000000001,
+      "time_acceleration": 10.0
+    }
+  },
+  {
+    "event_type": "simulation_updated",
+    "timestamp": "2025-09-16T16:56:10.194249",
+    "agent_id": null,
+    "parent1_id": null,
+    "parent2_id": null,
+    "offspring_id": null,
+    "data": {
+      "delta_time": 0.05,
+      "simulation_time": 0.9000000000000001,
+      "time_acceleration": 10.0
+    }
   }
 ]

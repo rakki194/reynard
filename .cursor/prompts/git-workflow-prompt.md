@@ -212,20 +212,20 @@ Reynard framework, improving developer experience, security, and
 maintainability while maintaining backward compatibility.
 ```
 
-### 3. Update CHANGELOG.md
+### 3. Update CHANGELOG.md and Version Management
 
-**CHANGELOG Entry Requirements:**
+**CHANGELOG Version Bump Strategy:**
 
-- Add new version entry at the top (following semantic versioning)
-- Categorize changes by type (Added, Changed, Deprecated, Removed, Fixed, Security)
-- Include detailed descriptions of significant changes
-- Mention any breaking changes prominently
-- Reference commit hash and date
+The CHANGELOG.md follows the [Keep a Changelog](https://keepachangelog.com/) format with an "Unreleased" section that gets promoted to a versioned release.
 
-**CHANGELOG Format:**
+**Current CHANGELOG Structure:**
 
 ```markdown
-## [X.Y.Z] - YYYY-MM-DD
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [Unreleased]
 
 ### Added
 
@@ -250,15 +250,64 @@ maintainability while maintaining backward compatibility.
 ### Security
 
 - Security improvements
+
+## [X.Y.Z] - YYYY-MM-DD
+
+[Previous release content...]
 ```
 
-### 4. Update Package Versions
+**Version Bump Process:**
+
+1. **Analyze Changes** to determine version bump type:
+   - **Major (X.0.0)**: Breaking changes, major new features
+   - **Minor (X.Y.0)**: New features, backward compatible changes
+   - **Patch (X.Y.Z)**: Bug fixes, documentation updates, minor improvements
+
+2. **Promote Unreleased to Versioned Release:**
+
+   ```bash
+   # Get current version from package.json
+   CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+   # Determine next version based on change analysis
+   if [[ $CHANGE_TYPE == "major" ]]; then
+       NEXT_VERSION=$(semver -i major $CURRENT_VERSION)
+   elif [[ $CHANGE_TYPE == "minor" ]]; then
+       NEXT_VERSION=$(semver -i minor $CURRENT_VERSION)
+   else
+       NEXT_VERSION=$(semver -i patch $CURRENT_VERSION)
+   fi
+
+   # Update CHANGELOG.md: Replace [Unreleased] with [NEXT_VERSION] - YYYY-MM-DD
+   TODAY=$(date +%Y-%m-%d)
+   sed -i "s/## \[Unreleased\]/## \[$NEXT_VERSION\] - $TODAY/" CHANGELOG.md
+
+   # Add new [Unreleased] section at the top
+   sed -i '/^# Changelog/a\\n## [Unreleased]\n\n### Added\n\n### Changed\n\n### Deprecated\n\n### Removed\n\n### Fixed\n\n### Security\n' CHANGELOG.md
+   ```
+
+3. **Preserve Existing Entries:**
+   - Never overwrite existing changelog content
+   - Only promote "Unreleased" section to versioned release
+   - Add new "Unreleased" section for future changes
+   - Maintain chronological order (newest first)
+
+**CHANGELOG Entry Requirements:**
+
+- Promote "Unreleased" section to versioned release with current date
+- Add new "Unreleased" section for future changes
+- Categorize changes by type (Added, Changed, Deprecated, Removed, Fixed, Security)
+- Include detailed descriptions of significant changes
+- Mention any breaking changes prominently
+- Reference commit hash and date in versioned releases
+
+### 4. Update Package Versions and Create Git Tags
 
 **Version Bump Strategy:**
 
-- **Major (X.0.0)**: Breaking changes
-- **Minor (X.Y.0)**: New features, backward compatible
-- **Patch (X.Y.Z)**: Bug fixes, backward compatible
+- **Major (X.0.0)**: Breaking changes, major new features
+- **Minor (X.Y.0)**: New features, backward compatible changes
+- **Patch (X.Y.Z)**: Bug fixes, documentation updates, minor improvements
 
 **Files to Update:**
 
@@ -266,7 +315,7 @@ maintainability while maintaining backward compatibility.
 # Root package.json
 package.json
 
-# Individual package package.json files
+# Individual package package.json files (if needed)
 packages/*/package.json
 
 # Version references in documentation
@@ -274,45 +323,84 @@ docs/*.md
 README.md
 ```
 
-**Version Update Commands:**
+**Version Update and Tagging Process:**
 
 ```bash
-# Update root package version
-npm version patch|minor|major
+# Step 1: Update root package.json version
+npm version $VERSION_TYPE --no-git-tag-version
 
-# Update individual package versions
-cd packages/package-name
-npm version patch|minor|major
+# Step 2: Get the new version for tagging
+NEW_VERSION=$(node -p "require('./package.json').version")
+
+# Step 3: Create annotated Git tag with release notes
+git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION
+
+$(grep -A 50 "## \[$NEW_VERSION\]" CHANGELOG.md | head -n -1 | tail -n +2)
+
+Full changelog: https://github.com/your-org/reynard/compare/v$PREVIOUS_VERSION...v$NEW_VERSION"
+
+# Step 4: Push tags to remote
+git push origin "v$NEW_VERSION"
 ```
 
-### 5. Execute Git Operations
+**Git Tag Requirements:**
+
+- Use semantic versioning format: `v1.2.3`
+- Create annotated tags with `-a` flag
+- Include release notes from CHANGELOG.md in tag message
+- Reference previous version in changelog link
+- Push tags to remote repository
+
+### 5. Execute Git Operations with Version Management
 
 **Complete Git Workflow:**
 
 ```bash
-# Stage all changes
+# Step 1: Stage all changes
 git add .
 
-# Commit with --no-verify (skip pre-commit hooks if needed)
-git commit --no-verify -m "feat: comprehensive codebase modernization and documentation overhaul
+# Step 2: Commit changes with conventional commit message
+git commit --no-verify -m "$COMMIT_MESSAGE"
 
-- Enhanced Husky pre-commit hooks with markdown link validation
-- Updated comprehensive documentation across all packages and examples
-- Improved testing infrastructure with better Vitest configuration
-- Enhanced security validation and input sanitization
-- Updated i18n system with improved translation management
-- Modernized component architecture and composables
-- Enhanced AI/ML integration documentation and examples
-- Improved E2E testing setup with penetration testing capabilities
-- Updated package configurations and dependencies
-- Streamlined development workflow and tooling
+# Step 3: Get previous version for changelog link
+PREVIOUS_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
 
-This commit represents a major modernization effort across the entire
-Reynard framework, improving developer experience, security, and
-maintainability while maintaining backward compatibility."
+# Step 4: Update package.json version (without creating tag)
+npm version $VERSION_TYPE --no-git-tag-version
 
-# Push to remote repository
+# Step 5: Get new version
+NEW_VERSION=$(node -p "require('./package.json').version")
+
+# Step 6: Update CHANGELOG.md (promote Unreleased to versioned release)
+TODAY=$(date +%Y-%m-%d)
+sed -i "s/## \[Unreleased\]/## \[$NEW_VERSION\] - $TODAY/" CHANGELOG.md
+
+# Step 7: Add new [Unreleased] section at the top
+sed -i '/^# Changelog/a\\n## [Unreleased]\n\n### Added\n\n### Changed\n\n### Deprecated\n\n### Removed\n\n### Fixed\n\n### Security\n' CHANGELOG.md
+
+# Step 8: Stage CHANGELOG.md changes
+git add CHANGELOG.md
+
+# Step 9: Create release commit
+git commit -m "chore: release v$NEW_VERSION
+
+- Promote unreleased changes to v$NEW_VERSION
+- Update CHANGELOG.md with release date
+- Add new [Unreleased] section for future changes"
+
+# Step 10: Create annotated Git tag with release notes
+RELEASE_NOTES=$(grep -A 50 "## \[$NEW_VERSION\]" CHANGELOG.md | head -n -1 | tail -n +2)
+git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION
+
+$RELEASE_NOTES
+
+Full changelog: https://github.com/your-org/reynard/compare/$PREVIOUS_VERSION...v$NEW_VERSION"
+
+# Step 11: Push commits and tags to remote
 git push origin main
+git push origin "v$NEW_VERSION"
+
+echo "✅ Successfully released v$NEW_VERSION with Git tag!"
 ```
 
 ## Detailed Analysis Requirements
@@ -429,24 +517,80 @@ git diff --stat | grep -E "(test|spec|__tests__)" > /tmp/git-changes-tests.txt |
 echo "📝 Generating commit message..."
 # Enhanced analysis logic here using the generated files
 
-# Step 3: Update CHANGELOG.md
-echo "📚 Updating CHANGELOG.md..."
-# CHANGELOG update logic here
+# Step 3: Determine version bump type based on changes
+echo "🔍 Determining version bump type..."
+if grep -q "BREAKING CHANGE\|feat!:" /tmp/git-changes-semantic.txt; then
+    VERSION_TYPE="major"
+    CHANGE_TYPE="major"
+elif grep -q "feat:" /tmp/git-changes-semantic.txt; then
+    VERSION_TYPE="minor"
+    CHANGE_TYPE="minor"
+else
+    VERSION_TYPE="patch"
+    CHANGE_TYPE="patch"
+fi
+echo "📈 Version bump type: $VERSION_TYPE"
 
-# Step 4: Update package versions
-echo "📦 Updating package versions..."
-# Version bump logic here
+# Step 4: Update CHANGELOG.md and package versions
+echo "📚 Updating CHANGELOG.md and package versions..."
+
+# Get current version
+CURRENT_VERSION=$(node -p "require('./package.json').version")
+echo "📦 Current version: $CURRENT_VERSION"
+
+# Update package.json version (without creating tag)
+npm version $VERSION_TYPE --no-git-tag-version
+
+# Get new version
+NEW_VERSION=$(node -p "require('./package.json').version")
+echo "🎯 New version: $NEW_VERSION"
+
+# Update CHANGELOG.md: Replace [Unreleased] with [NEW_VERSION] - TODAY
+TODAY=$(date +%Y-%m-%d)
+sed -i "s/## \[Unreleased\]/## \[$NEW_VERSION\] - $TODAY/" CHANGELOG.md
+
+# Add new [Unreleased] section at the top
+sed -i '/^# Changelog/a\\n## [Unreleased]\n\n### Added\n\n### Changed\n\n### Deprecated\n\n### Removed\n\n### Fixed\n\n### Security\n' CHANGELOG.md
+
+echo "📝 CHANGELOG.md updated: promoted [Unreleased] to [$NEW_VERSION] - $TODAY"
 
 # Step 5: Execute git operations with delta preview
 echo "🚀 Executing git operations..."
 echo "📋 Previewing changes with delta..."
 git diff --staged | delta --side-by-side || git diff --staged
 
+# Stage all changes
 git add .
-git commit --no-verify -m "$COMMIT_MESSAGE"
-git push origin main
 
-echo "✅ Git workflow completed successfully with delta enhancement!"
+# Commit changes
+git commit --no-verify -m "$COMMIT_MESSAGE"
+
+# Get previous version for changelog link
+PREVIOUS_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+echo "🔗 Previous version: $PREVIOUS_VERSION"
+
+# Create release commit for CHANGELOG.md changes
+git commit -m "chore: release v$NEW_VERSION
+
+- Promote unreleased changes to v$NEW_VERSION
+- Update CHANGELOG.md with release date
+- Add new [Unreleased] section for future changes"
+
+# Create annotated Git tag with release notes
+RELEASE_NOTES=$(grep -A 50 "## \[$NEW_VERSION\]" CHANGELOG.md | head -n -1 | tail -n +2)
+git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION
+
+$RELEASE_NOTES
+
+Full changelog: https://github.com/your-org/reynard/compare/$PREVIOUS_VERSION...v$NEW_VERSION"
+
+echo "🏷️  Created Git tag: v$NEW_VERSION"
+
+# Push commits and tags to remote
+git push origin main
+git push origin "v$NEW_VERSION"
+
+echo "✅ Git workflow completed successfully with version v$NEW_VERSION and Git tag!"
 ```
 
 ## Quality Assurance Checklist
@@ -455,18 +599,24 @@ echo "✅ Git workflow completed successfully with delta enhancement!"
 
 - [ ] All changes analyzed and categorized
 - [ ] Commit message follows conventional format
-- [ ] CHANGELOG.md updated with new version
-- [ ] Package versions bumped appropriately
+- [ ] Version bump type determined (major/minor/patch)
+- [ ] CHANGELOG.md [Unreleased] section has content
+- [ ] Package versions will be bumped appropriately
 - [ ] No sensitive data in commits
 - [ ] All files properly staged
 
 ### Post-Commit Verification
 
 - [ ] Commit pushed successfully
+- [ ] CHANGELOG.md [Unreleased] promoted to versioned release
+- [ ] New [Unreleased] section added to CHANGELOG.md
+- [ ] Package.json version updated
+- [ ] Git tag created with release notes
+- [ ] Git tag pushed to remote repository
 - [ ] Remote repository updated
 - [ ] CI/CD pipeline triggered
 - [ ] Documentation reflects changes
-- [ ] Version numbers consistent
+- [ ] Version numbers consistent across all files
 
 ## Error Handling
 
@@ -499,6 +649,40 @@ git lfs track "*.large"
 ```bash
 # Ensure consistent versioning across packages
 npm version patch --workspaces
+
+# Check for version mismatches
+git diff --name-only | grep package.json | xargs -I {} sh -c 'echo "=== {} ===" && cat {} | grep version'
+```
+
+#### Issue: CHANGELOG.md format errors
+
+```bash
+# Validate CHANGELOG.md format
+grep -n "## \[" CHANGELOG.md
+
+# Check for proper [Unreleased] section
+grep -A 5 "## \[Unreleased\]" CHANGELOG.md
+
+# Fix malformed CHANGELOG.md structure
+sed -i '/^## \[Unreleased\]/,$d' CHANGELOG.md
+echo -e "\n## [Unreleased]\n\n### Added\n\n### Changed\n\n### Deprecated\n\n### Removed\n\n### Fixed\n\n### Security\n" >> CHANGELOG.md
+```
+
+#### Issue: Git tag already exists
+
+```bash
+# Check existing tags
+git tag -l | grep "v$NEW_VERSION"
+
+# Delete local tag if exists
+git tag -d "v$NEW_VERSION"
+
+# Delete remote tag if exists
+git push origin :refs/tags/v$NEW_VERSION
+
+# Recreate tag
+git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
+git push origin "v$NEW_VERSION"
 ```
 
 #### Issue: Delta not displaying properly
@@ -550,10 +734,14 @@ The workflow is successful when:
 
 1. ✅ All changes are properly analyzed and categorized
 2. ✅ Commit message accurately describes the changes
-3. ✅ CHANGELOG.md is updated with new version entry
-4. ✅ Package versions are bumped appropriately
-5. ✅ Changes are committed and pushed successfully
-6. ✅ Repository state is clean and consistent
+3. ✅ Version bump type determined correctly (major/minor/patch)
+4. ✅ CHANGELOG.md [Unreleased] section promoted to versioned release
+5. ✅ New [Unreleased] section added to CHANGELOG.md for future changes
+6. ✅ Package.json version updated appropriately
+7. ✅ Git tag created with release notes from CHANGELOG.md
+8. ✅ Changes are committed and pushed successfully
+9. ✅ Git tag is pushed to remote repository
+10. ✅ Repository state is clean and consistent
 
 ## Example Execution
 
@@ -562,16 +750,26 @@ The workflow is successful when:
 ./git-workflow-automation.sh
 
 # Expected output:
-🦊 Starting Reynard Git Workflow Automation...
-📊 Analyzing source code changes...
+🦦 Starting Reynard Git Workflow Automation with Delta...
+📊 Analyzing source code changes with delta...
+🔍 Performing semantic change analysis...
+🛡️  Analyzing security and impact...
+🧪 Analyzing test coverage changes...
 📝 Generating commit message...
-📚 Updating CHANGELOG.md...
-📦 Updating package versions...
+🔍 Determining version bump type...
+📈 Version bump type: minor
+📚 Updating CHANGELOG.md and package versions...
+📦 Current version: 1.2.3
+🎯 New version: 1.3.0
+📝 CHANGELOG.md updated: promoted [Unreleased] to [1.3.0] - 2025-09-15
 🚀 Executing git operations...
-✅ Git workflow completed successfully!
+📋 Previewing changes with delta...
+🔗 Previous version: v1.2.3
+🏷️  Created Git tag: v1.3.0
+✅ Git workflow completed successfully with version v1.3.0 and Git tag!
 ```
 
 ---
 
 _This prompt provides a comprehensive framework for automating Git workflows in the Reynard monorepo, ensuring_
-_consistent, high-quality commits with proper documentation and versioning._
+_consistent, high-quality commits with proper CHANGELOG.md version management, semantic versioning, and Git tagging._

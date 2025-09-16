@@ -922,5 +922,104 @@
     ],
     "created_at": 1758033883.4171057,
     "last_updated": 1758033883.417106
+  },
+  "agent-1758034065-2533": {
+    "agent_id": "agent-1758034065-2533",
+    "spirit": "fox",
+    "style": "foundation",
+    "dominant_traits": [
+      "protectiveness",
+      "cunning",
+      "perfectionism"
+    ],
+    "personality_summary": "Strategic and cunning, with a focus on elegant solutions and clever problem-solving. Shows unique personality traits.",
+    "behavioral_patterns": {
+      "activity_level": 0.3101587317518944,
+      "social_tendency": 0.7771213943467653,
+      "learning_rate": 0.7281383694353849,
+      "creativity_index": 0.06089536884638708,
+      "aggression_level": 0.09872842667092267,
+      "cooperation_tendency": 0.6501438911252408
+    },
+    "communication_style": {
+      "tone": "strategic and cunning",
+      "approach": "calculated and precise",
+      "emphasis": "elegant solutions and clever insights",
+      "charisma_level": 0.7823568627459841,
+      "formality": 0.7,
+      "directness": 0.3101587317518944
+    },
+    "specializations": [
+      "strategist",
+      "scout"
+    ],
+    "created_at": 1758034065.57874,
+    "last_updated": 1758034065.57874
+  },
+  "agent-1758034459-9424": {
+    "agent_id": "agent-1758034459-9424",
+    "spirit": "fox",
+    "style": "foundation",
+    "dominant_traits": [
+      "empathy",
+      "playfulness",
+      "adaptability"
+    ],
+    "personality_summary": "Strategic and cunning, with a focus on elegant solutions and clever problem-solving. Shows deep understanding of others.",
+    "behavioral_patterns": {
+      "activity_level": 0.15230236006500175,
+      "social_tendency": 0.8688180140169779,
+      "learning_rate": 0.30897040677745,
+      "creativity_index": 0.41952729982046644,
+      "aggression_level": 0.7381975216356264,
+      "cooperation_tendency": 0.5180103405336166
+    },
+    "communication_style": {
+      "tone": "strategic and cunning",
+      "approach": "calculated and precise",
+      "emphasis": "elegant solutions and clever insights",
+      "charisma_level": 0.5854817669344614,
+      "formality": 0.5,
+      "directness": 0.15230236006500175
+    },
+    "specializations": [
+      "hunter",
+      "scout"
+    ],
+    "created_at": 1758034459.095307,
+    "last_updated": 1758034459.095307
+  },
+  "agent-1758034558-3929": {
+    "agent_id": "agent-1758034558-3929",
+    "spirit": "fox",
+    "style": "foundation",
+    "dominant_traits": [
+      "creativity",
+      "aggression",
+      "loyalty"
+    ],
+    "personality_summary": "Strategic and cunning, with a focus on elegant solutions and clever problem-solving. Shows innovative thinking and artistic flair.",
+    "behavioral_patterns": {
+      "activity_level": 0.1937687385801231,
+      "social_tendency": 0.7607761205305787,
+      "learning_rate": 0.19027115710380177,
+      "creativity_index": 0.8663233793790648,
+      "aggression_level": 0.8484370928846805,
+      "cooperation_tendency": 0.2128466267454672
+    },
+    "communication_style": {
+      "tone": "strategic and cunning",
+      "approach": "calculated and precise",
+      "emphasis": "elegant solutions and clever insights",
+      "charisma_level": 0.0742928231159733,
+      "formality": 0.5,
+      "directness": 0.1937687385801231
+    },
+    "specializations": [
+      "healer",
+      "artist"
+    ],
+    "created_at": 1758034558.8739028,
+    "last_updated": 1758034558.8739028
   }
 }
