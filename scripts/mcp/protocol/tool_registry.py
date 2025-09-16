@@ -12,6 +12,7 @@ from enum import Enum
 from typing import Any, Awaitable, Callable, Dict, Set, Union
 
 from config.tool_config import ToolConfigManager, ToolCategory
+from services.tool_config_service import ToolConfigService
 
 
 class ToolExecutionType(Enum):
@@ -35,10 +36,11 @@ class ToolHandler:
 class ToolRegistry:
     """Centralized tool registry for routing with dynamic loading."""
 
-    def __init__(self, config_manager: ToolConfigManager = None) -> None:
+    def __init__(self, config_manager: ToolConfigManager = None, tool_config_service: ToolConfigService = None) -> None:
         self._handlers: dict[str, ToolHandler] = {}
         self._category_tools: dict[str, set[str]] = {}
         self._config_manager = config_manager or ToolConfigManager()
+        self._tool_config_service = tool_config_service or ToolConfigService()
         self._config = self._config_manager.load_config()
 
     def register_tool(
@@ -103,37 +105,30 @@ class ToolRegistry:
     def is_tool_enabled(self, tool_name: str) -> bool:
         """Check if a tool is enabled."""
         return (tool_name in self._handlers and 
-                self._handlers[tool_name].enabled)
+                self._handlers[tool_name].enabled and
+                self._tool_config_service.is_tool_enabled(tool_name))
 
     def enable_tool(self, tool_name: str) -> bool:
         """Enable a tool."""
         if tool_name in self._handlers:
             self._handlers[tool_name].enabled = True
-            self._config.enable_tool(tool_name)
-            self._config_manager.save_config()
-            return True
+            return self._tool_config_service.enable_tool(tool_name)
         return False
 
     def disable_tool(self, tool_name: str) -> bool:
         """Disable a tool."""
         if tool_name in self._handlers:
             self._handlers[tool_name].enabled = False
-            self._config.disable_tool(tool_name)
-            self._config_manager.save_config()
-            return True
+            return self._tool_config_service.disable_tool(tool_name)
         return False
 
     def toggle_tool(self, tool_name: str) -> bool:
         """Toggle a tool's enabled state."""
         if tool_name in self._handlers:
-            new_state = not self._handlers[tool_name].enabled
-            self._handlers[tool_name].enabled = new_state
-            if new_state:
-                self._config.enable_tool(tool_name)
-            else:
-                self._config.disable_tool(tool_name)
-            self._config_manager.save_config()
-            return new_state
+            success = self._tool_config_service.toggle_tool(tool_name)
+            if success:
+                self._handlers[tool_name].enabled = self._tool_config_service.is_tool_enabled(tool_name)
+            return success
         return False
 
     def get_tool_config(self, tool_name: str) -> dict[str, Any]:
@@ -157,7 +152,23 @@ class ToolRegistry:
     def reload_config(self) -> None:
         """Reload configuration from file."""
         self._config = self._config_manager.load_config()
+        self._tool_config_service.reload_config()
         # Update handler enabled states
         for tool_name, handler in self._handlers.items():
-            if tool_name in self._config.tools:
-                handler.enabled = self._config.tools[tool_name].enabled
+            handler.enabled = self._tool_config_service.is_tool_enabled(tool_name)
+    
+    def get_tool_configs(self) -> Dict[str, Any]:
+        """Get all tool configurations from the service."""
+        return self._tool_config_service.get_all_tools()
+    
+    def get_tool_stats(self) -> Dict[str, Any]:
+        """Get tool statistics."""
+        return self._tool_config_service.get_tool_stats()
+    
+    def get_tools_by_category(self, category: str) -> Dict[str, Any]:
+        """Get tools by category."""
+        return self._tool_config_service.get_tools_by_category(category)
+    
+    def update_tool_config(self, tool_name: str, config: Dict[str, Any]) -> bool:
+        """Update tool configuration."""
+        return self._tool_config_service.update_tool_config(tool_name, config)

@@ -6,8 +6,9 @@ and service-specific settings.
 """
 
 import os
-from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional
+
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -17,6 +18,7 @@ load_dotenv()
 @dataclass
 class ServiceConfig:
     """Base configuration for services."""
+
     enabled: bool = True
     timeout: int = 30
     retry_attempts: int = 3
@@ -26,7 +28,10 @@ class ServiceConfig:
 @dataclass
 class GatekeeperConfig(ServiceConfig):
     """Gatekeeper authentication configuration."""
-    jwt_secret_key: str = field(default_factory=lambda: os.getenv("JWT_SECRET_KEY", "your-secret-key"))
+
+    jwt_secret_key: str = field(
+        default_factory=lambda: os.getenv("JWT_SECRET_KEY", "your-secret-key")
+    )
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
     refresh_token_expire_days: int = 7
@@ -35,6 +40,7 @@ class GatekeeperConfig(ServiceConfig):
 @dataclass
 class ComfyConfig(ServiceConfig):
     """ComfyUI service configuration."""
+
     api_url: str = "http://127.0.0.1:8188"
     image_dir: str = "generated/comfy"
     reconnect_max_attempts: int = 5
@@ -45,6 +51,7 @@ class ComfyConfig(ServiceConfig):
 @dataclass
 class NLWebConfig(ServiceConfig):
     """NLWeb service configuration."""
+
     base_url: Optional[str] = None
     suggest_timeout_s: float = 1.5
     cache_ttl_s: float = 10.0
@@ -67,6 +74,7 @@ class NLWebConfig(ServiceConfig):
 @dataclass
 class RAGConfig(ServiceConfig):
     """RAG service configuration."""
+
     pg_dsn: str = "postgresql://user:password@localhost:5432/reynard_rag"
     ollama_base_url: str = "http://localhost:11434"
     text_model: str = "mxbai-embed-large"
@@ -87,6 +95,7 @@ class RAGConfig(ServiceConfig):
 @dataclass
 class OllamaConfig(ServiceConfig):
     """Ollama service configuration."""
+
     enabled: bool = True
     base_url: str = "http://localhost:11434"
     timeout_seconds: int = 60
@@ -98,6 +107,7 @@ class OllamaConfig(ServiceConfig):
 @dataclass
 class TTSConfig(ServiceConfig):
     """TTS service configuration."""
+
     provider: str = "ollama"
     model: str = "llama3.2"
     voice: str = "alloy"
@@ -108,67 +118,89 @@ class TTSConfig(ServiceConfig):
 @dataclass
 class AppConfig:
     """Main application configuration."""
-    
+
     # Environment
-    environment: str = field(default_factory=lambda: os.getenv("ENVIRONMENT", "development"))
-    debug: bool = field(default_factory=lambda: os.getenv("DEBUG", "false").lower() == "true")
-    
+    environment: str = field(
+        default_factory=lambda: os.getenv("ENVIRONMENT", "development")
+    )
+    debug: bool = field(
+        default_factory=lambda: os.getenv("DEBUG", "false").lower() == "true"
+    )
+
     # Server settings
     host: str = "0.0.0.0"
     port: int = 8000
-    reload: bool = field(default_factory=lambda: os.getenv("ENVIRONMENT", "development") == "development")
-    
-    # Reload settings
-    reload_debounce_delay: float = field(default_factory=lambda: float(os.getenv("RELOAD_DEBOUNCE_DELAY", "10.0")))
-    reload_include_patterns: List[str] = field(default_factory=lambda: ["*.py", "*.env", "*.json"])
-    reload_exclude_patterns: List[str] = field(default_factory=lambda: [
-        "*.db", "*.log", "generated/*", "__pycache__/*", ".mypy_cache/*", 
-        "*.pyc", "*.pyo", "*.pyd", ".pytest_cache/*", ".coverage", 
-        "htmlcov/*", ".tox/*", "venv/*", "env/*", ".venv/*", 
-        "node_modules/*", ".git/*", "*.tmp", "*.temp", "*.swp", 
-        "*.swo", "*~", ".DS_Store", "Thumbs.db"
-    ])
-    
+    reload: bool = field(
+        default_factory=lambda: os.getenv("ENVIRONMENT", "development") == "development"
+    )
+
     # API settings
     title: str = "Reynard API"
     description: str = "Secure API backend for Reynard applications"
     version: str = "1.0.0"
-    docs_url: Optional[str] = field(default_factory=lambda: "/api/docs" if os.getenv("ENVIRONMENT", "development") == "development" else None)
-    redoc_url: Optional[str] = field(default_factory=lambda: "/api/redoc" if os.getenv("ENVIRONMENT", "development") == "development" else None)
-    
+    docs_url: Optional[str] = field(
+        default_factory=lambda: (
+            "/api/docs"
+            if os.getenv("ENVIRONMENT", "development") == "development"
+            else None
+        )
+    )
+    redoc_url: Optional[str] = field(
+        default_factory=lambda: (
+            "/api/redoc"
+            if os.getenv("ENVIRONMENT", "development") == "development"
+            else None
+        )
+    )
+
     # CORS settings
-    cors_origins: List[str] = field(default_factory=lambda: [
-        "http://localhost:3000",
-        "http://localhost:3001", 
-        "http://localhost:3002",
-        "http://localhost:3003",
-        "http://localhost:3004",
-        "http://localhost:3005",
-        "http://localhost:3006",
-        "http://localhost:3007",
-        "http://localhost:3008",
-        "http://localhost:3009",
-        "http://localhost:3010",
-        "http://localhost:3011",
-        "http://localhost:3012",
-        "http://localhost:3013",
-        "http://localhost:3014",
-        "http://localhost:3015",
-        "http://localhost:5173",
-    ])
-    cors_methods: List[str] = field(default_factory=lambda: ["GET", "POST", "PUT", "DELETE", "OPTIONS"])
-    cors_headers: List[str] = field(default_factory=lambda: [
-        "Accept", "Accept-Language", "Content-Language", "Content-Type",
-        "Authorization", "X-Requested-With"
-    ])
+    cors_origins: List[str] = field(
+        default_factory=lambda: [
+            "http://localhost:3000",
+            "http://localhost:3001",
+            "http://localhost:3002",
+            "http://localhost:3003",
+            "http://localhost:3004",
+            "http://localhost:3005",
+            "http://localhost:3006",
+            "http://localhost:3007",
+            "http://localhost:3008",
+            "http://localhost:3009",
+            "http://localhost:3010",
+            "http://localhost:3011",
+            "http://localhost:3012",
+            "http://localhost:3013",
+            "http://localhost:3014",
+            "http://localhost:3015",
+            "http://localhost:5173",
+        ]
+    )
+    cors_methods: List[str] = field(
+        default_factory=lambda: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    )
+    cors_headers: List[str] = field(
+        default_factory=lambda: [
+            "Accept",
+            "Accept-Language",
+            "Content-Language",
+            "Content-Type",
+            "Authorization",
+            "X-Requested-With",
+        ]
+    )
     cors_expose_headers: List[str] = field(default_factory=lambda: ["X-Total-Count"])
     cors_max_age: int = 3600
-    
+
     # Security settings
-    allowed_hosts: List[str] = field(default_factory=lambda: [
-        "localhost", "127.0.0.1", "testserver", "*.yourdomain.com"
-    ])
-    
+    allowed_hosts: List[str] = field(
+        default_factory=lambda: [
+            "localhost",
+            "127.0.0.1",
+            "testserver",
+            "*.yourdomain.com",
+        ]
+    )
+
     # Service configurations
     gatekeeper: GatekeeperConfig = field(default_factory=GatekeeperConfig)
     comfy: ComfyConfig = field(default_factory=ComfyConfig)
@@ -176,15 +208,15 @@ class AppConfig:
     rag: RAGConfig = field(default_factory=RAGConfig)
     ollama: OllamaConfig = field(default_factory=OllamaConfig)
     tts: TTSConfig = field(default_factory=TTSConfig)
-    
+
     # Startup/shutdown timeouts
     startup_timeout: float = 30.0
     shutdown_timeout: float = 10.0
-    
+
     def is_development(self) -> bool:
         """Check if running in development mode."""
         return self.environment == "development"
-    
+
     def is_production(self) -> bool:
         """Check if running in production mode."""
         return self.environment == "production"
@@ -279,5 +311,5 @@ def get_service_configs() -> Dict[str, Dict[str, Any]]:
             "tts_voice": config.tts.voice,
             "tts_speed": config.tts.speed,
             "tts_format": config.tts.format,
-        }
+        },
     }

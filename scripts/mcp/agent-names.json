@@ -14,5 +14,73 @@
   "agent-1758041784-5178": {
     "name": "Pteronura-Counselor-5",
     "assigned_at": 1758041784.5483186
+  },
+  "test-session": {
+    "name": "Effervescent-Prophet-20",
+    "assigned_at": 1758048205.1069112
+  },
+  "agent-1758048386-6366": {
+    "name": "Graceful-Advisor-25",
+    "assigned_at": 1758048386.7448797
+  },
+  "agent-1758048575-6203": {
+    "name": "Timber-Strategist-8",
+    "assigned_at": 1758048575.1251557
+  },
+  "agent-1758048721-6819": {
+    "name": "Cuddles-Elder-25",
+    "assigned_at": 1758048721.2740672
+  },
+  "test-ecs-integration": {
+    "name": "Prairie-Commander-7",
+    "assigned_at": 1758048886.8775682
+  },
+  "test-ecs-after-restart": {
+    "name": "Snickers-Analyst-30",
+    "assigned_at": 1758048906.552534
+  },
+  "test-agent": {
+    "name": "Animalspirit.fox-Namingstyle.foundation-736",
+    "assigned_at": 1758049065.7472389
+  },
+  "final-ecs-test": {
+    "name": "Animalspirit.wolf-Namingstyle.foundation-634",
+    "assigned_at": 1758049198.671866
+  },
+  "test-comprehensive": {
+    "name": "Bright-Coordinator-21",
+    "assigned_at": 1758049232.5816445
+  },
+  "test-tool-management": {
+    "name": "Animalspirit.otter-Namingstyle.scientific-117",
+    "assigned_at": 1758050003.3238964
+  },
+  "agent-1758050256-2621": {
+    "name": "Animalspirit.otter-Namingstyle.foundation-861",
+    "assigned_at": 1758050256.3541522
+  },
+  "debug-session": {
+    "name": "Animalspirit.otter-Namingstyle.foundation-187",
+    "assigned_at": 1758050544.5269957
+  },
+  "test-refactored-naming": {
+    "name": "Animalspirit.fox-Namingstyle.foundation-468",
+    "assigned_at": 1758050863.6885583
+  },
+  "test-fixed-naming": {
+    "name": "Animalspirit.wolf-Namingstyle.foundation-120",
+    "assigned_at": 1758050887.1185725
+  },
+  "test-clean-naming": {
+    "name": "Animalspirit.wolf-Namingstyle.foundation-743",
+    "assigned_at": 1758050952.8382869
+  },
+  "agent-1758050990-9490": {
+    "name": "Animalspirit.fox-Namingstyle.foundation-713",
+    "assigned_at": 1758050990.875181
+  },
+  "agent-1758051028-1178": {
+    "name": "Animalspirit.otter-Namingstyle.foundation-863",
+    "assigned_at": 1758051028.8640945
   }
 }

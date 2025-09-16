@@ -16,6 +16,7 @@ from typing import Any
 
 from protocol.mcp_handler import MCPHandler
 from protocol.tool_registry import ToolRegistry, ToolExecutionType
+from services.tool_config_service import ToolConfigService
 from agent_naming import AgentNameManager
 from tools.agent_tools import AgentTools
 from tools.bm25_search_tools import BM25SearchTools
@@ -32,6 +33,7 @@ from tools.semantic_file_search_tools import SemanticFileSearchTools
 from tools.utility_tools import UtilityTools
 from tools.version_vscode_tools import VersionVSCodeTools
 from tools.vscode_tasks_tools import VSCodeTasksTools
+from tools.tool_management_tools import ToolManagementTools
 from utils.logging_config import setup_logging
 
 logger = setup_logging()
@@ -44,8 +46,11 @@ class MCPServer:
         # Initialize services
         self.agent_manager = AgentNameManager()
         
+        # Initialize tool configuration service
+        self.tool_config_service = ToolConfigService()
+        
         # Initialize tool registry with configuration management
-        self.tool_registry = ToolRegistry()
+        self.tool_registry = ToolRegistry(tool_config_service=self.tool_config_service)
 
         # Initialize tool handlers
         self.ecs_agent_tools = ECSAgentTools()
@@ -63,6 +68,7 @@ class MCPServer:
         self.playwright_tools = PlaywrightTools()
         self.vscode_tasks_tools = VSCodeTasksTools()
         self.config_tools = ConfigTools(self.tool_registry)
+        self.tool_management_tools = ToolManagementTools(self.tool_registry)
 
         # Register all tools with the registry
         self._register_all_tools()
@@ -106,7 +112,7 @@ class MCPServer:
         self.tool_registry.register_tool(
             "agent_startup_sequence", 
             self.agent_tools.agent_startup_sequence, 
-            ToolExecutionType.SYNC, 
+            ToolExecutionType.ASYNC, 
             "agent"
         )
         self.tool_registry.register_tool(
@@ -224,8 +230,199 @@ class MCPServer:
             "utility"
         )
         
-        # Register other tool categories (simplified for brevity)
-        # In a full implementation, you would register all tools from each category
+        # Register tool management tools
+        self.tool_registry.register_tool(
+            "get_tool_configs", 
+            self.tool_management_tools.get_tool_configs, 
+            ToolExecutionType.SYNC, 
+            "utility"
+        )
+        self.tool_registry.register_tool(
+            "get_tool_status", 
+            self.tool_management_tools.get_tool_status, 
+            ToolExecutionType.SYNC, 
+            "utility"
+        )
+        self.tool_registry.register_tool(
+            "enable_tool", 
+            self.tool_management_tools.enable_tool, 
+            ToolExecutionType.SYNC, 
+            "utility"
+        )
+        self.tool_registry.register_tool(
+            "disable_tool", 
+            self.tool_management_tools.disable_tool, 
+            ToolExecutionType.SYNC, 
+            "utility"
+        )
+        self.tool_registry.register_tool(
+            "toggle_tool", 
+            self.tool_management_tools.toggle_tool, 
+            ToolExecutionType.SYNC, 
+            "utility"
+        )
+        self.tool_registry.register_tool(
+            "get_tools_by_category", 
+            self.tool_management_tools.get_tools_by_category, 
+            ToolExecutionType.SYNC, 
+            "utility"
+        )
+        self.tool_registry.register_tool(
+            "update_tool_config", 
+            self.tool_management_tools.update_tool_config, 
+            ToolExecutionType.SYNC, 
+            "utility"
+        )
+        
+        # Register linting tools
+        self.tool_registry.register_tool(
+            "lint_frontend", 
+            self.linting_tools.lint_frontend, 
+            ToolExecutionType.ASYNC, 
+            "linting"
+        )
+        self.tool_registry.register_tool(
+            "lint_python", 
+            self.linting_tools.lint_python, 
+            ToolExecutionType.ASYNC, 
+            "linting"
+        )
+        self.tool_registry.register_tool(
+            "lint_markdown", 
+            self.linting_tools.lint_markdown, 
+            ToolExecutionType.ASYNC, 
+            "linting"
+        )
+        self.tool_registry.register_tool(
+            "run_all_linting", 
+            self.linting_tools.run_all_linting, 
+            ToolExecutionType.ASYNC, 
+            "linting"
+        )
+        
+        # Register formatting tools
+        self.tool_registry.register_tool(
+            "format_frontend", 
+            self.linting_tools.format_frontend, 
+            ToolExecutionType.ASYNC, 
+            "formatting"
+        )
+        self.tool_registry.register_tool(
+            "format_python", 
+            self.linting_tools.format_python, 
+            ToolExecutionType.ASYNC, 
+            "formatting"
+        )
+        
+        # Register search tools
+        self.tool_registry.register_tool(
+            "search_files", 
+            self.file_search_tools.search_files, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "semantic_search", 
+            self.semantic_file_search_tools.semantic_search, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "search_enhanced", 
+            self.enhanced_bm25_search_tools._handle_search_enhanced, 
+            ToolExecutionType.SYNC, 
+            "search"
+        )
+        
+        # Register visualization tools
+        self.tool_registry.register_tool(
+            "validate_mermaid_diagram", 
+            self.mermaid_tools.validate_mermaid_diagram, 
+            ToolExecutionType.SYNC, 
+            "visualization"
+        )
+        self.tool_registry.register_tool(
+            "render_mermaid_to_svg", 
+            self.mermaid_tools.render_mermaid_to_svg, 
+            ToolExecutionType.SYNC, 
+            "visualization"
+        )
+        self.tool_registry.register_tool(
+            "open_image", 
+            self.image_viewer_tools.open_image, 
+            ToolExecutionType.SYNC, 
+            "visualization"
+        )
+        
+        # Register security tools
+        self.tool_registry.register_tool(
+            "scan_security", 
+            self.linting_tools.scan_security, 
+            ToolExecutionType.ASYNC, 
+            "security"
+        )
+        self.tool_registry.register_tool(
+            "scan_security_fast", 
+            self.linting_tools.scan_security_fast, 
+            ToolExecutionType.ASYNC, 
+            "security"
+        )
+        
+        # Register version tools
+        self.tool_registry.register_tool(
+            "get_versions", 
+            self.version_vscode_tools.get_versions, 
+            ToolExecutionType.SYNC, 
+            "version"
+        )
+        self.tool_registry.register_tool(
+            "get_python_version", 
+            self.version_vscode_tools.get_python_version, 
+            ToolExecutionType.SYNC, 
+            "version"
+        )
+        
+        # Register VS Code tools
+        self.tool_registry.register_tool(
+            "get_vscode_active_file", 
+            self.version_vscode_tools.get_vscode_active_file, 
+            ToolExecutionType.SYNC, 
+            "vscode"
+        )
+        self.tool_registry.register_tool(
+            "discover_vscode_tasks", 
+            self.vscode_tasks_tools.discover_tasks, 
+            ToolExecutionType.SYNC, 
+            "vscode"
+        )
+        
+        # Register Playwright tools
+        self.tool_registry.register_tool(
+            "playwright_screenshot", 
+            self.playwright_tools.take_webpage_screenshot, 
+            ToolExecutionType.SYNC, 
+            "playwright"
+        )
+        self.tool_registry.register_tool(
+            "playwright_navigate", 
+            self.playwright_tools.scrape_webpage_content, 
+            ToolExecutionType.SYNC, 
+            "playwright"
+        )
+        
+        # Register monolith detection tools
+        self.tool_registry.register_tool(
+            "detect_monoliths", 
+            self.monolith_detection_tools._detect_monoliths, 
+            ToolExecutionType.SYNC, 
+            "monolith"
+        )
+        self.tool_registry.register_tool(
+            "analyze_file_complexity", 
+            self.monolith_detection_tools._analyze_file_complexity, 
+            ToolExecutionType.SYNC, 
+            "monolith"
+        )
         
         logger.info(f"Registered {len(self.tool_registry.list_all_tools())} tools with registry")
 
@@ -253,7 +450,7 @@ class MCPServer:
                 tool_name = params.get("name")
                 arguments = params.get("arguments", {})
                 call_result: dict[str, Any] = await self.mcp_handler.handle_tool_call(
-                    tool_name, arguments, request_id
+                    tool_name, arguments, request_id, request
                 )
 
                 # Nudge ECS time forward for every MCP action

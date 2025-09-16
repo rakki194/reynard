@@ -43,7 +43,6 @@ dependencies = [
     "pgvector",
     "argon2-cffi",
     "cryptography",
-    "watchdog",
     "gatekeeper @ file://../libraries/gatekeeper",
 ]
 

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "",
+  "last_updated": "2025-09-16T21:28:10.395047",
   "tools": {
     "generate_agent_name": {
       "name": "generate_agent_name",
@@ -327,6 +327,62 @@
       "category": "monolith",
       "enabled": true,
       "description": "Deep-dive analysis of a specific file's complexity metrics",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_tool_configs": {
+      "name": "get_tool_configs",
+      "category": "utility",
+      "enabled": true,
+      "description": "Get all tool configurations from the service",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_tool_status": {
+      "name": "get_tool_status",
+      "category": "utility",
+      "enabled": true,
+      "description": "Get status of a specific tool or all tools",
+      "dependencies": [],
+      "config": {}
+    },
+    "enable_tool": {
+      "name": "enable_tool",
+      "category": "utility",
+      "enabled": true,
+      "description": "Enable a specific tool",
+      "dependencies": [],
+      "config": {}
+    },
+    "disable_tool": {
+      "name": "disable_tool",
+      "category": "utility",
+      "enabled": true,
+      "description": "Disable a specific tool",
+      "dependencies": [],
+      "config": {}
+    },
+    "toggle_tool": {
+      "name": "toggle_tool",
+      "category": "utility",
+      "enabled": true,
+      "description": "Toggle a tool's enabled state",
+      "dependencies": [],
+      "config": {}
+    },
+    "get_tools_by_category": {
+      "name": "get_tools_by_category",
+      "category": "utility",
+      "enabled": true,
+      "description": "Get tools by category",
+      "dependencies": [],
+      "config": {}
+    },
+    "update_tool_config": {
+      "name": "update_tool_config",
+      "category": "utility",
+      "enabled": true,
+      "description": "Update tool configuration",
       "dependencies": [],
       "config": {}
     }

@@ -17,6 +17,33 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/mcp/tool-config", tags=["mcp_tool_config"])
 
 
+def _generate_mcp_admin_token() -> str:
+    """Generate an admin token for MCP server communication."""
+    import jwt
+    import time
+    from datetime import datetime, timedelta, timezone
+    
+    # MCP token configuration (should match MCP server)
+    MCP_JWT_SECRET = "reynard-mcp-secret-key-2025"
+    MCP_JWT_ALGORITHM = "HS256"
+    MCP_TOKEN_EXPIRE_HOURS = 24
+    
+    # Create token payload
+    expire = datetime.now(timezone.utc) + timedelta(hours=MCP_TOKEN_EXPIRE_HOURS)
+    payload = {
+        "client_id": "backend-admin",
+        "permissions": ["mcp:admin", "mcp:tools:manage", "mcp:config:read", "mcp:config:write"],
+        "exp": expire.timestamp(),
+        "iat": time.time(),
+        "iss": "reynard-mcp-server",
+        "aud": "reynard-backend"
+    }
+    
+    # Generate token
+    token = jwt.encode(payload, MCP_JWT_SECRET, algorithm=MCP_JWT_ALGORITHM)
+    return token
+
+
 class ToolConfigResponse(BaseModel):
     """Response model for tool configuration."""
     
@@ -54,39 +81,28 @@ class ToolToggleRequest(BaseModel):
 async def _get_mcp_tool_configs() -> Dict[str, Any]:
     """Get tool configurations from MCP server."""
     try:
-        # This would connect to the MCP server to get configurations
-        # For now, we'll return a mock response
-        return {
-            "tools": {
-                "generate_agent_name": {
-                    "name": "generate_agent_name",
-                    "category": "agent",
-                    "enabled": True,
-                    "description": "Generate robot names with animal spirit themes",
-                    "dependencies": [],
-                    "config": {}
-                },
-                "lint_frontend": {
-                    "name": "lint_frontend",
-                    "category": "linting",
-                    "enabled": True,
-                    "description": "ESLint for TypeScript/JavaScript (with auto-fix)",
-                    "dependencies": [],
-                    "config": {}
-                },
-                "get_ecs_agent_status": {
-                    "name": "get_ecs_agent_status",
-                    "category": "ecs",
-                    "enabled": True,
-                    "description": "Get status of all agents in the ECS system",
-                    "dependencies": [],
-                    "config": {}
-                }
-            },
-            "total_tools": 3,
-            "enabled_tools": 3,
-            "disabled_tools": 0
-        }
+        # Import the MCP communication function
+        from .tools_endpoints import _send_mcp_request
+        
+        # Generate admin token for MCP server communication
+        admin_token = _generate_mcp_admin_token()
+        
+        # Call the MCP server to get tool configurations
+        result = await _send_mcp_request("tools/call", {
+            "name": "get_tool_configs",
+            "arguments": {},
+            "auth_token": admin_token
+        })
+        
+        if result and result.get("success"):
+            # The _send_mcp_request function already extracts the result
+            return result
+        else:
+            logger.error(f"MCP server returned error: {result}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="MCP server returned error"
+            )
     except Exception as e:
         logger.error(f"Failed to get MCP tool configurations: {e}")
         raise HTTPException(
@@ -98,10 +114,36 @@ async def _get_mcp_tool_configs() -> Dict[str, Any]:
 async def _update_mcp_tool_config(tool_name: str, enabled: Optional[bool] = None, config: Optional[Dict[str, Any]] = None) -> bool:
     """Update tool configuration in MCP server."""
     try:
-        # This would connect to the MCP server to update configurations
-        # For now, we'll simulate success
-        logger.info(f"Updating tool {tool_name}: enabled={enabled}, config={config}")
-        return True
+        # Import the MCP communication function
+        from .tools_endpoints import _send_mcp_request
+        
+        # Generate admin token for MCP server communication
+        admin_token = _generate_mcp_admin_token()
+        
+        # Determine which MCP tool to call based on the operation
+        if enabled is not None:
+            tool_method = "enable_tool" if enabled else "disable_tool"
+            result = await _send_mcp_request("tools/call", {
+                "name": tool_method,
+                "arguments": {"tool_name": tool_name},
+                "auth_token": admin_token
+            })
+        elif config is not None:
+            result = await _send_mcp_request("tools/call", {
+                "name": "update_tool_config",
+                "arguments": {"tool_name": tool_name, "config": config},
+                "auth_token": admin_token
+            })
+        else:
+            logger.warning(f"No operation specified for tool {tool_name}")
+            return False
+        
+        if result and result.get("success"):
+            logger.info(f"Successfully updated tool {tool_name}: enabled={enabled}, config={config}")
+            return True
+        else:
+            logger.error(f"MCP server returned error for tool {tool_name}: {result}")
+            return False
     except Exception as e:
         logger.error(f"Failed to update MCP tool configuration for {tool_name}: {e}")
         raise HTTPException(
@@ -125,11 +167,14 @@ async def get_tool_configurations():
         for name, config in config_data["tools"].items():
             tools[name] = ToolConfigResponse(**config)
         
+        # Extract stats from the MCP response
+        stats = config_data.get("stats", {})
+        
         return ToolConfigListResponse(
             tools=tools,
-            total_tools=config_data["total_tools"],
-            enabled_tools=config_data["enabled_tools"],
-            disabled_tools=config_data["disabled_tools"]
+            total_tools=stats.get("total_tools", 0),
+            enabled_tools=stats.get("enabled_tools", 0),
+            disabled_tools=stats.get("disabled_tools", 0)
         )
         
     except HTTPException:

@@ -8,10 +8,11 @@ Follows the 140-line axiom and modular architecture principles.
 """
 
 import logging
-from typing import Any
+from typing import Any, Optional
 
 from tools.definitions import get_tool_definitions
 from tools.config_definitions import get_config_tool_definitions
+from middleware.auth_middleware import mcp_auth_middleware
 
 from .tool_router import ToolRouter
 from .tool_registry import ToolRegistry
@@ -65,10 +66,24 @@ class MCPHandler:
         }
 
     async def handle_tool_call(
-        self, tool_name: str, arguments: dict[str, Any], request_id: Any
+        self, tool_name: str, arguments: dict[str, Any], request_id: Any, request: Optional[dict] = None
     ) -> dict[str, Any]:
-        """Handle tool call request."""
+        """Handle tool call request with authentication."""
         try:
+            # Authenticate request if authentication is required
+            if request and self._requires_auth(tool_name):
+                token_payload = mcp_auth_middleware.authenticate_request(request)
+                if not token_payload:
+                    return mcp_auth_middleware.create_error_response(
+                        "Authentication required", request_id
+                    )
+                
+                # Authorize tool access
+                if not mcp_auth_middleware.authorize_tool_access(token_payload, tool_name):
+                    return mcp_auth_middleware.create_error_response(
+                        f"Access denied for tool '{tool_name}'", request_id
+                    )
+            
             # Check if tool is enabled
             if not self.tool_registry.is_tool_enabled(tool_name):
                 return {
@@ -116,3 +131,18 @@ class MCPHandler:
             "id": request_id,
             "error": {"code": -32603, "message": f"Internal error: {error!s}"},
         }
+    
+    def _requires_auth(self, tool_name: str) -> bool:
+        """Check if a tool requires authentication."""
+        # Tool management tools require authentication
+        management_tools = {
+            "get_tool_configs",
+            "get_tool_status",
+            "enable_tool", 
+            "disable_tool",
+            "toggle_tool",
+            "get_tools_by_category",
+            "update_tool_config",
+            "reload_config"
+        }
+        return tool_name in management_tools

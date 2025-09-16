@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+- **Deprecated Optimization Files**: Removed outdated optimization documentation files (OPTIMIZATION_COMPLETE.md, PEER_DEPENDENCY_OPTIMIZATION.md, PHASE2_PROGRESS.md, PHASE3_PROGRESS.md) as part of codebase cleanup
+- **Reload Watcher System**: Removed deprecated reload watcher system and associated test files from backend, replaced with modern development workflow
+- **Packages README**: Removed redundant packages/README.md file, documentation consolidated into main project documentation
+
+### Fixed
+
+### Security
+
+## [0.8.0] - 2025-09-16
+
 - **ECS World Status API Fix**: Fixed Pydantic validation error in ECS world status endpoint by making entity_count, system_count, agent_count, and mature_agents fields optional in WorldStatusResponse model. Updated service to return default values (0) when world is not initialized, ensuring consistent API responses. Resolves 500 Internal Server Error when accessing /api/ecs/status endpoint. (Strategic-Fox-42)
 - **Debounced Reload System**: Implemented intelligent file watching with configurable grace periods for the backend development server. Added 10-second debounce timer that pools file changes before triggering reloads, preventing constant server restarts during rapid file modifications. Includes comprehensive file pattern filtering, graceful shutdown handling, and detailed logging of reload events. (Strategic-Fox-42)
 - **MCP Server Documentation Overhaul**: Comprehensive update to MCP server README.md with complete documentation of all 88 tools across 12 categories, detailed ECS world simulation system, agent naming system with 30+ spirits and 6 naming styles, service layer architecture with 19 specialized services, protocol layer documentation, and comprehensive testing infrastructure. Updated tool counts, added missing tool categories, and created legendary conclusion celebrating the apex predator development toolkit. (Lutra-Sage-10)
