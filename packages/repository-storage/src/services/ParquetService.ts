@@ -5,7 +5,7 @@
  * columnar analytics, and integration with the unified repository system.
  */
 
-import type { BaseAIService } from "reynard-ai-shared";
+import { BaseAIService } from "reynard-ai-shared";
 import type { ColumnStatistics, DataColumn, DataSchema, FileMetadata } from "../types";
 import { RepositoryError } from "../types";
 

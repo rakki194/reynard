@@ -161,7 +161,7 @@ export class ModelDownloadManager implements IModelDownloadManager {
       // Mark as downloaded
       progress.status = ModelStatus.DOWNLOADED;
       progress.progress = 100;
-      progress.currentFile = undefined;
+      progress.currentFile = undefined as string | undefined;
       progress.estimatedTimeRemaining = 0;
       this._downloadProgress.set(modelId, progress);
 

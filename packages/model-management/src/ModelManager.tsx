@@ -14,7 +14,7 @@
 
 import { Component, Show } from "solid-js";
 import { HealthOverview, ModelsGrid } from "./ModelManagerComponents";
-import { useModelManager } from "../composables/useModelManager";
+import { useModelManager } from "./useModelManager";
 import "./ModelManager.css";
 
 export interface ModelManagerProps {

@@ -4,8 +4,8 @@
  */
 
 import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Tabs, TabItem } from "../Tabs";
-import { Button } from "../primitives";
+import { Tabs, TabItem } from "reynard-components-core/primitives";
+import { Button } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { PackageDiscoveryPanel } from "./PackageDiscoveryPanel";
 import { PackageInstallationPanel } from "./PackageInstallationPanel";

@@ -4,7 +4,7 @@
  */
 
 import { Component, Accessor, Setter } from "solid-js";
-import { Slider } from "../primitives/Slider";
+import { Slider } from "reynard-components-core/primitives";
 import "./TagComponents.css";
 
 interface TagInputSectionProps {

@@ -4,7 +4,7 @@
  */
 
 import { Chart } from "reynard-charts";
-import { Button } from "../primitives";
+import { Button } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { Component, For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 

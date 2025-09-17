@@ -4,10 +4,8 @@
  */
 
 import { Component, Show, createEffect, createSignal, onMount } from "solid-js";
-import { Button } from "../primitives/Button";
-import { Select } from "../primitives/Select";
-import { TextField } from "../primitives/TextField";
-import { Toggle } from "../primitives";
+import { Button, Select, TextField } from "reynard-components-core/primitives";
+import { Toggle } from "reynard-components-core/primitives";
 
 export interface PerformanceExportTabProps {
   performanceHistory: Array<{

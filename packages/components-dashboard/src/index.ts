@@ -6,10 +6,10 @@
  */
 
 // Dashboard exports
-export * from "./dashboard/index.js";
+export * from "./dashboard/index";
 
 // Debug exports
-export * from "./debug/index.js";
+export * from "./debug/index";
 
 // Example exports
-export * from "./examples/index.js";
+export * from "./examples/index";

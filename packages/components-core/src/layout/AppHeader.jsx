@@ -1,0 +1,138 @@
+/**
+ * AppHeader Component
+ * Modern header with navigation and theme selector
+ */
+import { useNotifications } from "reynard-core";
+import { fluentIconsPackage } from "reynard-fluent-icons";
+import { getAvailableThemes, useTheme } from "reynard-themes";
+import { createEffect, createMemo, createSignal, For } from "solid-js";
+export const AppHeader = () => {
+    // Use createMemo to defer context access and handle errors gracefully
+    const themeContext = createMemo(() => {
+        try {
+            return useTheme();
+        }
+        catch (error) {
+            console.error("AppHeader: Theme context not available", error);
+            // Return a fallback theme context
+            return {
+                theme: "light",
+                setTheme: (theme) => {
+                    console.warn("Theme context not available, cannot set theme:", theme);
+                },
+                getTagStyle: () => ({}),
+                isDark: false,
+                isHighContrast: false,
+            };
+        }
+    });
+    const notifications = createMemo(() => {
+        try {
+            return useNotifications();
+        }
+        catch (error) {
+            console.error("AppHeader: Notifications context not available", error);
+            return {
+                notify: (message, type) => {
+                    console.warn("Notifications context not available:", message, type);
+                },
+            };
+        }
+    });
+    const notify = createMemo(() => notifications().notify);
+    const [isMenuOpen, setIsMenuOpen] = createSignal(false);
+    const availableThemes = getAvailableThemes();
+    // Debug logging to track theme changes
+    createEffect(() => {
+        console.log("AppHeader - Current theme:", themeContext().theme);
+        console.log("AppHeader - Available themes:", availableThemes);
+    });
+    const handleThemeChange = (themeName) => {
+        themeContext().setTheme(themeName);
+        notify()(`Switched to ${themeName} theme!`, "info");
+    };
+    const scrollToSection = (sectionId) => {
+        if (sectionId === "oklch-showcase" || sectionId === "charts-showcase" || sectionId === "threed-showcase") {
+            // Navigate to dedicated showcase pages
+            window.location.hash = sectionId;
+            setIsMenuOpen(false);
+        }
+        else {
+            // Scroll to section on current page
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+                setIsMenuOpen(false);
+            }
+        }
+    };
+    return (<header class="app-header">
+      <div class="header-content">
+        <div class="header-brand">
+          <div class="brand-logo">
+            {fluentIconsPackage.getIcon("fox") && (<div class="logo-icon" 
+        // eslint-disable-next-line solid/no-innerhtml
+        innerHTML={fluentIconsPackage.getIcon("fox")?.outerHTML}/>)}
+          </div>
+          <div class="brand-text">
+            <h1 class="brand-title">Reynard</h1>
+            <span class="brand-subtitle">Starter Template</span>
+          </div>
+        </div>
+
+        <nav class="header-nav">
+          <button class="nav-toggle" onClick={() => setIsMenuOpen(!isMenuOpen())} aria-label="Toggle navigation menu">
+            {fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu") && (<span 
+        // eslint-disable-next-line solid/no-innerhtml
+        innerHTML={fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu")?.outerHTML}/>)}
+          </button>
+
+          <div class={`nav-menu ${isMenuOpen() ? "open" : ""}`}>
+            <button class="nav-link" onClick={() => scrollToSection("hero")}>
+              Home
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("dashboard")}>
+              Dashboard
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("icons")}>
+              Icons
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("themes")}>
+              Themes
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("oklch-demo")}>
+              OKLCH Colors
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("oklch-showcase")}>
+              OKLCH Showcase
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("charts-showcase")}>
+              Charts Showcase
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("threed-showcase")}>
+              3D Showcase
+            </button>
+            <button class="nav-link" onClick={() => {
+            window.location.hash = "#roguelike-game";
+            setIsMenuOpen(false);
+        }}>
+              🦊 Rogue-like Game
+            </button>
+            <button class="nav-link" onClick={() => scrollToSection("playground")}>
+              Playground
+            </button>
+          </div>
+        </nav>
+
+        <div class="header-actions">
+          <div class="theme-quick-select">
+            <select value={themeContext().theme} onChange={e => handleThemeChange(e.target.value)} class="theme-select" title="Quick theme switch">
+              <For each={availableThemes}>
+                {themeConfig => <option value={themeConfig.name}>{themeConfig.displayName}</option>}
+              </For>
+            </select>
+          </div>
+        </div>
+      </div>
+    </header>);
+};

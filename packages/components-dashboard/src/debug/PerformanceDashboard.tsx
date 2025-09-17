@@ -5,8 +5,8 @@
 
 import { usePerformanceMonitor } from "reynard-composables";
 import { Component, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import { Button } from "../primitives/Button";
-import { Tabs, type TabItem } from "../Tabs";
+import { Button } from "reynard-components-core/primitives";
+import { Tabs, type TabItem } from "reynard-components-core/primitives";
 import { PerformanceAlertsTab } from "./PerformanceAlertsTab";
 import { PerformanceExportTab } from "./PerformanceExportTab";
 import { PerformanceMemoryTab } from "./PerformanceMemoryTab";

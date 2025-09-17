@@ -5,7 +5,7 @@
  * Supports text, image, audio, and data embeddings with vector storage and indexing.
  */
 
-import type { BaseAIService } from "reynard-ai-shared";
+import { BaseAIService } from "reynard-ai-shared";
 import type { ModalityType, SearchOptions, VectorEmbedding } from "../types";
 import { RepositoryError } from "../types";
 

@@ -4,7 +4,7 @@
  */
 
 import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button } from "../primitives";
+import { Button } from "reynard-components-core/primitives";
 
 export interface PerformanceMemoryTabProps {
   memoryUsage: number;

@@ -6,11 +6,47 @@ the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## [Unreleased]
 
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [0.8.1] - 2025-09-17
+
+**⚠️ REFACTORING SNAPSHOT**: This release represents a major refactoring state with extensive TypeScript compilation outputs and cleanup. The project is in a transitional state during architectural improvements.
+
+### Added
+
+- **Single Authoritative ECS Architecture**: Implemented centralized ECS World management through FastAPI backend
+- **ECS Client Service**: Created HTTP client service for MCP servers to connect to authoritative ECS World
+- **Authentication Client**: Added authentication and connection management for MCP-FastAPI communication
+- **ECS API Endpoints**: Comprehensive REST API endpoints for all ECS operations (agents, breeding, lineage, etc.)
+- **ECS API Documentation**: Complete API documentation for all ECS endpoints with examples and error handling
+- **MCP ECS Integration**: Updated MCP tools to use single authoritative ECS World via HTTP client
+- **Backend ECS Service**: Integrated ECS World as singleton service in FastAPI backend lifespan manager
+- **VS Code Workspace Enhancement**: Added MCP Server, Agent Naming, ECS World, and other notable packages as custom locations in workspace (Anuk-Counselor-48)
+- **Vitest Workspace Configuration**: Implemented centralized Vitest workspace configuration to resolve "multiple projects" warning, reducing from 115+ individual config files to single workspace config with projects pattern (Sea-Philosopher-20)
+- **ECS World README Update**: Comprehensive update to ECS World README with accurate code examples, tested functionality, and proper MCP integration patterns (Powerful-Master-8)
+- **Comprehensive Games Ecosystem Organization**: Created organized workspace structure with all games-related packages, examples, and templates categorized under games section (Anuk-Counselor-48)
+
+### Changed
+
+- **ECS World Integration**: Updated ECS World to operate as single authoritative source via FastAPI backend (Ripple-Strategist-5)
+- **MCP ECS Tools**: Refactored MCP ECS agent tools to use FastAPI backend instead of local ECS instances (Ripple-Strategist-5)
+- **Backend Dependencies**: Added reynard-ecs-world dependency to backend pyproject.toml for proper integration (Ripple-Strategist-5)
+- **Documentation Updates**: Updated MCP server, backend, and main README documentation to reflect single authoritative ECS architecture (Ripple-Strategist-5)
+- **ECS World README**: Updated ECS World package documentation with single authoritative architecture guidance (Ripple-Strategist-5)
 
 ### Deprecated
 

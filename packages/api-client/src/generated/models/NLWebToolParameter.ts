@@ -80,7 +80,7 @@ export function NLWebToolParameterFromJSONTyped(json: any, ignoreDiscriminator: 
     type: json["type"],
     description: json["description"],
     required: json["required"] == null ? undefined : json["required"],
-    _default: json["default"] == null ? undefined : FromJSON(json["default"]),
+    _default: json["default"] == null ? undefined : json["default"],
     constraints: json["constraints"] == null ? undefined : json["constraints"],
   };
 }
@@ -102,7 +102,7 @@ export function NLWebToolParameterToJSONTyped(
     type: value["type"],
     description: value["description"],
     required: value["required"],
-    default: ToJSON(value["_default"]),
+    default: value["_default"],
     constraints: value["constraints"],
   };
 }

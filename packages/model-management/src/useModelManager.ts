@@ -6,8 +6,8 @@
  */
 
 import { createSignal, onMount, onCleanup } from "solid-js";
-import { createBackendAnnotationManager } from "reynard-annotating";
-import type { ModelInfo, SystemHealth } from "../components/ModelManager";
+import { BackendAnnotationManager } from "reynard-annotating";
+import type { ModelInfo, SystemHealth } from "./ModelManager";
 import {
   createDefaultModels,
   extractLoadedModels,

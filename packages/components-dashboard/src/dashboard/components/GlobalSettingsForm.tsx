@@ -4,9 +4,9 @@
  */
 
 import { Component } from "solid-js";
-import { Button, TextField, Select } from "../../primitives";
-import { Toggle } from "../../primitives";
-import { Icon } from "../../icons";
+import { Button, TextField, Select } from "reynard-components-core/primitives";
+import { Toggle } from "reynard-components-core/primitives";
+import { Icon } from "reynard-fluent-icons";
 import type { GlobalSettingsFormProps } from "../types/PackageConfigurationTypes";
 
 export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = props => {

@@ -91,7 +91,7 @@ export abstract class BaseModel {
 
     try {
       this._status = ModelStatus.LOADING;
-      this._error = undefined;
+      this._error = undefined as string | undefined;
 
       // Check if model is available
       const available = await this.isAvailable();
@@ -124,7 +124,7 @@ export abstract class BaseModel {
       await this.unload();
       this._status = ModelStatus.DOWNLOADED;
       this._isInitialized = false;
-      this._loadedAt = undefined;
+      this._loadedAt = undefined as Date | undefined;
     } catch (error) {
       this._status = ModelStatus.ERROR;
       this._error = error instanceof Error ? error.message : String(error);
@@ -203,7 +203,7 @@ export abstract class BaseModel {
   }
 
   protected clearError(): void {
-    this._error = undefined;
+    this._error = undefined as string | undefined;
   }
 
   // Status management

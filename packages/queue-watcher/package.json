@@ -31,17 +31,22 @@
   "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.build.json --declaration --emitDeclarationOnly",
+    "build": "pnpm clean && vite build && tsc -p tsconfig.build.json --declaration --emitDeclarationOnly && pnpm postbuild",
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "build:watch": "vite build --watch",
+    "postbuild": "chmod +x dist/cli.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "test:ui": "vitest --ui",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist",
+    "clean": "pnpm clean:all",
+    "clean:all": "rm -rf dist && rm -f tsconfig.tsbuildinfo && find . -name '*.js' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.js.map' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts.map' -not -path './node_modules/*' -not -path './dist/*' -delete",
+    "clean:build": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "watch": "tsx src/cli.ts",
-    "start": "node dist/cli.js"
+    "start": "node dist/cli.js",
+    "prebuild": "pnpm clean:build"
   },
   "dependencies": {
     "chokidar": "^4.0.1",

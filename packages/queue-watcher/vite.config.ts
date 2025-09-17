@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
+    outDir: "dist",
     lib: {
       entry: {
         index: resolve(__dirname, "src/index.ts"),
@@ -28,11 +29,19 @@ export default defineConfig({
           child_process: "child_process",
           commander: "commander",
         },
+        // Ensure CLI has proper shebang
+        banner: chunk => {
+          if (chunk.name === "cli") {
+            return "#!/usr/bin/env node";
+          }
+          return "";
+        },
       },
     },
     target: "node18",
     minify: false,
     sourcemap: true,
+    emptyOutDir: true,
   },
   test: {
     environment: "happy-dom",

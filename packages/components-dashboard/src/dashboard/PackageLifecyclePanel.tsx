@@ -5,8 +5,8 @@
  */
 
 import { Component, Show } from "solid-js";
-import { Button } from "../primitives";
-import { Icon } from "../icons";
+import { Button } from "reynard-components-core/primitives";
+import { Icon } from "reynard-fluent-icons";
 import { LifecycleSummaryCard } from "./components/LifecycleSummaryCard";
 import { PackageLifecycleList } from "./components/PackageLifecycleList";
 import { usePackageLifecycle } from "./composables/usePackageLifecycle";

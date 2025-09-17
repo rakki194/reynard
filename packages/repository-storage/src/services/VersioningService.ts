@@ -5,7 +5,7 @@
  * Provides semantic versioning, change tracking, and version comparison capabilities.
  */
 
-import type { BaseAIService } from "reynard-ai-shared";
+import { BaseAIService } from "reynard-ai-shared";
 import type { DatasetLineage, DatasetVersion, VersionChange, VersionComparison } from "../types";
 import { RepositoryError } from "../types";
 

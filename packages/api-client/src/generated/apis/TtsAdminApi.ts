@@ -21,7 +21,7 @@ import {
   TTSStatsResponseToJSON,
 } from "../models/index";
 
-export interface ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest {
+export interface ReloadBackendApiTtsAdminBackendsBackendNameReloadPostRequest {
   backendName: string;
 }
 
@@ -115,7 +115,7 @@ export interface TtsAdminApiInterface {
    * @memberof TtsAdminApiInterface
    */
   reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
-    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
+    requestParameters: ReloadBackendApiTtsAdminBackendsBackendNameReloadPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>>;
 
@@ -124,7 +124,7 @@ export interface TtsAdminApiInterface {
    * Reload Backend
    */
   reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost(
-    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
+    requestParameters: ReloadBackendApiTtsAdminBackendsBackendNameReloadPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any>;
 }
@@ -298,7 +298,7 @@ export class TtsAdminApi extends runtime.BaseAPI implements TtsAdminApiInterface
    * Reload Backend
    */
   async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(
-    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
+    requestParameters: ReloadBackendApiTtsAdminBackendsBackendNameReloadPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<any>> {
     if (requestParameters["backendName"] == null) {
@@ -337,7 +337,7 @@ export class TtsAdminApi extends runtime.BaseAPI implements TtsAdminApiInterface
    * Reload Backend
    */
   async reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPost(
-    requestParameters: ReloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRequest,
+    requestParameters: ReloadBackendApiTtsAdminBackendsBackendNameReloadPostRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<any> {
     const response = await this.reloadBackendApiTtsApiTtsAdminBackendsBackendNameReloadPostRaw(

@@ -1,0 +1,16 @@
+/**
+ * Geometric Transformations Algorithm Module
+ *
+ * Algorithms for geometric transformations including rotations, scaling,
+ * translations, and other spatial transformations.
+ *
+ * Features:
+ * - 2D transformations
+ * - Matrix operations
+ * - Coordinate system transformations
+ * - Transformation composition
+ * - Inverse transformations
+ *
+ * @module algorithms/geometry/transformations
+ */
+export * from "./transformation-algorithms";

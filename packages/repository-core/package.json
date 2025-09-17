@@ -25,14 +25,14 @@
     "dev": "vite build --watch",
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=components-charts-package ../../scripts/vitest-global-queue.sh run components-charts-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=repository-core-package ../../scripts/vitest-global-queue.sh run repository-core-package",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "reynard-components-core": "workspace:*"
+    "reynard-core": "workspace:*"
   },
   "devDependencies": {
     "@solidjs/testing-library": "0.8.10",
@@ -49,6 +49,6 @@
   },
   "peerDependencies": {
     "solid-js": "1.9.9",
-    "three": "^0.160.0"
+    "three": "0.180.0"
   }
 }

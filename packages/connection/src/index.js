@@ -1,0 +1,31 @@
+/**
+ * Reynard Connection Package
+ *
+ * This package provides connection utilities and base classes for
+ * establishing and managing connections in the Reynard framework.
+ * It also includes comprehensive validation, HTTP client, and error
+ * handling systems that eliminate duplication across Reynard packages.
+ */
+export * from "./base";
+export * from "./config";
+export * from "./health";
+export * from "./manager";
+export * from "./metrics";
+export * from "./pool";
+export * from "./retry";
+export * from "./security";
+export * from "./types";
+// HTTP Client System
+export { HTTPClient, HTTPConnection } from "./http/client";
+export { createAuthMiddleware, createTokenRefreshMiddleware, createLoggingMiddleware as createHTTPLoggingMiddleware, createCacheMiddleware, createRateLimitMiddleware, createErrorHandlingMiddleware, createRequestIdMiddleware, createUserAgentMiddleware, createApiMiddlewareStack, createUploadMiddlewareStack, } from "./http/middleware";
+export { buildUrl, parseQueryParams, addQueryParams, mergeHeaders, normalizeHeaders, hasHeader, getHeader, createRequestOptions, cloneRequestOptions, validateRequestOptions, isSuccessResponse, isClientError, isServerError, isRedirectResponse, getContentType, isJsonResponse, isTextResponse, isBinaryResponse, createErrorFromResponse, isNetworkError as isHTTPNetworkError, isTimeoutError as isHTTPTimeoutError, isRetryableError as isHTTPRetryableError, getErrorMessage as getHTTPErrorMessage, serializeData, parseResponseData, formDataToObject, objectToFormData, measureRequest, createTimer, isValidUrl, isValidHttpMethod, isValidStatusCode, formatBytes, formatDuration, } from "./http/utils";
+// Error Handling System
+export { ReynardError, ValidationError, NetworkError, AuthenticationError, AuthorizationError, ProcessingError, DatabaseError, ConfigurationError, TimeoutError, RateLimitError, createValidationError, createNetworkError, createAuthenticationError, createAuthorizationError, createProcessingError, createDatabaseError, createConfigurationError, createTimeoutError, createRateLimitError, isReynardError, isValidationError, isNetworkError, isAuthenticationError, isAuthorizationError, isProcessingError, isDatabaseError, isConfigurationError, isTimeoutError, isRateLimitError, getErrorCode, getErrorMessage, getErrorContext, toReynardError, extractErrorDetails, } from "./errors/core";
+export { ErrorHandlerSystem, ConsoleErrorHandler, ValidationErrorHandler, NetworkErrorHandler, AuthenticationErrorHandler, AuthorizationErrorHandler, ProcessingErrorHandler, DatabaseErrorHandler, ConfigurationErrorHandler, TimeoutErrorHandler, RateLimitErrorHandler, createErrorHandlerSystem, globalErrorHandler, errorHandler, wrapAsync, } from "./errors/handlers";
+export { retry, retryWithExponentialBackoff, retryWithLinearBackoff, retryWithFixedDelay, withRetry, withExponentialBackoff, withLinearBackoff, withFixedDelay, calculateDelay, sleep, isRetryableError, createRetryCondition, createNetworkRetryCondition, createTimeoutRetryCondition, createRateLimitRetryCondition, RetryMonitor, globalRetryMonitor, exponentialBackoffStrategy, linearBackoffStrategy, fixedDelayStrategy, aggressiveRetryStrategy, conservativeRetryStrategy, } from "./errors/retry";
+export { ErrorReporter, createErrorCodeFilter, createErrorSourceFilter, createValidationErrorFilter, createNetworkErrorFilter, globalErrorReporter, reportError, setupGlobalErrorReporting, createErrorReport, formatErrorReport, } from "./errors/reporting";
+// Validation System
+export { ValidationUtils, } from "./validation/core";
+export { emailSchema, passwordSchema, usernameSchema, urlSchema, optionalUrlSchema, apiKeySchema, tokenSchema, fileNameSchema, mimeTypeSchema, fileSizeSchema, portSchema, timeoutSchema, retryCountSchema, modelNameSchema, promptSchema, temperatureSchema, maxTokensSchema, themeSchema, languageSchema, colorSchema, createSchema, makeOptional, makeRequired, withLength, withRange, } from "./validation/schemas";
+export { validateEmail, validatePassword, validateUsername, validateUrl, validateValue, validateApiKey, validateToken, validateFileName, validateMimeType, validateFileSize, validatePort, validateTimeout, validateRetryCount, validateModelName, validatePrompt, validateTemperature, validateMaxTokens, validateTheme, validateLanguage, validateColor, validateNotEmpty, validatePositive, validateRange, } from "./validation/validators";
+export { ValidationMiddlewareSystem, createCrossFieldMiddleware, createConditionalMiddleware, createSanitizationMiddleware, createLoggingMiddleware as createValidationLoggingMiddleware, createBusinessRuleMiddleware, passwordConfirmationMiddleware, emailConfirmationMiddleware, dateRangeMiddleware, numericRangeMiddleware, trimSanitization, lowercaseSanitization, uppercaseSanitization, htmlSanitization, globalValidationMiddleware, } from "./validation/middleware";

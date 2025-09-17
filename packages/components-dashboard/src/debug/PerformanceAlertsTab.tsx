@@ -4,7 +4,7 @@
  */
 
 import { Component, For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import { Button } from "../primitives/Button";
+import { Button } from "reynard-components-core/primitives";
 
 export interface PerformanceAlertsTabProps {
   warnings: Array<{

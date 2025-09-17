@@ -15,6 +15,7 @@ export default defineConfig({
         "solid-js/web",
         "solid-js/store",
         "reynard-components-core",
+        "reynard-components-core/primitives",
         "reynard-themes",
         "reynard-colors",
       ],

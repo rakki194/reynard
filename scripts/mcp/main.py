@@ -12,24 +12,28 @@ This enhanced version includes agent naming plus all project quality tools.
 import asyncio
 import json
 import sys
+from pathlib import Path
 from typing import Any
+
+# Add libraries directory to Python path
+libraries_path = Path(__file__).parent.parent.parent / "libraries"
+agent_naming_path = libraries_path / "agent-naming"
+if str(agent_naming_path) not in sys.path:
+    sys.path.insert(0, str(agent_naming_path))
 
 from protocol.mcp_handler import MCPHandler
 from protocol.tool_registry import ToolRegistry, ToolExecutionType
 from services.tool_config_service import ToolConfigService
 from agent_naming import AgentNameManager
 from tools.agent_tools import AgentTools
-from tools.bm25_search_tools import BM25SearchTools
 from tools.config_tools import ConfigTools
 from tools.ecs_agent_tools import ECSAgentTools
-from tools.enhanced_bm25_search_tools import EnhancedBM25SearchTools
-from tools.file_search_tools import FileSearchTools
 from tools.image_viewer_tools import ImageViewerTools
 from tools.linting_tools import LintingTools
 from tools.mermaid_tools import MermaidTools
-from tools.monolith_detection_tools import MonolithDetectionTools
+from tools.monolith_detection import MonolithDetectionTools
 from tools.playwright_tools import PlaywrightTools
-from tools.semantic_file_search_tools import SemanticFileSearchTools
+from tools.search.search_tools import SearchTools
 from tools.utility_tools import UtilityTools
 from tools.version_vscode_tools import VersionVSCodeTools
 from tools.vscode_tasks_tools import VSCodeTasksTools
@@ -55,13 +59,10 @@ class MCPServer:
         # Initialize tool handlers
         self.ecs_agent_tools = ECSAgentTools()
         self.agent_tools = AgentTools(self.agent_manager, self.ecs_agent_tools)
-        self.bm25_search_tools = BM25SearchTools()
-        self.enhanced_bm25_search_tools = EnhancedBM25SearchTools()
+        self.search_tools = SearchTools()
         self.utility_tools = UtilityTools()
         self.linting_tools = LintingTools()
         self.version_vscode_tools = VersionVSCodeTools()
-        self.file_search_tools = FileSearchTools()
-        self.semantic_file_search_tools = SemanticFileSearchTools()
         self.image_viewer_tools = ImageViewerTools()
         self.mermaid_tools = MermaidTools()
         self.monolith_detection_tools = MonolithDetectionTools()
@@ -314,23 +315,95 @@ class MCPServer:
             "formatting"
         )
         
-        # Register search tools
+        # Register unified search tools
+        self.tool_registry.register_tool(
+            "bm25_search", 
+            self.search_tools.bm25_search, 
+            ToolExecutionType.SYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "search_needle_in_haystack", 
+            self.search_tools.search_needle_in_haystack, 
+            ToolExecutionType.SYNC, 
+            "search"
+        )
         self.tool_registry.register_tool(
             "search_files", 
-            self.file_search_tools.search_files, 
+            self.search_tools.search_files, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "list_files", 
+            self.search_tools.list_files, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "search_content", 
+            self.search_tools.search_content, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "search_code_patterns", 
+            self.search_tools.search_code_patterns, 
             ToolExecutionType.ASYNC, 
             "search"
         )
         self.tool_registry.register_tool(
             "semantic_search", 
-            self.semantic_file_search_tools.semantic_search, 
+            self.search_tools.semantic_search, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "hybrid_search", 
+            self.search_tools.hybrid_search, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "embed_text", 
+            self.search_tools.embed_text, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "index_documents", 
+            self.search_tools.index_documents, 
             ToolExecutionType.ASYNC, 
             "search"
         )
         self.tool_registry.register_tool(
             "search_enhanced", 
-            self.enhanced_bm25_search_tools._handle_search_enhanced, 
-            ToolExecutionType.SYNC, 
+            self.search_tools.search_enhanced, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "get_query_suggestions", 
+            self.search_tools.get_query_suggestions, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "get_search_analytics", 
+            self.search_tools.get_search_analytics, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "clear_search_cache", 
+            self.search_tools.clear_search_cache, 
+            ToolExecutionType.ASYNC, 
+            "search"
+        )
+        self.tool_registry.register_tool(
+            "reindex_project", 
+            self.search_tools.reindex_project, 
+            ToolExecutionType.ASYNC, 
             "search"
         )
         

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "reynard-mcp": {
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd /home/kade/runeset/reynard/scripts/mcp && PYTHONPATH='/home/kade/runeset/reynard/scripts/mcp:/home/kade/runeset/reynard/packages/ecs-world/src:$PYTHONPATH' python3 main.py"],
+      "env": {
+        "PYTHONPATH": "/home/kade/runeset/reynard/scripts/mcp:/home/kade/runeset/reynard/packages/ecs-world/src"
+      }
+    }
+  }
+}

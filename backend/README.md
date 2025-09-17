@@ -10,6 +10,8 @@ A secure, JWT-based authentication backend for the Reynard project, built with F
 - 📚 **Auto Documentation**: Interactive API documentation with Swagger UI
 - 🚀 **High Performance**: Built on FastAPI for maximum performance
 - 🧪 **Tested**: Comprehensive test suite for all endpoints
+- 🌍 **ECS World Service**: Single authoritative ECS World simulation with agent management
+- 🔗 **MCP Integration**: REST API endpoints for MCP server integration
 
 ## Quick Start
 
@@ -219,6 +221,89 @@ To add database support:
 2. Create database models
 3. Replace in-memory storage with database operations
 4. Add database migrations
+
+## ECS World Service
+
+The Reynard backend includes a comprehensive ECS (Entity Component System) World service that provides single authoritative agent simulation and management.
+
+### ECS Service Features
+
+- **🌍 Single Authoritative Source**: Centralized ECS World instance for all agent operations
+- **🧬 Agent Management**: Create, manage, and track agents with trait inheritance
+- **🔗 MCP Integration**: REST API endpoints for MCP server communication
+- **⏰ Time Simulation**: Time-accelerated world progression with configurable speed
+- **🧬 Breeding System**: Automatic and manual agent reproduction with genetic compatibility
+- **📊 Lineage Tracking**: Complete family tree and ancestry management
+- **🔐 Authentication**: Secure access to all ECS operations
+
+### ECS API Endpoints
+
+The backend provides comprehensive REST endpoints for ECS operations:
+
+#### World Management
+
+- `GET /api/ecs/status` - Get world status and statistics
+- `GET /api/ecs/agents` - List all agents in the world
+- `POST /api/ecs/agents` - Create a new agent
+
+#### Agent Operations
+
+- `POST /api/ecs/agents/offspring` - Create offspring from two parent agents
+- `GET /api/ecs/agents/{id}/mates` - Find compatible mates for an agent
+- `GET /api/ecs/agents/{id}/compatibility/{id2}` - Analyze genetic compatibility
+- `GET /api/ecs/agents/{id}/lineage` - Get agent family tree and lineage
+
+#### Breeding System
+
+- `POST /api/ecs/breeding/enable` - Enable or disable automatic breeding
+- `GET /api/ecs/breeding/stats` - Get breeding statistics
+
+### ECS Service Integration
+
+The ECS service is integrated into the backend's lifespan manager with:
+
+- **Priority-based Initialization**: ECS service starts with high priority (90)
+- **Health Monitoring**: Built-in health checks for service status
+- **Graceful Shutdown**: Proper cleanup on application shutdown
+- **Error Handling**: Comprehensive error handling and logging
+
+### Usage Example
+
+```python
+# Create an agent via API
+POST /api/ecs/agents
+{
+  "agent_id": "agent-001",
+  "spirit": "fox",
+  "style": "foundation",
+  "name": "Custom-Name-123"
+}
+
+# Get world status
+GET /api/ecs/status
+{
+  "status": "active",
+  "entity_count": 5,
+  "agent_count": 3,
+  "mature_agents": 1
+}
+```
+
+### MCP Server Integration
+
+MCP servers connect to the ECS service via HTTP client:
+
+```python
+from services.ecs_client import ECSClient
+
+# Create ECS client
+ecs_client = ECSClient(base_url="http://localhost:8000")
+await ecs_client.start()
+
+# Use ECS operations
+agents = await ecs_client.get_agents()
+new_agent = await ecs_client.create_agent("agent-002", "wolf", "foundation")
+```
 
 ## Troubleshooting
 

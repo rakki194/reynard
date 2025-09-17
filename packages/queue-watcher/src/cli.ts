@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * 🦊 Reynard Queue Watcher CLI
  *

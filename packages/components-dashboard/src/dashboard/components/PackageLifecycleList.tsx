@@ -4,8 +4,8 @@
  */
 
 import { Component, For, Show } from "solid-js";
-import { Button, TextField, Select } from "../../primitives";
-import { Icon } from "../../icons";
+import { Button, TextField, Select } from "reynard-components-core/primitives";
+import { Icon } from "reynard-fluent-icons";
 import type { PackageLifecycleListProps } from "../types/PackageLifecycleTypes";
 
 export const PackageLifecycleList: Component<PackageLifecycleListProps> = props => {

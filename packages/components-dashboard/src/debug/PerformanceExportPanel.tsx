@@ -5,9 +5,9 @@
  */
 
 import { Component, Show, For } from "solid-js";
-import { Button, Select } from "../primitives";
-import { Toggle } from "../primitives";
-import { Icon } from "../icons";
+import { Button, Select } from "reynard-components-core/primitives";
+import { Toggle } from "reynard-components-core/primitives";
+import { Icon } from "reynard-fluent-icons";
 import { usePerformanceExport } from "./composables/usePerformanceExport";
 import type { PerformanceExportPanelProps } from "./types/PerformanceExportTypes";
 

@@ -5,7 +5,7 @@
  * Integrates with existing file processing capabilities and provides unified metadata management.
  */
 
-import type { BaseAIService } from "reynard-ai-shared";
+import { BaseAIService } from "reynard-ai-shared";
 import { getFileTypeFromExtension, getMimeTypeFromExtension, getModalityFromFileType } from "../constants";
 import type { ColumnStatistics, DataSchema, FileType, ModalityType } from "../types";
 import { RepositoryError } from "../types";
@@ -340,13 +340,13 @@ export class MetadataService extends BaseAIService {
   private async extractDataSchema(filePath: string, technical: TechnicalMetadata): Promise<DataSchema | undefined> {
     try {
       if (technical.fileType === "parquet") {
-        // Use ParquetService for parquet files
-        const { ParquetService } = await import("./ParquetService");
-        const parquetService = new ParquetService();
-        await parquetService.initialize();
-
-        const parquetInfo = await parquetService.processParquetFile(filePath);
-        return parquetInfo.schema;
+        // Basic parquet schema extraction (simplified for now)
+        // TODO: Implement proper parquet schema extraction or use repository-storage package
+        return {
+          columns: [],
+          rowCount: 0,
+          metadata: { format: "parquet" },
+        };
       } else if (technical.fileType === "csv") {
         return await this.extractCSVSchema(filePath);
       } else if (technical.fileType === "json") {
@@ -371,14 +371,14 @@ export class MetadataService extends BaseAIService {
         return undefined;
       }
 
-      // For parquet files, use ParquetService
+      // For parquet files, return basic statistics (simplified for now)
       if (filePath.endsWith(".parquet")) {
-        const { ParquetService } = await import("./ParquetService");
-        const parquetService = new ParquetService();
-        await parquetService.initialize();
-
-        const parquetInfo = await parquetService.processParquetFile(filePath);
-        return parquetInfo.statistics;
+        // TODO: Implement proper parquet statistics extraction or use repository-storage package
+        return {
+          totalRows: 0,
+          totalColumns: 0,
+          columnStatistics: [],
+        };
       }
 
       // For other data formats, calculate basic statistics

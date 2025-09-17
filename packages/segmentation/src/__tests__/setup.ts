@@ -4,7 +4,7 @@
  * Basic test setup with necessary mocks for segmentation testing.
  */
 
-import { vi } from "vitest";
+import { vi, beforeEach, afterEach } from "vitest";
 
 // Mock global objects
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
@@ -46,7 +46,7 @@ global.FileReader = vi.fn().mockImplementation(() => ({
 }));
 
 // Mock Touch constructor for canvas interaction tests
-global.Touch = vi.fn().mockImplementation((options) => ({
+global.Touch = vi.fn().mockImplementation(options => ({
   identifier: options.identifier,
   target: options.target,
   clientX: options.clientX,

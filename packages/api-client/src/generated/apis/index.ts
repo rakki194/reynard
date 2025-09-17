@@ -7,6 +7,7 @@ export * from "./CaptionMonitoringApi";
 export * from "./CaptionUploadApi";
 export * from "./ComfyApi";
 export * from "./CoreApi";
+export * from "./DefaultApi";
 export * from "./ExecutorApi";
 export * from "./HealthApi";
 export * from "./HfCacheApi";

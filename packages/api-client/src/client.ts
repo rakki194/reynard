@@ -23,11 +23,7 @@ export interface ReynardApiClientConfig {
  * Creates a configured Reynard API client
  */
 export function createReynardApiClient(config: ReynardApiClientConfig = {}) {
-  const {
-    basePath = "http://localhost:8000",
-    authFetch,
-    timeout = 30000,
-  } = config;
+  const { basePath = "http://localhost:8000", authFetch, timeout = 30000 } = config;
 
   // Create configuration
   const apiConfig = new Configuration({
@@ -56,34 +52,23 @@ export function createReynardApiClient(config: ReynardApiClientConfig = {}) {
     },
 
     caption: {
-      generate:
-        captionApi.generateCaptionApiCaptionGeneratePost.bind(captionApi),
-      batchGenerate:
-        captionApi.generateBatchCaptionsApiCaptionBatchPost.bind(captionApi),
-      generators:
-        captionApi.getAvailableGeneratorsApiCaptionGeneratorsGet.bind(
-          captionApi,
-        ),
-      upload:
-        captionUploadApi.uploadAndGenerateCaptionApiCaptionUploadPost.bind(
-          captionUploadApi,
-        ),
+      generate: captionApi.generateCaptionApiCaptionGeneratePost.bind(captionApi),
+      batchGenerate: captionApi.generateBatchCaptionsApiCaptionBatchPost.bind(captionApi),
+      generators: captionApi.getAvailableGeneratorsApiCaptionGeneratorsGet.bind(captionApi),
+      upload: captionUploadApi.uploadAndGenerateCaptionApiCaptionUploadPost.bind(captionUploadApi),
     },
 
     chat: {
       send: ollamaApi.chatApiOllamaChatPost.bind(ollamaApi),
       stream: ollamaApi.chatStreamApiOllamaChatStreamPost.bind(ollamaApi),
       assistant: ollamaApi.assistantChatApiOllamaAssistantPost.bind(ollamaApi),
-      assistantStream:
-        ollamaApi.assistantChatStreamApiOllamaAssistantStreamPost.bind(
-          ollamaApi,
-        ),
+      assistantStream: ollamaApi.assistantChatStreamApiOllamaAssistantStreamPost.bind(ollamaApi),
     },
 
     auth: {
       login: authApi.loginApiAuthLoginPost.bind(authApi),
       register: authApi.registerApiAuthRegisterPost.bind(authApi),
-      refresh: authApi.refreshTokenApiAuthRefreshPost.bind(authApi),
+      refresh: authApi.refreshTokensApiAuthRefreshPost.bind(authApi),
       logout: authApi.logoutApiAuthLogoutPost.bind(authApi),
       me: authApi.getCurrentUserInfoApiAuthMeGet.bind(authApi),
     },

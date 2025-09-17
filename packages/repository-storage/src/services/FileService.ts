@@ -5,7 +5,7 @@
  * existing file processing capabilities and providing comprehensive file operations.
  */
 
-import type { BaseAIService } from "reynard-ai-shared";
+import { BaseAIService } from "reynard-ai-shared";
 import type { ProcessingPipeline, ProcessingResult } from "reynard-file-processing";
 import type {
   FileFilters,
@@ -400,83 +400,83 @@ export class FileService extends BaseAIService {
 
     const typeMap: Record<string, FileType> = {
       // Data formats
-      parquet: "parquet",
-      arrow: "arrow",
-      feather: "feather",
-      h5: "hdf5",
-      hdf5: "hdf5",
-      csv: "csv",
-      tsv: "tsv",
-      json: "json",
-      jsonl: "jsonl",
+      parquet: FileType.PARQUET,
+      arrow: FileType.ARROW,
+      feather: FileType.FEATHER,
+      h5: FileType.HDF5,
+      hdf5: FileType.HDF5,
+      csv: FileType.CSV,
+      tsv: FileType.TSV,
+      json: FileType.JSON,
+      jsonl: FileType.JSONL,
 
       // Image formats
-      jpg: "image",
-      jpeg: "image",
-      png: "image",
-      gif: "image",
-      webp: "image",
-      avif: "image",
-      heic: "image",
-      heif: "image",
-      bmp: "image",
-      tiff: "image",
-      tif: "image",
+      jpg: FileType.IMAGE,
+      jpeg: FileType.IMAGE,
+      png: FileType.IMAGE,
+      gif: FileType.IMAGE,
+      webp: FileType.IMAGE,
+      avif: FileType.IMAGE,
+      heic: FileType.IMAGE,
+      heif: FileType.IMAGE,
+      bmp: FileType.IMAGE,
+      tiff: FileType.IMAGE,
+      tif: FileType.IMAGE,
 
       // Video formats
-      mp4: "video",
-      avi: "video",
-      mov: "video",
-      mkv: "video",
-      webm: "video",
-      flv: "video",
-      wmv: "video",
-      mpg: "video",
-      mpeg: "video",
+      mp4: FileType.VIDEO,
+      avi: FileType.VIDEO,
+      mov: FileType.VIDEO,
+      mkv: FileType.VIDEO,
+      webm: FileType.VIDEO,
+      flv: FileType.VIDEO,
+      wmv: FileType.VIDEO,
+      mpg: FileType.VIDEO,
+      mpeg: FileType.VIDEO,
 
       // Audio formats
-      mp3: "audio",
-      wav: "audio",
-      flac: "audio",
-      aac: "audio",
-      ogg: "audio",
-      m4a: "audio",
-      wma: "audio",
+      mp3: FileType.AUDIO,
+      wav: FileType.AUDIO,
+      flac: FileType.AUDIO,
+      aac: FileType.AUDIO,
+      ogg: FileType.AUDIO,
+      m4a: FileType.AUDIO,
+      wma: FileType.AUDIO,
 
       // Document formats
-      pdf: "pdf",
-      html: "html",
-      htm: "html",
-      md: "markdown",
-      markdown: "markdown",
-      docx: "docx",
-      epub: "epub",
+      pdf: FileType.PDF,
+      html: FileType.HTML,
+      htm: FileType.HTML,
+      md: FileType.MARKDOWN,
+      markdown: FileType.MARKDOWN,
+      docx: FileType.DOCX,
+      epub: FileType.EPUB,
 
       // Text formats
-      txt: "text",
+      txt: FileType.TEXT,
 
       // Code formats
-      py: "code",
-      js: "code",
-      ts: "code",
-      tsx: "code",
-      jsx: "code",
-      java: "code",
-      cpp: "code",
-      c: "code",
-      h: "code",
-      hpp: "code",
-      cs: "code",
-      php: "code",
-      rb: "code",
-      go: "code",
-      rs: "code",
-      swift: "code",
-      kt: "code",
-      scala: "code",
+      py: FileType.CODE,
+      js: FileType.CODE,
+      ts: FileType.CODE,
+      tsx: FileType.CODE,
+      jsx: FileType.CODE,
+      java: FileType.CODE,
+      cpp: FileType.CODE,
+      c: FileType.CODE,
+      h: FileType.CODE,
+      hpp: FileType.CODE,
+      cs: FileType.CODE,
+      php: FileType.CODE,
+      rb: FileType.CODE,
+      go: FileType.CODE,
+      rs: FileType.CODE,
+      swift: FileType.CODE,
+      kt: FileType.CODE,
+      scala: FileType.CODE,
     };
 
-    return typeMap[extension || ""] || "text";
+    return typeMap[extension || ""] || FileType.TEXT;
   }
 
   /**
@@ -484,30 +484,30 @@ export class FileService extends BaseAIService {
    */
   private determineModality(fileType: FileType): ModalityType {
     const modalityMap: Record<FileType, ModalityType> = {
-      parquet: "data",
-      arrow: "data",
-      feather: "data",
-      hdf5: "data",
-      csv: "data",
-      tsv: "data",
-      json: "data",
-      jsonl: "data",
+      [FileType.PARQUET]: ModalityType.DATA,
+      [FileType.ARROW]: ModalityType.DATA,
+      [FileType.FEATHER]: ModalityType.DATA,
+      [FileType.HDF5]: ModalityType.DATA,
+      [FileType.CSV]: ModalityType.DATA,
+      [FileType.TSV]: ModalityType.DATA,
+      [FileType.JSON]: ModalityType.DATA,
+      [FileType.JSONL]: ModalityType.DATA,
 
-      image: "image",
-      video: "video",
-      audio: "audio",
+      [FileType.IMAGE]: ModalityType.IMAGE,
+      [FileType.VIDEO]: ModalityType.VIDEO,
+      [FileType.AUDIO]: ModalityType.AUDIO,
 
-      pdf: "document",
-      html: "document",
-      markdown: "document",
-      docx: "document",
-      epub: "document",
+      [FileType.PDF]: ModalityType.DOCUMENT,
+      [FileType.HTML]: ModalityType.DOCUMENT,
+      [FileType.MARKDOWN]: ModalityType.DOCUMENT,
+      [FileType.DOCX]: ModalityType.DOCUMENT,
+      [FileType.EPUB]: ModalityType.DOCUMENT,
 
-      text: "text",
-      code: "code",
+      [FileType.TEXT]: ModalityType.TEXT,
+      [FileType.CODE]: ModalityType.CODE,
     };
 
-    return modalityMap[fileType] || "text";
+    return modalityMap[fileType] || ModalityType.TEXT;
   }
 
   /**

@@ -14,7 +14,10 @@ export {
 } from "./components/ChartComponents";
 
 // Export additional components that are being imported
-export { RealTimeChart } from "./components/RealTimeChart";
+export { 
+  RealTimeChart,
+  type RealTimeDataPoint 
+} from "./components/RealTimeChart";
 export { StatisticalChart } from "./components/StatisticalChart";
 
 // Export types

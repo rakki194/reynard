@@ -82,5 +82,53 @@
   "agent-1758051028-1178": {
     "name": "Animalspirit.otter-Namingstyle.foundation-863",
     "assigned_at": 1758051028.8640945
+  },
+  "debug-test": {
+    "name": "Animalspirit.wolf-Namingstyle.foundation-411",
+    "assigned_at": 1758051689.375735
+  },
+  "debug-test-2": {
+    "name": "Animalspirit.otter-Namingstyle.foundation-467",
+    "assigned_at": 1758051730.0206707
+  },
+  "test-final-fix": {
+    "name": "Animalspirit.fox-Namingstyle.foundation-648",
+    "assigned_at": 1758051816.6172187
+  },
+  "agent-1758051948-9733": {
+    "name": "Copse-Architect-13",
+    "assigned_at": 1758051948.750097
+  },
+  "agent-1758085327-4724": {
+    "name": "Spry-Advisor-3",
+    "assigned_at": 1758085327.4831903
+  },
+  "verification-session": {
+    "name": "Falls-Director-30",
+    "assigned_at": 1758085536.2389474
+  },
+  "agent-1758085915-4564": {
+    "name": "Ripple-Strategist-5",
+    "assigned_at": 1758085915.8474662
+  },
+  "agent-1758085999-3199": {
+    "name": "Snickers-Sage-10",
+    "assigned_at": 1758085999.5448277
+  },
+  "agent-1758086158-9401": {
+    "name": "Smooth-Analyst-10",
+    "assigned_at": 1758086158.0660775
+  },
+  "architectural-analysis": {
+    "name": "Fluid-Director-10",
+    "assigned_at": 1758087697.1063218
+  },
+  "search-consolidation": {
+    "name": "Astute-Master-13",
+    "assigned_at": 1758087723.4657035
+  },
+  "agent-1758088348-6794": {
+    "name": "Anuk-Counselor-48",
+    "assigned_at": 1758088348.758171
   }
 }

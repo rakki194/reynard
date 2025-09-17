@@ -24,6 +24,9 @@ export {
   searchIcons,
 } from "./registry";
 
+// Export Icon component
+export { Icon, type IconProps } from "./Icon";
+
 // Export Fluent UI icons package
 export {
   fluentIconsPackage,

@@ -177,6 +177,8 @@ function App() {
 
 - **🎯 Multi-Modal Content Management** - Images, videos, audio, documents, and specialized formats
 - **🤖 AI/ML Integration** - Caption generation, RAG system, object detection, and TTS
+- **🌍 Single Authoritative ECS World** - Centralized agent simulation with trait inheritance and breeding
+- **🔗 MCP Server Integration** - Comprehensive MCP tools for agent management and world simulation
 - **🎨 8 Built-in Themes** - Light, dark, and custom themes with CSS custom properties
 - **🌍 37 Languages** - Internationalization with RTL support and locale-aware formatting
 - **♿ WCAG 2.1 Compliance** - Full accessibility with ARIA labels and keyboard navigation
@@ -194,6 +196,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`reynard-core`** - Foundation utilities, notifications, localStorage, validation
 - **`reynard-components`** - UI components, modals, tooltips, forms
 - **`reynard-themes`** - Theming system with 8 built-in themes and i18n support
+- **`reynard-ecs-world`** - Single authoritative ECS World simulation with agent management
 - **`reynard-i18n`** - Internationalization with 37 language support
 
 ### Specialized Packages

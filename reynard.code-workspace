@@ -36,6 +36,90 @@
       "name": "📚 Libraries",
       "path": "./libraries",
     },
+    {
+      "name": "🤖 MCP Server",
+      "path": "./scripts/mcp",
+    },
+    {
+      "name": "🏷️ Agent Naming",
+      "path": "./libraries/agent-naming",
+    },
+    {
+      "name": "🌍 ECS World",
+      "path": "./packages/ecs-world",
+    },
+    {
+      "name": "🔐 Gatekeeper",
+      "path": "./libraries/gatekeeper",
+    },
+    {
+      "name": "🧠 AI Shared",
+      "path": "./packages/ai-shared",
+    },
+    {
+      "name": "🎨 Components Core",
+      "path": "./packages/components-core",
+    },
+    {
+      "name": "📊 Charts",
+      "path": "./packages/charts",
+    },
+    {
+      "name": "🎮 Games",
+      "path": "./packages/games",
+    },
+    {
+      "name": "🌐 I18n",
+      "path": "./packages/i18n",
+    },
+    {
+      "name": "🔍 RAG",
+      "path": "./packages/rag",
+    },
+    {
+      "name": "🧪 Testing",
+      "path": "./packages/testing",
+    },
+    {
+      "name": "🎮 Games - Core Package",
+      "path": "./packages/games",
+    },
+    {
+      "name": "🎮 Games - ECS System",
+      "path": "./packages/games/src/ecs",
+    },
+    {
+      "name": "🎮 Games - Collision Detection",
+      "path": "./packages/games/src/collision",
+    },
+    {
+      "name": "🎮 Games - Roguelike Engine",
+      "path": "./packages/games/src/roguelike",
+    },
+    {
+      "name": "🎮 Games - Geometry Demos",
+      "path": "./packages/games/src/geometry",
+    },
+    {
+      "name": "🎮 Games - Spatial Hash",
+      "path": "./packages/games/src/spatial-hash",
+    },
+    {
+      "name": "🎮 Games - Union Find",
+      "path": "./packages/games/src/union-find",
+    },
+    {
+      "name": "🎮 Games - Performance Tools",
+      "path": "./packages/games/src/performance",
+    },
+    {
+      "name": "🎮 Examples - 3D Demo Games",
+      "path": "./examples/3d-demo/src/games",
+    },
+    {
+      "name": "🎮 Templates - Starter Games",
+      "path": "./templates/starter/src/pages",
+    },
   ],
   "settings": {
     "task.autoDetect": "on",

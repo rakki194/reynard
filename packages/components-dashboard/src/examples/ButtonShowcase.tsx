@@ -4,9 +4,9 @@
  */
 
 import { Component, createSignal } from "solid-js";
-import { Button, IconButton, SidebarButton } from "../primitives";
-import { BreadcrumbButton, BreadcrumbActionButton } from "../navigation";
-import { Icon } from "../icons";
+import { Button, IconButton, SidebarButton } from "reynard-components-core/primitives";
+import { BreadcrumbButton, BreadcrumbActionButton } from "reynard-components-core/navigation";
+import { Icon } from "reynard-fluent-icons";
 
 export const ButtonShowcase: Component = () => {
   const [progress, setProgress] = createSignal(0);

@@ -5,7 +5,7 @@
 
 import { Component } from "solid-js";
 import { useTheme } from "reynard-themes";
-import { PointCloudVisualization } from "../threed";
+import { PointCloudVisualization } from "reynard-components-charts";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export const ThreeDDemo: Component = () => {

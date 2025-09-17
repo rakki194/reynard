@@ -4,7 +4,7 @@
  */
 
 import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button, TextField, Select } from "../primitives";
+import { Button, TextField, Select } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export interface PackageInstallationPanelProps {

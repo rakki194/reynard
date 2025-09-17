@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, For, createSignal, onMount } from "solid-js";
-import { Button } from "../primitives";
+import { Button } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export interface ServiceAuthStatusProps {

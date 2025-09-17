@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * 🦊 Reynard Queue-Based File Watcher (TypeScript)
  *

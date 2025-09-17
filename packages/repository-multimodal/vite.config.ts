@@ -14,6 +14,7 @@ export default defineConfig({
         "solid-js",
         "solid-js/web",
         "solid-js/store",
+        "express",
         "reynard-repository-core",
         "reynard-repository-storage",
         "reynard-repository-search",

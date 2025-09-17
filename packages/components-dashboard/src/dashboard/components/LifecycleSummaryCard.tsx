@@ -4,8 +4,8 @@
  */
 
 import { Component } from "solid-js";
-import { Button } from "../../primitives";
-import { Icon } from "../../icons";
+import { Button } from "reynard-components-core/primitives";
+import { Icon } from "reynard-fluent-icons";
 import type { LifecycleSummaryCardProps } from "../types/PackageLifecycleTypes";
 
 export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (

@@ -32,7 +32,10 @@
   "pylint.args": ["--rcfile=${workspaceFolder}/pyproject.toml"],
   "pylint.path": ["${workspaceFolder}/scripts"],
 
-  "vitest.maximumConfigs": 100,
+  "vitest.maximumConfigs": 20,
+  "vitest.workspaceConfig": "./vitest.workspace.ts",
+  "vitest.enable": true,
+  "vitest.rootConfig": "./vitest.workspace.ts",
 
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",

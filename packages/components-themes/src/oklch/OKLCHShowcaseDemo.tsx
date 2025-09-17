@@ -4,7 +4,6 @@
  */
 
 import { Component } from "solid-js";
-import { GoldenSpiralColors, GoldenAngleDemo } from "../utils";
 import { OKLCHHeroSection as HeroSection, TechnicalInfo } from ".";
 
 interface ColorVariations {
@@ -34,9 +33,6 @@ export const DemoComponents: Component<DemoComponentsProps> = (props) => {
       />
 
       <TechnicalInfo />
-
-      <GoldenAngleDemo />
-      <GoldenSpiralColors />
     </>
   );
 };

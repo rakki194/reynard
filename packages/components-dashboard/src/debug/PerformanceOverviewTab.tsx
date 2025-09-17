@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Button } from "../primitives";
+import { Button } from "reynard-components-core/primitives";
 
 export interface PerformanceOverviewTabProps {
   datasetSize: number;
