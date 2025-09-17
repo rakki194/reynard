@@ -1,10 +1,6 @@
 import { Component, createSignal, createEffect, onCleanup } from "solid-js";
-import {
 import { Slider } from "reynard-components";
-  batchCollisionDetection,
-  type AABB,
-  type CollisionResult,
-} from "reynard-algorithms";
+import { batchCollisionDetection, type AABB, type CollisionResult } from "reynard-algorithms";
 
 interface InteractivePhysicsDemoProps {
   onStatsUpdate: (stats: any) => void;
@@ -24,13 +20,11 @@ interface PhysicsObject {
   isStatic: boolean;
 }
 
-export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
-  props,
-) => {
+export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = props => {
   const [objects, setObjects] = createSignal<PhysicsObject[]>([]);
-  const [collisions, setCollisions] = createSignal<
-    Array<{ index1: number; index2: number; result: CollisionResult }>
-  >([]);
+  const [collisions, setCollisions] = createSignal<Array<{ index1: number; index2: number; result: CollisionResult }>>(
+    []
+  );
   const [isRunning, setIsRunning] = createSignal(false);
   const [gravity, setGravity] = createSignal(0.5);
   const [damping, setDamping] = createSignal(0.98);
@@ -53,15 +47,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
   // Initialize physics objects
   const initializeObjects = () => {
     const newObjects: PhysicsObject[] = [];
-    const colors = [
-      "#ff6b6b",
-      "#4ecdc4",
-      "#45b7d1",
-      "#96ceb4",
-      "#feca57",
-      "#ff9ff3",
-      "#54a0ff",
-    ];
+    const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#feca57", "#ff9ff3", "#54a0ff"];
 
     // Add some static objects (walls)
     newObjects.push(
@@ -116,7 +102,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
         color: "#666666",
         colliding: false,
         isStatic: true,
-      },
+      }
     );
 
     // Add dynamic objects
@@ -140,8 +126,8 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
 
   // Update physics
   const updatePhysics = (deltaTime: number) => {
-    setObjects((prev) =>
-      prev.map((obj) => {
+    setObjects(prev =>
+      prev.map(obj => {
         if (obj.isStatic) return obj;
 
         // Apply gravity
@@ -171,15 +157,12 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
           vy: newVy2,
           colliding: false,
         };
-      }),
+      })
     );
   };
 
   // Handle collision response
-  const handleCollisionResponse = (
-    obj1: PhysicsObject,
-    obj2: PhysicsObject,
-  ) => {
+  const handleCollisionResponse = (obj1: PhysicsObject, obj2: PhysicsObject) => {
     if (obj1.isStatic && obj2.isStatic) return;
 
     // Calculate collision normal and relative velocity
@@ -217,8 +200,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
 
     // Calculate impulse
     const restitution = 0.8; // Bounciness
-    const impulse =
-      (-(1 + restitution) * relativeSpeed) / (1 / obj1.mass + 1 / obj2.mass);
+    const impulse = (-(1 + restitution) * relativeSpeed) / (1 / obj1.mass + 1 / obj2.mass);
 
     // Apply impulse
     if (!obj1.isStatic) {
@@ -234,8 +216,8 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
   // Check collisions
   const checkCollisions = () => {
     const currentObjects = objects();
-    const dynamicObjects = currentObjects.filter((obj) => !obj.isStatic);
-    const aabbs: AABB[] = dynamicObjects.map((obj) => ({
+    const dynamicObjects = currentObjects.filter(obj => !obj.isStatic);
+    const aabbs: AABB[] = dynamicObjects.map(obj => ({
       x: obj.x,
       y: obj.y,
       width: obj.width,
@@ -252,20 +234,16 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
     const endTime = performance.now();
 
     // Update collision state and handle responses
-    setObjects((prev) => prev.map((obj) => ({ ...obj, colliding: false })));
+    setObjects(prev => prev.map(obj => ({ ...obj, colliding: false })));
 
-    collisionResults.forEach((collision) => {
+    collisionResults.forEach(collision => {
       const obj1 = dynamicObjects[collision.index1];
       const obj2 = dynamicObjects[collision.index2];
 
       if (obj1 && obj2) {
         // Mark as colliding
-        setObjects((prev) =>
-          prev.map((obj) =>
-            obj.id === obj1.id || obj.id === obj2.id
-              ? { ...obj, colliding: true }
-              : obj,
-          ),
+        setObjects(prev =>
+          prev.map(obj => (obj.id === obj1.id || obj.id === obj2.id ? { ...obj, colliding: true } : obj))
         );
 
         // Handle collision response
@@ -276,7 +254,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
     setCollisions(collisionResults);
 
     // Update stats
-    setStats((prev) => ({
+    setStats(prev => ({
       ...prev,
       collisionChecks: (aabbs.length * (aabbs.length - 1)) / 2,
       actualCollisions: collisionResults.length,
@@ -289,7 +267,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
     const currentObjects = objects();
     let totalEnergy = 0;
 
-    currentObjects.forEach((obj) => {
+    currentObjects.forEach(obj => {
       if (!obj.isStatic) {
         const kinetic = 0.5 * obj.mass * (obj.vx * obj.vx + obj.vy * obj.vy);
         const potential = obj.mass * gravity() * (500 - obj.y);
@@ -297,7 +275,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
       }
     });
 
-    setStats((prev) => ({ ...prev, totalEnergy }));
+    setStats(prev => ({ ...prev, totalEnergy }));
   };
 
   // Render frame
@@ -313,7 +291,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Draw objects
-    objects().forEach((obj) => {
+    objects().forEach(obj => {
       ctx.fillStyle = obj.colliding ? "#ff4757" : obj.color;
       ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
 
@@ -328,10 +306,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(obj.x + obj.width / 2, obj.y + obj.height / 2);
-        ctx.lineTo(
-          obj.x + obj.width / 2 + obj.vx * 5,
-          obj.y + obj.height / 2 + obj.vy * 5,
-        );
+        ctx.lineTo(obj.x + obj.width / 2 + obj.vx * 5, obj.y + obj.height / 2 + obj.vy * 5);
         ctx.stroke();
       }
     });
@@ -339,8 +314,8 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
     // Draw collision lines
     ctx.strokeStyle = "#ff4757";
     ctx.lineWidth = 2;
-    const dynamicObjects = objects().filter((obj) => !obj.isStatic);
-    collisions().forEach((collision) => {
+    const dynamicObjects = objects().filter(obj => !obj.isStatic);
+    collisions().forEach(collision => {
       const obj1 = dynamicObjects[collision.index1];
       const obj2 = dynamicObjects[collision.index2];
       if (obj1 && obj2) {
@@ -375,7 +350,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
     frameCount++;
     fpsTime += deltaTime;
     if (fpsTime >= 60) {
-      setStats((prev) => ({
+      setStats(prev => ({
         ...prev,
         fps: Math.round((frameCount * 60) / fpsTime),
       }));
@@ -398,8 +373,8 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
 
     if (isDragging() && draggedObject() !== null) {
       const objId = draggedObject()!;
-      setObjects((prev) =>
-        prev.map((obj) =>
+      setObjects(prev =>
+        prev.map(obj =>
           obj.id === objId && !obj.isStatic
             ? {
                 ...obj,
@@ -408,8 +383,8 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
                 vx: 0,
                 vy: 0,
               }
-            : obj,
-        ),
+            : obj
+        )
       );
     }
   };
@@ -424,12 +399,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
 
     // Find object under mouse
     const clickedObject = objects().find(
-      (obj) =>
-        x >= obj.x &&
-        x <= obj.x + obj.width &&
-        y >= obj.y &&
-        y <= obj.y + obj.height &&
-        !obj.isStatic,
+      obj => x >= obj.x && x <= obj.x + obj.width && y >= obj.y && y <= obj.y + obj.height && !obj.isStatic
     );
 
     if (clickedObject) {
@@ -454,15 +424,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
     const y = e.clientY - rect.top;
 
     // Add new object at mouse position
-    const colors = [
-      "#ff6b6b",
-      "#4ecdc4",
-      "#45b7d1",
-      "#96ceb4",
-      "#feca57",
-      "#ff9ff3",
-      "#54a0ff",
-    ];
+    const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#feca57", "#ff9ff3", "#54a0ff"];
     const newObject: PhysicsObject = {
       id: Date.now(),
       x: x - 15,
@@ -477,7 +439,7 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
       isStatic: false,
     };
 
-    setObjects((prev) => [...prev, newObject]);
+    setObjects(prev => [...prev, newObject]);
   };
 
   // Effects
@@ -512,11 +474,11 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
         <div class="control-group">
           <label for="gravity-slider">Gravity: {gravity().toFixed(1)}</label>
           <Slider
-    id="gravity-slider"
-    min={0}
-    max={2}
-    step={0.1}
-  /> setGravity(parseFloat(e.currentTarget.value))}
+            id="gravity-slider"
+            min={0}
+            max={2}
+            step={0.1}
+            onChange={e => setGravity(parseFloat(e.currentTarget.value))}
             title="Adjust the gravity strength in the physics simulation"
           />
         </div>
@@ -524,20 +486,17 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
         <div class="control-group">
           <label for="damping-slider">Damping: {damping().toFixed(2)}</label>
           <Slider
-    id="damping-slider"
-    min={0.9}
-    max={1}
-    step={0.01}
-  /> setDamping(parseFloat(e.currentTarget.value))}
+            id="damping-slider"
+            min={0.9}
+            max={1}
+            step={0.01}
+            onChange={e => setDamping(parseFloat(e.currentTarget.value))}
             title="Adjust the damping factor for object movement"
           />
         </div>
 
         <div class="control-group">
-          <button
-            class={`control-button ${isRunning() ? "active" : ""}`}
-            onClick={() => setIsRunning(!isRunning())}
-          >
+          <button class={`control-button ${isRunning() ? "active" : ""}`} onClick={() => setIsRunning(!isRunning())}>
             {isRunning() ? "⏸️ Pause" : "▶️ Start"}
           </button>
 
@@ -559,19 +518,14 @@ export const InteractivePhysicsDemo: Component<InteractivePhysicsDemoProps> = (
           class="demo-canvas"
         />
         <div class="canvas-overlay">
-          <p>
-            Click to add objects • Drag to move objects • Yellow lines show
-            velocity
-          </p>
+          <p>Click to add objects • Drag to move objects • Yellow lines show velocity</p>
         </div>
       </div>
 
       <div class="demo-stats">
         <div class="stat-item">
           <span class="stat-label">Objects:</span>
-          <span class="stat-value">
-            {objects().filter((obj) => !obj.isStatic).length}
-          </span>
+          <span class="stat-value">{objects().filter(obj => !obj.isStatic).length}</span>
         </div>
         <div class="stat-item">
           <span class="stat-label">Collisions:</span>

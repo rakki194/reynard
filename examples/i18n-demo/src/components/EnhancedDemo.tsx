@@ -1,11 +1,6 @@
 import { Component, createSignal, createEffect, For } from "solid-js";
-import {
 import { Toggle } from "reynard-components";
-  createI18nModule,
-  type EnhancedI18nModule,
-  migrateTranslations,
-  type MigrationOptions,
-} from "reynard-i18n";
+import { createI18nModule, type EnhancedI18nModule, migrateTranslations, type MigrationOptions } from "reynard-i18n";
 
 const EnhancedDemo: Component = () => {
   const [i18n, setI18n] = createSignal<EnhancedI18nModule | null>(null);
@@ -54,8 +49,7 @@ const EnhancedDemo: Component = () => {
     const currentI18n = i18n();
     if (currentI18n) {
       try {
-        const namespaceData =
-          await currentI18n.loadNamespace(selectedNamespace());
+        const namespaceData = await currentI18n.loadNamespace(selectedNamespace());
         console.log(`Loaded namespace ${selectedNamespace()}:`, namespaceData);
       } catch (error) {
         console.error("Failed to load namespace:", error);
@@ -86,14 +80,9 @@ const EnhancedDemo: Component = () => {
   const intlDemo = () => {
     const currentI18n = i18n();
     if (currentI18n) {
-      const number = currentI18n.intlFormatter.number.format(
-        1234.56,
-        "currency",
-      );
+      const number = currentI18n.intlFormatter.number.format(1234.56, "currency");
       const date = currentI18n.intlFormatter.date.format(new Date(), "long");
-      const relative = currentI18n.intlFormatter.relativeTime.formatSmart(
-        new Date(Date.now() - 86400000),
-      );
+      const relative = currentI18n.intlFormatter.relativeTime.formatSmart(new Date(Date.now() - 86400000));
 
       console.log("Intl formatting:", { number, date, relative });
     }
@@ -132,27 +121,18 @@ const EnhancedDemo: Component = () => {
       <div class="demo-section">
         <h3>Configuration</h3>
         <label>
-          <Toggle
-    size="sm"
-  /> setDebugMode(e.currentTarget.checked)}
-          />
+          <Toggle size="sm" checked={debugMode()} onChange={e => setDebugMode(e.currentTarget.checked)} />
           Enable Debug Mode
         </label>
         <label>
-          <Toggle
-    size="sm"
-  /> setPerformanceMode(e.currentTarget.checked)}
-          />
+          <Toggle size="sm" checked={performanceMode()} onChange={e => setPerformanceMode(e.currentTarget.checked)} />
           Enable Performance Monitoring
         </label>
       </div>
 
       <div class="demo-section">
         <h3>Namespace Loading</h3>
-        <select
-          value={selectedNamespace()}
-          onChange={(e) => setSelectedNamespace(e.currentTarget.value)}
-        >
+        <select value={selectedNamespace()} onChange={e => setSelectedNamespace(e.currentTarget.value)}>
           <option value="common">Common</option>
           <option value="themes">Themes</option>
           <option value="core">Core</option>
@@ -187,9 +167,7 @@ const EnhancedDemo: Component = () => {
             <p>Warnings: {migrationResult().warnings.length}</p>
             {migrationResult().warnings.length > 0 && (
               <ul>
-                <For each={migrationResult().warnings}>
-                  {(warning) => <li>{warning}</li>}
-                </For>
+                <For each={migrationResult().warnings}>{warning => <li>{warning}</li>}</For>
               </ul>
             )}
           </div>
@@ -200,24 +178,12 @@ const EnhancedDemo: Component = () => {
         <h3>Performance Metrics</h3>
         {i18n() && (
           <div class="metrics">
+            <p>Translation Calls: {i18n()!.performanceMonitor.getMetrics().translationCalls}</p>
             <p>
-              Translation Calls:{" "}
-              {i18n()!.performanceMonitor.getMetrics().translationCalls}
-            </p>
-            <p>
-              Average Load Time:{" "}
-              {i18n()!
-                .performanceMonitor.getMetrics()
-                .averageLoadTime.toFixed(2)}
+              Average Load Time: {i18n()!.performanceMonitor.getMetrics().averageLoadTime.toFixed(2)}
               ms
             </p>
-            <p>
-              Cache Hit Rate:{" "}
-              {(
-                i18n()!.performanceMonitor.getMetrics().cacheHitRate * 100
-              ).toFixed(1)}
-              %
-            </p>
+            <p>Cache Hit Rate: {(i18n()!.performanceMonitor.getMetrics().cacheHitRate * 100).toFixed(1)}%</p>
           </div>
         )}
       </div>
@@ -228,9 +194,7 @@ const EnhancedDemo: Component = () => {
           <div class="debug-info">
             <p>Used Keys: {i18n()!.debugger.getUsedKeys().length}</p>
             <p>Missing Keys: {i18n()!.debugger.getMissingKeys().length}</p>
-            <button onClick={() => i18n()!.debugger.clear()}>
-              Clear Debug Data
-            </button>
+            <button onClick={() => i18n()!.debugger.clear()}>Clear Debug Data</button>
           </div>
         )}
       </div>

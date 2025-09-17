@@ -1,9 +1,6 @@
 import { Component } from "solid-js";
-import {
 import { Slider } from "reynard-components";
-  MATERIAL_PATTERNS,
-  type MaterialType,
-} from "../composables/useMaterialEffects";
+import { MATERIAL_PATTERNS, type MaterialType } from "../composables/useMaterialEffects";
 
 interface MaterialControlsProps {
   selectedMaterial: MaterialType;
@@ -12,7 +9,7 @@ interface MaterialControlsProps {
   onIntensityChange: (intensity: number) => void;
 }
 
-export const MaterialControls: Component<MaterialControlsProps> = (props) => {
+export const MaterialControls: Component<MaterialControlsProps> = props => {
   return (
     <>
       <section class="control-section">
@@ -33,11 +30,11 @@ export const MaterialControls: Component<MaterialControlsProps> = (props) => {
         <h3>Shift Intensity</h3>
         <div class="intensity-control">
           <Slider
-    id="shift-intensity"
-    min={0}
-    max={1}
-    step={0.01}
-  /> props.onIntensityChange(parseFloat(e.target.value))}
+            id="shift-intensity"
+            min={0}
+            max={1}
+            step={0.01}
+            onChange={e => props.onIntensityChange(parseFloat(e.target.value))}
             class="intensity-slider"
           />
           <label for="shift-intensity" class="sr-only">

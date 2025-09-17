@@ -1,10 +1,6 @@
 import { Component, createSignal, createEffect, onCleanup } from "solid-js";
-import {
 import { Slider } from "reynard-components";
-  batchCollisionDetection,
-  batchCollisionWithSpatialHash,
-  type AABB,
-} from "reynard-algorithms";
+import { batchCollisionDetection, batchCollisionWithSpatialHash, type AABB } from "reynard-algorithms";
 
 interface SpatialOptimizationDemoProps {
   onStatsUpdate: (stats: any) => void;
@@ -18,9 +14,7 @@ interface PerformanceStats {
   collisionCount: number;
 }
 
-export const SpatialOptimizationDemo: Component<
-  SpatialOptimizationDemoProps
-> = (props) => {
+export const SpatialOptimizationDemo: Component<SpatialOptimizationDemoProps> = props => {
   const [objectCount, setObjectCount] = createSignal(50);
   const [isRunning, setIsRunning] = createSignal(false);
   const [stats, setStats] = createSignal<PerformanceStats>({
@@ -176,23 +170,18 @@ export const SpatialOptimizationDemo: Component<
     <div class="spatial-demo">
       <div class="demo-controls">
         <div class="control-group">
-          <label for="spatial-object-count-slider">
-            Object Count: {objectCount()}
-          </label>
+          <label for="spatial-object-count-slider">Object Count: {objectCount()}</label>
           <Slider
-    id="spatial-object-count-slider"
-    min={10}
-    max={200}
-  /> setObjectCount(parseInt(e.currentTarget.value))}
+            id="spatial-object-count-slider"
+            min={10}
+            max={200}
+            onChange={e => setObjectCount(parseInt(e.currentTarget.value))}
             title="Adjust the number of objects for performance comparison"
           />
         </div>
 
         <div class="control-group">
-          <button
-            class={`control-button ${isRunning() ? "active" : ""}`}
-            onClick={() => setIsRunning(!isRunning())}
-          >
+          <button class={`control-button ${isRunning() ? "active" : ""}`} onClick={() => setIsRunning(!isRunning())}>
             {isRunning() ? "⏸️ Pause" : "▶️ Start Benchmark"}
           </button>
 
@@ -203,12 +192,7 @@ export const SpatialOptimizationDemo: Component<
       </div>
 
       <div class="demo-canvas-container">
-        <canvas
-          ref={setCanvasRef}
-          width={800}
-          height={500}
-          class="demo-canvas"
-        />
+        <canvas ref={setCanvasRef} width={800} height={500} class="demo-canvas" />
         <div class="canvas-overlay">
           <p>Spatial Hash Grid Visualization • Each cell is 50x50 pixels</p>
         </div>
@@ -247,9 +231,7 @@ export const SpatialOptimizationDemo: Component<
           </div>
           <div class="metric">
             <span class="metric-label">Efficiency Gain:</span>
-            <span class="metric-value">
-              {((stats().speedup - 1) * 100).toFixed(1)}%
-            </span>
+            <span class="metric-value">{((stats().speedup - 1) * 100).toFixed(1)}%</span>
           </div>
         </div>
       </div>

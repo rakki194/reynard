@@ -7,10 +7,7 @@
 
 import { Component, Show } from "solid-js";
 import { Slider } from "reynard-components";
-import type {
-  AudioWaveformVisualizerProps,
-  WaveformData,
-} from "./AudioWaveformVisualizer";
+import type { AudioWaveformVisualizerProps, WaveformData } from "./AudioWaveformVisualizer";
 
 // Loading State Component
 export const LoadingState: Component = () => (
@@ -21,7 +18,7 @@ export const LoadingState: Component = () => (
 );
 
 // Error State Component
-export const ErrorState: Component<{ error: string }> = (props) => (
+export const ErrorState: Component<{ error: string }> = props => (
   <div class="error-state">
     <div class="error-icon">⚠️</div>
     <span>{props.error}</span>
@@ -37,7 +34,7 @@ export const WaveformCanvas: Component<{
   duration: () => number;
   onWaveformClick: (event: MouseEvent) => void;
   canvasRef: HTMLCanvasElement | undefined;
-}> = (props) => (
+}> = props => (
   <Show when={props.waveformData}>
     <div class="waveform-wrapper">
       <canvas
@@ -61,15 +58,10 @@ export const PlaybackControls: Component<{
   onTogglePlayback: () => void;
   onVolumeChange: (volume: number) => void;
   waveformData: WaveformData | null;
-}> = (props) => (
+}> = props => (
   <Show when={props.playbackConfig().showControls}>
     <div class="playback-controls">
-      <button
-        type="button"
-        class="play-button"
-        onClick={props.onTogglePlayback}
-        disabled={!props.waveformData}
-      >
+      <button type="button" class="play-button" onClick={props.onTogglePlayback} disabled={!props.waveformData}>
         <Show when={props.isPlaying()} fallback="▶️">
           ⏸️
         </Show>
@@ -77,22 +69,20 @@ export const PlaybackControls: Component<{
 
       <div class="time-display">
         <span class="current-time">
-          {Math.floor(props.currentTime() / 60)}:
-          {(props.currentTime() % 60).toFixed(0).padStart(2, "0")}
+          {Math.floor(props.currentTime() / 60)}:{(props.currentTime() % 60).toFixed(0).padStart(2, "0")}
         </span>
         <span class="duration">
-          {Math.floor(props.duration() / 60)}:
-          {(props.duration() % 60).toFixed(0).padStart(2, "0")}
+          {Math.floor(props.duration() / 60)}:{(props.duration() % 60).toFixed(0).padStart(2, "0")}
         </span>
       </div>
 
       <div class="volume-control">
         <span class="volume-icon">🔊</span>
         <Slider
-    min={0}
-    max={1}
-    step={0.1}
-  /> props.onVolumeChange(parseFloat(e.target.value))}
+          min={0}
+          max={1}
+          step={0.1}
+          onChange={e => props.onVolumeChange(parseFloat(e.target.value))}
           class="volume-slider"
         />
       </div>

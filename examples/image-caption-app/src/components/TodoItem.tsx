@@ -18,13 +18,14 @@ interface TodoItemProps {
   onDelete: () => void;
 }
 
-export const TodoItem: Component<TodoItemProps> = (props) => {
+export const TodoItem: Component<TodoItemProps> = props => {
   return (
     <div class={`todo-item ${props.todo.completed ? "completed" : ""}`}>
       <label class="todo-checkbox" for={`todo-${props.todo.id}`}>
         <Toggle
-    size="sm"
-  /> props.onToggle()}
+          size="sm"
+          checked={props.todo.completed}
+          onChange={props.onToggle}
           aria-label={`Mark "${props.todo.text}" as ${props.todo.completed ? "incomplete" : "complete"}`}
         />
         <span class="checkmark" />
@@ -32,11 +33,7 @@ export const TodoItem: Component<TodoItemProps> = (props) => {
 
       <span class="todo-text">{props.todo.text}</span>
 
-      <button
-        class="todo-delete"
-        onClick={() => props.onDelete()}
-        title="Delete todo"
-      >
+      <button class="todo-delete" onClick={() => props.onDelete()} title="Delete todo">
         ×
       </button>
     </div>

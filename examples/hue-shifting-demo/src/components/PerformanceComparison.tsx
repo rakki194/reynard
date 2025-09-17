@@ -1,9 +1,6 @@
 import { Component, createSignal, createMemo, onMount } from "solid-js";
 import type { OKLCHColor } from "reynard-colors";
-import {
-  basicColorRamp,
-  generateHueShiftRamp,
-} from "../utils/hueShiftingAlgorithms";
+import { basicColorRamp, generateHueShiftRamp } from "../utils/hueShiftingAlgorithms";
 import "./PerformanceComparison.css";
 import { Slider } from "reynard-components";
 
@@ -32,7 +29,7 @@ export const PerformanceComparison: Component = () => {
     setResults(null);
 
     // Small delay to show loading state
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     const testColorsArray = testColors();
     const iterationsCount = iterations();
@@ -40,7 +37,7 @@ export const PerformanceComparison: Component = () => {
     // Test OKLCH hue shifting
     const oklchStart = performance.now();
     for (let i = 0; i < iterationsCount; i++) {
-      testColorsArray.forEach((color) => {
+      testColorsArray.forEach(color => {
         basicColorRamp(color, "shadow", 0.3);
         basicColorRamp(color, "highlight", 0.3);
         generateHueShiftRamp(color, 5);
@@ -51,7 +48,7 @@ export const PerformanceComparison: Component = () => {
     // Test RGB-based approach (simulated)
     const rgbStart = performance.now();
     for (let i = 0; i < iterationsCount; i++) {
-      testColorsArray.forEach((color) => {
+      testColorsArray.forEach(color => {
         // Simulate RGB-based hue shifting (just lightness changes)
         const shadow = { ...color, l: Math.max(0, color.l - 30) };
         const highlight = { ...color, l: Math.min(100, color.l + 25) };
@@ -100,21 +97,18 @@ export const PerformanceComparison: Component = () => {
     <div class="performance-comparison">
       <header class="comparison-header">
         <h2>Performance Comparison</h2>
-        <p>
-          Compare the performance of OKLCH hue shifting algorithms against
-          traditional RGB-based approaches.
-        </p>
+        <p>Compare the performance of OKLCH hue shifting algorithms against traditional RGB-based approaches.</p>
       </header>
 
       <div class="comparison-controls">
         <div class="control-group">
           <label for="iterations-input">Test Iterations: {iterations()}</label>
           <Slider
-    id="iterations-input"
-    min={100}
-    max={10000}
-    step={100}
-  /> setIterations(parseInt(e.target.value))}
+            id="iterations-input"
+            min={100}
+            max={10000}
+            step={100}
+            onChange={e => setIterations(parseInt(e.target.value))}
             class="iterations-slider"
             disabled={isRunning()}
           />
@@ -124,11 +118,7 @@ export const PerformanceComparison: Component = () => {
           </div>
         </div>
 
-        <button
-          class="run-benchmark-button"
-          onClick={runBenchmark}
-          disabled={isRunning()}
-        >
+        <button class="run-benchmark-button" onClick={runBenchmark} disabled={isRunning()}>
           {isRunning() ? "Running..." : "Run Benchmark"}
         </button>
       </div>
@@ -141,21 +131,15 @@ export const PerformanceComparison: Component = () => {
               <div class="result-metrics">
                 <div class="metric">
                   <span class="metric-label">Total Time:</span>
-                  <span class="metric-value">
-                    {results()!.oklch.time.toFixed(2)}ms
-                  </span>
+                  <span class="metric-value">{results()!.oklch.time.toFixed(2)}ms</span>
                 </div>
                 <div class="metric">
                   <span class="metric-label">Operations/sec:</span>
-                  <span class="metric-value">
-                    {operationsPerSecond().oklch.toLocaleString()}
-                  </span>
+                  <span class="metric-value">{operationsPerSecond().oklch.toLocaleString()}</span>
                 </div>
                 <div class="metric">
                   <span class="metric-label">Total Operations:</span>
-                  <span class="metric-value">
-                    {results()!.oklch.operations.toLocaleString()}
-                  </span>
+                  <span class="metric-value">{results()!.oklch.operations.toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -165,21 +149,15 @@ export const PerformanceComparison: Component = () => {
               <div class="result-metrics">
                 <div class="metric">
                   <span class="metric-label">Total Time:</span>
-                  <span class="metric-value">
-                    {results()!.rgb.time.toFixed(2)}ms
-                  </span>
+                  <span class="metric-value">{results()!.rgb.time.toFixed(2)}ms</span>
                 </div>
                 <div class="metric">
                   <span class="metric-label">Operations/sec:</span>
-                  <span class="metric-value">
-                    {operationsPerSecond().rgb.toLocaleString()}
-                  </span>
+                  <span class="metric-value">{operationsPerSecond().rgb.toLocaleString()}</span>
                 </div>
                 <div class="metric">
                   <span class="metric-label">Total Operations:</span>
-                  <span class="metric-value">
-                    {results()!.rgb.operations.toLocaleString()}
-                  </span>
+                  <span class="metric-value">{results()!.rgb.operations.toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -191,15 +169,12 @@ export const PerformanceComparison: Component = () => {
               <div class="summary-item">
                 <span class="summary-label">OKLCH vs RGB Ratio:</span>
                 <span class="summary-value">
-                  {performanceRatio().toFixed(2)}x
-                  {performanceRatio() > 1 ? " slower" : " faster"}
+                  {performanceRatio().toFixed(2)}x{performanceRatio() > 1 ? " slower" : " faster"}
                 </span>
               </div>
               <div class="summary-item">
                 <span class="summary-label">Performance Winner:</span>
-                <span class="summary-value">
-                  {performanceRatio() > 1 ? "RGB Approach" : "OKLCH Approach"}
-                </span>
+                <span class="summary-value">{performanceRatio() > 1 ? "RGB Approach" : "OKLCH Approach"}</span>
               </div>
             </div>
           </div>

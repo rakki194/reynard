@@ -9,25 +9,18 @@ import {
   type MaterialPattern,
 } from "reynard-colors";
 import "./MaterialPainter.css";
-import { Slider, Toggle } from "reynard-components";;
+import { Slider, Toggle } from "reynard-components";
 
 interface MaterialPainterProps {
   baseColor: OKLCHColor;
-  onColorChange: (colors: {
-    shadow: OKLCHColor;
-    base: OKLCHColor;
-    highlight: OKLCHColor;
-  }) => void;
+  onColorChange: (colors: { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor }) => void;
 }
 
-export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
-  const [selectedMaterial, setSelectedMaterial] =
-    createSignal<MaterialType>("fabric");
+export const MaterialPainter: Component<MaterialPainterProps> = props => {
+  const [selectedMaterial, setSelectedMaterial] = createSignal<MaterialType>("fabric");
   const [intensity, setIntensity] = createSignal(0.5);
   const [isCustomizing, setIsCustomizing] = createSignal(false);
-  const [customPattern, setCustomPattern] = createSignal<
-    Partial<MaterialPattern>
-  >({});
+  const [customPattern, setCustomPattern] = createSignal<Partial<MaterialPattern>>({});
 
   const availableMaterials = getAvailableMaterials();
 
@@ -82,18 +75,14 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
   };
 
   const updateCustomPattern = (field: keyof MaterialPattern, value: any) => {
-    setCustomPattern((prev) => ({
+    setCustomPattern(prev => ({
       ...prev,
       [field]: value,
     }));
   };
 
-  const updateNestedPattern = (
-    parent: keyof MaterialPattern,
-    field: string,
-    value: any,
-  ) => {
-    setCustomPattern((prev) => ({
+  const updateNestedPattern = (parent: keyof MaterialPattern, field: string, value: any) => {
+    setCustomPattern(prev => ({
       ...prev,
       [parent]: {
         ...(prev[parent] as any),
@@ -114,28 +103,22 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
         <select
           id="material-select"
           value={selectedMaterial()}
-          onChange={(e) => handleMaterialChange(e.target.value as MaterialType)}
+          onChange={e => handleMaterialChange(e.target.value as MaterialType)}
         >
           <For each={availableMaterials}>
-            {(material) => (
-              <option value={material}>
-                {getMaterialPattern(material).name}
-              </option>
-            )}
+            {material => <option value={material}>{getMaterialPattern(material).name}</option>}
           </For>
         </select>
       </div>
 
       <div class="intensity-control">
-        <label for="intensity-slider">
-          Intensity: {intensity().toFixed(2)}
-        </label>
+        <label for="intensity-slider">Intensity: {intensity().toFixed(2)}</label>
         <Slider
-    id="intensity-slider"
-    min={0}
-    max={1}
-    step={0.01}
-  /> setIntensity(parseFloat(e.target.value))}
+          id="intensity-slider"
+          min={0}
+          max={1}
+          step={0.01}
+          onChange={e => setIntensity(parseFloat(e.target.value))}
           class="slider"
         />
       </div>
@@ -155,13 +138,8 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
           <div class="detail-group">
             <h5>Highlight Settings</h5>
             <p>Hue Shift: {currentPattern().highlightShift}°</p>
-            <p>
-              Preservation:{" "}
-              {currentPattern().highlightPreservation.enabled ? "Yes" : "No"}
-            </p>
-            <p>
-              Threshold: {currentPattern().highlightPreservation.threshold}%
-            </p>
+            <p>Preservation: {currentPattern().highlightPreservation.enabled ? "Yes" : "No"}</p>
+            <p>Threshold: {currentPattern().highlightPreservation.threshold}%</p>
           </div>
 
           <div class="detail-group">
@@ -215,9 +193,7 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
               <input
                 type="number"
                 value={customPattern().shadowShift || 0}
-                onInput={(e) =>
-                  updateCustomPattern("shadowShift", parseFloat(e.target.value))
-                }
+                onInput={e => updateCustomPattern("shadowShift", parseFloat(e.target.value))}
               />
             </div>
 
@@ -226,12 +202,7 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
               <input
                 type="number"
                 value={customPattern().highlightShift || 0}
-                onInput={(e) =>
-                  updateCustomPattern(
-                    "highlightShift",
-                    parseFloat(e.target.value),
-                  )
-                }
+                onInput={e => updateCustomPattern("highlightShift", parseFloat(e.target.value))}
               />
             </div>
 
@@ -241,9 +212,7 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
                 type="number"
                 step="0.01"
                 value={customPattern().chromaBoost || 0}
-                onInput={(e) =>
-                  updateCustomPattern("chromaBoost", parseFloat(e.target.value))
-                }
+                onInput={e => updateCustomPattern("chromaBoost", parseFloat(e.target.value))}
               />
             </div>
 
@@ -252,26 +221,16 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
               <input
                 type="number"
                 value={customPattern().lightnessRange || 0}
-                onInput={(e) =>
-                  updateCustomPattern(
-                    "lightnessRange",
-                    parseFloat(e.target.value),
-                  )
-                }
+                onInput={e => updateCustomPattern("lightnessRange", parseFloat(e.target.value))}
               />
             </div>
 
             <div class="editor-group">
               <label>
                 <Toggle
-    size="sm"
-  />
-                    updateNestedPattern(
-                      "highlightPreservation",
-                      "enabled",
-                      e.target.checked,
-                    )
-                  }
+                  size="sm"
+                  checked={currentPattern().highlightPreservation.enabled}
+                  onChange={e => updateNestedPattern("highlightPreservation", "enabled", e.target.checked)}
                 />
                 Enable Highlight Preservation
               </label>
@@ -280,14 +239,9 @@ export const MaterialPainter: Component<MaterialPainterProps> = (props) => {
             <div class="editor-group">
               <label>
                 <Toggle
-    size="sm"
-  />
-                    updateNestedPattern(
-                      "shadowEnhancement",
-                      "enabled",
-                      e.target.checked,
-                    )
-                  }
+                  size="sm"
+                  checked={currentPattern().shadowEnhancement.enabled}
+                  onChange={e => updateNestedPattern("shadowEnhancement", "enabled", e.target.checked)}
                 />
                 Enable Shadow Enhancement
               </label>

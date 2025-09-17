@@ -9,9 +9,7 @@ import { Toggle } from "reynard-components";
 
 interface ServiceControlsProps {
   serviceAvailability: () => Record<string, boolean>;
-  setServiceAvailability: (
-    updater: (prev: Record<string, boolean>) => Record<string, boolean>,
-  ) => void;
+  setServiceAvailability: (updater: (prev: Record<string, boolean>) => Record<string, boolean>) => void;
 }
 
 export default function ServiceControls(props: ServiceControlsProps) {
@@ -85,7 +83,7 @@ export default function ServiceControls(props: ServiceControlsProps) {
   ]);
 
   const toggleService = (serviceName: string) => {
-    props.setServiceAvailability((prev) => ({
+    props.setServiceAvailability(prev => ({
       ...prev,
       [serviceName]: !prev[serviceName],
     }));
@@ -93,9 +91,9 @@ export default function ServiceControls(props: ServiceControlsProps) {
 
   const toggleAllServices = (enabled: boolean) => {
     const currentServices = services();
-    props.setServiceAvailability((prev) => {
+    props.setServiceAvailability(prev => {
       const newState = { ...prev };
-      currentServices.forEach((service) => {
+      currentServices.forEach(service => {
         newState[service.name] = enabled;
       });
       return newState;
@@ -103,9 +101,7 @@ export default function ServiceControls(props: ServiceControlsProps) {
   };
 
   const availableCount = createMemo(
-    () =>
-      services().filter((service) => props.serviceAvailability()[service.name])
-        .length,
+    () => services().filter(service => props.serviceAvailability()[service.name]).length
   );
 
   const totalCount = createMemo(() => services().length);
@@ -117,16 +113,10 @@ export default function ServiceControls(props: ServiceControlsProps) {
 
       {/* Bulk Controls */}
       <div class="service-bulk-controls">
-        <button
-          class="btn btn-secondary"
-          onClick={() => toggleAllServices(true)}
-        >
+        <button class="btn btn-secondary" onClick={() => toggleAllServices(true)}>
           Enable All ({availableCount()}/{totalCount()})
         </button>
-        <button
-          class="btn btn-secondary"
-          onClick={() => toggleAllServices(false)}
-        >
+        <button class="btn btn-secondary" onClick={() => toggleAllServices(false)}>
           Disable All
         </button>
       </div>
@@ -134,12 +124,9 @@ export default function ServiceControls(props: ServiceControlsProps) {
       {/* Service Grid */}
       <div class="service-grid">
         <For each={services()}>
-          {(service) => (
+          {service => (
             <label class="service-toggle">
-              <Toggle
-    size="sm"
-  /> toggleService(service.name)}
-              />
+              <Toggle size="sm" checked={service.enabled} onChange={() => toggleService(service.name)} />
               <div class="service-label">
                 <div class="service-label-name">{service.label}</div>
                 <div class="service-label-category">{service.category}</div>

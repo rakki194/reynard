@@ -8,6 +8,8 @@
  *
  * @author Pool-Theorist-35 (Reynard Otter Specialist)
  * @since 1.0.0
+ */
+
 import { Browser, Page, chromium } from "@playwright/test";
 import { mkdirSync, writeFileSync } from "fs";
 import { join } from "path";

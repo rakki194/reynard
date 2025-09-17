@@ -8,7 +8,7 @@ interface ColorPickerProps {
   onColorChange: (color: OKLCHColor) => void;
 }
 
-export const ColorPicker: Component<ColorPickerProps> = (props) => {
+export const ColorPicker: Component<ColorPickerProps> = props => {
   const [lightness, setLightness] = createSignal(props.color.l);
   const [chroma, setChroma] = createSignal(props.color.c);
   const [hue, setHue] = createSignal(props.color.h);
@@ -27,10 +27,7 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
   return (
     <div class="color-picker">
       <div class="color-preview">
-        <div
-          class="preview-color"
-          style={{ "background-color": colorString() }}
-        />
+        <div class="preview-color" style={{ "background-color": colorString() }} />
         <div class="color-values">
           <span class="color-string">{colorString()}</span>
         </div>
@@ -38,15 +35,13 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
 
       <div class="color-controls">
         <div class="control-group">
-          <label for="lightness-slider">
-            Lightness: {Math.round(lightness())}%
-          </label>
+          <label for="lightness-slider">Lightness: {Math.round(lightness())}%</label>
           <Slider
-    id="lightness-slider"
-    min={0}
-    max={100}
-    step={1}
-  /> setLightness(parseFloat(e.target.value))}
+            id="lightness-slider"
+            min={0}
+            max={100}
+            step={1}
+            onChange={e => setLightness(parseFloat(e.target.value))}
             class="slider lightness-slider"
           />
         </div>
@@ -54,11 +49,11 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
         <div class="control-group">
           <label for="chroma-slider">Chroma: {chroma().toFixed(2)}</label>
           <Slider
-    id="chroma-slider"
-    min={0}
-    max={0.4}
-    step={0.01}
-  /> setChroma(parseFloat(e.target.value))}
+            id="chroma-slider"
+            min={0}
+            max={0.4}
+            step={0.01}
+            onChange={e => setChroma(parseFloat(e.target.value))}
             class="slider chroma-slider"
           />
         </div>
@@ -66,11 +61,11 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
         <div class="control-group">
           <label for="hue-slider">Hue: {Math.round(hue())}°</label>
           <Slider
-    id="hue-slider"
-    min={0}
-    max={360}
-    step={1}
-  /> setHue(parseFloat(e.target.value))}
+            id="hue-slider"
+            min={0}
+            max={360}
+            step={1}
+            onChange={e => setHue(parseFloat(e.target.value))}
             class="slider hue-slider"
           />
         </div>
@@ -79,7 +74,7 @@ export const ColorPicker: Component<ColorPickerProps> = (props) => {
       <div class="preset-colors">
         <h4>Preset Colors</h4>
         <div class="preset-grid">
-          {PRESET_COLORS.map((preset) => (
+          {PRESET_COLORS.map(preset => (
             <button
               class="preset-color"
               style={{
