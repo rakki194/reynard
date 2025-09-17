@@ -3,19 +3,8 @@
  * Integration component that uses both reynard-charts and reynard-components
  */
 
-import {
-  Component,
-  createSignal,
-  createMemo,
-  onMount,
-  onCleanup,
-} from "solid-js";
-import {
-  Chart,
-  RealTimeChart,
-  useVisualizationEngine,
-  type RealTimeDataPoint,
-} from "reynard-charts";
+import { Component, createSignal, createMemo, onMount, onCleanup } from "solid-js";
+import { Chart, RealTimeChart, useVisualizationEngine, type RealTimeDataPoint } from "reynard-charts";
 import { Button } from "reynard-components";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
@@ -49,7 +38,7 @@ export const ChartsDemo: Component = () => {
       label: new Date(now).toLocaleTimeString(),
     };
 
-    setRealTimeData((prev) => [...prev, newPoint].slice(-10));
+    setRealTimeData(prev => [...prev, newPoint].slice(-10));
   };
 
   onMount(() => {
@@ -74,9 +63,7 @@ export const ChartsDemo: Component = () => {
             <span class="card-icon">
               <div
                 // eslint-disable-next-line solid/no-innerhtml
-                innerHTML={
-                  fluentIconsPackage.getIcon("chart-multiple")?.outerHTML
-                }
+                innerHTML={fluentIconsPackage.getIcon("chart-multiple")?.outerHTML}
               />
             </span>
           )}
@@ -116,8 +103,7 @@ export const ChartsDemo: Component = () => {
       <div class="card-footer">
         <div class="stats-row">
           <span class="stat">
-            <strong>{visualization.stats().activeVisualizations}</strong> Active
-            Charts
+            <strong>{visualization.stats().activeVisualizations}</strong> Active Charts
           </span>
           <span class="stat">
             <strong>{visualization.stats().fps}</strong> FPS

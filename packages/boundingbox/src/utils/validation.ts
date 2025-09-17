@@ -5,19 +5,14 @@
  * ensuring data integrity and proper constraints.
  */
 
-import type {
-  BoundingBox,
-  PolygonAnnotation,
-  ImageInfo,
-  TransformConstraints,
-} from "../types";
+import type { BoundingBox, PolygonAnnotation, ImageInfo, TransformConstraints } from "../types";
 
 /**
  * Validate bounding box coordinates and dimensions
  */
 export function validateBoundingBox(
   box: BoundingBox,
-  imageInfo: ImageInfo,
+  imageInfo: ImageInfo
 ): {
   isValid: boolean;
   errors: string[];
@@ -87,7 +82,7 @@ export function validateBoundingBox(
  */
 export function validatePolygonAnnotation(
   polygon: PolygonAnnotation,
-  imageInfo: ImageInfo,
+  imageInfo: ImageInfo
 ): {
   isValid: boolean;
   errors: string[];
@@ -135,39 +130,25 @@ export function validatePolygonAnnotation(
 /**
  * Validate transform constraints
  */
-export function validateTransformConstraints(
-  constraints: TransformConstraints,
-): {
+export function validateTransformConstraints(constraints: TransformConstraints): {
   isValid: boolean;
   errors: string[];
 } {
   const errors: string[] = [];
 
-  if (
-    constraints.minWidth !== undefined &&
-    (typeof constraints.minWidth !== "number" || constraints.minWidth < 0)
-  ) {
+  if (constraints.minWidth !== undefined && (typeof constraints.minWidth !== "number" || constraints.minWidth < 0)) {
     errors.push("minWidth must be a non-negative number");
   }
 
-  if (
-    constraints.minHeight !== undefined &&
-    (typeof constraints.minHeight !== "number" || constraints.minHeight < 0)
-  ) {
+  if (constraints.minHeight !== undefined && (typeof constraints.minHeight !== "number" || constraints.minHeight < 0)) {
     errors.push("minHeight must be a non-negative number");
   }
 
-  if (
-    constraints.maxWidth !== undefined &&
-    (typeof constraints.maxWidth !== "number" || constraints.maxWidth < 0)
-  ) {
+  if (constraints.maxWidth !== undefined && (typeof constraints.maxWidth !== "number" || constraints.maxWidth < 0)) {
     errors.push("maxWidth must be a non-negative number");
   }
 
-  if (
-    constraints.maxHeight !== undefined &&
-    (typeof constraints.maxHeight !== "number" || constraints.maxHeight < 0)
-  ) {
+  if (constraints.maxHeight !== undefined && (typeof constraints.maxHeight !== "number" || constraints.maxHeight < 0)) {
     errors.push("maxHeight must be a non-negative number");
   }
 
@@ -189,8 +170,7 @@ export function validateTransformConstraints(
 
   if (
     constraints.aspectRatio !== undefined &&
-    (typeof constraints.aspectRatio !== "number" ||
-      constraints.aspectRatio <= 0)
+    (typeof constraints.aspectRatio !== "number" || constraints.aspectRatio <= 0)
   ) {
     errors.push("aspectRatio must be a positive number");
   }
@@ -206,7 +186,7 @@ export function validateTransformConstraints(
  */
 export function checkBoundingBoxConstraints(
   box: BoundingBox,
-  constraints: TransformConstraints,
+  constraints: TransformConstraints
 ): {
   meetsConstraints: boolean;
   violations: string[];
@@ -214,33 +194,19 @@ export function checkBoundingBoxConstraints(
   const violations: string[] = [];
 
   if (constraints.minWidth !== undefined && box.width < constraints.minWidth) {
-    violations.push(
-      `Width ${box.width} is less than minimum ${constraints.minWidth}`,
-    );
+    violations.push(`Width ${box.width} is less than minimum ${constraints.minWidth}`);
   }
 
-  if (
-    constraints.minHeight !== undefined &&
-    box.height < constraints.minHeight
-  ) {
-    violations.push(
-      `Height ${box.height} is less than minimum ${constraints.minHeight}`,
-    );
+  if (constraints.minHeight !== undefined && box.height < constraints.minHeight) {
+    violations.push(`Height ${box.height} is less than minimum ${constraints.minHeight}`);
   }
 
   if (constraints.maxWidth !== undefined && box.width > constraints.maxWidth) {
-    violations.push(
-      `Width ${box.width} is greater than maximum ${constraints.maxWidth}`,
-    );
+    violations.push(`Width ${box.width} is greater than maximum ${constraints.maxWidth}`);
   }
 
-  if (
-    constraints.maxHeight !== undefined &&
-    box.height > constraints.maxHeight
-  ) {
-    violations.push(
-      `Height ${box.height} is greater than maximum ${constraints.maxHeight}`,
-    );
+  if (constraints.maxHeight !== undefined && box.height > constraints.maxHeight) {
+    violations.push(`Height ${box.height} is greater than maximum ${constraints.maxHeight}`);
   }
 
   if (constraints.aspectRatio !== undefined) {
@@ -248,7 +214,7 @@ export function checkBoundingBoxConstraints(
     const tolerance = 0.01; // 1% tolerance
     if (Math.abs(currentAspectRatio - constraints.aspectRatio) > tolerance) {
       violations.push(
-        `Aspect ratio ${currentAspectRatio.toFixed(3)} does not match required ${constraints.aspectRatio}`,
+        `Aspect ratio ${currentAspectRatio.toFixed(3)} does not match required ${constraints.aspectRatio}`
       );
     }
   }
@@ -287,10 +253,7 @@ export function calculatePolygonArea(polygon: PolygonAnnotation): number {
 /**
  * Check if two bounding boxes overlap
  */
-export function boundingBoxesOverlap(
-  box1: BoundingBox,
-  box2: BoundingBox,
-): boolean {
+export function boundingBoxesOverlap(box1: BoundingBox, box2: BoundingBox): boolean {
   return !(
     box1.x + box1.width <= box2.x ||
     box2.x + box2.width <= box1.x ||
@@ -302,10 +265,7 @@ export function boundingBoxesOverlap(
 /**
  * Calculate intersection over union (IoU) of two bounding boxes
  */
-export function calculateBoundingBoxIoU(
-  box1: BoundingBox,
-  box2: BoundingBox,
-): number {
+export function calculateBoundingBoxIoU(box1: BoundingBox, box2: BoundingBox): number {
   if (!boundingBoxesOverlap(box1, box2)) {
     return 0;
   }
@@ -313,10 +273,8 @@ export function calculateBoundingBoxIoU(
   // Calculate intersection
   const intersectionX = Math.max(box1.x, box2.x);
   const intersectionY = Math.max(box1.y, box2.y);
-  const intersectionWidth =
-    Math.min(box1.x + box1.width, box2.x + box2.width) - intersectionX;
-  const intersectionHeight =
-    Math.min(box1.y + box1.height, box2.y + box2.height) - intersectionY;
+  const intersectionWidth = Math.min(box1.x + box1.width, box2.x + box2.width) - intersectionX;
+  const intersectionHeight = Math.min(box1.y + box1.height, box2.y + box2.height) - intersectionY;
 
   const intersectionArea = intersectionWidth * intersectionHeight;
 

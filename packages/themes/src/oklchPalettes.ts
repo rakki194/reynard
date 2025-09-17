@@ -10,10 +10,7 @@ import type { OKLCHColor } from "reynard-colors";
  * OKLCH Color Palette for each theme
  * These are the base OKLCH colors that define each theme's identity
  */
-export const themeOKLCHPalettes: Record<
-  ThemeName,
-  Record<string, OKLCHColor>
-> = {
+export const themeOKLCHPalettes: Record<ThemeName, Record<string, OKLCHColor>> = {
   light: {
     primary: { l: 60, c: 0.25, h: 240 }, // Blue
     secondary: { l: 50, c: 0.05, h: 0 }, // Neutral gray

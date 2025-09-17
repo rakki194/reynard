@@ -10,9 +10,7 @@ import type { editor } from "monaco-editor";
  * @param reynardTheme - The Reynard theme name
  * @returns Monaco theme definition or null if no custom theme exists
  */
-export const getCustomMonacoTheme = (
-  reynardTheme: string,
-): editor.IStandaloneThemeData | null => {
+export const getCustomMonacoTheme = (reynardTheme: string): editor.IStandaloneThemeData | null => {
   switch (reynardTheme) {
     case "strawberry":
       return getStrawberryTheme();
@@ -411,10 +409,7 @@ const getGrayTheme = (): editor.IStandaloneThemeData => ({
  * @param monaco - Monaco editor instance
  * @param reynardTheme - Current Reynard theme
  */
-export const registerCustomMonacoTheme = (
-  monaco: typeof import("monaco-editor"),
-  reynardTheme: string,
-): void => {
+export const registerCustomMonacoTheme = (monaco: typeof import("monaco-editor"), reynardTheme: string): void => {
   const customTheme = getCustomMonacoTheme(reynardTheme);
   console.log("registerCustomMonacoTheme:", {
     reynardTheme,

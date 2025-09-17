@@ -12,14 +12,7 @@
  * - Integration with Reynard's Monaco package
  */
 
-import {
-  Component,
-  createSignal,
-  createMemo,
-  onMount,
-  Show,
-  For,
-} from "solid-js";
+import { Component, createSignal, createMemo, onMount, Show, For } from "solid-js";
 import { MonacoEditor } from "reynard-monaco";
 
 interface ValidationMarker {
@@ -54,11 +47,9 @@ export interface TOMLEditorProps {
   className?: string;
 }
 
-export const TOMLEditor: Component<TOMLEditorProps> = (props) => {
+export const TOMLEditor: Component<TOMLEditorProps> = props => {
   const [content, setContent] = createSignal(props.content);
-  const [validationMarkers, setValidationMarkers] = createSignal<
-    ValidationMarker[]
-  >([]);
+  const [validationMarkers, setValidationMarkers] = createSignal<ValidationMarker[]>([]);
 
   // Real-time validation using Monaco's built-in INI validation (TOML uses INI language)
   const isValid = createMemo(() => {
@@ -145,10 +136,7 @@ export const TOMLEditor: Component<TOMLEditorProps> = (props) => {
   });
 
   return (
-    <div
-      class={`toml-editor ${props.className || ""}`}
-      onKeyDown={handleKeyDown}
-    >
+    <div class={`toml-editor ${props.className || ""}`} onKeyDown={handleKeyDown}>
       <div class="editor-header">
         <div class="editor-info">
           <span class="editor-title">TOML Editor</span>

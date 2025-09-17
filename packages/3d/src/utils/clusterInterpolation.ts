@@ -1,9 +1,5 @@
 // Cluster interpolation utilities for animations
-import type {
-  EmbeddingPoint,
-  PointAnimation,
-  ClusterAnimation,
-} from "../types";
+import type { EmbeddingPoint, PointAnimation, ClusterAnimation } from "../types";
 import { applyEasing } from "./easing";
 
 /**
@@ -12,7 +8,7 @@ import { applyEasing } from "./easing";
 export function createClusterPointAnimations(
   points: EmbeddingPoint[],
   center: [number, number, number],
-  expansionRadius: number,
+  expansionRadius: number
 ): PointAnimation[] {
   return points.map((point, index) => {
     const angle = (index / points.length) * Math.PI * 2;
@@ -40,26 +36,17 @@ export function createClusterPointAnimations(
 export function interpolateClusterPoint(
   point: EmbeddingPoint,
   pointAnim: PointAnimation,
-  clusterAnim: ClusterAnimation,
+  clusterAnim: ClusterAnimation
 ): EmbeddingPoint {
-  const progress = Math.max(
-    0,
-    (clusterAnim.progress || 0) - pointAnim.delay / clusterAnim.duration,
-  );
-  const easedProgress = applyEasing(
-    Math.max(0, Math.min(1, progress)),
-    clusterAnim.easing,
-  );
+  const progress = Math.max(0, (clusterAnim.progress || 0) - pointAnim.delay / clusterAnim.duration);
+  const easedProgress = applyEasing(Math.max(0, Math.min(1, progress)), clusterAnim.easing);
 
   return {
     ...point,
     position: [
-      pointAnim.startPosition[0] +
-        (pointAnim.endPosition[0] - pointAnim.startPosition[0]) * easedProgress,
-      pointAnim.startPosition[1] +
-        (pointAnim.endPosition[1] - pointAnim.startPosition[1]) * easedProgress,
-      pointAnim.startPosition[2] +
-        (pointAnim.endPosition[2] - pointAnim.startPosition[2]) * easedProgress,
+      pointAnim.startPosition[0] + (pointAnim.endPosition[0] - pointAnim.startPosition[0]) * easedProgress,
+      pointAnim.startPosition[1] + (pointAnim.endPosition[1] - pointAnim.startPosition[1]) * easedProgress,
+      pointAnim.startPosition[2] + (pointAnim.endPosition[2] - pointAnim.startPosition[2]) * easedProgress,
     ] as [number, number, number],
   };
 }

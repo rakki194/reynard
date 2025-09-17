@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  UnionFind,
-  detectCycle,
-  findConnectedComponents,
-} from "../../union-find";
+import { UnionFind, detectCycle, findConnectedComponents } from "../../union-find";
 
 describe("UnionFind", () => {
   it("should create a UnionFind with correct initial state", () => {
@@ -113,7 +109,7 @@ describe("findConnectedComponents", () => {
     expect(components).toHaveLength(2); // {0,1,2}, {3,4}
 
     // Check that components are sorted
-    const componentWith012 = components.find((comp) => comp.includes(0));
+    const componentWith012 = components.find(comp => comp.includes(0));
     expect(componentWith012).toContain(0);
     expect(componentWith012).toContain(1);
     expect(componentWith012).toContain(2);

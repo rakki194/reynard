@@ -19,9 +19,9 @@ export const useTimeManager = (alarms: () => Alarm[]) => {
 
     // Check for alarms
     const currentTimeStr = now.toTimeString().slice(0, 5);
-    const enabledAlarms = alarms().filter((alarm) => alarm.enabled);
+    const enabledAlarms = alarms().filter(alarm => alarm.enabled);
 
-    enabledAlarms.forEach((alarm) => {
+    enabledAlarms.forEach(alarm => {
       if (alarm.time === currentTimeStr) {
         notify(`Alarm: ${alarm.label || "Wake up!"}`, "warning");
       }

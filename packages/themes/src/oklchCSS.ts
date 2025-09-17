@@ -27,9 +27,7 @@ export function generateOKLCHCSS(theme: ThemeName): string {
   cssVars.push(`  --color-accent-hover: ${colorPalette.accentHover};`);
   cssVars.push(`  --color-accent-active: ${colorPalette.accentActive};`);
   cssVars.push(`  --color-background: ${colorPalette.background};`);
-  cssVars.push(
-    `  --color-background-secondary: ${colorPalette.backgroundLight};`,
-  );
+  cssVars.push(`  --color-background-secondary: ${colorPalette.backgroundLight};`);
   cssVars.push(`  --color-surface: ${colorPalette.surface};`);
   cssVars.push(`  --color-surface-hover: ${colorPalette.surfaceHover};`);
   cssVars.push(`  --color-surface-active: ${colorPalette.surfaceActive};`);
@@ -42,15 +40,9 @@ export function generateOKLCHCSS(theme: ThemeName): string {
   cssVars.push(`  --color-info: ${colorPalette.info};`);
 
   // Generate gradient variables
-  cssVars.push(
-    `  --gradient-primary: linear-gradient(135deg, ${colorPalette.primary}, ${colorPalette.primaryHover});`,
-  );
-  cssVars.push(
-    `  --gradient-surface: linear-gradient(135deg, ${colorPalette.surface}, ${colorPalette.surfaceHover});`,
-  );
-  cssVars.push(
-    `  --gradient-accent: linear-gradient(135deg, ${colorPalette.accent}, ${colorPalette.accentHover});`,
-  );
+  cssVars.push(`  --gradient-primary: linear-gradient(135deg, ${colorPalette.primary}, ${colorPalette.primaryHover});`);
+  cssVars.push(`  --gradient-surface: linear-gradient(135deg, ${colorPalette.surface}, ${colorPalette.surfaceHover});`);
+  cssVars.push(`  --gradient-accent: linear-gradient(135deg, ${colorPalette.accent}, ${colorPalette.accentHover});`);
 
   return `:root[data-theme="${theme}"] {\n${cssVars.join("\n")}\n}`;
 }
@@ -70,7 +62,7 @@ export function generateAllOKLCHCSS(): string {
     "high-contrast-inverse",
   ];
 
-  return themes.map((theme) => generateOKLCHCSS(theme)).join("\n\n");
+  return themes.map(theme => generateOKLCHCSS(theme)).join("\n\n");
 }
 
 /**

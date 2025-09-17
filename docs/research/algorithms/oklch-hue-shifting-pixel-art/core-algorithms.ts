@@ -15,7 +15,7 @@ import type { OKLCHColor } from "reynard-colors";
 export function basicHueShift(
   baseColor: OKLCHColor,
   shiftType: "shadow" | "highlight" | "midtone",
-  intensity: number = 0.3,
+  intensity: number = 0.3
 ): OKLCHColor {
   const { l, c, h } = baseColor;
 
@@ -55,7 +55,7 @@ export function generateHueShiftRamp(
   baseColor: OKLCHColor,
   stops: number = 5,
   shadowShift: number = 25,
-  highlightShift: number = 20,
+  highlightShift: number = 20
 ): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const { l, c, h } = baseColor;
@@ -92,11 +92,7 @@ export function generateHueShiftRamp(
  * @param frequency - Hue shift frequency
  * @returns Animated OKLCH color
  */
-export function temporalHueShift(
-  baseColor: OKLCHColor,
-  time: number,
-  frequency: number = 1.0,
-): OKLCHColor {
+export function temporalHueShift(baseColor: OKLCHColor, time: number, frequency: number = 1.0): OKLCHColor {
   const { l, c, h } = baseColor;
   const hueShift = Math.sin(time * Math.PI * 2 * frequency) * 10;
 
@@ -119,7 +115,7 @@ export function adaptiveHueShift(
     isWarm: boolean;
     isSaturated: boolean;
     isDark: boolean;
-  },
+  }
 ): { shadow: OKLCHColor; highlight: OKLCHColor } {
   const { l, c, h } = baseColor;
 

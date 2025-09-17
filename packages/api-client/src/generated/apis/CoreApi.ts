@@ -29,13 +29,13 @@ export interface CoreApiInterface {
      * @throws {RequiredError}
      * @memberof CoreApiInterface
      */
-    rootGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>>;
+    rootGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
 
     /**
      * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
      * Root
      */
-    rootGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }>;
+    rootGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 
 }
 
@@ -48,7 +48,7 @@ export class CoreApi extends runtime.BaseAPI implements CoreApiInterface {
      * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
      * Root
      */
-    async rootGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
+    async rootGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -70,7 +70,7 @@ export class CoreApi extends runtime.BaseAPI implements CoreApiInterface {
      * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
      * Root
      */
-    async rootGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
+    async rootGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
         const response = await this.rootGetRaw(initOverrides);
         return await response.value();
     }

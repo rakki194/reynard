@@ -16,15 +16,13 @@ export function useFileValidation(props: FileUploadProps) {
     // Check file size
     if (!validateFileSize(file, props.maxFileSize || 100 * 1024 * 1024)) {
       errors.push(
-        `File "${file.name}" is too large. Maximum size is ${formatFileSize(props.maxFileSize || 100 * 1024 * 1024)}`,
+        `File "${file.name}" is too large. Maximum size is ${formatFileSize(props.maxFileSize || 100 * 1024 * 1024)}`
       );
     }
 
     // Check file type
     if (!validateFileType(file, props.accept || "*/*")) {
-      errors.push(
-        `File "${file.name}" is not an accepted file type. Accepted types: ${props.accept}`,
-      );
+      errors.push(`File "${file.name}" is not an accepted file type. Accepted types: ${props.accept}`);
     }
 
     return {
@@ -36,22 +34,18 @@ export function useFileValidation(props: FileUploadProps) {
   /**
    * Validate multiple files
    */
-  const validateFiles = (
-    files: File[],
-  ): { validFiles: File[]; errors: string[] } => {
+  const validateFiles = (files: File[]): { validFiles: File[]; errors: string[] } => {
     const validFiles: File[] = [];
     const allErrors: string[] = [];
 
     // Check maximum number of files
     if (props.maxFiles && files.length > props.maxFiles) {
-      allErrors.push(
-        `Too many files selected. Maximum allowed: ${props.maxFiles}`,
-      );
+      allErrors.push(`Too many files selected. Maximum allowed: ${props.maxFiles}`);
       return { validFiles, errors: allErrors };
     }
 
     // Validate each file
-    files.forEach((file) => {
+    files.forEach(file => {
       const validation = validateFile(file);
       if (validation.isValid) {
         validFiles.push(file);

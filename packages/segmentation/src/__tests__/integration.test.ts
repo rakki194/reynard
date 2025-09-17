@@ -5,10 +5,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import {
-  SegmentationManager,
-  initializeSegmentationManager,
-} from "../services/SegmentationManager.js";
+import { SegmentationManager, initializeSegmentationManager } from "../services/SegmentationManager.js";
 import { SegmentationService } from "../services/SegmentationService.js";
 import { useSegmentationEditor } from "../composables/useSegmentationEditor.js";
 import { usePolygonEditor } from "../composables/usePolygonEditor.js";
@@ -131,10 +128,7 @@ describe("Segmentation System Integration", () => {
         validateGeometry: true,
       };
 
-      const registeredService = await manager.registerSegmentationService(
-        "test-service",
-        config,
-      );
+      const registeredService = await manager.registerSegmentationService("test-service", config);
 
       expect(registeredService).toBeDefined();
       expect(manager.isServiceAvailable("test-service")).toBe(true);
@@ -260,12 +254,12 @@ describe("Segmentation System Integration", () => {
           zoom: 1,
           panOffset: { x: 0, y: 0 },
         },
-        onSegmentationCreate: (segmentation) => {
+        onSegmentationCreate: segmentation => {
           // Validate segmentation using service
           const isValid = service.validateSegmentation(segmentation);
           expect(isValid).toBe(true);
         },
-        onSegmentationUpdate: (segmentation) => {
+        onSegmentationUpdate: segmentation => {
           // Validate updated segmentation
           const isValid = service.validateSegmentation(segmentation);
           expect(isValid).toBe(true);
@@ -283,7 +277,7 @@ describe("Segmentation System Integration", () => {
           minPolygonArea: 100,
           maxPolygonArea: 1000000,
         },
-        onPolygonChange: (polygon) => {
+        onPolygonChange: polygon => {
           // Validate polygon using service
           const testSegmentation: SegmentationData = {
             id: "test",
@@ -428,7 +422,7 @@ describe("Segmentation System Integration", () => {
         manager.generateSegmentation({
           type: "segmentation",
           imagePath: `/test/image${i}.jpg`,
-        }),
+        })
       );
 
       const results = await Promise.all(promises);
@@ -437,7 +431,7 @@ describe("Segmentation System Integration", () => {
       const executionTime = endTime - startTime;
 
       expect(results).toHaveLength(5);
-      expect(results.every((r) => r.success)).toBe(true);
+      expect(results.every(r => r.success)).toBe(true);
       expect(executionTime).toBeLessThan(500); // Should complete in less than 500ms
     });
   });
@@ -498,12 +492,8 @@ describe("Segmentation System Integration", () => {
         updatedAt: new Date(),
       };
 
-      expect(() =>
-        service.exportSegmentation(segmentation, "unsupported"),
-      ).toThrow();
-      expect(() =>
-        manager.exportSegmentation(segmentation, "unsupported"),
-      ).toThrow();
+      expect(() => service.exportSegmentation(segmentation, "unsupported")).toThrow();
+      expect(() => manager.exportSegmentation(segmentation, "unsupported")).toThrow();
     });
   });
 

@@ -12,9 +12,7 @@ interface MultiModalFileThumbnailProps {
   file: MultiModalFile;
 }
 
-export const MultiModalFileThumbnail: Component<
-  MultiModalFileThumbnailProps
-> = (props) => {
+export const MultiModalFileThumbnail: Component<MultiModalFileThumbnailProps> = props => {
   const [thumbnailUrl, setThumbnailUrl] = createSignal<string | null>(null);
 
   // Create thumbnail URL
@@ -30,18 +28,11 @@ export const MultiModalFileThumbnail: Component<
     <div class="file-thumbnail">
       <Show
         when={thumbnailUrl()}
-        fallback={
-          <div class="thumbnail-placeholder">
-            {getFileIcon(props.file.fileType)}
-          </div>
-        }
+        fallback={<div class="thumbnail-placeholder">{getFileIcon(props.file.fileType)}</div>}
       >
         <img src={thumbnailUrl()!} alt={props.file.name} />
       </Show>
-      <div
-        class="file-type-badge"
-        style={{ background: getTypeColor(props.file.fileType) }}
-      >
+      <div class="file-type-badge" style={{ background: getTypeColor(props.file.fileType) }}>
         {props.file.fileType.toUpperCase()}
       </div>
     </div>

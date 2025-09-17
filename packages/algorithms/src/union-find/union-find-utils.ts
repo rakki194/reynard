@@ -28,9 +28,7 @@ export function detectCycle(edges: Array<[number, number]>): boolean {
 /**
  * Utility function to find connected components
  */
-export function findConnectedComponents(
-  edges: Array<[number, number]>,
-): number[][] {
+export function findConnectedComponents(edges: Array<[number, number]>): number[][] {
   const maxNode = Math.max(...edges.flat());
   const uf = new UnionFind(maxNode + 1);
 

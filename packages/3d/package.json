@@ -33,9 +33,7 @@
       "import": "./dist/demos/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
@@ -69,13 +67,5 @@
   "peerDependencies": {
     "solid-js": "1.9.9"
   },
-  "keywords": [
-    "3d",
-    "threejs",
-    "webgl",
-    "visualization",
-    "graphics",
-    "solidjs",
-    "reynard"
-  ]
+  "keywords": ["3d", "threejs", "webgl", "visualization", "graphics", "solidjs", "reynard"]
 }

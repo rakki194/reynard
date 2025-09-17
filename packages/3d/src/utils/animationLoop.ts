@@ -10,9 +10,9 @@ export function createAnimationLoop(
   duration: number,
   easing: EasingType,
   onUpdate: (progress: number) => void,
-  onComplete: () => void,
+  onComplete: () => void
 ): Promise<void> {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     const animate = (currentTime: number) => {
       const elapsed = currentTime - animationState.startTime;
       const progress = Math.min(elapsed / duration, 1);
@@ -41,9 +41,9 @@ export function createClusterAnimationLoop(
   duration: number,
   easing: EasingType,
   onUpdate: (progress: number) => void,
-  onComplete: () => void,
+  onComplete: () => void
 ): Promise<void> {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);

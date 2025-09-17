@@ -24,11 +24,7 @@ export class CachedHueShifter {
    * @param intensity - Shift intensity
    * @returns Shifted OKLCH color
    */
-  getShiftedColor(
-    baseColor: OKLCHColor,
-    shiftType: string,
-    intensity: number,
-  ): OKLCHColor {
+  getShiftedColor(baseColor: OKLCHColor, shiftType: string, intensity: number): OKLCHColor {
     const key = `${baseColor.l}-${baseColor.c}-${baseColor.h}-${shiftType}-${intensity}`;
 
     if (this.cache.has(key)) {
@@ -84,9 +80,9 @@ export class CachedHueShifter {
 export function batchHueShift(
   colors: OKLCHColor[],
   shiftType: "shadow" | "highlight" | "midtone",
-  intensity: number,
+  intensity: number
 ): OKLCHColor[] {
-  return colors.map((color) => basicHueShift(color, shiftType, intensity));
+  return colors.map(color => basicHueShift(color, shiftType, intensity));
 }
 
 /**
@@ -98,12 +94,8 @@ export function batchHueShift(
  */
 export function createColorLookupTable(
   baseColors: OKLCHColor[],
-  shiftTypes: Array<"shadow" | "highlight" | "midtone"> = [
-    "shadow",
-    "highlight",
-    "midtone",
-  ],
-  intensities: number[] = [0.3, 0.5, 0.7],
+  shiftTypes: Array<"shadow" | "highlight" | "midtone"> = ["shadow", "highlight", "midtone"],
+  intensities: number[] = [0.3, 0.5, 0.7]
 ): Map<string, OKLCHColor> {
   const lookup = new Map<string, OKLCHColor>();
 
@@ -127,11 +119,7 @@ export function createColorLookupTable(
  * @param steps - Number of interpolation steps
  * @returns Array of interpolated OKLCH colors
  */
-export function interpolateColors(
-  color1: OKLCHColor,
-  color2: OKLCHColor,
-  steps: number = 10,
-): OKLCHColor[] {
+export function interpolateColors(color1: OKLCHColor, color2: OKLCHColor, steps: number = 10): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
 
   for (let i = 0; i <= steps; i++) {

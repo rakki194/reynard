@@ -21,24 +21,10 @@ export interface NLWebToolActions {
 /**
  * Create NLWeb tool actions
  */
-export function createNLWebToolActions(
-  state: NLWebState,
-  baseUrl: string,
-  requestTimeout: number,
-): NLWebToolActions {
+export function createNLWebToolActions(state: NLWebState, baseUrl: string, requestTimeout: number): NLWebToolActions {
   const getTools = createGetToolsAction(state, baseUrl, requestTimeout);
-  const registerTool = createRegisterToolAction(
-    state,
-    baseUrl,
-    requestTimeout,
-    getTools,
-  );
-  const unregisterTool = createUnregisterToolAction(
-    state,
-    baseUrl,
-    requestTimeout,
-    getTools,
-  );
+  const registerTool = createRegisterToolAction(state, baseUrl, requestTimeout, getTools);
+  const unregisterTool = createUnregisterToolAction(state, baseUrl, requestTimeout, getTools);
 
   return {
     getTools,

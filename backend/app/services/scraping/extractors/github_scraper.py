@@ -77,7 +77,7 @@ class GitHubScraper(BaseScraper):
         if repo_match:
             return "repository", {
                 "owner": repo_match.group(1),
-                "repo": repo_match.group(2)
+                "repo": repo_match.group(2),
             }
 
         # Issue URL
@@ -86,7 +86,7 @@ class GitHubScraper(BaseScraper):
             return "issue", {
                 "owner": issue_match.group(1),
                 "repo": issue_match.group(2),
-                "number": issue_match.group(3)
+                "number": issue_match.group(3),
             }
 
         # Pull Request URL
@@ -95,26 +95,26 @@ class GitHubScraper(BaseScraper):
             return "pull_request", {
                 "owner": pr_match.group(1),
                 "repo": pr_match.group(2),
-                "number": pr_match.group(3)
+                "number": pr_match.group(3),
             }
 
         # User URL
         user_match = self.user_pattern.search(url)
         if user_match:
-            return "user", {
-                "username": user_match.group(1)
-            }
+            return "user", {"username": user_match.group(1)}
 
         return None, None
 
-    async def _scrape_with_api(self, content_type: str, identifiers: dict[str, str], url: str) -> dict[str, Any] | None:
+    async def _scrape_with_api(
+        self, content_type: str, identifiers: dict[str, str], url: str
+    ) -> dict[str, Any] | None:
         """Scrape content using GitHub API."""
         try:
             import aiohttp
 
             headers = {
                 "Accept": "application/vnd.github.v3+json",
-                "User-Agent": "Reynard-Scraping/1.0"
+                "User-Agent": "Reynard-Scraping/1.0",
             }
 
             async with aiohttp.ClientSession(headers=headers) as session:
@@ -135,10 +135,12 @@ class GitHubScraper(BaseScraper):
                         data["content_type"] = content_type
                         data["method"] = "api"
                         return data
-                    elif response.status == 404:
+                    if response.status == 404:
                         self.logger.warning(f"GitHub API: Resource not found for {url}")
                     else:
-                        self.logger.warning(f"GitHub API: Status {response.status} for {url}")
+                        self.logger.warning(
+                            f"GitHub API: Status {response.status} for {url}"
+                        )
 
             return None
 
@@ -146,20 +148,23 @@ class GitHubScraper(BaseScraper):
             self.logger.error(f"GitHub API scraping failed: {e}")
             return None
 
-    def _create_result_from_api_content(self, url: str, content_type: str, content: dict[str, Any]) -> ScrapingResult:
+    def _create_result_from_api_content(
+        self, url: str, content_type: str, content: dict[str, Any]
+    ) -> ScrapingResult:
         """Create ScrapingResult from API content."""
         if content_type == "repository":
             return self._create_repository_result(url, content)
-        elif content_type == "issue":
+        if content_type == "issue":
             return self._create_issue_result(url, content)
-        elif content_type == "pull_request":
+        if content_type == "pull_request":
             return self._create_pull_request_result(url, content)
-        elif content_type == "user":
+        if content_type == "user":
             return self._create_user_result(url, content)
-        else:
-            return self._create_generic_result(url, content)
+        return self._create_generic_result(url, content)
 
-    def _create_repository_result(self, url: str, content: dict[str, Any]) -> ScrapingResult:
+    def _create_repository_result(
+        self, url: str, content: dict[str, Any]
+    ) -> ScrapingResult:
         """Create result for repository content."""
         title = content.get("name", "GitHub Repository")
         description = content.get("description", "")
@@ -192,7 +197,11 @@ class GitHubScraper(BaseScraper):
                 "pushed_at": content.get("pushed_at"),
                 "size": content.get("size", 0),
                 "topics": content.get("topics", []),
-                "license": content.get("license", {}).get("name") if content.get("license") else None,
+                "license": (
+                    content.get("license", {}).get("name")
+                    if content.get("license")
+                    else None
+                ),
                 "has_readme": bool(readme_content),
             },
             quality={
@@ -225,9 +234,18 @@ class GitHubScraper(BaseScraper):
                 "number": content.get("number"),
                 "state": content.get("state"),
                 "user": content.get("user", {}).get("login", ""),
-                "labels": [label.get("name", "") for label in content.get("labels", [])],
-                "assignees": [assignee.get("login", "") for assignee in content.get("assignees", [])],
-                "milestone": content.get("milestone", {}).get("title") if content.get("milestone") else None,
+                "labels": [
+                    label.get("name", "") for label in content.get("labels", [])
+                ],
+                "assignees": [
+                    assignee.get("login", "")
+                    for assignee in content.get("assignees", [])
+                ],
+                "milestone": (
+                    content.get("milestone", {}).get("title")
+                    if content.get("milestone")
+                    else None
+                ),
                 "comments": content.get("comments", 0),
                 "created_at": content.get("created_at"),
                 "updated_at": content.get("updated_at"),
@@ -247,7 +265,9 @@ class GitHubScraper(BaseScraper):
             },
         )
 
-    def _create_pull_request_result(self, url: str, content: dict[str, Any]) -> ScrapingResult:
+    def _create_pull_request_result(
+        self, url: str, content: dict[str, Any]
+    ) -> ScrapingResult:
         """Create result for pull request content."""
         title = content.get("title", "GitHub Pull Request")
         body = content.get("body", "")
@@ -336,7 +356,9 @@ class GitHubScraper(BaseScraper):
             },
         )
 
-    def _create_generic_result(self, url: str, content: dict[str, Any]) -> ScrapingResult:
+    def _create_generic_result(
+        self, url: str, content: dict[str, Any]
+    ) -> ScrapingResult:
         """Create generic result for unknown content types."""
         return ScrapingResult(
             url=url,

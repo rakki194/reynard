@@ -40,21 +40,17 @@ export async function validatePackageI18nSetup(): Promise<{
     // Check if package has i18n test file
     const i18nTestPath = join(pkg.path, "src/__tests__/i18n.test.ts");
     if (!existsSync(i18nTestPath)) {
-      issues.push(
-        `Package ${pkg.name} missing i18n test file: ${i18nTestPath}`,
-      );
+      issues.push(`Package ${pkg.name} missing i18n test file: ${i18nTestPath}`);
     }
 
     // Check if package has translation files
-    const hasTranslationFiles = pkg.namespaces.some((namespace) => {
+    const hasTranslationFiles = pkg.namespaces.some(namespace => {
       const translationPath = join(pkg.path, `src/lang/en/${namespace}.ts`);
       return existsSync(translationPath);
     });
 
     if (!hasTranslationFiles && pkg.validateCompleteness) {
-      issues.push(
-        `Package ${pkg.name} missing translation files for namespaces: ${pkg.namespaces.join(", ")}`,
-      );
+      issues.push(`Package ${pkg.name} missing translation files for namespaces: ${pkg.namespaces.join(", ")}`);
     }
   }
 

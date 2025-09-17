@@ -8,12 +8,7 @@
  */
 
 // Core types and interfaces
-export type {
-  AABB,
-  CollisionResult,
-  CollisionStats,
-  AABBSpatialHashConfig,
-} from "./aabb-types";
+export type { AABB, CollisionResult, CollisionStats, AABBSpatialHashConfig } from "./aabb-types";
 
 // Core collision detection
 export { checkCollision } from "./aabb-collision";
@@ -32,10 +27,7 @@ export {
 export { getAABBArea, getAABBPerimeter } from "./aabb-utils";
 
 // Batch collision detection
-export {
-  batchCollisionDetection,
-  batchCollisionWithSpatialHash,
-} from "./aabb-batch-collision";
+export { batchCollisionDetection, batchCollisionWithSpatialHash } from "./aabb-batch-collision";
 
 // Spatial hashing
 export { SpatialHash } from "./aabb-spatial-hash";

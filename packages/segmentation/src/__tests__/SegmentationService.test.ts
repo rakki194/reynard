@@ -6,11 +6,7 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { SegmentationService } from "../services/SegmentationService.js";
-import {
-  SegmentationTask,
-  SegmentationData,
-  SegmentationSource,
-} from "../types/index.js";
+import { SegmentationTask, SegmentationData, SegmentationSource } from "../types/index.js";
 import { PolygonOps } from "reynard-algorithms";
 
 // Mock dependencies
@@ -96,9 +92,7 @@ describe("SegmentationService", () => {
         initialize: vi.fn().mockRejectedValue(new Error("Backend error")),
       });
 
-      await expect(service.initialize()).rejects.toThrow(
-        "Failed to initialize segmentation service",
-      );
+      await expect(service.initialize()).rejects.toThrow("Failed to initialize segmentation service");
     });
   });
 
@@ -176,9 +170,7 @@ describe("SegmentationService", () => {
       const result = await service.refineSegmentation(segmentation);
 
       expect(result.success).toBe(true);
-      expect(result.segmentation.metadata?.source).toBe(
-        SegmentationSource.REFINED,
-      );
+      expect(result.segmentation.metadata?.source).toBe(SegmentationSource.REFINED);
       expect(result.processingInfo?.algorithm).toBe("polygon_optimization");
     });
 
@@ -391,9 +383,7 @@ describe("SegmentationService", () => {
         updatedAt: new Date(),
       };
 
-      expect(() =>
-        service.exportSegmentation(segmentation, "unsupported"),
-      ).toThrow();
+      expect(() => service.exportSegmentation(segmentation, "unsupported")).toThrow();
     });
   });
 
@@ -416,9 +406,7 @@ describe("SegmentationService", () => {
 
       const healthInfo = await service.getHealthInfo();
       expect(healthInfo.details.processingStats).toBeDefined();
-      expect(healthInfo.details.processingStats.totalProcessed).toBeGreaterThan(
-        0,
-      );
+      expect(healthInfo.details.processingStats.totalProcessed).toBeGreaterThan(0);
     });
   });
 

@@ -14,17 +14,13 @@ export interface FileItemProps {
   removeFile: (id: string) => void;
 }
 
-export const FileItem: Component<FileItemProps> = (props) => {
+export const FileItem: Component<FileItemProps> = props => {
   return (
-    <div
-      class={`reynard-file-upload__file-item reynard-file-upload__file-item--${props.item.status}`}
-    >
+    <div class={`reynard-file-upload__file-item reynard-file-upload__file-item--${props.item.status}`}>
       <div class="reynard-file-upload__file-info">
         <div class="reynard-file-upload__file-name">{props.item.file.name}</div>
         <div class="reynard-file-upload__file-details">
-          <span class="reynard-file-upload__file-size">
-            {formatFileSize(props.item.file.size)}
-          </span>
+          <span class="reynard-file-upload__file-size">{formatFileSize(props.item.file.size)}</span>
         </div>
       </div>
       <Show when={props.showProgress && props.item.status === "uploading"}>
@@ -34,9 +30,7 @@ export const FileItem: Component<FileItemProps> = (props) => {
               class={`reynard-file-upload__progress-fill reynard-file-upload__progress-fill--${Math.round(props.item.progress / 10) * 10}`}
             />
           </div>
-          <span class="reynard-file-upload__progress-text">
-            {Math.round(props.item.progress)}%
-          </span>
+          <span class="reynard-file-upload__progress-text">{Math.round(props.item.progress)}%</span>
         </div>
       </Show>
       <Show when={props.item.status === "error"}>

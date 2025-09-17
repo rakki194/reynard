@@ -264,7 +264,7 @@ describe("ComponentName", () => {
    ```typescript
    beforeEach(() => {
      Object.defineProperty(window, "matchMedia", {
-       value: vi.fn().mockImplementation((query) => ({
+       value: vi.fn().mockImplementation(query => ({
          matches: false,
          media: query,
          addEventListener: vi.fn(),

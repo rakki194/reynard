@@ -50,8 +50,7 @@ export interface MaterialActions {
 }
 
 export function useMaterialEffects() {
-  const [selectedMaterial, setSelectedMaterial] =
-    createSignal<MaterialType>("fabric");
+  const [selectedMaterial, setSelectedMaterial] = createSignal<MaterialType>("fabric");
   const [shiftIntensity, setShiftIntensity] = createSignal(0.3);
 
   const getEffectiveColor = (color: OKLCHColor): OKLCHColor => {

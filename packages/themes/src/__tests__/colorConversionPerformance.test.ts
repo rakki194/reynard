@@ -15,7 +15,7 @@ describe("Color Conversion Performance", () => {
     ];
 
     const start = performance.now();
-    colors.forEach((color) => oklchToRgb(color));
+    colors.forEach(color => oklchToRgb(color));
     const end = performance.now();
 
     // Should complete quickly (less than 10ms for 5 conversions)

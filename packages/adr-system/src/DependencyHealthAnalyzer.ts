@@ -28,13 +28,7 @@ export interface DependencyInfo {
 
 export interface DependencyHealthIssue {
   id: string;
-  type:
-    | "security"
-    | "version"
-    | "license"
-    | "maintenance"
-    | "performance"
-    | "compatibility";
+  type: "security" | "version" | "license" | "maintenance" | "performance" | "compatibility";
   severity: "low" | "medium" | "high" | "critical";
   dependency: string;
   description: string;
@@ -113,18 +107,14 @@ export class DependencyHealthAnalyzer {
     // Generate comprehensive report
     const report = this.generateHealthReport(healthScores);
 
-    console.log(
-      `✅ Dependency health analysis complete: ${report.overallHealth.toFixed(1)}% overall health`,
-    );
+    console.log(`✅ Dependency health analysis complete: ${report.overallHealth.toFixed(1)}% overall health`);
     return report;
   }
 
   /**
    * Analyze health of a specific dependency
    */
-  async analyzeDependencyHealth(
-    dependency: DependencyInfo,
-  ): Promise<DependencyHealthScore> {
+  async analyzeDependencyHealth(dependency: DependencyInfo): Promise<DependencyHealthScore> {
     const issues: DependencyHealthIssue[] = [];
     const recommendations: string[] = [];
 
@@ -141,8 +131,7 @@ export class DependencyHealthAnalyzer {
     issues.push(...performanceIssues);
 
     // Compatibility analysis
-    const compatibilityIssues =
-      await this.analyzeCompatibilityHealth(dependency);
+    const compatibilityIssues = await this.analyzeCompatibilityHealth(dependency);
     issues.push(...compatibilityIssues);
 
     // License analysis
@@ -182,9 +171,7 @@ export class DependencyHealthAnalyzer {
     const criticalIssues: DependencyHealthIssue[] = [];
 
     for (const healthScore of this.healthCache.values()) {
-      const critical = healthScore.issues.filter(
-        (issue) => issue.severity === "critical",
-      );
+      const critical = healthScore.issues.filter(issue => issue.severity === "critical");
       criticalIssues.push(...critical);
     }
 
@@ -209,14 +196,10 @@ export class DependencyHealthAnalyzer {
     }> = [];
 
     for (const healthScore of this.healthCache.values()) {
-      const outdatedIssues = healthScore.issues.filter(
-        (issue) => issue.type === "version",
-      );
+      const outdatedIssues = healthScore.issues.filter(issue => issue.type === "version");
       for (const issue of outdatedIssues) {
         // Extract version information from issue description
-        const versionMatch = issue.description.match(
-          /(\d+\.\d+\.\d+).*?(\d+\.\d+\.\d+)/,
-        );
+        const versionMatch = issue.description.match(/(\d+\.\d+\.\d+).*?(\d+\.\d+\.\d+)/);
         if (versionMatch) {
           outdated.push({
             dependency: issue.dependency,
@@ -237,9 +220,7 @@ export class DependencyHealthAnalyzer {
     const vulnerabilities: DependencyHealthIssue[] = [];
 
     for (const healthScore of this.healthCache.values()) {
-      const securityIssues = healthScore.issues.filter(
-        (issue) => issue.type === "security",
-      );
+      const securityIssues = healthScore.issues.filter(issue => issue.type === "security");
       vulnerabilities.push(...securityIssues);
     }
 
@@ -268,23 +249,12 @@ export class DependencyHealthAnalyzer {
     }> = [];
 
     for (const healthScore of this.healthCache.values()) {
-      const versionIssues = healthScore.issues.filter(
-        (issue) => issue.type === "version",
-      );
-      const securityIssues = healthScore.issues.filter(
-        (issue) => issue.type === "security",
-      );
+      const versionIssues = healthScore.issues.filter(issue => issue.type === "version");
+      const securityIssues = healthScore.issues.filter(issue => issue.type === "security");
 
       if (versionIssues.length > 0 || securityIssues.length > 0) {
-        const priority = securityIssues.some(
-          (issue) => issue.severity === "critical",
-        )
-          ? "high"
-          : "medium";
-        const reason =
-          securityIssues.length > 0
-            ? "Security vulnerabilities"
-            : "Outdated version";
+        const priority = securityIssues.some(issue => issue.severity === "critical") ? "high" : "medium";
+        const reason = securityIssues.length > 0 ? "Security vulnerabilities" : "Outdated version";
 
         recommendations.push({
           dependency: healthScore.dependency,
@@ -356,11 +326,7 @@ export class DependencyHealthAnalyzer {
           const fullPath = join(dir, entry.name);
 
           if (entry.isDirectory()) {
-            if (
-              !["node_modules", ".git", "dist", "build", "coverage"].includes(
-                entry.name,
-              )
-            ) {
+            if (!["node_modules", ".git", "dist", "build", "coverage"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile() && entry.name === "package.json") {
@@ -376,32 +342,19 @@ export class DependencyHealthAnalyzer {
     return files;
   }
 
-  private getDependencyType(
-    name: string,
-    packageJson: any,
-  ): DependencyInfo["type"] {
-    if (packageJson.dependencies && packageJson.dependencies[name])
-      return "production";
-    if (packageJson.devDependencies && packageJson.devDependencies[name])
-      return "development";
-    if (packageJson.peerDependencies && packageJson.peerDependencies[name])
-      return "peer";
-    if (
-      packageJson.optionalDependencies &&
-      packageJson.optionalDependencies[name]
-    )
-      return "optional";
+  private getDependencyType(name: string, packageJson: any): DependencyInfo["type"] {
+    if (packageJson.dependencies && packageJson.dependencies[name]) return "production";
+    if (packageJson.devDependencies && packageJson.devDependencies[name]) return "development";
+    if (packageJson.peerDependencies && packageJson.peerDependencies[name]) return "peer";
+    if (packageJson.optionalDependencies && packageJson.optionalDependencies[name]) return "optional";
     return "production";
   }
 
-  private async analyzeSecurityHealth(
-    dependency: DependencyInfo,
-  ): Promise<DependencyHealthIssue[]> {
+  private async analyzeSecurityHealth(dependency: DependencyInfo): Promise<DependencyHealthIssue[]> {
     const issues: DependencyHealthIssue[] = [];
 
     // Check for known vulnerabilities
-    const vulnerabilities =
-      this.vulnerabilityDatabase.get(dependency.name) || [];
+    const vulnerabilities = this.vulnerabilityDatabase.get(dependency.name) || [];
 
     for (const vulnerability of vulnerabilities) {
       issues.push({
@@ -409,8 +362,7 @@ export class DependencyHealthAnalyzer {
         type: "security",
         severity: this.mapSeverity(vulnerability.severity),
         dependency: dependency.name,
-        description:
-          vulnerability.description || "Security vulnerability detected",
+        description: vulnerability.description || "Security vulnerability detected",
         impact: vulnerability.impact || "Potential security risk",
         remediation: vulnerability.remediation || "Update to latest version",
         references: vulnerability.references,
@@ -435,9 +387,7 @@ export class DependencyHealthAnalyzer {
     return issues;
   }
 
-  private async analyzeMaintenanceHealth(
-    dependency: DependencyInfo,
-  ): Promise<DependencyHealthIssue[]> {
+  private async analyzeMaintenanceHealth(dependency: DependencyInfo): Promise<DependencyHealthIssue[]> {
     const issues: DependencyHealthIssue[] = [];
 
     // Check for outdated versions
@@ -473,9 +423,7 @@ export class DependencyHealthAnalyzer {
     return issues;
   }
 
-  private async analyzePerformanceHealth(
-    dependency: DependencyInfo,
-  ): Promise<DependencyHealthIssue[]> {
+  private async analyzePerformanceHealth(dependency: DependencyInfo): Promise<DependencyHealthIssue[]> {
     const issues: DependencyHealthIssue[] = [];
 
     // Check for large packages
@@ -511,17 +459,12 @@ export class DependencyHealthAnalyzer {
     return issues;
   }
 
-  private async analyzeCompatibilityHealth(
-    dependency: DependencyInfo,
-  ): Promise<DependencyHealthIssue[]> {
+  private async analyzeCompatibilityHealth(dependency: DependencyInfo): Promise<DependencyHealthIssue[]> {
     const issues: DependencyHealthIssue[] = [];
 
     // Check for Node.js version compatibility
     const nodeVersion = process.version;
-    const isCompatible = await this.checkNodeCompatibility(
-      dependency,
-      nodeVersion,
-    );
+    const isCompatible = await this.checkNodeCompatibility(dependency, nodeVersion);
     if (!isCompatible) {
       issues.push({
         id: this.generateIssueId(),
@@ -553,9 +496,7 @@ export class DependencyHealthAnalyzer {
     return issues;
   }
 
-  private async analyzeLicenseHealth(
-    dependency: DependencyInfo,
-  ): Promise<DependencyHealthIssue[]> {
+  private async analyzeLicenseHealth(dependency: DependencyInfo): Promise<DependencyHealthIssue[]> {
     const issues: DependencyHealthIssue[] = [];
 
     // Check for problematic licenses
@@ -591,9 +532,7 @@ export class DependencyHealthAnalyzer {
     return issues;
   }
 
-  private calculateCategoryScores(
-    issues: DependencyHealthIssue[],
-  ): DependencyHealthScore["categoryScores"] {
+  private calculateCategoryScores(issues: DependencyHealthIssue[]): DependencyHealthScore["categoryScores"] {
     const categoryScores = {
       security: 100,
       maintenance: 100,
@@ -642,7 +581,7 @@ export class DependencyHealthAnalyzer {
     for (const key of Object.keys(categoryScores)) {
       categoryScores[key as keyof typeof categoryScores] = Math.max(
         0,
-        categoryScores[key as keyof typeof categoryScores],
+        categoryScores[key as keyof typeof categoryScores]
       );
     }
 
@@ -651,7 +590,7 @@ export class DependencyHealthAnalyzer {
 
   private calculateOverallScore(
     categoryScores: DependencyHealthScore["categoryScores"],
-    issues: DependencyHealthIssue[],
+    issues: DependencyHealthIssue[]
   ): number {
     const weights = {
       security: 0.3,
@@ -669,10 +608,7 @@ export class DependencyHealthAnalyzer {
     return Math.round(weightedScore);
   }
 
-  private generateRecommendations(
-    issues: DependencyHealthIssue[],
-    dependency: DependencyInfo,
-  ): string[] {
+  private generateRecommendations(issues: DependencyHealthIssue[], dependency: DependencyInfo): string[] {
     const recommendations: string[] = [];
 
     if (issues.length === 0) {
@@ -680,13 +616,11 @@ export class DependencyHealthAnalyzer {
       return recommendations;
     }
 
-    const criticalIssues = issues.filter((i) => i.severity === "critical");
-    const highIssues = issues.filter((i) => i.severity === "high");
+    const criticalIssues = issues.filter(i => i.severity === "critical");
+    const highIssues = issues.filter(i => i.severity === "high");
 
     if (criticalIssues.length > 0) {
-      recommendations.push(
-        `🚨 Address ${criticalIssues.length} critical issues immediately`,
-      );
+      recommendations.push(`🚨 Address ${criticalIssues.length} critical issues immediately`);
     }
 
     if (highIssues.length > 0) {
@@ -694,18 +628,14 @@ export class DependencyHealthAnalyzer {
     }
 
     // Specific recommendations based on issue types
-    const issueTypes = new Set(issues.map((i) => i.type));
+    const issueTypes = new Set(issues.map(i => i.type));
 
     if (issueTypes.has("security")) {
-      recommendations.push(
-        "🔒 Update to latest version to address security vulnerabilities",
-      );
+      recommendations.push("🔒 Update to latest version to address security vulnerabilities");
     }
 
     if (issueTypes.has("version")) {
-      recommendations.push(
-        "📦 Update to latest version for bug fixes and features",
-      );
+      recommendations.push("📦 Update to latest version for bug fixes and features");
     }
 
     if (issueTypes.has("maintenance")) {
@@ -713,9 +643,7 @@ export class DependencyHealthAnalyzer {
     }
 
     if (issueTypes.has("performance")) {
-      recommendations.push(
-        "⚡ Monitor performance impact and consider alternatives",
-      );
+      recommendations.push("⚡ Monitor performance impact and consider alternatives");
     }
 
     if (issueTypes.has("compatibility")) {
@@ -729,59 +657,26 @@ export class DependencyHealthAnalyzer {
     return recommendations;
   }
 
-  private generateHealthReport(
-    healthScores: DependencyHealthScore[],
-  ): DependencyHealthReport {
+  private generateHealthReport(healthScores: DependencyHealthScore[]): DependencyHealthReport {
     const totalDependencies = healthScores.length;
-    const healthyDependencies = healthScores.filter(
-      (score) => score.overallScore >= 80,
-    ).length;
-    const overallHealth =
-      healthScores.reduce((sum, score) => sum + score.overallScore, 0) /
-      totalDependencies;
+    const healthyDependencies = healthScores.filter(score => score.overallScore >= 80).length;
+    const overallHealth = healthScores.reduce((sum, score) => sum + score.overallScore, 0) / totalDependencies;
 
     // Count issues by type
-    const allIssues = healthScores.flatMap((score) => score.issues);
-    const criticalIssues = allIssues.filter(
-      (issue) => issue.severity === "critical",
-    ).length;
-    const securityVulnerabilities = allIssues.filter(
-      (issue) => issue.type === "security",
-    ).length;
-    const outdatedDependencies = allIssues.filter(
-      (issue) => issue.type === "version",
-    ).length;
-    const licenseConflicts = allIssues.filter(
-      (issue) => issue.type === "license",
-    ).length;
+    const allIssues = healthScores.flatMap(score => score.issues);
+    const criticalIssues = allIssues.filter(issue => issue.severity === "critical").length;
+    const securityVulnerabilities = allIssues.filter(issue => issue.type === "security").length;
+    const outdatedDependencies = allIssues.filter(issue => issue.type === "version").length;
+    const licenseConflicts = allIssues.filter(issue => issue.type === "license").length;
 
     // Calculate health by category
     const healthByCategory = {
-      security:
-        healthScores.reduce(
-          (sum, score) => sum + score.categoryScores.security,
-          0,
-        ) / totalDependencies,
-      maintenance:
-        healthScores.reduce(
-          (sum, score) => sum + score.categoryScores.maintenance,
-          0,
-        ) / totalDependencies,
-      performance:
-        healthScores.reduce(
-          (sum, score) => sum + score.categoryScores.performance,
-          0,
-        ) / totalDependencies,
+      security: healthScores.reduce((sum, score) => sum + score.categoryScores.security, 0) / totalDependencies,
+      maintenance: healthScores.reduce((sum, score) => sum + score.categoryScores.maintenance, 0) / totalDependencies,
+      performance: healthScores.reduce((sum, score) => sum + score.categoryScores.performance, 0) / totalDependencies,
       compatibility:
-        healthScores.reduce(
-          (sum, score) => sum + score.categoryScores.compatibility,
-          0,
-        ) / totalDependencies,
-      license:
-        healthScores.reduce(
-          (sum, score) => sum + score.categoryScores.license,
-          0,
-        ) / totalDependencies,
+        healthScores.reduce((sum, score) => sum + score.categoryScores.compatibility, 0) / totalDependencies,
+      license: healthScores.reduce((sum, score) => sum + score.categoryScores.license, 0) / totalDependencies,
     };
 
     // Get top issues
@@ -811,32 +706,22 @@ export class DependencyHealthAnalyzer {
   }
 
   private generateGlobalRecommendations(
-    healthScores: DependencyHealthScore[],
+    healthScores: DependencyHealthScore[]
   ): DependencyHealthReport["recommendations"] {
     const immediate: string[] = [];
     const shortTerm: string[] = [];
     const longTerm: string[] = [];
 
-    const criticalDeps = healthScores.filter((score) =>
-      score.issues.some((issue) => issue.severity === "critical"),
-    );
-    const securityDeps = healthScores.filter((score) =>
-      score.issues.some((issue) => issue.type === "security"),
-    );
-    const outdatedDeps = healthScores.filter((score) =>
-      score.issues.some((issue) => issue.type === "version"),
-    );
+    const criticalDeps = healthScores.filter(score => score.issues.some(issue => issue.severity === "critical"));
+    const securityDeps = healthScores.filter(score => score.issues.some(issue => issue.type === "security"));
+    const outdatedDeps = healthScores.filter(score => score.issues.some(issue => issue.type === "version"));
 
     if (criticalDeps.length > 0) {
-      immediate.push(
-        `🚨 Address ${criticalDeps.length} dependencies with critical issues`,
-      );
+      immediate.push(`🚨 Address ${criticalDeps.length} dependencies with critical issues`);
     }
 
     if (securityDeps.length > 0) {
-      immediate.push(
-        `🔒 Update ${securityDeps.length} dependencies with security vulnerabilities`,
-      );
+      immediate.push(`🔒 Update ${securityDeps.length} dependencies with security vulnerabilities`);
     }
 
     if (outdatedDeps.length > 0) {
@@ -870,16 +755,13 @@ export class DependencyHealthAnalyzer {
     ]);
   }
 
-  private mapSeverity(
-    severity: string,
-  ): "low" | "medium" | "high" | "critical" {
-    const severityMap: Record<string, "low" | "medium" | "high" | "critical"> =
-      {
-        low: "low",
-        moderate: "medium",
-        high: "high",
-        critical: "critical",
-      };
+  private mapSeverity(severity: string): "low" | "medium" | "high" | "critical" {
+    const severityMap: Record<string, "low" | "medium" | "high" | "critical"> = {
+      low: "low",
+      moderate: "medium",
+      high: "high",
+      critical: "critical",
+    };
     return severityMap[severity.toLowerCase()] || "medium";
   }
 
@@ -910,17 +792,12 @@ export class DependencyHealthAnalyzer {
     return heavyPackages.includes(name);
   }
 
-  private async checkNodeCompatibility(
-    dependency: DependencyInfo,
-    nodeVersion: string,
-  ): Promise<boolean> {
+  private async checkNodeCompatibility(dependency: DependencyInfo, nodeVersion: string): Promise<boolean> {
     // Simplified check - in real implementation, would check engines field
     return Math.random() > 0.1; // 90% chance of being compatible
   }
 
-  private async checkPeerDependencyConflicts(
-    dependency: DependencyInfo,
-  ): Promise<string[]> {
+  private async checkPeerDependencyConflicts(dependency: DependencyInfo): Promise<string[]> {
     // Simplified check - in real implementation, would check actual conflicts
     return Math.random() > 0.8 ? ["react@^16.0.0"] : [];
   }
@@ -936,9 +813,7 @@ export class DependencyHealthAnalyzer {
     return problematicLicenses.includes(license);
   }
 
-  private async checkLicenseConflicts(
-    dependency: DependencyInfo,
-  ): Promise<string[]> {
+  private async checkLicenseConflicts(dependency: DependencyInfo): Promise<string[]> {
     // Simplified check - in real implementation, would check actual conflicts
     return Math.random() > 0.9 ? ["GPL-3.0 vs MIT"] : [];
   }

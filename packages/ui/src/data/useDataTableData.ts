@@ -19,15 +19,11 @@ export const useDataTableData = <T = unknown>(
   sortDirection: () => SortDirection,
   page: number,
   pageSize: number,
-  showPagination: boolean,
+  showPagination: boolean
 ): DataTableData<T> => {
-  const sortedData = createMemo(() =>
-    sortData(data, columns, sortColumn(), sortDirection()),
-  );
+  const sortedData = createMemo(() => sortData(data, columns, sortColumn(), sortDirection()));
 
-  const paginatedData = createMemo(() =>
-    paginateData(sortedData(), page, pageSize, showPagination),
-  );
+  const paginatedData = createMemo(() => paginateData(sortedData(), page, pageSize, showPagination));
 
   return {
     sortedData,

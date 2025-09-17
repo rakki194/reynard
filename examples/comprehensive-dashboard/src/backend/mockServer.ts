@@ -69,8 +69,7 @@ interface ActivityItem {
 class MockBackendServer {
   private server: ReturnType<typeof createServer> | null = null;
   private users: Map<string, User> = new Map();
-  private sessions: Map<string, { userId: string; expires: number }> =
-    new Map();
+  private sessions: Map<string, { userId: string; expires: number }> = new Map();
   private files: Map<string, FileItem> = new Map();
   private activities: ActivityItem[] = [];
   private settings: Map<string, unknown> = new Map();
@@ -100,7 +99,7 @@ class MockBackendServer {
       },
     ];
 
-    sampleUsers.forEach((user) => {
+    sampleUsers.forEach(user => {
       this.users.set(user.id, user);
     });
 
@@ -127,7 +126,7 @@ class MockBackendServer {
       },
     ];
 
-    sampleFiles.forEach((file) => {
+    sampleFiles.forEach(file => {
       this.files.set(file.id, file);
     });
 
@@ -185,7 +184,7 @@ class MockBackendServer {
   private parseBody(req: IncomingMessage): Promise<Record<string, unknown>> {
     return new Promise((resolve, reject) => {
       let body = "";
-      req.on("data", (chunk) => {
+      req.on("data", chunk => {
         body += chunk.toString();
       });
       req.on("end", () => {
@@ -198,11 +197,7 @@ class MockBackendServer {
     });
   }
 
-  private sendResponse(
-    res: ServerResponse,
-    status: number,
-    data: Record<string, unknown>,
-  ) {
+  private sendResponse(res: ServerResponse, status: number, data: Record<string, unknown>) {
     res.writeHead(status, { "Content-Type": "application/json" });
     res.end(JSON.stringify(data));
   }
@@ -211,27 +206,17 @@ class MockBackendServer {
     this.sendResponse(res, status, { error: message });
   }
 
-  private handleAuthLogin = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleAuthLogin = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const body = await this.parseBody(_req);
       const { email, password } = body;
 
-      if (
-        !email ||
-        !password ||
-        typeof email !== "string" ||
-        typeof password !== "string"
-      ) {
+      if (!email || !password || typeof email !== "string" || typeof password !== "string") {
         return this.sendError(res, 400, "Email and password are required");
       }
 
       // Simple mock authentication - accept any email/password
-      const user = Array.from(this.users.values()).find(
-        (u) => u.email === email,
-      ) || {
+      const user = Array.from(this.users.values()).find(u => u.email === email) || {
         id: "user-new",
         email,
         name: email.split("@")[0],
@@ -255,10 +240,7 @@ class MockBackendServer {
     }
   };
 
-  private handleAuthRegister = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleAuthRegister = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const body = await this.parseBody(_req);
       const { email, password, name } = body;
@@ -271,17 +253,11 @@ class MockBackendServer {
         typeof password !== "string" ||
         typeof name !== "string"
       ) {
-        return this.sendError(
-          res,
-          400,
-          "Email, password, and name are required",
-        );
+        return this.sendError(res, 400, "Email, password, and name are required");
       }
 
       // Check if user already exists
-      const existingUser = Array.from(this.users.values()).find(
-        (u) => u.email === email,
-      );
+      const existingUser = Array.from(this.users.values()).find(u => u.email === email);
       if (existingUser) {
         return this.sendError(res, 409, "User already exists");
       }
@@ -308,10 +284,7 @@ class MockBackendServer {
     }
   };
 
-  private handleAuthRefresh = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleAuthRefresh = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const body = await this.parseBody(_req);
       const { refreshToken } = body;
@@ -338,10 +311,7 @@ class MockBackendServer {
     }
   };
 
-  private handleAuthProfile = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleAuthProfile = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const authHeader = _req.headers.authorization;
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -361,10 +331,7 @@ class MockBackendServer {
     }
   };
 
-  private handleDashboardStats = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleDashboardStats = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const stats: DashboardStats = {
         totalUsers: this.users.size,
@@ -380,10 +347,7 @@ class MockBackendServer {
     }
   };
 
-  private handleDashboardCharts = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleDashboardCharts = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const charts = {
         visitors: {
@@ -424,10 +388,7 @@ class MockBackendServer {
     }
   };
 
-  private handleDashboardActivity = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleDashboardActivity = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       this.sendResponse(res, 200, { activities: this.activities });
     } catch (error) {
@@ -435,10 +396,7 @@ class MockBackendServer {
     }
   };
 
-  private handleFilesList = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleFilesList = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const files = Array.from(this.files.values());
       this.sendResponse(res, 200, { files });
@@ -447,10 +405,7 @@ class MockBackendServer {
     }
   };
 
-  private handleFilesUpload = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleFilesUpload = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const body = await this.parseBody(_req);
       const { name, type, size, url } = body;
@@ -458,8 +413,7 @@ class MockBackendServer {
       const newFile: FileItem = {
         id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         name: typeof name === "string" ? name : "uploaded-file",
-        type: (typeof type === "string" &&
-        ["image", "document", "video", "audio", "other"].includes(type)
+        type: (typeof type === "string" && ["image", "document", "video", "audio", "other"].includes(type)
           ? type
           : "other") as FileItem["type"],
         size: typeof size === "number" ? size : 0,
@@ -470,10 +424,7 @@ class MockBackendServer {
 
       // Add thumbnail for image files
       if (newFile.type === "image") {
-        newFile.thumbnail = newFile.url.replace(
-          "/uploads/",
-          "/uploads/thumbs/",
-        );
+        newFile.thumbnail = newFile.url.replace("/uploads/", "/uploads/thumbs/");
       }
 
       this.files.set(newFile.id, newFile);
@@ -493,10 +444,7 @@ class MockBackendServer {
     }
   };
 
-  private handleSettingsGet = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleSettingsGet = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const settings = Object.fromEntries(this.settings);
       this.sendResponse(res, 200, { settings });
@@ -505,10 +453,7 @@ class MockBackendServer {
     }
   };
 
-  private handleSettingsUpdate = async (
-    _req: IncomingMessage,
-    res: ServerResponse,
-  ) => {
+  private handleSettingsUpdate = async (_req: IncomingMessage, res: ServerResponse) => {
     try {
       const body = await this.parseBody(_req);
       const { settings } = body;
@@ -537,14 +482,8 @@ class MockBackendServer {
 
     // CORS headers
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, OPTIONS",
-    );
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization",
-    );
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
     if (method === "OPTIONS") {
       res.writeHead(200);
@@ -592,19 +531,17 @@ class MockBackendServer {
   };
 
   start(): Promise<void> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.server = createServer(this.handleRequest);
       this.server.listen(this.port, () => {
-        console.log(
-          `Mock backend server running on http://localhost:${this.port}`,
-        );
+        console.log(`Mock backend server running on http://localhost:${this.port}`);
         resolve();
       });
     });
   }
 
   stop(): Promise<void> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       if (this.server) {
         this.server.close(() => {
           console.log("Mock backend server stopped");
@@ -644,11 +581,4 @@ class MockBackendServer {
 }
 
 export { MockBackendServer };
-export type {
-  User,
-  AuthTokens,
-  DashboardStats,
-  ChartData,
-  FileItem,
-  ActivityItem,
-};
+export type { User, AuthTokens, DashboardStats, ChartData, FileItem, ActivityItem };

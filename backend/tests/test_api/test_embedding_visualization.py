@@ -5,23 +5,18 @@ This module tests the embedding visualization API endpoints for
 dimensionality reduction and visualization functionality.
 """
 
-import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
-from fastapi.testclient import TestClient
-from fastapi import FastAPI
 from datetime import datetime
-import json
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from app.api.embedding_visualization import router
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+
 from app.api.embedding_visualization import (
-    EmbeddingReductionRequest,
-    EmbeddingReductionResponse,
-    EmbeddingStatsResponse,
-    EmbeddingQualityRequest,
-    EmbeddingQualityResponse,
     CacheStatsResponse,
+    EmbeddingQualityRequest,
+    EmbeddingReductionRequest,
+    router,
 )
-
 
 # Create test app
 app = FastAPI()
@@ -33,7 +28,9 @@ class TestEmbeddingReductionEndpoint:
 
     def test_reduce_embeddings_success(self):
         """Test successful embedding dimensionality reduction."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service
             mock_result = MagicMock()
             mock_result.success = True
@@ -46,22 +43,24 @@ class TestEmbeddingReductionEndpoint:
             mock_result.job_id = "test-job-id"
             mock_result.cached = False
             mock_result.error = None
-            
+
             mock_service.perform_reduction = AsyncMock(return_value=mock_result)
-            
+
             # Create test client
             client = TestClient(app)
-            
+
             # Test request
             request_data = {
                 "method": "pca",
                 "filters": {"category": "text"},
                 "parameters": {"n_components": 2},
-                "max_samples": 1000
+                "max_samples": 1000,
             }
-            
-            response = client.post("/api/embedding-visualization/reduce", json=request_data)
-            
+
+            response = client.post(
+                "/api/embedding-visualization/reduce", json=request_data
+            )
+
             assert response.status_code == 200
             data = response.json()
             assert data["success"] is True
@@ -74,37 +73,43 @@ class TestEmbeddingReductionEndpoint:
     def test_reduce_embeddings_invalid_method(self):
         """Test embedding reduction with invalid method."""
         client = TestClient(app)
-        
+
         # Test with invalid method
         request_data = {
             "method": "invalid_method",
             "filters": {"category": "text"},
             "parameters": {"n_components": 2},
-            "max_samples": 1000
+            "max_samples": 1000,
         }
-        
+
         response = client.post("/api/embedding-visualization/reduce", json=request_data)
         assert response.status_code == 400
 
     def test_reduce_embeddings_service_error(self):
         """Test embedding reduction with service error."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service to raise an exception
-            mock_service.perform_reduction = AsyncMock(side_effect=Exception("Service error"))
-            
+            mock_service.perform_reduction = AsyncMock(
+                side_effect=Exception("Service error")
+            )
+
             # Create test client
             client = TestClient(app)
-            
+
             # Test request
             request_data = {
                 "method": "pca",
                 "filters": {"category": "text"},
                 "parameters": {"n_components": 2},
-                "max_samples": 1000
+                "max_samples": 1000,
             }
-            
-            response = client.post("/api/embedding-visualization/reduce", json=request_data)
-            
+
+            response = client.post(
+                "/api/embedding-visualization/reduce", json=request_data
+            )
+
             assert response.status_code == 500
             data = response.json()
             assert data["detail"] == "Service error"
@@ -112,29 +117,29 @@ class TestEmbeddingReductionEndpoint:
     def test_reduce_embeddings_invalid_request(self):
         """Test embedding reduction with invalid request data."""
         client = TestClient(app)
-        
+
         # Test with missing required field
         request_data = {
             "filters": {"category": "text"},
             "parameters": {"n_components": 2},
-            "max_samples": 1000
+            "max_samples": 1000,
         }
-        
+
         response = client.post("/api/embedding-visualization/reduce", json=request_data)
         assert response.status_code == 422
 
     def test_reduce_embeddings_validation_errors(self):
         """Test embedding reduction with validation errors."""
         client = TestClient(app)
-        
+
         # Test with invalid method (this should trigger validation error)
         request_data = {
             "method": "invalid_method",
             "filters": {"category": "text"},
             "parameters": {"n_components": 2},
-            "max_samples": 1000
+            "max_samples": 1000,
         }
-        
+
         response = client.post("/api/embedding-visualization/reduce", json=request_data)
         assert response.status_code == 400  # Invalid method returns 400, not 422
 
@@ -144,7 +149,9 @@ class TestEmbeddingStatsEndpoint:
 
     def test_get_embedding_stats_success(self):
         """Test successful embedding statistics retrieval."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service
             mock_stats = MagicMock()
             mock_stats.total_embeddings = 1000
@@ -155,14 +162,14 @@ class TestEmbeddingStatsEndpoint:
             mock_stats.max_values = [1.0, 0.5, 1.0]
             mock_stats.quality_score = 0.85
             mock_stats.last_updated = datetime.now()
-            
+
             mock_service.get_embedding_stats = AsyncMock(return_value=mock_stats)
-            
+
             # Create test client
             client = TestClient(app)
-            
+
             response = client.get("/api/embedding-visualization/stats")
-            
+
             assert response.status_code == 200
             data = response.json()
             assert data["total_embeddings"] == 1000
@@ -174,15 +181,19 @@ class TestEmbeddingStatsEndpoint:
 
     def test_get_embedding_stats_service_error(self):
         """Test embedding statistics with service error."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service to raise an exception
-            mock_service.get_embedding_stats = AsyncMock(side_effect=Exception("Service error"))
-            
+            mock_service.get_embedding_stats = AsyncMock(
+                side_effect=Exception("Service error")
+            )
+
             # Create test client
             client = TestClient(app)
-            
+
             response = client.get("/api/embedding-visualization/stats")
-            
+
             assert response.status_code == 500
             data = response.json()
             assert data["detail"] == "Service error"
@@ -193,7 +204,9 @@ class TestEmbeddingQualityEndpoint:
 
     def test_assess_embedding_quality_success(self):
         """Test successful embedding quality assessment."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service
             mock_quality = MagicMock()
             mock_quality.overall_score = 0.85
@@ -203,19 +216,23 @@ class TestEmbeddingQualityEndpoint:
             mock_quality.distribution_score = 0.8
             mock_quality.recommendations = ["Increase sample size", "Adjust parameters"]
             mock_quality.issues = []
-            
-            mock_service.analyze_embedding_quality = AsyncMock(return_value=mock_quality)
-            
+
+            mock_service.analyze_embedding_quality = AsyncMock(
+                return_value=mock_quality
+            )
+
             # Create test client
             client = TestClient(app)
-            
+
             # Test request
             request_data = {
                 "embeddings": [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]
             }
-            
-            response = client.post("/api/embedding-visualization/quality", json=request_data)
-            
+
+            response = client.post(
+                "/api/embedding-visualization/quality", json=request_data
+            )
+
             assert response.status_code == 200
             data = response.json()
             assert data["overall_score"] == 0.85
@@ -223,25 +240,34 @@ class TestEmbeddingQualityEndpoint:
             assert data["separation_score"] == 0.8
             assert data["density_score"] == 0.85
             assert data["distribution_score"] == 0.8
-            assert data["recommendations"] == ["Increase sample size", "Adjust parameters"]
+            assert data["recommendations"] == [
+                "Increase sample size",
+                "Adjust parameters",
+            ]
             assert data["issues"] == []
 
     def test_assess_embedding_quality_service_error(self):
         """Test embedding quality assessment with service error."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service to raise an exception
-            mock_service.analyze_embedding_quality = AsyncMock(side_effect=Exception("Service error"))
-            
+            mock_service.analyze_embedding_quality = AsyncMock(
+                side_effect=Exception("Service error")
+            )
+
             # Create test client
             client = TestClient(app)
-            
+
             # Test request
             request_data = {
                 "embeddings": [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]
             }
-            
-            response = client.post("/api/embedding-visualization/quality", json=request_data)
-            
+
+            response = client.post(
+                "/api/embedding-visualization/quality", json=request_data
+            )
+
             assert response.status_code == 500
             data = response.json()
             assert data["detail"] == "Service error"
@@ -249,11 +275,13 @@ class TestEmbeddingQualityEndpoint:
     def test_assess_embedding_quality_invalid_request(self):
         """Test embedding quality assessment with invalid request data."""
         client = TestClient(app)
-        
+
         # Test with missing required field
         request_data = {}
-        
-        response = client.post("/api/embedding-visualization/quality", json=request_data)
+
+        response = client.post(
+            "/api/embedding-visualization/quality", json=request_data
+        )
         assert response.status_code == 422
 
 
@@ -262,19 +290,23 @@ class TestEmbeddingMethodsEndpoint:
 
     def test_get_available_methods_success(self):
         """Test successful methods retrieval."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service
-            mock_service.get_available_methods = AsyncMock(return_value={
-                "pca": {"parameters": {"n_components": "int"}},
-                "tsne": {"parameters": {"perplexity": "float"}},
-                "umap": {"parameters": {"n_neighbors": "int"}}
-            })
-            
+            mock_service.get_available_methods = AsyncMock(
+                return_value={
+                    "pca": {"parameters": {"n_components": "int"}},
+                    "tsne": {"parameters": {"perplexity": "float"}},
+                    "umap": {"parameters": {"n_neighbors": "int"}},
+                }
+            )
+
             # Create test client
             client = TestClient(app)
-            
+
             response = client.get("/api/embedding-visualization/methods")
-            
+
             assert response.status_code == 200
             data = response.json()
             assert "pca" in data
@@ -283,15 +315,19 @@ class TestEmbeddingMethodsEndpoint:
 
     def test_get_available_methods_service_error(self):
         """Test methods retrieval with service error."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service to raise an exception
-            mock_service.get_available_methods = AsyncMock(side_effect=Exception("Service error"))
-            
+            mock_service.get_available_methods = AsyncMock(
+                side_effect=Exception("Service error")
+            )
+
             # Create test client
             client = TestClient(app)
-            
+
             response = client.get("/api/embedding-visualization/methods")
-            
+
             assert response.status_code == 500
             data = response.json()
             assert data["detail"] == "Service error"
@@ -302,22 +338,26 @@ class TestEmbeddingCacheEndpoint:
 
     def test_get_cache_stats_success(self):
         """Test successful cache stats retrieval."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service
-            mock_service.get_cache_stats = AsyncMock(return_value={
-                'total_entries': 10,
-                'total_size_bytes': 1024,
-                'default_ttl_seconds': 3600,
-                'cache_hit_rate': 0.85,
-                'oldest_entry': datetime.now(),
-                'newest_entry': datetime.now()
-            })
-            
+            mock_service.get_cache_stats = AsyncMock(
+                return_value={
+                    "total_entries": 10,
+                    "total_size_bytes": 1024,
+                    "default_ttl_seconds": 3600,
+                    "cache_hit_rate": 0.85,
+                    "oldest_entry": datetime.now(),
+                    "newest_entry": datetime.now(),
+                }
+            )
+
             # Create test client
             client = TestClient(app)
-            
+
             response = client.get("/api/embedding-visualization/cache/stats")
-            
+
             assert response.status_code == 200
             data = response.json()
             assert data["total_entries"] == 10
@@ -327,15 +367,17 @@ class TestEmbeddingCacheEndpoint:
 
     def test_clear_cache_success(self):
         """Test successful cache clearing."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service
             mock_service.clear_cache = AsyncMock(return_value={"cleared_entries": 5})
-            
+
             # Create test client
             client = TestClient(app)
-            
+
             response = client.delete("/api/embedding-visualization/cache")
-            
+
             assert response.status_code == 200
             data = response.json()
             assert data["cleared_entries"] == 5
@@ -346,19 +388,21 @@ class TestEmbeddingHealthEndpoint:
 
     def test_get_embedding_health_success(self):
         """Test successful embedding health check."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service
             mock_stats = MagicMock()
             mock_stats.total_embeddings = 1000
             mock_stats.embedding_dimension = 512
-            
+
             mock_service.get_embedding_stats = AsyncMock(return_value=mock_stats)
-            
+
             # Create test client
             client = TestClient(app)
-            
+
             response = client.get("/api/embedding-visualization/health")
-            
+
             assert response.status_code == 200
             data = response.json()
             assert data["status"] == "healthy"
@@ -368,16 +412,22 @@ class TestEmbeddingHealthEndpoint:
 
     def test_get_embedding_health_service_error(self):
         """Test embedding health check with service error."""
-        with patch('app.api.embedding_visualization.embedding_viz_service') as mock_service:
+        with patch(
+            "app.api.embedding_visualization.embedding_viz_service"
+        ) as mock_service:
             # Mock the service to raise an exception
-            mock_service.get_embedding_stats = AsyncMock(side_effect=Exception("Service error"))
-            
+            mock_service.get_embedding_stats = AsyncMock(
+                side_effect=Exception("Service error")
+            )
+
             # Create test client
             client = TestClient(app)
-            
+
             response = client.get("/api/embedding-visualization/health")
-            
-            assert response.status_code == 200  # Health endpoint returns 200 even on error
+
+            assert (
+                response.status_code == 200
+            )  # Health endpoint returns 200 even on error
             data = response.json()
             assert data["status"] == "unhealthy"
             assert data["service"] == "embedding-visualization"
@@ -393,9 +443,9 @@ class TestEmbeddingModels:
             method="pca",
             filters={"category": "text"},
             parameters={"n_components": 2},
-            max_samples=1000
+            max_samples=1000,
         )
-        
+
         assert request.method == "pca"
         assert request.filters == {"category": "text"}
         assert request.parameters == {"n_components": 2}
@@ -404,7 +454,7 @@ class TestEmbeddingModels:
     def test_embedding_reduction_request_defaults(self):
         """Test EmbeddingReductionRequest with default values."""
         request = EmbeddingReductionRequest(method="pca")
-        
+
         assert request.method == "pca"
         assert request.filters is None
         assert request.parameters is None
@@ -412,16 +462,14 @@ class TestEmbeddingModels:
 
     def test_embedding_quality_request_valid(self):
         """Test EmbeddingQualityRequest with valid data."""
-        request = EmbeddingQualityRequest(
-            embeddings=[[1.0, 2.0], [3.0, 4.0]]
-        )
-        
+        request = EmbeddingQualityRequest(embeddings=[[1.0, 2.0], [3.0, 4.0]])
+
         assert request.embeddings == [[1.0, 2.0], [3.0, 4.0]]
 
     def test_embedding_quality_request_empty(self):
         """Test EmbeddingQualityRequest with empty embeddings."""
         request = EmbeddingQualityRequest(embeddings=[])
-        
+
         assert request.embeddings == []
 
     def test_cache_stats_response_valid(self):
@@ -432,9 +480,9 @@ class TestEmbeddingModels:
             default_ttl_seconds=3600,
             cache_hit_rate=0.85,
             oldest_entry="2023-01-01T00:00:00",
-            newest_entry="2023-01-02T00:00:00"
+            newest_entry="2023-01-02T00:00:00",
         )
-        
+
         assert response.total_entries == 10
         assert response.total_size_bytes == 1024
         assert response.default_ttl_seconds == 3600

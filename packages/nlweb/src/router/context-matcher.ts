@@ -10,10 +10,7 @@ import { NLWebTool } from "../types/index.js";
 /**
  * Check if a tool is suitable for a specific context
  */
-export function isToolSuitableForContext(
-  tool: NLWebTool,
-  context: Record<string, unknown>,
-): boolean {
+export function isToolSuitableForContext(tool: NLWebTool, context: Record<string, unknown>): boolean {
   // Check if tool requires specific context that's not available
   for (const param of tool.parameters) {
     if (param.required && !context[param.name]) {
@@ -43,10 +40,7 @@ export function isToolSuitableForContext(
 /**
  * Get tools suitable for a specific context
  */
-export function getContextualTools(
-  tools: NLWebTool[],
-  context: Record<string, unknown>,
-): NLWebTool[] {
+export function getContextualTools(tools: NLWebTool[], context: Record<string, unknown>): NLWebTool[] {
   const suitableTools: NLWebTool[] = [];
 
   for (const tool of tools) {

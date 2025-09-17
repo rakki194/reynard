@@ -15,10 +15,10 @@ export const useNavigationEvents = (
   state: () => ImageViewerState,
   setState: (updater: (prev: ImageViewerState) => ImageViewerState) => void,
   containerRef: () => HTMLDivElement | undefined,
-  imageRef: () => HTMLImageElement | undefined,
+  imageRef: () => HTMLImageElement | undefined
 ): UseNavigationEventsReturn => {
   const handleReset = () => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       zoom: config.initialZoom,
       panX: 0,
@@ -38,7 +38,7 @@ export const useNavigationEvents = (
     const scaleY = containerRect.height / imageRect.height;
     const scale = Math.min(scaleX, scaleY, 1);
 
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       zoom: scale,
       panX: 0,

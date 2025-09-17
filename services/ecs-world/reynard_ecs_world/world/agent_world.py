@@ -7,18 +7,18 @@ Specialized ECS world for agent management with breeding and trait inheritance.
 import logging
 import random
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from ..core.world import ECSWorld
-from ..core.entity import Entity
 from ..components import (
     AgentComponent,
-    TraitComponent,
     LifecycleComponent,
     LineageComponent,
-    ReproductionComponent,
     PositionComponent,
+    ReproductionComponent,
+    TraitComponent,
 )
+from ..core.entity import Entity
+from ..core.world import ECSWorld
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ class AgentWorld(ECSWorld):
     trait inheritance, and world simulation.
     """
 
-    def __init__(self, data_dir: Optional[Path] = None):
+    def __init__(self, data_dir: Path | None = None):
         """
         Initialize the agent world.
 
@@ -55,9 +55,9 @@ class AgentWorld(ECSWorld):
     def create_agent(
         self,
         agent_id: str,
-        spirit: Optional[str] = None,
-        style: Optional[str] = None,
-        name: Optional[str] = None,
+        spirit: str | None = None,
+        style: str | None = None,
+        name: str | None = None,
     ) -> Entity:
         """
         Create a new agent entity with comprehensive traits.
@@ -172,7 +172,7 @@ class AgentWorld(ECSWorld):
         )
         return offspring
 
-    def get_agent_entities(self) -> List[Entity]:
+    def get_agent_entities(self) -> list[Entity]:
         """
         Get all agent entities.
 
@@ -181,7 +181,7 @@ class AgentWorld(ECSWorld):
         """
         return self.get_entities_with_components(AgentComponent)
 
-    def get_mature_agents(self) -> List[Entity]:
+    def get_mature_agents(self) -> list[Entity]:
         """
         Get agents that can reproduce.
 
@@ -198,7 +198,7 @@ class AgentWorld(ECSWorld):
                 mature_agents.append(entity)
         return mature_agents
 
-    def find_compatible_mates(self, agent_id: str, max_results: int = 5) -> List[str]:
+    def find_compatible_mates(self, agent_id: str, max_results: int = 5) -> list[str]:
         """
         Find compatible mates for an agent.
 
@@ -234,7 +234,7 @@ class AgentWorld(ECSWorld):
 
     def analyze_genetic_compatibility(
         self, agent1_id: str, agent2_id: str
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Analyze genetic compatibility between two agents.
 
@@ -265,7 +265,7 @@ class AgentWorld(ECSWorld):
             "recommended": compatibility >= 0.7,
         }
 
-    def get_agent_lineage(self, agent_id: str, depth: int = 3) -> Dict[str, Any]:
+    def get_agent_lineage(self, agent_id: str, depth: int = 3) -> dict[str, Any]:
         """
         Get agent family tree and lineage.
 
@@ -310,7 +310,7 @@ class AgentWorld(ECSWorld):
         """Stop the global breeding scheduler."""
         logger.info("🌱 Global breeding scheduler stopped")
 
-    def get_breeding_stats(self) -> Dict[str, Any]:
+    def get_breeding_stats(self) -> dict[str, Any]:
         """
         Get breeding statistics.
 
@@ -349,10 +349,10 @@ class AgentWorld(ECSWorld):
         try:
             # Import the proper naming system from the installed library
             from agent_naming import (
-                ReynardRobotNamer,
                 AnimalSpirit,
-                NamingStyle,
                 NamingConfig,
+                NamingStyle,
+                ReynardRobotNamer,
             )
 
             # Convert string parameters to proper enums
@@ -366,9 +366,8 @@ class AgentWorld(ECSWorld):
 
             if names:
                 return names[0].name
-            else:
-                # Fallback to simple name if generation fails
-                return f"Agent-{random.randint(1, 999)}"
+            # Fallback to simple name if generation fails
+            return f"Agent-{random.randint(1, 999)}"
 
         except Exception as e:
             logger.warning("Failed to generate proper name: %s, using fallback", e)
@@ -377,7 +376,7 @@ class AgentWorld(ECSWorld):
 
     def _inherit_traits(
         self, traits1: TraitComponent, traits2: TraitComponent
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Create offspring traits by inheriting from both parents.
 
@@ -445,7 +444,7 @@ class AgentWorld(ECSWorld):
         # This would load from persistent storage
         logger.info("Loading existing agents from storage")
 
-    def get_agent_persona(self, agent_id: str) -> Dict[str, Any]:
+    def get_agent_persona(self, agent_id: str) -> dict[str, Any]:
         """
         Get comprehensive agent persona from ECS system.
 
@@ -481,7 +480,7 @@ class AgentWorld(ECSWorld):
 
         return persona
 
-    def get_lora_config(self, agent_id: str) -> Dict[str, Any]:
+    def get_lora_config(self, agent_id: str) -> dict[str, Any]:
         """
         Get LoRA configuration for agent persona.
 

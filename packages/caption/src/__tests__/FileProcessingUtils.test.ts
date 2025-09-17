@@ -160,9 +160,7 @@ describe("File Processing Utils", () => {
         error: "Processing failed",
       });
 
-      await expect(processFile(mockFile, mockPipeline)).rejects.toThrow(
-        "Processing failed",
-      );
+      await expect(processFile(mockFile, mockPipeline)).rejects.toThrow("Processing failed");
     });
 
     it("should handle pipeline processing failure without error message", async () => {
@@ -170,9 +168,7 @@ describe("File Processing Utils", () => {
         success: false,
       });
 
-      await expect(processFile(mockFile, mockPipeline)).rejects.toThrow(
-        "Failed to process file",
-      );
+      await expect(processFile(mockFile, mockPipeline)).rejects.toThrow("Failed to process file");
     });
 
     it("should call pipeline with correct options", async () => {
@@ -288,9 +284,7 @@ describe("File Processing Utils", () => {
     });
 
     it("should return default color for unknown type", () => {
-      expect(getTypeColor("unknown" as MediaType)).toBe(
-        "oklch(var(--text-muted))",
-      );
+      expect(getTypeColor("unknown" as MediaType)).toBe("oklch(var(--text-muted))");
     });
   });
 });

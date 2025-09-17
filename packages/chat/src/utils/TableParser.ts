@@ -108,12 +108,10 @@ export class TableParser extends BaseMarkdownParser {
 
     // If we have headers, apply alignment
     if (this.state.tableHeaders.length > 0) {
-      this.state.tableHeaders = this.state.tableHeaders.map(
-        (header, index) => ({
-          ...header,
-          alignment: alignment[index] || "left",
-        }),
-      );
+      this.state.tableHeaders = this.state.tableHeaders.map((header, index) => ({
+        ...header,
+        alignment: alignment[index] || "left",
+      }));
     }
 
     return true;
@@ -131,7 +129,7 @@ export class TableParser extends BaseMarkdownParser {
           headers: this.state.tableHeaders,
           rows: this.state.tableRows,
           line: this.state.currentLine,
-        }),
+        })
       );
 
       this.state.inTable = false;
@@ -144,11 +142,7 @@ export class TableParser extends BaseMarkdownParser {
    * Validate table structure
    */
   private validateTable(): boolean {
-    return TableUtils.validateTable(
-      this.state,
-      this.addError.bind(this),
-      this.addWarning.bind(this),
-    );
+    return TableUtils.validateTable(this.state, this.addError.bind(this), this.addWarning.bind(this));
   }
 
   /**

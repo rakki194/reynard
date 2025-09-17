@@ -44,7 +44,9 @@ class TestAggressiveCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Mock the fuzzer instance
                 mock_fuzzer_instance = Mock()
@@ -116,7 +118,9 @@ class TestAggressiveCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call various methods to increase coverage
                 if hasattr(bola_attacker, "run_exploit"):
@@ -188,7 +192,9 @@ class TestAggressiveCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call various methods to increase coverage
                 if hasattr(csrf_attacker, "run_exploit"):
@@ -260,7 +266,9 @@ class TestAggressiveCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call various methods to increase coverage
                 if hasattr(smuggling_exploit, "run_exploit"):
@@ -334,7 +342,9 @@ class TestAggressiveCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call various methods to increase coverage
                 if hasattr(race_exploit, "run_exploit"):
@@ -406,7 +416,9 @@ class TestAggressiveCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call various methods to increase coverage
                 if hasattr(ssrf_attacker, "run_exploit"):
@@ -480,7 +492,9 @@ class TestAggressiveCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call various methods to increase coverage
                 if hasattr(unicode_exploit, "run_exploit"):

@@ -30,21 +30,15 @@ function normalizeRAGConfig(config: Record<string, unknown>): RAGConfig {
     rag_chunk_overlap_ratio: Number(config.rag_chunk_overlap_ratio) || 0.15,
     rag_text_model_max_tokens: Number(config.rag_text_model_max_tokens) || 512,
     rag_code_model_max_tokens: Number(config.rag_code_model_max_tokens) || 512,
-    rag_caption_model_max_tokens:
-      Number(config.rag_caption_model_max_tokens) || 512,
-    rag_query_rate_limit_per_minute:
-      Number(config.rag_query_rate_limit_per_minute) || 60,
-    rag_ingest_rate_limit_per_minute:
-      Number(config.rag_ingest_rate_limit_per_minute) || 10,
+    rag_caption_model_max_tokens: Number(config.rag_caption_model_max_tokens) || 512,
+    rag_query_rate_limit_per_minute: Number(config.rag_query_rate_limit_per_minute) || 60,
+    rag_ingest_rate_limit_per_minute: Number(config.rag_ingest_rate_limit_per_minute) || 10,
     rag_ingest_queue_max: Number(config.rag_ingest_queue_max) || 800,
     rag_ingest_throttle_ms: Number(config.rag_ingest_throttle_ms) || 50,
     rag_query_topk_max: Number(config.rag_query_topk_max) || 50,
-    rag_ingest_max_items_per_request:
-      Number(config.rag_ingest_max_items_per_request) || 100,
-    rag_ingest_max_content_length:
-      Number(config.rag_ingest_max_content_length) || 50000,
-    rag_clip_max_items_per_request:
-      Number(config.rag_clip_max_items_per_request) || 100,
+    rag_ingest_max_items_per_request: Number(config.rag_ingest_max_items_per_request) || 100,
+    rag_ingest_max_content_length: Number(config.rag_ingest_max_content_length) || 50000,
+    rag_clip_max_items_per_request: Number(config.rag_clip_max_items_per_request) || 100,
     rag_redact_logs: Boolean(config.rag_redact_logs) || true,
     rag_redact_highlights: Boolean(config.rag_redact_highlights) || true,
     rag_purge_on_disable: Boolean(config.rag_purge_on_disable) || false,
@@ -59,10 +53,7 @@ function normalizeRAGConfig(config: Record<string, unknown>): RAGConfig {
  * @param configUrl Config endpoint URL
  * @returns Config client with get/update capabilities
  */
-export function createRAGConfigClient(
-  authFetch: RAGClientOptions["authFetch"],
-  configUrl: string,
-) {
+export function createRAGConfigClient(authFetch: RAGClientOptions["authFetch"], configUrl: string) {
   const getConfig = async (): Promise<RAGConfig> => {
     const res = await authFetch(configUrl);
     if (!res.ok) throw new Error(`Failed to get config (${res.status})`);

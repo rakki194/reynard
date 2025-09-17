@@ -50,7 +50,7 @@ export interface ImageUtilsAPI {
     originalWidth: number,
     originalHeight: number,
     targetWidth?: number,
-    targetHeight?: number,
+    targetHeight?: number
   ): Promise<{ width: number; height: number }>;
 
   // Service information

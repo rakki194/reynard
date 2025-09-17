@@ -6,15 +6,9 @@
  */
 
 import { createSignal, createEffect } from "solid-js";
-import {
-  createStreamingText,
-  StreamingTextOptions,
-} from "./StreamingTextRenderer";
+import { createStreamingText, StreamingTextOptions } from "./StreamingTextRenderer";
 
-export function createMarkdownStreaming(
-  markdownText: string,
-  options: StreamingTextOptions = {},
-) {
+export function createMarkdownStreaming(markdownText: string, options: StreamingTextOptions = {}) {
   const stream = createStreamingText(markdownText, options);
 
   // Enhanced state that includes parsed markdown

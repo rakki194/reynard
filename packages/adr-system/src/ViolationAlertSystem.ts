@@ -13,13 +13,7 @@ import { PerformancePatternMonitor } from "./PerformancePatternMonitor";
 
 export interface ViolationAlert {
   id: string;
-  type:
-    | "compliance"
-    | "performance"
-    | "security"
-    | "quality"
-    | "dependency"
-    | "contract";
+  type: "compliance" | "performance" | "security" | "quality" | "dependency" | "contract";
   severity: "low" | "medium" | "high" | "critical";
   category:
     | "modularity"
@@ -58,13 +52,7 @@ export interface ViolationAlert {
     escalatedAt?: string;
     escalatedBy?: string;
   };
-  status:
-    | "new"
-    | "acknowledged"
-    | "investigating"
-    | "resolving"
-    | "resolved"
-    | "dismissed";
+  status: "new" | "acknowledged" | "investigating" | "resolving" | "resolved" | "dismissed";
   assignedTo?: string;
   resolvedAt?: string;
   resolvedBy?: string;
@@ -161,7 +149,7 @@ export class ViolationAlertSystem extends EventEmitter {
     architectureMonitor: RealTimeArchitectureMonitor,
     circularDependencyDetector: CircularDependencyDetector,
     interfaceContractValidator: InterfaceContractValidator,
-    performanceMonitor: PerformancePatternMonitor,
+    performanceMonitor: PerformancePatternMonitor
   ) {
     super();
 
@@ -228,8 +216,7 @@ export class ViolationAlertSystem extends EventEmitter {
       severity: alertData.severity || "medium",
       category: alertData.category || "modularity",
       title: alertData.title || "Architectural violation detected",
-      description:
-        alertData.description || "An architectural violation has been detected",
+      description: alertData.description || "An architectural violation has been detected",
       timestamp: new Date().toISOString(),
       source: alertData.source || "alert-system",
       location: alertData.location || {},
@@ -358,7 +345,7 @@ export class ViolationAlertSystem extends EventEmitter {
    */
   getActiveAlerts(): ViolationAlert[] {
     return Array.from(this.alertCache.values()).filter(
-      (alert) => alert.status !== "resolved" && alert.status !== "dismissed",
+      alert => alert.status !== "resolved" && alert.status !== "dismissed"
     );
   }
 
@@ -366,18 +353,14 @@ export class ViolationAlertSystem extends EventEmitter {
    * Get alerts by severity
    */
   getAlertsBySeverity(severity: ViolationAlert["severity"]): ViolationAlert[] {
-    return Array.from(this.alertCache.values()).filter(
-      (alert) => alert.severity === severity,
-    );
+    return Array.from(this.alertCache.values()).filter(alert => alert.severity === severity);
   }
 
   /**
    * Get alerts by category
    */
   getAlertsByCategory(category: ViolationAlert["category"]): ViolationAlert[] {
-    return Array.from(this.alertCache.values()).filter(
-      (alert) => alert.category === category,
-    );
+    return Array.from(this.alertCache.values()).filter(alert => alert.category === category);
   }
 
   /**
@@ -386,9 +369,7 @@ export class ViolationAlertSystem extends EventEmitter {
   getViolationAlertReport(): ViolationAlertReport {
     const allAlerts = Array.from(this.alertCache.values());
     const activeAlerts = this.getActiveAlerts();
-    const resolvedAlerts = allAlerts.filter(
-      (alert) => alert.status === "resolved",
-    );
+    const resolvedAlerts = allAlerts.filter(alert => alert.status === "resolved");
 
     // Group alerts by type, severity, and category
     const alertsByType: Record<string, number> = {};
@@ -397,10 +378,8 @@ export class ViolationAlertSystem extends EventEmitter {
 
     for (const alert of allAlerts) {
       alertsByType[alert.type] = (alertsByType[alert.type] || 0) + 1;
-      alertsBySeverity[alert.severity] =
-        (alertsBySeverity[alert.severity] || 0) + 1;
-      alertsByCategory[alert.category] =
-        (alertsByCategory[alert.category] || 0) + 1;
+      alertsBySeverity[alert.severity] = (alertsBySeverity[alert.severity] || 0) + 1;
+      alertsByCategory[alert.category] = (alertsByCategory[alert.category] || 0) + 1;
     }
 
     // Get top alerts
@@ -469,7 +448,7 @@ export class ViolationAlertSystem extends EventEmitter {
   // Private methods
   private setupEventListeners(): void {
     // Listen to architecture monitor events
-    this.architectureMonitor.on("threshold-violation", (alert) => {
+    this.architectureMonitor.on("threshold-violation", alert => {
       this.createAlert({
         type: "compliance",
         severity: alert.severity,
@@ -483,7 +462,7 @@ export class ViolationAlertSystem extends EventEmitter {
     });
 
     // Listen to performance monitor events
-    this.performanceMonitor.on("threshold-violation", (alert) => {
+    this.performanceMonitor.on("threshold-violation", alert => {
       this.createAlert({
         type: "performance",
         severity: alert.severity,
@@ -496,7 +475,7 @@ export class ViolationAlertSystem extends EventEmitter {
       });
     });
 
-    this.performanceMonitor.on("performance-regression", (alert) => {
+    this.performanceMonitor.on("performance-regression", alert => {
       this.createAlert({
         type: "performance",
         severity: "high",
@@ -528,10 +507,7 @@ export class ViolationAlertSystem extends EventEmitter {
     }
   }
 
-  private evaluateCondition(
-    alert: ViolationAlert,
-    condition: AlertRule["conditions"][0],
-  ): boolean {
+  private evaluateCondition(alert: ViolationAlert, condition: AlertRule["conditions"][0]): boolean {
     const value = this.extractMetricValue(alert, condition.metric);
 
     switch (condition.operator) {
@@ -600,10 +576,7 @@ export class ViolationAlertSystem extends EventEmitter {
     }
   }
 
-  private queueNotifications(
-    alert: ViolationAlert,
-    recipients: string[],
-  ): void {
+  private queueNotifications(alert: ViolationAlert, recipients: string[]): void {
     for (const recipient of recipients) {
       const notification: AlertNotification = {
         id: this.generateNotificationId(),
@@ -621,9 +594,7 @@ export class ViolationAlertSystem extends EventEmitter {
     }
   }
 
-  private determineNotificationType(
-    recipient: string,
-  ): AlertNotification["type"] {
+  private determineNotificationType(recipient: string): AlertNotification["type"] {
     if (recipient.includes("@")) return "email";
     if (recipient.startsWith("#")) return "slack";
     if (recipient.startsWith("http")) return "webhook";
@@ -637,7 +608,7 @@ export class ViolationAlertSystem extends EventEmitter {
       `Category: ${alert.category}\n` +
       `Source: ${alert.source}\n` +
       `Timestamp: ${alert.timestamp}\n\n` +
-      `Immediate Actions:\n${alert.actions.immediate.map((action) => `• ${action}`).join("\n")}`
+      `Immediate Actions:\n${alert.actions.immediate.map(action => `• ${action}`).join("\n")}`
     );
   }
 
@@ -690,9 +661,7 @@ export class ViolationAlertSystem extends EventEmitter {
   }
 
   private async processNotificationQueue(): Promise<void> {
-    const pendingNotifications = this.notificationQueue.filter(
-      (n) => n.status === "pending",
-    );
+    const pendingNotifications = this.notificationQueue.filter(n => n.status === "pending");
 
     for (const notification of pendingNotifications) {
       try {
@@ -710,20 +679,16 @@ export class ViolationAlertSystem extends EventEmitter {
     this.notificationQueue.splice(
       0,
       this.notificationQueue.length,
-      ...this.notificationQueue.filter((n) => n.status === "pending"),
+      ...this.notificationQueue.filter(n => n.status === "pending")
     );
   }
 
-  private async sendNotification(
-    notification: AlertNotification,
-  ): Promise<void> {
+  private async sendNotification(notification: AlertNotification): Promise<void> {
     // In a real implementation, this would send actual notifications
-    console.log(
-      `📧 Sending ${notification.type} notification to ${notification.recipient}: ${notification.message}`,
-    );
+    console.log(`📧 Sending ${notification.type} notification to ${notification.recipient}: ${notification.message}`);
 
     // Simulate sending delay
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
   }
 
   private calculateAlertTrends(): ViolationAlertReport["alertTrends"] {
@@ -735,14 +700,10 @@ export class ViolationAlertSystem extends EventEmitter {
     // Calculate daily trends (last 7 days)
     for (let i = 6; i >= 0; i--) {
       const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      const dayStart = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-      );
+      const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       const dayEnd = new Date(dayStart.getTime() + 24 * 60 * 60 * 1000);
 
-      const dayAlerts = this.alertHistory.filter((alert) => {
+      const dayAlerts = this.alertHistory.filter(alert => {
         const alertDate = new Date(alert.timestamp);
         return alertDate >= dayStart && alertDate < dayEnd;
       }).length;
@@ -752,12 +713,10 @@ export class ViolationAlertSystem extends EventEmitter {
 
     // Calculate weekly trends (last 4 weeks)
     for (let i = 3; i >= 0; i--) {
-      const weekStart = new Date(
-        now.getTime() - (i + 1) * 7 * 24 * 60 * 60 * 1000,
-      );
+      const weekStart = new Date(now.getTime() - (i + 1) * 7 * 24 * 60 * 60 * 1000);
       const weekEnd = new Date(now.getTime() - i * 7 * 24 * 60 * 60 * 1000);
 
-      const weekAlerts = this.alertHistory.filter((alert) => {
+      const weekAlerts = this.alertHistory.filter(alert => {
         const alertDate = new Date(alert.timestamp);
         return alertDate >= weekStart && alertDate < weekEnd;
       }).length;
@@ -770,7 +729,7 @@ export class ViolationAlertSystem extends EventEmitter {
       const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
 
-      const monthAlerts = this.alertHistory.filter((alert) => {
+      const monthAlerts = this.alertHistory.filter(alert => {
         const alertDate = new Date(alert.timestamp);
         return alertDate >= monthStart && alertDate < monthEnd;
       }).length;
@@ -782,9 +741,7 @@ export class ViolationAlertSystem extends EventEmitter {
   }
 
   private calculateResponseMetrics(): ViolationAlertReport["responseMetrics"] {
-    const resolvedAlerts = this.alertHistory.filter(
-      (alert) => alert.status === "resolved" && alert.resolvedAt,
-    );
+    const resolvedAlerts = this.alertHistory.filter(alert => alert.status === "resolved" && alert.resolvedAt);
 
     if (resolvedAlerts.length === 0) {
       return {
@@ -797,37 +754,30 @@ export class ViolationAlertSystem extends EventEmitter {
 
     // Calculate average response time (time from creation to acknowledgment)
     const responseTimes = resolvedAlerts
-      .filter((alert) => alert.assignedTo)
-      .map((alert) => {
+      .filter(alert => alert.assignedTo)
+      .map(alert => {
         const created = new Date(alert.timestamp);
         const acknowledged = new Date(alert.resolvedAt!);
         return acknowledged.getTime() - created.getTime();
       });
 
     const averageResponseTime =
-      responseTimes.length > 0
-        ? responseTimes.reduce((sum, time) => sum + time, 0) /
-          responseTimes.length
-        : 0;
+      responseTimes.length > 0 ? responseTimes.reduce((sum, time) => sum + time, 0) / responseTimes.length : 0;
 
     // Calculate average resolution time
-    const resolutionTimes = resolvedAlerts.map((alert) => {
+    const resolutionTimes = resolvedAlerts.map(alert => {
       const created = new Date(alert.timestamp);
       const resolved = new Date(alert.resolvedAt!);
       return resolved.getTime() - created.getTime();
     });
 
-    const averageResolutionTime =
-      resolutionTimes.reduce((sum, time) => sum + time, 0) /
-      resolutionTimes.length;
+    const averageResolutionTime = resolutionTimes.reduce((sum, time) => sum + time, 0) / resolutionTimes.length;
 
     // Calculate resolution rate
     const resolutionRate = resolvedAlerts.length / this.alertHistory.length;
 
     // Calculate false positive rate
-    const falsePositives = this.alertHistory.filter(
-      (alert) => alert.metadata.falsePositive,
-    ).length;
+    const falsePositives = this.alertHistory.filter(alert => alert.metadata.falsePositive).length;
     const falsePositiveRate = falsePositives / this.alertHistory.length;
 
     return {
@@ -846,18 +796,12 @@ export class ViolationAlertSystem extends EventEmitter {
       recommendations.push(`🚨 Address ${activeAlerts.length} active alerts`);
     }
 
-    const criticalAlerts = activeAlerts.filter(
-      (alert) => alert.severity === "critical",
-    ).length;
+    const criticalAlerts = activeAlerts.filter(alert => alert.severity === "critical").length;
     if (criticalAlerts > 0) {
-      recommendations.push(
-        `⚠️ Fix ${criticalAlerts} critical alerts immediately`,
-      );
+      recommendations.push(`⚠️ Fix ${criticalAlerts} critical alerts immediately`);
     }
 
-    const highAlerts = activeAlerts.filter(
-      (alert) => alert.severity === "high",
-    ).length;
+    const highAlerts = activeAlerts.filter(alert => alert.severity === "high").length;
     if (highAlerts > 0) {
       recommendations.push(`🔧 Resolve ${highAlerts} high-severity alerts`);
     }

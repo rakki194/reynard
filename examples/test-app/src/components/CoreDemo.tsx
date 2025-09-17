@@ -78,7 +78,7 @@ export function CoreDemo() {
           <h4>Current Theme: {theme}</h4>
           <div class="theme-grid">
             <For each={getAvailableThemes()}>
-              {(themeConfig) => (
+              {themeConfig => (
                 <Button
                   variant={themeConfig.name === theme ? "primary" : "secondary"}
                   onClick={() => setTheme(themeConfig.name as ThemeName)}
@@ -98,9 +98,7 @@ export function CoreDemo() {
         <div class="demo-subsection">
           <h4>Counter (Persistent)</h4>
           <div class="counter-demo">
-            <Button onClick={() => setCounter(counter() + 1)}>
-              Increment: {counter()}
-            </Button>
+            <Button onClick={() => setCounter(counter() + 1)}>Increment: {counter()}</Button>
             <Button onClick={() => setCounter(counter() - 1)}>Decrement</Button>
             <Button onClick={removeCounter} variant="danger">
               Reset
@@ -114,14 +112,14 @@ export function CoreDemo() {
             <TextField
               label="Username"
               value={userName()}
-              onInput={(e) => setUserName(e.currentTarget.value)}
+              onInput={e => setUserName(e.currentTarget.value)}
               placeholder="Enter your name"
             />
             <div class="preference-controls">
               <label>
                 <Toggle
                   checked={preferences().notifications}
-                  onChange={(checked) =>
+                  onChange={checked =>
                     setPreferences({
                       ...preferences(),
                       notifications: checked,
@@ -134,7 +132,7 @@ export function CoreDemo() {
               <label>
                 <Toggle
                   checked={preferences().language === "es"}
-                  onChange={(checked) =>
+                  onChange={checked =>
                     setPreferences({
                       ...preferences(),
                       language: checked ? "es" : "en",
@@ -155,16 +153,14 @@ export function CoreDemo() {
 
       <Card class="demo-section">
         <h3>Debounced Values</h3>
-        <p>
-          Demonstrates debounced reactive values for performance optimization.
-        </p>
+        <p>Demonstrates debounced reactive values for performance optimization.</p>
 
         <div class="demo-subsection">
           <TextField
             label="Search Term"
             placeholder="Type to search..."
             value={searchTerm()}
-            onInput={(e) => setSearchTerm(e.currentTarget.value)}
+            onInput={e => setSearchTerm(e.currentTarget.value)}
             helperText="Search is debounced by 500ms"
           />
           <div class="search-results">
@@ -176,9 +172,7 @@ export function CoreDemo() {
             </p>
             <p>
               <strong>Search Results:</strong>{" "}
-              {debouncedSearchTerm()
-                ? `Found results for "${debouncedSearchTerm()}"`
-                : "No search term"}
+              {debouncedSearchTerm() ? `Found results for "${debouncedSearchTerm()}"` : "No search term"}
             </p>
           </div>
         </div>
@@ -190,17 +184,11 @@ export function CoreDemo() {
 
         <div class="media-query-demo">
           <div class="breakpoint-indicators">
-            <div class={`indicator ${isMobile() ? "active" : ""}`}>
-              Mobile: {isMobile() ? "Active" : "Inactive"}
-            </div>
-            <div
-              class={`indicator ${isTablet() && !isMobile() ? "active" : ""}`}
-            >
+            <div class={`indicator ${isMobile() ? "active" : ""}`}>Mobile: {isMobile() ? "Active" : "Inactive"}</div>
+            <div class={`indicator ${isTablet() && !isMobile() ? "active" : ""}`}>
               Tablet: {isTablet() && !isMobile() ? "Active" : "Inactive"}
             </div>
-            <div class={`indicator ${isDesktop() ? "active" : ""}`}>
-              Desktop: {isDesktop() ? "Active" : "Inactive"}
-            </div>
+            <div class={`indicator ${isDesktop() ? "active" : ""}`}>Desktop: {isDesktop() ? "Active" : "Inactive"}</div>
           </div>
           <p>Resize your browser window to see the breakpoints change.</p>
         </div>
@@ -216,7 +204,7 @@ export function CoreDemo() {
             type="email"
             placeholder="Enter an email address"
             value={email()}
-            onInput={(e) => setEmail(e.currentTarget.value)}
+            onInput={e => setEmail(e.currentTarget.value)}
             error={!!emailError()}
             errorMessage={emailError()}
             helperText="Email will be validated in real-time"
@@ -227,7 +215,7 @@ export function CoreDemo() {
             type="url"
             placeholder="Enter a URL"
             value={url()}
-            onInput={(e) => setUrl(e.currentTarget.value)}
+            onInput={e => setUrl(e.currentTarget.value)}
             error={!!urlError()}
             errorMessage={urlError()}
             helperText="URL will be validated in real-time"
@@ -245,16 +233,14 @@ export function CoreDemo() {
               label="Number"
               type="number"
               value={number()}
-              onInput={(e) => setNumber(parseFloat(e.currentTarget.value) || 0)}
+              onInput={e => setNumber(parseFloat(e.currentTarget.value) || 0)}
             />
             <TextField
               label="Currency"
               type="number"
               step="0.01"
               value={currency()}
-              onInput={(e) =>
-                setCurrency(parseFloat(e.currentTarget.value) || 0)
-              }
+              onInput={e => setCurrency(parseFloat(e.currentTarget.value) || 0)}
             />
           </div>
 
@@ -266,16 +252,13 @@ export function CoreDemo() {
               <strong>Number:</strong> {formatNumber(number())}
             </div>
             <div class="format-item">
-              <strong>Currency (USD):</strong>{" "}
-              {formatCurrency(currency(), "USD")}
+              <strong>Currency (USD):</strong> {formatCurrency(currency(), "USD")}
             </div>
             <div class="format-item">
-              <strong>Currency (EUR):</strong>{" "}
-              {formatCurrency(currency(), "EUR")}
+              <strong>Currency (EUR):</strong> {formatCurrency(currency(), "EUR")}
             </div>
             <div class="format-item">
-              <strong>Currency (GBP):</strong>{" "}
-              {formatCurrency(currency(), "GBP")}
+              <strong>Currency (GBP):</strong> {formatCurrency(currency(), "GBP")}
             </div>
           </div>
         </div>

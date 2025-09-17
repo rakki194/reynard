@@ -22,11 +22,7 @@ import {
   createCollisionResult,
 } from "./collision-algorithms";
 import { analyzeWorkload } from "./workload-analyzer";
-import {
-  PerformanceMonitor,
-  type CollisionPerformanceStats,
-  type PerformanceReport,
-} from "./performance-monitor";
+import { PerformanceMonitor, type CollisionPerformanceStats, type PerformanceReport } from "./performance-monitor";
 import type { CollisionObjectData } from "../../types/spatial-types";
 import { SpatialHash } from "../../spatial-hash/spatial-hash-core";
 
@@ -44,10 +40,7 @@ export interface OptimizedCollisionConfig {
 }
 
 // Re-export types from performance monitor
-export type {
-  CollisionPerformanceStats,
-  PerformanceReport,
-} from "./performance-monitor";
+export type { CollisionPerformanceStats, PerformanceReport } from "./performance-monitor";
 
 /**
  * Optimized collision detection adapter with automatic algorithm selection
@@ -73,9 +66,7 @@ export class OptimizedCollisionAdapter {
     };
     this.algorithmSelector = new AlgorithmSelector();
     this.memoryPool = new EnhancedMemoryPool(this.config.memoryPoolConfig);
-    this.performanceMonitor = new PerformanceMonitor(
-      this.config.performanceThresholds,
-    );
+    this.performanceMonitor = new PerformanceMonitor(this.config.performanceThresholds);
   }
 
   detectCollisions(aabbs: AABB[]): CollisionPair[] {
@@ -111,13 +102,11 @@ export class OptimizedCollisionAdapter {
       aabbs.length,
       executionTime,
       memoryUsage,
-      this.memoryPool.getStatistics().hitRate,
+      this.memoryPool.getStatistics().hitRate
     );
 
     // Update memory pool stats
-    this.performanceMonitor.updateMemoryPoolStats(
-      this.memoryPool.getStatistics(),
-    );
+    this.performanceMonitor.updateMemoryPoolStats(this.memoryPool.getStatistics());
 
     return result;
   }
@@ -183,12 +172,7 @@ export class OptimizedCollisionAdapter {
       if (processed.has(i)) continue;
 
       const aabb = aabbs[i];
-      const nearby = spatialHash.queryRect(
-        aabb.x - aabb.width,
-        aabb.y - aabb.height,
-        aabb.width * 3,
-        aabb.height * 3,
-      );
+      const nearby = spatialHash.queryRect(aabb.x - aabb.width, aabb.y - aabb.height, aabb.width * 3, aabb.height * 3);
 
       for (const obj of nearby) {
         const collisionData = obj.data as CollisionObjectData;
@@ -243,12 +227,7 @@ export class OptimizedCollisionAdapter {
       if (processed.has(i)) continue;
 
       const aabb = aabbs[i];
-      const nearby = spatialHash.queryRect(
-        aabb.x - aabb.width,
-        aabb.y - aabb.height,
-        aabb.width * 3,
-        aabb.height * 3,
-      );
+      const nearby = spatialHash.queryRect(aabb.x - aabb.width, aabb.y - aabb.height, aabb.width * 3, aabb.height * 3);
 
       for (const obj of nearby) {
         const collisionData = obj.data as CollisionObjectData;
@@ -276,12 +255,7 @@ export class OptimizedCollisionAdapter {
   }
 
   private checkCollision(a: AABB, b: AABB): boolean {
-    return !(
-      a.x + a.width <= b.x ||
-      b.x + b.width <= a.x ||
-      a.y + a.height <= b.y ||
-      b.y + b.height <= a.y
-    );
+    return !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
   }
 
   private executeAlgorithm(algorithm: string, aabbs: AABB[]): CollisionPair[] {
@@ -297,15 +271,9 @@ export class OptimizedCollisionAdapter {
     }
   }
 
-  private updatePerformanceModel(
-    algorithm: string,
-    objectCount: number,
-    startTime: number,
-    memoryStart: number,
-  ): void {
+  private updatePerformanceModel(algorithm: string, objectCount: number, startTime: number, memoryStart: number): void {
     const executionTime = performance.now() - startTime;
-    const memoryUsage =
-      this.performanceMonitor.getCurrentMemoryUsage() - memoryStart;
+    const memoryUsage = this.performanceMonitor.getCurrentMemoryUsage() - memoryStart;
     const hitRate = this.memoryPool.getStatistics().hitRate;
     this.algorithmSelector.updatePerformanceModel({
       algorithm,
@@ -344,9 +312,7 @@ export class OptimizedCollisionAdapter {
   }
 
   getPerformanceReport(): PerformanceReport {
-    return this.performanceMonitor.getPerformanceReport(
-      this.getOptimizationRecommendations(),
-    );
+    return this.performanceMonitor.getPerformanceReport(this.getOptimizationRecommendations());
   }
 
   resetStatistics(): void {

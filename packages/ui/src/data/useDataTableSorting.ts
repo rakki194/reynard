@@ -15,7 +15,7 @@ export interface DataTableSorting<T = unknown> {
 }
 
 export const useDataTableSorting = <T = unknown>(
-  onSort?: (column: string, direction: SortDirection) => void,
+  onSort?: (column: string, direction: SortDirection) => void
 ): DataTableSorting<T> => {
   const [sortColumn, setSortColumn] = createSignal<string | null>(null);
   const [sortDirection, setSortDirection] = createSignal<SortDirection>(null);
@@ -23,8 +23,7 @@ export const useDataTableSorting = <T = unknown>(
   const handleSort = (column: Column<T>) => {
     if (!column.sortable) return;
 
-    const currentDirection =
-      sortColumn() === column.id ? sortDirection() : null;
+    const currentDirection = sortColumn() === column.id ? sortDirection() : null;
     let newDirection: SortDirection;
 
     if (currentDirection === null) {

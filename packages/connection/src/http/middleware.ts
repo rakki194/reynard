@@ -28,7 +28,7 @@ export type { HTTPMiddleware, AuthConfig, TokenRefreshConfig } from "./types";
  */
 export function createAuthMiddleware(authConfig: AuthConfig): HTTPMiddleware {
   return {
-    request: (config) => {
+    request: config => {
       const headers = { ...config.headers };
 
       switch (authConfig.type) {
@@ -40,9 +40,7 @@ export function createAuthMiddleware(authConfig: AuthConfig): HTTPMiddleware {
 
         case "basic":
           if (authConfig.username && authConfig.password) {
-            const credentials = btoa(
-              `${authConfig.username}:${authConfig.password}`,
-            );
+            const credentials = btoa(`${authConfig.username}:${authConfig.password}`);
             headers.Authorization = `Basic ${credentials}`;
           }
           break;
@@ -69,14 +67,12 @@ export function createAuthMiddleware(authConfig: AuthConfig): HTTPMiddleware {
 /**
  * Create token refresh middleware
  */
-export function createTokenRefreshMiddleware(
-  refreshConfig: TokenRefreshConfig,
-): HTTPMiddleware {
+export function createTokenRefreshMiddleware(refreshConfig: TokenRefreshConfig): HTTPMiddleware {
   let isRefreshing = false;
   let refreshPromise: Promise<string> | null = null;
 
   return {
-    request: async (config) => {
+    request: async config => {
       // If we're already refreshing, wait for it
       if (isRefreshing && refreshPromise) {
         try {
@@ -97,7 +93,7 @@ export function createTokenRefreshMiddleware(
       return config;
     },
 
-    error: async (error) => {
+    error: async error => {
       // Check if it's an authentication error
       if (error.status === 401 && !isRefreshing) {
         isRefreshing = true;
@@ -156,19 +152,11 @@ export interface LoggingConfig {
 /**
  * Create logging middleware
  */
-export function createLoggingMiddleware(
-  config: LoggingConfig = {},
-): HTTPMiddleware {
-  const {
-    logRequests = true,
-    logResponses = true,
-    logErrors = true,
-    logLevel = "info",
-    logger = console.log,
-  } = config;
+export function createLoggingMiddleware(config: LoggingConfig = {}): HTTPMiddleware {
+  const { logRequests = true, logResponses = true, logErrors = true, logLevel = "info", logger = console.log } = config;
 
   return {
-    request: (config) => {
+    request: config => {
       if (logRequests) {
         logger(logLevel, "HTTP Request", {
           method: config.method,
@@ -180,7 +168,7 @@ export function createLoggingMiddleware(
       return config;
     },
 
-    response: (response) => {
+    response: response => {
       if (logResponses) {
         logger(logLevel, "HTTP Response", {
           status: response.status,
@@ -193,7 +181,7 @@ export function createLoggingMiddleware(
       return response;
     },
 
-    error: (error) => {
+    error: error => {
       if (logErrors) {
         logger("error", "HTTP Error", {
           message: error.message,
@@ -215,11 +203,9 @@ export function createLoggingMiddleware(
 /**
  * Create retry middleware with custom retry logic
  */
-export function createRetryMiddleware(
-  retryConfig: RetryConfig,
-): HTTPMiddleware {
+export function createRetryMiddleware(retryConfig: RetryConfig): HTTPMiddleware {
   return {
-    error: (error) => {
+    error: error => {
       // This middleware would work with the client's retry logic
       // The actual retry implementation is in the client
       return error;
@@ -234,11 +220,9 @@ export function createRetryMiddleware(
 /**
  * Create circuit breaker middleware
  */
-export function createCircuitBreakerMiddleware(
-  circuitConfig: CircuitBreakerConfig,
-): HTTPMiddleware {
+export function createCircuitBreakerMiddleware(circuitConfig: CircuitBreakerConfig): HTTPMiddleware {
   return {
-    error: (error) => {
+    error: error => {
       // Circuit breaker logic is implemented in the client
       // This middleware can add additional monitoring
       return error;
@@ -254,7 +238,7 @@ export function createCircuitBreakerMiddleware(
  * Create request transformation middleware
  */
 export function createRequestTransformMiddleware(
-  transform: (config: HTTPRequestOptions) => HTTPRequestOptions,
+  transform: (config: HTTPRequestOptions) => HTTPRequestOptions
 ): HTTPMiddleware {
   return {
     request: transform,
@@ -265,10 +249,10 @@ export function createRequestTransformMiddleware(
  * Create response transformation middleware
  */
 export function createResponseTransformMiddleware<T, R>(
-  transform: (response: HTTPResponse<T>) => HTTPResponse<R>,
+  transform: (response: HTTPResponse<T>) => HTTPResponse<R>
 ): HTTPMiddleware {
   return {
-    response: (response) => transform(response as HTTPResponse<T>),
+    response: response => transform(response as HTTPResponse<T>),
   };
 }
 
@@ -285,18 +269,16 @@ export interface CacheConfig {
 /**
  * Create caching middleware
  */
-export function createCacheMiddleware(
-  cacheConfig: CacheConfig = {},
-): HTTPMiddleware {
+export function createCacheMiddleware(cacheConfig: CacheConfig = {}): HTTPMiddleware {
   const cache = new Map<string, { data: HTTPResponse; timestamp: number }>();
   const {
     ttl = 300000, // 5 minutes default
     maxSize = 100,
-    keyGenerator = (config) => `${config.method}:${config.endpoint}`,
+    keyGenerator = config => `${config.method}:${config.endpoint}`,
   } = cacheConfig;
 
   return {
-    request: (config) => {
+    request: config => {
       // Only cache GET requests
       if (config.method !== "GET") {
         return config;
@@ -313,7 +295,7 @@ export function createCacheMiddleware(
       return config;
     },
 
-    response: (response) => {
+    response: response => {
       // Only cache GET requests
       if (response.config.method !== "GET") {
         return response;
@@ -351,14 +333,12 @@ export interface RateLimitConfig {
 /**
  * Create rate limiting middleware
  */
-export function createRateLimitMiddleware(
-  rateConfig: RateLimitConfig,
-): HTTPMiddleware {
+export function createRateLimitMiddleware(rateConfig: RateLimitConfig): HTTPMiddleware {
   const requests: number[] = [];
   const { requestsPerMinute, burstLimit = requestsPerMinute * 2 } = rateConfig;
 
   return {
-    request: (config) => {
+    request: config => {
       const now = Date.now();
       const oneMinuteAgo = now - 60000;
 
@@ -373,17 +353,13 @@ export function createRateLimitMiddleware(
         const waitTime = oldestRequest + 60000 - now;
 
         if (waitTime > 0) {
-          throw new Error(
-            `Rate limit exceeded. Wait ${waitTime}ms before retrying.`,
-          );
+          throw new Error(`Rate limit exceeded. Wait ${waitTime}ms before retrying.`);
         }
       }
 
       // Check burst limit
       if (requests.length >= burstLimit) {
-        throw new Error(
-          "Burst limit exceeded. Too many requests in a short time.",
-        );
+        throw new Error("Burst limit exceeded. Too many requests in a short time.");
       }
 
       requests.push(now);
@@ -400,10 +376,10 @@ export function createRateLimitMiddleware(
  * Create error handling middleware
  */
 export function createErrorHandlingMiddleware(
-  errorHandler: (error: HTTPError) => void | Promise<void>,
+  errorHandler: (error: HTTPError) => void | Promise<void>
 ): HTTPMiddleware {
   return {
-    error: async (error) => {
+    error: async error => {
       await errorHandler(error);
       return error;
     },
@@ -419,7 +395,7 @@ export function createErrorHandlingMiddleware(
  */
 export function createRequestIdMiddleware(): HTTPMiddleware {
   return {
-    request: (config) => {
+    request: config => {
       const requestId = crypto.randomUUID();
       return {
         ...config,
@@ -441,7 +417,7 @@ export function createRequestIdMiddleware(): HTTPMiddleware {
  */
 export function createUserAgentMiddleware(userAgent: string): HTTPMiddleware {
   return {
-    request: (config) => {
+    request: config => {
       return {
         ...config,
         headers: {
@@ -494,10 +470,7 @@ export function createApiMiddlewareStack(options: {
 /**
  * Create upload middleware stack
  */
-export function createUploadMiddlewareStack(options: {
-  auth?: AuthConfig;
-  logging?: LoggingConfig;
-}): HTTPMiddleware[] {
+export function createUploadMiddlewareStack(options: { auth?: AuthConfig; logging?: LoggingConfig }): HTTPMiddleware[] {
   const middleware: HTTPMiddleware[] = [];
 
   // Add request ID
@@ -514,7 +487,7 @@ export function createUploadMiddlewareStack(options: {
       createLoggingMiddleware({
         ...options.logging,
         logRequests: false, // Don't log large request bodies
-      }),
+      })
     );
   }
 

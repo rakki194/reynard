@@ -11,22 +11,14 @@ import { useBreadcrumbProps } from "./useBreadcrumbProps";
 import type { BreadcrumbNavigationProps } from "./types";
 import "./BreadcrumbNavigation.css";
 
-export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
-  props,
-) => {
+export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = props => {
   const { local } = useBreadcrumbProps(props);
 
   // State management
-  const { state, toggleExpanded, toggleFullPaths, isExpanded } =
-    useBreadcrumbState();
+  const { state, toggleExpanded, toggleFullPaths, isExpanded } = useBreadcrumbState();
 
   // Event handlers
-  const {
-    handleItemClick,
-    handleHomeClick,
-    handleRefreshClick,
-    handleSettingsClick,
-  } = useBreadcrumbHandlers({
+  const { handleItemClick, handleHomeClick, handleRefreshClick, handleSettingsClick } = useBreadcrumbHandlers({
     onItemClick: local.onItemClick,
     onHomeClick: local.onHomeClick,
     onRefreshClick: local.onRefreshClick,

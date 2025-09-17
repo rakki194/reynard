@@ -73,7 +73,7 @@ export class ChartEngine {
         Tooltip,
         Legend,
         Filler,
-        ...registerables,
+        ...registerables
       );
       this.isRegistered = true;
     }
@@ -87,7 +87,7 @@ export class ChartEngine {
       this.config.lightness!,
       opacity,
       this.config.useOKLCH,
-      this.colorCache,
+      this.colorCache
     );
   }
 

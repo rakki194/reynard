@@ -36,13 +36,7 @@ export function validateURL(url: string): {
     }
 
     // Check for suspicious patterns
-    const suspiciousPatterns = [
-      /javascript:/i,
-      /data:/i,
-      /vbscript:/i,
-      /file:/i,
-      /ftp:/i,
-    ];
+    const suspiciousPatterns = [/javascript:/i, /data:/i, /vbscript:/i, /file:/i, /ftp:/i];
 
     for (const pattern of suspiciousPatterns) {
       if (pattern.test(url)) {

@@ -30,24 +30,9 @@
  * @since 1.0.0
  */
 
-import {
-  Component,
-  ComponentType,
-  createWorld,
-  Entity,
-  Resource,
-  ResourceType,
-  StorageType,
-  World,
-} from "../index";
-import {
-  createEnhancedMemoryTracker,
-  EnhancedMemoryTracker,
-} from "./improved-memory-tracker.js";
-import {
-  createScalingOptimizer,
-  ScalingOptimizer,
-} from "./scaling-optimizations.js";
+import { Component, ComponentType, createWorld, Entity, Resource, ResourceType, StorageType, World } from "../index";
+import { createEnhancedMemoryTracker, EnhancedMemoryTracker } from "./improved-memory-tracker.js";
+import { createScalingOptimizer, ScalingOptimizer } from "./scaling-optimizations.js";
 
 // Benchmark Components
 class Position implements Component {
@@ -55,7 +40,7 @@ class Position implements Component {
   constructor(
     public x: number,
     public y: number,
-    public z: number = 0,
+    public z: number = 0
   ) {}
 }
 
@@ -64,7 +49,7 @@ class Velocity implements Component {
   constructor(
     public x: number,
     public y: number,
-    public z: number = 0,
+    public z: number = 0
   ) {}
 }
 
@@ -72,7 +57,7 @@ class Health implements Component {
   readonly __component = true;
   constructor(
     public current: number,
-    public maximum: number,
+    public maximum: number
   ) {}
 }
 
@@ -85,7 +70,7 @@ class Player implements Component {
   readonly __component = true;
   constructor(
     public name: string,
-    public level: number = 1,
+    public level: number = 1
   ) {}
 }
 
@@ -93,7 +78,7 @@ class Enemy implements Component {
   readonly __component = true;
   constructor(
     public type: string,
-    public difficulty: number = 1,
+    public difficulty: number = 1
   ) {}
 }
 
@@ -101,7 +86,7 @@ class Bullet implements Component {
   readonly __component = true;
   constructor(
     public speed: number,
-    public lifetime: number = 5.0,
+    public lifetime: number = 5.0
   ) {}
 }
 
@@ -111,7 +96,7 @@ class Color implements Component {
     public r: number,
     public g: number,
     public b: number,
-    public a: number = 1.0,
+    public a: number = 1.0
   ) {}
 }
 
@@ -119,7 +104,7 @@ class Size implements Component {
   readonly __component = true;
   constructor(
     public width: number,
-    public height: number,
+    public height: number
   ) {}
 }
 
@@ -128,7 +113,7 @@ class Physics implements Component {
   constructor(
     public mass: number,
     public friction: number,
-    public restitution: number,
+    public restitution: number
   ) {}
 }
 
@@ -136,7 +121,7 @@ class Renderable implements Component {
   readonly __component = true;
   constructor(
     public mesh: string,
-    public texture: string,
+    public texture: string
   ) {}
 }
 
@@ -145,7 +130,7 @@ class GameTime implements Resource {
   readonly __resource = true;
   constructor(
     public deltaTime: number,
-    public totalTime: number,
+    public totalTime: number
   ) {}
 }
 
@@ -153,7 +138,7 @@ class GameState implements Resource {
   readonly __resource = true;
   constructor(
     public score: number,
-    public level: number,
+    public level: number
   ) {}
 }
 
@@ -162,7 +147,7 @@ class PerformanceMetrics implements Resource {
   constructor(
     public frameCount: number,
     public averageFrameTime: number,
-    public entityCount: number,
+    public entityCount: number
   ) {}
 }
 
@@ -275,9 +260,7 @@ class MemoryTracker {
     this.fallbackTracker = {
       initialMemory: 0,
       peakMemory: 0,
-      hasMemoryAPI:
-        "memory" in performance &&
-        (performance as PerformanceWithMemory).memory !== undefined,
+      hasMemoryAPI: "memory" in performance && (performance as PerformanceWithMemory).memory !== undefined,
     };
   }
 
@@ -316,9 +299,7 @@ class MemoryTracker {
     // Fallback to browser API
     if (this.fallbackTracker.hasMemoryAPI) {
       const perfMemory = (performance as PerformanceWithMemory).memory!;
-      const usage =
-        (perfMemory.usedJSHeapSize - this.fallbackTracker.initialMemory) /
-        (1024 * 1024);
+      const usage = (perfMemory.usedJSHeapSize - this.fallbackTracker.initialMemory) / (1024 * 1024);
       // Ensure we never return negative values
       return Math.max(0, usage);
     }
@@ -334,20 +315,14 @@ class MemoryTracker {
 
     // Fallback to browser API
     if (this.fallbackTracker.hasMemoryAPI) {
-      return (
-        (this.fallbackTracker.peakMemory - this.fallbackTracker.initialMemory) /
-        (1024 * 1024)
-      );
+      return (this.fallbackTracker.peakMemory - this.fallbackTracker.initialMemory) / (1024 * 1024);
     }
 
     return 0;
   }
 
   isMemoryTrackingAvailable(): boolean {
-    return (
-      this.enhancedTracker.isMemoryTrackingAvailable() ||
-      this.fallbackTracker.hasMemoryAPI
-    );
+    return this.enhancedTracker.isMemoryTrackingAvailable() || this.fallbackTracker.hasMemoryAPI;
   }
 
   getDetailedStats(): any {
@@ -390,71 +365,47 @@ export class ECSBenchmarkRunner {
     // Register all benchmark components with Table storage for performance
     this.componentTypes.set(
       "Position",
-      registry.register(
-        "Position",
-        StorageType.Table,
-        () => new Position(0, 0),
-      ),
+      registry.register("Position", StorageType.Table, () => new Position(0, 0))
     );
     this.componentTypes.set(
       "Velocity",
-      registry.register(
-        "Velocity",
-        StorageType.Table,
-        () => new Velocity(0, 0),
-      ),
+      registry.register("Velocity", StorageType.Table, () => new Velocity(0, 0))
     );
     this.componentTypes.set(
       "Health",
-      registry.register(
-        "Health",
-        StorageType.Table,
-        () => new Health(100, 100),
-      ),
+      registry.register("Health", StorageType.Table, () => new Health(100, 100))
     );
     this.componentTypes.set(
       "Damage",
-      registry.register("Damage", StorageType.Table, () => new Damage(10)),
+      registry.register("Damage", StorageType.Table, () => new Damage(10))
     );
     this.componentTypes.set(
       "Player",
-      registry.register(
-        "Player",
-        StorageType.Table,
-        () => new Player("Player1"),
-      ),
+      registry.register("Player", StorageType.Table, () => new Player("Player1"))
     );
     this.componentTypes.set(
       "Enemy",
-      registry.register("Enemy", StorageType.Table, () => new Enemy("Basic")),
+      registry.register("Enemy", StorageType.Table, () => new Enemy("Basic"))
     );
     this.componentTypes.set(
       "Bullet",
-      registry.register("Bullet", StorageType.Table, () => new Bullet(300)),
+      registry.register("Bullet", StorageType.Table, () => new Bullet(300))
     );
     this.componentTypes.set(
       "Color",
-      registry.register("Color", StorageType.Table, () => new Color(1, 1, 1)),
+      registry.register("Color", StorageType.Table, () => new Color(1, 1, 1))
     );
     this.componentTypes.set(
       "Size",
-      registry.register("Size", StorageType.Table, () => new Size(20, 20)),
+      registry.register("Size", StorageType.Table, () => new Size(20, 20))
     );
     this.componentTypes.set(
       "Physics",
-      registry.register(
-        "Physics",
-        StorageType.Table,
-        () => new Physics(1, 0.5, 0.8),
-      ),
+      registry.register("Physics", StorageType.Table, () => new Physics(1, 0.5, 0.8))
     );
     this.componentTypes.set(
       "Renderable",
-      registry.register(
-        "Renderable",
-        StorageType.Table,
-        () => new Renderable("cube", "default"),
-      ),
+      registry.register("Renderable", StorageType.Table, () => new Renderable("cube", "default"))
     );
   }
 
@@ -463,18 +414,15 @@ export class ECSBenchmarkRunner {
 
     this.resourceTypes.set(
       "GameTime",
-      registry.register("GameTime", () => new GameTime(0.016, 0)),
+      registry.register("GameTime", () => new GameTime(0.016, 0))
     );
     this.resourceTypes.set(
       "GameState",
-      registry.register("GameState", () => new GameState(0, 1)),
+      registry.register("GameState", () => new GameState(0, 1))
     );
     this.resourceTypes.set(
       "PerformanceMetrics",
-      registry.register(
-        "PerformanceMetrics",
-        () => new PerformanceMetrics(0, 0, 0),
-      ),
+      registry.register("PerformanceMetrics", () => new PerformanceMetrics(0, 0, 0))
     );
   }
 
@@ -486,7 +434,7 @@ export class ECSBenchmarkRunner {
     operation: string,
     entityCount: number,
     benchmarkFn: () => void,
-    iterations: number = this.config.iterations,
+    iterations: number = this.config.iterations
   ): Promise<BenchmarkResult> {
     const timer = new PerformanceTimer();
     const memoryTracker = new MemoryTracker();
@@ -568,16 +516,14 @@ export class ECSBenchmarkRunner {
             this.world.spawn(
               new Position(Math.random() * 1000, Math.random() * 1000),
               new Velocity(Math.random() * 10, Math.random() * 10),
-              new Health(100, 100),
+              new Health(100, 100)
             );
           }
         },
-        Math.max(1, Math.floor(this.config.iterations / entityCount)),
+        Math.max(1, Math.floor(this.config.iterations / entityCount))
       );
       results.push(result);
-      console.log(
-        `   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`,
-      );
+      console.log(`   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`);
     }
 
     return results;
@@ -603,18 +549,13 @@ export class ECSBenchmarkRunner {
         entityCount,
         () => {
           for (const entity of entities) {
-            this.world.insert(
-              entity,
-              new Velocity(Math.random() * 10, Math.random() * 10),
-            );
+            this.world.insert(entity, new Velocity(Math.random() * 10, Math.random() * 10));
           }
         },
-        Math.max(1, Math.floor(this.config.iterations / entityCount)),
+        Math.max(1, Math.floor(this.config.iterations / entityCount))
       );
       results.push(result);
-      console.log(
-        `   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`,
-      );
+      console.log(`   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`);
     }
 
     return results;
@@ -631,13 +572,7 @@ export class ECSBenchmarkRunner {
       // Pre-create entities with components
       const entities: Entity[] = [];
       for (let i = 0; i < entityCount; i++) {
-        entities.push(
-          this.world.spawn(
-            new Position(0, 0),
-            new Velocity(0, 0),
-            new Health(100, 100),
-          ),
-        );
+        entities.push(this.world.spawn(new Position(0, 0), new Velocity(0, 0), new Health(100, 100)));
       }
 
       const result = await this.runBenchmark(
@@ -649,12 +584,10 @@ export class ECSBenchmarkRunner {
             this.world.remove(entity, this.componentTypes.get("Velocity")!);
           }
         },
-        Math.max(1, Math.floor(this.config.iterations / entityCount)),
+        Math.max(1, Math.floor(this.config.iterations / entityCount))
       );
       results.push(result);
-      console.log(
-        `   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`,
-      );
+      console.log(`   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`);
     }
 
     return results;
@@ -671,15 +604,10 @@ export class ECSBenchmarkRunner {
       // Create entities with various component combinations
       const entities: Entity[] = [];
       for (let i = 0; i < entityCount; i++) {
-        const entity = this.world.spawn(
-          new Position(Math.random() * 1000, Math.random() * 1000),
-        );
+        const entity = this.world.spawn(new Position(Math.random() * 1000, Math.random() * 1000));
 
         if (i % 2 === 0) {
-          this.world.insert(
-            entity,
-            new Velocity(Math.random() * 10, Math.random() * 10),
-          );
+          this.world.insert(entity, new Velocity(Math.random() * 10, Math.random() * 10));
         }
         if (i % 3 === 0) {
           this.world.insert(entity, new Health(100, 100));
@@ -692,13 +620,8 @@ export class ECSBenchmarkRunner {
       }
 
       // Cache queries outside the benchmark loop for better performance
-      const simpleQuery = this.world.query(
-        this.componentTypes.get("Position")!,
-      );
-      const complexQuery = this.world.query(
-        this.componentTypes.get("Position")!,
-        this.componentTypes.get("Velocity")!,
-      );
+      const simpleQuery = this.world.query(this.componentTypes.get("Position")!);
+      const complexQuery = this.world.query(this.componentTypes.get("Position")!, this.componentTypes.get("Velocity")!);
 
       // Test simple query (Position only)
       const simpleResult = await this.runBenchmark(
@@ -714,7 +637,7 @@ export class ECSBenchmarkRunner {
             if (x + y === 0) return;
           });
         },
-        Math.max(1, Math.floor(this.config.iterations / entityCount)),
+        Math.max(1, Math.floor(this.config.iterations / entityCount))
       );
       results.push(simpleResult);
 
@@ -734,12 +657,12 @@ export class ECSBenchmarkRunner {
             if (x + y + vx + vy === 0) return;
           });
         },
-        Math.max(1, Math.floor(this.config.iterations / entityCount)),
+        Math.max(1, Math.floor(this.config.iterations / entityCount))
       );
       results.push(complexResult);
 
       console.log(
-        `   ${entityCount} entities - Simple: ${simpleResult.averageTimeUs.toFixed(2)}μs, Complex: ${complexResult.averageTimeUs.toFixed(2)}μs`,
+        `   ${entityCount} entities - Simple: ${simpleResult.averageTimeUs.toFixed(2)}μs, Complex: ${complexResult.averageTimeUs.toFixed(2)}μs`
       );
     }
 
@@ -754,10 +677,7 @@ export class ECSBenchmarkRunner {
     const results: BenchmarkResult[] = [];
 
     // Cache the query outside the system for better performance
-    const movementQuery = this.world.query(
-      this.componentTypes.get("Position")!,
-      this.componentTypes.get("Velocity")!,
-    );
+    const movementQuery = this.world.query(this.componentTypes.get("Position")!, this.componentTypes.get("Velocity")!);
 
     // Create a simple movement system
     const movementSystem = (world: World): void => {
@@ -772,7 +692,7 @@ export class ECSBenchmarkRunner {
       for (let i = 0; i < entityCount; i++) {
         this.world.spawn(
           new Position(Math.random() * 1000, Math.random() * 1000),
-          new Velocity(Math.random() * 10, Math.random() * 10),
+          new Velocity(Math.random() * 10, Math.random() * 10)
         );
       }
 
@@ -783,12 +703,10 @@ export class ECSBenchmarkRunner {
         () => {
           movementSystem(this.world);
         },
-        Math.max(1, Math.floor(this.config.iterations / entityCount)),
+        Math.max(1, Math.floor(this.config.iterations / entityCount))
       );
       results.push(result);
-      console.log(
-        `   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`,
-      );
+      console.log(`   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`);
     }
 
     return results;
@@ -811,15 +729,9 @@ export class ECSBenchmarkRunner {
       "getResource",
       1, // Resources are singletons
       () => {
-        const gameTime = this.world.getResource(
-          this.resourceTypes.get("GameTime")!,
-        );
-        const gameState = this.world.getResource(
-          this.resourceTypes.get("GameState")!,
-        );
-        const metrics = this.world.getResource(
-          this.resourceTypes.get("PerformanceMetrics")!,
-        );
+        const gameTime = this.world.getResource(this.resourceTypes.get("GameTime")!);
+        const gameState = this.world.getResource(this.resourceTypes.get("GameState")!);
+        const metrics = this.world.getResource(this.resourceTypes.get("PerformanceMetrics")!);
 
         // Access resource data
         if (gameTime) {
@@ -835,12 +747,10 @@ export class ECSBenchmarkRunner {
           const avgTime = metrics.averageFrameTime;
         }
       },
-      this.config.iterations,
+      this.config.iterations
     );
     results.push(result);
-    console.log(
-      `   Resource access: ${result.averageTimeUs.toFixed(2)}μs per operation`,
-    );
+    console.log(`   Resource access: ${result.averageTimeUs.toFixed(2)}μs per operation`);
 
     return results;
   }
@@ -861,14 +771,11 @@ export class ECSBenchmarkRunner {
         const entity = this.world.spawn(
           new Position(Math.random() * 1000, Math.random() * 1000),
           new Velocity(Math.random() * 10, Math.random() * 10),
-          new Health(100, 100),
+          new Health(100, 100)
         );
 
         if (i % 2 === 0) {
-          this.world.insert(
-            entity,
-            new Color(Math.random(), Math.random(), Math.random()),
-          );
+          this.world.insert(entity, new Color(Math.random(), Math.random(), Math.random()));
         }
         if (i % 3 === 0) {
           this.world.insert(entity, new Size(20, 20));
@@ -889,24 +796,19 @@ export class ECSBenchmarkRunner {
           const query = this.world.query(
             this.componentTypes.get("Position")!,
             this.componentTypes.get("Velocity")!,
-            this.componentTypes.get("Health")!,
+            this.componentTypes.get("Health")!
           );
           query.forEach((entity, position, velocity, health) => {
             // Complex operations
             (position as Position).x += (velocity as Velocity).x * 0.016;
             (position as Position).y += (velocity as Velocity).y * 0.016;
-            (health as Health).current = Math.max(
-              0,
-              (health as Health).current - 0.1,
-            );
+            (health as Health).current = Math.max(0, (health as Health).current - 0.1);
           });
         },
-        Math.max(1, Math.floor(100 / entityCount)), // Fewer iterations for stress tests
+        Math.max(1, Math.floor(100 / entityCount)) // Fewer iterations for stress tests
       );
       results.push(result);
-      console.log(
-        `   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`,
-      );
+      console.log(`   ${entityCount} entities: ${result.averageTimeUs.toFixed(2)}μs per operation`);
     }
 
     return results;
@@ -957,21 +859,17 @@ export class ECSBenchmarkRunner {
       console.log(`\n${operation}:`);
       for (const result of operationResults) {
         console.log(
-          `  ${result.entityCount.toLocaleString().padStart(8)} entities: ${result.averageTimeUs.toFixed(2).padStart(8)}μs avg, ${result.operationsPerSecond.toFixed(0).padStart(8)} ops/sec`,
+          `  ${result.entityCount.toLocaleString().padStart(8)} entities: ${result.averageTimeUs.toFixed(2).padStart(8)}μs avg, ${result.operationsPerSecond.toFixed(0).padStart(8)} ops/sec`
         );
       }
     }
 
     // Memory usage summary
-    const memoryResults = results.filter(
-      (r) => r.memoryUsageMB !== undefined && r.memoryUsageMB > 0,
-    );
+    const memoryResults = results.filter(r => r.memoryUsageMB !== undefined && r.memoryUsageMB > 0);
     if (memoryResults.length > 0) {
       console.log("\n💾 Memory Usage:");
       for (const result of memoryResults) {
-        console.log(
-          `  ${result.operation} (${result.entityCount} entities): ${result.memoryUsageMB!.toFixed(2)} MB`,
-        );
+        console.log(`  ${result.operation} (${result.entityCount} entities): ${result.memoryUsageMB!.toFixed(2)} MB`);
       }
     } else if (this.config.enableMemoryTracking) {
       console.log("\n💾 Memory Usage: Not available (Chrome/Chromium only)");
@@ -1034,13 +932,8 @@ export class ECSBenchmarkRunner {
       results: this.results,
       summary: {
         totalBenchmarks: this.results.length,
-        averageTimeUs:
-          this.results.reduce((sum, r) => sum + r.averageTimeUs, 0) /
-          this.results.length,
-        totalMemoryMB: this.results.reduce(
-          (sum, r) => sum + (r.memoryUsageMB || 0),
-          0,
-        ),
+        averageTimeUs: this.results.reduce((sum, r) => sum + r.averageTimeUs, 0) / this.results.length,
+        totalMemoryMB: this.results.reduce((sum, r) => sum + (r.memoryUsageMB || 0), 0),
       },
     };
 
@@ -1057,9 +950,7 @@ export class ECSBenchmarkRunner {
 /**
  * Convenience function to run all ECS benchmarks with default configuration.
  */
-export async function runECSBenchmarks(
-  config?: Partial<BenchmarkConfig>,
-): Promise<BenchmarkResult[]> {
+export async function runECSBenchmarks(config?: Partial<BenchmarkConfig>): Promise<BenchmarkResult[]> {
   const runner = new ECSBenchmarkRunner(config);
   return await runner.runAllBenchmarks();
 }
@@ -1067,9 +958,7 @@ export async function runECSBenchmarks(
 /**
  * Convenience function to run specific benchmark categories.
  */
-export async function runEntityBenchmarks(
-  config?: Partial<BenchmarkConfig>,
-): Promise<BenchmarkResult[]> {
+export async function runEntityBenchmarks(config?: Partial<BenchmarkConfig>): Promise<BenchmarkResult[]> {
   const runner = new ECSBenchmarkRunner(config);
   const results: BenchmarkResult[] = [];
 
@@ -1083,9 +972,7 @@ export async function runEntityBenchmarks(
 /**
  * Convenience function to run query performance benchmarks.
  */
-export async function runQueryBenchmarks(
-  config?: Partial<BenchmarkConfig>,
-): Promise<BenchmarkResult[]> {
+export async function runQueryBenchmarks(config?: Partial<BenchmarkConfig>): Promise<BenchmarkResult[]> {
   const runner = new ECSBenchmarkRunner(config);
   return await runner.benchmarkQueries();
 }
@@ -1093,9 +980,7 @@ export async function runQueryBenchmarks(
 /**
  * Convenience function to run system execution benchmarks.
  */
-export async function runSystemBenchmarks(
-  config?: Partial<BenchmarkConfig>,
-): Promise<BenchmarkResult[]> {
+export async function runSystemBenchmarks(config?: Partial<BenchmarkConfig>): Promise<BenchmarkResult[]> {
   const runner = new ECSBenchmarkRunner(config);
   return await runner.benchmarkSystemExecution();
 }
@@ -1103,9 +988,7 @@ export async function runSystemBenchmarks(
 /**
  * Convenience function to run stress tests.
  */
-export async function runStressTests(
-  config?: Partial<BenchmarkConfig>,
-): Promise<BenchmarkResult[]> {
+export async function runStressTests(config?: Partial<BenchmarkConfig>): Promise<BenchmarkResult[]> {
   const runner = new ECSBenchmarkRunner(config);
   return await runner.benchmarkStressTest();
 }

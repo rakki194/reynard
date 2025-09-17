@@ -13,9 +13,7 @@ export interface PointerMoveHandler {
 /**
  * Create pointer move handler
  */
-export function createPointerMoveHandler(
-  onDrag?: (position: PanelPosition) => void,
-): PointerMoveHandler {
+export function createPointerMoveHandler(onDrag?: (position: PanelPosition) => void): PointerMoveHandler {
   const handlePointerMove = (event: globalThis.PointerEvent) => {
     // This will be implemented with proper state management
     // For now, just a placeholder

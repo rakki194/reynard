@@ -52,8 +52,7 @@ export class WASMSIMDECS implements UnifiedECS {
   private performanceMonitor: PerformanceMonitor;
   private queryConverter: QueryConverter;
   private systemRunner: SystemRunner;
-  private systemFunctions: Array<{ fn: (world: World) => void; name: string }> =
-    [];
+  private systemFunctions: Array<{ fn: (world: World) => void; name: string }> = [];
 
   constructor(config: ECSConfig = {}) {
     this.world = createWorld();
@@ -61,11 +60,7 @@ export class WASMSIMDECS implements UnifiedECS {
     this.componentExtractor = new ComponentExtractor();
     this.performanceMonitor = new PerformanceMonitor();
     this.queryConverter = new QueryConverter();
-    this.systemRunner = new SystemRunner(
-      this.world,
-      this.wasmManager,
-      this.performanceMonitor,
-    );
+    this.systemRunner = new SystemRunner(this.world, this.wasmManager, this.performanceMonitor);
     this.metrics = this.performanceMonitor.initializeMetrics();
 
     this.initializeWASM(config);
@@ -94,18 +89,13 @@ export class WASMSIMDECS implements UnifiedECS {
     const entity = this.world.spawnEmpty();
     this.world.insert(entity, ...components);
 
-    if (
-      this.wasmManager.isInitialized &&
-      this.componentExtractor.isPositionVelocityEntity(components)
-    ) {
+    if (this.wasmManager.isInitialized && this.componentExtractor.isPositionVelocityEntity(components)) {
       this.wasmManager.addEntityToWASM(entity, components);
     }
 
-    this.performanceMonitor.updateEntityCount(
-      this.performanceMonitor.getMetrics().entityCount + 1,
-    );
+    this.performanceMonitor.updateEntityCount(this.performanceMonitor.getMetrics().entityCount + 1);
     this.performanceMonitor.updateComponentCount(
-      this.performanceMonitor.getMetrics().componentCount + components.length,
+      this.performanceMonitor.getMetrics().componentCount + components.length
     );
     return entity;
   }
@@ -115,9 +105,7 @@ export class WASMSIMDECS implements UnifiedECS {
    */
   spawnEmpty(): Entity {
     const entity = this.world.spawnEmpty();
-    this.performanceMonitor.updateEntityCount(
-      this.performanceMonitor.getMetrics().entityCount + 1,
-    );
+    this.performanceMonitor.updateEntityCount(this.performanceMonitor.getMetrics().entityCount + 1);
     return entity;
   }
 
@@ -131,9 +119,7 @@ export class WASMSIMDECS implements UnifiedECS {
     }
 
     this.world.despawn(entity);
-    this.performanceMonitor.updateEntityCount(
-      this.performanceMonitor.getMetrics().entityCount - 1,
-    );
+    this.performanceMonitor.updateEntityCount(this.performanceMonitor.getMetrics().entityCount - 1);
   }
 
   /**
@@ -142,15 +128,12 @@ export class WASMSIMDECS implements UnifiedECS {
   insert<T extends Component[]>(entity: Entity, ...components: T): void {
     this.world.insert(entity, ...components);
 
-    if (
-      this.wasmManager.isInitialized &&
-      this.componentExtractor.isPositionVelocityEntity(components)
-    ) {
+    if (this.wasmManager.isInitialized && this.componentExtractor.isPositionVelocityEntity(components)) {
       this.wasmManager.updateEntityInWASM(entity, components);
     }
 
     this.performanceMonitor.updateComponentCount(
-      this.performanceMonitor.getMetrics().componentCount + components.length,
+      this.performanceMonitor.getMetrics().componentCount + components.length
     );
   }
 
@@ -167,13 +150,9 @@ export class WASMSIMDECS implements UnifiedECS {
   /**
    * Query entities with specific component combinations.
    */
-  query<T extends Component[]>(
-    ...componentTypes: ComponentType<Component>[]
-  ): IterableIterator<[Entity, ...T]> {
+  query<T extends Component[]>(...componentTypes: ComponentType<Component>[]): IterableIterator<[Entity, ...T]> {
     const queryResult = this.world.query(...componentTypes);
-    return this.queryConverter.convertToIterator(
-      queryResult as unknown as Record<string, unknown>,
-    );
+    return this.queryConverter.convertToIterator(queryResult as unknown as Record<string, unknown>);
   }
 
   /**
@@ -186,9 +165,7 @@ export class WASMSIMDECS implements UnifiedECS {
   /**
    * Get a resource from the world.
    */
-  getResource<T extends Resource>(
-    resourceType: ResourceType<T>,
-  ): T | undefined {
+  getResource<T extends Resource>(resourceType: ResourceType<T>): T | undefined {
     return this.world.getResource(resourceType);
   }
 
@@ -262,8 +239,6 @@ export class WASMSIMDECS implements UnifiedECS {
  * });
  * ```
  */
-export async function createWASMSIMDECS(
-  config: ECSConfig = {},
-): Promise<WASMSIMDECS> {
+export async function createWASMSIMDECS(config: ECSConfig = {}): Promise<WASMSIMDECS> {
   return new WASMSIMDECS(config);
 }

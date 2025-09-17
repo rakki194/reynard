@@ -5,11 +5,11 @@ This module tests the sophisticated plugin management system including
 JXL and AVIF plugin detection, fallback mechanisms, and runtime support.
 """
 
+import asyncio
+from unittest.mock import MagicMock, patch
+
 import pytest
 import pytest_asyncio
-import asyncio
-from unittest.mock import patch, MagicMock
-from typing import Dict, Any
 
 from app.services.image_processing_service import (
     ImageProcessingService,
@@ -75,11 +75,20 @@ class TestImageProcessingService:
     async def test_supported_formats_initialization(self, service):
         """Test supported formats initialization."""
         # Service is already initialized by fixture
-        
+
         # Check base formats are always supported
-        base_formats = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff", ".tif", ".webp"}
+        base_formats = {
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".gif",
+            ".bmp",
+            ".tiff",
+            ".tif",
+            ".webp",
+        }
         assert base_formats.issubset(service._supported_formats)
-        
+
         # Check format info is populated
         assert len(service._format_info) > 0
         assert ".jpg" in service._format_info
@@ -88,11 +97,11 @@ class TestImageProcessingService:
     @pytest.mark.asyncio
     async def test_jxl_format_info_when_available(self, service):
         """Test JXL format info when plugin is available."""
-        with patch('importlib.import_module') as mock_import:
+        with patch("importlib.import_module") as mock_import:
             mock_import.return_value = MagicMock()
-            
+
             # Service is already initialized by fixture
-            
+
             if service._pillow_jxl_available:
                 assert ".jxl" in service._supported_formats
                 assert ".jxl" in service._format_info
@@ -104,11 +113,11 @@ class TestImageProcessingService:
     @pytest.mark.asyncio
     async def test_avif_format_info_when_available(self, service):
         """Test AVIF format info when plugin is available."""
-        with patch('importlib.import_module') as mock_import:
+        with patch("importlib.import_module") as mock_import:
             mock_import.return_value = MagicMock()
-            
+
             # Service is already initialized by fixture
-            
+
             if service._pillow_avif_available:
                 assert ".avif" in service._supported_formats
                 assert ".avif" in service._format_info
@@ -121,7 +130,7 @@ class TestImageProcessingService:
     async def test_health_check(self, service):
         """Test service health check."""
         # Service is already initialized by fixture
-        
+
         health_status = await service.health_check()
         assert health_status is True
         assert service._last_health_check is not None
@@ -129,23 +138,23 @@ class TestImageProcessingService:
     @pytest.mark.asyncio
     async def test_plugin_availability_verification(self, service):
         """Test plugin availability verification during health check."""
-        with patch('importlib.import_module') as mock_import:
+        with patch("importlib.import_module") as mock_import:
             mock_import.return_value = MagicMock()
-            
+
             # Service is already initialized by fixture
             initial_jxl_status = service._pillow_jxl_available
-            
+
             # Simulate plugin becoming unavailable
             mock_import.side_effect = ImportError
             await service._verify_plugin_availability()
-            
+
             # Status should be updated
             assert service._pillow_jxl_available != initial_jxl_status
 
     def test_get_info(self, service):
         """Test service info retrieval."""
         info = service.get_info()
-        
+
         assert "name" in info
         assert "initialized" in info
         assert "pillow_jxl_available" in info
@@ -156,11 +165,11 @@ class TestImageProcessingService:
     @pytest.mark.asyncio
     async def test_pil_image_with_plugins(self, service):
         """Test PIL.Image retrieval with plugin support."""
-        with patch('importlib.import_module') as mock_import:
+        with patch("importlib.import_module") as mock_import:
             mock_import.return_value = MagicMock()
-            
+
             # Service is already initialized by fixture
-            
+
             # Should return PIL.Image class
             pil_image = service.get_pil_image()
             assert pil_image is not None
@@ -169,14 +178,14 @@ class TestImageProcessingService:
     async def test_supported_formats_for_inference(self, service):
         """Test supported formats for inference."""
         # Service is already initialized by fixture
-        
+
         formats = service.get_supported_formats_for_inference()
-        
+
         # Should include base formats
         assert "image/jpeg" in formats
         assert "image/png" in formats
         assert "image/webp" in formats
-        
+
         # Plugin formats should be included if available
         if service._pillow_jxl_available:
             assert "image/jxl" in formats
@@ -199,7 +208,7 @@ class TestImageProcessingService:
         """Test service shutdown."""
         # Service is already initialized by fixture
         assert service._initialized
-        
+
         await service.shutdown()
         assert not service._initialized
         assert not service._pillow_jxl_available
@@ -229,7 +238,7 @@ class TestGlobalServiceManagement:
         """Test global service shutdown."""
         await initialize_image_processing_service()
         await shutdown_image_processing_service()
-        
+
         # Service should be reset
         service = await get_image_processing_service()
         assert not service._initialized
@@ -243,9 +252,9 @@ class TestFormatMetadata:
         """Test that format metadata is complete and accurate."""
         service = ImageProcessingService()
         # Service is already initialized by fixture
-        
+
         format_info = service.get_format_info()
-        
+
         # Check base format metadata
         jpg_info = format_info.get(".jpg")
         assert jpg_info is not None
@@ -266,11 +275,11 @@ class TestFormatMetadata:
     async def test_plugin_format_metadata(self):
         """Test plugin format metadata when available."""
         service = ImageProcessingService()
-        
-        with patch('importlib.import_module') as mock_import:
+
+        with patch("importlib.import_module") as mock_import:
             mock_import.return_value = MagicMock()
             # Service is already initialized by fixture
-            
+
             if service._pillow_jxl_available:
                 jxl_info = service._format_info.get(".jxl")
                 assert jxl_info is not None
@@ -295,10 +304,12 @@ class TestErrorHandling:
     async def test_import_error_handling(self):
         """Test handling of import errors during plugin loading."""
         service = ImageProcessingService()
-        
-        with patch('importlib.import_module', side_effect=ImportError("Module not found")):
+
+        with patch(
+            "importlib.import_module", side_effect=ImportError("Module not found")
+        ):
             await service.initialize()
-            
+
             # Should handle gracefully
             assert service._initialized
             # Since we're mocking import errors, plugins should not be available
@@ -310,8 +321,8 @@ class TestErrorHandling:
         """Test health check failure handling."""
         service = ImageProcessingService()
         await service.initialize()
-        
-        with patch('PIL.Image', side_effect=ImportError("PIL not available")):
+
+        with patch("PIL.Image", side_effect=ImportError("PIL not available")):
             health_status = await service.health_check()
             assert health_status is False
 
@@ -320,19 +331,17 @@ class TestErrorHandling:
         """Test concurrent service initialization."""
         service1 = ImageProcessingService()
         service2 = ImageProcessingService()
-        
+
         # Initialize both services concurrently
         results = await asyncio.gather(
-            service1.initialize(),
-            service2.initialize(),
-            return_exceptions=True
+            service1.initialize(), service2.initialize(), return_exceptions=True
         )
-        
+
         # Both should succeed
         assert all(result is True for result in results)
         assert service1._initialized
         assert service2._initialized
-        
+
         await service1.shutdown()
         await service2.shutdown()
 

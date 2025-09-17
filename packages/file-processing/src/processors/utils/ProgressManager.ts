@@ -31,7 +31,7 @@ export class ProgressManager {
    * Update progress and notify callbacks
    */
   updateProgress(progress: ProcessingProgress): void {
-    this.progressCallbacks.forEach((callback) => {
+    this.progressCallbacks.forEach(callback => {
       try {
         callback(progress);
       } catch (error) {
@@ -48,7 +48,7 @@ export class ProgressManager {
     currentIndex: number,
     totalFiles: number,
     currentFile?: string,
-    status?: string,
+    status?: string
   ): ProcessingProgress {
     return {
       operation,
@@ -63,10 +63,7 @@ export class ProgressManager {
   /**
    * Create completion progress update
    */
-  createCompletionProgress(
-    operation: string,
-    totalFiles: number,
-  ): ProcessingProgress {
+  createCompletionProgress(operation: string, totalFiles: number): ProcessingProgress {
     return {
       operation,
       progress: 100,

@@ -73,12 +73,7 @@ Versatile button component with multiple variants and states.
 Flexible container component with consistent styling.
 
 ```tsx
-<Card
-  variant="elevated"
-  padding="lg"
-  header={<h3>Card Title</h3>}
-  footer={<Button>Action</Button>}
->
+<Card variant="elevated" padding="lg" header={<h3>Card Title</h3>} footer={<Button>Action</Button>}>
   Card content goes here
 </Card>
 ```
@@ -151,12 +146,7 @@ Flexible modal dialog with backdrop and animations.
 ```tsx
 const [isOpen, setIsOpen] = createSignal(false);
 
-<Modal
-  open={isOpen()}
-  onClose={() => setIsOpen(false)}
-  title="Confirm Action"
-  size="md"
->
+<Modal open={isOpen()} onClose={() => setIsOpen(false)} title="Confirm Action" size="md">
   <p>Are you sure you want to continue?</p>
   <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
     <Button onClick={() => setIsOpen(false)}>Cancel</Button>
@@ -187,12 +177,7 @@ const tabs = [
   { id: "tab3", label: "Help" },
 ];
 
-<Tabs
-  items={tabs}
-  activeTab={activeTab()}
-  onTabChange={setActiveTab}
-  variant="pills"
->
+<Tabs items={tabs} activeTab={activeTab()} onTabChange={setActiveTab} variant="pills">
   <TabPanel tabId="tab1" activeTab={activeTab()}>
     <h3>Overview Content</h3>
   </TabPanel>
@@ -238,9 +223,7 @@ import { useTheme } from "reynard-themes";
 function ThemedComponent() {
   const { theme, setTheme } = useTheme();
 
-  return (
-    <Button onClick={() => setTheme("dark")}>Current theme: {theme}</Button>
-  );
+  return <Button onClick={() => setTheme("dark")}>Current theme: {theme}</Button>;
 }
 ```
 
@@ -283,8 +266,8 @@ import { ChatContainer } from "reynard-components";
     enableTools: true,
     showTimestamps: true,
   }}
-  onMessageSent={(message) => console.log("Sent:", message)}
-  onMessageReceived={(message) => console.log("Received:", message)}
+  onMessageSent={message => console.log("Sent:", message)}
+  onMessageReceived={message => console.log("Received:", message)}
 />;
 ```
 

@@ -20,12 +20,7 @@ export class ConfigLoader {
       }
 
       // Try common config file names
-      const commonConfigs = [
-        "reynard-docs.config.js",
-        "reynard-docs.config.ts",
-        "docs.config.js",
-        "docs.config.ts",
-      ];
+      const commonConfigs = ["reynard-docs.config.js", "reynard-docs.config.ts", "docs.config.js", "docs.config.ts"];
 
       for (const configName of commonConfigs) {
         if (await this.fileExists(configName)) {

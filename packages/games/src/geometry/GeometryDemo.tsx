@@ -1,11 +1,6 @@
 import { createSignal } from "solid-js";
 import { Button } from "reynard-components";
-import {
-  PointOps,
-  RectangleOps,
-  CircleOps,
-  PolygonOps,
-} from "reynard-algorithms";
+import { PointOps, RectangleOps, CircleOps, PolygonOps } from "reynard-algorithms";
 import { Shape, Operation } from "../types";
 import "./GeometryDemo.css";
 
@@ -13,29 +8,18 @@ export function GeometryDemo() {
   const [shapes, setShapes] = createSignal<Shape[]>([]);
   const [operations, setOperations] = createSignal<Operation[]>([]);
 
-  const addShape = (
-    type: "point" | "line" | "rectangle" | "circle" | "polygon",
-  ) => {
+  const addShape = (type: "point" | "line" | "rectangle" | "circle" | "polygon") => {
     const id = Date.now();
     let data: any;
 
     switch (type) {
       case "point":
-        data = PointOps.create(
-          Math.random() * 400 + 50,
-          Math.random() * 300 + 50,
-        );
+        data = PointOps.create(Math.random() * 400 + 50, Math.random() * 300 + 50);
         break;
       case "line":
         data = {
-          start: PointOps.create(
-            Math.random() * 400 + 50,
-            Math.random() * 300 + 50,
-          ),
-          end: PointOps.create(
-            Math.random() * 400 + 50,
-            Math.random() * 300 + 50,
-          ),
+          start: PointOps.create(Math.random() * 400 + 50, Math.random() * 300 + 50),
+          end: PointOps.create(Math.random() * 400 + 50, Math.random() * 300 + 50),
         };
         break;
       case "rectangle":
@@ -43,24 +27,24 @@ export function GeometryDemo() {
           Math.random() * 300 + 50,
           Math.random() * 200 + 50,
           Math.random() * 100 + 50,
-          Math.random() * 100 + 50,
+          Math.random() * 100 + 50
         );
         break;
       case "circle":
         data = CircleOps.create(
           PointOps.create(Math.random() * 400 + 50, Math.random() * 300 + 50),
-          Math.random() * 30 + 20,
+          Math.random() * 30 + 20
         );
         break;
       case "polygon":
         const points = Array.from({ length: 5 }, () =>
-          PointOps.create(Math.random() * 200 + 100, Math.random() * 150 + 100),
+          PointOps.create(Math.random() * 200 + 100, Math.random() * 150 + 100)
         );
         data = PolygonOps.create(points);
         break;
     }
 
-    setShapes((prev) => [
+    setShapes(prev => [
       ...prev,
       {
         id,
@@ -107,7 +91,7 @@ export function GeometryDemo() {
     }
 
     if (result !== undefined) {
-      setOperations((prev) => [
+      setOperations(prev => [
         ...prev,
         {
           type: operation,
@@ -123,39 +107,19 @@ export function GeometryDemo() {
       <div class="demo-header">
         <h3>📐 Geometry Operations Demo</h3>
         <div class="demo-controls">
-          <Button
-            onClick={() => addShape("point")}
-            variant="secondary"
-            size="sm"
-          >
+          <Button onClick={() => addShape("point")} variant="secondary" size="sm">
             Add Point
           </Button>
-          <Button
-            onClick={() => addShape("line")}
-            variant="secondary"
-            size="sm"
-          >
+          <Button onClick={() => addShape("line")} variant="secondary" size="sm">
             Add Line
           </Button>
-          <Button
-            onClick={() => addShape("rectangle")}
-            variant="secondary"
-            size="sm"
-          >
+          <Button onClick={() => addShape("rectangle")} variant="secondary" size="sm">
             Add Rectangle
           </Button>
-          <Button
-            onClick={() => addShape("circle")}
-            variant="secondary"
-            size="sm"
-          >
+          <Button onClick={() => addShape("circle")} variant="secondary" size="sm">
             Add Circle
           </Button>
-          <Button
-            onClick={() => addShape("polygon")}
-            variant="secondary"
-            size="sm"
-          >
+          <Button onClick={() => addShape("polygon")} variant="secondary" size="sm">
             Add Polygon
           </Button>
         </div>
@@ -163,18 +127,10 @@ export function GeometryDemo() {
 
       <div class="geometry-canvas">
         <svg width={500} height={400} class="geometry-svg">
-          {shapes().map((shape) => {
+          {shapes().map(shape => {
             switch (shape.type) {
               case "point":
-                return (
-                  <circle
-                    cx={shape.data.x}
-                    cy={shape.data.y}
-                    r="5"
-                    fill={shape.color}
-                    stroke="#333"
-                  />
-                );
+                return <circle cx={shape.data.x} cy={shape.data.y} r="5" fill={shape.color} stroke="#333" />;
               case "line":
                 return (
                   <line
@@ -210,17 +166,8 @@ export function GeometryDemo() {
                   />
                 );
               case "polygon":
-                const points = shape.data.points
-                  .map((p: any) => `${p.x},${p.y}`)
-                  .join(" ");
-                return (
-                  <polygon
-                    points={points}
-                    fill="none"
-                    stroke={shape.color}
-                    stroke-width="2"
-                  />
-                );
+                const points = shape.data.points.map((p: any) => `${p.x},${p.y}`).join(" ");
+                return <polygon points={points} fill="none" stroke={shape.color} stroke-width="2" />;
             }
           })}
         </svg>
@@ -246,7 +193,7 @@ export function GeometryDemo() {
         <div class="operation-results">
           {operations()
             .slice(-5)
-            .map((op) => (
+            .map(op => (
               <div class="operation-result">
                 <strong>{op.type}:</strong> {JSON.stringify(op.result)}
               </div>

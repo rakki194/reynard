@@ -5,37 +5,19 @@
  */
 
 // Core i18n functionality
-export {
-  I18nProvider,
-  useI18n,
-  createCoreI18nModule,
-  createBasicI18nModule,
-} from "./core";
+export { I18nProvider, useI18n, createCoreI18nModule, createBasicI18nModule } from "./core";
 
 // Module factory
-export {
-  createBaseI18nModule,
-  type EnhancedI18nOptions,
-} from "./core/providers/module-factory";
+export { createBaseI18nModule, type EnhancedI18nOptions } from "./core/providers/module-factory";
 
 // Options parser
-export {
-  parseI18nOptions,
-  type ParsedI18nOptions,
-} from "./core/providers/options-parser";
+export { parseI18nOptions, type ParsedI18nOptions } from "./core/providers/options-parser";
 
 // Locale manager
-export {
-  applyLocaleSideEffects,
-  createLocaleManager,
-} from "./core/providers/locale-manager";
+export { applyLocaleSideEffects, createLocaleManager } from "./core/providers/locale-manager";
 
 // Debug i18n features
-export {
-  loadTranslations,
-  createDebugI18nModule,
-  type DebugI18nModule,
-} from "./features/debug/debug-i18n";
+export { loadTranslations, createDebugI18nModule, type DebugI18nModule } from "./features/debug/debug-i18n";
 
 // Analytics i18n features
 export { createAnalyticsI18nModule } from "./features/analytics/analytics-i18n";
@@ -92,30 +74,17 @@ export {
   getHungarianSuffix,
 } from "./utils";
 
-export {
-  getPlural,
-  createPluralTranslation,
-  pluralRules,
-} from "./utils/pluralization/plurals";
+export { getPlural, createPluralTranslation, pluralRules } from "./utils/pluralization/plurals";
 
 // Enhanced loading system
-export {
-  loadNamespace,
-  createOptimizedLoader,
-  clearTranslationCache,
-  getCacheStats,
-} from "./loaders";
+export { loadNamespace, createOptimizedLoader, clearTranslationCache, getCacheStats } from "./loaders";
 
 // Debugging and validation
 export { createDebugStats } from "./features/debug";
 export type { DebugStats } from "./features/debug";
 
 // Intl API integration
-export {
-  createDateFormatter,
-  createNumberFormatter,
-  createRelativeFormatter,
-} from "./intl/formatters";
+export { createDateFormatter, createNumberFormatter, createRelativeFormatter } from "./intl/formatters";
 
 // Migration and enterprise tools
 // export { TranslationManager, TranslationAnalytics } from "./migration";

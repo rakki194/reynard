@@ -6,16 +6,8 @@
  */
 
 import { createEffect, onCleanup, Accessor } from "solid-js";
-import type {
-  PanelPosition,
-  PanelConstraints,
-  PanelSnapPoints,
-  UseFloatingPanelReturn,
-} from "../types.js";
-import {
-  createDraggablePanelCore,
-  DraggablePanelCore,
-} from "./useDraggablePanelCore.js";
+import type { PanelPosition, PanelConstraints, PanelSnapPoints, UseFloatingPanelReturn } from "../types.js";
+import { createDraggablePanelCore, DraggablePanelCore } from "./useDraggablePanelCore.js";
 import { createDraggablePanelHandlers } from "./useDraggablePanelHandlers.js";
 import { constrainPosition, snapToPoint } from "./useDraggablePanelUtils.js";
 
@@ -46,7 +38,7 @@ export interface UseDraggablePanelReturn extends UseFloatingPanelReturn {
 
 export function useDraggablePanel(
   panelRef: Accessor<HTMLElement | undefined>,
-  options: UseDraggablePanelOptions = {},
+  options: UseDraggablePanelOptions = {}
 ): UseDraggablePanelReturn {
   const {
     initialPosition = { top: 0, left: 0 },
@@ -65,15 +57,10 @@ export function useDraggablePanel(
     constraints,
     snapPoints,
     dragHandle,
-    enabled,
+    enabled
   );
 
-  const handlers = createDraggablePanelHandlers(
-    core,
-    onDragStart,
-    onDrag,
-    onDragEnd,
-  );
+  const handlers = createDraggablePanelHandlers(core, onDragStart, onDrag, onDragEnd);
 
   // Apply constraints and snap points
   createEffect(() => {
@@ -81,10 +68,7 @@ export function useDraggablePanel(
     const constrainedPosition = constrainPosition(currentPosition, constraints);
     const snappedPosition = snapToPoint(constrainedPosition, snapPoints);
 
-    if (
-      constrainedPosition !== currentPosition ||
-      snappedPosition !== constrainedPosition
-    ) {
+    if (constrainedPosition !== currentPosition || snappedPosition !== constrainedPosition) {
       const [, setPosition] = core.position;
       setPosition(snappedPosition);
     }
@@ -108,7 +92,6 @@ export function useDraggablePanel(
     updateDrag: handlers.handlePointerMove,
     endDrag: handlers.handlePointerUp,
     snapToPoint: (position: PanelPosition) => snapToPoint(position, snapPoints),
-    constrainPosition: (position: PanelPosition) =>
-      constrainPosition(position, constraints),
+    constrainPosition: (position: PanelPosition) => constrainPosition(position, constraints),
   };
 }

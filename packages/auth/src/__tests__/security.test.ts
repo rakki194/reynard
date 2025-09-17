@@ -102,10 +102,7 @@ describe("TokenManager", () => {
         Math.floor((Date.now() + 30000) / 1000) +
         "fQ.test";
 
-      const isExpiringSoon = tokenManager.isTokenExpiringSoon(
-        soonExpiringToken,
-        5,
-      );
+      const isExpiringSoon = tokenManager.isTokenExpiringSoon(soonExpiringToken, 5);
       expect(isExpiringSoon).toBe(true);
     });
   });
@@ -173,8 +170,7 @@ describe("Input Sanitization", () => {
     });
 
     it("should remove script and style tags", () => {
-      const input =
-        '<script>alert("xss")</script><style>body{color:red}</style>Hello';
+      const input = '<script>alert("xss")</script><style>body{color:red}</style>Hello';
       const sanitized = sanitizeInput(input);
       expect(sanitized).toBe("Hello");
     });
@@ -325,7 +321,7 @@ describe("Rate Limiter", () => {
     expect(rateLimiter.isAllowed("user1")).toBe(false);
 
     // Wait for time window to reset
-    await new Promise((resolve) => setTimeout(resolve, 1100));
+    await new Promise(resolve => setTimeout(resolve, 1100));
 
     // Should be allowed again
     expect(rateLimiter.isAllowed("user1")).toBe(true);
@@ -342,16 +338,9 @@ describe("Rate Limiter", () => {
 
 describe("Security Edge Cases", () => {
   it("should handle malformed JWT tokens gracefully", () => {
-    const malformedTokens = [
-      "not.a.jwt",
-      "too.many.parts.here.extra",
-      "only.two",
-      "",
-      null as any,
-      undefined as any,
-    ];
+    const malformedTokens = ["not.a.jwt", "too.many.parts.here.extra", "only.two", "", null as any, undefined as any];
 
-    malformedTokens.forEach((token) => {
+    malformedTokens.forEach(token => {
       expect(() => decodeToken(token)).not.toThrow();
       expect(decodeToken(token)).toBeNull();
     });

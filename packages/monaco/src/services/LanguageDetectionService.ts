@@ -45,9 +45,7 @@ export class LanguageDetectionService {
   /**
    * Detect natural language from text content
    */
-  async detectNaturalLanguage(
-    text: string,
-  ): Promise<NaturalLanguageDetectionResult> {
+  async detectNaturalLanguage(text: string): Promise<NaturalLanguageDetectionResult> {
     if (!this.isNaturalLanguageDetectionAvailable()) {
       return {
         success: false,

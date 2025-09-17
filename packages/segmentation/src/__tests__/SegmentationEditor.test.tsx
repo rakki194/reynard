@@ -5,10 +5,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import type {
-  SegmentationData,
-  SegmentationEditorConfig,
-} from "../types/index.js";
+import type { SegmentationData, SegmentationEditorConfig } from "../types/index.js";
 
 // Mock the SegmentationEditor component since we can't easily test SolidJS components without proper setup
 const mockSegmentationEditor = vi.fn();
@@ -81,7 +78,7 @@ describe("SegmentationEditor", () => {
           imageSrc: "/test/image.jpg",
           segmentations: mockSegmentations,
           config: defaultConfig,
-        }),
+        })
       );
     });
 
@@ -112,7 +109,7 @@ describe("SegmentationEditor", () => {
           state: expect.any(Object),
           events: expect.any(Object),
           class: "custom-editor",
-        }),
+        })
       );
     });
   });
@@ -134,7 +131,7 @@ describe("SegmentationEditor", () => {
       expect(mockSegmentationEditor).toHaveBeenCalledWith(
         expect.objectContaining({
           config: validConfig,
-        }),
+        })
       );
     });
 
@@ -153,7 +150,7 @@ describe("SegmentationEditor", () => {
       expect(mockSegmentationEditor).toHaveBeenCalledWith(
         expect.objectContaining({
           config: partialConfig,
-        }),
+        })
       );
     });
   });
@@ -169,7 +166,7 @@ describe("SegmentationEditor", () => {
       expect(mockSegmentationEditor).toHaveBeenCalledWith(
         expect.objectContaining({
           segmentations: [],
-        }),
+        })
       );
     });
 
@@ -183,7 +180,7 @@ describe("SegmentationEditor", () => {
         expect.objectContaining({
           imageSrc: "/test/image.jpg",
           config: defaultConfig,
-        }),
+        })
       );
     });
   });
@@ -208,7 +205,7 @@ describe("SegmentationEditor", () => {
       expect(mockSegmentationEditor).toHaveBeenCalledWith(
         expect.objectContaining({
           events,
-        }),
+        })
       );
     });
   });

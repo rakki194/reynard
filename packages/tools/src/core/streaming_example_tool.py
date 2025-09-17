@@ -7,7 +7,7 @@ and intermediate results during execution.
 
 import asyncio
 import logging
-from typing import Any, AsyncGenerator, Dict
+from collections.abc import AsyncGenerator
 
 from .base import ParameterType, ToolParameter
 from .streaming_base import (
@@ -76,7 +76,7 @@ class StreamingExampleTool(StreamingBaseTool, ProgressReportingMixin):
 
     async def execute_streaming(
         self, context: StreamingToolExecutionContext, **params
-    ) -> AsyncGenerator[StreamingToolResult, None]:
+    ) -> AsyncGenerator[StreamingToolResult]:
         """
         Execute the tool with streaming progress updates.
 
@@ -238,7 +238,7 @@ class StreamingErrorTool(StreamingBaseTool, ProgressReportingMixin):
 
     async def execute_streaming(
         self, context: StreamingToolExecutionContext, **params
-    ) -> AsyncGenerator[StreamingToolResult, None]:
+    ) -> AsyncGenerator[StreamingToolResult]:
         """
         Execute the tool with error handling demonstration.
         """

@@ -33,8 +33,8 @@
       "path": "./scripts",
     },
     {
-      "name": "📚 Libraries",
-      "path": "./libraries",
+      "name": "🔧 Services",
+      "path": "./services",
     },
     {
       "name": "🤖 MCP Server",
@@ -42,7 +42,7 @@
     },
     {
       "name": "🏷️ Agent Naming",
-      "path": "./libraries/agent-naming",
+      "path": "./services/agent-naming",
     },
     {
       "name": "🌍 ECS World",
@@ -50,7 +50,7 @@
     },
     {
       "name": "🔐 Gatekeeper",
-      "path": "./libraries/gatekeeper",
+      "path": "./services/gatekeeper",
     },
     {
       "name": "🧠 AI Shared",
@@ -142,41 +142,6 @@
       "tamasfe.even-better-toml",
       "ms-vscode.hexeditor",
       "ms-vscode.vscode-json",
-    ],
-  },
-  "tasks": {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "🔄 Auto-Start Queue-Based Watcher",
-        "type": "shell",
-        "command": "pnpm",
-        "args": [
-          "--filter",
-          "reynard-queue-watcher",
-          "watch",
-          "-d",
-          "../../docs",
-          "../../packages",
-          "../../examples",
-          "../../templates",
-        ],
-        "group": "build",
-        "presentation": {
-          "echo": true,
-          "reveal": "never",
-          "focus": false,
-          "panel": "dedicated",
-          "showReuseMessage": false,
-          "clear": false,
-        },
-        "isBackground": true,
-        "runOptions": {
-          "runOn": "folderOpen",
-        },
-        "problemMatcher": [],
-        "detail": "Automatically start queue-based watcher when workspace opens",
-      },
     ],
   },
 }

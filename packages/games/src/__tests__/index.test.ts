@@ -60,10 +60,8 @@ describe("Game Types", () => {
         { state: "paused" },
       ];
 
-      states.forEach((gameState) => {
-        expect(["playing", "won", "lost", "game-over", "paused"]).toContain(
-          gameState.state,
-        );
+      states.forEach(gameState => {
+        expect(["playing", "won", "lost", "game-over", "paused"]).toContain(gameState.state);
       });
     });
 
@@ -186,10 +184,8 @@ describe("Game Types", () => {
         },
       ];
 
-      shapes.forEach((shape) => {
-        expect(["point", "line", "rectangle", "circle", "polygon"]).toContain(
-          shape.type,
-        );
+      shapes.forEach(shape => {
+        expect(["point", "line", "rectangle", "circle", "polygon"]).toContain(shape.type);
         expect(typeof shape.id).toBe("number");
         expect(typeof shape.color).toBe("string");
         expect(shape.data).toBeDefined();

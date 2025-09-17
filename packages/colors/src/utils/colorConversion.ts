@@ -33,14 +33,7 @@ export function rgbToOklch(rgb: RGBColor): OKLCHColor {
 
   // Simplified OKLCH conversion (this is a basic approximation)
   const l = ((linearR + linearG + linearB) / 3) * 100; // Rough lightness
-  const c =
-    (Math.sqrt(
-      (linearR - linearG) ** 2 +
-        (linearG - linearB) ** 2 +
-        (linearB - linearR) ** 2,
-    ) /
-      3) *
-    0.4; // Rough chroma
+  const c = (Math.sqrt((linearR - linearG) ** 2 + (linearG - linearB) ** 2 + (linearB - linearR) ** 2) / 3) * 0.4; // Rough chroma
   const h = (Math.atan2(linearG - linearB, linearR - linearG) * 180) / Math.PI; // Rough hue
 
   return {
@@ -71,18 +64,9 @@ export function oklchToRgb(oklch: OKLCHColor): RGBColor {
   const b = c * Math.sin(hueRad);
 
   // Simplified conversion to RGB
-  const r = Math.round(
-    255 *
-      Math.max(0, Math.min(1, lightness + 0.3963377774 * a + 0.2158037573 * b)),
-  );
-  const g = Math.round(
-    255 *
-      Math.max(0, Math.min(1, lightness - 0.1055613458 * a - 0.0638541728 * b)),
-  );
-  const bVal = Math.round(
-    255 *
-      Math.max(0, Math.min(1, lightness - 0.0894841775 * a - 1.291485548 * b)),
-  );
+  const r = Math.round(255 * Math.max(0, Math.min(1, lightness + 0.3963377774 * a + 0.2158037573 * b)));
+  const g = Math.round(255 * Math.max(0, Math.min(1, lightness - 0.1055613458 * a - 0.0638541728 * b)));
+  const bVal = Math.round(255 * Math.max(0, Math.min(1, lightness - 0.0894841775 * a - 1.291485548 * b)));
 
   return { r, g, b: bVal };
 }

@@ -70,7 +70,7 @@
 Developer Command → Monorepo Root Config → Applied to All Packages
      ↓                    ↓                        ↓
   black .           pyproject.toml          backend/app/
-  isort .           [tool.black]           libraries/gatekeeper/
+  isort .           [tool.black]           services/gatekeeper/
   mypy .            [tool.isort]           fenrir/
   ruff .            [tool.mypy]            (all packages)
   pytest .          [tool.ruff]
@@ -124,13 +124,13 @@ isort .
 ruff check .
 
 # Type check all packages
-mypy backend/app libraries/gatekeeper/gatekeeper fenrir
+mypy backend/app services/gatekeeper/gatekeeper fenrir
 
 # Test all packages
 pytest
 
 # Security scan all packages
-bandit -r backend/app libraries/gatekeeper/gatekeeper fenrir
+bandit -r backend/app services/gatekeeper/gatekeeper fenrir
 ```
 
 ### Package-Specific Work
@@ -142,7 +142,7 @@ pytest tests/
 mypy app/
 
 # Work on gatekeeper only
-cd libraries/gatekeeper/
+cd services/gatekeeper/
 pytest tests/
 mypy gatekeeper/
 
@@ -173,7 +173,7 @@ mypy .
 
 ## 🎉 The Result
 
-*three spirits align in perfect harmony*
+_three spirits align in perfect harmony_
 
 The unified Python monorepo configuration brings together:
 
@@ -183,4 +183,4 @@ The unified Python monorepo configuration brings together:
 
 Every package benefits from the same high standards, while maintaining the flexibility to customize when needed. The configuration is as resilient as a fox's survival instincts, as thorough as an otter's grooming routine, and as relentless as a wolf's hunt for vulnerabilities.
 
-*red fur gleams with satisfaction* This is the apex predator approach to Python monorepo management!
+_red fur gleams with satisfaction_ This is the apex predator approach to Python monorepo management!

@@ -51,11 +51,9 @@ export const DOCUMENT_EXTENSIONS = new Set([
  */
 export const DOCUMENT_MIME_TYPES: Record<string, string> = {
   ".pdf": "application/pdf",
-  ".docx":
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   ".doc": "application/msword",
-  ".pptx":
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   ".ppt": "application/vnd.ms-powerpoint",
   ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   ".xls": "application/vnd.ms-excel",

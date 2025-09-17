@@ -13,7 +13,7 @@ export interface ToolCallDisplayProps {
   onAction?: (action: string, toolCall: ToolCall) => void;
 }
 
-export const ToolCallDisplay: Component<ToolCallDisplayProps> = (props) => {
+export const ToolCallDisplay: Component<ToolCallDisplayProps> = props => {
   const getStatusIcon = () => {
     switch (props.toolCall.status) {
       case "pending":
@@ -74,21 +74,15 @@ export const ToolCallDisplay: Component<ToolCallDisplayProps> = (props) => {
           <div class="reynard-tool-call__name">{props.toolCall.name}</div>
 
           <div class="reynard-tool-call__status">
-            <span
-              class="reynard-tool-call__status-icon"
-              style={{ color: getStatusColor() }}
-            >
+            <span class="reynard-tool-call__status-icon" style={{ color: getStatusColor() }}>
               {getStatusIcon()}
             </span>
             <span class="reynard-tool-call__status-text">
-              {props.toolCall.status.charAt(0).toUpperCase() +
-                props.toolCall.status.slice(1)}
+              {props.toolCall.status.charAt(0).toUpperCase() + props.toolCall.status.slice(1)}
             </span>
 
             <Show when={props.toolCall.message}>
-              <span class="reynard-tool-call__message">
-                - {props.toolCall.message}
-              </span>
+              <span class="reynard-tool-call__message">- {props.toolCall.message}</span>
             </Show>
 
             <Show when={getDuration()}>
@@ -108,13 +102,7 @@ export const ToolCallDisplay: Component<ToolCallDisplayProps> = (props) => {
             </button>
           </Show>
 
-          <Show
-            when={
-              props.toolCall.status === "failed" &&
-              props.toolCall.error?.retryable &&
-              props.onAction
-            }
-          >
+          <Show when={props.toolCall.status === "failed" && props.toolCall.error?.retryable && props.onAction}>
             <button
               class="reynard-tool-call__action reynard-tool-call__action--retry"
               onClick={() => props.onAction!("retry", props.toolCall)}
@@ -127,31 +115,19 @@ export const ToolCallDisplay: Component<ToolCallDisplayProps> = (props) => {
       </div>
 
       {/* Progress Bar */}
-      <Show
-        when={
-          props.toolCall.status === "running" &&
-          typeof props.toolCall.progress === "number"
-        }
-      >
+      <Show when={props.toolCall.status === "running" && typeof props.toolCall.progress === "number"}>
         <div class="reynard-tool-call__progress">
           <div class="reynard-tool-call__progress-bar">
-            <div
-              class="reynard-tool-call__progress-fill"
-              style={{ width: `${props.toolCall.progress}%` }}
-            ></div>
+            <div class="reynard-tool-call__progress-fill" style={{ width: `${props.toolCall.progress}%` }}></div>
           </div>
-          <span class="reynard-tool-call__progress-text">
-            {props.toolCall.progress}%
-          </span>
+          <span class="reynard-tool-call__progress-text">{props.toolCall.progress}%</span>
         </div>
       </Show>
 
       {/* Arguments */}
       <Show when={Object.keys(props.toolCall.arguments).length > 0}>
         <details class="reynard-tool-call__section">
-          <summary class="reynard-tool-call__section-header">
-            Parameters
-          </summary>
+          <summary class="reynard-tool-call__section-header">Parameters</summary>
           <pre class="reynard-tool-call__code">{formatArguments()}</pre>
         </details>
       </Show>
@@ -159,12 +135,8 @@ export const ToolCallDisplay: Component<ToolCallDisplayProps> = (props) => {
       {/* Intermediate Data */}
       <Show when={props.toolCall.intermediateData}>
         <details class="reynard-tool-call__section">
-          <summary class="reynard-tool-call__section-header">
-            Intermediate Results
-          </summary>
-          <pre class="reynard-tool-call__code">
-            {JSON.stringify(props.toolCall.intermediateData, null, 2)}
-          </pre>
+          <summary class="reynard-tool-call__section-header">Intermediate Results</summary>
+          <pre class="reynard-tool-call__code">{JSON.stringify(props.toolCall.intermediateData, null, 2)}</pre>
         </details>
       </Show>
 
@@ -181,19 +153,13 @@ export const ToolCallDisplay: Component<ToolCallDisplayProps> = (props) => {
         <div class="reynard-tool-call__error">
           <div class="reynard-tool-call__error-header">
             <span class="reynard-tool-call__error-icon">⚠️</span>
-            <span class="reynard-tool-call__error-title">
-              {props.toolCall.error!.type || "Error"}
-            </span>
+            <span class="reynard-tool-call__error-title">{props.toolCall.error!.type || "Error"}</span>
           </div>
-          <div class="reynard-tool-call__error-message">
-            {props.toolCall.error!.message}
-          </div>
+          <div class="reynard-tool-call__error-message">{props.toolCall.error!.message}</div>
           <Show when={props.toolCall.error!.details}>
             <details class="reynard-tool-call__error-details">
               <summary>Error Details</summary>
-              <pre>
-                {JSON.stringify(props.toolCall.error!.details, null, 2)}
-              </pre>
+              <pre>{JSON.stringify(props.toolCall.error!.details, null, 2)}</pre>
             </details>
           </Show>
         </div>

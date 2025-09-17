@@ -88,12 +88,10 @@ function calculateStroboscopicEffect(deltaTime: number) {
   const anglePerFrame = angularVelocity * frameTime;
 
   // Stroboscopic phase calculation
-  const stroboscopicPhase =
-    (anglePerFrame / ((GOLDEN_ANGLE * Math.PI) / 180)) % 1;
+  const stroboscopicPhase = (anglePerFrame / ((GOLDEN_ANGLE * Math.PI) / 180)) % 1;
 
   // Determine stroboscopic effect
-  const isStroboscopic =
-    Math.abs(stroboscopicPhase - 0.5) < stroboscopicThreshold;
+  const isStroboscopic = Math.abs(stroboscopicPhase - 0.5) < stroboscopicThreshold;
 
   // Calculate apparent motion
   let apparentMotion = "frozen";
@@ -120,14 +118,10 @@ Implementation of temporal aliasing effects for enhanced visual perception:
 
 ```typescript
 // Temporal aliasing calculation
-const temporalAliasing = enableTemporalAliasing
-  ? Math.sin(stroboscopicPhase * Math.PI * 2) * 0.5 + 0.5
-  : 0;
+const temporalAliasing = enableTemporalAliasing ? Math.sin(stroboscopicPhase * Math.PI * 2) * 0.5 + 0.5 : 0;
 
 // Morphing intensity for advanced effects
-const morphingIntensity = enableMorphingEffects
-  ? Math.abs(Math.sin(stroboscopicPhase * Math.PI * 4)) * 0.3
-  : 0;
+const morphingIntensity = enableMorphingEffects ? Math.abs(Math.sin(stroboscopicPhase * Math.PI * 4)) * 0.3 : 0;
 ```
 
 ## 3D Extensions
@@ -155,9 +149,7 @@ Extension of stroboscopic effects to 3D space:
 
 ```typescript
 function calculate3DStroboscopicIntensity(index: number) {
-  const totalRotation = Math.sqrt(
-    rotationX * rotationX + rotationY * rotationY + rotationZ * rotationZ,
-  );
+  const totalRotation = Math.sqrt(rotationX * rotationX + rotationY * rotationY + rotationZ * rotationZ);
 
   const stroboscopicPhase = (totalRotation / GOLDEN_ANGLE) % 1;
   const intensity = Math.abs(Math.sin(stroboscopicPhase * Math.PI * 2));
@@ -200,19 +192,15 @@ function applySpatialCulling(points: Point[], viewport: Viewport) {
   const centerX = viewport.x + viewport.width / 2;
   const centerY = viewport.y + viewport.height / 2;
 
-  const pointsWithDistance = points.map((point) => ({
+  const pointsWithDistance = points.map(point => ({
     ...point,
-    distance: Math.sqrt(
-      Math.pow(point.x - centerX, 2) + Math.pow(point.y - centerY, 2),
-    ),
+    distance: Math.sqrt(Math.pow(point.x - centerX, 2) + Math.pow(point.y - centerY, 2)),
   }));
 
   // Sort by distance and take closest points
   pointsWithDistance.sort((a, b) => a.distance - b.distance);
 
-  return pointsWithDistance
-    .slice(0, maxPoints)
-    .map(({ distance, ...point }) => point);
+  return pointsWithDistance.slice(0, maxPoints).map(({ distance, ...point }) => point);
 }
 ```
 
@@ -313,11 +301,7 @@ const stroboscopicTest = () => {
 
   assert(typeof result.isStroboscopic === "boolean");
   assert(result.stroboscopicPhase >= 0 && result.stroboscopicPhase <= 1);
-  assert(
-    ["growing", "shrinking", "frozen", "morphing"].includes(
-      result.apparentMotion,
-    ),
-  );
+  assert(["growing", "shrinking", "frozen", "morphing"].includes(result.apparentMotion));
 };
 ```
 

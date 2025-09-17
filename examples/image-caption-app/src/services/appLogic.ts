@@ -53,10 +53,7 @@ export class AppLogicService {
   /**
    * Generate caption for a single image
    */
-  async generateCaption(
-    image: ImageItem,
-    generatorName: string,
-  ): Promise<CaptionResult> {
+  async generateCaption(image: ImageItem, generatorName: string): Promise<CaptionResult> {
     return await this.apiService.generateCaption(image.file, generatorName, {
       threshold: 0.2,
       max_tags: 15,
@@ -69,28 +66,16 @@ export class AppLogicService {
   async processBatch(
     images: ImageItem[],
     generatorName: string,
-    onProgress: (progress: any) => void,
+    onProgress: (progress: any) => void
   ): Promise<CaptionResult[]> {
-    return await this.batchProcessor.processBatch(
-      images,
-      generatorName,
-      onProgress,
-    );
+    return await this.batchProcessor.processBatch(images, generatorName, onProgress);
   }
 
   /**
    * Update images with batch results
    */
-  updateImagesWithResults(
-    images: ImageItem[],
-    results: CaptionResult[],
-    generatorName: string,
-  ): ImageItem[] {
-    return this.batchProcessor.updateImagesWithResults(
-      images,
-      results,
-      generatorName,
-    );
+  updateImagesWithResults(images: ImageItem[], results: CaptionResult[], generatorName: string): ImageItem[] {
+    return this.batchProcessor.updateImagesWithResults(images, results, generatorName);
   }
 
   /**
@@ -104,20 +89,13 @@ export class AppLogicService {
    * Delete image from collection
    */
   deleteImage(images: ImageItem[], imageId: string): ImageItem[] {
-    return images.filter((img) => img.id !== imageId);
+    return images.filter(img => img.id !== imageId);
   }
 
   /**
    * Update image caption
    */
-  updateImageCaption(
-    images: ImageItem[],
-    imageId: string,
-    caption: string,
-    tags: string[],
-  ): ImageItem[] {
-    return images.map((img) =>
-      img.id === imageId ? { ...img, caption, tags } : img,
-    );
+  updateImageCaption(images: ImageItem[], imageId: string, caption: string, tags: string[]): ImageItem[] {
+    return images.map(img => (img.id === imageId ? { ...img, caption, tags } : img));
   }
 }

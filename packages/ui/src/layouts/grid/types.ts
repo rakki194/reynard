@@ -7,9 +7,7 @@ import { JSX } from "solid-js";
 
 export interface GridProps {
   /** Number of columns (can be responsive object) */
-  columns?:
-    | number
-    | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+  columns?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
   /** Gap between grid items */
   gap?: string | number;
   /** Minimum column width (for auto-fit grids) */
@@ -28,9 +26,7 @@ export interface GridProps {
 
 export interface GridItemProps {
   /** Column span */
-  colSpan?:
-    | number
-    | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+  colSpan?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
   /** Row span */
   rowSpan?: number;
   /** Column start position */
@@ -49,9 +45,7 @@ export interface GridItemProps {
 
 export interface MasonryGridProps {
   /** Number of columns */
-  columns?:
-    | number
-    | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+  columns?: number | { xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
   /** Gap between items */
   gap?: string | number;
   /** Custom class name */

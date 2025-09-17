@@ -385,10 +385,12 @@ class ReynardGalleryService:
             "total_requests": len(self.download_history),
             "successful_requests": len([r for r in self.download_history if r.success]),
             "failed_requests": len([r for r in self.download_history if not r.success]),
-            "average_response_time": sum(r.duration for r in self.download_history)
-            / len(self.download_history)
-            if self.download_history
-            else 0,
+            "average_response_time": (
+                sum(r.duration for r in self.download_history)
+                / len(self.download_history)
+                if self.download_history
+                else 0
+            ),
             "active_downloads": len(self.active_downloads),
             "queue_size": 0,  # No queue in this implementation
             "gallery_dl_available": self.gallery_dl_available,

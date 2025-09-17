@@ -69,44 +69,30 @@ export const coreTranslations = {
     minValue: "Waarde is te klein",
     maxValue: "Waarde is te groot",
     "invalid-input-type": "Ongeldig invoertype",
-    "does-not-match-pattern":
-      "Invoer komt niet overeen met het vereiste patroon",
+    "does-not-match-pattern": "Invoer komt niet overeen met het vereiste patroon",
   },
 
   // Wachtwoord validatie
   password: {
-    "must-be-at-least-8-characters-long":
-      "Wachtwoord moet minstens 8 tekens lang zijn",
-    "must-contain-at-least-one-uppercase-letter":
-      "Wachtwoord moet minstens één hoofdletter bevatten",
-    "must-contain-at-least-one-lowercase-letter":
-      "Wachtwoord moet minstens één kleine letter bevatten",
-    "must-contain-at-least-one-number":
-      "Wachtwoord moet minstens één cijfer bevatten",
-    "must-contain-at-least-one-special-character":
-      "Wachtwoord moet minstens één speciaal teken bevatten",
+    "must-be-at-least-8-characters-long": "Wachtwoord moet minstens 8 tekens lang zijn",
+    "must-contain-at-least-one-uppercase-letter": "Wachtwoord moet minstens één hoofdletter bevatten",
+    "must-contain-at-least-one-lowercase-letter": "Wachtwoord moet minstens één kleine letter bevatten",
+    "must-contain-at-least-one-number": "Wachtwoord moet minstens één cijfer bevatten",
+    "must-contain-at-least-one-special-character": "Wachtwoord moet minstens één speciaal teken bevatten",
   },
 
   // Beveiligingsvalidatie
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Minstens één tekentype moet worden opgenomen",
-    "input-contains-potentially-dangerous-html":
-      "Invoer bevat potentieel gevaarlijke HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Invoer bevat potentieel gevaarlijke SQL-patronen",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Invoer bevat potentieel gevaarlijke XSS-patronen",
-    "input-contains-path-traversal-patterns":
-      "Invoer bevat pad-traversal patronen",
-    "input-contains-windows-reserved-names":
-      "Invoer bevat Windows-gereserveerde namen",
-    "input-contains-executable-file-extensions":
-      "Invoer bevat uitvoerbare bestandsextensies",
+    "at-least-one-character-type-must-be-included": "Minstens één tekentype moet worden opgenomen",
+    "input-contains-potentially-dangerous-html": "Invoer bevat potentieel gevaarlijke HTML",
+    "input-contains-potentially-dangerous-sql-patterns": "Invoer bevat potentieel gevaarlijke SQL-patronen",
+    "input-contains-potentially-dangerous-xss-patterns": "Invoer bevat potentieel gevaarlijke XSS-patronen",
+    "input-contains-path-traversal-patterns": "Invoer bevat pad-traversal patronen",
+    "input-contains-windows-reserved-names": "Invoer bevat Windows-gereserveerde namen",
+    "input-contains-executable-file-extensions": "Invoer bevat uitvoerbare bestandsextensies",
     "input-contains-null-bytes": "Invoer bevat null-bytes",
     "input-contains-hidden-files": "Invoer bevat verborgen bestanden",
-    "input-contains-javascript-file-extensions":
-      "Invoer bevat JavaScript-bestandsextensies",
+    "input-contains-javascript-file-extensions": "Invoer bevat JavaScript-bestandsextensies",
   },
 
   // Asynchrone operaties
@@ -119,8 +105,7 @@ export const coreTranslations = {
     "persistent-failure": "Aanhoudende fout",
     "function-failed": "Functie mislukt",
     "mapper-failed": "Mapper mislukt",
-    "concurrency-must-be-greater-than-0":
-      "Gelijktijdigheid moet groter zijn dan 0",
+    "concurrency-must-be-greater-than-0": "Gelijktijdigheid moet groter zijn dan 0",
     "polling-timeout-reached": "Polling timeout bereikt",
   },
 
@@ -134,12 +119,9 @@ export const coreTranslations = {
 
   // Opslag en serialisatie
   storage: {
-    "potentially-dangerous-json-detected":
-      "Potentieel gevaarlijke JSON gedetecteerd",
-    "failed-to-parse-json-from-localstorage":
-      "Kon JSON niet parsen van localStorage:",
-    "error-parsing-storage-event":
-      "Fout bij het parsen van opslaggebeurtenis voor sleutel",
+    "potentially-dangerous-json-detected": "Potentieel gevaarlijke JSON gedetecteerd",
+    "failed-to-parse-json-from-localstorage": "Kon JSON niet parsen van localStorage:",
+    "error-parsing-storage-event": "Fout bij het parsen van opslaggebeurtenis voor sleutel",
   },
 
   // Test en ontwikkeling
@@ -176,9 +158,7 @@ export const coreTranslations = {
   // Integratietests
   integration: {
     "session-and-api-key-generation": "Sessie en API-sleutel generatie",
-    "authentication-and-input-validation-integration":
-      "Authenticatie en invoervalidatie integratie",
-    "performance-and-security-integration":
-      "Prestatie en beveiliging integratie",
+    "authentication-and-input-validation-integration": "Authenticatie en invoervalidatie integratie",
+    "performance-and-security-integration": "Prestatie en beveiliging integratie",
   },
 };

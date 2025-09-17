@@ -8,7 +8,7 @@
 import { Component, Show, createSignal } from "solid-js";
 import type { ThinkingIndicatorProps } from "../types";
 
-export const ThinkingIndicator: Component<ThinkingIndicatorProps> = (props) => {
+export const ThinkingIndicator: Component<ThinkingIndicatorProps> = props => {
   const [isExpanded, setIsExpanded] = createSignal(props.showContent || false);
 
   const getVariantClass = () => {
@@ -32,9 +32,7 @@ export const ThinkingIndicator: Component<ThinkingIndicatorProps> = (props) => {
       case "typing":
         return (
           <div class="reynard-thinking-indicator__typing">
-            <span class="reynard-thinking-indicator__typing-text">
-              {props.label || "Thinking"}
-            </span>
+            <span class="reynard-thinking-indicator__typing-text">{props.label || "Thinking"}</span>
             <span class="reynard-thinking-indicator__cursor">|</span>
           </div>
         );
@@ -66,22 +64,16 @@ export const ThinkingIndicator: Component<ThinkingIndicatorProps> = (props) => {
             class="reynard-thinking-indicator__toggle"
             onClick={() => setIsExpanded(!isExpanded())}
             attr:aria-expanded={isExpanded() ? "true" : "false"}
-            aria-label={
-              isExpanded() ? "Hide thinking content" : "Show thinking content"
-            }
+            aria-label={isExpanded() ? "Hide thinking content" : "Show thinking content"}
           >
-            <span class="reynard-thinking-indicator__toggle-icon">
-              {isExpanded() ? "▼" : "▶"}
-            </span>
+            <span class="reynard-thinking-indicator__toggle-icon">{isExpanded() ? "▼" : "▶"}</span>
           </button>
         </Show>
       </div>
 
       <Show when={isExpanded() && props.content}>
         <div class="reynard-thinking-indicator__content">
-          <div class="reynard-thinking-indicator__content-text">
-            {props.content}
-          </div>
+          <div class="reynard-thinking-indicator__content-text">{props.content}</div>
         </div>
       </Show>
     </div>

@@ -94,7 +94,7 @@ describe("Chart Utilities", () => {
       fn();
 
       // Should only be called once after delay
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
       expect(callCount).toBe(1);
     });
   });

@@ -14,8 +14,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: var(--color-background, oklch(98% 0.01 0));
   color: var(--color-text, oklch(15% 0.01 0));
   line-height: 1.6;

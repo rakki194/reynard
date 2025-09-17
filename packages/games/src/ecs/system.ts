@@ -12,7 +12,7 @@ export class SystemImpl implements System {
     public readonly run: SystemFunction,
     public readonly dependencies: string[] = [],
     public readonly exclusive: boolean = false,
-    public readonly condition?: SystemCondition,
+    public readonly condition?: SystemCondition
   ) {}
 }
 
@@ -31,10 +31,8 @@ export class ScheduleImpl implements Schedule {
     }
 
     // Check for duplicate system names
-    if (this.systems.some((s) => s.name === system.name)) {
-      throw new Error(
-        `System '${system.name}' is already in schedule '${this.name}'`,
-      );
+    if (this.systems.some(s => s.name === system.name)) {
+      throw new Error(`System '${system.name}' is already in schedule '${this.name}'`);
     }
 
     this.systems.push(system);
@@ -54,11 +52,9 @@ export class ScheduleImpl implements Schedule {
   }
 
   removeSystem(systemName: string): void {
-    const index = this.systems.findIndex((s) => s.name === systemName);
+    const index = this.systems.findIndex(s => s.name === systemName);
     if (index === -1) {
-      throw new Error(
-        `System '${systemName}' not found in schedule '${this.name}'`,
-      );
+      throw new Error(`System '${systemName}' not found in schedule '${this.name}'`);
     }
     this.systems.splice(index, 1);
   }
@@ -111,7 +107,7 @@ export class ScheduleImpl implements Schedule {
 
       visiting.add(systemName);
 
-      const system = this.systems.find((s) => s.name === systemName);
+      const system = this.systems.find(s => s.name === systemName);
       if (system) {
         // Visit dependencies first
         for (const dependency of system.dependencies) {
@@ -224,7 +220,7 @@ export class SystemBuilder {
         // Combine multiple conditions with AND logic
         combinedCondition = {
           __condition: true as const,
-          name: `combined_${this.conditions.map((c) => c.name).join("_and_")}`,
+          name: `combined_${this.conditions.map(c => c.name).join("_and_")}`,
           run: (world: World) => {
             for (const condition of this.conditions) {
               try {
@@ -241,13 +237,7 @@ export class SystemBuilder {
       }
     }
 
-    return new SystemImpl(
-      this.name,
-      this.systemFunction,
-      this.dependencies,
-      this.exclusive,
-      combinedCondition,
-    );
+    return new SystemImpl(this.name, this.systemFunction, this.dependencies, this.exclusive, combinedCondition);
   }
 }
 
@@ -256,10 +246,7 @@ export class SystemBuilder {
  */
 export function system(name: string, run: SystemFunction): SystemBuilder;
 export function system(run: SystemFunction): SystemBuilder;
-export function system(
-  nameOrRun: string | SystemFunction,
-  run?: SystemFunction,
-): SystemBuilder {
+export function system(nameOrRun: string | SystemFunction, run?: SystemFunction): SystemBuilder {
   if (typeof nameOrRun === "string") {
     // Called with name and function: system(name, run)
     return new SystemBuilder(nameOrRun, run!);
@@ -340,7 +327,7 @@ export class SystemSetConfig {
   constructor(
     public readonly set: SystemSet,
     public readonly otherSet: SystemSet,
-    public readonly order: "before" | "after",
+    public readonly order: "before" | "after"
   ) {}
 }
 

@@ -12,7 +12,7 @@ export interface BatchFileUploadProps {
   class?: string;
 }
 
-export const BatchFileUpload: Component<BatchFileUploadProps> = (props) => {
+export const BatchFileUpload: Component<BatchFileUploadProps> = props => {
   const [dragActive, setDragActive] = createSignal(false);
 
   const handleDrop = (e: DragEvent) => {
@@ -20,9 +20,7 @@ export const BatchFileUpload: Component<BatchFileUploadProps> = (props) => {
     setDragActive(false);
 
     const droppedFiles = Array.from(e.dataTransfer?.files || []);
-    const imageFiles = droppedFiles.filter((file) =>
-      file.type.startsWith("image/"),
-    );
+    const imageFiles = droppedFiles.filter(file => file.type.startsWith("image/"));
     props.onFilesAdded(imageFiles);
   };
 
@@ -39,9 +37,7 @@ export const BatchFileUpload: Component<BatchFileUploadProps> = (props) => {
   const handleFileInput = (e: Event) => {
     const target = e.target as HTMLInputElement;
     const selectedFiles = Array.from(target.files || []);
-    const imageFiles = selectedFiles.filter((file) =>
-      file.type.startsWith("image/"),
-    );
+    const imageFiles = selectedFiles.filter(file => file.type.startsWith("image/"));
     props.onFilesAdded(imageFiles);
     target.value = ""; // Reset input
   };

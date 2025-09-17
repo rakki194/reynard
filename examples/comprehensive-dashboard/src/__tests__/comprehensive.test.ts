@@ -171,9 +171,7 @@ describe("Comprehensive Dashboard Backend API", () => {
       // Check it appears in the list
       const response = await apiRequest("/files");
       const data = await response.json();
-      const uploadedFile = data.files.find(
-        (f: any) => f.name === "list-test.txt",
-      );
+      const uploadedFile = data.files.find((f: any) => f.name === "list-test.txt");
       expect(uploadedFile).toBeDefined();
     });
   });
@@ -290,9 +288,7 @@ describe("Comprehensive Dashboard Backend API", () => {
       // 6. Verify file in list
       const filesResponse = await apiRequest("/files");
       const filesData = await filesResponse.json();
-      const uploadedFile = filesData.files.find(
-        (f: any) => f.name === "workflow-test.txt",
-      );
+      const uploadedFile = filesData.files.find((f: any) => f.name === "workflow-test.txt");
       expect(uploadedFile).toBeDefined();
     });
 
@@ -307,7 +303,7 @@ describe("Comprehensive Dashboard Backend API", () => {
 
       const responses = await Promise.all(requests);
 
-      responses.forEach((response) => {
+      responses.forEach(response => {
         expect(response.status).toBe(200);
       });
     });
@@ -356,7 +352,7 @@ describe("Comprehensive Dashboard Backend API", () => {
       const responses = await Promise.all(requests);
       const endTime = Date.now();
 
-      responses.forEach((response) => {
+      responses.forEach(response => {
         expect(response.status).toBe(200);
       });
 
@@ -370,9 +366,7 @@ describe("Comprehensive Dashboard Backend API", () => {
         .map(() => apiRequest("/dashboard/charts"));
 
       const responses = await Promise.all(requests);
-      const dataSets = await Promise.all(
-        responses.map((response) => response.json()),
-      );
+      const dataSets = await Promise.all(responses.map(response => response.json()));
 
       // All responses should be identical
       dataSets.forEach((data, index) => {

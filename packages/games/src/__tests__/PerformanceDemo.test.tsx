@@ -11,9 +11,7 @@ describe("PerformanceDemo", () => {
   it("renders the performance demo component", () => {
     renderWithTestProviders(() => <PerformanceDemo />);
 
-    expect(
-      screen.getByText("⚡ Performance Monitoring Demo"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("⚡ Performance Monitoring Demo")).toBeInTheDocument();
   });
 
   it("displays performance metrics", () => {
@@ -87,9 +85,7 @@ describe("PerformanceDemo", () => {
 
     renderWithTestProviders(() => <PerformanceDemo config={customConfig} />);
 
-    expect(
-      screen.getByText("⚡ Performance Monitoring Demo"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("⚡ Performance Monitoring Demo")).toBeInTheDocument();
   });
 
   it("maintains component state consistency", async () => {
@@ -102,8 +98,6 @@ describe("PerformanceDemo", () => {
     fireEvent.click(screen.getByText("Throttled (1s)"));
 
     // Component should still be functional
-    expect(
-      screen.getByText("⚡ Performance Monitoring Demo"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("⚡ Performance Monitoring Demo")).toBeInTheDocument();
   });
 });

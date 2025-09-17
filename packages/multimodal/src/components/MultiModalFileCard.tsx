@@ -12,9 +12,7 @@ import { MultiModalFileThumbnail } from "./MultiModalFileThumbnail";
 import { MultiModalFileInfo } from "./MultiModalFileInfo";
 import { useI18n } from "reynard-i18n";
 
-export const MultiModalFileCard: Component<MultiModalFileCardProps> = (
-  props,
-) => {
+export const MultiModalFileCard: Component<MultiModalFileCardProps> = props => {
   const { t } = useI18n();
   return (
     <div
@@ -32,7 +30,7 @@ export const MultiModalFileCard: Component<MultiModalFileCardProps> = (
 
       <button
         class="remove-button"
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
           props.onRemove();
         }}

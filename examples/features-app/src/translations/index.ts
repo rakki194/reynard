@@ -5,8 +5,7 @@
 export const translations = {
   en: {
     "app.title": "Reynard Features Demo",
-    "app.subtitle":
-      "Interactive demonstration of the Reynard feature management system",
+    "app.subtitle": "Interactive demonstration of the Reynard feature management system",
     "app.footer":
       "This demo showcases how the Reynard features package manages application capabilities, dependencies, and graceful degradation. Toggle services above to see features adapt in real-time!",
 
@@ -28,53 +27,39 @@ export const translations = {
     "features.low": "Low",
 
     "services.controls": "Service Controls",
-    "services.description":
-      "Toggle services to see how features adapt in real-time",
+    "services.description": "Toggle services to see how features adapt in real-time",
 
     "demos.title": "Feature Demonstrations",
-    "demos.description":
-      "Interactive examples showing feature-aware components",
+    "demos.description": "Interactive examples showing feature-aware components",
 
     "demo.imageProcessing.title": "Image Processing",
-    "demo.imageProcessing.description":
-      "Process and manipulate images with various formats",
-    "demo.imageProcessing.available":
-      "Image processing is available! Upload an image to get started.",
+    "demo.imageProcessing.description": "Process and manipulate images with various formats",
+    "demo.imageProcessing.available": "Image processing is available! Upload an image to get started.",
     "demo.imageProcessing.unavailable":
       "Image processing is currently unavailable. Enable the ImageProcessingService to use this feature.",
 
     "demo.captionGeneration.title": "Caption Generation",
-    "demo.captionGeneration.description":
-      "Generate captions for images using AI models",
-    "demo.captionGeneration.available":
-      "Caption generation is fully operational!",
-    "demo.captionGeneration.degraded":
-      "Caption generation is running in degraded mode. Some features may be limited.",
+    "demo.captionGeneration.description": "Generate captions for images using AI models",
+    "demo.captionGeneration.available": "Caption generation is fully operational!",
+    "demo.captionGeneration.degraded": "Caption generation is running in degraded mode. Some features may be limited.",
     "demo.captionGeneration.unavailable":
       "Caption generation is unavailable. Enable the CaptionGeneratorService to use this feature.",
 
     "demo.objectDetection.title": "Object Detection",
-    "demo.objectDetection.description":
-      "Detect objects in images using AI models",
-    "demo.objectDetection.available":
-      "Object detection is ready! Upload an image to detect objects.",
+    "demo.objectDetection.description": "Detect objects in images using AI models",
+    "demo.objectDetection.available": "Object detection is ready! Upload an image to detect objects.",
     "demo.objectDetection.unavailable":
       "Object detection is unavailable. Enable the DetectionModelsService to use this feature.",
 
     "demo.textAnalysis.title": "Text Analysis",
     "demo.textAnalysis.description": "Analyze and process text content",
-    "demo.textAnalysis.available":
-      "Text analysis is available! Enter text to analyze.",
-    "demo.textAnalysis.unavailable":
-      "Text analysis is unavailable. Enable the NLPService to use this feature.",
+    "demo.textAnalysis.available": "Text analysis is available! Enter text to analyze.",
+    "demo.textAnalysis.unavailable": "Text analysis is unavailable. Enable the NLPService to use this feature.",
 
     "demo.gitIntegration.title": "Git Integration",
-    "demo.gitIntegration.description":
-      "Version control and repository management",
-    "demo.gitIntegration.available":
-      "Git integration is connected! Repository operations are available.",
-    "demo.gitIntegration.unavailable":
-      "Git integration is unavailable. Enable the GitService to use this feature.",
+    "demo.gitIntegration.description": "Version control and repository management",
+    "demo.gitIntegration.available": "Git integration is connected! Repository operations are available.",
+    "demo.gitIntegration.unavailable": "Git integration is unavailable. Enable the GitService to use this feature.",
 
     "status.available": "Available",
     "status.degraded": "Degraded",
@@ -92,8 +77,7 @@ export const translations = {
 
   es: {
     "app.title": "Demo de Características de Reynard",
-    "app.subtitle":
-      "Demostración interactiva del sistema de gestión de características de Reynard",
+    "app.subtitle": "Demostración interactiva del sistema de gestión de características de Reynard",
     "app.footer":
       "Esta demo muestra cómo el paquete de características de Reynard gestiona las capacidades de la aplicación, dependencias y degradación elegante. ¡Activa/desactiva servicios arriba para ver cómo las características se adaptan en tiempo real!",
 
@@ -115,49 +99,39 @@ export const translations = {
     "features.low": "Bajo",
 
     "services.controls": "Controles de Servicio",
-    "services.description":
-      "Activa/desactiva servicios para ver cómo las características se adaptan en tiempo real",
+    "services.description": "Activa/desactiva servicios para ver cómo las características se adaptan en tiempo real",
 
     "demos.title": "Demostraciones de Características",
-    "demos.description":
-      "Ejemplos interactivos mostrando componentes conscientes de características",
+    "demos.description": "Ejemplos interactivos mostrando componentes conscientes de características",
 
     "demo.imageProcessing.title": "Procesamiento de Imágenes",
-    "demo.imageProcessing.description":
-      "Procesar y manipular imágenes con varios formatos",
-    "demo.imageProcessing.available":
-      "¡El procesamiento de imágenes está disponible! Sube una imagen para comenzar.",
+    "demo.imageProcessing.description": "Procesar y manipular imágenes con varios formatos",
+    "demo.imageProcessing.available": "¡El procesamiento de imágenes está disponible! Sube una imagen para comenzar.",
     "demo.imageProcessing.unavailable":
       "El procesamiento de imágenes no está disponible actualmente. Habilita el ImageProcessingService para usar esta característica.",
 
     "demo.captionGeneration.title": "Generación de Subtítulos",
-    "demo.captionGeneration.description":
-      "Generar subtítulos para imágenes usando modelos de IA",
-    "demo.captionGeneration.available":
-      "¡La generación de subtítulos está completamente operativa!",
+    "demo.captionGeneration.description": "Generar subtítulos para imágenes usando modelos de IA",
+    "demo.captionGeneration.available": "¡La generación de subtítulos está completamente operativa!",
     "demo.captionGeneration.degraded":
       "La generación de subtítulos está ejecutándose en modo degradado. Algunas características pueden estar limitadas.",
     "demo.captionGeneration.unavailable":
       "La generación de subtítulos no está disponible. Habilita el CaptionGeneratorService para usar esta característica.",
 
     "demo.objectDetection.title": "Detección de Objetos",
-    "demo.objectDetection.description":
-      "Detectar objetos en imágenes usando modelos de IA",
-    "demo.objectDetection.available":
-      "¡La detección de objetos está lista! Sube una imagen para detectar objetos.",
+    "demo.objectDetection.description": "Detectar objetos en imágenes usando modelos de IA",
+    "demo.objectDetection.available": "¡La detección de objetos está lista! Sube una imagen para detectar objetos.",
     "demo.objectDetection.unavailable":
       "La detección de objetos no está disponible. Habilita el DetectionModelsService para usar esta característica.",
 
     "demo.textAnalysis.title": "Análisis de Texto",
     "demo.textAnalysis.description": "Analizar y procesar contenido de texto",
-    "demo.textAnalysis.available":
-      "¡El análisis de texto está disponible! Ingresa texto para analizar.",
+    "demo.textAnalysis.available": "¡El análisis de texto está disponible! Ingresa texto para analizar.",
     "demo.textAnalysis.unavailable":
       "El análisis de texto no está disponible. Habilita el NLPService para usar esta característica.",
 
     "demo.gitIntegration.title": "Integración Git",
-    "demo.gitIntegration.description":
-      "Control de versiones y gestión de repositorios",
+    "demo.gitIntegration.description": "Control de versiones y gestión de repositorios",
     "demo.gitIntegration.available":
       "¡La integración Git está conectada! Las operaciones de repositorio están disponibles.",
     "demo.gitIntegration.unavailable":
@@ -179,8 +153,7 @@ export const translations = {
 
   fr: {
     "app.title": "Démo des Fonctionnalités Reynard",
-    "app.subtitle":
-      "Démonstration interactive du système de gestion des fonctionnalités Reynard",
+    "app.subtitle": "Démonstration interactive du système de gestion des fonctionnalités Reynard",
     "app.footer":
       "Cette démo montre comment le package de fonctionnalités Reynard gère les capacités de l'application, les dépendances et la dégradation gracieuse. Activez/désactivez les services ci-dessus pour voir les fonctionnalités s'adapter en temps réel !",
 
@@ -206,30 +179,24 @@ export const translations = {
       "Activez/désactivez les services pour voir comment les fonctionnalités s'adaptent en temps réel",
 
     "demos.title": "Démonstrations de Fonctionnalités",
-    "demos.description":
-      "Exemples interactifs montrant des composants conscients des fonctionnalités",
+    "demos.description": "Exemples interactifs montrant des composants conscients des fonctionnalités",
 
     "demo.imageProcessing.title": "Traitement d'Images",
-    "demo.imageProcessing.description":
-      "Traiter et manipuler des images avec différents formats",
-    "demo.imageProcessing.available":
-      "Le traitement d'images est disponible ! Téléchargez une image pour commencer.",
+    "demo.imageProcessing.description": "Traiter et manipuler des images avec différents formats",
+    "demo.imageProcessing.available": "Le traitement d'images est disponible ! Téléchargez une image pour commencer.",
     "demo.imageProcessing.unavailable":
       "Le traitement d'images n'est pas disponible actuellement. Activez le ImageProcessingService pour utiliser cette fonctionnalité.",
 
     "demo.captionGeneration.title": "Génération de Légendes",
-    "demo.captionGeneration.description":
-      "Générer des légendes pour les images en utilisant des modèles d'IA",
-    "demo.captionGeneration.available":
-      "La génération de légendes est entièrement opérationnelle !",
+    "demo.captionGeneration.description": "Générer des légendes pour les images en utilisant des modèles d'IA",
+    "demo.captionGeneration.available": "La génération de légendes est entièrement opérationnelle !",
     "demo.captionGeneration.degraded":
       "La génération de légendes fonctionne en mode dégradé. Certaines fonctionnalités peuvent être limitées.",
     "demo.captionGeneration.unavailable":
       "La génération de légendes n'est pas disponible. Activez le CaptionGeneratorService pour utiliser cette fonctionnalité.",
 
     "demo.objectDetection.title": "Détection d'Objets",
-    "demo.objectDetection.description":
-      "Détecter des objets dans les images en utilisant des modèles d'IA",
+    "demo.objectDetection.description": "Détecter des objets dans les images en utilisant des modèles d'IA",
     "demo.objectDetection.available":
       "La détection d'objets est prête ! Téléchargez une image pour détecter des objets.",
     "demo.objectDetection.unavailable":
@@ -237,16 +204,13 @@ export const translations = {
 
     "demo.textAnalysis.title": "Analyse de Texte",
     "demo.textAnalysis.description": "Analyser et traiter le contenu textuel",
-    "demo.textAnalysis.available":
-      "L'analyse de texte est disponible ! Entrez du texte à analyser.",
+    "demo.textAnalysis.available": "L'analyse de texte est disponible ! Entrez du texte à analyser.",
     "demo.textAnalysis.unavailable":
       "L'analyse de texte n'est pas disponible. Activez le NLPService pour utiliser cette fonctionnalité.",
 
     "demo.gitIntegration.title": "Intégration Git",
-    "demo.gitIntegration.description":
-      "Contrôle de version et gestion de dépôts",
-    "demo.gitIntegration.available":
-      "L'intégration Git est connectée ! Les opérations de dépôt sont disponibles.",
+    "demo.gitIntegration.description": "Contrôle de version et gestion de dépôts",
+    "demo.gitIntegration.available": "L'intégration Git est connectée ! Les opérations de dépôt sont disponibles.",
     "demo.gitIntegration.unavailable":
       "L'intégration Git n'est pas disponible. Activez le GitService pour utiliser cette fonctionnalité.",
 

@@ -243,30 +243,21 @@ vi.mock("../../features/debug", () => ({
     }),
     reset: vi.fn(),
   })),
-  createTemplateTranslator: vi
-    .fn()
-    .mockImplementation(
-      (t) =>
-        (template: TemplateStringsArray, ...values: any[]) => {
-          const key = template.join("${}");
-          const params = values.reduce((acc, val, idx) => {
-            acc[`param${idx}`] = val;
-            return acc;
-          }, {} as any);
-          return t(key, params);
-        },
-    ),
-  createDebugPluralTranslator: vi
-    .fn()
-    .mockImplementation(
-      (t, locale) => (key: string, count: number, params?: any) => {
-        if (count === 1) {
-          return "1 item";
-        } else {
-          return `${count} items`;
-        }
-      },
-    ),
+  createTemplateTranslator: vi.fn().mockImplementation(t => (template: TemplateStringsArray, ...values: any[]) => {
+    const key = template.join("${}");
+    const params = values.reduce((acc, val, idx) => {
+      acc[`param${idx}`] = val;
+      return acc;
+    }, {} as any);
+    return t(key, params);
+  }),
+  createDebugPluralTranslator: vi.fn().mockImplementation((t, locale) => (key: string, count: number, params?: any) => {
+    if (count === 1) {
+      return "1 item";
+    } else {
+      return `${count} items`;
+    }
+  }),
 }));
 
 vi.mock("../../intl/IntlFormatter", () => ({
@@ -393,16 +384,11 @@ describe("Enhanced I18n Integration Tests", () => {
       i18n.t("common.hello");
 
       // Check that analytics tracked the usage
-      expect(i18n.analytics.trackUsage).toHaveBeenCalledWith(
-        "common.hello",
-        "en",
-      );
+      expect(i18n.analytics.trackUsage).toHaveBeenCalledWith("common.hello", "en");
 
       // Check that performance monitor exists and has correct methods
       expect(i18n.performanceMonitor).toBeDefined();
-      expect(typeof i18n.performanceMonitor.recordTranslationCall).toBe(
-        "function",
-      );
+      expect(typeof i18n.performanceMonitor.recordTranslationCall).toBe("function");
 
       // Get performance metrics
       const metrics = i18n.performanceMonitor.getMetrics();
@@ -480,16 +466,8 @@ describe("Enhanced I18n Integration Tests", () => {
 
     it("should integrate enterprise features with core functionality", () => {
       // Use translation manager
-      i18n.translationManager.setTranslation(
-        "en",
-        "common.test",
-        "Test",
-        "user@example.com",
-      );
-      const translation = i18n.translationManager.getTranslation(
-        "en",
-        "common.test",
-      );
+      i18n.translationManager.setTranslation("en", "common.test", "Test", "user@example.com");
+      const translation = i18n.translationManager.getTranslation("en", "common.test");
       expect(translation).toBe("Hello"); // Mocked return value
 
       // Export translations
@@ -556,10 +534,7 @@ describe("Enhanced I18n Integration Tests", () => {
       i18n.t("common.hello");
 
       // Check that analytics tracked the new locale
-      expect(i18n.analytics.trackUsage).toHaveBeenCalledWith(
-        "common.hello",
-        "es",
-      );
+      expect(i18n.analytics.trackUsage).toHaveBeenCalledWith("common.hello", "es");
     });
 
     it("should handle RTL languages correctly", () => {
@@ -571,21 +546,17 @@ describe("Enhanced I18n Integration Tests", () => {
     });
 
     it("should handle error scenarios gracefully", async () => {
-      const consoleSpy = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
       // Mock a loading error
       const { loadTranslationsWithCache } = await import("../../loaders");
-      loadTranslationsWithCache.mockRejectedValueOnce(
-        new Error("Network error"),
-      );
+      loadTranslationsWithCache.mockRejectedValueOnce(new Error("Network error"));
 
       // Create new i18n instance that will encounter the error
       const errorI18n = createI18nModule();
 
       // Wait for the effect to run
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await new Promise(resolve => setTimeout(resolve, 0));
 
       // Should handle error gracefully
       expect(typeof i18n.loadTranslations).toBe("function");
@@ -623,18 +594,10 @@ describe("Enhanced I18n Integration Tests", () => {
   describe("Enterprise Workflow", () => {
     it("should support complete enterprise translation management", () => {
       // 1. Set translation
-      i18n.translationManager.setTranslation(
-        "en",
-        "common.enterprise",
-        "Enterprise",
-        "admin@company.com",
-      );
+      i18n.translationManager.setTranslation("en", "common.enterprise", "Enterprise", "admin@company.com");
 
       // 2. Get translation
-      const translation = i18n.translationManager.getTranslation(
-        "en",
-        "common.enterprise",
-      );
+      const translation = i18n.translationManager.getTranslation("en", "common.enterprise");
 
       // 3. Export for backup
       const backup = i18n.translationManager.exportTranslations("en");

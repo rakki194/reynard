@@ -44,9 +44,7 @@ describe("useNotifications Composable", () => {
 
       notificationsModule.notify(t("core.test.notification"));
       expect(notificationsModule.notifications.length).toBe(1);
-      expect(notificationsModule.notifications[0].message).toBe(
-        t("core.test.notification"),
-      );
+      expect(notificationsModule.notifications[0].message).toBe(t("core.test.notification"));
     });
 
     it("should allow clearing notifications", () => {
@@ -83,16 +81,14 @@ describe("useNotifications Composable", () => {
   describe("useNotifications", () => {
     it("should throw error when used outside provider", () => {
       createRoot(() => {
-        expect(() => useNotifications()).toThrow(
-          "useNotifications must be used within a NotificationsProvider",
-        );
+        expect(() => useNotifications()).toThrow("useNotifications must be used within a NotificationsProvider");
       });
     });
 
     it("should return context when used within provider", () => {
       const notificationsModule = createNotifications();
 
-      createRoot((dispose) => {
+      createRoot(dispose => {
         // Test that the module has the expected structure
         expect(notificationsModule).toBeDefined();
         expect(typeof notificationsModule.notify).toBe("function");
@@ -107,7 +103,7 @@ describe("useNotifications Composable", () => {
     it("should return notification utilities", () => {
       const notificationsModule = createNotifications();
 
-      createRoot((dispose) => {
+      createRoot(dispose => {
         // Test that the module has the expected structure
         expect(notificationsModule).toBeDefined();
         expect(typeof notificationsModule.notify).toBe("function");
@@ -123,7 +119,7 @@ describe("useNotifications Composable", () => {
     it("should return notification values", () => {
       const notificationsModule = createNotifications();
 
-      createRoot((dispose) => {
+      createRoot(dispose => {
         // Test that the module has the expected structure
         expect(notificationsModule).toBeDefined();
         expect(Array.isArray(notificationsModule.notifications)).toBe(true);
@@ -141,9 +137,7 @@ describe("useNotifications Composable", () => {
       notificationsModule.notify(t("core.test.notification"), "info");
 
       expect(notificationsModule.notifications).toHaveLength(1);
-      expect(notificationsModule.notifications[0].message).toBe(
-        t("core.test.notification"),
-      );
+      expect(notificationsModule.notifications[0].message).toBe(t("core.test.notification"));
       expect(notificationsModule.notifications[0].type).toBe("info");
     });
   });
@@ -151,17 +145,13 @@ describe("useNotifications Composable", () => {
   describe("Error Handling", () => {
     it("should throw error when useNotify is used outside provider", () => {
       createRoot(() => {
-        expect(() => useNotify()).toThrow(
-          "useNotifications must be used within a NotificationsProvider",
-        );
+        expect(() => useNotify()).toThrow("useNotifications must be used within a NotificationsProvider");
       });
     });
 
     it("should throw error when useNotificationValues is used outside provider", () => {
       createRoot(() => {
-        expect(() => useNotificationValues()).toThrow(
-          "useNotifications must be used within a NotificationsProvider",
-        );
+        expect(() => useNotificationValues()).toThrow("useNotifications must be used within a NotificationsProvider");
       });
     });
   });
@@ -170,7 +160,7 @@ describe("useNotifications Composable", () => {
     it("should work with custom provider", () => {
       const customModule = createNotifications();
 
-      createRoot((dispose) => {
+      createRoot(dispose => {
         // Test that the custom module works
         expect(customModule).toBeDefined();
         expect(typeof customModule.notify).toBe("function");
@@ -193,9 +183,7 @@ describe("useNotifications Composable", () => {
       notificationsModule.removeNotification(firstId);
 
       expect(notificationsModule.notifications).toHaveLength(1);
-      expect(notificationsModule.notifications[0].message).toBe(
-        t("core.notifications.second"),
-      );
+      expect(notificationsModule.notifications[0].message).toBe(t("core.notifications.second"));
 
       // Clear all notifications
       notificationsModule.clearNotifications();

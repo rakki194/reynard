@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type {
-  UnionFindNode,
-  UnionFindStats,
-} from "../../union-find/union-find-types";
+import type { UnionFindNode, UnionFindStats } from "../../union-find/union-find-types";
 
 describe("Union-Find Types", () => {
   describe("UnionFindNode", () => {
@@ -128,9 +125,7 @@ describe("Union-Find Types", () => {
       };
 
       expect(fullyConnectedStats.totalSets).toBe(1);
-      expect(fullyConnectedStats.unionCount).toBe(
-        fullyConnectedStats.totalNodes - 1,
-      );
+      expect(fullyConnectedStats.unionCount).toBe(fullyConnectedStats.totalNodes - 1);
 
       // No connections case
       const disconnectedStats: UnionFindStats = {
@@ -158,8 +153,7 @@ describe("Union-Find Types", () => {
       };
 
       // High compression relative to operations shows good optimization
-      const compressionRatio =
-        optimizedStats.compressionCount / optimizedStats.unionCount;
+      const compressionRatio = optimizedStats.compressionCount / optimizedStats.unionCount;
       expect(compressionRatio).toBeGreaterThan(0.3); // More than 30% compression
 
       // Low average rank shows flat trees
@@ -179,10 +173,8 @@ describe("Union-Find Types", () => {
 
       // Calculate performance indicators
       const setReductionRatio =
-        (performanceStats.totalNodes - performanceStats.totalSets) /
-        performanceStats.totalNodes;
-      const rankEfficiency =
-        performanceStats.maxRank / Math.log2(performanceStats.totalNodes);
+        (performanceStats.totalNodes - performanceStats.totalSets) / performanceStats.totalNodes;
+      const rankEfficiency = performanceStats.maxRank / Math.log2(performanceStats.totalNodes);
 
       expect(setReductionRatio).toBeGreaterThan(0.9); // 90%+ reduction in sets
       expect(rankEfficiency).toBeLessThan(1); // Better than simple tree
@@ -192,10 +184,7 @@ describe("Union-Find Types", () => {
 
   describe("type usage patterns", () => {
     it("should support node creation patterns", () => {
-      function createUnionFindNode(
-        parent: number,
-        rank: number = 0,
-      ): UnionFindNode {
+      function createUnionFindNode(parent: number, rank: number = 0): UnionFindNode {
         return { parent, rank };
       }
 
@@ -215,13 +204,9 @@ describe("Union-Find Types", () => {
         return {
           totalNodes: statsArray.reduce((sum, s) => sum + s.totalNodes, 0),
           totalSets: statsArray.reduce((sum, s) => sum + s.totalSets, 0),
-          maxRank: Math.max(...statsArray.map((s) => s.maxRank)),
-          averageRank:
-            statsArray.reduce((sum, s) => sum + s.averageRank, 0) / total,
-          compressionCount: statsArray.reduce(
-            (sum, s) => sum + s.compressionCount,
-            0,
-          ),
+          maxRank: Math.max(...statsArray.map(s => s.maxRank)),
+          averageRank: statsArray.reduce((sum, s) => sum + s.averageRank, 0) / total,
+          compressionCount: statsArray.reduce((sum, s) => sum + s.compressionCount, 0),
           unionCount: statsArray.reduce((sum, s) => sum + s.unionCount, 0),
         };
       }
@@ -260,11 +245,9 @@ describe("Union-Find Types", () => {
         compressionEfficiency: number;
         setConsolidation: number;
       } {
-        const compressionEfficiency =
-          stats.compressionCount / Math.max(stats.unionCount, 1);
+        const compressionEfficiency = stats.compressionCount / Math.max(stats.unionCount, 1);
         const setConsolidation = 1 - stats.totalSets / stats.totalNodes;
-        const isWellOptimized =
-          stats.averageRank < 3 && compressionEfficiency > 0.2;
+        const isWellOptimized = stats.averageRank < 3 && compressionEfficiency > 0.2;
 
         return {
           isWellOptimized,

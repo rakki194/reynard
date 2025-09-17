@@ -52,7 +52,7 @@ export const languages: Language[] = [
 
 // Get language by code
 export function getLanguage(code: LanguageCode): Language | undefined {
-  return languages.find((lang) => lang.code === code);
+  return languages.find(lang => lang.code === code);
 }
 
 // Check if language is RTL
@@ -63,7 +63,7 @@ export function isRTL(locale: LanguageCode): boolean {
 
 // Validate language code
 export function isValidLanguageCode(code: string): code is LanguageCode {
-  return languages.some((lang) => lang.code === code);
+  return languages.some(lang => lang.code === code);
 }
 
 // Get language name in native script

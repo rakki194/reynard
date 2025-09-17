@@ -18,7 +18,7 @@ describe("useDebounce", () => {
 
   describe("useDebounce", () => {
     it("should return initial value immediately", () => {
-      createRoot((dispose) => {
+      createRoot(dispose => {
         const [value] = createSignal("test");
         const debouncedValue = useDebounce(value, 300);
 
@@ -28,7 +28,7 @@ describe("useDebounce", () => {
     });
 
     it("should not update immediately after value change", () => {
-      createRoot((dispose) => {
+      createRoot(dispose => {
         const [value, setValue] = createSignal("initial");
         const debouncedValue = useDebounce(value, 300);
 
@@ -42,7 +42,7 @@ describe("useDebounce", () => {
     });
 
     it("should create a debounced signal with proper type", () => {
-      createRoot((dispose) => {
+      createRoot(dispose => {
         const [numberValue] = createSignal(42);
         const debouncedNumber = useDebounce(numberValue, 100);
 
@@ -52,7 +52,7 @@ describe("useDebounce", () => {
         dispose();
       });
 
-      createRoot((dispose) => {
+      createRoot(dispose => {
         const [objectValue] = createSignal({ count: 0 });
         const debouncedObject = useDebounce(objectValue, 100);
 
@@ -64,7 +64,7 @@ describe("useDebounce", () => {
     });
 
     it("should handle rapid value changes without errors", () => {
-      createRoot((dispose) => {
+      createRoot(dispose => {
         const [value, setValue] = createSignal("initial");
         const debouncedValue = useDebounce(value, 50);
 
@@ -163,7 +163,7 @@ describe("useDebounce", () => {
 
   describe("useDebounce edge cases", () => {
     it("should handle cleanup when component unmounts", () => {
-      createRoot((dispose) => {
+      createRoot(dispose => {
         const [value, setValue] = createSignal("initial");
         const debouncedValue = useDebounce(value, 100);
 
@@ -181,7 +181,7 @@ describe("useDebounce", () => {
     });
 
     it("should handle multiple rapid changes and cleanup", () => {
-      createRoot((dispose) => {
+      createRoot(dispose => {
         const [value, setValue] = createSignal("initial");
         const debouncedValue = useDebounce(value, 50);
 

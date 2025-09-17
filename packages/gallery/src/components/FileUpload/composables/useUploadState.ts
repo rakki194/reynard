@@ -9,9 +9,7 @@ import type { FileUploadItem } from "../types";
 export interface UploadState {
   uploadItems: () => FileUploadItem[];
   isUploading: () => boolean;
-  setUploadItems: (
-    items: FileUploadItem[] | ((prev: FileUploadItem[]) => FileUploadItem[]),
-  ) => void;
+  setUploadItems: (items: FileUploadItem[] | ((prev: FileUploadItem[]) => FileUploadItem[])) => void;
   setIsUploading: (uploading: boolean | ((prev: boolean) => boolean)) => void;
 }
 

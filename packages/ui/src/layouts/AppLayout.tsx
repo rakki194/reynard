@@ -3,15 +3,7 @@
  * Main application layout with sidebar, header, and content areas
  */
 
-import {
-  Component,
-  JSX,
-  createSignal,
-  splitProps,
-  Show,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, JSX, createSignal, splitProps, Show, onMount, onCleanup } from "solid-js";
 
 export interface AppLayoutProps {
   /** Header content */
@@ -50,7 +42,7 @@ const defaultProps = {
   overlayOnMobile: true,
 };
 
-export const AppLayout: Component<AppLayoutProps> = (props) => {
+export const AppLayout: Component<AppLayoutProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local, others] = splitProps(merged, [
     "header",
@@ -127,8 +119,7 @@ export const AppLayout: Component<AppLayoutProps> = (props) => {
   const getLayoutClasses = () => {
     const classes = ["reynard-app-layout"];
     if (sidebarOpen()) classes.push("reynard-app-layout--sidebar-open");
-    if (sidebarCollapsed())
-      classes.push("reynard-app-layout--sidebar-collapsed");
+    if (sidebarCollapsed()) classes.push("reynard-app-layout--sidebar-collapsed");
     if (isMobile()) classes.push("reynard-app-layout--mobile");
 
     // Add width classes
@@ -152,19 +143,15 @@ export const AppLayout: Component<AppLayoutProps> = (props) => {
     const classes = ["reynard-app-layout__sidebar"];
     if (!sidebarOpen()) classes.push("reynard-app-layout__sidebar--closed");
     if (sidebarOpen()) classes.push("reynard-app-layout__sidebar--open");
-    if (isMobile() && local.overlayOnMobile)
-      classes.push("reynard-app-layout__sidebar--fixed");
-    if (!isMobile() || !local.overlayOnMobile)
-      classes.push("reynard-app-layout__sidebar--relative");
+    if (isMobile() && local.overlayOnMobile) classes.push("reynard-app-layout__sidebar--fixed");
+    if (!isMobile() || !local.overlayOnMobile) classes.push("reynard-app-layout__sidebar--relative");
     return classes.join(" ");
   };
 
   const getMainClasses = () => {
     const classes = ["reynard-app-layout__main"];
-    if (sidebarOpen() && !isMobile())
-      classes.push("reynard-app-layout__main--with-sidebar");
-    if (!sidebarOpen() || isMobile())
-      classes.push("reynard-app-layout__main--without-sidebar");
+    if (sidebarOpen() && !isMobile()) classes.push("reynard-app-layout__main--with-sidebar");
+    if (!sidebarOpen() || isMobile()) classes.push("reynard-app-layout__main--without-sidebar");
     return classes.join(" ");
   };
 
@@ -177,11 +164,7 @@ export const AppLayout: Component<AppLayoutProps> = (props) => {
 
       {/* Sidebar */}
       <Show when={local.sidebar}>
-        <aside
-          class={getSidebarClasses()}
-          data-collapsed={sidebarCollapsed()}
-          data-mobile={isMobile()}
-        >
+        <aside class={getSidebarClasses()} data-collapsed={sidebarCollapsed()} data-mobile={isMobile()}>
           <div class="reynard-app-layout__sidebar-content">{local.sidebar}</div>
 
           {/* Sidebar toggle button */}

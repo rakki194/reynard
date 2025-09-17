@@ -24,11 +24,11 @@ logger = logging.getLogger(__name__)
 async def health_check_gatekeeper() -> bool:
     """
     Perform health check for the Gatekeeper authentication service.
-    
+
     This function validates that the authentication service is operational
     by checking database connectivity, JWT token validation capabilities,
     and user management functionality.
-    
+
     Returns:
         bool: True if the service is healthy and operational, False otherwise.
     """
@@ -42,11 +42,11 @@ async def health_check_gatekeeper() -> bool:
 async def health_check_comfy() -> bool:
     """
     Perform health check for the ComfyUI service.
-    
+
     This function validates that the ComfyUI service is operational
     by checking API connectivity, workflow execution capabilities,
     and image generation functionality.
-    
+
     Returns:
         bool: True if the service is healthy and operational, False otherwise.
     """
@@ -60,11 +60,11 @@ async def health_check_comfy() -> bool:
 async def health_check_nlweb() -> bool:
     """
     Perform health check for the NLWeb service.
-    
+
     This function validates that the NLWeb service is operational
     by checking network connectivity, natural language processing
     capabilities, and content analysis functionality.
-    
+
     Returns:
         bool: True if the service is healthy and operational, False otherwise.
     """

@@ -2,20 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "🐍: Install Dependencies",
-      "type": "shell",
-      "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && pip install -r backend/requirements.txt"],
-      "group": "build",
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "🐍: Run Tests",
       "type": "shell",
       "command": "bash",
@@ -50,7 +36,7 @@
       "label": "🐍: Lint with Ruff",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && ruff check backend/ fenrir/ libraries/"],
+      "args": ["-c", "source ~/venv/bin/activate && ruff check backend/ fenrir/ services/"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -64,7 +50,7 @@
       "label": "🐍: Format with Ruff",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && ruff format backend/ fenrir/ libraries/"],
+      "args": ["-c", "source ~/venv/bin/activate && ruff format backend/ fenrir/ services/"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -78,7 +64,7 @@
       "label": "🐍: Type Check with mypy",
       "type": "shell",
       "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && mypy backend/ fenrir/ libraries/"],
+      "args": ["-c", "source ~/venv/bin/activate && mypy backend/ fenrir/ services/"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -91,7 +77,8 @@
     {
       "label": "Python: Start Backend Server",
       "type": "shell",
-      "command": "./scripts/dev/start-backend.sh",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd backend && python scripts/dev-server.py"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -105,7 +92,8 @@
     {
       "label": "🐍 Auto-Start Backend Server",
       "type": "shell",
-      "command": "./scripts/dev/start-backend.sh",
+      "command": "bash",
+      "args": ["-c", "source ~/venv/bin/activate && cd backend && python scripts/dev-server.py"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -494,14 +482,21 @@
         "reynard-queue-watcher",
         "watch",
         "-d",
-        "../../docs",
         "../../packages",
+        "../../backend",
+        "../../services",
+        "../../docs",
+        "../../.cursor/docs",
+        "../../.cursor/prompts",
+        "../../.cursor/rules",
         "../../examples",
         "../../templates",
-        "../../backend",
-        "../../scripts",
         "../../e2e",
-        "../../libraries",
+        "../../scripts",
+        "../../services",
+        "../../nginx",
+        "../../todos",
+        "../../data",
         "../../fenrir"
       ],
       "group": "build",
@@ -515,7 +510,7 @@
       },
       "isBackground": true,
       "problemMatcher": [],
-      "detail": "Start queue-based watcher with perfect file processing sequencing - includes all Python directories"
+      "detail": "Start queue-based watcher with perfect file processing sequencing - includes all project directories from architecture"
     },
     {
       "label": "🔄 Auto-Start Queue-Based Watcher",
@@ -526,14 +521,21 @@
         "reynard-queue-watcher",
         "watch",
         "-d",
-        "../../docs",
         "../../packages",
+        "../../backend",
+        "../../services",
+        "../../docs",
+        "../../.cursor/docs",
+        "../../.cursor/prompts",
+        "../../.cursor/rules",
         "../../examples",
         "../../templates",
-        "../../backend",
-        "../../scripts",
         "../../e2e",
-        "../../libraries",
+        "../../scripts",
+        "../../services",
+        "../../nginx",
+        "../../todos",
+        "../../data",
         "../../fenrir"
       ],
       "group": "build",
@@ -550,7 +552,7 @@
         "runOn": "folderOpen"
       },
       "problemMatcher": [],
-      "detail": "Automatically start queue-based watcher when workspace opens - includes all Python directories"
+      "detail": "Automatically start queue-based watcher when workspace opens - includes all project directories from architecture"
     },
     {
       "label": "🧪 Test Markdown Validation",
@@ -702,7 +704,7 @@
       },
       "isBackground": true,
       "problemMatcher": [],
-      "detail": "Start file watcher that triggers codebase scan when CHANGELOG.md is saved"
+      "detail": "Start file watcher that triggers markdown linting and formatting when CHANGELOG.md is saved"
     },
     {
       "label": "🦊 Auto-Start CHANGELOG.md Watcher",
@@ -722,7 +724,7 @@
         "runOn": "folderOpen"
       },
       "problemMatcher": [],
-      "detail": "Automatically start CHANGELOG.md file watcher when workspace opens"
+      "detail": "Automatically start CHANGELOG.md file watcher with markdown linting when workspace opens"
     }
   ]
 }

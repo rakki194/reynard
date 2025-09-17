@@ -27,11 +27,7 @@ interface TranslationEngine {
       formatDateTime: (date: Date) => string;
     };
     relative: {
-      format: (
-        value: number,
-        unit: Intl.RelativeTimeFormatUnit,
-        options?: Intl.RelativeTimeFormatOptions,
-      ) => string;
+      format: (value: number, unit: Intl.RelativeTimeFormatUnit, options?: Intl.RelativeTimeFormatOptions) => string;
       formatShort: (value: number, unit: Intl.RelativeTimeFormatUnit) => string;
       formatLong: (value: number, unit: Intl.RelativeTimeFormatUnit) => string;
       formatFromNow: (date: Date) => string;
@@ -40,10 +36,7 @@ interface TranslationEngine {
 }
 
 // Locale side effects management
-export function applyLocaleSideEffects(
-  newLocale: LanguageCode,
-  _translationEngine: TranslationEngine,
-) {
+export function applyLocaleSideEffects(newLocale: LanguageCode, _translationEngine: TranslationEngine) {
   if (typeof window === "undefined") return;
 
   try {
@@ -54,10 +47,7 @@ export function applyLocaleSideEffects(
 
   try {
     document.documentElement.setAttribute("lang", newLocale);
-    document.documentElement.setAttribute(
-      "dir",
-      isRTL(newLocale) ? "rtl" : "ltr",
-    );
+    document.documentElement.setAttribute("dir", isRTL(newLocale) ? "rtl" : "ltr");
   } catch (error) {
     console.warn("Failed to update document attributes:", error);
   }
@@ -69,7 +59,7 @@ export function applyLocaleSideEffects(
 // Create locale management functions
 export function createLocaleManager(
   setLocaleSignal: (locale: LanguageCode) => void,
-  translationEngine: TranslationEngine,
+  translationEngine: TranslationEngine
 ) {
   return (newLocale: LanguageCode) => {
     setLocaleSignal(newLocale);

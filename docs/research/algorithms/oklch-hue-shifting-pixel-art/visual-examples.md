@@ -275,11 +275,7 @@ const glassRamp = materialHueShift(glass, "plastic");
 **Smooth Color Interpolation:**
 
 ```typescript
-function interpolateOKLCH(
-  color1: OKLCHColor,
-  color2: OKLCHColor,
-  t: number,
-): OKLCHColor {
+function interpolateOKLCH(color1: OKLCHColor, color2: OKLCHColor, t: number): OKLCHColor {
   return {
     l: color1.l + (color2.l - color1.l) * t,
     c: color1.c + (color2.c - color1.c) * t,
@@ -301,7 +297,7 @@ function createPulsingColor(
   baseColor: OKLCHColor,
   time: number,
   frequency: number = 1.0,
-  intensity: number = 0.1,
+  intensity: number = 0.1
 ): OKLCHColor {
   const pulse = Math.sin(time * Math.PI * 2 * frequency) * intensity;
   return {
@@ -315,11 +311,7 @@ function createPulsingColor(
 **Color Cycling:**
 
 ```typescript
-function createColorCycle(
-  baseColor: OKLCHColor,
-  time: number,
-  cycleSpeed: number = 1.0,
-): OKLCHColor {
+function createColorCycle(baseColor: OKLCHColor, time: number, cycleSpeed: number = 1.0): OKLCHColor {
   return {
     l: baseColor.l,
     c: baseColor.c,

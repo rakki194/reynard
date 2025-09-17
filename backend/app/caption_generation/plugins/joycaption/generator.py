@@ -14,13 +14,12 @@ The implementation includes:
 
 import asyncio
 import logging
-import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import torch
 from PIL import Image
-from transformers import AutoProcessor, AutoModelForCausalLM
+from transformers import AutoModelForCausalLM, AutoProcessor
 
 from ...base import CaptionGeneratorBase, CaptionType, ModelCategory
 
@@ -87,7 +86,7 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
     multilingual support and configurable generation parameters.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         self._config = config or {}
         self._model = None
         self._processor = None
@@ -126,7 +125,7 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
         return self._is_loaded
 
     @property
-    def config_schema(self) -> Dict[str, Any]:
+    def config_schema(self) -> dict[str, Any]:
         """Get the configuration schema."""
         return {
             "type": "object",
@@ -136,47 +135,52 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
                     "minimum": 1,
                     "maximum": 512,
                     "default": 256,
-                    "description": "Maximum length of generated caption"
+                    "description": "Maximum length of generated caption",
                 },
                 "temperature": {
                     "type": "number",
                     "minimum": 0.0,
                     "maximum": 2.0,
                     "default": 0.7,
-                    "description": "Sampling temperature for generation"
+                    "description": "Sampling temperature for generation",
                 },
                 "top_p": {
                     "type": "number",
                     "minimum": 0.0,
                     "maximum": 1.0,
                     "default": 0.9,
-                    "description": "Top-p sampling parameter"
+                    "description": "Top-p sampling parameter",
                 },
                 "repetition_penalty": {
                     "type": "number",
                     "minimum": 0.0,
                     "maximum": 2.0,
                     "default": 1.0,
-                    "description": "Repetition penalty"
+                    "description": "Repetition penalty",
                 },
                 "model_name": {
                     "type": "string",
                     "default": "llava-hf/llava-1.5-7b-hf",
-                    "description": "HuggingFace model name for JoyCaption"
+                    "description": "HuggingFace model name for JoyCaption",
                 },
                 "caption_type": {
                     "type": "string",
                     "enum": list(CAPTION_TYPE_MAP.keys()),
                     "default": "descriptive",
-                    "description": "Type of caption to generate"
-                }
-            }
+                    "description": "Type of caption to generate",
+                },
+            },
         }
 
     @property
-    def features(self) -> List[str]:
+    def features(self) -> list[str]:
         """Get the list of features."""
-        return ["gpu_acceleration", "multilingual", "large_language_model", "configurable_generation"]
+        return [
+            "gpu_acceleration",
+            "multilingual",
+            "large_language_model",
+            "configurable_generation",
+        ]
 
     def is_available(self) -> bool:
         """Check if the generator is available."""
@@ -187,11 +191,12 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
         try:
             import torch
             import transformers
+
             return True
         except ImportError:
             return False
 
-    async def load(self, config: Optional[Dict[str, Any]] = None) -> None:
+    async def load(self, config: dict[str, Any] | None = None) -> None:
         """Load the JoyCaption model."""
         if self._is_loaded:
             return
@@ -261,47 +266,55 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
             logger.error(f"JoyCaption generation failed for {image_path}: {e}")
             raise
 
-    def get_info(self) -> Dict[str, Any]:
+    def get_info(self) -> dict[str, Any]:
         """Get comprehensive information about this generator."""
         info = super().get_info()
-        info.update({
-            "device": str(self._device) if self._device else None,
-            "model_name": self._model_name,
-            "self_contained": True
-        })
+        info.update(
+            {
+                "device": str(self._device) if self._device else None,
+                "model_name": self._model_name,
+                "self_contained": True,
+            }
+        )
         return info
 
     def _load_model_and_processor(self) -> None:
         """Load JoyCaption model and processor from HuggingFace."""
-        # Load processor
-        self._processor = AutoProcessor.from_pretrained(self._model_name)
-        
-        # Load model
+        # Load processor with security measures
+        self._processor = AutoProcessor.from_pretrained(
+            self._model_name,
+            trust_remote_code=False,
+            use_auth_token=False,
+        )
+
+        # Load model with security measures
         self._model = AutoModelForCausalLM.from_pretrained(
             self._model_name,
             torch_dtype=torch.float16 if self._device.type == "cuda" else torch.float32,
-            device_map="auto" if self._device.type == "cuda" else None
+            device_map="auto" if self._device.type == "cuda" else None,
+            trust_remote_code=False,
+            use_auth_token=False,
         )
-        
+
         # Move to device if not using device_map
         if self._device.type == "cpu":
             self._model.to(self._device)
 
-    def _generate_caption(self, image_path: str, config: Dict[str, Any]) -> str:
+    def _generate_caption(self, image_path: str, config: dict[str, Any]) -> str:
         """Generate caption for an image using JoyCaption."""
         if not self._model or not self._processor:
             raise RuntimeError("JoyCaption model components not loaded")
 
         # Load and process image
         image = Image.open(image_path)
-        
+
         # Get caption type and build prompt
         caption_type = config.get("caption_type", "descriptive")
         max_length = config.get("max_length", 256)
-        
+
         # Select appropriate prompt based on caption type
         prompts = CAPTION_TYPE_MAP.get(caption_type, CAPTION_TYPE_MAP["descriptive"])
-        
+
         # Choose prompt based on length
         if max_length <= 50:
             prompt_template = prompts[1] if len(prompts) > 1 else prompts[0]
@@ -313,18 +326,18 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
             prompt = prompt_template.format(length=length)
         else:
             prompt = prompts[0]
-        
+
         # Process inputs
         inputs = self._processor(text=prompt, images=image, return_tensors="pt")
-        
+
         # Move inputs to device
         inputs = {k: v.to(self._device) for k, v in inputs.items()}
-        
+
         # Generate caption
         temperature = config.get("temperature", 0.7)
         top_p = config.get("top_p", 0.9)
         repetition_penalty = config.get("repetition_penalty", 1.0)
-        
+
         with torch.no_grad():
             generated_ids = self._model.generate(
                 inputs["input_ids"],
@@ -334,13 +347,15 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
                 top_p=top_p,
                 repetition_penalty=repetition_penalty,
                 do_sample=True,
-                pad_token_id=self._processor.tokenizer.eos_token_id
+                pad_token_id=self._processor.tokenizer.eos_token_id,
             )
-        
+
         # Decode the generated text
-        generated_text = self._processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-        
+        generated_text = self._processor.batch_decode(
+            generated_ids, skip_special_tokens=True
+        )[0]
+
         # Extract caption from the generated text
         caption = generated_text.replace(prompt, "").strip()
-        
+
         return caption if caption else "Unable to generate caption for this image."

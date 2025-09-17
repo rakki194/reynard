@@ -255,4 +255,3 @@ Test data is created dynamically in temporary directories:
 8. **Use appropriate markers** for test categorization
 9. **Clean up resources** in fixtures
 10. **Document test purpose** in docstrings
-

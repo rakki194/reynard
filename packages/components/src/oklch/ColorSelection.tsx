@@ -12,33 +12,22 @@ interface ColorSelectionProps {
   onColorSelect: (color: string) => void;
 }
 
-export const ColorSelection: Component<ColorSelectionProps> = (props) => {
+export const ColorSelection: Component<ColorSelectionProps> = props => {
   const themeColors = useThemeColors();
 
-  const colorOptions = [
-    "primary",
-    "secondary",
-    "accent",
-    "success",
-    "warning",
-    "error",
-    "info",
-  ];
+  const colorOptions = ["primary", "secondary", "accent", "success", "warning", "error", "info"];
 
   return (
     <div class="color-selection">
       <h3>Select Base Color</h3>
       <div class="color-options">
         <For each={colorOptions}>
-          {(color) => (
+          {color => (
             <button
               class={`color-option ${props.selectedColor === color ? "active" : ""}`}
-              ref={(el) => {
+              ref={el => {
                 if (el) {
-                  el.style.setProperty(
-                    "--dynamic-color",
-                    themeColors.getColor(color),
-                  );
+                  el.style.setProperty("--dynamic-color", themeColors.getColor(color));
                 }
               }}
               onClick={() => props.onColorSelect(color)}

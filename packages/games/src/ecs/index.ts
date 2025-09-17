@@ -58,19 +58,9 @@ export {
 
 export { createWorld } from "./world";
 
-export {
-  createComponentType,
-  ComponentRegistry,
-  ComponentStorage,
-  TableStorage,
-  SparseSetStorage,
-} from "./component";
+export { createComponentType, ComponentRegistry, ComponentStorage, TableStorage, SparseSetStorage } from "./component";
 
-export {
-  createResourceType,
-  ResourceRegistry,
-  ResourceStorage,
-} from "./resource";
+export { createResourceType, ResourceRegistry, ResourceStorage } from "./resource";
 
 export { query, QueryBuilder, QueryResultImpl } from "./query";
 
@@ -98,71 +88,38 @@ export {
 
 export type { ArchetypeId, ArchetypeRow } from "./archetype";
 
-export {
-  ChangeDetectionImpl,
-  createTick,
-  createComponentTicks,
-} from "./change-detection";
+export { ChangeDetectionImpl, createTick, createComponentTicks } from "./change-detection";
 
 export type { ChangeDetection } from "./change-detection";
 
 export type { ComponentTicks, Tick } from "./change-detection";
 
-export {
-  BundleRegistry,
-  createBundle,
-  createBundleFromTypes,
-  createBundleInfo,
-} from "./bundle";
+export { BundleRegistry, createBundle, createBundleFromTypes, createBundleInfo } from "./bundle";
 
 export type { Bundle } from "./bundle";
 
 export type { BundleInfo } from "./bundle";
 
-export {
-  Events,
-  EventReaderImpl,
-  EventWriterImpl,
-  EventRegistry,
-  createEventId,
-} from "./event";
+export { Events, EventReaderImpl, EventWriterImpl, EventRegistry, createEventId } from "./event";
 
 export type { EventInstance, EventId } from "./event";
 
-export {
-  ParallelIteratorImpl,
-  ParallelCommandsImpl,
-  TaskPool,
-  TASK_POOL,
-  DEFAULT_BATCHING_STRATEGY,
-} from "./parallel";
+export { ParallelIteratorImpl, ParallelCommandsImpl, TaskPool, TASK_POOL, DEFAULT_BATCHING_STRATEGY } from "./parallel";
 
 export type { ParallelIterator, ParallelCommands } from "./parallel";
 
 export type { BatchingStrategy } from "./parallel";
 
-export {
-  Conditions,
-  ConditionCombinators,
-  createCondition,
-} from "./conditions";
+export { Conditions, ConditionCombinators, createCondition } from "./conditions";
 
 export type { SystemCondition } from "./conditions";
 
-export {
-  ComponentHookRegistry,
-  CommonHooks,
-  createComponentHooks,
-} from "./component-hooks";
+export { ComponentHookRegistry, CommonHooks, createComponentHooks } from "./component-hooks";
 
 export type { ComponentHooks } from "./component-hooks";
 
 export type { ComponentHook } from "./component-hooks";
 
-export {
-  QueryStateManager,
-  QueryStateBuilder,
-  queryState,
-} from "./query-state";
+export { QueryStateManager, QueryStateBuilder, queryState } from "./query-state";
 
 export type { QueryState } from "./query-state";

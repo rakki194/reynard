@@ -10,10 +10,7 @@ import type { FeatureRegistryCore } from "./FeatureRegistryCore.js";
 /**
  * Register a new feature
  */
-export function registerFeature(
-  core: FeatureRegistryCore,
-  feature: FeatureDefinition,
-): void {
+export function registerFeature(core: FeatureRegistryCore, feature: FeatureDefinition): void {
   const current = core.getFunctionalities();
   const updated = new Map(current);
   updated.set(feature.id, feature);
@@ -23,10 +20,7 @@ export function registerFeature(
 /**
  * Unregister a feature
  */
-export function unregisterFeature(
-  core: FeatureRegistryCore,
-  featureId: string,
-): void {
+export function unregisterFeature(core: FeatureRegistryCore, featureId: string): void {
   const current = core.getFunctionalities();
   const updated = new Map(current);
   updated.delete(featureId);
@@ -36,10 +30,7 @@ export function unregisterFeature(
 /**
  * Get a feature by ID
  */
-export function getFeature(
-  core: FeatureRegistryCore,
-  featureId: string,
-): FeatureDefinition | undefined {
+export function getFeature(core: FeatureRegistryCore, featureId: string): FeatureDefinition | undefined {
   const functionalities = core.getFunctionalities();
   return functionalities.get(featureId);
 }
@@ -55,10 +46,7 @@ export function getAllFeatures(core: FeatureRegistryCore): FeatureDefinition[] {
 /**
  * Check if a feature is registered
  */
-export function isFeatureRegistered(
-  core: FeatureRegistryCore,
-  featureId: string,
-): boolean {
+export function isFeatureRegistered(core: FeatureRegistryCore, featureId: string): boolean {
   const functionalities = core.getFunctionalities();
   return functionalities.has(featureId);
 }
@@ -66,25 +54,17 @@ export function isFeatureRegistered(
 /**
  * Get features by category
  */
-export function getFeaturesByCategory(
-  core: FeatureRegistryCore,
-  category: string,
-): FeatureDefinition[] {
+export function getFeaturesByCategory(core: FeatureRegistryCore, category: string): FeatureDefinition[] {
   const functionalities = core.getFunctionalities();
-  return Array.from(functionalities.values()).filter(
-    (feature) => feature.category === category,
-  );
+  return Array.from(functionalities.values()).filter(feature => feature.category === category);
 }
 
 /**
  * Get features by status
  */
-export function getFeaturesByStatus(
-  core: FeatureRegistryCore,
-  status: string,
-): FeatureDefinition[] {
+export function getFeaturesByStatus(core: FeatureRegistryCore, status: string): FeatureDefinition[] {
   const functionalities = core.getFunctionalities();
-  return Array.from(functionalities.values()).filter((feature) => {
+  return Array.from(functionalities.values()).filter(feature => {
     if (status === "enabled") return feature.enabled === true;
     if (status === "disabled") return feature.enabled === false;
     return false;

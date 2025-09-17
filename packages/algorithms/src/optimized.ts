@@ -14,14 +14,8 @@ import {
   OptimizedCollisionAdapter,
   type OptimizedCollisionConfig,
 } from "./optimization/adapters/optimized-collision-adapter";
-import {
-  AlgorithmSelector,
-  type WorkloadCharacteristics,
-} from "./optimization/core/algorithm-selector";
-import {
-  EnhancedMemoryPool,
-  type MemoryPoolConfig,
-} from "./optimization/core/enhanced-memory-pool";
+import { AlgorithmSelector, type WorkloadCharacteristics } from "./optimization/core/algorithm-selector";
+import { EnhancedMemoryPool, type MemoryPoolConfig } from "./optimization/core/enhanced-memory-pool";
 import { checkCollision } from "./geometry/collision/aabb-collision";
 import type { AABB, CollisionPair } from "./geometry/collision/aabb-types";
 
@@ -46,17 +40,13 @@ let globalAlgorithmSelector: AlgorithmSelector | null = null;
 /**
  * Configure the global optimization settings
  */
-export function configureOptimization(
-  config: Partial<OptimizedCollisionConfig>,
-): void {
+export function configureOptimization(config: Partial<OptimizedCollisionConfig>): void {
   globalOptimizationConfig = { ...globalOptimizationConfig, ...config };
 
   // Reinitialize global instances if they exist
   if (globalCollisionAdapter) {
     globalCollisionAdapter.destroy();
-    globalCollisionAdapter = new OptimizedCollisionAdapter(
-      globalOptimizationConfig,
-    );
+    globalCollisionAdapter = new OptimizedCollisionAdapter(globalOptimizationConfig);
   }
 }
 
@@ -65,9 +55,7 @@ export function configureOptimization(
  */
 function getGlobalCollisionAdapter(): OptimizedCollisionAdapter {
   if (!globalCollisionAdapter) {
-    globalCollisionAdapter = new OptimizedCollisionAdapter(
-      globalOptimizationConfig,
-    );
+    globalCollisionAdapter = new OptimizedCollisionAdapter(globalOptimizationConfig);
   }
   return globalCollisionAdapter;
 }
@@ -131,7 +119,7 @@ export function detectCollisions(aabbs: AABB[]): CollisionPair[] {
  */
 export function performSpatialQuery<T extends SpatialDataType>(
   queryAABB: AABB,
-  spatialObjects: Array<{ aabb: AABB; data: T }>,
+  spatialObjects: Array<{ aabb: AABB; data: T }>
 ): Array<{ aabb: AABB; data: T }> {
   // This would be implemented with the spatial query adapter
   // For now, return a simple implementation
@@ -259,9 +247,7 @@ export class OptimizationConfig {
   /**
    * Set algorithm selection strategy
    */
-  setAlgorithmStrategy(
-    strategy: "naive" | "spatial" | "optimized" | "adaptive",
-  ): void {
+  setAlgorithmStrategy(strategy: "naive" | "spatial" | "optimized" | "adaptive"): void {
     this.update({ algorithmSelectionStrategy: strategy });
   }
 

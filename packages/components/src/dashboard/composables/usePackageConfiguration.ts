@@ -37,11 +37,11 @@ export function usePackageConfiguration() {
   });
 
   const refreshConfigurationData = async () => {
-    setState((prev) => ({ ...prev, isRefreshing: true }));
+    setState(prev => ({ ...prev, isRefreshing: true }));
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       const mockPackages: PackageConfiguration[] = [
         {
@@ -55,7 +55,7 @@ export function usePackageConfiguration() {
         },
       ];
 
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         packages: mockPackages,
         lastUpdate: new Date(),
@@ -63,63 +63,58 @@ export function usePackageConfiguration() {
       }));
     } catch (error) {
       console.error("Failed to refresh configuration data:", error);
-      setState((prev) => ({ ...prev, isRefreshing: false }));
+      setState(prev => ({ ...prev, isRefreshing: false }));
     }
   };
 
-  const savePackageConfiguration = async (
-    packageName: string,
-    settings: any[],
-  ) => {
-    setState((prev) => ({ ...prev, isSaving: true }));
+  const savePackageConfiguration = async (packageName: string, settings: any[]) => {
+    setState(prev => ({ ...prev, isSaving: true }));
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
-        packages: prev.packages.map((pkg) =>
-          pkg.name === packageName
-            ? { ...pkg, settings, isConfigured: true, lastModified: new Date() }
-            : pkg,
+        packages: prev.packages.map(pkg =>
+          pkg.name === packageName ? { ...pkg, settings, isConfigured: true, lastModified: new Date() } : pkg
         ),
         isSaving: false,
       }));
     } catch (error) {
       console.error("Failed to save package configuration:", error);
-      setState((prev) => ({ ...prev, isSaving: false }));
+      setState(prev => ({ ...prev, isSaving: false }));
     }
   };
 
   const saveGlobalConfiguration = async (config: GlobalConfiguration) => {
-    setState((prev) => ({ ...prev, isSaving: true }));
+    setState(prev => ({ ...prev, isSaving: true }));
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         globalConfig: config,
         isSaving: false,
       }));
     } catch (error) {
       console.error("Failed to save global configuration:", error);
-      setState((prev) => ({ ...prev, isSaving: false }));
+      setState(prev => ({ ...prev, isSaving: false }));
     }
   };
 
   const selectPackage = (packageName: string | null) => {
-    setState((prev) => ({ ...prev, selectedPackage: packageName }));
+    setState(prev => ({ ...prev, selectedPackage: packageName }));
   };
 
   const setSearchQuery = (query: string) => {
-    setState((prev) => ({ ...prev, searchQuery: query }));
+    setState(prev => ({ ...prev, searchQuery: query }));
   };
 
   const setSelectedCategory = (category: string) => {
-    setState((prev) => ({ ...prev, selectedCategory: category }));
+    setState(prev => ({ ...prev, selectedCategory: category }));
   };
 
   onMount(() => {

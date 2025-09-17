@@ -4,37 +4,36 @@ Lineage Component
 Agent family relationships and ancestry component.
 """
 
-from typing import List
 from ..core.component import Component
 
 
 class LineageComponent(Component):
     """
     Agent family relationships and ancestry.
-    
+
     Tracks the agent's family relationships including parents,
     children, ancestors, and descendants for genetic inheritance
     and family tree management.
     """
 
-    def __init__(self, parents: List[str] | None = None) -> None:
+    def __init__(self, parents: list[str] | None = None) -> None:
         """
         Initialize the lineage component.
-        
+
         Args:
             parents: List of parent agent IDs
         """
         super().__init__()
         self.parents = parents or []
-        self.children: List[str] = []
-        self.ancestors: List[str] = []
-        self.descendants: List[str] = []
+        self.children: list[str] = []
+        self.ancestors: list[str] = []
+        self.descendants: list[str] = []
         self.generation = 1
 
     def add_child(self, child_id: str) -> None:
         """
         Add a child to this agent's lineage.
-        
+
         Args:
             child_id: ID of the child agent
         """
@@ -44,7 +43,7 @@ class LineageComponent(Component):
     def add_parent(self, parent_id: str) -> None:
         """
         Add a parent to this agent's lineage.
-        
+
         Args:
             parent_id: ID of the parent agent
         """
@@ -54,7 +53,7 @@ class LineageComponent(Component):
     def get_family_size(self) -> int:
         """
         Get the total family size including parents, children, and self.
-        
+
         Returns:
             Total number of family members
         """
@@ -63,10 +62,10 @@ class LineageComponent(Component):
     def is_ancestor_of(self, other_id: str) -> bool:
         """
         Check if this agent is an ancestor of another agent.
-        
+
         Args:
             other_id: ID of the potential descendant
-            
+
         Returns:
             True if this agent is an ancestor, False otherwise
         """

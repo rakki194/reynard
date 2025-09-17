@@ -22,13 +22,7 @@ describe("Package Exports Types", () => {
     });
 
     it("should have all expected enum members", () => {
-      const expectedValues = [
-        "module",
-        "component",
-        "function",
-        "class",
-        "constant",
-      ];
+      const expectedValues = ["module", "component", "function", "class", "constant"];
       const actualValues = Object.values(ExportType);
 
       expect(actualValues).toEqual(expect.arrayContaining(expectedValues));
@@ -55,36 +49,27 @@ describe("Package Exports Types", () => {
 
   describe("ExportValidationError", () => {
     it("should create error with message and package name", () => {
-      const error = new ExportValidationError(
-        t("core.test.error"),
-        "test-package",
-      );
+      const error = new ExportValidationError(t("core.test.error"), "test-package");
 
       expect(error.message).toBe(
         t("core.errors.exportValidationFailed", {
           package: "test-package",
           errors: "core.test.error",
-        }),
+        })
       );
       expect(error.packageName).toBe("test-package");
       expect(error.name).toBe("Error"); // Custom error classes inherit from Error
     });
 
     it("should be instance of Error", () => {
-      const error = new ExportValidationError(
-        t("core.test.error"),
-        "test-package",
-      );
+      const error = new ExportValidationError(t("core.test.error"), "test-package");
 
       expect(error).toBeInstanceOf(Error);
       expect(error).toBeInstanceOf(ExportValidationError);
     });
 
     it("should have correct stack trace", () => {
-      const error = new ExportValidationError(
-        t("core.test.error"),
-        "test-package",
-      );
+      const error = new ExportValidationError(t("core.test.error"), "test-package");
 
       expect(error.stack).toBeDefined();
       expect(typeof error.stack).toBe("string");
@@ -104,7 +89,7 @@ describe("Package Exports Types", () => {
         t("core.errors.exportValidationFailed", {
           package: "",
           errors: "core.test.error",
-        }),
+        })
       );
       expect(error.packageName).toBe("");
     });
@@ -161,7 +146,7 @@ describe("Package Exports Types", () => {
         ExportType.CONSTANT,
       ];
 
-      types.forEach((exportType) => {
+      types.forEach(exportType => {
         const metadata: ExportMetadata = {
           packageName: "test-package",
           exportType,
@@ -184,7 +169,7 @@ describe("Package Exports Types", () => {
         ExportValidationLevel.COMPREHENSIVE,
       ];
 
-      levels.forEach((validationLevel) => {
+      levels.forEach(validationLevel => {
         const metadata: ExportMetadata = {
           packageName: "test-package",
           exportType: ExportType.MODULE,

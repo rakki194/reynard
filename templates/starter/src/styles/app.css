@@ -40,16 +40,8 @@
   --shadow-large: 0 8px 25px var(--shadow-color);
 
   /* Gradients */
-  --gradient-primary: linear-gradient(
-    135deg,
-    var(--accent),
-    var(--color-accent-light, #0056b3)
-  );
-  --gradient-surface: linear-gradient(
-    135deg,
-    var(--card-bg),
-    var(--secondary-bg)
-  );
+  --gradient-primary: linear-gradient(135deg, var(--accent), var(--color-accent-light, #0056b3));
+  --gradient-surface: linear-gradient(135deg, var(--card-bg), var(--secondary-bg));
 }
 
 /* CSS Reset */

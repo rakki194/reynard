@@ -74,16 +74,13 @@ export class I18nDebugger {
    */
   getUnusedKeys(availableKeys: Record<string, unknown>): string[] {
     const availableKeySet = new Set(Object.keys(availableKeys));
-    return Array.from(this.usedKeys).filter((key) => !availableKeySet.has(key));
+    return Array.from(this.usedKeys).filter(key => !availableKeySet.has(key));
   }
 
   /**
    * Validate translations
    */
-  validate(
-    translations: Record<string, unknown>,
-    requiredKeys: string[] = [],
-  ): ValidationResult {
+  validate(translations: Record<string, unknown>, requiredKeys: string[] = []): ValidationResult {
     return validateTranslations(translations, requiredKeys);
   }
 
@@ -110,12 +107,12 @@ export class I18nDebugger {
 
     console.log("Used Keys:", this.usedKeys.size);
     if (this.usedKeys.size > 0) {
-      console.table(Array.from(this.usedKeys).map((key) => ({ key })));
+      console.table(Array.from(this.usedKeys).map(key => ({ key })));
     }
 
     console.log("Missing Keys:", this.missingKeys.size);
     if (this.missingKeys.size > 0) {
-      console.table(Array.from(this.missingKeys).map((key) => ({ key })));
+      console.table(Array.from(this.missingKeys).map(key => ({ key })));
     }
 
     console.log("Total Translations:", Object.keys(this.translations).length);

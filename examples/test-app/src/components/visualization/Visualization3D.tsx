@@ -19,7 +19,7 @@ interface Visualization3DProps {
   showControls?: boolean;
 }
 
-export const Visualization3D: Component<Visualization3DProps> = (props) => {
+export const Visualization3D: Component<Visualization3DProps> = props => {
   // State for controls
   const [isAnimating, setIsAnimating] = createSignal(false);
 

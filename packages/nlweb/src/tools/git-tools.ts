@@ -22,11 +22,7 @@ export const gitTools: NLWebTool[] = [
         required: true,
       },
     ],
-    examples: [
-      "git status",
-      "check repository status",
-      "what files are changed",
-    ],
+    examples: ["git status", "check repository status", "what files are changed"],
     enabled: true,
     priority: 80,
     timeout: 5000,

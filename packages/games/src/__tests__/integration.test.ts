@@ -10,14 +10,7 @@
 
 import { beforeEach, describe, expect, it } from "vitest";
 import { schedule, system, systemSet } from "../../system";
-import {
-  Component,
-  ComponentType,
-  Resource,
-  ResourceType,
-  StorageType,
-  World,
-} from "../../types";
+import { Component, ComponentType, Resource, ResourceType, StorageType, World } from "../../types";
 import { createWorld } from "../../world";
 
 // Game components
@@ -25,7 +18,7 @@ class Position implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -33,7 +26,7 @@ class Velocity implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -41,7 +34,7 @@ class Health implements Component {
   readonly __component = true;
   constructor(
     public current: number,
-    public maximum: number,
+    public maximum: number
   ) {}
 }
 
@@ -70,7 +63,7 @@ class GameTime implements Resource {
   readonly __resource = true;
   constructor(
     public deltaTime: number,
-    public totalTime: number,
+    public totalTime: number
   ) {}
 }
 
@@ -79,7 +72,7 @@ class GameState implements Resource {
   constructor(
     public score: number,
     public level: number,
-    public isRunning: boolean = true,
+    public isRunning: boolean = true
   ) {}
 }
 
@@ -88,7 +81,7 @@ class InputState implements Resource {
   constructor(
     public keys: Set<string> = new Set(),
     public mouseX: number = 0,
-    public mouseY: number = 0,
+    public mouseY: number = 0
   ) {}
 }
 
@@ -116,31 +109,13 @@ describe("ECS Integration Tests", () => {
     world = createWorld();
 
     // Register component types
-    world
-      .getComponentRegistry()
-      .register("Position", StorageType.Table, () => new Position(0, 0));
-    world
-      .getComponentRegistry()
-      .register("Velocity", StorageType.Table, () => new Velocity(0, 0));
-    world
-      .getComponentRegistry()
-      .register("Health", StorageType.SparseSet, () => new Health(100, 100));
-    world
-      .getComponentRegistry()
-      .register("Player", StorageType.SparseSet, () => new Player("Player"));
-    world
-      .getComponentRegistry()
-      .register("Enemy", StorageType.SparseSet, () => new Enemy("basic"));
-    world
-      .getComponentRegistry()
-      .register("Bullet", StorageType.SparseSet, () => new Bullet(300));
-    world
-      .getComponentRegistry()
-      .register(
-        "Renderable",
-        StorageType.Table,
-        () => new Renderable("circle"),
-      );
+    world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
+    world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    world.getComponentRegistry().register("Player", StorageType.SparseSet, () => new Player("Player"));
+    world.getComponentRegistry().register("Enemy", StorageType.SparseSet, () => new Enemy("basic"));
+    world.getComponentRegistry().register("Bullet", StorageType.SparseSet, () => new Bullet(300));
+    world.getComponentRegistry().register("Renderable", StorageType.Table, () => new Renderable("circle"));
 
     // Get the registered component types
     PositionType = world.getComponentRegistry().getByName("Position")!;
@@ -153,9 +128,7 @@ describe("ECS Integration Tests", () => {
 
     // Register resource types
     world.getResourceRegistry().register("GameTime", () => new GameTime(0, 0));
-    world
-      .getResourceRegistry()
-      .register("GameState", () => new GameState(0, 1, true));
+    world.getResourceRegistry().register("GameState", () => new GameState(0, 1, true));
     world.getResourceRegistry().register("InputState", () => new InputState());
 
     // Get the registered resource types
@@ -361,10 +334,7 @@ describe("ECS Integration Tests", () => {
       movementSystem.addDependency(inputSystem);
       renderSystem.addDependency(movementSystem);
 
-      const gameSchedule = schedule()
-        .addSystem(inputSystem)
-        .addSystem(movementSystem)
-        .addSystem(renderSystem);
+      const gameSchedule = schedule().addSystem(inputSystem).addSystem(movementSystem).addSystem(renderSystem);
 
       gameSchedule.run(world);
 
@@ -396,10 +366,7 @@ describe("ECS Integration Tests", () => {
       physicsSet.addDependency(inputSet);
       renderSet.addDependency(physicsSet);
 
-      const gameSchedule = schedule()
-        .addSystemSet(inputSet)
-        .addSystemSet(physicsSet)
-        .addSystemSet(renderSet);
+      const gameSchedule = schedule().addSystemSet(inputSet).addSystemSet(physicsSet).addSystemSet(renderSet);
 
       gameSchedule.run(world);
 
@@ -478,9 +445,7 @@ describe("ECS Integration Tests", () => {
         expect(count).toBe(1000);
       });
 
-      const gameSchedule = schedule()
-        .addSystem(movementSystem)
-        .addSystem(renderSystem);
+      const gameSchedule = schedule().addSystem(movementSystem).addSystem(renderSystem);
 
       const startTime = performance.now();
       gameSchedule.run(world);
@@ -522,10 +487,7 @@ describe("ECS Integration Tests", () => {
         });
 
         // Query with filters
-        const query2 = world
-          .query(PositionType)
-          .with(PlayerType)
-          .without(EnemyType);
+        const query2 = world.query(PositionType).with(PlayerType).without(EnemyType);
         let count2 = 0;
         query2.forEach(() => {
           count2++;
@@ -562,9 +524,7 @@ describe("ECS Integration Tests", () => {
         // This should still run
       });
 
-      const gameSchedule = schedule()
-        .addSystem(normalSystem)
-        .addSystem(errorSystem);
+      const gameSchedule = schedule().addSystem(normalSystem).addSystem(errorSystem);
 
       expect(() => {
         gameSchedule.run(world);

@@ -13,11 +13,7 @@ import type { ChatActions } from "../../types";
 export interface P2PChatActions extends ChatActions {
   // Room management
   /** Create a new room */
-  createRoom: (
-    name: string,
-    type: ChatRoom["type"],
-    participants?: ChatUser[],
-  ) => Promise<ChatRoom>;
+  createRoom: (name: string, type: ChatRoom["type"], participants?: ChatUser[]) => Promise<ChatRoom>;
   /** Join an existing room */
   joinRoom: (roomId: string) => Promise<void>;
   /** Leave a room */
@@ -25,11 +21,7 @@ export interface P2PChatActions extends ChatActions {
   /** Update room settings */
   updateRoom: (roomId: string, updates: Partial<ChatRoom>) => Promise<void>;
   /** Get room messages */
-  getRoomMessages: (
-    roomId: string,
-    limit?: number,
-    before?: string,
-  ) => Promise<P2PChatMessage[]>;
+  getRoomMessages: (roomId: string, limit?: number, before?: string) => Promise<P2PChatMessage[]>;
   /** Switch to a different room */
   switchRoom: (roomId: string) => void;
 
@@ -42,14 +34,10 @@ export interface P2PChatActions extends ChatActions {
       replyTo?: string;
       threadId?: string;
       priority?: P2PChatMessage["priority"];
-    },
+    }
   ) => Promise<void>;
   /** Edit a message */
-  editMessage: (
-    messageId: string,
-    newContent: string,
-    reason?: string,
-  ) => Promise<void>;
+  editMessage: (messageId: string, newContent: string, reason?: string) => Promise<void>;
   /** Delete a message */
   deleteMessage: (messageId: string) => Promise<void>;
   /** React to a message */
@@ -77,11 +65,7 @@ export interface P2PChatActions extends ChatActions {
 
   // File handling
   /** Upload file */
-  uploadFile: (
-    file: File,
-    roomId: string,
-    messageId?: string,
-  ) => Promise<MessageAttachment>;
+  uploadFile: (file: File, roomId: string, messageId?: string) => Promise<MessageAttachment>;
   /** Download file */
   downloadFile: (attachmentId: string) => Promise<Blob>;
 
@@ -95,7 +79,7 @@ export interface P2PChatActions extends ChatActions {
       before?: number;
       after?: number;
       limit?: number;
-    },
+    }
   ) => Promise<P2PChatMessage[]>;
 
   // Presence and notifications

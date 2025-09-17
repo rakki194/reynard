@@ -44,22 +44,14 @@ export const i18nRules = {
           const text = node.value.trim();
 
           if (text.length < minLength) return;
-          if (
-            ignorePatterns.some((pattern: string) =>
-              text.match(new RegExp(pattern)),
-            )
-          )
-            return;
+          if (ignorePatterns.some((pattern: string) => text.match(new RegExp(pattern)))) return;
           if (isTechnicalTerm(text)) return;
 
           context.report({
             node,
             message: `Hardcoded string found: "${text}". Consider using i18n.t('${generateTranslationKey(text)}') instead.`,
             fix(fixer: any) {
-              return fixer.replaceText(
-                node,
-                `{i18n.t('${generateTranslationKey(text)}')}`,
-              );
+              return fixer.replaceText(node, `{i18n.t('${generateTranslationKey(text)}')}`);
             },
           });
         },
@@ -67,12 +59,7 @@ export const i18nRules = {
         Literal(node: any) {
           if (typeof node.value !== "string") return;
           if (node.value.length < minLength) return;
-          if (
-            ignorePatterns.some((pattern: string) =>
-              node.value.match(new RegExp(pattern)),
-            )
-          )
-            return;
+          if (ignorePatterns.some((pattern: string) => node.value.match(new RegExp(pattern)))) return;
           if (isTechnicalTerm(node.value)) return;
 
           // Skip if parent is already using i18n
@@ -80,8 +67,7 @@ export const i18nRules = {
             node.parent &&
             node.parent.type === "CallExpression" &&
             node.parent.callee &&
-            (node.parent.callee.name === "t" ||
-              node.parent.callee.property?.name === "t")
+            (node.parent.callee.name === "t" || node.parent.callee.property?.name === "t")
           ) {
             return;
           }
@@ -126,15 +112,10 @@ export const i18nRules = {
           if (
             node.callee &&
             (node.callee.name === "t" ||
-              (node.callee.type === "MemberExpression" &&
-                node.callee.property?.name === "t"))
+              (node.callee.type === "MemberExpression" && node.callee.property?.name === "t"))
           ) {
             const key = node.arguments[0];
-            if (
-              key &&
-              key.type === "Literal" &&
-              typeof key.value === "string"
-            ) {
+            if (key && key.type === "Literal" && typeof key.value === "string") {
               // This would check against actual translation files
               // For now, just report as a warning
               context.report({

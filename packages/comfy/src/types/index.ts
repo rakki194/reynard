@@ -60,12 +60,7 @@ export interface ComfyJob {
   error?: string;
 }
 
-export type ComfyJobStatus =
-  | "pending"
-  | "running"
-  | "completed"
-  | "failed"
-  | "cancelled";
+export type ComfyJobStatus = "pending" | "running" | "completed" | "failed" | "cancelled";
 
 export interface ComfyJobResult {
   /** Job identifier */

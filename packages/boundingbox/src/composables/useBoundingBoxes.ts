@@ -31,27 +31,23 @@ export interface UseBoundingBoxesReturn {
   validationErrors: () => Record<string, string[]>;
 }
 
-export function useBoundingBoxes(
-  options: UseBoundingBoxesOptions = {},
-): UseBoundingBoxesReturn {
+export function useBoundingBoxes(options: UseBoundingBoxesOptions = {}): UseBoundingBoxesReturn {
   const { initialBoxes = [], imageInfo, enableValidation = true } = options;
 
   const [boxes, setBoxes] = createSignal<BoundingBox[]>(initialBoxes);
   const [selectedBoxId, setSelectedBoxId] = createSignal<string | null>(
-    initialBoxes.length > 0 ? initialBoxes[0].id : null,
+    initialBoxes.length > 0 ? initialBoxes[0].id : null
   );
 
   // Validation errors for each box
-  const [validationErrors, setValidationErrors] = createSignal<
-    Record<string, string[]>
-  >({});
+  const [validationErrors, setValidationErrors] = createSignal<Record<string, string[]>>({});
 
   // Memoized computed values
   const boxCount = createMemo(() => boxes().length);
 
   const selectedBox = createMemo(() => {
     const id = selectedBoxId();
-    return id ? boxes().find((box) => box.id === id) : undefined;
+    return id ? boxes().find(box => box.id === id) : undefined;
   });
 
   // Validate all boxes when they change
@@ -59,7 +55,7 @@ export function useBoundingBoxes(
     if (!enableValidation || !imageInfo) return;
 
     const errors: Record<string, string[]> = {};
-    boxList.forEach((box) => {
+    boxList.forEach(box => {
       const validation = validateBoundingBox(box, imageInfo);
       if (!validation.isValid) {
         errors[box.id] = validation.errors;
@@ -79,7 +75,7 @@ export function useBoundingBoxes(
       if (!validation.isValid) {
         console.warn("[useBoundingBoxes] Invalid box:", validation.errors);
         // Store validation errors even for rejected boxes
-        setValidationErrors((prev) => ({
+        setValidationErrors(prev => ({
           ...prev,
           [box.id]: validation.errors,
         }));
@@ -87,9 +83,9 @@ export function useBoundingBoxes(
       }
     }
 
-    setBoxes((prev) => {
+    setBoxes(prev => {
       // Check for duplicate ID
-      if (prev.some((b) => b.id === box.id)) {
+      if (prev.some(b => b.id === box.id)) {
         console.warn("[useBoundingBoxes] Box with ID already exists:", box.id);
         return prev;
       }
@@ -101,8 +97,8 @@ export function useBoundingBoxes(
   }
 
   function updateBox(id: string, updates: Partial<BoundingBox>): boolean {
-    setBoxes((prev) => {
-      const boxIndex = prev.findIndex((box) => box.id === id);
+    setBoxes(prev => {
+      const boxIndex = prev.findIndex(box => box.id === id);
       if (boxIndex === -1) {
         console.warn("[useBoundingBoxes] Box not found:", id);
         return prev;
@@ -113,10 +109,7 @@ export function useBoundingBoxes(
       if (enableValidation && imageInfo) {
         const validation = validateBoundingBox(updatedBox, imageInfo);
         if (!validation.isValid) {
-          console.warn(
-            "[useBoundingBoxes] Invalid box update:",
-            validation.errors,
-          );
+          console.warn("[useBoundingBoxes] Invalid box update:", validation.errors);
           return prev;
         }
       }
@@ -129,13 +122,13 @@ export function useBoundingBoxes(
   }
 
   function removeBox(id: string): boolean {
-    setBoxes((prev) => {
-      const boxExists = prev.some((box) => box.id === id);
+    setBoxes(prev => {
+      const boxExists = prev.some(box => box.id === id);
       if (!boxExists) {
         console.warn("[useBoundingBoxes] Box not found:", id);
         return prev;
       }
-      return prev.filter((box) => box.id !== id);
+      return prev.filter(box => box.id !== id);
     });
 
     if (selectedBoxId() === id) {
@@ -145,7 +138,7 @@ export function useBoundingBoxes(
   }
 
   function selectBox(id: string | null) {
-    if (id && !boxes().some((box) => box.id === id)) {
+    if (id && !boxes().some(box => box.id === id)) {
       console.warn("[useBoundingBoxes] Box not found:", id);
       return;
     }
@@ -159,11 +152,11 @@ export function useBoundingBoxes(
   }
 
   function getBox(id: string): BoundingBox | undefined {
-    return boxes().find((box) => box.id === id);
+    return boxes().find(box => box.id === id);
   }
 
   function hasBox(id: string): boolean {
-    return boxes().some((box) => box.id === id);
+    return boxes().some(box => box.id === id);
   }
 
   return {

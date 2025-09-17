@@ -15,13 +15,11 @@
       "import": "./dist/generated/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "generate": "openapi-generator-cli generate -i http://localhost:8000/openapi.json -g typescript-fetch -o ./src/generated --additional-properties=typescriptThreePlus=true,supportsES6=true,withInterfaces=true,useSingleRequestParameter=true",
     "generate:watch": "nodemon --watch ../../backend --exec 'pnpm run generate'",
-    "build": "tsc && cp -r src/generated dist/",
+    "build": "tsc && cp -r src/generated/* dist/generated/",
     "build:watch": "tsc --watch",
     "clean": "rm -rf dist src/generated",
     "typecheck": "tsc --noEmit"

@@ -1,6 +1,6 @@
 /**
  * Image Modal Header Component
- * 
+ *
  * Header with image info and control buttons
  */
 
@@ -33,52 +33,31 @@ export interface ImageModalHeaderProps {
   onDownload: () => void;
 }
 
-export const ImageModalHeader: Component<ImageModalHeaderProps> = (props) => {
+export const ImageModalHeader: Component<ImageModalHeaderProps> = props => {
   return (
     <div class="rag-image-header">
       <div class="image-info">
         <div class="image-path">{props.imagePath}</div>
         <div class="image-stats">
-          {formatDimensions(props.imageDimensions)} •{" "}
-          {formatFileSize(props.imageSize)} •{" "}
+          {formatDimensions(props.imageDimensions)} • {formatFileSize(props.imageSize)} •{" "}
           {props.imageFormat?.toUpperCase()}
         </div>
       </div>
 
       <div class="image-controls">
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={props.onToggleMetadata}
-          icon={getIcon("info")}
-        >
+        <Button variant="secondary" size="small" onClick={props.onToggleMetadata} icon={getIcon("info")}>
           {props.showMetadata ? "Hide" : "Show"} Metadata
         </Button>
 
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={props.onToggleEmbeddingInfo}
-          icon={getIcon("brain")}
-        >
+        <Button variant="secondary" size="small" onClick={props.onToggleEmbeddingInfo} icon={getIcon("brain")}>
           {props.showEmbeddingInfo ? "Hide" : "Show"} Embedding
         </Button>
 
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={props.onCopyPath}
-          icon={getIcon("copy")}
-        >
+        <Button variant="secondary" size="small" onClick={props.onCopyPath} icon={getIcon("copy")}>
           Copy Path
         </Button>
 
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={props.onDownload}
-          icon={getIcon("download")}
-        >
+        <Button variant="secondary" size="small" onClick={props.onDownload} icon={getIcon("download")}>
           Download
         </Button>
       </div>

@@ -49,9 +49,7 @@ export function getSystemThemePreference(): "light" | "dark" {
 /**
  * Listen for system theme changes
  */
-export function onSystemThemeChange(
-  callback: (theme: "light" | "dark") => void,
-): () => void {
+export function onSystemThemeChange(callback: (theme: "light" | "dark") => void): () => void {
   const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
   const handleChange = (e: MediaQueryListEvent) => {

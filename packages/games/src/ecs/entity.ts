@@ -21,7 +21,7 @@ export function createEntityLocation(
   archetypeId: ArchetypeId,
   archetypeRow: ArchetypeRow,
   tableId: number,
-  tableRow: number,
+  tableRow: number
 ): EntityLocation {
   return { archetypeId, archetypeRow, tableId, tableRow };
 }
@@ -197,9 +197,7 @@ export class EntityManager {
   setEntityMeta(entity: Entity, meta: EntityMeta): void {
     const existing = this.entities.get(entity.index);
     if (!existing || existing.generation !== entity.generation) {
-      throw new Error(
-        `Entity ${entity.index}v${entity.generation} does not exist`,
-      );
+      throw new Error(`Entity ${entity.index}v${entity.generation} does not exist`);
     }
     this.entityMeta.set(entity.index, meta);
   }

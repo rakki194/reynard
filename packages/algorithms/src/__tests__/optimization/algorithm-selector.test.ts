@@ -26,9 +26,7 @@ describe("AlgorithmSelector", () => {
 
       expect(selection.algorithm).toBe("naive");
       expect(selection.confidence).toBe(0.9);
-      expect(selection.reasoning).toContain(
-        "Small object count favors naive approach",
-      );
+      expect(selection.reasoning).toContain("Small object count favors naive approach");
       expect(selection.expectedPerformance.executionTime).toBeGreaterThan(0);
       expect(selection.expectedPerformance.memoryUsage).toBeGreaterThan(0);
     });
@@ -46,9 +44,7 @@ describe("AlgorithmSelector", () => {
 
       expect(selection.algorithm).toBe("spatial");
       expect(selection.confidence).toBe(0.8);
-      expect(selection.reasoning).toContain(
-        "Medium object count benefits from spatial optimization",
-      );
+      expect(selection.reasoning).toContain("Medium object count benefits from spatial optimization");
       expect(selection.expectedPerformance.executionTime).toBeGreaterThan(0);
       expect(selection.expectedPerformance.memoryUsage).toBeGreaterThan(0);
     });
@@ -66,9 +62,7 @@ describe("AlgorithmSelector", () => {
 
       expect(selection.algorithm).toBe("optimized");
       expect(selection.confidence).toBe(0.95);
-      expect(selection.reasoning).toContain(
-        "Large object count requires optimization",
-      );
+      expect(selection.reasoning).toContain("Large object count requires optimization");
       expect(selection.expectedPerformance.executionTime).toBeGreaterThan(0);
       expect(selection.expectedPerformance.memoryUsage).toBeGreaterThan(0);
     });
@@ -124,9 +118,7 @@ describe("AlgorithmSelector", () => {
 
       expect(selection.algorithm).toBe("optimized-spatial");
       expect(selection.confidence).toBe(0.9);
-      expect(selection.reasoning).toContain(
-        "High spatial density benefits from optimization",
-      );
+      expect(selection.reasoning).toContain("High spatial density benefits from optimization");
     });
 
     it("should select standard spatial for low density workloads", () => {
@@ -142,9 +134,7 @@ describe("AlgorithmSelector", () => {
 
       expect(selection.algorithm).toBe("spatial");
       expect(selection.confidence).toBe(0.8);
-      expect(selection.reasoning).toContain(
-        "Low spatial density allows standard spatial hashing",
-      );
+      expect(selection.reasoning).toContain("Low spatial density allows standard spatial hashing");
     });
 
     it("should handle edge case at density threshold", () => {
@@ -177,9 +167,7 @@ describe("AlgorithmSelector", () => {
 
       expect(selection.algorithm).toBe("union-find");
       expect(selection.confidence).toBe(0.9);
-      expect(selection.reasoning).toContain(
-        "Small dataset size optimal for standard Union-Find",
-      );
+      expect(selection.reasoning).toContain("Small dataset size optimal for standard Union-Find");
     });
 
     it("should select batch union-find for large datasets", () => {
@@ -195,9 +183,7 @@ describe("AlgorithmSelector", () => {
 
       expect(selection.algorithm).toBe("batch-union-find");
       expect(selection.confidence).toBe(0.9);
-      expect(selection.reasoning).toContain(
-        "Large dataset benefits from batch operations",
-      );
+      expect(selection.reasoning).toContain("Large dataset benefits from batch operations");
     });
 
     it("should handle threshold boundary", () => {
@@ -315,7 +301,7 @@ describe("AlgorithmSelector", () => {
       const largeSelection = selector.selectCollisionAlgorithm(largeWorkload);
 
       expect(largeSelection.expectedPerformance.executionTime).toBeGreaterThan(
-        smallSelection.expectedPerformance.executionTime,
+        smallSelection.expectedPerformance.executionTime
       );
     });
   });
@@ -383,9 +369,7 @@ describe("AlgorithmSelector", () => {
 
       expect(selection1.algorithm).toBe(selection2.algorithm);
       expect(selection1.confidence).toBe(selection2.confidence);
-      expect(selection1.expectedPerformance.executionTime).toBe(
-        selection2.expectedPerformance.executionTime,
-      );
+      expect(selection1.expectedPerformance.executionTime).toBe(selection2.expectedPerformance.executionTime);
     });
 
     it("should provide valid reasoning for all selections", () => {
@@ -413,14 +397,12 @@ describe("AlgorithmSelector", () => {
         },
       ];
 
-      workloads.forEach((workload) => {
+      workloads.forEach(workload => {
         const selection = selector.selectCollisionAlgorithm(workload);
 
         expect(selection.reasoning).toBeInstanceOf(Array);
         expect(selection.reasoning.length).toBeGreaterThan(0);
-        expect(
-          selection.reasoning.every((reason) => typeof reason === "string"),
-        ).toBe(true);
+        expect(selection.reasoning.every(reason => typeof reason === "string")).toBe(true);
       });
     });
   });

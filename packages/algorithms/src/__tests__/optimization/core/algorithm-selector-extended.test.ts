@@ -4,10 +4,7 @@
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { AlgorithmSelector } from "../../../optimization/core/algorithm-selector";
-import type {
-  WorkloadCharacteristics,
-  PerformanceRecord,
-} from "../../../optimization/core/algorithm-selector";
+import type { WorkloadCharacteristics, PerformanceRecord } from "../../../optimization/core/algorithm-selector";
 
 describe("Algorithm Selector Extended Coverage", () => {
   let selector: AlgorithmSelector;
@@ -68,7 +65,7 @@ describe("Algorithm Selector Extended Coverage", () => {
         },
       ];
 
-      workloads.forEach((workload) => {
+      workloads.forEach(workload => {
         const selection = selector.selectCollisionAlgorithm(workload);
         expect(selection).toBeDefined();
         expect(selection.algorithm).toBeDefined();
@@ -271,7 +268,7 @@ describe("Algorithm Selector Extended Coverage", () => {
         },
       ];
 
-      performanceRecords.forEach((record) => {
+      performanceRecords.forEach(record => {
         selector.updatePerformanceModel(record);
       });
 
@@ -405,8 +402,7 @@ describe("Algorithm Selector Extended Coverage", () => {
       // Add 1000 performance records
       for (let i = 0; i < 1000; i++) {
         const performanceRecord: PerformanceRecord = {
-          algorithm:
-            i % 3 === 0 ? "naive" : i % 3 === 1 ? "spatial" : "optimized",
+          algorithm: i % 3 === 0 ? "naive" : i % 3 === 1 ? "spatial" : "optimized",
           objectCount: 100 + i,
           executionTime: 5.2 + i * 0.01,
           memoryUsage: 1024 + i * 10,

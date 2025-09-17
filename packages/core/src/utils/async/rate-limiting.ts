@@ -15,7 +15,7 @@
  */
 export function debounce<T extends (...args: any[]) => Promise<any>>(
   fn: T,
-  delay: number,
+  delay: number
 ): (...args: Parameters<T>) => Promise<ReturnType<T>> {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let pendingPromise: Promise<ReturnType<T>> | null = null;
@@ -80,7 +80,7 @@ export function debounce<T extends (...args: any[]) => Promise<any>>(
  */
 export function throttle<T extends (...args: any[]) => Promise<any>>(
   fn: T,
-  delay: number,
+  delay: number
 ): (...args: Parameters<T>) => Promise<ReturnType<T> | void> {
   let lastExecuted = 0;
   let isThrottled = false;

@@ -2,10 +2,7 @@ import { Component, createSignal, createEffect, onMount, Show } from "solid-js";
 import { MonacoEditor } from "../solid-monaco/MonacoEditor";
 import { useLanguageDetection } from "../composables/useLanguageDetection";
 import { useReynardMonaco } from "../composables/useReynardMonaco";
-import {
-  getMonacoLanguageFromName,
-  getDisplayNameFromLanguage,
-} from "../utils/languageUtils";
+import { getMonacoLanguageFromName, getDisplayNameFromLanguage } from "../utils/languageUtils";
 import "./CodeEditor.css";
 
 interface CodeEditorProps {
@@ -22,7 +19,7 @@ interface CodeEditorProps {
   className?: string;
 }
 
-export const CodeEditor: Component<CodeEditorProps> = (props) => {
+export const CodeEditor: Component<CodeEditorProps> = props => {
   const languageDetection = useLanguageDetection();
 
   // Use Reynard Monaco integration for proper theme support
@@ -51,9 +48,7 @@ export const CodeEditor: Component<CodeEditorProps> = (props) => {
       setIsLoading(false);
     } catch (error) {
       console.error("Failed to initialize Monaco editor:", error);
-      setError(
-        error instanceof Error ? error.message : "Failed to initialize editor",
-      );
+      setError(error instanceof Error ? error.message : "Failed to initialize editor");
       setIsLoading(false);
     }
   });
@@ -63,11 +58,7 @@ export const CodeEditor: Component<CodeEditorProps> = (props) => {
     const content = props.value;
     const language = props.language;
 
-    if (
-      content &&
-      !language &&
-      languageDetection.isNaturalLanguageDetectionAvailable()
-    ) {
+    if (content && !language && languageDetection.isNaturalLanguageDetectionAvailable()) {
       // Only detect if we have content and no explicit language
       languageDetection.detectNaturalLanguage(content);
     }
@@ -85,10 +76,7 @@ export const CodeEditor: Component<CodeEditorProps> = (props) => {
 
   const getLanguageName = (): string => {
     // If we have a detected natural language and no explicit language is set, use the detected one
-    if (
-      !props.language &&
-      languageDetection.detectedNaturalLanguage() !== "unknown"
-    ) {
+    if (!props.language && languageDetection.detectedNaturalLanguage() !== "unknown") {
       const detected = languageDetection.detectedNaturalLanguage();
       return detected.charAt(0).toUpperCase() + detected.slice(1);
     }
@@ -106,16 +94,11 @@ export const CodeEditor: Component<CodeEditorProps> = (props) => {
             </div>
             <h3>Editor Error</h3>
             <p>{error()}</p>
-            <button onClick={() => window.location.reload()}>
-              Reload Page
-            </button>
+            <button onClick={() => window.location.reload()}>Reload Page</button>
           </div>
         </Show>
 
-        <Show
-          when={!error() && !isLoading()}
-          fallback={<div class="loading">Loading...</div>}
-        >
+        <Show when={!error() && !isLoading()} fallback={<div class="loading">Loading...</div>}>
           <div
             ref={editorContainerRef}
             class={`monaco-editor-container ${props.height ? "monaco-editor-container--custom-height" : ""} ${props.width ? "monaco-editor-container--custom-width" : ""}`}
@@ -153,9 +136,7 @@ export const CodeEditor: Component<CodeEditorProps> = (props) => {
             <span class="detection-icon">🔍</span>
             Auto-detected
             <Show when={languageDetection.confidence() > 0}>
-              <span class="confidence">
-                ({Math.round(languageDetection.confidence() * 100)}%)
-              </span>
+              <span class="confidence">({Math.round(languageDetection.confidence() * 100)}%)</span>
             </Show>
           </span>
         </Show>

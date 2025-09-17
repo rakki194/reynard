@@ -8,10 +8,7 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { checkCollision } from "../../geometry/collision/aabb-collision";
 import type { AABB } from "../../geometry/collision/aabb-types";
-import {
-  AlgorithmSelector,
-  EnhancedMemoryPool as MemoryPool,
-} from "../../optimization";
+import { AlgorithmSelector, EnhancedMemoryPool as MemoryPool } from "../../optimization";
 import {
   OptimizationConfig,
   PerformanceMonitor,
@@ -124,8 +121,8 @@ describe("Optimized Algorithms API", () => {
       const nearby = performSpatialQuery(queryAABB, spatialObjects);
 
       expect(nearby).toHaveLength(2);
-      expect(nearby.map((obj) => obj.data)).toContain("object1");
-      expect(nearby.map((obj) => obj.data)).toContain("object3");
+      expect(nearby.map(obj => obj.data)).toContain("object1");
+      expect(nearby.map(obj => obj.data)).toContain("object3");
     });
   });
 

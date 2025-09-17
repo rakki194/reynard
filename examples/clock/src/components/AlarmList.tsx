@@ -13,7 +13,7 @@ interface AlarmListProps {
   onDeleteAlarm: (id: string) => void;
 }
 
-export const AlarmList: Component<AlarmListProps> = (props) => {
+export const AlarmList: Component<AlarmListProps> = props => {
   const formatAlarmTime = (time: string): string => {
     const [hours, minutes] = time.split(":");
     const hour = parseInt(hours);
@@ -24,18 +24,14 @@ export const AlarmList: Component<AlarmListProps> = (props) => {
 
   return (
     <div class="alarm-list">
-      <h3 class="alarm-list-title">
-        Active Alarms ({props.alarms.filter((a) => a.enabled).length})
-      </h3>
+      <h3 class="alarm-list-title">Active Alarms ({props.alarms.filter(a => a.enabled).length})</h3>
 
       <Show when={props.alarms.length === 0}>
-        <div class="alarm-empty-state">
-          No alarms set. Add one above to get started!
-        </div>
+        <div class="alarm-empty-state">No alarms set. Add one above to get started!</div>
       </Show>
 
       <For each={props.alarms}>
-        {(alarm) => (
+        {alarm => (
           <div class="alarm-item">
             <div>
               <div class="alarm-time">{formatAlarmTime(alarm.time)}</div>
@@ -49,10 +45,7 @@ export const AlarmList: Component<AlarmListProps> = (props) => {
               >
                 {alarm.enabled ? "🔔" : "🔕"}
               </Button>
-              <Button
-                onClick={() => props.onDeleteAlarm(alarm.id)}
-                class="btn btn-danger btn-small"
-              >
+              <Button onClick={() => props.onDeleteAlarm(alarm.id)} class="btn btn-danger btn-small">
                 🗑️
               </Button>
             </div>

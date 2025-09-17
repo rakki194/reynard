@@ -56,51 +56,34 @@ export function detectProgrammingLanguage(extension: string): string {
 /**
  * Extract dependencies from code content based on file type
  */
-export function extractDependencies(
-  content: string,
-  extension: string,
-): string[] {
+export function extractDependencies(content: string, extension: string): string[] {
   const dependencies: string[] = [];
 
   // Extract dependencies based on file type
   if (extension === ".py") {
     // Python imports
-    const importMatches = content.match(
-      /^(?:from|import)\s+([a-zA-Z_][a-zA-Z0-9_.]*)/gm,
-    );
+    const importMatches = content.match(/^(?:from|import)\s+([a-zA-Z_][a-zA-Z0-9_.]*)/gm);
     if (importMatches) {
-      dependencies.push(
-        ...importMatches.map((match) =>
-          match.replace(/^(?:from|import)\s+/, ""),
-        ),
-      );
+      dependencies.push(...importMatches.map(match => match.replace(/^(?:from|import)\s+/, "")));
     }
   } else if (extension === ".js" || extension === ".ts") {
     // JavaScript/TypeScript imports
-    const importMatches = content.match(
-      /^(?:import|export)\s+.*?from\s+['"]([^'"]+)['"]/gm,
-    );
+    const importMatches = content.match(/^(?:import|export)\s+.*?from\s+['"]([^'"]+)['"]/gm);
     if (importMatches) {
       dependencies.push(
         ...importMatches
-          .map((match) => {
+          .map(match => {
             const fromMatch = match.match(/from\s+['"]([^'"]+)['"]/);
             return fromMatch ? fromMatch[1] : "";
           })
-          .filter(Boolean),
+          .filter(Boolean)
       );
     }
   } else if (extension === ".java") {
     // Java imports
-    const importMatches = content.match(
-      /^import\s+([a-zA-Z_][a-zA-Z0-9_.]*);/gm,
-    );
+    const importMatches = content.match(/^import\s+([a-zA-Z_][a-zA-Z0-9_.]*);/gm);
     if (importMatches) {
-      dependencies.push(
-        ...importMatches.map((match) =>
-          match.replace(/^import\s+/, "").replace(/;$/, ""),
-        ),
-      );
+      dependencies.push(...importMatches.map(match => match.replace(/^import\s+/, "").replace(/;$/, "")));
     }
   }
 
@@ -115,13 +98,10 @@ export function detectCodePurpose(extension: string): string {
 
   if (filename.includes("test") || filename.includes("spec")) return "test";
   if (filename.includes("config") || filename.includes("conf")) return "config";
-  if (filename.includes("readme") || filename.includes("doc"))
-    return "documentation";
+  if (filename.includes("readme") || filename.includes("doc")) return "documentation";
   if (filename.includes("dockerfile")) return "container";
-  if (filename.includes("gitignore") || filename.includes("gitattributes"))
-    return "version-control";
-  if (filename.includes("package") || filename.includes("requirements"))
-    return "dependencies";
+  if (filename.includes("gitignore") || filename.includes("gitattributes")) return "version-control";
+  if (filename.includes("package") || filename.includes("requirements")) return "dependencies";
 
   return "source";
 }

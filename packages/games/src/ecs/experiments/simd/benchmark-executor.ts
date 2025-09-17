@@ -7,7 +7,7 @@ import { World } from "../../index.js";
 export class BenchmarkExecutor {
   constructor(
     private simdSystem: PositionSystemSIMD,
-    private reynardWorld: World,
+    private reynardWorld: World
   ) {}
 
   executeSIMDPositions(iterations: number, deltaTime: number): number {
@@ -42,12 +42,7 @@ export class BenchmarkExecutor {
     return performance.now() - start;
   }
 
-  executeSIMDSpatial(
-    iterations: number,
-    queryX: number,
-    queryY: number,
-    radius: number,
-  ): number {
+  executeSIMDSpatial(iterations: number, queryX: number, queryY: number, radius: number): number {
     const start = performance.now();
     for (let i = 0; i < iterations; i++) {
       this.simdSystem.spatialQuery(queryX, queryY, radius);
@@ -69,7 +64,7 @@ export class BenchmarkResultFactory {
     name: string,
     iterations: number,
     totalTime: number,
-    entityCount: number,
+    entityCount: number
   ): BenchmarkResult {
     return {
       name,
@@ -80,11 +75,7 @@ export class BenchmarkResultFactory {
     };
   }
 
-  static createCollisionResult(
-    name: string,
-    iterations: number,
-    totalTime: number,
-  ): BenchmarkResult {
+  static createCollisionResult(name: string, iterations: number, totalTime: number): BenchmarkResult {
     return {
       name,
       iterations,
@@ -94,11 +85,7 @@ export class BenchmarkResultFactory {
     };
   }
 
-  static createSpatialResult(
-    name: string,
-    iterations: number,
-    totalTime: number,
-  ): BenchmarkResult {
+  static createSpatialResult(name: string, iterations: number, totalTime: number): BenchmarkResult {
     return {
       name,
       iterations,

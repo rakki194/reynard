@@ -28,7 +28,7 @@ export default defineConfig({
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ["html", { outputFolder: "../results/benchmark-results" }],
+    ["html", { outputFolder: "../results/benchmark-results", open: "never" }],
     ["json", { outputFile: "../results/benchmark-results.json" }],
     ["junit", { outputFile: "../results/benchmark-results.xml" }],
     ["list"],

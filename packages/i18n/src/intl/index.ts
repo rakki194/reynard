@@ -10,9 +10,4 @@ export * from "./utilities";
 
 // Re-export types and classes from the main types module
 export type { TranslationParams } from "../types";
-export {
-  IntlNumberFormatter,
-  IntlDateFormatter,
-  IntlRelativeTimeFormatter,
-  IntlPluralRules,
-} from "../types";
+export { IntlNumberFormatter, IntlDateFormatter, IntlRelativeTimeFormatter, IntlPluralRules } from "../types";

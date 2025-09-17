@@ -83,13 +83,13 @@ describe("useChat", () => {
 
     mockFetch.mockResolvedValueOnce(createMockStreamingResponse(chunks));
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const chat = useChat({ endpoint: "/api/chat" });
 
       await chat.actions.sendMessage("Hello");
 
       // Wait for streaming to complete
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(chat.messages()).toHaveLength(2); // User message + assistant response
       expect(chat.messages()[0].role).toBe("user");
@@ -111,7 +111,7 @@ describe("useChat", () => {
 
     mockFetch.mockResolvedValueOnce(createMockStreamingResponse(chunks));
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const chat = useChat();
 
       let thinkingDetected = false;
@@ -126,7 +126,7 @@ describe("useChat", () => {
       await chat.actions.sendMessage("Question");
 
       // Wait for streaming to complete
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(thinkingDetected).toBe(true);
       expect(chat.isThinking()).toBe(false); // Should be false after completion
@@ -162,17 +162,15 @@ describe("useChat", () => {
 
     mockFetch.mockResolvedValueOnce(createMockStreamingResponse(chunks));
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const chat = useChat();
 
       await chat.actions.sendMessage("What is 2 + 2?");
 
       // Wait for streaming to complete
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
-      const assistantMessage = chat
-        .messages()
-        .find((m) => m.role === "assistant");
+      const assistantMessage = chat.messages().find(m => m.role === "assistant");
       expect(assistantMessage?.toolCalls).toHaveLength(1);
       expect(assistantMessage?.toolCalls![0].name).toBe("calculator");
       expect(assistantMessage?.toolCalls![0].status).toBe("completed");
@@ -197,13 +195,13 @@ describe("useChat", () => {
 
     mockFetch.mockResolvedValueOnce(createMockStreamingResponse(chunks));
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const chat = useChat();
 
       await chat.actions.sendMessage("Hello");
 
       // Wait for streaming to complete
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       expect(chat.error()).toBeDefined();
       expect(chat.error()!.type).toBe("api_error");
@@ -227,7 +225,7 @@ describe("useChat", () => {
       body: stream,
     });
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const chat = useChat();
 
       // Start streaming
@@ -336,7 +334,7 @@ describe("useChat", () => {
 
     mockFetch.mockResolvedValueOnce(createMockStreamingResponse(chunks));
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const chat = useChat({
         initialMessages: [
           {
@@ -351,14 +349,14 @@ describe("useChat", () => {
       await chat.actions.retryLastMessage();
 
       // Wait for streaming to complete
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       expect(mockFetch).toHaveBeenCalledWith(
         expect.anything(),
         expect.objectContaining({
           method: "POST",
           body: expect.stringContaining("Original question"),
-        }),
+        })
       );
 
       dispose();
@@ -408,7 +406,7 @@ describe("useChat", () => {
   it("should handle network errors gracefully", async () => {
     mockFetch.mockRejectedValueOnce(new Error("Network error"));
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const chat = useChat();
 
       await chat.actions.sendMessage("Hello");

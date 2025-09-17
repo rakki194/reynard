@@ -5,7 +5,7 @@ interface RendererStatsProps {
   geometryStats: { cached: number };
 }
 
-export const RendererStats: Component<RendererStatsProps> = (props) => {
+export const RendererStats: Component<RendererStatsProps> = props => {
   return (
     <div class="renderer-stats">
       <div class="stats-item">

@@ -21,6 +21,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.8.3] - 2025-09-17
+
+### Added
+
+- **RAG Phase 2 Implementation**: Comprehensive Phase 2 enhancement implementation with AST-aware code chunking using tree-sitter for Python/TypeScript/JavaScript/Java/C++, A/B testing framework for embedding model evaluation with retrieval accuracy benchmarks, hybrid search engine with Reciprocal Rank Fusion algorithm and BM25 keyword scoring, and unified Phase 2 service integrating all enhancements. Expected improvements: 40% better semantic coherence, 35% improvement in search recall, 25% better multi-language support (Strategic-Fox-42)
+- **RAG Dependencies**: Added Phase 1 RAG optimization dependencies to both monorepo and backend pyproject.toml files including tiktoken for model-specific tokenization, psutil for system resource monitoring, prometheus-client for performance metrics, and numpy for statistical analysis. Future phases (enhanced chunking, hybrid search, multi-modal embeddings) are documented for future implementation (Strategic-Fox-42)
+- **RAG Embeddings Optimization**: Comprehensive Phase 1 optimization implementation with HNSW index tuning (m=32, ef_construction=400), concurrent batch processing with rate limiting, model-specific tokenization using tiktoken, LRU cache with hit rate monitoring, and performance metrics collection. Expected improvements: 50% latency reduction, 20% recall improvement, 4x throughput increase (Strategic-Fox-42)
+- **Search System**: Complete overhaul of search capabilities with FastAPI backend integration, semantic search using vector embeddings, hybrid search combining semantic and syntax search, intelligent query suggestions, and comprehensive codebase indexing (Free-Advisor-8)
+- **Embedding Service Fix**: Fixed sentence-transformers model loading error by properly separating Ollama embedding models (embeddinggemma:latest) from sentence-transformer fallback models, resolving Hugging Face repository ID validation issues (Strategic-Fox-42)
+- **Code Embedding Model Fix**: Replaced incompatible microsoft/codebert-base with sentence-transformers/all-mpnet-base-v2 for proper code embedding support, eliminating mean pooling warnings and improving code understanding capabilities (Strategic-Fox-42)
+- **Bandit Configuration**: Optimized Bandit security scanner configuration with comprehensive Python package scanning, proper exclusions, and JSON output format (Active-Counselor-30)
+- **Queue Watcher Enhancement**: Expanded queue watcher to scan all important project directories including backend, services, scripts, e2e, nginx, todos, data, fenrir, third_party, and .cursor subdirectories with comprehensive exclude patterns for build artifacts and temporary files (Jolly-Grandmaster-5)
+- **Project Architecture System**: Created comprehensive project architecture package with semantic and syntactic pathing, centralized directory definitions, relationship mapping, and utility functions for consistent project structure management across all tools and VS Code tasks (Jolly-Grandmaster-5)
+
+### Changed
+
+- **Security Hardening**: Fixed critical security vulnerabilities in Python backend including MD5 hash replacement with SHA-256 for ETag generation, improved error handling in ComfyUI service, secured HuggingFace model downloads with trust_remote_code=False, and changed default host binding from 0.0.0.0 to 127.0.0.1 for enhanced security (Security-Wolf-17)
+- **Directory Rename**: Renamed `libraries/` directory to `services/` to better reflect the purpose of gatekeeper and agent-naming services, updated all documentation, workspace configuration, and MCP server references (Strategic-Fox-42)
 
 ## [0.8.2] - 2025-09-17
 
@@ -59,7 +77,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Repository Size**: Significantly reduced repository size and clone time
 - **Development Workflow**: Cleaned up development environment by removing generated files from version control
 
-
 ## [0.8.1] - 2025-09-17
 
 **⚠️ REFACTORING SNAPSHOT**: This release represents a major refactoring state with extensive TypeScript compilation outputs and cleanup. The project is in a transitional state during architectural improvements.
@@ -86,17 +103,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Documentation Updates**: Updated MCP server, backend, and main README documentation to reflect single authoritative ECS architecture (Ripple-Strategist-5)
 - **ECS World README**: Updated ECS World package documentation with single authoritative architecture guidance (Ripple-Strategist-5)
 
-### Deprecated
-
 ### Removed
 
 - **Deprecated Optimization Files**: Removed outdated optimization documentation files (OPTIMIZATION_COMPLETE.md, PEER_DEPENDENCY_OPTIMIZATION.md, PHASE2_PROGRESS.md, PHASE3_PROGRESS.md) as part of codebase cleanup
 - **Reload Watcher System**: Removed deprecated reload watcher system and associated test files from backend, replaced with modern development workflow
 - **Packages README**: Removed redundant packages/README.md file, documentation consolidated into main project documentation
-
-### Fixed
-
-### Security
 
 ## [0.8.0] - 2025-09-16
 

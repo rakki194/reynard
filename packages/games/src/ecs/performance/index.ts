@@ -87,9 +87,7 @@ export type { Component, Entity, Resource, World } from "../types";
  * ecs.runSystems(0.016);
  * ```
  */
-export async function quickStartECS(
-  maxEntities: number = 10000,
-): Promise<UnifiedECS> {
+export async function quickStartECS(maxEntities: number = 10000): Promise<UnifiedECS> {
   return await createECSSystem({
     maxEntities,
     enableWASM: true,
@@ -116,7 +114,7 @@ export async function quickStartECS(
  */
 export async function benchmarkECS(
   entityCount: number = 1000,
-  iterations: number = 100,
+  iterations: number = 100
 ): Promise<{
   wasmSpeedup: number;
   typescriptTime: number;
@@ -201,9 +199,7 @@ export async function diagnoseECS(): Promise<{
   }
 
   if (!isWASMAvailable) {
-    recommendations.push(
-      "WASM SIMD module failed to load - using TypeScript fallback",
-    );
+    recommendations.push("WASM SIMD module failed to load - using TypeScript fallback");
   }
 
   if (recommendations.length === 0) {

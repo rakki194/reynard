@@ -9,16 +9,7 @@
 /**
  * Supported LoRA model file extensions
  */
-export const LORA_EXTENSIONS = new Set([
-  ".safetensors",
-  ".ckpt",
-  ".pt",
-  ".pth",
-  ".bin",
-  ".model",
-  ".lora",
-  ".lycoris",
-]);
+export const LORA_EXTENSIONS = new Set([".safetensors", ".ckpt", ".pt", ".pth", ".bin", ".model", ".lora", ".lycoris"]);
 
 /**
  * Supported OCR file extensions (images that may contain text)
@@ -64,14 +55,7 @@ export const CAPTION_EXTENSIONS = new Set([
 /**
  * Metadata file extensions
  */
-export const METADATA_EXTENSIONS = new Set([
-  ".bboxes.json",
-  ".metadata.json",
-  ".info.json",
-  ".exif",
-  ".xmp",
-  ".iptc",
-]);
+export const METADATA_EXTENSIONS = new Set([".bboxes.json", ".metadata.json", ".info.json", ".exif", ".xmp", ".iptc"]);
 
 /**
  * Special MIME types mapping

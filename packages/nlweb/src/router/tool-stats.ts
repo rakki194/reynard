@@ -12,7 +12,7 @@ import type { NLWebTool } from "../types/index.js";
 export function calculateToolStats(
   tools: NLWebTool[],
   toolsByCategory: Map<string, Set<string>>,
-  toolsByTag: Map<string, Set<string>>,
+  toolsByTag: Map<string, Set<string>>
 ): {
   totalTools: number;
   toolsByCategory: Record<string, number>;

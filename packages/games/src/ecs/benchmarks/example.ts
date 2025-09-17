@@ -47,19 +47,11 @@ export async function basicBenchmarkExample(): Promise<void> {
     console.log(`✅ Completed ${results.length} benchmark tests`);
 
     // Find the fastest and slowest operations
-    const fastest = results.reduce((min, result) =>
-      result.averageTimeUs < min.averageTimeUs ? result : min,
-    );
-    const slowest = results.reduce((max, result) =>
-      result.averageTimeUs > max.averageTimeUs ? result : max,
-    );
+    const fastest = results.reduce((min, result) => (result.averageTimeUs < min.averageTimeUs ? result : min));
+    const slowest = results.reduce((max, result) => (result.averageTimeUs > max.averageTimeUs ? result : max));
 
-    console.log(
-      `🏃 Fastest: ${fastest.operation} (${fastest.averageTimeUs.toFixed(2)}μs)`,
-    );
-    console.log(
-      `🐌 Slowest: ${slowest.operation} (${slowest.averageTimeUs.toFixed(2)}μs)`,
-    );
+    console.log(`🏃 Fastest: ${fastest.operation} (${fastest.averageTimeUs.toFixed(2)}μs)`);
+    console.log(`🐌 Slowest: ${slowest.operation} (${slowest.averageTimeUs.toFixed(2)}μs)`);
   } catch (error) {
     console.error("❌ Benchmark failed:", error);
   }
@@ -85,12 +77,9 @@ export async function customConfigExample(): Promise<void> {
     const results = await runner.runAllBenchmarks();
 
     // Analyze memory usage
-    const memoryResults = results.filter((r) => r.memoryUsageMB !== undefined);
+    const memoryResults = results.filter(r => r.memoryUsageMB !== undefined);
     if (memoryResults.length > 0) {
-      const totalMemory = memoryResults.reduce(
-        (sum, r) => sum + (r.memoryUsageMB || 0),
-        0,
-      );
+      const totalMemory = memoryResults.reduce((sum, r) => sum + (r.memoryUsageMB || 0), 0);
       const avgMemory = totalMemory / memoryResults.length;
       console.log(`💾 Average memory usage: ${avgMemory.toFixed(2)} MB`);
     }
@@ -115,9 +104,7 @@ export async function categoryBenchmarkExample(): Promise<void> {
     // Test entity operations
     console.log("Testing entity operations...");
     const entityResults = await runEntityBenchmarks(config);
-    console.log(
-      `✅ Entity benchmarks: ${entityResults.length} tests completed`,
-    );
+    console.log(`✅ Entity benchmarks: ${entityResults.length} tests completed`);
 
     // Test query performance
     console.log("Testing query performance...");
@@ -127,15 +114,11 @@ export async function categoryBenchmarkExample(): Promise<void> {
     // Test system execution
     console.log("Testing system execution...");
     const systemResults = await runSystemBenchmarks(config);
-    console.log(
-      `✅ System benchmarks: ${systemResults.length} tests completed`,
-    );
+    console.log(`✅ System benchmarks: ${systemResults.length} tests completed`);
 
     // Combine and analyze results
     const allResults = [...entityResults, ...queryResults, ...systemResults];
-    const avgTime =
-      allResults.reduce((sum, r) => sum + r.averageTimeUs, 0) /
-      allResults.length;
+    const avgTime = allResults.reduce((sum, r) => sum + r.averageTimeUs, 0) / allResults.length;
     console.log(`📊 Overall average time: ${avgTime.toFixed(2)}μs`);
   } catch (error) {
     console.error("❌ Category benchmark failed:", error);
@@ -165,23 +148,14 @@ export async function regressionTestExample(): Promise<void> {
       timestamp: new Date().toISOString(),
       results: baselineResults,
       summary: {
-        avgTimeUs:
-          baselineResults.reduce((sum, r) => sum + r.averageTimeUs, 0) /
-          baselineResults.length,
-        totalMemoryMB: baselineResults.reduce(
-          (sum, r) => sum + (r.memoryUsageMB || 0),
-          0,
-        ),
+        avgTimeUs: baselineResults.reduce((sum, r) => sum + r.averageTimeUs, 0) / baselineResults.length,
+        totalMemoryMB: baselineResults.reduce((sum, r) => sum + (r.memoryUsageMB || 0), 0),
       },
     };
 
     console.log("📊 Baseline Performance:");
-    console.log(
-      `  Average Time: ${baselineData.summary.avgTimeUs.toFixed(2)}μs`,
-    );
-    console.log(
-      `  Total Memory: ${baselineData.summary.totalMemoryMB.toFixed(2)} MB`,
-    );
+    console.log(`  Average Time: ${baselineData.summary.avgTimeUs.toFixed(2)}μs`);
+    console.log(`  Total Memory: ${baselineData.summary.totalMemoryMB.toFixed(2)} MB`);
 
     // Simulate running the same benchmarks again (in practice, this would be a separate run)
     console.log("\nRunning comparison benchmarks...");
@@ -189,29 +163,22 @@ export async function regressionTestExample(): Promise<void> {
 
     // Compare results
     const comparisonData = {
-      avgTimeUs:
-        comparisonResults.reduce((sum, r) => sum + r.averageTimeUs, 0) /
-        comparisonResults.length,
-      totalMemoryMB: comparisonResults.reduce(
-        (sum, r) => sum + (r.memoryUsageMB || 0),
-        0,
-      ),
+      avgTimeUs: comparisonResults.reduce((sum, r) => sum + r.averageTimeUs, 0) / comparisonResults.length,
+      totalMemoryMB: comparisonResults.reduce((sum, r) => sum + (r.memoryUsageMB || 0), 0),
     };
 
     const timeDiff = comparisonData.avgTimeUs - baselineData.summary.avgTimeUs;
     const timeDiffPercent = (timeDiff / baselineData.summary.avgTimeUs) * 100;
 
-    const memoryDiff =
-      comparisonData.totalMemoryMB - baselineData.summary.totalMemoryMB;
-    const memoryDiffPercent =
-      (memoryDiff / baselineData.summary.totalMemoryMB) * 100;
+    const memoryDiff = comparisonData.totalMemoryMB - baselineData.summary.totalMemoryMB;
+    const memoryDiffPercent = (memoryDiff / baselineData.summary.totalMemoryMB) * 100;
 
     console.log("📈 Performance Comparison:");
     console.log(
-      `  Time Change: ${timeDiff > 0 ? "+" : ""}${timeDiff.toFixed(2)}μs (${timeDiffPercent > 0 ? "+" : ""}${timeDiffPercent.toFixed(1)}%)`,
+      `  Time Change: ${timeDiff > 0 ? "+" : ""}${timeDiff.toFixed(2)}μs (${timeDiffPercent > 0 ? "+" : ""}${timeDiffPercent.toFixed(1)}%)`
     );
     console.log(
-      `  Memory Change: ${memoryDiff > 0 ? "+" : ""}${memoryDiff.toFixed(2)} MB (${memoryDiffPercent > 0 ? "+" : ""}${memoryDiffPercent.toFixed(1)}%)`,
+      `  Memory Change: ${memoryDiff > 0 ? "+" : ""}${memoryDiff.toFixed(2)} MB (${memoryDiffPercent > 0 ? "+" : ""}${memoryDiffPercent.toFixed(1)}%)`
     );
 
     // Alert on significant regressions
@@ -251,21 +218,18 @@ export async function stressTestExample(): Promise<void> {
       const memoryMB = result.memoryUsageMB || 0;
 
       console.log(
-        `  ${result.entityCount.toLocaleString().padStart(8)} entities: ${result.averageTimeUs.toFixed(2).padStart(8)}μs, ${opsPerSecond.toFixed(0).padStart(8)} ops/sec, ${memoryMB.toFixed(2).padStart(6)} MB`,
+        `  ${result.entityCount.toLocaleString().padStart(8)} entities: ${result.averageTimeUs.toFixed(2).padStart(8)}μs, ${opsPerSecond.toFixed(0).padStart(8)} ops/sec, ${memoryMB.toFixed(2).padStart(6)} MB`
       );
     }
 
     // Find the breaking point (where performance degrades significantly)
-    const sortedResults = stressResults.sort(
-      (a, b) => a.entityCount - b.entityCount,
-    );
+    const sortedResults = stressResults.sort((a, b) => a.entityCount - b.entityCount);
     let breakingPoint = null;
 
     for (let i = 1; i < sortedResults.length; i++) {
       const prev = sortedResults[i - 1];
       const curr = sortedResults[i];
-      const timeIncrease =
-        (curr.averageTimeUs - prev.averageTimeUs) / prev.averageTimeUs;
+      const timeIncrease = (curr.averageTimeUs - prev.averageTimeUs) / prev.averageTimeUs;
 
       if (timeIncrease > 0.5) {
         // 50% increase in time
@@ -275,13 +239,9 @@ export async function stressTestExample(): Promise<void> {
     }
 
     if (breakingPoint) {
-      console.log(
-        `⚠️  Performance breaking point detected at ${breakingPoint.toLocaleString()} entities`,
-      );
+      console.log(`⚠️  Performance breaking point detected at ${breakingPoint.toLocaleString()} entities`);
     } else {
-      console.log(
-        "✅ No significant performance breaking point detected in tested range",
-      );
+      console.log("✅ No significant performance breaking point detected in tested range");
     }
   } catch (error) {
     console.error("❌ Stress test failed:", error);
@@ -322,28 +282,20 @@ export async function analysisExample(): Promise<void> {
     // Analyze scaling behavior
     console.log("📈 Scaling Analysis:");
     for (const [entityCount, entityResults] of byEntityCount) {
-      const avgTime =
-        entityResults.reduce((sum, r) => sum + r.averageTimeUs, 0) /
-        entityResults.length;
-      const avgMemory =
-        entityResults.reduce((sum, r) => sum + (r.memoryUsageMB || 0), 0) /
-        entityResults.length;
+      const avgTime = entityResults.reduce((sum, r) => sum + r.averageTimeUs, 0) / entityResults.length;
+      const avgMemory = entityResults.reduce((sum, r) => sum + (r.memoryUsageMB || 0), 0) / entityResults.length;
 
       console.log(
-        `  ${entityCount.toLocaleString().padStart(6)} entities: ${avgTime.toFixed(2).padStart(8)}μs avg, ${avgMemory.toFixed(2).padStart(6)} MB avg`,
+        `  ${entityCount.toLocaleString().padStart(6)} entities: ${avgTime.toFixed(2).padStart(8)}μs avg, ${avgMemory.toFixed(2).padStart(6)} MB avg`
       );
     }
 
     // Find performance bottlenecks
-    const slowestOperations = results
-      .sort((a, b) => b.averageTimeUs - a.averageTimeUs)
-      .slice(0, 3);
+    const slowestOperations = results.sort((a, b) => b.averageTimeUs - a.averageTimeUs).slice(0, 3);
 
     console.log("\n🐌 Slowest Operations:");
     for (const result of slowestOperations) {
-      console.log(
-        `  ${result.operation}: ${result.averageTimeUs.toFixed(2)}μs (${result.entityCount} entities)`,
-      );
+      console.log(`  ${result.operation}: ${result.averageTimeUs.toFixed(2)}μs (${result.entityCount} entities)`);
     }
   } catch (error) {
     console.error("❌ Analysis failed:", error);
@@ -374,7 +326,7 @@ export async function runAllExamples(): Promise<void> {
 
 // Run examples if this file is executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  runAllExamples().catch((error) => {
+  runAllExamples().catch(error => {
     console.error("❌ Fatal error:", error);
     process.exit(1);
   });

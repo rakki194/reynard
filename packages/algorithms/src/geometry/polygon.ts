@@ -29,16 +29,11 @@ export class PolygonOps {
     if (polygon.points.length < 3) return false;
 
     let inside = false;
-    for (
-      let i = 0, j = polygon.points.length - 1;
-      i < polygon.points.length;
-      j = i++
-    ) {
+    for (let i = 0, j = polygon.points.length - 1; i < polygon.points.length; j = i++) {
       if (
         polygon.points[i].y > point.y !== polygon.points[j].y > point.y &&
         point.x <
-          ((polygon.points[j].x - polygon.points[i].x) *
-            (point.y - polygon.points[i].y)) /
+          ((polygon.points[j].x - polygon.points[i].x) * (point.y - polygon.points[i].y)) /
             (polygon.points[j].y - polygon.points[i].y) +
             polygon.points[i].x
       ) {

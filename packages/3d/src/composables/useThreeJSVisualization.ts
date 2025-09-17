@@ -24,9 +24,7 @@ export function useThreeJSVisualization(props: ThreeJSVisualizationProps) {
       setIsLoading(false);
     } catch (err) {
       console.error("Failed to initialize Three.js scene:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to initialize 3D scene",
-      );
+      setError(err instanceof Error ? err.message : "Failed to initialize 3D scene");
       setIsLoading(false);
     }
   };

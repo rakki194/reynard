@@ -71,7 +71,7 @@ export class BlockParser extends BaseMarkdownParser {
           type: "horizontalRule",
           content: "",
           line: this.state.currentLine,
-        }),
+        })
       );
       return true;
     }
@@ -93,7 +93,7 @@ export class BlockParser extends BaseMarkdownParser {
           level,
           content: text,
           line: this.state.currentLine,
-        }),
+        })
       );
       return true;
     }
@@ -121,9 +121,7 @@ export class BlockParser extends BaseMarkdownParser {
    * Handle code blocks
    */
   private handleCodeBlock(line: string): boolean {
-    return CodeBlockHandler.handleCodeBlock(line, this.state, (node) =>
-      this.addNode(this.createNode(node)),
-    );
+    return CodeBlockHandler.handleCodeBlock(line, this.state, node => this.addNode(this.createNode(node)));
   }
 
   /**
@@ -162,7 +160,7 @@ export class BlockParser extends BaseMarkdownParser {
           listType: this.state.listType,
           items: this.state.listItems,
           line: this.state.currentLine,
-        }),
+        })
       );
       this.state.inList = false;
       this.state.listItems = [];
@@ -176,7 +174,7 @@ export class BlockParser extends BaseMarkdownParser {
           type: "blockquote",
           content: this.state.blockquoteContent.join("\n"),
           line: this.state.currentLine,
-        }),
+        })
       );
       this.state.inBlockquote = false;
       this.state.blockquoteContent = [];

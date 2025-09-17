@@ -5,10 +5,7 @@
 
 import { Component, createSignal, JSX, onMount } from "solid-js";
 import { ChartConfig } from "../types";
-import {
-  EmbeddingDistributionChart,
-  EmbeddingDistributionData,
-} from "./EmbeddingDistributionChart";
+import { EmbeddingDistributionChart, EmbeddingDistributionData } from "./EmbeddingDistributionChart";
 import { ModelUsageChart, ModelUsageData } from "./ModelUsageChart";
 import { PCAVarianceChart, PCAVarianceData } from "./PCAVarianceChart";
 // Temporarily removed to break circular dependency
@@ -44,9 +41,7 @@ export interface AdvancedChartingDashboardProps {
   height?: number;
 }
 
-export const AdvancedChartingDashboard: Component<
-  AdvancedChartingDashboardProps
-> = (props) => {
+export const AdvancedChartingDashboard: Component<AdvancedChartingDashboardProps> = props => {
   const [activeTab, setActiveTab] = createSignal("model-usage");
   const [isLoading, setIsLoading] = createSignal(props.showLoading || false);
 
@@ -203,7 +198,7 @@ export const AdvancedChartingDashboard: Component<
             <input
               type="checkbox"
               checked={props.useOKLCH}
-              onChange={(e) => {
+              onChange={e => {
                 // This would need to be handled by parent component
                 console.log("OKLCH toggle:", e.currentTarget.checked);
               }}
@@ -216,18 +211,13 @@ export const AdvancedChartingDashboard: Component<
       {/* Temporary simple tabs implementation */}
       <div class="simple-tabs">
         <div class="tab-headers">
-          {tabs.map((tab) => (
-            <button
-              class={`tab-header ${activeTab() === tab.id ? "active" : ""}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
+          {tabs.map(tab => (
+            <button class={`tab-header ${activeTab() === tab.id ? "active" : ""}`} onClick={() => setActiveTab(tab.id)}>
               {tab.label}
             </button>
           ))}
         </div>
-        <div class="tab-content">
-          {tabs.find((tab) => tab.id === activeTab())?.content}
-        </div>
+        <div class="tab-content">{tabs.find(tab => tab.id === activeTab())?.content}</div>
       </div>
     </div>
   );

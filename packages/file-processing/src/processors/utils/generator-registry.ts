@@ -12,10 +12,7 @@ import { AudioThumbnailGenerator } from "../AudioThumbnailGenerator";
 import { DocumentThumbnailGenerator } from "../DocumentThumbnailGenerator";
 
 export interface ThumbnailGenerator {
-  generateThumbnail(
-    file: File | string,
-    options: ThumbnailOptions,
-  ): Promise<any>;
+  generateThumbnail(file: File | string, options: ThumbnailOptions): Promise<any>;
   destroy?(): void;
 }
 
@@ -36,10 +33,7 @@ export class GeneratorRegistry {
   /**
    * Get appropriate generator for file category
    */
-  getGenerator(
-    category: string,
-    options: GeneratorRegistryOptions,
-  ): ThumbnailGenerator | null {
+  getGenerator(category: string, options: GeneratorRegistryOptions): ThumbnailGenerator | null {
     const cacheKey = `${category}-${JSON.stringify(options)}`;
 
     if (this.generators.has(cacheKey)) {
@@ -57,10 +51,7 @@ export class GeneratorRegistry {
   /**
    * Create a new generator instance for the given category
    */
-  private createGenerator(
-    category: string,
-    options: GeneratorRegistryOptions,
-  ): ThumbnailGenerator | null {
+  private createGenerator(category: string, options: GeneratorRegistryOptions): ThumbnailGenerator | null {
     switch (category) {
       case "image":
         return new ImageThumbnailGenerator(options);
@@ -81,7 +72,7 @@ export class GeneratorRegistry {
    * Clean up all cached generators
    */
   destroy(): void {
-    this.generators.forEach((generator) => {
+    this.generators.forEach(generator => {
       if (generator && typeof generator.destroy === "function") {
         generator.destroy();
       }

@@ -6,10 +6,7 @@ import type { GeneratorConfig } from "./config/types/core";
 import type { PackageInfo } from "./config/types/package";
 import { DocPage, DocSection } from "./types.js";
 
-export async function analyzePackages(
-  config: GeneratorConfig,
-  packagePaths: string[],
-): Promise<PackageInfo[]> {
+export async function analyzePackages(config: GeneratorConfig, packagePaths: string[]): Promise<PackageInfo[]> {
   const packageAnalyzer = new PackageAnalyzer({
     name: "reynard-docs",
     path: config.outputPath,
@@ -25,10 +22,7 @@ export async function analyzePackages(
         const apiInfo = await tsAnalyzer.analyze(packageInfo);
         packageInfo.api = apiInfo;
       } catch (error) {
-        console.warn(
-          `⚠️  Warning: Failed to analyze TypeScript API for ${packageInfo.name}:`,
-          error,
-        );
+        console.warn(`⚠️  Warning: Failed to analyze TypeScript API for ${packageInfo.name}:`, error);
       }
       packageInfos.push(packageInfo);
     } catch (error) {
@@ -38,17 +32,13 @@ export async function analyzePackages(
   return packageInfos;
 }
 
-export async function generatePages(
-  config: GeneratorConfig,
-  packageInfos: PackageInfo[],
-): Promise<DocPage[]> {
+export async function generatePages(config: GeneratorConfig, packageInfos: PackageInfo[]): Promise<DocPage[]> {
   const templateEngine = new TemplateEngine(config);
   const mdAnalyzer = new MarkdownAnalyzer(config);
   const pages: DocPage[] = [];
 
   for (const packageInfo of packageInfos) {
-    const overviewPage =
-      await templateEngine.renderPackageOverview(packageInfo);
+    const overviewPage = await templateEngine.renderPackageOverview(packageInfo);
     pages.push(overviewPage);
   }
   for (const packageInfo of packageInfos) {
@@ -68,9 +58,7 @@ export async function generatePages(
   return pages;
 }
 
-export async function generateSections(
-  packageInfos: PackageInfo[],
-): Promise<DocSection[]> {
+export async function generateSections(packageInfos: PackageInfo[]): Promise<DocSection[]> {
   const sections: DocSection[] = [];
   const categories = new Map<string, PackageInfo[]>();
   for (const packageInfo of packageInfos) {
@@ -84,7 +72,7 @@ export async function generateSections(
       id: generateSlug(category),
       title: category,
       description: `Documentation for ${category.toLowerCase()} packages`,
-      pages: packages.map((pkg) => ({
+      pages: packages.map(pkg => ({
         id: pkg.name,
         slug: pkg.name,
         title: pkg.displayName || pkg.name,

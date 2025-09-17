@@ -187,13 +187,8 @@ const baselineData = {
   timestamp: new Date().toISOString(),
   results: baselineResults,
   summary: {
-    avgTimeUs:
-      baselineResults.reduce((sum, r) => sum + r.averageTimeUs, 0) /
-      baselineResults.length,
-    totalMemoryMB: baselineResults.reduce(
-      (sum, r) => sum + (r.memoryUsageMB || 0),
-      0,
-    ),
+    avgTimeUs: baselineResults.reduce((sum, r) => sum + r.averageTimeUs, 0) / baselineResults.length,
+    totalMemoryMB: baselineResults.reduce((sum, r) => sum + (r.memoryUsageMB || 0), 0),
   },
 };
 

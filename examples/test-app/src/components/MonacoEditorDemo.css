@@ -11,11 +11,7 @@
   text-align: center;
   margin-bottom: var(--spacing-xl, 30px);
   padding: var(--spacing-xl, 20px);
-  background: linear-gradient(
-    135deg,
-    var(--color-accent, #007bff) 0%,
-    var(--color-primary, #0056b3) 100%
-  );
+  background: linear-gradient(135deg, var(--color-accent, #007bff) 0%, var(--color-primary, #0056b3) 100%);
   color: var(--color-text-inverse, #ffffff);
   border-radius: var(--border-radius-lg, 12px);
   box-shadow: var(--elevation-3, 0 4px 15px rgba(0, 0, 0, 0.1));
@@ -108,8 +104,7 @@
   border-radius: var(--border-radius-sm, 4px);
   font-weight: 600;
   cursor: pointer;
-  transition: background-color var(--duration-base, 0.15s)
-    var(--easing-standard, ease-in-out);
+  transition: background-color var(--duration-base, 0.15s) var(--easing-standard, ease-in-out);
 }
 
 .toggle-diff-btn:hover {
@@ -135,8 +130,7 @@
 .diff-header {
   padding: var(--spacing-base, 15px) var(--spacing-xl, 20px);
   background: var(--color-background-secondary, #f8f9fa);
-  border-bottom: var(--border-width-thin, 1px) solid
-    var(--color-border, #e9ecef);
+  border-bottom: var(--border-width-thin, 1px) solid var(--color-border, #e9ecef);
 }
 
 .editor-header h3,
@@ -296,11 +290,7 @@
 
 /* Dark theme specific adjustments */
 [data-theme="dark"] .demo-header {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent, #1f6feb) 0%,
-    var(--color-primary, #0b5ed7) 100%
-  );
+  background: linear-gradient(135deg, var(--color-accent, #1f6feb) 0%, var(--color-primary, #0b5ed7) 100%);
 }
 
 [data-theme="dark"] .theme-sync-note {
@@ -310,20 +300,12 @@
 /* High contrast theme adjustments */
 [data-theme="high-contrast-black"] .demo-header,
 [data-theme="high-contrast-inverse"] .demo-header {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent, #0066cc) 0%,
-    var(--color-primary, #0052a3) 100%
-  );
+  background: linear-gradient(135deg, var(--color-accent, #0066cc) 0%, var(--color-primary, #0052a3) 100%);
 }
 
 /* Banana theme adjustments */
 [data-theme="banana"] .demo-header {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent, #ffc107) 0%,
-    var(--color-primary, #e0a800) 100%
-  );
+  background: linear-gradient(135deg, var(--color-accent, #ffc107) 0%, var(--color-primary, #e0a800) 100%);
   color: var(--color-text, #000000);
 }
 
@@ -335,11 +317,7 @@
 
 /* Strawberry theme adjustments */
 [data-theme="strawberry"] .demo-header {
-  background: linear-gradient(
-    135deg,
-    var(--color-accent, #e91e63) 0%,
-    var(--color-primary, #c2185b) 100%
-  );
+  background: linear-gradient(135deg, var(--color-accent, #e91e63) 0%, var(--color-primary, #c2185b) 100%);
 }
 
 /* Animation for smooth transitions */
@@ -354,8 +332,7 @@
 .control-group select:focus,
 .control-group input:focus,
 .toggle-diff-btn:focus {
-  outline: var(--focus-ring-width, 2px) solid
-    var(--focus-ring-color, var(--color-accent, #007bff));
+  outline: var(--focus-ring-width, 2px) solid var(--focus-ring-color, var(--color-accent, #007bff));
   outline-offset: var(--focus-ring-offset, 2px);
 }
 

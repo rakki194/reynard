@@ -40,10 +40,7 @@ export class BackendAnnotationService implements IAnnotationService {
   constructor(config: BackendAnnotationServiceConfig) {
     this.client = createCaptionApiClient(config);
     this.eventManager = new SimpleEventManager();
-    this.singleProcessor = new SingleCaptionProcessor(
-      this.client,
-      this.eventManager,
-    );
+    this.singleProcessor = new SingleCaptionProcessor(this.client, this.eventManager);
     this.batchProcessor = new BatchProcessor(this.client, this.eventManager);
     this.generatorManager = new GeneratorManager(this.client);
     this.healthStatsManager = new HealthStatsManager();
@@ -56,7 +53,7 @@ export class BackendAnnotationService implements IAnnotationService {
 
   async generateBatchCaptions(
     tasks: CaptionTask[],
-    progressCallback?: (progress: AnnotationProgress) => void,
+    progressCallback?: (progress: AnnotationProgress) => void
   ): Promise<CaptionResult[]> {
     return this.batchProcessor.processBatch(tasks, progressCallback);
   }
@@ -119,8 +116,6 @@ export class BackendAnnotationService implements IAnnotationService {
 /**
  * Create a backend annotation service
  */
-export function createBackendAnnotationService(
-  config: BackendAnnotationServiceConfig,
-): BackendAnnotationService {
+export function createBackendAnnotationService(config: BackendAnnotationServiceConfig): BackendAnnotationService {
   return new BackendAnnotationService(config);
 }

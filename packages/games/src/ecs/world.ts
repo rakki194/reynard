@@ -48,10 +48,7 @@ export class CommandsImpl implements Commands {
     this.world.insert(entity, ...components);
   }
 
-  remove<T extends Component[]>(
-    entity: Entity,
-    ...componentTypes: ComponentType<T[number]>[]
-  ): void {
+  remove<T extends Component[]>(entity: Entity, ...componentTypes: ComponentType<T[number]>[]): void {
     this.commands.push(() => this.world.remove(entity, ...componentTypes));
   }
 
@@ -162,15 +159,10 @@ export class WorldImpl implements IWorld {
       const component = components[i];
       const componentType = this.findComponentType(component);
       if (!componentType) {
-        throw new Error(
-          `Component type not registered: ${component.constructor.name}`,
-        );
+        throw new Error(`Component type not registered: ${component.constructor.name}`);
       }
 
-      const storage = this.componentStorage.getStorage(
-        componentType,
-        componentType.storage,
-      );
+      const storage = this.componentStorage.getStorage(componentType, componentType.storage);
       storage.insert(entity.index, component);
 
       // Mark component as added in change detection
@@ -182,20 +174,13 @@ export class WorldImpl implements IWorld {
   }
 
   // Alias for insert to match test expectations
-  add<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-    component: T,
-  ): void {
+  add<T extends Component>(entity: Entity, componentType: ComponentType<T>, component: T): void {
     if (!this.entityManager.contains(entity)) {
       return; // Safe to ignore operations on non-existent entities
     }
 
     // Use the provided component type instead of finding it
-    const storage = this.componentStorage.getStorage(
-      componentType,
-      componentType.storage,
-    );
+    const storage = this.componentStorage.getStorage(componentType, componentType.storage);
     storage.insert(entity.index, component);
 
     // Mark component as added in change detection
@@ -205,10 +190,7 @@ export class WorldImpl implements IWorld {
     this.updateEntityArchetype(entity);
   }
 
-  remove<T extends Component[]>(
-    entity: Entity,
-    ...componentTypes: ComponentType<T[number]>[]
-  ): void {
+  remove<T extends Component[]>(entity: Entity, ...componentTypes: ComponentType<T[number]>[]): void {
     if (!this.entityManager.contains(entity)) {
       return; // Safe to ignore operations on non-existent entities
     }
@@ -228,39 +210,28 @@ export class WorldImpl implements IWorld {
     this.updateEntityArchetype(entity);
   }
 
-  get<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): T | undefined {
+  get<T extends Component>(entity: Entity, componentType: ComponentType<T>): T | undefined {
     if (!this.entityManager.contains(entity)) {
       return undefined;
     }
 
     const storage =
-      this.componentStorage.getTableStorage(componentType) ||
-      this.componentStorage.getSparseSetStorage(componentType);
+      this.componentStorage.getTableStorage(componentType) || this.componentStorage.getSparseSetStorage(componentType);
     return storage?.get(entity.index);
   }
 
-  getMut<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): T | undefined {
+  getMut<T extends Component>(entity: Entity, componentType: ComponentType<T>): T | undefined {
     // For now, same as get - in a real implementation, this would track mutability
     return this.get(entity, componentType);
   }
 
-  has<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean {
+  has<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean {
     if (!this.entityManager.contains(entity)) {
       return false;
     }
 
     const storage =
-      this.componentStorage.getTableStorage(componentType) ||
-      this.componentStorage.getSparseSetStorage(componentType);
+      this.componentStorage.getTableStorage(componentType) || this.componentStorage.getSparseSetStorage(componentType);
     return storage?.has(entity.index) ?? false;
   }
 
@@ -268,36 +239,25 @@ export class WorldImpl implements IWorld {
   insertResource<T extends Resource>(resource: T): void {
     const resourceType = this.findResourceType(resource);
     if (!resourceType) {
-      throw new Error(
-        `Resource type not registered: ${resource.constructor.name}`,
-      );
+      throw new Error(`Resource type not registered: ${resource.constructor.name}`);
     }
     this.resourceStorage.insert(resourceType, resource);
   }
 
   // Alias for insertResource to match test expectations
-  addResource<T extends Resource>(
-    resourceType: ResourceType<T>,
-    resource: T,
-  ): void {
+  addResource<T extends Resource>(resourceType: ResourceType<T>, resource: T): void {
     this.resourceStorage.insert(resourceType, resource);
   }
 
-  removeResource<T extends Resource>(
-    resourceType: ResourceType<T>,
-  ): T | undefined {
+  removeResource<T extends Resource>(resourceType: ResourceType<T>): T | undefined {
     return this.resourceStorage.remove(resourceType);
   }
 
-  getResource<T extends Resource>(
-    resourceType: ResourceType<T>,
-  ): T | undefined {
+  getResource<T extends Resource>(resourceType: ResourceType<T>): T | undefined {
     return this.resourceStorage.get(resourceType);
   }
 
-  getResourceMut<T extends Resource>(
-    resourceType: ResourceType<T>,
-  ): T | undefined {
+  getResourceMut<T extends Resource>(resourceType: ResourceType<T>): T | undefined {
     // For now, same as get - in a real implementation, this would track mutability
     return this.resourceStorage.get(resourceType);
   }
@@ -310,9 +270,7 @@ export class WorldImpl implements IWorld {
   query<T extends Component[]>(
     ...componentTypes: ComponentType<T[number]>[]
   ): QueryBuilder<T> & {
-    forEach: (
-      callback: (entity: Entity, ...components: T) => void | false,
-    ) => void;
+    forEach: (callback: (entity: Entity, ...components: T) => void | false) => void;
     first: () => { entity: Entity; components: T } | undefined;
     added: (componentType: ComponentType<any>) => any;
     changed: (componentType: ComponentType<any>) => any;
@@ -325,24 +283,14 @@ export class WorldImpl implements IWorld {
 
     // Add methods that have access to world context
     return Object.assign(builder, {
-      forEach: (
-        callback: (entity: Entity, ...components: T) => void | false,
-      ) => {
+      forEach: (callback: (entity: Entity, ...components: T) => void | false) => {
         const query = builder.build();
-        const result = query.execute(
-          this.entityManager,
-          this.componentStorage,
-          this.changeDetection,
-        );
+        const result = query.execute(this.entityManager, this.componentStorage, this.changeDetection);
         result.forEach(callback);
       },
       first: () => {
         const query = builder.build();
-        const result = query.execute(
-          this.entityManager,
-          this.componentStorage,
-          this.changeDetection,
-        );
+        const result = query.execute(this.entityManager, this.componentStorage, this.changeDetection);
         return result.first();
       },
       added: (componentType: ComponentType<any>) => {
@@ -356,45 +304,25 @@ export class WorldImpl implements IWorld {
           added: [...(builder.filters.added || []), componentType],
         };
         return Object.assign(newBuilder, {
-          forEach: (
-            callback: (entity: Entity, ...components: any) => void | false,
-          ) => {
-            const result = addedQuery.execute(
-              this.entityManager,
-              this.componentStorage,
-              this.changeDetection,
-            );
+          forEach: (callback: (entity: Entity, ...components: any) => void | false) => {
+            const result = addedQuery.execute(this.entityManager, this.componentStorage, this.changeDetection);
             result.forEach(callback);
           },
           first: () => {
-            const result = addedQuery.execute(
-              this.entityManager,
-              this.componentStorage,
-              this.changeDetection,
-            );
+            const result = addedQuery.execute(this.entityManager, this.componentStorage, this.changeDetection);
             return result.first();
           },
           with: (newComponentType: ComponentType<any>) => {
             newBuilder.with(newComponentType);
             return Object.assign(newBuilder, {
-              forEach: (
-                callback: (entity: Entity, ...components: any) => void | false,
-              ) => {
+              forEach: (callback: (entity: Entity, ...components: any) => void | false) => {
                 const query = newBuilder.build();
-                const result = query.execute(
-                  this.entityManager,
-                  this.componentStorage,
-                  this.changeDetection,
-                );
+                const result = query.execute(this.entityManager, this.componentStorage, this.changeDetection);
                 result.forEach(callback);
               },
               first: () => {
                 const query = newBuilder.build();
-                const result = query.execute(
-                  this.entityManager,
-                  this.componentStorage,
-                  this.changeDetection,
-                );
+                const result = query.execute(this.entityManager, this.componentStorage, this.changeDetection);
                 return result.first();
               },
             });
@@ -412,45 +340,25 @@ export class WorldImpl implements IWorld {
           changed: [...(builder.filters.changed || []), componentType],
         };
         return Object.assign(newBuilder, {
-          forEach: (
-            callback: (entity: Entity, ...components: any) => void | false,
-          ) => {
-            const result = changedQuery.execute(
-              this.entityManager,
-              this.componentStorage,
-              this.changeDetection,
-            );
+          forEach: (callback: (entity: Entity, ...components: any) => void | false) => {
+            const result = changedQuery.execute(this.entityManager, this.componentStorage, this.changeDetection);
             result.forEach(callback);
           },
           first: () => {
-            const result = changedQuery.execute(
-              this.entityManager,
-              this.componentStorage,
-              this.changeDetection,
-            );
+            const result = changedQuery.execute(this.entityManager, this.componentStorage, this.changeDetection);
             return result.first();
           },
           with: (newComponentType: ComponentType<any>) => {
             newBuilder.with(newComponentType);
             return Object.assign(newBuilder, {
-              forEach: (
-                callback: (entity: Entity, ...components: any) => void | false,
-              ) => {
+              forEach: (callback: (entity: Entity, ...components: any) => void | false) => {
                 const query = newBuilder.build();
-                const result = query.execute(
-                  this.entityManager,
-                  this.componentStorage,
-                  this.changeDetection,
-                );
+                const result = query.execute(this.entityManager, this.componentStorage, this.changeDetection);
                 result.forEach(callback);
               },
               first: () => {
                 const query = newBuilder.build();
-                const result = query.execute(
-                  this.entityManager,
-                  this.componentStorage,
-                  this.changeDetection,
-                );
+                const result = query.execute(this.entityManager, this.componentStorage, this.changeDetection);
                 return result.first();
               },
             });
@@ -468,45 +376,25 @@ export class WorldImpl implements IWorld {
           removed: [...(builder.filters.removed || []), componentType],
         };
         return Object.assign(newBuilder, {
-          forEach: (
-            callback: (entity: Entity, ...components: any) => void | false,
-          ) => {
-            const result = removedQuery.execute(
-              this.entityManager,
-              this.componentStorage,
-              this.changeDetection,
-            );
+          forEach: (callback: (entity: Entity, ...components: any) => void | false) => {
+            const result = removedQuery.execute(this.entityManager, this.componentStorage, this.changeDetection);
             result.forEach(callback);
           },
           first: () => {
-            const result = removedQuery.execute(
-              this.entityManager,
-              this.componentStorage,
-              this.changeDetection,
-            );
+            const result = removedQuery.execute(this.entityManager, this.componentStorage, this.changeDetection);
             return result.first();
           },
           with: (newComponentType: ComponentType<any>) => {
             newBuilder.with(newComponentType);
             return Object.assign(newBuilder, {
-              forEach: (
-                callback: (entity: Entity, ...components: any) => void | false,
-              ) => {
+              forEach: (callback: (entity: Entity, ...components: any) => void | false) => {
                 const query = newBuilder.build();
-                const result = query.execute(
-                  this.entityManager,
-                  this.componentStorage,
-                  this.changeDetection,
-                );
+                const result = query.execute(this.entityManager, this.componentStorage, this.changeDetection);
                 result.forEach(callback);
               },
               first: () => {
                 const query = newBuilder.build();
-                const result = query.execute(
-                  this.entityManager,
-                  this.componentStorage,
-                  this.changeDetection,
-                );
+                const result = query.execute(this.entityManager, this.componentStorage, this.changeDetection);
                 return result.first();
               },
             });
@@ -518,14 +406,10 @@ export class WorldImpl implements IWorld {
 
   queryFiltered<T extends Component[]>(
     componentTypes: ComponentType<T[number]>[],
-    filter: QueryFilter,
+    filter: QueryFilter
   ): QueryResult<T> {
     const query = new QueryImpl(componentTypes, filter);
-    return query.execute(
-      this.entityManager,
-      this.componentStorage,
-      this.changeDetection,
-    );
+    return query.execute(this.entityManager, this.componentStorage, this.changeDetection);
   }
 
   // System operations
@@ -563,12 +447,9 @@ export class WorldImpl implements IWorld {
     return this.entityManager.getEntityCount();
   }
 
-  getComponentCount<T extends Component>(
-    componentType: ComponentType<T>,
-  ): number {
+  getComponentCount<T extends Component>(componentType: ComponentType<T>): number {
     const storage =
-      this.componentStorage.getTableStorage(componentType) ||
-      this.componentStorage.getSparseSetStorage(componentType);
+      this.componentStorage.getTableStorage(componentType) || this.componentStorage.getSparseSetStorage(componentType);
     return storage?.getCount() ?? 0;
   }
 
@@ -621,22 +502,16 @@ export class WorldImpl implements IWorld {
   }
 
   // Helper methods
-  private findComponentType(
-    component: Component,
-  ): ComponentType<any> | undefined {
+  private findComponentType(component: Component): ComponentType<any> | undefined {
     const componentName = component.constructor.name;
     let componentType = this.componentRegistry.getByName(componentName);
 
     // Auto-register component type if not found, but only for valid component classes
-    if (
-      !componentType &&
-      component.constructor !== Object &&
-      componentName !== "Object"
-    ) {
+    if (!componentType && component.constructor !== Object && componentName !== "Object") {
       componentType = this.componentRegistry.register(
         componentName,
         StorageType.Table,
-        () => new (component.constructor as any)(),
+        () => new (component.constructor as any)()
       );
     }
 
@@ -660,10 +535,7 @@ export class WorldImpl implements IWorld {
     const oldArchetypeId = this.entityToArchetype.get(entity.index);
 
     // If the archetype changed, move the entity
-    if (
-      oldArchetypeId === undefined ||
-      oldArchetypeId.index !== newArchetypeId.index
-    ) {
+    if (oldArchetypeId === undefined || oldArchetypeId.index !== newArchetypeId.index) {
       // Remove from old archetype if it exists
       if (oldArchetypeId !== undefined) {
         const oldArchetype = this.archetypes.getArchetype(oldArchetypeId);
@@ -689,10 +561,7 @@ export class WorldImpl implements IWorld {
 
     // Auto-register resource type if not found
     if (!resourceType) {
-      resourceType = this.resourceRegistry.register(
-        resourceName,
-        () => new (resource.constructor as any)(),
-      );
+      resourceType = this.resourceRegistry.register(resourceName, () => new (resource.constructor as any)());
     }
 
     return resourceType;

@@ -38,19 +38,11 @@ export const useContextMenuPositioning = ({
 
   const setSubmenuPosition = () => {
     if (submenuRef && state().submenuOpen !== null) {
-      const itemElement = menuRef?.querySelector(
-        `[data-index="${state().submenuOpen}"]`,
-      );
+      const itemElement = menuRef?.querySelector(`[data-index="${state().submenuOpen}"]`);
       if (itemElement) {
         const rect = itemElement.getBoundingClientRect();
-        submenuRef.style.setProperty(
-          "--context-menu-submenu-x",
-          `${rect.right + 4}px`,
-        );
-        submenuRef.style.setProperty(
-          "--context-menu-submenu-y",
-          `${rect.top}px`,
-        );
+        submenuRef.style.setProperty("--context-menu-submenu-x", `${rect.right + 4}px`);
+        submenuRef.style.setProperty("--context-menu-submenu-y", `${rect.top}px`);
       }
     }
   };

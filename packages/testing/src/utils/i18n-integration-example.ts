@@ -40,11 +40,7 @@ describe("Hardcoded String Detection Example", () => {
       ignorePatterns: ["^[a-z]+[A-Z][a-z]*$", "^[A-Z_]+$"],
     };
 
-    const results = detectHardcodedStrings(
-      "WelcomeComponent.tsx",
-      componentCode,
-      config,
-    );
+    const results = detectHardcodedStrings("WelcomeComponent.tsx", componentCode, config);
 
     expect(results).toHaveLength(4);
     expect(results[0].text).toBe("Welcome to our application");
@@ -79,11 +75,7 @@ describe("Hardcoded String Detection Example", () => {
       ignorePatterns: ["^[a-z]+[A-Z][a-z]*$", "^[A-Z_]+$"],
     };
 
-    const results = detectHardcodedStrings(
-      "TechnicalComponent.tsx",
-      componentCode,
-      config,
-    );
+    const results = detectHardcodedStrings("TechnicalComponent.tsx", componentCode, config);
 
     expect(results).toHaveLength(0);
   });
@@ -107,7 +99,7 @@ describe("Translation Validation Example", () => {
     expect(results).toHaveLength(3);
 
     // Check that each locale has validation results
-    const locales = results.map((r) => r.locale);
+    const locales = results.map(r => r.locale);
     expect(locales).toContain("en");
     expect(locales).toContain("es");
     expect(locales).toContain("fr");
@@ -176,11 +168,7 @@ describe("Integration with Existing Test Suites", () => {
       ignorePatterns: [],
     };
 
-    const results = detectHardcodedStrings(
-      "LocalizedComponent.tsx",
-      componentCode,
-      config,
-    );
+    const results = detectHardcodedStrings("LocalizedComponent.tsx", componentCode, config);
 
     // Should not find any hardcoded strings since we're using i18n
     expect(results).toHaveLength(0);
@@ -212,11 +200,7 @@ describe("Integration with Existing Test Suites", () => {
       ignorePatterns: [],
     };
 
-    const results = detectHardcodedStrings(
-      "ItemList.tsx",
-      pluralizationCode,
-      config,
-    );
+    const results = detectHardcodedStrings("ItemList.tsx", pluralizationCode, config);
 
     // Should not find hardcoded strings
     expect(results).toHaveLength(0);
@@ -241,9 +225,7 @@ describe("Performance Testing Example", () => {
     const endTime = performance.now();
 
     expect(result.performanceMetrics.loadTime).toBeGreaterThan(0);
-    expect(result.performanceMetrics.loadTime).toBeLessThan(
-      endTime - startTime + 100,
-    );
+    expect(result.performanceMetrics.loadTime).toBeLessThan(endTime - startTime + 100);
     expect(result.performanceMetrics.memoryUsage).toBeGreaterThan(0);
   });
 });
@@ -317,11 +299,7 @@ describe("Custom Ignore Patterns Example", () => {
       ignorePatterns: ["test-pattern", "another-pattern"],
     };
 
-    const results = detectHardcodedStrings(
-      "CustomComponent.tsx",
-      componentCode,
-      config,
-    );
+    const results = detectHardcodedStrings("CustomComponent.tsx", componentCode, config);
 
     // Should find the first two strings but ignore the custom patterns
     expect(results).toHaveLength(2);

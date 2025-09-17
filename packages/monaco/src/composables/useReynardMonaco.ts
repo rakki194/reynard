@@ -5,11 +5,7 @@
 
 import { createSignal, createEffect } from "solid-js";
 import { useMonacoShiki } from "./useMonacoShiki";
-import {
-  getMonacoThemeFromReynard,
-  getShikiThemeFromReynard,
-  isReynardThemeDark,
-} from "../utils/themeMapping";
+import { getMonacoThemeFromReynard, getShikiThemeFromReynard, isReynardThemeDark } from "../utils/themeMapping";
 import { registerCustomMonacoTheme } from "../utils/customThemes";
 // Define ThemeName locally to avoid dependency issues
 type ThemeName =
@@ -51,15 +47,11 @@ export interface ReynardMonacoState {
 export const useReynardMonaco = (options: ReynardMonacoOptions) => {
   // Helper functions to get reactive values
   const getReynardTheme = (): ThemeName => {
-    return typeof options.reynardTheme === "function"
-      ? options.reynardTheme()
-      : options.reynardTheme;
+    return typeof options.reynardTheme === "function" ? options.reynardTheme() : options.reynardTheme;
   };
 
   const getLang = (): string => {
-    return typeof options.lang === "function"
-      ? options.lang()
-      : options.lang || "javascript";
+    return typeof options.lang === "function" ? options.lang() : options.lang || "javascript";
   };
 
   const [state, setState] = createSignal<ReynardMonacoState>({
@@ -80,10 +72,7 @@ export const useReynardMonaco = (options: ReynardMonacoOptions) => {
   const registerThemes = (monaco: any) => {
     if (monaco && monaco.editor) {
       const reynardTheme = getReynardTheme();
-      console.log(
-        "Registering custom Monaco theme for Reynard theme:",
-        reynardTheme,
-      );
+      console.log("Registering custom Monaco theme for Reynard theme:", reynardTheme);
       registerCustomMonacoTheme(monaco, reynardTheme);
 
       // Also set the theme immediately after registration

@@ -6,7 +6,7 @@ Handles database connections and operations with reload optimization
 import asyncio
 import os
 from contextlib import asynccontextmanager
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 # Detect reload mode
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
@@ -55,7 +55,7 @@ class DatabaseService:
         print(f"[INFO] Database connection acquired: {connection_id}")
         return {"id": connection_id, "created_at": asyncio.get_event_loop().time()}
 
-    async def release_connection(self, connection: Dict[str, Any]):
+    async def release_connection(self, connection: dict[str, Any]):
         """Release a database connection back to the pool"""
         if not self.is_initialized:
             return
@@ -64,8 +64,8 @@ class DatabaseService:
         print(f"[INFO] Database connection released: {connection_id}")
 
     async def execute_query(
-        self, query: str, params: Optional[Dict[str, Any]] = None
-    ) -> List[Dict[str, Any]]:
+        self, query: str, params: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
         """Execute a database query"""
         if not self.is_initialized:
             raise RuntimeError("Database service not initialized")
@@ -130,7 +130,7 @@ class DatabaseService:
         finally:
             await self.release_connection(connection)
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         """Get database service statistics"""
         return {
             "initialized": self.is_initialized,

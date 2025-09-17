@@ -21,14 +21,7 @@ export interface ApiReturn {
 
 export interface ApiInfo {
   name: string;
-  type:
-    | "function"
-    | "class"
-    | "interface"
-    | "type"
-    | "enum"
-    | "namespace"
-    | "variable";
+  type: "function" | "class" | "interface" | "type" | "enum" | "namespace" | "variable";
   description: string;
   parameters?: ApiParameter[];
   returns?: ApiReturn;

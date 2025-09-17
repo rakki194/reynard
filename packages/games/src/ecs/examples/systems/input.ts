@@ -63,7 +63,7 @@ export function shootingSystem(world: World): void {
         new Position(pos.x, pos.y),
         new Velocity(0, -bulletSpeed),
         new Bullet(bulletSpeed),
-        new Lifetime(3), // 3 second lifetime
+        new Lifetime(3) // 3 second lifetime
       );
     }
   });

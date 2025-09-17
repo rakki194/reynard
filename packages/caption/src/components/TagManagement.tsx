@@ -12,15 +12,7 @@
  * - Integration with existing TagBubble components
  */
 
-import {
-  Component,
-  createSignal,
-  createMemo,
-  onMount,
-  onCleanup,
-  For,
-  Show,
-} from "solid-js";
+import { Component, createSignal, createMemo, onMount, onCleanup, For, Show } from "solid-js";
 import { TagBubble } from "./TagBubble";
 import type { TagBubbleProps } from "../types/index";
 
@@ -53,7 +45,7 @@ export interface TagManagementProps {
   className?: string;
 }
 
-export const TagManagement: Component<TagManagementProps> = (props) => {
+export const TagManagement: Component<TagManagementProps> = props => {
   const [selectedTags, setSelectedTags] = createSignal<Set<string>>(new Set());
   const [focusedTagId, setFocusedTagId] = createSignal<string | null>(null);
   const [isDragging, setIsDragging] = createSignal(false);
@@ -65,21 +57,19 @@ export const TagManagement: Component<TagManagementProps> = (props) => {
 
   // Handle tag editing
   const handleTagEdit = (tagId: string, newText: string) => {
-    const updatedTags = props.tags.map((tag) =>
-      tag.id === tagId ? { ...tag, text: newText } : tag,
-    );
+    const updatedTags = props.tags.map(tag => (tag.id === tagId ? { ...tag, text: newText } : tag));
     props.onTagsChange(updatedTags);
     props.onTagEdit?.(tagId, newText);
   };
 
   // Handle tag removal
   const handleTagRemove = (tagId: string) => {
-    const updatedTags = props.tags.filter((tag) => tag.id !== tagId);
+    const updatedTags = props.tags.filter(tag => tag.id !== tagId);
     props.onTagsChange(updatedTags);
     props.onTagRemove?.(tagId);
 
     // Remove from selection if it was selected
-    setSelectedTags((prev) => {
+    setSelectedTags(prev => {
       const newSet = new Set(prev);
       newSet.delete(tagId);
       return newSet;
@@ -90,14 +80,14 @@ export const TagManagement: Component<TagManagementProps> = (props) => {
   const handleTagSelect = (tagId: string, event?: MouseEvent) => {
     if (!props.showSelection) return;
 
-    setSelectedTags((prev) => {
+    setSelectedTags(prev => {
       const newSet = new Set(prev);
 
       if (event?.shiftKey && prev.size > 0) {
         // Range selection
-        const tagIds = props.tags.map((t) => t.id);
-        const startIndex = tagIds.findIndex((id) => prev.has(id));
-        const endIndex = tagIds.findIndex((id) => id === tagId);
+        const tagIds = props.tags.map(t => t.id);
+        const startIndex = tagIds.findIndex(id => prev.has(id));
+        const endIndex = tagIds.findIndex(id => id === tagId);
 
         if (startIndex !== -1 && endIndex !== -1) {
           const start = Math.min(startIndex, endIndex);
@@ -128,9 +118,7 @@ export const TagManagement: Component<TagManagementProps> = (props) => {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!focusedTagId()) return;
 
-    const currentIndex = props.tags.findIndex(
-      (tag) => tag.id === focusedTagId(),
-    );
+    const currentIndex = props.tags.findIndex(tag => tag.id === focusedTagId());
     if (currentIndex === -1) return;
 
     switch (e.key) {
@@ -171,7 +159,7 @@ export const TagManagement: Component<TagManagementProps> = (props) => {
       case "a":
         if (e.ctrlKey || e.metaKey) {
           e.preventDefault();
-          setSelectedTags(new Set(props.tags.map((tag) => tag.id)));
+          setSelectedTags(new Set(props.tags.map(tag => tag.id)));
         }
         break;
 
@@ -186,12 +174,10 @@ export const TagManagement: Component<TagManagementProps> = (props) => {
   // Handle bulk delete
   const handleBulkDelete = () => {
     const selectedIds = Array.from(selectedTags());
-    const updatedTags = props.tags.filter(
-      (tag) => !selectedIds.includes(tag.id),
-    );
+    const updatedTags = props.tags.filter(tag => !selectedIds.includes(tag.id));
     props.onTagsChange(updatedTags);
 
-    selectedIds.forEach((id) => props.onTagRemove?.(id));
+    selectedIds.forEach(id => props.onTagRemove?.(id));
     setSelectedTags(new Set<string>());
   };
 
@@ -221,9 +207,9 @@ export const TagManagement: Component<TagManagementProps> = (props) => {
     const draggedTagId = e.dataTransfer?.getData("text/plain");
 
     if (draggedTagId && draggedTagId !== targetTagId) {
-      const tagIds = props.tags.map((t) => t.id);
-      const draggedIndex = tagIds.findIndex((id) => id === draggedTagId);
-      const targetIndex = tagIds.findIndex((id) => id === targetTagId);
+      const tagIds = props.tags.map(t => t.id);
+      const draggedIndex = tagIds.findIndex(id => id === draggedTagId);
+      const targetIndex = tagIds.findIndex(id => id === targetTagId);
 
       if (draggedIndex !== -1 && targetIndex !== -1) {
         const newTagIds = [...tagIds];
@@ -239,12 +225,8 @@ export const TagManagement: Component<TagManagementProps> = (props) => {
   };
 
   // Handle tag navigation
-  const handleTagNavigate = (
-    direction: "left" | "right" | "up" | "down" | "start" | "end",
-  ) => {
-    const currentIndex = props.tags.findIndex(
-      (tag) => tag.id === focusedTagId(),
-    );
+  const handleTagNavigate = (direction: "left" | "right" | "up" | "down" | "start" | "end") => {
+    const currentIndex = props.tags.findIndex(tag => tag.id === focusedTagId());
     if (currentIndex === -1) return;
 
     let newIndex = currentIndex;
@@ -325,18 +307,18 @@ export const TagManagement: Component<TagManagementProps> = (props) => {
                 "drag-over": dragOverTagId() === tag.id,
               }}
               draggable={props.enableDragDrop}
-              onDragStart={(e) => handleDragStart(e, tag.id)}
-              onDragOver={(e) => handleDragOver(e, tag.id)}
+              onDragStart={e => handleDragStart(e, tag.id)}
+              onDragOver={e => handleDragOver(e, tag.id)}
               onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDrop(e, tag.id)}
-              onClick={(e) => handleTagSelect(tag.id, e)}
+              onDrop={e => handleDrop(e, tag.id)}
+              onClick={e => handleTagSelect(tag.id, e)}
               onFocus={() => setFocusedTagId(tag.id)}
               tabIndex={0}
             >
               <TagBubble
                 tag={tag.text}
                 index={index()}
-                onEdit={(newText) => handleTagEdit(tag.id, newText)}
+                onEdit={newText => handleTagEdit(tag.id, newText)}
                 onRemove={() => handleTagRemove(tag.id)}
                 onNavigate={handleTagNavigate}
                 editable={props.editable}

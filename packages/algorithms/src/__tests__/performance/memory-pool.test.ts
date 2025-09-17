@@ -6,11 +6,7 @@
 
 import { describe, it, expect, beforeEach } from "vitest";
 import { MemoryPool, PooledObject } from "../../performance/memory-pool-core";
-import {
-  createSpatialObjectPool,
-  createAABBPool,
-  globalPoolManager,
-} from "../../performance/memory-pool-utils";
+import { createSpatialObjectPool, createAABBPool, globalPoolManager } from "../../performance/memory-pool-utils";
 
 class TestObject implements PooledObject {
   value: number = 0;

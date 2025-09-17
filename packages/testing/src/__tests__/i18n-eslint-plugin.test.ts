@@ -11,7 +11,7 @@ describe("i18n ESLint plugin", () => {
       expect(i18nRules["no-hardcoded-strings"]).toBeDefined();
       expect(i18nRules["no-hardcoded-strings"].meta).toBeDefined();
       expect(i18nRules["no-hardcoded-strings"].meta.docs.description).toBe(
-        "Disallow hardcoded strings in JSX/TSX files",
+        "Disallow hardcoded strings in JSX/TSX files"
       );
     });
 
@@ -19,7 +19,7 @@ describe("i18n ESLint plugin", () => {
       expect(i18nRules["no-untranslated-keys"]).toBeDefined();
       expect(i18nRules["no-untranslated-keys"].meta).toBeDefined();
       expect(i18nRules["no-untranslated-keys"].meta.docs.description).toBe(
-        "Ensure all translation keys exist in translation files",
+        "Ensure all translation keys exist in translation files"
       );
     });
   });
@@ -41,12 +41,8 @@ describe("i18n ESLint plugin", () => {
     it("should have correct rule configurations in recommended config", () => {
       const recommended = i18nPlugin.configs.recommended;
 
-      expect(recommended.rules["@reynard/i18n/no-hardcoded-strings"]).toBe(
-        "error",
-      );
-      expect(recommended.rules["@reynard/i18n/no-untranslated-keys"]).toBe(
-        "warn",
-      );
+      expect(recommended.rules["@reynard/i18n/no-hardcoded-strings"]).toBe("error");
+      expect(recommended.rules["@reynard/i18n/no-untranslated-keys"]).toBe("warn");
     });
   });
 
@@ -87,9 +83,7 @@ describe("i18n ESLint plugin", () => {
 
         expect(schema.type).toBe("object");
         expect(schema.properties.translationFiles).toBeDefined();
-        expect(schema.properties.translationFiles.default).toEqual([
-          "src/lang/**/*.ts",
-        ]);
+        expect(schema.properties.translationFiles.default).toEqual(["src/lang/**/*.ts"]);
       });
     });
   });

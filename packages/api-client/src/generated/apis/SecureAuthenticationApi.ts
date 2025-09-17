@@ -51,13 +51,13 @@ export interface SecureAuthenticationApiInterface {
      * @throws {RequiredError}
      * @memberof SecureAuthenticationApiInterface
      */
-    secureLoginApiSecureAuthLoginPostRaw(requestParameters: SecureLoginApiSecureAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>>;
+    secureLoginApiSecureAuthLoginPostRaw(requestParameters: SecureLoginApiSecureAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
 
     /**
      * Secure user login with input validation.
      * Secure Login
      */
-    secureLoginApiSecureAuthLoginPost(requestParameters: SecureLoginApiSecureAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }>;
+    secureLoginApiSecureAuthLoginPost(requestParameters: SecureLoginApiSecureAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 
     /**
      * Secure user logout.
@@ -66,13 +66,13 @@ export interface SecureAuthenticationApiInterface {
      * @throws {RequiredError}
      * @memberof SecureAuthenticationApiInterface
      */
-    secureLogoutApiSecureAuthLogoutPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>>;
+    secureLogoutApiSecureAuthLogoutPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
 
     /**
      * Secure user logout.
      * Secure Logout
      */
-    secureLogoutApiSecureAuthLogoutPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }>;
+    secureLogoutApiSecureAuthLogoutPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 
     /**
      * Secure user registration with input validation.
@@ -82,13 +82,13 @@ export interface SecureAuthenticationApiInterface {
      * @throws {RequiredError}
      * @memberof SecureAuthenticationApiInterface
      */
-    secureRegisterApiSecureAuthRegisterPostRaw(requestParameters: SecureRegisterApiSecureAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>>;
+    secureRegisterApiSecureAuthRegisterPostRaw(requestParameters: SecureRegisterApiSecureAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
 
     /**
      * Secure user registration with input validation.
      * Secure Register
      */
-    secureRegisterApiSecureAuthRegisterPost(requestParameters: SecureRegisterApiSecureAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }>;
+    secureRegisterApiSecureAuthRegisterPost(requestParameters: SecureRegisterApiSecureAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 
 }
 
@@ -101,7 +101,7 @@ export class SecureAuthenticationApi extends runtime.BaseAPI implements SecureAu
      * Secure user login with input validation.
      * Secure Login
      */
-    async secureLoginApiSecureAuthLoginPostRaw(requestParameters: SecureLoginApiSecureAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
+    async secureLoginApiSecureAuthLoginPostRaw(requestParameters: SecureLoginApiSecureAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters['secureUserLogin'] == null) {
             throw new runtime.RequiredError(
                 'secureUserLogin',
@@ -133,7 +133,7 @@ export class SecureAuthenticationApi extends runtime.BaseAPI implements SecureAu
      * Secure user login with input validation.
      * Secure Login
      */
-    async secureLoginApiSecureAuthLoginPost(requestParameters: SecureLoginApiSecureAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
+    async secureLoginApiSecureAuthLoginPost(requestParameters: SecureLoginApiSecureAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
         const response = await this.secureLoginApiSecureAuthLoginPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -142,7 +142,7 @@ export class SecureAuthenticationApi extends runtime.BaseAPI implements SecureAu
      * Secure user logout.
      * Secure Logout
      */
-    async secureLogoutApiSecureAuthLogoutPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
+    async secureLogoutApiSecureAuthLogoutPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -172,7 +172,7 @@ export class SecureAuthenticationApi extends runtime.BaseAPI implements SecureAu
      * Secure user logout.
      * Secure Logout
      */
-    async secureLogoutApiSecureAuthLogoutPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
+    async secureLogoutApiSecureAuthLogoutPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
         const response = await this.secureLogoutApiSecureAuthLogoutPostRaw(initOverrides);
         return await response.value();
     }
@@ -181,7 +181,7 @@ export class SecureAuthenticationApi extends runtime.BaseAPI implements SecureAu
      * Secure user registration with input validation.
      * Secure Register
      */
-    async secureRegisterApiSecureAuthRegisterPostRaw(requestParameters: SecureRegisterApiSecureAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
+    async secureRegisterApiSecureAuthRegisterPostRaw(requestParameters: SecureRegisterApiSecureAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         if (requestParameters['secureUserCreate'] == null) {
             throw new runtime.RequiredError(
                 'secureUserCreate',
@@ -213,7 +213,7 @@ export class SecureAuthenticationApi extends runtime.BaseAPI implements SecureAu
      * Secure user registration with input validation.
      * Secure Register
      */
-    async secureRegisterApiSecureAuthRegisterPost(requestParameters: SecureRegisterApiSecureAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
+    async secureRegisterApiSecureAuthRegisterPost(requestParameters: SecureRegisterApiSecureAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
         const response = await this.secureRegisterApiSecureAuthRegisterPostRaw(requestParameters, initOverrides);
         return await response.value();
     }

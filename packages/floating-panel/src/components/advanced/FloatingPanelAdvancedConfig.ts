@@ -9,9 +9,7 @@ import type { PanelConfig } from "../../types.js";
 /**
  * Create default advanced configuration
  */
-export function createAdvancedConfig(
-  config?: PanelConfig,
-): Required<PanelConfig> {
+export function createAdvancedConfig(config?: PanelConfig): Required<PanelConfig> {
   return {
     draggable: true,
     resizable: true,

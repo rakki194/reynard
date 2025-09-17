@@ -28,7 +28,7 @@ export function DocumentsTab(props: DocumentsTabProps) {
 
         <div class="documents-list">
           <For each={props.documents}>
-            {(doc) => (
+            {doc => (
               <Card variant="outlined" padding="md">
                 <div class="document-item">
                   <div class="document-info">
@@ -44,12 +44,7 @@ export function DocumentsTab(props: DocumentsTabProps) {
                     <Button variant="ghost" size="sm" iconOnly>
                       <Icon name="eye" size="sm" />
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      iconOnly
-                      onClick={() => props.onDeleteDocument(doc.id)}
-                    >
+                    <Button variant="ghost" size="sm" iconOnly onClick={() => props.onDeleteDocument(doc.id)}>
                       <Icon name="delete" size="sm" />
                     </Button>
                   </div>

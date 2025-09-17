@@ -13,18 +13,13 @@ export const RoguelikeGamePage: Component = () => {
       <div class="page-header">
         <h1>🦊 Reynard Rogue-like</h1>
         <p class="page-description">
-          Experience a fully functional rogue-like dungeon crawler built with
-          Reynard's ECS system. Features procedural dungeon generation, AI
-          enemies, and pixel-perfect rendering.
+          Experience a fully functional rogue-like dungeon crawler built with Reynard's ECS system. Features procedural
+          dungeon generation, AI enemies, and pixel-perfect rendering.
         </p>
       </div>
 
       <div class="game-container">
-        <RoguelikeGameComponent
-          width={1280}
-          height={720}
-          className="main-game"
-        />
+        <RoguelikeGameComponent width={1280} height={720} className="main-game" />
       </div>
 
       <div class="page-footer">
@@ -33,30 +28,19 @@ export const RoguelikeGamePage: Component = () => {
           <div class="feature-grid">
             <div class="feature-card">
               <h4>ECS Architecture</h4>
-              <p>
-                Built with Reynard's Entity-Component-System for high
-                performance and modularity
-              </p>
+              <p>Built with Reynard's Entity-Component-System for high performance and modularity</p>
             </div>
             <div class="feature-card">
               <h4>Procedural Generation</h4>
-              <p>
-                Each dungeon is uniquely generated with rooms, corridors, and
-                varied layouts
-              </p>
+              <p>Each dungeon is uniquely generated with rooms, corridors, and varied layouts</p>
             </div>
             <div class="feature-card">
               <h4>AI Systems</h4>
-              <p>
-                Multiple enemy types with different behaviors: wander,
-                aggressive, and guard
-              </p>
+              <p>Multiple enemy types with different behaviors: wander, aggressive, and guard</p>
             </div>
             <div class="feature-card">
               <h4>Pixel Art Rendering</h4>
-              <p>
-                Crisp, retro-style graphics with proper pixel-perfect rendering
-              </p>
+              <p>Crisp, retro-style graphics with proper pixel-perfect rendering</p>
             </div>
             <div class="feature-card">
               <h4>Line of Sight</h4>
@@ -64,10 +48,7 @@ export const RoguelikeGamePage: Component = () => {
             </div>
             <div class="feature-card">
               <h4>Combat & Items</h4>
-              <p>
-                Turn-based combat system with item collection and inventory
-                management
-              </p>
+              <p>Turn-based combat system with item collection and inventory management</p>
             </div>
           </div>
         </div>

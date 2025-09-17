@@ -7,11 +7,7 @@
  * @module algorithms/optimization/collisionAlgorithms
  */
 
-import type {
-  AABB,
-  CollisionPair,
-  CollisionResult,
-} from "../../geometry/collision/aabb-types";
+import type { AABB, CollisionPair, CollisionResult } from "../../geometry/collision/aabb-types";
 import type { CollisionObjectData } from "../../types/spatial-types";
 import { SpatialHash } from "../../spatial-hash/spatial-hash-core";
 import { EnhancedMemoryPool } from "../core/enhanced-memory-pool";
@@ -20,12 +16,7 @@ import { EnhancedMemoryPool } from "../core/enhanced-memory-pool";
  * Basic collision detection between two AABBs
  */
 export function checkCollision(a: AABB, b: AABB): boolean {
-  return !(
-    a.x + a.width <= b.x ||
-    b.x + b.width <= a.x ||
-    a.y + a.height <= b.y ||
-    b.y + b.height <= a.y
-  );
+  return !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
 }
 
 /**
@@ -44,22 +35,14 @@ export function createCollisionResult(a: AABB, b: AABB): CollisionResult {
   }
 
   // Calculate overlap area
-  const overlapX = Math.max(
-    0,
-    Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x),
-  );
-  const overlapY = Math.max(
-    0,
-    Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y),
-  );
+  const overlapX = Math.max(0, Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x));
+  const overlapY = Math.max(0, Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y));
   const overlapArea = overlapX * overlapY;
 
   // Calculate distance between centers
   const centerA = { x: a.x + a.width / 2, y: a.y + a.height / 2 };
   const centerB = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
-  const distance = Math.sqrt(
-    Math.pow(centerA.x - centerB.x, 2) + Math.pow(centerA.y - centerB.y, 2),
-  );
+  const distance = Math.sqrt(Math.pow(centerA.x - centerB.x, 2) + Math.pow(centerA.y - centerB.y, 2));
 
   return {
     colliding: true,
@@ -98,10 +81,7 @@ export function executeNaiveCollisionDetection(aabbs: AABB[]): CollisionPair[] {
 /**
  * Spatial hash-based collision detection
  */
-export function executeSpatialCollisionDetection(
-  aabbs: AABB[],
-  memoryPool: EnhancedMemoryPool,
-): CollisionPair[] {
+export function executeSpatialCollisionDetection(aabbs: AABB[], memoryPool: EnhancedMemoryPool): CollisionPair[] {
   // For medium datasets, use naive approach as it's faster
   if (aabbs.length < 300) {
     return executeNaiveCollisionDetection(aabbs);
@@ -140,7 +120,7 @@ export function executeSpatialCollisionDetection(
           aabb.x - aabb.width,
           aabb.y - aabb.height,
           aabb.width * 3,
-          aabb.height * 3,
+          aabb.height * 3
         );
 
         for (const obj of nearby) {
@@ -173,9 +153,6 @@ export function executeSpatialCollisionDetection(
 /**
  * Optimized collision detection (currently same as spatial)
  */
-export function executeOptimizedCollisionDetection(
-  aabbs: AABB[],
-  memoryPool: EnhancedMemoryPool,
-): CollisionPair[] {
+export function executeOptimizedCollisionDetection(aabbs: AABB[], memoryPool: EnhancedMemoryPool): CollisionPair[] {
   return executeSpatialCollisionDetection(aabbs, memoryPool);
 }

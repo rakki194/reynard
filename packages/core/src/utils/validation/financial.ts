@@ -39,17 +39,9 @@ export function isValidCreditCard(cardNumber: string): boolean {
 /**
  * ZIP/Postal code validation (US and international)
  */
-export function isValidPostalCode(
-  postalCode: string,
-  country: string = "US",
-): boolean {
+export function isValidPostalCode(postalCode: string, country: string = "US"): boolean {
   // Handle null/undefined/empty input
-  if (
-    !postalCode ||
-    typeof postalCode !== "string" ||
-    !country ||
-    typeof country !== "string"
-  ) {
+  if (!postalCode || typeof postalCode !== "string" || !country || typeof country !== "string") {
     return false;
   }
 

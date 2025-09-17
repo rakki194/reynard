@@ -33,10 +33,7 @@
           "outputFile": "i18n-benchmark-results.xml"
         }
       ],
-      [
-        "list",
-        null
-      ]
+      ["list", null]
     ],
     "reportSlowTests": {
       "max": 5,
@@ -55,9 +52,7 @@
         "name": "chromium-performance",
         "testDir": "/home/kade/runeset/reynard/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "i18n-benchmark.spec.ts"
-        ],
+        "testMatch": ["i18n-benchmark.spec.ts"],
         "timeout": 60000
       },
       {
@@ -71,9 +66,7 @@
         "name": "firefox-performance",
         "testDir": "/home/kade/runeset/reynard/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "i18n-benchmark.spec.ts"
-        ],
+        "testMatch": ["i18n-benchmark.spec.ts"],
         "timeout": 60000
       },
       {
@@ -87,9 +80,7 @@
         "name": "webkit-performance",
         "testDir": "/home/kade/runeset/reynard/e2e",
         "testIgnore": [],
-        "testMatch": [
-          "i18n-benchmark.spec.ts"
-        ],
+        "testMatch": ["i18n-benchmark.spec.ts"],
         "timeout": 60000
       }
     ],

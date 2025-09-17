@@ -58,7 +58,7 @@ export class LocalStorageAdapter implements StorageAdapter {
     try {
       const targetPrefix = this.prefix + (prefix || "");
       const keys = this.keys(prefix);
-      keys.forEach((key) => localStorage.removeItem(targetPrefix + key));
+      keys.forEach(key => localStorage.removeItem(targetPrefix + key));
     } catch (error) {
       console.error("LocalStorage clear error:", error);
     }

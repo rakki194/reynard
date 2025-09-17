@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  processBarChartData,
-  BarChartData,
-  BarChartDataOptions,
-} from "../utils/barChartData";
+import { processBarChartData, BarChartData, BarChartDataOptions } from "../utils/barChartData";
 import type { Dataset } from "../types";
 
 describe("Bar Chart Data Processing", () => {
@@ -212,10 +208,7 @@ describe("Bar Chart Data Processing", () => {
     });
 
     it("should handle large datasets", () => {
-      const largeLabels = Array.from(
-        { length: 100 },
-        (_, i) => `Label ${i + 1}`,
-      );
+      const largeLabels = Array.from({ length: 100 }, (_, i) => `Label ${i + 1}`);
       const largeDatasets: Dataset[] = [
         {
           label: "Large Dataset",

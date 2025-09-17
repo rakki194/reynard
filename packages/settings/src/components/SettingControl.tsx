@@ -23,15 +23,8 @@ export interface SettingControlProps {
   class?: string;
 }
 
-export const SettingControl: Component<SettingControlProps> = (props) => {
-  const [local] = splitProps(props, [
-    "definition",
-    "value",
-    "onChange",
-    "error",
-    "disabled",
-    "class",
-  ]);
+export const SettingControl: Component<SettingControlProps> = props => {
+  const [local] = splitProps(props, ["definition", "value", "onChange", "error", "disabled", "class"]);
 
   // Memoized control ID
   const controlId = createMemo(() => `setting-${local.definition.key}`);
@@ -46,15 +39,11 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
     switch (type) {
       case "number":
       case "range":
-        convertedValue =
-          typeof newValue === "string" ? parseFloat(newValue) : newValue;
+        convertedValue = typeof newValue === "string" ? parseFloat(newValue) : newValue;
         break;
 
       case "boolean":
-        convertedValue =
-          typeof newValue === "string"
-            ? newValue === "true"
-            : Boolean(newValue);
+        convertedValue = typeof newValue === "string" ? newValue === "true" : Boolean(newValue);
         break;
 
       case "json":
@@ -102,7 +91,7 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
           <TextField
             id={controlId()}
             value={local.value || ""}
-            onInput={(e) => handleChange(e.target.value)}
+            onInput={e => handleChange(e.target.value)}
             disabled={isDisabled}
             placeholder={local.definition.description}
             error={!!local.error}
@@ -118,7 +107,7 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
             id={controlId()}
             type="number"
             value={local.value?.toString() || ""}
-            onInput={(e) => handleChange(e.target.value)}
+            onInput={e => handleChange(e.target.value)}
             disabled={isDisabled}
             placeholder={local.definition.description}
             error={!!local.error}
@@ -162,28 +151,21 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
         return (
           <div class="setting-control__multiselect">
             <For each={options || []}>
-              {(option) => (
+              {option => (
                 <label class="setting-control__checkbox-option">
                   <input
                     type="checkbox"
-                    checked={
-                      Array.isArray(local.value) &&
-                      local.value.includes(option.value)
-                    }
-                    onChange={(e) => {
-                      const currentValues = Array.isArray(local.value)
-                        ? local.value
-                        : [];
+                    checked={Array.isArray(local.value) && local.value.includes(option.value)}
+                    onChange={e => {
+                      const currentValues = Array.isArray(local.value) ? local.value : [];
                       const newValues = e.target.checked
                         ? [...currentValues, option.value]
-                        : currentValues.filter((v) => v !== option.value);
+                        : currentValues.filter(v => v !== option.value);
                       handleChange(newValues);
                     }}
                     disabled={isDisabled || option.disabled}
                   />
-                  <span class="setting-control__checkbox-label">
-                    {option.label}
-                  </span>
+                  <span class="setting-control__checkbox-label">{option.label}</span>
                 </label>
               )}
             </For>
@@ -197,13 +179,13 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
               type="color"
               id={controlId()}
               value={local.value || "#000000"}
-              onInput={(e) => handleChange(e.target.value)}
+              onInput={e => handleChange(e.target.value)}
               disabled={isDisabled}
               class="setting-control__color-input"
             />
             <TextField
               value={local.value || ""}
-              onInput={(e) => handleChange(e.target.value)}
+              onInput={e => handleChange(e.target.value)}
               disabled={isDisabled}
               placeholder="#000000"
               error={!!local.error}
@@ -218,13 +200,9 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
             id={controlId()}
             type="date"
             value={
-              local.value
-                ? local.value instanceof Date
-                  ? local.value.toISOString().split("T")[0]
-                  : local.value
-                : ""
+              local.value ? (local.value instanceof Date ? local.value.toISOString().split("T")[0] : local.value) : ""
             }
-            onInput={(e) => handleChange(e.target.value)}
+            onInput={e => handleChange(e.target.value)}
             disabled={isDisabled}
             error={!!local.error}
           />
@@ -236,7 +214,7 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
             id={controlId()}
             type="time"
             value={local.value || ""}
-            onInput={(e) => handleChange(e.target.value)}
+            onInput={e => handleChange(e.target.value)}
             disabled={isDisabled}
             error={!!local.error}
           />
@@ -248,13 +226,9 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
             id={controlId()}
             type="datetime-local"
             value={
-              local.value
-                ? local.value instanceof Date
-                  ? local.value.toISOString().slice(0, 16)
-                  : local.value
-                : ""
+              local.value ? (local.value instanceof Date ? local.value.toISOString().slice(0, 16) : local.value) : ""
             }
-            onInput={(e) => handleChange(e.target.value)}
+            onInput={e => handleChange(e.target.value)}
             disabled={isDisabled}
             error={!!local.error}
           />
@@ -264,12 +238,8 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
         return (
           <textarea
             id={controlId()}
-            value={
-              typeof local.value === "string"
-                ? local.value
-                : JSON.stringify(local.value, null, 2)
-            }
-            onInput={(e) => handleChange(e.target.value)}
+            value={typeof local.value === "string" ? local.value : JSON.stringify(local.value, null, 2)}
+            onInput={e => handleChange(e.target.value)}
             disabled={isDisabled}
             placeholder="Enter JSON data..."
             class={`setting-control__textarea ${local.error ? "setting-control__textarea--error" : ""}`}
@@ -284,11 +254,9 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
             <TextField
               id={controlId()}
               value={local.value || ""}
-              onInput={(e) => handleChange(e.target.value)}
+              onInput={e => handleChange(e.target.value)}
               disabled={isDisabled}
-              placeholder={
-                type === "file" ? "Enter file path..." : "Enter folder path..."
-              }
+              placeholder={type === "file" ? "Enter file path..." : "Enter folder path..."}
               error={!!local.error}
             />
             <Button
@@ -302,7 +270,7 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
                 if (type === "folder") {
                   input.setAttribute("webkitdirectory", "");
                 }
-                input.onchange = (e) => {
+                input.onchange = e => {
                   const files = (e.target as HTMLInputElement).files;
                   if (files && files[0]) {
                     handleChange(files[0].name);
@@ -321,7 +289,7 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
           <TextField
             id={controlId()}
             value={local.value?.toString() || ""}
-            onInput={(e) => handleChange(e.target.value)}
+            onInput={e => handleChange(e.target.value)}
             disabled={isDisabled}
             placeholder={local.definition.description}
             error={!!local.error}
@@ -363,9 +331,7 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
       </div>
 
       <Show when={local.definition.description}>
-        <div class="setting-control__description">
-          {local.definition.description}
-        </div>
+        <div class="setting-control__description">{local.definition.description}</div>
       </Show>
 
       <div class="setting-control__input">{renderControl()}</div>
@@ -374,36 +340,15 @@ export const SettingControl: Component<SettingControlProps> = (props) => {
         <div class="setting-control__error">{local.error}</div>
       </Show>
 
-      <Show
-        when={
-          local.definition.validation?.min !== undefined ||
-          local.definition.validation?.max !== undefined
-        }
-      >
+      <Show when={local.definition.validation?.min !== undefined || local.definition.validation?.max !== undefined}>
         <div class="setting-control__hint">
-          <Show
-            when={
-              local.definition.validation?.min !== undefined &&
-              local.definition.validation?.max !== undefined
-            }
-          >
-            Range: {local.definition.validation!.min} -{" "}
-            {local.definition.validation!.max}
+          <Show when={local.definition.validation?.min !== undefined && local.definition.validation?.max !== undefined}>
+            Range: {local.definition.validation!.min} - {local.definition.validation!.max}
           </Show>
-          <Show
-            when={
-              local.definition.validation?.min !== undefined &&
-              local.definition.validation?.max === undefined
-            }
-          >
+          <Show when={local.definition.validation?.min !== undefined && local.definition.validation?.max === undefined}>
             Minimum: {local.definition.validation!.min}
           </Show>
-          <Show
-            when={
-              local.definition.validation?.min === undefined &&
-              local.definition.validation?.max !== undefined
-            }
-          >
+          <Show when={local.definition.validation?.min === undefined && local.definition.validation?.max !== undefined}>
             Maximum: {local.definition.validation!.max}
           </Show>
         </div>

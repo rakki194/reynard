@@ -15,15 +15,11 @@ vi.mock("../GalleryGrid", () => ({
 }));
 
 vi.mock("../BreadcrumbNavigation", () => ({
-  BreadcrumbNavigation: (props: any) => (
-    <div data-testid="breadcrumb-navigation" {...props} />
-  ),
+  BreadcrumbNavigation: (props: any) => <div data-testid="breadcrumb-navigation" {...props} />,
 }));
 
 vi.mock("../FileUploadZone", () => ({
-  FileUploadZone: (props: any) => (
-    <div data-testid="file-upload-zone" {...props} />
-  ),
+  FileUploadZone: (props: any) => <div data-testid="file-upload-zone" {...props} />,
 }));
 
 // Mock the composables
@@ -119,9 +115,7 @@ describe("Gallery", () => {
     it("should not show breadcrumb navigation when disabled", () => {
       render(() => <Gallery data={mockGalleryData} showBreadcrumbs={false} />);
 
-      expect(
-        screen.queryByTestId("breadcrumb-navigation"),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByTestId("breadcrumb-navigation")).not.toBeInTheDocument();
     });
 
     it("should show upload zone when enabled", () => {
@@ -191,9 +185,7 @@ describe("Gallery", () => {
         maxSize: 5000000,
       };
 
-      render(() => (
-        <Gallery data={mockGalleryData} filterConfig={filterConfig} />
-      ));
+      render(() => <Gallery data={mockGalleryData} filterConfig={filterConfig} />);
 
       expect(screen.getByTestId("gallery-grid")).toBeInTheDocument();
     });
@@ -206,9 +198,7 @@ describe("Gallery", () => {
         autoUpload: true,
       };
 
-      render(() => (
-        <Gallery data={mockGalleryData} uploadConfig={uploadConfig} />
-      ));
+      render(() => <Gallery data={mockGalleryData} uploadConfig={uploadConfig} />);
 
       expect(screen.getByTestId("file-upload-zone")).toBeInTheDocument();
     });
@@ -216,9 +206,7 @@ describe("Gallery", () => {
 
   describe("Event Handling", () => {
     it("should call onFileSelect when file is selected", () => {
-      render(() => (
-        <Gallery data={mockGalleryData} callbacks={mockCallbacks} />
-      ));
+      render(() => <Gallery data={mockGalleryData} callbacks={mockCallbacks} />);
 
       // Simulate file selection through gallery grid
       const galleryGrid = screen.getByTestId("gallery-grid");
@@ -228,9 +216,7 @@ describe("Gallery", () => {
     });
 
     it("should call onFileDoubleClick when file is double-clicked", () => {
-      render(() => (
-        <Gallery data={mockGalleryData} callbacks={mockCallbacks} />
-      ));
+      render(() => <Gallery data={mockGalleryData} callbacks={mockCallbacks} />);
 
       const galleryGrid = screen.getByTestId("gallery-grid");
       fireEvent.doubleClick(galleryGrid);
@@ -239,9 +225,7 @@ describe("Gallery", () => {
     });
 
     it("should call onFolderOpen when folder is opened", () => {
-      render(() => (
-        <Gallery data={mockGalleryData} callbacks={mockCallbacks} />
-      ));
+      render(() => <Gallery data={mockGalleryData} callbacks={mockCallbacks} />);
 
       const galleryGrid = screen.getByTestId("gallery-grid");
       fireEvent.click(galleryGrid);
@@ -250,9 +234,7 @@ describe("Gallery", () => {
     });
 
     it("should call onFileUpload when files are uploaded", () => {
-      render(() => (
-        <Gallery data={mockGalleryData} callbacks={mockCallbacks} />
-      ));
+      render(() => <Gallery data={mockGalleryData} callbacks={mockCallbacks} />);
 
       const uploadZone = screen.getByTestId("file-upload-zone");
       fireEvent.click(uploadZone);
@@ -277,12 +259,8 @@ describe("Gallery", () => {
     it("should have view mode toggle buttons", () => {
       render(() => <Gallery data={mockGalleryData} showToolbar={true} />);
 
-      expect(
-        screen.getByRole("button", { name: /grid view/i }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: /list view/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /grid view/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /list view/i })).toBeInTheDocument();
     });
 
     it("should have sort controls", () => {
@@ -294,9 +272,7 @@ describe("Gallery", () => {
     it("should have filter controls", () => {
       render(() => <Gallery data={mockGalleryData} showToolbar={true} />);
 
-      expect(
-        screen.getByRole("textbox", { name: /filter/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("textbox", { name: /filter/i })).toBeInTheDocument();
     });
   });
 

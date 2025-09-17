@@ -4,12 +4,7 @@
  */
 
 import { createMemo, type Accessor } from "solid-js";
-import {
-  formatOKLCH,
-  adjustLightness,
-  adjustSaturation,
-  type OKLCHColor,
-} from "reynard-colors";
+import { formatOKLCH, adjustLightness, adjustSaturation, type OKLCHColor } from "reynard-colors";
 
 export interface ColorVariationsState {
   selectedHue: Accessor<number>;
@@ -24,7 +19,7 @@ export const createColorVariations = (state: ColorVariationsState) => {
       l: state.selectedLightness(),
       c: state.selectedChroma(),
       h: state.selectedHue(),
-    }),
+    })
   );
 
   // Generate color variations

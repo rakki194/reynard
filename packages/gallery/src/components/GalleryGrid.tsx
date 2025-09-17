@@ -3,29 +3,10 @@
  * Responsive grid layout for displaying files and folders
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createMemo,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, For, Show, createSignal, createMemo, onMount, onCleanup } from "solid-js";
 import { createResizeObserver } from "@solid-primitives/resize-observer";
-import type {
-  FileItem,
-  FolderItem,
-  ViewConfiguration,
-  SelectionState,
-  GalleryCallbacks,
-} from "../types";
-import {
-  calculateGridDimensions,
-  formatFileSize,
-  formatDate,
-  getFileIcon,
-} from "../utils";
+import type { FileItem, FolderItem, ViewConfiguration, SelectionState, GalleryCallbacks } from "../types";
+import { calculateGridDimensions, formatFileSize, formatDate, getFileIcon } from "../utils";
 
 export interface GalleryGridProps {
   /** Items to display */
@@ -41,16 +22,13 @@ export interface GalleryGridProps {
   /** Callbacks */
   onItemClick?: GalleryCallbacks["onItemOpen"];
   onItemDoubleClick?: GalleryCallbacks["onItemDoubleClick"];
-  onSelectionChange?: (
-    item: FileItem | FolderItem,
-    mode: "single" | "add" | "range",
-  ) => void;
+  onSelectionChange?: (item: FileItem | FolderItem, mode: "single" | "add" | "range") => void;
   onContextMenu?: (item: FileItem | FolderItem, x: number, y: number) => void;
   /** Custom class name */
   class?: string;
 }
 
-export const GalleryGrid: Component<GalleryGridProps> = (props) => {
+export const GalleryGrid: Component<GalleryGridProps> = props => {
   let containerRef: HTMLDivElement | undefined;
   const [containerSize, setContainerSize] = createSignal({
     width: 0,
@@ -61,7 +39,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
   // Set up resize observer
   createResizeObserver(
     () => containerRef,
-    (entries) => {
+    entries => {
       if (entries && Array.isArray(entries) && entries.length > 0) {
         const entry = entries[0];
         setContainerSize({
@@ -69,7 +47,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
           height: entry.contentRect.height,
         });
       }
-    },
+    }
   );
 
   // Calculate grid dimensions
@@ -77,18 +55,11 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
     const { width } = containerSize();
     if (width === 0) return { itemWidth: 200, itemHeight: 200, columns: 1 };
 
-    return calculateGridDimensions(
-      width,
-      props.viewConfig.itemSize,
-      props.viewConfig.itemsPerRow,
-    );
+    return calculateGridDimensions(width, props.viewConfig.itemSize, props.viewConfig.itemsPerRow);
   });
 
   // Handle item selection
-  const handleItemClick = (
-    event: MouseEvent,
-    item: FileItem | FolderItem,
-  ): void => {
+  const handleItemClick = (event: MouseEvent, item: FileItem | FolderItem): void => {
     event.preventDefault();
 
     if (props.selectionState.mode === "none") {
@@ -96,40 +67,24 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
       return;
     }
 
-    const mode =
-      event.ctrlKey || event.metaKey
-        ? "add"
-        : event.shiftKey
-          ? "range"
-          : "single";
+    const mode = event.ctrlKey || event.metaKey ? "add" : event.shiftKey ? "range" : "single";
 
     props.onSelectionChange?.(item, mode);
 
-    if (
-      mode === "single" &&
-      !event.ctrlKey &&
-      !event.metaKey &&
-      !event.shiftKey
-    ) {
+    if (mode === "single" && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
       // Single click without modifiers also opens the item
       setTimeout(() => props.onItemClick?.(item), 0);
     }
   };
 
   // Handle double click
-  const handleItemDoubleClick = (
-    event: MouseEvent,
-    item: FileItem | FolderItem,
-  ): void => {
+  const handleItemDoubleClick = (event: MouseEvent, item: FileItem | FolderItem): void => {
     event.preventDefault();
     props.onItemDoubleClick?.(item);
   };
 
   // Handle context menu
-  const handleContextMenu = (
-    event: MouseEvent,
-    item: FileItem | FolderItem,
-  ): void => {
+  const handleContextMenu = (event: MouseEvent, item: FileItem | FolderItem): void => {
     event.preventDefault();
     props.onContextMenu?.(item, event.clientX, event.clientY);
   };
@@ -140,9 +95,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
 
     if (props.items.length === 0) return;
 
-    const currentIndex = props.items.findIndex(
-      (item) => item.id === props.selectionState.lastSelectedId,
-    );
+    const currentIndex = props.items.findIndex(item => item.id === props.selectionState.lastSelectedId);
 
     let newIndex = currentIndex;
 
@@ -236,7 +189,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
             src={fileItem.thumbnailUrl}
             alt={item.name}
             loading="lazy"
-            onError={(e) => {
+            onError={e => {
               // Fallback to icon on image error
               const target = e.target as HTMLElement;
               target.style.display = "none";
@@ -265,19 +218,11 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
     return (
       <div class="gallery-item__metadata">
         <Show when={props.viewConfig.showFileSizes && item.type !== "folder"}>
-          <span class="gallery-item__size">
-            {formatFileSize((item as FileItem).size)}
-          </span>
+          <span class="gallery-item__size">{formatFileSize((item as FileItem).size)}</span>
         </Show>
-        <span class="gallery-item__date">
-          {formatDate(item.lastModified, "relative")}
-        </span>
-        <Show
-          when={item.type !== "folder" && (item as FileItem).metadata?.duration}
-        >
-          <span class="gallery-item__duration">
-            {(item as FileItem).metadata?.duration}s
-          </span>
+        <span class="gallery-item__date">{formatDate(item.lastModified, "relative")}</span>
+        <Show when={item.type !== "folder" && (item as FileItem).metadata?.duration}>
+          <span class="gallery-item__duration">{(item as FileItem).metadata?.duration}s</span>
         </Show>
       </div>
     );
@@ -302,9 +247,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
           <div class="gallery-grid__empty-icon">
             <span class="icon">folder-open</span>
           </div>
-          <span class="gallery-grid__empty-message">
-            {props.emptyMessage || "No items found"}
-          </span>
+          <span class="gallery-grid__empty-message">{props.emptyMessage || "No items found"}</span>
         </div>
       </Show>
 
@@ -316,7 +259,7 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
           aria-label="File gallery items"
         >
           <For each={props.items}>
-            {(item) => (
+            {item => (
               <div
                 class={`${getItemClasses(item)} gallery-item--${props.viewConfig.layout}`}
                 role="listitem"
@@ -325,9 +268,9 @@ export const GalleryGrid: Component<GalleryGridProps> = (props) => {
                 data-item-height={gridDimensions().itemHeight}
                 data-item-type={item.type}
                 data-item-id={item.id}
-                onClick={(e) => handleItemClick(e, item)}
-                onDblClick={(e) => handleItemDoubleClick(e, item)}
-                onContextMenu={(e) => handleContextMenu(e, item)}
+                onClick={e => handleItemClick(e, item)}
+                onDblClick={e => handleItemDoubleClick(e, item)}
+                onContextMenu={e => handleContextMenu(e, item)}
                 onMouseEnter={() => setHoveredItem(item.id)}
                 onMouseLeave={() => setHoveredItem(null)}
               >

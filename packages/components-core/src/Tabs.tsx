@@ -162,15 +162,17 @@ export const Tabs: Component<TabsProps> = props => {
       {/* Handle content property for backward compatibility */}
       {!local.children && local.items.length > 0 && (
         <div class="reynard-tabs__content">
-          <For each={local.items}>{item => (
-            <div
-              class={`reynard-tab-panel ${item.id === local.activeTab ? "reynard-tab-panel--active" : "reynard-tab-panel--hidden"}`}
-              role="tabpanel"
-              aria-hidden={item.id !== local.activeTab}
-            >
-              {item.content}
-            </div>
-          )}</For>
+          <For each={local.items}>
+            {item => (
+              <div
+                class={`reynard-tab-panel ${item.id === local.activeTab ? "reynard-tab-panel--active" : "reynard-tab-panel--hidden"}`}
+                role="tabpanel"
+                aria-hidden={item.id !== local.activeTab}
+              >
+                {item.content}
+              </div>
+            )}
+          </For>
         </div>
       )}
     </div>

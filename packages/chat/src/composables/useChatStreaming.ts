@@ -6,10 +6,7 @@
  */
 
 import { createSignal, batch } from "solid-js";
-import {
-  StreamingMarkdownParser,
-  createStreamingMarkdownParser,
-} from "../utils/StreamingMarkdownParser";
+import { StreamingMarkdownParser, createStreamingMarkdownParser } from "../utils/StreamingMarkdownParser";
 import type { ChatMessage, ChatRequest, StreamChunk, ToolCall } from "../types";
 
 export interface UseChatStreamingOptions {
@@ -28,16 +25,9 @@ export interface UseChatStreamingReturn {
   currentThinking: () => string;
   streamController: () => AbortController | null;
   streamingParser: () => StreamingMarkdownParser | null;
-  sendMessage: (
-    content: string,
-    requestOptions?: Partial<ChatRequest>,
-  ) => Promise<void>;
+  sendMessage: (content: string, requestOptions?: Partial<ChatRequest>) => Promise<void>;
   streamResponse: (request: ChatRequest) => Promise<void>;
-  processStreamChunk: (
-    chunk: StreamChunk,
-    parser: StreamingMarkdownParser,
-    messageId: string,
-  ) => Promise<void>;
+  processStreamChunk: (chunk: StreamChunk, parser: StreamingMarkdownParser, messageId: string) => Promise<void>;
   finalizeStreaming: (messageId: string) => Promise<void>;
   cancelStreaming: () => void;
   retryLastMessage: () => Promise<void>;
@@ -49,17 +39,15 @@ export function useChatStreaming(
     addMessage: (message: Omit<ChatMessage, "id" | "timestamp">) => ChatMessage;
     updateMessage: (id: string, updates: Partial<ChatMessage>) => void;
     messages: () => ChatMessage[];
-  },
+  }
 ): UseChatStreamingReturn {
   const { fetchFn = fetch, authHeaders = {}, endpoint = "/api/chat" } = options;
 
   // Streaming state
   const [isStreaming, setIsStreaming] = createSignal(false);
   const [isThinking, setIsThinking] = createSignal(false);
-  const [streamController, setStreamController] =
-    createSignal<AbortController | null>(null);
-  const [streamingParser, setStreamingParser] =
-    createSignal<StreamingMarkdownParser | null>(null);
+  const [streamController, setStreamController] = createSignal<AbortController | null>(null);
+  const [streamingParser, setStreamingParser] = createSignal<StreamingMarkdownParser | null>(null);
   const [currentResponse, setCurrentResponse] = createSignal("");
   const [currentThinking, setCurrentThinking] = createSignal("");
 
@@ -69,10 +57,7 @@ export function useChatStreaming(
   };
 
   // Send a message
-  const sendMessage = async (
-    content: string,
-    requestOptions: Partial<ChatRequest> = {},
-  ) => {
+  const sendMessage = async (content: string, requestOptions: Partial<ChatRequest> = {}) => {
     if (isStreaming()) {
       throw new Error("Cannot send message while streaming");
     }
@@ -103,8 +88,7 @@ export function useChatStreaming(
       // Add error message
       messageHandlers.addMessage({
         role: "assistant",
-        content:
-          "I apologize, but I encountered an error processing your message. Please try again.",
+        content: "I apologize, but I encountered an error processing your message. Please try again.",
         error: {
           type: "request_failed",
           message: error instanceof Error ? error.message : "Unknown error",
@@ -204,11 +188,7 @@ export function useChatStreaming(
   };
 
   // Process a single stream chunk
-  const processStreamChunk = async (
-    chunk: StreamChunk,
-    parser: StreamingMarkdownParser,
-    messageId: string,
-  ) => {
+  const processStreamChunk = async (chunk: StreamChunk, parser: StreamingMarkdownParser, messageId: string) => {
     switch (chunk.type) {
       case "start":
         batch(() => {
@@ -290,10 +270,7 @@ export function useChatStreaming(
   };
 
   // Handle tool call execution
-  const handleToolCall = async (
-    toolExecution: NonNullable<StreamChunk["toolExecution"]>,
-    messageId: string,
-  ) => {
+  const handleToolCall = async (toolExecution: NonNullable<StreamChunk["toolExecution"]>, messageId: string) => {
     const toolCall: ToolCall = {
       id: generateToolCallId(),
       name: toolExecution.toolName,
@@ -312,14 +289,11 @@ export function useChatStreaming(
   };
 
   // Update tool call progress
-  const updateToolCallProgress = (
-    toolExecution: NonNullable<StreamChunk["toolExecution"]>,
-    messageId: string,
-  ) => {
-    const message = messageHandlers.messages().find((m) => m.id === messageId);
+  const updateToolCallProgress = (toolExecution: NonNullable<StreamChunk["toolExecution"]>, messageId: string) => {
+    const message = messageHandlers.messages().find(m => m.id === messageId);
     if (!message?.toolCalls) return;
 
-    const updatedToolCalls = message.toolCalls.map((tc) =>
+    const updatedToolCalls = message.toolCalls.map(tc =>
       tc.name === toolExecution.toolName
         ? {
             ...tc,
@@ -327,7 +301,7 @@ export function useChatStreaming(
             message: toolExecution.message,
             status: toolExecution.status,
           }
-        : tc,
+        : tc
     );
 
     messageHandlers.updateMessage(messageId, {
@@ -336,14 +310,11 @@ export function useChatStreaming(
   };
 
   // Handle tool result
-  const handleToolResult = (
-    toolExecution: NonNullable<StreamChunk["toolExecution"]>,
-    messageId: string,
-  ) => {
-    const message = messageHandlers.messages().find((m) => m.id === messageId);
+  const handleToolResult = (toolExecution: NonNullable<StreamChunk["toolExecution"]>, messageId: string) => {
+    const message = messageHandlers.messages().find(m => m.id === messageId);
     if (!message?.toolCalls) return;
 
-    const updatedToolCalls = message.toolCalls.map((tc) =>
+    const updatedToolCalls = message.toolCalls.map(tc =>
       tc.name === toolExecution.toolName
         ? {
             ...tc,
@@ -356,7 +327,7 @@ export function useChatStreaming(
               duration: Date.now() - tc.timing!.startTime,
             },
           }
-        : tc,
+        : tc
     );
 
     messageHandlers.updateMessage(messageId, {
@@ -406,7 +377,7 @@ export function useChatStreaming(
   // Retry last message
   const retryLastMessage = async () => {
     const msgs = messageHandlers.messages();
-    const lastUserMessage = [...msgs].reverse().find((m) => m.role === "user");
+    const lastUserMessage = [...msgs].reverse().find(m => m.role === "user");
 
     if (!lastUserMessage) {
       throw new Error("No user message to retry");

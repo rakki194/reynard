@@ -10,7 +10,7 @@ import type { AdaptiveConfig } from "./AdaptiveConfig";
 export function createAdaptiveCallbacks(
   callbacks: AnimationCallbacks,
   qualityManager: QualityManager,
-  engine: any, // AnimationCore type
+  engine: any // AnimationCore type
 ): AnimationCallbacks {
   return {
     ...callbacks,
@@ -20,10 +20,7 @@ export function createAdaptiveCallbacks(
         qualityManager.adaptQuality(stats.currentFPS);
         callbacks.onFrameEnd?.(frameTime, frameCount);
       } catch (error) {
-        console.error(
-          "🦊 AdaptiveCallbacks: Error in onFrameEnd callback",
-          error,
-        );
+        console.error("🦊 AdaptiveCallbacks: Error in onFrameEnd callback", error);
       }
     },
   };

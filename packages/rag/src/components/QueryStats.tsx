@@ -13,32 +13,26 @@ export interface QueryStatsProps {
   queryResponse: RAGQueryResponse;
 }
 
-export const QueryStats: Component<QueryStatsProps> = (props) => {
+export const QueryStats: Component<QueryStatsProps> = props => {
   return (
     <div class="query-stats">
       <div class="stat-item">
         <div class="stat-icon">
           <Icon name="refresh" size="sm" />
         </div>
-        <span>
-          Query: {props.queryResponse.query_time.toFixed(2)}ms
-        </span>
+        <span>Query: {props.queryResponse.query_time.toFixed(2)}ms</span>
       </div>
       <div class="stat-item">
         <div class="stat-icon">
           <Icon name="server" size="sm" />
         </div>
-        <span>
-          Embedding: {props.queryResponse.embedding_time.toFixed(2)}ms
-        </span>
+        <span>Embedding: {props.queryResponse.embedding_time.toFixed(2)}ms</span>
       </div>
       <div class="stat-item">
         <div class="stat-icon">
           <Icon name="refresh" size="sm" />
         </div>
-        <span>
-          Search: {props.queryResponse.search_time.toFixed(2)}ms
-        </span>
+        <span>Search: {props.queryResponse.search_time.toFixed(2)}ms</span>
       </div>
       <div class="stat-item">
         <div class="stat-icon">

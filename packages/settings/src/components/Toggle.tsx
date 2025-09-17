@@ -6,8 +6,7 @@
 import { Component, JSX, splitProps } from "solid-js";
 import { Toggle } from "reynard-components";
 
-export interface ToggleProps
-  extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type"> {
+export interface ToggleProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, "type"> {
   /** Button state */
   checked: boolean;
   /** Change handler */
@@ -20,14 +19,8 @@ export interface ToggleProps
   disabled?: boolean;
 }
 
-export const Toggle: Component<ToggleProps> = (props) => {
-  const [local, others] = splitProps(props, [
-    "checked",
-    "onChange",
-    "label",
-    "helperText",
-    "disabled",
-  ]);
+export const Toggle: Component<ToggleProps> = props => {
+  const [local, others] = splitProps(props, ["checked", "onChange", "label", "helperText", "disabled"]);
 
   const handleChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -48,9 +41,7 @@ export const Toggle: Component<ToggleProps> = (props) => {
         />
         <span class="toggle-slider"></span>
       </div>
-      {local.helperText && (
-        <div class="toggle-helper-text">{local.helperText}</div>
-      )}
+      {local.helperText && <div class="toggle-helper-text">{local.helperText}</div>}
     </div>
   );
 };

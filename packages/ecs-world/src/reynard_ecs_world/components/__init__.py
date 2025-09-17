@@ -6,17 +6,17 @@ Each component represents a specific aspect of agent data.
 """
 
 from .agent import AgentComponent
-from .traits import TraitComponent
 from .lifecycle import LifecycleComponent
 from .lineage import LineageComponent
-from .reproduction import ReproductionComponent
 from .position import PositionComponent
+from .reproduction import ReproductionComponent
+from .traits import TraitComponent
 
 __all__ = [
     "AgentComponent",
-    "TraitComponent", 
     "LifecycleComponent",
     "LineageComponent",
-    "ReproductionComponent",
     "PositionComponent",
+    "ReproductionComponent",
+    "TraitComponent",
 ]

@@ -8,14 +8,14 @@ import asyncio
 import random
 import time
 from contextlib import asynccontextmanager
-from typing import Any, Dict, Optional
+from typing import Any
 
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Global state for demo
-demo_state: Dict[str, Any] = {
+demo_state: dict[str, Any] = {
     "error_count": 0,
     "last_error_time": None,
     "recovery_attempts": 0,
@@ -59,20 +59,20 @@ class ErrorReport(BaseModel):
     error_id: str
     error_type: str
     message: str
-    stack_trace: Optional[str] = None
-    user_context: Optional[Dict[str, Any]] = None
+    stack_trace: str | None = None
+    user_context: dict[str, Any] | None = None
     timestamp: float
 
 
 class RecoveryRequest(BaseModel):
     strategy: str
-    context: Optional[Dict[str, Any]] = None
+    context: dict[str, Any] | None = None
 
 
 class RecoveryResponse(BaseModel):
     success: bool
     message: str
-    data: Optional[Dict[str, Any]] = None
+    data: dict[str, Any] | None = None
 
 
 # Health check endpoint
@@ -228,12 +228,11 @@ async def retry_operation(request: RecoveryRequest):
             message="Operation retried successfully",
             data={"attempt": demo_state["recovery_attempts"]},
         )
-    else:
-        return RecoveryResponse(
-            success=False,
-            message="Retry failed. Operation still not working.",
-            data={"attempt": demo_state["recovery_attempts"]},
-        )
+    return RecoveryResponse(
+        success=False,
+        message="Retry failed. Operation still not working.",
+        data={"attempt": demo_state["recovery_attempts"]},
+    )
 
 
 @app.post("/api/recovery/reset")

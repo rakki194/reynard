@@ -3,19 +3,9 @@
  * Canvas component for 3D visualization
  */
 
-import {
-  Component,
-  createSignal,
-  onMount,
-  onCleanup,
-  createMemo,
-} from "solid-js";
+import { Component, createSignal, onMount, onCleanup, createMemo } from "solid-js";
 import { useOKLCHColors } from "reynard-themes";
-import {
-  VisualizationCore,
-  type DataPoint,
-  type VisualizationConfig,
-} from "./VisualizationCore";
+import { VisualizationCore, type DataPoint, type VisualizationConfig } from "./VisualizationCore";
 import { DataProcessor, type ProcessedData } from "./DataProcessor";
 import { createAnimationEngine } from "../../utils/animationEngine";
 import { oklchToRgbString } from "./colorUtils";
@@ -34,17 +24,13 @@ interface Visualization3DCanvasProps {
   onInitializationComplete?: () => void;
 }
 
-export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (
-  props,
-) => {
+export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = props => {
   const oklchColors = useOKLCHColors();
 
   // State
   const [visualizationCore] = createSignal(new VisualizationCore(props.config));
   const [isInitializing, setIsInitializing] = createSignal(false);
-  const [initializationError, setInitializationError] = createSignal<
-    string | null
-  >(null);
+  const [initializationError, setInitializationError] = createSignal<string | null>(null);
 
   // Refs
   let containerRef: HTMLDivElement | undefined;
@@ -102,10 +88,7 @@ export const Visualization3DCanvas: Component<Visualization3DCanvasProps> = (
       props.onInitializationComplete?.();
     } catch (error) {
       console.error("Failed to initialize Three.js:", error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Failed to initialize 3D scene";
+      const errorMessage = error instanceof Error ? error.message : "Failed to initialize 3D scene";
       setInitializationError(errorMessage);
       setIsInitializing(false);
       props.onInitializationError?.(errorMessage);

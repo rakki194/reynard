@@ -139,9 +139,7 @@ export class WASMManager {
     try {
       // Run position updates using WASM SIMD
       if (deltaTime !== undefined) {
-        console.log(
-          `🦊> Running WASM SIMD position updates with deltaTime: ${deltaTime}`,
-        );
+        console.log(`🦊> Running WASM SIMD position updates with deltaTime: ${deltaTime}`);
         // In a real implementation, you'd call the WASM SIMD systems
       }
     } catch (error) {

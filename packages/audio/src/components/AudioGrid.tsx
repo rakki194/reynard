@@ -6,10 +6,7 @@
  */
 
 import { Component, createSignal, createEffect, For, Show } from "solid-js";
-import {
-  AudioThumbnailGenerator,
-  AudioMetadataExtractor,
-} from "reynard-file-processing";
+import { AudioThumbnailGenerator, AudioMetadataExtractor } from "reynard-file-processing";
 import { AudioPlayer } from "./AudioPlayer";
 import { AudioWaveformVisualizer } from "./AudioWaveformVisualizer";
 import { AudioFile, AudioMetadata } from "./types/AudioTypes";
@@ -33,10 +30,8 @@ export interface AudioGridProps {
   class?: string;
 }
 
-export const AudioGrid: Component<AudioGridProps> = (props) => {
-  const [audioFiles, setAudioFiles] = createSignal<AudioFile[]>(
-    props.initialFiles || [],
-  );
+export const AudioGrid: Component<AudioGridProps> = props => {
+  const [audioFiles, setAudioFiles] = createSignal<AudioFile[]>(props.initialFiles || []);
   const [selectedFile, setSelectedFile] = createSignal<AudioFile | null>(null);
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
@@ -60,7 +55,7 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
 
   // Handle file removal
   const handleFileRemove = (fileId: string) => {
-    setAudioFiles((prev) => prev.filter((f) => f.id !== fileId));
+    setAudioFiles(prev => prev.filter(f => f.id !== fileId));
     if (selectedFile()?.id === fileId) {
       setSelectedFile(null);
     }
@@ -81,9 +76,7 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
       // Generate waveform thumbnail using existing infrastructure
       const thumbnailResult = await thumbnailGenerator.generateThumbnail(file);
       if (!thumbnailResult.success) {
-        throw new Error(
-          thumbnailResult.error || "Failed to generate waveform thumbnail",
-        );
+        throw new Error(thumbnailResult.error || "Failed to generate waveform thumbnail");
       }
 
       // Extract metadata using existing infrastructure
@@ -102,8 +95,7 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
 
       return audioFile;
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to process audio file";
+      const errorMessage = err instanceof Error ? err.message : "Failed to process audio file";
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -122,11 +114,9 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
     const filesToProcess = Array.from(files).slice(0, maxFiles);
 
     try {
-      const processedFiles = await Promise.all(
-        filesToProcess.map(processAudioFile),
-      );
+      const processedFiles = await Promise.all(filesToProcess.map(processAudioFile));
 
-      setAudioFiles((prev) => [...prev, ...processedFiles]);
+      setAudioFiles(prev => [...prev, ...processedFiles]);
     } catch (err) {
       console.error("Failed to process audio files:", err);
     }
@@ -167,7 +157,7 @@ export const AudioGrid: Component<AudioGridProps> = (props) => {
       {/* Audio Files Grid */}
       <div class="audio-files-grid">
         <For each={audioFiles()}>
-          {(file) => (
+          {file => (
             <AudioFileCard
               file={file}
               isSelected={selectedFile()?.id === file.id}
@@ -205,7 +195,7 @@ interface AudioFileCardProps {
   isAnalyzing?: boolean;
 }
 
-const AudioFileCard: Component<AudioFileCardProps> = (props) => {
+const AudioFileCard: Component<AudioFileCardProps> = props => {
   const [thumbnailUrl, setThumbnailUrl] = createSignal<string | null>(null);
 
   // Create thumbnail URL
@@ -218,23 +208,16 @@ const AudioFileCard: Component<AudioFileCardProps> = (props) => {
   });
 
   return (
-    <div
-      class="audio-file-card"
-      classList={{ selected: props.isSelected }}
-      onClick={props.onSelect}
-    >
+    <div class="audio-file-card" classList={{ selected: props.isSelected }} onClick={props.onSelect}>
       <div class="audio-thumbnail">
-        <Show
-          when={thumbnailUrl()}
-          fallback={<div class="thumbnail-placeholder">🎵</div>}
-        >
+        <Show when={thumbnailUrl()} fallback={<div class="thumbnail-placeholder">🎵</div>}>
           <img src={thumbnailUrl()!} alt={props.file.name} />
         </Show>
         <div class="audio-overlay">
           <div class="audio-actions">
             <button
               class="action-button play-button"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 props.onSelect();
               }}
@@ -243,7 +226,7 @@ const AudioFileCard: Component<AudioFileCardProps> = (props) => {
             </button>
             <button
               class="action-button analyze-button"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 props.onAnalyze();
               }}
@@ -253,7 +236,7 @@ const AudioFileCard: Component<AudioFileCardProps> = (props) => {
             </button>
             <button
               class="action-button remove-button"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 props.onRemove();
               }}
@@ -268,9 +251,7 @@ const AudioFileCard: Component<AudioFileCardProps> = (props) => {
         <h4 class="audio-name" title={props.file.name}>
           {props.file.name}
         </h4>
-        <div class="audio-size">
-          {(props.file.size / (1024 * 1024)).toFixed(2)} MB
-        </div>
+        <div class="audio-size">{(props.file.size / (1024 * 1024)).toFixed(2)} MB</div>
 
         <Show when={props.showMetadata && props.file.metadata}>
           <div class="audio-metadata">
@@ -310,7 +291,7 @@ interface AudioPlayerModalProps {
   isAnalyzing?: boolean;
 }
 
-const AudioPlayerModal: Component<AudioPlayerModalProps> = (props) => {
+const AudioPlayerModal: Component<AudioPlayerModalProps> = props => {
   return (
     <div class="audio-player-modal">
       <div class="audio-player-content">
@@ -321,11 +302,7 @@ const AudioPlayerModal: Component<AudioPlayerModalProps> = (props) => {
         <div class="audio-player-header">
           <h2>{props.file.name}</h2>
           <div class="audio-player-actions">
-            <button
-              class="analyze-button"
-              onClick={props.onAnalyze}
-              disabled={props.isAnalyzing}
-            >
+            <button class="analyze-button" onClick={props.onAnalyze} disabled={props.isAnalyzing}>
               {props.isAnalyzing ? "⏳ Analyzing..." : "📊 Analyze Audio"}
             </button>
           </div>
@@ -401,9 +378,7 @@ const AudioPlayerModal: Component<AudioPlayerModalProps> = (props) => {
                 </div>
                 <div class="metadata-item">
                   <span class="label">File Size:</span>
-                  <span class="value">
-                    {(props.file.size / (1024 * 1024)).toFixed(2)} MB
-                  </span>
+                  <span class="value">{(props.file.size / (1024 * 1024)).toFixed(2)} MB</span>
                 </div>
               </div>
             </div>

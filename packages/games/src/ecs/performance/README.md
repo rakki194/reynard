@@ -75,9 +75,7 @@ interface UnifiedECS {
 
   spawn<T extends Component[]>(...components: T): Entity;
   despawn(entity: Entity): void;
-  query<T extends Component[]>(
-    ...componentTypes: any[]
-  ): IterableIterator<[Entity, ...T]>;
+  query<T extends Component[]>(...componentTypes: any[]): IterableIterator<[Entity, ...T]>;
   addSystem(system: (world: World) => void, name?: string): void;
   runSystems(deltaTime?: number): void;
   // ... more methods
@@ -172,10 +170,7 @@ console.log("Memory Usage:", metrics.memoryUsage);
 ### Explicit Implementation Selection
 
 ```typescript
-import {
-  createWASMSIMDECSSystem,
-  createTypeScriptECSSystem,
-} from "./performance";
+import { createWASMSIMDECSSystem, createTypeScriptECSSystem } from "./performance";
 
 // Force WASM SIMD implementation
 const wasmECS = await createWASMSIMDECSSystem({
@@ -194,7 +189,7 @@ const tsECS = await createTypeScriptECSSystem({
 
 ```typescript
 // Add custom systems
-ecs.addSystem((world) => {
+ecs.addSystem(world => {
   const query = world.query(Position, Velocity);
   for (const [entity, position, velocity] of query) {
     position.x += velocity.vx * 0.016;
@@ -225,11 +220,7 @@ The performance package is fully compatible with existing Reynard ECS components
 ```typescript
 import { Position, Velocity, Health } from "../types";
 
-const entity = ecs.spawn(
-  new Position(0, 0),
-  new Velocity(1, 1),
-  new Health(100, 100),
-);
+const entity = ecs.spawn(new Position(0, 0), new Velocity(1, 1), new Health(100, 100));
 ```
 
 ## 🚀 Performance Tips

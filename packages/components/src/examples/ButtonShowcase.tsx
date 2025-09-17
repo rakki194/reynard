@@ -16,7 +16,7 @@ export const ButtonShowcase: Component = () => {
   const startProgress = () => {
     setProgress(0);
     const interval = setInterval(() => {
-      setProgress((prev) => {
+      setProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
@@ -29,9 +29,7 @@ export const ButtonShowcase: Component = () => {
   return (
     <div style={{ padding: "2rem", "max-width": "1200px", margin: "0 auto" }}>
       <h1>🦊 Reynard Button System Showcase</h1>
-      <p>
-        Enhanced button components with advanced features inspired by Yipyap
-      </p>
+      <p>Enhanced button components with advanced features inspired by Yipyap</p>
 
       {/* Enhanced Icon Component */}
       <section style={{ margin: "2rem 0" }}>
@@ -50,12 +48,7 @@ export const ButtonShowcase: Component = () => {
           <Icon name="settings" variant="primary" />
           <Icon name="settings" variant="error" />
           <Icon name="settings" variant="success" />
-          <Icon
-            name="settings"
-            interactive
-            tooltip="Click me!"
-            onClick={() => alert("Icon clicked!")}
-          />
+          <Icon name="settings" interactive tooltip="Click me!" onClick={() => alert("Icon clicked!")} />
           <Icon name="settings" active />
           <Icon name="settings" loading />
           <Icon name="settings" glow glowColor="var(--accent)" />
@@ -88,12 +81,7 @@ export const ButtonShowcase: Component = () => {
           <IconButton icon="save" variant="primary">
             Save
           </IconButton>
-          <IconButton
-            icon="delete"
-            variant="danger"
-            iconOnly
-            tooltip="Delete item"
-          />
+          <IconButton icon="delete" variant="danger" iconOnly tooltip="Delete item" />
           <IconButton icon="upload" variant="success" iconPosition="right">
             Upload
           </IconButton>
@@ -105,9 +93,7 @@ export const ButtonShowcase: Component = () => {
             icon="heart"
             variant="danger"
             active={activeButton() === "heart"}
-            onClick={() =>
-              setActiveButton(activeButton() === "heart" ? null : "heart")
-            }
+            onClick={() => setActiveButton(activeButton() === "heart" ? null : "heart")}
           />
         </div>
       </section>
@@ -127,9 +113,7 @@ export const ButtonShowcase: Component = () => {
             icon="home"
             label="Home"
             active={activeButton() === "home"}
-            onClick={() =>
-              setActiveButton(activeButton() === "home" ? null : "home")
-            }
+            onClick={() => setActiveButton(activeButton() === "home" ? null : "home")}
           />
           <SidebarButton
             icon="folder"
@@ -156,9 +140,7 @@ export const ButtonShowcase: Component = () => {
             label="Settings"
             layout="toggle"
             showContent
-            content={
-              <div style={{ padding: "1rem" }}>Settings content goes here</div>
-            }
+            content={<div style={{ padding: "1rem" }}>Settings content goes here</div>}
           />
           <SidebarButton
             icon="upload"
@@ -181,16 +163,8 @@ export const ButtonShowcase: Component = () => {
           }}
         >
           <BreadcrumbButton icon="home" tooltip="Go to home" />
-          <BreadcrumbButton
-            icon="chevron-left"
-            isNavigation
-            tooltip="Go back"
-          />
-          <BreadcrumbButton
-            icon="chevron-right"
-            isNavigation
-            tooltip="Go forward"
-          />
+          <BreadcrumbButton icon="chevron-left" isNavigation tooltip="Go back" />
+          <BreadcrumbButton icon="chevron-right" isNavigation tooltip="Go forward" />
           <BreadcrumbButton icon="refresh" isNavigation tooltip="Refresh" />
           <BreadcrumbButton icon="settings" tooltip="Settings" />
           <BreadcrumbButton icon="search" tooltip="Search" />
@@ -244,9 +218,7 @@ export const ButtonShowcase: Component = () => {
             icon="star"
             variant="warning"
             active={activeButton() === "star"}
-            onClick={() =>
-              setActiveButton(activeButton() === "star" ? null : "star")
-            }
+            onClick={() => setActiveButton(activeButton() === "star" ? null : "star")}
             glow={activeButton() === "star"}
           >
             Favorite

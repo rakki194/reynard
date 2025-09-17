@@ -197,18 +197,14 @@ describe("RectangleOps", () => {
       const originRect: Rectangle = { x: 0, y: 0, width: 5, height: 3 };
 
       expect(RectangleOps.containsPoint(originRect, { x: 2, y: 1 })).toBe(true);
-      expect(RectangleOps.containsPoint(originRect, { x: -1, y: 1 })).toBe(
-        false,
-      );
+      expect(RectangleOps.containsPoint(originRect, { x: -1, y: 1 })).toBe(false);
     });
 
     it("should handle zero-size rectangle", () => {
       const zeroRect: Rectangle = { x: 3, y: 4, width: 0, height: 0 };
 
       expect(RectangleOps.containsPoint(zeroRect, { x: 3, y: 4 })).toBe(true);
-      expect(RectangleOps.containsPoint(zeroRect, { x: 3.1, y: 4 })).toBe(
-        false,
-      );
+      expect(RectangleOps.containsPoint(zeroRect, { x: 3.1, y: 4 })).toBe(false);
     });
   });
 

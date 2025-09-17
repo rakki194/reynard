@@ -175,12 +175,7 @@ export const appSettingsSchema: SettingsSchema = {
       icon: "🎨",
       order: 1,
       category: "appearance",
-      settings: [
-        "appearance.theme",
-        "appearance.fontSize",
-        "appearance.sidebarCollapsed",
-        "appearance.animations",
-      ],
+      settings: ["appearance.theme", "appearance.fontSize", "appearance.sidebarCollapsed", "appearance.animations"],
     },
     privacy: {
       id: "privacy",
@@ -189,11 +184,7 @@ export const appSettingsSchema: SettingsSchema = {
       icon: "🔒",
       order: 2,
       category: "privacy",
-      settings: [
-        "privacy.analytics",
-        "privacy.sessionTimeout",
-        "privacy.rememberLogin",
-      ],
+      settings: ["privacy.analytics", "privacy.sessionTimeout", "privacy.rememberLogin"],
     },
   },
 };

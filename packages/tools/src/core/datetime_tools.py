@@ -7,7 +7,7 @@ formatting time in various formats.
 """
 
 import logging
-from typing import Any, Dict, List
+from typing import Any
 
 from .base import (
     BaseTool,
@@ -77,7 +77,7 @@ def get_datetime_service():
 )
 async def get_current_time_tool(
     timezone: str = "UTC", format_name: str = "iso", include_timezone_info: bool = True
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Get current date and time with timezone support.
 
@@ -205,7 +205,7 @@ async def format_time_tool(
     source_timezone: str = "UTC",
     target_timezone: str = "",
     custom_format: str = "",
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Format a given time input in various formats with timezone conversion.
 
@@ -311,7 +311,7 @@ class GetCurrentTimeTool(BaseTool):
         return "Get the current date and time with timezone support and multiple format options"
 
     @property
-    def parameters(self) -> List[ToolParameter]:
+    def parameters(self) -> list[ToolParameter]:
         return [
             ToolParameter(
                 name="timezone",
@@ -352,7 +352,7 @@ class GetCurrentTimeTool(BaseTool):
         return "datetime"
 
     @property
-    def tags(self) -> List[str]:
+    def tags(self) -> list[str]:
         return ["datetime", "time", "timezone", "current"]
 
     @property
@@ -385,7 +385,7 @@ class FormatTimeTool(BaseTool):
         return "Format a given date/time string or timestamp in various formats with timezone conversion"
 
     @property
-    def parameters(self) -> List[ToolParameter]:
+    def parameters(self) -> list[ToolParameter]:
         return [
             ToolParameter(
                 name="time_input",
@@ -447,7 +447,7 @@ class FormatTimeTool(BaseTool):
         return "datetime"
 
     @property
-    def tags(self) -> List[str]:
+    def tags(self) -> list[str]:
         return ["datetime", "format", "timezone", "conversion"]
 
     @property

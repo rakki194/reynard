@@ -17,16 +17,14 @@ async function runSimpleTest(): Promise<void> {
 
     console.log("\n📊 Results:");
     console.log(
-      `Non-SIMD: ${results.nonSimd.totalTime.toFixed(2)}ms (${results.nonSimd.operationsPerSecond.toFixed(0)} ops/sec)`,
+      `Non-SIMD: ${results.nonSimd.totalTime.toFixed(2)}ms (${results.nonSimd.operationsPerSecond.toFixed(0)} ops/sec)`
     );
     console.log(
-      `SIMD:     ${results.simd.totalTime.toFixed(2)}ms (${results.simd.operationsPerSecond.toFixed(0)} ops/sec)`,
+      `SIMD:     ${results.simd.totalTime.toFixed(2)}ms (${results.simd.operationsPerSecond.toFixed(0)} ops/sec)`
     );
 
     const speedup = results.nonSimd.totalTime / results.simd.totalTime;
-    console.log(
-      `Speedup:  ${speedup.toFixed(2)}x ${speedup > 1 ? "🚀" : "🐌"}`,
-    );
+    console.log(`Speedup:  ${speedup.toFixed(2)}x ${speedup > 1 ? "🚀" : "🐌"}`);
 
     console.log("\n🎉 WebAssembly SIMD benchmark completed successfully!");
   } catch (error) {

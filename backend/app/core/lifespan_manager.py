@@ -19,36 +19,37 @@ Architecture Features:
 import logging
 import time
 from contextlib import asynccontextmanager
-from typing import Dict, Any
+from typing import Any
 
 from fastapi import FastAPI
 
 # Core configuration and service management
 from app.core.config import get_config, get_service_configs
-from app.core.service_registry import get_service_registry
-
-# Service initializers
-from app.core.service_initializers import (
-    init_gatekeeper_service,
-    init_comfy_service,
-    init_nlweb_service,
-    init_rag_service,
-    init_ollama_service,
-    init_tts_service,
-)
-
-# Service shutdown functions
-from app.core.service_shutdown import (
-    shutdown_gatekeeper_service,
-    shutdown_comfy_service_func,
-    shutdown_nlweb_service_func,
-)
 
 # Health check functions
 from app.core.health_checks import (
-    health_check_gatekeeper,
     health_check_comfy,
+    health_check_gatekeeper,
     health_check_nlweb,
+)
+
+# Service initializers
+from app.core.service_initializers import (
+    init_comfy_service,
+    init_gatekeeper_service,
+    init_nlweb_service,
+    init_ollama_service,
+    init_rag_service,
+    init_search_service,
+    init_tts_service,
+)
+from app.core.service_registry import get_service_registry
+
+# Service shutdown functions
+from app.core.service_shutdown import (
+    shutdown_comfy_service_func,
+    shutdown_gatekeeper_service,
+    shutdown_nlweb_service_func,
 )
 
 logger = logging.getLogger(__name__)
@@ -65,8 +66,8 @@ async def _setup_secure_routers(app: FastAPI, registry) -> None:
     try:
         # Set up secure auth router
         try:
-            from gatekeeper.api.dependencies import get_auth_manager
             from app.security.secure_auth_routes import create_secure_auth_router
+            from gatekeeper.api.dependencies import get_auth_manager
 
             auth_manager = get_auth_manager()
             secure_auth_router = create_secure_auth_router(auth_manager)
@@ -170,6 +171,15 @@ async def lifespan(app: FastAPI):
     )
 
     registry.register_service(
+        "search",
+        service_configs.get("search", {"enabled": True}),
+        init_search_service,
+        None,  # No shutdown function yet
+        _health_check_search_service,
+        startup_priority=20,  # Lower priority than RAG (25) to ensure RAG starts first
+    )
+
+    registry.register_service(
         "ollama",
         service_configs["ollama"],
         init_ollama_service,
@@ -245,7 +255,7 @@ async def lifespan(app: FastAPI):
 
 
 # Image Processing Service Functions
-async def _init_image_processing_service(config: Dict[str, Any]) -> bool:
+async def _init_image_processing_service(config: dict[str, Any]) -> bool:
     """Initialize the image processing service."""
     try:
         from app.services.image_processing_service import (
@@ -289,7 +299,7 @@ async def _health_check_image_processing_service() -> bool:
 
 
 # ECS World Service Functions
-async def _init_ecs_world_service(config: Dict[str, Any]) -> bool:
+async def _init_ecs_world_service(config: dict[str, Any]) -> bool:
     """Initialize the ECS world service."""
     try:
         from app.ecs.service import get_ecs_service
@@ -329,4 +339,26 @@ async def _health_check_ecs_world_service() -> bool:
             return False
     except Exception as e:
         logger.error(f"❌ ECS world service health check error: {e}")
+        return False
+
+
+async def _health_check_search_service() -> bool:
+    """Health check for the search service."""
+    try:
+        from app.core.service_registry import get_service_registry
+        
+        registry = get_service_registry()
+        search_service = registry.get_service_instance("search")
+        
+        if search_service is None:
+            return False
+            
+        # Test basic search functionality
+        try:
+            await search_service.get_search_stats()
+            return True
+        except Exception:
+            return False
+    except Exception as e:
+        logger.error(f"❌ Search service health check error: {e}")
         return False

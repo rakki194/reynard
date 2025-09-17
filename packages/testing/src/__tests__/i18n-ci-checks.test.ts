@@ -71,9 +71,7 @@ describe("i18n CI checks", () => {
       const mockESLintOutput = JSON.stringify([
         {
           filePath: "test.tsx",
-          messages: [
-            { line: 5, column: 10, message: "Hardcoded string found" },
-          ],
+          messages: [{ line: 5, column: 10, message: "Hardcoded string found" }],
         },
       ]);
 
@@ -90,16 +88,16 @@ describe("i18n CI checks", () => {
     it("should handle ESLint failure gracefully", async () => {
       // Clear all mocks first
       vi.clearAllMocks();
-      
+
       // Mock execSync to throw error for hardcoded strings check, but return success for others
       (execSync as any).mockImplementation((command: string) => {
-        if (command.includes('eslint') && command.includes('@reynard/i18n/no-hardcoded-strings')) {
+        if (command.includes("eslint") && command.includes("@reynard/i18n/no-hardcoded-strings")) {
           const error = new Error("ESLint failed");
           (error as any).status = 1;
           throw error;
         }
         // Return success for other commands
-        if (command.includes('vitest')) {
+        if (command.includes("vitest")) {
           return JSON.stringify({
             coverage: {
               summary: {
@@ -228,9 +226,7 @@ describe("i18n CI checks", () => {
       const workflow = createGitHubActionsWorkflow();
 
       expect(workflow).toContain("if: github.event_name == 'pull_request'");
-      expect(workflow).toContain(
-        "const results = JSON.parse(fs.readFileSync('i18n-results.json', 'utf8'));",
-      );
+      expect(workflow).toContain("const results = JSON.parse(fs.readFileSync('i18n-results.json', 'utf8'));");
       expect(workflow).toContain("github.rest.issues.createComment");
     });
   });

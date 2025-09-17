@@ -3,15 +3,7 @@
  * Performance alerts tab for performance dashboard
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createEffect,
-  createSignal,
-  onCleanup,
-  onMount,
-} from "solid-js";
+import { Component, For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Button } from "../primitives/Button";
 
 export interface PerformanceAlertsTabProps {
@@ -26,9 +18,7 @@ export interface PerformanceAlertsTabProps {
   refreshInterval?: number;
 }
 
-export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (
-  props,
-) => {
+export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = props => {
   const [selectedSeverity, setSelectedSeverity] = createSignal<string>("all");
   const [selectedStatus, setSelectedStatus] = createSignal<string>("all");
   const [isRefreshing, setIsRefreshing] = createSignal(false);
@@ -82,10 +72,10 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (
       // Calculate alert summary
       const summary = {
         total: warnings.length,
-        critical: warnings.filter((w) => w.severity === "critical").length,
-        high: warnings.filter((w) => w.severity === "high").length,
-        medium: warnings.filter((w) => w.severity === "medium").length,
-        low: warnings.filter((w) => w.severity === "low").length,
+        critical: warnings.filter(w => w.severity === "critical").length,
+        high: warnings.filter(w => w.severity === "high").length,
+        medium: warnings.filter(w => w.severity === "medium").length,
+        low: warnings.filter(w => w.severity === "low").length,
         unresolved: warnings.length, // All warnings are unresolved for now
       };
 
@@ -104,14 +94,12 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (
 
     // Filter by severity
     if (selectedSeverity() !== "all") {
-      filtered = filtered.filter(
-        (alert) => alert.severity === selectedSeverity(),
-      );
+      filtered = filtered.filter(alert => alert.severity === selectedSeverity());
     }
 
     // Filter by status (all are unresolved for now)
     if (selectedStatus() === "unresolved") {
-      filtered = filtered.filter((alert) => true); // All are unresolved
+      filtered = filtered.filter(alert => true); // All are unresolved
     } else if (selectedStatus() === "resolved") {
       filtered = []; // None are resolved
     }
@@ -161,11 +149,7 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (
         </div>
 
         <div class="alerts-panel-actions">
-          <Button
-            variant="secondary"
-            onClick={updateAlerts}
-            disabled={isRefreshing()}
-          >
+          <Button variant="secondary" onClick={updateAlerts} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -210,12 +194,10 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (
           <label>Severity:</label>
           <select
             value={selectedSeverity()}
-            onChange={(e) => setSelectedSeverity(e.currentTarget.value)}
+            onChange={e => setSelectedSeverity(e.currentTarget.value)}
             title="Filter by severity"
           >
-            <For each={severities}>
-              {(severity) => <option value={severity}>{severity}</option>}
-            </For>
+            <For each={severities}>{severity => <option value={severity}>{severity}</option>}</For>
           </select>
         </div>
 
@@ -223,12 +205,10 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (
           <label>Status:</label>
           <select
             value={selectedStatus()}
-            onChange={(e) => setSelectedStatus(e.currentTarget.value)}
+            onChange={e => setSelectedStatus(e.currentTarget.value)}
             title="Filter by status"
           >
-            <For each={statuses}>
-              {(status) => <option value={status}>{status}</option>}
-            </For>
+            <For each={statuses}>{status => <option value={status}>{status}</option>}</For>
           </select>
         </div>
       </div>
@@ -236,17 +216,13 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (
       {/* Alerts List */}
       <div class="alerts-list">
         <For each={getFilteredAlerts()}>
-          {(alert) => (
+          {alert => (
             <div class={`alert-item ${getSeverityColor(alert.severity)}`}>
               <div class="alert-header">
                 <div class="alert-severity">
-                  <span class="severity-text">
-                    {alert.severity.toUpperCase()}
-                  </span>
+                  <span class="severity-text">{alert.severity.toUpperCase()}</span>
                 </div>
-                <div class="alert-timestamp">
-                  {formatTimestamp(alert.timestamp)}
-                </div>
+                <div class="alert-timestamp">{formatTimestamp(alert.timestamp)}</div>
               </div>
 
               <div class="alert-content">
@@ -279,9 +255,7 @@ export const PerformanceAlertsTab: Component<PerformanceAlertsTabProps> = (
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">
-          Last updated: {lastUpdate()!.toLocaleString()}
-        </div>
+        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
       </Show>
     </div>
   );

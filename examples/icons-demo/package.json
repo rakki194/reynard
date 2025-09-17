@@ -35,13 +35,7 @@
     "vite": "7.1.5",
     "vite-plugin-solid": "2.11.8"
   },
-  "keywords": [
-    "reynard",
-    "solidjs",
-    "icons",
-    "fluent-ui",
-    "demo"
-  ],
+  "keywords": ["reynard", "solidjs", "icons", "fluent-ui", "demo"],
   "author": "Reynard Framework",
   "license": "MIT"
 }

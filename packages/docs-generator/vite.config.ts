@@ -9,15 +9,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: [
-        "typescript",
-        "fs-extra",
-        "gray-matter",
-        "marked",
-        "highlight.js",
-        "glob",
-        "chokidar",
-      ],
+      external: ["typescript", "fs-extra", "gray-matter", "marked", "highlight.js", "glob", "chokidar"],
       output: {
         globals: {
           typescript: "ts",

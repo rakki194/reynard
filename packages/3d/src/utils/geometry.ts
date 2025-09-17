@@ -5,11 +5,7 @@ import type { Vector3, BoundingBox } from "../types";
 /**
  * Create a 3D vector
  */
-export function createVector3(
-  x: number = 0,
-  y: number = 0,
-  z: number = 0,
-): Vector3 {
+export function createVector3(x: number = 0, y: number = 0, z: number = 0): Vector3 {
   return { x, y, z };
 }
 
@@ -50,9 +46,7 @@ export function multiplyVector3(vector: Vector3, scalar: number): Vector3 {
  * Calculate the length of a 3D vector
  */
 export function lengthVector3(vector: Vector3): number {
-  return Math.sqrt(
-    vector.x * vector.x + vector.y * vector.y + vector.z * vector.z,
-  );
+  return Math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
 }
 
 /**
@@ -159,10 +153,7 @@ export function sizeBoundingBox(box: BoundingBox): Vector3 {
 /**
  * Check if a point is inside a bounding box
  */
-export function isPointInBoundingBox(
-  point: Vector3,
-  box: BoundingBox,
-): boolean {
+export function isPointInBoundingBox(point: Vector3, box: BoundingBox): boolean {
   return (
     point.x >= box.min.x &&
     point.x <= box.max.x &&
@@ -176,10 +167,7 @@ export function isPointInBoundingBox(
 /**
  * Expand a bounding box to include a point
  */
-export function expandBoundingBox(
-  box: BoundingBox,
-  point: Vector3,
-): BoundingBox {
+export function expandBoundingBox(box: BoundingBox, point: Vector3): BoundingBox {
   return {
     min: {
       x: Math.min(box.min.x, point.x),
@@ -197,11 +185,7 @@ export function expandBoundingBox(
 /**
  * Convert HSL to RGB
  */
-export function hslToRgb(
-  h: number,
-  s: number,
-  l: number,
-): [number, number, number] {
+export function hslToRgb(h: number, s: number, l: number): [number, number, number] {
   const hue2rgb = (p: number, q: number, t: number) => {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
@@ -228,11 +212,7 @@ export function hslToRgb(
 /**
  * Convert RGB to HSL
  */
-export function rgbToHsl(
-  r: number,
-  g: number,
-  b: number,
-): [number, number, number] {
+export function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
   r /= 255;
   g /= 255;
   b /= 255;
@@ -293,24 +273,14 @@ export function clamp(value: number, min: number, max: number): number {
 /**
  * Map a value from one range to another
  */
-export function mapRange(
-  value: number,
-  inMin: number,
-  inMax: number,
-  outMin: number,
-  outMax: number,
-): number {
+export function mapRange(value: number, inMin: number, inMax: number, outMin: number, outMax: number): number {
   return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
 
 /**
  * Generate points in a sphere
  */
-export function generateSpherePoints(
-  center: Vector3,
-  radius: number,
-  count: number,
-): Vector3[] {
+export function generateSpherePoints(center: Vector3, radius: number, count: number): Vector3[] {
   const points: Vector3[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -337,11 +307,7 @@ export function generateSpherePoints(
 /**
  * Generate points in a cube
  */
-export function generateCubePoints(
-  center: Vector3,
-  size: number,
-  count: number,
-): Vector3[] {
+export function generateCubePoints(center: Vector3, size: number, count: number): Vector3[] {
   const points: Vector3[] = [];
   // const halfSize = size / 2;
 

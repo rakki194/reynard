@@ -96,7 +96,7 @@ describe("Entity System", () => {
         createEntity(1000, 1), // Within 16-bit range
       ];
 
-      testCases.forEach((entity) => {
+      testCases.forEach(entity => {
         const bits = entityToBits(entity);
         const restored = entityFromBits(bits);
         expect(restored.index).toBe(entity.index);

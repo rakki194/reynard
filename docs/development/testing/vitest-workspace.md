@@ -1,6 +1,6 @@
 # 🦦 Vitest Workspace Configuration
 
-*splashes with enthusiasm* The Reynard monorepo now uses a centralized Vitest workspace configuration that eliminates the "multiple projects" warning and provides better performance and maintainability!
+_splashes with enthusiasm_ The Reynard monorepo now uses a centralized Vitest workspace configuration that eliminates the "multiple projects" warning and provides better performance and maintainability!
 
 ## Overview
 
@@ -18,6 +18,7 @@ Instead of having individual `vitest.config.*` files scattered throughout the mo
 The workspace configuration is located at `vitest.workspace.ts` in the project root and includes:
 
 ### Global Settings
+
 - Environment: `happy-dom`
 - Timeouts: 10 seconds for tests and hooks
 - Coverage: V8 provider with text, JSON, and HTML reports
@@ -35,16 +36,19 @@ Each package in the monorepo is defined as a separate project with:
 ## Special Package Configurations
 
 ### Components Package
+
 - Uses `vite-plugin-solid` for SolidJS support
 - Special HappyDOM environment options
 - Browser-specific resolve conditions
 
 ### Segmentation Package
+
 - Single fork pool configuration
 - Extended timeouts for complex operations
 - Custom alias resolution
 
 ### Testing Package
+
 - Higher coverage thresholds (90% vs 85%)
 - Specialized test setup
 
@@ -90,6 +94,7 @@ Use the provided cleanup script to remove redundant individual config files:
 ```
 
 This script will:
+
 - Remove redundant `vitest.config.*` files
 - Keep configs for packages with unique requirements
 - Test the new configuration
@@ -154,17 +159,20 @@ To add a new package to the workspace configuration:
 ## Best Practices
 
 ### Test Organization
+
 - Keep tests in `src/__tests__/` directories
 - Use descriptive test file names with `.test.ts` or `.spec.ts` extensions
 - Group related tests in the same file
 
 ### Coverage Requirements
+
 - Core packages: 85% coverage
 - Utility packages: 80% coverage
 - Examples/templates: 75% coverage
 - Testing packages: 90% coverage
 
 ### Performance
+
 - Use appropriate timeouts for different test types
 - Consider using `singleFork: true` for packages with heavy setup
 - Monitor test execution times and adjust accordingly
@@ -172,6 +180,7 @@ To add a new package to the workspace configuration:
 ## Configuration Reference
 
 ### Global Options
+
 ```typescript
 {
   test: {
@@ -196,6 +205,7 @@ To add a new package to the workspace configuration:
 ```
 
 ### Project Options
+
 ```typescript
 {
   name: "project-name",
@@ -226,6 +236,4 @@ To add a new package to the workspace configuration:
 
 ---
 
-*🦦 This configuration ensures that all your tests run smoothly while maintaining the flexibility and power of the Reynard testing ecosystem!*
-
-
+_🦦 This configuration ensures that all your tests run smoothly while maintaining the flexibility and power of the Reynard testing ecosystem!_

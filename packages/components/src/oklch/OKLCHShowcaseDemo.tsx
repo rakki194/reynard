@@ -25,13 +25,10 @@ interface DemoComponentsProps {
   animationFrame: () => number;
 }
 
-export const DemoComponents: Component<DemoComponentsProps> = (props) => {
+export const DemoComponents: Component<DemoComponentsProps> = props => {
   return (
     <>
-      <HeroSection
-        colorVariations={props.computedValues.colorVariations()}
-        animationFrame={props.animationFrame()}
-      />
+      <HeroSection colorVariations={props.computedValues.colorVariations()} animationFrame={props.animationFrame()} />
 
       <TechnicalInfo />
 

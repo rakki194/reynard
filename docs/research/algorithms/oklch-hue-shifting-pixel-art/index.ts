@@ -50,12 +50,7 @@ export {
 // ============================================================================
 
 // Core algorithms
-export {
-  basicHueShift,
-  generateHueShiftRamp,
-  temporalHueShift,
-  adaptiveHueShift,
-} from "./core-algorithms";
+export { basicHueShift, generateHueShiftRamp, temporalHueShift, adaptiveHueShift } from "./core-algorithms";
 
 // Material patterns
 export {
@@ -77,12 +72,7 @@ export {
 } from "./advanced-techniques";
 
 // Performance utilities
-export {
-  CachedHueShifter,
-  batchHueShift,
-  createColorLookupTable,
-  interpolateColors,
-} from "./performance-utils";
+export { CachedHueShifter, batchHueShift, createColorLookupTable, interpolateColors } from "./performance-utils";
 
 // Pixel art utilities
 export {

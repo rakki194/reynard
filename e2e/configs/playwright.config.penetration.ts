@@ -17,7 +17,7 @@ export default defineConfig({
   workers: 1, // Single worker for penetration tests
 
   reporter: [
-    ["html", { outputFolder: "penetration-results" }],
+    ["html", { outputFolder: "penetration-results", open: "never" }],
     ["json", { outputFile: "penetration-results.json" }],
     ["junit", { outputFile: "penetration-results.xml" }],
   ],

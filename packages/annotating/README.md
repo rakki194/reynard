@@ -23,11 +23,7 @@ npm install reynard-annotating
 ### Backend Mode (Recommended)
 
 ```typescript
-import {
-  createBackendAnnotationManager,
-  DEFAULT_BACKEND_CONFIG,
-  type CaptionTask,
-} from "reynard-annotating";
+import { createBackendAnnotationManager, DEFAULT_BACKEND_CONFIG, type CaptionTask } from "reynard-annotating";
 
 // Create backend manager that interfaces with FastAPI backend
 const manager = createBackendAnnotationManager({
@@ -40,8 +36,7 @@ await manager.initialize();
 
 // Generate captions using different generators
 const furryTags = await manager.generateFurryTags("/path/to/image.jpg");
-const detailedCaption =
-  await manager.generateDetailedCaption("/path/to/image.jpg");
+const detailedCaption = await manager.generateDetailedCaption("/path/to/image.jpg");
 const animeTags = await manager.generateAnimeTags("/path/to/image.jpg");
 
 // Or use the service directly
@@ -146,7 +141,7 @@ console.log("Model healthy:", modelHealth?.isHealthy);
 
 ```typescript
 // Listen to all annotation events
-manager.addEventListener((event) => {
+manager.addEventListener(event => {
   switch (event.type) {
     case "model_loaded":
       console.log("Model loaded:", event.data.modelName);
@@ -220,10 +215,8 @@ const tasks = [
   { imagePath: "/path/to/image3.jpg", generatorName: "wdv3" },
 ];
 
-const results = await service.generateBatchCaptions(tasks, (progress) => {
-  console.log(
-    `Progress: ${progress.progress}% (${progress.completed}/${progress.total})`,
-  );
+const results = await service.generateBatchCaptions(tasks, progress => {
+  console.log(`Progress: ${progress.progress}% (${progress.completed}/${progress.total})`);
 });
 ```
 

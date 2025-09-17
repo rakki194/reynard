@@ -524,26 +524,10 @@ my-reynard-app/
  * Demonstrates core Reynard features in a simple, practical application
  */
 
-import {
-  Component,
-  createSignal,
-  For,
-  createResource,
-  createContext,
-  useContext,
-} from "solid-js";
-import {
-  ReynardProvider,
-  useTheme,
-  useI18n,
-  type LanguageCode,
-} from "reynard-themes";
+import { Component, createSignal, For, createResource, createContext, useContext } from "solid-js";
+import { ReynardProvider, useTheme, useI18n, type LanguageCode } from "reynard-themes";
 import { loadTranslations } from "./translations";
-import {
-  NotificationsProvider,
-  useNotifications,
-  createNotificationsModule,
-} from "reynard-core";
+import { NotificationsProvider, useNotifications, createNotificationsModule } from "reynard-core";
 import { TodoItem } from "./components/TodoItem";
 import { AddTodo } from "./components/AddTodo";
 import { ThemeToggle } from "./components/ThemeToggle";
@@ -565,9 +549,7 @@ const CustomTranslationContext = createContext<
 export const useCustomTranslation = () => {
   const context = useContext(CustomTranslationContext);
   if (!context) {
-    throw new Error(
-      "useCustomTranslation must be used within a CustomTranslationProvider",
-    );
+    throw new Error("useCustomTranslation must be used within a CustomTranslationProvider");
   }
   return context;
 };
@@ -631,28 +613,24 @@ const TodoApp: Component = () => {
       text,
       completed: false,
     };
-    setTodos((prev) => [...prev, newTodo]);
-    setNextId((prev) => prev + 1);
+    setTodos(prev => [...prev, newTodo]);
+    setNextId(prev => prev + 1);
     notify(customT("todo.added", { text }), "success");
   };
 
   const toggleTodo = (id: number) => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    );
+    setTodos(prev => prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
   };
 
   const deleteTodo = (id: number) => {
-    const todo = todos().find((t) => t.id === id);
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    const todo = todos().find(t => t.id === id);
+    setTodos(prev => prev.filter(todo => todo.id !== id));
     if (todo) {
       notify(customT("todo.deleted", { text: todo.text }), "info");
     }
   };
 
-  const completedCount = () => todos().filter((todo) => todo.completed).length;
+  const completedCount = () => todos().filter(todo => todo.completed).length;
   const totalCount = () => todos().length;
 
   return (
@@ -664,9 +642,7 @@ const TodoApp: Component = () => {
         </h1>
         <p>{customT("app.subtitle")}</p>
         <div class="header-controls">
-          <div class="theme-info">
-            {customT("theme.current", { theme: customT(`theme.${theme}`) })}
-          </div>
+          <div class="theme-info">{customT("theme.current", { theme: customT(`theme.${theme}`) })}</div>
           <CustomTranslationContext.Provider value={customT}>
             <ThemeToggle />
           </CustomTranslationContext.Provider>
@@ -688,12 +664,8 @@ const TodoApp: Component = () => {
 
           <div class="todo-list">
             <For each={todos()}>
-              {(todo) => (
-                <TodoItem
-                  todo={todo}
-                  onToggle={() => toggleTodo(todo.id)}
-                  onDelete={() => deleteTodo(todo.id)}
-                />
+              {todo => (
+                <TodoItem todo={todo} onToggle={() => toggleTodo(todo.id)} onDelete={() => deleteTodo(todo.id)} />
               )}
             </For>
             {todos().length === 0 && (
@@ -751,7 +723,7 @@ interface TodoItemProps {
   onDelete: () => void;
 }
 
-export const TodoItem: Component<TodoItemProps> = (props) => {
+export const TodoItem: Component<TodoItemProps> = props => {
   return (
     <div class={`todo-item ${props.todo.completed ? "completed" : ""}`}>
       <label class="todo-checkbox" for={`todo-${props.todo.id}`}>
@@ -760,20 +732,14 @@ export const TodoItem: Component<TodoItemProps> = (props) => {
           type="checkbox"
           checked={props.todo.completed}
           onChange={() => props.onToggle()}
-          aria-label={`Mark "${props.todo.text}" as ${
-            props.todo.completed ? "incomplete" : "complete"
-          }`}
+          aria-label={`Mark "${props.todo.text}" as ${props.todo.completed ? "incomplete" : "complete"}`}
         />
         <span class="checkmark" />
       </label>
 
       <span class="todo-text">{props.todo.text}</span>
 
-      <button
-        class="todo-delete"
-        onClick={() => props.onDelete()}
-        title="Delete todo"
-      >
+      <button class="todo-delete" onClick={() => props.onDelete()} title="Delete todo">
         ×
       </button>
     </div>
@@ -796,7 +762,7 @@ interface AddTodoProps {
   onAdd: (text: string) => void;
 }
 
-export const AddTodo: Component<AddTodoProps> = (props) => {
+export const AddTodo: Component<AddTodoProps> = props => {
   const [input, setInput] = createSignal("");
   const t = useCustomTranslation();
 
@@ -816,7 +782,7 @@ export const AddTodo: Component<AddTodoProps> = (props) => {
         class="todo-input"
         placeholder={t("todo.placeholder")}
         value={input()}
-        onInput={(e) => setInput(e.currentTarget.value)}
+        onInput={e => setInput(e.currentTarget.value)}
       />
       <button type="submit" class="add-button" disabled={!input().trim()}>
         {t("todo.addButton")}
@@ -873,7 +839,7 @@ interface LanguageSelectorProps {
   setLocale: (locale: LanguageCode) => void;
 }
 
-export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
+export const LanguageSelector: Component<LanguageSelectorProps> = props => {
   const languages = [
     { code: "en", name: "English" },
     { code: "es", name: "Español" },
@@ -881,11 +847,8 @@ export const LanguageSelector: Component<LanguageSelectorProps> = (props) => {
   ];
 
   return (
-    <select
-      class="language-selector"
-      onChange={(e) => props.setLocale(e.currentTarget.value as LanguageCode)}
-    >
-      {languages.map((lang) => (
+    <select class="language-selector" onChange={e => props.setLocale(e.currentTarget.value as LanguageCode)}>
+      {languages.map(lang => (
         <option value={lang.code}>{lang.name}</option>
       ))}
     </select>
@@ -913,9 +876,7 @@ export const translations: Record<string, Translations> = {
   fr,
 };
 
-export const loadTranslations = async (
-  locale: string,
-): Promise<Translations> => {
+export const loadTranslations = async (locale: string): Promise<Translations> => {
   // Return available translation or fallback to English
   return translations[locale] || translations.en;
 };
@@ -969,8 +930,7 @@ export const en = {
 export const es = {
   app: {
     title: "Aplicación de Tareas",
-    subtitle:
-      "Una aplicación simple de tareas construida con el framework Reynard",
+    subtitle: "Una aplicación simple de tareas construida con el framework Reynard",
   },
   todo: {
     placeholder: "¿Qué necesita hacerse?",
@@ -1008,8 +968,7 @@ export const es = {
 export const fr = {
   app: {
     title: "Application de Tâches",
-    subtitle:
-      "Une application simple de tâches construite avec le framework Reynard",
+    subtitle: "Une application simple de tâches construite avec le framework Reynard",
   },
   todo: {
     placeholder: "Que faut-il faire ?",

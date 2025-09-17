@@ -36,11 +36,7 @@ export interface NotificationOptions {
 
 export interface NotificationsModule {
   readonly notifications: Notification[];
-  notify: (
-    message: string,
-    type?: Notification["type"],
-    options?: NotificationOptions,
-  ) => string;
+  notify: (message: string, type?: Notification["type"], options?: NotificationOptions) => string;
   removeNotification: (id: string) => void;
   clearNotifications: (group?: string) => void;
   updateNotification: (id: string, updates: Partial<Notification>) => void;
@@ -51,11 +47,7 @@ export const createNotificationsModule = (): NotificationsModule => {
   const notifications: Notification[] = [];
   const timers = new Map<string, NodeJS.Timeout>();
 
-  const notify = (
-    message: string,
-    type: Notification["type"] = "info",
-    options: NotificationOptions = {},
-  ): string => {
+  const notify = (message: string, type: Notification["type"] = "info", options: NotificationOptions = {}): string => {
     const id = crypto.randomUUID();
     const notification: Notification = {
       id,
@@ -83,7 +75,7 @@ export const createNotificationsModule = (): NotificationsModule => {
   };
 
   const removeNotification = (id: string): void => {
-    const index = notifications.findIndex((n) => n.id === id);
+    const index = notifications.findIndex(n => n.id === id);
     if (index > -1) {
       notifications.splice(index, 1);
 
@@ -99,11 +91,11 @@ export const createNotificationsModule = (): NotificationsModule => {
   const clearNotifications = (group?: string): void => {
     if (group) {
       // Remove notifications in specific group
-      const toRemove = notifications.filter((n) => n.group === group);
-      toRemove.forEach((n) => removeNotification(n.id));
+      const toRemove = notifications.filter(n => n.group === group);
+      toRemove.forEach(n => removeNotification(n.id));
     } else {
       // Remove all notifications
-      notifications.forEach((n) => {
+      notifications.forEach(n => {
         const timer = timers.get(n.id);
         if (timer) {
           clearTimeout(timer);
@@ -114,18 +106,15 @@ export const createNotificationsModule = (): NotificationsModule => {
     }
   };
 
-  const updateNotification = (
-    id: string,
-    updates: Partial<Notification>,
-  ): void => {
-    const index = notifications.findIndex((n) => n.id === id);
+  const updateNotification = (id: string, updates: Partial<Notification>): void => {
+    const index = notifications.findIndex(n => n.id === id);
     if (index > -1) {
       notifications[index] = { ...notifications[index], ...updates };
     }
   };
 
   const getNotificationsByGroup = (group: string): Notification[] => {
-    return notifications.filter((n) => n.group === group);
+    return notifications.filter(n => n.group === group);
   };
 
   const getDefaultDuration = (type: Notification["type"]): number => {
@@ -184,11 +173,7 @@ export interface ConnectionConfig {
 
 export interface ConnectionManager {
   readonly connections: Connection[];
-  addConnection: (
-    id: string,
-    config: ConnectionConfig,
-    type: Connection["type"],
-  ) => Promise<Connection>;
+  addConnection: (id: string, config: ConnectionConfig, type: Connection["type"]) => Promise<Connection>;
   removeConnection: (id: string) => Promise<void>;
   getConnection: (id: string) => Connection | undefined;
   connect: (id: string) => Promise<void>;
@@ -209,11 +194,7 @@ export const createConnectionManager = (): ConnectionManager => {
   const connections: Connection[] = [];
   const reconnectTimers = new Map<string, NodeJS.Timeout>();
 
-  const addConnection = async (
-    id: string,
-    config: ConnectionConfig,
-    type: Connection["type"],
-  ): Promise<Connection> => {
+  const addConnection = async (id: string, config: ConnectionConfig, type: Connection["type"]): Promise<Connection> => {
     const connection: Connection = {
       id,
       type,
@@ -233,7 +214,7 @@ export const createConnectionManager = (): ConnectionManager => {
   };
 
   const removeConnection = async (id: string): Promise<void> => {
-    const index = connections.findIndex((c) => c.id === id);
+    const index = connections.findIndex(c => c.id === id);
     if (index > -1) {
       const connection = connections[index];
 
@@ -254,7 +235,7 @@ export const createConnectionManager = (): ConnectionManager => {
   };
 
   const getConnection = (id: string): Connection | undefined => {
-    return connections.find((c) => c.id === id);
+    return connections.find(c => c.id === id);
   };
 
   const connect = async (id: string): Promise<void> => {
@@ -276,10 +257,7 @@ export const createConnectionManager = (): ConnectionManager => {
       connection.lastError = error as Error;
 
       // Attempt reconnection if enabled
-      if (
-        connection.config.autoReconnect &&
-        connection.reconnectAttempts < connection.maxReconnectAttempts
-      ) {
+      if (connection.config.autoReconnect && connection.reconnectAttempts < connection.maxReconnectAttempts) {
         scheduleReconnect(id);
       }
     }
@@ -321,13 +299,11 @@ export const createConnectionManager = (): ConnectionManager => {
 
   const simulateConnection = async (connection: Connection): Promise<void> => {
     // Simulate connection delay
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     // Simulate random failures
     if (Math.random() < 0.1) {
-      throw new Error(
-        `Connection failed to ${connection.config.host}:${connection.config.port}`,
-      );
+      throw new Error(`Connection failed to ${connection.config.host}:${connection.config.port}`);
     }
   };
 
@@ -340,7 +316,7 @@ export const createConnectionManager = (): ConnectionManager => {
       connecting: 0,
     };
 
-    connections.forEach((conn) => {
+    connections.forEach(conn => {
       switch (conn.status) {
         case "connected":
           stats.connected++;
@@ -385,37 +361,23 @@ export type EventCallback<T = any> = (data: T) => void;
 export type EventMap = Record<string, any>;
 
 export interface EventBus<TEventMap extends EventMap = EventMap> {
-  on<K extends keyof TEventMap>(
-    event: K,
-    callback: EventCallback<TEventMap[K]>,
-  ): () => void; // Returns unsubscribe function
+  on<K extends keyof TEventMap>(event: K, callback: EventCallback<TEventMap[K]>): () => void; // Returns unsubscribe function
 
   emit<K extends keyof TEventMap>(event: K, data: TEventMap[K]): void;
 
-  off<K extends keyof TEventMap>(
-    event: K,
-    callback: EventCallback<TEventMap[K]>,
-  ): void;
+  off<K extends keyof TEventMap>(event: K, callback: EventCallback<TEventMap[K]>): void;
 
-  once<K extends keyof TEventMap>(
-    event: K,
-    callback: EventCallback<TEventMap[K]>,
-  ): () => void;
+  once<K extends keyof TEventMap>(event: K, callback: EventCallback<TEventMap[K]>): () => void;
 
   clear(event?: keyof TEventMap): void;
   getListenerCount(event?: keyof TEventMap): number;
 }
 
-export const createEventBus = <
-  TEventMap extends EventMap = EventMap,
->(): EventBus<TEventMap> => {
+export const createEventBus = <TEventMap extends EventMap = EventMap>(): EventBus<TEventMap> => {
   const listeners = new Map<keyof TEventMap, Set<EventCallback>>();
   const onceListeners = new Map<keyof TEventMap, Set<EventCallback>>();
 
-  const on = <K extends keyof TEventMap>(
-    event: K,
-    callback: EventCallback<TEventMap[K]>,
-  ): (() => void) => {
+  const on = <K extends keyof TEventMap>(event: K, callback: EventCallback<TEventMap[K]>): (() => void) => {
     if (!listeners.has(event)) {
       listeners.set(event, new Set());
     }
@@ -428,14 +390,11 @@ export const createEventBus = <
     };
   };
 
-  const emit = <K extends keyof TEventMap>(
-    event: K,
-    data: TEventMap[K],
-  ): void => {
+  const emit = <K extends keyof TEventMap>(event: K, data: TEventMap[K]): void => {
     // Emit to regular listeners
     const eventListeners = listeners.get(event);
     if (eventListeners) {
-      eventListeners.forEach((callback) => {
+      eventListeners.forEach(callback => {
         try {
           callback(data);
         } catch (error) {
@@ -447,24 +406,18 @@ export const createEventBus = <
     // Emit to once listeners and remove them
     const eventOnceListeners = onceListeners.get(event);
     if (eventOnceListeners) {
-      eventOnceListeners.forEach((callback) => {
+      eventOnceListeners.forEach(callback => {
         try {
           callback(data);
         } catch (error) {
-          console.error(
-            `Error in once event listener for ${String(event)}:`,
-            error,
-          );
+          console.error(`Error in once event listener for ${String(event)}:`, error);
         }
       });
       onceListeners.delete(event);
     }
   };
 
-  const off = <K extends keyof TEventMap>(
-    event: K,
-    callback: EventCallback<TEventMap[K]>,
-  ): void => {
+  const off = <K extends keyof TEventMap>(event: K, callback: EventCallback<TEventMap[K]>): void => {
     const eventListeners = listeners.get(event);
     if (eventListeners) {
       eventListeners.delete(callback);
@@ -482,10 +435,7 @@ export const createEventBus = <
     }
   };
 
-  const once = <K extends keyof TEventMap>(
-    event: K,
-    callback: EventCallback<TEventMap[K]>,
-  ): (() => void) => {
+  const once = <K extends keyof TEventMap>(event: K, callback: EventCallback<TEventMap[K]>): (() => void) => {
     if (!onceListeners.has(event)) {
       onceListeners.set(event, new Set());
     }
@@ -516,8 +466,8 @@ export const createEventBus = <
     }
 
     let total = 0;
-    listeners.forEach((set) => (total += set.size));
-    onceListeners.forEach((set) => (total += set.size));
+    listeners.forEach(set => (total += set.size));
+    onceListeners.forEach(set => (total += set.size));
     return total;
   };
 
@@ -557,10 +507,7 @@ export interface StorageModule {
   size(): number;
 }
 
-export const createStorageModule = (
-  storage: Storage = localStorage,
-  options: StorageOptions = {},
-): StorageModule => {
+export const createStorageModule = (storage: Storage = localStorage, options: StorageOptions = {}): StorageModule => {
   const {
     serializer = {
       read: JSON.parse,
@@ -607,7 +554,7 @@ export const createStorageModule = (
       if (prefix) {
         // Only clear keys with our prefix
         const keys = Object.keys(storage);
-        keys.forEach((key) => {
+        keys.forEach(key => {
           if (key.startsWith(prefix + ":")) {
             storage.removeItem(key);
           }
@@ -624,9 +571,7 @@ export const createStorageModule = (
     try {
       const allKeys = Object.keys(storage);
       if (prefix) {
-        return allKeys
-          .filter((key) => key.startsWith(prefix + ":"))
-          .map((key) => key.substring(prefix.length + 1));
+        return allKeys.filter(key => key.startsWith(prefix + ":")).map(key => key.substring(prefix.length + 1));
       }
       return allKeys;
     } catch (error) {
@@ -645,14 +590,14 @@ export const createStorageModule = (
 
   // Handle cross-tab synchronization
   if (syncAcrossTabs) {
-    window.addEventListener("storage", (event) => {
+    window.addEventListener("storage", event => {
       if (event.key && event.key.startsWith(prefix)) {
         const key = prefix ? event.key.substring(prefix.length + 1) : event.key;
         // Emit custom event for cross-tab updates
         window.dispatchEvent(
           new CustomEvent("storage-change", {
             detail: { key, newValue: event.newValue, oldValue: event.oldValue },
-          }),
+          })
         );
       }
     });
@@ -713,11 +658,11 @@ await connectionManager.addConnection(
     autoReconnect: true,
     reconnectInterval: 1000,
   },
-  "http",
+  "http"
 );
 
 // Use event bus
-const unsubscribe = eventBus.on("user:login", (data) => {
+const unsubscribe = eventBus.on("user:login", data => {
   console.log(`User ${data.username} logged in`);
 });
 
@@ -739,11 +684,11 @@ export const createAppModules = () => {
   const storage = createStorageModule();
 
   // Connect modules
-  eventBus.on("connection:error", (data) => {
+  eventBus.on("connection:error", data => {
     notifications.notify(`Connection error: ${data.error}`, "error");
   });
 
-  eventBus.on("connection:connected", (data) => {
+  eventBus.on("connection:connected", data => {
     notifications.notify(`Connected to ${data.host}`, "success");
   });
 

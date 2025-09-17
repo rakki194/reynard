@@ -17,7 +17,7 @@ export class MediaProcessor extends InlineProcessor {
           content: "",
           src: src.trim(),
           alt: alt.trim(),
-        }),
+        })
       );
       return `<img src="${src}" alt="${alt}" />`;
     });

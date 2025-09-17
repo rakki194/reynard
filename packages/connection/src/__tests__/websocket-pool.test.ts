@@ -15,10 +15,7 @@ class MockSocket {
 
 describe("WebSocketConnectionPool", () => {
   it("creates connections through factory and acquires one", async () => {
-    if (
-      !(globalThis as any).crypto ||
-      typeof (globalThis as any).crypto.randomUUID !== "function"
-    ) {
+    if (!(globalThis as any).crypto || typeof (globalThis as any).crypto.randomUUID !== "function") {
       (globalThis as any).crypto = {
         randomUUID: vi.fn(() => "00000000-0000-4000-8000-000000000000"),
       } as any;
@@ -38,7 +35,7 @@ describe("WebSocketConnectionPool", () => {
         name: "ws",
         connectionType: ConnectionType.WEBSOCKET,
         url: "ws://localhost/ws",
-      },
+      }
     );
 
     const c = await pool.acquire(2);

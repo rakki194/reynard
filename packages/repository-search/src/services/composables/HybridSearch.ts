@@ -22,7 +22,11 @@ export class HybridSearchComposable {
   async search(
     query: string,
     options: HybridSearchOptions,
-    logger: { info: (msg: string) => void; error: (msg: string, error?: unknown) => void; warn: (msg: string, error?: unknown) => void }
+    logger: {
+      info: (msg: string) => void;
+      error: (msg: string, error?: unknown) => void;
+      warn: (msg: string, error?: unknown) => void;
+    }
   ): Promise<SearchResult[]> {
     try {
       // Perform both vector and keyword search in parallel
@@ -52,7 +56,11 @@ export class HybridSearchComposable {
   private async keywordSearch(
     query: string,
     _options: SearchOptions,
-    logger: { info: (msg: string) => void; error: (msg: string, error?: unknown) => void; warn: (msg: string, error?: unknown) => void }
+    logger: {
+      info: (msg: string) => void;
+      error: (msg: string, error?: unknown) => void;
+      warn: (msg: string, error?: unknown) => void;
+    }
   ): Promise<SearchResult[]> {
     try {
       // This would typically query a full-text search index

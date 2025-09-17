@@ -16,9 +16,4 @@ export { debounce, throttle } from "./rate-limiting";
 export { batchExecute, mapWithConcurrency } from "./concurrency";
 
 // Advanced utilities
-export {
-  poll,
-  memoizeAsync,
-  makeCancelable,
-  type CancelablePromise,
-} from "./advanced";
+export { poll, memoizeAsync, makeCancelable, type CancelablePromise } from "./advanced";

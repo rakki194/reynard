@@ -32,12 +32,7 @@ const NotificationCenter: Component = () => {
         </Button>
       </div>
 
-      <Drawer
-        open={isOpen()}
-        onClose={() => setIsOpen(false)}
-        position="right"
-        title="Notifications"
-      >
+      <Drawer open={isOpen()} onClose={() => setIsOpen(false)} position="right" title="Notifications">
         <div class="notification-center__content">
           <div class="notification-center__header">
             <h3>Notifications</h3>
@@ -58,7 +53,7 @@ const NotificationCenter: Component = () => {
               }
             >
               <For each={notifications.notifications}>
-                {(notification) => (
+                {notification => (
                   <Card class={`notification-center__item`}>
                     <div class="notification-center__item-content">
                       <div class="notification-center__item-type">
@@ -70,9 +65,7 @@ const NotificationCenter: Component = () => {
 
                       <div class="notification-center__item-body">
                         {/* No title property in Notification type */}
-                        <p class="notification-center__item-message">
-                          {notification.message}
-                        </p>
+                        <p class="notification-center__item-message">{notification.message}</p>
                         <Show when={notification.timestamp}>
                           <time class="notification-center__item-time">
                             {new Date(notification.timestamp!).toLocaleString()}
@@ -85,9 +78,7 @@ const NotificationCenter: Component = () => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() =>
-                            notifications.removeNotification(notification.id)
-                          }
+                          onClick={() => notifications.removeNotification(notification.id)}
                         >
                           ×
                         </Button>

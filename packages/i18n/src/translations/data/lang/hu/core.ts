@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // Jelszó validáció
   password: {
-    "must-be-at-least-8-characters-long":
-      "A jelszónak legalább 8 karakter hosszúnak kell lennie",
-    "must-contain-at-least-one-uppercase-letter":
-      "A jelszónak legalább egy nagybetűt kell tartalmaznia",
-    "must-contain-at-least-one-lowercase-letter":
-      "A jelszónak legalább egy kisbetűt kell tartalmaznia",
-    "must-contain-at-least-one-number":
-      "A jelszónak legalább egy számot kell tartalmaznia",
-    "must-contain-at-least-one-special-character":
-      "A jelszónak legalább egy speciális karaktert kell tartalmaznia",
+    "must-be-at-least-8-characters-long": "A jelszónak legalább 8 karakter hosszúnak kell lennie",
+    "must-contain-at-least-one-uppercase-letter": "A jelszónak legalább egy nagybetűt kell tartalmaznia",
+    "must-contain-at-least-one-lowercase-letter": "A jelszónak legalább egy kisbetűt kell tartalmaznia",
+    "must-contain-at-least-one-number": "A jelszónak legalább egy számot kell tartalmaznia",
+    "must-contain-at-least-one-special-character": "A jelszónak legalább egy speciális karaktert kell tartalmaznia",
   },
 
   // Biztonsági validáció
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Legalább egy karaktertípusnak szerepelnie kell",
-    "input-contains-potentially-dangerous-html":
-      "A bemenet potenciálisan veszélyes HTML-t tartalmaz",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "A bemenet potenciálisan veszélyes SQL mintákat tartalmaz",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "A bemenet potenciálisan veszélyes XSS mintákat tartalmaz",
-    "input-contains-path-traversal-patterns":
-      "A bemenet útvonal bejárási mintákat tartalmaz",
-    "input-contains-windows-reserved-names":
-      "A bemenet Windows fenntartott neveket tartalmaz",
-    "input-contains-executable-file-extensions":
-      "A bemenet végrehajtható fájl kiterjesztéseket tartalmaz",
+    "at-least-one-character-type-must-be-included": "Legalább egy karaktertípusnak szerepelnie kell",
+    "input-contains-potentially-dangerous-html": "A bemenet potenciálisan veszélyes HTML-t tartalmaz",
+    "input-contains-potentially-dangerous-sql-patterns": "A bemenet potenciálisan veszélyes SQL mintákat tartalmaz",
+    "input-contains-potentially-dangerous-xss-patterns": "A bemenet potenciálisan veszélyes XSS mintákat tartalmaz",
+    "input-contains-path-traversal-patterns": "A bemenet útvonal bejárási mintákat tartalmaz",
+    "input-contains-windows-reserved-names": "A bemenet Windows fenntartott neveket tartalmaz",
+    "input-contains-executable-file-extensions": "A bemenet végrehajtható fájl kiterjesztéseket tartalmaz",
     "input-contains-null-bytes": "A bemenet null bájtokat tartalmaz",
     "input-contains-hidden-files": "A bemenet rejtett fájlokat tartalmaz",
-    "input-contains-javascript-file-extensions":
-      "A bemenet JavaScript fájl kiterjesztéseket tartalmaz",
+    "input-contains-javascript-file-extensions": "A bemenet JavaScript fájl kiterjesztéseket tartalmaz",
   },
 
   // Aszinkron műveletek
@@ -118,8 +105,7 @@ export const coreTranslations = {
     "persistent-failure": "Tartós hiba",
     "function-failed": "A függvény sikertelen",
     "mapper-failed": "A mapper sikertelen",
-    "concurrency-must-be-greater-than-0":
-      "A párhuzamosságnak 0-nál nagyobbnak kell lennie",
+    "concurrency-must-be-greater-than-0": "A párhuzamosságnak 0-nál nagyobbnak kell lennie",
     "polling-timeout-reached": "Polling timeout elérve",
   },
 
@@ -133,12 +119,9 @@ export const coreTranslations = {
 
   // Tárolás és szerializálás
   storage: {
-    "potentially-dangerous-json-detected":
-      "Potenciálisan veszélyes JSON észlelve",
-    "failed-to-parse-json-from-localstorage":
-      "JSON elemzése localStorage-ból sikertelen:",
-    "error-parsing-storage-event":
-      "Hiba a tárolási esemény elemzésekor a kulcshoz",
+    "potentially-dangerous-json-detected": "Potenciálisan veszélyes JSON észlelve",
+    "failed-to-parse-json-from-localstorage": "JSON elemzése localStorage-ból sikertelen:",
+    "error-parsing-storage-event": "Hiba a tárolási esemény elemzésekor a kulcshoz",
   },
 
   // Teszt és fejlesztés
@@ -175,9 +158,7 @@ export const coreTranslations = {
   // Integrációs tesztek
   integration: {
     "session-and-api-key-generation": "Munkamenet és API kulcs generálás",
-    "authentication-and-input-validation-integration":
-      "Hitelesítés és bemenet validáció integráció",
-    "performance-and-security-integration":
-      "Teljesítmény és biztonság integráció",
+    "authentication-and-input-validation-integration": "Hitelesítés és bemenet validáció integráció",
+    "performance-and-security-integration": "Teljesítmény és biztonság integráció",
   },
 };

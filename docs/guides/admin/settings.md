@@ -69,9 +69,7 @@ const [store, setStore] = createStaticStore<{
 Add a persistence effect to save the setting to localStorage:
 
 ```typescript
-createRenderEffect(() =>
-  localStorage.setItem("newSetting", store.newSetting.toString()),
-);
+createRenderEffect(() => localStorage.setItem("newSetting", store.newSetting.toString()));
 ```
 
 ### 4. Add Getter and Setter
@@ -207,7 +205,7 @@ describe("Settings UI", () => {
 describe("Settings Translations", () => {
   it("should have all required keys", () => {
     const keys = ["newSetting", "newSettingTooltip"];
-    keys.forEach((key) => {
+    keys.forEach(key => {
       expect(translations.settings[key]).toBeDefined();
     });
   });
@@ -280,9 +278,7 @@ const stored = localStorage.getItem("myNewSetting");
 const value = (() => {
   if (!stored) return 0.5; // default
   try {
-    return stored.startsWith("{")
-      ? (JSON.parse(stored).value ?? 0.5)
-      : parseFloat(stored);
+    return stored.startsWith("{") ? (JSON.parse(stored).value ?? 0.5) : parseFloat(stored);
   } catch {
     return 0.5;
   }

@@ -37,8 +37,7 @@ export const navigationIcons = {
       name: "up",
       tags: ["navigation", "direction", "arrow"],
       description: "Up arrow icon",
-      caption:
-        "An upward pointing arrow icon for navigating to higher levels or scrolling up",
+      caption: "An upward pointing arrow icon for navigating to higher levels or scrolling up",
       keywords: ["up", "arrow", "direction", "top"],
     },
   },
@@ -48,8 +47,7 @@ export const navigationIcons = {
       name: "chevron-down",
       tags: ["navigation", "chevron", "direction"],
       description: "Chevron down icon",
-      caption:
-        "A downward pointing chevron icon for expanding menus or moving down",
+      caption: "A downward pointing chevron icon for expanding menus or moving down",
       keywords: ["chevron", "down", "arrow", "direction"],
     },
   },
@@ -59,8 +57,7 @@ export const navigationIcons = {
       name: "chevron-up",
       tags: ["navigation", "chevron", "direction"],
       description: "Chevron up icon",
-      caption:
-        "An upward pointing chevron icon for collapsing menus or moving up",
+      caption: "An upward pointing chevron icon for collapsing menus or moving up",
       keywords: ["chevron", "up", "arrow", "direction"],
     },
   },
@@ -70,8 +67,7 @@ export const navigationIcons = {
       name: "chevron-right",
       tags: ["navigation", "chevron", "direction"],
       description: "Chevron right icon",
-      caption:
-        "A rightward pointing chevron icon for moving forward or expanding rightward",
+      caption: "A rightward pointing chevron icon for moving forward or expanding rightward",
       keywords: ["chevron", "right", "arrow", "direction"],
     },
   },
@@ -81,8 +77,7 @@ export const navigationIcons = {
       name: "chevron-left",
       tags: ["navigation", "chevron", "direction"],
       description: "Chevron left icon",
-      caption:
-        "A leftward pointing chevron icon for moving backward or expanding leftward",
+      caption: "A leftward pointing chevron icon for moving backward or expanding leftward",
       keywords: ["chevron", "left", "arrow", "direction"],
     },
   },
@@ -92,8 +87,7 @@ export const navigationIcons = {
       name: "navigation",
       tags: ["navigation", "menu", "breadcrumb"],
       description: "Navigation icon",
-      caption:
-        "A navigation menu icon with horizontal lines for accessing main navigation",
+      caption: "A navigation menu icon with horizontal lines for accessing main navigation",
       keywords: ["navigation", "menu", "breadcrumb", "nav"],
     },
   },
@@ -103,8 +97,7 @@ export const navigationIcons = {
       name: "breadcrumb",
       tags: ["navigation", "menu", "breadcrumb"],
       description: "Breadcrumb navigation icon",
-      caption:
-        "A breadcrumb navigation icon showing hierarchical navigation path",
+      caption: "A breadcrumb navigation icon showing hierarchical navigation path",
       keywords: ["breadcrumb", "navigation", "menu", "nav"],
     },
   },
@@ -114,8 +107,7 @@ export const navigationIcons = {
       name: "arrow-sort",
       tags: ["navigation", "sort", "arrow"],
       description: "Arrow sort icon",
-      caption:
-        "A bidirectional arrow icon for sorting content in ascending or descending order",
+      caption: "A bidirectional arrow icon for sorting content in ascending or descending order",
       keywords: ["arrow", "sort", "direction", "order"],
     },
   },
@@ -175,8 +167,7 @@ export const navigationIcons = {
       name: "expand-up-right",
       tags: ["navigation", "expand", "arrow"],
       description: "Expand up right icon",
-      caption:
-        "A diagonal arrow icon pointing up and right for expanding content",
+      caption: "A diagonal arrow icon pointing up and right for expanding content",
       keywords: ["expand", "arrow", "up", "right"],
     },
   },
@@ -186,8 +177,7 @@ export const navigationIcons = {
       name: "move",
       tags: ["navigation", "move", "arrow"],
       description: "Move icon",
-      caption:
-        "A folder with arrow icon for moving or relocating files or content",
+      caption: "A folder with arrow icon for moving or relocating files or content",
       keywords: ["move", "arrow", "relocate", "transfer"],
     },
   },

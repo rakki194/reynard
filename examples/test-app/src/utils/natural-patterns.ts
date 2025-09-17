@@ -13,8 +13,7 @@ export const NATURAL_PATTERNS = {
     baseRadius: 20,
     colorSaturation: 0.3,
     colorLightness: 0.7,
-    description:
-      "Sunflower seed arrangement - optimal packing for maximum seeds",
+    description: "Sunflower seed arrangement - optimal packing for maximum seeds",
   },
   pinecone: {
     pointCount: 150,

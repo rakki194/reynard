@@ -23,7 +23,7 @@ import {
 export function basicColorRamp(
   baseColor: OKLCHColor,
   shiftType: "shadow" | "highlight" | "midtone",
-  intensity: number = 0.3,
+  intensity: number = 0.3
 ): OKLCHColor {
   return reynardBasicColorRamp(baseColor, shiftType, intensity);
 }
@@ -40,14 +40,9 @@ export function generateHueShiftRamp(
   baseColor: OKLCHColor,
   stops: number = 5,
   shadowShift: number = 25,
-  highlightShift: number = 20,
+  highlightShift: number = 20
 ): OKLCHColor[] {
-  return reynardGenerateColorRamp(
-    baseColor,
-    stops,
-    shadowShift,
-    highlightShift,
-  );
+  return reynardGenerateColorRamp(baseColor, stops, shadowShift, highlightShift);
 }
 
 /**
@@ -77,7 +72,7 @@ export const MATERIAL_PATTERNS = {
 export function materialHueShift(
   baseColor: OKLCHColor,
   material: keyof typeof MATERIAL_PATTERNS,
-  intensity: number = 1.0,
+  intensity: number = 1.0
 ): { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor } {
   return applyMaterialPattern(baseColor, material as MaterialType, intensity);
 }

@@ -11,7 +11,16 @@ import { FileType, ModalityType } from "./types";
 // ============================================================================
 
 export const SUPPORTED_FILE_TYPES: Record<ModalityType, FileType[]> = {
-  [ModalityType.DATA]: [FileType.PARQUET, FileType.ARROW, FileType.FEATHER, FileType.HDF5, FileType.CSV, FileType.TSV, FileType.JSON, FileType.JSONL],
+  [ModalityType.DATA]: [
+    FileType.PARQUET,
+    FileType.ARROW,
+    FileType.FEATHER,
+    FileType.HDF5,
+    FileType.CSV,
+    FileType.TSV,
+    FileType.JSON,
+    FileType.JSONL,
+  ],
   [ModalityType.IMAGE]: [
     FileType.IMAGE, // Covers all image formats: jpg, jpeg, png, gif, webp, avif, heic, heif, bmp, tiff, tif
   ],

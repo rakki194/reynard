@@ -8,7 +8,7 @@ import { vi } from "vitest";
  * Create a mock function with additional properties for testing
  */
 export function createMockFn<T extends (...args: any[]) => any>(
-  implementation?: T,
+  implementation?: T
 ): T & { mockClear: () => void; mockReset: () => void } {
   const mockFn = vi.fn(implementation) as any;
   // vi.fn() already provides mockClear and mockReset methods
@@ -19,7 +19,7 @@ export function createMockFn<T extends (...args: any[]) => any>(
  * Create a mock object with all methods mocked
  */
 export function createMockObject<T extends Record<string, unknown>>(
-  methods: (keyof T)[],
+  methods: (keyof T)[]
 ): {
   [K in keyof T]: T[K] extends (...args: any[]) => any
     ? T[K] & {
@@ -30,7 +30,7 @@ export function createMockObject<T extends Record<string, unknown>>(
     : T[K];
 } {
   const mockObj = {} as any;
-  methods.forEach((method) => {
+  methods.forEach(method => {
     mockObj[method] = createMockFn();
   });
   return mockObj;
@@ -45,7 +45,7 @@ export function createMockResponse(
     status?: number;
     statusText?: string;
     headers?: Record<string, string>;
-  } = {},
+  } = {}
 ) {
   const { status = 200, statusText = "OK", headers = {} } = options;
 
@@ -72,9 +72,7 @@ export function createMockResponse(
 /**
  * Create a mock fetch function
  */
-export function createMockFetch(
-  responses: Record<string, unknown> = {},
-): typeof fetch {
+export function createMockFetch(responses: Record<string, unknown> = {}): typeof fetch {
   return vi.fn().mockImplementation((url: string | URL | Request) => {
     const urlString = url.toString();
     const response = responses[urlString] || responses["*"] || { data: {} };
@@ -83,9 +81,7 @@ export function createMockFetch(
       return Promise.reject(response);
     }
 
-    return Promise.resolve(
-      createMockResponse((response as any).data, (response as any).options),
-    );
+    return Promise.resolve(createMockResponse((response as any).data, (response as any).options));
   });
 }
 
@@ -159,12 +155,11 @@ export function createMockFile(
   options: {
     type?: string;
     lastModified?: number;
-  } = {},
+  } = {}
 ): File {
   const { type = "text/plain", lastModified = Date.now() } = options;
 
-  const blob =
-    content instanceof Blob ? content : new Blob([content], { type });
+  const blob = content instanceof Blob ? content : new Blob([content], { type });
 
   return Object.assign(blob, {
     name,
@@ -230,10 +225,8 @@ export function createMockDataTransfer(files: File[] = []): DataTransfer {
 /**
  * Create a mock IntersectionObserver
  */
-export function createMockIntersectionObserver(
-  entries: IntersectionObserverEntry[] = [],
-): typeof IntersectionObserver {
-  const MockIntersectionObserver = vi.fn().mockImplementation((callback) => {
+export function createMockIntersectionObserver(entries: IntersectionObserverEntry[] = []): typeof IntersectionObserver {
+  const MockIntersectionObserver = vi.fn().mockImplementation(callback => {
     return {
       observe: vi.fn(),
       unobserve: vi.fn(),
@@ -288,7 +281,7 @@ export function createMockPerformanceObserver(): typeof PerformanceObserver {
 export function createMockCrypto(): Crypto {
   return {
     randomUUID: vi.fn().mockReturnValue("00000000-0000-4000-8000-000000000000"),
-    getRandomValues: vi.fn().mockImplementation((array) => {
+    getRandomValues: vi.fn().mockImplementation(array => {
       for (let i = 0; i < array.length; i++) {
         array[i] = Math.floor(Math.random() * 256);
       }
@@ -301,9 +294,7 @@ export function createMockCrypto(): Crypto {
 /**
  * Create a mock matchMedia function
  */
-export function createMockMatchMedia(
-  matches: boolean = false,
-): typeof window.matchMedia {
+export function createMockMatchMedia(matches: boolean = false): typeof window.matchMedia {
   return vi.fn().mockImplementation((query: string) => ({
     matches,
     media: query,

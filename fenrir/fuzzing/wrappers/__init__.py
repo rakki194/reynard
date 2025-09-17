@@ -5,10 +5,6 @@
 with e2e tests and provide standardized interfaces.
 """
 
-from .exploit_wrappers import FuzzyExploit, EndpointFuzzerExploit, run_fenrir_exploit
+from .exploit_wrappers import EndpointFuzzerExploit, FuzzyExploit, run_fenrir_exploit
 
-__all__ = [
-    "FuzzyExploit",
-    "EndpointFuzzerExploit", 
-    "run_fenrir_exploit"
-]
+__all__ = ["EndpointFuzzerExploit", "FuzzyExploit", "run_fenrir_exploit"]

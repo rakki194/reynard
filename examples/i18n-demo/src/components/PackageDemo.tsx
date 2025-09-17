@@ -9,8 +9,7 @@ const PackageDemo: Component = () => {
     <div class="package-demo">
       <h4>{getDemoTranslation(locale, "core")}</h4>
       <p>
-        {t("core.notifications.title")}:{" "}
-        {t("core.notifications.noNotifications")}
+        {t("core.notifications.title")}: {t("core.notifications.noNotifications")}
       </p>
 
       <h4>{getDemoTranslation(locale, "components")}</h4>

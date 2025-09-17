@@ -13,14 +13,12 @@ interface Particle {
   maxLife: number;
 }
 
-export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
+export const ParticleDemo: Component<ParticleDemoProps> = props => {
   const [score, setScore] = createSignal(0);
   const [particles, setParticles] = createSignal<Particle[]>([]);
   const [gameStarted, setGameStarted] = createSignal(false);
   const [particleCount, setParticleCount] = createSignal(0);
-  const [effectType, setEffectType] = createSignal<
-    "fireworks" | "fountain" | "spiral" | "explosion"
-  >("fireworks");
+  const [effectType, setEffectType] = createSignal<"fireworks" | "fountain" | "spiral" | "explosion">("fireworks");
 
   let gameLoop: number;
   let scene: any;
@@ -30,12 +28,7 @@ export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
   let nextParticleId = 0;
   let mousePosition = { x: 0, y: 0 };
 
-  const setupGameScene = async (
-    _scene: any,
-    _camera: any,
-    _renderer: any,
-    _controls: any,
-  ) => {
+  const setupGameScene = async (_scene: any, _camera: any, _renderer: any, _controls: any) => {
     scene = _scene;
     camera = _camera;
     renderer = _renderer;
@@ -43,14 +36,7 @@ export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
 
     // Lazy load Three.js
     const THREE = (await import("three")) as any;
-    const {
-      SphereGeometry,
-      MeshBasicMaterial,
-      Mesh,
-      AmbientLight,
-      DirectionalLight,
-      Fog,
-    } = THREE;
+    const { SphereGeometry, MeshBasicMaterial, Mesh, AmbientLight, DirectionalLight, Fog } = THREE;
 
     // Setup environment
     scene.fog = new Fog(0x000022, 1, 100);
@@ -149,7 +135,7 @@ export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
         maxLife: 120 + Math.random() * 60,
       };
 
-      setParticles((prev) => [...prev, newParticle]);
+      setParticles(prev => [...prev, newParticle]);
     }
   };
 
@@ -185,7 +171,7 @@ export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
         maxLife: 90 + Math.random() * 30,
       };
 
-      setParticles((prev) => [...prev, newParticle]);
+      setParticles(prev => [...prev, newParticle]);
     }
   };
 
@@ -221,7 +207,7 @@ export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
         maxLife: 150 + Math.random() * 50,
       };
 
-      setParticles((prev) => [...prev, newParticle]);
+      setParticles(prev => [...prev, newParticle]);
     }
   };
 
@@ -256,7 +242,7 @@ export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
         maxLife: 60 + Math.random() * 40,
       };
 
-      setParticles((prev) => [...prev, newParticle]);
+      setParticles(prev => [...prev, newParticle]);
     }
   };
 
@@ -264,8 +250,8 @@ export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
     if (!gameStarted()) return;
 
     // Update particles
-    setParticles((prev) =>
-      prev.filter((particle) => {
+    setParticles(prev =>
+      prev.filter(particle => {
         particle.life++;
 
         // Update position
@@ -287,7 +273,7 @@ export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
         }
 
         return true;
-      }),
+      })
     );
 
     setParticleCount(particles().length);
@@ -332,10 +318,7 @@ export const ParticleDemo: Component<ParticleDemoProps> = (props) => {
 
       <div class="game-instructions">
         <h3>✨ Particle Playground</h3>
-        <p>
-          Click anywhere to create particle effects! Each click creates 10
-          points.
-        </p>
+        <p>Click anywhere to create particle effects! Each click creates 10 points.</p>
         <p>🖱️ Move mouse to aim • Click to create effects</p>
         <button class="effect-toggle" onClick={cycleEffectType}>
           Switch Effect: {effectType()}

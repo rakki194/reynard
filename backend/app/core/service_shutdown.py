@@ -30,11 +30,11 @@ logger = logging.getLogger(__name__)
 async def shutdown_gatekeeper_service() -> None:
     """
     Gracefully shutdown the Gatekeeper authentication service.
-    
+
     This function performs proper cleanup of the authentication service,
     including closing database connections, clearing cached tokens,
     and ensuring all authentication resources are properly released.
-    
+
     Raises:
         Exception: Logged for monitoring purposes but does not prevent shutdown.
     """
@@ -48,11 +48,11 @@ async def shutdown_gatekeeper_service() -> None:
 async def shutdown_comfy_service_func() -> None:
     """
     Gracefully shutdown the ComfyUI service.
-    
+
     This function performs proper cleanup of the ComfyUI service,
     including closing API connections, saving any pending workflows,
     and ensuring all image generation resources are properly released.
-    
+
     Raises:
         Exception: Logged for monitoring purposes but does not prevent shutdown.
     """
@@ -66,11 +66,11 @@ async def shutdown_comfy_service_func() -> None:
 async def shutdown_nlweb_service_func() -> None:
     """
     Gracefully shutdown the NLWeb service.
-    
+
     This function performs proper cleanup of the NLWeb service,
     including closing network connections, clearing cached data,
     and ensuring all natural language processing resources are properly released.
-    
+
     Raises:
         Exception: Logged for monitoring purposes but does not prevent shutdown.
     """

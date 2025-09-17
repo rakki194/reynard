@@ -1,12 +1,4 @@
-import {
-  createSignal,
-  createEffect,
-  onCleanup,
-  JSX,
-  onMount,
-  mergeProps,
-  on,
-} from "solid-js";
+import { createSignal, createEffect, onCleanup, JSX, onMount, mergeProps, on } from "solid-js";
 import * as monacoEditor from "monaco-editor";
 import loader, { Monaco } from "@monaco-editor/loader";
 import { Loader } from "./Loader";
@@ -37,14 +29,8 @@ export interface MonacoDiffEditorProps {
   saveViewState?: boolean;
   loaderParams?: LoaderParams;
   onChange?: (value: string) => void;
-  onMount?: (
-    monaco: Monaco,
-    editor: monacoEditor.editor.IStandaloneDiffEditor,
-  ) => void;
-  onBeforeUnmount?: (
-    monaco: Monaco,
-    editor: monacoEditor.editor.IStandaloneDiffEditor,
-  ) => void;
+  onMount?: (monaco: Monaco, editor: monacoEditor.editor.IStandaloneDiffEditor) => void;
+  onBeforeUnmount?: (monaco: Monaco, editor: monacoEditor.editor.IStandaloneDiffEditor) => void;
 }
 
 export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
@@ -56,14 +42,13 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
       loadingState: "Loading…",
       saveViewState: true,
     },
-    inputProps,
+    inputProps
   );
 
   let containerRef: HTMLDivElement | undefined;
 
   const [monaco, setMonaco] = createSignal<Monaco>();
-  const [editor, setEditor] =
-    createSignal<monacoEditor.editor.IStandaloneDiffEditor>();
+  const [editor, setEditor] = createSignal<monacoEditor.editor.IStandaloneDiffEditor>();
 
   let abortInitialization: (() => void) | undefined;
   let monacoOnChangeSubscription: any;
@@ -113,7 +98,7 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
   createEffect(
     on(
       () => props.modified,
-      (modified) => {
+      modified => {
         const _editor = editor()?.getModifiedEditor();
         if (!_editor || typeof modified === "undefined") {
           return;
@@ -139,14 +124,14 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
           isOnChangeSuppressed = false;
         }
       },
-      { defer: true },
-    ),
+      { defer: true }
+    )
   );
 
   createEffect(
     on(
       () => props.original,
-      (original) => {
+      original => {
         const _editor = editor()?.getOriginalEditor();
         if (!_editor || typeof original === "undefined") {
           return;
@@ -156,34 +141,34 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
           _editor.setValue(original);
         }
       },
-      { defer: true },
-    ),
+      { defer: true }
+    )
   );
 
   createEffect(
     on(
       () => props.options,
-      (options) => {
+      options => {
         editor()?.updateOptions(options ?? {});
       },
-      { defer: true },
-    ),
+      { defer: true }
+    )
   );
 
   createEffect(
     on(
       () => props.theme,
-      (theme) => {
+      theme => {
         monaco()?.editor.setTheme(theme);
       },
-      { defer: true },
-    ),
+      { defer: true }
+    )
   );
 
   createEffect(
     on(
       () => props.originalLanguage,
-      (language) => {
+      language => {
         const model = editor()?.getModel();
         if (!language || !model) {
           return;
@@ -191,14 +176,14 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
 
         monaco()?.editor.setModelLanguage(model.original, language);
       },
-      { defer: true },
-    ),
+      { defer: true }
+    )
   );
 
   createEffect(
     on(
       () => props.modifiedLanguage,
-      (language) => {
+      language => {
         const model = editor()?.getModel();
         if (!language || !model) {
           return;
@@ -206,8 +191,8 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
 
         monaco()?.editor.setModelLanguage(model.modified, language);
       },
-      { defer: true },
-    ),
+      { defer: true }
+    )
   );
 
   createEffect(
@@ -227,34 +212,18 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
 
         if (prevOriginalPath !== originalPath) {
           if (props.saveViewState && originalPath != null) {
-            viewStates.set(
-              prevOriginalPath,
-              editor()?.getOriginalEditor().saveViewState(),
-            );
+            viewStates.set(prevOriginalPath, editor()?.getOriginalEditor().saveViewState());
           }
 
-          originalModel = getOrCreateModel(
-            _monaco,
-            props.original ?? "",
-            props.originalLanguage,
-            originalPath,
-          );
+          originalModel = getOrCreateModel(_monaco, props.original ?? "", props.originalLanguage, originalPath);
         }
 
         if (prevModifiedPath !== modifiedPath) {
           if (props.saveViewState && prevModifiedPath != null) {
-            viewStates.set(
-              prevModifiedPath,
-              editor()?.getModifiedEditor().saveViewState(),
-            );
+            viewStates.set(prevModifiedPath, editor()?.getModifiedEditor().saveViewState());
           }
 
-          modifiedModel = getOrCreateModel(
-            _monaco,
-            props.modified ?? "",
-            props.modifiedLanguage,
-            modifiedPath,
-          );
+          modifiedModel = getOrCreateModel(_monaco, props.modified ?? "", props.modifiedLanguage, modifiedPath);
         }
 
         editor()?.setModel({
@@ -263,31 +232,17 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
         });
 
         if (props.saveViewState) {
-          editor()
-            ?.getOriginalEditor()
-            .restoreViewState(viewStates.get(originalPath));
-          editor()
-            ?.getModifiedEditor()
-            .restoreViewState(viewStates.get(modifiedPath));
+          editor()?.getOriginalEditor().restoreViewState(viewStates.get(originalPath));
+          editor()?.getModifiedEditor().restoreViewState(viewStates.get(modifiedPath));
         }
       },
-      { defer: true },
-    ),
+      { defer: true }
+    )
   );
 
   const createEditor = (monaco: Monaco) => {
-    const originalModel = getOrCreateModel(
-      monaco,
-      props.original ?? "",
-      props.originalLanguage,
-      props.originalPath,
-    );
-    const modifiedModel = getOrCreateModel(
-      monaco,
-      props.modified ?? "",
-      props.modifiedLanguage,
-      props.modifiedPath,
-    );
+    const originalModel = getOrCreateModel(monaco, props.original ?? "", props.originalLanguage, props.originalPath);
+    const modifiedModel = getOrCreateModel(monaco, props.modified ?? "", props.modifiedLanguage, props.modifiedPath);
 
     const editor = monaco.editor.createDiffEditor(
       containerRef!,
@@ -295,7 +250,7 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
         automaticLayout: true,
         ...props.options,
       },
-      props.overrideServices,
+      props.overrideServices
     );
 
     editor.setModel({
@@ -307,11 +262,7 @@ export const MonacoDiffEditor = (inputProps: MonacoDiffEditorProps) => {
   };
 
   return (
-    <MonacoContainer
-      class={props.class}
-      width={props.width}
-      height={props.height}
-    >
+    <MonacoContainer class={props.class} width={props.width} height={props.height}>
       {!editor() && <Loader>{props.loadingState}</Loader>}
       <div class="monaco-diff-editor-container" ref={containerRef!} />
     </MonacoContainer>

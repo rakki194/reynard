@@ -28,36 +28,25 @@ describe("URL Validation", () => {
         "ftp://example.com",
       ];
 
-      dangerousUrls.forEach((url) => {
+      dangerousUrls.forEach(url => {
         const result = validateURL(url);
         expect(result.isValid).toBe(false);
       });
     });
 
     it("should reject localhost URLs", () => {
-      const localhostUrls = [
-        "http://localhost:3000",
-        "https://127.0.0.1:8080",
-        "http://0.0.0.0:9000",
-      ];
+      const localhostUrls = ["http://localhost:3000", "https://127.0.0.1:8080", "http://0.0.0.0:9000"];
 
-      localhostUrls.forEach((url) => {
+      localhostUrls.forEach(url => {
         const result = validateURL(url);
         expect(result.isValid).toBe(false);
       });
     });
 
     it("should handle invalid URLs", () => {
-      const invalidUrls = [
-        "not-a-url",
-        "http://",
-        "https://",
-        "",
-        null as any,
-        undefined as any,
-      ];
+      const invalidUrls = ["not-a-url", "http://", "https://", "", null as any, undefined as any];
 
-      invalidUrls.forEach((url) => {
+      invalidUrls.forEach(url => {
         const result = validateURL(url);
         expect(result.isValid).toBe(false);
       });

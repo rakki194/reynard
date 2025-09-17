@@ -15,11 +15,7 @@
  * truncateText("Hello world!", 5) // Returns "Hello..."
  * truncateText("Hello world!", 5, "…") // Returns "Hello…"
  */
-export function truncateText(
-  text: string,
-  maxLength: number,
-  suffix: string = "...",
-): string {
+export function truncateText(text: string, maxLength: number, suffix: string = "..."): string {
   if (text.length <= maxLength) return text;
   // Truncate to maxLength, where maxLength includes the suffix
   // So we need to leave space for the suffix
@@ -52,7 +48,7 @@ export function capitalize(str: string): string {
  * camelToKebab("backgroundColor") // Returns "background-color"
  */
 export function camelToKebab(str: string): string {
-  return str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+  return str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
 }
 
 /**
@@ -81,11 +77,7 @@ export function kebabToCamel(str: string): string {
  * pluralize(2, "item") // Returns "2 items"
  * pluralize(2, "child", "children") // Returns "2 children"
  */
-export function pluralize(
-  count: number,
-  singular: string,
-  plural?: string,
-): string {
+export function pluralize(count: number, singular: string, plural?: string): string {
   const word = count === 1 ? singular : plural || `${singular}s`;
   return `${count} ${word}`;
 }

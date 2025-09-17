@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // पासवर्ड सत्यापन
   password: {
-    "must-be-at-least-8-characters-long":
-      "पासवर्ड कम से कम 8 अक्षर का होना चाहिए",
-    "must-contain-at-least-one-uppercase-letter":
-      "पासवर्ड में कम से कम एक बड़ा अक्षर होना चाहिए",
-    "must-contain-at-least-one-lowercase-letter":
-      "पासवर्ड में कम से कम एक छोटा अक्षर होना चाहिए",
-    "must-contain-at-least-one-number":
-      "पासवर्ड में कम से कम एक संख्या होनी चाहिए",
-    "must-contain-at-least-one-special-character":
-      "पासवर्ड में कम से कम एक विशेष वर्ण होना चाहिए",
+    "must-be-at-least-8-characters-long": "पासवर्ड कम से कम 8 अक्षर का होना चाहिए",
+    "must-contain-at-least-one-uppercase-letter": "पासवर्ड में कम से कम एक बड़ा अक्षर होना चाहिए",
+    "must-contain-at-least-one-lowercase-letter": "पासवर्ड में कम से कम एक छोटा अक्षर होना चाहिए",
+    "must-contain-at-least-one-number": "पासवर्ड में कम से कम एक संख्या होनी चाहिए",
+    "must-contain-at-least-one-special-character": "पासवर्ड में कम से कम एक विशेष वर्ण होना चाहिए",
   },
 
   // सुरक्षा सत्यापन
   security: {
-    "at-least-one-character-type-must-be-included":
-      "कम से कम एक वर्ण प्रकार शामिल होना चाहिए",
-    "input-contains-potentially-dangerous-html":
-      "इनपुट में संभावित खतरनाक HTML है",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "इनपुट में संभावित खतरनाक SQL पैटर्न हैं",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "इनपुट में संभावित खतरनाक XSS पैटर्न हैं",
-    "input-contains-path-traversal-patterns":
-      "इनपुट में पथ ट्रैवर्सल पैटर्न हैं",
-    "input-contains-windows-reserved-names":
-      "इनपुट में Windows आरक्षित नाम हैं",
-    "input-contains-executable-file-extensions":
-      "इनपुट में निष्पादन योग्य फ़ाइल एक्सटेंशन हैं",
+    "at-least-one-character-type-must-be-included": "कम से कम एक वर्ण प्रकार शामिल होना चाहिए",
+    "input-contains-potentially-dangerous-html": "इनपुट में संभावित खतरनाक HTML है",
+    "input-contains-potentially-dangerous-sql-patterns": "इनपुट में संभावित खतरनाक SQL पैटर्न हैं",
+    "input-contains-potentially-dangerous-xss-patterns": "इनपुट में संभावित खतरनाक XSS पैटर्न हैं",
+    "input-contains-path-traversal-patterns": "इनपुट में पथ ट्रैवर्सल पैटर्न हैं",
+    "input-contains-windows-reserved-names": "इनपुट में Windows आरक्षित नाम हैं",
+    "input-contains-executable-file-extensions": "इनपुट में निष्पादन योग्य फ़ाइल एक्सटेंशन हैं",
     "input-contains-null-bytes": "इनपुट में null बाइट्स हैं",
     "input-contains-hidden-files": "इनपुट में छुपी हुई फ़ाइलें हैं",
-    "input-contains-javascript-file-extensions":
-      "इनपुट में JavaScript फ़ाइल एक्सटेंशन हैं",
+    "input-contains-javascript-file-extensions": "इनपुट में JavaScript फ़ाइल एक्सटेंशन हैं",
   },
 
   // अतुल्यकालिक संचालन
@@ -133,10 +120,8 @@ export const coreTranslations = {
   // भंडारण और क्रमबद्धता
   storage: {
     "potentially-dangerous-json-detected": "संभावित खतरनाक JSON का पता चला",
-    "failed-to-parse-json-from-localstorage":
-      "localStorage से JSON पार्स करने में विफल:",
-    "error-parsing-storage-event":
-      "कुंजी के लिए भंडारण घटना पार्स करने में त्रुटि",
+    "failed-to-parse-json-from-localstorage": "localStorage से JSON पार्स करने में विफल:",
+    "error-parsing-storage-event": "कुंजी के लिए भंडारण घटना पार्स करने में त्रुटि",
   },
 
   // परीक्षण और विकास
@@ -173,8 +158,7 @@ export const coreTranslations = {
   // एकीकरण परीक्षण
   integration: {
     "session-and-api-key-generation": "सत्र और API कुंजी जेनरेशन",
-    "authentication-and-input-validation-integration":
-      "प्रमाणीकरण और इनपुट सत्यापन एकीकरण",
+    "authentication-and-input-validation-integration": "प्रमाणीकरण और इनपुट सत्यापन एकीकरण",
     "performance-and-security-integration": "प्रदर्शन और सुरक्षा एकीकरण",
   },
 };

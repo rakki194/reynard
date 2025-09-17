@@ -14,16 +14,11 @@ export interface BatchResultsProps {
   class?: string;
 }
 
-export const BatchResults: Component<BatchResultsProps> = (props) => {
-  const completedFiles = () =>
-    props.files.filter((f) => f.status === "completed" && f.result);
+export const BatchResults: Component<BatchResultsProps> = props => {
+  const completedFiles = () => props.files.filter(f => f.status === "completed" && f.result);
   const totalFiles = () => props.files.length;
-  const successRate = () =>
-    totalFiles() > 0
-      ? Math.round((completedFiles().length / totalFiles()) * 100)
-      : 0;
-  const errorCount = () =>
-    props.files.filter((f) => f.status === "error").length;
+  const successRate = () => (totalFiles() > 0 ? Math.round((completedFiles().length / totalFiles()) * 100) : 0);
+  const errorCount = () => props.files.filter(f => f.status === "error").length;
 
   return (
     <Show when={props.showResults}>
@@ -52,12 +47,10 @@ export const BatchResults: Component<BatchResultsProps> = (props) => {
 
         <div class="results-list">
           <For each={completedFiles()}>
-            {(file) => (
+            {file => (
               <div class="result-item">
                 <div class="result-file">{file.file.name}</div>
-                <div class="result-caption">
-                  {file.result?.caption || "No caption generated"}
-                </div>
+                <div class="result-caption">{file.result?.caption || "No caption generated"}</div>
                 <div class="result-meta">
                   <span>Generator: {file.generatorName}</span>
                   <span>Time: {file.result?.processingTime?.toFixed(2)}s</span>

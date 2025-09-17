@@ -7,13 +7,8 @@ import { Component, splitProps } from "solid-js";
 import type { MasonryGridProps } from "./types";
 import { generateGapClasses } from "./utils";
 
-export const MasonryGrid: Component<MasonryGridProps> = (props) => {
-  const [local, others] = splitProps(props, [
-    "columns",
-    "gap",
-    "class",
-    "children",
-  ]);
+export const MasonryGrid: Component<MasonryGridProps> = props => {
+  const [local, others] = splitProps(props, ["columns", "gap", "class", "children"]);
 
   const getColumns = () => {
     if (typeof local.columns === "number") return local.columns;

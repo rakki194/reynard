@@ -9,19 +9,14 @@ import { Button, Card } from "reynard-components";
 /**
  * Main documentation renderer component
  */
-export const DocRenderer: Component<DocRendererProps> = (props) => {
+export const DocRenderer: Component<DocRendererProps> = props => {
   // const [isCodeExpanded, setIsCodeExpanded] = createSignal(false);
   // const [activeTab, setActiveTab] = createSignal(0);
 
   return (
     <div class={`doc-renderer ${props.className || ""}`}>
       <DocHeader metadata={props.metadata} />
-      <DocContent
-        content={props.content}
-        type={props.type}
-        onNavigate={props.onNavigate}
-        onCodeRun={props.onCodeRun}
-      />
+      <DocContent content={props.content} type={props.type} onNavigate={props.onNavigate} onCodeRun={props.onCodeRun} />
       <DocFooter metadata={props.metadata} />
     </div>
   );
@@ -30,18 +25,14 @@ export const DocRenderer: Component<DocRendererProps> = (props) => {
 /**
  * Documentation header component
  */
-const DocHeader: Component<{ metadata: any }> = (props) => {
+const DocHeader: Component<{ metadata: any }> = props => {
   return (
     <header class="doc-header">
       <div class="doc-meta">
         <h1 class="doc-title">{props.metadata.title}</h1>
-        {props.metadata.description && (
-          <p class="doc-description">{props.metadata.description}</p>
-        )}
+        {props.metadata.description && <p class="doc-description">{props.metadata.description}</p>}
         <div class="doc-tags">
-          <For each={props.metadata.tags || []}>
-            {(tag) => <span class="doc-tag">{tag}</span>}
-          </For>
+          <For each={props.metadata.tags || []}>{tag => <span class="doc-tag">{tag}</span>}</For>
         </div>
       </div>
     </header>
@@ -56,15 +47,13 @@ const DocContent: Component<{
   type: string;
   onNavigate?: (path: string) => void;
   onCodeRun?: (code: string) => void;
-}> = (props) => {
+}> = props => {
   return (
     <main class="doc-content">
       <div
         class="doc-content-body"
         innerHTML={props.content}
-        onClick={(e) =>
-          handleContentClick(e, props.onNavigate, props.onCodeRun)
-        }
+        onClick={e => handleContentClick(e, props.onNavigate, props.onCodeRun)}
       />
     </main>
   );
@@ -73,19 +62,14 @@ const DocContent: Component<{
 /**
  * Documentation footer component
  */
-const DocFooter: Component<{ metadata: any }> = (props) => {
+const DocFooter: Component<{ metadata: any }> = props => {
   return (
     <footer class="doc-footer">
       <div class="doc-footer-content">
         {props.metadata.lastModified && (
-          <p class="doc-last-modified">
-            Last updated:{" "}
-            {new Date(props.metadata.lastModified).toLocaleDateString()}
-          </p>
+          <p class="doc-last-modified">Last updated: {new Date(props.metadata.lastModified).toLocaleDateString()}</p>
         )}
-        {props.metadata.author && (
-          <p class="doc-author">By {props.metadata.author}</p>
-        )}
+        {props.metadata.author && <p class="doc-author">By {props.metadata.author}</p>}
       </div>
     </footer>
   );
@@ -97,7 +81,7 @@ const DocFooter: Component<{ metadata: any }> = (props) => {
 export const CodeExampleRenderer: Component<{
   example: CodeExample;
   onRun?: (code: string) => void;
-}> = (props) => {
+}> = props => {
   const [isExpanded, setIsExpanded] = createSignal(false);
   const [output, setOutput] = createSignal<string>("");
 
@@ -113,11 +97,7 @@ export const CodeExampleRenderer: Component<{
       <div class="code-example-header">
         <h4 class="code-example-title">{props.example.title}</h4>
         <div class="code-example-actions">
-          <Button
-            size="sm"
-            variant="secondary"
-            onClick={() => setIsExpanded(!isExpanded())}
-          >
+          <Button size="sm" variant="secondary" onClick={() => setIsExpanded(!isExpanded())}>
             {isExpanded() ? "Collapse" : "Expand"}
           </Button>
           {props.example.live && (
@@ -128,15 +108,11 @@ export const CodeExampleRenderer: Component<{
         </div>
       </div>
 
-      {props.example.description && (
-        <p class="code-example-description">{props.example.description}</p>
-      )}
+      {props.example.description && <p class="code-example-description">{props.example.description}</p>}
 
       <div class="code-example-content">
         <pre class="code-block">
-          <code class={`language-${props.example.language}`}>
-            {props.example.code}
-          </code>
+          <code class={`language-${props.example.language}`}>{props.example.code}</code>
         </pre>
       </div>
 
@@ -155,14 +131,12 @@ export const CodeExampleRenderer: Component<{
  */
 export const ApiDocRenderer: Component<{
   api: any;
-}> = (props) => {
+}> = props => {
   return (
     <Card class="api-doc">
       <div class="api-doc-header">
         <h3 class="api-doc-name">{props.api.name}</h3>
-        <span class={`api-doc-type api-doc-type--${props.api.type}`}>
-          {props.api.type}
-        </span>
+        <span class={`api-doc-type api-doc-type--${props.api.type}`}>{props.api.type}</span>
       </div>
 
       <p class="api-doc-description">{props.api.description}</p>
@@ -172,7 +146,7 @@ export const ApiDocRenderer: Component<{
           <h4>Parameters</h4>
           <div class="api-params-table">
             <For each={props.api.parameters}>
-              {(param) => (
+              {param => (
                 <div class="api-param">
                   <div class="api-param-name">
                     {param.name}
@@ -180,11 +154,7 @@ export const ApiDocRenderer: Component<{
                   </div>
                   <div class="api-param-type">{param.type}</div>
                   <div class="api-param-description">{param.description}</div>
-                  {param.default && (
-                    <div class="api-param-default">
-                      Default: {param.default}
-                    </div>
-                  )}
+                  {param.default && <div class="api-param-default">Default: {param.default}</div>}
                 </div>
               )}
             </For>
@@ -197,9 +167,7 @@ export const ApiDocRenderer: Component<{
           <h4>Returns</h4>
           <div class="api-return">
             <span class="api-return-type">{props.api.returns.type}</span>
-            <p class="api-return-description">
-              {props.api.returns.description}
-            </p>
+            <p class="api-return-description">{props.api.returns.description}</p>
           </div>
         </div>
       </Show>
@@ -207,9 +175,7 @@ export const ApiDocRenderer: Component<{
       <Show when={props.api.examples && props.api.examples.length > 0}>
         <div class="api-doc-examples">
           <h4>Examples</h4>
-          <For each={props.api.examples}>
-            {(example) => <CodeExampleRenderer example={example} />}
-          </For>
+          <For each={props.api.examples}>{example => <CodeExampleRenderer example={example} />}</For>
         </div>
       </Show>
     </Card>
@@ -222,7 +188,7 @@ export const ApiDocRenderer: Component<{
 export const TableOfContents: Component<{
   content: string;
   onNavigate?: (id: string) => void;
-}> = (props) => {
+}> = props => {
   const [headings, setHeadings] = createSignal<any[]>([]);
 
   createEffect(() => {
@@ -245,11 +211,11 @@ export const TableOfContents: Component<{
       <h3>Table of Contents</h3>
       <ul class="toc-list">
         <For each={headings()}>
-          {(heading) => (
+          {heading => (
             <li class={`toc-item toc-item--${heading.level}`}>
               <a
                 href={`#${heading.id}`}
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault();
                   props.onNavigate?.(heading.id);
                 }}
@@ -271,7 +237,7 @@ export const TableOfContents: Component<{
 function handleContentClick(
   event: MouseEvent,
   onNavigate?: (path: string) => void,
-  onCodeRun?: (code: string) => void,
+  onCodeRun?: (code: string) => void
 ) {
   const target = event.target as HTMLElement;
 

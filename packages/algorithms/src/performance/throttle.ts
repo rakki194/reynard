@@ -20,7 +20,7 @@ import type {
 export function throttle<TArgs extends readonly unknown[], TReturn>(
   func: FunctionSignature<TArgs, TReturn>,
   wait: number,
-  options: ThrottleOptions = {},
+  options: ThrottleOptions = {}
 ): ThrottledFunction<TArgs, TReturn> {
   let timeoutId: number | null = null;
   let lastExecTime = 0;
@@ -46,9 +46,7 @@ export function throttle<TArgs extends readonly unknown[], TReturn>(
 
     if (trailing) {
       lastArgs = args;
-      const delay = maxWait
-        ? Math.min(wait, maxWait - timeSinceLastExec)
-        : wait;
+      const delay = maxWait ? Math.min(wait, maxWait - timeSinceLastExec) : wait;
 
       timeoutId = window.setTimeout(() => {
         if (lastArgs) {
@@ -89,7 +87,7 @@ export function throttle<TArgs extends readonly unknown[], TReturn>(
 export function debounce<TArgs extends readonly unknown[], TReturn>(
   func: FunctionSignature<TArgs, TReturn>,
   wait: number,
-  options: DebounceOptions = {},
+  options: DebounceOptions = {}
 ): DebouncedFunction<TArgs, TReturn> {
   let timeoutId: number | null = null;
   let lastExecTime = 0;
@@ -115,9 +113,7 @@ export function debounce<TArgs extends readonly unknown[], TReturn>(
 
     if (trailing) {
       lastArgs = args;
-      const delay = maxWait
-        ? Math.min(wait, maxWait - timeSinceLastExec)
-        : wait;
+      const delay = maxWait ? Math.min(wait, maxWait - timeSinceLastExec) : wait;
 
       timeoutId = window.setTimeout(() => {
         if (lastArgs) {

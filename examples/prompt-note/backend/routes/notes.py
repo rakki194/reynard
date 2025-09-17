@@ -3,17 +3,13 @@ Notes API routes for Prompt Note application
 Handles CRUD operations for notes
 """
 
-import json
 from datetime import datetime
-from typing import List, Optional
-
-from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import DatabaseService
+from fastapi import APIRouter, Depends, HTTPException, status
 from models import Note, Notebook, User
+from pydantic import BaseModel
+from sqlalchemy import select
 
 router = APIRouter()
 
@@ -21,6 +17,7 @@ router = APIRouter()
 def get_database_service() -> DatabaseService:
     """Get database service dependency"""
     from main import get_database_service as main_get_db
+
     return main_get_db()
 
 
@@ -33,10 +30,10 @@ class NoteCreate(BaseModel):
 
 
 class NoteUpdate(BaseModel):
-    title: Optional[str] = None
-    content: Optional[str] = None
-    content_type: Optional[str] = None
-    is_favorite: Optional[bool] = None
+    title: str | None = None
+    content: str | None = None
+    content_type: str | None = None
+    is_favorite: bool | None = None
 
 
 class NoteResponse(BaseModel):
@@ -47,7 +44,7 @@ class NoteResponse(BaseModel):
     content_type: str
     is_favorite: bool
     created_at: datetime
-    updated_at: Optional[datetime]
+    updated_at: datetime | None
 
     class Config:
         from_attributes = True
@@ -61,44 +58,41 @@ async def get_current_user(db: DatabaseService = Depends(get_database_service)) 
     user = result.scalar_one_or_none()
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
     return user
 
 
-@router.get("/", response_model=List[NoteResponse])
+@router.get("/", response_model=list[NoteResponse])
 async def get_notes(
-    notebook_id: Optional[int] = None,
+    notebook_id: int | None = None,
     current_user: User = Depends(get_current_user),
-    db: DatabaseService = Depends(get_database_service)
+    db: DatabaseService = Depends(get_database_service),
 ):
     """Get all notes for the current user, optionally filtered by notebook"""
     query = select(Note).where(Note.user_id == current_user.id)
-    
+
     if notebook_id:
         # Verify notebook ownership
         notebook_result = await db.execute(
             select(Notebook).where(
-                Notebook.id == notebook_id,
-                Notebook.user_id == current_user.id
+                Notebook.id == notebook_id, Notebook.user_id == current_user.id
             )
         )
         notebook = notebook_result.scalar_one_or_none()
-        
+
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Notebook not found"
+                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found"
             )
-        
+
         query = query.where(Note.notebook_id == notebook_id)
-    
+
     query = query.order_by(Note.updated_at.desc())
-    
+
     result = await db.execute(query)
     notes = result.scalars().all()
-    
+
     return [
         NoteResponse(
             id=note.id,
@@ -108,7 +102,7 @@ async def get_notes(
             content_type=note.content_type,
             is_favorite=note.is_favorite,
             created_at=note.created_at,
-            updated_at=note.updated_at
+            updated_at=note.updated_at,
         )
         for note in notes
     ]
@@ -118,36 +112,34 @@ async def get_notes(
 async def create_note(
     note_data: NoteCreate,
     current_user: User = Depends(get_current_user),
-    db: DatabaseService = Depends(get_database_service)
+    db: DatabaseService = Depends(get_database_service),
 ):
     """Create a new note"""
     # Verify notebook ownership
     notebook_result = await db.execute(
         select(Notebook).where(
-            Notebook.id == note_data.notebook_id,
-            Notebook.user_id == current_user.id
+            Notebook.id == note_data.notebook_id, Notebook.user_id == current_user.id
         )
     )
     notebook = notebook_result.scalar_one_or_none()
-    
+
     if not notebook:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Notebook not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found"
         )
-    
+
     note = Note(
         notebook_id=note_data.notebook_id,
         user_id=current_user.id,
         title=note_data.title,
         content=note_data.content,
-        content_type=note_data.content_type
+        content_type=note_data.content_type,
     )
-    
+
     db.add(note)
     await db.commit()
     await db.refresh(note)
-    
+
     return NoteResponse(
         id=note.id,
         notebook_id=note.notebook_id,
@@ -156,7 +148,7 @@ async def create_note(
         content_type=note.content_type,
         is_favorite=note.is_favorite,
         created_at=note.created_at,
-        updated_at=note.updated_at
+        updated_at=note.updated_at,
     )
 
 
@@ -164,23 +156,19 @@ async def create_note(
 async def get_note(
     note_id: int,
     current_user: User = Depends(get_current_user),
-    db: DatabaseService = Depends(get_database_service)
+    db: DatabaseService = Depends(get_database_service),
 ):
     """Get a specific note by ID"""
     result = await db.execute(
-        select(Note).where(
-            Note.id == note_id,
-            Note.user_id == current_user.id
-        )
+        select(Note).where(Note.id == note_id, Note.user_id == current_user.id)
     )
     note = result.scalar_one_or_none()
-    
+
     if not note:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Note not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Note not found"
         )
-    
+
     return NoteResponse(
         id=note.id,
         notebook_id=note.notebook_id,
@@ -189,7 +177,7 @@ async def get_note(
         content_type=note.content_type,
         is_favorite=note.is_favorite,
         created_at=note.created_at,
-        updated_at=note.updated_at
+        updated_at=note.updated_at,
     )
 
 
@@ -198,23 +186,19 @@ async def update_note(
     note_id: int,
     note_data: NoteUpdate,
     current_user: User = Depends(get_current_user),
-    db: DatabaseService = Depends(get_database_service)
+    db: DatabaseService = Depends(get_database_service),
 ):
     """Update a note"""
     result = await db.execute(
-        select(Note).where(
-            Note.id == note_id,
-            Note.user_id == current_user.id
-        )
+        select(Note).where(Note.id == note_id, Note.user_id == current_user.id)
     )
     note = result.scalar_one_or_none()
-    
+
     if not note:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Note not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Note not found"
         )
-    
+
     # Update fields if provided
     if note_data.title is not None:
         note.title = note_data.title
@@ -224,12 +208,12 @@ async def update_note(
         note.content_type = note_data.content_type
     if note_data.is_favorite is not None:
         note.is_favorite = note_data.is_favorite
-    
+
     note.updated_at = datetime.utcnow()
-    
+
     await db.commit()
     await db.refresh(note)
-    
+
     return NoteResponse(
         id=note.id,
         notebook_id=note.notebook_id,
@@ -238,7 +222,7 @@ async def update_note(
         content_type=note.content_type,
         is_favorite=note.is_favorite,
         created_at=note.created_at,
-        updated_at=note.updated_at
+        updated_at=note.updated_at,
     )
 
 
@@ -246,43 +230,38 @@ async def update_note(
 async def delete_note(
     note_id: int,
     current_user: User = Depends(get_current_user),
-    db: DatabaseService = Depends(get_database_service)
+    db: DatabaseService = Depends(get_database_service),
 ):
     """Delete a note"""
     result = await db.execute(
-        select(Note).where(
-            Note.id == note_id,
-            Note.user_id == current_user.id
-        )
+        select(Note).where(Note.id == note_id, Note.user_id == current_user.id)
     )
     note = result.scalar_one_or_none()
-    
+
     if not note:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Note not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Note not found"
         )
-    
+
     await db.delete(note)
     await db.commit()
-    
+
     return {"message": "Note deleted successfully"}
 
 
-@router.get("/favorites/", response_model=List[NoteResponse])
+@router.get("/favorites/", response_model=list[NoteResponse])
 async def get_favorite_notes(
     current_user: User = Depends(get_current_user),
-    db: DatabaseService = Depends(get_database_service)
+    db: DatabaseService = Depends(get_database_service),
 ):
     """Get all favorite notes for the current user"""
     result = await db.execute(
-        select(Note).where(
-            Note.user_id == current_user.id,
-            Note.is_favorite == True
-        ).order_by(Note.updated_at.desc())
+        select(Note)
+        .where(Note.user_id == current_user.id, Note.is_favorite == True)
+        .order_by(Note.updated_at.desc())
     )
     notes = result.scalars().all()
-    
+
     return [
         NoteResponse(
             id=note.id,
@@ -292,7 +271,7 @@ async def get_favorite_notes(
             content_type=note.content_type,
             is_favorite=note.is_favorite,
             created_at=note.created_at,
-            updated_at=note.updated_at
+            updated_at=note.updated_at,
         )
         for note in notes
     ]
@@ -302,30 +281,26 @@ async def get_favorite_notes(
 async def toggle_favorite(
     note_id: int,
     current_user: User = Depends(get_current_user),
-    db: DatabaseService = Depends(get_database_service)
+    db: DatabaseService = Depends(get_database_service),
 ):
     """Toggle favorite status of a note"""
     result = await db.execute(
-        select(Note).where(
-            Note.id == note_id,
-            Note.user_id == current_user.id
-        )
+        select(Note).where(Note.id == note_id, Note.user_id == current_user.id)
     )
     note = result.scalar_one_or_none()
-    
+
     if not note:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Note not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Note not found"
         )
-    
+
     note.is_favorite = not note.is_favorite
     note.updated_at = datetime.utcnow()
-    
+
     await db.commit()
     await db.refresh(note)
-    
+
     return {
         "message": f"Note {'favorited' if note.is_favorite else 'unfavorited'} successfully",
-        "is_favorite": note.is_favorite
+        "is_favorite": note.is_favorite,
     }

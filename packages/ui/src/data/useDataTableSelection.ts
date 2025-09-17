@@ -14,7 +14,7 @@ export interface DataTableSelection<T = unknown> {
 
 export const useDataTableSelection = <T = unknown>(
   data: T[],
-  onRowSelect?: (selectedRows: T[]) => void,
+  onRowSelect?: (selectedRows: T[]) => void
 ): DataTableSelection<T> => {
   const [selectedRows, setSelectedRows] = createSignal<Set<number>>(new Set());
 
@@ -27,7 +27,7 @@ export const useDataTableSelection = <T = unknown>(
     }
     setSelectedRows(newSelected);
 
-    const selectedData = Array.from(newSelected).map((i) => data[i]);
+    const selectedData = Array.from(newSelected).map(i => data[i]);
     onRowSelect?.(selectedData);
   };
 

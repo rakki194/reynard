@@ -6,12 +6,12 @@ Abstract base class for TTS backend implementations.
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 
 class TTSBackend(ABC):
     """Abstract base class for TTS backends."""
-    
+
     def __init__(self, name: str):
         self.name = name
         self._initialized = False
@@ -36,17 +36,17 @@ class TTSBackend(ABC):
         pass
 
     @abstractmethod
-    async def get_available_voices(self) -> List[Dict[str, Any]]:
+    async def get_available_voices(self) -> list[dict[str, Any]]:
         """Get list of available voices."""
         pass
 
     @abstractmethod
-    async def get_supported_languages(self) -> List[str]:
+    async def get_supported_languages(self) -> list[str]:
         """Get list of supported languages."""
         pass
 
     @abstractmethod
-    async def get_supported_formats(self) -> List[str]:
+    async def get_supported_formats(self) -> list[str]:
         """Get list of supported output formats."""
         pass
 

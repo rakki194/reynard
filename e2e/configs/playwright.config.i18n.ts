@@ -26,7 +26,7 @@ export default defineConfig({
 
   /* Enhanced reporting for performance metrics */
   reporter: [
-    ["html", { outputFolder: "i18n-benchmark-results" }],
+    ["html", { outputFolder: "i18n-benchmark-results", open: "never" }],
     ["json", { outputFile: "i18n-benchmark-results.json" }],
     ["junit", { outputFile: "i18n-benchmark-results.xml" }],
     ["list"],

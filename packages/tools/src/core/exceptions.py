@@ -5,7 +5,7 @@ This module defines specific exception types for different tool-related errors,
 providing clear error messaging and proper categorization of failures.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any
 
 
 class ToolError(Exception):
@@ -14,14 +14,14 @@ class ToolError(Exception):
     def __init__(
         self,
         message: str,
-        tool_name: Optional[str] = None,
-        details: Optional[Dict[str, Any]] = None,
+        tool_name: str | None = None,
+        details: dict[str, Any] | None = None,
     ):
         super().__init__(message)
         self.tool_name = tool_name
         self.details = details or {}
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert exception to dictionary for API responses."""
         return {
             "error": self.__class__.__name__,
@@ -42,7 +42,7 @@ class ToolExecutionError(ToolError):
     """Raised when a tool fails during execution."""
 
     def __init__(
-        self, message: str, tool_name: str, original_error: Optional[Exception] = None
+        self, message: str, tool_name: str, original_error: Exception | None = None
     ):
         super().__init__(f"Tool '{tool_name}' execution failed: {message}", tool_name)
         self.original_error = original_error
@@ -55,7 +55,7 @@ class ToolPermissionError(ToolError):
     """Raised when a user lacks permission to execute a tool."""
 
     def __init__(
-        self, tool_name: str, required_permission: str, user_role: Optional[str] = None
+        self, tool_name: str, required_permission: str, user_role: str | None = None
     ):
         message = (
             f"Permission denied for tool '{tool_name}'. Required: {required_permission}"
@@ -73,7 +73,7 @@ class ToolPermissionError(ToolError):
 class ToolValidationError(ToolError):
     """Raised when tool parameters fail validation."""
 
-    def __init__(self, tool_name: str, validation_errors: Dict[str, str]):
+    def __init__(self, tool_name: str, validation_errors: dict[str, str]):
         errors_str = ", ".join(
             [f"{param}: {error}" for param, error in validation_errors.items()]
         )

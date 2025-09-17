@@ -74,16 +74,9 @@ export class ECSFactory {
    * ```
    */
   async createECSSystem(config: ECSConfig = {}): Promise<UnifiedECS> {
-    const {
-      enableWASM = true,
-      preferredMode = "auto",
-      fallbackBehavior = "warn",
-      ...restConfig
-    } = config;
+    const { enableWASM = true, preferredMode = "auto", fallbackBehavior = "warn", ...restConfig } = config;
 
-    console.log(
-      "🦊> Creating ECS system with automatic implementation selection...",
-    );
+    console.log("🦊> Creating ECS system with automatic implementation selection...");
 
     // Determine the best implementation to use
     const implementation = await this.selectBestImplementation({
@@ -103,27 +96,18 @@ export class ECSFactory {
 
       return ecs;
     } catch (error) {
-      console.error(
-        `🦦> Failed to create ${implementation} implementation:`,
-        error,
-      );
+      console.error(`🦦> Failed to create ${implementation} implementation:`, error);
 
       // Try fallback if the preferred implementation failed
       if (implementation !== "typescript") {
         console.log("🦦> Attempting fallback to TypeScript implementation...");
 
         try {
-          const fallbackECS = await this.createImplementation(
-            "typescript",
-            restConfig,
-          );
+          const fallbackECS = await this.createImplementation("typescript", restConfig);
           this.logFallbackSuccess(fallbackECS, implementation);
           return fallbackECS;
         } catch (fallbackError) {
-          console.error(
-            "🦦> Fallback to TypeScript also failed:",
-            fallbackError,
-          );
+          console.error("🦦> Fallback to TypeScript also failed:", fallbackError);
           throw new Error("All ECS implementations failed to initialize");
         }
       } else {
@@ -156,14 +140,10 @@ export class ECSFactory {
     if (config.preferredMode === "wasm-simd") {
       const isAvailable = await this.isWASMAvailable();
       if (isAvailable) {
-        console.log(
-          "🦦> WASM SIMD preferred and available, using WASM SIMD implementation",
-        );
+        console.log("🦦> WASM SIMD preferred and available, using WASM SIMD implementation");
         return "wasm-simd";
       } else {
-        console.log(
-          "🦦> WASM SIMD preferred but not available, using TypeScript implementation",
-        );
+        console.log("🦦> WASM SIMD preferred but not available, using TypeScript implementation");
         return "typescript";
       }
     }
@@ -172,14 +152,10 @@ export class ECSFactory {
     if (config.preferredMode === "auto") {
       const isAvailable = await this.isWASMAvailable();
       if (isAvailable) {
-        console.log(
-          "🦦> Auto mode: WASM SIMD available, using WASM SIMD implementation",
-        );
+        console.log("🦦> Auto mode: WASM SIMD available, using WASM SIMD implementation");
         return "wasm-simd";
       } else {
-        console.log(
-          "🦦> Auto mode: WASM SIMD not available, using TypeScript implementation",
-        );
+        console.log("🦦> Auto mode: WASM SIMD not available, using TypeScript implementation");
         return "typescript";
       }
     }
@@ -214,10 +190,7 @@ export class ECSFactory {
    */
   private async createImplementation(
     implementation: "wasm-simd" | "typescript",
-    config: Omit<
-      ECSConfig,
-      "enableWASM" | "preferredMode" | "fallbackBehavior"
-    >,
+    config: Omit<ECSConfig, "enableWASM" | "preferredMode" | "fallbackBehavior">
   ): Promise<UnifiedECS> {
     switch (implementation) {
       case "wasm-simd":
@@ -234,10 +207,7 @@ export class ECSFactory {
   /**
    * Log successful implementation creation.
    */
-  private logImplementationSuccess(
-    ecs: UnifiedECS,
-    implementation: string,
-  ): void {
+  private logImplementationSuccess(ecs: UnifiedECS, implementation: string): void {
     console.log(`✅ Successfully created ${implementation} ECS system`);
     console.log(`   Performance mode: ${ecs.performanceMode}`);
     console.log(`   WASM SIMD active: ${ecs.isWASMActive}`);
@@ -247,13 +217,8 @@ export class ECSFactory {
   /**
    * Log successful fallback.
    */
-  private logFallbackSuccess(
-    ecs: UnifiedECS,
-    failedImplementation: string,
-  ): void {
-    console.log(
-      `✅ Fallback successful: ${failedImplementation} → ${ecs.performanceMode}`,
-    );
+  private logFallbackSuccess(ecs: UnifiedECS, failedImplementation: string): void {
+    console.log(`✅ Fallback successful: ${failedImplementation} → ${ecs.performanceMode}`);
     console.log(`   Performance mode: ${ecs.performanceMode}`);
     console.log(`   WASM SIMD active: ${ecs.isWASMActive}`);
   }
@@ -317,9 +282,7 @@ export class ECSFactory {
  * ecs.runSystems(0.016);
  * ```
  */
-export const createECSSystem: ECSFactoryFunction = async (
-  config?: ECSConfig,
-): Promise<UnifiedECS> => {
+export const createECSSystem: ECSFactoryFunction = async (config?: ECSConfig): Promise<UnifiedECS> => {
   const factory = ECSFactory.getInstance();
   return await factory.createECSSystem(config);
 };
@@ -341,9 +304,7 @@ export const createECSSystem: ECSFactoryFunction = async (
  * });
  * ```
  */
-export const createTypeScriptECSSystem = async (
-  config?: ECSConfig,
-): Promise<UnifiedECS> => {
+export const createTypeScriptECSSystem = async (config?: ECSConfig): Promise<UnifiedECS> => {
   return await createTypeScriptECS({
     ...config,
     enableWASM: false,
@@ -368,9 +329,7 @@ export const createTypeScriptECSSystem = async (
  * });
  * ```
  */
-export const createWASMSIMDECSSystem = async (
-  config?: ECSConfig,
-): Promise<UnifiedECS> => {
+export const createWASMSIMDECSSystem = async (config?: ECSConfig): Promise<UnifiedECS> => {
   return await createWASMSIMDECS({
     ...config,
     enableWASM: true,

@@ -114,10 +114,7 @@ describe("Performance Types", () => {
   describe("FunctionSignature", () => {
     it("should define function types correctly", () => {
       const simpleFunction: FunctionSignature<[], number> = () => 42;
-      const functionWithArgs: FunctionSignature<[number, string], boolean> = (
-        a,
-        b,
-      ) => a > 0 && b.length > 0;
+      const functionWithArgs: FunctionSignature<[number, string], boolean> = (a, b) => a > 0 && b.length > 0;
 
       expect(simpleFunction()).toBe(42);
       expect(functionWithArgs(5, "test")).toBe(true);
@@ -127,13 +124,10 @@ describe("Performance Types", () => {
 
   describe("ThrottledFunction", () => {
     it("should define throttled function interface", () => {
-      const throttled: ThrottledFunction<[number], string> = Object.assign(
-        (x: number) => x.toString(),
-        {
-          cancel: () => {},
-          flush: () => "42" as string | undefined,
-        },
-      );
+      const throttled: ThrottledFunction<[number], string> = Object.assign((x: number) => x.toString(), {
+        cancel: () => {},
+        flush: () => "42" as string | undefined,
+      });
 
       expect(typeof throttled).toBe("function");
       expect(typeof throttled.cancel).toBe("function");
@@ -144,13 +138,10 @@ describe("Performance Types", () => {
 
   describe("DebouncedFunction", () => {
     it("should define debounced function interface", () => {
-      const debounced: DebouncedFunction<[string], number> = Object.assign(
-        (s: string) => s.length,
-        {
-          cancel: () => {},
-          flush: () => 0 as number | undefined,
-        },
-      );
+      const debounced: DebouncedFunction<[string], number> = Object.assign((s: string) => s.length, {
+        cancel: () => {},
+        flush: () => 0 as number | undefined,
+      });
 
       expect(typeof debounced).toBe("function");
       expect(typeof debounced.cancel).toBe("function");
@@ -233,12 +224,8 @@ describe("Performance Types", () => {
         averageLifetime: 2000,
       };
 
-      expect(stats.activeObjects + stats.availableObjects).toBe(
-        stats.totalObjects,
-      );
-      expect(stats.allocationCount - stats.deallocationCount).toBe(
-        stats.activeObjects,
-      );
+      expect(stats.activeObjects + stats.availableObjects).toBe(stats.totalObjects);
+      expect(stats.allocationCount - stats.deallocationCount).toBe(stats.activeObjects);
     });
   });
 
@@ -269,9 +256,7 @@ describe("Performance Types", () => {
       };
 
       expect(smallConfig.cellSize).toBeLessThan(largeConfig.cellSize);
-      expect(smallConfig.maxObjectsPerCell).toBeLessThan(
-        largeConfig.maxObjectsPerCell,
-      );
+      expect(smallConfig.maxObjectsPerCell).toBeLessThan(largeConfig.maxObjectsPerCell);
     });
   });
 
@@ -308,13 +293,8 @@ describe("Performance Types", () => {
       };
 
       expect(stats.occupiedCells).toBeLessThanOrEqual(stats.totalCells);
-      expect(stats.averageObjectsPerCell).toBeLessThanOrEqual(
-        stats.maxObjectsPerCell,
-      );
-      expect(stats.totalObjects / stats.occupiedCells).toBeCloseTo(
-        stats.averageObjectsPerCell,
-        1,
-      );
+      expect(stats.averageObjectsPerCell).toBeLessThanOrEqual(stats.maxObjectsPerCell);
+      expect(stats.totalObjects / stats.occupiedCells).toBeCloseTo(stats.averageObjectsPerCell, 1);
     });
   });
 

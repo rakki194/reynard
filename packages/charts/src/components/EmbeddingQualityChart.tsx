@@ -5,14 +5,7 @@
  * Ported from Yipyap's EmbeddingQualityChart with Reynard integration.
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  onMount,
-  Show,
-  splitProps,
-} from "solid-js";
+import { Component, createSignal, createEffect, onMount, Show, splitProps } from "solid-js";
 import { Chart } from "./Chart";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
 import { ChartConfig, Dataset, ReynardTheme } from "../types";
@@ -80,9 +73,7 @@ const defaultProps = {
   emptyMessage: "No embedding quality data available",
 };
 
-export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
-  props,
-) => {
+export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = props => {
   const [local, others] = splitProps(props, [
     "type",
     "data",
@@ -135,9 +126,9 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
   };
 
   const processQualityBarData = (data: EmbeddingQualityData) => {
-    const labels = data.metrics.map((m) => m.name);
-    const values = data.metrics.map((m) => m.value);
-    const colors = data.metrics.map((m) => getMetricColor(m));
+    const labels = data.metrics.map(m => m.name);
+    const values = data.metrics.map(m => m.value);
+    const colors = data.metrics.map(m => getMetricColor(m));
 
     return {
       labels,
@@ -145,7 +136,7 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
         {
           label: "Quality Score",
           data: values,
-          backgroundColor: colors.map((c) => c.replace("1)", "0.6)")),
+          backgroundColor: colors.map(c => c.replace("1)", "0.6)")),
           borderColor: colors,
           borderWidth: 2,
         },
@@ -180,13 +171,12 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
   };
 
   const processQualityRadarData = (data: EmbeddingQualityData) => {
-    const labels = data.metrics.map((m) => m.name);
-    const values = data.metrics.map((m) => m.value);
+    const labels = data.metrics.map(m => m.name);
+    const values = data.metrics.map(m => m.value);
 
     // Generate colors using visualization engine
     const colors = visualization.generateColors(1);
-    const backgroundColor =
-      colors[0]?.replace("1)", "0.3)") || "rgba(54, 162, 235, 0.3)";
+    const backgroundColor = colors[0]?.replace("1)", "0.3)") || "rgba(54, 162, 235, 0.3)";
     const borderColor = colors[0] || "rgba(54, 162, 235, 1)";
 
     return {
@@ -211,21 +201,14 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
   const getMetricColor = (metric: QualityMetric) => {
     if (metric.color) return metric.color;
 
-    if (
-      metric.goodThreshold !== undefined &&
-      metric.warningThreshold !== undefined
-    ) {
+    if (metric.goodThreshold !== undefined && metric.warningThreshold !== undefined) {
       if (metric.higherIsBetter) {
-        if (metric.value >= metric.goodThreshold)
-          return "rgba(75, 192, 192, 1)"; // Green
-        if (metric.value >= metric.warningThreshold)
-          return "rgba(255, 205, 86, 1)"; // Yellow
+        if (metric.value >= metric.goodThreshold) return "rgba(75, 192, 192, 1)"; // Green
+        if (metric.value >= metric.warningThreshold) return "rgba(255, 205, 86, 1)"; // Yellow
         return "rgba(255, 99, 132, 1)"; // Red
       } else {
-        if (metric.value <= metric.goodThreshold)
-          return "rgba(75, 192, 192, 1)"; // Green
-        if (metric.value <= metric.warningThreshold)
-          return "rgba(255, 205, 86, 1)"; // Yellow
+        if (metric.value <= metric.goodThreshold) return "rgba(75, 192, 192, 1)"; // Green
+        if (metric.value <= metric.warningThreshold) return "rgba(255, 205, 86, 1)"; // Yellow
         return "rgba(255, 99, 132, 1)"; // Red
       }
     }
@@ -265,16 +248,14 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
 
         <div class="overall-score">
           <div class="score-label">Overall Score:</div>
-          <div class="score-value">
-            {local.data.overall_score.toFixed(1)}/100
-          </div>
+          <div class="score-value">{local.data.overall_score.toFixed(1)}/100</div>
         </div>
 
         <Show when={assessment.issues.length > 0}>
           <div class="issues-section">
             <h5>Issues Found:</h5>
             <ul>
-              {assessment.issues.map((issue) => (
+              {assessment.issues.map(issue => (
                 <li>{issue}</li>
               ))}
             </ul>
@@ -285,7 +266,7 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
           <div class="recommendations-section">
             <h5>Recommendations:</h5>
             <ul>
-              {assessment.recommendations.map((rec) => (
+              {assessment.recommendations.map(rec => (
                 <li>{rec}</li>
               ))}
             </ul>
@@ -305,7 +286,7 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
         </div>
 
         <div class="metrics-grid">
-          {local.data.metrics.map((metric) => (
+          {local.data.metrics.map(metric => (
             <div class="metric-item">
               <div class="metric-name">{metric.name}</div>
               <div class="metric-value">
@@ -339,9 +320,7 @@ export const EmbeddingQualityChart: Component<EmbeddingQualityChartProps> = (
           }}
         >
           <div class="loading-spinner"></div>
-          <span style={{ "margin-left": "10px" }}>
-            {t("loadingEmbeddingQuality")}
-          </span>
+          <span style={{ "margin-left": "10px" }}>{t("loadingEmbeddingQuality")}</span>
         </div>
       </Show>
 

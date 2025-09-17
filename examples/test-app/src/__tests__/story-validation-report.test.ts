@@ -16,8 +16,7 @@ vi.mock("../ReynardAdventure", () => ({
       content: [
         {
           type: "text",
-          content:
-            "# What is Reynard?\n\nReynard is a comprehensive SolidJS framework...",
+          content: "# What is Reynard?\n\nReynard is a comprehensive SolidJS framework...",
         },
         {
           type: "code",
@@ -37,8 +36,7 @@ vi.mock("../ReynardAdventure", () => ({
       content: [
         {
           type: "text",
-          content:
-            "# Core Architecture\n\nReynard follows a modular architecture...",
+          content: "# Core Architecture\n\nReynard follows a modular architecture...",
         },
         {
           type: "code",
@@ -58,8 +56,7 @@ vi.mock("../ReynardAdventure", () => ({
       content: [
         {
           type: "text",
-          content:
-            "# Component Library\n\nReynard provides a comprehensive set...",
+          content: "# Component Library\n\nReynard provides a comprehensive set...",
         },
         {
           type: "code",
@@ -147,9 +144,7 @@ describe("Tutorial Validation Report", () => {
       expect(report.sectionStats.introduction?.hasCode).toBe(true);
       expect(report.sectionStats.introduction?.hasText).toBe(true);
       expect(report.sectionStats.introduction?.difficulty).toBe("beginner");
-      expect(report.sectionStats.introduction?.estimatedTime).toBe(
-        "10 minutes",
-      );
+      expect(report.sectionStats.introduction?.estimatedTime).toBe("10 minutes");
     });
   });
 
@@ -172,28 +167,14 @@ describe("Tutorial Validation Report", () => {
 
       printTutorialValidationReport();
 
-      expect(consoleSpy).toHaveBeenCalledWith(
-        "\n=== REYNARD TUTORIAL VALIDATION REPORT ===\n",
-      );
+      expect(consoleSpy).toHaveBeenCalledWith("\n=== REYNARD TUTORIAL VALIDATION REPORT ===\n");
       expect(consoleSpy).toHaveBeenCalledWith("SUMMARY:");
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Total Sections:"),
-      );
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Total Content Items:"),
-      );
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Missing Prerequisites:"),
-      );
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Invalid Structure:"),
-      );
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Empty Content:"),
-      );
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Invalid Difficulties:"),
-      );
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Total Sections:"));
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Total Content Items:"));
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Missing Prerequisites:"));
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Invalid Structure:"));
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Empty Content:"));
+      expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining("Invalid Difficulties:"));
 
       consoleSpy.mockRestore();
     });

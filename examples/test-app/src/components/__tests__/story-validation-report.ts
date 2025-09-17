@@ -30,19 +30,15 @@ export function generateTutorialValidationReport() {
   };
 
   // Get all section IDs
-  const sectionIds = new Set(tutorialData.map((section) => section.id));
+  const sectionIds = new Set(tutorialData.map(section => section.id));
   report.summary.totalSections = tutorialData.length;
 
   // Validate tutorial structure
   for (const section of tutorialData) {
     const sectionId = section.id;
     const contentCount = section.content ? section.content.length : 0;
-    const hasCode = section.content
-      ? section.content.some((c: any) => c.type === "code")
-      : false;
-    const hasText = section.content
-      ? section.content.some((c: any) => c.type === "text")
-      : false;
+    const hasCode = section.content ? section.content.some((c: any) => c.type === "code") : false;
+    const hasText = section.content ? section.content.some((c: any) => c.type === "text") : false;
 
     report.summary.totalContent += contentCount;
     report.sectionStats[sectionId] = {
@@ -58,26 +54,17 @@ export function generateTutorialValidationReport() {
       for (const prereq of section.prerequisites) {
         if (!sectionIds.has(prereq)) {
           report.issues.missingPrerequisites.push(
-            `Section "${sectionId}" has prerequisite "${prereq}" that does not exist`,
+            `Section "${sectionId}" has prerequisite "${prereq}" that does not exist`
           );
         }
       }
     }
 
     // Validate structure
-    const requiredFields = [
-      "id",
-      "title",
-      "description",
-      "content",
-      "estimatedTime",
-      "difficulty",
-    ];
+    const requiredFields = ["id", "title", "description", "content", "estimatedTime", "difficulty"];
     for (const field of requiredFields) {
       if (!(field in section)) {
-        report.issues.invalidStructure.push(
-          `Section "${sectionId}" is missing required field "${field}"`,
-        );
+        report.issues.invalidStructure.push(`Section "${sectionId}" is missing required field "${field}"`);
       }
     }
 
@@ -85,28 +72,21 @@ export function generateTutorialValidationReport() {
     if (section.content && Array.isArray(section.content)) {
       for (const [contentIndex, content] of section.content.entries()) {
         if (!content.content || content.content.trim().length === 0) {
-          report.issues.emptyContent.push(
-            `Section "${sectionId}" content ${contentIndex} is empty`,
-          );
+          report.issues.emptyContent.push(`Section "${sectionId}" content ${contentIndex} is empty`);
         }
       }
     } else {
-      report.issues.invalidStructure.push(
-        `Section "${sectionId}" has no content or content is not an array`,
-      );
+      report.issues.invalidStructure.push(`Section "${sectionId}" has no content or content is not an array`);
     }
 
     // Validate difficulty
     const validDifficulties = ["beginner", "intermediate", "advanced"];
     if (section.difficulty && !validDifficulties.includes(section.difficulty)) {
-      report.issues.invalidDifficulties.push(
-        `Section "${sectionId}" has invalid difficulty "${section.difficulty}"`,
-      );
+      report.issues.invalidDifficulties.push(`Section "${sectionId}" has invalid difficulty "${section.difficulty}"`);
     }
   }
 
-  report.summary.missingPrerequisites =
-    report.issues.missingPrerequisites.length;
+  report.summary.missingPrerequisites = report.issues.missingPrerequisites.length;
   report.summary.invalidStructure = report.issues.invalidStructure.length;
   report.summary.emptyContent = report.issues.emptyContent.length;
   report.summary.invalidDifficulties = report.issues.invalidDifficulties.length;
@@ -117,7 +97,7 @@ export function generateTutorialValidationReport() {
       const timeMatch = section.estimatedTime.match(/(\d+)\s*(minute|hour)s?/i);
       if (!timeMatch) {
         report.issues.invalidStructure.push(
-          `Section "${section.id}" has invalid estimated time format: "${section.estimatedTime}"`,
+          `Section "${section.id}" has invalid estimated time format: "${section.estimatedTime}"`
         );
       }
     }
@@ -135,40 +115,34 @@ export function printTutorialValidationReport() {
   console.log("SUMMARY:");
   console.log(`  Total Sections: ${report.summary.totalSections}`);
   console.log(`  Total Content Items: ${report.summary.totalContent}`);
-  console.log(
-    `  Missing Prerequisites: ${report.summary.missingPrerequisites}`,
-  );
+  console.log(`  Missing Prerequisites: ${report.summary.missingPrerequisites}`);
   console.log(`  Invalid Structure: ${report.summary.invalidStructure}`);
   console.log(`  Empty Content: ${report.summary.emptyContent}`);
   console.log(`  Invalid Difficulties: ${report.summary.invalidDifficulties}`);
 
   if (report.issues.missingPrerequisites.length > 0) {
     console.log("\nMISSING PREREQUISITES:");
-    report.issues.missingPrerequisites.slice(0, 10).forEach((error) => {
+    report.issues.missingPrerequisites.slice(0, 10).forEach(error => {
       console.log(`  ❌ ${error}`);
     });
     if (report.issues.missingPrerequisites.length > 10) {
-      console.log(
-        `  ... and ${report.issues.missingPrerequisites.length - 10} more`,
-      );
+      console.log(`  ... and ${report.issues.missingPrerequisites.length - 10} more`);
     }
   }
 
   if (report.issues.invalidStructure.length > 0) {
     console.log("\nINVALID STRUCTURE:");
-    report.issues.invalidStructure.slice(0, 10).forEach((error) => {
+    report.issues.invalidStructure.slice(0, 10).forEach(error => {
       console.log(`  ❌ ${error}`);
     });
     if (report.issues.invalidStructure.length > 10) {
-      console.log(
-        `  ... and ${report.issues.invalidStructure.length - 10} more`,
-      );
+      console.log(`  ... and ${report.issues.invalidStructure.length - 10} more`);
     }
   }
 
   if (report.issues.emptyContent.length > 0) {
     console.log("\nEMPTY CONTENT:");
-    report.issues.emptyContent.slice(0, 10).forEach((error) => {
+    report.issues.emptyContent.slice(0, 10).forEach(error => {
       console.log(`  ❌ ${error}`);
     });
     if (report.issues.emptyContent.length > 10) {
@@ -178,7 +152,7 @@ export function printTutorialValidationReport() {
 
   if (report.issues.invalidDifficulties.length > 0) {
     console.log("\nINVALID DIFFICULTIES:");
-    report.issues.invalidDifficulties.forEach((error) => {
+    report.issues.invalidDifficulties.forEach(error => {
       console.log(`  ❌ ${error}`);
     });
   }

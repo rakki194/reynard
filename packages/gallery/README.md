@@ -60,15 +60,15 @@ function FileManager() {
       showUpload={true}
       showBreadcrumbs={true}
       callbacks={{
-        onNavigate: (path) => {
+        onNavigate: path => {
           console.log("Navigate to:", path);
           // Fetch new data for path
         },
-        onItemOpen: (item) => {
+        onItemOpen: item => {
           console.log("Open item:", item.name);
           // Handle file opening
         },
-        onUploadComplete: (results) => {
+        onUploadComplete: results => {
           console.log("Upload complete:", results);
           // Refresh gallery data
         },
@@ -300,9 +300,9 @@ function FileUploadExample() {
       uploadUrl: "/api/upload",
     },
     callbacks: {
-      onUploadStart: (files) => console.log("Starting upload:", files.length),
-      onUploadProgress: (progress) => console.log("Progress:", progress),
-      onUploadComplete: (results) => console.log("Complete:", results),
+      onUploadStart: files => console.log("Starting upload:", files.length),
+      onUploadProgress: progress => console.log("Progress:", progress),
+      onUploadComplete: results => console.log("Complete:", results),
     },
   });
 
@@ -311,20 +311,18 @@ function FileUploadExample() {
       <input
         type="file"
         multiple
-        onChange={(e) => {
+        onChange={e => {
           const files = Array.from(e.target.files || []);
           fileUpload.uploadFiles(files);
         }}
       />
 
       <div>
-        {fileUpload.uploads().map((upload) => (
+        {fileUpload.uploads().map(upload => (
           <div key={upload.id}>
             {upload.file.name}: {upload.progress}%
             {upload.status === "uploading" && (
-              <button onClick={() => fileUpload.cancelUpload(upload.id)}>
-                Cancel
-              </button>
+              <button onClick={() => fileUpload.cancelUpload(upload.id)}>Cancel</button>
             )}
           </div>
         ))}
@@ -426,14 +424,14 @@ const galleryState = useGalleryState({
       id: "download",
       label: "Download",
       icon: "download",
-      handler: (items) => downloadFiles(items),
+      handler: items => downloadFiles(items),
     },
     {
       id: "delete",
       label: "Delete",
       icon: "trash",
       destructive: true,
-      handler: (items) => deleteFiles(items),
+      handler: items => deleteFiles(items),
     },
   ]}
 />
@@ -465,12 +463,10 @@ const getCustomFileIcon = (item: FileItem) => {
 function BackendIntegratedGallery() {
   const [data, { mutate, refetch }] = createResource(
     () => currentPath(),
-    async (path) => {
-      const response = await fetch(
-        `/api/files?path=${encodeURIComponent(path)}`,
-      );
+    async path => {
+      const response = await fetch(`/api/files?path=${encodeURIComponent(path)}`);
       return response.json();
-    },
+    }
   );
 
   return (
@@ -480,7 +476,7 @@ function BackendIntegratedGallery() {
       callbacks={{
         onNavigate: setCurrentPath,
         onUploadComplete: () => refetch(),
-        onDelete: async (items) => {
+        onDelete: async items => {
           await deleteFiles(items);
           refetch();
         },
@@ -535,11 +531,11 @@ async function openDirectoryPicker() {
 // Integrate with cloud storage providers
 const cloudGallery = useGalleryState({
   callbacks: {
-    onNavigate: async (path) => {
+    onNavigate: async path => {
       const data = await cloudStorage.listFiles(path);
       galleryState.updateData(data);
     },
-    onUpload: async (files) => {
+    onUpload: async files => {
       return await cloudStorage.uploadFiles(files, currentPath());
     },
   },

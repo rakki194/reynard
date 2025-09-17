@@ -10,6 +10,10 @@ export default defineConfig({
         cli: resolve(__dirname, "src/cli.ts"),
         "queue-manager": resolve(__dirname, "src/queue-manager.ts"),
         processors: resolve(__dirname, "src/processors.ts"),
+        config: resolve(__dirname, "src/config.ts"),
+        "file-utils": resolve(__dirname, "src/file-utils.ts"),
+        watcher: resolve(__dirname, "src/watcher.ts"),
+        "queue-watcher": resolve(__dirname, "src/queue-watcher.ts"),
       },
       formats: ["es", "cjs"],
       fileName: (format, entryName) => {

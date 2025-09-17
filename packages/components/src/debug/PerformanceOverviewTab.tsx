@@ -18,9 +18,7 @@ export interface PerformanceOverviewTabProps {
   onExportData: () => void;
 }
 
-export const PerformanceOverviewTab: Component<PerformanceOverviewTabProps> = (
-  props,
-) => {
+export const PerformanceOverviewTab: Component<PerformanceOverviewTabProps> = props => {
   // Format memory usage
   const formatMemory = (bytes: number): string => {
     if (bytes > 1024 * 1024 * 1024) {
@@ -135,10 +133,7 @@ export const PerformanceOverviewTab: Component<PerformanceOverviewTabProps> = (
         <div class="status-card">
           <h3>Quick Actions</h3>
           <div class="quick-actions">
-            <Button
-              variant={props.isRecording ? "danger" : "primary"}
-              onClick={props.onToggleRecording}
-            >
+            <Button variant={props.isRecording ? "danger" : "primary"} onClick={props.onToggleRecording}>
               {props.isRecording ? "Stop Recording" : "Start Recording"}
             </Button>
             <Button variant="secondary" onClick={props.onClearMetrics}>

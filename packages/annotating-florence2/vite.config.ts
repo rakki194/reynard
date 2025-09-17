@@ -11,12 +11,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: [
-        "solid-js",
-        "solid-js/web",
-        "solid-js/store",
-        "reynard-annotating-core",
-      ],
+      external: ["solid-js", "solid-js/web", "solid-js/store", "reynard-annotating-core"],
       output: {
         globals: {
           "solid-js": "SolidJS",

@@ -8,12 +8,7 @@ export type { BenchmarkResult, BenchmarkSuite } from "./benchmark.js";
 export { runExperiment, runQuickTest } from "./test-runner.js";
 
 // Re-export types
-export type {
-  Position,
-  Velocity,
-  Acceleration,
-  Mass,
-} from "./position-system.js";
+export type { Position, Velocity, Acceleration, Mass } from "./position-system.js";
 
 /**
  * Quick start function for running the experiment
@@ -40,16 +35,12 @@ export async function fullBenchmark(): Promise<void> {
 // Auto-run quick test if imported
 if (typeof window !== "undefined") {
   // Browser environment
-  (
-    window as typeof window & { ReynardECSSIMD: Record<string, unknown> }
-  ).ReynardECSSIMD = {
+  (window as typeof window & { ReynardECSSIMD: Record<string, unknown> }).ReynardECSSIMD = {
     quickStart,
     fullBenchmark,
     PositionSystem: (await import("./position-system.js")).PositionSystem,
-    PositionSystemSIMD: (await import("./position-system-simd.js"))
-      .PositionSystemSIMD,
-    ECSComparisonBenchmark: (await import("./benchmark.js"))
-      .ECSComparisonBenchmark,
+    PositionSystemSIMD: (await import("./position-system-simd.js")).PositionSystemSIMD,
+    ECSComparisonBenchmark: (await import("./benchmark.js")).ECSComparisonBenchmark,
   };
 
   console.log("🦊> Reynard ECS SIMD Experiment loaded!");

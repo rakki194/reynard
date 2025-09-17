@@ -4,7 +4,6 @@
 
 -- Enable required extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "vector";
 CREATE EXTENSION IF NOT EXISTS "pg_trgm"; -- For text similarity
 CREATE EXTENSION IF NOT EXISTS "btree_gin"; -- For composite indexes
 
@@ -491,5 +490,5 @@ COMMENT ON COLUMN data_schemas.columns IS 'Column definitions for structured dat
 
 -- Insert default configuration
 INSERT INTO search_analytics (date, total_searches, unique_users, avg_response_time)
-VALUES (CURRENT_DATE, 0, 0, 0.0)
+VALUES (CURRENT_DATE::DATE, 0, 0, 0.000000)
 ON CONFLICT (date) DO NOTHING;

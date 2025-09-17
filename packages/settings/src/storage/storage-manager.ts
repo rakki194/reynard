@@ -5,12 +5,7 @@
 
 import type { SettingStorage, SettingsExportData } from "../types";
 import type { StorageAdapter } from "./adapters";
-import {
-  LocalStorageAdapter,
-  SessionStorageAdapter,
-  MemoryAdapter,
-  IndexedDBAdapter,
-} from "./adapters";
+import { LocalStorageAdapter, SessionStorageAdapter, MemoryAdapter, IndexedDBAdapter } from "./adapters";
 
 export class StorageManager {
   private adapters: Map<SettingStorage, StorageAdapter> = new Map();
@@ -23,10 +18,7 @@ export class StorageManager {
     this.adapters.set("localStorage", new LocalStorageAdapter(prefix));
     this.adapters.set("sessionStorage", new SessionStorageAdapter(prefix));
     this.adapters.set("memory", new MemoryAdapter(prefix));
-    this.adapters.set(
-      "indexedDB",
-      new IndexedDBAdapter("reynard_settings", "settings", prefix),
-    );
+    this.adapters.set("indexedDB", new IndexedDBAdapter("reynard_settings", "settings", prefix));
   }
 
   /**
@@ -70,11 +62,7 @@ export class StorageManager {
   /**
    * Set a value using the specified or default storage
    */
-  async set(
-    key: string,
-    value: string,
-    storageType?: SettingStorage,
-  ): Promise<void> {
+  async set(key: string, value: string, storageType?: SettingStorage): Promise<void> {
     const adapter = this.getAdapter(storageType);
     const result = adapter.set(key, value);
     if (result instanceof Promise) await result;
@@ -112,9 +100,7 @@ export class StorageManager {
    */
   async export(storageType?: SettingStorage): Promise<SettingsExportData> {
     const adapter = this.getAdapter(storageType);
-    const keys = await (adapter.keys() instanceof Promise
-      ? await adapter.keys()
-      : adapter.keys());
+    const keys = await (adapter.keys() instanceof Promise ? await adapter.keys() : adapter.keys());
 
     const settings: SettingsExportData["settings"] = {};
 
@@ -144,7 +130,7 @@ export class StorageManager {
    */
   async import(
     data: SettingsExportData,
-    options: { merge?: boolean; storageType?: SettingStorage } = {},
+    options: { merge?: boolean; storageType?: SettingStorage } = {}
   ): Promise<void> {
     const { merge = false, storageType } = options;
 

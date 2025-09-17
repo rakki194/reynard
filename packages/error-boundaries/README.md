@@ -70,16 +70,13 @@ function App() {
 ### Error Boundary with Recovery
 
 ```tsx
-import {
-  ErrorBoundary,
-  builtInRecoveryStrategies,
-} from "reynard-error-boundaries";
+import { ErrorBoundary, builtInRecoveryStrategies } from "reynard-error-boundaries";
 
 function App() {
   return (
     <ErrorBoundary
       recoveryStrategies={builtInRecoveryStrategies}
-      onRecovery={(action) => {
+      onRecovery={action => {
         console.log("Recovery action executed:", action);
       }}
     >
@@ -179,7 +176,7 @@ const customStrategy = createRecoveryStrategy(
       message: "Custom retry successful",
     };
   },
-  1, // Priority
+  1 // Priority
 );
 
 <ErrorBoundary recoveryStrategies={[customStrategy]}>

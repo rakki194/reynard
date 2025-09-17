@@ -223,7 +223,7 @@ const DropZone = () => {
   const [isDropTarget, setIsDropTarget] = createSignal(false);
 
   const { uploadFiles } = useDragAndDrop({
-    onDragStateChange: (isDragging) => setIsDropTarget(isDragging),
+    onDragStateChange: isDragging => setIsDropTarget(isDragging),
   });
 
   return (
@@ -239,7 +239,7 @@ const DropZone = () => {
 ```tsx
 const DirectoryItem = (props: { path: string }) => {
   const { uploadFiles } = useDragAndDrop({
-    onDragStateChange: (isDragging) => {
+    onDragStateChange: isDragging => {
       // Update directory visual state
     },
   });

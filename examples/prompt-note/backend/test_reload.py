@@ -4,13 +4,10 @@ Test script for uvicorn reload functionality
 Demonstrates how to test reload behavior programmatically
 """
 
-import asyncio
 import os
-import signal
 import subprocess
 import sys
 import time
-from typing import Optional
 
 import requests
 
@@ -22,8 +19,8 @@ class ReloadTester:
         self.host = host
         self.port = port
         self.base_url = f"http://{host}:{port}"
-        self.process: Optional[subprocess.Popen] = None
-        self.start_time: Optional[float] = None
+        self.process: subprocess.Popen | None = None
+        self.start_time: float | None = None
 
     def start_server(self) -> bool:
         """Start the uvicorn server with reload enabled"""
@@ -57,9 +54,8 @@ class ReloadTester:
             if self._wait_for_server():
                 print("[OK] Server started successfully")
                 return True
-            else:
-                print("[FAIL] Server failed to start")
-                return False
+            print("[FAIL] Server failed to start")
+            return False
 
         except Exception as e:
             print(f"[FAIL] Error starting server: {e}")
@@ -132,14 +128,10 @@ class ReloadTester:
                 if reload_mode:
                     print("  [OK] Reload mode detected correctly")
                     return True
-                else:
-                    print("  [FAIL] Reload mode not detected")
-                    return False
-            else:
-                print(
-                    f"  [FAIL] Failed to get system info: HTTP {response.status_code}"
-                )
+                print("  [FAIL] Reload mode not detected")
                 return False
+            print(f"  [FAIL] Failed to get system info: HTTP {response.status_code}")
+            return False
         except requests.exceptions.RequestException as e:
             print(f"  [FAIL] Error testing reload detection: {e}")
             return False
@@ -163,11 +155,8 @@ class ReloadTester:
                         return False
 
                 return True
-            else:
-                print(
-                    f"  [FAIL] Failed to get service status: HTTP {response.status_code}"
-                )
-                return False
+            print(f"  [FAIL] Failed to get service status: HTTP {response.status_code}")
+            return False
         except requests.exceptions.RequestException as e:
             print(f"  [FAIL] Error testing service status: {e}")
             return False
@@ -195,11 +184,10 @@ class ReloadTester:
                 # Clean up temp file
                 os.remove(temp_file)
                 return True
-            else:
-                print(
-                    f"  [FAIL] Server not responding after file change: HTTP {response.status_code}"
-                )
-                return False
+            print(
+                f"  [FAIL] Server not responding after file change: HTTP {response.status_code}"
+            )
+            return False
 
         except Exception as e:
             print(f"  [FAIL] Error simulating file change: {e}")
@@ -277,9 +265,8 @@ class ReloadTester:
             if passed == total:
                 print("[OK] All tests passed!")
                 return True
-            else:
-                print("[WARN] Some tests failed")
-                return False
+            print("[WARN] Some tests failed")
+            return False
 
         finally:
             self.stop_server()

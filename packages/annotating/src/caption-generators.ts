@@ -17,7 +17,7 @@ import type { BackendAnnotationManager } from "./BackendAnnotationManager";
 export async function generateFurryTags(
   manager: BackendAnnotationManager,
   imagePath: string,
-  config?: Record<string, unknown>,
+  config?: Record<string, unknown>
 ): Promise<CaptionResult> {
   const service = manager.getService();
   const task: CaptionTask = {
@@ -34,7 +34,7 @@ export async function generateFurryTags(
 export async function generateDetailedCaption(
   manager: BackendAnnotationManager,
   imagePath: string,
-  config?: Record<string, unknown>,
+  config?: Record<string, unknown>
 ): Promise<CaptionResult> {
   const service = manager.getService();
   const task: CaptionTask = {
@@ -51,7 +51,7 @@ export async function generateDetailedCaption(
 export async function generateAnimeTags(
   manager: BackendAnnotationManager,
   imagePath: string,
-  config?: Record<string, unknown>,
+  config?: Record<string, unknown>
 ): Promise<CaptionResult> {
   const service = manager.getService();
   const task: CaptionTask = {
@@ -68,7 +68,7 @@ export async function generateAnimeTags(
 export async function generateGeneralCaption(
   manager: BackendAnnotationManager,
   imagePath: string,
-  config?: Record<string, unknown>,
+  config?: Record<string, unknown>
 ): Promise<CaptionResult> {
   const service = manager.getService();
   const task: CaptionTask = {

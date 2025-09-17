@@ -76,7 +76,7 @@ const createJSONEditorHandlers = (
   content: () => string,
   setContent: (content: string) => void,
   setValidationMarkers: (markers: ValidationMarker[]) => void,
-  props: JSONEditorProps,
+  props: JSONEditorProps
 ) => {
   const handleValidation = (markers: ValidationMarker[]) => {
     setValidationMarkers(markers);
@@ -113,11 +113,9 @@ const createJSONEditorHandlers = (
   };
 };
 
-export const JSONEditor: Component<JSONEditorProps> = (props) => {
+export const JSONEditor: Component<JSONEditorProps> = props => {
   const [content, setContent] = createSignal("");
-  const [validationMarkers, setValidationMarkers] = createSignal<
-    ValidationMarker[]
-  >([]);
+  const [validationMarkers, setValidationMarkers] = createSignal<ValidationMarker[]>([]);
 
   // Computed values
   const isValid = createMemo(() => validationMarkers().length === 0);
@@ -128,8 +126,12 @@ export const JSONEditor: Component<JSONEditorProps> = (props) => {
   });
 
   // Event handlers
-  const { handleValidation, handleContentChange, handleFormat } =
-    createJSONEditorHandlers(content, setContent, setValidationMarkers, props);
+  const { handleValidation, handleContentChange, handleFormat } = createJSONEditorHandlers(
+    content,
+    setContent,
+    setValidationMarkers,
+    props
+  );
 
   return (
     <div class="json-editor">

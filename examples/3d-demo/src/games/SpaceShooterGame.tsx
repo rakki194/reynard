@@ -18,7 +18,7 @@ interface Enemy {
   health: number;
 }
 
-export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
+export const SpaceShooterGame: Component<SpaceShooterGameProps> = props => {
   const [score, setScore] = createSignal(0);
   const [bullets, setBullets] = createSignal<Bullet[]>([]);
   const [enemies, setEnemies] = createSignal<Enemy[]>([]);
@@ -35,12 +35,7 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
   let nextEnemyId = 0;
   let lastEnemySpawn = 0;
 
-  const setupGameScene = async (
-    _scene: any,
-    _camera: any,
-    _renderer: any,
-    _controls: any,
-  ) => {
+  const setupGameScene = async (_scene: any, _camera: any, _renderer: any, _controls: any) => {
     scene = _scene;
     camera = _camera;
     renderer = _renderer;
@@ -48,16 +43,8 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
 
     // Lazy load Three.js
     const THREE = (await import("three")) as any;
-    const {
-      BoxGeometry,
-      SphereGeometry,
-      MeshStandardMaterial,
-      Mesh,
-      AmbientLight,
-      DirectionalLight,
-      PointLight,
-      Fog,
-    } = THREE;
+    const { BoxGeometry, SphereGeometry, MeshStandardMaterial, Mesh, AmbientLight, DirectionalLight, PointLight, Fog } =
+      THREE;
 
     // Setup space environment
     scene.fog = new Fog(0x000011, 1, 100);
@@ -155,7 +142,7 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
       velocity: { x: 0, y: 0, z: 0.5 },
     };
 
-    setBullets((prev) => [...prev, newBullet]);
+    setBullets(prev => [...prev, newBullet]);
   };
 
   const spawnEnemy = () => {
@@ -170,11 +157,7 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
     });
 
     const enemy = new Mesh(enemyGeometry, enemyMaterial);
-    enemy.position.set(
-      (Math.random() - 0.5) * 16,
-      (Math.random() - 0.5) * 8,
-      10,
-    );
+    enemy.position.set((Math.random() - 0.5) * 16, (Math.random() - 0.5) * 8, 10);
 
     scene.add(enemy);
 
@@ -189,7 +172,7 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
       health: 2,
     };
 
-    setEnemies((prev) => [...prev, newEnemy]);
+    setEnemies(prev => [...prev, newEnemy]);
   };
 
   const gameUpdate = () => {
@@ -209,8 +192,8 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
     }
 
     // Update bullets
-    setBullets((prev) =>
-      prev.filter((bullet) => {
+    setBullets(prev =>
+      prev.filter(bullet => {
         bullet.mesh.position.z += bullet.velocity.z;
 
         // Remove bullets that are too far
@@ -220,12 +203,12 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
         }
 
         return true;
-      }),
+      })
     );
 
     // Update enemies
-    setEnemies((prev) =>
-      prev.filter((enemy) => {
+    setEnemies(prev =>
+      prev.filter(enemy => {
         enemy.mesh.position.x += enemy.velocity.x;
         enemy.mesh.position.y += enemy.velocity.y;
         enemy.mesh.position.z += enemy.velocity.z;
@@ -238,7 +221,7 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
 
         // Check collision with player
         if (enemy.mesh.position.distanceTo(player.position) < 1) {
-          setPlayerHealth((prev) => {
+          setPlayerHealth(prev => {
             const newHealth = prev - 10;
             if (newHealth <= 0) {
               alert(`💥 Game Over! Final Score: ${score()}`);
@@ -250,22 +233,22 @@ export const SpaceShooterGame: Component<SpaceShooterGameProps> = (props) => {
         }
 
         return true;
-      }),
+      })
     );
 
     // Check bullet-enemy collisions
-    bullets().forEach((bullet) => {
-      enemies().forEach((enemy) => {
+    bullets().forEach(bullet => {
+      enemies().forEach(enemy => {
         if (bullet.mesh.position.distanceTo(enemy.mesh.position) < 0.5) {
           // Hit!
           enemy.health--;
           scene.remove(bullet.mesh);
-          setBullets((prev) => prev.filter((b) => b.id !== bullet.id));
+          setBullets(prev => prev.filter(b => b.id !== bullet.id));
 
           if (enemy.health <= 0) {
             scene.remove(enemy.mesh);
-            setEnemies((prev) => prev.filter((e) => e.id !== enemy.id));
-            setScore((prev) => {
+            setEnemies(prev => prev.filter(e => e.id !== enemy.id));
+            setScore(prev => {
               const newScore = prev + 100;
               props.onScoreUpdate(newScore);
               return newScore;

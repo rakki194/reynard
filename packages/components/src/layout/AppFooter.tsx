@@ -10,11 +10,7 @@ export const AppFooter: Component = () => {
     <footer class="app-footer">
       <p>Built with ❤️ using Reynard framework</p>
       <p>
-        <a
-          href="https://github.com/rakki194/reynard"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://github.com/rakki194/reynard" target="_blank" rel="noopener noreferrer">
           View on GitHub
         </a>
       </p>

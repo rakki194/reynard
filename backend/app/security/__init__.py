@@ -9,6 +9,6 @@ from .input_validator import validate_input_security
 from .security_headers import add_security_headers_middleware
 
 __all__ = [
-    "validate_input_security",
     "add_security_headers_middleware",
+    "validate_input_security",
 ]

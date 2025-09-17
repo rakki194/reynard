@@ -11,7 +11,7 @@ export function usePointTransitions() {
     startPoints: EmbeddingPoint[],
     endPoints: EmbeddingPoint[],
     duration: number = 1000,
-    easing: EasingType = "easeInOutCubic",
+    easing: EasingType = "easeInOutCubic"
   ): Promise<void> => {
     if (animationState.isAnimationsDisabled()) {
       return Promise.resolve();
@@ -25,13 +25,13 @@ export function usePointTransitions() {
       state,
       duration,
       easing,
-      (progress) => {
+      progress => {
         state.progress = progress;
         animationState.setCurrentAnimation({ ...state });
       },
       () => {
         animationState.setCurrentAnimation(null);
-      },
+      }
     );
   };
 

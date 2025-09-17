@@ -42,7 +42,7 @@ class MockHeaders {
 class MockRequest {
   constructor(
     public url: string,
-    public headers: MockHeaders = new MockHeaders(),
+    public headers: MockHeaders = new MockHeaders()
   ) {}
 }
 
@@ -69,17 +69,13 @@ describe("Security Headers", () => {
       expect(headers["X-Frame-Options"]).toBe("DENY");
       expect(headers["X-Content-Type-Options"]).toBe("nosniff");
       expect(headers["X-XSS-Protection"]).toBe("1; mode=block");
-      expect(headers["Referrer-Policy"]).toBe(
-        "strict-origin-when-cross-origin",
-      );
+      expect(headers["Referrer-Policy"]).toBe("strict-origin-when-cross-origin");
     });
 
     it("should include HSTS headers", () => {
       const headers = DEFAULT_SECURITY_HEADERS;
       expect(headers["Strict-Transport-Security"]).toContain("max-age=");
-      expect(headers["Strict-Transport-Security"]).toContain(
-        "includeSubDomains",
-      );
+      expect(headers["Strict-Transport-Security"]).toContain("includeSubDomains");
       expect(headers["Strict-Transport-Security"]).toContain("preload");
     });
   });
@@ -89,25 +85,17 @@ describe("Security Headers", () => {
       const strictHeaders = STRICT_SECURITY_HEADERS;
       const defaultHeaders = DEFAULT_SECURITY_HEADERS;
 
-      expect(strictHeaders["Content-Security-Policy"]).not.toContain(
-        "unsafe-inline",
-      );
-      expect(strictHeaders["Content-Security-Policy"]).not.toContain(
-        "unsafe-eval",
-      );
-      expect(strictHeaders["Content-Security-Policy"]).toContain(
-        "block-all-mixed-content",
-      );
+      expect(strictHeaders["Content-Security-Policy"]).not.toContain("unsafe-inline");
+      expect(strictHeaders["Content-Security-Policy"]).not.toContain("unsafe-eval");
+      expect(strictHeaders["Content-Security-Policy"]).toContain("block-all-mixed-content");
     });
 
     it("should have longer HSTS max-age", () => {
       const strictHeaders = STRICT_SECURITY_HEADERS;
       const defaultHeaders = DEFAULT_SECURITY_HEADERS;
 
-      const strictMaxAge =
-        strictHeaders["Strict-Transport-Security"].match(/max-age=(\d+)/)?.[1];
-      const defaultMaxAge =
-        defaultHeaders["Strict-Transport-Security"].match(/max-age=(\d+)/)?.[1];
+      const strictMaxAge = strictHeaders["Strict-Transport-Security"].match(/max-age=(\d+)/)?.[1];
+      const defaultMaxAge = defaultHeaders["Strict-Transport-Security"].match(/max-age=(\d+)/)?.[1];
 
       expect(parseInt(strictMaxAge!)).toBeGreaterThan(parseInt(defaultMaxAge!));
     });
@@ -124,8 +112,7 @@ describe("Security Headers", () => {
 
     it("should have shorter HSTS max-age", () => {
       const devHeaders = DEVELOPMENT_SECURITY_HEADERS;
-      const maxAge =
-        devHeaders["Strict-Transport-Security"].match(/max-age=(\d+)/)?.[1];
+      const maxAge = devHeaders["Strict-Transport-Security"].match(/max-age=(\d+)/)?.[1];
 
       expect(parseInt(maxAge!)).toBeLessThan(86400 * 365); // Less than 1 year
     });
@@ -273,9 +260,7 @@ describe("Security Headers", () => {
       const originalEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "production";
 
-      await expect(secureFetch("http://insecure.com")).rejects.toThrow(
-        "HTTPS required in production",
-      );
+      await expect(secureFetch("http://insecure.com")).rejects.toThrow("HTTPS required in production");
 
       process.env.NODE_ENV = originalEnv;
     });
@@ -295,7 +280,7 @@ describe("Security Headers", () => {
             Pragma: "no-cache",
             Expires: "0",
           }),
-        }),
+        })
       );
     });
 
@@ -310,7 +295,7 @@ describe("Security Headers", () => {
         expect.objectContaining({
           headers: expect.any(Object),
           credentials: "same-origin",
-        }),
+        })
       );
     });
 
@@ -320,10 +305,7 @@ describe("Security Headers", () => {
 
       await secureFetch("https://other-api.com/test");
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        "https://other-api.com/test",
-        expect.any(Object),
-      );
+      expect(mockFetch).toHaveBeenCalledWith("https://other-api.com/test", expect.any(Object));
     });
 
     it("should merge custom headers", async () => {
@@ -345,7 +327,7 @@ describe("Security Headers", () => {
             Authorization: t("core.bearer.token"),
             "X-Requested-With": "XMLHttpRequest",
           }),
-        }),
+        })
       );
     });
   });
@@ -405,37 +387,27 @@ describe("Security Headers", () => {
 
   describe("Cross-Origin Policies", () => {
     it("should set appropriate COEP policy", () => {
-      expect(DEFAULT_SECURITY_HEADERS["Cross-Origin-Embedder-Policy"]).toBe(
-        "require-corp",
-      );
+      expect(DEFAULT_SECURITY_HEADERS["Cross-Origin-Embedder-Policy"]).toBe("require-corp");
     });
 
     it("should set appropriate COOP policy", () => {
-      expect(DEFAULT_SECURITY_HEADERS["Cross-Origin-Opener-Policy"]).toBe(
-        "same-origin",
-      );
+      expect(DEFAULT_SECURITY_HEADERS["Cross-Origin-Opener-Policy"]).toBe("same-origin");
     });
 
     it("should set appropriate CORP policy", () => {
-      expect(DEFAULT_SECURITY_HEADERS["Cross-Origin-Resource-Policy"]).toBe(
-        "same-origin",
-      );
+      expect(DEFAULT_SECURITY_HEADERS["Cross-Origin-Resource-Policy"]).toBe("same-origin");
     });
   });
 
   describe("Edge Cases", () => {
     it("should handle empty headers object", () => {
       const emptyHeaders = new MockHeaders();
-      expect(() =>
-        applySecurityHeaders(emptyHeaders, "production"),
-      ).not.toThrow();
+      expect(() => applySecurityHeaders(emptyHeaders, "production")).not.toThrow();
     });
 
     it("should handle invalid environment", () => {
       const headers = new MockHeaders();
-      expect(() =>
-        applySecurityHeaders(headers, "invalid" as any),
-      ).not.toThrow();
+      expect(() => applySecurityHeaders(headers, "invalid" as any)).not.toThrow();
     });
 
     it("should handle malformed URLs in HTTPS enforcement", () => {

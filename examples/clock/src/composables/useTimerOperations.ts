@@ -14,7 +14,7 @@ export const useTimerOperations = (
   state: () => TimerStateType,
   setState: (value: TimerStateType) => void,
   originalTime: () => TimerTime,
-  setOriginalTime: (value: TimerTime) => void,
+  setOriginalTime: (value: TimerTime) => void
 ) => {
   const { notify } = useNotifications();
 
@@ -46,7 +46,7 @@ export const useTimerOperations = (
   };
 
   const updateTimer = (): void => {
-    setTime((currentTime) => {
+    setTime(currentTime => {
       const totalSeconds = timeToSeconds(currentTime);
       if (totalSeconds <= 1) {
         setState("stopped");
@@ -60,7 +60,7 @@ export const useTimerOperations = (
 
   const handleInputChange = (field: keyof TimerTime, value: string): void => {
     const numValue = Math.max(0, parseInt(value) || 0);
-    setInputTime((prev) => ({ ...prev, [field]: numValue }));
+    setInputTime(prev => ({ ...prev, [field]: numValue }));
   };
 
   return {

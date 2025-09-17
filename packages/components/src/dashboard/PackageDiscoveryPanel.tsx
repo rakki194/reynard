@@ -3,15 +3,7 @@
  * Package discovery and registration interface with conflict resolution
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button, TextField, Select } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
@@ -49,9 +41,7 @@ export interface DiscoverySummary {
   readyToInstall: number;
 }
 
-export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
-  props,
-) => {
+export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = props => {
   const [packages, setPackages] = createSignal<PackageInfo[]>([]);
   const [summary, setSummary] = createSignal<DiscoverySummary>({
     totalDiscovered: 0,
@@ -185,15 +175,10 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
       const packageList = mockPackages;
       const mockSummary: DiscoverySummary = {
         totalDiscovered: packageList.length,
-        newPackages: packageList.filter((p) => p.status === "discovered")
-          .length,
-        updatedPackages: packageList.filter((p) => p.status === "registered")
-          .length,
-        conflictedPackages: packageList.filter((p) => p.status === "conflict")
-          .length,
-        readyToInstall: packageList.filter(
-          (p) => p.status === "discovered" || p.status === "registered",
-        ).length,
+        newPackages: packageList.filter(p => p.status === "discovered").length,
+        updatedPackages: packageList.filter(p => p.status === "registered").length,
+        conflictedPackages: packageList.filter(p => p.status === "conflict").length,
+        readyToInstall: packageList.filter(p => p.status === "discovered" || p.status === "registered").length,
       };
 
       setSummary(mockSummary);
@@ -209,7 +194,7 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
     setIsDiscovering(true);
     try {
       // Simulate package discovery process
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       await refreshPackageData();
     } catch (error) {
       console.error("Failed to discover packages:", error);
@@ -223,10 +208,8 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
     console.log(`Registering package: ${packageName}`);
 
     // Simulate registration
-    const updatedPackages = packages().map((pkg) =>
-      pkg.name === packageName
-        ? { ...pkg, status: "registered" as const }
-        : pkg,
+    const updatedPackages = packages().map(pkg =>
+      pkg.name === packageName ? { ...pkg, status: "registered" as const } : pkg
     );
     setPackages(updatedPackages);
   };
@@ -236,10 +219,8 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
     console.log(`Resolving conflict for package: ${packageName}`);
 
     // Simulate conflict resolution
-    const updatedPackages = packages().map((pkg) =>
-      pkg.name === packageName
-        ? { ...pkg, status: "discovered" as const, conflicts: [] }
-        : pkg,
+    const updatedPackages = packages().map(pkg =>
+      pkg.name === packageName ? { ...pkg, status: "discovered" as const, conflicts: [] } : pkg
     );
     setPackages(updatedPackages);
   };
@@ -251,20 +232,18 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
     if (searchQuery()) {
       const query = searchQuery().toLowerCase();
       filtered = filtered.filter(
-        (pkg) =>
-          pkg.name.toLowerCase().includes(query) ||
-          pkg.description.toLowerCase().includes(query),
+        pkg => pkg.name.toLowerCase().includes(query) || pkg.description.toLowerCase().includes(query)
       );
     }
 
     // Filter by category
     if (selectedCategory() !== "all") {
-      filtered = filtered.filter((pkg) => pkg.category === selectedCategory());
+      filtered = filtered.filter(pkg => pkg.category === selectedCategory());
     }
 
     // Filter by status
     if (selectedStatus() !== "all") {
-      filtered = filtered.filter((pkg) => pkg.status === selectedStatus());
+      filtered = filtered.filter(pkg => pkg.status === selectedStatus());
     }
 
     return filtered;
@@ -272,7 +251,7 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
 
   const categories = () => {
     const packageList = packages();
-    const categorySet = new Set(packageList.map((p) => p.category));
+    const categorySet = new Set(packageList.map(p => p.category));
     return Array.from(categorySet);
   };
 
@@ -341,22 +320,14 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
         </div>
 
         <div class="discovery-panel-actions">
-          <Button
-            variant="primary"
-            onClick={handleDiscoverPackages}
-            disabled={isDiscovering()}
-          >
+          <Button variant="primary" onClick={handleDiscoverPackages} disabled={isDiscovering()}>
             <Show when={isDiscovering()} fallback="Discover Packages">
               <span class="spinner"></span>
               Discovering...
             </Show>
           </Button>
 
-          <Button
-            variant="secondary"
-            onClick={refreshPackageData}
-            disabled={isRefreshing()}
-          >
+          <Button variant="secondary" onClick={refreshPackageData} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -394,44 +365,31 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
         <TextField
           placeholder="Search packages..."
           value={searchQuery()}
-          onChange={(e) => setSearchQuery(e.currentTarget.value)}
+          onChange={e => setSearchQuery(e.currentTarget.value)}
         />
 
-        <Select
-          value={selectedCategory()}
-          onChange={(e) => setSelectedCategory(e.currentTarget.value)}
-        >
+        <Select value={selectedCategory()} onChange={e => setSelectedCategory(e.currentTarget.value)}>
           <option value="all">All Categories</option>
-          <For each={categories()}>
-            {(category) => <option value={category}>{category}</option>}
-          </For>
+          <For each={categories()}>{category => <option value={category}>{category}</option>}</For>
         </Select>
 
-        <Select
-          value={selectedStatus()}
-          onChange={(e) => setSelectedStatus(e.currentTarget.value)}
-        >
+        <Select value={selectedStatus()} onChange={e => setSelectedStatus(e.currentTarget.value)}>
           <option value="all">All Statuses</option>
-          <For each={statuses()}>
-            {(status) => <option value={status}>{status}</option>}
-          </For>
+          <For each={statuses()}>{status => <option value={status}>{status}</option>}</For>
         </Select>
       </div>
 
       {/* Packages List */}
       <div class="packages-list">
         <For each={filteredPackages()}>
-          {(pkg) => (
+          {pkg => (
             <div class="package-item">
               <div class="package-header">
                 <div class="package-info">
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={
-                        fluentIconsPackage.getIcon(getStatusIcon(pkg.status))
-                          ?.outerHTML || ""
-                      }
+                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(pkg.status))?.outerHTML || ""}
                     />
                   </span>
 
@@ -443,10 +401,7 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
                 </div>
 
                 <div class="package-status">
-                  <span
-                    class="status-badge"
-                    classList={{ [getStatusColor(pkg.status)]: true }}
-                  >
+                  <span class="status-badge" classList={{ [getStatusColor(pkg.status)]: true }}>
                     {pkg.status}
                   </span>
 
@@ -489,31 +444,19 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
               {/* Package Actions */}
               <div class="package-actions">
                 <Show when={pkg.status === "discovered"}>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => handleRegisterPackage(pkg.name)}
-                  >
+                  <Button variant="primary" size="sm" onClick={() => handleRegisterPackage(pkg.name)}>
                     Register
                   </Button>
                 </Show>
 
                 <Show when={pkg.status === "conflict"}>
-                  <Button
-                    variant="warning"
-                    size="sm"
-                    onClick={() => handleResolveConflict(pkg.name)}
-                  >
+                  <Button variant="warning" size="sm" onClick={() => handleResolveConflict(pkg.name)}>
                     Resolve Conflict
                   </Button>
                 </Show>
 
                 <Show when={pkg.status === "registered"}>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => props.setActiveTab?.("installation")}
-                  >
+                  <Button variant="secondary" size="sm" onClick={() => props.setActiveTab?.("installation")}>
                     Install
                   </Button>
                 </Show>
@@ -525,9 +468,7 @@ export const PackageDiscoveryPanel: Component<PackageDiscoveryPanelProps> = (
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">
-          Last updated: {lastUpdate()!.toLocaleString()}
-        </div>
+        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
       </Show>
     </div>
   );

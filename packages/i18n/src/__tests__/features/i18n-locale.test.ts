@@ -22,10 +22,7 @@ describe("I18n Locale Management", () => {
     expect(typeof i18n.setLocale).toBe("function");
     i18n.setLocale("es");
 
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-      "reynard-locale",
-      "es",
-    );
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith("reynard-locale", "es");
   });
 
   it("should update document attributes", () => {
@@ -34,10 +31,7 @@ describe("I18n Locale Management", () => {
     expect(typeof i18n.setLocale).toBe("function");
     i18n.setLocale("ar"); // RTL language
 
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-      "reynard-locale",
-      "ar",
-    );
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith("reynard-locale", "ar");
   });
 
   it("should update Intl formatter config on locale change", () => {
@@ -66,22 +60,13 @@ describe("I18n Locale Management", () => {
     const i18n = createI18nModule();
 
     i18n.setLocale("en");
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-      "reynard-locale",
-      "en",
-    );
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith("reynard-locale", "en");
 
     i18n.setLocale("fr");
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-      "reynard-locale",
-      "fr",
-    );
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith("reynard-locale", "fr");
 
     i18n.setLocale("de");
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-      "reynard-locale",
-      "de",
-    );
+    expect(mockLocalStorage.setItem).toHaveBeenCalledWith("reynard-locale", "de");
   });
 
   it("should maintain locale state across operations", () => {

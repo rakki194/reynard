@@ -26,18 +26,9 @@ export function createTick(value: number): Tick {
  * Change detection for tracking component modifications.
  */
 export interface ChangeDetection {
-  isAdded<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
-  isChanged<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
-  isRemoved<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
+  isAdded<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
+  isChanged<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
+  isRemoved<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
   clear(): void;
 }
 
@@ -53,11 +44,7 @@ export interface ComponentTicks {
 /**
  * Creates component ticks.
  */
-export function createComponentTicks(
-  added: Tick,
-  changed: Tick,
-  removed?: Tick,
-): ComponentTicks {
+export function createComponentTicks(added: Tick, changed: Tick, removed?: Tick): ComponentTicks {
   return { added, changed, removed };
 }
 
@@ -122,67 +109,39 @@ export class ChangeDetectionImpl implements ChangeDetection {
   /**
    * Marks a component as added.
    */
-  markAdded<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): void {
+  markAdded<T extends Component>(entity: Entity, componentType: ComponentType<T>): void {
     const key = this.getComponentKey(entity, componentType);
-    this.componentTicks.set(
-      key,
-      createComponentTicks(this.currentTick, this.currentTick),
-    );
+    this.componentTicks.set(key, createComponentTicks(this.currentTick, this.currentTick));
   }
 
   /**
    * Marks a component as changed.
    */
-  markChanged<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): void {
+  markChanged<T extends Component>(entity: Entity, componentType: ComponentType<T>): void {
     const key = this.getComponentKey(entity, componentType);
     const existing = this.componentTicks.get(key);
     if (existing) {
-      this.componentTicks.set(
-        key,
-        createComponentTicks(existing.added, this.currentTick),
-      );
+      this.componentTicks.set(key, createComponentTicks(existing.added, this.currentTick));
     } else {
-      this.componentTicks.set(
-        key,
-        createComponentTicks(this.currentTick, this.currentTick),
-      );
+      this.componentTicks.set(key, createComponentTicks(this.currentTick, this.currentTick));
     }
   }
 
   /**
    * Marks a component as removed.
    */
-  markRemoved<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): void {
+  markRemoved<T extends Component>(entity: Entity, componentType: ComponentType<T>): void {
     const key = this.getComponentKey(entity, componentType);
     const existing = this.componentTicks.get(key);
     if (existing) {
-      this.componentTicks.set(
-        key,
-        createComponentTicks(
-          existing.added,
-          existing.changed,
-          this.currentTick,
-        ),
-      );
+      this.componentTicks.set(key, createComponentTicks(existing.added, existing.changed, this.currentTick));
     }
   }
 
   /**
    * Checks if a component was added since the last check.
    */
-  isAdded<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean {
+  isAdded<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean {
     const key = this.getComponentKey(entity, componentType);
     const ticks = this.componentTicks.get(key);
     if (!ticks) return false;
@@ -194,10 +153,7 @@ export class ChangeDetectionImpl implements ChangeDetection {
   /**
    * Checks if a component was changed since the last check.
    */
-  isChanged<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean {
+  isChanged<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean {
     const key = this.getComponentKey(entity, componentType);
     const ticks = this.componentTicks.get(key);
     if (!ticks) return false;
@@ -209,27 +165,19 @@ export class ChangeDetectionImpl implements ChangeDetection {
   /**
    * Checks if a component was removed since the last check.
    */
-  isRemoved<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean {
+  isRemoved<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean {
     const key = this.getComponentKey(entity, componentType);
     const ticks = this.componentTicks.get(key);
     if (!ticks) return false;
 
     // Component is removed if it was removed after the last check tick
-    return ticks.removed
-      ? ticks.removed.isNewerThan(this.lastCheckTick)
-      : false;
+    return ticks.removed ? ticks.removed.isNewerThan(this.lastCheckTick) : false;
   }
 
   /**
    * Gets the component ticks for an entity and component type.
    */
-  getComponentTicks<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): ComponentTicks | undefined {
+  getComponentTicks<T extends Component>(entity: Entity, componentType: ComponentType<T>): ComponentTicks | undefined {
     const key = this.getComponentKey(entity, componentType);
     return this.componentTicks.get(key);
   }
@@ -246,10 +194,7 @@ export class ChangeDetectionImpl implements ChangeDetection {
   /**
    * Gets the component key for tracking.
    */
-  private getComponentKey<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): string {
+  private getComponentKey<T extends Component>(entity: Entity, componentType: ComponentType<T>): string {
     return `${entity.index}v${entity.generation}:${componentType.id}`;
   }
 }

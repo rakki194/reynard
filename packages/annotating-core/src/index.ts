@@ -6,14 +6,8 @@
  */
 
 // Backend services
-export {
-  BackendAnnotationManager,
-  createBackendAnnotationManager,
-} from "./services/BackendAnnotationManager.js";
-export {
-  BackendAnnotationService,
-  createBackendAnnotationService,
-} from "./services/BackendAnnotationService.js";
+export { BackendAnnotationManager, createBackendAnnotationManager } from "./services/BackendAnnotationManager.js";
+export { BackendAnnotationService, createBackendAnnotationService } from "./services/BackendAnnotationService.js";
 export {
   AISharedBackendAnnotationService,
   type AISharedBackendAnnotationServiceConfig,

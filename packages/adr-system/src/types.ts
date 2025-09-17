@@ -2,20 +2,9 @@
  * Type definitions for the Reynard ADR System
  */
 
-export type ADRStatus =
-  | "proposed"
-  | "accepted"
-  | "rejected"
-  | "superseded"
-  | "deprecated";
+export type ADRStatus = "proposed" | "accepted" | "rejected" | "superseded" | "deprecated";
 
-export type ADRCategory =
-  | "security"
-  | "performance"
-  | "scalability"
-  | "integration"
-  | "maintainability"
-  | "general";
+export type ADRCategory = "security" | "performance" | "scalability" | "integration" | "maintainability" | "general";
 
 export interface ADRDocument {
   id: string;

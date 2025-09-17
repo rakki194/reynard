@@ -30,19 +30,13 @@ export interface UseAppStateReturn {
  */
 export function useAppState(): UseAppStateReturn {
   const [images, setImages] = createSignal<ImageItem[]>([]);
-  const [selectedImage, setSelectedImage] = createSignal<ImageItem | null>(
-    null,
-  );
+  const [selectedImage, setSelectedImage] = createSignal<ImageItem | null>(null);
   const [activeTab, setActiveTab] = createSignal("gallery");
   const [isModalOpen, setIsModalOpen] = createSignal(false);
   const [selectedModel, setSelectedModel] = createSignal("jtp2");
-  const [systemStats, setSystemStats] = createSignal<SystemStatistics | null>(
-    null,
-  );
+  const [systemStats, setSystemStats] = createSignal<SystemStatistics | null>(null);
   const [isGenerating, setIsGenerating] = createSignal(false);
-  const [batchProgress, setBatchProgress] = createSignal<BatchProgress | null>(
-    null,
-  );
+  const [batchProgress, setBatchProgress] = createSignal<BatchProgress | null>(null);
   const [backendUrl] = createSignal("http://localhost:8000");
 
   return {

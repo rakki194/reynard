@@ -133,9 +133,7 @@ export function getLoadingMessage(chartType?: string): string {
 /**
  * Get quality assessment text
  */
-export function getQualityText(
-  quality: "excellent" | "good" | "fair" | "poor",
-): string {
+export function getQualityText(quality: "excellent" | "good" | "fair" | "poor"): string {
   return t(`quality.${quality}`);
 }
 

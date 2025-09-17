@@ -4,12 +4,7 @@
 
 import { Component, createSignal, onMount } from "solid-js";
 import { useSearchParams } from "solid-router";
-import {
-  DocsPage,
-  DocsSection,
-  DocsSearch,
-  DocsSearchResults,
-} from "reynard-docs-components";
+import { DocsPage, DocsSection, DocsSearch, DocsSearchResults } from "reynard-docs-components";
 
 /**
  * Search page component
@@ -35,9 +30,7 @@ export const SearchPage: Component = () => {
     setIsSearching(true);
     try {
       // Simulate search API call
-      const response = await fetch(
-        `/api/search?q=${encodeURIComponent(query)}`,
-      );
+      const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
       if (response.ok) {
         const results = await response.json();
         setSearchResults(results);
@@ -64,9 +57,7 @@ export const SearchPage: Component = () => {
     <DocsPage>
       <DocsSection>
         <h1 class="docs-search-title">Search Documentation</h1>
-        <p class="docs-search-description">
-          Find what you're looking for in the Reynard documentation
-        </p>
+        <p class="docs-search-description">Find what you're looking for in the Reynard documentation</p>
       </DocsSection>
 
       <DocsSection>
@@ -89,20 +80,13 @@ export const SearchPage: Component = () => {
         )}
 
         {!isSearching() && searchQuery() && (
-          <DocsSearchResults
-            results={searchResults()}
-            query={searchQuery()}
-            onResultClick={handleResultClick}
-          />
+          <DocsSearchResults results={searchResults()} query={searchQuery()} onResultClick={handleResultClick} />
         )}
 
         {!isSearching() && !searchQuery() && (
           <div class="docs-search-empty">
             <h3>Start searching</h3>
-            <p>
-              Enter a search term above to find documentation, examples, and API
-              references.
-            </p>
+            <p>Enter a search term above to find documentation, examples, and API references.</p>
           </div>
         )}
       </DocsSection>

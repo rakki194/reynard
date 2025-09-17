@@ -9,7 +9,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
+        manualChunks: id => {
           // Split vendor libraries
           if (id.includes("node_modules")) {
             if (id.includes("solid-js")) {

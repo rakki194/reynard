@@ -11,10 +11,7 @@ import {
 
 export const isExportedDeclaration = (node: ts.Node): boolean => {
   // Check for export modifier
-  if (
-    ts.canHaveModifiers(node) &&
-    ts.getCombinedModifierFlags(node as any) & ts.ModifierFlags.Export
-  ) {
+  if (ts.canHaveModifiers(node) && ts.getCombinedModifierFlags(node as any) & ts.ModifierFlags.Export) {
     return true;
   }
 
@@ -29,10 +26,10 @@ export const isExportedDeclaration = (node: ts.Node): boolean => {
 
 export const extractParameters = (
   node: ts.FunctionDeclaration | ts.MethodDeclaration,
-  checker: ts.TypeChecker,
+  checker: ts.TypeChecker
 ): ApiParameter[] => {
   if (!node.parameters) return [];
-  return node.parameters.map((param) => {
+  return node.parameters.map(param => {
     const name = param.name.getText();
     const type = param.type ? param.type.getText() : "any";
     const description = getJSDocDescription((param as any).symbol, checker);
@@ -49,20 +46,14 @@ export const extractParameters = (
   });
 };
 
-export const extractReturnType = (
-  node: ts.FunctionDeclaration | ts.MethodDeclaration,
-): ApiReturn | undefined => {
+export const extractReturnType = (node: ts.FunctionDeclaration | ts.MethodDeclaration): ApiReturn | undefined => {
   if (!node.type) return undefined;
   const type = node.type.getText();
   const description = getJSDocReturnDescription((node as any).symbol);
   return { type, description: description || "" };
 };
 
-export const extractApiInfo = (
-  node: ts.Node,
-  sourceFile: ts.SourceFile,
-  checker: ts.TypeChecker,
-): ApiInfo | null => {
+export const extractApiInfo = (node: ts.Node, sourceFile: ts.SourceFile, checker: ts.TypeChecker): ApiInfo | null => {
   // Try multiple approaches to get the symbol
   let symbol = checker.getSymbolAtLocation(node);
 
@@ -147,8 +138,7 @@ export const extractApiInfo = (
     source: {
       file: sourceFile.fileName,
       line: sourceFile.getLineAndCharacterOfPosition(node.getStart()).line + 1,
-      column:
-        sourceFile.getLineAndCharacterOfPosition(node.getStart()).character + 1,
+      column: sourceFile.getLineAndCharacterOfPosition(node.getStart()).character + 1,
     },
   };
 };

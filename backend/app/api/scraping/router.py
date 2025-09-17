@@ -425,6 +425,7 @@ async def get_gallery_download_statistics(
 
 # Enhanced Extraction Endpoints
 
+
 @router.post("/enhanced/extract", response_model=ScrapingApiResponse)
 async def extract_content_enhanced(
     request: dict, service: ScrapingService = Depends(get_scraping_service)
@@ -444,7 +445,7 @@ async def extract_content_enhanced(
 
 @router.get("/enhanced/methods", response_model=ScrapingApiResponse)
 async def get_enhanced_extraction_methods(
-    service: ScrapingService = Depends(get_scraping_service)
+    service: ScrapingService = Depends(get_scraping_service),
 ):
     """Get available enhanced extraction methods."""
     try:
@@ -493,7 +494,7 @@ async def get_best_extraction_method(
 
 @router.get("/enhanced/pipeline-stats", response_model=ScrapingApiResponse)
 async def get_enhanced_pipeline_stats(
-    service: ScrapingService = Depends(get_scraping_service)
+    service: ScrapingService = Depends(get_scraping_service),
 ):
     """Get enhanced pipeline processing statistics."""
     try:

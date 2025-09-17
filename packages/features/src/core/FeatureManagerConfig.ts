@@ -9,10 +9,7 @@ import type { FeatureManagerCore } from "./FeatureManagerCore.js";
 /**
  * Get feature config
  */
-export function getFeatureConfig(
-  core: FeatureManagerCore,
-  featureId: string,
-): Record<string, unknown> {
+export function getFeatureConfig(core: FeatureManagerCore, featureId: string): Record<string, unknown> {
   const [configs] = core.featureConfigsSignal;
   return configs()[featureId] || {};
 }
@@ -20,13 +17,9 @@ export function getFeatureConfig(
 /**
  * Set feature config
  */
-export function setFeatureConfig(
-  core: FeatureManagerCore,
-  featureId: string,
-  config: Record<string, unknown>,
-): void {
+export function setFeatureConfig(core: FeatureManagerCore, featureId: string, config: Record<string, unknown>): void {
   const [, setConfigs] = core.featureConfigsSignal;
-  setConfigs((prev) => ({
+  setConfigs(prev => ({
     ...prev,
     [featureId]: config,
   }));
@@ -35,9 +28,7 @@ export function setFeatureConfig(
 /**
  * Get all feature configs
  */
-export function getAllFeatureConfigs(
-  core: FeatureManagerCore,
-): Record<string, Record<string, unknown>> {
+export function getAllFeatureConfigs(core: FeatureManagerCore): Record<string, Record<string, unknown>> {
   const [configs] = core.featureConfigsSignal;
   return configs();
 }

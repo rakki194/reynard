@@ -44,8 +44,8 @@ export class ADRRelationshipMapper {
     incoming: ADRRelationship[];
     outgoing: ADRRelationship[];
   } {
-    const incoming = this.relationships.filter((rel) => rel.target === adrId);
-    const outgoing = this.relationships.filter((rel) => rel.source === adrId);
+    const incoming = this.relationships.filter(rel => rel.target === adrId);
+    const outgoing = this.relationships.filter(rel => rel.source === adrId);
 
     return { incoming, outgoing };
   }
@@ -126,9 +126,7 @@ export class ADRRelationshipMapper {
       visited.add(id);
       chain.push(id);
 
-      const outgoing = this.relationships.filter(
-        (rel) => rel.source === id && rel.type === "depends_on",
-      );
+      const outgoing = this.relationships.filter(rel => rel.source === id && rel.type === "depends_on");
 
       for (const rel of outgoing) {
         buildChain(rel.target);
@@ -145,9 +143,7 @@ export class ADRRelationshipMapper {
   private async loadAllADRs(): Promise<void> {
     try {
       const files = await readdir(this.adrDirectory);
-      const adrFiles = files.filter(
-        (file) => file.endsWith(".md") && file.match(/^\d{3}-/),
-      );
+      const adrFiles = files.filter(file => file.endsWith(".md") && file.match(/^\d{3}-/));
 
       for (const file of adrFiles) {
         const filePath = join(this.adrDirectory, file);
@@ -189,8 +185,8 @@ export class ADRRelationshipMapper {
       if (relatedMatch) {
         adr.relatedADRs = relatedMatch[1]
           .split(",")
-          .map((id) => id.trim().replace(/['"]/g, ""))
-          .filter((id) => id);
+          .map(id => id.trim().replace(/['"]/g, ""))
+          .filter(id => id);
       }
 
       // Extract superseded by
@@ -204,8 +200,8 @@ export class ADRRelationshipMapper {
       if (supersedesMatch) {
         adr.supersedes = supersedesMatch[1]
           .split(",")
-          .map((id) => id.trim().replace(/['"]/g, ""))
-          .filter((id) => id);
+          .map(id => id.trim().replace(/['"]/g, ""))
+          .filter(id => id);
       }
 
       return adr as ADRDocument;
@@ -319,17 +315,12 @@ export class ADRRelationshipMapper {
   /**
    * Detect potential conflict between two ADRs
    */
-  private detectPotentialConflict(
-    adr1: ADRDocument,
-    adr2: ADRDocument,
-  ): boolean {
+  private detectPotentialConflict(adr1: ADRDocument, adr2: ADRDocument): boolean {
     // Simplified conflict detection based on title similarity
     const title1 = adr1.title.toLowerCase();
     const title2 = adr2.title.toLowerCase();
 
-    const commonWords = title1
-      .split(" ")
-      .filter((word) => title2.includes(word) && word.length > 3);
+    const commonWords = title1.split(" ").filter(word => title2.includes(word) && word.length > 3);
 
     return commonWords.length >= 2;
   }
@@ -345,16 +336,9 @@ export class ADRRelationshipMapper {
     const title2 = adr2.title.toLowerCase();
 
     // Check for common dependency patterns
-    const dependencyKeywords = [
-      "depends on",
-      "requires",
-      "builds on",
-      "extends",
-    ];
+    const dependencyKeywords = ["depends on", "requires", "builds on", "extends"];
 
-    return dependencyKeywords.some(
-      (keyword) => title1.includes(keyword) || title2.includes(keyword),
-    );
+    return dependencyKeywords.some(keyword => title1.includes(keyword) || title2.includes(keyword));
   }
 
   /**

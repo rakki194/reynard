@@ -45,9 +45,7 @@ export const IconTest: Component = () => {
             style="width: 48px; height: 48px; border: 2px solid green; background: #f0f0f0;"
             innerHTML={allIcons.settings?.svg || "MISSING"}
           ></div>
-          <p style="font-size: 12px; margin: 5px 0;">
-            Length: {allIcons.settings?.svg?.length || 0}
-          </p>
+          <p style="font-size: 12px; margin: 5px 0;">Length: {allIcons.settings?.svg?.length || 0}</p>
         </div>
 
         <div style="border: 2px solid blue; padding: 10px;">
@@ -56,9 +54,7 @@ export const IconTest: Component = () => {
             style="width: 48px; height: 48px; border: 2px solid green; background: #f0f0f0;"
             innerHTML={allIcons.user?.svg || "MISSING"}
           ></div>
-          <p style="font-size: 12px; margin: 5px 0;">
-            Length: {allIcons.user?.svg?.length || 0}
-          </p>
+          <p style="font-size: 12px; margin: 5px 0;">Length: {allIcons.user?.svg?.length || 0}</p>
         </div>
 
         <div style="border: 2px solid blue; padding: 10px;">
@@ -67,9 +63,7 @@ export const IconTest: Component = () => {
             style="width: 48px; height: 48px; border: 2px solid green; background: #f0f0f0;"
             innerHTML={allIcons.tag?.svg || "MISSING"}
           ></div>
-          <p style="font-size: 12px; margin: 5px 0;">
-            Length: {allIcons.tag?.svg?.length || 0}
-          </p>
+          <p style="font-size: 12px; margin: 5px 0;">Length: {allIcons.tag?.svg?.length || 0}</p>
         </div>
 
         <div style="border: 2px solid blue; padding: 10px;">
@@ -78,9 +72,7 @@ export const IconTest: Component = () => {
             style="width: 48px; height: 48px; border: 2px solid green; background: #f0f0f0;"
             innerHTML={allIcons.box?.svg || "MISSING"}
           ></div>
-          <p style="font-size: 12px; margin: 5px 0;">
-            Length: {allIcons.box?.svg?.length || 0}
-          </p>
+          <p style="font-size: 12px; margin: 5px 0;">Length: {allIcons.box?.svg?.length || 0}</p>
         </div>
       </div>
 
@@ -93,9 +85,7 @@ export const IconTest: Component = () => {
 
       <div style="margin-top: 20px;">
         <h4>All Available Icons:</h4>
-        <p style="font-size: 12px; word-break: break-all;">
-          {Object.keys(allIcons).slice(0, 20).join(", ")}...
-        </p>
+        <p style="font-size: 12px; word-break: break-all;">{Object.keys(allIcons).slice(0, 20).join(", ")}...</p>
       </div>
     </div>
   );

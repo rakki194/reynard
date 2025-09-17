@@ -42,7 +42,6 @@ class QueryExpander:
             "test": ["spec", "unit", "integration", "e2e", "mock"],
             "config": ["settings", "options", "preferences", "setup"],
             "api": ["endpoint", "route", "service", "handler"],
-            
             # Technology stacks
             "react": ["jsx", "component", "hook", "props"],
             "typescript": ["ts", "type", "interface", "generic"],
@@ -50,7 +49,6 @@ class QueryExpander:
             "javascript": ["js", "node", "browser", "es6"],
             "css": ["style", "stylesheet", "styling", "scss"],
             "html": ["markup", "template", "dom", "element"],
-            
             # Common patterns
             "auth": ["authentication", "login", "security", "token"],
             "db": ["database", "sql", "query", "table"],
@@ -58,7 +56,7 @@ class QueryExpander:
             "backend": ["server", "api", "service", "controller"],
             "frontend": ["client", "ui", "browser", "view"],
         }
-        
+
         # Code pattern expansions
         self.patterns = {
             "function_def": [
@@ -84,22 +82,22 @@ class QueryExpander:
         """Expand query with synonyms and related terms."""
         tokens = self._tokenize(query)
         expanded_terms = set(tokens)
-        
+
         for token in tokens:
             if token in self.synonyms:
                 expanded_terms.update(self.synonyms[token])
-        
+
         return list(expanded_terms)
 
     def get_code_patterns(self, query: str) -> List[str]:
         """Get relevant code patterns for the query."""
         patterns = []
         query_lower = query.lower()
-        
+
         for pattern_type, pattern_list in self.patterns.items():
             if any(keyword in query_lower for keyword in pattern_type.split("_")):
                 patterns.extend(pattern_list)
-        
+
         return patterns
 
     def _tokenize(self, text: str) -> List[str]:
@@ -119,11 +117,11 @@ class RipgrepService:
             self.project_root = project_root
 
         self.query_expander = QueryExpander()
-        
+
         # File type mappings for ripgrep
         self.file_types = {
             "py": "python",
-            "ts": "typescript", 
+            "ts": "typescript",
             "tsx": "tsx",
             "js": "javascript",
             "jsx": "jsx",
@@ -155,13 +153,13 @@ class RipgrepService:
     ) -> Dict[str, Any]:
         """Run ripgrep with comprehensive options."""
         command = ["rg"]
-        
+
         # Add pattern
         if whole_word:
             command.extend(["-w", pattern])
         else:
             command.append(pattern)
-        
+
         # Add file type filters
         if file_types:
             for file_type in file_types:
@@ -169,42 +167,45 @@ class RipgrepService:
                     command.extend(["-t", self.file_types[file_type]])
                 else:
                     command.extend(["-t", file_type])
-        
+
         # Add directory filters
         if directories:
             command.extend(directories)
         else:
             command.append(".")
-        
+
         # Add case sensitivity
         if not case_sensitive:
             command.append("-i")
         elif smart_case:
             command.append("--smart-case")
-        
+
         # Add line numbers
         if include_line_numbers:
             command.append("-n")
-        
+
         # Add context lines
         if context_lines > 0:
             command.extend(["-C", str(context_lines)])
-        
+
         # Add max count
         if max_count:
             command.extend(["-m", str(max_count)])
-        
+
         # Add multiline support
         if multiline:
             command.append("-U")
-        
+
         # Add other useful options
-        command.extend([
-            "--color", "never",
-            "--no-heading",
-            "--no-messages",  # Suppress error messages for missing files
-        ])
-        
+        command.extend(
+            [
+                "--color",
+                "never",
+                "--no-heading",
+                "--no-messages",  # Suppress error messages for missing files
+            ]
+        )
+
         return await self._run_command(command)
 
     async def semantic_search(
@@ -217,7 +218,7 @@ class RipgrepService:
     ) -> Dict[str, Any]:
         """Perform semantic search with query expansion."""
         results = {}
-        
+
         # Strategy 1: Direct search
         direct_result = await self.run_ripgrep(
             query,
@@ -227,7 +228,7 @@ class RipgrepService:
             max_count=max_results // 3,
         )
         results["direct"] = direct_result
-        
+
         # Strategy 2: Expanded query search
         if expand_query:
             expanded_terms = self.query_expander.expand_query(query)
@@ -240,7 +241,7 @@ class RipgrepService:
                     max_count=max_results // 6,
                 )
                 results[f"expanded_{term}"] = expanded_result
-        
+
         # Strategy 3: Code pattern search
         code_patterns = self.query_expander.get_code_patterns(query)
         for pattern in code_patterns[:2]:  # Limit to top 2 patterns
@@ -252,10 +253,10 @@ class RipgrepService:
                 max_count=max_results // 6,
             )
             results[f"pattern_{pattern[:20]}"] = pattern_result
-        
+
         # Combine and rank results
         combined_results = self._combine_and_rank_results(results, max_results)
-        
+
         return {
             "success": True,
             "query": query,
@@ -310,17 +311,17 @@ class RipgrepService:
                 "cpp": r"//\s*FIXME:?\s*(.+)",
             },
         }
-        
+
         if pattern_type not in patterns or language not in patterns[pattern_type]:
             return {
                 "success": False,
                 "error": f"Unsupported pattern type: {pattern_type} for language: {language}",
             }
-        
+
         pattern = patterns[pattern_type][language]
         if name:
             pattern = pattern.replace(r"(\w+)", re.escape(name))
-        
+
         return await self.run_ripgrep(
             pattern,
             file_types=file_types or [language],
@@ -356,11 +357,11 @@ class RipgrepService:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
             )
-            
+
             stdout_bytes, stderr_bytes = await result.communicate()
             stdout = stdout_bytes.decode("utf-8")
             stderr = stderr_bytes.decode("utf-8")
-            
+
             return {
                 "success": result.returncode == 0,
                 "returncode": result.returncode,
@@ -368,7 +369,7 @@ class RipgrepService:
                 "stderr": stderr.strip(),
                 "command": " ".join(command),
             }
-            
+
         except Exception as e:
             logger.exception("Command execution failed")
             return {
@@ -385,30 +386,30 @@ class RipgrepService:
         """Combine and rank results from multiple search strategies."""
         combined = []
         seen_files: set[str] = set()
-        
+
         # Priority order for different search strategies
         strategy_priority = {
             "direct": 1.0,
             "expanded_": 0.8,
             "pattern_": 0.6,
         }
-        
+
         # Process results by priority
         for strategy, result in results.items():
             if not result.get("success") or not result.get("stdout"):
                 continue
-            
+
             priority = 1.0
             for prefix, score in strategy_priority.items():
                 if strategy.startswith(prefix):
                     priority = score
                     break
-            
+
             parsed_results = self._parse_ripgrep_output(
                 result["stdout"], priority, seen_files
             )
             combined.extend(parsed_results)
-        
+
         # Sort by priority and limit results
         combined.sort(key=lambda x: x["priority"], reverse=True)
         return combined[:max_results]
@@ -419,32 +420,34 @@ class RipgrepService:
         """Parse ripgrep output into structured results."""
         results = []
         lines = output.split("\n")
-        
+
         for line in lines:
             if not line.strip():
                 continue
-            
+
             # Parse ripgrep output format: file:line:content
             parts = line.split(":", 2)
             if len(parts) < 3:
                 continue
-            
+
             file_path = parts[0]
             line_number = parts[1]
             content = parts[2]
-            
+
             # Avoid duplicates
             file_line_key = f"{file_path}:{line_number}"
             if file_line_key in seen_files:
                 continue
             seen_files.add(file_line_key)
-            
-            results.append({
-                "file_path": file_path,
-                "line_number": int(line_number),
-                "content": content.strip(),
-                "priority": priority,
-                "match_type": "text",
-            })
-        
+
+            results.append(
+                {
+                    "file_path": file_path,
+                    "line_number": int(line_number),
+                    "content": content.strip(),
+                    "priority": priority,
+                    "match_type": "text",
+                }
+            )
+
         return results

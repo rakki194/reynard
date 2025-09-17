@@ -49,18 +49,13 @@ interface InitializationResult {
       camera: () => ThreeCamera | null,
       renderer: () => ThreeRenderer | null,
       controls: () => ThreeControls | null,
-      onRender?: (
-        scene: ThreeScene,
-        camera: ThreeCamera,
-        renderer: ThreeRenderer,
-        controls: ThreeControls,
-      ) => void,
+      onRender?: (scene: ThreeScene, camera: ThreeCamera, renderer: ThreeRenderer, controls: ThreeControls) => void
     ) => void;
     handleResize: (
       container: HTMLDivElement,
       camera: () => ThreeCamera | null,
       renderer: () => ThreeRenderer | null,
-      controls: () => ThreeControls | null,
+      controls: () => ThreeControls | null
     ) => () => void;
   };
 }
@@ -68,7 +63,7 @@ interface InitializationResult {
 export function useThreeJSEffects(
   props: ThreeJSVisualizationProps,
   initialization: InitializationResult,
-  isLoading: () => boolean,
+  isLoading: () => boolean
 ) {
   /**
    * Start animation loop when scene is ready
@@ -86,7 +81,7 @@ export function useThreeJSEffects(
         initialization.sceneComposable.camera,
         initialization.sceneComposable.renderer,
         initialization.controlsComposable.controls,
-        props.onRender,
+        props.onRender
       );
     }
   });
@@ -99,7 +94,7 @@ export function useThreeJSEffects(
       container,
       initialization.sceneComposable.camera,
       initialization.sceneComposable.renderer,
-      initialization.controlsComposable.controls,
+      initialization.controlsComposable.controls
     );
   };
 

@@ -39,7 +39,7 @@ export function useClusterInteractions(config: ClusterInteractionConfig) {
       config.camera,
       config.hullMeshes,
       setHoveredCluster,
-      config.onClusterSelect,
+      config.onClusterSelect
     );
 
     onCleanup(cleanup);

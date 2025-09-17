@@ -20,7 +20,7 @@ export class WaveformRenderer {
     height: number,
     audioData: number[] | null,
     audio: HTMLAudioElement,
-    options: WaveformOptions,
+    options: WaveformOptions
   ): Promise<void> {
     const bars = options.waveformBars || 20;
     const barWidth = width / bars;
@@ -30,42 +30,18 @@ export class WaveformRenderer {
 
     try {
       // Check if we got meaningful data
-      const hasData = audioData && audioData.some((value) => value > 0.01);
+      const hasData = audioData && audioData.some(value => value > 0.01);
 
       if (hasData) {
         // Draw real audio waveform
-        this.drawRealWaveform(
-          ctx,
-          width,
-          height,
-          audioData!,
-          bars,
-          barWidth,
-          barSpacing,
-        );
+        this.drawRealWaveform(ctx, width, height, audioData!, bars, barWidth, barSpacing);
       } else {
         // No meaningful data, use fallback
-        this.drawFallbackWaveform(
-          ctx,
-          width,
-          height,
-          audio,
-          bars,
-          barWidth,
-          barSpacing,
-        );
+        this.drawFallbackWaveform(ctx, width, height, audio, bars, barWidth, barSpacing);
       }
     } catch (error) {
       // Fallback to synthetic waveform if audio analysis fails
-      this.drawFallbackWaveform(
-        ctx,
-        width,
-        height,
-        audio,
-        bars,
-        barWidth,
-        barSpacing,
-      );
+      this.drawFallbackWaveform(ctx, width, height, audio, bars, barWidth, barSpacing);
     }
   }
 
@@ -79,7 +55,7 @@ export class WaveformRenderer {
     audioData: number[],
     bars: number,
     barWidth: number,
-    barSpacing: number,
+    barSpacing: number
   ): void {
     for (let i = 0; i < bars; i++) {
       const dataIndex = Math.floor((i / bars) * audioData.length);
@@ -103,7 +79,7 @@ export class WaveformRenderer {
     audio: HTMLAudioElement,
     bars: number,
     barWidth: number,
-    barSpacing: number,
+    barSpacing: number
   ): void {
     const duration = audio.duration || 0;
     const baseAmplitude = Math.min(1, Math.max(0.3, duration / 5));
@@ -124,10 +100,7 @@ export class WaveformRenderer {
       const combinedAmplitude = baseAmplitude * (0.2 + amp1 + amp2 + amp3);
       const noise = (Math.random() - 0.5) * 0.2;
 
-      const barHeight =
-        Math.max(0.15, Math.min(0.85, combinedAmplitude + noise)) *
-        height *
-        0.6;
+      const barHeight = Math.max(0.15, Math.min(0.85, combinedAmplitude + noise)) * height * 0.6;
       const x = i * barWidth + barSpacing;
 
       // Ensure we have a visible bar with better positioning
@@ -135,12 +108,7 @@ export class WaveformRenderer {
       const finalY = (height - finalBarHeight) / 2;
 
       // Create gradient for modern look
-      const gradient = ctx.createLinearGradient(
-        x,
-        finalY,
-        x,
-        finalY + finalBarHeight,
-      );
+      const gradient = ctx.createLinearGradient(x, finalY, x, finalY + finalBarHeight);
       gradient.addColorStop(0, "rgba(255, 255, 255, 0.9)");
       gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.7)");
       gradient.addColorStop(1, "rgba(255, 255, 255, 0.5)");

@@ -1,12 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { ConnectionManager } from "../manager";
 import { BaseConnection } from "../base";
-import {
-  ConnectionType,
-  type ConnectionConfig,
-  ConnectionHealth,
-  RecoveryStrategy,
-} from "../types";
+import { ConnectionType, type ConnectionConfig, ConnectionHealth, RecoveryStrategy } from "../types";
 
 class SimpleConn extends BaseConnection {
   constructor(cfg: ConnectionConfig) {
@@ -89,10 +84,7 @@ describe("ConnectionManager", () => {
       retryDelay: 0,
     });
     m.addConnection(bad);
-    m.setRecoveryStrategy(
-      bad.connectionId,
-      RecoveryStrategy.GRACEFUL_DEGRADATION,
-    );
+    m.setRecoveryStrategy(bad.connectionId, RecoveryStrategy.GRACEFUL_DEGRADATION);
     const hc = await m.healthCheckAll();
     expect(hc[bad.connectionId].isHealthy).toBe(false);
     // After graceful degradation, health can be set to DEGRADED

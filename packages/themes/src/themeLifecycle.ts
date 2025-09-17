@@ -15,7 +15,7 @@ import { onSystemThemeChange } from "./systemThemeUtils";
 export const setupThemeLifecycle = (
   theme: () => ThemeName,
   setThemeState: (theme: ThemeName) => void,
-  i18nModule: I18nModule,
+  i18nModule: I18nModule
 ) => {
   onMount(async () => {
     console.log("onMount - Current theme:", theme());
@@ -23,10 +23,7 @@ export const setupThemeLifecycle = (
     applyTheme(theme());
 
     // Set initial document attributes (i18n module handles locale automatically)
-    document.documentElement.setAttribute(
-      "dir",
-      i18nModule.isRTL ? "rtl" : "ltr",
-    );
+    document.documentElement.setAttribute("dir", i18nModule.isRTL ? "rtl" : "ltr");
     document.documentElement.setAttribute("lang", i18nModule.locale());
 
     // Listen for system theme changes

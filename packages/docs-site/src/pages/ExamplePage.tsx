@@ -4,11 +4,7 @@
 
 import { Component, createSignal, onMount } from "solid-js";
 import { useParams } from "solid-router";
-import {
-  DocsPage,
-  DocsSection,
-  DocsBreadcrumbs,
-} from "reynard-docs-components";
+import { DocsPage, DocsSection, DocsBreadcrumbs } from "reynard-docs-components";
 import { CodeExampleRenderer } from "reynard-docs-core";
 
 /**
@@ -22,9 +18,7 @@ export const ExamplePage: Component = () => {
   onMount(async () => {
     try {
       const packageName = params.package;
-      const response = await fetch(
-        `/docs-generated/pages/${packageName}-examples.json`,
-      );
+      const response = await fetch(`/docs-generated/pages/${packageName}-examples.json`);
 
       if (response.ok) {
         const data = await response.json();
@@ -105,7 +99,7 @@ function App() {
               live: true,
               editable: true,
             }}
-            onRun={(code) => {
+            onRun={code => {
               console.log("Running code:", code);
             }}
           />

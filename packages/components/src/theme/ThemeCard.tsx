@@ -43,52 +43,28 @@ const ThemePreview: Component = () => (
   </div>
 );
 
-const ThemeInfo: Component<{ themeConfig: ThemeConfig }> = (props) => (
+const ThemeInfo: Component<{ themeConfig: ThemeConfig }> = props => (
   <div class="theme-info">
     <h4 class="theme-name">{props.themeConfig.displayName}</h4>
     <p class="theme-description">{props.themeConfig.description}</p>
   </div>
 );
 
-export const ThemeCard: Component<ThemeCardProps> = (props) => {
+export const ThemeCard: Component<ThemeCardProps> = props => {
   const cardId = createUniqueId();
   const cardElementId = `theme-card-${cardId}`;
 
   createEffect(() => {
     const cardElement = document.getElementById(cardElementId);
     if (cardElement) {
-      cardElement.style.setProperty(
-        "--preview-primary-color",
-        props.themeConfig.colors.primary,
-      );
-      cardElement.style.setProperty(
-        "--preview-accent-color",
-        props.themeConfig.colors.accent,
-      );
-      cardElement.style.setProperty(
-        "--preview-background-color",
-        props.themeConfig.colors.background,
-      );
-      cardElement.style.setProperty(
-        "--preview-surface-color",
-        props.themeConfig.colors.surface,
-      );
-      cardElement.style.setProperty(
-        "--preview-text-color",
-        props.themeConfig.colors.text,
-      );
-      cardElement.style.setProperty(
-        "--preview-border-color",
-        props.themeConfig.colors.border,
-      );
-      cardElement.style.setProperty(
-        "--preview-dot-color",
-        props.themeConfig.colors.text,
-      );
-      cardElement.style.setProperty(
-        "--preview-bg",
-        props.themeConfig.colors.background,
-      );
+      cardElement.style.setProperty("--preview-primary-color", props.themeConfig.colors.primary);
+      cardElement.style.setProperty("--preview-accent-color", props.themeConfig.colors.accent);
+      cardElement.style.setProperty("--preview-background-color", props.themeConfig.colors.background);
+      cardElement.style.setProperty("--preview-surface-color", props.themeConfig.colors.surface);
+      cardElement.style.setProperty("--preview-text-color", props.themeConfig.colors.text);
+      cardElement.style.setProperty("--preview-border-color", props.themeConfig.colors.border);
+      cardElement.style.setProperty("--preview-dot-color", props.themeConfig.colors.text);
+      cardElement.style.setProperty("--preview-bg", props.themeConfig.colors.background);
     }
   });
 

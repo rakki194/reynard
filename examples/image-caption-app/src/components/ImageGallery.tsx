@@ -18,7 +18,7 @@ interface ImageGalleryProps {
   isGenerating?: boolean;
 }
 
-export const ImageGallery: Component<ImageGalleryProps> = (props) => {
+export const ImageGallery: Component<ImageGalleryProps> = props => {
   const { notify } = useNotifications();
 
   const handleFileInput = (event: Event) => {
@@ -28,7 +28,7 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
     if (files.length === 0) return;
 
     // Filter for image files only
-    const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+    const imageFiles = files.filter(file => file.type.startsWith("image/"));
 
     if (imageFiles.length !== files.length) {
       notify("Only image files are supported", "warning");
@@ -50,7 +50,7 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
   const handleDrop = (event: DragEvent) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer?.files || []);
-    const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+    const imageFiles = files.filter(file => file.type.startsWith("image/"));
 
     if (imageFiles.length > 0) {
       props.onFileUpload(imageFiles);
@@ -80,9 +80,7 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
             <Button
               variant="primary"
               onClick={() => {
-                const input = document.querySelector(
-                  ".file-input",
-                ) as HTMLInputElement;
+                const input = document.querySelector(".file-input") as HTMLInputElement;
                 input?.click();
               }}
             >
@@ -96,17 +94,10 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
       <Show when={props.images.length > 0}>
         <div class="images-grid">
           <For each={props.images}>
-            {(image) => (
-              <Card
-                class={`image-card ${props.selectedImage?.id === image.id ? "selected" : ""}`}
-                padding="md"
-              >
+            {image => (
+              <Card class={`image-card ${props.selectedImage?.id === image.id ? "selected" : ""}`} padding="md">
                 <div class="image-container">
-                  <img
-                    src={image.url}
-                    alt={image.name}
-                    onClick={() => props.onImageSelect(image)}
-                  />
+                  <img src={image.url} alt={image.name} onClick={() => props.onImageSelect(image)} />
 
                   <div class="image-overlay">
                     <div class="image-actions">
@@ -122,11 +113,7 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
                             ? "🔄 Regenerate"
                             : "🤖 Generate Caption"}
                       </Button>
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        onClick={() => props.onDeleteImage(image.id)}
-                      >
+                      <Button size="sm" variant="danger" onClick={() => props.onDeleteImage(image.id)}>
                         🗑️
                       </Button>
                     </div>
@@ -147,9 +134,7 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
                     <div class="tags-preview">
                       <strong>Tags:</strong>
                       <div class="tag-list">
-                        <For each={image.tags}>
-                          {(tag) => <span class="tag">{tag}</span>}
-                        </For>
+                        <For each={image.tags}>{tag => <span class="tag">{tag}</span>}</For>
                       </div>
                     </div>
                   </Show>
@@ -157,8 +142,7 @@ export const ImageGallery: Component<ImageGalleryProps> = (props) => {
                   <Show when={image.generatedAt}>
                     <div class="generation-info">
                       <small>
-                        Generated with {image.model} at{" "}
-                        {image.generatedAt?.toLocaleTimeString()}
+                        Generated with {image.model} at {image.generatedAt?.toLocaleTimeString()}
                       </small>
                     </div>
                   </Show>

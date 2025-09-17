@@ -20,9 +20,7 @@ interface PhyllotacticCanvasProps {
   };
 }
 
-export const PhyllotacticCanvas: Component<PhyllotacticCanvasProps> = (
-  props,
-) => {
+export const PhyllotacticCanvas: Component<PhyllotacticCanvasProps> = props => {
   console.log("🦊 PhyllotacticCanvas: Component initializing with props", {
     spiralPointsCount: props.spiralPoints.length,
     isRunning: props.isRunning,
@@ -36,10 +34,10 @@ export const PhyllotacticCanvas: Component<PhyllotacticCanvasProps> = (
   // Render spiral
   const renderSpiral = () => {
     if (!ctx || !canvasRef) {
-      console.log(
-        "🦊 PhyllotacticCanvas: renderSpiral skipped - no context or canvas",
-        { hasCtx: !!ctx, hasCanvas: !!canvasRef },
-      );
+      console.log("🦊 PhyllotacticCanvas: renderSpiral skipped - no context or canvas", {
+        hasCtx: !!ctx,
+        hasCanvas: !!canvasRef,
+      });
       return;
     }
 
@@ -78,9 +76,7 @@ export const PhyllotacticCanvas: Component<PhyllotacticCanvasProps> = (
 
   // Lifecycle
   onMount(() => {
-    console.log(
-      "🦊 PhyllotacticCanvas: onMount - setting up canvas and animation",
-    );
+    console.log("🦊 PhyllotacticCanvas: onMount - setting up canvas and animation");
     if (canvasRef) {
       ctx = canvasRef.getContext("2d")!;
       canvasRef.width = 800;
@@ -96,12 +92,9 @@ export const PhyllotacticCanvas: Component<PhyllotacticCanvasProps> = (
           maxFPS: 120,
           enableVSync: true,
           enablePerformanceMonitoring: true,
-        },
+        }
       );
-      console.log(
-        "🦊 PhyllotacticCanvas: Animation engine created",
-        animationEngine,
-      );
+      console.log("🦊 PhyllotacticCanvas: Animation engine created", animationEngine);
 
       // Always render the initial spiral, even if not animating
       console.log("🦊 PhyllotacticCanvas: Rendering initial spiral");
@@ -114,9 +107,7 @@ export const PhyllotacticCanvas: Component<PhyllotacticCanvasProps> = (
           onRender: renderSpiral,
         });
       } else {
-        console.log(
-          "🦊 PhyllotacticCanvas: Animation not running, engine ready but not started",
-        );
+        console.log("🦊 PhyllotacticCanvas: Animation not running, engine ready but not started");
       }
     } else {
       console.log("🦊 PhyllotacticCanvas: onMount - no canvas ref available");
@@ -140,9 +131,7 @@ export const PhyllotacticCanvas: Component<PhyllotacticCanvasProps> = (
       animationEngine.stop();
 
       if (isRunning) {
-        console.log(
-          "🦊 PhyllotacticCanvas: Starting animation due to isRunning change",
-        );
+        console.log("🦊 PhyllotacticCanvas: Starting animation due to isRunning change");
         // Add a small delay to ensure previous animation is fully stopped
         setTimeout(() => {
           if (animationEngine && props.isRunning) {
@@ -153,9 +142,7 @@ export const PhyllotacticCanvas: Component<PhyllotacticCanvasProps> = (
           }
         }, 10);
       } else {
-        console.log(
-          "🦊 PhyllotacticCanvas: Animation stopped due to isRunning change",
-        );
+        console.log("🦊 PhyllotacticCanvas: Animation stopped due to isRunning change");
       }
     }
   });

@@ -29,11 +29,7 @@ describe("i18n lint script", () => {
       // Mock file system structure
       (statSync as any).mockImplementation((path: string) => ({
         isDirectory: () => path.includes("packages"),
-        isFile: () =>
-          path.endsWith(".ts") ||
-          path.endsWith(".tsx") ||
-          path.endsWith(".js") ||
-          path.endsWith(".jsx"),
+        isFile: () => path.endsWith(".ts") || path.endsWith(".tsx") || path.endsWith(".js") || path.endsWith(".jsx"),
       }));
 
       (readdirSync as any).mockImplementation((dir: string) => {
@@ -58,18 +54,10 @@ describe("i18n lint script", () => {
     });
 
     it("should ignore specified directories", () => {
-      const ignoreDirs = [
-        "node_modules",
-        ".git",
-        "dist",
-        "build",
-        "coverage",
-        "__tests__",
-        "test",
-      ];
+      const ignoreDirs = ["node_modules", ".git", "dist", "build", "coverage", "__tests__", "test"];
 
       // Test that these directories would be ignored
-      ignoreDirs.forEach((dir) => {
+      ignoreDirs.forEach(dir => {
         expect(dir).toBeDefined();
       });
     });
@@ -77,7 +65,7 @@ describe("i18n lint script", () => {
     it("should only check specified file extensions", () => {
       const checkedExtensions = [".tsx", ".jsx", ".ts", ".js"];
 
-      checkedExtensions.forEach((ext) => {
+      checkedExtensions.forEach(ext => {
         expect(ext).toBeDefined();
       });
     });

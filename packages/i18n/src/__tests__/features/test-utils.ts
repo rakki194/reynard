@@ -5,14 +5,7 @@
 
 import { vi, type MockedFunction } from "vitest";
 
-export {
-  setupAllMocks,
-  mockLoader,
-  mockDebugger,
-  mockIntl,
-  mockMigration,
-  mockBrowserAPIs,
-} from "../test-utils";
+export { setupAllMocks, mockLoader, mockDebugger, mockIntl, mockMigration, mockBrowserAPIs } from "../test-utils";
 
 // Features-specific mocks
 export const mockFeatureModule = (): {

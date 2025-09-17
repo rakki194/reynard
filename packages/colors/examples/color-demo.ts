@@ -19,7 +19,7 @@ const colorGenerator = createTagColorGenerator();
 
 // Generate colors for different tags
 const tags = ["javascript", "react", "typescript", "solidjs", "css"];
-tags.forEach((tag) => {
+tags.forEach(tag => {
   const color = colorGenerator.getTagColor("dark", tag);
   console.log(`${tag}: ${formatOKLCH(color)}`);
 });
@@ -36,12 +36,10 @@ console.log("Current theme:", themeContext.theme);
 
 // Get tag styles for different themes
 const themes = ["light", "dark", "banana", "strawberry"] as const;
-themes.forEach((theme) => {
+themes.forEach(theme => {
   themeContext.setTheme(theme);
   const style = themeContext.getTagStyle("example");
-  console.log(
-    `${theme} theme - Background: ${style.backgroundColor}, Color: ${style.color}`,
-  );
+  console.log(`${theme} theme - Background: ${style.backgroundColor}, Color: ${style.color}`);
 });
 
 // File utilities example
@@ -55,7 +53,7 @@ const mockFiles = [
   new File([""], "document.txt"),
 ];
 
-mockFiles.forEach((file) => {
+mockFiles.forEach(file => {
   console.log(`${file.name}:`);
   console.log(`  - Image: ${isImageFile(file)}`);
   console.log(`  - Audio: ${isAudioFile(file)}`);
@@ -65,6 +63,6 @@ mockFiles.forEach((file) => {
 // File size formatting examples
 const sizes = [0, 1024, 1048576, 1073741824];
 console.log("\nFile size examples:");
-sizes.forEach((size) => {
+sizes.forEach(size => {
   console.log(`${size} bytes = ${formatFileSize(size)}`);
 });

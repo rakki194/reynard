@@ -31,7 +31,7 @@ export class BenchmarkOrchestrator {
 
       for (const result of suite.results) {
         console.log(
-          `${result.name}: ${result.totalTime.toFixed(2)}ms (${result.operationsPerSecond.toFixed(0)} ops/sec)`,
+          `${result.name}: ${result.totalTime.toFixed(2)}ms (${result.operationsPerSecond.toFixed(0)} ops/sec)`
         );
       }
     }

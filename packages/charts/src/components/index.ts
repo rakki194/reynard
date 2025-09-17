@@ -11,11 +11,7 @@ export { TimeSeriesChart, type TimeSeriesChartProps } from "./TimeSeriesChart";
 
 // New unified components with OKLCH integration
 export { Chart, type ChartProps } from "./Chart";
-export {
-  RealTimeChart,
-  type RealTimeChartProps,
-  type RealTimeDataPoint,
-} from "./RealTimeChart";
+export { RealTimeChart, type RealTimeChartProps, type RealTimeDataPoint } from "./RealTimeChart";
 export {
   StatisticalChart,
   type StatisticalChartProps,
@@ -25,25 +21,14 @@ export {
 } from "./StatisticalChart";
 
 // Advanced charting components
-export {
-  ModelUsageChart,
-  type ModelUsageChartProps,
-  type ModelUsageData,
-} from "./ModelUsageChart";
+export { ModelUsageChart, type ModelUsageChartProps, type ModelUsageData } from "./ModelUsageChart";
 export {
   EmbeddingDistributionChart,
   type EmbeddingDistributionChartProps,
   type EmbeddingDistributionData,
 } from "./EmbeddingDistributionChart";
-export {
-  PCAVarianceChart,
-  type PCAVarianceChartProps,
-  type PCAVarianceData,
-} from "./PCAVarianceChart";
-export {
-  AdvancedChartingDashboard,
-  type AdvancedChartingDashboardProps,
-} from "./AdvancedChartingDashboard";
+export { PCAVarianceChart, type PCAVarianceChartProps, type PCAVarianceData } from "./PCAVarianceChart";
+export { AdvancedChartingDashboard, type AdvancedChartingDashboardProps } from "./AdvancedChartingDashboard";
 
 // Embedding visualization components
 export {
@@ -56,7 +41,4 @@ export {
   EmbeddingVisualizationDashboard,
   type EmbeddingVisualizationDashboardProps,
 } from "./EmbeddingVisualizationDashboard";
-export {
-  Embedding3DVisualization,
-  type Embedding3DVisualizationProps,
-} from "./Embedding3DVisualization";
+export { Embedding3DVisualization, type Embedding3DVisualizationProps } from "./Embedding3DVisualization";

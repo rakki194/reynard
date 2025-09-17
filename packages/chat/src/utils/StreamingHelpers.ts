@@ -4,15 +4,9 @@
  * Contains utility functions for streaming text operations
  */
 
-import {
-  StreamingTextOptions,
-  StreamingTextState,
-} from "./StreamingTextRenderer";
+import { StreamingTextOptions, StreamingTextState } from "./StreamingTextRenderer";
 
-export function calculateCharacterDelay(
-  char: string,
-  options: Required<StreamingTextOptions>,
-): number {
+export function calculateCharacterDelay(char: string, options: Required<StreamingTextOptions>): number {
   let delay = options.speed;
 
   if (/[.!?;:]/.test(char)) {

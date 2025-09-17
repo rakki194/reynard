@@ -17,14 +17,7 @@
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
   },
-  "keywords": [
-    "ecs",
-    "simd",
-    "webassembly",
-    "performance",
-    "reynard",
-    "benchmark"
-  ],
+  "keywords": ["ecs", "simd", "webassembly", "performance", "reynard", "benchmark"],
   "author": "Balazs Horvath",
   "license": "MIT"
 }

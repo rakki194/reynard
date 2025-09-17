@@ -37,12 +37,11 @@ describe("Backend Integration Tests", () => {
       expect(profileData.user.id).toBe(user.id);
 
       // 3. Access dashboard data
-      const [statsResponse, chartsResponse, activityResponse] =
-        await Promise.all([
-          apiRequest("/dashboard/stats"),
-          apiRequest("/dashboard/charts"),
-          apiRequest("/dashboard/activity"),
-        ]);
+      const [statsResponse, chartsResponse, activityResponse] = await Promise.all([
+        apiRequest("/dashboard/stats"),
+        apiRequest("/dashboard/charts"),
+        apiRequest("/dashboard/activity"),
+      ]);
 
       expect(statsResponse.status).toBe(200);
       expect(chartsResponse.status).toBe(200);
@@ -81,9 +80,7 @@ describe("Backend Integration Tests", () => {
       const filesResponse = await apiRequest("/files");
       expect(filesResponse.status).toBe(200);
       const filesData = await filesResponse.json();
-      const uploadedFile = filesData.files.find(
-        (f: any) => f.name === "integration-test.txt",
-      );
+      const uploadedFile = filesData.files.find((f: any) => f.name === "integration-test.txt");
       expect(uploadedFile).toBeDefined();
 
       // 7. Verify activity was recorded
@@ -91,9 +88,7 @@ describe("Backend Integration Tests", () => {
       expect(updatedActivityResponse.status).toBe(200);
       const updatedActivityData = await updatedActivityResponse.json();
       const uploadActivity = updatedActivityData.activities.find(
-        (a: any) =>
-          a.action === "Uploaded file" &&
-          a.details?.fileName === "integration-test.txt",
+        (a: any) => a.action === "Uploaded file" && a.details?.fileName === "integration-test.txt"
       );
       expect(uploadActivity).toBeDefined();
     });
@@ -152,12 +147,8 @@ describe("Backend Integration Tests", () => {
       const filesResponse = await apiRequest("/files");
       const filesData = await filesResponse.json();
 
-      const user1File = filesData.files.find(
-        (f: any) => f.name === "user1-file.txt",
-      );
-      const user2File = filesData.files.find(
-        (f: any) => f.name === "user2-file.txt",
-      );
+      const user1File = filesData.files.find((f: any) => f.name === "user1-file.txt");
+      const user2File = filesData.files.find((f: any) => f.name === "user2-file.txt");
 
       expect(user1File).toBeDefined();
       expect(user2File).toBeDefined();
@@ -197,9 +188,7 @@ describe("Backend Integration Tests", () => {
 
       expect(response.status).toBe(200);
       expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
-      expect(response.headers.get("Access-Control-Allow-Methods")).toContain(
-        "POST",
-      );
+      expect(response.headers.get("Access-Control-Allow-Methods")).toContain("POST");
     });
 
     it("should handle large request bodies", async () => {
@@ -230,12 +219,12 @@ describe("Backend Integration Tests", () => {
               size: 100,
               url: `/uploads/concurrent-${index}.txt`,
             }),
-          }),
+          })
         );
 
       const responses = await Promise.all(concurrentRequests);
 
-      responses.forEach((response) => {
+      responses.forEach(response => {
         expect(response.status).toBe(201);
       });
 
@@ -244,9 +233,7 @@ describe("Backend Integration Tests", () => {
       const filesData = await filesResponse.json();
 
       for (let i = 0; i < 20; i++) {
-        const file = filesData.files.find(
-          (f: any) => f.name === `concurrent-${i}.txt`,
-        );
+        const file = filesData.files.find((f: any) => f.name === `concurrent-${i}.txt`);
         expect(file).toBeDefined();
       }
     });
@@ -274,9 +261,7 @@ describe("Backend Integration Tests", () => {
         .map(() => apiRequest("/dashboard/charts"));
 
       const responses = await Promise.all(requests);
-      const dataSets = await Promise.all(
-        responses.map((response) => response.json()),
-      );
+      const dataSets = await Promise.all(responses.map(response => response.json()));
 
       // All responses should be identical
       dataSets.forEach((data, index) => {
@@ -306,7 +291,7 @@ describe("Backend Integration Tests", () => {
       const responses = await Promise.all(mixedRequests);
       const endTime = Date.now();
 
-      responses.forEach((response) => {
+      responses.forEach(response => {
         expect(response.status).toBeGreaterThanOrEqual(200);
         expect(response.status).toBeLessThan(500);
       });
@@ -320,9 +305,9 @@ describe("Backend Integration Tests", () => {
     it("should maintain data consistency across operations", async () => {
       // Get initial state
       const [initialStats, initialFiles, initialSettings] = await Promise.all([
-        apiRequest("/dashboard/stats").then((r) => r.json()),
-        apiRequest("/files").then((r) => r.json()),
-        apiRequest("/settings").then((r) => r.json()),
+        apiRequest("/dashboard/stats").then(r => r.json()),
+        apiRequest("/files").then(r => r.json()),
+        apiRequest("/settings").then(r => r.json()),
       ]);
 
       // Perform operations
@@ -354,15 +339,13 @@ describe("Backend Integration Tests", () => {
 
       // Verify changes
       const [finalStats, finalFiles, finalSettings] = await Promise.all([
-        apiRequest("/dashboard/stats").then((r) => r.json()),
-        apiRequest("/files").then((r) => r.json()),
-        apiRequest("/settings").then((r) => r.json()),
+        apiRequest("/dashboard/stats").then(r => r.json()),
+        apiRequest("/files").then(r => r.json()),
+        apiRequest("/settings").then(r => r.json()),
       ]);
 
       // User count should have increased
-      expect(finalStats.stats.totalUsers).toBe(
-        initialStats.stats.totalUsers + 1,
-      );
+      expect(finalStats.stats.totalUsers).toBe(initialStats.stats.totalUsers + 1);
 
       // File count should have increased
       expect(finalFiles.files.length).toBe(initialFiles.files.length + 1);
@@ -400,10 +383,7 @@ describe("Backend Integration Tests", () => {
       testServer.clearData();
 
       // Verify data was reset
-      const [settingsResponse, filesResponse] = await Promise.all([
-        apiRequest("/settings"),
-        apiRequest("/files"),
-      ]);
+      const [settingsResponse, filesResponse] = await Promise.all([apiRequest("/settings"), apiRequest("/files")]);
 
       const settingsData = await settingsResponse.json();
       const filesData = await filesResponse.json();
@@ -414,9 +394,7 @@ describe("Backend Integration Tests", () => {
       expect(settingsData.settings.customSetting).toBeUndefined();
 
       // Files should be back to defaults (no uploaded file)
-      const uploadedFile = filesData.files.find(
-        (f: any) => f.name === "before-restart.txt",
-      );
+      const uploadedFile = filesData.files.find((f: any) => f.name === "before-restart.txt");
       expect(uploadedFile).toBeUndefined();
     });
   });

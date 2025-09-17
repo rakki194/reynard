@@ -9,12 +9,10 @@ import { Toggle } from "../../primitives";
 import { Icon } from "../../icons";
 import type { PackageSettingsFormProps } from "../types/PackageConfigurationTypes";
 
-export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
-  props,
-) => {
+export const PackageSettingsForm: Component<PackageSettingsFormProps> = props => {
   const handleSettingChange = (key: string, value: any) => {
-    const updatedSettings = props.package.settings.map((setting) =>
-      setting.key === key ? { ...setting, value } : setting,
+    const updatedSettings = props.package.settings.map(setting =>
+      setting.key === key ? { ...setting, value } : setting
     );
     // This would typically update local state, but for now we'll just call onSave
     props.onSave(updatedSettings);
@@ -26,9 +24,7 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
         return (
           <TextField
             value={setting.value || ""}
-            onInput={(e) =>
-              handleSettingChange(setting.key, e.currentTarget.value)
-            }
+            onInput={e => handleSettingChange(setting.key, e.currentTarget.value)}
             placeholder={setting.description}
             required={setting.required}
             size="sm"
@@ -40,9 +36,7 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
           <TextField
             type="number"
             value={setting.value || setting.defaultValue || ""}
-            onInput={(e) =>
-              handleSettingChange(setting.key, Number(e.currentTarget.value))
-            }
+            onInput={e => handleSettingChange(setting.key, Number(e.currentTarget.value))}
             min={setting.min}
             max={setting.max}
             step={setting.step}
@@ -55,7 +49,7 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
         return (
           <Toggle
             checked={setting.value ?? setting.defaultValue ?? false}
-            onChange={(checked) => handleSettingChange(setting.key, checked)}
+            onChange={checked => handleSettingChange(setting.key, checked)}
             size="sm"
           />
         );
@@ -64,7 +58,7 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
         return (
           <Select
             value={setting.value || setting.defaultValue || ""}
-            onChange={(value) => handleSettingChange(setting.key, value)}
+            onChange={value => handleSettingChange(setting.key, value)}
             options={
               setting.options?.map((opt: string) => ({
                 value: opt,
@@ -80,12 +74,12 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
         return (
           <div class="reynard-multiselect">
             <For each={setting.options || []}>
-              {(option) => (
+              {option => (
                 <label class="reynard-multiselect__option">
                   <input
                     type="checkbox"
                     checked={setting.value?.includes(option) || false}
-                    onChange={(e) => {
+                    onChange={e => {
                       const currentValues = setting.value || [];
                       const newValues = e.currentTarget.checked
                         ? [...currentValues, option]
@@ -109,9 +103,7 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
     <div class="reynard-package-settings-form">
       <div class="reynard-package-settings-form__header">
         <h3>Configure {props.package.name}</h3>
-        <p class="reynard-package-settings-form__description">
-          {props.package.description}
-        </p>
+        <p class="reynard-package-settings-form__description">{props.package.description}</p>
       </div>
 
       <div class="reynard-package-settings-form__content">
@@ -125,18 +117,14 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
           }
         >
           <For each={props.package.settings}>
-            {(setting) => (
+            {setting => (
               <div class="reynard-setting-field">
                 <div class="reynard-setting-field__label">
                   <label for={setting.key}>{setting.label}</label>
                   {setting.required && <span class="reynard-required">*</span>}
                 </div>
-                <div class="reynard-setting-field__input">
-                  {renderSettingInput(setting)}
-                </div>
-                <div class="reynard-setting-field__description">
-                  {setting.description}
-                </div>
+                <div class="reynard-setting-field__input">{renderSettingInput(setting)}</div>
+                <div class="reynard-setting-field__description">{setting.description}</div>
               </div>
             )}
           </For>
@@ -144,18 +132,10 @@ export const PackageSettingsForm: Component<PackageSettingsFormProps> = (
       </div>
 
       <div class="reynard-package-settings-form__actions">
-        <Button
-          variant="secondary"
-          onClick={props.onCancel}
-          disabled={props.isSaving}
-        >
+        <Button variant="secondary" onClick={props.onCancel} disabled={props.isSaving}>
           Cancel
         </Button>
-        <Button
-          variant="primary"
-          onClick={() => props.onSave(props.package.settings)}
-          loading={props.isSaving}
-        >
+        <Button variant="primary" onClick={() => props.onSave(props.package.settings)} loading={props.isSaving}>
           Save Configuration
         </Button>
       </div>

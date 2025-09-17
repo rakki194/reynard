@@ -134,10 +134,7 @@ export interface World {
    * @param componentTypes Types of components to remove
    * @throws Error if the entity doesn't exist
    */
-  remove<T extends Component[]>(
-    entity: Entity,
-    ...componentTypes: ComponentType<T[number]>[]
-  ): void;
+  remove<T extends Component[]>(entity: Entity, ...componentTypes: ComponentType<T[number]>[]): void;
 
   /**
    * Gets a component from an entity (read-only access).
@@ -145,10 +142,7 @@ export interface World {
    * @param componentType The type of component to get
    * @returns The component if it exists, undefined otherwise
    */
-  get<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): T | undefined;
+  get<T extends Component>(entity: Entity, componentType: ComponentType<T>): T | undefined;
 
   /**
    * Gets a component from an entity (mutable access).
@@ -156,10 +150,7 @@ export interface World {
    * @param componentType The type of component to get
    * @returns The component if it exists, undefined otherwise
    */
-  getMut<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): T | undefined;
+  getMut<T extends Component>(entity: Entity, componentType: ComponentType<T>): T | undefined;
 
   /**
    * Checks if an entity has a specific component.
@@ -167,10 +158,7 @@ export interface World {
    * @param componentType The type of component to check for
    * @returns true if the entity has the component
    */
-  has<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
+  has<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
 
   // Resource operations
   /**
@@ -185,9 +173,7 @@ export interface World {
    * @param resourceType The type of resource to remove
    * @returns The removed resource if it existed
    */
-  removeResource<T extends Resource>(
-    resourceType: ResourceType<T>,
-  ): T | undefined;
+  removeResource<T extends Resource>(resourceType: ResourceType<T>): T | undefined;
 
   /**
    * Gets a resource from the world (read-only access).
@@ -201,9 +187,7 @@ export interface World {
    * @param resourceType The type of resource to get
    * @returns The resource if it exists, undefined otherwise
    */
-  getResourceMut<T extends Resource>(
-    resourceType: ResourceType<T>,
-  ): T | undefined;
+  getResourceMut<T extends Resource>(resourceType: ResourceType<T>): T | undefined;
 
   /**
    * Checks if a resource exists in the world.
@@ -221,9 +205,7 @@ export interface World {
   query<T extends Component[]>(
     ...componentTypes: ComponentType<T[number]>[]
   ): QueryBuilder<T> & {
-    forEach: (
-      callback: (entity: Entity, ...components: T) => void | false,
-    ) => void;
+    forEach: (callback: (entity: Entity, ...components: T) => void | false) => void;
     first: () => { entity: Entity; components: T } | undefined;
     added: (componentType: ComponentType<any>) => any;
     changed: (componentType: ComponentType<any>) => any;
@@ -236,10 +218,7 @@ export interface World {
    * @param filter Additional filtering criteria
    * @returns QueryResult containing matching entities and their components
    */
-  queryFiltered<T extends Component[]>(
-    componentTypes: ComponentType<T[number]>[],
-    filter: QueryFilter,
-  ): QueryResult<T>;
+  queryFiltered<T extends Component[]>(componentTypes: ComponentType<T[number]>[], filter: QueryFilter): QueryResult<T>;
 
   // System operations
   /**
@@ -287,9 +266,7 @@ export interface World {
    * @param componentType The component type to count
    * @returns Number of entities with this component
    */
-  getComponentCount<T extends Component>(
-    componentType: ComponentType<T>,
-  ): number;
+  getComponentCount<T extends Component>(componentType: ComponentType<T>): number;
 
   /**
    * Gets the component registry for registering component types.

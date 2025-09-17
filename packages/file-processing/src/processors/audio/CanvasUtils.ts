@@ -30,7 +30,7 @@ export class CanvasUtils {
     canvas: HTMLCanvasElement,
     width: number,
     height: number,
-    backgroundColor: string,
+    backgroundColor: string
   ): CanvasRenderingContext2D {
     canvas.width = width;
     canvas.height = height;
@@ -45,12 +45,7 @@ export class CanvasUtils {
   /**
    * Draw audio icon overlay
    */
-  drawAudioIcon(
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    smallCorner: boolean = false,
-  ): void {
+  drawAudioIcon(ctx: CanvasRenderingContext2D, width: number, height: number, smallCorner: boolean = false): void {
     if (smallCorner) {
       // Draw subtle audio indicator in bottom-right corner
       const size = Math.min(width, height) * 0.12;
@@ -84,13 +79,10 @@ export class CanvasUtils {
   /**
    * Convert canvas to blob
    */
-  async canvasToBlob(
-    canvas: HTMLCanvasElement,
-    options: CanvasOptions,
-  ): Promise<Blob> {
+  async canvasToBlob(canvas: HTMLCanvasElement, options: CanvasOptions): Promise<Blob> {
     return new Promise((resolve, reject) => {
       canvas.toBlob(
-        (blob) => {
+        blob => {
           if (blob) {
             resolve(blob);
           } else {
@@ -98,7 +90,7 @@ export class CanvasUtils {
           }
         },
         `image/${options.format || "webp"}`,
-        (options.quality || 85) / 100,
+        (options.quality || 85) / 100
       );
     });
   }

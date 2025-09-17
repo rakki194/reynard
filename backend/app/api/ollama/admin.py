@@ -21,7 +21,7 @@ async def get_stats():
         service = get_ollama_service()
         stats = await service.get_stats()
         return stats
-        
+
     except Exception as e:
         logger.error(f"Failed to get stats: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -33,19 +33,15 @@ async def health_check():
     try:
         service = get_ollama_service()
         is_healthy = await service.health_check()
-        
+
         return {
             "healthy": is_healthy,
-            "status": "healthy" if is_healthy else "unhealthy"
+            "status": "healthy" if is_healthy else "unhealthy",
         }
-        
+
     except Exception as e:
         logger.error(f"Health check failed: {e}")
-        return {
-            "healthy": False,
-            "status": "error",
-            "error": str(e)
-        }
+        return {"healthy": False, "status": "error", "error": str(e)}
 
 
 @router.get("/models")
@@ -55,7 +51,7 @@ async def get_models():
         service = get_ollama_service()
         models = await service.get_available_models()
         return {"models": models}
-        
+
     except Exception as e:
         logger.error(f"Failed to get models: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -67,15 +63,14 @@ async def pull_model(model_name: str):
     try:
         service = get_ollama_service()
         success = await service.pull_model(model_name)
-        
+
         if not success:
-            raise HTTPException(status_code=400, detail=f"Failed to pull model {model_name}")
-        
-        return {
-            "success": True,
-            "message": f"Model {model_name} pulled successfully"
-        }
-        
+            raise HTTPException(
+                status_code=400, detail=f"Failed to pull model {model_name}"
+            )
+
+        return {"success": True, "message": f"Model {model_name} pulled successfully"}
+
     except Exception as e:
         logger.error(f"Failed to pull model {model_name}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -87,12 +82,9 @@ async def cleanup():
     try:
         service = get_ollama_service()
         await service.cleanup()
-        
-        return {
-            "success": True,
-            "message": "Service cleanup completed successfully"
-        }
-        
+
+        return {"success": True, "message": "Service cleanup completed successfully"}
+
     except Exception as e:
         logger.error(f"Cleanup failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))

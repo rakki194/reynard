@@ -44,7 +44,7 @@ const sanitizeHTML = (html: string): string => {
     .replace(/<a[^>]*href\s*=\s*["']?javascript:/gi, '<a href="#"');
 };
 
-export const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
+export const MarkdownRenderer: Component<MarkdownRendererProps> = props => {
   let containerRef: HTMLDivElement | undefined;
 
   // Parse markdown content
@@ -85,37 +85,28 @@ export const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
     // Add syntax highlighting classes if not already present
     html = html.replace(
       /<pre><code class="language-(\w+)">/g,
-      '<pre class="reynard-code-block"><code class="language-$1">',
+      '<pre class="reynard-code-block"><code class="language-$1">'
     );
 
     // Add math rendering classes
     if (props.enableMath) {
       html = html.replace(
         /<span class="math-inline">(.*?)<\/span>/g,
-        '<span class="reynard-math reynard-math--inline">$1</span>',
+        '<span class="reynard-math reynard-math--inline">$1</span>'
       );
     }
 
     // Process tables
     html = html
-      .replace(
-        /<table>/g,
-        '<div class="reynard-table-wrapper"><table class="reynard-table">',
-      )
+      .replace(/<table>/g, '<div class="reynard-table-wrapper"><table class="reynard-table">')
       .replace(/<\/table>/g, "</table></div>");
 
     // Process task lists
-    html = html.replace(
-      /<ul class="task-list">/g,
-      '<ul class="reynard-task-list">',
-    );
+    html = html.replace(/<ul class="task-list">/g, '<ul class="reynard-task-list">');
 
     // Add loading placeholder for images if needed
     if (props.imageConfig?.lazy) {
-      html = html.replace(
-        /<img ([^>]+)>/g,
-        '<img $1 loading="lazy" class="reynard-image">',
-      );
+      html = html.replace(/<img ([^>]+)>/g, '<img $1 loading="lazy" class="reynard-image">');
     }
 
     // Sanitize the HTML to prevent XSS attacks
@@ -127,10 +118,8 @@ export const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
     if (containerRef && processHTML()) {
       // Apply syntax highlighting if available
       if (typeof window !== "undefined" && window.hljs) {
-        const codeBlocks = containerRef.querySelectorAll(
-          'pre code[class*="language-"]',
-        );
-        codeBlocks.forEach((block) => {
+        const codeBlocks = containerRef.querySelectorAll('pre code[class*="language-"]');
+        codeBlocks.forEach(block => {
           window.hljs!.highlightElement(block);
         });
       }
@@ -141,11 +130,7 @@ export const MarkdownRenderer: Component<MarkdownRendererProps> = (props) => {
       }
 
       // Apply mermaid diagrams if available
-      if (
-        props.enableDiagrams &&
-        typeof window !== "undefined" &&
-        window.mermaid
-      ) {
+      if (props.enableDiagrams && typeof window !== "undefined" && window.mermaid) {
         const diagrams = containerRef.querySelectorAll(".language-mermaid");
         diagrams.forEach((diagram, index) => {
           const id = `mermaid-${Date.now()}-${index}`;

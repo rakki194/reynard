@@ -129,9 +129,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
 
   // P2P-specific state
   const [onlineUsers, setOnlineUsers] = createSignal<ChatUser[]>([]);
-  const [typingIndicators, setTypingIndicators] = createSignal<
-    TypingIndicator[]
-  >([]);
+  const [typingIndicators, setTypingIndicators] = createSignal<TypingIndicator[]>([]);
 
   // Typing timer management (for future use)
   const _typingTimers = new Map<string, number>();
@@ -155,31 +153,22 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
         break;
       case "typing_start":
         if (config.enableTypingIndicators) {
-          setTypingIndicators((prev) => [
-            ...prev.filter(
-              (t) => !(t.user.id === data.user.id && t.roomId === data.roomId),
-            ),
+          setTypingIndicators(prev => [
+            ...prev.filter(t => !(t.user.id === data.user.id && t.roomId === data.roomId)),
             { roomId: data.roomId, user: data.user, startedAt: Date.now() },
           ]);
         }
         break;
       case "typing_stop":
         if (config.enableTypingIndicators) {
-          setTypingIndicators((prev) =>
-            prev.filter(
-              (t) => !(t.user.id === data.user.id && t.roomId === data.roomId),
-            ),
-          );
+          setTypingIndicators(prev => prev.filter(t => !(t.user.id === data.user.id && t.roomId === data.roomId)));
         }
         break;
       case "user_joined":
-        setOnlineUsers((prev) => [
-          ...prev.filter((u) => u.id !== data.user.id),
-          data.user,
-        ]);
+        setOnlineUsers(prev => [...prev.filter(u => u.id !== data.user.id), data.user]);
         break;
       case "user_left":
-        setOnlineUsers((prev) => prev.filter((u) => u.id !== data.user.id));
+        setOnlineUsers(prev => prev.filter(u => u.id !== data.user.id));
         break;
       case "room_created":
         p2pRooms.addRoom(data.room);
@@ -199,11 +188,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     // Room actions
     joinRoom: p2pRooms.joinRoom,
     leaveRoom: p2pRooms.leaveRoom,
-    createRoom: async (
-      name: string,
-      type: "direct" | "group" | "public" | "private",
-      participants?: ChatUser[],
-    ) => {
+    createRoom: async (name: string, type: "direct" | "group" | "public" | "private", participants?: ChatUser[]) => {
       return await p2pRooms.createRoom({
         name,
         type,
@@ -213,11 +198,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     updateRoom: async (roomId: string, updates: Partial<ChatRoom>) => {
       p2pRooms.updateRoom(roomId, updates);
     },
-    getRoomMessages: async (
-      roomId: string,
-      _limit?: number,
-      _before?: string,
-    ) => {
+    getRoomMessages: async (roomId: string, _limit?: number, _before?: string) => {
       return p2pMessages.getRoomMessages(roomId);
     },
     switchRoom: (roomId: string) => {
@@ -239,7 +220,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
         replyTo?: string;
         threadId?: string;
         priority?: P2PChatMessage["priority"];
-      },
+      }
     ) => {
       const message: P2PChatMessage = {
         id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -268,7 +249,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
             type: "message_sent",
             roomId,
             message,
-          }),
+          })
         );
       }
     },
@@ -298,7 +279,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
             type: "typing_start",
             roomId,
             user: currentUser,
-          }),
+          })
         );
       }
     },
@@ -307,11 +288,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       if (!config.enableTypingIndicators) return;
 
       // Clear typing indicator
-      setTypingIndicators((prev) =>
-        prev.filter(
-          (t) => !(t.user.id === currentUser.id && t.roomId === roomId),
-        ),
-      );
+      setTypingIndicators(prev => prev.filter(t => !(t.user.id === currentUser.id && t.roomId === roomId)));
     },
 
     // Message management
@@ -327,11 +304,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
         p2pMessages.markMessageAsRead(room.id, messageId);
       }
     },
-    editMessage: async (
-      messageId: string,
-      newContent: string,
-      _reason?: string,
-    ) => {
+    editMessage: async (messageId: string, newContent: string, _reason?: string) => {
       const room = p2pRooms.activeRoom();
       if (room) {
         p2pMessages.updateMessage(room.id, messageId, { content: newContent });
@@ -355,7 +328,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
             type: "user_status_update",
             userId: currentUser.id,
             status,
-          }),
+          })
         );
       }
     },
@@ -383,10 +356,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       // Implementation for searching messages
       return [];
     },
-    getMessageHistory: async (
-      roomId: string,
-      _options?: { before?: number; after?: number; limit?: number },
-    ) => {
+    getMessageHistory: async (roomId: string, _options?: { before?: number; after?: number; limit?: number }) => {
       return p2pMessages.getRoomMessages(roomId);
     },
 
@@ -400,7 +370,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
             userId: currentUser.id,
             status,
             message,
-          }),
+          })
         );
       }
     },
@@ -438,9 +408,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
       if (format === "json") {
         return JSON.stringify(messages, null, 2);
       }
-      return messages
-        .map((msg) => `${msg.sender?.name || "Unknown"}: ${msg.content}`)
-        .join("\n");
+      return messages.map(msg => `${msg.sender?.name || "Unknown"}: ${msg.content}`).join("\n");
     },
     importConversation: (data: string, format: "json") => {
       // Implementation for importing conversation
@@ -499,7 +467,7 @@ export function useP2PChat(options: UseP2PChatOptions): UseP2PChatReturn {
     typingIndicators: () => {
       const indicators = typingIndicators();
       const grouped: Record<string, TypingIndicator[]> = {};
-      indicators.forEach((indicator) => {
+      indicators.forEach(indicator => {
         if (!grouped[indicator.roomId]) {
           grouped[indicator.roomId] = [];
         }

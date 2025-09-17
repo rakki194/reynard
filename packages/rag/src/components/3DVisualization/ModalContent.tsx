@@ -1,6 +1,6 @@
 /**
  * Modal Content Component
- * 
+ *
  * Contains the main content layout for the 3D visualization modal
  */
 
@@ -16,7 +16,7 @@ interface ModalContentProps {
   visualizationData: ReturnType<typeof use3DVisualizationData>;
 }
 
-export const ModalContent: Component<ModalContentProps> = (props) => {
+export const ModalContent: Component<ModalContentProps> = props => {
   const createVisualizationSettings = () => ({
     pointSize: props.params.pointSize(),
     enableHighlighting: props.params.enableHighlighting(),

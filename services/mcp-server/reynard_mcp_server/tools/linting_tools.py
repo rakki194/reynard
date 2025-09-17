@@ -88,12 +88,16 @@ class LintingTools:
         )
         return self._format_result(result, action)
 
-    async def scan_security(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    async def scan_security(
+        self, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Run comprehensive security scanning."""
         result = await self.security_service.run_comprehensive_security_scan()
         return self._format_result(result, "Security Scanning")
 
-    async def scan_security_fast(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    async def scan_security_fast(
+        self, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Run fast security scanning (skips slow Bandit checks)."""
         result = await self.security_service.run_fast_security_scan()
         return self._format_result(result, "Fast Security Scanning")

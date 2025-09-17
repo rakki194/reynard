@@ -8,26 +8,22 @@ import { Button, TextField, Select } from "../../primitives";
 import { Icon } from "../../icons";
 import type { PackageLifecycleListProps } from "../types/PackageLifecycleTypes";
 
-export const PackageLifecycleList: Component<PackageLifecycleListProps> = (
-  props,
-) => {
+export const PackageLifecycleList: Component<PackageLifecycleListProps> = props => {
   const filteredPackages = () => {
     let filtered = props.packages;
 
     // Filter by search query
     if (props.searchQuery) {
       filtered = filtered.filter(
-        (pkg) =>
+        pkg =>
           pkg.name.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
-          pkg.description
-            .toLowerCase()
-            .includes(props.searchQuery.toLowerCase()),
+          pkg.description.toLowerCase().includes(props.searchQuery.toLowerCase())
       );
     }
 
     // Filter by status
     if (props.selectedStatus !== "all") {
-      filtered = filtered.filter((pkg) => pkg.status === props.selectedStatus);
+      filtered = filtered.filter(pkg => pkg.status === props.selectedStatus);
     }
 
     return filtered;
@@ -85,13 +81,13 @@ export const PackageLifecycleList: Component<PackageLifecycleListProps> = (
           <TextField
             placeholder="Search packages..."
             value={props.searchQuery}
-            onInput={(e) => props.onSearchChange(e.currentTarget.value)}
+            onInput={e => props.onSearchChange(e.currentTarget.value)}
             leftIcon="search"
             size="sm"
           />
           <Select
             value={props.selectedStatus}
-            onChange={(e) => props.onStatusChange(e.target.value)}
+            onChange={e => props.onStatusChange(e.target.value)}
             options={[
               { value: "all", label: "All Statuses" },
               { value: "loaded", label: "Loaded" },
@@ -124,31 +120,20 @@ export const PackageLifecycleList: Component<PackageLifecycleListProps> = (
           }
         >
           <For each={filteredPackages()}>
-            {(pkg) => (
+            {pkg => (
               <div class="reynard-package-lifecycle-item">
                 <div class="reynard-package-lifecycle-item__header">
                   <div class="reynard-package-lifecycle-item__info">
                     <h4>{pkg.name}</h4>
-                    <span class="reynard-package-lifecycle-item__version">
-                      v{pkg.version}
-                    </span>
+                    <span class="reynard-package-lifecycle-item__version">v{pkg.version}</span>
                     <div class="reynard-package-lifecycle-item__status">
-                      <Icon
-                        name={getStatusIcon(pkg.status)}
-                        variant={getStatusVariant(pkg.status)}
-                        size="sm"
-                      />
+                      <Icon name={getStatusIcon(pkg.status)} variant={getStatusVariant(pkg.status)} size="sm" />
                       <span>{pkg.status}</span>
                     </div>
                   </div>
                   <div class="reynard-package-lifecycle-item__actions">
                     <Show when={pkg.status === "unloaded"}>
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        onClick={() => props.onLoadPackage(pkg.name)}
-                        leftIcon="play"
-                      >
+                      <Button variant="primary" size="sm" onClick={() => props.onLoadPackage(pkg.name)} leftIcon="play">
                         Load
                       </Button>
                     </Show>
@@ -172,9 +157,7 @@ export const PackageLifecycleList: Component<PackageLifecycleListProps> = (
                     </Show>
                   </div>
                 </div>
-                <p class="reynard-package-lifecycle-item__description">
-                  {pkg.description}
-                </p>
+                <p class="reynard-package-lifecycle-item__description">{pkg.description}</p>
                 <div class="reynard-package-lifecycle-item__meta">
                   <span>Memory: {formatMemoryUsage(pkg.memoryUsage)}</span>
                   <span>Load Time: {pkg.loadTime}ms</span>

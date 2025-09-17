@@ -8,17 +8,11 @@ export default defineConfig({
     alias: [
       {
         find: /^reynard-docs-components\/styles$/,
-        replacement: path.resolve(
-          __dirname,
-          "../docs-components/dist/index.css",
-        ),
+        replacement: path.resolve(__dirname, "../docs-components/dist/index.css"),
       },
       {
         find: "reynard-docs-components",
-        replacement: path.resolve(
-          __dirname,
-          "../docs-components/dist/index.js",
-        ),
+        replacement: path.resolve(__dirname, "../docs-components/dist/index.js"),
       },
       {
         find: "reynard-docs-core",

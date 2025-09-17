@@ -85,13 +85,9 @@ export interface MonitoringDashboard {
 export class RealTimeArchitectureMonitor extends EventEmitter {
   private readonly codebasePath: string;
   private readonly monitoringInterval: number;
-  private readonly alertThresholds: Map<
-    string,
-    { warning: number; critical: number }
-  > = new Map();
+  private readonly alertThresholds: Map<string, { warning: number; critical: number }> = new Map();
   private readonly eventHistory: MonitoringEvent[] = [];
-  private readonly metricsHistory: Map<string, ArchitectureMetric[]> =
-    new Map();
+  private readonly metricsHistory: Map<string, ArchitectureMetric[]> = new Map();
   private readonly activeAlerts: Map<string, MonitoringAlert> = new Map();
   private readonly watchers: Map<string, any> = new Map();
   private monitoringActive: boolean = false;
@@ -196,7 +192,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
    * Get monitoring events in a time range
    */
   getEventsInRange(startDate: Date, endDate: Date): MonitoringEvent[] {
-    return this.eventHistory.filter((event) => {
+    return this.eventHistory.filter(event => {
       const eventDate = new Date(event.timestamp);
       return eventDate >= startDate && eventDate <= endDate;
     });
@@ -206,9 +202,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
    * Get active alerts
    */
   getActiveAlerts(): MonitoringAlert[] {
-    return Array.from(this.activeAlerts.values()).filter(
-      (alert) => !alert.resolved,
-    );
+    return Array.from(this.activeAlerts.values()).filter(alert => !alert.resolved);
   }
 
   /**
@@ -232,25 +226,18 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
   /**
    * Set alert threshold for a metric
    */
-  setAlertThreshold(
-    metricName: string,
-    warning: number,
-    critical: number,
-  ): void {
+  setAlertThreshold(metricName: string, warning: number, critical: number): void {
     this.alertThresholds.set(metricName, { warning, critical });
   }
 
   /**
    * Get metric history
    */
-  getMetricHistory(
-    metricName: string,
-    hours: number = 24,
-  ): ArchitectureMetric[] {
+  getMetricHistory(metricName: string, hours: number = 24): ArchitectureMetric[] {
     const history = this.metricsHistory.get(metricName) || [];
     const cutoffTime = new Date(Date.now() - hours * 60 * 60 * 1000);
 
-    return history.filter((metric) => new Date(metric.timestamp) >= cutoffTime);
+    return history.filter(metric => new Date(metric.timestamp) >= cutoffTime);
   }
 
   // Private methods
@@ -259,7 +246,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
 
     for (const file of files) {
       try {
-        const watcher = watch(file, async (eventType) => {
+        const watcher = watch(file, async eventType => {
           if (eventType === "change") {
             await this.handleFileChange(file);
           }
@@ -285,16 +272,11 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
 
     try {
       // Run all compliance checks
-      const modularityReport =
-        await this.modularityChecker.checkModularityCompliance();
-      const dependencyReport =
-        await this.dependencyAnalyzer.analyzeDependencyHealth();
-      const interfaceReport =
-        await this.interfaceValidator.validateInterfaceConsistency();
-      const typeSafetyReport =
-        await this.typeSafetyCompliance.analyzeTypeSafety();
-      const performanceReport =
-        await this.performanceDetector.analyzePerformancePatterns();
+      const modularityReport = await this.modularityChecker.checkModularityCompliance();
+      const dependencyReport = await this.dependencyAnalyzer.analyzeDependencyHealth();
+      const interfaceReport = await this.interfaceValidator.validateInterfaceConsistency();
+      const typeSafetyReport = await this.typeSafetyCompliance.analyzeTypeSafety();
+      const performanceReport = await this.performanceDetector.analyzePerformancePatterns();
 
       // Create initial metrics
       await this.createInitialMetrics(
@@ -302,7 +284,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         dependencyReport,
         interfaceReport,
         typeSafetyReport,
-        performanceReport,
+        performanceReport
       );
 
       console.log("✅ Initial analysis complete");
@@ -351,10 +333,8 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         case "typescript":
         case "javascript":
           // Run modularity and performance analysis
-          const modularityIssues =
-            await this.modularityChecker.analyzeModule(filePath);
-          const performanceIssues =
-            await this.performanceDetector.analyzeFilePerformance(filePath);
+          const modularityIssues = await this.modularityChecker.analyzeModule(filePath);
+          const performanceIssues = await this.performanceDetector.analyzeFilePerformance(filePath);
 
           if (modularityIssues.violations.length > 0) {
             analysisResult = modularityIssues;
@@ -367,8 +347,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
 
         case "package-json":
           // Run dependency analysis
-          const dependencyReport =
-            await this.dependencyAnalyzer.analyzeDependencyHealth();
+          const dependencyReport = await this.dependencyAnalyzer.analyzeDependencyHealth();
           analysisResult = dependencyReport;
           category = "dependency";
           break;
@@ -406,18 +385,14 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
 
     try {
       // Collect modularity metrics
-      const modularityReport =
-        await this.modularityChecker.checkModularityCompliance();
+      const modularityReport = await this.modularityChecker.checkModularityCompliance();
       metrics.push({
         name: "modularity-compliance",
         value: modularityReport.overallCompliance,
         unit: "percentage",
         timestamp: new Date().toISOString(),
         category: "compliance",
-        trend: this.calculateTrend(
-          "modularity-compliance",
-          modularityReport.overallCompliance,
-        ),
+        trend: this.calculateTrend("modularity-compliance", modularityReport.overallCompliance),
         threshold: this.alertThresholds.get("modularity-compliance") || {
           warning: 70,
           critical: 50,
@@ -425,27 +400,19 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Overall modularity compliance score",
           impact: "Affects maintainability and code organization",
-          recommendations: [
-            "Split large files",
-            "Reduce function complexity",
-            "Improve module cohesion",
-          ],
+          recommendations: ["Split large files", "Reduce function complexity", "Improve module cohesion"],
         },
       });
 
       // Collect dependency health metrics
-      const dependencyReport =
-        await this.dependencyAnalyzer.analyzeDependencyHealth();
+      const dependencyReport = await this.dependencyAnalyzer.analyzeDependencyHealth();
       metrics.push({
         name: "dependency-health",
         value: dependencyReport.overallHealth,
         unit: "percentage",
         timestamp: new Date().toISOString(),
         category: "security",
-        trend: this.calculateTrend(
-          "dependency-health",
-          dependencyReport.overallHealth,
-        ),
+        trend: this.calculateTrend("dependency-health", dependencyReport.overallHealth),
         threshold: this.alertThresholds.get("dependency-health") || {
           warning: 80,
           critical: 60,
@@ -462,18 +429,14 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
       });
 
       // Collect interface consistency metrics
-      const interfaceReport =
-        await this.interfaceValidator.validateInterfaceConsistency();
+      const interfaceReport = await this.interfaceValidator.validateInterfaceConsistency();
       metrics.push({
         name: "interface-consistency",
         value: interfaceReport.overallConsistency,
         unit: "percentage",
         timestamp: new Date().toISOString(),
         category: "quality",
-        trend: this.calculateTrend(
-          "interface-consistency",
-          interfaceReport.overallConsistency,
-        ),
+        trend: this.calculateTrend("interface-consistency", interfaceReport.overallConsistency),
         threshold: this.alertThresholds.get("interface-consistency") || {
           warning: 85,
           critical: 70,
@@ -481,27 +444,19 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Interface consistency score",
           impact: "Affects API design and maintainability",
-          recommendations: [
-            "Follow naming conventions",
-            "Add documentation",
-            "Maintain consistent structure",
-          ],
+          recommendations: ["Follow naming conventions", "Add documentation", "Maintain consistent structure"],
         },
       });
 
       // Collect type safety metrics
-      const typeSafetyReport =
-        await this.typeSafetyCompliance.analyzeTypeSafety();
+      const typeSafetyReport = await this.typeSafetyCompliance.analyzeTypeSafety();
       metrics.push({
         name: "type-safety",
         value: typeSafetyReport.overallTypeSafety,
         unit: "percentage",
         timestamp: new Date().toISOString(),
         category: "quality",
-        trend: this.calculateTrend(
-          "type-safety",
-          typeSafetyReport.overallTypeSafety,
-        ),
+        trend: this.calculateTrend("type-safety", typeSafetyReport.overallTypeSafety),
         threshold: this.alertThresholds.get("type-safety") || {
           warning: 90,
           critical: 75,
@@ -509,27 +464,19 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Type safety compliance score",
           impact: "Affects code reliability and maintainability",
-          recommendations: [
-            "Eliminate any types",
-            "Add explicit type annotations",
-            "Enable strict mode",
-          ],
+          recommendations: ["Eliminate any types", "Add explicit type annotations", "Enable strict mode"],
         },
       });
 
       // Collect performance metrics
-      const performanceReport =
-        await this.performanceDetector.analyzePerformancePatterns();
+      const performanceReport = await this.performanceDetector.analyzePerformancePatterns();
       metrics.push({
         name: "performance-score",
         value: performanceReport.overallPerformance,
         unit: "percentage",
         timestamp: new Date().toISOString(),
         category: "performance",
-        trend: this.calculateTrend(
-          "performance-score",
-          performanceReport.overallPerformance,
-        ),
+        trend: this.calculateTrend("performance-score", performanceReport.overallPerformance),
         threshold: this.alertThresholds.get("performance-score") || {
           warning: 80,
           critical: 60,
@@ -537,11 +484,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         metadata: {
           description: "Overall performance score",
           impact: "Affects application performance and user experience",
-          recommendations: [
-            "Optimize algorithms",
-            "Fix memory leaks",
-            "Use async operations",
-          ],
+          recommendations: ["Optimize algorithms", "Fix memory leaks", "Use async operations"],
         },
       });
     } catch (error) {
@@ -551,9 +494,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     return metrics;
   }
 
-  private async checkThresholdViolations(
-    metrics: ArchitectureMetric[],
-  ): Promise<void> {
+  private async checkThresholdViolations(metrics: ArchitectureMetric[]): Promise<void> {
     for (const metric of metrics) {
       const threshold = this.alertThresholds.get(metric.name);
       if (!threshold) continue;
@@ -579,10 +520,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
           actions: {
             immediate: metric.metadata.recommendations.slice(0, 2),
             shortTerm: metric.metadata.recommendations.slice(2, 4),
-            longTerm: [
-              "Implement continuous monitoring",
-              "Set up automated alerts",
-            ],
+            longTerm: ["Implement continuous monitoring", "Set up automated alerts"],
           },
           resolved: false,
         };
@@ -608,10 +546,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
         actions: {
           immediate: ["Review the violation", "Assess impact"],
           shortTerm: ["Fix the violation", "Update monitoring rules"],
-          longTerm: [
-            "Prevent similar violations",
-            "Improve development process",
-          ],
+          longTerm: ["Prevent similar violations", "Improve development process"],
         },
         resolved: false,
       };
@@ -621,16 +556,12 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     }
   }
 
-  private calculateTrend(
-    metricName: string,
-    currentValue: number,
-  ): "improving" | "declining" | "stable" {
+  private calculateTrend(metricName: string, currentValue: number): "improving" | "declining" | "stable" {
     const history = this.metricsHistory.get(metricName) || [];
     if (history.length < 2) return "stable";
 
     const recent = history.slice(-5); // Last 5 measurements
-    const average =
-      recent.reduce((sum, metric) => sum + metric.value, 0) / recent.length;
+    const average = recent.reduce((sum, metric) => sum + metric.value, 0) / recent.length;
 
     const difference = currentValue - average;
     const threshold = 5; // 5% change threshold
@@ -651,13 +582,9 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     // Calculate trends for each category
     for (const [metricName, history] of this.metricsHistory) {
       const recentHistory = history.slice(-24); // Last 24 measurements
-      const values = recentHistory.map((metric) => metric.value);
+      const values = recentHistory.map(metric => metric.value);
 
-      if (
-        metricName.includes("modularity") ||
-        metricName.includes("interface") ||
-        metricName.includes("type-safety")
-      ) {
+      if (metricName.includes("modularity") || metricName.includes("interface") || metricName.includes("type-safety")) {
         trends.compliance.push(...values);
       } else if (metricName.includes("performance")) {
         trends.performance.push(...values);
@@ -673,13 +600,8 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
 
   private getTopIssues(): MonitoringEvent[] {
     return this.eventHistory
-      .filter(
-        (event) => event.severity === "critical" || event.severity === "error",
-      )
-      .sort(
-        (a, b) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-      )
+      .filter(event => event.severity === "critical" || event.severity === "error")
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
       .slice(0, 10);
   }
 
@@ -691,9 +613,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
       recommendations.push(`🚨 Address ${activeAlerts.length} active alerts`);
     }
 
-    const criticalEvents = this.eventHistory.filter(
-      (event) => event.severity === "critical",
-    ).length;
+    const criticalEvents = this.eventHistory.filter(event => event.severity === "critical").length;
     if (criticalEvents > 0) {
       recommendations.push(`⚠️ Fix ${criticalEvents} critical issues`);
     }
@@ -746,7 +666,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     dependencyReport: any,
     interfaceReport: any,
     typeSafetyReport: any,
-    performanceReport: any,
+    performanceReport: any
   ): Promise<void> {
     const metrics = await this.collectMetrics();
     this.updateMetricsHistory(metrics);
@@ -763,11 +683,7 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
           const fullPath = join(dir, entry.name);
 
           if (entry.isDirectory()) {
-            if (
-              !["node_modules", ".git", "dist", "build", "coverage"].includes(
-                entry.name,
-              )
-            ) {
+            if (!["node_modules", ".git", "dist", "build", "coverage"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
@@ -806,16 +722,10 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     }
   }
 
-  private determineSeverity(
-    analysisResult: any,
-  ): "info" | "warning" | "error" | "critical" {
+  private determineSeverity(analysisResult: any): "info" | "warning" | "error" | "critical" {
     if (analysisResult.violations) {
-      const criticalViolations = analysisResult.violations.filter(
-        (v: any) => v.severity === "critical",
-      ).length;
-      const highViolations = analysisResult.violations.filter(
-        (v: any) => v.severity === "high",
-      ).length;
+      const criticalViolations = analysisResult.violations.filter((v: any) => v.severity === "critical").length;
+      const highViolations = analysisResult.violations.filter((v: any) => v.severity === "high").length;
 
       if (criticalViolations > 0) return "critical";
       if (highViolations > 0) return "error";
@@ -823,12 +733,8 @@ export class RealTimeArchitectureMonitor extends EventEmitter {
     }
 
     if (Array.isArray(analysisResult)) {
-      const criticalIssues = analysisResult.filter(
-        (issue: any) => issue.severity === "critical",
-      ).length;
-      const highIssues = analysisResult.filter(
-        (issue: any) => issue.severity === "high",
-      ).length;
+      const criticalIssues = analysisResult.filter((issue: any) => issue.severity === "critical").length;
+      const highIssues = analysisResult.filter((issue: any) => issue.severity === "high").length;
 
       if (criticalIssues > 0) return "critical";
       if (highIssues > 0) return "error";

@@ -88,7 +88,7 @@ export class PixelArtRenderer {
     startY: number,
     endX: number,
     endY: number,
-    _camera: Camera,
+    _camera: Camera
   ): void {
     for (let y = startY; y < endY; y++) {
       for (let x = startX; x < endX; x++) {
@@ -110,14 +110,7 @@ export class PixelArtRenderer {
     }
   }
 
-  private renderTile(
-    _x: number,
-    _y: number,
-    type: string,
-    screenX: number,
-    screenY: number,
-    visible: boolean,
-  ): void {
+  private renderTile(_x: number, _y: number, type: string, screenX: number, screenY: number, visible: boolean): void {
     const alpha = visible ? 1.0 : 0.3;
 
     switch (type) {
@@ -132,12 +125,7 @@ export class PixelArtRenderer {
 
         // Add wall texture
         this.ctx.fillStyle = `rgba(70, 70, 70, ${alpha})`;
-        this.ctx.fillRect(
-          screenX + 1,
-          screenY + 1,
-          this.tileSize - 2,
-          this.tileSize - 2,
-        );
+        this.ctx.fillRect(screenX + 1, screenY + 1, this.tileSize - 2, this.tileSize - 2);
         break;
 
       case "door":
@@ -152,11 +140,7 @@ export class PixelArtRenderer {
         // Draw stairs symbol
         this.ctx.fillStyle = `rgba(200, 200, 200, ${alpha})`;
         this.ctx.font = `${this.fontSize}px ${this.fontFamily}`;
-        this.ctx.fillText(
-          ">",
-          screenX + this.tileSize / 2,
-          screenY + this.tileSize / 2,
-        );
+        this.ctx.fillText(">", screenX + this.tileSize / 2, screenY + this.tileSize / 2);
         break;
     }
   }
@@ -167,7 +151,7 @@ export class PixelArtRenderer {
     startY: number,
     endX: number,
     endY: number,
-    _camera: Camera,
+    _camera: Camera
   ): void {
     // Render items first (so they appear behind entities)
     const itemQuery = world.query(PositionType, SpriteType, RoguelikeItemType);
@@ -214,11 +198,7 @@ export class PixelArtRenderer {
     // Draw character
     this.ctx.fillStyle = sprite.fg;
     this.ctx.font = `${this.fontSize}px ${this.fontFamily}`;
-    this.ctx.fillText(
-      sprite.char,
-      screenX + this.tileSize / 2,
-      screenY + this.tileSize / 2,
-    );
+    this.ctx.fillText(sprite.char, screenX + this.tileSize / 2, screenY + this.tileSize / 2);
   }
 
   private renderUI(world: World, messageLog: MessageLog | null): void {
@@ -254,11 +234,7 @@ export class PixelArtRenderer {
 
     recentMessages.forEach((message, index) => {
       this.ctx.fillStyle = message.color;
-      this.ctx.fillText(
-        message.text,
-        15,
-        this.canvas.height - 110 + index * 20,
-      );
+      this.ctx.fillText(message.text, 15, this.canvas.height - 110 + index * 20);
     });
 
     // Reset text alignment
@@ -316,11 +292,7 @@ export class PixelArtRenderer {
     y += 15;
 
     if (healthComp) {
-      this.ctx.fillText(
-        `Health: ${healthComp.current}/${healthComp.max}`,
-        15,
-        y,
-      );
+      this.ctx.fillText(`Health: ${healthComp.current}/${healthComp.max}`, 15, y);
       y += 15;
     }
 
@@ -339,8 +311,7 @@ export class PixelArtRenderer {
     const gameTime = world.getResource(GameTimeType) as GameTime;
     if (!gameTime) return;
 
-    const fps =
-      gameTime.deltaTime > 0 ? Math.round(1000 / gameTime.deltaTime) : 0;
+    const fps = gameTime.deltaTime > 0 ? Math.round(1000 / gameTime.deltaTime) : 0;
 
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     this.ctx.fillRect(this.canvas.width - 80, 10, 70, 25);

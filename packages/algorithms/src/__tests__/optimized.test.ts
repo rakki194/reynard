@@ -153,9 +153,7 @@ describe("Optimized Algorithms API", () => {
     });
 
     it("should update spatial data", () => {
-      const spatialObjects = [
-        { aabb: { x: 0, y: 0, width: 10, height: 10 }, data: "object1" },
-      ];
+      const spatialObjects = [{ aabb: { x: 0, y: 0, width: 10, height: 10 }, data: "object1" }];
 
       // Simulate updating an object's position
       spatialObjects[0].aabb.x = 10;

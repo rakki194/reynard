@@ -4,27 +4,19 @@
  * Handles health monitoring and status reporting for the NLWeb service.
  */
 
-import type {
-  NLWebHealthStatus,
-  NLWebConfiguration,
-  NLWebEvent,
-  NLWebEventEmitter,
-} from "../types/index.js";
+import type { NLWebHealthStatus, NLWebConfiguration, NLWebEvent, NLWebEventEmitter } from "../types/index.js";
 import type { NLWebRouter } from "../types/index.js";
 
 export class NLWebHealthService {
   constructor(
     private configuration: NLWebConfiguration,
-    private eventEmitter: NLWebEventEmitter,
+    private eventEmitter: NLWebEventEmitter
   ) {}
 
   /**
    * Get service health status
    */
-  async getHealthStatus(
-    router: NLWebRouter,
-    initialized: boolean,
-  ): Promise<NLWebHealthStatus> {
+  async getHealthStatus(router: NLWebRouter, initialized: boolean): Promise<NLWebHealthStatus> {
     if (!initialized) {
       return this.getUnhealthyStatus();
     }

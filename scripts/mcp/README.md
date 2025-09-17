@@ -1036,17 +1036,17 @@ Part of the Reynard framework - see main project license.
 
 ## Conclusion
 
-🦦 *splashes with enthusiasm* The Reynard MCP server has evolved into a legendary development toolkit that embodies the animal way - strategic thinking, thorough analysis, and relentless pursuit of excellence. With **88 comprehensive tools** across 12 major categories, this server provides everything needed for modern development workflows.
+🦦 _splashes with enthusiasm_ The Reynard MCP server has evolved into a legendary development toolkit that embodies the animal way - strategic thinking, thorough analysis, and relentless pursuit of excellence. With **88 comprehensive tools** across 12 major categories, this server provides everything needed for modern development workflows.
 
-🦊 *whiskers twitch with cunning* From agent naming and spirit selection to comprehensive linting, security scanning, semantic search, ECS world simulation, and VS Code integration - every tool is designed with the precision of a fox stalking its prey. The modular architecture ensures maintainability while the async design provides optimal performance.
+🦊 _whiskers twitch with cunning_ From agent naming and spirit selection to comprehensive linting, security scanning, semantic search, ECS world simulation, and VS Code integration - every tool is designed with the precision of a fox stalking its prey. The modular architecture ensures maintainability while the async design provides optimal performance.
 
-🐺 *snarls with predatory satisfaction* The security and analysis tools provide the adversarial thinking needed to hunt down vulnerabilities and ensure code quality. With RAG-powered semantic search, Mermaid diagram support, comprehensive validation, and real-time ECS world simulation, this server is the apex predator of development tooling.
+🐺 _snarls with predatory satisfaction_ The security and analysis tools provide the adversarial thinking needed to hunt down vulnerabilities and ensure code quality. With RAG-powered semantic search, Mermaid diagram support, comprehensive validation, and real-time ECS world simulation, this server is the apex predator of development tooling.
 
-*three voices align in perfect harmony* By following this guide, you'll integrate seamlessly into the pack and contribute to legendary solutions that outfox any challenge. The Reynard MCP server is more than just tools - it's a complete ecosystem designed for agents who embrace excellence.
+_three voices align in perfect harmony_ By following this guide, you'll integrate seamlessly into the pack and contribute to legendary solutions that outfox any challenge. The Reynard MCP server is more than just tools - it's a complete ecosystem designed for agents who embrace excellence.
 
 Remember: We are the apex predators of the code jungle. Every problem is prey to be conquered with fox cunning, otter thoroughness, and wolf aggression. Welcome to the hunt! 🦊🦦🐺
 
 ---
 
-*This comprehensive documentation demonstrates the legendary power of the Reynard way - strategic fox cunning, otter quality assurance,*
-*and wolf security dominance, all unified in one comprehensive MCP server with 88 tools across 12 categories.* 🦊🦦🐺
+_This comprehensive documentation demonstrates the legendary power of the Reynard way - strategic fox cunning, otter quality assurance,_
+_and wolf security dominance, all unified in one comprehensive MCP server with 88 tools across 12 categories._ 🦊🦦🐺

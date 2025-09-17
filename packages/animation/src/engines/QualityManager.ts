@@ -23,15 +23,12 @@ export function createQualityManager(config: AdaptiveConfig): QualityManager {
       lowFPSFrames++;
       highFPSFrames = 0;
 
-      if (
-        lowFPSFrames >= config.adaptationThreshold &&
-        currentQualityIndex < config.qualityLevels.length - 1
-      ) {
+      if (lowFPSFrames >= config.adaptationThreshold && currentQualityIndex < config.qualityLevels.length - 1) {
         currentQualityIndex++;
         lowFPSFrames = 0;
         if (config.enablePerformanceMonitoring) {
           console.log(
-            `🦊 QualityManager: Reduced quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`,
+            `🦊 QualityManager: Reduced quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`
           );
         }
       }
@@ -39,15 +36,12 @@ export function createQualityManager(config: AdaptiveConfig): QualityManager {
       highFPSFrames++;
       lowFPSFrames = 0;
 
-      if (
-        highFPSFrames >= config.adaptationThreshold &&
-        currentQualityIndex > 0
-      ) {
+      if (highFPSFrames >= config.adaptationThreshold && currentQualityIndex > 0) {
         currentQualityIndex--;
         highFPSFrames = 0;
         if (config.enablePerformanceMonitoring) {
           console.log(
-            `🦊 QualityManager: Increased quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`,
+            `🦊 QualityManager: Increased quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`
           );
         }
       }

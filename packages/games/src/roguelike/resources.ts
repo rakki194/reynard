@@ -9,7 +9,7 @@ export class GameState implements Resource {
   constructor(
     public state: "playing" | "paused" | "gameOver" | "victory" = "playing",
     public turn: number = 0,
-    public message: string = "",
+    public message: string = ""
   ) {}
 }
 
@@ -18,9 +18,7 @@ export class DungeonMap implements Resource {
   constructor(
     public width: number = 80,
     public height: number = 25,
-    public tiles: Array<
-      Array<{ type: string; explored: boolean; visible: boolean }>
-    > = [],
+    public tiles: Array<Array<{ type: string; explored: boolean; visible: boolean }>> = [],
     public rooms: Array<{
       x: number;
       y: number;
@@ -32,7 +30,7 @@ export class DungeonMap implements Resource {
       y1: number;
       x2: number;
       y2: number;
-    }> = [],
+    }> = []
   ) {}
 }
 
@@ -43,7 +41,7 @@ export class PlayerInput implements Resource {
     public lastKey: string = "",
     public mouseX: number = 0,
     public mouseY: number = 0,
-    public mousePressed: boolean = false,
+    public mousePressed: boolean = false
   ) {}
 }
 
@@ -56,7 +54,7 @@ export class GameConfig implements Resource {
     public fontFamily: string = "monospace",
     public fontSize: number = 16,
     public showFPS: boolean = true,
-    public showDebug: boolean = false,
+    public showDebug: boolean = false
   ) {}
 }
 
@@ -66,7 +64,7 @@ export class Camera implements Resource {
     public x: number = 0,
     public y: number = 0,
     public zoom: number = 1,
-    public followTarget?: number, // entity id
+    public followTarget?: number // entity id
   ) {}
 }
 
@@ -78,7 +76,7 @@ export class MessageLog implements Resource {
       color: string;
       timestamp: number;
     }> = [],
-    public maxMessages: number = 100,
+    public maxMessages: number = 100
   ) {}
 }
 
@@ -87,7 +85,7 @@ export class GameTime implements Resource {
   constructor(
     public deltaTime: number = 0,
     public totalTime: number = 0,
-    public lastUpdate: number = 0,
+    public lastUpdate: number = 0
   ) {}
 }
 

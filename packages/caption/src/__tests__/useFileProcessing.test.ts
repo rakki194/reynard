@@ -95,9 +95,7 @@ describe("useFileProcessing", () => {
 
       const { processFileWrapper, isLoading, error } = useFileProcessing();
 
-      await expect(processFileWrapper(mockFile)).rejects.toThrow(
-        "Failed to process file",
-      );
+      await expect(processFileWrapper(mockFile)).rejects.toThrow("Failed to process file");
       expect(isLoading()).toBe(false);
       expect(error()).toBe("Failed to process file");
     });
@@ -117,7 +115,7 @@ describe("useFileProcessing", () => {
 
       // Create a promise that we can control
       let resolvePromise: (value: MultiModalFile) => void;
-      const processingPromise = new Promise<MultiModalFile>((resolve) => {
+      const processingPromise = new Promise<MultiModalFile>(resolve => {
         resolvePromise = resolve;
       });
 

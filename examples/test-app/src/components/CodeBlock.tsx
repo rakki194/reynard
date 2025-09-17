@@ -12,7 +12,7 @@ interface CodeBlockProps {
   maxHeight?: string;
 }
 
-export const CodeBlock: Component<CodeBlockProps> = (props) => {
+export const CodeBlock: Component<CodeBlockProps> = props => {
   const { theme: currentTheme } = useTheme();
 
   // Calculate height based on content or use maxHeight
@@ -27,13 +27,7 @@ export const CodeBlock: Component<CodeBlockProps> = (props) => {
     const lineCount = props.code.split("\n").length;
     const calculatedHeight = Math.max(lineCount * 25, 200); // Minimum 200px, 25px per line
     const finalHeight = `${Math.min(calculatedHeight, 600)}px`; // Maximum 600px
-    console.log(
-      "CodeBlock: Calculated height:",
-      finalHeight,
-      "for",
-      lineCount,
-      "lines",
-    );
+    console.log("CodeBlock: Calculated height:", finalHeight, "for", lineCount, "lines");
     return finalHeight;
   };
 

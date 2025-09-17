@@ -17,7 +17,7 @@ import { clampToGamut, handleEdgeCases } from "./colorConversion";
 export function basicColorRamp(
   baseColor: OKLCHColor,
   shiftType: "shadow" | "highlight" | "midtone",
-  intensity: number = 0.3,
+  intensity: number = 0.3
 ): OKLCHColor {
   const { l, c, h } = baseColor;
 
@@ -64,7 +64,7 @@ export function generateColorRamp(
   baseColor: OKLCHColor,
   stops: number = 5,
   shadowShift: number = 25,
-  highlightShift: number = 20,
+  highlightShift: number = 20
 ): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const { l, c, h } = baseColor;
@@ -106,7 +106,7 @@ export function generateColorRamp(
 export function generateLightnessRamp(
   baseColor: OKLCHColor,
   stops: number = 5,
-  lightnessRange: number = 60,
+  lightnessRange: number = 60
 ): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const { c, h } = baseColor;
@@ -134,11 +134,7 @@ export function generateLightnessRamp(
  * @param chromaRange - Range of chroma variation
  * @returns Array of OKLCH colors with varying chroma
  */
-export function generateChromaRamp(
-  baseColor: OKLCHColor,
-  stops: number = 5,
-  chromaRange: number = 0.3,
-): OKLCHColor[] {
+export function generateChromaRamp(baseColor: OKLCHColor, stops: number = 5, chromaRange: number = 0.3): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const { l, h } = baseColor;
 
@@ -175,7 +171,7 @@ export function generateMultiDimensionalRamp(
     lightnessCurve?: "linear" | "sine" | "cosine";
     chromaCurve?: "linear" | "sine" | "cosine";
     hueCurve?: "linear" | "sine" | "cosine";
-  } = {},
+  } = {}
 ): OKLCHColor[] {
   const {
     lightnessRange = 40,
@@ -243,7 +239,7 @@ export function generateEasedRamp(
   baseColor: OKLCHColor,
   targetColor: OKLCHColor,
   stops: number = 5,
-  easingFunction: (t: number) => number = (t: number) => t,
+  easingFunction: (t: number) => number = (t: number) => t
 ): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
 

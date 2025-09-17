@@ -8,11 +8,12 @@ error recovery, logging, and integration with the existing threading patterns.
 import asyncio
 import logging
 import time
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any, Callable, Dict, Optional, Union
+from typing import Any
 
 from .base import BaseTool, ToolExecutionContext, ToolResult
-from .exceptions import ToolExecutionError, ToolResourceError, ToolTimeoutError
+from .exceptions import ToolResourceError, ToolTimeoutError
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +26,7 @@ class ToolExecutor:
     timeouts, errors, resource management, and integration with existing threading.
     """
 
-    def __init__(self, thread_pool: Optional[ThreadPoolExecutor] = None):
+    def __init__(self, thread_pool: ThreadPoolExecutor | None = None):
         """
         Initialize the tool executor.
 
@@ -42,7 +43,7 @@ class ToolExecutor:
         }
 
     async def execute_tool(
-        self, tool: BaseTool, context: ToolExecutionContext, parameters: Dict[str, Any]
+        self, tool: BaseTool, context: ToolExecutionContext, parameters: dict[str, Any]
     ) -> ToolResult:
         """
         Execute a tool with the given context and parameters.
@@ -93,7 +94,7 @@ class ToolExecutor:
             )
             return result
 
-        except asyncio.TimeoutError:
+        except TimeoutError:
             execution_time = time.time() - start_time
             self._execution_stats["timeouts"] += 1
             self._execution_stats["failed_executions"] += 1
@@ -112,7 +113,7 @@ class ToolExecutor:
             self._execution_stats["failed_executions"] += 1
             self._execution_stats["total_execution_time"] += execution_time
 
-            error_msg = f"Tool '{tool.name}' execution failed: {str(e)}"
+            error_msg = f"Tool '{tool.name}' execution failed: {e!s}"
             logger.error(error_msg, exc_info=True)
 
             return ToolResult.error_result(
@@ -159,7 +160,7 @@ class ToolExecutor:
         return enhanced_context
 
     async def _execute_dry_run(
-        self, tool: BaseTool, context: ToolExecutionContext, parameters: Dict[str, Any]
+        self, tool: BaseTool, context: ToolExecutionContext, parameters: dict[str, Any]
     ) -> ToolResult:
         """
         Execute a tool in dry-run mode (simulation only).
@@ -191,7 +192,7 @@ class ToolExecutor:
         )
 
     async def _execute_with_monitoring(
-        self, tool: BaseTool, context: ToolExecutionContext, parameters: Dict[str, Any]
+        self, tool: BaseTool, context: ToolExecutionContext, parameters: dict[str, Any]
     ) -> ToolResult:
         """
         Execute a tool with monitoring and resource checks.
@@ -222,7 +223,7 @@ class ToolExecutor:
 
             return result
 
-        except asyncio.TimeoutError:
+        except TimeoutError:
             raise ToolTimeoutError(tool.name, timeout)
 
     def _check_system_resources(self, tool_name: str) -> None:
@@ -264,7 +265,7 @@ class ToolExecutor:
         self,
         func: Callable,
         context: ToolExecutionContext,
-        parameters: Dict[str, Any],
+        parameters: dict[str, Any],
         is_async: bool = False,
     ) -> ToolResult:
         """
@@ -285,19 +286,16 @@ class ToolExecutor:
             if is_async:
                 # Execute async function directly
                 result = await func(**parameters)
+            # Execute sync function in thread pool
+            elif self.thread_pool:
+                loop = asyncio.get_event_loop()
+                result = await loop.run_in_executor(
+                    self.thread_pool, lambda: func(**parameters)
+                )
             else:
-                # Execute sync function in thread pool
-                if self.thread_pool:
-                    loop = asyncio.get_event_loop()
-                    result = await loop.run_in_executor(
-                        self.thread_pool, lambda: func(**parameters)
-                    )
-                else:
-                    # Execute in default executor
-                    loop = asyncio.get_event_loop()
-                    result = await loop.run_in_executor(
-                        None, lambda: func(**parameters)
-                    )
+                # Execute in default executor
+                loop = asyncio.get_event_loop()
+                result = await loop.run_in_executor(None, lambda: func(**parameters))
 
             execution_time = time.time() - start_time
 
@@ -305,7 +303,7 @@ class ToolExecutor:
 
         except Exception as e:
             execution_time = time.time() - start_time
-            error_msg = f"Function execution failed: {str(e)}"
+            error_msg = f"Function execution failed: {e!s}"
 
             return ToolResult.error_result(
                 error=error_msg,
@@ -315,7 +313,7 @@ class ToolExecutor:
                 },
             )
 
-    def get_execution_stats(self) -> Dict[str, Any]:
+    def get_execution_stats(self) -> dict[str, Any]:
         """
         Get execution statistics.
 
@@ -351,7 +349,7 @@ class ToolExecutor:
 
 
 # Global executor instance
-_executor: Optional[ToolExecutor] = None
+_executor: ToolExecutor | None = None
 
 
 def get_tool_executor() -> ToolExecutor:
@@ -363,7 +361,7 @@ def get_tool_executor() -> ToolExecutor:
 
 
 def initialize_tool_executor(
-    thread_pool: Optional[ThreadPoolExecutor] = None,
+    thread_pool: ThreadPoolExecutor | None = None,
 ) -> ToolExecutor:
     """Initialize the global tool executor with optional thread pool."""
     global _executor

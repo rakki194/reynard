@@ -3,18 +3,17 @@
 import os
 import tempfile
 from pathlib import Path
-from unittest.mock import patch, MagicMock
-import pytest
+from unittest.mock import MagicMock, patch
 
 from app.utils.hf_cache import (
+    clear_cache,
+    ensure_hf_cache_dir,
+    get_cache_size,
     get_hf_cache_dir,
     get_hf_hub_dir,
     get_model_cache_path,
-    ensure_hf_cache_dir,
     get_model_snapshot_path,
     is_model_cached,
-    get_cache_size,
-    clear_cache
 )
 
 
@@ -43,10 +42,9 @@ class TestHFCache:
 
     def test_get_hf_cache_dir_priority_order(self):
         """Test that HF_HOME takes priority over HF_CACHE."""
-        with patch.dict(os.environ, {
-            "HF_HOME": "/priority/home",
-            "HF_CACHE": "/secondary/cache"
-        }):
+        with patch.dict(
+            os.environ, {"HF_HOME": "/priority/home", "HF_CACHE": "/secondary/cache"}
+        ):
             result = get_hf_cache_dir()
             assert result == Path("/priority/home")
 
@@ -57,9 +55,9 @@ class TestHFCache:
             mock_hub_dir = MagicMock()
             mock_cache_dir.__truediv__ = MagicMock(return_value=mock_hub_dir)
             mock_get_cache.return_value = mock_cache_dir
-            
+
             result = get_hf_hub_dir()
-            
+
             mock_cache_dir.__truediv__.assert_called_once_with("hub")
             mock_hub_dir.mkdir.assert_called_once_with(parents=True, exist_ok=True)
             assert result == mock_hub_dir
@@ -71,10 +69,14 @@ class TestHFCache:
             mock_model_path = MagicMock()
             mock_hub_dir.__truediv__ = MagicMock(return_value=mock_model_path)
             mock_get_hub.return_value = mock_hub_dir
-            
-            result = get_model_cache_path("fancyfeast/llama-joycaption-beta-one-hf-llava")
-            
-            expected_cache_name = "models--fancyfeast--llama-joycaption-beta-one-hf-llava"
+
+            result = get_model_cache_path(
+                "fancyfeast/llama-joycaption-beta-one-hf-llava"
+            )
+
+            expected_cache_name = (
+                "models--fancyfeast--llama-joycaption-beta-one-hf-llava"
+            )
             mock_hub_dir.__truediv__.assert_called_once_with(expected_cache_name)
             assert result == mock_model_path
 
@@ -85,9 +87,9 @@ class TestHFCache:
             mock_model_path = MagicMock()
             mock_hub_dir.__truediv__ = MagicMock(return_value=mock_model_path)
             mock_get_hub.return_value = mock_hub_dir
-            
+
             result = get_model_cache_path("user/model-name")
-            
+
             expected_cache_name = "models--user--model-name"
             mock_hub_dir.__truediv__.assert_called_once_with(expected_cache_name)
             assert result == mock_model_path
@@ -97,9 +99,9 @@ class TestHFCache:
         with patch("app.utils.hf_cache.get_hf_cache_dir") as mock_get_cache:
             mock_cache_dir = MagicMock()
             mock_get_cache.return_value = mock_cache_dir
-            
+
             result = ensure_hf_cache_dir()
-            
+
             mock_cache_dir.mkdir.assert_called_once_with(parents=True, exist_ok=True)
             assert result == mock_cache_dir
 
@@ -112,9 +114,9 @@ class TestHFCache:
             mock_model_path.__truediv__ = MagicMock(return_value=mock_snapshots_dir)
             mock_snapshots_dir.__truediv__ = MagicMock(return_value=mock_snapshot_path)
             mock_get_model_path.return_value = mock_model_path
-            
+
             result = get_model_snapshot_path("user/model")
-            
+
             mock_get_model_path.assert_called_once_with("user/model")
             mock_model_path.__truediv__.assert_called_once_with("snapshots")
             mock_snapshots_dir.__truediv__.assert_called_once_with("main")
@@ -129,9 +131,9 @@ class TestHFCache:
             mock_model_path.__truediv__ = MagicMock(return_value=mock_snapshots_dir)
             mock_snapshots_dir.__truediv__ = MagicMock(return_value=mock_snapshot_path)
             mock_get_model_path.return_value = mock_model_path
-            
+
             result = get_model_snapshot_path("user/model", "v1.0")
-            
+
             mock_get_model_path.assert_called_once_with("user/model")
             mock_model_path.__truediv__.assert_called_once_with("snapshots")
             mock_snapshots_dir.__truediv__.assert_called_once_with("v1.0")
@@ -143,9 +145,9 @@ class TestHFCache:
             mock_model_path = MagicMock()
             mock_model_path.exists.return_value = True
             mock_get_model_path.return_value = mock_model_path
-            
+
             result = is_model_cached("user/model")
-            
+
             mock_get_model_path.assert_called_once_with("user/model")
             mock_model_path.exists.assert_called_once()
             assert result is True
@@ -156,9 +158,9 @@ class TestHFCache:
             mock_model_path = MagicMock()
             mock_model_path.exists.return_value = False
             mock_get_model_path.return_value = mock_model_path
-            
+
             result = is_model_cached("user/model")
-            
+
             mock_get_model_path.assert_called_once_with("user/model")
             mock_model_path.exists.assert_called_once()
             assert result is False
@@ -169,16 +171,16 @@ class TestHFCache:
             # Create a temporary directory structure
             with tempfile.TemporaryDirectory() as temp_dir:
                 temp_path = Path(temp_dir)
-                
+
                 # Create some test files
                 (temp_path / "file1.txt").write_text("content1")
                 (temp_path / "subdir").mkdir()
                 (temp_path / "subdir" / "file2.txt").write_text("content2")
-                
+
                 mock_get_cache.return_value = temp_path
-                
+
                 result = get_cache_size()
-                
+
                 # Should be the size of both files (8 + 8 = 16 bytes)
                 assert result == 16
 
@@ -188,9 +190,9 @@ class TestHFCache:
             mock_cache_dir = MagicMock()
             mock_cache_dir.exists.return_value = False
             mock_get_cache.return_value = mock_cache_dir
-            
+
             result = get_cache_size()
-            
+
             mock_cache_dir.exists.assert_called_once()
             assert result == 0
 
@@ -201,9 +203,9 @@ class TestHFCache:
                 mock_cache_dir = MagicMock()
                 mock_cache_dir.exists.return_value = True
                 mock_get_cache.return_value = mock_cache_dir
-                
+
                 result = clear_cache()
-                
+
                 mock_cache_dir.exists.assert_called_once()
                 mock_rmtree.assert_called_once_with(mock_cache_dir)
                 assert result is True
@@ -214,9 +216,9 @@ class TestHFCache:
             mock_cache_dir = MagicMock()
             mock_cache_dir.exists.return_value = False
             mock_get_cache.return_value = mock_cache_dir
-            
+
             result = clear_cache()
-            
+
             mock_cache_dir.exists.assert_called_once()
             assert result is True
 
@@ -228,9 +230,9 @@ class TestHFCache:
                 mock_cache_dir.exists.return_value = True
                 mock_rmtree.side_effect = Exception("Permission denied")
                 mock_get_cache.return_value = mock_cache_dir
-                
+
                 result = clear_cache()
-                
+
                 mock_cache_dir.exists.assert_called_once()
                 mock_rmtree.assert_called_once_with(mock_cache_dir)
                 assert result is False

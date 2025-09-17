@@ -6,7 +6,6 @@ Base class for all ECS systems. Systems contain logic and operate on entities wi
 
 import logging
 from abc import ABC, abstractmethod
-from typing import List, Type
 
 from .component import Component
 from .entity import Entity
@@ -17,7 +16,7 @@ logger = logging.getLogger(__name__)
 class System(ABC):
     """
     Base class for all ECS systems.
-    
+
     Systems contain logic and operate on entities that have specific components.
     They are the primary way to implement behavior in the ECS architecture.
     """
@@ -25,7 +24,7 @@ class System(ABC):
     def __init__(self, world: "ECSWorld"):
         """
         Initialize the system.
-        
+
         Args:
             world: The ECS world this system belongs to
         """
@@ -36,21 +35,21 @@ class System(ABC):
     def update(self, delta_time: float) -> None:
         """
         Update system logic.
-        
+
         Args:
             delta_time: Time elapsed since last update
         """
         pass
 
     def get_entities_with_components(
-        self, *component_types: Type[Component]
-    ) -> List[Entity]:
+        self, *component_types: type[Component]
+    ) -> list[Entity]:
         """
         Get entities that have all specified components.
-        
+
         Args:
             *component_types: Component types to filter by
-            
+
         Returns:
             List of entities that have all specified components
         """

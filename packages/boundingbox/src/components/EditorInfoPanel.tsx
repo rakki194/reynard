@@ -21,7 +21,7 @@ export interface EditorInfoPanelProps {
   className?: string;
 }
 
-export const EditorInfoPanel: Component<EditorInfoPanelProps> = (props) => {
+export const EditorInfoPanel: Component<EditorInfoPanelProps> = props => {
   const {
     boundingBoxes,
     selectedBoxId,
@@ -53,7 +53,7 @@ export const EditorInfoPanel: Component<EditorInfoPanelProps> = (props) => {
 
       <div class="boxes-list">
         <For each={boundingBoxes}>
-          {(box) => (
+          {box => (
             <div
               class={`box-item ${selectedBoxId === box.id ? "selected" : ""}`}
               onClick={() => handleBoxClick(box.id)}
@@ -66,7 +66,7 @@ export const EditorInfoPanel: Component<EditorInfoPanelProps> = (props) => {
                 <Show when={config.enableEditing}>
                   <button
                     type="button"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       handleEditClick(box.id);
                     }}
@@ -78,7 +78,7 @@ export const EditorInfoPanel: Component<EditorInfoPanelProps> = (props) => {
                 <Show when={config.enableDeletion}>
                   <button
                     type="button"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       handleDeleteClick(box.id);
                     }}

@@ -24,18 +24,10 @@ export class MarkdownAnalyzer {
   // private includePatterns: string[];
   private excludePatterns: string[];
 
-  constructor(config: {
-    rootPath: string;
-    includePatterns?: string[];
-    excludePatterns?: string[];
-  }) {
+  constructor(config: { rootPath: string; includePatterns?: string[]; excludePatterns?: string[] }) {
     this.rootPath = config.rootPath;
     // this.includePatterns = config.includePatterns || ['**/*.md', '**/*.mdx'];
-    this.excludePatterns = config.excludePatterns || [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-    ];
+    this.excludePatterns = config.excludePatterns || ["**/node_modules/**", "**/dist/**", "**/build/**"];
   }
 
   /**
@@ -52,10 +44,7 @@ export class MarkdownAnalyzer {
           pages.push(page);
         }
       } catch (error) {
-        console.warn(
-          `Warning: Failed to analyze markdown file ${filePath}:`,
-          error,
-        );
+        console.warn(`Warning: Failed to analyze markdown file ${filePath}:`, error);
       }
     }
 
@@ -74,10 +63,7 @@ export class MarkdownAnalyzer {
       for (const entry of entries) {
         const fullPath = path.join(this.rootPath, entry.name);
 
-        if (
-          entry.isDirectory() &&
-          !shouldExcludeDirectory(entry.name, this.excludePatterns)
-        ) {
+        if (entry.isDirectory() && !shouldExcludeDirectory(entry.name, this.excludePatterns)) {
           const subFiles = await this.findMarkdownFilesInDirectory(fullPath);
           files.push(...subFiles);
         } else if (entry.isFile() && isMarkdownFile(entry.name)) {
@@ -103,10 +89,7 @@ export class MarkdownAnalyzer {
       for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
 
-        if (
-          entry.isDirectory() &&
-          !shouldExcludeDirectory(entry.name, this.excludePatterns)
-        ) {
+        if (entry.isDirectory() && !shouldExcludeDirectory(entry.name, this.excludePatterns)) {
           const subFiles = await this.findMarkdownFilesInDirectory(fullPath);
           files.push(...subFiles);
         } else if (entry.isFile() && isMarkdownFile(entry.name)) {
@@ -139,8 +122,7 @@ export class MarkdownAnalyzer {
       const slug = generateSlugFromPath(this.rootPath, filePath);
 
       // Extract title from frontmatter or first heading
-      const title =
-        data.title || extractTitleFromContent(markdownContent) || "Untitled";
+      const title = data.title || extractTitleFromContent(markdownContent) || "Untitled";
 
       // Determine content type
       const type = filePath.endsWith(".mdx") ? "mdx" : "markdown";
@@ -155,11 +137,7 @@ export class MarkdownAnalyzer {
           description: data.description,
           author: data.author,
           date: data.date,
-          tags: Array.isArray(data.tags)
-            ? data.tags
-            : data.tags
-              ? [data.tags]
-              : [],
+          tags: Array.isArray(data.tags) ? data.tags : data.tags ? [data.tags] : [],
           category: data.category,
           version: data.version,
           lastModified: data.lastModified,

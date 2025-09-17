@@ -85,8 +85,7 @@ export class TemplateEngine {
    * Render examples page
    */
   async renderExamplePage(packageInfo: PackageInfo): Promise<DocPage> {
-    const content =
-      this.exampleDocumentationGenerator.generateContent(packageInfo);
+    const content = this.exampleDocumentationGenerator.generateContent(packageInfo);
 
     return {
       id: `${packageInfo.name}-examples`,

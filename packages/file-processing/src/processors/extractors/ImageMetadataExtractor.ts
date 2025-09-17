@@ -6,19 +6,13 @@
  */
 
 import { ImageMetadata, ExifData } from "../../types";
-import {
-  BaseMetadataExtractor,
-  MetadataExtractionOptions,
-} from "./BaseMetadataExtractor";
+import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
 
 export class ImageMetadataExtractor extends BaseMetadataExtractor {
   /**
    * Extract metadata from image files
    */
-  async extractMetadata(
-    file: File | string,
-    options?: Partial<MetadataExtractionOptions>,
-  ): Promise<ImageMetadata> {
+  async extractMetadata(file: File | string, options?: Partial<MetadataExtractionOptions>): Promise<ImageMetadata> {
     const mergedOptions = { ...this.options, ...options };
     const image = await this.loadImage(file);
     const basicInfo = await this.getBasicFileInfo(file);
@@ -90,9 +84,7 @@ export class ImageMetadataExtractor extends BaseMetadataExtractor {
    */
   private async detectImageAnimation(file: File | string): Promise<boolean> {
     // Simple detection based on file extension
-    const extension = this.getFileExtension(
-      typeof file === "string" ? file : file.name,
-    );
+    const extension = this.getFileExtension(typeof file === "string" ? file : file.name);
     return extension === ".gif" || extension === ".webp";
   }
 

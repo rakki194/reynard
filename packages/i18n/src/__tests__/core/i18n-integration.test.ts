@@ -52,9 +52,7 @@ describe("I18n Integration Tests", () => {
   describe("Translation Loading", () => {
     it("should load translations for supported locales", async () => {
       // Mock the dynamic import
-      const mockImport = vi
-        .fn()
-        .mockResolvedValue({ default: mockTranslations });
+      const mockImport = vi.fn().mockResolvedValue({ default: mockTranslations });
       vi.stubGlobal("import", mockImport);
 
       const translations = await loadTranslations("en");
@@ -78,9 +76,7 @@ describe("I18n Integration Tests", () => {
       const mockImport = vi.fn().mockRejectedValue(new Error("Not found"));
       vi.stubGlobal("import", mockImport);
 
-      await expect(loadTranslations("nonexistent")).rejects.toThrow(
-        "Not found",
-      );
+      await expect(loadTranslations("nonexistent")).rejects.toThrow("Not found");
     });
 
     it("should handle network errors gracefully", async () => {
@@ -119,22 +115,13 @@ describe("I18n Integration Tests", () => {
 
     it("should integrate with localStorage for persistence", () => {
       i18n.setLocale("fr");
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(
-        "reynard-locale",
-        "fr",
-      );
+      expect(window.localStorage.setItem).toHaveBeenCalledWith("reynard-locale", "fr");
     });
 
     it("should integrate with document attributes", () => {
       i18n.setLocale("ar");
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
-        "lang",
-        "ar",
-      );
-      expect(document.documentElement.setAttribute).toHaveBeenCalledWith(
-        "dir",
-        "rtl",
-      );
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("lang", "ar");
+      expect(document.documentElement.setAttribute).toHaveBeenCalledWith("dir", "rtl");
     });
 
     it("should handle localStorage errors gracefully", () => {
@@ -321,13 +308,9 @@ describe("I18n Integration Tests", () => {
     });
 
     it("should handle dynamic content updates", () => {
-      expect(i18n.t("integration.dynamic", { value: "test" })).toBe(
-        "Dynamic content: test",
-      );
+      expect(i18n.t("integration.dynamic", { value: "test" })).toBe("Dynamic content: test");
 
-      expect(i18n.t("integration.dynamic", { value: "updated" })).toBe(
-        "Dynamic content: updated",
-      );
+      expect(i18n.t("integration.dynamic", { value: "updated" })).toBe("Dynamic content: updated");
     });
 
     it("should maintain state across multiple operations", () => {

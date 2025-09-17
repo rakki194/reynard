@@ -3,15 +3,7 @@
  * Package installation interface with progress tracking and dependency resolution
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button, TextField, Select } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
@@ -49,9 +41,7 @@ export interface InstallationSummary {
   totalProgress: number;
 }
 
-export const PackageInstallationPanel: Component<
-  PackageInstallationPanelProps
-> = (props) => {
+export const PackageInstallationPanel: Component<PackageInstallationPanelProps> = props => {
   const [packages, setPackages] = createSignal<InstallationPackage[]>([]);
   const [summary, setSummary] = createSignal<InstallationSummary>({
     totalPackages: 0,
@@ -178,19 +168,14 @@ export const PackageInstallationPanel: Component<
 
       // Calculate summary
       const packageList = mockPackages;
-      const totalProgress =
-        packageList.reduce((sum, pkg) => sum + pkg.progress, 0) /
-        packageList.length;
+      const totalProgress = packageList.reduce((sum, pkg) => sum + pkg.progress, 0) / packageList.length;
 
       const mockSummary: InstallationSummary = {
         totalPackages: packageList.length,
-        pendingPackages: packageList.filter((p) => p.status === "pending")
-          .length,
-        installingPackages: packageList.filter((p) => p.status === "installing")
-          .length,
-        installedPackages: packageList.filter((p) => p.status === "installed")
-          .length,
-        failedPackages: packageList.filter((p) => p.status === "failed").length,
+        pendingPackages: packageList.filter(p => p.status === "pending").length,
+        installingPackages: packageList.filter(p => p.status === "installing").length,
+        installedPackages: packageList.filter(p => p.status === "installed").length,
+        failedPackages: packageList.filter(p => p.status === "failed").length,
         totalProgress: totalProgress,
       };
 
@@ -208,10 +193,8 @@ export const PackageInstallationPanel: Component<
     console.log(`Installing package: ${packageName}`);
 
     // Simulate installation
-    const updatedPackages = packages().map((pkg) =>
-      pkg.name === packageName
-        ? { ...pkg, status: "installing" as const, startTime: new Date() }
-        : pkg,
+    const updatedPackages = packages().map(pkg =>
+      pkg.name === packageName ? { ...pkg, status: "installing" as const, startTime: new Date() } : pkg
     );
     setPackages(updatedPackages);
 
@@ -219,22 +202,20 @@ export const PackageInstallationPanel: Component<
     let progress = 0;
     const progressInterval = setInterval(() => {
       progress += 10;
-      setPackages((prev) =>
-        prev.map((pkg) =>
-          pkg.name === packageName && pkg.status === "installing"
-            ? { ...pkg, progress: Math.min(progress, 100) }
-            : pkg,
-        ),
+      setPackages(prev =>
+        prev.map(pkg =>
+          pkg.name === packageName && pkg.status === "installing" ? { ...pkg, progress: Math.min(progress, 100) } : pkg
+        )
       );
 
       if (progress >= 100) {
         clearInterval(progressInterval);
-        setPackages((prev) =>
-          prev.map((pkg) =>
+        setPackages(prev =>
+          prev.map(pkg =>
             pkg.name === packageName && pkg.status === "installing"
               ? { ...pkg, status: "installed" as const, endTime: new Date() }
-              : pkg,
-          ),
+              : pkg
+          )
         );
       }
     }, 500);
@@ -245,10 +226,8 @@ export const PackageInstallationPanel: Component<
     console.log(`Cancelling installation: ${packageName}`);
 
     // Simulate cancellation
-    const updatedPackages = packages().map((pkg) =>
-      pkg.name === packageName
-        ? { ...pkg, status: "cancelled" as const, endTime: new Date() }
-        : pkg,
+    const updatedPackages = packages().map(pkg =>
+      pkg.name === packageName ? { ...pkg, status: "cancelled" as const, endTime: new Date() } : pkg
     );
     setPackages(updatedPackages);
   };
@@ -258,7 +237,7 @@ export const PackageInstallationPanel: Component<
     console.log(`Retrying installation: ${packageName}`);
 
     // Simulate retry
-    const updatedPackages = packages().map((pkg) =>
+    const updatedPackages = packages().map(pkg =>
       pkg.name === packageName
         ? {
             ...pkg,
@@ -267,22 +246,20 @@ export const PackageInstallationPanel: Component<
             error: undefined,
             startTime: new Date(),
           }
-        : pkg,
+        : pkg
     );
     setPackages(updatedPackages);
   };
 
   const handleBulkInstall = async () => {
-    const pendingPackages = packages().filter(
-      (pkg) => pkg.status === "pending",
-    );
+    const pendingPackages = packages().filter(pkg => pkg.status === "pending");
     setIsInstalling(true);
 
     try {
       for (const pkg of pendingPackages) {
         await handleInstallPackage(pkg.name);
         // Add delay between installations
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
     } finally {
       setIsInstalling(false);
@@ -296,15 +273,13 @@ export const PackageInstallationPanel: Component<
     if (searchQuery()) {
       const query = searchQuery().toLowerCase();
       filtered = filtered.filter(
-        (pkg) =>
-          pkg.name.toLowerCase().includes(query) ||
-          pkg.description.toLowerCase().includes(query),
+        pkg => pkg.name.toLowerCase().includes(query) || pkg.description.toLowerCase().includes(query)
       );
     }
 
     // Filter by status
     if (selectedStatus() !== "all") {
-      filtered = filtered.filter((pkg) => pkg.status === selectedStatus());
+      filtered = filtered.filter(pkg => pkg.status === selectedStatus());
     }
 
     return filtered;
@@ -378,9 +353,7 @@ export const PackageInstallationPanel: Component<
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon("download")?.outerHTML || ""
-              }
+              innerHTML={fluentIconsPackage.getIcon("download")?.outerHTML || ""}
             />
           </span>
           <h3>Package Installation</h3>
@@ -393,21 +366,14 @@ export const PackageInstallationPanel: Component<
               onClick={handleBulkInstall}
               disabled={isInstalling() || summary().pendingPackages === 0}
             >
-              <Show
-                when={isInstalling()}
-                fallback={`Install All (${summary().pendingPackages})`}
-              >
+              <Show when={isInstalling()} fallback={`Install All (${summary().pendingPackages})`}>
                 <span class="spinner"></span>
                 Installing...
               </Show>
             </Button>
           </Show>
 
-          <Button
-            variant="secondary"
-            onClick={refreshInstallationData}
-            disabled={isRefreshing()}
-          >
+          <Button variant="secondary" onClick={refreshInstallationData} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -449,34 +415,26 @@ export const PackageInstallationPanel: Component<
         <TextField
           placeholder="Search packages..."
           value={searchQuery()}
-          onChange={(e) => setSearchQuery(e.currentTarget.value)}
+          onChange={e => setSearchQuery(e.currentTarget.value)}
         />
 
-        <Select
-          value={selectedStatus()}
-          onChange={(e) => setSelectedStatus(e.currentTarget.value)}
-        >
+        <Select value={selectedStatus()} onChange={e => setSelectedStatus(e.currentTarget.value)}>
           <option value="all">All Statuses</option>
-          <For each={statuses()}>
-            {(status) => <option value={status}>{status}</option>}
-          </For>
+          <For each={statuses()}>{status => <option value={status}>{status}</option>}</For>
         </Select>
       </div>
 
       {/* Packages List */}
       <div class="packages-list">
         <For each={filteredPackages()}>
-          {(pkg) => (
+          {pkg => (
             <div class="package-item">
               <div class="package-header">
                 <div class="package-info">
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={
-                        fluentIconsPackage.getIcon(getStatusIcon(pkg.status))
-                          ?.outerHTML || ""
-                      }
+                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(pkg.status))?.outerHTML || ""}
                     />
                   </span>
 
@@ -488,10 +446,7 @@ export const PackageInstallationPanel: Component<
                 </div>
 
                 <div class="package-status">
-                  <span
-                    class="status-badge"
-                    classList={{ [getStatusColor(pkg.status)]: true }}
-                  >
+                  <span class="status-badge" classList={{ [getStatusColor(pkg.status)]: true }}>
                     {pkg.status}
                   </span>
 
@@ -507,9 +462,7 @@ export const PackageInstallationPanel: Component<
                   </div>
                   <div class="progress-info">
                     <span class="progress-text">{pkg.progress}%</span>
-                    <span class="estimated-time">
-                      ETA: {formatTime(pkg.estimatedTime)}
-                    </span>
+                    <span class="estimated-time">ETA: {formatTime(pkg.estimatedTime)}</span>
                   </div>
                 </div>
               </Show>
@@ -558,31 +511,19 @@ export const PackageInstallationPanel: Component<
               {/* Package Actions */}
               <div class="package-actions">
                 <Show when={pkg.status === "pending"}>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => handleInstallPackage(pkg.name)}
-                  >
+                  <Button variant="primary" size="sm" onClick={() => handleInstallPackage(pkg.name)}>
                     Install
                   </Button>
                 </Show>
 
                 <Show when={pkg.status === "installing"}>
-                  <Button
-                    variant="warning"
-                    size="sm"
-                    onClick={() => handleCancelInstallation(pkg.name)}
-                  >
+                  <Button variant="warning" size="sm" onClick={() => handleCancelInstallation(pkg.name)}>
                     Cancel
                   </Button>
                 </Show>
 
                 <Show when={pkg.status === "failed"}>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => handleRetryInstallation(pkg.name)}
-                  >
+                  <Button variant="secondary" size="sm" onClick={() => handleRetryInstallation(pkg.name)}>
                     Retry
                   </Button>
                 </Show>
@@ -594,9 +535,7 @@ export const PackageInstallationPanel: Component<
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">
-          Last updated: {lastUpdate()!.toLocaleString()}
-        </div>
+        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
       </Show>
     </div>
   );

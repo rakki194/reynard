@@ -126,9 +126,7 @@ const [isVisible, setIsVisible] = createSignal(true);
 const [isAuthenticated, setIsAuthenticated] = createSignal(false);
 
 // ✅ Derived signals use descriptive names
-const filteredItems = createMemo(() =>
-  items().filter((item) => item.name.includes(searchQuery())),
-);
+const filteredItems = createMemo(() => items().filter(item => item.name.includes(searchQuery())));
 ```
 
 ### Effect Naming
@@ -163,11 +161,7 @@ function useToggle(initialValue: boolean) {
   return [value, toggle] as const;
 }
 
-function useEventListener(
-  event: string,
-  handler: EventListener,
-  target: EventTarget = window,
-) {
+function useEventListener(event: string, handler: EventListener, target: EventTarget = window) {
   createEffect(() => {
     target.addEventListener(event, handler);
     onCleanup(() => target.removeEventListener(event, handler));
@@ -198,8 +192,8 @@ Composables should return consistent, typed values:
 // ✅ Signal tuple pattern
 function useCounter(initial: number = 0) {
   const [count, setCount] = createSignal(initial);
-  const increment = () => setCount((c) => c + 1);
-  const decrement = () => setCount((c) => c - 1);
+  const increment = () => setCount(c => c + 1);
+  const decrement = () => setCount(c => c - 1);
 
   return [count, { increment, decrement }] as const;
 }
@@ -211,11 +205,11 @@ function useForm<T>(initialValues: T) {
   const [isSubmitting, setIsSubmitting] = createSignal(false);
 
   const setValue = (key: keyof T, value: any) => {
-    setValues((prev) => ({ ...prev, [key]: value }));
+    setValues(prev => ({ ...prev, [key]: value }));
   };
 
   const setError = (key: keyof T, error: string) => {
-    setErrors((prev) => ({ ...prev, [key]: error }));
+    setErrors(prev => ({ ...prev, [key]: error }));
   };
 
   return {
@@ -317,7 +311,7 @@ export { API_ENDPOINTS, ROUTES } from "./constants";
 // ✅ Properly typed composables
 function useCounter(initial: number = 0) {
   const [count, setCount] = createSignal<number>(initial);
-  const increment = () => setCount((c) => c + 1);
+  const increment = () => setCount(c => c + 1);
 
   return [count, { increment }] as const;
 }
@@ -342,11 +336,7 @@ function useLocalStorage<T>(key: string, defaultValue: T) {
 
 ```typescript
 // ✅ Proper cleanup
-function useEventListener(
-  event: string,
-  handler: EventListener,
-  target: EventTarget = window,
-) {
+function useEventListener(event: string, handler: EventListener, target: EventTarget = window) {
   createEffect(() => {
     target.addEventListener(event, handler);
     onCleanup(() => {

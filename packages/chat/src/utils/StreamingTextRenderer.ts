@@ -57,21 +57,12 @@ const DEFAULT_OPTIONS: Required<StreamingTextOptions> = {
   wordPause: 50,
 };
 
-import {
-  calculateCharacterDelay,
-  createInitialState,
-  createTimerManager,
-} from "./StreamingHelpers";
+import { calculateCharacterDelay, createInitialState, createTimerManager } from "./StreamingHelpers";
 import { createStreamingControls } from "./StreamingControls";
 
-export function createStreamingText(
-  text: string,
-  options: StreamingTextOptions = {},
-) {
+export function createStreamingText(text: string, options: StreamingTextOptions = {}) {
   const opts = { ...DEFAULT_OPTIONS, ...options };
-  const [state, setState] = createSignal<StreamingTextState>(
-    createInitialState(text),
-  );
+  const [state, setState] = createSignal<StreamingTextState>(createInitialState(text));
   const timers = createTimerManager();
 
   const streamNext = () => {
@@ -88,7 +79,7 @@ export function createStreamingText(
     const nextIndex = currentState.currentIndex + 1;
     const progress = (nextIndex / text.length) * 100;
 
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       currentText: nextText,
       currentIndex: nextIndex,
@@ -100,7 +91,7 @@ export function createStreamingText(
   };
 
   const handleStreamingComplete = () => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       isStreaming: false,
       isComplete: true,
@@ -112,14 +103,7 @@ export function createStreamingText(
     }
   };
 
-  const controls = createStreamingControls(
-    text,
-    opts,
-    state,
-    setState,
-    timers,
-    streamNext,
-  );
+  const controls = createStreamingControls(text, opts, state, setState, timers, streamNext);
   const { restart } = controls;
 
   onCleanup(timers.cleanup);

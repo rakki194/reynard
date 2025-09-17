@@ -5,11 +5,7 @@
 
 import { createEffect, onCleanup } from "solid-js";
 import type { ImageViewerProps, ImageViewerConfig } from "../types";
-import {
-  useImageViewerState,
-  useImageViewerEvents,
-  useImageViewerTransform,
-} from "./index";
+import { useImageViewerState, useImageViewerEvents, useImageViewerTransform } from "./index";
 
 export interface UseImageViewerReturn {
   config: () => ImageViewerConfig;
@@ -22,7 +18,7 @@ export interface UseImageViewerReturn {
 export const useImageViewer = (
   props: ImageViewerProps,
   containerRef: () => HTMLDivElement | undefined,
-  imageRef: () => HTMLImageElement | undefined,
+  imageRef: () => HTMLImageElement | undefined
 ): UseImageViewerReturn => {
   // Configuration - computed to avoid reactive variable warnings
   const config = (): ImageViewerConfig => ({
@@ -36,26 +32,13 @@ export const useImageViewer = (
   });
 
   // State management
-  const { state, setState } = useImageViewerState(
-    config(),
-    props.onZoomChange,
-    props.onPanChange,
-  );
+  const { state, setState } = useImageViewerState(config(), props.onZoomChange, props.onPanChange);
 
   // Event handlers
-  const events = useImageViewerEvents(
-    config(),
-    state,
-    setState,
-    containerRef,
-    imageRef,
-  );
+  const events = useImageViewerEvents(config(), state, setState, containerRef, imageRef);
 
   // Transform management
-  const { imageClasses, applyTransforms } = useImageViewerTransform(
-    state,
-    config().enablePan,
-  );
+  const { imageClasses, applyTransforms } = useImageViewerTransform(state, config().enablePan);
 
   // Apply transforms when state changes
   createEffect(() => {

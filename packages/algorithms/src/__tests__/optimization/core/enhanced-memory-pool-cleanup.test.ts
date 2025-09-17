@@ -276,7 +276,7 @@ describe("Enhanced Memory Pool Cleanup Coverage", () => {
       }
 
       // Return all to pool
-      pools.forEach((pool) => memoryPool.returnSpatialHash(pool));
+      pools.forEach(pool => memoryPool.returnSpatialHash(pool));
 
       // Force cleanup
       (memoryPool as any).cleanupUnusedPools();
@@ -294,7 +294,7 @@ describe("Enhanced Memory Pool Cleanup Coverage", () => {
       const processedSet = memoryPool.getProcessedSet();
 
       // Mark all as unused with old timestamps
-      [spatialHash, unionFind, collisionArray, processedSet].forEach((pool) => {
+      [spatialHash, unionFind, collisionArray, processedSet].forEach(pool => {
         (pool as any).isInUse = false;
         (pool as any).lastUsed = Date.now() - 10000;
       });

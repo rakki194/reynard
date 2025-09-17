@@ -39,11 +39,9 @@ export const gamesTranslations = {
   canvasElementNotFound: "Canvas element not found",
   howToPlay: "How to Play",
   useWASDOrArrowKeysToMove: "Use WASD or Arrow Keys to move your character (@)",
-  exploreProcedurallyGeneratedDungeon:
-    "Explore the procedurally generated dungeon",
+  exploreProcedurallyGeneratedDungeon: "Explore the procedurally generated dungeon",
   fightEnemiesByWalkingIntoThem: "Fight enemies (g, o, T) by walking into them",
-  collectItemsByWalkingOverThem:
-    "Collect items (!, ?, $, )) by walking over them",
+  collectItemsByWalkingOverThem: "Collect items (!, ?, $, )) by walking over them",
   pressRToRestartGame: "Press R to restart the game",
   features: "Features",
   ecsArchitecture: "ECS Architecture",
@@ -51,11 +49,9 @@ export const gamesTranslations = {
   proceduralGeneration: "Procedural Generation",
   eachDungeonUniquelyGenerated: "Each dungeon is uniquely generated",
   lineOfSight: "Line of Sight",
-  realisticVisionAndExplorationMechanics:
-    "Realistic vision and exploration mechanics",
+  realisticVisionAndExplorationMechanics: "Realistic vision and exploration mechanics",
   aiEnemies: "AI Enemies",
-  differentEnemyTypesWithUniqueBehaviors:
-    "Different enemy types with unique behaviors",
+  differentEnemyTypesWithUniqueBehaviors: "Different enemy types with unique behaviors",
   pixelArt: "Pixel Art",
   retroStyleRenderingWithCrispPixels: "Retro-style rendering with crisp pixels",
 };

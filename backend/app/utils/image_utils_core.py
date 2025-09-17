@@ -10,7 +10,7 @@ from .image_processing import ImageProcessing
 
 class ImageUtils:
     """Image processing utilities combining format support and processing."""
-    
+
     # Delegate format operations to ImageFormatSupport
     get_supported_formats = ImageFormatSupport.get_supported_formats
     is_supported_format = ImageFormatSupport.is_supported_format
@@ -20,7 +20,7 @@ class ImageUtils:
     get_mime_type = ImageFormatSupport.get_mime_type
     requires_plugin = ImageFormatSupport.requires_plugin
     supports_transparency = ImageFormatSupport.supports_transparency
-    
+
     # Delegate processing operations to ImageProcessing
     validate_dimensions = ImageProcessing.validate_dimensions
     get_aspect_ratio = ImageProcessing.get_aspect_ratio

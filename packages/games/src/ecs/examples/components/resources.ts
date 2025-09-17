@@ -6,7 +6,7 @@ export class GameTime implements Resource {
   readonly __resource = true;
   constructor(
     public deltaTime: number,
-    public totalTime: number,
+    public totalTime: number
   ) {}
 }
 
@@ -15,7 +15,7 @@ export class GameState implements Resource {
   constructor(
     public score: number,
     public level: number,
-    public isGameOver: boolean = false,
+    public isGameOver: boolean = false
   ) {}
 }
 
@@ -25,7 +25,7 @@ export class InputState implements Resource {
     public keys: Set<string> = new Set(),
     public mouseX: number = 0,
     public mouseY: number = 0,
-    public mousePressed: boolean = false,
+    public mousePressed: boolean = false
   ) {}
 }
 
@@ -34,7 +34,7 @@ export class Camera implements Resource {
   constructor(
     public x: number = 0,
     public y: number = 0,
-    public zoom: number = 1,
+    public zoom: number = 1
   ) {}
 }
 

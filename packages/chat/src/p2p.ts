@@ -19,20 +19,9 @@ export { RoomList } from "./components/RoomList";
 export { UserList } from "./components/UserList";
 
 // Re-export base chat functionality for convenience
-export {
-  ChatMessage,
-  MessageInput,
-  MarkdownRenderer,
-  ThinkingIndicator,
-  ToolCallDisplay,
-} from "./components";
+export { ChatMessage, MessageInput, MarkdownRenderer, ThinkingIndicator, ToolCallDisplay } from "./components";
 
-export {
-  StreamingMarkdownParser,
-  createStreamingMarkdownParser,
-  parseMarkdown,
-  parseMarkdownStream,
-} from "./utils";
+export { StreamingMarkdownParser, createStreamingMarkdownParser, parseMarkdown, parseMarkdownStream } from "./utils";
 
 // Re-export base types that are commonly used in P2P
 export type {

@@ -18,10 +18,10 @@ import type { VectorSearchOptions, HybridSearchOptions, SearchConfig, SearchMetr
 
 /**
  * Intelligent Search Operations
- * 
+ *
  * This class provides a clean, intelligent interface to search operations
  * with proper error handling, validation, caching, and metrics tracking.
- * 
+ *
  * @deprecated Use SearchOperationsManager directly for new code
  */
 export class SearchOperations {
@@ -67,7 +67,11 @@ export class SearchOperations {
   /**
    * Perform multimodal search across multiple modalities with intelligent error handling
    */
-  async multimodalSearch(query: string, modalities: ModalityType[], options: SearchOptions = {}): Promise<Record<ModalityType, SearchResult[]>> {
+  async multimodalSearch(
+    query: string,
+    modalities: ModalityType[],
+    options: SearchOptions = {}
+  ): Promise<Record<ModalityType, SearchResult[]>> {
     return this.manager.multimodalSearch(query, modalities, options);
   }
   /**

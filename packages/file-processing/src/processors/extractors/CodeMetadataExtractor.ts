@@ -7,11 +7,7 @@
 
 import { CodeMetadata } from "../../types";
 import { BaseMetadataExtractor } from "./BaseMetadataExtractor";
-import {
-  detectProgrammingLanguage,
-  extractDependencies,
-  detectCodePurpose,
-} from "../utils/language-detection";
+import { detectProgrammingLanguage, extractDependencies, detectCodePurpose } from "../utils/language-detection";
 
 export class CodeMetadataExtractor extends BaseMetadataExtractor {
   /**

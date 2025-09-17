@@ -10,8 +10,9 @@ Follows the 100-line axiom and modular architecture principles.
 import secrets
 from typing import Any
 
-from reynard_agent_naming import AgentNameManager, AnimalSpirit, NamingStyle
 from services.version_service import VersionService
+
+from reynard_agent_naming import AgentNameManager, AnimalSpirit, NamingStyle
 
 
 class AgentTools:

@@ -69,6 +69,6 @@ const renderSearchHistory = (props: RAGSearchHistoryProps) => {
   );
 };
 
-export const RAGSearchHistory: Component<RAGSearchHistoryProps> = (props) => {
+export const RAGSearchHistory: Component<RAGSearchHistoryProps> = props => {
   return renderSearchHistory(props);
 };

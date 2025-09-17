@@ -22,11 +22,7 @@ describe("AppLayout", () => {
   describe("Rendering", () => {
     it("should render with all sections", () => {
       render(() => (
-        <AppLayout
-          header={mockHeader}
-          sidebar={mockSidebar}
-          footer={mockFooter}
-        >
+        <AppLayout header={mockHeader} sidebar={mockSidebar} footer={mockFooter}>
           {mockContent}
         </AppLayout>
       ));
@@ -92,9 +88,7 @@ describe("AppLayout", () => {
         </AppLayout>
       ));
 
-      expect(
-        screen.queryByRole("button", { name: /toggle sidebar/i }),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /toggle sidebar/i })).not.toBeInTheDocument();
     });
 
     it("should apply custom sidebar width", () => {
@@ -110,11 +104,7 @@ describe("AppLayout", () => {
 
     it("should apply collapsed width when collapsed", () => {
       render(() => (
-        <AppLayout
-          sidebar={mockSidebar}
-          collapsedWidth={80}
-          defaultSidebarOpen={false}
-        >
+        <AppLayout sidebar={mockSidebar} collapsedWidth={80} defaultSidebarOpen={false}>
           {mockContent}
         </AppLayout>
       ));
@@ -151,11 +141,7 @@ describe("AppLayout", () => {
       });
 
       render(() => (
-        <AppLayout
-          sidebar={mockSidebar}
-          mobileBreakpoint={768}
-          overlayOnMobile={true}
-        >
+        <AppLayout sidebar={mockSidebar} mobileBreakpoint={768} overlayOnMobile={true}>
           {mockContent}
         </AppLayout>
       ));
@@ -202,10 +188,7 @@ describe("AppLayout", () => {
       });
       fireEvent.click(toggleButton);
 
-      expect(localStorageSpy).toHaveBeenCalledWith(
-        "app-layout-sidebar-open",
-        "false",
-      );
+      expect(localStorageSpy).toHaveBeenCalledWith("app-layout-sidebar-open", "false");
     });
 
     it("should restore sidebar state from localStorage", () => {
@@ -271,11 +254,7 @@ describe("AppLayout", () => {
   describe("Layout Structure", () => {
     it("should maintain proper layout hierarchy", () => {
       render(() => (
-        <AppLayout
-          header={mockHeader}
-          sidebar={mockSidebar}
-          footer={mockFooter}
-        >
+        <AppLayout header={mockHeader} sidebar={mockSidebar} footer={mockFooter}>
           {mockContent}
         </AppLayout>
       ));

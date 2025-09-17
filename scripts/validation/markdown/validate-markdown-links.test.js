@@ -12,11 +12,7 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import {
-  MarkdownLinkValidator,
-  LinkValidationResult,
-  FileValidationResult,
-} from "./validate-markdown-links.js";
+import { MarkdownLinkValidator, LinkValidationResult, FileValidationResult } from "./validate-markdown-links.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,10 +40,7 @@ describe("MarkdownLinkValidator", () => {
 
   describe("URL parsing", () => {
     it("should parse external URLs correctly", () => {
-      const urlInfo = validator.parseUrl(
-        "https://example.com",
-        "/test/file.md",
-      );
+      const urlInfo = validator.parseUrl("https://example.com", "/test/file.md");
 
       expect(urlInfo.type).toBe("external");
       expect(urlInfo.url).toBe("https://example.com");
@@ -56,10 +49,7 @@ describe("MarkdownLinkValidator", () => {
     });
 
     it("should parse external URLs with fragments", () => {
-      const urlInfo = validator.parseUrl(
-        "https://example.com#section",
-        "/test/file.md",
-      );
+      const urlInfo = validator.parseUrl("https://example.com#section", "/test/file.md");
 
       expect(urlInfo.type).toBe("external");
       expect(urlInfo.url).toBe("https://example.com#section");
@@ -83,10 +73,7 @@ describe("MarkdownLinkValidator", () => {
     });
 
     it("should parse internal file links with fragments", () => {
-      const urlInfo = validator.parseUrl(
-        "./other-file.md#section",
-        "/test/file.md",
-      );
+      const urlInfo = validator.parseUrl("./other-file.md#section", "/test/file.md");
 
       expect(urlInfo.type).toBe("internal");
       expect(urlInfo.relativePath).toBe("./other-file.md");
@@ -170,9 +157,7 @@ Another [link](https://example.com) outside code.
       const links = validator.extractLinks(content, "/test/file.md");
 
       expect(links).toHaveLength(2);
-      expect(links.every((link) => link.url === "https://example.com")).toBe(
-        true,
-      );
+      expect(links.every(link => link.url === "https://example.com")).toBe(true);
     });
   });
 
@@ -227,11 +212,7 @@ Another [link](https://example.com) outside code.
       };
 
       const fileResult = new FileValidationResult("/test/file.md");
-      const result = await validator.validateLink(
-        link,
-        "/test/file.md",
-        fileResult,
-      );
+      const result = await validator.validateLink(link, "/test/file.md", fileResult);
 
       expect(result.type).toBe("external");
       expect(result.status).toBe("valid");
@@ -247,11 +228,7 @@ Another [link](https://example.com) outside code.
       };
 
       const fileResult = new FileValidationResult("/test/file.md");
-      const result = await validator.validateLink(
-        link,
-        "/test/file.md",
-        fileResult,
-      );
+      const result = await validator.validateLink(link, "/test/file.md", fileResult);
 
       expect(result.type).toBe("external");
       expect(result.status).toBe("error");
@@ -327,7 +304,7 @@ This is a [broken link](#nonexistent-section).
 ## Target Section
 
 This is the target content.
-            `,
+            `
       );
 
       const link = {
@@ -381,7 +358,7 @@ This is the target content.
         "https://example.com",
         "external",
         "valid",
-        "Valid link",
+        "Valid link"
       );
       fileResult.addLink(validResult);
 
@@ -397,7 +374,7 @@ This is the target content.
         "./broken.md",
         "internal",
         "broken",
-        "File not found",
+        "File not found"
       );
       fileResult.addLink(brokenResult);
 
@@ -413,7 +390,7 @@ This is the target content.
         "http://example.com",
         "external",
         "warning",
-        "Use HTTPS",
+        "Use HTTPS"
       );
       fileResult.addLink(warningResult);
 
@@ -487,7 +464,7 @@ describe("LinkValidationResult", () => {
       "https://example.com",
       "external",
       "valid",
-      "Link is valid",
+      "Link is valid"
     );
 
     expect(result.file).toBe("/test/file.md");
@@ -510,12 +487,10 @@ describe("LinkValidationResult", () => {
       "external",
       "warning",
       "Use HTTPS",
-      "Consider using https://example.com instead",
+      "Consider using https://example.com instead"
     );
 
-    expect(result.suggestion).toBe(
-      "Consider using https://example.com instead",
-    );
+    expect(result.suggestion).toBe("Consider using https://example.com instead");
   });
 });
 

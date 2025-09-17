@@ -21,7 +21,7 @@ export interface RetryConfig {
 export const handleUnauthorizedResponse = async (
   url: string,
   options: AuthFetchOptions,
-  retryConfig: RetryConfig,
+  retryConfig: RetryConfig
 ): Promise<Response | null> => {
   const { config, tokenManager, onUnauthorized, onTokenRefresh } = retryConfig;
   const token = tokenManager.getAccessToken();

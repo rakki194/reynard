@@ -8,9 +8,7 @@ import { Button } from "reynard-components-core/primitives";
 import { Icon } from "reynard-fluent-icons";
 import type { LifecycleSummaryCardProps } from "../types/PackageLifecycleTypes";
 
-export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (
-  props,
-) => {
+export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = props => {
   const formatMemoryUsage = (bytes: number) => {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -26,13 +24,7 @@ export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (
     <div class="reynard-lifecycle-summary-card">
       <div class="reynard-lifecycle-summary-card__header">
         <h3>Package Lifecycle Summary</h3>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={props.onRefresh}
-          loading={props.isRefreshing}
-          leftIcon="refresh"
-        >
+        <Button variant="secondary" size="sm" onClick={props.onRefresh} loading={props.isRefreshing} leftIcon="refresh">
           Refresh
         </Button>
       </div>
@@ -44,9 +36,7 @@ export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (
               <Icon name="package" variant="primary" />
             </div>
             <div class="reynard-summary-item__content">
-              <div class="reynard-summary-item__value">
-                {props.summary.totalPackages}
-              </div>
+              <div class="reynard-summary-item__value">{props.summary.totalPackages}</div>
               <div class="reynard-summary-item__label">Total Packages</div>
             </div>
           </div>
@@ -56,9 +46,7 @@ export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (
               <Icon name="checkmark-circle" variant="success" />
             </div>
             <div class="reynard-summary-item__content">
-              <div class="reynard-summary-item__value">
-                {props.summary.loadedPackages}
-              </div>
+              <div class="reynard-summary-item__value">{props.summary.loadedPackages}</div>
               <div class="reynard-summary-item__label">Loaded</div>
             </div>
           </div>
@@ -68,9 +56,7 @@ export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (
               <Icon name="circle" variant="muted" />
             </div>
             <div class="reynard-summary-item__content">
-              <div class="reynard-summary-item__value">
-                {props.summary.unloadedPackages}
-              </div>
+              <div class="reynard-summary-item__value">{props.summary.unloadedPackages}</div>
               <div class="reynard-summary-item__label">Unloaded</div>
             </div>
           </div>
@@ -80,9 +66,7 @@ export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (
               <Icon name="loading" variant="info" />
             </div>
             <div class="reynard-summary-item__content">
-              <div class="reynard-summary-item__value">
-                {props.summary.loadingPackages}
-              </div>
+              <div class="reynard-summary-item__value">{props.summary.loadingPackages}</div>
               <div class="reynard-summary-item__label">Loading</div>
             </div>
           </div>
@@ -92,9 +76,7 @@ export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (
               <Icon name="warning" variant="warning" />
             </div>
             <div class="reynard-summary-item__content">
-              <div class="reynard-summary-item__value">
-                {props.summary.errorPackages}
-              </div>
+              <div class="reynard-summary-item__value">{props.summary.errorPackages}</div>
               <div class="reynard-summary-item__label">Errors</div>
             </div>
           </div>
@@ -104,9 +86,7 @@ export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (
               <Icon name="memory" variant="info" />
             </div>
             <div class="reynard-summary-item__content">
-              <div class="reynard-summary-item__value">
-                {formatMemoryUsage(props.summary.totalMemoryUsage)}
-              </div>
+              <div class="reynard-summary-item__value">{formatMemoryUsage(props.summary.totalMemoryUsage)}</div>
               <div class="reynard-summary-item__label">Memory Usage</div>
             </div>
           </div>
@@ -116,9 +96,7 @@ export const LifecycleSummaryCard: Component<LifecycleSummaryCardProps> = (
               <Icon name="clock" variant="primary" />
             </div>
             <div class="reynard-summary-item__content">
-              <div class="reynard-summary-item__value">
-                {formatLoadTime(props.summary.averageLoadTime)}
-              </div>
+              <div class="reynard-summary-item__value">{formatLoadTime(props.summary.averageLoadTime)}</div>
               <div class="reynard-summary-item__label">Avg Load Time</div>
             </div>
           </div>

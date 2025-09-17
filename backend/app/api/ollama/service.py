@@ -3,7 +3,7 @@ Service layer integration for Ollama API.
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 from ...services.ollama import OllamaService
 
@@ -21,7 +21,7 @@ def get_ollama_service() -> OllamaService:
     return _ollama_service
 
 
-async def initialize_ollama_service(config: Dict[str, Any]) -> bool:
+async def initialize_ollama_service(config: dict[str, Any]) -> bool:
     """Initialize the Ollama service with configuration."""
     try:
         service = get_ollama_service()

@@ -7,12 +7,7 @@ import type {
   InstancedBufferGeometryLike,
   ThreeJSInterface,
 } from "../types/rendering";
-import {
-  applyColorMapping,
-  applySizeMapping,
-  filterPoints,
-  generateGeometryCacheKey,
-} from "../utils/rendering";
+import { applyColorMapping, applySizeMapping, filterPoints, generateGeometryCacheKey } from "../utils/rendering";
 
 export class PointCloudGeometryManager implements GeometryManager {
   public threeJS: ThreeJSInterface;
@@ -23,10 +18,7 @@ export class PointCloudGeometryManager implements GeometryManager {
     this.threeJS = threeJS;
   }
 
-  createPointGeometry(
-    points: EmbeddingPoint[],
-    config: EmbeddingRenderingConfig,
-  ): GeometryLike {
+  createPointGeometry(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): GeometryLike {
     const { BufferGeometry } = this.threeJS;
 
     // Apply color and size mappings
@@ -49,10 +41,7 @@ export class PointCloudGeometryManager implements GeometryManager {
     }
   }
 
-  private createStandardGeometry(
-    points: EmbeddingPoint[],
-    config: EmbeddingRenderingConfig,
-  ): BufferGeometryLike {
+  private createStandardGeometry(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): BufferGeometryLike {
     const { BufferGeometry, Float32BufferAttribute } = this.threeJS;
 
     const geometry = new BufferGeometry();
@@ -106,24 +95,16 @@ export class PointCloudGeometryManager implements GeometryManager {
 
   private createInstancedGeometry(
     points: EmbeddingPoint[],
-    config: EmbeddingRenderingConfig,
+    config: EmbeddingRenderingConfig
   ): InstancedBufferGeometryLike {
-    const {
-      InstancedBufferGeometry,
-      BufferGeometry,
-      Float32BufferAttribute,
-      InstancedBufferAttribute,
-    } = this.threeJS;
+    const { InstancedBufferGeometry, BufferGeometry, Float32BufferAttribute, InstancedBufferAttribute } = this.threeJS;
 
     const geometry = new InstancedBufferGeometry();
 
     // Create a single point geometry
     const pointGeometry = new BufferGeometry();
     const positions = new Float32Array([0, 0, 0]);
-    pointGeometry.setAttribute(
-      "position",
-      new Float32BufferAttribute(positions, 3),
-    );
+    pointGeometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
 
     geometry.index = pointGeometry.index;
     geometry.attributes = pointGeometry.attributes;
@@ -163,18 +144,9 @@ export class PointCloudGeometryManager implements GeometryManager {
       instanceSizes[i] = point.size || config.pointSize;
     }
 
-    geometry.setAttribute(
-      "instancePosition",
-      new InstancedBufferAttribute(instancePositions, 3),
-    );
-    geometry.setAttribute(
-      "instanceColor",
-      new InstancedBufferAttribute(instanceColors, 3),
-    );
-    geometry.setAttribute(
-      "instanceSize",
-      new InstancedBufferAttribute(instanceSizes, 1),
-    );
+    geometry.setAttribute("instancePosition", new InstancedBufferAttribute(instancePositions, 3));
+    geometry.setAttribute("instanceColor", new InstancedBufferAttribute(instanceColors, 3));
+    geometry.setAttribute("instanceSize", new InstancedBufferAttribute(instanceSizes, 1));
 
     geometry.instanceCount = points.length;
 
@@ -189,10 +161,7 @@ export class PointCloudGeometryManager implements GeometryManager {
     return geometry;
   }
 
-  createThumbnailGeometry(
-    points: EmbeddingPoint[],
-    config: EmbeddingRenderingConfig,
-  ): BufferGeometryLike {
+  createThumbnailGeometry(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): BufferGeometryLike {
     const { BufferGeometry, Float32BufferAttribute } = this.threeJS;
 
     const geometry = new BufferGeometry();
@@ -233,10 +202,7 @@ export class PointCloudGeometryManager implements GeometryManager {
     return geometry;
   }
 
-  createTextGeometry(
-    points: EmbeddingPoint[],
-    config: EmbeddingRenderingConfig,
-  ): BufferGeometryLike {
+  createTextGeometry(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): BufferGeometryLike {
     const { BufferGeometry, Float32BufferAttribute } = this.threeJS;
 
     const geometry = new BufferGeometry();
@@ -270,11 +236,7 @@ export class PointCloudGeometryManager implements GeometryManager {
     return geometry;
   }
 
-  updateGeometry(
-    geometry: GeometryLike,
-    points: EmbeddingPoint[],
-    config: EmbeddingRenderingConfig,
-  ): void {
+  updateGeometry(geometry: GeometryLike, points: EmbeddingPoint[], config: EmbeddingRenderingConfig): void {
     if (!geometry || !geometry.userData) return;
 
     // Dispose old geometry
@@ -326,10 +288,7 @@ export class PointCloudGeometryManager implements GeometryManager {
   /**
    * Get cached geometry or create new one
    */
-  getOrCreatePointGeometry(
-    points: EmbeddingPoint[],
-    config: EmbeddingRenderingConfig,
-  ): GeometryLike {
+  getOrCreatePointGeometry(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): GeometryLike {
     const cacheKey = generateGeometryCacheKey(points, config);
     const cached = this.geometryCache.get(cacheKey);
 

@@ -13,14 +13,7 @@
  * - Quality metrics
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  onMount,
-  Show,
-  For,
-} from "solid-js";
+import { Component, createSignal, createEffect, onMount, Show, For } from "solid-js";
 import { AudioMetadataExtractor } from "reynard-file-processing";
 import { AudioWaveformVisualizer } from "./AudioWaveformVisualizer";
 import "./AudioAnalysisDashboard.css";
@@ -94,12 +87,8 @@ export interface AudioAnalysis {
   };
 }
 
-export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
-  props,
-) => {
-  const [analysisData, setAnalysisData] = createSignal<AudioAnalysis | null>(
-    null,
-  );
+export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = props => {
+  const [analysisData, setAnalysisData] = createSignal<AudioAnalysis | null>(null);
   const [isAnalyzing, setIsAnalyzing] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
 
@@ -129,9 +118,7 @@ export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
     } catch (err) {
       const errorMessage = `Analysis failed: ${err instanceof Error ? err.message : "Unknown error"}`;
       setError(errorMessage);
-      props.onAnalysisError?.(
-        err instanceof Error ? err : new Error(errorMessage),
-      );
+      props.onAnalysisError?.(err instanceof Error ? err : new Error(errorMessage));
     } finally {
       setIsAnalyzing(false);
     }
@@ -143,29 +130,18 @@ export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
 
     try {
       // Extract basic metadata
-      const metadata = await metadataExtractor.extractMetadata(
-        props.audioFile,
-        {
-          analyzeContent: true,
-        },
-      );
+      const metadata = await metadataExtractor.extractMetadata(props.audioFile, {
+        analyzeContent: true,
+      });
 
       // Generate comprehensive analysis
       const analysis: AudioAnalysis = {
         fileInfo: {
           name:
-            typeof props.audioFile === "string"
-              ? props.audioFile.split("/").pop() || "Unknown"
-              : props.audioFile.name,
+            typeof props.audioFile === "string" ? props.audioFile.split("/").pop() || "Unknown" : props.audioFile.name,
           size: typeof props.audioFile === "string" ? 0 : props.audioFile.size,
-          type:
-            typeof props.audioFile === "string"
-              ? "audio"
-              : props.audioFile.type,
-          lastModified:
-            typeof props.audioFile === "string"
-              ? undefined
-              : new Date(props.audioFile.lastModified),
+          type: typeof props.audioFile === "string" ? "audio" : props.audioFile.type,
+          lastModified: typeof props.audioFile === "string" ? undefined : new Date(props.audioFile.lastModified),
         },
         metadata: {
           duration: metadata.duration || 0,
@@ -203,9 +179,7 @@ export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
       setAnalysisData(analysis);
       props.onAnalysisComplete?.(analysis);
     } catch (err) {
-      throw new Error(
-        `Analysis failed: ${err instanceof Error ? err.message : "Unknown error"}`,
-      );
+      throw new Error(`Analysis failed: ${err instanceof Error ? err.message : "Unknown error"}`);
     }
   };
 
@@ -242,9 +216,7 @@ export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
     <div class={`audio-analysis-dashboard ${props.className || ""}`}>
       <div class="dashboard-header">
         <h3 class="dashboard-title">Audio Analysis</h3>
-        <p class="dashboard-description">
-          Comprehensive analysis of audio file properties and quality metrics
-        </p>
+        <p class="dashboard-description">Comprehensive analysis of audio file properties and quality metrics</p>
       </div>
 
       <div class="dashboard-content">
@@ -290,28 +262,20 @@ export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
               <div class="info-grid">
                 <div class="info-item">
                   <span class="info-label">Name</span>
-                  <span class="info-value">
-                    {analysisData()?.fileInfo.name}
-                  </span>
+                  <span class="info-value">{analysisData()?.fileInfo.name}</span>
                 </div>
                 <div class="info-item">
                   <span class="info-label">Size</span>
-                  <span class="info-value">
-                    {formatFileSize(analysisData()?.fileInfo.size || 0)}
-                  </span>
+                  <span class="info-value">{formatFileSize(analysisData()?.fileInfo.size || 0)}</span>
                 </div>
                 <div class="info-item">
                   <span class="info-label">Type</span>
-                  <span class="info-value">
-                    {analysisData()?.fileInfo.type}
-                  </span>
+                  <span class="info-value">{analysisData()?.fileInfo.type}</span>
                 </div>
                 <Show when={analysisData()?.fileInfo.lastModified}>
                   <div class="info-item">
                     <span class="info-label">Modified</span>
-                    <span class="info-value">
-                      {analysisData()?.fileInfo.lastModified?.toLocaleDateString()}
-                    </span>
+                    <span class="info-value">{analysisData()?.fileInfo.lastModified?.toLocaleDateString()}</span>
                   </div>
                 </Show>
               </div>
@@ -324,41 +288,27 @@ export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
                 <div class="info-grid">
                   <div class="info-item">
                     <span class="info-label">Duration</span>
-                    <span class="info-value">
-                      {formatDuration(analysisData()?.metadata.duration || 0)}
-                    </span>
+                    <span class="info-value">{formatDuration(analysisData()?.metadata.duration || 0)}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Sample Rate</span>
-                    <span class="info-value">
-                      {formatFrequency(
-                        analysisData()?.metadata.sampleRate || 0,
-                      )}
-                    </span>
+                    <span class="info-value">{formatFrequency(analysisData()?.metadata.sampleRate || 0)}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Channels</span>
-                    <span class="info-value">
-                      {analysisData()?.metadata.channels}
-                    </span>
+                    <span class="info-value">{analysisData()?.metadata.channels}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Bitrate</span>
-                    <span class="info-value">
-                      {analysisData()?.metadata.bitrate} kbps
-                    </span>
+                    <span class="info-value">{analysisData()?.metadata.bitrate} kbps</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Codec</span>
-                    <span class="info-value">
-                      {analysisData()?.metadata.codec}
-                    </span>
+                    <span class="info-value">{analysisData()?.metadata.codec}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Format</span>
-                    <span class="info-value">
-                      {analysisData()?.metadata.format}
-                    </span>
+                    <span class="info-value">{analysisData()?.metadata.format}</span>
                   </div>
                 </div>
               </div>
@@ -372,49 +322,28 @@ export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
                   <div class="info-item">
                     <span class="info-label">Average Amplitude</span>
                     <span class="info-value">
-                      {(
-                        (analysisData()?.statistics.averageAmplitude || 0) * 100
-                      ).toFixed(1)}
-                      %
+                      {((analysisData()?.statistics.averageAmplitude || 0) * 100).toFixed(1)}%
                     </span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Peak Amplitude</span>
                     <span class="info-value">
-                      {(
-                        (analysisData()?.statistics.peakAmplitude || 0) * 100
-                      ).toFixed(1)}
-                      %
+                      {((analysisData()?.statistics.peakAmplitude || 0) * 100).toFixed(1)}%
                     </span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">RMS Amplitude</span>
-                    <span class="info-value">
-                      {(
-                        (analysisData()?.statistics.rmsAmplitude || 0) * 100
-                      ).toFixed(1)}
-                      %
-                    </span>
+                    <span class="info-value">{((analysisData()?.statistics.rmsAmplitude || 0) * 100).toFixed(1)}%</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Dynamic Range</span>
-                    <span class="info-value">
-                      {(analysisData()?.statistics.dynamicRange || 0).toFixed(
-                        1,
-                      )}{" "}
-                      dB
-                    </span>
+                    <span class="info-value">{(analysisData()?.statistics.dynamicRange || 0).toFixed(1)} dB</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Frequency Range</span>
                     <span class="info-value">
-                      {formatFrequency(
-                        analysisData()?.statistics.frequencyRange.low || 0,
-                      )}{" "}
-                      -{" "}
-                      {formatFrequency(
-                        analysisData()?.statistics.frequencyRange.high || 0,
-                      )}
+                      {formatFrequency(analysisData()?.statistics.frequencyRange.low || 0)} -{" "}
+                      {formatFrequency(analysisData()?.statistics.frequencyRange.high || 0)}
                     </span>
                   </div>
                 </div>
@@ -428,27 +357,19 @@ export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
                 <div class="info-grid">
                   <div class="info-item">
                     <span class="info-label">Container</span>
-                    <span class="info-value">
-                      {analysisData()?.formatInfo.container}
-                    </span>
+                    <span class="info-value">{analysisData()?.formatInfo.container}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Codec</span>
-                    <span class="info-value">
-                      {analysisData()?.formatInfo.codec}
-                    </span>
+                    <span class="info-value">{analysisData()?.formatInfo.codec}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Compression</span>
-                    <span class="info-value">
-                      {analysisData()?.formatInfo.compression}
-                    </span>
+                    <span class="info-value">{analysisData()?.formatInfo.compression}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Quality</span>
-                    <span class="info-value">
-                      {analysisData()?.formatInfo.quality}
-                    </span>
+                    <span class="info-value">{analysisData()?.formatInfo.quality}</span>
                   </div>
                 </div>
               </div>
@@ -461,39 +382,25 @@ export const AudioAnalysisDashboard: Component<AudioAnalysisDashboardProps> = (
                 <div class="info-grid">
                   <div class="info-item">
                     <span class="info-label">Bit Depth</span>
-                    <span class="info-value">
-                      {analysisData()?.qualityMetrics.bitDepth} bits
-                    </span>
+                    <span class="info-value">{analysisData()?.qualityMetrics.bitDepth} bits</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Sample Rate</span>
-                    <span class="info-value">
-                      {formatFrequency(
-                        analysisData()?.qualityMetrics.sampleRate || 0,
-                      )}
-                    </span>
+                    <span class="info-value">{formatFrequency(analysisData()?.qualityMetrics.sampleRate || 0)}</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Bitrate</span>
-                    <span class="info-value">
-                      {analysisData()?.qualityMetrics.bitrate} kbps
-                    </span>
+                    <span class="info-value">{analysisData()?.qualityMetrics.bitrate} kbps</span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Compression Ratio</span>
                     <span class="info-value">
-                      {(
-                        (analysisData()?.qualityMetrics.compressionRatio || 0) *
-                        100
-                      ).toFixed(1)}
-                      %
+                      {((analysisData()?.qualityMetrics.compressionRatio || 0) * 100).toFixed(1)}%
                     </span>
                   </div>
                   <div class="info-item">
                     <span class="info-label">Quality Score</span>
-                    <span class="info-value quality-score">
-                      {analysisData()?.qualityMetrics.qualityScore}/100
-                    </span>
+                    <span class="info-value quality-score">{analysisData()?.qualityMetrics.qualityScore}/100</span>
                   </div>
                 </div>
               </div>

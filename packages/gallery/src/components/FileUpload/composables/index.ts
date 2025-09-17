@@ -10,17 +10,11 @@ export { useUploadOperations } from "./useUploadOperations";
 export { useDragDrop } from "./useDragDrop";
 export { useFileValidation } from "./useFileValidation";
 export { useFileUploadHandlers } from "./useFileUploadHandlers";
-export {
-  createUpdateItemFunction,
-  createFileUploadActions,
-} from "./useFileUploadHelpers";
+export { createUpdateItemFunction, createFileUploadActions } from "./useFileUploadHelpers";
 
 // Drag and drop utilities
 export { createDragHandlers } from "./drag-handlers";
-export {
-  createPasteHandler,
-  createPasteHandlerWithCleanup,
-} from "./paste-handler";
+export { createPasteHandler, createPasteHandlerWithCleanup } from "./paste-handler";
 
 export type { UploadState } from "./useUploadState";
 export type { FileOperations } from "./useFileOperations";

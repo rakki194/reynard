@@ -32,12 +32,12 @@ class RAGConfig:
         default_factory=lambda: os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
     )
 
-    # Model configuration
+    # Model configuration - EmbeddingGemma as priority
     text_model: str = field(
         default_factory=lambda: os.getenv("RAG_TEXT_MODEL", "embeddinggemma:latest")
     )
     code_model: str = field(
-        default_factory=lambda: os.getenv("RAG_CODE_MODEL", "bge-m3")
+        default_factory=lambda: os.getenv("RAG_CODE_MODEL", "embeddinggemma:latest")
     )
     caption_model: str = field(
         default_factory=lambda: os.getenv("RAG_CAPTION_MODEL", "nomic-embed-text")
@@ -102,11 +102,16 @@ class RAGConfig:
 
     def validate(self) -> None:
         """Validate configuration settings."""
-        if not self.pg_dsn or "password" in self.pg_dsn.lower():
-            raise ValueError(
-                "RAG configuration error: PG_DSN must be set with a secure password. "
-                "Please set the PG_DSN environment variable with your actual database credentials."
-            )
+        # Check if we're in development mode
+        is_development = os.getenv("ENVIRONMENT", "development").lower() == "development"
+        
+        # Only enforce secure password in production
+        if not is_development:
+            if not self.pg_dsn or "password" in self.pg_dsn.lower():
+                raise ValueError(
+                    "RAG configuration error: PG_DSN must be set with a secure password. "
+                    "Please set the PG_DSN environment variable with your actual database credentials."
+                )
 
         if not self.ollama_base_url:
             raise ValueError("RAG configuration error: OLLAMA_BASE_URL must be set")

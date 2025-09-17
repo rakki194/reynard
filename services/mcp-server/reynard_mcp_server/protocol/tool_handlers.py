@@ -8,7 +8,7 @@ Follows the 100-line axiom and modular architecture principles.
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict
+from typing import Any
 
 
 class BaseToolHandler(ABC):

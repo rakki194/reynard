@@ -40,27 +40,17 @@ export interface P2PFileUploadReturn {
   generateAttachmentId: () => string;
 }
 
-export function useP2PFileUpload(
-  options: P2PFileUploadOptions,
-): P2PFileUploadReturn {
+export function useP2PFileUpload(options: P2PFileUploadOptions): P2PFileUploadReturn {
   const {
     maxFileSize = 10 * 1024 * 1024, // 10MB default
-    allowedTypes = [
-      "image/*",
-      "video/*",
-      "audio/*",
-      "application/pdf",
-      "text/*",
-    ],
+    allowedTypes = ["image/*", "video/*", "audio/*", "application/pdf", "text/*"],
     uploadEndpoint = "/api/upload",
     authHeaders = {},
     fetchFn = fetch,
   } = options;
 
   // Upload progress tracking
-  const [uploads, setUploads] = createSignal<Record<string, UploadProgress>>(
-    {},
-  );
+  const [uploads, setUploads] = createSignal<Record<string, UploadProgress>>({});
 
   // Generate unique attachment ID
   const generateAttachmentId = (): string => {
@@ -70,12 +60,10 @@ export function useP2PFileUpload(
   // Validate file
   const validateFile = (file: File): void => {
     if (file.size > maxFileSize) {
-      throw new Error(
-        `File size ${file.size} exceeds maximum allowed size ${maxFileSize}`,
-      );
+      throw new Error(`File size ${file.size} exceeds maximum allowed size ${maxFileSize}`);
     }
 
-    const isAllowedType = allowedTypes.some((type) => {
+    const isAllowedType = allowedTypes.some(type => {
       if (type.endsWith("/*")) {
         return file.type.startsWith(type.slice(0, -1));
       }
@@ -88,10 +76,7 @@ export function useP2PFileUpload(
   };
 
   // Upload file
-  const uploadFile = async (
-    file: File,
-    roomId: string,
-  ): Promise<MessageAttachment> => {
+  const uploadFile = async (file: File, roomId: string): Promise<MessageAttachment> => {
     const fileId = generateAttachmentId();
 
     try {
@@ -99,7 +84,7 @@ export function useP2PFileUpload(
       validateFile(file);
 
       // Initialize upload progress
-      setUploads((prev) => ({
+      setUploads(prev => ({
         ...prev,
         [fileId]: {
           fileId,
@@ -116,7 +101,7 @@ export function useP2PFileUpload(
       formData.append("fileId", fileId);
 
       // Update status to uploading
-      setUploads((prev) => ({
+      setUploads(prev => ({
         ...prev,
         [fileId]: { ...prev[fileId], status: "uploading" },
       }));
@@ -137,7 +122,7 @@ export function useP2PFileUpload(
       const result = await response.json();
 
       // Update progress to completed
-      setUploads((prev) => ({
+      setUploads(prev => ({
         ...prev,
         [fileId]: {
           ...prev[fileId],
@@ -161,7 +146,7 @@ export function useP2PFileUpload(
       return attachment;
     } catch (error) {
       // Update progress to error
-      setUploads((prev) => ({
+      setUploads(prev => ({
         ...prev,
         [fileId]: {
           ...prev[fileId],
@@ -176,7 +161,7 @@ export function useP2PFileUpload(
 
   // Cancel upload
   const cancelUpload = (fileId: string) => {
-    setUploads((prev) => {
+    setUploads(prev => {
       const upload = prev[fileId];
       if (upload && upload.status === "uploading") {
         // In a real implementation, you would cancel the actual upload request
@@ -197,7 +182,7 @@ export function useP2PFileUpload(
     }
 
     // Reset upload status
-    setUploads((prev) => ({
+    setUploads(prev => ({
       ...prev,
       [fileId]: {
         ...prev[fileId],
@@ -219,7 +204,7 @@ export function useP2PFileUpload(
 
   // Clear completed uploads
   const clearCompletedUploads = () => {
-    setUploads((prev) => {
+    setUploads(prev => {
       const filtered: Record<string, UploadProgress> = {};
       Object.entries(prev).forEach(([key, value]) => {
         if (value.status !== "completed") {

@@ -13,7 +13,7 @@ export default function ImageProcessingDemo() {
     "image-processing",
     <div class="demo-content unavailable">
       <p>Image processing is currently unavailable</p>
-    </div>,
+    </div>
   );
 
   const status = useFeatureStatus("image-processing");
@@ -24,7 +24,7 @@ export default function ImageProcessingDemo() {
     const file = input.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setUploadedImage(e.target?.result as string);
       };
       reader.readAsDataURL(file);
@@ -40,9 +40,7 @@ export default function ImageProcessingDemo() {
         <div class="demo-content">
           <p>Image processing is fully available</p>
 
-          {status()?.degraded && (
-            <div class="status-message warning">⚠️ {status()?.message}</div>
-          )}
+          {status()?.degraded && <div class="status-message warning">⚠️ {status()?.message}</div>}
 
           <div style={{ "margin-top": "var(--spacing)" }}>
             <input
@@ -71,8 +69,7 @@ export default function ImageProcessingDemo() {
                     color: "var(--text-secondary)",
                   }}
                 >
-                  Image uploaded successfully! Processing features would be
-                  available here.
+                  Image uploaded successfully! Processing features would be available here.
                 </p>
               </div>
             )}

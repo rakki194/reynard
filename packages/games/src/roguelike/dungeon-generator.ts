@@ -28,7 +28,7 @@ export class DungeonGenerator {
     height: number = 25,
     minRoomSize: number = 4,
     maxRoomSize: number = 12,
-    maxRooms: number = 15,
+    maxRooms: number = 15
   ) {
     this.width = width;
     this.height = height;
@@ -63,12 +63,8 @@ export class DungeonGenerator {
     return new DungeonMap(this.width, this.height, tiles, rooms, corridors);
   }
 
-  private createEmptyMap(): Array<
-    Array<{ type: string; explored: boolean; visible: boolean }>
-  > {
-    const tiles: Array<
-      Array<{ type: string; explored: boolean; visible: boolean }>
-    > = [];
+  private createEmptyMap(): Array<Array<{ type: string; explored: boolean; visible: boolean }>> {
+    const tiles: Array<Array<{ type: string; explored: boolean; visible: boolean }>> = [];
 
     for (let y = 0; y < this.height; y++) {
       tiles[y] = [];
@@ -91,12 +87,7 @@ export class DungeonGenerator {
 
   private isRoomValid(room: Room, existingRooms: Room[]): boolean {
     // Check if room is within bounds
-    if (
-      room.x < 1 ||
-      room.y < 1 ||
-      room.x + room.width >= this.width - 1 ||
-      room.y + room.height >= this.height - 1
-    ) {
+    if (room.x < 1 || room.y < 1 || room.x + room.width >= this.width - 1 || room.y + room.height >= this.height - 1) {
       return false;
     }
 
@@ -119,10 +110,7 @@ export class DungeonGenerator {
     );
   }
 
-  private carveRoom(
-    tiles: Array<Array<{ type: string; explored: boolean; visible: boolean }>>,
-    room: Room,
-  ): void {
+  private carveRoom(tiles: Array<Array<{ type: string; explored: boolean; visible: boolean }>>, room: Room): void {
     for (let y = room.y; y < room.y + room.height; y++) {
       for (let x = room.x; x < room.x + room.width; x++) {
         tiles[y][x].type = "floor";
@@ -150,7 +138,7 @@ export class DungeonGenerator {
 
   private carveCorridor(
     tiles: Array<Array<{ type: string; explored: boolean; visible: boolean }>>,
-    corridor: Corridor,
+    corridor: Corridor
   ): void {
     // Create L-shaped corridor
     const { x1, y1, x2, y2 } = corridor;
@@ -217,12 +205,7 @@ export class DungeonGenerator {
             // 90% chance to place floor
             const tileX = x + dx;
             const tileY = y + dy;
-            if (
-              tileX >= 0 &&
-              tileX < this.width &&
-              tileY >= 0 &&
-              tileY < this.height
-            ) {
+            if (tileX >= 0 && tileX < this.width && tileY >= 0 && tileY < this.height) {
               dungeon.tiles[tileY][tileX].type = "floor";
             }
           }
@@ -235,18 +218,12 @@ export class DungeonGenerator {
     tiles: Array<Array<{ type: string; explored: boolean; visible: boolean }>>,
     centerX: number,
     centerY: number,
-    radius: number,
+    radius: number
   ): void {
     for (let y = centerY - radius; y <= centerY + radius; y++) {
       for (let x = centerX - radius; x <= centerX + radius; x++) {
         const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
-        if (
-          distance <= radius &&
-          x >= 0 &&
-          x < this.width &&
-          y >= 0 &&
-          y < this.height
-        ) {
+        if (distance <= radius && x >= 0 && x < this.width && y >= 0 && y < this.height) {
           tiles[y][x].type = "floor";
         }
       }

@@ -7,8 +7,7 @@ export const FALLBACK_TRANSLATIONS: Record<string, string> = {
   // Core package translations
   "core.errors.moduleIsNull": "Module is null",
   "core.errors.invalidModuleStructure": "Invalid module structure",
-  "core.errors.exportValidationFailed":
-    "Export validation failed for {package}: {errors}",
+  "core.errors.exportValidationFailed": "Export validation failed for {package}: {errors}",
   "core.errors.loadFailed": "Failed to load module",
   "core.errors.mediaQueryNotSupported": "matchMedia not supported",
   "core.errors.generic": "An error occurred",
@@ -18,10 +17,8 @@ export const FALLBACK_TRANSLATIONS: Record<string, string> = {
   "core.errors.notFound": "Not found",
   "core.test.notification": "Test notification",
   "core.module.load-failed": "Failed to load module",
-  "core.storage.potentially-dangerous-json-detected":
-    "Potentially dangerous JSON detected",
-  "core.storage.failed-to-parse-json-from-localstorage":
-    "Failed to parse JSON from localStorage:",
+  "core.storage.potentially-dangerous-json-detected": "Potentially dangerous JSON detected",
+  "core.storage.failed-to-parse-json-from-localstorage": "Failed to parse JSON from localStorage:",
 
   // Common translations
   "common.loading": "Loading...",

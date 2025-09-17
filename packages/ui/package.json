@@ -14,10 +14,7 @@
     },
     "./styles": "./dist/styles.css"
   },
-  "files": [
-    "dist/**/*",
-    "README.md"
-  ],
+  "files": ["dist/**/*", "README.md"],
   "scripts": {
     "build": "vite build && tsc -p tsconfig.json --declaration --declarationMap && cp src/overlays/Drawer.css dist/overlays/ 2>/dev/null || true && (mv dist/ui.css dist/styles.css 2>/dev/null || true)",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
@@ -27,14 +24,7 @@
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },
-  "keywords": [
-    "solidjs",
-    "ui",
-    "layouts",
-    "navigation",
-    "components",
-    "responsive"
-  ],
+  "keywords": ["solidjs", "ui", "layouts", "navigation", "components", "responsive"],
   "peerDependencies": {
     "solid-js": "1.9.9"
   },

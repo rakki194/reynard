@@ -6,19 +6,13 @@
  */
 
 import { DocumentMetadata } from "../../types";
-import {
-  BaseMetadataExtractor,
-  MetadataExtractionOptions,
-} from "./BaseMetadataExtractor";
+import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
 
 export class DocumentMetadataExtractor extends BaseMetadataExtractor {
   /**
    * Extract metadata from document files
    */
-  async extractMetadata(
-    file: File | string,
-    options?: Partial<MetadataExtractionOptions>,
-  ): Promise<DocumentMetadata> {
+  async extractMetadata(file: File | string, options?: Partial<MetadataExtractionOptions>): Promise<DocumentMetadata> {
     const mergedOptions = { ...this.options, ...options };
     const basicInfo = await this.getBasicFileInfo(file);
     const extension = this.getFileExtension(basicInfo.name);
@@ -46,8 +40,7 @@ export class DocumentMetadataExtractor extends BaseMetadataExtractor {
           metadata.subject = docInfo.subject || metadata.subject;
           metadata.keywords = docInfo.keywords || metadata.keywords;
           metadata.hasText = docInfo.hasText ?? metadata.hasText;
-          metadata.ocrConfidence =
-            docInfo.ocrConfidence || metadata.ocrConfidence;
+          metadata.ocrConfidence = docInfo.ocrConfidence || metadata.ocrConfidence;
         }
       } catch (error) {
         console.warn("Document info extraction failed:", error);

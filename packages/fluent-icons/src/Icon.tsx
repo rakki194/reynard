@@ -6,35 +6,15 @@
  * glow effects, and interactive states.
  */
 
-import {
-  Component,
-  JSX,
-  createMemo,
-  createSignal,
-  onMount,
-  onCleanup,
-  splitProps,
-} from "solid-js";
+import { Component, JSX, createMemo, createSignal, onMount, onCleanup, splitProps } from "solid-js";
 import { getIcon, iconRegistry } from "./index";
 
 // Icon component props
-export interface IconProps
-  extends Omit<
-    JSX.ButtonHTMLAttributes<HTMLButtonElement>,
-    "children" | "role"
-  > {
+export interface IconProps extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "children" | "role"> {
   name: string;
   packageId?: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
-  variant?:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "muted"
-    | "error"
-    | "warning"
-    | "success"
-    | "info";
+  variant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
   class?: string;
   style?: JSX.CSSProperties;
   role?: string;
@@ -54,7 +34,7 @@ export interface IconProps
 /**
  * Enhanced Icon component for displaying SVG icons with advanced features
  */
-export const Icon: Component<IconProps> = (props) => {
+export const Icon: Component<IconProps> = props => {
   const [localProps, buttonProps] = splitProps(props, [
     "name",
     "packageId",
@@ -161,10 +141,7 @@ export const Icon: Component<IconProps> = (props) => {
 
       {shouldShowProgress() && (
         <div class="reynard-icon__progress">
-          <div
-            class="reynard-icon__progress-bar"
-            style={{ "--progress-width": `${getProgressValue()}%` } as any}
-          />
+          <div class="reynard-icon__progress-bar" style={{ "--progress-width": `${getProgressValue()}%` } as any} />
         </div>
       )}
     </>
@@ -206,39 +183,15 @@ export const Icon: Component<IconProps> = (props) => {
 };
 
 // Export individual icon components for convenience
-export const Search = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="search" />
-);
-export const Upload = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="upload" />
-);
-export const FileText = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="file-text" />
-);
-export const Code = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="code" />
-);
-export const Database = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="database" />
-);
-export const Settings = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="settings" />
-);
-export const Download = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="download" />
-);
-export const Trash2 = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="delete" />
-);
-export const Eye = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="eye" />
-);
-export const Clock = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="clock" />
-);
-export const Zap = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="sparkle" />
-); // Using sparkle as alternative
-export const Brain = (props: Omit<IconProps, "name">) => (
-  <Icon {...props} name="brain" />
-);
+export const Search = (props: Omit<IconProps, "name">) => <Icon {...props} name="search" />;
+export const Upload = (props: Omit<IconProps, "name">) => <Icon {...props} name="upload" />;
+export const FileText = (props: Omit<IconProps, "name">) => <Icon {...props} name="file-text" />;
+export const Code = (props: Omit<IconProps, "name">) => <Icon {...props} name="code" />;
+export const Database = (props: Omit<IconProps, "name">) => <Icon {...props} name="database" />;
+export const Settings = (props: Omit<IconProps, "name">) => <Icon {...props} name="settings" />;
+export const Download = (props: Omit<IconProps, "name">) => <Icon {...props} name="download" />;
+export const Trash2 = (props: Omit<IconProps, "name">) => <Icon {...props} name="delete" />;
+export const Eye = (props: Omit<IconProps, "name">) => <Icon {...props} name="eye" />;
+export const Clock = (props: Omit<IconProps, "name">) => <Icon {...props} name="clock" />;
+export const Zap = (props: Omit<IconProps, "name">) => <Icon {...props} name="sparkle" />; // Using sparkle as alternative
+export const Brain = (props: Omit<IconProps, "name">) => <Icon {...props} name="brain" />;

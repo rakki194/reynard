@@ -13,17 +13,11 @@ import { type VisualizationConfig, type DataPoint } from "./VisualizationCore";
 
 export const DataVisualizationDemo: Component = () => {
   // State
-  const [activeView, setActiveView] = createSignal<"2d" | "3d" | "both">(
-    "both",
-  );
-  const [dataType, setDataType] = createSignal<
-    "random" | "spiral" | "clusters"
-  >("spiral");
+  const [activeView, setActiveView] = createSignal<"2d" | "3d" | "both">("both");
+  const [dataType, setDataType] = createSignal<"random" | "spiral" | "clusters">("spiral");
   const [dataPoints, setDataPoints] = createSignal<DataPoint[]>([]);
   const [pointCount, setPointCount] = createSignal(500);
-  const [colorMapping, setColorMapping] = createSignal<
-    "value" | "cluster" | "category" | "gradient"
-  >("value");
+  const [colorMapping, setColorMapping] = createSignal<"value" | "cluster" | "category" | "gradient">("value");
   const [theme, setTheme] = createSignal<"dark" | "light" | "gray">("dark");
 
   // Generate new data
@@ -57,10 +51,7 @@ export const DataVisualizationDemo: Component = () => {
       <Card class="demo-container">
         <div class="demo-header">
           <h2>🦊 Data Visualization Showcase</h2>
-          <p>
-            Interactive 2D and 3D visualizations with shared OKLCH color
-            processing
-          </p>
+          <p>Interactive 2D and 3D visualizations with shared OKLCH color processing</p>
         </div>
 
         <div class="demo-controls">
@@ -71,7 +62,7 @@ export const DataVisualizationDemo: Component = () => {
                 <label>Data Type:</label>
                 <Select
                   value={dataType()}
-                  onChange={(value) => setDataType(value as any)}
+                  onChange={value => setDataType(value as any)}
                   options={[
                     { value: "random", label: "Random Points" },
                     { value: "spiral", label: "Spiral Pattern" },
@@ -93,11 +84,7 @@ export const DataVisualizationDemo: Component = () => {
                 <span class="value-display">{pointCount()}</span>
               </div>
 
-              <Button
-                variant="primary"
-                onClick={generateData}
-                leftIcon={getIcon("refresh")}
-              >
+              <Button variant="primary" onClick={generateData} leftIcon={getIcon("refresh")}>
                 Generate Data
               </Button>
             </div>
@@ -110,7 +97,7 @@ export const DataVisualizationDemo: Component = () => {
                 <label>View Mode:</label>
                 <Select
                   value={activeView()}
-                  onChange={(value) => setActiveView(value as any)}
+                  onChange={value => setActiveView(value as any)}
                   options={[
                     { value: "2d", label: "2D Only" },
                     { value: "3d", label: "3D Only" },
@@ -123,7 +110,7 @@ export const DataVisualizationDemo: Component = () => {
                 <label>Color Mapping:</label>
                 <Select
                   value={colorMapping()}
-                  onChange={(value) => setColorMapping(value as any)}
+                  onChange={value => setColorMapping(value as any)}
                   options={[
                     { value: "value", label: "By Value" },
                     { value: "cluster", label: "By Cluster" },
@@ -137,7 +124,7 @@ export const DataVisualizationDemo: Component = () => {
                 <label>Theme:</label>
                 <Select
                   value={theme()}
-                  onChange={(value) => setTheme(value as any)}
+                  onChange={value => setTheme(value as any)}
                   options={[
                     { value: "dark", label: "Dark" },
                     { value: "light", label: "Light" },
@@ -210,28 +197,24 @@ export const DataVisualizationDemo: Component = () => {
             <h4>🦊 Features Demonstrated</h4>
             <ul>
               <li>
-                <strong>Shared Data Processing:</strong> Both 2D and 3D
-                visualizations use the same data processing pipeline
+                <strong>Shared Data Processing:</strong> Both 2D and 3D visualizations use the same data processing
+                pipeline
               </li>
               <li>
-                <strong>OKLCH Color Management:</strong> Consistent,
-                perceptually uniform colors across all visualizations
+                <strong>OKLCH Color Management:</strong> Consistent, perceptually uniform colors across all
+                visualizations
               </li>
               <li>
-                <strong>Real-time Clustering:</strong> Automatic K-means
-                clustering with visual cluster representation
+                <strong>Real-time Clustering:</strong> Automatic K-means clustering with visual cluster representation
               </li>
               <li>
-                <strong>Interactive Controls:</strong> Zoom, pan, and camera
-                controls for both 2D and 3D views
+                <strong>Interactive Controls:</strong> Zoom, pan, and camera controls for both 2D and 3D views
               </li>
               <li>
-                <strong>Performance Optimization:</strong> Efficient rendering
-                with animation engines and LOD
+                <strong>Performance Optimization:</strong> Efficient rendering with animation engines and LOD
               </li>
               <li>
-                <strong>Modular Architecture:</strong> Reusable components that
-                can be shared between packages
+                <strong>Modular Architecture:</strong> Reusable components that can be shared between packages
               </li>
             </ul>
           </div>
@@ -243,16 +226,13 @@ export const DataVisualizationDemo: Component = () => {
                 <strong>By Value:</strong> Colors based on data point values
               </li>
               <li>
-                <strong>By Cluster:</strong> Colors assigned to clusters using
-                golden angle distribution
+                <strong>By Cluster:</strong> Colors assigned to clusters using golden angle distribution
               </li>
               <li>
-                <strong>By Category:</strong> Colors based on categorical
-                metadata
+                <strong>By Category:</strong> Colors based on categorical metadata
               </li>
               <li>
-                <strong>Gradient:</strong> Radial gradient from center based on
-                distance
+                <strong>Gradient:</strong> Radial gradient from center based on distance
               </li>
             </ul>
           </div>

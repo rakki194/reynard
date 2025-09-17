@@ -15,10 +15,7 @@ export interface UseFileUploadOptions {
   /** Upload configuration */
   config: UploadConfiguration;
   /** Upload callbacks */
-  callbacks?: Pick<
-    GalleryCallbacks,
-    "onUploadStart" | "onUploadProgress" | "onUploadComplete" | "onError"
-  >;
+  callbacks?: Pick<GalleryCallbacks, "onUploadStart" | "onUploadProgress" | "onUploadComplete" | "onError">;
   /** Current folder path */
   currentPath?: string;
 }
@@ -28,11 +25,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
   const validation = useFileValidation(options.config);
   const stats = useUploadStats();
 
-  const updateUploadProgress = createUpdateProgressFunction(
-    state.setUploads,
-    state.uploads,
-    options.callbacks,
-  );
+  const updateUploadProgress = createUpdateProgressFunction(state.setUploads, state.uploads, options.callbacks);
 
   const singleUpload = useSingleFileUpload({
     config: options.config,
@@ -41,13 +34,7 @@ export function useFileUpload(options: UseFileUploadOptions) {
     uploadControllers: state.uploadControllers,
   });
 
-  const actions = createUploadActions(
-    state,
-    validation,
-    singleUpload,
-    updateUploadProgress,
-    options,
-  );
+  const actions = createUploadActions(state, validation, singleUpload, updateUploadProgress, options);
 
   return {
     uploads: state.uploads,

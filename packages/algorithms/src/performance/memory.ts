@@ -6,10 +6,7 @@
  * @module algorithms/performance/memory
  */
 
-import type {
-  ExtendedPerformance,
-  PerformanceMemoryInfo,
-} from "../types/performance-types";
+import type { ExtendedPerformance, PerformanceMemoryInfo } from "../types/performance-types";
 
 /**
  * Memory usage monitor
@@ -90,20 +87,13 @@ export class MemoryLeakDetector {
       growthRates.push(rate);
     }
 
-    const averageGrowthRate =
-      growthRates.reduce((sum, rate) => sum + rate, 0) / growthRates.length;
+    const averageGrowthRate = growthRates.reduce((sum, rate) => sum + rate, 0) / growthRates.length;
     const isLeaking = averageGrowthRate > 1000; // 1KB per second threshold
 
     // Calculate confidence based on consistency of growth
     const variance =
-      growthRates.reduce(
-        (sum, rate) => sum + Math.pow(rate - averageGrowthRate, 2),
-        0,
-      ) / growthRates.length;
-    const confidence = Math.max(
-      0,
-      1 - Math.sqrt(variance) / Math.abs(averageGrowthRate),
-    );
+      growthRates.reduce((sum, rate) => sum + Math.pow(rate - averageGrowthRate, 2), 0) / growthRates.length;
+    const confidence = Math.max(0, 1 - Math.sqrt(variance) / Math.abs(averageGrowthRate));
 
     return {
       isLeaking,

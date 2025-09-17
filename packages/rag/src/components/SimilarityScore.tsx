@@ -1,6 +1,6 @@
 /**
  * Similarity Score Component
- * 
+ *
  * Displays the similarity score with visual indicators
  */
 
@@ -12,14 +12,12 @@ export interface SimilarityScoreProps {
   score: number;
 }
 
-export const SimilarityScore: Component<SimilarityScoreProps> = (props) => {
+export const SimilarityScore: Component<SimilarityScoreProps> = props => {
   return (
     <Card className="score-card">
       <div class="score-header">
         <h4>Similarity Score</h4>
-        <Badge variant={getScoreColor(props.score)}>
-          {getScoreLabel(props.score)}
-        </Badge>
+        <Badge variant={getScoreColor(props.score)}>{getScoreLabel(props.score)}</Badge>
       </div>
       <div class="score-value">{(props.score * 100).toFixed(1)}%</div>
       <div class="score-bar">

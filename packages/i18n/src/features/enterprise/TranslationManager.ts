@@ -3,11 +3,7 @@
  * Enterprise-grade translation management with history tracking and import/export
  */
 
-import type {
-  LanguageCode,
-  Translations,
-  TranslationParams,
-} from "../../types";
+import type { LanguageCode, Translations, TranslationParams } from "../../types";
 
 export interface TranslationChange {
   id: string;
@@ -45,7 +41,7 @@ export class TranslationManager {
     localeOrKey: LanguageCode | string,
     keyOrValue: string,
     valueOrLocale?: string | LanguageCode,
-    params?: TranslationParams,
+    params?: TranslationParams
   ): void {
     // Handle both signatures: setTranslation(key, value, locale) and setTranslation(locale, key, value)
     let locale: LanguageCode;
@@ -57,11 +53,7 @@ export class TranslationManager {
       key = localeOrKey as string;
       value = keyOrValue;
       locale = this.options.locale;
-    } else if (
-      typeof localeOrKey === "string" &&
-      typeof keyOrValue === "string" &&
-      typeof valueOrLocale === "string"
-    ) {
+    } else if (typeof localeOrKey === "string" && typeof keyOrValue === "string" && typeof valueOrLocale === "string") {
       // Called as setTranslation(locale, key, value)
       locale = localeOrKey as LanguageCode;
       key = keyOrValue;
@@ -98,10 +90,7 @@ export class TranslationManager {
   /**
    * Get a translation for a specific locale and key
    */
-  getTranslation(
-    localeOrKey: LanguageCode | string,
-    keyOrLocale?: string | LanguageCode,
-  ): string | undefined {
+  getTranslation(localeOrKey: LanguageCode | string, keyOrLocale?: string | LanguageCode): string | undefined {
     // Handle both signatures: getTranslation(key, locale) and getTranslation(locale, key)
     let locale: LanguageCode;
     let key: string;
@@ -110,10 +99,7 @@ export class TranslationManager {
       // Called as getTranslation(key) - use default locale
       key = localeOrKey as string;
       locale = this.options.locale;
-    } else if (
-      typeof localeOrKey === "string" &&
-      typeof keyOrLocale === "string"
-    ) {
+    } else if (typeof localeOrKey === "string" && typeof keyOrLocale === "string") {
       // Called as getTranslation(locale, key)
       locale = localeOrKey as LanguageCode;
       key = keyOrLocale;
@@ -160,7 +146,7 @@ export class TranslationManager {
     localeOrJsonString: LanguageCode | string | Record<string, any>,
     jsonStringOrAuthor?: string,
     authorOrMerge?: string | boolean,
-    merge: boolean = true,
+    merge: boolean = true
   ): boolean {
     try {
       // Handle different calling patterns
@@ -169,11 +155,7 @@ export class TranslationManager {
       let author: string | undefined;
       let shouldMerge: boolean;
 
-      if (
-        typeof localeOrJsonString === "string" &&
-        jsonStringOrAuthor &&
-        authorOrMerge
-      ) {
+      if (typeof localeOrJsonString === "string" && jsonStringOrAuthor && authorOrMerge) {
         // Called as importTranslations(locale, jsonString, author)
         locale = localeOrJsonString as LanguageCode;
         jsonString = jsonStringOrAuthor;
@@ -181,10 +163,7 @@ export class TranslationManager {
         shouldMerge = merge;
       } else if (typeof localeOrJsonString === "string" && jsonStringOrAuthor) {
         // Called as importTranslations(jsonString, locale) or importTranslations(locale, jsonString)
-        if (
-          typeof jsonStringOrAuthor === "string" &&
-          jsonStringOrAuthor.length > 2
-        ) {
+        if (typeof jsonStringOrAuthor === "string" && jsonStringOrAuthor.length > 2) {
           // Likely a JSON string
           locale = this.options.locale;
           jsonString = localeOrJsonString;
@@ -203,16 +182,11 @@ export class TranslationManager {
       }
 
       const importedTranslations =
-        typeof jsonString === "string"
-          ? (JSON.parse(jsonString) as Translations)
-          : (jsonString as Translations);
+        typeof jsonString === "string" ? (JSON.parse(jsonString) as Translations) : (jsonString as Translations);
 
       if (shouldMerge) {
         const existingTranslations = this.getTranslations(locale);
-        const mergedTranslations = this.deepMerge(
-          existingTranslations,
-          importedTranslations,
-        );
+        const mergedTranslations = this.deepMerge(existingTranslations, importedTranslations);
         this.translations.set(locale, mergedTranslations);
       } else {
         this.translations.set(locale, importedTranslations);
@@ -258,10 +232,7 @@ export class TranslationManager {
   /**
    * Check if a translation exists
    */
-  hasTranslation(
-    key: string,
-    locale: LanguageCode = this.options.locale,
-  ): boolean {
+  hasTranslation(key: string, locale: LanguageCode = this.options.locale): boolean {
     return this.getTranslation(key, locale) !== undefined;
   }
 
@@ -299,11 +270,7 @@ export class TranslationManager {
     const result = { ...target };
 
     for (const key in source) {
-      if (
-        source[key] &&
-        typeof source[key] === "object" &&
-        !Array.isArray(source[key])
-      ) {
+      if (source[key] && typeof source[key] === "object" && !Array.isArray(source[key])) {
         result[key] = this.deepMerge(result[key] || {}, source[key]);
       } else {
         result[key] = source[key];
@@ -318,9 +285,7 @@ export class TranslationManager {
 
     // Keep history size within limits
     if (this.changeHistory.length > this.options.maxHistorySize) {
-      this.changeHistory = this.changeHistory.slice(
-        -this.options.maxHistorySize,
-      );
+      this.changeHistory = this.changeHistory.slice(-this.options.maxHistorySize);
     }
   }
 

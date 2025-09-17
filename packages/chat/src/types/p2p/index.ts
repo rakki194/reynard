@@ -12,13 +12,7 @@ export type { ChatUser, TypingIndicator } from "./user";
 export type { ChatRoom, RoomSettings } from "./room";
 
 // Re-export all message and attachment types
-export type {
-  P2PChatMessage,
-  MessageReaction,
-  MessageReadReceipt,
-  MessageAttachment,
-  MessageEdit,
-} from "./message";
+export type { P2PChatMessage, MessageReaction, MessageReadReceipt, MessageAttachment, MessageEdit } from "./message";
 
 // Re-export all event types
 export type {
@@ -43,9 +37,4 @@ export type { P2PChatState, UseP2PChatReturn } from "./state";
 export type { P2PChatActions } from "./actions";
 
 // Re-export all component prop types
-export type {
-  P2PChatContainerProps,
-  P2PMessageProps,
-  RoomListProps,
-  UserListProps,
-} from "./components";
+export type { P2PChatContainerProps, P2PMessageProps, RoomListProps, UserListProps } from "./components";

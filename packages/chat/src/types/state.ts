@@ -41,10 +41,7 @@ export interface ChatState {
 
 export interface ChatActions {
   /** Send a new message */
-  sendMessage: (
-    content: string,
-    options?: Partial<import("./tools").ChatRequest>,
-  ) => Promise<void>;
+  sendMessage: (content: string, options?: Partial<import("./tools").ChatRequest>) => Promise<void>;
   /** Cancel current streaming */
   cancelStreaming: () => void;
   /** Clear conversation */

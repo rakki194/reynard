@@ -23,7 +23,7 @@ export const createExampleModule = (): ExampleModule => {
   };
 
   const removeItem = (id: string) => {
-    const index = data.findIndex((item) => item.id === id);
+    const index = data.findIndex(item => item.id === id);
     if (index > -1) {
       data.splice(index, 1);
     }
@@ -127,7 +127,7 @@ export const formatDate = (date: Date): string => {
 
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
-  delay: number,
+  delay: number
 ): ((...args: Parameters<T>) => void) => {
   let timeoutId: NodeJS.Timeout;
 
@@ -144,14 +144,10 @@ export const debounce = <T extends (...args: any[]) => any>(
 
 ```typescript
 // Generic result type
-export type Result<T, E = Error> =
-  | { success: true; data: T }
-  | { success: false; error: E };
+export type Result<T, E = Error> = { success: true; data: T } | { success: false; error: E };
 
 // Generic async function wrapper
-export const asyncWrapper = async <T>(
-  fn: () => Promise<T>,
-): Promise<Result<T>> => {
+export const asyncWrapper = async <T>(fn: () => Promise<T>): Promise<Result<T>> => {
   try {
     const data = await fn();
     return { success: true, data };
@@ -161,9 +157,7 @@ export const asyncWrapper = async <T>(
 };
 
 // Generic module factory
-export const createTypedModule = <T extends Record<string, any>>(
-  initialState: T,
-) => {
+export const createTypedModule = <T extends Record<string, any>>(initialState: T) => {
   let state = { ...initialState };
 
   return {
@@ -185,8 +179,7 @@ export const createTypedModule = <T extends Record<string, any>>(
 export type PartialExcept<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
 // Make all properties required except specified ones
-export type RequiredExcept<T, K extends keyof T> = Required<T> &
-  Partial<Pick<T, K>>;
+export type RequiredExcept<T, K extends keyof T> = Required<T> & Partial<Pick<T, K>>;
 
 // Extract function parameters
 export type Parameters<T> = T extends (...args: infer P) => any ? P : never;
@@ -297,7 +290,7 @@ export const createPubSub = () => {
 
   const publish = (event, data) => {
     const callbacks = subscribers.get(event) || [];
-    callbacks.forEach((callback) => callback(data));
+    callbacks.forEach(callback => callback(data));
   };
 
   return { subscribe, publish };
@@ -307,7 +300,7 @@ export const createPubSub = () => {
 export const createMediator = () => {
   const channels = new Map();
 
-  const channel = (name) => {
+  const channel = name => {
     if (!channels.has(name)) {
       channels.set(name, createPubSub());
     }
@@ -325,10 +318,7 @@ export const createMediator = () => {
 ```typescript
 // tests/modules/example.test.ts
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import {
-  createExampleModule,
-  type ExampleModule,
-} from "../../src/modules/example-module";
+import { createExampleModule, type ExampleModule } from "../../src/modules/example-module";
 
 describe("ExampleModule", () => {
   let module: ExampleModule;
@@ -473,7 +463,7 @@ export const memoize = <T extends (...args: any[]) => any>(fn: T) => {
 // Debounce
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
-  delay: number,
+  delay: number
 ): ((...args: Parameters<T>) => void) => {
   let timeoutId: NodeJS.Timeout;
 
@@ -486,7 +476,7 @@ export const debounce = <T extends (...args: any[]) => any>(
 // Throttle
 export const throttle = <T extends (...args: any[]) => any>(
   func: T,
-  delay: number,
+  delay: number
 ): ((...args: Parameters<T>) => void) => {
   let lastCall = 0;
 
@@ -506,10 +496,7 @@ export const throttle = <T extends (...args: any[]) => any>(
 
 ```typescript
 // Error wrapper
-export const withErrorHandling = <T extends (...args: any[]) => any>(
-  fn: T,
-  errorHandler?: (error: Error) => void,
-) => {
+export const withErrorHandling = <T extends (...args: any[]) => any>(fn: T, errorHandler?: (error: Error) => void) => {
   return (...args: Parameters<T>) => {
     try {
       return fn(...args);
@@ -525,11 +512,9 @@ export const withErrorHandling = <T extends (...args: any[]) => any>(
 };
 
 // Async error wrapper
-export const withAsyncErrorHandling = <
-  T extends (...args: any[]) => Promise<any>,
->(
+export const withAsyncErrorHandling = <T extends (...args: any[]) => Promise<any>>(
   fn: T,
-  errorHandler?: (error: Error) => void,
+  errorHandler?: (error: Error) => void
 ) => {
   return async (...args: Parameters<T>) => {
     try {
@@ -550,9 +535,7 @@ export const withAsyncErrorHandling = <
 
 ```typescript
 // Simple validator
-export const createValidator = <T>(
-  schema: Record<keyof T, (value: any) => boolean>,
-) => {
+export const createValidator = <T>(schema: Record<keyof T, (value: any) => boolean>) => {
   return (data: T): { isValid: boolean; errors: string[] } => {
     const errors: string[] = [];
 
@@ -571,9 +554,9 @@ export const createValidator = <T>(
 
 // Usage
 const userValidator = createValidator({
-  email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-  age: (value) => typeof value === "number" && value >= 0,
-  name: (value) => typeof value === "string" && value.length > 0,
+  email: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+  age: value => typeof value === "number" && value >= 0,
+  name: value => typeof value === "string" && value.length > 0,
 });
 ```
 
@@ -581,10 +564,7 @@ const userValidator = createValidator({
 
 ```typescript
 // Date formatting
-export const formatDate = (
-  date: Date,
-  format: "short" | "long" | "iso" = "short",
-) => {
+export const formatDate = (date: Date, format: "short" | "long" | "iso" = "short") => {
   switch (format) {
     case "short":
       return date.toLocaleDateString();

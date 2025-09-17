@@ -3,15 +3,7 @@
  * Comprehensive package management dashboard with discovery, installation, and lifecycle management
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Tabs, TabItem } from "../Tabs";
 import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
@@ -68,9 +60,7 @@ export interface PackageAnalyticsSummary {
   performanceScore: number;
 }
 
-export const PackageManagementDashboard: Component<
-  PackageManagementDashboardProps
-> = (props) => {
+export const PackageManagementDashboard: Component<PackageManagementDashboardProps> = props => {
   const [activeTab, setActiveTab] = createSignal("overview");
   const [isRefreshing, setIsRefreshing] = createSignal(false);
   const [lastRefresh, setLastRefresh] = createSignal<Date | null>(null);
@@ -82,22 +72,20 @@ export const PackageManagementDashboard: Component<
     loadingPackages: 0,
     disabledPackages: 0,
   });
-  const [discoverySummary, setDiscoverySummary] =
-    createSignal<PackageDiscoverySummary>({
-      totalDiscovered: 0,
-      newPackages: 0,
-      updatedPackages: 0,
-      conflictedPackages: 0,
-      readyToInstall: 0,
-    });
-  const [analyticsSummary, setAnalyticsSummary] =
-    createSignal<PackageAnalyticsSummary>({
-      totalLoads: 0,
-      averageLoadTime: 0,
-      successRate: 0,
-      memoryUsage: 0,
-      performanceScore: 0,
-    });
+  const [discoverySummary, setDiscoverySummary] = createSignal<PackageDiscoverySummary>({
+    totalDiscovered: 0,
+    newPackages: 0,
+    updatedPackages: 0,
+    conflictedPackages: 0,
+    readyToInstall: 0,
+  });
+  const [analyticsSummary, setAnalyticsSummary] = createSignal<PackageAnalyticsSummary>({
+    totalLoads: 0,
+    averageLoadTime: 0,
+    successRate: 0,
+    memoryUsage: 0,
+    performanceScore: 0,
+  });
 
   // Auto-refresh functionality
   let refreshInterval: ReturnType<typeof setInterval> | undefined;
@@ -136,11 +124,7 @@ export const PackageManagementDashboard: Component<
     setIsRefreshing(true);
     try {
       // Simulate API calls to backend package management endpoints
-      await Promise.all([
-        refreshPackageData(),
-        refreshDiscoveryData(),
-        refreshAnalyticsData(),
-      ]);
+      await Promise.all([refreshPackageData(), refreshDiscoveryData(), refreshAnalyticsData()]);
       setLastRefresh(new Date());
     } catch (error) {
       console.error("Failed to refresh package data:", error);
@@ -273,27 +257,19 @@ export const PackageManagementDashboard: Component<
               <h3>Package Status</h3>
               <div class="summary-stats">
                 <div class="stat-item">
-                  <span class="stat-value">
-                    {packageSummary().totalPackages}
-                  </span>
+                  <span class="stat-value">{packageSummary().totalPackages}</span>
                   <span class="stat-label">Total</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value success">
-                    {packageSummary().installedPackages}
-                  </span>
+                  <span class="stat-value success">{packageSummary().installedPackages}</span>
                   <span class="stat-label">Installed</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value info">
-                    {packageSummary().availablePackages}
-                  </span>
+                  <span class="stat-value info">{packageSummary().availablePackages}</span>
                   <span class="stat-label">Available</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value error">
-                    {packageSummary().failedPackages}
-                  </span>
+                  <span class="stat-value error">{packageSummary().failedPackages}</span>
                   <span class="stat-label">Failed</span>
                 </div>
               </div>
@@ -304,27 +280,19 @@ export const PackageManagementDashboard: Component<
               <h3>Package Discovery</h3>
               <div class="summary-stats">
                 <div class="stat-item">
-                  <span class="stat-value">
-                    {discoverySummary().totalDiscovered}
-                  </span>
+                  <span class="stat-value">{discoverySummary().totalDiscovered}</span>
                   <span class="stat-label">Discovered</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value success">
-                    {discoverySummary().newPackages}
-                  </span>
+                  <span class="stat-value success">{discoverySummary().newPackages}</span>
                   <span class="stat-label">New</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value warning">
-                    {discoverySummary().updatedPackages}
-                  </span>
+                  <span class="stat-value warning">{discoverySummary().updatedPackages}</span>
                   <span class="stat-label">Updated</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value error">
-                    {discoverySummary().conflictedPackages}
-                  </span>
+                  <span class="stat-value error">{discoverySummary().conflictedPackages}</span>
                   <span class="stat-label">Conflicts</span>
                 </div>
               </div>
@@ -335,27 +303,19 @@ export const PackageManagementDashboard: Component<
               <h3>Performance Analytics</h3>
               <div class="summary-stats">
                 <div class="stat-item">
-                  <span class="stat-value">
-                    {analyticsSummary().totalLoads}
-                  </span>
+                  <span class="stat-value">{analyticsSummary().totalLoads}</span>
                   <span class="stat-label">Total Loads</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value success">
-                    {analyticsSummary().successRate.toFixed(1)}%
-                  </span>
+                  <span class="stat-value success">{analyticsSummary().successRate.toFixed(1)}%</span>
                   <span class="stat-label">Success Rate</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value info">
-                    {analyticsSummary().averageLoadTime.toFixed(2)}s
-                  </span>
+                  <span class="stat-value info">{analyticsSummary().averageLoadTime.toFixed(2)}s</span>
                   <span class="stat-label">Avg Load Time</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value warning">
-                    {analyticsSummary().performanceScore}
-                  </span>
+                  <span class="stat-value warning">{analyticsSummary().performanceScore}</span>
                   <span class="stat-label">Performance</span>
                 </div>
               </div>
@@ -365,25 +325,13 @@ export const PackageManagementDashboard: Component<
             <div class="overview-card">
               <h3>Quick Actions</h3>
               <div class="quick-actions">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setActiveTab("discovery")}
-                >
+                <Button variant="secondary" size="sm" onClick={() => setActiveTab("discovery")}>
                   Discover Packages
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setActiveTab("installation")}
-                >
+                <Button variant="secondary" size="sm" onClick={() => setActiveTab("installation")}>
                   Install Packages
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setActiveTab("lifecycle")}
-                >
+                <Button variant="secondary" size="sm" onClick={() => setActiveTab("lifecycle")}>
                   Manage Lifecycle
                 </Button>
               </div>
@@ -425,11 +373,7 @@ export const PackageManagementDashboard: Component<
       label: "Dependencies",
       content: (
         <div class="dependencies-tab">
-          <PackageDependencyGraph
-            showConflicts={true}
-            showResolution={true}
-            showVisualization={true}
-          />
+          <PackageDependencyGraph showConflicts={true} showResolution={true} showVisualization={true} />
         </div>
       ),
     },
@@ -466,11 +410,7 @@ export const PackageManagementDashboard: Component<
       label: "Configuration",
       content: (
         <div class="configuration-tab">
-          <PackageConfigurationPanel
-            showGlobalSettings={true}
-            showPackageSettings={true}
-            showAdvancedSettings={true}
-          />
+          <PackageConfigurationPanel showGlobalSettings={true} showPackageSettings={true} showAdvancedSettings={true} />
         </div>
       ),
     },
@@ -494,11 +434,7 @@ export const PackageManagementDashboard: Component<
         </div>
 
         <div class="dashboard-actions">
-          <Button
-            variant="primary"
-            onClick={refreshAll}
-            disabled={isRefreshing()}
-          >
+          <Button variant="primary" onClick={refreshAll} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -506,21 +442,13 @@ export const PackageManagementDashboard: Component<
           </Button>
 
           <Show when={lastRefresh()}>
-            <div class="last-refresh">
-              Last updated: {lastRefresh()!.toLocaleTimeString()}
-            </div>
+            <div class="last-refresh">Last updated: {lastRefresh()!.toLocaleTimeString()}</div>
           </Show>
         </div>
       </div>
 
       {/* Tabs */}
-      <Tabs
-        items={tabs}
-        activeTab={activeTab()}
-        onTabChange={setActiveTab}
-        variant="underline"
-        size="lg"
-      />
+      <Tabs items={tabs} activeTab={activeTab()} onTabChange={setActiveTab} variant="underline" size="lg" />
     </div>
   );
 };

@@ -47,12 +47,7 @@ export interface CollisionObjectData extends SpatialData {
   readonly index: number;
 }
 
-export type SpatialDataType =
-  | SpatialObjectData
-  | GameEntityData
-  | CollisionData
-  | RenderData
-  | CollisionObjectData;
+export type SpatialDataType = SpatialObjectData | GameEntityData | CollisionData | RenderData | CollisionObjectData;
 
 export interface SpatialObject<T extends SpatialDataType = SpatialDataType> {
   readonly id: string | number;
@@ -63,9 +58,7 @@ export interface SpatialObject<T extends SpatialDataType = SpatialDataType> {
   readonly data: T;
 }
 
-export interface SpatialQueryResult<
-  T extends SpatialDataType = SpatialDataType,
-> {
+export interface SpatialQueryResult<T extends SpatialDataType = SpatialDataType> {
   readonly objects: readonly SpatialObject<T>[];
   readonly queryTime: number;
   readonly totalObjects: number;

@@ -217,7 +217,7 @@ const {
   enableSnapping: true,
   enableAlignment: true,
   onBoxMoved: (boxId, newBox) => console.log("Box moved"),
-  onBoxMoveEnd: (boxId) => console.log("Move ended"),
+  onBoxMoveEnd: boxId => console.log("Move ended"),
 });
 ```
 
@@ -238,25 +238,16 @@ const displayCoords = imageToDisplayCoords(
   { x: 100, y: 100, width: 200, height: 150 },
   imageInfo,
   containerWidth,
-  containerHeight,
+  containerHeight
 );
 
-const imageCoords = displayToImageCoords(
-  displayCoords,
-  imageInfo,
-  containerWidth,
-  containerHeight,
-);
+const imageCoords = displayToImageCoords(displayCoords, imageInfo, containerWidth, containerHeight);
 ```
 
 #### Validation
 
 ```tsx
-import {
-  validateBoundingBox,
-  checkBoundingBoxConstraints,
-  boundingBoxesOverlap,
-} from "reynard-boundingbox";
+import { validateBoundingBox, checkBoundingBoxConstraints, boundingBoxesOverlap } from "reynard-boundingbox";
 
 // Validate bounding box
 const validation = validateBoundingBox(box, imageInfo);

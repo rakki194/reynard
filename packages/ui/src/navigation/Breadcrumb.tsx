@@ -41,7 +41,7 @@ const defaultProps = {
   showHomeIcon: false,
 };
 
-export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
+export const Breadcrumb: Component<BreadcrumbProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local, others] = splitProps(merged, [
     "items",
@@ -119,25 +119,13 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
   };
 
   const renderHomeIcon = () => (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-      aria-hidden="true"
-    >
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
       <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z" />
     </svg>
   );
 
   const renderEllipsis = () => (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-      aria-hidden="true"
-    >
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
       <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
     </svg>
   );
@@ -151,24 +139,12 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
               <Show
                 when={item.href && !item.disabled && !item.current}
                 fallback={
-                  <span
-                    class={getLinkClasses(item)}
-                    aria-current={item.current ? "page" : undefined}
-                  >
-                    <Show when={item.id === "ellipsis"}>
-                      {renderEllipsis()}
-                    </Show>
+                  <span class={getLinkClasses(item)} aria-current={item.current ? "page" : undefined}>
+                    <Show when={item.id === "ellipsis"}>{renderEllipsis()}</Show>
                     <Show when={item.id !== "ellipsis"}>
-                      <Show
-                        when={
-                          item.icon || (local.showHomeIcon && index() === 0)
-                        }
-                      >
+                      <Show when={item.icon || (local.showHomeIcon && index() === 0)}>
                         <span class="reynard-breadcrumb__icon">
-                          {item.icon ||
-                            (local.showHomeIcon && index() === 0
-                              ? renderHomeIcon()
-                              : null)}
+                          {item.icon || (local.showHomeIcon && index() === 0 ? renderHomeIcon() : null)}
                         </span>
                       </Show>
                       <span class="reynard-breadcrumb__text">{item.label}</span>
@@ -179,17 +155,12 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
                 <a
                   href={item.href}
                   class={getLinkClasses(item)}
-                  onClick={(e) => handleItemClick(item, e)}
+                  onClick={e => handleItemClick(item, e)}
                   aria-current={item.current ? "page" : undefined}
                 >
-                  <Show
-                    when={item.icon || (local.showHomeIcon && index() === 0)}
-                  >
+                  <Show when={item.icon || (local.showHomeIcon && index() === 0)}>
                     <span class="reynard-breadcrumb__icon">
-                      {item.icon ||
-                        (local.showHomeIcon && index() === 0
-                          ? renderHomeIcon()
-                          : null)}
+                      {item.icon || (local.showHomeIcon && index() === 0 ? renderHomeIcon() : null)}
                     </span>
                   </Show>
                   <span class="reynard-breadcrumb__text">{item.label}</span>
@@ -197,9 +168,7 @@ export const Breadcrumb: Component<BreadcrumbProps> = (props) => {
               </Show>
 
               {/* Separator */}
-              <Show when={index() < processedItems().length - 1}>
-                {renderSeparator()}
-              </Show>
+              <Show when={index() < processedItems().length - 1}>{renderSeparator()}</Show>
             </li>
           )}
         </For>

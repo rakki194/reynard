@@ -29,23 +29,27 @@ export class SearchValidator {
    * Validate search query
    */
   static validateQuery(query: string): string {
-    if (typeof query !== 'string') {
-      throw new SearchValidationError('Query must be a string', 'query', query);
+    if (typeof query !== "string") {
+      throw new SearchValidationError("Query must be a string", "query", query);
     }
 
     const trimmedQuery = query.trim();
-    
+
     if (trimmedQuery.length < this.MIN_QUERY_LENGTH) {
-      throw new SearchValidationError(`Query must be at least ${this.MIN_QUERY_LENGTH} character long`, 'query', query);
+      throw new SearchValidationError(`Query must be at least ${this.MIN_QUERY_LENGTH} character long`, "query", query);
     }
 
     if (trimmedQuery.length > this.MAX_QUERY_LENGTH) {
-      throw new SearchValidationError(`Query must be no more than ${this.MAX_QUERY_LENGTH} characters long`, 'query', query);
+      throw new SearchValidationError(
+        `Query must be no more than ${this.MAX_QUERY_LENGTH} characters long`,
+        "query",
+        query
+      );
     }
 
     // Check for potentially malicious content
     if (this.containsSuspiciousContent(trimmedQuery)) {
-      throw new SearchValidationError('Query contains potentially malicious content', 'query', query);
+      throw new SearchValidationError("Query contains potentially malicious content", "query", query);
     }
 
     return trimmedQuery;
@@ -55,19 +59,19 @@ export class SearchValidator {
    * Validate file ID
    */
   static validateFileId(fileId: string): string {
-    if (typeof fileId !== 'string') {
-      throw new SearchValidationError('File ID must be a string', 'fileId', fileId);
+    if (typeof fileId !== "string") {
+      throw new SearchValidationError("File ID must be a string", "fileId", fileId);
     }
 
     const trimmedId = fileId.trim();
-    
+
     if (trimmedId.length === 0) {
-      throw new SearchValidationError('File ID cannot be empty', 'fileId', fileId);
+      throw new SearchValidationError("File ID cannot be empty", "fileId", fileId);
     }
 
     // Basic UUID or alphanumeric validation
     if (!/^[a-zA-Z0-9\-_]+$/.test(trimmedId)) {
-      throw new SearchValidationError('File ID contains invalid characters', 'fileId', fileId);
+      throw new SearchValidationError("File ID contains invalid characters", "fileId", fileId);
     }
 
     return trimmedId;
@@ -77,10 +81,10 @@ export class SearchValidator {
    * Validate modality type
    */
   static validateModality(modality: ModalityType): ModalityType {
-    const validModalities: ModalityType[] = ['text', 'image', 'audio', 'video', 'data', 'code', 'document'];
-    
+    const validModalities: ModalityType[] = ["text", "image", "audio", "video", "data", "code", "document"];
+
     if (!validModalities.includes(modality)) {
-      throw new SearchValidationError(`Invalid modality type: ${modality}`, 'modality', modality);
+      throw new SearchValidationError(`Invalid modality type: ${modality}`, "modality", modality);
     }
 
     return modality;
@@ -90,12 +94,12 @@ export class SearchValidator {
    * Validate top K parameter
    */
   static validateTopK(topK: number): number {
-    if (typeof topK !== 'number' || !Number.isInteger(topK)) {
-      throw new SearchValidationError('Top K must be an integer', 'topK', topK);
+    if (typeof topK !== "number" || !Number.isInteger(topK)) {
+      throw new SearchValidationError("Top K must be an integer", "topK", topK);
     }
 
     if (topK < this.MIN_TOP_K || topK > this.MAX_TOP_K) {
-      throw new SearchValidationError(`Top K must be between ${this.MIN_TOP_K} and ${this.MAX_TOP_K}`, 'topK', topK);
+      throw new SearchValidationError(`Top K must be between ${this.MIN_TOP_K} and ${this.MAX_TOP_K}`, "topK", topK);
     }
 
     return topK;
@@ -105,12 +109,16 @@ export class SearchValidator {
    * Validate similarity threshold
    */
   static validateSimilarityThreshold(threshold: number): number {
-    if (typeof threshold !== 'number') {
-      throw new SearchValidationError('Similarity threshold must be a number', 'similarityThreshold', threshold);
+    if (typeof threshold !== "number") {
+      throw new SearchValidationError("Similarity threshold must be a number", "similarityThreshold", threshold);
     }
 
     if (threshold < this.MIN_SIMILARITY_THRESHOLD || threshold > this.MAX_SIMILARITY_THRESHOLD) {
-      throw new SearchValidationError(`Similarity threshold must be between ${this.MIN_SIMILARITY_THRESHOLD} and ${this.MAX_SIMILARITY_THRESHOLD}`, 'similarityThreshold', threshold);
+      throw new SearchValidationError(
+        `Similarity threshold must be between ${this.MIN_SIMILARITY_THRESHOLD} and ${this.MAX_SIMILARITY_THRESHOLD}`,
+        "similarityThreshold",
+        threshold
+      );
     }
 
     return threshold;
@@ -120,12 +128,16 @@ export class SearchValidator {
    * Validate weight parameter
    */
   static validateWeight(weight: number, fieldName: string): number {
-    if (typeof weight !== 'number') {
+    if (typeof weight !== "number") {
       throw new SearchValidationError(`${fieldName} must be a number`, fieldName, weight);
     }
 
     if (weight < this.MIN_WEIGHT || weight > this.MAX_WEIGHT) {
-      throw new SearchValidationError(`${fieldName} must be between ${this.MIN_WEIGHT} and ${this.MAX_WEIGHT}`, fieldName, weight);
+      throw new SearchValidationError(
+        `${fieldName} must be between ${this.MIN_WEIGHT} and ${this.MAX_WEIGHT}`,
+        fieldName,
+        weight
+      );
     }
 
     return weight;
@@ -187,11 +199,11 @@ export class SearchValidator {
    */
   static validateHybridSearchOptions(options: Partial<HybridSearchOptions>): HybridSearchOptions {
     const baseOptions = this.validateVectorSearchOptions(options);
-    
+
     return {
       ...baseOptions,
-      keywordWeight: this.validateWeight(options.keywordWeight ?? 0.5, 'keywordWeight'),
-      vectorWeight: this.validateWeight(options.vectorWeight ?? 0.5, 'vectorWeight'),
+      keywordWeight: this.validateWeight(options.keywordWeight ?? 0.5, "keywordWeight"),
+      vectorWeight: this.validateWeight(options.vectorWeight ?? 0.5, "vectorWeight"),
       enableReranking: Boolean(options.enableReranking ?? false),
     };
   }
@@ -201,15 +213,15 @@ export class SearchValidator {
    */
   static validateModalities(modalities: ModalityType[]): ModalityType[] {
     if (!Array.isArray(modalities)) {
-      throw new SearchValidationError('Modalities must be an array', 'modalities', modalities);
+      throw new SearchValidationError("Modalities must be an array", "modalities", modalities);
     }
 
     if (modalities.length === 0) {
-      throw new SearchValidationError('At least one modality must be specified', 'modalities', modalities);
+      throw new SearchValidationError("At least one modality must be specified", "modalities", modalities);
     }
 
     if (modalities.length > 10) {
-      throw new SearchValidationError('Too many modalities specified (max 10)', 'modalities', modalities);
+      throw new SearchValidationError("Too many modalities specified (max 10)", "modalities", modalities);
     }
 
     return modalities.map(modality => this.validateModality(modality));
@@ -219,12 +231,12 @@ export class SearchValidator {
    * Validate limit parameter
    */
   static validateLimit(limit: number): number {
-    if (typeof limit !== 'number' || !Number.isInteger(limit)) {
-      throw new SearchValidationError('Limit must be an integer', 'limit', limit);
+    if (typeof limit !== "number" || !Number.isInteger(limit)) {
+      throw new SearchValidationError("Limit must be an integer", "limit", limit);
     }
 
     if (limit < 1 || limit > 100) {
-      throw new SearchValidationError('Limit must be between 1 and 100', 'limit', limit);
+      throw new SearchValidationError("Limit must be between 1 and 100", "limit", limit);
     }
 
     return limit;

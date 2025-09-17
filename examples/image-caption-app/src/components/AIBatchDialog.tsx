@@ -5,11 +5,7 @@
  */
 
 import { Component } from "solid-js";
-import {
-  BatchProcessingDialog,
-  type FileItem,
-  type GalleryCaptionResult,
-} from "reynard-gallery-ai";
+import { BatchProcessingDialog, type FileItem, type GalleryCaptionResult } from "reynard-gallery-ai";
 import { useNotifications } from "reynard-core";
 
 interface AIBatchDialogProps {
@@ -20,7 +16,7 @@ interface AIBatchDialogProps {
   onError: (error: Error) => void;
 }
 
-export const AIBatchDialog: Component<AIBatchDialogProps> = (props) => {
+export const AIBatchDialog: Component<AIBatchDialogProps> = props => {
   const { notify } = useNotifications();
 
   return (
@@ -32,10 +28,7 @@ export const AIBatchDialog: Component<AIBatchDialogProps> = (props) => {
       onComplete={(results: GalleryCaptionResult[]) => {
         console.log("Batch processing completed:", results);
         props.onComplete(results);
-        notify(
-          `Batch processing completed: ${results.length} items processed`,
-          "success",
-        );
+        notify(`Batch processing completed: ${results.length} items processed`, "success");
       }}
       onError={(error: string) => {
         console.error("Batch processing error:", error);

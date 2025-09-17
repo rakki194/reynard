@@ -5,7 +5,7 @@ Service layer for TTS operations.
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 from ...services.tts import TTSService
 
@@ -23,7 +23,7 @@ def get_tts_service() -> TTSService:
     return _tts_service
 
 
-async def initialize_tts_service(config: Dict[str, Any]) -> bool:
+async def initialize_tts_service(config: dict[str, Any]) -> bool:
     """Initialize the TTS service."""
     try:
         service = get_tts_service()

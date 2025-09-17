@@ -15,12 +15,9 @@ export function createAnimationFunctions(
   setSpiralPoints: (points: SpiralPoint[]) => void,
   spiralLogic:
     | {
-        updateSpiralPoints: (
-          points: SpiralPoint[],
-          angle: number,
-        ) => SpiralPoint[];
+        updateSpiralPoints: (points: SpiralPoint[], angle: number) => SpiralPoint[];
       }
-    | undefined,
+    | undefined
 ) {
   const updateSpiral = (deltaTime: number) => {
     if (!isRunning() || !spiralLogic) {
@@ -31,13 +28,9 @@ export function createAnimationFunctions(
       return;
     }
 
-    const newAngle =
-      currentAngle() + (config().rotationSpeed * deltaTime) / 16.67;
+    const newAngle = currentAngle() + (config().rotationSpeed * deltaTime) / 16.67;
     setCurrentAngle(newAngle);
-    const updatedPoints = spiralLogic.updateSpiralPoints(
-      spiralPoints(),
-      newAngle,
-    );
+    const updatedPoints = spiralLogic.updateSpiralPoints(spiralPoints(), newAngle);
     setSpiralPoints(updatedPoints);
     console.log("🦊 PhyllotacticGameAnimation: Spiral updated", {
       deltaTime,

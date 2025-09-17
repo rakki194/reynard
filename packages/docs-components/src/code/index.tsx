@@ -17,7 +17,7 @@ export const DocsCodeBlock: Component<{
   runnable?: boolean;
   onRun?: (code: string) => void;
   className?: string;
-}> = (props) => {
+}> = props => {
   const [copied, setCopied] = createSignal(false);
   const [isExpanded, setIsExpanded] = createSignal(false);
 
@@ -42,22 +42,12 @@ export const DocsCodeBlock: Component<{
           <h4 class="docs-code-block-title">{props.title}</h4>
           <div class="docs-code-block-actions">
             <Show when={props.copyable !== false}>
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={handleCopy}
-                class="docs-code-block-copy"
-              >
+              <Button size="sm" variant="secondary" onClick={handleCopy} class="docs-code-block-copy">
                 {copied() ? "Copied!" : "Copy"}
               </Button>
             </Show>
             <Show when={props.runnable}>
-              <Button
-                size="sm"
-                variant="primary"
-                onClick={handleRun}
-                class="docs-code-block-run"
-              >
+              <Button size="sm" variant="primary" onClick={handleRun} class="docs-code-block-run">
                 Run
               </Button>
             </Show>
@@ -92,7 +82,7 @@ export const DocsCodeEditor: Component<{
   onRun?: (code: string) => void;
   readOnly?: boolean;
   className?: string;
-}> = (props) => {
+}> = props => {
   const [code, setCode] = createSignal(props.code);
   const [output, setOutput] = createSignal("");
 
@@ -110,12 +100,7 @@ export const DocsCodeEditor: Component<{
     <div class={`docs-code-editor ${props.className || ""}`}>
       <div class="docs-code-editor-header">
         <span class="docs-code-editor-language">{props.language}</span>
-        <Button
-          size="sm"
-          variant="primary"
-          onClick={handleRun}
-          class="docs-code-editor-run"
-        >
+        <Button size="sm" variant="primary" onClick={handleRun} class="docs-code-editor-run">
           Run Code
         </Button>
       </div>
@@ -123,7 +108,7 @@ export const DocsCodeEditor: Component<{
       <div class="docs-code-editor-content">
         <textarea
           value={code()}
-          onInput={(e) => handleCodeChange(e.currentTarget.value)}
+          onInput={e => handleCodeChange(e.currentTarget.value)}
           readOnly={props.readOnly}
           class="docs-code-editor-textarea"
           spellcheck={false}
@@ -151,7 +136,7 @@ export const DocsCodeExample: Component<{
   preview?: string;
   onRun?: (code: string) => void;
   className?: string;
-}> = (props) => {
+}> = props => {
   const [activeTab, setActiveTab] = createSignal<"code" | "preview">("preview");
   const [output, setOutput] = createSignal("");
 
@@ -200,12 +185,7 @@ export const DocsCodeExample: Component<{
         </Show>
 
         <Show when={activeTab() === "code"}>
-          <DocsCodeBlock
-            code={props.code}
-            language={props.language}
-            runnable={!!props.onRun}
-            onRun={handleRun}
-          />
+          <DocsCodeBlock code={props.code} language={props.language} runnable={!!props.onRun} onRun={handleRun} />
         </Show>
       </div>
 
@@ -234,7 +214,7 @@ export const DocsCodeComparison: Component<{
     language: string;
   };
   className?: string;
-}> = (props) => {
+}> = props => {
   return (
     <div class={`docs-code-comparison ${props.className || ""}`}>
       <div class="docs-code-comparison-header">
@@ -244,11 +224,7 @@ export const DocsCodeComparison: Component<{
       <div class="docs-code-comparison-content">
         <div class="docs-code-comparison-left">
           <h5 class="docs-code-comparison-title">{props.left.title}</h5>
-          <DocsCodeBlock
-            code={props.left.code}
-            language={props.left.language}
-            copyable={true}
-          />
+          <DocsCodeBlock code={props.left.code} language={props.left.language} copyable={true} />
         </div>
 
         <div class="docs-code-comparison-separator">
@@ -257,11 +233,7 @@ export const DocsCodeComparison: Component<{
 
         <div class="docs-code-comparison-right">
           <h5 class="docs-code-comparison-title">{props.right.title}</h5>
-          <DocsCodeBlock
-            code={props.right.code}
-            language={props.right.language}
-            copyable={true}
-          />
+          <DocsCodeBlock code={props.right.code} language={props.right.language} copyable={true} />
         </div>
       </div>
     </div>
@@ -276,7 +248,7 @@ export const DocsCodeSnippet: Component<{
   language?: string;
   copyable?: boolean;
   className?: string;
-}> = (props) => {
+}> = props => {
   const [copied, setCopied] = createSignal(false);
 
   const handleCopy = async () => {
@@ -293,11 +265,7 @@ export const DocsCodeSnippet: Component<{
     <code class={`docs-code-snippet ${props.className || ""}`}>
       {props.code}
       <Show when={props.copyable}>
-        <button
-          class="docs-code-snippet-copy"
-          onClick={handleCopy}
-          title="Copy code"
-        >
+        <button class="docs-code-snippet-copy" onClick={handleCopy} title="Copy code">
           {copied() ? "✓" : "📋"}
         </button>
       </Show>
@@ -316,7 +284,7 @@ export const DocsTerminal: Component<{
   }>;
   prompt?: string;
   className?: string;
-}> = (props) => {
+}> = props => {
   const prompt = () => props.prompt || "$";
 
   return (
@@ -332,7 +300,7 @@ export const DocsTerminal: Component<{
 
       <div class="docs-terminal-content">
         <For each={props.commands}>
-          {(cmd) => (
+          {cmd => (
             <div class="docs-terminal-line">
               <span class="docs-terminal-prompt">{prompt()}</span>
               <span class="docs-terminal-command">{cmd.command}</span>

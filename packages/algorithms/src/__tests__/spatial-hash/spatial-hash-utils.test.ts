@@ -7,12 +7,7 @@ import {
 import type { SpatialObject } from "../../spatial-hash/spatial-hash-types";
 
 describe("Spatial Hash Utils", () => {
-  const createSpatialObject = (
-    x: number,
-    y: number,
-    width: number = 0,
-    height: number = 0,
-  ): SpatialObject => ({
+  const createSpatialObject = (x: number, y: number, width: number = 0, height: number = 0): SpatialObject => ({
     x,
     y,
     width,
@@ -21,10 +16,7 @@ describe("Spatial Hash Utils", () => {
 
   describe("createOptimizedSpatialHash", () => {
     it("should create spatial hash with default options", () => {
-      const objects = [
-        createSpatialObject(0, 0, 50, 50),
-        createSpatialObject(100, 100, 50, 50),
-      ];
+      const objects = [createSpatialObject(0, 0, 50, 50), createSpatialObject(100, 100, 50, 50)];
 
       const hash = createOptimizedSpatialHash(objects);
 
@@ -33,10 +25,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should create spatial hash with custom options", () => {
-      const objects = [
-        createSpatialObject(0, 0, 50, 50),
-        createSpatialObject(100, 100, 50, 50),
-      ];
+      const objects = [createSpatialObject(0, 0, 50, 50), createSpatialObject(100, 100, 50, 50)];
 
       const hash = createOptimizedSpatialHash(objects, {
         targetCellSize: 200,
@@ -47,10 +36,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should calculate optimal cell size based on object distribution", () => {
-      const objects = [
-        createSpatialObject(0, 0, 100, 100),
-        createSpatialObject(200, 200, 100, 100),
-      ];
+      const objects = [createSpatialObject(0, 0, 100, 100), createSpatialObject(200, 200, 100, 100)];
 
       const hash = createOptimizedSpatialHash(objects);
 
@@ -65,10 +51,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should handle objects without dimensions", () => {
-      const objects = [
-        createSpatialObject(0, 0),
-        createSpatialObject(100, 100),
-      ];
+      const objects = [createSpatialObject(0, 0), createSpatialObject(100, 100)];
 
       const hash = createOptimizedSpatialHash(objects);
 
@@ -89,10 +72,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should handle objects with zero dimensions", () => {
-      const objects = [
-        createSpatialObject(0, 0, 0, 0),
-        createSpatialObject(100, 100, 0, 0),
-      ];
+      const objects = [createSpatialObject(0, 0, 0, 0), createSpatialObject(100, 100, 0, 0)];
 
       const hash = createOptimizedSpatialHash(objects);
 
@@ -100,10 +80,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should handle very large objects", () => {
-      const objects = [
-        createSpatialObject(0, 0, 10000, 10000),
-        createSpatialObject(5000, 5000, 10000, 10000),
-      ];
+      const objects = [createSpatialObject(0, 0, 10000, 10000), createSpatialObject(5000, 5000, 10000, 10000)];
 
       const hash = createOptimizedSpatialHash(objects);
 
@@ -111,10 +88,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should handle very small objects", () => {
-      const objects = [
-        createSpatialObject(0, 0, 0.1, 0.1),
-        createSpatialObject(0.5, 0.5, 0.1, 0.1),
-      ];
+      const objects = [createSpatialObject(0, 0, 0.1, 0.1), createSpatialObject(0.5, 0.5, 0.1, 0.1)];
 
       const hash = createOptimizedSpatialHash(objects);
 
@@ -143,10 +117,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should handle objects without dimensions", () => {
-      const objects = [
-        createSpatialObject(0, 0),
-        createSpatialObject(100, 100),
-      ];
+      const objects = [createSpatialObject(0, 0), createSpatialObject(100, 100)];
 
       const size = calculateOptimalCellSize(objects);
       expect(size).toBe(50); // Should return minimum
@@ -166,10 +137,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should handle very large objects", () => {
-      const objects = [
-        createSpatialObject(0, 0, 1000, 1000),
-        createSpatialObject(100, 100, 2000, 2000),
-      ];
+      const objects = [createSpatialObject(0, 0, 1000, 1000), createSpatialObject(100, 100, 2000, 2000)];
 
       const size = calculateOptimalCellSize(objects);
 
@@ -178,10 +146,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should handle very small objects", () => {
-      const objects = [
-        createSpatialObject(0, 0, 1, 1),
-        createSpatialObject(100, 100, 2, 2),
-      ];
+      const objects = [createSpatialObject(0, 0, 1, 1), createSpatialObject(100, 100, 2, 2)];
 
       const size = calculateOptimalCellSize(objects);
 
@@ -199,10 +164,7 @@ describe("Spatial Hash Utils", () => {
     });
 
     it("should handle objects with zero dimensions", () => {
-      const objects = [
-        createSpatialObject(0, 0, 0, 0),
-        createSpatialObject(100, 100, 0, 0),
-      ];
+      const objects = [createSpatialObject(0, 0, 0, 0), createSpatialObject(100, 100, 0, 0)];
 
       const size = calculateOptimalCellSize(objects);
       expect(size).toBe(50); // Should return minimum

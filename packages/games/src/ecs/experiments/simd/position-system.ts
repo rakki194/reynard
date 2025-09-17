@@ -28,12 +28,7 @@ export class PositionSystem {
 
   constructor(private maxEntities: number = 100000) {}
 
-  addEntity(
-    position: Position,
-    velocity: Velocity,
-    acceleration: Acceleration,
-    mass: Mass,
-  ): void {
+  addEntity(position: Position, velocity: Velocity, acceleration: Acceleration, mass: Mass): void {
     if (this.entityCount >= this.maxEntities) return;
 
     this.positions.push(position);

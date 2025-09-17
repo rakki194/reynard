@@ -27,15 +27,7 @@ export interface MultiValidationResult {
 }
 
 export interface ValidationSchema {
-  type:
-    | "string"
-    | "number"
-    | "boolean"
-    | "object"
-    | "array"
-    | "email"
-    | "url"
-    | "date";
+  type: "string" | "number" | "boolean" | "object" | "array" | "email" | "url" | "date";
   required?: boolean;
   minLength?: number;
   maxLength?: number;
@@ -67,7 +59,7 @@ export class ValidationUtils {
   static validateValue(
     value: unknown,
     schema: ValidationSchema,
-    options: FieldValidationOptions = {},
+    options: FieldValidationOptions = {}
   ): ValidationResult {
     const { fieldName = "field", context, strict = false } = options;
     const errors: string[] = [];
@@ -108,44 +100,16 @@ export class ValidationUtils {
     // Type-specific validation
     switch (schema.type) {
       case "string":
-        this.validateString(
-          value as string,
-          schema,
-          fieldName,
-          errors,
-          context,
-          strict,
-        );
+        this.validateString(value as string, schema, fieldName, errors, context, strict);
         break;
       case "number":
-        this.validateNumber(
-          value as number,
-          schema,
-          fieldName,
-          errors,
-          context,
-          strict,
-        );
+        this.validateNumber(value as number, schema, fieldName, errors, context, strict);
         break;
       case "array":
-        this.validateArray(
-          value as unknown[],
-          schema,
-          fieldName,
-          errors,
-          context,
-          strict,
-        );
+        this.validateArray(value as unknown[], schema, fieldName, errors, context, strict);
         break;
       case "object":
-        this.validateObject(
-          value as Record<string, unknown>,
-          schema,
-          fieldName,
-          errors,
-          context,
-          strict,
-        );
+        this.validateObject(value as Record<string, unknown>, schema, fieldName, errors, context, strict);
         break;
       case "email":
         this.validateEmail(value as string, fieldName, errors, context, strict);
@@ -159,11 +123,7 @@ export class ValidationUtils {
     }
 
     // Pattern validation
-    if (
-      schema.pattern &&
-      typeof value === "string" &&
-      !schema.pattern.test(value)
-    ) {
+    if (schema.pattern && typeof value === "string" && !schema.pattern.test(value)) {
       const error = schema.errorMessage || `${fieldName} format is invalid`;
       if (context && strict) {
         throw new ValidationError(error, {
@@ -195,15 +155,12 @@ export class ValidationUtils {
       const customResult = schema.customValidator(value);
       if (!customResult.isValid) {
         if (context && strict) {
-          throw new ValidationError(
-            customResult.error || "Custom validation failed",
-            {
-              ...context,
-              field: fieldName,
-              value,
-              constraint: "custom",
-            },
-          );
+          throw new ValidationError(customResult.error || "Custom validation failed", {
+            ...context,
+            field: fieldName,
+            value,
+            constraint: "custom",
+          });
         }
         errors.push(customResult.error || "Custom validation failed");
       }
@@ -224,7 +181,7 @@ export class ValidationUtils {
   static validateMultiple(
     data: Record<string, unknown>,
     schemas: Record<string, ValidationSchema>,
-    options: FieldValidationOptions = {},
+    options: FieldValidationOptions = {}
   ): MultiValidationResult {
     const results: Record<string, ValidationResult> = {};
     const errors: string[] = [];
@@ -276,9 +233,7 @@ export class ValidationUtils {
       case "boolean":
         return typeof value === "boolean";
       case "object":
-        return (
-          typeof value === "object" && value !== null && !Array.isArray(value)
-        );
+        return typeof value === "object" && value !== null && !Array.isArray(value);
       case "array":
         return Array.isArray(value);
       case "email":
@@ -298,7 +253,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     if (schema.minLength !== undefined && value.length < schema.minLength) {
       const error = `${fieldName} must be at least ${schema.minLength} characters`;
@@ -333,7 +288,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     if (schema.min !== undefined && value < schema.min) {
       const error = `${fieldName} must be at least ${schema.min}`;
@@ -368,7 +323,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     if (schema.minLength !== undefined && value.length < schema.minLength) {
       const error = `${fieldName} must have at least ${schema.minLength} items`;
@@ -417,7 +372,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     if (schema.properties) {
       for (const [propName, propSchema] of Object.entries(schema.properties)) {
@@ -438,7 +393,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
@@ -460,7 +415,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     try {
       new URL(value);
@@ -483,7 +438,7 @@ export class ValidationUtils {
     fieldName: string,
     errors: string[],
     context?: ValidationErrorContext,
-    strict = false,
+    strict = false
   ): void {
     let date: Date;
 

@@ -5,18 +5,14 @@
  * Provides a clean interface for registering default and custom tools.
  */
 
-import type {
-  NLWebTool,
-  NLWebEventEmitter,
-  NLWebEvent,
-} from "../types/index.js";
+import type { NLWebTool, NLWebEventEmitter, NLWebEvent } from "../types/index.js";
 import type { NLWebToolRegistry } from "../router/NLWebToolRegistry.js";
 import { allDefaultTools } from "../tools/index.js";
 
 export class ToolRegistrationService {
   constructor(
     private toolRegistry: NLWebToolRegistry,
-    private eventEmitter: NLWebEventEmitter,
+    private eventEmitter: NLWebEventEmitter
   ) {}
 
   /**

@@ -66,8 +66,7 @@ const lightTheme: ThemeConfig = {
   },
   typography: {
     fontFamily: {
-      primary:
-        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      primary: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
       secondary: 'Georgia, "Times New Roman", Times, serif',
       mono: '"SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace',
     },

@@ -4,7 +4,4 @@
  */
 
 export { useAuth, type UseAuthOptions } from "./useAuth";
-export {
-  usePasswordStrength,
-  type UsePasswordStrengthOptions,
-} from "./usePasswordStrength";
+export { usePasswordStrength, type UsePasswordStrengthOptions } from "./usePasswordStrength";

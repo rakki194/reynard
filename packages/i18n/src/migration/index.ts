@@ -8,10 +8,7 @@ export { TranslationManager } from "../features/enterprise/TranslationManager";
 export { TranslationAnalytics } from "../features/enterprise/TranslationAnalytics";
 
 // Migration utilities
-export function migrateFromSolidI18n(
-  sourceTranslations: any,
-  config: any = {},
-) {
+export function migrateFromSolidI18n(sourceTranslations: any, config: any = {}) {
   // Check for invalid input that should throw an error
   if (config.shouldThrowError || sourceTranslations === null) {
     throw new Error("Migration failed due to invalid input");
@@ -50,10 +47,7 @@ export function migrateFromSolidI18n(
   };
 }
 
-export function migrateFromSolidPrimitives(
-  sourceTranslations: any,
-  config: any = {},
-) {
+export function migrateFromSolidPrimitives(sourceTranslations: any, config: any = {}) {
   const translations = sourceTranslations || config.translations || {};
 
   // Count all nested keys
@@ -101,19 +95,12 @@ export function migrateFromI18next(sourceTranslations: any, config: any = {}) {
   };
 }
 
-export function migrateTranslations(
-  sourceLibraryOrConfig: string | any,
-  config?: any,
-) {
+export function migrateTranslations(sourceLibraryOrConfig: string | any, config?: any) {
   // Handle case where first parameter is an object (config)
-  if (
-    typeof sourceLibraryOrConfig === "object" &&
-    sourceLibraryOrConfig !== null
-  ) {
+  if (typeof sourceLibraryOrConfig === "object" && sourceLibraryOrConfig !== null) {
     const configObj = sourceLibraryOrConfig;
     const library = configObj.sourceLibrary || "solid-i18n";
-    const sourceTranslations =
-      configObj.sourceTranslations || configObj.translations || {};
+    const sourceTranslations = configObj.sourceTranslations || configObj.translations || {};
 
     switch (library) {
       case "solid-i18n":
@@ -137,8 +124,7 @@ export function migrateTranslations(
   // Handle case where first parameter is a string (sourceLibrary)
   const library = sourceLibraryOrConfig as string;
   const safeConfig = config || { translations: {} };
-  const sourceTranslations =
-    safeConfig.sourceTranslations || safeConfig.translations || {};
+  const sourceTranslations = safeConfig.sourceTranslations || safeConfig.translations || {};
 
   switch (library) {
     case "solid-i18n":
@@ -185,9 +171,7 @@ export class TranslationValidator {
       if (translations && typeof translations === "object") {
         const requiredNamespaces = ["common", "themes"];
         const availableNamespaces = Object.keys(translations);
-        const missingNamespaces = requiredNamespaces.filter(
-          (ns) => !availableNamespaces.includes(ns),
-        );
+        const missingNamespaces = requiredNamespaces.filter(ns => !availableNamespaces.includes(ns));
         if (missingNamespaces.length > 0) {
           return `Missing required namespace: ${missingNamespaces.join(", ")}`;
         }
@@ -206,7 +190,7 @@ export class TranslationValidator {
     const errors: string[] = [];
 
     // Execute custom rules
-    this.rules.forEach((rule) => {
+    this.rules.forEach(rule => {
       try {
         const result = rule(translations);
         if (result && typeof result === "string") {
@@ -228,7 +212,7 @@ export class TranslationValidator {
     // Check for required namespaces (only require 'common' as a minimum)
     const requiredNamespaces = ["common"];
     const availableNamespaces = Object.keys(translations);
-    requiredNamespaces.forEach((namespace) => {
+    requiredNamespaces.forEach(namespace => {
       if (!availableNamespaces.includes(namespace)) {
         errors.push(`Missing required namespace: ${namespace}`);
       }

@@ -114,7 +114,7 @@ parent1 = world.create_agent(
 )
 
 parent2 = world.create_agent(
-    agent_id="parent-002", 
+    agent_id="parent-002",
     spirit="wolf",
     style="exo"
 )
@@ -122,7 +122,7 @@ parent2 = world.create_agent(
 # Create offspring from two parents
 offspring = world.create_offspring(
     parent1_id="parent-001",
-    parent2_id="parent-002", 
+    parent2_id="parent-002",
     offspring_id="offspring-001"
 )
 
@@ -205,13 +205,13 @@ The ECS World integrates with MCP tools through the `ECSClient` service:
 class ECSAgentTools:
     def __init__(self, ecs_client: ECSClient | None = None):
         self.ecs_client = ecs_client or get_ecs_client()
-    
+
     async def create_ecs_agent(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Create a new agent using ECS system via FastAPI backend."""
         agent_id = arguments.get("agent_id", "")
         spirit = arguments.get("spirit", "fox")
         style = arguments.get("style", "foundation")
-        
+
         # Use the authoritative backend
         result = await self.ecs_client.create_agent(agent_id, spirit, style)
         return result
@@ -398,4 +398,4 @@ MIT License - Part of the Reynard Framework
 
 ---
 
-*The Reynard ECS World embodies the animal way - strategic fox architecture, otter quality assurance, and wolf system reliability. Every component is designed with the precision of a master craftsman and the reliability of a pack hunter.* 🦊🦦🐺
+_The Reynard ECS World embodies the animal way - strategic fox architecture, otter quality assurance, and wolf system reliability. Every component is designed with the precision of a master craftsman and the reliability of a pack hunter._ 🦊🦦🐺

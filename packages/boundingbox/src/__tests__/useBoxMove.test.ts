@@ -91,9 +91,7 @@ describe("useBoxMove", () => {
 
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
 
-      expect(mockCallbacks.onBoxMoveStart).toHaveBeenCalledWith(
-        mockBoundingBox.id,
-      );
+      expect(mockCallbacks.onBoxMoveStart).toHaveBeenCalledWith(mockBoundingBox.id);
       expect(moveEngine.isMoving()).toBe(true);
     });
 
@@ -117,7 +115,7 @@ describe("useBoxMove", () => {
           y: expect.any(Number),
           width: mockBoundingBox.width,
           height: mockBoundingBox.height,
-        }),
+        })
       );
     });
 
@@ -134,9 +132,7 @@ describe("useBoxMove", () => {
       moveEngine.startBoxMove(mockBoundingBox.id, mockBoundingBox, 100, 100);
       moveEngine.endBoxMove();
 
-      expect(mockCallbacks.onBoxMoveEnd).toHaveBeenCalledWith(
-        mockBoundingBox.id,
-      );
+      expect(mockCallbacks.onBoxMoveEnd).toHaveBeenCalledWith(mockBoundingBox.id);
       expect(moveEngine.isMoving()).toBe(false);
     });
   });
@@ -162,12 +158,8 @@ describe("useBoxMove", () => {
       // Box should be constrained within image bounds
       expect(movedBox.x).toBeGreaterThanOrEqual(0);
       expect(movedBox.y).toBeGreaterThanOrEqual(0);
-      expect(movedBox.x + movedBox.width).toBeLessThanOrEqual(
-        mockImageInfo.width,
-      );
-      expect(movedBox.y + movedBox.height).toBeLessThanOrEqual(
-        mockImageInfo.height,
-      );
+      expect(movedBox.x + movedBox.width).toBeLessThanOrEqual(mockImageInfo.width);
+      expect(movedBox.y + movedBox.height).toBeLessThanOrEqual(mockImageInfo.height);
     });
 
     it("should allow movement beyond bounds when constraints are disabled", () => {
@@ -499,7 +491,7 @@ describe("useBoxMove", () => {
       }));
 
       // Move each box
-      boxes.forEach((box) => {
+      boxes.forEach(box => {
         moveEngine.startBoxMove(box.id, box, box.x + 50, box.y + 50);
         moveEngine.endBoxMove();
       });

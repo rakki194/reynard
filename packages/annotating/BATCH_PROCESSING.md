@@ -154,7 +154,7 @@ The component provides comprehensive progress tracking:
 ### Progress Callbacks
 
 ```typescript
-const progressCallback = (progressData) => {
+const progressCallback = progressData => {
   if (progressData.type === "progress") {
     // Update individual file progress
   } else if (progressData.type === "completed") {

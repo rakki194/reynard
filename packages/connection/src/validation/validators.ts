@@ -15,10 +15,7 @@ import { ValidationResult, ValidationUtils } from "./core";
 /**
  * Validate an email address
  */
-export function validateEmail(
-  email: string,
-  fieldName = "email",
-): ValidationResult {
+export function validateEmail(email: string, fieldName = "email"): ValidationResult {
   return ValidationUtils.validateValue(
     email,
     {
@@ -26,17 +23,14 @@ export function validateEmail(
       required: true,
       errorMessage: "Must be a valid email address",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate a password
  */
-export function validatePassword(
-  password: string,
-  fieldName = "password",
-): ValidationResult {
+export function validatePassword(password: string, fieldName = "password"): ValidationResult {
   return ValidationUtils.validateValue(
     password,
     {
@@ -44,22 +38,17 @@ export function validatePassword(
       required: true,
       minLength: 8,
       maxLength: 128,
-      pattern:
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      errorMessage:
-        "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+      errorMessage: "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate a username
  */
-export function validateUsername(
-  username: string,
-  fieldName = "username",
-): ValidationResult {
+export function validateUsername(username: string, fieldName = "username"): ValidationResult {
   return ValidationUtils.validateValue(
     username,
     {
@@ -68,10 +57,9 @@ export function validateUsername(
       minLength: 3,
       maxLength: 30,
       pattern: /^[a-zA-Z0-9_-]+$/,
-      errorMessage:
-        "Username must be 3-30 characters with only letters, numbers, underscores, and hyphens",
+      errorMessage: "Username must be 3-30 characters with only letters, numbers, underscores, and hyphens",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
@@ -86,7 +74,7 @@ export function validateUrl(url: string, fieldName = "url"): ValidationResult {
       required: true,
       errorMessage: "Must be a valid URL",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
@@ -96,15 +84,7 @@ export function validateUrl(url: string, fieldName = "url"): ValidationResult {
 export function validateValue(
   value: unknown,
   schema: {
-    type:
-      | "string"
-      | "number"
-      | "boolean"
-      | "object"
-      | "array"
-      | "email"
-      | "url"
-      | "date";
+    type: "string" | "number" | "boolean" | "object" | "array" | "email" | "url" | "date";
     required?: boolean;
     minLength?: number;
     maxLength?: number;
@@ -114,7 +94,7 @@ export function validateValue(
     enum?: unknown[];
     errorMessage?: string;
   },
-  fieldName = "field",
+  fieldName = "field"
 ): ValidationResult {
   return ValidationUtils.validateValue(value, schema, { fieldName });
 }
@@ -126,10 +106,7 @@ export function validateValue(
 /**
  * Validate an API key
  */
-export function validateApiKey(
-  apiKey: string,
-  fieldName = "apiKey",
-): ValidationResult {
+export function validateApiKey(apiKey: string, fieldName = "apiKey"): ValidationResult {
   return ValidationUtils.validateValue(
     apiKey,
     {
@@ -138,20 +115,16 @@ export function validateApiKey(
       minLength: 10,
       maxLength: 256,
       pattern: /^[a-zA-Z0-9_-]+$/,
-      errorMessage:
-        "API key must be 10-256 characters with only letters, numbers, underscores, and hyphens",
+      errorMessage: "API key must be 10-256 characters with only letters, numbers, underscores, and hyphens",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate an authentication token
  */
-export function validateToken(
-  token: string,
-  fieldName = "token",
-): ValidationResult {
+export function validateToken(token: string, fieldName = "token"): ValidationResult {
   return ValidationUtils.validateValue(
     token,
     {
@@ -161,7 +134,7 @@ export function validateToken(
       maxLength: 512,
       errorMessage: "Token must be 20-512 characters",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
@@ -172,10 +145,7 @@ export function validateToken(
 /**
  * Validate a filename
  */
-export function validateFileName(
-  fileName: string,
-  fieldName = "fileName",
-): ValidationResult {
+export function validateFileName(fileName: string, fieldName = "fileName"): ValidationResult {
   return ValidationUtils.validateValue(
     fileName,
     {
@@ -186,27 +156,23 @@ export function validateFileName(
       pattern: /^[^<>:"/\\|?*\x00-\x1f]+$/,
       errorMessage: "Filename cannot contain invalid characters",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate a MIME type
  */
-export function validateMimeType(
-  mimeType: string,
-  fieldName = "mimeType",
-): ValidationResult {
+export function validateMimeType(mimeType: string, fieldName = "mimeType"): ValidationResult {
   return ValidationUtils.validateValue(
     mimeType,
     {
       type: "string",
       required: true,
-      pattern:
-        /^[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*\/[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*$/,
+      pattern: /^[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*\/[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*$/,
       errorMessage: "Must be a valid MIME type",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
@@ -216,7 +182,7 @@ export function validateMimeType(
 export function validateFileSize(
   fileSize: number,
   fieldName = "fileSize",
-  maxSize = 100 * 1024 * 1024, // 100MB default
+  maxSize = 100 * 1024 * 1024 // 100MB default
 ): ValidationResult {
   return ValidationUtils.validateValue(
     fileSize,
@@ -227,7 +193,7 @@ export function validateFileSize(
       max: maxSize,
       errorMessage: `File size must be between 0 and ${Math.round(maxSize / 1024 / 1024)}MB`,
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
@@ -238,10 +204,7 @@ export function validateFileSize(
 /**
  * Validate a port number
  */
-export function validatePort(
-  port: number,
-  fieldName = "port",
-): ValidationResult {
+export function validatePort(port: number, fieldName = "port"): ValidationResult {
   return ValidationUtils.validateValue(
     port,
     {
@@ -251,17 +214,14 @@ export function validatePort(
       max: 65535,
       errorMessage: "Port must be between 1 and 65535",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate a timeout value
  */
-export function validateTimeout(
-  timeout: number,
-  fieldName = "timeout",
-): ValidationResult {
+export function validateTimeout(timeout: number, fieldName = "timeout"): ValidationResult {
   return ValidationUtils.validateValue(
     timeout,
     {
@@ -271,17 +231,14 @@ export function validateTimeout(
       max: 300000, // 5 minutes
       errorMessage: "Timeout must be between 1 second and 5 minutes",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate retry count
  */
-export function validateRetryCount(
-  retryCount: number,
-  fieldName = "retryCount",
-): ValidationResult {
+export function validateRetryCount(retryCount: number, fieldName = "retryCount"): ValidationResult {
   return ValidationUtils.validateValue(
     retryCount,
     {
@@ -291,7 +248,7 @@ export function validateRetryCount(
       max: 10,
       errorMessage: "Retry count must be between 0 and 10",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
@@ -302,10 +259,7 @@ export function validateRetryCount(
 /**
  * Validate a model name
  */
-export function validateModelName(
-  modelName: string,
-  fieldName = "modelName",
-): ValidationResult {
+export function validateModelName(modelName: string, fieldName = "modelName"): ValidationResult {
   return ValidationUtils.validateValue(
     modelName,
     {
@@ -314,20 +268,16 @@ export function validateModelName(
       minLength: 1,
       maxLength: 100,
       pattern: /^[a-zA-Z0-9._-]+$/,
-      errorMessage:
-        "Model name must be 1-100 characters with only letters, numbers, dots, underscores, and hyphens",
+      errorMessage: "Model name must be 1-100 characters with only letters, numbers, dots, underscores, and hyphens",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate a prompt
  */
-export function validatePrompt(
-  prompt: string,
-  fieldName = "prompt",
-): ValidationResult {
+export function validatePrompt(prompt: string, fieldName = "prompt"): ValidationResult {
   return ValidationUtils.validateValue(
     prompt,
     {
@@ -337,17 +287,14 @@ export function validatePrompt(
       maxLength: 10000,
       errorMessage: "Prompt must be 1-10000 characters",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate temperature parameter
  */
-export function validateTemperature(
-  temperature: number,
-  fieldName = "temperature",
-): ValidationResult {
+export function validateTemperature(temperature: number, fieldName = "temperature"): ValidationResult {
   return ValidationUtils.validateValue(
     temperature,
     {
@@ -357,17 +304,14 @@ export function validateTemperature(
       max: 2,
       errorMessage: "Temperature must be between 0 and 2",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate max tokens parameter
  */
-export function validateMaxTokens(
-  maxTokens: number,
-  fieldName = "maxTokens",
-): ValidationResult {
+export function validateMaxTokens(maxTokens: number, fieldName = "maxTokens"): ValidationResult {
   return ValidationUtils.validateValue(
     maxTokens,
     {
@@ -377,7 +321,7 @@ export function validateMaxTokens(
       max: 100000,
       errorMessage: "Max tokens must be between 1 and 100000",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
@@ -388,10 +332,7 @@ export function validateMaxTokens(
 /**
  * Validate a theme
  */
-export function validateTheme(
-  theme: string,
-  fieldName = "theme",
-): ValidationResult {
+export function validateTheme(theme: string, fieldName = "theme"): ValidationResult {
   return ValidationUtils.validateValue(
     theme,
     {
@@ -400,17 +341,14 @@ export function validateTheme(
       enum: ["light", "dark", "auto"],
       errorMessage: "Theme must be light, dark, or auto",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate a language code
  */
-export function validateLanguage(
-  language: string,
-  fieldName = "language",
-): ValidationResult {
+export function validateLanguage(language: string, fieldName = "language"): ValidationResult {
   return ValidationUtils.validateValue(
     language,
     {
@@ -419,30 +357,25 @@ export function validateLanguage(
       minLength: 2,
       maxLength: 5,
       pattern: /^[a-z]{2}(-[A-Z]{2})?$/,
-      errorMessage:
-        "Language must be a valid locale code (e.g., 'en' or 'en-US')",
+      errorMessage: "Language must be a valid locale code (e.g., 'en' or 'en-US')",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
 /**
  * Validate a color value
  */
-export function validateColor(
-  color: string,
-  fieldName = "color",
-): ValidationResult {
+export function validateColor(color: string, fieldName = "color"): ValidationResult {
   return ValidationUtils.validateValue(
     color,
     {
       type: "string",
       required: true,
-      pattern:
-        /^#[0-9A-Fa-f]{6}$|^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$|^hsl\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*\)$/,
+      pattern: /^#[0-9A-Fa-f]{6}$|^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$|^hsl\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*\)$/,
       errorMessage: "Color must be a valid hex, RGB, or HSL color",
     },
-    { fieldName },
+    { fieldName }
   );
 }
 
@@ -453,10 +386,7 @@ export function validateColor(
 /**
  * Validate that a value is not empty
  */
-export function validateNotEmpty(
-  value: unknown,
-  fieldName = "field",
-): ValidationResult {
+export function validateNotEmpty(value: unknown, fieldName = "field"): ValidationResult {
   if (value === null || value === undefined || value === "") {
     return {
       isValid: false,
@@ -471,10 +401,7 @@ export function validateNotEmpty(
 /**
  * Validate that a value is a positive number
  */
-export function validatePositive(
-  value: number,
-  fieldName = "field",
-): ValidationResult {
+export function validatePositive(value: number, fieldName = "field"): ValidationResult {
   if (typeof value !== "number" || value <= 0) {
     return {
       isValid: false,
@@ -489,12 +416,7 @@ export function validatePositive(
 /**
  * Validate that a value is within a range
  */
-export function validateRange(
-  value: number,
-  min: number,
-  max: number,
-  fieldName = "field",
-): ValidationResult {
+export function validateRange(value: number, min: number, max: number, fieldName = "field"): ValidationResult {
   if (typeof value !== "number" || value < min || value > max) {
     return {
       isValid: false,

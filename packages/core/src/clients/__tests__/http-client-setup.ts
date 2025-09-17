@@ -60,17 +60,12 @@ class MockHTTPClient {
       ...(config.apiKey ? { Authorization: `Bearer ${config.apiKey}` } : {}),
     };
 
-    this.request = vi.fn().mockImplementation(async (options) => {
+    this.request = vi.fn().mockImplementation(async options => {
       const url = `${this.config.baseUrl}${options.endpoint}`;
       const headers = { ...this.baseHeaders, ...options.headers };
 
       // Don't include body for GET requests
-      const body =
-        options.method === "GET"
-          ? undefined
-          : options.data
-            ? JSON.stringify(options.data)
-            : undefined;
+      const body = options.method === "GET" ? undefined : options.data ? JSON.stringify(options.data) : undefined;
 
       const response = await mockFetch(url, {
         method: options.method,
@@ -94,7 +89,7 @@ class MockHTTPClient {
       };
     });
 
-    this.upload = vi.fn().mockImplementation(async (options) => {
+    this.upload = vi.fn().mockImplementation(async options => {
       const url = `${this.config.baseUrl}${options.endpoint}`;
       const headers = { ...this.baseHeaders, ...options.headers };
 
@@ -121,7 +116,7 @@ class MockHTTPClient {
     });
 
     this.getConfig = vi.fn(() => ({ ...this.config }));
-    this.updateConfig = vi.fn((updates) => {
+    this.updateConfig = vi.fn(updates => {
       Object.assign(this.config, updates);
       if (updates.apiKey) {
         this.baseHeaders.Authorization = `Bearer ${updates.apiKey}`;

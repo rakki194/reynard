@@ -18,7 +18,7 @@ export function renderCharacterWithLighting(
   character: PixelSprite,
   x: number,
   y: number,
-  lighting: "day" | "night" | "sunset",
+  lighting: "day" | "night" | "sunset"
 ): void {
   let modifiedSprite = character;
 
@@ -30,7 +30,7 @@ export function renderCharacterWithLighting(
       modifiedSprite = createTintedSprite(
         character,
         { l: 60, c: 0.2, h: 30 }, // Orange tint
-        0.4,
+        0.4
       );
       break;
     case "day":
@@ -39,21 +39,13 @@ export function renderCharacterWithLighting(
       break;
   }
 
-  spriteRenderer.drawSpriteWithPalette(
-    modifiedSprite,
-    x,
-    y,
-    modifiedSprite.palette,
-  );
+  spriteRenderer.drawSpriteWithPalette(modifiedSprite, x, y, modifiedSprite.palette);
 }
 
 /**
  * Example: Create a simple scene with multiple characters
  */
-export function createSimpleScene(
-  canvas: HTMLCanvasElement,
-  pixelSize: number = 4,
-): void {
+export function createSimpleScene(canvas: HTMLCanvasElement, pixelSize: number = 4): void {
   const renderer = new PixelArtRenderer(canvas, pixelSize);
   const spriteRenderer = new SpriteRenderer(renderer);
 
@@ -69,39 +61,15 @@ export function createSimpleScene(
   const character = createExampleCharacter();
 
   // Render characters in different lighting conditions
-  renderCharacterWithLighting(
-    renderer,
-    spriteRenderer,
-    character,
-    10,
-    10,
-    "day",
-  );
-  renderCharacterWithLighting(
-    renderer,
-    spriteRenderer,
-    character,
-    20,
-    10,
-    "sunset",
-  );
-  renderCharacterWithLighting(
-    renderer,
-    spriteRenderer,
-    character,
-    30,
-    10,
-    "night",
-  );
+  renderCharacterWithLighting(renderer, spriteRenderer, character, 10, 10, "day");
+  renderCharacterWithLighting(renderer, spriteRenderer, character, 20, 10, "sunset");
+  renderCharacterWithLighting(renderer, spriteRenderer, character, 30, 10, "night");
 }
 
 /**
  * Example: Animate a character with hue shifting
  */
-export function animateCharacterWithHueShift(
-  canvas: HTMLCanvasElement,
-  pixelSize: number = 4,
-): void {
+export function animateCharacterWithHueShift(canvas: HTMLCanvasElement, pixelSize: number = 4): void {
   const renderer = new PixelArtRenderer(canvas, pixelSize);
   const spriteRenderer = new SpriteRenderer(renderer);
 
@@ -126,10 +94,7 @@ export function animateCharacterWithHueShift(
 /**
  * Example: Create a color palette demonstration
  */
-export function createPaletteDemo(
-  canvas: HTMLCanvasElement,
-  pixelSize: number = 4,
-): void {
+export function createPaletteDemo(canvas: HTMLCanvasElement, pixelSize: number = 4): void {
   const renderer = new PixelArtRenderer(canvas, pixelSize);
 
   // Define a color palette
@@ -158,11 +123,7 @@ export function createPaletteDemo(
 /**
  * Example: Performance test with many sprites
  */
-export function performanceTest(
-  canvas: HTMLCanvasElement,
-  pixelSize: number = 2,
-  spriteCount: number = 100,
-): void {
+export function performanceTest(canvas: HTMLCanvasElement, pixelSize: number = 2, spriteCount: number = 100): void {
   const renderer = new PixelArtRenderer(canvas, pixelSize);
   const spriteRenderer = new SpriteRenderer(renderer);
 
@@ -182,13 +143,8 @@ export function performanceTest(
     renderer.clear();
 
     // Draw all sprites
-    sprites.forEach((sprite) => {
-      spriteRenderer.drawSpriteWithHueShift(
-        character,
-        sprite.x,
-        sprite.y,
-        sprite.hueShift,
-      );
+    sprites.forEach(sprite => {
+      spriteRenderer.drawSpriteWithHueShift(character, sprite.x, sprite.y, sprite.hueShift);
     });
 
     requestAnimationFrame(animate);

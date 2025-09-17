@@ -4,18 +4,13 @@
  * Handles translation actions and locale management.
  */
 
-import type {
-  LanguageCode,
-  TranslationParams,
-  TranslationFunction,
-  Translations,
-} from "../../types";
+import type { LanguageCode, TranslationParams, TranslationFunction, Translations } from "../../types";
 import { getTranslationValue, isRTL } from "../../utils";
 
 export function createI18nActions(
   locale: () => LanguageCode,
   translations: () => Translations,
-  setLocaleSignal: (locale: LanguageCode) => void,
+  setLocaleSignal: (locale: LanguageCode) => void
 ) {
   const setLocale = (newLocale: LanguageCode) => {
     setLocaleSignal(newLocale);

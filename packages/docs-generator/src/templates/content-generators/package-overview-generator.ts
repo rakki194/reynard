@@ -20,10 +20,7 @@ export class PackageOverviewGenerator {
    */
   generateContent(packageInfo: PackageInfo): string {
     // If we have a rich README, use it directly instead of generating basic content
-    if (
-      packageInfo.readme &&
-      this.readmeProcessor.isRichReadme(packageInfo.readme)
-    ) {
+    if (packageInfo.readme && this.readmeProcessor.isRichReadme(packageInfo.readme)) {
       return packageInfo.readme;
     }
 
@@ -62,9 +59,7 @@ export class PackageOverviewGenerator {
     if (!packageInfo.readme) return "";
 
     let content = `## Quick Start\n\n`;
-    content += this.readmeProcessor.extractQuickStartFromReadme(
-      packageInfo.readme,
-    );
+    content += this.readmeProcessor.extractQuickStartFromReadme(packageInfo.readme);
     content += `\n\n`;
     return content;
   }

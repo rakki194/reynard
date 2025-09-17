@@ -40,30 +40,12 @@ export interface ChangeDetection {
   incrementTick(): void;
   createTick(): Tick;
   advanceTick(): void;
-  markAdded<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): void;
-  markChanged<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): void;
-  markRemoved<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): void;
-  isAdded<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
-  isChanged<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
-  isRemoved<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
+  markAdded<T extends Component>(entity: Entity, componentType: ComponentType<T>): void;
+  markChanged<T extends Component>(entity: Entity, componentType: ComponentType<T>): void;
+  markRemoved<T extends Component>(entity: Entity, componentType: ComponentType<T>): void;
+  isAdded<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
+  isChanged<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
+  isRemoved<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
   clear(): void;
   cleanup(): void;
   getStats(): ChangeDetectionStats;
@@ -122,11 +104,7 @@ export function createTick(value: number): Tick {
 /**
  * Creates component ticks.
  */
-export function createComponentTicks(
-  added: Tick,
-  changed: Tick,
-  removed?: Tick,
-): ComponentTicks {
+export function createComponentTicks(added: Tick, changed: Tick, removed?: Tick): ComponentTicks {
   return { added, changed, removed };
 }
 
@@ -159,10 +137,7 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
     this.currentTick = createTick(this.currentTick.value + 1);
 
     // Periodic cleanup
-    if (
-      this.currentTick.value - this.lastCleanupTick >=
-      this.config.cleanupInterval
-    ) {
+    if (this.currentTick.value - this.lastCleanupTick >= this.config.cleanupInterval) {
       this.cleanup();
     }
   }
@@ -186,23 +161,14 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
   /**
    * Marks a component as added.
    */
-  markAdded<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): void {
+  markAdded<T extends Component>(entity: Entity, componentType: ComponentType<T>): void {
     // Check if we need cleanup before adding
-    if (
-      this.componentTicks.size >=
-      this.config.maxEntries * this.config.cleanupThreshold
-    ) {
+    if (this.componentTicks.size >= this.config.maxEntries * this.config.cleanupThreshold) {
       this.cleanup();
     }
 
     const key = this.getOptimizedComponentKey(entity, componentType);
-    this.componentTicks.set(
-      key,
-      createComponentTicks(this.currentTick, this.currentTick),
-    );
+    this.componentTicks.set(key, createComponentTicks(this.currentTick, this.currentTick));
 
     this.updateStats();
   }
@@ -210,22 +176,13 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
   /**
    * Marks a component as changed.
    */
-  markChanged<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): void {
+  markChanged<T extends Component>(entity: Entity, componentType: ComponentType<T>): void {
     const key = this.getOptimizedComponentKey(entity, componentType);
     const existing = this.componentTicks.get(key);
     if (existing) {
-      this.componentTicks.set(
-        key,
-        createComponentTicks(existing.added, this.currentTick),
-      );
+      this.componentTicks.set(key, createComponentTicks(existing.added, this.currentTick));
     } else {
-      this.componentTicks.set(
-        key,
-        createComponentTicks(this.currentTick, this.currentTick),
-      );
+      this.componentTicks.set(key, createComponentTicks(this.currentTick, this.currentTick));
     }
 
     this.updateStats();
@@ -234,21 +191,11 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
   /**
    * Marks a component as removed.
    */
-  markRemoved<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): void {
+  markRemoved<T extends Component>(entity: Entity, componentType: ComponentType<T>): void {
     const key = this.getOptimizedComponentKey(entity, componentType);
     const existing = this.componentTicks.get(key);
     if (existing) {
-      this.componentTicks.set(
-        key,
-        createComponentTicks(
-          existing.added,
-          existing.changed,
-          this.currentTick,
-        ),
-      );
+      this.componentTicks.set(key, createComponentTicks(existing.added, existing.changed, this.currentTick));
     }
 
     this.updateStats();
@@ -257,10 +204,7 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
   /**
    * Checks if a component was added since the last check.
    */
-  isAdded<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean {
+  isAdded<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean {
     const key = this.getOptimizedComponentKey(entity, componentType);
     const ticks = this.componentTicks.get(key);
     if (!ticks) return false;
@@ -271,10 +215,7 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
   /**
    * Checks if a component was changed since the last check.
    */
-  isChanged<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean {
+  isChanged<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean {
     const key = this.getOptimizedComponentKey(entity, componentType);
     const ticks = this.componentTicks.get(key);
     if (!ticks) return false;
@@ -285,17 +226,12 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
   /**
    * Checks if a component was removed since the last check.
    */
-  isRemoved<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean {
+  isRemoved<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean {
     const key = this.getOptimizedComponentKey(entity, componentType);
     const ticks = this.componentTicks.get(key);
     if (!ticks) return false;
 
-    return ticks.removed
-      ? ticks.removed.isNewerThan(this.lastCheckTick)
-      : false;
+    return ticks.removed ? ticks.removed.isNewerThan(this.lastCheckTick) : false;
   }
 
   /**
@@ -316,10 +252,7 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
 
     // Remove entries older than cutoff
     for (const [key, ticks] of this.componentTicks.entries()) {
-      if (
-        ticks.changed.value < cutoffTick &&
-        (!ticks.removed || ticks.removed.value < cutoffTick)
-      ) {
+      if (ticks.changed.value < cutoffTick && (!ticks.removed || ticks.removed.value < cutoffTick)) {
         this.componentTicks.delete(key);
       }
     }
@@ -329,9 +262,7 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
     this.updateStats();
 
     if (this.config.enableStats) {
-      console.log(
-        `🧹 Change detection cleanup: ${oldSize} -> ${this.componentTicks.size} entries`,
-      );
+      console.log(`🧹 Change detection cleanup: ${oldSize} -> ${this.componentTicks.size} entries`);
     }
   }
 
@@ -345,10 +276,7 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
   /**
    * Optimized component key generation using numeric IDs instead of strings.
    */
-  private getOptimizedComponentKey<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): string {
+  private getOptimizedComponentKey<T extends Component>(entity: Entity, componentType: ComponentType<T>): string {
     // Use numeric IDs for better performance and smaller memory footprint
     // Format: entityIndex:entityGeneration:componentId
     return `${entity.index}:${entity.generation}:${componentType.id}`;
@@ -365,8 +293,7 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
     this.stats.cleanupCount = this.cleanupCount;
 
     // Estimate average entries per tick (simplified)
-    this.stats.averageEntriesPerTick =
-      this.componentTicks.size / Math.max(1, this.currentTick.value);
+    this.stats.averageEntriesPerTick = this.componentTicks.size / Math.max(1, this.currentTick.value);
   }
 
   /**
@@ -383,8 +310,6 @@ export class OptimizedChangeDetectionImpl implements ChangeDetection {
 /**
  * Creates an optimized change detection system.
  */
-export function createOptimizedChangeDetection(
-  config?: Partial<ChangeDetectionConfig>,
-): ChangeDetection {
+export function createOptimizedChangeDetection(config?: Partial<ChangeDetectionConfig>): ChangeDetection {
   return new OptimizedChangeDetectionImpl(config);
 }

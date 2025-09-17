@@ -15,16 +15,14 @@ The implementation includes:
 import asyncio
 import json
 import logging
-import os
-import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-import torch
-import timm
 import safetensors
+import timm
+import torch
+from huggingface_hub import hf_hub_download
 from PIL import Image
-from huggingface_hub import hf_hub_download, try_to_load_from_cache
 
 from ...base import CaptionGeneratorBase, CaptionType, ModelCategory
 
@@ -42,15 +40,20 @@ class JTP2Generator(CaptionGeneratorBase):
     tag generation with GPU acceleration support.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, config: dict[str, Any] | None = None):
         self._config = config or {}
         self._model = None
         self._tags = None
         self._transform = None
         self._device = None
         self._is_loaded = False
-        self._model_path = self._config.get("model_path", "RedRocket/JointTaggerProject/JTP_PILOT2/JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors")
-        self._tags_path = self._config.get("tags_path", "RedRocket/JointTaggerProject/JTP_PILOT2/tags.json")
+        self._model_path = self._config.get(
+            "model_path",
+            "RedRocket/JointTaggerProject/JTP_PILOT2/JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors",
+        )
+        self._tags_path = self._config.get(
+            "tags_path", "RedRocket/JointTaggerProject/JTP_PILOT2/tags.json"
+        )
         self._downloaded_model_path = None
         self._downloaded_tags_path = None
 
@@ -85,7 +88,7 @@ class JTP2Generator(CaptionGeneratorBase):
         return self._is_loaded
 
     @property
-    def config_schema(self) -> Dict[str, Any]:
+    def config_schema(self) -> dict[str, Any]:
         """Get the configuration schema."""
         return {
             "type": "object",
@@ -95,33 +98,30 @@ class JTP2Generator(CaptionGeneratorBase):
                     "minimum": 0.0,
                     "maximum": 1.0,
                     "default": 0.2,
-                    "description": "Confidence threshold for tags"
+                    "description": "Confidence threshold for tags",
                 },
                 "force_cpu": {
                     "type": "boolean",
                     "default": False,
-                    "description": "Force CPU usage instead of GPU"
+                    "description": "Force CPU usage instead of GPU",
                 },
                 "batch_size": {
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 32,
                     "default": 1,
-                    "description": "Number of images to process in batch"
+                    "description": "Number of images to process in batch",
                 },
                 "model_path": {
                     "type": "string",
-                    "description": "Path to the JTP2 model file"
+                    "description": "Path to the JTP2 model file",
                 },
-                "tags_path": {
-                    "type": "string",
-                    "description": "Path to the tags file"
-                }
-            }
+                "tags_path": {"type": "string", "description": "Path to the tags file"},
+            },
         }
 
     @property
-    def features(self) -> List[str]:
+    def features(self) -> list[str]:
         """Get the list of features."""
         return ["gpu_acceleration", "batch_processing", "furry_specialized"]
 
@@ -132,16 +132,17 @@ class JTP2Generator(CaptionGeneratorBase):
 
         # Check if required dependencies are available
         try:
-            import torch
-            import timm
             import safetensors
-            from PIL import Image
+            import timm
+            import torch
             from huggingface_hub import hf_hub_download
+            from PIL import Image
+
             return True
         except ImportError:
             return False
 
-    async def load(self, config: Optional[Dict[str, Any]] = None) -> None:
+    async def load(self, config: dict[str, Any] | None = None) -> None:
         """Load the JTP2 model."""
         if self._is_loaded:
             return
@@ -213,23 +214,25 @@ class JTP2Generator(CaptionGeneratorBase):
             logger.error(f"JTP2 generation failed for {image_path}: {e}")
             raise
 
-    def get_info(self) -> Dict[str, Any]:
+    def get_info(self) -> dict[str, Any]:
         """Get comprehensive information about this generator."""
         info = super().get_info()
-        info.update({
-            "device": str(self._device) if self._device else None,
-            "model_path": self._model_path,
-            "tags_path": self._tags_path,
-            "self_contained": True
-        })
+        info.update(
+            {
+                "device": str(self._device) if self._device else None,
+                "model_path": self._model_path,
+                "tags_path": self._tags_path,
+                "self_contained": True,
+            }
+        )
         return info
 
     def _load_model_and_tags(self) -> None:
         """Load model and tags from files or HuggingFace Hub."""
         model_path, tags_path = self._ensure_files_available()
-        
+
         # Load tags dictionary
-        with open(tags_path, 'r') as f:
+        with open(tags_path) as f:
             self._tags = json.load(f)
 
         # Load model
@@ -264,33 +267,36 @@ class JTP2Generator(CaptionGeneratorBase):
             parts = str(self._model_path).split("/")
             if len(parts) >= 4:
                 repo_id = "RedRocket/JointTaggerProject"
-                model_filename = parts[-1]  # JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors
+                model_filename = parts[
+                    -1
+                ]  # JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors
                 tags_filename = "tags.json"
                 subfolder = parts[-2]  # JTP_PILOT2
 
-                # Download model file
+                # Download model file with security measures
                 model_path = hf_hub_download(
                     repo_id=repo_id,
                     filename=model_filename,
                     subfolder=subfolder,
-                    local_files_only=False
+                    local_files_only=False,
+                    token=False,
                 )
 
-                # Download tags file
+                # Download tags file with security measures
                 tags_path = hf_hub_download(
                     repo_id=repo_id,
                     filename=tags_filename,
                     subfolder=subfolder,
-                    local_files_only=False
+                    local_files_only=False,
+                    token=False,
                 )
 
                 self._downloaded_model_path = Path(model_path)
                 self._downloaded_tags_path = Path(tags_path)
-                
-                logger.info(f"Downloaded JTP2 model files from HuggingFace Hub")
+
+                logger.info("Downloaded JTP2 model files from HuggingFace Hub")
                 return self._downloaded_model_path, self._downloaded_tags_path
-            else:
-                raise ValueError(f"Invalid model path format: {self._model_path}")
+            raise ValueError(f"Invalid model path format: {self._model_path}")
 
         except Exception as e:
             logger.error(f"Failed to download JTP2 model from HuggingFace: {e}")
@@ -299,34 +305,33 @@ class JTP2Generator(CaptionGeneratorBase):
     def _load_model_from_file(self, model_path: Path) -> torch.nn.Module:
         """Load model from safetensors file."""
         # Load model architecture
-        model = timm.create_model('vit_so400m_patch14_siglip_384', pretrained=False)
-        
+        model = timm.create_model("vit_so400m_patch14_siglip_384", pretrained=False)
+
         # Load weights from safetensors
         weights = safetensors.torch.load_file(str(model_path))
         model.load_state_dict(weights)
-        
+
         # Set to evaluation mode
         model.eval()
-        
+
         # Move to appropriate device
         model.to(self._device)
-        
+
         return model
 
     def _create_transform(self) -> torch.nn.Module:
         """Create image transform for preprocessing."""
-        import torchvision.transforms as transforms
-        
-        return transforms.Compose([
-            transforms.Resize((384, 384)),
-            transforms.ToTensor(),
-            transforms.Normalize(
-                mean=[0.5, 0.5, 0.5],
-                std=[0.5, 0.5, 0.5]
-            )
-        ])
+        from torchvision import transforms
 
-    def _generate_caption(self, image_path: str, config: Dict[str, Any]) -> str:
+        return transforms.Compose(
+            [
+                transforms.Resize((384, 384)),
+                transforms.ToTensor(),
+                transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
+            ]
+        )
+
+    def _generate_caption(self, image_path: str, config: dict[str, Any]) -> str:
         """Generate caption for an image."""
         if not self._model or not self._tags or not self._transform:
             raise RuntimeError("JTP2 model components not loaded")
@@ -346,9 +351,9 @@ class JTP2Generator(CaptionGeneratorBase):
         # Get tags above threshold
         threshold = config.get("threshold", 0.2)
         tag_indices = (probabilities > threshold).nonzero(as_tuple=True)[0]
-        
+
         tags = [self._tags[index.item()] for index in tag_indices]
-        
+
         # Limit to max_tags
         max_tags = config.get("max_tags", 20)
         return ", ".join(tags[:max_tags])

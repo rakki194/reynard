@@ -22,14 +22,23 @@ def get_config_tool_definitions() -> dict[str, dict[str, Any]]:
                     "category": {
                         "type": "string",
                         "enum": [
-                            "agent", "ecs", "linting", "formatting", "search", 
-                            "visualization", "security", "utility", "version", 
-                            "vscode", "playwright", "monolith"
+                            "agent",
+                            "ecs",
+                            "linting",
+                            "formatting",
+                            "search",
+                            "visualization",
+                            "security",
+                            "utility",
+                            "version",
+                            "vscode",
+                            "playwright",
+                            "monolith",
                         ],
-                        "description": "Optional category filter for tools"
+                        "description": "Optional category filter for tools",
                     }
-                }
-            }
+                },
+            },
         },
         "enable_tool": {
             "name": "enable_tool",
@@ -39,11 +48,11 @@ def get_config_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "tool_name": {
                         "type": "string",
-                        "description": "Name of the tool to enable"
+                        "description": "Name of the tool to enable",
                     }
                 },
-                "required": ["tool_name"]
-            }
+                "required": ["tool_name"],
+            },
         },
         "disable_tool": {
             "name": "disable_tool",
@@ -53,11 +62,11 @@ def get_config_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "tool_name": {
                         "type": "string",
-                        "description": "Name of the tool to disable"
+                        "description": "Name of the tool to disable",
                     }
                 },
-                "required": ["tool_name"]
-            }
+                "required": ["tool_name"],
+            },
         },
         "toggle_tool": {
             "name": "toggle_tool",
@@ -67,11 +76,11 @@ def get_config_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "tool_name": {
                         "type": "string",
-                        "description": "Name of the tool to toggle"
+                        "description": "Name of the tool to toggle",
                     }
                 },
-                "required": ["tool_name"]
-            }
+                "required": ["tool_name"],
+            },
         },
         "get_tool_status": {
             "name": "get_tool_status",
@@ -81,17 +90,14 @@ def get_config_tool_definitions() -> dict[str, dict[str, Any]]:
                 "properties": {
                     "tool_name": {
                         "type": "string",
-                        "description": "Optional name of specific tool to check status"
+                        "description": "Optional name of specific tool to check status",
                     }
-                }
-            }
+                },
+            },
         },
         "reload_config": {
             "name": "reload_config",
             "description": "Reload tool configuration from file",
-            "inputSchema": {
-                "type": "object",
-                "properties": {}
-            }
-        }
+            "inputSchema": {"type": "object", "properties": {}},
+        },
     }

@@ -12,9 +12,7 @@ export interface CaptionGeneratorResultsProps {
   state: CaptionGeneratorState;
 }
 
-export const CaptionGeneratorResults: Component<
-  CaptionGeneratorResultsProps
-> = (props) => {
+export const CaptionGeneratorResults: Component<CaptionGeneratorResultsProps> = props => {
   return (
     <Show when={props.state.result()}>
       <GenerationResults

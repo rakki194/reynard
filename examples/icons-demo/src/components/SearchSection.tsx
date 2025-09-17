@@ -14,7 +14,7 @@ interface SearchSectionProps {
   resultCount: number;
 }
 
-export const SearchSection: Component<SearchSectionProps> = (props) => {
+export const SearchSection: Component<SearchSectionProps> = props => {
   const categoryOptions = [
     { value: "all", label: "All Categories" },
     ...Object.entries(iconCategories).map(([key, category]) => ({
@@ -31,33 +31,23 @@ export const SearchSection: Component<SearchSectionProps> = (props) => {
           class="search-input"
           placeholder="Search icons by name, description, or keywords..."
           value={props.searchQuery()}
-          onInput={(e) => props.setSearchQuery(e.currentTarget.value)}
+          onInput={e => props.setSearchQuery(e.currentTarget.value)}
         />
         <select
           class="category-filter"
           value={props.selectedCategory()}
-          onChange={(e) => props.setSelectedCategory(e.currentTarget.value)}
+          onChange={e => props.setSelectedCategory(e.currentTarget.value)}
           aria-label="Filter icons by category"
         >
           <For each={categoryOptions}>
-            {(option: { value: string; label: string }) => (
-              <option value={option.value}>{option.label}</option>
-            )}
+            {(option: { value: string; label: string }) => <option value={option.value}>{option.label}</option>}
           </For>
         </select>
       </div>
       <div class="search-stats">
         Showing {props.resultCount} icon{props.resultCount !== 1 ? "s" : ""}
         {props.selectedCategory() !== "all" && (
-          <span>
-            {" "}
-            in{" "}
-            {
-              iconCategories[
-                props.selectedCategory() as keyof typeof iconCategories
-              ]?.name
-            }
-          </span>
+          <span> in {iconCategories[props.selectedCategory() as keyof typeof iconCategories]?.name}</span>
         )}
         {props.searchQuery() && <span> matching "{props.searchQuery()}"</span>}
       </div>

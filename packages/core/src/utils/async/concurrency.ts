@@ -17,15 +17,12 @@ import { t } from "../optional-i18n";
  * const fetchFunctions = urls.map(url => () => fetch(url));
  * const results = await batchExecute(fetchFunctions, 2);
  */
-export async function batchExecute<T>(
-  promises: Array<() => Promise<T>>,
-  batchSize: number = 5,
-): Promise<T[]> {
+export async function batchExecute<T>(promises: Array<() => Promise<T>>, batchSize: number = 5): Promise<T[]> {
   const results: T[] = [];
 
   for (let i = 0; i < promises.length; i += batchSize) {
     const batch = promises.slice(i, i + batchSize);
-    const batchResults = await Promise.all(batch.map((fn) => fn()));
+    const batchResults = await Promise.all(batch.map(fn => fn()));
     results.push(...batchResults);
   }
 
@@ -43,7 +40,7 @@ export async function batchExecute<T>(
 export async function mapWithConcurrency<T, U>(
   items: T[],
   mapper: (item: T, index: number) => Promise<U>,
-  concurrency: number = 5,
+  concurrency: number = 5
 ): Promise<U[]> {
   // Handle edge cases
   if (!Array.isArray(items) || items.length === 0) {
@@ -60,10 +57,10 @@ export async function mapWithConcurrency<T, U>(
   for (let i = 0; i < items.length; i++) {
     const index = i; // Capture the index for this iteration
     const promise = mapper(items[i], index)
-      .then((result) => {
+      .then(result => {
         results[index] = result;
       })
-      .catch((error) => {
+      .catch(error => {
         // Store error in results array to maintain order
         results[index] = error as U;
       });
@@ -79,10 +76,7 @@ export async function mapWithConcurrency<T, U>(
       for (const promise of executing) {
         // Use Promise.race to check if promise is still pending
         try {
-          await Promise.race([
-            promise,
-            new Promise((resolve) => setTimeout(() => resolve("timeout"), 0)),
-          ]);
+          await Promise.race([promise, new Promise(resolve => setTimeout(() => resolve("timeout"), 0))]);
         } catch {
           // Promise was rejected, it's completed
         }

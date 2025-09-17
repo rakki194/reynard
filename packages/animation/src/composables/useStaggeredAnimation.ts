@@ -4,11 +4,7 @@
  */
 
 import { createSignal, createEffect, onCleanup } from "solid-js";
-import type {
-  StaggeredAnimationConfig,
-  StaggeredAnimationItem,
-  EasingType,
-} from "../types";
+import type { StaggeredAnimationConfig, StaggeredAnimationItem, EasingType } from "../types";
 import { createSimpleAnimationLoop } from "../utils/AnimationLoop";
 
 export interface UseStaggeredAnimationOptions {
@@ -31,9 +27,7 @@ export interface UseStaggeredAnimationReturn {
   reset: () => void;
 }
 
-export function useStaggeredAnimation(
-  options: UseStaggeredAnimationOptions = {},
-): UseStaggeredAnimationReturn {
+export function useStaggeredAnimation(options: UseStaggeredAnimationOptions = {}): UseStaggeredAnimationReturn {
   const [items, setItems] = createSignal<StaggeredAnimationItem[]>([]);
   const [isAnimating, setIsAnimating] = createSignal(false);
 
@@ -65,9 +59,7 @@ export function useStaggeredAnimation(
 
   const start = async (itemCount: number): Promise<void> => {
     if (isAnimating()) {
-      console.warn(
-        "🦊 StaggeredAnimation: Already animating, ignoring start request",
-      );
+      console.warn("🦊 StaggeredAnimation: Already animating, ignoring start request");
       return;
     }
 
@@ -75,52 +67,35 @@ export function useStaggeredAnimation(
     config.onStart?.();
 
     // Create items
-    const newItems: StaggeredAnimationItem[] = Array.from(
-      { length: itemCount },
-      (_, index) => ({
-        index,
-        delay: calculateItemDelay(index, itemCount),
-        isAnimating: false,
-        progress: 0,
-      }),
-    );
+    const newItems: StaggeredAnimationItem[] = Array.from({ length: itemCount }, (_, index) => ({
+      index,
+      delay: calculateItemDelay(index, itemCount),
+      isAnimating: false,
+      progress: 0,
+    }));
 
     setItems(newItems);
 
     // Start animations for each item
-    const animationPromises = newItems.map((item) => {
-      return new Promise<void>((resolve) => {
+    const animationPromises = newItems.map(item => {
+      return new Promise<void>(resolve => {
         setTimeout(() => {
-          setItems((prev) =>
-            prev.map((i) =>
-              i.index === item.index ? { ...i, isAnimating: true } : i,
-            ),
-          );
+          setItems(prev => prev.map(i => (i.index === item.index ? { ...i, isAnimating: true } : i)));
 
           config.onItemStart?.(item.index);
 
           createSimpleAnimationLoop(
             config.duration,
             config.easing,
-            (progress) => {
-              setItems((prev) =>
-                prev.map((i) =>
-                  i.index === item.index ? { ...i, progress } : i,
-                ),
-              );
+            progress => {
+              setItems(prev => prev.map(i => (i.index === item.index ? { ...i, progress } : i)));
             },
             () => {
-              setItems((prev) =>
-                prev.map((i) =>
-                  i.index === item.index
-                    ? { ...i, isAnimating: false, progress: 1 }
-                    : i,
-                ),
-              );
+              setItems(prev => prev.map(i => (i.index === item.index ? { ...i, isAnimating: false, progress: 1 } : i)));
 
               config.onItemComplete?.(item.index);
               resolve();
-            },
+            }
           );
         }, item.delay);
       });
@@ -135,7 +110,7 @@ export function useStaggeredAnimation(
 
   const stop = () => {
     setIsAnimating(false);
-    setItems((prev) => prev.map((item) => ({ ...item, isAnimating: false })));
+    setItems(prev => prev.map(item => ({ ...item, isAnimating: false })));
   };
 
   const reset = () => {

@@ -79,13 +79,8 @@ function extractCodeExamples(docPath) {
 
         if (codeBlockContent.length > 0) {
           const code = codeBlockContent.join("\n");
-          const isTypeScript = ["tsx", "ts", "typescript"].includes(
-            currentLanguage,
-          );
-          const isComponent =
-            code.includes("function") &&
-            code.includes("return") &&
-            code.includes("<");
+          const isTypeScript = ["tsx", "ts", "typescript"].includes(currentLanguage);
+          const isComponent = code.includes("function") && code.includes("return") && code.includes("<");
 
           examples.push({
             code,
@@ -169,22 +164,20 @@ function main() {
   let totalInvalid = 0;
   let totalExamples = 0;
 
-  results.forEach((result) => {
+  results.forEach(result => {
     totalValid += result.validExamples;
     totalInvalid += result.invalidExamples;
     totalExamples += result.totalExamples;
 
     console.log(`📦 ${result.package}`);
     console.log(
-      `   Examples: ${result.totalExamples} (${result.validExamples} valid, ${result.invalidExamples} invalid)`,
+      `   Examples: ${result.totalExamples} (${result.validExamples} valid, ${result.invalidExamples} invalid)`
     );
 
     if (result.issues.length > 0) {
       console.log(`   Issues:`);
-      result.issues.forEach((issue) => {
-        console.log(
-          `     - Example ${issue.example}: ${issue.issues.join(", ")}`,
-        );
+      result.issues.forEach(issue => {
+        console.log(`     - Example ${issue.example}: ${issue.issues.join(", ")}`);
       });
     }
     console.log("");
@@ -195,9 +188,7 @@ function main() {
   console.log(`   Total Examples: ${totalExamples}`);
   console.log(`   Valid Examples: ${totalValid}`);
   console.log(`   Invalid Examples: ${totalInvalid}`);
-  console.log(
-    `   Success Rate: ${totalExamples > 0 ? ((totalValid / totalExamples) * 100).toFixed(1) : 0}%`,
-  );
+  console.log(`   Success Rate: ${totalExamples > 0 ? ((totalValid / totalExamples) * 100).toFixed(1) : 0}%`);
 
   if (totalInvalid === 0) {
     console.log("\n✅ All documentation examples are valid!");

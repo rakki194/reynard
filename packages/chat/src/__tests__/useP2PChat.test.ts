@@ -5,12 +5,7 @@
 import { describe, it, expect, beforeEach, vi, MockedFunction } from "vitest";
 import { createRoot } from "solid-js";
 import { useP2PChat } from "../../composables/useP2PChat";
-import type {
-  ChatUser,
-  ChatRoom,
-  P2PChatMessage,
-  P2PChatEvent,
-} from "../../types/p2p";
+import type { ChatUser, ChatRoom, P2PChatMessage, P2PChatEvent } from "../../types/p2p";
 
 // Mock WebSocket
 class MockWebSocket {
@@ -85,7 +80,7 @@ describe("useP2PChat", () => {
   });
 
   it("should initialize with default state", () => {
-    createRoot((dispose) => {
+    createRoot(dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -102,7 +97,7 @@ describe("useP2PChat", () => {
   });
 
   it("should initialize with provided rooms", () => {
-    createRoot((dispose) => {
+    createRoot(dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -118,7 +113,7 @@ describe("useP2PChat", () => {
   });
 
   it("should connect to WebSocket automatically", async () => {
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -126,7 +121,7 @@ describe("useP2PChat", () => {
       });
 
       // Wait for connection
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 20));
 
       expect(p2pChat.p2pConnection().status).toBe("connected");
 
@@ -141,7 +136,7 @@ describe("useP2PChat", () => {
       json: async () => newRoom,
     });
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -159,7 +154,7 @@ describe("useP2PChat", () => {
             type: "group",
             participants: [],
           }),
-        }),
+        })
       );
 
       expect(createdRoom).toEqual(newRoom);
@@ -185,7 +180,7 @@ describe("useP2PChat", () => {
       json: async () => message,
     });
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -200,7 +195,7 @@ describe("useP2PChat", () => {
         expect.objectContaining({
           method: "POST",
           body: expect.stringContaining("Hello World"),
-        }),
+        })
       );
 
       dispose();
@@ -208,7 +203,7 @@ describe("useP2PChat", () => {
   });
 
   it("should handle real-time message events", async () => {
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -217,7 +212,7 @@ describe("useP2PChat", () => {
       });
 
       // Wait for connection
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 20));
 
       const messageEvent: P2PChatEvent = {
         type: "message_sent",
@@ -238,7 +233,7 @@ describe("useP2PChat", () => {
       ws.simulateMessage(messageEvent);
 
       // Wait for message processing
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 10));
 
       const roomMessages = p2pChat.messagesByRoom()[mockRoom.id];
       expect(roomMessages).toHaveLength(1);
@@ -249,7 +244,7 @@ describe("useP2PChat", () => {
   });
 
   it("should handle typing indicators", async () => {
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -258,7 +253,7 @@ describe("useP2PChat", () => {
       });
 
       // Wait for connection
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 20));
 
       const typingEvent: P2PChatEvent = {
         type: "typing_start",
@@ -272,7 +267,7 @@ describe("useP2PChat", () => {
       ws.simulateMessage(typingEvent);
 
       // Wait for processing
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 10));
 
       const typingIndicators = p2pChat.typingIndicators()[mockRoom.id];
       expect(typingIndicators).toHaveLength(1);
@@ -283,7 +278,7 @@ describe("useP2PChat", () => {
   });
 
   it("should start and stop typing", async () => {
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -291,7 +286,7 @@ describe("useP2PChat", () => {
       });
 
       // Wait for connection
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 20));
 
       p2pChat.actions.startTyping(mockRoom.id);
 
@@ -302,7 +297,7 @@ describe("useP2PChat", () => {
         expect.objectContaining({
           type: "typing_start",
           roomId: mockRoom.id,
-        }),
+        })
       );
 
       p2pChat.actions.stopTyping(mockRoom.id);
@@ -311,7 +306,7 @@ describe("useP2PChat", () => {
         expect.objectContaining({
           type: "typing_stop",
           roomId: mockRoom.id,
-        }),
+        })
       );
 
       dispose();
@@ -324,7 +319,7 @@ describe("useP2PChat", () => {
       json: async () => [],
     });
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -333,7 +328,7 @@ describe("useP2PChat", () => {
       });
 
       // Wait for connection
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 20));
 
       await p2pChat.actions.joinRoom(mockRoom.id);
 
@@ -344,7 +339,7 @@ describe("useP2PChat", () => {
         expect.objectContaining({
           type: "join_room",
           roomId: mockRoom.id,
-        }),
+        })
       );
 
       expect(p2pChat.activeRoom()).toBe(mockRoom);
@@ -355,7 +350,7 @@ describe("useP2PChat", () => {
         expect.objectContaining({
           type: "leave_room",
           roomId: mockRoom.id,
-        }),
+        })
       );
 
       expect(p2pChat.activeRoom()).toBeUndefined();
@@ -365,7 +360,7 @@ describe("useP2PChat", () => {
   });
 
   it("should handle user status changes", async () => {
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -374,7 +369,7 @@ describe("useP2PChat", () => {
       });
 
       // Wait for connection
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 20));
 
       const statusEvent: P2PChatEvent = {
         type: "user_status_changed",
@@ -387,12 +382,10 @@ describe("useP2PChat", () => {
       ws.simulateMessage(statusEvent);
 
       // Wait for processing
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 10));
 
-      const updatedRoom = p2pChat.rooms().find((r) => r.id === mockRoom.id);
-      const updatedUser = updatedRoom?.participants.find(
-        (p) => p.id === mockCurrentUser.id,
-      );
+      const updatedRoom = p2pChat.rooms().find(r => r.id === mockRoom.id);
+      const updatedUser = updatedRoom?.participants.find(p => p.id === mockCurrentUser.id);
       expect(updatedUser?.status).toBe("away");
 
       dispose();
@@ -416,7 +409,7 @@ describe("useP2PChat", () => {
       json: async () => mockAttachment,
     });
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -429,7 +422,7 @@ describe("useP2PChat", () => {
         "/api/chat/upload",
         expect.objectContaining({
           method: "POST",
-        }),
+        })
       );
 
       expect(result.name).toBe("test.txt");
@@ -456,22 +449,17 @@ describe("useP2PChat", () => {
       json: async () => searchResults,
     });
 
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
       });
 
-      const results = await p2pChat.actions.searchMessages(
-        "test query",
-        mockRoom.id,
-      );
+      const results = await p2pChat.actions.searchMessages("test query", mockRoom.id);
 
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining(
-          "/api/chat/search/messages?q=test+query&roomId=room-1",
-        ),
-        expect.any(Object),
+        expect.stringContaining("/api/chat/search/messages?q=test+query&roomId=room-1"),
+        expect.any(Object)
       );
 
       expect(results).toEqual(searchResults);
@@ -481,7 +469,7 @@ describe("useP2PChat", () => {
   });
 
   it("should handle reconnection", async () => {
-    await createRoot(async (dispose) => {
+    await createRoot(async dispose => {
       const p2pChat = useP2PChat({
         currentUser: mockCurrentUser,
         realtimeEndpoint: "ws://localhost:8080",
@@ -495,7 +483,7 @@ describe("useP2PChat", () => {
       });
 
       // Wait for initial connection
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise(resolve => setTimeout(resolve, 20));
       expect(p2pChat.p2pConnection().status).toBe("connected");
 
       // Simulate disconnect
@@ -503,7 +491,7 @@ describe("useP2PChat", () => {
       ws.close();
 
       // Wait for reconnection attempt
-      await new Promise((resolve) => setTimeout(resolve, 150));
+      await new Promise(resolve => setTimeout(resolve, 150));
       expect(p2pChat.p2pConnection().status).toBe("connected");
 
       dispose();

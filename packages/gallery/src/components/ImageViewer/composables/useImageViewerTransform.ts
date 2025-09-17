@@ -13,17 +13,13 @@ export interface UseImageViewerTransformReturn {
 
 export const useImageViewerTransform = (
   state: () => ImageViewerState,
-  enablePan: boolean,
+  enablePan: boolean
 ): UseImageViewerTransformReturn => {
   const imageClasses = () => {
     const currentState = state();
     const baseClass = "reynard-image-viewer__image";
-    const draggingClass = currentState.isDragging
-      ? " reynard-image-viewer__image--dragging"
-      : "";
-    const panEnabledClass = enablePan
-      ? " reynard-image-viewer__image--pan-enabled"
-      : "";
+    const draggingClass = currentState.isDragging ? " reynard-image-viewer__image--dragging" : "";
+    const panEnabledClass = enablePan ? " reynard-image-viewer__image--pan-enabled" : "";
     return baseClass + draggingClass + panEnabledClass;
   };
 

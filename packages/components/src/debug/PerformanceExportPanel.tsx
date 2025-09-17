@@ -11,9 +11,7 @@ import { Icon } from "../icons";
 import { usePerformanceExport } from "./composables/usePerformanceExport";
 import type { PerformanceExportPanelProps } from "./types/PerformanceExportTypes";
 
-export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
-  props,
-) => {
+export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = props => {
   const {
     state,
     filteredData,
@@ -43,12 +41,7 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
           <h2>Performance Data Export</h2>
         </div>
         <div class="reynard-performance-export-panel__actions">
-          <Button
-            variant="secondary"
-            size="sm"
-            leftIcon="delete"
-            onClick={handleClearHistory}
-          >
+          <Button variant="secondary" size="sm" leftIcon="delete" onClick={handleClearHistory}>
             Clear History
           </Button>
           <Button
@@ -90,10 +83,8 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
               <h4>Export Format</h4>
               <Select
                 value={state().exportOptions.format}
-                onChange={(e) =>
-                  updateExportOptions({ format: e.target.value })
-                }
-                options={exportFormats.map((f) => ({
+                onChange={e => updateExportOptions({ format: e.target.value })}
+                options={exportFormats.map(f => ({
                   value: f.value,
                   label: f.label,
                 }))}
@@ -105,17 +96,13 @@ export const PerformanceExportPanel: Component<PerformanceExportPanelProps> = (
               <h4>Include Metrics</h4>
               <div class="reynard-metrics-selection">
                 <For each={availableMetrics}>
-                  {(metric) => (
+                  {metric => (
                     <label class="reynard-metric-option">
                       <Toggle
-                        checked={state().exportOptions.includeMetrics.includes(
-                          metric,
-                        )}
-                        onChange={(checked) => {
+                        checked={state().exportOptions.includeMetrics.includes(metric)}
+                        onChange={checked => {
                           const metrics = state().exportOptions.includeMetrics;
-                          const newMetrics = checked
-                            ? [...metrics, metric]
-                            : metrics.filter((m) => m !== metric);
+                          const newMetrics = checked ? [...metrics, metric] : metrics.filter(m => m !== metric);
                           updateExportOptions({ includeMetrics: newMetrics });
                         }}
                         size="sm"

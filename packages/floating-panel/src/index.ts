@@ -49,11 +49,7 @@ export { PanelHeader } from "./components/PanelHeader";
 
 // Composables
 export { useOverlayManager } from "./composables/useOverlayManager";
-export {
-  useStaggeredAnimation,
-  usePanelAnimation,
-  useMultiPanelAnimation,
-} from "./composables/useStaggeredAnimation";
+export { useStaggeredAnimation, usePanelAnimation, useMultiPanelAnimation } from "./composables/useStaggeredAnimation";
 export { useDraggablePanel } from "./composables/useDraggablePanel";
 export { useDraggableResizable } from "./composables/useDraggableResizable";
 

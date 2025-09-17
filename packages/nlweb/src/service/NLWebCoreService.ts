@@ -30,22 +30,13 @@ export class NLWebCoreService implements INLWebService {
   private eventEmitter: NLWebEventEmitter;
   private initialized = false;
 
-  constructor(
-    configuration: NLWebConfiguration,
-    eventEmitter: NLWebEventEmitter,
-  ) {
+  constructor(configuration: NLWebConfiguration, eventEmitter: NLWebEventEmitter) {
     this.configuration = configuration;
     this.eventEmitter = eventEmitter;
     this.toolRegistry = new NLWebToolRegistryImpl();
-    this.toolRegistrationService = new ToolRegistrationService(
-      this.toolRegistry,
-      eventEmitter,
-    );
+    this.toolRegistrationService = new ToolRegistrationService(this.toolRegistry, eventEmitter);
     this.healthService = new NLWebHealthService(configuration, eventEmitter);
-    this.initializationService = new NLWebInitializationService(
-      configuration,
-      eventEmitter,
-    );
+    this.initializationService = new NLWebInitializationService(configuration, eventEmitter);
     this.router = new NLWebRouterImpl(this.toolRegistry, eventEmitter);
   }
 
@@ -57,10 +48,7 @@ export class NLWebCoreService implements INLWebService {
       return;
     }
 
-    await this.initializationService.initialize(
-      this.router,
-      this.toolRegistrationService,
-    );
+    await this.initializationService.initialize(this.router, this.toolRegistrationService);
     this.initialized = true;
   }
 
@@ -88,9 +76,7 @@ export class NLWebCoreService implements INLWebService {
   /**
    * Update service configuration
    */
-  async updateConfiguration(
-    config: Partial<NLWebConfiguration>,
-  ): Promise<void> {
+  async updateConfiguration(config: Partial<NLWebConfiguration>): Promise<void> {
     this.configuration = { ...this.configuration, ...config };
 
     // Reinitialize if configuration changed significantly

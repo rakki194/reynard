@@ -45,7 +45,7 @@ const Config = {
     "backend/",
     "e2e/",
     "scripts/",
-    "libraries/",
+    "services/",
     "fenrir/",
     "todos/",
   ],

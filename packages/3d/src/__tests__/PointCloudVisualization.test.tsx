@@ -180,9 +180,7 @@ describe("PointCloudVisualization", () => {
       maxPoints: 5000,
     };
 
-    render(() => (
-      <PointCloudVisualization points={mockPoints} settings={settings} />
-    ));
+    render(() => <PointCloudVisualization points={mockPoints} settings={settings} />);
 
     const container = document.querySelector(".point-cloud-visualization");
     expect(container).toBeInTheDocument();
@@ -198,12 +196,7 @@ describe("PointCloudVisualization", () => {
   it("calls onPointClick when point is clicked", async () => {
     const onPointClick = vi.fn();
 
-    render(() => (
-      <PointCloudVisualization
-        points={mockPoints}
-        onPointClick={onPointClick}
-      />
-    ));
+    render(() => <PointCloudVisualization points={mockPoints} onPointClick={onPointClick} />);
 
     // The actual click handling would be tested in integration tests
     // since it requires Three.js raycasting
@@ -213,12 +206,7 @@ describe("PointCloudVisualization", () => {
   it("calls onSelectionChange when selection changes", async () => {
     const onSelectionChange = vi.fn();
 
-    render(() => (
-      <PointCloudVisualization
-        points={mockPoints}
-        onSelectionChange={onSelectionChange}
-      />
-    ));
+    render(() => <PointCloudVisualization points={mockPoints} onSelectionChange={onSelectionChange} />);
 
     // Selection change handling would be tested in integration tests
     expect(onSelectionChange).toBeDefined();
@@ -228,18 +216,11 @@ describe("PointCloudVisualization", () => {
     const searchIntegration = {
       enableSearchIntegration: true,
       searchQueryEmbedding: [0.1, 0.2, 0.3],
-      searchResults: [
-        { id: "1", score: 0.9, embedding_vector: [0.1, 0.2, 0.3] },
-      ],
+      searchResults: [{ id: "1", score: 0.9, embedding_vector: [0.1, 0.2, 0.3] }],
       highlightQueryPoint: true,
     };
 
-    render(() => (
-      <PointCloudVisualization
-        points={mockPoints}
-        searchIntegration={searchIntegration}
-      />
-    ));
+    render(() => <PointCloudVisualization points={mockPoints} searchIntegration={searchIntegration} />);
 
     const container = document.querySelector(".point-cloud-visualization");
     expect(container).toBeInTheDocument();
@@ -254,12 +235,7 @@ describe("PointCloudVisualization", () => {
       onAnimationEnd: vi.fn(),
     };
 
-    render(() => (
-      <PointCloudVisualization
-        points={mockPoints}
-        animationSettings={animationSettings}
-      />
-    ));
+    render(() => <PointCloudVisualization points={mockPoints} animationSettings={animationSettings} />);
 
     const container = document.querySelector(".point-cloud-visualization");
     expect(container).toBeInTheDocument();

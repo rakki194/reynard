@@ -159,9 +159,7 @@ export class BatchUnionFind extends UnionFind {
     return {
       ...this.batchStats,
       cacheHitRate:
-        this.batchStats.totalOperations > 0
-          ? this.batchStats.cacheHits / this.batchStats.totalOperations
-          : 0,
+        this.batchStats.totalOperations > 0 ? this.batchStats.cacheHits / this.batchStats.totalOperations : 0,
     };
   }
 

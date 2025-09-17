@@ -14,19 +14,15 @@ interface EmbeddingChartProps {
   class?: string;
 }
 
-export const EmbeddingChart: Component<EmbeddingChartProps> = (props) => {
+export const EmbeddingChart: Component<EmbeddingChartProps> = props => {
   return (
     <div
       class={`embedding-chart ${props.theme} ${props.width && props.height ? `size-${props.width}x${props.height}` : "size-default"} ${props.class || ""}`}
     >
       <div class="embedding-chart-content">
         <div class="embedding-chart-icon">📊</div>
-        <div class="embedding-chart-title">
-          Embedding Visualization Dashboard
-        </div>
-        <div class="embedding-chart-subtitle">
-          Advanced 3D point cloud visualization with statistical analysis
-        </div>
+        <div class="embedding-chart-title">Embedding Visualization Dashboard</div>
+        <div class="embedding-chart-subtitle">Advanced 3D point cloud visualization with statistical analysis</div>
       </div>
     </div>
   );

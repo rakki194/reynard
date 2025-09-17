@@ -23,9 +23,7 @@
       "import": "./dist/types/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",
@@ -34,15 +32,7 @@
     "test:run": "vitest run",
     "type-check": "tsc --noEmit"
   },
-  "keywords": [
-    "reynard",
-    "image",
-    "media",
-    "processing",
-    "display",
-    "gallery",
-    "metadata"
-  ],
+  "keywords": ["reynard", "image", "media", "processing", "display", "gallery", "metadata"],
   "author": "Reynard Framework",
   "license": "MIT",
   "dependencies": {

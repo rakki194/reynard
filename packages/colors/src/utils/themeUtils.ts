@@ -3,12 +3,7 @@
  */
 
 import type { ThemeName } from "../types";
-import {
-  computeTagBackground,
-  computeTagColor,
-  computeHoverStyles,
-  computeAnimation,
-} from "./colorUtils";
+import { computeTagBackground, computeTagColor, computeHoverStyles, computeAnimation } from "./colorUtils";
 
 /**
  * Theme context interface
@@ -32,22 +27,12 @@ export const DEFAULT_THEME: ThemeName = "light";
 /**
  * Available themes
  */
-export const AVAILABLE_THEMES: ThemeName[] = [
-  "dark",
-  "light",
-  "gray",
-  "banana",
-  "strawberry",
-  "peanut",
-];
+export const AVAILABLE_THEMES: ThemeName[] = ["dark", "light", "gray", "banana", "strawberry", "peanut"];
 
 /**
  * Theme metadata for UI display
  */
-export const THEME_METADATA: Record<
-  ThemeName,
-  { name: string; description: string; icon: string }
-> = {
+export const THEME_METADATA: Record<ThemeName, { name: string; description: string; icon: string }> = {
   dark: {
     name: "Dark",
     description: "Dark theme with high contrast",
@@ -122,9 +107,7 @@ export function getTagStyle(theme: ThemeName, tag: string) {
  * @param initialTheme - Initial theme to use
  * @returns Theme context object
  */
-export function createThemeContext(
-  initialTheme: ThemeName = DEFAULT_THEME,
-): ThemeContext {
+export function createThemeContext(initialTheme: ThemeName = DEFAULT_THEME): ThemeContext {
   let currentTheme = initialTheme;
 
   return {
@@ -166,8 +149,7 @@ export function getNextTheme(currentTheme: ThemeName): ThemeName {
  */
 export function getPreviousTheme(currentTheme: ThemeName): ThemeName {
   const currentIndex = AVAILABLE_THEMES.indexOf(currentTheme);
-  const previousIndex =
-    currentIndex === 0 ? AVAILABLE_THEMES.length - 1 : currentIndex - 1;
+  const previousIndex = currentIndex === 0 ? AVAILABLE_THEMES.length - 1 : currentIndex - 1;
   return AVAILABLE_THEMES[previousIndex];
 }
 
@@ -188,7 +170,7 @@ export function getThemeByName(name: string) {
  * @returns Array of all available themes with metadata
  */
 export function getAllThemes() {
-  return AVAILABLE_THEMES.map((theme) => ({
+  return AVAILABLE_THEMES.map(theme => ({
     id: theme,
     ...THEME_METADATA[theme],
   }));

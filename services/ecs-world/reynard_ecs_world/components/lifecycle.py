@@ -5,13 +5,14 @@ Agent lifecycle and aging information component.
 """
 
 import time
+
 from ..core.component import Component
 
 
 class LifecycleComponent(Component):
     """
     Agent lifecycle and aging information.
-    
+
     Tracks the agent's age, life stage, and lifecycle progression
     including birth time, maturity, and maximum age.
     """
@@ -19,7 +20,7 @@ class LifecycleComponent(Component):
     def __init__(self, birth_time: float | None = None) -> None:
         """
         Initialize the lifecycle component.
-        
+
         Args:
             birth_time: Time when the agent was born (defaults to current time)
         """
@@ -44,7 +45,7 @@ class LifecycleComponent(Component):
     def is_mature(self) -> bool:
         """
         Check if the agent is mature enough to reproduce.
-        
+
         Returns:
             True if the agent is mature, False otherwise
         """
@@ -53,7 +54,7 @@ class LifecycleComponent(Component):
     def is_alive(self) -> bool:
         """
         Check if the agent is still alive.
-        
+
         Returns:
             True if the agent is alive, False otherwise
         """

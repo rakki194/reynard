@@ -5,9 +5,7 @@ import { usePointCloudInitialization } from "../composables/usePointCloudInitial
 import { RendererUI } from "./RendererUI";
 import "./BasePointCloudRenderer.css";
 
-export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = (
-  props,
-) => {
+export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = props => {
   const animations = useThreeJSAnimations();
   const initialization = usePointCloudInitialization();
 
@@ -15,14 +13,7 @@ export const BasePointCloudRenderer: Component<BasePointCloudRendererProps> = (
     if (!props.scene || !props.camera || !props.renderer) return;
 
     initialization
-      .initializeRenderer(
-        props.scene,
-        props.camera,
-        props.renderer,
-        props.points,
-        props.config,
-        props.onPointSelect,
-      )
+      .initializeRenderer(props.scene, props.camera, props.renderer, props.points, props.config, props.onPointSelect)
       .catch(console.error);
   });
 

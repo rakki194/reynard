@@ -45,11 +45,7 @@ export function SearchSettings(props: SearchSettingsProps) {
           <label>Embedding Model</label>
           <Select
             value={props.embeddingModel}
-            onChange={(e: Event) =>
-              props.onEmbeddingModelChange(
-                (e.target as HTMLSelectElement).value,
-              )
-            }
+            onChange={(e: Event) => props.onEmbeddingModelChange((e.target as HTMLSelectElement).value)}
             options={EMBEDDING_MODELS}
             fullWidth
           />
@@ -61,9 +57,7 @@ export function SearchSettings(props: SearchSettingsProps) {
             min={1}
             max={50}
             value={props.maxResults}
-            onChange={(e) =>
-              props.onMaxResultsChange(parseInt(e.currentTarget.value))
-            }
+            onChange={e => props.onMaxResultsChange(parseInt(e.currentTarget.value))}
             class="range-slider"
             title="Maximum number of search results"
             aria-label="Maximum number of search results"
@@ -71,20 +65,13 @@ export function SearchSettings(props: SearchSettingsProps) {
         </div>
 
         <div class="setting-group">
-          <label>
-            Similarity Threshold:{" "}
-            {(props.similarityThreshold * 100).toFixed(0)}%
-          </label>
+          <label>Similarity Threshold: {(props.similarityThreshold * 100).toFixed(0)}%</label>
           <Slider
             min={0.1}
             max={1.0}
             step={0.05}
             value={props.similarityThreshold}
-            onChange={(e) =>
-              props.onSimilarityThresholdChange(
-                parseFloat(e.currentTarget.value),
-              )
-            }
+            onChange={e => props.onSimilarityThresholdChange(parseFloat(e.currentTarget.value))}
             class="range-slider"
             title="Similarity threshold for search results"
             aria-label="Similarity threshold for search results"
@@ -96,9 +83,7 @@ export function SearchSettings(props: SearchSettingsProps) {
             <Toggle
               size="sm"
               checked={props.enableReranking}
-              onChange={(e) =>
-                props.onEnableRerankingChange(e.currentTarget.checked)
-              }
+              onChange={e => props.onEnableRerankingChange(e.currentTarget.checked)}
             />
             Enable Reranking
           </label>

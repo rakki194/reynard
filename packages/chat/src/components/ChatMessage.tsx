@@ -16,7 +16,7 @@ import { MarkdownRenderer } from "./MarkdownRenderer";
 import { ThinkingIndicator } from "./ThinkingIndicator";
 import { ToolCallDisplay } from "./ToolCallDisplay";
 
-export const ChatMessage: Component<ChatMessageProps> = (props) => {
+export const ChatMessage: Component<ChatMessageProps> = props => {
   const [showThinking, setShowThinking] = createSignal(false);
   const [showDetails, setShowDetails] = createSignal(false);
 
@@ -45,9 +45,7 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
   const getRoleClasses = () => {
     const base = "reynard-chat-message";
     const role = `${base}--${props.message.role}`;
-    const streaming = props.message.streaming?.isStreaming
-      ? `${base}--streaming`
-      : "";
+    const streaming = props.message.streaming?.isStreaming ? `${base}--streaming` : "";
     const error = props.message.error ? `${base}--error` : "";
     const latest = props.isLatest ? `${base}--latest` : "";
 
@@ -93,8 +91,7 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
   // Check if message has thinking content
   const hasThinking = createMemo(() => {
     return (
-      props.message.streaming?.currentThinking ||
-      (props.message.content && props.message.content.includes("<think>"))
+      props.message.streaming?.currentThinking || (props.message.content && props.message.content.includes("<think>"))
     );
   });
 
@@ -154,24 +151,17 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
           <span class="reynard-chat-message__role">{getRoleName()}</span>
 
           <Show when={props.showTimestamp}>
-            <time
-              class="reynard-chat-message__timestamp"
-              datetime={new Date(props.message.timestamp).toISOString()}
-            >
+            <time class="reynard-chat-message__timestamp" datetime={new Date(props.message.timestamp).toISOString()}>
               {formatTimestamp(props.message.timestamp)}
             </time>
           </Show>
 
           <Show when={getTokenCount()}>
-            <span class="reynard-chat-message__tokens">
-              {getTokenCount()} tokens
-            </span>
+            <span class="reynard-chat-message__tokens">{getTokenCount()} tokens</span>
           </Show>
 
           <Show when={getProcessingTime()}>
-            <span class="reynard-chat-message__processing-time">
-              {getProcessingTime()}ms
-            </span>
+            <span class="reynard-chat-message__processing-time">{getProcessingTime()}ms</span>
           </Show>
 
           {/* Streaming indicator */}
@@ -211,12 +201,7 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
       </div>
 
       {/* Thinking Section */}
-      <Show
-        when={
-          hasThinking() &&
-          (showThinking() || props.message.streaming?.isThinking)
-        }
-      >
+      <Show when={hasThinking() && (showThinking() || props.message.streaming?.isThinking)}>
         <div class="reynard-chat-message__thinking">
           <ThinkingIndicator
             content={getThinkingContent()}
@@ -238,9 +223,7 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
               fallback={
                 <Show when={props.message.streaming?.isStreaming}>
                   <div class="reynard-chat-message__placeholder">
-                    <span class="reynard-chat-message__typing-indicator">
-                      Preparing response...
-                    </span>
+                    <span class="reynard-chat-message__typing-indicator">Preparing response...</span>
                   </div>
                 </Show>
               }
@@ -260,17 +243,10 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
       </div>
 
       {/* Tool Calls */}
-      <Show
-        when={props.message.toolCalls && props.message.toolCalls.length > 0}
-      >
+      <Show when={props.message.toolCalls && props.message.toolCalls.length > 0}>
         <div class="reynard-chat-message__tools">
           <For each={props.message.toolCalls}>
-            {(toolCall) => (
-              <ToolCallDisplay
-                toolCall={toolCall}
-                onAction={props.onToolAction}
-              />
-            )}
+            {toolCall => <ToolCallDisplay toolCall={toolCall} onAction={props.onToolAction} />}
           </For>
         </div>
       </Show>
@@ -280,9 +256,7 @@ export const ChatMessage: Component<ChatMessageProps> = (props) => {
         <div class="reynard-chat-message__error">
           <div class="reynard-chat-message__error-icon">⚠️</div>
           <div class="reynard-chat-message__error-content">
-            <div class="reynard-chat-message__error-message">
-              {props.message.error!.message}
-            </div>
+            <div class="reynard-chat-message__error-message">{props.message.error!.message}</div>
             <Show when={props.message.error!.recoverable}>
               <button
                 class="reynard-chat-message__error-retry"

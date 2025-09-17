@@ -16,10 +16,7 @@ import type {
 /**
  * File type detection utilities
  */
-export function getFileType(
-  fileName: string,
-  mimeType?: string,
-): FileItem["type"] {
+export function getFileType(fileName: string, mimeType?: string): FileItem["type"] {
   const ext = getFileExtension(fileName);
 
   if (mimeType) {
@@ -33,17 +30,7 @@ export function getFileType(
   const imageExts = ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "ico"];
   const videoExts = ["mp4", "avi", "mov", "wmv", "flv", "webm", "mkv", "m4v"];
   const audioExts = ["mp3", "wav", "ogg", "m4a", "flac", "aac", "wma"];
-  const textExts = [
-    "txt",
-    "md",
-    "json",
-    "xml",
-    "html",
-    "css",
-    "js",
-    "ts",
-    "py",
-  ];
+  const textExts = ["txt", "md", "json", "xml", "html", "css", "js", "ts", "py"];
 
   if (imageExts.includes(ext)) return "image";
   if (videoExts.includes(ext)) return "video";
@@ -92,10 +79,7 @@ export function formatDuration(seconds: number): string {
 /**
  * Format timestamp for display
  */
-export function formatDate(
-  timestamp: number,
-  format: "short" | "long" | "relative" = "short",
-): string {
+export function formatDate(timestamp: number, format: "short" | "long" | "relative" = "short"): string {
   const date = new Date(timestamp);
   const now = new Date();
 
@@ -131,10 +115,7 @@ export function formatDate(
 /**
  * Generate thumbnail URL with options
  */
-export function generateThumbnailUrl(
-  baseUrl: string,
-  options: Partial<ThumbnailOptions> = {},
-): string {
+export function generateThumbnailUrl(baseUrl: string, options: Partial<ThumbnailOptions> = {}): string {
   const params = new URLSearchParams();
 
   if (options.width) params.set("w", options.width.toString());
@@ -153,7 +134,7 @@ export function generateThumbnailUrl(
 export function calculateGridDimensions(
   containerWidth: number,
   itemSize: "small" | "medium" | "large" | "xl",
-  itemsPerRow?: number,
+  itemsPerRow?: number
 ): { itemWidth: number; itemHeight: number; columns: number } {
   const baseSizes = {
     small: 120,
@@ -176,10 +157,7 @@ export function calculateGridDimensions(
   }
 
   // Auto-calculate columns based on container width
-  const columns = Math.max(
-    1,
-    Math.floor((containerWidth + gap) / (baseSize + gap)),
-  );
+  const columns = Math.max(1, Math.floor((containerWidth + gap) / (baseSize + gap)));
   const availableWidth = containerWidth - gap * (columns - 1);
   const itemWidth = availableWidth / columns;
 
@@ -193,10 +171,7 @@ export function calculateGridDimensions(
 /**
  * Sort items according to configuration
  */
-export function sortItems(
-  items: (FileItem | FolderItem)[],
-  config: SortConfiguration,
-): (FileItem | FolderItem)[] {
+export function sortItems(items: (FileItem | FolderItem)[], config: SortConfiguration): (FileItem | FolderItem)[] {
   const { field, direction } = config;
   const multiplier = direction === "asc" ? 1 : -1;
 
@@ -213,8 +188,7 @@ export function sortItems(
         break;
       case "size":
         comparison =
-          (a.type === "folder" ? 0 : (a as FileItem).size) -
-          (b.type === "folder" ? 0 : (b as FileItem).size);
+          (a.type === "folder" ? 0 : (a as FileItem).size) - (b.type === "folder" ? 0 : (b as FileItem).size);
         break;
       case "lastModified":
         comparison = a.lastModified - b.lastModified;
@@ -238,11 +212,8 @@ export function sortItems(
 /**
  * Filter items according to configuration
  */
-export function filterItems(
-  items: (FileItem | FolderItem)[],
-  config: FilterConfiguration,
-): (FileItem | FolderItem)[] {
-  return items.filter((item) => {
+export function filterItems(items: (FileItem | FolderItem)[], config: FilterConfiguration): (FileItem | FolderItem)[] {
+  return items.filter(item => {
     // Search query filter
     if (config.searchQuery) {
       const query = config.searchQuery.toLowerCase();
@@ -254,16 +225,13 @@ export function filterItems(
     // File type filter
     if (config.fileTypes.length > 0 && item.type !== "folder") {
       const fileItem = item as FileItem;
-      const matchesType = config.fileTypes.some((type) => {
+      const matchesType = config.fileTypes.some(type => {
         if (type === "*") return true;
         if (type.endsWith("/*")) {
           const category = type.slice(0, -2);
           return fileItem.type === category;
         }
-        return (
-          fileItem.mimeType?.includes(type) ||
-          fileItem.name.toLowerCase().endsWith(`.${type}`)
-        );
+        return fileItem.mimeType?.includes(type) || fileItem.name.toLowerCase().endsWith(`.${type}`);
       });
       if (!matchesType) return false;
     }
@@ -276,10 +244,7 @@ export function filterItems(
     // Date range filter
     if (config.dateRange) {
       const itemDate = new Date(item.lastModified);
-      if (
-        itemDate < config.dateRange.start ||
-        itemDate > config.dateRange.end
-      ) {
+      if (itemDate < config.dateRange.start || itemDate > config.dateRange.end) {
         return false;
       }
     }
@@ -287,10 +252,7 @@ export function filterItems(
     // Size range filter
     if (config.sizeRange && item.type !== "folder") {
       const fileItem = item as FileItem;
-      if (
-        fileItem.size < config.sizeRange.min ||
-        fileItem.size > config.sizeRange.max
-      ) {
+      if (fileItem.size < config.sizeRange.min || fileItem.size > config.sizeRange.max) {
         return false;
       }
     }
@@ -338,7 +300,7 @@ export function validateFile(
   config: {
     maxFileSize: number;
     allowedTypes: string[];
-  },
+  }
 ): { valid: boolean; error?: string } {
   // Size validation
   if (file.size > config.maxFileSize) {
@@ -350,7 +312,7 @@ export function validateFile(
 
   // Type validation
   if (config.allowedTypes.length > 0) {
-    const isAllowed = config.allowedTypes.some((type) => {
+    const isAllowed = config.allowedTypes.some(type => {
       if (type === "*/*") return true;
       if (type.endsWith("/*")) {
         return file.type.startsWith(type.slice(0, -1));
@@ -372,13 +334,11 @@ export function validateFile(
 /**
  * Extract metadata from file
  */
-export async function extractFileMetadata(
-  file: File,
-): Promise<Partial<FileMetadata>> {
+export async function extractFileMetadata(file: File): Promise<Partial<FileMetadata>> {
   const metadata: Partial<FileMetadata> = {};
 
   if (file.type.startsWith("image/")) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const img = new Image();
       img.onload = () => {
         metadata.width = img.width;
@@ -392,7 +352,7 @@ export async function extractFileMetadata(
   }
 
   if (file.type.startsWith("video/")) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const video = document.createElement("video");
       video.onloadedmetadata = () => {
         metadata.width = video.videoWidth;
@@ -407,7 +367,7 @@ export async function extractFileMetadata(
   }
 
   if (file.type.startsWith("audio/")) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const audio = new Audio();
       audio.onloadedmetadata = () => {
         metadata.duration = audio.duration;
@@ -445,10 +405,7 @@ export function generateFileId(file: File | string, path?: string): string {
 /**
  * Debounce function for search and filtering
  */
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number,
-): (...args: Parameters<T>) => void {
+export function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout;
 
   return (...args: Parameters<T>) => {
@@ -460,10 +417,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function for scroll events
  */
-export function throttle<T extends (...args: any[]) => any>(
-  func: T,
-  limit: number,
-): (...args: Parameters<T>) => void {
+export function throttle<T extends (...args: any[]) => any>(func: T, limit: number): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
 
   return (...args: Parameters<T>) => {
@@ -528,7 +482,7 @@ export function getFileIcon(item: FileItem | FolderItem): string {
  */
 export function joinPaths(...paths: string[]): string {
   return paths
-    .map((path) => path.replace(/^\/+|\/+$/g, ""))
+    .map(path => path.replace(/^\/+|\/+$/g, ""))
     .filter(Boolean)
     .join("/");
 }

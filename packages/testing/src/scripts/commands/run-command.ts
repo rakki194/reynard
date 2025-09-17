@@ -24,9 +24,7 @@ const handleRunCommand = async (options: RunCommandOptions): Promise<void> => {
 
     if (options.verbose) {
       console.log("📋 Configuration:");
-      console.log(
-        `   Packages: ${options.packages ? options.packages.join(", ") : "all enabled"}`,
-      );
+      console.log(`   Packages: ${options.packages ? options.packages.join(", ") : "all enabled"}`);
       console.log(`   Output: ${options.output || "console"}`);
       console.log(`   Report: ${options.report || "console"}`);
       console.log(`   Fail Fast: ${options.failFast ? "yes" : "no"}`);
@@ -42,17 +40,14 @@ const handleRunCommand = async (options: RunCommandOptions): Promise<void> => {
         success: result.overallSuccess,
         summary: result.summary,
         duration: result.duration,
-        packages: result.packageResults.map((pkg) => ({
+        packages: result.packageResults.map(pkg => ({
           name: pkg.packageName,
           path: pkg.packagePath,
           success: pkg.success,
           errors: pkg.errors,
           warnings: pkg.warnings,
           hardcodedStrings: pkg.results.hardcodedStrings.length,
-          missingTranslations: pkg.results.translationValidation.reduce(
-            (sum, v) => sum + v.missingKeys.length,
-            0,
-          ),
+          missingTranslations: pkg.results.translationValidation.reduce((sum, v) => sum + v.missingKeys.length, 0),
           rtlIssues: pkg.results.rtlIssues.length,
         })),
       };
@@ -80,15 +75,9 @@ export const createRunCommand = (): Command => {
 
   command
     .description("Run i18n tests for all enabled packages")
-    .option(
-      "-p, --packages <packages...>",
-      "Specific packages to test (default: all enabled)",
-    )
+    .option("-p, --packages <packages...>", "Specific packages to test (default: all enabled)")
     .option("-o, --output <file>", "Output file for test results (JSON format)")
-    .option(
-      "-r, --report <file>",
-      "Output file for test report (Markdown format)",
-    )
+    .option("-r, --report <file>", "Output file for test report (Markdown format)")
     .option("--fail-fast", "Stop on first failure")
     .option("--verbose", "Verbose output")
     .action(handleRunCommand);

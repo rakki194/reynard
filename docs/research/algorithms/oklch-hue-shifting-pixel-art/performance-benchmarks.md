@@ -93,7 +93,7 @@ class LRUColorCache {
 function batchProcessColors(
   colors: OKLCHColor[],
   processor: (color: OKLCHColor) => OKLCHColor,
-  batchSize: number = 1000,
+  batchSize: number = 1000
 ): OKLCHColor[] {
   const results: OKLCHColor[] = [];
 
@@ -104,7 +104,7 @@ function batchProcessColors(
 
     // Yield control to prevent blocking
     if (i % (batchSize * 10) === 0) {
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await new Promise(resolve => setTimeout(resolve, 0));
     }
   }
 
@@ -127,11 +127,7 @@ class ColorWorkerManager {
     }
   }
 
-  async processColors(
-    colors: OKLCHColor[],
-    operation: string,
-    parameters: any,
-  ): Promise<OKLCHColor[]> {
+  async processColors(colors: OKLCHColor[], operation: string, parameters: any): Promise<OKLCHColor[]> {
     const worker = this.workers[this.workerIndex];
     this.workerIndex = (this.workerIndex + 1) % this.workers.length;
 
@@ -142,7 +138,7 @@ class ColorWorkerManager {
         parameters,
       });
 
-      worker.onmessage = (event) => {
+      worker.onmessage = event => {
         resolve(event.data);
       };
 
@@ -191,11 +187,7 @@ class ColorPool {
 class ColorBenchmark {
   private results: Map<string, number[]> = new Map();
 
-  async benchmark(
-    name: string,
-    fn: () => void | Promise<void>,
-    iterations: number = 1000,
-  ): Promise<number> {
+  async benchmark(name: string, fn: () => void | Promise<void>, iterations: number = 1000): Promise<number> {
     const times: number[] = [];
 
     // Warm up
@@ -299,11 +291,7 @@ class MemoryProfiler {
 class CharacterAnimationCache {
   private cache = new Map<string, PixelSprite[]>();
 
-  precomputeAnimation(
-    baseSprite: PixelSprite,
-    animationFrames: number,
-    lightingConditions: string[],
-  ): void {
+  precomputeAnimation(baseSprite: PixelSprite, animationFrames: number, lightingConditions: string[]): void {
     for (const lighting of lightingConditions) {
       const key = `${baseSprite.width}x${baseSprite.height}-${lighting}`;
       const frames: PixelSprite[] = [];
@@ -317,11 +305,7 @@ class CharacterAnimationCache {
     }
   }
 
-  getAnimationFrame(
-    spriteKey: string,
-    frame: number,
-    lighting: string,
-  ): PixelSprite | null {
+  getAnimationFrame(spriteKey: string, frame: number, lighting: string): PixelSprite | null {
     const key = `${spriteKey}-${lighting}`;
     const frames = this.cache.get(key);
     return frames?.[frame] || null;
@@ -352,12 +336,7 @@ class ChunkedTilemapRenderer {
   private chunkSize = 32;
   private chunks = new Map<string, ImageData>();
 
-  renderChunk(
-    chunkX: number,
-    chunkY: number,
-    tiles: number[][],
-    palette: OKLCHColor[],
-  ): ImageData {
+  renderChunk(chunkX: number, chunkY: number, tiles: number[][], palette: OKLCHColor[]): ImageData {
     const key = `${chunkX}-${chunkY}`;
 
     if (this.chunks.has(key)) {
@@ -372,12 +351,7 @@ class ChunkedTilemapRenderer {
     return imageData;
   }
 
-  renderViewport(
-    viewportX: number,
-    viewportY: number,
-    viewportWidth: number,
-    viewportHeight: number,
-  ): void {
+  renderViewport(viewportX: number, viewportY: number, viewportWidth: number, viewportHeight: number): void {
     const startChunkX = Math.floor(viewportX / this.chunkSize);
     const endChunkX = Math.ceil((viewportX + viewportWidth) / this.chunkSize);
     const startChunkY = Math.floor(viewportY / this.chunkSize);

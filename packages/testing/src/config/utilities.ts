@@ -10,12 +10,8 @@ import { resolve } from "path";
 /**
  * Get configuration for a specific package
  */
-export function getPackageI18nConfig(
-  packageName: string,
-): PackageI18nConfig | undefined {
-  const pkg = defaultI18nTestingConfig.packages.find(
-    (pkg) => pkg.name === packageName,
-  );
+export function getPackageI18nConfig(packageName: string): PackageI18nConfig | undefined {
+  const pkg = defaultI18nTestingConfig.packages.find(pkg => pkg.name === packageName);
   if (pkg) {
     return {
       ...pkg,
@@ -30,8 +26,8 @@ export function getPackageI18nConfig(
  */
 export function getEnabledPackages(): PackageI18nConfig[] {
   return defaultI18nTestingConfig.packages
-    .filter((pkg) => pkg.enabled)
-    .map((pkg) => ({
+    .filter(pkg => pkg.enabled)
+    .map(pkg => ({
       ...pkg,
       path: resolvePackagePath(pkg.path),
     }));
@@ -41,7 +37,7 @@ export function getEnabledPackages(): PackageI18nConfig[] {
  * Get all package paths for i18n testing
  */
 export function getEnabledPackagePaths(): string[] {
-  return getEnabledPackages().map((pkg) => pkg.path);
+  return getEnabledPackages().map(pkg => pkg.path);
 }
 
 /**
@@ -58,15 +54,9 @@ function resolvePackagePath(relativePath: string): string {
       const packageJsonPath = resolve(currentDir, "package.json");
       const fs = require("fs");
       if (fs.existsSync(packageJsonPath)) {
-        const packageJson = JSON.parse(
-          fs.readFileSync(packageJsonPath, "utf8"),
-        );
+        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
         // Look for the main Reynard package.json (not the testing package)
-        if (
-          packageJson.name &&
-          packageJson.name.includes("reynard") &&
-          !packageJson.name.includes("testing")
-        ) {
+        if (packageJson.name && packageJson.name.includes("reynard") && !packageJson.name.includes("testing")) {
           rootDir = currentDir;
           break;
         }
@@ -90,8 +80,8 @@ function resolvePackagePath(relativePath: string): string {
  */
 export function getAllNamespaces(): string[] {
   const namespaces = new Set<string>();
-  getEnabledPackages().forEach((pkg) => {
-    pkg.namespaces.forEach((ns) => namespaces.add(ns));
+  getEnabledPackages().forEach(pkg => {
+    pkg.namespaces.forEach(ns => namespaces.add(ns));
   });
   return Array.from(namespaces);
 }

@@ -57,34 +57,21 @@ describe("Notifications Module", () => {
     it("should replace grouped notifications", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify(
-        t("core.notifications.first-message"),
-        "info",
-        {
-          group: "test-group",
-        },
-      );
-      notificationsModule.notify(
-        t("core.notifications.second-message"),
-        "info",
-        {
-          group: "test-group",
-        },
-      );
+      notificationsModule.notify(t("core.notifications.first-message"), "info", {
+        group: "test-group",
+      });
+      notificationsModule.notify(t("core.notifications.second-message"), "info", {
+        group: "test-group",
+      });
 
       expect(notificationsModule.notifications).toHaveLength(1);
-      expect(notificationsModule.notifications[0].message).toBe(
-        t("core.notifications.second-message"),
-      );
+      expect(notificationsModule.notifications[0].message).toBe(t("core.notifications.second-message"));
     });
 
     it("should auto-dismiss notifications with duration", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify(
-        t("core.notifications.auto-dismiss"),
-        "success",
-      );
+      notificationsModule.notify(t("core.notifications.auto-dismiss"), "success");
       expect(notificationsModule.notifications).toHaveLength(1);
 
       // Fast forward past the auto-dismiss duration
@@ -96,10 +83,7 @@ describe("Notifications Module", () => {
     it("should not auto-dismiss error notifications", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify(
-        t("core.notifications.error-message"),
-        "error",
-      );
+      notificationsModule.notify(t("core.notifications.error-message"), "error");
       expect(notificationsModule.notifications).toHaveLength(1);
 
       // Fast forward, error should still be there
@@ -138,9 +122,7 @@ describe("Notifications Module", () => {
       notificationsModule.clearNotifications("group-a");
 
       expect(notificationsModule.notifications).toHaveLength(2);
-      expect(
-        notificationsModule.notifications.every((n) => n.group !== "group-a"),
-      ).toBe(true);
+      expect(notificationsModule.notifications.every(n => n.group !== "group-a")).toBe(true);
     });
 
     it("should clear all notifications when no group specified", () => {
@@ -160,13 +142,9 @@ describe("Notifications Module", () => {
     it("should update notification progress", () => {
       const notificationsModule = createNotificationsModule();
 
-      const id = notificationsModule.notify(
-        t("core.notifications.upload-progress"),
-        "info",
-        {
-          progress: 50,
-        },
-      );
+      const id = notificationsModule.notify(t("core.notifications.upload-progress"), "info", {
+        progress: 50,
+      });
 
       expect(notificationsModule.notifications[0].progress).toBe(50);
 
@@ -178,29 +156,17 @@ describe("Notifications Module", () => {
     it("should clamp progress values between 0 and 100", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify(
-        t("core.notifications.progress-test"),
-        "info",
-        { progress: 150 },
-      );
+      notificationsModule.notify(t("core.notifications.progress-test"), "info", { progress: 150 });
       expect(notificationsModule.notifications[0].progress).toBe(100);
 
-      notificationsModule.notify(
-        t("core.notifications.progress-test-2"),
-        "info",
-        { progress: -10 },
-      );
+      notificationsModule.notify(t("core.notifications.progress-test-2"), "info", { progress: -10 });
       expect(notificationsModule.notifications[1].progress).toBe(0);
     });
 
     it("should create notification with custom duration", () => {
       const notificationsModule = createNotificationsModule();
 
-      notificationsModule.notify(
-        t("core.notifications.custom-duration"),
-        "info",
-        { duration: 1000 },
-      );
+      notificationsModule.notify(t("core.notifications.custom-duration"), "info", { duration: 1000 });
 
       expect(notificationsModule.notifications[0].duration).toBe(1000);
 
@@ -229,9 +195,7 @@ describe("Notifications Module", () => {
 
       // Test clearNotifications with group
       notificationsModule.clearNotifications("test-group");
-      expect(mockContainer.removeNotificationByGroup).toHaveBeenCalledWith(
-        "test-group",
-      );
+      expect(mockContainer.removeNotificationByGroup).toHaveBeenCalledWith("test-group");
 
       // Test clearNotifications without group
       notificationsModule.clearNotifications();
@@ -255,13 +219,9 @@ describe("Notifications Module", () => {
       expect(notificationsModule.notifications).toHaveLength(0);
 
       // Add notifications for clear tests
-      notificationsModule.notify(
-        t("core.notifications.group-message"),
-        "info",
-        {
-          group: "test-group",
-        },
-      );
+      notificationsModule.notify(t("core.notifications.group-message"), "info", {
+        group: "test-group",
+      });
       notificationsModule.notify(t("core.notifications.regular-message"));
 
       // Test clearNotifications with group fallback
@@ -308,9 +268,7 @@ describe("Notifications Module", () => {
       });
 
       expect(notificationsModule.notifications).toHaveLength(1);
-      expect(notificationsModule.notifications[0].message).toBe(
-        t("core.notifications.second-grouped"),
-      );
+      expect(notificationsModule.notifications[0].message).toBe(t("core.notifications.second-grouped"));
     });
   });
 });

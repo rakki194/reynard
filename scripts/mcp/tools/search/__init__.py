@@ -12,14 +12,16 @@ Provides comprehensive search capabilities including:
 """
 
 from .bm25_search import BM25SearchEngine, ReynardBM25Search
+from .enhanced_search_tools import EnhancedSearchTools
 from .file_search import FileSearchEngine
-from .semantic_search import SemanticSearchEngine
 from .ripgrep_search import RipgrepSearchEngine
 from .search_tools import SearchTools
+from .semantic_search import SemanticSearchEngine
 
 __all__ = [
     "BM25SearchEngine",
     "ReynardBM25Search",
+    "EnhancedSearchTools",
     "FileSearchEngine",
     "SemanticSearchEngine",
     "RipgrepSearchEngine",

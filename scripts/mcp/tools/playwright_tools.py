@@ -11,7 +11,7 @@ Browser automation tools that allow agents to:
 
 import logging
 import subprocess
-from typing import Any, Dict
+from typing import Any
 
 from services.playwright_browser_service import PlaywrightBrowserService
 

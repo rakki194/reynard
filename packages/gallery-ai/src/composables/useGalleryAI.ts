@@ -6,13 +6,7 @@
  * batch processing, and AI-powered features.
  */
 
-import {
-  createSignal,
-  createEffect,
-  onCleanup,
-  createContext,
-  useContext,
-} from "solid-js";
+import { createSignal, createEffect, onCleanup, createContext, useContext } from "solid-js";
 import { CaptionTask, CaptionType } from "reynard-ai-shared";
 import {
   getAnnotationServiceRegistry,
@@ -58,16 +52,12 @@ export const AIGalleryContext = createContext<UseGalleryAIReturn | undefined>();
 export function useAIGalleryContext(): UseGalleryAIReturn {
   const context = useContext(AIGalleryContext);
   if (!context) {
-    throw new Error(
-      "useAIGalleryContext must be used within an AIGalleryProvider",
-    );
+    throw new Error("useAIGalleryContext must be used within an AIGalleryProvider");
   }
   return context;
 }
 
-export function useGalleryAI(
-  options: UseGalleryAIOptions = {},
-): UseGalleryAIReturn {
+export function useGalleryAI(options: UseGalleryAIOptions = {}): UseGalleryAIReturn {
   const {
     initialConfig = {},
     autoInitialize = true,
@@ -106,7 +96,7 @@ export function useGalleryAI(
     isGenerating: false,
     selectedGenerator: loadPersistedState(
       "selectedGenerator",
-      initialConfig.defaultGenerator || DEFAULT_AI_CONFIG.defaultGenerator,
+      initialConfig.defaultGenerator || DEFAULT_AI_CONFIG.defaultGenerator
     ),
     availableGenerators: [],
     batchProgress: null,
@@ -120,8 +110,7 @@ export function useGalleryAI(
   });
 
   // Annotation service instance
-  const [annotationService, setAnnotationService] =
-    createSignal<AISharedBackendAnnotationService | null>(null);
+  const [annotationService, setAnnotationService] = createSignal<AISharedBackendAnnotationService | null>(null);
 
   // Persist configuration changes
   createEffect(() => {
@@ -157,7 +146,7 @@ export function useGalleryAI(
         // Create a default service if none exists
         service = createDefaultAnnotationService(
           "http://localhost:8000", // Default backend URL
-          "gallery-ai-service",
+          "gallery-ai-service"
         );
       }
 
@@ -172,20 +161,17 @@ export function useGalleryAI(
       const generators = await service.getAvailableGenerators();
       const generatorNames = generators.map((g: any) => g.name);
 
-      setAIState((prev) => ({
+      setAIState(prev => ({
         ...prev,
         availableGenerators: generatorNames,
         operationStatus: AIOperationStatus.IDLE,
       }));
     } catch (error) {
       console.error("Failed to initialize annotation service:", error);
-      setAIState((prev) => ({
+      setAIState(prev => ({
         ...prev,
         operationStatus: AIOperationStatus.ERROR,
-        lastError:
-          error instanceof Error
-            ? error.message
-            : "Failed to initialize AI system",
+        lastError: error instanceof Error ? error.message : "Failed to initialize AI system",
       }));
     }
   };
@@ -193,10 +179,7 @@ export function useGalleryAI(
   /**
    * Generate caption for a single item
    */
-  const generateCaption = async (
-    item: any,
-    generator: string,
-  ): Promise<GalleryCaptionResult> => {
+  const generateCaption = async (item: any, generator: string): Promise<GalleryCaptionResult> => {
     const state = aiState();
     if (!state.aiEnabled) {
       throw new Error("AI features are disabled");
@@ -207,7 +190,7 @@ export function useGalleryAI(
       throw new Error("Annotation service is not initialized");
     }
 
-    setAIState((prev) => ({
+    setAIState(prev => ({
       ...prev,
       isGenerating: true,
       operationStatus: AIOperationStatus.GENERATING,
@@ -222,8 +205,7 @@ export function useGalleryAI(
         postProcess: state.config.captionSettings.postProcessing,
         priority: 1,
         force: state.config.captionSettings.forceRegeneration,
-        captionType: state.config.captionSettings
-          .defaultCaptionType as CaptionType,
+        captionType: state.config.captionSettings.defaultCaptionType as CaptionType,
       };
 
       // Call callback
@@ -243,7 +225,7 @@ export function useGalleryAI(
         metadata: result.metadata,
       };
 
-      setAIState((prev) => ({
+      setAIState(prev => ({
         ...prev,
         isGenerating: false,
         operationStatus: AIOperationStatus.SUCCESS,
@@ -254,10 +236,9 @@ export function useGalleryAI(
 
       return galleryResult;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Caption generation failed";
+      const errorMessage = error instanceof Error ? error.message : "Caption generation failed";
 
-      setAIState((prev) => ({
+      setAIState(prev => ({
         ...prev,
         isGenerating: false,
         operationStatus: AIOperationStatus.ERROR,
@@ -274,10 +255,7 @@ export function useGalleryAI(
   /**
    * Batch annotate multiple items
    */
-  const batchAnnotate = async (
-    items: any[],
-    generator: string,
-  ): Promise<GalleryCaptionResult[]> => {
+  const batchAnnotate = async (items: any[], generator: string): Promise<GalleryCaptionResult[]> => {
     const state = aiState();
     if (!state.aiEnabled) {
       throw new Error("AI features are disabled");
@@ -288,7 +266,7 @@ export function useGalleryAI(
       throw new Error("Annotation service is not initialized");
     }
 
-    setAIState((prev) => ({
+    setAIState(prev => ({
       ...prev,
       isGenerating: true,
       operationStatus: AIOperationStatus.BATCH_PROCESSING,
@@ -296,48 +274,42 @@ export function useGalleryAI(
     }));
 
     try {
-      const tasks: CaptionTask[] = items.map((item) => ({
+      const tasks: CaptionTask[] = items.map(item => ({
         imagePath: item.path || item.name,
         generatorName: generator,
         config: state.config.captionSettings.generatorConfigs[generator] || {},
         postProcess: state.config.captionSettings.postProcessing,
         priority: 1,
         force: state.config.captionSettings.forceRegeneration,
-        captionType: state.config.captionSettings
-          .defaultCaptionType as CaptionType,
+        captionType: state.config.captionSettings.defaultCaptionType as CaptionType,
       }));
 
       // Call callback
       callbacks.onBatchProcessingStart?.(items, generator);
 
-      const results = await service.generateBatchCaptions(
-        tasks,
-        (progress: any) => {
-          setAIState((prev) => ({
-            ...prev,
-            batchProgress: progress,
-          }));
+      const results = await service.generateBatchCaptions(tasks, (progress: any) => {
+        setAIState(prev => ({
+          ...prev,
+          batchProgress: progress,
+        }));
 
-          // Call progress callback
-          callbacks.onBatchProcessingProgress?.(progress);
-        },
-      );
+        // Call progress callback
+        callbacks.onBatchProcessingProgress?.(progress);
+      });
 
       // Convert ai-shared CaptionResult[] to GalleryCaptionResult[]
-      const galleryResults: GalleryCaptionResult[] = results.map(
-        (result: any) => ({
-          success: result.success,
-          caption: result.caption,
-          processingTime: result.processingTime,
-          captionType: result.captionType,
-          generator: result.generatorName,
-          imagePath: result.imagePath,
-          error: result.error,
-          metadata: result.metadata,
-        }),
-      );
+      const galleryResults: GalleryCaptionResult[] = results.map((result: any) => ({
+        success: result.success,
+        caption: result.caption,
+        processingTime: result.processingTime,
+        captionType: result.captionType,
+        generator: result.generatorName,
+        imagePath: result.imagePath,
+        error: result.error,
+        metadata: result.metadata,
+      }));
 
-      setAIState((prev) => ({
+      setAIState(prev => ({
         ...prev,
         isGenerating: false,
         operationStatus: AIOperationStatus.SUCCESS,
@@ -349,10 +321,9 @@ export function useGalleryAI(
 
       return galleryResults;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Batch processing failed";
+      const errorMessage = error instanceof Error ? error.message : "Batch processing failed";
 
-      setAIState((prev) => ({
+      setAIState(prev => ({
         ...prev,
         isGenerating: false,
         operationStatus: AIOperationStatus.ERROR,
@@ -371,7 +342,7 @@ export function useGalleryAI(
    * Update AI configuration
    */
   const updateAIConfig = (config: Partial<AIGalleryConfig>): void => {
-    setAIState((prev) => ({
+    setAIState(prev => ({
       ...prev,
       config: {
         ...prev.config,
@@ -409,7 +380,7 @@ export function useGalleryAI(
    * Clear AI state
    */
   const clearAIState = (): void => {
-    setAIState((prev) => ({
+    setAIState(prev => ({
       ...prev,
       isGenerating: false,
       batchProgress: null,
@@ -422,7 +393,7 @@ export function useGalleryAI(
    * Set AI enabled state
    */
   const setAIEnabled = (enabled: boolean): void => {
-    setAIState((prev) => ({
+    setAIState(prev => ({
       ...prev,
       aiEnabled: enabled,
     }));

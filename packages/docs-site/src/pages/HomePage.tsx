@@ -3,12 +3,7 @@
  */
 
 import { Component, createSignal, onMount, For } from "solid-js";
-import {
-  DocsHero,
-  DocsCardGrid,
-  DocsSection,
-  DocsPage,
-} from "reynard-docs-components";
+import { DocsHero, DocsCardGrid, DocsSection, DocsPage } from "reynard-docs-components";
 
 /**
  * Home page component
@@ -40,24 +35,21 @@ export const HomePage: Component = () => {
   const features = [
     {
       title: "Core Framework",
-      description:
-        "Essential utilities and composables for building modern web applications",
+      description: "Essential utilities and composables for building modern web applications",
       icon: "⚡",
       href: "/packages/core",
       badge: "Essential",
     },
     {
       title: "UI Components",
-      description:
-        "Beautiful, accessible components built with SolidJS and modern web standards",
+      description: "Beautiful, accessible components built with SolidJS and modern web standards",
       icon: "🎨",
       href: "/packages/components",
       badge: "Popular",
     },
     {
       title: "Themes",
-      description:
-        "Flexible theming system with dark mode support and custom CSS variables",
+      description: "Flexible theming system with dark mode support and custom CSS variables",
       icon: "🌙",
       href: "/packages/themes",
       badge: "New",
@@ -125,16 +117,10 @@ import { useTheme } from 'reynard-themes';`,
         description="A modern, modular framework for building fast, accessible, and maintainable web applications. Built with SolidJS and TypeScript."
         actions={
           <div class="docs-hero-actions">
-            <a
-              href="/packages/core"
-              class="docs-hero-button docs-hero-button--primary"
-            >
+            <a href="/packages/core" class="docs-hero-button docs-hero-button--primary">
               Get Started
             </a>
-            <a
-              href="/packages/components"
-              class="docs-hero-button docs-hero-button--secondary"
-            >
+            <a href="/packages/components" class="docs-hero-button docs-hero-button--secondary">
               View Components
             </a>
           </div>
@@ -166,7 +152,7 @@ import { useTheme } from 'reynard-themes';`,
       <DocsSection title="Quick Start">
         <div class="docs-quick-start">
           <For each={quickStartSteps}>
-            {(step) => (
+            {step => (
               <div class="docs-quick-start-step">
                 <div class="docs-quick-start-step-number">{step.step}</div>
                 <div class="docs-quick-start-step-content">
@@ -187,10 +173,7 @@ import { useTheme } from 'reynard-themes';`,
           <div class="docs-community-item">
             <h3>GitHub</h3>
             <p>Contribute to Reynard and help make it better</p>
-            <a
-              href="https://github.com/rakki194/reynard"
-              class="docs-community-link"
-            >
+            <a href="https://github.com/rakki194/reynard" class="docs-community-link">
               View on GitHub →
             </a>
           </div>
@@ -204,10 +187,7 @@ import { useTheme } from 'reynard-themes';`,
           <div class="docs-community-item">
             <h3>Twitter</h3>
             <p>Follow us for updates and announcements</p>
-            <a
-              href="https://twitter.com/reynard_framework"
-              class="docs-community-link"
-            >
+            <a href="https://twitter.com/reynard_framework" class="docs-community-link">
               Follow on Twitter →
             </a>
           </div>

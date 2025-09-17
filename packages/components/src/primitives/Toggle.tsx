@@ -16,16 +16,8 @@ export interface ToggleProps {
   id?: string;
 }
 
-export const Toggle: Component<ToggleProps> = (props) => {
-  const [local, others] = splitProps(props, [
-    "checked",
-    "onChange",
-    "disabled",
-    "size",
-    "class",
-    "aria-label",
-    "id",
-  ]);
+export const Toggle: Component<ToggleProps> = props => {
+  const [local, others] = splitProps(props, ["checked", "onChange", "disabled", "size", "class", "aria-label", "id"]);
 
   const handleChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
@@ -33,9 +25,7 @@ export const Toggle: Component<ToggleProps> = (props) => {
   };
 
   return (
-    <label
-      class={`toggle ${local.size || "md"} ${local.class || ""} ${local.disabled ? "disabled" : ""}`}
-    >
+    <label class={`toggle ${local.size || "md"} ${local.class || ""} ${local.disabled ? "disabled" : ""}`}>
       <input
         id={local.id}
         type="checkbox"

@@ -14,10 +14,7 @@ export const ThemeSelector: Component = () => {
   createEffect(() => {
     console.log("ThemeSelector - Current theme:", themeContext.theme);
     console.log("ThemeSelector - Available themes:", availableThemes);
-    console.log(
-      "ThemeSelector - localStorage theme:",
-      localStorage.getItem("reynard-theme"),
-    );
+    console.log("ThemeSelector - localStorage theme:", localStorage.getItem("reynard-theme"));
   });
 
   return (
@@ -27,17 +24,13 @@ export const ThemeSelector: Component = () => {
         <select
           class="theme-select"
           value={themeContext.theme}
-          onChange={(e) => {
+          onChange={e => {
             console.log("Theme changed to:", e.target.value);
             themeContext.setTheme(e.target.value as ThemeName);
           }}
         >
           <For each={availableThemes}>
-            {(themeConfig) => (
-              <option value={themeConfig.name}>
-                {themeConfig.displayName}
-              </option>
-            )}
+            {themeConfig => <option value={themeConfig.name}>{themeConfig.displayName}</option>}
           </For>
         </select>
       </label>

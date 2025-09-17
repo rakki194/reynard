@@ -44,14 +44,10 @@ const RetryStrategyDemo: Component = () => {
         if (response.ok) {
           const data = await response.json();
           if (data.success) {
-            setResult(
-              `✅ Retry successful after ${attempt} attempts: ${data.message}`,
-            );
+            setResult(`✅ Retry successful after ${attempt} attempts: ${data.message}`);
             break;
           } else {
-            setResult(
-              `❌ Retry failed after ${attempt} attempts: ${data.message}`,
-            );
+            setResult(`❌ Retry failed after ${attempt} attempts: ${data.message}`);
           }
         } else {
           setResult(`❌ Retry request failed: ${response.statusText}`);
@@ -61,7 +57,7 @@ const RetryStrategyDemo: Component = () => {
       }
 
       if (attempt < maxAttempts) {
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second between attempts
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second between attempts
       }
     }
 
@@ -89,23 +85,13 @@ const RetryStrategyDemo: Component = () => {
         </div>
       </div>
 
-      <button
-        class="btn btn-primary"
-        onClick={executeRetryStrategy}
-        disabled={loading()}
-      >
+      <button class="btn btn-primary" onClick={executeRetryStrategy} disabled={loading()}>
         {loading() ? "Retrying..." : "Execute Retry Strategy"}
       </button>
 
       <Show when={result()}>
-        <div
-          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
-        >
-          {result().startsWith("✅") ? (
-            <CheckmarkCircle size={16} />
-          ) : (
-            <XCircle size={16} />
-          )}
+        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
+          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
           <span>{result()}</span>
         </div>
       </Show>
@@ -152,23 +138,13 @@ const ResetStrategyDemo: Component = () => {
       </h3>
       <p>Demonstrates component reset to initial state.</p>
 
-      <button
-        class="btn btn-secondary"
-        onClick={executeResetStrategy}
-        disabled={loading()}
-      >
+      <button class="btn btn-secondary" onClick={executeResetStrategy} disabled={loading()}>
         {loading() ? "Resetting..." : "Execute Reset Strategy"}
       </button>
 
       <Show when={result()}>
-        <div
-          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
-        >
-          {result().startsWith("✅") ? (
-            <CheckmarkCircle size={16} />
-          ) : (
-            <XCircle size={16} />
-          )}
+        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
+          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
           <span>{result()}</span>
         </div>
       </Show>
@@ -220,11 +196,7 @@ const FallbackStrategyDemo: Component = () => {
       <p>Demonstrates switching to fallback UI when primary UI fails.</p>
 
       <Show when={!fallbackActive()}>
-        <button
-          class="btn btn-warning"
-          onClick={executeFallbackStrategy}
-          disabled={loading()}
-        >
+        <button class="btn btn-warning" onClick={executeFallbackStrategy} disabled={loading()}>
           {loading() ? "Activating..." : "Execute Fallback Strategy"}
         </button>
       </Show>
@@ -232,10 +204,7 @@ const FallbackStrategyDemo: Component = () => {
       <Show when={fallbackActive()}>
         <div class="status-message status-warning">
           <AlertTriangle size={16} />
-          <span>
-            Fallback UI is now active. This is a simplified version of the
-            interface.
-          </span>
+          <span>Fallback UI is now active. This is a simplified version of the interface.</span>
         </div>
         <button class="btn btn-primary" onClick={exitFallback}>
           Exit Fallback Mode
@@ -243,14 +212,8 @@ const FallbackStrategyDemo: Component = () => {
       </Show>
 
       <Show when={result() && !fallbackActive()}>
-        <div
-          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
-        >
-          {result().startsWith("✅") ? (
-            <CheckmarkCircle size={16} />
-          ) : (
-            <XCircle size={16} />
-          )}
+        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
+          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
           <span>{result()}</span>
         </div>
       </Show>
@@ -278,9 +241,7 @@ const RedirectStrategyDemo: Component = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setResult(
-          `✅ ${data.message} - Would redirect to: ${data.data.redirect_url}`,
-        );
+        setResult(`✅ ${data.message} - Would redirect to: ${data.data.redirect_url}`);
       } else {
         setResult(`❌ Redirect failed: ${response.statusText}`);
       }
@@ -299,23 +260,13 @@ const RedirectStrategyDemo: Component = () => {
       </h3>
       <p>Demonstrates redirecting users to a safe page when errors occur.</p>
 
-      <button
-        class="btn btn-info"
-        onClick={executeRedirectStrategy}
-        disabled={loading()}
-      >
+      <button class="btn btn-info" onClick={executeRedirectStrategy} disabled={loading()}>
         {loading() ? "Redirecting..." : "Execute Redirect Strategy"}
       </button>
 
       <Show when={result()}>
-        <div
-          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
-        >
-          {result().startsWith("✅") ? (
-            <CheckmarkCircle size={16} />
-          ) : (
-            <XCircle size={16} />
-          )}
+        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
+          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
           <span>{result()}</span>
         </div>
       </Show>
@@ -341,7 +292,7 @@ const ReloadStrategyDemo: Component = () => {
       if (response.ok) {
         const data = await response.json();
         setResult(
-          `✅ ${data.message} - Application would reload at: ${new Date(data.data.reload_time).toLocaleTimeString()}`,
+          `✅ ${data.message} - Application would reload at: ${new Date(data.data.reload_time).toLocaleTimeString()}`
         );
       } else {
         setResult(`❌ Reload failed: ${response.statusText}`);
@@ -359,28 +310,15 @@ const ReloadStrategyDemo: Component = () => {
         <Refresh size={20} />
         Reload Strategy Demo
       </h3>
-      <p>
-        Demonstrates reloading the entire application when critical errors
-        occur.
-      </p>
+      <p>Demonstrates reloading the entire application when critical errors occur.</p>
 
-      <button
-        class="btn btn-danger"
-        onClick={executeReloadStrategy}
-        disabled={loading()}
-      >
+      <button class="btn btn-danger" onClick={executeReloadStrategy} disabled={loading()}>
         {loading() ? "Reloading..." : "Execute Reload Strategy"}
       </button>
 
       <Show when={result()}>
-        <div
-          class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}
-        >
-          {result().startsWith("✅") ? (
-            <CheckmarkCircle size={16} />
-          ) : (
-            <XCircle size={16} />
-          )}
+        <div class={`status-message ${result().startsWith("✅") ? "status-success" : "status-error"}`}>
+          {result().startsWith("✅") ? <CheckmarkCircle size={16} /> : <XCircle size={16} />}
           <span>{result()}</span>
         </div>
       </Show>
@@ -395,10 +333,7 @@ const RecoveryDemo: Component = () => {
         <ArrowClockwise size={32} />
         <div>
           <h2>Recovery Strategy Demonstrations</h2>
-          <p>
-            Test various recovery strategies and see how they handle different
-            error scenarios
-          </p>
+          <p>Test various recovery strategies and see how they handle different error scenarios</p>
         </div>
       </div>
 
@@ -429,9 +364,7 @@ const RecoveryDemo: Component = () => {
           </div>
 
           <div style="margin-top: 2rem; padding: 1rem; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
-            <h4 style="margin: 0 0 0.5rem 0; color: #667eea;">
-              Strategy Priority
-            </h4>
+            <h4 style="margin: 0 0 0.5rem 0; color: #667eea;">Strategy Priority</h4>
             <div style="font-size: 0.9rem; color: #64748b;">
               <div>1. Retry (highest priority)</div>
               <div>2. Fallback UI</div>

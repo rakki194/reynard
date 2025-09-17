@@ -4,10 +4,7 @@
 
 import type { ApiResponse } from "../types.js";
 
-export function parseApiResponse<T>(
-  response: Response,
-  data: T,
-): ApiResponse<T> {
+export function parseApiResponse<T>(response: Response, data: T): ApiResponse<T> {
   return {
     data,
     success: response.ok,
@@ -19,10 +16,7 @@ export function parseApiResponse<T>(
   };
 }
 
-export function parseApiError(
-  response: Response,
-  error: any,
-): ApiResponse<null> {
+export function parseApiError(response: Response, error: any): ApiResponse<null> {
   return {
     data: null,
     error: error?.message || `HTTP ${response.status}: ${response.statusText}`,

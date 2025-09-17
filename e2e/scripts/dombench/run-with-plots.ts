@@ -15,18 +15,17 @@ import { plotBenchmarkResults } from "./plot-benchmark-results.js";
  */
 export async function runDOMBenchWithPlots(): Promise<void> {
   console.log("🦦 Starting DOMBench with integrated plotting...\n");
-  
+
   try {
     // Run the benchmark
     console.log("📊 Running DOMBench...");
     await runWorkingDOMBench();
-    
+
     console.log("\n📈 Generating performance plots...");
     await plotBenchmarkResults();
-    
+
     console.log("\n✅ DOMBench with plots completed successfully!");
     console.log("🦦 Check the dombench-results/ directory for all generated files!");
-    
   } catch (error) {
     console.error("❌ DOMBench with plots failed:", error.message);
     process.exit(1);

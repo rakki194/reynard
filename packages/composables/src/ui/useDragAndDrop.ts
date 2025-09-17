@@ -7,15 +7,8 @@ export interface DragAndDropOptions {
   maxFileSize?: number; // in bytes
   allowedFileTypes?: string[];
   uploadFiles?: (files: FileList) => Promise<void>;
-  moveItems?: (
-    items: string[],
-    sourcePath: string,
-    targetPath: string,
-  ) => Promise<any>;
-  notify?: (
-    message: string,
-    type?: "error" | "success" | "info" | "warning",
-  ) => void;
+  moveItems?: (items: string[], sourcePath: string, targetPath: string) => Promise<any>;
+  notify?: (message: string, type?: "error" | "success" | "info" | "warning") => void;
 }
 
 interface DragItem {
@@ -50,10 +43,7 @@ export function useDragAndDrop(options: DragAndDropOptions) {
   // Validate file size and type
   const validateFile = (file: File): boolean => {
     if (file.size > maxFileSize) {
-      notify?.(
-        `File ${file.name} is too large. Maximum size is ${(maxFileSize / 1024 / 1024).toFixed(0)}MB`,
-        "error",
-      );
+      notify?.(`File ${file.name} is too large. Maximum size is ${(maxFileSize / 1024 / 1024).toFixed(0)}MB`, "error");
       return false;
     }
 
@@ -148,16 +138,14 @@ export function useDragAndDrop(options: DragAndDropOptions) {
         const items = itemsData ? JSON.parse(itemsData) : [item];
 
         const itemsToMove = items.map((item: DragItem) => item.name);
-        const alreadyMoving = itemsToMove.filter((name: string) =>
-          movingItems().has(name),
-        );
+        const alreadyMoving = itemsToMove.filter((name: string) => movingItems().has(name));
         if (alreadyMoving.length > 0) {
           notify?.("Move operation already in progress", "warning");
           return;
         }
 
         // Mark items as being moved
-        setMovingItems((prev) => {
+        setMovingItems(prev => {
           const newSet = new Set(prev);
           itemsToMove.forEach((name: string) => newSet.add(name));
           return newSet;
@@ -165,9 +153,7 @@ export function useDragAndDrop(options: DragAndDropOptions) {
 
         // Get target path
         const targetElement = e.target as HTMLElement;
-        const directoryItem = targetElement.closest(
-          ".item.directory",
-        ) as HTMLElement;
+        const directoryItem = targetElement.closest(".item.directory") as HTMLElement;
         let targetPath = "";
 
         if (directoryItem) {
@@ -185,19 +171,13 @@ export function useDragAndDrop(options: DragAndDropOptions) {
         if (moveItems) {
           const result = await moveItems(itemsToMove, sourcePath, targetPath);
           onItemsDropped?.(items, targetPath);
-          notify?.(
-            `Moved ${result.moved?.length || itemsToMove.length} items successfully`,
-            "success",
-          );
+          notify?.(`Moved ${result.moved?.length || itemsToMove.length} items successfully`, "success");
         } else {
           onItemsDropped?.(items, targetPath);
         }
       } catch (err) {
         console.error("Move failed:", err);
-        notify?.(
-          `Move failed: ${err instanceof Error ? err.message : "Unknown error"}`,
-          "error",
-        );
+        notify?.(`Move failed: ${err instanceof Error ? err.message : "Unknown error"}`, "error");
       } finally {
         setIsMoving(false);
         setMovingItems(new Set<string>());
@@ -208,9 +188,7 @@ export function useDragAndDrop(options: DragAndDropOptions) {
     // Handle external file drops
     if (e.dataTransfer.items) {
       const items = Array.from(e.dataTransfer.items);
-      const entries = items
-        .filter((item) => item.kind === "file")
-        .map((item) => item.webkitGetAsEntry());
+      const entries = items.filter(item => item.kind === "file").map(item => item.webkitGetAsEntry());
 
       const files: File[] = [];
 
@@ -218,7 +196,7 @@ export function useDragAndDrop(options: DragAndDropOptions) {
         if (!entry) return;
 
         if (entry.isFile) {
-          return new Promise<void>((resolve) => {
+          return new Promise<void>(resolve => {
             entry.file((file: File) => {
               if (validateFile(file)) {
                 files.push(file);
@@ -230,7 +208,7 @@ export function useDragAndDrop(options: DragAndDropOptions) {
           const dirReader = entry.createReader();
           const dirPath = path ? `${path}/${entry.name}` : entry.name;
 
-          return new Promise<void>((resolve) => {
+          return new Promise<void>(resolve => {
             const readEntries = () => {
               dirReader.readEntries(async (entries: any[]) => {
                 if (entries.length === 0) {
@@ -238,7 +216,7 @@ export function useDragAndDrop(options: DragAndDropOptions) {
                   return;
                 }
 
-                await Promise.all(entries.map((e) => processEntry(e, dirPath)));
+                await Promise.all(entries.map(e => processEntry(e, dirPath)));
                 readEntries();
               });
             };
@@ -248,11 +226,11 @@ export function useDragAndDrop(options: DragAndDropOptions) {
       };
 
       try {
-        await Promise.all(entries.map((entry) => processEntry(entry)));
+        await Promise.all(entries.map(entry => processEntry(entry)));
 
         if (files.length > 0) {
           const fileList = new DataTransfer();
-          files.forEach((file) => fileList.items.add(file));
+          files.forEach(file => fileList.items.add(file));
 
           if (uploadFiles) {
             await uploadFiles(fileList.files);
@@ -262,10 +240,7 @@ export function useDragAndDrop(options: DragAndDropOptions) {
         }
       } catch (err) {
         console.error("Failed to process dropped files:", err);
-        notify?.(
-          `Upload failed: ${err instanceof Error ? err.message : "Unknown error"}`,
-          "error",
-        );
+        notify?.(`Upload failed: ${err instanceof Error ? err.message : "Unknown error"}`, "error");
       }
     } else {
       // Fallback to simple FileList
@@ -281,7 +256,7 @@ export function useDragAndDrop(options: DragAndDropOptions) {
 
       if (validFiles.length > 0) {
         const fileList = new DataTransfer();
-        validFiles.forEach((file) => fileList.items.add(file));
+        validFiles.forEach(file => fileList.items.add(file));
 
         if (uploadFiles) {
           await uploadFiles(fileList.files);
@@ -322,15 +297,12 @@ export function useDragAndDrop(options: DragAndDropOptions) {
       idx: idx,
     };
 
-    e.dataTransfer.setData(
-      "application/x-custom-item",
-      JSON.stringify(itemData),
-    );
+    e.dataTransfer.setData("application/x-custom-item", JSON.stringify(itemData));
   };
 
   // Handle drag end
   const handleDragEnd = (e: DragEvent) => {
-    document.querySelectorAll(".being-dragged, .drag-target").forEach((el) => {
+    document.querySelectorAll(".being-dragged, .drag-target").forEach(el => {
       el.classList.remove("being-dragged", "drag-target");
     });
   };

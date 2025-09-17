@@ -19,9 +19,7 @@ interface MultiModalGalleryContentProps {
   showMetadata?: boolean;
 }
 
-export const MultiModalGalleryContent: Component<
-  MultiModalGalleryContentProps
-> = (props) => {
+export const MultiModalGalleryContent: Component<MultiModalGalleryContentProps> = props => {
   return (
     <div class="gallery-content">
       <Show when={props.currentView === "grid"}>

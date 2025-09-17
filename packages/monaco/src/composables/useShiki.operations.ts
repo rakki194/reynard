@@ -18,7 +18,7 @@ export function createShikiOperations(
   state: () => any,
   setHighlighter: (highlighter: any) => void,
   setError: (error: string | null) => void,
-  setLoading: (loading: boolean) => void,
+  setLoading: (loading: boolean) => void
 ): ShikiOperations {
   const initializeHighlighter = async (options: ShikiOptions) => {
     try {
@@ -48,17 +48,11 @@ export function createShikiOperations(
 
       setHighlighter(highlighter);
     } catch (error) {
-      setError(
-        error instanceof Error ? error.message : "Failed to initialize Shiki",
-      );
+      setError(error instanceof Error ? error.message : "Failed to initialize Shiki");
     }
   };
 
-  const highlightCode = async (
-    code: string,
-    lang: string,
-    theme: string,
-  ): Promise<string> => {
+  const highlightCode = async (code: string, lang: string, theme: string): Promise<string> => {
     const currentState = state();
     if (!currentState.highlighter) {
       throw new Error("Shiki highlighter not initialized");
@@ -70,9 +64,7 @@ export function createShikiOperations(
         theme,
       });
     } catch (error) {
-      throw new Error(
-        `Failed to highlight code: ${error instanceof Error ? error.message : "Unknown error"}`,
-      );
+      throw new Error(`Failed to highlight code: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   };
 

@@ -10,19 +10,17 @@ import { Button } from "reynard-components";
 import { useAIGalleryContext } from "../composables/useGalleryAI";
 import type { AIImageViewerProps, GalleryCaptionResult } from "../types";
 
-export const AIImageViewer: Component<AIImageViewerProps> = (props) => {
+export const AIImageViewer: Component<AIImageViewerProps> = props => {
   const ai = useAIGalleryContext();
   const [isGenerating, setIsGenerating] = createSignal(false);
   const [currentCaption, setCurrentCaption] = createSignal<string>("");
   const [isEditing, setIsEditing] = createSignal(false);
   const [selectedGenerator, setSelectedGenerator] = createSignal<string>("");
-  const [generationResult, setGenerationResult] =
-    createSignal<GalleryCaptionResult | null>(null);
+  const [generationResult, setGenerationResult] = createSignal<GalleryCaptionResult | null>(null);
 
   // Initialize with default generator
   onMount(() => {
-    const defaultGen =
-      props.aiProps?.defaultGenerator || ai.aiState().selectedGenerator;
+    const defaultGen = props.aiProps?.defaultGenerator || ai.aiState().selectedGenerator;
     setSelectedGenerator(defaultGen);
 
     // Auto-generate if enabled
@@ -111,9 +109,7 @@ export const AIImageViewer: Component<AIImageViewerProps> = (props) => {
             <div class="ai-image-viewer__spinner">
               <div class="ai-image-viewer__spinner-inner" />
             </div>
-            <span class="ai-image-viewer__generating-text">
-              Generating caption...
-            </span>
+            <span class="ai-image-viewer__generating-text">Generating caption...</span>
           </div>
         </Show>
       </div>
@@ -125,22 +121,13 @@ export const AIImageViewer: Component<AIImageViewerProps> = (props) => {
             <label class="ai-image-viewer__label">Generator:</label>
             <select
               value={selectedGenerator()}
-              onChange={(e) => setSelectedGenerator(e.currentTarget.value)}
+              onChange={e => setSelectedGenerator(e.currentTarget.value)}
               disabled={isGenerating()}
               class="ai-image-viewer__select"
               title="Select caption generator"
             >
-              <For
-                each={
-                  props.aiProps?.availableGenerators ||
-                  ai.getAvailableGenerators()
-                }
-              >
-                {(generator) => (
-                  <option value={generator}>
-                    {getGeneratorDisplayName(generator)}
-                  </option>
-                )}
+              <For each={props.aiProps?.availableGenerators || ai.getAvailableGenerators()}>
+                {generator => <option value={generator}>{getGeneratorDisplayName(generator)}</option>}
               </For>
             </select>
           </div>
@@ -167,20 +154,10 @@ export const AIImageViewer: Component<AIImageViewerProps> = (props) => {
             <h3 class="ai-image-viewer__caption-title">Caption</h3>
             <Show when={currentCaption() && !isEditing()}>
               <div class="ai-image-viewer__caption-actions">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleEditCaption}
-                  class="ai-image-viewer__edit-btn"
-                >
+                <Button variant="ghost" size="sm" onClick={handleEditCaption} class="ai-image-viewer__edit-btn">
                   Edit
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleDeleteCaption}
-                  class="ai-image-viewer__delete-btn"
-                >
+                <Button variant="ghost" size="sm" onClick={handleDeleteCaption} class="ai-image-viewer__delete-btn">
                   Delete
                 </Button>
               </div>
@@ -191,26 +168,16 @@ export const AIImageViewer: Component<AIImageViewerProps> = (props) => {
             <div class="ai-image-viewer__caption-editor">
               <textarea
                 value={currentCaption()}
-                onInput={(e) => setCurrentCaption(e.currentTarget.value)}
+                onInput={e => setCurrentCaption(e.currentTarget.value)}
                 placeholder="Enter caption..."
                 class="ai-image-viewer__caption-textarea"
                 rows={4}
               />
               <div class="ai-image-viewer__editor-actions">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handleSaveCaption}
-                  class="ai-image-viewer__save-btn"
-                >
+                <Button variant="primary" size="sm" onClick={handleSaveCaption} class="ai-image-viewer__save-btn">
                   Save
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleCancelEdit}
-                  class="ai-image-viewer__cancel-btn"
-                >
+                <Button variant="ghost" size="sm" onClick={handleCancelEdit} class="ai-image-viewer__cancel-btn">
                   Cancel
                 </Button>
               </div>
@@ -223,13 +190,10 @@ export const AIImageViewer: Component<AIImageViewerProps> = (props) => {
               <Show when={generationResult()}>
                 <div class="ai-image-viewer__caption-meta">
                   <span class="ai-image-viewer__generator">
-                    Generated by:{" "}
-                    {getGeneratorDisplayName(generationResult()!.generator)}
+                    Generated by: {getGeneratorDisplayName(generationResult()!.generator)}
                   </span>
                   <Show when={generationResult()!.processingTime}>
-                    <span class="ai-image-viewer__processing-time">
-                      ({generationResult()!.processingTime}ms)
-                    </span>
+                    <span class="ai-image-viewer__processing-time">({generationResult()!.processingTime}ms)</span>
                   </Show>
                 </div>
               </Show>
@@ -250,14 +214,10 @@ export const AIImageViewer: Component<AIImageViewerProps> = (props) => {
       <Show when={generationResult()}>
         <div class="ai-image-viewer__result-info">
           <Show when={generationResult()!.success}>
-            <div class="ai-image-viewer__success">
-              ✅ Caption generated successfully
-            </div>
+            <div class="ai-image-viewer__success">✅ Caption generated successfully</div>
           </Show>
           <Show when={!generationResult()!.success}>
-            <div class="ai-image-viewer__error">
-              ❌ {generationResult()!.error || "Caption generation failed"}
-            </div>
+            <div class="ai-image-viewer__error">❌ {generationResult()!.error || "Caption generation failed"}</div>
           </Show>
         </div>
       </Show>

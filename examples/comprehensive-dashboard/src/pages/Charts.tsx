@@ -5,12 +5,8 @@ import { useI18n } from "reynard-i18n";
 
 export function Charts() {
   const { t } = useI18n();
-  const [chartType, setChartType] = createSignal<
-    "line" | "bar" | "pie" | "timeseries"
-  >("line");
-  const [dataSet, setDataSet] = createSignal<"sales" | "users" | "performance">(
-    "sales",
-  );
+  const [chartType, setChartType] = createSignal<"line" | "bar" | "pie" | "timeseries">("line");
+  const [dataSet, setDataSet] = createSignal<"sales" | "users" | "performance">("sales");
 
   // Sample data for different chart types
   const salesData = createMemo(() => ({
@@ -42,14 +38,7 @@ export function Charts() {
   }));
 
   const timeSeriesData = createMemo(() => ({
-    labels: [
-      "2023-01-01",
-      "2023-02-01",
-      "2023-03-01",
-      "2023-04-01",
-      "2023-05-01",
-      "2023-06-01",
-    ],
+    labels: ["2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01"],
     datasets: [
       {
         label: "Revenue",
@@ -102,11 +91,7 @@ export function Charts() {
         <div class="flex gap-4">
           <Select
             value={chartType()}
-            onInput={(e) =>
-              setChartType(
-                e.target.value as "line" | "bar" | "pie" | "timeseries",
-              )
-            }
+            onInput={e => setChartType(e.target.value as "line" | "bar" | "pie" | "timeseries")}
             options={[
               { value: "line", label: t("charts.types.line") },
               { value: "bar", label: t("charts.types.bar") },
@@ -116,9 +101,7 @@ export function Charts() {
           />
           <Select
             value={dataSet()}
-            onInput={(e) =>
-              setDataSet(e.target.value as "sales" | "users" | "performance")
-            }
+            onInput={e => setDataSet(e.target.value as "sales" | "users" | "performance")}
             options={[
               { value: "sales", label: t("charts.data.sales") },
               { value: "users", label: t("charts.data.users") },
@@ -131,18 +114,14 @@ export function Charts() {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <div class="p-6">
-            <h2 class="text-lg font-semibold mb-4">
-              {t("charts.interactive.title")}
-            </h2>
+            <h2 class="text-lg font-semibold mb-4">{t("charts.interactive.title")}</h2>
             <div class="h-64">{renderChart()}</div>
           </div>
         </Card>
 
         <Card>
           <div class="p-6">
-            <h2 class="text-lg font-semibold mb-4">
-              {t("charts.comparison.title")}
-            </h2>
+            <h2 class="text-lg font-semibold mb-4">{t("charts.comparison.title")}</h2>
             <div class="h-64">
               <BarChart
                 labels={["Q1", "Q2", "Q3", "Q4"]}
@@ -162,9 +141,7 @@ export function Charts() {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <div class="p-6">
-            <h3 class="text-md font-semibold mb-3">
-              {t("charts.small.revenue")}
-            </h3>
+            <h3 class="text-md font-semibold mb-3">{t("charts.small.revenue")}</h3>
             <div class="h-32">
               <LineChart
                 labels={["Week 1", "Week 2", "Week 3", "Week 4"]}
@@ -183,23 +160,16 @@ export function Charts() {
 
         <Card>
           <div class="p-6">
-            <h3 class="text-md font-semibold mb-3">
-              {t("charts.small.users")}
-            </h3>
+            <h3 class="text-md font-semibold mb-3">{t("charts.small.users")}</h3>
             <div class="h-32">
-              <PieChart
-                labels={["Desktop", "Mobile", "Tablet"]}
-                data={[60, 30, 10]}
-              />
+              <PieChart labels={["Desktop", "Mobile", "Tablet"]} data={[60, 30, 10]} />
             </div>
           </div>
         </Card>
 
         <Card>
           <div class="p-6">
-            <h3 class="text-md font-semibold mb-3">
-              {t("charts.small.performance")}
-            </h3>
+            <h3 class="text-md font-semibold mb-3">{t("charts.small.performance")}</h3>
             <div class="h-32">
               <BarChart
                 labels={["CPU", "Memory", "Disk", "Network"]}

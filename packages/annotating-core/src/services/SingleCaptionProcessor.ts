@@ -11,7 +11,7 @@ import { SimpleEventManager } from "./EventManager.js";
 export class SingleCaptionProcessor {
   constructor(
     private client: CaptionApiClient,
-    private eventManager: SimpleEventManager,
+    private eventManager: SimpleEventManager
   ) {}
 
   async processCaption(task: CaptionTask): Promise<CaptionResult> {
@@ -53,8 +53,7 @@ export class SingleCaptionProcessor {
 
       return result;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
       this.eventManager.emitEvent({
         type: "caption_failed",

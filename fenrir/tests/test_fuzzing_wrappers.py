@@ -30,15 +30,15 @@ class TestFuzzingWrappers(FenrirTestBase):
             # Test the modular fuzzer
             async with Fuzzy(self.base_url) as fuzzer:
                 # Test that the fuzzer can be initialized and used
-                assert fuzzer.base_url == self.base_url, (
-                    "Base URL should be set correctly"
-                )
-                assert hasattr(fuzzer, "fuzz_authentication_endpoints"), (
-                    "Should have authentication fuzzing method"
-                )
-                assert hasattr(fuzzer, "fuzz_all_specialized_endpoints"), (
-                    "Should have specialized endpoint fuzzing method"
-                )
+                assert (
+                    fuzzer.base_url == self.base_url
+                ), "Base URL should be set correctly"
+                assert hasattr(
+                    fuzzer, "fuzz_authentication_endpoints"
+                ), "Should have authentication fuzzing method"
+                assert hasattr(
+                    fuzzer, "fuzz_all_specialized_endpoints"
+                ), "Should have specialized endpoint fuzzing method"
 
             response_time = time.time() - start_time
 
@@ -79,18 +79,18 @@ class TestFuzzingWrappers(FenrirTestBase):
             orchestrator = EndpointOrchestrator(self.base_url)
 
             # Test that the orchestrator can be initialized
-            assert orchestrator.base_url == self.base_url, (
-                "Base URL should be set correctly"
-            )
-            assert hasattr(orchestrator, "register_fuzzer"), (
-                "Should have register_fuzzer method"
-            )
-            assert hasattr(orchestrator, "fuzz_all_categories"), (
-                "Should have fuzz_all_categories method"
-            )
-            assert hasattr(orchestrator, "print_comprehensive_report"), (
-                "Should have print_comprehensive_report method"
-            )
+            assert (
+                orchestrator.base_url == self.base_url
+            ), "Base URL should be set correctly"
+            assert hasattr(
+                orchestrator, "register_fuzzer"
+            ), "Should have register_fuzzer method"
+            assert hasattr(
+                orchestrator, "fuzz_all_categories"
+            ), "Should have fuzz_all_categories method"
+            assert hasattr(
+                orchestrator, "print_comprehensive_report"
+            ), "Should have print_comprehensive_report method"
 
             response_time = time.time() - start_time
 

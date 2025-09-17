@@ -5,14 +5,14 @@ This module tests the format conversion capabilities, optimization settings,
 and plugin-dependent format support.
 """
 
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock
 
 from app.utils.image_format_converter import (
     ImageFormatConverter,
-    get_format_converter,
-    FormatConversionError,
     UnsupportedFormatError,
+    get_format_converter,
 )
 
 
@@ -107,7 +107,7 @@ class TestImageFormatConverter:
     def test_alpha_channel_warning(self, converter):
         """Test alpha channel conversion warnings."""
         # PNG to JPEG (loses alpha)
-        with patch('app.utils.image_format_converter.logger') as mock_logger:
+        with patch("app.utils.image_format_converter.logger") as mock_logger:
             result = converter.validate_conversion("png", "jpeg")
             assert result is True
             mock_logger.warning.assert_called()
@@ -115,7 +115,7 @@ class TestImageFormatConverter:
     def test_animation_warning(self, converter):
         """Test animation conversion warnings."""
         # GIF to JPEG (loses animation)
-        with patch('app.utils.image_format_converter.logger') as mock_logger:
+        with patch("app.utils.image_format_converter.logger") as mock_logger:
             result = converter.validate_conversion("gif", "jpeg")
             assert result is True
             mock_logger.warning.assert_called()
@@ -123,39 +123,33 @@ class TestImageFormatConverter:
     def test_optimal_format_selection(self, converter):
         """Test optimal format selection based on requirements."""
         # High quality, no special requirements
-        optimal = converter.get_optimal_format({
-            "quality_priority": "high",
-            "size_priority": "large"
-        })
+        optimal = converter.get_optimal_format(
+            {"quality_priority": "high", "size_priority": "large"}
+        )
         assert optimal in ["png", "tiff"]
 
         # Small size, no special requirements
-        optimal = converter.get_optimal_format({
-            "quality_priority": "low",
-            "size_priority": "small"
-        })
+        optimal = converter.get_optimal_format(
+            {"quality_priority": "low", "size_priority": "small"}
+        )
         assert optimal in ["jpeg", "webp"]
 
         # Needs alpha channel
-        optimal = converter.get_optimal_format({
-            "needs_alpha": True,
-            "quality_priority": "medium"
-        })
+        optimal = converter.get_optimal_format(
+            {"needs_alpha": True, "quality_priority": "medium"}
+        )
         assert optimal in ["png", "webp"]
 
         # Needs animation
-        optimal = converter.get_optimal_format({
-            "needs_animation": True,
-            "quality_priority": "medium"
-        })
+        optimal = converter.get_optimal_format(
+            {"needs_animation": True, "quality_priority": "medium"}
+        )
         assert optimal in ["gif", "webp"]
 
         # Needs both alpha and animation
-        optimal = converter.get_optimal_format({
-            "needs_alpha": True,
-            "needs_animation": True,
-            "quality_priority": "medium"
-        })
+        optimal = converter.get_optimal_format(
+            {"needs_alpha": True, "needs_animation": True, "quality_priority": "medium"}
+        )
         assert optimal == "webp"
 
     def test_file_extension_retrieval(self, converter):
@@ -191,14 +185,14 @@ class TestPluginFormatSupport:
         """Create a format converter for testing."""
         return ImageFormatConverter()
 
-    @patch('app.utils.image_format_converter._global_image_service')
+    @patch("app.utils.image_format_converter._global_image_service")
     def test_jxl_support_when_available(self, mock_global_service, converter):
         """Test JXL support when plugin is available."""
         # Mock service with JXL support
         mock_service = MagicMock()
         mock_service.is_jxl_supported.return_value = True
         mock_global_service.return_value = mock_service
-        
+
         # Add JXL format back to supported formats (it was removed during init)
         converter.supported_formats["jxl"] = {
             "extensions": [".jxl"],
@@ -209,10 +203,10 @@ class TestPluginFormatSupport:
             "default_effort": 7,
             "compression_levels": list(range(0, 10)),
         }
-        
+
         # Re-initialize converter to check plugin support
         converter._check_optional_formats()
-        
+
         assert converter.is_format_supported("jxl")
         jxl_info = converter.get_format_info("jxl")
         assert jxl_info is not None
@@ -221,27 +215,27 @@ class TestPluginFormatSupport:
         assert jxl_info["default_quality"] == 90
         assert jxl_info["default_effort"] == 7
 
-    @patch('app.services.image_processing_service._global_image_service')
+    @patch("app.services.image_processing_service._global_image_service")
     def test_jxl_support_when_unavailable(self, mock_global_service, converter):
         """Test JXL support when plugin is unavailable."""
         # Mock service without JXL support
         mock_service = MagicMock()
         mock_service.is_jxl_supported.return_value = False
         mock_global_service.return_value = mock_service
-        
+
         # Re-initialize converter to check plugin support
         converter._check_optional_formats()
-        
+
         assert not converter.is_format_supported("jxl")
 
-    @patch('app.utils.image_format_converter._global_image_service')
+    @patch("app.utils.image_format_converter._global_image_service")
     def test_avif_support_when_available(self, mock_global_service, converter):
         """Test AVIF support when plugin is available."""
         # Mock service with AVIF support
         mock_service = MagicMock()
         mock_service.is_avif_supported.return_value = True
         mock_global_service.return_value = mock_service
-        
+
         # Add AVIF format back to supported formats (it was removed during init)
         converter.supported_formats["avif"] = {
             "extensions": [".avif"],
@@ -251,10 +245,10 @@ class TestPluginFormatSupport:
             "default_quality": 80,
             "compression_levels": list(range(0, 10)),
         }
-        
+
         # Re-initialize converter to check plugin support
         converter._check_optional_formats()
-        
+
         assert converter.is_format_supported("avif")
         avif_info = converter.get_format_info("avif")
         assert avif_info is not None
@@ -262,28 +256,28 @@ class TestPluginFormatSupport:
         assert avif_info["supports_alpha"] is True
         assert avif_info["default_quality"] == 80
 
-    @patch('app.services.image_processing_service._global_image_service')
+    @patch("app.services.image_processing_service._global_image_service")
     def test_avif_support_when_unavailable(self, mock_global_service, converter):
         """Test AVIF support when plugin is unavailable."""
         # Mock service without AVIF support
         mock_service = MagicMock()
         mock_service.is_avif_supported.return_value = False
         mock_global_service.return_value = mock_service
-        
+
         # Re-initialize converter to check plugin support
         converter._check_optional_formats()
-        
+
         assert not converter.is_format_supported("avif")
 
-    @patch('app.services.image_processing_service._global_image_service')
+    @patch("app.services.image_processing_service._global_image_service")
     def test_plugin_check_error_handling(self, mock_global_service, converter):
         """Test error handling during plugin availability check."""
         # Mock service that raises an exception
         mock_global_service.side_effect = Exception("Service error")
-        
+
         # Should handle gracefully
         converter._check_optional_formats()
-        
+
         # Plugin formats should not be available
         assert not converter.is_format_supported("jxl")
         assert not converter.is_format_supported("avif")
@@ -315,46 +309,49 @@ class TestFormatConversionScenarios:
     def test_photo_optimization_scenario(self, converter):
         """Test photo optimization scenario."""
         # High quality photo with alpha support
-        optimal = converter.get_optimal_format({
-            "needs_alpha": True,
-            "quality_priority": "high",
-            "size_priority": "medium"
-        })
+        optimal = converter.get_optimal_format(
+            {"needs_alpha": True, "quality_priority": "high", "size_priority": "medium"}
+        )
         assert optimal == "png"
 
         # High quality photo without alpha
-        optimal = converter.get_optimal_format({
-            "needs_alpha": False,
-            "quality_priority": "high",
-            "size_priority": "medium"
-        })
+        optimal = converter.get_optimal_format(
+            {
+                "needs_alpha": False,
+                "quality_priority": "high",
+                "size_priority": "medium",
+            }
+        )
         assert optimal in ["jpeg", "png"]
 
     def test_web_optimization_scenario(self, converter):
         """Test web optimization scenario."""
         # Web image with animation support
-        optimal = converter.get_optimal_format({
-            "needs_animation": True,
-            "quality_priority": "medium",
-            "size_priority": "small"
-        })
+        optimal = converter.get_optimal_format(
+            {
+                "needs_animation": True,
+                "quality_priority": "medium",
+                "size_priority": "small",
+            }
+        )
         assert optimal == "webp"
 
         # Web image without animation
-        optimal = converter.get_optimal_format({
-            "needs_animation": False,
-            "quality_priority": "medium",
-            "size_priority": "small"
-        })
+        optimal = converter.get_optimal_format(
+            {
+                "needs_animation": False,
+                "quality_priority": "medium",
+                "size_priority": "small",
+            }
+        )
         assert optimal in ["jpeg", "webp"]
 
     def test_archive_preservation_scenario(self, converter):
         """Test archive preservation scenario."""
         # Archive image with maximum quality
-        optimal = converter.get_optimal_format({
-            "quality_priority": "high",
-            "size_priority": "large"
-        })
+        optimal = converter.get_optimal_format(
+            {"quality_priority": "high", "size_priority": "large"}
+        )
         assert optimal in ["png", "tiff"]
 
     def test_conversion_chain_validation(self, converter):
@@ -364,7 +361,7 @@ class TestFormatConversionScenarios:
         assert converter.validate_conversion("png", "webp") is True
 
         # Invalid conversion chain: GIF -> JPEG (loses animation)
-        with patch('app.utils.image_format_converter.logger') as mock_logger:
+        with patch("app.utils.image_format_converter.logger") as mock_logger:
             result = converter.validate_conversion("gif", "jpeg")
             assert result is True  # Technically valid but with warnings
             mock_logger.warning.assert_called()

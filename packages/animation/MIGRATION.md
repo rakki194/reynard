@@ -51,10 +51,7 @@ import { createAnimationCore } from "./utils/animation/AnimationCore";
 import { createAdaptiveAnimationEngine } from "./utils/animation/AdaptiveAnimation";
 
 // New
-import {
-  createAnimationCore,
-  createAdaptiveAnimationEngine,
-} from "reynard-animation";
+import { createAnimationCore, createAdaptiveAnimationEngine } from "reynard-animation";
 ```
 
 ### 3. Update Type Imports
@@ -124,10 +121,10 @@ const engine = createAnimationCore({
 });
 
 engine.start({
-  onUpdate: (deltaTime) => {
+  onUpdate: deltaTime => {
     // Your animation logic
   },
-  onRender: (deltaTime) => {
+  onRender: deltaTime => {
     // Your rendering logic
   },
 });

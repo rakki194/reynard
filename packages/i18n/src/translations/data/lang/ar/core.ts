@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // التحقق من كلمة المرور
   password: {
-    "must-be-at-least-8-characters-long":
-      "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
-    "must-contain-at-least-one-uppercase-letter":
-      "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
-    "must-contain-at-least-one-lowercase-letter":
-      "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
-    "must-contain-at-least-one-number":
-      "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
-    "must-contain-at-least-one-special-character":
-      "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
+    "must-be-at-least-8-characters-long": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "must-contain-at-least-one-uppercase-letter": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+    "must-contain-at-least-one-lowercase-letter": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+    "must-contain-at-least-one-number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+    "must-contain-at-least-one-special-character": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
   },
 
   // التحقق من الأمان
   security: {
-    "at-least-one-character-type-must-be-included":
-      "يجب تضمين نوع حرف واحد على الأقل",
-    "input-contains-potentially-dangerous-html":
-      "الإدخال يحتوي على HTML محتمل الخطورة",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "الإدخال يحتوي على أنماط SQL محتملة الخطورة",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "الإدخال يحتوي على أنماط XSS محتملة الخطورة",
-    "input-contains-path-traversal-patterns":
-      "الإدخال يحتوي على أنماط اجتياز المسار",
-    "input-contains-windows-reserved-names":
-      "الإدخال يحتوي على أسماء محجوزة في Windows",
-    "input-contains-executable-file-extensions":
-      "الإدخال يحتوي على امتدادات ملفات قابلة للتنفيذ",
+    "at-least-one-character-type-must-be-included": "يجب تضمين نوع حرف واحد على الأقل",
+    "input-contains-potentially-dangerous-html": "الإدخال يحتوي على HTML محتمل الخطورة",
+    "input-contains-potentially-dangerous-sql-patterns": "الإدخال يحتوي على أنماط SQL محتملة الخطورة",
+    "input-contains-potentially-dangerous-xss-patterns": "الإدخال يحتوي على أنماط XSS محتملة الخطورة",
+    "input-contains-path-traversal-patterns": "الإدخال يحتوي على أنماط اجتياز المسار",
+    "input-contains-windows-reserved-names": "الإدخال يحتوي على أسماء محجوزة في Windows",
+    "input-contains-executable-file-extensions": "الإدخال يحتوي على امتدادات ملفات قابلة للتنفيذ",
     "input-contains-null-bytes": "الإدخال يحتوي على بايتات فارغة",
     "input-contains-hidden-files": "الإدخال يحتوي على ملفات مخفية",
-    "input-contains-javascript-file-extensions":
-      "الإدخال يحتوي على امتدادات ملفات JavaScript",
+    "input-contains-javascript-file-extensions": "الإدخال يحتوي على امتدادات ملفات JavaScript",
   },
 
   // العمليات غير المتزامنة
@@ -133,8 +120,7 @@ export const coreTranslations = {
   // التخزين والتسلسل
   storage: {
     "potentially-dangerous-json-detected": "تم اكتشاف JSON محتمل الخطورة",
-    "failed-to-parse-json-from-localstorage":
-      "فشل في تحليل JSON من localStorage:",
+    "failed-to-parse-json-from-localstorage": "فشل في تحليل JSON من localStorage:",
     "error-parsing-storage-event": "خطأ في تحليل حدث التخزين للمفتاح",
   },
 
@@ -171,10 +157,8 @@ export const coreTranslations = {
 
   // اختبارات التكامل
   integration: {
-    "session-and-api-key-generation":
-      "إنشاء الجلسة ومفتاح واجهة برمجة التطبيقات",
-    "authentication-and-input-validation-integration":
-      "تكامل المصادقة والتحقق من الإدخال",
+    "session-and-api-key-generation": "إنشاء الجلسة ومفتاح واجهة برمجة التطبيقات",
+    "authentication-and-input-validation-integration": "تكامل المصادقة والتحقق من الإدخال",
     "performance-and-security-integration": "تكامل الأداء والأمان",
   },
 };

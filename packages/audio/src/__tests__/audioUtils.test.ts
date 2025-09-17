@@ -6,12 +6,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  isAudioFile,
-  getFileExtension,
-  formatDuration,
-  formatFileSize,
-} from "../../audioUtils";
+import { isAudioFile, getFileExtension, formatDuration, formatFileSize } from "../../audioUtils";
 
 describe("audioUtils", () => {
   describe("isAudioFile", () => {
@@ -27,7 +22,7 @@ describe("audioUtils", () => {
         new File([], "test.opus", { type: "audio/opus" }),
       ];
 
-      audioFiles.forEach((file) => {
+      audioFiles.forEach(file => {
         expect(isAudioFile(file)).toBe(true);
       });
     });
@@ -41,7 +36,7 @@ describe("audioUtils", () => {
         new File([], "test.doc", { type: "application/msword" }),
       ];
 
-      nonAudioFiles.forEach((file) => {
+      nonAudioFiles.forEach(file => {
         expect(isAudioFile(file)).toBe(false);
       });
     });
@@ -54,7 +49,7 @@ describe("audioUtils", () => {
         new File([], "test.AAC", { type: "audio/aac" }),
       ];
 
-      caseVariations.forEach((file) => {
+      caseVariations.forEach(file => {
         expect(isAudioFile(file)).toBe(true);
       });
     });

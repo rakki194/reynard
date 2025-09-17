@@ -114,12 +114,7 @@ export interface BreakingChange {
 
 export interface ContractViolation {
   id: string;
-  type:
-    | "breaking-change"
-    | "contract-violation"
-    | "compatibility-issue"
-    | "documentation-missing"
-    | "version-mismatch";
+  type: "breaking-change" | "contract-violation" | "compatibility-issue" | "documentation-missing" | "version-mismatch";
   severity: "low" | "medium" | "high" | "critical";
   contract: string;
   description: string;
@@ -191,24 +186,16 @@ export class InterfaceContractValidator {
     const breakingChanges = await this.detectBreakingChanges();
 
     // Generate comprehensive report
-    const report = this.generateContractValidationReport(
-      contracts,
-      violations,
-      breakingChanges,
-    );
+    const report = this.generateContractValidationReport(contracts, violations, breakingChanges);
 
-    console.log(
-      `✅ Interface contract validation complete: ${report.overallCompliance.toFixed(1)}% compliance`,
-    );
+    console.log(`✅ Interface contract validation complete: ${report.overallCompliance.toFixed(1)}% compliance`);
     return report;
   }
 
   /**
    * Validate a specific interface contract
    */
-  async validateContract(
-    contract: InterfaceContract,
-  ): Promise<ContractViolation[]> {
+  async validateContract(contract: InterfaceContract): Promise<ContractViolation[]> {
     const violations: ContractViolation[] = [];
 
     // Check for missing documentation
@@ -254,11 +241,7 @@ export class InterfaceContractValidator {
    */
   isContractCompliant(contractId: string): boolean {
     const violations = this.getContractViolations(contractId);
-    return (
-      violations.filter(
-        (v) => v.severity === "critical" || v.severity === "high",
-      ).length === 0
-    );
+    return violations.filter(v => v.severity === "critical" || v.severity === "high").length === 0;
   }
 
   /**
@@ -274,9 +257,7 @@ export class InterfaceContractValidator {
     }> = [];
 
     for (const [contractId, violations] of this.violationCache) {
-      const criticalViolations = violations.filter(
-        (v) => v.severity === "critical",
-      );
+      const criticalViolations = violations.filter(v => v.severity === "critical");
       if (criticalViolations.length > 0) {
         const contract = this.contractCache.get(contractId);
         if (contract) {
@@ -285,9 +266,7 @@ export class InterfaceContractValidator {
       }
     }
 
-    return criticalContracts.sort(
-      (a, b) => b.violations.length - a.violations.length,
-    );
+    return criticalContracts.sort((a, b) => b.violations.length - a.violations.length);
   }
 
   /**
@@ -302,7 +281,7 @@ export class InterfaceContractValidator {
       return suggestions;
     }
 
-    const violationTypes = new Set(violations.map((v) => v.type));
+    const violationTypes = new Set(violations.map(v => v.type));
 
     if (violationTypes.has("documentation-missing")) {
       suggestions.push("📚 Add comprehensive documentation");
@@ -340,7 +319,7 @@ export class InterfaceContractValidator {
   compareContractVersions(
     contractId: string,
     version1: string,
-    version2: string,
+    version2: string
   ): {
     changes: BreakingChange[];
     additions: string[];
@@ -348,8 +327,8 @@ export class InterfaceContractValidator {
     modifications: string[];
   } {
     const history = this.getContractVersionHistory(contractId);
-    const v1 = history.find((c) => c.version === version1);
-    const v2 = history.find((c) => c.version === version2);
+    const v1 = history.find(c => c.version === version1);
+    const v2 = history.find(c => c.version === version2);
 
     if (!v1 || !v2) {
       return { changes: [], additions: [], removals: [], modifications: [] };
@@ -392,11 +371,7 @@ export class InterfaceContractValidator {
           const fullPath = join(dir, entry.name);
 
           if (entry.isDirectory()) {
-            if (
-              !["node_modules", ".git", "dist", "build", "coverage"].includes(
-                entry.name,
-              )
-            ) {
+            if (!["node_modules", ".git", "dist", "build", "coverage"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
@@ -415,10 +390,7 @@ export class InterfaceContractValidator {
     return files;
   }
 
-  private extractInterfaceContracts(
-    content: string,
-    filePath: string,
-  ): InterfaceContract[] {
+  private extractInterfaceContracts(content: string, filePath: string): InterfaceContract[] {
     const contracts: InterfaceContract[] = [];
     const lines = content.split("\n");
 
@@ -428,39 +400,21 @@ export class InterfaceContractValidator {
       // Interface declarations
       const interfaceMatch = line.match(/interface\s+(\w+)/);
       if (interfaceMatch) {
-        const contract = this.parseInterfaceContract(
-          content,
-          filePath,
-          i,
-          "interface",
-          interfaceMatch[1],
-        );
+        const contract = this.parseInterfaceContract(content, filePath, i, "interface", interfaceMatch[1]);
         contracts.push(contract);
       }
 
       // Type declarations
       const typeMatch = line.match(/type\s+(\w+)\s*=/);
       if (typeMatch) {
-        const contract = this.parseInterfaceContract(
-          content,
-          filePath,
-          i,
-          "type",
-          typeMatch[1],
-        );
+        const contract = this.parseInterfaceContract(content, filePath, i, "type", typeMatch[1]);
         contracts.push(contract);
       }
 
       // Class declarations
       const classMatch = line.match(/class\s+(\w+)/);
       if (classMatch) {
-        const contract = this.parseInterfaceContract(
-          content,
-          filePath,
-          i,
-          "class",
-          classMatch[1],
-        );
+        const contract = this.parseInterfaceContract(content, filePath, i, "class", classMatch[1]);
         contracts.push(contract);
       }
     }
@@ -473,7 +427,7 @@ export class InterfaceContractValidator {
     filePath: string,
     lineNumber: number,
     type: InterfaceContract["type"],
-    name: string,
+    name: string
   ): InterfaceContract {
     const lines = content.split("\n");
     const properties: ContractProperty[] = [];
@@ -497,11 +451,7 @@ export class InterfaceContractValidator {
         braceCount -= (line.match(/\}/g) || []).length;
 
         // Parse properties and methods
-        if (
-          line.includes(":") &&
-          !line.includes("function") &&
-          !line.includes("(")
-        ) {
+        if (line.includes(":") && !line.includes("function") && !line.includes("(")) {
           const property = this.parseContractProperty(line);
           if (property) properties.push(property);
         } else if (line.includes("(") && line.includes(")")) {
@@ -591,9 +541,7 @@ export class InterfaceContractValidator {
     return parameters;
   }
 
-  private validateDocumentation(
-    contract: InterfaceContract,
-  ): ContractViolation[] {
+  private validateDocumentation(contract: InterfaceContract): ContractViolation[] {
     const violations: ContractViolation[] = [];
 
     // Check for missing contract documentation
@@ -682,8 +630,7 @@ export class InterfaceContractValidator {
         contract: contract.name,
         description: "Contract lacks proper versioning",
         location: `${contract.filePath}:${contract.lineNumber}`,
-        suggestion:
-          "Add proper version information and follow semantic versioning",
+        suggestion: "Add proper version information and follow semantic versioning",
         impact: {
           backwardCompatibility: 0.6,
           forwardCompatibility: 0.5,
@@ -702,10 +649,7 @@ export class InterfaceContractValidator {
     const violations: ContractViolation[] = [];
 
     // Check for experimental contracts without proper warnings
-    if (
-      contract.metadata.stability === "experimental" &&
-      !contract.metadata.documentation?.includes("experimental")
-    ) {
+    if (contract.metadata.stability === "experimental" && !contract.metadata.documentation?.includes("experimental")) {
       violations.push({
         id: this.generateViolationId(),
         type: "contract-violation",
@@ -720,9 +664,7 @@ export class InterfaceContractValidator {
           stability: 0.2,
           usability: 0.5,
         },
-        examples: [
-          "/**\n * @experimental This API is experimental and may change\n * @version 0.1.0\n */",
-        ],
+        examples: ["/**\n * @experimental This API is experimental and may change\n * @version 0.1.0\n */"],
         detectedAt: new Date().toISOString(),
       });
     }
@@ -730,9 +672,7 @@ export class InterfaceContractValidator {
     return violations;
   }
 
-  private validateBreakingChanges(
-    contract: InterfaceContract,
-  ): ContractViolation[] {
+  private validateBreakingChanges(contract: InterfaceContract): ContractViolation[] {
     const violations: ContractViolation[] = [];
 
     // Check for breaking changes without proper migration
@@ -765,9 +705,7 @@ export class InterfaceContractValidator {
     return violations;
   }
 
-  private validateCompatibility(
-    contract: InterfaceContract,
-  ): ContractViolation[] {
+  private validateCompatibility(contract: InterfaceContract): ContractViolation[] {
     const violations: ContractViolation[] = [];
 
     // Check for deprecated properties without replacements
@@ -787,9 +725,7 @@ export class InterfaceContractValidator {
             stability: 0.5,
             usability: 0.8,
           },
-          examples: [
-            "/**\n * @deprecated Use newProperty instead\n * @since 2.0.0\n */\noldProperty: string;",
-          ],
+          examples: ["/**\n * @deprecated Use newProperty instead\n * @since 2.0.0\n */\noldProperty: string;"],
           detectedAt: new Date().toISOString(),
         });
       }
@@ -812,9 +748,7 @@ export class InterfaceContractValidator {
             stability: 0.5,
             usability: 0.8,
           },
-          examples: [
-            "/**\n * @deprecated Use newMethod instead\n * @since 2.0.0\n */\noldMethod(): void;",
-          ],
+          examples: ["/**\n * @deprecated Use newMethod instead\n * @since 2.0.0\n */\noldMethod(): void;"],
           detectedAt: new Date().toISOString(),
         });
       }
@@ -842,7 +776,7 @@ export class InterfaceContractValidator {
 
   private compareContracts(
     oldContract: InterfaceContract,
-    newContract: InterfaceContract,
+    newContract: InterfaceContract
   ): {
     changes: BreakingChange[];
     additions: string[];
@@ -855,12 +789,8 @@ export class InterfaceContractValidator {
     const modifications: string[] = [];
 
     // Compare properties
-    const oldProperties = new Map(
-      oldContract.properties.map((p) => [p.name, p]),
-    );
-    const newProperties = new Map(
-      newContract.properties.map((p) => [p.name, p]),
-    );
+    const oldProperties = new Map(oldContract.properties.map(p => [p.name, p]));
+    const newProperties = new Map(newContract.properties.map(p => [p.name, p]));
 
     for (const [name, newProp] of newProperties) {
       const oldProp = oldProperties.get(name);
@@ -902,8 +832,8 @@ export class InterfaceContractValidator {
     }
 
     // Compare methods
-    const oldMethods = new Map(oldContract.methods.map((m) => [m.name, m]));
-    const newMethods = new Map(newContract.methods.map((m) => [m.name, m]));
+    const oldMethods = new Map(oldContract.methods.map(m => [m.name, m]));
+    const newMethods = new Map(newContract.methods.map(m => [m.name, m]));
 
     for (const [name, newMethod] of newMethods) {
       const oldMethod = oldMethods.get(name);
@@ -947,10 +877,7 @@ export class InterfaceContractValidator {
     return { changes, additions, removals, modifications };
   }
 
-  private methodSignaturesDiffer(
-    method1: ContractMethod,
-    method2: ContractMethod,
-  ): boolean {
+  private methodSignaturesDiffer(method1: ContractMethod, method2: ContractMethod): boolean {
     if (method1.parameters.length !== method2.parameters.length) return true;
     if (method1.returnType !== method2.returnType) return true;
 
@@ -958,10 +885,7 @@ export class InterfaceContractValidator {
       const param1 = method1.parameters[i];
       const param2 = method2.parameters[i];
 
-      if (
-        param1.type !== param2.type ||
-        param1.isOptional !== param2.isOptional
-      ) {
+      if (param1.type !== param2.type || param1.isOptional !== param2.isOptional) {
         return true;
       }
     }
@@ -972,24 +896,19 @@ export class InterfaceContractValidator {
   private generateContractValidationReport(
     contracts: InterfaceContract[],
     violations: ContractViolation[],
-    breakingChanges: BreakingChange[],
+    breakingChanges: BreakingChange[]
   ): ContractValidationReport {
     const totalContracts = contracts.length;
-    const compliantContracts = contracts.filter((contract) =>
-      this.isContractCompliant(contract.id),
-    ).length;
-    const overallCompliance =
-      totalContracts > 0 ? (compliantContracts / totalContracts) * 100 : 100;
+    const compliantContracts = contracts.filter(contract => this.isContractCompliant(contract.id)).length;
+    const overallCompliance = totalContracts > 0 ? (compliantContracts / totalContracts) * 100 : 100;
 
     // Group violations by type and severity
     const violationsByType: Record<string, number> = {};
     const violationsBySeverity: Record<string, number> = {};
 
     for (const violation of violations) {
-      violationsByType[violation.type] =
-        (violationsByType[violation.type] || 0) + 1;
-      violationsBySeverity[violation.severity] =
-        (violationsBySeverity[violation.severity] || 0) + 1;
+      violationsByType[violation.type] = (violationsByType[violation.type] || 0) + 1;
+      violationsBySeverity[violation.severity] = (violationsBySeverity[violation.severity] || 0) + 1;
     }
 
     // Get top violations
@@ -1002,20 +921,13 @@ export class InterfaceContractValidator {
 
     // Calculate compatibility matrix
     const compatibilityMatrix = {
-      backwardCompatible: contracts.filter(
-        (c) => c.metadata.breakingChanges.length === 0,
-      ).length,
-      forwardCompatible: contracts.filter(
-        (c) => c.metadata.stability === "stable",
-      ).length,
+      backwardCompatible: contracts.filter(c => c.metadata.breakingChanges.length === 0).length,
+      forwardCompatible: contracts.filter(c => c.metadata.stability === "stable").length,
       breakingChanges: breakingChanges.length,
     };
 
     // Generate recommendations
-    const recommendations = this.generateRecommendations(
-      violations,
-      breakingChanges,
-    );
+    const recommendations = this.generateRecommendations(violations, breakingChanges);
 
     // Determine versioning strategy
     const versioning = this.determineVersioningStrategy(breakingChanges);
@@ -1036,22 +948,18 @@ export class InterfaceContractValidator {
 
   private generateRecommendations(
     violations: ContractViolation[],
-    breakingChanges: BreakingChange[],
+    breakingChanges: BreakingChange[]
   ): ContractValidationReport["recommendations"] {
     const immediate: string[] = [];
     const shortTerm: string[] = [];
     const longTerm: string[] = [];
 
-    const criticalViolations = violations.filter(
-      (v) => v.severity === "critical",
-    );
-    const highViolations = violations.filter((v) => v.severity === "high");
+    const criticalViolations = violations.filter(v => v.severity === "critical");
+    const highViolations = violations.filter(v => v.severity === "high");
     const breakingChangeCount = breakingChanges.length;
 
     if (criticalViolations.length > 0) {
-      immediate.push(
-        `🚨 Address ${criticalViolations.length} critical contract violations`,
-      );
+      immediate.push(`🚨 Address ${criticalViolations.length} critical contract violations`);
     }
 
     if (breakingChangeCount > 0) {
@@ -1059,9 +967,7 @@ export class InterfaceContractValidator {
     }
 
     if (highViolations.length > 0) {
-      immediate.push(
-        `🔧 Fix ${highViolations.length} high-severity violations`,
-      );
+      immediate.push(`🔧 Fix ${highViolations.length} high-severity violations`);
     }
 
     shortTerm.push("📚 Implement comprehensive contract documentation");
@@ -1076,27 +982,20 @@ export class InterfaceContractValidator {
     return { immediate, shortTerm, longTerm };
   }
 
-  private determineVersioningStrategy(
-    breakingChanges: BreakingChange[],
-  ): ContractValidationReport["versioning"] {
+  private determineVersioningStrategy(breakingChanges: BreakingChange[]): ContractValidationReport["versioning"] {
     const currentVersion = "1.0.0";
     let nextVersion = "1.1.0";
     let recommendedVersion = "1.1.0";
     let versioningStrategy = "Semantic Versioning";
 
     if (breakingChanges.length > 0) {
-      const criticalChanges = breakingChanges.filter(
-        (bc) => bc.impact === "critical",
-      ).length;
-      const highChanges = breakingChanges.filter(
-        (bc) => bc.impact === "high",
-      ).length;
+      const criticalChanges = breakingChanges.filter(bc => bc.impact === "critical").length;
+      const highChanges = breakingChanges.filter(bc => bc.impact === "high").length;
 
       if (criticalChanges > 0) {
         nextVersion = "2.0.0";
         recommendedVersion = "2.0.0";
-        versioningStrategy =
-          "Major version bump required due to breaking changes";
+        versioningStrategy = "Major version bump required due to breaking changes";
       } else if (highChanges > 0) {
         nextVersion = "1.1.0";
         recommendedVersion = "1.1.0";
@@ -1114,23 +1013,14 @@ export class InterfaceContractValidator {
 
   // Helper methods
   private isExported(content: string, name: string): boolean {
-    return (
-      content.includes(`export ${name}`) ||
-      content.includes(`export { ${name} }`)
-    );
+    return content.includes(`export ${name}`) || content.includes(`export { ${name} }`);
   }
 
   private isPublic(content: string, name: string): boolean {
-    return (
-      !content.includes(`private ${name}`) &&
-      !content.includes(`protected ${name}`)
-    );
+    return !content.includes(`private ${name}`) && !content.includes(`protected ${name}`);
   }
 
-  private extractDocumentation(
-    content: string,
-    lineNumber: number,
-  ): string | undefined {
+  private extractDocumentation(content: string, lineNumber: number): string | undefined {
     const lines = content.split("\n");
     const docLines: string[] = [];
 
@@ -1156,19 +1046,16 @@ export class InterfaceContractValidator {
     if (!documentation) return [];
 
     const tagMatches = documentation.match(/@(\w+)/g);
-    return tagMatches ? tagMatches.map((tag) => tag.substring(1)) : [];
+    return tagMatches ? tagMatches.map(tag => tag.substring(1)) : [];
   }
 
   private extractVersion(content: string, lineNumber: number): string {
     const tags = this.extractTags(content, lineNumber);
-    const versionTag = tags.find((tag) => tag.startsWith("version"));
+    const versionTag = tags.find(tag => tag.startsWith("version"));
     return versionTag ? versionTag.split(" ")[1] : "1.0.0";
   }
 
-  private extractStability(
-    content: string,
-    lineNumber: number,
-  ): InterfaceContract["metadata"]["stability"] {
+  private extractStability(content: string, lineNumber: number): InterfaceContract["metadata"]["stability"] {
     const tags = this.extractTags(content, lineNumber);
 
     if (tags.includes("experimental")) return "experimental";

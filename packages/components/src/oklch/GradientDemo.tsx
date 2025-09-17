@@ -14,18 +14,16 @@ interface GradientDemoProps {
   gradientDemos?: GradientDemoItem[];
 }
 
-export const GradientDemo: Component<GradientDemoProps> = (props) => {
+export const GradientDemo: Component<GradientDemoProps> = props => {
   // Fallback gradients if no data is provided
   const defaultGradients: GradientDemoItem[] = [
     {
       name: "Primary → Accent",
-      gradient:
-        "linear-gradient(135deg, oklch(0.7 0.15 200), oklch(0.6 0.2 320))",
+      gradient: "linear-gradient(135deg, oklch(0.7 0.15 200), oklch(0.6 0.2 320))",
     },
     {
       name: "Success → Info",
-      gradient:
-        "linear-gradient(45deg, oklch(0.6 0.15 140), oklch(0.7 0.12 240))",
+      gradient: "linear-gradient(45deg, oklch(0.6 0.15 140), oklch(0.7 0.12 240))",
     },
     {
       name: "Warning → Error",
@@ -38,7 +36,7 @@ export const GradientDemo: Component<GradientDemoProps> = (props) => {
   // Apply gradients to elements using data attributes
   createEffect(() => {
     const gradientElements = document.querySelectorAll("[data-gradient]");
-    gradientElements.forEach((element) => {
+    gradientElements.forEach(element => {
       const gradient = element.getAttribute("data-gradient");
       if (gradient) {
         (element as HTMLElement).style.background = gradient;
@@ -52,11 +50,7 @@ export const GradientDemo: Component<GradientDemoProps> = (props) => {
       <div class="gradient-grid">
         <For each={gradients()}>
           {(gradient, index) => (
-            <div
-              class="gradient-sample"
-              data-gradient={gradient.gradient}
-              data-index={index()}
-            >
+            <div class="gradient-sample" data-gradient={gradient.gradient} data-index={index()}>
               {gradient.name}
             </div>
           )}

@@ -68,7 +68,7 @@ The fundamental algorithm for creating shadows and highlights with hue shifts.
 function basicHueShift(
   baseColor: OKLCHColor,
   shiftType: "shadow" | "highlight" | "midtone",
-  intensity: number = 0.3,
+  intensity: number = 0.3
 ): OKLCHColor {
   const { l, c, h } = baseColor;
 
@@ -114,7 +114,7 @@ function generateHueShiftRamp(
   baseColor: OKLCHColor,
   stops: number = 5,
   shadowShift: number = 25,
-  highlightShift: number = 20,
+  highlightShift: number = 20
 ): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const { l, c, h } = baseColor;
@@ -183,7 +183,7 @@ const MATERIAL_PATTERNS = {
 function materialHueShift(
   baseColor: OKLCHColor,
   material: keyof typeof MATERIAL_PATTERNS,
-  intensity: number = 1.0,
+  intensity: number = 1.0
 ): { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor } {
   const pattern = MATERIAL_PATTERNS[material];
   const { l, c, h } = baseColor;
@@ -221,10 +221,7 @@ Uses the golden ratio for optimal color distribution in palettes.
  * @param count - Number of colors in palette
  * @returns Array of OKLCH colors
  */
-function goldenRatioHuePalette(
-  baseColor: OKLCHColor,
-  count: number = 8,
-): OKLCHColor[] {
+function goldenRatioHuePalette(baseColor: OKLCHColor, count: number = 8): OKLCHColor[] {
   const GOLDEN_ANGLE = 137.508; // Golden angle in degrees
   const colors: OKLCHColor[] = [];
   const { l, c } = baseColor;
@@ -262,7 +259,7 @@ function adaptiveHueShift(
     isWarm: boolean;
     isSaturated: boolean;
     isDark: boolean;
-  },
+  }
 ): { shadow: OKLCHColor; highlight: OKLCHColor } {
   const { l, c, h } = baseColor;
 
@@ -302,11 +299,7 @@ For animated pixel art with color transitions.
  * @param frequency - Hue shift frequency
  * @returns Animated OKLCH color
  */
-function temporalHueShift(
-  baseColor: OKLCHColor,
-  time: number,
-  frequency: number = 1.0,
-): OKLCHColor {
+function temporalHueShift(baseColor: OKLCHColor, time: number, frequency: number = 1.0): OKLCHColor {
   const { l, c, h } = baseColor;
   const hueShift = Math.sin(time * Math.PI * 2 * frequency) * 10;
 
@@ -323,12 +316,7 @@ function temporalHueShift(
 ### Integration with Reynard OKLCH System
 
 ```typescript
-import {
-  OKLCHColor,
-  formatOKLCH,
-  oklchToRgb,
-  createTagColorGenerator,
-} from "reynard-colors";
+import { OKLCHColor, formatOKLCH, oklchToRgb, createTagColorGenerator } from "reynard-colors";
 
 /**
  * Pixel art sprite color generator using Reynard's OKLCH system
@@ -342,7 +330,7 @@ class PixelArtColorGenerator {
   generateSpriteColors(
     baseColor: OKLCHColor,
     spriteType: "character" | "environment" | "ui",
-    material?: string,
+    material?: string
   ): {
     shadow: string;
     base: string;
@@ -364,15 +352,12 @@ class PixelArtColorGenerator {
   /**
    * Generate palette for pixel art tileset
    */
-  generateTilesetPalette(
-    baseColors: OKLCHColor[],
-    tileCount: number = 16,
-  ): string[] {
+  generateTilesetPalette(baseColors: OKLCHColor[], tileCount: number = 16): string[] {
     const palette: string[] = [];
 
-    baseColors.forEach((baseColor) => {
+    baseColors.forEach(baseColor => {
       const ramp = generateHueShiftRamp(baseColor, 4);
-      ramp.forEach((color) => palette.push(formatOKLCH(color)));
+      ramp.forEach(color => palette.push(formatOKLCH(color)));
     });
 
     return palette.slice(0, tileCount);
@@ -412,7 +397,7 @@ class PixelArtRenderer {
     colors: { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor },
     x: number,
     y: number,
-    pixelSize: number = 1,
+    pixelSize: number = 1
   ) {
     sprite.forEach((row, rowIndex) => {
       row.forEach((pixel, colIndex) => {
@@ -451,11 +436,7 @@ class PixelArtRenderer {
 class CachedHueShifter {
   private cache = new Map<string, OKLCHColor>();
 
-  getShiftedColor(
-    baseColor: OKLCHColor,
-    shiftType: string,
-    intensity: number,
-  ): OKLCHColor {
+  getShiftedColor(baseColor: OKLCHColor, shiftType: string, intensity: number): OKLCHColor {
     const key = `${baseColor.l}-${baseColor.c}-${baseColor.h}-${shiftType}-${intensity}`;
 
     if (this.cache.has(key)) {
@@ -482,9 +463,9 @@ class CachedHueShifter {
 function batchHueShift(
   colors: OKLCHColor[],
   shiftType: "shadow" | "highlight" | "midtone",
-  intensity: number,
+  intensity: number
 ): OKLCHColor[] {
-  return colors.map((color) => basicHueShift(color, shiftType, intensity));
+  return colors.map(color => basicHueShift(color, shiftType, intensity));
 }
 ```
 

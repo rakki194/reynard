@@ -14,20 +14,15 @@ const _exportRegistry = new Map<string, LazyPackageExport>();
 export function createLazyExport(
   packageName: string,
   loader?: () => Promise<any>,
-  validationLevel: ExportValidationLevel = ExportValidationLevel.BASIC,
+  validationLevel: ExportValidationLevel = ExportValidationLevel.BASIC
 ): LazyPackageExport {
   if (!_exportRegistry.has(packageName)) {
-    _exportRegistry.set(
-      packageName,
-      new LazyPackageExport(packageName, loader, validationLevel),
-    );
+    _exportRegistry.set(packageName, new LazyPackageExport(packageName, loader, validationLevel));
   }
   return _exportRegistry.get(packageName)!;
 }
 
-export function getLazyExport(
-  packageName: string,
-): LazyPackageExport | undefined {
+export function getLazyExport(packageName: string): LazyPackageExport | undefined {
   return _exportRegistry.get(packageName);
 }
 

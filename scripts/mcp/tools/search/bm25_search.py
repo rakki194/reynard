@@ -23,7 +23,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
-from .ignore_config import should_ignore_path, filter_paths
+from .ignore_config import should_ignore_path
 
 logger = logging.getLogger(__name__)
 
@@ -60,9 +60,36 @@ class QueryExpander:
         }
 
         self.stop_words = {
-            "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by",
-            "is", "are", "was", "were", "be", "been", "have", "has", "had", "do", "does", "did",
-            "will", "would", "could", "should",
+            "the",
+            "a",
+            "an",
+            "and",
+            "or",
+            "but",
+            "in",
+            "on",
+            "at",
+            "to",
+            "for",
+            "of",
+            "with",
+            "by",
+            "is",
+            "are",
+            "was",
+            "were",
+            "be",
+            "been",
+            "have",
+            "has",
+            "had",
+            "do",
+            "does",
+            "did",
+            "will",
+            "would",
+            "could",
+            "should",
         }
 
     def expand_query(self, query: str) -> list[str]:
@@ -94,7 +121,9 @@ class QueryExpander:
             suggestions.extend([f"{query} fix", f"{query} solution", f"{query} debug"])
 
         if "test" in tokens:
-            suggestions.extend([f"{query} unit", f"{query} integration", f"{query} spec"])
+            suggestions.extend(
+                [f"{query} unit", f"{query} integration", f"{query} spec"]
+            )
 
         return suggestions[:max_suggestions]
 
@@ -282,9 +311,13 @@ class BM25SearchEngine:
 
         for i, doc_freq in enumerate(self.doc_freqs):
             # Apply filters
-            if file_types and not self._matches_file_type(self.doc_paths[i], file_types):
+            if file_types and not self._matches_file_type(
+                self.doc_paths[i], file_types
+            ):
                 continue
-            if directories and not self._matches_directory(self.doc_paths[i], directories):
+            if directories and not self._matches_directory(
+                self.doc_paths[i], directories
+            ):
                 continue
 
             score = 0.0
@@ -404,7 +437,9 @@ class BM25SearchEngine:
             "avg_document_length": self.avgdl,
             "file_types": dict(self.file_types),
             "top_directories": dict(
-                sorted(self.directory_stats.items(), key=lambda x: x[1], reverse=True)[:10]
+                sorted(self.directory_stats.items(), key=lambda x: x[1], reverse=True)[
+                    :10
+                ]
             ),
             "search_stats": self.search_stats,
             "cache_size": len(self.cache.cache),
@@ -436,9 +471,24 @@ class ReynardBM25Search:
 
         if file_patterns is None:
             file_patterns = [
-                "*.py", "*.ts", "*.tsx", "*.js", "*.jsx", "*.md", "*.txt", "*.json",
-                "*.yaml", "*.yml", "*.sh", "*.config.*", "*.css", "*.html", "*.xml",
-                "*.sql", "*.dockerfile", "*.gitignore",
+                "*.py",
+                "*.ts",
+                "*.tsx",
+                "*.js",
+                "*.jsx",
+                "*.md",
+                "*.txt",
+                "*.json",
+                "*.yaml",
+                "*.yml",
+                "*.sh",
+                "*.config.*",
+                "*.css",
+                "*.html",
+                "*.xml",
+                "*.sql",
+                "*.dockerfile",
+                "*.gitignore",
             ]
 
         documents = []
@@ -587,9 +637,7 @@ def search_needle_in_haystack(
     if not bm25_search.indexed:
         bm25_search.index_project(project_root)
 
-    return bm25_search.search(
-        needle, top_k, expand_query, file_types, directories
-    )
+    return bm25_search.search(needle, top_k, expand_query, file_types, directories)
 
 
 def get_query_suggestions(query: str, max_suggestions: int = 5) -> list[str]:

@@ -4,12 +4,10 @@ import "./MaterialSelector.css";
 
 interface MaterialSelectorProps {
   selectedMaterial: keyof typeof import("../utils/hueShiftingAlgorithms").MATERIAL_PATTERNS;
-  onMaterialSelect: (
-    material: keyof typeof import("../utils/hueShiftingAlgorithms").MATERIAL_PATTERNS,
-  ) => void;
+  onMaterialSelect: (material: keyof typeof import("../utils/hueShiftingAlgorithms").MATERIAL_PATTERNS) => void;
 }
 
-export const MaterialSelector: Component<MaterialSelectorProps> = (props) => {
+export const MaterialSelector: Component<MaterialSelectorProps> = props => {
   // Debug logging
   createEffect(() => {
     console.log("=== MATERIAL SELECTOR DEBUG ===");
@@ -30,7 +28,7 @@ export const MaterialSelector: Component<MaterialSelectorProps> = (props) => {
       <h3>Select Material</h3>
       <div class="material-cards">
         <For each={MATERIALS}>
-          {(material) => (
+          {material => (
             <button
               class={`material-card ${props.selectedMaterial === material.key ? "selected" : ""}`}
               onClick={() => props.onMaterialSelect(material.key)}

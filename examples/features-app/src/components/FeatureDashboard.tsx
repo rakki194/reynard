@@ -4,11 +4,7 @@
  */
 
 import { createMemo } from "solid-js";
-import {
-  useFeatures,
-  useFeaturesByCategory,
-  useCriticalFeatures,
-} from "reynard-features";
+import { useFeatures, useFeaturesByCategory, useCriticalFeatures } from "reynard-features";
 import { useI18n } from "reynard-themes";
 
 export default function FeatureDashboard() {
@@ -71,7 +67,7 @@ export default function FeatureDashboard() {
             <div class="critical-features-details">
               Unavailable:{" "}
               {criticalFeatures()
-                .unavailable.map((f) => f.name)
+                .unavailable.map(f => f.name)
                 .join(", ")}
             </div>
           )}
@@ -86,9 +82,7 @@ export default function FeatureDashboard() {
             <div class="feature-status available" />
             <div class="feature-info">
               <div class="feature-name">Core ({coreFeatures().length})</div>
-              <div class="feature-description">
-                Essential application features
-              </div>
+              <div class="feature-description">Essential application features</div>
             </div>
             <div class="feature-category">core</div>
           </div>
@@ -97,9 +91,7 @@ export default function FeatureDashboard() {
             <div class="feature-status available" />
             <div class="feature-info">
               <div class="feature-name">ML/AI ({mlFeatures().length})</div>
-              <div class="feature-description">
-                Machine learning capabilities
-              </div>
+              <div class="feature-description">Machine learning capabilities</div>
             </div>
             <div class="feature-category">ml</div>
           </div>
@@ -107,12 +99,8 @@ export default function FeatureDashboard() {
           <div class="feature-item">
             <div class="feature-status available" />
             <div class="feature-info">
-              <div class="feature-name">
-                Integration ({integrationFeatures().length})
-              </div>
-              <div class="feature-description">
-                Third-party service integrations
-              </div>
+              <div class="feature-name">Integration ({integrationFeatures().length})</div>
+              <div class="feature-description">Third-party service integrations</div>
             </div>
             <div class="feature-category">integration</div>
           </div>
@@ -120,12 +108,8 @@ export default function FeatureDashboard() {
           <div class="feature-item">
             <div class="feature-status available" />
             <div class="feature-info">
-              <div class="feature-name">
-                Utility ({utilityFeatures().length})
-              </div>
-              <div class="feature-description">
-                Supporting utilities and tools
-              </div>
+              <div class="feature-name">Utility ({utilityFeatures().length})</div>
+              <div class="feature-description">Supporting utilities and tools</div>
             </div>
             <div class="feature-category">utility</div>
           </div>
@@ -143,9 +127,7 @@ export default function FeatureDashboard() {
             <div class="feature-status available" />
             <div class="feature-info">
               <div class="feature-name">Data ({dataFeatures().length})</div>
-              <div class="feature-description">
-                Data processing and management
-              </div>
+              <div class="feature-description">Data processing and management</div>
             </div>
             <div class="feature-category">data</div>
           </div>

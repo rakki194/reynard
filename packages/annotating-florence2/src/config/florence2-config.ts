@@ -11,12 +11,7 @@ export const FLORENCE2_CONFIG_SCHEMA = {
   properties: {
     task: {
       type: "string",
-      enum: [
-        "caption",
-        "dense_caption",
-        "object_detection",
-        "visual_question_answering",
-      ],
+      enum: ["caption", "dense_caption", "object_detection", "visual_question_answering"],
       default: "caption",
       description: "Task type for Florence2",
     },
@@ -66,8 +61,7 @@ export const FLORENCE2_DEFAULT_CONFIG = {
 
 export const FLORENCE2_METADATA = {
   name: "florence2",
-  description:
-    "Florence2 - General purpose vision-language model for image understanding",
+  description: "Florence2 - General purpose vision-language model for image understanding",
   version: "1.0.0",
   caption_type: "caption",
   model_category: "heavy",

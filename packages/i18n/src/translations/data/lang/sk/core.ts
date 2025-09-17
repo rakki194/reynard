@@ -75,36 +75,24 @@ export const coreTranslations = {
   // Validácia hesla
   password: {
     "must-be-at-least-8-characters-long": "Heslo musí mať aspoň 8 znakov",
-    "must-contain-at-least-one-uppercase-letter":
-      "Heslo musí obsahovať aspoň jedno veľké písmeno",
-    "must-contain-at-least-one-lowercase-letter":
-      "Heslo musí obsahovať aspoň jedno malé písmeno",
-    "must-contain-at-least-one-number":
-      "Heslo musí obsahovať aspoň jedno číslo",
-    "must-contain-at-least-one-special-character":
-      "Heslo musí obsahovať aspoň jeden špeciálny znak",
+    "must-contain-at-least-one-uppercase-letter": "Heslo musí obsahovať aspoň jedno veľké písmeno",
+    "must-contain-at-least-one-lowercase-letter": "Heslo musí obsahovať aspoň jedno malé písmeno",
+    "must-contain-at-least-one-number": "Heslo musí obsahovať aspoň jedno číslo",
+    "must-contain-at-least-one-special-character": "Heslo musí obsahovať aspoň jeden špeciálny znak",
   },
 
   // Bezpečnostná validácia
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Musí byť zahrnutý aspoň jeden typ znaku",
-    "input-contains-potentially-dangerous-html":
-      "Vstup obsahuje potenciálne nebezpečný HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Vstup obsahuje potenciálne nebezpečné SQL vzory",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Vstup obsahuje potenciálne nebezpečné XSS vzory",
-    "input-contains-path-traversal-patterns":
-      "Vstup obsahuje vzory prechádzania cesty",
-    "input-contains-windows-reserved-names":
-      "Vstup obsahuje rezervované názvy Windows",
-    "input-contains-executable-file-extensions":
-      "Vstup obsahuje prípony spustiteľných súborov",
+    "at-least-one-character-type-must-be-included": "Musí byť zahrnutý aspoň jeden typ znaku",
+    "input-contains-potentially-dangerous-html": "Vstup obsahuje potenciálne nebezpečný HTML",
+    "input-contains-potentially-dangerous-sql-patterns": "Vstup obsahuje potenciálne nebezpečné SQL vzory",
+    "input-contains-potentially-dangerous-xss-patterns": "Vstup obsahuje potenciálne nebezpečné XSS vzory",
+    "input-contains-path-traversal-patterns": "Vstup obsahuje vzory prechádzania cesty",
+    "input-contains-windows-reserved-names": "Vstup obsahuje rezervované názvy Windows",
+    "input-contains-executable-file-extensions": "Vstup obsahuje prípony spustiteľných súborov",
     "input-contains-null-bytes": "Vstup obsahuje null bajty",
     "input-contains-hidden-files": "Vstup obsahuje skryté súbory",
-    "input-contains-javascript-file-extensions":
-      "Vstup obsahuje prípony JavaScript súborov",
+    "input-contains-javascript-file-extensions": "Vstup obsahuje prípony JavaScript súborov",
   },
 
   // Asynchrónne operácie
@@ -131,12 +119,9 @@ export const coreTranslations = {
 
   // Úložisko a serializácia
   storage: {
-    "potentially-dangerous-json-detected":
-      "Detekovaný potenciálne nebezpečný JSON",
-    "failed-to-parse-json-from-localstorage":
-      "Nepodarilo sa parsovať JSON z localStorage:",
-    "error-parsing-storage-event":
-      "Chyba pri parsovaní udalosti úložiska pre kľúč",
+    "potentially-dangerous-json-detected": "Detekovaný potenciálne nebezpečný JSON",
+    "failed-to-parse-json-from-localstorage": "Nepodarilo sa parsovať JSON z localStorage:",
+    "error-parsing-storage-event": "Chyba pri parsovaní udalosti úložiska pre kľúč",
   },
 
   // Test a vývoj
@@ -173,8 +158,7 @@ export const coreTranslations = {
   // Integračné testy
   integration: {
     "session-and-api-key-generation": "Generovanie relácie a API kľúča",
-    "authentication-and-input-validation-integration":
-      "Integrácia autentifikácie a validácie vstupu",
+    "authentication-and-input-validation-integration": "Integrácia autentifikácie a validácie vstupu",
     "performance-and-security-integration": "Integrácia výkonu a bezpečnosti",
   },
 };

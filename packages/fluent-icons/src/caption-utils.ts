@@ -52,18 +52,15 @@ export function generateCaption(metadata: IconMetadata): string {
  * @param query - Natural language search query
  * @returns Array of matching icon names and their captions
  */
-export function searchIconsByCaption<
-  T extends Record<string, { metadata: IconMetadata }>,
->(
+export function searchIconsByCaption<T extends Record<string, { metadata: IconMetadata }>>(
   icons: T,
-  query: string,
+  query: string
 ): Array<{ name: string; caption: string; score: number }> {
   const searchTerms = query.toLowerCase().split(/\s+/);
   const results: Array<{ name: string; caption: string; score: number }> = [];
 
   for (const [name, iconData] of Object.entries(icons)) {
-    const caption =
-      iconData.metadata.caption || generateCaption(iconData.metadata);
+    const caption = iconData.metadata.caption || generateCaption(iconData.metadata);
     const captionLower = caption.toLowerCase();
     const nameLower = name.toLowerCase();
 
@@ -101,14 +98,11 @@ export function searchIconsByCaption<
  * @param icons - Object containing icon data
  * @returns Object mapping icon names to their captions
  */
-export function getAllCaptions<
-  T extends Record<string, { metadata: IconMetadata }>,
->(icons: T): Record<string, string> {
+export function getAllCaptions<T extends Record<string, { metadata: IconMetadata }>>(icons: T): Record<string, string> {
   const captions: Record<string, string> = {};
 
   for (const [name, iconData] of Object.entries(icons)) {
-    captions[name] =
-      iconData.metadata.caption || generateCaption(iconData.metadata);
+    captions[name] = iconData.metadata.caption || generateCaption(iconData.metadata);
   }
 
   return captions;
@@ -143,9 +137,7 @@ export function suggestCaptionImprovements(metadata: IconMetadata): string[] {
   const suggestions: string[] = [];
 
   if (!metadata.caption) {
-    suggestions.push(
-      "Add a natural language caption describing the icon's purpose",
-    );
+    suggestions.push("Add a natural language caption describing the icon's purpose");
     return suggestions;
   }
 
@@ -165,9 +157,7 @@ export function suggestCaptionImprovements(metadata: IconMetadata): string[] {
   }
 
   if (caption === metadata.description) {
-    suggestions.push(
-      "Caption should be more detailed than the basic description",
-    );
+    suggestions.push("Caption should be more detailed than the basic description");
   }
 
   return suggestions;
@@ -179,9 +169,9 @@ export function suggestCaptionImprovements(metadata: IconMetadata): string[] {
  * @param icons - Object containing icon data
  * @returns Object with generated captions for icons that were missing them
  */
-export function generateMissingCaptions<
-  T extends Record<string, { metadata: IconMetadata }>,
->(icons: T): Record<string, string> {
+export function generateMissingCaptions<T extends Record<string, { metadata: IconMetadata }>>(
+  icons: T
+): Record<string, string> {
   const generated: Record<string, string> = {};
 
   for (const [name, iconData] of Object.entries(icons)) {
@@ -200,9 +190,10 @@ export function generateMissingCaptions<
  * @param format - Output format ('json' | 'markdown' | 'text')
  * @returns Formatted string containing all captions
  */
-export function exportCaptions<
-  T extends Record<string, { metadata: IconMetadata }>,
->(icons: T, format: "json" | "markdown" | "text" = "json"): string {
+export function exportCaptions<T extends Record<string, { metadata: IconMetadata }>>(
+  icons: T,
+  format: "json" | "markdown" | "text" = "json"
+): string {
   const captions = getAllCaptions(icons);
 
   switch (format) {

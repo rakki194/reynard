@@ -57,19 +57,11 @@ interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "small" | "medium" | "large";
 }
 
-export const Button: Component<ButtonProps> = (props) => {
-  const {
-    variant = "primary",
-    size = "medium",
-    class: className,
-    children,
-    ...restProps
-  } = props;
+export const Button: Component<ButtonProps> = props => {
+  const { variant = "primary", size = "medium", class: className, children, ...restProps } = props;
 
   const buttonClasses = createMemo(() => {
-    return [styles.button, styles[variant], styles[size], className || ""]
-      .filter(Boolean)
-      .join(" ");
+    return [styles.button, styles[variant], styles[size], className || ""].filter(Boolean).join(" ");
   });
 
   return (

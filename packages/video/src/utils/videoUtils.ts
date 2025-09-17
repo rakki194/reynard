@@ -8,16 +8,7 @@
  * @returns True if file is a video file
  */
 export function isVideoFile(file: File): boolean {
-  const videoExtensions = [
-    ".mp4",
-    ".avi",
-    ".mov",
-    ".mkv",
-    ".webm",
-    ".flv",
-    ".wmv",
-    ".m4v",
-  ];
+  const videoExtensions = [".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".wmv", ".m4v"];
   return videoExtensions.includes(getFileExtension(file.name));
 }
 

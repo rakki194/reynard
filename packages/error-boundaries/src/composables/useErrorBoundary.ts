@@ -7,10 +7,7 @@ import { createSignal, createMemo, onCleanup } from "solid-js";
 import { ErrorContext } from "../types/ErrorTypes";
 import { RecoveryAction, RecoveryStrategy } from "../types/RecoveryTypes";
 import { createErrorContext } from "../utils/ErrorAnalyzer";
-import {
-  getApplicableStrategies,
-  executeRecoveryStrategy,
-} from "../utils/RecoveryStrategies";
+import { getApplicableStrategies, executeRecoveryStrategy } from "../utils/RecoveryStrategies";
 
 interface UseErrorBoundaryOptions {
   recoveryStrategies?: RecoveryStrategy[];
@@ -31,15 +28,11 @@ interface UseErrorBoundaryReturn {
   clearError: () => void;
 }
 
-export function useErrorBoundary(
-  options: UseErrorBoundaryOptions = {},
-): UseErrorBoundaryReturn {
+export function useErrorBoundary(options: UseErrorBoundaryOptions = {}): UseErrorBoundaryReturn {
   const [error, setError] = createSignal<Error | null>(null);
   const [errorInfo, setErrorInfo] = createSignal<any>(null);
   const [isRecovering, setIsRecovering] = createSignal(false);
-  const [recoveryActions, setRecoveryActions] = createSignal<RecoveryAction[]>(
-    [],
-  );
+  const [recoveryActions, setRecoveryActions] = createSignal<RecoveryAction[]>([]);
 
   // Create error context when error occurs
   const errorContext = createMemo(() => {
@@ -61,14 +54,10 @@ export function useErrorBoundary(
     const context = createErrorContext(error, errorInfo);
 
     // Get applicable recovery strategies
-    const strategies = getApplicableStrategies(
-      error,
-      context,
-      options.recoveryStrategies,
-    );
+    const strategies = getApplicableStrategies(error, context, options.recoveryStrategies);
 
     // Convert strategies to recovery actions
-    const actions: RecoveryAction[] = strategies.map((strategy) => ({
+    const actions: RecoveryAction[] = strategies.map(strategy => ({
       id: strategy.id,
       name: strategy.name,
       description: strategy.description,
@@ -113,19 +102,13 @@ export function useErrorBoundary(
 
     try {
       // Find the strategy for this action
-      const strategy = options.recoveryStrategies?.find(
-        (s) => s.id === action.id,
-      );
+      const strategy = options.recoveryStrategies?.find(s => s.id === action.id);
       if (!strategy) {
         throw new Error(`Recovery strategy not found: ${action.id}`);
       }
 
       // Execute the recovery strategy
-      const result = await executeRecoveryStrategy(
-        strategy,
-        currentError,
-        currentContext,
-      );
+      const result = await executeRecoveryStrategy(strategy, currentError, currentContext);
 
       if (result.success) {
         // Call user recovery handler
@@ -172,10 +155,7 @@ export function useErrorBoundary(
 
     onCleanup(() => {
       window.removeEventListener("error", handleGlobalError);
-      window.removeEventListener(
-        "unhandledrejection",
-        handleUnhandledRejection,
-      );
+      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
     });
   }
 

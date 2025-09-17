@@ -3,12 +3,7 @@
  */
 
 import { BaseTool } from "./BaseTool";
-import {
-  ToolResult,
-  ToolExecutionContext,
-  ToolCall,
-  ToolCallResult,
-} from "./types";
+import { ToolResult, ToolExecutionContext, ToolCall, ToolCallResult } from "./types";
 
 export class ToolExecutor {
   private registry: Map<string, BaseTool> = new Map();
@@ -41,7 +36,7 @@ export class ToolExecutor {
   async executeTool(
     toolName: string,
     parameters: Record<string, any>,
-    context: ToolExecutionContext,
+    context: ToolExecutionContext
   ): Promise<ToolResult> {
     const tool = this.registry.get(toolName);
     if (!tool) {
@@ -63,12 +58,7 @@ export class ToolExecutor {
     }
 
     // Create execution promise
-    const executionPromise = this.executeWithRetry(
-      tool,
-      parameters,
-      context,
-      callId,
-    );
+    const executionPromise = this.executeWithRetry(tool, parameters, context, callId);
     this.activeExecutions.set(executionKey, executionPromise);
 
     try {
@@ -88,11 +78,9 @@ export class ToolExecutor {
       toolName: string;
       parameters: Record<string, any>;
     }>,
-    context: ToolExecutionContext,
+    context: ToolExecutionContext
   ): Promise<ToolResult[]> {
-    const promises = executions.map((execution) =>
-      this.executeTool(execution.toolName, execution.parameters, context),
-    );
+    const promises = executions.map(execution => this.executeTool(execution.toolName, execution.parameters, context));
 
     return Promise.all(promises);
   }
@@ -105,16 +93,12 @@ export class ToolExecutor {
       toolName: string;
       parameters: Record<string, any>;
     }>,
-    context: ToolExecutionContext,
+    context: ToolExecutionContext
   ): Promise<ToolResult[]> {
     const results: ToolResult[] = [];
 
     for (const execution of executions) {
-      const result = await this.executeTool(
-        execution.toolName,
-        execution.parameters,
-        context,
-      );
+      const result = await this.executeTool(execution.toolName, execution.parameters, context);
       results.push(result);
 
       // Stop execution if a tool fails and context doesn't allow failures
@@ -135,7 +119,7 @@ export class ToolExecutor {
       parameters: Record<string, any>;
       dependsOn?: string[];
     }>,
-    context: ToolExecutionContext,
+    context: ToolExecutionContext
   ): Promise<Map<string, ToolResult>> {
     const results = new Map<string, ToolResult>();
     const executed = new Set<string>();
@@ -148,9 +132,7 @@ export class ToolExecutor {
 
     while (pending.size > 0) {
       const readyExecutions = Array.from(pending.entries()).filter(
-        ([_, execution]) =>
-          !execution.dependsOn ||
-          execution.dependsOn.every((dep) => executed.has(dep)),
+        ([_, execution]) => !execution.dependsOn || execution.dependsOn.every(dep => executed.has(dep))
       );
 
       if (readyExecutions.length === 0) {
@@ -159,11 +141,7 @@ export class ToolExecutor {
 
       // Execute ready tools in parallel
       const promises = readyExecutions.map(async ([toolName, execution]) => {
-        const result = await this.executeTool(
-          toolName,
-          execution.parameters,
-          context,
-        );
+        const result = await this.executeTool(toolName, execution.parameters, context);
         results.set(toolName, result);
         executed.add(toolName);
         pending.delete(toolName);
@@ -183,7 +161,7 @@ export class ToolExecutor {
     tool: BaseTool,
     parameters: Record<string, any>,
     context: ToolExecutionContext,
-    callId: string,
+    callId: string
   ): Promise<ToolResult> {
     const maxRetries = context.retryCount || tool.retryCount;
     const timeout = context.timeout || tool.timeout;
@@ -191,12 +169,7 @@ export class ToolExecutor {
 
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
       try {
-        const result = await this.executeWithTimeout(
-          tool,
-          parameters,
-          context,
-          timeout,
-        );
+        const result = await this.executeWithTimeout(tool, parameters, context, timeout);
         return result;
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
@@ -223,7 +196,7 @@ export class ToolExecutor {
     tool: BaseTool,
     parameters: Record<string, any>,
     context: ToolExecutionContext,
-    timeout: number,
+    timeout: number
   ): Promise<ToolResult> {
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
@@ -232,11 +205,11 @@ export class ToolExecutor {
 
       tool
         .execute(parameters, context)
-        .then((result) => {
+        .then(result => {
           clearTimeout(timeoutId);
           resolve(result);
         })
-        .catch((error) => {
+        .catch(error => {
           clearTimeout(timeoutId);
           reject(error);
         });
@@ -258,7 +231,7 @@ export class ToolExecutor {
    * Sleep for the given number of milliseconds
    */
   private sleep(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**
@@ -271,10 +244,7 @@ export class ToolExecutor {
   /**
    * Get execution key for deduplication
    */
-  private getExecutionKey(
-    toolName: string,
-    parameters: Record<string, any>,
-  ): string {
+  private getExecutionKey(toolName: string, parameters: Record<string, any>): string {
     return `${toolName}_${JSON.stringify(parameters)}`;
   }
 

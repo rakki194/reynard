@@ -100,11 +100,8 @@ async def register_and_login_user(username, password):
         )
         if login_response.status_code == 200:
             return login_response.json().get("access_token")
-        else:
-            print(
-                f"Failed to login user {username}. Status: {login_response.status_code}"
-            )
-            return None
+        print(f"Failed to login user {username}. Status: {login_response.status_code}")
+        return None
     except httpx.RequestError as e:
         print(f"Login request failed for {username}: {e}")
         return None
@@ -138,11 +135,10 @@ async def register_and_login_admin_user(username, password):
             return login_response.json().get("access_token"), login_response.json().get(
                 "refresh_token"
             )
-        else:
-            print(
-                f"Failed to login admin user {username}. Status: {login_response.status_code}"
-            )
-            return None, None
+        print(
+            f"Failed to login admin user {username}. Status: {login_response.status_code}"
+        )
+        return None, None
     except httpx.RequestError as e:
         print(f"Admin Login request failed for {username}: {e}")
         return None, None
@@ -929,11 +925,10 @@ async def create_test_memory(
             memory_id = response.json().get("memory_id")
             print(f"Created test memory: {memory_id}")
             return memory_id
-        else:
-            print(
-                f"Failed to create test memory (Status: {response.status_code}, Response: {response.text.strip()[:100]})."
-            )
-            return None
+        print(
+            f"Failed to create test memory (Status: {response.status_code}, Response: {response.text.strip()[:100]})."
+        )
+        return None
     except httpx.RequestError as e:
         print(f"Failed to create test memory: {e}")
         return None
@@ -994,7 +989,9 @@ async def fuzz_create_memory_endpoint(headers):
     print("--- Fuzzing /api/memory/ (POST) endpoint complete ---\n")
 
 
-async def _test_memory_by_id_with_headers(memory_id: str, headers: dict, user_type: str) -> None:
+async def _test_memory_by_id_with_headers(
+    memory_id: str, headers: dict, user_type: str
+) -> None:
     """Test getting memory by ID with specific headers."""
     try:
         response = await httpx.AsyncClient().get(
@@ -1006,7 +1003,9 @@ async def _test_memory_by_id_with_headers(memory_id: str, headers: dict, user_ty
     except httpx.RequestError as e:
         print(f"GET Memory request failed for ID '{memory_id}' ({user_type} User): {e}")
     except Exception as e:
-        print(f"An unexpected error occurred during GET memory for ID '{memory_id}' ({user_type} User): {e}")
+        print(
+            f"An unexpected error occurred during GET memory for ID '{memory_id}' ({user_type} User): {e}"
+        )
 
 
 async def fuzz_get_memory_by_id_endpoint(

@@ -148,11 +148,17 @@ class InheritedNameGenerator:
         spirit2_names = self.animal_pools.get_spirit_names(spirit2)
 
         # Choose mythological names
-        name1 = random.choice(spirit1_names) if spirit1_names else "Unknown"  # nosec B311
-        name2 = random.choice(spirit2_names) if spirit2_names else "Unknown"  # nosec B311
+        name1 = (
+            random.choice(spirit1_names) if spirit1_names else "Unknown"
+        )  # nosec B311
+        name2 = (
+            random.choice(spirit2_names) if spirit2_names else "Unknown"
+        )  # nosec B311
 
         # Create fusion
-        fusion_suffix = random.choice(["Fusion", "Hybrid", "Blend", "Union"])  # nosec B311
+        fusion_suffix = random.choice(
+            ["Fusion", "Hybrid", "Blend", "Union"]
+        )  # nosec B311
         return f"{name1}-{name2}-{fusion_suffix}-{generation}"
 
     def _generate_mutation_novel_name(
@@ -164,13 +170,17 @@ class InheritedNameGenerator:
 
         # Get spirit names
         spirit_names = self.animal_pools.get_spirit_names(spirit)
-        base_name = random.choice(spirit_names) if spirit_names else "Unknown"  # nosec B311
+        base_name = (
+            random.choice(spirit_names) if spirit_names else "Unknown"
+        )  # nosec B311
 
         # Get trait-based suffix
         trait_suffix = self._get_trait_based_suffix(personality)
 
         # Add mutation indicator
-        mutation_prefix = random.choice(["New", "Evolved", "Adapted", "Enhanced"])  # nosec B311
+        mutation_prefix = random.choice(
+            ["New", "Evolved", "Adapted", "Enhanced"]
+        )  # nosec B311
 
         return f"{mutation_prefix}-{base_name}-{trait_suffix}-{generation}"
 

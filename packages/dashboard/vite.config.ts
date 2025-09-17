@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardDashboard",
-      fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
+      fileName: format => (format === "es" ? "index.js" : `index.${format}`),
     },
     rollupOptions: {
       external: [

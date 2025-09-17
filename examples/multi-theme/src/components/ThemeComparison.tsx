@@ -12,13 +12,13 @@ export const ThemeComparison: Component = () => {
 
   const addTheme = (theme: string) => {
     if (!selectedThemes().includes(theme) && selectedThemes().length < 3) {
-      setSelectedThemes((prev) => [...prev, theme]);
+      setSelectedThemes(prev => [...prev, theme]);
     }
   };
 
   const removeTheme = (theme: string) => {
     if (selectedThemes().length > 1) {
-      setSelectedThemes((prev) => prev.filter((t) => t !== theme));
+      setSelectedThemes(prev => prev.filter(t => t !== theme));
     }
   };
 
@@ -42,18 +42,11 @@ export const ThemeComparison: Component = () => {
         <h3>Selected Themes ({selectedThemes().length}/3)</h3>
         <div class="theme-selector">
           <For each={availableThemes}>
-            {(theme) => (
+            {theme => (
               <button
                 class={`theme-option ${selectedThemes().includes(theme) ? "selected" : ""}`}
-                onClick={() =>
-                  selectedThemes().includes(theme)
-                    ? removeTheme(theme)
-                    : addTheme(theme)
-                }
-                disabled={
-                  !selectedThemes().includes(theme) &&
-                  selectedThemes().length >= 3
-                }
+                onClick={() => (selectedThemes().includes(theme) ? removeTheme(theme) : addTheme(theme))}
+                disabled={!selectedThemes().includes(theme) && selectedThemes().length >= 3}
               >
                 {getThemeEmoji(theme)} {theme}
               </button>
@@ -69,17 +62,14 @@ export const ThemeComparison: Component = () => {
         }}
       >
         <For each={selectedThemes()}>
-          {(theme) => (
+          {theme => (
             <div class="comparison-column" data-theme={theme}>
               <div class="column-header">
                 <h3>
                   {getThemeEmoji(theme)} {theme}
                 </h3>
                 {selectedThemes().length > 1 && (
-                  <button
-                    class="remove-theme"
-                    onClick={() => removeTheme(theme)}
-                  >
+                  <button class="remove-theme" onClick={() => removeTheme(theme)}>
                     ×
                   </button>
                 )}
@@ -111,11 +101,7 @@ export const ThemeComparison: Component = () => {
 
                   <button class="sample-button">Button</button>
 
-                  <input
-                    type="text"
-                    class="sample-input"
-                    placeholder="Input field"
-                  />
+                  <input type="text" class="sample-input" placeholder="Input field" />
 
                   <div class="sample-card">
                     <h5>Card Title</h5>
@@ -138,8 +124,7 @@ export const ThemeComparison: Component = () => {
                   <h4>Typography</h4>
                   <h5>Heading</h5>
                   <p>
-                    Regular paragraph text with <strong>bold</strong> and{" "}
-                    <em>italic</em> formatting.
+                    Regular paragraph text with <strong>bold</strong> and <em>italic</em> formatting.
                   </p>
                   <code>Code snippet</code>
                 </div>

@@ -23,16 +23,8 @@ vi.mock("reynard-file-processing", () => ({
 // Mock the AudioWaveformComponents
 vi.mock("../AudioWaveformComponents", () => ({
   LoadingState: () => <div data-testid="loading-state">Loading...</div>,
-  ErrorState: (props: any) => (
-    <div data-testid="error-state">{props.message}</div>
-  ),
-  WaveformCanvas: (props: any) => (
-    <canvas
-      data-testid="waveform-canvas"
-      onClick={(e) => props.onSeek?.(e)}
-      {...props}
-    />
-  ),
+  ErrorState: (props: any) => <div data-testid="error-state">{props.message}</div>,
+  WaveformCanvas: (props: any) => <canvas data-testid="waveform-canvas" onClick={e => props.onSeek?.(e)} {...props} />,
   PlaybackControls: (props: any) => (
     <div data-testid="playback-controls">
       <button onClick={props.onPlay}>Play</button>
@@ -64,18 +56,10 @@ describe("AudioWaveformVisualizer", () => {
     });
 
     it("should render with custom className", () => {
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          className="custom-visualizer"
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} className="custom-visualizer" />);
 
       const visualizer = screen.getByRole("generic");
-      expect(visualizer).toHaveClass(
-        "audio-waveform-visualizer",
-        "custom-visualizer",
-      );
+      expect(visualizer).toHaveClass("audio-waveform-visualizer", "custom-visualizer");
     });
   });
 
@@ -90,12 +74,7 @@ describe("AudioWaveformVisualizer", () => {
         height: 100,
       };
 
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          waveformConfig={waveformConfig}
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} waveformConfig={waveformConfig} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
@@ -116,23 +95,13 @@ describe("AudioWaveformVisualizer", () => {
         showControls: true,
       };
 
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          playbackConfig={playbackConfig}
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} playbackConfig={playbackConfig} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
 
     it("should handle auto-play configuration", () => {
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          playbackConfig={{ autoPlay: true }}
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} playbackConfig={{ autoPlay: true }} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
@@ -145,12 +114,7 @@ describe("AudioWaveformVisualizer", () => {
         showProgress: true,
       };
 
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          interactionConfig={interactionConfig}
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} interactionConfig={interactionConfig} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
@@ -161,12 +125,7 @@ describe("AudioWaveformVisualizer", () => {
         showProgress: false,
       };
 
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          interactionConfig={interactionConfig}
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} interactionConfig={interactionConfig} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
@@ -175,12 +134,7 @@ describe("AudioWaveformVisualizer", () => {
   describe("Event Handlers", () => {
     it("should call onTimeUpdate when time changes", async () => {
       const onTimeUpdate = vi.fn();
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          onTimeUpdate={onTimeUpdate}
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} onTimeUpdate={onTimeUpdate} />);
 
       // Simulate time update
       await waitFor(() => {
@@ -191,30 +145,21 @@ describe("AudioWaveformVisualizer", () => {
 
     it("should call onPlaybackStateChange when playback state changes", () => {
       const onPlaybackStateChange = vi.fn();
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          onPlaybackStateChange={onPlaybackStateChange}
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} onPlaybackStateChange={onPlaybackStateChange} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
 
     it("should call onSeek when seeking", () => {
       const onSeek = vi.fn();
-      render(() => (
-        <AudioWaveformVisualizer audioSrc={mockAudioFile} onSeek={onSeek} />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} onSeek={onSeek} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
 
     it("should call onError when error occurs", () => {
       const onError = vi.fn();
-      render(() => (
-        <AudioWaveformVisualizer audioSrc={mockAudioFile} onError={onError} />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} onError={onError} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
@@ -250,12 +195,7 @@ describe("AudioWaveformVisualizer", () => {
     });
 
     it("should render playback controls when enabled", () => {
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          playbackConfig={{ showControls: true }}
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} playbackConfig={{ showControls: true }} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
@@ -266,10 +206,7 @@ describe("AudioWaveformVisualizer", () => {
       render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} />);
 
       const visualizer = screen.getByRole("generic");
-      expect(visualizer).toHaveAttribute(
-        "aria-label",
-        "Audio waveform visualizer",
-      );
+      expect(visualizer).toHaveAttribute("aria-label", "Audio waveform visualizer");
     });
 
     it("should support keyboard navigation", () => {
@@ -279,12 +216,7 @@ describe("AudioWaveformVisualizer", () => {
     });
 
     it("should have proper button labels", () => {
-      render(() => (
-        <AudioWaveformVisualizer
-          audioSrc={mockAudioFile}
-          playbackConfig={{ showControls: true }}
-        />
-      ));
+      render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} playbackConfig={{ showControls: true }} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
@@ -302,9 +234,7 @@ describe("AudioWaveformVisualizer", () => {
     });
 
     it("should clean up resources on unmount", () => {
-      const { unmount } = render(() => (
-        <AudioWaveformVisualizer audioSrc={mockAudioFile} />
-      ));
+      const { unmount } = render(() => <AudioWaveformVisualizer audioSrc={mockAudioFile} />);
 
       expect(screen.getByTestId("loading-state")).toBeInTheDocument();
 

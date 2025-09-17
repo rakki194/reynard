@@ -27,21 +27,15 @@ const demoOptions: DemoOption[] = [
   {
     id: "spatial-optimization",
     title: "Spatial Optimization",
-    description:
-      "Compare naive O(n²) vs spatial hashing optimization for collision detection performance",
+    description: "Compare naive O(n²) vs spatial hashing optimization for collision detection performance",
     icon: "⚡",
     complexity: "Intermediate",
-    features: [
-      "Performance Comparison",
-      "Spatial Hashing",
-      "Scalability Analysis",
-    ],
+    features: ["Performance Comparison", "Spatial Hashing", "Scalability Analysis"],
   },
   {
     id: "performance-benchmark",
     title: "Performance Benchmark",
-    description:
-      "Comprehensive benchmarking suite for collision detection algorithms with detailed metrics",
+    description: "Comprehensive benchmarking suite for collision detection algorithms with detailed metrics",
     icon: "📊",
     complexity: "Advanced",
     features: ["Benchmarking", "Performance Metrics", "Algorithm Comparison"],
@@ -49,41 +43,33 @@ const demoOptions: DemoOption[] = [
   {
     id: "interactive-physics",
     title: "Interactive Physics",
-    description:
-      "Full physics simulation with gravity, bouncing, and complex collision interactions",
+    description: "Full physics simulation with gravity, bouncing, and complex collision interactions",
     icon: "🎯",
     complexity: "Advanced",
     features: ["Physics Simulation", "Gravity", "Elastic Collisions"],
   },
 ];
 
-export const DemoSelector: Component<DemoSelectorProps> = (props) => {
+export const DemoSelector: Component<DemoSelectorProps> = props => {
   return (
     <div class="demo-selector">
       <div class="selector-header">
         <h2>Choose Your Algorithm Demo</h2>
-        <p>
-          Explore the power of Reynard's collision detection and optimization
-          algorithms
-        </p>
+        <p>Explore the power of Reynard's collision detection and optimization algorithms</p>
       </div>
 
       <div class="demos-grid">
-        {demoOptions.map((demo) => (
+        {demoOptions.map(demo => (
           <div class="demo-card" onClick={() => props.onDemoSelect(demo.id)}>
             <div class="demo-icon">{demo.icon}</div>
             <div class="demo-content">
               <h3>{demo.title}</h3>
               <p class="demo-description">{demo.description}</p>
               <div class="demo-meta">
-                <span
-                  class={`complexity complexity-${demo.complexity.toLowerCase()}`}
-                >
-                  {demo.complexity}
-                </span>
+                <span class={`complexity complexity-${demo.complexity.toLowerCase()}`}>{demo.complexity}</span>
               </div>
               <div class="demo-features">
-                {demo.features.map((feature) => (
+                {demo.features.map(feature => (
                   <span class="feature-tag">{feature}</span>
                 ))}
               </div>

@@ -17,7 +17,7 @@ export default defineConfig({
           "solid-js": "SolidJS",
           "solid-js/web": "SolidJSWeb",
         },
-        assetFileNames: (assetInfo) => {
+        assetFileNames: assetInfo => {
           if (assetInfo.name === "style.css") {
             return "styles.css";
           }

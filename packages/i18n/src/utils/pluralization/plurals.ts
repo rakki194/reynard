@@ -57,8 +57,7 @@ export const pluralRules: Record<string, PluralRule> = {
   },
 
   // Spanish (similar to default but using specific function)
-  es: (n: number, forms: PluralForms) =>
-    getSpanishPlural(n, { singular: forms.one, plural: forms.other }),
+  es: (n: number, forms: PluralForms) => getSpanishPlural(n, { singular: forms.one, plural: forms.other }),
 
   // Japanese, Chinese, Korean, Vietnamese (no plurals)
   ja: (_n: number, forms: PluralForms) => forms.other,
@@ -128,10 +127,7 @@ const languageToRule: Record<LanguageCode, PluralRule> = {
   zh: pluralRules.zh,
 };
 
-function interpolate(
-  template: string,
-  params: TranslationParams | null | undefined,
-): string {
+function interpolate(template: string, params: TranslationParams | null | undefined): string {
   if (!params || typeof params !== "object") {
     return template.replace(/\${count}/g, "some");
   }
@@ -149,11 +145,7 @@ function interpolate(
  * @param lang The language code
  * @returns The appropriate plural form string
  */
-export function getPlural(
-  count: number,
-  forms: PluralForms,
-  lang: LanguageCode,
-): string {
+export function getPlural(count: number, forms: PluralForms, lang: LanguageCode): string {
   const rule = languageToRule[lang] || pluralRules.default;
   return rule(count, forms);
 }
@@ -164,10 +156,7 @@ export function getPlural(
  * @param lang The language code
  * @returns A function that takes a count and returns the appropriate plural form
  */
-export function createPluralTranslation(
-  forms: PluralForms,
-  lang: LanguageCode,
-) {
+export function createPluralTranslation(forms: PluralForms, lang: LanguageCode) {
   return (params: TranslationParams | null | undefined = {}) => {
     if (!params || typeof params !== "object") {
       return interpolate(forms.other, null);

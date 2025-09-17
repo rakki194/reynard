@@ -11,7 +11,7 @@ interface ColorPickerPanelProps {
   onHide?: () => void;
 }
 
-export const ColorPickerPanel: Component<ColorPickerPanelProps> = (props) => {
+export const ColorPickerPanel: Component<ColorPickerPanelProps> = props => {
   return (
     <FloatingPanelAdvanced
       id="color-picker-panel"

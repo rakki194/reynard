@@ -123,10 +123,7 @@ export {
 } from "./composables/useBoxMove";
 
 // Components
-export {
-  BoundingBoxEditor,
-  type BoundingBoxEditorProps,
-} from "./components/BoundingBoxEditor";
+export { BoundingBoxEditor, type BoundingBoxEditorProps } from "./components/BoundingBoxEditor";
 
 // Re-export commonly used types for convenience
 export type { Component } from "solid-js";

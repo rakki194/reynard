@@ -109,7 +109,7 @@ export class DependencyMapper {
     this.calculateGraphMetrics();
 
     console.log(
-      `✅ Dependency graph built: ${this.dependencyGraph.nodes.size} nodes, ${this.dependencyGraph.edges.size} edges`,
+      `✅ Dependency graph built: ${this.dependencyGraph.nodes.size} nodes, ${this.dependencyGraph.edges.size} edges`
     );
     return this.dependencyGraph;
   }
@@ -117,9 +117,7 @@ export class DependencyMapper {
   /**
    * Analyze impact propagation for a change
    */
-  async analyzeImpactPropagation(
-    change: CodeChange,
-  ): Promise<ImpactPropagation> {
+  async analyzeImpactPropagation(change: CodeChange): Promise<ImpactPropagation> {
     console.log(`🦦 Analyzing impact propagation for: ${change.filePath}`);
 
     const sourceNode = this.dependencyGraph.nodes.get(change.filePath);
@@ -148,9 +146,7 @@ export class DependencyMapper {
   /**
    * Get dependency impact for multiple changes
    */
-  async getDependencyImpact(
-    changes: CodeChange[],
-  ): Promise<DependencyImpact[]> {
+  async getDependencyImpact(changes: CodeChange[]): Promise<DependencyImpact[]> {
     console.log(`🦦 Analyzing dependency impact for ${changes.length} changes`);
 
     const impacts: DependencyImpact[] = [];
@@ -164,9 +160,10 @@ export class DependencyMapper {
         impactChain: propagation.propagationPath,
         breakingChanges: propagation.breakingChanges,
         migrationRequired: propagation.breakingChanges.length > 0,
-        estimatedMigrationEffort: Array.from(
-          propagation.estimatedEffort.values(),
-        ).reduce((sum, effort) => sum + effort, 0),
+        estimatedMigrationEffort: Array.from(propagation.estimatedEffort.values()).reduce(
+          (sum, effort) => sum + effort,
+          0
+        ),
       };
 
       impacts.push(impact);
@@ -190,10 +187,7 @@ export class DependencyMapper {
       }
     }
 
-    return criticalNodes.sort(
-      (a, b) =>
-        this.calculateNodeImportance(b) - this.calculateNodeImportance(a),
-    );
+    return criticalNodes.sort((a, b) => this.calculateNodeImportance(b) - this.calculateNodeImportance(a));
   }
 
   /**
@@ -327,20 +321,12 @@ export class DependencyMapper {
           const fullPath = join(dir, entry.name);
 
           if (entry.isDirectory()) {
-            if (
-              !["node_modules", ".git", "dist", "build", "coverage"].includes(
-                entry.name,
-              )
-            ) {
+            if (!["node_modules", ".git", "dist", "build", "coverage"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
             const ext = fullPath.split(".").pop();
-            if (
-              ["ts", "tsx", "js", "jsx", "py", "go", "rs", "java"].includes(
-                ext || "",
-              )
-            ) {
+            if (["ts", "tsx", "js", "jsx", "py", "go", "rs", "java"].includes(ext || "")) {
               files.push(fullPath);
             }
           }
@@ -420,7 +406,7 @@ export class DependencyMapper {
 
   private extractDependencies(
     content: string,
-    filePath: string,
+    filePath: string
   ): Array<{
     path: string;
     type: "import" | "export" | "inheritance" | "composition" | "service-call";
@@ -431,12 +417,7 @@ export class DependencyMapper {
   }> {
     const dependencies: Array<{
       path: string;
-      type:
-        | "import"
-        | "export"
-        | "inheritance"
-        | "composition"
-        | "service-call";
+      type: "import" | "export" | "inheritance" | "composition" | "service-call";
       strength: number;
       lineNumber?: number;
       isOptional: boolean;
@@ -465,14 +446,9 @@ export class DependencyMapper {
       }
 
       // Dynamic imports
-      const dynamicImportMatch = line.match(
-        /import\s*\(\s*['"]([^'"]+)['"]\s*\)/,
-      );
+      const dynamicImportMatch = line.match(/import\s*\(\s*['"]([^'"]+)['"]\s*\)/);
       if (dynamicImportMatch) {
-        const importPath = this.resolveImportPath(
-          dynamicImportMatch[1],
-          filePath,
-        );
+        const importPath = this.resolveImportPath(dynamicImportMatch[1], filePath);
         if (importPath) {
           dependencies.push({
             path: importPath,
@@ -515,24 +491,14 @@ export class DependencyMapper {
     return dependencies;
   }
 
-  private resolveImportPath(
-    importPath: string,
-    fromFile: string,
-  ): string | null {
+  private resolveImportPath(importPath: string, fromFile: string): string | null {
     if (importPath.startsWith(".")) {
       // Relative import
       const fromDir = dirname(fromFile);
       const resolvedPath = join(fromDir, importPath);
 
       // Try different extensions
-      const extensions = [
-        ".ts",
-        ".tsx",
-        ".js",
-        ".jsx",
-        "/index.ts",
-        "/index.js",
-      ];
+      const extensions = [".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.js"];
       for (const ext of extensions) {
         const fullPath = resolvedPath + ext;
         if (this.dependencyGraph.nodes.has(fullPath)) {
@@ -547,17 +513,11 @@ export class DependencyMapper {
     }
   }
 
-  private async calculatePropagationPath(
-    sourceNode: DependencyNode,
-  ): Promise<string[][]> {
+  private async calculatePropagationPath(sourceNode: DependencyNode): Promise<string[][]> {
     const paths: string[][] = [];
     const visited = new Set<string>();
 
-    const dfs = (
-      currentNodeId: string,
-      path: string[],
-      depth: number,
-    ): void => {
+    const dfs = (currentNodeId: string, path: string[], depth: number): void => {
       if (depth > 10) return; // Prevent infinite recursion
 
       const node = this.dependencyGraph.nodes.get(currentNodeId);
@@ -597,12 +557,9 @@ export class DependencyMapper {
 
   private calculateImpactLevels(
     change: CodeChange,
-    affectedNodes: string[],
+    affectedNodes: string[]
   ): Map<string, "low" | "medium" | "high" | "critical"> {
-    const impactLevels = new Map<
-      string,
-      "low" | "medium" | "high" | "critical"
-    >();
+    const impactLevels = new Map<string, "low" | "medium" | "high" | "critical">();
 
     for (const nodeId of affectedNodes) {
       const node = this.dependencyGraph.nodes.get(nodeId);
@@ -629,17 +586,12 @@ export class DependencyMapper {
     return impactLevels;
   }
 
-  private identifyBreakingChanges(
-    change: CodeChange,
-    affectedNodes: string[],
-  ): string[] {
+  private identifyBreakingChanges(change: CodeChange, affectedNodes: string[]): string[] {
     const breakingChanges: string[] = [];
 
     // Analyze change type and content
     if (change.changeType === "deleted") {
-      breakingChanges.push(
-        `File deletion may break dependents: ${change.filePath}`,
-      );
+      breakingChanges.push(`File deletion may break dependents: ${change.filePath}`);
     }
 
     if (change.changeType === "modified") {
@@ -647,16 +599,12 @@ export class DependencyMapper {
 
       // Check for interface changes
       if (content.includes("interface") || content.includes("export")) {
-        breakingChanges.push(
-          `Interface changes may break consumers: ${change.filePath}`,
-        );
+        breakingChanges.push(`Interface changes may break consumers: ${change.filePath}`);
       }
 
       // Check for function signature changes
       if (content.includes("function") || content.includes("=>")) {
-        breakingChanges.push(
-          `Function signature changes may break callers: ${change.filePath}`,
-        );
+        breakingChanges.push(`Function signature changes may break callers: ${change.filePath}`);
       }
     }
 
@@ -665,12 +613,12 @@ export class DependencyMapper {
 
   private calculateMigrationPaths(breakingChanges: string[]): string[][] {
     // Simplified implementation - would calculate actual migration paths
-    return breakingChanges.map((change) => [change]);
+    return breakingChanges.map(change => [change]);
   }
 
   private estimateEffort(
     affectedNodes: string[],
-    impactLevels: Map<string, "low" | "medium" | "high" | "critical">,
+    impactLevels: Map<string, "low" | "medium" | "high" | "critical">
   ): Map<string, number> {
     const effortMap = new Map<string, number>();
 
@@ -712,11 +660,7 @@ export class DependencyMapper {
 
     // Calculate importance based on multiple factors
     const importance =
-      (dependentsCount * 0.4 +
-        complexity * 0.3 +
-        (1 - stability) * 0.2 +
-        dependenciesCount * 0.1) /
-      10; // Normalize to 0-1
+      (dependentsCount * 0.4 + complexity * 0.3 + (1 - stability) * 0.2 + dependenciesCount * 0.1) / 10; // Normalize to 0-1
 
     return Math.min(1, Math.max(0, importance));
   }
@@ -725,11 +669,7 @@ export class DependencyMapper {
     const paths: string[][] = [];
     const visited = new Set<string>();
 
-    const dfs = (
-      currentNodeId: string,
-      path: string[],
-      depth: number,
-    ): void => {
+    const dfs = (currentNodeId: string, path: string[], depth: number): void => {
       if (depth > 5) return; // Limit depth
 
       const node = this.dependencyGraph.nodes.get(currentNodeId);
@@ -756,9 +696,7 @@ export class DependencyMapper {
 
   private calculateDistance(sourceId: string, targetId: string): number {
     // Simplified BFS to calculate shortest path
-    const queue: Array<{ nodeId: string; distance: number }> = [
-      { nodeId: sourceId, distance: 0 },
-    ];
+    const queue: Array<{ nodeId: string; distance: number }> = [{ nodeId: sourceId, distance: 0 }];
     const visited = new Set<string>();
 
     while (queue.length > 0) {
@@ -803,10 +741,7 @@ export class DependencyMapper {
     return complexity / Math.max(1, lines.length / 10);
   }
 
-  private calculateInitialImportance(
-    filePath: string,
-    content: string,
-  ): number {
+  private calculateInitialImportance(filePath: string, content: string): number {
     let importance = 0.1; // Base importance
 
     // Increase importance for certain file types
@@ -830,8 +765,7 @@ export class DependencyMapper {
   }
 
   private calculateStability(filePath: string, lastModified: Date): number {
-    const daysSinceModified =
-      (Date.now() - lastModified.getTime()) / (1000 * 60 * 60 * 24);
+    const daysSinceModified = (Date.now() - lastModified.getTime()) / (1000 * 60 * 60 * 24);
 
     // Files modified recently are less stable
     if (daysSinceModified < 7) {
@@ -857,15 +791,13 @@ export class DependencyMapper {
     for (const node of nodes.values()) {
       totalDegree += node.dependencies.length + node.dependents.length;
     }
-    this.dependencyGraph.metrics.averageDegree =
-      nodes.size > 0 ? totalDegree / nodes.size : 0;
+    this.dependencyGraph.metrics.averageDegree = nodes.size > 0 ? totalDegree / nodes.size : 0;
 
     // Calculate max depth
     this.dependencyGraph.metrics.maxDepth = this.calculateMaxDepth();
 
     // Detect circular dependencies
-    this.dependencyGraph.metrics.circularDependencies =
-      this.detectCircularDependencies();
+    this.dependencyGraph.metrics.circularDependencies = this.detectCircularDependencies();
 
     // Find critical paths
     this.dependencyGraph.metrics.criticalPaths = this.findCriticalPaths();

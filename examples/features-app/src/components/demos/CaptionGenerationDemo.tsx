@@ -11,7 +11,7 @@ export default function CaptionGenerationDemo() {
     "caption-generation",
     <div class="demo-content unavailable">
       <p>Caption generation is currently unavailable</p>
-    </div>,
+    </div>
   );
 
   const status = useFeatureStatus("caption-generation");
@@ -43,16 +43,14 @@ export default function CaptionGenerationDemo() {
             <p>Caption generation is running in degraded mode</p>
           ) : null}
 
-          {status()?.degraded && (
-            <div class="status-message warning">⚠️ {status()?.message}</div>
-          )}
+          {status()?.degraded && <div class="status-message warning">⚠️ {status()?.message}</div>}
 
           <div class="caption-demo-container">
             <textarea
               class="caption-textarea"
               placeholder="Enter text to generate a caption for..."
               value={inputText()}
-              onInput={(e) => setInputText(e.target.value)}
+              onInput={e => setInputText(e.target.value)}
             />
 
             <button

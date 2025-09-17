@@ -17,25 +17,15 @@ export interface SearchHistoryListProps {
   onRemoveItem: (id: string) => void;
 }
 
-export const SearchHistoryList: Component<SearchHistoryListProps> = (props) => {
+export const SearchHistoryList: Component<SearchHistoryListProps> = props => {
   return (
     <div class="history-list">
       <Show
         when={props.filteredHistory.length > 0}
-        fallback={
-          <SearchHistoryEmpty 
-            hasFilters={props.searchQuery !== "" || props.selectedModality !== "all"} 
-          />
-        }
+        fallback={<SearchHistoryEmpty hasFilters={props.searchQuery !== "" || props.selectedModality !== "all"} />}
       >
         <For each={props.filteredHistory}>
-          {(item) => (
-            <HistoryItem
-              item={item}
-              onSearchAgain={props.onSearchAgain}
-              onRemoveItem={props.onRemoveItem}
-            />
-          )}
+          {item => <HistoryItem item={item} onSearchAgain={props.onSearchAgain} onRemoveItem={props.onRemoveItem} />}
         </For>
       </Show>
     </div>

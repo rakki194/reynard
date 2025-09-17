@@ -7,7 +7,7 @@ interface DemoCardProps {
   children: any;
 }
 
-const DemoCard: Component<DemoCardProps> = (props) => {
+const DemoCard: Component<DemoCardProps> = props => {
   const { locale } = useI18n();
 
   return (

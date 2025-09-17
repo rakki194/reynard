@@ -3,17 +3,15 @@ Database service for Reynard Basic Backend
 SQLAlchemy-based database operations with async support
 """
 
-import asyncio
 import os
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from config import database_config
 from models import BackgroundTask, Base, CacheEntry, Session, SystemMetric, User
 from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import selectinload
 
 # Detect reload mode
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
@@ -80,7 +78,7 @@ class DatabaseService:
         username: str,
         email: str,
         password_hash: str,
-        full_name: Optional[str] = None,
+        full_name: str | None = None,
     ) -> User:
         """Create a new user"""
         async with self.get_session_context() as session:
@@ -95,7 +93,7 @@ class DatabaseService:
             await session.refresh(user)
             return user
 
-    async def get_user_by_username(self, username: str) -> Optional[User]:
+    async def get_user_by_username(self, username: str) -> User | None:
         """Get user by username"""
         async with self.get_session_context() as session:
             result = await session.execute(
@@ -103,13 +101,13 @@ class DatabaseService:
             )
             return result.scalar_one_or_none()
 
-    async def get_user_by_id(self, user_id: int) -> Optional[User]:
+    async def get_user_by_id(self, user_id: int) -> User | None:
         """Get user by ID"""
         async with self.get_session_context() as session:
             result = await session.execute(select(User).where(User.id == user_id))
             return result.scalar_one_or_none()
 
-    async def get_all_users(self, skip: int = 0, limit: int = 100) -> List[User]:
+    async def get_all_users(self, skip: int = 0, limit: int = 100) -> list[User]:
         """Get all users with pagination"""
         async with self.get_session_context() as session:
             result = await session.execute(
@@ -139,7 +137,7 @@ class DatabaseService:
             await session.refresh(session_obj)
             return session_obj
 
-    async def get_session_by_token(self, token: str) -> Optional[Session]:
+    async def get_session_by_token(self, token: str) -> Session | None:
         """Get session by token"""
         async with self.get_session_context() as session:
             result = await session.execute(
@@ -169,7 +167,7 @@ class DatabaseService:
             await session.commit()
 
     # Cache operations
-    async def set_cache(self, key: str, value: str, ttl: Optional[int] = None):
+    async def set_cache(self, key: str, value: str, ttl: int | None = None):
         """Set cache entry"""
         async with self.get_session_context() as session:
             expires_at = None
@@ -192,7 +190,7 @@ class DatabaseService:
 
             await session.commit()
 
-    async def get_cache(self, key: str) -> Optional[str]:
+    async def get_cache(self, key: str) -> str | None:
         """Get cache entry"""
         async with self.get_session_context() as session:
             result = await session.execute(
@@ -222,7 +220,7 @@ class DatabaseService:
 
     # System metrics
     async def record_metric(
-        self, name: str, value: float, data: Optional[Dict[str, Any]] = None
+        self, name: str, value: float, data: dict[str, Any] | None = None
     ):
         """Record a system metric"""
         async with self.get_session_context() as session:
@@ -236,7 +234,7 @@ class DatabaseService:
             session.add(metric)
             await session.commit()
 
-    async def get_metrics(self, name: str, limit: int = 100) -> List[SystemMetric]:
+    async def get_metrics(self, name: str, limit: int = 100) -> list[SystemMetric]:
         """Get metrics by name"""
         async with self.get_session_context() as session:
             result = await session.execute(
@@ -249,7 +247,7 @@ class DatabaseService:
 
     # Background tasks
     async def create_background_task(
-        self, name: str, data: Optional[Dict[str, Any]] = None
+        self, name: str, data: dict[str, Any] | None = None
     ) -> BackgroundTask:
         """Create a background task record"""
         async with self.get_session_context() as session:
@@ -264,7 +262,7 @@ class DatabaseService:
             return task
 
     async def update_task_status(
-        self, task_id: int, status: str, error_message: Optional[str] = None
+        self, task_id: int, status: str, error_message: str | None = None
     ):
         """Update task status"""
         async with self.get_session_context() as session:
@@ -296,7 +294,7 @@ class DatabaseService:
             print(f"[FAIL] Database health check failed: {e}")
             return False
 
-    async def get_stats(self) -> Dict[str, Any]:
+    async def get_stats(self) -> dict[str, Any]:
         """Get database statistics"""
         if not self.is_initialized:
             return {"initialized": False}

@@ -33,9 +33,7 @@
       "import": "./dist/performance/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && tsc src/index.ts --declaration --declarationMap --emitDeclarationOnly --outDir dist --jsx preserve --jsxImportSource solid-js --target ES2022 --moduleResolution bundler --skipLibCheck",

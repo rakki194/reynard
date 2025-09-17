@@ -29,10 +29,7 @@ export interface CanvasSetupConfig {
   scale?: number;
 }
 
-export function createCanvas(
-  canvasElement: HTMLCanvasElement,
-  config: CanvasSetupConfig,
-): fabric.Canvas {
+export function createCanvas(canvasElement: HTMLCanvasElement, config: CanvasSetupConfig): fabric.Canvas {
   const canvas = new fabric.Canvas(canvasElement, {
     width: config.containerWidth,
     height: config.containerHeight,
@@ -52,18 +49,18 @@ export function createCanvas(
 export function addBoundingBoxesToCanvas(
   canvas: fabric.Canvas,
   boundingBoxes: BoundingBox[],
-  config: CanvasSetupConfig,
+  config: CanvasSetupConfig
 ) {
   // Clear existing objects
   canvas.clear();
 
   // Add each bounding box as a fabric rectangle
-  boundingBoxes.forEach((box) => {
+  boundingBoxes.forEach(box => {
     const displayCoords = boundingBoxToDisplayCoords(
       box,
       config.imageInfo,
       config.containerWidth,
-      config.containerHeight,
+      config.containerHeight
     );
 
     const rect = new fabric.Rect({

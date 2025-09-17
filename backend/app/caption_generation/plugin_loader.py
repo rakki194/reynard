@@ -26,22 +26,23 @@ This module now serves as a facade that imports from the modular components:
 - global_manager.py: Global manager singleton
 """
 
+from .global_manager import (
+    discover_plugins,
+    get_captioner_manager,
+    is_manager_initialized,
+    reset_global_manager,
+)
+
 # Import all the modular components
 from .plugin import CaptionerPlugin
 from .plugin_manager import CaptionerManager
-from .global_manager import (
-    get_captioner_manager,
-    discover_plugins,
-    reset_global_manager,
-    is_manager_initialized,
-)
 
 # Re-export the main classes and functions for backward compatibility
 __all__ = [
+    "CaptionerManager",
     "CaptionerPlugin",
-    "CaptionerManager", 
-    "get_captioner_manager",
     "discover_plugins",
-    "reset_global_manager",
+    "get_captioner_manager",
     "is_manager_initialized",
+    "reset_global_manager",
 ]

@@ -30,7 +30,7 @@ export const ThemeToggle: Component = () => {
   };
 
   const cycleTheme = () => {
-    const themes = getAvailableThemes().map((theme) => theme.name as ThemeName);
+    const themes = getAvailableThemes().map(theme => theme.name as ThemeName);
     const currentIndex = themes.indexOf(theme);
     const nextIndex = (currentIndex + 1) % themes.length;
     setTheme(themes[nextIndex]);

@@ -44,11 +44,7 @@ export function formatNumber(num: number, locale: string = "en-US"): string {
  * formatCurrency(1234.56, 'USD') // Returns "$1,234.56"
  * formatCurrency(1234.56, 'EUR', 'de-DE') // Returns "1.234,56 €"
  */
-export function formatCurrency(
-  amount: number,
-  currency: string = "USD",
-  locale: string = "en-US",
-): string {
+export function formatCurrency(amount: number, currency: string = "USD", locale: string = "en-US"): string {
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,

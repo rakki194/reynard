@@ -40,14 +40,14 @@ export const useKeyboardNavigation = ({
         break;
       case "ArrowDown":
         event.preventDefault();
-        setState((prev) => ({
+        setState(prev => ({
           ...prev,
           selectedIndex: Math.min(prev.selectedIndex + 1, items.length - 1),
         }));
         break;
       case "ArrowUp":
         event.preventDefault();
-        setState((prev) => ({
+        setState(prev => ({
           ...prev,
           selectedIndex: Math.max(prev.selectedIndex - 1, 0),
         }));
@@ -56,7 +56,7 @@ export const useKeyboardNavigation = ({
         event.preventDefault();
         const currentItem = items[state().selectedIndex];
         if (currentItem?.submenu) {
-          setState((prev) => ({ ...prev, submenuOpen: prev.selectedIndex }));
+          setState(prev => ({ ...prev, submenuOpen: prev.selectedIndex }));
         }
         break;
       }

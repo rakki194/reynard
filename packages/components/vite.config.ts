@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardComponents",
-      fileName: (format) => {
+      fileName: format => {
         if (format === "es") return "index.js";
         if (format === "cjs") return "index.cjs";
         return `index.${format}`;
@@ -37,7 +37,7 @@ export default defineConfig({
           "reynard-charts": "ReynardCharts",
           three: "THREE",
         },
-        assetFileNames: (assetInfo) => {
+        assetFileNames: assetInfo => {
           const assetName = (assetInfo as { fileName?: string }).fileName;
           if (assetName === "style.css") {
             return "styles.css";

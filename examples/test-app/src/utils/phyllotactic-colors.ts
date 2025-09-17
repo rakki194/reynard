@@ -22,14 +22,13 @@ export interface ColorConfig {
  */
 export function generateGoldenColor(
   index: number,
-  config: ColorConfig,
+  config: ColorConfig
 ): {
   hue: number;
   saturation: number;
   lightness: number;
 } {
-  const hue =
-    (config.baseHue + index * GOLDEN_ANGLE + (config.hueOffset || 0)) % 360;
+  const hue = (config.baseHue + index * GOLDEN_ANGLE + (config.hueOffset || 0)) % 360;
 
   return {
     hue,

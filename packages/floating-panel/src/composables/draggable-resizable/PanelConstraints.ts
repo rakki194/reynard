@@ -22,17 +22,8 @@ export interface PanelConstraints {
 /**
  * Apply constraints to panel state
  */
-export function applyConstraints(
-  state: PanelState,
-  constraints: PanelConstraints,
-): PanelState {
-  const {
-    minWidth = 180,
-    minHeight = 120,
-    maxWidth = 800,
-    maxHeight = 600,
-    bounds,
-  } = constraints;
+export function applyConstraints(state: PanelState, constraints: PanelConstraints): PanelState {
+  const { minWidth = 180, minHeight = 120, maxWidth = 800, maxHeight = 600, bounds } = constraints;
 
   let { x, y, width, height } = state;
 
@@ -42,12 +33,7 @@ export function applyConstraints(
 
   // Apply position constraints
   if (bounds) {
-    const {
-      top = 0,
-      right = window.innerWidth,
-      bottom = window.innerHeight,
-      left = 0,
-    } = bounds;
+    const { top = 0, right = window.innerWidth, bottom = window.innerHeight, left = 0 } = bounds;
     x = Math.max(left, Math.min(right - width, x));
     y = Math.max(top, Math.min(bottom - height, y));
   }

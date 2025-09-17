@@ -9,7 +9,7 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
-const Sidebar: Component<SidebarProps> = (props) => {
+const Sidebar: Component<SidebarProps> = props => {
   const { t } = useI18n();
 
   const handleToggle = () => props.onToggle();

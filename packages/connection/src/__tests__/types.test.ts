@@ -1,11 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  ConnectionState,
-  ConnectionType,
-  ConnectionHealth,
-  SecurityLevel,
-  RecoveryStrategy,
-} from "../types";
+import { ConnectionState, ConnectionType, ConnectionHealth, SecurityLevel, RecoveryStrategy } from "../types";
 
 describe("connection types enums", () => {
   it("contain expected values", () => {

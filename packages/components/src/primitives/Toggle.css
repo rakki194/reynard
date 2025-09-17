@@ -132,15 +132,11 @@
   transform: translateX(1.6em) translateY(-50%) scale(0.95);
 }
 
-.toggle.sm:not(.disabled):active
-  .toggle__input:checked
-  + .toggle__slider::before {
+.toggle.sm:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
   transform: translateX(1.2em) translateY(-50%) scale(0.95);
 }
 
-.toggle.lg:not(.disabled):active
-  .toggle__input:checked
-  + .toggle__slider::before {
+.toggle.lg:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
   transform: translateX(1.8em) translateY(-50%) scale(0.95);
 }
 
@@ -207,23 +203,14 @@
   transform: translateX(-1.8em) translateY(-50%);
 }
 
-:root[dir="rtl"]
-  .toggle:not(.disabled):active
-  .toggle__input:checked
-  + .toggle__slider::before {
+:root[dir="rtl"] .toggle:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
   transform: translateX(-1.6em) translateY(-50%) scale(0.95);
 }
 
-:root[dir="rtl"]
-  .toggle.sm:not(.disabled):active
-  .toggle__input:checked
-  + .toggle__slider::before {
+:root[dir="rtl"] .toggle.sm:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
   transform: translateX(-1.2em) translateY(-50%) scale(0.95);
 }
 
-:root[dir="rtl"]
-  .toggle.lg:not(.disabled):active
-  .toggle__input:checked
-  + .toggle__slider::before {
+:root[dir="rtl"] .toggle.lg:not(.disabled):active .toggle__input:checked + .toggle__slider::before {
   transform: translateX(-1.8em) translateY(-50%) scale(0.95);
 }

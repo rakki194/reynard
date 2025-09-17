@@ -7,10 +7,7 @@
 
 import { ThumbnailOptions, ProcessingResult } from "../types";
 import { getFileTypeInfo } from "../config/file-types";
-import {
-  ThumbnailGeneratorFactory,
-  ThumbnailGeneratorFactoryOptions,
-} from "./ThumbnailGeneratorFactory";
+import { ThumbnailGeneratorFactory, ThumbnailGeneratorFactoryOptions } from "./ThumbnailGeneratorFactory";
 
 export interface ThumbnailGeneratorOptions extends ThumbnailOptions {
   /** Whether to enable Web Workers for background processing */
@@ -26,9 +23,7 @@ export interface ThumbnailGeneratorOptions extends ThumbnailOptions {
 export class ThumbnailGenerator {
   private factory: ThumbnailGeneratorFactory;
 
-  constructor(
-    private options: ThumbnailGeneratorOptions = { size: [200, 200] },
-  ) {
+  constructor(private options: ThumbnailGeneratorOptions = { size: [200, 200] }) {
     this.options = {
       format: "webp",
       quality: 85,
@@ -42,9 +37,7 @@ export class ThumbnailGenerator {
       ...options,
     };
 
-    this.factory = new ThumbnailGeneratorFactory(
-      this.options as ThumbnailGeneratorFactoryOptions,
-    );
+    this.factory = new ThumbnailGeneratorFactory(this.options as ThumbnailGeneratorFactoryOptions);
   }
 
   /**
@@ -52,7 +45,7 @@ export class ThumbnailGenerator {
    */
   async generateThumbnail(
     file: File | string,
-    options?: Partial<ThumbnailOptions>,
+    options?: Partial<ThumbnailOptions>
   ): Promise<ProcessingResult<Blob | string>> {
     const mergedOptions = { ...this.options, ...options };
 
@@ -87,8 +80,7 @@ export class ThumbnailGenerator {
     } catch (error) {
       return {
         success: false,
-        error:
-          error instanceof Error ? error.message : "Unknown error occurred",
+        error: error instanceof Error ? error.message : "Unknown error occurred",
         duration: 0,
         timestamp: new Date(),
       };
@@ -99,7 +91,7 @@ export class ThumbnailGenerator {
    * Get file information
    */
   private async getFileInfo(
-    file: File | string,
+    file: File | string
   ): Promise<ProcessingResult<{ name: string; size: number; type: string }>> {
     try {
       if (typeof file === "string") {
@@ -129,8 +121,7 @@ export class ThumbnailGenerator {
     } catch (error) {
       return {
         success: false,
-        error:
-          error instanceof Error ? error.message : "Failed to get file info",
+        error: error instanceof Error ? error.message : "Failed to get file info",
         duration: 0,
         timestamp: new Date(),
       };
@@ -142,9 +133,7 @@ export class ThumbnailGenerator {
    */
   private getFileExtension(filename: string): string {
     const lastDotIndex = filename.lastIndexOf(".");
-    return lastDotIndex !== -1
-      ? filename.substring(lastDotIndex).toLowerCase()
-      : "";
+    return lastDotIndex !== -1 ? filename.substring(lastDotIndex).toLowerCase() : "";
   }
 
   /**

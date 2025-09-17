@@ -50,7 +50,7 @@ export function getTranslationValue(
   obj: Record<string, unknown>,
   path: string,
   params?: TranslationParams,
-  locale: LanguageCode = "en",
+  locale: LanguageCode = "en"
 ): string {
   const value = path.split(".").reduce((acc: unknown, part) => {
     if (acc && typeof acc === "object" && part in acc) {
@@ -91,17 +91,9 @@ export function getTranslationValue(
     }
 
     // Check if it has the required pluralization keys for full pluralization support
-    if (
-      pluralObj.one &&
-      pluralObj.other &&
-      (pluralObj.zero || pluralObj.few || pluralObj.many)
-    ) {
+    if (pluralObj.one && pluralObj.other && (pluralObj.zero || pluralObj.few || pluralObj.many)) {
       if (params && typeof params.count === "number") {
-        const pluralResult = getPlural(
-          params.count,
-          pluralObj as PluralForms,
-          locale,
-        );
+        const pluralResult = getPlural(params.count, pluralObj as PluralForms, locale);
         // Debug logging removed
         // Interpolate parameters in the plural result
         if (pluralResult && params !== undefined) {
@@ -152,11 +144,7 @@ export function formatNumber(value: number, locale: LanguageCode): string {
 }
 
 // Format date according to locale
-export function formatDate(
-  date: Date,
-  locale: LanguageCode,
-  options?: Intl.DateTimeFormatOptions,
-): string {
+export function formatDate(date: Date, locale: LanguageCode, options?: Intl.DateTimeFormatOptions): string {
   try {
     return new Intl.DateTimeFormat(locale, options).format(date);
   } catch {
@@ -165,11 +153,7 @@ export function formatDate(
 }
 
 // Format currency according to locale
-export function formatCurrency(
-  value: number,
-  locale: LanguageCode,
-  currency = "USD",
-): string {
+export function formatCurrency(value: number, locale: LanguageCode, currency = "USD"): string {
   try {
     return new Intl.NumberFormat(locale, {
       style: "currency",

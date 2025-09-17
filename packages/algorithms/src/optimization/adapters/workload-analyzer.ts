@@ -92,9 +92,7 @@ export function calculateOverlapRatio(aabbs: AABB[]): number {
 /**
  * Analyze query pattern based on spatial distribution
  */
-export function analyzeQueryPattern(
-  aabbs: AABB[],
-): "random" | "clustered" | "sequential" {
+export function analyzeQueryPattern(aabbs: AABB[]): "random" | "clustered" | "sequential" {
   if (aabbs.length < 3) return "random";
 
   // Analyze spatial distribution
@@ -109,10 +107,9 @@ export function analyzeQueryPattern(
  * Get algorithm recommendation based on workload analysis
  */
 export function getAlgorithmRecommendation(
-  characteristics: WorkloadCharacteristics,
+  characteristics: WorkloadCharacteristics
 ): WorkloadAnalysisResult["recommendations"] {
-  const { objectCount, spatialDensity, overlapRatio, queryPattern } =
-    characteristics;
+  const { objectCount, spatialDensity, overlapRatio, queryPattern } = characteristics;
 
   // Small object counts: naive is often fastest
   if (objectCount < 50) {
@@ -146,8 +143,7 @@ export function getAlgorithmRecommendation(
     return {
       preferredAlgorithm: "optimized",
       confidence: 0.75,
-      reasoning:
-        "High overlap ratio benefits from optimized collision detection",
+      reasoning: "High overlap ratio benefits from optimized collision detection",
     };
   }
 

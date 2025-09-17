@@ -16,11 +16,7 @@ interface CustomTagGeneratorProps {
 }
 
 // Helper function to set CSS custom properties
-const setCSSProperty = (
-  element: HTMLElement,
-  property: string,
-  value: string,
-) => {
+const setCSSProperty = (element: HTMLElement, property: string, value: string) => {
   element.style.setProperty(property, value);
 };
 
@@ -29,7 +25,7 @@ const updateTagColors = (
   themes: string[],
   customTag: string,
   tagIntensity: number,
-  generatedTagsRef: HTMLDivElement[],
+  generatedTagsRef: HTMLDivElement[]
 ) => {
   const generator = createTagColorGenerator();
   themes.forEach((theme, index) => {
@@ -37,11 +33,7 @@ const updateTagColors = (
     if (ref) {
       const color = generator.getTagColor(theme, customTag, tagIntensity);
       setCSSProperty(ref, "--dynamic-bg-color", formatOKLCH(color));
-      setCSSProperty(
-        ref,
-        "--dynamic-text-color",
-        color.l > 50 ? "#000" : "#fff",
-      );
+      setCSSProperty(ref, "--dynamic-text-color", color.l > 50 ? "#000" : "#fff");
     }
   });
 };
@@ -52,19 +44,17 @@ const TagInputControls: Component<{
   tagIntensity: number;
   onTagChange: (tag: string) => void;
   onIntensityChange: (intensity: number) => void;
-}> = (props) => (
+}> = props => (
   <div class="tag-inputs">
     <input
       type="text"
       placeholder="Enter tag name"
       value={props.customTag}
-      onInput={(e) => props.onTagChange(e.target.value)}
+      onInput={e => props.onTagChange(e.target.value)}
       class="tag-input"
     />
     <div class="intensity-control">
-      <label for="tag-intensity-slider">
-        Intensity: {props.tagIntensity.toFixed(1)}
-      </label>
+      <label for="tag-intensity-slider">Intensity: {props.tagIntensity.toFixed(1)}</label>
       <Slider
         id="tag-intensity-slider"
         min={0.1}
@@ -85,19 +75,15 @@ const GeneratedTagsDisplay: Component<{
   customTag: string;
   tagIntensity: number;
   generatedTagsRef: HTMLDivElement[];
-}> = (props) => (
+}> = props => (
   <div class="generated-tags">
     <For each={props.availableThemes}>
       {(theme, index) => {
         const generator = createTagColorGenerator();
-        const color = generator.getTagColor(
-          theme,
-          props.customTag,
-          props.tagIntensity,
-        );
+        const color = generator.getTagColor(theme, props.customTag, props.tagIntensity);
         return (
           <div
-            ref={(el) => (props.generatedTagsRef[index()] = el)}
+            ref={el => (props.generatedTagsRef[index()] = el)}
             class="generated-tag"
             data-background-color={formatOKLCH(color)}
             data-text-color={color.l > 50 ? "#000" : "#fff"}
@@ -110,19 +96,12 @@ const GeneratedTagsDisplay: Component<{
   </div>
 );
 
-export const CustomTagGenerator: Component<CustomTagGeneratorProps> = (
-  props,
-) => {
+export const CustomTagGenerator: Component<CustomTagGeneratorProps> = props => {
   const generatedTagsRef: HTMLDivElement[] = [];
 
   // Update generated tags
   createEffect(() => {
-    updateTagColors(
-      props.availableThemes,
-      props.customTag,
-      props.tagIntensity,
-      generatedTagsRef,
-    );
+    updateTagColors(props.availableThemes, props.customTag, props.tagIntensity, generatedTagsRef);
   });
 
   return (

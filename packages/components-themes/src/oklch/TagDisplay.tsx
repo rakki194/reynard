@@ -12,7 +12,7 @@ interface TagDisplayProps {
   intensity: Accessor<number>;
 }
 
-export const TagDisplay: Component<TagDisplayProps> = (props) => {
+export const TagDisplay: Component<TagDisplayProps> = props => {
   const tagColors = useTagColors();
 
   const tagStyle = createMemo(() => {
@@ -23,7 +23,7 @@ export const TagDisplay: Component<TagDisplayProps> = (props) => {
     <div class="tag-display">
       <div
         class="tag"
-        ref={(el) => {
+        ref={el => {
           if (el) {
             const style = tagStyle();
             el.style.setProperty("--tag-bg", style["--tag-bg"]);

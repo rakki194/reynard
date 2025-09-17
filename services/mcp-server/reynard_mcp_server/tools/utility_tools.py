@@ -11,11 +11,11 @@ import logging
 import os
 import signal
 import subprocess
+import zoneinfo
 from datetime import datetime
 from typing import Any
 
 import requests
-import zoneinfo
 
 logger = logging.getLogger(__name__)
 

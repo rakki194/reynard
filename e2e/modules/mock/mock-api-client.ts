@@ -19,42 +19,28 @@ export class MockApiClient {
   /**
    * Mock a GET request
    */
-  async get(
-    endpoint: string,
-    headers?: Record<string, string>,
-  ): Promise<Response> {
+  async get(endpoint: string, headers?: Record<string, string>): Promise<Response> {
     return this.mockRequest("GET", endpoint, undefined, headers);
   }
 
   /**
    * Mock a POST request
    */
-  async post(
-    endpoint: string,
-    body?: unknown,
-    headers?: Record<string, string>,
-  ): Promise<Response> {
+  async post(endpoint: string, body?: unknown, headers?: Record<string, string>): Promise<Response> {
     return this.mockRequest("POST", endpoint, body, headers);
   }
 
   /**
    * Mock a PUT request
    */
-  async put(
-    endpoint: string,
-    body?: unknown,
-    headers?: Record<string, string>,
-  ): Promise<Response> {
+  async put(endpoint: string, body?: unknown, headers?: Record<string, string>): Promise<Response> {
     return this.mockRequest("PUT", endpoint, body, headers);
   }
 
   /**
    * Mock a DELETE request
    */
-  async delete(
-    endpoint: string,
-    headers?: Record<string, string>,
-  ): Promise<Response> {
+  async delete(endpoint: string, headers?: Record<string, string>): Promise<Response> {
     return this.mockRequest("DELETE", endpoint, undefined, headers);
   }
 
@@ -65,7 +51,7 @@ export class MockApiClient {
     _method: string,
     endpoint: string,
     _body?: unknown,
-    _headers?: Record<string, string>,
+    _headers?: Record<string, string>
   ): Promise<Response> {
     const response = this.responses.get(endpoint) || {
       status: 404,
@@ -74,7 +60,7 @@ export class MockApiClient {
 
     // Simulate delay
     if (response.delay) {
-      await new Promise((resolve) => setTimeout(resolve, response.delay));
+      await new Promise(resolve => setTimeout(resolve, response.delay));
     }
 
     return new Response(JSON.stringify(response.body), {

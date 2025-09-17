@@ -110,7 +110,7 @@ export const IconGallery: Component = () => {
       "reynard-logo",
     ];
 
-    iconNames.forEach((name) => {
+    iconNames.forEach(name => {
       const svgElement = fluentIconsPackage.getIcon(name);
       const metadata = fluentIconsPackage.getIconMetadata?.(name);
       if (svgElement) {
@@ -131,20 +131,16 @@ export const IconGallery: Component = () => {
     let filtered = allIcons();
 
     if (selectedCategory() !== "all") {
-      filtered = filtered.filter(
-        (icon) => icon.category === selectedCategory(),
-      );
+      filtered = filtered.filter(icon => icon.category === selectedCategory());
     }
 
     if (searchTerm()) {
       const term = searchTerm().toLowerCase();
       filtered = filtered.filter(
-        (icon) =>
+        icon =>
           icon.name.toLowerCase().includes(term) ||
           icon.metadata?.description?.toLowerCase().includes(term) ||
-          icon.metadata?.keywords?.some((keyword: string) =>
-            keyword.toLowerCase().includes(term),
-          ),
+          icon.metadata?.keywords?.some((keyword: string) => keyword.toLowerCase().includes(term))
       );
     }
 
@@ -196,7 +192,7 @@ export const IconGallery: Component = () => {
               type="text"
               placeholder="Search icons..."
               value={searchTerm()}
-              onInput={(e) => setSearchTerm(e.target.value)}
+              onInput={e => setSearchTerm(e.target.value)}
               class="search-input"
             />
           </div>
@@ -206,15 +202,11 @@ export const IconGallery: Component = () => {
           <div class="category-filter">
             <select
               value={selectedCategory()}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={e => setSelectedCategory(e.target.value)}
               class="category-select"
               title="Filter icons by category"
             >
-              <For each={categories}>
-                {(category) => (
-                  <option value={category.id}>{category.name}</option>
-                )}
-              </For>
+              <For each={categories}>{category => <option value={category.id}>{category.name}</option>}</For>
             </select>
           </div>
 
@@ -255,7 +247,7 @@ export const IconGallery: Component = () => {
 
       <div class={`icon-gallery ${viewMode()}`}>
         <For each={filteredIcons()}>
-          {(icon) => (
+          {icon => (
             <div
               class="icon-item"
               onClick={() => handleIconClick(icon.name)}
@@ -271,16 +263,10 @@ export const IconGallery: Component = () => {
               <div class="icon-info">
                 <span class="icon-name">{icon.name}</span>
                 {viewMode() === "list" && icon.metadata?.description && (
-                  <span class="icon-description">
-                    {icon.metadata.description}
-                  </span>
+                  <span class="icon-description">{icon.metadata.description}</span>
                 )}
               </div>
-              <button
-                class="icon-copy"
-                onClick={(e) => handleCopyIcon(icon.name, e)}
-                title="Copy SVG"
-              >
+              <button class="icon-copy" onClick={e => handleCopyIcon(icon.name, e)} title="Copy SVG">
                 {fluentIconsPackage.getIcon("copy") && (
                   <span
                     // eslint-disable-next-line solid/no-innerhtml

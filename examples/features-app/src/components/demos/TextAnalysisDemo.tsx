@@ -13,7 +13,7 @@ export default function TextAnalysisDemo() {
     "text-analysis",
     <div class="demo-content unavailable">
       <p>Text analysis is currently unavailable</p>
-    </div>,
+    </div>
   );
 
   const status = useFeatureStatus("text-analysis");
@@ -28,9 +28,7 @@ export default function TextAnalysisDemo() {
       setTimeout(() => {
         const text = inputText();
         const words = text.split(/\s+/).length;
-        const sentences = text
-          .split(/[.!?]+/)
-          .filter((s) => s.trim().length > 0).length;
+        const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
         const characters = text.length;
         const sentiment = Math.random() > 0.5 ? "positive" : "negative";
 
@@ -41,7 +39,7 @@ export default function TextAnalysisDemo() {
           sentiment,
           keywords: text
             .split(/\s+/)
-            .filter((word) => word.length > 4)
+            .filter(word => word.length > 4)
             .slice(0, 5),
         });
         setIsAnalyzing(false);
@@ -58,15 +56,13 @@ export default function TextAnalysisDemo() {
         <div class="demo-content">
           <p>Text analysis is fully available</p>
 
-          {status()?.degraded && (
-            <div class="status-message warning">⚠️ {status()?.message}</div>
-          )}
+          {status()?.degraded && <div class="status-message warning">⚠️ {status()?.message}</div>}
 
           <div style={{ "margin-top": "var(--spacing)" }}>
             <textarea
               placeholder="Enter text to analyze..."
               value={inputText()}
-              onInput={(e) => setInputText(e.target.value)}
+              onInput={e => setInputText(e.target.value)}
               style={{
                 width: "100%",
                 "min-height": "100px",
@@ -131,8 +127,7 @@ export default function TextAnalysisDemo() {
                 <div
                   style={{
                     display: "grid",
-                    "grid-template-columns":
-                      "repeat(auto-fit, minmax(120px, 1fr))",
+                    "grid-template-columns": "repeat(auto-fit, minmax(120px, 1fr))",
                     gap: "calc(var(--spacing) / 2)",
                     "margin-top": "calc(var(--spacing) / 2)",
                   }}
@@ -142,15 +137,11 @@ export default function TextAnalysisDemo() {
                     <div class="stat-label">Words</div>
                   </div>
                   <div class="stat-card">
-                    <div class="stat-value">
-                      {analysisResult().sentenceCount}
-                    </div>
+                    <div class="stat-value">{analysisResult().sentenceCount}</div>
                     <div class="stat-label">Sentences</div>
                   </div>
                   <div class="stat-card">
-                    <div class="stat-value">
-                      {analysisResult().characterCount}
-                    </div>
+                    <div class="stat-value">{analysisResult().characterCount}</div>
                     <div class="stat-label">Characters</div>
                   </div>
                   <div class="stat-card">

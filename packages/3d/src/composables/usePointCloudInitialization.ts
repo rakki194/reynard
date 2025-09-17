@@ -11,14 +11,11 @@ import { usePointCloudEvents } from "./usePointCloudEvents";
 
 export function usePointCloudInitialization() {
   const [isInitialized, setIsInitialized] = createSignal(false);
-  const [thumbnailSprites, setThumbnailSprites] = createSignal<SpriteLike[]>(
-    [],
-  );
+  const [thumbnailSprites, setThumbnailSprites] = createSignal<SpriteLike[]>([]);
   const [textSprites, setTextSprites] = createSignal<SpriteLike[]>([]);
 
   let threeJS: ThreeJSInterface | null = null;
-  let pointCloudRenderer: ReturnType<typeof usePointCloudRenderer> | null =
-    null;
+  let pointCloudRenderer: ReturnType<typeof usePointCloudRenderer> | null = null;
   let pointCloudEvents: ReturnType<typeof usePointCloudEvents> | null = null;
 
   const initializeRenderer = async (
@@ -27,7 +24,7 @@ export function usePointCloudInitialization() {
     renderer: any,
     points: EmbeddingPoint[],
     config: EmbeddingRenderingConfig,
-    onPointSelect?: (pointId: string) => void,
+    onPointSelect?: (pointId: string) => void
   ) => {
     // Initialize Three.js
     if (!threeJS) {
@@ -44,14 +41,7 @@ export function usePointCloudInitialization() {
     clearScene(scene);
 
     // Create point cloud
-    await createPointCloud(
-      scene,
-      camera,
-      renderer,
-      points,
-      config,
-      onPointSelect,
-    );
+    await createPointCloud(scene, camera, renderer, points, config, onPointSelect);
 
     // Create thumbnails if enabled
     if (config.enableThumbnails) {
@@ -74,9 +64,7 @@ export function usePointCloudInitialization() {
 
     // Remove thumbnail sprites
     if (pointCloudRenderer) {
-      pointCloudRenderer
-        .spriteManager()
-        .disposeSprites(thumbnailSprites(), scene);
+      pointCloudRenderer.spriteManager().disposeSprites(thumbnailSprites(), scene);
     }
     setThumbnailSprites([]);
 
@@ -93,7 +81,7 @@ export function usePointCloudInitialization() {
     renderer: any,
     points: EmbeddingPoint[],
     config: EmbeddingRenderingConfig,
-    onPointSelect?: (pointId: string) => void,
+    onPointSelect?: (pointId: string) => void
   ) => {
     if (!pointCloudRenderer || !points || points.length === 0) return;
 
@@ -105,49 +93,32 @@ export function usePointCloudInitialization() {
           points,
           camera,
           renderer,
-          onPointSelect,
+          onPointSelect
         );
       }
     };
 
-    await pointCloudRenderer.createPointCloud(
+    await pointCloudRenderer.createPointCloud(points, config, scene, handlePointClick);
+  };
+
+  const createThumbnailSprites = async (scene: any, points: EmbeddingPoint[], config: EmbeddingRenderingConfig) => {
+    if (!pointCloudRenderer || !pointCloudEvents || !points) return;
+
+    const sprites = await pointCloudRenderer.spriteManager().createThumbnailSprites(
       points,
       config,
       scene,
-      handlePointClick,
+      pointId => pointCloudEvents!.handlePointHover(pointId, config),
+      () => pointCloudEvents!.handlePointLeave(config)
     );
-  };
-
-  const createThumbnailSprites = async (
-    scene: any,
-    points: EmbeddingPoint[],
-    config: EmbeddingRenderingConfig,
-  ) => {
-    if (!pointCloudRenderer || !pointCloudEvents || !points) return;
-
-    const sprites = await pointCloudRenderer
-      .spriteManager()
-      .createThumbnailSprites(
-        points,
-        config,
-        scene,
-        (pointId) => pointCloudEvents!.handlePointHover(pointId, config),
-        () => pointCloudEvents!.handlePointLeave(config),
-      );
 
     setThumbnailSprites(sprites);
   };
 
-  const createTextSprites = async (
-    scene: any,
-    points: EmbeddingPoint[],
-    config: EmbeddingRenderingConfig,
-  ) => {
+  const createTextSprites = async (scene: any, points: EmbeddingPoint[], config: EmbeddingRenderingConfig) => {
     if (!pointCloudRenderer || !points) return;
 
-    const sprites = await pointCloudRenderer
-      .spriteManager()
-      .createTextSprites(points, config, scene);
+    const sprites = await pointCloudRenderer.spriteManager().createTextSprites(points, config, scene);
 
     setTextSprites(sprites);
   };

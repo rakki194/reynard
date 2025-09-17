@@ -10,11 +10,7 @@ import {
   executeRecoveryStrategy,
   createRecoveryStrategy,
 } from "../RecoveryStrategies";
-import {
-  ErrorCategory,
-  ErrorSeverity,
-  ErrorContext,
-} from "../../types/ErrorTypes";
+import { ErrorCategory, ErrorSeverity, ErrorContext } from "../../types/ErrorTypes";
 import { RecoveryActionType } from "../../types/RecoveryTypes";
 
 describe("RecoveryStrategies", () => {
@@ -23,9 +19,7 @@ describe("RecoveryStrategies", () => {
   });
 
   // Helper function to create complete ErrorContext for tests
-  const createTestContext = (
-    overrides: Partial<ErrorContext> = {},
-  ): ErrorContext => ({
+  const createTestContext = (overrides: Partial<ErrorContext> = {}): ErrorContext => ({
     componentStack: ["TestComponent"],
     errorBoundaryId: "test-boundary-123",
     timestamp: Date.now(),
@@ -41,7 +35,7 @@ describe("RecoveryStrategies", () => {
 
   describe("builtInRecoveryStrategies", () => {
     it("should include all expected built-in strategies", () => {
-      const strategyIds = builtInRecoveryStrategies.map((s) => s.id);
+      const strategyIds = builtInRecoveryStrategies.map(s => s.id);
 
       expect(strategyIds).toContain("retry");
       expect(strategyIds).toContain("fallback-ui");
@@ -52,7 +46,7 @@ describe("RecoveryStrategies", () => {
     });
 
     it("should have strategies with proper structure", () => {
-      builtInRecoveryStrategies.forEach((strategy) => {
+      builtInRecoveryStrategies.forEach(strategy => {
         expect(strategy.id).toBeDefined();
         expect(strategy.name).toBeDefined();
         expect(strategy.description).toBeDefined();
@@ -75,7 +69,7 @@ describe("RecoveryStrategies", () => {
       const applicable = getApplicableStrategies(networkError, context);
 
       expect(applicable.length).toBeGreaterThan(0);
-      expect(applicable.some((s) => s.id === "retry")).toBe(true);
+      expect(applicable.some(s => s.id === "retry")).toBe(true);
     });
 
     it("should return strategies that can recover from rendering errors", () => {
@@ -89,7 +83,7 @@ describe("RecoveryStrategies", () => {
       const applicable = getApplicableStrategies(renderingError, context);
 
       expect(applicable.length).toBeGreaterThan(0);
-      expect(applicable.some((s) => s.id === "fallback-ui")).toBe(true);
+      expect(applicable.some(s => s.id === "fallback-ui")).toBe(true);
     });
 
     it("should return strategies that can recover from critical errors", () => {
@@ -103,7 +97,7 @@ describe("RecoveryStrategies", () => {
       const applicable = getApplicableStrategies(criticalError, context);
 
       expect(applicable.length).toBeGreaterThan(0);
-      expect(applicable.some((s) => s.id === "redirect")).toBe(true);
+      expect(applicable.some(s => s.id === "redirect")).toBe(true);
     });
 
     it("should sort strategies by priority", () => {
@@ -117,9 +111,7 @@ describe("RecoveryStrategies", () => {
       const applicable = getApplicableStrategies(error, context);
 
       for (let i = 1; i < applicable.length; i++) {
-        expect(applicable[i - 1].priority).toBeLessThanOrEqual(
-          applicable[i].priority,
-        );
+        expect(applicable[i - 1].priority).toBeLessThanOrEqual(applicable[i].priority);
       }
     });
 
@@ -143,11 +135,7 @@ describe("RecoveryStrategies", () => {
         },
       ];
 
-      const applicable = getApplicableStrategies(
-        error,
-        context,
-        mockStrategies,
-      );
+      const applicable = getApplicableStrategies(error, context, mockStrategies);
 
       expect(applicable).toHaveLength(0);
     });
@@ -171,11 +159,7 @@ describe("RecoveryStrategies", () => {
       const error = new Error("Test error");
       const context = createTestContext({ category: ErrorCategory.NETWORK });
 
-      const result = await executeRecoveryStrategy(
-        mockStrategy,
-        error,
-        context,
-      );
+      const result = await executeRecoveryStrategy(mockStrategy, error, context);
 
       expect(result.success).toBe(true);
       expect(result.action).toBe(RecoveryActionType.RETRY);
@@ -196,11 +180,7 @@ describe("RecoveryStrategies", () => {
       const error = new Error("Test error");
       const context = createTestContext({ category: ErrorCategory.NETWORK });
 
-      const result = await executeRecoveryStrategy(
-        mockStrategy,
-        error,
-        context,
-      );
+      const result = await executeRecoveryStrategy(mockStrategy, error, context);
 
       expect(result.success).toBe(false);
       expect(result.action).toBe(RecoveryActionType.CUSTOM);
@@ -214,11 +194,7 @@ describe("RecoveryStrategies", () => {
         name: "Test Strategy",
         description: "Test recovery strategy",
         canRecover: vi.fn().mockReturnValue(true),
-        recover: vi
-          .fn()
-          .mockImplementation(
-            () => new Promise((resolve) => setTimeout(resolve, 2000)),
-          ),
+        recover: vi.fn().mockImplementation(() => new Promise(resolve => setTimeout(resolve, 2000))),
         priority: 1,
         timeout: 100, // 100ms timeout
       };
@@ -226,11 +202,7 @@ describe("RecoveryStrategies", () => {
       const error = new Error("Test error");
       const context = createTestContext({ category: ErrorCategory.NETWORK });
 
-      const result = await executeRecoveryStrategy(
-        mockStrategy,
-        error,
-        context,
-      );
+      const result = await executeRecoveryStrategy(mockStrategy, error, context);
 
       expect(result.success).toBe(false);
       expect(result.message).toBe("Recovery strategy failed");
@@ -245,16 +217,16 @@ describe("RecoveryStrategies", () => {
         canRecover: vi.fn().mockReturnValue(true),
         recover: vi.fn().mockImplementation(
           () =>
-            new Promise((resolve) =>
+            new Promise(resolve =>
               setTimeout(
                 () =>
                   resolve({
                     success: true,
                     action: RecoveryActionType.RETRY,
                   }),
-                2000,
-              ),
-            ),
+                2000
+              )
+            )
         ),
         priority: 1,
         // No timeout specified
@@ -263,11 +235,7 @@ describe("RecoveryStrategies", () => {
       const error = new Error("Test error");
       const context = createTestContext({ category: ErrorCategory.NETWORK });
 
-      const result = await executeRecoveryStrategy(
-        mockStrategy,
-        error,
-        context,
-      );
+      const result = await executeRecoveryStrategy(mockStrategy, error, context);
 
       expect(result).toBeDefined();
       expect(result.success).toBe(true);
@@ -290,7 +258,7 @@ describe("RecoveryStrategies", () => {
         canRecover,
         recover,
         5,
-        5000,
+        5000
       );
 
       expect(strategy.id).toBe("custom-test");
@@ -314,7 +282,7 @@ describe("RecoveryStrategies", () => {
         "Custom Test",
         "Custom test strategy",
         canRecover,
-        recover,
+        recover
       );
 
       expect(strategy.priority).toBe(5);
@@ -324,9 +292,7 @@ describe("RecoveryStrategies", () => {
 
   describe("Built-in Strategy Behavior", () => {
     it("should have retry strategy that can recover from network errors", () => {
-      const retryStrategy = builtInRecoveryStrategies.find(
-        (s) => s.id === "retry",
-      );
+      const retryStrategy = builtInRecoveryStrategies.find(s => s.id === "retry");
       expect(retryStrategy).toBeDefined();
 
       const networkError = new Error("Network error");
@@ -336,15 +302,11 @@ describe("RecoveryStrategies", () => {
         recoverable: true,
       });
 
-      expect(retryStrategy!.canRecover(networkError, networkContext)).toBe(
-        true,
-      );
+      expect(retryStrategy!.canRecover(networkError, networkContext)).toBe(true);
     });
 
     it("should have fallback-ui strategy that can recover from rendering errors", () => {
-      const fallbackStrategy = builtInRecoveryStrategies.find(
-        (s) => s.id === "fallback-ui",
-      );
+      const fallbackStrategy = builtInRecoveryStrategies.find(s => s.id === "fallback-ui");
       expect(fallbackStrategy).toBeDefined();
 
       const renderingError = new Error("Render error");
@@ -354,15 +316,11 @@ describe("RecoveryStrategies", () => {
         recoverable: true,
       });
 
-      expect(
-        fallbackStrategy!.canRecover(renderingError, renderingContext),
-      ).toBe(true);
+      expect(fallbackStrategy!.canRecover(renderingError, renderingContext)).toBe(true);
     });
 
     it("should have redirect strategy for critical errors", () => {
-      const redirectStrategy = builtInRecoveryStrategies.find(
-        (s) => s.id === "redirect",
-      );
+      const redirectStrategy = builtInRecoveryStrategies.find(s => s.id === "redirect");
       expect(redirectStrategy).toBeDefined();
 
       const criticalError = new Error("Critical error");
@@ -372,15 +330,11 @@ describe("RecoveryStrategies", () => {
         recoverable: false,
       });
 
-      expect(redirectStrategy!.canRecover(criticalError, criticalContext)).toBe(
-        true,
-      );
+      expect(redirectStrategy!.canRecover(criticalError, criticalContext)).toBe(true);
     });
 
     it("should have reload strategy for critical errors", () => {
-      const reloadStrategy = builtInRecoveryStrategies.find(
-        (s) => s.id === "reload",
-      );
+      const reloadStrategy = builtInRecoveryStrategies.find(s => s.id === "reload");
       expect(reloadStrategy).toBeDefined();
 
       const criticalError = new Error("Critical error");
@@ -390,9 +344,7 @@ describe("RecoveryStrategies", () => {
         recoverable: false,
       });
 
-      expect(reloadStrategy!.canRecover(criticalError, criticalContext)).toBe(
-        true,
-      );
+      expect(reloadStrategy!.canRecover(criticalError, criticalContext)).toBe(true);
     });
   });
 });

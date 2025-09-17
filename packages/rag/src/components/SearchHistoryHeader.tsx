@@ -12,17 +12,12 @@ export interface SearchHistoryHeaderProps {
   onClearHistory: () => void;
 }
 
-export const SearchHistoryHeader: Component<SearchHistoryHeaderProps> = (props) => {
+export const SearchHistoryHeader: Component<SearchHistoryHeaderProps> = props => {
   return (
     <div class="history-header">
       <h3>Search History</h3>
       <div class="history-actions">
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={props.onClearHistory}
-          leftIcon={getIcon("delete")}
-        >
+        <Button variant="secondary" size="sm" onClick={props.onClearHistory} leftIcon={getIcon("delete")}>
           Clear All
         </Button>
       </div>

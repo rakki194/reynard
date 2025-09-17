@@ -156,10 +156,7 @@ await manager.registerGenerator(plugin.getGenerator());
 The unified manager is created using factory functions:
 
 ```typescript
-import {
-  createUnifiedAnnotationManager,
-  PRODUCTION_CONFIG,
-} from "reynard-annotating";
+import { createUnifiedAnnotationManager, PRODUCTION_CONFIG } from "reynard-annotating";
 
 const manager = createUnifiedAnnotationManager(PRODUCTION_CONFIG);
 await manager.initialize();
@@ -170,7 +167,7 @@ await manager.initialize();
 The system uses comprehensive event handling for monitoring and debugging:
 
 ```typescript
-manager.addEventListener((event) => {
+manager.addEventListener(event => {
   console.log("Annotation event:", event.type, event.data);
 });
 ```

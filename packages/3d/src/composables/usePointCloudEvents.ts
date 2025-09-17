@@ -16,7 +16,7 @@ export function usePointCloudEvents() {
     points: EmbeddingPoint[],
     camera: unknown,
     renderer: unknown,
-    onPointSelect?: (pointId: string) => void,
+    onPointSelect?: (pointId: string) => void
   ): void => {
     if (!camera || !pointCloud) return;
 

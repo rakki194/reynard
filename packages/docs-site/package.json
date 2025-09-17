@@ -19,13 +19,7 @@
     "generate-docs": "reynard-docs-generator",
     "generate-docs:watch": "reynard-docs-generator --watch"
   },
-  "keywords": [
-    "documentation",
-    "site",
-    "reynard",
-    "solidjs",
-    "typescript"
-  ],
+  "keywords": ["documentation", "site", "reynard", "solidjs", "typescript"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {

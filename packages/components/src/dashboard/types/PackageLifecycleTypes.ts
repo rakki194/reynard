@@ -7,13 +7,7 @@ export interface PackageLifecycleInfo {
   name: string;
   version: string;
   description: string;
-  status:
-    | "loaded"
-    | "unloaded"
-    | "loading"
-    | "unloading"
-    | "reloading"
-    | "error";
+  status: "loaded" | "unloaded" | "loading" | "unloading" | "reloading" | "error";
   loadTime: number;
   memoryUsage: number;
   lastLoaded: Date | null;

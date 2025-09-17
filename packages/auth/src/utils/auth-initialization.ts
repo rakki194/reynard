@@ -3,12 +3,7 @@
  * Handles initial auth state setup and token validation
  */
 
-import type {
-  User,
-  AuthState,
-  AuthConfiguration,
-  AuthCallbacks,
-} from "../types";
+import type { User, AuthState, AuthConfiguration, AuthCallbacks } from "../types";
 import { TokenManager, isTokenExpired, getUserFromToken } from "./token-utils";
 
 export interface AuthInitialization {
@@ -26,7 +21,7 @@ export const createAuthInitialization = (
   callbacks: AuthCallbacks,
   setupTokenRefresh: () => void,
   fetchUserProfile: () => void,
-  logout: () => Promise<void>,
+  logout: () => Promise<void>
 ): AuthInitialization => {
   const initialize = async (): Promise<void> => {
     updateAuthState({ isLoading: true });

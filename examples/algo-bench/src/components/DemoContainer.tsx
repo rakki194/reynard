@@ -11,7 +11,7 @@ interface DemoContainerProps {
   onBackToMenu: () => void;
 }
 
-export const DemoContainer: Component<DemoContainerProps> = (props) => {
+export const DemoContainer: Component<DemoContainerProps> = props => {
   const renderDemo = () => {
     switch (props.demo) {
       case "aabb-collision":
@@ -33,11 +33,7 @@ export const DemoContainer: Component<DemoContainerProps> = (props) => {
         <button class="back-button" onClick={props.onBackToMenu}>
           ← Back to Demos
         </button>
-        <h2 class="demo-title">
-          {props.demo
-            .replace("-", " ")
-            .replace(/\b\w/g, (l) => l.toUpperCase())}
-        </h2>
+        <h2 class="demo-title">{props.demo.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase())}</h2>
       </div>
 
       <div class="demo-content">{renderDemo()}</div>

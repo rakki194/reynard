@@ -54,29 +54,22 @@ export interface SystemHealth {
   models: Record<string, boolean>;
 }
 
-export const ModelManager: Component<ModelManagerProps> = (props) => {
-  const { models, systemHealth, error, loadModel, unloadModel, clearError } =
-    useModelManager({
-      baseUrl: props.backendConfig?.baseUrl || "http://localhost:8000",
-      apiKey: props.backendConfig?.apiKey,
-    });
+export const ModelManager: Component<ModelManagerProps> = props => {
+  const { models, systemHealth, error, loadModel, unloadModel, clearError } = useModelManager({
+    baseUrl: props.backendConfig?.baseUrl || "http://localhost:8000",
+    apiKey: props.backendConfig?.apiKey,
+  });
 
   return (
     <div class={`model-manager ${props.className || ""}`}>
       <div class="manager-header">
         <h3 class="manager-title">Model Manager</h3>
-        <p class="manager-description">
-          Manage AI models, monitor system health, and view usage statistics
-        </p>
+        <p class="manager-description">Manage AI models, monitor system health, and view usage statistics</p>
       </div>
 
       <div class="manager-content">
         <HealthOverview systemHealth={systemHealth()} />
-        <ModelsGrid
-          models={models()}
-          onLoad={loadModel}
-          onUnload={unloadModel}
-        />
+        <ModelsGrid models={models()} onLoad={loadModel} onUnload={unloadModel} />
 
         <Show when={error()}>
           <div class="error-message">

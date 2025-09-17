@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // Password validation
   password: {
-    "must-be-at-least-8-characters-long":
-      "Password must be at least 8 characters long",
-    "must-contain-at-least-one-uppercase-letter":
-      "Password must contain at least one uppercase letter",
-    "must-contain-at-least-one-lowercase-letter":
-      "Password must contain at least one lowercase letter",
-    "must-contain-at-least-one-number":
-      "Password must contain at least one number",
-    "must-contain-at-least-one-special-character":
-      "Password must contain at least one special character",
+    "must-be-at-least-8-characters-long": "Password must be at least 8 characters long",
+    "must-contain-at-least-one-uppercase-letter": "Password must contain at least one uppercase letter",
+    "must-contain-at-least-one-lowercase-letter": "Password must contain at least one lowercase letter",
+    "must-contain-at-least-one-number": "Password must contain at least one number",
+    "must-contain-at-least-one-special-character": "Password must contain at least one special character",
   },
 
   // Security validation
   security: {
-    "at-least-one-character-type-must-be-included":
-      "At least one character type must be included",
-    "input-contains-potentially-dangerous-html":
-      "Input contains potentially dangerous HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Input contains potentially dangerous SQL patterns",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Input contains potentially dangerous XSS patterns",
-    "input-contains-path-traversal-patterns":
-      "Input contains path traversal patterns",
-    "input-contains-windows-reserved-names":
-      "Input contains Windows reserved names",
-    "input-contains-executable-file-extensions":
-      "Input contains executable file extensions",
+    "at-least-one-character-type-must-be-included": "At least one character type must be included",
+    "input-contains-potentially-dangerous-html": "Input contains potentially dangerous HTML",
+    "input-contains-potentially-dangerous-sql-patterns": "Input contains potentially dangerous SQL patterns",
+    "input-contains-potentially-dangerous-xss-patterns": "Input contains potentially dangerous XSS patterns",
+    "input-contains-path-traversal-patterns": "Input contains path traversal patterns",
+    "input-contains-windows-reserved-names": "Input contains Windows reserved names",
+    "input-contains-executable-file-extensions": "Input contains executable file extensions",
     "input-contains-null-bytes": "Input contains null bytes",
     "input-contains-hidden-files": "Input contains hidden files",
-    "input-contains-javascript-file-extensions":
-      "Input contains JavaScript file extensions",
+    "input-contains-javascript-file-extensions": "Input contains JavaScript file extensions",
   },
 
   // Async operations
@@ -132,10 +119,8 @@ export const coreTranslations = {
 
   // Storage and serialization
   storage: {
-    "potentially-dangerous-json-detected":
-      "Potentially dangerous JSON detected",
-    "failed-to-parse-json-from-localstorage":
-      "Failed to parse JSON from localStorage:",
+    "potentially-dangerous-json-detected": "Potentially dangerous JSON detected",
+    "failed-to-parse-json-from-localstorage": "Failed to parse JSON from localStorage:",
     "error-parsing-storage-event": "Error parsing storage event for key",
   },
 
@@ -160,8 +145,7 @@ export const coreTranslations = {
     notFound: "Not found",
     mediaQueryNotSupported: "matchMedia not supported",
     loadFailed: "Failed to load module",
-    dangerousJson:
-      "Potentially dangerous JSON detected - contains prototype pollution patterns",
+    dangerousJson: "Potentially dangerous JSON detected - contains prototype pollution patterns",
     parseJsonFailed: "Failed to parse JSON from localStorage:",
     moduleIsNull: "Module is null",
     invalidModuleStructure: "Invalid module structure",
@@ -213,9 +197,7 @@ export const coreTranslations = {
   // Integration tests
   integration: {
     "session-and-api-key-generation": "Session and API Key Generation",
-    "authentication-and-input-validation-integration":
-      "Authentication and Input Validation Integration",
-    "performance-and-security-integration":
-      "Performance and Security Integration",
+    "authentication-and-input-validation-integration": "Authentication and Input Validation Integration",
+    "performance-and-security-integration": "Performance and Security Integration",
   },
 };

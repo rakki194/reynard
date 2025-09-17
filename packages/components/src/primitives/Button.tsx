@@ -5,18 +5,9 @@
 
 import { Component, JSX, splitProps, mergeProps } from "solid-js";
 
-export interface ButtonProps
-  extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Button variant */
-  variant?:
-    | "primary"
-    | "secondary"
-    | "tertiary"
-    | "ghost"
-    | "icon"
-    | "danger"
-    | "success"
-    | "warning";
+  variant?: "primary" | "secondary" | "tertiary" | "ghost" | "icon" | "danger" | "success" | "warning";
   /** Button size */
   size?: "sm" | "md" | "lg";
   /** Loading state */
@@ -44,7 +35,7 @@ const defaultProps: Partial<ButtonProps> = {
   iconOnly: false,
 };
 
-export const Button: Component<ButtonProps> = (props) => {
+export const Button: Component<ButtonProps> = props => {
   const merged = mergeProps(defaultProps, props);
   const [local, others] = splitProps(merged, [
     "variant",
@@ -94,30 +85,16 @@ export const Button: Component<ButtonProps> = (props) => {
   };
 
   return (
-    <button
-      class={getButtonClasses()}
-      disabled={local.disabled || local.loading}
-      {...others}
-    >
-      {local.leftIcon && (
-        <span class="reynard-button__icon reynard-button__icon--left">
-          {local.leftIcon}
-        </span>
-      )}
+    <button class={getButtonClasses()} disabled={local.disabled || local.loading} {...others}>
+      {local.leftIcon && <span class="reynard-button__icon reynard-button__icon--left">{local.leftIcon}</span>}
 
       {local.loading && <span class="reynard-button__spinner" />}
 
-      {!local.iconOnly && local.children && (
-        <span class="reynard-button__content">{local.children}</span>
-      )}
+      {!local.iconOnly && local.children && <span class="reynard-button__content">{local.children}</span>}
 
       {local.iconOnly && local.children}
 
-      {local.rightIcon && (
-        <span class="reynard-button__icon reynard-button__icon--right">
-          {local.rightIcon}
-        </span>
-      )}
+      {local.rightIcon && <span class="reynard-button__icon reynard-button__icon--right">{local.rightIcon}</span>}
     </button>
   );
 };

@@ -1,13 +1,7 @@
 import { createSignal } from "solid-js";
 import { Card, Tabs, TabPanel } from "reynard-components";
 import { getIcon } from "reynard-fluent-icons";
-import {
-  UnionFindGame,
-  CollisionGame,
-  SpatialHashDemo,
-  GeometryDemo,
-  PerformanceDemo,
-} from "reynard-games";
+import { UnionFindGame, CollisionGame, SpatialHashDemo, GeometryDemo, PerformanceDemo } from "reynard-games";
 import "./AlgorithmsDemo.css";
 
 export function AlgorithmsDemo() {
@@ -29,10 +23,7 @@ export function AlgorithmsDemo() {
     <div class="algorithms-demo">
       <div class="demo-header">
         <h2>🧮 Algorithms Demonstration</h2>
-        <p>
-          Interactive games and visualizations showcasing Reynard's algorithm
-          primitives
-        </p>
+        <p>Interactive games and visualizations showcasing Reynard's algorithm primitives</p>
       </div>
 
       <Tabs

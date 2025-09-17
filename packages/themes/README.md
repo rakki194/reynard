@@ -62,8 +62,8 @@ function ThemeToggle() {
   const { theme, setTheme, availableThemes } = useTheme();
 
   return (
-    <select value={theme()} onChange={(e) => setTheme(e.target.value)}>
-      {availableThemes.map((t) => (
+    <select value={theme()} onChange={e => setTheme(e.target.value)}>
+      {availableThemes.map(t => (
         <option key={t} value={t}>
           {t}
         </option>

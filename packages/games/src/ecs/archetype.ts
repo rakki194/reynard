@@ -59,7 +59,7 @@ export class Archetype {
 
   constructor(
     public readonly id: ArchetypeId,
-    public readonly componentTypes: ComponentType<Component>[],
+    public readonly componentTypes: ComponentType<Component>[]
   ) {
     // Store component type IDs for fast lookup
     for (const componentType of componentTypes) {
@@ -204,9 +204,7 @@ export class Archetypes {
   /**
    * Gets or creates an archetype for the given component types.
    */
-  getOrCreateArchetype(
-    componentTypes: ComponentType<Component>[],
-  ): ArchetypeId {
+  getOrCreateArchetype(componentTypes: ComponentType<Component>[]): ArchetypeId {
     const layoutKey = this.getComponentLayoutKey(componentTypes);
 
     let archetypeId = this.componentLayoutToArchetype.get(layoutKey);
@@ -247,9 +245,7 @@ export class Archetypes {
   /**
    * Finds an archetype that contains the given component types.
    */
-  findArchetypeWithComponents(
-    componentTypes: ComponentType<Component>[],
-  ): ArchetypeId | undefined {
+  findArchetypeWithComponents(componentTypes: ComponentType<Component>[]): ArchetypeId | undefined {
     const layoutKey = this.getComponentLayoutKey(componentTypes);
     return this.componentLayoutToArchetype.get(layoutKey);
   }
@@ -257,11 +253,9 @@ export class Archetypes {
   /**
    * Creates a component layout key for archetype lookup.
    */
-  private getComponentLayoutKey(
-    componentTypes: ComponentType<Component>[],
-  ): string {
+  private getComponentLayoutKey(componentTypes: ComponentType<Component>[]): string {
     return componentTypes
-      .map((ct) => ct.id)
+      .map(ct => ct.id)
       .sort((a, b) => a - b)
       .join(",");
   }

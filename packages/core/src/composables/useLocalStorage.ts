@@ -19,15 +19,8 @@ export interface UseLocalStorageOptions<T> {
 /**
  * Reactive localStorage hook
  */
-export const useLocalStorage = <T>(
-  key: string,
-  options: UseLocalStorageOptions<T>,
-) => {
-  const {
-    defaultValue,
-    serializer = defaultSerializer as Serializer<T>,
-    syncAcrossTabs = true,
-  } = options;
+export const useLocalStorage = <T>(key: string, options: UseLocalStorageOptions<T>) => {
+  const { defaultValue, serializer = defaultSerializer as Serializer<T>, syncAcrossTabs = true } = options;
 
   // Validate key input
   if (!key || typeof key !== "string" || key.trim() === "") {
@@ -63,9 +56,7 @@ export const useLocalStorage = <T>(
   });
 
   // Setup cross-tab synchronization
-  const storageHandler = syncAcrossTabs
-    ? createStorageEventHandler(key, setValue, serializer)
-    : { cleanup: () => {} };
+  const storageHandler = syncAcrossTabs ? createStorageEventHandler(key, setValue, serializer) : { cleanup: () => {} };
 
   onCleanup(storageHandler.cleanup);
 

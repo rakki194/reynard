@@ -39,7 +39,7 @@ class Position implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -47,7 +47,7 @@ class Velocity implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 ```
@@ -63,7 +63,7 @@ class GameTime implements Resource {
   readonly __resource = true;
   constructor(
     public deltaTime: number,
-    public totalTime: number,
+    public totalTime: number
   ) {}
 }
 ```
@@ -92,37 +92,19 @@ function movementSystem(world: World): void {
 ### Basic Setup
 
 ```typescript
-import {
-  createWorld,
-  ComponentType,
-  ResourceType,
-  StorageType,
-  system,
-  schedule,
-} from "./ecs";
+import { createWorld, ComponentType, ResourceType, StorageType, system, schedule } from "./ecs";
 
 // Create world
 const world = createWorld();
 
 // Register component types
 const registry = world.getComponentRegistry();
-const positionType = registry.register(
-  "Position",
-  StorageType.Table,
-  () => new Position(0, 0),
-);
-const velocityType = registry.register(
-  "Velocity",
-  StorageType.Table,
-  () => new Velocity(0, 0),
-);
+const positionType = registry.register("Position", StorageType.Table, () => new Position(0, 0));
+const velocityType = registry.register("Velocity", StorageType.Table, () => new Velocity(0, 0));
 
 // Register resource types
 const resourceRegistry = world.getResourceRegistry();
-const gameTimeType = resourceRegistry.register(
-  "GameTime",
-  () => new GameTime(0, 0),
-);
+const gameTimeType = resourceRegistry.register("GameTime", () => new GameTime(0, 0));
 
 // Add systems
 world.addSystem(system("movement", movementSystem).build());
@@ -157,9 +139,7 @@ const query = world.queryFiltered([positionType], filter);
 
 ```typescript
 // Create systems with dependencies
-const movementSystem = system("movement", movementSystemFn)
-  .after("input")
-  .build();
+const movementSystem = system("movement", movementSystemFn).after("input").build();
 
 const inputSystem = system("input", inputSystemFn).build();
 
@@ -173,11 +153,7 @@ function spawnBulletSystem(world: World): void {
   const commands = world.commands();
 
   // Deferred operations
-  commands.spawn(
-    new Position(100, 100),
-    new Velocity(0, -300),
-    new Bullet(300),
-  );
+  commands.spawn(new Position(100, 100), new Velocity(0, -300), new Bullet(300));
 
   // Commands are applied at the end of the system
 }
@@ -192,11 +168,7 @@ function spawnBulletSystem(world: World): void {
 - Best for frequently accessed components
 
 ```typescript
-const positionType = registry.register(
-  "Position",
-  StorageType.Table,
-  () => new Position(0, 0),
-);
+const positionType = registry.register("Position", StorageType.Table, () => new Position(0, 0));
 ```
 
 ### SparseSet Storage (Sparse)
@@ -206,11 +178,7 @@ const positionType = registry.register(
 - Best for optional components
 
 ```typescript
-const powerUpType = registry.register(
-  "PowerUp",
-  StorageType.SparseSet,
-  () => new PowerUp(),
-);
+const powerUpType = registry.register("PowerUp", StorageType.SparseSet, () => new PowerUp());
 ```
 
 ## Performance Considerations

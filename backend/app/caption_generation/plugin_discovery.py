@@ -9,14 +9,14 @@ allows the Reynard application to discover available captioners at runtime.
 import importlib
 import logging
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from .plugin import CaptionerPlugin
 
 logger = logging.getLogger("uvicorn")
 
 
-def discover_plugins() -> Dict[str, CaptionerPlugin]:
+def discover_plugins() -> dict[str, CaptionerPlugin]:
     """
     Discover all available captioner plugins.
 
@@ -80,20 +80,16 @@ def _load_plugin_from_path(plugin_path: Path) -> CaptionerPlugin:
 
     # Check for register_plugin function
     if not hasattr(module, "register_plugin"):
-        logger.warning(
-            f"Plugin {plugin_path.name} missing register_plugin function"
-        )
+        logger.warning(f"Plugin {plugin_path.name} missing register_plugin function")
         return None
 
     # Get plugin info
-    register_func = getattr(module, "register_plugin")
+    register_func = module.register_plugin
     plugin_info = register_func()
 
     # Validate plugin info
     if not isinstance(plugin_info, dict):
-        logger.warning(
-            f"Plugin {plugin_path.name} returned invalid registration info"
-        )
+        logger.warning(f"Plugin {plugin_path.name} returned invalid registration info")
         return None
 
     if "name" not in plugin_info or "module_path" not in plugin_info:
@@ -110,7 +106,7 @@ def _load_plugin_from_path(plugin_path: Path) -> CaptionerPlugin:
     return CaptionerPlugin(name, module_path, default_config)
 
 
-def validate_plugin_info(plugin_info: Dict[str, Any], plugin_name: str) -> bool:
+def validate_plugin_info(plugin_info: dict[str, Any], plugin_name: str) -> bool:
     """
     Validate plugin registration information.
 
@@ -128,9 +124,7 @@ def validate_plugin_info(plugin_info: Dict[str, Any], plugin_name: str) -> bool:
     required_fields = ["name", "module_path"]
     for field in required_fields:
         if field not in plugin_info:
-            logger.warning(
-                f"Plugin {plugin_name} missing required field: {field}"
-            )
+            logger.warning(f"Plugin {plugin_name} missing required field: {field}")
             return False
 
     return True

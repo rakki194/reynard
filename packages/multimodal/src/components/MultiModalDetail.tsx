@@ -9,7 +9,7 @@ import { Component, Show } from "solid-js";
 import type { MultiModalDetailProps } from "../types/MultiModalTypes";
 import { useI18n } from "reynard-i18n";
 
-export const MultiModalDetail: Component<MultiModalDetailProps> = (props) => {
+export const MultiModalDetail: Component<MultiModalDetailProps> = props => {
   const { t } = useI18n();
   return (
     <div class="multi-modal-detail-modal">
@@ -21,19 +21,14 @@ export const MultiModalDetail: Component<MultiModalDetailProps> = (props) => {
         <div class="detail-header">
           <h2>{props.file.name}</h2>
           <div class="detail-meta">
-            {props.file.fileType} •{" "}
-            {(props.file.size / (1024 * 1024)).toFixed(2)} MB •{" "}
+            {props.file.fileType} • {(props.file.size / (1024 * 1024)).toFixed(2)} MB •{" "}
             {props.file.uploadedAt.toLocaleString()}
           </div>
         </div>
 
         <div class="detail-body">
           <Show when={props.file.fileType === "image"}>
-            <img
-              src={props.file.url}
-              alt={props.file.name}
-              class="detail-image"
-            />
+            <img src={props.file.url} alt={props.file.name} class="detail-image" />
           </Show>
 
           <Show when={props.file.fileType === "video"}>
@@ -55,11 +50,7 @@ export const MultiModalDetail: Component<MultiModalDetailProps> = (props) => {
           <Show when={props.file.fileType === "document"}>
             <div class="detail-document">
               <p>{t("multimodal.documentPreviewNotAvailable")}</p>
-              <a
-                href={props.file.url}
-                download={props.file.name}
-                class="download-button"
-              >
+              <a href={props.file.url} download={props.file.name} class="download-button">
                 {t("multimodal.downloadDocument")}
               </a>
             </div>

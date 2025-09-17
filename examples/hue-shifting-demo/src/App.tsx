@@ -7,7 +7,7 @@ import { MaterialShowcase } from "./components/MaterialShowcase";
 import { Navigation } from "./components/Navigation";
 import "./App.css";
 
-const Layout: Component<{ children?: any }> = (props) => (
+const Layout: Component<{ children?: any }> = props => (
   <div class="app">
     <Navigation />
     <main class="main-content">{props.children}</main>

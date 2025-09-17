@@ -9,9 +9,7 @@ import { Toggle } from "../../primitives";
 import { Icon } from "../../icons";
 import type { GlobalSettingsFormProps } from "../types/PackageConfigurationTypes";
 
-export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (
-  props,
-) => {
+export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = props => {
   const handleConfigChange = (key: keyof typeof props.config, value: any) => {
     const updatedConfig = { ...props.config, [key]: value };
     // This would typically update local state, but for now we'll just call onSave
@@ -36,13 +34,9 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (
             </div>
             <Toggle
               checked={props.config.autoDiscovery}
-              onChange={(checked) =>
-                handleConfigChange("autoDiscovery", checked)
-              }
+              onChange={checked => handleConfigChange("autoDiscovery", checked)}
             />
-            <div class="reynard-setting-field__description">
-              Automatically discover new packages
-            </div>
+            <div class="reynard-setting-field__description">Automatically discover new packages</div>
           </div>
 
           <div class="reynard-setting-field">
@@ -51,21 +45,16 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (
             </div>
             <Toggle
               checked={props.config.autoInstall}
-              onChange={(checked) => handleConfigChange("autoInstall", checked)}
+              onChange={checked => handleConfigChange("autoInstall", checked)}
             />
-            <div class="reynard-setting-field__description">
-              Automatically install discovered packages
-            </div>
+            <div class="reynard-setting-field__description">Automatically install discovered packages</div>
           </div>
 
           <div class="reynard-setting-field">
             <div class="reynard-setting-field__label">
               <label>Auto Update</label>
             </div>
-            <Toggle
-              checked={props.config.autoUpdate}
-              onChange={(checked) => handleConfigChange("autoUpdate", checked)}
-            />
+            <Toggle checked={props.config.autoUpdate} onChange={checked => handleConfigChange("autoUpdate", checked)} />
             <div class="reynard-setting-field__description">
               Automatically update packages when new versions are available
             </div>
@@ -82,12 +71,7 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (
             <TextField
               type="number"
               value={props.config.maxConcurrentInstalls}
-              onInput={(e) =>
-                handleConfigChange(
-                  "maxConcurrentInstalls",
-                  Number(e.currentTarget.value),
-                )
-              }
+              onInput={e => handleConfigChange("maxConcurrentInstalls", Number(e.currentTarget.value))}
               min="1"
               max="10"
               size="sm"
@@ -104,17 +88,13 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (
             <TextField
               type="number"
               value={props.config.memoryLimit}
-              onInput={(e) =>
-                handleConfigChange("memoryLimit", Number(e.currentTarget.value))
-              }
+              onInput={e => handleConfigChange("memoryLimit", Number(e.currentTarget.value))}
               min="512"
               max="8192"
               step="256"
               size="sm"
             />
-            <div class="reynard-setting-field__description">
-              Maximum memory usage for package operations
-            </div>
+            <div class="reynard-setting-field__description">Maximum memory usage for package operations</div>
           </div>
         </div>
 
@@ -127,13 +107,9 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (
             </div>
             <Toggle
               checked={props.config.enableAnalytics}
-              onChange={(checked) =>
-                handleConfigChange("enableAnalytics", checked)
-              }
+              onChange={checked => handleConfigChange("enableAnalytics", checked)}
             />
-            <div class="reynard-setting-field__description">
-              Collect usage analytics and performance data
-            </div>
+            <div class="reynard-setting-field__description">Collect usage analytics and performance data</div>
           </div>
 
           <div class="reynard-setting-field">
@@ -142,7 +118,7 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (
             </div>
             <Select
               value={props.config.logLevel}
-              onChange={(value) => handleConfigChange("logLevel", value)}
+              onChange={value => handleConfigChange("logLevel", value)}
               options={[
                 { value: "debug", label: "Debug" },
                 { value: "info", label: "Info" },
@@ -151,26 +127,16 @@ export const GlobalSettingsForm: Component<GlobalSettingsFormProps> = (
               ]}
               size="sm"
             />
-            <div class="reynard-setting-field__description">
-              Minimum log level for package operations
-            </div>
+            <div class="reynard-setting-field__description">Minimum log level for package operations</div>
           </div>
         </div>
       </div>
 
       <div class="reynard-global-settings-form__actions">
-        <Button
-          variant="secondary"
-          onClick={props.onCancel}
-          disabled={props.isSaving}
-        >
+        <Button variant="secondary" onClick={props.onCancel} disabled={props.isSaving}>
           Cancel
         </Button>
-        <Button
-          variant="primary"
-          onClick={() => props.onSave(props.config)}
-          loading={props.isSaving}
-        >
+        <Button variant="primary" onClick={() => props.onSave(props.config)} loading={props.isSaving}>
           Save Global Settings
         </Button>
       </div>

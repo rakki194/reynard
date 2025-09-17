@@ -19,13 +19,10 @@ export function createCanvas(): HTMLCanvasElement {
 /**
  * Convert canvas to blob
  */
-export async function canvasToBlob(
-  canvas: HTMLCanvasElement,
-  options: CanvasOptions,
-): Promise<Blob> {
+export async function canvasToBlob(canvas: HTMLCanvasElement, options: CanvasOptions): Promise<Blob> {
   return new Promise((resolve, reject) => {
     canvas.toBlob(
-      (blob) => {
+      blob => {
         if (blob) {
           resolve(blob);
         } else {
@@ -33,7 +30,7 @@ export async function canvasToBlob(
         }
       },
       `image/${options.format}`,
-      (options.quality || 85) / 100,
+      (options.quality || 85) / 100
     );
   });
 }
@@ -45,7 +42,7 @@ export function clearCanvas(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
-  backgroundColor: string = "#ffffff",
+  backgroundColor: string = "#ffffff"
 ): void {
   ctx.fillStyle = backgroundColor;
   ctx.fillRect(0, 0, width, height);

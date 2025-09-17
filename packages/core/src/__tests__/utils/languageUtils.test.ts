@@ -41,9 +41,7 @@ describe("languageUtils", () => {
       // Directory traversal attempts - these should still work for legitimate files
       expect(getMonacoLanguage("../../../etc/passwd")).toBe("plaintext"); // No extension
       expect(getMonacoLanguage("..\\..\\windows\\system32")).toBe("plaintext"); // No extension
-      expect(getMonacoLanguage("file/../../../malicious.js")).toBe(
-        "javascript",
-      ); // Has .js extension
+      expect(getMonacoLanguage("file/../../../malicious.js")).toBe("javascript"); // Has .js extension
 
       // Extremely long filenames
       const longFilename = "a".repeat(300) + ".js";
@@ -64,9 +62,7 @@ describe("languageUtils", () => {
 
     it("handles security edge cases", () => {
       expect(getLanguageDisplayName(null as any)).toBe("Plain Text");
-      expect(getLanguageDisplayName("../../../malicious.js")).toBe(
-        "JavaScript",
-      ); // Should still work for .js files
+      expect(getLanguageDisplayName("../../../malicious.js")).toBe("JavaScript"); // Should still work for .js files
     });
   });
 

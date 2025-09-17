@@ -8,7 +8,7 @@ export function createPointInteractionHandler() {
   const handlePointClick = (
     intersects: unknown[],
     points: EmbeddingPoint[],
-    onPointSelect?: (pointId: string) => void,
+    onPointSelect?: (pointId: string) => void
   ): void => {
     if (intersects.length === 0) return;
 

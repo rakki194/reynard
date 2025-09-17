@@ -56,9 +56,9 @@ class GalleryWebSocketManager:
 
     def __init__(self) -> None:
         self.active_connections: list[ConnectionInfo] = []
-        self.download_subscribers: dict[
-            str, set[int]
-        ] = {}  # download_id -> connection indices
+        self.download_subscribers: dict[str, set[int]] = (
+            {}
+        )  # download_id -> connection indices
         self.connection_lock = asyncio.Lock()
 
     async def connect(self, websocket: WebSocket, user_id: str | None = None) -> int:

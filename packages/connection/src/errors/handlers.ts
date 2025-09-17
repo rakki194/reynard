@@ -41,10 +41,7 @@ export interface ErrorHandler {
   /**
    * Handle an error
    */
-  handle(
-    error: unknown,
-    context?: Record<string, unknown>,
-  ): Promise<void> | void;
+  handle(error: unknown, context?: Record<string, unknown>): Promise<void> | void;
 
   /**
    * Check if this handler can handle the error
@@ -93,10 +90,7 @@ export class ErrorHandlerSystem {
   /**
    * Handle an error using registered handlers
    */
-  async handleError(
-    error: unknown,
-    context?: Record<string, unknown>,
-  ): Promise<void> {
+  async handleError(error: unknown, context?: Record<string, unknown>): Promise<void> {
     for (const handler of this.handlers) {
       if (handler.canHandle(error)) {
         try {
@@ -214,9 +208,7 @@ export class NetworkErrorHandler implements ErrorHandler {
  * Authentication error handler
  */
 export class AuthenticationErrorHandler implements ErrorHandler {
-  constructor(
-    private onAuthenticationError?: (error: AuthenticationError) => void,
-  ) {}
+  constructor(private onAuthenticationError?: (error: AuthenticationError) => void) {}
 
   canHandle(error: unknown): boolean {
     return isAuthenticationError(error);
@@ -245,9 +237,7 @@ export class AuthenticationErrorHandler implements ErrorHandler {
  * Authorization error handler
  */
 export class AuthorizationErrorHandler implements ErrorHandler {
-  constructor(
-    private onAuthorizationError?: (error: AuthorizationError) => void,
-  ) {}
+  constructor(private onAuthorizationError?: (error: AuthorizationError) => void) {}
 
   canHandle(error: unknown): boolean {
     return isAuthorizationError(error);
@@ -336,9 +326,7 @@ export class DatabaseErrorHandler implements ErrorHandler {
  * Configuration error handler
  */
 export class ConfigurationErrorHandler implements ErrorHandler {
-  constructor(
-    private onConfigurationError?: (error: ConfigurationError) => void,
-  ) {}
+  constructor(private onConfigurationError?: (error: ConfigurationError) => void) {}
 
   canHandle(error: unknown): boolean {
     return isConfigurationError(error);
@@ -456,15 +444,11 @@ export function createErrorHandlerSystem(options: {
   }
 
   if (options.onAuthenticationError) {
-    system.addHandler(
-      new AuthenticationErrorHandler(options.onAuthenticationError),
-    );
+    system.addHandler(new AuthenticationErrorHandler(options.onAuthenticationError));
   }
 
   if (options.onAuthorizationError) {
-    system.addHandler(
-      new AuthorizationErrorHandler(options.onAuthorizationError),
-    );
+    system.addHandler(new AuthorizationErrorHandler(options.onAuthorizationError));
   }
 
   if (options.onProcessingError) {
@@ -476,9 +460,7 @@ export function createErrorHandlerSystem(options: {
   }
 
   if (options.onConfigurationError) {
-    system.addHandler(
-      new ConfigurationErrorHandler(options.onConfigurationError),
-    );
+    system.addHandler(new ConfigurationErrorHandler(options.onConfigurationError));
   }
 
   if (options.onTimeoutError) {
@@ -506,10 +488,7 @@ export const globalErrorHandler = createErrorHandlerSystem({
 /**
  * Handle an error using the global error handler
  */
-export async function errorHandler(
-  error: unknown,
-  context?: Record<string, unknown>,
-): Promise<void> {
+export async function errorHandler(error: unknown, context?: Record<string, unknown>): Promise<void> {
   await globalErrorHandler.handleError(error, context);
 }
 
@@ -519,17 +498,12 @@ export async function errorHandler(
 export function wrapAsync<T>(
   fn: () => Promise<T>,
   errorMessage: string,
-  context?: Record<string, unknown>,
-): Promise<
-  { success: true; data: T } | { success: false; error: ReynardError }
-> {
+  context?: Record<string, unknown>
+): Promise<{ success: true; data: T } | { success: false; error: ReynardError }> {
   return fn()
-    .then((data) => ({ success: true as const, data }))
-    .catch((error) => {
-      const reynardError = toReynardError(
-        error,
-        (context?.source as string) || "reynard",
-      );
+    .then(data => ({ success: true as const, data }))
+    .catch(error => {
+      const reynardError = toReynardError(error, (context?.source as string) || "reynard");
       errorHandler(reynardError, context);
       return { success: false as const, error: reynardError };
     });

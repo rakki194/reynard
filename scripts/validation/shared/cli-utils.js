@@ -69,7 +69,7 @@ export function generateHelp(scriptName, description, options = {}) {
   if (examples.length > 0) {
     help += "\n";
     help += "Examples:\n";
-    examples.forEach((example) => {
+    examples.forEach(example => {
       help += `  ${example}\n`;
     });
   }
@@ -77,7 +77,7 @@ export function generateHelp(scriptName, description, options = {}) {
   if (notes.length > 0) {
     help += "\n";
     help += "Notes:\n";
-    notes.forEach((note) => {
+    notes.forEach(note => {
       help += `  ${note}\n`;
     });
   }
@@ -147,7 +147,7 @@ export function validateDependencies(dependencies = {}) {
 
   if (!allAvailable && packages.length > 0) {
     printColored("\n💡 Install missing dependencies:", Colors.YELLOW);
-    packages.forEach((pkg) => {
+    packages.forEach(pkg => {
       printColored(`  sudo pacman -S ${pkg}`, Colors.CYAN);
     });
   }
@@ -223,7 +223,7 @@ export async function retryWithBackoff(fn, maxRetries = 3, baseDelay = 1000) {
 
       const delay = baseDelay * Math.pow(2, attempt);
       printColored(`⚠️  Attempt ${attempt + 1} failed, retrying in ${delay}ms...`, Colors.YELLOW);
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
 }

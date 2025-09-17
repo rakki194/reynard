@@ -124,10 +124,7 @@ export class ResourceStorage {
 /**
  * Helper function to create a resource type.
  */
-export function createResourceType<T extends Resource>(
-  name: string,
-  create: () => T,
-): ResourceType<T> {
+export function createResourceType<T extends Resource>(name: string, create: () => T): ResourceType<T> {
   return {
     name,
     id: 0, // Will be set by registry

@@ -17,12 +17,8 @@ export function ThemeDemo() {
         <Button onClick={() => setTheme("banana")}>Banana</Button>
         <Button onClick={() => setTheme("strawberry")}>Strawberry</Button>
         <Button onClick={() => setTheme("peanut")}>Peanut</Button>
-        <Button onClick={() => setTheme("high-contrast-black")}>
-          High Contrast Black
-        </Button>
-        <Button onClick={() => setTheme("high-contrast-inverse")}>
-          High Contrast Inverse
-        </Button>
+        <Button onClick={() => setTheme("high-contrast-black")}>High Contrast Black</Button>
+        <Button onClick={() => setTheme("high-contrast-inverse")}>High Contrast Inverse</Button>
       </div>
     </Card>
   );

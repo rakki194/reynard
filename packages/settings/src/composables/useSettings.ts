@@ -38,7 +38,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
   // Storage manager
   const storageManager = new StorageManager(
     config.storage?.default || "localStorage",
-    config.storage?.prefix || "reynard_settings_",
+    config.storage?.prefix || "reynard_settings_"
   );
 
   // Settings state
@@ -57,7 +57,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
 
   // Update settings state helper
   const updateState = (updates: Partial<SettingsState>) => {
-    setSettingsState((prev) => ({ ...prev, ...updates }));
+    setSettingsState(prev => ({ ...prev, ...updates }));
   };
 
   // Get setting definition
@@ -133,9 +133,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
   };
 
   // Set multiple settings at once
-  const setSettings = async (
-    settings: Record<string, unknown>,
-  ): Promise<boolean> => {
+  const setSettings = async (settings: Record<string, unknown>): Promise<boolean> => {
     let allValid = true;
     const newValues = { ...settingsState().values };
     const newValidationErrors = { ...settingsState().validationErrors };
@@ -231,10 +229,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
     try {
       // Validate all settings if enabled
       if (config.validation?.validateOnSave) {
-        const validation = validateSettings(
-          settingsState().values,
-          config.schema.settings,
-        );
+        const validation = validateSettings(settingsState().values, config.schema.settings);
         if (!validation.isValid) {
           updateState({
             saving: false,
@@ -252,9 +247,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
         if (!definition) continue;
 
         try {
-          const serializedValue = definition.serialize
-            ? definition.serialize(value)
-            : JSON.stringify(value);
+          const serializedValue = definition.serialize ? definition.serialize(value) : JSON.stringify(value);
 
           await storageManager.set(key, serializedValue, definition.storage);
         } catch (error) {
@@ -269,7 +262,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
         JSON.stringify({
           version: config.schema.version,
           lastSaved: new Date().toISOString(),
-        }),
+        })
       );
 
       updateState({
@@ -321,15 +314,8 @@ export function useSettings(options: UseSettingsOptions = {}) {
             }
 
             // Migrate value if needed
-            if (
-              definition.migrate &&
-              metadata.version !== config.schema.version
-            ) {
-              value = migrateSettings(
-                { [key]: value },
-                metadata.version || "0.0.0",
-                config.schema.version,
-              )[key];
+            if (definition.migrate && metadata.version !== config.schema.version) {
+              value = migrateSettings({ [key]: value }, metadata.version || "0.0.0", config.schema.version)[key];
             }
 
             loadedValues[key] = value;
@@ -345,10 +331,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
 
       // Validate loaded settings if enabled
       if (validateOnLoad) {
-        const validation = validateSettings(
-          loadedValues,
-          config.schema.settings,
-        );
+        const validation = validateSettings(loadedValues, config.schema.settings);
         if (!validation.isValid) {
           updateState({
             validationErrors: validation.errors,
@@ -368,9 +351,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
         values: loadedValues,
         loading: false,
         hasChanges: false,
-        lastSaved: metadata.lastSaved
-          ? new Date(metadata.lastSaved)
-          : undefined,
+        lastSaved: metadata.lastSaved ? new Date(metadata.lastSaved) : undefined,
         version: config.schema.version,
       });
 
@@ -395,10 +376,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
   };
 
   // Import settings
-  const importSettings = async (
-    data: SettingsExportData,
-    options: SettingsImportOptions = {},
-  ): Promise<void> => {
+  const importSettings = async (data: SettingsExportData, options: SettingsImportOptions = {}): Promise<void> => {
     try {
       await storageManager.import(data, {
         merge: options.merge,
@@ -424,46 +402,36 @@ export function useSettings(options: UseSettingsOptions = {}) {
     if (query.query) {
       const searchTerm = query.query.toLowerCase();
       filteredSettings = filteredSettings.filter(
-        (setting) =>
+        setting =>
           setting.label.toLowerCase().includes(searchTerm) ||
           setting.description?.toLowerCase().includes(searchTerm) ||
           setting.key.toLowerCase().includes(searchTerm) ||
-          setting.tags?.some((tag) => tag.toLowerCase().includes(searchTerm)),
+          setting.tags?.some(tag => tag.toLowerCase().includes(searchTerm))
       );
     }
 
     if (query.category) {
-      filteredSettings = filteredSettings.filter(
-        (setting) => setting.category === query.category,
-      );
+      filteredSettings = filteredSettings.filter(setting => setting.category === query.category);
     }
 
     if (query.type) {
-      filteredSettings = filteredSettings.filter(
-        (setting) => setting.type === query.type,
-      );
+      filteredSettings = filteredSettings.filter(setting => setting.type === query.type);
     }
 
     if (query.scope) {
-      filteredSettings = filteredSettings.filter(
-        (setting) => setting.scope === query.scope,
-      );
+      filteredSettings = filteredSettings.filter(setting => setting.scope === query.scope);
     }
 
     if (query.tags && query.tags.length > 0) {
-      filteredSettings = filteredSettings.filter((setting) =>
-        setting.tags?.some((tag) => query.tags!.includes(tag)),
-      );
+      filteredSettings = filteredSettings.filter(setting => setting.tags?.some(tag => query.tags!.includes(tag)));
     }
 
     if (!query.includeHidden) {
-      filteredSettings = filteredSettings.filter((setting) => !setting.hidden);
+      filteredSettings = filteredSettings.filter(setting => !setting.hidden);
     }
 
     if (!query.includeExperimental) {
-      filteredSettings = filteredSettings.filter(
-        (setting) => !setting.experimental,
-      );
+      filteredSettings = filteredSettings.filter(setting => !setting.experimental);
     }
 
     const duration = performance.now() - startTime;
@@ -481,9 +449,7 @@ export function useSettings(options: UseSettingsOptions = {}) {
 
   // Computed values
   const hasUnsavedChanges = createMemo(() => settingsState().hasChanges);
-  const hasValidationErrors = createMemo(
-    () => Object.keys(settingsState().validationErrors).length > 0,
-  );
+  const hasValidationErrors = createMemo(() => Object.keys(settingsState().validationErrors).length > 0);
   const isLoading = createMemo(() => settingsState().loading);
   const isSaving = createMemo(() => settingsState().saving);
 

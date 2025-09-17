@@ -30,8 +30,7 @@ export const enTranslations = {
   // Features list
   featuresList: {
     languages: "37 languages with comprehensive coverage",
-    pluralization:
-      "Advanced pluralization rules (Arabic, Russian, Polish, etc.)",
+    pluralization: "Advanced pluralization rules (Arabic, Russian, Polish, etc.)",
     rtlSupport: "RTL support for Arabic and Hebrew",
     typeSafe: "Type-safe translations with autocomplete",
     dynamicLoading: "Dynamic loading for optimal performance",

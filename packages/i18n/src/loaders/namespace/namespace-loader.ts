@@ -7,9 +7,7 @@ import type { LanguageCode } from "../../types";
 import { namespaceCache } from "../cache/cache";
 
 // Namespace-based loaders for bundle optimization
-export const createNamespaceLoader = <T = unknown>(
-  namespace: string,
-): Record<string, () => Promise<T>> => {
+export const createNamespaceLoader = <T = unknown>(namespace: string): Record<string, () => Promise<T>> => {
   // For testing environment, return mock loaders to avoid dynamic glob issues
   if (typeof import.meta === "undefined" || !(import.meta as any).glob) {
     return createMockNamespaceLoader<T>(namespace);
@@ -26,9 +24,7 @@ export const createNamespaceLoader = <T = unknown>(
 };
 
 // Create mock namespace loaders for testing
-function createMockNamespaceLoader<T = unknown>(
-  namespace: string,
-): Record<string, () => Promise<T>> {
+function createMockNamespaceLoader<T = unknown>(namespace: string): Record<string, () => Promise<T>> {
   const mockTranslations: Record<string, any> = {
     common: {
       hello: "Hello",
@@ -66,7 +62,7 @@ function createMockNamespaceLoader<T = unknown>(
 export async function loadNamespace<T = unknown>(
   locale: LanguageCode,
   namespace: string,
-  useCache: boolean = true,
+  useCache: boolean = true
 ): Promise<T> {
   if (useCache && namespaceCache.has(namespace)) {
     const namespaceMap = namespaceCache.get(namespace)!;
@@ -105,14 +101,9 @@ export async function loadNamespace<T = unknown>(
       }
     }
 
-    throw new Error(
-      `No translations found for namespace ${namespace} in locale ${locale}`,
-    );
+    throw new Error(`No translations found for namespace ${namespace} in locale ${locale}`);
   } catch (error) {
-    console.error(
-      `Failed to load namespace ${namespace} for locale ${locale}:`,
-      error,
-    );
+    console.error(`Failed to load namespace ${namespace} for locale ${locale}:`, error);
     throw error;
   }
 }

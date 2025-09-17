@@ -3,15 +3,7 @@
  * Advanced multi-selection system with keyboard shortcuts and visual feedback
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  onCleanup,
-  splitProps,
-  For,
-  Show,
-} from "solid-js";
+import { Component, createSignal, createEffect, onCleanup, splitProps, For, Show } from "solid-js";
 import { Button } from "reynard-components";
 import "./MultiSelect.css";
 
@@ -59,7 +51,7 @@ const defaultProps = {
   enableKeyboard: true,
 };
 
-export const MultiSelect: Component<MultiSelectProps> = (props) => {
+export const MultiSelect: Component<MultiSelectProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local] = splitProps(merged, [
     "items",
@@ -84,15 +76,12 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
   // Computed values
   const selectedCount = () => state().selectedItems.size;
   const hasSelection = () => selectedCount() > 0;
-  const isAllSelected = () =>
-    local.items.length > 0 && selectedCount() === local.items.length;
+  const isAllSelected = () => local.items.length > 0 && selectedCount() === local.items.length;
 
   // Effects
   createEffect(() => {
     const currentState = state();
-    const selectedItems = local.items.filter((item) =>
-      currentState.selectedItems.has(item.id),
-    );
+    const selectedItems = local.items.filter(item => currentState.selectedItems.has(item.id));
     local.onSelectionChange?.(selectedItems);
   });
 
@@ -100,7 +89,7 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
     const currentState = state();
     const newMode = local.mode || "multiple";
     if (currentState.mode !== newMode) {
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         mode: newMode as "single" | "multiple" | "range",
       }));
@@ -108,11 +97,7 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
   });
 
   // Event handlers
-  const handleItemClick = (
-    item: SelectableItem,
-    index: number,
-    event: MouseEvent,
-  ) => {
+  const handleItemClick = (item: SelectableItem, index: number, event: MouseEvent) => {
     if (!local.enabled) return;
 
     const currentState = state();
@@ -121,7 +106,7 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
 
     if (local.mode === "single") {
       // Single selection mode
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         selectedItems: new Set([item.id]),
         lastSelectedIndex: index,
@@ -135,7 +120,7 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
         } else {
           newSelection.add(item.id);
         }
-        setState((prev) => ({
+        setState(prev => ({
           ...prev,
           selectedItems: newSelection,
           lastSelectedIndex: index,
@@ -150,14 +135,14 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
           newSelection.add(local.items[i].id);
         }
 
-        setState((prev) => ({
+        setState(prev => ({
           ...prev,
           selectedItems: newSelection,
           lastSelectedIndex: index,
         }));
       } else {
         // Single click - replace selection
-        setState((prev) => ({
+        setState(prev => ({
           ...prev,
           selectedItems: new Set([item.id]),
           lastSelectedIndex: index,
@@ -174,13 +159,13 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
           newSelection.add(local.items[i].id);
         }
 
-        setState((prev) => ({
+        setState(prev => ({
           ...prev,
           selectedItems: newSelection,
           lastSelectedIndex: index,
         }));
       } else {
-        setState((prev) => ({
+        setState(prev => ({
           ...prev,
           selectedItems: new Set([item.id]),
           lastSelectedIndex: index,
@@ -190,15 +175,15 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
   };
 
   const handleSelectAll = () => {
-    const allIds = local.items.map((item) => item.id);
-    setState((prev) => ({
+    const allIds = local.items.map(item => item.id);
+    setState(prev => ({
       ...prev,
       selectedItems: new Set(allIds),
     }));
   };
 
   const handleDeselectAll = () => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       selectedItems: new Set(),
       lastSelectedIndex: -1,
@@ -206,7 +191,7 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
   };
 
   const handleModeChange = (newMode: "single" | "multiple" | "range") => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       mode: newMode,
       selectedItems: new Set(), // Clear selection when mode changes
@@ -303,18 +288,14 @@ export const MultiSelect: Component<MultiSelectProps> = (props) => {
           {(item, index) => (
             <div
               class={`reynard-multi-select__item ${
-                state().selectedItems.has(item.id)
-                  ? "reynard-multi-select__item--selected"
-                  : ""
+                state().selectedItems.has(item.id) ? "reynard-multi-select__item--selected" : ""
               }`}
-              onClick={(event) => handleItemClick(item, index(), event)}
+              onClick={event => handleItemClick(item, index(), event)}
               data-testid={`multi-select-item-${item.id}`}
             >
               <div class="reynard-multi-select__item-checkbox">
                 <Show when={state().selectedItems.has(item.id)}>
-                  <span class="reynard-multi-select__item-checkbox-icon">
-                    ✓
-                  </span>
+                  <span class="reynard-multi-select__item-checkbox-icon">✓</span>
                 </Show>
               </div>
               <div class="reynard-multi-select__item-content">

@@ -6,19 +6,18 @@ using the service layer for business logic.
 """
 
 import logging
-from typing import Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, status
 
 from .models import (
-    LazyExportRequest,
-    LazyExportResponse,
-    PackageLoadRequest,
-    PackageLoadResponse,
-    LazyLoadingStatusResponse,
-    PackageInfoResponse,
     ConfigResponse,
     ConfigUpdateRequest,
+    LazyExportRequest,
+    LazyExportResponse,
+    LazyLoadingStatusResponse,
+    PackageInfoResponse,
+    PackageLoadRequest,
+    PackageLoadResponse,
 )
 from .service import get_lazy_loading_service
 
@@ -32,13 +31,15 @@ async def create_lazy_export_endpoint(request: LazyExportRequest):
     """Create a new lazy export for a package."""
     try:
         service = get_lazy_loading_service()
-        result = service.create_lazy_export(request.package_name, request.validation_level)
+        result = service.create_lazy_export(
+            request.package_name, request.validation_level
+        )
         return LazyExportResponse(**result)
     except Exception as e:
         logger.error(f"Failed to create lazy export for {request.package_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create lazy export: {str(e)}"
+            detail=f"Failed to create lazy export: {e!s}",
         )
 
 
@@ -48,13 +49,13 @@ async def get_lazy_export_endpoint(package_name: str):
     try:
         service = get_lazy_loading_service()
         result = service.get_lazy_export(package_name)
-        
+
         if not result:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Lazy export for package '{package_name}' not found"
+                detail=f"Lazy export for package '{package_name}' not found",
             )
-        
+
         return LazyExportResponse(**result)
     except HTTPException:
         raise
@@ -62,7 +63,7 @@ async def get_lazy_export_endpoint(package_name: str):
         logger.error(f"Failed to get lazy export for {package_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get lazy export: {str(e)}"
+            detail=f"Failed to get lazy export: {e!s}",
         )
 
 
@@ -77,7 +78,7 @@ async def load_package_endpoint(request: PackageLoadRequest):
         logger.error(f"Failed to load package {request.package_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to load package: {str(e)}"
+            detail=f"Failed to load package: {e!s}",
         )
 
 
@@ -92,7 +93,7 @@ async def unload_package_endpoint(package_name: str):
         logger.error(f"Failed to unload package {package_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to unload package: {str(e)}"
+            detail=f"Failed to unload package: {e!s}",
         )
 
 
@@ -107,7 +108,7 @@ async def get_lazy_loading_status():
         logger.error(f"Failed to get lazy loading status: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get status: {str(e)}"
+            detail=f"Failed to get status: {e!s}",
         )
 
 
@@ -117,13 +118,13 @@ async def get_package_info_endpoint(package_name: str):
     try:
         service = get_lazy_loading_service()
         result = service.get_package_info(package_name)
-        
+
         if not result:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Lazy export for package '{package_name}' not found"
+                detail=f"Lazy export for package '{package_name}' not found",
             )
-        
+
         return PackageInfoResponse(**result)
     except HTTPException:
         raise
@@ -131,11 +132,11 @@ async def get_package_info_endpoint(package_name: str):
         logger.error(f"Failed to get package info for {package_name}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get package info: {str(e)}"
+            detail=f"Failed to get package info: {e!s}",
         )
 
 
-@router.get("/packages", response_model=List[PackageInfoResponse])
+@router.get("/packages", response_model=list[PackageInfoResponse])
 async def get_all_packages_endpoint():
     """Get information about all registered packages."""
     try:
@@ -146,7 +147,7 @@ async def get_all_packages_endpoint():
         logger.error(f"Failed to get all packages info: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get packages info: {str(e)}"
+            detail=f"Failed to get packages info: {e!s}",
         )
 
 
@@ -161,7 +162,7 @@ async def get_config_endpoint():
         logger.error(f"Failed to get config: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get config: {str(e)}"
+            detail=f"Failed to get config: {e!s}",
         )
 
 
@@ -177,7 +178,7 @@ async def update_config_endpoint(request: ConfigUpdateRequest):
         logger.error(f"Failed to update config: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update config: {str(e)}"
+            detail=f"Failed to update config: {e!s}",
         )
 
 
@@ -192,12 +193,12 @@ async def clear_registry_endpoint():
         logger.error(f"Failed to clear registry: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to clear registry: {str(e)}"
+            detail=f"Failed to clear registry: {e!s}",
         )
 
 
 @router.post("/cleanup")
-async def force_cleanup_endpoint(package_name: Optional[str] = None):
+async def force_cleanup_endpoint(package_name: str | None = None):
     """Force cleanup of packages or all packages."""
     try:
         service = get_lazy_loading_service()
@@ -207,5 +208,5 @@ async def force_cleanup_endpoint(package_name: Optional[str] = None):
         logger.error(f"Failed to cleanup packages: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to cleanup packages: {str(e)}"
+            detail=f"Failed to cleanup packages: {e!s}",
         )

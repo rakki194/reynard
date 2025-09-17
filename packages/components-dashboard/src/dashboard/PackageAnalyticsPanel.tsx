@@ -3,15 +3,7 @@
  * Package usage analytics and performance monitoring interface
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button, TextField, Select } from "reynard-components-core/primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
@@ -53,9 +45,7 @@ export interface AnalyticsSummary {
   errorRate: number;
 }
 
-export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
-  props,
-) => {
+export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = props => {
   const [analytics, setAnalytics] = createSignal<PackageAnalytics[]>([]);
   const [summary, setSummary] = createSignal<AnalyticsSummary>({
     totalPackages: 0,
@@ -224,30 +214,15 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
       // Calculate summary
       const analyticsList = mockAnalytics;
       const totalLoads = analyticsList.reduce((sum, a) => sum + a.loadCount, 0);
-      const totalLoadTime = analyticsList.reduce(
-        (sum, a) => sum + a.totalLoadTime,
-        0,
-      );
+      const totalLoadTime = analyticsList.reduce((sum, a) => sum + a.totalLoadTime, 0);
       const averageLoadTime = totalLoadTime / totalLoads;
-      const totalSuccesses = analyticsList.reduce(
-        (sum, a) => sum + (a.loadCount * a.successRate) / 100,
-        0,
-      );
+      const totalSuccesses = analyticsList.reduce((sum, a) => sum + (a.loadCount * a.successRate) / 100, 0);
       const overallSuccessRate = (totalSuccesses / totalLoads) * 100;
-      const totalMemoryUsage = analyticsList.reduce(
-        (sum, a) => sum + a.memoryUsage,
-        0,
-      );
-      const peakMemoryUsage = Math.max(
-        ...analyticsList.map((a) => a.peakMemoryUsage),
-      );
+      const totalMemoryUsage = analyticsList.reduce((sum, a) => sum + a.memoryUsage, 0);
+      const peakMemoryUsage = Math.max(...analyticsList.map(a => a.peakMemoryUsage));
       const averagePerformanceScore =
-        analyticsList.reduce((sum, a) => sum + a.performanceScore, 0) /
-        analyticsList.length;
-      const totalErrors = analyticsList.reduce(
-        (sum, a) => sum + a.errorCount,
-        0,
-      );
+        analyticsList.reduce((sum, a) => sum + a.performanceScore, 0) / analyticsList.length;
+      const totalErrors = analyticsList.reduce((sum, a) => sum + a.errorCount, 0);
       const errorRate = (totalErrors / totalLoads) * 100;
 
       const mockSummary: AnalyticsSummary = {
@@ -277,17 +252,13 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
     if (searchQuery()) {
       const query = searchQuery().toLowerCase();
       filtered = filtered.filter(
-        (analytics) =>
-          analytics.name.toLowerCase().includes(query) ||
-          analytics.version.toLowerCase().includes(query),
+        analytics => analytics.name.toLowerCase().includes(query) || analytics.version.toLowerCase().includes(query)
       );
     }
 
     // Filter by frequency
     if (selectedFrequency() !== "all") {
-      filtered = filtered.filter(
-        (analytics) => analytics.usageFrequency === selectedFrequency(),
-      );
+      filtered = filtered.filter(analytics => analytics.usageFrequency === selectedFrequency());
     }
 
     // Sort
@@ -411,20 +382,14 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon("chart-multiple")?.outerHTML || ""
-              }
+              innerHTML={fluentIconsPackage.getIcon("chart-multiple")?.outerHTML || ""}
             />
           </span>
           <h3>Package Analytics</h3>
         </div>
 
         <div class="analytics-panel-actions">
-          <Button
-            variant="secondary"
-            onClick={refreshAnalyticsData}
-            disabled={isRefreshing()}
-          >
+          <Button variant="secondary" onClick={refreshAnalyticsData} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -488,23 +453,17 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
         <TextField
           placeholder="Search packages..."
           value={searchQuery()}
-          onChange={(e) => setSearchQuery(e.currentTarget.value)}
+          onChange={e => setSearchQuery(e.currentTarget.value)}
         />
 
-        <Select
-          value={selectedFrequency()}
-          onChange={(e) => setSelectedFrequency(e.currentTarget.value)}
-        >
+        <Select value={selectedFrequency()} onChange={e => setSelectedFrequency(e.currentTarget.value)}>
           <option value="all">All Frequencies</option>
           <option value="high">High Usage</option>
           <option value="medium">Medium Usage</option>
           <option value="low">Low Usage</option>
         </Select>
 
-        <Select
-          value={sortBy()}
-          onChange={(e) => setSortBy(e.currentTarget.value)}
-        >
+        <Select value={sortBy()} onChange={e => setSortBy(e.currentTarget.value)}>
           <option value="loadCount">Sort by Load Count</option>
           <option value="averageLoadTime">Sort by Load Time</option>
           <option value="successRate">Sort by Success Rate</option>
@@ -513,12 +472,7 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
           <option value="errorCount">Sort by Error Count</option>
         </Select>
 
-        <Select
-          value={sortOrder()}
-          onChange={(e) =>
-            setSortOrder(e.currentTarget.value as "asc" | "desc")
-          }
-        >
+        <Select value={sortOrder()} onChange={e => setSortOrder(e.currentTarget.value as "asc" | "desc")}>
           <option value="desc">Descending</option>
           <option value="asc">Ascending</option>
         </Select>
@@ -527,7 +481,7 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
       {/* Analytics List */}
       <div class="analytics-list">
         <For each={filteredAndSortedAnalytics()}>
-          {(analytics) => (
+          {analytics => (
             <div class="analytics-item">
               <div class="analytics-header">
                 <div class="analytics-info">
@@ -535,9 +489,7 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
                       innerHTML={
-                        fluentIconsPackage.getIcon(
-                          getFrequencyIcon(analytics.usageFrequency),
-                        )?.outerHTML || ""
+                        fluentIconsPackage.getIcon(getFrequencyIcon(analytics.usageFrequency))?.outerHTML || ""
                       }
                     />
                   </span>
@@ -574,16 +526,12 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
                 <div class="metrics-grid">
                   <div class="metric-item">
                     <span class="label">Load Count:</span>
-                    <span class="value">
-                      {analytics.loadCount.toLocaleString()}
-                    </span>
+                    <span class="value">{analytics.loadCount.toLocaleString()}</span>
                   </div>
 
                   <div class="metric-item">
                     <span class="label">Avg Load Time:</span>
-                    <span class="value">
-                      {formatTime(analytics.averageLoadTime)}
-                    </span>
+                    <span class="value">{formatTime(analytics.averageLoadTime)}</span>
                   </div>
 
                   <div class="metric-item">
@@ -600,16 +548,12 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
 
                   <div class="metric-item">
                     <span class="label">Memory Usage:</span>
-                    <span class="value">
-                      {formatSize(analytics.memoryUsage)}
-                    </span>
+                    <span class="value">{formatSize(analytics.memoryUsage)}</span>
                   </div>
 
                   <div class="metric-item">
                     <span class="label">Peak Memory:</span>
-                    <span class="value">
-                      {formatSize(analytics.peakMemoryUsage)}
-                    </span>
+                    <span class="value">{formatSize(analytics.peakMemoryUsage)}</span>
                   </div>
 
                   <div class="metric-item">
@@ -620,24 +564,18 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
 
                 <div class="detail-row">
                   <span class="label">Last Used:</span>
-                  <span class="value">
-                    {analytics.lastUsed.toLocaleString()}
-                  </span>
+                  <span class="value">{analytics.lastUsed.toLocaleString()}</span>
                 </div>
 
                 <div class="detail-row">
                   <span class="label">Total Load Time:</span>
-                  <span class="value">
-                    {formatDuration(analytics.totalLoadTime)}
-                  </span>
+                  <span class="value">{formatDuration(analytics.totalLoadTime)}</span>
                 </div>
 
                 <Show when={analytics.dependencies.length > 0}>
                   <div class="detail-row">
                     <span class="label">Dependencies:</span>
-                    <span class="value">
-                      {analytics.dependencies.join(", ")}
-                    </span>
+                    <span class="value">{analytics.dependencies.join(", ")}</span>
                   </div>
                 </Show>
               </div>
@@ -648,9 +586,7 @@ export const PackageAnalyticsPanel: Component<PackageAnalyticsPanelProps> = (
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">
-          Last updated: {lastUpdate()!.toLocaleString()}
-        </div>
+        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
       </Show>
     </div>
   );

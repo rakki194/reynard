@@ -4,10 +4,7 @@
  * Cache management for the NLWeb router.
  */
 
-import {
-  NLWebSuggestionRequest,
-  NLWebSuggestionResponse,
-} from "../types/index.js";
+import { NLWebSuggestionRequest, NLWebSuggestionResponse } from "../types/index.js";
 
 export interface CacheEntry {
   response: NLWebSuggestionResponse;
@@ -25,10 +22,7 @@ export interface NLWebRouterCache {
 /**
  * Create NLWeb router cache
  */
-export function createNLWebRouterCache(
-  cacheTtl: number,
-  maxCacheSize: number,
-): NLWebRouterCache {
+export function createNLWebRouterCache(cacheTtl: number, maxCacheSize: number): NLWebRouterCache {
   const cache = new Map<string, CacheEntry>();
 
   const get = (key: string): CacheEntry | undefined => {

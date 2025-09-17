@@ -33,9 +33,7 @@ export class QueryConverter {
   /**
    * Convert QueryResult to IterableIterator for compatibility.
    */
-  convertToIterator<T extends Component[]>(
-    queryResult: Record<string, unknown>,
-  ): IterableIterator<[Entity, ...T]> {
+  convertToIterator<T extends Component[]>(queryResult: Record<string, unknown>): IterableIterator<[Entity, ...T]> {
     // This is a simplified conversion - in a real implementation,
     // you'd properly convert the QueryResult to an iterator
     const entities = (queryResult.entities as Entity[]) || [];

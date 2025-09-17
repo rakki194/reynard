@@ -52,8 +52,8 @@ function App() {
         enableTools: true,
         showTimestamps: true,
       }}
-      onMessageSent={(message) => console.log("Sent:", message)}
-      onMessageReceived={(message) => console.log("Received:", message)}
+      onMessageSent={message => console.log("Sent:", message)}
+      onMessageReceived={message => console.log("Received:", message)}
     />
   );
 }
@@ -62,12 +62,7 @@ function App() {
 ### Advanced Usage with Custom Components
 
 ```tsx
-import {
-  ChatContainer,
-  ChatMessage,
-  MessageInput,
-  useChat,
-} from "reynard-components";
+import { ChatContainer, ChatMessage, MessageInput, useChat } from "reynard-components";
 
 function CustomChatApp() {
   const { messages, sendMessage, isStreaming } = useChat({
@@ -83,20 +78,12 @@ function CustomChatApp() {
     <div class="custom-chat">
       <div class="messages">
         <For each={messages()}>
-          {(message) => (
-            <ChatMessage
-              message={message}
-              showTimestamp={true}
-              showThinking={message.type === "assistant"}
-            />
+          {message => (
+            <ChatMessage message={message} showTimestamp={true} showThinking={message.type === "assistant"} />
           )}
         </For>
       </div>
-      <MessageInput
-        onSend={sendMessage}
-        disabled={isStreaming()}
-        placeholder="Type your message..."
-      />
+      <MessageInput onSend={sendMessage} disabled={isStreaming()} placeholder="Type your message..." />
     </div>
   );
 }
@@ -108,19 +95,18 @@ function CustomChatApp() {
 import { ChatContainer, useStreamingChat } from "reynard-components";
 
 function StreamingChatApp() {
-  const { messages, sendMessage, isStreaming, streamStatus, thinkingContent } =
-    useStreamingChat({
-      endpoint: "/api/chat/stream",
-      config: {
-        enableThinking: true,
-        enableTools: true,
-        streamMode: "real-time",
-        bufferSize: 1024,
-      },
-      onStreamStart: () => console.log("Stream started"),
-      onStreamEnd: () => console.log("Stream ended"),
-      onThinkingUpdate: (content) => console.log("Thinking:", content),
-    });
+  const { messages, sendMessage, isStreaming, streamStatus, thinkingContent } = useStreamingChat({
+    endpoint: "/api/chat/stream",
+    config: {
+      enableThinking: true,
+      enableTools: true,
+      streamMode: "real-time",
+      bufferSize: 1024,
+    },
+    onStreamStart: () => console.log("Stream started"),
+    onStreamEnd: () => console.log("Stream ended"),
+    onThinkingUpdate: content => console.log("Thinking:", content),
+  });
 
   return (
     <div class="streaming-chat">
@@ -134,14 +120,10 @@ function StreamingChatApp() {
 
       <div class="messages-container">
         <For each={messages()}>
-          {(message) => (
+          {message => (
             <div class={`message ${message.role}`}>
               <div class="message-content">{message.content}</div>
-              {message.timestamp && (
-                <div class="timestamp">
-                  {new Date(message.timestamp).toLocaleTimeString()}
-                </div>
-              )}
+              {message.timestamp && <div class="timestamp">{new Date(message.timestamp).toLocaleTimeString()}</div>}
             </div>
           )}
         </For>
@@ -173,15 +155,7 @@ function StreamingChatApp() {
 import { P2PChatContainer, useP2PChat } from "reynard-components";
 
 function P2PChatApp() {
-  const {
-    messages,
-    sendMessage,
-    isConnected,
-    connectionStatus,
-    participants,
-    joinRoom,
-    leaveRoom,
-  } = useP2PChat({
+  const { messages, sendMessage, isConnected, connectionStatus, participants, joinRoom, leaveRoom } = useP2PChat({
     signalingServer: "wss://signaling.example.com",
     iceServers: [
       { urls: "stun:stun.l.google.com:19302" },
@@ -193,9 +167,9 @@ function P2PChatApp() {
       enableVoiceChat: false,
       maxParticipants: 10,
     },
-    onConnectionChange: (status) => console.log("Connection:", status),
-    onParticipantJoin: (user) => console.log("User joined:", user),
-    onParticipantLeave: (user) => console.log("User left:", user),
+    onConnectionChange: status => console.log("Connection:", status),
+    onParticipantJoin: user => console.log("User joined:", user),
+    onParticipantLeave: user => console.log("User left:", user),
   });
 
   const handleJoinRoom = async (roomId: string) => {
@@ -219,27 +193,17 @@ function P2PChatApp() {
 
       <div class="room-controls">
         <input type="text" placeholder="Room ID" id="roomId" />
-        <button
-          onClick={() =>
-            handleJoinRoom(document.getElementById("roomId")?.value || "")
-          }
-        >
-          Join Room
-        </button>
+        <button onClick={() => handleJoinRoom(document.getElementById("roomId")?.value || "")}>Join Room</button>
         <button onClick={leaveRoom}>Leave Room</button>
       </div>
 
       <div class="messages-container">
         <For each={messages()}>
-          {(message) => (
-            <div
-              class={`message ${message.senderId === "me" ? "own" : "other"}`}
-            >
+          {message => (
+            <div class={`message ${message.senderId === "me" ? "own" : "other"}`}>
               <div class="sender">{message.senderName}</div>
               <div class="content">{message.content}</div>
-              <div class="timestamp">
-                {new Date(message.timestamp).toLocaleTimeString()}
-              </div>
+              <div class="timestamp">{new Date(message.timestamp).toLocaleTimeString()}</div>
             </div>
           )}
         </For>
@@ -263,72 +227,71 @@ function P2PChatApp() {
 import { ChatContainer, useChatWithTools } from "reynard-components";
 
 function ChatWithToolsApp() {
-  const { messages, sendMessage, isStreaming, activeTools, toolResults } =
-    useChatWithTools({
-      endpoint: "/api/chat/tools",
-      tools: [
-        {
-          name: "search_web",
-          description: "Search the web for information",
-          parameters: {
-            type: "object",
-            properties: {
-              query: { type: "string", description: "Search query" },
-              limit: {
-                type: "number",
-                description: "Number of results",
-                default: 5,
-              },
+  const { messages, sendMessage, isStreaming, activeTools, toolResults } = useChatWithTools({
+    endpoint: "/api/chat/tools",
+    tools: [
+      {
+        name: "search_web",
+        description: "Search the web for information",
+        parameters: {
+          type: "object",
+          properties: {
+            query: { type: "string", description: "Search query" },
+            limit: {
+              type: "number",
+              description: "Number of results",
+              default: 5,
             },
-            required: ["query"],
           },
+          required: ["query"],
         },
-        {
-          name: "get_weather",
-          description: "Get current weather for a location",
-          parameters: {
-            type: "object",
-            properties: {
-              location: { type: "string", description: "City name" },
-              units: {
-                type: "string",
-                enum: ["celsius", "fahrenheit"],
-                default: "celsius",
-              },
+      },
+      {
+        name: "get_weather",
+        description: "Get current weather for a location",
+        parameters: {
+          type: "object",
+          properties: {
+            location: { type: "string", description: "City name" },
+            units: {
+              type: "string",
+              enum: ["celsius", "fahrenheit"],
+              default: "celsius",
             },
-            required: ["location"],
           },
+          required: ["location"],
         },
-        {
-          name: "calculate",
-          description: "Perform mathematical calculations",
-          parameters: {
-            type: "object",
-            properties: {
-              expression: {
-                type: "string",
-                description: "Mathematical expression",
-              },
+      },
+      {
+        name: "calculate",
+        description: "Perform mathematical calculations",
+        parameters: {
+          type: "object",
+          properties: {
+            expression: {
+              type: "string",
+              description: "Mathematical expression",
             },
-            required: ["expression"],
           },
+          required: ["expression"],
         },
-      ],
-      config: {
-        enableToolExecution: true,
-        showToolProgress: true,
-        allowToolSelection: true,
       },
-      onToolStart: (toolName, parameters) => {
-        console.log(`Tool started: ${toolName}`, parameters);
-      },
-      onToolComplete: (toolName, result) => {
-        console.log(`Tool completed: ${toolName}`, result);
-      },
-      onToolError: (toolName, error) => {
-        console.error(`Tool error: ${toolName}`, error);
-      },
-    });
+    ],
+    config: {
+      enableToolExecution: true,
+      showToolProgress: true,
+      allowToolSelection: true,
+    },
+    onToolStart: (toolName, parameters) => {
+      console.log(`Tool started: ${toolName}`, parameters);
+    },
+    onToolComplete: (toolName, result) => {
+      console.log(`Tool completed: ${toolName}`, result);
+    },
+    onToolError: (toolName, error) => {
+      console.error(`Tool error: ${toolName}`, error);
+    },
+  });
 
   return (
     <div class="chat-with-tools">
@@ -339,7 +302,7 @@ function ChatWithToolsApp() {
             <div class="tools-status">
               Active tools:{" "}
               {activeTools()
-                .map((t) => t.name)
+                .map(t => t.name)
                 .join(", ")}
             </div>
           )}
@@ -348,22 +311,18 @@ function ChatWithToolsApp() {
 
       <div class="messages-container">
         <For each={messages()}>
-          {(message) => (
+          {message => (
             <div class={`message ${message.role}`}>
               <div class="message-content">{message.content}</div>
 
               {message.toolCalls && (
                 <div class="tool-calls">
                   <For each={message.toolCalls}>
-                    {(toolCall) => (
+                    {toolCall => (
                       <div class="tool-call">
                         <div class="tool-name">🔧 {toolCall.name}</div>
-                        <div class="tool-parameters">
-                          {JSON.stringify(toolCall.parameters, null, 2)}
-                        </div>
-                        {toolCall.result && (
-                          <div class="tool-result">{toolCall.result}</div>
-                        )}
+                        <div class="tool-parameters">{JSON.stringify(toolCall.parameters, null, 2)}</div>
+                        {toolCall.result && <div class="tool-result">{toolCall.result}</div>}
                       </div>
                     )}
                   </For>
@@ -665,9 +624,9 @@ import { ChatContainer } from "reynard-components";
       },
     },
   ]}
-  onMessageSent={(message) => console.log("Sent:", message)}
-  onMessageReceived={(message) => console.log("Received:", message)}
-  onError={(error) => console.error("Chat error:", error)}
+  onMessageSent={message => console.log("Sent:", message)}
+  onMessageReceived={message => console.log("Received:", message)}
+  onError={error => console.error("Chat error:", error)}
   onStreamingStart={() => console.log("Streaming started")}
   onStreamingEnd={() => console.log("Streaming ended")}
 />;
@@ -705,8 +664,8 @@ Advanced input component with smart features.
   maxLength={4000}
   showCounter={true}
   variant="default" // 'default' | 'compact'
-  onSubmit={(content) => sendMessage(content)}
-  onChange={(content) => setDraft(content)}
+  onSubmit={content => sendMessage(content)}
+  onChange={content => setDraft(content)}
   submitButton={<CustomButton />}
 />
 ```
@@ -863,7 +822,7 @@ app.post("/api/chat", async (req, res) => {
     `data: ${JSON.stringify({
       type: "thinking",
       content: "Let me think about this...",
-    })}\n\n`,
+    })}\n\n`
   );
 
   // Send content chunks
@@ -872,7 +831,7 @@ app.post("/api/chat", async (req, res) => {
       `data: ${JSON.stringify({
         type: "content",
         content: chunk,
-      })}\n\n`,
+      })}\n\n`
     );
   }
 
@@ -881,7 +840,7 @@ app.post("/api/chat", async (req, res) => {
     `data: ${JSON.stringify({
       type: "complete",
       done: true,
-    })}\n\n`,
+    })}\n\n`
   );
 
   res.end();
@@ -893,12 +852,12 @@ app.post("/api/chat", async (req, res) => {
 ```javascript
 // Tool execution example
 const tools = {
-  calculator: async (args) => {
+  calculator: async args => {
     const result = eval(args.expression); // Don't use eval in production!
     return { result, type: "number" };
   },
 
-  search: async (args) => {
+  search: async args => {
     const results = await searchAPI(args.query);
     return { results, type: "search_results" };
   },
@@ -914,7 +873,7 @@ res.write(
       parameters: { expression: "2 + 2" },
       status: "running",
     },
-  })}\n\n`,
+  })}\n\n`
 );
 
 // After execution
@@ -927,7 +886,7 @@ res.write(
       status: "completed",
       result: 4,
     },
-  })}\n\n`,
+  })}\n\n`
 );
 ```
 
@@ -954,9 +913,7 @@ import { ChatContainer } from "reynard-components";
 test("sends message correctly", async () => {
   const onMessageSent = vi.fn();
 
-  render(() => (
-    <ChatContainer endpoint="/api/chat" onMessageSent={onMessageSent} />
-  ));
+  render(() => <ChatContainer endpoint="/api/chat" onMessageSent={onMessageSent} />);
 
   const input = screen.getByLabelText("Message input");
   const sendButton = screen.getByRole("button", { name: /send/i });
@@ -968,7 +925,7 @@ test("sends message correctly", async () => {
     expect.objectContaining({
       content: "Hello!",
       role: "user",
-    }),
+    })
   );
 });
 ```
@@ -1000,9 +957,9 @@ const chat = useChat({
 ```tsx
 // Lazy load chat components
 const ChatContainer = lazy(() =>
-  import("reynard-components").then((m) => ({
+  import("reynard-components").then(m => ({
     default: m.ChatContainer,
-  })),
+  }))
 );
 
 function App() {
@@ -1033,9 +990,7 @@ const CustomMessageRenderer = (props: { message: CustomMessage }) => {
     <div class={`message priority-${props.message.customData?.priority}`}>
       <ChatMessage message={props.message} />
       <div class="tags">
-        <For each={props.message.customData?.tags}>
-          {(tag) => <span class="tag">{tag}</span>}
-        </For>
+        <For each={props.message.customData?.tags}>{tag => <span class="tag">{tag}</span>}</For>
       </div>
     </div>
   );

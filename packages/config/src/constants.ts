@@ -84,11 +84,7 @@ export const VALIDATION_CONSTANTS = {
   FILE: {
     MAX_SIZE: 100 * 1024 * 1024, // 100MB
     ALLOWED_IMAGE_TYPES: ["image/jpeg", "image/png", "image/gif", "image/webp"],
-    ALLOWED_DOCUMENT_TYPES: [
-      "application/pdf",
-      "text/plain",
-      "application/msword",
-    ],
+    ALLOWED_DOCUMENT_TYPES: ["application/pdf", "text/plain", "application/msword"],
     ALLOWED_VIDEO_TYPES: ["video/mp4", "video/webm", "video/ogg"],
     ALLOWED_AUDIO_TYPES: ["audio/mpeg", "audio/wav", "audio/ogg"],
   },
@@ -309,8 +305,7 @@ export const ENVIRONMENT = {
   TEST: "test",
 } as const;
 
-export const CURRENT_ENVIRONMENT =
-  process.env.NODE_ENV || ENVIRONMENT.DEVELOPMENT;
+export const CURRENT_ENVIRONMENT = process.env.NODE_ENV || ENVIRONMENT.DEVELOPMENT;
 
 // ============================================================================
 // Storage Constants

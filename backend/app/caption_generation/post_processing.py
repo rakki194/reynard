@@ -5,23 +5,27 @@ Modular, configurable, and safe-by-default post-processing for captions.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 def post_process_caption(
     caption: str,
     generator_name: str,
-    settings: Optional[Dict[str, Any]] = None,
+    settings: dict[str, Any] | None = None,
 ) -> str:
     if not caption:
         return caption
 
-    if not settings or not isinstance(settings, dict) or not settings.get("enabled", True):
+    if (
+        not settings
+        or not isinstance(settings, dict)
+        or not settings.get("enabled", True)
+    ):
         if generator_name in ["jtp2", "wdv3"]:
             return caption.replace("_", " ")
         return caption
 
-    pipeline: List[str] = settings.get("pipeline") or [
+    pipeline: list[str] = settings.get("pipeline") or [
         "replace_underscores",
         "trim_whitespace",
         "remove_duplicate_spaces",
@@ -30,7 +34,7 @@ def post_process_caption(
         "ensure_terminal_punctuation",
     ]
 
-    rules: Dict[str, Any] = {
+    rules: dict[str, Any] = {
         "replace_underscores": True,
         "case_conversion": "none",
         "trim_whitespace": True,
@@ -54,11 +58,17 @@ def post_process_caption(
             import re as _re
 
             caption = _re.sub(r"\s+", " ", caption)
-        elif step == "normalize_punctuation_spacing" and rules.get("normalize_punctuation_spacing"):
+        elif step == "normalize_punctuation_spacing" and rules.get(
+            "normalize_punctuation_spacing"
+        ):
             caption = _normalize_spacing(caption)
         elif step == "case_conversion":
-            caption = _apply_case(caption, (rules.get("case_conversion") or "none").lower())
-        elif step == "ensure_terminal_punctuation" and rules.get("ensure_terminal_punctuation"):
+            caption = _apply_case(
+                caption, (rules.get("case_conversion") or "none").lower()
+            )
+        elif step == "ensure_terminal_punctuation" and rules.get(
+            "ensure_terminal_punctuation"
+        ):
             if caption and caption[-1] not in ".!?":
                 caption = caption + "."
 
@@ -83,9 +93,11 @@ def _apply_case(text: str, mode: str) -> str:
         try:
             import re
 
-            return re.sub(r"\b(\w)(\w*)\b", lambda m: m.group(1).upper() + m.group(2).lower(), text)
+            return re.sub(
+                r"\b(\w)(\w*)\b",
+                lambda m: m.group(1).upper() + m.group(2).lower(),
+                text,
+            )
         except Exception:
             return text.title()
     return text
-
-

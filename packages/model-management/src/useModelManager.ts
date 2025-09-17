@@ -7,11 +7,7 @@
 
 import { createSignal, onMount, onCleanup } from "solid-js";
 import type { ModelInfo, SystemHealth } from "./ModelManager";
-import {
-  createDefaultModels,
-  extractLoadedModels,
-  createModelStatusMap,
-} from "./modelData";
+import { createDefaultModels, extractLoadedModels, createModelStatusMap } from "./modelData";
 import {
   updateModelLoadingState,
   createModelErrorMessage,
@@ -39,13 +35,9 @@ export interface UseModelManagerReturn {
   clearError: () => void;
 }
 
-export const useModelManager = (
-  config: ModelManagerConfig,
-): UseModelManagerReturn => {
+export const useModelManager = (config: ModelManagerConfig): UseModelManagerReturn => {
   const [models, setModels] = createSignal<ModelInfo[]>([]);
-  const [systemHealth, setSystemHealth] = createSignal<SystemHealth | null>(
-    null,
-  );
+  const [systemHealth, setSystemHealth] = createSignal<SystemHealth | null>(null);
   const [error, setError] = createSignal<string | null>(null);
 
   let manager: any = null;
@@ -99,12 +91,12 @@ export const useModelManager = (
   // Load a specific model
   const loadModel = async (modelName: string) => {
     try {
-      setModels((prev) => updateModelLoadingState(prev, modelName, "loading"));
+      setModels(prev => updateModelLoadingState(prev, modelName, "loading"));
       // Simulate model loading
       await new Promise(resolve => setTimeout(resolve, 1000));
-      setModels((prev) => updateModelLoadingState(prev, modelName, "loaded"));
+      setModels(prev => updateModelLoadingState(prev, modelName, "loaded"));
     } catch (err) {
-      setModels((prev) => updateModelLoadingState(prev, modelName, "error"));
+      setModels(prev => updateModelLoadingState(prev, modelName, "error"));
       setError(createModelErrorMessage(modelName, String(err)));
     }
   };
@@ -112,12 +104,12 @@ export const useModelManager = (
   // Unload a specific model
   const unloadModel = async (modelName: string) => {
     try {
-      setModels((prev) => updateModelLoadingState(prev, modelName, "loading"));
+      setModels(prev => updateModelLoadingState(prev, modelName, "loading"));
       // Simulate model unloading
       await new Promise(resolve => setTimeout(resolve, 500));
-      setModels((prev) => updateModelLoadingState(prev, modelName, "loaded"));
+      setModels(prev => updateModelLoadingState(prev, modelName, "loaded"));
     } catch (err) {
-      setModels((prev) => updateModelLoadingState(prev, modelName, "error"));
+      setModels(prev => updateModelLoadingState(prev, modelName, "error"));
       setError(createModelErrorMessage(modelName, String(err)));
     }
   };

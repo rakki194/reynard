@@ -7,8 +7,7 @@ optimization settings and quality controls.
 """
 
 import logging
-from typing import Dict, Any, Optional, List
-from pathlib import Path
+from typing import Any
 
 logger = logging.getLogger("uvicorn")
 
@@ -124,7 +123,9 @@ class ImageFormatConverter:
         """Check JXL plugin support."""
         try:
             if _global_image_service is None:
-                logger.debug("No global service instance available, removing JXL support")
+                logger.debug(
+                    "No global service instance available, removing JXL support"
+                )
                 if "jxl" in self.supported_formats:
                     del self.supported_formats["jxl"]
                 return
@@ -147,7 +148,9 @@ class ImageFormatConverter:
         """Check AVIF plugin support."""
         try:
             if _global_image_service is None:
-                logger.debug("No global service instance available, removing AVIF support")
+                logger.debug(
+                    "No global service instance available, removing AVIF support"
+                )
                 if "avif" in self.supported_formats:
                     del self.supported_formats["avif"]
                 return
@@ -166,7 +169,7 @@ class ImageFormatConverter:
             if "avif" in self.supported_formats:
                 del self.supported_formats["avif"]
 
-    def get_supported_formats(self) -> Dict[str, Dict[str, Any]]:
+    def get_supported_formats(self) -> dict[str, dict[str, Any]]:
         """
         Get dictionary of supported formats and their capabilities.
 
@@ -187,7 +190,7 @@ class ImageFormatConverter:
         """
         return format_name.lower() in self.supported_formats
 
-    def get_format_info(self, format_name: str) -> Optional[Dict[str, Any]]:
+    def get_format_info(self, format_name: str) -> dict[str, Any] | None:
         """
         Get detailed information about a specific format.
 
@@ -199,7 +202,7 @@ class ImageFormatConverter:
         """
         return self.supported_formats.get(format_name.lower())
 
-    def get_conversion_options(self, format_name: str) -> Dict[str, Any]:
+    def get_conversion_options(self, format_name: str) -> dict[str, Any]:
         """
         Get conversion options for a specific format.
 
@@ -282,7 +285,7 @@ class ImageFormatConverter:
 
         return True
 
-    def get_optimal_format(self, requirements: Dict[str, Any]) -> Optional[str]:
+    def get_optimal_format(self, requirements: dict[str, Any]) -> str | None:
         """
         Get the optimal format based on requirements.
 
@@ -311,7 +314,10 @@ class ImageFormatConverter:
         return candidates[0][0]
 
     def _calculate_format_score(
-        self, format_name: str, format_info: Dict[str, Any], requirements: Dict[str, Any]
+        self,
+        format_name: str,
+        format_info: dict[str, Any],
+        requirements: dict[str, Any],
     ) -> int:
         """Calculate score for a format based on requirements."""
         score = 0
@@ -339,32 +345,32 @@ class ImageFormatConverter:
         return score
 
     def _score_quality_priority(
-        self, format_info: Dict[str, Any], requirements: Dict[str, Any]
+        self, format_info: dict[str, Any], requirements: dict[str, Any]
     ) -> int:
         """Score format based on quality priority."""
         quality_priority = requirements.get("quality_priority", "medium")
         default_quality = format_info.get("default_quality", 80)
 
-        if quality_priority == "high" and default_quality >= 90:
+        if (quality_priority == "high" and default_quality >= 90) or (
+            quality_priority == "medium" and 70 <= default_quality < 90
+        ):
             return 5
-        elif quality_priority == "medium" and 70 <= default_quality < 90:
-            return 5
-        elif quality_priority == "low" and default_quality < 70:
+        if quality_priority == "low" and default_quality < 70:
             return 5
         return 0
 
     def _score_size_priority(
-        self, format_info: Dict[str, Any], requirements: Dict[str, Any]
+        self, format_info: dict[str, Any], requirements: dict[str, Any]
     ) -> int:
         """Score format based on size priority."""
         size_priority = requirements.get("size_priority", "medium")
         default_quality = format_info.get("default_quality", 80)
 
-        if size_priority == "small" and default_quality <= 80:
+        if (size_priority == "small" and default_quality <= 80) or (
+            size_priority == "medium" and 70 <= default_quality <= 95
+        ):
             return 5
-        elif size_priority == "medium" and 70 <= default_quality <= 95:
-            return 5
-        elif size_priority == "large" and default_quality >= 90:
+        if size_priority == "large" and default_quality >= 90:
             return 5
         return 0
 
@@ -403,7 +409,7 @@ class ImageFormatConverter:
 
 
 # Global format converter instance
-_global_format_converter: Optional[ImageFormatConverter] = None
+_global_format_converter: ImageFormatConverter | None = None
 
 
 def get_format_converter() -> ImageFormatConverter:

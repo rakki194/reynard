@@ -15,7 +15,7 @@ interface NotificationItemProps {
   onRemove: (id: string) => void;
 }
 
-export const NotificationItem: Component<NotificationItemProps> = (props) => {
+export const NotificationItem: Component<NotificationItemProps> = props => {
   const handleClick = () => {
     props.onRemove(props.notification.id);
   };
@@ -26,15 +26,10 @@ export const NotificationItem: Component<NotificationItemProps> = (props) => {
   };
 
   return (
-    <div
-      class={`notification-toast notification-toast--${props.notification.type}`}
-      onClick={handleClick}
-    >
+    <div class={`notification-toast notification-toast--${props.notification.type}`} onClick={handleClick}>
       <NotificationIcon type={props.notification.type} />
       <div class="notification-toast__content">
-        <div class="notification-toast__message">
-          {props.notification.message}
-        </div>
+        <div class="notification-toast__message">{props.notification.message}</div>
       </div>
       <button class="notification-toast__close" onClick={handleCloseClick}>
         ×

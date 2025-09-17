@@ -26,7 +26,7 @@ const networkRetryStrategy = createRecoveryStrategy(
     console.log("Retrying network request...", error.message);
 
     // In a real app, this would retry the actual network request
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     return {
       success: true,
@@ -35,7 +35,7 @@ const networkRetryStrategy = createRecoveryStrategy(
     };
   },
   1, // High priority
-  5000, // 5 second timeout
+  5000 // 5 second timeout
 );
 
 // Custom recovery strategy for authentication errors
@@ -58,7 +58,7 @@ const authRedirectStrategy = createRecoveryStrategy(
       message: "Redirected to login page",
     };
   },
-  2,
+  2
 );
 
 // Component that demonstrates different error types
@@ -139,22 +139,16 @@ const ErrorDashboard: Component = () => {
       >
         <div>
           <h4>Total Reports</h4>
-          <p style={{ fontSize: "2rem", margin: 0, color: "var(--accent)" }}>
-            {metrics.totalReports}
-          </p>
+          <p style={{ fontSize: "2rem", margin: 0, color: "var(--accent)" }}>{metrics.totalReports}</p>
         </div>
         <div>
           <h4>Average per Hour</h4>
-          <p style={{ fontSize: "2rem", margin: 0, color: "var(--accent)" }}>
-            {metrics.averageReportsPerHour}
-          </p>
+          <p style={{ fontSize: "2rem", margin: 0, color: "var(--accent)" }}>{metrics.averageReportsPerHour}</p>
         </div>
         <div>
           <h4>Last Report</h4>
           <p style={{ fontSize: "1rem", margin: 0 }}>
-            {metrics.lastReportTime
-              ? new Date(metrics.lastReportTime).toLocaleTimeString()
-              : "None"}
+            {metrics.lastReportTime ? new Date(metrics.lastReportTime).toLocaleTimeString() : "None"}
           </p>
         </div>
       </div>
@@ -174,8 +168,7 @@ const AdvancedErrorBoundaryDemo: Component = () => {
     <div style={{ padding: "2rem", maxWidth: "1000px", margin: "0 auto" }}>
       <h1>🦊 Advanced Error Boundary Demo</h1>
       <p>
-        This demonstrates advanced error boundary features including custom
-        recovery strategies and error reporting.
+        This demonstrates advanced error boundary features including custom recovery strategies and error reporting.
       </p>
 
       <div

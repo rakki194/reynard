@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // Slaptažodžio validavimas
   password: {
-    "must-be-at-least-8-characters-long":
-      "Slaptažodis turi būti bent 8 simbolių",
-    "must-contain-at-least-one-uppercase-letter":
-      "Slaptažodis turi turėti bent vieną didžiąją raidę",
-    "must-contain-at-least-one-lowercase-letter":
-      "Slaptažodis turi turėti bent vieną mažąją raidę",
-    "must-contain-at-least-one-number":
-      "Slaptažodis turi turėti bent vieną skaičių",
-    "must-contain-at-least-one-special-character":
-      "Slaptažodis turi turėti bent vieną specialų simbolį",
+    "must-be-at-least-8-characters-long": "Slaptažodis turi būti bent 8 simbolių",
+    "must-contain-at-least-one-uppercase-letter": "Slaptažodis turi turėti bent vieną didžiąją raidę",
+    "must-contain-at-least-one-lowercase-letter": "Slaptažodis turi turėti bent vieną mažąją raidę",
+    "must-contain-at-least-one-number": "Slaptažodis turi turėti bent vieną skaičių",
+    "must-contain-at-least-one-special-character": "Slaptažodis turi turėti bent vieną specialų simbolį",
   },
 
   // Saugumo validavimas
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Turi būti įtrauktas bent vienas simbolio tipas",
-    "input-contains-potentially-dangerous-html":
-      "Įvestis turi potencialiai pavojingą HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Įvestis turi potencialiai pavojingus SQL šablonus",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Įvestis turi potencialiai pavojingus XSS šablonus",
-    "input-contains-path-traversal-patterns":
-      "Įvestis turi kelio perėjimo šablonus",
-    "input-contains-windows-reserved-names":
-      "Įvestis turi Windows rezervuotus vardus",
-    "input-contains-executable-file-extensions":
-      "Įvestis turi vykdomų failų plėtinius",
+    "at-least-one-character-type-must-be-included": "Turi būti įtrauktas bent vienas simbolio tipas",
+    "input-contains-potentially-dangerous-html": "Įvestis turi potencialiai pavojingą HTML",
+    "input-contains-potentially-dangerous-sql-patterns": "Įvestis turi potencialiai pavojingus SQL šablonus",
+    "input-contains-potentially-dangerous-xss-patterns": "Įvestis turi potencialiai pavojingus XSS šablonus",
+    "input-contains-path-traversal-patterns": "Įvestis turi kelio perėjimo šablonus",
+    "input-contains-windows-reserved-names": "Įvestis turi Windows rezervuotus vardus",
+    "input-contains-executable-file-extensions": "Įvestis turi vykdomų failų plėtinius",
     "input-contains-null-bytes": "Įvestis turi null baitus",
     "input-contains-hidden-files": "Įvestis turi paslėptus failus",
-    "input-contains-javascript-file-extensions":
-      "Įvestis turi JavaScript failų plėtinius",
+    "input-contains-javascript-file-extensions": "Įvestis turi JavaScript failų plėtinius",
   },
 
   // Asinchroninės operacijos
@@ -118,8 +105,7 @@ export const coreTranslations = {
     "persistent-failure": "Nuolatinis nesėkmė",
     "function-failed": "Funkcija nepavyko",
     "mapper-failed": "Mapper nepavyko",
-    "concurrency-must-be-greater-than-0":
-      "Lygiagretumas turi būti didesnis nei 0",
+    "concurrency-must-be-greater-than-0": "Lygiagretumas turi būti didesnis nei 0",
     "polling-timeout-reached": "Pasiektas apklausos laiko limitas",
   },
 
@@ -133,10 +119,8 @@ export const coreTranslations = {
 
   // Saugojimas ir serializavimas
   storage: {
-    "potentially-dangerous-json-detected":
-      "Aptiktas potencialiai pavojingas JSON",
-    "failed-to-parse-json-from-localstorage":
-      "Nepavyko išanalizuoti JSON iš localStorage:",
+    "potentially-dangerous-json-detected": "Aptiktas potencialiai pavojingas JSON",
+    "failed-to-parse-json-from-localstorage": "Nepavyko išanalizuoti JSON iš localStorage:",
     "error-parsing-storage-event": "Klaida analizuojant saugojimo įvykį raktui",
   },
 
@@ -174,8 +158,7 @@ export const coreTranslations = {
   // Integracijos testai
   integration: {
     "session-and-api-key-generation": "Sesijos ir API rakto generavimas",
-    "authentication-and-input-validation-integration":
-      "Autentifikavimo ir įvesties validavimo integracija",
+    "authentication-and-input-validation-integration": "Autentifikavimo ir įvesties validavimo integracija",
     "performance-and-security-integration": "Veikimo ir saugumo integracija",
   },
 };

@@ -11,7 +11,7 @@ interface CanvasSizePanelProps {
   onHide?: () => void;
 }
 
-export const CanvasSizePanel: Component<CanvasSizePanelProps> = (props) => {
+export const CanvasSizePanel: Component<CanvasSizePanelProps> = props => {
   return (
     <FloatingPanelAdvanced
       id="canvas-size-panel"

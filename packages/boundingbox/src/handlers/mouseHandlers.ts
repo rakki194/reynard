@@ -8,12 +8,9 @@ import type { BoundingBox } from "../types";
 import type { CanvasEventHandlersConfig } from "./canvasEventHandlers";
 import * as fabric from "fabric";
 
-export function setupMouseHandlers(
-  canvas: fabric.Canvas,
-  config: CanvasEventHandlersConfig,
-) {
+export function setupMouseHandlers(canvas: fabric.Canvas, config: CanvasEventHandlersConfig) {
   // Mouse down - start drawing or select box
-  canvas.on("mouse:down", (event) => {
+  canvas.on("mouse:down", event => {
     if (!config.config.enableCreation) return;
 
     const pointer = canvas.getPointer(event.e);
@@ -43,7 +40,7 @@ export function setupMouseHandlers(
   });
 
   // Mouse move - update drawing box
-  canvas.on("mouse:move", (event) => {
+  canvas.on("mouse:move", event => {
     if (!config.isDrawing() || !config.newBox() || !config.startPoint()) return;
 
     const pointer = canvas.getPointer(event.e);

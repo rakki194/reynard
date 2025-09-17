@@ -4,27 +4,20 @@
  * Handles service initialization and shutdown logic for the NLWeb service.
  */
 
-import type {
-  NLWebConfiguration,
-  NLWebEvent,
-  NLWebEventEmitter,
-} from "../types/index.js";
+import type { NLWebConfiguration, NLWebEvent, NLWebEventEmitter } from "../types/index.js";
 import type { NLWebRouter } from "../types/index.js";
 import type { ToolRegistrationService } from "./ToolRegistrationService.js";
 
 export class NLWebInitializationService {
   constructor(
     private configuration: NLWebConfiguration,
-    private eventEmitter: NLWebEventEmitter,
+    private eventEmitter: NLWebEventEmitter
   ) {}
 
   /**
    * Initialize the service
    */
-  async initialize(
-    router: NLWebRouter,
-    toolRegistrationService: ToolRegistrationService,
-  ): Promise<void> {
+  async initialize(router: NLWebRouter, toolRegistrationService: ToolRegistrationService): Promise<void> {
     try {
       // Initialize the router
       await router.initialize();

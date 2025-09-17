@@ -65,29 +65,29 @@ class FenrirTestBase:
     ) -> None:
         """Assert that a vulnerability was or wasn't detected as expected"""
         if should_be_vulnerable:
-            assert result.vulnerability_found, (
-                f"Expected vulnerability in {result.test_name}: {result.details}"
-            )
+            assert (
+                result.vulnerability_found
+            ), f"Expected vulnerability in {result.test_name}: {result.details}"
         else:
-            assert not result.vulnerability_found, (
-                f"Unexpected vulnerability in {result.test_name}: {result.details}"
-            )
+            assert (
+                not result.vulnerability_found
+            ), f"Unexpected vulnerability in {result.test_name}: {result.details}"
 
     def assert_response_time(
         self, result: SecurityTestResult, max_time: float = 5.0
     ) -> None:
         """Assert that the response time is within acceptable limits"""
-        assert result.response_time <= max_time, (
-            f"Response time too slow: {result.response_time:.2f}s > {max_time}s"
-        )
+        assert (
+            result.response_time <= max_time
+        ), f"Response time too slow: {result.response_time:.2f}s > {max_time}s"
 
     def assert_status_code(
         self, result: SecurityTestResult, expected_codes: list[int]
     ) -> None:
         """Assert that the status code is one of the expected values"""
-        assert result.status_code in expected_codes, (
-            f"Unexpected status code {result.status_code}, expected one of {expected_codes}"
-        )
+        assert (
+            result.status_code in expected_codes
+        ), f"Unexpected status code {result.status_code}, expected one of {expected_codes}"
 
     def log_test_result(self, result: SecurityTestResult) -> None:
         """Log a test result"""
@@ -116,9 +116,9 @@ class FenrirTestBase:
             "passed_tests": passed_tests,
             "failed_tests": total_tests - passed_tests,
             "vulnerabilities_found": vulnerabilities_found,
-            "success_rate": (passed_tests / total_tests * 100)
-            if total_tests > 0
-            else 0,
+            "success_rate": (
+                (passed_tests / total_tests * 100) if total_tests > 0 else 0
+            ),
             "results": self.test_results,
         }
 

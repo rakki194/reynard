@@ -36,10 +36,7 @@ const IconsDemo: Component = () => {
 
     // Filter by category
     if (selectedCategory() !== "all") {
-      const categoryIcons = Object.keys(
-        iconCategories[selectedCategory() as keyof typeof iconCategories]
-          ?.icons || {},
-      );
+      const categoryIcons = Object.keys(iconCategories[selectedCategory() as keyof typeof iconCategories]?.icons || {});
       icons = icons.filter(([name]) => categoryIcons.includes(name));
     }
 
@@ -51,10 +48,8 @@ const IconsDemo: Component = () => {
         return (
           name.toLowerCase().includes(query) ||
           metadata.description?.toLowerCase().includes(query) ||
-          metadata.keywords?.some((keyword) =>
-            keyword.toLowerCase().includes(query),
-          ) ||
-          metadata.tags?.some((tag) => tag.toLowerCase().includes(query))
+          metadata.keywords?.some(keyword => keyword.toLowerCase().includes(query)) ||
+          metadata.tags?.some(tag => tag.toLowerCase().includes(query))
         );
       });
     }
@@ -65,9 +60,7 @@ const IconsDemo: Component = () => {
   const renderActiveTab = () => {
     switch (activeTab()) {
       case "browse":
-        return (
-          <IconGrid icons={filteredIcons()} onIconClick={setSelectedIcon} />
-        );
+        return <IconGrid icons={filteredIcons()} onIconClick={setSelectedIcon} />;
       case "search":
         return (
           <>
@@ -90,9 +83,7 @@ const IconsDemo: Component = () => {
                 <div class="category-card">
                   <h3>{category.name}</h3>
                   <p>{category.description}</p>
-                  <div class="category-icon-count">
-                    {Object.keys(category.icons).length} icons
-                  </div>
+                  <div class="category-icon-count">{Object.keys(category.icons).length} icons</div>
                   <button
                     class="view-category-btn"
                     onClick={() => {
@@ -110,9 +101,7 @@ const IconsDemo: Component = () => {
       case "stats":
         return <CategoryStats />;
       default:
-        return (
-          <IconGrid icons={filteredIcons()} onIconClick={setSelectedIcon} />
-        );
+        return <IconGrid icons={filteredIcons()} onIconClick={setSelectedIcon} />;
     }
   };
 
@@ -123,10 +112,7 @@ const IconsDemo: Component = () => {
           <span class="reynard-logo"></span>
           Reynard Icons Demo
         </h1>
-        <p>
-          Comprehensive Fluent UI Icons Collection - Built with Reynard
-          Framework
-        </p>
+        <p>Comprehensive Fluent UI Icons Collection - Built with Reynard Framework</p>
         <div class="header-controls">
           <div class="theme-info">Current theme: {theme()}</div>
           <ThemeToggle />
@@ -135,16 +121,14 @@ const IconsDemo: Component = () => {
 
       <main class="app-main">
         <div class="tab-navigation">
-          {tabs.map((tab) => {
+          {tabs.map(tab => {
             const iconElement = getIcon(tab.icon);
             return (
               <button
                 class={`tab-button ${activeTab() === tab.id ? "active" : ""}`}
                 onClick={() => setActiveTab(tab.id)}
               >
-                <span class="icon">
-                  {iconElement && <div innerHTML={iconElement} />}
-                </span>
+                <span class="icon">{iconElement && <div innerHTML={iconElement} />}</span>
                 {tab.label}
               </button>
             );
@@ -155,10 +139,7 @@ const IconsDemo: Component = () => {
       </main>
 
       <Show when={selectedIcon()}>
-        <IconModal
-          iconName={selectedIcon()!}
-          onClose={() => setSelectedIcon(null)}
-        />
+        <IconModal iconName={selectedIcon()!} onClose={() => setSelectedIcon(null)} />
       </Show>
     </div>
   );

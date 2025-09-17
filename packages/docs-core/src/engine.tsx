@@ -5,14 +5,7 @@
 // import { createSignal, createEffect } from 'solid-js';
 import { ContentParser } from "./parser";
 import { DocRenderer } from "./renderer";
-import type {
-  DocEngine,
-  DocEngineConfig,
-  DocPage,
-  DocSection,
-  DocPlugin,
-  DocContentType,
-} from "./types";
+import type { DocEngine, DocEngineConfig, DocPage, DocSection, DocPlugin, DocContentType } from "./types";
 
 /**
  * Main documentation engine class
@@ -57,14 +50,7 @@ export class ReynardDocEngine implements DocEngine {
    * Render a documentation page
    */
   render(page: DocPage) {
-    return (props: any) => (
-      <DocRenderer
-        content={page.content}
-        metadata={page.metadata}
-        type={page.type}
-        {...props}
-      />
-    );
+    return (props: any) => <DocRenderer content={page.content} metadata={page.metadata} type={page.type} {...props} />;
   }
 
   /**
@@ -82,12 +68,7 @@ export class ReynardDocEngine implements DocEngine {
     const searchTerm = query.toLowerCase();
 
     for (const page of this.config.pages) {
-      const searchableText = [
-        page.title,
-        page.metadata.description || "",
-        page.content,
-        ...(page.metadata.tags || []),
-      ]
+      const searchableText = [page.title, page.metadata.description || "", page.content, ...(page.metadata.tags || [])]
         .join(" ")
         .toLowerCase();
 
@@ -112,14 +93,14 @@ export class ReynardDocEngine implements DocEngine {
    * Get a page by ID
    */
   getPage(id: string): DocPage | undefined {
-    return this.config.pages.find((page) => page.id === id);
+    return this.config.pages.find(page => page.id === id);
   }
 
   /**
    * Get a section by ID
    */
   getSection(id: string): DocSection | undefined {
-    return this.config.sections.find((section) => section.id === id);
+    return this.config.sections.find(section => section.id === id);
   }
 
   /**
@@ -181,9 +162,7 @@ export class ReynardDocEngine implements DocEngine {
         }
       } else {
         // Find parent section
-        const parentSection = this.config.sections.find((section) =>
-          section.pages.some((p) => p.id === currentPage.id),
-        );
+        const parentSection = this.config.sections.find(section => section.pages.some(p => p.id === currentPage.id));
         if (parentSection) {
           breadcrumbs.unshift({
             label: parentSection.title,
@@ -212,7 +191,7 @@ export class ReynardDocEngine implements DocEngine {
       if (otherPage.id === pageId) continue;
 
       const otherTags = otherPage.metadata.tags || [];
-      const commonTags = pageTags.filter((tag) => otherTags.includes(tag));
+      const commonTags = pageTags.filter(tag => otherTags.includes(tag));
 
       if (commonTags.length > 0) {
         related.push(otherPage);
@@ -221,12 +200,8 @@ export class ReynardDocEngine implements DocEngine {
 
     // Sort by number of common tags
     related.sort((a, b) => {
-      const aCommonTags = (a.metadata.tags || []).filter((tag) =>
-        pageTags.includes(tag),
-      ).length;
-      const bCommonTags = (b.metadata.tags || []).filter((tag) =>
-        pageTags.includes(tag),
-      ).length;
+      const aCommonTags = (a.metadata.tags || []).filter(tag => pageTags.includes(tag)).length;
+      const bCommonTags = (b.metadata.tags || []).filter(tag => pageTags.includes(tag)).length;
 
       return bCommonTags - aCommonTags;
     });

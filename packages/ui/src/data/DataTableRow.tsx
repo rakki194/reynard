@@ -17,9 +17,8 @@ export interface DataTableRowProps<T = unknown> {
   onRowClick?: (row: T, index: number) => void;
 }
 
-export const DataTableRow: Component<DataTableRowProps> = (props) => {
-  const visibleColumns = () =>
-    props.columns.filter((col) => col.visible !== false);
+export const DataTableRow: Component<DataTableRowProps> = props => {
+  const visibleColumns = () => props.columns.filter(col => col.visible !== false);
 
   return (
     <tr
@@ -33,9 +32,7 @@ export const DataTableRow: Component<DataTableRowProps> = (props) => {
           <input
             type="checkbox"
             checked={props.selected}
-            onChange={(e) =>
-              props.onRowSelect(props.index, e.currentTarget.checked)
-            }
+            onChange={e => props.onRowSelect(props.index, e.currentTarget.checked)}
             aria-label={`Select row ${props.index + 1}`}
           />
         </td>
@@ -43,21 +40,10 @@ export const DataTableRow: Component<DataTableRowProps> = (props) => {
 
       {/* Data columns */}
       <For each={visibleColumns()}>
-        {(column) => (
-          <td
-            class={`reynard-data-table__cell reynard-data-table__cell--align-${column.align || "left"}`}
-          >
-            <Show
-              when={column.cell}
-              fallback={
-                <span>{String(getCellValue(props.row, column) ?? "")}</span>
-              }
-            >
-              {column.cell!(
-                getCellValue(props.row, column),
-                props.row,
-                props.index,
-              )}
+        {column => (
+          <td class={`reynard-data-table__cell reynard-data-table__cell--align-${column.align || "left"}`}>
+            <Show when={column.cell} fallback={<span>{String(getCellValue(props.row, column) ?? "")}</span>}>
+              {column.cell!(getCellValue(props.row, column), props.row, props.index)}
             </Show>
           </td>
         )}

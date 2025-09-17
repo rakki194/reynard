@@ -6,10 +6,9 @@ with cache manipulation exploits and model access attacks!
 """
 
 import asyncio
-import httpx
 import time
-import json
-from typing import List, Dict, Any, Optional
+
+import httpx
 from rich.console import Console
 from rich.panel import Panel
 
@@ -18,59 +17,74 @@ from ..generators.payload_generator import PayloadGenerator
 
 console = Console()
 
+
 class HFCacheFuzzer:
     """
     *circles with menacing intent* Specialized fuzzing for HuggingFace cache endpoints
-    
+
     *bares fangs with savage satisfaction* Targets cache manipulation vulnerabilities,
     model access control, and directory traversal attacks!
     """
-    
+
     def __init__(self, base_url: str = "http://localhost:8000"):
-        self.base_url = base_url.rstrip('/')
+        self.base_url = base_url.rstrip("/")
         self.payload_generator = PayloadGenerator()
         self.session = httpx.AsyncClient(timeout=30.0)
-        
+
     async def __aenter__(self):
         return self
-        
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.session.aclose()
-    
-    async def fuzz_hf_cache_endpoints(self) -> List[FuzzResult]:
+
+    async def fuzz_hf_cache_endpoints(self) -> list[FuzzResult]:
         """Fuzz all HuggingFace cache endpoints with specialized attacks"""
-        console.print(Panel.fit(
-            "[bold red]🐺 FUZZING HUGGINGFACE CACHE ENDPOINTS[/bold red]\n"
-            "*snarls with predatory glee* Time to break your model cache security!",
-            border_style="red"
-        ))
-        
+        console.print(
+            Panel.fit(
+                "[bold red]🐺 FUZZING HUGGINGFACE CACHE ENDPOINTS[/bold red]\n"
+                "*snarls with predatory glee* Time to break your model cache security!",
+                border_style="red",
+            )
+        )
+
         results = []
-        
+
         # Fuzz each endpoint with specialized attacks
         endpoints = [
             ("/api/hf-cache/info", "GET", self._fuzz_cache_info_endpoint),
             ("/api/hf-cache/cache-dir", "GET", self._fuzz_cache_dir_endpoint),
             ("/api/hf-cache/hub-dir", "GET", self._fuzz_hub_dir_endpoint),
-            ("/api/hf-cache/ensure-cache-dir", "POST", self._fuzz_ensure_cache_dir_endpoint),
+            (
+                "/api/hf-cache/ensure-cache-dir",
+                "POST",
+                self._fuzz_ensure_cache_dir_endpoint,
+            ),
             ("/api/hf-cache/size", "GET", self._fuzz_cache_size_endpoint),
             ("/api/hf-cache/clear", "DELETE", self._fuzz_cache_clear_endpoint),
-            ("/api/hf-cache/model/test-model", "GET", self._fuzz_model_cache_info_endpoint),
-            ("/api/hf-cache/model/test-model/cached", "GET", self._fuzz_model_cached_endpoint),
+            (
+                "/api/hf-cache/model/test-model",
+                "GET",
+                self._fuzz_model_cache_info_endpoint,
+            ),
+            (
+                "/api/hf-cache/model/test-model/cached",
+                "GET",
+                self._fuzz_model_cached_endpoint,
+            ),
         ]
-        
+
         for endpoint, method, fuzz_func in endpoints:
             console.print(f"🔍 Fuzzing {method} {endpoint}")
             endpoint_results = await fuzz_func(endpoint)
             results.extend(endpoint_results)
-        
+
         return results
-    
-    async def _fuzz_cache_info_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_cache_info_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz cache information endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Cache info attacks
         info_attacks = [
             {},  # No parameters
@@ -100,18 +114,18 @@ class HFCacheFuzzer:
             {"include_size": "undefined"},
             {"include_size": "'; DROP TABLE size; --"},
         ]
-        
+
         for params in info_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_cache_dir_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_cache_dir_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz cache directory endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Cache directory attacks
         dir_attacks = [
             {},  # No parameters
@@ -134,18 +148,18 @@ class HFCacheFuzzer:
             {"include_size": "undefined"},
             {"include_size": "'; DROP TABLE size; --"},
         ]
-        
+
         for params in dir_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_hub_dir_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_hub_dir_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz hub directory endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Hub directory attacks
         hub_attacks = [
             {},  # No parameters
@@ -168,121 +182,64 @@ class HFCacheFuzzer:
             {"include_size": "undefined"},
             {"include_size": "'; DROP TABLE size; --"},
         ]
-        
+
         for params in hub_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_ensure_cache_dir_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_ensure_cache_dir_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz ensure cache directory endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Cache directory creation payloads
         ensure_payloads = [
             # Valid directory creation
-            {
-                "path": "/tmp/hf-cache"
-            },
+            {"path": "/tmp/hf-cache"},
             # Malicious paths
-            {
-                "path": "../../../etc/passwd"
-            },
-            {
-                "path": "'; DROP TABLE directories; --"
-            },
-            {
-                "path": "<script>alert('XSS')</script>"
-            },
-            {
-                "path": "; ls -la"
-            },
-            {
-                "path": "| whoami"
-            },
-            {
-                "path": "` id `"
-            },
-            {
-                "path": "$(whoami)"
-            },
+            {"path": "../../../etc/passwd"},
+            {"path": "'; DROP TABLE directories; --"},
+            {"path": "<script>alert('XSS')</script>"},
+            {"path": "; ls -la"},
+            {"path": "| whoami"},
+            {"path": "` id `"},
+            {"path": "$(whoami)"},
             # Path traversal attempts
-            {
-                "path": "../../../var/log/auth.log"
-            },
-            {
-                "path": "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts"
-            },
-            {
-                "path": "/proc/self/cmdline"
-            },
-            {
-                "path": "../../../etc/shadow"
-            },
+            {"path": "../../../var/log/auth.log"},
+            {"path": "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts"},
+            {"path": "/proc/self/cmdline"},
+            {"path": "../../../etc/shadow"},
             # Malformed inputs
-            {
-                "path": None
-            },
-            {
-                "path": ""
-            },
-            {
-                "path": "   "  # Whitespace only
-            },
+            {"path": None},
+            {"path": ""},
+            {"path": "   "},  # Whitespace only
             # Missing required fields
             {},
             # Directory creation options
-            {
-                "path": "/tmp/hf-cache",
-                "create_parents": True
-            },
-            {
-                "path": "/tmp/hf-cache",
-                "create_parents": False
-            },
-            {
-                "path": "/tmp/hf-cache",
-                "create_parents": "true"
-            },
-            {
-                "path": "/tmp/hf-cache",
-                "create_parents": "false"
-            },
-            {
-                "path": "/tmp/hf-cache",
-                "create_parents": "' OR 1=1 --"
-            },
-            {
-                "path": "/tmp/hf-cache",
-                "permissions": "755"
-            },
-            {
-                "path": "/tmp/hf-cache",
-                "permissions": "777"
-            },
-            {
-                "path": "/tmp/hf-cache",
-                "permissions": "' OR 1=1 --"
-            },
-            {
-                "path": "/tmp/hf-cache",
-                "permissions": "<script>alert('XSS')</script>"
-            },
+            {"path": "/tmp/hf-cache", "create_parents": True},
+            {"path": "/tmp/hf-cache", "create_parents": False},
+            {"path": "/tmp/hf-cache", "create_parents": "true"},
+            {"path": "/tmp/hf-cache", "create_parents": "false"},
+            {"path": "/tmp/hf-cache", "create_parents": "' OR 1=1 --"},
+            {"path": "/tmp/hf-cache", "permissions": "755"},
+            {"path": "/tmp/hf-cache", "permissions": "777"},
+            {"path": "/tmp/hf-cache", "permissions": "' OR 1=1 --"},
+            {"path": "/tmp/hf-cache", "permissions": "<script>alert('XSS')</script>"},
         ]
-        
+
         for payload in ensure_payloads:
             result = await self._send_request(url, "POST", json=payload)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_cache_size_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_cache_size_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz cache size endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Cache size attacks
         size_attacks = [
             {},  # No parameters
@@ -311,18 +268,18 @@ class HFCacheFuzzer:
             {"include_models": "undefined"},
             {"include_models": "'; DROP TABLE models; --"},
         ]
-        
+
         for params in size_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_cache_clear_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_cache_clear_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz cache clear endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Cache clearing attacks
         clear_attacks = [
             {},  # No parameters
@@ -356,18 +313,18 @@ class HFCacheFuzzer:
             {"include_temp": "undefined"},
             {"include_temp": "'; DROP TABLE temp; --"},
         ]
-        
+
         for params in clear_attacks:
             result = await self._send_request(url, "DELETE", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_model_cache_info_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_model_cache_info_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz model cache info endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Model cache info attacks
         model_info_attacks = [
             {},  # No parameters
@@ -397,18 +354,18 @@ class HFCacheFuzzer:
             {"include_metadata": "undefined"},
             {"include_metadata": "'; DROP TABLE metadata; --"},
         ]
-        
+
         for params in model_info_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_model_cached_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_model_cached_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz model cached check endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Model cached check attacks
         cached_attacks = [
             {},  # No parameters
@@ -438,24 +395,26 @@ class HFCacheFuzzer:
             {"check_integrity": "undefined"},
             {"check_integrity": "'; DROP TABLE integrity; --"},
         ]
-        
+
         for params in cached_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
+
     async def _send_request(self, url: str, method: str, **kwargs) -> FuzzResult:
         """Send a request and analyze for vulnerabilities"""
         start_time = time.time()
-        
+
         try:
             response = await self.session.request(method, url, **kwargs)
             end_time = time.time()
-            
+
             # Analyze response for HF cache-specific vulnerabilities
-            vulnerability_detected, vulnerability_type = self._analyze_hf_cache_response(response, kwargs)
-            
+            vulnerability_detected, vulnerability_type = (
+                self._analyze_hf_cache_response(response, kwargs)
+            )
+
             return FuzzResult(
                 url=url,
                 method=method,
@@ -468,9 +427,9 @@ class HFCacheFuzzer:
                 response_body=response.text,
                 response_text=response.text,
                 response_headers=dict(response.headers),
-                request_headers=kwargs.get('headers')
+                request_headers=kwargs.get("headers"),
             )
-            
+
         except Exception as e:
             end_time = time.time()
             return FuzzResult(
@@ -484,59 +443,102 @@ class HFCacheFuzzer:
                 response_body=None,
                 response_text=None,
                 response_headers=None,
-                request_headers=kwargs.get('headers')
+                request_headers=kwargs.get("headers"),
             )
-    
-    def _analyze_hf_cache_response(self, response: httpx.Response, request_kwargs: dict) -> tuple[bool, Optional[str]]:
+
+    def _analyze_hf_cache_response(
+        self, response: httpx.Response, request_kwargs: dict
+    ) -> tuple[bool, str | None]:
         """Analyze response for HF cache-specific vulnerabilities"""
         response_text = response.text.lower()
-        
+
         # Check for HF cache vulnerabilities
         if response.status_code == 200:
             # Check for information disclosure in cache responses
-            if any(indicator in response_text for indicator in ["cache_path", "model_path", "internal_error", "stack_trace", "file_path"]):
+            if any(
+                indicator in response_text
+                for indicator in [
+                    "cache_path",
+                    "model_path",
+                    "internal_error",
+                    "stack_trace",
+                    "file_path",
+                ]
+            ):
                 return True, "HF Cache Information Disclosure"
-            
+
             # Check for successful path manipulation
             if "json" in request_kwargs:
                 payload = request_kwargs["json"]
                 if isinstance(payload, dict) and "path" in payload:
                     path = payload["path"]
-                    if any(malicious in path for malicious in ["../", "'; DROP TABLE", "<script>", "; ls"]):
-                        if any(success in response_text for success in ["created", "processed", "accepted"]):
+                    if any(
+                        malicious in path
+                        for malicious in ["../", "'; DROP TABLE", "<script>", "; ls"]
+                    ):
+                        if any(
+                            success in response_text
+                            for success in ["created", "processed", "accepted"]
+                        ):
                             return True, "HF Cache Path Manipulation"
-        
+
         # Check for cache poisoning
-        if any(indicator in response_text for indicator in ["cache_poisoned", "malicious_model", "backdoor"]):
+        if any(
+            indicator in response_text
+            for indicator in ["cache_poisoned", "malicious_model", "backdoor"]
+        ):
             return True, "HF Cache Poisoning"
-        
+
         # Check for unauthorized model access
-        if any(indicator in response_text for indicator in ["unauthorized_access", "access_denied", "permission_denied"]):
+        if any(
+            indicator in response_text
+            for indicator in [
+                "unauthorized_access",
+                "access_denied",
+                "permission_denied",
+            ]
+        ):
             return True, "HF Cache Unauthorized Access"
-        
+
         # Check for SQL injection in cache context
-        if any(indicator in response_text for indicator in ["sql", "database", "mysql", "postgresql"]):
+        if any(
+            indicator in response_text
+            for indicator in ["sql", "database", "mysql", "postgresql"]
+        ):
             return True, "HF Cache SQL Injection"
-        
+
         # Check for XSS in cache responses
-        if any(indicator in response_text for indicator in ["<script>", "javascript:", "onerror="]):
+        if any(
+            indicator in response_text
+            for indicator in ["<script>", "javascript:", "onerror="]
+        ):
             return True, "HF Cache XSS"
-        
+
         # Check for path traversal
-        if any(indicator in response_text for indicator in ["root:", "etc:", "windows", "system32"]):
+        if any(
+            indicator in response_text
+            for indicator in ["root:", "etc:", "windows", "system32"]
+        ):
             return True, "HF Cache Path Traversal"
-        
+
         # Check for command execution
-        if any(indicator in response_text for indicator in ["executed", "command_result", "shell_output"]):
+        if any(
+            indicator in response_text
+            for indicator in ["executed", "command_result", "shell_output"]
+        ):
             return True, "HF Cache Command Execution"
-        
+
         return False, None
+
 
 async def main():
     """Main execution function for testing"""
     async with HFCacheFuzzer() as fuzzer:
         results = await fuzzer.fuzz_hf_cache_endpoints()
-        console.print(f"🐺 HuggingFace Cache fuzzing completed: {len(results)} requests made")
+        console.print(
+            f"🐺 HuggingFace Cache fuzzing completed: {len(results)} requests made"
+        )
+
 
 if __name__ == "__main__":
     asyncio.run(main())

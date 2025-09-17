@@ -70,19 +70,9 @@ export class ParserOrchestrator {
     const tableResult = this.parsers.table.finalize();
 
     // Combine results
-    const allNodes = [
-      ...thinkingResult.nodes,
-      ...blockResult.nodes,
-      ...inlineResult.nodes,
-      ...tableResult.nodes,
-    ];
+    const allNodes = [...thinkingResult.nodes, ...blockResult.nodes, ...inlineResult.nodes, ...tableResult.nodes];
 
-    const allErrors = [
-      ...thinkingResult.errors,
-      ...blockResult.errors,
-      ...inlineResult.errors,
-      ...tableResult.errors,
-    ];
+    const allErrors = [...thinkingResult.errors, ...blockResult.errors, ...inlineResult.errors, ...tableResult.errors];
 
     const allWarnings = [
       ...(thinkingResult.warnings || []),

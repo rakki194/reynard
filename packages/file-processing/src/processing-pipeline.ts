@@ -34,35 +34,22 @@ export class FileProcessingPipeline implements ProcessingPipeline {
   /**
    * Process a single file with security validation
    */
-  async processFile(
-    file: File | string,
-    options?: ProcessingOptions,
-  ): Promise<ProcessingResult> {
-    return await this.orchestrator
-      .getFileProcessor()
-      .processFile(file, options);
+  async processFile(file: File | string, options?: ProcessingOptions): Promise<ProcessingResult> {
+    return await this.orchestrator.getFileProcessor().processFile(file, options);
   }
 
   /**
    * Process multiple files
    */
-  async processFiles(
-    files: (File | string)[],
-    options?: ProcessingOptions,
-  ): Promise<ProcessingResult[]> {
+  async processFiles(files: (File | string)[], options?: ProcessingOptions): Promise<ProcessingResult[]> {
     return await this.orchestrator.processFiles(files, options);
   }
 
   /**
    * Generate thumbnail for a file
    */
-  async generateThumbnail(
-    file: File | string,
-    options: ThumbnailOptions,
-  ): Promise<ProcessingResult<Blob | string>> {
-    return await this.orchestrator
-      .getFileProcessor()
-      .generateThumbnail(file, options);
+  async generateThumbnail(file: File | string, options: ThumbnailOptions): Promise<ProcessingResult<Blob | string>> {
+    return await this.orchestrator.getFileProcessor().generateThumbnail(file, options);
   }
 
   /**
@@ -75,13 +62,8 @@ export class FileProcessingPipeline implements ProcessingPipeline {
   /**
    * Scan directory contents
    */
-  async scanDirectory(
-    path: string,
-    options?: ProcessingOptions,
-  ): Promise<ProcessingResult<DirectoryListing>> {
-    return await this.orchestrator
-      .getDirectoryScanner()
-      .scanDirectory(path, options);
+  async scanDirectory(path: string, options?: ProcessingOptions): Promise<ProcessingResult<DirectoryListing>> {
+    return await this.orchestrator.getDirectoryScanner().scanDirectory(path, options);
   }
 
   /**

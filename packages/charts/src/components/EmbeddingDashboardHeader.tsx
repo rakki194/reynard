@@ -13,9 +13,7 @@ export interface EmbeddingDashboardHeaderProps {
   onTabChange: (tab: "distribution" | "pca" | "quality" | "3d") => void;
 }
 
-export const EmbeddingDashboardHeader: Component<
-  EmbeddingDashboardHeaderProps
-> = (props) => {
+export const EmbeddingDashboardHeader: Component<EmbeddingDashboardHeaderProps> = props => {
   return (
     <div class="dashboard-header">
       <h2>Embedding Visualization Dashboard</h2>

@@ -33,9 +33,7 @@ describe("VideoPlayer", () => {
     });
 
     it("should render with custom class name", () => {
-      render(() => (
-        <VideoPlayer videoSrc={mockVideoFile} class="custom-player" />
-      ));
+      render(() => <VideoPlayer videoSrc={mockVideoFile} class="custom-player" />);
 
       const player = screen.getByRole("generic");
       expect(player).toHaveClass("video-player", "custom-player");
@@ -55,9 +53,7 @@ describe("VideoPlayer", () => {
       const playButton = screen.getByRole("button", { name: /play/i });
       fireEvent.click(playButton);
 
-      expect(
-        screen.getByRole("button", { name: /pause/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /pause/i })).toBeInTheDocument();
     });
 
     it("should show progress bar", () => {
@@ -69,17 +65,13 @@ describe("VideoPlayer", () => {
     it("should show volume control", () => {
       render(() => <VideoPlayer videoSrc={mockVideoFile} />);
 
-      expect(
-        screen.getByRole("slider", { name: /volume/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("slider", { name: /volume/i })).toBeInTheDocument();
     });
 
     it("should show fullscreen button", () => {
       render(() => <VideoPlayer videoSrc={mockVideoFile} />);
 
-      expect(
-        screen.getByRole("button", { name: /fullscreen/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /fullscreen/i })).toBeInTheDocument();
     });
   });
 
@@ -137,9 +129,7 @@ describe("VideoPlayer", () => {
 
     it("should call onTimeUpdate when time changes", () => {
       const onTimeUpdate = vi.fn();
-      render(() => (
-        <VideoPlayer videoSrc={mockVideoFile} onTimeUpdate={onTimeUpdate} />
-      ));
+      render(() => <VideoPlayer videoSrc={mockVideoFile} onTimeUpdate={onTimeUpdate} />);
 
       const videoElement = screen.getByRole("video");
       fireEvent.timeUpdate(videoElement);
@@ -149,9 +139,7 @@ describe("VideoPlayer", () => {
 
     it("should call onVolumeChange when volume changes", () => {
       const onVolumeChange = vi.fn();
-      render(() => (
-        <VideoPlayer videoSrc={mockVideoFile} onVolumeChange={onVolumeChange} />
-      ));
+      render(() => <VideoPlayer videoSrc={mockVideoFile} onVolumeChange={onVolumeChange} />);
 
       const volumeSlider = screen.getByRole("slider", { name: /volume/i });
       fireEvent.input(volumeSlider, { target: { value: "0.5" } });

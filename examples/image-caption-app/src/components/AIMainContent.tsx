@@ -10,11 +10,7 @@ import { AIGalleryTab } from "./AIGalleryTab";
 import { AIViewerTab } from "./AIViewerTab";
 import { ModelMonitorTab } from "./ModelMonitorTab";
 import { AIBatchDialog } from "./AIBatchDialog";
-import type {
-  FileItem,
-  FolderItem,
-  GalleryCaptionResult,
-} from "reynard-gallery-ai";
+import type { FileItem, FolderItem, GalleryCaptionResult } from "reynard-gallery-ai";
 import type { UseAppStateReturn } from "../composables/useAppState";
 import type { UseWorkflowReturn } from "../composables/useWorkflow";
 import type { UseAppHandlersReturn } from "../composables/useAppHandlers";
@@ -37,7 +33,7 @@ const convertToImageItem = (fileItem: FileItem) => ({
   generatedAt: fileItem.metadata?.generatedAt,
 });
 
-export const AIMainContent: Component<AIMainContentProps> = (props) => {
+export const AIMainContent: Component<AIMainContentProps> = props => {
   const [showBatchDialog, setShowBatchDialog] = createSignal(false);
   const [selectedItems, setSelectedItems] = createSignal<FileItem[]>([]);
 
@@ -59,19 +55,16 @@ export const AIMainContent: Component<AIMainContentProps> = (props) => {
   };
 
   // Handle selection change
-  const handleSelectionChange = (
-    item: FileItem | FolderItem,
-    mode: "single" | "add" | "range",
-  ) => {
+  const handleSelectionChange = (item: FileItem | FolderItem, mode: "single" | "add" | "range") => {
     if (item.type === "folder") return; // Skip folders
     const fileItem = item as FileItem;
     if (mode === "single") {
       setSelectedItems([fileItem]);
     } else if (mode === "add") {
-      setSelectedItems((prev) => {
-        const exists = prev.some((selected) => selected.id === fileItem.id);
+      setSelectedItems(prev => {
+        const exists = prev.some(selected => selected.id === fileItem.id);
         if (exists) {
-          return prev.filter((selected) => selected.id !== fileItem.id);
+          return prev.filter(selected => selected.id !== fileItem.id);
         } else {
           return [...prev, fileItem];
         }
@@ -80,11 +73,7 @@ export const AIMainContent: Component<AIMainContentProps> = (props) => {
   };
 
   // Handle context menu
-  const handleContextMenu = (
-    _item: FileItem | FolderItem,
-    _x: number,
-    _y: number,
-  ) => {
+  const handleContextMenu = (_item: FileItem | FolderItem, _x: number, _y: number) => {
     console.log("Context menu requested");
   };
 
@@ -136,31 +125,21 @@ export const AIMainContent: Component<AIMainContentProps> = (props) => {
               <div class="stats-grid">
                 <div class="stat-card">
                   <h4>Total Processed</h4>
-                  <p class="stat-value">
-                    {props.appState.systemStats()!.totalProcessed || 0}
-                  </p>
+                  <p class="stat-value">{props.appState.systemStats()!.totalProcessed || 0}</p>
                 </div>
                 <div class="stat-card">
                   <h4>Loaded Models</h4>
-                  <p class="stat-value">
-                    {props.appState.systemStats()!.loadedModels}
-                  </p>
+                  <p class="stat-value">{props.appState.systemStats()!.loadedModels}</p>
                 </div>
                 <div class="stat-card">
                   <h4>System Health</h4>
-                  <p
-                    class={`stat-value ${props.appState.systemStats()!.isHealthy ? "healthy" : "unhealthy"}`}
-                  >
-                    {props.appState.systemStats()!.isHealthy
-                      ? "✅ Healthy"
-                      : "❌ Unhealthy"}
+                  <p class={`stat-value ${props.appState.systemStats()!.isHealthy ? "healthy" : "unhealthy"}`}>
+                    {props.appState.systemStats()!.isHealthy ? "✅ Healthy" : "❌ Unhealthy"}
                   </p>
                 </div>
                 <div class="stat-card">
                   <h4>Active Tasks</h4>
-                  <p class="stat-value">
-                    {props.appState.systemStats()!.activeTasks || 0}
-                  </p>
+                  <p class="stat-value">{props.appState.systemStats()!.activeTasks || 0}</p>
                 </div>
               </div>
             ) : (
@@ -177,10 +156,7 @@ export const AIMainContent: Component<AIMainContentProps> = (props) => {
               <div class="workflow-actions">
                 <Button
                   onClick={() => {
-                    props.workflow.startWorkflow(
-                      props.appState.selectedImage()!,
-                      false,
-                    );
+                    props.workflow.startWorkflow(props.appState.selectedImage()!, false);
                     props.appState.setIsModalOpen(true);
                   }}
                   variant="primary"
@@ -188,11 +164,7 @@ export const AIMainContent: Component<AIMainContentProps> = (props) => {
                   ✏️ Edit Caption
                 </Button>
                 <Button
-                  onClick={() =>
-                    props.handlers.generateCaption(
-                      props.appState.selectedImage()!,
-                    )
-                  }
+                  onClick={() => props.handlers.generateCaption(props.appState.selectedImage()!)}
                   disabled={props.appState.isGenerating()}
                   variant="secondary"
                 >

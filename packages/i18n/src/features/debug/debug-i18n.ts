@@ -43,8 +43,7 @@ export type { EnhancedI18nOptions } from "../../core/providers/module-factory";
 
 // Debug i18n module creation with all development features
 export function createDebugI18nModule(options: unknown = {}): DebugI18nModule {
-  const { locale, setLocale, translations, translationEngine } =
-    createBaseI18nModule(options);
+  const { locale, setLocale, translations, translationEngine } = createBaseI18nModule(options);
 
   // Initialize debug features
   const i18nDebugger = new I18nDebugger();

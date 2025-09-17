@@ -13,13 +13,10 @@ export interface DropZoneProps {
   handleDragLeave: (event: DragEvent) => void;
   handleDrop: (event: DragEvent) => void;
   handleFileInput: (event: Event) => void;
-  props: Pick<
-    FileUploadProps,
-    "multiple" | "accept" | "maxFileSize" | "maxFiles"
-  >;
+  props: Pick<FileUploadProps, "multiple" | "accept" | "maxFileSize" | "maxFiles">;
 }
 
-export const DropZone: Component<DropZoneProps> = (props) => {
+export const DropZone: Component<DropZoneProps> = props => {
   return (
     <div
       class={`reynard-file-upload__drop-zone ${props.isDragOver() ? "reynard-file-upload__drop-zone--drag-over" : ""}`}
@@ -38,9 +35,7 @@ export const DropZone: Component<DropZoneProps> = (props) => {
       <label for="file-input" class="reynard-file-upload__drop-zone-content">
         <div class="reynard-file-upload__drop-zone-icon">📁</div>
         <div class="reynard-file-upload__drop-zone-title">
-          {props.isDragOver()
-            ? "Drop files here"
-            : "Click to select files or drag and drop"}
+          {props.isDragOver() ? "Drop files here" : "Click to select files or drag and drop"}
         </div>
         <div class="reynard-file-upload__drop-zone-subtitle">
           Max file size: {formatFileSize(props.props.maxFileSize!)}

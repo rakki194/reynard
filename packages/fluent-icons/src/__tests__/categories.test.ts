@@ -216,15 +216,13 @@ describe("Icon Categories", () => {
         "custom",
       ];
 
-      expectedCategories.forEach((category) => {
-        expect(
-          iconCategories[category as keyof typeof iconCategories],
-        ).toBeDefined();
+      expectedCategories.forEach(category => {
+        expect(iconCategories[category as keyof typeof iconCategories]).toBeDefined();
       });
     });
 
     it("should have proper category metadata", () => {
-      Object.values(iconCategories).forEach((category) => {
+      Object.values(iconCategories).forEach(category => {
         expect(category.name).toBeDefined();
         expect(category.description).toBeDefined();
         expect(category.icons).toBeDefined();
@@ -237,7 +235,7 @@ describe("Icon Categories", () => {
 
   describe("Icon Structure Consistency", () => {
     it("should have consistent icon structure across all categories", () => {
-      Object.values(allIcons).forEach((icon) => {
+      Object.values(allIcons).forEach(icon => {
         expect(icon.svg).toBeDefined();
         expect(icon.metadata).toBeDefined();
         expect(icon.metadata.name).toBeDefined();
@@ -249,7 +247,7 @@ describe("Icon Categories", () => {
     });
 
     it("should have proper metadata arrays", () => {
-      Object.values(allIcons).forEach((icon) => {
+      Object.values(allIcons).forEach(icon => {
         if (icon.metadata.tags) {
           expect(Array.isArray(icon.metadata.tags)).toBe(true);
         }

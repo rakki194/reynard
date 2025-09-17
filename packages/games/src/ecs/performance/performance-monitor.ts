@@ -106,8 +106,7 @@ export class PerformanceMonitor {
   getMetrics(): ECSPerformanceMetrics {
     const averageSystemTime =
       this.systemExecutionTimes.length > 0
-        ? this.systemExecutionTimes.reduce((sum, time) => sum + time, 0) /
-          this.systemExecutionTimes.length
+        ? this.systemExecutionTimes.reduce((sum, time) => sum + time, 0) / this.systemExecutionTimes.length
         : 0;
 
     let memoryUsage = 0;
@@ -115,8 +114,7 @@ export class PerformanceMonitor {
     if (typeof performance !== "undefined" && "memory" in performance) {
       const perfMemory = (performance as Record<string, unknown>).memory;
       if (perfMemory) {
-        memoryUsage = (perfMemory as Record<string, unknown>)
-          .usedJSHeapSize as number;
+        memoryUsage = (perfMemory as Record<string, unknown>).usedJSHeapSize as number;
       }
     }
 

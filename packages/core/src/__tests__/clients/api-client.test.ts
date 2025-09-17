@@ -9,7 +9,7 @@ import { t } from "../../utils/optional-i18n";
 
 // Mock HTTPClient
 vi.mock("./http-client", () => {
-  const mockHTTPClient = vi.fn().mockImplementation((config) => ({
+  const mockHTTPClient = vi.fn().mockImplementation(config => ({
     config,
     request: vi.fn().mockResolvedValue({
       data: { status: "ok", uptime: 12345 },
@@ -228,13 +228,11 @@ describe("ApiClient", () => {
     });
 
     it("should start periodic health checks", () => {
-      const checkHealthSpy = vi
-        .spyOn(apiClient, "checkHealth")
-        .mockResolvedValue({
-          isHealthy: true,
-          status: "healthy",
-          timestamp: Date.now(),
-        } as HealthStatus);
+      const checkHealthSpy = vi.spyOn(apiClient, "checkHealth").mockResolvedValue({
+        isHealthy: true,
+        status: "healthy",
+        timestamp: Date.now(),
+      } as HealthStatus);
 
       apiClient.startHealthChecks(1000);
 

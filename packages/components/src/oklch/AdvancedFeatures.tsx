@@ -10,15 +10,11 @@ interface AdvancedFeaturesProps {
   onToggleAdvanced: () => void;
 }
 
-export const AdvancedFeatures: Component<AdvancedFeaturesProps> = (props) => {
+export const AdvancedFeatures: Component<AdvancedFeaturesProps> = props => {
   const cubeVoxelsRef: HTMLDivElement[] = [];
 
   // Helper function to set CSS custom properties
-  const setCSSProperty = (
-    element: HTMLElement,
-    property: string,
-    value: string,
-  ) => {
+  const setCSSProperty = (element: HTMLElement, property: string, value: string) => {
     element.style.setProperty(property, value);
   };
 
@@ -31,11 +27,7 @@ export const AdvancedFeatures: Component<AdvancedFeaturesProps> = (props) => {
         const h = (index * 5.625) % 360;
         setCSSProperty(ref, "--dynamic-bg-color", `oklch(${l}% ${c} ${h})`);
         setCSSProperty(ref, "--dynamic-x", (index % 8).toString());
-        setCSSProperty(
-          ref,
-          "--dynamic-y",
-          (Math.floor(index / 8) % 8).toString(),
-        );
+        setCSSProperty(ref, "--dynamic-y", (Math.floor(index / 8) % 8).toString());
         setCSSProperty(ref, "--dynamic-z", Math.floor(index / 64).toString());
       }
     });
@@ -61,13 +53,13 @@ export const AdvancedFeatures: Component<AdvancedFeaturesProps> = (props) => {
             <div class="space-container">
               <div class="color-cube">
                 <For each={Array.from({ length: 64 }, (_, i) => i)}>
-                  {(index) => {
+                  {index => {
                     const l = Math.floor(index / 16) * 6.25;
                     const c = (index % 16) * 0.025;
                     const h = (index * 5.625) % 360;
                     return (
                       <div
-                        ref={(el) => (cubeVoxelsRef[index] = el)}
+                        ref={el => (cubeVoxelsRef[index] = el)}
                         class="cube-voxel"
                         data-background-color={`oklch(${l}% ${c} ${h})`}
                         data-x={index % 8}

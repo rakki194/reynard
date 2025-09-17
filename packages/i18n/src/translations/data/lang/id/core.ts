@@ -75,36 +75,24 @@ export const coreTranslations = {
   // Validasi kata sandi
   password: {
     "must-be-at-least-8-characters-long": "Kata sandi harus minimal 8 karakter",
-    "must-contain-at-least-one-uppercase-letter":
-      "Kata sandi harus mengandung minimal satu huruf besar",
-    "must-contain-at-least-one-lowercase-letter":
-      "Kata sandi harus mengandung minimal satu huruf kecil",
-    "must-contain-at-least-one-number":
-      "Kata sandi harus mengandung minimal satu angka",
-    "must-contain-at-least-one-special-character":
-      "Kata sandi harus mengandung minimal satu karakter khusus",
+    "must-contain-at-least-one-uppercase-letter": "Kata sandi harus mengandung minimal satu huruf besar",
+    "must-contain-at-least-one-lowercase-letter": "Kata sandi harus mengandung minimal satu huruf kecil",
+    "must-contain-at-least-one-number": "Kata sandi harus mengandung minimal satu angka",
+    "must-contain-at-least-one-special-character": "Kata sandi harus mengandung minimal satu karakter khusus",
   },
 
   // Validasi keamanan
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Minimal satu tipe karakter harus disertakan",
-    "input-contains-potentially-dangerous-html":
-      "Input mengandung HTML yang berpotensi berbahaya",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Input mengandung pola SQL yang berpotensi berbahaya",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Input mengandung pola XSS yang berpotensi berbahaya",
-    "input-contains-path-traversal-patterns":
-      "Input mengandung pola penelusuran jalur",
-    "input-contains-windows-reserved-names":
-      "Input mengandung nama cadangan Windows",
-    "input-contains-executable-file-extensions":
-      "Input mengandung ekstensi file yang dapat dieksekusi",
+    "at-least-one-character-type-must-be-included": "Minimal satu tipe karakter harus disertakan",
+    "input-contains-potentially-dangerous-html": "Input mengandung HTML yang berpotensi berbahaya",
+    "input-contains-potentially-dangerous-sql-patterns": "Input mengandung pola SQL yang berpotensi berbahaya",
+    "input-contains-potentially-dangerous-xss-patterns": "Input mengandung pola XSS yang berpotensi berbahaya",
+    "input-contains-path-traversal-patterns": "Input mengandung pola penelusuran jalur",
+    "input-contains-windows-reserved-names": "Input mengandung nama cadangan Windows",
+    "input-contains-executable-file-extensions": "Input mengandung ekstensi file yang dapat dieksekusi",
     "input-contains-null-bytes": "Input mengandung byte null",
     "input-contains-hidden-files": "Input mengandung file tersembunyi",
-    "input-contains-javascript-file-extensions":
-      "Input mengandung ekstensi file JavaScript",
+    "input-contains-javascript-file-extensions": "Input mengandung ekstensi file JavaScript",
   },
 
   // Operasi asinkron
@@ -131,12 +119,9 @@ export const coreTranslations = {
 
   // Penyimpanan dan serialisasi
   storage: {
-    "potentially-dangerous-json-detected":
-      "JSON yang berpotensi berbahaya terdeteksi",
-    "failed-to-parse-json-from-localstorage":
-      "Gagal memparse JSON dari localStorage:",
-    "error-parsing-storage-event":
-      "Kesalahan memparse event penyimpanan untuk kunci",
+    "potentially-dangerous-json-detected": "JSON yang berpotensi berbahaya terdeteksi",
+    "failed-to-parse-json-from-localstorage": "Gagal memparse JSON dari localStorage:",
+    "error-parsing-storage-event": "Kesalahan memparse event penyimpanan untuk kunci",
   },
 
   // Uji dan pengembangan
@@ -173,8 +158,7 @@ export const coreTranslations = {
   // Uji integrasi
   integration: {
     "session-and-api-key-generation": "Generasi sesi dan kunci API",
-    "authentication-and-input-validation-integration":
-      "Integrasi autentikasi dan validasi input",
+    "authentication-and-input-validation-integration": "Integrasi autentikasi dan validasi input",
     "performance-and-security-integration": "Integrasi kinerja dan keamanan",
   },
 };

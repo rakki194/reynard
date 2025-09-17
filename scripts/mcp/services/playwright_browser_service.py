@@ -9,7 +9,7 @@ and browser-based rendering across different MCP tools.
 import asyncio
 import logging
 import tempfile
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
 try:
     from playwright.async_api import Browser, Page, async_playwright

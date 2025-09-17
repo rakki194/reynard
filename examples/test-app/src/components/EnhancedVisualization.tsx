@@ -14,7 +14,7 @@ export interface VisualizationProps {
   stroboscopicState: () => any;
 }
 
-export const EnhancedVisualization: Component<VisualizationProps> = (props) => {
+export const EnhancedVisualization: Component<VisualizationProps> = props => {
   return (
     <div class="demo-visualization">
       <Card class="canvas-container">
@@ -23,14 +23,12 @@ export const EnhancedVisualization: Component<VisualizationProps> = (props) => {
           <div class="overlay-info">
             <h4>Enhanced Integration System</h4>
             <p>
-              {props.mode().toUpperCase()} {props.patternType().toUpperCase()}{" "}
-              Pattern
+              {props.mode().toUpperCase()} {props.patternType().toUpperCase()} Pattern
             </p>
             <p>{props.currentPoints().length} points with advanced features</p>
-            {props.enableStroboscopic() &&
-              props.stroboscopicState()?.isStroboscopic && (
-                <p>✨ Stroboscopic effects active</p>
-              )}
+            {props.enableStroboscopic() && props.stroboscopicState()?.isStroboscopic && (
+              <p>✨ Stroboscopic effects active</p>
+            )}
           </div>
         </div>
       </Card>

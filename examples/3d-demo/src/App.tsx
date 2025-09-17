@@ -3,31 +3,16 @@
  * Showcasing the power of our 3D package with multiple games and demos
  */
 
-import {
-  Component,
-  createSignal,
-  createContext,
-  useContext,
-  ParentComponent,
-} from "solid-js";
+import { Component, createSignal, createContext, useContext, ParentComponent } from "solid-js";
 import { ReynardProvider, useTheme } from "reynard-themes";
-import {
-  NotificationsProvider,
-  useNotifications,
-  createNotifications,
-} from "reynard-core";
+import { NotificationsProvider, useNotifications, createNotifications } from "reynard-core";
 import { GameSelector } from "./components/GameSelector";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { GameContainer } from "./components/GameContainer";
 import { GameInfo } from "./components/GameInfo";
 
 // Game types
-export type GameType =
-  | "cube-collector"
-  | "space-shooter"
-  | "maze-explorer"
-  | "particle-demo"
-  | "none";
+export type GameType = "cube-collector" | "space-shooter" | "maze-explorer" | "particle-demo" | "none";
 
 interface GameContextType {
   currentGame: () => GameType;
@@ -46,12 +31,8 @@ export const useGame = () => {
   return context;
 };
 
-const GameProvider: ParentComponent<{ value: GameContextType }> = (props) => {
-  return (
-    <GameContext.Provider value={props.value}>
-      {props.children}
-    </GameContext.Provider>
-  );
+const GameProvider: ParentComponent<{ value: GameContextType }> = props => {
+  return <GameContext.Provider value={props.value}>{props.children}</GameContext.Provider>;
 };
 
 const GameApp: Component = () => {
@@ -114,11 +95,7 @@ const GameApp: Component = () => {
         <footer class="app-footer">
           <p>
             Built with 🦊 Reynard Framework •
-            <a
-              href="https://github.com/your-org/reynard"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="https://github.com/your-org/reynard" target="_blank" rel="noopener noreferrer">
               View on GitHub
             </a>
           </p>

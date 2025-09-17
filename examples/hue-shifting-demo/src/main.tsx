@@ -12,5 +12,5 @@ render(
       </Router>
     </ReynardProvider>
   ),
-  document.getElementById("app")!,
+  document.getElementById("app")!
 );

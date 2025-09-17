@@ -75,7 +75,7 @@ export class ThinkingSectionParser extends BaseMarkdownParser {
       this.state,
       this.addWarning.bind(this),
       this.addNode.bind(this),
-      this.createNode.bind(this),
+      this.createNode.bind(this)
     );
   }
 
@@ -83,12 +83,7 @@ export class ThinkingSectionParser extends BaseMarkdownParser {
    * Extract inline thinking from a line
    */
   protected extractInlineThinking(line: string): string {
-    return ThinkingCore.extractInlineThinking(
-      line,
-      this.state,
-      this.addNode.bind(this),
-      this.createNode.bind(this),
-    );
+    return ThinkingCore.extractInlineThinking(line, this.state, this.addNode.bind(this), this.createNode.bind(this));
   }
 
   /**

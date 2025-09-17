@@ -8,7 +8,7 @@ import type { LanguageCode, Translations } from "../../types";
 
 export async function loadTranslationModuleCore(
   locale: LanguageCode,
-  importFn: (path: string) => Promise<{ default: Translations }>,
+  importFn: (path: string) => Promise<{ default: Translations }>
 ): Promise<Translations> {
   const translationModule = await importFn(`./lang/${locale}/index.js`);
   return translationModule.default;
@@ -30,9 +30,5 @@ export function hasMockedImport(): boolean {
     mockRejectedValue?: unknown;
   };
 
-  return Boolean(
-    mockImport.mockImplementation ||
-      mockImport.mockResolvedValue ||
-      mockImport.mockRejectedValue,
-  );
+  return Boolean(mockImport.mockImplementation || mockImport.mockResolvedValue || mockImport.mockRejectedValue);
 }

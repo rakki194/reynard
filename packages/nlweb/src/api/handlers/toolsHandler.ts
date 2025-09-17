@@ -4,11 +4,7 @@
  * Handles tool management requests for the NLWeb API.
  */
 
-import type {
-  NLWebAPIRequest,
-  NLWebAPIResponse,
-  NLWebAPIHandler,
-} from "../types.js";
+import type { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
 import type { NLWebService, NLWebTool } from "../../types/index.js";
 import { getCORSHeaders } from "../utils.js";
 
@@ -40,11 +36,7 @@ function isValidToolRequestBody(body: unknown): body is NLWebTool {
 /**
  * Create get tools handler
  */
-export function createGetToolsHandler(
-  service: NLWebService,
-  basePath: string,
-  enableCORS: boolean,
-): NLWebAPIHandler {
+export function createGetToolsHandler(service: NLWebService, basePath: string, enableCORS: boolean): NLWebAPIHandler {
   return async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {
       const category = req.query?.category;
@@ -54,14 +46,12 @@ export function createGetToolsHandler(
 
       // Filter by category if specified
       if (category) {
-        tools = tools.filter((tool) => tool.category === category);
+        tools = tools.filter(tool => tool.category === category);
       }
 
       // Filter by tags if specified
       if (tags && tags.length > 0) {
-        tools = tools.filter((tool) =>
-          tags.some((tag) => tool.tags?.includes(tag)),
-        );
+        tools = tools.filter(tool => tags.some(tag => tool.tags?.includes(tag)));
       }
 
       return {
@@ -86,7 +76,7 @@ export function createGetToolsHandler(
 export function createRegisterToolHandler(
   service: NLWebService,
   basePath: string,
-  enableCORS: boolean,
+  enableCORS: boolean
 ): NLWebAPIHandler {
   return async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {
@@ -124,7 +114,7 @@ export function createRegisterToolHandler(
 export function createUnregisterToolHandler(
   service: NLWebService,
   basePath: string,
-  enableCORS: boolean,
+  enableCORS: boolean
 ): NLWebAPIHandler {
   return async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {

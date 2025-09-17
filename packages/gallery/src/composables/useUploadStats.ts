@@ -17,15 +17,12 @@ export interface UploadStats {
 export function useUploadStats() {
   const getUploadStats = (uploads: UploadProgress[]): UploadStats => {
     const total = uploads.length;
-    const completed = uploads.filter((u) => u.status === "completed").length;
-    const failed = uploads.filter((u) => u.status === "error").length;
-    const cancelled = uploads.filter((u) => u.status === "cancelled").length;
-    const inProgress = uploads.filter((u) => u.status === "uploading").length;
+    const completed = uploads.filter(u => u.status === "completed").length;
+    const failed = uploads.filter(u => u.status === "error").length;
+    const cancelled = uploads.filter(u => u.status === "cancelled").length;
+    const inProgress = uploads.filter(u => u.status === "uploading").length;
 
-    const totalProgress =
-      total > 0
-        ? uploads.reduce((sum, upload) => sum + upload.progress, 0) / total
-        : 0;
+    const totalProgress = total > 0 ? uploads.reduce((sum, upload) => sum + upload.progress, 0) / total : 0;
 
     return {
       total,

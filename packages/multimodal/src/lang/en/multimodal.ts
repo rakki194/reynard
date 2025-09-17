@@ -33,8 +33,7 @@ export const multimodalTranslations = {
     videoToText: "Video to Text",
   },
   // File management specific translations
-  documentPreviewNotAvailable:
-    "Document preview not available. Download to view.",
+  documentPreviewNotAvailable: "Document preview not available. Download to view.",
   downloadDocument: "Download Document",
   removeFile: "Remove file",
   type: "Type",

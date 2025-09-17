@@ -21,12 +21,7 @@ npm install reynard-model-management
 ## Quick Start
 
 ```typescript
-import {
-  ModelManager,
-  ModelType,
-  ModelStatus,
-  ModelHealth,
-} from "reynard-model-management";
+import { ModelManager, ModelType, ModelStatus, ModelHealth } from "reynard-model-management";
 
 // Create model manager
 const modelManager = new ModelManager({
@@ -47,7 +42,7 @@ modelManager.registerModel({
 });
 
 // Download the model
-await modelManager.downloadModel("my-caption-model", (progress) => {
+await modelManager.downloadModel("my-caption-model", progress => {
   console.log(`Download progress: ${progress.progress}%`);
 });
 
@@ -161,7 +156,7 @@ enum ModelHealth {
 ### Event Handling
 
 ```typescript
-modelManager.addEventListener((event) => {
+modelManager.addEventListener(event => {
   console.log("Model event:", event);
 });
 ```

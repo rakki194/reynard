@@ -163,7 +163,7 @@ describe("SpatialHashDemo", () => {
       () => {
         expect(screen.getByText(/Objects: [1-9]/)).toBeInTheDocument();
       },
-      { timeout: 2000 },
+      { timeout: 2000 }
     );
 
     // Objects should maintain their positions or move predictably

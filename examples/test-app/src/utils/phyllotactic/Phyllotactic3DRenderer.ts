@@ -32,7 +32,7 @@ export class Phyllotactic3DRenderer {
     const sortedPoints = [...points].sort((a, b) => b.z - a.z);
 
     // Render points with perspective
-    sortedPoints.forEach((point) => {
+    sortedPoints.forEach(point => {
       this.renderPoint(point);
     });
 

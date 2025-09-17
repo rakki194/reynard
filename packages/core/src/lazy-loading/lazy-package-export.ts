@@ -25,7 +25,7 @@ export class LazyPackageExport {
     private _loader?: () => Promise<any>,
     validationLevel: ExportValidationLevel = ExportValidationLevel.BASIC,
     enablePerformanceMonitoring: boolean = true,
-    autoCleanup: boolean = true,
+    autoCleanup: boolean = true
   ) {
     this._validationLevel = validationLevel;
     this._enablePerformanceMonitoring = enablePerformanceMonitoring;
@@ -69,12 +69,8 @@ export class LazyPackageExport {
       return this._module;
     } catch (error) {
       this._metadata.errorCount++;
-      this._metadata.lastError =
-        error instanceof Error ? error.message : String(error);
-      throw new ExportValidationError(
-        `Failed to load package: ${error}`,
-        this._packageName,
-      );
+      this._metadata.lastError = error instanceof Error ? error.message : String(error);
+      throw new ExportValidationError(`Failed to load package: ${error}`, this._packageName);
     }
   }
 
@@ -85,18 +81,12 @@ export class LazyPackageExport {
 
   private async _validateExport(): Promise<void> {
     if (!this._module) {
-      throw new ExportValidationError(
-        t("core.errors.moduleIsNull"),
-        this._packageName,
-      );
+      throw new ExportValidationError(t("core.errors.moduleIsNull"), this._packageName);
     }
 
     if (this._validationLevel >= ExportValidationLevel.BASIC) {
       if (typeof this._module !== "object" || this._module === null) {
-        throw new ExportValidationError(
-          t("core.errors.invalidModuleStructure"),
-          this._packageName,
-        );
+        throw new ExportValidationError(t("core.errors.invalidModuleStructure"), this._packageName);
       }
     }
   }

@@ -5,13 +5,7 @@
 export * from "./types";
 
 // Export all utilities (excluding EasingType to avoid conflicts)
-export {
-  Easing,
-  applyEasing,
-  interpolate,
-  interpolateVector3,
-  interpolateColor,
-} from "./utils/easing";
+export { Easing, applyEasing, interpolate, interpolateVector3, interpolateColor } from "./utils/easing";
 export * from "./utils/geometry";
 export * from "./utils/performance";
 export * from "./utils/clusterDetection";

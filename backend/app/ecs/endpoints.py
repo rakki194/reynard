@@ -5,13 +5,14 @@ FastAPI endpoints for ECS world management and agent operations.
 """
 
 import logging
-from typing import Dict, Any, List, Optional
-from fastapi import APIRouter, HTTPException, Depends
+
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
-from .service import get_ecs_world, get_ecs_service
 from reynard_ecs_world import AgentWorld
 from reynard_ecs_world.components.agent import AgentComponent
+
+from .service import get_ecs_service, get_ecs_world
 
 logger = logging.getLogger(__name__)
 
@@ -22,9 +23,9 @@ router = APIRouter(prefix="/ecs", tags=["ECS World"])
 # Pydantic models for API
 class AgentCreateRequest(BaseModel):
     agent_id: str
-    spirit: Optional[str] = "fox"
-    style: Optional[str] = "foundation"
-    name: Optional[str] = None
+    spirit: str | None = "fox"
+    style: str | None = "foundation"
+    name: str | None = None
 
 
 class OffspringCreateRequest(BaseModel):
@@ -35,10 +36,10 @@ class OffspringCreateRequest(BaseModel):
 
 class WorldStatusResponse(BaseModel):
     status: str
-    entity_count: Optional[int] = None
-    system_count: Optional[int] = None
-    agent_count: Optional[int] = None
-    mature_agents: Optional[int] = None
+    entity_count: int | None = None
+    system_count: int | None = None
+    agent_count: int | None = None
+    mature_agents: int | None = None
 
 
 class AgentResponse(BaseModel):
@@ -70,7 +71,7 @@ async def get_world_status():
         raise HTTPException(status_code=500, detail="Failed to get world status")
 
 
-@router.get("/agents", response_model=List[AgentResponse])
+@router.get("/agents", response_model=list[AgentResponse])
 async def get_agents(world: AgentWorld = Depends(get_world)):
     """Get all agents in the world."""
     try:
@@ -78,13 +79,15 @@ async def get_agents(world: AgentWorld = Depends(get_world)):
         for entity in world.get_agent_entities():
             agent_component = entity.get_component(AgentComponent)
             if agent_component:
-                agents.append(AgentResponse(
-                    agent_id=entity.id,
-                    name=agent_component.name,
-                    spirit=agent_component.spirit,
-                    style=agent_component.style,
-                    active=entity.active
-                ))
+                agents.append(
+                    AgentResponse(
+                        agent_id=entity.id,
+                        name=agent_component.name,
+                        spirit=agent_component.spirit,
+                        style=agent_component.style,
+                        active=entity.active,
+                    )
+                )
         return agents
     except Exception as e:
         logger.error(f"Error getting agents: {e}")
@@ -93,8 +96,7 @@ async def get_agents(world: AgentWorld = Depends(get_world)):
 
 @router.post("/agents", response_model=AgentResponse)
 async def create_agent(
-    request: AgentCreateRequest,
-    world: AgentWorld = Depends(get_world)
+    request: AgentCreateRequest, world: AgentWorld = Depends(get_world)
 ):
     """Create a new agent."""
     try:
@@ -102,19 +104,21 @@ async def create_agent(
             agent_id=request.agent_id,
             spirit=request.spirit,
             style=request.style,
-            name=request.name
+            name=request.name,
         )
-        
+
         agent_component = entity.get_component(AgentComponent)
         if not agent_component:
-            raise HTTPException(status_code=500, detail="Failed to create agent component")
-        
+            raise HTTPException(
+                status_code=500, detail="Failed to create agent component"
+            )
+
         return AgentResponse(
             agent_id=entity.id,
             name=agent_component.name,
             spirit=agent_component.spirit,
             style=agent_component.style,
-            active=entity.active
+            active=entity.active,
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -125,27 +129,26 @@ async def create_agent(
 
 @router.post("/agents/offspring", response_model=AgentResponse)
 async def create_offspring(
-    request: OffspringCreateRequest,
-    world: AgentWorld = Depends(get_world)
+    request: OffspringCreateRequest, world: AgentWorld = Depends(get_world)
 ):
     """Create offspring from two parent agents."""
     try:
         entity = world.create_offspring(
             parent1_id=request.parent1_id,
             parent2_id=request.parent2_id,
-            offspring_id=request.offspring_id
+            offspring_id=request.offspring_id,
         )
-        
+
         agent_component = entity.get_component(AgentComponent)
         if not agent_component:
             raise HTTPException(status_code=500, detail="Failed to create offspring")
-        
+
         return AgentResponse(
             agent_id=entity.id,
             name=agent_component.name,
             spirit=agent_component.spirit,
             style=agent_component.style,
-            active=entity.active
+            active=entity.active,
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -156,9 +159,7 @@ async def create_offspring(
 
 @router.get("/agents/{agent_id}/mates")
 async def find_compatible_mates(
-    agent_id: str,
-    max_results: int = 5,
-    world: AgentWorld = Depends(get_world)
+    agent_id: str, max_results: int = 5, world: AgentWorld = Depends(get_world)
 ):
     """Find compatible mates for an agent."""
     try:
@@ -171,9 +172,7 @@ async def find_compatible_mates(
 
 @router.get("/agents/{agent1_id}/compatibility/{agent2_id}")
 async def analyze_compatibility(
-    agent1_id: str,
-    agent2_id: str,
-    world: AgentWorld = Depends(get_world)
+    agent1_id: str, agent2_id: str, world: AgentWorld = Depends(get_world)
 ):
     """Analyze genetic compatibility between two agents."""
     try:
@@ -186,9 +185,7 @@ async def analyze_compatibility(
 
 @router.get("/agents/{agent_id}/lineage")
 async def get_agent_lineage(
-    agent_id: str,
-    depth: int = 3,
-    world: AgentWorld = Depends(get_world)
+    agent_id: str, depth: int = 3, world: AgentWorld = Depends(get_world)
 ):
     """Get agent family tree and lineage."""
     try:
@@ -200,10 +197,7 @@ async def get_agent_lineage(
 
 
 @router.post("/breeding/enable")
-async def enable_breeding(
-    enabled: bool = True,
-    world: AgentWorld = Depends(get_world)
-):
+async def enable_breeding(enabled: bool = True, world: AgentWorld = Depends(get_world)):
     """Enable or disable automatic breeding."""
     try:
         world.enable_automatic_reproduction(enabled)

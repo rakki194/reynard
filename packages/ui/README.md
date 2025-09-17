@@ -27,18 +27,10 @@ import "reynard-ui/styles";
 
 function App() {
   return (
-    <AppLayout
-      sidebar={<nav>Sidebar content</nav>}
-      header={<header>App Header</header>}
-    >
+    <AppLayout sidebar={<nav>Sidebar content</nav>} header={<header>App Header</header>}>
       <Grid columns={{ xs: 1, md: 2, lg: 3 }} gap="1rem">
         <GridItem colSpan={{ xs: 1, md: 2 }}>
-          <DataTable
-            data={users}
-            columns={userColumns}
-            selectable
-            showPagination
-          />
+          <DataTable data={users} columns={userColumns} selectable showPagination />
         </GridItem>
         <GridItem>
           <div>Sidebar content</div>
@@ -83,11 +75,7 @@ Complete application layout with sidebar, header, and content areas.
 Responsive CSS Grid system with breakpoint support.
 
 ```tsx
-<Grid
-  columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-  gap="1.5rem"
-  autoRows="min-content"
->
+<Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4 }} gap="1.5rem" autoRows="min-content">
   <GridItem colSpan={{ xs: 1, md: 2 }}>
     <Card>Featured content</Card>
   </GridItem>
@@ -180,8 +168,8 @@ const menuItems = [
   orientation="vertical"
   showIcons
   showBadges
-  onItemClick={(item) => navigate(item.href)}
-  onActiveChange={(itemId) => setActiveItem(itemId)}
+  onItemClick={item => navigate(item.href)}
+  onActiveChange={itemId => setActiveItem(itemId)}
 />;
 ```
 
@@ -239,10 +227,10 @@ const columns = [
   showPagination
   showPageSizeSelector
   loading={isLoading}
-  onRowSelect={(selectedRows) => setSelected(selectedRows)}
+  onRowSelect={selectedRows => setSelected(selectedRows)}
   onSort={(column, direction) => handleSort(column, direction)}
-  onPageChange={(page) => setCurrentPage(page)}
-  onRowClick={(row) => viewUser(row)}
+  onPageChange={page => setCurrentPage(page)}
+  onRowClick={row => viewUser(row)}
 />;
 ```
 
@@ -326,13 +314,8 @@ All components automatically adapt to your theme and work seamlessly with `reyna
 
 ```tsx
 // Custom responsive configuration
-<Grid
-  columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 6 }}
-  gap={{ xs: "1rem", lg: "2rem" }}
->
-  <GridItem colSpan={{ xs: 1, md: 2, xl: 3 }}>
-    Featured content spans multiple columns
-  </GridItem>
+<Grid columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 6 }} gap={{ xs: "1rem", lg: "2rem" }}>
+  <GridItem colSpan={{ xs: 1, md: 2, xl: 3 }}>Featured content spans multiple columns</GridItem>
 </Grid>
 ```
 
@@ -357,7 +340,7 @@ function RemoteDataTable() {
       columns={columns}
       page={page()}
       loading={loading()}
-      onPageChange={(newPage) => {
+      onPageChange={newPage => {
         setPage(newPage);
         fetchData(newPage);
       }}
@@ -376,15 +359,13 @@ function AppNavigation() {
   const location = useLocation();
 
   const menuItems = createMemo(() =>
-    navConfig.map((item) => ({
+    navConfig.map(item => ({
       ...item,
       active: location.pathname.startsWith(item.href),
-    })),
+    }))
   );
 
-  return (
-    <NavMenu items={menuItems()} onItemClick={(item) => navigate(item.href)} />
-  );
+  return <NavMenu items={menuItems()} onItemClick={item => navigate(item.href)} />;
 }
 ```
 

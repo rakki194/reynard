@@ -26,9 +26,7 @@ export class AudioThumbnailGenerator {
   private waveformRenderer: WaveformRenderer;
   private canvasUtils: CanvasUtils;
 
-  constructor(
-    private options: AudioThumbnailGeneratorOptions = { size: [200, 200] },
-  ) {
+  constructor(private options: AudioThumbnailGeneratorOptions = { size: [200, 200] }) {
     this.options = {
       format: "webp",
       quality: 85,
@@ -51,10 +49,7 @@ export class AudioThumbnailGenerator {
   /**
    * Generate thumbnail for audio files
    */
-  async generateThumbnail(
-    file: File | string,
-    options?: Partial<ThumbnailOptions>,
-  ): Promise<ProcessingResult<Blob>> {
+  async generateThumbnail(file: File | string, options?: Partial<ThumbnailOptions>): Promise<ProcessingResult<Blob>> {
     const startTime = Date.now();
     const mergedOptions = { ...this.options, ...options };
 
@@ -68,7 +63,7 @@ export class AudioThumbnailGenerator {
         canvas,
         targetWidth,
         targetHeight,
-        mergedOptions.backgroundColor || "#1db954",
+        mergedOptions.backgroundColor || "#1db954"
       );
 
       // Analyze audio data
@@ -81,14 +76,7 @@ export class AudioThumbnailGenerator {
       }
 
       // Draw audio waveform visualization
-      await this.waveformRenderer.drawAudioWaveform(
-        ctx,
-        targetWidth,
-        targetHeight,
-        audioData,
-        audio,
-        mergedOptions,
-      );
+      await this.waveformRenderer.drawAudioWaveform(ctx, targetWidth, targetHeight, audioData, audio, mergedOptions);
 
       // Add small audio icon in corner
       this.canvasUtils.drawAudioIcon(ctx, targetWidth, targetHeight, true);
@@ -105,10 +93,7 @@ export class AudioThumbnailGenerator {
     } catch (error) {
       return {
         success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to generate audio thumbnail",
+        error: error instanceof Error ? error.message : "Failed to generate audio thumbnail",
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };

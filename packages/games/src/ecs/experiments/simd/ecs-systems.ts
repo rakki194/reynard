@@ -18,9 +18,7 @@ const Acceleration = createComponentType<{
   ay: number;
   readonly __component: true;
 }>("Acceleration");
-const Mass = createComponentType<{ mass: number; readonly __component: true }>(
-  "Mass",
-);
+const Mass = createComponentType<{ mass: number; readonly __component: true }>("Mass");
 
 // Type definitions for the component data
 type PositionData = { x: number; y: number; readonly __component: true };
@@ -29,7 +27,7 @@ type AccelerationData = { ax: number; ay: number; readonly __component: true };
 
 export class ECSSystems {
   static createPositionUpdateSystem() {
-    return system("positionUpdateSystem", (world) => {
+    return system("positionUpdateSystem", world => {
       const queryResult = world.query(Position, Velocity, Acceleration, Mass);
       queryResult.forEach((entity, pos, vel, acc, _mass) => {
         const position = pos as PositionData;
@@ -48,7 +46,7 @@ export class ECSSystems {
   }
 
   static createCollisionSystem() {
-    return system("collisionSystem", (world) => {
+    return system("collisionSystem", world => {
       const query = world.query(Position);
       const collisions: number[] = [];
       const entities: Entity[] = [];
@@ -75,7 +73,7 @@ export class ECSSystems {
   }
 
   static createSpatialQuerySystem() {
-    return system("spatialQuerySystem", (world) => {
+    return system("spatialQuerySystem", world => {
       const query = world.query(Position);
       const results: number[] = [];
       const entities: Entity[] = [];

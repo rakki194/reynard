@@ -8,9 +8,7 @@ import { createSignal, createEffect } from "solid-js";
 import { downloadFile, copyToClipboard, chunkContent } from "../utils/file-utils";
 
 export function useFileModal(props: { fileContent: string; fileName: string; chunkIndex?: number }) {
-  const [selectedChunk, setSelectedChunk] = createSignal<number | null>(
-    props.chunkIndex ?? null,
-  );
+  const [selectedChunk, setSelectedChunk] = createSignal<number | null>(props.chunkIndex ?? null);
   const [showLineNumbers, setShowLineNumbers] = createSignal(true);
   const [wrapLines, setWrapLines] = createSignal(false);
   const [fontSize, setFontSize] = createSignal(14);

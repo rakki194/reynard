@@ -11,16 +11,14 @@ interface IconModalProps {
   onClose: () => void;
 }
 
-export const IconModal: Component<IconModalProps> = (props) => {
-  const iconData = createMemo(
-    () => allIcons[props.iconName as keyof typeof allIcons],
-  );
+export const IconModal: Component<IconModalProps> = props => {
+  const iconData = createMemo(() => allIcons[props.iconName as keyof typeof allIcons]);
   const iconElement = createMemo(() => getIcon(props.iconName));
   const metadata = createMemo(() => iconData()?.metadata);
 
   return (
     <div class="icon-modal" onClick={props.onClose}>
-      <div class="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div class="modal-content" onClick={e => e.stopPropagation()}>
         <div class="modal-header">
           <h2 class="modal-title">{metadata()?.name}</h2>
           <button class="close-button" onClick={props.onClose}>
@@ -28,9 +26,7 @@ export const IconModal: Component<IconModalProps> = (props) => {
           </button>
         </div>
 
-        <div class="modal-icon-display">
-          {iconElement() && <div innerHTML={iconElement()!} />}
-        </div>
+        <div class="modal-icon-display">{iconElement() && <div innerHTML={iconElement()!} />}</div>
 
         <div class="modal-details">
           <div class="detail-row">
@@ -40,16 +36,12 @@ export const IconModal: Component<IconModalProps> = (props) => {
 
           <div class="detail-row">
             <span class="detail-label">Tags:</span>
-            <span class="detail-value">
-              {metadata()?.tags?.join(", ") || "None"}
-            </span>
+            <span class="detail-value">{metadata()?.tags?.join(", ") || "None"}</span>
           </div>
 
           <div class="detail-row">
             <span class="detail-label">Keywords:</span>
-            <span class="detail-value">
-              {metadata()?.keywords?.join(", ") || "None"}
-            </span>
+            <span class="detail-value">{metadata()?.keywords?.join(", ") || "None"}</span>
           </div>
 
           <div class="detail-row">

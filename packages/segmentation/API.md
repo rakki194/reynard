@@ -167,31 +167,20 @@ interface SegmentationEditorConfig {
 Core service for polygon segmentation operations that integrates with the Reynard AI-shared and annotating-core systems.
 
 ```typescript
-class SegmentationService
-  extends BaseAIService
-  implements ISegmentationService
-{
+class SegmentationService extends BaseAIService implements ISegmentationService {
   constructor(config: SegmentationServiceConfig);
 
   // Core operations
-  async generateSegmentation(
-    task: SegmentationTask,
-  ): Promise<SegmentationResult>;
+  async generateSegmentation(task: SegmentationTask): Promise<SegmentationResult>;
   async generateBatchSegmentations(
     tasks: SegmentationTask[],
-    progressCallback?: (progress: number) => void,
+    progressCallback?: (progress: number) => void
   ): Promise<SegmentationResult[]>;
-  async refineSegmentation(
-    segmentation: SegmentationData,
-    options?: SegmentationOptions,
-  ): Promise<SegmentationResult>;
+  async refineSegmentation(segmentation: SegmentationData, options?: SegmentationOptions): Promise<SegmentationResult>;
 
   // Validation and utilities
   validateSegmentation(segmentation: SegmentationData): boolean;
-  exportSegmentation(
-    segmentation: SegmentationData,
-    format: string,
-  ): Record<string, unknown>;
+  exportSegmentation(segmentation: SegmentationData, format: string): Record<string, unknown>;
   importSegmentation(data: Record<string, unknown>): SegmentationData;
 }
 ```
@@ -232,41 +221,27 @@ Central manager for segmentation services that coordinates multiple services and
 
 ```typescript
 class SegmentationManager implements ISegmentationManager {
-  constructor(
-    serviceRegistry?: ServiceRegistry,
-    annotationServiceRegistry?: AnnotationServiceRegistry,
-  );
+  constructor(serviceRegistry?: ServiceRegistry, annotationServiceRegistry?: AnnotationServiceRegistry);
 
   // Lifecycle
   async initialize(): Promise<void>;
   async cleanup(): Promise<void>;
 
   // Service management
-  async registerSegmentationService(
-    name: string,
-    config: SegmentationServiceConfig,
-  ): Promise<SegmentationService>;
+  async registerSegmentationService(name: string, config: SegmentationServiceConfig): Promise<SegmentationService>;
   async unregisterSegmentationService(name: string): Promise<void>;
 
   // Operations
-  async generateSegmentation(
-    task: SegmentationTask,
-  ): Promise<SegmentationResult>;
+  async generateSegmentation(task: SegmentationTask): Promise<SegmentationResult>;
   async generateBatchSegmentations(
     tasks: SegmentationTask[],
-    progressCallback?: (progress: number) => void,
+    progressCallback?: (progress: number) => void
   ): Promise<SegmentationResult[]>;
-  async refineSegmentation(
-    segmentation: SegmentationData,
-    options?: SegmentationOptions,
-  ): Promise<SegmentationResult>;
+  async refineSegmentation(segmentation: SegmentationData, options?: SegmentationOptions): Promise<SegmentationResult>;
 
   // Utilities
   validateSegmentation(segmentation: SegmentationData): boolean;
-  exportSegmentation(
-    segmentation: SegmentationData,
-    format: SegmentationExportFormat,
-  ): SegmentationExportData;
+  exportSegmentation(segmentation: SegmentationData, format: SegmentationExportFormat): SegmentationExportData;
   importSegmentation(data: SegmentationExportData): SegmentationData;
 
   // Statistics
@@ -280,10 +255,7 @@ class SegmentationManager implements ISegmentationManager {
 **Example:**
 
 ```typescript
-import {
-  SegmentationManager,
-  initializeSegmentationManager,
-} from "reynard-segmentation";
+import { SegmentationManager, initializeSegmentationManager } from "reynard-segmentation";
 
 // Initialize the global manager
 const manager = await initializeSegmentationManager();
@@ -367,23 +339,19 @@ function MySegmentationApp() {
         maxPolygonArea: 1000000,
       }}
       events={{
-        onSegmentationCreate: (segmentation) => {
-          setSegmentations((prev) => [...prev, segmentation]);
+        onSegmentationCreate: segmentation => {
+          setSegmentations(prev => [...prev, segmentation]);
         },
-        onSegmentationUpdate: (segmentation) => {
-          setSegmentations((prev) =>
-            prev.map((s) => (s.id === segmentation.id ? segmentation : s)),
-          );
+        onSegmentationUpdate: segmentation => {
+          setSegmentations(prev => prev.map(s => (s.id === segmentation.id ? segmentation : s)));
         },
-        onSegmentationDelete: (segmentationId) => {
-          setSegmentations((prev) =>
-            prev.filter((s) => s.id !== segmentationId),
-          );
+        onSegmentationDelete: segmentationId => {
+          setSegmentations(prev => prev.filter(s => s.id !== segmentationId));
         },
-        onSegmentationSelect: (segmentationId) => {
+        onSegmentationSelect: segmentationId => {
           console.log("Selected segmentation:", segmentationId);
         },
-        onStateChange: (state) => {
+        onStateChange: state => {
           console.log("Editor state changed:", state);
         },
       }}
@@ -512,9 +480,7 @@ interface UseSegmentationEditorReturn {
   cleanup: () => void;
 }
 
-function useSegmentationEditor(
-  options: UseSegmentationEditorOptions,
-): UseSegmentationEditorReturn;
+function useSegmentationEditor(options: UseSegmentationEditorOptions): UseSegmentationEditorReturn;
 ```
 
 **Example:**
@@ -592,22 +558,14 @@ interface UsePolygonEditorReturn {
   getPolygonCenter: (polygon: Polygon) => Point;
   getPolygonBounds: (polygon: Polygon) => { min: Point; max: Point };
   isPointInPolygon: (polygon: Polygon, point: Point) => boolean;
-  getClosestVertex: (
-    polygon: Polygon,
-    point: Point,
-  ) => { index: number; distance: number };
-  getClosestEdge: (
-    polygon: Polygon,
-    point: Point,
-  ) => { index: number; distance: number; point: Point };
+  getClosestVertex: (polygon: Polygon, point: Point) => { index: number; distance: number };
+  getClosestEdge: (polygon: Polygon, point: Point) => { index: number; distance: number; point: Point };
 
   // Cleanup
   cleanup: () => void;
 }
 
-function usePolygonEditor(
-  options: UsePolygonEditorOptions,
-): UsePolygonEditorReturn;
+function usePolygonEditor(options: UsePolygonEditorOptions): UsePolygonEditorReturn;
 ```
 
 **Example:**
@@ -680,9 +638,7 @@ interface UseCanvasInteractionReturn {
   handleTouchEnd: (event: TouchEvent) => void;
 }
 
-function useCanvasInteraction(
-  options: UseCanvasInteractionOptions,
-): UseCanvasInteractionReturn;
+function useCanvasInteraction(options: UseCanvasInteractionOptions): UseCanvasInteractionReturn;
 ```
 
 ## 🛠️ **Utilities**
@@ -708,10 +664,7 @@ async function initializeSegmentationManager(): Promise<SegmentationManager>;
 **Example:**
 
 ```typescript
-import {
-  getSegmentationManager,
-  initializeSegmentationManager,
-} from "reynard-segmentation";
+import { getSegmentationManager, initializeSegmentationManager } from "reynard-segmentation";
 
 // Initialize the global manager
 const manager = await initializeSegmentationManager();
@@ -741,8 +694,8 @@ function BasicSegmentationApp() {
         allowPolygonCreation: true,
       }}
       events={{
-        onSegmentationCreate: (segmentation) => {
-          setSegmentations((prev) => [...prev, segmentation]);
+        onSegmentationCreate: segmentation => {
+          setSegmentations(prev => [...prev, segmentation]);
         },
       }}
     />
@@ -753,11 +706,7 @@ function BasicSegmentationApp() {
 ### Advanced Usage with AI Integration
 
 ```tsx
-import {
-  SegmentationEditor,
-  SegmentationManager,
-  initializeSegmentationManager,
-} from "reynard-segmentation";
+import { SegmentationEditor, SegmentationManager, initializeSegmentationManager } from "reynard-segmentation";
 
 function AdvancedSegmentationApp() {
   const [segmentations, setSegmentations] = useState<SegmentationData[]>([]);
@@ -780,7 +729,7 @@ function AdvancedSegmentationApp() {
     });
 
     if (result.success) {
-      setSegmentations((prev) => [...prev, result.segmentation]);
+      setSegmentations(prev => [...prev, result.segmentation]);
     }
   };
 
@@ -799,13 +748,11 @@ function AdvancedSegmentationApp() {
           allowEdgeEdit: true,
         }}
         events={{
-          onSegmentationCreate: (segmentation) => {
-            setSegmentations((prev) => [...prev, segmentation]);
+          onSegmentationCreate: segmentation => {
+            setSegmentations(prev => [...prev, segmentation]);
           },
-          onSegmentationUpdate: (segmentation) => {
-            setSegmentations((prev) =>
-              prev.map((s) => (s.id === segmentation.id ? segmentation : s)),
-            );
+          onSegmentationUpdate: segmentation => {
+            setSegmentations(prev => prev.map(s => (s.id === segmentation.id ? segmentation : s)));
           },
         }}
       />
@@ -823,9 +770,7 @@ function ExportImportExample() {
   const [manager] = useState(() => new SegmentationManager());
 
   const exportSegmentations = (segmentations: SegmentationData[]) => {
-    const exportData = segmentations.map((seg) =>
-      manager.exportSegmentation(seg, "coco"),
-    );
+    const exportData = segmentations.map(seg => manager.exportSegmentation(seg, "coco"));
 
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
       type: "application/json",
@@ -841,11 +786,9 @@ function ExportImportExample() {
 
   const importSegmentations = (file: File) => {
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       const data = JSON.parse(e.target?.result as string);
-      const imported = data.map((item: any) =>
-        manager.importSegmentation(item),
-      );
+      const imported = data.map((item: any) => manager.importSegmentation(item));
       console.log("Imported segmentations:", imported);
     };
     reader.readAsText(file);
@@ -853,13 +796,11 @@ function ExportImportExample() {
 
   return (
     <div>
-      <button onClick={() => exportSegmentations([])}>
-        Export Segmentations
-      </button>
+      <button onClick={() => exportSegmentations([])}>Export Segmentations</button>
       <input
         type="file"
         accept=".json"
-        onChange={(e) => {
+        onChange={e => {
           const file = e.target.files?.[0];
           if (file) importSegmentations(file);
         }}
@@ -876,7 +817,7 @@ function ExportImportExample() {
 1. **Use batch processing** for multiple segmentations:
 
 ```typescript
-const results = await manager.generateBatchSegmentations(tasks, (progress) => {
+const results = await manager.generateBatchSegmentations(tasks, progress => {
   console.log(`Progress: ${Math.round(progress * 100)}%`);
 });
 ```

@@ -25,9 +25,7 @@ export function renderingSystem(world: World): void {
   query.forEach((entity, position, color) => {
     const pos = position as Position;
     const col = color as Color;
-    console.log(
-      `Entity ${entity.index}: pos(${pos.x}, ${pos.y}), color(${col.r}, ${col.g}, ${col.b})`,
-    );
+    console.log(`Entity ${entity.index}: pos(${pos.x}, ${pos.y}), color(${col.r}, ${col.g}, ${col.b})`);
   });
 }
 

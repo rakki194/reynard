@@ -178,9 +178,7 @@ describe("EnhancedMemoryPool", () => {
 
       const finalStats = memoryPool.getStatistics();
       expect(finalStats.totalAllocations).toBeGreaterThan(initialAllocations);
-      expect(finalStats.totalDeallocations).toBeGreaterThan(
-        initialDeallocations,
-      );
+      expect(finalStats.totalDeallocations).toBeGreaterThan(initialDeallocations);
     });
   });
 

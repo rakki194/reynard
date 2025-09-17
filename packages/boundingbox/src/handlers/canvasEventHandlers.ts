@@ -6,11 +6,7 @@
  * - Object events handled by objectHandlers
  */
 
-import type {
-  BoundingBox,
-  EditorConfig,
-  AnnotationEventHandlers,
-} from "../types";
+import type { BoundingBox, EditorConfig, AnnotationEventHandlers } from "../types";
 import type { Setter, Accessor } from "solid-js";
 import * as fabric from "fabric";
 import { setupMouseHandlers } from "./mouseHandlers";
@@ -38,10 +34,7 @@ export interface CanvasEventHandlersConfig {
   clampBoundingBoxToImage: (box: BoundingBox) => BoundingBox;
 }
 
-export function setupCanvasEventHandlers(
-  canvas: fabric.Canvas,
-  config: CanvasEventHandlersConfig,
-) {
+export function setupCanvasEventHandlers(canvas: fabric.Canvas, config: CanvasEventHandlersConfig) {
   // Setup mouse event handlers
   setupMouseHandlers(canvas, config);
 

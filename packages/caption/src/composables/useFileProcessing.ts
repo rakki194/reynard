@@ -6,10 +6,7 @@
 
 import { createSignal } from "solid-js";
 import type { MultiModalFile } from "../types/MultiModalTypes";
-import {
-  processFile,
-  createFileProcessingPipeline,
-} from "../utils/FileProcessingUtils";
+import { processFile, createFileProcessingPipeline } from "../utils/FileProcessingUtils";
 
 export interface UseFileProcessingReturn {
   isLoading: () => boolean;
@@ -31,8 +28,7 @@ export const useFileProcessing = (): UseFileProcessingReturn => {
     try {
       return await processFile(file, processingPipeline);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to process file";
+      const errorMessage = err instanceof Error ? err.message : "Failed to process file";
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {

@@ -17,43 +17,21 @@ export const Easing = {
 
   easeOutCubic: (t: number) => --t * t * t + 1,
 
-  easeInOutCubic: (t: number) =>
-    t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+  easeInOutCubic: (t: number) => (t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1),
 
   easeInElastic: (t: number) =>
-    t === 0
-      ? 0
-      : t === 1
-        ? 1
-        : -Math.pow(2, 10 * t - 10) *
-          Math.sin((t * 10 - 10.75) * ((2 * Math.PI) / 3)),
+    t === 0 ? 0 : t === 1 ? 1 : -Math.pow(2, 10 * t - 10) * Math.sin((t * 10 - 10.75) * ((2 * Math.PI) / 3)),
 
   easeOutElastic: (t: number) =>
-    t === 0
-      ? 0
-      : t === 1
-        ? 1
-        : Math.pow(2, -10 * t) *
-            Math.sin((t * 10 - 0.75) * ((2 * Math.PI) / 3)) +
-          1,
+    t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1,
 
   easeInOutElastic: (t: number) => {
     if (t === 0) return 0;
     if (t === 1) return 1;
     if (t < 0.5) {
-      return (
-        -(
-          Math.pow(2, 20 * t - 10) *
-          Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5))
-        ) / 2
-      );
+      return -(Math.pow(2, 20 * t - 10) * Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5))) / 2;
     }
-    return (
-      (Math.pow(2, -20 * t + 10) *
-        Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5))) /
-        2 +
-      1
-    );
+    return (Math.pow(2, -20 * t + 10) * Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5))) / 2 + 1;
   },
 };
 
@@ -69,12 +47,7 @@ export function applyEasing(t: number, easing: EasingType): number {
 /**
  * Interpolate between two values with easing
  */
-export function interpolate(
-  start: number,
-  end: number,
-  t: number,
-  easing: EasingType = "linear",
-): number {
+export function interpolate(start: number, end: number, t: number, easing: EasingType = "linear"): number {
   const easedT = applyEasing(t, easing);
   return start + (end - start) * easedT;
 }
@@ -86,7 +59,7 @@ export function interpolateVector3(
   start: [number, number, number],
   end: [number, number, number],
   t: number,
-  easing: EasingType = "linear",
+  easing: EasingType = "linear"
 ): [number, number, number] {
   return [
     interpolate(start[0], end[0], t, easing),
@@ -102,7 +75,7 @@ export function interpolateColor(
   start: [number, number, number],
   end: [number, number, number],
   t: number,
-  easing: EasingType = "linear",
+  easing: EasingType = "linear"
 ): [number, number, number] {
   return [
     interpolate(start[0], end[0], t, easing),

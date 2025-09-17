@@ -5,20 +5,10 @@
 import path from "path";
 import chokidar from "chokidar";
 import type { GeneratorConfig } from "./config/types/core";
-import type {
-  PackageConfig,
-  TemplateConfig,
-  ExampleConfig,
-} from "./config/types/package";
+import type { PackageConfig, TemplateConfig, ExampleConfig } from "./config/types/package";
 import { DocEngineConfig } from "./types.js";
 import { discoverPackages } from "./discovery";
-import {
-  analyzePackages,
-  generatePages,
-  generateSections,
-  generateExamples,
-  generateApiDocs,
-} from "./builders";
+import { analyzePackages, generatePages, generateSections, generateExamples, generateApiDocs } from "./builders";
 import { writeOutput } from "./output/html";
 
 export class ReynardDocGenerator {
@@ -68,15 +58,9 @@ export class ReynardDocGenerator {
     this.isWatching = true;
 
     const watchPaths = [
-      ...(this.config.packages || []).map((pkg: PackageConfig) =>
-        path.join(pkg.path || "", "**/*"),
-      ),
-      ...(this.config.templates || []).map((template: TemplateConfig) =>
-        path.join(template.path, "**/*"),
-      ),
-      ...(this.config.examples || []).map((example: ExampleConfig) =>
-        path.join(example.path, "**/*"),
-      ),
+      ...(this.config.packages || []).map((pkg: PackageConfig) => path.join(pkg.path || "", "**/*")),
+      ...(this.config.templates || []).map((template: TemplateConfig) => path.join(template.path, "**/*")),
+      ...(this.config.examples || []).map((example: ExampleConfig) => path.join(example.path, "**/*")),
     ];
 
     const watcher = chokidar.watch(watchPaths, {
@@ -105,8 +89,6 @@ export class ReynardDocGenerator {
   }
 }
 
-export function createDocGenerator(
-  config: GeneratorConfig,
-): ReynardDocGenerator {
+export function createDocGenerator(config: GeneratorConfig): ReynardDocGenerator {
   return new ReynardDocGenerator(config);
 }

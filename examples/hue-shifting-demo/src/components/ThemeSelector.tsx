@@ -24,7 +24,7 @@ export const ThemeSelector: Component = () => {
       <h3>🎨 Theme</h3>
       <div class="theme-grid">
         <For each={availableThemes}>
-          {(themeConfig) => {
+          {themeConfig => {
             const themeName = themeConfig.name as ThemeName;
             const iconName = themeIcons[themeName] || "palette";
             const isSelected = theme === themeName;
@@ -37,11 +37,7 @@ export const ThemeSelector: Component = () => {
               >
                 <div
                   class="theme-icon"
-                  innerHTML={
-                    allIcons[iconName as keyof typeof allIcons]?.svg ||
-                    allIcons.settings?.svg ||
-                    ""
-                  }
+                  innerHTML={allIcons[iconName as keyof typeof allIcons]?.svg || allIcons.settings?.svg || ""}
                 />
                 <div class="theme-info">
                   <h4>{themeConfig.displayName}</h4>

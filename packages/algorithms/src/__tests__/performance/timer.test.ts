@@ -21,7 +21,7 @@ describe("PerformanceTimer", () => {
       timer.start();
 
       // Wait for real time to pass
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 10));
 
       const elapsed = timer.stop();
       expect(elapsed).toBeGreaterThanOrEqual(9); // Allow some timing variance with real timers
@@ -43,7 +43,7 @@ describe("PerformanceTimer", () => {
       timer.start();
 
       // Wait for real time to pass
-      await new Promise((resolve) => setTimeout(resolve, 5));
+      await new Promise(resolve => setTimeout(resolve, 5));
 
       const elapsed = timer.getElapsed();
       expect(elapsed).toBeGreaterThanOrEqual(4); // Allow some timing variance with real timers
@@ -53,7 +53,7 @@ describe("PerformanceTimer", () => {
       timer.start();
 
       // Wait for real time to pass
-      await new Promise((resolve) => setTimeout(resolve, 5));
+      await new Promise(resolve => setTimeout(resolve, 5));
 
       const finalElapsed = timer.stop();
       const elapsed = timer.getElapsed();
@@ -92,13 +92,13 @@ describe("PerformanceTimer", () => {
     it("should work correctly for multiple start/stop cycles", async () => {
       // First cycle
       timer.start();
-      await new Promise((resolve) => setTimeout(resolve, 5));
+      await new Promise(resolve => setTimeout(resolve, 5));
       const firstElapsed = timer.stop();
 
       // Reset and second cycle
       timer.reset();
       timer.start();
-      await new Promise((resolve) => setTimeout(resolve, 5));
+      await new Promise(resolve => setTimeout(resolve, 5));
       const secondElapsed = timer.stop();
 
       expect(firstElapsed).toBeGreaterThanOrEqual(5);
@@ -107,7 +107,7 @@ describe("PerformanceTimer", () => {
 
     it("should maintain precision for very short durations", async () => {
       timer.start();
-      await new Promise((resolve) => setTimeout(resolve, 1));
+      await new Promise(resolve => setTimeout(resolve, 1));
       const elapsed = timer.stop();
 
       expect(elapsed).toBeGreaterThanOrEqual(1);

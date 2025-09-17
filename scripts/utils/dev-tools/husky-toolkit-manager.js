@@ -34,8 +34,7 @@ class HuskyToolkitManager {
       "workflow-shell": {
         name: "Workflow Shell Validation",
         script: "extract-workflow-shell.js",
-        description:
-          "Extracts and validates shell scripts from GitHub workflows",
+        description: "Extracts and validates shell scripts from GitHub workflows",
         category: "security",
         dependencies: ["node", "shellcheck"],
       },
@@ -63,8 +62,7 @@ class HuskyToolkitManager {
       "markdown-toc": {
         name: "Markdown ToC Validation",
         script: "validate-markdown-toc.js",
-        description:
-          "Validates and generates table of contents for markdown files",
+        description: "Validates and generates table of contents for markdown files",
         category: "documentation",
         dependencies: ["node"],
       },
@@ -85,8 +83,7 @@ class HuskyToolkitManager {
       "italic-blockquote": {
         name: "Italic to Blockquote Conversion",
         script: "validate-italic-to-blockquote.js",
-        description:
-          "Converts italic text to blockquotes for better readability",
+        description: "Converts italic text to blockquotes for better readability",
         category: "documentation",
         dependencies: ["node"],
       },
@@ -176,11 +173,7 @@ class HuskyToolkitManager {
 
     const categories = {};
     for (const [toolName, tool] of Object.entries(this.tools)) {
-      if (
-        filter &&
-        !toolName.includes(filter) &&
-        !tool.name.toLowerCase().includes(filter.toLowerCase())
-      ) {
+      if (filter && !toolName.includes(filter) && !tool.name.toLowerCase().includes(filter.toLowerCase())) {
         continue;
       }
 
@@ -197,21 +190,10 @@ class HuskyToolkitManager {
 
       for (const { name, tool } of tools) {
         const status = this.getToolStatus(name);
-        const statusIcon = status.available
-          ? "✅"
-          : status.exists
-            ? "⚠️"
-            : "❌";
-        const statusText = status.available
-          ? "Ready"
-          : status.exists
-            ? "Missing deps"
-            : "Not found";
+        const statusIcon = status.available ? "✅" : status.exists ? "⚠️" : "❌";
+        const statusText = status.available ? "Ready" : status.exists ? "Missing deps" : "Not found";
 
-        this.log(
-          `  ${statusIcon} ${tool.name}`,
-          status.available ? "green" : "yellow",
-        );
+        this.log(`  ${statusIcon} ${tool.name}`, status.available ? "green" : "yellow");
         this.log(`     ${tool.description}`, "reset");
         this.log(`     Status: ${statusText}`, "reset");
 
@@ -237,10 +219,7 @@ class HuskyToolkitManager {
     if (!status.available) {
       this.log(`❌ Tool '${toolName}' is not available`, "red");
       if (status.missing && status.missing.length > 0) {
-        this.log(
-          `   Missing dependencies: ${status.missing.join(", ")}`,
-          "red",
-        );
+        this.log(`   Missing dependencies: ${status.missing.join(", ")}`, "red");
       }
       return false;
     }
@@ -296,10 +275,7 @@ class HuskyToolkitManager {
 
     this.log("\n🎯 Summary", "magenta");
     this.log("=".repeat(20), "magenta");
-    this.log(
-      `✅ Successful: ${successCount}/${totalCount}`,
-      successCount === totalCount ? "green" : "yellow",
-    );
+    this.log(`✅ Successful: ${successCount}/${totalCount}`, successCount === totalCount ? "green" : "yellow");
 
     if (successCount < totalCount) {
       this.log("❌ Failed tools:", "red");
@@ -325,7 +301,7 @@ class HuskyToolkitManager {
     for (const toolName of Object.keys(this.tools)) {
       const deps = this.checkDependencies(toolName);
       if (!deps.available) {
-        deps.missing.forEach((dep) => allDeps.add(dep));
+        deps.missing.forEach(dep => allDeps.add(dep));
       }
     }
 
@@ -373,28 +349,19 @@ class HuskyToolkitManager {
     this.log("🐺 Husky Toolkit Manager", "magenta");
     this.log("=".repeat(30), "magenta");
     this.log("");
-    this.log(
-      "Usage: node husky-toolkit-manager.js <command> [options]",
-      "blue",
-    );
+    this.log("Usage: node husky-toolkit-manager.js <command> [options]", "blue");
     this.log("");
     this.log("Commands:", "yellow");
     this.log("  list [filter]     List all tools with their status", "reset");
     this.log("  run <tool> [args] Run a specific tool", "reset");
     this.log("  run-all [args]    Run all available tools", "reset");
-    this.log(
-      "  install-deps      Show installation commands for missing dependencies",
-      "reset",
-    );
+    this.log("  install-deps      Show installation commands for missing dependencies", "reset");
     this.log("  help              Show this help message", "reset");
     this.log("");
     this.log("Examples:", "yellow");
     this.log("  node husky-toolkit-manager.js list", "reset");
     this.log("  node husky-toolkit-manager.js list shell", "reset");
-    this.log(
-      "  node husky-toolkit-manager.js run workflow-shell --fix",
-      "reset",
-    );
+    this.log("  node husky-toolkit-manager.js run workflow-shell --fix", "reset");
     this.log("  node husky-toolkit-manager.js run-all", "reset");
     this.log("  node husky-toolkit-manager.js install-deps", "reset");
   }

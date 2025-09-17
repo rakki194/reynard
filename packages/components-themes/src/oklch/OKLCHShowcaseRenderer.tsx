@@ -41,9 +41,7 @@ interface OKLCHShowcaseRendererProps {
   };
 }
 
-export const OKLCHShowcaseRenderer: Component<OKLCHShowcaseRendererProps> = (
-  props,
-) => {
+export const OKLCHShowcaseRenderer: Component<OKLCHShowcaseRendererProps> = props => {
   return (
     <section class="oklch-showcase">
       <ShowcaseSections

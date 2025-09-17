@@ -5,7 +5,7 @@ export interface LoadingSpinnerProps {
   message?: string;
 }
 
-export const LoadingSpinner: Component<LoadingSpinnerProps> = (props) => {
+export const LoadingSpinner: Component<LoadingSpinnerProps> = props => {
   const { t } = useI18n();
 
   return (

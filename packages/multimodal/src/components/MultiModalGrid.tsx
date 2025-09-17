@@ -8,11 +8,11 @@ import { Component, For } from "solid-js";
 import type { MultiModalGridProps } from "../types/MultiModalTypes";
 import { MultiModalFileCard } from "./MultiModalFileCard";
 
-export const MultiModalGrid: Component<MultiModalGridProps> = (props) => {
+export const MultiModalGrid: Component<MultiModalGridProps> = props => {
   return (
     <div class="multi-modal-grid">
       <For each={props.files}>
-        {(file) => (
+        {file => (
           <MultiModalFileCard
             file={file}
             isSelected={props.selectedFile?.id === file.id}

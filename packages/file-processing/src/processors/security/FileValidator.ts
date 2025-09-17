@@ -24,10 +24,7 @@ export class FileValidator {
   /**
    * Validate File object for security issues
    */
-  static validateFileObject(
-    file: File,
-    maxFileSize: number,
-  ): FileValidationResult {
+  static validateFileObject(file: File, maxFileSize: number): FileValidationResult {
     // Validate file name
     if (!file.name || file.name.length === 0) {
       return { isValid: false, error: "Invalid file name" };
@@ -40,11 +37,7 @@ export class FileValidator {
     }
 
     // Check for path traversal in file name
-    if (
-      file.name.includes("..") ||
-      file.name.includes("/") ||
-      file.name.includes("\\")
-    ) {
+    if (file.name.includes("..") || file.name.includes("/") || file.name.includes("\\")) {
       return { isValid: false, error: "Invalid file name" };
     }
 
@@ -65,8 +58,6 @@ export class FileValidator {
    */
   static getFileExtension(filename: string): string {
     const lastDotIndex = filename.lastIndexOf(".");
-    return lastDotIndex !== -1
-      ? filename.substring(lastDotIndex).toLowerCase()
-      : "";
+    return lastDotIndex !== -1 ? filename.substring(lastDotIndex).toLowerCase() : "";
   }
 }

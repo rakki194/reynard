@@ -4,17 +4,13 @@
  */
 
 import { Component, createSignal } from "solid-js";
-import {
-  ErrorBoundary,
-  ErrorFallback,
-  builtInRecoveryStrategies,
-} from "reynard-error-boundaries";
+import { ErrorBoundary, ErrorFallback, builtInRecoveryStrategies } from "reynard-error-boundaries";
 import { ReynardProvider, useTheme } from "reynard-themes";
 import "reynard-themes/themes.css";
 import { Button, Card } from "reynard-components";
 
 // Component that can throw an error
-const RiskyComponent: Component<{ shouldThrow?: boolean }> = (props) => {
+const RiskyComponent: Component<{ shouldThrow?: boolean }> = props => {
   if (props.shouldThrow) {
     throw new Error("This is a test error!");
   }
@@ -53,7 +49,7 @@ const ErrorBoundaryDemo: Component = () => {
         onError={(error, errorInfo) => {
           console.log("Error caught:", error, errorInfo);
         }}
-        onRecovery={(action) => {
+        onRecovery={action => {
           console.log("Recovery action executed:", action);
         }}
         reportErrors={true}

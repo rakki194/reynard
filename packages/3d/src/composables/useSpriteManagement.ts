@@ -1,10 +1,5 @@
 import { createEffect } from "solid-js";
-import type {
-  EmbeddingPoint,
-  EmbeddingRenderingConfig,
-  SceneLike,
-  SpriteLike,
-} from "../types/rendering";
+import type { EmbeddingPoint, EmbeddingRenderingConfig, SceneLike, SpriteLike } from "../types/rendering";
 
 export interface SpriteManagementConfig {
   pointCloudRenderer: () => {
@@ -14,20 +9,17 @@ export interface SpriteManagementConfig {
         config: EmbeddingRenderingConfig,
         scene: SceneLike,
         onHover: (pointId: string) => void,
-        onLeave: () => void,
+        onLeave: () => void
       ) => Promise<SpriteLike[]>;
       createTextSprites: (
         points: EmbeddingPoint[],
         config: EmbeddingRenderingConfig,
-        scene: SceneLike,
+        scene: SceneLike
       ) => Promise<SpriteLike[]>;
     };
   } | null;
   pointCloudEvents: () => {
-    handlePointHover: (
-      pointId: string,
-      config: EmbeddingRenderingConfig,
-    ) => void;
+    handlePointHover: (pointId: string, config: EmbeddingRenderingConfig) => void;
     handlePointLeave: (config: EmbeddingRenderingConfig) => void;
   } | null;
   points: EmbeddingPoint[];
@@ -51,7 +43,7 @@ export function useSpriteManagement(config: SpriteManagementConfig) {
       config.config,
       config.scene,
       (pointId: string) => events.handlePointHover(pointId, config.config),
-      () => events.handlePointLeave(config.config),
+      () => events.handlePointLeave(config.config)
     );
 
     config.setThumbnailSprites(sprites);
@@ -62,19 +54,13 @@ export function useSpriteManagement(config: SpriteManagementConfig) {
 
     if (!renderer || !config.points) return;
 
-    const sprites = await renderer
-      .spriteManager()
-      .createTextSprites(config.points, config.config, config.scene);
+    const sprites = await renderer.spriteManager().createTextSprites(config.points, config.config, config.scene);
 
     config.setTextSprites(sprites);
   };
 
   createEffect(() => {
-    if (
-      config.pointCloudRenderer() &&
-      config.pointCloudEvents() &&
-      config.points
-    ) {
+    if (config.pointCloudRenderer() && config.pointCloudEvents() && config.points) {
       createThumbnailSprites();
       createTextSprites();
     }

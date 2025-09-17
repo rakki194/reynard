@@ -1,11 +1,7 @@
 // Point cloud visualization composable for SolidJS
 // Orchestrates modular point cloud functionality
 
-import type {
-  Point3D,
-  PointCloudSettings,
-  SearchIntegrationSettings,
-} from "../types";
+import type { Point3D, PointCloudSettings, SearchIntegrationSettings } from "../types";
 import { useThreeJSInitialization } from "./useThreeJSInitialization";
 import { usePointCloudInteractions } from "./usePointCloudInteractions";
 import { usePointCloudEvents } from "./usePointCloudEvents";
@@ -19,14 +15,13 @@ import { createPointCloudReturn } from "./usePointCloudReturn";
 export function usePointCloud(
   points: () => Point3D[],
   settings: () => PointCloudSettings = () => ({}),
-  searchIntegration: () => SearchIntegrationSettings = () => ({}),
+  searchIntegration: () => SearchIntegrationSettings = () => ({})
 ) {
   // Initialize modular composables
   const threeJSInit = useThreeJSInitialization({});
   const interactions = usePointCloudInteractions();
   const eventsModule = usePointCloudEvents();
-  const searchIntegrationModule =
-    usePointCloudSearchIntegration(searchIntegration);
+  const searchIntegrationModule = usePointCloudSearchIntegration(searchIntegration);
   const settingsModule = usePointCloudSettings(settings);
   const stateModule = usePointCloudState();
 
@@ -36,17 +31,16 @@ export function usePointCloud(
     settings,
     settingsModule.maxPoints,
     settingsModule.pointSize,
-    searchIntegrationModule.processPointsWithSearchIntegration,
+    searchIntegrationModule.processPointsWithSearchIntegration
   );
 
   // Create interaction handlers
-  const { createPointSelectionHandler, createPointHoverHandler } =
-    usePointCloudHandlers(
-      eventsModule.raycaster,
-      eventsModule.mouse,
-      interactions.handlePointSelection,
-      interactions.handlePointHover,
-    );
+  const { createPointSelectionHandler, createPointHoverHandler } = usePointCloudHandlers(
+    eventsModule.raycaster,
+    eventsModule.mouse,
+    interactions.handlePointSelection,
+    interactions.handlePointHover
+  );
 
   return createPointCloudReturn(
     threeJSInit,
@@ -57,6 +51,6 @@ export function usePointCloud(
     stateModule,
     processedPoints,
     createPointSelectionHandler,
-    createPointHoverHandler,
+    createPointHoverHandler
   );
 }

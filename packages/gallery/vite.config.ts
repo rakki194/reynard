@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardGallery",
-      fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
+      fileName: format => (format === "es" ? "index.js" : `index.${format}`),
     },
     rollupOptions: {
       external: [
@@ -26,8 +26,7 @@ export default defineConfig({
           "solid-js/web": "solidWeb",
           "reynard-core": "ReynardCore",
           "reynard-components": "ReynardComponents",
-          "@solid-primitives/intersection-observer":
-            "SolidPrimitivesIntersectionObserver",
+          "@solid-primitives/intersection-observer": "SolidPrimitivesIntersectionObserver",
           "@solid-primitives/resize-observer": "SolidPrimitivesResizeObserver",
           "@solid-primitives/event-listener": "SolidPrimitivesEventListener",
         },

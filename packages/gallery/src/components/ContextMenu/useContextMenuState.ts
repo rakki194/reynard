@@ -34,15 +34,15 @@ export const useContextMenuState = (): UseContextMenuStateReturn => {
   };
 
   const setSelectedIndex = (index: number) => {
-    setState((prev) => ({ ...prev, selectedIndex: index }));
+    setState(prev => ({ ...prev, selectedIndex: index }));
   };
 
   const setSubmenuOpen = (index: number | null) => {
-    setState((prev) => ({ ...prev, submenuOpen: index }));
+    setState(prev => ({ ...prev, submenuOpen: index }));
   };
 
   const setVisible = (visible: boolean) => {
-    setState((prev) => ({ ...prev, isVisible: visible }));
+    setState(prev => ({ ...prev, isVisible: visible }));
   };
 
   return {

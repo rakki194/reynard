@@ -152,12 +152,8 @@ vi.mock("../debugger", () => ({
     }),
     reset: vi.fn(),
   })),
-  createTemplateTranslator: vi
-    .fn()
-    .mockReturnValue(vi.fn().mockReturnValue("Hello World!")),
-  createDebugPluralTranslator: vi
-    .fn()
-    .mockReturnValue(vi.fn().mockReturnValue("1 item")),
+  createTemplateTranslator: vi.fn().mockReturnValue(vi.fn().mockReturnValue("Hello World!")),
+  createDebugPluralTranslator: vi.fn().mockReturnValue(vi.fn().mockReturnValue("1 item")),
 }));
 
 vi.mock("../intl", () => ({
@@ -357,16 +353,8 @@ describe("Enhanced I18n Simple Tests", () => {
     const i18n = createI18nModule();
 
     // Translation Manager
-    i18n.translationManager.setTranslation(
-      "en",
-      "common.test",
-      "Test",
-      "user@example.com",
-    );
-    const translation = i18n.translationManager.getTranslation(
-      "en",
-      "common.test",
-    );
+    i18n.translationManager.setTranslation("en", "common.test", "Test", "user@example.com");
+    const translation = i18n.translationManager.getTranslation("en", "common.test");
     expect(translation).toBe("Hello");
 
     // Analytics
@@ -405,9 +393,6 @@ describe("Enhanced I18n Simple Tests", () => {
 
     i18n.t("common.hello");
 
-    expect(i18n.analytics.trackUsage).toHaveBeenCalledWith(
-      "common.hello",
-      "en",
-    );
+    expect(i18n.analytics.trackUsage).toHaveBeenCalledWith("common.hello", "en");
   });
 });

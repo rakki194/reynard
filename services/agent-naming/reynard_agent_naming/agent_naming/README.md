@@ -7,7 +7,7 @@ A clean, modular agent naming system for the Reynard MCP server that generates r
 The agent naming system provides comprehensive robot name generation inspired by:
 
 - **Asimov's Foundation** - Strategic, intellectual naming
-- **Destiny's Exo** - Combat, technical naming  
+- **Destiny's Exo** - Combat, technical naming
 - **Cyberpunk** - Tech-prefixed cyber naming
 - **Mythological** - Divine/mystical references
 - **Scientific** - Latin scientific classifications
@@ -131,7 +131,7 @@ Strategic, intellectual naming: `[Spirit] + [Suffix] + [Generation]`
 - Example: `Vulpine-Sage-13`
 - Suffixes: Prime, Sage, Oracle, Prophet, Architect, Strategist
 
-### Exo Style  
+### Exo Style
 
 Combat, technical naming: `[Spirit] + [Suffix] + [Model]`
 

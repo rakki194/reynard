@@ -17,7 +17,7 @@ export interface DragHandlers {
 export function createDragHandlers(
   props: FileUploadProps,
   setIsDragOver: (value: boolean) => void,
-  onFilesDropped: (files: File[]) => void,
+  onFilesDropped: (files: File[]) => void
 ): DragHandlers {
   /**
    * Handle drag over events

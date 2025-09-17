@@ -50,9 +50,8 @@ class ManualReloadTester:
             if response.status_code == 200:
                 print(f"  [OK] {description}: OK")
                 return True
-            else:
-                print(f"  [FAIL] {description}: HTTP {response.status_code}")
-                return False
+            print(f"  [FAIL] {description}: HTTP {response.status_code}")
+            return False
         except requests.exceptions.RequestException as e:
             print(f"  [FAIL] {description}: {e}")
             return False
@@ -65,11 +64,11 @@ class ManualReloadTester:
                 data = response.json()
                 print("\n[INFO] System Information:")
                 print(f"  [INFO] Reload Mode: {data.get('reload_mode', 'Unknown')}")
-                print(f"  [INFO] Services:")
+                print("  [INFO] Services:")
                 for service, status in data.get("services", {}).items():
                     available = status.get("available", False)
                     print(f"    - {service}: {'[OK]' if available else '[FAIL]'}")
-                print(f"  [INFO] Environment:")
+                print("  [INFO] Environment:")
                 for key, value in data.get("environment", {}).items():
                     print(f"    - {key}: {value}")
             else:
@@ -86,7 +85,7 @@ class ManualReloadTester:
                 print("\n[INFO] Health Status:")
                 print(f"  [INFO] Overall Status: {data.get('status', 'Unknown')}")
                 print(f"  [INFO] Uptime: {data.get('uptime', 0):.2f}s")
-                print(f"  [INFO] Services:")
+                print("  [INFO] Services:")
                 for service, info in data.get("services", {}).items():
                     status = info.get("status", "Unknown")
                     print(f"    - {service}: {status}")
@@ -136,7 +135,7 @@ class ManualReloadTester:
             if choice == "0":
                 print("[INFO] Goodbye!")
                 break
-            elif choice == "1":
+            if choice == "1":
                 if self.check_server_status():
                     print("[OK] Server is running and responding")
                 else:
@@ -255,7 +254,7 @@ class ManualReloadTester:
             duration = end_time - start_time
             success_rate = (success_count / total_requests) * 100
 
-            print(f"[INFO] Results:")
+            print("[INFO] Results:")
             print(f"  - Requests: {success_count}/{total_requests}")
             print(f"  - Duration: {duration:.2f}s")
             print(f"  - Success Rate: {success_rate:.1f}%")

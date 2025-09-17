@@ -9,15 +9,7 @@
  */
 
 import { beforeEach, describe, expect, it } from "vitest";
-import {
-  Component,
-  ComponentType,
-  Entity,
-  Resource,
-  ResourceType,
-  StorageType,
-  World,
-} from "../../types";
+import { Component, ComponentType, Entity, Resource, ResourceType, StorageType, World } from "../../types";
 import { createWorld } from "../../world";
 
 // Test components
@@ -25,7 +17,7 @@ class Position implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -33,7 +25,7 @@ class Velocity implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -41,7 +33,7 @@ class Health implements Component {
   readonly __component = true;
   constructor(
     public current: number,
-    public maximum: number,
+    public maximum: number
   ) {}
 }
 
@@ -55,7 +47,7 @@ class GameTime implements Resource {
   readonly __resource = true;
   constructor(
     public deltaTime: number,
-    public totalTime: number,
+    public totalTime: number
   ) {}
 }
 
@@ -63,7 +55,7 @@ class GameState implements Resource {
   readonly __resource = true;
   constructor(
     public score: number,
-    public level: number,
+    public level: number
   ) {}
 }
 
@@ -82,26 +74,14 @@ describe("World System", () => {
     world = createWorld();
 
     // Register component types and get the type objects
-    PositionType = world
-      .getComponentRegistry()
-      .register("Position", StorageType.Table, () => new Position(0, 0));
-    VelocityType = world
-      .getComponentRegistry()
-      .register("Velocity", StorageType.Table, () => new Velocity(0, 0));
-    HealthType = world
-      .getComponentRegistry()
-      .register("Health", StorageType.SparseSet, () => new Health(100, 100));
-    PlayerType = world
-      .getComponentRegistry()
-      .register("Player", StorageType.SparseSet, () => new Player("Player"));
+    PositionType = world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
+    VelocityType = world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    HealthType = world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    PlayerType = world.getComponentRegistry().register("Player", StorageType.SparseSet, () => new Player("Player"));
 
     // Register resource types and get the type objects
-    GameTimeType = world
-      .getResourceRegistry()
-      .register("GameTime", () => new GameTime(0, 0));
-    GameStateType = world
-      .getResourceRegistry()
-      .register("GameState", () => new GameState(0, 1));
+    GameTimeType = world.getResourceRegistry().register("GameTime", () => new GameTime(0, 0));
+    GameStateType = world.getResourceRegistry().register("GameState", () => new GameState(0, 1));
   });
 
   describe("Entity Management", () => {

@@ -18,17 +18,14 @@ export const useTextFileUpload = (options: UseTextFileUploadOptions = {}) => {
   const [error, setError] = createSignal<string | null>(null);
 
   // Process uploaded files with error handling
-  const processFileWithErrorHandling = async (
-    file: File,
-  ): Promise<TextFile> => {
+  const processFileWithErrorHandling = async (file: File): Promise<TextFile> => {
     setIsLoading(true);
     setError(null);
 
     try {
       return await processTextFile(file);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to process text file";
+      const errorMessage = err instanceof Error ? err.message : "Failed to process text file";
       setError(errorMessage);
       options.onError?.(errorMessage);
       throw new Error(errorMessage);
@@ -48,9 +45,7 @@ export const useTextFileUpload = (options: UseTextFileUploadOptions = {}) => {
     const filesToProcess = Array.from(files).slice(0, maxFiles);
 
     try {
-      return await Promise.all(
-        filesToProcess.map(processFileWithErrorHandling),
-      );
+      return await Promise.all(filesToProcess.map(processFileWithErrorHandling));
     } catch (err) {
       console.error("Failed to process text files:", err);
       return [];

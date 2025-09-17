@@ -17,7 +17,7 @@ import { HTTPRequestOptions, HTTPResponse, HTTPError } from "./types";
 export function buildUrl(
   baseUrl: string,
   endpoint: string,
-  params?: Record<string, string | number | boolean>,
+  params?: Record<string, string | number | boolean>
 ): string {
   const url = new URL(endpoint, baseUrl);
 
@@ -47,10 +47,7 @@ export function parseQueryParams(url: string): Record<string, string> {
 /**
  * Add query parameters to a URL
  */
-export function addQueryParams(
-  url: string,
-  params: Record<string, string | number | boolean>,
-): string {
+export function addQueryParams(url: string, params: Record<string, string | number | boolean>): string {
   const urlObj = new URL(url);
 
   Object.entries(params).forEach(([key, value]) => {
@@ -67,9 +64,7 @@ export function addQueryParams(
 /**
  * Merge headers with priority (later headers override earlier ones)
  */
-export function mergeHeaders(
-  ...headerObjects: Array<Record<string, string> | undefined>
-): Record<string, string> {
+export function mergeHeaders(...headerObjects: Array<Record<string, string> | undefined>): Record<string, string> {
   const merged: Record<string, string> = {};
 
   for (const headers of headerObjects) {
@@ -84,9 +79,7 @@ export function mergeHeaders(
 /**
  * Normalize header names (convert to lowercase)
  */
-export function normalizeHeaders(
-  headers: Record<string, string>,
-): Record<string, string> {
+export function normalizeHeaders(headers: Record<string, string>): Record<string, string> {
   const normalized: Record<string, string> = {};
 
   Object.entries(headers).forEach(([key, value]) => {
@@ -99,27 +92,17 @@ export function normalizeHeaders(
 /**
  * Check if headers contain a specific header
  */
-export function hasHeader(
-  headers: Record<string, string>,
-  headerName: string,
-): boolean {
+export function hasHeader(headers: Record<string, string>, headerName: string): boolean {
   const normalizedName = headerName.toLowerCase();
-  return Object.keys(headers).some(
-    (key) => key.toLowerCase() === normalizedName,
-  );
+  return Object.keys(headers).some(key => key.toLowerCase() === normalizedName);
 }
 
 /**
  * Get header value (case-insensitive)
  */
-export function getHeader(
-  headers: Record<string, string>,
-  headerName: string,
-): string | undefined {
+export function getHeader(headers: Record<string, string>, headerName: string): string | undefined {
   const normalizedName = headerName.toLowerCase();
-  const entry = Object.entries(headers).find(
-    ([key]) => key.toLowerCase() === normalizedName,
-  );
+  const entry = Object.entries(headers).find(([key]) => key.toLowerCase() === normalizedName);
   return entry?.[1];
 }
 
@@ -133,7 +116,7 @@ export function getHeader(
 export function createRequestOptions(
   method: HTTPRequestOptions["method"],
   endpoint: string,
-  options: Partial<HTTPRequestOptions> = {},
+  options: Partial<HTTPRequestOptions> = {}
 ): HTTPRequestOptions {
   return {
     method,
@@ -145,9 +128,7 @@ export function createRequestOptions(
 /**
  * Clone request options
  */
-export function cloneRequestOptions(
-  options: HTTPRequestOptions,
-): HTTPRequestOptions {
+export function cloneRequestOptions(options: HTTPRequestOptions): HTTPRequestOptions {
   return {
     ...options,
     headers: { ...options.headers },
@@ -250,13 +231,8 @@ export function isBinaryResponse(response: HTTPResponse): boolean {
 /**
  * Create an HTTP error from a response
  */
-export function createErrorFromResponse(
-  response: HTTPResponse,
-  message?: string,
-): HTTPError {
-  const error = new Error(
-    message || `HTTP ${response.status}: ${response.statusText}`,
-  ) as HTTPError;
+export function createErrorFromResponse(response: HTTPResponse, message?: string): HTTPError {
+  const error = new Error(message || `HTTP ${response.status}: ${response.statusText}`) as HTTPError;
   error.status = response.status;
   error.statusText = response.statusText;
   error.response = response;
@@ -373,9 +349,7 @@ export function formDataToObject(formData: FormData): Record<string, string> {
 /**
  * Convert object to FormData
  */
-export function objectToFormData(
-  obj: Record<string, string | File | Blob>,
-): FormData {
+export function objectToFormData(obj: Record<string, string | File | Blob>): FormData {
   const formData = new FormData();
 
   Object.entries(obj).forEach(([key, value]) => {
@@ -392,12 +366,10 @@ export function objectToFormData(
 /**
  * Measure request performance
  */
-export function measureRequest<T>(
-  requestFn: () => Promise<T>,
-): Promise<{ result: T; duration: number }> {
+export function measureRequest<T>(requestFn: () => Promise<T>): Promise<{ result: T; duration: number }> {
   const startTime = performance.now();
 
-  return requestFn().then((result) => {
+  return requestFn().then(result => {
     const endTime = performance.now();
     return {
       result,
@@ -441,18 +413,8 @@ export function isValidUrl(url: string): boolean {
 /**
  * Validate HTTP method
  */
-export function isValidHttpMethod(
-  method: string,
-): method is HTTPRequestOptions["method"] {
-  const validMethods = [
-    "GET",
-    "POST",
-    "PUT",
-    "DELETE",
-    "PATCH",
-    "HEAD",
-    "OPTIONS",
-  ];
+export function isValidHttpMethod(method: string): method is HTTPRequestOptions["method"] {
+  const validMethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"];
   return validMethods.includes(method.toUpperCase());
 }
 

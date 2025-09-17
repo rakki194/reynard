@@ -43,11 +43,7 @@ describe("validate-css-variables.js", () => {
     describe("findCSSFiles", () => {
       it("should find CSS files in configured directories", () => {
         // Mock a simpler scenario with just one directory containing CSS files
-        mockReadDirSync.mockReturnValueOnce([
-          "styles.css",
-          "theme.css",
-          "components.css",
-        ]);
+        mockReadDirSync.mockReturnValueOnce(["styles.css", "theme.css", "components.css"]);
 
         mockStatSync
           .mockReturnValueOnce({ isDirectory: () => false }) // styles.css
@@ -66,9 +62,7 @@ describe("validate-css-variables.js", () => {
 
       it("should ignore files in ignored directories", () => {
         // Mock a scenario where node_modules is ignored
-        mockReadDirSync
-          .mockReturnValueOnce(["styles.css", "node_modules"])
-          .mockReturnValueOnce(["ignored.css"]);
+        mockReadDirSync.mockReturnValueOnce(["styles.css", "node_modules"]).mockReturnValueOnce(["ignored.css"]);
 
         mockStatSync
           .mockReturnValueOnce({ isDirectory: () => false }) // styles.css
@@ -190,7 +184,7 @@ describe("validate-css-variables.js", () => {
 }`;
 
         // Mock file reads: need to handle multiple calls to readFileSync
-        mockReadFileSync.mockImplementation((filePath) => {
+        mockReadFileSync.mockImplementation(filePath => {
           if (filePath === "/test/main.css") {
             return mainCss;
           } else if (filePath === "/test/variables.css") {
@@ -200,7 +194,7 @@ describe("validate-css-variables.js", () => {
         });
 
         // Mock file existence checks - need to handle the path resolution
-        mockExistsSync.mockImplementation((path) => {
+        mockExistsSync.mockImplementation(path => {
           return path === "/test/main.css" || path === "/test/variables.css";
         });
 
@@ -341,13 +335,9 @@ describe("validate-css-variables.js", () => {
 
         expect(validator.variables.typos).toHaveLength(2);
         expect(validator.variables.typos[0].variable).toBe("primay-color");
-        expect(validator.variables.typos[0].issues).toContain(
-          "'primay' should be 'primary'",
-        );
+        expect(validator.variables.typos[0].issues).toContain("'primay' should be 'primary'");
         expect(validator.variables.typos[1].variable).toBe("seconary-color");
-        expect(validator.variables.typos[1].issues).toContain(
-          "'seconary' should be 'secondary'",
-        );
+        expect(validator.variables.typos[1].issues).toContain("'seconary' should be 'secondary'");
       });
 
       it("should not flag correctly spelled variables", () => {
@@ -462,9 +452,7 @@ describe("validate-css-variables.js", () => {
       it("should identify external variables correctly", () => {
         expect(validator.isLikelyExternalVariable("z-index")).toBe(true);
         expect(validator.isLikelyExternalVariable("shadow-sm")).toBe(true);
-        expect(validator.isLikelyExternalVariable("transition-duration")).toBe(
-          true,
-        );
+        expect(validator.isLikelyExternalVariable("transition-duration")).toBe(true);
         expect(validator.isLikelyExternalVariable("animation-name")).toBe(true);
         expect(validator.isLikelyExternalVariable("font-size")).toBe(true);
         expect(validator.isLikelyExternalVariable("spacing-md")).toBe(true);
@@ -487,13 +475,9 @@ describe("validate-css-variables.js", () => {
       });
 
       // Mock file system
-      mockReadDirSync
-        .mockReturnValueOnce(["test"])
-        .mockReturnValueOnce(["styles.css"]);
+      mockReadDirSync.mockReturnValueOnce(["test"]).mockReturnValueOnce(["styles.css"]);
 
-      mockStatSync
-        .mockReturnValueOnce({ isDirectory: () => true })
-        .mockReturnValueOnce({ isDirectory: () => false });
+      mockStatSync.mockReturnValueOnce({ isDirectory: () => true }).mockReturnValueOnce({ isDirectory: () => false });
 
       mockExistsSync.mockReturnValue(true);
 
@@ -520,13 +504,9 @@ describe("validate-css-variables.js", () => {
     it("should handle file read errors gracefully", () => {
       const validator = new CSSVariableValidator();
 
-      mockReadDirSync
-        .mockReturnValueOnce(["test"])
-        .mockReturnValueOnce(["styles.css"]);
+      mockReadDirSync.mockReturnValueOnce(["test"]).mockReturnValueOnce(["styles.css"]);
 
-      mockStatSync
-        .mockReturnValueOnce({ isDirectory: () => true })
-        .mockReturnValueOnce({ isDirectory: () => false });
+      mockStatSync.mockReturnValueOnce({ isDirectory: () => true }).mockReturnValueOnce({ isDirectory: () => false });
 
       mockExistsSync.mockReturnValue(true);
       mockReadFileSync.mockImplementation(() => {

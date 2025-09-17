@@ -12,10 +12,8 @@ export interface UseFileUploadReturn {
   error: () => string | null;
   handleFileUpload: (
     event: Event,
-    setFiles: (
-      files: MultiModalFile[] | ((prev: MultiModalFile[]) => MultiModalFile[]),
-    ) => void,
-    maxFiles?: number,
+    setFiles: (files: MultiModalFile[] | ((prev: MultiModalFile[]) => MultiModalFile[])) => void,
+    maxFiles?: number
   ) => Promise<void>;
 }
 
@@ -24,10 +22,8 @@ export const useFileUpload = (): UseFileUploadReturn => {
 
   const handleFileUpload = async (
     event: Event,
-    setFiles: (
-      files: MultiModalFile[] | ((prev: MultiModalFile[]) => MultiModalFile[]),
-    ) => void,
-    maxFiles: number = 50,
+    setFiles: (files: MultiModalFile[] | ((prev: MultiModalFile[]) => MultiModalFile[])) => void,
+    maxFiles: number = 50
   ): Promise<void> => {
     const input = event.target as HTMLInputElement;
     const files = input.files;
@@ -37,11 +33,9 @@ export const useFileUpload = (): UseFileUploadReturn => {
     const filesToProcess = Array.from(files).slice(0, maxFiles);
 
     try {
-      const processedFiles = await Promise.all(
-        filesToProcess.map(processFileWrapper),
-      );
+      const processedFiles = await Promise.all(filesToProcess.map(processFileWrapper));
 
-      setFiles((prev) => [...prev, ...processedFiles]);
+      setFiles(prev => [...prev, ...processedFiles]);
     } catch (err) {
       console.error("Failed to process files:", err);
     }

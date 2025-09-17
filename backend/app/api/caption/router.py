@@ -8,8 +8,8 @@ for clean organization and easy maintenance.
 from fastapi import APIRouter
 
 from .endpoints import router as endpoints_router
-from .upload import router as upload_router
 from .monitoring import router as monitoring_router
+from .upload import router as upload_router
 
 # Create main router
 router = APIRouter()

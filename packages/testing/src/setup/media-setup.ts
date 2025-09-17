@@ -23,7 +23,7 @@ export function setupMediaTest() {
     constructor(
       _parts: (string | Blob | ArrayBuffer | ArrayBufferView)[],
       filename: string,
-      options?: { size?: number; type?: string; lastModified?: number },
+      options?: { size?: number; type?: string; lastModified?: number }
     ) {
       this.name = filename;
       this.size = options?.size || 0;
@@ -227,17 +227,15 @@ export function setupMediaTest() {
         textBaseline: "alphabetic",
         direction: "inherit",
         filter: "none",
-      }) as unknown as CanvasRenderingContext2D,
+      }) as unknown as CanvasRenderingContext2D
   ) as unknown as typeof HTMLCanvasElement.prototype.getContext;
 
-  global.HTMLCanvasElement.prototype.toBlob = vi.fn((callback) => {
+  global.HTMLCanvasElement.prototype.toBlob = vi.fn(callback => {
     const blob = new Blob(["mock-image"], { type: "image/png" });
     callback(blob);
   });
 
-  global.HTMLCanvasElement.prototype.toDataURL = vi.fn(
-    () => "data:image/png;base64,mock",
-  );
+  global.HTMLCanvasElement.prototype.toDataURL = vi.fn(() => "data:image/png;base64,mock");
 
   // Mock createImageBitmap
   global.createImageBitmap = vi.fn(() =>
@@ -245,7 +243,7 @@ export function setupMediaTest() {
       width: 100,
       height: 100,
       close: vi.fn(),
-    } as ImageBitmap),
+    } as ImageBitmap)
   );
 
   // Mock OffscreenCanvas if not available

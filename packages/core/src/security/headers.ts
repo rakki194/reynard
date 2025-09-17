@@ -105,7 +105,7 @@ export const DEVELOPMENT_SECURITY_HEADERS: SecurityHeaders = {
  */
 export function applySecurityHeaders(
   headers: Headers,
-  environment: "development" | "production" | "strict" = "production",
+  environment: "development" | "production" | "strict" = "production"
 ): void {
   const securityHeaders = getSecurityHeaders(environment);
 
@@ -118,7 +118,7 @@ export function applySecurityHeaders(
  * Get security headers based on environment
  */
 export function getSecurityHeaders(
-  environment: "development" | "production" | "strict" = "production",
+  environment: "development" | "production" | "strict" = "production"
 ): SecurityHeaders {
   switch (environment) {
     case "development":
@@ -136,9 +136,7 @@ export function getSecurityHeaders(
  */
 export function enforceHTTPS(request: Request): boolean {
   // Check if request is over HTTPS
-  const protocol =
-    request.headers.get("x-forwarded-proto") ||
-    (request.url.startsWith("https:") ? "https" : "http");
+  const protocol = request.headers.get("x-forwarded-proto") || (request.url.startsWith("https:") ? "https" : "http");
 
   return protocol === "https";
 }
@@ -149,9 +147,7 @@ export function enforceHTTPS(request: Request): boolean {
 export function generateNonce(): string {
   const array = new Uint8Array(16);
   crypto.getRandomValues(array);
-  return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join(
-    "",
-  );
+  return Array.from(array, byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
 /**
@@ -159,7 +155,7 @@ export function generateNonce(): string {
  */
 export function createCSPWithNonce(
   nonce: string,
-  environment: "development" | "production" | "strict" = "production",
+  environment: "development" | "production" | "strict" = "production"
 ): string {
   const baseHeaders = getSecurityHeaders(environment);
   const baseCSP = baseHeaders["Content-Security-Policy"];
@@ -173,19 +169,13 @@ export function createCSPWithNonce(
 /**
  * Security middleware for fetch requests
  */
-export function createSecureFetch(
-  baseUrl: string,
-  options: RequestInit = {},
-): typeof fetch {
+export function createSecureFetch(baseUrl: string, options: RequestInit = {}): typeof fetch {
   return async (input: RequestInfo | URL, init: RequestInit = {}) => {
     const url = typeof input === "string" ? input : input.toString();
     const fullUrl = url.startsWith("http") ? url : `${baseUrl}${url}`;
 
     // Ensure HTTPS in production
-    if (
-      process.env.NODE_ENV === "production" &&
-      !fullUrl.startsWith("https:")
-    ) {
+    if (process.env.NODE_ENV === "production" && !fullUrl.startsWith("https:")) {
       throw new Error("HTTPS required in production");
     }
 

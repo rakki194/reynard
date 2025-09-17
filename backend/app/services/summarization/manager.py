@@ -8,14 +8,15 @@ performance optimization features. Ported from Yipyap's battle-tested implementa
 
 import logging
 import time
-from typing import Dict, List, Optional, Any, AsyncGenerator
+from collections.abc import AsyncGenerator
 from pathlib import Path
+from typing import Any
 
 from .base import (
     BaseSummarizer,
-    SummarizationResult,
-    SummarizationOptions,
     ContentType,
+    SummarizationOptions,
+    SummarizationResult,
     SummaryLevel,
 )
 
@@ -31,16 +32,16 @@ class SummarizationManager:
     providing fallback options when needed.
     """
 
-    def __init__(self, cache_dir: Optional[Path] = None):
+    def __init__(self, cache_dir: Path | None = None):
         """
         Initialize the summarization manager.
 
         Args:
             cache_dir: Directory for cache storage (optional)
         """
-        self._summarizers: Dict[str, BaseSummarizer] = {}
-        self._default_summarizer: Optional[str] = None
-        self._content_type_routing: Dict[ContentType, List[str]] = {}
+        self._summarizers: dict[str, BaseSummarizer] = {}
+        self._default_summarizer: str | None = None
+        self._content_type_routing: dict[ContentType, list[str]] = {}
         self._initialized = False
 
         # Performance statistics
@@ -82,9 +83,8 @@ class SummarizationManager:
                 )
                 self._initialized = True
                 return True
-            else:
-                logger.error("❌ No summarizers available")
-                return False
+            logger.error("❌ No summarizers available")
+            return False
 
         except Exception as e:
             logger.error(f"Failed to initialize SummarizationManager: {e}")
@@ -110,7 +110,7 @@ class SummarizationManager:
             f"Registered summarizer '{name}' with content types: {[ct.value for ct in summarizer.supported_content_types]}"
         )
 
-    def get_available_summarizers(self) -> List[str]:
+    def get_available_summarizers(self) -> list[str]:
         """
         Get list of available summarizer names.
 
@@ -123,7 +123,7 @@ class SummarizationManager:
             if summarizer.is_available()
         ]
 
-    def get_summarizer(self, name: str) -> Optional[BaseSummarizer]:
+    def get_summarizer(self, name: str) -> BaseSummarizer | None:
         """
         Get a specific summarizer by name.
 
@@ -136,8 +136,8 @@ class SummarizationManager:
         return self._summarizers.get(name)
 
     def select_summarizer(
-        self, content_type: ContentType, preferred_summarizer: Optional[str] = None
-    ) -> Optional[BaseSummarizer]:
+        self, content_type: ContentType, preferred_summarizer: str | None = None
+    ) -> BaseSummarizer | None:
         """
         Select the best summarizer for a given content type.
 
@@ -224,14 +224,14 @@ class SummarizationManager:
 
             return result
 
-        except Exception as e:
+        except Exception:
             processing_time = time.time() - start_time
             self._update_performance_stats(processing_time)
             raise
 
     async def summarize_stream(
         self, text: str, options: SummarizationOptions
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+    ) -> AsyncGenerator[dict[str, Any]]:
         """
         Stream summarization progress and results.
 
@@ -346,7 +346,7 @@ class SummarizationManager:
 
     async def get_summary_quality_metrics(
         self, result: SummarizationResult
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """
         Get quality metrics for a summarization result.
 
@@ -369,7 +369,7 @@ class SummarizationManager:
             "readability": 0.0,
         }
 
-    def get_supported_content_types(self) -> Dict[ContentType, List[str]]:
+    def get_supported_content_types(self) -> dict[ContentType, list[str]]:
         """
         Get mapping of content types to supporting summarizers.
 
@@ -403,7 +403,7 @@ class SummarizationManager:
                 self._performance_stats["total_processing_time"] / total_requests
             )
 
-    def get_performance_stats(self) -> Dict[str, Any]:
+    def get_performance_stats(self) -> dict[str, Any]:
         """Get performance statistics."""
         stats = dict(self._performance_stats)
 
@@ -427,9 +427,9 @@ class SummarizationManager:
 
     async def summarize_batch(
         self,
-        requests: List[Dict[str, Any]],
+        requests: list[dict[str, Any]],
         enable_streaming: bool = False,
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+    ) -> AsyncGenerator[dict[str, Any]]:
         """
         Process a batch of summarization requests.
 
@@ -459,11 +459,19 @@ class SummarizationManager:
             try:
                 # Convert request to SummarizationOptions
                 options_dict = req["options"].copy()
-                if "content_type" in options_dict and isinstance(options_dict["content_type"], str):
-                    options_dict["content_type"] = ContentType(options_dict["content_type"])
-                if "summary_level" in options_dict and isinstance(options_dict["summary_level"], str):
-                    options_dict["summary_level"] = SummaryLevel(options_dict["summary_level"])
-                
+                if "content_type" in options_dict and isinstance(
+                    options_dict["content_type"], str
+                ):
+                    options_dict["content_type"] = ContentType(
+                        options_dict["content_type"]
+                    )
+                if "summary_level" in options_dict and isinstance(
+                    options_dict["summary_level"], str
+                ):
+                    options_dict["summary_level"] = SummaryLevel(
+                        options_dict["summary_level"]
+                    )
+
                 options = SummarizationOptions(**options_dict)
 
                 # Process request
@@ -494,7 +502,8 @@ class SummarizationManager:
                     "data": {
                         "completed": completed_requests,
                         "total": total_requests,
-                        "progress_percentage": (completed_requests / total_requests) * 100,
+                        "progress_percentage": (completed_requests / total_requests)
+                        * 100,
                     },
                 }
 
@@ -513,6 +522,10 @@ class SummarizationManager:
             "data": {
                 "completed": completed_requests,
                 "total": total_requests,
-                "success_rate": (completed_requests / total_requests) * 100 if total_requests > 0 else 0,
+                "success_rate": (
+                    (completed_requests / total_requests) * 100
+                    if total_requests > 0
+                    else 0
+                ),
             },
         }

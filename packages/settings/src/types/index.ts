@@ -43,12 +43,7 @@ export type SettingCategory =
 
 export type SettingScope = "user" | "global" | "session" | "temporary";
 
-export type SettingStorage =
-  | "localStorage"
-  | "sessionStorage"
-  | "indexedDB"
-  | "memory"
-  | "remote";
+export type SettingStorage = "localStorage" | "sessionStorage" | "indexedDB" | "memory" | "remote";
 
 export interface SettingDefinition<T = any> {
   /** Unique setting identifier */
@@ -143,13 +138,7 @@ export interface SettingCondition {
   /** Expected value or comparison */
   value?: any;
   /** Comparison operator */
-  operator?:
-    | "equals"
-    | "not-equals"
-    | "greater"
-    | "less"
-    | "contains"
-    | "exists";
+  operator?: "equals" | "not-equals" | "greater" | "less" | "contains" | "exists";
   /** Multiple conditions */
   and?: SettingCondition[];
   /** Alternative conditions */
@@ -411,8 +400,7 @@ export interface SelectSetting extends SettingDefinition<string | number> {
   options: SettingOption[];
 }
 
-export interface MultiSelectSetting
-  extends SettingDefinition<(string | number)[]> {
+export interface MultiSelectSetting extends SettingDefinition<(string | number)[]> {
   type: "multiselect";
   options: SettingOption[];
 }
@@ -473,10 +461,7 @@ export const DEFAULT_SETTINGS_CONFIG: SettingsConfiguration = {
   },
 };
 
-export const COMMON_SETTING_CATEGORIES: Record<
-  SettingCategory,
-  CategoryConfig
-> = {
+export const COMMON_SETTING_CATEGORIES: Record<SettingCategory, CategoryConfig> = {
   general: {
     name: "General",
     description: "Basic application settings",

@@ -9,10 +9,7 @@ import type { NLWebTool } from "../types/index.js";
 /**
  * Update category index when registering a tool
  */
-export function addToCategoryIndex(
-  toolsByCategory: Map<string, Set<string>>,
-  tool: NLWebTool,
-): void {
+export function addToCategoryIndex(toolsByCategory: Map<string, Set<string>>, tool: NLWebTool): void {
   if (!toolsByCategory.has(tool.category)) {
     toolsByCategory.set(tool.category, new Set());
   }
@@ -22,10 +19,7 @@ export function addToCategoryIndex(
 /**
  * Update tag index when registering a tool
  */
-export function addToTagIndex(
-  toolsByTag: Map<string, Set<string>>,
-  tool: NLWebTool,
-): void {
+export function addToTagIndex(toolsByTag: Map<string, Set<string>>, tool: NLWebTool): void {
   for (const tag of tool.tags) {
     if (!toolsByTag.has(tag)) {
       toolsByTag.set(tag, new Set());
@@ -37,10 +31,7 @@ export function addToTagIndex(
 /**
  * Remove from category index when unregistering a tool
  */
-export function removeFromCategoryIndex(
-  toolsByCategory: Map<string, Set<string>>,
-  tool: NLWebTool,
-): void {
+export function removeFromCategoryIndex(toolsByCategory: Map<string, Set<string>>, tool: NLWebTool): void {
   const categorySet = toolsByCategory.get(tool.category);
   if (categorySet) {
     categorySet.delete(tool.name);
@@ -53,10 +44,7 @@ export function removeFromCategoryIndex(
 /**
  * Remove from tag index when unregistering a tool
  */
-export function removeFromTagIndex(
-  toolsByTag: Map<string, Set<string>>,
-  tool: NLWebTool,
-): void {
+export function removeFromTagIndex(toolsByTag: Map<string, Set<string>>, tool: NLWebTool): void {
   for (const tag of tool.tags) {
     const tagSet = toolsByTag.get(tag);
     if (tagSet) {

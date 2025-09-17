@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // Parooli valideerimine
   password: {
-    "must-be-at-least-8-characters-long":
-      "Parool peab olema vähemalt 8 tähemärki",
-    "must-contain-at-least-one-uppercase-letter":
-      "Parool peab sisaldama vähemalt üht suurt tähte",
-    "must-contain-at-least-one-lowercase-letter":
-      "Parool peab sisaldama vähemalt üht väikest tähte",
-    "must-contain-at-least-one-number":
-      "Parool peab sisaldama vähemalt üht numbrit",
-    "must-contain-at-least-one-special-character":
-      "Parool peab sisaldama vähemalt üht erimärki",
+    "must-be-at-least-8-characters-long": "Parool peab olema vähemalt 8 tähemärki",
+    "must-contain-at-least-one-uppercase-letter": "Parool peab sisaldama vähemalt üht suurt tähte",
+    "must-contain-at-least-one-lowercase-letter": "Parool peab sisaldama vähemalt üht väikest tähte",
+    "must-contain-at-least-one-number": "Parool peab sisaldama vähemalt üht numbrit",
+    "must-contain-at-least-one-special-character": "Parool peab sisaldama vähemalt üht erimärki",
   },
 
   // Turvalisuse valideerimine
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Peab olema kaasatud vähemalt üks tähemärgi tüüp",
-    "input-contains-potentially-dangerous-html":
-      "Sisend sisaldab potentsiaalselt ohtlikku HTML-i",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Sisend sisaldab potentsiaalselt ohtlikke SQL mustreid",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Sisend sisaldab potentsiaalselt ohtlikke XSS mustreid",
-    "input-contains-path-traversal-patterns":
-      "Sisend sisaldab tee läbimise mustreid",
-    "input-contains-windows-reserved-names":
-      "Sisend sisaldab Windowsi reserveeritud nimesid",
-    "input-contains-executable-file-extensions":
-      "Sisend sisaldab täidetavate failide laiendeid",
+    "at-least-one-character-type-must-be-included": "Peab olema kaasatud vähemalt üks tähemärgi tüüp",
+    "input-contains-potentially-dangerous-html": "Sisend sisaldab potentsiaalselt ohtlikku HTML-i",
+    "input-contains-potentially-dangerous-sql-patterns": "Sisend sisaldab potentsiaalselt ohtlikke SQL mustreid",
+    "input-contains-potentially-dangerous-xss-patterns": "Sisend sisaldab potentsiaalselt ohtlikke XSS mustreid",
+    "input-contains-path-traversal-patterns": "Sisend sisaldab tee läbimise mustreid",
+    "input-contains-windows-reserved-names": "Sisend sisaldab Windowsi reserveeritud nimesid",
+    "input-contains-executable-file-extensions": "Sisend sisaldab täidetavate failide laiendeid",
     "input-contains-null-bytes": "Sisend sisaldab null baite",
     "input-contains-hidden-files": "Sisend sisaldab peidetud faile",
-    "input-contains-javascript-file-extensions":
-      "Sisend sisaldab JavaScript failide laiendeid",
+    "input-contains-javascript-file-extensions": "Sisend sisaldab JavaScript failide laiendeid",
   },
 
   // Asünkroonsed toimingud
@@ -132,12 +119,9 @@ export const coreTranslations = {
 
   // Salvestamine ja serialiseerimine
   storage: {
-    "potentially-dangerous-json-detected":
-      "Tuvastatud potentsiaalselt ohtlik JSON",
-    "failed-to-parse-json-from-localstorage":
-      "JSON-i parsimine localStorage-ist ebaõnnestus:",
-    "error-parsing-storage-event":
-      "Viga salvestamise sündmuse parsimisel võtme jaoks",
+    "potentially-dangerous-json-detected": "Tuvastatud potentsiaalselt ohtlik JSON",
+    "failed-to-parse-json-from-localstorage": "JSON-i parsimine localStorage-ist ebaõnnestus:",
+    "error-parsing-storage-event": "Viga salvestamise sündmuse parsimisel võtme jaoks",
   },
 
   // Test ja arendus
@@ -174,9 +158,7 @@ export const coreTranslations = {
   // Integratsiooni testid
   integration: {
     "session-and-api-key-generation": "Sessiooni ja API võtme genereerimine",
-    "authentication-and-input-validation-integration":
-      "Autentimise ja sisendi valideerimise integratsioon",
-    "performance-and-security-integration":
-      "Jõudluse ja turvalisuse integratsioon",
+    "authentication-and-input-validation-integration": "Autentimise ja sisendi valideerimise integratsioon",
+    "performance-and-security-integration": "Jõudluse ja turvalisuse integratsioon",
   },
 };

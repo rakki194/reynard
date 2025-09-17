@@ -52,9 +52,7 @@ export function extractInlineThinking(line: string): string {
 /**
  * Parse table cells from a row
  */
-export function parseTableCells(
-  rowContent: string,
-): Array<{ content: string; alignment?: string }> {
+export function parseTableCells(rowContent: string): Array<{ content: string; alignment?: string }> {
   const cells: Array<{ content: string; alignment?: string }> = [];
   const parts = rowContent.split("|");
 
@@ -98,7 +96,7 @@ export function createParserError(
   type: "syntax" | "malformed" | "incomplete" | "table_error",
   message: string,
   line: number,
-  recoverable: boolean = true,
+  recoverable: boolean = true
 ): ParserError {
   return {
     type,
@@ -111,10 +109,7 @@ export function createParserError(
 /**
  * Check if a line matches a pattern
  */
-export function matches(
-  line: string,
-  pattern: RegExp,
-): RegExpMatchArray | null {
+export function matches(line: string, pattern: RegExp): RegExpMatchArray | null {
   return line.match(pattern);
 }
 

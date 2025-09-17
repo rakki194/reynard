@@ -4,18 +4,16 @@ Image Types for Reynard Backend
 Type definitions for the image processing system.
 """
 
-from typing import Dict, List, Optional, Tuple
-
 
 class ImageFormat:
     """Image format information."""
-    
+
     def __init__(
-        self, 
-        extension: str, 
-        mime_type: str, 
+        self,
+        extension: str,
+        mime_type: str,
         supported: bool = True,
-        requires_plugin: bool = False
+        requires_plugin: bool = False,
     ):
         self.extension = extension
         self.mime_type = mime_type
@@ -25,15 +23,8 @@ class ImageFormat:
 
 class ImageInfo:
     """Image information."""
-    
-    def __init__(
-        self,
-        width: int,
-        height: int,
-        format: str,
-        mode: str,
-        size: int
-    ):
+
+    def __init__(self, width: int, height: int, format: str, mode: str, size: int):
         self.width = width
         self.height = height
         self.format = format
@@ -43,13 +34,13 @@ class ImageInfo:
 
 class ImageTransform:
     """Image transformation configuration."""
-    
+
     def __init__(
         self,
-        resize: Optional[Tuple[int, int]] = None,
-        crop: Optional[Tuple[int, int, int, int]] = None,
-        normalize: Optional[Dict[str, List[float]]] = None,
-        convert: Optional[str] = None
+        resize: tuple[int, int] | None = None,
+        crop: tuple[int, int, int, int] | None = None,
+        normalize: dict[str, list[float]] | None = None,
+        convert: str | None = None,
     ):
         self.resize = resize
         self.crop = crop

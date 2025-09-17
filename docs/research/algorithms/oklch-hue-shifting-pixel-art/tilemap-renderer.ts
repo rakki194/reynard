@@ -32,11 +32,7 @@ export class TilemapRenderer {
   /**
    * Draw the entire tilemap
    */
-  drawTilemap(
-    tilemap: Tilemap,
-    offsetX: number = 0,
-    offsetY: number = 0,
-  ): void {
+  drawTilemap(tilemap: Tilemap, offsetX: number = 0, offsetY: number = 0): void {
     for (let row = 0; row < tilemap.height; row++) {
       for (let col = 0; col < tilemap.width; col++) {
         const tileIndex = tilemap.tiles[row][col];
@@ -63,18 +59,12 @@ export class TilemapRenderer {
     viewportX: number,
     viewportY: number,
     viewportWidth: number,
-    viewportHeight: number,
+    viewportHeight: number
   ): void {
     const startCol = Math.max(0, Math.floor(viewportX / tilemap.tileSize));
-    const endCol = Math.min(
-      tilemap.width,
-      Math.ceil((viewportX + viewportWidth) / tilemap.tileSize),
-    );
+    const endCol = Math.min(tilemap.width, Math.ceil((viewportX + viewportWidth) / tilemap.tileSize));
     const startRow = Math.max(0, Math.floor(viewportY / tilemap.tileSize));
-    const endRow = Math.min(
-      tilemap.height,
-      Math.ceil((viewportY + viewportHeight) / tilemap.tileSize),
-    );
+    const endRow = Math.min(tilemap.height, Math.ceil((viewportY + viewportHeight) / tilemap.tileSize));
 
     for (let row = startRow; row < endRow; row++) {
       for (let col = startCol; col < endCol; col++) {

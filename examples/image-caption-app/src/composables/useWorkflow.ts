@@ -32,7 +32,7 @@ export function useWorkflow(): UseWorkflowReturn {
   };
 
   const updateWorkflow = (updates: Partial<CaptionWorkflow>) => {
-    setWorkflow((prev) => (prev ? { ...prev, ...updates } : null));
+    setWorkflow(prev => (prev ? { ...prev, ...updates } : null));
   };
 
   const clearWorkflow = () => {

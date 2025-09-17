@@ -6,9 +6,7 @@ export async function readPackageJson(packageJsonPath: string): Promise<any> {
   return JSON.parse(content);
 }
 
-export async function readFileIfExists(
-  filePath: string,
-): Promise<string | undefined> {
+export async function readFileIfExists(filePath: string): Promise<string | undefined> {
   try {
     return await fs.readFile(filePath, "utf-8");
   } catch {
@@ -17,25 +15,18 @@ export async function readFileIfExists(
 }
 
 export function extractDisplayName(packageJson: any): string | undefined {
-  return (
-    packageJson.displayName ||
-    packageJson.title ||
-    formatPackageName(packageJson.name)
-  );
+  return packageJson.displayName || packageJson.title || formatPackageName(packageJson.name);
 }
 
 function formatPackageName(name: string): string {
   const nameWithoutScope = name.replace(/^@[^/]+\//, "");
   return nameWithoutScope
     .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
 
-export async function extractExports(
-  _packagePath: string,
-  packageJson: any,
-): Promise<Record<string, string>> {
+export async function extractExports(_packagePath: string, packageJson: any): Promise<Record<string, string>> {
   const result: Record<string, string> = {};
 
   if (packageJson.exports) {
@@ -58,10 +49,7 @@ export async function extractExports(
   return result;
 }
 
-export async function extractTypes(
-  packagePath: string,
-  packageJson: any,
-): Promise<Record<string, string>> {
+export async function extractTypes(packagePath: string, packageJson: any): Promise<Record<string, string>> {
   const result: Record<string, string> = {};
 
   if (packageJson.types) result["."] = packageJson.types;

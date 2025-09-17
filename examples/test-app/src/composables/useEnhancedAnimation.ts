@@ -18,21 +18,13 @@ export function useEnhancedAnimation(config: () => AnimationConfig) {
   const createAnimationLoop = (
     engines: any,
     renderer: any,
-    _updateMetrics: (
-      frameTime: number,
-      renderTime: number,
-      updateTime: number,
-      pointCount: number,
-    ) => void,
+    _updateMetrics: (frameTime: number, renderTime: number, updateTime: number, pointCount: number) => void
   ) => {
     return (deltaTime: number) => {
       const cfg = config();
 
       // Check performance throttling
-      if (
-        cfg.enablePerformanceOptimization &&
-        engines.performanceEngine.shouldSkipUpdate()
-      ) {
+      if (cfg.enablePerformanceOptimization && engines.performanceEngine.shouldSkipUpdate()) {
         return;
       }
 
@@ -43,16 +35,11 @@ export function useEnhancedAnimation(config: () => AnimationConfig) {
       // Apply stroboscopic effects
       let transformedPoints = engines.currentPoints();
       if (cfg.enableStroboscopic) {
-        const stroboscopicState =
-          engines.stroboscopicEngine.calculateStroboscopicEffect(deltaTime);
+        const stroboscopicState = engines.stroboscopicEngine.calculateStroboscopicEffect(deltaTime);
         engines.setStroboscopicState(stroboscopicState);
 
         if (stroboscopicState.isStroboscopic) {
-          transformedPoints =
-            engines.stroboscopicEngine.applyStroboscopicTransform(
-              transformedPoints,
-              deltaTime,
-            );
+          transformedPoints = engines.stroboscopicEngine.applyStroboscopicTransform(transformedPoints, deltaTime);
         }
       }
 
@@ -76,11 +63,7 @@ export function useEnhancedAnimation(config: () => AnimationConfig) {
       };
 
       const renderStartTime = performance.now();
-      renderer.renderPoints(
-        transformedPoints,
-        renderConfig,
-        engines.performanceEngine,
-      );
+      renderer.renderPoints(transformedPoints, renderConfig, engines.performanceEngine);
       const renderTime = performance.now() - renderStartTime;
 
       // Update performance metrics
@@ -88,20 +71,11 @@ export function useEnhancedAnimation(config: () => AnimationConfig) {
       const updateTime = performance.now() - renderStartTime;
 
       if (cfg.enablePerformanceOptimization) {
-        engines.performanceEngine.updateMetrics(
-          frameTime,
-          renderTime,
-          updateTime,
-          transformedPoints.length,
-        );
+        engines.performanceEngine.updateMetrics(frameTime, renderTime, updateTime, transformedPoints.length);
         engines.setPerformanceMetrics(engines.performanceEngine.getMetrics());
-        engines.setQualityLevel(
-          engines.performanceEngine.getCurrentQualityLevel(),
-        );
+        engines.setQualityLevel(engines.performanceEngine.getCurrentQualityLevel());
       } else {
-        engines.setPerformanceMetrics(
-          engines.animationCore.getPerformanceStats(),
-        );
+        engines.setPerformanceMetrics(engines.animationCore.getPerformanceStats());
       }
     };
   };
@@ -112,7 +86,7 @@ export function useEnhancedAnimation(config: () => AnimationConfig) {
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
 
-    return points.map((point) => {
+    return points.map(point => {
       const dx = point.x - centerX;
       const dy = point.y - centerY;
 

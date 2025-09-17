@@ -62,10 +62,10 @@ const engine = createAnimationCore({
 });
 
 engine.start({
-  onUpdate: (deltaTime) => {
+  onUpdate: deltaTime => {
     // Update your animation state
   },
-  onRender: (deltaTime) => {
+  onRender: deltaTime => {
     // Render your animation
   },
 });
@@ -113,12 +113,7 @@ const easedValue = Easing.easeOutCubic(0.5);
 const value = interpolate(0, 100, 0.5, "easeInOutCubic");
 
 // Interpolate 3D vectors
-const position = interpolateVector3(
-  [0, 0, 0],
-  [100, 100, 100],
-  0.5,
-  "easeOutElastic",
-);
+const position = interpolateVector3([0, 0, 0], [100, 100, 100], 0.5, "easeOutElastic");
 ```
 
 ## Package Structure

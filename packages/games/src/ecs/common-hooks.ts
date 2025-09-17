@@ -10,27 +10,20 @@ export const CommonHooks = {
   /**
    * Logs when a component is added.
    */
-  logOnAdd<T extends Component>(
-    componentType: ComponentType<T>,
-  ): ComponentHook {
+  logOnAdd<T extends Component>(componentType: ComponentType<T>): ComponentHook {
     return (_world, entity, component) => {
-      console.log(
-        `Component ${componentType.name} added to entity ${entity.index}v${entity.generation}:`,
-        component,
-      );
+      console.log(`Component ${componentType.name} added to entity ${entity.index}v${entity.generation}:`, component);
     };
   },
 
   /**
    * Logs when a component is removed.
    */
-  logOnRemove<T extends Component>(
-    componentType: ComponentType<T>,
-  ): ComponentHook {
+  logOnRemove<T extends Component>(componentType: ComponentType<T>): ComponentHook {
     return (_world, entity, component) => {
       console.log(
         `Component ${componentType.name} removed from entity ${entity.index}v${entity.generation}:`,
-        component,
+        component
       );
     };
   },
@@ -40,13 +33,11 @@ export const CommonHooks = {
    */
   validateOnAdd<T extends Component>(
     componentType: ComponentType<T>,
-    validator: (component: T) => boolean,
+    validator: (component: T) => boolean
   ): ComponentHook {
     return (_world, entity, component) => {
       if (!validator(component as T)) {
-        console.warn(
-          `Invalid component ${componentType.name} added to entity ${entity.index}v${entity.generation}`,
-        );
+        console.warn(`Invalid component ${componentType.name} added to entity ${entity.index}v${entity.generation}`);
       }
     };
   },
@@ -59,7 +50,7 @@ export const CommonHooks = {
       // This would trigger an event in the event system
       console.log(
         `Event ${eventType} triggered for component added to entity ${entity.index}v${entity.generation}:`,
-        component,
+        component
       );
     };
   },
@@ -91,9 +82,7 @@ export const CommonHooks = {
   /**
    * Cleans up resources when a component is removed.
    */
-  cleanupOnRemove<T extends Component>(
-    cleanup: (component: T) => void,
-  ): ComponentHook {
+  cleanupOnRemove<T extends Component>(cleanup: (component: T) => void): ComponentHook {
     return (_world, _entity, component) => {
       cleanup(component as T);
     };
@@ -102,9 +91,7 @@ export const CommonHooks = {
   /**
    * Initializes component state on add.
    */
-  initializeOnAdd<T extends Component>(
-    initializer: (component: T) => void,
-  ): ComponentHook {
+  initializeOnAdd<T extends Component>(initializer: (component: T) => void): ComponentHook {
     return (_world, _entity, component) => {
       initializer(component as T);
     };

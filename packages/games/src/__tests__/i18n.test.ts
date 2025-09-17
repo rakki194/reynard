@@ -25,7 +25,7 @@ describe("games i18n Tests", () => {
       if (config.validateCompleteness) {
         const missingTranslations = result.results.translationValidation.reduce(
           (sum, validation) => sum + validation.missingKeys.length,
-          0,
+          0
         );
         expect(missingTranslations).toBe(0);
       }

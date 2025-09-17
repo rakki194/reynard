@@ -1,6 +1,6 @@
 /**
  * 3D Visualization Parameters Composable
- * 
+ *
  * Manages all parameter state for 3D embedding visualization
  * including reduction methods, algorithm parameters, and display settings.
  */
@@ -42,9 +42,7 @@ export interface VisualizationSettings {
 
 export function use3DVisualizationParams() {
   // Reduction method state
-  const [reductionMethod, setReductionMethod] = createSignal<
-    "tsne" | "umap" | "pca"
-  >("tsne");
+  const [reductionMethod, setReductionMethod] = createSignal<"tsne" | "umap" | "pca">("tsne");
 
   // Algorithm parameters
   const [tsneParams, setTsneParams] = createSignal<TsneParams>({
@@ -86,7 +84,7 @@ export function use3DVisualizationParams() {
     // Reduction method
     reductionMethod,
     setReductionMethod,
-    
+
     // Algorithm parameters
     tsneParams,
     setTsneParams,
@@ -94,7 +92,7 @@ export function use3DVisualizationParams() {
     setUmapParams,
     pcaParams,
     setPcaParams,
-    
+
     // Visualization settings
     pointSize,
     setPointSize,
@@ -106,7 +104,7 @@ export function use3DVisualizationParams() {
     setShowSimilarityRadius,
     radiusThreshold,
     setRadiusThreshold,
-    
+
     // Control visibility
     showParameterControls,
     setShowParameterControls,

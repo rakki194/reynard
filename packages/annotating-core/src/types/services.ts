@@ -14,7 +14,7 @@ export interface AnnotationService {
   generateCaption(task: CaptionTask): Promise<CaptionResult>;
   generateBatchCaptions(
     tasks: CaptionTask[],
-    progressCallback?: (progress: AnnotationProgress) => void,
+    progressCallback?: (progress: AnnotationProgress) => void
   ): Promise<CaptionResult[]>;
   getAvailableGenerators(): Promise<CaptionGenerator[]>;
   getGenerator(name: string): CaptionGenerator | undefined;

@@ -1,6 +1,6 @@
 /**
  * 🐺 Fenrir Class Mapper
- * 
+ *
  * *snarls with systematic precision* Maps fenrir exploit module names
  * to their corresponding class names for dynamic instantiation.
  */
@@ -82,9 +82,8 @@ export function getExploitClassName(modulePath: string): string {
   // Fallback: generate class name without "Exploit" suffix
   const className = moduleName
     .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join("");
 
   return className;
 }
-

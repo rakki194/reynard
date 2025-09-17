@@ -24,10 +24,7 @@ export function applyTheme(theme: Partial<ChartTheme> = {}): ChartTheme {
 /**
  * Format number values for display
  */
-export function formatValue(
-  value: number,
-  type: "number" | "currency" | "percentage" = "number",
-): string {
+export function formatValue(value: number, type: "number" | "currency" | "percentage" = "number"): string {
   // Handle null/undefined values first
   if (value == null || value === undefined) {
     return "0";
@@ -60,10 +57,7 @@ export function formatValue(
 /**
  * Format timestamp for display
  */
-export function formatTimestamp(
-  timestamp: number,
-  format: "time" | "date" | "datetime" = "datetime",
-): string {
+export function formatTimestamp(timestamp: number, format: "time" | "date" | "datetime" = "datetime"): string {
   const date = new Date(timestamp);
 
   switch (format) {
@@ -81,13 +75,7 @@ export function formatTimestamp(
  */
 export function prepareDatasets(datasets: Partial<Dataset>[]): Dataset[] {
   const colors = generateColorsWithCache(datasets.length, 0, 0.3, 0.6, 1);
-  const backgroundColors = generateColorsWithCache(
-    datasets.length,
-    0,
-    0.3,
-    0.6,
-    0.6,
-  );
+  const backgroundColors = generateColorsWithCache(datasets.length, 0, 0.3, 0.6, 0.6);
 
   return datasets.map(
     (dataset, index) =>
@@ -98,7 +86,7 @@ export function prepareDatasets(datasets: Partial<Dataset>[]): Dataset[] {
         backgroundColor: dataset.backgroundColor || backgroundColors[index],
         borderColor: dataset.borderColor || colors[index],
         borderWidth: dataset.borderWidth || 2,
-      }) as Dataset,
+      }) as Dataset
   );
 }
 
@@ -214,10 +202,7 @@ export function getDefaultConfig(type: ChartType, theme?: Partial<ChartTheme>) {
 /**
  * Debounce function for chart updates
  */
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number,
-): (...args: Parameters<T>) => void {
+export function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout>;
 
   return (...args: Parameters<T>) => {
@@ -231,7 +216,7 @@ export function debounce<T extends (...args: any[]) => any>(
  */
 export function calculateDimensions(
   container: HTMLElement,
-  aspectRatio: number = 2,
+  aspectRatio: number = 2
 ): { width: number; height: number } {
   const containerWidth = container.clientWidth;
   const width = Math.max(containerWidth, 300);
@@ -242,10 +227,7 @@ export function calculateDimensions(
 /**
  * Validate chart data
  */
-export function validateChartData(
-  datasets: Dataset[],
-  labels?: string[],
-): boolean {
+export function validateChartData(datasets: Dataset[], labels?: string[]): boolean {
   if (!Array.isArray(datasets) || datasets.length === 0) {
     return false;
   }
@@ -268,7 +250,7 @@ export function validateChartData(
  */
 export function processTimeSeriesData(
   data: Array<{ timestamp: number; value: number; label?: string }>,
-  maxPoints: number = 100,
+  maxPoints: number = 100
 ): { labels: string[]; data: number[] } {
   // Sort by timestamp
   const sortedData = [...data].sort((a, b) => a.timestamp - b.timestamp);
@@ -277,10 +259,8 @@ export function processTimeSeriesData(
   const limitedData = sortedData.slice(-maxPoints);
 
   return {
-    labels: limitedData.map(
-      (item) => item.label || formatTimestamp(item.timestamp, "time"),
-    ),
-    data: limitedData.map((item) => item.value),
+    labels: limitedData.map(item => item.label || formatTimestamp(item.timestamp, "time")),
+    data: limitedData.map(item => item.value),
   };
 }
 
@@ -289,7 +269,7 @@ export function processTimeSeriesData(
  */
 export function aggregateByInterval(
   data: Array<{ timestamp: number; value: number }>,
-  intervalMs: number,
+  intervalMs: number
 ): Array<{ timestamp: number; value: number; count: number }> {
   const aggregated = new Map<number, { sum: number; count: number }>();
 

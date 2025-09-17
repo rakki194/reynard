@@ -3,16 +3,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  computeTagBackground,
-  computeTagColor,
-  computeHoverStyles,
-  computeAnimation,
-} from "../../themeUtils";
-import {
-  getSystemThemePreference,
-  supportsReducedMotion,
-} from "../../systemThemeUtils";
+import { computeTagBackground, computeTagColor, computeHoverStyles, computeAnimation } from "../../themeUtils";
+import { getSystemThemePreference, supportsReducedMotion } from "../../systemThemeUtils";
 import type { ThemeName } from "../../types";
 
 describe("Theme Utilities", () => {

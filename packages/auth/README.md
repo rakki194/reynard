@@ -40,7 +40,7 @@ function App() {
         loginRedirectPath: "/dashboard",
       }}
       callbacks={{
-        onLoginSuccess: (user) => console.log("Welcome:", user.username),
+        onLoginSuccess: user => console.log("Welcome:", user.username),
         onLogout: () => console.log("Goodbye!"),
         onSessionExpired: () => console.log("Session expired"),
       }}
@@ -48,7 +48,7 @@ function App() {
       <div class="app">
         <Show when={showLogin()}>
           <LoginForm
-            onLogin={async (credentials) => {
+            onLogin={async credentials => {
               // Handle login with your API
               console.log("Login attempt:", credentials);
             }}
@@ -58,7 +58,7 @@ function App() {
 
         <Show when={!showLogin()}>
           <RegisterForm
-            onRegister={async (data) => {
+            onRegister={async data => {
               // Handle registration with your API
               console.log("Register attempt:", data);
             }}
@@ -106,10 +106,7 @@ Context provider that manages authentication state and provides auth methods.
   callbacks={{
     onLoginSuccess: (user, tokens) => {
       console.log("Login successful:", user);
-      localStorage.setItem(
-        "user_preferences",
-        JSON.stringify(user.preferences),
-      );
+      localStorage.setItem("user_preferences", JSON.stringify(user.preferences));
     },
     onLogout: () => {
       localStorage.removeItem("user_preferences");
@@ -137,7 +134,7 @@ Complete login form with validation and error handling.
   error={loginError()}
   showRememberMe={true}
   showForgotPassword={true}
-  onLogin={async (credentials) => {
+  onLogin={async credentials => {
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -173,7 +170,7 @@ Registration form with password strength checking and validation.
   requireEmail={true}
   requireFullName={true}
   showTermsAcceptance={true}
-  onRegister={async (data) => {
+  onRegister={async data => {
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
@@ -211,7 +208,7 @@ function PasswordField() {
       <input
         type="password"
         value={password()}
-        onInput={(e) => setPassword(e.target.value)}
+        onInput={e => setPassword(e.target.value)}
         placeholder="Enter password"
       />
 
@@ -242,7 +239,7 @@ function UserProfile() {
       refreshThresholdMinutes: 5,
     },
     callbacks: {
-      onTokenRefresh: (tokens) => {
+      onTokenRefresh: tokens => {
         console.log("Tokens refreshed");
       },
     },
@@ -298,11 +295,7 @@ function PasswordInput() {
 
   return (
     <div>
-      <input
-        type="password"
-        value={password()}
-        onInput={(e) => setPassword(e.target.value)}
-      />
+      <input type="password" value={password()} onInput={e => setPassword(e.target.value)} />
 
       <div class="strength-indicator">
         <div
@@ -312,25 +305,21 @@ function PasswordInput() {
             "background-color": strength.strengthColor(),
           }}
         />
-        <span style={{ color: strength.strengthColor() }}>
-          {strength.strengthLabel()}
-        </span>
+        <span style={{ color: strength.strengthColor() }}>{strength.strengthLabel()}</span>
       </div>
 
       <Show when={!strength.isAcceptable()}>
         <div class="strength-feedback">
           <p>{strength.feedback()}</p>
           <ul>
-            <For each={strength.strength().suggestions}>
-              {(suggestion) => <li>{suggestion}</li>}
-            </For>
+            <For each={strength.strength().suggestions}>{suggestion => <li>{suggestion}</li>}</For>
           </ul>
         </div>
       </Show>
 
       <div class="requirements">
         <For each={strength.requirements()}>
-          {(req) => (
+          {req => (
             <div class={req.met ? "met" : "unmet"}>
               {req.met ? "✓" : "○"} {req.label}
             </div>
@@ -380,8 +369,7 @@ const customValidation: ValidationRules = {
   requireLowercase: true,
   requireNumber: true,
   requireSpecialChar: true,
-  customPattern:
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
+  customPattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/,
   usernamePattern: /^[a-zA-Z0-9_-]{3,20}$/,
   emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 };
@@ -399,7 +387,7 @@ const auth = useAuth({
     refreshThresholdMinutes: 10, // Refresh 10 minutes before expiry
   },
   callbacks: {
-    onTokenRefresh: (tokens) => {
+    onTokenRefresh: tokens => {
       console.log("Tokens refreshed automatically");
     },
     onSessionExpired: () => {
@@ -452,7 +440,7 @@ const bruteForceProtection = new BruteForceProtection({
 });
 
 // Usage in login handler
-const handleLogin = async (credentials) => {
+const handleLogin = async credentials => {
   const clientId = getClientIdentifier(); // IP + User-Agent hash
 
   if (await rateLimiter.isBlocked(clientId)) {
@@ -535,10 +523,7 @@ const tokenManager = TokenManager.getInstance("app_token", "app_refresh");
 tokenManager.setTokens(accessToken, refreshToken);
 
 // Check token validity
-if (
-  tokenManager.hasAccessToken() &&
-  !isTokenExpired(tokenManager.getAccessToken()!)
-) {
+if (tokenManager.hasAccessToken() && !isTokenExpired(tokenManager.getAccessToken()!)) {
   console.log("Valid token available");
 }
 
@@ -550,11 +535,7 @@ storage.set("user_preferences", JSON.stringify(preferences));
 ### Password Security
 
 ```tsx
-import {
-  validatePassword,
-  calculatePasswordStrength,
-  hashPassword,
-} from "reynard-auth";
+import { validatePassword, calculatePasswordStrength, hashPassword } from "reynard-auth";
 
 // Validate password against rules
 const validation = validatePassword(password, {
@@ -661,10 +642,7 @@ function AuthGuard(props: { children: any; requireRole?: UserRole }) {
       navigate("/login");
     }
 
-    if (
-      props.requireRole &&
-      !hasPermission(auth.user()?.role || "guest", props.requireRole)
-    ) {
+    if (props.requireRole && !hasPermission(auth.user()?.role || "guest", props.requireRole)) {
       navigate("/unauthorized");
     }
   });
@@ -742,7 +720,7 @@ function UsersList() {
   return (
     <div>
       <For each={users()}>
-        {(user) => (
+        {user => (
           <div>
             {user.username}
             <button onClick={() => deleteUser(user.id)}>Delete</button>

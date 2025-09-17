@@ -9,11 +9,7 @@ import { SegmentationService } from "../services/SegmentationService.js";
 import { SegmentationManager } from "../services/SegmentationManager.js";
 import { usePolygonEditor } from "../composables/usePolygonEditor.js";
 import { PolygonOps, type Polygon } from "reynard-algorithms";
-import type {
-  SegmentationData,
-  SegmentationTask,
-  SegmentationSource,
-} from "../types/index.js";
+import type { SegmentationData, SegmentationTask, SegmentationSource } from "../types/index.js";
 
 // Mock dependencies for performance testing
 vi.mock("reynard-ai-shared", () => ({
@@ -202,7 +198,7 @@ describe("Performance Benchmarks", () => {
 
       const formats = ["coco", "yolo", "pascal_voc", "reynard"];
 
-      formats.forEach((format) => {
+      formats.forEach(format => {
         const startTime = performance.now();
         const exportData = service.exportSegmentation(segmentation, format);
         const endTime = performance.now();
@@ -280,7 +276,7 @@ describe("Performance Benchmarks", () => {
 
       const startTime = performance.now();
 
-      polygons.forEach((polygon) => {
+      polygons.forEach(polygon => {
         polygonEditor.validatePolygon(polygon);
       });
 
@@ -380,7 +376,7 @@ describe("Performance Benchmarks", () => {
       const startTime = performance.now();
 
       // Run all tasks concurrently
-      const promises = tasks.map((task) => service.generateSegmentation(task));
+      const promises = tasks.map(task => service.generateSegmentation(task));
       const results = await Promise.all(promises);
 
       const endTime = performance.now();
@@ -414,7 +410,7 @@ describe("Performance Benchmarks", () => {
         () => polygonEditor.isPointInPolygon(polygon, { x: 50, y: 50 }),
       ];
 
-      operations.forEach((operation) => operation());
+      operations.forEach(operation => operation());
 
       const endTime = performance.now();
       const executionTime = endTime - startTime;
@@ -465,8 +461,7 @@ describe("Performance Benchmarks", () => {
         times.push(endTime - startTime);
       }
 
-      const averageTime =
-        times.reduce((sum, time) => sum + time, 0) / times.length;
+      const averageTime = times.reduce((sum, time) => sum + time, 0) / times.length;
       const maxTime = Math.max(...times);
       const minTime = Math.min(...times);
 

@@ -5,22 +5,13 @@
  * including textarea, tags, and specialized editors.
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  createMemo,
-  onMount,
-  onCleanup,
-  Show,
-  For,
-} from "solid-js";
+import { Component, createSignal, createEffect, createMemo, onMount, onCleanup, Show, For } from "solid-js";
 import { CaptionInputProps, CaptionType, CaptionData } from "../types/index.js";
 import { TagBubble } from "./TagBubble.js";
 import { splitAndCleanTags } from "../utils/tagUtils.js";
 import "./CaptionInput.css";
 
-export const CaptionInput: Component<CaptionInputProps> = (props) => {
+export const CaptionInput: Component<CaptionInputProps> = props => {
   const [isExpanded, setIsExpanded] = createSignal(props.state === "expanded");
   const [caption, setCaption] = createSignal(props.caption);
   const [isDirty, setIsDirty] = createSignal(false);
@@ -36,9 +27,7 @@ export const CaptionInput: Component<CaptionInputProps> = (props) => {
 
   const isTagInput = createMemo(() => captionType() === CaptionType.TAGS);
   // isE621Input and isTomlInput removed as they're not used
-  const isTextareaInput = createMemo(
-    () => captionType() === CaptionType.CAPTION,
-  );
+  const isTextareaInput = createMemo(() => captionType() === CaptionType.CAPTION);
 
   const tags = createMemo(() => {
     if (isTagInput()) {
@@ -239,12 +228,8 @@ export const CaptionInput: Component<CaptionInputProps> = (props) => {
                 when={isTagInput()}
                 fallback={
                   <div class="caption-placeholder">
-                    <span class="caption-type-indicator">
-                      {captionType().toUpperCase()}
-                    </span>
-                    <span class="caption-content-preview">
-                      {captionContent() || props.placeholder || "No content"}
-                    </span>
+                    <span class="caption-type-indicator">{captionType().toUpperCase()}</span>
+                    <span class="caption-content-preview">{captionContent() || props.placeholder || "No content"}</span>
                   </div>
                 }
               >
@@ -255,7 +240,7 @@ export const CaptionInput: Component<CaptionInputProps> = (props) => {
                         <TagBubble
                           tag={tag}
                           index={index()}
-                          onEdit={(newTag) => handleTagEdit(index(), newTag)}
+                          onEdit={newTag => handleTagEdit(index(), newTag)}
                           onRemove={() => handleTagRemove(index())}
                           editable={!props.readonly}
                           removable={!props.readonly}
@@ -268,7 +253,7 @@ export const CaptionInput: Component<CaptionInputProps> = (props) => {
                       <input
                         type="text"
                         placeholder="Add tag..."
-                        onKeyDown={(e) => {
+                        onKeyDown={e => {
                           if (e.key === "Enter") {
                             e.preventDefault();
                             const target = e.target as HTMLInputElement;
@@ -305,29 +290,15 @@ export const CaptionInput: Component<CaptionInputProps> = (props) => {
                 disabled={isSaving()}
                 title="Save caption (Ctrl+S)"
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                   <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z" />
                 </svg>
               </button>
             </Show>
 
             <Show when={isDirty() && !props.readonly}>
-              <button
-                class="caption-icon caption-icon--cancel"
-                onClick={handleCancel}
-                title="Cancel changes (Esc)"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                >
+              <button class="caption-icon caption-icon--cancel" onClick={handleCancel} title="Cancel changes (Esc)">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                   <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
                 </svg>
               </button>
@@ -335,16 +306,8 @@ export const CaptionInput: Component<CaptionInputProps> = (props) => {
 
             <Show when={isSaving()}>
               <div class="caption-icon caption-icon--loading">
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="currentColor"
-                >
-                  <path
-                    d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 2a6 6 0 1 1 0 12A6 6 0 0 1 8 2z"
-                    opacity="0.3"
-                  />
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 2a6 6 0 1 1 0 12A6 6 0 0 1 8 2z" opacity="0.3" />
                   <path d="M8 0a8 8 0 0 1 8 8h-2a6 6 0 0 0-6-6V0z">
                     <animateTransform
                       attributeName="transform"

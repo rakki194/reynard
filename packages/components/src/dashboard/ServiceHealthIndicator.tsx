@@ -15,9 +15,7 @@ export interface ServiceHealthIndicatorProps {
   size?: "sm" | "md" | "lg";
 }
 
-export const ServiceHealthIndicator: Component<ServiceHealthIndicatorProps> = (
-  props,
-) => {
+export const ServiceHealthIndicator: Component<ServiceHealthIndicatorProps> = props => {
   const getHealthIcon = () => {
     switch (props.health) {
       case "healthy":
@@ -77,9 +75,7 @@ export const ServiceHealthIndicator: Component<ServiceHealthIndicatorProps> = (
   };
 
   return (
-    <div
-      class={`service-health-indicator ${getHealthClass()} ${getSizeClass()}`}
-    >
+    <div class={`service-health-indicator ${getHealthClass()} ${getSizeClass()}`}>
       <span class="health-icon">
         <div
           // eslint-disable-next-line solid/no-innerhtml

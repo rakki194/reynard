@@ -23,9 +23,7 @@ export function serializeError(error: Error): {
 /**
  * Safely serialize error context
  */
-export function serializeErrorContext(
-  context: ErrorContext,
-): Partial<ErrorContext> {
+export function serializeErrorContext(context: ErrorContext): Partial<ErrorContext> {
   return {
     componentStack: context.componentStack,
     errorBoundaryId: context.errorBoundaryId,
@@ -71,20 +69,9 @@ function sanitizeMetadata(metadata: Record<string, any>): Record<string, any> {
  * Check if a key is sensitive
  */
 function isSensitiveKey(key: string): boolean {
-  const sensitiveKeys = [
-    "password",
-    "token",
-    "secret",
-    "key",
-    "auth",
-    "credential",
-    "private",
-    "sensitive",
-  ];
+  const sensitiveKeys = ["password", "token", "secret", "key", "auth", "credential", "private", "sensitive"];
 
-  return sensitiveKeys.some((sensitive) =>
-    key.toLowerCase().includes(sensitive),
-  );
+  return sensitiveKeys.some(sensitive => key.toLowerCase().includes(sensitive));
 }
 
 /**
@@ -104,17 +91,13 @@ function isSensitiveValue(value: string): boolean {
     /basic\s+/i,
   ];
 
-  return sensitivePatterns.some((pattern) => pattern.test(value));
+  return sensitivePatterns.some(pattern => pattern.test(value));
 }
 
 /**
  * Create error report from error and context
  */
-export function createErrorReport(
-  error: Error,
-  context: ErrorContext,
-  userReport?: string,
-): ErrorReport {
+export function createErrorReport(error: Error, context: ErrorContext, userReport?: string): ErrorReport {
   return {
     id: generateReportId(),
     error: serializeError(error),

@@ -40,12 +40,12 @@ export class ConnectionManager {
     if (this.autoHealth) {
       this.healthTask = setInterval(
         () => this.healthLoop().catch(() => {}),
-        this.healthIntervalSec * 1000,
+        this.healthIntervalSec * 1000
       ) as unknown as number;
     }
     this.cleanupTask = setInterval(
       () => this.cleanupLoop().catch(() => {}),
-      this.cleanupIntervalSec * 1000,
+      this.cleanupIntervalSec * 1000
     ) as unknown as number;
   }
 
@@ -62,7 +62,7 @@ export class ConnectionManager {
     const list = this.groups.get(group) ?? [];
     list.push(conn.connectionId);
     this.groups.set(group, list);
-    conn.onEvent((e) => this.handleEvent(e));
+    conn.onEvent(e => this.handleEvent(e));
     this.metrics.set(conn.connectionId, new ConnectionMetricsTracker());
   }
 
@@ -71,7 +71,7 @@ export class ConnectionManager {
     for (const [g, ids] of this.groups)
       this.groups.set(
         g,
-        ids.filter((id) => id !== connectionId),
+        ids.filter(id => id !== connectionId)
       );
     this.connections.delete(connectionId);
     this.metrics.delete(connectionId);
@@ -83,32 +83,24 @@ export class ConnectionManager {
   }
 
   getConnectionsByType(type: ConnectionType): BaseConnection[] {
-    return Array.from(this.connections.values()).filter(
-      (c) => c.getStatus().connectionType === type,
-    );
+    return Array.from(this.connections.values()).filter(c => c.getStatus().connectionType === type);
   }
 
   getConnectionsByGroup(group: string): BaseConnection[] {
     const ids = this.groups.get(group) ?? [];
-    return ids.map((id) => this.connections.get(id)!).filter(Boolean);
+    return ids.map(id => this.connections.get(id)!).filter(Boolean);
   }
 
   getConnectionsByState(state: ConnectionState): BaseConnection[] {
-    return Array.from(this.connections.values()).filter(
-      (c) => c.getStatus().state === state,
-    );
+    return Array.from(this.connections.values()).filter(c => c.getStatus().state === state);
   }
 
   getConnectionsByHealth(health: ConnectionHealth): BaseConnection[] {
-    return Array.from(this.connections.values()).filter(
-      (c) => c.getStatus().health === health,
-    );
+    return Array.from(this.connections.values()).filter(c => c.getStatus().health === health);
   }
 
   async connectAll(group?: string) {
-    const list = group
-      ? this.getConnectionsByGroup(group)
-      : Array.from(this.connections.values());
+    const list = group ? this.getConnectionsByGroup(group) : Array.from(this.connections.values());
     const results: Record<string, boolean> = {};
     for (const c of list) {
       try {
@@ -121,9 +113,7 @@ export class ConnectionManager {
   }
 
   async disconnectAll(group?: string) {
-    const list = group
-      ? this.getConnectionsByGroup(group)
-      : Array.from(this.connections.values());
+    const list = group ? this.getConnectionsByGroup(group) : Array.from(this.connections.values());
     const results: Record<string, boolean> = {};
     for (const c of list) {
       try {
@@ -135,12 +125,8 @@ export class ConnectionManager {
     return results;
   }
 
-  async healthCheckAll(
-    group?: string,
-  ): Promise<Record<string, HealthCheckResult>> {
-    const list = group
-      ? this.getConnectionsByGroup(group)
-      : Array.from(this.connections.values());
+  async healthCheckAll(group?: string): Promise<Record<string, HealthCheckResult>> {
+    const list = group ? this.getConnectionsByGroup(group) : Array.from(this.connections.values());
     const out: Record<string, HealthCheckResult> = {};
     for (const c of list) {
       try {
@@ -209,37 +195,18 @@ export class ConnectionManager {
   getInfo(): ConnectionInfo {
     const conns = Array.from(this.connections.values());
     const total = conns.length;
-    const active = conns.filter((c) => c.getStatus().isActive).length;
-    const healthy = conns.filter(
-      (c) => c.getStatus().health === ConnectionHealth.HEALTHY,
-    ).length;
-    const degraded = conns.filter(
-      (c) => c.getStatus().health === ConnectionHealth.DEGRADED,
-    ).length;
-    const unhealthy = conns.filter(
-      (c) => c.getStatus().health === ConnectionHealth.UNHEALTHY,
-    ).length;
-    const errorConns = conns.filter(
-      (c) => c.getStatus().health === ConnectionHealth.UNKNOWN,
-    ).length;
-    const totalRequests = conns.reduce(
-      (a, c) => a + c.getStatus().metrics.totalRequests,
-      0,
-    );
-    const totalErrors = conns.reduce(
-      (a, c) => a + c.getStatus().metrics.errorCount,
-      0,
-    );
-    const avgResponseTime =
-      total > 0
-        ? conns.reduce((a, c) => a + c.getStatus().metrics.responseTime, 0) /
-          total
-        : 0;
+    const active = conns.filter(c => c.getStatus().isActive).length;
+    const healthy = conns.filter(c => c.getStatus().health === ConnectionHealth.HEALTHY).length;
+    const degraded = conns.filter(c => c.getStatus().health === ConnectionHealth.DEGRADED).length;
+    const unhealthy = conns.filter(c => c.getStatus().health === ConnectionHealth.UNHEALTHY).length;
+    const errorConns = conns.filter(c => c.getStatus().health === ConnectionHealth.UNKNOWN).length;
+    const totalRequests = conns.reduce((a, c) => a + c.getStatus().metrics.totalRequests, 0);
+    const totalErrors = conns.reduce((a, c) => a + c.getStatus().metrics.errorCount, 0);
+    const avgResponseTime = total > 0 ? conns.reduce((a, c) => a + c.getStatus().metrics.responseTime, 0) / total : 0;
     let overall = ConnectionHealth.UNKNOWN;
     if (total === 0) overall = ConnectionHealth.UNKNOWN;
     else if (healthy === total) overall = ConnectionHealth.HEALTHY;
-    else if (unhealthy > 0 || errorConns > 0)
-      overall = ConnectionHealth.UNHEALTHY;
+    else if (unhealthy > 0 || errorConns > 0) overall = ConnectionHealth.UNHEALTHY;
     else if (degraded > 0) overall = ConnectionHealth.DEGRADED;
     return {
       totalConnections: total,
@@ -260,19 +227,10 @@ export class ConnectionManager {
     const info = this.getInfo();
     const uptimeSec = Math.max(0, (Date.now() - this.startTime) / 1000);
     const aggregated = (() => {
-      const values = Array.from(this.metrics.values()).map((m) => m.summary());
-      const total_requests = values.reduce(
-        (a, v) => a + Number(v.total_requests ?? 0),
-        0,
-      );
-      const failed = values.reduce(
-        (a, v) => a + Number(v.failed_requests ?? 0),
-        0,
-      );
-      const avg_rt_sum = values.reduce(
-        (a, v) => a + Number(v.average_response_time ?? 0),
-        0,
-      );
+      const values = Array.from(this.metrics.values()).map(m => m.summary());
+      const total_requests = values.reduce((a, v) => a + Number(v.total_requests ?? 0), 0);
+      const failed = values.reduce((a, v) => a + Number(v.failed_requests ?? 0), 0);
+      const avg_rt_sum = values.reduce((a, v) => a + Number(v.average_response_time ?? 0), 0);
       const avg_rt = values.length ? avg_rt_sum / values.length : 0;
       const error_rate = total_requests ? (failed / total_requests) * 100 : 0;
       return {
@@ -314,9 +272,7 @@ export class ConnectionManager {
   }
 
   private async attemptRecovery(conn: BaseConnection) {
-    const strategy =
-      this.recoveryOverrides.get(conn.connectionId) ??
-      conn["config"].recoveryStrategy;
+    const strategy = this.recoveryOverrides.get(conn.connectionId) ?? conn["config"].recoveryStrategy;
     if (!strategy || strategy === RecoveryStrategy.NONE) return;
     try {
       if (strategy === RecoveryStrategy.RECONNECT) {
@@ -328,7 +284,7 @@ export class ConnectionManager {
         for (let i = 0; i < Math.max(1, retryCount); i++) {
           const ok = await conn.reconnect();
           if (ok) return;
-          await new Promise((r) => setTimeout(r, delay));
+          await new Promise(r => setTimeout(r, delay));
           delay *= Math.max(1, mult);
         }
       } else if (strategy === RecoveryStrategy.GRACEFUL_DEGRADATION) {

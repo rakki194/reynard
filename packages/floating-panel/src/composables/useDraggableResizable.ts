@@ -6,19 +6,9 @@
  */
 
 import { createSignal, createEffect, onCleanup } from "solid-js";
-import {
-  createPanelState,
-  updatePanelState,
-  type PanelState,
-} from "./draggable-resizable/PanelState.js";
-import {
-  applyConstraints,
-  type PanelConstraints,
-} from "./draggable-resizable/PanelConstraints.js";
-import {
-  savePanelState,
-  loadPanelState,
-} from "./draggable-resizable/PanelStorage.js";
+import { createPanelState, updatePanelState, type PanelState } from "./draggable-resizable/PanelState.js";
+import { applyConstraints, type PanelConstraints } from "./draggable-resizable/PanelConstraints.js";
+import { savePanelState, loadPanelState } from "./draggable-resizable/PanelStorage.js";
 
 export interface DraggableResizableOptions extends PanelConstraints {
   initialState: PanelState;
@@ -42,9 +32,7 @@ export interface DraggableResizableReturn {
   resetPosition: () => void;
 }
 
-export function useDraggableResizable(
-  options: DraggableResizableOptions,
-): DraggableResizableReturn {
+export function useDraggableResizable(options: DraggableResizableOptions): DraggableResizableReturn {
   const {
     initialState,
     storageKey,
@@ -57,9 +45,7 @@ export function useDraggableResizable(
   } = options;
 
   // Load initial state from storage if available
-  const [state, setState] = createPanelState(
-    storageKey ? loadPanelState(storageKey, initialState) : initialState,
-  );
+  const [state, setState] = createPanelState(storageKey ? loadPanelState(storageKey, initialState) : initialState);
   const [isDragging, setIsDragging] = createSignal(false);
   const [isResizing, setIsResizing] = createSignal(false);
   const [ref, setRef] = createSignal<HTMLElement>();
@@ -90,8 +76,7 @@ export function useDraggableResizable(
     }
   };
 
-  const toggleMinimized = () =>
-    updatePanelState(setState, { minimized: !state().minimized });
+  const toggleMinimized = () => updatePanelState(setState, { minimized: !state().minimized });
   const resetPosition = () => setState(initialState);
 
   // Cleanup

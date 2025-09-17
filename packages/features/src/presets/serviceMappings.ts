@@ -57,20 +57,14 @@ export const SERVICE_MAPPINGS = {
  * Reverse mapping from actual service names to feature system names
  */
 export const REVERSE_SERVICE_MAPPINGS = Object.fromEntries(
-  Object.entries(SERVICE_MAPPINGS).map(([feature, actual]) => [
-    actual,
-    feature,
-  ]),
+  Object.entries(SERVICE_MAPPINGS).map(([feature, actual]) => [actual, feature])
 ) as Record<string, string>;
 
 /**
  * Get the actual service name for a feature system service name
  */
 export function getActualServiceName(featureServiceName: string): string {
-  return (
-    SERVICE_MAPPINGS[featureServiceName as keyof typeof SERVICE_MAPPINGS] ||
-    featureServiceName
-  );
+  return SERVICE_MAPPINGS[featureServiceName as keyof typeof SERVICE_MAPPINGS] || featureServiceName;
 }
 
 /**

@@ -1,8 +1,8 @@
 /**
  * DOM Form Element Tests
- * 
+ *
  * Tests for form element states and validation.
- * 
+ *
  * @author 🦊 The Cunning Fox
  */
 

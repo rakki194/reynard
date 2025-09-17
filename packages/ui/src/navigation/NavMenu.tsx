@@ -3,15 +3,7 @@
  * Hierarchical navigation menu with keyboard support and accessibility
  */
 
-import {
-  Component,
-  JSX,
-  splitProps,
-  For,
-  Show,
-  createSignal,
-  onMount,
-} from "solid-js";
+import { Component, JSX, splitProps, For, Show, createSignal, onMount } from "solid-js";
 
 export interface NavMenuItem {
   /** Unique identifier */
@@ -60,7 +52,7 @@ const defaultProps = {
   hoverToOpen: false,
 };
 
-export const NavMenu: Component<NavMenuProps> = (props) => {
+export const NavMenu: Component<NavMenuProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local, others] = splitProps(merged, [
     "items",
@@ -79,7 +71,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
   let focusableItems: HTMLElement[] = [];
 
   const toggleSubmenu = (itemId: string) => {
-    setOpenSubmenus((prev) => {
+    setOpenSubmenus(prev => {
       const newSet = new Set(prev);
       if (newSet.has(itemId)) {
         newSet.delete(itemId);
@@ -92,10 +84,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
     setTimeout(updateFocusableItems, 0);
   };
 
-  const handleItemClick = (
-    item: NavMenuItem,
-    event: MouseEvent | KeyboardEvent,
-  ) => {
+  const handleItemClick = (item: NavMenuItem, event: MouseEvent | KeyboardEvent) => {
     if (item.disabled) {
       event.preventDefault();
       return;
@@ -164,53 +153,38 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
 
   const focusNextItem = () => {
     const currentFocus = document.activeElement as HTMLElement;
-    const currentIndex = focusableItems.findIndex(
-      (item) => item === currentFocus,
-    );
+    const currentIndex = focusableItems.findIndex(item => item === currentFocus);
     const nextIndex = (currentIndex + 1) % focusableItems.length;
     focusableItems[nextIndex]?.focus();
   };
 
   const focusPreviousItem = () => {
     const currentFocus = document.activeElement as HTMLElement;
-    const currentIndex = focusableItems.findIndex(
-      (item) => item === currentFocus,
-    );
-    const prevIndex =
-      currentIndex <= 0 ? focusableItems.length - 1 : currentIndex - 1;
+    const currentIndex = focusableItems.findIndex(item => item === currentFocus);
+    const prevIndex = currentIndex <= 0 ? focusableItems.length - 1 : currentIndex - 1;
     focusableItems[prevIndex]?.focus();
   };
 
   const updateFocusableItems = () => {
     if (menuRef) {
       focusableItems = Array.from(
-        menuRef.querySelectorAll(
-          'a, span[tabindex="0"]:not([aria-disabled="true"])',
-        ),
+        menuRef.querySelectorAll('a, span[tabindex="0"]:not([aria-disabled="true"])')
       ) as HTMLElement[];
     }
   };
 
   const getClasses = () => {
-    const classes = [
-      "reynard-nav-menu",
-      `reynard-nav-menu--${local.orientation}`,
-    ];
+    const classes = ["reynard-nav-menu", `reynard-nav-menu--${local.orientation}`];
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
 
   const getItemClasses = (item: NavMenuItem, level = 0) => {
-    const classes = [
-      "reynard-nav-menu__item",
-      `reynard-nav-menu__item--level-${level}`,
-    ];
+    const classes = ["reynard-nav-menu__item", `reynard-nav-menu__item--level-${level}`];
     if (item.active) classes.push("reynard-nav-menu__item--active");
     if (item.disabled) classes.push("reynard-nav-menu__item--disabled");
-    if (item.children?.length)
-      classes.push("reynard-nav-menu__item--has-children");
-    if (openSubmenus().has(item.id))
-      classes.push("reynard-nav-menu__item--open");
+    if (item.children?.length) classes.push("reynard-nav-menu__item--has-children");
+    if (openSubmenus().has(item.id)) classes.push("reynard-nav-menu__item--open");
     return classes.join(" ");
   };
 
@@ -225,7 +199,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
     <button
       type="button"
       class="reynard-nav-menu__toggle"
-      onClick={(e) => {
+      onClick={e => {
         e.stopPropagation();
         toggleSubmenu(item.id);
       }}
@@ -258,11 +232,11 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
           <span
             class={getLinkClasses(item)}
             tabindex={item.disabled ? -1 : 0}
-            onKeyDown={(e) => handleKeyDown(e, item)}
-            onClick={(e) => handleItemClick(item, e)}
+            onKeyDown={e => handleKeyDown(e, item)}
+            onClick={e => handleItemClick(item, e)}
             onMouseEnter={() => {
               if (local.hoverToOpen && item.children?.length) {
-                setOpenSubmenus((prev) => new Set(prev).add(item.id));
+                setOpenSubmenus(prev => new Set(prev).add(item.id));
                 setTimeout(updateFocusableItems, 0);
               }
             }}
@@ -275,14 +249,10 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
 
               <span class="reynard-nav-menu__label">{item.label}</span>
 
-              <Show when={local.showBadges && item.badge}>
-                {renderBadge(item.badge!)}
-              </Show>
+              <Show when={local.showBadges && item.badge}>{renderBadge(item.badge!)}</Show>
             </div>
 
-            <Show when={item.children?.length}>
-              {renderSubmenuToggle(item)}
-            </Show>
+            <Show when={item.children?.length}>{renderSubmenuToggle(item)}</Show>
           </span>
         }
       >
@@ -290,11 +260,11 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
           href={item.href}
           class={getLinkClasses(item)}
           tabindex={item.disabled ? -1 : 0}
-          onKeyDown={(e) => handleKeyDown(e, item)}
-          onClick={(e) => handleItemClick(item, e)}
+          onKeyDown={e => handleKeyDown(e, item)}
+          onClick={e => handleItemClick(item, e)}
           onMouseEnter={() => {
             if (local.hoverToOpen && item.children?.length) {
-              setOpenSubmenus((prev) => new Set(prev).add(item.id));
+              setOpenSubmenus(prev => new Set(prev).add(item.id));
               setTimeout(updateFocusableItems, 0);
             }
           }}
@@ -307,9 +277,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
 
             <span class="reynard-nav-menu__label">{item.label}</span>
 
-            <Show when={local.showBadges && item.badge}>
-              {renderBadge(item.badge!)}
-            </Show>
+            <Show when={local.showBadges && item.badge}>{renderBadge(item.badge!)}</Show>
           </div>
 
           <Show when={item.children?.length}>{renderSubmenuToggle(item)}</Show>
@@ -319,9 +287,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
       {/* Submenu */}
       <Show when={item.children?.length && openSubmenus().has(item.id)}>
         <ul class="reynard-nav-menu__submenu" role="menu">
-          <For each={item.children}>
-            {(child) => renderMenuItem(child, level + 1)}
-          </For>
+          <For each={item.children}>{child => renderMenuItem(child, level + 1)}</For>
         </ul>
       </Show>
     </li>
@@ -332,7 +298,7 @@ export const NavMenu: Component<NavMenuProps> = (props) => {
   return (
     <nav ref={menuRef} class={getClasses()} {...others}>
       <ul class="reynard-nav-menu__list" role="menubar">
-        <For each={local.items}>{(item) => renderMenuItem(item)}</For>
+        <For each={local.items}>{item => renderMenuItem(item)}</For>
       </ul>
     </nav>
   );

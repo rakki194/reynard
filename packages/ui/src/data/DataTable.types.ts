@@ -76,9 +76,5 @@ export interface DataTableState {
 export interface DataTableUtils {
   getCellValue: (row: unknown, column: Column) => unknown;
   getTableClasses: (loading: boolean, customClass?: string) => string;
-  getSortIcon: (
-    column: Column,
-    sortColumn: string | null,
-    sortDirection: SortDirection,
-  ) => JSX.Element | null;
+  getSortIcon: (column: Column, sortColumn: string | null, sortDirection: SortDirection) => JSX.Element | null;
 }

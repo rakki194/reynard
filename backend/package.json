@@ -19,15 +19,7 @@
     "test:parallel": "./scripts/run-tests.sh -p",
     "test:ci": "./scripts/run-tests.sh -t all -c -p -r xml"
   },
-  "keywords": [
-    "fastapi",
-    "python",
-    "backend",
-    "api",
-    "reynard",
-    "jwt",
-    "authentication"
-  ],
+  "keywords": ["fastapi", "python", "backend", "api", "reynard", "jwt", "authentication"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "repository": {

@@ -92,18 +92,14 @@ describe("NavMenu", () => {
       render(() => <NavMenu items={mockMenuItems} />);
 
       const aboutItem = screen.getByText("About");
-      expect(aboutItem.closest(".nav-menu-item")).toHaveClass(
-        "nav-menu-item--active",
-      );
+      expect(aboutItem.closest(".nav-menu-item")).toHaveClass("nav-menu-item--active");
     });
 
     it("should disable disabled items", () => {
       render(() => <NavMenu items={mockMenuItems} />);
 
       const contactItem = screen.getByText("Contact");
-      expect(contactItem.closest(".nav-menu-item")).toHaveClass(
-        "nav-menu-item--disabled",
-      );
+      expect(contactItem.closest(".nav-menu-item")).toHaveClass("nav-menu-item--disabled");
     });
   });
 
@@ -158,10 +154,7 @@ describe("NavMenu", () => {
       const homeItem = screen.getByText("Home");
       fireEvent.click(homeItem);
 
-      expect(onItemClick).toHaveBeenCalledWith(
-        mockMenuItems[0],
-        expect.any(MouseEvent),
-      );
+      expect(onItemClick).toHaveBeenCalledWith(mockMenuItems[0], expect.any(MouseEvent));
     });
 
     it("should not call onItemClick for disabled items", () => {
@@ -184,10 +177,7 @@ describe("NavMenu", () => {
       const webItem = screen.getByText("Web Development");
       fireEvent.click(webItem);
 
-      expect(onItemClick).toHaveBeenCalledWith(
-        mockMenuItems[2].children![0],
-        expect.any(MouseEvent),
-      );
+      expect(onItemClick).toHaveBeenCalledWith(mockMenuItems[2].children![0], expect.any(MouseEvent));
     });
   });
 

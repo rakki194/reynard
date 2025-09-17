@@ -234,9 +234,7 @@ describe("SegmentationManager", () => {
         register: vi.fn().mockRejectedValue(new Error("Registry error")),
       });
 
-      await expect(manager.initialize()).rejects.toThrow(
-        "Failed to initialize segmentation manager",
-      );
+      await expect(manager.initialize()).rejects.toThrow("Failed to initialize segmentation manager");
     });
   });
 
@@ -251,10 +249,7 @@ describe("SegmentationManager", () => {
         validateGeometry: true,
       };
 
-      const service = await manager.registerSegmentationService(
-        "test-service",
-        config,
-      );
+      const service = await manager.registerSegmentationService("test-service", config);
 
       expect(service).toBeDefined();
       expect(service.config.name).toBe("test-service");
@@ -271,9 +266,7 @@ describe("SegmentationManager", () => {
       };
 
       await manager.registerSegmentationService("test-service", config);
-      await expect(
-        manager.unregisterSegmentationService("test-service"),
-      ).resolves.not.toThrow();
+      await expect(manager.unregisterSegmentationService("test-service")).resolves.not.toThrow();
     });
 
     it("should get available services", async () => {
@@ -384,10 +377,7 @@ describe("SegmentationManager", () => {
       ];
 
       const progressCallback = vi.fn();
-      const results = await manager.generateBatchSegmentations(
-        tasks,
-        progressCallback,
-      );
+      const results = await manager.generateBatchSegmentations(tasks, progressCallback);
 
       expect(results).toHaveLength(2);
       expect(progressCallback).toHaveBeenCalled();
@@ -565,9 +555,7 @@ describe("SegmentationManager", () => {
       // Mock no available services
       vi.spyOn(manager, "getAvailableServices").mockResolvedValue([]);
 
-      await expect(manager.generateSegmentation(task)).rejects.toThrow(
-        "No segmentation services available",
-      );
+      await expect(manager.generateSegmentation(task)).rejects.toThrow("No segmentation services available");
     });
 
     it("should handle service generation error", async () => {
@@ -578,15 +566,11 @@ describe("SegmentationManager", () => {
 
       // Mock service generation failure
       const mockService = {
-        generateSegmentation: vi
-          .fn()
-          .mockRejectedValue(new Error("Service error")),
+        generateSegmentation: vi.fn().mockRejectedValue(new Error("Service error")),
       };
       vi.spyOn(manager, "getService").mockReturnValue(mockService as any);
 
-      await expect(manager.generateSegmentation(task)).rejects.toThrow(
-        "Failed to generate segmentation",
-      );
+      await expect(manager.generateSegmentation(task)).rejects.toThrow("Failed to generate segmentation");
     });
 
     it("should handle batch processing errors", async () => {
@@ -603,15 +587,11 @@ describe("SegmentationManager", () => {
 
       // Mock service generation failure
       const mockService = {
-        generateBatchSegmentations: vi
-          .fn()
-          .mockRejectedValue(new Error("Batch error")),
+        generateBatchSegmentations: vi.fn().mockRejectedValue(new Error("Batch error")),
       };
       vi.spyOn(manager, "getService").mockReturnValue(mockService as any);
 
-      await expect(manager.generateBatchSegmentations(tasks)).rejects.toThrow(
-        "Failed to generate batch segmentations",
-      );
+      await expect(manager.generateBatchSegmentations(tasks)).rejects.toThrow("Failed to generate batch segmentations");
     });
   });
 

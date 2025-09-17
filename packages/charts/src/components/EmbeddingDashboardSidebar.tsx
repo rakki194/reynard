@@ -31,9 +31,7 @@ export interface EmbeddingDashboardSidebarProps {
   onPerformReduction: () => void;
 }
 
-export const EmbeddingDashboardSidebar: Component<
-  EmbeddingDashboardSidebarProps
-> = (props) => {
+export const EmbeddingDashboardSidebar: Component<EmbeddingDashboardSidebarProps> = props => {
   return (
     <div class="dashboard-sidebar">
       <EmbeddingStatsPanel stats={props.stats} />

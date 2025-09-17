@@ -40,12 +40,8 @@ describe("Vitest Configuration Core Functions", () => {
 
       expect(config.test!.setupFiles).toEqual(customSetupFiles);
       expect(config.plugins).toHaveLength(2); // solid plugin + custom plugin
-      expect((config.test!.coverage as any).thresholds.global).toEqual(
-        customCoverageThresholds,
-      );
-      expect((config.test!.coverage as any).exclude).toContain(
-        "custom-exclude/**",
-      );
+      expect((config.test!.coverage as any).thresholds.global).toEqual(customCoverageThresholds);
+      expect((config.test!.coverage as any).exclude).toContain("custom-exclude/**");
     });
 
     it("should handle minimal options", () => {
@@ -83,11 +79,7 @@ describe("Vitest Configuration Core Functions", () => {
       const config = createBaseVitestConfig({ packageName: "test-package" });
 
       expect((config.test!.coverage as any).provider).toBe("v8");
-      expect((config.test!.coverage as any).reporter).toEqual([
-        "text",
-        "html",
-        "lcov",
-      ]);
+      expect((config.test!.coverage as any).reporter).toEqual(["text", "html", "lcov"]);
     });
   });
 

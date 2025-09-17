@@ -5,10 +5,11 @@ Provides health monitoring and system status endpoints
 
 import os
 import time
-from typing import Any, Dict
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
+
 from services import BackgroundService, CacheService, DatabaseService
 
 router = APIRouter()
@@ -20,8 +21,8 @@ class HealthResponse(BaseModel):
     status: str
     timestamp: float
     uptime: float
-    services: Dict[str, Dict[str, Any]]
-    environment: Dict[str, str]
+    services: dict[str, dict[str, Any]]
+    environment: dict[str, str]
 
 
 class ServiceStatus(BaseModel):
@@ -29,7 +30,7 @@ class ServiceStatus(BaseModel):
 
     name: str
     status: str
-    details: Dict[str, Any]
+    details: dict[str, Any]
 
 
 # Dependency functions (will be overridden in main.py)
@@ -128,15 +129,14 @@ async def readiness_check(
 
         if db_ready and cache_ready:
             return {"status": "ready", "timestamp": time.time()}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Services not ready",
-            )
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Services not ready",
+        )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail=f"Readiness check failed: {str(e)}",
+            detail=f"Readiness check failed: {e!s}",
         )
 
 
@@ -150,7 +150,7 @@ async def liveness_check():
     }
 
 
-@router.get("/health/services", response_model=Dict[str, ServiceStatus])
+@router.get("/health/services", response_model=dict[str, ServiceStatus])
 async def services_status(
     db_service: DatabaseService = Depends(get_database_service),
     cache_service: CacheService = Depends(get_cache_service),

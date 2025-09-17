@@ -13,7 +13,7 @@ export interface SearchHistoryFooterProps {
   maxItems?: number;
 }
 
-export const SearchHistoryFooter: Component<SearchHistoryFooterProps> = (props) => {
+export const SearchHistoryFooter: Component<SearchHistoryFooterProps> = props => {
   return (
     <div class="history-footer">
       <div class="history-stats">
@@ -21,9 +21,7 @@ export const SearchHistoryFooter: Component<SearchHistoryFooterProps> = (props) 
       </div>
 
       <Show when={props.maxItems && props.totalCount > props.maxItems}>
-        <div class="history-limit">
-          Limited to {props.maxItems} most recent items
-        </div>
+        <div class="history-limit">Limited to {props.maxItems} most recent items</div>
       </Show>
     </div>
   );

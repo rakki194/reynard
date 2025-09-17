@@ -4,7 +4,6 @@ Database setup script for Prompt Note application
 Creates PostgreSQL database, user, and initial schema
 """
 
-import asyncio
 import logging
 import os
 import sys
@@ -248,9 +247,7 @@ def create_tables():
                 )
             )
             conn.execute(
-                text(
-                    "CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id)"
-                )
+                text("CREATE INDEX IF NOT EXISTS idx_notes_user_id ON notes(user_id)")
             )
             conn.execute(
                 text(

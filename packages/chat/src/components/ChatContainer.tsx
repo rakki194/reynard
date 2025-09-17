@@ -5,22 +5,13 @@
  * with message display, input handling, and state management.
  */
 
-import {
-  Component,
-  Show,
-  For,
-  createEffect,
-  createSignal,
-  onCleanup,
-  splitProps,
-  createMemo,
-} from "solid-js";
+import { Component, Show, For, createEffect, createSignal, onCleanup, splitProps, createMemo } from "solid-js";
 import { useChat } from "../composables/useChat";
 import { ChatMessage } from "./ChatMessage";
 import { MessageInput } from "./MessageInput";
 import type { ChatContainerProps, ToolCall } from "../types";
 
-export const ChatContainer: Component<ChatContainerProps> = (props) => {
+export const ChatContainer: Component<ChatContainerProps> = props => {
   const [local] = splitProps(props, [
     "endpoint",
     "authHeaders",
@@ -53,7 +44,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
       tools: props.tools,
       initialMessages: props.initialMessages,
       autoConnect: true,
-    }),
+    })
   );
 
   // Auto-scroll to bottom when new messages arrive
@@ -113,9 +104,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
       local.onMessageSent?.(chat().messages()[chat().messages().length - 1]);
     } catch (error) {
       console.error("Failed to send message:", error);
-      local.onError?.(
-        error instanceof Error ? error : new Error(String(error)),
-      );
+      local.onError?.(error instanceof Error ? error : new Error(String(error)));
     }
   };
 
@@ -149,18 +138,14 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
     const base = "reynard-chat-container";
     const variant = `${base}--${local.variant || "default"}`;
     const streaming = chat().isStreaming() ? `${base}--streaming` : "";
-    const connected =
-      chat().connectionState() === "connected" ? `${base}--connected` : "";
+    const connected = chat().connectionState() === "connected" ? `${base}--connected` : "";
 
     // Height classes
     let heightClass = "";
     if (local.height) {
       if (typeof local.height === "string") {
         if (local.height === "100%" || local.height === "100vh") {
-          heightClass =
-            local.height === "100vh"
-              ? `${base}--height-screen`
-              : `${base}--height-full`;
+          heightClass = local.height === "100vh" ? `${base}--height-screen` : `${base}--height-full`;
         } else if (local.height.endsWith("px")) {
           const heightValue = parseInt(local.height);
           if (heightValue <= 400) heightClass = `${base}--height-400`;
@@ -181,20 +166,15 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
         } else if (local.maxHeight.endsWith("px")) {
           const maxHeightValue = parseInt(local.maxHeight);
           if (maxHeightValue <= 400) maxHeightClass = `${base}--max-height-400`;
-          else if (maxHeightValue <= 500)
-            maxHeightClass = `${base}--max-height-500`;
-          else if (maxHeightValue <= 600)
-            maxHeightClass = `${base}--max-height-600`;
-          else if (maxHeightValue <= 700)
-            maxHeightClass = `${base}--max-height-700`;
+          else if (maxHeightValue <= 500) maxHeightClass = `${base}--max-height-500`;
+          else if (maxHeightValue <= 600) maxHeightClass = `${base}--max-height-600`;
+          else if (maxHeightValue <= 700) maxHeightClass = `${base}--max-height-700`;
           else maxHeightClass = `${base}--max-height-800`;
         }
       }
     }
 
-    return [base, variant, streaming, connected, heightClass, maxHeightClass]
-      .filter(Boolean)
-      .join(" ");
+    return [base, variant, streaming, connected, heightClass, maxHeightClass].filter(Boolean).join(" ");
   };
 
   // Cleanup on unmount
@@ -213,15 +193,10 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
             {chat().connectionState() === "connecting" ? "🔄" : "⚠️"}
           </div>
           <span class="reynard-chat-container__status-text">
-            {chat().connectionState() === "connecting"
-              ? "Connecting..."
-              : "Connection Error"}
+            {chat().connectionState() === "connecting" ? "Connecting..." : "Connection Error"}
           </span>
           <Show when={chat().connectionState() === "error"}>
-            <button
-              class="reynard-chat-container__retry-button"
-              onClick={() => chat().actions.connect()}
-            >
+            <button class="reynard-chat-container__retry-button" onClick={() => chat().actions.connect()}>
               Retry
             </button>
           </Show>
@@ -229,26 +204,19 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
       </Show>
 
       {/* Messages Area */}
-      <div
-        ref={messagesContainerRef}
-        class="reynard-chat-container__messages"
-        onScroll={handleScroll}
-      >
+      <div ref={messagesContainerRef} class="reynard-chat-container__messages" onScroll={handleScroll}>
         <Show
           when={chat().messages().length > 0}
           fallback={
             <div class="reynard-chat-container__empty">
               <div class="reynard-chat-container__empty-icon">💬</div>
-              <div class="reynard-chat-container__empty-text">
-                Start a conversation
-              </div>
+              <div class="reynard-chat-container__empty-text">Start a conversation</div>
             </div>
           }
         >
           <For each={chat().messages()}>
             {(message, index) => {
-              const MessageComponent =
-                local.messageComponents?.[message.role] || ChatMessage;
+              const MessageComponent = local.messageComponents?.[message.role] || ChatMessage;
 
               return (
                 <MessageComponent
@@ -275,9 +243,7 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
                 <span />
                 <span />
               </div>
-              <span class="reynard-chat-container__typing-text">
-                Assistant is typing...
-              </span>
+              <span class="reynard-chat-container__typing-text">Assistant is typing...</span>
             </div>
           </div>
         </Show>
@@ -319,22 +285,15 @@ export const ChatContainer: Component<ChatContainerProps> = (props) => {
       <div class="reynard-chat-container__footer">
         <div class="reynard-chat-container__footer-info">
           <Show when={chat().messages().length > 0}>
-            <span class="reynard-chat-container__message-count">
-              {chat().messages().length} messages
-            </span>
+            <span class="reynard-chat-container__message-count">{chat().messages().length} messages</span>
           </Show>
 
           <Show when={chat().error()}>
             <div class="reynard-chat-container__error">
               <span class="reynard-chat-container__error-icon">⚠️</span>
-              <span class="reynard-chat-container__error-text">
-                {chat().error()!.message}
-              </span>
+              <span class="reynard-chat-container__error-text">{chat().error()!.message}</span>
               <Show when={chat().error()!.recoverable}>
-                <button
-                  class="reynard-chat-container__error-retry"
-                  onClick={() => chat().actions.retryLastMessage()}
-                >
+                <button class="reynard-chat-container__error-retry" onClick={() => chat().actions.retryLastMessage()}>
                   Retry
                 </button>
               </Show>

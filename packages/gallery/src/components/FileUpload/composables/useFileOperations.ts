@@ -4,11 +4,7 @@
  */
 
 import type { FileUploadItem, FileUploadProps } from "../types";
-import {
-  createFileUploadItem,
-  validateFileSize,
-  validateFileType,
-} from "../utils/file-utils";
+import { createFileUploadItem, validateFileSize, validateFileType } from "../utils/file-utils";
 
 export interface FileOperations {
   addFiles: (files: File[]) => FileUploadItem[];
@@ -18,11 +14,8 @@ export interface FileOperations {
 
 export function useFileOperations(props: FileUploadProps): FileOperations {
   const addFiles = (files: File[]): FileUploadItem[] => {
-    const validFiles = files.filter((file) => {
-      const sizeValid = validateFileSize(
-        file,
-        props.maxFileSize || 100 * 1024 * 1024,
-      );
+    const validFiles = files.filter(file => {
+      const sizeValid = validateFileSize(file, props.maxFileSize || 100 * 1024 * 1024);
       const typeValid = validateFileType(file, props.accept || "*/*");
       return sizeValid && typeValid;
     });
@@ -33,11 +26,8 @@ export function useFileOperations(props: FileUploadProps): FileOperations {
     return newItems;
   };
 
-  const removeFile = (
-    id: string,
-    items: FileUploadItem[],
-  ): FileUploadItem[] => {
-    return items.filter((item) => item.id !== id);
+  const removeFile = (id: string, items: FileUploadItem[]): FileUploadItem[] => {
+    return items.filter(item => item.id !== id);
   };
 
   const clearFiles = (): FileUploadItem[] => {

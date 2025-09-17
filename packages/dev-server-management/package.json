@@ -1,0 +1,68 @@
+{
+  "name": "dev-server-management",
+  "version": "0.1.0",
+  "description": "🦊 Modern development server management for the Reynard ecosystem",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./cli": {
+      "import": "./dist/cli/index.js",
+      "types": "./dist/cli/index.d.ts"
+    }
+  },
+  "bin": {
+    "dev-server": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && tsc --emitDeclarationOnly",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "reynard",
+    "dev-server",
+    "development",
+    "monorepo",
+    "typescript",
+    "server-management"
+  ],
+  "author": "Reynard Team",
+  "license": "MIT",
+  "dependencies": {
+    "reynard-service-manager": "workspace:*",
+    "reynard-queue-watcher": "workspace:*",
+    "reynard-core": "workspace:*",
+    "commander": "14.0.1",
+    "chalk": "5.6.2",
+    "ora": "9.0.0",
+    "inquirer": "12.9.6",
+    "node-pty": "1.0.0",
+    "ws": "8.18.3",
+    "zod": "4.1.9"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.1",
+    "@types/inquirer": "9.0.9",
+    "@types/ws": "8.18.1",
+    "typescript": "5.9.2",
+    "vite": "7.1.5",
+    "vitest": "3.2.4",
+    "eslint": "9.35.0",
+    "@typescript-eslint/eslint-plugin": "8.44.0",
+    "@typescript-eslint/parser": "8.44.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

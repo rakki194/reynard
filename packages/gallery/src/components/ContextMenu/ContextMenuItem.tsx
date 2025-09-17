@@ -26,11 +26,8 @@ export interface ContextMenuItemComponentProps {
  * This component is designed to be used within a menu structure and will be
  * properly accessible when rendered within ContextMenuContainer.
  */
-export const ContextMenuItemComponent: Component<
-  ContextMenuItemComponentProps
-> = (props) => {
-  const hasSubmenu = (item: ContextMenuItem) =>
-    item.submenu && item.submenu.length > 0;
+export const ContextMenuItemComponent: Component<ContextMenuItemComponentProps> = props => {
+  const hasSubmenu = (item: ContextMenuItem) => item.submenu && item.submenu.length > 0;
 
   return (
     <div

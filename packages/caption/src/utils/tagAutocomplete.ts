@@ -91,10 +91,7 @@ export function useTagAutocomplete() {
   };
 }
 
-export function createTagAutocompleteManager(
-  availableTags: string[] = [],
-  maxSuggestions: number = 10,
-) {
+export function createTagAutocompleteManager(availableTags: string[] = [], maxSuggestions: number = 10) {
   const autocomplete = useTagAutocomplete();
 
   const updateQuery = (newQuery: string) => {
@@ -106,11 +103,7 @@ export function createTagAutocompleteManager(
     }
 
     const filteredSuggestions = availableTags
-      .filter(
-        (tag) =>
-          tag.toLowerCase().includes(newQuery.toLowerCase()) &&
-          tag.toLowerCase() !== newQuery.toLowerCase(),
-      )
+      .filter(tag => tag.toLowerCase().includes(newQuery.toLowerCase()) && tag.toLowerCase() !== newQuery.toLowerCase())
       .sort((a, b) => {
         const aLower = a.toLowerCase();
         const bLower = b.toLowerCase();

@@ -36,10 +36,7 @@ describe("I18n Enterprise Features", () => {
     it("should get translations", () => {
       const i18n = createI18nModule();
 
-      const translation = i18n.translationManager.getTranslation(
-        "common.hello",
-        "en",
-      );
+      const translation = i18n.translationManager.getTranslation("common.hello", "en");
 
       // The function should exist and be callable
       expect(i18n.translationManager.getTranslation).toBeDefined();
@@ -74,10 +71,7 @@ describe("I18n Enterprise Features", () => {
     it("should import translations", () => {
       const i18n = createI18nModule();
 
-      const success = i18n.translationManager.importTranslations(
-        '{"common":{"hello":"Hello"}}',
-        "en",
-      );
+      const success = i18n.translationManager.importTranslations('{"common":{"hello":"Hello"}}', "en");
 
       expect(typeof success).toBe("boolean");
     });
@@ -177,10 +171,7 @@ describe("I18n Enterprise Features", () => {
       const i18n = createI18nModule();
 
       // Import translations
-      const success = i18n.translationManager.importTranslations(
-        '{"common":{"welcome":"Welcome"}}',
-        "en",
-      );
+      const success = i18n.translationManager.importTranslations('{"common":{"welcome":"Welcome"}}', "en");
       expect(typeof success).toBe("boolean");
 
       // Use translations

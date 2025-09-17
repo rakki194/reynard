@@ -16,7 +16,7 @@ export interface MetadataDisplayProps {
   onToggleExpanded: (path: string) => void;
 }
 
-export const MetadataDisplay: Component<MetadataDisplayProps> = (props) => {
+export const MetadataDisplay: Component<MetadataDisplayProps> = props => {
   return (
     <Show when={props.item.metadata}>
       <Show
@@ -44,16 +44,9 @@ export const MetadataDisplay: Component<MetadataDisplayProps> = (props) => {
 
       <Show when={props.isExpanded}>
         <div class="reynard-breadcrumb-navigation__metadata">
-          <Show
-            when={
-              props.showItemCounts &&
-              props.item.metadata?.itemCount !== undefined
-            }
-          >
+          <Show when={props.showItemCounts && props.item.metadata?.itemCount !== undefined}>
             <div class="reynard-breadcrumb-navigation__metadata-item">
-              <span class="reynard-breadcrumb-navigation__metadata-label">
-                Items:
-              </span>
+              <span class="reynard-breadcrumb-navigation__metadata-label">Items:</span>
               <span class="reynard-breadcrumb-navigation__metadata-value">
                 {props.item.metadata!.itemCount!.toLocaleString()}
               </span>
@@ -62,22 +55,14 @@ export const MetadataDisplay: Component<MetadataDisplayProps> = (props) => {
 
           <Show when={props.showFileSizes && props.item.metadata?.size}>
             <div class="reynard-breadcrumb-navigation__metadata-item">
-              <span class="reynard-breadcrumb-navigation__metadata-label">
-                Size:
-              </span>
-              <span class="reynard-breadcrumb-navigation__metadata-value">
-                {props.item.metadata!.size}
-              </span>
+              <span class="reynard-breadcrumb-navigation__metadata-label">Size:</span>
+              <span class="reynard-breadcrumb-navigation__metadata-value">{props.item.metadata!.size}</span>
             </div>
           </Show>
 
-          <Show
-            when={props.showLastModified && props.item.metadata?.lastModified}
-          >
+          <Show when={props.showLastModified && props.item.metadata?.lastModified}>
             <div class="reynard-breadcrumb-navigation__metadata-item">
-              <span class="reynard-breadcrumb-navigation__metadata-label">
-                Modified:
-              </span>
+              <span class="reynard-breadcrumb-navigation__metadata-label">Modified:</span>
               <span class="reynard-breadcrumb-navigation__metadata-value">
                 {formatDate(props.item.metadata!.lastModified!)}
               </span>
@@ -86,12 +71,8 @@ export const MetadataDisplay: Component<MetadataDisplayProps> = (props) => {
 
           <Show when={props.item.metadata?.type}>
             <div class="reynard-breadcrumb-navigation__metadata-item">
-              <span class="reynard-breadcrumb-navigation__metadata-label">
-                Type:
-              </span>
-              <span class="reynard-breadcrumb-navigation__metadata-value">
-                {props.item.metadata!.type}
-              </span>
+              <span class="reynard-breadcrumb-navigation__metadata-label">Type:</span>
+              <span class="reynard-breadcrumb-navigation__metadata-value">{props.item.metadata!.type}</span>
             </div>
           </Show>
         </div>

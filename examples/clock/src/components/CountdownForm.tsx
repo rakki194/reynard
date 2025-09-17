@@ -16,7 +16,7 @@ interface CountdownFormProps {
   onReset: () => void;
 }
 
-export const CountdownForm: Component<CountdownFormProps> = (props) => {
+export const CountdownForm: Component<CountdownFormProps> = props => {
   const handleDateChange = (value: string): void => {
     props.onTargetChange({ ...props.target, date: value });
   };
@@ -39,7 +39,7 @@ export const CountdownForm: Component<CountdownFormProps> = (props) => {
           type="text"
           placeholder="Birthday, Holiday, Deadline..."
           value={props.target.label}
-          onInput={(e) => handleLabelChange(e.currentTarget.value)}
+          onInput={e => handleLabelChange(e.currentTarget.value)}
         />
       </div>
 
@@ -48,7 +48,7 @@ export const CountdownForm: Component<CountdownFormProps> = (props) => {
         <input
           type="date"
           value={props.target.date}
-          onInput={(e) => handleDateChange(e.currentTarget.value)}
+          onInput={e => handleDateChange(e.currentTarget.value)}
           title="Select target date"
         />
       </div>
@@ -58,34 +58,25 @@ export const CountdownForm: Component<CountdownFormProps> = (props) => {
         <input
           type="time"
           value={props.target.time}
-          onInput={(e) => handleTimeChange(e.currentTarget.value)}
+          onInput={e => handleTimeChange(e.currentTarget.value)}
           title="Select target time"
         />
       </div>
 
       <div class="countdown-controls">
         <Show when={!props.isActive}>
-          <Button
-            onClick={props.onStart}
-            class="btn btn-success countdown-control-button"
-          >
+          <Button onClick={props.onStart} class="btn btn-success countdown-control-button">
             ▶️ Start Countdown
           </Button>
         </Show>
 
         <Show when={props.isActive}>
-          <Button
-            onClick={props.onStop}
-            class="btn btn-danger countdown-control-button"
-          >
+          <Button onClick={props.onStop} class="btn btn-danger countdown-control-button">
             ⏹️ Stop
           </Button>
         </Show>
 
-        <Button
-          onClick={props.onReset}
-          class="btn btn-secondary countdown-control-button"
-        >
+        <Button onClick={props.onReset} class="btn btn-secondary countdown-control-button">
           🔄 Reset
         </Button>
       </div>

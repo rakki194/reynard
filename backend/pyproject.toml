@@ -43,11 +43,35 @@ dependencies = [
     "pgvector",
     "argon2-cffi",
     "cryptography",
-    "reynard-gatekeeper @ file://../services/gatekeeper",
-    "reynard-ecs-world @ file://../packages/ecs-world",
+    "reynard-gatekeeper @ file:///home/kade/runeset/reynard/services/gatekeeper",
+    "reynard-ecs-world @ file:///home/kade/runeset/reynard/packages/ecs-world",
 ]
 
 [project.optional-dependencies]
+# RAG Embeddings Optimization dependencies
+rag = [
+    # Phase 1: Immediate optimizations
+    "tiktoken",           # Model-specific tokenization
+    "psutil",             # System resource monitoring
+    "prometheus-client",  # Performance monitoring and metrics
+    # Note: numpy is already in main dependencies
+    # Note: Phase 2 and 3 dependencies are commented out for future implementation
+    # Phase 2: Enhanced chunking (future)
+    # "tree-sitter",
+    # "tree-sitter-python", 
+    # "tree-sitter-typescript",
+    # "tree-sitter-javascript",
+    # Phase 2: Hybrid search (future)
+    # "rank-bm25",
+    # "scikit-learn",
+    # Phase 3: Multi-modal embeddings (future)
+    # "transformers",
+    # "torch",  # Already in main dependencies
+    # "pillow",  # Already in main dependencies
+    # Phase 3: Quality monitoring (future)
+    # "matplotlib",
+]
+
 test = [
     "pytest",
     "pytest-asyncio",
@@ -62,7 +86,7 @@ test = [
 ]
 
 dev = [
-    "reynard-backend[test]",
+    "reynard-backend[rag,test]",
     "black",
     "isort",
     "flake8",
@@ -79,6 +103,13 @@ Issues = "https://github.com/rakki194/reynard/issues"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["app*"]
+
+[tool.mypy]
+cache_dir = "/tmp/mypy_cache"
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

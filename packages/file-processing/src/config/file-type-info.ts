@@ -14,22 +14,10 @@ import { FILE_TYPE_CONFIGS } from "./file-type-configs";
  */
 function resolveCapabilities(capabilities: any, ext: string) {
   return {
-    thumbnail:
-      typeof capabilities.thumbnail === "function"
-        ? capabilities.thumbnail(ext)
-        : capabilities.thumbnail,
-    metadata:
-      typeof capabilities.metadata === "function"
-        ? capabilities.metadata(ext)
-        : capabilities.metadata,
-    content:
-      typeof capabilities.content === "function"
-        ? capabilities.content(ext)
-        : capabilities.content,
-    ocr:
-      typeof capabilities.ocr === "function"
-        ? capabilities.ocr(ext)
-        : capabilities.ocr,
+    thumbnail: typeof capabilities.thumbnail === "function" ? capabilities.thumbnail(ext) : capabilities.thumbnail,
+    metadata: typeof capabilities.metadata === "function" ? capabilities.metadata(ext) : capabilities.metadata,
+    content: typeof capabilities.content === "function" ? capabilities.content(ext) : capabilities.content,
+    ocr: typeof capabilities.ocr === "function" ? capabilities.ocr(ext) : capabilities.ocr,
   };
 }
 

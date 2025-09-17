@@ -224,9 +224,9 @@ class GalleryIntegration:
             "active_downloads": active_downloads,
             "total_files_downloaded": total_files,
             "total_size_bytes": total_size,
-            "success_rate": completed_downloads / total_downloads
-            if total_downloads > 0
-            else 0,
+            "success_rate": (
+                completed_downloads / total_downloads if total_downloads > 0 else 0
+            ),
         }
 
     async def validate_url(self, url: str) -> dict[str, Any]:
@@ -237,9 +237,11 @@ class GalleryIntegration:
 
             return {
                 "isValid": validation_result.isValid,
-                "extractor": validation_result.extractor.dict()
-                if validation_result.extractor
-                else None,
+                "extractor": (
+                    validation_result.extractor.dict()
+                    if validation_result.extractor
+                    else None
+                ),
                 "error": validation_result.error,
                 "pattern": validation_result.pattern,
             }

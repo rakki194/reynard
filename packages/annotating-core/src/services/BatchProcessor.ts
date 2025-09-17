@@ -4,23 +4,19 @@
  * Handles batch caption generation with progress tracking.
  */
 
-import {
-  CaptionTask,
-  CaptionResult,
-  AnnotationProgress,
-} from "../types/index.js";
+import { CaptionTask, CaptionResult, AnnotationProgress } from "../types/index.js";
 import { CaptionApiClient } from "../clients/index.js";
 import { SimpleEventManager } from "./EventManager.js";
 
 export class BatchProcessor {
   constructor(
     private client: CaptionApiClient,
-    private eventManager: SimpleEventManager,
+    private eventManager: SimpleEventManager
   ) {}
 
   async processBatch(
     tasks: CaptionTask[],
-    progressCallback?: (progress: AnnotationProgress) => void,
+    progressCallback?: (progress: AnnotationProgress) => void
   ): Promise<CaptionResult[]> {
     const startTime = new Date();
     const total = tasks.length;
@@ -40,7 +36,7 @@ export class BatchProcessor {
       });
 
       const request = {
-        tasks: tasks.map((task) => ({
+        tasks: tasks.map(task => ({
           image_path: task.imagePath,
           generator_name: task.generatorName,
           config: task.config,
@@ -101,8 +97,7 @@ export class BatchProcessor {
 
       return results;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
       this.eventManager.emitEvent({
         type: "batch_failed",
@@ -116,7 +111,7 @@ export class BatchProcessor {
       });
 
       // Return error results for all tasks
-      return tasks.map((task) => ({
+      return tasks.map(task => ({
         imagePath: task.imagePath,
         generatorName: task.generatorName,
         success: false,

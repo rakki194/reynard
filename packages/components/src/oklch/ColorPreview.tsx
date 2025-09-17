@@ -26,7 +26,7 @@ interface ColorPreviewProps {
   selectedHue: number;
 }
 
-export const ColorPreview: Component<ColorPreviewProps> = (props) => {
+export const ColorPreview: Component<ColorPreviewProps> = props => {
   return (
     <div class="color-preview-section">
       <h2>Live Color Preview</h2>

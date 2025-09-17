@@ -6,18 +6,12 @@ import { createSignal, createMemo } from "solid-js";
 import type { AnimationState, EasingType } from "../types";
 
 export function useAnimationState() {
-  const [currentAnimation, setCurrentAnimation] =
-    createSignal<AnimationState | null>(null);
-  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(
-    null,
-  );
+  const [currentAnimation, setCurrentAnimation] = createSignal<AnimationState | null>(null);
+  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(null);
 
   const isAnimationsDisabled = createMemo(() => false);
 
-  const createAnimationState = (
-    duration: number,
-    easing: EasingType,
-  ): AnimationState => ({
+  const createAnimationState = (duration: number, easing: EasingType): AnimationState => ({
     isAnimating: true,
     progress: 0,
     startTime: performance.now(),

@@ -21,12 +21,7 @@ npm install reynard-annotating-core
 ## Quick Start
 
 ```typescript
-import {
-  createAnnotationManager,
-  DEFAULT_CONFIG,
-  type CaptionTask,
-  type CaptionResult,
-} from "reynard-annotating-core";
+import { createAnnotationManager, DEFAULT_CONFIG, type CaptionTask, type CaptionResult } from "reynard-annotating-core";
 
 // Create annotation manager with production features
 const manager = createAnnotationManager({
@@ -60,10 +55,8 @@ const tasks: CaptionTask[] = [
   { imagePath: "/path/to/image2.jpg", generatorName: "joycaption" },
 ];
 
-const results = await service.generateBatchCaptions(tasks, (progress) => {
-  console.log(
-    `Progress: ${progress.progress}% (${progress.completed}/${progress.total})`,
-  );
+const results = await service.generateBatchCaptions(tasks, progress => {
+  console.log(`Progress: ${progress.progress}% (${progress.completed}/${progress.total})`);
 });
 
 // Get system statistics
@@ -73,7 +66,7 @@ console.log("Loaded models:", stats.loadedModels);
 console.log("Queue status:", stats.queueStatus);
 
 // Monitor events
-manager.addEventListener((event) => {
+manager.addEventListener(event => {
   console.log("Annotation event:", event.type, event.data);
 });
 
@@ -89,10 +82,7 @@ await manager.stop();
 // Get usage statistics for a specific model
 const usageStats = service.getModelUsageStats("jtp2");
 console.log("Total requests:", usageStats?.totalRequests);
-console.log(
-  "Success rate:",
-  usageStats?.successfulRequests / usageStats?.totalRequests,
-);
+console.log("Success rate:", usageStats?.successfulRequests / usageStats?.totalRequests);
 console.log("Average processing time:", usageStats?.averageProcessingTime);
 ```
 
@@ -151,7 +141,7 @@ The system provides comprehensive event handling:
 
 ```typescript
 // Model events
-manager.addEventListener((event) => {
+manager.addEventListener(event => {
   if (event.type === "model_loaded") {
     console.log("Model loaded:", event.data.modelName);
   } else if (event.type === "model_error") {
@@ -160,7 +150,7 @@ manager.addEventListener((event) => {
 });
 
 // Caption events
-manager.addEventListener((event) => {
+manager.addEventListener(event => {
   if (event.type === "caption_started") {
     console.log("Caption generation started for:", event.data.task.imagePath);
   } else if (event.type === "caption_completed") {
@@ -169,7 +159,7 @@ manager.addEventListener((event) => {
 });
 
 // Batch events
-manager.addEventListener((event) => {
+manager.addEventListener(event => {
   if (event.type === "batch_progress") {
     console.log(`Batch progress: ${event.data.progress}%`);
   }

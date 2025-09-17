@@ -1,11 +1,7 @@
 .reynard-tutorial {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    var(--bg-color) 0%,
-    var(--secondary-bg) 100%
-  );
+  background: linear-gradient(135deg, var(--bg-color) 0%, var(--secondary-bg) 100%);
 }
 
 /* Tutorial Sidebar */
@@ -452,11 +448,7 @@
 
 /* Theme-specific adjustments */
 :root[data-theme="dark"] .reynard-tutorial {
-  background: linear-gradient(
-    135deg,
-    hsl(220deg 15% 8%) 0%,
-    hsl(220deg 15% 12%) 100%
-  );
+  background: linear-gradient(135deg, hsl(220deg 15% 8%) 0%, hsl(220deg 15% 12%) 100%);
 }
 
 :root[data-theme="dark"] .tutorial-sidebar {

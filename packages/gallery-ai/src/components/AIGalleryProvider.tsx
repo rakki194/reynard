@@ -9,9 +9,7 @@ import { ParentComponent } from "solid-js";
 import { useGalleryAI, AIGalleryContext } from "../composables/useGalleryAI";
 import type { AIGalleryProviderProps } from "../types";
 
-export const AIGalleryProvider: ParentComponent<AIGalleryProviderProps> = (
-  props,
-) => {
+export const AIGalleryProvider: ParentComponent<AIGalleryProviderProps> = props => {
   // Create the AI gallery instance directly - SolidJS will track prop changes automatically
   const aiGallery = useGalleryAI({
     get initialConfig() {
@@ -28,7 +26,5 @@ export const AIGalleryProvider: ParentComponent<AIGalleryProviderProps> = (
     },
   });
 
-  return (
-    <AIGalleryContext.Provider value={aiGallery} children={props.children} />
-  );
+  return <AIGalleryContext.Provider value={aiGallery} children={props.children} />;
 };

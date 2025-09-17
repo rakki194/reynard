@@ -12,9 +12,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc --build",
@@ -24,13 +22,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "configuration",
-    "constants",
-    "settings",
-    "reynard",
-    "config"
-  ],
+  "keywords": ["configuration", "constants", "settings", "reynard", "config"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {

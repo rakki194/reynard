@@ -117,7 +117,7 @@ describe("Sentence Length Validation", () => {
 
       const lines = result.split("\n");
       // At least one continuation line should have the same indentation as the original
-      const hasIndentedContinuation = lines.some((line) => line.match(/^    /));
+      const hasIndentedContinuation = lines.some(line => line.match(/^    /));
       expect(hasIndentedContinuation).toBe(true);
       expect(lines[0].length).toBeLessThanOrEqual(60);
     });
@@ -143,42 +143,31 @@ describe("Sentence Length Validation", () => {
     });
 
     it("should find comma break points", () => {
-      const line =
-        "This is a long sentence, with multiple clauses, that should be broken at commas.";
+      const line = "This is a long sentence, with multiple clauses, that should be broken at commas.";
       const breakPoints = findOptimalBreakPoints(line, 50);
 
-      const commaBreaks = breakPoints.filter(
-        (bp) => bp.type === "punctuation" && bp.char === ",",
-      );
+      const commaBreaks = breakPoints.filter(bp => bp.type === "punctuation" && bp.char === ",");
       expect(commaBreaks.length).toBeGreaterThan(0);
     });
 
     it("should find preposition break points", () => {
-      const line =
-        "This is a very long sentence that should be broken at prepositions for better readability.";
+      const line = "This is a very long sentence that should be broken at prepositions for better readability.";
       const breakPoints = findOptimalBreakPoints(line, 60);
 
-      const prepBreaks = breakPoints.filter((bp) => bp.type === "preposition");
+      const prepBreaks = breakPoints.filter(bp => bp.type === "preposition");
       expect(prepBreaks.length).toBeGreaterThan(0);
     });
 
     it("should score break points appropriately", () => {
-      const line =
-        "This is a long sentence and it should be broken, but not at random points.";
+      const line = "This is a long sentence and it should be broken, but not at random points.";
       const breakPoints = findOptimalBreakPoints(line, 50);
 
       // Conjunctions should have higher scores than punctuation
-      const conjunctionBreaks = breakPoints.filter(
-        (bp) => bp.type === "conjunction",
-      );
-      const punctuationBreaks = breakPoints.filter(
-        (bp) => bp.type === "punctuation",
-      );
+      const conjunctionBreaks = breakPoints.filter(bp => bp.type === "conjunction");
+      const punctuationBreaks = breakPoints.filter(bp => bp.type === "punctuation");
 
       if (conjunctionBreaks.length > 0 && punctuationBreaks.length > 0) {
-        expect(conjunctionBreaks[0].score).toBeGreaterThan(
-          punctuationBreaks[0].score,
-        );
+        expect(conjunctionBreaks[0].score).toBeGreaterThan(punctuationBreaks[0].score);
       }
     });
   });
@@ -204,16 +193,12 @@ const veryLongVariableName = "This is a very long string that should not be brok
       const lines = result.split("\n");
 
       // Check that most long lines were broken (allow for some edge cases)
-      const longLines = lines.filter(
-        (line) => line.length > 80 && !line.trim().startsWith("```"),
-      );
+      const longLines = lines.filter(line => line.length > 80 && !line.trim().startsWith("```"));
       expect(longLines.length).toBeLessThanOrEqual(1); // Allow for 1 edge case
 
       // Check that code blocks were preserved
       expect(result).toContain("```javascript");
-      expect(result).toContain(
-        'const veryLongVariableName = "This is a very long string',
-      );
+      expect(result).toContain('const veryLongVariableName = "This is a very long string');
     });
 
     it("should preserve special markdown elements", () => {
@@ -229,15 +214,15 @@ http://this.is.a.very.long.url.that.should.not.be.broken.because.it.is.a.url.com
       // All special elements should be preserved as single lines
       const lines = result.split("\n");
       const specialLines = lines.filter(
-        (line) =>
+        line =>
           line.trim().startsWith("- ") ||
           line.trim().startsWith("|") ||
           line.trim().startsWith(">") ||
-          line.trim().startsWith("http"),
+          line.trim().startsWith("http")
       );
 
       // None of the special lines should have been broken
-      expect(specialLines.every((line) => !line.includes("\n"))).toBe(true);
+      expect(specialLines.every(line => !line.includes("\n"))).toBe(true);
     });
   });
 
@@ -316,9 +301,7 @@ This is another long sentence that also needs to be broken.`;
 
       const fixedContent = fs.readFileSync(testFile, "utf8");
       const lines = fixedContent.split("\n");
-      const longLines = lines.filter(
-        (line) => line.length > 60 && !line.trim().startsWith("#"),
-      );
+      const longLines = lines.filter(line => line.length > 60 && !line.trim().startsWith("#"));
       expect(longLines.length).toBe(0);
     });
 
@@ -350,7 +333,7 @@ This is another short line.`;
 
       expect(result).toContain("\n");
       const lines = result.split("\n");
-      lines.forEach((line) => {
+      lines.forEach(line => {
         expect(line.length).toBeLessThanOrEqual(120);
       });
 
@@ -367,7 +350,7 @@ This is another short line.`;
 
       expect(result).toContain("\n");
       const lines = result.split("\n");
-      lines.forEach((line) => {
+      lines.forEach(line => {
         expect(line.length).toBeLessThanOrEqual(100);
       });
     });
@@ -380,7 +363,7 @@ This is another short line.`;
 
       expect(result).toContain("\n");
       const lines = result.split("\n");
-      lines.forEach((line) => {
+      lines.forEach(line => {
         expect(line.length).toBeLessThanOrEqual(80);
       });
     });
@@ -410,9 +393,7 @@ This is another short line.`;
     it("should not identify regular text as special", () => {
       expect(testIsSpecialMarkdownElement("This is regular text")).toBe(false);
       expect(
-        testIsSpecialMarkdownElement(
-          "This is a very long sentence that should not be identified as special",
-        ),
+        testIsSpecialMarkdownElement("This is a very long sentence that should not be identified as special")
       ).toBe(false);
     });
 
@@ -421,14 +402,10 @@ This is another short line.`;
       expect(testIsSpecialMarkdownElement("def hello():", context1)).toBe(true);
 
       const context2 = ["```python", "def hello():", "```"];
-      expect(
-        testIsSpecialMarkdownElement("This is regular text", context2),
-      ).toBe(false);
+      expect(testIsSpecialMarkdownElement("This is regular text", context2)).toBe(false);
 
       const context3 = ["```python", "def hello():", "```", "```javascript"];
-      expect(testIsSpecialMarkdownElement("const x = 42;", context3)).toBe(
-        true,
-      );
+      expect(testIsSpecialMarkdownElement("const x = 42;", context3)).toBe(true);
     });
 
     it("should handle multiple code blocks correctly", () => {
@@ -446,17 +423,10 @@ This is another short line.`;
       ];
 
       // Text after the first code block should not be special
-      expect(
-        testIsSpecialMarkdownElement(
-          "This is regular text",
-          context.slice(0, 4),
-        ),
-      ).toBe(false);
+      expect(testIsSpecialMarkdownElement("This is regular text", context.slice(0, 4))).toBe(false);
 
       // Text after the second code block should not be special
-      expect(
-        testIsSpecialMarkdownElement("This is also regular text", context),
-      ).toBe(false);
+      expect(testIsSpecialMarkdownElement("This is also regular text", context)).toBe(false);
     });
 
     it("should handle malformed code blocks gracefully", () => {
@@ -605,10 +575,7 @@ This is another very long sentence that should also be automatically fixed.`;
       // Check that long sentences were broken
       const lines = fixedContent.split("\n");
       const longLines = lines.filter(
-        (line) =>
-          line.length > 80 &&
-          !line.trim().startsWith("```") &&
-          !line.trim().startsWith("#"),
+        line => line.length > 80 && !line.trim().startsWith("```") && !line.trim().startsWith("#")
       );
       expect(longLines.length).toBe(0);
     });
@@ -640,8 +607,7 @@ This is another very long sentence that should also be automatically fixed.`;
     });
 
     it("should handle very long single words", () => {
-      const content =
-        "This is a line with a verylongwordthatexceedsthelimitandcannotbebrokenatwordboundaries.";
+      const content = "This is a line with a verylongwordthatexceedsthelimitandcannotbebrokenatwordboundaries.";
       const result = breakLineIntelligently(content, 50);
 
       // Should still break the line even if it means breaking a long word

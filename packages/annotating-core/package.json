@@ -28,9 +28,7 @@
       "import": "./dist/utils/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
@@ -41,16 +39,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "annotation",
-    "caption",
-    "tagging",
-    "image",
-    "ml",
-    "ai",
-    "core",
-    "model-management"
-  ],
+  "keywords": ["annotation", "caption", "tagging", "image", "ml", "ai", "core", "model-management"],
   "dependencies": {
     "reynard-core": "workspace:*",
     "reynard-service-manager": "workspace:*",

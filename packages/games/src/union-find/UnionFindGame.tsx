@@ -36,7 +36,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
       .map(() =>
         Array(GRID_SIZE)
           .fill(0)
-          .map(() => COLORS[Math.floor(Math.random() * COLORS.length)]),
+          .map(() => COLORS[Math.floor(Math.random() * COLORS.length)])
       );
     setGrid(newGrid);
     setUf(new UnionFind(GRID_SIZE * GRID_SIZE));
@@ -72,7 +72,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
   };
 
   const applyGravity = (newGrid: number[][]) => {
-    const updatedGrid = newGrid.map((row) => [...row]);
+    const updatedGrid = newGrid.map(row => [...row]);
 
     for (let col = 0; col < GRID_SIZE; col++) {
       // Create a new column with only non-zero values, packed to the bottom
@@ -97,7 +97,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
   };
 
   const fillEmptySpaces = (newGrid: number[][]) => {
-    const updatedGrid = newGrid.map((row) => [...row]);
+    const updatedGrid = newGrid.map(row => [...row]);
 
     // Only fill empty spaces at the top of each column
     for (let col = 0; col < GRID_SIZE; col++) {
@@ -113,8 +113,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
 
       // Fill only the top empty spaces
       for (let row = 0; row < emptyCount; row++) {
-        updatedGrid[row][col] =
-          COLORS[Math.floor(Math.random() * COLORS.length)];
+        updatedGrid[row][col] = COLORS[Math.floor(Math.random() * COLORS.length)];
       }
     }
 
@@ -125,14 +124,14 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
     setIsAnimating(true);
 
     // Convert component IDs back to grid positions
-    const positions = component.map((id) => ({
+    const positions = component.map(id => ({
       row: Math.floor(id / GRID_SIZE),
       col: id % GRID_SIZE,
     }));
 
     // Mark cells for clearing
-    setGrid((prevGrid) => {
-      const newGrid = prevGrid.map((row) => [...row]);
+    setGrid(prevGrid => {
+      const newGrid = prevGrid.map(row => [...row]);
       positions.forEach(({ row, col }) => {
         newGrid[row][col] = 0;
       });
@@ -140,13 +139,13 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
     });
 
     // Wait for animation
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise(resolve => setTimeout(resolve, 300));
 
     // Apply gravity
-    setGrid((prevGrid) => applyGravity(prevGrid));
+    setGrid(prevGrid => applyGravity(prevGrid));
 
     // Wait for gravity animation
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await new Promise(resolve => setTimeout(resolve, 200));
 
     // Update score
     const comboScore = component.length * 10 * (comboCount() + 1);
@@ -156,23 +155,14 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
     setIsAnimating(false);
   };
 
-  const isAdjacent = (
-    row1: number,
-    col1: number,
-    row2: number,
-    col2: number,
-  ) => {
+  const isAdjacent = (row1: number, col1: number, row2: number, col2: number) => {
     const rowDiff = Math.abs(row1 - row2);
     const colDiff = Math.abs(col1 - col2);
     // Allow both orthogonal (up/down/left/right) and diagonal connections
     return rowDiff <= 1 && colDiff <= 1 && !(rowDiff === 0 && colDiff === 0);
   };
 
-  const canAddToSelection = (
-    row: number,
-    col: number,
-    currentSelection: Set<string>,
-  ) => {
+  const canAddToSelection = (row: number, col: number, currentSelection: Set<string>) => {
     if (currentSelection.size === 0) return true;
 
     const currentColor = grid()[row][col];
@@ -180,10 +170,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
     // Check if any selected cell is adjacent and has the same color
     for (const selectedKey of Array.from(currentSelection)) {
       const [selRow, selCol] = selectedKey.split("-").map(Number);
-      if (
-        grid()[selRow][selCol] === currentColor &&
-        isAdjacent(row, col, selRow, selCol)
-      ) {
+      if (grid()[selRow][selCol] === currentColor && isAdjacent(row, col, selRow, selCol)) {
         return true;
       }
     }
@@ -213,10 +200,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
         for (const selectedKey of Array.from(newSelected)) {
           if (selectedKey === cellKey) continue;
           const [selRow, selCol] = selectedKey.split("-").map(Number);
-          if (
-            grid()[selRow][selCol] === currentColor &&
-            isAdjacent(row, col, selRow, selCol)
-          ) {
+          if (grid()[selRow][selCol] === currentColor && isAdjacent(row, col, selRow, selCol)) {
             const selId = getCellId(selRow, selCol);
             currentUf.union(cellId, selId);
           }
@@ -240,7 +224,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
 
   const fillBoard = () => {
     if (gameState() !== "playing") return;
-    setGrid((prevGrid) => fillEmptySpaces(prevGrid));
+    setGrid(prevGrid => fillEmptySpaces(prevGrid));
     // Check for game over after filling
     setTimeout(() => {
       checkGameOver();
@@ -299,10 +283,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
         if (color === 0) continue;
 
         // Check for L-shape patterns (3 blocks forming an L)
-        if (
-          currentGrid[row][col + 1] === color &&
-          currentGrid[row + 1][col] === color
-        ) {
+        if (currentGrid[row][col + 1] === color && currentGrid[row + 1][col] === color) {
           return true;
         }
 
@@ -312,17 +293,11 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
         }
 
         // Check for other connected patterns
-        if (
-          currentGrid[row][col + 1] === color &&
-          currentGrid[row + 1][col + 1] === color
-        ) {
+        if (currentGrid[row][col + 1] === color && currentGrid[row + 1][col + 1] === color) {
           return true;
         }
 
-        if (
-          currentGrid[row + 1][col] === color &&
-          currentGrid[row + 1][col + 1] === color
-        ) {
+        if (currentGrid[row + 1][col] === color && currentGrid[row + 1][col + 1] === color) {
           return true;
         }
 
@@ -358,9 +333,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
 
     // Get the connected components from the current selection
     const components = findConnectedComponents(currentSelection);
-    const largestComponent = components.reduce((max, comp) =>
-      comp.length > max.length ? comp : max,
-    );
+    const largestComponent = components.reduce((max, comp) => (comp.length > max.length ? comp : max));
 
     // Clear selected cells
     setSelectedCells(new Set<string>());
@@ -389,10 +362,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
 
       if (event.key === "Escape") {
         cancelSelection();
-      } else if (
-        event.key === "Enter" &&
-        selectedCells().size >= TARGET_CONNECTIONS
-      ) {
+      } else if (event.key === "Enter" && selectedCells().size >= TARGET_CONNECTIONS) {
         clearSelectedCombo();
       }
     };
@@ -412,9 +382,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
           <span>Score: {score()}</span>
           <span>Moves: {moves()}</span>
           <span>Combo: {comboCount()}</span>
-          <span>
-            Status: {gameState() === "game-over" ? "Game Over!" : gameState()}
-          </span>
+          <span>Status: {gameState() === "game-over" ? "Game Over!" : gameState()}</span>
         </div>
         <Button onClick={initializeGame} variant="secondary" size="sm">
           New Game
@@ -422,12 +390,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
         <Button onClick={fillBoard} variant="tertiary" size="sm">
           Fill Board
         </Button>
-        <Button
-          onClick={cancelSelection}
-          variant="ghost"
-          size="sm"
-          disabled={selectedCells().size === 0}
-        >
+        <Button onClick={cancelSelection} variant="ghost" size="sm" disabled={selectedCells().size === 0}>
           Cancel Selection
         </Button>
         <Button
@@ -453,8 +416,7 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
             const canSelect =
               !isEmpty &&
               gameState() === "playing" &&
-              (selectedCells().size === 0 ||
-                canAddToSelection(rowIndex, colIndex, selectedCells()));
+              (selectedCells().size === 0 || canAddToSelection(rowIndex, colIndex, selectedCells()));
 
             return (
               <div
@@ -462,12 +424,10 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
                 onClick={() => canSelect && handleCellClick(rowIndex, colIndex)}
               >
                 {!isEmpty && <span class="cell-number">{color}</span>}
-                {isSelected && !isEmpty && (
-                  <span class="set-size">{setSize}</span>
-                )}
+                {isSelected && !isEmpty && <span class="set-size">{setSize}</span>}
               </div>
             );
-          }),
+          })
         )}
       </div>
 
@@ -483,21 +443,18 @@ export function UnionFindGame(props: UnionFindGameProps = {}) {
 
       <div class="game-instructions">
         <p>
-          🎯 <strong>Goal:</strong> Select connected cells of the same number to
-          create combos of 3+ cells (orthogonal and diagonal connections
-          allowed!)
+          🎯 <strong>Goal:</strong> Select connected cells of the same number to create combos of 3+ cells (orthogonal
+          and diagonal connections allowed!)
         </p>
         <p>
-          💡 <strong>Mechanics:</strong> Combos disappear, blocks fall with
-          gravity!
+          💡 <strong>Mechanics:</strong> Combos disappear, blocks fall with gravity!
         </p>
         <p>
-          🔥 <strong>Scoring:</strong> Larger combos = more points! Chain combos
-          for bonus multipliers!
+          🔥 <strong>Scoring:</strong> Larger combos = more points! Chain combos for bonus multipliers!
         </p>
         <p>
-          ⌨️ <strong>Controls:</strong> Click cells to select, press{" "}
-          <kbd>Escape</kbd> to cancel, <kbd>Enter</kbd> to clear combo!
+          ⌨️ <strong>Controls:</strong> Click cells to select, press <kbd>Escape</kbd> to cancel, <kbd>Enter</kbd> to
+          clear combo!
         </p>
       </div>
 

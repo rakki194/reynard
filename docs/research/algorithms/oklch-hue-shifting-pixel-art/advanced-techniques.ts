@@ -11,10 +11,7 @@ import type { OKLCHColor } from "reynard-colors";
  * @param count - Number of colors in palette
  * @returns Array of OKLCH colors
  */
-export function goldenRatioHuePalette(
-  baseColor: OKLCHColor,
-  count: number = 8,
-): OKLCHColor[] {
+export function goldenRatioHuePalette(baseColor: OKLCHColor, count: number = 8): OKLCHColor[] {
   const GOLDEN_ANGLE = 137.508; // Golden angle in degrees
   const colors: OKLCHColor[] = [];
   const { l, c } = baseColor;
@@ -40,10 +37,7 @@ export function goldenRatioHuePalette(
  * @param shiftAmount - Amount to shift the complementary hue
  * @returns Complementary OKLCH color
  */
-export function generateComplementaryColor(
-  baseColor: OKLCHColor,
-  shiftAmount: number = 0,
-): OKLCHColor {
+export function generateComplementaryColor(baseColor: OKLCHColor, shiftAmount: number = 0): OKLCHColor {
   const complementaryHue = (baseColor.h + 180 + shiftAmount) % 360;
 
   return {
@@ -61,16 +55,12 @@ export function generateComplementaryColor(
  */
 export function generateTriadicColors(
   baseColor: OKLCHColor,
-  shiftAmount: number = 0,
+  shiftAmount: number = 0
 ): [OKLCHColor, OKLCHColor, OKLCHColor] {
   const hue1 = (baseColor.h + 120 + shiftAmount) % 360;
   const hue2 = (baseColor.h + 240 + shiftAmount) % 360;
 
-  return [
-    baseColor,
-    { l: baseColor.l, c: baseColor.c, h: hue1 },
-    { l: baseColor.l, c: baseColor.c, h: hue2 },
-  ];
+  return [baseColor, { l: baseColor.l, c: baseColor.c, h: hue1 }, { l: baseColor.l, c: baseColor.c, h: hue2 }];
 }
 
 /**
@@ -80,11 +70,7 @@ export function generateTriadicColors(
  * @param spread - Hue spread in degrees
  * @returns Array of OKLCH colors
  */
-export function generateAnalogousColors(
-  baseColor: OKLCHColor,
-  count: number = 5,
-  spread: number = 30,
-): OKLCHColor[] {
+export function generateAnalogousColors(baseColor: OKLCHColor, count: number = 5, spread: number = 30): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const step = spread / (count - 1);
   const startOffset = -spread / 2;
@@ -109,17 +95,13 @@ export function generateAnalogousColors(
  */
 export function generateSplitComplementaryColors(
   baseColor: OKLCHColor,
-  spread: number = 30,
+  spread: number = 30
 ): [OKLCHColor, OKLCHColor, OKLCHColor] {
   const complementaryHue = (baseColor.h + 180) % 360;
   const hue1 = (complementaryHue - spread + 360) % 360;
   const hue2 = (complementaryHue + spread) % 360;
 
-  return [
-    baseColor,
-    { l: baseColor.l, c: baseColor.c, h: hue1 },
-    { l: baseColor.l, c: baseColor.c, h: hue2 },
-  ];
+  return [baseColor, { l: baseColor.l, c: baseColor.c, h: hue1 }, { l: baseColor.l, c: baseColor.c, h: hue2 }];
 }
 
 /**
@@ -130,7 +112,7 @@ export function generateSplitComplementaryColors(
  */
 export function generateTetradicColors(
   baseColor: OKLCHColor,
-  offset: number = 30,
+  offset: number = 30
 ): [OKLCHColor, OKLCHColor, OKLCHColor, OKLCHColor] {
   const hue1 = (baseColor.h + offset) % 360;
   const hue2 = (baseColor.h + 180) % 360;

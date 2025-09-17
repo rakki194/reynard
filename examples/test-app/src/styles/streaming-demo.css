@@ -46,13 +46,7 @@
 }
 
 .streaming-text {
-  font-family: var(
-    --font-family-mono,
-    "Monaco",
-    "Menlo",
-    "Ubuntu Mono",
-    monospace
-  );
+  font-family: var(--font-family-mono, "Monaco", "Menlo", "Ubuntu Mono", monospace);
   font-size: 0.875rem;
   color: var(--color-text-primary, #333);
 }

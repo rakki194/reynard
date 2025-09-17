@@ -4,7 +4,6 @@ Image Utils API Models for Reynard Backend
 Pydantic models for image processing API endpoints.
 """
 
-from typing import Dict, List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -12,13 +11,13 @@ class ImageFormatResponse(BaseModel):
     extension: str
     mime_type: str
     supported: bool
-    requires_plugin: Optional[bool] = None
+    requires_plugin: bool | None = None
 
 
 class ImageProcessingServiceInfoResponse(BaseModel):
     jxl_supported: bool
     avif_supported: bool
-    supported_formats: List[str]
+    supported_formats: list[str]
     total_formats: int
 
 
@@ -34,8 +33,8 @@ class ImageDimensionsRequest(BaseModel):
 class ResizeDimensionsRequest(BaseModel):
     original_width: int = Field(..., ge=1, le=10000)
     original_height: int = Field(..., ge=1, le=10000)
-    target_width: Optional[int] = Field(default=None, ge=1, le=10000)
-    target_height: Optional[int] = Field(default=None, ge=1, le=10000)
+    target_width: int | None = Field(default=None, ge=1, le=10000)
+    target_height: int | None = Field(default=None, ge=1, le=10000)
 
 
 class ResizeDimensionsResponse(BaseModel):
@@ -49,4 +48,4 @@ class AspectRatioResponse(BaseModel):
 
 class ValidationResponse(BaseModel):
     valid: bool
-    message: Optional[str] = None
+    message: str | None = None

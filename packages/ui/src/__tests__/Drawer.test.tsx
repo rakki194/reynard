@@ -165,9 +165,7 @@ describe("Drawer", () => {
     it("should show close button by default", () => {
       render(() => <Drawer open={true}>{mockContent}</Drawer>);
 
-      expect(
-        screen.getByRole("button", { name: /close/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /close/i })).toBeInTheDocument();
     });
 
     it("should hide close button when disabled", () => {
@@ -177,9 +175,7 @@ describe("Drawer", () => {
         </Drawer>
       ));
 
-      expect(
-        screen.queryByRole("button", { name: /close/i }),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /close/i })).not.toBeInTheDocument();
     });
 
     it("should call onClose when close button is clicked", () => {
@@ -334,9 +330,7 @@ describe("Drawer", () => {
       document.body.appendChild(triggerButton);
       triggerButton.focus();
 
-      const { rerender } = render(() => (
-        <Drawer open={true}>{mockContent}</Drawer>
-      ));
+      const { rerender } = render(() => <Drawer open={true}>{mockContent}</Drawer>);
 
       expect(triggerButton).not.toHaveFocus();
 
@@ -357,9 +351,7 @@ describe("Drawer", () => {
     });
 
     it("should apply closing animation class when closing", () => {
-      const { rerender } = render(() => (
-        <Drawer open={true}>{mockContent}</Drawer>
-      ));
+      const { rerender } = render(() => <Drawer open={true}>{mockContent}</Drawer>);
 
       rerender(() => <Drawer open={false}>{mockContent}</Drawer>);
 

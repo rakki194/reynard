@@ -29,7 +29,7 @@ const defaultProps: Partial<CardProps> = {
   selected: false,
 };
 
-export const Card: Component<CardProps> = (props) => {
+export const Card: Component<CardProps> = props => {
   const merged = mergeProps(defaultProps, props);
   const [local, others] = splitProps(merged, [
     "variant",
@@ -43,11 +43,7 @@ export const Card: Component<CardProps> = (props) => {
   ]);
 
   const getClasses = () => {
-    const classes = [
-      "reynard-card",
-      `reynard-card--${local.variant}`,
-      `reynard-card--padding-${local.padding}`,
-    ];
+    const classes = ["reynard-card", `reynard-card--${local.variant}`, `reynard-card--padding-${local.padding}`];
 
     if (local.interactive) classes.push("reynard-card--interactive");
     if (local.selected) classes.push("reynard-card--selected");
@@ -60,9 +56,7 @@ export const Card: Component<CardProps> = (props) => {
     <div class={getClasses()} {...others}>
       {local.header && <div class="reynard-card__header">{local.header}</div>}
 
-      {local.children && (
-        <div class="reynard-card__content">{local.children}</div>
-      )}
+      {local.children && <div class="reynard-card__content">{local.children}</div>}
 
       {local.footer && <div class="reynard-card__footer">{local.footer}</div>}
     </div>

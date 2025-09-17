@@ -20,7 +20,7 @@ export class PerformanceBenchmark {
   async run<T>(
     fn: () => T | Promise<T>,
     iterations: number = 1,
-    budget?: PerformanceBudget,
+    budget?: PerformanceBudget
   ): Promise<PerformanceMetrics> {
     const times: number[] = [];
     const memoryBefore = this.memoryMonitor.measure();
@@ -34,9 +34,7 @@ export class PerformanceBenchmark {
       times.push(end - start);
 
       if (budget && end - start > budget.maxDuration) {
-        console.warn(
-          `Performance budget exceeded: ${end - start}ms > ${budget.maxDuration}ms`,
-        );
+        console.warn(`Performance budget exceeded: ${end - start}ms > ${budget.maxDuration}ms`);
       }
     }
 
@@ -44,15 +42,12 @@ export class PerformanceBenchmark {
     const memoryAfter = this.memoryMonitor.measure();
 
     const sortedTimes = times.sort((a, b) => a - b);
-    const averageTime =
-      times.reduce((sum, time) => sum + time, 0) / times.length;
+    const averageTime = times.reduce((sum, time) => sum + time, 0) / times.length;
     const minTime = sortedTimes[0];
     const maxTime = sortedTimes[sortedTimes.length - 1];
 
     // Calculate standard deviation
-    const variance =
-      times.reduce((sum, time) => sum + Math.pow(time - averageTime, 2), 0) /
-      times.length;
+    const variance = times.reduce((sum, time) => sum + Math.pow(time - averageTime, 2), 0) / times.length;
     const standardDeviation = Math.sqrt(variance);
 
     return {
@@ -75,7 +70,7 @@ export class PerformanceBenchmark {
  */
 export async function measureAsync<T>(
   operation: () => Promise<T>,
-  name?: string,
+  name?: string
 ): Promise<{ result: T; metrics: PerformanceMetrics }> {
   const benchmark = new PerformanceBenchmark();
   const metrics = await benchmark.run(operation, 1);
@@ -93,7 +88,7 @@ export async function measureAsync<T>(
 export async function measureSync<T>(
   operation: () => T,
   name?: string,
-  iterations: number = 1,
+  iterations: number = 1
 ): Promise<{ result: T; metrics: PerformanceMetrics }> {
   const benchmark = new PerformanceBenchmark();
   const metrics = await benchmark.run(operation, iterations);

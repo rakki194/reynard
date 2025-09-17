@@ -5,20 +5,21 @@ This module provides default implementations and utility methods
 for caption generators.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from .types import ModelCategory
 
 
 class CaptionGeneratorMixin:
     """
     Mixin class providing default implementations for caption generators.
-    
+
     This mixin provides sensible defaults for optional methods and properties
     that generators can override as needed.
     """
 
     @property
-    def features(self) -> List[str]:
+    def features(self) -> list[str]:
         """
         List of special features/capabilities this captioner supports.
 
@@ -47,7 +48,7 @@ class CaptionGeneratorMixin:
         """
         return False
 
-    async def load(self, config: Optional[Dict[str, Any]] = None) -> None:
+    async def load(self, config: dict[str, Any] | None = None) -> None:
         """
         Load the model into memory.
 
@@ -62,7 +63,7 @@ class CaptionGeneratorMixin:
         """
         pass
 
-    def get_info(self) -> Dict[str, Any]:
+    def get_info(self) -> dict[str, Any]:
         """
         Get comprehensive information about this generator.
 
@@ -78,5 +79,5 @@ class CaptionGeneratorMixin:
             "is_loaded": self.is_loaded,
             "config_schema": self.config_schema,
             "features": self.features,
-            "model_category": self.model_category.value
+            "model_category": self.model_category.value,
         }

@@ -7,11 +7,7 @@ import type { IntlConfig } from "../../intl/IntlConfig";
 export class IntlRelativeTimeFormatter {
   constructor(private config: IntlConfig) {}
 
-  format(
-    value: number,
-    unit: Intl.RelativeTimeFormatUnit,
-    options?: Intl.RelativeTimeFormatOptions,
-  ): string {
+  format(value: number, unit: Intl.RelativeTimeFormatUnit, options?: Intl.RelativeTimeFormatOptions): string {
     const formatter = new Intl.RelativeTimeFormat(this.config.locale, options);
     return formatter.format(value, unit);
   }

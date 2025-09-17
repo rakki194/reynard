@@ -12,10 +12,9 @@ import { RAGConfig } from "./rag-types";
 export function createRAGAutoRefresh(
   config: () => RAGConfig | undefined,
   refetchIndexingStatus: () => void,
-  refetchMetrics: () => void,
+  refetchMetrics: () => void
 ) {
-  const [statusRefreshInterval, setStatusRefreshInterval] =
-    createSignal<NodeJS.Timeout | null>(null);
+  const [statusRefreshInterval, setStatusRefreshInterval] = createSignal<NodeJS.Timeout | null>(null);
 
   createEffect(() => {
     if (config()?.rag_enabled) {

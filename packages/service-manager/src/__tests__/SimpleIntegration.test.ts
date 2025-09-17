@@ -6,12 +6,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import {
-  ServiceManager,
-  BaseService,
-  ServiceStatus,
-  ServiceHealth,
-} from "../../../index.js";
+import { ServiceManager, BaseService, ServiceStatus, ServiceHealth } from "../../../index.js";
 import { FeatureManager, COMMON_FEATURES } from "reynard-features";
 import { FeatureServiceBridge } from "../../FeatureServiceBridge.js";
 

@@ -91,10 +91,7 @@ export interface Commands {
    * @param entity The entity to modify
    * @param componentTypes Types of components to remove
    */
-  remove<T extends Component[]>(
-    entity: Entity,
-    ...componentTypes: ComponentType<T[number]>[]
-  ): void;
+  remove<T extends Component[]>(entity: Entity, ...componentTypes: ComponentType<T[number]>[]): void;
 
   /**
    * Inserts a resource into the world.

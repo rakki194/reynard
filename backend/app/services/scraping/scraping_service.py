@@ -467,10 +467,12 @@ class ScrapingService:
                 job.id,
                 {
                     "results_count": len(processed_results),
-                    "average_quality": sum(r.quality.score for r in processed_results)
-                    / len(processed_results)
-                    if processed_results
-                    else 0,
+                    "average_quality": (
+                        sum(r.quality.score for r in processed_results)
+                        / len(processed_results)
+                        if processed_results
+                        else 0
+                    ),
                 },
             )
 

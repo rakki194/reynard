@@ -27,7 +27,7 @@ export function formatPackageName(name: string): string {
   // Convert kebab-case to Title Case
   return nameWithoutScope
     .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
 
@@ -46,9 +46,7 @@ export async function fileExists(filePath: string): Promise<boolean> {
 /**
  * Read file if it exists
  */
-export async function readFileIfExists(
-  filePath: string,
-): Promise<string | null> {
+export async function readFileIfExists(filePath: string): Promise<string | null> {
   try {
     return await fs.readFile(filePath, "utf-8");
   } catch {
@@ -59,10 +57,7 @@ export async function readFileIfExists(
 /**
  * Write file with directory creation
  */
-export async function writeFileWithDirs(
-  filePath: string,
-  content: string,
-): Promise<void> {
+export async function writeFileWithDirs(filePath: string, content: string): Promise<void> {
   const dir = path.dirname(filePath);
   await fs.mkdir(dir, { recursive: true });
   await fs.writeFile(filePath, content, "utf-8");
@@ -71,10 +66,7 @@ export async function writeFileWithDirs(
 /**
  * Copy file with directory creation
  */
-export async function copyFileWithDirs(
-  src: string,
-  dest: string,
-): Promise<void> {
+export async function copyFileWithDirs(src: string, dest: string): Promise<void> {
   const dir = path.dirname(dest);
   await fs.mkdir(dir, { recursive: true });
   await fs.copyFile(src, dest);
@@ -83,11 +75,7 @@ export async function copyFileWithDirs(
 /**
  * Find files matching a pattern
  */
-export async function findFiles(
-  dir: string,
-  pattern: RegExp,
-  excludePatterns: RegExp[] = [],
-): Promise<string[]> {
+export async function findFiles(dir: string, pattern: RegExp, excludePatterns: RegExp[] = []): Promise<string[]> {
   const files: string[] = [];
 
   try {
@@ -96,10 +84,7 @@ export async function findFiles(
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
 
-      if (
-        entry.isDirectory() &&
-        !excludePatterns.some((pattern) => pattern.test(entry.name))
-      ) {
+      if (entry.isDirectory() && !excludePatterns.some(pattern => pattern.test(entry.name))) {
         const subFiles = await findFiles(fullPath, pattern, excludePatterns);
         files.push(...subFiles);
       } else if (entry.isFile() && pattern.test(entry.name)) {
@@ -249,10 +234,7 @@ export function formatRelativeTime(date: Date | string): string {
 /**
  * Deep merge objects
  */
-export function deepMerge<T extends Record<string, any>>(
-  target: T,
-  source: Partial<T>,
-): T {
+export function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
   const result = { ...target };
 
   for (const key in source) {
@@ -281,10 +263,7 @@ export function deepMerge<T extends Record<string, any>>(
 /**
  * Debounce function
  */
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number,
-): (...args: Parameters<T>) => void {
+export function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout;
 
   return (...args: Parameters<T>) => {
@@ -296,10 +275,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function
  */
-export function throttle<T extends (...args: any[]) => any>(
-  func: T,
-  limit: number,
-): (...args: Parameters<T>) => void {
+export function throttle<T extends (...args: any[]) => any>(func: T, limit: number): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
 
   return (...args: Parameters<T>) => {
@@ -314,11 +290,7 @@ export function throttle<T extends (...args: any[]) => any>(
 /**
  * Retry function with exponential backoff
  */
-export async function retry<T>(
-  fn: () => Promise<T>,
-  maxAttempts: number = 3,
-  baseDelay: number = 1000,
-): Promise<T> {
+export async function retry<T>(fn: () => Promise<T>, maxAttempts: number = 3, baseDelay: number = 1000): Promise<T> {
   let lastError: Error;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -332,7 +304,7 @@ export async function retry<T>(
       }
 
       const delay = baseDelay * Math.pow(2, attempt - 1);
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
 

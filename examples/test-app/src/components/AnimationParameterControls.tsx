@@ -16,14 +16,10 @@ interface AnimationParameterControlsProps {
     enablePerformanceMonitoring: boolean;
   };
   onConfigChange: (config: Partial<GameConfig>) => void;
-  onAnimationConfigChange: (
-    config: Partial<AnimationParameterControlsProps["animationConfig"]>,
-  ) => void;
+  onAnimationConfigChange: (config: Partial<AnimationParameterControlsProps["animationConfig"]>) => void;
 }
 
-export const AnimationParameterControls: Component<
-  AnimationParameterControlsProps
-> = (props) => {
+export const AnimationParameterControls: Component<AnimationParameterControlsProps> = props => {
   console.log("🦊 AnimationParameterControls: Component rendering with props", {
     config: props.config,
     animationConfig: props.animationConfig,
@@ -127,9 +123,7 @@ export const AnimationParameterControls: Component<
           <h4>Spiral Configuration</h4>
 
           <div class="control-item">
-            <label for="point-count">
-              Point Count: {props.config.pointCount}
-            </label>
+            <label for="point-count">Point Count: {props.config.pointCount}</label>
             <input
               type="range"
               id="point-count"
@@ -137,17 +131,13 @@ export const AnimationParameterControls: Component<
               max="2000"
               step="5"
               value={props.config.pointCount}
-              onInput={(e: any) =>
-                props.onConfigChange({ pointCount: parseInt(e.target.value) })
-              }
+              onInput={(e: any) => props.onConfigChange({ pointCount: parseInt(e.target.value) })}
             />
             <div class="range-info">Range: 10 - 2000 points</div>
           </div>
 
           <div class="control-item">
-            <label for="rotation-speed">
-              Rotation Speed: {props.config.rotationSpeed.toFixed(2)}
-            </label>
+            <label for="rotation-speed">Rotation Speed: {props.config.rotationSpeed.toFixed(2)}</label>
             <input
               type="range"
               id="rotation-speed"
@@ -161,15 +151,11 @@ export const AnimationParameterControls: Component<
                 })
               }
             />
-            <div class="range-info">
-              Range: 0.01 - 20.0 (ultra slow to hyper fast)
-            </div>
+            <div class="range-info">Range: 0.01 - 20.0 (ultra slow to hyper fast)</div>
           </div>
 
           <div class="control-item">
-            <label for="spiral-growth">
-              Spiral Growth: {props.config.spiralGrowth.toFixed(2)}
-            </label>
+            <label for="spiral-growth">Spiral Growth: {props.config.spiralGrowth.toFixed(2)}</label>
             <input
               type="range"
               id="spiral-growth"
@@ -183,15 +169,11 @@ export const AnimationParameterControls: Component<
                 })
               }
             />
-            <div class="range-info">
-              Range: 0.1 - 15.0 (tight to extremely loose)
-            </div>
+            <div class="range-info">Range: 0.1 - 15.0 (tight to extremely loose)</div>
           </div>
 
           <div class="control-item">
-            <label for="base-radius">
-              Base Radius: {props.config.baseRadius}
-            </label>
+            <label for="base-radius">Base Radius: {props.config.baseRadius}</label>
             <input
               type="range"
               id="base-radius"
@@ -199,17 +181,13 @@ export const AnimationParameterControls: Component<
               max="200"
               step="1"
               value={props.config.baseRadius}
-              onInput={(e: any) =>
-                props.onConfigChange({ baseRadius: parseInt(e.target.value) })
-              }
+              onInput={(e: any) => props.onConfigChange({ baseRadius: parseInt(e.target.value) })}
             />
             <div class="range-info">Range: 1 - 200 pixels</div>
           </div>
 
           <div class="control-item">
-            <label for="dot-size">
-              Dot Size: {props.config.dotSize.toFixed(1)}
-            </label>
+            <label for="dot-size">Dot Size: {props.config.dotSize.toFixed(1)}</label>
             <input
               type="range"
               id="dot-size"
@@ -217,9 +195,7 @@ export const AnimationParameterControls: Component<
               max="10.0"
               step="0.1"
               value={props.config.dotSize}
-              onInput={(e: any) =>
-                props.onConfigChange({ dotSize: parseFloat(e.target.value) })
-              }
+              onInput={(e: any) => props.onConfigChange({ dotSize: parseFloat(e.target.value) })}
             />
             <div class="range-info">Range: 0.1 - 10.0 pixels</div>
           </div>
@@ -230,10 +206,7 @@ export const AnimationParameterControls: Component<
           <h4>Color Configuration</h4>
 
           <div class="control-item">
-            <label for="color-saturation">
-              Color Saturation:{" "}
-              {(props.config.colorSaturation * 100).toFixed(1)}%
-            </label>
+            <label for="color-saturation">Color Saturation: {(props.config.colorSaturation * 100).toFixed(1)}%</label>
             <input
               type="range"
               id="color-saturation"
@@ -251,9 +224,7 @@ export const AnimationParameterControls: Component<
           </div>
 
           <div class="control-item">
-            <label for="color-lightness">
-              Color Lightness: {(props.config.colorLightness * 100).toFixed(1)}%
-            </label>
+            <label for="color-lightness">Color Lightness: {(props.config.colorLightness * 100).toFixed(1)}%</label>
             <input
               type="range"
               id="color-lightness"
@@ -276,23 +247,19 @@ export const AnimationParameterControls: Component<
           <h4>Advanced Phyllotactic Parameters</h4>
 
           <div class="control-item">
-            <label for="angle-fraction">
-              Angle Fraction: {props.config.angleFraction.toFixed(5)}
-            </label>
+            <label for="angle-fraction">Angle Fraction: {props.config.angleFraction.toFixed(5)}</label>
             <input
               id="angle-fraction"
               type="number"
               step="0.00001"
               value={props.config.angleFraction}
-              onInput={(e) =>
+              onInput={e =>
                 props.onConfigChange({
                   angleFraction: parseFloat(e.target.value),
                 })
               }
             />
-            <div class="range-info">
-              Golden angle fraction (0.382 = golden angle)
-            </div>
+            <div class="range-info">Golden angle fraction (0.382 = golden angle)</div>
           </div>
 
           <div class="control-item">
@@ -302,23 +269,19 @@ export const AnimationParameterControls: Component<
               type="number"
               step="0.05"
               value={props.config.step}
-              onInput={(e) =>
-                props.onConfigChange({ step: parseFloat(e.target.value) })
-              }
+              onInput={e => props.onConfigChange({ step: parseFloat(e.target.value) })}
             />
             <div class="range-info">Step size for spiral generation</div>
           </div>
 
           <div class="control-item">
-            <label for="rotation-fraction">
-              Rotation Fraction: {props.config.rotationFraction.toFixed(5)}
-            </label>
+            <label for="rotation-fraction">Rotation Fraction: {props.config.rotationFraction.toFixed(5)}</label>
             <input
               id="rotation-fraction"
               type="number"
               step="0.00001"
               value={props.config.rotationFraction}
-              onInput={(e) =>
+              onInput={e =>
                 props.onConfigChange({
                   rotationFraction: parseFloat(e.target.value),
                 })
@@ -333,7 +296,7 @@ export const AnimationParameterControls: Component<
               <input
                 type="checkbox"
                 checked={props.config.lockRotation || false}
-                onChange={(e) =>
+                onChange={e =>
                   props.onConfigChange({
                     lockRotation: e.currentTarget.checked,
                   })
@@ -355,7 +318,7 @@ export const AnimationParameterControls: Component<
                   <input
                     type="checkbox"
                     checked={props.config.enableLine1 || false}
-                    onChange={(e) =>
+                    onChange={e =>
                       props.onConfigChange({
                         enableLine1: e.currentTarget.checked,
                       })
@@ -371,7 +334,7 @@ export const AnimationParameterControls: Component<
                   type="number"
                   min="1"
                   value={props.config.lineStep1}
-                  onInput={(e) =>
+                  onInput={e =>
                     props.onConfigChange({
                       lineStep1: parseInt(e.target.value),
                     })
@@ -383,7 +346,7 @@ export const AnimationParameterControls: Component<
                   <input
                     type="checkbox"
                     checked={props.config.fillGaps1 || false}
-                    onChange={(e) =>
+                    onChange={e =>
                       props.onConfigChange({
                         fillGaps1: e.currentTarget.checked,
                       })
@@ -400,7 +363,7 @@ export const AnimationParameterControls: Component<
                   <input
                     type="checkbox"
                     checked={props.config.enableLine2 || false}
-                    onChange={(e) =>
+                    onChange={e =>
                       props.onConfigChange({
                         enableLine2: e.currentTarget.checked,
                       })
@@ -416,7 +379,7 @@ export const AnimationParameterControls: Component<
                   type="number"
                   min="1"
                   value={props.config.lineStep2}
-                  onInput={(e) =>
+                  onInput={e =>
                     props.onConfigChange({
                       lineStep2: parseInt(e.target.value),
                     })
@@ -428,7 +391,7 @@ export const AnimationParameterControls: Component<
                   <input
                     type="checkbox"
                     checked={props.config.fillGaps2 || false}
-                    onChange={(e) =>
+                    onChange={e =>
                       props.onConfigChange({
                         fillGaps2: e.currentTarget.checked,
                       })
@@ -446,9 +409,7 @@ export const AnimationParameterControls: Component<
           <h4>Animation Engine</h4>
 
           <div class="control-item">
-            <label for="frame-rate">
-              Frame Rate: {props.animationConfig.frameRate} FPS
-            </label>
+            <label for="frame-rate">Frame Rate: {props.animationConfig.frameRate} FPS</label>
             <input
               type="range"
               id="frame-rate"
@@ -462,9 +423,7 @@ export const AnimationParameterControls: Component<
                 })
               }
             />
-            <div class="range-info">
-              Range: 1 - 160 FPS (slideshow to ultra smooth)
-            </div>
+            <div class="range-info">Range: 1 - 160 FPS (slideshow to ultra smooth)</div>
           </div>
 
           <div class="control-item">
@@ -490,7 +449,7 @@ export const AnimationParameterControls: Component<
               <input
                 type="checkbox"
                 checked={props.animationConfig.enableVSync}
-                onChange={(e) =>
+                onChange={e =>
                   props.onAnimationConfigChange({
                     enableVSync: e.currentTarget.checked,
                   })
@@ -505,7 +464,7 @@ export const AnimationParameterControls: Component<
               <input
                 type="checkbox"
                 checked={props.animationConfig.enablePerformanceMonitoring}
-                onChange={(e) =>
+                onChange={e =>
                   props.onAnimationConfigChange({
                     enablePerformanceMonitoring: e.currentTarget.checked,
                   })

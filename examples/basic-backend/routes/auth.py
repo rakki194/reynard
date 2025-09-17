@@ -7,11 +7,12 @@ import hashlib
 import secrets
 import time
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional
+from typing import Any
 
 from database import DatabaseService
 from fastapi import APIRouter, Depends, Header, HTTPException, status
 from pydantic import BaseModel, EmailStr
+
 from services import CacheService
 
 router = APIRouter()
@@ -30,7 +31,7 @@ class RegisterRequest(BaseModel):
     username: str
     email: EmailStr
     password: str
-    full_name: Optional[str] = None
+    full_name: str | None = None
 
 
 class TokenResponse(BaseModel):
@@ -47,14 +48,14 @@ class UserResponse(BaseModel):
     id: int
     username: str
     email: str
-    full_name: Optional[str] = None
+    full_name: str | None = None
     created_at: float
 
 
 # In-memory user storage (for demo purposes)
 # Note: This gets reset on reload, so we'll use cache service for persistence
-users_db: Dict[str, Dict[str, Any]] = {}
-sessions_db: Dict[str, Dict[str, Any]] = {}
+users_db: dict[str, dict[str, Any]] = {}
+sessions_db: dict[str, dict[str, Any]] = {}
 
 
 # Dependency functions (will be overridden in main.py)
@@ -201,7 +202,7 @@ async def register(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Username already exists",
                 )
-            elif "email" in str(e):
+            if "email" in str(e):
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail="Email already exists",

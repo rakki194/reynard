@@ -49,7 +49,7 @@ export class ComfyService {
    */
   async queueWorkflow(
     workflow: Record<string, unknown>,
-    clientId?: string,
+    clientId?: string
   ): Promise<{ promptId: string; clientId?: string }> {
     const response = await this.apiClient.comfy.queue({
       workflow,
@@ -98,16 +98,8 @@ export class ComfyService {
   /**
    * View a generated image
    */
-  async getImage(
-    filename: string,
-    subfolder = "",
-    type = "output",
-  ): Promise<ComfyImage> {
-    const response = await this.apiClient.comfy.viewImage(
-      filename,
-      subfolder,
-      type,
-    );
+  async getImage(filename: string, subfolder = "", type = "output"): Promise<ComfyImage> {
+    const response = await this.apiClient.comfy.viewImage(filename, subfolder, type);
     return {
       filename,
       subfolder,
@@ -119,9 +111,7 @@ export class ComfyService {
   /**
    * Generate an image from text
    */
-  async textToImage(
-    params: ComfyText2ImgParams,
-  ): Promise<{ promptId: string }> {
+  async textToImage(params: ComfyText2ImgParams): Promise<{ promptId: string }> {
     const response = await this.apiClient.comfy.text2img(params);
     return { promptId: response.data.prompt_id };
   }
@@ -133,7 +123,7 @@ export class ComfyService {
     file: File,
     promptId: string,
     workflow: Record<string, unknown>,
-    metadata: Record<string, unknown> = {},
+    metadata: Record<string, unknown> = {}
   ): Promise<ComfyIngestResult> {
     const formData = new FormData();
     formData.append("file", file);
@@ -148,17 +138,14 @@ export class ComfyService {
   /**
    * Stream status updates for a prompt
    */
-  streamStatus(
-    promptId: string,
-    onEvent: (event: ComfyStreamEvent) => void,
-  ): () => void {
+  streamStatus(promptId: string, onEvent: (event: ComfyStreamEvent) => void): () => void {
     if (this.eventSource) {
       this.eventSource.close();
     }
 
     this.eventSource = new EventSource(`/api/comfy/stream/${promptId}`);
 
-    this.eventSource.onmessage = (event) => {
+    this.eventSource.onmessage = event => {
       try {
         const data = JSON.parse(event.data);
         onEvent(data);
@@ -167,7 +154,7 @@ export class ComfyService {
       }
     };
 
-    this.eventSource.onerror = (error) => {
+    this.eventSource.onerror = error => {
       console.error("ComfyUI stream error:", error);
       onEvent({ type: "error", message: "Stream connection failed" });
     };
@@ -275,9 +262,7 @@ export class ComfyService {
   /**
    * Create a preset
    */
-  async createPreset(
-    preset: Omit<ComfyPreset, "createdAt" | "updatedAt" | "createdBy">,
-  ): Promise<ComfyPreset> {
+  async createPreset(preset: Omit<ComfyPreset, "createdAt" | "updatedAt" | "createdBy">): Promise<ComfyPreset> {
     const response = await this.apiClient.comfy.createPreset(preset);
     return response.data.preset;
   }
@@ -299,9 +284,7 @@ export class ComfyService {
   /**
    * Import a preset
    */
-  async importPreset(
-    preset: Omit<ComfyPreset, "createdAt" | "updatedAt" | "createdBy">,
-  ): Promise<ComfyPreset> {
+  async importPreset(preset: Omit<ComfyPreset, "createdAt" | "updatedAt" | "createdBy">): Promise<ComfyPreset> {
     const response = await this.apiClient.comfy.importPreset(preset);
     return response.data.preset;
   }
@@ -323,9 +306,7 @@ export class ComfyService {
   /**
    * Get a specific workflow template
    */
-  async getWorkflowTemplate(
-    templateId: string,
-  ): Promise<ComfyWorkflowTemplate> {
+  async getWorkflowTemplate(templateId: string): Promise<ComfyWorkflowTemplate> {
     const response = await this.apiClient.comfy.getWorkflowTemplate(templateId);
     return response.data.template;
   }
@@ -334,13 +315,9 @@ export class ComfyService {
    * Create a workflow template
    */
   async createWorkflowTemplate(
-    template: Omit<
-      ComfyWorkflowTemplate,
-      "id" | "createdAt" | "updatedAt" | "usageCount"
-    >,
+    template: Omit<ComfyWorkflowTemplate, "id" | "createdAt" | "updatedAt" | "usageCount">
   ): Promise<ComfyWorkflowTemplate> {
-    const response =
-      await this.apiClient.comfy.createWorkflowTemplate(template);
+    const response = await this.apiClient.comfy.createWorkflowTemplate(template);
     return response.data.template;
   }
 
@@ -349,12 +326,9 @@ export class ComfyService {
    */
   async updateWorkflowTemplate(
     templateId: string,
-    updates: Partial<ComfyWorkflowTemplate>,
+    updates: Partial<ComfyWorkflowTemplate>
   ): Promise<ComfyWorkflowTemplate> {
-    const response = await this.apiClient.comfy.updateWorkflowTemplate(
-      templateId,
-      updates,
-    );
+    const response = await this.apiClient.comfy.updateWorkflowTemplate(templateId, updates);
     return response.data.template;
   }
 
@@ -373,21 +347,16 @@ export class ComfyService {
     filters?: {
       category?: string;
       tags?: string;
-    },
+    }
   ): Promise<ComfyWorkflowTemplate[]> {
-    const response = await this.apiClient.comfy.searchWorkflowTemplates(
-      query,
-      filters,
-    );
+    const response = await this.apiClient.comfy.searchWorkflowTemplates(query, filters);
     return response.data.templates || [];
   }
 
   /**
    * Get community templates
    */
-  async getCommunityTemplates(
-    limit?: number,
-  ): Promise<ComfyWorkflowTemplate[]> {
+  async getCommunityTemplates(limit?: number): Promise<ComfyWorkflowTemplate[]> {
     const response = await this.apiClient.comfy.getCommunityTemplates({
       limit,
     });
@@ -412,10 +381,7 @@ export class ComfyService {
   /**
    * Import a template
    */
-  async importTemplate(
-    templateData: Record<string, unknown>,
-    visibility = "private",
-  ): Promise<ComfyWorkflowTemplate> {
+  async importTemplate(templateData: Record<string, unknown>, visibility = "private"): Promise<ComfyWorkflowTemplate> {
     const response = await this.apiClient.comfy.importTemplate({
       template_data: templateData,
       visibility,

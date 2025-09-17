@@ -12,18 +12,9 @@ import { PackageLifecycleList } from "./components/PackageLifecycleList";
 import { usePackageLifecycle } from "./composables/usePackageLifecycle";
 import type { PackageLifecyclePanelProps } from "./types/PackageLifecycleTypes";
 
-export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = (
-  props,
-) => {
-  const {
-    state,
-    refreshLifecycleData,
-    loadPackage,
-    unloadPackage,
-    reloadPackage,
-    setSearchQuery,
-    setSelectedStatus,
-  } = usePackageLifecycle(props.refreshInterval);
+export const PackageLifecyclePanel: Component<PackageLifecyclePanelProps> = props => {
+  const { state, refreshLifecycleData, loadPackage, unloadPackage, reloadPackage, setSearchQuery, setSelectedStatus } =
+    usePackageLifecycle(props.refreshInterval);
 
   return (
     <div class="reynard-package-lifecycle-panel">

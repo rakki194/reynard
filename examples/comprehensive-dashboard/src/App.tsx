@@ -1,9 +1,4 @@
-import {
-  Component,
-  createEffect,
-  createResource,
-  createSignal,
-} from "solid-js";
+import { Component, createEffect, createResource, createSignal } from "solid-js";
 import { Route } from "@solidjs/router";
 import { createNotificationsModule, NotificationsProvider } from "reynard-core";
 import { ReynardProvider, useTheme } from "reynard-themes";
@@ -52,11 +47,7 @@ const App: Component = () => {
   // Apply theme from settings
   createEffect(() => {
     const themePreference = settings.getSetting<string>("appearance.theme");
-    if (
-      themePreference &&
-      typeof themePreference === "string" &&
-      themePreference !== theme.theme()
-    ) {
+    if (themePreference && typeof themePreference === "string" && themePreference !== theme.theme()) {
       // Validate that the theme preference is a valid theme
       const validThemes: Theme[] = [
         "light",
@@ -77,11 +68,7 @@ const App: Component = () => {
   // Apply language from settings
   createEffect(() => {
     const languagePreference = settings.getSetting<string>("general.language");
-    if (
-      languagePreference &&
-      typeof languagePreference === "string" &&
-      languagePreference !== i18n.locale()
-    ) {
+    if (languagePreference && typeof languagePreference === "string" && languagePreference !== i18n.locale()) {
       // Validate that the language preference is a valid locale
       const validLocales: Locale[] = [
         "en",
@@ -142,10 +129,7 @@ const App: Component = () => {
         >
           <AppLayout
             sidebar={
-              <Sidebar
-                collapsed={sidebarCollapsed()}
-                onToggle={() => setSidebarCollapsed(!sidebarCollapsed())}
-              />
+              <Sidebar collapsed={sidebarCollapsed()} onToggle={() => setSidebarCollapsed(!sidebarCollapsed())} />
             }
             header={
               <Header

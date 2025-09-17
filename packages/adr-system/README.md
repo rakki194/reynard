@@ -62,24 +62,15 @@ npx adr-analyze relationships --path ./docs/architecture/decisions
 ### Programmatic Usage
 
 ```typescript
-import {
-  CodebaseAnalyzer,
-  ADRGenerator,
-  ADRValidator,
-} from "reynard-adr-system";
+import { CodebaseAnalyzer, ADRGenerator, ADRValidator } from "reynard-adr-system";
 
 // Analyze codebase
 const analyzer = new CodebaseAnalyzer("./src");
 const analysis = await analyzer.analyzeCodebase();
 
 // Generate ADRs from suggestions
-const generator = new ADRGenerator(
-  "./docs/architecture/decisions",
-  "./templates",
-);
-const generatedFiles = await generator.generateMultipleADRs(
-  analysis.suggestions,
-);
+const generator = new ADRGenerator("./docs/architecture/decisions", "./templates");
+const generatedFiles = await generator.generateMultipleADRs(analysis.suggestions);
 
 // Validate ADRs
 const validator = new ADRValidator("./docs/architecture/decisions");

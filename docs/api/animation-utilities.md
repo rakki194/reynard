@@ -369,10 +369,7 @@ interface AdaptiveQualityLevel {
 ### Phyllotactic Constants
 
 ```typescript
-import {
-  PHYLLOTACTIC_CONSTANTS,
-  GOLDEN_ANGLE,
-} from "../utils/phyllotactic-constants";
+import { PHYLLOTACTIC_CONSTANTS, GOLDEN_ANGLE } from "../utils/phyllotactic-constants";
 
 // Available constants:
 PHYLLOTACTIC_CONSTANTS.GOLDEN_RATIO; // φ = (1 + √5) / 2
@@ -384,10 +381,7 @@ PHYLLOTACTIC_CONSTANTS.VOGEL_SCALING_FACTOR; // Scaling factor for Vogel's model
 ### Spiral Calculations
 
 ```typescript
-import {
-  calculateSpiralPosition,
-  generatePhyllotacticPattern,
-} from "../utils/spiral-calculations";
+import { calculateSpiralPosition, generatePhyllotacticPattern } from "../utils/spiral-calculations";
 
 // Calculate individual spiral position
 const position = calculateSpiralPosition(index, rotationAngle, config);

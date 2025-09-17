@@ -38,7 +38,7 @@ export class ExportValidationError extends Error {
   constructor(
     message: string,
     public packageName: string,
-    public exportName?: string,
+    public exportName?: string
   ) {
     super(`Export validation failed for ${packageName}: ${message}`);
   }

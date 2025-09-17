@@ -5,10 +5,7 @@
  */
 
 import { getFileCategory } from "../../config/file-types";
-import {
-  BaseMetadataExtractor,
-  MetadataExtractionOptions,
-} from "./BaseMetadataExtractor";
+import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
 import { ImageMetadataExtractor } from "./ImageMetadataExtractor";
 import { VideoMetadataExtractor } from "./VideoMetadataExtractor";
 import { AudioMetadataExtractor } from "./AudioMetadataExtractor";
@@ -21,10 +18,7 @@ export class MetadataExtractorFactory {
   /**
    * Create a metadata extractor for the given file
    */
-  static createExtractor(
-    filename: string,
-    options?: MetadataExtractionOptions,
-  ): BaseMetadataExtractor {
+  static createExtractor(filename: string, options?: MetadataExtractionOptions): BaseMetadataExtractor {
     const extension = this.getFileExtension(filename);
     const category = getFileCategory(extension);
 
@@ -53,8 +47,6 @@ export class MetadataExtractorFactory {
    */
   private static getFileExtension(filename: string): string {
     const lastDotIndex = filename.lastIndexOf(".");
-    return lastDotIndex !== -1
-      ? filename.substring(lastDotIndex).toLowerCase()
-      : "";
+    return lastDotIndex !== -1 ? filename.substring(lastDotIndex).toLowerCase() : "";
   }
 }

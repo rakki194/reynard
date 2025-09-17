@@ -4,11 +4,7 @@
  */
 
 import { createSignal, createEffect, onCleanup } from "solid-js";
-import {
-  ErrorReport,
-  ErrorReportingConfig,
-  ErrorFilter,
-} from "../types/ErrorTypes";
+import { ErrorReport, ErrorReportingConfig, ErrorFilter } from "../types/ErrorTypes";
 import { createErrorReport } from "../utils/ErrorSerializer";
 
 interface UseErrorReportingOptions extends ErrorReportingConfig {
@@ -18,11 +14,7 @@ interface UseErrorReportingOptions extends ErrorReportingConfig {
 
 interface UseErrorReportingReturn {
   reports: () => ErrorReport[];
-  reportError: (
-    error: Error,
-    context: any,
-    userReport?: string,
-  ) => Promise<void>;
+  reportError: (error: Error, context: any, userReport?: string) => Promise<void>;
   flushReports: () => Promise<void>;
   clearReports: () => void;
   getMetrics: () => ErrorMetrics;
@@ -36,9 +28,7 @@ interface ErrorMetrics {
   lastReportTime?: number;
 }
 
-export function useErrorReporting(
-  options: UseErrorReportingOptions = { enabled: true },
-): UseErrorReportingReturn {
+export function useErrorReporting(options: UseErrorReportingOptions = { enabled: true }): UseErrorReportingReturn {
   const [reports, setReports] = createSignal<ErrorReport[]>([]);
 
   // Default options
@@ -71,10 +61,7 @@ export function useErrorReporting(
   });
 
   // Check if report should be included based on filters
-  const shouldReport = (
-    report: ErrorReport,
-    filters: ErrorFilter[],
-  ): boolean => {
+  const shouldReport = (report: ErrorReport, filters: ErrorFilter[]): boolean => {
     if (filters.length === 0) return true;
 
     for (const filter of filters) {
@@ -99,9 +86,7 @@ export function useErrorReporting(
 
       const matches =
         value === filter.value ||
-        (typeof value === "string" &&
-          typeof filter.value === "string" &&
-          value.includes(filter.value));
+        (typeof value === "string" && typeof filter.value === "string" && value.includes(filter.value));
 
       if (filter.action === "include" && !matches) {
         return false;
@@ -115,11 +100,7 @@ export function useErrorReporting(
   };
 
   // Report an error
-  const reportError = async (
-    error: Error,
-    context: any,
-    userReport?: string,
-  ): Promise<void> => {
+  const reportError = async (error: Error, context: any, userReport?: string): Promise<void> => {
     if (!config.enabled) return;
 
     try {
@@ -131,7 +112,7 @@ export function useErrorReporting(
       }
 
       // Add to reports
-      setReports((prev) => [...prev, report]);
+      setReports(prev => [...prev, report]);
 
       // Call user callback
       options.onReport?.(report);
@@ -196,15 +177,13 @@ export function useErrorReporting(
     const oneHourAgo = now - 60 * 60 * 1000;
 
     // Filter reports from last hour
-    const recentReports = currentReports.filter(
-      (report) => report.timestamp > oneHourAgo,
-    );
+    const recentReports = currentReports.filter(report => report.timestamp > oneHourAgo);
 
     // Calculate metrics
     const reportsByCategory: Record<string, number> = {};
     const reportsBySeverity: Record<string, number> = {};
 
-    currentReports.forEach((report) => {
+    currentReports.forEach(report => {
       const category = report.context.category;
       const severity = report.context.severity;
 
@@ -212,10 +191,7 @@ export function useErrorReporting(
       reportsBySeverity[severity] = (reportsBySeverity[severity] || 0) + 1;
     });
 
-    const lastReport =
-      currentReports.length > 0
-        ? Math.max(...currentReports.map((r) => r.timestamp))
-        : undefined;
+    const lastReport = currentReports.length > 0 ? Math.max(...currentReports.map(r => r.timestamp)) : undefined;
 
     return {
       totalReports: currentReports.length,

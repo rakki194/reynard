@@ -8,8 +8,7 @@ import { allIcons } from "reynard-fluent-icons";
 import type { OKLCHColor } from "reynard-colors";
 
 type DrawingTool = "pencil" | "eraser" | "fill";
-type MaterialType =
-  keyof typeof import("../composables/useMaterialEffects").MATERIAL_PATTERNS;
+type MaterialType = keyof typeof import("../composables/useMaterialEffects").MATERIAL_PATTERNS;
 
 interface EditorLayoutProps {
   selectedColor: OKLCHColor;
@@ -31,14 +30,13 @@ interface EditorLayoutProps {
   onClearCanvas: () => void;
 }
 
-export const EditorLayout: Component<EditorLayoutProps> = (props) => {
+export const EditorLayout: Component<EditorLayoutProps> = props => {
   return (
     <div class="pixel-art-editor">
       <header class="editor-header">
         <h2>Interactive Pixel Art Editor</h2>
         <p>
-          Create pixel art with real-time OKLCH hue shifting. Click and drag to
-          draw, use different tools and materials.
+          Create pixel art with real-time OKLCH hue shifting. Click and drag to draw, use different tools and materials.
         </p>
       </header>
 
@@ -50,17 +48,11 @@ export const EditorLayout: Component<EditorLayoutProps> = (props) => {
             onResizeCanvas={props.onResizeCanvas}
           />
 
-          <ToolControls
-            selectedTool={props.selectedTool}
-            onToolChange={props.onToolChange}
-          />
+          <ToolControls selectedTool={props.selectedTool} onToolChange={props.onToolChange} />
 
           <section class="control-section">
             <h3>Color</h3>
-            <ColorPicker
-              color={props.selectedColor}
-              onColorChange={props.onColorChange}
-            />
+            <ColorPicker color={props.selectedColor} onColorChange={props.onColorChange} />
           </section>
 
           <MaterialControls

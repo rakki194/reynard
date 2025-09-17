@@ -7,4 +7,4 @@ from .background import BackgroundService
 from .cache import CacheService
 from .database import DatabaseService
 
-__all__ = ["DatabaseService", "CacheService", "BackgroundService"]
+__all__ = ["BackgroundService", "CacheService", "DatabaseService"]

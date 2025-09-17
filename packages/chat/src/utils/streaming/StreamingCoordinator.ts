@@ -93,11 +93,7 @@ export class StreamingCoordinator {
   /**
    * Finalize and create result
    */
-  finalize(
-    allNodes: any[],
-    allErrors: any[],
-    allWarnings: string[],
-  ): ParseResult {
+  finalize(allNodes: any[], allErrors: any[], allWarnings: string[]): ParseResult {
     // Process any remaining buffer content
     if (this.state.buffer.trim()) {
       this.state.currentLine++;

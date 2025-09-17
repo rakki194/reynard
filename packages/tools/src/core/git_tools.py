@@ -7,16 +7,8 @@ committing, branching, and repository management.
 """
 
 import logging
-from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-from .base import (
-    BaseTool,
-    ParameterType,
-    ToolExecutionContext,
-    ToolParameter,
-    ToolResult,
-)
 from .decorators import tool
 
 logger = logging.getLogger(__name__)
@@ -44,7 +36,7 @@ def get_git_manager():
         }
     },
 )
-async def git_status_tool(dataset_path: str) -> Dict[str, Any]:
+async def git_status_tool(dataset_path: str) -> dict[str, Any]:
     """Get comprehensive git status for a dataset directory."""
     try:
         git_manager = get_git_manager()
@@ -81,7 +73,7 @@ async def git_status_tool(dataset_path: str) -> Dict[str, Any]:
         }
     },
 )
-async def git_init_tool(dataset_path: str) -> Dict[str, Any]:
+async def git_init_tool(dataset_path: str) -> dict[str, Any]:
     """Initialize a new git repository in the specified dataset directory."""
     try:
         git_manager = get_git_manager()
@@ -93,11 +85,10 @@ async def git_init_tool(dataset_path: str) -> Dict[str, Any]:
                 "message": f"Successfully initialized git repository in {dataset_path}",
                 "repository_path": dataset_path,
             }
-        else:
-            return {
-                "success": False,
-                "message": f"Failed to initialize git repository in {dataset_path}",
-            }
+        return {
+            "success": False,
+            "message": f"Failed to initialize git repository in {dataset_path}",
+        }
     except Exception as e:
         logger.error(f"Error initializing git repository in {dataset_path}: {e}")
         raise
@@ -130,8 +121,8 @@ async def git_init_tool(dataset_path: str) -> Dict[str, Any]:
     },
 )
 async def git_add_tool(
-    dataset_path: str, files: List[str] = None, all_files: bool = False
-) -> Dict[str, Any]:
+    dataset_path: str, files: list[str] = None, all_files: bool = False
+) -> dict[str, Any]:
     """Stage files for the next commit."""
     try:
         git_manager = get_git_manager()
@@ -186,8 +177,8 @@ async def git_add_tool(
     },
 )
 async def git_unstage_tool(
-    dataset_path: str, files: List[str] = None, all_files: bool = False
-) -> Dict[str, Any]:
+    dataset_path: str, files: list[str] = None, all_files: bool = False
+) -> dict[str, Any]:
     """Unstage files from the staging area."""
     try:
         git_manager = get_git_manager()
@@ -253,7 +244,7 @@ async def git_commit_tool(
     message: str,
     author_name: str = "YipYap Assistant",
     author_email: str = "assistant@yipyap.local",
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Commit staged changes with the specified message."""
     try:
         git_manager = get_git_manager()
@@ -269,12 +260,11 @@ async def git_commit_tool(
                 "author": f"{author_name} <{author_email}>",
                 "dataset_path": dataset_path,
             }
-        else:
-            return {
-                "success": False,
-                "message": "Failed to commit changes (no staged changes or repository error)",
-                "dataset_path": dataset_path,
-            }
+        return {
+            "success": False,
+            "message": "Failed to commit changes (no staged changes or repository error)",
+            "dataset_path": dataset_path,
+        }
     except Exception as e:
         logger.error(f"Error committing changes in {dataset_path}: {e}")
         raise
@@ -294,7 +284,7 @@ async def git_commit_tool(
         }
     },
 )
-async def git_branches_tool(dataset_path: str) -> Dict[str, Any]:
+async def git_branches_tool(dataset_path: str) -> dict[str, Any]:
     """Get list of all branches in the repository."""
     try:
         git_manager = get_git_manager()
@@ -368,7 +358,7 @@ async def git_branches_tool(dataset_path: str) -> Dict[str, Any]:
 )
 async def git_create_branch_tool(
     dataset_path: str, branch_name: str, switch_to: bool = True
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Create a new branch and optionally switch to it."""
     try:
         git_manager = get_git_manager()
@@ -383,13 +373,12 @@ async def git_create_branch_tool(
                 "switched": switch_to,
                 "dataset_path": dataset_path,
             }
-        else:
-            return {
-                "success": False,
-                "message": f"Failed to create branch '{branch_name}'",
-                "branch_name": branch_name,
-                "dataset_path": dataset_path,
-            }
+        return {
+            "success": False,
+            "message": f"Failed to create branch '{branch_name}'",
+            "branch_name": branch_name,
+            "dataset_path": dataset_path,
+        }
     except Exception as e:
         logger.error(f"Error creating branch {branch_name} in {dataset_path}: {e}")
         raise
@@ -416,7 +405,7 @@ async def git_create_branch_tool(
         },
     },
 )
-async def git_switch_branch_tool(dataset_path: str, branch_name: str) -> Dict[str, Any]:
+async def git_switch_branch_tool(dataset_path: str, branch_name: str) -> dict[str, Any]:
     """Switch to an existing branch."""
     try:
         git_manager = get_git_manager()
@@ -429,13 +418,12 @@ async def git_switch_branch_tool(dataset_path: str, branch_name: str) -> Dict[st
                 "branch_name": branch_name,
                 "dataset_path": dataset_path,
             }
-        else:
-            return {
-                "success": False,
-                "message": f"Failed to switch to branch '{branch_name}' (branch may not exist)",
-                "branch_name": branch_name,
-                "dataset_path": dataset_path,
-            }
+        return {
+            "success": False,
+            "message": f"Failed to switch to branch '{branch_name}' (branch may not exist)",
+            "branch_name": branch_name,
+            "dataset_path": dataset_path,
+        }
     except Exception as e:
         logger.error(f"Error switching to branch {branch_name} in {dataset_path}: {e}")
         raise
@@ -463,7 +451,7 @@ async def git_switch_branch_tool(dataset_path: str, branch_name: str) -> Dict[st
         },
     },
 )
-async def git_history_tool(dataset_path: str, limit: int = 20) -> Dict[str, Any]:
+async def git_history_tool(dataset_path: str, limit: int = 20) -> dict[str, Any]:
     """Get commit history for the repository."""
     try:
         git_manager = get_git_manager()
@@ -513,7 +501,7 @@ async def git_history_tool(dataset_path: str, limit: int = 20) -> Dict[str, Any]
         },
     },
 )
-async def git_revert_tool(dataset_path: str, files: List[str]) -> Dict[str, Any]:
+async def git_revert_tool(dataset_path: str, files: list[str]) -> dict[str, Any]:
     """Revert modified files back to their last committed state."""
     try:
         git_manager = get_git_manager()
@@ -526,13 +514,12 @@ async def git_revert_tool(dataset_path: str, files: List[str]) -> Dict[str, Any]
                 "files_reverted": files,
                 "dataset_path": dataset_path,
             }
-        else:
-            return {
-                "success": False,
-                "message": f"Failed to revert files (repository may not have commits)",
-                "files": files,
-                "dataset_path": dataset_path,
-            }
+        return {
+            "success": False,
+            "message": "Failed to revert files (repository may not have commits)",
+            "files": files,
+            "dataset_path": dataset_path,
+        }
     except Exception as e:
         logger.error(f"Error reverting files in {dataset_path}: {e}")
         raise
@@ -559,7 +546,7 @@ async def git_revert_tool(dataset_path: str, files: List[str]) -> Dict[str, Any]
 )
 async def git_delete_untracked_tool(
     dataset_path: str, file_path: str
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Delete an untracked file from the repository."""
     try:
         git_manager = get_git_manager()
@@ -572,13 +559,12 @@ async def git_delete_untracked_tool(
                 "file_path": file_path,
                 "dataset_path": dataset_path,
             }
-        else:
-            return {
-                "success": False,
-                "message": f"Failed to delete file: {file_path} (file may not exist or is not untracked)",
-                "file_path": file_path,
-                "dataset_path": dataset_path,
-            }
+        return {
+            "success": False,
+            "message": f"Failed to delete file: {file_path} (file may not exist or is not untracked)",
+            "file_path": file_path,
+            "dataset_path": dataset_path,
+        }
     except Exception as e:
         logger.error(f"Error deleting file {file_path} in {dataset_path}: {e}")
         raise
@@ -598,7 +584,7 @@ async def git_delete_untracked_tool(
         }
     },
 )
-async def git_lfs_update_tool(dataset_path: str) -> Dict[str, Any]:
+async def git_lfs_update_tool(dataset_path: str) -> dict[str, Any]:
     """Update Git LFS settings for the repository."""
     try:
         git_manager = get_git_manager()
@@ -610,12 +596,11 @@ async def git_lfs_update_tool(dataset_path: str) -> Dict[str, Any]:
                 "message": "Successfully updated Git LFS settings",
                 "dataset_path": dataset_path,
             }
-        else:
-            return {
-                "success": False,
-                "message": "Failed to update Git LFS settings (Git LFS may not be available)",
-                "dataset_path": dataset_path,
-            }
+        return {
+            "success": False,
+            "message": "Failed to update Git LFS settings (Git LFS may not be available)",
+            "dataset_path": dataset_path,
+        }
     except Exception as e:
         logger.error(f"Error updating Git LFS settings for {dataset_path}: {e}")
         raise

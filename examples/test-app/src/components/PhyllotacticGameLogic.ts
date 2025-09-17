@@ -4,15 +4,8 @@
  */
 
 import { createSignal } from "solid-js";
-import {
-  PhyllotacticSpiralLogic,
-  type SpiralPoint,
-  type GameConfig,
-} from "./PhyllotacticSpiralLogic";
-import {
-  createDefaultConfig,
-  createDefaultAnimationConfig,
-} from "./PhyllotacticGameConfig";
+import { PhyllotacticSpiralLogic, type SpiralPoint, type GameConfig } from "./PhyllotacticSpiralLogic";
+import { createDefaultConfig, createDefaultAnimationConfig } from "./PhyllotacticGameConfig";
 import { createGameActions } from "./PhyllotacticGameActions";
 import { createAnimationFunctions } from "./PhyllotacticGameAnimation";
 
@@ -22,9 +15,7 @@ export function createPhyllotacticGameLogic() {
   const [isRunning, setIsRunning] = createSignal(false);
   const [currentAngle, setCurrentAngle] = createSignal(0);
   const [config, setConfig] = createSignal<GameConfig>(createDefaultConfig());
-  const [animationConfig, setAnimationConfig] = createSignal(
-    createDefaultAnimationConfig(),
-  );
+  const [animationConfig, setAnimationConfig] = createSignal(createDefaultAnimationConfig());
   const [showSpellCaster, setShowSpellCaster] = createSignal(false);
   console.log("🦊 PhyllotacticGameLogic: Signals created", {
     isRunning: isRunning(),
@@ -35,28 +26,15 @@ export function createPhyllotacticGameLogic() {
 
   // Initialize spiral logic
   const initializeSpiralLogic = () => {
-    console.log(
-      "🦊 PhyllotacticGameLogic: Initializing spiral logic with config",
-      config(),
-    );
+    console.log("🦊 PhyllotacticGameLogic: Initializing spiral logic with config", config());
     spiralLogic = new PhyllotacticSpiralLogic(config());
     const initialPoints = spiralLogic.initializeSpiral();
-    console.log(
-      "🦊 PhyllotacticGameLogic: Initial spiral points generated",
-      initialPoints.length,
-    );
+    console.log("🦊 PhyllotacticGameLogic: Initial spiral points generated", initialPoints.length);
     setSpiralPoints(initialPoints);
 
     // Recreate game actions and animation functions with the initialized spiral logic
-    console.log(
-      "🦊 PhyllotacticGameLogic: Recreating game actions and animation functions with spiral logic",
-    );
-    gameActions = createGameActions(
-      config,
-      setConfig,
-      spiralLogic,
-      setSpiralPoints,
-    );
+    console.log("🦊 PhyllotacticGameLogic: Recreating game actions and animation functions with spiral logic");
+    gameActions = createGameActions(config, setConfig, spiralLogic, setSpiralPoints);
     animationFunctions = createAnimationFunctions(
       isRunning,
       setIsRunning,
@@ -65,17 +43,12 @@ export function createPhyllotacticGameLogic() {
       config,
       spiralPoints,
       setSpiralPoints,
-      spiralLogic,
+      spiralLogic
     );
   };
 
   // Create game actions and animation functions that will be updated when spiral logic is initialized
-  let gameActions = createGameActions(
-    config,
-    setConfig,
-    spiralLogic,
-    setSpiralPoints,
-  );
+  let gameActions = createGameActions(config, setConfig, spiralLogic, setSpiralPoints);
   let animationFunctions = createAnimationFunctions(
     isRunning,
     setIsRunning,
@@ -84,17 +57,15 @@ export function createPhyllotacticGameLogic() {
     config,
     spiralPoints,
     setSpiralPoints,
-    spiralLogic,
+    spiralLogic
   );
 
-  const updateAnimationConfig = (
-    newConfig: Partial<typeof animationConfig>,
-  ) => {
+  const updateAnimationConfig = (newConfig: Partial<typeof animationConfig>) => {
     console.log("🦊 PhyllotacticGameLogic: Updating animation config", {
       oldConfig: animationConfig(),
       newConfig,
     });
-    setAnimationConfig((prev) => ({ ...prev, ...newConfig }));
+    setAnimationConfig(prev => ({ ...prev, ...newConfig }));
   };
 
   return {

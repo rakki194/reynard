@@ -35,12 +35,7 @@ export const ThreeDDemo: Component = () => {
       </div>
 
       <div class="threed-preview">
-        <PointCloudVisualization
-          width={200}
-          height={150}
-          theme={themeContext.theme}
-          pointCount={200}
-        />
+        <PointCloudVisualization width={200} height={150} theme={themeContext.theme} pointCount={200} />
       </div>
 
       <div class="card-footer">

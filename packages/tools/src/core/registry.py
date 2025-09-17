@@ -6,7 +6,8 @@ discovery, and execution coordination.
 """
 
 import logging
-from typing import Any, Dict, List, Optional, Set
+from datetime import UTC
+from typing import Any
 
 from .base import BaseTool, ToolExecutionContext, ToolResult
 from .exceptions import ToolNotFoundError, ToolPermissionError
@@ -23,9 +24,9 @@ class ToolRegistry:
     """
 
     def __init__(self, validation_level=None):
-        self._tools: Dict[str, BaseTool] = {}
-        self._categories: Dict[str, Set[str]] = {}
-        self._tags: Dict[str, Set[str]] = {}
+        self._tools: dict[str, BaseTool] = {}
+        self._categories: dict[str, set[str]] = {}
+        self._tags: dict[str, set[str]] = {}
         self._validation_level = validation_level
         self._validator = None
 
@@ -92,7 +93,7 @@ class ToolRegistry:
         logger.info(f"Unregistered tool: {tool_name}")
         return True
 
-    def get_tool(self, tool_name: str) -> Optional[BaseTool]:
+    def get_tool(self, tool_name: str) -> BaseTool | None:
         """
         Get a tool by name.
 
@@ -106,11 +107,11 @@ class ToolRegistry:
 
     def list_tools(
         self,
-        category: Optional[str] = None,
-        tag: Optional[str] = None,
-        permission: Optional[str] = None,
-        user_role: Optional[str] = None,
-    ) -> List[BaseTool]:
+        category: str | None = None,
+        tag: str | None = None,
+        permission: str | None = None,
+        user_role: str | None = None,
+    ) -> list[BaseTool]:
         """
         List available tools with optional filtering.
 
@@ -150,9 +151,7 @@ class ToolRegistry:
 
         return tools
 
-    def search_tools(
-        self, query: str, user_role: Optional[str] = None
-    ) -> List[BaseTool]:
+    def search_tools(self, query: str, user_role: str | None = None) -> list[BaseTool]:
         """
         Search tools by name, description, category, or tags.
 
@@ -189,15 +188,15 @@ class ToolRegistry:
 
         return matching_tools
 
-    def get_categories(self) -> List[str]:
+    def get_categories(self) -> list[str]:
         """Get list of all tool categories."""
         return list(self._categories.keys())
 
-    def get_tags(self) -> List[str]:
+    def get_tags(self) -> list[str]:
         """Get list of all tool tags."""
         return list(self._tags.keys())
 
-    def get_tools_by_category(self, category: str) -> List[BaseTool]:
+    def get_tools_by_category(self, category: str) -> list[BaseTool]:
         """
         Get all tools in a specific category.
 
@@ -212,7 +211,7 @@ class ToolRegistry:
 
         return [self._tools[name] for name in self._categories[category]]
 
-    def get_tools_by_tag(self, tag: str) -> List[BaseTool]:
+    def get_tools_by_tag(self, tag: str) -> list[BaseTool]:
         """
         Get all tools with a specific tag.
 
@@ -231,7 +230,7 @@ class ToolRegistry:
         self,
         tool_name: str,
         context: ToolExecutionContext,
-        parameters: Optional[Dict[str, Any]] = None,
+        parameters: dict[str, Any] | None = None,
     ) -> ToolResult:
         """
         Execute a tool with the given parameters.
@@ -349,7 +348,7 @@ class ToolRegistry:
             )
             raise
 
-    def get_tool_info(self, tool_name: str) -> Optional[Dict[str, Any]]:
+    def get_tool_info(self, tool_name: str) -> dict[str, Any] | None:
         """
         Get detailed information about a tool.
 
@@ -365,7 +364,7 @@ class ToolRegistry:
 
         return tool.to_dict()
 
-    def get_registry_stats(self) -> Dict[str, Any]:
+    def get_registry_stats(self) -> dict[str, Any]:
         """
         Get statistics about the tool registry.
 
@@ -390,9 +389,9 @@ class ToolRegistry:
     def validate_tool_parameters(
         self,
         tool_name: str,
-        parameters: Dict[str, Any],
-        context: Optional[Dict[str, Any]] = None,
-    ) -> Dict[str, Any]:
+        parameters: dict[str, Any],
+        context: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
         """
         Validate parameters for a tool without executing it using enhanced validation.
 
@@ -437,7 +436,7 @@ class ToolRegistry:
             ),
         }
 
-    def to_dict(self, user_role: Optional[str] = None) -> Dict[str, Any]:
+    def to_dict(self, user_role: str | None = None) -> dict[str, Any]:
         """
         Convert registry to dictionary for API responses.
 
@@ -506,7 +505,7 @@ class ToolRegistry:
         user_permissions = permission_hierarchy.get(user_role, [])
         return required_permission in user_permissions
 
-    def _redact_sensitive_parameters(self, params: Dict[str, Any]) -> Dict[str, Any]:
+    def _redact_sensitive_parameters(self, params: dict[str, Any]) -> dict[str, Any]:
         """
         Redact sensitive parameters for logging and error reporting.
 
@@ -546,7 +545,7 @@ class ToolRegistry:
         return redacted
 
     def _log_admin_tool_execution(
-        self, tool_name: str, context: ToolExecutionContext, params: Dict[str, Any]
+        self, tool_name: str, context: ToolExecutionContext, params: dict[str, Any]
     ) -> None:
         """
         Log admin-level tool executions for audit purposes.
@@ -557,10 +556,10 @@ class ToolRegistry:
             params: Tool parameters (already prepared)
         """
         import json
-        from datetime import datetime, timezone
+        from datetime import datetime
 
         audit_entry = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "tool_name": tool_name,
             "user_id": context.user_id,
             "user_role": context.user_role,
@@ -570,7 +569,7 @@ class ToolRegistry:
             "working_directory": context.working_directory,
             "event_type": "admin_tool_execution",
         }
-        audit_entry["timestamp"] = datetime.now(timezone.utc).isoformat()
+        audit_entry["timestamp"] = datetime.now(UTC).isoformat()
 
         # Log to structured audit log
         logger.info(
@@ -580,7 +579,7 @@ class ToolRegistry:
 
 
 # Global registry instance
-_registry: Optional[ToolRegistry] = None
+_registry: ToolRegistry | None = None
 
 
 def get_tool_registry() -> ToolRegistry:

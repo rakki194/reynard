@@ -56,10 +56,10 @@ class SearchTools:
         """Format tool result for MCP response."""
         success = result.get("success", False)
         status = "✅ SUCCESS" if success else "❌ FAILED"
-    
+
         # Format output text
         output_lines = [f"{status} - {operation}"]
-    
+
         if "results" in result:
             results = result["results"]
             if isinstance(results, list) and results:
@@ -69,15 +69,17 @@ class SearchTools:
                     line_number = item.get("line_number", "")
                     content = item.get("content", "")[:80]
                     score = item.get("score", 0.0)
-                
-                    output_lines.append(f"  {i}. {file_path}:{line_number} (score: {score:.2f})")
+
+                    output_lines.append(
+                        f"  {i}. {file_path}:{line_number} (score: {score:.2f})"
+                    )
                     if content:
                         output_lines.append(f"     {content}...")
                 if len(results) > 10:
                     output_lines.append(f"  ... and {len(results) - 10} more results")
             else:
                 output_lines.append("No results found")
-    
+
         elif "files" in result:
             files = result["files"]
             output_lines.append(f"\n📁 Found {len(files)} files:")
@@ -85,7 +87,7 @@ class SearchTools:
                 output_lines.append(f"  • {file_path}")
             if len(files) > 10:
                 output_lines.append(f"  ... and {len(files) - 10} more")
-    
+
         elif "matches" in result:
             matches = result["matches"]
             output_lines.append(f"\n🔍 Found {len(matches)} matches:")
@@ -93,14 +95,14 @@ class SearchTools:
                 output_lines.append(f"  • {match}")
             if len(matches) > 5:
                 output_lines.append(f"  ... and {len(matches) - 5} more")
-    
+
         if result.get("error"):
             output_lines.append(f"\n⚠️ Error: {result['error']}")
-    
+
         if result.get("search_strategies"):
             strategies = result["search_strategies"]
             output_lines.append(f"\n🎯 Search strategies used: {', '.join(strategies)}")
-    
+
         return {
             "success": success,
             "output": "\n".join(output_lines),
@@ -201,9 +203,7 @@ class SearchTools:
                 include_hidden=include_hidden,
             )
 
-            return self._format_result(
-                {"success": True, "files": files}, "File Search"
-            )
+            return self._format_result({"success": True, "files": files}, "File Search")
 
         except Exception as e:
             logger.exception("Error searching files")
@@ -235,9 +235,7 @@ class SearchTools:
                 include_hidden=include_hidden,
             )
 
-            return self._format_result(
-                {"success": True, "files": files}, "List Files"
-            )
+            return self._format_result({"success": True, "files": files}, "List Files")
 
         except Exception as e:
             logger.exception("Error listing files")
@@ -455,9 +453,13 @@ class SearchTools:
                     "summary": {
                         "total_files_indexed": stats.get("corpus_size", 0),
                         "avg_document_length": stats.get("avg_document_length", 0),
-                        "total_searches": stats.get("search_stats", {}).get("total_searches", 0),
+                        "total_searches": stats.get("search_stats", {}).get(
+                            "total_searches", 0
+                        ),
                         "cache_hit_rate": self._calculate_cache_hit_rate(stats),
-                        "avg_search_time": stats.get("search_stats", {}).get("avg_search_time", 0),
+                        "avg_search_time": stats.get("search_stats", {}).get(
+                            "avg_search_time", 0
+                        ),
                     },
                 },
                 "Search Analytics",

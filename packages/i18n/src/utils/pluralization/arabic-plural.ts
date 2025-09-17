@@ -18,7 +18,7 @@ export function getArabicPlural(
     dual: string;
     plural: string;
     pluralLarge?: string;
-  },
+  }
 ): string {
   const absCount = Math.trunc(Math.abs(count));
 

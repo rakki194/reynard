@@ -5,7 +5,7 @@ import { PoolConfig, ConnectionConfig } from "./types";
 export class WebSocketConnectionPool extends ConnectionPool<WebSocketConnection> {
   constructor(
     poolConfig: PoolConfig,
-    private connConfig: ConnectionConfig,
+    private connConfig: ConnectionConfig
   ) {
     super(poolConfig);
     this.setFactory(async () => {

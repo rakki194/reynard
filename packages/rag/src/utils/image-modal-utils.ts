@@ -9,10 +9,7 @@ export const formatFileSize = (bytes?: number): string => {
   return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
 };
 
-export const formatDimensions = (dimensions?: {
-  width: number;
-  height: number;
-}): string => {
+export const formatDimensions = (dimensions?: { width: number; height: number }): string => {
   if (!dimensions) return "Unknown";
   return `${dimensions.width} × ${dimensions.height}`;
 };

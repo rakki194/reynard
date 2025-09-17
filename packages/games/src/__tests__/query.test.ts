@@ -17,7 +17,7 @@ class Position implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -25,7 +25,7 @@ class Velocity implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -33,7 +33,7 @@ class Health implements Component {
   readonly __component = true;
   constructor(
     public current: number,
-    public maximum: number,
+    public maximum: number
   ) {}
 }
 
@@ -74,31 +74,15 @@ describe("Query System", () => {
     world = createWorld();
 
     // Register all component types and get the type objects
-    PositionType = world
-      .getComponentRegistry()
-      .register("Position", StorageType.Table, () => new Position(0, 0));
-    VelocityType = world
-      .getComponentRegistry()
-      .register("Velocity", StorageType.Table, () => new Velocity(0, 0));
-    HealthType = world
-      .getComponentRegistry()
-      .register("Health", StorageType.SparseSet, () => new Health(100, 100));
-    PlayerType = world
-      .getComponentRegistry()
-      .register("Player", StorageType.SparseSet, () => new Player("Player"));
-    EnemyType = world
-      .getComponentRegistry()
-      .register("Enemy", StorageType.SparseSet, () => new Enemy("Enemy"));
-    BulletType = world
-      .getComponentRegistry()
-      .register("Bullet", StorageType.SparseSet, () => new Bullet(300));
+    PositionType = world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
+    VelocityType = world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    HealthType = world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    PlayerType = world.getComponentRegistry().register("Player", StorageType.SparseSet, () => new Player("Player"));
+    EnemyType = world.getComponentRegistry().register("Enemy", StorageType.SparseSet, () => new Enemy("Enemy"));
+    BulletType = world.getComponentRegistry().register("Bullet", StorageType.SparseSet, () => new Bullet(300));
     RenderableType = world
       .getComponentRegistry()
-      .register(
-        "Renderable",
-        StorageType.Table,
-        () => new Renderable("circle"),
-      );
+      .register("Renderable", StorageType.Table, () => new Renderable("circle"));
 
     // Create test entities with various component combinations
     setupTestEntities();
@@ -157,7 +141,7 @@ describe("Query System", () => {
       });
 
       expect(results).toHaveLength(6); // All entities have position
-      expect(results.every((r) => r.position instanceof Position)).toBe(true);
+      expect(results.every(r => r.position instanceof Position)).toBe(true);
     });
 
     it("should query entities with multiple components", () => {
@@ -169,8 +153,8 @@ describe("Query System", () => {
       });
 
       expect(results).toHaveLength(5); // Player, enemy1, enemy2, bullet1, bullet2
-      expect(results.every((r) => r.position instanceof Position)).toBe(true);
-      expect(results.every((r) => r.velocity instanceof Velocity)).toBe(true);
+      expect(results.every(r => r.position instanceof Position)).toBe(true);
+      expect(results.every(r => r.velocity instanceof Velocity)).toBe(true);
     });
 
     it("should query entities with sparse set components", () => {
@@ -182,7 +166,7 @@ describe("Query System", () => {
       });
 
       expect(results).toHaveLength(3); // Player, enemy1, healthOnly
-      expect(results.every((r) => r.health instanceof Health)).toBe(true);
+      expect(results.every(r => r.health instanceof Health)).toBe(true);
     });
 
     it("should query entities with mixed storage types", () => {
@@ -194,8 +178,8 @@ describe("Query System", () => {
       });
 
       expect(results).toHaveLength(2); // Player, enemy1
-      expect(results.every((r) => r.position instanceof Position)).toBe(true);
-      expect(results.every((r) => r.health instanceof Health)).toBe(true);
+      expect(results.every(r => r.position instanceof Position)).toBe(true);
+      expect(results.every(r => r.health instanceof Health)).toBe(true);
     });
   });
 
@@ -223,7 +207,7 @@ describe("Query System", () => {
       });
 
       expect(results).toHaveLength(5); // All except player
-      expect(results.every((r) => r.position.x !== 100)).toBe(true);
+      expect(results.every(r => r.position.x !== 100)).toBe(true);
     });
 
     it("should filter entities with multiple required components", () => {
@@ -237,7 +221,7 @@ describe("Query System", () => {
       });
 
       expect(results).toHaveLength(2); // enemy1, enemy2
-      expect(results.every((r) => r.position.x >= 200)).toBe(true);
+      expect(results.every(r => r.position.x >= 200)).toBe(true);
     });
 
     it("should filter entities without multiple components", () => {
@@ -251,8 +235,8 @@ describe("Query System", () => {
       });
 
       expect(results).toHaveLength(2); // player, staticEntity
-      expect(results.some((r) => r.position.x === 100)).toBe(true); // player
-      expect(results.some((r) => r.position.x === 400)).toBe(true); // staticEntity
+      expect(results.some(r => r.position.x === 100)).toBe(true); // player
+      expect(results.some(r => r.position.x === 400)).toBe(true); // staticEntity
     });
 
     it("should combine with and without filters", () => {
@@ -267,7 +251,7 @@ describe("Query System", () => {
       });
 
       expect(results).toHaveLength(4); // enemy1, enemy2, bullet1, bullet2
-      expect(results.every((r) => r.position.x !== 100)).toBe(true); // not player
+      expect(results.every(r => r.position.x !== 100)).toBe(true); // not player
     });
   });
 
@@ -280,9 +264,7 @@ describe("Query System", () => {
       world.getChangeDetection().advanceTick();
 
       // Add a new component to an existing entity
-      const staticEntity = world
-        .queryFiltered([PositionType], { without: [VelocityType] })
-        .first();
+      const staticEntity = world.queryFiltered([PositionType], { without: [VelocityType] }).first();
       if (staticEntity) {
         world.add(staticEntity.entity, VelocityType, new Velocity(5, 5));
       }
@@ -306,9 +288,7 @@ describe("Query System", () => {
       world.getChangeDetection().advanceTick();
 
       // Modify a component
-      const player = world
-        .queryFiltered([PositionType], { with: [PlayerType] })
-        .first();
+      const player = world.queryFiltered([PositionType], { with: [PlayerType] }).first();
       if (player) {
         const position = world.get(player.entity, PositionType);
         position.x = 150;
@@ -478,10 +458,8 @@ describe("Query System", () => {
       expect(firstResults).toHaveLength(secondResults.length);
       expect(
         firstResults.every(
-          (r, i) =>
-            r.entity.index === secondResults[i].entity.index &&
-            r.position.x === secondResults[i].position.x,
-        ),
+          (r, i) => r.entity.index === secondResults[i].entity.index && r.position.x === secondResults[i].position.x
+        )
       ).toBe(true);
     });
 
@@ -495,9 +473,7 @@ describe("Query System", () => {
       });
 
       // Add a component to an entity
-      const staticEntity = world
-        .queryFiltered([PositionType], { without: [VelocityType] })
-        .first();
+      const staticEntity = world.queryFiltered([PositionType], { without: [VelocityType] }).first();
       if (staticEntity) {
         world.insert(staticEntity.entity, new Velocity(5, 5));
       }

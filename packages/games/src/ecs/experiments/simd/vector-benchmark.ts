@@ -15,13 +15,8 @@ export class VectorBenchmark {
     await this.simdSystem.initialize();
   }
 
-  async benchmarkVectorOperations(
-    arraySize: number,
-    iterations: number = 1000,
-  ): Promise<BenchmarkResult> {
-    console.log(
-      `Benchmarking vector operations with ${arraySize} elements, ${iterations} iterations...`,
-    );
+  async benchmarkVectorOperations(arraySize: number, iterations: number = 1000): Promise<BenchmarkResult> {
+    console.log(`Benchmarking vector operations with ${arraySize} elements, ${iterations} iterations...`);
 
     // Generate test data
     const { a, b } = TestDataGenerator.generateVectorArrays(arraySize);

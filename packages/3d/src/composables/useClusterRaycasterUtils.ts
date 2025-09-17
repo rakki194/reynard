@@ -23,7 +23,7 @@ export async function setupClusterRaycaster(
   camera: CameraLike,
   hullMeshes: ThreeMesh[],
   setHoveredCluster: (clusterId: string | null) => void,
-  onClusterSelect?: (clusterId: string) => void,
+  onClusterSelect?: (clusterId: string) => void
 ) {
   const THREE = (await import("three")).default as unknown as ThreeJSModule;
   const raycaster = new THREE.Raycaster();
@@ -41,10 +41,7 @@ export async function setupClusterRaycaster(
 
     if (intersects.length > 0) {
       const intersected = intersects[0].object;
-      if (
-        intersected.userData?.clusterId &&
-        typeof intersected.userData.clusterId === "string"
-      ) {
+      if (intersected.userData?.clusterId && typeof intersected.userData.clusterId === "string") {
         setHoveredCluster(intersected.userData.clusterId);
       }
     } else {
@@ -60,11 +57,7 @@ export async function setupClusterRaycaster(
 
     if (intersects.length > 0) {
       const intersected = intersects[0].object;
-      if (
-        intersected.userData?.clusterId &&
-        typeof intersected.userData.clusterId === "string" &&
-        onClusterSelect
-      ) {
+      if (intersected.userData?.clusterId && typeof intersected.userData.clusterId === "string" && onClusterSelect) {
         onClusterSelect(intersected.userData.clusterId);
       }
     }

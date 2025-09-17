@@ -8,7 +8,8 @@ and intermediate results during execution.
 import asyncio
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, AsyncGenerator, Callable, Dict, Optional
+from collections.abc import AsyncGenerator, Callable
+from typing import Any
 
 from .base import BaseTool, ToolExecutionContext, ToolResult
 
@@ -21,10 +22,10 @@ class StreamingToolResult(ToolResult):
     def __init__(
         self,
         success: bool,
-        data: Optional[Dict[str, Any]] = None,
-        error: Optional[str] = None,
-        metadata: Optional[Dict[str, Any]] = None,
-        execution_time: Optional[float] = None,
+        data: dict[str, Any] | None = None,
+        error: str | None = None,
+        metadata: dict[str, Any] | None = None,
+        execution_time: float | None = None,
         streamed_progress: bool = False,
         total_progress_updates: int = 0,
     ):
@@ -54,8 +55,8 @@ class StreamingToolExecutionContext(ToolExecutionContext):
         self,
         progress: float,
         status: str,
-        message: Optional[str] = None,
-        intermediate_data: Optional[Dict[str, Any]] = None,
+        message: str | None = None,
+        intermediate_data: dict[str, Any] | None = None,
     ):
         """Report execution progress."""
         if self._progress_callback:
@@ -69,7 +70,7 @@ class StreamingToolExecutionContext(ToolExecutionContext):
     async def report_error(
         self,
         error: str,
-        error_type: Optional[str] = None,
+        error_type: str | None = None,
         retryable: bool = False,
     ):
         """Report execution error."""
@@ -79,11 +80,11 @@ class StreamingToolExecutionContext(ToolExecutionContext):
             except Exception as e:
                 logger.error(f"Error in error callback: {e}")
 
-    async def emit_progress_chunk(self, chunk: Dict[str, Any]):
+    async def emit_progress_chunk(self, chunk: dict[str, Any]):
         """Emit a progress chunk to the queue."""
         await self._progress_queue.put(chunk)
 
-    async def get_progress_chunks(self) -> AsyncGenerator[Dict[str, Any], None]:
+    async def get_progress_chunks(self) -> AsyncGenerator[dict[str, Any]]:
         """Get progress chunks from the queue."""
         while not self._progress_queue.empty():
             yield await self._progress_queue.get()
@@ -109,7 +110,7 @@ class StreamingBaseTool(BaseTool, ABC):
     @abstractmethod
     async def execute_streaming(
         self, context: StreamingToolExecutionContext, **params
-    ) -> AsyncGenerator[StreamingToolResult, None]:
+    ) -> AsyncGenerator[StreamingToolResult]:
         """
         Execute the tool with streaming progress updates.
 
@@ -175,7 +176,7 @@ class StreamingBaseTool(BaseTool, ABC):
             return await asyncio.wait_for(
                 self.execute(context, **params), timeout=timeout
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             from .exceptions import ToolTimeoutError
 
             raise ToolTimeoutError(self.name, timeout)
@@ -200,8 +201,8 @@ class ProgressReportingMixin:
         self,
         context: StreamingToolExecutionContext,
         progress: float,
-        message: Optional[str] = None,
-        intermediate_data: Optional[Dict[str, Any]] = None,
+        message: str | None = None,
+        intermediate_data: dict[str, Any] | None = None,
     ):
         """Report processing progress."""
         await context.report_progress(
@@ -228,7 +229,7 @@ class ProgressReportingMixin:
         self,
         context: StreamingToolExecutionContext,
         error: str,
-        error_type: Optional[str] = None,
+        error_type: str | None = None,
         retryable: bool = False,
     ):
         """Report error progress."""

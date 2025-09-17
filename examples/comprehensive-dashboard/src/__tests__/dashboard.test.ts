@@ -279,9 +279,7 @@ describe("Dashboard Data API", () => {
 
       // Find upload activities
       const uploadActivities = data.activities.filter(
-        (a: any) =>
-          a.action === "Uploaded file" &&
-          a.details?.fileName?.startsWith("order-test-"),
+        (a: any) => a.action === "Uploaded file" && a.details?.fileName?.startsWith("order-test-")
       );
 
       expect(uploadActivities.length).toBe(3);
@@ -296,12 +294,11 @@ describe("Dashboard Data API", () => {
 
   describe("Dashboard Data Integration", () => {
     it("should provide consistent data across all endpoints", async () => {
-      const [statsResponse, chartsResponse, activityResponse] =
-        await Promise.all([
-          apiRequest("/dashboard/stats"),
-          apiRequest("/dashboard/charts"),
-          apiRequest("/dashboard/activity"),
-        ]);
+      const [statsResponse, chartsResponse, activityResponse] = await Promise.all([
+        apiRequest("/dashboard/stats"),
+        apiRequest("/dashboard/charts"),
+        apiRequest("/dashboard/activity"),
+      ]);
 
       expect(statsResponse.status).toBe(200);
       expect(chartsResponse.status).toBe(200);
@@ -327,7 +324,7 @@ describe("Dashboard Data API", () => {
             apiRequest("/dashboard/stats"),
             apiRequest("/dashboard/charts"),
             apiRequest("/dashboard/activity"),
-          ]),
+          ])
         );
 
       const results = await Promise.all(requests);
@@ -358,11 +355,9 @@ describe("Dashboard Data API", () => {
       ]);
 
       // Parse all responses
-      const statsData = await Promise.all(statsResults.map((r) => r.json()));
-      const chartsData = await Promise.all(chartsResults.map((r) => r.json()));
-      const activityData = await Promise.all(
-        activityResults.map((r) => r.json()),
-      );
+      const statsData = await Promise.all(statsResults.map(r => r.json()));
+      const chartsData = await Promise.all(chartsResults.map(r => r.json()));
+      const activityData = await Promise.all(activityResults.map(r => r.json()));
 
       // Charts and activity should be identical across requests
       chartsData.forEach((data, index) => {
@@ -378,7 +373,7 @@ describe("Dashboard Data API", () => {
       });
 
       // Stats should have same structure but may vary due to random elements
-      statsData.forEach((data) => {
+      statsData.forEach(data => {
         expect(data.stats).toHaveProperty("totalUsers");
         expect(data.stats).toHaveProperty("activeUsers");
         expect(data.stats).toHaveProperty("revenue");

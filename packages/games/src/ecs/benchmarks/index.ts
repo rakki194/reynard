@@ -27,11 +27,7 @@
  */
 
 // Main benchmark runner and configuration
-export {
-  ECSBenchmarkRunner,
-  type BenchmarkConfig,
-  type BenchmarkResult,
-} from "./ecs-benchmark.js";
+export { ECSBenchmarkRunner, type BenchmarkConfig, type BenchmarkResult } from "./ecs-benchmark.js";
 
 // Convenience functions for running specific benchmark categories
 export {

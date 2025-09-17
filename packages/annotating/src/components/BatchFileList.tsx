@@ -18,7 +18,7 @@ export interface BatchFileListProps {
   class?: string;
 }
 
-export const BatchFileList: Component<BatchFileListProps> = (props) => {
+export const BatchFileList: Component<BatchFileListProps> = props => {
   return (
     <div class={`file-list ${props.class || ""}`}>
       <div class="file-list-header">
@@ -31,11 +31,7 @@ export const BatchFileList: Component<BatchFileListProps> = (props) => {
           >
             {props.isProcessing ? "Processing..." : "Process Batch"}
           </button>
-          <button
-            onClick={props.onClearBatch}
-            disabled={props.isProcessing}
-            class="clear-button"
-          >
+          <button onClick={props.onClearBatch} disabled={props.isProcessing} class="clear-button">
             Clear All
           </button>
         </div>
@@ -43,14 +39,14 @@ export const BatchFileList: Component<BatchFileListProps> = (props) => {
 
       <div class="files-grid">
         <For each={props.files}>
-          {(file) => (
+          {file => (
             <div class={`file-item ${file.status}`}>
               <div class="file-info">
                 <div class="file-name">{file.file.name}</div>
                 <div class="file-generator">
                   <select
                     value={file.generatorName}
-                    onChange={(e) =>
+                    onChange={e =>
                       props.onUpdateFileConfig(file.id, {
                         generatorName: e.currentTarget.value,
                       })
@@ -59,9 +55,7 @@ export const BatchFileList: Component<BatchFileListProps> = (props) => {
                     aria-label={`Select generator for ${file.file.name}`}
                   >
                     <For each={props.availableGenerators}>
-                      {(generator) => (
-                        <option value={generator}>{generator}</option>
-                      )}
+                      {generator => <option value={generator}>{generator}</option>}
                     </For>
                   </select>
                 </div>
@@ -75,12 +69,8 @@ export const BatchFileList: Component<BatchFileListProps> = (props) => {
                   {file.status === "error" && "❌"}
                 </div>
                 <div class="status-text">
-                  {file.status === "processing" && file.progress && (
-                    <span>{file.progress}%</span>
-                  )}
-                  {file.status === "error" && file.error && (
-                    <span class="error-text">{file.error}</span>
-                  )}
+                  {file.status === "processing" && file.progress && <span>{file.progress}%</span>}
+                  {file.status === "error" && file.error && <span class="error-text">{file.error}</span>}
                 </div>
               </div>
 

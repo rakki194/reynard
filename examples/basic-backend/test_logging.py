@@ -4,8 +4,6 @@ Test script to demonstrate professional logging functionality
 Run this script to see the logging system in action
 """
 
-import os
-import time
 
 from logging_config import (
     get_app_logger,

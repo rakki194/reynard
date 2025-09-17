@@ -16,9 +16,8 @@ export class GeneratorManager {
   async initializeGenerators(): Promise<void> {
     try {
       const generators = await this.client.getAvailableGenerators();
-      Object.values(generators).forEach((generatorInfo) => {
-        const generator =
-          GeneratorConverter.convertGeneratorInfo(generatorInfo);
+      Object.values(generators).forEach(generatorInfo => {
+        const generator = GeneratorConverter.convertGeneratorInfo(generatorInfo);
         this.generators.set(generator.name, generator);
       });
     } catch (error) {

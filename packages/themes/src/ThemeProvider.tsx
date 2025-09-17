@@ -3,12 +3,7 @@
  * Based on yipyap's ThemeProvider implementation
  */
 
-import {
-  createContext,
-  ParentComponent,
-  createSignal,
-  createEffect,
-} from "solid-js";
+import { createContext, ParentComponent, createSignal, createEffect } from "solid-js";
 import type { ThemeName, ReynardContext, ThemeProviderProps } from "./types";
 import type { TranslationContext } from "reynard-i18n";
 import { I18nProvider } from "reynard-i18n";
@@ -18,12 +13,10 @@ import { createThemeContext } from "./themeContext";
 import { setupThemeLifecycle } from "./themeLifecycle";
 
 // Create contexts with default value to prevent context not found errors
-export const ReynardContextInstance = createContext<ReynardContext | undefined>(
-  undefined,
-);
+export const ReynardContextInstance = createContext<ReynardContext | undefined>(undefined);
 
 // Theme Provider Component
-export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
+export const ReynardProvider: ParentComponent<ThemeProviderProps> = props => {
   console.log("ReynardProvider - props.defaultTheme:", props.defaultTheme);
   const initialTheme = getInitialTheme(props.defaultTheme);
   console.log("ReynardProvider - initialTheme:", initialTheme);
@@ -69,9 +62,7 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = (props) => {
 
   return (
     <I18nProvider value={translationContext}>
-      <ReynardContextInstance.Provider value={context}>
-        {props.children}
-      </ReynardContextInstance.Provider>
+      <ReynardContextInstance.Provider value={context}>{props.children}</ReynardContextInstance.Provider>
     </I18nProvider>
   );
 };

@@ -7,12 +7,7 @@
 import type { LanguageCode, Translations } from "../../types";
 
 export interface MigrationOptions {
-  sourceLibrary:
-    | "solid-i18n"
-    | "solid-primitives"
-    | "amoutonbrady"
-    | "i18next"
-    | "react-i18next";
+  sourceLibrary: "solid-i18n" | "solid-primitives" | "amoutonbrady" | "i18next" | "react-i18next";
   sourceTranslations: unknown;
   targetLocale: LanguageCode;
   preserveStructure?: boolean;

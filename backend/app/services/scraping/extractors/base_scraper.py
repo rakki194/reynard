@@ -7,6 +7,7 @@ Abstract base class for all content scrapers.
 import logging
 from abc import ABC, abstractmethod
 from typing import Any
+
 import aiohttp
 from bs4 import BeautifulSoup
 
@@ -186,9 +187,8 @@ class BaseScraper(ABC):
                 async with session.get(url, timeout=30) as response:
                     if response.status == 200:
                         return response
-                    else:
-                        self.logger.warning(f"HTTP {response.status} for {url}")
-                        return None
+                    self.logger.warning(f"HTTP {response.status} for {url}")
+                    return None
 
         except Exception as e:
             self.logger.error(f"Request failed for {url}: {e}")

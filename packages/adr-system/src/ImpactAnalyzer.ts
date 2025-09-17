@@ -126,15 +126,9 @@ export class ImpactAnalyzer {
     const affectedADRs = await this.findAffectedADRs(change);
     const impactAreas = await this.identifyImpactAreas(change);
     const complianceViolations = await this.checkComplianceViolations(change);
-    const recommendations = await this.generateRecommendations(
-      change,
-      complianceViolations,
-    );
+    const recommendations = await this.generateRecommendations(change, complianceViolations);
 
-    const impactLevel = this.calculateImpactLevel(
-      affectedADRs,
-      complianceViolations,
-    );
+    const impactLevel = this.calculateImpactLevel(affectedADRs, complianceViolations);
     const estimatedEffort = this.estimateEffort(change, complianceViolations);
     const riskScore = this.calculateRiskScore(change, complianceViolations);
 
@@ -153,9 +147,7 @@ export class ImpactAnalyzer {
   /**
    * Analyze dependency impact of changes
    */
-  async analyzeDependencyImpact(
-    changes: CodeChange[],
-  ): Promise<DependencyImpact[]> {
+  async analyzeDependencyImpact(changes: CodeChange[]): Promise<DependencyImpact[]> {
     console.log(`🦦 Analyzing dependency impact for ${changes.length} changes`);
 
     const impacts: DependencyImpact[] = [];
@@ -165,8 +157,7 @@ export class ImpactAnalyzer {
       const impactChain = await this.buildImpactChain(change, affectedFiles);
       const breakingChanges = await this.identifyBreakingChanges(change);
       const migrationRequired = breakingChanges.length > 0;
-      const estimatedMigrationEffort =
-        this.estimateMigrationEffort(breakingChanges);
+      const estimatedMigrationEffort = this.estimateMigrationEffort(breakingChanges);
 
       impacts.push({
         sourceFile: change.filePath,
@@ -186,11 +177,8 @@ export class ImpactAnalyzer {
    */
   getChangeHistory(filePath: string): CodeChange[] {
     return Array.from(this.changeHistory.values())
-      .filter((change) => change.filePath === filePath)
-      .sort(
-        (a, b) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-      );
+      .filter(change => change.filePath === filePath)
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   }
 
   /**
@@ -198,43 +186,27 @@ export class ImpactAnalyzer {
    */
   getChangesInRange(startDate: Date, endDate: Date): CodeChange[] {
     return Array.from(this.changeHistory.values())
-      .filter((change) => {
+      .filter(change => {
         const changeDate = new Date(change.timestamp);
         return changeDate >= startDate && changeDate <= endDate;
       })
-      .sort(
-        (a, b) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-      );
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   }
 
   /**
    * Generate impact report
    */
-  generateImpactReport(
-    changes: CodeChange[],
-    assessments: ImpactAssessment[],
-  ): string {
+  generateImpactReport(changes: CodeChange[], assessments: ImpactAssessment[]): string {
     let report = "# Impact Analysis Report\n\n";
     report += `**Generated**: ${new Date().toISOString()}\n`;
     report += `**Changes Analyzed**: ${changes.length}\n\n`;
 
     // Summary
     report += "## Summary\n\n";
-    const criticalChanges = assessments.filter(
-      (a) => a.impactLevel === "critical",
-    ).length;
-    const highImpactChanges = assessments.filter(
-      (a) => a.impactLevel === "high",
-    ).length;
-    const totalViolations = assessments.reduce(
-      (sum, a) => sum + a.complianceViolations.length,
-      0,
-    );
-    const totalEffort = assessments.reduce(
-      (sum, a) => sum + a.estimatedEffort,
-      0,
-    );
+    const criticalChanges = assessments.filter(a => a.impactLevel === "critical").length;
+    const highImpactChanges = assessments.filter(a => a.impactLevel === "high").length;
+    const totalViolations = assessments.reduce((sum, a) => sum + a.complianceViolations.length, 0);
+    const totalEffort = assessments.reduce((sum, a) => sum + a.estimatedEffort, 0);
 
     report += `- **Critical Changes**: ${criticalChanges}\n`;
     report += `- **High Impact Changes**: ${highImpactChanges}\n`;
@@ -302,9 +274,7 @@ export class ImpactAnalyzer {
   private async loadADRs(): Promise<void> {
     try {
       const files = await readdir(this.adrPath);
-      const adrFiles = files.filter(
-        (file) => file.endsWith(".md") && file.match(/^\d{3}-/),
-      );
+      const adrFiles = files.filter(file => file.endsWith(".md") && file.match(/^\d{3}-/));
 
       for (const file of adrFiles) {
         const filePath = join(this.adrPath, file);
@@ -354,7 +324,7 @@ export class ImpactAnalyzer {
 
   private async watchFile(filePath: string): Promise<void> {
     try {
-      const watcher = watch(filePath, async (eventType) => {
+      const watcher = watch(filePath, async eventType => {
         if (eventType === "change") {
           await this.handleFileChange(filePath);
         }
@@ -398,9 +368,7 @@ export class ImpactAnalyzer {
 
         // Analyze impact
         const impact = await this.analyzeChangeImpact(change);
-        console.log(
-          `📊 Impact analysis for ${filePath}: ${impact.impactLevel} (${impact.riskScore.toFixed(2)})`,
-        );
+        console.log(`📊 Impact analysis for ${filePath}: ${impact.impactLevel} (${impact.riskScore.toFixed(2)})`);
       }
     } catch (error) {
       console.error(`Failed to handle file change for ${filePath}:`, error);
@@ -418,18 +386,12 @@ export class ImpactAnalyzer {
           const fullPath = join(dir, entry.name);
 
           if (entry.isDirectory()) {
-            if (
-              !["node_modules", ".git", "dist", "build"].includes(entry.name)
-            ) {
+            if (!["node_modules", ".git", "dist", "build"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
             const ext = fullPath.split(".").pop();
-            if (
-              ["ts", "tsx", "js", "jsx", "py", "go", "rs", "java"].includes(
-                ext || "",
-              )
-            ) {
+            if (["ts", "tsx", "js", "jsx", "py", "go", "rs", "java"].includes(ext || "")) {
               files.push(fullPath);
             }
           }
@@ -529,9 +491,7 @@ export class ImpactAnalyzer {
     return impactAreas;
   }
 
-  private async checkComplianceViolations(
-    change: CodeChange,
-  ): Promise<ComplianceViolation[]> {
+  private async checkComplianceViolations(change: CodeChange): Promise<ComplianceViolation[]> {
     const violations: ComplianceViolation[] = [];
     const content = change.content || "";
     const lines = content.split("\n");
@@ -590,10 +550,7 @@ export class ImpactAnalyzer {
     return violations;
   }
 
-  private async generateRecommendations(
-    change: CodeChange,
-    violations: ComplianceViolation[],
-  ): Promise<string[]> {
+  private async generateRecommendations(change: CodeChange, violations: ComplianceViolation[]): Promise<string[]> {
     const recommendations: string[] = [];
 
     // Generate recommendations based on violations
@@ -609,9 +566,7 @@ export class ImpactAnalyzer {
       recommendations.push("Review existing tests to ensure they still pass");
       recommendations.push("Consider if this change affects other components");
     } else if (change.changeType === "deleted") {
-      recommendations.push(
-        "Verify that no other code depends on the deleted functionality",
-      );
+      recommendations.push("Verify that no other code depends on the deleted functionality");
       recommendations.push("Update or remove related tests");
     }
 
@@ -639,33 +594,24 @@ export class ImpactAnalyzer {
 
   private calculateImpactLevel(
     affectedADRs: string[],
-    violations: ComplianceViolation[],
+    violations: ComplianceViolation[]
   ): "low" | "medium" | "high" | "critical" {
-    if (violations.some((v) => v.severity === "critical")) {
+    if (violations.some(v => v.severity === "critical")) {
       return "critical";
     }
 
-    if (
-      affectedADRs.length > 3 ||
-      violations.some((v) => v.severity === "high")
-    ) {
+    if (affectedADRs.length > 3 || violations.some(v => v.severity === "high")) {
       return "high";
     }
 
-    if (
-      affectedADRs.length > 1 ||
-      violations.some((v) => v.severity === "medium")
-    ) {
+    if (affectedADRs.length > 1 || violations.some(v => v.severity === "medium")) {
       return "medium";
     }
 
     return "low";
   }
 
-  private estimateEffort(
-    change: CodeChange,
-    violations: ComplianceViolation[],
-  ): number {
+  private estimateEffort(change: CodeChange, violations: ComplianceViolation[]): number {
     let effort = 0;
 
     // Base effort based on change size
@@ -692,10 +638,7 @@ export class ImpactAnalyzer {
     return effort;
   }
 
-  private calculateRiskScore(
-    change: CodeChange,
-    violations: ComplianceViolation[],
-  ): number {
+  private calculateRiskScore(change: CodeChange, violations: ComplianceViolation[]): number {
     let risk = 0;
 
     // Base risk based on change size
@@ -743,12 +686,9 @@ export class ImpactAnalyzer {
     return affectedFiles;
   }
 
-  private async buildImpactChain(
-    change: CodeChange,
-    affectedFiles: string[],
-  ): Promise<string[][]> {
+  private async buildImpactChain(change: CodeChange, affectedFiles: string[]): Promise<string[][]> {
     // Simplified implementation - would build actual dependency chains
-    return affectedFiles.map((file) => [change.filePath, file]);
+    return affectedFiles.map(file => [change.filePath, file]);
   }
 
   private async identifyBreakingChanges(change: CodeChange): Promise<string[]> {
@@ -786,14 +726,12 @@ export class ImpactAnalyzer {
   private isContentRelevantToADR(content: string, adr: ADRDocument): boolean {
     // Simplified implementation - would use more sophisticated analysis
     const adrContent = (adr.context + " " + adr.decision).toLowerCase();
-    const keywords = adrContent.split(" ").filter((word) => word.length > 4);
+    const keywords = adrContent.split(" ").filter(word => word.length > 4);
 
-    return keywords.some((keyword) => content.includes(keyword));
+    return keywords.some(keyword => content.includes(keyword));
   }
 
-  private findLongFunctions(
-    content: string,
-  ): Array<{ line: number; lines: number }> {
+  private findLongFunctions(content: string): Array<{ line: number; lines: number }> {
     const functions: Array<{ line: number; lines: number }> = [];
     const lines = content.split("\n");
 
@@ -804,11 +742,7 @@ export class ImpactAnalyzer {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
 
-      if (
-        line.includes("function") ||
-        line.includes("=>") ||
-        line.includes("class")
-      ) {
+      if (line.includes("function") || line.includes("=>") || line.includes("class")) {
         inFunction = true;
         functionStart = i;
         braceCount = 0;
@@ -852,11 +786,7 @@ export class ImpactAnalyzer {
       const line = lines[i];
 
       // Check for hardcoded secrets
-      if (
-        line.includes("password") &&
-        line.includes("=") &&
-        !line.includes("process.env")
-      ) {
+      if (line.includes("password") && line.includes("=") && !line.includes("process.env")) {
         issues.push({
           line: i + 1,
           severity: "critical",
@@ -867,11 +797,7 @@ export class ImpactAnalyzer {
       }
 
       // Check for SQL injection risks
-      if (
-        line.includes("query") &&
-        line.includes("+") &&
-        !line.includes("prepared")
-      ) {
+      if (line.includes("query") && line.includes("+") && !line.includes("prepared")) {
         issues.push({
           line: i + 1,
           severity: "high",

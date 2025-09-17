@@ -50,31 +50,24 @@ function createEngineComponents(
   locale: () => LanguageCode,
   translations: () => Translations,
   setTranslations: (translations: Translations) => void,
-  options: ReturnType<typeof extractEngineOptions>,
+  options: ReturnType<typeof extractEngineOptions>
 ) {
   const t = createCoreTranslationFunction(locale, translations, {
     enableDebug: options.enableDebug,
     enablePerformanceMonitoring: options.enablePerformanceMonitoring,
   });
 
-  const loadingEffect = createTranslationLoadingEffect(
-    locale,
-    setTranslations,
-    {
-      enablePerformanceMonitoring: options.enablePerformanceMonitoring,
-      intlConfig: options.intlConfig,
-      usedNamespaces: options.usedNamespaces,
-      preloadLocales: options.preloadLocales,
-      initialTranslations: options.initialTranslations,
-    },
-  );
+  const loadingEffect = createTranslationLoadingEffect(locale, setTranslations, {
+    enablePerformanceMonitoring: options.enablePerformanceMonitoring,
+    intlConfig: options.intlConfig,
+    usedNamespaces: options.usedNamespaces,
+    preloadLocales: options.preloadLocales,
+    initialTranslations: options.initialTranslations,
+  });
 
   const i18nDebugger = {} as Record<string, unknown>; // Placeholder - I18nDebugger not available
   const features = createTranslationFeatures(t, locale);
-  const namespaceLoader = createNamespaceLoader(
-    locale,
-    loadingEffect.optimizedLoader,
-  );
+  const namespaceLoader = createNamespaceLoader(locale, loadingEffect.optimizedLoader);
   const cacheManager = createCacheManager();
 
   return {
@@ -99,15 +92,10 @@ export function createTranslationEngine(
     usedNamespaces?: string[];
     preloadLocales?: LanguageCode[];
     initialTranslations?: Partial<Translations>;
-  },
+  }
 ) {
   const parsedOptions = extractEngineOptions(options);
-  const components = createEngineComponents(
-    locale,
-    translations,
-    setTranslations,
-    parsedOptions,
-  );
+  const components = createEngineComponents(locale, translations, setTranslations, parsedOptions);
 
   return {
     debugger: components.i18nDebugger,

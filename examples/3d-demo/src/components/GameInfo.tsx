@@ -6,9 +6,8 @@ export const GameInfo: Component = () => {
       <div class="info-section">
         <h3>🦊 About Reynard 3D</h3>
         <p>
-          This demo showcases the powerful 3D capabilities of the Reynard
-          framework, built on top of Three.js and optimized for modern web
-          browsers.
+          This demo showcases the powerful 3D capabilities of the Reynard framework, built on top of Three.js and
+          optimized for modern web browsers.
         </p>
       </div>
 

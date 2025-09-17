@@ -17,37 +17,23 @@ interface ThemeDetailsProps {
   onCopyColor: (color: string) => void;
 }
 
-export const ThemeDetails: Component<ThemeDetailsProps> = (props) => {
+export const ThemeDetails: Component<ThemeDetailsProps> = props => {
   return (
     <div class="theme-details-panel">
       <div class="current-theme-info">
         <h3>Current Theme: {props.currentThemeName}</h3>
-        <button
-          class="button button--secondary"
-          onClick={() => props.onToggleColorDetails()}
-        >
-          {fluentIconsPackage.getIcon(
-            props.showColorDetails ? "eye-off" : "eye",
-          ) && (
+        <button class="button button--secondary" onClick={() => props.onToggleColorDetails()}>
+          {fluentIconsPackage.getIcon(props.showColorDetails ? "eye-off" : "eye") && (
             <span
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon(
-                  props.showColorDetails ? "eye-off" : "eye",
-                )?.outerHTML
-              }
+              innerHTML={fluentIconsPackage.getIcon(props.showColorDetails ? "eye-off" : "eye")?.outerHTML}
             />
           )}
           {props.showColorDetails ? "Hide" : "Show"} Color Details
         </button>
       </div>
 
-      {props.showColorDetails && (
-        <ColorDetails
-          colors={props.themeColors}
-          onCopyColor={props.onCopyColor}
-        />
-      )}
+      {props.showColorDetails && <ColorDetails colors={props.themeColors} onCopyColor={props.onCopyColor} />}
 
       <ThemeFeatures />
     </div>

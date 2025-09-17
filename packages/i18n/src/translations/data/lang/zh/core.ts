@@ -75,23 +75,18 @@ export const coreTranslations = {
   // 密码验证
   password: {
     "must-be-at-least-8-characters-long": "密码必须至少8个字符",
-    "must-contain-at-least-one-uppercase-letter":
-      "密码必须包含至少一个大写字母",
-    "must-contain-at-least-one-lowercase-letter":
-      "密码必须包含至少一个小写字母",
+    "must-contain-at-least-one-uppercase-letter": "密码必须包含至少一个大写字母",
+    "must-contain-at-least-one-lowercase-letter": "密码必须包含至少一个小写字母",
     "must-contain-at-least-one-number": "密码必须包含至少一个数字",
-    "must-contain-at-least-one-special-character":
-      "密码必须包含至少一个特殊字符",
+    "must-contain-at-least-one-special-character": "密码必须包含至少一个特殊字符",
   },
 
   // 安全验证
   security: {
     "at-least-one-character-type-must-be-included": "必须包含至少一种字符类型",
     "input-contains-potentially-dangerous-html": "输入包含潜在危险的HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "输入包含潜在危险的SQL模式",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "输入包含潜在危险的XSS模式",
+    "input-contains-potentially-dangerous-sql-patterns": "输入包含潜在危险的SQL模式",
+    "input-contains-potentially-dangerous-xss-patterns": "输入包含潜在危险的XSS模式",
     "input-contains-path-traversal-patterns": "输入包含路径遍历模式",
     "input-contains-windows-reserved-names": "输入包含Windows保留名称",
     "input-contains-executable-file-extensions": "输入包含可执行文件扩展名",

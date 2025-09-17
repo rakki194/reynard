@@ -129,7 +129,7 @@ We provide utility classes for common container patterns:
 // Component
 <div class={`${styles.galleryContainer} container container-name-layout`}>
   <div class={styles.gallery}>
-    {items.map((item) => (
+    {items.map(item => (
       <div class={styles.item} key={item.id}>
         {item.content}
       </div>
@@ -494,7 +494,7 @@ export function ResponsiveGallery({ items }: { items: Item[] }) {
   return (
     <div class={`${styles.container} container container-name-gallery`}>
       <div class={styles.grid}>
-        {items.map((item) => (
+        {items.map(item => (
           <div class={styles.item} key={item.id}>
             <img src={item.image} alt={item.title} />
             <div class={styles.content}>
@@ -629,7 +629,7 @@ test("adapts layout based on container size", () => {
 test("respects reduced motion preference", () => {
   // Mock reduced motion preference
   Object.defineProperty(window, "matchMedia", {
-    value: jest.fn().mockImplementation((query) => ({
+    value: jest.fn().mockImplementation(query => ({
       matches: query === "(prefers-reduced-motion: reduce)",
       media: query,
     })),

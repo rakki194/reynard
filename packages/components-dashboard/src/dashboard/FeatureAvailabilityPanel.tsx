@@ -27,15 +27,9 @@ export interface FeatureInfo {
   healthScore: number;
 }
 
-export const FeatureAvailabilityPanel: Component<
-  FeatureAvailabilityPanelProps
-> = (props) => {
-  const [selectedCategory, setSelectedCategory] = createSignal<string | null>(
-    null,
-  );
-  const [selectedPriority, setSelectedPriority] = createSignal<string | null>(
-    null,
-  );
+export const FeatureAvailabilityPanel: Component<FeatureAvailabilityPanelProps> = props => {
+  const [selectedCategory, setSelectedCategory] = createSignal<string | null>(null);
+  const [selectedPriority, setSelectedPriority] = createSignal<string | null>(null);
 
   // Mock feature data
   const [features] = createSignal<FeatureInfo[]>([
@@ -143,7 +137,7 @@ export const FeatureAvailabilityPanel: Component<
 
   const categories = () => {
     const featureList = features();
-    const categorySet = new Set(featureList.map((f) => f.category));
+    const categorySet = new Set(featureList.map(f => f.category));
     return Array.from(categorySet);
   };
 
@@ -156,11 +150,11 @@ export const FeatureAvailabilityPanel: Component<
     let filtered = featureList;
 
     if (selectedCategory()) {
-      filtered = filtered.filter((f) => f.category === selectedCategory());
+      filtered = filtered.filter(f => f.category === selectedCategory());
     }
 
     if (selectedPriority()) {
-      filtered = filtered.filter((f) => f.priority === selectedPriority());
+      filtered = filtered.filter(f => f.priority === selectedPriority());
     }
 
     return filtered;
@@ -235,15 +229,11 @@ export const FeatureAvailabilityPanel: Component<
             <label>Category:</label>
             <select
               value={selectedCategory() || ""}
-              onChange={(e) =>
-                setSelectedCategory(e.currentTarget.value || null)
-              }
+              onChange={e => setSelectedCategory(e.currentTarget.value || null)}
               aria-label="Filter by category"
             >
               <option value="">All Categories</option>
-              <For each={categories()}>
-                {(category) => <option value={category}>{category}</option>}
-              </For>
+              <For each={categories()}>{category => <option value={category}>{category}</option>}</For>
             </select>
           </div>
         </Show>
@@ -253,15 +243,11 @@ export const FeatureAvailabilityPanel: Component<
             <label>Priority:</label>
             <select
               value={selectedPriority() || ""}
-              onChange={(e) =>
-                setSelectedPriority(e.currentTarget.value || null)
-              }
+              onChange={e => setSelectedPriority(e.currentTarget.value || null)}
               aria-label="Filter by priority"
             >
               <option value="">All Priorities</option>
-              <For each={priorities()}>
-                {(priority) => <option value={priority}>{priority}</option>}
-              </For>
+              <For each={priorities()}>{priority => <option value={priority}>{priority}</option>}</For>
             </select>
           </div>
         </Show>
@@ -270,40 +256,29 @@ export const FeatureAvailabilityPanel: Component<
       {/* Features List */}
       <div class="features-list">
         <For each={filteredFeatures()}>
-          {(feature) => (
+          {feature => (
             <div class="feature-item">
               <div class="feature-header">
                 <div class="feature-info">
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={
-                        fluentIconsPackage.getIcon(getStatusIcon(feature))
-                          ?.outerHTML || ""
-                      }
+                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(feature))?.outerHTML || ""}
                     />
                   </span>
 
                   <div class="feature-details">
                     <span class="feature-name">{feature.name}</span>
-                    <span class="feature-description">
-                      {feature.description}
-                    </span>
+                    <span class="feature-description">{feature.description}</span>
                   </div>
                 </div>
 
                 <div class="feature-status">
-                  <span
-                    class="status-badge"
-                    classList={{ [getStatusColor(feature)]: true }}
-                  >
+                  <span class="status-badge" classList={{ [getStatusColor(feature)]: true }}>
                     {feature.status}
                   </span>
 
-                  <span
-                    class="priority-badge"
-                    classList={{ [getPriorityColor(feature.priority)]: true }}
-                  >
+                  <span class="priority-badge" classList={{ [getPriorityColor(feature.priority)]: true }}>
                     {feature.priority}
                   </span>
 
@@ -327,16 +302,10 @@ export const FeatureAvailabilityPanel: Component<
 
                 <div class="detail-row">
                   <span class="label">Last Check:</span>
-                  <span class="value">
-                    {feature.lastCheck.toLocaleString()}
-                  </span>
+                  <span class="value">{feature.lastCheck.toLocaleString()}</span>
                 </div>
 
-                <Show
-                  when={
-                    props.showDependencies && feature.dependencies.length > 0
-                  }
-                >
+                <Show when={props.showDependencies && feature.dependencies.length > 0}>
                   <div class="detail-row">
                     <span class="label">Dependencies:</span>
                     <span class="value">{feature.dependencies.join(", ")}</span>
@@ -356,24 +325,15 @@ export const FeatureAvailabilityPanel: Component<
         </div>
         <div class="summary-item">
           <span class="label">Available:</span>
-          <span class="value success">
-            {filteredFeatures().filter((f) => f.status === "available").length}
-          </span>
+          <span class="value success">{filteredFeatures().filter(f => f.status === "available").length}</span>
         </div>
         <div class="summary-item">
           <span class="label">Degraded:</span>
-          <span class="value warning">
-            {filteredFeatures().filter((f) => f.status === "degraded").length}
-          </span>
+          <span class="value warning">{filteredFeatures().filter(f => f.status === "degraded").length}</span>
         </div>
         <div class="summary-item">
           <span class="label">Unavailable:</span>
-          <span class="value error">
-            {
-              filteredFeatures().filter((f) => f.status === "unavailable")
-                .length
-            }
-          </span>
+          <span class="value error">{filteredFeatures().filter(f => f.status === "unavailable").length}</span>
         </div>
       </div>
     </div>

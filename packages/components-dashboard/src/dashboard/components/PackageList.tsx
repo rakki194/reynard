@@ -8,33 +8,29 @@ import { Button, TextField, Select } from "reynard-components-core/primitives";
 import { Icon } from "reynard-fluent-icons";
 import type { PackageListProps } from "../types/PackageConfigurationTypes";
 
-export const PackageList: Component<PackageListProps> = (props) => {
+export const PackageList: Component<PackageListProps> = props => {
   const filteredPackages = () => {
     let filtered = props.packages;
 
     // Filter by search query
     if (props.searchQuery) {
       filtered = filtered.filter(
-        (pkg) =>
+        pkg =>
           pkg.name.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
-          pkg.description
-            .toLowerCase()
-            .includes(props.searchQuery.toLowerCase()),
+          pkg.description.toLowerCase().includes(props.searchQuery.toLowerCase())
       );
     }
 
     // Filter by category
     if (props.selectedCategory !== "all") {
-      filtered = filtered.filter(
-        (pkg) => pkg.category === props.selectedCategory,
-      );
+      filtered = filtered.filter(pkg => pkg.category === props.selectedCategory);
     }
 
     return filtered;
   };
 
   const categories = () => {
-    const cats = new Set(props.packages.map((pkg) => pkg.category));
+    const cats = new Set(props.packages.map(pkg => pkg.category));
     return Array.from(cats);
   };
 
@@ -46,16 +42,16 @@ export const PackageList: Component<PackageListProps> = (props) => {
           <TextField
             placeholder="Search packages..."
             value={props.searchQuery}
-            onInput={(e) => props.onSearchChange(e.currentTarget.value)}
+            onInput={e => props.onSearchChange(e.currentTarget.value)}
             leftIcon="search"
             size="sm"
           />
           <Select
             value={props.selectedCategory}
-            onChange={(e) => props.onCategoryChange(e.target.value)}
+            onChange={e => props.onCategoryChange(e.target.value)}
             options={[
               { value: "all", label: "All Categories" },
-              ...categories().map((cat) => ({ value: cat, label: cat })),
+              ...categories().map(cat => ({ value: cat, label: cat })),
             ]}
             size="sm"
           />
@@ -82,21 +78,17 @@ export const PackageList: Component<PackageListProps> = (props) => {
           }
         >
           <For each={filteredPackages()}>
-            {(pkg) => (
+            {pkg => (
               <div
                 class={`reynard-package-item ${
-                  props.selectedPackage === pkg.name
-                    ? "reynard-package-item--selected"
-                    : ""
+                  props.selectedPackage === pkg.name ? "reynard-package-item--selected" : ""
                 }`}
                 onClick={() => props.onSelectPackage(pkg.name)}
               >
                 <div class="reynard-package-item__header">
                   <div class="reynard-package-item__info">
                     <h4>{pkg.name}</h4>
-                    <span class="reynard-package-item__version">
-                      v{pkg.version}
-                    </span>
+                    <span class="reynard-package-item__version">v{pkg.version}</span>
                   </div>
                   <div class="reynard-package-item__status">
                     <Icon
@@ -106,16 +98,10 @@ export const PackageList: Component<PackageListProps> = (props) => {
                     />
                   </div>
                 </div>
-                <p class="reynard-package-item__description">
-                  {pkg.description}
-                </p>
+                <p class="reynard-package-item__description">{pkg.description}</p>
                 <div class="reynard-package-item__meta">
-                  <span class="reynard-package-item__category">
-                    {pkg.category}
-                  </span>
-                  <span class="reynard-package-item__modified">
-                    Modified: {pkg.lastModified.toLocaleDateString()}
-                  </span>
+                  <span class="reynard-package-item__category">{pkg.category}</span>
+                  <span class="reynard-package-item__modified">Modified: {pkg.lastModified.toLocaleDateString()}</span>
                 </div>
               </div>
             )}

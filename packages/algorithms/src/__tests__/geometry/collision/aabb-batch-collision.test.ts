@@ -3,18 +3,10 @@ import {
   batchCollisionDetection,
   batchCollisionWithSpatialHash,
 } from "../../../geometry/collision/aabb-batch-collision";
-import type {
-  AABB,
-  AABBSpatialHashConfig,
-} from "../../../geometry/collision/aabb-types";
+import type { AABB, AABBSpatialHashConfig } from "../../../geometry/collision/aabb-types";
 
 // Test helper functions
-const createAABB = (
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-): AABB => ({
+const createAABB = (x: number, y: number, width: number, height: number): AABB => ({
   x,
   y,
   width,
@@ -93,7 +85,7 @@ describe("AABB Batch Collision Detection - Distance Filtering", () => {
 
       // Should only include close collisions
       expect(collisions.length).toBeGreaterThan(0);
-      collisions.forEach((collision) => {
+      collisions.forEach(collision => {
         expect(collision.result.distance).toBeLessThanOrEqual(100);
       });
     });
@@ -103,9 +95,7 @@ describe("AABB Batch Collision Detection - Distance Filtering", () => {
 describe("AABB Batch Collision Detection - Spatial Hash Optimization", () => {
   describe("batchCollisionDetection", () => {
     it("should use spatial hash optimization for large arrays", () => {
-      const aabbs = Array.from({ length: 150 }, (_, i) =>
-        createAABB(i * 10, i * 10, 50, 50),
-      );
+      const aabbs = Array.from({ length: 150 }, (_, i) => createAABB(i * 10, i * 10, 50, 50));
 
       const collisions = batchCollisionDetection(aabbs, {
         spatialHash: createSpatialHashConfig(100),
@@ -154,28 +144,20 @@ describe("AABB Batch Collision Detection - Spatial Hash Function", () => {
     });
 
     it("should respect maxDistance with spatial hash", () => {
-      const aabbs = [
-        createAABB(0, 0, 100, 100),
-        createAABB(150, 150, 50, 50),
-        createAABB(50, 50, 50, 50),
-      ];
+      const aabbs = [createAABB(0, 0, 100, 100), createAABB(150, 150, 50, 50), createAABB(50, 50, 50, 50)];
 
       const collisions = batchCollisionWithSpatialHash(aabbs, {
         maxDistance: 100,
         spatialHash: createSpatialHashConfig(100),
       });
 
-      collisions.forEach((collision) => {
+      collisions.forEach(collision => {
         expect(collision.result.distance).toBeLessThanOrEqual(100);
       });
     });
 
     it("should handle multiple objects in same cell", () => {
-      const aabbs = [
-        createAABB(0, 0, 50, 50),
-        createAABB(25, 25, 50, 50),
-        createAABB(10, 10, 30, 30),
-      ];
+      const aabbs = [createAABB(0, 0, 50, 50), createAABB(25, 25, 50, 50), createAABB(10, 10, 30, 30)];
 
       const collisions = batchCollisionWithSpatialHash(aabbs, {
         spatialHash: createSpatialHashConfig(100),

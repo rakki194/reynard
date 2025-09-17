@@ -4,14 +4,7 @@
  */
 
 import { usePerformanceMonitor } from "reynard-composables";
-import {
-  Component,
-  Show,
-  createEffect,
-  createSignal,
-  onCleanup,
-  onMount,
-} from "solid-js";
+import { Component, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { Button } from "../primitives/Button";
 import { Tabs, type TabItem } from "../Tabs";
 import { PerformanceAlertsTab } from "./PerformanceAlertsTab";
@@ -49,20 +42,15 @@ export interface PerformanceHistory {
   frameDropCount?: number;
 }
 
-export const PerformanceDashboard: Component<PerformanceDashboardProps> = (
-  props,
-) => {
+export const PerformanceDashboard: Component<PerformanceDashboardProps> = props => {
   const performanceMonitor = usePerformanceMonitor();
   const [activeTab, setActiveTab] = createSignal("overview");
   const [isRecording, setIsRecording] = createSignal(false);
   const [memoryUsage, setMemoryUsage] = createSignal<number>(0);
-  const [browserResponsiveness, setBrowserResponsiveness] =
-    createSignal<number>(0);
+  const [browserResponsiveness, setBrowserResponsiveness] = createSignal<number>(0);
   const [frameRate, setFrameRate] = createSignal<number>(60);
   const [warnings, setWarnings] = createSignal<PerformanceWarning[]>([]);
-  const [performanceHistory, setPerformanceHistory] = createSignal<
-    PerformanceHistory[]
-  >([]);
+  const [performanceHistory, setPerformanceHistory] = createSignal<PerformanceHistory[]>([]);
   const [lastUpdate, setLastUpdate] = createSignal<Date | null>(null);
 
   // Auto-refresh functionality
@@ -107,23 +95,20 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (
       const memory = await performanceMonitor.measureMemoryUsage();
       setMemoryUsage(memory);
 
-      const responsiveness =
-        await performanceMonitor.checkBrowserResponsiveness();
+      const responsiveness = await performanceMonitor.checkBrowserResponsiveness();
       setBrowserResponsiveness(responsiveness);
 
       updateFrameRate();
 
       // Convert warnings to our format
-      const convertedWarnings: PerformanceWarning[] = currentWarnings.map(
-        (warning, index) => ({
-          type: warning.severity,
-          message: warning.message,
-          value: warning.value,
-          threshold: warning.threshold,
-          timestamp: warning.timestamp,
-          severity: warning.severity,
-        }),
-      );
+      const convertedWarnings: PerformanceWarning[] = currentWarnings.map((warning, index) => ({
+        type: warning.severity,
+        message: warning.message,
+        value: warning.value,
+        threshold: warning.threshold,
+        timestamp: warning.timestamp,
+        severity: warning.severity,
+      }));
       setWarnings(convertedWarnings);
 
       // Update performance history
@@ -140,7 +125,7 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (
           frameDropCount: metrics.frameDropCount,
         };
 
-        setPerformanceHistory((prev) => {
+        setPerformanceHistory(prev => {
           const updated = [...prev, historyEntry];
           return updated.slice(-100); // Keep only last 100 data points
         });
@@ -237,13 +222,7 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (
           </div>
 
           {/* Tabs */}
-          <Tabs
-            items={tabs}
-            activeTab={activeTab()}
-            onTabChange={setActiveTab}
-            variant="underline"
-            size="lg"
-          />
+          <Tabs items={tabs} activeTab={activeTab()} onTabChange={setActiveTab} variant="underline" size="lg" />
 
           {/* Tab Content */}
           <Show when={activeTab() === "overview"}>
@@ -261,10 +240,7 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (
           </Show>
 
           <Show when={activeTab() === "metrics"}>
-            <PerformanceMetricsTab
-              performanceHistory={performanceHistory()}
-              refreshInterval={props.refreshInterval}
-            />
+            <PerformanceMetricsTab performanceHistory={performanceHistory()} refreshInterval={props.refreshInterval} />
           </Show>
 
           <Show when={activeTab() === "memory"}>
@@ -276,10 +252,7 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (
           </Show>
 
           <Show when={activeTab() === "alerts"}>
-            <PerformanceAlertsTab
-              warnings={warnings()}
-              refreshInterval={props.refreshInterval}
-            />
+            <PerformanceAlertsTab warnings={warnings()} refreshInterval={props.refreshInterval} />
           </Show>
 
           <Show when={activeTab() === "export"}>
@@ -292,9 +265,7 @@ export const PerformanceDashboard: Component<PerformanceDashboardProps> = (
 
           {/* Last Update */}
           <Show when={lastUpdate()}>
-            <div class="last-update">
-              Last updated: {lastUpdate()!.toLocaleString()}
-            </div>
+            <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
           </Show>
         </div>
       </div>

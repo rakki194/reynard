@@ -9,10 +9,7 @@ import { Component } from "solid-js";
 import { ModelSelection, ImageUpload } from "./CaptionGeneratorComponents";
 import { CaptionGeneratorControls } from "./CaptionGeneratorControls";
 import { CaptionGeneratorResults } from "./CaptionGeneratorResults";
-import type {
-  CaptionGeneratorState,
-  CaptionGeneratorHandlers,
-} from "../composables";
+import type { CaptionGeneratorState, CaptionGeneratorHandlers } from "../composables";
 
 export interface CaptionGeneratorViewProps {
   state: CaptionGeneratorState;
@@ -21,16 +18,12 @@ export interface CaptionGeneratorViewProps {
   fileInputRef: HTMLInputElement | undefined;
 }
 
-export const CaptionGeneratorView: Component<CaptionGeneratorViewProps> = (
-  props,
-) => {
+export const CaptionGeneratorView: Component<CaptionGeneratorViewProps> = props => {
   return (
     <div class={`caption-generator ${props.class || ""}`}>
       <div class="generator-header">
         <h3 class="generator-title">Caption Generator</h3>
-        <p class="generator-description">
-          Generate captions and tags for your images using AI models
-        </p>
+        <p class="generator-description">Generate captions and tags for your images using AI models</p>
       </div>
 
       <div class="generator-content">
@@ -52,10 +45,7 @@ export const CaptionGeneratorView: Component<CaptionGeneratorViewProps> = (
           fileInputRef={props.fileInputRef}
         />
 
-        <CaptionGeneratorControls
-          state={props.state}
-          handlers={props.handlers}
-        />
+        <CaptionGeneratorControls state={props.state} handlers={props.handlers} />
 
         <CaptionGeneratorResults state={props.state} />
       </div>

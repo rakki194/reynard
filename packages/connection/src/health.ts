@@ -29,10 +29,7 @@ export class HealthChecker {
   private async run() {
     for (const [, fn] of this.checks) {
       const controller = new AbortController();
-      const timer = setTimeout(
-        () => controller.abort(),
-        this.timeoutSec * 1000,
-      );
+      const timer = setTimeout(() => controller.abort(), this.timeoutSec * 1000);
       try {
         await fn();
       } catch {
@@ -48,7 +45,7 @@ export class HealthChecker {
     isHealthy: boolean,
     responseTime: number,
     errorMessage?: string,
-    details?: Record<string, unknown>,
+    details?: Record<string, unknown>
   ): HealthCheckResult {
     return {
       connectionId,

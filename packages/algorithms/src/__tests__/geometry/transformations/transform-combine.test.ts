@@ -49,14 +49,8 @@ describe("TransformOps - Combine Operations", () => {
     });
 
     it("should handle complex combination", () => {
-      const a = TransformOps.combine(
-        TransformOps.translate(5, 10),
-        TransformOps.scale(2, 3),
-      );
-      const b = TransformOps.combine(
-        TransformOps.rotate(Math.PI / 4),
-        TransformOps.translate(1, 1),
-      );
+      const a = TransformOps.combine(TransformOps.translate(5, 10), TransformOps.scale(2, 3));
+      const b = TransformOps.combine(TransformOps.rotate(Math.PI / 4), TransformOps.translate(1, 1));
       const combined = TransformOps.combine(a, b);
 
       expect(combined.rotation).toBeCloseTo(Math.PI / 4, 5);

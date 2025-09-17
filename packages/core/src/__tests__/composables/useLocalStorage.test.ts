@@ -132,10 +132,7 @@ describe("useLocalStorage", () => {
         syncAcrossTabs: false,
       });
 
-      expect(addEventListener).not.toHaveBeenCalledWith(
-        "storage",
-        expect.any(Function),
-      );
+      expect(addEventListener).not.toHaveBeenCalledWith("storage", expect.any(Function));
     });
 
     addEventListener.mockRestore();
@@ -190,7 +187,7 @@ describe("useLocalStorage", () => {
       // Should fallback to default value and log warning
       expect(consoleSpy).toHaveBeenCalledWith(
         'core.storage.error-parsing-storage-event "test-key-malicious":',
-        expect.any(Error),
+        expect.any(Error)
       );
       expect(value()).toBe("initial");
     });
@@ -198,14 +195,14 @@ describe("useLocalStorage", () => {
 
   it("should validate key input", () => {
     expect(() => useLocalStorage("", { defaultValue: "test" })).toThrow(
-      "useLocalStorage key must be a non-empty string",
+      "useLocalStorage key must be a non-empty string"
     );
-    expect(() =>
-      useLocalStorage(null as any, { defaultValue: "test" }),
-    ).toThrow("useLocalStorage key must be a non-empty string");
-    expect(() =>
-      useLocalStorage(undefined as any, { defaultValue: "test" }),
-    ).toThrow("useLocalStorage key must be a non-empty string");
+    expect(() => useLocalStorage(null as any, { defaultValue: "test" })).toThrow(
+      "useLocalStorage key must be a non-empty string"
+    );
+    expect(() => useLocalStorage(undefined as any, { defaultValue: "test" })).toThrow(
+      "useLocalStorage key must be a non-empty string"
+    );
   });
 
   it("should handle extremely large JSON values", () => {
@@ -230,7 +227,7 @@ describe("useLocalStorage", () => {
       // Should fallback to default value and log warning
       expect(consoleSpy).toHaveBeenCalledWith(
         'core.storage.error-parsing-storage-event "test-key-large":',
-        expect.any(Error),
+        expect.any(Error)
       );
       expect(value()).toBe("initial");
     });

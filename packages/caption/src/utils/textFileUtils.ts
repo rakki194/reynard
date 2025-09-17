@@ -11,9 +11,7 @@ import { TextFile, TextMetadata } from "../types/TextTypes";
  */
 export const getFileExtension = (filename: string): string => {
   const lastDotIndex = filename.lastIndexOf(".");
-  return lastDotIndex !== -1
-    ? filename.substring(lastDotIndex).toLowerCase()
-    : "";
+  return lastDotIndex !== -1 ? filename.substring(lastDotIndex).toLowerCase() : "";
 };
 
 /**
@@ -131,7 +129,7 @@ export const processTextFile = async (file: File): Promise<TextFile> => {
     type: file.type,
     extension: getFileExtension(file.name),
     lineCount: content.split("\n").length,
-    wordCount: content.split(/\s+/).filter((word) => word.length > 0).length,
+    wordCount: content.split(/\s+/).filter(word => word.length > 0).length,
     characterCount: content.length,
     encoding: "utf-8", // Default assumption
     language: detectLanguage(file.name, content),

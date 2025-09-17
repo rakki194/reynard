@@ -44,15 +44,11 @@ describe("I18n Performance Monitoring", () => {
       });
 
       expect(i18n.performanceMonitor).toBeDefined();
-      expect(typeof i18n.performanceMonitor.recordTranslationCall).toBe(
-        "function",
-      );
+      expect(typeof i18n.performanceMonitor.recordTranslationCall).toBe("function");
 
       i18n.t("common.hello");
 
-      expect(typeof i18n.performanceMonitor.recordTranslationCall).toBe(
-        "function",
-      );
+      expect(typeof i18n.performanceMonitor.recordTranslationCall).toBe("function");
     });
 
     it("should track translation call metrics", () => {

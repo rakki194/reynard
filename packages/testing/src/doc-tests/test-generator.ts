@@ -26,10 +26,7 @@ function extractComponentName(code: string): string {
 /**
  * Create a test-safe version of code by wrapping it in proper test structure
  */
-export function createTestableCode(
-  example: CodeExample,
-  packageName: string,
-): string {
+export function createTestableCode(example: CodeExample, packageName: string): string {
   const { code, isComponent, isTypeScript } = example;
 
   // Skip non-executable examples
@@ -70,11 +67,7 @@ export function createTestableCode(
         expect(true).toBe(true);
       });
     `;
-  } else if (
-    code.includes("const") ||
-    code.includes("let") ||
-    code.includes("function")
-  ) {
+  } else if (code.includes("const") || code.includes("let") || code.includes("function")) {
     // Wrap variable/function examples
     testableCode = `
       ${code}

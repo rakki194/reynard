@@ -11,7 +11,7 @@ export interface FileUploadHandlers {
 export function useFileUploadHandlers(
   validateFiles: (files: File[]) => { validFiles: File[]; errors: string[] },
   addFiles: (files: File[]) => void,
-  handleDrop: (event: DragEvent) => void,
+  handleDrop: (event: DragEvent) => void
 ): FileUploadHandlers {
   /**
    * Handle file input change

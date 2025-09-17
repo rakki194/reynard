@@ -11,7 +11,7 @@ from abc import ABC
 class Component(ABC):
     """
     Base class for all ECS components.
-    
+
     Components hold data and are attached to entities. They should be pure data
     containers without behavior - all logic should be in systems.
     """
@@ -23,7 +23,7 @@ class Component(ABC):
     def _get_current_time(self) -> float:
         """
         Get current timestamp.
-        
+
         Returns:
             Current time as float
         """

@@ -28,9 +28,7 @@ describe("charts i18n Tests", () => {
 
   it("should handle chart-specific translations", () => {
     expect(t("loadingStatisticalData")).toBe("Loading statistical data...");
-    expect(t("loadingEmbeddingQuality")).toBe(
-      "Loading embedding quality analysis...",
-    );
+    expect(t("loadingEmbeddingQuality")).toBe("Loading embedding quality analysis...");
     expect(t("exportImage")).toBe("Export as Image");
     expect(t("exportCsv")).toBe("Export as CSV");
     expect(t("exportPdf")).toBe("Export as PDF");
@@ -54,12 +52,8 @@ describe("charts i18n Tests", () => {
 
   it("should provide loading messages", () => {
     expect(getLoadingMessage()).toBe("Loading Data...");
-    expect(getLoadingMessage("statistical")).toBe(
-      "Loading statistical data...",
-    );
-    expect(getLoadingMessage("embedding-quality")).toBe(
-      "Loading embedding quality analysis...",
-    );
+    expect(getLoadingMessage("statistical")).toBe("Loading statistical data...");
+    expect(getLoadingMessage("embedding-quality")).toBe("Loading embedding quality analysis...");
   });
 
   it("should provide quality assessments", () => {

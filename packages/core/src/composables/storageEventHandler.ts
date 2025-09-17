@@ -17,7 +17,7 @@ export interface StorageEventHandler<_T = unknown> {
 export const createStorageEventHandler = <T>(
   key: string,
   setValue: Setter<T>,
-  serializer: Serializer<T>,
+  serializer: Serializer<T>
 ): StorageEventHandler<T> => {
   let handleStorageChange: ((e: StorageEvent) => void) | null = null;
 
@@ -27,10 +27,7 @@ export const createStorageEventHandler = <T>(
         try {
           setValue(() => serializer.read(e.newValue!));
         } catch (error) {
-          console.warn(
-            t("core.storage.error-parsing-storage-event") + ` "${key}":`,
-            error,
-          );
+          console.warn(t("core.storage.error-parsing-storage-event") + ` "${key}":`, error);
         }
       }
     };

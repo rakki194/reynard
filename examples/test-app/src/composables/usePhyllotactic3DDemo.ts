@@ -5,10 +5,7 @@
 
 import { createSignal } from "solid-js";
 import { Phyllotactic3DSystem } from "../utils/phyllotactic/Phyllotactic3D";
-import {
-  Phyllotactic3DRenderer,
-  type Point3D,
-} from "../utils/phyllotactic/Phyllotactic3DRenderer";
+import { Phyllotactic3DRenderer, type Point3D } from "../utils/phyllotactic/Phyllotactic3DRenderer";
 import { createAnimationCore } from "../utils/animation/AnimationCore";
 
 export interface PerformanceMetrics {
@@ -24,15 +21,13 @@ export function usePhyllotactic3DDemo() {
   const [baseRadius, setBaseRadius] = createSignal(10);
   const [height, setHeight] = createSignal(100);
   const [spiralPitch, setSpiralPitch] = createSignal(0.1);
-  const [enableSphericalProjection, setEnableSphericalProjection] =
-    createSignal(false);
+  const [enableSphericalProjection, setEnableSphericalProjection] = createSignal(false);
   const [enableStroboscopic3D, setEnableStroboscopic3D] = createSignal(true);
   const [rotationSpeedX, setRotationSpeedX] = createSignal(0.01);
   const [rotationSpeedY, setRotationSpeedY] = createSignal(0.02);
   const [rotationSpeedZ, setRotationSpeedZ] = createSignal(0.005);
   const [currentPoints, setCurrentPoints] = createSignal<Point3D[]>([]);
-  const [performanceMetrics, setPerformanceMetrics] =
-    createSignal<PerformanceMetrics | null>(null);
+  const [performanceMetrics, setPerformanceMetrics] = createSignal<PerformanceMetrics | null>(null);
 
   // Engines
   let phyllotactic3D: Phyllotactic3DSystem;
@@ -116,10 +111,7 @@ export function usePhyllotactic3DDemo() {
   };
 
   // Handle canvas ready
-  const handleCanvasReady = (
-    canvas: HTMLCanvasElement,
-    ctx: CanvasRenderingContext2D,
-  ) => {
+  const handleCanvasReady = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     renderer = new Phyllotactic3DRenderer(canvas, ctx);
     initializeEngines();
     generate3DPattern();

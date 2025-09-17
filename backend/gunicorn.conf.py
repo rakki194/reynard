@@ -38,7 +38,7 @@ proc_name = "reynard-backend"
 
 # Server mechanics
 daemon = False
-pidfile = "/tmp/gunicorn.pid"
+pidfile = "/var/run/gunicorn.pid"
 user = "reynard"
 group = "reynard"
 tmp_upload_dir = None

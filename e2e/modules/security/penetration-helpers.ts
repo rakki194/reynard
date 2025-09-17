@@ -7,11 +7,7 @@
 
 import { ExploitRunner } from "./exploit-runner";
 import { SecurityAssessor } from "./security-assessor";
-import type {
-  PenetrationConfig,
-  PenetrationResult,
-  SecurityAssessment,
-} from "./penetration-types";
+import type { PenetrationConfig, PenetrationResult, SecurityAssessment } from "./penetration-types";
 
 // Re-export types for convenience
 export type {
@@ -98,10 +94,7 @@ export class PenetrationTestHelper {
    * Run comprehensive fuzzing tests
    */
   async testFuzzing(): Promise<PenetrationResult[]> {
-    return this.runTestSuite([
-      "fuzzing.comprehensive_fuzzer",
-      "fuzzing.endpoint_fuzzer",
-    ], { maxPayloads: 50 });
+    return this.runTestSuite(["fuzzing.comprehensive_fuzzer", "fuzzing.endpoint_fuzzer"], { maxPayloads: 50 });
   }
 
   /**
@@ -118,10 +111,7 @@ export class PenetrationTestHelper {
   /**
    * Run a test suite with common options
    */
-  private async runTestSuite(
-    tests: string[],
-    options: { maxPayloads?: number } = {},
-  ): Promise<PenetrationResult[]> {
+  private async runTestSuite(tests: string[], options: { maxPayloads?: number } = {}): Promise<PenetrationResult[]> {
     const results: PenetrationResult[] = [];
 
     for (const test of tests) {

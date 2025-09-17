@@ -6,12 +6,7 @@
  */
 
 // Export types
-export type {
-  IconPackage,
-  IconMetadata,
-  IconRegistry,
-  IconSearchResult,
-} from "./types";
+export type { IconPackage, IconMetadata, IconRegistry, IconSearchResult } from "./types";
 
 // Export registry and utilities
 export {

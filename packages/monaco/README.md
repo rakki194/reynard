@@ -27,15 +27,7 @@ import { CodeEditor } from "reynard-monaco";
 function App() {
   const [code, setCode] = createSignal('console.log("Hello, World!");');
 
-  return (
-    <CodeEditor
-      value={code()}
-      language="javascript"
-      theme="dark"
-      onChange={setCode}
-      height="400px"
-    />
-  );
+  return <CodeEditor value={code()} language="javascript" theme="dark" onChange={setCode} height="400px" />;
 }
 ```
 
@@ -45,9 +37,7 @@ function App() {
 import { CodeEditor, useLanguageDetection } from "reynard-monaco";
 
 function App() {
-  const [code, setCode] = createSignal(
-    'def hello_world():\n    print("Hello, World!")',
-  );
+  const [code, setCode] = createSignal('def hello_world():\n    print("Hello, World!")');
   const languageDetection = useLanguageDetection();
 
   return (
@@ -74,14 +64,7 @@ function App() {
     enableShikiHighlighting: true,
   });
 
-  return (
-    <CodeEditor
-      value={code()}
-      language="typescript"
-      onChange={setCode}
-      height="400px"
-    />
-  );
+  return <CodeEditor value={code()} language="typescript" onChange={setCode} height="400px" />;
 }
 ```
 
@@ -147,12 +130,7 @@ const shiki = useShiki({
 #### Language Utilities
 
 ```tsx
-import {
-  getMonacoLanguage,
-  getLanguageDisplayName,
-  isCodeFile,
-  getLanguageInfo,
-} from "reynard-monaco";
+import { getMonacoLanguage, getLanguageDisplayName, isCodeFile, getLanguageInfo } from "reynard-monaco";
 
 // Get Monaco language from file path
 const lang = getMonacoLanguage("app.js"); // 'javascript'

@@ -5,18 +5,8 @@
  * using the FeatureServiceBridge.
  */
 
-import {
-  ServiceManager,
-  BaseService,
-  ServiceStatus,
-  ServiceHealth,
-} from "../index.js";
-import {
-  FeatureManager,
-  FeatureProvider,
-  COMMON_FEATURES,
-  getActualServiceName,
-} from "reynard-features";
+import { ServiceManager, BaseService, ServiceStatus, ServiceHealth } from "../index.js";
+import { FeatureManager, FeatureProvider, COMMON_FEATURES, getActualServiceName } from "reynard-features";
 import { FeatureServiceBridge } from "./FeatureServiceBridge.js";
 
 /**
@@ -35,7 +25,7 @@ class ExampleFileProcessingService extends BaseService {
   async initialize(): Promise<void> {
     console.log("FileProcessingService initialized");
     // Simulate initialization
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
 
   async shutdown(): Promise<void> {
@@ -60,7 +50,7 @@ class ExampleAuthService extends BaseService {
 
   async initialize(): Promise<void> {
     console.log("AuthService initialized");
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
   }
 
   async shutdown(): Promise<void> {
@@ -84,7 +74,7 @@ class ExampleAnnotationService extends BaseService {
 
   async initialize(): Promise<void> {
     console.log("AnnotationService initialized");
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    await new Promise(resolve => setTimeout(resolve, 800));
   }
 
   async shutdown(): Promise<void> {
@@ -171,7 +161,7 @@ export async function demonstrateIntegration() {
   await serviceManager.startServices();
 
   // Wait a bit for services to start
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 2000));
 
   // Check feature statuses
   console.log("🔍 Checking feature statuses...");
@@ -205,12 +195,10 @@ export async function demonstrateIntegration() {
   await authService.shutdown();
 
   // Wait for feature system to update
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 1000));
 
   // Check auth feature status
-  const authFeatureStatus = featureManager.getFeatureStatus(
-    "user-authentication",
-  );
+  const authFeatureStatus = featureManager.getFeatureStatus("user-authentication");
   console.log("Auth feature after service failure:");
   console.log(`  Available: ${authFeatureStatus?.available}`);
   console.log(`  Degraded: ${authFeatureStatus?.degraded}`);

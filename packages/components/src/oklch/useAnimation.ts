@@ -12,7 +12,7 @@ export const useAnimation = (animationSpeed: Accessor<number>) => {
   // Animation loop
   onMount(() => {
     const animate = () => {
-      setAnimationFrame((prev) => prev + animationSpeed());
+      setAnimationFrame(prev => prev + animationSpeed());
       animationId = window.requestAnimationFrame(animate);
     };
     animationId = window.requestAnimationFrame(animate);

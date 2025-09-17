@@ -56,52 +56,40 @@ async function testMapSizeLimitFix(): Promise<void> {
         const batches = Math.ceil(entityCount / batchSize);
 
         for (let batch = 0; batch < batches; batch++) {
-          const currentBatchSize = Math.min(
-            batchSize,
-            entityCount - batch * batchSize,
-          );
+          const currentBatchSize = Math.min(batchSize, entityCount - batch * batchSize);
 
           for (let i = 0; i < currentBatchSize; i++) {
             runner.world.spawn(
               new Position(Math.random() * 1000, Math.random() * 1000),
               new Velocity(Math.random() * 10, Math.random() * 10),
-              new Health(100, 100),
+              new Health(100, 100)
             );
           }
 
           // Small delay between batches to allow garbage collection
           if (batch < batches - 1) {
-            await new Promise((resolve) => setTimeout(resolve, 10));
+            await new Promise(resolve => setTimeout(resolve, 10));
           }
         }
 
         const endTime = performance.now();
         const duration = endTime - startTime;
 
-        console.log(
-          `   ✅ Created ${entityCount.toLocaleString()} entities in ${duration.toFixed(2)}ms`,
-        );
-        console.log(
-          `   📊 Average: ${((duration / entityCount) * 1000).toFixed(2)}μs per entity`,
-        );
+        console.log(`   ✅ Created ${entityCount.toLocaleString()} entities in ${duration.toFixed(2)}ms`);
+        console.log(`   📊 Average: ${((duration / entityCount) * 1000).toFixed(2)}μs per entity`);
 
         // Check if we hit any limits
         const entityCountActual = runner.world.getEntityCount();
         if (entityCountActual >= entityCount * 0.95) {
           // Allow 5% tolerance
-          console.log(
-            `   🎯 Entity count verified: ${entityCountActual.toLocaleString()}`,
-          );
+          console.log(`   🎯 Entity count verified: ${entityCountActual.toLocaleString()}`);
         } else {
           console.log(
-            `   ⚠️  Entity count mismatch: expected ${entityCount.toLocaleString()}, got ${entityCountActual.toLocaleString()}`,
+            `   ⚠️  Entity count mismatch: expected ${entityCount.toLocaleString()}, got ${entityCountActual.toLocaleString()}`
           );
         }
       } catch (error) {
-        console.error(
-          `   ❌ Failed at ${entityCount.toLocaleString()} entities:`,
-          error.message,
-        );
+        console.error(`   ❌ Failed at ${entityCount.toLocaleString()} entities:`, error.message);
         break;
       }
     }
@@ -127,9 +115,7 @@ async function testMemoryTracking(): Promise<void> {
     });
 
     console.log("✅ Node.js memory tracker created successfully");
-    console.log(
-      `   Memory tracking available: ${memoryTracker.isMemoryTrackingAvailable()}`,
-    );
+    console.log(`   Memory tracking available: ${memoryTracker.isMemoryTrackingAvailable()}`);
 
     // Start tracking
     memoryTracker.start();
@@ -157,16 +143,10 @@ async function testMemoryTracking(): Promise<void> {
     const finalStats = memoryTracker.stop();
 
     console.log("\n📊 Memory Tracking Results:");
-    console.log(
-      `   Total tracking time: ${finalStats.trackingTimeMs.toFixed(2)}ms`,
-    );
+    console.log(`   Total tracking time: ${finalStats.trackingTimeMs.toFixed(2)}ms`);
     console.log(`   Samples taken: ${finalStats.sampleCount}`);
-    console.log(
-      `   Memory delta: ${finalStats.memoryDeltaMB.heapUsed.toFixed(2)} MB`,
-    );
-    console.log(
-      `   Peak memory: ${finalStats.memoryDeltaMB.heapUsed.toFixed(2)} MB`,
-    );
+    console.log(`   Memory delta: ${finalStats.memoryDeltaMB.heapUsed.toFixed(2)} MB`);
+    console.log(`   Peak memory: ${finalStats.memoryDeltaMB.heapUsed.toFixed(2)} MB`);
 
     // Clean up
     arrays.length = 0;
@@ -198,7 +178,7 @@ async function testScalingOptimizations(): Promise<void> {
     console.log("\n🔄 Testing entity pool...");
     const poolStats = optimizer.getOptimizationStats().entityPool;
     console.log(
-      `   Pool stats: ${poolStats.available} available, ${poolStats.active} active, ${poolStats.total} total`,
+      `   Pool stats: ${poolStats.available} available, ${poolStats.active} active, ${poolStats.total} total`
     );
 
     // Test batch processing
@@ -209,25 +189,19 @@ async function testScalingOptimizations(): Promise<void> {
     }));
 
     const startTime = performance.now();
-    const results = await optimizer.batchProcessor.processEntitiesInBatches(
-      testEntities,
-      (batch) => batch.length,
-      1000,
-    );
+    const results = await optimizer.batchProcessor.processEntitiesInBatches(testEntities, batch => batch.length, 1000);
     const endTime = performance.now();
 
+    console.log(`   Processed ${testEntities.length} entities in ${(endTime - startTime).toFixed(2)}ms`);
     console.log(
-      `   Processed ${testEntities.length} entities in ${(endTime - startTime).toFixed(2)}ms`,
-    );
-    console.log(
-      `   Batch results: ${results.length} batches, total: ${results.reduce((sum, r) => sum + r, 0)} entities`,
+      `   Batch results: ${results.length} batches, total: ${results.reduce((sum, r) => sum + r, 0)} entities`
     );
 
     // Test query optimization
     console.log("\n🔄 Testing query optimization...");
     const queryStats = optimizer.getOptimizationStats().queryCache;
     console.log(
-      `   Query cache stats: ${queryStats.hits} hits, ${queryStats.misses} misses, ${(queryStats.hitRate * 100).toFixed(1)}% hit rate`,
+      `   Query cache stats: ${queryStats.hits} hits, ${queryStats.misses} misses, ${(queryStats.hitRate * 100).toFixed(1)}% hit rate`
     );
 
     console.log("\n🎉 Scaling optimizations test completed!");
@@ -263,7 +237,7 @@ class Position {
   constructor(
     public x: number,
     public y: number,
-    public z: number = 0,
+    public z: number = 0
   ) {}
 }
 
@@ -272,7 +246,7 @@ class Velocity {
   constructor(
     public x: number,
     public y: number,
-    public z: number = 0,
+    public z: number = 0
   ) {}
 }
 
@@ -280,13 +254,13 @@ class Health {
   readonly __component = true;
   constructor(
     public current: number,
-    public maximum: number,
+    public maximum: number
   ) {}
 }
 
 // Run the tests if this script is executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  runAllTests().catch((error) => {
+  runAllTests().catch(error => {
     console.error("❌ Fatal error:", error);
     process.exit(1);
   });

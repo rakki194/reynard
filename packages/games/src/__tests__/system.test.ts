@@ -27,7 +27,7 @@ class Position implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -35,7 +35,7 @@ class Velocity implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -43,7 +43,7 @@ class Health implements Component {
   readonly __component = true;
   constructor(
     public current: number,
-    public maximum: number,
+    public maximum: number
   ) {}
 }
 
@@ -52,7 +52,7 @@ class GameTime implements Resource {
   readonly __resource = true;
   constructor(
     public deltaTime: number,
-    public totalTime: number,
+    public totalTime: number
   ) {}
 }
 
@@ -61,7 +61,7 @@ class GameState implements Resource {
   constructor(
     public score: number,
     public level: number,
-    public isRunning: boolean = true,
+    public isRunning: boolean = true
   ) {}
 }
 
@@ -83,23 +83,13 @@ describe("System System", () => {
     world = createWorld();
 
     // Register component types and get the type objects
-    PositionType = world
-      .getComponentRegistry()
-      .register("Position", StorageType.Table, () => new Position(0, 0));
-    VelocityType = world
-      .getComponentRegistry()
-      .register("Velocity", StorageType.Table, () => new Velocity(0, 0));
-    HealthType = world
-      .getComponentRegistry()
-      .register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    PositionType = world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
+    VelocityType = world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    HealthType = world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
 
     // Register resource types and get the type objects
-    GameTimeType = world
-      .getResourceRegistry()
-      .register("GameTime", () => new GameTime(0, 0));
-    GameStateType = world
-      .getResourceRegistry()
-      .register("GameState", () => new GameState(0, 1, true));
+    GameTimeType = world.getResourceRegistry().register("GameTime", () => new GameTime(0, 0));
+    GameStateType = world.getResourceRegistry().register("GameState", () => new GameState(0, 1, true));
 
     // Add resources
     gameTime = new GameTime(16.67, 1000);
@@ -237,10 +227,7 @@ describe("System System", () => {
       renderSystem.addDependency(collisionSystem);
 
       // Create schedule and run
-      const gameSchedule = schedule()
-        .addSystem(movementSystem)
-        .addSystem(collisionSystem)
-        .addSystem(renderSystem);
+      const gameSchedule = schedule().addSystem(movementSystem).addSystem(collisionSystem).addSystem(renderSystem);
 
       gameSchedule.run(world);
 
@@ -434,17 +421,13 @@ describe("System System", () => {
         executionOrder.push("physics");
       });
 
-      const physicsSet = systemSet("physics")
-        .addSystem(movementSystem)
-        .addSystem(physicsSystem);
+      const physicsSet = systemSet("physics").addSystem(movementSystem).addSystem(physicsSystem);
 
       const renderSystem = system((world: World) => {
         executionOrder.push("render");
       });
 
-      const gameSchedule = schedule()
-        .addSystemSet(physicsSet)
-        .addSystem(renderSystem);
+      const gameSchedule = schedule().addSystemSet(physicsSet).addSystem(renderSystem);
 
       gameSchedule.run(world);
 
@@ -478,10 +461,7 @@ describe("System System", () => {
       physicsSet.addDependency(inputSet);
       renderSet.addDependency(physicsSet);
 
-      const gameSchedule = schedule()
-        .addSystemSet(inputSet)
-        .addSystemSet(physicsSet)
-        .addSystemSet(renderSet);
+      const gameSchedule = schedule().addSystemSet(inputSet).addSystemSet(physicsSet).addSystemSet(renderSet);
 
       gameSchedule.run(world);
 
@@ -514,10 +494,7 @@ describe("System System", () => {
       physicsSet.addDependency(inputSystem);
       renderSystem.addDependency(physicsSet);
 
-      const gameSchedule = schedule()
-        .addSystem(inputSystem)
-        .addSystemSet(physicsSet)
-        .addSystem(renderSystem);
+      const gameSchedule = schedule().addSystem(inputSystem).addSystemSet(physicsSet).addSystem(renderSystem);
 
       gameSchedule.run(world);
 
@@ -543,7 +520,7 @@ describe("System System", () => {
       }
 
       const gameSchedule = schedule();
-      systems.forEach((sys) => gameSchedule.addSystem(sys));
+      systems.forEach(sys => gameSchedule.addSystem(sys));
 
       const startTime = performance.now();
       gameSchedule.run(world);
@@ -605,10 +582,7 @@ describe("System System", () => {
         executionOrder.push("system3");
       });
 
-      const gameSchedule = schedule()
-        .addSystem(system1)
-        .addSystem(errorSystem)
-        .addSystem(system3);
+      const gameSchedule = schedule().addSystem(system1).addSystem(errorSystem).addSystem(system3);
 
       expect(() => {
         gameSchedule.run(world);

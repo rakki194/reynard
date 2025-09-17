@@ -24,12 +24,7 @@ export class SecurityAssessor {
     timeout: number;
   };
 
-  constructor(config: {
-    backendUrl: string;
-    verbose: boolean;
-    destructive: boolean;
-    timeout: number;
-  }) {
+  constructor(config: { backendUrl: string; verbose: boolean; destructive: boolean; timeout: number }) {
     this.config = config;
     this.fenrirPath = path.join(process.cwd(), "..", "fenrir");
   }
@@ -39,9 +34,7 @@ export class SecurityAssessor {
    */
   async runCompleteSecurityAssessment(): Promise<SecurityAssessment> {
     try {
-      const pythonPath =
-        process.env.PYTHON_PATH ||
-        "bash -c 'source ~/venv/bin/activate && python3'";
+      const pythonPath = process.env.PYTHON_PATH || "bash -c 'source ~/venv/bin/activate && python3'";
       const command = `${pythonPath} run_all_exploits.py --url ${this.config.backendUrl} ${this.config.verbose ? "--verbose" : ""} ${this.config.destructive ? "--destructive" : ""}`;
 
       const { stdout, stderr } = await execAsync(command, {
@@ -75,12 +68,8 @@ export class SecurityAssessor {
    */
   private parseAssessmentResults(stdout: string): SecurityAssessment {
     // Parse results from output
-    const vulnerabilityMatch = stdout.match(
-      /Total Vulnerabilities Found: (\d+)/,
-    );
-    const totalVulnerabilities = vulnerabilityMatch
-      ? parseInt(vulnerabilityMatch[1])
-      : 0;
+    const vulnerabilityMatch = stdout.match(/Total Vulnerabilities Found: (\d+)/);
+    const totalVulnerabilities = vulnerabilityMatch ? parseInt(vulnerabilityMatch[1]) : 0;
 
     const exploitsMatch = stdout.match(/Total Exploits Executed: (\d+)/);
     const exploitsRun = exploitsMatch ? parseInt(exploitsMatch[1]) : 0;
@@ -121,9 +110,7 @@ export class SecurityAssessor {
   /**
    * Generate security recommendations
    */
-  private generateSecurityRecommendations(
-    vulnerabilityCount: number,
-  ): string[] {
+  private generateSecurityRecommendations(vulnerabilityCount: number): string[] {
     const recommendations = [
       "🔐 Authentication & Authorization:",
       "  • Use persistent, secure JWT secret keys",
@@ -158,9 +145,7 @@ export class SecurityAssessor {
 
     if (vulnerabilityCount > 0) {
       recommendations.unshift("🚨 IMMEDIATE ACTION REQUIRED:");
-      recommendations.unshift(
-        "  • Review and fix all identified vulnerabilities",
-      );
+      recommendations.unshift("  • Review and fix all identified vulnerabilities");
       recommendations.unshift("  • Implement additional security controls");
       recommendations.unshift("  • Conduct regular security assessments");
     }
@@ -190,7 +175,7 @@ export class SecurityAssessor {
 - Low Issues: ${assessment.lowIssues}
 
 🛡️ SECURITY RECOMMENDATIONS
-${assessment.recommendations.map((rec) => `- ${rec}`).join("\n")}
+${assessment.recommendations.map(rec => `- ${rec}`).join("\n")}
 
 Generated: ${new Date().toISOString()}
 Target: ${backendUrl}

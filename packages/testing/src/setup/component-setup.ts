@@ -29,7 +29,7 @@ export function setupComponentTest() {
     constructor(
       public content: string[],
       public name: string,
-      public options: { type?: string } = {},
+      public options: { type?: string } = {}
     ) {
       this.type = options.type || "text/plain";
     }

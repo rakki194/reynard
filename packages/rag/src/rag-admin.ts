@@ -8,15 +8,10 @@ import { RAGIndexingStatus, RAGMetrics, RAGClientOptions } from "./rag-types";
  * @param metricsUrl Metrics endpoint URL
  * @returns Admin client with operational capabilities
  */
-export function createRAGAdminClient(
-  authFetch: RAGClientOptions["authFetch"],
-  adminUrl: string,
-  metricsUrl: string,
-) {
+export function createRAGAdminClient(authFetch: RAGClientOptions["authFetch"], adminUrl: string, metricsUrl: string) {
   const getIndexingStatus = async (): Promise<RAGIndexingStatus> => {
     const res = await authFetch(`${adminUrl}/status`);
-    if (!res.ok)
-      throw new Error(`Failed to get indexing status (${res.status})`);
+    if (!res.ok) throw new Error(`Failed to get indexing status (${res.status})`);
     return await res.json();
   };
 

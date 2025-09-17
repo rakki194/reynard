@@ -41,10 +41,7 @@ export interface EnhancedSystemConfig {
 }
 
 export const useEnhancedPhyllotacticSystem = (config: EnhancedSystemConfig) => {
-  console.log(
-    "🦊 EnhancedPhyllotacticSystem: Initializing with config",
-    config,
-  );
+  console.log("🦊 EnhancedPhyllotacticSystem: Initializing with config", config);
 
   // Initialize engines
   const stroboscopicEngine = new StroboscopicEngine({
@@ -117,11 +114,7 @@ export const useEnhancedPhyllotacticSystem = (config: EnhancedSystemConfig) => {
     }
 
     setCurrentPoints(points);
-    console.log(
-      "🦊 EnhancedPhyllotacticSystem: Pattern generated",
-      points.length,
-      "points",
-    );
+    console.log("🦊 EnhancedPhyllotacticSystem: Pattern generated", points.length, "points");
   };
 
   // Animation loop
@@ -135,15 +128,11 @@ export const useEnhancedPhyllotacticSystem = (config: EnhancedSystemConfig) => {
 
     // Apply stroboscopic effects if enabled
     if (config.enableStroboscopic) {
-      const stroboscopicState =
-        stroboscopicEngine.calculateStroboscopicEffect(deltaTime);
+      const stroboscopicState = stroboscopicEngine.calculateStroboscopicEffect(deltaTime);
       setStroboscopicState(stroboscopicState);
 
       if (stroboscopicState.isStroboscopic) {
-        const transformedPoints = stroboscopicEngine.applyStroboscopicTransform(
-          currentPoints(),
-          deltaTime,
-        );
+        const transformedPoints = stroboscopicEngine.applyStroboscopicTransform(currentPoints(), deltaTime);
         setCurrentPoints(transformedPoints);
       }
     }
@@ -157,12 +146,7 @@ export const useEnhancedPhyllotacticSystem = (config: EnhancedSystemConfig) => {
     const renderTime = performance.now() - renderStartTime;
     const updateTime = performance.now() - updateStartTime;
 
-    performanceEngine.updateMetrics(
-      frameTime,
-      renderTime,
-      updateTime,
-      currentPoints().length,
-    );
+    performanceEngine.updateMetrics(frameTime, renderTime, updateTime, currentPoints().length);
 
     setPerformanceMetrics(performanceEngine.getMetrics());
   };
@@ -176,11 +160,7 @@ export const useEnhancedPhyllotacticSystem = (config: EnhancedSystemConfig) => {
       onUpdate: animate,
       onRender: () => {
         // Render logic would go here
-        console.log(
-          "🦊 EnhancedPhyllotacticSystem: Rendering",
-          currentPoints().length,
-          "points",
-        );
+        console.log("🦊 EnhancedPhyllotacticSystem: Rendering", currentPoints().length, "points");
       },
     });
   };
@@ -248,9 +228,7 @@ export const useEnhancedPhyllotacticSystem = (config: EnhancedSystemConfig) => {
   });
 
   onCleanup(() => {
-    console.log(
-      "🦊 EnhancedPhyllotacticSystem: onCleanup - stopping animation",
-    );
+    console.log("🦊 EnhancedPhyllotacticSystem: onCleanup - stopping animation");
     stopAnimation();
   });
 

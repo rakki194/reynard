@@ -6,7 +6,7 @@ export interface ErrorDisplayProps {
   onRetry: () => void;
 }
 
-export const ErrorDisplay: Component<ErrorDisplayProps> = (props) => {
+export const ErrorDisplay: Component<ErrorDisplayProps> = props => {
   const { t } = useI18n();
 
   return (

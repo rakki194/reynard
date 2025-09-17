@@ -8,9 +8,7 @@ import { getInterpolatedClusterPoints } from "../utils/clusterPointInterpolator"
 import { createClusterAnimationInstance } from "../utils/clusterAnimationFactory";
 
 export function useClusterAnimations() {
-  const [clusterAnimations, setClusterAnimations] = createSignal<
-    ClusterAnimation[]
-  >([]);
+  const [clusterAnimations, setClusterAnimations] = createSignal<ClusterAnimation[]>([]);
   const isAnimationsDisabled = createMemo(() => false);
 
   const createClusterAnimation = (
@@ -19,7 +17,7 @@ export function useClusterAnimations() {
     center: [number, number, number],
     expansionRadius: number = 2,
     duration: number = 800,
-    easing: EasingType = "easeOutElastic",
+    easing: EasingType = "easeOutElastic"
   ): Promise<void> => {
     if (isAnimationsDisabled()) return Promise.resolve();
 
@@ -32,24 +30,18 @@ export function useClusterAnimations() {
       easing,
     });
 
-    setClusterAnimations((prev) => [...prev, clusterAnimation]);
+    setClusterAnimations(prev => [...prev, clusterAnimation]);
 
     return executeClusterAnimation({
       duration,
       easing,
-      onProgress: (progress) => {
-        setClusterAnimations((prev) =>
-          prev.map((cluster) =>
-            cluster.clusterId === clusterId
-              ? { ...cluster, progress }
-              : cluster,
-          ),
+      onProgress: progress => {
+        setClusterAnimations(prev =>
+          prev.map(cluster => (cluster.clusterId === clusterId ? { ...cluster, progress } : cluster))
         );
       },
       onComplete: () => {
-        setClusterAnimations((prev) =>
-          prev.filter((c) => c.clusterId !== clusterId),
-        );
+        setClusterAnimations(prev => prev.filter(c => c.clusterId !== clusterId));
       },
     });
   };

@@ -5,12 +5,7 @@
 import { marked } from "marked";
 import matter from "gray-matter";
 import hljs from "highlight.js";
-import type {
-  DocPage,
-  DocMetadata,
-  DocContentType,
-  MarkdownOptions,
-} from "../types";
+import type { DocPage, DocMetadata, DocContentType, MarkdownOptions } from "../types";
 
 /**
  * Enhanced markdown parser with syntax highlighting and custom features
@@ -37,10 +32,7 @@ export class MarkdownParser {
   /**
    * Parse markdown content with frontmatter
    */
-  async parse(
-    content: string,
-    type: DocContentType = "markdown",
-  ): Promise<DocPage> {
+  async parse(content: string, type: DocContentType = "markdown"): Promise<DocPage> {
     const { data, content: markdownContent } = matter(content);
 
     const metadata: DocMetadata = {
@@ -85,8 +77,7 @@ export class MarkdownParser {
 
     // Custom code block rendering
     renderer.code = ({ text, lang }: { text: string; lang?: string }) => {
-      const highlighted =
-        this.options.highlight?.(text, lang || "text") || text;
+      const highlighted = this.options.highlight?.(text, lang || "text") || text;
       return `
         <div class="code-block" data-language="${lang}">
           <div class="code-header">
@@ -116,32 +107,16 @@ export class MarkdownParser {
     };
 
     // Custom link rendering with external link detection
-    renderer.link = ({
-      href,
-      title,
-      tokens,
-    }: {
-      href: string;
-      title?: string | null;
-      tokens: any[];
-    }) => {
+    renderer.link = ({ href, title, tokens }: { href: string; title?: string | null; tokens: any[] }) => {
       const isExternal = href.startsWith("http") || href.startsWith("//");
-      const target = isExternal
-        ? ' target="_blank" rel="noopener noreferrer"'
-        : "";
+      const target = isExternal ? ' target="_blank" rel="noopener noreferrer"' : "";
       const titleAttr = title ? ` title="${title}"` : "";
 
       return `<a href="${href}"${titleAttr}${target} class="doc-link ${isExternal ? "external" : ""}">${tokens}</a>`;
     };
 
     // Custom heading rendering with anchor links
-    renderer.heading = ({
-      tokens,
-      depth,
-    }: {
-      tokens: any[];
-      depth: number;
-    }) => {
+    renderer.heading = ({ tokens, depth }: { tokens: any[]; depth: number }) => {
       const id = this.generateSlug(tokens.toString());
       return `
         <h${depth} id="${id}" class="doc-heading doc-heading--${depth}">

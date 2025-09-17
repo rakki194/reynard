@@ -10,7 +10,7 @@ import json
 import random
 import sys
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 # Add the MCP scripts directory to Python path
 mcp_dir = Path(__file__).parent
@@ -19,12 +19,12 @@ if str(mcp_dir) not in sys.path:
 
 from reynard_ecs_world import (
     AgentComponent,
+    AgentTraits,
+    ECSWorld,
+    Entity,
     LifecycleComponent,
     ReproductionComponent,
     TraitComponent,
-    ECSWorld,
-    Entity,
-    AgentTraits,
 )
 
 

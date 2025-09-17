@@ -17,7 +17,7 @@ interface ColorControlsProps {
   onSpeedChange: (speed: number) => void;
 }
 
-export const ColorControls: Component<ColorControlsProps> = (props) => {
+export const ColorControls: Component<ColorControlsProps> = props => {
   return (
     <div class="color-controls-section">
       <h2>Interactive Color Laboratory</h2>
@@ -35,9 +35,7 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
           />
         </div>
         <div class="control-group">
-          <label for="lightness-slider">
-            Lightness: {props.selectedLightness}%
-          </label>
+          <label for="lightness-slider">Lightness: {props.selectedLightness}%</label>
           <Slider
             id="lightness-slider"
             min={0}
@@ -49,9 +47,7 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
           />
         </div>
         <div class="control-group">
-          <label for="chroma-slider">
-            Chroma: {props.selectedChroma.toFixed(2)}
-          </label>
+          <label for="chroma-slider">Chroma: {props.selectedChroma.toFixed(2)}</label>
           <Slider
             id="chroma-slider"
             min={0}
@@ -64,9 +60,7 @@ export const ColorControls: Component<ColorControlsProps> = (props) => {
           />
         </div>
         <div class="control-group">
-          <label for="speed-slider">
-            Animation Speed: {props.animationSpeed}
-          </label>
+          <label for="speed-slider">Animation Speed: {props.animationSpeed}</label>
           <Slider
             id="speed-slider"
             min={0}

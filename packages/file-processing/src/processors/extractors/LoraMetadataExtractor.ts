@@ -12,10 +12,7 @@ export class LoraMetadataExtractor extends BaseMetadataExtractor {
   /**
    * Extract metadata from LoRA model files
    */
-  async extractMetadata(
-    file: File | string,
-    options: MetadataExtractionOptions,
-  ): Promise<LoraMetadata> {
+  async extractMetadata(file: File | string, options: MetadataExtractionOptions): Promise<LoraMetadata> {
     const basicInfo = await this.getBasicFileInfo(file);
     const extension = this.getFileExtension(basicInfo.name);
 
@@ -37,8 +34,7 @@ export class LoraMetadataExtractor extends BaseMetadataExtractor {
         if (modelInfo) {
           metadata.description = modelInfo.description || metadata.description;
           metadata.baseModel = modelInfo.baseModel || metadata.baseModel;
-          metadata.trainingData =
-            modelInfo.trainingData || metadata.trainingData;
+          metadata.trainingData = modelInfo.trainingData || metadata.trainingData;
           metadata.tags = modelInfo.tags || metadata.tags;
           metadata.parameters = modelInfo.parameters || metadata.parameters;
         }

@@ -4,11 +4,7 @@
  * Handles tool suggestion requests for the NLWeb API.
  */
 
-import type {
-  NLWebAPIRequest,
-  NLWebAPIResponse,
-  NLWebAPIHandler,
-} from "../types.js";
+import type { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
 import type { NLWebService } from "../../types/index.js";
 import { getCORSHeaders } from "../utils.js";
 
@@ -20,11 +16,7 @@ function isValidSuggestRequestBody(body: unknown): body is {
   context?: Record<string, unknown>;
   maxSuggestions?: number;
 } {
-  return (
-    typeof body === "object" &&
-    body !== null &&
-    typeof (body as Record<string, unknown>).query === "string"
-  );
+  return typeof body === "object" && body !== null && typeof (body as Record<string, unknown>).query === "string";
 }
 
 /**
@@ -34,7 +26,7 @@ export function createSuggestHandler(
   service: NLWebService,
   basePath: string,
   enableCORS: boolean,
-  enableLogging: boolean,
+  enableLogging: boolean
 ): NLWebAPIHandler {
   return async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {

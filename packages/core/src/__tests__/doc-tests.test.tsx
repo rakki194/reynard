@@ -18,12 +18,7 @@ function expectElementToBeInTheDocument(element: Element | null) {
 }
 
 // Package-specific setup
-import {
-  NotificationsProvider,
-  createNotificationsModule,
-  useNotifications,
-  isValidEmail,
-} from "../index";
+import { NotificationsProvider, createNotificationsModule, useNotifications, isValidEmail } from "../index";
 
 // Simple documentation test example
 describe("Documentation Examples", () => {
@@ -42,10 +37,7 @@ describe("Documentation Examples", () => {
 
       return (
         <div data-testid="notifications-demo">
-          <button
-            data-testid="notification-button"
-            onClick={() => notify("Test notification", "success")}
-          >
+          <button data-testid="notification-button" onClick={() => notify("Test notification", "success")}>
             Show Notification
           </button>
         </div>

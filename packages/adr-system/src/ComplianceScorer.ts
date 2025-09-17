@@ -14,12 +14,7 @@ import { DependencyNode, DependencyGraph } from "./DependencyMapper";
 export interface ComplianceRule {
   id: string;
   name: string;
-  category:
-    | "architectural"
-    | "security"
-    | "performance"
-    | "maintainability"
-    | "scalability";
+  category: "architectural" | "security" | "performance" | "maintainability" | "scalability";
   severity: "low" | "medium" | "high" | "critical";
   description: string;
   weight: number; // 0-1, importance of this rule
@@ -130,13 +125,8 @@ export class ComplianceScorer {
       violations.push(...ruleViolations);
 
       // Calculate category score
-      const categoryViolations = ruleViolations.filter(
-        (v) => v.type === rule.category,
-      );
-      const categoryScore = this.calculateCategoryScore(
-        rule.category,
-        categoryViolations,
-      );
+      const categoryViolations = ruleViolations.filter(v => v.type === rule.category);
+      const categoryScore = this.calculateCategoryScore(rule.category, categoryViolations);
       categoryScores[rule.category] = categoryScore;
 
       // Calculate weighted score
@@ -145,8 +135,7 @@ export class ComplianceScorer {
       totalWeight += rule.weight;
     }
 
-    const overallScore =
-      totalWeight > 0 ? (totalScore / totalWeight) * 100 : 100;
+    const overallScore = totalWeight > 0 ? (totalScore / totalWeight) * 100 : 100;
 
     const score: ComplianceScore = {
       overall: Math.round(overallScore),
@@ -185,18 +174,12 @@ export class ComplianceScorer {
     // Calculate category breakdown
     const categoryBreakdown = new Map<string, ComplianceScore>();
     for (const category of Object.keys(score.categories)) {
-      const categoryScore = await this.calculateCategoryScore(
-        category as any,
-        score.violations,
-      );
+      const categoryScore = await this.calculateCategoryScore(category as any, score.violations);
       categoryBreakdown.set(category, {
         overall: categoryScore,
         categories: { ...score.categories },
-        violations: score.violations.filter((v) => v.type === category),
-        recommendations: this.generateCategoryRecommendations(
-          category as any,
-          score.violations,
-        ),
+        violations: score.violations.filter(v => v.type === category),
+        recommendations: this.generateCategoryRecommendations(category as any, score.violations),
         trends: this.calculateTrends(),
         metadata: score.metadata,
       });
@@ -206,9 +189,7 @@ export class ComplianceScorer {
     const violationAnalysis = this.analyzeViolations(score.violations);
 
     // Generate recommendations
-    const recommendations = this.generateDetailedRecommendations(
-      score.violations,
-    );
+    const recommendations = this.generateDetailedRecommendations(score.violations);
 
     // Create action plan
     const actionPlan = this.createActionPlan(score.violations);
@@ -240,29 +221,20 @@ export class ComplianceScorer {
       const change = current.overall - previous.overall;
 
       if (change < -10) {
-        alerts.push(
-          `⚠️ Compliance score dropped significantly: ${change} points`,
-        );
+        alerts.push(`⚠️ Compliance score dropped significantly: ${change} points`);
       } else if (change > 10) {
-        alerts.push(
-          `✅ Compliance score improved significantly: +${change} points`,
-        );
+        alerts.push(`✅ Compliance score improved significantly: +${change} points`);
       }
 
       // Check for new critical violations
       const newCriticalViolations = current.violations.filter(
-        (v) =>
+        v =>
           v.severity === "critical" &&
-          !previous.violations.some(
-            (pv) =>
-              pv.description === v.description && pv.location === v.location,
-          ),
+          !previous.violations.some(pv => pv.description === v.description && pv.location === v.location)
       );
 
       if (newCriticalViolations.length > 0) {
-        alerts.push(
-          `🚨 ${newCriticalViolations.length} new critical violations detected`,
-        );
+        alerts.push(`🚨 ${newCriticalViolations.length} new critical violations detected`);
       }
     }
 
@@ -318,7 +290,7 @@ export class ComplianceScorer {
         },
       },
       null,
-      2,
+      2
     );
   }
 
@@ -353,20 +325,12 @@ export class ComplianceScorer {
           const fullPath = join(dir, entry.name);
 
           if (entry.isDirectory()) {
-            if (
-              !["node_modules", ".git", "dist", "build", "coverage"].includes(
-                entry.name,
-              )
-            ) {
+            if (!["node_modules", ".git", "dist", "build", "coverage"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
             const ext = fullPath.split(".").pop();
-            if (
-              ["ts", "tsx", "js", "jsx", "py", "go", "rs", "java"].includes(
-                ext || "",
-              )
-            ) {
+            if (["ts", "tsx", "js", "jsx", "py", "go", "rs", "java"].includes(ext || "")) {
               files.push(fullPath);
             }
           }
@@ -380,10 +344,7 @@ export class ComplianceScorer {
     return files;
   }
 
-  private async evaluateRule(
-    rule: ComplianceRule,
-    files: string[],
-  ): Promise<ComplianceViolation[]> {
+  private async evaluateRule(rule: ComplianceRule, files: string[]): Promise<ComplianceViolation[]> {
     const violations: ComplianceViolation[] = [];
 
     for (const file of files) {
@@ -392,12 +353,7 @@ export class ComplianceScorer {
         const stats = await stat(file);
 
         for (const condition of rule.conditions) {
-          const violation = await this.evaluateCondition(
-            condition,
-            file,
-            content,
-            stats,
-          );
+          const violation = await this.evaluateCondition(condition, file, content, stats);
           if (violation) {
             violations.push({
               type: rule.category,
@@ -410,10 +366,7 @@ export class ComplianceScorer {
           }
         }
       } catch (error) {
-        console.warn(
-          `Could not evaluate rule ${rule.name} for file ${file}:`,
-          error,
-        );
+        console.warn(`Could not evaluate rule ${rule.name} for file ${file}:`, error);
       }
     }
 
@@ -424,7 +377,7 @@ export class ComplianceScorer {
     condition: ComplianceCondition,
     filePath: string,
     content: string,
-    stats: any,
+    stats: any
   ): Promise<{ description: string; location: string } | null> {
     let value: any;
     let description = "";
@@ -439,9 +392,7 @@ export class ComplianceScorer {
       case "function-length":
         const functions = this.findFunctions(content);
         for (const func of functions) {
-          if (
-            this.compareValues(func.lines, condition.operator, condition.value)
-          ) {
+          if (this.compareValues(func.lines, condition.operator, condition.value)) {
             return {
               description: `Function has ${func.lines} lines`,
               location: `${filePath}:${func.line}`,
@@ -461,10 +412,7 @@ export class ComplianceScorer {
         break;
 
       case "naming-convention":
-        const namingViolations = this.checkNamingConvention(
-          content,
-          condition.value,
-        );
+        const namingViolations = this.checkNamingConvention(content, condition.value);
         if (namingViolations.length > 0) {
           return {
             description: `Naming convention violations: ${namingViolations.join(", ")}`,
@@ -474,10 +422,7 @@ export class ComplianceScorer {
         return null;
 
       case "security-pattern":
-        const securityIssues = this.findSecurityPatterns(
-          content,
-          condition.value,
-        );
+        const securityIssues = this.findSecurityPatterns(content, condition.value);
         if (securityIssues.length > 0) {
           return {
             description: `Security issues: ${securityIssues.join(", ")}`,
@@ -487,10 +432,7 @@ export class ComplianceScorer {
         return null;
 
       case "performance-pattern":
-        const performanceIssues = this.findPerformancePatterns(
-          content,
-          condition.value,
-        );
+        const performanceIssues = this.findPerformancePatterns(content, condition.value);
         if (performanceIssues.length > 0) {
           return {
             description: `Performance issues: ${performanceIssues.join(", ")}`,
@@ -533,11 +475,8 @@ export class ComplianceScorer {
     }
   }
 
-  private calculateCategoryScore(
-    category: string,
-    violations: ComplianceViolation[],
-  ): number {
-    const categoryViolations = violations.filter((v) => v.type === category);
+  private calculateCategoryScore(category: string, violations: ComplianceViolation[]): number {
+    const categoryViolations = violations.filter(v => v.type === category);
     if (categoryViolations.length === 0) return 100;
 
     let penalty = 0;
@@ -561,10 +500,7 @@ export class ComplianceScorer {
     return Math.max(0, 100 - penalty);
   }
 
-  private calculateRuleScore(
-    rule: ComplianceRule,
-    violations: ComplianceViolation[],
-  ): number {
+  private calculateRuleScore(rule: ComplianceRule, violations: ComplianceViolation[]): number {
     if (violations.length === 0) return 100;
 
     let penalty = 0;
@@ -636,42 +572,28 @@ export class ComplianceScorer {
     // Generate recommendations for each type
     for (const [type, typeViolations] of violationsByType) {
       const count = typeViolations.length;
-      const criticalCount = typeViolations.filter(
-        (v) => v.severity === "critical",
-      ).length;
+      const criticalCount = typeViolations.filter(v => v.severity === "critical").length;
 
       if (criticalCount > 0) {
-        recommendations.push(
-          `🚨 Address ${criticalCount} critical ${type} violations immediately`,
-        );
+        recommendations.push(`🚨 Address ${criticalCount} critical ${type} violations immediately`);
       }
 
       if (count > 10) {
-        recommendations.push(
-          `📊 High number of ${type} violations (${count}) - consider systematic review`,
-        );
+        recommendations.push(`📊 High number of ${type} violations (${count}) - consider systematic review`);
       }
 
       switch (type) {
         case "maintainability":
-          recommendations.push(
-            "🔧 Refactor large files and functions to improve maintainability",
-          );
+          recommendations.push("🔧 Refactor large files and functions to improve maintainability");
           break;
         case "security":
-          recommendations.push(
-            "🔒 Conduct security review and implement secure coding practices",
-          );
+          recommendations.push("🔒 Conduct security review and implement secure coding practices");
           break;
         case "performance":
-          recommendations.push(
-            "⚡ Optimize performance bottlenecks and implement caching strategies",
-          );
+          recommendations.push("⚡ Optimize performance bottlenecks and implement caching strategies");
           break;
         case "scalability":
-          recommendations.push(
-            "📈 Review architecture for scalability improvements",
-          );
+          recommendations.push("📈 Review architecture for scalability improvements");
           break;
       }
     }
@@ -679,17 +601,12 @@ export class ComplianceScorer {
     return recommendations;
   }
 
-  private generateCategoryRecommendations(
-    category: string,
-    violations: ComplianceViolation[],
-  ): string[] {
-    const categoryViolations = violations.filter((v) => v.type === category);
+  private generateCategoryRecommendations(category: string, violations: ComplianceViolation[]): string[] {
+    const categoryViolations = violations.filter(v => v.type === category);
     return this.generateRecommendations(categoryViolations);
   }
 
-  private analyzeViolations(
-    violations: ComplianceViolation[],
-  ): ComplianceReport["violationAnalysis"] {
+  private analyzeViolations(violations: ComplianceViolation[]): ComplianceReport["violationAnalysis"] {
     const bySeverity: Record<string, number> = {};
     const byCategory: Record<string, number> = {};
     const byFile = new Map<string, ComplianceViolation[]>();
@@ -697,8 +614,7 @@ export class ComplianceScorer {
 
     // Count by severity
     for (const violation of violations) {
-      bySeverity[violation.severity] =
-        (bySeverity[violation.severity] || 0) + 1;
+      bySeverity[violation.severity] = (bySeverity[violation.severity] || 0) + 1;
       byCategory[violation.type] = (byCategory[violation.type] || 0) + 1;
 
       // Group by file
@@ -715,7 +631,7 @@ export class ComplianceScorer {
           const severityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
           return severityOrder[b.severity] - severityOrder[a.severity];
         })
-        .slice(0, 10),
+        .slice(0, 10)
     );
 
     return {
@@ -726,37 +642,27 @@ export class ComplianceScorer {
     };
   }
 
-  private generateDetailedRecommendations(
-    violations: ComplianceViolation[],
-  ): ComplianceReport["recommendations"] {
+  private generateDetailedRecommendations(violations: ComplianceViolation[]): ComplianceReport["recommendations"] {
     const immediate: string[] = [];
     const shortTerm: string[] = [];
     const longTerm: string[] = [];
 
-    const criticalViolations = violations.filter(
-      (v) => v.severity === "critical",
-    );
-    const highViolations = violations.filter((v) => v.severity === "high");
-    const mediumViolations = violations.filter((v) => v.severity === "medium");
+    const criticalViolations = violations.filter(v => v.severity === "critical");
+    const highViolations = violations.filter(v => v.severity === "high");
+    const mediumViolations = violations.filter(v => v.severity === "medium");
 
     // Immediate actions
     if (criticalViolations.length > 0) {
-      immediate.push(
-        `Fix ${criticalViolations.length} critical violations immediately`,
-      );
+      immediate.push(`Fix ${criticalViolations.length} critical violations immediately`);
     }
 
     if (highViolations.length > 0) {
-      immediate.push(
-        `Address ${highViolations.length} high-severity violations within 1 week`,
-      );
+      immediate.push(`Address ${highViolations.length} high-severity violations within 1 week`);
     }
 
     // Short-term actions
     if (mediumViolations.length > 0) {
-      shortTerm.push(
-        `Resolve ${mediumViolations.length} medium-severity violations within 2 weeks`,
-      );
+      shortTerm.push(`Resolve ${mediumViolations.length} medium-severity violations within 2 weeks`);
     }
 
     shortTerm.push("Implement automated compliance checking in CI/CD pipeline");
@@ -771,9 +677,7 @@ export class ComplianceScorer {
     return { immediate, shortTerm, longTerm };
   }
 
-  private createActionPlan(
-    violations: ComplianceViolation[],
-  ): ComplianceReport["actionPlan"] {
+  private createActionPlan(violations: ComplianceViolation[]): ComplianceReport["actionPlan"] {
     const actionPlan: ComplianceReport["actionPlan"] = [];
 
     // Group violations by type and severity
@@ -833,8 +737,7 @@ export class ComplianceScorer {
     // Sort by priority and impact
     return actionPlan.sort((a, b) => {
       const priorityOrder = { high: 3, medium: 2, low: 1 };
-      const priorityDiff =
-        priorityOrder[b.priority] - priorityOrder[a.priority];
+      const priorityDiff = priorityOrder[b.priority] - priorityOrder[a.priority];
       if (priorityDiff !== 0) return priorityDiff;
       return b.impact - a.impact;
     });
@@ -944,8 +847,7 @@ export class ComplianceScorer {
           description: "Hardcoded password detected",
         },
       ],
-      remediation:
-        "Use environment variables or secure configuration management",
+      remediation: "Use environment variables or secure configuration management",
     });
 
     // Performance rules
@@ -969,9 +871,7 @@ export class ComplianceScorer {
     });
   }
 
-  private findFunctions(
-    content: string,
-  ): Array<{ line: number; lines: number }> {
+  private findFunctions(content: string): Array<{ line: number; lines: number }> {
     const functions: Array<{ line: number; lines: number }> = [];
     const lines = content.split("\n");
 
@@ -982,11 +882,7 @@ export class ComplianceScorer {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
 
-      if (
-        line.includes("function") ||
-        line.includes("=>") ||
-        line.includes("class")
-      ) {
+      if (line.includes("function") || line.includes("=>") || line.includes("class")) {
         inFunction = true;
         functionStart = i;
         braceCount = 0;
@@ -1024,9 +920,7 @@ export class ComplianceScorer {
   }
 
   private countDependencies(content: string): number {
-    const importMatches = content.match(
-      /import\s+.*?\s+from\s+['"][^'"]+['"]/g,
-    );
+    const importMatches = content.match(/import\s+.*?\s+from\s+['"][^'"]+['"]/g);
     return importMatches ? importMatches.length : 0;
   }
 
@@ -1056,21 +950,11 @@ export class ComplianceScorer {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
 
-      if (
-        pattern === "password" &&
-        line.includes("password") &&
-        line.includes("=") &&
-        !line.includes("process.env")
-      ) {
+      if (pattern === "password" && line.includes("password") && line.includes("=") && !line.includes("process.env")) {
         issues.push(`Line ${i + 1}: Hardcoded password`);
       }
 
-      if (
-        pattern === "sql" &&
-        line.includes("query") &&
-        line.includes("+") &&
-        !line.includes("prepared")
-      ) {
+      if (pattern === "sql" && line.includes("query") && line.includes("+") && !line.includes("prepared")) {
         issues.push(`Line ${i + 1}: Potential SQL injection`);
       }
     }
@@ -1085,18 +969,11 @@ export class ComplianceScorer {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
 
-      if (
-        pattern === "Sync" &&
-        (line.includes("readFileSync") || line.includes("writeFileSync"))
-      ) {
+      if (pattern === "Sync" && (line.includes("readFileSync") || line.includes("writeFileSync"))) {
         issues.push(`Line ${i + 1}: Synchronous I/O operation`);
       }
 
-      if (
-        pattern === "Loop" &&
-        line.includes("while") &&
-        line.includes("true")
-      ) {
+      if (pattern === "Loop" && line.includes("while") && line.includes("true")) {
         issues.push(`Line ${i + 1}: Potential infinite loop`);
       }
     }

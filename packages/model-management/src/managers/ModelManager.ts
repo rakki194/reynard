@@ -32,13 +32,9 @@ export class ModelManager implements IModelManager {
     this._downloadManager = new ModelDownloadManager(
       this._registry,
       config.maxConcurrentDownloads || 3,
-      config.downloadTimeout || 300000,
+      config.downloadTimeout || 300000
     );
-    this._loader = new ModelLoader(
-      this._registry,
-      config.maxConcurrentLoads || 2,
-      config.loadTimeout || 120000,
-    );
+    this._loader = new ModelLoader(this._registry, config.maxConcurrentLoads || 2, config.loadTimeout || 120000);
   }
 
   // Model registration
@@ -53,10 +49,7 @@ export class ModelManager implements IModelManager {
   }
 
   // Model download
-  async downloadModel(
-    modelId: string,
-    progressCallback?: (progress: ModelDownloadProgress) => void,
-  ): Promise<void> {
+  async downloadModel(modelId: string, progressCallback?: (progress: ModelDownloadProgress) => void): Promise<void> {
     this._emitEvent({
       type: "download_start",
       modelId,
@@ -65,7 +58,7 @@ export class ModelManager implements IModelManager {
     });
 
     try {
-      await this._downloadManager.downloadModel(modelId, (progress) => {
+      await this._downloadManager.downloadModel(modelId, progress => {
         this._emitEvent({
           type: "download_progress",
           modelId,
@@ -99,10 +92,7 @@ export class ModelManager implements IModelManager {
   }
 
   // Model loading
-  async loadModel(
-    modelId: string,
-    config?: Record<string, any>,
-  ): Promise<ModelInstance> {
+  async loadModel(modelId: string, config?: Record<string, any>): Promise<ModelInstance> {
     this._emitEvent({
       type: "load_start",
       modelId,
@@ -183,10 +173,7 @@ export class ModelManager implements IModelManager {
 
   // Model status and health
   isModelAvailable(modelId: string): boolean {
-    return (
-      this._registry.isModelRegistered(modelId) &&
-      this._downloadManager.isDownloaded(modelId)
-    );
+    return this._registry.isModelRegistered(modelId) && this._downloadManager.isDownloaded(modelId);
   }
 
   isModelLoaded(modelId: string): boolean {

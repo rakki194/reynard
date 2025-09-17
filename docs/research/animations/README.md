@@ -162,11 +162,7 @@ const stroboscopicTest = () => {
 
   assert(typeof result.isStroboscopic === "boolean");
   assert(result.stroboscopicPhase >= 0 && result.stroboscopicPhase <= 1);
-  assert(
-    ["growing", "shrinking", "frozen", "morphing"].includes(
-      result.apparentMotion,
-    ),
-  );
+  assert(["growing", "shrinking", "frozen", "morphing"].includes(result.apparentMotion));
 };
 ```
 

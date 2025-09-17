@@ -29,15 +29,13 @@ export function setupBaseTest() {
       type: "basic" as ResponseType,
       body: null,
       bodyUsed: false,
-    } as Response),
+    } as Response)
   ) as any;
 
   // Mock crypto API
   Object.defineProperty(global, "crypto", {
     value: {
-      randomUUID: vi
-        .fn()
-        .mockReturnValue("00000000-0000-4000-8000-000000000000"),
+      randomUUID: vi.fn().mockReturnValue("00000000-0000-4000-8000-000000000000"),
       getRandomValues: vi.fn().mockImplementation((array: Uint8Array) => {
         for (let i = 0; i < array.length; i++) {
           array[i] = Math.floor(Math.random() * 256);
@@ -50,8 +48,7 @@ export function setupBaseTest() {
           const algorithmOffset = algorithm === "SHA-1" ? 100 : 200;
           const dataHash = data.reduce((acc, byte) => acc + byte, 0);
           for (let i = 0; i < hash.length; i++) {
-            hash[i] =
-              (data[i % data.length] + i + algorithmOffset + dataHash) % 256;
+            hash[i] = (data[i % data.length] + i + algorithmOffset + dataHash) % 256;
           }
           return hash;
         }),
@@ -96,22 +93,15 @@ export function setupBaseTest() {
   global.URL.revokeObjectURL = vi.fn();
 
   // Mock btoa/atob
-  global.btoa = vi.fn((str: string) =>
-    Buffer.from(str, "binary").toString("base64"),
-  );
-  global.atob = vi.fn((str: string) =>
-    Buffer.from(str, "base64").toString("binary"),
-  );
+  global.btoa = vi.fn((str: string) => Buffer.from(str, "binary").toString("base64"));
+  global.atob = vi.fn((str: string) => Buffer.from(str, "base64").toString("binary"));
 
   // Mock TextEncoder/TextDecoder
   global.TextEncoder = class TextEncoder {
     encode(input: string): Uint8Array {
       return new Uint8Array(Buffer.from(input, "utf8"));
     }
-    encodeInto(
-      input: string,
-      destination: Uint8Array,
-    ): { read: number; written: number } {
+    encodeInto(input: string, destination: Uint8Array): { read: number; written: number } {
       const encoded = this.encode(input);
       const written = Math.min(encoded.length, destination.length);
       destination.set(encoded.subarray(0, written));
@@ -126,7 +116,7 @@ export function setupBaseTest() {
     constructor(
       public encoding = "utf-8",
       public fatal = false,
-      public ignoreBOM = false,
+      public ignoreBOM = false
     ) {}
     decode(input: Uint8Array): string {
       return Buffer.from(input).toString("utf8");
@@ -173,10 +163,7 @@ export function suppressConsoleWarnings() {
   };
 
   console.error = (...args: any[]) => {
-    if (
-      typeof args[0] === "string" &&
-      args[0].includes("Error: computations created outside a `createRoot`")
-    ) {
+    if (typeof args[0] === "string" && args[0].includes("Error: computations created outside a `createRoot`")) {
       return; // Suppress SolidJS lifecycle errors
     }
     originalError(...args);

@@ -6,14 +6,12 @@ with SQLite backend for development and PostgreSQL for production.
 """
 
 import os
-from typing import Optional
 
+from app.security.jwt_secret_manager import get_jwt_algorithm, get_jwt_secret_key
 from gatekeeper import AuthManager, SecurityLevel, TokenConfig
 from gatekeeper.backends.memory import MemoryBackend
 from gatekeeper.backends.postgresql import PostgreSQLBackend
 from gatekeeper.backends.sqlite import SQLiteBackend
-
-from app.security.jwt_secret_manager import get_jwt_secret_key, get_jwt_algorithm
 
 # Detect reload mode for optimization
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
@@ -69,35 +67,36 @@ class ReynardGatekeeperConfig:
         if IS_RELOAD_MODE or self.use_memory_backend:
             # Use memory backend for development/reload mode
             return MemoryBackend()
-        
-        if self.database_url.startswith("postgresql://") or self.database_url.startswith("postgres://"):
+
+        if self.database_url.startswith(
+            "postgresql://"
+        ) or self.database_url.startswith("postgres://"):
             # PostgreSQL backend for production
             return PostgreSQLBackend(
                 database_url=self.database_url,
                 pool_size=self.backend_pool_size,
                 max_overflow=self.backend_max_overflow,
             )
-        else:
-            # SQLite backend for development
-            return SQLiteBackend(database_url=self.database_url)
+        # SQLite backend for development
+        return SQLiteBackend(database_url=self.database_url)
 
     def create_auth_manager(self) -> AuthManager:
         """Create and configure the AuthManager instance."""
         token_config = self.get_token_config()
         backend = self.get_user_backend()
-        
+
         auth_manager = AuthManager(
             backend=backend,
             token_config=token_config,
             password_security_level=self.password_security_level,
         )
-        
+
         return auth_manager
 
 
 # Global configuration instance
-_config: Optional[ReynardGatekeeperConfig] = None
-_auth_manager: Optional[AuthManager] = None
+_config: ReynardGatekeeperConfig | None = None
+_auth_manager: AuthManager | None = None
 
 
 def get_config() -> ReynardGatekeeperConfig:
@@ -114,18 +113,18 @@ async def get_auth_manager() -> AuthManager:
     if _auth_manager is None:
         config = get_config()
         _auth_manager = config.create_auth_manager()
-        
+
         # Initialize the backend if needed
-        if hasattr(_auth_manager.backend, 'initialize'):
+        if hasattr(_auth_manager.backend, "initialize"):
             await _auth_manager.backend.initialize()
-    
+
     return _auth_manager
 
 
 async def initialize_gatekeeper() -> AuthManager:
     """Initialize Gatekeeper for the Reynard backend."""
     print("[INFO] Initializing Gatekeeper authentication system...")
-    
+
     try:
         auth_manager = await get_auth_manager()
         print("[OK] Gatekeeper initialized successfully")
@@ -139,7 +138,7 @@ async def shutdown_gatekeeper():
     """Shutdown Gatekeeper and cleanup resources."""
     global _auth_manager
     if _auth_manager is not None:
-        if hasattr(_auth_manager.backend, 'close'):
+        if hasattr(_auth_manager.backend, "close"):
             await _auth_manager.backend.close()
         _auth_manager = None
     print("[OK] Gatekeeper shutdown complete")

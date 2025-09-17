@@ -1,13 +1,7 @@
 // Query system implementation for component access
 
 import { ComponentStorage } from "./component";
-import {
-  Component,
-  ComponentType,
-  Entity,
-  QueryFilter,
-  QueryResult,
-} from "./types";
+import { Component, ComponentType, Entity, QueryFilter, QueryResult } from "./types";
 
 /**
  * Helper type to extract component types from ComponentType array.
@@ -26,7 +20,7 @@ export class QueryResultImpl<T extends Component[]> implements QueryResult<T> {
     public readonly components: T,
     public readonly length: number,
     private readonly componentTypes: ComponentType<Component>[] = [],
-    private readonly entityComponents: Map<number, Component[]> = new Map(),
+    private readonly entityComponents: Map<number, Component[]> = new Map()
   ) {}
 
   forEach(callback: (entity: Entity, ...components: T) => void | false): void {
@@ -50,9 +44,7 @@ export class QueryResultImpl<T extends Component[]> implements QueryResult<T> {
     return results;
   }
 
-  filter(
-    predicate: (entity: Entity, ...components: T) => boolean,
-  ): QueryResult<T> {
+  filter(predicate: (entity: Entity, ...components: T) => boolean): QueryResult<T> {
     const filteredEntities: Entity[] = [];
     const filteredEntityComponents = new Map<number, Component[]>();
 
@@ -77,7 +69,7 @@ export class QueryResultImpl<T extends Component[]> implements QueryResult<T> {
       allComponents as T,
       filteredEntities.length,
       this.componentTypes,
-      filteredEntityComponents,
+      filteredEntityComponents
     );
   }
 
@@ -108,9 +100,7 @@ export class QueryBuilder<T extends Component[]> {
   public componentTypes: ComponentType<Component>[] = [];
   public filters: QueryFilter = {};
 
-  with<U extends Component>(
-    componentType: ComponentType<U>,
-  ): QueryBuilder<[...T, U]> {
+  with<U extends Component>(componentType: ComponentType<U>): QueryBuilder<[...T, U]> {
     this.componentTypes.push(componentType as ComponentType<Component>);
     return this as unknown as QueryBuilder<[...T, U]>;
   }
@@ -118,10 +108,7 @@ export class QueryBuilder<T extends Component[]> {
   without<U extends Component>(componentType: ComponentType<U>): this {
     this.filters = {
       ...this.filters,
-      without: [
-        ...(this.filters.without || []),
-        componentType as ComponentType<Component>,
-      ],
+      without: [...(this.filters.without || []), componentType as ComponentType<Component>],
     };
     return this;
   }
@@ -132,10 +119,7 @@ export class QueryBuilder<T extends Component[]> {
   }
 
   build(): Query<T> {
-    return new QueryImpl(
-      this.componentTypes as ComponentType<T[number]>[],
-      this.filters,
-    );
+    return new QueryImpl(this.componentTypes as ComponentType<T[number]>[], this.filters);
   }
 
   // Make QueryBuilder executable like QueryResult
@@ -146,20 +130,14 @@ export class QueryBuilder<T extends Component[]> {
       isAdded(entity: Entity, type: ComponentType<Component>): boolean;
       isChanged(entity: Entity, type: ComponentType<Component>): boolean;
       isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
-    },
+    }
   ): QueryResult<T> {
-    return this.build().execute(
-      entityManager,
-      componentStorage,
-      changeDetection,
-    );
+    return this.build().execute(entityManager, componentStorage, changeDetection);
   }
 
   forEach(_callback: (entity: Entity, ...components: T) => void | false): void {
     // This will be called by the test, but we need the world context
-    throw new Error(
-      "QueryBuilder.forEach() requires world context - use world.query() instead",
-    );
+    throw new Error("QueryBuilder.forEach() requires world context - use world.query() instead");
   }
 }
 
@@ -169,7 +147,7 @@ export class QueryBuilder<T extends Component[]> {
 export class QueryImpl<T extends Component[]> {
   constructor(
     private componentTypes: ComponentType<T[number]>[],
-    private filters: QueryFilter,
+    private filters: QueryFilter
   ) {}
 
   // Add change detection methods for tests
@@ -204,7 +182,7 @@ export class QueryImpl<T extends Component[]> {
       isAdded(entity: Entity, type: ComponentType<Component>): boolean;
       isChanged(entity: Entity, type: ComponentType<Component>): boolean;
       isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
-    },
+    }
   ): QueryResult<T> {
     const matchingEntities: Entity[] = [];
     const entityComponents = new Map<number, Component[]>();
@@ -232,30 +210,23 @@ export class QueryImpl<T extends Component[]> {
       allComponents as T,
       matchingEntities.length,
       this.componentTypes,
-      entityComponents,
+      entityComponents
     );
   }
 
   private hasAllComponents(entity: Entity, storage: ComponentStorage): boolean {
-    return this.componentTypes.every((type) => {
+    return this.componentTypes.every(type => {
       const tableStorage = storage.getTableStorage(type);
       const sparseStorage = storage.getSparseSetStorage(type);
-      return (
-        (tableStorage?.has(entity.index) || sparseStorage?.has(entity.index)) ??
-        false
-      );
+      return (tableStorage?.has(entity.index) || sparseStorage?.has(entity.index)) ?? false;
     });
   }
 
-  private getEntityComponents(
-    entity: Entity,
-    storage: ComponentStorage,
-  ): Component[] {
-    return this.componentTypes.map((type) => {
+  private getEntityComponents(entity: Entity, storage: ComponentStorage): Component[] {
+    return this.componentTypes.map(type => {
       const tableStorage = storage.getTableStorage(type);
       const sparseStorage = storage.getSparseSetStorage(type);
-      return (tableStorage?.get(entity.index) ||
-        sparseStorage?.get(entity.index)) as Component;
+      return (tableStorage?.get(entity.index) || sparseStorage?.get(entity.index)) as Component;
     });
   }
 
@@ -266,55 +237,29 @@ export class QueryImpl<T extends Component[]> {
       isAdded(entity: Entity, type: ComponentType<Component>): boolean;
       isChanged(entity: Entity, type: ComponentType<Component>): boolean;
       isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
-    },
+    }
   ): boolean {
-    if (this.filters.with && !this.checkWithFilter(entity, storage))
-      return false;
-    if (this.filters.without && this.checkWithoutFilter(entity, storage))
-      return false;
-    if (
-      this.filters.added &&
-      changeDetection &&
-      !this.checkAddedFilter(entity, changeDetection)
-    )
-      return false;
-    if (
-      this.filters.changed &&
-      changeDetection &&
-      !this.checkChangedFilter(entity, changeDetection)
-    )
-      return false;
-    if (
-      this.filters.removed &&
-      changeDetection &&
-      !this.checkRemovedFilter(entity, changeDetection)
-    )
-      return false;
+    if (this.filters.with && !this.checkWithFilter(entity, storage)) return false;
+    if (this.filters.without && this.checkWithoutFilter(entity, storage)) return false;
+    if (this.filters.added && changeDetection && !this.checkAddedFilter(entity, changeDetection)) return false;
+    if (this.filters.changed && changeDetection && !this.checkChangedFilter(entity, changeDetection)) return false;
+    if (this.filters.removed && changeDetection && !this.checkRemovedFilter(entity, changeDetection)) return false;
     return true;
   }
 
   private checkWithFilter(entity: Entity, storage: ComponentStorage): boolean {
-    return this.filters.with!.every((type) => {
+    return this.filters.with!.every(type => {
       const tableStorage = storage.getTableStorage(type);
       const sparseStorage = storage.getSparseSetStorage(type);
-      return (
-        (tableStorage?.has(entity.index) || sparseStorage?.has(entity.index)) ??
-        false
-      );
+      return (tableStorage?.has(entity.index) || sparseStorage?.has(entity.index)) ?? false;
     });
   }
 
-  private checkWithoutFilter(
-    entity: Entity,
-    storage: ComponentStorage,
-  ): boolean {
-    return this.filters.without!.some((type) => {
+  private checkWithoutFilter(entity: Entity, storage: ComponentStorage): boolean {
+    return this.filters.without!.some(type => {
       const tableStorage = storage.getTableStorage(type);
       const sparseStorage = storage.getSparseSetStorage(type);
-      return (
-        (tableStorage?.has(entity.index) || sparseStorage?.has(entity.index)) ??
-        false
-      );
+      return (tableStorage?.has(entity.index) || sparseStorage?.has(entity.index)) ?? false;
     });
   }
 
@@ -322,33 +267,27 @@ export class QueryImpl<T extends Component[]> {
     entity: Entity,
     changeDetection: {
       isAdded(entity: Entity, type: ComponentType<Component>): boolean;
-    },
+    }
   ): boolean {
-    return this.filters.added!.every((type) =>
-      changeDetection.isAdded(entity, type),
-    );
+    return this.filters.added!.every(type => changeDetection.isAdded(entity, type));
   }
 
   private checkChangedFilter(
     entity: Entity,
     changeDetection: {
       isChanged(entity: Entity, type: ComponentType<Component>): boolean;
-    },
+    }
   ): boolean {
-    return this.filters.changed!.every((type) =>
-      changeDetection.isChanged(entity, type),
-    );
+    return this.filters.changed!.every(type => changeDetection.isChanged(entity, type));
   }
 
   private checkRemovedFilter(
     entity: Entity,
     changeDetection: {
       isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
-    },
+    }
   ): boolean {
-    return this.filters.removed!.every((type) =>
-      changeDetection.isRemoved(entity, type),
-    );
+    return this.filters.removed!.every(type => changeDetection.isRemoved(entity, type));
   }
 }
 
@@ -360,7 +299,7 @@ export interface Query<T extends Component[]> {
       isAdded(entity: Entity, type: ComponentType<Component>): boolean;
       isChanged(entity: Entity, type: ComponentType<Component>): boolean;
       isRemoved(entity: Entity, type: ComponentType<Component>): boolean;
-    },
+    }
   ): QueryResult<T>;
 
   // Add change detection methods for tests

@@ -37,10 +37,7 @@ describe("measureAsync Function", () => {
     expect(result.result).toBe("async result");
     expect(result.metrics).toBeDefined();
     expect(result.metrics.iterations).toBe(1);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "Performance measurement for test operation:",
-      expect.any(Object),
-    );
+    expect(consoleSpy).toHaveBeenCalledWith("Performance measurement for test operation:", expect.any(Object));
 
     consoleSpy.mockRestore();
   });
@@ -69,8 +66,6 @@ describe("measureAsync Function", () => {
       .mockReturnValueOnce(0) // start
       .mockReturnValueOnce(100); // end
 
-    await expect(measureAsync(failingAsyncOperation)).rejects.toThrow(
-      "Async error",
-    );
+    await expect(measureAsync(failingAsyncOperation)).rejects.toThrow("Async error");
   });
 });

@@ -4,20 +4,10 @@
  */
 
 // Re-export file validation functions
-export {
-  validateFileName,
-  validateFileExtension,
-  validateFileSize,
-  getSafeFilename,
-} from "./file-validation.js";
+export { validateFileName, validateFileExtension, validateFileSize, getSafeFilename } from "./file-validation.js";
 
 // Re-export SQL validation functions
-export {
-  validateSQLInput,
-  sanitizeSQLInput,
-  validateSQLIdentifier,
-  validateSQLParameter,
-} from "./sql-validation.js";
+export { validateSQLInput, sanitizeSQLInput, validateSQLIdentifier, validateSQLParameter } from "./sql-validation.js";
 
 // Re-export general input validation functions
 export {
@@ -33,11 +23,7 @@ export {
 export { validateJSON, sanitizeJSON } from "./json-validation.js";
 
 // Re-export XSS validation functions
-export {
-  validateXSSInput,
-  sanitizeXSSInput,
-  validateHTMLContent,
-} from "./xss-validation.js";
+export { validateXSSInput, sanitizeXSSInput, validateHTMLContent } from "./xss-validation.js";
 
 // Re-export MIME validation functions
 export {

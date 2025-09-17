@@ -6,15 +6,11 @@ Administrative endpoints for RAG system management and monitoring.
 
 import logging
 
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 
+from ...security.mcp_auth import MCPTokenData, require_mcp_permission, require_rag_stats
 from .models import RAGIndexingStatusResponse, RAGStatsResponse
 from .service import get_rag_service
-from ...security.mcp_auth import (
-    require_rag_stats,
-    require_mcp_permission,
-    MCPTokenData
-)
 
 logger = logging.getLogger("uvicorn")
 
@@ -22,9 +18,7 @@ router = APIRouter(tags=["rag"])
 
 
 @router.get("/admin/stats", response_model=RAGStatsResponse)
-async def get_rag_stats(
-    mcp_client: MCPTokenData = Depends(require_rag_stats)
-):
+async def get_rag_stats(mcp_client: MCPTokenData = Depends(require_rag_stats)):
     """Get RAG system statistics."""
     try:
         service = get_rag_service()
@@ -39,9 +33,7 @@ async def get_rag_stats(
 
 
 @router.get("/admin/indexing-status", response_model=RAGIndexingStatusResponse)
-async def get_indexing_status(
-    mcp_client: MCPTokenData = Depends(require_rag_stats)
-):
+async def get_indexing_status(mcp_client: MCPTokenData = Depends(require_rag_stats)):
     """Get current indexing status."""
     try:
         service = get_rag_service()
@@ -57,7 +49,7 @@ async def get_indexing_status(
 
 @router.post("/admin/rebuild-index")
 async def rebuild_index(
-    mcp_client: MCPTokenData = Depends(require_mcp_permission("rag:admin"))
+    mcp_client: MCPTokenData = Depends(require_mcp_permission("rag:admin")),
 ):
     """Rebuild the vector index."""
     try:
@@ -74,7 +66,7 @@ async def rebuild_index(
 
 @router.post("/admin/clear-cache")
 async def clear_cache(
-    mcp_client: MCPTokenData = Depends(require_mcp_permission("rag:admin"))
+    mcp_client: MCPTokenData = Depends(require_mcp_permission("rag:admin")),
 ):
     """Clear the RAG system cache."""
     try:

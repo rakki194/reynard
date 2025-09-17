@@ -17,7 +17,7 @@ import { materialHueShift } from "./material-patterns";
 export function generateSpriteColors(
   baseColor: OKLCHColor,
   spriteType: "character" | "environment" | "ui",
-  material?: keyof typeof import("./material-patterns").MATERIAL_PATTERNS,
+  material?: keyof typeof import("./material-patterns").MATERIAL_PATTERNS
 ): {
   shadow: OKLCHColor;
   base: OKLCHColor;
@@ -53,13 +53,10 @@ export function generateSpriteColors(
  * @param tileCount - Maximum number of tiles
  * @returns Array of OKLCH colors for tileset
  */
-export function generateTilesetPalette(
-  baseColors: OKLCHColor[],
-  tileCount: number = 16,
-): OKLCHColor[] {
+export function generateTilesetPalette(baseColors: OKLCHColor[], tileCount: number = 16): OKLCHColor[] {
   const palette: OKLCHColor[] = [];
 
-  baseColors.forEach((baseColor) => {
+  baseColors.forEach(baseColor => {
     const ramp = generateHueShiftRamp(baseColor, 4);
     palette.push(...ramp);
   });
@@ -75,11 +72,7 @@ export function generateTilesetPalette(
  */
 export function createColorLookupTable(
   baseColors: OKLCHColor[],
-  shiftTypes: Array<"shadow" | "highlight" | "midtone"> = [
-    "shadow",
-    "highlight",
-    "midtone",
-  ],
+  shiftTypes: Array<"shadow" | "highlight" | "midtone"> = ["shadow", "highlight", "midtone"]
 ): Map<string, OKLCHColor> {
   const lookup = new Map<string, OKLCHColor>();
 
@@ -104,15 +97,11 @@ export function createColorLookupTable(
 export function generateCharacterPalette(
   skinColor: OKLCHColor,
   hairColor: OKLCHColor,
-  clothingColor: OKLCHColor,
+  clothingColor: OKLCHColor
 ): OKLCHColor[] {
   const skinColors = generateSpriteColors(skinColor, "character", "skin");
   const hairColors = generateSpriteColors(hairColor, "character", "fabric");
-  const clothingColors = generateSpriteColors(
-    clothingColor,
-    "character",
-    "fabric",
-  );
+  const clothingColors = generateSpriteColors(clothingColor, "character", "fabric");
 
   return [
     skinColors.shadow,
@@ -137,7 +126,7 @@ export function generateCharacterPalette(
 export function generateEnvironmentPalette(
   grassColor: OKLCHColor,
   stoneColor: OKLCHColor,
-  waterColor: OKLCHColor,
+  waterColor: OKLCHColor
 ): OKLCHColor[] {
   const grassRamp = generateHueShiftRamp(grassColor, 4);
   const stoneRamp = generateHueShiftRamp(stoneColor, 4);
@@ -156,7 +145,7 @@ export function generateEnvironmentPalette(
 export function generateUIPalette(
   primaryColor: OKLCHColor,
   secondaryColor: OKLCHColor,
-  accentColor: OKLCHColor,
+  accentColor: OKLCHColor
 ): OKLCHColor[] {
   const primaryColors = generateSpriteColors(primaryColor, "ui");
   const secondaryColors = generateSpriteColors(secondaryColor, "ui");

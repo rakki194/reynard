@@ -6,11 +6,7 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useSegmentationEditor } from "../composables/useSegmentationEditor.js";
-import type {
-  SegmentationData,
-  SegmentationEditorConfig,
-  SegmentationEditorState,
-} from "../types/index.js";
+import type { SegmentationData, SegmentationEditorConfig, SegmentationEditorState } from "../types/index.js";
 
 describe("useSegmentationEditor", () => {
   let config: SegmentationEditorConfig;
@@ -93,9 +89,7 @@ describe("useSegmentationEditor", () => {
 
       expect(editor.state().zoom).toBe(2);
       expect(editor.state().panOffset).toEqual({ x: 10, y: 20 });
-      expect(mockOnStateChange).toHaveBeenCalledWith(
-        expect.objectContaining(updates),
-      );
+      expect(mockOnStateChange).toHaveBeenCalledWith(expect.objectContaining(updates));
     });
 
     it("should update state without callback", () => {

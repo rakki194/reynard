@@ -13,7 +13,7 @@ const getIcon = (name: string): HTMLElement | null => {
   const icon = getIconFromRegistry(name);
   if (icon) {
     // Create a wrapper div and return the actual HTML element
-    const wrapper = document.createElement('div');
+    const wrapper = document.createElement("div");
     wrapper.innerHTML = icon.outerHTML;
     return wrapper.firstElementChild as HTMLElement;
   }

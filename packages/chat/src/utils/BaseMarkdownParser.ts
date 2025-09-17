@@ -7,12 +7,7 @@
 
 import { createNode } from "./parsing-utils";
 import { SectionCloser } from "./block/SectionCloser";
-import type {
-  MarkdownNode,
-  StreamingParserState,
-  ParseResult,
-  ParserError,
-} from "../types";
+import type { MarkdownNode, StreamingParserState, ParseResult, ParserError } from "../types";
 
 export abstract class BaseMarkdownParser {
   protected state: StreamingParserState;
@@ -116,9 +111,7 @@ export abstract class BaseMarkdownParser {
    * Close any open sections
    */
   protected closeOpenSections(): void {
-    SectionCloser.closeAllSections(this.state, (node) =>
-      this.addNode(this.createNode(node)),
-    );
+    SectionCloser.closeAllSections(this.state, node => this.addNode(this.createNode(node)));
   }
 
   /**

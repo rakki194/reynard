@@ -56,16 +56,14 @@ export class RosePetalNaturalGrowth {
     else if (bundleTime < 4.0) {
       petal.unfoldPhase = "unfolding";
       const unfoldProgress = (bundleTime - 2.0) / 2.0;
-      petal.naturalGrowthProgress =
-        0.3 + 0.4 * this.easeOutQuart(unfoldProgress);
+      petal.naturalGrowthProgress = 0.3 + 0.4 * this.easeOutQuart(unfoldProgress);
       petal.lobeSeparation = this.easeInOutCubic(unfoldProgress);
     }
     // Phase 3: Petal reaches full maturity (open -> mature)
     else {
       petal.unfoldPhase = "mature";
       const matureProgress = Math.min(1, (bundleTime - 4.0) / 1.0);
-      petal.naturalGrowthProgress =
-        0.7 + 0.3 * this.easeOutCubic(matureProgress);
+      petal.naturalGrowthProgress = 0.7 + 0.3 * this.easeOutCubic(matureProgress);
       petal.lobeSeparation = 1.0;
     }
 
@@ -93,18 +91,14 @@ export class RosePetalNaturalGrowth {
 
     // Blend natural and gaussian for smooth appearance
     petal.scale = 0.1 + 0.9 * (0.3 * gaussianProgress + 0.7 * naturalProgress);
-    petal.opacity =
-      0.3 + 0.7 * (0.4 * gaussianProgress + 0.6 * naturalProgress);
+    petal.opacity = 0.3 + 0.7 * (0.4 * gaussianProgress + 0.6 * naturalProgress);
   }
 
   /**
    * Original gaussian growth (preserved for compatibility)
    */
   private updateGaussianGrowth(petal: RosePetal, _deltaTime: number): void {
-    petal.growthProgress = Math.min(
-      1,
-      petal.growthProgress + this.config.growthSpeed * _deltaTime,
-    );
+    petal.growthProgress = Math.min(1, petal.growthProgress + this.config.growthSpeed * _deltaTime);
 
     const growthCurve = this.easeOutCubic(petal.growthProgress);
     petal.size = 2 + (this.config.maxPetalSize - 2) * growthCurve;
@@ -130,12 +124,8 @@ export class RosePetalNaturalGrowth {
 
     // Subtle position variation for organic movement
     const timeVariation = Math.sin(this.time * 0.5 + petal.id * 0.1) * 0.5;
-    petal.x =
-      this.config.centerX +
-      Math.cos(petal.angle) * (petal.radius + timeVariation);
-    petal.y =
-      this.config.centerY +
-      Math.sin(petal.angle) * (petal.radius + timeVariation);
+    petal.x = this.config.centerX + Math.cos(petal.angle) * (petal.radius + timeVariation);
+    petal.y = this.config.centerY + Math.sin(petal.angle) * (petal.radius + timeVariation);
 
     // Update sepal visibility based on petal position
     petal.sepalVisible = this.shouldShowSepal(petal);
@@ -166,10 +156,7 @@ export class RosePetalNaturalGrowth {
     const baseScale = 0.1 + 0.9 * petal.naturalGrowthProgress;
 
     // Add unfolding effect - petals appear to "unroll" from the center
-    const unfoldEffect =
-      petal.unfoldPhase === "unfolding"
-        ? Math.sin(petal.naturalGrowthProgress * Math.PI) * 0.1
-        : 0;
+    const unfoldEffect = petal.unfoldPhase === "unfolding" ? Math.sin(petal.naturalGrowthProgress * Math.PI) * 0.1 : 0;
 
     return Math.min(1.0, baseScale + unfoldEffect);
   }
@@ -213,10 +200,7 @@ export class RosePetalNaturalGrowth {
 
     // Sepals are visible when petals are in early growth phases
     // and positioned to show the green points between petal bundles
-    return (
-      petal.unfoldPhase === "closed" ||
-      (petal.unfoldPhase === "unfolding" && petal.naturalGrowthProgress < 0.5)
-    );
+    return petal.unfoldPhase === "closed" || (petal.unfoldPhase === "unfolding" && petal.naturalGrowthProgress < 0.5);
   }
 
   /**

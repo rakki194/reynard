@@ -107,10 +107,7 @@ export class TranslationAnalytics {
 /**
  * Main migration function
  */
-export function migrateTranslations(
-  sourceTranslations: unknown,
-  options: MigrationOptions,
-): MigrationResult {
+export function migrateTranslations(sourceTranslations: unknown, options: MigrationOptions): MigrationResult {
   switch (options.sourceLibrary) {
     case "solid-i18n":
       return migrateFromSolidI18n(sourceTranslations, options);

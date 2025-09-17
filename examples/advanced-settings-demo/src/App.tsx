@@ -206,16 +206,10 @@ export const App: Component = () => {
     <div class="advanced-settings-demo">
       <header class="demo-header">
         <h1>Reynard Advanced Settings Demo</h1>
-        <p>
-          Comprehensive demonstration of advanced settings and configuration
-          management
-        </p>
+        <p>Comprehensive demonstration of advanced settings and configuration management</p>
 
         <div class="demo-controls">
-          <Button
-            variant="primary"
-            onClick={() => setShowAdvancedSettings(!showAdvancedSettings())}
-          >
+          <Button variant="primary" onClick={() => setShowAdvancedSettings(!showAdvancedSettings())}>
             {showAdvancedSettings() ? "Hide" : "Show"} Advanced Settings
           </Button>
         </div>
@@ -240,13 +234,7 @@ export const App: Component = () => {
         <Show when={showAdvancedSettings()}>
           {/* Advanced Settings with Tabs */}
           <div class="advanced-settings-container">
-            <Tabs
-              items={tabs}
-              activeTab={activeTab()}
-              onTabChange={setActiveTab}
-              variant="underline"
-              size="lg"
-            />
+            <Tabs items={tabs} activeTab={activeTab()} onTabChange={setActiveTab} variant="underline" size="lg" />
 
             <div class="settings-content">
               <Show when={activeTab() === "general"}>
@@ -295,10 +283,8 @@ export const App: Component = () => {
 
       <footer class="demo-footer">
         <p>
-          This demo showcases Reynard's comprehensive settings system with
-          specialized configuration panels for RAG, Diffusion, ComfyUI, Model
-          Management, Service Management, AI Assistant, and Advanced
-          Configuration Watching.
+          This demo showcases Reynard's comprehensive settings system with specialized configuration panels for RAG,
+          Diffusion, ComfyUI, Model Management, Service Management, AI Assistant, and Advanced Configuration Watching.
         </p>
       </footer>
     </div>

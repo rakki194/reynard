@@ -5,11 +5,7 @@
  * thumbnail generation, and content analysis.
  */
 
-import {
-  ProcessingOptions,
-  ProcessingResult,
-  ThumbnailOptions,
-} from "../types";
+import { ProcessingOptions, ProcessingResult, ThumbnailOptions } from "../types";
 import { ThumbnailGenerator } from "./thumbnail-generator";
 import { SecurityValidator } from "./security/SecurityValidator";
 import { FileTypeValidator } from "./utils/FileTypeValidator";
@@ -23,9 +19,7 @@ export class FileProcessor {
 
   constructor(configManager: ConfigManager) {
     this.configManager = configManager;
-    this.thumbnailGenerator = new ThumbnailGenerator(
-      configManager.getThumbnailConfig(),
-    );
+    this.thumbnailGenerator = new ThumbnailGenerator(configManager.getThumbnailConfig());
 
     const securityValidator = new SecurityValidator({
       maxFileSize: configManager.getMaxFileSize(),
@@ -33,24 +27,15 @@ export class FileProcessor {
       blockedExtensions: new Set(),
     });
 
-    const fileTypeValidator = new FileTypeValidator(
-      configManager.getSupportedExtensions(),
-    );
+    const fileTypeValidator = new FileTypeValidator(configManager.getSupportedExtensions());
 
-    this.processingEngine = new FileProcessingEngine(
-      securityValidator,
-      fileTypeValidator,
-      configManager,
-    );
+    this.processingEngine = new FileProcessingEngine(securityValidator, fileTypeValidator, configManager);
   }
 
   /**
    * Process a single file with security validation
    */
-  async processFile(
-    file: File | string,
-    options?: ProcessingOptions,
-  ): Promise<ProcessingResult> {
+  async processFile(file: File | string, options?: ProcessingOptions): Promise<ProcessingResult> {
     const result = await this.processingEngine.processFile(file, options);
 
     // Add thumbnail generation if requested
@@ -69,10 +54,7 @@ export class FileProcessor {
   /**
    * Generate thumbnail for a file
    */
-  async generateThumbnail(
-    file: File | string,
-    options: ThumbnailOptions,
-  ): Promise<ProcessingResult<Blob | string>> {
+  async generateThumbnail(file: File | string, options: ThumbnailOptions): Promise<ProcessingResult<Blob | string>> {
     return await this.thumbnailGenerator.generateThumbnail(file, options);
   }
 
@@ -98,9 +80,7 @@ export class FileProcessor {
 
     // Update thumbnail generator if thumbnail size changed
     if (updates.defaultThumbnailSize) {
-      this.thumbnailGenerator = new ThumbnailGenerator(
-        this.configManager.getThumbnailConfig(),
-      );
+      this.thumbnailGenerator = new ThumbnailGenerator(this.configManager.getThumbnailConfig());
     }
 
     // Update processing engine with new config

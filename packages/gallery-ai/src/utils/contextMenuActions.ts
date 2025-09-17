@@ -6,12 +6,7 @@
  * and smart features.
  */
 
-import type {
-  AIContextMenuAction,
-  FileItem,
-  FolderItem,
-  CaptionType,
-} from "../types";
+import type { AIContextMenuAction, FileItem, FolderItem, CaptionType } from "../types";
 import { AIContextMenuActionType } from "../types";
 import { CaptionType as AISharedCaptionType } from "reynard-ai-shared";
 
@@ -37,7 +32,7 @@ export interface ContextMenuActionsConfig {
  */
 export function createSingleItemActions(
   item: FileItem | FolderItem,
-  config: ContextMenuActionsConfig,
+  config: ContextMenuActionsConfig
 ): AIContextMenuAction[] {
   const actions: AIContextMenuAction[] = [];
 
@@ -53,7 +48,7 @@ export function createSingleItemActions(
       label: "Generate Caption",
       icon: "🤖",
       aiActionType: AIContextMenuActionType.GENERATE_CAPTION,
-      children: config.availableGenerators.map((generator) => ({
+      children: config.availableGenerators.map(generator => ({
         id: `generate-caption-${generator}`,
         label: getGeneratorDisplayName(generator),
         icon: getGeneratorIcon(generator),
@@ -108,7 +103,7 @@ export function createSingleItemActions(
  */
 export function createBatchActions(
   items: (FileItem | FolderItem)[],
-  config: ContextMenuActionsConfig,
+  config: ContextMenuActionsConfig
 ): AIContextMenuAction[] {
   const actions: AIContextMenuAction[] = [];
 
@@ -116,9 +111,7 @@ export function createBatchActions(
     return actions;
   }
 
-  const fileItems = items.filter(
-    (item) => item.type !== "folder",
-  ) as FileItem[];
+  const fileItems = items.filter(item => item.type !== "folder") as FileItem[];
 
   if (fileItems.length < 2) {
     return actions;
@@ -131,7 +124,7 @@ export function createBatchActions(
     icon: "📦",
     aiActionType: AIContextMenuActionType.BATCH_ANNOTATE,
     requiresMultipleSelection: true,
-    children: config.availableGenerators.map((generator) => ({
+    children: config.availableGenerators.map(generator => ({
       id: `batch-annotate-${generator}`,
       label: `Batch with ${getGeneratorDisplayName(generator)}`,
       icon: getGeneratorIcon(generator),
@@ -153,7 +146,7 @@ export function createBatchActions(
  */
 export function createSmartFeatureActions(
   _item: FileItem | FolderItem,
-  config: ContextMenuActionsConfig,
+  config: ContextMenuActionsConfig
 ): AIContextMenuAction[] {
   const actions: AIContextMenuAction[] = [];
 
@@ -186,7 +179,7 @@ export function createSmartFeatureActions(
 export function createAIContextMenuActions(
   item: FileItem | FolderItem,
   selectedItems: (FileItem | FolderItem)[],
-  config: ContextMenuActionsConfig,
+  config: ContextMenuActionsConfig
 ): AIContextMenuAction[] {
   const actions: AIContextMenuAction[] = [];
 

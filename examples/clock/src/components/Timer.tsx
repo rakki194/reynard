@@ -11,26 +11,13 @@ import { TimerInputs } from "./TimerInputs";
 import { TimerControls } from "./TimerControls";
 
 export const Timer: Component = () => {
-  const {
-    time,
-    inputTime,
-    state,
-    startTimer,
-    pauseTimer,
-    stopTimer,
-    resetTimer,
-    handleInputChange,
-  } = useTimer();
+  const { time, inputTime, state, startTimer, pauseTimer, stopTimer, resetTimer, handleInputChange } = useTimer();
 
   return (
     <div class="timer-container">
       <Card class="timer-card">
         <TimerDisplay time={time()} state={state()} />
-        <TimerInputs
-          inputTime={inputTime()}
-          state={state()}
-          onInputChange={handleInputChange}
-        />
+        <TimerInputs inputTime={inputTime()} state={state()} onInputChange={handleInputChange} />
         <TimerControls
           time={time()}
           state={state()}

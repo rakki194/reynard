@@ -3,12 +3,7 @@ import { SpatialHash } from "../../../geometry/collision/aabb-spatial-hash";
 import type { AABB } from "../../../geometry/collision/aabb-types";
 
 // Test utilities
-const createAABB = (
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-): AABB => ({
+const createAABB = (x: number, y: number, width: number, height: number): AABB => ({
   x,
   y,
   width,
@@ -207,9 +202,7 @@ describe("AABB Spatial Hash - Edge Cases", () => {
 
   it("should handle large numbers of objects", () => {
     const hash = new SpatialHash(100);
-    const aabbs = Array.from({ length: 1000 }, (_, i) =>
-      createAABB((i % 10) * 10, Math.floor(i / 10) * 10, 5, 5),
-    );
+    const aabbs = Array.from({ length: 1000 }, (_, i) => createAABB((i % 10) * 10, Math.floor(i / 10) * 10, 5, 5));
 
     aabbs.forEach((aabb, i) => {
       hash.insert(i, aabb);

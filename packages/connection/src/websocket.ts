@@ -41,10 +41,7 @@ export class WebSocketConnection extends BaseConnection {
 
   async isConnected(): Promise<boolean> {
     const openConst = (WebSocket as any).OPEN ?? 1;
-    return (
-      !!this.ws &&
-      (this.ws.readyState === openConst || this.ws.readyState === 1)
-    );
+    return !!this.ws && (this.ws.readyState === openConst || this.ws.readyState === 1);
   }
 
   async healthCheck(): Promise<HealthCheckResult> {
@@ -52,9 +49,7 @@ export class WebSocketConnection extends BaseConnection {
     try {
       const ok = (await this.isConnected()) || (await this.connect());
       const rt = performance.now() - start;
-      (this as any).setHealth?.(
-        ok ? ConnectionHealth.HEALTHY : ConnectionHealth.UNHEALTHY,
-      );
+      (this as any).setHealth?.(ok ? ConnectionHealth.HEALTHY : ConnectionHealth.UNHEALTHY);
       return {
         connectionId: this.connectionId,
         timestamp: Date.now(),
@@ -90,13 +85,10 @@ export class WebSocketConnection extends BaseConnection {
     // Synchronous readiness check to avoid microtask race with tests firing
     // message handlers immediately after calling receiveImpl().
     const openConst = (WebSocket as any).OPEN ?? 1;
-    if (
-      !this.ws ||
-      !(this.ws.readyState === openConst || this.ws.readyState === 1)
-    ) {
+    if (!this.ws || !(this.ws.readyState === openConst || this.ws.readyState === 1)) {
       return null;
     }
-    return await new Promise<unknown>((resolve) => {
+    return await new Promise<unknown>(resolve => {
       const onMessage = (ev: MessageEvent) => {
         this.ws?.removeEventListener("message", onMessage as any);
         try {

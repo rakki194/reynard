@@ -9,9 +9,7 @@ import { MockBackendServer } from "./mock-backend-server";
 /**
  * Create a mock backend server instance
  */
-export async function createMockBackendServer(
-  port: number = 8000,
-): Promise<MockBackendServer> {
+export async function createMockBackendServer(port: number = 8000): Promise<MockBackendServer> {
   const server = new MockBackendServer({
     port,
     baseUrl: `http://localhost:${port}`,

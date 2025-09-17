@@ -11,13 +11,11 @@ interface StatusItemProps {
   statusClass?: string;
 }
 
-export const StatusItem: Component<StatusItemProps> = (props) => {
+export const StatusItem: Component<StatusItemProps> = props => {
   return (
     <div class="status-item">
       <span class="status-label">{props.label}:</span>
-      <span class={`status-value ${props.statusClass || ""}`}>
-        {props.value}
-      </span>
+      <span class={`status-value ${props.statusClass || ""}`}>{props.value}</span>
     </div>
   );
 };

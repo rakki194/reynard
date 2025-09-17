@@ -11,7 +11,7 @@ collects river stones - every statistic tells a story!
 """
 
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 
 class MetricsAggregationService:

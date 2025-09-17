@@ -7,10 +7,8 @@ interface ColorRampProps {
   colors: OKLCHColor[];
 }
 
-export const ColorRamp: Component<ColorRampProps> = (props) => {
-  const colorStrings = createMemo(() =>
-    props.colors.map((color) => `oklch(${color.l}% ${color.c} ${color.h})`),
-  );
+export const ColorRamp: Component<ColorRampProps> = props => {
+  const colorStrings = createMemo(() => props.colors.map(color => `oklch(${color.l}% ${color.c} ${color.h})`));
 
   const copyToClipboard = async (colorString: string) => {
     try {
@@ -41,10 +39,7 @@ export const ColorRamp: Component<ColorRampProps> = (props) => {
       </div>
 
       <div class="ramp-actions">
-        <button
-          class="action-button copy-all"
-          onClick={() => copyToClipboard(colorStrings().join("\n"))}
-        >
+        <button class="action-button copy-all" onClick={() => copyToClipboard(colorStrings().join("\n"))}>
           <span innerHTML={allIcons.copy.svg}></span> Copy All Colors
         </button>
         <button
@@ -56,8 +51,7 @@ export const ColorRamp: Component<ColorRampProps> = (props) => {
             copyToClipboard(`:root {\n${cssVars}\n}`);
           }}
         >
-          <span innerHTML={allIcons["window-brush"].svg}></span> Export as CSS
-          Variables
+          <span innerHTML={allIcons["window-brush"].svg}></span> Export as CSS Variables
         </button>
       </div>
     </div>

@@ -62,10 +62,7 @@ export abstract class ApiClient {
    * Check if the client is connected (override in subclasses)
    */
   isConnected(): boolean {
-    return (
-      this.lastHealthCheck !== undefined &&
-      Date.now() - this.lastHealthCheck < 60000
-    ); // 1 minute
+    return this.lastHealthCheck !== undefined && Date.now() - this.lastHealthCheck < 60000; // 1 minute
   }
 
   /**

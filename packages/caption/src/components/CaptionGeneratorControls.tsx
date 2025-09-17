@@ -5,19 +5,14 @@
  */
 
 import { Component, Show } from "solid-js";
-import type {
-  CaptionGeneratorState,
-  CaptionGeneratorHandlers,
-} from "../composables";
+import type { CaptionGeneratorState, CaptionGeneratorHandlers } from "../composables";
 
 export interface CaptionGeneratorControlsProps {
   state: CaptionGeneratorState;
   handlers: CaptionGeneratorHandlers;
 }
 
-export const CaptionGeneratorControls: Component<
-  CaptionGeneratorControlsProps
-> = (props) => {
+export const CaptionGeneratorControls: Component<CaptionGeneratorControlsProps> = props => {
   return (
     <>
       <div class="generation-controls">
@@ -38,10 +33,7 @@ export const CaptionGeneratorControls: Component<
       <Show when={props.state.isGenerating()}>
         <div class="progress-container">
           <div class="progress-bar">
-            <div
-              class="progress-fill"
-              style={{ width: `${props.state.generationProgress()}%` }}
-            />
+            <div class="progress-fill" style={{ width: `${props.state.generationProgress()}%` }} />
           </div>
         </div>
       </Show>

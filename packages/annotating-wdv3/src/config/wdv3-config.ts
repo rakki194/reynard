@@ -72,8 +72,7 @@ export const WDV3_DEFAULT_CONFIG = {
 
 export const WDV3_METADATA = {
   name: "wdv3",
-  description:
-    "WDv3 - Danbooru-style tagging model for anime and manga artwork",
+  description: "WDv3 - Danbooru-style tagging model for anime and manga artwork",
   version: "1.0.0",
   caption_type: "tags",
   model_category: "lightweight",

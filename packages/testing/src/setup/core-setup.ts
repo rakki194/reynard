@@ -26,7 +26,7 @@ export function setupCoreTest() {
         external: 0,
         arrayBuffers: 0,
       })),
-      nextTick: vi.fn((callback) => setTimeout(callback, 0)),
+      nextTick: vi.fn(callback => setTimeout(callback, 0)),
       cwd: vi.fn(() => "/test"),
       platform: "test",
       version: "v18.0.0",
@@ -55,7 +55,7 @@ export function setupCoreTest() {
     return setTimeout(callback, delay) as any;
   }) as any;
 
-  global.clearTimeout = vi.fn((id) => {
+  global.clearTimeout = vi.fn(id => {
     return clearTimeout(id);
   }) as any;
 
@@ -63,7 +63,7 @@ export function setupCoreTest() {
     return setInterval(callback, delay) as any;
   }) as any;
 
-  global.clearInterval = vi.fn((id) => {
+  global.clearInterval = vi.fn(id => {
     return clearInterval(id);
   }) as any;
 }

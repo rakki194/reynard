@@ -304,7 +304,7 @@ export const MATERIAL_PATTERNS: Record<MaterialType, MaterialPattern> = {
 export function applyMaterialPattern(
   baseColor: OKLCHColor,
   material: MaterialType,
-  intensity: number = 1.0,
+  intensity: number = 1.0
 ): { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor } {
   const pattern = MATERIAL_PATTERNS[material];
   const { l, c, h } = baseColor;
@@ -317,10 +317,7 @@ export function applyMaterialPattern(
   };
 
   // Apply shadow enhancement if enabled
-  if (
-    pattern.shadowEnhancement.enabled &&
-    shadow.l <= pattern.shadowEnhancement.threshold
-  ) {
+  if (pattern.shadowEnhancement.enabled && shadow.l <= pattern.shadowEnhancement.threshold) {
     shadow.h = (shadow.h - pattern.shadowEnhancement.coolShift + 360) % 360;
   }
 
@@ -332,19 +329,10 @@ export function applyMaterialPattern(
   };
 
   // Apply highlight preservation if enabled
-  if (
-    pattern.highlightPreservation.enabled &&
-    highlight.l >= pattern.highlightPreservation.threshold
-  ) {
-    highlight.c = Math.max(
-      0.01,
-      highlight.c - pattern.highlightPreservation.desaturation,
-    );
+  if (pattern.highlightPreservation.enabled && highlight.l >= pattern.highlightPreservation.threshold) {
+    highlight.c = Math.max(0.01, highlight.c - pattern.highlightPreservation.desaturation);
     // Keep hue closer to original for very bright highlights
-    const hueInfluence = Math.max(
-      0,
-      1 - (highlight.l - pattern.highlightPreservation.threshold) / 20,
-    );
+    const hueInfluence = Math.max(0, 1 - (highlight.l - pattern.highlightPreservation.threshold) / 20);
     highlight.h = h + (highlight.h - h) * hueInfluence;
   }
 
@@ -353,10 +341,7 @@ export function applyMaterialPattern(
   if (pattern.midtoneAdjustment.enabled) {
     base = {
       l: l,
-      c: Math.min(
-        0.4,
-        c + pattern.midtoneAdjustment.chromaAdjustment * intensity,
-      ),
+      c: Math.min(0.4, c + pattern.midtoneAdjustment.chromaAdjustment * intensity),
       h: (h + pattern.midtoneAdjustment.hueShift * intensity + 360) % 360,
     };
   }
@@ -380,7 +365,7 @@ export function generateMaterialRamp(
   baseColor: OKLCHColor,
   material: MaterialType,
   stops: number = 5,
-  _intensity: number = 1.0,
+  _intensity: number = 1.0
 ): OKLCHColor[] {
   const pattern = MATERIAL_PATTERNS[material];
   const colors: OKLCHColor[] = [];
@@ -396,10 +381,7 @@ export function generateMaterialRamp(
     if (t < 0.5) {
       // Shadow side
       hueShift = -pattern.shadowShift * (0.5 - t) * 2;
-      if (
-        pattern.shadowEnhancement.enabled &&
-        lightness <= pattern.shadowEnhancement.threshold
-      ) {
+      if (pattern.shadowEnhancement.enabled && lightness <= pattern.shadowEnhancement.threshold) {
         hueShift -= pattern.shadowEnhancement.coolShift;
       }
     } else {
@@ -414,18 +396,9 @@ export function generateMaterialRamp(
     };
 
     // Apply highlight preservation
-    if (
-      pattern.highlightPreservation.enabled &&
-      color.l >= pattern.highlightPreservation.threshold
-    ) {
-      color.c = Math.max(
-        0.01,
-        color.c - pattern.highlightPreservation.desaturation,
-      );
-      const hueInfluence = Math.max(
-        0,
-        1 - (color.l - pattern.highlightPreservation.threshold) / 20,
-      );
+    if (pattern.highlightPreservation.enabled && color.l >= pattern.highlightPreservation.threshold) {
+      color.c = Math.max(0.01, color.c - pattern.highlightPreservation.desaturation);
+      const hueInfluence = Math.max(0, 1 - (color.l - pattern.highlightPreservation.threshold) / 20);
       color.h = h + (color.h - h) * hueInfluence;
     }
 
@@ -440,9 +413,7 @@ export function generateMaterialRamp(
  * @param config - Custom material configuration
  * @returns Custom material pattern
  */
-export function createCustomMaterial(
-  config: Partial<MaterialPattern>,
-): MaterialPattern {
+export function createCustomMaterial(config: Partial<MaterialPattern>): MaterialPattern {
   return {
     name: config.name || "Custom Material",
     description: config.description || "User-defined material pattern",

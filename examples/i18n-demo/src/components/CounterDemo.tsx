@@ -8,18 +8,15 @@ const CounterDemo: Component = () => {
 
   return (
     <div class="counter-demo">
-      <button onClick={() => setCount((c) => c - 1)}>-</button>
+      <button onClick={() => setCount(c => c - 1)}>-</button>
       <span class="count">{count()}</span>
-      <button onClick={() => setCount((c) => c + 1)}>+</button>
+      <button onClick={() => setCount(c => c + 1)}>+</button>
       <p class="count-text">
         {count() === 0 && t("common.none")}
         {count() === 1 && getDemoTranslation(locale, "oneItem")}
         {count() !== 0 &&
           count() !== 1 &&
-          getDemoTranslation(locale, "multipleItems").replace(
-            "{count}",
-            count().toString(),
-          )}
+          getDemoTranslation(locale, "multipleItems").replace("{count}", count().toString())}
       </p>
     </div>
   );

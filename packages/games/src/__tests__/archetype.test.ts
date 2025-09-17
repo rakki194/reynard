@@ -17,7 +17,7 @@ class Position implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -25,7 +25,7 @@ class Velocity implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -33,7 +33,7 @@ class Health implements Component {
   readonly __component = true;
   constructor(
     public current: number,
-    public maximum: number,
+    public maximum: number
   ) {}
 }
 
@@ -61,21 +61,11 @@ describe("Archetype System", () => {
     world = createWorld();
 
     // Register component types
-    world
-      .getComponentRegistry()
-      .register("Position", StorageType.Table, () => new Position(0, 0));
-    world
-      .getComponentRegistry()
-      .register("Velocity", StorageType.Table, () => new Velocity(0, 0));
-    world
-      .getComponentRegistry()
-      .register("Health", StorageType.SparseSet, () => new Health(100, 100));
-    world
-      .getComponentRegistry()
-      .register("Player", StorageType.SparseSet, () => new Player("Player"));
-    world
-      .getComponentRegistry()
-      .register("Enemy", StorageType.SparseSet, () => new Enemy("basic"));
+    world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
+    world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    world.getComponentRegistry().register("Health", StorageType.SparseSet, () => new Health(100, 100));
+    world.getComponentRegistry().register("Player", StorageType.SparseSet, () => new Player("Player"));
+    world.getComponentRegistry().register("Enemy", StorageType.SparseSet, () => new Enemy("basic"));
 
     // Get the registered component types
     PositionType = world.getComponentRegistry().getByName("Position")!;
@@ -271,7 +261,7 @@ describe("Archetype System", () => {
       const startTime = performance.now();
 
       // Check archetype for each entity
-      entities.forEach((entity) => {
+      entities.forEach(entity => {
         const archetype = world.getArchetype(entity);
         expect(archetype).toBeDefined();
       });
@@ -296,7 +286,7 @@ describe("Archetype System", () => {
       // All entities should be in the same archetype
       const archetype = world.getArchetype(entities[0]);
 
-      entities.forEach((entity) => {
+      entities.forEach(entity => {
         expect(world.getArchetype(entity)).toBe(archetype);
       });
 

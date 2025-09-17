@@ -347,6 +347,4 @@ class PasswordResetResponse(BaseModel):
     """
 
     message: str = Field(..., description="Success message")
-    token: str | None = Field(
-        None, description="Reset token (for development/testing)"
-    )
+    token: str | None = Field(None, description="Reset token (for development/testing)")

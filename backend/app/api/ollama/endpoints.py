@@ -25,9 +25,10 @@ async def chat(request: OllamaChatRequest):
     """Chat with Ollama model."""
     try:
         service = get_ollama_service()
-        
+
         # Convert request to service params
         from ...services.ollama.models import OllamaChatParams
+
         params = OllamaChatParams(
             message=request.message,
             model=request.model,
@@ -36,30 +37,32 @@ async def chat(request: OllamaChatRequest):
             max_tokens=request.max_tokens,
             stream=False,  # Non-streaming for this endpoint
             tools=request.tools,
-            context=request.context
+            context=request.context,
         )
-        
+
         # Chat with Ollama
         response_text = ""
         tokens_generated = 0
         processing_time = 0.0
         tool_calls = []
-        
+
         async for event in service.chat_stream(params):
             if event.type == "token":
                 response_text += event.data
                 tokens_generated += 1
             elif event.type == "tool_call":
-                tool_calls.append({
-                    "name": event.metadata.get("tool_name", "unknown"),
-                    "args": event.metadata.get("tool_args", {}),
-                    "id": event.metadata.get("tool_call_id", "")
-                })
+                tool_calls.append(
+                    {
+                        "name": event.metadata.get("tool_name", "unknown"),
+                        "args": event.metadata.get("tool_args", {}),
+                        "id": event.metadata.get("tool_call_id", ""),
+                    }
+                )
             elif event.type == "complete":
                 processing_time = event.metadata.get("processing_time", 0.0)
             elif event.type == "error":
                 raise HTTPException(status_code=500, detail=event.data)
-        
+
         return OllamaChatResponse(
             success=True,
             response=response_text,
@@ -67,9 +70,9 @@ async def chat(request: OllamaChatRequest):
             processing_time=processing_time,
             tokens_generated=tokens_generated,
             tool_calls=tool_calls,
-            tools_used=[tc["name"] for tc in tool_calls]
+            tools_used=[tc["name"] for tc in tool_calls],
         )
-        
+
     except Exception as e:
         logger.error(f"Chat failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -80,9 +83,10 @@ async def chat_stream(request: OllamaChatRequest):
     """Chat with Ollama model with streaming support."""
     try:
         service = get_ollama_service()
-        
+
         # Convert request to service params
         from ...services.ollama.models import OllamaChatParams
+
         params = OllamaChatParams(
             message=request.message,
             model=request.model,
@@ -91,20 +95,20 @@ async def chat_stream(request: OllamaChatRequest):
             max_tokens=request.max_tokens,
             stream=True,
             tools=request.tools,
-            context=request.context
+            context=request.context,
         )
-        
+
         async def event_generator():
             async for event in service.chat_stream(params):
                 yield {
                     "type": event.type,
                     "data": event.data,
                     "timestamp": event.timestamp,
-                    "metadata": event.metadata
+                    "metadata": event.metadata,
                 }
-        
+
         return EventSourceResponse(event_generator())
-        
+
     except Exception as e:
         logger.error(f"Streaming chat failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -115,9 +119,10 @@ async def assistant_chat(request: OllamaAssistantRequest):
     """Chat with ReynardAssistant."""
     try:
         service = get_ollama_service()
-        
+
         # Convert request to service params
         from ...services.ollama.models import OllamaAssistantParams
+
         params = OllamaAssistantParams(
             message=request.message,
             assistant_type=request.assistant_type,
@@ -126,16 +131,16 @@ async def assistant_chat(request: OllamaAssistantRequest):
             max_tokens=request.max_tokens,
             stream=False,  # Non-streaming for this endpoint
             context=request.context,
-            tools_enabled=request.tools_enabled
+            tools_enabled=request.tools_enabled,
         )
-        
+
         # Chat with assistant
         response_text = ""
         tokens_generated = 0
         tools_used = []
         tool_calls = []
         processing_time = 0.0
-        
+
         async for event in service.assistant_stream(params):
             if event.type == "token":
                 response_text += event.data
@@ -143,16 +148,18 @@ async def assistant_chat(request: OllamaAssistantRequest):
             elif event.type == "tool_call":
                 tool_name = event.metadata.get("tool_name", "unknown")
                 tools_used.append(tool_name)
-                tool_calls.append({
-                    "name": tool_name,
-                    "args": event.metadata.get("tool_args", {}),
-                    "id": event.metadata.get("tool_call_id", "")
-                })
+                tool_calls.append(
+                    {
+                        "name": tool_name,
+                        "args": event.metadata.get("tool_args", {}),
+                        "id": event.metadata.get("tool_call_id", ""),
+                    }
+                )
             elif event.type == "complete":
                 processing_time = event.metadata.get("processing_time", 0.0)
             elif event.type == "error":
                 raise HTTPException(status_code=500, detail=event.data)
-        
+
         return OllamaAssistantResponse(
             success=True,
             response=response_text,
@@ -161,9 +168,9 @@ async def assistant_chat(request: OllamaAssistantRequest):
             processing_time=processing_time,
             tokens_generated=tokens_generated,
             tools_used=tools_used,
-            tool_calls=tool_calls
+            tool_calls=tool_calls,
         )
-        
+
     except Exception as e:
         logger.error(f"Assistant chat failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -174,9 +181,10 @@ async def assistant_chat_stream(request: OllamaAssistantRequest):
     """Chat with ReynardAssistant with streaming support."""
     try:
         service = get_ollama_service()
-        
+
         # Convert request to service params
         from ...services.ollama.models import OllamaAssistantParams
+
         params = OllamaAssistantParams(
             message=request.message,
             assistant_type=request.assistant_type,
@@ -185,20 +193,20 @@ async def assistant_chat_stream(request: OllamaAssistantRequest):
             max_tokens=request.max_tokens,
             stream=True,
             context=request.context,
-            tools_enabled=request.tools_enabled
+            tools_enabled=request.tools_enabled,
         )
-        
+
         async def event_generator():
             async for event in service.assistant_stream(params):
                 yield {
                     "type": event.type,
                     "data": event.data,
                     "timestamp": event.timestamp,
-                    "metadata": event.metadata
+                    "metadata": event.metadata,
                 }
-        
+
         return EventSourceResponse(event_generator())
-        
+
     except Exception as e:
         logger.error(f"Streaming assistant chat failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -211,7 +219,7 @@ async def get_models():
         service = get_ollama_service()
         models = await service.get_available_models()
         return {"models": models}
-        
+
     except Exception as e:
         logger.error(f"Failed to get models: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -224,7 +232,7 @@ async def get_config():
         service = get_ollama_service()
         config = await service.get_config()
         return config
-        
+
     except Exception as e:
         logger.error(f"Failed to get config: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -236,12 +244,14 @@ async def update_config(config: dict):
     try:
         service = get_ollama_service()
         success = await service.update_config(config)
-        
+
         if not success:
-            raise HTTPException(status_code=400, detail="Failed to update configuration")
-        
+            raise HTTPException(
+                status_code=400, detail="Failed to update configuration"
+            )
+
         return {"success": True, "message": "Configuration updated successfully"}
-        
+
     except Exception as e:
         logger.error(f"Failed to update config: {e}")
         raise HTTPException(status_code=500, detail=str(e))

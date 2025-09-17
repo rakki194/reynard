@@ -348,7 +348,7 @@ interface ServiceMetrics {
 // Test helper for API calls
 async function testAPIEndpoint<T>(
   endpoint: string,
-  options: RequestInit = {},
+  options: RequestInit = {}
 ): Promise<{ response: Response; data: T }> {
   const response = await fetch(endpoint, {
     headers: {

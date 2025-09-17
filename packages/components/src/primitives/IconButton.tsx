@@ -7,8 +7,7 @@
 import { Component, JSX, splitProps, mergeProps } from "solid-js";
 import { Icon } from "../icons/Icon";
 
-export interface IconButtonProps
-  extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IconButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Icon name from the icon registry */
   icon: string;
   /** Icon package ID (optional) */
@@ -18,25 +17,9 @@ export interface IconButtonProps
   /** Icon size */
   iconSize?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Icon variant */
-  iconVariant?:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "muted"
-    | "error"
-    | "warning"
-    | "success"
-    | "info";
+  iconVariant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
   /** Button variant */
-  variant?:
-    | "primary"
-    | "secondary"
-    | "tertiary"
-    | "ghost"
-    | "icon"
-    | "danger"
-    | "success"
-    | "warning";
+  variant?: "primary" | "secondary" | "tertiary" | "ghost" | "icon" | "danger" | "success" | "warning";
   /** Button size */
   size?: "sm" | "md" | "lg";
   /** Icon only button (no text) */
@@ -74,7 +57,7 @@ const defaultProps: Partial<IconButtonProps> = {
   active: false,
 };
 
-export const IconButton: Component<IconButtonProps> = (props) => {
+export const IconButton: Component<IconButtonProps> = props => {
   const merged = mergeProps(defaultProps, props);
   const [local, others] = splitProps(merged, [
     "icon",
@@ -160,9 +143,7 @@ export const IconButton: Component<IconButtonProps> = (props) => {
   const renderIcon = (position: "left" | "right") => {
     if (local.iconPosition === position) {
       return (
-        <span
-          class={`reynard-icon-button__icon reynard-icon-button__icon--${position}`}
-        >
+        <span class={`reynard-icon-button__icon reynard-icon-button__icon--${position}`}>
           <Icon {...getIconProps()} />
         </span>
       );
@@ -188,9 +169,7 @@ export const IconButton: Component<IconButtonProps> = (props) => {
     >
       {renderIcon("left")}
 
-      {!local.iconOnly && local.children && (
-        <span class="reynard-icon-button__content">{local.children}</span>
-      )}
+      {!local.iconOnly && local.children && <span class="reynard-icon-button__content">{local.children}</span>}
 
       {local.iconOnly && local.children}
 

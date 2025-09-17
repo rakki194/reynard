@@ -206,10 +206,5 @@ export interface InterpolationOptions {
 }
 
 export interface AnimationInterpolator<T> {
-  interpolate: (
-    start: T,
-    end: T,
-    progress: number,
-    options?: InterpolationOptions,
-  ) => T;
+  interpolate: (start: T, end: T, progress: number, options?: InterpolationOptions) => T;
 }

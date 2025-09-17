@@ -50,12 +50,8 @@ const QuickActions: Component = () => {
     <Card class="quick-actions" padding="lg">
       <h3>⚡ Quick Actions</h3>
       <div class="actions-grid">
-        {actions.map((action) => (
-          <button
-            class="action-button"
-            onClick={action.action}
-            title={action.description}
-          >
+        {actions.map(action => (
+          <button class="action-button" onClick={action.action} title={action.description}>
             <span class="action-icon">{action.icon}</span>
             <span class="action-label">{action.label}</span>
           </button>

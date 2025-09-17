@@ -84,11 +84,7 @@ The main application component featuring:
 
 ```tsx
 import { createSignal } from "solid-js";
-import {
-  fluentIconsPackage,
-  iconCategories,
-  allIcons,
-} from "reynard-fluent-icons";
+import { fluentIconsPackage, iconCategories, allIcons } from "reynard-fluent-icons";
 
 function App() {
   const [activeTab, setActiveTab] = createSignal("browse");
@@ -111,11 +107,8 @@ function App() {
       </header>
 
       <nav class="tabs">
-        {tabs.map((tab) => (
-          <button
-            class={`tab-button ${activeTab() === tab.id ? "active" : ""}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
+        {tabs.map(tab => (
+          <button class={`tab-button ${activeTab() === tab.id ? "active" : ""}`} onClick={() => setActiveTab(tab.id)}>
             <span class="icon" innerHTML={getIcon(tab.icon)}></span>
             {tab.label}
           </button>
@@ -148,11 +141,7 @@ function ThemeToggle() {
   };
 
   return (
-    <button
-      class="theme-toggle"
-      onClick={toggleTheme}
-      title={`Switch to ${isDark() ? "light" : "dark"} theme`}
-    >
+    <button class="theme-toggle" onClick={toggleTheme} title={`Switch to ${isDark() ? "light" : "dark"} theme`}>
       <span innerHTML={getIcon(isDark() ? "sun" : "moon")}></span>
     </button>
   );

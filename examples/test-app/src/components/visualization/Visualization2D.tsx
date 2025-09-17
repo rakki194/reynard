@@ -3,21 +3,11 @@
  * Canvas-based 2D visualization with OKLCH colors and Three.js integration
  */
 
-import {
-  Component,
-  createSignal,
-  onMount,
-  onCleanup,
-  createMemo,
-} from "solid-js";
+import { Component, createSignal, onMount, onCleanup, createMemo } from "solid-js";
 import { Card, Button } from "reynard-components";
 import { getIcon } from "reynard-fluent-icons";
 import { useOKLCHColors } from "reynard-themes";
-import {
-  VisualizationCore,
-  type DataPoint,
-  type VisualizationConfig,
-} from "./VisualizationCore";
+import { VisualizationCore, type DataPoint, type VisualizationConfig } from "./VisualizationCore";
 import { DataProcessor, type ProcessedData } from "./DataProcessor";
 import { createAnimationEngine } from "../../utils/animationEngine";
 
@@ -30,13 +20,11 @@ interface Visualization2DProps {
   showControls?: boolean;
 }
 
-export const Visualization2D: Component<Visualization2DProps> = (props) => {
+export const Visualization2D: Component<Visualization2DProps> = props => {
   const oklchColors = useOKLCHColors();
 
   // State
-  const [processedData, setProcessedData] = createSignal<ProcessedData | null>(
-    null,
-  );
+  const [processedData, setProcessedData] = createSignal<ProcessedData | null>(null);
   const [visualizationCore] = createSignal(new VisualizationCore(props.config));
   const [isAnimating, setIsAnimating] = createSignal(false);
   const [zoom, setZoom] = createSignal(1);
@@ -142,7 +130,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
   const drawClusters = (clusters: any[]) => {
     if (!ctx) return;
 
-    clusters.forEach((cluster) => {
+    clusters.forEach(cluster => {
       if (!ctx) return;
       ctx.strokeStyle = cluster.color;
       ctx.fillStyle = cluster.color;
@@ -150,13 +138,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
       ctx.lineWidth = 2;
 
       ctx.beginPath();
-      ctx.arc(
-        cluster.center.x - 0.5,
-        cluster.center.y - 0.5,
-        cluster.radius,
-        0,
-        Math.PI * 2,
-      );
+      ctx.arc(cluster.center.x - 0.5, cluster.center.y - 0.5, cluster.radius, 0, Math.PI * 2);
       ctx.fill();
       ctx.stroke();
 
@@ -211,7 +193,7 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
   const handleMouseWheel = (e: WheelEvent) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    setZoom((prev) => Math.max(0.1, Math.min(5, prev * delta)));
+    setZoom(prev => Math.max(0.1, Math.min(5, prev * delta)));
   };
 
   const handleMouseDown = (e: MouseEvent) => {
@@ -324,27 +306,19 @@ export const Visualization2D: Component<Visualization2DProps> = (props) => {
                   <div class="stats-grid">
                     <div class="stat-item">
                       <span class="stat-label">Points:</span>
-                      <span class="stat-value">
-                        {processedData()!.statistics.count}
-                      </span>
+                      <span class="stat-value">{processedData()!.statistics.count}</span>
                     </div>
                     <div class="stat-item">
                       <span class="stat-label">Mean:</span>
-                      <span class="stat-value">
-                        {processedData()!.statistics.mean.toFixed(3)}
-                      </span>
+                      <span class="stat-value">{processedData()!.statistics.mean.toFixed(3)}</span>
                     </div>
                     <div class="stat-item">
                       <span class="stat-label">Std Dev:</span>
-                      <span class="stat-value">
-                        {processedData()!.statistics.std.toFixed(3)}
-                      </span>
+                      <span class="stat-value">{processedData()!.statistics.std.toFixed(3)}</span>
                     </div>
                     <div class="stat-item">
                       <span class="stat-label">Clusters:</span>
-                      <span class="stat-value">
-                        {processedData()!.clusters?.length || 0}
-                      </span>
+                      <span class="stat-value">{processedData()!.clusters?.length || 0}</span>
                     </div>
                   </div>
                 )}

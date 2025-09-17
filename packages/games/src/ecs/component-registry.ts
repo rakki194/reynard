@@ -10,7 +10,7 @@ export class ComponentRegistry {
   register<T extends Component>(
     name: string,
     storage: StorageType = StorageType.Table,
-    create: () => T,
+    create: () => T
   ): ComponentType<T> {
     if (this.componentTypes.has(name)) {
       throw new Error(`Component type '${name}' is already registered`);

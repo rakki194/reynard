@@ -19,11 +19,7 @@ The integration allows you to:
 
 ```typescript
 import { ServiceManager, BaseService } from "reynard-service-manager";
-import {
-  FeatureManager,
-  FeatureProvider,
-  COMMON_FEATURES,
-} from "reynard-features";
+import { FeatureManager, FeatureProvider, COMMON_FEATURES } from "reynard-features";
 import { FeatureServiceBridge } from "reynard-service-manager/integrations";
 
 // Create service manager
@@ -67,7 +63,7 @@ function App() {
     <FeatureProvider
       config={{
         features: COMMON_FEATURES,
-        serviceChecker: (serviceName) => {
+        serviceChecker: serviceName => {
           // This will be automatically updated by the bridge
           return bridge.getServiceStatus(serviceName).available;
         },
@@ -88,9 +84,7 @@ function MyComponent() {
       {isCaptionAvailable() ? (
         <CaptionGenerationPanel />
       ) : (
-        <div class="feature-unavailable">
-          Caption generation is unavailable: {captionStatus()?.message}
-        </div>
+        <div class="feature-unavailable">Caption generation is unavailable: {captionStatus()?.message}</div>
       )}
     </div>
   );
@@ -124,10 +118,7 @@ const bridge = new FeatureServiceBridge({
 The `reynard-features` package includes predefined service mappings:
 
 ```typescript
-import {
-  SERVICE_MAPPINGS,
-  getActualServiceName,
-} from "reynard-features/presets";
+import { SERVICE_MAPPINGS, getActualServiceName } from "reynard-features/presets";
 
 // Use predefined mappings
 const bridge = new FeatureServiceBridge({
@@ -190,17 +181,10 @@ function FeatureAwareComponent() {
       {isAvailable() ? (
         <ImageProcessingPanel />
       ) : (
-        <FeatureUnavailable
-          feature="image-processing"
-          message={status()?.message}
-        />
+        <FeatureUnavailable feature="image-processing" message={status()?.message} />
       )}
 
-      {isDegraded() && (
-        <div class="warning">
-          Image processing is degraded: {status()?.message}
-        </div>
-      )}
+      {isDegraded() && <div class="warning">Image processing is degraded: {status()?.message}</div>}
     </div>
   );
 }
@@ -225,7 +209,7 @@ function FeatureDashboard() {
 
       <div class="critical-features">
         <h3>Critical Features</h3>
-        {criticalFeatures().unavailable.map((feature) => (
+        {criticalFeatures().unavailable.map(feature => (
           <div key={feature.id} class="critical-unavailable">
             ⚠️ {feature.name} is unavailable
           </div>
@@ -272,7 +256,7 @@ console.log("All service statuses:", allStatuses);
 
 ```typescript
 // Listen to service manager events
-serviceManager.addEventListener((event) => {
+serviceManager.addEventListener(event => {
   switch (event.type) {
     case "startup":
       console.log(`Service ${event.serviceName} started`);
@@ -331,9 +315,7 @@ describe("Service-Feature Integration", () => {
     await service.shutdown();
 
     // Verify feature status updates
-    const authFeature = system.featureManager.getFeatureStatus(
-      "user-authentication",
-    );
+    const authFeature = system.featureManager.getFeatureStatus("user-authentication");
     expect(authFeature?.available).toBe(false);
   });
 });

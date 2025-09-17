@@ -130,8 +130,7 @@ export class SpellRenderer {
     };
 
     // Calculate rotation angle based on time and speed
-    const rotationAngle =
-      (performance.now() * 0.001 * pattern.rotationSpeed) % (Math.PI * 2);
+    const rotationAngle = (performance.now() * 0.001 * pattern.rotationSpeed) % (Math.PI * 2);
 
     // Render spiral points
     for (let i = 0; i < pattern.pointCount; i++) {
@@ -156,7 +155,7 @@ export class SpellRenderer {
         0,
         position.x,
         position.y,
-        pattern.baseRadius * 0.5,
+        pattern.baseRadius * 0.5
       );
       gradient.addColorStop(0, colors.glow);
       gradient.addColorStop(1, colors.primary);
@@ -164,26 +163,14 @@ export class SpellRenderer {
       // Draw point with glow - make it more visible
       this.ctx.fillStyle = gradient;
       this.ctx.beginPath();
-      this.ctx.arc(
-        position.x,
-        position.y,
-        5 + pointIntensity * 3,
-        0,
-        Math.PI * 2,
-      );
+      this.ctx.arc(position.x, position.y, 5 + pointIntensity * 3, 0, Math.PI * 2);
       this.ctx.fill();
 
       // Draw outer glow - make it more visible
       this.ctx.strokeStyle = colors.accent;
       this.ctx.lineWidth = 2;
       this.ctx.beginPath();
-      this.ctx.arc(
-        position.x,
-        position.y,
-        8 + pointIntensity * 4,
-        0,
-        Math.PI * 2,
-      );
+      this.ctx.arc(position.x, position.y, 8 + pointIntensity * 4, 0, Math.PI * 2);
       this.ctx.stroke();
 
       this.ctx.restore();

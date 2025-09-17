@@ -75,34 +75,24 @@ export const coreTranslations = {
   // การตรวจสอบรหัสผ่าน
   password: {
     "must-be-at-least-8-characters-long": "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร",
-    "must-contain-at-least-one-uppercase-letter":
-      "รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่อย่างน้อยหนึ่งตัว",
-    "must-contain-at-least-one-lowercase-letter":
-      "รหัสผ่านต้องมีตัวอักษรพิมพ์เล็กอย่างน้อยหนึ่งตัว",
+    "must-contain-at-least-one-uppercase-letter": "รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่อย่างน้อยหนึ่งตัว",
+    "must-contain-at-least-one-lowercase-letter": "รหัสผ่านต้องมีตัวอักษรพิมพ์เล็กอย่างน้อยหนึ่งตัว",
     "must-contain-at-least-one-number": "รหัสผ่านต้องมีตัวเลขอย่างน้อยหนึ่งตัว",
-    "must-contain-at-least-one-special-character":
-      "รหัสผ่านต้องมีอักขระพิเศษอย่างน้อยหนึ่งตัว",
+    "must-contain-at-least-one-special-character": "รหัสผ่านต้องมีอักขระพิเศษอย่างน้อยหนึ่งตัว",
   },
 
   // การตรวจสอบความปลอดภัย
   security: {
-    "at-least-one-character-type-must-be-included":
-      "ต้องรวมประเภทอักขระอย่างน้อยหนึ่งประเภท",
-    "input-contains-potentially-dangerous-html":
-      "อินพุตมี HTML ที่อาจเป็นอันตราย",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "อินพุตมีรูปแบบ SQL ที่อาจเป็นอันตราย",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "อินพุตมีรูปแบบ XSS ที่อาจเป็นอันตราย",
+    "at-least-one-character-type-must-be-included": "ต้องรวมประเภทอักขระอย่างน้อยหนึ่งประเภท",
+    "input-contains-potentially-dangerous-html": "อินพุตมี HTML ที่อาจเป็นอันตราย",
+    "input-contains-potentially-dangerous-sql-patterns": "อินพุตมีรูปแบบ SQL ที่อาจเป็นอันตราย",
+    "input-contains-potentially-dangerous-xss-patterns": "อินพุตมีรูปแบบ XSS ที่อาจเป็นอันตราย",
     "input-contains-path-traversal-patterns": "อินพุตมีรูปแบบการข้ามเส้นทาง",
-    "input-contains-windows-reserved-names":
-      "อินพุตมีชื่อที่สงวนไว้ของ Windows",
-    "input-contains-executable-file-extensions":
-      "อินพุตมีนามสกุลไฟล์ที่ปฏิบัติการได้",
+    "input-contains-windows-reserved-names": "อินพุตมีชื่อที่สงวนไว้ของ Windows",
+    "input-contains-executable-file-extensions": "อินพุตมีนามสกุลไฟล์ที่ปฏิบัติการได้",
     "input-contains-null-bytes": "อินพุตมีไบต์ null",
     "input-contains-hidden-files": "อินพุตมีไฟล์ที่ซ่อนอยู่",
-    "input-contains-javascript-file-extensions":
-      "อินพุตมีนามสกุลไฟล์ JavaScript",
+    "input-contains-javascript-file-extensions": "อินพุตมีนามสกุลไฟล์ JavaScript",
   },
 
   // การดำเนินการแบบอะซิงโครนัส
@@ -130,10 +120,8 @@ export const coreTranslations = {
   // การจัดเก็บและการจัดลำดับ
   storage: {
     "potentially-dangerous-json-detected": "ตรวจพบ JSON ที่อาจเป็นอันตราย",
-    "failed-to-parse-json-from-localstorage":
-      "ไม่สามารถแยกวิเคราะห์ JSON จาก localStorage:",
-    "error-parsing-storage-event":
-      "ข้อผิดพลาดในการแยกวิเคราะห์เหตุการณ์การจัดเก็บสำหรับคีย์",
+    "failed-to-parse-json-from-localstorage": "ไม่สามารถแยกวิเคราะห์ JSON จาก localStorage:",
+    "error-parsing-storage-event": "ข้อผิดพลาดในการแยกวิเคราะห์เหตุการณ์การจัดเก็บสำหรับคีย์",
   },
 
   // การทดสอบและการพัฒนา
@@ -170,8 +158,7 @@ export const coreTranslations = {
   // การทดสอบการรวม
   integration: {
     "session-and-api-key-generation": "การสร้างเซสชันและคีย์ API",
-    "authentication-and-input-validation-integration":
-      "การรวมการรับรองตัวตนและการตรวจสอบอินพุต",
+    "authentication-and-input-validation-integration": "การรวมการรับรองตัวตนและการตรวจสอบอินพุต",
     "performance-and-security-integration": "การรวมประสิทธิภาพและความปลอดภัย",
   },
 };

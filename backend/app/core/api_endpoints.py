@@ -15,26 +15,26 @@ Each endpoint follows FastAPI best practices with proper documentation,
 error handling, and response formatting.
 """
 
-from datetime import datetime, timezone
-from typing import Any, Dict
+from datetime import UTC, datetime
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
-# Authentication
-from gatekeeper.api.dependencies import require_active_user
-from gatekeeper.models.user import User
-
 # Core configuration and service management
 from app.core.config import get_config, get_service_configs
 from app.core.service_registry import get_service_registry
+
+# Authentication
+from gatekeeper.api.dependencies import require_active_user
+from gatekeeper.models.user import User
 
 # Create router for core endpoints
 router = APIRouter()
 
 
 @router.get("/", tags=["Core"])
-async def root() -> Dict[str, Any]:
+async def root() -> dict[str, Any]:
     """
     Root endpoint providing system information and API status.
 
@@ -56,7 +56,7 @@ async def root() -> Dict[str, Any]:
         "message": "🦊 Reynard API is running",
         "version": config.version,
         "environment": config.environment,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "docs_url": config.docs_url,
     }
 
@@ -95,7 +95,7 @@ async def health_check() -> JSONResponse:
 
     response_data = {
         "status": "healthy" if is_healthy else "unhealthy",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "environment": config.environment,
         "version": config.version,
         "services": {
@@ -107,14 +107,11 @@ async def health_check() -> JSONResponse:
         },
     }
 
-    return JSONResponse(
-        content=response_data,
-        status_code=status_code
-    )
+    return JSONResponse(content=response_data, status_code=status_code)
 
 
 @router.get("/api/health/detailed", tags=["Health"])
-async def detailed_health_check() -> Dict[str, Any]:
+async def detailed_health_check() -> dict[str, Any]:
     """
     Detailed health check endpoint with comprehensive service diagnostics.
 
@@ -147,14 +144,16 @@ async def detailed_health_check() -> Dict[str, Any]:
             }
 
     return {
-        "timestamp": datetime.now(timezone.utc),
+        "timestamp": datetime.now(UTC),
         "environment": config.environment,
         "services": detailed_info,
     }
 
 
 @router.get("/api/protected", tags=["Auth"])
-async def protected_route(current_user: User = Depends(require_active_user())) -> Dict[str, Any]:
+async def protected_route(
+    current_user: User = Depends(require_active_user()),
+) -> dict[str, Any]:
     """
     Protected route demonstrating authentication and authorization.
 
@@ -181,13 +180,13 @@ async def protected_route(current_user: User = Depends(require_active_user())) -
     return {
         "message": f"🦊 Hello {current_user.username}!",
         "user_id": current_user.id,
-        "timestamp": datetime.now(timezone.utc),
+        "timestamp": datetime.now(UTC),
         "authenticated": True,
     }
 
 
 @router.get("/api/config", tags=["System"])
-async def get_configuration() -> Dict[str, Any]:
+async def get_configuration() -> dict[str, Any]:
     """
     Retrieve current application configuration (development environment only).
 

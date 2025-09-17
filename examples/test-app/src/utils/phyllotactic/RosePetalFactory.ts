@@ -29,10 +29,7 @@ export class RosePetalFactory {
   /**
    * Create a new petal at the specified index
    */
-  createPetal(
-    index: number,
-    shape: "inner" | "middle" | "outer" | "bud" = "inner",
-  ): RosePetal {
+  createPetal(index: number, shape: "inner" | "middle" | "outer" | "bud" = "inner"): RosePetal {
     const angle = index * this.config.goldenAngle * (Math.PI / 180);
     const radius = this.calculatePetalRadius(index);
 
@@ -71,8 +68,7 @@ export class RosePetalFactory {
     const baseRadius = this.config.baseRadius;
     const maxRadius = baseRadius * 3;
 
-    const spiralRadius =
-      baseRadius + (maxRadius - baseRadius) * normalizedIndex;
+    const spiralRadius = baseRadius + (maxRadius - baseRadius) * normalizedIndex;
     const variation = 0.8 + Math.random() * 0.4;
 
     return spiralRadius * variation;
@@ -92,10 +88,7 @@ export class RosePetalFactory {
   /**
    * Generate petal color based on position and shape
    */
-  private generatePetalColor(
-    _index: number,
-    shape: "inner" | "middle" | "outer" | "bud",
-  ): string {
+  private generatePetalColor(_index: number, shape: "inner" | "middle" | "outer" | "bud"): string {
     let baseHue: number;
     let saturation: number;
     let lightness: number;
@@ -123,8 +116,7 @@ export class RosePetalFactory {
         break;
     }
 
-    const hueVariation =
-      (Math.random() - 0.5) * this.config.colorVariation * 60;
+    const hueVariation = (Math.random() - 0.5) * this.config.colorVariation * 60;
     const finalHue = (baseHue + hueVariation + 360) % 360;
 
     return `hsl(${finalHue}, ${saturation}%, ${lightness}%)`;

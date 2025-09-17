@@ -3,14 +3,7 @@
  * Complete settings interface with categories, search, and controls
  */
 
-import {
-  Component,
-  createSignal,
-  createMemo,
-  Show,
-  For,
-  splitProps,
-} from "solid-js";
+import { Component, createSignal, createMemo, Show, For, splitProps } from "solid-js";
 import { Button, TextField, Modal, Tabs } from "reynard-components";
 import type {
   SettingDefinition,
@@ -57,7 +50,7 @@ const defaultProps = {
   defaultCategory: "general" as SettingCategory,
 };
 
-export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
+export const SettingsPanel: Component<SettingsPanelProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local] = splitProps(merged, [
     "config",
@@ -73,16 +66,12 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
   ]);
 
   // Settings management
-  const settingsInstance = createMemo(() =>
-    useSettings({ config: local.config }),
-  );
+  const settingsInstance = createMemo(() => useSettings({ config: local.config }));
   const settings = createMemo(() => settingsInstance());
 
   // UI state
   const [searchQuery, setSearchQuery] = createSignal("");
-  const [selectedCategory, setSelectedCategory] = createSignal<SettingCategory>(
-    local.defaultCategory,
-  );
+  const [selectedCategory, setSelectedCategory] = createSignal<SettingCategory>(local.defaultCategory);
   const [showExportModal, setShowExportModal] = createSignal(false);
   const [showImportModal, setShowImportModal] = createSignal(false);
   const [showResetModal, setShowResetModal] = createSignal(false);
@@ -96,9 +85,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
 
     const categories = new Set<SettingCategory>();
 
-    for (const definition of Object.values(
-      schema.settings,
-    ) as SettingDefinition[]) {
+    for (const definition of Object.values(schema.settings) as SettingDefinition[]) {
       if (isSettingVisible(definition, definitions)) {
         categories.add(definition.category);
       }
@@ -127,17 +114,12 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
 
     // Filter by visibility
     const values = settings().settingsState().values;
-    return result.settings.filter((setting) =>
-      isSettingVisible(setting, values),
-    );
+    return result.settings.filter(setting => isSettingVisible(setting, values));
   });
 
   // Group settings by category
   const settingsByCategory = createMemo(() => {
-    const grouped: Record<SettingCategory, SettingDefinition[]> = {} as Record<
-      SettingCategory,
-      SettingDefinition[]
-    >;
+    const grouped: Record<SettingCategory, SettingDefinition[]> = {} as Record<SettingCategory, SettingDefinition[]>;
 
     // Initialize with empty arrays for all categories
     for (const category of availableCategories()) {
@@ -153,9 +135,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
 
     // Sort settings within each category by order
     for (const category of Object.keys(grouped)) {
-      grouped[category as SettingCategory].sort(
-        (a, b) => (a.order || 999) - (b.order || 999),
-      );
+      grouped[category as SettingCategory].sort((a, b) => (a.order || 999) - (b.order || 999));
     }
 
     return grouped;
@@ -164,7 +144,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
   // Handle setting changes
   const handleSettingChange = async (
     key: string,
-    value: string | number | boolean | string[] | Record<string, unknown>,
+    value: string | number | boolean | string[] | Record<string, unknown>
   ) => {
     await settings().setSetting(key, value);
   };
@@ -211,7 +191,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
 
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         const content = e.target?.result as string;
         setImportData(content);
       };
@@ -234,37 +214,23 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
           <h2 class="settings-panel__title">{local.title}</h2>
 
           <Show when={settings().hasUnsavedChanges()}>
-            <span class="settings-panel__unsaved-indicator">
-              • Unsaved changes
-            </span>
+            <span class="settings-panel__unsaved-indicator">• Unsaved changes</span>
           </Show>
         </div>
 
         <div class="settings-panel__actions">
           <Show when={local.showImportExport}>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => setShowExportModal(true)}
-            >
+            <Button variant="secondary" size="sm" onClick={() => setShowExportModal(true)}>
               Export
             </Button>
 
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => setShowImportModal(true)}
-            >
+            <Button variant="secondary" size="sm" onClick={() => setShowImportModal(true)}>
               Import
             </Button>
           </Show>
 
           <Show when={local.showReset}>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => setShowResetModal(true)}
-            >
+            <Button variant="secondary" size="sm" onClick={() => setShowResetModal(true)}>
               Reset
             </Button>
           </Show>
@@ -294,7 +260,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
           <TextField
             placeholder="Search settings..."
             value={searchQuery()}
-            onInput={(e) => setSearchQuery(e.target.value)}
+            onInput={e => setSearchQuery(e.target.value)}
           />
         </div>
       </Show>
@@ -303,7 +269,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
       <Show when={local.showCategories && availableCategories().length > 1}>
         <div class="settings-panel__categories">
           <Tabs
-            items={availableCategories().map((category) => {
+            items={availableCategories().map(category => {
               const config = COMMON_SETTING_CATEGORIES[category];
               return {
                 id: category,
@@ -312,9 +278,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
               };
             })}
             activeTab={selectedCategory()}
-            onTabChange={(tabId) =>
-              setSelectedCategory(tabId as SettingCategory)
-            }
+            onTabChange={tabId => setSelectedCategory(tabId as SettingCategory)}
             variant="pills"
           />
         </div>
@@ -328,48 +292,33 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
 
         <Show when={!settings().isLoading() && filteredSettings().length === 0}>
           <div class="settings-panel__empty">
-            <Show when={searchQuery()}>
-              No settings match your search: "{searchQuery()}"
-            </Show>
-            <Show when={!searchQuery()}>
-              No settings available in this category.
-            </Show>
+            <Show when={searchQuery()}>No settings match your search: "{searchQuery()}"</Show>
+            <Show when={!searchQuery()}>No settings available in this category.</Show>
           </div>
         </Show>
 
         <Show when={!settings().isLoading() && filteredSettings().length > 0}>
           <div class="settings-panel__settings">
-            <Show
-              when={!local.showCategories || availableCategories().length <= 1}
-            >
+            <Show when={!local.showCategories || availableCategories().length <= 1}>
               {/* Single category view */}
               <For each={filteredSettings()}>
-                {(setting) => (
+                {setting => (
                   <SettingControl
                     definition={setting}
                     value={settings().getSetting(setting.key)}
-                    onChange={(value) =>
-                      handleSettingChange(setting.key, value)
-                    }
-                    error={
-                      settings().settingsState().validationErrors[setting.key]
-                    }
+                    onChange={value => handleSettingChange(setting.key, value)}
+                    error={settings().settingsState().validationErrors[setting.key]}
                   />
                 )}
               </For>
             </Show>
 
-            <Show
-              when={local.showCategories && availableCategories().length > 1}
-            >
+            <Show when={local.showCategories && availableCategories().length > 1}>
               {/* Multi-category view */}
               <For each={availableCategories()}>
-                {(category) => {
+                {category => {
                   const categorySettings = settingsByCategory()[category] || [];
-                  if (
-                    selectedCategory() !== "general" &&
-                    selectedCategory() !== category
-                  ) {
+                  if (selectedCategory() !== "general" && selectedCategory() !== category) {
                     return null;
                   }
 
@@ -382,9 +331,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
                       <Show when={selectedCategory() === "general"}>
                         <h3 class="settings-panel__category-title">
                           <Show when={config?.icon}>
-                            <span class="settings-panel__category-icon">
-                              {config!.icon}
-                            </span>
+                            <span class="settings-panel__category-icon">{config!.icon}</span>
                           </Show>
                           {config?.name || category}
                         </h3>
@@ -392,18 +339,12 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
 
                       <div class="settings-panel__category-settings">
                         <For each={categorySettings}>
-                          {(setting) => (
+                          {setting => (
                             <SettingControl
                               definition={setting}
                               value={settings().getSetting(setting.key)}
-                              onChange={(value) =>
-                                handleSettingChange(setting.key, value)
-                              }
-                              error={
-                                settings().settingsState().validationErrors[
-                                  setting.key
-                                ]
-                              }
+                              onChange={value => handleSettingChange(setting.key, value)}
+                              error={settings().settingsState().validationErrors[setting.key]}
                             />
                           )}
                         </For>
@@ -418,18 +359,11 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
       </div>
 
       {/* Export Modal */}
-      <Modal
-        open={showExportModal()}
-        onClose={() => setShowExportModal(false)}
-        title="Export Settings"
-      >
+      <Modal open={showExportModal()} onClose={() => setShowExportModal(false)} title="Export Settings">
         <div class="settings-panel__export-modal">
           <p>Export your current settings to a JSON file.</p>
           <div class="settings-panel__modal-actions">
-            <Button
-              variant="secondary"
-              onClick={() => setShowExportModal(false)}
-            >
+            <Button variant="secondary" onClick={() => setShowExportModal(false)}>
               Cancel
             </Button>
             <Button variant="primary" onClick={handleExport}>
@@ -440,19 +374,12 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
       </Modal>
 
       {/* Import Modal */}
-      <Modal
-        open={showImportModal()}
-        onClose={() => setShowImportModal(false)}
-        title="Import Settings"
-      >
+      <Modal open={showImportModal()} onClose={() => setShowImportModal(false)} title="Import Settings">
         <div class="settings-panel__import-modal">
           <p>Import settings from a JSON file or paste JSON data.</p>
 
           <div class="settings-panel__import-options">
-            <label
-              for="settings-import-file"
-              class="settings-panel__file-input-label"
-            >
+            <label for="settings-import-file" class="settings-panel__file-input-label">
               Choose a JSON file:
             </label>
             <input
@@ -464,17 +391,14 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
               aria-label="Import settings from JSON file"
             />
 
-            <label
-              for="settings-import-textarea"
-              class="settings-panel__textarea-label"
-            >
+            <label for="settings-import-textarea" class="settings-panel__textarea-label">
               Or paste JSON data here:
             </label>
             <textarea
               id="settings-import-textarea"
               placeholder="Or paste JSON data here..."
               value={importData()}
-              onInput={(e) => setImportData(e.target.value)}
+              onInput={e => setImportData(e.target.value)}
               class="settings-panel__import-textarea"
               aria-label="Paste JSON data for import"
             />
@@ -490,11 +414,7 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
             >
               Cancel
             </Button>
-            <Button
-              variant="primary"
-              disabled={!importData()}
-              onClick={handleImport}
-            >
+            <Button variant="primary" disabled={!importData()} onClick={handleImport}>
               Import
             </Button>
           </div>
@@ -502,22 +422,12 @@ export const SettingsPanel: Component<SettingsPanelProps> = (props) => {
       </Modal>
 
       {/* Reset Modal */}
-      <Modal
-        open={showResetModal()}
-        onClose={() => setShowResetModal(false)}
-        title="Reset Settings"
-      >
+      <Modal open={showResetModal()} onClose={() => setShowResetModal(false)} title="Reset Settings">
         <div class="settings-panel__reset-modal">
-          <p>
-            Are you sure you want to reset all settings to their default values?
-            This action cannot be undone.
-          </p>
+          <p>Are you sure you want to reset all settings to their default values? This action cannot be undone.</p>
 
           <div class="settings-panel__modal-actions">
-            <Button
-              variant="secondary"
-              onClick={() => setShowResetModal(false)}
-            >
+            <Button variant="secondary" onClick={() => setShowResetModal(false)}>
               Cancel
             </Button>
             <Button variant="danger" onClick={handleReset}>

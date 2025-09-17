@@ -69,17 +69,16 @@ def test_path_traversal_upload(token: str) -> bool:
                 f"    [VULNERABLE] File was written outside ROOT_DIR at {POC_ABS_TARGET} via filename traversal."
             )
             return False
-        elif exists_after and existed_before:
+        if exists_after and existed_before:
             print(
                 "    [POTENTIALLY VULNERABLE] Target file exists; cannot confirm creation. Manually verify timestamps."
             )
             return False
+        if resp.status_code in (400, 403):
+            print("    [OK] Upload rejected, traversal appears mitigated.")
         else:
-            if resp.status_code in (400, 403):
-                print("    [OK] Upload rejected, traversal appears mitigated.")
-            else:
-                print("    [INFO] No file observed; review server-side validation.")
-            return True
+            print("    [INFO] No file observed; review server-side validation.")
+        return True
     except requests.RequestException as e:
         print(f"[!] Request error: {e}")
         return False

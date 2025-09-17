@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // Validazzjoni tal-password
   password: {
-    "must-be-at-least-8-characters-long":
-      "Il-password għandha tkun tal-anqas 8 karattri",
-    "must-contain-at-least-one-uppercase-letter":
-      "Il-password għandha tinkludi tal-anqas ittra waħda kbira",
-    "must-contain-at-least-one-lowercase-letter":
-      "Il-password għandha tinkludi tal-anqas ittra waħda żgħira",
-    "must-contain-at-least-one-number":
-      "Il-password għandha tinkludi tal-anqas numru wieħed",
-    "must-contain-at-least-one-special-character":
-      "Il-password għandha tinkludi tal-anqas karattru speċjali wieħed",
+    "must-be-at-least-8-characters-long": "Il-password għandha tkun tal-anqas 8 karattri",
+    "must-contain-at-least-one-uppercase-letter": "Il-password għandha tinkludi tal-anqas ittra waħda kbira",
+    "must-contain-at-least-one-lowercase-letter": "Il-password għandha tinkludi tal-anqas ittra waħda żgħira",
+    "must-contain-at-least-one-number": "Il-password għandha tinkludi tal-anqas numru wieħed",
+    "must-contain-at-least-one-special-character": "Il-password għandha tinkludi tal-anqas karattru speċjali wieħed",
   },
 
   // Validazzjoni tas-sigurtà
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Tal-anqas tip ta' karattru wieħed għandu jkun inkluż",
-    "input-contains-potentially-dangerous-html":
-      "L-input fih HTML li jista' jkun perikoluż",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "L-input fih mudelli SQL li jistgħu jkunu perikolużi",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "L-input fih mudelli XSS li jistgħu jkunu perikolużi",
-    "input-contains-path-traversal-patterns":
-      "L-input fih mudelli ta' traversar tal-passaġġ",
-    "input-contains-windows-reserved-names":
-      "L-input fih ismijiet riżervati ta' Windows",
-    "input-contains-executable-file-extensions":
-      "L-input fih estensjonijiet ta' fajls eżekutabbli",
+    "at-least-one-character-type-must-be-included": "Tal-anqas tip ta' karattru wieħed għandu jkun inkluż",
+    "input-contains-potentially-dangerous-html": "L-input fih HTML li jista' jkun perikoluż",
+    "input-contains-potentially-dangerous-sql-patterns": "L-input fih mudelli SQL li jistgħu jkunu perikolużi",
+    "input-contains-potentially-dangerous-xss-patterns": "L-input fih mudelli XSS li jistgħu jkunu perikolużi",
+    "input-contains-path-traversal-patterns": "L-input fih mudelli ta' traversar tal-passaġġ",
+    "input-contains-windows-reserved-names": "L-input fih ismijiet riżervati ta' Windows",
+    "input-contains-executable-file-extensions": "L-input fih estensjonijiet ta' fajls eżekutabbli",
     "input-contains-null-bytes": "L-input fih bytes null",
     "input-contains-hidden-files": "L-input fih fajls moħbija",
-    "input-contains-javascript-file-extensions":
-      "L-input fih estensjonijiet ta' fajls JavaScript",
+    "input-contains-javascript-file-extensions": "L-input fih estensjonijiet ta' fajls JavaScript",
   },
 
   // Operazzjonijiet asinkroni
@@ -118,8 +105,7 @@ export const coreTranslations = {
     "persistent-failure": "Falliment persistenti",
     "function-failed": "Il-funzjoni falliet",
     "mapper-failed": "Il-mapper falliet",
-    "concurrency-must-be-greater-than-0":
-      "Il-konkorrenza għandha tkun akbar minn 0",
+    "concurrency-must-be-greater-than-0": "Il-konkorrenza għandha tkun akbar minn 0",
     "polling-timeout-reached": "Timeout tal-polling intlaħaq",
   },
 
@@ -133,12 +119,9 @@ export const coreTranslations = {
 
   // Ħażna u serializzazzjoni
   storage: {
-    "potentially-dangerous-json-detected":
-      "JSON li jista' jkun perikoluż intlaħaq",
-    "failed-to-parse-json-from-localstorage":
-      "Ma rnexxilx jipparse JSON minn localStorage:",
-    "error-parsing-storage-event":
-      "Żball fil-parsing tal-avveniment tal-ħażna għall-ċavetta",
+    "potentially-dangerous-json-detected": "JSON li jista' jkun perikoluż intlaħaq",
+    "failed-to-parse-json-from-localstorage": "Ma rnexxilx jipparse JSON minn localStorage:",
+    "error-parsing-storage-event": "Żball fil-parsing tal-avveniment tal-ħażna għall-ċavetta",
   },
 
   // Test u żvilupp
@@ -175,9 +158,7 @@ export const coreTranslations = {
   // Testijiet ta' integrazzjoni
   integration: {
     "session-and-api-key-generation": "Ġenerazzjoni tas-sessjoni u ċavetta API",
-    "authentication-and-input-validation-integration":
-      "Integrazzjoni ta' autentikazzjoni u validazzjoni tal-input",
-    "performance-and-security-integration":
-      "Integrazzjoni tal-prestazzjoni u s-sigurtà",
+    "authentication-and-input-validation-integration": "Integrazzjoni ta' autentikazzjoni u validazzjoni tal-input",
+    "performance-and-security-integration": "Integrazzjoni tal-prestazzjoni u s-sigurtà",
   },
 };

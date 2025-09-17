@@ -5,11 +5,12 @@
 endpoint types with targeted attack vectors.
 """
 
+from .diffusion_fuzzer import DiffusionFuzzer
+
 # from .endpoint_fuzzer import EndpointFuzzer  # Removed - legacy duplicated code
 from .embedding_visualization_fuzzer import EmbeddingVisualizationFuzzer
-from .diffusion_fuzzer import DiffusionFuzzer
-from .lazy_loading_fuzzer import LazyLoadingFuzzer
 from .hf_cache_fuzzer import HFCacheFuzzer
+from .lazy_loading_fuzzer import LazyLoadingFuzzer
 from .secure_auth_fuzzer import SecureAuthFuzzer
 from .secure_ollama_fuzzer import SecureOllamaFuzzer
 from .secure_summarization_fuzzer import SecureSummarizationFuzzer
@@ -18,11 +19,11 @@ from .websocket_fuzzer import WebSocketFuzzer
 __all__ = [
     # "EndpointFuzzer",  # Removed - legacy duplicated code
     "EmbeddingVisualizationFuzzer",
-    "DiffusionFuzzer", 
+    "DiffusionFuzzer",
     "LazyLoadingFuzzer",
     "HFCacheFuzzer",
     "SecureAuthFuzzer",
     "SecureOllamaFuzzer",
     "SecureSummarizationFuzzer",
-    "WebSocketFuzzer"
+    "WebSocketFuzzer",
 ]

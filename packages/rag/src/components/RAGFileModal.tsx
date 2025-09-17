@@ -25,7 +25,7 @@ export interface RAGFileModalProps {
   modality: RAGModality;
 }
 
-export const RAGFileModal: Component<RAGFileModalProps> = (props) => {
+export const RAGFileModal: Component<RAGFileModalProps> = props => {
   const modalState = useFileModal(props);
   const { showLineNumbers, wrapLines, fontSize, contentChunks, selectedChunk } = modalState;
 
@@ -67,11 +67,7 @@ export const RAGFileModal: Component<RAGFileModalProps> = (props) => {
           fontSize={fontSize()}
         />
 
-        <FileModalFooter
-          fileName={props.fileName}
-          modality={props.modality}
-          chunkIndex={props.chunkIndex}
-        />
+        <FileModalFooter fileName={props.fileName} modality={props.modality} chunkIndex={props.chunkIndex} />
       </div>
     </Modal>
   );

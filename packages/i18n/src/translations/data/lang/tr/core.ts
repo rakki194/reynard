@@ -75,35 +75,24 @@ export const coreTranslations = {
   // Şifre doğrulama
   password: {
     "must-be-at-least-8-characters-long": "Şifre en az 8 karakter olmalıdır",
-    "must-contain-at-least-one-uppercase-letter":
-      "Şifre en az bir büyük harf içermelidir",
-    "must-contain-at-least-one-lowercase-letter":
-      "Şifre en az bir küçük harf içermelidir",
+    "must-contain-at-least-one-uppercase-letter": "Şifre en az bir büyük harf içermelidir",
+    "must-contain-at-least-one-lowercase-letter": "Şifre en az bir küçük harf içermelidir",
     "must-contain-at-least-one-number": "Şifre en az bir rakam içermelidir",
-    "must-contain-at-least-one-special-character":
-      "Şifre en az bir özel karakter içermelidir",
+    "must-contain-at-least-one-special-character": "Şifre en az bir özel karakter içermelidir",
   },
 
   // Güvenlik doğrulama
   security: {
-    "at-least-one-character-type-must-be-included":
-      "En az bir karakter türü dahil edilmelidir",
-    "input-contains-potentially-dangerous-html":
-      "Giriş potansiyel olarak tehlikeli HTML içeriyor",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Giriş potansiyel olarak tehlikeli SQL desenleri içeriyor",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Giriş potansiyel olarak tehlikeli XSS desenleri içeriyor",
-    "input-contains-path-traversal-patterns":
-      "Giriş yol geçiş desenleri içeriyor",
-    "input-contains-windows-reserved-names":
-      "Giriş Windows ayrılmış isimleri içeriyor",
-    "input-contains-executable-file-extensions":
-      "Giriş çalıştırılabilir dosya uzantıları içeriyor",
+    "at-least-one-character-type-must-be-included": "En az bir karakter türü dahil edilmelidir",
+    "input-contains-potentially-dangerous-html": "Giriş potansiyel olarak tehlikeli HTML içeriyor",
+    "input-contains-potentially-dangerous-sql-patterns": "Giriş potansiyel olarak tehlikeli SQL desenleri içeriyor",
+    "input-contains-potentially-dangerous-xss-patterns": "Giriş potansiyel olarak tehlikeli XSS desenleri içeriyor",
+    "input-contains-path-traversal-patterns": "Giriş yol geçiş desenleri içeriyor",
+    "input-contains-windows-reserved-names": "Giriş Windows ayrılmış isimleri içeriyor",
+    "input-contains-executable-file-extensions": "Giriş çalıştırılabilir dosya uzantıları içeriyor",
     "input-contains-null-bytes": "Giriş null baytları içeriyor",
     "input-contains-hidden-files": "Giriş gizli dosyalar içeriyor",
-    "input-contains-javascript-file-extensions":
-      "Giriş JavaScript dosya uzantıları içeriyor",
+    "input-contains-javascript-file-extensions": "Giriş JavaScript dosya uzantıları içeriyor",
   },
 
   // Asenkron işlemler
@@ -130,12 +119,9 @@ export const coreTranslations = {
 
   // Depolama ve serileştirme
   storage: {
-    "potentially-dangerous-json-detected":
-      "Potansiyel olarak tehlikeli JSON tespit edildi",
-    "failed-to-parse-json-from-localstorage":
-      "localStorage'dan JSON ayrıştırılamadı:",
-    "error-parsing-storage-event":
-      "Anahtar için depolama olayını ayrıştırırken hata",
+    "potentially-dangerous-json-detected": "Potansiyel olarak tehlikeli JSON tespit edildi",
+    "failed-to-parse-json-from-localstorage": "localStorage'dan JSON ayrıştırılamadı:",
+    "error-parsing-storage-event": "Anahtar için depolama olayını ayrıştırırken hata",
   },
 
   // Test ve geliştirme
@@ -172,9 +158,7 @@ export const coreTranslations = {
   // Entegrasyon testleri
   integration: {
     "session-and-api-key-generation": "Oturum ve API anahtarı oluşturma",
-    "authentication-and-input-validation-integration":
-      "Kimlik doğrulama ve giriş doğrulama entegrasyonu",
-    "performance-and-security-integration":
-      "Performans ve güvenlik entegrasyonu",
+    "authentication-and-input-validation-integration": "Kimlik doğrulama ve giriş doğrulama entegrasyonu",
+    "performance-and-security-integration": "Performans ve güvenlik entegrasyonu",
   },
 };

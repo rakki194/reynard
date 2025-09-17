@@ -71,8 +71,7 @@ export const iconCategories = {
   },
   interface: {
     name: "Interface & UI",
-    description:
-      "Icons for user interface elements, controls, and interactions",
+    description: "Icons for user interface elements, controls, and interactions",
     icons: interfaceIcons,
   },
   development: {

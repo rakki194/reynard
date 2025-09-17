@@ -5,9 +5,7 @@
  * used throughout the Reynard AI/ML framework.
  */
 
-export type AsyncResult<T, E = Error> = Promise<
-  { success: true; data: T } | { success: false; error: E }
->;
+export type AsyncResult<T, E = Error> = Promise<{ success: true; data: T } | { success: false; error: E }>;
 
 export type ProgressCallback = (progress: number, message?: string) => void;
 

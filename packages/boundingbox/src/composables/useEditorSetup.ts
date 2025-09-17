@@ -8,12 +8,7 @@ import { useCanvasSetup } from "./useCanvasSetup";
 import { useDrawingState } from "./useDrawingState";
 import { useLabelManagement } from "./useLabelManagement";
 import { useBoundingBoxSetup } from "./useBoundingBoxSetup";
-import type {
-  BoundingBox,
-  ImageInfo,
-  EditorConfig,
-  AnnotationEventHandlers,
-} from "../types";
+import type { BoundingBox, ImageInfo, EditorConfig, AnnotationEventHandlers } from "../types";
 
 export interface EditorSetupConfig {
   imageInfo: ImageInfo;
@@ -35,10 +30,7 @@ export interface EditorSetup {
 export const useEditorSetup = (setupConfig: EditorSetupConfig): EditorSetup => {
   const drawingState = useDrawingState();
   const labelManagement = useLabelManagement(setupConfig.config);
-  const boundingBoxSetup = useBoundingBoxSetup(
-    setupConfig.initialBoxes,
-    setupConfig.imageInfo,
-  );
+  const boundingBoxSetup = useBoundingBoxSetup(setupConfig.initialBoxes, setupConfig.imageInfo);
 
   const { canvasRef } = useCanvasSetup({
     containerWidth: setupConfig.containerWidth,

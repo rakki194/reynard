@@ -5,24 +5,10 @@
 
 import { existsSync } from "fs";
 import { join } from "path";
-import {
-  runI18nTests,
-  type I18nTestConfig,
-  type I18nTestResult,
-} from "./i18n-testing";
-import {
-  defaultI18nTestingConfig,
-  getEnabledPackages,
-  type PackageI18nConfig,
-} from "../config/i18n-testing-config";
-import type {
-  PackageI18nTestResult,
-  GlobalI18nTestResult,
-} from "./i18n-orchestrator-types";
-import {
-  generateSummary,
-  generateGlobalReport,
-} from "./i18n-orchestrator-summary";
+import { runI18nTests, type I18nTestConfig, type I18nTestResult } from "./i18n-testing";
+import { defaultI18nTestingConfig, getEnabledPackages, type PackageI18nConfig } from "../config/i18n-testing-config";
+import type { PackageI18nTestResult, GlobalI18nTestResult } from "./i18n-orchestrator-types";
+import { generateSummary, generateGlobalReport } from "./i18n-orchestrator-summary";
 
 /**
  * Run i18n tests for all enabled packages
@@ -32,9 +18,7 @@ export async function runAllPackageI18nTests(): Promise<GlobalI18nTestResult> {
   const enabledPackages = getEnabledPackages();
   const packageResults: PackageI18nTestResult[] = [];
 
-  console.log(
-    `🦊 Starting i18n tests for ${enabledPackages.length} packages...\n`,
-  );
+  console.log(`🦊 Starting i18n tests for ${enabledPackages.length} packages...\n`);
 
   for (const pkg of enabledPackages) {
     console.log(`📦 Testing package: ${pkg.name}`);
@@ -47,10 +31,8 @@ export async function runAllPackageI18nTests(): Promise<GlobalI18nTestResult> {
         console.log(`✅ ${pkg.name}: PASSED`);
       } else {
         console.log(`❌ ${pkg.name}: FAILED`);
-        result.errors.forEach((error) => console.log(`   Error: ${error}`));
-        result.warnings.forEach((warning) =>
-          console.log(`   Warning: ${warning}`),
-        );
+        result.errors.forEach(error => console.log(`   Error: ${error}`));
+        result.warnings.forEach(warning => console.log(`   Warning: ${warning}`));
       }
     } catch (error) {
       const errorResult: PackageI18nTestResult = {
@@ -63,15 +45,11 @@ export async function runAllPackageI18nTests(): Promise<GlobalI18nTestResult> {
           rtlIssues: [],
           performanceMetrics: { loadTime: 0, memoryUsage: 0 },
         },
-        errors: [
-          `Failed to run tests: ${error instanceof Error ? error.message : String(error)}`,
-        ],
+        errors: [`Failed to run tests: ${error instanceof Error ? error.message : String(error)}`],
         warnings: [],
       };
       packageResults.push(errorResult);
-      console.log(
-        `💥 ${pkg.name}: ERROR - ${error instanceof Error ? error.message : String(error)}`,
-      );
+      console.log(`💥 ${pkg.name}: ERROR - ${error instanceof Error ? error.message : String(error)}`);
     }
 
     console.log(""); // Empty line for readability
@@ -84,9 +62,7 @@ export async function runAllPackageI18nTests(): Promise<GlobalI18nTestResult> {
 
   console.log(`\n🎯 i18n Testing Complete!`);
   console.log(`   Duration: ${duration}ms`);
-  console.log(
-    `   Packages: ${summary.successfulPackages}/${summary.totalPackages} passed`,
-  );
+  console.log(`   Packages: ${summary.successfulPackages}/${summary.totalPackages} passed`);
   console.log(`   Hardcoded strings: ${summary.totalHardcodedStrings}`);
   console.log(`   Missing translations: ${summary.totalMissingTranslations}`);
   console.log(`   RTL issues: ${summary.totalRTLIssues}`);
@@ -104,9 +80,7 @@ export async function runAllPackageI18nTests(): Promise<GlobalI18nTestResult> {
 /**
  * Run i18n tests for a specific package
  */
-export async function runPackageI18nTests(
-  pkg: PackageI18nConfig,
-): Promise<PackageI18nTestResult> {
+export async function runPackageI18nTests(pkg: PackageI18nConfig): Promise<PackageI18nTestResult> {
   const errors: string[] = [];
   const warnings: string[] = [];
 
@@ -124,10 +98,7 @@ export async function runPackageI18nTests(
     validateCompleteness: pkg.validateCompleteness,
     testPluralization: true,
     testRTL: pkg.testRTL,
-    ignorePatterns: [
-      ...defaultI18nTestingConfig.defaultIgnorePatterns,
-      ...pkg.ignorePatterns,
-    ],
+    ignorePatterns: [...defaultI18nTestingConfig.defaultIgnorePatterns, ...pkg.ignorePatterns],
   };
 
   // Run the tests
@@ -141,7 +112,7 @@ export async function runPackageI18nTests(
   // Check for missing translations
   const missingTranslations = results.translationValidation.reduce(
     (sum, validation) => sum + validation.missingKeys.length,
-    0,
+    0
   );
   if (pkg.validateCompleteness && missingTranslations > 0) {
     errors.push(`Found ${missingTranslations} missing translations`);
@@ -167,11 +138,7 @@ export async function runPackageI18nTests(
 /**
  * Create error result for failed package tests
  */
-function createErrorResult(
-  pkg: PackageI18nConfig,
-  errors: string[],
-  warnings: string[],
-): PackageI18nTestResult {
+function createErrorResult(pkg: PackageI18nConfig, errors: string[], warnings: string[]): PackageI18nTestResult {
   return {
     packageName: pkg.name,
     packagePath: pkg.path,

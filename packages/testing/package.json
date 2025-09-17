@@ -36,10 +36,7 @@
       "types": "./dist/doc-test-runner/index.d.ts"
     }
   },
-  "files": [
-    "dist",
-    "configs"
-  ],
+  "files": ["dist", "configs"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc --build",
@@ -58,15 +55,7 @@
     "i18n:eslint": "tsx src/scripts/i18n-test-cli.ts eslint",
     "i18n:ci": "tsx src/scripts/i18n-test-cli.ts ci"
   },
-  "keywords": [
-    "testing",
-    "vitest",
-    "solidjs",
-    "reynard",
-    "test-utils",
-    "mocks",
-    "fixtures"
-  ],
+  "keywords": ["testing", "vitest", "solidjs", "reynard", "test-utils", "mocks", "fixtures"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {

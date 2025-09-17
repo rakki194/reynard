@@ -16,7 +16,7 @@ import { temporalHueShift } from "./core-algorithms";
 export function generateColorKeyframes(
   baseColor: OKLCHColor,
   keyframeCount: number = 8,
-  animationType: "pulse" | "shift" | "fade" = "pulse",
+  animationType: "pulse" | "shift" | "fade" = "pulse"
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
 
@@ -62,7 +62,7 @@ export function generateColorKeyframes(
 export function createBreathingAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 16,
-  intensity: number = 0.2,
+  intensity: number = 0.2
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
 
@@ -90,7 +90,7 @@ export function createBreathingAnimation(
 export function createShimmerAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 12,
-  shimmerIntensity: number = 0.3,
+  shimmerIntensity: number = 0.3
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
 
@@ -118,7 +118,7 @@ export function createShimmerAnimation(
 export function createColorCyclingAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 20,
-  cycleRange: number = 60,
+  cycleRange: number = 60
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
 
@@ -146,7 +146,7 @@ export function createColorCyclingAnimation(
 export function createFadeAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 10,
-  fadeType: "in" | "out" | "inout" = "inout",
+  fadeType: "in" | "out" | "inout" = "inout"
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
 
@@ -186,7 +186,7 @@ export function createFadeAnimation(
 export function createRainbowAnimation(
   baseColor: OKLCHColor,
   keyframeCount: number = 24,
-  saturation: number = 0.3,
+  saturation: number = 0.3
 ): OKLCHColor[] {
   const keyframes: OKLCHColor[] = [];
 

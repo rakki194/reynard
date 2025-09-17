@@ -32,13 +32,7 @@ describe("Utils Lazy Package Export", () => {
 
     it("should pass through constructor arguments", () => {
       const mockLoader = vi.fn();
-      const instance = new LazyPackageExport(
-        "test-package",
-        mockLoader,
-        "basic",
-        false,
-        false,
-      );
+      const instance = new LazyPackageExport("test-package", mockLoader, "basic", false, false);
 
       expect(instance).toBeDefined();
       expect(instance).toBeInstanceOf(LazyPackageExport);
@@ -125,14 +119,10 @@ describe("Utils Lazy Package Export", () => {
     });
 
     it("should handle loading errors", async () => {
-      const errorLoader = vi
-        .fn()
-        .mockRejectedValue(new Error(t("core.module.load-failed")));
+      const errorLoader = vi.fn().mockRejectedValue(new Error(t("core.module.load-failed")));
       const instance = new LazyPackageExport("test-package", errorLoader);
 
-      await expect(instance.getModule()).rejects.toThrow(
-        t("core.module.load-failed"),
-      );
+      await expect(instance.getModule()).rejects.toThrow(t("core.module.load-failed"));
 
       const metadata = instance.getMetadata();
       expect(metadata.errorCount).toBe(1);

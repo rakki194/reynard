@@ -6,15 +6,7 @@
 import { Chart } from "reynard-charts";
 import { Button } from "reynard-components";
 import { fluentIconsPackage } from "reynard-fluent-icons";
-import {
-  Component,
-  For,
-  Show,
-  createEffect,
-  createSignal,
-  onCleanup,
-  onMount,
-} from "solid-js";
+import { Component, For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 
 export interface PerformanceMetricsPanelProps {
   /** Performance history data */
@@ -45,9 +37,7 @@ export interface PerformanceMetrics {
   performanceScore: number;
 }
 
-export const PerformanceMetricsPanel: Component<
-  PerformanceMetricsPanelProps
-> = (props) => {
+export const PerformanceMetricsPanel: Component<PerformanceMetricsPanelProps> = props => {
   const [metrics, setMetrics] = createSignal<PerformanceMetrics>({
     averageFrameRate: 0,
     averageMemoryUsage: 0,
@@ -109,9 +99,7 @@ export const PerformanceMetricsPanel: Component<
       // Calculate time range filter
       const now = Date.now();
       const timeRangeMs = getTimeRangeMs(timeRange());
-      const filteredHistory = history.filter(
-        (entry) => now - entry.timestamp <= timeRangeMs,
-      );
+      const filteredHistory = history.filter(entry => now - entry.timestamp <= timeRangeMs);
 
       if (filteredHistory.length === 0) {
         setLastUpdate(new Date());
@@ -120,38 +108,21 @@ export const PerformanceMetricsPanel: Component<
 
       // Calculate metrics
       const averageFrameRate =
-        filteredHistory.reduce((sum, entry) => sum + entry.frameRate, 0) /
-        filteredHistory.length;
+        filteredHistory.reduce((sum, entry) => sum + entry.frameRate, 0) / filteredHistory.length;
       const averageMemoryUsage =
-        filteredHistory.reduce((sum, entry) => sum + entry.memoryUsage, 0) /
-        filteredHistory.length;
+        filteredHistory.reduce((sum, entry) => sum + entry.memoryUsage, 0) / filteredHistory.length;
       const averageBrowserResponsiveness =
-        filteredHistory.reduce(
-          (sum, entry) => sum + entry.browserResponsiveness,
-          0,
-        ) / filteredHistory.length;
+        filteredHistory.reduce((sum, entry) => sum + entry.browserResponsiveness, 0) / filteredHistory.length;
       const averageSelectionDuration =
-        filteredHistory.reduce(
-          (sum, entry) => sum + (entry.selectionDuration || 0),
-          0,
-        ) / filteredHistory.length;
+        filteredHistory.reduce((sum, entry) => sum + (entry.selectionDuration || 0), 0) / filteredHistory.length;
       const averageItemsPerSecond =
-        filteredHistory.reduce(
-          (sum, entry) => sum + (entry.itemsPerSecond || 0),
-          0,
-        ) / filteredHistory.length;
-      const totalDomUpdates = filteredHistory.reduce(
-        (sum, entry) => sum + (entry.domUpdateCount || 0),
-        0,
-      );
+        filteredHistory.reduce((sum, entry) => sum + (entry.itemsPerSecond || 0), 0) / filteredHistory.length;
+      const totalDomUpdates = filteredHistory.reduce((sum, entry) => sum + (entry.domUpdateCount || 0), 0);
       const totalStyleApplications = filteredHistory.reduce(
         (sum, entry) => sum + (entry.styleApplicationCount || 0),
-        0,
+        0
       );
-      const totalFrameDrops = filteredHistory.reduce(
-        (sum, entry) => sum + (entry.frameDropCount || 0),
-        0,
-      );
+      const totalFrameDrops = filteredHistory.reduce((sum, entry) => sum + (entry.frameDropCount || 0), 0);
 
       // Calculate performance score (0-100)
       const performanceScore = calculatePerformanceScore({
@@ -282,11 +253,9 @@ export const PerformanceMetricsPanel: Component<
     const history = props.performanceHistory;
     const timeRangeMs = getTimeRangeMs(timeRange());
     const now = Date.now();
-    const filteredHistory = history.filter(
-      (entry) => now - entry.timestamp <= timeRangeMs,
-    );
+    const filteredHistory = history.filter(entry => now - entry.timestamp <= timeRangeMs);
 
-    return filteredHistory.map((entry) => ({
+    return filteredHistory.map(entry => ({
       timestamp: entry.timestamp,
       value: getMetricValue(entry, selectedMetric()),
     }));
@@ -361,20 +330,14 @@ export const PerformanceMetricsPanel: Component<
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon("chart-line")?.outerHTML || ""
-              }
+              innerHTML={fluentIconsPackage.getIcon("chart-line")?.outerHTML || ""}
             />
           </span>
           <h3>Performance Metrics</h3>
         </div>
 
         <div class="metrics-panel-actions">
-          <Button
-            variant="secondary"
-            onClick={updateMetrics}
-            disabled={isRefreshing()}
-          >
+          <Button variant="secondary" onClick={updateMetrics} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -387,27 +350,15 @@ export const PerformanceMetricsPanel: Component<
       <div class="metrics-controls">
         <div class="control-group">
           <label>Metric:</label>
-          <select
-            value={selectedMetric()}
-            onChange={(e) => setSelectedMetric(e.currentTarget.value)}
-          >
-            <For each={availableMetrics}>
-              {(metric) => (
-                <option value={metric}>{getMetricLabel(metric)}</option>
-              )}
-            </For>
+          <select value={selectedMetric()} onChange={e => setSelectedMetric(e.currentTarget.value)}>
+            <For each={availableMetrics}>{metric => <option value={metric}>{getMetricLabel(metric)}</option>}</For>
           </select>
         </div>
 
         <div class="control-group">
           <label>Time Range:</label>
-          <select
-            value={timeRange()}
-            onChange={(e) => setTimeRange(e.currentTarget.value)}
-          >
-            <For each={timeRanges}>
-              {(range) => <option value={range}>{range}</option>}
-            </For>
+          <select value={timeRange()} onChange={e => setTimeRange(e.currentTarget.value)}>
+            <For each={timeRanges}>{range => <option value={range}>{range}</option>}</For>
           </select>
         </div>
       </div>
@@ -416,15 +367,11 @@ export const PerformanceMetricsPanel: Component<
       <div class="performance-score">
         <div class="score-header">
           <h4>Performance Score</h4>
-          <span
-            class={`score-value ${getPerformanceScoreColor(metrics().performanceScore)}`}
-          >
+          <span class={`score-value ${getPerformanceScoreColor(metrics().performanceScore)}`}>
             {metrics().performanceScore.toFixed(0)}
           </span>
         </div>
-        <div class="score-message">
-          {getPerformanceScoreMessage(metrics().performanceScore)}
-        </div>
+        <div class="score-message">{getPerformanceScoreMessage(metrics().performanceScore)}</div>
       </div>
 
       {/* Metrics Summary */}
@@ -432,51 +379,35 @@ export const PerformanceMetricsPanel: Component<
         <div class="summary-grid">
           <div class="summary-item">
             <label>Average Frame Rate</label>
-            <span class="value">
-              {metrics().averageFrameRate.toFixed(1)} fps
-            </span>
+            <span class="value">{metrics().averageFrameRate.toFixed(1)} fps</span>
           </div>
           <div class="summary-item">
             <label>Average Memory Usage</label>
-            <span class="value">
-              {formatMemory(metrics().averageMemoryUsage)}
-            </span>
+            <span class="value">{formatMemory(metrics().averageMemoryUsage)}</span>
           </div>
           <div class="summary-item">
             <label>Average Browser Response</label>
-            <span class="value">
-              {formatDuration(metrics().averageBrowserResponsiveness)}
-            </span>
+            <span class="value">{formatDuration(metrics().averageBrowserResponsiveness)}</span>
           </div>
           <div class="summary-item">
             <label>Average Selection Duration</label>
-            <span class="value">
-              {formatDuration(metrics().averageSelectionDuration)}
-            </span>
+            <span class="value">{formatDuration(metrics().averageSelectionDuration)}</span>
           </div>
           <div class="summary-item">
             <label>Average Items/Second</label>
-            <span class="value">
-              {metrics().averageItemsPerSecond.toFixed(1)}
-            </span>
+            <span class="value">{metrics().averageItemsPerSecond.toFixed(1)}</span>
           </div>
           <div class="summary-item">
             <label>Total DOM Updates</label>
-            <span class="value">
-              {metrics().totalDomUpdates.toLocaleString()}
-            </span>
+            <span class="value">{metrics().totalDomUpdates.toLocaleString()}</span>
           </div>
           <div class="summary-item">
             <label>Total Style Applications</label>
-            <span class="value">
-              {metrics().totalStyleApplications.toLocaleString()}
-            </span>
+            <span class="value">{metrics().totalStyleApplications.toLocaleString()}</span>
           </div>
           <div class="summary-item">
             <label>Total Frame Drops</label>
-            <span class="value">
-              {metrics().totalFrameDrops.toLocaleString()}
-            </span>
+            <span class="value">{metrics().totalFrameDrops.toLocaleString()}</span>
           </div>
         </div>
       </div>
@@ -486,13 +417,11 @@ export const PerformanceMetricsPanel: Component<
         <h4>{getMetricLabel(selectedMetric())}</h4>
         <Chart
           type="line"
-          labels={getChartData().map((entry) =>
-            new Date(entry.timestamp).toLocaleTimeString(),
-          )}
+          labels={getChartData().map(entry => new Date(entry.timestamp).toLocaleTimeString())}
           datasets={[
             {
               label: getMetricLabel(selectedMetric()),
-              data: getChartData().map((entry) => entry.value),
+              data: getChartData().map(entry => entry.value),
               borderColor: "oklch(0.7 0.15 200)",
               backgroundColor: "oklch(0.7 0.15 200 / 0.1)",
               tension: 0.1,
@@ -506,9 +435,7 @@ export const PerformanceMetricsPanel: Component<
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">
-          Last updated: {lastUpdate()!.toLocaleString()}
-        </div>
+        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
       </Show>
     </div>
   );

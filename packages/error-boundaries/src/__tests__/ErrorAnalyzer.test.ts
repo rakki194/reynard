@@ -157,10 +157,7 @@ describe("ErrorAnalyzer", () => {
 
       const context = createErrorContext(error, errorInfo);
 
-      expect(context.componentStack).toEqual([
-        "TestComponent",
-        "AnotherComponent",
-      ]);
+      expect(context.componentStack).toEqual(["TestComponent", "AnotherComponent"]);
       expect(context.errorBoundaryId).toMatch(/^error-boundary-/);
       expect(context.timestamp).toBeTypeOf("number");
       expect(context.userAgent).toBe("Mozilla/5.0 (Test Browser)");

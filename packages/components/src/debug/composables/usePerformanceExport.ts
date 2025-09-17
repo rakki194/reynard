@@ -4,15 +4,9 @@
  */
 
 import { createSignal, createMemo } from "solid-js";
-import type {
-  PerformanceDataPoint,
-  ExportOptions,
-  PerformanceExportState,
-} from "../types/PerformanceExportTypes";
+import type { PerformanceDataPoint, ExportOptions, PerformanceExportState } from "../types/PerformanceExportTypes";
 
-export function usePerformanceExport(
-  performanceHistory: PerformanceDataPoint[],
-) {
+export function usePerformanceExport(performanceHistory: PerformanceDataPoint[]) {
   const [state, setState] = createSignal<PerformanceExportState>({
     exportOptions: {
       format: "json",
@@ -71,58 +65,52 @@ export function usePerformanceExport(
 
     // Filter by date range
     if (options.dateRange.start) {
-      filtered = filtered.filter(
-        (point) => new Date(point.timestamp) >= options.dateRange.start!,
-      );
+      filtered = filtered.filter(point => new Date(point.timestamp) >= options.dateRange.start!);
     }
     if (options.dateRange.end) {
-      filtered = filtered.filter(
-        (point) => new Date(point.timestamp) <= options.dateRange.end!,
-      );
+      filtered = filtered.filter(point => new Date(point.timestamp) <= options.dateRange.end!);
     }
 
     return filtered;
   });
 
   const updateExportOptions = (options: Partial<ExportOptions>) => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       exportOptions: { ...prev.exportOptions, ...options },
     }));
   };
 
   const selectRow = (index: number) => {
-    setState((prev) => {
+    setState(prev => {
       const selected = prev.selectedRows.includes(index)
-        ? prev.selectedRows.filter((i) => i !== index)
+        ? prev.selectedRows.filter(i => i !== index)
         : [...prev.selectedRows, index];
       return { ...prev, selectedRows: selected };
     });
   };
 
   const selectAllRows = () => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       selectedRows: Array.from({ length: filteredData().length }, (_, i) => i),
     }));
   };
 
   const clearSelection = () => {
-    setState((prev) => ({ ...prev, selectedRows: [] }));
+    setState(prev => ({ ...prev, selectedRows: [] }));
   };
 
   const exportData = async () => {
-    setState((prev) => ({ ...prev, isExporting: true }));
+    setState(prev => ({ ...prev, isExporting: true }));
 
     try {
       const options = state().exportOptions;
       const dataToExport =
-        state().selectedRows.length > 0
-          ? state().selectedRows.map((i) => filteredData()[i])
-          : filteredData();
+        state().selectedRows.length > 0 ? state().selectedRows.map(i => filteredData()[i]) : filteredData();
 
       // Simulate export process
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Create downloadable file
       const blob = createExportBlob(dataToExport, options);
@@ -133,7 +121,7 @@ export function usePerformanceExport(
       a.click();
       URL.revokeObjectURL(url);
 
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         isExporting: false,
         lastExport: new Date(),
@@ -141,14 +129,11 @@ export function usePerformanceExport(
       }));
     } catch (error) {
       console.error("Export failed:", error);
-      setState((prev) => ({ ...prev, isExporting: false }));
+      setState(prev => ({ ...prev, isExporting: false }));
     }
   };
 
-  const createExportBlob = (
-    data: PerformanceDataPoint[],
-    options: ExportOptions,
-  ) => {
+  const createExportBlob = (data: PerformanceDataPoint[], options: ExportOptions) => {
     const format = options.format;
 
     switch (format) {
@@ -169,28 +154,21 @@ export function usePerformanceExport(
 
   const convertToCSV = (data: PerformanceDataPoint[], metrics: string[]) => {
     const headers = ["timestamp", ...metrics];
-    const rows = data.map((point) =>
-      headers.map(
-        (header) => point[header as keyof PerformanceDataPoint] || "",
-      ),
-    );
-    return [headers, ...rows].map((row) => row.join(",")).join("\n");
+    const rows = data.map(point => headers.map(header => point[header as keyof PerformanceDataPoint] || ""));
+    return [headers, ...rows].map(row => row.join(",")).join("\n");
   };
 
   const convertToXML = (data: PerformanceDataPoint[], metrics: string[]) => {
     const xml = [
       '<?xml version="1.0" encoding="UTF-8"?>',
       "<performance-data>",
-      ...data.map((point) =>
+      ...data.map(point =>
         [
           "  <data-point>",
           `    <timestamp>${point.timestamp}</timestamp>`,
-          ...metrics.map(
-            (metric) =>
-              `    <${metric}>${point[metric as keyof PerformanceDataPoint] || ""}</${metric}>`,
-          ),
+          ...metrics.map(metric => `    <${metric}>${point[metric as keyof PerformanceDataPoint] || ""}</${metric}>`),
           "  </data-point>",
-        ].join("\n"),
+        ].join("\n")
       ),
       "</performance-data>",
     ].join("\n");

@@ -6,9 +6,7 @@ interface CanvasSizeControlsProps {
   onResizeCanvas: (width: number, height: number) => void;
 }
 
-export const CanvasSizeControls: Component<CanvasSizeControlsProps> = (
-  props,
-) => {
+export const CanvasSizeControls: Component<CanvasSizeControlsProps> = props => {
   return (
     <section class="control-section">
       <h3>Canvas Size</h3>
@@ -21,9 +19,7 @@ export const CanvasSizeControls: Component<CanvasSizeControlsProps> = (
             min="4"
             max="64"
             value={props.canvasWidth}
-            onInput={(e) =>
-              props.onResizeCanvas(parseInt(e.target.value), props.canvasHeight)
-            }
+            onInput={e => props.onResizeCanvas(parseInt(e.target.value), props.canvasHeight)}
           />
         </div>
         <div class="size-input">
@@ -34,9 +30,7 @@ export const CanvasSizeControls: Component<CanvasSizeControlsProps> = (
             min="4"
             max="64"
             value={props.canvasHeight}
-            onInput={(e) =>
-              props.onResizeCanvas(props.canvasWidth, parseInt(e.target.value))
-            }
+            onInput={e => props.onResizeCanvas(props.canvasWidth, parseInt(e.target.value))}
           />
         </div>
       </div>

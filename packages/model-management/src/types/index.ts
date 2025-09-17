@@ -97,10 +97,7 @@ export interface ModelRegistry {
 }
 
 export interface ModelDownloadManager {
-  downloadModel(
-    modelId: string,
-    progressCallback?: (progress: ModelDownloadProgress) => void,
-  ): Promise<void>;
+  downloadModel(modelId: string, progressCallback?: (progress: ModelDownloadProgress) => void): Promise<void>;
   cancelDownload(modelId: string): void;
   getDownloadProgress(modelId: string): ModelDownloadProgress | undefined;
   getAllDownloadProgress(): Record<string, ModelDownloadProgress>;
@@ -109,10 +106,7 @@ export interface ModelDownloadManager {
 }
 
 export interface ModelLoader {
-  loadModel(
-    modelId: string,
-    config?: Record<string, any>,
-  ): Promise<ModelInstance>;
+  loadModel(modelId: string, config?: Record<string, any>): Promise<ModelInstance>;
   unloadModel(modelId: string): Promise<void>;
   getLoadedModel(modelId: string): ModelInstance | undefined;
   getAllLoadedModels(): Record<string, ModelInstance>;
@@ -122,14 +116,8 @@ export interface ModelLoader {
 
 export interface ModelManager {
   registerModel(modelInfo: ModelInfo): void;
-  downloadModel(
-    modelId: string,
-    progressCallback?: (progress: ModelDownloadProgress) => void,
-  ): Promise<void>;
-  loadModel(
-    modelId: string,
-    config?: Record<string, any>,
-  ): Promise<ModelInstance>;
+  downloadModel(modelId: string, progressCallback?: (progress: ModelDownloadProgress) => void): Promise<void>;
+  loadModel(modelId: string, config?: Record<string, any>): Promise<ModelInstance>;
   unloadModel(modelId: string): Promise<void>;
   getModelInfo(modelId: string): ModelInfo | undefined;
   getModelInstance(modelId: string): ModelInstance | undefined;

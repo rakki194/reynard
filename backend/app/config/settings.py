@@ -6,7 +6,6 @@ environment variable support and secure defaults.
 """
 
 import os
-from typing import List
 
 from dotenv import load_dotenv
 
@@ -16,15 +15,15 @@ load_dotenv()
 
 class Config:
     """Configuration class for Reynard Backend."""
-    
+
     def __init__(self):
-        
+
         # CORS settings
         self.CORS_ORIGINS = self._get_cors_origins()
         self.CORS_METHODS = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
         self.CORS_HEADERS = [
             "Accept",
-            "Accept-Language", 
+            "Accept-Language",
             "Content-Language",
             "Content-Type",
             "Authorization",
@@ -32,16 +31,16 @@ class Config:
         ]
         self.CORS_EXPOSE_HEADERS = ["X-Total-Count"]
         self.CORS_MAX_AGE = 3600
-        
+
         # Security settings
         self.ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
         self.ALLOWED_HOSTS = ["localhost", "127.0.0.1", "*.yourdomain.com"]
-    
-    def _get_cors_origins(self) -> List[str]:
+
+    def _get_cors_origins(self) -> list[str]:
         """Get CORS allowed origins."""
         return [
             "http://localhost:3000",
-            "http://localhost:3001", 
+            "http://localhost:3001",
             "http://localhost:3002",
             "http://localhost:3003",
             "http://localhost:3004",

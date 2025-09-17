@@ -15,17 +15,13 @@ export const customMatchers = {
   toBeInTheDocument: (element: Element | null) => {
     if (!element) {
       return {
-        message: () =>
-          "Expected element to be in the document, but it was null",
+        message: () => "Expected element to be in the document, but it was null",
         pass: false,
       };
     }
     const pass = document.contains(element);
     return {
-      message: () =>
-        pass
-          ? "Expected element not to be in the document"
-          : "Expected element to be in the document",
+      message: () => (pass ? "Expected element not to be in the document" : "Expected element to be in the document"),
       pass,
     };
   },
@@ -36,17 +32,14 @@ export const customMatchers = {
   toHaveClass: (element: Element | null, className: string) => {
     if (!element) {
       return {
-        message: () =>
-          `Expected element to have class "${className}", but element was null`,
+        message: () => `Expected element to have class "${className}", but element was null`,
         pass: false,
       };
     }
     const pass = element.classList.contains(className);
     return {
       message: () =>
-        pass
-          ? `Expected element not to have class "${className}"`
-          : `Expected element to have class "${className}"`,
+        pass ? `Expected element not to have class "${className}"` : `Expected element to have class "${className}"`,
       pass,
     };
   },
@@ -54,15 +47,10 @@ export const customMatchers = {
   /**
    * Check if element has a specific attribute
    */
-  toHaveAttribute: (
-    element: Element | null,
-    attribute: string,
-    value?: string,
-  ) => {
+  toHaveAttribute: (element: Element | null, attribute: string, value?: string) => {
     if (!element) {
       return {
-        message: () =>
-          `Expected element to have attribute "${attribute}", but element was null`,
+        message: () => `Expected element to have attribute "${attribute}", but element was null`,
         pass: false,
       };
     }
@@ -105,9 +93,7 @@ export const customMatchers = {
 
     for (const [property, expectedValue] of Object.entries(styles)) {
       // First try to get from inline style attribute
-      let actualValue = (element as HTMLElement).style.getPropertyValue(
-        property,
-      );
+      let actualValue = (element as HTMLElement).style.getPropertyValue(property);
 
       // If not found in inline styles, try computed style
       if (!actualValue) {
@@ -119,9 +105,7 @@ export const customMatchers = {
       if (!actualValue && property.startsWith("--")) {
         const styleAttr = element.getAttribute("style");
         if (styleAttr) {
-          const match = styleAttr.match(
-            new RegExp(`${property}\\s*:\\s*([^;]+)`),
-          );
+          const match = styleAttr.match(new RegExp(`${property}\\s*:\\s*([^;]+)`));
           if (match) {
             actualValue = match[1].trim();
           }
@@ -129,9 +113,7 @@ export const customMatchers = {
       }
 
       if (actualValue !== expectedValue) {
-        failedStyles.push(
-          `${property}: expected "${expectedValue}", got "${actualValue}"`,
-        );
+        failedStyles.push(`${property}: expected "${expectedValue}", got "${actualValue}"`);
       }
     }
 
@@ -157,10 +139,7 @@ export const customMatchers = {
     }
     const pass = (element as HTMLInputElement).disabled === true;
     return {
-      message: () =>
-        pass
-          ? "Expected element not to be disabled"
-          : "Expected element to be disabled",
+      message: () => (pass ? "Expected element not to be disabled" : "Expected element to be disabled"),
       pass,
     };
   },
@@ -177,10 +156,7 @@ export const customMatchers = {
     }
     const pass = (element as HTMLInputElement).disabled === false;
     return {
-      message: () =>
-        pass
-          ? "Expected element not to be enabled"
-          : "Expected element to be enabled",
+      message: () => (pass ? "Expected element not to be enabled" : "Expected element to be enabled"),
       pass,
     };
   },
@@ -197,10 +173,7 @@ export const customMatchers = {
     }
     const pass = document.activeElement === element;
     return {
-      message: () =>
-        pass
-          ? "Expected element not to have focus"
-          : "Expected element to have focus",
+      message: () => (pass ? "Expected element not to have focus" : "Expected element to have focus"),
       pass,
     };
   },
@@ -217,10 +190,7 @@ export const customMatchers = {
     }
     const pass = (element as HTMLInputElement).checked === true;
     return {
-      message: () =>
-        pass
-          ? "Expected element not to be checked"
-          : "Expected element to be checked",
+      message: () => (pass ? "Expected element not to be checked" : "Expected element to be checked"),
       pass,
     };
   },
@@ -231,8 +201,7 @@ export const customMatchers = {
   toHaveValue: (element: Element | null, value: string) => {
     if (!element) {
       return {
-        message: () =>
-          `Expected element to have value "${value}", but element was null`,
+        message: () => `Expected element to have value "${value}", but element was null`,
         pass: false,
       };
     }
@@ -253,16 +222,12 @@ export const customMatchers = {
   toHaveTextContent: (element: Element | null, text: string | RegExp) => {
     if (!element) {
       return {
-        message: () =>
-          `Expected element to have text content "${text}", but element was null`,
+        message: () => `Expected element to have text content "${text}", but element was null`,
         pass: false,
       };
     }
     const actualText = element.textContent || "";
-    const pass =
-      typeof text === "string"
-        ? actualText.includes(text)
-        : text.test(actualText);
+    const pass = typeof text === "string" ? actualText.includes(text) : text.test(actualText);
     return {
       message: () =>
         pass
@@ -278,8 +243,7 @@ export const customMatchers = {
   toHaveDisplayValue: (element: Element | null, value: string) => {
     if (!element) {
       return {
-        message: () =>
-          `Expected element to have display value "${value}", but element was null`,
+        message: () => `Expected element to have display value "${value}", but element was null`,
         pass: false,
       };
     }
@@ -300,17 +264,14 @@ export const customMatchers = {
   toBePartiallyChecked: (element: Element | null) => {
     if (!element) {
       return {
-        message: () =>
-          "Expected element to be partially checked, but element was null",
+        message: () => "Expected element to be partially checked, but element was null",
         pass: false,
       };
     }
     const pass = (element as HTMLInputElement).indeterminate === true;
     return {
       message: () =>
-        pass
-          ? "Expected element not to be partially checked"
-          : "Expected element to be partially checked",
+        pass ? "Expected element not to be partially checked" : "Expected element to be partially checked",
       pass,
     };
   },
@@ -327,10 +288,7 @@ export const customMatchers = {
     }
     const pass = (element as HTMLInputElement).required === true;
     return {
-      message: () =>
-        pass
-          ? "Expected element not to be required"
-          : "Expected element to be required",
+      message: () => (pass ? "Expected element not to be required" : "Expected element to be required"),
       pass,
     };
   },
@@ -347,10 +305,7 @@ export const customMatchers = {
     }
     const pass = (element as HTMLInputElement).validity.valid === true;
     return {
-      message: () =>
-        pass
-          ? "Expected element not to be valid"
-          : "Expected element to be valid",
+      message: () => (pass ? "Expected element not to be valid" : "Expected element to be valid"),
       pass,
     };
   },
@@ -367,10 +322,7 @@ export const customMatchers = {
     }
     const pass = (element as HTMLInputElement).validity.valid === false;
     return {
-      message: () =>
-        pass
-          ? "Expected element not to be invalid"
-          : "Expected element to be invalid",
+      message: () => (pass ? "Expected element not to be invalid" : "Expected element to be invalid"),
       pass,
     };
   },
@@ -386,15 +338,9 @@ export const customMatchers = {
       };
     }
     const style = window.getComputedStyle(element);
-    const pass =
-      style.display !== "none" &&
-      style.visibility !== "hidden" &&
-      style.opacity !== "0";
+    const pass = style.display !== "none" && style.visibility !== "hidden" && style.opacity !== "0";
     return {
-      message: () =>
-        pass
-          ? "Expected element not to be visible"
-          : "Expected element to be visible",
+      message: () => (pass ? "Expected element not to be visible" : "Expected element to be visible"),
       pass,
     };
   },
@@ -409,13 +355,9 @@ export const customMatchers = {
         pass: false,
       };
     }
-    const pass =
-      element.children.length === 0 && element.textContent?.trim() === "";
+    const pass = element.children.length === 0 && element.textContent?.trim() === "";
     return {
-      message: () =>
-        pass
-          ? "Expected element not to be empty"
-          : "Expected element to be empty",
+      message: () => (pass ? "Expected element not to be empty" : "Expected element to be empty"),
       pass,
     };
   },
@@ -423,14 +365,10 @@ export const customMatchers = {
   /**
    * Check if element has a specific form
    */
-  toHaveFormValues: (
-    element: Element | null,
-    values: Record<string, unknown>,
-  ) => {
+  toHaveFormValues: (element: Element | null, values: Record<string, unknown>) => {
     if (!element) {
       return {
-        message: () =>
-          "Expected element to have form values, but element was null",
+        message: () => "Expected element to have form values, but element was null",
         pass: false,
       };
     }
@@ -451,9 +389,7 @@ export const customMatchers = {
       }
       const actualValue = input.value;
       if (actualValue !== expectedValue) {
-        failedValues.push(
-          `${name}: expected "${expectedValue}", got "${actualValue}"`,
-        );
+        failedValues.push(`${name}: expected "${expectedValue}", got "${actualValue}"`);
       }
     }
 
@@ -473,8 +409,7 @@ export const customMatchers = {
   toHaveAccessibleName: (element: Element | null, name: string) => {
     if (!element) {
       return {
-        message: () =>
-          `Expected element to have accessible name "${name}", but element was null`,
+        message: () => `Expected element to have accessible name "${name}", but element was null`,
         pass: false,
       };
     }
@@ -495,14 +430,10 @@ export const customMatchers = {
   /**
    * Check if element has a specific accessible description
    */
-  toHaveAccessibleDescription: (
-    element: Element | null,
-    description: string,
-  ) => {
+  toHaveAccessibleDescription: (element: Element | null, description: string) => {
     if (!element) {
       return {
-        message: () =>
-          `Expected element to have accessible description "${description}", but element was null`,
+        message: () => `Expected element to have accessible description "${description}", but element was null`,
         pass: false,
       };
     }
@@ -535,9 +466,7 @@ export function extendExpect() {
 /**
  * Helper function to check if element exists and is not null
  */
-export function expectElementToExist(
-  element: Element | null,
-): asserts element is Element {
+export function expectElementToExist(element: Element | null): asserts element is Element {
   expect(element).not.toBeNull();
   expect(element).toBeDefined();
 }
@@ -557,13 +486,9 @@ export function getByTestId(container: Element, testId: string): Element {
  * Helper function to get all elements by test id
  */
 export function getAllByTestId(container: Element, testId: string): Element[] {
-  const elements = Array.from(
-    container.querySelectorAll(`[data-testid="${testId}"]`),
-  );
+  const elements = Array.from(container.querySelectorAll(`[data-testid="${testId}"]`));
   if (elements.length === 0) {
-    throw new Error(
-      `Unable to find any elements by: [data-testid="${testId}"]`,
-    );
+    throw new Error(`Unable to find any elements by: [data-testid="${testId}"]`);
   }
   return elements;
 }

@@ -29,11 +29,7 @@ describe("File Type Validation Security", () => {
     });
 
     it("should reject unsupported file types", async () => {
-      const unsupportedFiles = [
-        TEST_FILES.UNSUPPORTED.JS,
-        TEST_FILES.UNSUPPORTED.CSS,
-        TEST_FILES.UNSUPPORTED.HTML,
-      ];
+      const unsupportedFiles = [TEST_FILES.UNSUPPORTED.JS, TEST_FILES.UNSUPPORTED.CSS, TEST_FILES.UNSUPPORTED.HTML];
 
       for (const file of unsupportedFiles) {
         const result = await pipeline.processFile(file);
@@ -94,11 +90,7 @@ describe("File Type Validation Security", () => {
     });
 
     it("should reject oversized compressed files", async () => {
-      const largeCompressedFile = createMockFile(
-        "large.zip",
-        60 * 1024 * 1024,
-        "application/zip",
-      ); // 60MB
+      const largeCompressedFile = createMockFile("large.zip", 60 * 1024 * 1024, "application/zip"); // 60MB
       const result = await pipeline.processFile(largeCompressedFile);
       expect(result.success).toBe(false);
       expect(result.error).toBe("File content validation failed");

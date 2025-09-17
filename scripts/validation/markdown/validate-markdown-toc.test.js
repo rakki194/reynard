@@ -254,12 +254,8 @@ More content.`;
       const result = validateMarkdownFile("test.md");
 
       expect(result.valid).toBe(false);
-      expect(result.error).toBe(
-        "No Table of Contents found after first H2 heading",
-      );
-      expect(result.suggestion).toContain(
-        'Add a "## Table of Contents" section',
-      );
+      expect(result.error).toBe("No Table of Contents found after first H2 heading");
+      expect(result.suggestion).toContain('Add a "## Table of Contents" section');
     });
 
     it("should fail validation for missing H2 heading", () => {
@@ -335,9 +331,7 @@ New content.`;
 - [Usage](#usage)
 ## Usage`;
 
-      mockReadFileSync
-        .mockReturnValueOnce(content1)
-        .mockReturnValueOnce(content2);
+      mockReadFileSync.mockReturnValueOnce(content1).mockReturnValueOnce(content2);
 
       const result = validateMarkdownToC(["file1.md", "file2.md"]);
 
@@ -355,9 +349,7 @@ New content.`;
 ## Setup
 ## Configuration`;
 
-      mockReadFileSync
-        .mockReturnValueOnce(content1)
-        .mockReturnValueOnce(content2);
+      mockReadFileSync.mockReturnValueOnce(content1).mockReturnValueOnce(content2);
 
       const result = validateMarkdownToC(["file1.md", "file2.md"]);
 
@@ -391,7 +383,7 @@ More content.`;
       expect(mockWriteFileSync).toHaveBeenCalledWith(
         "test.md",
         expect.stringContaining("## Table of Contents"),
-        "utf8",
+        "utf8"
       );
     });
 
@@ -419,16 +411,8 @@ New content.`;
       const result = autoFixToC(["test.md"]);
 
       expect(result).toBe(true);
-      expect(mockWriteFileSync).toHaveBeenCalledWith(
-        "test.md",
-        expect.stringContaining("New Section"),
-        "utf8",
-      );
-      expect(mockWriteFileSync).toHaveBeenCalledWith(
-        "test.md",
-        expect.not.stringContaining("Old Section"),
-        "utf8",
-      );
+      expect(mockWriteFileSync).toHaveBeenCalledWith("test.md", expect.stringContaining("New Section"), "utf8");
+      expect(mockWriteFileSync).toHaveBeenCalledWith("test.md", expect.not.stringContaining("Old Section"), "utf8");
     });
 
     it("should handle files without H2 headings", () => {
@@ -486,10 +470,9 @@ More content.`;
 
       validateMarkdownToC(); // No files passed, should use git
 
-      expect(mockExecSync).toHaveBeenCalledWith(
-        "git diff --cached --name-only --diff-filter=ACM",
-        { encoding: "utf8" },
-      );
+      expect(mockExecSync).toHaveBeenCalledWith("git diff --cached --name-only --diff-filter=ACM", {
+        encoding: "utf8",
+      });
     });
 
     it("should handle git command errors", () => {

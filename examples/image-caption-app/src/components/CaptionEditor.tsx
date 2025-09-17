@@ -15,7 +15,7 @@ interface CaptionEditorProps {
   onGenerate: () => void;
 }
 
-export const CaptionEditor: Component<CaptionEditorProps> = (props) => {
+export const CaptionEditor: Component<CaptionEditorProps> = props => {
   return (
     <Card class="caption-editor" padding="lg">
       <div class="editor-header">
@@ -24,11 +24,7 @@ export const CaptionEditor: Component<CaptionEditorProps> = (props) => {
           <Button variant="primary" onClick={props.onGenerate}>
             🤖 Generate Caption
           </Button>
-          <Button
-            variant="secondary"
-            onClick={props.onEdit}
-            disabled={!props.image.caption}
-          >
+          <Button variant="secondary" onClick={props.onEdit} disabled={!props.image.caption}>
             ✏️ Edit Caption
           </Button>
         </div>
@@ -45,10 +41,7 @@ export const CaptionEditor: Component<CaptionEditorProps> = (props) => {
             when={props.image.caption}
             fallback={
               <div class="no-caption">
-                <p>
-                  No caption generated yet. Click "Generate Caption" to create
-                  one with AI!
-                </p>
+                <p>No caption generated yet. Click "Generate Caption" to create one with AI!</p>
               </div>
             }
           >
@@ -61,14 +54,7 @@ export const CaptionEditor: Component<CaptionEditorProps> = (props) => {
                   <h4>Tags:</h4>
                   <div class="tag-bubbles">
                     <For each={props.image.tags}>
-                      {(tag, index) => (
-                        <TagBubble
-                          tag={tag}
-                          index={index()}
-                          editable={false}
-                          removable={false}
-                        />
-                      )}
+                      {(tag, index) => <TagBubble tag={tag} index={index()} editable={false} removable={false} />}
                     </For>
                   </div>
                 </div>
@@ -78,8 +64,7 @@ export const CaptionEditor: Component<CaptionEditorProps> = (props) => {
                 <div class="generation-meta">
                   <small>
                     Generated with <strong>{props.image.model}</strong> on{" "}
-                    {props.image.generatedAt?.toLocaleDateString()} at{" "}
-                    {props.image.generatedAt?.toLocaleTimeString()}
+                    {props.image.generatedAt?.toLocaleDateString()} at {props.image.generatedAt?.toLocaleTimeString()}
                   </small>
                 </div>
               </Show>

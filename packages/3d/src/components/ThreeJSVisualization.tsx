@@ -6,14 +6,11 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { ErrorDisplay } from "./ErrorDisplay";
 import "./ThreeJSVisualization.css";
 
-export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = (
-  props,
-) => {
+export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = props => {
   const [containerRef, setContainerRef] = createSignal<HTMLDivElement>();
   const visualization = useThreeJSVisualization(props);
 
-  const initializeScene = (container: HTMLDivElement) =>
-    visualization.initializeScene(container);
+  const initializeScene = (container: HTMLDivElement) => visualization.initializeScene(container);
 
   onMount(() => {
     const container = containerRef();
@@ -21,14 +18,11 @@ export const ThreeJSVisualization: Component<ThreeJSVisualizationProps> = (
   });
 
   useResizeHandler(containerRef, {
-    onResize: (container) => visualization.handleResize(container),
+    onResize: container => visualization.handleResize(container),
   });
 
   return (
-    <div
-      ref={setContainerRef}
-      class={`threejs-visualization threejs-container ${props.className || ""}`}
-    >
+    <div ref={setContainerRef} class={`threejs-visualization threejs-container ${props.className || ""}`}>
       <Show when={visualization.isLoading()}>
         <LoadingSpinner />
       </Show>

@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // Валідація пароля
   password: {
-    "must-be-at-least-8-characters-long":
-      "Пароль повинен містити принаймні 8 символів",
-    "must-contain-at-least-one-uppercase-letter":
-      "Пароль повинен містити принаймні одну велику літеру",
-    "must-contain-at-least-one-lowercase-letter":
-      "Пароль повинен містити принаймні одну малу літеру",
-    "must-contain-at-least-one-number":
-      "Пароль повинен містити принаймні одну цифру",
-    "must-contain-at-least-one-special-character":
-      "Пароль повинен містити принаймні один спеціальний символ",
+    "must-be-at-least-8-characters-long": "Пароль повинен містити принаймні 8 символів",
+    "must-contain-at-least-one-uppercase-letter": "Пароль повинен містити принаймні одну велику літеру",
+    "must-contain-at-least-one-lowercase-letter": "Пароль повинен містити принаймні одну малу літеру",
+    "must-contain-at-least-one-number": "Пароль повинен містити принаймні одну цифру",
+    "must-contain-at-least-one-special-character": "Пароль повинен містити принаймні один спеціальний символ",
   },
 
   // Валідація безпеки
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Повинен бути включений принаймні один тип символу",
-    "input-contains-potentially-dangerous-html":
-      "Ввід містить потенційно небезпечний HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Ввід містить потенційно небезпечні SQL-шаблони",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Ввід містить потенційно небезпечні XSS-шаблони",
-    "input-contains-path-traversal-patterns":
-      "Ввід містить шаблони обходу шляху",
-    "input-contains-windows-reserved-names":
-      "Ввід містить зарезервовані імена Windows",
-    "input-contains-executable-file-extensions":
-      "Ввід містить розширення виконуваних файлів",
+    "at-least-one-character-type-must-be-included": "Повинен бути включений принаймні один тип символу",
+    "input-contains-potentially-dangerous-html": "Ввід містить потенційно небезпечний HTML",
+    "input-contains-potentially-dangerous-sql-patterns": "Ввід містить потенційно небезпечні SQL-шаблони",
+    "input-contains-potentially-dangerous-xss-patterns": "Ввід містить потенційно небезпечні XSS-шаблони",
+    "input-contains-path-traversal-patterns": "Ввід містить шаблони обходу шляху",
+    "input-contains-windows-reserved-names": "Ввід містить зарезервовані імена Windows",
+    "input-contains-executable-file-extensions": "Ввід містить розширення виконуваних файлів",
     "input-contains-null-bytes": "Ввід містить нульові байти",
     "input-contains-hidden-files": "Ввід містить приховані файли",
-    "input-contains-javascript-file-extensions":
-      "Ввід містить розширення файлів JavaScript",
+    "input-contains-javascript-file-extensions": "Ввід містить розширення файлів JavaScript",
   },
 
   // Асинхронні операції
@@ -132,10 +119,8 @@ export const coreTranslations = {
 
   // Зберігання та серіалізація
   storage: {
-    "potentially-dangerous-json-detected":
-      "Виявлено потенційно небезпечний JSON",
-    "failed-to-parse-json-from-localstorage":
-      "Не вдалося розібрати JSON з localStorage:",
+    "potentially-dangerous-json-detected": "Виявлено потенційно небезпечний JSON",
+    "failed-to-parse-json-from-localstorage": "Не вдалося розібрати JSON з localStorage:",
     "error-parsing-storage-event": "Помилка розбору події зберігання для ключа",
   },
 
@@ -173,9 +158,7 @@ export const coreTranslations = {
   // Інтеграційні тести
   integration: {
     "session-and-api-key-generation": "Генерація сесії та API-ключа",
-    "authentication-and-input-validation-integration":
-      "Інтеграція аутентифікації та валідації вводу",
-    "performance-and-security-integration":
-      "Інтеграція продуктивності та безпеки",
+    "authentication-and-input-validation-integration": "Інтеграція аутентифікації та валідації вводу",
+    "performance-and-security-integration": "Інтеграція продуктивності та безпеки",
   },
 };

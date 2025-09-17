@@ -5,11 +5,7 @@
 
 import { Component, createSignal, onMount, onCleanup } from "solid-js";
 import { Card, Button } from "reynard-components";
-import {
-  RosePetalGrowthSystem,
-  RosePetalRenderer,
-  type RosePetal,
-} from "../utils/phyllotactic";
+import { RosePetalGrowthSystem, RosePetalRenderer, type RosePetal } from "../utils/phyllotactic";
 import "./PhyllotacticRosePetalDemo.css";
 
 export const PhyllotacticRosePetalDemo: Component = () => {
@@ -67,11 +63,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
     if (!renderer) return;
 
     renderer.renderPetals(petals);
-    renderer.drawGrowthPhaseIndicator(
-      growthPhase(),
-      currentPetals().length,
-      fps(),
-    );
+    renderer.drawGrowthPhaseIndicator(growthPhase(), currentPetals().length, fps());
   };
 
   // Animation loop
@@ -166,10 +158,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
     <div class="phyllotactic-rose-demo">
       <div class="demo-header">
         <h2>🌹 Phyllotactic Rose Petal Growth</h2>
-        <p>
-          Beautiful organic rose petal growth animation using phyllotactic
-          mathematics
-        </p>
+        <p>Beautiful organic rose petal growth animation using phyllotactic mathematics</p>
       </div>
 
       <div class="demo-content">
@@ -283,9 +272,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
             </div>
 
             <div class="control-group">
-              <label>
-                Bundle Growth Delay: {bundleGrowthDelay().toFixed(2)}s
-              </label>
+              <label>Bundle Growth Delay: {bundleGrowthDelay().toFixed(2)}s</label>
               <input
                 type="range"
                 min="0.1"
@@ -303,7 +290,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={sepalVisibility()}
-                onChange={(e) => {
+                onChange={e => {
                   setSepalVisibility(e.currentTarget.checked);
                   updateConfig();
                 }}
@@ -319,9 +306,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={enableOrganicMovement()}
-                onChange={(e) =>
-                  setEnableOrganicMovement(e.currentTarget.checked)
-                }
+                onChange={e => setEnableOrganicMovement(e.currentTarget.checked)}
               />
               <label>Enable Organic Movement</label>
             </div>
@@ -330,29 +315,19 @@ export const PhyllotacticRosePetalDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={enablePetalRotation()}
-                onChange={(e) =>
-                  setEnablePetalRotation(e.currentTarget.checked)
-                }
+                onChange={e => setEnablePetalRotation(e.currentTarget.checked)}
               />
               <label>Enable Petal Rotation</label>
             </div>
 
             <div class="control-group">
-              <Button
-                variant="secondary"
-                onClick={resetRose}
-                class="control-button"
-              >
+              <Button variant="secondary" onClick={resetRose} class="control-button">
                 🌱 Reset Rose
               </Button>
             </div>
 
             <div class="control-group">
-              <Button
-                variant={isGrowing() ? "danger" : "primary"}
-                onClick={toggleGrowth}
-                class="control-button"
-              >
+              <Button variant={isGrowing() ? "danger" : "primary"} onClick={toggleGrowth} class="control-button">
                 {isGrowing() ? "⏹️ Stop Growth" : "🌹 Start Growth"}
               </Button>
             </div>
@@ -363,10 +338,7 @@ export const PhyllotacticRosePetalDemo: Component = () => {
             <div class="info-content">
               <div class="info-item">
                 <span class="info-label">Growth Phase:</span>
-                <span class="info-value">
-                  {growthPhase().charAt(0).toUpperCase() +
-                    growthPhase().slice(1)}
-                </span>
+                <span class="info-value">{growthPhase().charAt(0).toUpperCase() + growthPhase().slice(1)}</span>
               </div>
               <div class="info-item">
                 <span class="info-label">Petal Count:</span>
@@ -401,29 +373,29 @@ export const PhyllotacticRosePetalDemo: Component = () => {
             <div class="feature-description">
               <h4>🌱 Organic Growth</h4>
               <p>
-                Petals grow naturally following the golden angle (137.5°)
-                creating the perfect spiral pattern found in nature.
+                Petals grow naturally following the golden angle (137.5°) creating the perfect spiral pattern found in
+                nature.
               </p>
             </div>
             <div class="feature-description">
               <h4>🎨 Dynamic Colors</h4>
               <p>
-                Each petal has unique colors that transition from deep purples
-                in the center to vibrant reds and oranges on the outer edges.
+                Each petal has unique colors that transition from deep purples in the center to vibrant reds and oranges
+                on the outer edges.
               </p>
             </div>
             <div class="feature-description">
               <h4>🌊 Organic Movement</h4>
               <p>
-                Subtle organic movement and rotation make each petal feel alive
-                and natural, just like a real rose in a gentle breeze.
+                Subtle organic movement and rotation make each petal feel alive and natural, just like a real rose in a
+                gentle breeze.
               </p>
             </div>
             <div class="feature-description">
               <h4>⏱️ Growth Phases</h4>
               <p>
-                Watch the rose progress through bud, blooming, full bloom, and
-                wilting phases with realistic timing and behavior.
+                Watch the rose progress through bud, blooming, full bloom, and wilting phases with realistic timing and
+                behavior.
               </p>
             </div>
           </div>

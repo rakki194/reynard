@@ -15,15 +15,12 @@ export function createAnimationEngine(
     maxFPS: 120,
     enableVSync: true,
     enablePerformanceMonitoring: true,
-  },
+  }
 ) {
   return createAnimationCore(config);
 }
 
 // Re-export types and other engines
-export type {
-  AnimationConfig,
-  AnimationCallbacks,
-} from "./animation/AnimationTypes";
+export type { AnimationConfig, AnimationCallbacks } from "./animation/AnimationTypes";
 export { createThrottledAnimationEngine } from "./animation/ThrottledAnimation";
 export { createAdaptiveAnimationEngine } from "./animation/AdaptiveAnimation";

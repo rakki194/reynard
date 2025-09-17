@@ -6,11 +6,7 @@
 
 // Main Performance Dashboard
 export { PerformanceDashboard } from "./PerformanceDashboard";
-export type {
-  PerformanceDashboardProps,
-  PerformanceWarning,
-  PerformanceHistory,
-} from "./PerformanceDashboard";
+export type { PerformanceDashboardProps, PerformanceWarning, PerformanceHistory } from "./PerformanceDashboard";
 
 // Performance Dashboard Tabs
 export { PerformanceOverviewTab } from "./PerformanceOverviewTab";
@@ -30,13 +26,7 @@ export type { PerformanceExportTabProps } from "./PerformanceExportTab";
 
 // Performance Panels
 export { PerformanceMetricsPanel } from "./PerformanceMetricsPanel";
-export type {
-  PerformanceMetricsPanelProps,
-  PerformanceMetrics,
-} from "./PerformanceMetricsPanel";
+export type { PerformanceMetricsPanelProps, PerformanceMetrics } from "./PerformanceMetricsPanel";
 
 export { MemoryTrackingPanel } from "./MemoryTrackingPanel";
-export type {
-  MemoryTrackingPanelProps,
-  MemoryLeakDetection,
-} from "./MemoryTrackingPanel";
+export type { MemoryTrackingPanelProps, MemoryLeakDetection } from "./MemoryTrackingPanel";

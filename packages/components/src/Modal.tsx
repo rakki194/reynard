@@ -2,13 +2,7 @@
  * Modal Component
  * A flexible modal dialog component with backdrop and animations
  */
-import {
-  splitProps,
-  mergeProps,
-  createEffect,
-  Show,
-  Component,
-} from "solid-js";
+import { splitProps, mergeProps, createEffect, Show, Component } from "solid-js";
 import { Portal } from "solid-js/web";
 
 export interface ModalProps {
@@ -39,7 +33,7 @@ const defaultProps: Partial<ModalProps> = {
   closeOnEscape: true,
 };
 
-export const Modal: Component<ModalProps> = (props) => {
+export const Modal: Component<ModalProps> = props => {
   const merged = mergeProps(defaultProps, props);
   const [local] = splitProps(merged, [
     "open",
@@ -84,10 +78,7 @@ export const Modal: Component<ModalProps> = (props) => {
   };
 
   const getModalClasses = () => {
-    const classes = [
-      "reynard-modal__content",
-      `reynard-modal__content--${local.size}`,
-    ];
+    const classes = ["reynard-modal__content", `reynard-modal__content--${local.size}`];
     if (local.class) classes.push(local.class);
     return classes.join(" ");
   };
@@ -100,9 +91,7 @@ export const Modal: Component<ModalProps> = (props) => {
             <div class={getModalClasses()}>
               {(local.title || local.showCloseButton) && (
                 <div class="reynard-modal__header">
-                  {local.title && (
-                    <h2 class="reynard-modal__title">{local.title}</h2>
-                  )}
+                  {local.title && <h2 class="reynard-modal__title">{local.title}</h2>}
 
                   {local.showCloseButton && (
                     <button
@@ -111,12 +100,7 @@ export const Modal: Component<ModalProps> = (props) => {
                       onClick={() => local.onClose?.()}
                       aria-label="Close modal"
                     >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="currentColor"
-                      >
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 6.585l3.593-3.592a1 1 0 011.414 1.414L9.415 8l3.592 3.593a1 1 0 01-1.414 1.414L8 9.415l-3.593 3.592a1 1 0 01-1.414-1.414L6.585 8 2.993 4.407a1 1 0 011.414-1.414L8 6.585z" />
                       </svg>
                     </button>

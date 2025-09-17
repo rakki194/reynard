@@ -11,46 +11,40 @@ export function usePointCloudHandlers(
     camera: unknown,
     scene: unknown,
     raycaster: unknown,
-    mouse: unknown,
+    mouse: unknown
   ) => void,
   handlePointHover: (
     event: MouseEvent | TouchEvent,
     camera: unknown,
     scene: unknown,
     raycaster: unknown,
-    mouse: unknown,
-  ) => void,
+    mouse: unknown
+  ) => void
 ) {
   // Interaction handlers with validation
-  const createPointSelectionHandler =
-    (camera: unknown, scene: unknown) => (event: MouseEvent | TouchEvent) => {
-      const ray = raycaster();
-      const mousePos = mouse();
+  const createPointSelectionHandler = (camera: unknown, scene: unknown) => (event: MouseEvent | TouchEvent) => {
+    const ray = raycaster();
+    const mousePos = mouse();
 
-      if (!ray || !mousePos) {
-        console.warn(
-          "Raycaster or mouse not initialized. Call eventsModule.initializeRaycaster() first.",
-        );
-        return;
-      }
+    if (!ray || !mousePos) {
+      console.warn("Raycaster or mouse not initialized. Call eventsModule.initializeRaycaster() first.");
+      return;
+    }
 
-      handlePointSelection(event, camera, scene, ray, mousePos);
-    };
+    handlePointSelection(event, camera, scene, ray, mousePos);
+  };
 
-  const createPointHoverHandler =
-    (camera: unknown, scene: unknown) => (event: MouseEvent | TouchEvent) => {
-      const ray = raycaster();
-      const mousePos = mouse();
+  const createPointHoverHandler = (camera: unknown, scene: unknown) => (event: MouseEvent | TouchEvent) => {
+    const ray = raycaster();
+    const mousePos = mouse();
 
-      if (!ray || !mousePos) {
-        console.warn(
-          "Raycaster or mouse not initialized. Call eventsModule.initializeRaycaster() first.",
-        );
-        return;
-      }
+    if (!ray || !mousePos) {
+      console.warn("Raycaster or mouse not initialized. Call eventsModule.initializeRaycaster() first.");
+      return;
+    }
 
-      handlePointHover(event, camera, scene, ray, mousePos);
-    };
+    handlePointHover(event, camera, scene, ray, mousePos);
+  };
 
   return {
     createPointSelectionHandler,

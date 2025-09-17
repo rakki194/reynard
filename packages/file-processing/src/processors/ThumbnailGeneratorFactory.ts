@@ -8,19 +8,14 @@
 import { ThumbnailOptions, ProcessingResult } from "../types";
 import { getFileCategory } from "../config/file-types";
 import { getFileInfo, getFileExtension } from "./utils/file-info";
-import {
-  GeneratorRegistry,
-  GeneratorRegistryOptions,
-} from "./utils/generator-registry";
+import { GeneratorRegistry, GeneratorRegistryOptions } from "./utils/generator-registry";
 
 export type ThumbnailGeneratorFactoryOptions = GeneratorRegistryOptions;
 
 export class ThumbnailGeneratorFactory {
   private registry: GeneratorRegistry;
 
-  constructor(
-    private options: ThumbnailGeneratorFactoryOptions = { size: [200, 200] },
-  ) {
+  constructor(private options: ThumbnailGeneratorFactoryOptions = { size: [200, 200] }) {
     this.options = {
       format: "webp",
       quality: 85,
@@ -42,7 +37,7 @@ export class ThumbnailGeneratorFactory {
    */
   async generateThumbnail(
     file: File | string,
-    options?: Partial<ThumbnailOptions>,
+    options?: Partial<ThumbnailOptions>
   ): Promise<ProcessingResult<Blob | string>> {
     const startTime = Date.now();
     const mergedOptions = { ...this.options, ...options };
@@ -60,19 +55,13 @@ export class ThumbnailGeneratorFactory {
 
       // Check file size limit
       if (size > (mergedOptions.maxThumbnailSize || Infinity)) {
-        return this.createErrorResult(
-          `File size ${size} exceeds maximum thumbnail size limit`,
-          startTime,
-        );
+        return this.createErrorResult(`File size ${size} exceeds maximum thumbnail size limit`, startTime);
       }
 
       // Get appropriate generator
       const generator = this.registry.getGenerator(category, mergedOptions);
       if (!generator) {
-        return this.createErrorResult(
-          `Unsupported file category: ${category}`,
-          startTime,
-        );
+        return this.createErrorResult(`Unsupported file category: ${category}`, startTime);
       }
 
       // Generate thumbnail
@@ -83,20 +72,14 @@ export class ThumbnailGeneratorFactory {
         duration: Date.now() - startTime,
       };
     } catch (error) {
-      return this.createErrorResult(
-        error instanceof Error ? error.message : "Unknown error occurred",
-        startTime,
-      );
+      return this.createErrorResult(error instanceof Error ? error.message : "Unknown error occurred", startTime);
     }
   }
 
   /**
    * Create error result with consistent format
    */
-  private createErrorResult(
-    error: string,
-    startTime: number,
-  ): ProcessingResult<Blob | string> {
+  private createErrorResult(error: string, startTime: number): ProcessingResult<Blob | string> {
     return {
       success: false,
       error,

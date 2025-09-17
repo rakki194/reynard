@@ -20,14 +20,13 @@ export interface FileModalHeaderProps {
   onDownload: () => void;
 }
 
-export const FileModalHeader: Component<FileModalHeaderProps> = (props) => {
+export const FileModalHeader: Component<FileModalHeaderProps> = props => {
   return (
     <div class="rag-file-header">
       <div class="file-info">
         <div class="file-path">{props.filePath}</div>
         <div class="file-stats">
-          {props.fileContent.split("\n").length} lines •{" "}
-          {props.fileContent.length} characters
+          {props.fileContent.split("\n").length} lines • {props.fileContent.length} characters
         </div>
       </div>
 

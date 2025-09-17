@@ -12,10 +12,7 @@ export interface ValidationResult {
   errors: string[];
 }
 
-export function validateTranslations(
-  translations: Record<string, unknown>,
-  requiredKeys: string[],
-): ValidationResult {
+export function validateTranslations(translations: Record<string, unknown>, requiredKeys: string[]): ValidationResult {
   const result: ValidationResult = {
     isValid: true,
     missingKeys: [],

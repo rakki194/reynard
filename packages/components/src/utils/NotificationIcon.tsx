@@ -10,7 +10,7 @@ interface NotificationIconProps {
   type: "success" | "error" | "warning" | "info";
 }
 
-export const NotificationIcon: Component<NotificationIconProps> = (props) => {
+export const NotificationIcon: Component<NotificationIconProps> = props => {
   const getIconName = () => {
     switch (props.type) {
       case "success":

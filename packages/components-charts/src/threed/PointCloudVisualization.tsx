@@ -3,13 +3,7 @@
  * Interactive point cloud with theme-aware colors
  */
 
-import {
-  Component,
-  createSignal,
-  onMount,
-  onCleanup,
-  createEffect,
-} from "solid-js";
+import { Component, createSignal, onMount, onCleanup, createEffect } from "solid-js";
 import { useVisualizationEngine } from "reynard-charts";
 
 interface PointCloudVisualizationProps {
@@ -19,9 +13,7 @@ interface PointCloudVisualizationProps {
   pointCount?: number;
 }
 
-export const PointCloudVisualization: Component<
-  PointCloudVisualizationProps
-> = (props) => {
+export const PointCloudVisualization: Component<PointCloudVisualizationProps> = props => {
   const [container, setContainer] = createSignal<HTMLDivElement>();
   const [isInitialized, setIsInitialized] = createSignal(false);
 
@@ -41,9 +33,7 @@ export const PointCloudVisualization: Component<
       strawberry: ["#f87171", "#ef4444", "#dc2626", "#991b1b"],
       peanut: ["#d97706", "#b45309", "#92400e", "#78350f"],
     };
-    return (
-      colorPalettes[theme as keyof typeof colorPalettes] || colorPalettes.dark
-    );
+    return colorPalettes[theme as keyof typeof colorPalettes] || colorPalettes.dark;
   };
 
   const initializeThreeJS = async () => {
@@ -58,12 +48,7 @@ export const PointCloudVisualization: Component<
       scene.background = new THREE.Color(bgColor);
 
       // Create camera
-      camera = new THREE.PerspectiveCamera(
-        75,
-        (props.width || 400) / (props.height || 300),
-        0.1,
-        1000,
-      );
+      camera = new THREE.PerspectiveCamera(75, (props.width || 400) / (props.height || 300), 0.1, 1000);
       camera.position.z = 5;
 
       // Create renderer
@@ -177,7 +162,7 @@ export const PointCloudVisualization: Component<
   // Update colors when theme changes
   createEffect(() => {
     if (isInitialized() && points) {
-      import("three").then((THREE) => {
+      import("three").then(THREE => {
         const colorPalette = getThemeColors(props.theme);
         const colors = points.geometry.attributes.color.array;
 

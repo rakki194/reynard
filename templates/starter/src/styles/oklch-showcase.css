@@ -38,12 +38,9 @@
 
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 oklch(0% 0 0 / 0.05);
-  --shadow-md:
-    0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -1px oklch(0% 0 0 / 0.06);
-  --shadow-lg:
-    0 10px 15px -3px oklch(0% 0 0 / 0.1), 0 4px 6px -2px oklch(0% 0 0 / 0.05);
-  --shadow-xl:
-    0 20px 25px -5px oklch(0% 0 0 / 0.1), 0 10px 10px -5px oklch(0% 0 0 / 0.04);
+  --shadow-md: 0 4px 6px -1px oklch(0% 0 0 / 0.1), 0 2px 4px -1px oklch(0% 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px oklch(0% 0 0 / 0.1), 0 4px 6px -2px oklch(0% 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px oklch(0% 0 0 / 0.1), 0 10px 10px -5px oklch(0% 0 0 / 0.04);
   --shadow-2xl: 0 25px 50px -12px oklch(0% 0 0 / 0.25);
 
   /* Glow Effects */
@@ -113,11 +110,7 @@
 .page-title {
   font-size: 2rem;
   font-weight: 800;
-  background: linear-gradient(
-    135deg,
-    var(--showcase-primary),
-    var(--showcase-accent)
-  );
+  background: linear-gradient(135deg, var(--showcase-primary), var(--showcase-accent));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -164,11 +157,7 @@
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: var(--space-lg);
-  background: linear-gradient(
-    135deg,
-    var(--showcase-primary),
-    var(--showcase-accent)
-  );
+  background: linear-gradient(135deg, var(--showcase-primary), var(--showcase-accent));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -398,21 +387,11 @@
 }
 
 .lightness-slider {
-  background: linear-gradient(
-    to right,
-    oklch(0% 0 0),
-    oklch(50% 0 0),
-    oklch(100% 0 0)
-  );
+  background: linear-gradient(to right, oklch(0% 0 0), oklch(50% 0 0), oklch(100% 0 0));
 }
 
 .chroma-slider {
-  background: linear-gradient(
-    to right,
-    oklch(60% 0 240),
-    oklch(60% 0.2 240),
-    oklch(60% 0.4 240)
-  );
+  background: linear-gradient(to right, oklch(60% 0 240), oklch(60% 0.2 240), oklch(60% 0.4 240));
 }
 
 /* Color Preview Section */
@@ -700,11 +679,7 @@
 
 /* Specific gradient samples */
 .gradient-sample.primary-accent {
-  background: linear-gradient(
-    135deg,
-    var(--showcase-primary),
-    var(--showcase-accent)
-  );
+  background: linear-gradient(135deg, var(--showcase-primary), var(--showcase-accent));
 }
 
 .gradient-sample.success-info {
@@ -1282,21 +1257,13 @@
   position: absolute;
   width: 25px;
   height: 25px;
-  transform: translate3d(
-    calc(var(--x) * 25px - 100px),
-    calc(var(--y) * 25px - 100px),
-    calc(var(--z) * 25px - 50px)
-  );
+  transform: translate3d(calc(var(--x) * 25px - 100px), calc(var(--y) * 25px - 100px), calc(var(--z) * 25px - 50px));
   border-radius: 2px;
   transition: all var(--animation-duration) var(--animation-timing);
 }
 
 .cube-voxel:hover {
-  transform: translate3d(
-      calc(var(--x) * 25px - 100px),
-      calc(var(--y) * 25px - 100px),
-      calc(var(--z) * 25px - 50px)
-    )
+  transform: translate3d(calc(var(--x) * 25px - 100px), calc(var(--y) * 25px - 100px), calc(var(--z) * 25px - 50px))
     scale(1.2);
   box-shadow: var(--shadow-lg);
 }
@@ -1506,11 +1473,7 @@
 .spiral-header h2 {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(
-    135deg,
-    var(--showcase-primary),
-    var(--showcase-accent)
-  );
+  background: linear-gradient(135deg, var(--showcase-primary), var(--showcase-accent));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1568,9 +1531,7 @@
   transition: all var(--animation-duration) var(--animation-timing);
 }
 
-.spiral-controls
-  .control-group
-  input[type="range"]::-webkit-slider-thumb:hover {
+.spiral-controls .control-group input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.2);
   box-shadow: var(--shadow-lg);
 }
@@ -1812,10 +1773,8 @@
   :root {
     --showcase-border: oklch(0% 0 0);
     --shadow-sm: 0 1px 2px 0 oklch(0% 0 0 / 0.3);
-    --shadow-md:
-      0 4px 6px -1px oklch(0% 0 0 / 0.3), 0 2px 4px -1px oklch(0% 0 0 / 0.2);
-    --shadow-lg:
-      0 10px 15px -3px oklch(0% 0 0 / 0.3), 0 4px 6px -2px oklch(0% 0 0 / 0.2);
+    --shadow-md: 0 4px 6px -1px oklch(0% 0 0 / 0.3), 0 2px 4px -1px oklch(0% 0 0 / 0.2);
+    --shadow-lg: 0 10px 15px -3px oklch(0% 0 0 / 0.3), 0 4px 6px -2px oklch(0% 0 0 / 0.2);
   }
 
   .color-swatch,

@@ -91,17 +91,12 @@ export class MemoryPool<T extends PooledObject> {
     this.pool.push(obj);
     this.stats.released++;
     this.stats.poolSize = this.pool.length;
-    this.stats.peakPoolSize = Math.max(
-      this.stats.peakPoolSize,
-      this.pool.length,
-    );
+    this.stats.peakPoolSize = Math.max(this.stats.peakPoolSize, this.pool.length);
   }
 
   private updateHitRate(): void {
     if (this.stats.acquired > 0) {
-      this.stats.hitRate =
-        (this.stats.acquired - (this.stats.created - this.config.initialSize)) /
-        this.stats.acquired;
+      this.stats.hitRate = (this.stats.acquired - (this.stats.created - this.config.initialSize)) / this.stats.acquired;
     }
   }
 

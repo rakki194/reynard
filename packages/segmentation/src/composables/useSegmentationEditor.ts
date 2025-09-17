@@ -64,21 +64,15 @@ export interface UseSegmentationEditorReturn {
 /**
  * Segmentation editor composable with comprehensive state management
  */
-export function useSegmentationEditor(
-  options: UseSegmentationEditorOptions,
-): UseSegmentationEditorReturn {
-  const [state, setState] = createSignal<SegmentationEditorState>(
-    options.state,
-  );
-  const [segmentations, setSegmentations] = createSignal<SegmentationData[]>(
-    [],
-  );
+export function useSegmentationEditor(options: UseSegmentationEditorOptions): UseSegmentationEditorReturn {
+  const [state, setState] = createSignal<SegmentationEditorState>(options.state);
+  const [segmentations, setSegmentations] = createSignal<SegmentationData[]>([]);
   const [history, setHistory] = createSignal<SegmentationData[][]>([]);
   const [historyIndex, setHistoryIndex] = createSignal<number>(-1);
 
   // Update state and notify parent
   const updateState = (updates: Partial<SegmentationEditorState>) => {
-    setState((prev) => {
+    setState(prev => {
       const newState = { ...prev, ...updates };
       options.onStateChange?.(newState);
       return newState;
@@ -96,14 +90,12 @@ export function useSegmentationEditor(
     // Check polygon count limit
     const currentCount = segmentations().length;
     if (currentCount >= options.config.maxPolygons) {
-      console.warn(
-        `Maximum polygon count (${options.config.maxPolygons}) reached`,
-      );
+      console.warn(`Maximum polygon count (${options.config.maxPolygons}) reached`);
       return;
     }
 
     // Add to segmentations
-    setSegmentations((prev) => [...prev, segmentation]);
+    setSegmentations(prev => [...prev, segmentation]);
 
     // Update state
     updateState({
@@ -124,9 +116,7 @@ export function useSegmentationEditor(
     }
 
     // Update in segmentations
-    setSegmentations((prev) =>
-      prev.map((s) => (s.id === segmentation.id ? segmentation : s)),
-    );
+    setSegmentations(prev => prev.map(s => (s.id === segmentation.id ? segmentation : s)));
 
     // Update state if this is the selected segmentation
     const currentState = state();
@@ -144,7 +134,7 @@ export function useSegmentationEditor(
   // Delete a segmentation
   const deleteSegmentation = (segmentationId: string) => {
     // Remove from segmentations
-    setSegmentations((prev) => prev.filter((s) => s.id !== segmentationId));
+    setSegmentations(prev => prev.filter(s => s.id !== segmentationId));
 
     // Update state if this was the selected segmentation
     const currentState = state();
@@ -215,10 +205,7 @@ export function useSegmentationEditor(
 
     // Check area constraints
     const area = PolygonOps.area(segmentation.polygon);
-    if (
-      area < options.config.minPolygonArea ||
-      area > options.config.maxPolygonArea
-    ) {
+    if (area < options.config.minPolygonArea || area > options.config.maxPolygonArea) {
       return false;
     }
 
@@ -252,14 +239,7 @@ export function useSegmentationEditor(
 
     for (let i = 0; i < points.length; i++) {
       for (let j = i + 2; j < points.length; j++) {
-        if (
-          linesIntersect(
-            points[i],
-            points[(i + 1) % points.length],
-            points[j],
-            points[(j + 1) % points.length],
-          )
-        ) {
+        if (linesIntersect(points[i], points[(i + 1) % points.length], points[j], points[(j + 1) % points.length])) {
           return true;
         }
       }
@@ -269,19 +249,12 @@ export function useSegmentationEditor(
   };
 
   // Check if two line segments intersect
-  const linesIntersect = (
-    p1: Point,
-    p2: Point,
-    p3: Point,
-    p4: Point,
-  ): boolean => {
+  const linesIntersect = (p1: Point, p2: Point, p3: Point, p4: Point): boolean => {
     const denom = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x);
     if (Math.abs(denom) < 1e-10) return false; // Lines are parallel
 
-    const t =
-      ((p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)) / denom;
-    const u =
-      -((p1.x - p2.x) * (p1.y - p3.y) - (p1.y - p2.y) * (p1.x - p3.x)) / denom;
+    const t = ((p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)) / denom;
+    const u = -((p1.x - p2.x) * (p1.y - p3.y) - (p1.y - p2.y) * (p1.x - p3.x)) / denom;
 
     return t >= 0 && t <= 1 && u >= 0 && u <= 1;
   };
@@ -316,7 +289,7 @@ export function useSegmentationEditor(
 
   // Utility functions
   const getSegmentation = (id: string): SegmentationData | undefined => {
-    return segmentations().find((s) => s.id === id);
+    return segmentations().find(s => s.id === id);
   };
 
   const getSelectedSegmentation = (): SegmentationData | undefined => {

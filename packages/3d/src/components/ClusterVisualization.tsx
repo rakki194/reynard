@@ -1,18 +1,10 @@
-import {
-  Component,
-  createEffect,
-  onCleanup,
-  createMemo,
-  createSignal,
-} from "solid-js";
+import { Component, createEffect, onCleanup, createMemo, createSignal } from "solid-js";
 import type { ClusterVisualizationProps } from "../types/rendering";
 import { ClusterStatisticsPanel } from "./ClusterStatisticsPanel";
 import { useClusterInteractions } from "../composables/useClusterInteractions";
 import { ClusterRenderer } from "../utils/clusterRenderer";
 
-export const ClusterVisualization: Component<ClusterVisualizationProps> = (
-  props,
-) => {
+export const ClusterVisualization: Component<ClusterVisualizationProps> = props => {
   const [hoveredCluster, setHoveredCluster] = createSignal<string | null>(null);
 
   // Create cluster renderer
@@ -22,7 +14,7 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = (
         scene: props.scene,
         renderer: props.renderer,
         camera: props.camera,
-      }),
+      })
   );
 
   // Set up cluster interactions
@@ -41,7 +33,7 @@ export const ClusterVisualization: Component<ClusterVisualizationProps> = (
 
     // Use setTimeout to handle async operations outside of reactive scope
     setTimeout(async () => {
-      await clusterRenderer().renderClusters(props.clusters, (clusterId) => {
+      await clusterRenderer().renderClusters(props.clusters, clusterId => {
         setHoveredCluster(clusterId || null);
       });
     }, 0);

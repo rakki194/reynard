@@ -1,6 +1,6 @@
 /**
  * Image Display Component
- * 
+ *
  * Handles image loading, error states, and zoom controls
  */
 
@@ -25,7 +25,7 @@ export interface ImageDisplayProps {
   onRetry?: () => void;
 }
 
-export const ImageDisplay: Component<ImageDisplayProps> = (props) => {
+export const ImageDisplay: Component<ImageDisplayProps> = props => {
   const [imageError, setImageError] = createSignal(false);
   const [imageLoading, setImageLoading] = createSignal(true);
   const [imageScale, setImageScale] = createSignal(1);
@@ -82,9 +82,7 @@ export const ImageDisplay: Component<ImageDisplayProps> = (props) => {
         <Button
           variant="secondary"
           size="small"
-          onClick={() =>
-            setImageScale(Math.max(0.25, imageScale() - 0.25))
-          }
+          onClick={() => setImageScale(Math.max(0.25, imageScale() - 0.25))}
           icon={getIcon("zoom-out")}
         >
           Zoom Out
@@ -101,12 +99,7 @@ export const ImageDisplay: Component<ImageDisplayProps> = (props) => {
           Zoom In
         </Button>
 
-        <Button
-          variant="secondary"
-          size="small"
-          onClick={() => setImageScale(1)}
-          icon={getIcon("zoom-reset")}
-        >
+        <Button variant="secondary" size="small" onClick={() => setImageScale(1)} icon={getIcon("zoom-reset")}>
           Reset
         </Button>
       </div>

@@ -9,21 +9,14 @@ import "./OKLCHButton.css";
 
 interface OKLCHButtonProps {
   children: JSX.Element;
-  variant?:
-    | "primary"
-    | "secondary"
-    | "accent"
-    | "success"
-    | "warning"
-    | "error"
-    | "info";
+  variant?: "primary" | "secondary" | "accent" | "success" | "warning" | "error" | "info";
   size?: "small" | "medium" | "large";
   disabled?: boolean;
   onClick?: () => void;
   class?: string;
 }
 
-export const OKLCHButton: Component<OKLCHButtonProps> = (props) => {
+export const OKLCHButton: Component<OKLCHButtonProps> = props => {
   const themeColors = useThemeColors();
 
   const variant = () => props.variant || "primary";
@@ -45,7 +38,7 @@ export const OKLCHButton: Component<OKLCHButtonProps> = (props) => {
   return (
     <button
       class={`oklch-button oklch-button--${variant()} oklch-button--${size()} ${props.class || ""}`}
-      ref={(el) => {
+      ref={el => {
         if (el) {
           const styles = getButtonStyles();
           Object.entries(styles).forEach(([key, value]) => {

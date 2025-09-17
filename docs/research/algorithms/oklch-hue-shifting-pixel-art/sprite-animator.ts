@@ -116,11 +116,7 @@ export class SpriteAnimator {
    * Set current frame (for manual control)
    */
   setFrame(frameIndex: number): void {
-    if (
-      this.animation &&
-      frameIndex >= 0 &&
-      frameIndex < this.animation.frames.length
-    ) {
+    if (this.animation && frameIndex >= 0 && frameIndex < this.animation.frames.length) {
       this.currentFrame = frameIndex;
       this.frameTime = 0;
     }

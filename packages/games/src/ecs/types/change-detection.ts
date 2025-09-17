@@ -76,10 +76,7 @@ export interface ChangeDetection {
    * @param componentType The component type to check for
    * @returns true if the component was added this frame
    */
-  isAdded<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
+  isAdded<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
 
   /**
    * Checks if a component was changed on an entity this frame.
@@ -87,10 +84,7 @@ export interface ChangeDetection {
    * @param componentType The component type to check for
    * @returns true if the component was changed this frame
    */
-  isChanged<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
+  isChanged<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
 
   /**
    * Checks if a component was removed from an entity this frame.
@@ -98,10 +92,7 @@ export interface ChangeDetection {
    * @param componentType The component type to check for
    * @returns true if the component was removed this frame
    */
-  isRemoved<T extends Component>(
-    entity: Entity,
-    componentType: ComponentType<T>,
-  ): boolean;
+  isRemoved<T extends Component>(entity: Entity, componentType: ComponentType<T>): boolean;
 
   /**
    * Clears all change detection data.

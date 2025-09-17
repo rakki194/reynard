@@ -117,11 +117,7 @@ export class EnhancedMemoryPool {
     // Initialize union-find pool with common sizes
     const commonSizes = [10, 25, 50, 100, 200, 500];
     for (const size of commonSizes) {
-      for (
-        let i = 0;
-        i < Math.ceil(this.config.unionFindPoolSize / commonSizes.length);
-        i++
-      ) {
+      for (let i = 0; i < Math.ceil(this.config.unionFindPoolSize / commonSizes.length); i++) {
         this.unionFindPool.push({
           object: new UnionFind(size),
           isInUse: false,
@@ -160,7 +156,7 @@ export class EnhancedMemoryPool {
     const startTime = performance.now();
 
     // Try to find an available pooled instance
-    let pooled = this.spatialHashPool.find((p) => !p.isInUse);
+    let pooled = this.spatialHashPool.find(p => !p.isInUse);
 
     if (pooled) {
       // Reuse existing instance
@@ -201,7 +197,7 @@ export class EnhancedMemoryPool {
     const startTime = performance.now();
 
     // Try to find an available pooled instance of the right size
-    let pooled = this.unionFindPool.find((p) => !p.isInUse && p.size === size);
+    let pooled = this.unionFindPool.find(p => !p.isInUse && p.size === size);
 
     if (pooled) {
       // Reuse existing instance
@@ -243,7 +239,7 @@ export class EnhancedMemoryPool {
     const startTime = performance.now();
 
     // Try to find an available pooled array
-    let pooled = this.collisionArrayPool.find((p) => !p.isInUse);
+    let pooled = this.collisionArrayPool.find(p => !p.isInUse);
 
     if (pooled) {
       // Reuse existing array
@@ -284,7 +280,7 @@ export class EnhancedMemoryPool {
     const startTime = performance.now();
 
     // Try to find an available pooled set
-    let pooled = this.processedSetPool.find((p) => !p.isInUse);
+    let pooled = this.processedSetPool.find(p => !p.isInUse);
 
     if (pooled) {
       // Reuse existing set
@@ -322,7 +318,7 @@ export class EnhancedMemoryPool {
    * Return a spatial hash to the pool
    */
   returnSpatialHash(hash: SpatialHash): void {
-    const pooled = this.spatialHashPool.find((p) => p.object === hash);
+    const pooled = this.spatialHashPool.find(p => p.object === hash);
     if (pooled) {
       pooled.isInUse = false;
       pooled.lastUsed = Date.now();
@@ -334,7 +330,7 @@ export class EnhancedMemoryPool {
    * Return a union-find to the pool
    */
   returnUnionFind(unionFind: UnionFind): void {
-    const pooled = this.unionFindPool.find((p) => p.object === unionFind);
+    const pooled = this.unionFindPool.find(p => p.object === unionFind);
     if (pooled) {
       pooled.isInUse = false;
       pooled.lastUsed = Date.now();
@@ -346,7 +342,7 @@ export class EnhancedMemoryPool {
    * Return a collision array to the pool
    */
   returnCollisionArray(array: CollisionPair[]): void {
-    const pooled = this.collisionArrayPool.find((p) => p.object === array);
+    const pooled = this.collisionArrayPool.find(p => p.object === array);
     if (pooled) {
       pooled.isInUse = false;
       pooled.lastUsed = Date.now();
@@ -358,7 +354,7 @@ export class EnhancedMemoryPool {
    * Return a processed set to the pool
    */
   returnProcessedSet(set: Set<number>): void {
-    const pooled = this.processedSetPool.find((p) => p.object === set);
+    const pooled = this.processedSetPool.find(p => p.object === set);
     if (pooled) {
       pooled.isInUse = false;
       pooled.lastUsed = Date.now();
@@ -373,8 +369,7 @@ export class EnhancedMemoryPool {
     const allocationTime = performance.now() - startTime;
     this.stats.totalAllocations++;
     this.stats.averageAllocationTime =
-      (this.stats.averageAllocationTime * (this.stats.totalAllocations - 1) +
-        allocationTime) /
+      (this.stats.averageAllocationTime * (this.stats.totalAllocations - 1) + allocationTime) /
       this.stats.totalAllocations;
 
     if (wasPoolHit) {
@@ -382,18 +377,14 @@ export class EnhancedMemoryPool {
     }
 
     this.stats.currentPoolUsage = this.getCurrentPoolUsage();
-    this.stats.peakPoolUsage = Math.max(
-      this.stats.peakPoolUsage,
-      this.stats.currentPoolUsage,
-    );
+    this.stats.peakPoolUsage = Math.max(this.stats.peakPoolUsage, this.stats.currentPoolUsage);
 
     // Update hit rate
     const total = this.stats.poolHits + this.stats.poolMisses;
     this.stats.hitRate = total > 0 ? (this.stats.poolHits / total) * 100 : 0;
 
     // Update allocation reduction
-    this.stats.allocationReduction =
-      total > 0 ? (this.stats.poolHits / total) * 100 : 0;
+    this.stats.allocationReduction = total > 0 ? (this.stats.poolHits / total) * 100 : 0;
 
     // Record performance history if enabled
     if (this.config.enablePerformanceTracking) {
@@ -411,32 +402,19 @@ export class EnhancedMemoryPool {
     const collisionArraySize = 64; // bytes
     const processedSetSize = 128; // bytes
 
-    return (
-      spatialHashSize + unionFindSize + collisionArraySize + processedSetSize
-    );
+    return spatialHashSize + unionFindSize + collisionArraySize + processedSetSize;
   }
 
   /**
    * Get current pool usage statistics
    */
   getCurrentPoolUsage(): number {
-    const spatialHashInUse = this.spatialHashPool.filter(
-      (p) => p.isInUse,
-    ).length;
-    const unionFindInUse = this.unionFindPool.filter((p) => p.isInUse).length;
-    const collisionArrayInUse = this.collisionArrayPool.filter(
-      (p) => p.isInUse,
-    ).length;
-    const processedSetInUse = this.processedSetPool.filter(
-      (p) => p.isInUse,
-    ).length;
+    const spatialHashInUse = this.spatialHashPool.filter(p => p.isInUse).length;
+    const unionFindInUse = this.unionFindPool.filter(p => p.isInUse).length;
+    const collisionArrayInUse = this.collisionArrayPool.filter(p => p.isInUse).length;
+    const processedSetInUse = this.processedSetPool.filter(p => p.isInUse).length;
 
-    return (
-      spatialHashInUse +
-      unionFindInUse +
-      collisionArrayInUse +
-      processedSetInUse
-    );
+    return spatialHashInUse + unionFindInUse + collisionArrayInUse + processedSetInUse;
   }
 
   /**
@@ -451,23 +429,23 @@ export class EnhancedMemoryPool {
     return {
       spatialHashPool: {
         total: this.spatialHashPool.length,
-        inUse: this.spatialHashPool.filter((p) => p.isInUse).length,
-        available: this.spatialHashPool.filter((p) => !p.isInUse).length,
+        inUse: this.spatialHashPool.filter(p => p.isInUse).length,
+        available: this.spatialHashPool.filter(p => !p.isInUse).length,
       },
       unionFindPool: {
         total: this.unionFindPool.length,
-        inUse: this.unionFindPool.filter((p) => p.isInUse).length,
-        available: this.unionFindPool.filter((p) => !p.isInUse).length,
+        inUse: this.unionFindPool.filter(p => p.isInUse).length,
+        available: this.unionFindPool.filter(p => !p.isInUse).length,
       },
       collisionArrayPool: {
         total: this.collisionArrayPool.length,
-        inUse: this.collisionArrayPool.filter((p) => p.isInUse).length,
-        available: this.collisionArrayPool.filter((p) => !p.isInUse).length,
+        inUse: this.collisionArrayPool.filter(p => p.isInUse).length,
+        available: this.collisionArrayPool.filter(p => !p.isInUse).length,
       },
       processedSetPool: {
         total: this.processedSetPool.length,
-        inUse: this.processedSetPool.filter((p) => p.isInUse).length,
-        available: this.processedSetPool.filter((p) => !p.isInUse).length,
+        inUse: this.processedSetPool.filter(p => p.isInUse).length,
+        available: this.processedSetPool.filter(p => !p.isInUse).length,
       },
     };
   }
@@ -489,11 +467,9 @@ export class EnhancedMemoryPool {
     if (this.stats.hitRate < 90) {
       recommendations.push({
         type: "pool_size",
-        description:
-          "Low pool hit rate detected. Consider increasing pool sizes.",
+        description: "Low pool hit rate detected. Consider increasing pool sizes.",
         impact: "high",
-        implementation:
-          "Increase spatialHashPoolSize and collisionArrayPoolSize in config",
+        implementation: "Increase spatialHashPoolSize and collisionArrayPoolSize in config",
       });
     }
 
@@ -501,8 +477,7 @@ export class EnhancedMemoryPool {
     if (this.stats.currentPoolUsage > this.config.maxPoolSize * 0.8) {
       recommendations.push({
         type: "cleanup_interval",
-        description:
-          "High pool usage detected. Consider reducing cleanup interval.",
+        description: "High pool usage detected. Consider reducing cleanup interval.",
         impact: "medium",
         implementation: "Reduce cleanupInterval in config",
       });
@@ -512,11 +487,9 @@ export class EnhancedMemoryPool {
     if (this.stats.allocationReduction < 95) {
       recommendations.push({
         type: "object_lifecycle",
-        description:
-          "Allocation reduction below optimal. Check object lifecycle management.",
+        description: "Allocation reduction below optimal. Check object lifecycle management.",
         impact: "high",
-        implementation:
-          "Ensure proper returnToPool() calls and object reuse patterns",
+        implementation: "Ensure proper returnToPool() calls and object reuse patterns",
       });
     }
 
@@ -569,7 +542,7 @@ export class EnhancedMemoryPool {
     const maxIdleTime = 300000; // 5 minutes
 
     // Clean up unused spatial hash pools
-    this.spatialHashPool = this.spatialHashPool.filter((p) => {
+    this.spatialHashPool = this.spatialHashPool.filter(p => {
       if (!p.isInUse && now - p.lastUsed > maxIdleTime) {
         return false;
       }
@@ -577,7 +550,7 @@ export class EnhancedMemoryPool {
     });
 
     // Clean up unused union-find pools
-    this.unionFindPool = this.unionFindPool.filter((p) => {
+    this.unionFindPool = this.unionFindPool.filter(p => {
       if (!p.isInUse && now - p.lastUsed > maxIdleTime) {
         return false;
       }
@@ -585,7 +558,7 @@ export class EnhancedMemoryPool {
     });
 
     // Clean up unused collision array pools
-    this.collisionArrayPool = this.collisionArrayPool.filter((p) => {
+    this.collisionArrayPool = this.collisionArrayPool.filter(p => {
       if (!p.isInUse && now - p.lastUsed > maxIdleTime) {
         return false;
       }
@@ -593,7 +566,7 @@ export class EnhancedMemoryPool {
     });
 
     // Clean up unused processed set pools
-    this.processedSetPool = this.processedSetPool.filter((p) => {
+    this.processedSetPool = this.processedSetPool.filter(p => {
       if (!p.isInUse && now - p.lastUsed > maxIdleTime) {
         return false;
       }
@@ -609,33 +582,20 @@ export class EnhancedMemoryPool {
     spatialDensity: number;
     updateFrequency: number;
   }): void {
-    const { objectCount, spatialDensity, updateFrequency } =
-      workloadCharacteristics;
+    const { objectCount, spatialDensity, updateFrequency } = workloadCharacteristics;
 
     // Adjust pool sizes based on workload
     if (objectCount > 100) {
-      this.config.spatialHashPoolSize = Math.min(
-        50,
-        this.config.spatialHashPoolSize * 1.5,
-      );
-      this.config.collisionArrayPoolSize = Math.min(
-        200,
-        this.config.collisionArrayPoolSize * 1.5,
-      );
+      this.config.spatialHashPoolSize = Math.min(50, this.config.spatialHashPoolSize * 1.5);
+      this.config.collisionArrayPoolSize = Math.min(200, this.config.collisionArrayPoolSize * 1.5);
     }
 
     if (spatialDensity > 0.7) {
-      this.config.spatialHashPoolSize = Math.min(
-        100,
-        this.config.spatialHashPoolSize * 2,
-      );
+      this.config.spatialHashPoolSize = Math.min(100, this.config.spatialHashPoolSize * 2);
     }
 
     if (updateFrequency > 10) {
-      this.config.cleanupInterval = Math.max(
-        10000,
-        this.config.cleanupInterval * 0.5,
-      );
+      this.config.cleanupInterval = Math.max(10000, this.config.cleanupInterval * 0.5);
     }
   }
 

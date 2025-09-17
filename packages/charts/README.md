@@ -60,7 +60,7 @@ function LiveDashboard() {
   // Simulate real-time data
   onMount(() => {
     const interval = setInterval(() => {
-      setData((prev) =>
+      setData(prev =>
         [
           ...prev,
           {
@@ -68,7 +68,7 @@ function LiveDashboard() {
             value: Math.random() * 100,
             label: new Date().toLocaleTimeString(),
           },
-        ].slice(-50),
+        ].slice(-50)
       ); // Keep last 50 points
     }, 1000);
 
@@ -285,9 +285,9 @@ function StreamingChart() {
 
   onMount(() => {
     const websocket = new WebSocket("ws://localhost:8080/data");
-    websocket.onmessage = (event) => {
+    websocket.onmessage = event => {
       const point = JSON.parse(event.data);
-      setData((prev) => [...prev, point].slice(-100));
+      setData(prev => [...prev, point].slice(-100));
     };
     setWs(websocket);
   });
@@ -299,7 +299,7 @@ function StreamingChart() {
       streaming={{
         enabled: true,
         websocket: ws(),
-        parser: (data) => ({
+        parser: data => ({
           timestamp: data.time,
           value: data.value,
           label: new Date(data.time).toLocaleTimeString(),
@@ -326,14 +326,7 @@ function MonitoredChart() {
     }
   });
 
-  return (
-    <Chart
-      type="line"
-      labels={labels}
-      datasets={datasets}
-      enablePerformanceMonitoring={true}
-    />
-  );
+  return <Chart type="line" labels={labels} datasets={datasets} enablePerformanceMonitoring={true} />;
 }
 ```
 
@@ -427,13 +420,7 @@ To enable OKLCH colors in existing charts:
 
 ```tsx
 // Add these props to existing charts
-<Chart
-  type="line"
-  labels={labels}
-  datasets={datasets}
-  useOKLCH={true}
-  colorTheme="dark"
-/>
+<Chart type="line" labels={labels} datasets={datasets} useOKLCH={true} colorTheme="dark" />
 ```
 
 ## Conclusion

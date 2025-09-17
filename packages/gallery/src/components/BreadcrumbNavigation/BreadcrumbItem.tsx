@@ -20,7 +20,7 @@ export interface BreadcrumbItemProps {
   onToggleExpanded: (path: string) => void;
 }
 
-export const BreadcrumbItem: Component<BreadcrumbItemProps> = (props) => {
+export const BreadcrumbItem: Component<BreadcrumbItemProps> = props => {
   return (
     <li class="reynard-breadcrumb-navigation__item">
       <Show when={props.index > 0}>
@@ -34,9 +34,7 @@ export const BreadcrumbItem: Component<BreadcrumbItemProps> = (props) => {
           title={props.showFullPaths ? props.item.fullPath : props.item.name}
         >
           <Show when={props.item.icon}>
-            <span class="reynard-breadcrumb-navigation__item-icon">
-              {props.item.icon}
-            </span>
+            <span class="reynard-breadcrumb-navigation__item-icon">{props.item.icon}</span>
           </Show>
           <span class="reynard-breadcrumb-navigation__item-name">
             {props.showFullPaths ? props.item.fullPath : props.item.name}
@@ -47,13 +45,9 @@ export const BreadcrumbItem: Component<BreadcrumbItemProps> = (props) => {
       <Show when={props.item.clickable === false}>
         <span class="reynard-breadcrumb-navigation__current">
           <Show when={props.item.icon}>
-            <span class="reynard-breadcrumb-navigation__item-icon">
-              {props.item.icon}
-            </span>
+            <span class="reynard-breadcrumb-navigation__item-icon">{props.item.icon}</span>
           </Show>
-          <span class="reynard-breadcrumb-navigation__item-name">
-            {props.item.name}
-          </span>
+          <span class="reynard-breadcrumb-navigation__item-name">{props.item.name}</span>
         </span>
       </Show>
 

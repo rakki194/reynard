@@ -141,7 +141,8 @@ class TwitterScraper(BaseScraper):
                 await page.wait_for_timeout(3000)
 
                 # Extract tweet content
-                content = await page.evaluate("""
+                content = await page.evaluate(
+                    """
                     () => {
                         const result = {};
 
@@ -213,7 +214,8 @@ class TwitterScraper(BaseScraper):
 
                         return result;
                     }
-                """)
+                """
+                )
 
                 await browser.close()
                 return content
@@ -321,7 +323,8 @@ class TwitterScraper(BaseScraper):
                 tweets_collected = 0
                 while tweets_collected < limit:
                     # Extract tweets from current view
-                    tweets = await page.evaluate("""
+                    tweets = await page.evaluate(
+                        """
                         () => {
                             const tweets = [];
                             const tweetElements = document.querySelectorAll('[data-testid="tweet"]');
@@ -343,7 +346,8 @@ class TwitterScraper(BaseScraper):
 
                             return tweets;
                         }
-                    """)
+                    """
+                    )
 
                     for tweet in tweets:
                         if tweets_collected >= limit:
@@ -351,9 +355,11 @@ class TwitterScraper(BaseScraper):
 
                         result = ScrapingResult(
                             url=url,
-                            title=tweet["text"][:100] + "..."
-                            if len(tweet["text"]) > 100
-                            else tweet["text"],
+                            title=(
+                                tweet["text"][:100] + "..."
+                                if len(tweet["text"]) > 100
+                                else tweet["text"]
+                            ),
                             content=tweet["text"],
                             metadata={
                                 "source": "twitter",

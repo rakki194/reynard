@@ -37,8 +37,8 @@ describe("FileProcessingPipeline", () => {
   it("should get supported file types", () => {
     const types = pipeline.getSupportedTypes();
     expect(types.length).toBeGreaterThan(0);
-    expect(types.some((t) => t.extension === ".jpg")).toBe(true);
-    expect(types.some((t) => t.extension === ".png")).toBe(true);
+    expect(types.some(t => t.extension === ".jpg")).toBe(true);
+    expect(types.some(t => t.extension === ".png")).toBe(true);
   });
 
   it("should update configuration", () => {
@@ -77,8 +77,8 @@ describe("ThumbnailGenerator", () => {
     ctx.fillStyle = "red";
     ctx.fillRect(0, 0, 100, 100);
 
-    const blob = await new Promise<Blob>((resolve) => {
-      canvas.toBlob((blob) => {
+    const blob = await new Promise<Blob>(resolve => {
+      canvas.toBlob(blob => {
         if (blob) resolve(blob);
       }, "image/png");
     });
@@ -133,7 +133,7 @@ describe("Processing Pipeline Integration", () => {
   it("should process files with progress tracking", async () => {
     const progressUpdates: any[] = [];
 
-    pipeline.onProgress((progress) => {
+    pipeline.onProgress(progress => {
       progressUpdates.push(progress);
     });
 

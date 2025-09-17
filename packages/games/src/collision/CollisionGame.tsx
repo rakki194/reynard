@@ -52,8 +52,8 @@ export function CollisionGame(props: CollisionGameProps = {}) {
   const updateBalls = () => {
     if (!isRunning()) return;
 
-    setBalls((prevBalls) => {
-      const newBalls = prevBalls.map((ball) => {
+    setBalls(prevBalls => {
+      const newBalls = prevBalls.map(ball => {
         let newX = ball.x + ball.vx;
         let newY = ball.y + ball.vy;
         let newVx = ball.vx;
@@ -151,16 +151,11 @@ export function CollisionGame(props: CollisionGameProps = {}) {
       }
 
       // Keep only recent collisions
-      const recentCollisions = newCollisions.filter(
-        (c) => Date.now() - c.timestamp < 1000,
-      );
+      const recentCollisions = newCollisions.filter(c => Date.now() - c.timestamp < 1000);
       setCollisions(recentCollisions);
 
       // Update stats
-      const totalSpeed = newBalls.reduce(
-        (sum, ball) => sum + Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy),
-        0,
-      );
+      const totalSpeed = newBalls.reduce((sum, ball) => sum + Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy), 0);
       setStats({
         totalCollisions: stats().totalCollisions! + collisionCount,
         activeBalls: newBalls.length,
@@ -210,11 +205,7 @@ export function CollisionGame(props: CollisionGameProps = {}) {
       <div class="game-header">
         <h3>⚽ Bouncing Balls Collision Demo</h3>
         <div class="game-controls">
-          <Button
-            onClick={() => setIsRunning(!isRunning())}
-            variant={isRunning() ? "danger" : "primary"}
-            size="sm"
-          >
+          <Button onClick={() => setIsRunning(!isRunning())} variant={isRunning() ? "danger" : "primary"} size="sm">
             {isRunning() ? "Pause" : "Start"}
           </Button>
           <Button onClick={initializeBalls} variant="secondary" size="sm">
@@ -230,31 +221,16 @@ export function CollisionGame(props: CollisionGameProps = {}) {
 
       <div class="collision-canvas">
         <svg width={CANVAS_WIDTH} height={CANVAS_HEIGHT} class="balls-svg">
-          {balls().map((ball) => (
-            <circle
-              cx={ball.x}
-              cy={ball.y}
-              r={ball.radius}
-              fill={ball.color}
-              stroke="#333"
-              stroke-width="2"
-            />
+          {balls().map(ball => (
+            <circle cx={ball.x} cy={ball.y} r={ball.radius} fill={ball.color} stroke="#333" stroke-width="2" />
           ))}
-          {collisions().map((collision) => {
-            const ball1 = balls().find((b) => b.id === collision.ball1);
-            const ball2 = balls().find((b) => b.id === collision.ball2);
+          {collisions().map(collision => {
+            const ball1 = balls().find(b => b.id === collision.ball1);
+            const ball2 = balls().find(b => b.id === collision.ball2);
             if (!ball1 || !ball2) return null;
 
             return (
-              <line
-                x1={ball1.x}
-                y1={ball1.y}
-                x2={ball2.x}
-                y2={ball2.y}
-                stroke="red"
-                stroke-width="3"
-                opacity="0.7"
-              />
+              <line x1={ball1.x} y1={ball1.y} x2={ball2.x} y2={ball2.y} stroke="red" stroke-width="3" opacity="0.7" />
             );
           })}
         </svg>
@@ -262,12 +238,10 @@ export function CollisionGame(props: CollisionGameProps = {}) {
 
       <div class="game-instructions">
         <p>
-          🎯 <strong>Watch:</strong> AABB collision detection in real-time with
-          elastic collisions
+          🎯 <strong>Watch:</strong> AABB collision detection in real-time with elastic collisions
         </p>
         <p>
-          💡 <strong>Algorithm:</strong> Batch collision detection with spatial
-          optimization
+          💡 <strong>Algorithm:</strong> Batch collision detection with spatial optimization
         </p>
       </div>
     </div>

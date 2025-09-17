@@ -32,10 +32,7 @@ describe("CircleOps - Basic Operations", () => {
       const circle = CircleOps.create({ x: 0, y: 0 }, 5);
       const expectedCircumference = 2 * Math.PI * 5;
 
-      expect(CircleOps.circumference(circle)).toBeCloseTo(
-        expectedCircumference,
-        5,
-      );
+      expect(CircleOps.circumference(circle)).toBeCloseTo(expectedCircumference, 5);
     });
 
     it("should calculate circumference for zero radius", () => {

@@ -18,7 +18,7 @@ export interface SliderProps {
   id?: string;
 }
 
-export const Slider: Component<SliderProps> = (props) => {
+export const Slider: Component<SliderProps> = props => {
   const [trackRef, setTrackRef] = createSignal<HTMLDivElement>();
   const [isDragging, setIsDragging] = createSignal(false);
   const [value, setValue] = createSignal(props.value ?? 0);

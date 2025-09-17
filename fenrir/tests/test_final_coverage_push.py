@@ -58,7 +58,9 @@ class TestFinalCoveragePush(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call run_exploit on all exploits
                 for exploit in exploits:
@@ -268,7 +270,9 @@ class TestFinalCoveragePush(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call run_exploit on all exploits
                 for exploit in exploits:

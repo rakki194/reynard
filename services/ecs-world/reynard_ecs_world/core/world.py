@@ -5,7 +5,6 @@ Main ECS world that manages entities, components, and systems.
 """
 
 import logging
-from typing import Dict, List, Type
 
 from .component import Component
 from .entity import Entity
@@ -17,27 +16,27 @@ logger = logging.getLogger(__name__)
 class ECSWorld:
     """
     Main ECS world that manages entities, components, and systems.
-    
+
     The world is the central container that holds all entities and systems,
     and provides methods to create, manage, and update them.
     """
 
     def __init__(self) -> None:
         """Initialize the ECS world."""
-        self.entities: Dict[str, Entity] = {}
-        self.systems: List[System] = []
+        self.entities: dict[str, Entity] = {}
+        self.systems: list[System] = []
         self._next_entity_id = 1
 
     def create_entity(self, entity_id: str | None = None) -> Entity:
         """
         Create a new entity.
-        
+
         Args:
             entity_id: Optional custom ID for the entity
-            
+
         Returns:
             The created entity
-            
+
         Raises:
             ValueError: If entity_id already exists
         """
@@ -56,10 +55,10 @@ class ECSWorld:
     def get_entity(self, entity_id: str) -> Entity | None:
         """
         Get an entity by ID.
-        
+
         Args:
             entity_id: The ID of the entity to retrieve
-            
+
         Returns:
             The entity if found, None otherwise
         """
@@ -68,7 +67,7 @@ class ECSWorld:
     def destroy_entity(self, entity_id: str) -> None:
         """
         Destroy an entity.
-        
+
         Args:
             entity_id: The ID of the entity to destroy
         """
@@ -80,7 +79,7 @@ class ECSWorld:
     def add_system(self, system: System) -> None:
         """
         Add a system to the world.
-        
+
         Args:
             system: The system to add
         """
@@ -90,7 +89,7 @@ class ECSWorld:
     def remove_system(self, system: System) -> None:
         """
         Remove a system from the world.
-        
+
         Args:
             system: The system to remove
         """
@@ -101,7 +100,7 @@ class ECSWorld:
     def update(self, delta_time: float) -> None:
         """
         Update all systems.
-        
+
         Args:
             delta_time: Time elapsed since last update
         """
@@ -113,14 +112,14 @@ class ECSWorld:
                     logger.error(f"Error updating system {type(system).__name__}: {e}")
 
     def get_entities_with_components(
-        self, *component_types: Type[Component]
-    ) -> List[Entity]:
+        self, *component_types: type[Component]
+    ) -> list[Entity]:
         """
         Get entities that have all specified components.
-        
+
         Args:
             *component_types: Component types to filter by
-            
+
         Returns:
             List of entities that have all specified components
         """
@@ -141,7 +140,7 @@ class ECSWorld:
     def get_entity_count(self) -> int:
         """
         Get the total number of entities.
-        
+
         Returns:
             Number of entities in the world
         """
@@ -150,7 +149,7 @@ class ECSWorld:
     def get_system_count(self) -> int:
         """
         Get the total number of systems.
-        
+
         Returns:
             Number of systems in the world
         """

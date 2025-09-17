@@ -8,13 +8,7 @@
  * once the backend caption system is fully integrated.
  */
 
-export type MediaType =
-  | "image"
-  | "video"
-  | "audio"
-  | "text"
-  | "document"
-  | "unknown";
+export type MediaType = "image" | "video" | "audio" | "text" | "document" | "unknown";
 export type GalleryView = "grid" | "list" | "timeline";
 
 export interface MultiModalFile {

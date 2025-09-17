@@ -11,7 +11,7 @@ export default function GitIntegrationDemo() {
     "git-integration",
     <div class="demo-content unavailable">
       <p>Git integration is currently unavailable</p>
-    </div>,
+    </div>
   );
 
   const status = useFeatureStatus("git-integration");
@@ -57,9 +57,7 @@ export default function GitIntegrationDemo() {
         <div class="demo-content">
           <p>Git integration is fully available</p>
 
-          {status()?.degraded && (
-            <div class="status-message warning">⚠️ {status()?.message}</div>
-          )}
+          {status()?.degraded && <div class="status-message warning">⚠️ {status()?.message}</div>}
 
           <div class="git-demo-container">
             <input
@@ -67,17 +65,11 @@ export default function GitIntegrationDemo() {
               class="git-input"
               placeholder="Enter repository URL (e.g., https://github.com/user/repo)"
               value={repositoryUrl()}
-              onInput={(e) => setRepositoryUrl(e.target.value)}
+              onInput={e => setRepositoryUrl(e.target.value)}
             />
 
-            <button
-              class="btn"
-              onClick={checkRepository}
-              disabled={!repositoryUrl() || isChecking()}
-            >
-              {isChecking()
-                ? "Checking Repository..."
-                : "Check Repository Status"}
+            <button class="btn" onClick={checkRepository} disabled={!repositoryUrl() || isChecking()}>
+              {isChecking() ? "Checking Repository..." : "Check Repository Status"}
             </button>
 
             {isChecking() && (
@@ -96,8 +88,7 @@ export default function GitIntegrationDemo() {
                   </div>
                   <div>
                     <strong>Status:</strong>
-                    <span class="git-status-indicator">●</span>{" "}
-                    {gitStatus()!.status}
+                    <span class="git-status-indicator">●</span> {gitStatus()!.status}
                   </div>
                   <div>
                     <strong>Last Commit:</strong> {gitStatus()!.lastCommit}
@@ -109,8 +100,7 @@ export default function GitIntegrationDemo() {
                     <strong>Date:</strong> {gitStatus()!.date}
                   </div>
                   <div>
-                    <strong>Ahead/Behind:</strong> {gitStatus()!.ahead}/
-                    {gitStatus()!.behind}
+                    <strong>Ahead/Behind:</strong> {gitStatus()!.ahead}/{gitStatus()!.behind}
                   </div>
                 </div>
                 <div class="git-commit-message">

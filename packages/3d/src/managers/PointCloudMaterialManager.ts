@@ -1,9 +1,4 @@
-import type {
-  EmbeddingRenderingConfig,
-  MaterialManager,
-  MaterialLike,
-  ThreeJSInterface,
-} from "../types/rendering";
+import type { EmbeddingRenderingConfig, MaterialManager, MaterialLike, ThreeJSInterface } from "../types/rendering";
 import { generateMaterialCacheKey } from "../utils/rendering";
 
 export class PointCloudMaterialManager implements MaterialManager {
@@ -82,10 +77,7 @@ export class PointCloudMaterialManager implements MaterialManager {
     return material;
   }
 
-  updateMaterial(
-    material: MaterialLike,
-    config: EmbeddingRenderingConfig,
-  ): void {
+  updateMaterial(material: MaterialLike, config: EmbeddingRenderingConfig): void {
     if (!material || !material.userData) return;
 
     const userData = material.userData;

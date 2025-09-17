@@ -112,27 +112,37 @@ export class SearchService extends BaseAIService {
   }
 
   async vectorSearch(query: string, options: Partial<VectorSearchOptions> = {}): Promise<SearchResult[]> {
-    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
+    if (!this.isInitialized)
+      throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.vectorSearch(query, options);
   }
   async hybridSearch(query: string, options: Partial<HybridSearchOptions> = {}): Promise<SearchResult[]> {
-    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
+    if (!this.isInitialized)
+      throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.hybridSearch(query, options);
   }
   async keywordSearch(query: string, options: SearchOptions = {}): Promise<SearchResult[]> {
-    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
+    if (!this.isInitialized)
+      throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.keywordSearch(query, options);
   }
-  async multimodalSearch(query: string, modalities: ModalityType[], options: SearchOptions = {}): Promise<Record<ModalityType, SearchResult[]>> {
-    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
+  async multimodalSearch(
+    query: string,
+    modalities: ModalityType[],
+    options: SearchOptions = {}
+  ): Promise<Record<ModalityType, SearchResult[]>> {
+    if (!this.isInitialized)
+      throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.multimodalSearch(query, modalities, options);
   }
   async findSimilarFiles(fileId: string, modality: ModalityType, options: SearchOptions = {}): Promise<SearchResult[]> {
-    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
+    if (!this.isInitialized)
+      throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.findSimilarFiles(fileId, modality, options);
   }
   async getSearchSuggestions(query: string, limit: number = 10): Promise<string[]> {
-    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
+    if (!this.isInitialized)
+      throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.getSearchSuggestions(query, limit);
   }
   getSearchMetrics(): SearchMetrics {

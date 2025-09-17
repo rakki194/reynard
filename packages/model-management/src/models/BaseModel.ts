@@ -5,13 +5,7 @@
  * Provides common model lifecycle management and interface.
  */
 
-import {
-  ModelType,
-  ModelStatus,
-  ModelHealth,
-  ModelInstance,
-  ModelCapabilities,
-} from "../types/index.js";
+import { ModelType, ModelStatus, ModelHealth, ModelInstance, ModelCapabilities } from "../types/index.js";
 
 export abstract class BaseModel {
   protected _modelId: string;
@@ -25,11 +19,7 @@ export abstract class BaseModel {
   protected _metadata: Record<string, any> = {};
   protected _isInitialized = false;
 
-  constructor(
-    modelId: string,
-    modelType: ModelType,
-    config: Record<string, any> = {},
-  ) {
+  constructor(modelId: string, modelType: ModelType, config: Record<string, any> = {}) {
     this._modelId = modelId;
     this._modelType = modelType;
     this._config = { ...config };

@@ -7,15 +7,13 @@
 import type { Translations } from "../../types";
 
 export async function loadEnglishFallbackCore(
-  importFn: (path: string) => Promise<{ default: Translations }>,
+  importFn: (path: string) => Promise<{ default: Translations }>
 ): Promise<Translations> {
   const fallbackModule = await importFn("./lang/en/index.js");
   return fallbackModule.default;
 }
 
-export function createImportFunction(): (
-  path: string,
-) => Promise<{ default: Translations }> {
+export function createImportFunction(): (path: string) => Promise<{ default: Translations }> {
   if (typeof process !== "undefined" && process.env.NODE_ENV === "test") {
     const globalImport = (
       globalThis as {

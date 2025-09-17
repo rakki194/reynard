@@ -3,11 +3,7 @@
  * Template translation and plural handling
  */
 
-import type {
-  LanguageCode,
-  TranslationFunction,
-  TranslationParams,
-} from "../types";
+import type { LanguageCode, TranslationFunction, TranslationParams } from "../types";
 
 /**
  * Creates a template translator for template literals
@@ -24,10 +20,7 @@ function createTemplateTranslator(t: TranslationFunction) {
 /**
  * Creates a plural translator with fallback logic
  */
-function createPluralTranslator(
-  t: TranslationFunction,
-  locale: () => LanguageCode,
-) {
+function createPluralTranslator(t: TranslationFunction, locale: () => LanguageCode) {
   return (key: string, count: number, params?: TranslationParams): string => {
     // First, try to get the base key to see if it's a simple string
     const baseResult = t(key, { ...params, count });
@@ -115,10 +108,7 @@ function getPluralForm(count: number, locale: string): string {
 /**
  * Creates enhanced translation features
  */
-export function createTranslationFeatures(
-  t: TranslationFunction,
-  locale: () => LanguageCode,
-) {
+export function createTranslationFeatures(t: TranslationFunction, locale: () => LanguageCode) {
   const templateTranslator = createTemplateTranslator(t);
   const pluralTranslator = createPluralTranslator(t, locale);
 

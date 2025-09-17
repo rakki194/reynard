@@ -7,16 +7,17 @@ model management, batch processing, and statistics tracking.
 
 import logging
 import time
-from typing import Any, Callable, Dict, List, Optional, Set
+from collections.abc import Callable
+from typing import Any
 
-from ..base import CaptionGenerator
-from ..types import CaptionResult, CaptionTask
-from ..errors import CaptionError, format_error_message
-from ..retry_utils import retry_with_backoff, DEFAULT_RETRY_CONFIG
-from ..post_processing import post_process_caption
-from .model_coordinator import ModelCoordinator
-from .batch_processor import BatchProcessor
 from .. import stats as stats_mod
+from ..base import CaptionGenerator
+from ..errors import CaptionError, format_error_message
+from ..post_processing import post_process_caption
+from ..retry_utils import DEFAULT_RETRY_CONFIG, retry_with_backoff
+from ..types import CaptionResult, CaptionTask
+from .batch_processor import BatchProcessor
+from .model_coordinator import ModelCoordinator
 
 logger = logging.getLogger("uvicorn")
 
@@ -30,13 +31,13 @@ class CaptionService:
         self._retry_config = dict(DEFAULT_RETRY_CONFIG)
         self._total_processed = 0
         self._total_processing_time = 0.0
-        self._active_tasks: Set[str] = set()
+        self._active_tasks: set[str] = set()
 
     async def generate_single_caption(
         self,
         image_path,
         generator_name: str,
-        config: Optional[Dict[str, Any]] = None,
+        config: dict[str, Any] | None = None,
         force: bool = False,
     ) -> CaptionResult:
         """Generate a caption for a single image."""
@@ -44,7 +45,9 @@ class CaptionService:
         config = config or {}
 
         try:
-            if not self._model_coordinator.should_load_model(generator_name, is_batch=False):
+            if not self._model_coordinator.should_load_model(
+                generator_name, is_batch=False
+            ):
                 return CaptionResult(
                     image_path=image_path,
                     generator_name=generator_name,
@@ -69,9 +72,13 @@ class CaptionService:
 
             if not force:
                 caption_path = image_path.with_suffix(f".{model.caption_type.value}")
-                logger.debug(f"Checking if caption exists for {generator_name}: {caption_path}")
+                logger.debug(
+                    f"Checking if caption exists for {generator_name}: {caption_path}"
+                )
                 if caption_path.exists():
-                    logger.info(f"Caption already exists for {generator_name} at {caption_path}, skipping generation")
+                    logger.info(
+                        f"Caption already exists for {generator_name} at {caption_path}, skipping generation"
+                    )
                     return CaptionResult(
                         image_path=image_path,
                         generator_name=generator_name,
@@ -84,7 +91,9 @@ class CaptionService:
 
             caption = await self._generate_caption_with_retry(model, image_path, config)
             if caption and config.get("post_process", True):
-                caption = post_process_caption(caption, generator_name, config.get("post_processing_settings"))
+                caption = post_process_caption(
+                    caption, generator_name, config.get("post_processing_settings")
+                )
 
             processing_time = time.time() - start_time
             stats_mod.record_usage(generator_name, processing_time, True)
@@ -102,7 +111,9 @@ class CaptionService:
 
         except CaptionError as e:
             processing_time = time.time() - start_time
-            logger.error(f"Caption generation error for {image_path}: {e}", exc_info=True)
+            logger.error(
+                f"Caption generation error for {image_path}: {e}", exc_info=True
+            )
             stats_mod.record_usage(generator_name, processing_time, False)
             self._total_processed += 1
             self._total_processing_time += processing_time
@@ -118,14 +129,17 @@ class CaptionService:
             )
         except Exception as e:
             processing_time = time.time() - start_time
-            logger.error(f"Unexpected error generating caption for {image_path}: {e}", exc_info=True)
+            logger.error(
+                f"Unexpected error generating caption for {image_path}: {e}",
+                exc_info=True,
+            )
             self._total_processed += 1
             self._total_processing_time += processing_time
             return CaptionResult(
                 image_path=image_path,
                 generator_name=generator_name,
                 success=False,
-                error=f"Unexpected error: {str(e)}",
+                error=f"Unexpected error: {e!s}",
                 error_type="unexpected",
                 retryable=True,
                 processing_time=processing_time,
@@ -134,40 +148,51 @@ class CaptionService:
 
     async def generate_batch_captions(
         self,
-        tasks: List[CaptionTask],
-        progress_callback: Optional[Callable[[Dict[str, Any]], None]] = None,
+        tasks: list[CaptionTask],
+        progress_callback: Callable[[dict[str, Any]], None] | None = None,
         max_concurrent: int = 4,
-    ) -> List[CaptionResult]:
+    ) -> list[CaptionResult]:
         """Generate captions for multiple images in batch."""
-        return await self._batch_processor.process_batch(tasks, progress_callback, max_concurrent)
+        return await self._batch_processor.process_batch(
+            tasks, progress_callback, max_concurrent
+        )
 
-    async def _generate_caption_with_retry(self, model: CaptionGenerator, image_path, config: Dict[str, Any]) -> str:
+    async def _generate_caption_with_retry(
+        self, model: CaptionGenerator, image_path, config: dict[str, Any]
+    ) -> str:
         """Generate caption with retry logic."""
+
         async def _generate() -> str:
             try:
                 return await model.generate(image_path, **config)
             except Exception as e:
                 from ..errors import CaptionGenerationError
-                retryable = any(p in str(e).lower() for p in [
-                    "timeout",
-                    "connection",
-                    "network",
-                    "temporary",
-                    "server error",
-                    "rate limit",
-                    "memory",
-                    "cuda",
-                ])
+
+                retryable = any(
+                    p in str(e).lower()
+                    for p in [
+                        "timeout",
+                        "connection",
+                        "network",
+                        "temporary",
+                        "server error",
+                        "rate limit",
+                        "memory",
+                        "cuda",
+                    ]
+                )
                 raise CaptionGenerationError(model.name, str(e), retryable=retryable)
 
-        return await retry_with_backoff(_generate, "caption generation", config=self._retry_config)
+        return await retry_with_backoff(
+            _generate, "caption generation", config=self._retry_config
+        )
 
     # Introspection and control
-    def get_available_generators(self) -> Dict[str, Dict[str, Any]]:
+    def get_available_generators(self) -> dict[str, dict[str, Any]]:
         """Get information about available generators."""
         return self._model_coordinator.get_available_generators()
 
-    def get_generator_info(self, generator_name: str) -> Optional[Dict[str, Any]]:
+    def get_generator_info(self, generator_name: str) -> dict[str, Any] | None:
         """Get information about a specific generator."""
         return self._model_coordinator.get_generator_info(generator_name)
 
@@ -196,11 +221,11 @@ class CaptionService:
         pass
 
     # Stats facade
-    def get_model_usage_stats(self, model_name: str) -> Optional[Dict[str, Any]]:
+    def get_model_usage_stats(self, model_name: str) -> dict[str, Any] | None:
         """Get usage statistics for a specific model."""
         return stats_mod.get_model_usage_stats(model_name)
 
-    def get_health_status(self, model_name: Optional[str] = None) -> Dict[str, Any]:
+    def get_health_status(self, model_name: str | None = None) -> dict[str, Any]:
         """Get health status for system or specific model."""
         if model_name:
             return stats_mod.get_health_status(model_name=model_name)
@@ -209,20 +234,21 @@ class CaptionService:
             total_processing_time=self._total_processing_time,
         )
 
-    def get_circuit_breaker_state(self, model_name: str) -> Dict[str, Any]:
+    def get_circuit_breaker_state(self, model_name: str) -> dict[str, Any]:
         """Get circuit breaker state for a specific model."""
         return stats_mod.get_circuit_breaker_state(model_name)
 
-    def get_queue_status(self) -> Dict[str, Any]:
+    def get_queue_status(self) -> dict[str, Any]:
         """Get request queue status."""
         return stats_mod.get_queue_status()
 
-    def get_system_statistics(self) -> Dict[str, Any]:
+    def get_system_statistics(self) -> dict[str, Any]:
         """Get comprehensive system statistics."""
         return {
             "total_processed": self._total_processed,
             "total_processing_time": self._total_processing_time,
-            "average_processing_time": self._total_processing_time / max(self._total_processed, 1),
+            "average_processing_time": self._total_processing_time
+            / max(self._total_processed, 1),
             "active_tasks": len(self._active_tasks),
             "loaded_models": len(self.get_loaded_models()),
             "available_generators": len(self.get_available_generators()),

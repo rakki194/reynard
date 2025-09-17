@@ -4,11 +4,7 @@
  */
 
 import { ChartType, Dataset } from "../types";
-import {
-  getDefaultChartOptions,
-  enhanceChartOptions,
-  ChartTheme,
-} from "../utils/chartOptions";
+import { getDefaultChartOptions, enhanceChartOptions, ChartTheme } from "../utils/chartOptions";
 import { processDatasets, createChartData } from "../utils/chartDataProcessor";
 
 export interface ChartDataConfig {
@@ -49,15 +45,9 @@ export function useChartData(config: ChartDataConfig) {
 
     // Generate chart options
     const theme: ChartTheme = {
-      text: config.useOKLCH
-        ? config.visualization.generateColors(1)[0]
-        : "#ffffff",
-      background: config.useOKLCH
-        ? config.visualization.generateColors(1, 0.8)[0]
-        : "rgba(0, 0, 0, 0.8)",
-      grid: config.useOKLCH
-        ? config.visualization.generateColors(1, 0.3)[0]
-        : "rgba(255, 255, 255, 0.1)",
+      text: config.useOKLCH ? config.visualization.generateColors(1)[0] : "#ffffff",
+      background: config.useOKLCH ? config.visualization.generateColors(1, 0.8)[0] : "rgba(0, 0, 0, 0.8)",
+      grid: config.useOKLCH ? config.visualization.generateColors(1, 0.3)[0] : "rgba(255, 255, 255, 0.1)",
     };
 
     const baseOptions = getDefaultChartOptions({

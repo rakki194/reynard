@@ -119,11 +119,11 @@ const authClient = new HTTPClient({
     createTokenRefreshMiddleware({
       refreshEndpoint: "/auth/refresh",
       refreshToken: () => tokenManager.getRefreshToken(),
-      onTokenRefresh: (newToken) => tokenManager.setTokens(newToken),
+      onTokenRefresh: newToken => tokenManager.setTokens(newToken),
       onTokenExpired: () => handleLogout(),
     }),
     createErrorHandlingMiddleware({
-      onError: (error) => {
+      onError: error => {
         if (error.status === 401) {
           handleUnauthorized();
         }
@@ -166,7 +166,7 @@ const validationMiddleware = [
     password: ["trim"],
   }),
   passwordConfirmationMiddleware("password", "confirmPassword"),
-  createCrossFieldMiddleware((data) => {
+  createCrossFieldMiddleware(data => {
     if (data.email && data.email.includes("test")) {
       return { isValid: false, error: "Test emails not allowed" };
     }
@@ -181,7 +181,7 @@ const result = ValidationUtils.validateMultiple(
     confirmPassword: "SecurePass123!",
   },
   userSchema,
-  { middleware: validationMiddleware },
+  { middleware: validationMiddleware }
 );
 
 console.log(result.isValid); // true
@@ -204,9 +204,9 @@ import {
 // Set up global error handling
 const errorSystem = createErrorHandlerSystem({
   enableConsoleLogging: true,
-  onValidationError: (error) => console.warn("Validation error:", error),
-  onNetworkError: (error) => console.error("Network error:", error),
-  onAuthenticationError: (error) => {
+  onValidationError: error => console.warn("Validation error:", error),
+  onNetworkError: error => console.error("Network error:", error),
+  onAuthenticationError: error => {
     console.error("Auth error:", error);
     // Redirect to login
   },
@@ -243,10 +243,10 @@ try {
     },
     3, // max retries
     1000, // base delay
-    (error) => {
+    error => {
       // Custom retry condition
       return error.status >= 500 || error.status === 429;
-    },
+    }
   );
 } catch (error) {
   console.error("Failed after retries:", error);
@@ -270,7 +270,7 @@ export const createAuthHTTPClient = (
   config: AuthConfiguration,
   tokenManager: TokenManager,
   onUnauthorized: () => void,
-  onTokenRefresh: () => Promise<void>,
+  onTokenRefresh: () => Promise<void>
 ): HTTPClient => {
   return new HTTPClient({
     baseUrl: config.apiBaseUrl || "",
@@ -292,7 +292,7 @@ export const createAuthHTTPClient = (
         },
       }),
       createErrorHandlingMiddleware({
-        onError: (error) => {
+        onError: error => {
           if (error.status === 401) {
             onUnauthorized();
           }
@@ -307,18 +307,9 @@ export const createAuthHTTPClient = (
 
 ```typescript
 // packages/settings/src/utils/index.ts
-import {
-  ValidationUtils,
-  validateEmail,
-  validateUrl,
-  validateTheme,
-  type ValidationSchema,
-} from "reynard-connection";
+import { ValidationUtils, validateEmail, validateUrl, validateTheme, type ValidationSchema } from "reynard-connection";
 
-export function validateSetting(
-  definition: SettingDefinition,
-  value: any,
-): ValidationResult {
+export function validateSetting(definition: SettingDefinition, value: any): ValidationResult {
   // Map setting types to validation schemas
   const schemaMap: Record<string, ValidationSchema> = {
     email: { type: "email", required: definition.required },
@@ -346,11 +337,7 @@ export function validateSetting(
 
 ```typescript
 // packages/tools/src/core/BaseTool.ts
-import {
-  ValidationUtils,
-  ValidationError,
-  type ValidationSchema,
-} from "reynard-connection";
+import { ValidationUtils, ValidationError, type ValidationSchema } from "reynard-connection";
 
 export abstract class BaseTool {
   protected validateParameter(param: ToolParameter, value: any): void {
@@ -405,29 +392,11 @@ class HTTPClient {
 
   // Request methods
   request<T>(options: HTTPRequestOptions): Promise<HTTPResponse<T>>;
-  get<T>(
-    endpoint: string,
-    options?: Partial<HTTPRequestOptions>,
-  ): Promise<HTTPResponse<T>>;
-  post<T>(
-    endpoint: string,
-    data?: unknown,
-    options?: Partial<HTTPRequestOptions>,
-  ): Promise<HTTPResponse<T>>;
-  put<T>(
-    endpoint: string,
-    data?: unknown,
-    options?: Partial<HTTPRequestOptions>,
-  ): Promise<HTTPResponse<T>>;
-  patch<T>(
-    endpoint: string,
-    data?: unknown,
-    options?: Partial<HTTPRequestOptions>,
-  ): Promise<HTTPResponse<T>>;
-  delete<T>(
-    endpoint: string,
-    options?: Partial<HTTPRequestOptions>,
-  ): Promise<HTTPResponse<T>>;
+  get<T>(endpoint: string, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
+  post<T>(endpoint: string, data?: unknown, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
+  put<T>(endpoint: string, data?: unknown, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
+  patch<T>(endpoint: string, data?: unknown, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
+  delete<T>(endpoint: string, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>>;
 
   // Middleware management
   addMiddleware(middleware: HTTPMiddleware): void;
@@ -528,15 +497,11 @@ const uploadStack = createUploadMiddlewareStack({
 ```typescript
 class ValidationUtils {
   // Core validation
-  static validateValue(
-    value: unknown,
-    schema: ValidationSchema,
-    options?: FieldValidationOptions,
-  ): ValidationResult;
+  static validateValue(value: unknown, schema: ValidationSchema, options?: FieldValidationOptions): ValidationResult;
   static validateMultiple(
     data: Record<string, unknown>,
     schemas: Record<string, ValidationSchema>,
-    options?: FieldValidationOptions,
+    options?: FieldValidationOptions
   ): MultiValidationResult;
 
   // Helper methods
@@ -600,7 +565,7 @@ withRange(schema: ValidationSchema, min?: number, max?: number): ValidationSchem
 
 ```typescript
 // Cross-field validation
-const crossFieldMiddleware = createCrossFieldMiddleware((data) => {
+const crossFieldMiddleware = createCrossFieldMiddleware(data => {
   if (data.password !== data.confirmPassword) {
     return { isValid: false, error: "Passwords do not match" };
   }
@@ -608,10 +573,9 @@ const crossFieldMiddleware = createCrossFieldMiddleware((data) => {
 });
 
 // Conditional validation
-const conditionalMiddleware = createConditionalMiddleware(
-  (data) => data.role === "admin",
-  { permissions: { type: "array", required: true } },
-);
+const conditionalMiddleware = createConditionalMiddleware(data => data.role === "admin", {
+  permissions: { type: "array", required: true },
+});
 
 // Sanitization
 const sanitizationMiddleware = createSanitizationMiddleware({

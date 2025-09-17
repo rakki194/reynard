@@ -14,14 +14,14 @@ interface TagInputSectionProps {
   setIntensity: Setter<number>;
 }
 
-export const TagInputSection: Component<TagInputSectionProps> = (props) => {
+export const TagInputSection: Component<TagInputSectionProps> = props => {
   return (
     <div class="tag-input-section">
       <input
         type="text"
         placeholder="Enter tag name"
         value={props.tagInput()}
-        onInput={(e) => props.setTagInput(e.target.value)}
+        onInput={e => props.setTagInput(e.target.value)}
       />
       <Slider
         min={0.1}

@@ -5,10 +5,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { useBoundingBoxes } from "../composables/useBoundingBoxes";
 import { validateBoundingBox } from "../utils/validation";
-import {
-  imageToDisplayCoords,
-  displayToImageCoords,
-} from "../utils/coordinateTransform";
+import { imageToDisplayCoords, displayToImageCoords } from "../utils/coordinateTransform";
 import type { BoundingBox, ImageInfo } from "../types";
 
 describe("reynard-boundingbox", () => {
@@ -137,7 +134,7 @@ describe("reynard-boundingbox", () => {
         imageCoords,
         mockImageInfo,
         800, // container width
-        600, // container height
+        600 // container height
       );
 
       expect(displayCoords.x).toBeGreaterThan(0);
@@ -148,33 +145,15 @@ describe("reynard-boundingbox", () => {
 
     it("should convert display coordinates back to image coordinates", () => {
       const imageCoords = { x: 100, y: 100, width: 200, height: 150 };
-      const displayCoords = imageToDisplayCoords(
-        imageCoords,
-        mockImageInfo,
-        800,
-        600,
-      );
+      const displayCoords = imageToDisplayCoords(imageCoords, mockImageInfo, 800, 600);
 
-      const backToImageCoords = displayToImageCoords(
-        displayCoords,
-        mockImageInfo,
-        800,
-        600,
-      );
+      const backToImageCoords = displayToImageCoords(displayCoords, mockImageInfo, 800, 600);
 
       // Should be close to original (allowing for rounding)
-      expect(Math.abs(backToImageCoords.x - imageCoords.x)).toBeLessThanOrEqual(
-        1,
-      );
-      expect(Math.abs(backToImageCoords.y - imageCoords.y)).toBeLessThanOrEqual(
-        1,
-      );
-      expect(
-        Math.abs(backToImageCoords.width! - imageCoords.width),
-      ).toBeLessThanOrEqual(1);
-      expect(
-        Math.abs(backToImageCoords.height! - imageCoords.height),
-      ).toBeLessThanOrEqual(1);
+      expect(Math.abs(backToImageCoords.x - imageCoords.x)).toBeLessThanOrEqual(1);
+      expect(Math.abs(backToImageCoords.y - imageCoords.y)).toBeLessThanOrEqual(1);
+      expect(Math.abs(backToImageCoords.width! - imageCoords.width)).toBeLessThanOrEqual(1);
+      expect(Math.abs(backToImageCoords.height! - imageCoords.height)).toBeLessThanOrEqual(1);
     });
   });
 });

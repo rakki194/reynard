@@ -115,11 +115,7 @@ renderWithRouter(() => <MyComponent />, '/dashboard');
 ### Mock Utilities
 
 ```typescript
-import {
-  createMockFn,
-  createMockResponse,
-  createMockFile,
-} from "reynard-testing/utils";
+import { createMockFn, createMockResponse, createMockFile } from "reynard-testing/utils";
 
 // Create mock function
 const mockFn = createMockFn();
@@ -134,11 +130,7 @@ const file = createMockFile("test.txt", "content");
 ### Assertion Utilities
 
 ```typescript
-import {
-  expectComponentToRender,
-  expectPromiseToResolve,
-  expectElementToHaveClass,
-} from "reynard-testing/utils";
+import { expectComponentToRender, expectPromiseToResolve, expectElementToHaveClass } from "reynard-testing/utils";
 
 // Component assertions
 expectComponentToRender(MyComponent);
@@ -155,11 +147,7 @@ expectElementToHaveClass(element, "active");
 ### Browser APIs
 
 ```typescript
-import {
-  mockFetch,
-  mockLocalStorage,
-  mockWebSocket,
-} from "reynard-testing/mocks";
+import { mockFetch, mockLocalStorage, mockWebSocket } from "reynard-testing/mocks";
 
 // Mock fetch
 mockFetch.mockResolvedValueOnce({ ok: true });
@@ -453,9 +441,7 @@ describe("retryWithBackoff", () => {
       throw new Error("Permanent failure");
     };
 
-    await expect(retryWithBackoff(failingOperation, 2, 100)).rejects.toThrow(
-      "Permanent failure",
-    );
+    await expect(retryWithBackoff(failingOperation, 2, 100)).rejects.toThrow("Permanent failure");
   });
 });
 

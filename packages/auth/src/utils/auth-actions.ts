@@ -34,26 +34,21 @@ export const createAuthActions = (
   updateAuthState: (updates: Partial<AuthState>) => void,
   callbacks: AuthCallbacks,
   setupTokenRefresh: () => void,
-  authFetch: ReturnType<typeof createAuthFetch>,
+  authFetch: ReturnType<typeof createAuthFetch>
 ): AuthActions => {
   const login = async (credentials: LoginCredentials): Promise<void> => {
     updateAuthState({ isLoading: true, error: null });
 
     try {
-      const response = await fetch(
-        `${config.apiBaseUrl}${config.loginEndpoint}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
+      const response = await fetch(`${config.apiBaseUrl}${config.loginEndpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(credentials),
+      });
 
-      const result = await parseApiResponse<AuthTokens & { user: User }>(
-        response,
-      );
+      const result = await parseApiResponse<AuthTokens & { user: User }>(response);
 
       if (result.success && result.data) {
         const { user, accessToken, refreshToken } = result.data;
@@ -86,8 +81,7 @@ export const createAuthActions = (
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Login failed";
+      const errorMessage = error instanceof Error ? error.message : "Login failed";
       updateAuthState({
         isLoading: false,
         error: errorMessage,
@@ -101,20 +95,15 @@ export const createAuthActions = (
     updateAuthState({ isLoading: true, error: null });
 
     try {
-      const response = await fetch(
-        `${config.apiBaseUrl}${config.registerEndpoint}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+      const response = await fetch(`${config.apiBaseUrl}${config.registerEndpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(data),
+      });
 
-      const result = await parseApiResponse<{ user: User; message?: string }>(
-        response,
-      );
+      const result = await parseApiResponse<{ user: User; message?: string }>(response);
 
       if (result.success) {
         updateAuthState({
@@ -138,8 +127,7 @@ export const createAuthActions = (
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Registration failed";
+      const errorMessage = error instanceof Error ? error.message : "Registration failed";
       updateAuthState({
         isLoading: false,
         error: errorMessage,
@@ -205,8 +193,7 @@ export const createAuthActions = (
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Password change failed";
+      const errorMessage = error instanceof Error ? error.message : "Password change failed";
       updateAuthState({
         isLoading: false,
         error: errorMessage,

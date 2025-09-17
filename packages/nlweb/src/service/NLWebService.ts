@@ -19,10 +19,7 @@ import { ToolRegistrationService } from "./ToolRegistrationService.js";
 export class NLWebService implements INLWebService {
   private coreService: NLWebCoreService;
 
-  constructor(
-    configuration: NLWebConfiguration,
-    eventEmitter: NLWebEventEmitter,
-  ) {
+  constructor(configuration: NLWebConfiguration, eventEmitter: NLWebEventEmitter) {
     this.coreService = new NLWebCoreService(configuration, eventEmitter);
   }
 
@@ -57,9 +54,7 @@ export class NLWebService implements INLWebService {
   /**
    * Update service configuration
    */
-  async updateConfiguration(
-    config: Partial<NLWebConfiguration>,
-  ): Promise<void> {
+  async updateConfiguration(config: Partial<NLWebConfiguration>): Promise<void> {
     return this.coreService.updateConfiguration(config);
   }
 

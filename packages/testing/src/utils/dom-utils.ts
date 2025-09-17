@@ -28,7 +28,7 @@ export function getDocumentBody(): HTMLElement {
     // happy-dom sometimes fails to access document.body
     console.warn("Could not access document.body:", error);
   }
-  
+
   // Create a body element if it doesn't exist or can't be accessed
   const body = document.createElement("body");
   try {
@@ -36,7 +36,7 @@ export function getDocumentBody(): HTMLElement {
   } catch (error) {
     console.warn("Could not append body to documentElement:", error);
   }
-  
+
   return body;
 }
 
@@ -84,13 +84,13 @@ export function getComputedStyles(element: Element): SafeCSSStyleDeclaration {
   try {
     const styles = window.getComputedStyle(element);
     // Check if happy-dom returned a valid style object
-    if (styles && typeof styles.display !== 'undefined') {
+    if (styles && typeof styles.display !== "undefined") {
       return styles as unknown as SafeCSSStyleDeclaration;
     }
   } catch (error) {
     console.warn("Could not get computed styles:", error);
   }
-  
+
   // Enhanced fallback that better handles happy-dom limitations
   const mockStyle = {
     display: "block",
@@ -102,7 +102,7 @@ export function getComputedStyles(element: Element): SafeCSSStyleDeclaration {
     width: "auto",
     height: "auto",
   } as SafeCSSStyleDeclaration;
-  
+
   // Check for inline styles and use them if available
   if (element instanceof HTMLElement) {
     const inlineStyle = element.style;
@@ -111,12 +111,12 @@ export function getComputedStyles(element: Element): SafeCSSStyleDeclaration {
     if (inlineStyle.opacity) mockStyle.opacity = inlineStyle.opacity;
     if (inlineStyle.position) mockStyle.position = inlineStyle.position;
   }
-  
+
   // Check for common CSS classes that might indicate hidden state
-  if (element.classList.contains('hidden') || element.classList.contains('sr-only')) {
-    mockStyle.display = 'none';
+  if (element.classList.contains("hidden") || element.classList.contains("sr-only")) {
+    mockStyle.display = "none";
   }
-  
+
   return mockStyle;
 }
 
@@ -127,20 +127,20 @@ export function getComputedStyles(element: Element): SafeCSSStyleDeclaration {
 export function isElementInDocument(element: Element): boolean {
   try {
     // Try the standard approach first
-    if (document.contains && typeof document.contains === 'function') {
+    if (document.contains && typeof document.contains === "function") {
       return document.contains(element);
     }
   } catch (error) {
     console.warn("Could not check if element is in document:", error);
   }
-  
+
   // Enhanced fallback: check multiple indicators
   try {
     // Check if element has a parent and is connected to the document
     if (element.parentNode === null) {
       return false;
     }
-    
+
     // Check if element is connected to the document root
     let current: Node | null = element;
     while (current.parentNode) {
@@ -149,7 +149,7 @@ export function isElementInDocument(element: Element): boolean {
         return true;
       }
     }
-    
+
     // Fallback: check if element is in a container that's in the document
     return element.parentNode !== null;
   } catch (error) {
@@ -175,7 +175,7 @@ export function getActiveElement(): Element | null {
  */
 export function setFocus(element: Element): void {
   try {
-    if (element instanceof HTMLElement && typeof element.focus === 'function') {
+    if (element instanceof HTMLElement && typeof element.focus === "function") {
       element.focus();
     }
   } catch (error) {

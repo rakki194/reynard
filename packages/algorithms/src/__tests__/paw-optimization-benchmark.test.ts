@@ -8,16 +8,8 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import {
-  detectCollisions,
-  PerformanceMonitor,
-  configureOptimization,
-  cleanup,
-} from "../optimized";
-import {
-  batchCollisionDetection,
-  batchCollisionWithSpatialHash,
-} from "../geometry/collision";
+import { detectCollisions, PerformanceMonitor, configureOptimization, cleanup } from "../optimized";
+import { batchCollisionDetection, batchCollisionWithSpatialHash } from "../geometry/collision";
 import { PerformanceTimer } from "../performance/timer";
 import type { AABB, CollisionPair } from "../geometry/collision/aabb-types";
 
@@ -85,7 +77,7 @@ function benchmarkAlgorithm(
   algorithm: (aabbs: AABB[]) => CollisionPair[],
   aabbs: AABB[],
   iterations: number = 10,
-  algorithmName: string,
+  algorithmName: string
 ): BenchmarkResult {
   const timer = new PerformanceTimer();
   let totalTime = 0;
@@ -130,32 +122,18 @@ describe("PAW Optimization Benchmark", () => {
     it("should use naive algorithm for small datasets", () => {
       const smallAABBs = generateRandomAABBs(20);
 
-      const naiveResult = benchmarkAlgorithm(
-        batchCollisionDetection,
-        smallAABBs,
-        100,
-        "naive",
-      );
+      const naiveResult = benchmarkAlgorithm(batchCollisionDetection, smallAABBs, 100, "naive");
 
-      const pawResult = benchmarkAlgorithm(
-        detectCollisions,
-        smallAABBs,
-        100,
-        "PAW-optimized",
-      );
+      const pawResult = benchmarkAlgorithm(detectCollisions, smallAABBs, 100, "PAW-optimized");
 
       console.log("Small dataset results:");
       console.log(`Naive: ${naiveResult.executionTime.toFixed(3)}ms`);
       console.log(`PAW: ${pawResult.executionTime.toFixed(3)}ms`);
 
       // PAW should be competitive or better for small datasets
-      expect(pawResult.executionTime).toBeLessThanOrEqual(
-        naiveResult.executionTime * 1.5,
-      );
+      expect(pawResult.executionTime).toBeLessThanOrEqual(naiveResult.executionTime * 1.5);
       // Note: PAW might return different collision counts due to different algorithms
-      console.log(
-        `Collision counts - Naive: ${naiveResult.collisionCount}, PAW: ${pawResult.collisionCount}`,
-      );
+      console.log(`Collision counts - Naive: ${naiveResult.collisionCount}, PAW: ${pawResult.collisionCount}`);
     });
   });
 
@@ -163,27 +141,16 @@ describe("PAW Optimization Benchmark", () => {
     it("should outperform naive for medium datasets", () => {
       const mediumAABBs = generateRandomAABBs(200);
 
-      const naiveResult = benchmarkAlgorithm(
-        batchCollisionDetection,
-        mediumAABBs,
-        20,
-        "naive",
-      );
+      const naiveResult = benchmarkAlgorithm(batchCollisionDetection, mediumAABBs, 20, "naive");
 
       const spatialResult = benchmarkAlgorithm(
-        (aabbs) =>
-          batchCollisionWithSpatialHash(aabbs, { maxDistance: Infinity }),
+        aabbs => batchCollisionWithSpatialHash(aabbs, { maxDistance: Infinity }),
         mediumAABBs,
         20,
-        "spatial-hash",
+        "spatial-hash"
       );
 
-      const pawResult = benchmarkAlgorithm(
-        detectCollisions,
-        mediumAABBs,
-        20,
-        "PAW-optimized",
-      );
+      const pawResult = benchmarkAlgorithm(detectCollisions, mediumAABBs, 20, "PAW-optimized");
 
       console.log("Medium dataset results:");
       console.log(`Naive: ${naiveResult.executionTime.toFixed(3)}ms`);
@@ -191,86 +158,65 @@ describe("PAW Optimization Benchmark", () => {
       console.log(`PAW: ${pawResult.executionTime.toFixed(3)}ms`);
 
       // PAW should be significantly better than naive
-      expect(pawResult.executionTime).toBeLessThan(
-        naiveResult.executionTime * 0.8,
-      );
+      expect(pawResult.executionTime).toBeLessThan(naiveResult.executionTime * 0.8);
       console.log(
-        `Collision counts - Naive: ${naiveResult.collisionCount}, Spatial: ${spatialResult.collisionCount}, PAW: ${pawResult.collisionCount}`,
+        `Collision counts - Naive: ${naiveResult.collisionCount}, Spatial: ${spatialResult.collisionCount}, PAW: ${pawResult.collisionCount}`
       );
     });
   });
 
   describe("Large Dataset Performance (500+ objects)", () => {
-    it(
-      "should significantly outperform naive for large datasets",
-      { timeout: 30000 },
-      async () => {
-        const largeAABBs = generateRandomAABBs(500); // Reduced from 1000 to 500
+    it("should significantly outperform naive for large datasets", { timeout: 30000 }, async () => {
+      const largeAABBs = generateRandomAABBs(500); // Reduced from 1000 to 500
 
-        const naiveResult = benchmarkAlgorithm(
-          batchCollisionDetection,
-          largeAABBs,
-          3, // Reduced from 5 to 3
-          "naive",
-        );
+      const naiveResult = benchmarkAlgorithm(
+        batchCollisionDetection,
+        largeAABBs,
+        3, // Reduced from 5 to 3
+        "naive"
+      );
 
-        const spatialResult = benchmarkAlgorithm(
-          (aabbs) =>
-            batchCollisionWithSpatialHash(aabbs, { maxDistance: Infinity }),
-          largeAABBs,
-          3, // Reduced from 5 to 3
-          "spatial-hash",
-        );
+      const spatialResult = benchmarkAlgorithm(
+        aabbs => batchCollisionWithSpatialHash(aabbs, { maxDistance: Infinity }),
+        largeAABBs,
+        3, // Reduced from 5 to 3
+        "spatial-hash"
+      );
 
-        const pawResult = benchmarkAlgorithm(
-          detectCollisions,
-          largeAABBs,
-          3, // Reduced from 5 to 3
-          "PAW-optimized",
-        );
+      const pawResult = benchmarkAlgorithm(
+        detectCollisions,
+        largeAABBs,
+        3, // Reduced from 5 to 3
+        "PAW-optimized"
+      );
 
-        console.log("Large dataset results:");
-        console.log(`Naive: ${naiveResult.executionTime.toFixed(3)}ms`);
-        console.log(`Spatial: ${spatialResult.executionTime.toFixed(3)}ms`);
-        console.log(`PAW: ${pawResult.executionTime.toFixed(3)}ms`);
+      console.log("Large dataset results:");
+      console.log(`Naive: ${naiveResult.executionTime.toFixed(3)}ms`);
+      console.log(`Spatial: ${spatialResult.executionTime.toFixed(3)}ms`);
+      console.log(`PAW: ${pawResult.executionTime.toFixed(3)}ms`);
 
-        // PAW should be dramatically better than naive
-        expect(pawResult.executionTime).toBeLessThan(
-          naiveResult.executionTime * 0.5,
-        );
-        console.log(
-          `Collision counts - Naive: ${naiveResult.collisionCount}, Spatial: ${spatialResult.collisionCount}, PAW: ${pawResult.collisionCount}`,
-        );
-      },
-    );
+      // PAW should be dramatically better than naive
+      expect(pawResult.executionTime).toBeLessThan(naiveResult.executionTime * 0.5);
+      console.log(
+        `Collision counts - Naive: ${naiveResult.collisionCount}, Spatial: ${spatialResult.collisionCount}, PAW: ${pawResult.collisionCount}`
+      );
+    });
   });
 
   describe("Clustered Data Performance", () => {
     it("should handle clustered data efficiently", () => {
       const clusteredAABBs = generateClusteredAABBs(500, 5);
 
-      const naiveResult = benchmarkAlgorithm(
-        batchCollisionDetection,
-        clusteredAABBs,
-        10,
-        "naive",
-      );
+      const naiveResult = benchmarkAlgorithm(batchCollisionDetection, clusteredAABBs, 10, "naive");
 
-      const pawResult = benchmarkAlgorithm(
-        detectCollisions,
-        clusteredAABBs,
-        10,
-        "PAW-optimized",
-      );
+      const pawResult = benchmarkAlgorithm(detectCollisions, clusteredAABBs, 10, "PAW-optimized");
 
       console.log("Clustered dataset results:");
       console.log(`Naive: ${naiveResult.executionTime.toFixed(3)}ms`);
       console.log(`PAW: ${pawResult.executionTime.toFixed(3)}ms`);
 
       // PAW should be much better for clustered data
-      expect(pawResult.executionTime).toBeLessThan(
-        naiveResult.executionTime * 0.7,
-      );
+      expect(pawResult.executionTime).toBeLessThan(naiveResult.executionTime * 0.7);
     });
   });
 
@@ -278,28 +224,16 @@ describe("PAW Optimization Benchmark", () => {
     it("should handle sequential data efficiently", () => {
       const sequentialAABBs = generateSequentialAABBs(200);
 
-      const naiveResult = benchmarkAlgorithm(
-        batchCollisionDetection,
-        sequentialAABBs,
-        20,
-        "naive",
-      );
+      const naiveResult = benchmarkAlgorithm(batchCollisionDetection, sequentialAABBs, 20, "naive");
 
-      const pawResult = benchmarkAlgorithm(
-        detectCollisions,
-        sequentialAABBs,
-        20,
-        "PAW-optimized",
-      );
+      const pawResult = benchmarkAlgorithm(detectCollisions, sequentialAABBs, 20, "PAW-optimized");
 
       console.log("Sequential dataset results:");
       console.log(`Naive: ${naiveResult.executionTime.toFixed(3)}ms`);
       console.log(`PAW: ${pawResult.executionTime.toFixed(3)}ms`);
 
       // PAW should be better for sequential data
-      expect(pawResult.executionTime).toBeLessThan(
-        naiveResult.executionTime * 0.8,
-      );
+      expect(pawResult.executionTime).toBeLessThan(naiveResult.executionTime * 0.8);
     });
   });
 
@@ -313,12 +247,7 @@ describe("PAW Optimization Benchmark", () => {
         enableAlgorithmSelection: true,
       });
 
-      const noPoolingResult = benchmarkAlgorithm(
-        detectCollisions,
-        aabbs,
-        20,
-        "no-memory-pooling",
-      );
+      const noPoolingResult = benchmarkAlgorithm(detectCollisions, aabbs, 20, "no-memory-pooling");
 
       // Test with memory pooling enabled
       configureOptimization({
@@ -326,12 +255,7 @@ describe("PAW Optimization Benchmark", () => {
         enableAlgorithmSelection: true,
       });
 
-      const poolingResult = benchmarkAlgorithm(
-        detectCollisions,
-        aabbs,
-        20,
-        "with-memory-pooling",
-      );
+      const poolingResult = benchmarkAlgorithm(detectCollisions, aabbs, 20, "with-memory-pooling");
 
       console.log("Memory pooling results:");
       console.log(`No pooling: ${noPoolingResult.executionTime.toFixed(3)}ms`);
@@ -339,9 +263,7 @@ describe("PAW Optimization Benchmark", () => {
 
       // Memory pooling may not provide benefit for small datasets (overhead vs benefit)
       // Just ensure it's not dramatically worse
-      expect(poolingResult.executionTime).toBeLessThanOrEqual(
-        noPoolingResult.executionTime * 3.0,
-      );
+      expect(poolingResult.executionTime).toBeLessThanOrEqual(noPoolingResult.executionTime * 3.0);
     });
   });
 

@@ -8,51 +8,33 @@ import { applyEasing } from "./easing";
 export function interpolatePoint(
   point: EmbeddingPoint,
   pointAnim: PointAnimation,
-  animationState: AnimationState,
+  animationState: AnimationState
 ): EmbeddingPoint {
-  const progress = Math.max(
-    0,
-    animationState.progress - pointAnim.delay / animationState.duration,
-  );
-  const easedProgress = applyEasing(
-    Math.max(0, Math.min(1, progress)),
-    animationState.easing,
-  );
+  const progress = Math.max(0, animationState.progress - pointAnim.delay / animationState.duration);
+  const easedProgress = applyEasing(Math.max(0, Math.min(1, progress)), animationState.easing);
 
   return {
     ...point,
     position: [
-      pointAnim.startPosition[0] +
-        (pointAnim.endPosition[0] - pointAnim.startPosition[0]) * easedProgress,
-      pointAnim.startPosition[1] +
-        (pointAnim.endPosition[1] - pointAnim.startPosition[1]) * easedProgress,
-      pointAnim.startPosition[2] +
-        (pointAnim.endPosition[2] - pointAnim.startPosition[2]) * easedProgress,
+      pointAnim.startPosition[0] + (pointAnim.endPosition[0] - pointAnim.startPosition[0]) * easedProgress,
+      pointAnim.startPosition[1] + (pointAnim.endPosition[1] - pointAnim.startPosition[1]) * easedProgress,
+      pointAnim.startPosition[2] + (pointAnim.endPosition[2] - pointAnim.startPosition[2]) * easedProgress,
     ] as [number, number, number],
     color: [
-      pointAnim.startColor[0] +
-        (pointAnim.endColor[0] - pointAnim.startColor[0]) * easedProgress,
-      pointAnim.startColor[1] +
-        (pointAnim.endColor[1] - pointAnim.startColor[1]) * easedProgress,
-      pointAnim.startColor[2] +
-        (pointAnim.endColor[2] - pointAnim.startColor[2]) * easedProgress,
+      pointAnim.startColor[0] + (pointAnim.endColor[0] - pointAnim.startColor[0]) * easedProgress,
+      pointAnim.startColor[1] + (pointAnim.endColor[1] - pointAnim.startColor[1]) * easedProgress,
+      pointAnim.startColor[2] + (pointAnim.endColor[2] - pointAnim.startColor[2]) * easedProgress,
     ] as [number, number, number],
-    size:
-      pointAnim.startSize +
-      (pointAnim.endSize - pointAnim.startSize) * easedProgress,
+    size: pointAnim.startSize + (pointAnim.endSize - pointAnim.startSize) * easedProgress,
   };
 }
 
 /**
  * Create point animations from start and end points
  */
-export function createPointAnimations(
-  startPoints: EmbeddingPoint[],
-  endPoints: EmbeddingPoint[],
-): PointAnimation[] {
-  return startPoints.map((startPoint) => {
-    const endPoint =
-      endPoints.find((p) => p.id === startPoint.id) || startPoint;
+export function createPointAnimations(startPoints: EmbeddingPoint[], endPoints: EmbeddingPoint[]): PointAnimation[] {
+  return startPoints.map(startPoint => {
+    const endPoint = endPoints.find(p => p.id === startPoint.id) || startPoint;
     return {
       id: startPoint.id,
       startPosition: startPoint.position,

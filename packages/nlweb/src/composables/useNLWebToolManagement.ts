@@ -11,18 +11,10 @@ import { makeNLWebRequest, handleAPIError } from "./useNLWebRequest.js";
 /**
  * Create get tools action
  */
-export function createGetToolsAction(
-  state: NLWebState,
-  baseUrl: string,
-  requestTimeout: number,
-): () => Promise<void> {
+export function createGetToolsAction(state: NLWebState, baseUrl: string, requestTimeout: number): () => Promise<void> {
   return async (): Promise<void> => {
     try {
-      const response = await makeNLWebRequest<{ tools: NLWebTool[] }>(
-        "/tools",
-        baseUrl,
-        requestTimeout,
-      );
+      const response = await makeNLWebRequest<{ tools: NLWebTool[] }>("/tools", baseUrl, requestTimeout);
       state.setTools(response.tools);
     } catch (error) {
       handleAPIError(state, error, "Failed to get tools");
@@ -37,7 +29,7 @@ export function createRegisterToolAction(
   state: NLWebState,
   baseUrl: string,
   requestTimeout: number,
-  getTools: () => Promise<void>,
+  getTools: () => Promise<void>
 ): (tool: NLWebTool) => Promise<void> {
   return async (tool: NLWebTool): Promise<void> => {
     try {
@@ -66,7 +58,7 @@ export function createUnregisterToolAction(
   state: NLWebState,
   baseUrl: string,
   requestTimeout: number,
-  getTools: () => Promise<void>,
+  getTools: () => Promise<void>
 ): (name: string) => Promise<void> {
   return async (name: string): Promise<void> => {
     try {

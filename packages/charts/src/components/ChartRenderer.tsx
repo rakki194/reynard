@@ -3,24 +3,10 @@
  * Handles the actual rendering of different chart types with Chart.js integration
  */
 
-import {
-  Component,
-  Show,
-  onCleanup,
-  createEffect,
-  createSignal,
-} from "solid-js";
+import { Component, Show, onCleanup, createEffect, createSignal } from "solid-js";
 import { ChartType } from "../types";
-import {
-  createChartIntegration,
-  ChartIntegrationConfig,
-} from "../utils/chartIntegration";
-import {
-  getTestId,
-  LoadingOverlay,
-  EmptyState,
-  PerformanceOverlay,
-} from "./ChartComponents";
+import { createChartIntegration, ChartIntegrationConfig } from "../utils/chartIntegration";
+import { getTestId, LoadingOverlay, EmptyState, PerformanceOverlay } from "./ChartComponents";
 import "./ChartRenderer.css";
 
 export interface ChartRendererProps {
@@ -48,11 +34,8 @@ const ChartCanvas = (props: {
   height?: number;
   onChartRef?: (chart: unknown) => void;
 }) => {
-  const [chartIntegration, setChartIntegration] = createSignal<ReturnType<
-    typeof createChartIntegration
-  > | null>(null);
-  const [canvasElement, setCanvasElement] =
-    createSignal<HTMLCanvasElement | null>(null);
+  const [chartIntegration, setChartIntegration] = createSignal<ReturnType<typeof createChartIntegration> | null>(null);
+  const [canvasElement, setCanvasElement] = createSignal<HTMLCanvasElement | null>(null);
 
   // Create Chart.js integration reactively
   createEffect(() => {
@@ -98,9 +81,7 @@ const ChartCanvas = (props: {
     const integration = chartIntegration();
     const canvas = canvasElement();
     if (integration && canvas) {
-      console.log(
-        "🦊 ChartCanvas: Integration and canvas both available, calling canvasRef",
-      );
+      console.log("🦊 ChartCanvas: Integration and canvas both available, calling canvasRef");
       integration.canvasRef(canvas);
     }
   });
@@ -115,19 +96,15 @@ const ChartCanvas = (props: {
 
   return (
     <canvas
-      ref={(el) => {
+      ref={el => {
         console.log("🦊 ChartCanvas: Canvas ref called with element", el);
         setCanvasElement(el);
         const integration = chartIntegration();
         if (integration) {
-          console.log(
-            "🦊 ChartCanvas: Calling integration.canvasRef immediately",
-          );
+          console.log("🦊 ChartCanvas: Calling integration.canvasRef immediately");
           integration.canvasRef(el);
         } else {
-          console.log(
-            "🦊 ChartCanvas: No integration available yet, will be handled by effect",
-          );
+          console.log("🦊 ChartCanvas: No integration available yet, will be handled by effect");
         }
       }}
       width={props.width || 400}
@@ -137,7 +114,7 @@ const ChartCanvas = (props: {
   );
 };
 
-export const ChartRenderer: Component<ChartRendererProps> = (props) => {
+export const ChartRenderer: Component<ChartRendererProps> = props => {
   return (
     <div class="reynard-chart">
       <LoadingOverlay loading={props.loading || false} />

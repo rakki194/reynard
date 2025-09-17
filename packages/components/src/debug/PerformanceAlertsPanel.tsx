@@ -3,15 +3,7 @@
  * Performance alerts and warnings management
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
@@ -56,9 +48,7 @@ export interface AlertSummary {
   unresolved: number;
 }
 
-export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
-  props,
-) => {
+export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = props => {
   const [alerts, setAlerts] = createSignal<PerformanceAlert[]>([]);
   const [alertSummary, setAlertSummary] = createSignal<AlertSummary>({
     total: 0,
@@ -112,7 +102,7 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
     setIsRefreshing(true);
     try {
       // Convert warnings to alerts
-      const newAlerts: PerformanceAlert[] = props.warnings.map((warning) => ({
+      const newAlerts: PerformanceAlert[] = props.warnings.map(warning => ({
         ...warning,
         acknowledged: false,
         resolved: false,
@@ -126,14 +116,13 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
       // Calculate alert summary
       const summary: AlertSummary = {
         total: newAlerts.length,
-        critical: newAlerts.filter((alert) => alert.severity === "critical")
-          .length,
-        high: newAlerts.filter((alert) => alert.severity === "high").length,
-        medium: newAlerts.filter((alert) => alert.severity === "medium").length,
-        low: newAlerts.filter((alert) => alert.severity === "low").length,
-        acknowledged: newAlerts.filter((alert) => alert.acknowledged).length,
-        resolved: newAlerts.filter((alert) => alert.resolved).length,
-        unresolved: newAlerts.filter((alert) => !alert.resolved).length,
+        critical: newAlerts.filter(alert => alert.severity === "critical").length,
+        high: newAlerts.filter(alert => alert.severity === "high").length,
+        medium: newAlerts.filter(alert => alert.severity === "medium").length,
+        low: newAlerts.filter(alert => alert.severity === "low").length,
+        acknowledged: newAlerts.filter(alert => alert.acknowledged).length,
+        resolved: newAlerts.filter(alert => alert.resolved).length,
+        unresolved: newAlerts.filter(alert => !alert.resolved).length,
       };
 
       setAlertSummary(summary);
@@ -192,37 +181,27 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
 
   // Acknowledge alert
   const acknowledgeAlert = (alertId: string) => {
-    setAlerts((prev) =>
-      prev.map((alert) =>
-        alert.id === alertId ? { ...alert, acknowledged: true } : alert,
-      ),
-    );
+    setAlerts(prev => prev.map(alert => (alert.id === alertId ? { ...alert, acknowledged: true } : alert)));
   };
 
   // Resolve alert
   const resolveAlert = (alertId: string) => {
-    setAlerts((prev) =>
-      prev.map((alert) =>
-        alert.id === alertId ? { ...alert, resolved: true } : alert,
-      ),
-    );
+    setAlerts(prev => prev.map(alert => (alert.id === alertId ? { ...alert, resolved: true } : alert)));
   };
 
   // Acknowledge all alerts
   const acknowledgeAllAlerts = () => {
-    setAlerts((prev) =>
-      prev.map((alert) => ({ ...alert, acknowledged: true })),
-    );
+    setAlerts(prev => prev.map(alert => ({ ...alert, acknowledged: true })));
   };
 
   // Resolve all alerts
   const resolveAllAlerts = () => {
-    setAlerts((prev) => prev.map((alert) => ({ ...alert, resolved: true })));
+    setAlerts(prev => prev.map(alert => ({ ...alert, resolved: true })));
   };
 
   // Clear resolved alerts
   const clearResolvedAlerts = () => {
-    setAlerts((prev) => prev.filter((alert) => !alert.resolved));
+    setAlerts(prev => prev.filter(alert => !alert.resolved));
   };
 
   // Get filtered alerts
@@ -231,18 +210,16 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
 
     // Filter by severity
     if (selectedSeverity() !== "all") {
-      filtered = filtered.filter(
-        (alert) => alert.severity === selectedSeverity(),
-      );
+      filtered = filtered.filter(alert => alert.severity === selectedSeverity());
     }
 
     // Filter by status
     if (selectedStatus() === "acknowledged") {
-      filtered = filtered.filter((alert) => alert.acknowledged);
+      filtered = filtered.filter(alert => alert.acknowledged);
     } else if (selectedStatus() === "resolved") {
-      filtered = filtered.filter((alert) => alert.resolved);
+      filtered = filtered.filter(alert => alert.resolved);
     } else if (selectedStatus() === "unresolved") {
-      filtered = filtered.filter((alert) => !alert.resolved);
+      filtered = filtered.filter(alert => !alert.resolved);
     }
 
     return filtered;
@@ -312,11 +289,7 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
         </div>
 
         <div class="alerts-panel-actions">
-          <Button
-            variant="secondary"
-            onClick={updateAlerts}
-            disabled={isRefreshing()}
-          >
+          <Button variant="secondary" onClick={updateAlerts} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -361,12 +334,10 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
           <label>Severity:</label>
           <select
             value={selectedSeverity()}
-            onChange={(e) => setSelectedSeverity(e.currentTarget.value)}
+            onChange={e => setSelectedSeverity(e.currentTarget.value)}
             title="Filter by severity"
           >
-            <For each={severities}>
-              {(severity) => <option value={severity}>{severity}</option>}
-            </For>
+            <For each={severities}>{severity => <option value={severity}>{severity}</option>}</For>
           </select>
         </div>
 
@@ -374,12 +345,10 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
           <label>Status:</label>
           <select
             value={selectedStatus()}
-            onChange={(e) => setSelectedStatus(e.currentTarget.value)}
+            onChange={e => setSelectedStatus(e.currentTarget.value)}
             title="Filter by status"
           >
-            <For each={statuses}>
-              {(status) => <option value={status}>{status}</option>}
-            </For>
+            <For each={statuses}>{status => <option value={status}>{status}</option>}</For>
           </select>
         </div>
       </div>
@@ -400,25 +369,19 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
       {/* Alerts List */}
       <div class="alerts-list">
         <For each={getFilteredAlerts()}>
-          {(alert) => (
+          {alert => (
             <div class={`alert-item ${getSeverityColor(alert.severity)}`}>
               <div class="alert-header">
                 <div class="alert-severity">
                   <span class="severity-icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={
-                        getSeverityIcon(alert.severity)?.outerHTML || ""
-                      }
+                      innerHTML={getSeverityIcon(alert.severity)?.outerHTML || ""}
                     />
                   </span>
-                  <span class="severity-text">
-                    {alert.severity.toUpperCase()}
-                  </span>
+                  <span class="severity-text">{alert.severity.toUpperCase()}</span>
                 </div>
-                <div class="alert-timestamp">
-                  {formatTimestamp(alert.timestamp)}
-                </div>
+                <div class="alert-timestamp">{formatTimestamp(alert.timestamp)}</div>
               </div>
 
               <div class="alert-content">
@@ -448,20 +411,12 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
 
               <div class="alert-actions">
                 <Show when={!alert.acknowledged}>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => acknowledgeAlert(alert.id)}
-                  >
+                  <Button variant="secondary" size="sm" onClick={() => acknowledgeAlert(alert.id)}>
                     Acknowledge
                   </Button>
                 </Show>
                 <Show when={!alert.resolved}>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => resolveAlert(alert.id)}
-                  >
+                  <Button variant="primary" size="sm" onClick={() => resolveAlert(alert.id)}>
                     Resolve
                   </Button>
                 </Show>
@@ -483,9 +438,7 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
           <div class="no-alerts-icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon("checkmark-circle")?.outerHTML || ""
-              }
+              innerHTML={fluentIconsPackage.getIcon("checkmark-circle")?.outerHTML || ""}
             />
           </div>
           <div class="no-alerts-message">
@@ -497,9 +450,7 @@ export const PerformanceAlertsPanel: Component<PerformanceAlertsPanelProps> = (
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">
-          Last updated: {lastUpdate()!.toLocaleString()}
-        </div>
+        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
       </Show>
     </div>
   );

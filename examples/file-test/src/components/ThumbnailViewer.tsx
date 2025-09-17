@@ -45,44 +45,17 @@ export default function ThumbnailViewer(props: ThumbnailViewerProps) {
   const getFileTypeIcon = (fileName: string): string => {
     const extension = fileName.split(".").pop()?.toLowerCase();
 
-    if (
-      ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp"].includes(
-        extension || "",
-      )
-    ) {
+    if (["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp"].includes(extension || "")) {
       return "🖼️";
-    } else if (
-      ["mp4", "avi", "mov", "wmv", "flv", "webm", "mkv"].includes(
-        extension || "",
-      )
-    ) {
+    } else if (["mp4", "avi", "mov", "wmv", "flv", "webm", "mkv"].includes(extension || "")) {
       return "🎥";
-    } else if (
-      ["mp3", "wav", "flac", "aac", "ogg", "m4a"].includes(extension || "")
-    ) {
+    } else if (["mp3", "wav", "flac", "aac", "ogg", "m4a"].includes(extension || "")) {
       return "🎵";
     } else if (["txt", "md", "json", "xml", "csv"].includes(extension || "")) {
       return "📄";
-    } else if (
-      [
-        "js",
-        "ts",
-        "jsx",
-        "tsx",
-        "css",
-        "html",
-        "py",
-        "java",
-        "cpp",
-        "c",
-      ].includes(extension || "")
-    ) {
+    } else if (["js", "ts", "jsx", "tsx", "css", "html", "py", "java", "cpp", "c"].includes(extension || "")) {
       return "💻";
-    } else if (
-      ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(
-        extension || "",
-      )
-    ) {
+    } else if (["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(extension || "")) {
       return "📋";
     } else {
       return "📁";
@@ -109,17 +82,13 @@ export default function ThumbnailViewer(props: ThumbnailViewerProps) {
 
       <div class="file-info">
         <div class="file-name" title={props.processedFile.file.name}>
-          {getFileTypeIcon(props.processedFile.file.name)}{" "}
-          {props.processedFile.file.name}
+          {getFileTypeIcon(props.processedFile.file.name)} {props.processedFile.file.name}
         </div>
         <div class="file-size">
-          {formatFileSize(props.processedFile.file.size)} •{" "}
-          {props.processedFile.processingTime}ms
+          {formatFileSize(props.processedFile.file.size)} • {props.processedFile.processingTime}ms
         </div>
         {props.processedFile.error && (
-          <div style="color: #dc3545; font-size: 0.75rem; margin-top: 0.25rem;">
-            {props.processedFile.error}
-          </div>
+          <div style="color: #dc3545; font-size: 0.75rem; margin-top: 0.25rem;">{props.processedFile.error}</div>
         )}
       </div>
     </div>

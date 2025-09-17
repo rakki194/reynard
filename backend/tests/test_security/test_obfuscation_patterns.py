@@ -6,22 +6,22 @@ various obfuscation techniques in security attacks.
 """
 
 import re
-import pytest
+
 from app.security.obfuscation_patterns import (
     COMMENT_OBFUSCATION_PATTERNS,
-    STRING_OBFUSCATION_PATTERNS,
+    CONTROL_CHARACTER_PATTERNS,
+    DATETIME_OBFUSCATION_PATTERNS,
+    ENCODING_OBFUSCATION_PATTERNS,
     FUNCTION_OBFUSCATION_PATTERNS,
     HEX_OBFUSCATION_PATTERNS,
+    MATH_OBFUSCATION_PATTERNS,
+    OBFUSCATION_PATTERNS,
+    SQL_FUNCTION_OBFUSCATION_PATTERNS,
+    STRING_MANIPULATION_OBFUSCATION_PATTERNS,
+    STRING_OBFUSCATION_PATTERNS,
+    SYSTEM_VARIABLE_OBFUSCATION_PATTERNS,
     UNICODE_OBFUSCATION_PATTERNS,
     WHITESPACE_OBFUSCATION_PATTERNS,
-    CONTROL_CHARACTER_PATTERNS,
-    ENCODING_OBFUSCATION_PATTERNS,
-    SQL_FUNCTION_OBFUSCATION_PATTERNS,
-    MATH_OBFUSCATION_PATTERNS,
-    STRING_MANIPULATION_OBFUSCATION_PATTERNS,
-    DATETIME_OBFUSCATION_PATTERNS,
-    SYSTEM_VARIABLE_OBFUSCATION_PATTERNS,
-    OBFUSCATION_PATTERNS,
 )
 
 
@@ -39,10 +39,12 @@ class TestCommentObfuscationPatterns:
             ("-- single line comment", True),
             ("# hash comment", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE | re.MULTILINE) 
-                         for pattern in COMMENT_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE | re.MULTILINE)
+                for pattern in COMMENT_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_nested_comments(self):
@@ -52,10 +54,12 @@ class TestCommentObfuscationPatterns:
             ("-- line 1\n-- line 2", True),
             ("# line 1\n# line 2", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE | re.MULTILINE) 
-                         for pattern in COMMENT_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE | re.MULTILINE)
+                for pattern in COMMENT_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -72,10 +76,12 @@ class TestStringObfuscationPatterns:
             ("'hello world'", False),
             ("SELECT * FROM users", False),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in STRING_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in STRING_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_complex_string_obfuscation(self):
@@ -86,10 +92,12 @@ class TestStringObfuscationPatterns:
             ("'UNION' + 'SELECT'", True),
             ("concat_ws('', 'UNION', 'SELECT')", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in STRING_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in STRING_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -109,10 +117,12 @@ class TestFunctionObfuscationPatterns:
             ("ORD('A')", True),
             ("SELECT * FROM users", False),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in FUNCTION_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in FUNCTION_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_character_function_obfuscation(self):
@@ -122,10 +132,12 @@ class TestFunctionObfuscationPatterns:
             ("chr(83)+chr(69)+chr(76)+chr(69)+chr(67)+chr(84)", True),
             ("ascii('S')+ascii('E')+ascii('L')", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in FUNCTION_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in FUNCTION_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -145,23 +157,27 @@ class TestHexObfuscationPatterns:
             ("0x", False),  # Incomplete hex
             ("0xg", False),  # Invalid hex
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in HEX_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in HEX_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_hex_obfuscation_attacks(self):
         """Test detection of hex obfuscation in attacks."""
         test_cases = [
             ("0x53454C454354", True),  # "SELECT" in hex
-            ("0x554E494F4E", True),    # "UNION" in hex
+            ("0x554E494F4E", True),  # "UNION" in hex
             ("0x494E53455254", True),  # "INSERT" in hex
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in HEX_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in HEX_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -173,30 +189,34 @@ class TestUnicodeObfuscationPatterns:
         test_cases = [
             ("\\u0041", True),  # Unicode escape
             ("\\u0042", True),
-            ("\\x41", True),    # Hex escape
+            ("\\x41", True),  # Hex escape
             ("\\x42", True),
             ("\\u0041\\u0042", True),
             ("\\x41\\x42", True),
             ("SELECT * FROM users", False),
-            ("\\u", False),     # Incomplete unicode
-            ("\\x", False),     # Incomplete hex
+            ("\\u", False),  # Incomplete unicode
+            ("\\x", False),  # Incomplete hex
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in UNICODE_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in UNICODE_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_unicode_obfuscation_attacks(self):
         """Test detection of unicode obfuscation in attacks."""
         test_cases = [
             ("\\u0053\\u0045\\u004C\\u0045\\u0043\\u0054", True),  # "SELECT"
-            ("\\x53\\x45\\x4C\\x45\\x43\\x54", True),              # "SELECT"
+            ("\\x53\\x45\\x4C\\x45\\x43\\x54", True),  # "SELECT"
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in UNICODE_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in UNICODE_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -206,19 +226,21 @@ class TestWhitespaceObfuscationPatterns:
     def test_whitespace_patterns(self):
         """Test detection of whitespace obfuscation patterns."""
         test_cases = [
-            ("SELECT * FROM users", True),   # Contains "select"
+            ("SELECT * FROM users", True),  # Contains "select"
             ("UNION SELECT * FROM users", True),  # Contains "union"
-            ("INSERT INTO users", True),     # Contains "from" (in FROM users)
-            ("WHERE id = 1", True),          # Contains "where"
-            ("AND name = 'test'", True),     # Contains "and"
-            ("OR status = 1", True),         # Contains "or"
-            ("SELECT*FROM users", False),    # No spaces around keywords
-            ("hello world", False),          # No SQL keywords
+            ("INSERT INTO users", True),  # Contains "from" (in FROM users)
+            ("WHERE id = 1", True),  # Contains "where"
+            ("AND name = 'test'", True),  # Contains "and"
+            ("OR status = 1", True),  # Contains "or"
+            ("SELECT*FROM users", False),  # No spaces around keywords
+            ("hello world", False),  # No SQL keywords
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in WHITESPACE_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in WHITESPACE_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_whitespace_obfuscation_attacks(self):
@@ -228,10 +250,12 @@ class TestWhitespaceObfuscationPatterns:
             ("UNI ON SELECT * FROM users", True),
             ("INS ERT INTO users", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in WHITESPACE_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in WHITESPACE_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -241,19 +265,21 @@ class TestControlCharacterPatterns:
     def test_control_character_patterns(self):
         """Test detection of control character patterns."""
         test_cases = [
-            ("SELECT\t* FROM users", True),   # Tab character
-            ("SELECT\n* FROM users", True),   # Newline character
-            ("SELECT\r* FROM users", True),   # Carriage return
+            ("SELECT\t* FROM users", True),  # Tab character
+            ("SELECT\n* FROM users", True),  # Newline character
+            ("SELECT\r* FROM users", True),  # Carriage return
             ("SELECT   * FROM users", True),  # Multiple spaces
-            ("SELECT\0* FROM users", True),   # Null byte
-            ("SELECT * FROM users", False),   # Normal spaces
-            ("SELECT\x00* FROM users", True), # Null byte (hex)
-            ("SELECT\x1F* FROM users", True), # Control character
+            ("SELECT\0* FROM users", True),  # Null byte
+            ("SELECT * FROM users", False),  # Normal spaces
+            ("SELECT\x00* FROM users", True),  # Null byte (hex)
+            ("SELECT\x1f* FROM users", True),  # Control character
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in CONTROL_CHARACTER_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in CONTROL_CHARACTER_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_control_character_attacks(self):
@@ -264,10 +290,12 @@ class TestControlCharacterPatterns:
             ("INS\rERT INTO users", True),
             ("SEL\0ECT * FROM users", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in CONTROL_CHARACTER_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in CONTROL_CHARACTER_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -277,18 +305,20 @@ class TestEncodingObfuscationPatterns:
     def test_encoding_patterns(self):
         """Test detection of encoding obfuscation patterns."""
         test_cases = [
-            ("%41%42%43", True),      # URL encoding
-            ("&lt;script&gt;", True), # HTML entities
-            ("&amp;", True),          # HTML entities
-            ("&quot;", True),         # HTML entities
+            ("%41%42%43", True),  # URL encoding
+            ("&lt;script&gt;", True),  # HTML entities
+            ("&amp;", True),  # HTML entities
+            ("&quot;", True),  # HTML entities
             ("SELECT * FROM users", False),
-            ("%", False),             # Incomplete encoding
-            ("&", False),             # Incomplete entity
+            ("%", False),  # Incomplete encoding
+            ("&", False),  # Incomplete entity
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in ENCODING_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in ENCODING_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_encoding_obfuscation_attacks(self):
@@ -297,10 +327,12 @@ class TestEncodingObfuscationPatterns:
             ("%53%45%4C%45%43%54", True),  # "SELECT" in URL encoding
             ("&lt;script&gt;alert(1)&lt;/script&gt;", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in ENCODING_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in ENCODING_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -314,13 +346,15 @@ class TestSqlFunctionObfuscationPatterns:
             ("case when 1=1 then 'true' else 'false' end", True),
             ("when 1=1 then 'true'", True),
             ("SELECT * FROM users", False),
-            ("if", False),             # Incomplete function
-            ("case", False),           # Incomplete case
+            ("if", False),  # Incomplete function
+            ("case", False),  # Incomplete case
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in SQL_FUNCTION_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in SQL_FUNCTION_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_sql_function_obfuscation_attacks(self):
@@ -329,10 +363,12 @@ class TestSqlFunctionObfuscationPatterns:
             ("if(1=1, (SELECT * FROM users), '')", True),
             ("case when 1=1 then (SELECT * FROM users) else '' end", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in SQL_FUNCTION_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in SQL_FUNCTION_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -354,10 +390,12 @@ class TestMathObfuscationPatterns:
             ("MOD(10, 3)", True),
             ("SELECT * FROM users", False),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in MATH_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in MATH_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_math_obfuscation_attacks(self):
@@ -367,10 +405,12 @@ class TestMathObfuscationPatterns:
             ("ceil(rand()*2)", True),
             ("round(rand()*2)", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in MATH_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in MATH_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -392,10 +432,12 @@ class TestStringManipulationObfuscationPatterns:
             ("RIGHT('hello', 3)", True),
             ("SELECT * FROM users", False),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in STRING_MANIPULATION_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in STRING_MANIPULATION_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_string_manipulation_obfuscation_attacks(self):
@@ -405,10 +447,12 @@ class TestStringManipulationObfuscationPatterns:
             ("substring('UNION', 1, 5)", True),
             ("left('INSERT', 6)", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in STRING_MANIPULATION_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in STRING_MANIPULATION_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -428,10 +472,12 @@ class TestDatetimeObfuscationPatterns:
             ("CURRENT_TIMESTAMP()", True),
             ("SELECT * FROM users", False),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in DATETIME_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in DATETIME_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_datetime_obfuscation_attacks(self):
@@ -440,10 +486,12 @@ class TestDatetimeObfuscationPatterns:
             ("sleep(now())", True),
             ("waitfor delay current_time()", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in DATETIME_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in DATETIME_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -465,10 +513,12 @@ class TestSystemVariableObfuscationPatterns:
             ("@@SOCKET", True),
             ("SELECT * FROM users", False),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in SYSTEM_VARIABLE_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in SYSTEM_VARIABLE_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_system_variable_obfuscation_attacks(self):
@@ -477,10 +527,12 @@ class TestSystemVariableObfuscationPatterns:
             ("SELECT @@version", True),
             ("UNION SELECT @@datadir", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE) 
-                         for pattern in SYSTEM_VARIABLE_OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE)
+                for pattern in SYSTEM_VARIABLE_OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
 
@@ -504,7 +556,7 @@ class TestCombinedObfuscationPatterns:
             DATETIME_OBFUSCATION_PATTERNS,
             SYSTEM_VARIABLE_OBFUSCATION_PATTERNS,
         ]
-        
+
         total_expected = sum(len(category) for category in expected_categories)
         assert len(OBFUSCATION_PATTERNS) == total_expected
 
@@ -526,10 +578,12 @@ class TestCombinedObfuscationPatterns:
             ("@@version", True),
             ("normal text", False),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE | re.MULTILINE) 
-                         for pattern in OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE | re.MULTILINE)
+                for pattern in OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_complex_obfuscation_attacks(self):
@@ -547,20 +601,24 @@ class TestCombinedObfuscationPatterns:
             ("sleep(now())", True),
             ("SELECT @@version", True),
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE | re.MULTILINE) 
-                         for pattern in OBFUSCATION_PATTERNS)
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE | re.MULTILINE)
+                for pattern in OBFUSCATION_PATTERNS
+            )
             assert matches == should_match, f"Failed for: {text}"
 
     def test_pattern_performance(self):
         """Test that patterns can handle reasonable input sizes."""
         # Create a large text with obfuscation patterns
         large_text = "SELECT * FROM users " * 1000 + "/* comment */"
-        
+
         # This should not take too long
-        matches = any(re.search(pattern, large_text, re.IGNORECASE | re.MULTILINE) 
-                     for pattern in OBFUSCATION_PATTERNS)
+        matches = any(
+            re.search(pattern, large_text, re.IGNORECASE | re.MULTILINE)
+            for pattern in OBFUSCATION_PATTERNS
+        )
         assert matches is True
 
     def test_pattern_edge_cases(self):
@@ -569,14 +627,16 @@ class TestCombinedObfuscationPatterns:
             ("", False),  # Empty string
             (" ", False),  # Single space
             ("\n", False),  # Single newline
-            ("\t", True),   # Single tab (control character)
-            ("\0", True),   # Null byte
+            ("\t", True),  # Single tab (control character)
+            ("\0", True),  # Null byte
             ("/*/", True),  # Incomplete comment
-            ("--", True),   # Comment start
-            ("#", True),    # Comment start
+            ("--", True),  # Comment start
+            ("#", True),  # Comment start
         ]
-        
+
         for text, should_match in test_cases:
-            matches = any(re.search(pattern, text, re.IGNORECASE | re.MULTILINE) 
-                         for pattern in OBFUSCATION_PATTERNS)
-            assert matches == should_match, f"Failed for: {repr(text)}"
+            matches = any(
+                re.search(pattern, text, re.IGNORECASE | re.MULTILINE)
+                for pattern in OBFUSCATION_PATTERNS
+            )
+            assert matches == should_match, f"Failed for: {text!r}"

@@ -12,7 +12,6 @@ of a fox stalking prey - finding exactly what we need while avoiding traps!
 
 import fnmatch
 import os
-from typing import List, Set
 
 
 class FileDiscoveryService:

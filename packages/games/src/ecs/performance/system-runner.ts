@@ -35,16 +35,13 @@ export class SystemRunner {
   constructor(
     private world: World,
     private wasmManager: WASMManager,
-    private performanceMonitor: PerformanceMonitor,
+    private performanceMonitor: PerformanceMonitor
   ) {}
 
   /**
    * Run all registered systems.
    */
-  runSystems(
-    systemFunctions: Array<{ fn: (world: World) => void; name: string }>,
-    deltaTime?: number,
-  ): void {
+  runSystems(systemFunctions: Array<{ fn: (world: World) => void; name: string }>, deltaTime?: number): void {
     this.addDeltaTimeResource(deltaTime);
 
     // Run WASM SIMD systems first for performance-critical operations

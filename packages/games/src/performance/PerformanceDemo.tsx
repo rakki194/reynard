@@ -1,9 +1,4 @@
-import {
-  debounce,
-  MemoryMonitor,
-  PerformanceTimer,
-  throttle,
-} from "reynard-algorithms";
+import { debounce, MemoryMonitor, PerformanceTimer, throttle } from "reynard-algorithms";
 import { Button } from "reynard-components";
 import { createSignal } from "solid-js";
 import { Measurement } from "../types";
@@ -21,9 +16,7 @@ interface PerformanceDemoProps {
 }
 
 export function PerformanceDemo(_props: PerformanceDemoProps = {}) {
-  const [memoryMonitor, setMemoryMonitor] = createSignal<MemoryMonitor | null>(
-    null,
-  );
+  const [memoryMonitor, setMemoryMonitor] = createSignal<MemoryMonitor | null>(null);
   const [measurements, setMeasurements] = createSignal<Measurement[]>([]);
 
   const performHeavyOperation = () => {
@@ -44,7 +37,7 @@ export function PerformanceDemo(_props: PerformanceDemoProps = {}) {
     const duration = newTimer.stop();
     const memoryAfter = newMemoryMonitor.measure();
 
-    setMeasurements((prev) => [
+    setMeasurements(prev => [
       ...prev,
       {
         name: `Heavy Operation ${prev.length + 1}`,
@@ -86,15 +79,11 @@ export function PerformanceDemo(_props: PerformanceDemoProps = {}) {
           <div class="measurements-list">
             {measurements()
               .slice(-5)
-              .map((measurement) => (
+              .map(measurement => (
                 <div class="measurement">
                   <span class="measurement-name">{measurement.name}</span>
-                  <span class="measurement-duration">
-                    {measurement.duration.toFixed(2)}ms
-                  </span>
-                  <span class="measurement-memory">
-                    {measurement.memory} bytes
-                  </span>
+                  <span class="measurement-duration">{measurement.duration.toFixed(2)}ms</span>
+                  <span class="measurement-memory">{measurement.memory} bytes</span>
                 </div>
               ))}
           </div>
@@ -105,9 +94,7 @@ export function PerformanceDemo(_props: PerformanceDemoProps = {}) {
           <div class="memory-info">
             {memoryMonitor() && (
               <div>
-                <p>
-                  Current: {memoryMonitor()!.getAverageUsage().toFixed(0)} bytes
-                </p>
+                <p>Current: {memoryMonitor()!.getAverageUsage().toFixed(0)} bytes</p>
                 <p>Delta: {memoryMonitor()!.getDelta()} bytes</p>
               </div>
             )}
@@ -120,8 +107,7 @@ export function PerformanceDemo(_props: PerformanceDemoProps = {}) {
           🎯 <strong>Click</strong> buttons to test performance monitoring
         </p>
         <p>
-          💡 <strong>Features:</strong> High-precision timing, memory
-          monitoring, throttling, debouncing
+          💡 <strong>Features:</strong> High-precision timing, memory monitoring, throttling, debouncing
         </p>
       </div>
     </div>

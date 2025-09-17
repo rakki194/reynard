@@ -12,15 +12,12 @@ export function useEnhancedIntegration() {
   // State
   const [isRunning, setIsRunning] = createSignal(false);
   const [mode, setMode] = createSignal<"2d" | "3d">("2d");
-  const [patternType, setPatternType] = createSignal<
-    "vogel" | "rotase" | "bernoulli" | "fibonacci-sibling"
-  >("vogel");
+  const [patternType, setPatternType] = createSignal<"vogel" | "rotase" | "bernoulli" | "fibonacci-sibling">("vogel");
   const [pointCount, setPointCount] = createSignal(2000);
   const [rotationSpeed, setRotationSpeed] = createSignal(1.0);
   const [enableStroboscopic, setEnableStroboscopic] = createSignal(true);
   const [enableMorphing, setEnableMorphing] = createSignal(true);
-  const [enablePerformanceOptimization, setEnablePerformanceOptimization] =
-    createSignal(true);
+  const [enablePerformanceOptimization, setEnablePerformanceOptimization] = createSignal(true);
 
   // Engine configuration
   const engineConfig = (): EngineConfig => ({
@@ -44,9 +41,7 @@ export function useEnhancedIntegration() {
   const initializeSystem = () => {
     console.log("🦊 useEnhancedIntegration: Initializing system");
     engines.initializeEngines();
-    const canvas = document.getElementById(
-      "integration-canvas",
-    ) as HTMLCanvasElement;
+    const canvas = document.getElementById("integration-canvas") as HTMLCanvasElement;
     if (canvas) {
       renderer = new EnhancedRenderer(canvas);
     }
@@ -62,11 +57,7 @@ export function useEnhancedIntegration() {
         enablePerformanceOptimization: enablePerformanceOptimization(),
         stroboscopicState: engines.stroboscopicState(),
       };
-      renderer.renderPoints(
-        points,
-        renderConfig,
-        engines.getEngines().performanceEngine,
-      );
+      renderer.renderPoints(points, renderConfig, engines.getEngines().performanceEngine);
     }
   };
 
@@ -82,7 +73,7 @@ export function useEnhancedIntegration() {
         renderer,
         (_frameTime, _renderTime, _updateTime, _pointCount) => {
           // Metrics update handled in animation loop
-        },
+        }
       );
       engines.startAnimation(animationLoop);
     }

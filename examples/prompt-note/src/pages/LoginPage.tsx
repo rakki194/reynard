@@ -36,9 +36,7 @@ const LoginPage: Component = () => {
 
           <Card padding="lg" class="register-card">
             <h2>New to Prompt Note?</h2>
-            <p>
-              Create an account and start your gamified note-taking adventure
-            </p>
+            <p>Create an account and start your gamified note-taking adventure</p>
             <RegisterForm
               onSuccess={() => {
                 console.log("Registration successful");

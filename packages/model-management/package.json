@@ -24,9 +24,7 @@
       "import": "./dist/models/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "pnpm clean && vite build && tsc -p tsconfig.build.json --declaration --emitDeclarationOnly",
@@ -43,14 +41,7 @@
     "clean:build": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "prebuild": "pnpm clean:build"
   },
-  "keywords": [
-    "model",
-    "management",
-    "ml",
-    "ai",
-    "download",
-    "lifecycle"
-  ],
+  "keywords": ["model", "management", "ml", "ai", "download", "lifecycle"],
   "dependencies": {
     "reynard-core": "workspace:*",
     "reynard-service-manager": "workspace:*"

@@ -10,7 +10,7 @@ from ..core.component import Component
 class AgentComponent(Component):
     """
     Core agent identity and basic information.
-    
+
     Contains the fundamental identity data for an agent including
     name, spirit, style, and generation information.
     """
@@ -18,7 +18,7 @@ class AgentComponent(Component):
     def __init__(self, name: str, spirit: str, style: str) -> None:
         """
         Initialize the agent component.
-        
+
         Args:
             name: The agent's name
             spirit: The agent's animal spirit (fox, wolf, otter, etc.)

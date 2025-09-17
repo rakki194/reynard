@@ -6,7 +6,7 @@ export class Health implements Component {
   readonly __component = true;
   constructor(
     public current: number,
-    public max: number,
+    public max: number
   ) {}
 }
 

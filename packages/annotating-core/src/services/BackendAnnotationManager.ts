@@ -35,7 +35,7 @@ class SimpleEventSystem {
   }
 
   emitEvent(event: AnyAnnotationEvent): void {
-    this.listeners.forEach((listener) => {
+    this.listeners.forEach(listener => {
       try {
         listener(event);
       } catch (error) {
@@ -57,7 +57,7 @@ export class BackendAnnotationManager implements IAnnotationManager {
     this.eventSystem = new SimpleEventSystem();
 
     // Forward events from the annotation service
-    this.annotationService.addEventListener((event) => {
+    this.annotationService.addEventListener(event => {
       this.eventSystem.emitEvent(event);
     });
   }
@@ -161,8 +161,6 @@ export class BackendAnnotationManager implements IAnnotationManager {
 /**
  * Create a backend annotation manager
  */
-export function createBackendAnnotationManager(
-  config: BackendAnnotationManagerConfig,
-): BackendAnnotationManager {
+export function createBackendAnnotationManager(config: BackendAnnotationManagerConfig): BackendAnnotationManager {
   return new BackendAnnotationManager(config);
 }

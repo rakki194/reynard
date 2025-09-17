@@ -10,10 +10,7 @@ import { FALLBACK_TRANSLATIONS } from "./fallback-translations";
  * Register additional fallback translations for a package
  * This allows packages to add their own fallback translations
  */
-export function registerFallbackTranslations(
-  packageName: string,
-  translations: Record<string, string>,
-): void {
+export function registerFallbackTranslations(packageName: string, translations: Record<string, string>): void {
   for (const [key, value] of Object.entries(translations)) {
     const prefixedKey = `${packageName}.${key}`;
     FALLBACK_TRANSLATIONS[prefixedKey] = value;
@@ -46,10 +43,7 @@ export function createMockI18n(): I18nModule {
       // Simple parameter substitution
       if (params) {
         for (const [paramKey, paramValue] of Object.entries(params)) {
-          translation = translation.replace(
-            `{${paramKey}}`,
-            String(paramValue),
-          );
+          translation = translation.replace(`{${paramKey}}`, String(paramValue));
         }
       }
 

@@ -101,12 +101,7 @@ export interface ServiceRegistry {
 }
 
 export interface DependencyGraph {
-  addService(
-    name: string,
-    dependencies: string[],
-    startupPriority: number,
-    requiredPackages?: string[],
-  ): void;
+  addService(name: string, dependencies: string[], startupPriority: number, requiredPackages?: string[]): void;
   removeService(name: string): void;
   getStartupOrder(): string[];
   getParallelGroups(): string[][];

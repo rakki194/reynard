@@ -1,8 +1,4 @@
-import {
-  RAGQueryParams,
-  RAGQueryResponse,
-  RAGClientOptions,
-} from "./rag-types";
+import { RAGQueryParams, RAGQueryResponse, RAGClientOptions } from "./rag-types";
 
 /**
  * Creates a RAG query client for searching documents
@@ -11,13 +7,10 @@ import {
  * @param queryUrl Query endpoint URL
  * @returns Query client with search capabilities
  */
-export function createRAGQueryClient(
-  authFetch: RAGClientOptions["authFetch"],
-  queryUrl: string,
-) {
+export function createRAGQueryClient(authFetch: RAGClientOptions["authFetch"], queryUrl: string) {
   const query = async <TExtra = Record<string, unknown>>(
     params: RAGQueryParams,
-    signal?: globalThis.AbortSignal,
+    signal?: globalThis.AbortSignal
   ): Promise<RAGQueryResponse<TExtra>> => {
     const payload = {
       q: params.q || "",

@@ -15,7 +15,7 @@ export interface ChunkNavigationProps {
   chunkText?: string;
 }
 
-export const ChunkNavigation: Component<ChunkNavigationProps> = (props) => {
+export const ChunkNavigation: Component<ChunkNavigationProps> = props => {
   return (
     <>
       {/* Chunk navigation */}
@@ -24,16 +24,14 @@ export const ChunkNavigation: Component<ChunkNavigationProps> = (props) => {
           <label>Chunk:</label>
           <Select
             value={props.selectedChunk || 0}
-            onChange={(value) => props.onChunkChange(Number(value))}
+            onChange={value => props.onChunkChange(Number(value))}
             options={props.chunks.map((_, index) => ({
               value: index,
               label: `Chunk ${index + 1}`,
             }))}
             size="small"
           />
-          <span class="chunk-info">
-            {props.chunks.length} chunks total
-          </span>
+          <span class="chunk-info">{props.chunks.length} chunks total</span>
         </div>
       </Show>
 

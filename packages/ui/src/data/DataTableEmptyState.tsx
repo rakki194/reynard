@@ -11,15 +11,10 @@ export interface DataTableEmptyStateProps {
   columnCount: number;
 }
 
-export const DataTableEmptyState: Component<DataTableEmptyStateProps> = (
-  props,
-) => {
+export const DataTableEmptyState: Component<DataTableEmptyStateProps> = props => {
   return (
     <tr>
-      <td
-        class="reynard-data-table__cell reynard-data-table__cell--empty"
-        colspan={props.columnCount}
-      >
+      <td class="reynard-data-table__cell reynard-data-table__cell--empty" colspan={props.columnCount}>
         <Show when={props.loading} fallback={props.emptyMessage}>
           <div class="reynard-data-table__loading">
             <span>Loading...</span>

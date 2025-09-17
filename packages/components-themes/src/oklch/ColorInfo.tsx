@@ -13,7 +13,7 @@ interface ColorInfoProps {
   title?: string;
 }
 
-export const ColorInfo: Component<ColorInfoProps> = (props) => {
+export const ColorInfo: Component<ColorInfoProps> = props => {
   return (
     <div class="color-info">
       <h3>{props.title || "Current Color"}</h3>

@@ -4,19 +4,14 @@
  * Manages service registration and discovery.
  */
 
-import {
-  ServiceRegistry as IServiceRegistry,
-  ServiceConfig,
-} from "../types/index.js";
+import { ServiceRegistry as IServiceRegistry, ServiceConfig } from "../types/index.js";
 
 export class ServiceRegistry implements IServiceRegistry {
   private _services: Map<string, ServiceConfig> = new Map();
 
   register(config: ServiceConfig): void {
     if (this._services.has(config.name)) {
-      console.warn(
-        `Service '${config.name}' is already registered, overwriting`,
-      );
+      console.warn(`Service '${config.name}' is already registered, overwriting`);
     }
 
     this._services.set(config.name, { ...config });

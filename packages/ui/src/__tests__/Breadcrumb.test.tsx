@@ -32,9 +32,7 @@ describe("Breadcrumb", () => {
     });
 
     it("should render with custom class name", () => {
-      render(() => (
-        <Breadcrumb items={mockBreadcrumbItems} class="custom-breadcrumb" />
-      ));
+      render(() => <Breadcrumb items={mockBreadcrumbItems} class="custom-breadcrumb" />);
 
       const breadcrumb = screen.getByRole("navigation");
       expect(breadcrumb).toHaveClass("breadcrumb", "custom-breadcrumb");
@@ -56,9 +54,7 @@ describe("Breadcrumb", () => {
 
     it("should render custom separator element", () => {
       const customSeparator = <span data-testid="custom-separator">→</span>;
-      render(() => (
-        <Breadcrumb items={mockBreadcrumbItems} separator={customSeparator} />
-      ));
+      render(() => <Breadcrumb items={mockBreadcrumbItems} separator={customSeparator} />);
 
       const separators = screen.getAllByTestId("custom-separator");
       expect(separators).toHaveLength(3);
@@ -120,26 +116,20 @@ describe("Breadcrumb", () => {
 
   describe("Home Icon", () => {
     it("should show home icon when enabled", () => {
-      render(() => (
-        <Breadcrumb items={mockBreadcrumbItems} showHomeIcon={true} />
-      ));
+      render(() => <Breadcrumb items={mockBreadcrumbItems} showHomeIcon={true} />);
 
       const homeIcon = screen.getByText("🏠");
       expect(homeIcon).toBeInTheDocument();
     });
 
     it("should not show home icon when disabled", () => {
-      render(() => (
-        <Breadcrumb items={mockBreadcrumbItems} showHomeIcon={false} />
-      ));
+      render(() => <Breadcrumb items={mockBreadcrumbItems} showHomeIcon={false} />);
 
       expect(screen.queryByText("🏠")).not.toBeInTheDocument();
     });
 
     it("should replace first item text with home icon", () => {
-      render(() => (
-        <Breadcrumb items={mockBreadcrumbItems} showHomeIcon={true} />
-      ));
+      render(() => <Breadcrumb items={mockBreadcrumbItems} showHomeIcon={true} />);
 
       expect(screen.queryByText("Home")).not.toBeInTheDocument();
       expect(screen.getByText("🏠")).toBeInTheDocument();
@@ -187,24 +177,17 @@ describe("Breadcrumb", () => {
   describe("Event Handling", () => {
     it("should call onItemClick when item is clicked", () => {
       const onItemClick = vi.fn();
-      render(() => (
-        <Breadcrumb items={mockBreadcrumbItems} onItemClick={onItemClick} />
-      ));
+      render(() => <Breadcrumb items={mockBreadcrumbItems} onItemClick={onItemClick} />);
 
       const homeItem = screen.getByText("Home");
       fireEvent.click(homeItem);
 
-      expect(onItemClick).toHaveBeenCalledWith(
-        mockBreadcrumbItems[0],
-        expect.any(MouseEvent),
-      );
+      expect(onItemClick).toHaveBeenCalledWith(mockBreadcrumbItems[0], expect.any(MouseEvent));
     });
 
     it("should not call onItemClick for current item", () => {
       const onItemClick = vi.fn();
-      render(() => (
-        <Breadcrumb items={mockBreadcrumbItems} onItemClick={onItemClick} />
-      ));
+      render(() => <Breadcrumb items={mockBreadcrumbItems} onItemClick={onItemClick} />);
 
       const currentItem = screen.getByText("Current Page");
       fireEvent.click(currentItem);
@@ -220,9 +203,7 @@ describe("Breadcrumb", () => {
         { id: "current", label: "Current", current: true },
       ];
 
-      render(() => (
-        <Breadcrumb items={itemsWithDisabled} onItemClick={onItemClick} />
-      ));
+      render(() => <Breadcrumb items={itemsWithDisabled} onItemClick={onItemClick} />);
 
       const disabledItem = screen.getByText("Disabled");
       fireEvent.click(disabledItem);

@@ -21,21 +21,14 @@ interface ShowcaseSectionsProps {
   animationFrame: () => number;
 }
 
-export const ShowcaseSections: Component<ShowcaseSectionsProps> = (props) => {
+export const ShowcaseSections: Component<ShowcaseSectionsProps> = props => {
   const { state, computedValues, animationFrame } = props;
 
   return (
     <>
-      <DemoComponents
-        computedValues={computedValues}
-        animationFrame={animationFrame}
-      />
+      <DemoComponents computedValues={computedValues} animationFrame={animationFrame} />
 
-      <CoreComponents
-        state={state}
-        computedValues={computedValues}
-        animationFrame={animationFrame}
-      />
+      <CoreComponents state={state} computedValues={computedValues} animationFrame={animationFrame} />
 
       <AdvancedComponents state={state} computedValues={computedValues} />
     </>

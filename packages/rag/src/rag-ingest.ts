@@ -32,15 +32,12 @@ function parseNdjsonChunk(line: string): RAGStreamEvent | null {
  * @param ingestUrl Ingest endpoint URL
  * @returns Ingest client with document processing capabilities
  */
-export function createRAGIngestClient(
-  authFetch: RAGClientOptions["authFetch"],
-  ingestUrl: string,
-) {
+export function createRAGIngestClient(authFetch: RAGClientOptions["authFetch"], ingestUrl: string) {
   const ingestDocuments = async (
     items: RAGIngestItem[],
     model: string,
     onEvent?: (evt: RAGStreamEvent) => void,
-    signal?: globalThis.AbortSignal,
+    signal?: globalThis.AbortSignal
   ): Promise<void> => {
     const res = await authFetch(ingestUrl, {
       method: "POST",

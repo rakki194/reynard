@@ -23,7 +23,7 @@ export class Tile implements Component {
   constructor(
     public type: "floor" | "wall" | "door" | "stairs",
     public explored: boolean = false,
-    public visible: boolean = false,
+    public visible: boolean = false
   ) {}
 }
 
@@ -32,7 +32,7 @@ export class Sprite implements Component {
   constructor(
     public char: string,
     public fg: string = "#ffffff",
-    public bg: string = "#000000",
+    public bg: string = "#000000"
   ) {}
 }
 
@@ -40,7 +40,7 @@ export class Inventory implements Component {
   readonly __component = true;
   constructor(
     public items: string[] = [],
-    public maxSize: number = 10,
+    public maxSize: number = 10
   ) {}
 }
 
@@ -52,7 +52,7 @@ export class Stats implements Component {
     public strength: number = 10,
     public dexterity: number = 10,
     public constitution: number = 10,
-    public intelligence: number = 10,
+    public intelligence: number = 10
   ) {}
 }
 
@@ -61,7 +61,7 @@ export class Equipment implements Component {
   constructor(
     public weapon?: string,
     public armor?: string,
-    public accessory?: string,
+    public accessory?: string
   ) {}
 }
 
@@ -70,7 +70,7 @@ export class AI implements Component {
   constructor(
     public type: "passive" | "aggressive" | "guard" | "wander",
     public target?: number, // entity id
-    public state: "idle" | "hunting" | "fleeing" | "dead" = "idle",
+    public state: "idle" | "hunting" | "fleeing" | "dead" = "idle"
   ) {}
 }
 
@@ -83,7 +83,7 @@ export class Movement implements Component {
   readonly __component = true;
   constructor(
     public speed: number = 1,
-    public canMove: boolean = true,
+    public canMove: boolean = true
   ) {}
 }
 
@@ -92,7 +92,7 @@ export class DungeonLevel implements Component {
   constructor(
     public level: number = 1,
     public width: number = 80,
-    public height: number = 25,
+    public height: number = 25
   ) {}
 }
 
@@ -102,7 +102,7 @@ export class RoguelikeItem implements Component {
     public name: string,
     public type: "weapon" | "armor" | "potion" | "scroll" | "food",
     public value: number = 0,
-    public description: string = "",
+    public description: string = ""
   ) {}
 }
 

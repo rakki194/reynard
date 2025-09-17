@@ -1,0 +1,10 @@
+# Core MCP Server Dependencies
+aiohttp
+PyJWT
+sentence-transformers
+rank-bm25
+numpy
+
+# Optional dependencies for full functionality
+transformers
+torch

@@ -14,18 +14,13 @@ export interface PlaygroundCodeSectionProps {
   onToggleCode: () => void;
 }
 
-export const PlaygroundCodeSection: Component<PlaygroundCodeSectionProps> = (
-  props,
-) => {
+export const PlaygroundCodeSection: Component<PlaygroundCodeSectionProps> = props => {
   // Use createMemo to defer context access and handle errors gracefully
   const notifications = createMemo(() => {
     try {
       return useNotifications();
     } catch (error) {
-      console.error(
-        "PlaygroundCodeSection: Notifications context not available",
-        error,
-      );
+      console.error("PlaygroundCodeSection: Notifications context not available", error);
       return {
         notify: (message: string, type?: string) => {
           console.warn("Notifications context not available:", message, type);
@@ -49,10 +44,7 @@ export const PlaygroundCodeSection: Component<PlaygroundCodeSectionProps> = (
           {fluentIconsPackage.getIcon(props.showCode ? "eye-off" : "eye") && (
             <span
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon(props.showCode ? "eye-off" : "eye")
-                  ?.outerHTML
-              }
+              innerHTML={fluentIconsPackage.getIcon(props.showCode ? "eye-off" : "eye")?.outerHTML}
             />
           )}
           {props.showCode ? "Hide" : "Show"} Code
@@ -64,10 +56,7 @@ export const PlaygroundCodeSection: Component<PlaygroundCodeSectionProps> = (
           <pre>
             <code>{getCodeExample(props.activeTab)}</code>
           </pre>
-          <button
-            class="button button--small button--secondary"
-            onClick={handleCopyCode}
-          >
+          <button class="button button--small button--secondary" onClick={handleCopyCode}>
             {fluentIconsPackage.getIcon("copy") && (
               <span
                 // eslint-disable-next-line solid/no-innerhtml

@@ -10,7 +10,7 @@ export function createUploadActions(
   validation: any,
   singleUpload: any,
   updateProgress: (uploadId: string, updates: Partial<UploadProgress>) => void,
-  options: any,
+  options: any
 ) {
   const uploadFiles = async (files: File[]): Promise<void> => {
     if (files.length === 0) return;
@@ -18,10 +18,7 @@ export function createUploadActions(
     const { validFiles, errors } = validation.validateFiles(files);
 
     if (errors.length > 0) {
-      options.callbacks?.onError?.(
-        `Some files could not be uploaded:\n${errors.join("\n")}`,
-        { errors },
-      );
+      options.callbacks?.onError?.(`Some files could not be uploaded:\n${errors.join("\n")}`, { errors });
     }
 
     if (validFiles.length === 0) return;
@@ -60,16 +57,11 @@ export function createUploadActions(
   };
 }
 
-async function performUpload(
-  validFiles: File[],
-  state: any,
-  singleUpload: any,
-  options: any,
-): Promise<void> {
+async function performUpload(validFiles: File[], state: any, singleUpload: any, options: any): Promise<void> {
   state.setIsUploading(true);
   options.callbacks?.onUploadStart?.(validFiles);
 
-  const initialProgress = validFiles.map((file) => ({
+  const initialProgress = validFiles.map(file => ({
     id: generateFileId(file),
     file,
     progress: 0,
@@ -78,22 +70,17 @@ async function performUpload(
 
   state.setUploads(initialProgress);
 
-  const uploadPromises = validFiles.map((file, index) =>
-    singleUpload.uploadSingleFile(file, initialProgress[index]),
-  );
+  const uploadPromises = validFiles.map((file, index) => singleUpload.uploadSingleFile(file, initialProgress[index]));
 
   try {
     await Promise.all(uploadPromises);
     const finalUploads = state.uploads();
-    const failed = finalUploads.filter((u) => u.status === "error");
+    const failed = finalUploads.filter(u => u.status === "error");
 
     if (failed.length > 0) {
-      options.callbacks?.onError?.(
-        `${failed.length} file(s) failed to upload`,
-        {
-          failed: failed.map((u) => ({ name: u.file.name, error: u.error })),
-        },
-      );
+      options.callbacks?.onError?.(`${failed.length} file(s) failed to upload`, {
+        failed: failed.map(u => ({ name: u.file.name, error: u.error })),
+      });
     }
 
     options.callbacks?.onUploadComplete?.(finalUploads);

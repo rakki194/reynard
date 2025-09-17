@@ -7,10 +7,7 @@
  * @module algorithms/optimization/performanceMonitor
  */
 
-import type {
-  MemoryPoolStats,
-  OptimizationRecommendation,
-} from "../core/enhanced-memory-pool";
+import type { MemoryPoolStats, OptimizationRecommendation } from "../core/enhanced-memory-pool";
 import type { AlgorithmSelector } from "../core/algorithm-selector";
 
 export interface PerformanceRecord {
@@ -101,7 +98,7 @@ export class PerformanceMonitor {
     objectCount: number,
     executionTime: number,
     memoryUsage: number,
-    hitRate: number,
+    hitRate: number
   ): void {
     const record: PerformanceRecord = {
       timestamp: Date.now(),
@@ -160,9 +157,7 @@ export class PerformanceMonitor {
   /**
    * Get performance report
    */
-  getPerformanceReport(
-    recommendations: OptimizationRecommendation[],
-  ): PerformanceReport {
+  getPerformanceReport(recommendations: OptimizationRecommendation[]): PerformanceReport {
     return {
       summary: {
         totalQueries: this.stats.totalQueries,
@@ -183,7 +178,7 @@ export class PerformanceMonitor {
   estimateUpdateFrequency(): number {
     const now = Date.now();
     const recentQueries = this.performanceHistory.filter(
-      (record) => now - record.timestamp < 1000, // Last second
+      record => now - record.timestamp < 1000 // Last second
     );
     return recentQueries.length;
   }
@@ -221,21 +216,14 @@ export class PerformanceMonitor {
   /**
    * Update running averages
    */
-  private updateRunningAverages(
-    executionTime: number,
-    memoryUsage: number,
-  ): void {
+  private updateRunningAverages(executionTime: number, memoryUsage: number): void {
     // Update average execution time
     this.stats.averageExecutionTime =
-      (this.stats.averageExecutionTime * (this.stats.totalQueries - 1) +
-        executionTime) /
-      this.stats.totalQueries;
+      (this.stats.averageExecutionTime * (this.stats.totalQueries - 1) + executionTime) / this.stats.totalQueries;
 
     // Update average memory usage
     this.stats.averageMemoryUsage =
-      (this.stats.averageMemoryUsage * (this.stats.totalQueries - 1) +
-        memoryUsage) /
-      this.stats.totalQueries;
+      (this.stats.averageMemoryUsage * (this.stats.totalQueries - 1) + memoryUsage) / this.stats.totalQueries;
   }
 
   /**
@@ -243,9 +231,7 @@ export class PerformanceMonitor {
    */
   private updateAlgorithmUsage(algorithm: string): void {
     if (algorithm in this.stats.algorithmUsage) {
-      this.stats.algorithmUsage[
-        algorithm as keyof typeof this.stats.algorithmUsage
-      ]++;
+      this.stats.algorithmUsage[algorithm as keyof typeof this.stats.algorithmUsage]++;
     }
   }
 }

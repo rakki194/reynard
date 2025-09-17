@@ -13,9 +13,7 @@ interface BenchmarkResult {
   collisionCount: number;
 }
 
-export const PerformanceBenchmarkDemo: Component<
-  PerformanceBenchmarkDemoProps
-> = (props) => {
+export const PerformanceBenchmarkDemo: Component<PerformanceBenchmarkDemoProps> = props => {
   const [isRunning, setIsRunning] = createSignal(false);
   const [results, setResults] = createSignal<BenchmarkResult[]>([]);
   const [currentTest, setCurrentTest] = createSignal(0);
@@ -103,7 +101,7 @@ export const PerformanceBenchmarkDemo: Component<
       });
 
       // Small delay to allow UI updates
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
 
     setCurrentTest(0);
@@ -129,10 +127,8 @@ export const PerformanceBenchmarkDemo: Component<
     const margin = 60;
     const chartWidth = canvas.width - 2 * margin;
     const chartHeight = canvas.height - 2 * margin;
-    const maxObjects = Math.max(...resultsData.map((r) => r.objectCount));
-    const maxTime = Math.max(
-      ...resultsData.map((r) => Math.max(r.naiveTime, r.spatialTime)),
-    );
+    const maxObjects = Math.max(...resultsData.map(r => r.objectCount));
+    const maxTime = Math.max(...resultsData.map(r => Math.max(r.naiveTime, r.spatialTime)));
 
     // Draw axes
     ctx.strokeStyle = "#666666";
@@ -167,8 +163,7 @@ export const PerformanceBenchmarkDemo: Component<
     ctx.beginPath();
     resultsData.forEach((result, index) => {
       const x = margin + (result.objectCount / maxObjects) * chartWidth;
-      const y =
-        canvas.height - margin - (result.naiveTime / maxTime) * chartHeight;
+      const y = canvas.height - margin - (result.naiveTime / maxTime) * chartHeight;
 
       if (index === 0) {
         ctx.moveTo(x, y);
@@ -184,8 +179,7 @@ export const PerformanceBenchmarkDemo: Component<
     ctx.beginPath();
     resultsData.forEach((result, index) => {
       const x = margin + (result.objectCount / maxObjects) * chartWidth;
-      const y =
-        canvas.height - margin - (result.spatialTime / maxTime) * chartHeight;
+      const y = canvas.height - margin - (result.spatialTime / maxTime) * chartHeight;
 
       if (index === 0) {
         ctx.moveTo(x, y);
@@ -196,12 +190,10 @@ export const PerformanceBenchmarkDemo: Component<
     ctx.stroke();
 
     // Draw data points
-    resultsData.forEach((result) => {
+    resultsData.forEach(result => {
       const x = margin + (result.objectCount / maxObjects) * chartWidth;
-      const naiveY =
-        canvas.height - margin - (result.naiveTime / maxTime) * chartHeight;
-      const spatialY =
-        canvas.height - margin - (result.spatialTime / maxTime) * chartHeight;
+      const naiveY = canvas.height - margin - (result.naiveTime / maxTime) * chartHeight;
+      const spatialY = canvas.height - margin - (result.spatialTime / maxTime) * chartHeight;
 
       // Naive points
       ctx.fillStyle = "#ff6b6b";
@@ -277,33 +269,19 @@ export const PerformanceBenchmarkDemo: Component<
             }}
             disabled={isRunning()}
           >
-            {isRunning()
-              ? `🔄 Running Test ${currentTest()}/8...`
-              : "🚀 Start Benchmark"}
+            {isRunning() ? `🔄 Running Test ${currentTest()}/8...` : "🚀 Start Benchmark"}
           </button>
 
-          <button
-            class="control-button"
-            onClick={() => setResults([])}
-            disabled={isRunning()}
-          >
+          <button class="control-button" onClick={() => setResults([])} disabled={isRunning()}>
             🗑️ Clear Results
           </button>
         </div>
       </div>
 
       <div class="demo-canvas-container">
-        <canvas
-          ref={setCanvasRef}
-          width={800}
-          height={500}
-          class="demo-canvas"
-        />
+        <canvas ref={setCanvasRef} width={800} height={500} class="demo-canvas" />
         <div class="canvas-overlay">
-          <p>
-            Performance Comparison Chart • Red: Naive O(n²) • Teal: Spatial Hash
-            O(n)
-          </p>
+          <p>Performance Comparison Chart • Red: Naive O(n²) • Teal: Spatial Hash O(n)</p>
         </div>
       </div>
 
@@ -322,14 +300,12 @@ export const PerformanceBenchmarkDemo: Component<
                 </tr>
               </thead>
               <tbody>
-                {results().map((result) => (
+                {results().map(result => (
                   <tr>
                     <td>{result.objectCount}</td>
                     <td>{result.naiveTime.toFixed(2)}</td>
                     <td>{result.spatialTime.toFixed(2)}</td>
-                    <td class={result.speedup > 2 ? "highlight" : ""}>
-                      {result.speedup.toFixed(2)}x
-                    </td>
+                    <td class={result.speedup > 2 ? "highlight" : ""}>{result.speedup.toFixed(2)}x</td>
                     <td>{result.collisionCount}</td>
                   </tr>
                 ))}

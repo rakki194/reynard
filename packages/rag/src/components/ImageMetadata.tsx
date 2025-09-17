@@ -1,6 +1,6 @@
 /**
  * Image Metadata Component
- * 
+ *
  * Displays image metadata in a collapsible card
  */
 
@@ -24,29 +24,20 @@ export interface ImageMetadataProps {
   onToggle: () => void;
 }
 
-export const ImageMetadata: Component<ImageMetadataProps> = (props) => {
+export const ImageMetadata: Component<ImageMetadataProps> = props => {
   return (
     <Show when={props.isVisible && props.metadata}>
       <Card className="metadata-card">
         <div class="card-header">
           <h4>Image Metadata</h4>
-          <Button
-            variant="ghost"
-            size="small"
-            onClick={props.onToggle}
-            icon={getIcon("close")}
-          />
+          <Button variant="ghost" size="small" onClick={props.onToggle} icon={getIcon("close")} />
         </div>
         <div class="metadata-content">
           <For each={Object.entries(props.metadata || {})}>
             {([key, value]) => (
               <div class="metadata-item">
                 <span class="metadata-key">{key}:</span>
-                <span class="metadata-value">
-                  {typeof value === "object"
-                    ? JSON.stringify(value)
-                    : String(value)}
-                </span>
+                <span class="metadata-value">{typeof value === "object" ? JSON.stringify(value) : String(value)}</span>
               </div>
             )}
           </For>

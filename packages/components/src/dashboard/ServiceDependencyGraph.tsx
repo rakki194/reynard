@@ -20,9 +20,7 @@ export interface ServiceDependency {
   isRequired: boolean;
 }
 
-export const ServiceDependencyGraph: Component<ServiceDependencyGraphProps> = (
-  props,
-) => {
+export const ServiceDependencyGraph: Component<ServiceDependencyGraphProps> = props => {
   // Mock dependency data
   const getDependencies = (serviceName: string): ServiceDependency[] => {
     const dependencyMap: Record<string, ServiceDependency[]> = {
@@ -183,16 +181,13 @@ export const ServiceDependencyGraph: Component<ServiceDependencyGraphProps> = (
       <Show when={dependencies().length > 0}>
         <div class="dependencies-list">
           <For each={dependencies()}>
-            {(dependency) => (
+            {dependency => (
               <div class="dependency-item">
                 <div class="dependency-info">
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={
-                        fluentIconsPackage.getIcon(getStatusIcon(dependency))
-                          ?.outerHTML || ""
-                      }
+                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(dependency))?.outerHTML || ""}
                     />
                   </span>
 
@@ -204,17 +199,11 @@ export const ServiceDependencyGraph: Component<ServiceDependencyGraphProps> = (
                 </div>
 
                 <div class="dependency-status">
-                  <span
-                    class="status-badge"
-                    classList={{ [getStatusColor(dependency)]: true }}
-                  >
+                  <span class="status-badge" classList={{ [getStatusColor(dependency)]: true }}>
                     {dependency.status}
                   </span>
 
-                  <span
-                    class="health-badge"
-                    classList={{ [getStatusColor(dependency)]: true }}
-                  >
+                  <span class="health-badge" classList={{ [getStatusColor(dependency)]: true }}>
                     {dependency.health}
                   </span>
                 </div>

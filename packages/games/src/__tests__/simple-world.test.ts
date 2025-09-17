@@ -7,7 +7,7 @@ class Position implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -15,7 +15,7 @@ class Velocity implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -32,12 +32,8 @@ describe("Simple World Test", () => {
     world = createWorld();
 
     // Register component types
-    world
-      .getComponentRegistry()
-      .register("Position", StorageType.Table, () => new Position(0, 0));
-    world
-      .getComponentRegistry()
-      .register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    world.getComponentRegistry().register("Position", StorageType.Table, () => new Position(0, 0));
+    world.getComponentRegistry().register("Velocity", StorageType.Table, () => new Velocity(0, 0));
 
     // Register resource types
     world.getResourceRegistry().register("GameTime", () => new GameTime(0));

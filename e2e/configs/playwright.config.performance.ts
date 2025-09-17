@@ -18,7 +18,7 @@ export default defineConfig({
   workers: 1, // Single worker for consistent performance measurements
 
   reporter: [
-    ["html", { outputFolder: "performance-results" }],
+    ["html", { outputFolder: "performance-results", open: "never" }],
     ["json", { outputFile: "performance-results.json" }],
     ["junit", { outputFile: "performance-results.xml" }],
     ["line"], // Real-time progress

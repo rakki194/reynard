@@ -68,9 +68,7 @@ export default function FileUploader(props: FileUploaderProps) {
 
       <div class="upload-text">
         <p>📁 Drop files here or click to browse</p>
-        <p class="file-types">
-          Supports: Images, Videos, Audio, Text, Code, Documents
-        </p>
+        <p class="file-types">Supports: Images, Videos, Audio, Text, Code, Documents</p>
       </div>
 
       <button class="upload-button" type="button" disabled={props.disabled}>

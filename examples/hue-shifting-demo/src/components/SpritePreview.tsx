@@ -11,7 +11,7 @@ interface SpritePreviewProps {
   };
 }
 
-export const SpritePreview: Component<SpritePreviewProps> = (props) => {
+export const SpritePreview: Component<SpritePreviewProps> = props => {
   const getColorForPixel = (pixelValue: number): OKLCHColor => {
     switch (pixelValue) {
       case 1:
@@ -43,7 +43,7 @@ export const SpritePreview: Component<SpritePreviewProps> = (props) => {
                 }}
               />
             );
-          }),
+          })
         )}
       </div>
 

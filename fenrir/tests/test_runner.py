@@ -201,9 +201,11 @@ class FenrirTestRunner:
         summary_table.add_row(
             "Vulnerabilities Found",
             str(total_vulnerabilities),
-            f"{(total_vulnerabilities / total_tests * 100):.1f}%"
-            if total_tests > 0
-            else "0%",
+            (
+                f"{(total_vulnerabilities / total_tests * 100):.1f}%"
+                if total_tests > 0
+                else "0%"
+            ),
         )
         summary_table.add_row("Total Execution Time", f"{total_time:.2f}s", "")
 
@@ -284,16 +286,20 @@ TEST SUITE BREAKDOWN:
             summary_table.add_row(
                 "Failed Tests",
                 str(total_failed),
-                f"{(total_failed / total_tests * 100):.1f}%"
-                if total_tests > 0
-                else "0%",
+                (
+                    f"{(total_failed / total_tests * 100):.1f}%"
+                    if total_tests > 0
+                    else "0%"
+                ),
             )
             summary_table.add_row(
                 "Vulnerabilities Found",
                 str(total_vulnerabilities),
-                f"{(total_vulnerabilities / total_tests * 100):.1f}%"
-                if total_tests > 0
-                else "0%",
+                (
+                    f"{(total_vulnerabilities / total_tests * 100):.1f}%"
+                    if total_tests > 0
+                    else "0%"
+                ),
             )
             summary_table.add_row("Total Execution Time", f"{total_time:.2f}s", "")
 

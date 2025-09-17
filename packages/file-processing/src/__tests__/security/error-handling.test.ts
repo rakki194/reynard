@@ -19,9 +19,7 @@ describe("Error Handling Security", () => {
       const problematicFile = createMockFile("test.txt", 1024, "text/plain");
 
       // Mock the thumbnail generator to throw an error
-      vi.spyOn(pipeline as any, "generateThumbnail").mockRejectedValue(
-        new Error("Processing failed"),
-      );
+      vi.spyOn(pipeline as any, "generateThumbnail").mockRejectedValue(new Error("Processing failed"));
 
       const result = await pipeline.processFile(problematicFile);
       expect(result.success).toBe(false);
@@ -39,15 +37,11 @@ describe("Error Handling Security", () => {
 
   describe("Multiple File Processing", () => {
     it("should process multiple files safely", async () => {
-      const files = [
-        TEST_FILES.SAFE.IMAGE_JPG,
-        TEST_FILES.SAFE.IMAGE_PNG,
-        TEST_FILES.SAFE.PDF,
-      ];
+      const files = [TEST_FILES.SAFE.IMAGE_JPG, TEST_FILES.SAFE.IMAGE_PNG, TEST_FILES.SAFE.PDF];
 
       const results = await pipeline.processFiles(files);
       expect(results).toHaveLength(3);
-      results.forEach((result) => {
+      results.forEach(result => {
         expect(result.success).toBe(true);
       });
     });
@@ -83,11 +77,7 @@ describe("Error Handling Security", () => {
     });
 
     it("should handle files with special characters in names", async () => {
-      const specialCharFile = createMockFile(
-        "file@name#test$.txt",
-        1024,
-        "text/plain",
-      );
+      const specialCharFile = createMockFile("file@name#test$.txt", 1024, "text/plain");
       const result = await pipeline.processFile(specialCharFile);
       expect(result.success).toBe(true);
     });
@@ -99,11 +89,7 @@ describe("Error Handling Security", () => {
     });
 
     it("should handle files with multiple extensions", async () => {
-      const multiExtFile = createMockFile(
-        "file.txt.backup",
-        1024,
-        "text/plain",
-      );
+      const multiExtFile = createMockFile("file.txt.backup", 1024, "text/plain");
       const result = await pipeline.processFile(multiExtFile);
       expect(result.success).toBe(true);
     });
@@ -111,9 +97,7 @@ describe("Error Handling Security", () => {
 
   describe("Performance and Resource Limits", () => {
     it("should handle concurrent file processing", async () => {
-      const files = Array.from({ length: 10 }, (_, i) =>
-        createMockFile(`file${i}.txt`, 1024, "text/plain"),
-      );
+      const files = Array.from({ length: 10 }, (_, i) => createMockFile(`file${i}.txt`, 1024, "text/plain"));
 
       const startTime = Date.now();
       const results = await pipeline.processFiles(files);
@@ -127,13 +111,12 @@ describe("Error Handling Security", () => {
       // Test with files that might cause memory issues
       const largeFiles = Array.from(
         { length: 5 },
-        (_, i) =>
-          createMockFile(`large${i}.txt`, 2 * 1024 * 1024, "text/plain"), // 2MB each
+        (_, i) => createMockFile(`large${i}.txt`, 2 * 1024 * 1024, "text/plain") // 2MB each
       );
 
       const results = await pipeline.processFiles(largeFiles);
       expect(results).toHaveLength(5);
-      results.forEach((result) => {
+      results.forEach(result => {
         expect(result.success).toBe(true);
       });
     });

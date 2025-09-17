@@ -25,16 +25,12 @@ export interface UseChatMessagesReturn {
   importConversation: (data: string, format: "json") => void;
 }
 
-export function useChatMessages(
-  options: UseChatMessagesOptions = {},
-): UseChatMessagesReturn {
+export function useChatMessages(options: UseChatMessagesOptions = {}): UseChatMessagesReturn {
   const { initialMessages = [], maxHistoryLength = 100 } = options;
 
   // Core message state
   const [messages, setMessages] = createSignal<ChatMessage[]>(initialMessages);
-  const [currentMessage, setCurrentMessage] = createSignal<
-    ChatMessage | undefined
-  >();
+  const [currentMessage, setCurrentMessage] = createSignal<ChatMessage | undefined>();
 
   // Generate unique message ID
   const generateMessageId = (): string => {
@@ -42,9 +38,7 @@ export function useChatMessages(
   };
 
   // Add a new message to the conversation
-  const addMessage = (
-    message: Omit<ChatMessage, "id" | "timestamp">,
-  ): ChatMessage => {
+  const addMessage = (message: Omit<ChatMessage, "id" | "timestamp">): ChatMessage => {
     const newMessage: ChatMessage = {
       id: generateMessageId(),
       timestamp: Date.now(),
@@ -52,11 +46,9 @@ export function useChatMessages(
     };
 
     batch(() => {
-      setMessages((prev) => {
+      setMessages(prev => {
         const updated = [...prev, newMessage];
-        return updated.length > maxHistoryLength
-          ? updated.slice(-maxHistoryLength)
-          : updated;
+        return updated.length > maxHistoryLength ? updated.slice(-maxHistoryLength) : updated;
       });
     });
 
@@ -65,9 +57,7 @@ export function useChatMessages(
 
   // Update an existing message
   const updateMessage = (id: string, updates: Partial<ChatMessage>) => {
-    setMessages((prev) =>
-      prev.map((msg) => (msg.id === id ? { ...msg, ...updates } : msg)),
-    );
+    setMessages(prev => prev.map(msg => (msg.id === id ? { ...msg, ...updates } : msg)));
   };
 
   // Clear conversation
@@ -88,7 +78,7 @@ export function useChatMessages(
 
       case "markdown":
         return msgs
-          .map((msg) => {
+          .map(msg => {
             const timestamp = new Date(msg.timestamp).toLocaleString();
             const role = msg.role === "user" ? "**User**" : "**Assistant**";
             return `## ${role} (${timestamp})\n\n${msg.content}\n\n---\n`;
@@ -97,7 +87,7 @@ export function useChatMessages(
 
       case "txt":
         return msgs
-          .map((msg) => {
+          .map(msg => {
             const timestamp = new Date(msg.timestamp).toLocaleString();
             return `[${timestamp}] ${msg.role.toUpperCase()}: ${msg.content}`;
           })

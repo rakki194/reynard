@@ -61,14 +61,9 @@ describe("Spatial Types", () => {
     });
 
     it("should support all category types", () => {
-      const categories: SpatialObjectData["category"][] = [
-        "entity",
-        "obstacle",
-        "trigger",
-        "decoration",
-      ];
+      const categories: SpatialObjectData["category"][] = ["entity", "obstacle", "trigger", "decoration"];
 
-      categories.forEach((category) => {
+      categories.forEach(category => {
         const data: SpatialObjectData = {
           id: `test-${category}`,
           type: "object",
@@ -97,15 +92,9 @@ describe("Spatial Types", () => {
     });
 
     it("should support all entity types", () => {
-      const entityTypes: GameEntityData["entityType"][] = [
-        "player",
-        "enemy",
-        "npc",
-        "item",
-        "projectile",
-      ];
+      const entityTypes: GameEntityData["entityType"][] = ["player", "enemy", "npc", "item", "projectile"];
 
-      entityTypes.forEach((entityType) => {
+      entityTypes.forEach(entityType => {
         const data: GameEntityData = {
           id: `test-${entityType}`,
           type: "entity",
@@ -146,14 +135,9 @@ describe("Spatial Types", () => {
     });
 
     it("should support all collision types", () => {
-      const collisionTypes: CollisionData["collisionType"][] = [
-        "solid",
-        "trigger",
-        "platform",
-        "oneway",
-      ];
+      const collisionTypes: CollisionData["collisionType"][] = ["solid", "trigger", "platform", "oneway"];
 
-      collisionTypes.forEach((collisionType) => {
+      collisionTypes.forEach(collisionType => {
         const data: CollisionData = {
           id: `test-${collisionType}`,
           type: "collision",
@@ -164,15 +148,9 @@ describe("Spatial Types", () => {
     });
 
     it("should support all material types", () => {
-      const materials: NonNullable<CollisionData["material"]>[] = [
-        "metal",
-        "wood",
-        "stone",
-        "fabric",
-        "glass",
-      ];
+      const materials: NonNullable<CollisionData["material"]>[] = ["metal", "wood", "stone", "fabric", "glass"];
 
-      materials.forEach((material) => {
+      materials.forEach(material => {
         const data: CollisionData = {
           id: `test-${material}`,
           type: "collision",
@@ -426,9 +404,7 @@ describe("Spatial Types", () => {
       };
 
       expect(smallConfig.cellSize).toBeLessThan(largeConfig.cellSize);
-      expect(smallConfig.maxObjectsPerCell).toBeLessThan(
-        largeConfig.maxObjectsPerCell,
-      );
+      expect(smallConfig.maxObjectsPerCell).toBeLessThan(largeConfig.maxObjectsPerCell);
     });
   });
 
@@ -465,14 +441,10 @@ describe("Spatial Types", () => {
       };
 
       // Active + Available should equal Total
-      expect(stats.activeObjects + stats.availableObjects).toBe(
-        stats.totalObjects,
-      );
+      expect(stats.activeObjects + stats.availableObjects).toBe(stats.totalObjects);
 
       // Allocation - Deallocation should equal Active
-      expect(stats.allocationCount - stats.deallocationCount).toBe(
-        stats.activeObjects,
-      );
+      expect(stats.allocationCount - stats.deallocationCount).toBe(stats.activeObjects);
 
       // Peak usage should not exceed total capacity
       expect(stats.peakUsage).toBeLessThanOrEqual(stats.totalObjects);
@@ -509,11 +481,7 @@ describe("Spatial Types", () => {
     });
 
     it("should allow using types in generic functions", () => {
-      function createTypedSpatialObject<T extends SpatialDataType>(
-        x: number,
-        y: number,
-        data: T,
-      ): SpatialObject<T> {
+      function createTypedSpatialObject<T extends SpatialDataType>(x: number, y: number, data: T): SpatialObject<T> {
         return {
           id: data.id,
           x,

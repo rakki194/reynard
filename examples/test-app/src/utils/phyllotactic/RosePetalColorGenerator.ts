@@ -15,11 +15,7 @@ export class RosePetalColorGenerator {
   /**
    * Generate petal color based on position and shape
    */
-  generatePetalColor(
-    _index: number,
-    shape: PetalShape,
-    _totalPetals: number,
-  ): string {
+  generatePetalColor(_index: number, shape: PetalShape, _totalPetals: number): string {
     let baseHue: number;
     let saturation: number;
     let lightness: number;

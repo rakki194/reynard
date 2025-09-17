@@ -24,13 +24,7 @@ export interface AuthFetchOptions {
   body?: string | FormData | URLSearchParams | ReadableStream | null;
   credentials?: "omit" | "same-origin" | "include";
   mode?: "cors" | "no-cors" | "same-origin";
-  cache?:
-    | "default"
-    | "no-store"
-    | "reload"
-    | "no-cache"
-    | "force-cache"
-    | "only-if-cached";
+  cache?: "default" | "no-store" | "reload" | "no-cache" | "force-cache" | "only-if-cached";
   redirect?: "follow" | "error" | "manual";
   referrer?: string;
   referrerPolicy?:
@@ -54,7 +48,7 @@ export const createAuthHTTPClient = (
   config: AuthConfiguration,
   tokenManager: TokenManager,
   onUnauthorized: () => void,
-  onTokenRefresh: () => Promise<void>,
+  onTokenRefresh: () => Promise<void>
 ): HTTPClient => {
   const authConfig: AuthConfig = {
     type: "bearer",
@@ -80,10 +74,7 @@ export const createAuthHTTPClient = (
     enableRetry: true,
     enableCircuitBreaker: true,
     enableMetrics: true,
-    middleware: [
-      createAuthMiddleware(authConfig),
-      createTokenRefreshMiddleware(tokenRefreshConfig),
-    ],
+    middleware: [createAuthMiddleware(authConfig), createTokenRefreshMiddleware(tokenRefreshConfig)],
   });
 
   return client;
@@ -96,12 +87,9 @@ export const createAuthFetch = (
   config: AuthConfiguration,
   tokenManager: TokenManager,
   onUnauthorized: () => void,
-  onTokenRefresh: () => Promise<void>,
+  onTokenRefresh: () => Promise<void>
 ) => {
-  return async (
-    url: string,
-    options: AuthFetchOptions = {},
-  ): Promise<Response> => {
+  return async (url: string, options: AuthFetchOptions = {}): Promise<Response> => {
     const token = tokenManager.getAccessToken();
     const headers = buildAuthHeaders({ token: token || undefined, options });
 
@@ -131,16 +119,12 @@ export const createAuthFetch = (
 /**
  * Parse API response into standardized format
  */
-export const parseApiResponse = async <T>(
-  response: Response,
-): Promise<ApiResponse<T>> => {
+export const parseApiResponse = async <T>(response: Response): Promise<ApiResponse<T>> => {
   try {
     const data = await response.json();
     return {
       data: response.ok ? data : undefined,
-      error: response.ok
-        ? undefined
-        : data.message || data.detail || "Request failed",
+      error: response.ok ? undefined : data.message || data.detail || "Request failed",
       success: response.ok,
       status: response.status,
       meta: {

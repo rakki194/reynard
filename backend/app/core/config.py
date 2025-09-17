@@ -7,7 +7,7 @@ and service-specific settings.
 
 import os
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from dotenv import load_dotenv
 
@@ -52,7 +52,7 @@ class ComfyConfig(ServiceConfig):
 class NLWebConfig(ServiceConfig):
     """NLWeb service configuration."""
 
-    base_url: Optional[str] = None
+    base_url: str | None = None
     suggest_timeout_s: float = 1.5
     cache_ttl_s: float = 10.0
     cache_max_entries: int = 64
@@ -128,7 +128,7 @@ class AppConfig:
     )
 
     # Server settings
-    host: str = "0.0.0.0"
+    host: str = field(default_factory=lambda: os.getenv("HOST", "127.0.0.1"))
     port: int = 8000
     reload: bool = field(
         default_factory=lambda: os.getenv("ENVIRONMENT", "development") == "development"
@@ -138,14 +138,14 @@ class AppConfig:
     title: str = "Reynard API"
     description: str = "Secure API backend for Reynard applications"
     version: str = "1.0.0"
-    docs_url: Optional[str] = field(
+    docs_url: str | None = field(
         default_factory=lambda: (
             "/api/docs"
             if os.getenv("ENVIRONMENT", "development") == "development"
             else None
         )
     )
-    redoc_url: Optional[str] = field(
+    redoc_url: str | None = field(
         default_factory=lambda: (
             "/api/redoc"
             if os.getenv("ENVIRONMENT", "development") == "development"
@@ -154,7 +154,7 @@ class AppConfig:
     )
 
     # CORS settings
-    cors_origins: List[str] = field(
+    cors_origins: list[str] = field(
         default_factory=lambda: [
             "http://localhost:3000",
             "http://localhost:3001",
@@ -175,10 +175,10 @@ class AppConfig:
             "http://localhost:5173",
         ]
     )
-    cors_methods: List[str] = field(
+    cors_methods: list[str] = field(
         default_factory=lambda: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     )
-    cors_headers: List[str] = field(
+    cors_headers: list[str] = field(
         default_factory=lambda: [
             "Accept",
             "Accept-Language",
@@ -188,11 +188,11 @@ class AppConfig:
             "X-Requested-With",
         ]
     )
-    cors_expose_headers: List[str] = field(default_factory=lambda: ["X-Total-Count"])
+    cors_expose_headers: list[str] = field(default_factory=lambda: ["X-Total-Count"])
     cors_max_age: int = 3600
 
     # Security settings
-    allowed_hosts: List[str] = field(
+    allowed_hosts: list[str] = field(
         default_factory=lambda: [
             "localhost",
             "127.0.0.1",
@@ -223,7 +223,7 @@ class AppConfig:
 
 
 # Global configuration instance
-_config: Optional[AppConfig] = None
+_config: AppConfig | None = None
 
 
 def get_config() -> AppConfig:
@@ -234,7 +234,7 @@ def get_config() -> AppConfig:
     return _config
 
 
-def get_service_configs() -> Dict[str, Dict[str, Any]]:
+def get_service_configs() -> dict[str, dict[str, Any]]:
     """Get service configurations as dictionaries."""
     config = get_config()
     return {

@@ -7,8 +7,8 @@ This module provides shared fixtures and configuration for all test modules.
 import asyncio
 import os
 import sys
+from collections.abc import AsyncGenerator, Generator
 from pathlib import Path
-from typing import AsyncGenerator, Dict, Generator
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -22,48 +22,46 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "app"))
 
 # Mock gatekeeper for API tests (but not for auth unit tests)
 # Use environment variable to control mocking
-import os
-SKIP_GATEKEEPER_MOCK = os.getenv('SKIP_GATEKEEPER_MOCK', 'false').lower() == 'true'
+
+SKIP_GATEKEEPER_MOCK = os.getenv("SKIP_GATEKEEPER_MOCK", "false").lower() == "true"
 
 # Only mock gatekeeper if not explicitly disabled
 if not SKIP_GATEKEEPER_MOCK:
     import tests.mocks.gatekeeper as mock_gatekeeper
     import tests.mocks.gatekeeper.api as mock_gatekeeper_api
-    import tests.mocks.gatekeeper.api.routes as mock_routes
     import tests.mocks.gatekeeper.api.dependencies as mock_dependencies
-    import tests.mocks.gatekeeper.models as mock_models
-    import tests.mocks.gatekeeper.models.user as mock_user_models
-    import tests.mocks.gatekeeper.models.token as mock_token_models
+    import tests.mocks.gatekeeper.api.routes as mock_routes
     import tests.mocks.gatekeeper.backends as mock_backends
     import tests.mocks.gatekeeper.backends.memory as mock_memory_backend
     import tests.mocks.gatekeeper.backends.postgresql as mock_postgresql_backend
     import tests.mocks.gatekeeper.backends.sqlite as mock_sqlite_backend
     import tests.mocks.gatekeeper.core as mock_core
-    import tests.mocks.gatekeeper.core.password_manager as mock_password_manager
     import tests.mocks.gatekeeper.core.auth_manager as mock_auth_manager
+    import tests.mocks.gatekeeper.core.password_manager as mock_password_manager
     import tests.mocks.gatekeeper.core.token_manager as mock_token_manager
-    
-    sys.modules['gatekeeper'] = mock_gatekeeper
-    sys.modules['gatekeeper.api'] = mock_gatekeeper_api
-    sys.modules['gatekeeper.api.routes'] = mock_routes
-    sys.modules['gatekeeper.api.dependencies'] = mock_dependencies
-    sys.modules['gatekeeper.models'] = mock_models
-    sys.modules['gatekeeper.models.user'] = mock_user_models
-    sys.modules['gatekeeper.models.token'] = mock_token_models
-    sys.modules['gatekeeper.backends'] = mock_backends
-    sys.modules['gatekeeper.backends.memory'] = mock_memory_backend
-    sys.modules['gatekeeper.backends.postgresql'] = mock_postgresql_backend
-    sys.modules['gatekeeper.backends.sqlite'] = mock_sqlite_backend
-    sys.modules['gatekeeper.core'] = mock_core
-    sys.modules['gatekeeper.core.password_manager'] = mock_password_manager
-    sys.modules['gatekeeper.core.auth_manager'] = mock_auth_manager
-    sys.modules['gatekeeper.core.token_manager'] = mock_token_manager
+    import tests.mocks.gatekeeper.models as mock_models
+    import tests.mocks.gatekeeper.models.token as mock_token_models
+    import tests.mocks.gatekeeper.models.user as mock_user_models
 
-from main import create_app
+    sys.modules["gatekeeper"] = mock_gatekeeper
+    sys.modules["gatekeeper.api"] = mock_gatekeeper_api
+    sys.modules["gatekeeper.api.routes"] = mock_routes
+    sys.modules["gatekeeper.api.dependencies"] = mock_dependencies
+    sys.modules["gatekeeper.models"] = mock_models
+    sys.modules["gatekeeper.models.user"] = mock_user_models
+    sys.modules["gatekeeper.models.token"] = mock_token_models
+    sys.modules["gatekeeper.backends"] = mock_backends
+    sys.modules["gatekeeper.backends.memory"] = mock_memory_backend
+    sys.modules["gatekeeper.backends.postgresql"] = mock_postgresql_backend
+    sys.modules["gatekeeper.backends.sqlite"] = mock_sqlite_backend
+    sys.modules["gatekeeper.core"] = mock_core
+    sys.modules["gatekeeper.core.password_manager"] = mock_password_manager
+    sys.modules["gatekeeper.core.auth_manager"] = mock_auth_manager
+    sys.modules["gatekeeper.core.token_manager"] = mock_token_manager
 
 
 @pytest.fixture(scope="session")
-def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
+def event_loop() -> Generator[asyncio.AbstractEventLoop]:
     """Create an instance of the default event loop for the test session."""
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
@@ -74,13 +72,13 @@ def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
 def test_app() -> FastAPI:
     """Create a test FastAPI application."""
     # Create app without lifespan manager for testing
-    from app.core.config import get_config
-    from app.core.app_factory import _setup_middleware, _setup_routers
-    from app.core.service_registry import ServiceRegistry
     from unittest.mock import MagicMock
-    
+
+    from app.core.app_factory import _setup_middleware, _setup_routers
+    from app.core.config import get_config
+
     config = get_config()
-    
+
     # Create the FastAPI application without lifespan
     app = FastAPI(
         title=config.title,
@@ -89,22 +87,22 @@ def test_app() -> FastAPI:
         docs_url=config.docs_url,
         redoc_url=config.redoc_url,
     )
-    
+
     # Mock the service registry for testing
     mock_registry = MagicMock()
     mock_registry.get_all_status.return_value = {}
     mock_registry.health_check_all.return_value = {}
     mock_registry.is_healthy.return_value = True
-    
+
     # Store the mock registry in the app state
     app.state.service_registry = mock_registry
-    
+
     # Configure routers (before middleware wrapping)
     _setup_routers(app)
-    
+
     # Configure middleware (last to wrap everything)
     app = _setup_middleware(app, config)
-    
+
     return app
 
 
@@ -115,9 +113,10 @@ def client(test_app) -> TestClient:
 
 
 @pytest_asyncio.fixture(scope="function")
-async def async_client(test_app) -> AsyncGenerator[AsyncClient, None]:
+async def async_client(test_app) -> AsyncGenerator[AsyncClient]:
     """Create an async test client for the FastAPI application."""
     from httpx import ASGITransport
+
     transport = ASGITransport(app=test_app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         yield ac
@@ -130,7 +129,7 @@ def mock_auth_token() -> str:
 
 
 @pytest.fixture
-def auth_headers(mock_auth_token) -> Dict[str, str]:
+def auth_headers(mock_auth_token) -> dict[str, str]:
     """Provide authentication headers."""
     return {"Authorization": f"Bearer {mock_auth_token}"}
 
@@ -139,101 +138,103 @@ def auth_headers(mock_auth_token) -> Dict[str, str]:
 def test_image_data() -> bytes:
     """Provide test image data."""
     # This is a simple 1x1 JPEG image (smaller and more compatible)
-    return b'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x00H\x00H\x00\x00\xff\xdb\x00C\x00\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a\x1f\x1e\x1d\x1a\x1c\x1c $.\' ",#\x1c\x1c(7),01444\x1f\'9=82<.342\xff\xc0\x00\x11\x08\x00\x01\x00\x01\x01\x01\x11\x00\x02\x11\x01\x03\x11\x01\xff\xc4\x00\x14\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\xff\xc4\x00\x14\x10\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x0c\x03\x01\x00\x02\x11\x03\x11\x00\x3f\x00\xaa\xff\xd9'
+    return b"\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x01\x00H\x00H\x00\x00\xff\xdb\x00C\x00\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a\x1f\x1e\x1d\x1a\x1c\x1c $.' \",#\x1c\x1c(7),01444\x1f'9=82<.342\xff\xc0\x00\x11\x08\x00\x01\x00\x01\x01\x01\x11\x00\x02\x11\x01\x03\x11\x01\xff\xc4\x00\x14\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\xff\xc4\x00\x14\x10\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xda\x00\x0c\x03\x01\x00\x02\x11\x03\x11\x00\x3f\x00\xaa\xff\xd9"
 
 
 @pytest.fixture
 def mock_caption_service():
     """Create a mock caption service for testing."""
     mock_service = MagicMock()
-    
+
     # Mock available generators
     mock_service.get_available_generators.return_value = {
         "florence2": {
             "description": "Microsoft Florence2 - General purpose image captioning model",
             "is_available": True,
             "caption_type": "caption",
-            "config_schema": {"type": "object", "properties": {}}
+            "config_schema": {"type": "object", "properties": {}},
         }
     }
-    
+
     # Mock generator info
     mock_service.get_generator_info.return_value = {
         "description": "Microsoft Florence2 - General purpose image captioning model",
         "is_available": True,
         "caption_type": "caption",
-        "config_schema": {"type": "object", "properties": {}}
+        "config_schema": {"type": "object", "properties": {}},
     }
-    
+
     # Mock single caption generation
     mock_service.generate_single_caption.return_value = {
         "success": True,
         "caption": "A test image with various objects",
         "processing_time": 1.5,
         "caption_type": "descriptive",
-        "confidence": 0.95
+        "confidence": 0.95,
     }
-    
+
     # Mock upload and generate caption
-    mock_service.upload_and_generate_caption = AsyncMock(return_value={
-        "success": True,
-        "image_path": "/tmp/test.jpg",
-        "generator_name": "florence2",
-        "caption": "A test image with various objects",
-        "processing_time": 1.5,
-        "caption_type": "descriptive",
-        "confidence": 0.95
-    })
-    
+    mock_service.upload_and_generate_caption = AsyncMock(
+        return_value={
+            "success": True,
+            "image_path": "/tmp/test.jpg",
+            "generator_name": "florence2",
+            "caption": "A test image with various objects",
+            "processing_time": 1.5,
+            "caption_type": "descriptive",
+            "confidence": 0.95,
+        }
+    )
+
     # Mock batch caption generation
     mock_service.generate_batch_captions.return_value = [
         {
             "success": True,
             "caption": "First image caption",
             "processing_time": 1.0,
-            "caption_type": "descriptive"
+            "caption_type": "descriptive",
         },
         {
             "success": True,
             "caption": "Second image caption",
             "processing_time": 1.2,
-            "caption_type": "descriptive"
-        }
+            "caption_type": "descriptive",
+        },
     ]
-    
+
     # Mock model management
     mock_service.load_model.return_value = True
     mock_service.unload_model.return_value = True
     mock_service.get_loaded_models.return_value = ["model1", "model2"]
-    
+
     # Mock monitoring
     mock_service.get_generation_stats.return_value = {
         "total_generations": 100,
         "successful_generations": 95,
         "failed_generations": 5,
         "average_processing_time": 1.5,
-        "generators_used": ["generator1", "generator2"]
+        "generators_used": ["generator1", "generator2"],
     }
-    
+
     mock_service.get_generation_history.return_value = [
         {
             "id": "1",
             "timestamp": "2023-01-01T00:00:00Z",
             "generator": "test_generator",
             "success": True,
-            "processing_time": 1.5
+            "processing_time": 1.5,
         },
         {
             "id": "2",
             "timestamp": "2023-01-01T01:00:00Z",
             "generator": "test_generator",
             "success": False,
-            "error": "Model not available"
-        }
+            "error": "Model not available",
+        },
     ]
-    
+
     mock_service.clear_generation_history.return_value = True
-    
+
     return mock_service
 
 
@@ -254,14 +255,14 @@ def setup_test_environment():
 def clean_databases():
     """Clean up test databases before each test."""
     # Import here to avoid circular imports
-    from app.auth.user_service import users_db, refresh_tokens_db
-    
+    from app.auth.user_service import refresh_tokens_db, users_db
+
     # Clear the in-memory databases
     users_db.clear()
     refresh_tokens_db.clear()
-    
+
     yield
-    
+
     # Clean up after test
     users_db.clear()
     refresh_tokens_db.clear()
@@ -271,6 +272,7 @@ def clean_databases():
 def access_token():
     """Provide a valid access token for testing."""
     from app.auth.jwt_utils import create_access_token
+
     return create_access_token({"sub": "testuser", "username": "testuser"})
 
 
@@ -278,8 +280,9 @@ def access_token():
 def expired_token():
     """Provide an expired access token for testing."""
     from datetime import timedelta
+
     from app.auth.jwt_utils import create_access_token
+
     return create_access_token(
-        {"sub": "testuser", "username": "testuser"}, 
-        expires_delta=timedelta(minutes=-1)
+        {"sub": "testuser", "username": "testuser"}, expires_delta=timedelta(minutes=-1)
     )

@@ -70,9 +70,8 @@ export const GoldenAngleDemo: Component = () => {
     <div class="golden-angle-demo">
       <h3>🦊 Golden Angle Color Distribution</h3>
       <p>
-        Each dot represents a color generated using the golden angle (137.507°).
-        The sunflower pattern shows how colors are distributed with perfect
-        mathematical spacing!
+        Each dot represents a color generated using the golden angle (137.507°). The sunflower pattern shows how colors
+        are distributed with perfect mathematical spacing!
       </p>
 
       <div class="demo-controls">
@@ -84,7 +83,7 @@ export const GoldenAngleDemo: Component = () => {
             max={200}
             step={10}
             value={pointCount()}
-            onChange={(value) => {
+            onChange={value => {
               setPointCount(value);
               updatePoints();
             }}
@@ -93,11 +92,7 @@ export const GoldenAngleDemo: Component = () => {
 
         <div class="control-group">
           <label>
-            <Toggle
-              checked={showNumbers()}
-              onChange={(checked) => setShowNumbers(checked)}
-              size="sm"
-            />
+            <Toggle checked={showNumbers()} onChange={checked => setShowNumbers(checked)} size="sm" />
             Show Index Numbers
           </label>
         </div>
@@ -106,7 +101,7 @@ export const GoldenAngleDemo: Component = () => {
           <label>
             <Toggle
               checked={sunflowerMode()}
-              onChange={(checked) => {
+              onChange={checked => {
                 setSunflowerMode(checked);
                 updatePoints();
               }}
@@ -119,36 +114,14 @@ export const GoldenAngleDemo: Component = () => {
 
       <div class="demo-visualization">
         <svg width="600" height="600" class="color-circle">
-          <circle
-            cx="300"
-            cy="300"
-            r="250"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            opacity="0.3"
-          />
+          <circle cx="300" cy="300" r="250" fill="none" stroke="currentColor" stroke-width="2" opacity="0.3" />
 
           <For each={colorPoints()}>
-            {(point) => (
+            {point => (
               <g>
-                <circle
-                  cx={point.x}
-                  cy={point.y}
-                  r="8"
-                  fill={point.color}
-                  stroke="white"
-                  stroke-width="2"
-                />
+                <circle cx={point.x} cy={point.y} r="8" fill={point.color} stroke="white" stroke-width="2" />
                 {showNumbers() && (
-                  <text
-                    x={point.x}
-                    y={point.y + 3}
-                    text-anchor="middle"
-                    font-size="10"
-                    fill="white"
-                    font-weight="bold"
-                  >
+                  <text x={point.x} y={point.y + 3} text-anchor="middle" font-size="10" fill="white" font-weight="bold">
                     {point.index}
                   </text>
                 )}
@@ -162,31 +135,19 @@ export const GoldenAngleDemo: Component = () => {
         <div class="explanation-grid">
           <div class="explanation-card">
             <h4>🎯 Maximum Separation</h4>
-            <p>
-              Each new color is positioned as far as possible from all previous
-              colors in hue space.
-            </p>
+            <p>Each new color is positioned as far as possible from all previous colors in hue space.</p>
           </div>
           <div class="explanation-card">
             <h4>♾️ No Repetition</h4>
-            <p>
-              The irrational golden angle ensures the sequence never repeats,
-              even with millions of colors.
-            </p>
+            <p>The irrational golden angle ensures the sequence never repeats, even with millions of colors.</p>
           </div>
           <div class="explanation-card">
             <h4>🌻 Natural Distribution</h4>
-            <p>
-              Same principle used in nature for optimal packing (sunflower
-              seeds, pinecones).
-            </p>
+            <p>Same principle used in nature for optimal packing (sunflower seeds, pinecones).</p>
           </div>
           <div class="explanation-card">
             <h4>🎨 Visual Harmony</h4>
-            <p>
-              Creates aesthetically pleasing color palettes with perfect visual
-              balance.
-            </p>
+            <p>Creates aesthetically pleasing color palettes with perfect visual balance.</p>
           </div>
         </div>
       </div>

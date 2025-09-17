@@ -34,10 +34,7 @@ export const useDebounce = <T>(value: () => T, delay: number) => {
 /**
  * Debounces a function call
  */
-export const useDebouncedCallback = <TArgs extends unknown[]>(
-  callback: (...args: TArgs) => void,
-  delay: number,
-) => {
+export const useDebouncedCallback = <TArgs extends unknown[]>(callback: (...args: TArgs) => void, delay: number) => {
   let timeoutId: ReturnType<typeof setTimeout>;
 
   return (...args: TArgs) => {

@@ -6,7 +6,7 @@ to ensure proper validation and documentation.
 """
 
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -37,13 +37,13 @@ class ToolParameterInfo(BaseModel):
     type: str
     description: str
     required: bool
-    default: Optional[Any] = None
-    min_value: Optional[float] = None
-    max_value: Optional[float] = None
-    min_length: Optional[int] = None
-    max_length: Optional[int] = None
-    choices: Optional[List[Any]] = None
-    pattern: Optional[str] = None
+    default: Any | None = None
+    min_value: float | None = None
+    max_value: float | None = None
+    min_length: int | None = None
+    max_length: int | None = None
+    choices: list[Any] | None = None
+    pattern: str | None = None
 
 
 class ToolInfo(BaseModel):
@@ -52,18 +52,18 @@ class ToolInfo(BaseModel):
     name: str
     description: str
     category: str
-    tags: List[str]
+    tags: list[str]
     required_permission: str
-    parameters: List[ToolParameterInfo]
-    timeout: Optional[int] = None
+    parameters: list[ToolParameterInfo]
+    timeout: int | None = None
 
 
 class ToolListRequest(BaseModel):
     """Request model for listing tools."""
 
-    category: Optional[str] = Field(None, description="Filter by category")
-    tag: Optional[str] = Field(None, description="Filter by tag")
-    permission: Optional[str] = Field(None, description="Filter by required permission")
+    category: str | None = Field(None, description="Filter by category")
+    tag: str | None = Field(None, description="Filter by tag")
+    permission: str | None = Field(None, description="Filter by required permission")
 
 
 class ToolSearchRequest(BaseModel):
@@ -75,11 +75,11 @@ class ToolSearchRequest(BaseModel):
 class ToolExecutionRequest(BaseModel):
     """Request model for tool execution."""
 
-    parameters: Dict[str, Any] = Field(
+    parameters: dict[str, Any] = Field(
         default_factory=dict, description="Tool parameters"
     )
     dry_run: bool = Field(False, description="Whether to perform a dry run")
-    timeout: Optional[int] = Field(
+    timeout: int | None = Field(
         None, description="Custom timeout in seconds", ge=1, le=300
     )
 
@@ -88,8 +88,8 @@ class ToolExecutionResult(BaseModel):
     """Response model for tool execution."""
 
     success: bool
-    result: Optional[Dict[str, Any]] = None
-    error: Optional[str] = None
+    result: dict[str, Any] | None = None
+    error: str | None = None
     execution_time: float
     dry_run: bool = False
     tool_name: str
@@ -98,17 +98,17 @@ class ToolExecutionResult(BaseModel):
 class ToolListResponse(BaseModel):
     """Response model for tool listing."""
 
-    tools: List[ToolInfo]
+    tools: list[ToolInfo]
     total_count: int
     filtered_count: int
-    categories: List[str]
-    tags: List[str]
+    categories: list[str]
+    tags: list[str]
 
 
 class ToolSearchResponse(BaseModel):
     """Response model for tool search."""
 
-    tools: List[ToolInfo]
+    tools: list[ToolInfo]
     query: str
     total_results: int
 
@@ -116,7 +116,7 @@ class ToolSearchResponse(BaseModel):
 class ToolCategoriesResponse(BaseModel):
     """Response model for tool categories."""
 
-    categories: List[str]
+    categories: list[str]
 
 
 class ToolStatsResponse(BaseModel):
@@ -125,29 +125,29 @@ class ToolStatsResponse(BaseModel):
     total_tools: int
     categories: int
     tags: int
-    tools_by_category: Dict[str, int]
-    tools_by_permission: Dict[str, int]
+    tools_by_category: dict[str, int]
+    tools_by_permission: dict[str, int]
 
 
 class ErrorResponse(BaseModel):
     """Standard error response model."""
 
     error: str
-    detail: Optional[str] = None
-    code: Optional[str] = None
+    detail: str | None = None
+    code: str | None = None
 
 
 # ---------- RAG Models ----------
 
 
 class RAGIngestItem(BaseModel):
-    source: Optional[str] = None
+    source: str | None = None
     content: str
 
 
 class RAGIngestRequest(BaseModel):
-    items: List[RAGIngestItem]
-    model: Optional[str] = None
+    items: list[RAGIngestItem]
+    model: str | None = None
 
 
 class RAGIngestResponse(BaseModel):
@@ -157,32 +157,32 @@ class RAGIngestResponse(BaseModel):
 
 
 class RAGReindexFilters(BaseModel):
-    modality: Optional[str] = None
-    model: Optional[str] = None
-    start_date: Optional[str] = None
-    end_date: Optional[str] = None
+    modality: str | None = None
+    model: str | None = None
+    start_date: str | None = None
+    end_date: str | None = None
 
 
 class RAGReindexRequest(BaseModel):
-    filters: Optional[RAGReindexFilters] = None
+    filters: RAGReindexFilters | None = None
 
 
 class RAGQueryRequest(BaseModel):
     q: str
     modality: str = "docs"  # docs|code|captions|images
     top_k: int = 20
-    w_vec: Optional[float] = None
-    w_text: Optional[float] = None
+    w_vec: float | None = None
+    w_text: float | None = None
 
 
 class RAGQueryHit(BaseModel):
-    id: Optional[int] = None
+    id: int | None = None
     score: float
-    extra: Dict[str, Any] = {}
-    highlights: Optional[List[str]] = None
+    extra: dict[str, Any] = {}
+    highlights: list[str] | None = None
 
 
 class RAGQueryResponse(BaseModel):
-    hits: List[RAGQueryHit]
+    hits: list[RAGQueryHit]
     total: int
-    modality: Optional[str] = None
+    modality: str | None = None

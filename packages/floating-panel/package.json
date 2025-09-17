@@ -13,9 +13,7 @@
     },
     "./styles": "./dist/styles.css"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",
@@ -28,14 +26,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"
   },
-  "keywords": [
-    "reynard",
-    "floating-panel",
-    "overlay",
-    "animation",
-    "solidjs",
-    "ui-components"
-  ],
+  "keywords": ["reynard", "floating-panel", "overlay", "animation", "solidjs", "ui-components"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
@@ -46,7 +37,7 @@
     "@solidjs/testing-library": "0.8.10",
     "@typescript-eslint/eslint-plugin": "8.43.0",
     "@typescript-eslint/parser": "8.43.0",
-    "eslint": "8.57.1",
+    "eslint": "9.35.0",
     "happy-dom": "18.0.1",
     "jsdom": "^26.1.0",
     "reynard-testing": "workspace:*",

@@ -3,19 +3,9 @@
  * Showcasing the power of our algorithms package with interactive physics demos
  */
 
-import {
-  Component,
-  createSignal,
-  createContext,
-  useContext,
-  ParentComponent,
-} from "solid-js";
+import { Component, createSignal, createContext, useContext, ParentComponent } from "solid-js";
 import { ReynardProvider, useTheme } from "reynard-themes";
-import {
-  NotificationsProvider,
-  useNotifications,
-  createNotifications,
-} from "reynard-core";
+import { NotificationsProvider, useNotifications, createNotifications } from "reynard-core";
 import { DemoSelector } from "./components/DemoSelector";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { DemoContainer } from "./components/DemoContainer";
@@ -46,12 +36,8 @@ export const useDemo = () => {
   return context;
 };
 
-const DemoProvider: ParentComponent<{ value: DemoContextType }> = (props) => {
-  return (
-    <DemoContext.Provider value={props.value}>
-      {props.children}
-    </DemoContext.Provider>
-  );
+const DemoProvider: ParentComponent<{ value: DemoContextType }> = props => {
+  return <DemoContext.Provider value={props.value}>{props.children}</DemoContext.Provider>;
 };
 
 const DemoApp: Component = () => {
@@ -115,11 +101,7 @@ const DemoApp: Component = () => {
         <footer class="app-footer">
           <p>
             Built with 🦊 Reynard Framework •
-            <a
-              href="https://github.com/your-org/reynard"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href="https://github.com/your-org/reynard" target="_blank" rel="noopener noreferrer">
               View on GitHub
             </a>
           </p>

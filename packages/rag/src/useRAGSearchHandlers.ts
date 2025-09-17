@@ -11,11 +11,7 @@ export interface RAGSearchHandlersConfig {
   onResultClick?: (result: RAGResult) => void;
   onDocumentUpload?: (document: any) => void;
   apiBaseUrl?: string;
-  uploadFile: (
-    file: File,
-    basePath: string,
-    onUpload?: (result: any) => void,
-  ) => Promise<void>;
+  uploadFile: (file: File, basePath: string, onUpload?: (result: any) => void) => Promise<void>;
   search: () => void;
 }
 
@@ -39,11 +35,7 @@ export function useRAGSearchHandlers(config: RAGSearchHandlersConfig) {
     const target = e.target as HTMLInputElement;
     const file = target.files?.[0];
     if (file) {
-      config.uploadFile(
-        file,
-        config.apiBaseUrl || "http://localhost:8000",
-        config.onDocumentUpload,
-      );
+      config.uploadFile(file, config.apiBaseUrl || "http://localhost:8000", config.onDocumentUpload);
     }
   };
 

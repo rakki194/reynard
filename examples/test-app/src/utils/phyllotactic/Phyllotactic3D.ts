@@ -32,18 +32,10 @@ export class Phyllotactic3DSystem {
 
     for (let i = 0; i < this.config.pointCount; i++) {
       // Generate 3D coordinates using math module
-      const coords = Phyllotactic3DMath.generate3DSpiralCoordinates(
-        i,
-        this.config,
-      );
+      const coords = Phyllotactic3DMath.generate3DSpiralCoordinates(i, this.config);
 
       // Apply current rotation
-      const rotated = Phyllotactic3DMath.applyRotation(
-        coords.x,
-        coords.y,
-        coords.z,
-        this.rotation,
-      );
+      const rotated = Phyllotactic3DMath.applyRotation(coords.x, coords.y, coords.z, this.rotation);
 
       // Apply center offset
       const x = rotated.x + this.config.centerX;
@@ -51,12 +43,7 @@ export class Phyllotactic3DSystem {
       const z = rotated.z + this.config.centerZ;
 
       // Calculate stroboscopic intensity
-      const stroboscopicIntensity =
-        Phyllotactic3DMath.calculate3DStroboscopicIntensity(
-          i,
-          this.rotation,
-          this.config,
-        );
+      const stroboscopicIntensity = Phyllotactic3DMath.calculate3DStroboscopicIntensity(i, this.rotation, this.config);
 
       points.push({
         index: i,
@@ -79,11 +66,7 @@ export class Phyllotactic3DSystem {
    * Update rotation for animation
    */
   updateRotation(deltaTime: number): void {
-    this.rotation = Phyllotactic3DMath.updateRotation(
-      this.rotation,
-      this.config,
-      deltaTime,
-    );
+    this.rotation = Phyllotactic3DMath.updateRotation(this.rotation, this.config, deltaTime);
   }
 
   /**

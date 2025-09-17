@@ -7,8 +7,9 @@ authentication, and all services running together.
 
 import asyncio
 import sys
+from collections.abc import AsyncGenerator
 from pathlib import Path
-from typing import Any, AsyncGenerator, Dict
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -21,12 +22,14 @@ from httpx import AsyncClient
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "app"))
 
 # Mock gatekeeper before importing the app
-sys.modules['gatekeeper'] = __import__('tests.mocks.gatekeeper', fromlist=[''])
-sys.modules['gatekeeper.api'] = sys.modules['gatekeeper']
-sys.modules['gatekeeper.api.routes'] = sys.modules['gatekeeper']
-sys.modules['gatekeeper.api.dependencies'] = sys.modules['gatekeeper']
-sys.modules['gatekeeper.models'] = sys.modules['gatekeeper']
-sys.modules['gatekeeper.models.user'] = sys.modules['gatekeeper']
+sys.modules["gatekeeper"] = __import__("tests.mocks.gatekeeper", fromlist=[""])
+sys.modules["gatekeeper.api"] = sys.modules["gatekeeper"]
+sys.modules["gatekeeper.api.routes"] = sys.modules["gatekeeper"]
+sys.modules["gatekeeper.api.dependencies"] = sys.modules["gatekeeper"]
+sys.modules["gatekeeper.models"] = sys.modules["gatekeeper"]
+sys.modules["gatekeeper.models.user"] = sys.modules["gatekeeper"]
+
+from main import create_app  # noqa: E402
 
 # Import app modules after path setup
 # Note: These imports must come after sys.path.insert and sys.modules setup
@@ -34,7 +37,6 @@ from app.services.ollama.models import (  # noqa: E402
     OllamaAssistantParams,
     OllamaChatParams,
 )
-from main import create_app  # noqa: E402
 
 
 class TestNLWebFullIntegration:
@@ -51,10 +53,11 @@ class TestNLWebFullIntegration:
         return TestClient(app)
 
     @pytest_asyncio.fixture(scope="class")
-    async def async_client(self, app: FastAPI) -> AsyncGenerator[AsyncClient, None]:
+    async def async_client(self, app: FastAPI) -> AsyncGenerator[AsyncClient]:
         """Create async test client."""
         # Use transport parameter for FastAPI app integration
         from httpx import ASGITransport
+
         transport = ASGITransport(app=app)
         async with AsyncClient(transport=transport, base_url="http://test") as ac:
             yield ac
@@ -65,7 +68,7 @@ class TestNLWebFullIntegration:
         return "mock_bearer_token"
 
     @pytest.fixture
-    def auth_headers(self, mock_auth_token: str) -> Dict[str, str]:
+    def auth_headers(self, mock_auth_token: str) -> dict[str, str]:
         """Authentication headers."""
         return {"Authorization": f"Bearer {mock_auth_token}"}
 
@@ -77,11 +80,11 @@ class TestNLWebFullIntegration:
         # Check that NLWeb routes are registered
         route_paths = []
         for route in app.routes:
-            if hasattr(route, 'path'):
+            if hasattr(route, "path"):
                 route_paths.append(route.path)
-            elif hasattr(route, 'routes'):  # For route groups
+            elif hasattr(route, "routes"):  # For route groups
                 for subroute in route.routes:
-                    if hasattr(subroute, 'path'):
+                    if hasattr(subroute, "path"):
                         route_paths.append(subroute.path)
 
         # Check that key NLWeb endpoints exist
@@ -91,9 +94,11 @@ class TestNLWebFullIntegration:
         assert any("/api/nlweb/ask" in path for path in route_paths)
         assert any("/api/nlweb/verification" in path for path in route_paths)
 
-    def test_nlweb_health_endpoint(self, client: TestClient, auth_headers: Dict[str, str]) -> None:
+    def test_nlweb_health_endpoint(
+        self, client: TestClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test NLWeb health endpoint with full app."""
-        with patch('app.api.nlweb.endpoints.get_nlweb_service') as mock_service:
+        with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             # Mock the service
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.get_health_status.return_value = {
@@ -106,7 +111,7 @@ class TestNLWebFullIntegration:
                 "canary_enabled": False,
                 "canary_percentage": 0.0,
                 "rollback_enabled": False,
-                "performance_monitoring": True
+                "performance_monitoring": True,
             }
             mock_service.return_value = mock_nlweb_service
 
@@ -118,9 +123,11 @@ class TestNLWebFullIntegration:
             assert data["enabled"] is True
             assert data["connection_state"] == "connected"
 
-    def test_nlweb_suggest_endpoint(self, client: TestClient, auth_headers: Dict[str, str]) -> None:
+    def test_nlweb_suggest_endpoint(
+        self, client: TestClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test NLWeb suggest endpoint with full app."""
-        with patch('app.api.nlweb.endpoints.get_nlweb_service') as mock_service:
+        with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             # Mock the service
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.is_available.return_value = True
@@ -134,21 +141,23 @@ class TestNLWebFullIntegration:
                 "path": "/api/tools/file-list",
                 "method": "POST",
                 "parameters": [],
-                "examples": ["list files", "show directory contents"]
+                "examples": ["list files", "show directory contents"],
             }
 
             mock_suggestion_response = {
-                "suggestions": [{
-                    "tool": mock_tool,
-                    "score": 95.0,
-                    "parameters": {"path": "/current/directory"},
-                    "reasoning": "User wants to list files in current directory",
-                    "parameter_hints": {"path": "Current working directory"}
-                }],
+                "suggestions": [
+                    {
+                        "tool": mock_tool,
+                        "score": 95.0,
+                        "parameters": {"path": "/current/directory"},
+                        "reasoning": "User wants to list files in current directory",
+                        "parameter_hints": {"path": "Current working directory"},
+                    }
+                ],
                 "query": "list files in current directory",
                 "processing_time_ms": 150.0,
                 "cache_hit": False,
-                "total_tools_considered": 25
+                "total_tools_considered": 25,
             }
 
             mock_nlweb_service.suggest_tools.return_value = mock_suggestion_response
@@ -162,18 +171,16 @@ class TestNLWebFullIntegration:
                     "git_status": {
                         "is_repository": True,
                         "branch": "main",
-                        "is_dirty": False
-                    }
+                        "is_dirty": False,
+                    },
                 },
                 "max_suggestions": 5,
                 "min_score": 50.0,
-                "include_reasoning": True
+                "include_reasoning": True,
             }
 
             response = client.post(
-                "/api/nlweb/suggest",
-                json=request_data,
-                headers=auth_headers
+                "/api/nlweb/suggest", json=request_data, headers=auth_headers
             )
 
             assert response.status_code == 200
@@ -185,9 +192,11 @@ class TestNLWebFullIntegration:
             assert data["query"] == "list files in current directory"
             assert data["processing_time_ms"] == 150.0
 
-    def test_nlweb_stats_endpoint(self, client: TestClient, auth_headers: Dict[str, str]) -> None:
+    def test_nlweb_stats_endpoint(
+        self, client: TestClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test NLWeb stats endpoint with full app."""
-        with patch('app.api.nlweb.endpoints.get_nlweb_service') as mock_service:
+        with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             # Mock the service
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.get_performance_stats.return_value = {
@@ -204,7 +213,7 @@ class TestNLWebFullIntegration:
                 "max_cache_size": 1000,
                 "rate_limit_hits": 5,
                 "stale_served_count": 10,
-                "degradation_events": 2
+                "degradation_events": 2,
             }
             mock_service.return_value = mock_nlweb_service
 
@@ -218,9 +227,11 @@ class TestNLWebFullIntegration:
             assert data["avg_processing_time_ms"] == 150.0
             assert data["cache_hit_rate"] == 75.0
 
-    def test_nlweb_verification_endpoint(self, client: TestClient, auth_headers: Dict[str, str]) -> None:
+    def test_nlweb_verification_endpoint(
+        self, client: TestClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test NLWeb verification endpoint with full app."""
-        with patch('app.api.nlweb.endpoints.get_nlweb_service') as mock_service:
+        with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             # Mock the service
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.get_verification_checklist.return_value = {
@@ -232,17 +243,17 @@ class TestNLWebFullIntegration:
                         "description": "Check if NLWeb service is reachable",
                         "status": "pass",
                         "value": "connected",
-                        "threshold": "must be connected"
+                        "threshold": "must be connected",
                     },
                     {
                         "name": "ollama_integration",
                         "description": "Check Ollama integration",
                         "status": "pass",
                         "value": "available",
-                        "threshold": "must be available"
-                    }
+                        "threshold": "must be available",
+                    },
                 ],
-                "overall_status": "pass"
+                "overall_status": "pass",
             }
             mock_service.return_value = mock_nlweb_service
 
@@ -256,27 +267,29 @@ class TestNLWebFullIntegration:
             assert len(data["checks"]) == 2
 
     @pytest.mark.asyncio
-    async def test_nlweb_ask_endpoint_streaming(self, async_client: AsyncClient, auth_headers: Dict[str, str]) -> None:
+    async def test_nlweb_ask_endpoint_streaming(
+        self, async_client: AsyncClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test NLWeb ask endpoint with streaming."""
-        with patch('app.api.nlweb.endpoints.get_nlweb_service') as mock_service:
+        with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             # Mock the service
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.is_available.return_value = True
             mock_nlweb_service.configuration.base_url = "http://localhost:3001"
 
             # Mock streaming response
-            async def mock_stream() -> AsyncGenerator[Dict[str, Any], None]:
+            async def mock_stream() -> AsyncGenerator[dict[str, Any]]:
                 yield {
                     "type": "token",
                     "data": "Hello",
                     "timestamp": 1234567890,
-                    "metadata": {"model": "qwen3:latest", "tool_used": "ollama_chat"}
+                    "metadata": {"model": "qwen3:latest", "tool_used": "ollama_chat"},
                 }
                 yield {
                     "type": "token",
                     "data": " world",
                     "timestamp": 1234567891,
-                    "metadata": {"model": "qwen3:latest", "tool_used": "ollama_chat"}
+                    "metadata": {"model": "qwen3:latest", "tool_used": "ollama_chat"},
                 }
                 yield {
                     "type": "complete",
@@ -286,8 +299,8 @@ class TestNLWebFullIntegration:
                         "processing_time": 1.5,
                         "tokens_generated": 2,
                         "model": "qwen3:latest",
-                        "tools_used": ["ollama_chat"]
-                    }
+                        "tools_used": ["ollama_chat"],
+                    },
                 }
 
             mock_nlweb_service.proxy_ask_request.return_value = mock_stream()
@@ -295,51 +308,79 @@ class TestNLWebFullIntegration:
 
             request_data = {
                 "query": "Hello, how are you?",
-                "context": {
-                    "current_path": "/home/user",
-                    "user_id": "testuser"
-                },
+                "context": {"current_path": "/home/user", "user_id": "testuser"},
                 "stream": True,
                 "max_tokens": 100,
-                "temperature": 0.7
+                "temperature": 0.7,
             }
 
             response = await async_client.post(
-                "/api/nlweb/ask",
-                json=request_data,
-                headers=auth_headers
+                "/api/nlweb/ask", json=request_data, headers=auth_headers
             )
 
             assert response.status_code == 200
 
-    def test_ollama_chat_endpoint(self, client: TestClient, auth_headers: Dict[str, str]) -> None:
+    def test_ollama_chat_endpoint(
+        self, client: TestClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test Ollama chat endpoint with full app."""
-        with patch('app.api.ollama.endpoints.get_ollama_service') as mock_service:
+        with patch("app.api.ollama.endpoints.get_ollama_service") as mock_service:
             # Mock the service
             mock_ollama_service = MagicMock()
             mock_ollama_service.is_available.return_value = True
 
             # Mock the chat_stream method
-            async def mock_chat_stream(_params: OllamaChatParams) -> AsyncGenerator[MagicMock, None]:
-                yield MagicMock(type="token", data="I can help", timestamp=1234567890, metadata={})
-                yield MagicMock(type="tool_call", data="", timestamp=1234567891, metadata={"tool_name": "file_list"})
-                yield MagicMock(type="token", data=" you with that.", timestamp=1234567892, metadata={})
-                yield MagicMock(type="complete", data="", timestamp=1234567893, metadata={"processing_time": 1.5})
+            async def mock_chat_stream(
+                _params: OllamaChatParams,
+            ) -> AsyncGenerator[MagicMock]:
+                yield MagicMock(
+                    type="token", data="I can help", timestamp=1234567890, metadata={}
+                )
+                yield MagicMock(
+                    type="tool_call",
+                    data="",
+                    timestamp=1234567891,
+                    metadata={"tool_name": "file_list"},
+                )
+                yield MagicMock(
+                    type="token",
+                    data=" you with that.",
+                    timestamp=1234567892,
+                    metadata={},
+                )
+                yield MagicMock(
+                    type="complete",
+                    data="",
+                    timestamp=1234567893,
+                    metadata={"processing_time": 1.5},
+                )
 
-            mock_ollama_service.chat_stream.return_value = mock_chat_stream(OllamaChatParams(
-                message="List files in current directory",
-                model="qwen3:latest",
-                system_prompt="You are a helpful assistant with access to file system tools.",
-                temperature=0.7,
-                max_tokens=100,
-                stream=True,
-                context={"current_path": "/home/user/project", "user_id": "testuser"},
-                tools=[{
-                    "name": "file_list",
-                    "description": "List files in a directory",
-                    "parameters": {"path": {"type": "string", "description": "Directory path"}}
-                }]
-            ))
+            mock_ollama_service.chat_stream.return_value = mock_chat_stream(
+                OllamaChatParams(
+                    message="List files in current directory",
+                    model="qwen3:latest",
+                    system_prompt="You are a helpful assistant with access to file system tools.",
+                    temperature=0.7,
+                    max_tokens=100,
+                    stream=True,
+                    context={
+                        "current_path": "/home/user/project",
+                        "user_id": "testuser",
+                    },
+                    tools=[
+                        {
+                            "name": "file_list",
+                            "description": "List files in a directory",
+                            "parameters": {
+                                "path": {
+                                    "type": "string",
+                                    "description": "Directory path",
+                                }
+                            },
+                        }
+                    ],
+                )
+            )
             mock_service.return_value = mock_ollama_service
 
             # Make request
@@ -360,24 +401,22 @@ class TestNLWebFullIntegration:
                                 "properties": {
                                     "path": {
                                         "type": "string",
-                                        "description": "Directory path to list"
+                                        "description": "Directory path to list",
                                     }
                                 },
-                                "required": ["path"]
-                            }
-                        }
+                                "required": ["path"],
+                            },
+                        },
                     }
                 ],
                 "context": {
                     "current_path": "/home/user/project",
-                    "user_id": "testuser"
-                }
+                    "user_id": "testuser",
+                },
             }
 
             response = client.post(
-                "/api/ollama/chat",
-                json=request_data,
-                headers=auth_headers
+                "/api/ollama/chat", json=request_data, headers=auth_headers
             )
 
             assert response.status_code == 200
@@ -387,36 +426,57 @@ class TestNLWebFullIntegration:
             assert data["model"] == "qwen3:latest"
             assert data["processing_time"] == 1.5
 
-    def test_ollama_assistant_endpoint(self, client: TestClient, auth_headers: Dict[str, str]) -> None:
+    def test_ollama_assistant_endpoint(
+        self, client: TestClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test Ollama assistant endpoint with full app."""
-        with patch('app.api.ollama.endpoints.get_ollama_service') as mock_service:
+        with patch("app.api.ollama.endpoints.get_ollama_service") as mock_service:
             # Mock the service
             mock_ollama_service = MagicMock()
             mock_ollama_service.is_available.return_value = True
 
             # Mock the assistant_stream method
-            async def mock_assistant_stream(_params: OllamaAssistantParams) -> AsyncGenerator[MagicMock, None]:
-                yield MagicMock(type="token", data="I'll help", timestamp=1234567890, metadata={})
-                yield MagicMock(type="tool_call", data="", timestamp=1234567891, metadata={"tool_name": "nlweb_suggest"})
-                yield MagicMock(type="token", data=" you with that task.", timestamp=1234567892, metadata={})
-                yield MagicMock(type="complete", data="", timestamp=1234567893, metadata={"processing_time": 2.0})
+            async def mock_assistant_stream(
+                _params: OllamaAssistantParams,
+            ) -> AsyncGenerator[MagicMock]:
+                yield MagicMock(
+                    type="token", data="I'll help", timestamp=1234567890, metadata={}
+                )
+                yield MagicMock(
+                    type="tool_call",
+                    data="",
+                    timestamp=1234567891,
+                    metadata={"tool_name": "nlweb_suggest"},
+                )
+                yield MagicMock(
+                    type="token",
+                    data=" you with that task.",
+                    timestamp=1234567892,
+                    metadata={},
+                )
+                yield MagicMock(
+                    type="complete",
+                    data="",
+                    timestamp=1234567893,
+                    metadata={"processing_time": 2.0},
+                )
 
-            mock_ollama_service.assistant_stream.return_value = mock_assistant_stream(OllamaAssistantParams(
-                message="Help me organize my project files",
-                assistant_type="reynard",
-                model="qwen3:latest",
-                temperature=0.7,
-                max_tokens=200,
-                stream=True,
-                context={
-                    "current_path": "/home/user/project",
-                    "project_type": "web_application",
-                    "user_preferences": {
-                        "organization_style": "by_type"
-                    }
-                },
-                tools_enabled=True
-            ))
+            mock_ollama_service.assistant_stream.return_value = mock_assistant_stream(
+                OllamaAssistantParams(
+                    message="Help me organize my project files",
+                    assistant_type="reynard",
+                    model="qwen3:latest",
+                    temperature=0.7,
+                    max_tokens=200,
+                    stream=True,
+                    context={
+                        "current_path": "/home/user/project",
+                        "project_type": "web_application",
+                        "user_preferences": {"organization_style": "by_type"},
+                    },
+                    tools_enabled=True,
+                )
+            )
             mock_service.return_value = mock_ollama_service
 
             # Make request
@@ -429,17 +489,13 @@ class TestNLWebFullIntegration:
                 "context": {
                     "current_path": "/home/user/project",
                     "project_type": "web_application",
-                    "user_preferences": {
-                        "organization_style": "by_type"
-                    }
+                    "user_preferences": {"organization_style": "by_type"},
                 },
-                "tools_enabled": True
+                "tools_enabled": True,
             }
 
             response = client.post(
-                "/api/ollama/assistant",
-                json=request_data,
-                headers=auth_headers
+                "/api/ollama/assistant", json=request_data, headers=auth_headers
             )
 
             assert response.status_code == 200
@@ -462,9 +518,11 @@ class TestNLWebFullIntegration:
         response = client.get("/api/nlweb/stats")
         assert response.status_code == 401
 
-    def test_error_handling(self, client: TestClient, auth_headers: Dict[str, str]) -> None:
+    def test_error_handling(
+        self, client: TestClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test error handling in the full app."""
-        with patch('app.api.nlweb.endpoints.get_nlweb_service') as mock_service:
+        with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             # Mock service that throws an error
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.is_available.return_value = True
@@ -474,9 +532,7 @@ class TestNLWebFullIntegration:
             request_data = {"query": "test query"}
 
             response = client.post(
-                "/api/nlweb/suggest",
-                json=request_data,
-                headers=auth_headers
+                "/api/nlweb/suggest", json=request_data, headers=auth_headers
             )
 
             assert response.status_code == 500
@@ -488,7 +544,9 @@ class TestNLWebFullIntegration:
         assert response.status_code == 200
         # CORS headers should be present (handled by middleware)
 
-    def test_rate_limiting(self, client: TestClient, auth_headers: Dict[str, str]) -> None:
+    def test_rate_limiting(
+        self, client: TestClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test rate limiting functionality."""
         # Make multiple requests quickly
         for _ in range(10):
@@ -497,9 +555,11 @@ class TestNLWebFullIntegration:
             assert response.status_code in [200, 503]  # 503 if service unavailable
 
     @pytest.mark.asyncio
-    async def test_concurrent_requests(self, async_client: AsyncClient, auth_headers: Dict[str, str]) -> None:
+    async def test_concurrent_requests(
+        self, async_client: AsyncClient, auth_headers: dict[str, str]
+    ) -> None:
         """Test handling of concurrent requests."""
-        with patch('app.api.nlweb.endpoints.get_nlweb_service') as mock_service:
+        with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
             # Mock the service
             mock_nlweb_service = MagicMock()
             mock_nlweb_service.is_available.return_value = True
@@ -508,7 +568,7 @@ class TestNLWebFullIntegration:
                 "query": "test query",
                 "processing_time_ms": 100.0,
                 "cache_hit": False,
-                "total_tools_considered": 5
+                "total_tools_considered": 5,
             }
             mock_service.return_value = mock_nlweb_service
 
@@ -518,7 +578,7 @@ class TestNLWebFullIntegration:
                 task = async_client.post(
                     "/api/nlweb/suggest",
                     json={"query": f"test query {i}"},
-                    headers=auth_headers
+                    headers=auth_headers,
                 )
                 tasks.append(task)
 

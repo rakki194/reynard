@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any
 
-
-_model_usage_stats: Dict[str, Dict[str, Any]] = {}
-_model_health_status: Dict[str, Dict[str, Any]] = {}
-_circuit_breakers: Dict[str, Dict[str, Any]] = {}
-_request_queue: List[Dict[str, Any]] = []
+_model_usage_stats: dict[str, dict[str, Any]] = {}
+_model_health_status: dict[str, dict[str, Any]] = {}
+_circuit_breakers: dict[str, dict[str, Any]] = {}
+_request_queue: list[dict[str, Any]] = []
 
 
 def record_usage(model_name: str, processing_time: float, success: bool) -> None:
@@ -29,21 +28,24 @@ def record_usage(model_name: str, processing_time: float, success: bool) -> None
     else:
         stats["failed_requests"] += 1
 
-    total_time = stats["average_processing_time"] * (stats["total_requests"] - 1) + processing_time
+    total_time = (
+        stats["average_processing_time"] * (stats["total_requests"] - 1)
+        + processing_time
+    )
     stats["average_processing_time"] = total_time / stats["total_requests"]
     stats["last_used"] = time.time()
 
 
-def get_model_usage_stats(model_name: str) -> Optional[Dict[str, Any]]:
+def get_model_usage_stats(model_name: str) -> dict[str, Any] | None:
     return _model_usage_stats.get(model_name)
 
 
 def get_health_status(
     *,
-    model_name: Optional[str] = None,
+    model_name: str | None = None,
     total_processed: int = 0,
     total_processing_time: float = 0.0,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     if model_name:
         return _model_health_status.get(
             model_name,
@@ -59,7 +61,9 @@ def get_health_status(
             },
         )
 
-    all_healthy = all(status.get("is_healthy", True) for status in _model_health_status.values())
+    all_healthy = all(
+        status.get("is_healthy", True) for status in _model_health_status.values()
+    )
     return {
         "is_healthy": all_healthy,
         "last_health_check": time.time(),
@@ -72,7 +76,7 @@ def get_health_status(
     }
 
 
-def get_circuit_breaker_state(model_name: str) -> Dict[str, Any]:
+def get_circuit_breaker_state(model_name: str) -> dict[str, Any]:
     return _circuit_breakers.get(
         model_name,
         {
@@ -84,12 +88,10 @@ def get_circuit_breaker_state(model_name: str) -> Dict[str, Any]:
     )
 
 
-def get_queue_status() -> Dict[str, Any]:
+def get_queue_status() -> dict[str, Any]:
     return {
         "total_queued": len(_request_queue),
         "queued_by_model": {},
         "average_wait_time": 0,
         "oldest_request": None,
     }
-
-

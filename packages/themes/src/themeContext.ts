@@ -3,13 +3,7 @@
  * Handles theme context creation and management
  */
 
-import {
-  applyTheme,
-  computeAnimation,
-  computeHoverStyles,
-  computeTagBackground,
-  computeTagColor,
-} from "./themeUtils";
+import { applyTheme, computeAnimation, computeHoverStyles, computeTagBackground, computeTagColor } from "./themeUtils";
 import { isDarkTheme, isHighContrastTheme } from "./themes";
 import type { ThemeContext, ThemeName } from "./types";
 
@@ -18,7 +12,7 @@ import type { ThemeContext, ThemeName } from "./types";
  */
 export const createThemeContext = (
   theme: () => ThemeName,
-  setThemeState: (theme: ThemeName) => void,
+  setThemeState: (theme: ThemeName) => void
 ): ThemeContext => ({
   get theme() {
     const currentTheme = theme();

@@ -10,7 +10,7 @@ export function createPointCloudReturn(
   stateModule: any,
   processedPoints: any,
   createPointSelectionHandler: any,
-  createPointHoverHandler: any,
+  createPointHoverHandler: any
 ) {
   return {
     // Three.js state

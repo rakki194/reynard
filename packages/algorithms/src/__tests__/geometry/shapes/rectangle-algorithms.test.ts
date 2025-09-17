@@ -61,9 +61,7 @@ describe("RectangleOps Integration", () => {
 
       const translated = RectangleOps.translate(rect, { x: 10, y: 10 });
       const translatedPoint = PointOps.create(60, 35);
-      expect(RectangleOps.containsPoint(translated, translatedPoint)).toBe(
-        true,
-      );
+      expect(RectangleOps.containsPoint(translated, translatedPoint)).toBe(true);
     });
   });
 });

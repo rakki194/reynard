@@ -12,7 +12,7 @@ This test demonstrates the full tool calling workflow:
 import asyncio
 import json
 import re
-from typing import Any, Dict
+from typing import Any
 
 import aiohttp
 import pytest
@@ -39,7 +39,7 @@ def format_response_with_thinking(response_text: str) -> str:
     return "".join(formatted_parts)
 
 
-def execute_tool_call(tool_call: Dict[str, Any]) -> Dict[str, Any]:
+def execute_tool_call(tool_call: dict[str, Any]) -> dict[str, Any]:
     """Execute a tool call and return the result."""
     tool_name = tool_call.get("name", "unknown")
     tool_args = tool_call.get("args", {})
@@ -58,7 +58,7 @@ def execute_tool_call(tool_call: Dict[str, Any]) -> Dict[str, Any]:
             "result": f"The square of {input_num} is {result}",
             "value": result,
         }
-    elif tool_name == "file_list":
+    if tool_name == "file_list":
         path = tool_args.get("path", ".")
         # Simulate file listing
         files = ["test.py", "main.py", "config.json", "README.md", "requirements.txt"]
@@ -68,17 +68,16 @@ def execute_tool_call(tool_call: Dict[str, Any]) -> Dict[str, Any]:
             "result": f"Files in {path}: {', '.join(files)}",
             "files": files,
         }
-    else:
-        return {
-            "tool_call_id": tool_call.get("id", "unknown"),
-            "tool_name": tool_name,
-            "result": f"Tool {tool_name} executed with args {tool_args}",
-            "error": "Unknown tool",
-        }
+    return {
+        "tool_call_id": tool_call.get("id", "unknown"),
+        "tool_name": tool_name,
+        "result": f"Tool {tool_name} executed with args {tool_args}",
+        "error": "Unknown tool",
+    }
 
 
 @pytest.mark.asyncio
-async def test_complete_tool_execution_workflow() -> Dict[str, Any]:
+async def test_complete_tool_execution_workflow() -> dict[str, Any]:
     """Test the complete tool execution workflow."""
     print("🦊> Testing Complete Tool Execution Workflow")
     print("=" * 60)
@@ -167,7 +166,7 @@ async def test_complete_tool_execution_workflow() -> Dict[str, Any]:
                             final_response = follow_up_data.get("response", "")
 
                             print("✅ Final response received")
-                            processing_time = follow_up_data.get('processing_time', 0)
+                            processing_time = follow_up_data.get("processing_time", 0)
                             print(f"   Processing time: {processing_time:.2f}s")
 
                             # Display the final answer
@@ -185,10 +184,9 @@ async def test_complete_tool_execution_workflow() -> Dict[str, Any]:
                                 "tool_results": tool_results,
                                 "final_answer": final_response,
                             }
-                        else:
-                            error_text = await follow_up_response.text()
-                            print(f"❌ Follow-up request failed: {error_text}")
-                            return {"success": False, "error": error_text}
+                        error_text = await follow_up_response.text()
+                        print(f"❌ Follow-up request failed: {error_text}")
+                        return {"success": False, "error": error_text}
                 else:
                     print("⚠️ No tool calls were made")
                     return {"success": False, "error": "No tool calls made"}
@@ -199,7 +197,7 @@ async def test_complete_tool_execution_workflow() -> Dict[str, Any]:
 
 
 @pytest.mark.asyncio
-async def test_assistant_complete_workflow() -> Dict[str, Any]:
+async def test_assistant_complete_workflow() -> dict[str, Any]:
     """Test complete workflow with assistant endpoint."""
     print("\n🦦> Testing Assistant Complete Workflow")
     print("=" * 60)
@@ -279,7 +277,7 @@ async def test_assistant_complete_workflow() -> Dict[str, Any]:
                             final_response = follow_up_data.get("response", "")
 
                             print("✅ Final assistant response received")
-                            processing_time = follow_up_data.get('processing_time', 0)
+                            processing_time = follow_up_data.get("processing_time", 0)
                             print(f"   Processing time: {processing_time:.2f}s")
 
                             # Display the final answer
@@ -297,10 +295,9 @@ async def test_assistant_complete_workflow() -> Dict[str, Any]:
                                 "tool_results": tool_results,
                                 "final_answer": final_response,
                             }
-                        else:
-                            error_text = await follow_up_response.text()
-                            print(f"❌ Follow-up request failed: {error_text}")
-                            return {"success": False, "error": error_text}
+                        error_text = await follow_up_response.text()
+                        print(f"❌ Follow-up request failed: {error_text}")
+                        return {"success": False, "error": error_text}
                 else:
                     print("⚠️ No tool calls were made")
                     return {"success": False, "error": "No tool calls made"}
@@ -324,9 +321,9 @@ async def main() -> None:
     # Summary
     print("\n" + "=" * 70)
     print("📊 Complete Workflow Analysis:")
-    chat_status = "✅ Success" if chat_result.get('success') else "❌ Failed"
+    chat_status = "✅ Success" if chat_result.get("success") else "❌ Failed"
     print(f"   Chat endpoint workflow: {chat_status}")
-    assistant_status = "✅ Success" if assistant_result.get('success') else "❌ Failed"
+    assistant_status = "✅ Success" if assistant_result.get("success") else "❌ Failed"
     print(f"   Assistant endpoint workflow: {assistant_status}")
 
     if chat_result.get("success") and assistant_result.get("success"):

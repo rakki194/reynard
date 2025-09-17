@@ -26,9 +26,7 @@ export interface UseStaggeredAnimationOptions {
   };
 }
 
-export function useStaggeredAnimation(
-  options: UseStaggeredAnimationOptions = {},
-): UseStaggeredAnimationReturn {
+export function useStaggeredAnimation(options: UseStaggeredAnimationOptions = {}): UseStaggeredAnimationReturn {
   const config = { ...createDefaultAnimationConfig(), ...options };
   const [isAnimating, setIsAnimating] = createSignal(false);
   const [currentIndex, setCurrentIndex] = createSignal(0);

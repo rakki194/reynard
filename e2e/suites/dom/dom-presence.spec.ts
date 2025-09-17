@@ -1,8 +1,8 @@
 /**
  * DOM Element Presence Tests
- * 
+ *
  * Tests for element presence and attachment assertions.
- * 
+ *
  * @author 🦊 The Cunning Fox
  */
 
@@ -22,10 +22,10 @@ test.describe("DOM Element Presence", () => {
   test("should detect elements not in document", async ({ page }) => {
     const element = page.locator("#removable-element");
     await expect(element).toBeAttached();
-    
+
     // Remove the element
     await removeElement(page, "#removable-element");
-    
+
     await expect(element).not.toBeAttached();
   });
 

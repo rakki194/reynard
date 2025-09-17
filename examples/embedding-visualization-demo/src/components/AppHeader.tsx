@@ -11,7 +11,7 @@ interface AppHeaderProps {
   onThemeToggle: () => void;
 }
 
-export const AppHeader: Component<AppHeaderProps> = (props) => {
+export const AppHeader: Component<AppHeaderProps> = props => {
   return (
     <header class="app-header">
       <h1>🦊 Reynard Embedding Visualization Demo</h1>

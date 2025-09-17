@@ -259,7 +259,7 @@ The generator automatically extracts API documentation from TypeScript source co
 export function createNotification(
   message: string,
   type: "success" | "error" | "warning" | "info",
-  options?: NotificationOptions,
+  options?: NotificationOptions
 ): string {
   // Implementation
 }

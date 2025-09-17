@@ -4,16 +4,8 @@
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createRoot } from "solid-js";
-import {
-  usePrefersReducedMotion,
-  usePrefersDarkMode,
-  usePrefersHighContrast,
-} from "../../useMediaQuery";
-import {
-  createMockMediaQuery,
-  setupMatchMediaMock,
-  cleanupMatchMediaMock,
-} from "../media-query-test-setup";
+import { usePrefersReducedMotion, usePrefersDarkMode, usePrefersHighContrast } from "../../useMediaQuery";
+import { createMockMediaQuery, setupMatchMediaMock, cleanupMatchMediaMock } from "../media-query-test-setup";
 
 describe("Preference Hooks", () => {
   let mockMatchMedia: ReturnType<typeof setupMatchMediaMock>;

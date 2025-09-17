@@ -16,11 +16,7 @@ import { sleep } from "./timing";
  * @example
  * const result = await retry(() => fetch('/api/data'), 3);
  */
-export async function retry<T>(
-  fn: () => Promise<T>,
-  maxRetries: number = 3,
-  baseDelay: number = 1000,
-): Promise<T> {
+export async function retry<T>(fn: () => Promise<T>, maxRetries: number = 3, baseDelay: number = 1000): Promise<T> {
   let lastError: Error;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {

@@ -14,21 +14,17 @@ interface SelectAllCheckboxProps {
   onSelectAll: (selected: boolean) => void;
 }
 
-const SelectAllCheckbox: Component<SelectAllCheckboxProps> = (props) => (
+const SelectAllCheckbox: Component<SelectAllCheckboxProps> = props => (
   <th class="reynard-data-table__cell reynard-data-table__cell--select">
     <input
       type="checkbox"
-      checked={
-        props.selectedRows.size === props.dataLength && props.dataLength > 0
-      }
-      ref={(el) => {
+      checked={props.selectedRows.size === props.dataLength && props.dataLength > 0}
+      ref={el => {
         if (el) {
-          el.indeterminate =
-            props.selectedRows.size > 0 &&
-            props.selectedRows.size < props.dataLength;
+          el.indeterminate = props.selectedRows.size > 0 && props.selectedRows.size < props.dataLength;
         }
       }}
-      onChange={(e) => props.onSelectAll(e.currentTarget.checked)}
+      onChange={e => props.onSelectAll(e.currentTarget.checked)}
       aria-label="Select all rows"
     />
   </th>
@@ -42,7 +38,7 @@ interface ColumnHeaderProps<T = unknown> {
   onSort: (column: Column<T>) => void;
 }
 
-const ColumnHeader: Component<ColumnHeaderProps> = (props) => (
+const ColumnHeader: Component<ColumnHeaderProps> = props => (
   <Show
     when={props.column.sortable}
     fallback={
@@ -84,9 +80,8 @@ export interface DataTableHeaderProps<T = unknown> {
   onSelectAll: (selected: boolean) => void;
 }
 
-export const DataTableHeader: Component<DataTableHeaderProps> = (props) => {
-  const visibleColumns = () =>
-    props.columns.filter((col) => col.visible !== false);
+export const DataTableHeader: Component<DataTableHeaderProps> = props => {
+  const visibleColumns = () => props.columns.filter(col => col.visible !== false);
 
   return (
     <thead class="reynard-data-table__header">
@@ -102,7 +97,7 @@ export const DataTableHeader: Component<DataTableHeaderProps> = (props) => {
 
         {/* Column headers */}
         <For each={visibleColumns()}>
-          {(column) => (
+          {column => (
             <ColumnHeader
               column={column}
               sortColumn={props.sortColumn}

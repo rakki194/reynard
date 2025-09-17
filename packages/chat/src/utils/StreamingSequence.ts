@@ -6,20 +6,15 @@
  */
 
 import { createSignal } from "solid-js";
-import {
-  createStreamingText,
-  StreamingTextOptions,
-} from "./StreamingTextRenderer";
+import { createStreamingText, StreamingTextOptions } from "./StreamingTextRenderer";
 
-export function createStreamingSequence(
-  sequences: Array<{ text: string; options?: StreamingTextOptions }>,
-) {
+export function createStreamingSequence(sequences: Array<{ text: string; options?: StreamingTextOptions }>) {
   const [currentSequence, setCurrentSequence] = createSignal(0);
   const [isActive, setIsActive] = createSignal(false);
 
   const currentStream = createStreamingText(
     sequences[currentSequence()]?.text || "",
-    sequences[currentSequence()]?.options || {},
+    sequences[currentSequence()]?.options || {}
   );
 
   const start = () => {

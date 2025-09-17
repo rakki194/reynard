@@ -7,10 +7,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook } from "@solidjs/testing-library";
-import {
-  useCaptionGeneratorState,
-  type CaptionGeneratorState,
-} from "../../useCaptionGeneratorState";
+import { useCaptionGeneratorState, type CaptionGeneratorState } from "../../useCaptionGeneratorState";
 import type { CaptionResult } from "reynard-annotating";
 
 describe("useCaptionGeneratorState", () => {
@@ -109,8 +106,7 @@ describe("useCaptionGeneratorState", () => {
     });
 
     it("should handle blob URLs", () => {
-      const blobUrl =
-        "blob:http://localhost:3000/12345678-1234-1234-1234-123456789abc";
+      const blobUrl = "blob:http://localhost:3000/12345678-1234-1234-1234-123456789abc";
       state.setImagePreview(blobUrl);
       expect(state.imagePreview()).toBe(blobUrl);
     });

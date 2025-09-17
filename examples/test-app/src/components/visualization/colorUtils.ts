@@ -51,14 +51,8 @@ export function oklchToRgb(oklch: any): RGBColor {
 
   // Convert to RGB (simplified approximation)
   const r = Math.max(0, Math.min(1, lightness + chroma * Math.cos(hueRad)));
-  const g = Math.max(
-    0,
-    Math.min(1, lightness + chroma * Math.cos(hueRad - (2 * Math.PI) / 3)),
-  );
-  const b = Math.max(
-    0,
-    Math.min(1, lightness + chroma * Math.cos(hueRad + (2 * Math.PI) / 3)),
-  );
+  const g = Math.max(0, Math.min(1, lightness + chroma * Math.cos(hueRad - (2 * Math.PI) / 3)));
+  const b = Math.max(0, Math.min(1, lightness + chroma * Math.cos(hueRad + (2 * Math.PI) / 3)));
 
   return { r, g, b };
 }

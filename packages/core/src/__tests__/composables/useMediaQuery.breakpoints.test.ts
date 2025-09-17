@@ -4,17 +4,8 @@
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createRoot } from "solid-js";
-import {
-  useIsMobile,
-  useIsTablet,
-  useIsDesktop,
-  useIsLargeScreen,
-} from "../../useMediaQuery";
-import {
-  createMockMediaQuery,
-  setupMatchMediaMock,
-  cleanupMatchMediaMock,
-} from "../media-query-test-setup";
+import { useIsMobile, useIsTablet, useIsDesktop, useIsLargeScreen } from "../../useMediaQuery";
+import { createMockMediaQuery, setupMatchMediaMock, cleanupMatchMediaMock } from "../media-query-test-setup";
 
 describe("Breakpoint Hooks", () => {
   let mockMatchMedia: ReturnType<typeof setupMatchMediaMock>;

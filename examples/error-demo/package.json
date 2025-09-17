@@ -24,13 +24,7 @@
     "vite": "7.1.5",
     "vite-plugin-solid": "2.11.8"
   },
-  "keywords": [
-    "reynard",
-    "solidjs",
-    "error-boundaries",
-    "error-handling",
-    "recovery-strategies"
-  ],
+  "keywords": ["reynard", "solidjs", "error-boundaries", "error-handling", "recovery-strategies"],
   "author": "Reynard Framework",
   "license": "MIT"
 }

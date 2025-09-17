@@ -16,25 +16,20 @@ export interface UseChatToolsOptions {
 export interface UseChatToolsReturn {
   availableTools: () => Tool[];
   generateToolCallId: () => string;
-  handleToolCall: (
-    toolExecution: NonNullable<StreamChunk["toolExecution"]>,
-    messageId: string,
-  ) => ToolCall;
+  handleToolCall: (toolExecution: NonNullable<StreamChunk["toolExecution"]>, messageId: string) => ToolCall;
   updateToolCallProgress: (
     toolExecution: NonNullable<StreamChunk["toolExecution"]>,
     messageId: string,
-    updateMessage: (id: string, updates: any) => void,
+    updateMessage: (id: string, updates: any) => void
   ) => void;
   handleToolResult: (
     toolExecution: NonNullable<StreamChunk["toolExecution"]>,
     messageId: string,
-    updateMessage: (id: string, updates: any) => void,
+    updateMessage: (id: string, updates: any) => void
   ) => void;
 }
 
-export function useChatTools(
-  options: UseChatToolsOptions = {},
-): UseChatToolsReturn {
+export function useChatTools(options: UseChatToolsOptions = {}): UseChatToolsReturn {
   const { tools = [] } = options;
 
   // Tool state
@@ -46,10 +41,7 @@ export function useChatTools(
   };
 
   // Handle tool call execution
-  const handleToolCall = (
-    toolExecution: NonNullable<StreamChunk["toolExecution"]>,
-    messageId: string,
-  ): ToolCall => {
+  const handleToolCall = (toolExecution: NonNullable<StreamChunk["toolExecution"]>, messageId: string): ToolCall => {
     const toolCall: ToolCall = {
       id: generateToolCallId(),
       name: toolExecution.toolName,
@@ -69,7 +61,7 @@ export function useChatTools(
   const updateToolCallProgress = (
     toolExecution: NonNullable<StreamChunk["toolExecution"]>,
     messageId: string,
-    updateMessage: (id: string, updates: any) => void,
+    updateMessage: (id: string, updates: any) => void
   ) => {
     // This would need access to the current message to update tool calls
     // For now, we'll provide the logic that can be used by the calling composable
@@ -88,7 +80,7 @@ export function useChatTools(
   const handleToolResult = (
     toolExecution: NonNullable<StreamChunk["toolExecution"]>,
     messageId: string,
-    updateMessage: (id: string, updates: any) => void,
+    updateMessage: (id: string, updates: any) => void
   ) => {
     // This would need access to the current message to update tool calls
     // For now, we'll provide the logic that can be used by the calling composable

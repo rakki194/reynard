@@ -22,10 +22,7 @@ npm install reynard-file-processing
 ## Quick Start
 
 ```typescript
-import {
-  FileProcessingPipeline,
-  ThumbnailGenerator,
-} from "reynard-file-processing";
+import { FileProcessingPipeline, ThumbnailGenerator } from "reynard-file-processing";
 
 // Create a processing pipeline
 const pipeline = new FileProcessingPipeline({
@@ -210,7 +207,7 @@ import { FileProcessingPipeline } from "reynard-file-processing";
 const pipeline = new FileProcessingPipeline();
 
 // Track progress
-pipeline.onProgress((progress) => {
+pipeline.onProgress(progress => {
   console.log(`${progress.operation}: ${progress.progress.toFixed(1)}%`);
   console.log(`Processing: ${progress.currentFile}`);
 });

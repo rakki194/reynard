@@ -7,15 +7,7 @@ import { Component, createSignal, Show } from "solid-js";
 import { useAuth, LoginForm, RegisterForm } from "reynard-auth";
 import { useTheme } from "reynard-themes";
 import { Card, Button } from "reynard-components";
-import {
-  Person,
-  Shield,
-  SignOut,
-  Settings,
-  CheckmarkCircle,
-  Warning,
-  Info,
-} from "./Icons";
+import { Person, Shield, SignOut, Settings, CheckmarkCircle, Warning, Info } from "./Icons";
 import type { LoginCredentials, RegisterData } from "reynard-auth";
 
 type AuthMode = "login" | "register";
@@ -48,9 +40,7 @@ export const AuthContent: Component = () => {
 
       // Use the auth.register method which handles the full flow
       await auth.register(data);
-      setSuccess(
-        "Registration successful! Please log in with your new account.",
-      );
+      setSuccess("Registration successful! Please log in with your new account.");
       setAuthMode("login");
     } catch (err) {
       setError("Registration failed. Please try again.");
@@ -77,10 +67,7 @@ export const AuthContent: Component = () => {
             <Shield size={32} />
             <h1>Reynard Auth Demo</h1>
           </div>
-          <p>
-            Authentication with PostgreSQL & Gatekeeper - Built with Reynard
-            Framework
-          </p>
+          <p>Authentication with PostgreSQL & Gatekeeper - Built with Reynard Framework</p>
           <div class="header-controls">
             <div class="theme-info">
               <Settings size={16} />
@@ -143,11 +130,7 @@ export const AuthContent: Component = () => {
                       />
                     }
                   >
-                    <LoginForm
-                      onLogin={handleLogin}
-                      loading={auth.isLoading()}
-                      showRememberMe={true}
-                    />
+                    <LoginForm onLogin={handleLogin} loading={auth.isLoading()} showRememberMe={true} />
                   </Show>
                 </div>
               </div>
@@ -160,10 +143,7 @@ export const AuthContent: Component = () => {
                 <CheckmarkCircle size={32} />
                 <div>
                   <h2>Welcome to your Dashboard!</h2>
-                  <p>
-                    You are successfully authenticated with Reynard Auth and
-                    Gatekeeper.
-                  </p>
+                  <p>You are successfully authenticated with Reynard Auth and Gatekeeper.</p>
                 </div>
               </div>
             </div>
@@ -214,21 +194,12 @@ export const AuthContent: Component = () => {
                   <Info size={20} />
                   <h3>Created</h3>
                 </div>
-                <p>
-                  {auth.user()?.createdAt
-                    ? new Date(auth.user()!.createdAt).toLocaleDateString()
-                    : "N/A"}
-                </p>
+                <p>{auth.user()?.createdAt ? new Date(auth.user()!.createdAt).toLocaleDateString() : "N/A"}</p>
               </Card>
             </div>
 
             <div class="dashboard-actions">
-              <Button
-                variant="secondary"
-                size="lg"
-                onClick={handleLogout}
-                class="logout-button"
-              >
+              <Button variant="secondary" size="lg" onClick={handleLogout} class="logout-button">
                 <SignOut size={20} />
                 Sign Out
               </Button>

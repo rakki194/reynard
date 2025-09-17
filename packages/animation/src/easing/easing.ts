@@ -21,44 +21,22 @@ export const Easing = {
   // Cubic
   easeInCubic: (t: number) => t * t * t,
   easeOutCubic: (t: number) => --t * t * t + 1,
-  easeInOutCubic: (t: number) =>
-    t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+  easeInOutCubic: (t: number) => (t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1),
 
   // Elastic (from 3D package)
   easeInElastic: (t: number) =>
-    t === 0
-      ? 0
-      : t === 1
-        ? 1
-        : -Math.pow(2, 10 * t - 10) *
-          Math.sin((t * 10 - 10.75) * ((2 * Math.PI) / 3)),
+    t === 0 ? 0 : t === 1 ? 1 : -Math.pow(2, 10 * t - 10) * Math.sin((t * 10 - 10.75) * ((2 * Math.PI) / 3)),
 
   easeOutElastic: (t: number) =>
-    t === 0
-      ? 0
-      : t === 1
-        ? 1
-        : Math.pow(2, -10 * t) *
-            Math.sin((t * 10 - 0.75) * ((2 * Math.PI) / 3)) +
-          1,
+    t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * ((2 * Math.PI) / 3)) + 1,
 
   easeInOutElastic: (t: number) => {
     if (t === 0) return 0;
     if (t === 1) return 1;
     if (t < 0.5) {
-      return (
-        -(
-          Math.pow(2, 20 * t - 10) *
-          Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5))
-        ) / 2
-      );
+      return -(Math.pow(2, 20 * t - 10) * Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5))) / 2;
     }
-    return (
-      (Math.pow(2, -20 * t + 10) *
-        Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5))) /
-        2 +
-      1
-    );
+    return (Math.pow(2, -20 * t + 10) * Math.sin((20 * t - 11.125) * ((2 * Math.PI) / 4.5))) / 2 + 1;
   },
 
   // Bounce (from colors package, enhanced)
@@ -75,9 +53,7 @@ export const Easing = {
     }
   },
   easeInOutBounce: (t: number) =>
-    t < 0.5
-      ? (1 - Easing.easeOutBounce(1 - 2 * t)) / 2
-      : (1 + Easing.easeOutBounce(2 * t - 1)) / 2,
+    t < 0.5 ? (1 - Easing.easeOutBounce(1 - 2 * t)) / 2 : (1 + Easing.easeOutBounce(2 * t - 1)) / 2,
 } as const;
 
 /**
@@ -90,12 +66,7 @@ export function applyEasing(t: number, easing: EasingType): number {
 /**
  * Interpolate between two values with easing
  */
-export function interpolate(
-  start: number,
-  end: number,
-  t: number,
-  easing: EasingType = "linear",
-): number {
+export function interpolate(start: number, end: number, t: number, easing: EasingType = "linear"): number {
   const easedT = applyEasing(t, easing);
   return start + (end - start) * easedT;
 }
@@ -107,13 +78,10 @@ export function interpolateVector2(
   start: [number, number],
   end: [number, number],
   t: number,
-  easing: EasingType = "linear",
+  easing: EasingType = "linear"
 ): [number, number] {
   const easedT = applyEasing(t, easing);
-  return [
-    start[0] + (end[0] - start[0]) * easedT,
-    start[1] + (end[1] - start[1]) * easedT,
-  ];
+  return [start[0] + (end[0] - start[0]) * easedT, start[1] + (end[1] - start[1]) * easedT];
 }
 
 /**
@@ -123,7 +91,7 @@ export function interpolateVector3(
   start: [number, number, number],
   end: [number, number, number],
   t: number,
-  easing: EasingType = "linear",
+  easing: EasingType = "linear"
 ): [number, number, number] {
   const easedT = applyEasing(t, easing);
   return [
@@ -140,7 +108,7 @@ export function interpolateColor(
   start: [number, number, number],
   end: [number, number, number],
   t: number,
-  easing: EasingType = "linear",
+  easing: EasingType = "linear"
 ): [number, number, number] {
   const easedT = applyEasing(t, easing);
   return [
@@ -153,9 +121,7 @@ export function interpolateColor(
 /**
  * Create a custom easing function from a mathematical expression
  */
-export function createCustomEasing(
-  expression: (t: number) => number,
-): (t: number) => number {
+export function createCustomEasing(expression: (t: number) => number): (t: number) => number {
   return (t: number) => {
     // Clamp t to [0, 1]
     const clampedT = Math.max(0, Math.min(1, t));
@@ -166,19 +132,14 @@ export function createCustomEasing(
 /**
  * Reverse an easing function
  */
-export function reverseEasing(
-  easing: (t: number) => number,
-): (t: number) => number {
+export function reverseEasing(easing: (t: number) => number): (t: number) => number {
   return (t: number) => easing(1 - t);
 }
 
 /**
  * Combine two easing functions
  */
-export function combineEasing(
-  first: (t: number) => number,
-  second: (t: number) => number,
-): (t: number) => number {
+export function combineEasing(first: (t: number) => number, second: (t: number) => number): (t: number) => number {
   return (t: number) => second(first(t));
 }
 

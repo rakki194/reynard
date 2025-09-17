@@ -21,9 +21,7 @@ export const DEFAULT_CAPTION_CONFIG: Partial<CaptionApiClientConfig> = {
 /**
  * Create a caption API client instance with default configuration
  */
-export function createCaptionApiClient(
-  config: CaptionApiClientConfig,
-): CaptionApiClient {
+export function createCaptionApiClient(config: CaptionApiClientConfig): CaptionApiClient {
   const fullConfig: CaptionApiClientConfig = {
     ...DEFAULT_CAPTION_CONFIG,
     ...config,
@@ -42,7 +40,7 @@ export function createCaptionApiClient(
  */
 export function createCaptionApiClientWithHealth(
   config: CaptionApiClientConfig,
-  healthCheckInterval: number = 30000,
+  healthCheckInterval: number = 30000
 ): CaptionApiClient {
   const client = createCaptionApiClient(config);
   client.startHealthChecks(healthCheckInterval);

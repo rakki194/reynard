@@ -15,10 +15,7 @@ export interface SingleFileUploadOptions {
 }
 
 export function useSingleFileUpload(options: SingleFileUploadOptions) {
-  const uploadSingleFile = async (
-    file: File,
-    initialProgress: UploadProgress,
-  ): Promise<void> => {
+  const uploadSingleFile = async (file: File, initialProgress: UploadProgress): Promise<void> => {
     const uploadId = initialProgress.id;
     const controller = new AbortController();
     options.uploadControllers.set(uploadId, controller);

@@ -13,7 +13,7 @@ export interface TextFileUploadProps {
   class?: string;
 }
 
-export const TextFileUpload: Component<TextFileUploadProps> = (props) => {
+export const TextFileUpload: Component<TextFileUploadProps> = props => {
   return (
     <div class={`text-upload-section ${props.class || ""}`}>
       <label for="text-file-upload" class="upload-label">

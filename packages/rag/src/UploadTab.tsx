@@ -44,19 +44,14 @@ export function UploadTab(props: UploadTabProps) {
           <label for="file-upload" class="upload-label">
             <div class="upload-icon">{getIcon("upload")}</div>
             <span>Click to upload or drag and drop</span>
-            <small>
-              Supports: .txt, .md, .py, .js, .ts, .json, .yaml, .html
-            </small>
+            <small>Supports: .txt, .md, .py, .js, .ts, .json, .yaml, .html</small>
           </label>
         </div>
 
         <Show when={props.isUploading}>
           <div class="upload-progress">
             <div class="upload-progress-bar">
-              <div
-                class="upload-progress-fill"
-                style={`width: ${props.uploadProgress}%`}
-              />
+              <div class="upload-progress-fill" style={`width: ${props.uploadProgress}%`} />
             </div>
             <p>Uploading and processing document...</p>
           </div>

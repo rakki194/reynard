@@ -15,9 +15,7 @@ export const AdvancedPatternDemo: Component = () => {
 
   // State
   const [isRunning, setIsRunning] = createSignal(false);
-  const [patternType, setPatternType] = createSignal<
-    "vogel" | "rotase" | "bernoulli" | "fibonacci-sibling"
-  >("vogel");
+  const [patternType, setPatternType] = createSignal<"vogel" | "rotase" | "bernoulli" | "fibonacci-sibling">("vogel");
   const [pointCount, setPointCount] = createSignal(1000);
   const [baseRadius, setBaseRadius] = createSignal(10);
   const [growthFactor, setGrowthFactor] = createSignal(1.0);
@@ -96,7 +94,7 @@ export const AdvancedPatternDemo: Component = () => {
 
     // Simple rotation animation
     const points = currentPoints();
-    const rotatedPoints = points.map((point) => {
+    const rotatedPoints = points.map(point => {
       const centerX = 400;
       const centerY = 300;
       const angle = deltaTime * 0.001;
@@ -246,7 +244,7 @@ export const AdvancedPatternDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={enableMorphing()}
-                onChange={(e) => setEnableMorphing(e.currentTarget.checked)}
+                onChange={e => setEnableMorphing(e.currentTarget.checked)}
               />
               <label>Enable Morphing</label>
             </div>
@@ -255,29 +253,19 @@ export const AdvancedPatternDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={enableColorHarmonics()}
-                onChange={(e) =>
-                  setEnableColorHarmonics(e.currentTarget.checked)
-                }
+                onChange={e => setEnableColorHarmonics(e.currentTarget.checked)}
               />
               <label>Enable Color Harmonics</label>
             </div>
 
             <div class="control-group">
-              <Button
-                variant="secondary"
-                onClick={generatePattern}
-                class="control-button"
-              >
+              <Button variant="secondary" onClick={generatePattern} class="control-button">
                 🔄 Regenerate Pattern
               </Button>
             </div>
 
             <div class="control-group">
-              <Button
-                variant={isRunning() ? "danger" : "primary"}
-                onClick={toggleAnimation}
-                class="control-button"
-              >
+              <Button variant={isRunning() ? "danger" : "primary"} onClick={toggleAnimation} class="control-button">
                 {isRunning() ? "⏹️ Stop Animation" : "▶️ Start Animation"}
               </Button>
             </div>
@@ -304,15 +292,11 @@ export const AdvancedPatternDemo: Component = () => {
               </div>
               <div class="info-item">
                 <span class="info-label">Morphing:</span>
-                <span class="info-value">
-                  {enableMorphing() ? "Enabled" : "Disabled"}
-                </span>
+                <span class="info-value">{enableMorphing() ? "Enabled" : "Disabled"}</span>
               </div>
               <div class="info-item">
                 <span class="info-label">Color Harmonics:</span>
-                <span class="info-value">
-                  {enableColorHarmonics() ? "Enabled" : "Disabled"}
-                </span>
+                <span class="info-value">{enableColorHarmonics() ? "Enabled" : "Disabled"}</span>
               </div>
             </div>
           </Card>
@@ -322,21 +306,15 @@ export const AdvancedPatternDemo: Component = () => {
             <div class="performance-info">
               <div class="performance-item">
                 <span class="performance-label">FPS:</span>
-                <span class="performance-value">
-                  {performanceMetrics()?.currentFPS?.toFixed(1) || "0.0"}
-                </span>
+                <span class="performance-value">{performanceMetrics()?.currentFPS?.toFixed(1) || "0.0"}</span>
               </div>
               <div class="performance-item">
                 <span class="performance-label">Frame Time:</span>
-                <span class="performance-value">
-                  {performanceMetrics()?.frameTime?.toFixed(2) || "0.00"}ms
-                </span>
+                <span class="performance-value">{performanceMetrics()?.frameTime?.toFixed(2) || "0.00"}ms</span>
               </div>
               <div class="performance-item">
                 <span class="performance-label">Render Time:</span>
-                <span class="performance-value">
-                  {performanceMetrics()?.renderTime?.toFixed(2) || "0.00"}ms
-                </span>
+                <span class="performance-value">{performanceMetrics()?.renderTime?.toFixed(2) || "0.00"}ms</span>
               </div>
             </div>
           </Card>
@@ -349,8 +327,7 @@ export const AdvancedPatternDemo: Component = () => {
               <div class="overlay-info">
                 <h4>{patternType().toUpperCase()} Pattern</h4>
                 <p>
-                  {currentPoints().length} points with{" "}
-                  {enableColorHarmonics() ? "color harmonics" : "basic colors"}
+                  {currentPoints().length} points with {enableColorHarmonics() ? "color harmonics" : "basic colors"}
                 </p>
               </div>
             </div>
@@ -364,31 +341,19 @@ export const AdvancedPatternDemo: Component = () => {
           <div class="pattern-descriptions">
             <div class="pattern-description">
               <h4>Enhanced Vogel</h4>
-              <p>
-                Classic phyllotactic model with morphing capabilities and
-                advanced color harmonics.
-              </p>
+              <p>Classic phyllotactic model with morphing capabilities and advanced color harmonics.</p>
             </div>
             <div class="pattern-description">
               <h4>ROTASE Model</h4>
-              <p>
-                Galactic spiral equations with Fibonacci sibling sequences for
-                complex natural patterns.
-              </p>
+              <p>Galactic spiral equations with Fibonacci sibling sequences for complex natural patterns.</p>
             </div>
             <div class="pattern-description">
               <h4>Bernoulli Lattice</h4>
-              <p>
-                Mathematical framework for complex, naturalistic patterns with
-                lattice transformations.
-              </p>
+              <p>Mathematical framework for complex, naturalistic patterns with lattice transformations.</p>
             </div>
             <div class="pattern-description">
               <h4>Fibonacci Sibling</h4>
-              <p>
-                Advanced sequence generation using Fibonacci sibling ratios for
-                unique patterns.
-              </p>
+              <p>Advanced sequence generation using Fibonacci sibling ratios for unique patterns.</p>
             </div>
           </div>
         </Card>

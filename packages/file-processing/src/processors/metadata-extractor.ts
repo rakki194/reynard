@@ -7,10 +7,7 @@
 
 import { ProcessingResult, FileMetadata } from "../types";
 import { getFileTypeInfo } from "../config/file-types";
-import {
-  MetadataExtractorFactory,
-  MetadataExtractionOptions,
-} from "./extractors";
+import { MetadataExtractorFactory, MetadataExtractionOptions } from "./extractors";
 
 export type { MetadataExtractionOptions };
 
@@ -31,7 +28,7 @@ export class MetadataExtractor {
    */
   async extractMetadata(
     file: File | string,
-    options?: Partial<MetadataExtractionOptions>,
+    options?: Partial<MetadataExtractionOptions>
   ): Promise<ProcessingResult<FileMetadata>> {
     const startTime = Date.now();
     const mergedOptions = { ...this.options, ...options };
@@ -63,10 +60,7 @@ export class MetadataExtractor {
       }
 
       // Use factory-created extractor for all supported types
-      const extractor = MetadataExtractorFactory.createExtractor(
-        name,
-        mergedOptions,
-      );
+      const extractor = MetadataExtractorFactory.createExtractor(name, mergedOptions);
       const metadata = await extractor.extractMetadata(file, mergedOptions);
 
       return {
@@ -78,8 +72,7 @@ export class MetadataExtractor {
     } catch (error) {
       return {
         success: false,
-        error:
-          error instanceof Error ? error.message : "Unknown error occurred",
+        error: error instanceof Error ? error.message : "Unknown error occurred",
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };
@@ -87,7 +80,7 @@ export class MetadataExtractor {
   }
 
   private async getFileInfo(
-    file: File | string,
+    file: File | string
   ): Promise<ProcessingResult<{ name: string; size: number; type: string }>> {
     try {
       if (typeof file === "string") {
@@ -116,8 +109,7 @@ export class MetadataExtractor {
     } catch (error) {
       return {
         success: false,
-        error:
-          error instanceof Error ? error.message : "Failed to get file info",
+        error: error instanceof Error ? error.message : "Failed to get file info",
         duration: 0,
         timestamp: new Date(),
       };
@@ -126,8 +118,6 @@ export class MetadataExtractor {
 
   private getFileExtension(filename: string): string {
     const lastDotIndex = filename.lastIndexOf(".");
-    return lastDotIndex !== -1
-      ? filename.substring(lastDotIndex).toLowerCase()
-      : "";
+    return lastDotIndex !== -1 ? filename.substring(lastDotIndex).toLowerCase() : "";
   }
 }

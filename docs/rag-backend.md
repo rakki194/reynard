@@ -317,14 +317,11 @@ const results = await rag.query({
 });
 
 // Ingest documents with streaming progress
-await rag.ingestDocuments(
-  [{ source: "doc1.txt", content: "document content" }],
-  {
-    model: "mxbai-embed-large",
-    batch_size: 16,
-    force_reindex: false,
-  },
-);
+await rag.ingestDocuments([{ source: "doc1.txt", content: "document content" }], {
+  model: "mxbai-embed-large",
+  batch_size: 16,
+  force_reindex: false,
+});
 ```
 
 ## Performance Considerations

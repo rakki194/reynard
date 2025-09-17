@@ -22,7 +22,7 @@ logger = logging.getLogger("uvicorn")
 class VectorDBService:
     """PostgreSQL + pgvector service for RAG operations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._engine: Engine | None = None
         self._enabled: bool = False
         self._dsn: str | None = None
@@ -92,23 +92,38 @@ class VectorDBService:
             # Run migrations in order
             migration_files = sorted(migrations_dir.glob("*.sql"))
 
+            if not self._engine:
+                logger.error("VectorDBService engine not initialized")
+                return False
+
             with self._engine.connect() as conn:
-                for migration_file in migration_files:
-                    logger.info(f"Running migration: {migration_file.name}")
-                    try:
-                        with open(migration_file) as f:
-                            migration_sql = f.read()
+                # Start a transaction for all migrations
+                trans = conn.begin()
+                try:
+                    for migration_file in migration_files:
+                        logger.info(f"Running migration: {migration_file.name}")
+                        try:
+                            with open(migration_file) as f:
+                                migration_sql = f.read()
 
-                        # Execute migration
-                        conn.execute(text(migration_sql))
-                        conn.commit()
-                        logger.info(
-                            f"Migration {migration_file.name} completed successfully"
-                        )
+                            # Execute migration
+                            conn.execute(text(migration_sql))
+                            logger.info(
+                                f"Migration {migration_file.name} completed successfully"
+                            )
 
-                    except Exception as e:
-                        logger.error(f"Migration {migration_file.name} failed: {e}")
-                        return False
+                        except Exception as e:
+                            logger.error(f"Migration {migration_file.name} failed: {e}")
+                            logger.error(f"SQL content: {migration_sql[:500]}...")
+                            trans.rollback()
+                            return False
+
+                    # Commit all migrations if they all succeed
+                    trans.commit()
+                except Exception as e:
+                    logger.error(f"Migration transaction failed: {e}")
+                    trans.rollback()
+                    return False
 
             logger.info("VectorDBService migrations completed successfully")
             return True
@@ -133,7 +148,7 @@ class VectorDBService:
                 await self._reconnect()
             return False
 
-    async def _reconnect(self):
+    async def _reconnect(self) -> None:
         """Reconnect to the database."""
         try:
             if self._engine:
@@ -229,7 +244,7 @@ class VectorDBService:
             logger.error(f"Failed to get vector database stats: {e}")
             return {"error": str(e)}
 
-    async def shutdown(self):
+    async def shutdown(self) -> None:
         """Shutdown the service."""
         if self._engine:
             self._engine.dispose()

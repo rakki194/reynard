@@ -13,7 +13,7 @@ an otter explores a stream - every metric is a treasure to discover!
 import ast
 import re
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 
 class MonolithAnalysisService:

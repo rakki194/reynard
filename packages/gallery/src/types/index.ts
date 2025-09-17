@@ -53,8 +53,7 @@ export interface FileMetadata {
   custom?: Record<string, any>;
 }
 
-export interface FolderItem
-  extends Omit<FileItem, "type" | "size" | "mimeType"> {
+export interface FolderItem extends Omit<FileItem, "type" | "size" | "mimeType"> {
   type: "folder";
   /** Number of items in folder */
   itemCount?: number;

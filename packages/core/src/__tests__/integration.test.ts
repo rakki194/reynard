@@ -58,55 +58,51 @@ describe("Security Integration Tests", () => {
     vi.clearAllMocks();
   });
 
-  describe(
-    t("core.integration.authentication-and-input-validation-integration"),
-    () => {
-      it("should handle malicious input in authentication flow", () => {
-        // Test malicious input sanitization
-        const maliciousInput =
-          '<script>alert("xss")</script>\'; DROP TABLE users; --';
-        const sanitized = sanitizeInput(maliciousInput);
+  describe(t("core.integration.authentication-and-input-validation-integration"), () => {
+    it("should handle malicious input in authentication flow", () => {
+      // Test malicious input sanitization
+      const maliciousInput = '<script>alert("xss")</script>\'; DROP TABLE users; --';
+      const sanitized = sanitizeInput(maliciousInput);
 
-        expect(sanitized).not.toContain("<script>");
-        // Note: HTML sanitization doesn't remove SQL patterns, that's handled by SQL validation
+      expect(sanitized).not.toContain("<script>");
+      // Note: HTML sanitization doesn't remove SQL patterns, that's handled by SQL validation
 
-        // Test comprehensive validation
-        const validationResult = validateInput(maliciousInput, {
+      // Test comprehensive validation
+      const validationResult = validateInput(maliciousInput, {
+        maxLength: 100,
+        allowHTML: false,
+        allowSQL: false,
+        allowXSS: false,
+      });
+
+      expect(validationResult.isValid).toBe(false);
+      expect(validationResult.errors.length).toBeGreaterThan(0);
+    });
+
+    it("should validate user input throughout authentication process", () => {
+      const testCases = [
+        { input: "valid@email.com", shouldPass: true },
+        { input: '<script>alert("xss")</script>', shouldPass: false },
+        { input: "'; DROP TABLE users; --", shouldPass: false },
+        { input: "normalusername", shouldPass: true },
+        { input: "../../../etc/passwd", shouldPass: false },
+      ];
+
+      testCases.forEach(({ input, shouldPass }, index) => {
+        const result = validateInput(input, {
           maxLength: 100,
           allowHTML: false,
           allowSQL: false,
           allowXSS: false,
         });
 
-        expect(validationResult.isValid).toBe(false);
-        expect(validationResult.errors.length).toBeGreaterThan(0);
+        expect(result.isValid).toBe(
+          shouldPass,
+          `Input "${input}" should ${shouldPass ? "pass" : "fail"} validation but got ${result.isValid ? "pass" : "fail"}. Errors: ${result.errors?.join(", ") || "none"}`
+        );
       });
-
-      it("should validate user input throughout authentication process", () => {
-        const testCases = [
-          { input: "valid@email.com", shouldPass: true },
-          { input: '<script>alert("xss")</script>', shouldPass: false },
-          { input: "'; DROP TABLE users; --", shouldPass: false },
-          { input: "normalusername", shouldPass: true },
-          { input: "../../../etc/passwd", shouldPass: false },
-        ];
-
-        testCases.forEach(({ input, shouldPass }, index) => {
-          const result = validateInput(input, {
-            maxLength: 100,
-            allowHTML: false,
-            allowSQL: false,
-            allowXSS: false,
-          });
-
-          expect(result.isValid).toBe(
-            shouldPass,
-            `Input "${input}" should ${shouldPass ? "pass" : "fail"} validation but got ${result.isValid ? "pass" : "fail"}. Errors: ${result.errors?.join(", ") || "none"}`,
-          );
-        });
-      });
-    },
-  );
+    });
+  });
 
   describe("File Upload and Security Integration", () => {
     it("should validate file names with security checks", () => {
@@ -119,14 +115,9 @@ describe("Security Integration Tests", () => {
     });
 
     it("should handle file name validation with dangerous patterns", () => {
-      const dangerousNames = [
-        "../../../etc/passwd",
-        "malware.exe",
-        "CON.txt",
-        "file\x00.jpg",
-      ];
+      const dangerousNames = ["../../../etc/passwd", "malware.exe", "CON.txt", "file\x00.jpg"];
 
-      dangerousNames.forEach((name) => {
+      dangerousNames.forEach(name => {
         const result = validateInput(name, { maxLength: 100 });
         expect(result.isValid).toBe(false);
       });
@@ -171,7 +162,7 @@ describe("Security Integration Tests", () => {
           headers: expect.objectContaining({
             "X-CSRF-Token": csrfToken,
           }),
-        }),
+        })
       );
     });
   });
@@ -180,7 +171,7 @@ describe("Security Integration Tests", () => {
     it("should apply appropriate headers based on environment", () => {
       const environments = ["development", "production", "strict"] as const;
 
-      environments.forEach((env) => {
+      environments.forEach(env => {
         const headers = getSecurityHeaders(env);
         expect(headers).toBeDefined();
         expect(headers["Content-Security-Policy"]).toBeDefined();
@@ -202,7 +193,7 @@ describe("Security Integration Tests", () => {
             "X-Requested-With": "XMLHttpRequest",
             "Cache-Control": "no-cache, no-store, must-revalidate",
           }),
-        }),
+        })
       );
     });
   });
@@ -242,14 +233,12 @@ describe("Security Integration Tests", () => {
 
       const weakResult = validateInput(weakPassword, {
         maxLength: 100,
-        pattern:
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       });
 
       const strongResult = validateInput(strongPassword, {
         maxLength: 100,
-        pattern:
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       });
 
       expect(weakResult.isValid).toBe(false);
@@ -314,16 +303,14 @@ describe("Security Integration Tests", () => {
       const inputs = Array.from({ length: 10 }, (_, i) => `test-input-${i}`);
 
       const startTime = performance.now();
-      const results = inputs.map((input) =>
-        validateInput(input, { maxLength: 100 }),
-      );
+      const results = inputs.map(input => validateInput(input, { maxLength: 100 }));
       const endTime = performance.now();
 
       expect(results).toHaveLength(10);
       expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
 
       // All inputs should be valid
-      results.forEach((result) => {
+      results.forEach(result => {
         expect(result.isValid).toBe(true);
       });
     });
@@ -338,7 +325,7 @@ describe("Security Integration Tests", () => {
       ];
 
       const startTime = performance.now();
-      const results = await Promise.all(operations.map((op) => op()));
+      const results = await Promise.all(operations.map(op => op()));
       const endTime = performance.now();
 
       expect(results).toHaveLength(5);
@@ -356,7 +343,7 @@ describe("Security Integration Tests", () => {
         "<svg onload=\"alert('xss')\"></svg>",
       ];
 
-      xssPayloads.forEach((payload) => {
+      xssPayloads.forEach(payload => {
         const sanitized = sanitizeInput(payload);
         expect(sanitized).not.toContain("<script>");
         expect(sanitized).not.toContain("javascript:");
@@ -373,7 +360,7 @@ describe("Security Integration Tests", () => {
         "' OR 1=1 --",
       ];
 
-      sqlPayloads.forEach((payload) => {
+      sqlPayloads.forEach(payload => {
         const validation = validateInput(payload, {
           allowSQL: false,
         });
@@ -382,12 +369,7 @@ describe("Security Integration Tests", () => {
     });
 
     it("should prevent file upload attacks", () => {
-      const attackFileNames = [
-        "malware.exe",
-        "../../../etc/passwd",
-        ".htaccess",
-        "script.js",
-      ];
+      const attackFileNames = ["malware.exe", "../../../etc/passwd", ".htaccess", "script.js"];
 
       for (const fileName of attackFileNames) {
         const result = validateInput(fileName, { maxLength: 100 });

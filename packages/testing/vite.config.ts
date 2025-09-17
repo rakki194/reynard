@@ -12,8 +12,7 @@ export default defineConfig({
         mocks: "./src/mocks/index.ts",
       },
       formats: ["es", "cjs"],
-      fileName: (format, entryName) =>
-        `${entryName}.${format === "es" ? "js" : "cjs"}`,
+      fileName: (format, entryName) => `${entryName}.${format === "es" ? "js" : "cjs"}`,
     },
     rollupOptions: {
       external: [

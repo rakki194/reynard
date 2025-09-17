@@ -17,7 +17,7 @@ export interface RAGSettingsProps {
   class?: string;
 }
 
-export const RAGSettings: Component<RAGSettingsProps> = (props) => {
+export const RAGSettings: Component<RAGSettingsProps> = props => {
   const settings = props.settings || useSettings();
   const [isLoading, setIsLoading] = createSignal(false);
   const [isSaving, setIsSaving] = createSignal(false);
@@ -45,15 +45,11 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
       // Load RAG settings from the settings system
       setRagEnabled(settings.getSetting("rag.enabled") || false);
       setDatabaseUrl(settings.getSetting("rag.database_url") || "");
-      setEmbeddingModel(
-        settings.getSetting("rag.embedding_model") || "nomic-embed-text",
-      );
+      setEmbeddingModel(settings.getSetting("rag.embedding_model") || "nomic-embed-text");
       setChunkSize(settings.getSetting("rag.chunk_size") || 1000);
       setChunkOverlap(settings.getSetting("rag.chunk_overlap") || 200);
       setTopK(settings.getSetting("rag.top_k") || 10);
-      setSimilarityThreshold(
-        settings.getSetting("rag.similarity_threshold") || 0.7,
-      );
+      setSimilarityThreshold(settings.getSetting("rag.similarity_threshold") || 0.7);
       setEnableStreaming(settings.getSetting("rag.enable_streaming") || true);
       setEnableCaching(settings.getSetting("rag.enable_caching") || true);
       setCacheSize(settings.getSetting("rag.cache_size") || 1000);
@@ -73,10 +69,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
       await settings.setSetting("rag.chunk_size", chunkSize());
       await settings.setSetting("rag.chunk_overlap", chunkOverlap());
       await settings.setSetting("rag.top_k", topK());
-      await settings.setSetting(
-        "rag.similarity_threshold",
-        similarityThreshold(),
-      );
+      await settings.setSetting("rag.similarity_threshold", similarityThreshold());
       await settings.setSetting("rag.enable_streaming", enableStreaming());
       await settings.setSetting("rag.enable_caching", enableCaching());
       await settings.setSetting("rag.cache_size", cacheSize());
@@ -109,8 +102,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
       <div class="settings-section">
         <h3>RAG System Configuration</h3>
         <p class="settings-description">
-          Configure Retrieval-Augmented Generation settings for document search
-          and processing.
+          Configure Retrieval-Augmented Generation settings for document search and processing.
         </p>
 
         <Show when={isLoading()}>
@@ -121,9 +113,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
           {/* Core RAG Settings */}
           <div class="setting-group">
             <h4>Core Settings</h4>
-            <p class="setting-description">
-              Basic RAG functionality and database configuration.
-            </p>
+            <p class="setting-description">Basic RAG functionality and database configuration.</p>
 
             <div class="setting-row">
               <Button
@@ -145,11 +135,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
             </div>
 
             <div class="setting-row">
-              <Button
-                variant="secondary"
-                onClick={testConnection}
-                disabled={!databaseUrl()}
-              >
+              <Button variant="secondary" onClick={testConnection} disabled={!databaseUrl()}>
                 Test Connection
               </Button>
             </div>
@@ -158,9 +144,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
           {/* Embedding Configuration */}
           <div class="setting-group">
             <h4>Embedding Configuration</h4>
-            <p class="setting-description">
-              Configure embedding models and processing parameters.
-            </p>
+            <p class="setting-description">Configure embedding models and processing parameters.</p>
 
             <div class="setting-row">
               <Select
@@ -177,7 +161,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                 label="Chunk Size"
                 type="number"
                 value={chunkSize()}
-                onChange={(e) => setChunkSize(parseInt(e.target.value) || 1000)}
+                onChange={e => setChunkSize(parseInt(e.target.value) || 1000)}
                 helperText="Maximum number of characters per document chunk"
               />
             </div>
@@ -187,9 +171,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                 label="Chunk Overlap"
                 type="number"
                 value={chunkOverlap()}
-                onChange={(e) =>
-                  setChunkOverlap(parseInt(e.target.value) || 200)
-                }
+                onChange={e => setChunkOverlap(parseInt(e.target.value) || 200)}
                 helperText="Number of characters to overlap between chunks"
               />
             </div>
@@ -198,16 +180,14 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
           {/* Search Configuration */}
           <div class="setting-group">
             <h4>Search Configuration</h4>
-            <p class="setting-description">
-              Configure search parameters and result filtering.
-            </p>
+            <p class="setting-description">Configure search parameters and result filtering.</p>
 
             <div class="setting-row">
               <TextField
                 label="Top K Results"
                 type="number"
                 value={topK()}
-                onChange={(e) => setTopK(parseInt(e.target.value) || 10)}
+                onChange={e => setTopK(parseInt(e.target.value) || 10)}
                 helperText="Maximum number of results to return per search"
               />
             </div>
@@ -218,9 +198,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                 type="number"
                 step="0.1"
                 value={similarityThreshold()}
-                onChange={(value) =>
-                  setSimilarityThreshold(parseFloat(value) || 0.7)
-                }
+                onChange={value => setSimilarityThreshold(parseFloat(value) || 0.7)}
                 helperText="Minimum similarity score for search results (0.0 - 1.0)"
               />
             </div>
@@ -229,9 +207,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
           {/* Performance Settings */}
           <div class="setting-group">
             <h4>Performance Settings</h4>
-            <p class="setting-description">
-              Configure performance optimization and caching.
-            </p>
+            <p class="setting-description">Configure performance optimization and caching.</p>
 
             <div class="setting-row">
               <Button
@@ -257,9 +233,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
                   label="Cache Size"
                   type="number"
                   value={cacheSize()}
-                  onChange={(e) =>
-                    setCacheSize(parseInt(e.target.value) || 1000)
-                  }
+                  onChange={e => setCacheSize(parseInt(e.target.value) || 1000)}
                   helperText="Maximum number of items to cache"
                 />
               </div>
@@ -268,12 +242,7 @@ export const RAGSettings: Component<RAGSettingsProps> = (props) => {
 
           {/* Actions */}
           <div class="settings-actions">
-            <Button
-              variant="primary"
-              onClick={saveRAGSettings}
-              loading={isSaving()}
-              disabled={isSaving()}
-            >
+            <Button variant="primary" onClick={saveRAGSettings} loading={isSaving()} disabled={isSaving()}>
               Save RAG Settings
             </Button>
           </div>

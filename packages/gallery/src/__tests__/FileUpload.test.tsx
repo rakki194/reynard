@@ -13,9 +13,7 @@ import { FileUpload } from "../../FileUpload";
 vi.mock("../components", () => ({
   DropZone: (props: any) => <div data-testid="drop-zone" {...props} />,
   FileList: (props: any) => <div data-testid="file-list" {...props} />,
-  UploadControls: (props: any) => (
-    <div data-testid="upload-controls" {...props} />
-  ),
+  UploadControls: (props: any) => <div data-testid="upload-controls" {...props} />,
 }));
 
 // Mock the composables
@@ -130,9 +128,7 @@ describe("FileUpload", () => {
       render(() => <FileUpload {...mockProps} />);
 
       const dropZone = screen.getByTestId("drop-zone");
-      const mockFiles = [
-        new File(["content"], "test.txt", { type: "text/plain" }),
-      ];
+      const mockFiles = [new File(["content"], "test.txt", { type: "text/plain" })];
 
       fireEvent.drop(dropZone, {
         dataTransfer: {

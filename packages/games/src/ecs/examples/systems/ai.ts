@@ -1,14 +1,7 @@
 // AI and enemy behavior systems
 
 import { World } from "../../types";
-import {
-  EnemyType,
-  PlayerType,
-  Position,
-  PositionType,
-  Velocity,
-  VelocityType,
-} from "../components";
+import { EnemyType, PlayerType, Position, PositionType, Velocity, VelocityType } from "../components";
 
 /**
  * Enemy AI system - simple AI for enemy movement.

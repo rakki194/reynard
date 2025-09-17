@@ -14,12 +14,10 @@ export interface AnimationExecutorOptions {
 /**
  * Execute cluster animation with progress tracking
  */
-export function executeClusterAnimation(
-  options: AnimationExecutorOptions,
-): Promise<void> {
+export function executeClusterAnimation(options: AnimationExecutorOptions): Promise<void> {
   const { duration, easing, onProgress, onComplete } = options;
 
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     const startTime = performance.now();
 
     const animate = (currentTime: number) => {

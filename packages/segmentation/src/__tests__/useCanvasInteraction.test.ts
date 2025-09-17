@@ -6,11 +6,7 @@
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useCanvasInteraction } from "../composables/useCanvasInteraction.js";
-import type {
-  SegmentationEditorConfig,
-  SegmentationEditorState,
-  Point,
-} from "../types/index.js";
+import type { SegmentationEditorConfig, SegmentationEditorState, Point } from "../types/index.js";
 
 describe("useCanvasInteraction", () => {
   let config: SegmentationEditorConfig;
@@ -131,7 +127,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: expect.any(Number),
           y: expect.any(Number),
-        }),
+        })
       );
     });
 
@@ -337,7 +333,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: expect.any(Number),
           y: expect.any(Number),
-        }),
+        })
       );
     });
   });
@@ -393,7 +389,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: expect.any(Number),
           y: expect.any(Number),
-        }),
+        })
       );
     });
 
@@ -479,7 +475,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: expect.any(Number),
           y: expect.any(Number),
-        }),
+        })
       );
     });
 
@@ -523,7 +519,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: 100,
           y: 200,
-        }),
+        })
       );
     });
 
@@ -546,7 +542,7 @@ describe("useCanvasInteraction", () => {
         expect.objectContaining({
           x: 105,
           y: 205,
-        }),
+        })
       );
     });
   });
@@ -589,10 +585,7 @@ describe("useCanvasInteraction", () => {
       interaction.handleMouseDown(mouseEvent);
 
       // Should update existing polygon
-      expect(mockOnPolygonUpdate).toHaveBeenCalledWith(
-        expect.any(Array),
-        "test-seg",
-      );
+      expect(mockOnPolygonUpdate).toHaveBeenCalledWith(expect.any(Array), "test-seg");
     });
 
     it("should handle disabled state", () => {

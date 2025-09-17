@@ -29,14 +29,12 @@ export class CollisionBenchmark {
    */
   async benchmarkCollisionDetection(
     entityCount: number,
-    iterations: number = 100,
+    iterations: number = 100
   ): Promise<{ nonSimd: BenchmarkResult; simd: BenchmarkResult }> {
     if (!this.isInitialized) {
       await this.initialize();
     }
-    console.log(
-      `Benchmarking collision detection with ${entityCount} entities, ${iterations} iterations...`,
-    );
+    console.log(`Benchmarking collision detection with ${entityCount} entities, ${iterations} iterations...`);
 
     // Generate test data
     const testData = TestDataGenerator.generateTestData(entityCount);
@@ -44,23 +42,13 @@ export class CollisionBenchmark {
     // Setup non-SIMD system
     this.nonSimdSystem.clear();
     for (const data of testData) {
-      this.nonSimdSystem.addEntity(
-        data.position,
-        data.velocity,
-        data.acceleration,
-        data.mass,
-      );
+      this.nonSimdSystem.addEntity(data.position, data.velocity, data.acceleration, data.mass);
     }
 
     // Setup SIMD system
     this.simdSystem.clear();
     for (const data of testData) {
-      this.simdSystem.addEntity(
-        data.position,
-        data.velocity,
-        data.acceleration,
-        data.mass,
-      );
+      this.simdSystem.addEntity(data.position, data.velocity, data.acceleration, data.mass);
     }
 
     const radius = 10.0;

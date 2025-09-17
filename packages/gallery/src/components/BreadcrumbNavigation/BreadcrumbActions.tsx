@@ -13,7 +13,7 @@ export interface BreadcrumbActionsProps {
   onSettingsClick: () => void;
 }
 
-export const BreadcrumbActions: Component<BreadcrumbActionsProps> = (props) => {
+export const BreadcrumbActions: Component<BreadcrumbActionsProps> = props => {
   return (
     <div class="reynard-breadcrumb-navigation__actions">
       <Button
@@ -25,21 +25,11 @@ export const BreadcrumbActions: Component<BreadcrumbActionsProps> = (props) => {
         {props.showFullPaths ? "Short" : "Full"}
       </Button>
 
-      <Button
-        size="sm"
-        variant="secondary"
-        onClick={props.onRefreshClick}
-        title="Refresh current location"
-      >
+      <Button size="sm" variant="secondary" onClick={props.onRefreshClick} title="Refresh current location">
         🔄
       </Button>
 
-      <Button
-        size="sm"
-        variant="secondary"
-        onClick={props.onSettingsClick}
-        title="Breadcrumb settings"
-      >
+      <Button size="sm" variant="secondary" onClick={props.onSettingsClick} title="Breadcrumb settings">
         ⚙️
       </Button>
     </div>

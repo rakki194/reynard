@@ -40,7 +40,9 @@ class TestTargetedCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call run_exploit on both wrappers
                 if hasattr(comprehensive_wrapper, "run_exploit"):
@@ -137,7 +139,9 @@ class TestTargetedCoverage(FenrirTestBase):
                 mock_response.status_code = 200
                 mock_response.text = "test response"
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Test BlackHatExploitSuite
                 try:
@@ -220,7 +224,9 @@ class TestTargetedCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call various methods on each exploit
                 for exploit in exploits:

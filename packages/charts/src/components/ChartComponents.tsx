@@ -22,7 +22,7 @@ export const getTestId = (type: ChartType) => {
   }
 };
 
-export const LoadingOverlay: Component<{ loading: boolean }> = (props) => (
+export const LoadingOverlay: Component<{ loading: boolean }> = props => (
   <Show when={props.loading}>
     <div class="chart-loading-overlay">{t("loading")}</div>
   </Show>
@@ -33,7 +33,7 @@ export const EmptyState: Component<{
   data: unknown;
   height?: number;
   emptyMessage?: string;
-}> = (props) => {
+}> = props => {
   const isEmpty = () => {
     if (!props.data) return true;
     const dataObj = props.data as Record<string, unknown>;
@@ -43,9 +43,7 @@ export const EmptyState: Component<{
 
   return (
     <Show when={!props.loading && isEmpty()}>
-      <div class="chart-empty-state chart-empty-state-height">
-        {props.emptyMessage || t("noData")}
-      </div>
+      <div class="chart-empty-state chart-empty-state-height">{props.emptyMessage || t("noData")}</div>
     </Show>
   );
 };
@@ -57,17 +55,14 @@ export const PerformanceOverlay: Component<{
     memoryUsage: number;
     activeVisualizations: number;
   };
-}> = (props) => (
+}> = props => (
   <Show
     when={
-      props.enablePerformanceMonitoring &&
-      props.performanceStats &&
-      props.performanceStats.activeVisualizations > 0
+      props.enablePerformanceMonitoring && props.performanceStats && props.performanceStats.activeVisualizations > 0
     }
   >
     <div class="chart-performance-overlay">
-      {t("performance.fps")}: {props.performanceStats?.fps} | Memory:{" "}
-      {props.performanceStats?.memoryUsage.toFixed(1)}MB
+      {t("performance.fps")}: {props.performanceStats?.fps} | Memory: {props.performanceStats?.memoryUsage.toFixed(1)}MB
     </div>
   </Show>
 );

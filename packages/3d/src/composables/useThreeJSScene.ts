@@ -53,12 +53,7 @@ export function useThreeJSScene(config: SceneConfig) {
     setScene(newScene);
 
     // Create camera
-    const newCamera = new threeJSModules.PerspectiveCamera(
-      75,
-      config.width / config.height,
-      0.1,
-      1000,
-    );
+    const newCamera = new threeJSModules.PerspectiveCamera(75, config.width / config.height, 0.1, 1000);
     newCamera.position.set(5, 5, 5);
     newCamera.lookAt(0, 0, 0);
     setCamera(newCamera);

@@ -179,8 +179,8 @@ describe("Mock Utilities", () => {
     it("should simulate connection after creation", async () => {
       const mockWs = createMockWebSocket();
 
-      await new Promise<void>((resolve) => {
-        mockWs.onopen = (event) => {
+      await new Promise<void>(resolve => {
+        mockWs.onopen = event => {
           expect(mockWs.readyState).toBe(1); // OPEN
           expect(event.type).toBe("open");
           resolve();
@@ -212,8 +212,8 @@ describe("Mock Utilities", () => {
     it("should simulate connection after creation", async () => {
       const mockEs = createMockEventSource();
 
-      await new Promise<void>((resolve) => {
-        mockEs.onopen = (event) => {
+      await new Promise<void>(resolve => {
+        mockEs.onopen = event => {
           expect(mockEs.readyState).toBe(1); // OPEN
           expect(event.type).toBe("open");
           resolve();
@@ -259,10 +259,7 @@ describe("Mock Utilities", () => {
 
   describe("createMockFileList", () => {
     it("should create a mock FileList", () => {
-      const files = [
-        createMockFile("file1.txt", "content1"),
-        createMockFile("file2.txt", "content2"),
-      ];
+      const files = [createMockFile("file1.txt", "content1"), createMockFile("file2.txt", "content2")];
       const fileList = createMockFileList(files);
 
       expect(fileList.length).toBe(2);
@@ -272,10 +269,7 @@ describe("Mock Utilities", () => {
     });
 
     it("should support iteration", () => {
-      const files = [
-        createMockFile("file1.txt", "content1"),
-        createMockFile("file2.txt", "content2"),
-      ];
+      const files = [createMockFile("file1.txt", "content1"), createMockFile("file2.txt", "content2")];
       const fileList = createMockFileList(files);
 
       const iteratedFiles = Array.from(fileList);
@@ -283,10 +277,7 @@ describe("Mock Utilities", () => {
     });
 
     it("should support numeric indexing", () => {
-      const files = [
-        createMockFile("file1.txt", "content1"),
-        createMockFile("file2.txt", "content2"),
-      ];
+      const files = [createMockFile("file1.txt", "content1"), createMockFile("file2.txt", "content2")];
       const fileList = createMockFileList(files);
 
       expect(fileList[0]).toBe(files[0]);
@@ -417,9 +408,7 @@ describe("Mock Utilities", () => {
     it("should generate predictable UUID", () => {
       const mockCrypto = createMockCrypto();
 
-      expect(mockCrypto.randomUUID()).toBe(
-        "00000000-0000-4000-8000-000000000000",
-      );
+      expect(mockCrypto.randomUUID()).toBe("00000000-0000-4000-8000-000000000000");
     });
 
     it("should fill array with random values", () => {
@@ -478,8 +467,8 @@ describe("Mock Utilities", () => {
     it("should call callback asynchronously", async () => {
       const mockRAF = createMockRequestAnimationFrame();
 
-      await new Promise<void>((resolve) => {
-        mockRAF((timestamp) => {
+      await new Promise<void>(resolve => {
+        mockRAF(timestamp => {
           expect(typeof timestamp).toBe("number");
           resolve();
         });

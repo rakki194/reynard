@@ -3,10 +3,7 @@
  */
 
 import { createSignal } from "solid-js";
-import type {
-  OllamaChatRequest,
-  OllamaChatResponse,
-} from "../generated/index.js";
+import type { OllamaChatRequest, OllamaChatResponse } from "../generated/index.js";
 
 export interface UseChatOptions {
   basePath?: string;
@@ -15,9 +12,7 @@ export interface UseChatOptions {
 export function useChat(options: UseChatOptions = {}) {
   const [isLoading, setIsLoading] = createSignal(false);
 
-  const sendMessage = async (
-    request: OllamaChatRequest,
-  ): Promise<OllamaChatResponse> => {
+  const sendMessage = async (request: OllamaChatRequest): Promise<OllamaChatResponse> => {
     setIsLoading(true);
     try {
       // Stub implementation

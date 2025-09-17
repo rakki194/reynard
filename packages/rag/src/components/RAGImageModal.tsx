@@ -85,15 +85,11 @@ const createImageModalContent = (
     />
 
     <div class="rag-image-content">
-      <ImageDisplay
-        imagePath={props.imagePath}
-        previewPath={props.previewPath}
-        imageId={props.imageId}
-      />
+      <ImageDisplay imagePath={props.imagePath} previewPath={props.previewPath} imageId={props.imageId} />
 
       <div class="rag-image-sidebar">
         <SimilarityScore score={props.score} />
-        
+
         <ImageMetadata
           metadata={props.imageMetadata}
           isVisible={showMetadata()}
@@ -111,10 +107,10 @@ const createImageModalContent = (
   </div>
 );
 
-export const RAGImageModal: Component<RAGImageModalProps> = (props) => {
+export const RAGImageModal: Component<RAGImageModalProps> = props => {
   const [showEmbeddingInfo, setShowEmbeddingInfo] = createSignal(false);
   const [showMetadata, setShowMetadata] = createSignal(true);
-  
+
   const handlers = createImageModalHandlers(props);
 
   return (
@@ -125,14 +121,7 @@ export const RAGImageModal: Component<RAGImageModalProps> = (props) => {
       size="xl"
       class="rag-image-modal"
     >
-      {createImageModalContent(
-        props,
-        showMetadata,
-        showEmbeddingInfo,
-        setShowMetadata,
-        setShowEmbeddingInfo,
-        handlers
-      )}
+      {createImageModalContent(props, showMetadata, showEmbeddingInfo, setShowMetadata, setShowEmbeddingInfo, handlers)}
     </Modal>
   );
 };

@@ -22,7 +22,11 @@ export class VectorSearchComposable {
   async search(
     query: string,
     options: VectorSearchOptions,
-    logger: { info: (msg: string) => void; error: (msg: string, error?: unknown) => void; warn: (msg: string, error?: unknown) => void }
+    logger: {
+      info: (msg: string) => void;
+      error: (msg: string, error?: unknown) => void;
+      warn: (msg: string, error?: unknown) => void;
+    }
   ): Promise<SearchResult[]> {
     try {
       // Generate query embedding

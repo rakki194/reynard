@@ -18,21 +18,13 @@ interface CaptionModalProps {
   onTagRemove: (index: number) => void;
 }
 
-export const CaptionModal: Component<CaptionModalProps> = (props) => {
+export const CaptionModal: Component<CaptionModalProps> = props => {
   return (
-    <Modal
-      open={props.open}
-      onClose={props.onClose}
-      title="Edit Caption"
-      size="lg"
-    >
+    <Modal open={props.open} onClose={props.onClose} title="Edit Caption" size="lg">
       <Show when={props.workflow}>
         <div class="caption-editor-modal">
           <div class="image-preview">
-            <img
-              src={props.workflow!.image.url}
-              alt={props.workflow!.image.name}
-            />
+            <img src={props.workflow!.image.url} alt={props.workflow!.image.name} />
             <h3>{props.workflow!.image.name}</h3>
           </div>
 
@@ -44,9 +36,7 @@ export const CaptionModal: Component<CaptionModalProps> = (props) => {
               }}
               state="expanded"
               onClick={() => {}}
-              onCaptionChange={(caption) =>
-                props.onCaptionChange(caption.content)
-              }
+              onCaptionChange={caption => props.onCaptionChange(caption.content)}
               onSave={props.onSave}
               placeholder="Enter your caption..."
             />
@@ -59,7 +49,7 @@ export const CaptionModal: Component<CaptionModalProps> = (props) => {
                     <TagBubble
                       tag={tag}
                       index={index()}
-                      onEdit={(newTag) => props.onTagEdit(index(), newTag)}
+                      onEdit={newTag => props.onTagEdit(index(), newTag)}
                       onRemove={() => props.onTagRemove(index())}
                       editable={true}
                       removable={true}

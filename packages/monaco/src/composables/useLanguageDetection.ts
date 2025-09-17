@@ -1,26 +1,20 @@
 import { createSignal, createMemo } from "solid-js";
-import {
-  languageDetectionService,
-  type NaturalLanguageDetectionResult,
-} from "../services/LanguageDetectionService";
+import { languageDetectionService, type NaturalLanguageDetectionResult } from "../services/LanguageDetectionService";
 import type { UseLanguageDetectionReturn } from "../types";
 
 export function useLanguageDetection(): UseLanguageDetectionReturn {
-  const [detectedNaturalLanguage, setDetectedNaturalLanguage] =
-    createSignal<string>("unknown");
+  const [detectedNaturalLanguage, setDetectedNaturalLanguage] = createSignal<string>("unknown");
   const [confidence, setConfidence] = createSignal<number>(0);
   const [error, setError] = createSignal<string | null>(null);
   const [isDetecting, setIsDetecting] = createSignal<boolean>(false);
 
   const isNaturalLanguageDetectionAvailable = createMemo(() =>
-    languageDetectionService.isNaturalLanguageDetectionAvailable(),
+    languageDetectionService.isNaturalLanguageDetectionAvailable()
   );
   const isProgrammingLanguageDetectionAvailable = createMemo(() =>
-    languageDetectionService.isProgrammingLanguageDetectionAvailable(),
+    languageDetectionService.isProgrammingLanguageDetectionAvailable()
   );
-  const isLoading = createMemo(
-    () => languageDetectionService.isLoading() || isDetecting(),
-  );
+  const isLoading = createMemo(() => languageDetectionService.isLoading() || isDetecting());
 
   const detectNaturalLanguage = async (text: string): Promise<void> => {
     if (!isNaturalLanguageDetectionAvailable()) {
@@ -34,8 +28,7 @@ export function useLanguageDetection(): UseLanguageDetectionReturn {
     setError(null);
 
     try {
-      const result: NaturalLanguageDetectionResult =
-        await languageDetectionService.detectNaturalLanguage(text);
+      const result: NaturalLanguageDetectionResult = await languageDetectionService.detectNaturalLanguage(text);
 
       if (result.success) {
         setDetectedNaturalLanguage(result.naturalLanguage);

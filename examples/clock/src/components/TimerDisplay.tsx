@@ -12,7 +12,7 @@ interface TimerDisplayProps {
   state: TimerStateType;
 }
 
-export const TimerDisplay: Component<TimerDisplayProps> = (props) => {
+export const TimerDisplay: Component<TimerDisplayProps> = props => {
   const getStatusText = (): string => {
     switch (props.state) {
       case "running":

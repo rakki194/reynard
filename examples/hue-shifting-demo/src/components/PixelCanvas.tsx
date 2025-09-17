@@ -15,7 +15,7 @@ interface PixelCanvasProps {
   onMouseLeave: () => void;
 }
 
-export const PixelCanvas: Component<PixelCanvasProps> = (props) => {
+export const PixelCanvas: Component<PixelCanvasProps> = props => {
   return (
     <div class="editor-canvas">
       <div class="canvas-container">
@@ -33,16 +33,14 @@ export const PixelCanvas: Component<PixelCanvasProps> = (props) => {
               <div
                 class={`pixel-cell ${pixel ? "pixel-cell--filled" : "pixel-cell--empty"}`}
                 style={{
-                  "background-color": pixel
-                    ? `oklch(${pixel.l}% ${pixel.c} ${pixel.h})`
-                    : "transparent",
+                  "background-color": pixel ? `oklch(${pixel.l}% ${pixel.c} ${pixel.h})` : "transparent",
                 }}
                 onMouseDown={() => props.onMouseDown(x, y)}
                 onMouseMove={() => props.onMouseMove(x, y)}
                 onMouseUp={props.onMouseUp}
                 onMouseLeave={props.onMouseLeave}
               />
-            )),
+            ))
           )}
         </div>
       </div>

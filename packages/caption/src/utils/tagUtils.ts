@@ -11,9 +11,9 @@ export function splitAndCleanTags(tagString: string): string[] {
 
   return tagString
     .split(",")
-    .map((tag) => tag.trim())
-    .filter((tag) => tag.length > 0)
-    .map((tag) => cleanTag(tag));
+    .map(tag => tag.trim())
+    .filter(tag => tag.length > 0)
+    .map(tag => cleanTag(tag));
 }
 
 export function cleanTag(tag: string): string {
@@ -64,8 +64,8 @@ export function formatTags(tags: string[]): string {
   }
 
   return tags
-    .filter((tag) => validateTag(tag))
-    .map((tag) => cleanTag(tag))
+    .filter(tag => validateTag(tag))
+    .map(tag => cleanTag(tag))
     .join(", ");
 }
 
@@ -92,19 +92,17 @@ export function removeDuplicateTags(tags: string[]): string[] {
 
 export function sortTags(
   tags: string[],
-  sortOrder: "alphabetical" | "length" | "frequency" = "alphabetical",
+  sortOrder: "alphabetical" | "length" | "frequency" = "alphabetical"
 ): string[] {
   if (!Array.isArray(tags)) {
     return [];
   }
 
-  const cleanedTags = tags.map((tag) => cleanTag(tag)).filter((tag) => tag);
+  const cleanedTags = tags.map(tag => cleanTag(tag)).filter(tag => tag);
 
   switch (sortOrder) {
     case "alphabetical":
-      return cleanedTags.sort((a, b) =>
-        a.toLowerCase().localeCompare(b.toLowerCase()),
-      );
+      return cleanedTags.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 
     case "length":
       return cleanedTags.sort((a, b) => a.length - b.length);
@@ -133,17 +131,13 @@ export function filterTags(tags: string[], query: string): string[] {
 
   const normalizedQuery = query.toLowerCase().trim();
 
-  return tags.filter((tag) => {
+  return tags.filter(tag => {
     const normalizedTag = tag.toLowerCase();
     return normalizedTag.includes(normalizedQuery);
   });
 }
 
-export function getTagSuggestions(
-  tags: string[],
-  query: string,
-  maxSuggestions: number = 10,
-): string[] {
+export function getTagSuggestions(tags: string[], query: string, maxSuggestions: number = 10): string[] {
   if (!Array.isArray(tags) || !query) {
     return [];
   }
@@ -155,12 +149,9 @@ export function getTagSuggestions(
   }
 
   const suggestions = tags
-    .filter((tag) => {
+    .filter(tag => {
       const normalizedTag = tag.toLowerCase();
-      return (
-        normalizedTag.includes(normalizedQuery) &&
-        normalizedTag !== normalizedQuery
-      );
+      return normalizedTag.includes(normalizedQuery) && normalizedTag !== normalizedQuery;
     })
     .sort((a, b) => {
       const aLower = a.toLowerCase();
@@ -205,28 +196,24 @@ export function getTagStats(tags: string[]): {
     };
   }
 
-  const cleanedTags = tags.map((tag) => cleanTag(tag)).filter((tag) => tag);
+  const cleanedTags = tags.map(tag => cleanTag(tag)).filter(tag => tag);
   const uniqueTags = removeDuplicateTags(cleanedTags);
 
   const total = cleanedTags.length;
   const unique = uniqueTags.length;
   const duplicates = total - unique;
 
-  const lengths = cleanedTags.map((tag) => tag.length);
-  const averageLength =
-    lengths.length > 0
-      ? lengths.reduce((sum, len) => sum + len, 0) / lengths.length
-      : 0;
+  const lengths = cleanedTags.map(tag => tag.length);
+  const averageLength = lengths.length > 0 ? lengths.reduce((sum, len) => sum + len, 0) / lengths.length : 0;
 
   const longestTag = cleanedTags.reduce(
     (longest, current) => (current.length > longest.length ? current : longest),
-    "",
+    ""
   );
 
   const shortestTag = cleanedTags.reduce(
-    (shortest, current) =>
-      current.length < shortest.length ? current : shortest,
-    cleanedTags[0] || "",
+    (shortest, current) => (current.length < shortest.length ? current : shortest),
+    cleanedTags[0] || ""
   );
 
   return {

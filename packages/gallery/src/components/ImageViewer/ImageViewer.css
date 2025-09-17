@@ -20,8 +20,7 @@
   max-width: none;
   max-height: none;
   pointer-events: none;
-  transform: translate(var(--pan-x, 0px), var(--pan-y, 0px))
-    scale(var(--zoom, 1));
+  transform: translate(var(--pan-x, 0px), var(--pan-y, 0px)) scale(var(--zoom, 1));
 }
 
 .reynard-image-viewer__image--dragging {

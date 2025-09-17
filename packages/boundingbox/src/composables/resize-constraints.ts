@@ -33,7 +33,7 @@ export interface ResizeDimensions {
  */
 export function applyResizeConstraints(
   dimensions: ResizeDimensions,
-  constraints: TransformConstraints,
+  constraints: TransformConstraints
 ): ResizeDimensions {
   let { width, height } = dimensions;
   const { x, y } = dimensions;
@@ -81,32 +81,17 @@ export function calculateAspectRatio(dimensions: ResizeDimensions): number {
  * @param constraints - The constraints to check against
  * @returns True if dimensions are valid
  */
-export function validateResizeConstraints(
-  dimensions: ResizeDimensions,
-  constraints: TransformConstraints,
-): boolean {
-  if (
-    constraints.minWidth !== undefined &&
-    dimensions.width < constraints.minWidth
-  ) {
+export function validateResizeConstraints(dimensions: ResizeDimensions, constraints: TransformConstraints): boolean {
+  if (constraints.minWidth !== undefined && dimensions.width < constraints.minWidth) {
     return false;
   }
-  if (
-    constraints.minHeight !== undefined &&
-    dimensions.height < constraints.minHeight
-  ) {
+  if (constraints.minHeight !== undefined && dimensions.height < constraints.minHeight) {
     return false;
   }
-  if (
-    constraints.maxWidth !== undefined &&
-    dimensions.width > constraints.maxWidth
-  ) {
+  if (constraints.maxWidth !== undefined && dimensions.width > constraints.maxWidth) {
     return false;
   }
-  if (
-    constraints.maxHeight !== undefined &&
-    dimensions.height > constraints.maxHeight
-  ) {
+  if (constraints.maxHeight !== undefined && dimensions.height > constraints.maxHeight) {
     return false;
   }
   return true;

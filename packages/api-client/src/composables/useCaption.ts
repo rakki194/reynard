@@ -3,11 +3,7 @@
  */
 
 import { createSignal } from "solid-js";
-import type {
-  CaptionRequest,
-  CaptionResponse,
-  GeneratorInfo,
-} from "../generated/index.js";
+import type { CaptionRequest, CaptionResponse, GeneratorInfo } from "../generated/index.js";
 
 export interface UseCaptionOptions {
   basePath?: string;
@@ -16,9 +12,7 @@ export interface UseCaptionOptions {
 export function useCaption(options: UseCaptionOptions = {}) {
   const [isGenerating, setIsGenerating] = createSignal(false);
 
-  const generateCaption = async (
-    request: CaptionRequest,
-  ): Promise<CaptionResponse> => {
+  const generateCaption = async (request: CaptionRequest): Promise<CaptionResponse> => {
     setIsGenerating(true);
     try {
       // Stub implementation

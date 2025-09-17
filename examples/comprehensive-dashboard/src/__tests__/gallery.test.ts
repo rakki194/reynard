@@ -47,9 +47,7 @@ describe("Gallery/File Management API", () => {
         expect(typeof file.uploadedBy).toBe("string");
 
         // Validate file type
-        expect(["image", "document", "video", "audio", "other"]).toContain(
-          file.type,
-        );
+        expect(["image", "document", "video", "audio", "other"]).toContain(file.type);
 
         // Validate size is non-negative
         expect(file.size).toBeGreaterThanOrEqual(0);
@@ -222,9 +220,7 @@ describe("Gallery/File Management API", () => {
 
       expect(listData.files.length).toBe(initialCount + 1);
 
-      const uploadedFile = listData.files.find(
-        (f: any) => f.id === uploadedFileId,
-      );
+      const uploadedFile = listData.files.find((f: any) => f.id === uploadedFileId);
       expect(uploadedFile).toBeDefined();
       expect(uploadedFile.name).toBe("list-test.txt");
     });
@@ -239,19 +235,19 @@ describe("Gallery/File Management API", () => {
         { name: "aud1.mp3", type: "audio", size: 512000 },
       ];
 
-      const uploadPromises = files.map((file) =>
+      const uploadPromises = files.map(file =>
         apiRequest("/files/upload", {
           method: "POST",
           body: JSON.stringify({
             ...file,
             url: `/uploads/${file.name}`,
           }),
-        }),
+        })
       );
 
       const responses = await Promise.all(uploadPromises);
 
-      responses.forEach((response) => {
+      responses.forEach(response => {
         expect(response.status).toBe(201);
       });
 
@@ -259,7 +255,7 @@ describe("Gallery/File Management API", () => {
       const listResponse = await apiRequest("/files");
       const listData = await listResponse.json();
 
-      files.forEach((file) => {
+      files.forEach(file => {
         const foundFile = listData.files.find((f: any) => f.name === file.name);
         expect(foundFile).toBeDefined();
         expect(foundFile.type).toBe(file.type);
@@ -282,15 +278,9 @@ describe("Gallery/File Management API", () => {
       }
 
       // Get file list multiple times
-      const responses = await Promise.all([
-        apiRequest("/files"),
-        apiRequest("/files"),
-        apiRequest("/files"),
-      ]);
+      const responses = await Promise.all([apiRequest("/files"), apiRequest("/files"), apiRequest("/files")]);
 
-      const dataSets = await Promise.all(
-        responses.map((response) => response.json()),
-      );
+      const dataSets = await Promise.all(responses.map(response => response.json()));
 
       // All responses should be identical
       dataSets.forEach((data, index) => {

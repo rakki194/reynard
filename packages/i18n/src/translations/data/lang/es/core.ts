@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // Validación de contraseña
   password: {
-    "must-be-at-least-8-characters-long":
-      "La contraseña debe tener al menos 8 caracteres",
-    "must-contain-at-least-one-uppercase-letter":
-      "La contraseña debe contener al menos una letra mayúscula",
-    "must-contain-at-least-one-lowercase-letter":
-      "La contraseña debe contener al menos una letra minúscula",
-    "must-contain-at-least-one-number":
-      "La contraseña debe contener al menos un número",
-    "must-contain-at-least-one-special-character":
-      "La contraseña debe contener al menos un carácter especial",
+    "must-be-at-least-8-characters-long": "La contraseña debe tener al menos 8 caracteres",
+    "must-contain-at-least-one-uppercase-letter": "La contraseña debe contener al menos una letra mayúscula",
+    "must-contain-at-least-one-lowercase-letter": "La contraseña debe contener al menos una letra minúscula",
+    "must-contain-at-least-one-number": "La contraseña debe contener al menos un número",
+    "must-contain-at-least-one-special-character": "La contraseña debe contener al menos un carácter especial",
   },
 
   // Validación de seguridad
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Debe incluirse al menos un tipo de carácter",
-    "input-contains-potentially-dangerous-html":
-      "La entrada contiene HTML potencialmente peligroso",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "La entrada contiene patrones SQL potencialmente peligrosos",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "La entrada contiene patrones XSS potencialmente peligrosos",
-    "input-contains-path-traversal-patterns":
-      "La entrada contiene patrones de recorrido de ruta",
-    "input-contains-windows-reserved-names":
-      "La entrada contiene nombres reservados de Windows",
-    "input-contains-executable-file-extensions":
-      "La entrada contiene extensiones de archivos ejecutables",
+    "at-least-one-character-type-must-be-included": "Debe incluirse al menos un tipo de carácter",
+    "input-contains-potentially-dangerous-html": "La entrada contiene HTML potencialmente peligroso",
+    "input-contains-potentially-dangerous-sql-patterns": "La entrada contiene patrones SQL potencialmente peligrosos",
+    "input-contains-potentially-dangerous-xss-patterns": "La entrada contiene patrones XSS potencialmente peligrosos",
+    "input-contains-path-traversal-patterns": "La entrada contiene patrones de recorrido de ruta",
+    "input-contains-windows-reserved-names": "La entrada contiene nombres reservados de Windows",
+    "input-contains-executable-file-extensions": "La entrada contiene extensiones de archivos ejecutables",
     "input-contains-null-bytes": "La entrada contiene bytes nulos",
     "input-contains-hidden-files": "La entrada contiene archivos ocultos",
-    "input-contains-javascript-file-extensions":
-      "La entrada contiene extensiones de archivos JavaScript",
+    "input-contains-javascript-file-extensions": "La entrada contiene extensiones de archivos JavaScript",
   },
 
   // Operaciones asíncronas
@@ -118,8 +105,7 @@ export const coreTranslations = {
     "persistent-failure": "Falla persistente",
     "function-failed": "La función falló",
     "mapper-failed": "El mapper falló",
-    "concurrency-must-be-greater-than-0":
-      "La concurrencia debe ser mayor que 0",
+    "concurrency-must-be-greater-than-0": "La concurrencia debe ser mayor que 0",
     "polling-timeout-reached": "Se alcanzó el timeout de polling",
   },
 
@@ -133,12 +119,9 @@ export const coreTranslations = {
 
   // Almacenamiento y serialización
   storage: {
-    "potentially-dangerous-json-detected":
-      "JSON potencialmente peligroso detectado",
-    "failed-to-parse-json-from-localstorage":
-      "Error al parsear JSON desde localStorage:",
-    "error-parsing-storage-event":
-      "Error al parsear evento de almacenamiento para clave",
+    "potentially-dangerous-json-detected": "JSON potencialmente peligroso detectado",
+    "failed-to-parse-json-from-localstorage": "Error al parsear JSON desde localStorage:",
+    "error-parsing-storage-event": "Error al parsear evento de almacenamiento para clave",
   },
 
   // Prueba y desarrollo
@@ -175,9 +158,7 @@ export const coreTranslations = {
   // Pruebas de integración
   integration: {
     "session-and-api-key-generation": "Generación de sesión y clave API",
-    "authentication-and-input-validation-integration":
-      "Integración de autenticación y validación de entrada",
-    "performance-and-security-integration":
-      "Integración de rendimiento y seguridad",
+    "authentication-and-input-validation-integration": "Integración de autenticación y validación de entrada",
+    "performance-and-security-integration": "Integración de rendimiento y seguridad",
   },
 };

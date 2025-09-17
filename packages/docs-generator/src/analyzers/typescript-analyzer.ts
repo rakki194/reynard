@@ -17,13 +17,9 @@ export class TypeScriptAnalyzer {
 
     try {
       const tsFiles = await findTypeScriptFiles(packageInfo.path);
-      console.log(
-        `🔍 TypeScript Analyzer: Found ${tsFiles.length} TypeScript files in ${packageInfo.name}`,
-      );
+      console.log(`🔍 TypeScript Analyzer: Found ${tsFiles.length} TypeScript files in ${packageInfo.name}`);
       if (tsFiles.length > 0) {
-        console.log(
-          `📁 TypeScript files: ${tsFiles.slice(0, 5).join(", ")}${tsFiles.length > 5 ? "..." : ""}`,
-        );
+        console.log(`📁 TypeScript files: ${tsFiles.slice(0, 5).join(", ")}${tsFiles.length > 5 ? "..." : ""}`);
       }
       if (tsFiles.length === 0) return apiInfo;
 
@@ -44,16 +40,11 @@ export class TypeScriptAnalyzer {
       for (const sourceFile of this.program.getSourceFiles()) {
         if (!tsFiles.includes(sourceFile.fileName)) continue;
         const fileApiInfo = this.analyzeSourceFile(sourceFile);
-        console.log(
-          `📄 Analyzed ${sourceFile.fileName}: found ${fileApiInfo.length} API items`,
-        );
+        console.log(`📄 Analyzed ${sourceFile.fileName}: found ${fileApiInfo.length} API items`);
         apiInfo.push(...fileApiInfo);
       }
     } catch (error) {
-      console.warn(
-        `Warning: Failed to analyze TypeScript files for ${packageInfo.name}:`,
-        error,
-      );
+      console.warn(`Warning: Failed to analyze TypeScript files for ${packageInfo.name}:`, error);
     }
 
     return apiInfo;

@@ -20,13 +20,11 @@ export const DocsNav: Component<{
   }>;
   orientation?: "horizontal" | "vertical";
   className?: string;
-}> = (props) => {
+}> = props => {
   return (
-    <nav
-      class={`docs-nav docs-nav--${props.orientation || "horizontal"} ${props.className || ""}`}
-    >
+    <nav class={`docs-nav docs-nav--${props.orientation || "horizontal"} ${props.className || ""}`}>
       <ul class="docs-nav-list">
-        <For each={props.items}>{(item) => <DocsNavItem item={item} />}</For>
+        <For each={props.items}>{item => <DocsNavItem item={item} />}</For>
       </ul>
     </nav>
   );
@@ -45,10 +43,9 @@ const DocsNavItem: Component<{
     badge?: string;
     color?: string;
   };
-}> = (props) => {
+}> = props => {
   const [isExpanded, setIsExpanded] = createSignal(false);
-  const hasChildren = () =>
-    props.item.children && props.item.children.length > 0;
+  const hasChildren = () => props.item.children && props.item.children.length > 0;
 
   return (
     <li class="docs-nav-item">
@@ -73,10 +70,7 @@ const DocsNavItem: Component<{
       </Show>
 
       <Show when={!props.item.href}>
-        <button
-          class="docs-nav-button"
-          onClick={() => hasChildren() && setIsExpanded(!isExpanded())}
-        >
+        <button class="docs-nav-button" onClick={() => hasChildren() && setIsExpanded(!isExpanded())}>
           <Show when={props.item.icon}>
             <span class="docs-nav-icon">{props.item.icon}</span>
           </Show>
@@ -85,18 +79,14 @@ const DocsNavItem: Component<{
             <span class="docs-nav-badge">{props.item.badge}</span>
           </Show>
           <Show when={hasChildren()}>
-            <span class={`docs-nav-arrow ${isExpanded() ? "expanded" : ""}`}>
-              ▼
-            </span>
+            <span class={`docs-nav-arrow ${isExpanded() ? "expanded" : ""}`}>▼</span>
           </Show>
         </button>
       </Show>
 
       <Show when={hasChildren() && isExpanded()}>
         <ul class="docs-nav-sublist">
-          <For each={props.item.children}>
-            {(child) => <DocsNavItem item={child} />}
-          </For>
+          <For each={props.item.children}>{child => <DocsNavItem item={child} />}</For>
         </ul>
       </Show>
     </li>
@@ -113,14 +103,11 @@ export const DocsBreadcrumbs: Component<{
   }>;
   separator?: string;
   className?: string;
-}> = (props) => {
+}> = props => {
   const separator = () => props.separator || "/";
 
   return (
-    <nav
-      class={`docs-breadcrumbs ${props.className || ""}`}
-      aria-label="Breadcrumb"
-    >
+    <nav class={`docs-breadcrumbs ${props.className || ""}`} aria-label="Breadcrumb">
       <ol class="docs-breadcrumbs-list">
         <For each={props.items}>
           {(item, index) => (
@@ -160,21 +147,18 @@ export const DocsTOC: Component<{
   activeId?: string;
   onNavigate?: (id: string) => void;
   className?: string;
-}> = (props) => {
+}> = props => {
   return (
-    <nav
-      class={`docs-toc ${props.className || ""}`}
-      aria-label="Table of contents"
-    >
+    <nav class={`docs-toc ${props.className || ""}`} aria-label="Table of contents">
       <h3 class="docs-toc-title">On this page</h3>
       <ul class="docs-toc-list">
         <For each={props.headings}>
-          {(heading) => (
+          {heading => (
             <li class={`docs-toc-item docs-toc-item--${heading.level}`}>
               <a
                 href={`#${heading.id}`}
                 class={`docs-toc-link ${props.activeId === heading.id ? "active" : ""}`}
-                onClick={(e) => {
+                onClick={e => {
                   e.preventDefault();
                   props.onNavigate?.(heading.id);
                 }}
@@ -200,7 +184,7 @@ export const DocsPagination: Component<{
   showPrevNext?: boolean;
   maxVisible?: number;
   className?: string;
-}> = (props) => {
+}> = props => {
   const maxVisible = () => props.maxVisible || 5;
   const showFirstLast = () => props.showFirstLast !== false;
   const showPrevNext = () => props.showPrevNext !== false;
@@ -233,18 +217,11 @@ export const DocsPagination: Component<{
   };
 
   return (
-    <nav
-      class={`docs-pagination ${props.className || ""}`}
-      aria-label="Pagination"
-    >
+    <nav class={`docs-pagination ${props.className || ""}`} aria-label="Pagination">
       <ul class="docs-pagination-list">
         <Show when={showFirstLast() && getVisiblePages()[0] > 1}>
           <li class="docs-pagination-item">
-            <button
-              class="docs-pagination-button"
-              onClick={() => props.onPageChange(1)}
-              aria-label="Go to first page"
-            >
+            <button class="docs-pagination-button" onClick={() => props.onPageChange(1)} aria-label="Go to first page">
               ««
             </button>
           </li>
@@ -263,7 +240,7 @@ export const DocsPagination: Component<{
         </Show>
 
         <For each={getVisiblePages()}>
-          {(page) => (
+          {page => (
             <li class="docs-pagination-item">
               <button
                 class={`docs-pagination-button ${page === props.current ? "active" : ""}`}
@@ -289,12 +266,7 @@ export const DocsPagination: Component<{
           </li>
         </Show>
 
-        <Show
-          when={
-            showFirstLast() &&
-            getVisiblePages()[getVisiblePages().length - 1] < props.total
-          }
-        >
+        <Show when={showFirstLast() && getVisiblePages()[getVisiblePages().length - 1] < props.total}>
           <li class="docs-pagination-item">
             <button
               class="docs-pagination-button"
@@ -325,14 +297,12 @@ export const DocsTabs: Component<{
   onTabChange: (tabId: string) => void;
   orientation?: "horizontal" | "vertical";
   className?: string;
-}> = (props) => {
+}> = props => {
   return (
-    <div
-      class={`docs-tabs docs-tabs--${props.orientation || "horizontal"} ${props.className || ""}`}
-    >
+    <div class={`docs-tabs docs-tabs--${props.orientation || "horizontal"} ${props.className || ""}`}>
       <div class="docs-tabs-list" role="tablist">
         <For each={props.tabs}>
-          {(tab) => (
+          {tab => (
             <button
               class={`docs-tab ${props.activeTab === tab.id ? "active" : ""} ${tab.disabled ? "disabled" : ""}`}
               role="tab"
@@ -365,7 +335,7 @@ export const DocsTabPanel: Component<{
   activeTab: string;
   children: JSX.Element;
   className?: string;
-}> = (props) => {
+}> = props => {
   const isActive = () => props.activeTab === props.tabId;
 
   return (

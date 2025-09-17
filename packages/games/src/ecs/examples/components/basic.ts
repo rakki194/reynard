@@ -6,7 +6,7 @@ export class Position implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -14,7 +14,7 @@ export class Velocity implements Component {
   readonly __component = true;
   constructor(
     public x: number,
-    public y: number,
+    public y: number
   ) {}
 }
 
@@ -22,7 +22,7 @@ export class Acceleration implements Component {
   readonly __component = true;
   constructor(
     public ax: number,
-    public ay: number,
+    public ay: number
   ) {}
 }
 
@@ -35,7 +35,7 @@ export class Size implements Component {
   readonly __component = true;
   constructor(
     public width: number,
-    public height: number,
+    public height: number
   ) {}
 }
 
@@ -45,7 +45,7 @@ export class Color implements Component {
     public r: number,
     public g: number,
     public b: number,
-    public a: number = 1,
+    public a: number = 1
   ) {}
 }
 

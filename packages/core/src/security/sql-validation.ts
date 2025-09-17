@@ -75,9 +75,7 @@ export function validateSQLInput(input: string): {
   // Check for dangerous patterns
   for (const pattern of sqlPatterns) {
     if (pattern.test(sanitized)) {
-      warnings.push(
-        `Potential SQL injection pattern detected: ${pattern.source}`,
-      );
+      warnings.push(`Potential SQL injection pattern detected: ${pattern.source}`);
     }
   }
 
@@ -86,10 +84,7 @@ export function validateSQLInput(input: string): {
     .replace(/['"`;]/g, "") // Remove quotes and semicolons
     .replace(/--.*$/gm, "") // Remove SQL comments
     .replace(/\/\*.*?\*\//gs, "") // Remove block comments
-    .replace(
-      /\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE|UNION|SCRIPT)\b/gi,
-      "",
-    ); // Remove SQL keywords
+    .replace(/\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE|UNION|SCRIPT)\b/gi, ""); // Remove SQL keywords
 
   // Check for remaining suspicious patterns
   const suspiciousPatterns = [

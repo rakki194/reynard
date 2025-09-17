@@ -44,8 +44,7 @@ export const mediaIcons = {
       name: "pause",
       tags: ["media", "control", "playback"],
       description: "Pause icon",
-      caption:
-        "A pause button icon with two vertical bars for pausing media playback",
+      caption: "A pause button icon with two vertical bars for pausing media playback",
       keywords: ["pause", "stop", "media", "control"],
     },
   },
@@ -55,8 +54,7 @@ export const mediaIcons = {
       name: "stop",
       tags: ["media", "control", "playback"],
       description: "Stop icon",
-      caption:
-        "A square stop button icon for stopping media playback completely",
+      caption: "A square stop button icon for stopping media playback completely",
       keywords: ["stop", "end", "media", "square"],
     },
   },
@@ -66,8 +64,7 @@ export const mediaIcons = {
       name: "skip-backward",
       tags: ["media", "control", "navigation"],
       description: "Skip backward icon",
-      caption:
-        "A skip backward icon with double arrows for rewinding media content",
+      caption: "A skip backward icon with double arrows for rewinding media content",
       keywords: ["skip", "backward", "rewind", "media"],
     },
   },
@@ -77,8 +74,7 @@ export const mediaIcons = {
       name: "skip-forward",
       tags: ["media", "control", "navigation"],
       description: "Skip forward icon",
-      caption:
-        "A skip forward icon with double arrows for fast-forwarding media content",
+      caption: "A skip forward icon with double arrows for fast-forwarding media content",
       keywords: ["skip", "forward", "fast", "media"],
     },
   },
@@ -88,8 +84,7 @@ export const mediaIcons = {
       name: "speaker",
       tags: ["media", "audio", "sound"],
       description: "Speaker icon",
-      caption:
-        "A speaker icon with sound waves for audio output and volume control",
+      caption: "A speaker icon with sound waves for audio output and volume control",
       keywords: ["speaker", "audio", "sound", "volume"],
     },
   },
@@ -109,8 +104,7 @@ export const mediaIcons = {
       name: "speaker-1",
       tags: ["media", "audio", "sound"],
       description: "Speaker 1 icon",
-      caption:
-        "A speaker icon with single sound wave for low volume audio output",
+      caption: "A speaker icon with single sound wave for low volume audio output",
       keywords: ["speaker", "audio", "sound", "volume"],
     },
   },
@@ -120,8 +114,7 @@ export const mediaIcons = {
       name: "speaker-2",
       tags: ["media", "audio", "sound"],
       description: "Speaker 2 icon",
-      caption:
-        "A speaker icon with double sound waves for high volume audio output",
+      caption: "A speaker icon with double sound waves for high volume audio output",
       keywords: ["speaker", "audio", "sound", "volume"],
     },
   },
@@ -131,8 +124,7 @@ export const mediaIcons = {
       name: "volume",
       tags: ["media", "audio", "sound"],
       description: "Volume icon",
-      caption:
-        "A volume control icon with speaker and sound waves for audio level adjustment",
+      caption: "A volume control icon with speaker and sound waves for audio level adjustment",
       keywords: ["volume", "audio", "sound", "speaker"],
     },
   },
@@ -152,8 +144,7 @@ export const mediaIcons = {
       name: "music-note-2",
       tags: ["media", "music", "audio"],
       description: "Music note 2 icon",
-      caption:
-        "A double music note icon representing musical content or audio files",
+      caption: "A double music note icon representing musical content or audio files",
       keywords: ["music", "note", "audio", "sound"],
     },
   },
@@ -163,8 +154,7 @@ export const mediaIcons = {
       name: "music-note-1-filled",
       tags: ["media", "music", "audio"],
       description: "Music note 1 filled icon",
-      caption:
-        "A filled single music note icon for active or selected audio content",
+      caption: "A filled single music note icon for active or selected audio content",
       keywords: ["music", "note", "audio", "filled"],
     },
   },
@@ -174,8 +164,7 @@ export const mediaIcons = {
       name: "music-note-2-filled",
       tags: ["media", "music", "audio"],
       description: "Music note 2 filled icon",
-      caption:
-        "A filled double music note icon for active or selected musical content",
+      caption: "A filled double music note icon for active or selected musical content",
       keywords: ["music", "note", "audio", "filled"],
     },
   },
@@ -185,8 +174,7 @@ export const mediaIcons = {
       name: "music-note-off-1",
       tags: ["media", "music", "audio"],
       description: "Music note off 1 icon",
-      caption:
-        "A music note with slash icon indicating muted or disabled audio",
+      caption: "A music note with slash icon indicating muted or disabled audio",
       keywords: ["music", "note", "off", "mute"],
     },
   },
@@ -196,8 +184,7 @@ export const mediaIcons = {
       name: "music-note-off-2",
       tags: ["media", "music", "audio"],
       description: "Music note off 2 icon",
-      caption:
-        "A double music note with slash icon indicating muted or disabled audio",
+      caption: "A double music note with slash icon indicating muted or disabled audio",
       keywords: ["music", "note", "off", "mute"],
     },
   },
@@ -207,8 +194,7 @@ export const mediaIcons = {
       name: "music-note-off-1-filled",
       tags: ["media", "music", "audio"],
       description: "Music note off 1 filled icon",
-      caption:
-        "A filled music note with slash icon for disabled or muted audio content",
+      caption: "A filled music note with slash icon for disabled or muted audio content",
       keywords: ["music", "note", "off", "mute", "filled"],
     },
   },
@@ -218,8 +204,7 @@ export const mediaIcons = {
       name: "music-note-off-2-filled",
       tags: ["media", "music", "audio"],
       description: "Music note off 2 filled icon",
-      caption:
-        "A filled double music note with slash icon for disabled or muted audio content",
+      caption: "A filled double music note with slash icon for disabled or muted audio content",
       keywords: ["music", "note", "off", "mute", "filled"],
     },
   },
@@ -229,8 +214,7 @@ export const mediaIcons = {
       name: "music",
       tags: ["media", "music", "audio"],
       description: "Music icon",
-      caption:
-        "A music note icon representing musical content, audio files, or sound",
+      caption: "A music note icon representing musical content, audio files, or sound",
       keywords: ["music", "note", "audio", "sound"],
     },
   },
@@ -240,8 +224,7 @@ export const mediaIcons = {
       name: "video",
       tags: ["media", "video", "playback"],
       description: "Video icon",
-      caption:
-        "A video camera icon representing video content, recording, or playback",
+      caption: "A video camera icon representing video content, recording, or playback",
       keywords: ["video", "play", "media", "camera"],
     },
   },
@@ -251,8 +234,7 @@ export const mediaIcons = {
       name: "camera",
       tags: ["media", "camera", "photo"],
       description: "Camera icon",
-      caption:
-        "A camera icon for taking photos, capturing images, or video recording",
+      caption: "A camera icon for taking photos, capturing images, or video recording",
       keywords: ["camera", "photo", "picture", "capture"],
     },
   },
@@ -262,8 +244,7 @@ export const mediaIcons = {
       name: "image-add",
       tags: ["media", "image", "add"],
       description: "Image add icon",
-      caption:
-        "An image icon with plus sign for adding or uploading new images",
+      caption: "An image icon with plus sign for adding or uploading new images",
       keywords: ["image", "add", "photo", "picture"],
     },
   },
@@ -273,8 +254,7 @@ export const mediaIcons = {
       name: "dimensions",
       tags: ["media", "image", "size"],
       description: "Image dimensions icon",
-      caption:
-        "An image icon with dimension indicators for showing image size or resolution",
+      caption: "An image icon with dimension indicators for showing image size or resolution",
       keywords: ["dimensions", "image", "size", "picture"],
     },
   },
@@ -284,8 +264,7 @@ export const mediaIcons = {
       name: "sound-wave",
       tags: ["media", "audio", "wave"],
       description: "Sound wave circle icon",
-      caption:
-        "A circular sound wave icon representing audio visualization or sound levels",
+      caption: "A circular sound wave icon representing audio visualization or sound levels",
       keywords: ["sound", "wave", "audio", "circle"],
     },
   },

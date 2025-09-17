@@ -22,7 +22,7 @@ export class AIError extends Error {
   constructor(
     message: string,
     public code: string,
-    public context?: Record<string, any>,
+    public context?: Record<string, any>
   ) {
     super(message);
     this.name = "AIError";
@@ -33,7 +33,7 @@ export class ModelError extends AIError {
   constructor(
     message: string,
     public modelName: string,
-    context?: Record<string, any>,
+    context?: Record<string, any>
   ) {
     super(message, "MODEL_ERROR", { modelName, ...context });
     this.name = "ModelError";
@@ -44,7 +44,7 @@ export class ServiceError extends AIError {
   constructor(
     message: string,
     public serviceName: string,
-    context?: Record<string, any>,
+    context?: Record<string, any>
   ) {
     super(message, "SERVICE_ERROR", { serviceName, ...context });
     this.name = "ServiceError";

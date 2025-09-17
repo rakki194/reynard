@@ -4,12 +4,7 @@
  * Handles model loading, unloading, and lifecycle management.
  */
 
-import {
-  ModelLoader as IModelLoader,
-  ModelInstance,
-  ModelStatus,
-  ModelHealth,
-} from "../types/index.js";
+import { ModelLoader as IModelLoader, ModelInstance, ModelStatus, ModelHealth } from "../types/index.js";
 import { BaseModel } from "../models/BaseModel.js";
 import { ModelRegistry } from "./ModelRegistry.js";
 
@@ -20,20 +15,13 @@ export class ModelLoader implements IModelLoader {
   private _maxConcurrentLoads: number = 2;
   private _loadTimeout: number = 120000; // 2 minutes
 
-  constructor(
-    registry: ModelRegistry,
-    maxConcurrentLoads = 2,
-    loadTimeout = 120000,
-  ) {
+  constructor(registry: ModelRegistry, maxConcurrentLoads = 2, loadTimeout = 120000) {
     this._registry = registry;
     this._maxConcurrentLoads = maxConcurrentLoads;
     this._loadTimeout = loadTimeout;
   }
 
-  async loadModel(
-    modelId: string,
-    config?: Record<string, any>,
-  ): Promise<ModelInstance> {
+  async loadModel(modelId: string, config?: Record<string, any>): Promise<ModelInstance> {
     // Check if model is registered
     const modelInfo = this._registry.getModelInfo(modelId);
     if (!modelInfo) {
@@ -53,21 +41,15 @@ export class ModelLoader implements IModelLoader {
 
     // Check concurrent load limit
     const loadingCount = Array.from(this._loadedModels.values()).filter(
-      (instance) => instance.status === ModelStatus.LOADING,
+      instance => instance.status === ModelStatus.LOADING
     ).length;
 
     if (loadingCount >= this._maxConcurrentLoads) {
-      throw new Error(
-        `Maximum concurrent loads (${this._maxConcurrentLoads}) reached`,
-      );
+      throw new Error(`Maximum concurrent loads (${this._maxConcurrentLoads}) reached`);
     }
 
     // Create model instance
-    const modelInstance = this._createModelInstance(
-      modelId,
-      modelInfo.modelType,
-      config || {},
-    );
+    const modelInstance = this._createModelInstance(modelId, modelInfo.modelType, config || {});
 
     // Initialize model instance
     const instance: ModelInstance = {
@@ -230,9 +212,7 @@ export class ModelLoader implements IModelLoader {
 
   // Cleanup
   async unloadAllModels(): Promise<void> {
-    const unloadPromises = Array.from(this._loadedModels.keys()).map(
-      (modelId) => this.unloadModel(modelId),
-    );
+    const unloadPromises = Array.from(this._loadedModels.keys()).map(modelId => this.unloadModel(modelId));
 
     await Promise.all(unloadPromises);
   }
@@ -276,11 +256,7 @@ export class ModelLoader implements IModelLoader {
     };
   }
 
-  private _createModelInstance(
-    modelId: string,
-    modelType: any,
-    config: Record<string, any>,
-  ): BaseModel {
+  private _createModelInstance(modelId: string, modelType: any, config: Record<string, any>): BaseModel {
     // This is a simplified factory method
     // In a real implementation, this would create specific model instances based on type
     return new (class extends BaseModel {

@@ -17,9 +17,7 @@ export function usePointCloudInteractions() {
     x: number;
     y: number;
   } | null>(null);
-  const [selectionGroups, setSelectionGroups] = createSignal<
-    Map<string, Point3D[]>
-  >(new Map());
+  const [selectionGroups, setSelectionGroups] = createSignal<Map<string, Point3D[]>>(new Map());
 
   /**
    * Handle point selection via raycasting
@@ -29,7 +27,7 @@ export function usePointCloudInteractions() {
     camera: unknown,
     scene: unknown,
     raycaster: unknown,
-    mouse: unknown,
+    mouse: unknown
   ) => {
     if (!raycaster || !mouse) return;
 
@@ -39,10 +37,8 @@ export function usePointCloudInteractions() {
     const rect = target.getBoundingClientRect();
 
     // Handle both MouseEvent and TouchEvent
-    const clientX =
-      "clientX" in event ? event.clientX : event.touches[0]?.clientX || 0;
-    const clientY =
-      "clientY" in event ? event.clientY : event.touches[0]?.clientY || 0;
+    const clientX = "clientX" in event ? event.clientX : event.touches[0]?.clientX || 0;
+    const clientY = "clientY" in event ? event.clientY : event.touches[0]?.clientY || 0;
 
     (mouse as any).x = ((clientX - rect.left) / rect.width) * 2 - 1;
     (mouse as any).y = -((clientY - rect.top) / rect.height) * 2 + 1;
@@ -50,10 +46,7 @@ export function usePointCloudInteractions() {
     (raycaster as any).setFromCamera(mouse, camera);
 
     // Find intersected points
-    const intersects = (raycaster as any).intersectObjects(
-      (scene as any).children,
-      true,
-    );
+    const intersects = (raycaster as any).intersectObjects((scene as any).children, true);
 
     if (intersects.length > 0) {
       const intersectedPoint = intersects[0];
@@ -67,10 +60,10 @@ export function usePointCloudInteractions() {
         if (point) {
           if (event.ctrlKey || event.metaKey) {
             // Multi-select
-            setSelectedPoints((prev) => {
-              const isSelected = prev.some((p) => p.id === point.id);
+            setSelectedPoints(prev => {
+              const isSelected = prev.some(p => p.id === point.id);
               if (isSelected) {
-                return prev.filter((p) => p.id !== point.id);
+                return prev.filter(p => p.id !== point.id);
               } else {
                 return [...prev, point];
               }
@@ -97,7 +90,7 @@ export function usePointCloudInteractions() {
     camera: unknown,
     scene: unknown,
     raycaster: unknown,
-    mouse: unknown,
+    mouse: unknown
   ) => {
     if (!raycaster || !mouse) return;
 
@@ -107,10 +100,8 @@ export function usePointCloudInteractions() {
     const rect = target.getBoundingClientRect();
 
     // Handle both MouseEvent and TouchEvent
-    const clientX =
-      "clientX" in event ? event.clientX : event.touches[0]?.clientX || 0;
-    const clientY =
-      "clientY" in event ? event.clientY : event.touches[0]?.clientY || 0;
+    const clientX = "clientX" in event ? event.clientX : event.touches[0]?.clientX || 0;
+    const clientY = "clientY" in event ? event.clientY : event.touches[0]?.clientY || 0;
 
     (mouse as any).x = ((clientX - rect.left) / rect.width) * 2 - 1;
     (mouse as any).y = -((clientY - rect.top) / rect.height) * 2 + 1;
@@ -120,10 +111,7 @@ export function usePointCloudInteractions() {
 
     (raycaster as any).setFromCamera(mouse, camera);
 
-    const intersects = (raycaster as any).intersectObjects(
-      (scene as any).children,
-      true,
-    );
+    const intersects = (raycaster as any).intersectObjects((scene as any).children, true);
 
     if (intersects.length > 0) {
       const intersectedPoint = intersects[0];

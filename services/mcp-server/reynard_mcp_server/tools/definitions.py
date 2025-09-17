@@ -360,9 +360,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
     # Get linting, version/vscode, search, image viewer, mermaid, and VS Code tasks tools
     linting_tools = get_linting_tool_definitions()
     version_vscode_tools = get_version_vscode_tool_definitions()
-    search_tools = {
-        tool["name"]: tool for tool in SEARCH_TOOL_DEFINITIONS
-    }
+    search_tools = {tool["name"]: tool for tool in SEARCH_TOOL_DEFINITIONS}
     image_viewer_tools = get_image_viewer_tool_definitions()
     mermaid_tools = get_mermaid_tool_definitions()
     monolith_detection_tools = get_monolith_detection_tool_definitions()

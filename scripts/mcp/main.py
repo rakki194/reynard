@@ -16,29 +16,34 @@ from pathlib import Path
 from typing import Any
 
 # Add libraries directory to Python path
-libraries_path = Path(__file__).parent.parent.parent / "libraries"
-agent_naming_path = libraries_path / "agent-naming"
+services_path = Path(__file__).parent.parent.parent / "services"
+agent_naming_path = services_path / "agent-naming"
 if str(agent_naming_path) not in sys.path:
     sys.path.insert(0, str(agent_naming_path))
 
 from protocol.mcp_handler import MCPHandler
-from protocol.tool_registry import ToolRegistry, ToolExecutionType
+from protocol.tool_registry import ToolExecutionType, ToolRegistry
 from services.tool_config_service import ToolConfigService
-from agent_naming import AgentNameManager
-from tools.agent_tools import AgentTools
-from tools.config_tools import ConfigTools
-from tools.ecs_agent_tools import ECSAgentTools
-from tools.image_viewer_tools import ImageViewerTools
-from tools.linting_tools import LintingTools
-from tools.mermaid_tools import MermaidTools
-from tools.monolith_detection import MonolithDetectionTools
+from tools import (
+    get_agent_tools,
+    get_config_tools,
+    get_ecs_agent_tools,
+    get_image_viewer_tools,
+    get_linting_tools,
+    get_mermaid_tools,
+    get_monolith_detection_tools,
+    get_search_tools,
+    get_utility_tools,
+    get_version_vscode_tools,
+    get_vscode_tasks_tools,
+)
+from tools.git_automation_tools import GitAutomationTools
 from tools.playwright_tools import PlaywrightTools
-from tools.search.search_tools import SearchTools
-from tools.utility_tools import UtilityTools
-from tools.version_vscode_tools import VersionVSCodeTools
-from tools.vscode_tasks_tools import VSCodeTasksTools
+from tools.search.enhanced_search_tools import EnhancedSearchTools
 from tools.tool_management_tools import ToolManagementTools
 from utils.logging_config import setup_logging
+
+from reynard_agent_naming.agent_naming import AgentNameManager
 
 logger = setup_logging()
 
@@ -49,27 +54,29 @@ class MCPServer:
     def __init__(self) -> None:
         # Initialize services
         self.agent_manager = AgentNameManager()
-        
+
         # Initialize tool configuration service
         self.tool_config_service = ToolConfigService()
-        
+
         # Initialize tool registry with configuration management
         self.tool_registry = ToolRegistry(tool_config_service=self.tool_config_service)
 
         # Initialize tool handlers
-        self.ecs_agent_tools = ECSAgentTools()
-        self.agent_tools = AgentTools(self.agent_manager, self.ecs_agent_tools)
-        self.search_tools = SearchTools()
-        self.utility_tools = UtilityTools()
-        self.linting_tools = LintingTools()
-        self.version_vscode_tools = VersionVSCodeTools()
-        self.image_viewer_tools = ImageViewerTools()
-        self.mermaid_tools = MermaidTools()
-        self.monolith_detection_tools = MonolithDetectionTools()
+        self.ecs_agent_tools = get_ecs_agent_tools()()
+        self.agent_tools = get_agent_tools()(self.agent_manager, self.ecs_agent_tools)
+        self.search_tools = get_search_tools()()
+        self.enhanced_search_tools = EnhancedSearchTools()
+        self.utility_tools = get_utility_tools()()
+        self.linting_tools = get_linting_tools()()
+        self.version_vscode_tools = get_version_vscode_tools()()
+        self.image_viewer_tools = get_image_viewer_tools()()
+        self.mermaid_tools = get_mermaid_tools()()
+        self.monolith_detection_tools = get_monolith_detection_tools()()
         self.playwright_tools = PlaywrightTools()
-        self.vscode_tasks_tools = VSCodeTasksTools()
-        self.config_tools = ConfigTools(self.tool_registry)
+        self.vscode_tasks_tools = get_vscode_tasks_tools()()
+        self.config_tools = get_config_tools()(self.tool_registry)
         self.tool_management_tools = ToolManagementTools(self.tool_registry)
+        self.git_automation_tools = GitAutomationTools()
 
         # Register all tools with the registry
         self._register_all_tools()
@@ -81,423 +88,536 @@ class MCPServer:
         """Register all tools with the tool registry."""
         # Agent tools
         self.tool_registry.register_tool(
-            "generate_agent_name", 
-            self.agent_tools.generate_agent_name, 
-            ToolExecutionType.SYNC, 
-            "agent"
+            "generate_agent_name",
+            self.agent_tools.generate_agent_name,
+            ToolExecutionType.SYNC,
+            "agent",
         )
         self.tool_registry.register_tool(
-            "assign_agent_name", 
-            self.agent_tools.assign_agent_name, 
-            ToolExecutionType.SYNC, 
-            "agent"
+            "assign_agent_name",
+            self.agent_tools.assign_agent_name,
+            ToolExecutionType.SYNC,
+            "agent",
         )
         self.tool_registry.register_tool(
-            "get_agent_name", 
-            self.agent_tools.get_agent_name, 
-            ToolExecutionType.SYNC, 
-            "agent"
+            "get_agent_name",
+            self.agent_tools.get_agent_name,
+            ToolExecutionType.SYNC,
+            "agent",
         )
         self.tool_registry.register_tool(
-            "list_agent_names", 
-            self.agent_tools.list_agent_names, 
-            ToolExecutionType.SYNC, 
-            "agent"
+            "list_agent_names",
+            self.agent_tools.list_agent_names,
+            ToolExecutionType.SYNC,
+            "agent",
         )
         self.tool_registry.register_tool(
-            "roll_agent_spirit", 
-            self.agent_tools.roll_agent_spirit, 
-            ToolExecutionType.SYNC, 
-            "agent"
+            "roll_agent_spirit",
+            self.agent_tools.roll_agent_spirit,
+            ToolExecutionType.SYNC,
+            "agent",
         )
         self.tool_registry.register_tool(
-            "agent_startup_sequence", 
-            self.agent_tools.agent_startup_sequence, 
-            ToolExecutionType.ASYNC, 
-            "agent"
+            "agent_startup_sequence",
+            self.agent_tools.agent_startup_sequence,
+            ToolExecutionType.ASYNC,
+            "agent",
         )
         self.tool_registry.register_tool(
-            "get_agent_persona", 
-            self.agent_tools.get_agent_persona, 
-            ToolExecutionType.SYNC, 
-            "agent"
+            "get_agent_persona",
+            self.agent_tools.get_agent_persona,
+            ToolExecutionType.SYNC,
+            "agent",
         )
         self.tool_registry.register_tool(
-            "get_lora_config", 
-            self.agent_tools.get_lora_config, 
-            ToolExecutionType.SYNC, 
-            "agent"
+            "get_lora_config",
+            self.agent_tools.get_lora_config,
+            ToolExecutionType.SYNC,
+            "agent",
         )
-        
+
         # Utility tools
         self.tool_registry.register_tool(
-            "get_current_time", 
-            self.utility_tools.get_current_time, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "get_current_time",
+            self.utility_tools.get_current_time,
+            ToolExecutionType.SYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "get_current_location", 
-            self.utility_tools.get_current_location, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "get_current_location",
+            self.utility_tools.get_current_location,
+            ToolExecutionType.SYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "send_desktop_notification", 
-            self.utility_tools.send_desktop_notification, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "send_desktop_notification",
+            self.utility_tools.send_desktop_notification,
+            ToolExecutionType.SYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "restart_mcp_server", 
-            self.utility_tools.restart_mcp_server, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "restart_mcp_server",
+            self.utility_tools.restart_mcp_server,
+            ToolExecutionType.SYNC,
+            "utility",
         )
-        
+
         # ECS tools
         self.tool_registry.register_tool(
-            "create_ecs_agent", 
-            self.ecs_agent_tools.create_ecs_agent, 
-            ToolExecutionType.SYNC, 
-            "ecs"
+            "create_ecs_agent",
+            self.ecs_agent_tools.create_ecs_agent,
+            ToolExecutionType.SYNC,
+            "ecs",
         )
         self.tool_registry.register_tool(
-            "get_ecs_agent_status", 
-            self.ecs_agent_tools.get_ecs_agent_status, 
-            ToolExecutionType.SYNC, 
-            "ecs"
+            "get_ecs_agent_status",
+            self.ecs_agent_tools.get_ecs_agent_status,
+            ToolExecutionType.SYNC,
+            "ecs",
         )
         self.tool_registry.register_tool(
-            "get_ecs_agent_positions", 
-            self.ecs_agent_tools.get_ecs_agent_positions, 
-            ToolExecutionType.SYNC, 
-            "ecs"
+            "get_ecs_agent_positions",
+            self.ecs_agent_tools.get_ecs_agent_positions,
+            ToolExecutionType.SYNC,
+            "ecs",
         )
         self.tool_registry.register_tool(
-            "get_simulation_status", 
-            self.ecs_agent_tools.get_simulation_status, 
-            ToolExecutionType.SYNC, 
-            "ecs"
+            "get_simulation_status",
+            self.ecs_agent_tools.get_simulation_status,
+            ToolExecutionType.SYNC,
+            "ecs",
         )
         self.tool_registry.register_tool(
-            "accelerate_time", 
-            self.ecs_agent_tools.accelerate_time, 
-            ToolExecutionType.SYNC, 
-            "ecs"
+            "accelerate_time",
+            self.ecs_agent_tools.accelerate_time,
+            ToolExecutionType.SYNC,
+            "ecs",
         )
         self.tool_registry.register_tool(
-            "nudge_time", 
-            self.ecs_agent_tools.nudge_time, 
-            ToolExecutionType.SYNC, 
-            "ecs"
+            "nudge_time", self.ecs_agent_tools.nudge_time, ToolExecutionType.SYNC, "ecs"
         )
-        
+
         # Configuration tools
         self.tool_registry.register_tool(
-            "get_tool_configs", 
-            self.config_tools.get_tool_configs, 
-            ToolExecutionType.ASYNC, 
-            "utility"
+            "get_tool_configs",
+            self.config_tools.get_tool_configs,
+            ToolExecutionType.ASYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "enable_tool", 
-            self.config_tools.enable_tool, 
-            ToolExecutionType.ASYNC, 
-            "utility"
+            "enable_tool",
+            self.config_tools.enable_tool,
+            ToolExecutionType.ASYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "disable_tool", 
-            self.config_tools.disable_tool, 
-            ToolExecutionType.ASYNC, 
-            "utility"
+            "disable_tool",
+            self.config_tools.disable_tool,
+            ToolExecutionType.ASYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "toggle_tool", 
-            self.config_tools.toggle_tool, 
-            ToolExecutionType.ASYNC, 
-            "utility"
+            "toggle_tool",
+            self.config_tools.toggle_tool,
+            ToolExecutionType.ASYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "get_tool_status", 
-            self.config_tools.get_tool_status, 
-            ToolExecutionType.ASYNC, 
-            "utility"
+            "get_tool_status",
+            self.config_tools.get_tool_status,
+            ToolExecutionType.ASYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "reload_config", 
-            self.config_tools.reload_config, 
-            ToolExecutionType.ASYNC, 
-            "utility"
+            "reload_config",
+            self.config_tools.reload_config,
+            ToolExecutionType.ASYNC,
+            "utility",
         )
-        
+
         # Register tool management tools
         self.tool_registry.register_tool(
-            "get_tool_configs", 
-            self.tool_management_tools.get_tool_configs, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "get_tool_configs",
+            self.tool_management_tools.get_tool_configs,
+            ToolExecutionType.SYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "get_tool_status", 
-            self.tool_management_tools.get_tool_status, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "get_tool_status",
+            self.tool_management_tools.get_tool_status,
+            ToolExecutionType.SYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "enable_tool", 
-            self.tool_management_tools.enable_tool, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "enable_tool",
+            self.tool_management_tools.enable_tool,
+            ToolExecutionType.SYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "disable_tool", 
-            self.tool_management_tools.disable_tool, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "disable_tool",
+            self.tool_management_tools.disable_tool,
+            ToolExecutionType.SYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "toggle_tool", 
-            self.tool_management_tools.toggle_tool, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "toggle_tool",
+            self.tool_management_tools.toggle_tool,
+            ToolExecutionType.SYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "get_tools_by_category", 
-            self.tool_management_tools.get_tools_by_category, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "get_tools_by_category",
+            self.tool_management_tools.get_tools_by_category,
+            ToolExecutionType.SYNC,
+            "utility",
         )
         self.tool_registry.register_tool(
-            "update_tool_config", 
-            self.tool_management_tools.update_tool_config, 
-            ToolExecutionType.SYNC, 
-            "utility"
+            "update_tool_config",
+            self.tool_management_tools.update_tool_config,
+            ToolExecutionType.SYNC,
+            "utility",
         )
-        
+
         # Register linting tools
         self.tool_registry.register_tool(
-            "lint_frontend", 
-            self.linting_tools.lint_frontend, 
-            ToolExecutionType.ASYNC, 
-            "linting"
+            "lint_frontend",
+            self.linting_tools.lint_frontend,
+            ToolExecutionType.ASYNC,
+            "linting",
         )
         self.tool_registry.register_tool(
-            "lint_python", 
-            self.linting_tools.lint_python, 
-            ToolExecutionType.ASYNC, 
-            "linting"
+            "lint_python",
+            self.linting_tools.lint_python,
+            ToolExecutionType.ASYNC,
+            "linting",
         )
         self.tool_registry.register_tool(
-            "lint_markdown", 
-            self.linting_tools.lint_markdown, 
-            ToolExecutionType.ASYNC, 
-            "linting"
+            "lint_markdown",
+            self.linting_tools.lint_markdown,
+            ToolExecutionType.ASYNC,
+            "linting",
         )
         self.tool_registry.register_tool(
-            "run_all_linting", 
-            self.linting_tools.run_all_linting, 
-            ToolExecutionType.ASYNC, 
-            "linting"
+            "run_all_linting",
+            self.linting_tools.run_all_linting,
+            ToolExecutionType.ASYNC,
+            "linting",
         )
-        
+
         # Register formatting tools
         self.tool_registry.register_tool(
-            "format_frontend", 
-            self.linting_tools.format_frontend, 
-            ToolExecutionType.ASYNC, 
-            "formatting"
+            "format_frontend",
+            self.linting_tools.format_frontend,
+            ToolExecutionType.ASYNC,
+            "formatting",
         )
         self.tool_registry.register_tool(
-            "format_python", 
-            self.linting_tools.format_python, 
-            ToolExecutionType.ASYNC, 
-            "formatting"
+            "format_python",
+            self.linting_tools.format_python,
+            ToolExecutionType.ASYNC,
+            "formatting",
         )
-        
+
         # Register unified search tools
         self.tool_registry.register_tool(
-            "bm25_search", 
-            self.search_tools.bm25_search, 
-            ToolExecutionType.SYNC, 
-            "search"
+            "search_content",
+            self.search_tools.search_content,
+            ToolExecutionType.SYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "search_needle_in_haystack", 
-            self.search_tools.search_needle_in_haystack, 
-            ToolExecutionType.SYNC, 
-            "search"
+            "search_enhanced",
+            self.search_tools.search_enhanced,
+            ToolExecutionType.SYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "search_files", 
-            self.search_tools.search_files, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "search_files",
+            self.search_tools.search_files,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "list_files", 
-            self.search_tools.list_files, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "list_files",
+            self.search_tools.list_files,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "search_content", 
-            self.search_tools.search_content, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "search_content",
+            self.search_tools.search_content,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "search_code_patterns", 
-            self.search_tools.search_code_patterns, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "search_code_patterns",
+            self.search_tools.search_code_patterns,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "semantic_search", 
-            self.search_tools.semantic_search, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "semantic_search",
+            self.search_tools.semantic_search,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "hybrid_search", 
-            self.search_tools.hybrid_search, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "hybrid_search",
+            self.search_tools.hybrid_search,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "embed_text", 
-            self.search_tools.embed_text, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "search_enhanced",
+            self.search_tools.search_enhanced,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "index_documents", 
-            self.search_tools.index_documents, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "get_query_suggestions",
+            self.search_tools.get_query_suggestions,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "search_enhanced", 
-            self.search_tools.search_enhanced, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "get_search_analytics",
+            self.search_tools.get_search_analytics,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "get_query_suggestions", 
-            self.search_tools.get_query_suggestions, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "clear_search_cache",
+            self.search_tools.clear_search_cache,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "get_search_analytics", 
-            self.search_tools.get_search_analytics, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "reindex_project",
+            self.search_tools.reindex_project,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+
+        # Register search tools
+        self.tool_registry.register_tool(
+            "search_smart",
+            self.search_tools.search_smart,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "clear_search_cache", 
-            self.search_tools.clear_search_cache, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "index_codebase_new",
+            self.search_tools.index_codebase,
+            ToolExecutionType.ASYNC,
+            "search",
         )
         self.tool_registry.register_tool(
-            "reindex_project", 
-            self.search_tools.reindex_project, 
-            ToolExecutionType.ASYNC, 
-            "search"
+            "get_search_stats_new",
+            self.search_tools.get_search_stats_new,
+            ToolExecutionType.ASYNC,
+            "search",
         )
-        
+        self.tool_registry.register_tool(
+            "get_query_suggestions_new",
+            self.search_tools.get_query_suggestions_new,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+        self.tool_registry.register_tool(
+            "search_health_check",
+            self.search_tools.search_health_check,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+
+        # Register enhanced search tools
+        self.tool_registry.register_tool(
+            "natural_language_search",
+            self.enhanced_search_tools.natural_language_search,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+        self.tool_registry.register_tool(
+            "intelligent_search",
+            self.enhanced_search_tools.intelligent_search,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+        self.tool_registry.register_tool(
+            "contextual_search",
+            self.enhanced_search_tools.contextual_search,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+        self.tool_registry.register_tool(
+            "analyze_query",
+            self.enhanced_search_tools.analyze_query,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+        self.tool_registry.register_tool(
+            "get_intelligent_suggestions",
+            self.enhanced_search_tools.get_intelligent_suggestions,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+        self.tool_registry.register_tool(
+            "search_with_examples",
+            self.enhanced_search_tools.search_with_examples,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+        self.tool_registry.register_tool(
+            "enhanced_search_health_check",
+            self.enhanced_search_tools.enhanced_search_health_check,
+            ToolExecutionType.ASYNC,
+            "search",
+        )
+
         # Register visualization tools
         self.tool_registry.register_tool(
-            "validate_mermaid_diagram", 
-            self.mermaid_tools.validate_mermaid_diagram, 
-            ToolExecutionType.SYNC, 
-            "visualization"
+            "validate_mermaid_diagram",
+            self.mermaid_tools.validate_mermaid_diagram,
+            ToolExecutionType.SYNC,
+            "visualization",
         )
         self.tool_registry.register_tool(
-            "render_mermaid_to_svg", 
-            self.mermaid_tools.render_mermaid_to_svg, 
-            ToolExecutionType.SYNC, 
-            "visualization"
+            "render_mermaid_to_svg",
+            self.mermaid_tools.render_mermaid_to_svg,
+            ToolExecutionType.SYNC,
+            "visualization",
         )
         self.tool_registry.register_tool(
-            "open_image", 
-            self.image_viewer_tools.open_image, 
-            ToolExecutionType.SYNC, 
-            "visualization"
+            "open_image",
+            self.image_viewer_tools.open_image,
+            ToolExecutionType.SYNC,
+            "visualization",
         )
-        
+
         # Register security tools
         self.tool_registry.register_tool(
-            "scan_security", 
-            self.linting_tools.scan_security, 
-            ToolExecutionType.ASYNC, 
-            "security"
+            "scan_security",
+            self.linting_tools.scan_security,
+            ToolExecutionType.ASYNC,
+            "security",
         )
         self.tool_registry.register_tool(
-            "scan_security_fast", 
-            self.linting_tools.scan_security_fast, 
-            ToolExecutionType.ASYNC, 
-            "security"
+            "scan_security_fast",
+            self.linting_tools.scan_security_fast,
+            ToolExecutionType.ASYNC,
+            "security",
         )
-        
+
         # Register version tools
         self.tool_registry.register_tool(
-            "get_versions", 
-            self.version_vscode_tools.get_versions, 
-            ToolExecutionType.SYNC, 
-            "version"
+            "get_versions",
+            self.version_vscode_tools.get_versions,
+            ToolExecutionType.SYNC,
+            "version",
         )
         self.tool_registry.register_tool(
-            "get_python_version", 
-            self.version_vscode_tools.get_python_version, 
-            ToolExecutionType.SYNC, 
-            "version"
+            "get_python_version",
+            self.version_vscode_tools.get_python_version,
+            ToolExecutionType.SYNC,
+            "version",
         )
-        
+
         # Register VS Code tools
         self.tool_registry.register_tool(
-            "get_vscode_active_file", 
-            self.version_vscode_tools.get_vscode_active_file, 
-            ToolExecutionType.SYNC, 
-            "vscode"
+            "get_vscode_active_file",
+            self.version_vscode_tools.get_vscode_active_file,
+            ToolExecutionType.SYNC,
+            "vscode",
         )
         self.tool_registry.register_tool(
-            "discover_vscode_tasks", 
-            self.vscode_tasks_tools.discover_tasks, 
-            ToolExecutionType.SYNC, 
-            "vscode"
+            "discover_vscode_tasks",
+            self.vscode_tasks_tools.discover_tasks,
+            ToolExecutionType.SYNC,
+            "vscode",
         )
-        
+
         # Register Playwright tools
         self.tool_registry.register_tool(
-            "playwright_screenshot", 
-            self.playwright_tools.take_webpage_screenshot, 
-            ToolExecutionType.SYNC, 
-            "playwright"
+            "playwright_screenshot",
+            self.playwright_tools.take_webpage_screenshot,
+            ToolExecutionType.SYNC,
+            "playwright",
         )
         self.tool_registry.register_tool(
-            "playwright_navigate", 
-            self.playwright_tools.scrape_webpage_content, 
-            ToolExecutionType.SYNC, 
-            "playwright"
+            "playwright_navigate",
+            self.playwright_tools.scrape_webpage_content,
+            ToolExecutionType.SYNC,
+            "playwright",
         )
-        
+
         # Register monolith detection tools
         self.tool_registry.register_tool(
-            "detect_monoliths", 
-            self.monolith_detection_tools._detect_monoliths, 
-            ToolExecutionType.SYNC, 
-            "monolith"
+            "detect_monoliths",
+            self.monolith_detection_tools._detect_monoliths,
+            ToolExecutionType.SYNC,
+            "monolith",
         )
         self.tool_registry.register_tool(
-            "analyze_file_complexity", 
-            self.monolith_detection_tools._analyze_file_complexity, 
-            ToolExecutionType.SYNC, 
-            "monolith"
+            "analyze_file_complexity",
+            self.monolith_detection_tools._analyze_file_complexity,
+            ToolExecutionType.SYNC,
+            "monolith",
         )
-        
-        logger.info(f"Registered {len(self.tool_registry.list_all_tools())} tools with registry")
+
+        # Register Git automation tools
+        self.tool_registry.register_tool(
+            "detect_junk_files",
+            self.git_automation_tools.detect_junk_files,
+            ToolExecutionType.ASYNC,
+            "git",
+        )
+        self.tool_registry.register_tool(
+            "analyze_git_changes",
+            self.git_automation_tools.analyze_changes,
+            ToolExecutionType.ASYNC,
+            "git",
+        )
+        self.tool_registry.register_tool(
+            "generate_commit_message",
+            self.git_automation_tools.generate_commit_message,
+            ToolExecutionType.ASYNC,
+            "git",
+        )
+        self.tool_registry.register_tool(
+            "manage_changelog",
+            self.git_automation_tools.manage_changelog,
+            ToolExecutionType.ASYNC,
+            "git",
+        )
+        self.tool_registry.register_tool(
+            "manage_version",
+            self.git_automation_tools.manage_version,
+            ToolExecutionType.ASYNC,
+            "git",
+        )
+        self.tool_registry.register_tool(
+            "execute_git_workflow",
+            self.git_automation_tools.execute_workflow,
+            ToolExecutionType.ASYNC,
+            "git",
+        )
+        self.tool_registry.register_tool(
+            "quick_git_workflow",
+            self.git_automation_tools.quick_workflow,
+            ToolExecutionType.ASYNC,
+            "git",
+        )
+        self.tool_registry.register_tool(
+            "get_git_workflow_status",
+            self.git_automation_tools.get_workflow_status,
+            ToolExecutionType.ASYNC,
+            "git",
+        )
+
+        logger.info(
+            f"Registered {len(self.tool_registry.list_all_tools())} tools with registry"
+        )
 
     async def handle_request(self, request: dict[str, Any]) -> dict[str, Any] | None:
         """Handle incoming MCP requests with ECS time nudging."""

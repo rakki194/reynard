@@ -2,7 +2,7 @@
 # 🦊 CHANGELOG.md File Watcher
 # ============================
 # Strategic fox specialist tool for monitoring CHANGELOG.md changes
-# and triggering comprehensive codebase scans.
+# and triggering markdown linting and formatting.
 
 set -euo pipefail
 
@@ -15,7 +15,6 @@ NC='\033[0m' # No Color
 
 # Configuration
 CHANGELOG_FILE="CHANGELOG.md"
-SCAN_SCRIPT="scripts/changelog-scanner.py"
 PROJECT_ROOT="/home/kade/runeset/reynard"
 DEBOUNCE_DELAY=2  # seconds
 
@@ -39,9 +38,9 @@ log_warning() {
     echo -e "${YELLOW}[$(date '+%Y-%m-%d %H:%M:%S')] ⚠️${NC} $1"
 }
 
-# Function to run the codebase scanner
-run_scanner() {
-    log "🦊 CHANGELOG.md changed - triggering codebase scan..."
+# Function to run markdown linting and formatting
+run_markdown_lint() {
+    log "🦊 CHANGELOG.md changed - running markdown linting and formatting..."
 
     # Change to project root
     cd "${PROJECT_ROOT}" || {
@@ -49,44 +48,47 @@ run_scanner() {
         return 1
     }
 
-    # Activate virtual environment and run scanner
-    if source ~/venv/bin/activate 2>/dev/null; then
-        log "🐍 Virtual environment activated"
-        if python3 "${SCAN_SCRIPT}"; then
-            log_success "Codebase scan completed successfully"
-        else
-            log_error "Codebase scan failed"
-            return 1
-        fi
+    # Run markdown linting with auto-fix
+    log "📝 Running markdownlint with auto-fix..."
+    if pnpm run markdown:lint:fix 2>/dev/null; then
+        log_success "Markdown linting completed successfully"
     else
-        log_warning "Virtual environment not found, running without it"
-        if python3 "${SCAN_SCRIPT}"; then
-            log_success "Codebase scan completed successfully"
+        log_warning "Markdown linting had issues, but continuing..."
+    fi
+
+    # Run Prettier formatting for markdown
+    log "🎨 Running Prettier formatting..."
+    if pnpm run format 2>/dev/null; then
+        log_success "Prettier formatting completed successfully"
+    else
+        log_warning "Prettier formatting had issues, but continuing..."
+    fi
+
+    # Run line height formatter if available
+    if command -v markdownlint >/dev/null 2>&1; then
+        log "📏 Running markdownlint directly..."
+        if markdownlint --fix "${CHANGELOG_FILE}" 2>/dev/null; then
+            log_success "Direct markdownlint completed successfully"
         else
-            log_error "Codebase scan failed"
-            return 1
+            log_warning "Direct markdownlint had issues, but continuing..."
         fi
     fi
+
+    log_success "CHANGELOG.md processing completed"
 }
 
 # Function to setup file watcher
 setup_watcher() {
     log "🦊 Setting up CHANGELOG.md file watcher..."
-    log "📁 Watching:${$PROJECT_ROO}T${$CHANGELOG_FIL}E"
+    log "📁 Watching: ${PROJECT_ROOT}/${CHANGELOG_FILE}"
     log "🔄 Debounce delay: ${DEBOUNCE_DELAY}s"
-    log "🛠️  Scanner script:${$SCAN_SCRIP}T"
+    log "🛠️  Running markdown linting and formatting"
 
     # Check if CHANGELOG.md exists
     if [[ ! -f "${PROJECT_ROOT}/${CHANGELOG_FILE}" ]]; then
         log_warning "CHANGELOG.md not found at ${PROJECT_ROOT}/${CHANGELOG_FILE}"
         log "Creating empty CHANGELOG.md for monitoring..."
         touch "${PROJECT_ROOT}/${CHANGELOG_FILE}"
-    fi
-
-    # Check if scanner script exists
-    if [[ ! -f "${PROJECT_ROOT}/${SCAN_SCRIPT}" ]]; then
-        log_error "Scanner script not found: ${PROJECT_ROOT}/${SCAN_SCRIPT}"
-        exit 1
     fi
 
     log_success "File watcher setup complete"
@@ -109,16 +111,16 @@ handle_file_change() {
         return
     fi
 
-    log "📝 CHANGELOG.md modified:${$file_pat}h"
+    log "📝 CHANGELOG.md modified: ${file_path}"
 
     # Debounce: wait for file to stabilize
     sleep "${DEBOUNCE_DELAY}"
 
     # Check if file still exists and is readable
     if [[ -f "${file_path}" && -r "${file_path}" ]]; then
-        run_scanner
+        run_markdown_lint
     else
-        log_warning "CHANGELOG.md is not accessible, skipping scan"
+        log_warning "CHANGELOG.md is not accessible, skipping linting"
     fi
 }
 

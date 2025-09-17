@@ -13,12 +13,7 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@solidjs/testing-library";
 import { BoundingBoxEditor } from "../components/BoundingBoxEditor";
-import type {
-  BoundingBox,
-  ImageInfo,
-  EditorConfig,
-  AnnotationEventHandlers,
-} from "../../types";
+import type { BoundingBox, ImageInfo, EditorConfig, AnnotationEventHandlers } from "../../types";
 
 // Mock data
 const mockImageInfo: ImageInfo = {
@@ -68,11 +63,7 @@ describe("BoundingBoxEditor", () => {
   describe("Component Rendering", () => {
     it("should render with default props", () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
       // Check if canvas container is rendered
@@ -139,9 +130,7 @@ describe("BoundingBoxEditor", () => {
       ));
 
       expect(screen.getByText("Bounding Boxes (1)")).toBeInTheDocument();
-      expect(
-        screen.getByText("person", { selector: ".box-label" }),
-      ).toBeInTheDocument();
+      expect(screen.getByText("person", { selector: ".box-label" })).toBeInTheDocument();
       expect(screen.getByText("(100, 100) 200×150")).toBeInTheDocument();
     });
   });
@@ -155,19 +144,13 @@ describe("BoundingBoxEditor", () => {
       };
 
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={customConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={customConfig} eventHandlers={mockEventHandlers} />
       ));
 
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
       expect(select).toBeInTheDocument();
 
-      customLabelClasses.forEach((labelClass) => {
+      customLabelClasses.forEach(labelClass => {
         expect(screen.getByText(labelClass)).toBeInTheDocument();
       });
     });
@@ -176,31 +159,19 @@ describe("BoundingBoxEditor", () => {
       const customConfig = { ...defaultConfig, defaultLabelClass: "vehicle" };
 
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={customConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={customConfig} eventHandlers={mockEventHandlers} />
       ));
 
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
       expect(select).toHaveValue("vehicle");
     });
 
     it("should allow changing selected label class", async () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
 
       fireEvent.change(select, { target: { value: "vehicle" } });
 
@@ -236,9 +207,7 @@ describe("BoundingBoxEditor", () => {
         />
       ));
 
-      expect(
-        screen.getByText("person", { selector: ".box-label" }),
-      ).toBeInTheDocument();
+      expect(screen.getByText("person", { selector: ".box-label" })).toBeInTheDocument();
       expect(screen.getByText("(100, 100) 200×150")).toBeInTheDocument();
     });
 
@@ -252,9 +221,7 @@ describe("BoundingBoxEditor", () => {
         />
       ));
 
-      const boxItem = screen
-        .getByText("person", { selector: ".box-label" })
-        .closest(".box-item");
+      const boxItem = screen.getByText("person", { selector: ".box-label" }).closest(".box-item");
 
       // The box should be selected (due to being the first initial box)
       expect(boxItem).toHaveClass("selected");
@@ -282,9 +249,7 @@ describe("BoundingBoxEditor", () => {
       fireEvent.click(deleteButton);
 
       await waitFor(() => {
-        expect(mockEventHandlers.onAnnotationDelete).toHaveBeenCalledWith(
-          mockBoundingBox.id,
-        );
+        expect(mockEventHandlers.onAnnotationDelete).toHaveBeenCalledWith(mockBoundingBox.id);
       });
 
       expect(screen.getByText("Bounding Boxes (0)")).toBeInTheDocument();
@@ -304,17 +269,12 @@ describe("BoundingBoxEditor", () => {
       fireEvent.click(editButton);
 
       await waitFor(() => {
-        expect(mockEventHandlers.onEditingStart).toHaveBeenCalledWith(
-          mockBoundingBox.id,
-          "edit",
-        );
+        expect(mockEventHandlers.onEditingStart).toHaveBeenCalledWith(mockBoundingBox.id, "edit");
       });
 
       // Check if editing controls are shown
       expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: /cancel/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
     });
 
     it("should handle save editing", async () => {
@@ -336,10 +296,7 @@ describe("BoundingBoxEditor", () => {
       fireEvent.click(saveButton);
 
       await waitFor(() => {
-        expect(mockEventHandlers.onEditingEnd).toHaveBeenCalledWith(
-          mockBoundingBox.id,
-          "edit",
-        );
+        expect(mockEventHandlers.onEditingEnd).toHaveBeenCalledWith(mockBoundingBox.id, "edit");
       });
     });
 
@@ -362,9 +319,7 @@ describe("BoundingBoxEditor", () => {
       fireEvent.click(cancelButton);
 
       await waitFor(() => {
-        expect(mockEventHandlers.onEditingCancel).toHaveBeenCalledWith(
-          mockBoundingBox.id,
-        );
+        expect(mockEventHandlers.onEditingCancel).toHaveBeenCalledWith(mockBoundingBox.id);
       });
     });
   });
@@ -373,13 +328,7 @@ describe("BoundingBoxEditor", () => {
     it("should disable creation when enableCreation is false", () => {
       const config = { ...defaultConfig, enableCreation: false };
 
-      render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={config}
-          eventHandlers={mockEventHandlers}
-        />
-      ));
+      render(() => <BoundingBoxEditor imageInfo={mockImageInfo} config={config} eventHandlers={mockEventHandlers} />);
 
       // Canvas should still be rendered but creation should be disabled
       const canvasContainer = screen.getByRole("img", {
@@ -401,9 +350,7 @@ describe("BoundingBoxEditor", () => {
       ));
 
       // Edit button should not be present
-      expect(
-        screen.queryByRole("button", { name: /edit/i }),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /edit/i })).not.toBeInTheDocument();
     });
 
     it("should disable deletion when enableDeletion is false", () => {
@@ -419,25 +366,17 @@ describe("BoundingBoxEditor", () => {
       ));
 
       // Delete button should not be present
-      expect(
-        screen.queryByRole("button", { name: /delete/i }),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /delete/i })).not.toBeInTheDocument();
     });
   });
 
   describe("Accessibility", () => {
     it("should have proper ARIA labels", () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
       expect(select).toBeInTheDocument();
     });
 
@@ -452,9 +391,7 @@ describe("BoundingBoxEditor", () => {
       ));
 
       expect(screen.getByRole("button", { name: /edit/i })).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: /delete/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
     });
 
     it("should disable buttons when appropriate", () => {
@@ -479,9 +416,7 @@ describe("BoundingBoxEditor", () => {
   describe("Error Handling", () => {
     it("should handle missing event handlers gracefully", () => {
       expect(() => {
-        render(() => (
-          <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} />
-        ));
+        render(() => <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} />);
       }).not.toThrow();
     });
 
@@ -503,11 +438,7 @@ describe("BoundingBoxEditor", () => {
 
       expect(() => {
         render(() => (
-          <BoundingBoxEditor
-            imageInfo={invalidImageInfo}
-            config={defaultConfig}
-            eventHandlers={mockEventHandlers}
-          />
+          <BoundingBoxEditor imageInfo={invalidImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
         ));
       }).not.toThrow();
     });
@@ -516,27 +447,17 @@ describe("BoundingBoxEditor", () => {
   describe("Canvas Integration", () => {
     it("should initialize fabric canvas on mount", () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
       // Canvas element should be present
-      const canvas = screen
-        .getByRole("img", { name: /bounding box editor canvas/i })
-        .querySelector("canvas");
+      const canvas = screen.getByRole("img", { name: /bounding box editor canvas/i }).querySelector("canvas");
       expect(canvas).toBeInTheDocument();
     });
 
     it("should clean up fabric canvas on unmount", () => {
       const { unmount } = render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
       // Should not throw when unmounting
@@ -547,11 +468,7 @@ describe("BoundingBoxEditor", () => {
   describe("Event Callbacks", () => {
     it("should call onAnnotationCreate when a box is created", async () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
       // Simulate box creation (this would normally happen through canvas interaction)

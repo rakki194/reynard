@@ -11,13 +11,13 @@ interface ColorDetailsProps {
   onCopyColor: (color: string) => void;
 }
 
-export const ColorDetails: Component<ColorDetailsProps> = (props) => {
+export const ColorDetails: Component<ColorDetailsProps> = props => {
   return (
     <div class="color-details">
       <h4>Color Palette</h4>
       <div class="color-grid">
         <For each={props.colors}>
-          {(color) => {
+          {color => {
             let swatchRef: HTMLDivElement | undefined;
 
             // Update CSS custom property when color changes

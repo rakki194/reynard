@@ -11,7 +11,7 @@ import { createDebugLogging } from "./debug/FloatingPanelDebugLogging.js";
 import { createDebugHandlers } from "./debug/FloatingPanelDebugHandlers.js";
 import "./FloatingPanel.css";
 
-export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
+export const FloatingPanelDebug: Component<FloatingPanelProps> = props => {
   const [panelRef, setPanelRef] = createSignal<HTMLElement>();
 
   // Create configuration and handlers
@@ -62,11 +62,7 @@ export const FloatingPanelDebug: Component<FloatingPanelProps> = (props) => {
           </div>
           <div class="floating-panel-controls">
             {config.closable && (
-              <button
-                class="floating-panel-control-btn"
-                onClick={handlers.handleHide}
-                title="Close panel"
-              >
+              <button class="floating-panel-control-btn" onClick={handlers.handleHide} title="Close panel">
                 ✕
               </button>
             )}

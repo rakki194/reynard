@@ -12,9 +12,8 @@ export const DemoDescription: Component = () => {
     <div class="demo-description">
       <h2>Comprehensive Embedding Analysis & Visualization</h2>
       <p>
-        This demo showcases the complete embedding visualization system ported
-        from Yipyap, featuring dimensionality reduction, statistical analysis,
-        quality metrics, and 3D visualization.
+        This demo showcases the complete embedding visualization system ported from Yipyap, featuring dimensionality
+        reduction, statistical analysis, quality metrics, and 3D visualization.
       </p>
 
       <FeaturesGrid />

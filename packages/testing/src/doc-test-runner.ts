@@ -7,11 +7,7 @@
 import { execSync } from "child_process";
 import { writeFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
-import {
-  createDocTestFile,
-  validateDocExamples,
-  generateDocTestReport,
-} from "./doc-tests/index";
+import { createDocTestFile, validateDocExamples, generateDocTestReport } from "./doc-tests/index";
 
 export interface PackageConfig {
   name: string;
@@ -92,7 +88,7 @@ export const PACKAGES: PackageConfig[] = [
 export function generateAllDocTests(rootPath: string = process.cwd()) {
   console.log("🦊 Generating documentation test files...");
 
-  PACKAGES.forEach((pkg) => {
+  PACKAGES.forEach(pkg => {
     const testFilePath = join(rootPath, pkg.path, "src", "doc-tests.test.ts");
     const testDir = dirname(testFilePath);
 
@@ -125,7 +121,7 @@ export function validateAllDocs(rootPath: string = process.cwd()) {
   let totalValid = 0;
   let totalInvalid = 0;
 
-  PACKAGES.forEach((pkg) => {
+  PACKAGES.forEach(pkg => {
     const docPath = join(rootPath, pkg.docPath);
 
     if (existsSync(docPath)) {
@@ -137,13 +133,9 @@ export function validateAllDocs(rootPath: string = process.cwd()) {
 
       reports.push(`## ${pkg.name}\n${report}`);
 
-      console.log(
-        `📊 ${pkg.name}: ${validation.valid} valid, ${validation.invalid} invalid`,
-      );
+      console.log(`📊 ${pkg.name}: ${validation.valid} valid, ${validation.invalid} invalid`);
     } else {
-      console.log(
-        `⚠️  ${pkg.name}: Documentation file not found at ${docPath}`,
-      );
+      console.log(`⚠️  ${pkg.name}: Documentation file not found at ${docPath}`);
     }
   });
 
@@ -173,19 +165,14 @@ ${
   writeFileSync(reportPath, combinedReport);
 
   console.log(`📋 Full report saved to: ${reportPath}`);
-  console.log(
-    `🎯 Overall: ${totalValid} valid, ${totalInvalid} invalid examples`,
-  );
+  console.log(`🎯 Overall: ${totalValid} valid, ${totalInvalid} invalid examples`);
 }
 
 /**
  * Run documentation tests for a specific package
  */
-export function runPackageDocTests(
-  packageName: string,
-  rootPath: string = process.cwd(),
-) {
-  const pkg = PACKAGES.find((p) => p.name === packageName);
+export function runPackageDocTests(packageName: string, rootPath: string = process.cwd()) {
+  const pkg = PACKAGES.find(p => p.name === packageName);
 
   if (!pkg) {
     console.error(`❌ Package ${packageName} not found`);
@@ -202,10 +189,7 @@ export function runPackageDocTests(
     console.log(`✅ Documentation tests passed for ${packageName}`);
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(
-      `❌ Documentation tests failed for ${packageName}:`,
-      errorMessage,
-    );
+    console.error(`❌ Documentation tests failed for ${packageName}:`, errorMessage);
   }
 }
 
@@ -217,7 +201,7 @@ export function runAllDocTests(rootPath: string = process.cwd()) {
 
   const results: { package: string; success: boolean; error?: string }[] = [];
 
-  PACKAGES.forEach((pkg) => {
+  PACKAGES.forEach(pkg => {
     try {
       console.log(`\n🧪 Testing ${pkg.name}...`);
       execSync(`cd "${join(rootPath, pkg.path)}" && npm run test:docs`, {
@@ -228,8 +212,7 @@ export function runAllDocTests(rootPath: string = process.cwd()) {
       results.push({ package: pkg.name, success: true });
       console.log(`✅ ${pkg.name} passed`);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       results.push({
         package: pkg.name,
         success: false,
@@ -240,8 +223,8 @@ export function runAllDocTests(rootPath: string = process.cwd()) {
   });
 
   // Summary
-  const passed = results.filter((r) => r.success).length;
-  const failed = results.filter((r) => !r.success).length;
+  const passed = results.filter(r => r.success).length;
+  const failed = results.filter(r => !r.success).length;
 
   console.log(`\n📊 Documentation Test Summary:`);
   console.log(`✅ Passed: ${passed}`);
@@ -250,8 +233,8 @@ export function runAllDocTests(rootPath: string = process.cwd()) {
   if (failed > 0) {
     console.log(`\n❌ Failed packages:`);
     results
-      .filter((r) => !r.success)
-      .forEach((r) => {
+      .filter(r => !r.success)
+      .forEach(r => {
         console.log(`  - ${r.package}: ${r.error}`);
       });
   }

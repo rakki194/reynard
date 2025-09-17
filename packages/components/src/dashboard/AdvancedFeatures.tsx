@@ -13,10 +13,7 @@ export const AdvancedFeatures: Component = () => {
 
   const handleAdvancedToggle = () => {
     setShowAdvanced(!showAdvanced());
-    notify(
-      showAdvanced() ? "Advanced features hidden" : "Advanced features shown",
-      "info",
-    );
+    notify(showAdvanced() ? "Advanced features hidden" : "Advanced features shown", "info");
   };
 
   return (
@@ -39,10 +36,7 @@ export const AdvancedFeatures: Component = () => {
           {fluentIconsPackage.getIcon(showAdvanced() ? "eye-off" : "eye") && (
             <span
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon(showAdvanced() ? "eye-off" : "eye")
-                  ?.outerHTML
-              }
+              innerHTML={fluentIconsPackage.getIcon(showAdvanced() ? "eye-off" : "eye")?.outerHTML}
             />
           )}
           {showAdvanced() ? "Hide" : "Show"} Advanced

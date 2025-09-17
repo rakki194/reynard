@@ -6,10 +6,7 @@
 /**
  * Validate MIME type against allowed types
  */
-export function validateMimeType(
-  mimeType: string,
-  allowedTypes: string[],
-): boolean {
+export function validateMimeType(mimeType: string, allowedTypes: string[]): boolean {
   if (!mimeType || typeof mimeType !== "string") {
     return false;
   }
@@ -92,10 +89,7 @@ export function getMimeTypeFromExtension(filename: string): string | null {
 /**
  * Validate file type by extension
  */
-export function validateFileTypeByExtension(
-  filename: string,
-  allowedExtensions: string[],
-): boolean {
+export function validateFileTypeByExtension(filename: string, allowedExtensions: string[]): boolean {
   if (!filename || typeof filename !== "string") {
     return false;
   }

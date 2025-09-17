@@ -265,9 +265,7 @@ Persian (fa). This is implemented through several layers:
    // In app context
    createRenderEffect(() => {
      document.documentElement.lang = store.locale;
-     document.documentElement.dir = ["ar", "he", "fa"].includes(store.locale)
-       ? "rtl"
-       : "ltr";
+     document.documentElement.dir = ["ar", "he", "fa"].includes(store.locale) ? "rtl" : "ltr";
    });
    ```
 
@@ -277,9 +275,7 @@ Persian (fa). This is implemented through several layers:
    :root[dir="rtl"] {
      --start: right;
      --end: left;
-     --font-family-base:
-       "Noto Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI",
-       Roboto, sans-serif;
+     --font-family-base: "Noto Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
    }
 
    :root[dir="ltr"] {
@@ -379,7 +375,7 @@ and ensures a consistent experience for all users.
 describe("Translation Keys", () => {
   it("should have all required keys", () => {
     const required = ["common.ok", "common.cancel"];
-    required.forEach((key) => {
+    required.forEach(key => {
       expect(getTranslationValue(en, key)).toBeDefined();
       expect(getTranslationValue(ja, key)).toBeDefined();
     });

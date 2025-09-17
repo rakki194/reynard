@@ -16,22 +16,15 @@ export interface SearchHistoryFilterState {
 
 export function useSearchHistoryFilter(searchHistory: Accessor<SearchHistoryItem[]>) {
   const [searchQuery, setSearchQuery] = createSignal("");
-  const [selectedModality, setSelectedModality] = createSignal<
-    RAGModality | "all"
-  >("all");
-  const [sortBy, setSortBy] = createSignal<
-    "timestamp" | "resultCount" | "topScore"
-  >("timestamp");
+  const [selectedModality, setSelectedModality] = createSignal<RAGModality | "all">("all");
+  const [sortBy, setSortBy] = createSignal<"timestamp" | "resultCount" | "topScore">("timestamp");
   const [sortOrder, setSortOrder] = createSignal<"asc" | "desc">("desc");
 
   // Filter and sort search history
   const filteredHistory = createMemo(() => {
-    let filtered = searchHistory().filter((item) => {
-      const matchesQuery =
-        !searchQuery() ||
-        item.query.toLowerCase().includes(searchQuery().toLowerCase());
-      const matchesModality =
-        selectedModality() === "all" || item.modality === selectedModality();
+    let filtered = searchHistory().filter(item => {
+      const matchesQuery = !searchQuery() || item.query.toLowerCase().includes(searchQuery().toLowerCase());
+      const matchesModality = selectedModality() === "all" || item.modality === selectedModality();
 
       return matchesQuery && matchesModality;
     });
@@ -64,13 +57,13 @@ export function useSearchHistoryFilter(searchHistory: Accessor<SearchHistoryItem
     selectedModality,
     sortBy,
     sortOrder,
-    
+
     // Actions
     setSearchQuery,
     setSelectedModality,
     setSortBy,
     setSortOrder,
-    
+
     // Computed
     filteredHistory,
   };

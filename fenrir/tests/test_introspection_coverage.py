@@ -71,7 +71,9 @@ class TestIntrospectionCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # For each class instance, use introspection to call all methods
                 for instance in classes_to_test:
@@ -250,7 +252,9 @@ class TestIntrospectionCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Use introspection on LLM classes
                 for instance in llm_classes:

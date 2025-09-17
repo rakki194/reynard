@@ -10,19 +10,16 @@ interface ColorPaletteDisplayProps {
   selectedColor: string;
 }
 
-export const ColorPaletteDisplay: Component<ColorPaletteDisplayProps> = (
-  props,
-) => {
+export const ColorPaletteDisplay: Component<ColorPaletteDisplayProps> = props => {
   const colorPalette = useColorPalette();
 
   const palette = () => colorPalette.generatePalette(props.selectedColor, 5);
-  const monochromaticPalette = () =>
-    colorPalette.generateMonochromaticPalette(props.selectedColor, 5);
+  const monochromaticPalette = () => colorPalette.generateMonochromaticPalette(props.selectedColor, 5);
 
   // Apply colors to elements using data attributes
   createEffect(() => {
     const colorElements = document.querySelectorAll("[data-bg-color]");
-    colorElements.forEach((element) => {
+    colorElements.forEach(element => {
       const color = element.getAttribute("data-bg-color");
       if (color) {
         (element as HTMLElement).style.setProperty("--dynamic-bg-color", color);
@@ -37,11 +34,7 @@ export const ColorPaletteDisplay: Component<ColorPaletteDisplayProps> = (
         <div class="palette-group">
           <h4>Base Palette</h4>
           <div class="color-swatches">
-            <For each={palette()}>
-              {(color) => (
-                <div class="color-swatch" data-bg-color={color} title={color} />
-              )}
-            </For>
+            <For each={palette()}>{color => <div class="color-swatch" data-bg-color={color} title={color} />}</For>
           </div>
         </div>
 
@@ -49,9 +42,7 @@ export const ColorPaletteDisplay: Component<ColorPaletteDisplayProps> = (
           <h4>Monochromatic Palette</h4>
           <div class="color-swatches">
             <For each={monochromaticPalette()}>
-              {(color) => (
-                <div class="color-swatch" data-bg-color={color} title={color} />
-              )}
+              {color => <div class="color-swatch" data-bg-color={color} title={color} />}
             </For>
           </div>
         </div>

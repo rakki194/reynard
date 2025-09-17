@@ -1,18 +1,8 @@
-import {
-  Component,
-  Show,
-  createSignal,
-  createMemo,
-  onMount,
-  onCleanup,
-  createEffect,
-} from "solid-js";
+import { Component, Show, createSignal, createMemo, onMount, onCleanup, createEffect } from "solid-js";
 import type { VectorVisualizationProps } from "../types/rendering";
 import "./VectorVisualization.css";
 
-export const VectorVisualization: Component<VectorVisualizationProps> = (
-  props,
-) => {
+export const VectorVisualization: Component<VectorVisualizationProps> = props => {
   const [canvasRef, setCanvasRef] = createSignal<HTMLCanvasElement>();
   const [isExpanded, setIsExpanded] = createSignal(false);
   const [selectedVector, setSelectedVector] = createSignal<number>(-1);
@@ -49,9 +39,7 @@ export const VectorVisualization: Component<VectorVisualizationProps> = (
 
     if (range === 0) return props.vectors;
 
-    return props.vectors.map((vector) =>
-      vector.map((val) => (val - minVal) / range),
-    );
+    return props.vectors.map(vector => vector.map(val => (val - minVal) / range));
   });
 
   const colormap = createMemo(() => {
@@ -127,9 +115,7 @@ export const VectorVisualization: Component<VectorVisualizationProps> = (
 
         // Apply opacity
         const opacity = props.pointOpacity || 0.8;
-        ctx.fillStyle = color
-          .replace("rgb", "rgba")
-          .replace(")", `, ${opacity})`);
+        ctx.fillStyle = color.replace("rgb", "rgba").replace(")", `, ${opacity})`);
 
         // Draw cell
         ctx.fillRect(x, y, cellWidth, cellHeight);
@@ -145,11 +131,7 @@ export const VectorVisualization: Component<VectorVisualizationProps> = (
           ctx.font = "10px Arial";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText(
-            props.vectors[vectorIndex][valueIndex].toFixed(2),
-            x + cellWidth / 2,
-            y + cellHeight / 2,
-          );
+          ctx.fillText(props.vectors[vectorIndex][valueIndex].toFixed(2), x + cellWidth / 2, y + cellHeight / 2);
         }
       });
     });
@@ -166,12 +148,7 @@ export const VectorVisualization: Component<VectorVisualizationProps> = (
     if (selectedRegion()) {
       const { start, end } = selectedRegion()!;
       ctx.fillStyle = "rgba(0, 123, 255, 0.2)";
-      ctx.fillRect(
-        start * cellWidth,
-        0,
-        (end - start) * cellWidth,
-        canvas.height,
-      );
+      ctx.fillRect(start * cellWidth, 0, (end - start) * cellWidth, canvas.height);
     }
 
     ctx.restore();
@@ -198,12 +175,7 @@ export const VectorVisualization: Component<VectorVisualizationProps> = (
     const vectorIndex = Math.floor(y / cellHeight);
     const valueIndex = Math.floor(x / cellWidth);
 
-    if (
-      vectorIndex >= 0 &&
-      vectorIndex < vectors.length &&
-      valueIndex >= 0 &&
-      valueIndex < vectors[0].length
-    ) {
+    if (vectorIndex >= 0 && vectorIndex < vectors.length && valueIndex >= 0 && valueIndex < vectors[0].length) {
       setHoveredCell({ vectorIndex, valueIndex });
     } else {
       setHoveredCell(null);
@@ -213,7 +185,7 @@ export const VectorVisualization: Component<VectorVisualizationProps> = (
     if (isDragging && props.enablePan) {
       const deltaX = x - lastMousePos.x;
       const deltaY = y - lastMousePos.y;
-      setPanOffset((prev) => ({
+      setPanOffset(prev => ({
         x: prev.x + deltaX,
         y: prev.y + deltaY,
       }));
@@ -237,7 +209,7 @@ export const VectorVisualization: Component<VectorVisualizationProps> = (
 
     event.preventDefault();
     const delta = event.deltaY > 0 ? 0.9 : 1.1;
-    setZoomLevel((prev) => Math.max(0.1, Math.min(5, prev * delta)));
+    setZoomLevel(prev => Math.max(0.1, Math.min(5, prev * delta)));
   };
 
   const handleClick = (event: MouseEvent) => {
@@ -296,12 +268,7 @@ export const VectorVisualization: Component<VectorVisualizationProps> = (
       </Show>
 
       <div class="visualization-container">
-        <canvas
-          ref={setCanvasRef}
-          width={width()}
-          height={height()}
-          class="visualization-canvas"
-        />
+        <canvas ref={setCanvasRef} width={width()} height={height()} class="visualization-canvas" />
 
         <Show when={props.showLegend}>
           <div class="color-legend">
@@ -330,25 +297,17 @@ export const VectorVisualization: Component<VectorVisualizationProps> = (
           <div class="tooltip-content">
             <div>Vector: {hoveredCell()?.vectorIndex}</div>
             <div>
-              Value:{" "}
-              {props.vectors[hoveredCell()?.vectorIndex || 0]?.[
-                hoveredCell()?.valueIndex || 0
-              ]?.toFixed(3)}
+              Value: {props.vectors[hoveredCell()?.vectorIndex || 0]?.[hoveredCell()?.valueIndex || 0]?.toFixed(3)}
             </div>
             <Show when={props.labels?.[hoveredCell()?.vectorIndex || 0]}>
-              <div>
-                Label: {props.labels?.[hoveredCell()?.vectorIndex || 0]}
-              </div>
+              <div>Label: {props.labels?.[hoveredCell()?.vectorIndex || 0]}</div>
             </Show>
           </div>
         </div>
       </Show>
 
       <div class="visualization-controls">
-        <button
-          onClick={() => setIsExpanded(!isExpanded())}
-          class="expand-button"
-        >
+        <button onClick={() => setIsExpanded(!isExpanded())} class="expand-button">
           {isExpanded() ? "Collapse" : "Expand"}
         </button>
 

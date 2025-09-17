@@ -4,17 +4,16 @@ Executor API Models for Reynard Backend
 Pydantic models for executor API endpoints.
 """
 
-from typing import List, Optional
 from pydantic import BaseModel, Field
 
 
 class ExecutorConfigRequest(BaseModel):
-    max_workers: Optional[int] = Field(default=4, ge=1, le=16)
-    enable_performance_monitoring: Optional[bool] = Field(default=True)
-    auto_cleanup: Optional[bool] = Field(default=True)
-    default_timeout: Optional[float] = Field(default=30.0, ge=1.0, le=300.0)
-    max_retries: Optional[int] = Field(default=3, ge=0, le=10)
-    retry_delay: Optional[float] = Field(default=1.0, ge=0.1, le=10.0)
+    max_workers: int | None = Field(default=4, ge=1, le=16)
+    enable_performance_monitoring: bool | None = Field(default=True)
+    auto_cleanup: bool | None = Field(default=True)
+    default_timeout: float | None = Field(default=30.0, ge=1.0, le=300.0)
+    max_retries: int | None = Field(default=3, ge=0, le=10)
+    retry_delay: float | None = Field(default=1.0, ge=0.1, le=10.0)
 
 
 class ExecutorStatsResponse(BaseModel):
@@ -43,5 +42,5 @@ class ExecutorStateResponse(BaseModel):
 
 class TaskExecutionRequest(BaseModel):
     function_name: str = Field(..., description="Name of the function to execute")
-    timeout: Optional[float] = Field(default=None, ge=1.0, le=300.0)
-    retries: Optional[int] = Field(default=None, ge=0, le=10)
+    timeout: float | None = Field(default=None, ge=1.0, le=300.0)
+    retries: int | None = Field(default=None, ge=0, le=10)

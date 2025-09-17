@@ -20,7 +20,7 @@ export function updateModelLoadingState(
         ...model,
         isLoading: status === "loading",
         isLoaded: status === "loaded",
-        healthStatus: status === "error" ? "unhealthy" as const : model.healthStatus,
+        healthStatus: status === "error" ? ("unhealthy" as const) : model.healthStatus,
       };
     }
     return model;

@@ -29,9 +29,7 @@ describe("Optional i18n functionality without i18n package", () => {
       package: "test-package",
       errors: "validation error",
     });
-    expect(result).toBe(
-      "Export validation failed for test-package: validation error",
-    );
+    expect(result).toBe("Export validation failed for test-package: validation error");
   });
 
   it("should return the key when no fallback translation exists", () => {
@@ -41,9 +39,7 @@ describe("Optional i18n functionality without i18n package", () => {
 
   it("should handle null and undefined parameters", () => {
     expect(t("core.errors.generic", null as any)).toBe("An error occurred");
-    expect(t("core.errors.generic", undefined as any)).toBe(
-      "An error occurred",
-    );
+    expect(t("core.errors.generic", undefined as any)).toBe("An error occurred");
   });
 
   it("should handle empty parameter objects", () => {

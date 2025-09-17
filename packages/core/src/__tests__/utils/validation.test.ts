@@ -5,19 +5,9 @@ import {
   validatePasswordStrength,
   isValidUrl,
 } from "../../security/input-validation";
-import {
-  isValidFileType,
-  isValidFileSize,
-} from "../../security/file-validation";
-import {
-  isValidCreditCard,
-  isValidPostalCode,
-  isValidSSN,
-} from "../../utils/validation/financial";
-import {
-  isValidDate,
-  isValidAge,
-} from "../../utils/validation/date";
+import { isValidFileType, isValidFileSize } from "../../security/file-validation";
+import { isValidCreditCard, isValidPostalCode, isValidSSN } from "../../utils/validation/financial";
+import { isValidDate, isValidAge } from "../../utils/validation/date";
 import {
   isInRange,
   isValidLength,
@@ -154,9 +144,7 @@ describe("validation", () => {
   describe("isValidFileType", () => {
     it("validates file types correctly", () => {
       expect(isValidFileType("image.jpg", ["jpg", "png", "gif"])).toBe(true);
-      expect(isValidFileType("document.pdf", ["jpg", "png", "gif"])).toBe(
-        false,
-      );
+      expect(isValidFileType("document.pdf", ["jpg", "png", "gif"])).toBe(false);
       expect(isValidFileType("image.JPG", ["jpg", "png", "gif"])).toBe(true); // Case insensitive
     });
   });

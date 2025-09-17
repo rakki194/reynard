@@ -7,7 +7,7 @@ export default defineConfig({
     lib: {
       entry: "src/index.ts",
       name: "ReynardGalleryAI",
-      fileName: (format) => `index.${format === "es" ? "js" : "cjs"}`,
+      fileName: format => `index.${format === "es" ? "js" : "cjs"}`,
       formats: ["es", "cjs"],
     },
     rollupOptions: {

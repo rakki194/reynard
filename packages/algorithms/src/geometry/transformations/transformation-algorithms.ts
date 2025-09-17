@@ -50,14 +50,8 @@ export class TransformOps {
     const sin = Math.sin(a.rotation);
 
     return {
-      translateX:
-        a.translateX +
-        b.translateX * a.scaleX * cos -
-        b.translateY * a.scaleY * sin,
-      translateY:
-        a.translateY +
-        b.translateX * a.scaleX * sin +
-        b.translateY * a.scaleY * cos,
+      translateX: a.translateX + b.translateX * a.scaleX * cos - b.translateY * a.scaleY * sin,
+      translateY: a.translateY + b.translateX * a.scaleX * sin + b.translateY * a.scaleY * cos,
       scaleX: a.scaleX * b.scaleX,
       scaleY: a.scaleY * b.scaleY,
       rotation: a.rotation + b.rotation,
@@ -69,14 +63,8 @@ export class TransformOps {
     const sin = Math.sin(transform.rotation);
 
     return {
-      x:
-        point.x * transform.scaleX * cos -
-        point.y * transform.scaleY * sin +
-        transform.translateX,
-      y:
-        point.x * transform.scaleX * sin +
-        point.y * transform.scaleY * cos +
-        transform.translateY,
+      x: point.x * transform.scaleX * cos - point.y * transform.scaleY * sin + transform.translateX,
+      y: point.x * transform.scaleX * sin + point.y * transform.scaleY * cos + transform.translateY,
     };
   }
 
@@ -88,9 +76,7 @@ export class TransformOps {
       RectangleOps.bottomRight(rect),
     ];
 
-    const transformedCorners = corners.map((corner) =>
-      this.applyToPoint(transform, corner),
-    );
+    const transformedCorners = corners.map(corner => this.applyToPoint(transform, corner));
 
     let minX = transformedCorners[0].x,
       maxX = transformedCorners[0].x;
@@ -112,12 +98,8 @@ export class TransformOps {
     const sin = Math.sin(-transform.rotation);
 
     return {
-      translateX:
-        -(transform.translateX * cos - transform.translateY * sin) /
-        transform.scaleX,
-      translateY:
-        -(transform.translateX * sin + transform.translateY * cos) /
-        transform.scaleY,
+      translateX: -(transform.translateX * cos - transform.translateY * sin) / transform.scaleX,
+      translateY: -(transform.translateX * sin + transform.translateY * cos) / transform.scaleY,
       scaleX: 1 / transform.scaleX,
       scaleY: 1 / transform.scaleY,
       rotation: -transform.rotation,

@@ -348,7 +348,7 @@ describe("Memory Pool Utils Extended Coverage", () => {
             this.value = 0;
           },
         }),
-        config1,
+        config1
       );
 
       const pool2 = manager.createPool(
@@ -359,7 +359,7 @@ describe("Memory Pool Utils Extended Coverage", () => {
             this.value = 0;
           },
         }),
-        config2,
+        config2
       );
 
       expect(pool1).toBeDefined();

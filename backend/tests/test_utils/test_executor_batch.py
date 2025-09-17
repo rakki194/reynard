@@ -1,8 +1,9 @@
 """Tests for the executor_batch module."""
 
 import asyncio
+from unittest.mock import AsyncMock, MagicMock
+
 import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
 
 from app.utils.executor_batch import BatchExecutor
 
@@ -104,6 +105,7 @@ class TestBatchExecutor:
     @pytest.mark.asyncio
     async def test_execute_batch_concurrency_control(self):
         """Test that execute_batch properly controls concurrency with semaphore."""
+
         # Create tasks that take some time
         async def slow_task(delay, result):
             await asyncio.sleep(delay)
@@ -128,7 +130,7 @@ class TestBatchExecutor:
 
         # Verify results
         assert results == ["result1", "result2", "result3"]
-        
+
         # Should take at least 0.2 seconds (2 batches of 0.1s each)
         # but less than 0.3 seconds (if all ran in parallel)
         assert 0.2 <= (end_time - start_time) < 0.3

@@ -24,13 +24,7 @@ npm install reynard-tools
 ### Basic Tool Usage
 
 ```typescript
-import {
-  ToolRegistry,
-  ToolExecutor,
-  BaseTool,
-  ToolDefinition,
-  ParameterType,
-} from "reynard-tools";
+import { ToolRegistry, ToolExecutor, BaseTool, ToolDefinition, ParameterType } from "reynard-tools";
 
 // Create a custom tool
 class GreetTool extends BaseTool {
@@ -96,7 +90,7 @@ const result = await executor.executeTool(
   {
     permissions: [],
     metadata: {},
-  },
+  }
 );
 
 console.log(result.data.greeting); // "Hello, Alice!"
@@ -125,7 +119,7 @@ const fileResult = await executor.executeTool(
   {
     permissions: ["file.read"],
     metadata: {},
-  },
+  }
 );
 
 // Write a file
@@ -139,7 +133,7 @@ const writeResult = await executor.executeTool(
   {
     permissions: ["file.write"],
     metadata: {},
-  },
+  }
 );
 
 // List directory contents
@@ -153,7 +147,7 @@ const listResult = await executor.executeTool(
   {
     permissions: ["file.read"],
     metadata: {},
-  },
+  }
 );
 ```
 
@@ -179,12 +173,12 @@ const results = await executor.executeToolsParallel(
   {
     permissions: ["file.read"],
     metadata: {},
-  },
+  }
 );
 
 console.log(
   "All tools completed:",
-  results.every((r) => r.success),
+  results.every(r => r.success)
 );
 ```
 
@@ -213,7 +207,7 @@ const results = await executor.executeToolsSequential(
   {
     permissions: ["file.read", "file.write"],
     metadata: { continueOnFailure: false },
-  },
+  }
 );
 ```
 
@@ -241,7 +235,7 @@ const results = await executor.executeToolsWithDependencies(
   {
     permissions: ["file.read", "file.write"],
     metadata: {},
-  },
+  }
 );
 
 // Results are returned as a Map with tool names as keys
@@ -348,7 +342,7 @@ const result = await executor.executeTool(
   {
     permissions: ["admin.access", "system.modify", "user.read"],
     metadata: { userId: "admin123" },
-  },
+  }
 );
 ```
 
@@ -378,7 +372,7 @@ try {
     {
       permissions: [],
       metadata: {},
-    },
+    }
   );
 } catch (error) {
   if (error.message.includes("not found")) {
@@ -414,7 +408,7 @@ const result = await executor.executeTool(
     metadata: {},
     timeout: 5000, // Override to 5 seconds
     retryCount: 5, // Override to 5 retries
-  },
+  }
 );
 ```
 
@@ -532,7 +526,7 @@ const results = await executor.executeToolsParallel(
     { toolName: "tool2", parameters: {} },
     { toolName: "tool3", parameters: {} },
   ],
-  context,
+  context
 );
 
 // Good: Use sequential execution for dependent operations
@@ -542,7 +536,7 @@ const results = await executor.executeToolsSequential(
     { toolName: "process_data", parameters: {} },
     { toolName: "write_result", parameters: {} },
   ],
-  context,
+  context
 );
 ```
 

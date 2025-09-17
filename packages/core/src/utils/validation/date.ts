@@ -6,11 +6,7 @@
 /**
  * Date validation (checks if date is valid and optionally in range)
  */
-export function isValidDate(
-  date: string | Date,
-  minDate?: Date,
-  maxDate?: Date,
-): boolean {
+export function isValidDate(date: string | Date, minDate?: Date, maxDate?: Date): boolean {
   const dateObj = typeof date === "string" ? new Date(date) : date;
 
   // Check if date is valid

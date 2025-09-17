@@ -4,20 +4,13 @@
  * Migration utilities for i18next library.
  */
 
-import type {
-  MigrationOptions,
-  MigrationResult,
-  MigrationStatistics,
-} from "./types";
+import type { MigrationOptions, MigrationResult, MigrationStatistics } from "./types";
 import type { Translations } from "../../types";
 
 /**
  * Migrate from i18next
  */
-export function migrateFromI18next(
-  sourceTranslations: unknown,
-  _options: MigrationOptions,
-): MigrationResult {
+export function migrateFromI18next(sourceTranslations: unknown, _options: MigrationOptions): MigrationResult {
   const warnings: string[] = [];
   const errors: string[] = [];
   const statistics: MigrationStatistics = {
@@ -59,9 +52,7 @@ export function migrateFromI18next(
       statistics,
     };
   } catch (error) {
-    errors.push(
-      `Migration failed: ${error instanceof Error ? error.message : String(error)}`,
-    );
+    errors.push(`Migration failed: ${error instanceof Error ? error.message : String(error)}`);
     return {
       success: false,
       migratedTranslations: {} as Translations,

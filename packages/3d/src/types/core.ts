@@ -24,12 +24,7 @@ export interface EmbeddingPoint {
 export interface EmbeddingRenderingConfig {
   // Point cloud settings
   pointSize: number;
-  colorMapping:
-    | "similarity"
-    | "cluster"
-    | "importance"
-    | "confidence"
-    | "custom";
+  colorMapping: "similarity" | "cluster" | "importance" | "confidence" | "custom";
   sizeMapping: "importance" | "confidence" | "uniform";
 
   // Performance settings

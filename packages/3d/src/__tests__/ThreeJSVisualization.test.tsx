@@ -105,9 +105,7 @@ describe("ThreeJSVisualization", () => {
   it("applies custom className", () => {
     render(() => <ThreeJSVisualization className="custom-class" />);
 
-    const container = document.querySelector(
-      ".threejs-visualization.custom-class",
-    );
+    const container = document.querySelector(".threejs-visualization.custom-class");
     expect(container).toBeInTheDocument();
   });
 
@@ -140,7 +138,7 @@ describe("ThreeJSVisualization", () => {
       () => {
         expect(onSceneReady).toHaveBeenCalled();
       },
-      { timeout: 1000 },
+      { timeout: 1000 }
     );
   });
 

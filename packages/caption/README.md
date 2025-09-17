@@ -73,9 +73,7 @@ interface TagBubbleProps {
   index: number; // The index of the tag in the list
   onRemove: () => void; // Callback when tag is removed
   onEdit: (newTag: string) => void; // Callback when tag is edited
-  onNavigate?: (
-    direction: "left" | "right" | "up" | "down" | "start" | "end",
-  ) => void;
+  onNavigate?: (direction: "left" | "right" | "up" | "down" | "start" | "end") => void;
   editable?: boolean; // Whether the tag can be edited (default: true)
   removable?: boolean; // Whether the tag can be removed (default: true)
   color?: string; // Custom color for the tag

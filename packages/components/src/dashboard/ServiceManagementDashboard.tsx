@@ -3,15 +3,7 @@
  * Comprehensive service management dashboard with real-time monitoring and control
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Tabs, TabItem } from "../Tabs";
 import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
@@ -62,9 +54,7 @@ export interface AuthStatus {
   failedServices: number;
 }
 
-export const ServiceManagementDashboard: Component<
-  ServiceManagementDashboardProps
-> = (props) => {
+export const ServiceManagementDashboard: Component<ServiceManagementDashboardProps> = props => {
   const [activeTab, setActiveTab] = createSignal("overview");
   const [isRefreshing, setIsRefreshing] = createSignal(false);
   const [lastRefresh, setLastRefresh] = createSignal<Date | null>(null);
@@ -127,11 +117,7 @@ export const ServiceManagementDashboard: Component<
     setIsRefreshing(true);
     try {
       // Simulate API calls to backend health endpoints
-      await Promise.all([
-        refreshServiceData(),
-        refreshFeatureData(),
-        refreshAuthData(),
-      ]);
+      await Promise.all([refreshServiceData(), refreshFeatureData(), refreshAuthData()]);
       setLastRefresh(new Date());
     } catch (error) {
       console.error("Failed to refresh service data:", error);
@@ -264,27 +250,19 @@ export const ServiceManagementDashboard: Component<
               <h3>Service Status</h3>
               <div class="summary-stats">
                 <div class="stat-item">
-                  <span class="stat-value">
-                    {serviceSummary().totalServices}
-                  </span>
+                  <span class="stat-value">{serviceSummary().totalServices}</span>
                   <span class="stat-label">Total</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value success">
-                    {serviceSummary().runningServices}
-                  </span>
+                  <span class="stat-value success">{serviceSummary().runningServices}</span>
                   <span class="stat-label">Running</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value warning">
-                    {serviceSummary().healthyServices}
-                  </span>
+                  <span class="stat-value warning">{serviceSummary().healthyServices}</span>
                   <span class="stat-label">Healthy</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value error">
-                    {serviceSummary().failedServices}
-                  </span>
+                  <span class="stat-value error">{serviceSummary().failedServices}</span>
                   <span class="stat-label">Failed</span>
                 </div>
               </div>
@@ -299,21 +277,15 @@ export const ServiceManagementDashboard: Component<
                   <span class="stat-label">Total</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value success">
-                    {featureSummary().available}
-                  </span>
+                  <span class="stat-value success">{featureSummary().available}</span>
                   <span class="stat-label">Available</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value warning">
-                    {featureSummary().degraded}
-                  </span>
+                  <span class="stat-value warning">{featureSummary().degraded}</span>
                   <span class="stat-label">Degraded</span>
                 </div>
                 <div class="stat-item">
-                  <span class="stat-value error">
-                    {featureSummary().unavailable}
-                  </span>
+                  <span class="stat-value error">{featureSummary().unavailable}</span>
                   <span class="stat-label">Unavailable</span>
                 </div>
               </div>
@@ -331,25 +303,13 @@ export const ServiceManagementDashboard: Component<
             <div class="overview-card">
               <h3>Quick Actions</h3>
               <div class="quick-actions">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setActiveTab("services")}
-                >
+                <Button variant="secondary" size="sm" onClick={() => setActiveTab("services")}>
                   View Services
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setActiveTab("features")}
-                >
+                <Button variant="secondary" size="sm" onClick={() => setActiveTab("features")}>
                   View Features
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => setActiveTab("restart")}
-                >
+                <Button variant="secondary" size="sm" onClick={() => setActiveTab("restart")}>
                   Restart Services
                 </Button>
               </div>
@@ -379,11 +339,7 @@ export const ServiceManagementDashboard: Component<
       label: "Features",
       content: (
         <div class="features-tab">
-          <FeatureAvailabilityPanel
-            showCategories={true}
-            showPriorities={true}
-            showDependencies={true}
-          />
+          <FeatureAvailabilityPanel showCategories={true} showPriorities={true} showDependencies={true} />
         </div>
       ),
     },
@@ -392,11 +348,7 @@ export const ServiceManagementDashboard: Component<
       label: "Restart",
       content: (
         <div class="restart-tab">
-          <ServiceRestartPanel
-            showFailedOnly={false}
-            showRecoveryOptions={true}
-            showBulkActions={true}
-          />
+          <ServiceRestartPanel showFailedOnly={false} showRecoveryOptions={true} showBulkActions={true} />
         </div>
       ),
     },
@@ -405,11 +357,7 @@ export const ServiceManagementDashboard: Component<
       label: "Auth",
       content: (
         <div class="auth-tab">
-          <ServiceAuthStatus
-            showCriticalOnly={false}
-            showProgress={true}
-            showRetryButton={true}
-          />
+          <ServiceAuthStatus showCriticalOnly={false} showProgress={true} showRetryButton={true} />
         </div>
       ),
     },
@@ -433,11 +381,7 @@ export const ServiceManagementDashboard: Component<
         </div>
 
         <div class="dashboard-actions">
-          <Button
-            variant="primary"
-            onClick={refreshAll}
-            disabled={isRefreshing()}
-          >
+          <Button variant="primary" onClick={refreshAll} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -445,21 +389,13 @@ export const ServiceManagementDashboard: Component<
           </Button>
 
           <Show when={lastRefresh()}>
-            <div class="last-refresh">
-              Last updated: {lastRefresh()!.toLocaleTimeString()}
-            </div>
+            <div class="last-refresh">Last updated: {lastRefresh()!.toLocaleTimeString()}</div>
           </Show>
         </div>
       </div>
 
       {/* Tabs */}
-      <Tabs
-        items={tabs}
-        activeTab={activeTab()}
-        onTabChange={setActiveTab}
-        variant="underline"
-        size="lg"
-      />
+      <Tabs items={tabs} activeTab={activeTab()} onTabChange={setActiveTab} variant="underline" size="lg" />
     </div>
   );
 };

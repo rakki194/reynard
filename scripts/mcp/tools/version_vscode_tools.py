@@ -60,22 +60,30 @@ class VersionVSCodeTools:
 
         return {"content": [{"type": "text", "text": "\n".join(output_lines)}]}
 
-    async def get_versions(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    async def get_versions(
+        self, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Get all available version information."""
         result = await self.version_service.get_all_versions()
         return self._format_result(result, "Version Detection")
 
-    async def get_python_version(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    async def get_python_version(
+        self, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Get Python version information."""
         result = await self.version_service.get_python_version()
         return self._format_result(result, "Python Version")
 
-    async def get_node_version(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    async def get_node_version(
+        self, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Get Node.js version information."""
         result = await self.version_service.get_node_version()
         return self._format_result(result, "Node.js Version")
 
-    async def get_typescript_version(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    async def get_typescript_version(
+        self, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Get TypeScript version information."""
         result = await self.version_service.get_typescript_version()
         return self._format_result(result, "TypeScript Version")
@@ -101,14 +109,18 @@ class VersionVSCodeTools:
         result = self.vscode_service.get_vscode_extensions()
         return self._format_result(result, "VS Code Extensions")
 
-    async def scan_security_fast(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    async def scan_security_fast(
+        self, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Run fast security scanning (skips Bandit)."""
         result = await self.security_service.run_comprehensive_security_scan(
             include_bandit=False
         )
         return self._format_result(result, "Fast Security Scan")
 
-    async def scan_security_full(self, arguments: dict[str, Any]) -> dict[str, Any]:  # pylint: disable=unused-argument
+    async def scan_security_full(
+        self, arguments: dict[str, Any]
+    ) -> dict[str, Any]:  # pylint: disable=unused-argument
         """Run comprehensive security scanning including Bandit."""
         result = await self.security_service.run_comprehensive_security_scan(
             include_bandit=True

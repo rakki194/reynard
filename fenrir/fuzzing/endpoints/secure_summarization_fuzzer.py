@@ -6,245 +6,236 @@ with advanced JWT manipulation and text processing attack vectors!
 """
 
 import asyncio
-import httpx
 import time
-import json
-from typing import List, Dict, Any, Optional
+
+import httpx
 from rich.console import Console
 from rich.panel import Panel
 
-from ..core.results import FuzzResult, AuthBypassResult
+from ..core.results import FuzzResult
 from ..generators.payload_generator import PayloadGenerator
 
 console = Console()
 
+
 class SecureSummarizationFuzzer:
     """
     *circles with menacing intent* Specialized fuzzing for secure summarization endpoints
-    
+
     *bares fangs with savage satisfaction* Targets JWT vulnerabilities,
     text processing attacks, and AI-specific attack vectors!
     """
-    
+
     def __init__(self, base_url: str = "http://localhost:8000"):
-        self.base_url = base_url.rstrip('/')
+        self.base_url = base_url.rstrip("/")
         self.payload_generator = PayloadGenerator()
         self.session = httpx.AsyncClient(timeout=30.0)
-        
+
     async def __aenter__(self):
         return self
-        
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.session.aclose()
-    
-    async def fuzz_secure_summarization_endpoints(self) -> List[FuzzResult]:
+
+    async def fuzz_secure_summarization_endpoints(self) -> list[FuzzResult]:
         """Fuzz all secure summarization endpoints with specialized attacks"""
-        console.print(Panel.fit(
-            "[bold red]🐺 FUZZING SECURE SUMMARIZATION ENDPOINTS[/bold red]\n"
-            "*snarls with predatory glee* Time to break your secure text processing!",
-            border_style="red"
-        ))
-        
+        console.print(
+            Panel.fit(
+                "[bold red]🐺 FUZZING SECURE SUMMARIZATION ENDPOINTS[/bold red]\n"
+                "*snarls with predatory glee* Time to break your secure text processing!",
+                border_style="red",
+            )
+        )
+
         results = []
-        
+
         # Fuzz each endpoint with specialized attacks
         endpoints = [
-            ("/api/secure/summarization/summarize", "POST", self._fuzz_secure_summarize_endpoint),
-            ("/api/secure/summarization/summarize/stream", "POST", self._fuzz_secure_summarize_stream_endpoint),
-            ("/api/secure/summarization/summarize/batch", "POST", self._fuzz_secure_summarize_batch_endpoint),
-            ("/api/secure/summarization/detect-content-type", "POST", self._fuzz_secure_detect_content_type_endpoint),
-            ("/api/secure/summarization/models", "GET", self._fuzz_secure_models_endpoint),
-            ("/api/secure/summarization/content-types", "GET", self._fuzz_secure_content_types_endpoint),
-            ("/api/secure/summarization/stats", "GET", self._fuzz_secure_stats_endpoint),
-            ("/api/secure/summarization/health", "GET", self._fuzz_secure_health_endpoint),
-            ("/api/secure/summarization/config", "POST", self._fuzz_secure_config_post_endpoint),
-            ("/api/secure/summarization/config", "GET", self._fuzz_secure_config_get_endpoint),
+            (
+                "/api/secure/summarization/summarize",
+                "POST",
+                self._fuzz_secure_summarize_endpoint,
+            ),
+            (
+                "/api/secure/summarization/summarize/stream",
+                "POST",
+                self._fuzz_secure_summarize_stream_endpoint,
+            ),
+            (
+                "/api/secure/summarization/summarize/batch",
+                "POST",
+                self._fuzz_secure_summarize_batch_endpoint,
+            ),
+            (
+                "/api/secure/summarization/detect-content-type",
+                "POST",
+                self._fuzz_secure_detect_content_type_endpoint,
+            ),
+            (
+                "/api/secure/summarization/models",
+                "GET",
+                self._fuzz_secure_models_endpoint,
+            ),
+            (
+                "/api/secure/summarization/content-types",
+                "GET",
+                self._fuzz_secure_content_types_endpoint,
+            ),
+            (
+                "/api/secure/summarization/stats",
+                "GET",
+                self._fuzz_secure_stats_endpoint,
+            ),
+            (
+                "/api/secure/summarization/health",
+                "GET",
+                self._fuzz_secure_health_endpoint,
+            ),
+            (
+                "/api/secure/summarization/config",
+                "POST",
+                self._fuzz_secure_config_post_endpoint,
+            ),
+            (
+                "/api/secure/summarization/config",
+                "GET",
+                self._fuzz_secure_config_get_endpoint,
+            ),
         ]
-        
+
         for endpoint, method, fuzz_func in endpoints:
             console.print(f"🔍 Fuzzing {method} {endpoint}")
             endpoint_results = await fuzz_func(endpoint)
             results.extend(endpoint_results)
-        
+
         return results
-    
-    async def _fuzz_secure_summarize_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_summarize_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz secure summarization endpoint with text processing attacks"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Summarization payloads with malicious inputs
         summarize_payloads = [
             # Valid summarization request
             {
                 "text": "This is a sample text to summarize. It contains multiple sentences that should be processed by the summarization service.",
                 "max_length": 50,
-                "model": "default"
+                "model": "default",
             },
             # Malicious text content
-            {
-                "text": "' OR 1=1 --",
-                "max_length": 50,
-                "model": "default"
-            },
+            {"text": "' OR 1=1 --", "max_length": 50, "model": "default"},
             {
                 "text": "<script>alert('XSS')</script>",
                 "max_length": 50,
-                "model": "default"
+                "model": "default",
             },
-            {
-                "text": "; ls -la",
-                "max_length": 50,
-                "model": "default"
-            },
-            {
-                "text": "| whoami",
-                "max_length": 50,
-                "model": "default"
-            },
-            {
-                "text": "` id `",
-                "max_length": 50,
-                "model": "default"
-            },
-            {
-                "text": "$(whoami)",
-                "max_length": 50,
-                "model": "default"
-            },
+            {"text": "; ls -la", "max_length": 50, "model": "default"},
+            {"text": "| whoami", "max_length": 50, "model": "default"},
+            {"text": "` id `", "max_length": 50, "model": "default"},
+            {"text": "$(whoami)", "max_length": 50, "model": "default"},
             # Malicious model names
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
-                "model": "' OR 1=1 --"
+                "model": "' OR 1=1 --",
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
-                "model": "<script>alert('XSS')</script>"
+                "model": "<script>alert('XSS')</script>",
             },
-            {
-                "text": "Sample text to summarize",
-                "max_length": 50,
-                "model": "; ls -la"
-            },
-            {
-                "text": "Sample text to summarize",
-                "max_length": 50,
-                "model": "| whoami"
-            },
+            {"text": "Sample text to summarize", "max_length": 50, "model": "; ls -la"},
+            {"text": "Sample text to summarize", "max_length": 50, "model": "| whoami"},
             # Parameter manipulation
             {
                 "text": "Sample text to summarize",
                 "max_length": -1,  # Invalid negative length
-                "model": "default"
+                "model": "default",
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 1000000,  # Excessive length
-                "model": "default"
+                "model": "default",
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "default",
-                "temperature": -1.0  # Invalid negative temperature
+                "temperature": -1.0,  # Invalid negative temperature
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "default",
-                "temperature": 10.0  # Excessive temperature
+                "temperature": 10.0,  # Excessive temperature
             },
             # Malformed inputs
-            {
-                "text": None,
-                "max_length": 50,
-                "model": "default"
-            },
-            {
-                "text": "",
-                "max_length": 50,
-                "model": "default"
-            },
+            {"text": None, "max_length": 50, "model": "default"},
+            {"text": "", "max_length": 50, "model": "default"},
             {
                 "text": "Sample text to summarize",
                 "max_length": None,
-                "model": "default"
+                "model": "default",
             },
-            {
-                "text": "Sample text to summarize",
-                "max_length": 50,
-                "model": None
-            },
-            {
-                "text": "Sample text to summarize",
-                "max_length": 50,
-                "model": ""
-            },
+            {"text": "Sample text to summarize", "max_length": 50, "model": None},
+            {"text": "Sample text to summarize", "max_length": 50, "model": ""},
             # Missing required fields
-            {
-                "max_length": 50,
-                "model": "default"
-            },
-            {
-                "text": "Sample text to summarize",
-                "model": "default"
-            },
-            {
-                "text": "Sample text to summarize",
-                "max_length": 50
-            },
+            {"max_length": 50, "model": "default"},
+            {"text": "Sample text to summarize", "model": "default"},
+            {"text": "Sample text to summarize", "max_length": 50},
             # Oversized inputs
             {
                 "text": "a" * 100000,  # Oversized text
                 "max_length": 50,
-                "model": "default"
+                "model": "default",
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
-                "model": "a" * 1000  # Oversized model name
+                "model": "a" * 1000,  # Oversized model name
             },
             # JWT manipulation attempts
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "default",
-                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMDAwMDAwMH0."
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMDAwMDAwMH0.",
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "default",
-                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMDAwMDAwMH0.invalid"
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMDAwMDAwMH0.invalid",
             },
             # Authorization bypass attempts
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "default",
-                "authorization": "Bearer admin"
+                "authorization": "Bearer admin",
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "default",
-                "authorization": "Bearer ' OR 1=1 --"
+                "authorization": "Bearer ' OR 1=1 --",
             },
         ]
-        
+
         for payload in summarize_payloads:
             result = await self._send_request(url, "POST", json=payload)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_secure_summarize_stream_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_summarize_stream_endpoint(
+        self, endpoint: str
+    ) -> list[FuzzResult]:
         """Fuzz secure streaming summarization endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Streaming summarization payloads
         stream_payloads = [
             # Valid streaming summarization request
@@ -252,72 +243,74 @@ class SecureSummarizationFuzzer:
                 "text": "This is a sample text to summarize. It contains multiple sentences that should be processed by the summarization service.",
                 "max_length": 50,
                 "model": "default",
-                "stream": True
+                "stream": True,
             },
             # Streaming with malicious inputs
             {
                 "text": "' OR 1=1 --",
                 "max_length": 50,
                 "model": "default",
-                "stream": True
+                "stream": True,
             },
             {
                 "text": "<script>alert('XSS')</script>",
                 "max_length": 50,
                 "model": "default",
-                "stream": True
+                "stream": True,
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "' OR 1=1 --",
-                "stream": True
+                "stream": True,
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "<script>alert('XSS')</script>",
-                "stream": True
+                "stream": True,
             },
             # Parameter manipulation for streaming
             {
                 "text": "a" * 100000,  # Oversized text
                 "max_length": 50,
                 "model": "default",
-                "stream": True
+                "stream": True,
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 1000000,  # Excessive length
                 "model": "default",
-                "stream": True
+                "stream": True,
             },
             # Malformed streaming parameters
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "default",
-                "stream": "invalid"
+                "stream": "invalid",
             },
             {
                 "text": "Sample text to summarize",
                 "max_length": 50,
                 "model": "default",
-                "stream": None
+                "stream": None,
             },
         ]
-        
+
         for payload in stream_payloads:
             result = await self._send_request(url, "POST", json=payload)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_secure_summarize_batch_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_summarize_batch_endpoint(
+        self, endpoint: str
+    ) -> list[FuzzResult]:
         """Fuzz secure batch summarization endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Batch summarization payloads
         batch_payloads = [
             # Valid batch summarization request
@@ -325,190 +318,159 @@ class SecureSummarizationFuzzer:
                 "texts": [
                     "This is the first text to summarize.",
                     "This is the second text to summarize.",
-                    "This is the third text to summarize."
+                    "This is the third text to summarize.",
                 ],
                 "max_length": 50,
-                "model": "default"
+                "model": "default",
             },
             # Malicious text content in batch
             {
                 "texts": [
                     "This is the first text to summarize.",
                     "' OR 1=1 --",
-                    "This is the third text to summarize."
+                    "This is the third text to summarize.",
                 ],
                 "max_length": 50,
-                "model": "default"
+                "model": "default",
             },
             {
                 "texts": [
                     "This is the first text to summarize.",
                     "<script>alert('XSS')</script>",
-                    "This is the third text to summarize."
+                    "This is the third text to summarize.",
                 ],
                 "max_length": 50,
-                "model": "default"
+                "model": "default",
             },
             {
                 "texts": [
                     "This is the first text to summarize.",
                     "; ls -la",
-                    "This is the third text to summarize."
+                    "This is the third text to summarize.",
                 ],
                 "max_length": 50,
-                "model": "default"
+                "model": "default",
             },
             # Malicious model names
             {
                 "texts": [
                     "This is the first text to summarize.",
                     "This is the second text to summarize.",
-                    "This is the third text to summarize."
+                    "This is the third text to summarize.",
                 ],
                 "max_length": 50,
-                "model": "' OR 1=1 --"
+                "model": "' OR 1=1 --",
             },
             {
                 "texts": [
                     "This is the first text to summarize.",
                     "This is the second text to summarize.",
-                    "This is the third text to summarize."
+                    "This is the third text to summarize.",
                 ],
                 "max_length": 50,
-                "model": "<script>alert('XSS')</script>"
+                "model": "<script>alert('XSS')</script>",
             },
             # Malformed inputs
-            {
-                "texts": None,
-                "max_length": 50,
-                "model": "default"
-            },
-            {
-                "texts": [],
-                "max_length": 50,
-                "model": "default"
-            },
+            {"texts": None, "max_length": 50, "model": "default"},
+            {"texts": [], "max_length": 50, "model": "default"},
             {
                 "texts": [
                     "This is the first text to summarize.",
                     "This is the second text to summarize.",
-                    "This is the third text to summarize."
+                    "This is the third text to summarize.",
                 ],
                 "max_length": None,
-                "model": "default"
+                "model": "default",
             },
             {
                 "texts": [
                     "This is the first text to summarize.",
                     "This is the second text to summarize.",
-                    "This is the third text to summarize."
+                    "This is the third text to summarize.",
                 ],
                 "max_length": 50,
-                "model": None
+                "model": None,
             },
             # Missing required fields
+            {"max_length": 50, "model": "default"},
             {
+                "texts": [
+                    "This is the first text to summarize.",
+                    "This is the second text to summarize.",
+                    "This is the third text to summarize.",
+                ],
+                "model": "default",
+            },
+            {
+                "texts": [
+                    "This is the first text to summarize.",
+                    "This is the second text to summarize.",
+                    "This is the third text to summarize.",
+                ],
                 "max_length": 50,
-                "model": "default"
-            },
-            {
-                "texts": [
-                    "This is the first text to summarize.",
-                    "This is the second text to summarize.",
-                    "This is the third text to summarize."
-                ],
-                "model": "default"
-            },
-            {
-                "texts": [
-                    "This is the first text to summarize.",
-                    "This is the second text to summarize.",
-                    "This is the third text to summarize."
-                ],
-                "max_length": 50
             },
             # Oversized inputs
             {
                 "texts": ["a" * 100000 for _ in range(100)],  # Oversized batch
                 "max_length": 50,
-                "model": "default"
+                "model": "default",
             },
             {
                 "texts": [
                     "This is the first text to summarize.",
                     "This is the second text to summarize.",
-                    "This is the third text to summarize."
+                    "This is the third text to summarize.",
                 ],
                 "max_length": 50,
-                "model": "a" * 1000  # Oversized model name
+                "model": "a" * 1000,  # Oversized model name
             },
         ]
-        
+
         for payload in batch_payloads:
             result = await self._send_request(url, "POST", json=payload)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_secure_detect_content_type_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_detect_content_type_endpoint(
+        self, endpoint: str
+    ) -> list[FuzzResult]:
         """Fuzz secure content type detection endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Content type detection payloads
         detect_payloads = [
             # Valid content type detection request
-            {
-                "text": "This is a sample text to analyze for content type detection."
-            },
+            {"text": "This is a sample text to analyze for content type detection."},
             # Malicious text content
-            {
-                "text": "' OR 1=1 --"
-            },
-            {
-                "text": "<script>alert('XSS')</script>"
-            },
-            {
-                "text": "; ls -la"
-            },
-            {
-                "text": "| whoami"
-            },
-            {
-                "text": "` id `"
-            },
-            {
-                "text": "$(whoami)"
-            },
+            {"text": "' OR 1=1 --"},
+            {"text": "<script>alert('XSS')</script>"},
+            {"text": "; ls -la"},
+            {"text": "| whoami"},
+            {"text": "` id `"},
+            {"text": "$(whoami)"},
             # Malformed inputs
-            {
-                "text": None
-            },
-            {
-                "text": ""
-            },
-            {
-                "text": "   "  # Whitespace only
-            },
+            {"text": None},
+            {"text": ""},
+            {"text": "   "},  # Whitespace only
             # Missing required fields
             {},
             # Oversized inputs
-            {
-                "text": "a" * 100000
-            },
+            {"text": "a" * 100000},
         ]
-        
+
         for payload in detect_payloads:
             result = await self._send_request(url, "POST", json=payload)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_secure_models_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_models_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz secure models endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Models retrieval attacks
         models_attacks = [
             {},  # No parameters
@@ -535,18 +497,20 @@ class SecureSummarizationFuzzer:
             {"category": "' OR 1=1 --"},
             {"category": "<script>alert('XSS')</script>"},
         ]
-        
+
         for params in models_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_secure_content_types_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_content_types_endpoint(
+        self, endpoint: str
+    ) -> list[FuzzResult]:
         """Fuzz secure content types endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Content types retrieval attacks
         content_types_attacks = [
             {},  # No parameters
@@ -569,18 +533,18 @@ class SecureSummarizationFuzzer:
             {"include_supported": "undefined"},
             {"include_supported": "'; DROP TABLE supported; --"},
         ]
-        
+
         for params in content_types_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_secure_stats_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_stats_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz secure stats endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Stats retrieval attacks
         stats_attacks = [
             {},  # No parameters
@@ -600,18 +564,18 @@ class SecureSummarizationFuzzer:
             {"time_range": "' OR 1=1 --"},
             {"time_range": "<script>alert('XSS')</script>"},
         ]
-        
+
         for params in stats_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_secure_health_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_health_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz secure health endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Health check attacks
         health_attacks = [
             {},  # No parameters
@@ -631,98 +595,59 @@ class SecureSummarizationFuzzer:
             {"include_metrics": "undefined"},
             {"include_metrics": "'; DROP TABLE health; --"},
         ]
-        
+
         for params in health_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_secure_config_post_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_config_post_endpoint(
+        self, endpoint: str
+    ) -> list[FuzzResult]:
         """Fuzz secure configuration POST endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Configuration manipulation payloads
         config_payloads = [
             # Valid configuration update
-            {
-                "max_length": 100,
-                "temperature": 0.7
-            },
+            {"max_length": 100, "temperature": 0.7},
             # Malicious configuration values
-            {
-                "max_length": "' OR 1=1 --",
-                "temperature": 0.7
-            },
-            {
-                "max_length": 100,
-                "temperature": "<script>alert('XSS')</script>"
-            },
+            {"max_length": "' OR 1=1 --", "temperature": 0.7},
+            {"max_length": 100, "temperature": "<script>alert('XSS')</script>"},
             # Invalid configuration values
-            {
-                "max_length": -1,  # Invalid negative length
-                "temperature": 0.7
-            },
-            {
-                "max_length": 1000000,  # Excessive length
-                "temperature": 0.7
-            },
-            {
-                "max_length": 100,
-                "temperature": -1.0  # Invalid negative temperature
-            },
-            {
-                "max_length": 100,
-                "temperature": 10.0  # Excessive temperature
-            },
+            {"max_length": -1, "temperature": 0.7},  # Invalid negative length
+            {"max_length": 1000000, "temperature": 0.7},  # Excessive length
+            {"max_length": 100, "temperature": -1.0},  # Invalid negative temperature
+            {"max_length": 100, "temperature": 10.0},  # Excessive temperature
             # Malformed configuration
-            {
-                "max_length": None,
-                "temperature": 0.7
-            },
-            {
-                "max_length": 100,
-                "temperature": None
-            },
-            {
-                "max_length": "invalid",
-                "temperature": 0.7
-            },
-            {
-                "max_length": 100,
-                "temperature": "invalid"
-            },
+            {"max_length": None, "temperature": 0.7},
+            {"max_length": 100, "temperature": None},
+            {"max_length": "invalid", "temperature": 0.7},
+            {"max_length": 100, "temperature": "invalid"},
             # Command injection in configuration
-            {
-                "max_length": 100,
-                "temperature": 0.7,
-                "model_path": "; ls -la"
-            },
-            {
-                "max_length": 100,
-                "temperature": 0.7,
-                "model_path": "| whoami"
-            },
+            {"max_length": 100, "temperature": 0.7, "model_path": "; ls -la"},
+            {"max_length": 100, "temperature": 0.7, "model_path": "| whoami"},
             # Path traversal in configuration
             {
                 "max_length": 100,
                 "temperature": 0.7,
-                "model_path": "../../../etc/passwd"
+                "model_path": "../../../etc/passwd",
             },
         ]
-        
+
         for payload in config_payloads:
             result = await self._send_request(url, "POST", json=payload)
             results.append(result)
-        
+
         return results
-    
-    async def _fuzz_secure_config_get_endpoint(self, endpoint: str) -> List[FuzzResult]:
+
+    async def _fuzz_secure_config_get_endpoint(self, endpoint: str) -> list[FuzzResult]:
         """Fuzz secure configuration GET endpoint"""
         results = []
         url = f"{self.base_url}{endpoint}"
-        
+
         # Configuration retrieval attacks
         config_attacks = [
             {},  # No parameters
@@ -742,24 +667,26 @@ class SecureSummarizationFuzzer:
             {"section": "' OR 1=1 --"},
             {"section": "<script>alert('XSS')</script>"},
         ]
-        
+
         for params in config_attacks:
             result = await self._send_request(url, "GET", params=params)
             results.append(result)
-        
+
         return results
-    
+
     async def _send_request(self, url: str, method: str, **kwargs) -> FuzzResult:
         """Send a request and analyze for vulnerabilities"""
         start_time = time.time()
-        
+
         try:
             response = await self.session.request(method, url, **kwargs)
             end_time = time.time()
-            
+
             # Analyze response for secure summarization-specific vulnerabilities
-            vulnerability_detected, vulnerability_type = self._analyze_secure_summarization_response(response, kwargs)
-            
+            vulnerability_detected, vulnerability_type = (
+                self._analyze_secure_summarization_response(response, kwargs)
+            )
+
             return FuzzResult(
                 url=url,
                 method=method,
@@ -772,9 +699,9 @@ class SecureSummarizationFuzzer:
                 response_body=response.text,
                 response_text=response.text,
                 response_headers=dict(response.headers),
-                request_headers=kwargs.get('headers')
+                request_headers=kwargs.get("headers"),
             )
-            
+
         except Exception as e:
             end_time = time.time()
             return FuzzResult(
@@ -788,23 +715,41 @@ class SecureSummarizationFuzzer:
                 response_body=None,
                 response_text=None,
                 response_headers=None,
-                request_headers=kwargs.get('headers')
+                request_headers=kwargs.get("headers"),
             )
-    
-    def _analyze_secure_summarization_response(self, response: httpx.Response, request_kwargs: dict) -> tuple[bool, Optional[str]]:
+
+    def _analyze_secure_summarization_response(
+        self, response: httpx.Response, request_kwargs: dict
+    ) -> tuple[bool, str | None]:
         """Analyze response for secure summarization-specific vulnerabilities"""
         response_text = response.text.lower()
-        
+
         # Check for secure summarization vulnerabilities
         if response.status_code == 200:
             # Check for successful authentication bypass
-            if any(indicator in response_text for indicator in ["access_token", "authenticated", "login_successful", "summary"]):
+            if any(
+                indicator in response_text
+                for indicator in [
+                    "access_token",
+                    "authenticated",
+                    "login_successful",
+                    "summary",
+                ]
+            ):
                 return True, "Secure Summarization Auth Bypass"
-            
+
             # Check for information disclosure in summarization responses
-            if any(indicator in response_text for indicator in ["internal_error", "stack_trace", "model_path", "api_key"]):
+            if any(
+                indicator in response_text
+                for indicator in [
+                    "internal_error",
+                    "stack_trace",
+                    "model_path",
+                    "api_key",
+                ]
+            ):
                 return True, "Secure Summarization Information Disclosure"
-            
+
             # Check for successful text injection
             if "json" in request_kwargs:
                 payload = request_kwargs["json"]
@@ -812,47 +757,109 @@ class SecureSummarizationFuzzer:
                     # Check if malicious text was processed
                     if "text" in payload:
                         text = payload["text"]
-                        if any(malicious in text for malicious in ["'; DROP TABLE", "<script>", "; ls", "| whoami"]):
-                            if any(success in response_text for success in ["processed", "accepted", "summarized"]):
+                        if any(
+                            malicious in text
+                            for malicious in [
+                                "'; DROP TABLE",
+                                "<script>",
+                                "; ls",
+                                "| whoami",
+                            ]
+                        ):
+                            if any(
+                                success in response_text
+                                for success in ["processed", "accepted", "summarized"]
+                            ):
                                 return True, "Secure Summarization Text Injection"
-                    
+
                     # Check if malicious batch texts were processed
                     if "texts" in payload:
                         texts = payload["texts"]
                         if isinstance(texts, list):
                             for text in texts:
                                 if isinstance(text, str):
-                                    if any(malicious in text for malicious in ["'; DROP TABLE", "<script>", "; ls", "| whoami"]):
-                                        if any(success in response_text for success in ["processed", "accepted", "summarized"]):
-                                            return True, "Secure Summarization Batch Text Injection"
-            
+                                    if any(
+                                        malicious in text
+                                        for malicious in [
+                                            "'; DROP TABLE",
+                                            "<script>",
+                                            "; ls",
+                                            "| whoami",
+                                        ]
+                                    ):
+                                        if any(
+                                            success in response_text
+                                            for success in [
+                                                "processed",
+                                                "accepted",
+                                                "summarized",
+                                            ]
+                                        ):
+                                            return (
+                                                True,
+                                                "Secure Summarization Batch Text Injection",
+                                            )
+
             # Check for JWT vulnerabilities
-            if any(indicator in response_text for indicator in ["jwt_secret", "signing_key", "algorithm", "token_payload"]):
+            if any(
+                indicator in response_text
+                for indicator in [
+                    "jwt_secret",
+                    "signing_key",
+                    "algorithm",
+                    "token_payload",
+                ]
+            ):
                 return True, "Secure Summarization JWT Information Disclosure"
-        
+
         # Check for SQL injection in summarization context
-        if any(indicator in response_text for indicator in ["sql", "database", "mysql", "postgresql"]):
+        if any(
+            indicator in response_text
+            for indicator in ["sql", "database", "mysql", "postgresql"]
+        ):
             return True, "Secure Summarization SQL Injection"
-        
+
         # Check for XSS in summarization responses
-        if any(indicator in response_text for indicator in ["<script>", "javascript:", "onerror="]):
+        if any(
+            indicator in response_text
+            for indicator in ["<script>", "javascript:", "onerror="]
+        ):
             return True, "Secure Summarization XSS"
-        
+
         # Check for command injection
-        if any(indicator in response_text for indicator in ["command not found", "permission denied", "whoami:", "ls:"]):
+        if any(
+            indicator in response_text
+            for indicator in [
+                "command not found",
+                "permission denied",
+                "whoami:",
+                "ls:",
+            ]
+        ):
             return True, "Secure Summarization Command Injection"
-        
+
         # Check for model access control bypass
-        if any(indicator in response_text for indicator in ["unauthorized_model", "access_denied", "permission_denied"]):
+        if any(
+            indicator in response_text
+            for indicator in [
+                "unauthorized_model",
+                "access_denied",
+                "permission_denied",
+            ]
+        ):
             return True, "Secure Summarization Model Access Bypass"
-        
+
         return False, None
+
 
 async def main():
     """Main execution function for testing"""
     async with SecureSummarizationFuzzer() as fuzzer:
         results = await fuzzer.fuzz_secure_summarization_endpoints()
-        console.print(f"🐺 Secure Summarization fuzzing completed: {len(results)} requests made")
+        console.print(
+            f"🐺 Secure Summarization fuzzing completed: {len(results)} requests made"
+        )
+
 
 if __name__ == "__main__":
     asyncio.run(main())

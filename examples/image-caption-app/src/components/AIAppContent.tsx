@@ -6,12 +6,7 @@
  */
 
 import { Component } from "solid-js";
-import {
-  AIGalleryProvider,
-  type AIGalleryConfig,
-  type FileItem,
-  type GalleryCaptionResult,
-} from "reynard-gallery-ai";
+import { AIGalleryProvider, type AIGalleryConfig, type FileItem, type GalleryCaptionResult } from "reynard-gallery-ai";
 import { useNotifications } from "reynard-core";
 import { AIMainContent } from "./AIMainContent";
 import type { UseAppStateReturn } from "../composables/useAppState";
@@ -54,20 +49,12 @@ const createAIConfig = (selectedModel: string): AIGalleryConfig => ({
 });
 
 // AI Gallery callbacks
-const createAICallbacks = (
-  notify: (
-    message: string,
-    type?: "error" | "success" | "info" | "warning",
-  ) => void,
-) => ({
+const createAICallbacks = (notify: (message: string, type?: "error" | "success" | "info" | "warning") => void) => ({
   onCaptionGenerationStart: (item: FileItem, generator: string) => {
     console.log("Caption generation started:", item.name, "with", generator);
     notify(`Generating caption for ${item.name} using ${generator}`, "info");
   },
-  onCaptionGenerationComplete: (
-    item: FileItem,
-    result: GalleryCaptionResult,
-  ) => {
+  onCaptionGenerationComplete: (item: FileItem, result: GalleryCaptionResult) => {
     console.log("Caption generation completed:", item.name, result);
     if (result.success) {
       notify(`Caption generated for ${item.name}`, "success");
@@ -76,21 +63,13 @@ const createAICallbacks = (
     }
   },
   onBatchProcessingStart: (items: FileItem[], generator: string) => {
-    console.log(
-      "Batch processing started:",
-      items.length,
-      "items with",
-      generator,
-    );
+    console.log("Batch processing started:", items.length, "items with", generator);
     notify(`Starting batch processing of ${items.length} images`, "info");
   },
   onBatchProcessingComplete: (results: GalleryCaptionResult[]) => {
     console.log("Batch processing completed:", results.length, "results");
-    const successCount = results.filter((r) => r.success).length;
-    notify(
-      `Batch processing completed: ${successCount}/${results.length} successful`,
-      "success",
-    );
+    const successCount = results.filter(r => r.success).length;
+    notify(`Batch processing completed: ${successCount}/${results.length} successful`, "success");
   },
   onBatchProcessingError: (error: string) => {
     console.error("Batch processing error:", error);
@@ -98,7 +77,7 @@ const createAICallbacks = (
   },
 });
 
-export const AIAppContent: Component<AIAppContentProps> = (props) => {
+export const AIAppContent: Component<AIAppContentProps> = props => {
   const { notify } = useNotifications();
 
   return (
@@ -108,11 +87,7 @@ export const AIAppContent: Component<AIAppContentProps> = (props) => {
       persistState={true}
       storageKey="image-caption-app-ai"
     >
-      <AIMainContent
-        appState={props.appState}
-        workflow={props.workflow}
-        handlers={props.handlers}
-      />
+      <AIMainContent appState={props.appState} workflow={props.workflow} handlers={props.handlers} />
     </AIGalleryProvider>
   );
 };

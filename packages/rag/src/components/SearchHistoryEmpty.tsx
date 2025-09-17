@@ -11,7 +11,7 @@ export interface SearchHistoryEmptyProps {
   hasFilters: boolean;
 }
 
-export const SearchHistoryEmpty: Component<SearchHistoryEmptyProps> = (props) => {
+export const SearchHistoryEmpty: Component<SearchHistoryEmptyProps> = props => {
   return (
     <div class="history-empty">
       <div class="empty-icon">{getIcon("history")}</div>

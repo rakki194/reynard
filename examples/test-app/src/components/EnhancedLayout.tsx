@@ -14,7 +14,7 @@ export interface LayoutProps {
   integration: any;
 }
 
-export const EnhancedLayout: Component<LayoutProps> = (props) => {
+export const EnhancedLayout: Component<LayoutProps> = props => {
   return (
     <div class="enhanced-integration-demo">
       <div class="demo-content">
@@ -32,12 +32,8 @@ export const EnhancedLayout: Component<LayoutProps> = (props) => {
             setEnableStroboscopic={props.integration.setEnableStroboscopic}
             enableMorphing={props.integration.enableMorphing}
             setEnableMorphing={props.integration.setEnableMorphing}
-            enablePerformanceOptimization={
-              props.integration.enablePerformanceOptimization
-            }
-            setEnablePerformanceOptimization={
-              props.integration.setEnablePerformanceOptimization
-            }
+            enablePerformanceOptimization={props.integration.enablePerformanceOptimization}
+            setEnablePerformanceOptimization={props.integration.setEnablePerformanceOptimization}
             isRunning={props.integration.isRunning}
             onRegeneratePattern={props.integration.generatePattern}
             onToggleAnimation={props.integration.toggleAnimation}
@@ -50,14 +46,10 @@ export const EnhancedLayout: Component<LayoutProps> = (props) => {
             currentPoints={props.integration.engines.currentPoints}
             stroboscopicState={props.integration.engines.stroboscopicState}
             qualityLevel={props.integration.engines.qualityLevel}
-            enablePerformanceOptimization={
-              props.integration.enablePerformanceOptimization
-            }
+            enablePerformanceOptimization={props.integration.enablePerformanceOptimization}
           />
 
-          <EnhancedMetrics
-            performanceMetrics={props.integration.engines.performanceMetrics}
-          />
+          <EnhancedMetrics performanceMetrics={props.integration.engines.performanceMetrics} />
         </div>
 
         <EnhancedVisualization

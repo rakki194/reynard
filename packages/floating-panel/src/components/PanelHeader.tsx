@@ -15,16 +15,16 @@ interface PanelHeaderProps {
   onReset?: () => void;
 }
 
-export const PanelHeader: Component<PanelHeaderProps> = (props) => {
+export const PanelHeader: Component<PanelHeaderProps> = props => {
   return (
     <div class="panel-header">
       <div
         class="panel-drag-handle"
-        onMouseDown={(e) => {
+        onMouseDown={e => {
           e.stopPropagation();
           props.panel.handleMouseDown(e, "drag");
         }}
-        onPointerDown={(e) => e.stopPropagation()}
+        onPointerDown={e => e.stopPropagation()}
         title="Drag to move panel"
       >
         <span class="drag-icon">{getIcon("menu")}</span>
@@ -36,16 +36,10 @@ export const PanelHeader: Component<PanelHeaderProps> = (props) => {
           onClick={() => props.panel.toggleMinimized()}
           title={props.panel.isMinimized() ? "Expand panel" : "Minimize panel"}
         >
-          {props.panel.isMinimized()
-            ? getIcon("chevron-down")
-            : getIcon("chevron-up")}
+          {props.panel.isMinimized() ? getIcon("chevron-down") : getIcon("chevron-up")}
         </button>
         {props.onReset && (
-          <button
-            class="panel-control-btn"
-            onClick={props.onReset}
-            title="Reset panel position"
-          >
+          <button class="panel-control-btn" onClick={props.onReset} title="Reset panel position">
             {getIcon("refresh")}
           </button>
         )}

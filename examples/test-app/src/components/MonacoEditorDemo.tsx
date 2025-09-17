@@ -453,8 +453,7 @@ export const MonacoEditorDemo: Component = () => {
   // Initialize with sample code
   createEffect(() => {
     const language = selectedLanguage();
-    const sample =
-      LANGUAGES.find((lang) => lang.value === language)?.sample || "";
+    const sample = LANGUAGES.find(lang => lang.value === language)?.sample || "";
     setEditorValue(sample);
 
     // Set diff values for comparison
@@ -492,7 +491,7 @@ interface User {
   };
 
   const getCurrentLanguage = () => {
-    return LANGUAGES.find((lang) => lang.value === selectedLanguage());
+    return LANGUAGES.find(lang => lang.value === selectedLanguage());
   };
 
   const getMonacoOptions = () => ({
@@ -519,13 +518,9 @@ interface User {
     <div class="monaco-demo">
       <div class="demo-header">
         <h1>Monaco Editor Demo</h1>
-        <p>
-          Comprehensive test of reynard-monaco with forked solid-monaco
-          components
-        </p>
+        <p>Comprehensive test of reynard-monaco with forked solid-monaco components</p>
         <p class="theme-sync-note">
-          🎨 Theme automatically syncs with Reynard theme:{" "}
-          <strong>{currentReynardTheme}</strong>
+          🎨 Theme automatically syncs with Reynard theme: <strong>{currentReynardTheme}</strong>
         </p>
       </div>
 
@@ -535,9 +530,7 @@ interface User {
           <select
             id="editor-type-select"
             value={editorType()}
-            onChange={(e) =>
-              setEditorType(e.currentTarget.value as "monaco" | "code")
-            }
+            onChange={e => setEditorType(e.currentTarget.value as "monaco" | "code")}
           >
             <option value="monaco">Monaco Editor (Forked)</option>
             <option value="code">Code Editor (Reynard)</option>
@@ -549,11 +542,9 @@ interface User {
           <select
             id="language-select"
             value={selectedLanguage()}
-            onChange={(e) => setSelectedLanguage(e.currentTarget.value)}
+            onChange={e => setSelectedLanguage(e.currentTarget.value)}
           >
-            <For each={LANGUAGES}>
-              {(lang) => <option value={lang.value}>{lang.label}</option>}
-            </For>
+            <For each={LANGUAGES}>{lang => <option value={lang.value}>{lang.label}</option>}</For>
           </select>
         </div>
 
@@ -575,7 +566,7 @@ interface User {
             <input
               type="checkbox"
               checked={showLineNumbers()}
-              onChange={(e) => setShowLineNumbers(e.currentTarget.checked)}
+              onChange={e => setShowLineNumbers(e.currentTarget.checked)}
             />
             Line Numbers
           </label>
@@ -583,33 +574,21 @@ interface User {
 
         <div class="control-group">
           <label>
-            <input
-              type="checkbox"
-              checked={showMinimap()}
-              onChange={(e) => setShowMinimap(e.currentTarget.checked)}
-            />
+            <input type="checkbox" checked={showMinimap()} onChange={e => setShowMinimap(e.currentTarget.checked)} />
             Minimap
           </label>
         </div>
 
         <div class="control-group">
           <label>
-            <input
-              type="checkbox"
-              checked={readOnly()}
-              onChange={(e) => setReadOnly(e.currentTarget.checked)}
-            />
+            <input type="checkbox" checked={readOnly()} onChange={e => setReadOnly(e.currentTarget.checked)} />
             Read Only
           </label>
         </div>
 
         <div class="control-group">
           <label for="word-wrap-select">Word Wrap:</label>
-          <select
-            id="word-wrap-select"
-            value={wordWrap()}
-            onChange={(e) => setWordWrap(e.currentTarget.value)}
-          >
+          <select id="word-wrap-select" value={wordWrap()} onChange={e => setWordWrap(e.currentTarget.value)}>
             <option value="off">Off</option>
             <option value="on">On</option>
             <option value="wordWrapColumn">Word Wrap Column</option>
@@ -618,10 +597,7 @@ interface User {
         </div>
 
         <div class="control-group">
-          <button
-            onClick={() => setShowDiffEditor(!showDiffEditor())}
-            class="toggle-diff-btn"
-          >
+          <button onClick={() => setShowDiffEditor(!showDiffEditor())} class="toggle-diff-btn">
             {showDiffEditor() ? "Hide" : "Show"} Diff Editor
           </button>
         </div>
@@ -630,24 +606,14 @@ interface User {
       <div class="demo-content">
         <div class="editor-container">
           <div class="editor-header">
-            <h3>
-              {editorType() === "monaco"
-                ? "Monaco Editor (Forked)"
-                : "Code Editor (Reynard)"}
-            </h3>
+            <h3>{editorType() === "monaco" ? "Monaco Editor (Forked)" : "Code Editor (Reynard)"}</h3>
             <div class="editor-info">
               <span class="language-info">
                 Language: {getCurrentLanguage()?.label} ({selectedLanguage()})
               </span>
-              <span class="theme-info">
-                Theme: {currentReynardTheme} (Reynard)
-              </span>
-              <Show
-                when={languageDetection.isNaturalLanguageDetectionAvailable()}
-              >
-                <span class="detection-info">
-                  Auto-detection: {languageDetection.detectedNaturalLanguage()}
-                </span>
+              <span class="theme-info">Theme: {currentReynardTheme} (Reynard)</span>
+              <Show when={languageDetection.isNaturalLanguageDetectionAvailable()}>
+                <span class="detection-info">Auto-detection: {languageDetection.detectedNaturalLanguage()}</span>
               </Show>
               <Show when={reynardMonaco.isShikiEnabled()}>
                 <span class="shiki-info">✨ Shiki Enhanced</span>
@@ -713,12 +679,8 @@ interface User {
                 <MonacoDiffEditor
                   original={diffValue1()}
                   modified={diffValue2()}
-                  originalLanguage={getMonacoLanguageFromName(
-                    selectedLanguage(),
-                  )}
-                  modifiedLanguage={getMonacoLanguageFromName(
-                    selectedLanguage(),
-                  )}
+                  originalLanguage={getMonacoLanguageFromName(selectedLanguage())}
+                  modifiedLanguage={getMonacoLanguageFromName(selectedLanguage())}
                   theme={reynardMonaco.monacoTheme()}
                   onChange={handleDiffChange}
                   options={getMonacoOptions()}
@@ -733,19 +695,12 @@ interface User {
         <div class="feature-list">
           <h4>Features Demonstrated:</h4>
           <ul>
-            <li>
-              ✅ Forked solid-monaco components (MonacoEditor, MonacoDiffEditor)
-            </li>
+            <li>✅ Forked solid-monaco components (MonacoEditor, MonacoDiffEditor)</li>
             <li>✅ Reynard CodeEditor with enhanced features</li>
             <li>✅ Latest Monaco Editor 0.52.2 support</li>
             <li>✅ Multiple language support with syntax highlighting</li>
-            <li>
-              ✅ Theme switching (VS, VS Dark, High Contrast, GitHub themes)
-            </li>
-            <li>
-              ✅ Real-time configuration (font size, line numbers, minimap,
-              etc.)
-            </li>
+            <li>✅ Theme switching (VS, VS Dark, High Contrast, GitHub themes)</li>
+            <li>✅ Real-time configuration (font size, line numbers, minimap, etc.)</li>
             <li>✅ Shiki integration for enhanced syntax highlighting</li>
             <li>✅ Language detection capabilities</li>
             <li>✅ Diff editor for code comparison</li>

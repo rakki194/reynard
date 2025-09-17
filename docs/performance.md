@@ -132,7 +132,7 @@ import { createMemo } from "solid-js";
 function ExpensiveComponent({ data }) {
   // Memoize expensive calculations
   const processedData = createMemo(() => {
-    return data().map((item) => ({
+    return data().map(item => ({
       ...item,
       processed: expensiveOperation(item),
     }));
@@ -140,7 +140,7 @@ function ExpensiveComponent({ data }) {
 
   return (
     <div>
-      {processedData().map((item) => (
+      {processedData().map(item => (
         <ItemComponent key={item.id} item={item} />
       ))}
     </div>
@@ -187,7 +187,7 @@ function VirtualList({ items }) {
         }}
       >
         <For each={virtualizer.getVirtualItems()}>
-          {(virtualRow) => (
+          {virtualRow => (
             <div
               style={{
                 position: "absolute",
@@ -254,22 +254,22 @@ function StoreComponent() {
   });
 
   // Optimize store updates
-  const addItem = (item) => {
-    setStore("items", (items) => [...items, item]);
+  const addItem = item => {
+    setStore("items", items => [...items, item]);
   };
 
-  const updateFilter = (filter) => {
+  const updateFilter = filter => {
     setStore("filter", filter);
   };
 
   // Memoize derived state
   const filteredItems = createMemo(() => {
-    return store.items.filter((item) => item.name.includes(store.filter));
+    return store.items.filter(item => item.name.includes(store.filter));
   });
 
   return (
     <div>
-      {filteredItems().map((item) => (
+      {filteredItems().map(item => (
         <ItemComponent key={item.id} item={item} />
       ))}
     </div>
@@ -297,7 +297,7 @@ function LazyImage({ src, alt }) {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 },
+      { threshold: 0.1 }
     );
 
     observer.observe(imgRef);
@@ -306,12 +306,7 @@ function LazyImage({ src, alt }) {
   return (
     <div ref={imgRef}>
       <Show when={isInView()}>
-        <img
-          src={src}
-          alt={alt}
-          onLoad={() => setIsLoaded(true)}
-          style={{ opacity: isLoaded() ? 1 : 0 }}
-        />
+        <img src={src} alt={alt} onLoad={() => setIsLoaded(true)} style={{ opacity: isLoaded() ? 1 : 0 }} />
       </Show>
     </div>
   );
@@ -339,13 +334,7 @@ function OptimizedImageUpload() {
     return thumbnail;
   };
 
-  return (
-    <input
-      type="file"
-      accept="image/*"
-      onChange={(e) => handleImageUpload(e.target.files[0])}
-    />
-  );
+  return <input type="file" accept="image/*" onChange={e => handleImageUpload(e.target.files[0])} />;
 }
 ```
 
@@ -371,13 +360,9 @@ function SearchComponent() {
 
   return (
     <div>
-      <input
-        value={searchTerm()}
-        onInput={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search..."
-      />
+      <input value={searchTerm()} onInput={e => setSearchTerm(e.target.value)} placeholder="Search..." />
       <div>
-        {results().map((result) => (
+        {results().map(result => (
           <div key={result.id}>{result.title}</div>
         ))}
       </div>
@@ -404,7 +389,7 @@ function CachedDataComponent() {
     try {
       const response = await fetch(`/api/data/${key}`);
       const data = await response.json();
-      setCache((prev) => new Map(prev).set(key, data));
+      setCache(prev => new Map(prev).set(key, data));
       return data;
     } finally {
       setLoading(false);
@@ -451,7 +436,7 @@ function usePerformanceMonitoring() {
     const result = await operation();
     const end = performance.now();
 
-    setMetrics((prev) => ({
+    setMetrics(prev => ({
       ...prev,
       [name]: {
         duration: end - start,
@@ -534,13 +519,13 @@ function MemorySafeComponent() {
     const controller = new AbortController();
 
     fetch("/api/data", { signal: controller.signal })
-      .then((response) => response.json())
-      .then((data) => {
+      .then(response => response.json())
+      .then(data => {
         if (isActive()) {
           setData(data);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.name !== "AbortError") {
           console.error("Fetch error:", error);
         }
@@ -554,7 +539,7 @@ function MemorySafeComponent() {
   return (
     <div>
       <button onClick={() => setIsActive(false)}>Stop Loading</button>
-      {data().map((item) => (
+      {data().map(item => (
         <div key={item.id}>{item.name}</div>
       ))}
     </div>
@@ -698,7 +683,7 @@ function usePerformanceMonitoring() {
     const result = fn();
     const end = performance.now();
 
-    setMetrics((prev) => ({
+    setMetrics(prev => ({
       ...prev,
       [name]: end - start,
     }));
@@ -711,7 +696,7 @@ function usePerformanceMonitoring() {
     const result = await fn();
     const end = performance.now();
 
-    setMetrics((prev) => ({
+    setMetrics(prev => ({
       ...prev,
       [name]: end - start,
     }));
@@ -729,7 +714,7 @@ function usePerformanceMonitoring() {
 // RUM (Real User Monitoring)
 function setupRUM() {
   // Monitor Core Web Vitals
-  new PerformanceObserver((list) => {
+  new PerformanceObserver(list => {
     for (const entry of list.getEntries()) {
       if (entry.entryType === "largest-contentful-paint") {
         console.log("LCP:", entry.startTime);
@@ -738,7 +723,7 @@ function setupRUM() {
   }).observe({ entryTypes: ["largest-contentful-paint"] });
 
   // Monitor First Input Delay
-  new PerformanceObserver((list) => {
+  new PerformanceObserver(list => {
     for (const entry of list.getEntries()) {
       console.log("FID:", entry.processingStart - entry.startTime);
     }

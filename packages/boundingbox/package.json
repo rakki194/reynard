@@ -13,9 +13,7 @@
     },
     "./styles": "./dist/styles.css"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",
@@ -28,14 +26,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"
   },
-  "keywords": [
-    "reynard",
-    "bounding-box",
-    "annotation",
-    "image-editing",
-    "solidjs",
-    "fabricjs"
-  ],
+  "keywords": ["reynard", "bounding-box", "annotation", "image-editing", "solidjs", "fabricjs"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
@@ -50,7 +41,7 @@
     "@types/fabric": "5.3.10",
     "@typescript-eslint/eslint-plugin": "8.43.0",
     "@typescript-eslint/parser": "8.43.0",
-    "eslint": "8.57.1",
+    "eslint": "9.35.0",
     "happy-dom": "^18.0.1",
     "reynard-testing": "workspace:*",
     "typescript": "5.9.2",

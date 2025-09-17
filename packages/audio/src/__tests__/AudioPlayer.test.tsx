@@ -11,9 +11,7 @@ import { AudioPlayer } from "../../AudioPlayer";
 
 // Mock the AudioWaveformVisualizer component
 vi.mock("../AudioWaveformVisualizer", () => ({
-  AudioWaveformVisualizer: (props: any) => (
-    <div data-testid="audio-waveform-visualizer" {...props} />
-  ),
+  AudioWaveformVisualizer: (props: any) => <div data-testid="audio-waveform-visualizer" {...props} />,
 }));
 
 // Mock URL.createObjectURL
@@ -62,15 +60,11 @@ describe("AudioPlayer", () => {
       render(() => <AudioPlayer audioFiles={mockAudioFiles} />);
 
       expect(screen.getByText("song1.mp3")).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: /play\/pause/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /play\/pause/i })).toBeInTheDocument();
     });
 
     it("should render with custom className", () => {
-      render(() => (
-        <AudioPlayer audioFiles={mockAudioFiles} className="custom-player" />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} className="custom-player" />);
 
       const player = screen.getByRole("generic");
       expect(player).toHaveClass("audio-player", "custom-player");
@@ -111,9 +105,7 @@ describe("AudioPlayer", () => {
     });
 
     it("should navigate to previous track", () => {
-      render(() => (
-        <AudioPlayer audioFiles={mockAudioFiles} initialTrack={1} />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} initialTrack={1} />);
 
       const prevButton = screen.getByRole("button", { name: /previous/i });
       fireEvent.click(prevButton);
@@ -122,18 +114,14 @@ describe("AudioPlayer", () => {
     });
 
     it("should disable previous button on first track", () => {
-      render(() => (
-        <AudioPlayer audioFiles={mockAudioFiles} initialTrack={0} />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} initialTrack={0} />);
 
       const prevButton = screen.getByRole("button", { name: /previous/i });
       expect(prevButton).toBeDisabled();
     });
 
     it("should disable next button on last track", () => {
-      render(() => (
-        <AudioPlayer audioFiles={mockAudioFiles} initialTrack={2} />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} initialTrack={2} />);
 
       const nextButton = screen.getByRole("button", { name: /next/i });
       expect(nextButton).toBeDisabled();
@@ -171,12 +159,7 @@ describe("AudioPlayer", () => {
     });
 
     it("should enable shuffle from config", () => {
-      render(() => (
-        <AudioPlayer
-          audioFiles={mockAudioFiles}
-          playerConfig={{ shuffle: true }}
-        />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} playerConfig={{ shuffle: true }} />);
 
       const shuffleButton = screen.getByRole("button", { name: /shuffle/i });
       expect(shuffleButton).toHaveClass("active");
@@ -188,9 +171,7 @@ describe("AudioPlayer", () => {
       render(() => <AudioPlayer audioFiles={mockAudioFiles} />);
 
       const playlistItems = screen.getAllByRole("generic");
-      const secondTrack = playlistItems.find((item) =>
-        item.textContent?.includes("song2.wav"),
-      );
+      const secondTrack = playlistItems.find(item => item.textContent?.includes("song2.wav"));
 
       if (secondTrack) {
         fireEvent.click(secondTrack);
@@ -217,11 +198,7 @@ describe("AudioPlayer", () => {
     it("should respect autoPlayNext configuration", () => {
       const onPlaylistEnd = vi.fn();
       render(() => (
-        <AudioPlayer
-          audioFiles={mockAudioFiles}
-          playerConfig={{ autoPlayNext: false }}
-          onPlaylistEnd={onPlaylistEnd}
-        />
+        <AudioPlayer audioFiles={mockAudioFiles} playerConfig={{ autoPlayNext: false }} onPlaylistEnd={onPlaylistEnd} />
       ));
 
       // Navigate to last track
@@ -236,12 +213,7 @@ describe("AudioPlayer", () => {
     });
 
     it("should respect loopPlaylist configuration", () => {
-      render(() => (
-        <AudioPlayer
-          audioFiles={mockAudioFiles}
-          playerConfig={{ loopPlaylist: true }}
-        />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} playerConfig={{ loopPlaylist: true }} />);
 
       // Navigate to last track
       const nextButton = screen.getByRole("button", { name: /next/i });
@@ -253,25 +225,13 @@ describe("AudioPlayer", () => {
     });
 
     it("should respect showWaveform configuration", () => {
-      render(() => (
-        <AudioPlayer
-          audioFiles={mockAudioFiles}
-          playerConfig={{ showWaveform: false }}
-        />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} playerConfig={{ showWaveform: false }} />);
 
-      expect(
-        screen.queryByTestId("audio-waveform-visualizer"),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByTestId("audio-waveform-visualizer")).not.toBeInTheDocument();
     });
 
     it("should respect showPlaylist configuration", () => {
-      render(() => (
-        <AudioPlayer
-          audioFiles={mockAudioFiles}
-          playerConfig={{ showPlaylist: false }}
-        />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} playerConfig={{ showPlaylist: false }} />);
 
       expect(screen.queryByText("Playlist")).not.toBeInTheDocument();
     });
@@ -280,12 +240,7 @@ describe("AudioPlayer", () => {
   describe("Callbacks", () => {
     it("should call onTrackChange when track changes", () => {
       const onTrackChange = vi.fn();
-      render(() => (
-        <AudioPlayer
-          audioFiles={mockAudioFiles}
-          onTrackChange={onTrackChange}
-        />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} onTrackChange={onTrackChange} />);
 
       const nextButton = screen.getByRole("button", { name: /next/i });
       fireEvent.click(nextButton);
@@ -295,12 +250,7 @@ describe("AudioPlayer", () => {
 
     it("should call onPlaybackStateChange when playback state changes", () => {
       const onPlaybackStateChange = vi.fn();
-      render(() => (
-        <AudioPlayer
-          audioFiles={mockAudioFiles}
-          onPlaybackStateChange={onPlaybackStateChange}
-        />
-      ));
+      render(() => <AudioPlayer audioFiles={mockAudioFiles} onPlaybackStateChange={onPlaybackStateChange} />);
 
       const playButton = screen.getByRole("button", { name: /play\/pause/i });
       fireEvent.click(playButton);
@@ -374,9 +324,7 @@ describe("AudioPlayer", () => {
 
   describe("Error Handling", () => {
     it("should handle audio load errors gracefully", () => {
-      const consoleSpy = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
       render(() => <AudioPlayer audioFiles={mockAudioFiles} />);
 
@@ -392,9 +340,7 @@ describe("AudioPlayer", () => {
       render(() => <AudioPlayer audioFiles={[]} />);
 
       expect(screen.getByText("No track selected")).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: /play\/pause/i }),
-      ).toBeDisabled();
+      expect(screen.getByRole("button", { name: /play\/pause/i })).toBeDisabled();
     });
   });
 });

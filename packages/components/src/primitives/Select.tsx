@@ -3,14 +3,7 @@
  * A flexible select dropdown component with styling and validation
  */
 
-import {
-  Component,
-  JSX,
-  splitProps,
-  mergeProps,
-  createSignal,
-  For,
-} from "solid-js";
+import { Component, JSX, splitProps, mergeProps, createSignal, For } from "solid-js";
 
 export interface SelectOption {
   value: string | number;
@@ -18,8 +11,7 @@ export interface SelectOption {
   disabled?: boolean;
 }
 
-export interface SelectProps
-  extends Omit<JSX.SelectHTMLAttributes<HTMLSelectElement>, "size"> {
+export interface SelectProps extends Omit<JSX.SelectHTMLAttributes<HTMLSelectElement>, "size"> {
   /** Select variant */
   variant?: "default" | "filled" | "outlined";
   /** Select size */
@@ -56,7 +48,7 @@ const defaultProps: Partial<SelectProps> = {
   options: [],
 };
 
-export const Select: Component<SelectProps> = (props) => {
+export const Select: Component<SelectProps> = props => {
   const merged = mergeProps(defaultProps, props);
   const [local, others] = splitProps(merged, [
     "variant",
@@ -76,17 +68,11 @@ export const Select: Component<SelectProps> = (props) => {
     "id",
   ]);
 
-  const [selectId] = createSignal(
-    local.id || `select-${Math.random().toString(36).substr(2, 9)}`,
-  );
+  const [selectId] = createSignal(local.id || `select-${Math.random().toString(36).substr(2, 9)}`);
   const [focused, setFocused] = createSignal(false);
 
   const getWrapperClasses = () => {
-    const classes = [
-      "reynard-select",
-      `reynard-select--${local.variant}`,
-      `reynard-select--${local.size}`,
-    ];
+    const classes = ["reynard-select", `reynard-select--${local.variant}`, `reynard-select--${local.size}`];
 
     if (local.error) classes.push("reynard-select--error");
     if (focused()) classes.push("reynard-select--focused");
@@ -113,11 +99,7 @@ export const Select: Component<SelectProps> = (props) => {
       )}
 
       <div class="reynard-select__input-wrapper">
-        {local.leftIcon && (
-          <div class="reynard-select__icon reynard-select__icon--left">
-            {local.leftIcon}
-          </div>
-        )}
+        {local.leftIcon && <div class="reynard-select__icon reynard-select__icon--left">{local.leftIcon}</div>}
 
         <select
           id={selectId()}
@@ -134,7 +116,7 @@ export const Select: Component<SelectProps> = (props) => {
 
           {local.options && local.options.length > 0 ? (
             <For each={local.options}>
-              {(option) => (
+              {option => (
                 <option value={option.value} disabled={option.disabled}>
                   {option.label}
                 </option>
@@ -157,15 +139,9 @@ export const Select: Component<SelectProps> = (props) => {
       {(local.errorMessage || local.helperText) && (
         <div class="reynard-select__help">
           {local.error && local.errorMessage ? (
-            <span class="reynard-select__error-message">
-              {local.errorMessage}
-            </span>
+            <span class="reynard-select__error-message">{local.errorMessage}</span>
           ) : (
-            local.helperText && (
-              <span class="reynard-select__helper-text">
-                {local.helperText}
-              </span>
-            )
+            local.helperText && <span class="reynard-select__helper-text">{local.helperText}</span>
           )}
         </div>
       )}

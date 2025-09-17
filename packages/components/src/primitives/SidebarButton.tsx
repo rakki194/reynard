@@ -7,8 +7,7 @@
 import { Component, JSX, splitProps, mergeProps, For, Show } from "solid-js";
 import { Icon } from "../icons/Icon";
 
-export interface SidebarButtonProps
-  extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+export interface SidebarButtonProps extends Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
   /** Icon name from the icon registry */
   icon: string;
   /** Icon package ID (optional) */
@@ -16,15 +15,7 @@ export interface SidebarButtonProps
   /** Icon size */
   iconSize?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Icon variant */
-  iconVariant?:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "muted"
-    | "error"
-    | "warning"
-    | "success"
-    | "info";
+  iconVariant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
   /** Whether the button is active/selected */
   active?: boolean;
   /** Whether the button is disabled */
@@ -40,29 +31,13 @@ export interface SidebarButtonProps
   /** Secondary icon (e.g., status indicator) */
   secondaryIcon?: string;
   /** Secondary icon variant */
-  secondaryIconVariant?:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "muted"
-    | "error"
-    | "warning"
-    | "success"
-    | "info";
+  secondaryIconVariant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
   /** Whether to show secondary actions */
   showSecondaryActions?: boolean;
   /** Secondary action buttons */
   secondaryActions?: Array<{
     icon: string;
-    variant?:
-      | "default"
-      | "primary"
-      | "secondary"
-      | "muted"
-      | "error"
-      | "warning"
-      | "success"
-      | "info";
+    variant?: "default" | "primary" | "secondary" | "muted" | "error" | "warning" | "success" | "info";
     size?: "xs" | "sm" | "md" | "lg" | "xl";
     ariaLabel: string;
     tooltip: string;
@@ -100,7 +75,7 @@ const defaultProps: Partial<SidebarButtonProps> = {
   loading: false,
 };
 
-export const SidebarButton: Component<SidebarButtonProps> = (props) => {
+export const SidebarButton: Component<SidebarButtonProps> = props => {
   const merged = mergeProps(defaultProps, props);
   const [local, others] = splitProps(merged, [
     "icon",
@@ -237,7 +212,7 @@ export const SidebarButton: Component<SidebarButtonProps> = (props) => {
         <Show when={local.showSecondaryActions && local.secondaryActions}>
           <div class="reynard-sidebar-button__secondary-actions">
             <For each={local.secondaryActions}>
-              {(action) => (
+              {action => (
                 <button
                   class="reynard-sidebar-button__secondary-action"
                   aria-label={action.ariaLabel}

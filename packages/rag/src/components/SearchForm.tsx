@@ -17,15 +17,13 @@ export interface SearchFormProps {
   error: string | null;
 }
 
-export const SearchForm: Component<SearchFormProps> = (props) => {
+export const SearchForm: Component<SearchFormProps> = props => {
   return (
     <div class="search-form">
       <div class="search-input-group">
         <TextField
           value={props.query}
-          onInput={(e: Event) =>
-            props.onQueryChange((e.target as HTMLInputElement).value)
-          }
+          onInput={(e: Event) => props.onQueryChange((e.target as HTMLInputElement).value)}
           onKeyPress={props.onKeyPress}
           placeholder="Ask a question or search for information..."
           fullWidth

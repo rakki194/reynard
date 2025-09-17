@@ -15,7 +15,7 @@ export function createGameActions(
         initializeSpiral: () => any;
       }
     | undefined,
-  setSpiralPoints: (points: any[]) => void,
+  setSpiralPoints: (points: any[]) => void
 ) {
   const updateConfig = (newConfig: Partial<GameConfig>) => {
     console.log("🦊 PhyllotacticGameActions: Updating config", {
@@ -25,9 +25,7 @@ export function createGameActions(
     });
     setConfig({ ...config(), ...newConfig });
     if (spiralLogic) {
-      console.log(
-        "🦊 PhyllotacticGameActions: Updating spiral logic and regenerating points",
-      );
+      console.log("🦊 PhyllotacticGameActions: Updating spiral logic and regenerating points");
       spiralLogic.updateConfig({ ...config(), ...newConfig });
       const newPoints = spiralLogic.initializeSpiral();
       console.log("🦊 PhyllotacticGameActions: Generated new spiral points", {
@@ -35,9 +33,7 @@ export function createGameActions(
       });
       setSpiralPoints(newPoints);
     } else {
-      console.warn(
-        "🦊 PhyllotacticGameActions: No spiral logic available, config update ignored",
-      );
+      console.warn("🦊 PhyllotacticGameActions: No spiral logic available, config update ignored");
     }
   };
 
@@ -50,10 +46,7 @@ export function createGameActions(
       spiralGrowth: patternConfig.spiralGrowth,
       baseRadius: patternConfig.baseRadius,
     };
-    console.log(
-      "🦊 PhyllotacticGameActions: New config for pattern",
-      newConfig,
-    );
+    console.log("🦊 PhyllotacticGameActions: New config for pattern", newConfig);
     updateConfig(newConfig);
   };
 

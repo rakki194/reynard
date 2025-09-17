@@ -7,9 +7,9 @@ registration.
 """
 
 import asyncio
-import functools
 import inspect
-from typing import Any, Callable, Dict, List, Optional, Union, get_type_hints
+from collections.abc import Callable
+from typing import Any, get_type_hints
 
 from .base import (
     BaseTool,
@@ -22,13 +22,13 @@ from .registry import register_tool
 
 
 def tool(
-    name: Optional[str] = None,
-    description: Optional[str] = None,
+    name: str | None = None,
+    description: str | None = None,
     category: str = "general",
-    tags: Optional[List[str]] = None,
+    tags: list[str] | None = None,
     required_permission: str = "execute",
     timeout: float = 30.0,
-    parameters: Optional[Dict[str, Dict[str, Any]]] = None,
+    parameters: dict[str, dict[str, Any]] | None = None,
     auto_register: bool = True,
 ):
     """
@@ -129,10 +129,9 @@ def requires_permission(permission: str):
         if isinstance(func_or_tool, FunctionTool):
             func_or_tool._required_permission = permission
             return func_or_tool
-        else:
-            # Store permission requirement for later use by @tool decorator
-            func_or_tool._tool_required_permission = permission
-            return func_or_tool
+        # Store permission requirement for later use by @tool decorator
+        func_or_tool._tool_required_permission = permission
+        return func_or_tool
 
     return decorator
 
@@ -151,8 +150,8 @@ class FunctionTool(BaseTool):
         tool_name: str,
         tool_description: str,
         tool_category: str = "general",
-        tool_tags: Optional[List[str]] = None,
-        tool_parameters: Optional[List[ToolParameter]] = None,
+        tool_tags: list[str] | None = None,
+        tool_parameters: list[ToolParameter] | None = None,
         tool_required_permission: str = "execute",
         tool_timeout: float = 30.0,
         is_async: bool = False,
@@ -177,7 +176,7 @@ class FunctionTool(BaseTool):
         return self._description
 
     @property
-    def parameters(self) -> List[ToolParameter]:
+    def parameters(self) -> list[ToolParameter]:
         return self._parameters
 
     @property
@@ -185,7 +184,7 @@ class FunctionTool(BaseTool):
         return self._category
 
     @property
-    def tags(self) -> List[str]:
+    def tags(self) -> list[str]:
         return self._tags
 
     @property
@@ -210,14 +209,14 @@ class FunctionTool(BaseTool):
             return ToolResult.success_result(result)
 
         except Exception as e:
-            return ToolResult.error_result(f"Function execution failed: {str(e)}")
+            return ToolResult.error_result(f"Function execution failed: {e!s}")
 
     def __call__(self, *args, **kwargs):
         """Allow the tool to be called as a regular function."""
         return self._func(*args, **kwargs)
 
 
-def _detect_function_parameters(func: Callable) -> List[ToolParameter]:
+def _detect_function_parameters(func: Callable) -> list[ToolParameter]:
     """
     Auto-detect parameters from a function signature.
 
@@ -260,8 +259,8 @@ def _detect_function_parameters(func: Callable) -> List[ToolParameter]:
 
 
 def _convert_parameter_definitions(
-    param_defs: Dict[str, Dict[str, Any]],
-) -> List[ToolParameter]:
+    param_defs: dict[str, dict[str, Any]],
+) -> list[ToolParameter]:
     """
     Convert parameter definitions from dict format to ToolParameter objects.
 
@@ -310,19 +309,18 @@ def _python_type_to_parameter_type(python_type) -> ParameterType:
     """
     if python_type == str:
         return ParameterType.STRING
-    elif python_type == int:
+    if python_type == int:
         return ParameterType.INTEGER
-    elif python_type == float:
+    if python_type == float:
         return ParameterType.FLOAT
-    elif python_type == bool:
+    if python_type == bool:
         return ParameterType.BOOLEAN
-    elif python_type == list:
+    if python_type == list:
         return ParameterType.ARRAY
-    elif python_type == dict:
+    if python_type == dict:
         return ParameterType.OBJECT
-    else:
-        # Default to string for unknown types
-        return ParameterType.STRING
+    # Default to string for unknown types
+    return ParameterType.STRING
 
 
 # Convenience functions for common tool patterns

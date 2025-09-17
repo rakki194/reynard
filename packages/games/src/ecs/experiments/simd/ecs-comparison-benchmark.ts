@@ -29,10 +29,8 @@ export class ECSComparisonBenchmark {
     await this.simdSystem.initialize();
     await this.systemSetup.initialize();
 
-    this.benchmarkRunner = new ECSBenchmarkRunner(
-      this.simdSystem,
-      this.systemSetup.getWorld(),
-      (entityCount) => this.setupTestData(entityCount),
+    this.benchmarkRunner = new ECSBenchmarkRunner(this.simdSystem, this.systemSetup.getWorld(), entityCount =>
+      this.setupTestData(entityCount)
     );
 
     this.isInitialized = true;
@@ -47,12 +45,7 @@ export class ECSComparisonBenchmark {
     this.simdSystem.clear();
 
     for (const data of testData) {
-      this.simdSystem.addEntity(
-        data.position,
-        data.velocity,
-        data.acceleration,
-        data.mass,
-      );
+      this.simdSystem.addEntity(data.position, data.velocity, data.acceleration, data.mass);
     }
 
     this.systemSetup.setupTestData(entityCount);
@@ -81,29 +74,19 @@ export class ECSComparisonBenchmark {
     BenchmarkResultsFormatter.printResults(results);
   }
 
-  private async runBenchmarkSuite(
-    entityCount: number,
-    results: BenchmarkResults,
-  ): Promise<void> {
-    const positionResults = await this.benchmarkRunner.benchmarkPositionUpdates(
-      entityCount,
-      1000,
-    );
+  private async runBenchmarkSuite(entityCount: number, results: BenchmarkResults): Promise<void> {
+    const positionResults = await this.benchmarkRunner.benchmarkPositionUpdates(entityCount, 1000);
     results.simd.push(positionResults.simd);
     results.reynard.push(positionResults.reynard);
 
-    const collisionResults =
-      await this.benchmarkRunner.benchmarkCollisionDetection(
-        entityCount,
-        Math.max(10, 1000 / entityCount),
-      );
+    const collisionResults = await this.benchmarkRunner.benchmarkCollisionDetection(
+      entityCount,
+      Math.max(10, 1000 / entityCount)
+    );
     results.simd.push(collisionResults.simd);
     results.reynard.push(collisionResults.reynard);
 
-    const spatialResults = await this.benchmarkRunner.benchmarkSpatialQueries(
-      entityCount,
-      1000,
-    );
+    const spatialResults = await this.benchmarkRunner.benchmarkSpatialQueries(entityCount, 1000);
     results.simd.push(spatialResults.simd);
     results.reynard.push(spatialResults.reynard);
   }

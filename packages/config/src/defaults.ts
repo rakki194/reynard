@@ -5,12 +5,7 @@
  * variables or user preferences.
  */
 
-import {
-  HTTP_CONSTANTS,
-  PERFORMANCE_CONSTANTS,
-  SECURITY_CONSTANTS,
-  VALIDATION_CONSTANTS,
-} from "./constants";
+import { HTTP_CONSTANTS, PERFORMANCE_CONSTANTS, SECURITY_CONSTANTS, VALIDATION_CONSTANTS } from "./constants";
 
 // ============================================================================
 // HTTP Defaults

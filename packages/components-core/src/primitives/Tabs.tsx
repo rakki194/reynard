@@ -55,7 +55,7 @@ const defaultProps: Partial<TabsProps> = {
   fullWidth: false,
 };
 
-export const Tabs: Component<TabsProps> = (props) => {
+export const Tabs: Component<TabsProps> = props => {
   const merged = mergeProps(defaultProps, props);
   const [local] = splitProps(merged, [
     "items",
@@ -71,20 +71,16 @@ export const Tabs: Component<TabsProps> = (props) => {
 
   // Handle keyboard navigation
   const handleKeyDown = (e: KeyboardEvent, tabId: string) => {
-    const currentIndex = local.items.findIndex(
-      (item: TabItem) => item.id === tabId,
-    );
+    const currentIndex = local.items.findIndex((item: TabItem) => item.id === tabId);
     let nextIndex = currentIndex;
     switch (e.key) {
       case "ArrowLeft":
         e.preventDefault();
-        nextIndex =
-          currentIndex > 0 ? currentIndex - 1 : local.items.length - 1;
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : local.items.length - 1;
         break;
       case "ArrowRight":
         e.preventDefault();
-        nextIndex =
-          currentIndex < local.items.length - 1 ? currentIndex + 1 : 0;
+        nextIndex = currentIndex < local.items.length - 1 ? currentIndex + 1 : 0;
         break;
       case "Home":
         e.preventDefault();
@@ -112,19 +108,13 @@ export const Tabs: Component<TabsProps> = (props) => {
     }
     if (!local.items[nextIndex]?.disabled) {
       // Focus the tab button
-      const tabButton = tabsRef?.querySelector(
-        `[data-tab-id="${local.items[nextIndex].id}"]`,
-      ) as HTMLElement;
+      const tabButton = tabsRef?.querySelector(`[data-tab-id="${local.items[nextIndex].id}"]`) as HTMLElement;
       tabButton?.focus();
     }
   };
 
   const getTabsClasses = () => {
-    const classes = [
-      "reynard-tabs",
-      `reynard-tabs--${local.variant}`,
-      `reynard-tabs--${local.size}`,
-    ];
+    const classes = ["reynard-tabs", `reynard-tabs--${local.variant}`, `reynard-tabs--${local.size}`];
     if (local.fullWidth) classes.push("reynard-tabs--full-width");
     if (local.class) classes.push(local.class);
     return classes.join(" ");
@@ -155,30 +145,24 @@ export const Tabs: Component<TabsProps> = (props) => {
               disabled={item.disabled}
               tabindex={item.id === local.activeTab ? 0 : -1}
               onClick={() => !item.disabled && local.onTabChange(item.id)}
-              onKeyDown={(e) => handleKeyDown(e, item.id)}
+              onKeyDown={e => handleKeyDown(e, item.id)}
             >
-              {item.icon && (
-                <span class="reynard-tabs__tab-icon">{item.icon}</span>
-              )}
+              {item.icon && <span class="reynard-tabs__tab-icon">{item.icon}</span>}
 
               <span class="reynard-tabs__tab-label">{item.label}</span>
 
-              {item.badge && (
-                <span class="reynard-tabs__tab-badge">{item.badge}</span>
-              )}
+              {item.badge && <span class="reynard-tabs__tab-badge">{item.badge}</span>}
             </button>
           )}
         </For>
       </div>
 
-      {local.children && (
-        <div class="reynard-tabs__content">{local.children}</div>
-      )}
+      {local.children && <div class="reynard-tabs__content">{local.children}</div>}
 
       {/* Handle content property for backward compatibility */}
       {!local.children && local.items.length > 0 && (
         <div class="reynard-tabs__content">
-          {local.items.map((item) => (
+          {local.items.map(item => (
             <div
               class={`reynard-tab-panel ${item.id === local.activeTab ? "reynard-tab-panel--active" : "reynard-tab-panel--hidden"}`}
               role="tabpanel"
@@ -193,13 +177,8 @@ export const Tabs: Component<TabsProps> = (props) => {
   );
 };
 
-export const TabPanel: Component<TabPanelProps> = (props) => {
-  const [local] = splitProps(props, [
-    "tabId",
-    "activeTab",
-    "children",
-    "class",
-  ]);
+export const TabPanel: Component<TabPanelProps> = props => {
+  const [local] = splitProps(props, ["tabId", "activeTab", "children", "class"]);
   const isActive = () => local.tabId === local.activeTab;
   const getAriaHidden = () => {
     return !isActive();

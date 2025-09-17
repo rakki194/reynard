@@ -13,15 +13,11 @@ export interface UploadControlsProps {
   startUpload: () => void;
 }
 
-export const UploadControls: Component<UploadControlsProps> = (props) => {
+export const UploadControls: Component<UploadControlsProps> = props => {
   return (
     <Show when={!props.autoUpload && props.hasFiles}>
       <div class="upload-controls">
-        <Button
-          onClick={() => props.startUpload()}
-          disabled={props.isUploading()}
-          loading={props.isUploading()}
-        >
+        <Button onClick={() => props.startUpload()} disabled={props.isUploading()} loading={props.isUploading()}>
           {props.isUploading() ? "Uploading..." : "Upload Files"}
         </Button>
       </div>

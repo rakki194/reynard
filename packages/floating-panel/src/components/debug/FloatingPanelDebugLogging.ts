@@ -14,7 +14,7 @@ export function createDebugLogging(
   props: FloatingPanelProps,
   panelRef: () => HTMLElement | undefined,
   isVisible: () => boolean,
-  isDragging: () => boolean,
+  isDragging: () => boolean
 ) {
   // Initial debug logging
   console.log("🦦> FloatingPanelDebug created:", {

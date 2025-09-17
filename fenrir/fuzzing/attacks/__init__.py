@@ -13,16 +13,16 @@ Modules:
     traditional: Traditional HTTP fuzzing attacks
 """
 
-from .grammar import GrammarFuzzer
-from .websocket import WebSocketFuzzer
-from .ml import MLFuzzer
 from .auth import AuthBypassFuzzer
+from .grammar import GrammarFuzzer
+from .ml import MLFuzzer
 from .traditional import TraditionalFuzzer
+from .websocket import WebSocketFuzzer
 
 __all__ = [
-    "GrammarFuzzer",
-    "WebSocketFuzzer", 
-    "MLFuzzer",
     "AuthBypassFuzzer",
-    "TraditionalFuzzer"
+    "GrammarFuzzer",
+    "MLFuzzer",
+    "TraditionalFuzzer",
+    "WebSocketFuzzer",
 ]

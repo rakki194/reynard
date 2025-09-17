@@ -9,13 +9,11 @@ interface HueShiftControlsProps {
   onRampStopsChange: (stops: number) => void;
 }
 
-export const HueShiftControls: Component<HueShiftControlsProps> = (props) => {
+export const HueShiftControls: Component<HueShiftControlsProps> = props => {
   return (
     <div class="hue-shift-controls">
       <div class="control-group">
-        <label for="intensity-slider">
-          Shift Intensity: {props.intensity.toFixed(2)}
-        </label>
+        <label for="intensity-slider">Shift Intensity: {props.intensity.toFixed(2)}</label>
         <Slider
           id="intensity-slider"
           min={0}
@@ -32,9 +30,7 @@ export const HueShiftControls: Component<HueShiftControlsProps> = (props) => {
       </div>
 
       <div class="control-group">
-        <label for="ramp-stops-slider">
-          Color Ramp Stops: {props.rampStops}
-        </label>
+        <label for="ramp-stops-slider">Color Ramp Stops: {props.rampStops}</label>
         <Slider
           id="ramp-stops-slider"
           min={3}
@@ -53,28 +49,16 @@ export const HueShiftControls: Component<HueShiftControlsProps> = (props) => {
       <div class="preset-buttons">
         <h4>Quick Presets</h4>
         <div class="preset-grid">
-          <button
-            class="preset-button subtle"
-            onClick={() => props.onIntensityChange(0.2)}
-          >
+          <button class="preset-button subtle" onClick={() => props.onIntensityChange(0.2)}>
             Subtle
           </button>
-          <button
-            class="preset-button moderate"
-            onClick={() => props.onIntensityChange(0.4)}
-          >
+          <button class="preset-button moderate" onClick={() => props.onIntensityChange(0.4)}>
             Moderate
           </button>
-          <button
-            class="preset-button strong"
-            onClick={() => props.onIntensityChange(0.6)}
-          >
+          <button class="preset-button strong" onClick={() => props.onIntensityChange(0.6)}>
             Strong
           </button>
-          <button
-            class="preset-button extreme"
-            onClick={() => props.onIntensityChange(0.8)}
-          >
+          <button class="preset-button extreme" onClick={() => props.onIntensityChange(0.8)}>
             Extreme
           </button>
         </div>
@@ -84,13 +68,12 @@ export const HueShiftControls: Component<HueShiftControlsProps> = (props) => {
         <h4>About Hue Shifting</h4>
         <div class="info-content">
           <div class="info-item">
-            <strong>Intensity:</strong> Controls how much the hue shifts between
-            shadows and highlights. Higher values create more dramatic color
-            changes.
+            <strong>Intensity:</strong> Controls how much the hue shifts between shadows and highlights. Higher values
+            create more dramatic color changes.
           </div>
           <div class="info-item">
-            <strong>Ramp Stops:</strong> Number of colors in the generated ramp.
-            More stops create smoother gradients but use more palette space.
+            <strong>Ramp Stops:</strong> Number of colors in the generated ramp. More stops create smoother gradients
+            but use more palette space.
           </div>
         </div>
       </div>

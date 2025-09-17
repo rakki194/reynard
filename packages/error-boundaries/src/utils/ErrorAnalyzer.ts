@@ -3,18 +3,14 @@
  * Comprehensive error analysis and classification system
  */
 
-import {
-  ErrorSeverity,
-  ErrorCategory,
-  ErrorContext,
-} from "../types/ErrorTypes";
+import { ErrorSeverity, ErrorCategory, ErrorContext } from "../types/ErrorTypes";
 
 /**
  * Analyze an error and determine its severity and category
  */
 export function analyzeError(
   error: Error,
-  errorInfo: any,
+  errorInfo: any
 ): {
   severity: ErrorSeverity;
   category: ErrorCategory;
@@ -48,12 +44,7 @@ export function analyzeError(
 /**
  * Determine error category based on error characteristics
  */
-function determineErrorCategory(
-  _error: Error,
-  message: string,
-  name: string,
-  stack: string,
-): ErrorCategory {
+function determineErrorCategory(_error: Error, message: string, name: string, stack: string): ErrorCategory {
   // Network errors
   if (
     name.includes("network") ||
@@ -81,11 +72,7 @@ function determineErrorCategory(
   }
 
   // Permission errors
-  if (
-    message.includes("permission") ||
-    message.includes("access denied") ||
-    message.includes("not allowed")
-  ) {
+  if (message.includes("permission") || message.includes("access denied") || message.includes("not allowed")) {
     return ErrorCategory.PERMISSION;
   }
 
@@ -123,11 +110,7 @@ function determineErrorCategory(
   }
 
   // Timeout errors
-  if (
-    name.includes("timeout") ||
-    message.includes("timeout") ||
-    message.includes("timed out")
-  ) {
+  if (name.includes("timeout") || message.includes("timeout") || message.includes("timed out")) {
     return ErrorCategory.TIMEOUT;
   }
 
@@ -137,11 +120,7 @@ function determineErrorCategory(
 /**
  * Determine error severity based on category and context
  */
-function determineErrorSeverity(
-  category: ErrorCategory,
-  error: Error,
-  _errorInfo: any,
-): ErrorSeverity {
+function determineErrorSeverity(category: ErrorCategory, error: Error, _errorInfo: any): ErrorSeverity {
   // Critical errors that break the entire application
   if (
     category === ErrorCategory.AUTHENTICATION ||
@@ -178,21 +157,14 @@ function determineErrorSeverity(
 /**
  * Determine if an error is recoverable
  */
-function isErrorRecoverable(
-  category: ErrorCategory,
-  severity: ErrorSeverity,
-  _error: Error,
-): boolean {
+function isErrorRecoverable(category: ErrorCategory, severity: ErrorSeverity, _error: Error): boolean {
   // Critical errors are generally not recoverable
   if (severity === ErrorSeverity.CRITICAL) {
     return false;
   }
 
   // Network and timeout errors are usually recoverable
-  if (
-    category === ErrorCategory.NETWORK ||
-    category === ErrorCategory.TIMEOUT
-  ) {
+  if (category === ErrorCategory.NETWORK || category === ErrorCategory.TIMEOUT) {
     return true;
   }
 
@@ -217,31 +189,25 @@ function isErrorRecoverable(
 /**
  * Extract metadata from error and error info
  */
-function extractErrorMetadata(
-  _error: Error,
-  errorInfo: any,
-  stack: string,
-): Record<string, unknown> {
+function extractErrorMetadata(_error: Error, errorInfo: any, stack: string): Record<string, unknown> {
   const metadata: Record<string, unknown> = {};
 
   // Extract component information from stack
   const componentMatch = stack.match(/at\s+(\w+)/g);
   if (componentMatch) {
-    metadata.components = componentMatch.map((match) =>
-      match.replace("at ", ""),
-    );
+    metadata.components = componentMatch.map(match => match.replace("at ", ""));
   }
 
   // Extract file information
   const fileMatch = stack.match(/\(([^)]+\.(tsx?|jsx?)):/g);
   if (fileMatch) {
-    metadata.files = fileMatch.map((match) => match.replace(/[()]/g, ""));
+    metadata.files = fileMatch.map(match => match.replace(/[()]/g, ""));
   }
 
   // Extract line numbers
   const lineMatch = stack.match(/:(\d+):(\d+)/g);
   if (lineMatch) {
-    metadata.locations = lineMatch.map((match) => match.replace(/:/g, ""));
+    metadata.locations = lineMatch.map(match => match.replace(/:/g, ""));
   }
 
   // Add error info metadata
@@ -270,7 +236,7 @@ function extractErrorMetadata(
 export function createErrorContext(
   error: Error,
   _errorInfo: any,
-  additionalContext?: Partial<ErrorContext>,
+  additionalContext?: Partial<ErrorContext>
 ): ErrorContext {
   const analysis = analyzeError(error, _errorInfo);
 

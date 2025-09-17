@@ -7,7 +7,7 @@
 import { Component, Show, For, createSignal } from "solid-js";
 import type { UserListProps } from "../types/p2p";
 
-export const UserList: Component<UserListProps> = (props) => {
+export const UserList: Component<UserListProps> = props => {
   const [selectedUser, setSelectedUser] = createSignal<string | null>(null);
 
   // Get status icon for user
@@ -71,14 +71,10 @@ export const UserList: Component<UserListProps> = (props) => {
   };
 
   return (
-    <div
-      class={`reynard-user-list ${props.compact ? "reynard-user-list--compact" : ""}`}
-    >
+    <div class={`reynard-user-list ${props.compact ? "reynard-user-list--compact" : ""}`}>
       {/* Header */}
       <div class="reynard-user-list__header">
-        <h3 class="reynard-user-list__title">
-          Participants ({props.users.length})
-        </h3>
+        <h3 class="reynard-user-list__title">Participants ({props.users.length})</h3>
       </div>
 
       {/* User List */}
@@ -93,17 +89,11 @@ export const UserList: Component<UserListProps> = (props) => {
           }
         >
           <For each={sortedUsers()}>
-            {(user) => (
+            {user => (
               <div
                 class={`reynard-user-list__item ${
-                  user.id === props.currentUser.id
-                    ? "reynard-user-list__item--current"
-                    : ""
-                } ${
-                  selectedUser() === user.id
-                    ? "reynard-user-list__item--selected"
-                    : ""
-                }`}
+                  user.id === props.currentUser.id ? "reynard-user-list__item--current" : ""
+                } ${selectedUser() === user.id ? "reynard-user-list__item--selected" : ""}`}
                 onClick={() => {
                   setSelectedUser(user.id);
                   props.onUserSelect?.(user);
@@ -111,15 +101,11 @@ export const UserList: Component<UserListProps> = (props) => {
               >
                 {/* User Avatar */}
                 <div class="reynard-user-list__item-avatar">
-                  <div class="reynard-user-list__avatar">
-                    {user.avatar || user.name.charAt(0)}
-                  </div>
+                  <div class="reynard-user-list__avatar">{user.avatar || user.name.charAt(0)}</div>
 
                   {/* Status Indicator */}
                   <Show when={props.showStatus}>
-                    <div
-                      class={`reynard-user-list__status-indicator ${getStatusClass(user.status)}`}
-                    >
+                    <div class={`reynard-user-list__status-indicator ${getStatusClass(user.status)}`}>
                       <span class="reynard-user-list__status-dot"></span>
                     </div>
                   </Show>
@@ -131,53 +117,40 @@ export const UserList: Component<UserListProps> = (props) => {
                     <span class="reynard-user-list__item-name">
                       {user.name}
                       <Show when={user.id === props.currentUser.id}>
-                        <span class="reynard-user-list__you-indicator">
-                          {" "}
-                          (You)
-                        </span>
+                        <span class="reynard-user-list__you-indicator"> (You)</span>
                       </Show>
                     </span>
 
                     <Show when={props.showStatus && !props.compact}>
-                      <span class="reynard-user-list__status-icon">
-                        {getStatusIcon(user.status)}
-                      </span>
+                      <span class="reynard-user-list__status-icon">{getStatusIcon(user.status)}</span>
                     </Show>
                   </div>
 
                   <Show when={!props.compact}>
                     <div class="reynard-user-list__item-footer">
                       <Show when={props.showStatus}>
-                        <span
-                          class={`reynard-user-list__status-text ${getStatusClass(user.status)}`}
-                        >
+                        <span class={`reynard-user-list__status-text ${getStatusClass(user.status)}`}>
                           {user.status}
                         </span>
                       </Show>
 
                       <Show when={user.status === "offline" && user.lastSeen}>
-                        <span class="reynard-user-list__last-seen">
-                          Last seen {formatLastSeen(user.lastSeen)}
-                        </span>
+                        <span class="reynard-user-list__last-seen">Last seen {formatLastSeen(user.lastSeen)}</span>
                       </Show>
 
                       <Show when={user.metadata?.role}>
-                        <span class="reynard-user-list__role">
-                          {user.metadata!.role}
-                        </span>
+                        <span class="reynard-user-list__role">{user.metadata!.role}</span>
                       </Show>
                     </div>
                   </Show>
                 </div>
 
                 {/* User Actions */}
-                <Show
-                  when={props.showActions && user.id !== props.currentUser.id}
-                >
+                <Show when={props.showActions && user.id !== props.currentUser.id}>
                   <div class="reynard-user-list__item-actions">
                     <button
                       class="reynard-user-list__action reynard-user-list__action--message"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         console.log("Direct message to:", user.name);
                       }}
@@ -188,7 +161,7 @@ export const UserList: Component<UserListProps> = (props) => {
 
                     <button
                       class="reynard-user-list__action reynard-user-list__action--profile"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         console.log("View profile:", user.name);
                       }}
@@ -199,7 +172,7 @@ export const UserList: Component<UserListProps> = (props) => {
 
                     <button
                       class="reynard-user-list__action reynard-user-list__action--more"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         console.log("More actions for:", user.name);
                       }}
@@ -219,7 +192,7 @@ export const UserList: Component<UserListProps> = (props) => {
       <Show when={props.showStatus && !props.compact}>
         <div class="reynard-user-list__footer">
           <div class="reynard-user-list__online-count">
-            {props.users.filter((u) => u.status === "online").length} online
+            {props.users.filter(u => u.status === "online").length} online
           </div>
         </div>
       </Show>

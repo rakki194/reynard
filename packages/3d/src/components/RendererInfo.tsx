@@ -8,7 +8,7 @@ interface RendererInfoProps {
   geometryStats: { cached: number };
 }
 
-export const RendererInfo: Component<RendererInfoProps> = (props) => {
+export const RendererInfo: Component<RendererInfoProps> = props => {
   return (
     <div class="renderer-info">
       <div class="info-item">
@@ -17,21 +17,15 @@ export const RendererInfo: Component<RendererInfoProps> = (props) => {
       </div>
       <div class="info-item">
         <span class="label">Instancing:</span>
-        <span class="value">
-          {props.config.enableInstancing ? "Enabled" : "Disabled"}
-        </span>
+        <span class="value">{props.config.enableInstancing ? "Enabled" : "Disabled"}</span>
       </div>
       <div class="info-item">
         <span class="label">LOD:</span>
-        <span class="value">
-          {props.config.enableLOD ? "Enabled" : "Disabled"}
-        </span>
+        <span class="value">{props.config.enableLOD ? "Enabled" : "Disabled"}</span>
       </div>
       <div class="info-item">
         <span class="label">Culling:</span>
-        <span class="value">
-          {props.config.enableCulling ? "Enabled" : "Disabled"}
-        </span>
+        <span class="value">{props.config.enableCulling ? "Enabled" : "Disabled"}</span>
       </div>
     </div>
   );

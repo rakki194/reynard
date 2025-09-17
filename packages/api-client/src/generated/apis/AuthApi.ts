@@ -29,13 +29,13 @@ export interface AuthApiInterface {
      * @throws {RequiredError}
      * @memberof AuthApiInterface
      */
-    protectedRouteApiProtectedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>>;
+    protectedRouteApiProtectedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
 
     /**
      * Protected route demonstrating authentication and authorization.  This endpoint requires valid JWT authentication and demonstrates the integration with the Gatekeeper authentication service. It serves as a reference implementation for securing API endpoints and accessing authenticated user information.  Args:     current_user: Authenticated user object provided by the require_active_user dependency.                  Automatically injected by FastAPI\'s dependency injection system.  Returns:     dict: Authenticated user information containing:         - message: Personalized greeting message         - user_id: Unique identifier for the authenticated user         - timestamp: Current UTC timestamp         - authenticated: Authentication status confirmation  Raises:     HTTPException: 401 Unauthorized if authentication fails or token is invalid.     HTTPException: 403 Forbidden if user account is inactive or disabled.
      * Protected Route
      */
-    protectedRouteApiProtectedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }>;
+    protectedRouteApiProtectedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 
 }
 
@@ -48,7 +48,7 @@ export class AuthApi extends runtime.BaseAPI implements AuthApiInterface {
      * Protected route demonstrating authentication and authorization.  This endpoint requires valid JWT authentication and demonstrates the integration with the Gatekeeper authentication service. It serves as a reference implementation for securing API endpoints and accessing authenticated user information.  Args:     current_user: Authenticated user object provided by the require_active_user dependency.                  Automatically injected by FastAPI\'s dependency injection system.  Returns:     dict: Authenticated user information containing:         - message: Personalized greeting message         - user_id: Unique identifier for the authenticated user         - timestamp: Current UTC timestamp         - authenticated: Authentication status confirmation  Raises:     HTTPException: 401 Unauthorized if authentication fails or token is invalid.     HTTPException: 403 Forbidden if user account is inactive or disabled.
      * Protected Route
      */
-    async protectedRouteApiProtectedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
+    async protectedRouteApiProtectedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -75,7 +75,7 @@ export class AuthApi extends runtime.BaseAPI implements AuthApiInterface {
      * Protected route demonstrating authentication and authorization.  This endpoint requires valid JWT authentication and demonstrates the integration with the Gatekeeper authentication service. It serves as a reference implementation for securing API endpoints and accessing authenticated user information.  Args:     current_user: Authenticated user object provided by the require_active_user dependency.                  Automatically injected by FastAPI\'s dependency injection system.  Returns:     dict: Authenticated user information containing:         - message: Personalized greeting message         - user_id: Unique identifier for the authenticated user         - timestamp: Current UTC timestamp         - authenticated: Authentication status confirmation  Raises:     HTTPException: 401 Unauthorized if authentication fails or token is invalid.     HTTPException: 403 Forbidden if user account is inactive or disabled.
      * Protected Route
      */
-    async protectedRouteApiProtectedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
+    async protectedRouteApiProtectedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
         const response = await this.protectedRouteApiProtectedGetRaw(initOverrides);
         return await response.value();
     }

@@ -4,14 +4,7 @@
  * Based on yipyap's EmbeddingDistributionChart and EmbeddingQualityChart
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  onMount,
-  Show,
-  splitProps,
-} from "solid-js";
+import { Component, createSignal, createEffect, onMount, Show, splitProps } from "solid-js";
 import { Chart } from "./Chart";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
 import { ChartConfig, Dataset, ReynardTheme } from "../types";
@@ -102,7 +95,7 @@ const defaultProps = {
   emptyMessage: "No data available",
 };
 
-export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
+export const StatisticalChart: Component<StatisticalChartProps> = props => {
   const [local, others] = splitProps(props, [
     "type",
     "data",
@@ -165,8 +158,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
     }
 
     const values = data.values;
-    const numBins =
-      local.numBins || Math.min(20, Math.ceil(Math.sqrt(values.length)));
+    const numBins = local.numBins || Math.min(20, Math.ceil(Math.sqrt(values.length)));
 
     // Calculate bin edges
     const min = Math.min(...values);
@@ -184,7 +176,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
     for (let i = 0; i < numBins; i++) {
       const binStart = bins[i];
       const binEnd = bins[i + 1];
-      const count = values.filter((v) => v >= binStart && v < binEnd).length;
+      const count = values.filter(v => v >= binStart && v < binEnd).length;
       binCounts.push(count);
     }
 
@@ -196,8 +188,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
     });
 
     const colors = visualization.generateColors(1);
-    const backgroundColor =
-      colors[0]?.replace("1)", "0.6)") || "rgba(54, 162, 235, 0.6)";
+    const backgroundColor = colors[0]?.replace("1)", "0.6)") || "rgba(54, 162, 235, 0.6)";
     const borderColor = colors[0] || "rgba(54, 162, 235, 1)";
 
     return {
@@ -241,16 +232,15 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
     ];
 
     const colors = visualization.generateColors(1);
-    const backgroundColor =
-      colors[0]?.replace("1)", "0.6)") || "rgba(255, 99, 132, 0.6)";
+    const backgroundColor = colors[0]?.replace("1)", "0.6)") || "rgba(255, 99, 132, 0.6)";
     const borderColor = colors[0] || "rgba(255, 99, 132, 1)";
 
     return {
-      labels: boxPlotPoints.map((p) => p.label),
+      labels: boxPlotPoints.map(p => p.label),
       datasets: [
         {
           label: "Value",
-          data: boxPlotPoints.map((p) => p.value),
+          data: boxPlotPoints.map(p => p.value),
           backgroundColor,
           borderColor,
           borderWidth: 2,
@@ -265,9 +255,9 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
   };
 
   const processQualityBarData = (data: QualityData) => {
-    const labels = data.metrics.map((m) => m.name);
-    const values = data.metrics.map((m) => m.value);
-    const colors = data.metrics.map((m) => getMetricColor(m));
+    const labels = data.metrics.map(m => m.name);
+    const values = data.metrics.map(m => m.value);
+    const colors = data.metrics.map(m => getMetricColor(m));
 
     return {
       labels,
@@ -275,7 +265,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
         {
           label: "Quality Score",
           data: values,
-          backgroundColor: colors.map((c) => c.replace("1)", "0.6)")),
+          backgroundColor: colors.map(c => c.replace("1)", "0.6)")),
           borderColor: colors,
           borderWidth: 2,
         },
@@ -312,21 +302,14 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
   const getMetricColor = (metric: QualityMetric) => {
     if (metric.color) return metric.color;
 
-    if (
-      metric.goodThreshold !== undefined &&
-      metric.warningThreshold !== undefined
-    ) {
+    if (metric.goodThreshold !== undefined && metric.warningThreshold !== undefined) {
       if (metric.higherIsBetter) {
-        if (metric.value >= metric.goodThreshold)
-          return "rgba(75, 192, 192, 1)"; // Green
-        if (metric.value >= metric.warningThreshold)
-          return "rgba(255, 205, 86, 1)"; // Yellow
+        if (metric.value >= metric.goodThreshold) return "rgba(75, 192, 192, 1)"; // Green
+        if (metric.value >= metric.warningThreshold) return "rgba(255, 205, 86, 1)"; // Yellow
         return "rgba(255, 99, 132, 1)"; // Red
       } else {
-        if (metric.value <= metric.goodThreshold)
-          return "rgba(75, 192, 192, 1)"; // Green
-        if (metric.value <= metric.warningThreshold)
-          return "rgba(255, 205, 86, 1)"; // Yellow
+        if (metric.value <= metric.goodThreshold) return "rgba(75, 192, 192, 1)"; // Green
+        if (metric.value <= metric.warningThreshold) return "rgba(255, 205, 86, 1)"; // Yellow
         return "rgba(255, 99, 132, 1)"; // Red
       }
     }
@@ -396,7 +379,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
           <div class="issues-section">
             <h5>Issues Found:</h5>
             <ul>
-              {assessment.issues.map((issue) => (
+              {assessment.issues.map(issue => (
                 <li>{issue}</li>
               ))}
             </ul>
@@ -407,7 +390,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
           <div class="recommendations-section">
             <h5>Recommendations:</h5>
             <ul>
-              {assessment.recommendations.map((rec) => (
+              {assessment.recommendations.map(rec => (
                 <li>{rec}</li>
               ))}
             </ul>
@@ -430,9 +413,7 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
           }}
         >
           <div class="loading-spinner"></div>
-          <span style={{ "margin-left": "10px" }}>
-            {t("loadingStatisticalData")}
-          </span>
+          <span style={{ "margin-left": "10px" }}>{t("loadingStatisticalData")}</span>
         </div>
       </Show>
 
@@ -459,14 +440,8 @@ export const StatisticalChart: Component<StatisticalChartProps> = (props) => {
           width={others.width}
           height={others.height}
           title={others.title}
-          xAxisLabel={
-            others.xAxisLabel ||
-            (local.type === "histogram" ? t("valueRange") : t("metric"))
-          }
-          yAxisLabel={
-            others.yAxisLabel ||
-            (local.type === "histogram" ? t("frequency") : t("value"))
-          }
+          xAxisLabel={others.xAxisLabel || (local.type === "histogram" ? t("valueRange") : t("metric"))}
+          yAxisLabel={others.yAxisLabel || (local.type === "histogram" ? t("frequency") : t("value"))}
           showGrid={others.showGrid}
           showLegend={others.showLegend}
           useOKLCH={true}

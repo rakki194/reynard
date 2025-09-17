@@ -1,19 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 // Ensure crypto.randomUUID exists and is callable without wrong this binding
-if (
-  !(globalThis as any).crypto ||
-  typeof (globalThis as any).crypto.randomUUID !== "function"
-) {
+if (!(globalThis as any).crypto || typeof (globalThis as any).crypto.randomUUID !== "function") {
   (globalThis as any).crypto = {
     randomUUID: vi.fn(() => "00000000-0000-4000-8000-000000000000"),
   } as any;
 }
 import { BaseConnection } from "../base";
-import {
-  ConnectionType,
-  ConnectionHealth,
-  type ConnectionConfig,
-} from "../types";
+import { ConnectionType, ConnectionHealth, type ConnectionConfig } from "../types";
 
 class TestConnection extends BaseConnection {
   public sent: unknown[] = [];
@@ -68,7 +61,7 @@ describe("BaseConnection", () => {
   it("reports initial status and updates metrics on send/receive", async () => {
     const c = new TestConnection(baseCfg);
     const events: string[] = [];
-    c.onEvent((e) => events.push(e.eventType));
+    c.onEvent(e => events.push(e.eventType));
     expect(c.getStatus().health).toBe(ConnectionHealth.UNKNOWN);
     await c.connect();
     const ok = await c.send({ a: 1 });

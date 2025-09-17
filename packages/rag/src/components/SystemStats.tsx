@@ -30,9 +30,7 @@ export function SystemStats(props: SystemStatsProps) {
           </div>
           <div class="stat-card">
             <div class="stat-label">Embedding Coverage</div>
-            <div class="stat-value">
-              {(props.stats!.embedding_coverage * 100).toFixed(1)}%
-            </div>
+            <div class="stat-value">{(props.stats!.embedding_coverage * 100).toFixed(1)}%</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Default Model</div>

@@ -17,7 +17,7 @@ import { t } from "../optional-i18n";
 export async function poll(
   condition: () => Promise<boolean> | boolean,
   interval: number = 1000,
-  timeout: number = 30000,
+  timeout: number = 30000
 ): Promise<void> {
   const startTime = Date.now();
 
@@ -40,7 +40,7 @@ export async function poll(
  */
 export function memoizeAsync<T extends (...args: any[]) => Promise<any>>(
   fn: T,
-  keyGenerator?: (...args: Parameters<T>) => string,
+  keyGenerator?: (...args: Parameters<T>) => string
 ): T {
   const cache = new Map<string, Promise<ReturnType<T>>>();
 
@@ -75,13 +75,13 @@ export function makeCancelable<T>(promise: Promise<T>): CancelablePromise<T> {
 
   const wrappedPromise = new Promise<T>((resolve, reject) => {
     promise
-      .then((value) => {
+      .then(value => {
         if (!isCanceled && !isResolved) {
           isResolved = true;
           resolve(value);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         if (!isCanceled && !isResolved) {
           isResolved = true;
           reject(error);

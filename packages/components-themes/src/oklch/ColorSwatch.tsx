@@ -11,15 +11,11 @@ interface ColorSwatchProps {
   ref?: (el: HTMLDivElement) => void;
 }
 
-export const ColorSwatch: Component<ColorSwatchProps> = (props) => {
+export const ColorSwatch: Component<ColorSwatchProps> = props => {
   let swatchRef: HTMLDivElement | undefined;
 
   // Helper function to set CSS custom properties
-  const setCSSProperty = (
-    element: HTMLElement,
-    property: string,
-    value: string,
-  ) => {
+  const setCSSProperty = (element: HTMLElement, property: string, value: string) => {
     element.style.setProperty(property, value);
   };
 
@@ -32,7 +28,7 @@ export const ColorSwatch: Component<ColorSwatchProps> = (props) => {
 
   return (
     <div
-      ref={(el) => {
+      ref={el => {
         swatchRef = el;
         props.ref?.(el);
       }}

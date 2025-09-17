@@ -12,10 +12,7 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import {
-  validateItalicToBlockquote,
-  convertItalicToBlockquote,
-} from "./validate-italic-to-blockquote.js";
+import { validateItalicToBlockquote, convertItalicToBlockquote } from "./validate-italic-to-blockquote.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -60,16 +57,10 @@ Regular paragraph text.
 
       // Check the file was actually modified
       const modifiedContent = fs.readFileSync(testFile, "utf8");
-      expect(modifiedContent).toContain(
-        "> This is italic text that should be converted",
-      );
+      expect(modifiedContent).toContain("> This is italic text that should be converted");
       expect(modifiedContent).toContain("> Another italic line for testing");
-      expect(modifiedContent).not.toContain(
-        "*This is italic text that should be converted*",
-      );
-      expect(modifiedContent).not.toContain(
-        "*Another italic line for testing*",
-      );
+      expect(modifiedContent).not.toContain("*This is italic text that should be converted*");
+      expect(modifiedContent).not.toContain("*Another italic line for testing*");
     });
 
     it("should not modify text that is not italic", () => {
@@ -140,15 +131,11 @@ This is regular text.
 
       const modifiedContent = fs.readFileSync(testFile, "utf8");
       expect(modifiedContent).toContain(
-        "> Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision",
+        "> Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision"
       );
-      expect(modifiedContent).toContain(
-        "> API endpoints: /api/v1/users, /api/v1/posts",
-      );
+      expect(modifiedContent).toContain("> API endpoints: /api/v1/users, /api/v1/posts");
       expect(modifiedContent).toContain("> Error codes: 404, 500, 503");
-      expect(modifiedContent).toContain(
-        "> Special chars: @#$%^&*()_+-=[]{}|;':\",./<>?",
-      );
+      expect(modifiedContent).toContain("> Special chars: @#$%^&*()_+-=[]{}|;':\",./<>?");
     });
 
     it("should handle mixed content with indentation", () => {
@@ -260,7 +247,7 @@ Regular paragraph.`;
       const modifiedContent = fs.readFileSync(testFile, "utf8");
       expect(modifiedContent).toContain("> This is a single line italic");
       expect(modifiedContent).toContain(
-        "> This is a longer italic text that spans multiple words and should be converted to a blockquote for better readability",
+        "> This is a longer italic text that spans multiple words and should be converted to a blockquote for better readability"
       );
       expect(modifiedContent).toContain("> Short italic");
     });
@@ -293,9 +280,7 @@ Regular paragraph.`;
 
       const modifiedContent = fs.readFileSync(testFile, "utf8");
       expect(modifiedContent).toContain("> Valid italic text");
-      expect(modifiedContent).toContain(
-        "> Valid italic with numbers 123 and symbols !@#",
-      );
+      expect(modifiedContent).toContain("> Valid italic with numbers 123 and symbols !@#");
       expect(modifiedContent).toContain("* Invalid (space after asterisk)");
       expect(modifiedContent).toContain("> Invalid (space before asterisk) ");
     });
@@ -312,11 +297,7 @@ Regular paragraph.`;
       fs.writeFileSync(testFile2, `# File 2\n\nRegular text`);
       fs.writeFileSync(testFile3, `# File 3\n\n*Italic text 2*`);
 
-      const result = validateItalicToBlockquote(
-        [testFile1, testFile2, testFile3],
-        false,
-        false,
-      );
+      const result = validateItalicToBlockquote([testFile1, testFile2, testFile3], false, false);
 
       expect(result).toBe(false); // Should fail because there are issues to fix
     });
@@ -331,11 +312,7 @@ Regular paragraph.`;
       fs.writeFileSync(testFile2, `# File 2\n\nRegular text`);
       fs.writeFileSync(testFile3, `# File 3\n\n*Italic text 2*`);
 
-      const result = validateItalicToBlockquote(
-        [testFile1, testFile2, testFile3],
-        false,
-        true,
-      );
+      const result = validateItalicToBlockquote([testFile1, testFile2, testFile3], false, true);
 
       expect(result).toBe(true); // Should succeed after fixing
 
@@ -455,20 +432,16 @@ const example = "code block";
 
       // Check all italic texts were converted
       expect(modifiedContent).toContain(
-        "> This is an introduction that should be converted to a blockquote for emphasis",
+        "> This is an introduction that should be converted to a blockquote for emphasis"
       );
       expect(modifiedContent).toContain(
-        "> Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision",
+        "> Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision"
       );
+      expect(modifiedContent).toContain("> API endpoints: /api/v1/users, /api/v1/posts, /api/v1/comments");
       expect(modifiedContent).toContain(
-        "> API endpoints: /api/v1/users, /api/v1/posts, /api/v1/comments",
+        "> Error codes: 404 (Not Found), 500 (Internal Server Error), 503 (Service Unavailable)"
       );
-      expect(modifiedContent).toContain(
-        "> Error codes: 404 (Not Found), 500 (Internal Server Error), 503 (Service Unavailable)",
-      );
-      expect(modifiedContent).toContain(
-        "> This italic text should be converted",
-      );
+      expect(modifiedContent).toContain("> This italic text should be converted");
       expect(modifiedContent).toContain("> Final thoughts and recommendations");
       expect(modifiedContent).toContain("> Last italic text to convert");
 
@@ -476,9 +449,7 @@ const example = "code block";
       expect(modifiedContent).toContain("**bold text**");
       expect(modifiedContent).toContain("`inline code`");
       expect(modifiedContent).toContain("// This is code, not italic");
-      expect(modifiedContent).toContain(
-        "> This is already a blockquote and should remain unchanged",
-      );
+      expect(modifiedContent).toContain("> This is already a blockquote and should remain unchanged");
     });
 
     it("should handle real-world documentation patterns", () => {
@@ -542,37 +513,21 @@ npm install reynard-framework
       const modifiedContent = fs.readFileSync(testFile, "utf8");
 
       // Verify all italic texts were converted
-      const blockquoteLines = modifiedContent
-        .split("\n")
-        .filter((line) => line.trim().startsWith(">"));
+      const blockquoteLines = modifiedContent.split("\n").filter(line => line.trim().startsWith(">"));
       expect(blockquoteLines).toHaveLength(9);
 
       // Check specific conversions
       expect(modifiedContent).toContain(
-        "> Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision",
+        "> Comprehensive quality assurance tools for the Reynard framework - where cunning development meets feral precision"
       );
-      expect(modifiedContent).toContain(
-        "> Install the framework using npm or pnpm package manager",
-      );
-      expect(modifiedContent).toContain(
-        "> Configure your environment variables and settings",
-      );
-      expect(modifiedContent).toContain(
-        "> Core API endpoints for user management and data processing",
-      );
-      expect(modifiedContent).toContain(
-        "> Administrative endpoints for system management and monitoring",
-      );
+      expect(modifiedContent).toContain("> Install the framework using npm or pnpm package manager");
+      expect(modifiedContent).toContain("> Configure your environment variables and settings");
+      expect(modifiedContent).toContain("> Core API endpoints for user management and data processing");
+      expect(modifiedContent).toContain("> Administrative endpoints for system management and monitoring");
       expect(modifiedContent).toContain("> Common issues and their solutions");
-      expect(modifiedContent).toContain(
-        "> Performance optimization techniques and best practices",
-      );
-      expect(modifiedContent).toContain(
-        "> Guidelines for contributing to the Reynard framework",
-      );
-      expect(modifiedContent).toContain(
-        "> Thank you for using Reynard Framework!",
-      );
+      expect(modifiedContent).toContain("> Performance optimization techniques and best practices");
+      expect(modifiedContent).toContain("> Guidelines for contributing to the Reynard framework");
+      expect(modifiedContent).toContain("> Thank you for using Reynard Framework!");
     });
   });
 

@@ -6,12 +6,7 @@
  */
 
 import { BaseConnection } from "../base";
-import {
-  ConnectionConfig,
-  ConnectionHealth,
-  HealthCheckResult,
-  ConnectionState,
-} from "../types";
+import { ConnectionConfig, ConnectionHealth, HealthCheckResult, ConnectionState } from "../types";
 import {
   HTTPClientConfig,
   HTTPRequestOptions,
@@ -49,12 +44,8 @@ export class HTTPClient {
       headers: config.headers ?? {},
       authToken: config.authToken ?? "",
       enableRetry: config.enableRetry ?? preset.config.enableRetry ?? true,
-      enableCircuitBreaker:
-        config.enableCircuitBreaker ??
-        preset.config.enableCircuitBreaker ??
-        true,
-      enableMetrics:
-        config.enableMetrics ?? preset.config.enableMetrics ?? true,
+      enableCircuitBreaker: config.enableCircuitBreaker ?? preset.config.enableCircuitBreaker ?? true,
+      enableMetrics: config.enableMetrics ?? preset.config.enableMetrics ?? true,
       middleware: config.middleware ?? [],
       preset: config.preset ?? "default",
     };
@@ -89,9 +80,7 @@ export class HTTPClient {
   /**
    * Make HTTP request with retry logic and middleware
    */
-  async request<T = unknown>(
-    options: HTTPRequestOptions,
-  ): Promise<HTTPResponse<T>> {
+  async request<T = unknown>(options: HTTPRequestOptions): Promise<HTTPResponse<T>> {
     const startTime = Date.now();
     const requestMetrics: RequestMetrics = {
       startTime,
@@ -103,12 +92,7 @@ export class HTTPClient {
       const timeSinceLastFailure = Date.now() - this.circuitBreakerLastFailure;
       if (timeSinceLastFailure < 60000) {
         // 1 minute recovery timeout
-        throw this.createError(
-          "Circuit breaker is open",
-          options,
-          503,
-          startTime,
-        );
+        throw this.createError("Circuit breaker is open", options, 503, startTime);
       } else {
         this.circuitBreakerState = "half-open";
         this.metrics.circuitBreakerState = this.circuitBreakerState;
@@ -157,9 +141,7 @@ export class HTTPClient {
           if (processedOptions.data instanceof FormData) {
             requestOptions.body = processedOptions.data;
             // Remove Content-Type header for FormData (browser will set it with boundary)
-            delete (requestOptions.headers as Record<string, string>)[
-              "Content-Type"
-            ];
+            delete (requestOptions.headers as Record<string, string>)["Content-Type"];
           } else {
             requestOptions.body = JSON.stringify(processedOptions.data);
           }
@@ -203,9 +185,7 @@ export class HTTPClient {
         let processedResponse = httpResponse as HTTPResponse<T>;
         for (const middleware of this.middleware) {
           if (middleware.response) {
-            processedResponse = (await middleware.response(
-              processedResponse,
-            )) as HTTPResponse<T>;
+            processedResponse = (await middleware.response(processedResponse)) as HTTPResponse<T>;
           }
         }
 
@@ -233,12 +213,10 @@ export class HTTPClient {
         const httpError = this.createError(
           error instanceof Error ? error.message : "Unknown error",
           processedOptions,
-          error instanceof Error && "status" in error
-            ? (error as any).status
-            : 0,
+          error instanceof Error && "status" in error ? (error as any).status : 0,
           startTime,
           requestTime,
-          attempt,
+          attempt
         );
 
         // Apply error middleware
@@ -254,7 +232,7 @@ export class HTTPClient {
         // Check if we should retry
         if (attempt < retries && this.shouldRetry(processedError)) {
           const delay = this.calculateRetryDelay(attempt);
-          await new Promise((resolve) => setTimeout(resolve, delay));
+          await new Promise(resolve => setTimeout(resolve, delay));
           continue;
         }
 
@@ -267,11 +245,7 @@ export class HTTPClient {
         // Notify middleware of completion
         for (const middleware of this.middleware) {
           if (middleware.complete) {
-            await middleware.complete(
-              processedOptions,
-              undefined,
-              processedError,
-            );
+            await middleware.complete(processedOptions, undefined, processedError);
           }
         }
 
@@ -286,17 +260,14 @@ export class HTTPClient {
   // Convenience Methods
   // ============================================================================
 
-  async get<T = unknown>(
-    endpoint: string,
-    options: Partial<HTTPRequestOptions> = {},
-  ): Promise<HTTPResponse<T>> {
+  async get<T = unknown>(endpoint: string, options: Partial<HTTPRequestOptions> = {}): Promise<HTTPResponse<T>> {
     return this.request<T>({ ...options, method: "GET", endpoint });
   }
 
   async post<T = unknown>(
     endpoint: string,
     data?: unknown,
-    options: Partial<HTTPRequestOptions> = {},
+    options: Partial<HTTPRequestOptions> = {}
   ): Promise<HTTPResponse<T>> {
     return this.request<T>({ ...options, method: "POST", endpoint, data });
   }
@@ -304,7 +275,7 @@ export class HTTPClient {
   async put<T = unknown>(
     endpoint: string,
     data?: unknown,
-    options: Partial<HTTPRequestOptions> = {},
+    options: Partial<HTTPRequestOptions> = {}
   ): Promise<HTTPResponse<T>> {
     return this.request<T>({ ...options, method: "PUT", endpoint, data });
   }
@@ -312,15 +283,12 @@ export class HTTPClient {
   async patch<T = unknown>(
     endpoint: string,
     data?: unknown,
-    options: Partial<HTTPRequestOptions> = {},
+    options: Partial<HTTPRequestOptions> = {}
   ): Promise<HTTPResponse<T>> {
     return this.request<T>({ ...options, method: "PATCH", endpoint, data });
   }
 
-  async delete<T = unknown>(
-    endpoint: string,
-    options: Partial<HTTPRequestOptions> = {},
-  ): Promise<HTTPResponse<T>> {
+  async delete<T = unknown>(endpoint: string, options: Partial<HTTPRequestOptions> = {}): Promise<HTTPResponse<T>> {
     return this.request<T>({ ...options, method: "DELETE", endpoint });
   }
 
@@ -402,7 +370,7 @@ export class HTTPClient {
     status = 0,
     startTime: number,
     requestTime?: number,
-    retryCount = 0,
+    retryCount = 0
   ): HTTPError {
     const error = new Error(message) as HTTPError;
     error.status = status;
@@ -418,9 +386,7 @@ export class HTTPClient {
     // Retry on network errors or 5xx status codes
     return (
       error.status === 0 || // Network error
-      (error.status !== undefined &&
-        error.status >= 500 &&
-        error.status < 600) || // Server errors
+      (error.status !== undefined && error.status >= 500 && error.status < 600) || // Server errors
       error.status === 429 // Rate limiting
     );
   }
@@ -444,8 +410,7 @@ export class HTTPClient {
     // Update average response time
     const totalRequests = this.metrics.successCount + this.metrics.errorCount;
     this.metrics.averageResponseTime =
-      (this.metrics.averageResponseTime * (totalRequests - 1) + requestTime) /
-      totalRequests;
+      (this.metrics.averageResponseTime * (totalRequests - 1) + requestTime) / totalRequests;
   }
 
   private updateCircuitBreaker(): void {

@@ -33,7 +33,7 @@ interface CoreComponentsProps {
   animationFrame: () => number;
 }
 
-export const CoreComponents: Component<CoreComponentsProps> = (props) => {
+export const CoreComponents: Component<CoreComponentsProps> = props => {
   return (
     <>
       <ColorControls
@@ -54,10 +54,7 @@ export const CoreComponents: Component<CoreComponentsProps> = (props) => {
         selectedHue={props.state.selectedHue()}
       />
 
-      <ColorWheel
-        animatedPalette={props.computedValues.animatedPalette()}
-        animationFrame={props.animationFrame()}
-      />
+      <ColorWheel animatedPalette={props.computedValues.animatedPalette()} animationFrame={props.animationFrame()} />
 
       <GradientDemo gradientDemos={props.computedValues.gradientDemos()} />
     </>

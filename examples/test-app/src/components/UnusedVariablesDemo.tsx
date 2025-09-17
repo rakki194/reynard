@@ -46,22 +46,15 @@ export function UnusedVariablesDemo() {
     <div class="unused-variables-demo">
       <div class="demo-header">
         <h2>🎨 Unused CSS Variables Showcase</h2>
-        <p>
-          Interactive demonstrations of unused CSS variables across Reynard
-          projects
-        </p>
+        <p>Interactive demonstrations of unused CSS variables across Reynard projects</p>
       </div>
 
       <div class="demo-controls">
         <div class="control-group">
           <label for="active-section-select">Active Section:</label>
-          <select
-            id="active-section-select"
-            value={activeSection()}
-            onInput={(e) => setActiveSection(e.target.value)}
-          >
+          <select id="active-section-select" value={activeSection()} onInput={e => setActiveSection(e.target.value)}>
             <For each={sections}>
-              {(section) => (
+              {section => (
                 <option value={section.id}>
                   {section.icon} {section.label}
                 </option>
@@ -72,14 +65,8 @@ export function UnusedVariablesDemo() {
 
         <div class="control-group">
           <label for="theme-select">Theme:</label>
-          <select
-            id="theme-select"
-            value={selectedTheme()}
-            onInput={(e) => setSelectedTheme(e.target.value)}
-          >
-            <For each={themes}>
-              {(theme) => <option value={theme.id}>{theme.label}</option>}
-            </For>
+          <select id="theme-select" value={selectedTheme()} onInput={e => setSelectedTheme(e.target.value)}>
+            <For each={themes}>{theme => <option value={theme.id}>{theme.label}</option>}</For>
           </select>
         </div>
       </div>
@@ -107,9 +94,7 @@ export function UnusedVariablesDemo() {
                 <div class="button-group">
                   <button class="btn btn-save">Save Action</button>
                   <button class="btn btn-cancel">Cancel Action</button>
-                  <button class="btn btn-destructive">
-                    Destructive Action
-                  </button>
+                  <button class="btn btn-destructive">Destructive Action</button>
                 </div>
               </div>
 
@@ -138,7 +123,7 @@ export function UnusedVariablesDemo() {
               <h4>Caption Variants</h4>
               <div class="caption-grid">
                 <For each={captionVariants}>
-                  {(variant) => (
+                  {variant => (
                     <div class={`caption-item caption-${variant.name}`}>
                       <span class="caption-text">{variant.name}</span>
                       <div class="caption-hover">Hover State</div>
@@ -179,9 +164,7 @@ export function UnusedVariablesDemo() {
                   <div class="color-swatch primary">Primary</div>
                   <div class="color-swatch primary-hover">Primary Hover</div>
                   <div class="color-swatch primary-active">Primary Active</div>
-                  <div class="color-swatch primary-disabled">
-                    Primary Disabled
-                  </div>
+                  <div class="color-swatch primary-disabled">Primary Disabled</div>
                 </div>
               </div>
 
@@ -189,15 +172,9 @@ export function UnusedVariablesDemo() {
                 <h4>Secondary Colors</h4>
                 <div class="color-swatches">
                   <div class="color-swatch secondary">Secondary</div>
-                  <div class="color-swatch secondary-hover">
-                    Secondary Hover
-                  </div>
-                  <div class="color-swatch secondary-active">
-                    Secondary Active
-                  </div>
-                  <div class="color-swatch secondary-disabled">
-                    Secondary Disabled
-                  </div>
+                  <div class="color-swatch secondary-hover">Secondary Hover</div>
+                  <div class="color-swatch secondary-active">Secondary Active</div>
+                  <div class="color-swatch secondary-disabled">Secondary Disabled</div>
                 </div>
               </div>
 
@@ -207,9 +184,7 @@ export function UnusedVariablesDemo() {
                   <div class="color-swatch surface">Surface</div>
                   <div class="color-swatch surface-hover">Surface Hover</div>
                   <div class="color-swatch surface-active">Surface Active</div>
-                  <div class="color-swatch surface-selected">
-                    Surface Selected
-                  </div>
+                  <div class="color-swatch surface-selected">Surface Selected</div>
                 </div>
               </div>
 
@@ -234,18 +209,14 @@ export function UnusedVariablesDemo() {
             <div class="layout-demo">
               <div class="grid-controls">
                 <label>
-                  <input
-                    type="checkbox"
-                    checked={showGrid()}
-                    onChange={(e) => setShowGrid(e.target.checked)}
-                  />
+                  <input type="checkbox" checked={showGrid()} onChange={e => setShowGrid(e.target.checked)} />
                   Show Grid
                 </label>
               </div>
 
               <div class="grid-demo" classList={{ "show-grid": showGrid() }}>
                 <For each={gridColumns}>
-                  {(size) => (
+                  {size => (
                     <div class={`grid-example grid-${size}`}>
                       <h4>Grid {size.toUpperCase()}</h4>
                       <div class={`grid-container grid-cols-${size}`}>
@@ -260,13 +231,11 @@ export function UnusedVariablesDemo() {
                                     ? "4"
                                     : size === "lg"
                                       ? "6"
-                                      : "8",
-                            ),
+                                      : "8"
+                            )
                           )}
                         >
-                          {(_, i) => (
-                            <div class="grid-item">Item {i() + 1}</div>
-                          )}
+                          {(_, i) => <div class="grid-item">Item {i() + 1}</div>}
                         </For>
                       </div>
                     </div>
@@ -336,7 +305,7 @@ export function UnusedVariablesDemo() {
 
               <div class="elevation-grid">
                 <For each={elevations}>
-                  {(level) => (
+                  {level => (
                     <div class={`elevation-card elevation-${level}`}>
                       <h4>Elevation {level}</h4>
                       <p>Shadow level {level}</p>
@@ -377,11 +346,7 @@ export function UnusedVariablesDemo() {
 
               <div class="opacity-grid">
                 <For each={opacities}>
-                  {(opacityLevel) => (
-                    <div class={`opacity-item opacity-${opacityLevel}`}>
-                      {opacityLevel}% Opacity
-                    </div>
-                  )}
+                  {opacityLevel => <div class={`opacity-item opacity-${opacityLevel}`}>{opacityLevel}% Opacity</div>}
                 </For>
               </div>
 
@@ -392,9 +357,7 @@ export function UnusedVariablesDemo() {
                   <div class="overlay-item overlay-darker">Darker Overlay</div>
                   <div class="overlay-item overlay-medium">Medium Overlay</div>
                   <div class="overlay-item overlay-light">Light Overlay</div>
-                  <div class="overlay-item overlay-lighter">
-                    Lighter Overlay
-                  </div>
+                  <div class="overlay-item overlay-lighter">Lighter Overlay</div>
                 </div>
               </div>
             </div>
@@ -409,26 +372,15 @@ export function UnusedVariablesDemo() {
               <div class="radius-controls">
                 <label>
                   Border Radius: {borderRadius()}
-                  <select
-                    value={borderRadius()}
-                    onInput={(e) => setBorderRadius(e.target.value)}
-                  >
-                    <For each={radiusSizes}>
-                      {(size) => (
-                        <option value={size}>{size.toUpperCase()}</option>
-                      )}
-                    </For>
+                  <select value={borderRadius()} onInput={e => setBorderRadius(e.target.value)}>
+                    <For each={radiusSizes}>{size => <option value={size}>{size.toUpperCase()}</option>}</For>
                   </select>
                 </label>
               </div>
 
               <div class="radius-grid">
                 <For each={radiusSizes}>
-                  {(size) => (
-                    <div class={`radius-item radius-${size}`}>
-                      {size.toUpperCase()} Radius
-                    </div>
-                  )}
+                  {size => <div class={`radius-item radius-${size}`}>{size.toUpperCase()} Radius</div>}
                 </For>
               </div>
 

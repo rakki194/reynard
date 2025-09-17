@@ -18,7 +18,7 @@ describe("Vitest Configuration Coverage", () => {
         "**/mocks/**",
       ];
 
-      expectedExclusions.forEach((exclusion) => {
+      expectedExclusions.forEach(exclusion => {
         expect((config.test!.coverage as any).exclude).toContain(exclusion);
       });
     });
@@ -30,7 +30,7 @@ describe("Vitest Configuration Coverage", () => {
         excludeFromCoverage: customExclusions,
       });
 
-      customExclusions.forEach((exclusion) => {
+      customExclusions.forEach(exclusion => {
         expect((config.test!.coverage as any).exclude).toContain(exclusion);
       });
     });
@@ -60,9 +60,7 @@ describe("Vitest Configuration Coverage", () => {
 
       expect(config.test).toBeDefined();
       expect(config.test!.coverage).toBeDefined();
-      expect((config.test!.coverage as any).thresholds.global).toEqual(
-        customThresholds,
-      );
+      expect((config.test!.coverage as any).thresholds.global).toEqual(customThresholds);
     });
 
     it("should be able to create config with custom exclusions manually", () => {
@@ -91,7 +89,7 @@ describe("Vitest Configuration Coverage", () => {
 
       expect(config.test).toBeDefined();
       expect(config.test!.coverage).toBeDefined();
-      customExclusions.forEach((exclusion) => {
+      customExclusions.forEach(exclusion => {
         expect((config.test!.coverage as any).exclude).toContain(exclusion);
       });
     });

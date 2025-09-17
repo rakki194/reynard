@@ -16,10 +16,7 @@ export interface LocalStorageOptions {
  * @param options Configuration options
  * @returns Signal with storage value and setter
  */
-export function useLocalStorage(
-  key: string,
-  options: LocalStorageOptions = {},
-) {
+export function useLocalStorage(key: string, options: LocalStorageOptions = {}) {
   const {
     defaultValue,
     serializer = {
@@ -107,10 +104,7 @@ export function useLocalStorage(
  * @param options Configuration options
  * @returns Signal with storage value and setter
  */
-export function useSessionStorage(
-  key: string,
-  options: Omit<LocalStorageOptions, "syncAcrossTabs"> = {},
-) {
+export function useSessionStorage(key: string, options: Omit<LocalStorageOptions, "syncAcrossTabs"> = {}) {
   const {
     defaultValue,
     serializer = {

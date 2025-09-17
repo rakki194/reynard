@@ -13,9 +13,7 @@ import { GlobalSettingsForm } from "./components/GlobalSettingsForm";
 import { usePackageConfiguration } from "./composables/usePackageConfiguration";
 import type { PackageConfigurationPanelProps } from "./types/PackageConfigurationTypes";
 
-export const PackageConfigurationPanel: Component<
-  PackageConfigurationPanelProps
-> = (props) => {
+export const PackageConfigurationPanel: Component<PackageConfigurationPanelProps> = props => {
   const {
     state,
     refreshConfigurationData,
@@ -28,9 +26,7 @@ export const PackageConfigurationPanel: Component<
 
   const selectedPackageData = () => {
     const selected = state().selectedPackage;
-    return selected
-      ? state().packages.find((pkg) => pkg.name === selected)
-      : null;
+    return selected ? state().packages.find(pkg => pkg.name === selected) : null;
   };
 
   const handleSavePackageSettings = async (settings: any[]) => {

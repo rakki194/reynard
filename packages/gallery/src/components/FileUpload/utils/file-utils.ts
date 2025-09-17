@@ -25,8 +25,8 @@ export function validateFileSize(file: File, maxSize: number): boolean {
 export function validateFileType(file: File, accept: string): boolean {
   if (accept === "*/*") return true;
 
-  const acceptedTypes = accept.split(",").map((type) => type.trim());
-  return acceptedTypes.some((type) => {
+  const acceptedTypes = accept.split(",").map(type => type.trim());
+  return acceptedTypes.some(type => {
     if (type.startsWith(".")) {
       // File extension check
       return file.name.toLowerCase().endsWith(type.toLowerCase());
@@ -70,7 +70,7 @@ export function calculateProgress(loaded: number, total: number): number {
 export function calculateUploadMetrics(
   loaded: number,
   total: number,
-  startTime: number,
+  startTime: number
 ): { speed: number; timeRemaining: number } {
   const elapsed = (Date.now() - startTime) / 1000; // seconds
   const speed = loaded / elapsed; // bytes per second

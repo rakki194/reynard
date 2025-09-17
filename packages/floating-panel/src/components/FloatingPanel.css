@@ -161,13 +161,11 @@
 
 /* Animation states */
 .floating-panel.entering {
-  animation: panel-entrance var(--panel-transition-duration, 300ms)
-    var(--panel-transition-easing, ease);
+  animation: panel-entrance var(--panel-transition-duration, 300ms) var(--panel-transition-easing, ease);
 }
 
 .floating-panel.exiting {
-  animation: panel-exit var(--panel-transition-duration, 300ms)
-    var(--panel-transition-easing, ease);
+  animation: panel-exit var(--panel-transition-duration, 300ms) var(--panel-transition-easing, ease);
 }
 
 @keyframes panel-entrance {

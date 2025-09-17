@@ -3,11 +3,7 @@
  */
 
 import { createSignal } from "solid-js";
-import type {
-  RAGQueryRequest,
-  RAGQueryResponse,
-  RAGStatsResponse,
-} from "../generated/index.js";
+import type { RAGQueryRequest, RAGQueryResponse, RAGStatsResponse } from "../generated/index.js";
 
 export interface UseRAGOptions {
   basePath?: string;
@@ -22,9 +18,7 @@ export function useRAG(options: UseRAGOptions = {}) {
       // Stub implementation
       console.log("RAG query:", request);
       return {
-        hits: [
-          { chunkText: "Sample document content", score: 0.95, extra: {} },
-        ],
+        hits: [{ chunkText: "Sample document content", score: 0.95, extra: {} }],
         total: 1,
       };
     } finally {

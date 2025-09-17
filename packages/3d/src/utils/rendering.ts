@@ -1,18 +1,12 @@
-import type {
-  EmbeddingPoint,
-  EmbeddingRenderingConfig,
-} from "../types/rendering";
+import type { EmbeddingPoint, EmbeddingRenderingConfig } from "../types/rendering";
 
 /**
  * Apply color mapping to points based on configuration
  */
-export function applyColorMapping(
-  points: EmbeddingPoint[],
-  colorMapping: string,
-): void {
+export function applyColorMapping(points: EmbeddingPoint[], colorMapping: string): void {
   switch (colorMapping) {
     case "similarity":
-      points.forEach((point) => {
+      points.forEach(point => {
         if (point.similarity !== undefined) {
           const intensity = Math.max(0, Math.min(1, point.similarity));
           point.color = [intensity, 1 - intensity, 0.5];
@@ -20,7 +14,7 @@ export function applyColorMapping(
       });
       break;
     case "cluster":
-      points.forEach((point) => {
+      points.forEach(point => {
         if (point.clusterId) {
           const hash = point.clusterId.split("").reduce((a, b) => {
             a = (a << 5) - a + b.charCodeAt(0);
@@ -34,7 +28,7 @@ export function applyColorMapping(
       });
       break;
     case "importance":
-      points.forEach((point) => {
+      points.forEach(point => {
         if (point.importance !== undefined) {
           const intensity = Math.max(0, Math.min(1, point.importance));
           point.color = [intensity, intensity, 1 - intensity];
@@ -42,7 +36,7 @@ export function applyColorMapping(
       });
       break;
     case "confidence":
-      points.forEach((point) => {
+      points.forEach(point => {
         if (point.confidence !== undefined) {
           const intensity = Math.max(0, Math.min(1, point.confidence));
           point.color = [1 - intensity, intensity, 0.5];
@@ -61,14 +55,10 @@ export function applyColorMapping(
 /**
  * Apply size mapping to points based on configuration
  */
-export function applySizeMapping(
-  points: EmbeddingPoint[],
-  sizeMapping: string,
-  baseSize: number,
-): void {
+export function applySizeMapping(points: EmbeddingPoint[], sizeMapping: string, baseSize: number): void {
   switch (sizeMapping) {
     case "importance":
-      points.forEach((point) => {
+      points.forEach(point => {
         if (point.importance !== undefined) {
           point.size = baseSize * (0.5 + point.importance * 1.5);
         } else {
@@ -77,7 +67,7 @@ export function applySizeMapping(
       });
       break;
     case "confidence":
-      points.forEach((point) => {
+      points.forEach(point => {
         if (point.confidence !== undefined) {
           point.size = baseSize * (0.5 + point.confidence * 1.5);
         } else {
@@ -87,7 +77,7 @@ export function applySizeMapping(
       break;
     case "uniform":
     default:
-      points.forEach((point) => {
+      points.forEach(point => {
         point.size = baseSize;
       });
       break;
@@ -97,10 +87,7 @@ export function applySizeMapping(
 /**
  * Filter points based on configuration
  */
-export function filterPoints(
-  points: EmbeddingPoint[],
-  config: EmbeddingRenderingConfig,
-): EmbeddingPoint[] {
+export function filterPoints(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): EmbeddingPoint[] {
   let filtered = [...points];
 
   // Apply max points limit
@@ -116,7 +103,7 @@ export function filterPoints(
   }
 
   // Filter out invalid positions
-  filtered = filtered.filter((point) => {
+  filtered = filtered.filter(point => {
     const [x, y, z] = point.position;
     return Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(z);
   });
@@ -127,9 +114,7 @@ export function filterPoints(
 /**
  * Generate a cache key for materials
  */
-export function generateMaterialCacheKey(
-  config: EmbeddingRenderingConfig,
-): string {
+export function generateMaterialCacheKey(config: EmbeddingRenderingConfig): string {
   return JSON.stringify({
     pointSize: config.pointSize,
     colorMapping: config.colorMapping,
@@ -146,10 +131,7 @@ export function generateMaterialCacheKey(
 /**
  * Generate a cache key for geometries
  */
-export function generateGeometryCacheKey(
-  points: EmbeddingPoint[],
-  config: EmbeddingRenderingConfig,
-): string {
+export function generateGeometryCacheKey(points: EmbeddingPoint[], config: EmbeddingRenderingConfig): string {
   return JSON.stringify({
     pointCount: points.length,
     enableInstancing: config.enableInstancing,
@@ -177,7 +159,7 @@ export function calculateBoundingBox(points: EmbeddingPoint[]): {
     maxY = -Infinity,
     maxZ = -Infinity;
 
-  points.forEach((point) => {
+  points.forEach(point => {
     const [x, y, z] = point.position;
     minX = Math.min(minX, x);
     minY = Math.min(minY, y);
@@ -196,9 +178,7 @@ export function calculateBoundingBox(points: EmbeddingPoint[]): {
 /**
  * Calculate center point for points
  */
-export function calculateCenter(
-  points: EmbeddingPoint[],
-): [number, number, number] {
+export function calculateCenter(points: EmbeddingPoint[]): [number, number, number] {
   if (points.length === 0) {
     return [0, 0, 0];
   }
@@ -206,7 +186,7 @@ export function calculateCenter(
   let sumX = 0,
     sumY = 0,
     sumZ = 0;
-  points.forEach((point) => {
+  points.forEach(point => {
     const [x, y, z] = point.position;
     sumX += x;
     sumY += y;
@@ -219,10 +199,7 @@ export function calculateCenter(
 /**
  * Calculate distance between two points
  */
-export function calculateDistance(
-  point1: [number, number, number],
-  point2: [number, number, number],
-): number {
+export function calculateDistance(point1: [number, number, number], point2: [number, number, number]): number {
   const dx = point1[0] - point2[0];
   const dy = point1[1] - point2[1];
   const dz = point1[2] - point2[2];
@@ -246,7 +223,7 @@ export function normalizePoints(points: EmbeddingPoint[]): EmbeddingPoint[] {
 
   if (maxRange === 0) return points;
 
-  return points.map((point) => ({
+  return points.map(point => ({
     ...point,
     position: [
       (point.position[0] - minX) / maxRange,

@@ -4,18 +4,13 @@
  * Handles file type checking and validation against supported extensions.
  */
 
-import {
-  getFileTypeInfo,
-  isSupportedExtension,
-  getAllSupportedExtensions,
-} from "../../config/file-types";
+import { getFileTypeInfo, isSupportedExtension, getAllSupportedExtensions } from "../../config/file-types";
 
 export class FileTypeValidator {
   private supportedExtensions: Set<string>;
 
   constructor(supportedExtensions?: Set<string>) {
-    this.supportedExtensions =
-      supportedExtensions || getAllSupportedExtensions();
+    this.supportedExtensions = supportedExtensions || getAllSupportedExtensions();
   }
 
   /**
@@ -38,9 +33,7 @@ export class FileTypeValidator {
    */
   getFileExtension(filename: string): string {
     const lastDotIndex = filename.lastIndexOf(".");
-    return lastDotIndex !== -1
-      ? filename.substring(lastDotIndex).toLowerCase()
-      : "";
+    return lastDotIndex !== -1 ? filename.substring(lastDotIndex).toLowerCase() : "";
   }
 
   /**

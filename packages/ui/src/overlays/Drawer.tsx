@@ -3,15 +3,7 @@
  * Slide-out panel component with backdrop and animations
  */
 
-import {
-  Component,
-  JSX,
-  splitProps,
-  mergeProps,
-  createEffect,
-  Show,
-  onCleanup,
-} from "solid-js";
+import { Component, JSX, splitProps, mergeProps, createEffect, Show, onCleanup } from "solid-js";
 import { Portal } from "solid-js/web";
 import "./Drawer.css";
 
@@ -53,7 +45,7 @@ const defaultProps: Partial<DrawerProps> = {
   zIndex: 1000,
 };
 
-export const Drawer: Component<DrawerProps> = (props) => {
+export const Drawer: Component<DrawerProps> = props => {
   const merged = mergeProps(defaultProps, props);
   const [local] = splitProps(merged, [
     "open",
@@ -107,7 +99,7 @@ export const Drawer: Component<DrawerProps> = (props) => {
   createEffect(() => {
     if (local.open && drawerRef) {
       const focusableElements = drawerRef.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       );
       const firstElement = focusableElements[0] as HTMLElement;
       firstElement?.focus();
@@ -201,12 +193,7 @@ export const Drawer: Component<DrawerProps> = (props) => {
                     onClick={() => local.onClose?.()}
                     aria-label="Close drawer"
                   >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="currentColor"
-                    >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                       <path d="M8 6.585l3.593-3.592a1 1 0 011.414 1.414L9.415 8l3.592 3.593a1 1 0 01-1.414 1.414L8 9.415l-3.593 3.592a1 1 0 01-1.414-1.414L6.585 8 2.993 4.407a1 1 0 011.414-1.414L8 6.585z" />
                     </svg>
                   </button>

@@ -123,7 +123,7 @@ export class BatchProcessor {
   async processEntitiesInBatches<T>(
     entities: Entity[],
     processor: (batch: Entity[]) => T,
-    batchSize?: number,
+    batchSize?: number
   ): Promise<T[]> {
     const size = batchSize || this.config.maxEntitiesPerBatch;
     const results: T[] = [];
@@ -135,7 +135,7 @@ export class BatchProcessor {
 
       // Allow other operations to run
       if (i + size < entities.length) {
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        await new Promise(resolve => setTimeout(resolve, 0));
       }
     }
 
@@ -145,10 +145,7 @@ export class BatchProcessor {
   /**
    * Processes entities with memory management.
    */
-  processWithMemoryManagement<T>(
-    entities: Entity[],
-    processor: (entity: Entity) => T,
-  ): T[] {
+  processWithMemoryManagement<T>(entities: Entity[], processor: (entity: Entity) => T): T[] {
     const results: T[] = [];
     const batchSize = this.config.maxEntitiesPerBatch;
 
@@ -161,10 +158,7 @@ export class BatchProcessor {
       }
 
       // Force garbage collection if available
-      if (
-        this.config.enableMemoryOptimization &&
-        typeof global.gc === "function"
-      ) {
+      if (this.config.enableMemoryOptimization && typeof global.gc === "function") {
         global.gc();
       }
     }
@@ -180,10 +174,7 @@ export class MemoryOptimizedStorage {
   /**
    * Optimizes component storage for large entity counts.
    */
-  static optimizeStorage<T extends Component>(
-    componentType: ComponentType<T>,
-    entityCount: number,
-  ): StorageType {
+  static optimizeStorage<T extends Component>(componentType: ComponentType<T>, entityCount: number): StorageType {
     // Use SparseSet for optional components with low density
     if (entityCount > 10000) {
       return StorageType.SparseSet;
@@ -196,11 +187,7 @@ export class MemoryOptimizedStorage {
   /**
    * Estimates memory usage for different storage types.
    */
-  static estimateMemoryUsage(
-    entityCount: number,
-    componentSize: number,
-    storageType: StorageType,
-  ): number {
+  static estimateMemoryUsage(entityCount: number, componentSize: number, storageType: StorageType): number {
     const baseSize = entityCount * componentSize;
 
     switch (storageType) {
@@ -232,13 +219,9 @@ export class QueryOptimizer {
       enableCaching?: boolean;
       maxCacheSize?: number;
       cacheTimeout?: number;
-    } = {},
+    } = {}
   ): any {
-    const {
-      enableCaching = true,
-      maxCacheSize = 100,
-      cacheTimeout = 1000,
-    } = options;
+    const { enableCaching = true, maxCacheSize = 100, cacheTimeout = 1000 } = options;
 
     if (!enableCaching) {
       return world.query(...componentTypes);
@@ -301,7 +284,7 @@ export class QueryOptimizer {
    */
   private generateCacheKey(componentTypes: ComponentType<any>[]): string {
     return componentTypes
-      .map((type) => type.id)
+      .map(type => type.id)
       .sort()
       .join(",");
   }
@@ -433,7 +416,7 @@ export class ScalingOptimizer {
   async createEntitiesOptimized(
     world: World,
     count: number,
-    componentFactory: (entity: Entity) => Component[],
+    componentFactory: (entity: Entity) => Component[]
   ): Promise<Entity[]> {
     this.monitor.startTiming("entity_creation");
 
@@ -468,10 +451,7 @@ export class ScalingOptimizer {
   /**
    * Optimizes query execution for large entity counts.
    */
-  optimizeQuery<T extends Component[]>(
-    world: World,
-    componentTypes: ComponentType<T[number]>[],
-  ): any {
+  optimizeQuery<T extends Component[]>(world: World, componentTypes: ComponentType<T[number]>[]): any {
     this.monitor.startTiming("query_optimization");
 
     const query = this.queryOptimizer.optimizeQuery(world, componentTypes, {
@@ -511,8 +491,6 @@ export class ScalingOptimizer {
 /**
  * Creates a scaling optimizer with default configuration.
  */
-export function createScalingOptimizer(
-  config?: Partial<ScalingConfig>,
-): ScalingOptimizer {
+export function createScalingOptimizer(config?: Partial<ScalingConfig>): ScalingOptimizer {
   return new ScalingOptimizer(config);
 }

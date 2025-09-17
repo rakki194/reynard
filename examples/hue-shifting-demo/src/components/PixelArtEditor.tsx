@@ -19,12 +19,7 @@ export const PixelArtEditor: Component = () => {
   const canvas = useCanvas(16, 16);
   const drawingTools = useDrawingTools();
   const materialEffects = useMaterialEffects();
-  const events = useEditorEvents(
-    selectedColor,
-    canvas,
-    drawingTools,
-    materialEffects,
-  );
+  const events = useEditorEvents(selectedColor, canvas, drawingTools, materialEffects);
 
   // Initialize on mount
   onMount(() => {

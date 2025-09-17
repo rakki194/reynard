@@ -12,8 +12,6 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from .ignore_config import should_ignore_path, filter_paths
-
 logger = logging.getLogger(__name__)
 
 
@@ -91,15 +89,24 @@ class RipgrepSearchEngine:
                     cmd.extend(["--type", f"custom:{ext}"])
             else:
                 # Default file types
-                cmd.extend([
-                    "--type", "py",
-                    "--type", "ts",
-                    "--type", "js",
-                    "--type", "tsx",
-                    "--type", "jsx",
-                    "--type", "md",
-                    "--type", "txt",
-                ])
+                cmd.extend(
+                    [
+                        "--type",
+                        "py",
+                        "--type",
+                        "ts",
+                        "--type",
+                        "js",
+                        "--type",
+                        "tsx",
+                        "--type",
+                        "jsx",
+                        "--type",
+                        "md",
+                        "--type",
+                        "txt",
+                    ]
+                )
 
             # Add directory filters
             search_paths = [str(self.project_root)]

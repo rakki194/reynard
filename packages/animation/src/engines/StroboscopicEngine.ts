@@ -43,12 +43,10 @@ export class StroboscopicEngine {
     const anglePerFrame = angularVelocity * frameTime;
 
     // Calculate stroboscopic phase
-    const stroboscopicPhase =
-      (anglePerFrame / ((this.config.goldenAngle * Math.PI) / 180)) % 1;
+    const stroboscopicPhase = (anglePerFrame / ((this.config.goldenAngle * Math.PI) / 180)) % 1;
 
     // Determine if stroboscopic effect is active
-    const isStroboscopic =
-      Math.abs(stroboscopicPhase - 0.5) < this.config.stroboscopicThreshold;
+    const isStroboscopic = Math.abs(stroboscopicPhase - 0.5) < this.config.stroboscopicThreshold;
 
     // Calculate apparent motion
     let apparentMotion: StroboscopicState["apparentMotion"] = "frozen";
@@ -89,7 +87,7 @@ export class StroboscopicEngine {
    */
   applyStroboscopicTransform(
     points: Array<{ x: number; y: number; radius: number; angle: number }>,
-    deltaTime: number,
+    deltaTime: number
   ): Array<{
     x: number;
     y: number;
@@ -104,8 +102,7 @@ export class StroboscopicEngine {
 
       if (stroboscopicState.isStroboscopic) {
         // Apply morphing transformation based on research findings
-        const morphingFactor =
-          stroboscopicState.morphingIntensity * Math.sin(index * 0.1);
+        const morphingFactor = stroboscopicState.morphingIntensity * Math.sin(index * 0.1);
 
         // Radial morphing effect
         const radialMorphing = 1 + morphingFactor * 0.2;
@@ -116,14 +113,11 @@ export class StroboscopicEngine {
         transformedPoint.angle += angularMorphing;
 
         // Recalculate position
-        transformedPoint.x =
-          Math.cos(transformedPoint.angle) * transformedPoint.radius;
-        transformedPoint.y =
-          Math.sin(transformedPoint.angle) * transformedPoint.radius;
+        transformedPoint.x = Math.cos(transformedPoint.angle) * transformedPoint.radius;
+        transformedPoint.y = Math.sin(transformedPoint.angle) * transformedPoint.radius;
 
         // Set stroboscopic intensity for visual effects
-        transformedPoint.stroboscopicIntensity =
-          stroboscopicState.temporalAliasing;
+        transformedPoint.stroboscopicIntensity = stroboscopicState.temporalAliasing;
       }
 
       return transformedPoint;

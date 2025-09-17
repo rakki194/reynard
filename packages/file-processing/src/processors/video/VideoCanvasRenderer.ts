@@ -20,7 +20,7 @@ export class VideoCanvasRenderer {
   async renderVideoFrame(
     video: HTMLVideoElement,
     dimensions: DimensionResult,
-    options: VideoCanvasOptions,
+    options: VideoCanvasOptions
   ): Promise<Blob> {
     const canvas = this.getCanvas();
     const ctx = canvas.getContext("2d")!;
@@ -35,13 +35,7 @@ export class VideoCanvasRenderer {
     ctx.fillRect(0, 0, targetWidth, targetHeight);
 
     // Draw video frame
-    ctx.drawImage(
-      video,
-      dimensions.x,
-      dimensions.y,
-      dimensions.width,
-      dimensions.height,
-    );
+    ctx.drawImage(video, dimensions.x, dimensions.y, dimensions.width, dimensions.height);
 
     // Add play button overlay
     this.drawPlayButton(ctx, targetWidth, targetHeight);
@@ -63,11 +57,7 @@ export class VideoCanvasRenderer {
   /**
    * Draw play button overlay for video thumbnails
    */
-  private drawPlayButton(
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-  ): void {
+  private drawPlayButton(ctx: CanvasRenderingContext2D, width: number, height: number): void {
     const size = Math.min(width, height) * 0.2;
     const x = (width - size) / 2;
     const y = (height - size) / 2;
@@ -91,13 +81,10 @@ export class VideoCanvasRenderer {
   /**
    * Convert canvas to blob
    */
-  private async canvasToBlob(
-    canvas: HTMLCanvasElement,
-    options: VideoCanvasOptions,
-  ): Promise<Blob> {
+  private async canvasToBlob(canvas: HTMLCanvasElement, options: VideoCanvasOptions): Promise<Blob> {
     return new Promise((resolve, reject) => {
       canvas.toBlob(
-        (blob) => {
+        blob => {
           if (blob) {
             resolve(blob);
           } else {
@@ -105,7 +92,7 @@ export class VideoCanvasRenderer {
           }
         },
         `image/${options.format}`,
-        (options.quality || 85) / 100,
+        (options.quality || 85) / 100
       );
     });
   }

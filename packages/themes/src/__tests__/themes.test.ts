@@ -3,13 +3,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  themes,
-  getTheme,
-  getAvailableThemes,
-  isDarkTheme,
-  isHighContrastTheme,
-} from "../../themes";
+import { themes, getTheme, getAvailableThemes, isDarkTheme, isHighContrastTheme } from "../../themes";
 import type { ThemeName } from "../../types";
 
 describe("Theme Configurations", () => {
@@ -25,14 +19,14 @@ describe("Theme Configurations", () => {
       "high-contrast-inverse",
     ];
 
-    expectedThemes.forEach((theme) => {
+    expectedThemes.forEach(theme => {
       expect(themes[theme]).toBeDefined();
       expect(themes[theme].name).toBe(theme);
     });
   });
 
   it("should have valid theme configurations", () => {
-    Object.values(themes).forEach((theme) => {
+    Object.values(themes).forEach(theme => {
       expect(theme.name).toBeTruthy();
       expect(theme.displayName).toBeTruthy();
       expect(theme.description).toBeTruthy();

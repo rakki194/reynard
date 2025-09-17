@@ -11,18 +11,6 @@ export { useDataTableHandlers } from "./useDataTableHandlers";
 export { useDataTableData } from "./useDataTableData";
 export { useDataTableSetup } from "./useDataTableSetup";
 
-export type {
-  Column,
-  DataTableProps,
-  SortDirection,
-  DataTableState,
-  DataTableUtils,
-} from "./DataTable.types";
+export type { Column, DataTableProps, SortDirection, DataTableState, DataTableUtils } from "./DataTable.types";
 
-export {
-  getCellValue,
-  getTableClasses,
-  getSortIcon,
-  sortData,
-  paginateData,
-} from "./DataTable.utils";
+export { getCellValue, getTableClasses, getSortIcon, sortData, paginateData } from "./DataTable.utils";

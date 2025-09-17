@@ -8,12 +8,7 @@
 import { createSignal, batch, onCleanup } from "solid-js";
 
 export interface P2PConnectionState {
-  status:
-    | "disconnected"
-    | "connecting"
-    | "connected"
-    | "reconnecting"
-    | "error";
+  status: "disconnected" | "connecting" | "connected" | "reconnecting" | "error";
   lastConnected: number | undefined;
   reconnectAttempts: number;
   protocol: "websocket" | "webrtc" | "sse";
@@ -44,9 +39,7 @@ export interface P2PConnectionReturn {
   isReconnecting: () => boolean;
 }
 
-export function useP2PConnection(
-  options: P2PConnectionOptions,
-): P2PConnectionReturn {
+export function useP2PConnection(options: P2PConnectionOptions): P2PConnectionReturn {
   const {
     realtimeEndpoint,
     reconnection = {
@@ -77,7 +70,7 @@ export function useP2PConnection(
     }
 
     try {
-      setP2pConnection((prev) => ({ ...prev, status: "connecting" }));
+      setP2pConnection(prev => ({ ...prev, status: "connecting" }));
 
       const ws = new WebSocket(realtimeEndpoint);
 
@@ -93,21 +86,21 @@ export function useP2PConnection(
         });
       };
 
-      ws.onclose = (event) => {
+      ws.onclose = event => {
         setWebSocket(null);
         if (!event.wasClean && reconnection.enabled) {
           scheduleReconnect();
         } else {
-          setP2pConnection((prev) => ({ ...prev, status: "disconnected" }));
+          setP2pConnection(prev => ({ ...prev, status: "disconnected" }));
         }
       };
 
-      ws.onerror = (error) => {
+      ws.onerror = error => {
         console.error("WebSocket error:", error);
-        setP2pConnection((prev) => ({ ...prev, status: "error" }));
+        setP2pConnection(prev => ({ ...prev, status: "error" }));
       };
 
-      ws.onmessage = (event) => {
+      ws.onmessage = event => {
         try {
           const data = JSON.parse(event.data);
           handleWebSocketMessage(data);
@@ -117,7 +110,7 @@ export function useP2PConnection(
       };
     } catch (error) {
       console.error("Failed to connect to WebSocket:", error);
-      setP2pConnection((prev) => ({ ...prev, status: "error" }));
+      setP2pConnection(prev => ({ ...prev, status: "error" }));
     }
   };
 
@@ -133,11 +126,11 @@ export function useP2PConnection(
     const attempts = p2pConnection().reconnectAttempts;
 
     if (attempts >= reconnection.maxAttempts) {
-      setP2pConnection((prev) => ({ ...prev, status: "error" }));
+      setP2pConnection(prev => ({ ...prev, status: "error" }));
       return;
     }
 
-    setP2pConnection((prev) => ({
+    setP2pConnection(prev => ({
       ...prev,
       status: "reconnecting",
       reconnectAttempts: attempts + 1,
@@ -170,7 +163,7 @@ export function useP2PConnection(
       setWebSocket(null);
     }
 
-    setP2pConnection((prev) => ({ ...prev, status: "disconnected" }));
+    setP2pConnection(prev => ({ ...prev, status: "disconnected" }));
   };
 
   // Reconnect function

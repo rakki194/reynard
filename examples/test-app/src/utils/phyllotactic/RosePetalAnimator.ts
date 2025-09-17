@@ -24,7 +24,7 @@ export class RosePetalAnimator {
     this.time += deltaTime * this.config.animationSpeed;
     this.updateGrowthPhase();
 
-    petals.forEach((petal) => {
+    petals.forEach(petal => {
       this.updatePetal(petal, deltaTime);
     });
   }
@@ -37,10 +37,7 @@ export class RosePetalAnimator {
     this.naturalGrowth.updatePetal(petal, deltaTime);
 
     // Update growth progress for compatibility
-    petal.growthProgress = Math.min(
-      1,
-      petal.growthProgress + this.config.growthSpeed * deltaTime,
-    );
+    petal.growthProgress = Math.min(1, petal.growthProgress + this.config.growthSpeed * deltaTime);
   }
 
   /**

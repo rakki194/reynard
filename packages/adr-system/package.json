@@ -11,13 +11,7 @@
     "lint": "eslint src --ext .ts,.tsx",
     "analyze": "node dist/analyze.js"
   },
-  "keywords": [
-    "adr",
-    "architecture",
-    "decision-records",
-    "codebase-analysis",
-    "reynard"
-  ],
+  "keywords": ["adr", "architecture", "decision-records", "codebase-analysis", "reynard"],
   "author": "Reynard Architecture Team",
   "license": "MIT",
   "dependencies": {

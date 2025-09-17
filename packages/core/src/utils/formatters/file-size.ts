@@ -21,12 +21,7 @@ export function formatFileSize(bytes: number, precision: number = 1): string {
     return "0 B";
   }
 
-  if (
-    typeof precision !== "number" ||
-    !isFinite(precision) ||
-    precision < 0 ||
-    precision > 10
-  ) {
+  if (typeof precision !== "number" || !isFinite(precision) || precision < 0 || precision > 10) {
     precision = 1;
   }
 
@@ -51,8 +46,7 @@ export function formatFileSize(bytes: number, precision: number = 1): string {
     size = Math.round(size * Math.pow(10, precision)) / Math.pow(10, precision);
   }
 
-  const formatted =
-    unitIndex === 0 ? Math.round(size).toString() : size.toFixed(precision);
+  const formatted = unitIndex === 0 ? Math.round(size).toString() : size.toFixed(precision);
   return `${formatted} ${units[unitIndex]}`;
 }
 

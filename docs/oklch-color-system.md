@@ -231,13 +231,7 @@ function ColorGenerator() {
         color: "oklch(95% 0.01 0)",
       }}
     >
-      <input
-        type="range"
-        min="0"
-        max="360"
-        value={hue()}
-        onInput={(e) => setHue(Number(e.target.value))}
-      />
+      <input type="range" min="0" max="360" value={hue()} onInput={e => setHue(Number(e.target.value))} />
     </div>
   );
 }

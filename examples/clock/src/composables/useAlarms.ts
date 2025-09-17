@@ -25,29 +25,25 @@ export const useAlarms = () => {
       enabled: true,
     };
 
-    const updatedAlarms = [...alarms(), newAlarm].sort((a, b) =>
-      a.time.localeCompare(b.time),
-    );
+    const updatedAlarms = [...alarms(), newAlarm].sort((a, b) => a.time.localeCompare(b.time));
     setAlarms(updatedAlarms);
     storage.save(updatedAlarms);
     notify(`Alarm added for ${newAlarm.time}`, "success");
   };
 
   const deleteAlarm = (id: string): void => {
-    const updatedAlarms = alarms().filter((alarm) => alarm.id !== id);
+    const updatedAlarms = alarms().filter(alarm => alarm.id !== id);
     setAlarms(updatedAlarms);
     storage.save(updatedAlarms);
     notify("Alarm deleted", "info");
   };
 
   const toggleAlarm = (id: string): void => {
-    const updatedAlarms = alarms().map((alarm) =>
-      alarm.id === id ? { ...alarm, enabled: !alarm.enabled } : alarm,
-    );
+    const updatedAlarms = alarms().map(alarm => (alarm.id === id ? { ...alarm, enabled: !alarm.enabled } : alarm));
     setAlarms(updatedAlarms);
     storage.save(updatedAlarms);
 
-    const alarm = alarms().find((a) => a.id === id);
+    const alarm = alarms().find(a => a.id === id);
     if (alarm) {
       notify(`Alarm ${alarm.enabled ? "disabled" : "enabled"}`, "info");
     }

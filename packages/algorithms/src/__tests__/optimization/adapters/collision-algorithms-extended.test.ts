@@ -47,7 +47,7 @@ describe("Collision Algorithms Extended Coverage", () => {
       expect(collisions.length).toBeGreaterThan(0);
 
       // Check that collisions are properly structured
-      collisions.forEach((collision) => {
+      collisions.forEach(collision => {
         expect(collision).toHaveProperty("a");
         expect(collision).toHaveProperty("b");
         expect(collision).toHaveProperty("result");
@@ -64,10 +64,7 @@ describe("Collision Algorithms Extended Coverage", () => {
 
     it("should handle single AABB", () => {
       const singleAABB = [{ x: 0, y: 0, width: 10, height: 10 }];
-      const collisions = executeSpatialCollisionDetection(
-        singleAABB,
-        memoryPool,
-      );
+      const collisions = executeSpatialCollisionDetection(singleAABB, memoryPool);
       expect(collisions).toEqual([]);
     });
 
@@ -78,10 +75,7 @@ describe("Collision Algorithms Extended Coverage", () => {
         { x: 40, y: 40, width: 10, height: 10 },
       ];
 
-      const collisions = executeSpatialCollisionDetection(
-        nonOverlappingAABBs,
-        memoryPool,
-      );
+      const collisions = executeSpatialCollisionDetection(nonOverlappingAABBs, memoryPool);
       expect(collisions).toEqual([]);
     });
 
@@ -96,10 +90,7 @@ describe("Collision Algorithms Extended Coverage", () => {
         });
       }
 
-      const collisions = executeSpatialCollisionDetection(
-        largeAABBs,
-        memoryPool,
-      );
+      const collisions = executeSpatialCollisionDetection(largeAABBs, memoryPool);
       expect(Array.isArray(collisions)).toBe(true);
     });
 
@@ -109,10 +100,7 @@ describe("Collision Algorithms Extended Coverage", () => {
         { x: 0, y: 0, width: 10, height: 10 },
       ];
 
-      const collisions = executeSpatialCollisionDetection(
-        zeroDimAABBs,
-        memoryPool,
-      );
+      const collisions = executeSpatialCollisionDetection(zeroDimAABBs, memoryPool);
       expect(Array.isArray(collisions)).toBe(true);
     });
 
@@ -122,10 +110,7 @@ describe("Collision Algorithms Extended Coverage", () => {
         { x: -5, y: -5, width: 10, height: 10 },
       ];
 
-      const collisions = executeSpatialCollisionDetection(
-        negativeCoordAABBs,
-        memoryPool,
-      );
+      const collisions = executeSpatialCollisionDetection(negativeCoordAABBs, memoryPool);
       expect(Array.isArray(collisions)).toBe(true);
     });
   });
@@ -140,17 +125,13 @@ describe("Collision Algorithms Extended Coverage", () => {
         enableEarlyTermination: true,
       };
 
-      const collisions = executeOptimizedCollisionDetection(
-        aabbs,
-        config,
-        memoryPool,
-      );
+      const collisions = executeOptimizedCollisionDetection(aabbs, config, memoryPool);
 
       expect(Array.isArray(collisions)).toBe(true);
       expect(collisions.length).toBeGreaterThan(0);
 
       // Check that collisions are properly structured
-      collisions.forEach((collision) => {
+      collisions.forEach(collision => {
         expect(collision).toHaveProperty("a");
         expect(collision).toHaveProperty("b");
         expect(collision).toHaveProperty("result");
@@ -178,12 +159,8 @@ describe("Collision Algorithms Extended Coverage", () => {
         },
       ];
 
-      configs.forEach((config) => {
-        const collisions = executeOptimizedCollisionDetection(
-          aabbs,
-          config,
-          memoryPool,
-        );
+      configs.forEach(config => {
+        const collisions = executeOptimizedCollisionDetection(aabbs, config, memoryPool);
         expect(Array.isArray(collisions)).toBe(true);
       });
     });
@@ -197,11 +174,7 @@ describe("Collision Algorithms Extended Coverage", () => {
         enableEarlyTermination: true,
       };
 
-      const collisions = executeOptimizedCollisionDetection(
-        [],
-        config,
-        memoryPool,
-      );
+      const collisions = executeOptimizedCollisionDetection([], config, memoryPool);
       expect(collisions).toEqual([]);
     });
 
@@ -215,11 +188,7 @@ describe("Collision Algorithms Extended Coverage", () => {
         enableEarlyTermination: true,
       };
 
-      const collisions = executeOptimizedCollisionDetection(
-        singleAABB,
-        config,
-        memoryPool,
-      );
+      const collisions = executeOptimizedCollisionDetection(singleAABB, config, memoryPool);
       expect(collisions).toEqual([]);
     });
 
@@ -242,11 +211,7 @@ describe("Collision Algorithms Extended Coverage", () => {
         enableEarlyTermination: true,
       };
 
-      const collisions = executeOptimizedCollisionDetection(
-        largeAABBs,
-        config,
-        memoryPool,
-      );
+      const collisions = executeOptimizedCollisionDetection(largeAABBs, config, memoryPool);
       expect(Array.isArray(collisions)).toBe(true);
     });
 
@@ -266,11 +231,7 @@ describe("Collision Algorithms Extended Coverage", () => {
         enableEarlyTermination: true,
       };
 
-      const collisions = executeOptimizedCollisionDetection(
-        edgeCaseAABBs,
-        config,
-        memoryPool,
-      );
+      const collisions = executeOptimizedCollisionDetection(edgeCaseAABBs, config, memoryPool);
       expect(Array.isArray(collisions)).toBe(true);
     });
   });
@@ -283,9 +244,7 @@ describe("Collision Algorithms Extended Coverage", () => {
       executeSpatialCollisionDetection(aabbs, memoryPool);
 
       const finalStats = memoryPool.getStatistics();
-      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(
-        initialAllocations,
-      );
+      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(initialAllocations);
     });
 
     it("should properly use memory pool for optimized operations", () => {

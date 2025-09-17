@@ -57,11 +57,7 @@ const aiConfig: Partial<AIGalleryConfig> = {
 
 function MyAIGallery() {
   return (
-    <AIGalleryProvider
-      initialConfig={aiConfig}
-      persistState={true}
-      storageKey="my-ai-gallery"
-    >
+    <AIGalleryProvider initialConfig={aiConfig} persistState={true} storageKey="my-ai-gallery">
       <AIGalleryGrid
         items={galleryData.items}
         viewConfig={{ viewMode: "grid", itemSize: "medium" }}
@@ -73,7 +69,7 @@ function MyAIGallery() {
           showBatchControls: true,
           availableGenerators: ["jtp2", "wdv3", "joy", "florence2"],
         }}
-        onItemClick={(item) => console.log("Item clicked:", item.name)}
+        onItemClick={item => console.log("Item clicked:", item.name)}
         onContextMenu={(item, x, y) => console.log("Context menu:", item.name)}
       />
     </AIGalleryProvider>
@@ -154,7 +150,7 @@ Enhanced gallery grid with AI-powered features including generation indicators, 
     showBatchControls: true,
     availableGenerators: ["jtp2", "wdv3", "joy", "florence2"],
   }}
-  onItemClick={(item) => console.log("Item clicked:", item.name)}
+  onItemClick={item => console.log("Item clicked:", item.name)}
   onContextMenu={(item, x, y) => console.log("Context menu:", item.name)}
 />
 ```
@@ -175,15 +171,15 @@ AI-enhanced image viewer with caption generation and editing capabilities.
     defaultGenerator: "jtp2",
   }}
   onClose={() => setShowImageViewer(false)}
-  onCaptionSave={async (captionData) => {
+  onCaptionSave={async captionData => {
     // Save caption to backend
     return Promise.resolve();
   }}
-  onCaptionDelete={async (captionType) => {
+  onCaptionDelete={async captionType => {
     // Delete caption from backend
     return Promise.resolve();
   }}
-  onCaptionGenerate={async (generator) => {
+  onCaptionGenerate={async generator => {
     console.log("Generating caption with:", generator);
   }}
 />
@@ -199,10 +195,10 @@ Dialog for managing batch annotation operations with progress tracking.
   items={selectedItems}
   availableGenerators={["jtp2", "wdv3", "joy", "florence2"]}
   onClose={() => setShowBatchDialog(false)}
-  onComplete={(results) => {
+  onComplete={results => {
     console.log("Batch processing completed:", results);
   }}
-  onError={(error) => {
+  onError={error => {
     console.error("Batch processing failed:", error);
   }}
 />

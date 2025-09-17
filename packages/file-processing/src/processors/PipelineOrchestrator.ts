@@ -29,9 +29,7 @@ export class PipelineOrchestrator {
   constructor(configManager: ConfigManager) {
     this.configManager = configManager;
     this.progressManager = new ProgressManager();
-    this.fileTypeValidator = new FileTypeValidator(
-      configManager.getSupportedExtensions(),
-    );
+    this.fileTypeValidator = new FileTypeValidator(configManager.getSupportedExtensions());
     this.directoryScanner = new DirectoryScanner();
     this.fileProcessor = new FileProcessor(configManager);
   }
@@ -39,10 +37,7 @@ export class PipelineOrchestrator {
   /**
    * Process multiple files with progress tracking
    */
-  async processFiles(
-    files: (File | string)[],
-    options?: ProcessingOptions,
-  ): Promise<ProcessingResult[]> {
+  async processFiles(files: (File | string)[], options?: ProcessingOptions): Promise<ProcessingResult[]> {
     const results: ProcessingResult[] = [];
     const totalFiles = files.length;
 
@@ -54,8 +49,8 @@ export class PipelineOrchestrator {
           "Processing files",
           i,
           totalFiles,
-          typeof file === "string" ? file : file.name,
-        ),
+          typeof file === "string" ? file : file.name
+        )
       );
 
       try {
@@ -64,20 +59,14 @@ export class PipelineOrchestrator {
       } catch (error) {
         results.push({
           success: false,
-          error:
-            error instanceof Error ? error.message : "Unknown error occurred",
+          error: error instanceof Error ? error.message : "Unknown error occurred",
           duration: 0,
           timestamp: new Date(),
         });
       }
     }
 
-    this.progressManager.updateProgress(
-      this.progressManager.createCompletionProgress(
-        "Processing files",
-        totalFiles,
-      ),
-    );
+    this.progressManager.updateProgress(this.progressManager.createCompletionProgress("Processing files", totalFiles));
 
     return results;
   }
@@ -86,8 +75,8 @@ export class PipelineOrchestrator {
    * Get supported file types
    */
   getSupportedTypes(): FileTypeInfo[] {
-    return Array.from(this.fileTypeValidator.getAllSupportedExtensions()).map(
-      (ext) => this.fileTypeValidator.getFileTypeInfo(ext),
+    return Array.from(this.fileTypeValidator.getAllSupportedExtensions()).map(ext =>
+      this.fileTypeValidator.getFileTypeInfo(ext)
     );
   }
 

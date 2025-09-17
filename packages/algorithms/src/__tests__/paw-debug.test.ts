@@ -100,15 +100,9 @@ describe("PAW Debug Investigation", () => {
     const time3 = performance.now() - start3;
 
     console.log("Medium dataset (200 objects) execution times:");
-    console.log(
-      `Adaptive selection: ${time1.toFixed(3)}ms (${result1.length} collisions)`,
-    );
-    console.log(
-      `Forced naive: ${time2.toFixed(3)}ms (${result2.length} collisions)`,
-    );
-    console.log(
-      `Forced optimized: ${time3.toFixed(3)}ms (${result3.length} collisions)`,
-    );
+    console.log(`Adaptive selection: ${time1.toFixed(3)}ms (${result1.length} collisions)`);
+    console.log(`Forced naive: ${time2.toFixed(3)}ms (${result2.length} collisions)`);
+    console.log(`Forced optimized: ${time3.toFixed(3)}ms (${result3.length} collisions)`);
 
     // With fake timers, all times are 0, so just verify the algorithms work
     expect(result1.length).toBeGreaterThan(0); // Should find collisions

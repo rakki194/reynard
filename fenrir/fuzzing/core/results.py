@@ -13,18 +13,18 @@ Classes:
 """
 
 from dataclasses import dataclass
-from typing import Dict, Any, Optional
+from typing import Any
 
 
 @dataclass
 class FuzzResult:
     """
     🐺 Standard HTTP Fuzzing Result
-    
+
     *snarls with predatory intelligence* Captures comprehensive information about
     a single fuzzing attempt against an HTTP endpoint. Includes response analysis,
     vulnerability detection, and performance metrics.
-    
+
     Attributes:
         url (str): Target URL that was fuzzed
         method (str): HTTP method used (GET, POST, etc.)
@@ -42,7 +42,7 @@ class FuzzResult:
         attack_type (Optional[str]): Type of attack performed
         grammar_rule (Optional[str]): Grammar rule used for payload generation
         learning_score (float): Learning-based mutation score (0.0-1.0)
-    
+
     Example:
         >>> result = FuzzResult(
         ...     url="http://localhost:8000/api/auth/login",
@@ -55,23 +55,24 @@ class FuzzResult:
         ...     vulnerability_type="SQL Injection"
         ... )
     """
+
     url: str
     method: str
     payload: str
     status_code: int
     response_time: float
     response_size: int
-    error: Optional[str] = None
+    error: str | None = None
     vulnerability_detected: bool = False
-    vulnerability_type: Optional[str] = None
+    vulnerability_type: str | None = None
     # Enhanced response capture
-    response_body: Optional[str] = None
-    response_text: Optional[str] = None
-    response_headers: Optional[Dict[str, str]] = None
-    request_headers: Optional[Dict[str, str]] = None
+    response_body: str | None = None
+    response_text: str | None = None
+    response_headers: dict[str, str] | None = None
+    request_headers: dict[str, str] | None = None
     # Advanced attack tracking
-    attack_type: Optional[str] = None
-    grammar_rule: Optional[str] = None
+    attack_type: str | None = None
+    grammar_rule: str | None = None
     learning_score: float = 0.0
 
 
@@ -79,11 +80,11 @@ class FuzzResult:
 class WebSocketResult:
     """
     🐺 WebSocket Fuzzing Result
-    
+
     *circles with menacing intent* Specialized result tracking for WebSocket
     fuzzing attempts. Captures connection status, message flow, and real-time
     vulnerability detection.
-    
+
     Attributes:
         url (str): WebSocket URL that was targeted
         attack_type (str): Type of WebSocket attack performed
@@ -95,7 +96,7 @@ class WebSocketResult:
         vulnerability_detected (bool): Whether a vulnerability was detected
         vulnerability_type (Optional[str]): Type of vulnerability found
         connection_time (float): Time taken to establish connection in seconds
-    
+
     Example:
         >>> ws_result = WebSocketResult(
         ...     url="ws://localhost:8000/api/embedding-visualization/progress",
@@ -107,15 +108,16 @@ class WebSocketResult:
         ...     vulnerability_type="XSS"
         ... )
     """
+
     url: str
     attack_type: str
     payload: str
     connection_successful: bool
     response_received: bool
-    response_data: Optional[str] = None
-    error_message: Optional[str] = None
+    response_data: str | None = None
+    error_message: str | None = None
     vulnerability_detected: bool = False
-    vulnerability_type: Optional[str] = None
+    vulnerability_type: str | None = None
     connection_time: float = 0.0
 
 
@@ -123,11 +125,11 @@ class WebSocketResult:
 class MLFuzzResult:
     """
     🐺 Machine Learning Model Fuzzing Result
-    
+
     *bares fangs with savage satisfaction* Specialized result tracking for
     ML model fuzzing attempts. Includes model response analysis, resource
     exhaustion detection, and AI-specific vulnerability identification.
-    
+
     Attributes:
         url (str): ML endpoint URL that was fuzzed
         method (str): HTTP method used
@@ -139,7 +141,7 @@ class MLFuzzResult:
         vulnerability_detected (bool): Whether a vulnerability was found
         vulnerability_type (Optional[str]): Type of vulnerability detected
         resource_exhaustion (bool): Whether resource exhaustion was detected
-    
+
     Example:
         >>> ml_result = MLFuzzResult(
         ...     url="http://localhost:8000/api/embedding-visualization/reduce",
@@ -153,15 +155,16 @@ class MLFuzzResult:
         ...     vulnerability_type="Resource Exhaustion"
         ... )
     """
+
     url: str
     method: str
     attack_type: str
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
     status_code: int
     response_time: float
-    model_response: Optional[Dict[str, Any]] = None
+    model_response: dict[str, Any] | None = None
     vulnerability_detected: bool = False
-    vulnerability_type: Optional[str] = None
+    vulnerability_type: str | None = None
     resource_exhaustion: bool = False
 
 
@@ -169,11 +172,11 @@ class MLFuzzResult:
 class AuthBypassResult:
     """
     🐺 Authentication Bypass Fuzzing Result
-    
+
     *snarls with predatory glee* Specialized result tracking for authentication
     bypass attempts. Captures JWT manipulation, session hijacking, and privilege
     escalation attempts.
-    
+
     Attributes:
         url (str): Authentication endpoint URL that was targeted
         method (str): HTTP method used
@@ -185,7 +188,7 @@ class AuthBypassResult:
         vulnerability_type (Optional[str]): Type of vulnerability detected
         token_manipulated (bool): Whether JWT token was manipulated
         response_headers (Optional[Dict[str, str]]): Response headers
-    
+
     Example:
         >>> auth_result = AuthBypassResult(
         ...     url="http://localhost:8000/api/auth/login",
@@ -198,13 +201,14 @@ class AuthBypassResult:
         ...     token_manipulated=True
         ... )
     """
+
     url: str
     method: str
     attack_type: str
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
     status_code: int
     response_time: float
     auth_bypassed: bool = False
-    vulnerability_type: Optional[str] = None
+    vulnerability_type: str | None = None
     token_manipulated: bool = False
-    response_headers: Optional[Dict[str, str]] = None
+    response_headers: dict[str, str] | None = None

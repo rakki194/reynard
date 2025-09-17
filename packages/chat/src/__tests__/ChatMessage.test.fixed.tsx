@@ -9,21 +9,15 @@ import type { ChatMessage as ChatMessageType } from "../types";
 
 // Mock components to avoid cross-test contamination
 vi.mock("../components/MarkdownRenderer", () => ({
-  MarkdownRenderer: (props: any) => (
-    <div data-testid="markdown-renderer">{props.content}</div>
-  ),
+  MarkdownRenderer: (props: any) => <div data-testid="markdown-renderer">{props.content}</div>,
 }));
 
 vi.mock("../components/ThinkingIndicator", () => ({
-  ThinkingIndicator: (props: any) => (
-    <div data-testid="thinking-indicator">{props.content}</div>
-  ),
+  ThinkingIndicator: (props: any) => <div data-testid="thinking-indicator">{props.content}</div>,
 }));
 
 vi.mock("../components/ToolCallDisplay", () => ({
-  ToolCallDisplay: (props: any) => (
-    <div data-testid="tool-call">{props.toolCall.name}</div>
-  ),
+  ToolCallDisplay: (props: any) => <div data-testid="tool-call">{props.toolCall.name}</div>,
 }));
 
 describe("ChatMessage", () => {
@@ -35,9 +29,7 @@ describe("ChatMessage", () => {
     cleanup();
   });
 
-  const createMockMessage = (
-    overrides: Partial<ChatMessageType> = {},
-  ): ChatMessageType => ({
+  const createMockMessage = (overrides: Partial<ChatMessageType> = {}): ChatMessageType => ({
     id: "msg-1",
     role: "user",
     content: "Test message",
@@ -145,9 +137,7 @@ describe("ChatMessage", () => {
 
     expect(screen.getByTestId("markdown-renderer")).toBeInTheDocument();
     // Should show streaming indicator in header
-    const streamingDots = document.querySelector(
-      ".reynard-chat-message__typing-dots",
-    );
+    const streamingDots = document.querySelector(".reynard-chat-message__typing-dots");
     expect(streamingDots).toBeInTheDocument();
   });
 
@@ -253,21 +243,15 @@ describe("ChatMessage", () => {
     render(() => <ChatMessage message={message} />);
 
     expect(screen.getByText("Fatal error occurred")).toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: /retry/i }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /retry/i })).not.toBeInTheDocument();
   });
 
   it("should use custom renderer when provided", () => {
     cleanup();
-    const customRenderer = vi.fn(() => (
-      <div data-testid="custom-content">Custom rendered content</div>
-    ));
+    const customRenderer = vi.fn(() => <div data-testid="custom-content">Custom rendered content</div>);
     const message = createMockMessage({ content: "Original content" });
 
-    render(() => (
-      <ChatMessage message={message} customRenderer={customRenderer} />
-    ));
+    render(() => <ChatMessage message={message} customRenderer={customRenderer} />);
 
     expect(screen.getByTestId("custom-content")).toBeInTheDocument();
     expect(customRenderer).toHaveBeenCalledWith("Original content", message);
@@ -278,17 +262,11 @@ describe("ChatMessage", () => {
   it("should apply correct CSS classes for different roles", () => {
     cleanup();
     render(() => <ChatMessage message={createMockMessage({ role: "user" })} />);
-    expect(
-      document.querySelector(".reynard-chat-message--user"),
-    ).toBeInTheDocument();
+    expect(document.querySelector(".reynard-chat-message--user")).toBeInTheDocument();
 
     cleanup();
-    render(() => (
-      <ChatMessage message={createMockMessage({ role: "assistant" })} />
-    ));
-    expect(
-      document.querySelector(".reynard-chat-message--assistant"),
-    ).toBeInTheDocument();
+    render(() => <ChatMessage message={createMockMessage({ role: "assistant" })} />);
+    expect(document.querySelector(".reynard-chat-message--assistant")).toBeInTheDocument();
   });
 
   it("should apply streaming class when streaming", () => {
@@ -305,9 +283,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} />);
 
-    expect(
-      document.querySelector(".reynard-chat-message--streaming"),
-    ).toBeInTheDocument();
+    expect(document.querySelector(".reynard-chat-message--streaming")).toBeInTheDocument();
   });
 
   it("should apply latest class when isLatest is true", () => {
@@ -316,9 +292,7 @@ describe("ChatMessage", () => {
 
     render(() => <ChatMessage message={message} isLatest={true} />);
 
-    expect(
-      document.querySelector(".reynard-chat-message--latest"),
-    ).toBeInTheDocument();
+    expect(document.querySelector(".reynard-chat-message--latest")).toBeInTheDocument();
   });
 
   it("should show placeholder when streaming without content", () => {

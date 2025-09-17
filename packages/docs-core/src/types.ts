@@ -7,13 +7,7 @@ import { Component } from "solid-js";
 /**
  * Documentation content types
  */
-export type DocContentType =
-  | "markdown"
-  | "mdx"
-  | "html"
-  | "component"
-  | "api"
-  | "example";
+export type DocContentType = "markdown" | "mdx" | "html" | "component" | "api" | "example";
 
 /**
  * Documentation metadata

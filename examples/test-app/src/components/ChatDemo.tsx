@@ -173,10 +173,7 @@ export function ChatDemo() {
 
   // Create streaming text instance
   const currentDemo = () => streamingDemos[currentDemoIndex()];
-  const stream = createMarkdownStreaming(
-    currentDemo().content,
-    currentDemo().options,
-  );
+  const stream = createMarkdownStreaming(currentDemo().content, currentDemo().options);
 
   // Auto-restart streaming demo
   let restartTimer: number | null = null;
@@ -200,10 +197,7 @@ export function ChatDemo() {
   };
 
   const previousDemo = () => {
-    const prevIndex =
-      currentDemoIndex() === 0
-        ? streamingDemos.length - 1
-        : currentDemoIndex() - 1;
+    const prevIndex = currentDemoIndex() === 0 ? streamingDemos.length - 1 : currentDemoIndex() - 1;
     setCurrentDemoIndex(prevIndex);
     stream.restart();
   };
@@ -289,10 +283,7 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
     <div class="chat-demo">
       <Card class="demo-section">
         <h3>Chat System Overview</h3>
-        <p>
-          Demonstrates the comprehensive chat system with streaming, markdown,
-          and tool integration.
-        </p>
+        <p>Demonstrates the comprehensive chat system with streaming, markdown, and tool integration.</p>
 
         <div class="chat-demo-tabs">
           <div class="demo-tab-buttons">
@@ -303,9 +294,7 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
               Basic Chat
             </Button>
             <Button
-              variant={
-                activeChatDemo() === "advanced" ? "primary" : "secondary"
-              }
+              variant={activeChatDemo() === "advanced" ? "primary" : "secondary"}
               onClick={() => setActiveChatDemo("advanced")}
             >
               Advanced Features
@@ -323,22 +312,16 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
       {activeChatDemo() === "basic" && (
         <Card class="demo-section">
           <h3>Basic Chat Interface</h3>
-          <p>
-            Simple chat interface with message history and basic functionality.
-          </p>
+          <p>Simple chat interface with message history and basic functionality.</p>
 
           <div class="chat-container-demo">
             <div class="chat-messages">
               <For each={demoMessages}>
-                {(message) => (
+                {message => (
                   <div class={`chat-message chat-message--${message.type}`}>
                     <div class="message-header">
-                      <span class="message-sender">
-                        {message.type === "user" ? "You" : "Assistant"}
-                      </span>
-                      <span class="message-time">
-                        {new Date(message.timestamp).toLocaleTimeString()}
-                      </span>
+                      <span class="message-sender">{message.type === "user" ? "You" : "Assistant"}</span>
+                      <span class="message-time">{new Date(message.timestamp).toLocaleTimeString()}</span>
                     </div>
                     <div class="message-content">
                       <MarkdownRenderer
@@ -355,9 +338,7 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
                             innerHTML={(() => {
                               const icon = getIcon("brain");
                               if (!icon) return "";
-                              return typeof icon === "string"
-                                ? icon
-                                : icon.outerHTML;
+                              return typeof icon === "string" ? icon : icon.outerHTML;
                             })()}
                           ></span>{" "}
                           {message.thinking}
@@ -367,19 +348,14 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
                     {message.tools && (
                       <div class="message-tools">
                         <For each={message.tools}>
-                          {(tool) => (
+                          {tool => (
                             <div class="tool-call">
                               <div class="tool-header">
                                 <span class="tool-name">{tool.name}</span>
-                                <span
-                                  class={`tool-status tool-status--${tool.status}`}
-                                >
-                                  {tool.status}
-                                </span>
+                                <span class={`tool-status tool-status--${tool.status}`}>{tool.status}</span>
                               </div>
                               <div class="tool-input">
-                                <strong>Input:</strong>{" "}
-                                {JSON.stringify(tool.input)}
+                                <strong>Input:</strong> {JSON.stringify(tool.input)}
                               </div>
                               <div class="tool-result">
                                 <strong>Result:</strong> {tool.result}
@@ -396,11 +372,7 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
 
             <div class="chat-input-demo">
               <div class="input-container">
-                <input
-                  type="text"
-                  placeholder="Type your message here..."
-                  class="chat-input"
-                />
+                <input type="text" placeholder="Type your message here..." class="chat-input" />
                 <Button>Send</Button>
               </div>
             </div>
@@ -411,36 +383,24 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
       {activeChatDemo() === "advanced" && (
         <Card class="demo-section">
           <h3>Advanced Chat Features</h3>
-          <p>
-            Demonstrates advanced features like streaming, thinking indicators,
-            and tool integration.
-          </p>
+          <p>Demonstrates advanced features like streaming, thinking indicators, and tool integration.</p>
 
           <div class="advanced-features">
             <div class="feature-demo">
               <h4>Streaming Markdown Rendering</h4>
-              <p>
-                Real-time markdown streaming with configurable speed, pauses,
-                and auto-restart.
-              </p>
+              <p>Real-time markdown streaming with configurable speed, pauses, and auto-restart.</p>
 
               <div class="streaming-controls">
                 <Button
                   variant={stream.state().isStreaming ? "secondary" : "primary"}
-                  onClick={
-                    stream.state().isStreaming
-                      ? pauseStreamingDemo
-                      : startStreamingDemo
-                  }
+                  onClick={stream.state().isStreaming ? pauseStreamingDemo : startStreamingDemo}
                 >
                   {stream.state().isStreaming ? "Pause" : "Start"} Streaming
                 </Button>
                 <Button
                   variant="secondary"
                   onClick={restartStreamingDemo}
-                  disabled={
-                    !stream.state().isStreaming && !stream.state().isComplete
-                  }
+                  disabled={!stream.state().isStreaming && !stream.state().isComplete}
                 >
                   Restart
                 </Button>
@@ -463,24 +423,13 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
                         ? "Complete"
                         : "Stopped"}
                 </span>
-                <span class="progress">
-                  {Math.round(stream.state().progress)}% complete
-                </span>
+                <span class="progress">{Math.round(stream.state().progress)}% complete</span>
               </div>
 
               <div class="streaming-demo">
                 <div class="streaming-content">
-                  <div
-                    class="streaming-text"
-                    innerHTML={stream.parsedContent()}
-                  />
-                  <Show
-                    when={
-                      stream.state().showCursor &&
-                      stream.state().isStreaming &&
-                      !stream.state().isComplete
-                    }
-                  >
+                  <div class="streaming-text" innerHTML={stream.parsedContent()} />
+                  <Show when={stream.state().showCursor && stream.state().isStreaming && !stream.state().isComplete}>
                     <span class="streaming-cursor">|</span>
                   </Show>
                 </div>
@@ -489,10 +438,7 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
 
             <div class="feature-demo">
               <h4>Thinking Indicators</h4>
-              <p>
-                Visual indicators when the assistant is processing or
-                "thinking".
-              </p>
+              <p>Visual indicators when the assistant is processing or "thinking".</p>
               <div class="thinking-demo">
                 <div class="thinking-indicator">
                   <div class="thinking-dots">
@@ -512,9 +458,7 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
                 <div class="tool-call">
                   <div class="tool-header">
                     <span class="tool-name">web_search</span>
-                    <span class="tool-status tool-status--completed">
-                      completed
-                    </span>
+                    <span class="tool-status tool-status--completed">completed</span>
                   </div>
                   <div class="tool-progress">
                     <div class="progress-bar">
@@ -527,10 +471,7 @@ The system handles **bold text**, *italic text*, and \`inline code\` seamlessly!
 
             <div class="feature-demo">
               <h4>Markdown Rendering</h4>
-              <p>
-                Full markdown support including code blocks, tables, and
-                formatting.
-              </p>
+              <p>Full markdown support including code blocks, tables, and formatting.</p>
               <div class="markdown-demo">
                 <div class="markdown-content">
                   <h5>Code Example:</h5>

@@ -3,7 +3,7 @@ Service layer integration for Diffusion-LLM API.
 """
 
 import logging
-from typing import Any, Dict
+from typing import Any
 
 from ...services.diffusion import DiffusionLLMService
 
@@ -21,7 +21,7 @@ def get_diffusion_service() -> DiffusionLLMService:
     return _diffusion_service
 
 
-async def initialize_diffusion_service(config: Dict[str, Any]) -> bool:
+async def initialize_diffusion_service(config: dict[str, Any]) -> bool:
     """Initialize the diffusion service with configuration."""
     try:
         service = get_diffusion_service()

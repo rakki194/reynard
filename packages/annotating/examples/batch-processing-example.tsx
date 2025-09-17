@@ -16,9 +16,7 @@ import {
 import "reynard-annotating/components/BatchCaptionProcessor.css";
 
 export const BatchProcessingExample: Component = () => {
-  const [manager, setManager] = createSignal<BackendAnnotationManager | null>(
-    null,
-  );
+  const [manager, setManager] = createSignal<BackendAnnotationManager | null>(null);
   const [isInitialized, setIsInitialized] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
 
@@ -60,12 +58,9 @@ export const BatchProcessingExample: Component = () => {
     console.log("🎉 Batch processing completed!", results);
 
     // Log summary statistics
-    const successful = results.filter((r) => r.success).length;
-    const failed = results.filter((r) => !r.success).length;
-    const totalTime = results.reduce(
-      (sum, r) => sum + (r.processingTime || 0),
-      0,
-    );
+    const successful = results.filter(r => r.success).length;
+    const failed = results.filter(r => !r.success).length;
+    const totalTime = results.reduce((sum, r) => sum + (r.processingTime || 0), 0);
 
     console.log(`📊 Batch Summary:
       - Total files: ${results.length}
@@ -135,9 +130,8 @@ export const BatchProcessingExample: Component = () => {
       <div class="example-header">
         <h1>🦊 Batch Caption Processing</h1>
         <p>
-          Advanced batch processing for caption generation with real-time
-          progress tracking, multiple generator support, and comprehensive
-          result management.
+          Advanced batch processing for caption generation with real-time progress tracking, multiple generator support,
+          and comprehensive result management.
         </p>
       </div>
 
@@ -154,48 +148,36 @@ export const BatchProcessingExample: Component = () => {
         <h3>Features Demonstrated</h3>
         <ul>
           <li>
-            ✅ <strong>Drag & Drop Upload:</strong> Intuitive file selection
-            with visual feedback
+            ✅ <strong>Drag & Drop Upload:</strong> Intuitive file selection with visual feedback
           </li>
           <li>
-            ✅ <strong>Real-time Progress:</strong> Live updates during batch
-            processing
+            ✅ <strong>Real-time Progress:</strong> Live updates during batch processing
           </li>
           <li>
-            ✅ <strong>Multiple Generators:</strong> Support for JTP2,
-            Florence2, WDv3, JoyCaption
+            ✅ <strong>Multiple Generators:</strong> Support for JTP2, Florence2, WDv3, JoyCaption
           </li>
           <li>
-            ✅ <strong>Configuration Options:</strong> Concurrency control,
-            force regeneration, post-processing
+            ✅ <strong>Configuration Options:</strong> Concurrency control, force regeneration, post-processing
           </li>
           <li>
-            ✅ <strong>Error Handling:</strong> Comprehensive error tracking and
-            recovery
+            ✅ <strong>Error Handling:</strong> Comprehensive error tracking and recovery
           </li>
           <li>
-            ✅ <strong>Results Export:</strong> JSON export of all generated
-            captions
+            ✅ <strong>Results Export:</strong> JSON export of all generated captions
           </li>
           <li>
-            ✅ <strong>Responsive Design:</strong> Works on desktop and mobile
-            devices
+            ✅ <strong>Responsive Design:</strong> Works on desktop and mobile devices
           </li>
         </ul>
 
         <h3>Backend Integration</h3>
-        <p>
-          This component integrates with the Reynard backend's batch processing
-          API:
-        </p>
+        <p>This component integrates with the Reynard backend's batch processing API:</p>
         <ul>
           <li>
-            <code>POST /api/caption/batch</code> - Batch caption generation
-            endpoint
+            <code>POST /api/caption/batch</code> - Batch caption generation endpoint
           </li>
           <li>
-            <code>GET /api/caption/generators</code> - Available generator
-            information
+            <code>GET /api/caption/generators</code> - Available generator information
           </li>
           <li>Progress callbacks for real-time status updates</li>
           <li>Concurrent processing with configurable limits</li>

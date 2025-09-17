@@ -9,10 +9,7 @@ import { createSignal, createResource, onCleanup, onMount } from "solid-js";
 import { useChatMessages } from "./useChatMessages";
 import { useChatStreaming } from "./useChatStreaming";
 import { useChatTools } from "./useChatTools";
-import {
-  useChat as useGeneratedChat,
-  createReynardApiClient,
-} from "reynard-api-client";
+import { useChat as useGeneratedChat, createReynardApiClient } from "reynard-api-client";
 import type { ChatState, ChatActions, UseChatReturn } from "../types";
 
 export interface UseChatOptions {
@@ -82,8 +79,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   // Core state
   const [availableModels] = createSignal<string[]>([]);
   const [selectedModel] = createSignal<string>();
-  const [connectionState, setConnectionState] =
-    createSignal<ChatState["connectionState"]>("disconnected");
+  const [connectionState, setConnectionState] = createSignal<ChatState["connectionState"]>("disconnected");
   const [error, setError] = createSignal<ChatState["error"]>();
   const [config, setConfig] = createSignal<ChatState["config"]>({
     ...DEFAULT_CONFIG,
@@ -113,13 +109,13 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       addMessage: messagesComposable.addMessage,
       updateMessage: messagesComposable.updateMessage,
       messages: messagesComposable.messages,
-    },
+    }
   );
 
   // Resource for checking connection
   const [connectionCheck] = createResource(
     () => endpoint,
-    async (url) => {
+    async url => {
       try {
         const response = await fetchFn(`${url}/health`, {
           headers: authHeaders,
@@ -128,12 +124,12 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       } catch {
         return false;
       }
-    },
+    }
   );
 
   // Update configuration
   const updateConfig = (newConfig: Partial<ChatState["config"]>) => {
-    setConfig((prev) => ({ ...prev, ...newConfig }));
+    setConfig(prev => ({ ...prev, ...newConfig }));
   };
 
   // Connect to chat service
@@ -147,17 +143,13 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     } catch {
       setConnectionState("error");
 
-      if (
-        reconnection.enabled &&
-        reconnectionAttempts() < reconnection.maxAttempts
-      ) {
+      if (reconnection.enabled && reconnectionAttempts() < reconnection.maxAttempts) {
         setTimeout(
           () => {
-            setReconnectionAttempts((prev) => prev + 1);
+            setReconnectionAttempts(prev => prev + 1);
             connect();
           },
-          reconnection.delay *
-            Math.pow(reconnection.backoff, reconnectionAttempts()),
+          reconnection.delay * Math.pow(reconnection.backoff, reconnectionAttempts())
         );
       }
     }
@@ -217,8 +209,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       return [...legacyMessages, ...generatedMessages];
     },
     currentMessage: messagesComposable.currentMessage,
-    isStreaming: () =>
-      generatedChat.isStreaming() || streamingComposable.isStreaming(),
+    isStreaming: () => generatedChat.isStreaming() || streamingComposable.isStreaming(),
     isThinking: streamingComposable.isThinking,
     availableModels: () => generatedChat.models() || availableModels(),
     selectedModel,

@@ -14,9 +14,7 @@ import ThemeToggle from "./components/ThemeToggle";
 import LanguageSelector from "./components/LanguageSelector";
 
 // Service availability simulation
-const [serviceAvailability, setServiceAvailability] = createSignal<
-  Record<string, boolean>
->({
+const [serviceAvailability, setServiceAvailability] = createSignal<Record<string, boolean>>({
   DataSourceService: true,
   AuthService: true,
   DatabaseService: true,
@@ -82,9 +80,7 @@ function AppContent() {
           </div>
           Reynard Features Demo
         </h1>
-        <p>
-          Interactive demonstration of the Reynard feature management system
-        </p>
+        <p>Interactive demonstration of the Reynard feature management system</p>
         <div class="header-controls">
           <div class="theme-info">
             Current theme: <strong>{theme}</strong>
@@ -96,18 +92,14 @@ function AppContent() {
 
       <main class="app-main">
         <FeatureDashboard />
-        <ServiceControls
-          serviceAvailability={serviceAvailability}
-          setServiceAvailability={setServiceAvailability}
-        />
+        <ServiceControls serviceAvailability={serviceAvailability} setServiceAvailability={setServiceAvailability} />
         <FeatureDemos />
       </main>
 
       <footer class="app-footer">
         <p>
-          This demo showcases how the Reynard features package manages
-          application capabilities, dependencies, and graceful degradation.
-          Toggle services above to see features adapt in real-time!
+          This demo showcases how the Reynard features package manages application capabilities, dependencies, and
+          graceful degradation. Toggle services above to see features adapt in real-time!
         </p>
       </footer>
     </div>

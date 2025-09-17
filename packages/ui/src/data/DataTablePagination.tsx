@@ -19,9 +19,7 @@ export interface DataTablePaginationProps {
   onPageSizeChange?: (pageSize: number) => void;
 }
 
-export const DataTablePagination: Component<DataTablePaginationProps> = (
-  props,
-) => {
+export const DataTablePagination: Component<DataTablePaginationProps> = props => {
   const totalPages = () => Math.ceil(props.totalItems / props.pageSize);
 
   return (
@@ -36,16 +34,10 @@ export const DataTablePagination: Component<DataTablePaginationProps> = (
             />
           </Show>
 
-          <span class="reynard-data-table__stats">
-            {pluralize(props.totalItems, "row")} total
-          </span>
+          <span class="reynard-data-table__stats">{pluralize(props.totalItems, "row")} total</span>
         </div>
 
-        <DataTablePaginationControls
-          page={props.page}
-          totalPages={totalPages()}
-          onPageChange={props.onPageChange}
-        />
+        <DataTablePaginationControls page={props.page} totalPages={totalPages()} onPageChange={props.onPageChange} />
       </div>
     </Show>
   );

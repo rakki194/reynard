@@ -23,7 +23,7 @@ export const ComponentShowcase: Component = () => {
   };
 
   const toggleCheckbox = (key: "option1" | "option2" | "option3") => {
-    setCheckboxes((prev) => ({ ...prev, [key]: !prev[key] }));
+    setCheckboxes(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -58,18 +58,13 @@ export const ComponentShowcase: Component = () => {
                 class="form-input"
                 placeholder="Enter some text..."
                 value={inputValue()}
-                onInput={(e) => setInputValue(e.currentTarget.value)}
+                onInput={e => setInputValue(e.currentTarget.value)}
               />
             </div>
 
             <div class="form-group">
               <label for="textarea">Textarea</label>
-              <textarea
-                id="textarea"
-                class="form-textarea"
-                placeholder="Enter multiple lines..."
-                rows="3"
-              ></textarea>
+              <textarea id="textarea" class="form-textarea" placeholder="Enter multiple lines..." rows="3"></textarea>
             </div>
 
             <div class="form-group">
@@ -95,27 +90,15 @@ export const ComponentShowcase: Component = () => {
           <div class="form-group">
             <h4>Checkboxes</h4>
             <label class="checkbox-label">
-              <Toggle
-                checked={checkboxes().option1}
-                onChange={() => toggleCheckbox("option1")}
-                size="sm"
-              />
+              <Toggle checked={checkboxes().option1} onChange={() => toggleCheckbox("option1")} size="sm" />
               Option 1 (Checked)
             </label>
             <label class="checkbox-label">
-              <Toggle
-                checked={checkboxes().option2}
-                onChange={() => toggleCheckbox("option2")}
-                size="sm"
-              />
+              <Toggle checked={checkboxes().option2} onChange={() => toggleCheckbox("option2")} size="sm" />
               Option 2 (Unchecked)
             </label>
             <label class="checkbox-label">
-              <Toggle
-                checked={checkboxes().option3}
-                onChange={() => toggleCheckbox("option3")}
-                size="sm"
-              />
+              <Toggle checked={checkboxes().option3} onChange={() => toggleCheckbox("option3")} size="sm" />
               Option 3 (Checked)
             </label>
           </div>
@@ -167,10 +150,7 @@ export const ComponentShowcase: Component = () => {
               <h4>Sample Card</h4>
             </div>
             <div class="card-body">
-              <p>
-                This is a sample card that demonstrates how content containers
-                adapt to different themes.
-              </p>
+              <p>This is a sample card that demonstrates how content containers adapt to different themes.</p>
               <div class="card-actions">
                 <button class="btn btn-primary btn-sm">Action</button>
                 <button class="btn btn-secondary btn-sm">Cancel</button>
@@ -207,14 +187,11 @@ export const ComponentShowcase: Component = () => {
           <h6>Heading 6</h6>
 
           <p>
-            This is a regular paragraph with <strong>bold text</strong>,{" "}
-            <em>italic text</em>, and <code>inline code</code>.
+            This is a regular paragraph with <strong>bold text</strong>, <em>italic text</em>, and{" "}
+            <code>inline code</code>.
           </p>
 
-          <blockquote>
-            This is a blockquote that demonstrates how quoted text appears in
-            different themes.
-          </blockquote>
+          <blockquote>This is a blockquote that demonstrates how quoted text appears in different themes.</blockquote>
 
           <ul>
             <li>Unordered list item 1</li>

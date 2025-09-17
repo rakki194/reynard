@@ -54,12 +54,7 @@ export interface ADRSuggestion {
   id: string;
   title: string;
   priority: "low" | "medium" | "high" | "critical";
-  category:
-    | "security"
-    | "performance"
-    | "scalability"
-    | "integration"
-    | "maintainability";
+  category: "security" | "performance" | "scalability" | "integration" | "maintainability";
   reasoning: string[];
   evidence: string[];
   template: string;
@@ -68,28 +63,9 @@ export interface ADRSuggestion {
 }
 
 export class CodebaseAnalyzer {
-  private readonly supportedExtensions = [
-    ".ts",
-    ".tsx",
-    ".js",
-    ".jsx",
-    ".py",
-    ".go",
-    ".rs",
-    ".java",
-  ];
-  private readonly testPatterns = [
-    /\.test\./,
-    /\.spec\./,
-    /__tests__/,
-    /test_/,
-  ];
-  private readonly configFiles = [
-    "package.json",
-    "tsconfig.json",
-    "vite.config.ts",
-    "webpack.config.js",
-  ];
+  private readonly supportedExtensions = [".ts", ".tsx", ".js", ".jsx", ".py", ".go", ".rs", ".java"];
+  private readonly testPatterns = [/\.test\./, /\.spec\./, /__tests__/, /test_/];
+  private readonly configFiles = ["package.json", "tsconfig.json", "vite.config.ts", "webpack.config.js"];
 
   constructor(private readonly rootPath: string) {}
 
@@ -108,17 +84,9 @@ export class CodebaseAnalyzer {
     const files = await this.discoverFiles();
     const metrics = await this.calculateMetrics(files);
     const dependencies = await this.analyzeDependencies(files);
-    const patterns = await this.identifyArchitecturePatterns(
-      files,
-      dependencies,
-    );
+    const patterns = await this.identifyArchitecturePatterns(files, dependencies);
     const quality = await this.assessCodeQuality(files);
-    const suggestions = await this.generateADRSuggestions(
-      metrics,
-      dependencies,
-      patterns,
-      quality,
-    );
+    const suggestions = await this.generateADRSuggestions(metrics, dependencies, patterns, quality);
 
     console.log("✅ Codebase analysis complete!");
     return { metrics, dependencies, patterns, quality, suggestions };
@@ -139,24 +107,12 @@ export class CodebaseAnalyzer {
 
           if (entry.isDirectory()) {
             // Skip common directories that don't contain source code
-            if (
-              ![
-                "node_modules",
-                ".git",
-                "dist",
-                "build",
-                ".next",
-                "coverage",
-              ].includes(entry.name)
-            ) {
+            if (!["node_modules", ".git", "dist", "build", ".next", "coverage"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
             const ext = extname(entry.name);
-            if (
-              this.supportedExtensions.includes(ext) ||
-              this.configFiles.includes(entry.name)
-            ) {
+            if (this.supportedExtensions.includes(ext) || this.configFiles.includes(entry.name)) {
               files.push(fullPath);
             }
           }
@@ -213,9 +169,7 @@ export class CodebaseAnalyzer {
   /**
    * Analyze dependencies between modules
    */
-  private async analyzeDependencies(
-    files: string[],
-  ): Promise<DependencyAnalysis> {
+  private async analyzeDependencies(files: string[]): Promise<DependencyAnalysis> {
     const internalDependencies = new Map<string, string[]>();
     const externalDependencies = new Map<string, string[]>();
     const circularDependencies: string[][] = [];
@@ -225,12 +179,8 @@ export class CodebaseAnalyzer {
         const content = await readFile(file, "utf-8");
         const imports = this.extractImports(content);
 
-        const internal = imports.filter(
-          (imp) => imp.startsWith(".") || imp.startsWith("/"),
-        );
-        const external = imports.filter(
-          (imp) => !imp.startsWith(".") && !imp.startsWith("/"),
-        );
+        const internal = imports.filter(imp => imp.startsWith(".") || imp.startsWith("/"));
+        const external = imports.filter(imp => !imp.startsWith(".") && !imp.startsWith("/"));
 
         internalDependencies.set(file, internal);
         externalDependencies.set(file, external);
@@ -247,8 +197,7 @@ export class CodebaseAnalyzer {
     const dependencyDepth = this.calculateDependencyDepth(internalDependencies);
 
     // Identify critical dependencies
-    const criticalDependencies =
-      this.identifyCriticalDependencies(internalDependencies);
+    const criticalDependencies = this.identifyCriticalDependencies(internalDependencies);
 
     return {
       internalDependencies,
@@ -264,15 +213,12 @@ export class CodebaseAnalyzer {
    */
   private async identifyArchitecturePatterns(
     files: string[],
-    dependencies: DependencyAnalysis,
+    dependencies: DependencyAnalysis
   ): Promise<ArchitecturePattern[]> {
     const patterns: ArchitecturePattern[] = [];
 
     // Analyze for microservice patterns
-    const microservicePattern = this.detectMicroservicePattern(
-      files,
-      dependencies,
-    );
+    const microservicePattern = this.detectMicroservicePattern(files, dependencies);
     if (microservicePattern.confidence > 0.3) {
       patterns.push(microservicePattern);
     }
@@ -295,12 +241,8 @@ export class CodebaseAnalyzer {
   /**
    * Assess code quality metrics
    */
-  private async assessCodeQuality(
-    files: string[],
-  ): Promise<CodeQualityMetrics> {
-    const testFiles = files.filter((file) =>
-      this.testPatterns.some((pattern) => pattern.test(file)),
-    );
+  private async assessCodeQuality(files: string[]): Promise<CodeQualityMetrics> {
+    const testFiles = files.filter(file => this.testPatterns.some(pattern => pattern.test(file)));
     const testCoverage = (testFiles.length / files.length) * 100;
 
     const documentedFiles = await this.countDocumentedFiles(files);
@@ -324,12 +266,12 @@ export class CodebaseAnalyzer {
     metrics: CodebaseMetrics,
     dependencies: DependencyAnalysis,
     patterns: ArchitecturePattern[],
-    quality: CodeQualityMetrics,
+    quality: CodeQualityMetrics
   ): Promise<ADRSuggestion[]> {
     const suggestions: ADRSuggestion[] = [];
 
     // Suggest performance ADR for large files
-    if (metrics.largestFiles.some((f) => f.lines > 500)) {
+    if (metrics.largestFiles.some(f => f.lines > 500)) {
       suggestions.push({
         id: "perf-large-files",
         title: "Performance Optimization for Large Files",
@@ -339,9 +281,7 @@ export class CodebaseAnalyzer {
           "Large files detected that may impact build performance",
           "Files over 500 lines can be difficult to maintain",
         ],
-        evidence: metrics.largestFiles
-          .filter((f) => f.lines > 500)
-          .map((f) => f.path),
+        evidence: metrics.largestFiles.filter(f => f.lines > 500).map(f => f.path),
         template: "performance",
         estimatedImpact: "high",
         stakeholders: ["Development Team", "Performance Team"],
@@ -388,11 +328,9 @@ export class CodebaseAnalyzer {
   }
 
   // Helper methods
-  private calculateComplexityScore(
-    fileSizes: Array<{ path: string; lines: number }>,
-  ): number {
-    const largeFiles = fileSizes.filter((f) => f.lines > 200).length;
-    const veryLargeFiles = fileSizes.filter((f) => f.lines > 500).length;
+  private calculateComplexityScore(fileSizes: Array<{ path: string; lines: number }>): number {
+    const largeFiles = fileSizes.filter(f => f.lines > 200).length;
+    const veryLargeFiles = fileSizes.filter(f => f.lines > 500).length;
     return (largeFiles * 0.1 + veryLargeFiles * 0.3) * 100;
   }
 
@@ -408,17 +346,13 @@ export class CodebaseAnalyzer {
     return imports;
   }
 
-  private detectCircularDependencies(
-    dependencies: Map<string, string[]>,
-  ): string[][] {
+  private detectCircularDependencies(dependencies: Map<string, string[]>): string[][] {
     // Simplified circular dependency detection
     // In a real implementation, this would use graph algorithms
     return [];
   }
 
-  private calculateDependencyDepth(
-    dependencies: Map<string, string[]>,
-  ): Map<string, number> {
+  private calculateDependencyDepth(dependencies: Map<string, string[]>): Map<string, number> {
     const depth = new Map<string, number>();
 
     for (const [file] of dependencies) {
@@ -428,26 +362,18 @@ export class CodebaseAnalyzer {
     return depth;
   }
 
-  private calculateFileDepth(
-    file: string,
-    dependencies: Map<string, string[]>,
-    visited: Set<string>,
-  ): number {
+  private calculateFileDepth(file: string, dependencies: Map<string, string[]>, visited: Set<string>): number {
     if (visited.has(file)) return 0;
     visited.add(file);
 
     const deps = dependencies.get(file) || [];
     if (deps.length === 0) return 1;
 
-    const maxDepth = Math.max(
-      ...deps.map((dep) => this.calculateFileDepth(dep, dependencies, visited)),
-    );
+    const maxDepth = Math.max(...deps.map(dep => this.calculateFileDepth(dep, dependencies, visited)));
     return maxDepth + 1;
   }
 
-  private identifyCriticalDependencies(
-    dependencies: Map<string, string[]>,
-  ): string[] {
+  private identifyCriticalDependencies(dependencies: Map<string, string[]>): string[] {
     const dependencyCount = new Map<string, number>();
 
     for (const deps of dependencies.values()) {
@@ -461,26 +387,21 @@ export class CodebaseAnalyzer {
       .map(([dep]) => dep);
   }
 
-  private detectMicroservicePattern(
-    files: string[],
-    dependencies: DependencyAnalysis,
-  ): ArchitecturePattern {
+  private detectMicroservicePattern(files: string[], dependencies: DependencyAnalysis): ArchitecturePattern {
     const evidence: string[] = [];
     let confidence = 0;
 
     // Look for service-like directories
-    const serviceDirs = files.filter(
-      (f) => f.includes("/services/") || f.includes("/api/"),
-    );
+    const serviceDirs = files.filter(f => f.includes("/services/") || f.includes("/api/"));
     if (serviceDirs.length > 0) {
       evidence.push(`Found ${serviceDirs.length} service-related files`);
       confidence += 0.3;
     }
 
     // Look for independent modules
-    const independentModules = Array.from(
-      dependencies.internalDependencies.entries(),
-    ).filter(([, deps]) => deps.length < 3).length;
+    const independentModules = Array.from(dependencies.internalDependencies.entries()).filter(
+      ([, deps]) => deps.length < 3
+    ).length;
 
     if (independentModules > 5) {
       evidence.push(`Found ${independentModules} independent modules`);
@@ -502,17 +423,12 @@ export class CodebaseAnalyzer {
     };
   }
 
-  private detectModularPattern(
-    files: string[],
-    dependencies: DependencyAnalysis,
-  ): ArchitecturePattern {
+  private detectModularPattern(files: string[], dependencies: DependencyAnalysis): ArchitecturePattern {
     const evidence: string[] = [];
     let confidence = 0;
 
     // Look for modular structure
-    const moduleDirs = files.filter(
-      (f) => f.includes("/modules/") || f.includes("/components/"),
-    );
+    const moduleDirs = files.filter(f => f.includes("/modules/") || f.includes("/components/"));
     if (moduleDirs.length > 0) {
       evidence.push(`Found ${moduleDirs.length} modular files`);
       confidence += 0.4;
@@ -520,10 +436,8 @@ export class CodebaseAnalyzer {
 
     // Check for clear separation of concerns
     const avgDeps =
-      Array.from(dependencies.internalDependencies.values()).reduce(
-        (sum, deps) => sum + deps.length,
-        0,
-      ) / dependencies.internalDependencies.size;
+      Array.from(dependencies.internalDependencies.values()).reduce((sum, deps) => sum + deps.length, 0) /
+      dependencies.internalDependencies.size;
 
     if (avgDeps < 5) {
       evidence.push(`Low average dependency count: ${avgDeps.toFixed(1)}`);
@@ -536,34 +450,20 @@ export class CodebaseAnalyzer {
       evidence,
       recommendations:
         confidence > 0.5
-          ? [
-              "Document module boundaries",
-              "Implement module communication patterns",
-              "Add module testing strategies",
-            ]
+          ? ["Document module boundaries", "Implement module communication patterns", "Add module testing strategies"]
           : [],
     };
   }
 
-  private detectLayeredPattern(
-    files: string[],
-    dependencies: DependencyAnalysis,
-  ): ArchitecturePattern {
+  private detectLayeredPattern(files: string[], dependencies: DependencyAnalysis): ArchitecturePattern {
     const evidence: string[] = [];
     let confidence = 0;
 
     // Look for layered structure
-    const layers = [
-      "/controllers/",
-      "/services/",
-      "/repositories/",
-      "/models/",
-    ];
-    const layerFiles = layers.map(
-      (layer) => files.filter((f) => f.includes(layer)).length,
-    );
+    const layers = ["/controllers/", "/services/", "/repositories/", "/models/"];
+    const layerFiles = layers.map(layer => files.filter(f => f.includes(layer)).length);
 
-    const nonZeroLayers = layerFiles.filter((count) => count > 0).length;
+    const nonZeroLayers = layerFiles.filter(count => count > 0).length;
     if (nonZeroLayers >= 3) {
       evidence.push(`Found ${nonZeroLayers} architectural layers`);
       confidence += 0.5;
@@ -575,11 +475,7 @@ export class CodebaseAnalyzer {
       evidence,
       recommendations:
         confidence > 0.5
-          ? [
-              "Document layer responsibilities",
-              "Implement layer communication rules",
-              "Add layer testing strategies",
-            ]
+          ? ["Document layer responsibilities", "Implement layer communication rules", "Add layer testing strategies"]
           : [],
     };
   }
@@ -591,11 +487,7 @@ export class CodebaseAnalyzer {
       // Sample first 100 files
       try {
         const content = await readFile(file, "utf-8");
-        if (
-          content.includes("/**") ||
-          content.includes("//") ||
-          content.includes("#")
-        ) {
+        if (content.includes("/**") || content.includes("//") || content.includes("#")) {
           documentedCount++;
         }
       } catch (error) {
@@ -606,9 +498,7 @@ export class CodebaseAnalyzer {
     return documentedCount;
   }
 
-  private async calculateComplexityMetrics(
-    files: string[],
-  ): Promise<CodeQualityMetrics["complexityMetrics"]> {
+  private async calculateComplexityMetrics(files: string[]): Promise<CodeQualityMetrics["complexityMetrics"]> {
     // Simplified complexity calculation
     // In a real implementation, this would use tools like ESLint or SonarQube
     return {
@@ -618,9 +508,7 @@ export class CodebaseAnalyzer {
     };
   }
 
-  private async detectCodeSmells(
-    files: string[],
-  ): Promise<CodeQualityMetrics["codeSmells"]> {
+  private async detectCodeSmells(files: string[]): Promise<CodeQualityMetrics["codeSmells"]> {
     const smells: CodeQualityMetrics["codeSmells"] = [];
 
     // Sample analysis of first 50 files
@@ -640,9 +528,7 @@ export class CodebaseAnalyzer {
         }
 
         // Detect deep nesting
-        const maxIndent = Math.max(
-          ...lines.map((line) => (line.match(/^\s*/)?.[0] || "").length),
-        );
+        const maxIndent = Math.max(...lines.map(line => (line.match(/^\s*/)?.[0] || "").length));
         if (maxIndent > 6) {
           smells.push({
             type: "Deep Nesting",

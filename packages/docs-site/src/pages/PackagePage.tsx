@@ -4,12 +4,7 @@
 
 import { Component, createSignal, onMount, For } from "solid-js";
 import { useParams } from "solid-router";
-import {
-  DocsPage,
-  DocsSection,
-  DocsBreadcrumbs,
-  DocsCodeBlock,
-} from "reynard-docs-components";
+import { DocsPage, DocsSection, DocsBreadcrumbs, DocsCodeBlock } from "reynard-docs-components";
 import { DocRenderer } from "reynard-docs-core";
 
 /**
@@ -82,30 +77,18 @@ export const PackagePage: Component = () => {
         <div class="docs-package-header">
           <h1 class="docs-package-title">{packageInfo.title}</h1>
           <div class="docs-package-meta">
-            <span class="docs-package-version">
-              v{packageInfo.metadata.version}
-            </span>
-            <span class="docs-package-category">
-              {packageInfo.metadata.category}
-            </span>
+            <span class="docs-package-version">v{packageInfo.metadata.version}</span>
+            <span class="docs-package-category">{packageInfo.metadata.category}</span>
           </div>
         </div>
 
-        <div class="docs-package-description">
-          {packageInfo.metadata.description}
-        </div>
+        <div class="docs-package-description">{packageInfo.metadata.description}</div>
 
         <div class="docs-package-actions">
-          <a
-            href={`/packages/${params.package}/api`}
-            class="docs-package-button"
-          >
+          <a href={`/packages/${params.package}/api`} class="docs-package-button">
             View API
           </a>
-          <a
-            href={`/packages/${params.package}/examples`}
-            class="docs-package-button"
-          >
+          <a href={`/packages/${params.package}/examples`} class="docs-package-button">
             View Examples
           </a>
         </div>
@@ -122,11 +105,7 @@ export const PackagePage: Component = () => {
 
       <DocsSection title="Quick Start">
         <div class="docs-package-content">
-          <DocRenderer
-            content={packageInfo.content}
-            metadata={packageInfo.metadata}
-            type={packageInfo.type}
-          />
+          <DocRenderer content={packageInfo.content} metadata={packageInfo.metadata} type={packageInfo.type} />
         </div>
       </DocsSection>
 
@@ -148,10 +127,7 @@ export const PackagePage: Component = () => {
             </a>
           )}
           {packageInfo.metadata.repository?.url && (
-            <a
-              href={packageInfo.metadata.repository.url}
-              class="docs-package-link"
-            >
+            <a href={packageInfo.metadata.repository.url} class="docs-package-link">
               Repository
             </a>
           )}

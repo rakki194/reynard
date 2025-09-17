@@ -12,7 +12,7 @@ interface ComparisonViewProps {
   };
 }
 
-export const ComparisonView: Component<ComparisonViewProps> = (props) => {
+export const ComparisonView: Component<ComparisonViewProps> = props => {
   const getColorForPixel = (pixelValue: number): OKLCHColor => {
     switch (pixelValue) {
       case 1:
@@ -53,7 +53,7 @@ export const ComparisonView: Component<ComparisonViewProps> = (props) => {
                     }}
                   />
                 );
-              }),
+              })
             )}
           </div>
         </div>
@@ -76,7 +76,7 @@ export const ComparisonView: Component<ComparisonViewProps> = (props) => {
                     }}
                   />
                 );
-              }),
+              })
             )}
           </div>
         </div>

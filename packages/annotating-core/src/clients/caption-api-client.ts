@@ -5,11 +5,7 @@
  * the generic ApiClient from the core package.
  */
 
-import {
-  ApiClient,
-  type ApiClientConfig,
-  type HealthStatus,
-} from "reynard-core";
+import { ApiClient, type ApiClientConfig, type HealthStatus } from "reynard-core";
 import {
   CaptionApiClientConfig,
   CaptionRequest,
@@ -44,9 +40,7 @@ export class CaptionApiClient extends ApiClient {
   /**
    * Generate captions for multiple images
    */
-  async generateBatchCaptions(
-    request: BatchCaptionRequest,
-  ): Promise<CaptionResponse[]> {
+  async generateBatchCaptions(request: BatchCaptionRequest): Promise<CaptionResponse[]> {
     return this.httpClient.request({
       method: "POST",
       endpoint: "/caption/batch",
@@ -77,9 +71,7 @@ export class CaptionApiClient extends ApiClient {
   /**
    * Load a specific model
    */
-  async loadModel(
-    generatorName: string,
-  ): Promise<{ success: boolean; message: string }> {
+  async loadModel(generatorName: string): Promise<{ success: boolean; message: string }> {
     return this.httpClient.request({
       method: "POST",
       endpoint: `/caption/models/${generatorName}/load`,
@@ -89,9 +81,7 @@ export class CaptionApiClient extends ApiClient {
   /**
    * Unload a specific model
    */
-  async unloadModel(
-    generatorName: string,
-  ): Promise<{ success: boolean; message: string }> {
+  async unloadModel(generatorName: string): Promise<{ success: boolean; message: string }> {
     return this.httpClient.request({
       method: "POST",
       endpoint: `/caption/models/${generatorName}/unload`,
@@ -151,11 +141,7 @@ export class CaptionApiClient extends ApiClient {
   /**
    * Upload an image file for caption generation
    */
-  async uploadImage(
-    file: File,
-    generatorName: string,
-    config?: Record<string, any>,
-  ): Promise<CaptionResponse> {
+  async uploadImage(file: File, generatorName: string, config?: Record<string, any>): Promise<CaptionResponse> {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("generator_name", generatorName);

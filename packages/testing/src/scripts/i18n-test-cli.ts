@@ -19,10 +19,7 @@ import { setupErrorHandlers } from "./cli-utils.js";
 setupErrorHandlers();
 
 // Configure main program
-program
-  .name("i18n-test")
-  .description("Run i18n tests across all Reynard packages")
-  .version("1.0.0");
+program.name("i18n-test").description("Run i18n tests across all Reynard packages").version("1.0.0");
 
 // Add all command modules
 program.addCommand(createRunCommand());

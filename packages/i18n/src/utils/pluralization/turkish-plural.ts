@@ -16,7 +16,7 @@ export function getTurkishPlural(
     singular: string;
     pluralLar: string; // for back vowels
     pluralLer: string; // for front vowels
-  },
+  }
 ): string {
   // Back vowels: a, ı, o, u
   const backVowels = ["a", "ı", "o", "u"];

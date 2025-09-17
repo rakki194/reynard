@@ -132,9 +132,7 @@ export interface QueryResult<T extends Component[]> {
    * @param predicate Function that determines if an entity should be included
    * @returns New QueryResult containing only matching entities
    */
-  filter(
-    predicate: (entity: Entity, ...components: T) => boolean,
-  ): QueryResult<T>;
+  filter(predicate: (entity: Entity, ...components: T) => boolean): QueryResult<T>;
 
   /**
    * Gets the first entity and its components, or undefined if empty.

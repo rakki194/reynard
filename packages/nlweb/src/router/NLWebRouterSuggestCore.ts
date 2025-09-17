@@ -4,10 +4,7 @@
  * Core suggestion logic for the NLWeb router.
  */
 
-import {
-  NLWebSuggestionRequest,
-  NLWebSuggestionResponse,
-} from "../types/index.js";
+import { NLWebSuggestionRequest, NLWebSuggestionResponse } from "../types/index.js";
 import { NLWebRouterCache } from "./NLWebRouterCache.js";
 
 export interface SuggestContext {
@@ -21,9 +18,7 @@ export interface SuggestContext {
 /**
  * Check cache for existing suggestion
  */
-export function checkCache(
-  context: SuggestContext,
-): NLWebSuggestionResponse | null {
+export function checkCache(context: SuggestContext): NLWebSuggestionResponse | null {
   const { request, cache, performanceStats, emitEvent } = context;
   const cacheKey = cache.generateCacheKey(request);
   const cached = cache.get(cacheKey);
@@ -53,14 +48,10 @@ export function checkCache(
 /**
  * Generate new suggestion
  */
-export async function generateSuggestion(
-  context: SuggestContext,
-): Promise<NLWebSuggestionResponse> {
+export async function generateSuggestion(context: SuggestContext): Promise<NLWebSuggestionResponse> {
   const { request, cache, toolRegistry, emitEvent } = context;
   const startTime = Date.now();
-  const requestId =
-    request.metadata?.requestId ||
-    `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  const requestId = request.metadata?.requestId || `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
   // Get available tools
   const availableTools = (toolRegistry as any).getAvailableTools();
@@ -69,22 +60,16 @@ export async function generateSuggestion(
   }
 
   // Score tools based on query
-  const scoredTools = await (toolRegistry as any).scoreTools(
-    request.query,
-    availableTools,
-    request.context,
-  );
+  const scoredTools = await (toolRegistry as any).scoreTools(request.query, availableTools, request.context);
 
   // Generate suggestions
-  const suggestions = scoredTools
-    .slice(0, request.maxSuggestions)
-    .map((tool: any) => ({
-      tool: tool.tool,
-      score: tool.score,
-      parameters: tool.parameters,
-      reasoning: tool.reasoning,
-      parameterHints: tool.parameterHints,
-    }));
+  const suggestions = scoredTools.slice(0, request.maxSuggestions).map((tool: any) => ({
+    tool: tool.tool,
+    score: tool.score,
+    parameters: tool.parameters,
+    reasoning: tool.reasoning,
+    parameterHints: tool.parameterHints,
+  }));
 
   const response: NLWebSuggestionResponse = {
     suggestions,

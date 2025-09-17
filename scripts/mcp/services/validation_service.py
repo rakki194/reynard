@@ -44,8 +44,8 @@ class ValidationService:
             )
 
             stdout_bytes, stderr_bytes = await result.communicate()
-            stdout = stdout_bytes.decode('utf-8')
-            stderr = stderr_bytes.decode('utf-8')
+            stdout = stdout_bytes.decode("utf-8")
+            stderr = stderr_bytes.decode("utf-8")
 
             return {
                 "success": result.returncode == 0,

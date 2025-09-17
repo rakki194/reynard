@@ -16,7 +16,7 @@ export class CodeProcessor extends InlineProcessor {
           type: "code",
           content: content.trim(),
           inline: true,
-        }),
+        })
       );
       return `<code>${content}</code>`;
     });

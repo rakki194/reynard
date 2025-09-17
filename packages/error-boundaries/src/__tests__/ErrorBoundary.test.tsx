@@ -94,10 +94,7 @@ describe("ErrorBoundary", () => {
     const onRecovery = vi.fn();
 
     render(() => (
-      <ErrorBoundary
-        recoveryStrategies={[mockRecoveryStrategy]}
-        onRecovery={onRecovery}
-      >
+      <ErrorBoundary recoveryStrategies={[mockRecoveryStrategy]} onRecovery={onRecovery}>
         <ThrowError />
       </ErrorBoundary>
     ));
@@ -169,9 +166,7 @@ describe("ErrorBoundary", () => {
       </ErrorBoundary>
     ));
 
-    const textarea = screen.getByPlaceholderText(
-      "Describe what you were doing when this error occurred...",
-    );
+    const textarea = screen.getByPlaceholderText("Describe what you were doing when this error occurred...");
     const reportButton = screen.getByText("Send Report");
 
     // Initially disabled
@@ -188,9 +183,7 @@ describe("ErrorBoundary", () => {
   });
 
   it("should use custom fallback component when provided", () => {
-    const CustomFallback = ({ error }: { error: Error }) => (
-      <div>Custom error: {error.message}</div>
-    );
+    const CustomFallback = ({ error }: { error: Error }) => <div>Custom error: {error.message}</div>;
 
     render(() => (
       <ErrorBoundary fallback={CustomFallback}>

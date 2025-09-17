@@ -9,9 +9,7 @@ interface ThreeJSVisualizationDemoProps {
   className?: string;
 }
 
-export const ThreeJSVisualizationDemo: Component<
-  ThreeJSVisualizationDemoProps
-> = (props) => {
+export const ThreeJSVisualizationDemo: Component<ThreeJSVisualizationDemoProps> = props => {
   const { t } = useI18n();
   const [_scene, setScene] = createSignal<unknown>(null);
   const [_camera, setCamera] = createSignal<unknown>(null);
@@ -20,12 +18,7 @@ export const ThreeJSVisualizationDemo: Component<
   const [cameraInfo, setCameraInfo] = createSignal<string>("");
 
   // Demo scene setup
-  const setupDemoScene = async (
-    _scene: unknown,
-    _camera: unknown,
-    _renderer: unknown,
-    _controls: unknown,
-  ) => {
+  const setupDemoScene = async (_scene: unknown, _camera: unknown, _renderer: unknown, _controls: unknown) => {
     try {
       // Store references
       setScene(_scene);
@@ -114,12 +107,7 @@ export const ThreeJSVisualizationDemo: Component<
     const currentCamera = _camera();
     const currentControls = _controls();
 
-    if (
-      currentCamera &&
-      currentControls &&
-      (currentCamera as any).position &&
-      (currentControls as any).target
-    ) {
+    if (currentCamera && currentControls && (currentCamera as any).position && (currentControls as any).target) {
       const pos = (currentCamera as any).position;
       const target = (currentControls as any).target;
 
@@ -129,24 +117,19 @@ export const ThreeJSVisualizationDemo: Component<
         : Math.sqrt(
             Math.pow((pos.x || 0) - (target.x || 0), 2) +
               Math.pow((pos.y || 0) - (target.y || 0), 2) +
-              Math.pow((pos.z || 0) - (target.z || 0), 2),
+              Math.pow((pos.z || 0) - (target.z || 0), 2)
           );
 
       setCameraInfo(
         `Camera: (${(pos.x || 0).toFixed(2)}, ${(pos.y || 0).toFixed(2)}, ${(pos.z || 0).toFixed(2)}) | ` +
           `Target: (${(target.x || 0).toFixed(2)}, ${(target.y || 0).toFixed(2)}, ${(target.z || 0).toFixed(2)}) | ` +
-          `Distance: ${distance.toFixed(2)}`,
+          `Distance: ${distance.toFixed(2)}`
       );
     }
   };
 
   // Custom render function for animations
-  const onRender = (
-    _scene: any,
-    _camera: any,
-    _renderer: any,
-    _controls: any,
-  ) => {
+  const onRender = (_scene: any, _camera: any, _renderer: any, _controls: any) => {
     // Add any custom rendering logic here
     // For now, just update camera info
     updateCameraInfo();

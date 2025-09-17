@@ -43,7 +43,7 @@ export function clampOKLCHColor(color: OKLCHColor): OKLCHColor {
  * @returns True if all colors are valid
  */
 export function validateOKLCHColorArray(colors: OKLCHColor[]): boolean {
-  return colors.every((color) => validateOKLCHColor(color));
+  return colors.every(color => validateOKLCHColor(color));
 }
 
 /**
@@ -52,7 +52,7 @@ export function validateOKLCHColorArray(colors: OKLCHColor[]): boolean {
  * @returns Array of sanitized OKLCH colors
  */
 export function sanitizeOKLCHColorArray(colors: OKLCHColor[]): OKLCHColor[] {
-  return colors.map((color) => clampOKLCHColor(color));
+  return colors.map(color => clampOKLCHColor(color));
 }
 
 /**
@@ -62,11 +62,7 @@ export function sanitizeOKLCHColorArray(colors: OKLCHColor[]): OKLCHColor[] {
  * @param tolerance - Tolerance for comparison
  * @returns True if colors are approximately equal
  */
-export function colorsApproximatelyEqual(
-  color1: OKLCHColor,
-  color2: OKLCHColor,
-  tolerance: number = 0.01,
-): boolean {
+export function colorsApproximatelyEqual(color1: OKLCHColor, color2: OKLCHColor, tolerance: number = 0.01): boolean {
   return (
     Math.abs(color1.l - color2.l) < tolerance &&
     Math.abs(color1.c - color2.c) < tolerance &&
@@ -80,17 +76,9 @@ export function colorsApproximatelyEqual(
  * @param intensity - Shift intensity
  * @returns True if parameters are valid
  */
-export function validateShiftParameters(
-  shiftType: string,
-  intensity: number,
-): boolean {
+export function validateShiftParameters(shiftType: string, intensity: number): boolean {
   const validShiftTypes = ["shadow", "highlight", "midtone"];
-  return (
-    validShiftTypes.includes(shiftType) &&
-    typeof intensity === "number" &&
-    intensity >= 0 &&
-    intensity <= 1
-  );
+  return validShiftTypes.includes(shiftType) && typeof intensity === "number" && intensity >= 0 && intensity <= 1;
 }
 
 /**
@@ -99,19 +87,8 @@ export function validateShiftParameters(
  * @param animationType - Type of animation
  * @returns True if parameters are valid
  */
-export function validateAnimationParameters(
-  keyframeCount: number,
-  animationType: string,
-): boolean {
-  const validAnimationTypes = [
-    "pulse",
-    "shift",
-    "fade",
-    "breathing",
-    "shimmer",
-    "cycling",
-    "rainbow",
-  ];
+export function validateAnimationParameters(keyframeCount: number, animationType: string): boolean {
+  const validAnimationTypes = ["pulse", "shift", "fade", "breathing", "shimmer", "cycling", "rainbow"];
   return (
     typeof keyframeCount === "number" &&
     keyframeCount > 0 &&
@@ -139,15 +116,11 @@ export function getOKLCHValidationErrors(color: OKLCHColor): string[] {
   const errors: string[] = [];
 
   if (typeof color.l !== "number" || color.l < 0 || color.l > 100) {
-    errors.push(
-      `Lightness (l) must be a number between 0 and 100, got: ${color.l}`,
-    );
+    errors.push(`Lightness (l) must be a number between 0 and 100, got: ${color.l}`);
   }
 
   if (typeof color.c !== "number" || color.c < 0 || color.c > 0.4) {
-    errors.push(
-      `Chroma (c) must be a number between 0 and 0.4, got: ${color.c}`,
-    );
+    errors.push(`Chroma (c) must be a number between 0 and 0.4, got: ${color.c}`);
   }
 
   if (typeof color.h !== "number" || color.h < 0 || color.h >= 360) {

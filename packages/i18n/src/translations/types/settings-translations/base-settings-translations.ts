@@ -5,10 +5,7 @@
  * for appearance, language, and basic functionality.
  */
 
-import type {
-  TranslationParams,
-  ThemeTranslations,
-} from "../../../types/core/common-types";
+import type { TranslationParams, ThemeTranslations } from "../../../types/core/common-types";
 
 // Base settings translations
 export interface BaseSettingsTranslations {

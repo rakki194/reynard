@@ -6,20 +6,21 @@ for the FastAPI application.
 """
 
 import os
-from fastapi import Request, Response
+
+from fastapi import Request
 
 
 async def add_security_headers(request: Request, call_next):
     """Add comprehensive security headers to all responses"""
     response = await call_next(request)
-    
+
     # Security headers
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
-    
+
     # Content Security Policy
     csp = (
         "default-src 'self'; "
@@ -31,9 +32,11 @@ async def add_security_headers(request: Request, call_next):
         "frame-ancestors 'none';"
     )
     response.headers["Content-Security-Policy"] = csp
-    
+
     # Strict Transport Security (only in production)
     if os.getenv("ENVIRONMENT") == "production":
-        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-    
+        response.headers["Strict-Transport-Security"] = (
+            "max-age=31536000; includeSubDomains"
+        )
+
     return response

@@ -8,10 +8,11 @@ Ported from Yipyap's battle-tested implementation.
 
 import logging
 from abc import ABC, abstractmethod
+from collections.abc import AsyncGenerator
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 from enum import Enum
-from typing import Dict, List, Optional, Any, AsyncGenerator
-from datetime import datetime, timezone
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -43,16 +44,18 @@ class SummarizationOptions:
 
     content_type: ContentType = ContentType.GENERAL
     summary_level: SummaryLevel = SummaryLevel.DETAILED
-    max_length: Optional[int] = None
+    max_length: int | None = None
     include_outline: bool = False
     include_highlights: bool = False
     temperature: float = 0.3
     top_p: float = 0.9
-    model: Optional[str] = None
-    language: Optional[str] = None  # Target language for summarization
-    source_language: Optional[str] = None  # Source language (auto-detected if not provided)
-    context: Optional[Dict[str, Any]] = None
-    user_preferences: Optional[Dict[str, Any]] = None
+    model: str | None = None
+    language: str | None = None  # Target language for summarization
+    source_language: str | None = (
+        None  # Source language (auto-detected if not provided)
+    )
+    context: dict[str, Any] | None = None
+    user_preferences: dict[str, Any] | None = None
 
 
 @dataclass
@@ -64,31 +67,31 @@ class SummarizationResult:
     summary: str
     content_type: ContentType
     summary_level: SummaryLevel
-    language: Optional[str] = None  # Language of the summary
-    source_language: Optional[str] = None  # Language of the original text
-    quality_score: Optional[float] = None
-    processing_time: Optional[float] = None
-    model: Optional[str] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    language: str | None = None  # Language of the summary
+    source_language: str | None = None  # Language of the original text
+    quality_score: float | None = None
+    processing_time: float | None = None
+    model: str | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+    created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
 
     # Optional fields for enhanced functionality
-    title: Optional[str] = None
-    abstract: Optional[str] = None
-    short_summary: Optional[str] = None
-    long_summary: Optional[str] = None
-    outline: Optional[List[str]] = None
-    highlights: Optional[List[str]] = None
-    word_count: Optional[int] = None
-    summary_word_count: Optional[int] = None
-    model_used: Optional[str] = None  # Alias for model field
+    title: str | None = None
+    abstract: str | None = None
+    short_summary: str | None = None
+    long_summary: str | None = None
+    outline: list[str] | None = None
+    highlights: list[str] | None = None
+    word_count: int | None = None
+    summary_word_count: int | None = None
+    model_used: str | None = None  # Alias for model field
 
     @property
     def summary_id(self) -> str:
         """Backward compatibility property for summary_id."""
         return self.id
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert the result to a dictionary."""
         return {
             "id": self.id,
@@ -131,7 +134,7 @@ class BaseSummarizer(ABC):
     providing a consistent API for different summarization strategies.
     """
 
-    def __init__(self, name: str, supported_content_types: List[ContentType]):
+    def __init__(self, name: str, supported_content_types: list[ContentType]):
         """
         Initialize the base summarizer.
 
@@ -176,7 +179,7 @@ class BaseSummarizer(ABC):
     @abstractmethod
     async def summarize_stream(
         self, text: str, options: SummarizationOptions
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+    ) -> AsyncGenerator[dict[str, Any]]:
         """
         Stream summarization progress and results.
 
@@ -225,7 +228,7 @@ class BaseSummarizer(ABC):
 
     async def get_quality_metrics(
         self, result: SummarizationResult
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """
         Calculate quality metrics for a summarization result.
 
@@ -258,7 +261,9 @@ class BaseSummarizer(ABC):
             original_words = set(result.original_text.lower().split())
             summary_words = set(result.summary.lower().split())
             if original_words:
-                overlap = len(original_words.intersection(summary_words)) / len(original_words)
+                overlap = len(original_words.intersection(summary_words)) / len(
+                    original_words
+                )
                 metrics["relevance"] = min(1.0, overlap * 2.0)
 
             # Readability: simple sentence length heuristic

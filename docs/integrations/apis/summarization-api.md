@@ -296,13 +296,7 @@ Get information about available summarization models and capabilities.
   "available_summarizers": {
     "ollama": {
       "name": "Ollama Summarizer",
-      "supported_content_types": [
-        "article",
-        "code",
-        "document",
-        "technical",
-        "general"
-      ],
+      "supported_content_types": ["article", "code", "document", "technical", "general"],
       "supported_languages": ["en", "es", "fr", "de", "zh", "ja"],
       "default_model": "qwen3:8b"
     },
@@ -319,13 +313,7 @@ Get information about available summarization models and capabilities.
       "default_model": "qwen3:8b"
     }
   },
-  "supported_content_types": [
-    "article",
-    "code",
-    "document",
-    "technical",
-    "general"
-  ],
+  "supported_content_types": ["article", "code", "document", "technical", "general"],
   "supported_languages": ["en", "es", "fr", "de", "zh", "ja"]
 }
 ```
@@ -490,14 +478,12 @@ const result = await response.json();
 console.log(result.summary);
 
 // Streaming summarization
-const eventSource = new EventSource(
-  "/api/summarize/stream?text=Content&content_type=article",
-);
-eventSource.addEventListener("tokens", (event) => {
+const eventSource = new EventSource("/api/summarize/stream?text=Content&content_type=article");
+eventSource.addEventListener("tokens", event => {
   const data = JSON.parse(event.data);
   console.log("Partial summary:", data.partial_summary);
 });
-eventSource.addEventListener("done", (event) => {
+eventSource.addEventListener("done", event => {
   const data = JSON.parse(event.data);
   console.log("Final summary:", data.result.summary);
   eventSource.close();

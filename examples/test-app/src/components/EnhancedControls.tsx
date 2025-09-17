@@ -10,9 +10,7 @@ export interface ControlsProps {
   mode: () => "2d" | "3d";
   setMode: (mode: "2d" | "3d") => void;
   patternType: () => "vogel" | "rotase" | "bernoulli" | "fibonacci-sibling";
-  setPatternType: (
-    type: "vogel" | "rotase" | "bernoulli" | "fibonacci-sibling",
-  ) => void;
+  setPatternType: (type: "vogel" | "rotase" | "bernoulli" | "fibonacci-sibling") => void;
   pointCount: () => number;
   setPointCount: (count: number) => void;
   rotationSpeed: () => number;
@@ -29,7 +27,7 @@ export interface ControlsProps {
   onConfigUpdate: () => void;
 }
 
-export const EnhancedControls: Component<ControlsProps> = (props) => {
+export const EnhancedControls: Component<ControlsProps> = props => {
   const handleModeChange = (e: any) => {
     props.setMode(e.currentTarget.value as "2d" | "3d");
     props.onConfigUpdate();
@@ -78,9 +76,7 @@ export const EnhancedControls: Component<ControlsProps> = (props) => {
           max="10000"
           step="500"
           value={props.pointCount()}
-          onInput={(e: any) =>
-            props.setPointCount(parseInt(e.currentTarget.value))
-          }
+          onInput={(e: any) => props.setPointCount(parseInt(e.currentTarget.value))}
         />
       </div>
 
@@ -92,9 +88,7 @@ export const EnhancedControls: Component<ControlsProps> = (props) => {
           max="5.0"
           step="0.1"
           value={props.rotationSpeed()}
-          onInput={(e: any) =>
-            props.setRotationSpeed(parseFloat(e.currentTarget.value))
-          }
+          onInput={(e: any) => props.setRotationSpeed(parseFloat(e.currentTarget.value))}
         />
       </div>
 
@@ -102,7 +96,7 @@ export const EnhancedControls: Component<ControlsProps> = (props) => {
         <input
           type="checkbox"
           checked={props.enableStroboscopic()}
-          onChange={(e) => props.setEnableStroboscopic(e.currentTarget.checked)}
+          onChange={e => props.setEnableStroboscopic(e.currentTarget.checked)}
         />
         <label>Enable Stroboscopic Effects</label>
       </div>
@@ -111,7 +105,7 @@ export const EnhancedControls: Component<ControlsProps> = (props) => {
         <input
           type="checkbox"
           checked={props.enableMorphing()}
-          onChange={(e) => props.setEnableMorphing(e.currentTarget.checked)}
+          onChange={e => props.setEnableMorphing(e.currentTarget.checked)}
         />
         <label>Enable Morphing Effects</label>
       </div>
@@ -120,19 +114,13 @@ export const EnhancedControls: Component<ControlsProps> = (props) => {
         <input
           type="checkbox"
           checked={props.enablePerformanceOptimization()}
-          onChange={(e) =>
-            props.setEnablePerformanceOptimization(e.currentTarget.checked)
-          }
+          onChange={e => props.setEnablePerformanceOptimization(e.currentTarget.checked)}
         />
         <label>Enable Performance Optimization</label>
       </div>
 
       <div class="control-group">
-        <Button
-          variant="secondary"
-          onClick={props.onRegeneratePattern}
-          class="control-button"
-        >
+        <Button variant="secondary" onClick={props.onRegeneratePattern} class="control-button">
           🔄 Regenerate Pattern
         </Button>
       </div>

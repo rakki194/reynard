@@ -8,13 +8,16 @@ import logging
 import time
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException, status, UploadFile, File, Form
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import FileResponse
 
 from .models import (
-    TTSSynthesisRequest, TTSSynthesisResponse,
-    TTSBatchRequest, TTSBatchResponse,
-    TTSConfigRequest, TTSConfigResponse
+    TTSBatchRequest,
+    TTSBatchResponse,
+    TTSConfigRequest,
+    TTSConfigResponse,
+    TTSSynthesisRequest,
+    TTSSynthesisResponse,
 )
 from .service import get_tts_service
 
@@ -35,14 +38,14 @@ async def synthesize_text(request: TTSSynthesisRequest):
             speed=request.speed,
             lang=request.lang,
             to_ogg=request.to_ogg,
-            to_opus=request.to_opus
+            to_opus=request.to_opus,
         )
         return TTSSynthesisResponse(**result)
     except Exception as e:
         logger.error(f"TTS synthesis failed: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"TTS synthesis failed: {str(e)}"
+            detail=f"TTS synthesis failed: {e!s}",
         )
 
 
@@ -58,14 +61,14 @@ async def synthesize_batch(request: TTSBatchRequest):
             speed=request.speed,
             lang=request.lang,
             to_ogg=request.to_ogg,
-            to_opus=request.to_opus
+            to_opus=request.to_opus,
         )
         return TTSBatchResponse(**result)
     except Exception as e:
         logger.error(f"Batch TTS synthesis failed: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Batch TTS synthesis failed: {str(e)}"
+            detail=f"Batch TTS synthesis failed: {e!s}",
         )
 
 
@@ -76,17 +79,14 @@ async def get_audio_file(filename: str):
         service = get_tts_service()
         audio_dir = Path("generated/audio")
         audio_path = audio_dir / filename
-        
+
         if not audio_path.exists():
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Audio file not found"
+                status_code=status.HTTP_404_NOT_FOUND, detail="Audio file not found"
             )
-        
+
         return FileResponse(
-            path=str(audio_path),
-            media_type="audio/wav",
-            filename=filename
+            path=str(audio_path), media_type="audio/wav", filename=filename
         )
     except HTTPException:
         raise
@@ -94,7 +94,7 @@ async def get_audio_file(filename: str):
         logger.error(f"Failed to get audio file: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get audio file: {str(e)}"
+            detail=f"Failed to get audio file: {e!s}",
         )
 
 
@@ -109,7 +109,7 @@ async def get_tts_config():
         logger.error(f"Failed to get TTS config: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get TTS config: {str(e)}"
+            detail=f"Failed to get TTS config: {e!s}",
         )
 
 
@@ -118,11 +118,11 @@ async def update_tts_config(request: TTSConfigRequest):
     """Update TTS configuration."""
     try:
         service = get_tts_service()
-        
+
         # Convert request to dict, excluding None values
         config_dict = request.dict(exclude_unset=True)
         await service.update_config(config_dict)
-        
+
         # Return updated config
         updated_config = await service.get_config()
         return TTSConfigResponse(**updated_config)
@@ -130,7 +130,7 @@ async def update_tts_config(request: TTSConfigRequest):
         logger.error(f"Failed to update TTS config: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update TTS config: {str(e)}"
+            detail=f"Failed to update TTS config: {e!s}",
         )
 
 
@@ -139,50 +139,50 @@ async def synthesize_with_voice_clone(
     text: str = Form(...),
     reference_audio: UploadFile = File(...),
     speed: float = Form(1.0),
-    lang: str = Form("en")
+    lang: str = Form("en"),
 ):
     """Synthesize text with voice cloning using XTTS."""
     try:
         service = get_tts_service()
-        
+
         # Save reference audio temporarily
         temp_dir = Path("temp/voice_clone")
         temp_dir.mkdir(parents=True, exist_ok=True)
         reference_path = temp_dir / f"ref_{reference_audio.filename}"
-        
+
         with open(reference_path, "wb") as f:
             content = await reference_audio.read()
             f.write(content)
-        
+
         # Generate output path
         output_dir = Path("generated/audio")
         output_dir.mkdir(parents=True, exist_ok=True)
         output_path = output_dir / f"cloned_{int(time.time())}.wav"
-        
+
         # Perform voice cloning synthesis
         result_path = await service.synthesize_with_voice_clone(
             text=text,
             out_path=output_path,
             reference_audio=reference_path,
             speed=speed,
-            lang=lang
+            lang=lang,
         )
-        
+
         # Clean up reference audio
         reference_path.unlink(missing_ok=True)
-        
+
         return {
             "success": True,
             "audio_path": str(result_path),
             "audio_url": f"/api/tts/audio/{result_path.name}",
             "backend_used": "xtts",
             "processing_time": 0.0,
-            "error": None
+            "error": None,
         }
-        
+
     except Exception as e:
         logger.error(f"Voice cloning synthesis failed: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Voice cloning synthesis failed: {str(e)}"
+            detail=f"Voice cloning synthesis failed: {e!s}",
         )

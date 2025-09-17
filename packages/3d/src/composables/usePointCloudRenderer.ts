@@ -1,21 +1,12 @@
 import { createSignal } from "solid-js";
-import type {
-  ThreeJSInterface,
-  PointsLike,
-  EmbeddingRenderingConfig,
-  EmbeddingPoint,
-} from "../types/rendering";
+import type { ThreeJSInterface, PointsLike, EmbeddingRenderingConfig, EmbeddingPoint } from "../types/rendering";
 import { PointCloudMaterialManager } from "../managers/PointCloudMaterialManager";
 import { PointCloudGeometryManager } from "../managers/PointCloudGeometryManager";
 import { SpriteManager } from "../managers/SpriteManager";
 
 export function usePointCloudRenderer(threeJS: ThreeJSInterface) {
-  const [materialManager] = createSignal(
-    new PointCloudMaterialManager(threeJS),
-  );
-  const [geometryManager] = createSignal(
-    new PointCloudGeometryManager(threeJS),
-  );
+  const [materialManager] = createSignal(new PointCloudMaterialManager(threeJS));
+  const [geometryManager] = createSignal(new PointCloudGeometryManager(threeJS));
   const [spriteManager] = createSignal(new SpriteManager(threeJS));
   const [pointCloud, setPointCloud] = createSignal<PointsLike | null>(null);
 
@@ -23,7 +14,7 @@ export function usePointCloudRenderer(threeJS: ThreeJSInterface) {
     points: EmbeddingPoint[],
     config: EmbeddingRenderingConfig,
     scene: any,
-    onPointClick: (event: MouseEvent) => void,
+    onPointClick: (event: MouseEvent) => void
   ): Promise<PointsLike> => {
     if (!points || points.length === 0) {
       throw new Error("No points provided for point cloud creation");
@@ -59,10 +50,8 @@ export function usePointCloudRenderer(threeJS: ThreeJSInterface) {
     const currentPointCloud = pointCloud();
     if (currentPointCloud) {
       scene.remove(currentPointCloud);
-      if (currentPointCloud.geometry?.dispose)
-        currentPointCloud.geometry.dispose();
-      if (currentPointCloud.material?.dispose)
-        currentPointCloud.material.dispose();
+      if (currentPointCloud.geometry?.dispose) currentPointCloud.geometry.dispose();
+      if (currentPointCloud.material?.dispose) currentPointCloud.material.dispose();
       setPointCloud(null);
     }
   };

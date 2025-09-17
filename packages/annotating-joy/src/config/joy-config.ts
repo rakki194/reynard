@@ -58,8 +58,7 @@ export const JOY_CAPTION_DEFAULT_CONFIG = {
 
 export const JOY_CAPTION_METADATA = {
   name: "joycaption",
-  description:
-    "JoyCaption - Large language model for detailed image captioning with multilingual support",
+  description: "JoyCaption - Large language model for detailed image captioning with multilingual support",
   version: "1.0.0",
   caption_type: "caption",
   model_category: "heavy",

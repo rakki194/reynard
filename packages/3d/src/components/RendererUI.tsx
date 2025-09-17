@@ -10,7 +10,7 @@ interface RendererUIProps {
   onConfigChange: (newConfig: any) => void;
 }
 
-export const RendererUI: Component<RendererUIProps> = (uiProps) => {
+export const RendererUI: Component<RendererUIProps> = uiProps => {
   return (
     <div class="base-point-cloud-renderer">
       <RendererInfo
@@ -28,10 +28,7 @@ export const RendererUI: Component<RendererUIProps> = (uiProps) => {
         }
       />
 
-      <RendererControls
-        config={uiProps.props.config}
-        onConfigChange={uiProps.onConfigChange}
-      />
+      <RendererControls config={uiProps.props.config} onConfigChange={uiProps.onConfigChange} />
 
       <RendererStats
         materialStats={

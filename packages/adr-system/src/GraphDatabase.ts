@@ -5,12 +5,7 @@
  * storage and advanced querying of the ADR knowledge graph.
  */
 
-import {
-  KnowledgeNode,
-  KnowledgeEdge,
-  GraphQuery,
-  GraphPath,
-} from "./KnowledgeGraph";
+import { KnowledgeNode, KnowledgeEdge, GraphQuery, GraphPath } from "./KnowledgeGraph";
 
 export interface GraphDatabaseConfig {
   type: "neo4j" | "in-memory" | "json-file";
@@ -45,15 +40,8 @@ export abstract class GraphDatabase {
   abstract removeNode(nodeId: string): Promise<void>;
   abstract removeEdge(edgeId: string): Promise<void>;
   abstract query(query: GraphQuery): Promise<QueryResult>;
-  abstract findShortestPath(
-    sourceId: string,
-    targetId: string,
-  ): Promise<GraphPath | null>;
-  abstract findAllPaths(
-    sourceId: string,
-    targetId: string,
-    maxDepth?: number,
-  ): Promise<GraphPath[]>;
+  abstract findShortestPath(sourceId: string, targetId: string): Promise<GraphPath | null>;
+  abstract findAllPaths(sourceId: string, targetId: string, maxDepth?: number): Promise<GraphPath[]>;
   abstract detectCommunities(): Promise<Map<string, string[]>>;
   abstract calculateMetrics(): Promise<any>;
 }
@@ -189,12 +177,10 @@ export class Neo4jGraphDatabase extends GraphDatabase {
 
     // Add property filters
     if (query.properties) {
-      const propertyConditions = Object.entries(query.properties).map(
-        ([key, value], index) => {
-          parameters[`prop${index}`] = value;
-          return `n.properties.${key} = $prop${index}`;
-        },
-      );
+      const propertyConditions = Object.entries(query.properties).map(([key, value], index) => {
+        parameters[`prop${index}`] = value;
+        return `n.properties.${key} = $prop${index}`;
+      });
 
       if (query.nodeTypes && query.nodeTypes.length > 0) {
         cypher += ` AND ${propertyConditions.join(" AND ")}`;
@@ -231,10 +217,7 @@ export class Neo4jGraphDatabase extends GraphDatabase {
     };
   }
 
-  async findShortestPath(
-    sourceId: string,
-    targetId: string,
-  ): Promise<GraphPath | null> {
+  async findShortestPath(sourceId: string, targetId: string): Promise<GraphPath | null> {
     const cypher = `
       MATCH (source {id: $sourceId}), (target {id: $targetId}),
             path = shortestPath((source)-[*]-(target))
@@ -251,11 +234,7 @@ export class Neo4jGraphDatabase extends GraphDatabase {
     return null;
   }
 
-  async findAllPaths(
-    sourceId: string,
-    targetId: string,
-    maxDepth: number = 5,
-  ): Promise<GraphPath[]> {
+  async findAllPaths(sourceId: string, targetId: string, maxDepth: number = 5): Promise<GraphPath[]> {
     const cypher = `
       MATCH (source {id: $sourceId}), (target {id: $targetId}),
             paths = (source)-[*1..${maxDepth}]-(target)
@@ -393,22 +372,16 @@ export class InMemoryGraphDatabase extends GraphDatabase {
 
     // Apply filters
     if (query.nodeTypes && query.nodeTypes.length > 0) {
-      filteredNodes = filteredNodes.filter((node) =>
-        query.nodeTypes!.includes(node.type),
-      );
+      filteredNodes = filteredNodes.filter(node => query.nodeTypes!.includes(node.type));
     }
 
     if (query.edgeTypes && query.edgeTypes.length > 0) {
-      filteredEdges = filteredEdges.filter((edge) =>
-        query.edgeTypes!.includes(edge.type),
-      );
+      filteredEdges = filteredEdges.filter(edge => query.edgeTypes!.includes(edge.type));
     }
 
     if (query.properties) {
-      filteredNodes = filteredNodes.filter((node) =>
-        Object.entries(query.properties!).every(
-          ([key, value]) => node.properties[key] === value,
-        ),
+      filteredNodes = filteredNodes.filter(node =>
+        Object.entries(query.properties!).every(([key, value]) => node.properties[key] === value)
       );
     }
 
@@ -428,10 +401,7 @@ export class InMemoryGraphDatabase extends GraphDatabase {
     };
   }
 
-  async findShortestPath(
-    sourceId: string,
-    targetId: string,
-  ): Promise<GraphPath | null> {
+  async findShortestPath(sourceId: string, targetId: string): Promise<GraphPath | null> {
     if (!this.nodes.has(sourceId) || !this.nodes.has(targetId)) {
       return null;
     }
@@ -445,7 +415,7 @@ export class InMemoryGraphDatabase extends GraphDatabase {
       const { nodeId, path, weight } = queue.shift()!;
 
       if (nodeId === targetId) {
-        const nodes = path.map((id) => this.nodes.get(id)!);
+        const nodes = path.map(id => this.nodes.get(id)!);
         const edges: KnowledgeEdge[] = [];
 
         for (let i = 0; i < path.length - 1; i++) {
@@ -481,24 +451,14 @@ export class InMemoryGraphDatabase extends GraphDatabase {
     return null;
   }
 
-  async findAllPaths(
-    sourceId: string,
-    targetId: string,
-    maxDepth: number = 5,
-  ): Promise<GraphPath[]> {
+  async findAllPaths(sourceId: string, targetId: string, maxDepth: number = 5): Promise<GraphPath[]> {
     const paths: GraphPath[] = [];
 
-    const dfs = (
-      currentId: string,
-      targetId: string,
-      path: string[],
-      visited: Set<string>,
-      depth: number,
-    ): void => {
+    const dfs = (currentId: string, targetId: string, path: string[], visited: Set<string>, depth: number): void => {
       if (depth > maxDepth) return;
 
       if (currentId === targetId) {
-        const nodes = path.map((id) => this.nodes.get(id)!);
+        const nodes = path.map(id => this.nodes.get(id)!);
         const edges: KnowledgeEdge[] = [];
         let totalWeight = 0;
 
@@ -573,13 +533,9 @@ export class InMemoryGraphDatabase extends GraphDatabase {
       edgeTypes[edge.type] = (edgeTypes[edge.type] || 0) + 1;
     }
 
-    const totalDegree = Array.from(this.adjacencyList.values()).reduce(
-      (sum, neighbors) => sum + neighbors.size,
-      0,
-    );
+    const totalDegree = Array.from(this.adjacencyList.values()).reduce((sum, neighbors) => sum + neighbors.size, 0);
 
-    const averageDegree =
-      this.nodes.size > 0 ? totalDegree / this.nodes.size : 0;
+    const averageDegree = this.nodes.size > 0 ? totalDegree / this.nodes.size : 0;
 
     return {
       totalNodes: this.nodes.size,
@@ -590,10 +546,7 @@ export class InMemoryGraphDatabase extends GraphDatabase {
     };
   }
 
-  private findEdge(
-    sourceId: string,
-    targetId: string,
-  ): KnowledgeEdge | undefined {
+  private findEdge(sourceId: string, targetId: string): KnowledgeEdge | undefined {
     for (const edge of this.edges.values()) {
       if (edge.source === sourceId && edge.target === targetId) {
         return edge;
@@ -652,10 +605,7 @@ export class JsonFileGraphDatabase extends GraphDatabase {
           },
         };
 
-        await fs.writeFile(
-          this.config.filePath,
-          JSON.stringify(graphData, null, 2),
-        );
+        await fs.writeFile(this.config.filePath, JSON.stringify(graphData, null, 2));
         console.log(`🦊 Saved graph to ${this.config.filePath}`);
       } catch (error) {
         console.error("Failed to save graph:", error);
@@ -694,22 +644,16 @@ export class JsonFileGraphDatabase extends GraphDatabase {
     let filteredEdges = Array.from(this.edges.values());
 
     if (query.nodeTypes && query.nodeTypes.length > 0) {
-      filteredNodes = filteredNodes.filter((node) =>
-        query.nodeTypes!.includes(node.type),
-      );
+      filteredNodes = filteredNodes.filter(node => query.nodeTypes!.includes(node.type));
     }
 
     if (query.edgeTypes && query.edgeTypes.length > 0) {
-      filteredEdges = filteredEdges.filter((edge) =>
-        query.edgeTypes!.includes(edge.type),
-      );
+      filteredEdges = filteredEdges.filter(edge => query.edgeTypes!.includes(edge.type));
     }
 
     if (query.properties) {
-      filteredNodes = filteredNodes.filter((node) =>
-        Object.entries(query.properties!).every(
-          ([key, value]) => node.properties[key] === value,
-        ),
+      filteredNodes = filteredNodes.filter(node =>
+        Object.entries(query.properties!).every(([key, value]) => node.properties[key] === value)
       );
     }
 
@@ -729,19 +673,12 @@ export class JsonFileGraphDatabase extends GraphDatabase {
     };
   }
 
-  async findShortestPath(
-    sourceId: string,
-    targetId: string,
-  ): Promise<GraphPath | null> {
+  async findShortestPath(sourceId: string, targetId: string): Promise<GraphPath | null> {
     // Simplified implementation - would need proper graph traversal
     return null;
   }
 
-  async findAllPaths(
-    sourceId: string,
-    targetId: string,
-    maxDepth: number = 5,
-  ): Promise<GraphPath[]> {
+  async findAllPaths(sourceId: string, targetId: string, maxDepth: number = 5): Promise<GraphPath[]> {
     // Simplified implementation - would need proper graph traversal
     return [];
   }

@@ -15,10 +15,7 @@ export class SpellEffectsRenderer {
   /**
    * Render spell-specific visual effects
    */
-  renderSpellSpecificEffects(
-    spell: SpellEffect,
-    animation: SpellAnimation,
-  ): void {
+  renderSpellSpecificEffects(spell: SpellEffect, animation: SpellAnimation): void {
     const centerX = this.ctx.canvas.width / 2;
     const centerY = this.ctx.canvas.height / 2;
     const progress = animation.progress;
@@ -81,11 +78,7 @@ export class SpellEffectsRenderer {
     }
   }
 
-  private renderLightningEffects(
-    x: number,
-    y: number,
-    spell: SpellEffect,
-  ): void {
+  private renderLightningEffects(x: number, y: number, spell: SpellEffect): void {
     // Lightning bolts
     for (let i = 0; i < 5; i++) {
       const angle = (i / 5) * Math.PI * 2;

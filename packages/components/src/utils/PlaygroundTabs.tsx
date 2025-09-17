@@ -18,11 +18,11 @@ export interface PlaygroundTabsProps {
   onTabChange: (tabId: string) => void;
 }
 
-export const PlaygroundTabs: Component<PlaygroundTabsProps> = (props) => {
+export const PlaygroundTabs: Component<PlaygroundTabsProps> = props => {
   return (
     <div class="playground-tabs">
       <For each={props.tabs}>
-        {(tab) => (
+        {tab => (
           <button
             class={`playground-tab ${props.activeTab === tab.id ? "active" : ""}`}
             onClick={() => props.onTabChange(tab.id)}

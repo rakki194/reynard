@@ -39,15 +39,8 @@ export class ConfigValidator {
       errors.push("Configuration version must be a string");
     }
 
-    if (
-      config.environment &&
-      !["development", "staging", "production", "test"].includes(
-        config.environment,
-      )
-    ) {
-      errors.push(
-        "Configuration environment must be one of: development, staging, production, test",
-      );
+    if (config.environment && !["development", "staging", "production", "test"].includes(config.environment)) {
+      errors.push("Configuration environment must be one of: development, staging, production, test");
     }
 
     if (config.debug !== undefined && typeof config.debug !== "boolean") {
@@ -137,11 +130,7 @@ export class ConfigValidator {
     }
 
     if (config.retries !== undefined) {
-      if (
-        typeof config.retries !== "number" ||
-        config.retries < 0 ||
-        config.retries > 10
-      ) {
+      if (typeof config.retries !== "number" || config.retries < 0 || config.retries > 10) {
         errors.push("HTTP retries must be a number between 0 and 10");
       }
     }
@@ -150,24 +139,15 @@ export class ConfigValidator {
       errors.push("HTTP headers must be an object");
     }
 
-    if (
-      config.enableRetry !== undefined &&
-      typeof config.enableRetry !== "boolean"
-    ) {
+    if (config.enableRetry !== undefined && typeof config.enableRetry !== "boolean") {
       errors.push("HTTP enableRetry must be a boolean");
     }
 
-    if (
-      config.enableCircuitBreaker !== undefined &&
-      typeof config.enableCircuitBreaker !== "boolean"
-    ) {
+    if (config.enableCircuitBreaker !== undefined && typeof config.enableCircuitBreaker !== "boolean") {
       errors.push("HTTP enableCircuitBreaker must be a boolean");
     }
 
-    if (
-      config.enableMetrics !== undefined &&
-      typeof config.enableMetrics !== "boolean"
-    ) {
+    if (config.enableMetrics !== undefined && typeof config.enableMetrics !== "boolean") {
       errors.push("HTTP enableMetrics must be a boolean");
     }
 
@@ -177,46 +157,30 @@ export class ConfigValidator {
   /**
    * Validate validation configuration
    */
-  static validateValidation(
-    config: Partial<ValidationConfig>,
-  ): ValidationResult {
+  static validateValidation(config: Partial<ValidationConfig>): ValidationResult {
     const errors: string[] = [];
     const warnings: string[] = [];
 
     if (config.password) {
       if (
         config.password.minLength !== undefined &&
-        (typeof config.password.minLength !== "number" ||
-          config.password.minLength < 1)
+        (typeof config.password.minLength !== "number" || config.password.minLength < 1)
       ) {
         errors.push("Password minLength must be a positive number");
       }
       if (
         config.password.maxLength !== undefined &&
-        (typeof config.password.maxLength !== "number" ||
-          config.password.maxLength < config.password.minLength ||
-          0)
+        (typeof config.password.maxLength !== "number" || config.password.maxLength < config.password.minLength || 0)
       ) {
-        errors.push(
-          "Password maxLength must be a number greater than minLength",
-        );
+        errors.push("Password maxLength must be a number greater than minLength");
       }
-      if (
-        config.password.requireUppercase !== undefined &&
-        typeof config.password.requireUppercase !== "boolean"
-      ) {
+      if (config.password.requireUppercase !== undefined && typeof config.password.requireUppercase !== "boolean") {
         errors.push("Password requireUppercase must be a boolean");
       }
-      if (
-        config.password.requireLowercase !== undefined &&
-        typeof config.password.requireLowercase !== "boolean"
-      ) {
+      if (config.password.requireLowercase !== undefined && typeof config.password.requireLowercase !== "boolean") {
         errors.push("Password requireLowercase must be a boolean");
       }
-      if (
-        config.password.requireNumbers !== undefined &&
-        typeof config.password.requireNumbers !== "boolean"
-      ) {
+      if (config.password.requireNumbers !== undefined && typeof config.password.requireNumbers !== "boolean") {
         errors.push("Password requireNumbers must be a boolean");
       }
       if (
@@ -230,25 +194,17 @@ export class ConfigValidator {
     if (config.username) {
       if (
         config.username.minLength !== undefined &&
-        (typeof config.username.minLength !== "number" ||
-          config.username.minLength < 1)
+        (typeof config.username.minLength !== "number" || config.username.minLength < 1)
       ) {
         errors.push("Username minLength must be a positive number");
       }
       if (
         config.username.maxLength !== undefined &&
-        (typeof config.username.maxLength !== "number" ||
-          config.username.maxLength < config.username.minLength ||
-          0)
+        (typeof config.username.maxLength !== "number" || config.username.maxLength < config.username.minLength || 0)
       ) {
-        errors.push(
-          "Username maxLength must be a number greater than minLength",
-        );
+        errors.push("Username maxLength must be a number greater than minLength");
       }
-      if (
-        config.username.allowedChars &&
-        !(config.username.allowedChars instanceof RegExp)
-      ) {
+      if (config.username.allowedChars && !(config.username.allowedChars instanceof RegExp)) {
         errors.push("Username allowedChars must be a RegExp");
       }
     }
@@ -256,8 +212,7 @@ export class ConfigValidator {
     if (config.email) {
       if (
         config.email.maxLength !== undefined &&
-        (typeof config.email.maxLength !== "number" ||
-          config.email.maxLength < 1)
+        (typeof config.email.maxLength !== "number" || config.email.maxLength < 1)
       ) {
         errors.push("Email maxLength must be a positive number");
       }
@@ -267,34 +222,19 @@ export class ConfigValidator {
     }
 
     if (config.file) {
-      if (
-        config.file.maxSize !== undefined &&
-        (typeof config.file.maxSize !== "number" || config.file.maxSize <= 0)
-      ) {
+      if (config.file.maxSize !== undefined && (typeof config.file.maxSize !== "number" || config.file.maxSize <= 0)) {
         errors.push("File maxSize must be a positive number");
       }
-      if (
-        config.file.allowedImageTypes &&
-        !Array.isArray(config.file.allowedImageTypes)
-      ) {
+      if (config.file.allowedImageTypes && !Array.isArray(config.file.allowedImageTypes)) {
         errors.push("File allowedImageTypes must be an array");
       }
-      if (
-        config.file.allowedDocumentTypes &&
-        !Array.isArray(config.file.allowedDocumentTypes)
-      ) {
+      if (config.file.allowedDocumentTypes && !Array.isArray(config.file.allowedDocumentTypes)) {
         errors.push("File allowedDocumentTypes must be an array");
       }
-      if (
-        config.file.allowedVideoTypes &&
-        !Array.isArray(config.file.allowedVideoTypes)
-      ) {
+      if (config.file.allowedVideoTypes && !Array.isArray(config.file.allowedVideoTypes)) {
         errors.push("File allowedVideoTypes must be an array");
       }
-      if (
-        config.file.allowedAudioTypes &&
-        !Array.isArray(config.file.allowedAudioTypes)
-      ) {
+      if (config.file.allowedAudioTypes && !Array.isArray(config.file.allowedAudioTypes)) {
         errors.push("File allowedAudioTypes must be an array");
       }
     }
@@ -305,67 +245,45 @@ export class ConfigValidator {
   /**
    * Validate performance configuration
    */
-  static validatePerformance(
-    config: Partial<PerformanceConfig>,
-  ): ValidationResult {
+  static validatePerformance(config: Partial<PerformanceConfig>): ValidationResult {
     const errors: string[] = [];
     const warnings: string[] = [];
 
-    if (
-      config.debounceDelay !== undefined &&
-      (typeof config.debounceDelay !== "number" || config.debounceDelay < 0)
-    ) {
+    if (config.debounceDelay !== undefined && (typeof config.debounceDelay !== "number" || config.debounceDelay < 0)) {
       errors.push("Performance debounceDelay must be a non-negative number");
     }
 
-    if (
-      config.throttleDelay !== undefined &&
-      (typeof config.throttleDelay !== "number" || config.throttleDelay < 0)
-    ) {
+    if (config.throttleDelay !== undefined && (typeof config.throttleDelay !== "number" || config.throttleDelay < 0)) {
       errors.push("Performance throttleDelay must be a non-negative number");
     }
 
-    if (
-      config.cacheTTL !== undefined &&
-      (typeof config.cacheTTL !== "number" || config.cacheTTL <= 0)
-    ) {
+    if (config.cacheTTL !== undefined && (typeof config.cacheTTL !== "number" || config.cacheTTL <= 0)) {
       errors.push("Performance cacheTTL must be a positive number");
     }
 
-    if (
-      config.maxCacheSize !== undefined &&
-      (typeof config.maxCacheSize !== "number" || config.maxCacheSize <= 0)
-    ) {
+    if (config.maxCacheSize !== undefined && (typeof config.maxCacheSize !== "number" || config.maxCacheSize <= 0)) {
       errors.push("Performance maxCacheSize must be a positive number");
     }
 
     if (
       config.maxRetryAttempts !== undefined &&
-      (typeof config.maxRetryAttempts !== "number" ||
-        config.maxRetryAttempts < 0 ||
-        config.maxRetryAttempts > 10)
+      (typeof config.maxRetryAttempts !== "number" || config.maxRetryAttempts < 0 || config.maxRetryAttempts > 10)
     ) {
-      errors.push(
-        "Performance maxRetryAttempts must be a number between 0 and 10",
-      );
+      errors.push("Performance maxRetryAttempts must be a number between 0 and 10");
     }
 
     if (
       config.healthCheckInterval !== undefined &&
-      (typeof config.healthCheckInterval !== "number" ||
-        config.healthCheckInterval <= 0)
+      (typeof config.healthCheckInterval !== "number" || config.healthCheckInterval <= 0)
     ) {
       errors.push("Performance healthCheckInterval must be a positive number");
     }
 
     if (
       config.metricsCollectionInterval !== undefined &&
-      (typeof config.metricsCollectionInterval !== "number" ||
-        config.metricsCollectionInterval <= 0)
+      (typeof config.metricsCollectionInterval !== "number" || config.metricsCollectionInterval <= 0)
     ) {
-      errors.push(
-        "Performance metricsCollectionInterval must be a positive number",
-      );
+      errors.push("Performance metricsCollectionInterval must be a positive number");
     }
 
     if (config.memory) {
@@ -383,18 +301,14 @@ export class ConfigValidator {
           config.memory.criticalThreshold < 0 ||
           config.memory.criticalThreshold > 1)
       ) {
-        errors.push(
-          "Memory criticalThreshold must be a number between 0 and 1",
-        );
+        errors.push("Memory criticalThreshold must be a number between 0 and 1");
       }
       if (
         config.memory.warningThreshold !== undefined &&
         config.memory.criticalThreshold !== undefined &&
         config.memory.warningThreshold >= config.memory.criticalThreshold
       ) {
-        errors.push(
-          "Memory warningThreshold must be less than criticalThreshold",
-        );
+        errors.push("Memory warningThreshold must be less than criticalThreshold");
       }
     }
 
@@ -411,15 +325,13 @@ export class ConfigValidator {
     if (config.jwt) {
       if (
         config.jwt.defaultExpiry !== undefined &&
-        (typeof config.jwt.defaultExpiry !== "number" ||
-          config.jwt.defaultExpiry <= 0)
+        (typeof config.jwt.defaultExpiry !== "number" || config.jwt.defaultExpiry <= 0)
       ) {
         errors.push("JWT defaultExpiry must be a positive number");
       }
       if (
         config.jwt.refreshExpiry !== undefined &&
-        (typeof config.jwt.refreshExpiry !== "number" ||
-          config.jwt.refreshExpiry <= 0)
+        (typeof config.jwt.refreshExpiry !== "number" || config.jwt.refreshExpiry <= 0)
       ) {
         errors.push("JWT refreshExpiry must be a positive number");
       }
@@ -431,39 +343,26 @@ export class ConfigValidator {
     if (config.rateLimiting) {
       if (
         config.rateLimiting.defaultWindow !== undefined &&
-        (typeof config.rateLimiting.defaultWindow !== "number" ||
-          config.rateLimiting.defaultWindow <= 0)
+        (typeof config.rateLimiting.defaultWindow !== "number" || config.rateLimiting.defaultWindow <= 0)
       ) {
         errors.push("Rate limiting defaultWindow must be a positive number");
       }
       if (
         config.rateLimiting.defaultMaxRequests !== undefined &&
-        (typeof config.rateLimiting.defaultMaxRequests !== "number" ||
-          config.rateLimiting.defaultMaxRequests <= 0)
+        (typeof config.rateLimiting.defaultMaxRequests !== "number" || config.rateLimiting.defaultMaxRequests <= 0)
       ) {
-        errors.push(
-          "Rate limiting defaultMaxRequests must be a positive number",
-        );
+        errors.push("Rate limiting defaultMaxRequests must be a positive number");
       }
     }
 
     if (config.cors) {
-      if (
-        config.cors.allowedOrigins &&
-        !Array.isArray(config.cors.allowedOrigins)
-      ) {
+      if (config.cors.allowedOrigins && !Array.isArray(config.cors.allowedOrigins)) {
         errors.push("CORS allowedOrigins must be an array");
       }
-      if (
-        config.cors.allowedMethods &&
-        !Array.isArray(config.cors.allowedMethods)
-      ) {
+      if (config.cors.allowedMethods && !Array.isArray(config.cors.allowedMethods)) {
         errors.push("CORS allowedMethods must be an array");
       }
-      if (
-        config.cors.allowedHeaders &&
-        !Array.isArray(config.cors.allowedHeaders)
-      ) {
+      if (config.cors.allowedHeaders && !Array.isArray(config.cors.allowedHeaders)) {
         errors.push("CORS allowedHeaders must be an array");
       }
     }
@@ -493,12 +392,8 @@ export class ConfigValidator {
     if (config.breakpoints) {
       const breakpointKeys = ["mobile", "tablet", "desktop", "largeDesktop"];
       for (const key of breakpointKeys) {
-        if (
-          config.breakpoints[key as keyof typeof config.breakpoints] !==
-          undefined
-        ) {
-          const value =
-            config.breakpoints[key as keyof typeof config.breakpoints];
+        if (config.breakpoints[key as keyof typeof config.breakpoints] !== undefined) {
+          const value = config.breakpoints[key as keyof typeof config.breakpoints];
           if (typeof value !== "number" || value <= 0) {
             errors.push(`UI breakpoint ${key} must be a positive number`);
           }
@@ -509,15 +404,11 @@ export class ConfigValidator {
     if (config.animation) {
       if (
         config.animation.duration !== undefined &&
-        (typeof config.animation.duration !== "number" ||
-          config.animation.duration < 0)
+        (typeof config.animation.duration !== "number" || config.animation.duration < 0)
       ) {
         errors.push("Animation duration must be a non-negative number");
       }
-      if (
-        config.animation.easing &&
-        typeof config.animation.easing !== "string"
-      ) {
+      if (config.animation.easing && typeof config.animation.easing !== "string") {
         errors.push("Animation easing must be a string");
       }
     }
@@ -543,38 +434,29 @@ export class ConfigValidator {
     if (config.pagination) {
       if (
         config.pagination.defaultPageSize !== undefined &&
-        (typeof config.pagination.defaultPageSize !== "number" ||
-          config.pagination.defaultPageSize <= 0)
+        (typeof config.pagination.defaultPageSize !== "number" || config.pagination.defaultPageSize <= 0)
       ) {
         errors.push("API pagination defaultPageSize must be a positive number");
       }
       if (
         config.pagination.maxPageSize !== undefined &&
-        (typeof config.pagination.maxPageSize !== "number" ||
-          config.pagination.maxPageSize <= 0)
+        (typeof config.pagination.maxPageSize !== "number" || config.pagination.maxPageSize <= 0)
       ) {
         errors.push("API pagination maxPageSize must be a positive number");
       }
       if (
         config.pagination.minPageSize !== undefined &&
-        (typeof config.pagination.minPageSize !== "number" ||
-          config.pagination.minPageSize <= 0)
+        (typeof config.pagination.minPageSize !== "number" || config.pagination.minPageSize <= 0)
       ) {
         errors.push("API pagination minPageSize must be a positive number");
       }
     }
 
-    if (
-      config.timeout !== undefined &&
-      (typeof config.timeout !== "number" || config.timeout <= 0)
-    ) {
+    if (config.timeout !== undefined && (typeof config.timeout !== "number" || config.timeout <= 0)) {
       errors.push("API timeout must be a positive number");
     }
 
-    if (
-      config.retries !== undefined &&
-      (typeof config.retries !== "number" || config.retries < 0)
-    ) {
+    if (config.retries !== undefined && (typeof config.retries !== "number" || config.retries < 0)) {
       errors.push("API retries must be a non-negative number");
     }
 
@@ -589,52 +471,31 @@ export class ConfigValidator {
     const warnings: string[] = [];
 
     if (config.localStorage) {
-      if (
-        config.localStorage.enabled !== undefined &&
-        typeof config.localStorage.enabled !== "boolean"
-      ) {
+      if (config.localStorage.enabled !== undefined && typeof config.localStorage.enabled !== "boolean") {
         errors.push("LocalStorage enabled must be a boolean");
       }
-      if (
-        config.localStorage.prefix &&
-        typeof config.localStorage.prefix !== "string"
-      ) {
+      if (config.localStorage.prefix && typeof config.localStorage.prefix !== "string") {
         errors.push("LocalStorage prefix must be a string");
       }
-      if (
-        config.localStorage.encryption !== undefined &&
-        typeof config.localStorage.encryption !== "boolean"
-      ) {
+      if (config.localStorage.encryption !== undefined && typeof config.localStorage.encryption !== "boolean") {
         errors.push("LocalStorage encryption must be a boolean");
       }
     }
 
     if (config.sessionStorage) {
-      if (
-        config.sessionStorage.enabled !== undefined &&
-        typeof config.sessionStorage.enabled !== "boolean"
-      ) {
+      if (config.sessionStorage.enabled !== undefined && typeof config.sessionStorage.enabled !== "boolean") {
         errors.push("SessionStorage enabled must be a boolean");
       }
-      if (
-        config.sessionStorage.prefix &&
-        typeof config.sessionStorage.prefix !== "string"
-      ) {
+      if (config.sessionStorage.prefix && typeof config.sessionStorage.prefix !== "string") {
         errors.push("SessionStorage prefix must be a string");
       }
-      if (
-        config.sessionStorage.encryption !== undefined &&
-        typeof config.sessionStorage.encryption !== "boolean"
-      ) {
+      if (config.sessionStorage.encryption !== undefined && typeof config.sessionStorage.encryption !== "boolean") {
         errors.push("SessionStorage encryption must be a boolean");
       }
     }
 
     if (config.indexedDB) {
-      if (
-        config.indexedDB.enabled !== undefined &&
-        typeof config.indexedDB.enabled !== "boolean"
-      ) {
+      if (config.indexedDB.enabled !== undefined && typeof config.indexedDB.enabled !== "boolean") {
         errors.push("IndexedDB enabled must be a boolean");
       }
       if (config.indexedDB.name && typeof config.indexedDB.name !== "string") {
@@ -642,8 +503,7 @@ export class ConfigValidator {
       }
       if (
         config.indexedDB.version !== undefined &&
-        (typeof config.indexedDB.version !== "number" ||
-          config.indexedDB.version <= 0)
+        (typeof config.indexedDB.version !== "number" || config.indexedDB.version <= 0)
       ) {
         errors.push("IndexedDB version must be a positive number");
       }
@@ -692,9 +552,7 @@ export class ConfigValidator {
 /**
  * Validate configuration
  */
-export function validateConfig(
-  config: Partial<ReynardConfig>,
-): ValidationResult {
+export function validateConfig(config: Partial<ReynardConfig>): ValidationResult {
   return ConfigValidator.validate(config);
 }
 
@@ -703,7 +561,7 @@ export function validateConfig(
  */
 export function validateConfigSection<K extends keyof ReynardConfig>(
   section: K,
-  config: ReynardConfig[K],
+  config: ReynardConfig[K]
 ): ValidationResult {
   const partialConfig = { [section]: config } as Partial<ReynardConfig>;
   return ConfigValidator.validate(partialConfig);

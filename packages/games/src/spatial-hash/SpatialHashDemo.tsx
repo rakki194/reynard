@@ -41,9 +41,7 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
   });
 
   const initializeDemo = () => {
-    const newObjects = Array.from({ length: OBJECT_COUNT }, (_, i) =>
-      createObject(i),
-    );
+    const newObjects = Array.from({ length: OBJECT_COUNT }, (_, i) => createObject(i));
     setObjects(newObjects);
 
     const hash = new SpatialHash({ cellSize: 50 });
@@ -69,13 +67,8 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
 
     const hash = spatialHash();
     if (hash) {
-      const results = hash.queryRect(
-        newQueryRect.x,
-        newQueryRect.y,
-        newQueryRect.width,
-        newQueryRect.height,
-      );
-      setQueryResults(results.map((obj) => obj.id as number));
+      const results = hash.queryRect(newQueryRect.x, newQueryRect.y, newQueryRect.width, newQueryRect.height);
+      setQueryResults(results.map(obj => obj.id as number));
     }
   };
 
@@ -98,36 +91,17 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
       </div>
 
       <div class="spatial-canvas">
-        <svg
-          width={CANVAS_WIDTH}
-          height={CANVAS_HEIGHT}
-          class="spatial-svg"
-          onClick={handleCanvasClick}
-        >
+        <svg width={CANVAS_WIDTH} height={CANVAS_HEIGHT} class="spatial-svg" onClick={handleCanvasClick}>
           {/* Grid lines */}
           {Array.from({ length: Math.ceil(CANVAS_WIDTH / 50) }, (_, i) => (
-            <line
-              x1={i * 50}
-              y1={0}
-              x2={i * 50}
-              y2={CANVAS_HEIGHT}
-              stroke="#ddd"
-              stroke-width="1"
-            />
+            <line x1={i * 50} y1={0} x2={i * 50} y2={CANVAS_HEIGHT} stroke="#ddd" stroke-width="1" />
           ))}
           {Array.from({ length: Math.ceil(CANVAS_HEIGHT / 50) }, (_, i) => (
-            <line
-              x1={0}
-              y1={i * 50}
-              x2={CANVAS_WIDTH}
-              y2={i * 50}
-              stroke="#ddd"
-              stroke-width="1"
-            />
+            <line x1={0} y1={i * 50} x2={CANVAS_WIDTH} y2={i * 50} stroke="#ddd" stroke-width="1" />
           ))}
 
           {/* Objects */}
-          {objects().map((obj) => (
+          {objects().map(obj => (
             <rect
               x={obj.x}
               y={obj.y}
@@ -159,8 +133,7 @@ export function SpatialHashDemo(props: SpatialHashDemoProps = {}) {
           🎯 <strong>Click</strong> anywhere to query objects in a 100x100 area
         </p>
         <p>
-          💡 <strong>Algorithm:</strong> Spatial hashing for O(1) average case
-          queries
+          💡 <strong>Algorithm:</strong> Spatial hashing for O(1) average case queries
         </p>
       </div>
 

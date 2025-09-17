@@ -6,14 +6,8 @@
 
 import { NLWebState } from "./useNLWebState.js";
 import { NLWebActions } from "./useNLWebActions.js";
-import {
-  createNLWebHealthChecks,
-  NLWebHealthChecks,
-} from "./useNLWebHealthChecks.js";
-import {
-  createNLWebHealthUtils,
-  NLWebHealthUtils,
-} from "./useNLWebHealthUtils.js";
+import { createNLWebHealthChecks, NLWebHealthChecks } from "./useNLWebHealthChecks.js";
+import { createNLWebHealthUtils, NLWebHealthUtils } from "./useNLWebHealthUtils.js";
 
 export interface NLWebHealthManager {
   startHealthChecks: () => void;
@@ -30,13 +24,13 @@ export function createNLWebHealthManager(
   state: NLWebState,
   actions: NLWebActions,
   enableHealthChecks: boolean,
-  healthCheckInterval: number,
+  healthCheckInterval: number
 ): NLWebHealthManager {
   const healthChecks: NLWebHealthChecks = createNLWebHealthChecks(
     state,
     actions,
     enableHealthChecks,
-    healthCheckInterval,
+    healthCheckInterval
   );
 
   const healthUtils: NLWebHealthUtils = createNLWebHealthUtils(state);

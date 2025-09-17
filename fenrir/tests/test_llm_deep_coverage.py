@@ -41,7 +41,9 @@ class TestLLMDeepCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Use deep introspection to call ALL methods
                 methods = [
@@ -152,7 +154,9 @@ class TestLLMDeepCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Use deep introspection
                 methods = [
@@ -289,7 +293,9 @@ class TestLLMDeepCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Use deep introspection on all LLM classes
                 for instance in llm_classes:

@@ -14,7 +14,7 @@ interface CountdownDisplayProps {
   isCompleted: boolean;
 }
 
-export const CountdownDisplay: Component<CountdownDisplayProps> = (props) => {
+export const CountdownDisplay: Component<CountdownDisplayProps> = props => {
   const getStatusText = (): string => {
     if (props.isCompleted) return "Countdown completed!";
     if (props.isActive) return "Countdown is running...";
@@ -27,9 +27,7 @@ export const CountdownDisplay: Component<CountdownDisplayProps> = (props) => {
 
       <div class="countdown-target-date">{formatTargetDate(props.target)}</div>
 
-      <div
-        class={`countdown-status ${props.isActive ? "active" : props.isCompleted ? "completed" : ""}`}
-      >
+      <div class={`countdown-status ${props.isActive ? "active" : props.isCompleted ? "completed" : ""}`}>
         {getStatusText()}
       </div>
 

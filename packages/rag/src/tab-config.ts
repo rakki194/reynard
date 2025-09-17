@@ -25,9 +25,7 @@ const getIcon = (name: string) => {
  * @param includeHistory Whether to include the history tab
  * @returns Array of tab items with icons and labels
  */
-export const createRAGTabConfig = (
-  includeHistory: boolean = false,
-): TabItem[] => {
+export const createRAGTabConfig = (includeHistory: boolean = false): TabItem[] => {
   const baseTabs: TabItem[] = [
     { id: "search", label: "Search", icon: getIcon("search") },
     { id: "documents", label: "Documents", icon: getIcon("box") },

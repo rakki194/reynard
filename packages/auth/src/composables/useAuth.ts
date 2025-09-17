@@ -5,24 +5,13 @@
 
 import { createSignal, onMount, onCleanup } from "solid-js";
 
-import type {
-  AuthState,
-  AuthConfiguration,
-  AuthCallbacks,
-  User,
-} from "../types";
+import type { AuthState, AuthConfiguration, AuthCallbacks, User } from "../types";
 import { createAuthOrchestrator } from "../utils";
 import { DEFAULT_AUTH_CONFIG } from "../types";
-import {
-  useAuth as useGeneratedAuth,
-  createReynardApiClient,
-  type UserResponse,
-} from "reynard-api-client";
+import { useAuth as useGeneratedAuth, createReynardApiClient, type UserResponse } from "reynard-api-client";
 
 // Utility function to convert UserResponse to User
-function convertUserResponseToUser(
-  userResponse: UserResponse | null,
-): User | null {
+function convertUserResponseToUser(userResponse: UserResponse | null): User | null {
   if (!userResponse) return null;
 
   return {
@@ -78,7 +67,7 @@ export function useAuth(options: UseAuthOptions = {}) {
 
   // Update auth state helper
   const updateAuthState = (updates: Partial<AuthState>) => {
-    setAuthState((prev) => {
+    setAuthState(prev => {
       const newState = { ...prev, ...updates };
       callbacks.onAuthStateChange?.(newState);
       return newState;
@@ -86,12 +75,7 @@ export function useAuth(options: UseAuthOptions = {}) {
   };
 
   // Create auth orchestrator
-  const orchestrator = createAuthOrchestrator(
-    config,
-    callbacks,
-    authState,
-    updateAuthState,
-  );
+  const orchestrator = createAuthOrchestrator(config, callbacks, authState, updateAuthState);
 
   // Auto-initialize if enabled
   onMount(() => {
@@ -108,10 +92,8 @@ export function useAuth(options: UseAuthOptions = {}) {
   return {
     // State - integrate with generated auth
     authState,
-    user: () =>
-      convertUserResponseToUser(generatedAuth.user()) || authState().user,
-    isAuthenticated: () =>
-      generatedAuth.isAuthenticated() || authState().isAuthenticated,
+    user: () => convertUserResponseToUser(generatedAuth.user()) || authState().user,
+    isAuthenticated: () => generatedAuth.isAuthenticated() || authState().isAuthenticated,
     isLoading: () => authState().isLoading,
     error: () => authState().error,
     isRefreshing: () => authState().isRefreshing,

@@ -12,9 +12,7 @@ class ReynardIconRegistry implements IconRegistry {
 
   register(pkg: IconPackage): void {
     if (this.packages.has(pkg.id)) {
-      console.warn(
-        `Icon package '${pkg.id}' is already registered. Overwriting.`,
-      );
+      console.warn(`Icon package '${pkg.id}' is already registered. Overwriting.`);
     }
     this.packages.set(pkg.id, pkg);
   }
@@ -45,7 +43,7 @@ class ReynardIconRegistry implements IconRegistry {
 
     for (const pkg of this.packages.values()) {
       const names = pkg.getIconNames();
-      names.forEach((name) => allNames.add(name));
+      names.forEach(name => allNames.add(name));
     }
 
     return Array.from(allNames);
@@ -81,9 +79,7 @@ class ReynardIconRegistry implements IconRegistry {
         else if (pkg.getIconMetadata) {
           const metadata = pkg.getIconMetadata(name);
           if (metadata?.keywords) {
-            const keywordMatch = metadata.keywords.some((keyword) =>
-              keyword.toLowerCase().includes(lowerQuery),
-            );
+            const keywordMatch = metadata.keywords.some(keyword => keyword.toLowerCase().includes(lowerQuery));
             if (keywordMatch) {
               score = 40;
             }
@@ -111,12 +107,9 @@ class ReynardIconRegistry implements IconRegistry {
 export const iconRegistry = new ReynardIconRegistry();
 
 // Convenience functions
-export const registerIconPackage = (pkg: IconPackage) =>
-  iconRegistry.register(pkg);
-export const unregisterIconPackage = (packageId: string) =>
-  iconRegistry.unregister(packageId);
-export const getIcon = (name: string, packageId?: string) =>
-  iconRegistry.getIcon(name, packageId);
+export const registerIconPackage = (pkg: IconPackage) => iconRegistry.register(pkg);
+export const unregisterIconPackage = (packageId: string) => iconRegistry.unregister(packageId);
+export const getIcon = (name: string, packageId?: string) => iconRegistry.getIcon(name, packageId);
 export const getAllIconNames = () => iconRegistry.getAllIconNames();
 export const getIconPackages = () => iconRegistry.getPackages();
 export const searchIcons = (query: string) => iconRegistry.searchIcons(query);

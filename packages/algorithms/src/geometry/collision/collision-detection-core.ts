@@ -27,11 +27,7 @@ export interface CollisionCache {
 /**
  * Check collision with caching support
  */
-export function checkCollisionWithCache(
-  a: AABB,
-  b: AABB,
-  cache: CollisionCache,
-): CollisionResult {
+export function checkCollisionWithCache(a: AABB, b: AABB, cache: CollisionCache): CollisionResult {
   if (!cache.config.enableCaching) {
     return checkCollision(a, b);
   }
@@ -67,10 +63,7 @@ export function generateCacheKey(a: AABB, b: AABB): string {
 /**
  * Naive O(n²) collision detection for small datasets
  */
-export function naiveCollisionDetection(
-  aabbs: AABB[],
-  cache: CollisionCache,
-): CollisionPair[] {
+export function naiveCollisionDetection(aabbs: AABB[], cache: CollisionCache): CollisionPair[] {
   const collisions: CollisionPair[] = [];
 
   for (let i = 0; i < aabbs.length; i++) {
@@ -91,7 +84,7 @@ export function naiveCollisionDetection(
 export function spatialCollisionDetection(
   aabbs: AABB[],
   spatialHash: SpatialHash<CollisionObjectData>,
-  cache: CollisionCache,
+  cache: CollisionCache
 ): CollisionPair[] {
   const collisions: CollisionPair[] = [];
 
@@ -122,12 +115,7 @@ export function spatialCollisionDetection(
     if (processed.has(i)) continue;
 
     const aabb = aabbs[i];
-    const nearby = spatialHash.queryRect(
-      aabb.x - aabb.width,
-      aabb.y - aabb.height,
-      aabb.width * 3,
-      aabb.height * 3,
-    );
+    const nearby = spatialHash.queryRect(aabb.x - aabb.width, aabb.y - aabb.height, aabb.width * 3, aabb.height * 3);
 
     for (const obj of nearby) {
       const j = obj.data.index;

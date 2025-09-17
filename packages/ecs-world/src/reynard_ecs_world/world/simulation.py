@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 class WorldSimulation(AgentWorld):
     """
     World simulation with time acceleration and progression.
-    
+
     Manages the simulation time, acceleration, and provides
     time-based updates for the ECS world.
     """
@@ -26,14 +26,14 @@ class WorldSimulation(AgentWorld):
     def __init__(self, data_dir: Path | None = None, time_acceleration: float = 10.0):
         """
         Initialize the world simulation.
-        
+
         Args:
             data_dir: Directory for persistent data storage
             time_acceleration: Time acceleration factor (default 10x)
         """
         # Initialize the parent AgentWorld
         super().__init__(data_dir)
-        
+
         # Initialize time simulation
         self.time_acceleration = time_acceleration
         self.simulation_time = 0.0
@@ -44,26 +44,26 @@ class WorldSimulation(AgentWorld):
     def update(self, delta_time: float) -> float:
         """
         Update the simulation time.
-        
+
         Args:
             delta_time: Real time elapsed since last update
-            
+
         Returns:
             Simulated time elapsed
         """
         if self.paused:
             return 0.0
-        
+
         # Calculate simulated time based on acceleration
         simulated_delta = delta_time * self.time_acceleration
         self.simulation_time += simulated_delta
-        
+
         return simulated_delta
 
     def set_time_acceleration(self, acceleration: float) -> None:
         """
         Set the time acceleration factor.
-        
+
         Args:
             acceleration: New acceleration factor
         """
@@ -83,7 +83,7 @@ class WorldSimulation(AgentWorld):
     def get_simulation_time(self) -> float:
         """
         Get the current simulation time.
-        
+
         Returns:
             Current simulation time
         """
@@ -92,7 +92,7 @@ class WorldSimulation(AgentWorld):
     def get_real_time_elapsed(self) -> float:
         """
         Get the real time elapsed since simulation start.
-        
+
         Returns:
             Real time elapsed in seconds
         """
@@ -101,16 +101,20 @@ class WorldSimulation(AgentWorld):
     def nudge_time(self, amount: float = 0.1) -> None:
         """
         Nudge the simulation time forward by a small amount.
-        
+
         This is useful for MCP actions that need to advance time
         without waiting for the normal update cycle.
-        
+
         Args:
             amount: Amount of simulated time to advance
         """
         if not self.paused:
             self.simulation_time += amount
-            logger.debug("Time nudged forward by %s, new time: %.2f", amount, self.simulation_time)
+            logger.debug(
+                "Time nudged forward by %s, new time: %.2f",
+                amount,
+                self.simulation_time,
+            )
 
     def create_agent_with_inheritance(
         self,
@@ -123,10 +127,10 @@ class WorldSimulation(AgentWorld):
     ) -> Any:
         """
         Create an agent with inheritance capabilities.
-        
+
         This method creates an agent and can optionally handle parent
         relationships for inheritance scenarios.
-        
+
         Args:
             agent_id: Unique identifier for the agent
             spirit: Animal spirit (fox, wolf, otter, etc.)
@@ -134,7 +138,7 @@ class WorldSimulation(AgentWorld):
             name: Optional custom name
             parent1_id: Optional first parent ID for inheritance
             parent2_id: Optional second parent ID for inheritance
-            
+
         Returns:
             The created agent entity
         """
@@ -145,7 +149,7 @@ class WorldSimulation(AgentWorld):
     def get_status(self) -> dict[str, Any]:
         """
         Get the current simulation status.
-        
+
         Returns:
             Dictionary with simulation status information
         """

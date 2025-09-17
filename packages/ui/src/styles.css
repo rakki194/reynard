@@ -301,10 +301,7 @@
 
 /* Custom min-column-width for auto-fit */
 .reynard-grid--auto-fit {
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(var(--min-column-width, 250px), 1fr)
-  );
+  grid-template-columns: repeat(auto-fit, minmax(var(--min-column-width, 250px), 1fr));
 }
 
 /* Grid item positioning via CSS custom properties */
@@ -656,10 +653,7 @@
 
 /* Auto-fit grid with min column width */
 .reynard-grid--auto-fit {
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(var(--min-column-width, 200px), 1fr)
-  );
+  grid-template-columns: repeat(auto-fit, minmax(var(--min-column-width, 200px), 1fr));
 }
 
 /* Responsive columns utility classes */
@@ -1005,10 +999,7 @@
 
 @media (min-width: 576px) {
   .reynard-grid {
-    grid-template-columns: repeat(
-      var(--grid-columns-sm, var(--grid-columns, 1)),
-      1fr
-    );
+    grid-template-columns: repeat(var(--grid-columns-sm, var(--grid-columns, 1)), 1fr);
   }
 
   .reynard-grid-item {
@@ -1018,10 +1009,7 @@
 
 @media (min-width: 768px) {
   .reynard-grid {
-    grid-template-columns: repeat(
-      var(--grid-columns-md, var(--grid-columns, 1)),
-      1fr
-    );
+    grid-template-columns: repeat(var(--grid-columns-md, var(--grid-columns, 1)), 1fr);
   }
 
   .reynard-grid-item {
@@ -1031,10 +1019,7 @@
 
 @media (min-width: 992px) {
   .reynard-grid {
-    grid-template-columns: repeat(
-      var(--grid-columns-lg, var(--grid-columns, 1)),
-      1fr
-    );
+    grid-template-columns: repeat(var(--grid-columns-lg, var(--grid-columns, 1)), 1fr);
   }
 
   .reynard-grid-item {
@@ -1044,10 +1029,7 @@
 
 @media (min-width: 1200px) {
   .reynard-grid {
-    grid-template-columns: repeat(
-      var(--grid-columns-xl, var(--grid-columns, 1)),
-      1fr
-    );
+    grid-template-columns: repeat(var(--grid-columns-xl, var(--grid-columns, 1)), 1fr);
   }
 
   .reynard-grid-item {

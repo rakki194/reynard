@@ -78,9 +78,7 @@ describe("useTextFileUpload", () => {
         modifiedAt: new Date(),
       };
 
-      mockProcessTextFile
-        .mockResolvedValueOnce(mockTextFile1)
-        .mockResolvedValueOnce(mockTextFile2);
+      mockProcessTextFile.mockResolvedValueOnce(mockTextFile1).mockResolvedValueOnce(mockTextFile2);
 
       const mockEvent = {
         target: {
@@ -130,8 +128,7 @@ describe("useTextFileUpload", () => {
     it("should respect maxFiles limit", async () => {
       const files = Array.from(
         { length: 10 },
-        (_, i) =>
-          new File([`test${i}`], `test${i}.txt`, { type: "text/plain" }),
+        (_, i) => new File([`test${i}`], `test${i}.txt`, { type: "text/plain" })
       );
 
       const mockTextFiles = files.map((_, i) => ({
@@ -144,9 +141,7 @@ describe("useTextFileUpload", () => {
         modifiedAt: new Date(),
       }));
 
-      mockProcessTextFile.mockImplementation((file) =>
-        Promise.resolve(mockTextFiles[files.indexOf(file)]),
-      );
+      mockProcessTextFile.mockImplementation(file => Promise.resolve(mockTextFiles[files.indexOf(file)]));
 
       const mockEvent = {
         target: { files },
@@ -161,9 +156,7 @@ describe("useTextFileUpload", () => {
 
     it("should handle processing errors gracefully", async () => {
       const mockFile = new File(["test"], "test.txt", { type: "text/plain" });
-      const consoleSpy = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
       mockProcessTextFile.mockRejectedValue(new Error("Processing failed"));
 
@@ -175,10 +168,7 @@ describe("useTextFileUpload", () => {
       const result = await handleFileUpload(mockEvent);
 
       expect(result).toEqual([]);
-      expect(consoleSpy).toHaveBeenCalledWith(
-        "Failed to process text files:",
-        expect.any(Error),
-      );
+      expect(consoleSpy).toHaveBeenCalledWith("Failed to process text files:", expect.any(Error));
 
       consoleSpy.mockRestore();
     });
@@ -230,7 +220,7 @@ describe("useTextFileUpload", () => {
 
       // Create a promise that we can control
       let resolvePromise: (value: TextFile) => void;
-      const processingPromise = new Promise<TextFile>((resolve) => {
+      const processingPromise = new Promise<TextFile>(resolve => {
         resolvePromise = resolve;
       });
 

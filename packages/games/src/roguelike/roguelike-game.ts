@@ -50,14 +50,7 @@ import {
   PlayerInputType,
 } from "./resources";
 
-import {
-  aiSystem,
-  combatSystem,
-  gameStateSystem,
-  inputSystem,
-  itemSystem,
-  visionSystem,
-} from "./systems";
+import { aiSystem, combatSystem, gameStateSystem, inputSystem, itemSystem, visionSystem } from "./systems";
 
 import { DungeonGenerator } from "./dungeon-generator";
 import { PixelArtRenderer } from "./renderer";
@@ -206,47 +199,15 @@ export class RoguelikeGame {
     }
 
     const playerEntity = this.world.spawn();
-    this.world.insertComponent(
-      playerEntity,
-      this.positionType,
-      new Position(startX, startY),
-    );
-    this.world.insertComponent(
-      playerEntity,
-      this.spriteType,
-      new Sprite("@", "#ffff00", "#000000"),
-    );
-    this.world.insertComponent(
-      playerEntity,
-      this.healthType,
-      new Health(100, 100),
-    );
+    this.world.insertComponent(playerEntity, this.positionType, new Position(startX, startY));
+    this.world.insertComponent(playerEntity, this.spriteType, new Sprite("@", "#ffff00", "#000000"));
+    this.world.insertComponent(playerEntity, this.healthType, new Health(100, 100));
     this.world.insertComponent(playerEntity, this.visionType, new Vision(8));
-    this.world.insertComponent(
-      playerEntity,
-      this.movementType,
-      new Movement(1),
-    );
-    this.world.insertComponent(
-      playerEntity,
-      this.playerType,
-      new Player("Hero"),
-    );
-    this.world.insertComponent(
-      playerEntity,
-      this.statsType,
-      new Stats(1, 0, 12, 14, 13, 10),
-    );
-    this.world.insertComponent(
-      playerEntity,
-      this.inventoryType,
-      new Inventory(),
-    );
-    this.world.insertComponent(
-      playerEntity,
-      this.equipmentType,
-      new Equipment(),
-    );
+    this.world.insertComponent(playerEntity, this.movementType, new Movement(1));
+    this.world.insertComponent(playerEntity, this.playerType, new Player("Hero"));
+    this.world.insertComponent(playerEntity, this.statsType, new Stats(1, 0, 12, 14, 13, 10));
+    this.world.insertComponent(playerEntity, this.inventoryType, new Inventory());
+    this.world.insertComponent(playerEntity, this.equipmentType, new Equipment());
   }
 
   private createEnemies(): void {
@@ -280,44 +241,23 @@ export class RoguelikeGame {
     // Place enemies in rooms (not in the starting room)
     for (let i = 1; i < dungeon.rooms.length && i < 8; i++) {
       const room = dungeon.rooms[i];
-      const enemyType =
-        enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+      const enemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
 
       const x = room.x + Math.floor(Math.random() * room.width);
       const y = room.y + Math.floor(Math.random() * room.height);
 
       if (dungeon.tiles[y][x].type === "floor") {
         const enemyEntity = this.world.spawn();
-        this.world.insertComponent(
-          enemyEntity,
-          this.positionType,
-          new Position(x, y),
-        );
+        this.world.insertComponent(enemyEntity, this.positionType, new Position(x, y));
         this.world.insertComponent(
           enemyEntity,
           this.spriteType,
-          new Sprite(enemyType.char, enemyType.fg, enemyType.bg),
+          new Sprite(enemyType.char, enemyType.fg, enemyType.bg)
         );
-        this.world.insertComponent(
-          enemyEntity,
-          this.healthType,
-          new Health(enemyType.health, enemyType.health),
-        );
-        this.world.insertComponent(
-          enemyEntity,
-          this.aiType,
-          new AI(enemyType.ai),
-        );
-        this.world.insertComponent(
-          enemyEntity,
-          this.movementType,
-          new Movement(1),
-        );
-        this.world.insertComponent(
-          enemyEntity,
-          this.enemyType,
-          new Enemy(enemyType.char),
-        );
+        this.world.insertComponent(enemyEntity, this.healthType, new Health(enemyType.health, enemyType.health));
+        this.world.insertComponent(enemyEntity, this.aiType, new AI(enemyType.ai));
+        this.world.insertComponent(enemyEntity, this.movementType, new Movement(1));
+        this.world.insertComponent(enemyEntity, this.enemyType, new Enemy(enemyType.char));
       }
     }
   }
@@ -367,20 +307,12 @@ export class RoguelikeGame {
 
       if (dungeon.tiles[y][x].type === "floor") {
         const itemEntity = this.world.spawn();
-        this.world.insertComponent(
-          itemEntity,
-          this.positionType,
-          new Position(x, y),
-        );
-        this.world.insertComponent(
-          itemEntity,
-          this.spriteType,
-          new Sprite(itemType.char, itemType.fg, itemType.bg),
-        );
+        this.world.insertComponent(itemEntity, this.positionType, new Position(x, y));
+        this.world.insertComponent(itemEntity, this.spriteType, new Sprite(itemType.char, itemType.fg, itemType.bg));
         this.world.insertComponent(
           itemEntity,
           this.itemType,
-          new RoguelikeItem(itemType.name, itemType.type, 10, "A useful item"),
+          new RoguelikeItem(itemType.name, itemType.type, 10, "A useful item")
         );
       }
     }
@@ -391,7 +323,7 @@ export class RoguelikeGame {
     if (!input) return;
 
     // Keyboard input
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener("keydown", event => {
       input.keys.add(event.key);
       input.lastKey = event.key;
 
@@ -401,12 +333,12 @@ export class RoguelikeGame {
       }
     });
 
-    document.addEventListener("keyup", (event) => {
+    document.addEventListener("keyup", event => {
       input.keys.delete(event.key);
     });
 
     // Mouse input
-    this.canvas.addEventListener("mousemove", (event) => {
+    this.canvas.addEventListener("mousemove", event => {
       const rect = this.canvas.getBoundingClientRect();
       input.mouseX = event.clientX - rect.left;
       input.mouseY = event.clientY - rect.top;
@@ -452,7 +384,7 @@ export class RoguelikeGame {
     if (this.gameLoop) return;
 
     this.lastTime = performance.now();
-    this.gameLoop = requestAnimationFrame((time) => this.update(time));
+    this.gameLoop = requestAnimationFrame(time => this.update(time));
   }
 
   stop(): void {
@@ -481,7 +413,7 @@ export class RoguelikeGame {
     this.renderer.render(this.world);
 
     // Continue game loop
-    this.gameLoop = requestAnimationFrame((time) => this.update(time));
+    this.gameLoop = requestAnimationFrame(time => this.update(time));
   }
 
   resize(width: number, height: number): void {

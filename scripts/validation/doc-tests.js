@@ -67,7 +67,7 @@ function runDocTests() {
 
   const results = [];
 
-  PACKAGES.forEach((pkg) => {
+  PACKAGES.forEach(pkg => {
     console.log(`\n🧪 Testing ${pkg.name}...`);
 
     const success = runCommand("npm run test:docs", pkg.path);
@@ -81,8 +81,8 @@ function runDocTests() {
   });
 
   // Summary
-  const passed = results.filter((r) => r.success).length;
-  const failed = results.filter((r) => !r.success).length;
+  const passed = results.filter(r => r.success).length;
+  const failed = results.filter(r => !r.success).length;
 
   console.log(`\n📊 Documentation Test Summary:`);
   console.log(`✅ Passed: ${passed}/${results.length}`);
@@ -91,8 +91,8 @@ function runDocTests() {
   if (failed > 0) {
     console.log(`\n❌ Failed packages:`);
     results
-      .filter((r) => !r.success)
-      .forEach((r) => {
+      .filter(r => !r.success)
+      .forEach(r => {
         console.log(`  - ${r.package}`);
       });
   }
@@ -146,9 +146,7 @@ Examples:
   }
 
   if (success) {
-    console.log(
-      "\n🎉 All documentation test operations completed successfully!"
-    );
+    console.log("\n🎉 All documentation test operations completed successfully!");
     process.exit(0);
   } else {
     console.log("\n💥 Some documentation test operations failed!");

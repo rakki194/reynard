@@ -12,12 +12,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: [
-        "solid-js",
-        "reynard-core",
-        "reynard-components",
-        "reynard-fluent-icons",
-      ],
+      external: ["solid-js", "reynard-core", "reynard-components", "reynard-fluent-icons"],
       output: {
         globals: {
           "solid-js": "SolidJS",

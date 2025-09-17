@@ -141,9 +141,7 @@ export interface UnifiedECS {
    * }
    * ```
    */
-  query<T extends Component[]>(
-    ...componentTypes: ComponentType<Component>[]
-  ): IterableIterator<[Entity, ...T]>;
+  query<T extends Component[]>(...componentTypes: ComponentType<Component>[]): IterableIterator<[Entity, ...T]>;
 
   /**
    * Add a resource to the world.

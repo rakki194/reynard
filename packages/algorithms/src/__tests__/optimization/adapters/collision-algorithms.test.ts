@@ -168,10 +168,7 @@ describe("Collision Algorithms", () => {
         getCollisionArray: () => [],
       };
 
-      const result = executeSpatialCollisionDetection(
-        aabbs,
-        mockMemoryPool as any,
-      );
+      const result = executeSpatialCollisionDetection(aabbs, mockMemoryPool as any);
 
       expect(result).toHaveLength(1);
       expect(result[0].a).toBe(0);
@@ -189,10 +186,7 @@ describe("Collision Algorithms", () => {
         getCollisionArray: () => [],
       };
 
-      const result = executeSpatialCollisionDetection(
-        aabbs,
-        mockMemoryPool as any,
-      );
+      const result = executeSpatialCollisionDetection(aabbs, mockMemoryPool as any);
 
       expect(result).toHaveLength(0);
     });
@@ -208,10 +202,7 @@ describe("Collision Algorithms", () => {
         getCollisionArray: () => [],
       };
 
-      const result = executeSpatialCollisionDetection(
-        aabbs,
-        mockMemoryPool as any,
-      );
+      const result = executeSpatialCollisionDetection(aabbs, mockMemoryPool as any);
 
       expect(result).toHaveLength(0);
     });

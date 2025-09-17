@@ -219,7 +219,7 @@ describe("Chart Utilities", () => {
       const colors = generateColorsWithCache(3, 0, 0.3, 0.6, 0.5);
       expect(colors).toHaveLength(3);
       // Colors should be valid CSS color strings
-      colors.forEach((color) => {
+      colors.forEach(color => {
         expect(typeof color).toBe("string");
         expect(color.length).toBeGreaterThan(0);
       });
@@ -234,7 +234,7 @@ describe("Chart Utilities", () => {
       const colors = generateColorsWithCache(100);
       expect(colors).toHaveLength(100);
       // All colors should be valid strings
-      expect(colors.every((color) => typeof color === "string")).toBe(true);
+      expect(colors.every(color => typeof color === "string")).toBe(true);
     });
 
     it("generates consistent colors", () => {
@@ -342,7 +342,7 @@ describe("Chart Utilities", () => {
       expect(mockFn).not.toHaveBeenCalled();
 
       // Wait for debounce delay
-      await new Promise((resolve) => setTimeout(resolve, 150));
+      await new Promise(resolve => setTimeout(resolve, 150));
       expect(mockFn).toHaveBeenCalledTimes(1);
     });
 
@@ -351,7 +351,7 @@ describe("Chart Utilities", () => {
       const debouncedFn = debounce(mockFn, 100);
 
       debouncedFn("arg1", "arg2");
-      await new Promise((resolve) => setTimeout(resolve, 150));
+      await new Promise(resolve => setTimeout(resolve, 150));
 
       expect(mockFn).toHaveBeenCalledWith("arg1", "arg2");
     });
@@ -361,7 +361,7 @@ describe("Chart Utilities", () => {
       const debouncedFn = debounce(mockFn, 0);
 
       debouncedFn();
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 10));
 
       expect(mockFn).toHaveBeenCalled();
     });
@@ -556,7 +556,7 @@ describe("Chart Utilities", () => {
       const startTime = performance.now();
       const result = validateChartData(
         largeDatasets,
-        Array.from({ length: 1000 }, (_, i) => `Label ${i}`),
+        Array.from({ length: 1000 }, (_, i) => `Label ${i}`)
       );
       const endTime = performance.now();
 
@@ -567,9 +567,7 @@ describe("Chart Utilities", () => {
 
   describe("Error Handling", () => {
     it("handles malformed data gracefully", () => {
-      const malformedData = [
-        { timestamp: "invalid", value: "not a number" } as any,
-      ];
+      const malformedData = [{ timestamp: "invalid", value: "not a number" } as any];
 
       expect(() => processTimeSeriesData(malformedData)).not.toThrow();
     });

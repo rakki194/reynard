@@ -14,31 +14,20 @@ export const useTimer = () => {
     minutes: 0,
     seconds: 0,
   });
-  const [inputTime, setInputTime] = createSignal<TimerTime>(
-    getDefaultTimerTime(),
-  );
+  const [inputTime, setInputTime] = createSignal<TimerTime>(getDefaultTimerTime());
   const [state, setState] = createSignal<TimerStateType>("stopped");
-  const [originalTime, setOriginalTime] = createSignal<TimerTime>(
-    getDefaultTimerTime(),
-  );
+  const [originalTime, setOriginalTime] = createSignal<TimerTime>(getDefaultTimerTime());
 
   let intervalId: NodeJS.Timeout;
 
-  const {
-    startTimer,
-    pauseTimer,
-    stopTimer,
-    resetTimer,
-    updateTimer,
-    handleInputChange,
-  } = useTimerOperations(
+  const { startTimer, pauseTimer, stopTimer, resetTimer, updateTimer, handleInputChange } = useTimerOperations(
     setTime,
     inputTime,
     setInputTime,
     state,
     setState,
     originalTime,
-    setOriginalTime,
+    setOriginalTime
   );
 
   onMount(() => {

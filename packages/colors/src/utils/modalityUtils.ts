@@ -115,9 +115,7 @@ export class ModalityRegistry {
    */
   registerModality(modality: Modality) {
     if (this.modalities.has(modality.id)) {
-      console.warn(
-        `Modality with id '${modality.id}' is already registered. Overwriting.`,
-      );
+      console.warn(`Modality with id '${modality.id}' is already registered. Overwriting.`);
     }
 
     this.modalities.set(modality.id, modality);
@@ -153,7 +151,7 @@ export class ModalityRegistry {
    * @returns Array of enabled modalities
    */
   getEnabledModalities(): Modality[] {
-    return this.getAllModalities().filter((modality) => modality.enabled);
+    return this.getAllModalities().filter(modality => modality.enabled);
   }
 
   /**
@@ -162,9 +160,7 @@ export class ModalityRegistry {
    * @returns Array of modalities that support the functionality
    */
   getModalitiesForFunctionality(functionalityId: string): Modality[] {
-    return this.getAllModalities().filter((modality) =>
-      modality.supportedFunctionalities.includes(functionalityId),
-    );
+    return this.getAllModalities().filter(modality => modality.supportedFunctionalities.includes(functionalityId));
   }
 
   /**
@@ -174,10 +170,8 @@ export class ModalityRegistry {
    */
   getModalitiesForFileExtension(extension: string): Modality[] {
     const normalizedExtension = extension.toLowerCase();
-    return this.getAllModalities().filter((modality) =>
-      modality.fileExtensions.some(
-        (ext) => ext.toLowerCase() === normalizedExtension,
-      ),
+    return this.getAllModalities().filter(modality =>
+      modality.fileExtensions.some(ext => ext.toLowerCase() === normalizedExtension)
     );
   }
 
@@ -187,9 +181,7 @@ export class ModalityRegistry {
    * @returns Array of modalities that support the file
    */
   getModalitiesForFile(file: File): Modality[] {
-    return this.getAllModalities().filter((modality) =>
-      modality.validateFile(file),
-    );
+    return this.getAllModalities().filter(modality => modality.validateFile(file));
   }
 }
 
@@ -242,16 +234,7 @@ export function getFileExtension(filename: string): string {
  * @returns True if file is an image
  */
 export function isImageFile(file: File): boolean {
-  const imageExtensions = [
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".gif",
-    ".webp",
-    ".bmp",
-    ".tiff",
-    ".svg",
-  ];
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff", ".svg"];
   return imageExtensions.includes(getFileExtension(file.name));
 }
 
@@ -261,16 +244,7 @@ export function isImageFile(file: File): boolean {
  * @returns True if file is an audio file
  */
 export function isAudioFile(file: File): boolean {
-  const audioExtensions = [
-    ".mp3",
-    ".wav",
-    ".flac",
-    ".aac",
-    ".ogg",
-    ".m4a",
-    ".wma",
-    ".opus",
-  ];
+  const audioExtensions = [".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a", ".wma", ".opus"];
   return audioExtensions.includes(getFileExtension(file.name));
 }
 
@@ -280,16 +254,7 @@ export function isAudioFile(file: File): boolean {
  * @returns True if file is a video file
  */
 export function isVideoFile(file: File): boolean {
-  const videoExtensions = [
-    ".mp4",
-    ".avi",
-    ".mov",
-    ".mkv",
-    ".webm",
-    ".flv",
-    ".wmv",
-    ".m4v",
-  ];
+  const videoExtensions = [".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".wmv", ".m4v"];
   return videoExtensions.includes(getFileExtension(file.name));
 }
 
@@ -299,16 +264,6 @@ export function isVideoFile(file: File): boolean {
  * @returns True if file is a text file
  */
 export function isTextFile(file: File): boolean {
-  const textExtensions = [
-    ".txt",
-    ".md",
-    ".json",
-    ".xml",
-    ".html",
-    ".css",
-    ".js",
-    ".ts",
-    ".tsx",
-  ];
+  const textExtensions = [".txt", ".md", ".json", ".xml", ".html", ".css", ".js", ".ts", ".tsx"];
   return textExtensions.includes(getFileExtension(file.name));
 }

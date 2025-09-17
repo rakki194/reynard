@@ -11,9 +11,7 @@ export interface EmbeddingStatsPanelProps {
   stats: any;
 }
 
-export const EmbeddingStatsPanel: Component<EmbeddingStatsPanelProps> = (
-  props,
-) => {
+export const EmbeddingStatsPanel: Component<EmbeddingStatsPanelProps> = props => {
   if (!props.stats) return null;
 
   return (
@@ -22,9 +20,7 @@ export const EmbeddingStatsPanel: Component<EmbeddingStatsPanelProps> = (
       <div class="stats-grid">
         <div class="stat-item">
           <div class="stat-label">Total Embeddings:</div>
-          <div class="stat-value">
-            {props.stats.total_embeddings.toLocaleString()}
-          </div>
+          <div class="stat-value">{props.stats.total_embeddings.toLocaleString()}</div>
         </div>
         <div class="stat-item">
           <div class="stat-label">Dimensions:</div>
@@ -32,15 +28,11 @@ export const EmbeddingStatsPanel: Component<EmbeddingStatsPanelProps> = (
         </div>
         <div class="stat-item">
           <div class="stat-label">Quality Score:</div>
-          <div class="stat-value">
-            {(props.stats.quality_score * 100).toFixed(1)}%
-          </div>
+          <div class="stat-value">{(props.stats.quality_score * 100).toFixed(1)}%</div>
         </div>
         <div class="stat-item">
           <div class="stat-label">Last Updated:</div>
-          <div class="stat-value">
-            {new Date(props.stats.last_updated).toLocaleString()}
-          </div>
+          <div class="stat-value">{new Date(props.stats.last_updated).toLocaleString()}</div>
         </div>
       </div>
     </div>

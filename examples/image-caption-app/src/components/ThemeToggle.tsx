@@ -34,18 +34,14 @@ export const ThemeToggle: Component = () => {
   };
 
   const nextTheme = () => {
-    const themes = getAvailableThemes().map((theme) => theme.name as ThemeName);
+    const themes = getAvailableThemes().map(theme => theme.name as ThemeName);
     const currentIndex = themes.indexOf(themeContext.theme);
     const nextIndex = (currentIndex + 1) % themes.length;
     themeContext.setTheme(themes[nextIndex]);
   };
 
   return (
-    <Button
-      variant="secondary"
-      onClick={nextTheme}
-      title={`Switch to next theme (currently ${themeContext.theme})`}
-    >
+    <Button variant="secondary" onClick={nextTheme} title={`Switch to next theme (currently ${themeContext.theme})`}>
       {getThemeEmoji()} {themeContext.theme}
     </Button>
   );

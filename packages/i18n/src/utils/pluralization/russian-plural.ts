@@ -9,10 +9,7 @@
  * @param forms Array of [singular, few, many] forms
  * @returns The correct plural form
  */
-export function getRussianPlural(
-  num: number,
-  forms: [string, string, string],
-): string {
+export function getRussianPlural(num: number, forms: [string, string, string]): string {
   // Truncate decimal numbers to integers
   const n = Math.trunc(Math.abs(num));
   const lastDigit = n % 10;

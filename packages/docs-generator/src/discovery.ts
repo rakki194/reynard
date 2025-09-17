@@ -3,9 +3,7 @@ import path from "path";
 import { glob } from "glob";
 import type { GeneratorConfig } from "./config/types/core";
 
-export async function discoverPackages(
-  config: GeneratorConfig,
-): Promise<string[]> {
+export async function discoverPackages(config: GeneratorConfig): Promise<string[]> {
   const packages: string[] = [];
   const excludePatterns = config.excludePatterns || [
     "**/third_party/**",
@@ -21,9 +19,7 @@ export async function discoverPackages(
       const shouldExclude = excludePatterns.some((pattern: string) => {
         const normalizedPath = path.normalize(packageConfig.path!);
         const normalizedPattern = pattern.replace(/\*\*/g, "**");
-        return normalizedPath.includes(
-          normalizedPattern.replace("**/", "").replace("/**", ""),
-        );
+        return normalizedPath.includes(normalizedPattern.replace("**/", "").replace("/**", ""));
       });
       if (shouldExclude) {
         console.log(`🚫 Excluding package: ${packageConfig.path}`);

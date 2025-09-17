@@ -36,12 +36,7 @@ export interface CircularDependency {
   };
   description: string;
   resolution: {
-    strategy:
-      | "extract-interface"
-      | "dependency-injection"
-      | "event-driven"
-      | "facade"
-      | "restructure";
+    strategy: "extract-interface" | "dependency-injection" | "event-driven" | "facade" | "restructure";
     description: string;
     effort: "low" | "medium" | "high";
     risk: "low" | "medium" | "high";
@@ -58,10 +53,7 @@ export interface CircularDependency {
 
 export interface DependencyGraph {
   nodes: Map<string, DependencyNode>;
-  edges: Map<
-    string,
-    { source: string; target: string; type: string; weight: number }
-  >;
+  edges: Map<string, { source: string; target: string; type: string; weight: number }>;
   cycles: CircularDependency[];
   metrics: {
     totalNodes: number;
@@ -135,9 +127,7 @@ export class CircularDependencyDetector {
     // Analyze impact and generate resolution plans
     const report = this.generateCircularDependencyReport();
 
-    console.log(
-      `✅ Circular dependency analysis complete: ${report.totalCycles} cycles detected`,
-    );
+    console.log(`✅ Circular dependency analysis complete: ${report.totalCycles} cycles detected`);
     return report;
   }
 
@@ -145,9 +135,7 @@ export class CircularDependencyDetector {
    * Get circular dependencies for a specific file
    */
   getCircularDependenciesForFile(filePath: string): CircularDependency[] {
-    return this.dependencyGraph.cycles.filter((cycle) =>
-      cycle.cycle.includes(filePath),
-    );
+    return this.dependencyGraph.cycles.filter(cycle => cycle.cycle.includes(filePath));
   }
 
   /**
@@ -161,17 +149,13 @@ export class CircularDependencyDetector {
    * Get critical circular dependencies
    */
   getCriticalCircularDependencies(): CircularDependency[] {
-    return this.dependencyGraph.cycles.filter(
-      (cycle) => cycle.severity === "critical",
-    );
+    return this.dependencyGraph.cycles.filter(cycle => cycle.severity === "critical");
   }
 
   /**
    * Generate resolution suggestions for a specific cycle
    */
-  generateResolutionSuggestions(
-    cycleId: string,
-  ): CircularDependency["resolution"] | null {
+  generateResolutionSuggestions(cycleId: string): CircularDependency["resolution"] | null {
     const cycle = this.cycleCache.get(cycleId);
     return cycle ? cycle.resolution : null;
   }
@@ -180,9 +164,7 @@ export class CircularDependencyDetector {
    * Check if a file is part of any circular dependency
    */
   isFileInCycle(filePath: string): boolean {
-    return this.dependencyGraph.cycles.some((cycle) =>
-      cycle.cycle.includes(filePath),
-    );
+    return this.dependencyGraph.cycles.some(cycle => cycle.cycle.includes(filePath));
   }
 
   /**
@@ -193,24 +175,20 @@ export class CircularDependencyDetector {
     edges: Array<{ source: string; target: string; inCycle: boolean }>;
     cycles: string[][];
   } {
-    const nodes = Array.from(this.dependencyGraph.nodes.values()).map(
-      (node) => ({
-        id: node.id,
-        label: node.name,
-        type: node.type,
-        inCycle: this.isFileInCycle(node.path),
-      }),
-    );
+    const nodes = Array.from(this.dependencyGraph.nodes.values()).map(node => ({
+      id: node.id,
+      label: node.name,
+      type: node.type,
+      inCycle: this.isFileInCycle(node.path),
+    }));
 
-    const edges = Array.from(this.dependencyGraph.edges.values()).map(
-      (edge) => ({
-        source: edge.source,
-        target: edge.target,
-        inCycle: this.isEdgeInCycle(edge.source, edge.target),
-      }),
-    );
+    const edges = Array.from(this.dependencyGraph.edges.values()).map(edge => ({
+      source: edge.source,
+      target: edge.target,
+      inCycle: this.isEdgeInCycle(edge.source, edge.target),
+    }));
 
-    const cycles = this.dependencyGraph.cycles.map((cycle) => cycle.cycle);
+    const cycles = this.dependencyGraph.cycles.map(cycle => cycle.cycle);
 
     return { nodes, edges, cycles };
   }
@@ -237,7 +215,7 @@ export class CircularDependencyDetector {
     this.dependencyGraph.metrics.totalEdges = this.dependencyGraph.edges.size;
 
     console.log(
-      `✅ Dependency graph built: ${this.dependencyGraph.metrics.totalNodes} nodes, ${this.dependencyGraph.metrics.totalEdges} edges`,
+      `✅ Dependency graph built: ${this.dependencyGraph.metrics.totalNodes} nodes, ${this.dependencyGraph.metrics.totalEdges} edges`
     );
   }
 
@@ -288,9 +266,7 @@ export class CircularDependencyDetector {
     this.dependencyGraph.cycles = cycles;
     this.updateCycleMetrics();
 
-    console.log(
-      `✅ Circular dependency detection complete: ${cycles.length} cycles found`,
-    );
+    console.log(`✅ Circular dependency detection complete: ${cycles.length} cycles found`);
   }
 
   private async discoverFiles(): Promise<string[]> {
@@ -304,11 +280,7 @@ export class CircularDependencyDetector {
           const fullPath = join(dir, entry.name);
 
           if (entry.isDirectory()) {
-            if (
-              !["node_modules", ".git", "dist", "build", "coverage"].includes(
-                entry.name,
-              )
-            ) {
+            if (!["node_modules", ".git", "dist", "build", "coverage"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
@@ -327,9 +299,7 @@ export class CircularDependencyDetector {
     return files;
   }
 
-  private async createDependencyNode(
-    filePath: string,
-  ): Promise<DependencyNode> {
+  private async createDependencyNode(filePath: string): Promise<DependencyNode> {
     try {
       const content = await readFile(filePath, "utf-8");
       const stats = await stat(filePath);
@@ -408,14 +378,9 @@ export class CircularDependencyDetector {
       }
 
       // Dynamic imports
-      const dynamicImportMatch = line.match(
-        /import\s*\(\s*['"]([^'"]+)['"]\s*\)/,
-      );
+      const dynamicImportMatch = line.match(/import\s*\(\s*['"]([^'"]+)['"]\s*\)/);
       if (dynamicImportMatch) {
-        const importPath = this.resolveImportPath(
-          dynamicImportMatch[1],
-          filePath,
-        );
+        const importPath = this.resolveImportPath(dynamicImportMatch[1], filePath);
         if (importPath) {
           dependencies.push(this.generateNodeId(importPath));
         }
@@ -434,24 +399,14 @@ export class CircularDependencyDetector {
     return dependencies;
   }
 
-  private resolveImportPath(
-    importPath: string,
-    fromFile: string,
-  ): string | null {
+  private resolveImportPath(importPath: string, fromFile: string): string | null {
     if (importPath.startsWith(".")) {
       // Relative import
       const fromDir = dirname(fromFile);
       const resolvedPath = join(fromDir, importPath);
 
       // Try different extensions
-      const extensions = [
-        ".ts",
-        ".tsx",
-        ".js",
-        ".jsx",
-        "/index.ts",
-        "/index.js",
-      ];
+      const extensions = [".ts", ".tsx", ".js", ".jsx", "/index.ts", "/index.js"];
       for (const ext of extensions) {
         const fullPath = resolvedPath + ext;
         if (this.nodeCache.has(fullPath)) {
@@ -487,9 +442,7 @@ export class CircularDependencyDetector {
     };
   }
 
-  private calculateCycleSeverity(
-    cycle: string[],
-  ): "low" | "medium" | "high" | "critical" {
+  private calculateCycleSeverity(cycle: string[]): "low" | "medium" | "high" | "critical" {
     const length = cycle.length;
     const importance = this.calculateCycleImportance(cycle);
 
@@ -529,9 +482,7 @@ export class CircularDependencyDetector {
     };
   }
 
-  private generateResolutionStrategy(
-    cycle: string[],
-  ): CircularDependency["resolution"] {
+  private generateResolutionStrategy(cycle: string[]): CircularDependency["resolution"] {
     const length = cycle.length;
     const types = this.getInvolvedTypes(cycle);
 
@@ -547,13 +498,10 @@ export class CircularDependencyDetector {
     }
   }
 
-  private generateTwoNodeResolution(
-    cycle: string[],
-  ): CircularDependency["resolution"] {
+  private generateTwoNodeResolution(cycle: string[]): CircularDependency["resolution"] {
     return {
       strategy: "extract-interface",
-      description:
-        "Extract a shared interface to break the circular dependency",
+      description: "Extract a shared interface to break the circular dependency",
       effort: "low",
       risk: "low",
       steps: [
@@ -570,9 +518,7 @@ export class CircularDependencyDetector {
     };
   }
 
-  private generateInterfaceExtractionResolution(
-    cycle: string[],
-  ): CircularDependency["resolution"] {
+  private generateInterfaceExtractionResolution(cycle: string[]): CircularDependency["resolution"] {
     return {
       strategy: "extract-interface",
       description: "Extract interfaces to break circular dependencies",
@@ -593,9 +539,7 @@ export class CircularDependencyDetector {
     };
   }
 
-  private generateDependencyInjectionResolution(
-    cycle: string[],
-  ): CircularDependency["resolution"] {
+  private generateDependencyInjectionResolution(cycle: string[]): CircularDependency["resolution"] {
     return {
       strategy: "dependency-injection",
       description: "Use dependency injection to break the circular dependency",
@@ -616,9 +560,7 @@ export class CircularDependencyDetector {
     };
   }
 
-  private generateRestructureResolution(
-    cycle: string[],
-  ): CircularDependency["resolution"] {
+  private generateRestructureResolution(cycle: string[]): CircularDependency["resolution"] {
     return {
       strategy: "restructure",
       description: "Restructure the code to eliminate circular dependencies",
@@ -641,7 +583,7 @@ export class CircularDependencyDetector {
   }
 
   private generateCycleDescription(cycle: string[]): string {
-    const fileNames = cycle.map((nodeId) => {
+    const fileNames = cycle.map(nodeId => {
       const node = this.dependencyGraph.nodes.get(nodeId);
       return node ? basename(node.path) : nodeId;
     });
@@ -663,7 +605,7 @@ export class CircularDependencyDetector {
   }
 
   private isEdgeInCycle(source: string, target: string): boolean {
-    return this.dependencyGraph.cycles.some((cycle) => {
+    return this.dependencyGraph.cycles.some(cycle => {
       for (let i = 0; i < cycle.length; i++) {
         const current = cycle[i];
         const next = cycle[(i + 1) % cycle.length];
@@ -679,34 +621,23 @@ export class CircularDependencyDetector {
     const cycles = this.dependencyGraph.cycles;
 
     this.dependencyGraph.metrics.totalCycles = cycles.length;
-    this.dependencyGraph.metrics.criticalCycles = cycles.filter(
-      (c) => c.severity === "critical",
-    ).length;
+    this.dependencyGraph.metrics.criticalCycles = cycles.filter(c => c.severity === "critical").length;
 
     if (cycles.length > 0) {
-      const totalLength = cycles.reduce(
-        (sum, cycle) => sum + cycle.metadata.cycleLength,
-        0,
-      );
-      this.dependencyGraph.metrics.averageCycleLength =
-        totalLength / cycles.length;
-      this.dependencyGraph.metrics.maxCycleLength = Math.max(
-        ...cycles.map((c) => c.metadata.cycleLength),
-      );
+      const totalLength = cycles.reduce((sum, cycle) => sum + cycle.metadata.cycleLength, 0);
+      this.dependencyGraph.metrics.averageCycleLength = totalLength / cycles.length;
+      this.dependencyGraph.metrics.maxCycleLength = Math.max(...cycles.map(c => c.metadata.cycleLength));
     }
   }
 
   private generateCircularDependencyReport(): CircularDependencyReport {
     const cycles = this.dependencyGraph.cycles;
-    const criticalCycles = cycles.filter(
-      (c) => c.severity === "critical",
-    ).length;
+    const criticalCycles = cycles.filter(c => c.severity === "critical").length;
 
     // Group cycles by severity
     const cyclesBySeverity: Record<string, number> = {};
     for (const cycle of cycles) {
-      cyclesBySeverity[cycle.severity] =
-        (cyclesBySeverity[cycle.severity] || 0) + 1;
+      cyclesBySeverity[cycle.severity] = (cyclesBySeverity[cycle.severity] || 0) + 1;
     }
 
     // Get top cycles (most critical)
@@ -719,11 +650,9 @@ export class CircularDependencyDetector {
 
     // Create resolution plan
     const resolutionPlan = {
-      immediate: cycles.filter((c) => c.severity === "critical"),
-      shortTerm: cycles.filter((c) => c.severity === "high"),
-      longTerm: cycles.filter(
-        (c) => c.severity === "medium" || c.severity === "low",
-      ),
+      immediate: cycles.filter(c => c.severity === "critical"),
+      shortTerm: cycles.filter(c => c.severity === "high"),
+      longTerm: cycles.filter(c => c.severity === "medium" || c.severity === "low"),
     };
 
     // Generate recommendations
@@ -747,32 +676,24 @@ export class CircularDependencyDetector {
     };
   }
 
-  private generateRecommendations(
-    cycles: CircularDependency[],
-  ): CircularDependencyReport["recommendations"] {
+  private generateRecommendations(cycles: CircularDependency[]): CircularDependencyReport["recommendations"] {
     const immediate: string[] = [];
     const shortTerm: string[] = [];
     const longTerm: string[] = [];
 
-    const criticalCycles = cycles.filter((c) => c.severity === "critical");
-    const highCycles = cycles.filter((c) => c.severity === "high");
+    const criticalCycles = cycles.filter(c => c.severity === "critical");
+    const highCycles = cycles.filter(c => c.severity === "high");
 
     if (criticalCycles.length > 0) {
-      immediate.push(
-        `🚨 Resolve ${criticalCycles.length} critical circular dependencies immediately`,
-      );
+      immediate.push(`🚨 Resolve ${criticalCycles.length} critical circular dependencies immediately`);
     }
 
     if (highCycles.length > 0) {
-      immediate.push(
-        `⚠️ Address ${highCycles.length} high-severity circular dependencies`,
-      );
+      immediate.push(`⚠️ Address ${highCycles.length} high-severity circular dependencies`);
     }
 
     if (cycles.length > 0) {
-      shortTerm.push(
-        "🔍 Implement circular dependency detection in CI/CD pipeline",
-      );
+      shortTerm.push("🔍 Implement circular dependency detection in CI/CD pipeline");
       shortTerm.push("📚 Create dependency management guidelines");
       shortTerm.push("🎓 Conduct team training on dependency management");
     }
@@ -809,9 +730,7 @@ export class CircularDependencyDetector {
     return Math.max(0, 100 - penalty);
   }
 
-  private calculateImpactMetrics(
-    cycles: CircularDependency[],
-  ): CircularDependencyReport["metrics"] {
+  private calculateImpactMetrics(cycles: CircularDependency[]): CircularDependencyReport["metrics"] {
     let buildTimeImpact = 0;
     let runtimeImpact = 0;
     let maintainabilityImpact = 0;
@@ -871,8 +790,7 @@ export class CircularDependencyDetector {
   }
 
   private calculateStability(lastModified: Date): number {
-    const daysSinceModified =
-      (Date.now() - lastModified.getTime()) / (1000 * 60 * 60 * 24);
+    const daysSinceModified = (Date.now() - lastModified.getTime()) / (1000 * 60 * 60 * 24);
 
     if (daysSinceModified < 7) return 0.2;
     if (daysSinceModified < 30) return 0.5;

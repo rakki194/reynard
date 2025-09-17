@@ -4,7 +4,6 @@ Configures the authentication system using the Reynard standard gatekeeper libra
 """
 
 import os
-from typing import Optional
 
 from gatekeeper import AuthManager, SecurityLevel, TokenConfig
 from gatekeeper.backends.memory import MemoryBackend
@@ -71,21 +70,19 @@ class GatekeeperConfig:
         if self.use_memory_backend:
             print("[INFO] Using MemoryBackend for authentication")
             return MemoryBackend()
-        else:
-            # Check database type and use appropriate backend
-            if self.database_url.startswith("sqlite"):
-                print("[INFO] Using SQLiteBackend for authentication")
-                return SQLiteBackend(
-                    database_url=self.database_url,
-                    pool_size=self.backend_pool_size,
-                    max_overflow=self.backend_max_overflow,
-                )
-            else:
-                print("[INFO] Using PostgreSQLBackend for authentication")
-                return PostgreSQLBackend(
-                    database_url=self.database_url,
-                    echo=False,
-                )
+        # Check database type and use appropriate backend
+        if self.database_url.startswith("sqlite"):
+            print("[INFO] Using SQLiteBackend for authentication")
+            return SQLiteBackend(
+                database_url=self.database_url,
+                pool_size=self.backend_pool_size,
+                max_overflow=self.backend_max_overflow,
+            )
+        print("[INFO] Using PostgreSQLBackend for authentication")
+        return PostgreSQLBackend(
+            database_url=self.database_url,
+            echo=False,
+        )
 
     def create_auth_manager(self) -> AuthManager:
         """Create and configure the authentication manager"""
@@ -114,7 +111,7 @@ class GatekeeperConfig:
 gatekeeper_config = GatekeeperConfig()
 
 # Global auth manager instance
-_auth_manager: Optional[AuthManager] = None
+_auth_manager: AuthManager | None = None
 
 
 def get_auth_manager() -> AuthManager:

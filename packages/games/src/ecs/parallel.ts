@@ -15,10 +15,7 @@ export interface ParallelIterator<T extends Component[]> {
   /**
    * Runs a function on each query result in parallel with initialization.
    */
-  forEachInit<U>(
-    init: () => U,
-    callback: (local: U, entity: Entity, ...components: T) => void,
-  ): void;
+  forEachInit<U>(init: () => U, callback: (local: U, entity: Entity, ...components: T) => void): void;
 
   /**
    * Changes the batching strategy used when iterating.
@@ -47,15 +44,13 @@ export const DEFAULT_BATCHING_STRATEGY: BatchingStrategy = {
 /**
  * Parallel iterator implementation.
  */
-export class ParallelIteratorImpl<T extends Component[]>
-  implements ParallelIterator<T>
-{
+export class ParallelIteratorImpl<T extends Component[]> implements ParallelIterator<T> {
   private _strategy: BatchingStrategy = DEFAULT_BATCHING_STRATEGY;
 
   constructor(
     private queryResult: QueryResult<T>,
     private _world: any,
-    private _changeDetection?: ChangeDetection,
+    private _changeDetection?: ChangeDetection
   ) {}
 
   forEach(callback: (entity: Entity, ...components: T) => void): void {
@@ -63,19 +58,13 @@ export class ParallelIteratorImpl<T extends Component[]>
       () => {},
       (_, entity, ...components) => {
         callback(entity, ...components);
-      },
+      }
     );
   }
 
-  forEachInit<U>(
-    init: () => U,
-    callback: (local: U, entity: Entity, ...components: T) => void,
-  ): void {
+  forEachInit<U>(init: () => U, callback: (local: U, entity: Entity, ...components: T) => void): void {
     // Check if we're in a web worker environment
-    if (
-      typeof Worker !== "undefined" &&
-      typeof (globalThis as any).importScripts === "function"
-    ) {
+    if (typeof Worker !== "undefined" && typeof (globalThis as any).importScripts === "function") {
       // We're in a web worker, use parallel execution
       this.executeParallel(init, callback);
     } else {
@@ -89,20 +78,14 @@ export class ParallelIteratorImpl<T extends Component[]>
     return this;
   }
 
-  private executeSequential<U>(
-    init: () => U,
-    callback: (local: U, entity: Entity, ...components: T) => void,
-  ): void {
+  private executeSequential<U>(init: () => U, callback: (local: U, entity: Entity, ...components: T) => void): void {
     const local = init();
     this.queryResult.forEach((entity, ...components) => {
       callback(local, entity, ...components);
     });
   }
 
-  private executeParallel<U>(
-    init: () => U,
-    callback: (local: U, entity: Entity, ...components: T) => void,
-  ): void {
+  private executeParallel<U>(init: () => U, callback: (local: U, entity: Entity, ...components: T) => void): void {
     // For now, fallback to sequential execution
     // In a real implementation, this would use Web Workers or SharedArrayBuffer
     this.executeSequential(init, callback);
@@ -168,10 +151,7 @@ export class TaskPool {
   /**
    * Executes tasks in parallel.
    */
-  async executeParallel<T, R>(
-    tasks: T[],
-    worker: (task: T) => R,
-  ): Promise<R[]> {
+  async executeParallel<T, R>(tasks: T[], worker: (task: T) => R): Promise<R[]> {
     if (tasks.length === 0) return [];
 
     // For now, execute sequentially

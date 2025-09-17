@@ -138,31 +138,31 @@ const useTouchInteraction = () => {
 // From useCrawl.ts - SSE event listeners with passive options
 es.addEventListener(
   "submitted",
-  (ev) => {
+  ev => {
     try {
       handlers.onSubmitted?.(JSON.parse((ev as MessageEvent).data));
     } catch {}
   },
-  { passive: true } as any,
+  { passive: true } as any
 );
 es.addEventListener(
   "status",
-  (ev) => {
+  ev => {
     try {
       handlers.onStatus?.(JSON.parse((ev as MessageEvent).data));
     } catch {}
   },
-  { passive: true } as any,
+  { passive: true } as any
 );
 es.addEventListener(
   "done",
-  (ev) => {
+  ev => {
     try {
       handlers.onDone?.(JSON.parse((ev as MessageEvent).data));
     } catch {}
     stop();
   },
-  { passive: true } as any,
+  { passive: true } as any
 );
 ```
 

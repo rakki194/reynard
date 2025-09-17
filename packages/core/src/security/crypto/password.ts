@@ -17,7 +17,7 @@ export function generateSecurePassword(
     includeNumbers?: boolean;
     includeSymbols?: boolean;
     excludeSimilar?: boolean;
-  } = {},
+  } = {}
 ): string {
   const {
     includeUppercase = true,
@@ -30,15 +30,11 @@ export function generateSecurePassword(
   let charset = "";
 
   if (includeUppercase) {
-    charset += excludeSimilar
-      ? "ABCDEFGHJKLMNPQRSTUVWXYZ"
-      : "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    charset += excludeSimilar ? "ABCDEFGHJKLMNPQRSTUVWXYZ" : "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   }
 
   if (includeLowercase) {
-    charset += excludeSimilar
-      ? "abcdefghijkmnpqrstuvwxyz"
-      : "abcdefghijklmnopqrstuvwxyz";
+    charset += excludeSimilar ? "abcdefghijkmnpqrstuvwxyz" : "abcdefghijklmnopqrstuvwxyz";
   }
 
   if (includeNumbers) {
@@ -50,9 +46,7 @@ export function generateSecurePassword(
   }
 
   if (charset.length === 0) {
-    throw new Error(
-      t("core.security.at-least-one-character-type-must-be-included"),
-    );
+    throw new Error(t("core.security.at-least-one-character-type-must-be-included"));
   }
 
   return generateSecureString(length, charset);

@@ -21,9 +21,7 @@
       "import": "./dist/parser/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
@@ -32,13 +30,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "documentation",
-    "markdown",
-    "rendering",
-    "reynard",
-    "solidjs"
-  ],
+  "keywords": ["documentation", "markdown", "rendering", "reynard", "solidjs"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {

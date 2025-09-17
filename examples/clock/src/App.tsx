@@ -54,11 +54,8 @@ const ClockApp: Component = () => {
 
       <main class="app-main">
         <div class="tab-navigation">
-          {tabs.map((tab) => (
-            <button
-              class={`tab-button ${activeTab() === tab.id ? "active" : ""}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
+          {tabs.map(tab => (
+            <button class={`tab-button ${activeTab() === tab.id ? "active" : ""}`} onClick={() => setActiveTab(tab.id)}>
               <span class="icon">{tab.icon}</span>
               {tab.label}
             </button>

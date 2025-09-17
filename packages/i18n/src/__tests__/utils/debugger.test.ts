@@ -10,12 +10,7 @@ import {
   createDebugPluralTranslator,
 } from "../../features/debug/DebugTranslation";
 import { validateTranslations } from "../../features/debug/Validation";
-import {
-  createDebugStats,
-  getDebugStats,
-  usedKeys,
-  missingKeys,
-} from "../../features/debug/DebugStats";
+import { createDebugStats, getDebugStats, usedKeys, missingKeys } from "../../features/debug/DebugStats";
 import { createPerformanceMonitor } from "../../features/performance/performance-monitor";
 
 import type { Translations, TranslationParams } from "../../../types";
@@ -80,9 +75,7 @@ describe("I18nDebugger", () => {
 
     it("should identify unused keys", () => {
       // This would need to be implemented based on the actual translation structure
-      const unusedKeys = Object.keys(mockTranslations).filter(
-        (key) => !usedKeys.has(key),
-      );
+      const unusedKeys = Object.keys(mockTranslations).filter(key => !usedKeys.has(key));
       expect(Array.isArray(unusedKeys)).toBe(true);
     });
 
@@ -112,11 +105,7 @@ describe("I18nDebugger", () => {
         common: { hello: "Hello" },
       } as any;
 
-      const result = validateTranslations(incompleteTranslations, [
-        "common",
-        "themes",
-        "core",
-      ]);
+      const result = validateTranslations(incompleteTranslations, ["common", "themes", "core"]);
 
       expect(result.isValid).toBe(false);
       expect(result.missingKeys.length).toBeGreaterThan(0);
@@ -135,11 +124,7 @@ describe("I18nDebugger", () => {
         },
       };
 
-      const result = validateTranslations(translationsWithEmpty, [
-        "common",
-        "themes",
-        "core",
-      ]);
+      const result = validateTranslations(translationsWithEmpty, ["common", "themes", "core"]);
 
       // The current implementation doesn't check for empty values, so this should be valid
       expect(result.isValid).toBe(true);
@@ -255,11 +240,7 @@ describe("Debug Translation Functions", () => {
       const mockTranslations = { common: { hello: "Hello" } };
       const mockLocale = () => "en";
 
-      const debugT = createDebugTranslationFunction(
-        () => mockTranslations as any,
-        mockLocale,
-        true,
-      );
+      const debugT = createDebugTranslationFunction(() => mockTranslations as any, mockLocale, true);
 
       const result = debugT("common.hello");
       expect(result).toBe("Hello");
@@ -269,11 +250,7 @@ describe("Debug Translation Functions", () => {
       const mockTranslations = { common: { hello: "Hello" } };
       const mockLocale = () => "en";
 
-      const debugT = createDebugTranslationFunction(
-        () => mockTranslations as any,
-        mockLocale,
-        true,
-      );
+      const debugT = createDebugTranslationFunction(() => mockTranslations as any, mockLocale, true);
 
       const result = debugT("common.nonexistent");
 
@@ -289,9 +266,7 @@ describe("Debug Translation Functions", () => {
 
   describe("createTemplateTranslator", () => {
     it("should handle template literals", () => {
-      const mockT = vi
-        .fn()
-        .mockReturnValue("Hello World! You have 5 messages.");
+      const mockT = vi.fn().mockReturnValue("Hello World! You have 5 messages.");
 
       const templateT = createTemplateTranslator(mockT);
 
@@ -328,9 +303,7 @@ describe("Debug Translation Functions", () => {
 
       pluralT("common.items", 5);
 
-      expect(mockConsole.debug).toHaveBeenCalledWith(
-        expect.stringContaining("Plural translation"),
-      );
+      expect(mockConsole.debug).toHaveBeenCalledWith(expect.stringContaining("Plural translation"));
     });
   });
 });
@@ -349,12 +322,7 @@ describe("Validation Functions", () => {
         components: { button: "Button" },
       } as any;
 
-      const result = validateTranslations(completeTranslations, [
-        "common",
-        "themes",
-        "core",
-        "components",
-      ]);
+      const result = validateTranslations(completeTranslations, ["common", "themes", "core", "components"]);
 
       // The validation should pass since all required namespaces are present
       expect(result.isValid).toBe(true);
@@ -366,11 +334,7 @@ describe("Validation Functions", () => {
         common: { hello: "Hello" },
       } as any;
 
-      const result = validateTranslations(incompleteTranslations, [
-        "common",
-        "themes",
-        "core",
-      ]);
+      const result = validateTranslations(incompleteTranslations, ["common", "themes", "core"]);
 
       expect(result.isValid).toBe(false);
       expect(result.missingKeys.length).toBeGreaterThan(0);
@@ -387,10 +351,7 @@ describe("Validation Functions", () => {
         },
       } as any;
 
-      const result = validateTranslations(translationsWithDuplicates, [
-        "common",
-        "themes",
-      ]);
+      const result = validateTranslations(translationsWithDuplicates, ["common", "themes"]);
 
       // The current implementation doesn't detect duplicates across namespaces
       // It only detects duplicates within the same namespace

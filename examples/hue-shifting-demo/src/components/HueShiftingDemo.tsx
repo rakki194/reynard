@@ -9,11 +9,7 @@ import { IconTest } from "./IconTest";
 import { TrueHueShifter } from "./TrueHueShifter";
 import { MaterialPainter } from "./MaterialPainter";
 import type { OKLCHColor } from "reynard-colors";
-import {
-  basicColorRamp,
-  generateHueShiftRamp,
-  materialHueShift,
-} from "../utils/hueShiftingAlgorithms";
+import { basicColorRamp, generateHueShiftRamp, materialHueShift } from "../utils/hueShiftingAlgorithms";
 import "./HueShiftingDemo.css";
 
 export const HueShiftingDemo: Component = () => {
@@ -23,13 +19,10 @@ export const HueShiftingDemo: Component = () => {
     h: 120,
   });
 
-  const [selectedMaterial, setSelectedMaterial] =
-    createSignal<keyof typeof MATERIAL_PATTERNS>("fabric");
+  const [selectedMaterial, setSelectedMaterial] = createSignal<keyof typeof MATERIAL_PATTERNS>("fabric");
   const [shiftIntensity, setShiftIntensity] = createSignal(0.3);
   const [rampStops, setRampStops] = createSignal(5);
-  const [activeTab, setActiveTab] = createSignal<
-    "ramping" | "hue-shifting" | "materials"
-  >("ramping");
+  const [activeTab, setActiveTab] = createSignal<"ramping" | "hue-shifting" | "materials">("ramping");
 
   const MATERIAL_PATTERNS = {
     metal: {
@@ -82,10 +75,7 @@ export const HueShiftingDemo: Component = () => {
     <div class="hue-shifting-demo">
       <header class="demo-header">
         <h2>OKLCH Color Manipulation Demo</h2>
-        <p>
-          Explore OKLCH color space algorithms: color ramping, true hue
-          shifting, and material patterns.
-        </p>
+        <p>Explore OKLCH color space algorithms: color ramping, true hue shifting, and material patterns.</p>
       </header>
 
       <div class="demo-tabs">
@@ -123,10 +113,7 @@ export const HueShiftingDemo: Component = () => {
 
             <section class="control-section">
               <h3>Material Type</h3>
-              <MaterialSelector
-                selected={selectedMaterial()}
-                onMaterialChange={setSelectedMaterial}
-              />
+              <MaterialSelector selected={selectedMaterial()} onMaterialChange={setSelectedMaterial} />
             </section>
 
             <section class="control-section">
@@ -181,11 +168,7 @@ export const HueShiftingDemo: Component = () => {
 
             <section class="preview-section">
               <h3>Pixel Art Preview</h3>
-              <PixelArtPreview
-                baseColor={baseColor()}
-                material={selectedMaterial()}
-                intensity={shiftIntensity()}
-              />
+              <PixelArtPreview baseColor={baseColor()} material={selectedMaterial()} intensity={shiftIntensity()} />
             </section>
           </div>
         </div>
@@ -205,7 +188,7 @@ export const HueShiftingDemo: Component = () => {
           <div class="preview-panel">
             <TrueHueShifter
               baseColor={baseColor()}
-              onColorChange={(colors) => {
+              onColorChange={colors => {
                 console.log("True hue shift colors:", colors);
               }}
             />
@@ -227,7 +210,7 @@ export const HueShiftingDemo: Component = () => {
           <div class="preview-panel">
             <MaterialPainter
               baseColor={baseColor()}
-              onColorChange={(colors) => {
+              onColorChange={colors => {
                 console.log("Material pattern colors:", colors);
               }}
             />
@@ -241,22 +224,22 @@ export const HueShiftingDemo: Component = () => {
           <div class="info-card">
             <h4>Perceptual Uniformity</h4>
             <p>
-              OKLCH ensures that equal changes in color values produce equal
-              visual changes, making hue shifting predictable and consistent.
+              OKLCH ensures that equal changes in color values produce equal visual changes, making hue shifting
+              predictable and consistent.
             </p>
           </div>
           <div class="info-card">
             <h4>Material Awareness</h4>
             <p>
-              Different materials have different light interaction patterns.
-              Metal reflects differently than skin or fabric.
+              Different materials have different light interaction patterns. Metal reflects differently than skin or
+              fabric.
             </p>
           </div>
           <div class="info-card">
             <h4>Real-time Preview</h4>
             <p>
-              See your changes instantly in the pixel art preview, helping you
-              understand the visual impact of different settings.
+              See your changes instantly in the pixel art preview, helping you understand the visual impact of different
+              settings.
             </p>
           </div>
         </div>

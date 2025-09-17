@@ -99,8 +99,8 @@ function LanguageSelector() {
   const { locale, setLocale, languages } = useI18n();
 
   return (
-    <select value={locale()} onChange={(e) => setLocale(e.target.value)}>
-      {languages.map((lang) => (
+    <select value={locale()} onChange={e => setLocale(e.target.value)}>
+      {languages.map(lang => (
         <option key={lang.code} value={lang.code}>
           {lang.nativeName}
         </option>

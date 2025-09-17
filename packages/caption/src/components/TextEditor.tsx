@@ -16,7 +16,7 @@ export interface TextEditorProps {
   editable?: boolean;
 }
 
-export const TextEditor: Component<TextEditorProps> = (props) => {
+export const TextEditor: Component<TextEditorProps> = props => {
   const [content, setContent] = createSignal(props.file.content);
   const [isModified, setIsModified] = createSignal(false);
 
@@ -86,8 +86,7 @@ export const TextEditor: Component<TextEditorProps> = (props) => {
           <div class="file-info">
             <h3>{props.file.name}</h3>
             <div class="file-details">
-              {props.file.metadata.lineCount} lines •{" "}
-              {props.file.metadata.wordCount} words •{" "}
+              {props.file.metadata.lineCount} lines • {props.file.metadata.wordCount} words •{" "}
               {props.file.metadata.characterCount} characters
             </div>
           </div>

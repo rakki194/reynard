@@ -3,13 +3,7 @@
  */
 
 import { BaseTool } from "../core/BaseTool";
-import {
-  ToolDefinition,
-  ToolResult,
-  ToolExecutionContext,
-  ToolParameter,
-  ParameterType,
-} from "../core/types";
+import { ToolDefinition, ToolResult, ToolExecutionContext, ToolParameter, ParameterType } from "../core/types";
 
 export class ReadFileTool extends BaseTool {
   constructor() {
@@ -40,10 +34,7 @@ export class ReadFileTool extends BaseTool {
     super(definition);
   }
 
-  protected async executeImpl(
-    parameters: Record<string, any>,
-    context: ToolExecutionContext,
-  ): Promise<any> {
+  protected async executeImpl(parameters: Record<string, any>, context: ToolExecutionContext): Promise<any> {
     const { path, encoding = "utf8" } = parameters;
 
     // In a real implementation, this would use Node.js fs module
@@ -100,16 +91,8 @@ export class WriteFileTool extends BaseTool {
     super(definition);
   }
 
-  protected async executeImpl(
-    parameters: Record<string, any>,
-    context: ToolExecutionContext,
-  ): Promise<any> {
-    const {
-      path,
-      content,
-      encoding = "utf8",
-      createDirectories = false,
-    } = parameters;
+  protected async executeImpl(parameters: Record<string, any>, context: ToolExecutionContext): Promise<any> {
+    const { path, content, encoding = "utf8", createDirectories = false } = parameters;
 
     // In a real implementation, this would use Node.js fs module
     // For now, we'll simulate the operation
@@ -159,10 +142,7 @@ export class ListDirectoryTool extends BaseTool {
     super(definition);
   }
 
-  protected async executeImpl(
-    parameters: Record<string, any>,
-    context: ToolExecutionContext,
-  ): Promise<any> {
+  protected async executeImpl(parameters: Record<string, any>, context: ToolExecutionContext): Promise<any> {
     const { path, recursive = false, includeHidden = false } = parameters;
 
     // In a real implementation, this would use Node.js fs module

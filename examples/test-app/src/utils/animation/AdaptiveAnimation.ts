@@ -19,7 +19,7 @@ export function createAdaptiveAnimationEngine(
     targetFPS: 60,
     qualityLevels: [1, 0.75, 0.5, 0.25], // Quality multipliers
     adaptationThreshold: 5, // FPS below target for this many frames
-  },
+  }
 ) {
   const engine = createAnimationCore(config);
   let currentQualityIndex = 0;
@@ -29,9 +29,7 @@ export function createAdaptiveAnimationEngine(
 
   const adaptiveStart = (callbacks: AnimationCallbacks) => {
     if (isInitialized) {
-      console.warn(
-        "🦊 AdaptiveAnimation: Already initialized, ignoring start request",
-      );
+      console.warn("🦊 AdaptiveAnimation: Already initialized, ignoring start request");
       return;
     }
 
@@ -48,15 +46,12 @@ export function createAdaptiveAnimationEngine(
             lowFPSFrames++;
             highFPSFrames = 0;
 
-            if (
-              lowFPSFrames >= config.adaptationThreshold &&
-              currentQualityIndex < config.qualityLevels.length - 1
-            ) {
+            if (lowFPSFrames >= config.adaptationThreshold && currentQualityIndex < config.qualityLevels.length - 1) {
               currentQualityIndex++;
               lowFPSFrames = 0;
               if (config.enablePerformanceMonitoring) {
                 console.log(
-                  `🦊 AdaptiveAnimation: Reduced quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`,
+                  `🦊 AdaptiveAnimation: Reduced quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`
                 );
               }
             }
@@ -64,15 +59,12 @@ export function createAdaptiveAnimationEngine(
             highFPSFrames++;
             lowFPSFrames = 0;
 
-            if (
-              highFPSFrames >= config.adaptationThreshold &&
-              currentQualityIndex > 0
-            ) {
+            if (highFPSFrames >= config.adaptationThreshold && currentQualityIndex > 0) {
               currentQualityIndex--;
               highFPSFrames = 0;
               if (config.enablePerformanceMonitoring) {
                 console.log(
-                  `🦊 AdaptiveAnimation: Increased quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`,
+                  `🦊 AdaptiveAnimation: Increased quality to level ${currentQualityIndex} (${config.qualityLevels[currentQualityIndex] * 100}%)`
                 );
               }
             }
@@ -80,10 +72,7 @@ export function createAdaptiveAnimationEngine(
 
           callbacks.onFrameEnd?.(frameTime, frameCount);
         } catch (error) {
-          console.error(
-            "🦊 AdaptiveAnimation: Error in onFrameEnd callback",
-            error,
-          );
+          console.error("🦊 AdaptiveAnimation: Error in onFrameEnd callback", error);
         }
       },
     };

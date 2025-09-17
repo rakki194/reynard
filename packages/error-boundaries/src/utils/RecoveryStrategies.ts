@@ -3,16 +3,8 @@
  * Comprehensive recovery strategies for different error types
  */
 
-import {
-  ErrorCategory,
-  ErrorSeverity,
-  ErrorContext,
-} from "../types/ErrorTypes";
-import {
-  RecoveryStrategy,
-  RecoveryResult,
-  RecoveryActionType,
-} from "../types/RecoveryTypes";
+import { ErrorCategory, ErrorSeverity, ErrorContext } from "../types/ErrorTypes";
+import { RecoveryStrategy, RecoveryResult, RecoveryActionType } from "../types/RecoveryTypes";
 
 /**
  * Retry strategy for network and resource errors
@@ -64,8 +56,7 @@ export const resetStrategy: RecoveryStrategy = {
   name: "Reset Component",
   description: "Reset the component to its initial state",
   canRecover: (_error, context) =>
-    context.category === ErrorCategory.RENDERING ||
-    context.category === ErrorCategory.VALIDATION,
+    context.category === ErrorCategory.RENDERING || context.category === ErrorCategory.VALIDATION,
   recover: async (_error, _context) => {
     return {
       success: true,
@@ -159,11 +150,9 @@ export const builtInRecoveryStrategies: RecoveryStrategy[] = [
 export function getApplicableStrategies(
   error: Error,
   context: ErrorContext,
-  strategies: RecoveryStrategy[] = builtInRecoveryStrategies,
+  strategies: RecoveryStrategy[] = builtInRecoveryStrategies
 ): RecoveryStrategy[] {
-  return strategies
-    .filter((strategy) => strategy.canRecover(error, context))
-    .sort((a, b) => a.priority - b.priority);
+  return strategies.filter(strategy => strategy.canRecover(error, context)).sort((a, b) => a.priority - b.priority);
 }
 
 /**
@@ -172,16 +161,13 @@ export function getApplicableStrategies(
 export async function executeRecoveryStrategy(
   strategy: RecoveryStrategy,
   error: Error,
-  context: ErrorContext,
+  context: ErrorContext
 ): Promise<RecoveryResult> {
   try {
     const result = await Promise.race([
       strategy.recover(error, context),
       new Promise<RecoveryResult>((_, reject) =>
-        setTimeout(
-          () => reject(new Error("Recovery timeout")),
-          strategy.timeout || 10000,
-        ),
+        setTimeout(() => reject(new Error("Recovery timeout")), strategy.timeout || 10000)
       ),
     ]);
     return result;
@@ -190,10 +176,7 @@ export async function executeRecoveryStrategy(
       success: false,
       action: RecoveryActionType.CUSTOM,
       message: "Recovery strategy failed",
-      error:
-        recoveryError instanceof Error
-          ? recoveryError
-          : new Error(String(recoveryError)),
+      error: recoveryError instanceof Error ? recoveryError : new Error(String(recoveryError)),
     };
   }
 }
@@ -208,7 +191,7 @@ export function createRecoveryStrategy(
   canRecover: (error: Error, context: ErrorContext) => boolean,
   recover: (error: Error, context: ErrorContext) => Promise<RecoveryResult>,
   priority: number = 5,
-  timeout?: number,
+  timeout?: number
 ): RecoveryStrategy {
   return {
     id,

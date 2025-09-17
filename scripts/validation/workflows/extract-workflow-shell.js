@@ -113,10 +113,7 @@ class WorkflowShellExtractor {
         type: "multiline",
       };
       scripts.push(script);
-      this.log(
-        `    ✅ Extracted ${scriptContent.length} lines (end of file)`,
-        "green",
-      );
+      this.log(`    ✅ Extracted ${scriptContent.length} lines (end of file)`, "green");
     }
 
     return scripts;
@@ -129,10 +126,7 @@ class WorkflowShellExtractor {
     this.log(`🔍 Validating script: ${script.name}`, "blue");
 
     // Create temporary script file
-    const tempScriptPath = path.join(
-      this.tempDir,
-      `${path.basename(script.workflow)}_${script.name}.sh`,
-    );
+    const tempScriptPath = path.join(this.tempDir, `${path.basename(script.workflow)}_${script.name}.sh`);
 
     // Ensure temp directory exists
     if (!fs.existsSync(this.tempDir)) {
@@ -150,13 +144,10 @@ ${script.content}`;
 
     try {
       // Run shellcheck
-      const result = execSync(
-        `shellcheck --rcfile=${this.shellcheckRc} "${tempScriptPath}"`,
-        {
-          encoding: "utf8",
-          stdio: "pipe",
-        },
-      );
+      const result = execSync(`shellcheck --rcfile=${this.shellcheckRc} "${tempScriptPath}"`, {
+        encoding: "utf8",
+        stdio: "pipe",
+      });
 
       this.log(`    ✅ Valid`, "green");
       return { valid: true, issues: [], script: tempScriptPath };
@@ -262,10 +253,7 @@ ${script.content}`;
    * Process all workflow files
    */
   async processWorkflows() {
-    this.log(
-      "🐺 Starting workflow shell script extraction and validation...",
-      "magenta",
-    );
+    this.log("🐺 Starting workflow shell script extraction and validation...", "magenta");
     this.log("=".repeat(60), "magenta");
 
     // Ensure temp directory exists
@@ -343,8 +331,8 @@ ${script.content}`;
 
     const files = fs.readdirSync(this.workflowDir);
     return files
-      .filter((file) => file.endsWith(".yml") || file.endsWith(".yaml"))
-      .map((file) => path.join(this.workflowDir, file));
+      .filter(file => file.endsWith(".yml") || file.endsWith(".yaml"))
+      .map(file => path.join(this.workflowDir, file));
   }
 
   /**
@@ -375,10 +363,7 @@ ${script.content}`;
       this.log("", "reset");
       this.log("🔧 To fix issues:", "yellow");
       this.log("  1. Run with --fix flag to auto-fix common issues", "yellow");
-      this.log(
-        "  2. Manually fix remaining issues in workflow files",
-        "yellow",
-      );
+      this.log("  2. Manually fix remaining issues in workflow files", "yellow");
       this.log("  3. Use shellcheck directly for detailed analysis", "yellow");
     } else {
       this.log("", "reset");
@@ -393,23 +378,19 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const options = {
     verbose: args.includes("--verbose") || args.includes("-v"),
     fixMode: args.includes("--fix"),
-    workflowDir: args
-      .find((arg) => arg.startsWith("--workflow-dir="))
-      ?.split("=")[1],
-    tempDir: args.find((arg) => arg.startsWith("--temp-dir="))?.split("=")[1],
-    shellcheckRc: args
-      .find((arg) => arg.startsWith("--shellcheck-rc="))
-      ?.split("=")[1],
+    workflowDir: args.find(arg => arg.startsWith("--workflow-dir="))?.split("=")[1],
+    tempDir: args.find(arg => arg.startsWith("--temp-dir="))?.split("=")[1],
+    shellcheckRc: args.find(arg => arg.startsWith("--shellcheck-rc="))?.split("=")[1],
   };
 
   const extractor = new WorkflowShellExtractor(options);
 
   extractor
     .processWorkflows()
-    .then((result) => {
+    .then(result => {
       process.exit(result.success ? 0 : 1);
     })
-    .catch((error) => {
+    .catch(error => {
       console.error("❌ Error:", error.message);
       process.exit(1);
     });

@@ -12,7 +12,7 @@ interface RotationSliderProps {
   onChange: (value: number) => void;
 }
 
-const RotationSlider: Component<RotationSliderProps> = (props) => (
+const RotationSlider: Component<RotationSliderProps> = props => (
   <div class="control-group">
     <label for={`slider-${props.label.toLowerCase().replace(/\s+/g, "-")}`}>
       {props.label}: {props.value().toFixed(3)}
@@ -43,15 +43,12 @@ interface Phyllotactic3DRotationControlsProps {
   onToggleAnimation: () => void;
 }
 
-export const Phyllotactic3DRotationControls: Component<
-  Phyllotactic3DRotationControlsProps
-> = (props) => {
-  const handleSliderChange =
-    (setter: (value: number) => void) => (value: number) => {
-      setter(value);
-      // Call onConfigUpdate in next tick to avoid reactivity issues
-      setTimeout(() => props.onConfigUpdate(), 0);
-    };
+export const Phyllotactic3DRotationControls: Component<Phyllotactic3DRotationControlsProps> = props => {
+  const handleSliderChange = (setter: (value: number) => void) => (value: number) => {
+    setter(value);
+    // Call onConfigUpdate in next tick to avoid reactivity issues
+    setTimeout(() => props.onConfigUpdate(), 0);
+  };
 
   return (
     <Card class="rotation-controls">
@@ -76,11 +73,7 @@ export const Phyllotactic3DRotationControls: Component<
       />
 
       <div class="control-group">
-        <Button
-          variant="secondary"
-          onClick={props.onRegenerate}
-          class="control-button"
-        >
+        <Button variant="secondary" onClick={props.onRegenerate} class="control-button">
           🔄 Regenerate 3D Pattern
         </Button>
       </div>

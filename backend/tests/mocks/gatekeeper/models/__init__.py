@@ -3,23 +3,23 @@ Mock gatekeeper models package.
 """
 
 from ..main import (
+    MockTokenResponse,
     MockUser,
     MockUserCreate,
     MockUserPublic,
     MockUserUpdate,
-    MockTokenResponse,
     TokenConfig,
     TokenData,
-    TokenValidationResult
+    TokenValidationResult,
 )
 
 __all__ = [
+    "MockTokenResponse",
     "MockUser",
     "MockUserCreate",
-    "MockUserPublic", 
+    "MockUserPublic",
     "MockUserUpdate",
-    "MockTokenResponse",
     "TokenConfig",
     "TokenData",
-    "TokenValidationResult"
+    "TokenValidationResult",
 ]

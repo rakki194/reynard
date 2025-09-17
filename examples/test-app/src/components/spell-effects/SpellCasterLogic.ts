@@ -14,8 +14,7 @@ export function createSpellCasterLogic(spellRenderer?: SpellRenderer) {
     hasSpellRenderer: !!spellRenderer,
   });
   const [activeSpells, setActiveSpells] = createSignal<SpellEffect[]>([]);
-  const [selectedSpellType, setSelectedSpellType] =
-    createSignal<SpellType>("fire");
+  const [selectedSpellType, setSelectedSpellType] = createSignal<SpellType>("fire");
   const [isCasting, setIsCasting] = createSignal(false);
   const [spellIntensity, setSpellIntensity] = createSignal(1.0);
   const [spellDuration, setSpellDuration] = createSignal(3000);
@@ -59,7 +58,7 @@ export function createSpellCasterLogic(spellRenderer?: SpellRenderer) {
     };
     console.log("🦊 SpellCasterLogic: Created spell", spell);
 
-    setActiveSpells((prev) => {
+    setActiveSpells(prev => {
       const newSpells = [...prev, spell];
       console.log("🦊 SpellCasterLogic: Added spell to active spells", {
         count: newSpells.length,
@@ -76,11 +75,8 @@ export function createSpellCasterLogic(spellRenderer?: SpellRenderer) {
 
     // Remove spell after duration
     setTimeout(() => {
-      console.log(
-        "🦊 SpellCasterLogic: Spell duration expired, removing",
-        spell.id,
-      );
-      setActiveSpells((prev) => prev.filter((s) => s.id !== spell.id));
+      console.log("🦊 SpellCasterLogic: Spell duration expired, removing", spell.id);
+      setActiveSpells(prev => prev.filter(s => s.id !== spell.id));
       if (spellRenderer) {
         spellRenderer.stopSpell(spell.id);
       }

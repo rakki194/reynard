@@ -3,12 +3,7 @@
  * Basic translation logic without advanced features
  */
 
-import type {
-  LanguageCode,
-  Translations,
-  TranslationParams,
-  TranslationFunction,
-} from "../types";
+import type { LanguageCode, Translations, TranslationParams, TranslationFunction } from "../types";
 import { createEffect } from "solid-js";
 
 // Enhanced loading system with caching and namespace support
@@ -20,21 +15,14 @@ import { createIntlFormatter } from "../intl/IntlFormatter";
 import { getTranslationValue } from "../utils";
 
 // Performance monitoring
-import {
-  createPerformanceMonitor,
-  createNoOpPerformanceMonitor,
-} from "../features/performance/performance-monitor";
+import { createPerformanceMonitor, createNoOpPerformanceMonitor } from "../features/performance/performance-monitor";
 
 // Enhanced translation loading function with caching
-export async function loadTranslations(
-  locale: LanguageCode,
-): Promise<Translations> {
+export async function loadTranslations(locale: LanguageCode): Promise<Translations> {
   try {
     // Use the global import function (which can be mocked in tests)
     const importFn = (globalThis as any).import;
-    const result = await importFn(
-      `./translations/data/lang/${locale}/index.js`,
-    );
+    const result = await importFn(`./translations/data/lang/${locale}/index.js`);
     return result.default;
   } catch (error) {
     // Fallback to English if available
@@ -44,10 +32,7 @@ export async function loadTranslations(
         const result = await importFn(`./translations/data/lang/en/index.js`);
         return result.default;
       } catch (fallbackError) {
-        console.error(
-          `Failed to load translations for locale ${locale} and fallback to English:`,
-          fallbackError,
-        );
+        console.error(`Failed to load translations for locale ${locale} and fallback to English:`, fallbackError);
         throw error;
       }
     }
@@ -64,16 +49,11 @@ export function createCoreTranslationFunction(
   _options: {
     enableDebug?: boolean;
     enablePerformanceMonitoring?: boolean;
-  },
+  }
 ): TranslationFunction {
   return (key: string, params?: TranslationParams) => {
     const currentTranslations = translations();
-    return getTranslationValue(
-      currentTranslations as unknown as Record<string, unknown>,
-      key,
-      params,
-      locale(),
-    );
+    return getTranslationValue(currentTranslations as unknown as Record<string, unknown>, key, params, locale());
   };
 }
 
@@ -84,20 +64,15 @@ function initializeTranslationDependencies(
     intlConfig?: Partial<IntlConfig>;
     usedNamespaces?: string[];
     preloadLocales?: LanguageCode[];
-  },
+  }
 ) {
-  const {
-    intlConfig: _intlConfig = {},
-    usedNamespaces = [],
-    preloadLocales = [],
-  } = options;
+  const { intlConfig: _intlConfig = {}, usedNamespaces = [], preloadLocales = [] } = options;
 
   const intlFormatter = createIntlFormatter(_intlConfig);
-  const optimizedLoader =
-    usedNamespaces.length > 0 ? createOptimizedLoader(usedNamespaces) : null;
+  const optimizedLoader = usedNamespaces.length > 0 ? createOptimizedLoader(usedNamespaces) : null;
 
   if (preloadLocales.length > 0) {
-    preloadLocales.forEach((locale) => {
+    preloadLocales.forEach(locale => {
       // Placeholder - preloadTranslations not available
       console.log(`Preloading locale: ${locale}`);
     });
@@ -113,7 +88,7 @@ function createTranslationEffect(
   intlFormatter: ReturnType<typeof createIntlFormatter>,
   optimizedLoader: ReturnType<typeof createOptimizedLoader> | null,
   intlConfig: Partial<IntlConfig>,
-  initialTranslations?: Partial<Translations>,
+  initialTranslations?: Partial<Translations>
 ) {
   let isEffectRunning = false;
 
@@ -137,11 +112,7 @@ function createTranslationEffect(
               : await loadTranslations(currentLocale);
             setTranslations(loadedTranslations);
           } catch (error) {
-            console.error(
-              "Failed to load translations for locale:",
-              currentLocale,
-              error,
-            );
+            console.error("Failed to load translations for locale:", currentLocale, error);
           }
         }
       }
@@ -161,13 +132,10 @@ export function createTranslationLoadingEffect(
     usedNamespaces?: string[];
     preloadLocales?: LanguageCode[];
     initialTranslations?: Partial<Translations>;
-  },
+  }
 ) {
   const { initialTranslations, enablePerformanceMonitoring = false } = options;
-  const { intlFormatter, optimizedLoader } = initializeTranslationDependencies(
-    locale,
-    options,
-  );
+  const { intlFormatter, optimizedLoader } = initializeTranslationDependencies(locale, options);
 
   createTranslationEffect(
     locale,
@@ -175,13 +143,11 @@ export function createTranslationLoadingEffect(
     intlFormatter,
     optimizedLoader,
     options.intlConfig || {},
-    initialTranslations,
+    initialTranslations
   );
 
   // Create performance monitor if enabled
-  const performanceMonitor = enablePerformanceMonitoring
-    ? createPerformanceMonitor()
-    : createNoOpPerformanceMonitor();
+  const performanceMonitor = enablePerformanceMonitoring ? createPerformanceMonitor() : createNoOpPerformanceMonitor();
 
   return { intlFormatter, optimizedLoader, performanceMonitor };
 }

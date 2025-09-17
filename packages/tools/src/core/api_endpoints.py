@@ -7,23 +7,18 @@ search, and execute tools through the web interface.
 
 import logging
 import time
-from typing import Any, Dict, List, Optional
 
 from fastapi import Body, Depends, HTTPException, Path, Query
-from fastapi.responses import JSONResponse
 
 from ..auth import get_current_user, is_admin
 from ..models import User, UserRole
 from .api_models import (
-    ErrorResponse,
     ToolCategoriesResponse,
     ToolExecutionRequest,
     ToolExecutionResult,
     ToolInfo,
-    ToolListRequest,
     ToolListResponse,
     ToolParameterInfo,
-    ToolSearchRequest,
     ToolSearchResponse,
     ToolStatsResponse,
 )
@@ -41,7 +36,7 @@ from .registry import get_tool_registry
 logger = logging.getLogger(__name__)
 
 
-def _map_user_role_to_permissions(role: UserRole) -> List[str]:
+def _map_user_role_to_permissions(role: UserRole) -> list[str]:
     """
     Map user roles to tool permissions.
 
@@ -124,11 +119,9 @@ def _create_execution_context(user: User) -> ToolExecutionContext:
 
 
 async def list_tools(
-    category: Optional[str] = Query(None, description="Filter by category"),
-    tag: Optional[str] = Query(None, description="Filter by tag"),
-    permission: Optional[str] = Query(
-        None, description="Filter by required permission"
-    ),
+    category: str | None = Query(None, description="Filter by category"),
+    tag: str | None = Query(None, description="Filter by tag"),
+    permission: str | None = Query(None, description="Filter by required permission"),
     current_user: User = Depends(get_current_user),
 ) -> ToolListResponse:
     """
@@ -309,31 +302,29 @@ async def execute_tool(
                 dry_run=True,
                 tool_name=tool_name,
             )
-        else:
-            # Real execution - set timeout if provided
-            if request.timeout:
-                context.timeout = request.timeout
+        # Real execution - set timeout if provided
+        if request.timeout:
+            context.timeout = request.timeout
 
-            result = await executor.execute_tool(
-                tool=tool, context=context, parameters=request.parameters
+        result = await executor.execute_tool(
+            tool=tool, context=context, parameters=request.parameters
+        )
+
+        execution_time = time.time() - start_time
+
+        if result.success:
+            return ToolExecutionResult(
+                success=True,
+                result=result.data,
+                execution_time=execution_time,
+                tool_name=tool_name,
             )
-
-            execution_time = time.time() - start_time
-
-            if result.success:
-                return ToolExecutionResult(
-                    success=True,
-                    result=result.data,
-                    execution_time=execution_time,
-                    tool_name=tool_name,
-                )
-            else:
-                return ToolExecutionResult(
-                    success=False,
-                    error=result.error,
-                    execution_time=execution_time,
-                    tool_name=tool_name,
-                )
+        return ToolExecutionResult(
+            success=False,
+            error=result.error,
+            execution_time=execution_time,
+            tool_name=tool_name,
+        )
 
     except HTTPException:
         raise

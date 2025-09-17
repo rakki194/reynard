@@ -29,9 +29,7 @@ export class GeneratorConverter {
   /**
    * Convert multiple generator infos to CaptionGenerator array
    */
-  static convertGeneratorInfos(
-    generators: Record<string, any>,
-  ): CaptionGenerator[] {
+  static convertGeneratorInfos(generators: Record<string, any>): CaptionGenerator[] {
     return Object.values(generators).map(this.convertGeneratorInfo);
   }
 }

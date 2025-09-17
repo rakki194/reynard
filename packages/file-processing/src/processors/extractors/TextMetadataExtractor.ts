@@ -12,10 +12,7 @@ export class TextMetadataExtractor extends BaseMetadataExtractor {
   /**
    * Extract metadata from text files
    */
-  async extractMetadata(
-    file: File | string,
-    options: MetadataExtractionOptions,
-  ): Promise<TextMetadata> {
+  async extractMetadata(file: File | string, options: MetadataExtractionOptions): Promise<TextMetadata> {
     const text = await this.loadText(file);
     const basicInfo = await this.getBasicFileInfo(file);
 
@@ -23,7 +20,7 @@ export class TextMetadataExtractor extends BaseMetadataExtractor {
       ...basicInfo,
       lineCount: text.split("\n").length,
       characterCount: text.length,
-      wordCount: text.split(/\s+/).filter((word) => word.length > 0).length,
+      wordCount: text.split(/\s+/).filter(word => word.length > 0).length,
       encoding: "UTF-8", // Default assumption
       isStructured: this.detectStructuredData(text),
     };

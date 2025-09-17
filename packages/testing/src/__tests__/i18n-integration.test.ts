@@ -34,7 +34,7 @@ describe("i18n Integration Tests", () => {
       expect(enabledPackages.length).toBeGreaterThan(0);
 
       // Check that key packages are enabled
-      const packageNames = enabledPackages.map((pkg) => pkg.name);
+      const packageNames = enabledPackages.map(pkg => pkg.name);
       expect(packageNames).toContain("components");
       expect(packageNames).toContain("ui");
       expect(packageNames).toContain("auth");
@@ -45,7 +45,7 @@ describe("i18n Integration Tests", () => {
       expect(packagePaths.length).toBeGreaterThan(0);
 
       // All paths should start with 'packages/'
-      packagePaths.forEach((path) => {
+      packagePaths.forEach(path => {
         expect(path).toMatch(/^packages\//);
       });
     });
@@ -103,7 +103,7 @@ describe("i18n Integration Tests", () => {
       expect(result.summary.averageCoverage).toBeGreaterThanOrEqual(0);
 
       // Verify package results structure
-      result.packageResults.forEach((pkgResult) => {
+      result.packageResults.forEach(pkgResult => {
         expect(pkgResult.packageName).toBeDefined();
         expect(pkgResult.packagePath).toBeDefined();
         expect(typeof pkgResult.success).toBe("boolean");

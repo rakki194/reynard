@@ -5,9 +5,7 @@ import { createSignal } from "solid-js";
  * Animation frame manager for handling requestAnimationFrame lifecycle
  */
 export function createAnimationFrameManager() {
-  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(
-    null,
-  );
+  const [animationFrameId, setAnimationFrameId] = createSignal<number | null>(null);
 
   const requestFrame = (callback: FrameRequestCallback): number => {
     const id = window.requestAnimationFrame(callback);

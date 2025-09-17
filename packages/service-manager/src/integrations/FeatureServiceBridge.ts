@@ -101,10 +101,7 @@ export class FeatureServiceBridge {
   /**
    * Update service availability in feature manager
    */
-  private updateServiceAvailability(
-    serviceName: string,
-    available: boolean,
-  ): void {
+  private updateServiceAvailability(serviceName: string, available: boolean): void {
     const mappedName = this.mapServiceName(serviceName);
 
     // Update the service checker in feature manager
@@ -120,13 +117,9 @@ export class FeatureServiceBridge {
   /**
    * Update service health in feature manager
    */
-  private updateServiceHealth(
-    serviceName: string,
-    health?: ServiceHealth,
-  ): void {
+  private updateServiceHealth(serviceName: string, health?: ServiceHealth): void {
     const mappedName = this.mapServiceName(serviceName);
-    const isHealthy =
-      health === ServiceHealth.HEALTHY || health === ServiceHealth.DEGRADED;
+    const isHealthy = health === ServiceHealth.HEALTHY || health === ServiceHealth.DEGRADED;
 
     this.updateServiceAvailability(serviceName, isHealthy);
   }
@@ -159,10 +152,7 @@ export class FeatureServiceBridge {
     const status = service.status;
     const health = service.health;
 
-    return (
-      status === ServiceStatus.RUNNING &&
-      (health === ServiceHealth.HEALTHY || health === ServiceHealth.DEGRADED)
-    );
+    return status === ServiceStatus.RUNNING && (health === ServiceHealth.HEALTHY || health === ServiceHealth.DEGRADED);
   }
 
   /**
@@ -190,9 +180,7 @@ export class FeatureServiceBridge {
    */
   private getMappedServiceName(originalName: string): string {
     // Find the key (mapped name) for this original service name
-    for (const [mappedName, originalServiceName] of Object.entries(
-      this.serviceNameMapping,
-    )) {
+    for (const [mappedName, originalServiceName] of Object.entries(this.serviceNameMapping)) {
       if (originalServiceName === originalName) {
         return mappedName;
       }
@@ -222,8 +210,7 @@ export class FeatureServiceBridge {
 
     const available =
       service.status === ServiceStatus.RUNNING &&
-      (service.health === ServiceHealth.HEALTHY ||
-        service.health === ServiceHealth.DEGRADED);
+      (service.health === ServiceHealth.HEALTHY || service.health === ServiceHealth.DEGRADED);
 
     return {
       available,

@@ -77,9 +77,7 @@ export class HTTPClient {
   /**
    * Make HTTP request with retry logic and exponential backoff
    */
-  async request<T = unknown>(
-    options: HTTPRequestOptions,
-  ): Promise<HTTPResponse<T>> {
+  async request<T = unknown>(options: HTTPRequestOptions): Promise<HTTPResponse<T>> {
     const url = `${this.config.baseUrl}${options.endpoint}`;
     const headers = { ...this.baseHeaders, ...options.headers };
     const timeout = options.timeout ?? this.config.timeout;
@@ -102,12 +100,7 @@ export class HTTPClient {
           signal,
         };
 
-        if (
-          options.data &&
-          (options.method === "POST" ||
-            options.method === "PUT" ||
-            options.method === "PATCH")
-        ) {
+        if (options.data && (options.method === "POST" || options.method === "PUT" || options.method === "PATCH")) {
           requestOptions.body = JSON.stringify(options.data);
         }
 
@@ -129,9 +122,7 @@ export class HTTPClient {
         }
 
         if (!response.ok) {
-          const error = new Error(
-            `HTTP ${response.status}: ${response.statusText}`,
-          ) as HTTPError;
+          const error = new Error(`HTTP ${response.status}: ${response.statusText}`) as HTTPError;
           error.status = response.status;
           error.statusText = response.statusText;
           error.response = {
@@ -153,17 +144,14 @@ export class HTTPClient {
           config: options,
         };
       } catch (error) {
-        lastError =
-          error instanceof Error
-            ? (error as HTTPError)
-            : (new Error(String(error)) as HTTPError);
+        lastError = error instanceof Error ? (error as HTTPError) : (new Error(String(error)) as HTTPError);
 
         lastError.config = options;
 
         if (attempt < retries && this.config.enableRetry) {
           // Exponential backoff
           const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
-          await new Promise((resolve) => setTimeout(resolve, delay));
+          await new Promise(resolve => setTimeout(resolve, delay));
         }
       }
     }
@@ -175,17 +163,14 @@ export class HTTPClient {
   /**
    * Convenience methods for common HTTP operations
    */
-  async get<T = unknown>(
-    endpoint: string,
-    options?: Partial<HTTPRequestOptions>,
-  ): Promise<HTTPResponse<T>> {
+  async get<T = unknown>(endpoint: string, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "GET", endpoint, ...options });
   }
 
   async post<T = unknown>(
     endpoint: string,
     data?: unknown,
-    options?: Partial<HTTPRequestOptions>,
+    options?: Partial<HTTPRequestOptions>
   ): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "POST", endpoint, data, ...options });
   }
@@ -193,22 +178,19 @@ export class HTTPClient {
   async put<T = unknown>(
     endpoint: string,
     data?: unknown,
-    options?: Partial<HTTPRequestOptions>,
+    options?: Partial<HTTPRequestOptions>
   ): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "PUT", endpoint, data, ...options });
   }
 
-  async delete<T = unknown>(
-    endpoint: string,
-    options?: Partial<HTTPRequestOptions>,
-  ): Promise<HTTPResponse<T>> {
+  async delete<T = unknown>(endpoint: string, options?: Partial<HTTPRequestOptions>): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "DELETE", endpoint, ...options });
   }
 
   async patch<T = unknown>(
     endpoint: string,
     data?: unknown,
-    options?: Partial<HTTPRequestOptions>,
+    options?: Partial<HTTPRequestOptions>
   ): Promise<HTTPResponse<T>> {
     return this.request<T>({ method: "PATCH", endpoint, data, ...options });
   }
@@ -219,7 +201,7 @@ export class HTTPClient {
   async upload<T = unknown>(
     endpoint: string,
     file: File,
-    options?: Partial<HTTPRequestOptions>,
+    options?: Partial<HTTPRequestOptions>
   ): Promise<HTTPResponse<T>> {
     const formData = new FormData();
     formData.append("file", file);
@@ -243,8 +225,7 @@ export class HTTPClient {
     return {
       requestCount: this.requestCount,
       errorCount: this.errorCount,
-      errorRate:
-        this.requestCount > 0 ? (this.errorCount / this.requestCount) * 100 : 0,
+      errorRate: this.requestCount > 0 ? (this.errorCount / this.requestCount) * 100 : 0,
     };
   }
 
@@ -323,14 +304,10 @@ export class HTTPConnection extends BaseConnection {
     if (!this["config"].url) return false;
     try {
       this.controller = new AbortController();
-      const method =
-        typeof data === "object" && data !== null ? "POST" : "POST";
+      const method = typeof data === "object" && data !== null ? "POST" : "POST";
 
       // Ensure HTTPS in production
-      if (
-        process.env.NODE_ENV === "production" &&
-        !this["config"].url.startsWith("https:")
-      ) {
+      if (process.env.NODE_ENV === "production" && !this["config"].url.startsWith("https:")) {
         throw new Error("HTTPS required in production");
       }
 

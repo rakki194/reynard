@@ -23,7 +23,7 @@ export interface ComfyText2ImgFormProps {
   class?: string;
 }
 
-export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
+export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = props => {
   const comfy = useComfy();
 
   // Form state
@@ -48,14 +48,12 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
   });
 
   const [isGenerating, setIsGenerating] = createSignal(false);
-  const [currentPromptId, setCurrentPromptId] = createSignal<string | null>(
-    null,
-  );
+  const [currentPromptId, setCurrentPromptId] = createSignal<string | null>(null);
 
   // Initialize form with default values
   createEffect(() => {
     if (props.initialValues) {
-      setFormData((prev) => ({ ...prev, ...props.initialValues }));
+      setFormData(prev => ({ ...prev, ...props.initialValues }));
     }
   });
 
@@ -81,7 +79,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
       props.onGenerate?.(result.promptId);
 
       // Start monitoring the generation
-      const cleanup = comfy.streamStatus(result.promptId, (event) => {
+      const cleanup = comfy.streamStatus(result.promptId, event => {
         if (event.type === "status" && event.data?.status === "completed") {
           setIsGenerating(false);
           setCurrentPromptId(null);
@@ -97,28 +95,24 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
     } catch (error) {
       setIsGenerating(false);
       setCurrentPromptId(null);
-      const errorMessage =
-        error instanceof Error ? error.message : "Generation failed";
+      const errorMessage = error instanceof Error ? error.message : "Generation failed";
       props.onError?.(errorMessage);
     }
   };
 
   // Handle input changes
   const handleInputChange = (field: keyof ComfyText2ImgParams, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      class={`comfy-text2img-form ${props.class || ""}`}
-    >
+    <form onSubmit={handleSubmit} class={`comfy-text2img-form ${props.class || ""}`}>
       <div class="form-group">
         <label for="caption">Caption *</label>
         <textarea
           id="caption"
           value={formData().caption}
-          onInput={(e) => handleInputChange("caption", e.currentTarget.value)}
+          onInput={e => handleInputChange("caption", e.currentTarget.value)}
           placeholder="Enter your prompt..."
           rows={3}
           disabled={props.disabled || isGenerating()}
@@ -131,7 +125,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
         <textarea
           id="negative"
           value={formData().negative || ""}
-          onInput={(e) => handleInputChange("negative", e.currentTarget.value)}
+          onInput={e => handleInputChange("negative", e.currentTarget.value)}
           placeholder="Enter negative prompt..."
           rows={2}
           disabled={props.disabled || isGenerating()}
@@ -145,9 +139,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
             id="width"
             type="number"
             value={formData().width || 1024}
-            onInput={(e) =>
-              handleInputChange("width", parseInt(e.currentTarget.value))
-            }
+            onInput={e => handleInputChange("width", parseInt(e.currentTarget.value))}
             min="64"
             max="4096"
             step="64"
@@ -161,9 +153,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
             id="height"
             type="number"
             value={formData().height || 1024}
-            onInput={(e) =>
-              handleInputChange("height", parseInt(e.currentTarget.value))
-            }
+            onInput={e => handleInputChange("height", parseInt(e.currentTarget.value))}
             min="64"
             max="4096"
             step="64"
@@ -179,9 +169,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
             id="steps"
             type="number"
             value={formData().steps || 24}
-            onInput={(e) =>
-              handleInputChange("steps", parseInt(e.currentTarget.value))
-            }
+            onInput={e => handleInputChange("steps", parseInt(e.currentTarget.value))}
             min="1"
             max="150"
             disabled={props.disabled || isGenerating()}
@@ -194,9 +182,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
             id="cfg"
             type="number"
             value={formData().cfg || 5.5}
-            onInput={(e) =>
-              handleInputChange("cfg", parseFloat(e.currentTarget.value))
-            }
+            onInput={e => handleInputChange("cfg", parseFloat(e.currentTarget.value))}
             min="0.1"
             max="20.0"
             step="0.1"
@@ -212,13 +198,8 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
             id="seed"
             type="number"
             value={formData().seed || ""}
-            onInput={(e) =>
-              handleInputChange(
-                "seed",
-                e.currentTarget.value
-                  ? parseInt(e.currentTarget.value)
-                  : undefined,
-              )
+            onInput={e =>
+              handleInputChange("seed", e.currentTarget.value ? parseInt(e.currentTarget.value) : undefined)
             }
             min="0"
             disabled={props.disabled || isGenerating()}
@@ -231,12 +212,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
             id="checkpoint"
             type="text"
             value={formData().checkpoint || ""}
-            onInput={(e) =>
-              handleInputChange(
-                "checkpoint",
-                e.currentTarget.value || undefined,
-              )
-            }
+            onInput={e => handleInputChange("checkpoint", e.currentTarget.value || undefined)}
             placeholder="Model checkpoint"
             disabled={props.disabled || isGenerating()}
           />
@@ -250,9 +226,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
             id="sampler"
             type="text"
             value={formData().sampler || ""}
-            onInput={(e) =>
-              handleInputChange("sampler", e.currentTarget.value || undefined)
-            }
+            onInput={e => handleInputChange("sampler", e.currentTarget.value || undefined)}
             placeholder="Sampling method"
             disabled={props.disabled || isGenerating()}
           />
@@ -264,9 +238,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
             id="scheduler"
             type="text"
             value={formData().scheduler || ""}
-            onInput={(e) =>
-              handleInputChange("scheduler", e.currentTarget.value || undefined)
-            }
+            onInput={e => handleInputChange("scheduler", e.currentTarget.value || undefined)}
             placeholder="Scheduler type"
             disabled={props.disabled || isGenerating()}
           />
@@ -276,9 +248,7 @@ export const ComfyText2ImgForm: Component<ComfyText2ImgFormProps> = (props) => {
       <div class="form-actions">
         <button
           type="submit"
-          disabled={
-            props.disabled || isGenerating() || !formData().caption.trim()
-          }
+          disabled={props.disabled || isGenerating() || !formData().caption.trim()}
           class="btn btn-primary"
         >
           {isGenerating() ? "Generating..." : "Generate Image"}

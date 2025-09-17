@@ -44,9 +44,7 @@ async function testEnhancedMemoryTracker(): Promise<void> {
     });
 
     console.log("✅ Enhanced memory tracker created successfully");
-    console.log(
-      `   Memory tracking available: ${tracker.isMemoryTrackingAvailable()}`,
-    );
+    console.log(`   Memory tracking available: ${tracker.isMemoryTrackingAvailable()}`);
 
     // Start tracking
     tracker.start();
@@ -66,9 +64,7 @@ async function testEnhancedMemoryTracker(): Promise<void> {
       if (i % 10 === 0) {
         const currentUsage = tracker.getMemoryUsageMB();
         const smoothedUsage = tracker.getSmoothedMemoryUsageMB();
-        console.log(
-          `   Step ${i}: Current=${currentUsage.toFixed(2)}MB, Smoothed=${smoothedUsage.toFixed(2)}MB`,
-        );
+        console.log(`   Step ${i}: Current=${currentUsage.toFixed(2)}MB, Smoothed=${smoothedUsage.toFixed(2)}MB`);
       }
     }
 
@@ -89,9 +85,7 @@ async function testEnhancedMemoryTracker(): Promise<void> {
       if (i % 10 === 0) {
         const currentUsage = tracker.getMemoryUsageMB();
         const smoothedUsage = tracker.getSmoothedMemoryUsageMB();
-        console.log(
-          `   Step ${i}: Current=${currentUsage.toFixed(2)}MB, Smoothed=${smoothedUsage.toFixed(2)}MB`,
-        );
+        console.log(`   Step ${i}: Current=${currentUsage.toFixed(2)}MB, Smoothed=${smoothedUsage.toFixed(2)}MB`);
       }
     }
 
@@ -99,34 +93,22 @@ async function testEnhancedMemoryTracker(): Promise<void> {
     const finalStats = tracker.stop();
 
     console.log("\n📊 Enhanced Memory Tracking Results:");
-    console.log(
-      `   Total tracking time: ${finalStats.trackingTimeMs.toFixed(2)}ms`,
-    );
+    console.log(`   Total tracking time: ${finalStats.trackingTimeMs.toFixed(2)}ms`);
     console.log(`   Samples taken: ${finalStats.sampleCount}`);
     console.log(`   GC events detected: ${finalStats.gcEvents}`);
     console.log(`   Memory delta: ${finalStats.memoryDeltaMB.toFixed(2)} MB`);
     console.log(
-      `   Peak memory: ${((finalStats.peakMemory - finalStats.initialMemory) / (1024 * 1024)).toFixed(2)} MB`,
+      `   Peak memory: ${((finalStats.peakMemory - finalStats.initialMemory) / (1024 * 1024)).toFixed(2)} MB`
     );
-    console.log(
-      `   Total allocated: ${(finalStats.totalAllocated / (1024 * 1024)).toFixed(2)} MB`,
-    );
-    console.log(
-      `   Total freed: ${(finalStats.totalFreed / (1024 * 1024)).toFixed(2)} MB`,
-    );
-    console.log(
-      `   Net allocation: ${(finalStats.netAllocation / (1024 * 1024)).toFixed(2)} MB`,
-    );
+    console.log(`   Total allocated: ${(finalStats.totalAllocated / (1024 * 1024)).toFixed(2)} MB`);
+    console.log(`   Total freed: ${(finalStats.totalFreed / (1024 * 1024)).toFixed(2)} MB`);
+    console.log(`   Net allocation: ${(finalStats.netAllocation / (1024 * 1024)).toFixed(2)} MB`);
 
     // Get efficiency metrics
     const efficiency = tracker.getMemoryEfficiency();
-    console.log(
-      `   Allocation rate: ${efficiency.allocationRate.toFixed(2)} MB/s`,
-    );
+    console.log(`   Allocation rate: ${efficiency.allocationRate.toFixed(2)} MB/s`);
     console.log(`   GC efficiency: ${efficiency.gcEfficiency.toFixed(1)}%`);
-    console.log(
-      `   Memory stability: ${efficiency.memoryStability.toFixed(1)}%`,
-    );
+    console.log(`   Memory stability: ${efficiency.memoryStability.toFixed(1)}%`);
 
     console.log("\n🎉 Enhanced memory tracking test completed!");
   } catch (error) {
@@ -153,9 +135,7 @@ async function testECSBenchmarkMemoryTracking(): Promise<void> {
 
     // Test with different entity counts
     for (const entityCount of TEST_CONFIG.entityCounts) {
-      console.log(
-        `\n🔄 Testing with ${entityCount.toLocaleString()} entities...`,
-      );
+      console.log(`\n🔄 Testing with ${entityCount.toLocaleString()} entities...`);
 
       try {
         // Run a simple benchmark
@@ -166,19 +146,15 @@ async function testECSBenchmarkMemoryTracking(): Promise<void> {
           runner.world.spawn(
             new Position(Math.random() * 1000, Math.random() * 1000),
             new Velocity(Math.random() * 10, Math.random() * 10),
-            new Health(100, 100),
+            new Health(100, 100)
           );
         }
 
         const endTime = performance.now();
         const duration = endTime - startTime;
 
-        console.log(
-          `   ✅ Created ${entityCount.toLocaleString()} entities in ${duration.toFixed(2)}ms`,
-        );
-        console.log(
-          `   📊 Average: ${((duration / entityCount) * 1000).toFixed(2)}μs per entity`,
-        );
+        console.log(`   ✅ Created ${entityCount.toLocaleString()} entities in ${duration.toFixed(2)}ms`);
+        console.log(`   📊 Average: ${((duration / entityCount) * 1000).toFixed(2)}μs per entity`);
 
         // Check memory usage
         const memoryUsage = runner.getMemoryUsageMB();
@@ -186,19 +162,13 @@ async function testECSBenchmarkMemoryTracking(): Promise<void> {
 
         // Verify no negative memory
         if (memoryUsage < 0) {
-          console.log(
-            `   ⚠️  Negative memory detected: ${memoryUsage.toFixed(2)} MB`,
-          );
+          console.log(`   ⚠️  Negative memory detected: ${memoryUsage.toFixed(2)} MB`);
         } else {
           console.log(`   ✅ Memory tracking working correctly`);
         }
       } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : String(error);
-        console.error(
-          `   ❌ Failed at ${entityCount.toLocaleString()} entities:`,
-          errorMessage,
-        );
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        console.error(`   ❌ Failed at ${entityCount.toLocaleString()} entities:`, errorMessage);
         break;
       }
     }
@@ -206,10 +176,7 @@ async function testECSBenchmarkMemoryTracking(): Promise<void> {
     console.log("\n🎉 ECS benchmark memory tracking test completed!");
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(
-      "❌ ECS benchmark memory tracking test failed:",
-      errorMessage,
-    );
+    console.error("❌ ECS benchmark memory tracking test failed:", errorMessage);
   }
 }
 
@@ -250,7 +217,7 @@ async function testGarbageCollectionHandling(): Promise<void> {
       console.log(`   Memory usage after allocation: ${usage.toFixed(2)} MB`);
 
       // Simulate some processing
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       // Deallocate some memory
       console.log(`🗑️  Chunk ${chunk + 1}: Deallocating memory...`);
@@ -258,47 +225,31 @@ async function testGarbageCollectionHandling(): Promise<void> {
       tracker.update();
 
       const usageAfterGC = tracker.getMemoryUsageMB();
-      console.log(
-        `   Memory usage after deallocation: ${usageAfterGC.toFixed(2)} MB`,
-      );
+      console.log(`   Memory usage after deallocation: ${usageAfterGC.toFixed(2)} MB`);
 
       // Force garbage collection if available
       if (typeof global.gc === "function") {
         global.gc();
         tracker.update();
         const usageAfterForceGC = tracker.getMemoryUsageMB();
-        console.log(
-          `   Memory usage after forced GC: ${usageAfterForceGC.toFixed(2)} MB`,
-        );
+        console.log(`   Memory usage after forced GC: ${usageAfterForceGC.toFixed(2)} MB`);
       }
     }
 
     const finalStats = tracker.stop();
 
     console.log("\n📊 Garbage Collection Test Results:");
-    console.log(
-      `   Final memory delta: ${finalStats.memoryDeltaMB.toFixed(2)} MB`,
-    );
+    console.log(`   Final memory delta: ${finalStats.memoryDeltaMB.toFixed(2)} MB`);
     console.log(`   GC events detected: ${finalStats.gcEvents}`);
-    console.log(
-      `   Total allocated: ${(finalStats.totalAllocated / (1024 * 1024)).toFixed(2)} MB`,
-    );
-    console.log(
-      `   Total freed: ${(finalStats.totalFreed / (1024 * 1024)).toFixed(2)} MB`,
-    );
+    console.log(`   Total allocated: ${(finalStats.totalAllocated / (1024 * 1024)).toFixed(2)} MB`);
+    console.log(`   Total freed: ${(finalStats.totalFreed / (1024 * 1024)).toFixed(2)} MB`);
 
     // Verify no negative memory in final result
     if (finalStats.memoryDeltaMB < 0) {
-      console.log(
-        `   ⚠️  Final memory delta is negative: ${finalStats.memoryDeltaMB.toFixed(2)} MB`,
-      );
-      console.log(
-        `   This indicates garbage collection occurred during the test`,
-      );
+      console.log(`   ⚠️  Final memory delta is negative: ${finalStats.memoryDeltaMB.toFixed(2)} MB`);
+      console.log(`   This indicates garbage collection occurred during the test`);
     } else {
-      console.log(
-        `   ✅ Final memory delta is positive: ${finalStats.memoryDeltaMB.toFixed(2)} MB`,
-      );
+      console.log(`   ✅ Final memory delta is positive: ${finalStats.memoryDeltaMB.toFixed(2)} MB`);
     }
 
     console.log("\n🎉 Garbage collection handling test completed!");
@@ -334,7 +285,7 @@ class Position {
   constructor(
     public x: number,
     public y: number,
-    public z: number = 0,
+    public z: number = 0
   ) {}
 }
 
@@ -343,7 +294,7 @@ class Velocity {
   constructor(
     public x: number,
     public y: number,
-    public z: number = 0,
+    public z: number = 0
   ) {}
 }
 
@@ -351,13 +302,13 @@ class Health {
   readonly __component = true;
   constructor(
     public current: number,
-    public maximum: number,
+    public maximum: number
   ) {}
 }
 
 // Run the tests if this script is executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  runAllMemoryTests().catch((error) => {
+  runAllMemoryTests().catch(error => {
     console.error("❌ Fatal error:", error);
     process.exit(1);
   });

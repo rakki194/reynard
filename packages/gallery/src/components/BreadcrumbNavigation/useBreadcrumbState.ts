@@ -12,7 +12,7 @@ export const useBreadcrumbState = () => {
   });
 
   const toggleExpanded = (itemPath: string) => {
-    setState((prev) => {
+    setState(prev => {
       const newExpanded = new Set(prev.expandedItems);
       if (newExpanded.has(itemPath)) {
         newExpanded.delete(itemPath);
@@ -24,7 +24,7 @@ export const useBreadcrumbState = () => {
   };
 
   const toggleFullPaths = () => {
-    setState((prev) => ({ ...prev, showFullPaths: !prev.showFullPaths }));
+    setState(prev => ({ ...prev, showFullPaths: !prev.showFullPaths }));
   };
 
   const isExpanded = (path: string) => state().expandedItems.has(path);

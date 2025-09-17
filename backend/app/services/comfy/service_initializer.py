@@ -5,23 +5,24 @@ Handles initialization and configuration of the ComfyUI service.
 """
 
 import logging
-from typing import Dict, Any, Optional
+from typing import Any
+
 from .comfy_service import ComfyService
 
 logger = logging.getLogger(__name__)
 
 # Global service instance
-_comfy_service: Optional[ComfyService] = None
+_comfy_service: ComfyService | None = None
 
 
-def initialize_comfy_service(config: Dict[str, Any]) -> ComfyService:
+def initialize_comfy_service(config: dict[str, Any]) -> ComfyService:
     """Initialize the ComfyUI service with configuration."""
     global _comfy_service
-    
+
     if _comfy_service is not None:
         logger.warning("ComfyUI service already initialized")
         return _comfy_service
-    
+
     try:
         _comfy_service = ComfyService()
         # Note: In a real implementation, you'd await this
@@ -33,7 +34,7 @@ def initialize_comfy_service(config: Dict[str, Any]) -> ComfyService:
         raise
 
 
-def get_comfy_service() -> Optional[ComfyService]:
+def get_comfy_service() -> ComfyService | None:
     """Get the ComfyUI service instance."""
     return _comfy_service
 
@@ -41,7 +42,7 @@ def get_comfy_service() -> Optional[ComfyService]:
 def shutdown_comfy_service() -> None:
     """Shutdown the ComfyUI service."""
     global _comfy_service
-    
+
     if _comfy_service is not None:
         try:
             # Note: In a real implementation, you'd await this

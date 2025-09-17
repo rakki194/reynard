@@ -18,13 +18,9 @@ export interface MonacoShikiOperations {
 export function createMonacoShikiOperations(
   state: () => MonacoShikiState,
   updateState: (updates: Partial<MonacoShikiState>) => void,
-  _options: MonacoShikiOptions = {},
+  _options: MonacoShikiOptions = {}
 ): MonacoShikiOperations {
-  const highlightCode = async (
-    code: string,
-    lang: string,
-    theme: string,
-  ): Promise<string> => {
+  const highlightCode = async (code: string, lang: string, theme: string): Promise<string> => {
     // Simplified implementation - in real code this would use Shiki
     return `<pre class="shiki-${theme}"><code class="language-${lang}">${code}</code></pre>`;
   };

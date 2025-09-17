@@ -3,12 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  createLazyExport,
-  getLazyExport,
-  clearExportRegistry,
-  mlPackages,
-} from "../package-exports";
+import { createLazyExport, getLazyExport, clearExportRegistry, mlPackages } from "../package-exports";
 
 // Mock the lazy-loading module
 vi.mock("../lazy-loading", () => ({
@@ -52,11 +47,7 @@ describe("Package Exports", () => {
 
       const result = createLazyExport("test-package", mockLoader, mockOptions);
 
-      expect(mockCreateLazyExport).toHaveBeenCalledWith(
-        "test-package",
-        mockLoader,
-        mockOptions,
-      );
+      expect(mockCreateLazyExport).toHaveBeenCalledWith("test-package", mockLoader, mockOptions);
       expect(result).toBe(mockLazyExport);
     });
   });
@@ -81,10 +72,7 @@ describe("Package Exports", () => {
 
       const result = getLazyExport("test-package", mockLoader);
 
-      expect(mockGetLazyExport).toHaveBeenCalledWith(
-        "test-package",
-        mockLoader,
-      );
+      expect(mockGetLazyExport).toHaveBeenCalledWith("test-package", mockLoader);
       expect(result).toBe(mockLazyExport);
     });
   });

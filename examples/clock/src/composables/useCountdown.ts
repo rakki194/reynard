@@ -6,11 +6,7 @@
 import { createSignal, onMount, onCleanup } from "solid-js";
 import { useNotifications } from "reynard-core";
 import type { CountdownTime, CountdownTarget } from "../types/countdown";
-import {
-  calculateCountdown,
-  isTargetInFuture,
-  getDefaultTarget,
-} from "../utils/countdownUtils";
+import { calculateCountdown, isTargetInFuture, getDefaultTarget } from "../utils/countdownUtils";
 
 export const useCountdown = () => {
   const [countdown, setCountdown] = createSignal<CountdownTime>({

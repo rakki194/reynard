@@ -30,7 +30,7 @@ import { useAuthFetch, createAuthFetch } from "reynard-composables";
 const authFetch = useAuthFetch({
   logout: () => console.log("Logged out"),
   notify: (message, type) => console.log(message, type),
-  navigate: (path) => (window.location.href = path),
+  navigate: path => (window.location.href = path),
 });
 
 // Standalone usage
@@ -70,10 +70,10 @@ await serviceManager.refreshStatus();
 import { useDragAndDrop } from "reynard-composables";
 
 const { isMoving } = useDragAndDrop({
-  onDragStateChange: (isDragging) => {
+  onDragStateChange: isDragging => {
     setShowDropOverlay(isDragging);
   },
-  onFilesDropped: async (files) => {
+  onFilesDropped: async files => {
     console.log("Files dropped:", files);
   },
   onItemsDropped: async (items, targetPath) => {
@@ -81,7 +81,7 @@ const { isMoving } = useDragAndDrop({
   },
   maxFileSize: 50 * 1024 * 1024, // 50MB
   allowedFileTypes: ["jpg", "png", "pdf"],
-  uploadFiles: async (files) => {
+  uploadFiles: async files => {
     // Handle file upload
   },
   moveItems: async (items, sourcePath, targetPath) => {
@@ -135,13 +135,9 @@ const searchResults = rag.createRAGSearchResource(searchParams);
 setSearchParams({ q: "search query", modality: "docs", topK: 10 });
 
 // Ingest documents
-await rag.ingestDocuments(
-  [{ source: "document.pdf", content: "Document content..." }],
-  "text-model",
-  (event) => {
-    console.log("Ingest progress:", event);
-  },
-);
+await rag.ingestDocuments([{ source: "document.pdf", content: "Document content..." }], "text-model", event => {
+  console.log("Ingest progress:", event);
+});
 ```
 
 ### File Upload
@@ -149,17 +145,16 @@ await rag.ingestDocuments(
 ```typescript
 import { useFileUpload } from "reynard-composables";
 
-const { uploadFiles, uploadProgress, isUploading, validateFile } =
-  useFileUpload({
-    maxFileSize: 100 * 1024 * 1024, // 100MB
-    allowedFileTypes: ["jpg", "png", "pdf", "docx"],
-    maxFiles: 5,
-    uploadUrl: "/api/upload",
-    authFetch: myAuthFetch,
-    onProgress: (progress) => console.log("Upload progress:", progress),
-    onSuccess: (response) => console.log("Upload successful:", response),
-    onError: (error) => console.error("Upload failed:", error),
-  });
+const { uploadFiles, uploadProgress, isUploading, validateFile } = useFileUpload({
+  maxFileSize: 100 * 1024 * 1024, // 100MB
+  allowedFileTypes: ["jpg", "png", "pdf", "docx"],
+  maxFiles: 5,
+  uploadUrl: "/api/upload",
+  authFetch: myAuthFetch,
+  onProgress: progress => console.log("Upload progress:", progress),
+  onSuccess: response => console.log("Upload successful:", response),
+  onError: error => console.error("Upload failed:", error),
+});
 
 // Upload files
 const files = document.querySelector('input[type="file"]').files;

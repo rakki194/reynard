@@ -16,13 +16,13 @@ export interface DrawingActions {
     x: number,
     y: number,
     selectedColor: OKLCHColor,
-    drawPixel: (x: number, y: number, color: PixelData) => void,
+    drawPixel: (x: number, y: number, color: PixelData) => void
   ) => void;
   handleMouseMove: (
     x: number,
     y: number,
     selectedColor: OKLCHColor,
-    drawPixel: (x: number, y: number, color: PixelData) => void,
+    drawPixel: (x: number, y: number, color: PixelData) => void
   ) => void;
   handleMouseUp: () => void;
   handleFill: (
@@ -30,7 +30,7 @@ export interface DrawingActions {
     y: number,
     selectedColor: OKLCHColor,
     pixels: PixelData[][],
-    drawPixel: (x: number, y: number, color: PixelData) => void,
+    drawPixel: (x: number, y: number, color: PixelData) => void
   ) => void;
 }
 
@@ -42,7 +42,7 @@ export function useDrawingTools() {
     x: number,
     y: number,
     selectedColor: OKLCHColor,
-    drawPixel: (x: number, y: number, color: PixelData) => void,
+    drawPixel: (x: number, y: number, color: PixelData) => void
   ) => {
     setIsDrawing(true);
     if (tool() === "pencil") {
@@ -56,7 +56,7 @@ export function useDrawingTools() {
     x: number,
     y: number,
     selectedColor: OKLCHColor,
-    drawPixel: (x: number, y: number, color: PixelData) => void,
+    drawPixel: (x: number, y: number, color: PixelData) => void
   ) => {
     if (isDrawing()) {
       if (tool() === "pencil") {
@@ -77,14 +77,9 @@ export function useDrawingTools() {
     targetColor: PixelData,
     newColor: PixelData,
     pixels: PixelData[][],
-    drawPixel: (x: number, y: number, color: PixelData) => void,
+    drawPixel: (x: number, y: number, color: PixelData) => void
   ) => {
-    if (
-      startY < 0 ||
-      startY >= pixels.length ||
-      startX < 0 ||
-      startX >= pixels[startY].length
-    ) {
+    if (startY < 0 || startY >= pixels.length || startX < 0 || startX >= pixels[startY].length) {
       return;
     }
 
@@ -101,8 +96,7 @@ export function useDrawingTools() {
       if (visited.has(key)) continue;
       visited.add(key);
 
-      if (y < 0 || y >= pixels.length || x < 0 || x >= pixels[y].length)
-        continue;
+      if (y < 0 || y >= pixels.length || x < 0 || x >= pixels[y].length) continue;
       if (pixels[y][x] !== target) continue;
 
       drawPixel(x, y, newColor);
@@ -117,7 +111,7 @@ export function useDrawingTools() {
     y: number,
     selectedColor: OKLCHColor,
     pixels: PixelData[][],
-    drawPixel: (x: number, y: number, color: PixelData) => void,
+    drawPixel: (x: number, y: number, color: PixelData) => void
   ) => {
     const targetColor = pixels[y]?.[x];
     floodFill(x, y, targetColor, selectedColor, pixels, drawPixel);

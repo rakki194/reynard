@@ -5,9 +5,8 @@ Agent Naming Types
 Type definitions and enums for the agent naming system.
 """
 
-from enum import Enum
-from typing import Dict, List, Optional
 from dataclasses import dataclass
+from enum import Enum
 
 
 class AnimalSpirit(Enum):
@@ -129,7 +128,7 @@ class AgentName:
     def __str__(self) -> str:
         return self.name
 
-    def to_dict(self) -> dict[str, str]:
+    def to_dict(self) -> dict[str, str | list[str] | int | None]:
         """Convert to dictionary representation."""
         return {
             "name": self.name,
@@ -149,7 +148,7 @@ class NamingConfig:
     count: int = 1
     weighted_distribution: bool = True
 
-    def to_dict(self) -> dict[str, str]:
+    def to_dict(self) -> dict[str, str | int | bool | None]:
         """Convert to dictionary representation."""
         return {
             "spirit": self.spirit.value if self.spirit else None,

@@ -34,9 +34,7 @@ export function validateJSON(input: string): {
   } catch (error) {
     return {
       isValid: false,
-      errors: [
-        `Invalid JSON: ${error instanceof Error ? error.message : "Unknown error"}`,
-      ],
+      errors: [`Invalid JSON: ${error instanceof Error ? error.message : "Unknown error"}`],
     };
   }
 }

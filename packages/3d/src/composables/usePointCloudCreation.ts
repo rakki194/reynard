@@ -1,11 +1,5 @@
 import { createEffect } from "solid-js";
-import type {
-  EmbeddingPoint,
-  EmbeddingRenderingConfig,
-  SceneLike,
-  CameraLike,
-  RendererLike,
-} from "../types/rendering";
+import type { EmbeddingPoint, EmbeddingRenderingConfig, SceneLike, CameraLike, RendererLike } from "../types/rendering";
 
 export interface PointCloudCreationConfig {
   pointCloudRenderer: () => {
@@ -13,7 +7,7 @@ export interface PointCloudCreationConfig {
       points: EmbeddingPoint[],
       config: EmbeddingRenderingConfig,
       scene: SceneLike,
-      onPointClick: (event: MouseEvent) => void,
+      onPointClick: (event: MouseEvent) => void
     ) => Promise<unknown>;
     pointCloud: () => unknown;
   };
@@ -24,7 +18,7 @@ export interface PointCloudCreationConfig {
       points: EmbeddingPoint[],
       camera: CameraLike,
       renderer: RendererLike,
-      onPointSelect?: (pointId: string) => void,
+      onPointSelect?: (pointId: string) => void
     ) => void;
   };
   points: EmbeddingPoint[];
@@ -37,12 +31,7 @@ export interface PointCloudCreationConfig {
 
 export function usePointCloudCreation(config: PointCloudCreationConfig) {
   const createPointCloud = async () => {
-    if (
-      !config.pointCloudRenderer() ||
-      !config.points ||
-      config.points.length === 0
-    )
-      return;
+    if (!config.pointCloudRenderer() || !config.points || config.points.length === 0) return;
 
     const handlePointClick = (event: MouseEvent) => {
       if (config.pointCloudEvents() && config.pointCloudRenderer()) {
@@ -54,27 +43,16 @@ export function usePointCloudCreation(config: PointCloudCreationConfig) {
             config.points,
             config.camera,
             config.renderer,
-            config.onPointSelect,
+            config.onPointSelect
           );
       }
     };
 
-    await config
-      .pointCloudRenderer()
-      .createPointCloud(
-        config.points,
-        config.config,
-        config.scene,
-        handlePointClick,
-      );
+    await config.pointCloudRenderer().createPointCloud(config.points, config.config, config.scene, handlePointClick);
   };
 
   createEffect(() => {
-    if (
-      config.pointCloudRenderer() &&
-      config.points &&
-      config.points.length > 0
-    ) {
+    if (config.pointCloudRenderer() && config.points && config.points.length > 0) {
       createPointCloud();
     }
   });

@@ -12,25 +12,18 @@ import { TextFilesGrid } from "./TextFilesGrid";
 import { useTextFileUpload } from "../composables/useTextFileUpload";
 import { useTextFileManager } from "../composables/useTextFileManager";
 
-export const TextGrid: Component<TextGridProps> = (props) => {
-  const {
-    textFiles,
-    selectedFile,
-    setSelectedFile,
-    handleFileSelect,
-    handleFileRemove,
-    handleFileModify,
-    addFiles,
-  } = useTextFileManager({
-    initialFiles: props.initialFiles,
-    onFileSelect: props.onFileSelect,
-    onFileRemove: props.onFileRemove,
-    onFileModify: props.onFileModify,
-  });
+export const TextGrid: Component<TextGridProps> = props => {
+  const { textFiles, selectedFile, setSelectedFile, handleFileSelect, handleFileRemove, handleFileModify, addFiles } =
+    useTextFileManager({
+      initialFiles: props.initialFiles,
+      onFileSelect: props.onFileSelect,
+      onFileRemove: props.onFileRemove,
+      onFileModify: props.onFileModify,
+    });
 
   const { isLoading, error, handleFileUpload } = useTextFileUpload({
     maxFiles: props.maxFiles,
-    onError: (error) => console.error("File upload error:", error),
+    onError: error => console.error("File upload error:", error),
   });
 
   // Handle file upload
@@ -43,11 +36,7 @@ export const TextGrid: Component<TextGridProps> = (props) => {
 
   return (
     <div class={`text-grid ${props.class || ""}`}>
-      <TextFileUpload
-        onFileUpload={onFileUpload}
-        isLoading={isLoading()}
-        error={error()}
-      />
+      <TextFileUpload onFileUpload={onFileUpload} isLoading={isLoading()} error={error()} />
 
       <TextFilesGrid
         files={textFiles()}

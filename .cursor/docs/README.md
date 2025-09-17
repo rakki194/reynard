@@ -304,6 +304,48 @@ Comprehensive analysis of icon system architecture and optimization
 - Modern icon handling best practices
 - Migration strategies and developer experience improvements
 
+### ⚡ Build Tools & Dependencies
+
+#### 🔧 [Vite 7 and SolidJS Compatibility Research](./vite-7-solidjs-compatibility-research.md)
+
+Comprehensive research on Vite 7 and SolidJS compatibility issues
+
+- Peer dependency analysis and plugin requirements
+- Native framework support investigation
+- Plugin ecosystem status and alternatives
+- Build tool compatibility matrix
+- Future compatibility roadmap
+
+#### 📦 [Peer Dependency Management Best Practices](./peer-dependency-management-best-practices.md)
+
+Best practices for managing peer dependency warnings and conflicts
+
+- Understanding peer dependencies and their purpose
+- Update strategies and compatibility management
+- Testing and validation procedures
+- Monitoring and maintenance workflows
+- Emergency procedures and rollback strategies
+
+#### 🔄 [Vite and SolidJS Alternative Solutions](./vite-solidjs-alternative-solutions.md)
+
+Alternative approaches and workarounds for build tool compatibility
+
+- Immediate solutions and plugin updates
+- Alternative build tools (Rollup, esbuild, Webpack)
+- Framework-specific alternatives (SolidStart, Astro)
+- Development workflow alternatives
+- Migration strategies and decision matrix
+
+#### 📈 [Dependency Update Strategy](./dependency-update-strategy.md)
+
+Systematic approach to dependency management in the Reynard monorepo
+
+- Update philosophy and risk assessment framework
+- Categorized update workflows (security, patch, minor, major)
+- Testing strategies and quality gates
+- Monitoring and automation setup
+- Long-term planning and metrics tracking
+
 ### ⚙️ Configuration & Tools
 
 #### ⚙️ [JavaScript Defining Node for ESLint](./javascript-defining-node-for-eslint.md)

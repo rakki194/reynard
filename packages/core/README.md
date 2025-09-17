@@ -114,11 +114,7 @@ pnpm install reynard-core reynard-connection solid-js
 
 ```tsx
 import { createSignal } from "solid-js";
-import {
-  NotificationsProvider,
-  createNotifications,
-  useNotifications,
-} from "reynard-core";
+import { NotificationsProvider, createNotifications, useNotifications } from "reynard-core";
 
 function App() {
   const notificationsModule = createNotifications();
@@ -135,9 +131,7 @@ function NotificationDemo() {
 
   return (
     <div>
-      <button onClick={() => notify("Hello World!", "success")}>
-        Show Notification
-      </button>
+      <button onClick={() => notify("Hello World!", "success")}>Show Notification</button>
     </div>
   );
 }
@@ -146,12 +140,7 @@ function NotificationDemo() {
 ### Security Validation
 
 ```tsx
-import {
-  validateInput,
-  sanitizeHTML,
-  validateFileName,
-  generateSecurePassword,
-} from "reynard-core";
+import { validateInput, sanitizeHTML, validateFileName, generateSecurePassword } from "reynard-core";
 
 function SecurityDemo() {
   // Input validation
@@ -161,9 +150,7 @@ function SecurityDemo() {
   });
 
   // HTML sanitization
-  const cleanHTML = sanitizeHTML(
-    '<script>alert("xss")</script><p>Safe content</p>',
-  );
+  const cleanHTML = sanitizeHTML('<script>alert("xss")</script><p>Safe content</p>');
 
   // File validation
   const fileResult = validateFileName("document.pdf", {
@@ -230,11 +217,7 @@ function ApiDemo() {
 ### Notifications System
 
 ```tsx
-import {
-  NotificationsProvider,
-  createNotifications,
-  useNotifications,
-} from "reynard-core";
+import { NotificationsProvider, createNotifications, useNotifications } from "reynard-core";
 
 function App() {
   const notificationsModule = createNotifications();
@@ -276,7 +259,7 @@ function SettingsComponent() {
   });
 
   const updateLanguage = (language: string) => {
-    setSettings((prev) => ({ ...prev, language }));
+    setSettings(prev => ({ ...prev, language }));
   };
 
   return (
@@ -378,17 +361,13 @@ function UserPreferences() {
   });
 
   const toggleDarkMode = () => {
-    setPreferences((prev) => ({ ...prev, darkMode: !prev.darkMode }));
+    setPreferences(prev => ({ ...prev, darkMode: !prev.darkMode }));
   };
 
   return (
     <div>
       <label>
-        <input
-          type="checkbox"
-          checked={preferences().darkMode}
-          onChange={toggleDarkMode}
-        />
+        <input type="checkbox" checked={preferences().darkMode} onChange={toggleDarkMode} />
         Dark Mode
       </label>
     </div>
@@ -417,13 +396,7 @@ function SearchComponent() {
     }
   });
 
-  return (
-    <input
-      value={searchTerm()}
-      onInput={(e) => setSearchTerm(e.target.value)}
-      placeholder="Search..."
-    />
-  );
+  return <input value={searchTerm()} onInput={e => setSearchTerm(e.target.value)} placeholder="Search..." />;
 }
 ```
 
@@ -440,10 +413,7 @@ const debouncedCallback = useDebouncedCallback(callback, delay);
 ```tsx
 function AutoSaveComponent() {
   const [content, setContent] = createSignal("");
-  const debouncedSave = useDebouncedCallback(
-    (text: string) => saveToServer(text),
-    1000,
-  );
+  const debouncedSave = useDebouncedCallback((text: string) => saveToServer(text), 1000);
 
   createEffect(() => {
     if (content()) {
@@ -451,9 +421,7 @@ function AutoSaveComponent() {
     }
   });
 
-  return (
-    <textarea value={content()} onInput={(e) => setContent(e.target.value)} />
-  );
+  return <textarea value={content()} onInput={e => setContent(e.target.value)} />;
 }
 ```
 
@@ -462,13 +430,7 @@ function AutoSaveComponent() {
 #### Input Validation
 
 ```tsx
-import {
-  validateInput,
-  validateEmail,
-  validatePassword,
-  validateURL,
-  validatePhoneNumber,
-} from "reynard-core";
+import { validateInput, validateEmail, validatePassword, validateURL, validatePhoneNumber } from "reynard-core";
 
 // Comprehensive input validation
 const result = validateInput("user@example.com", {
@@ -502,9 +464,7 @@ const isValidPhone = validatePhoneNumber("+1-555-123-4567"); // true
 import { sanitizeHTML, validateXSSInput, sanitizeXSSInput } from "reynard-core";
 
 // HTML sanitization
-const cleanHTML = sanitizeHTML(
-  '<script>alert("xss")</script><p>Safe content</p>',
-);
+const cleanHTML = sanitizeHTML('<script>alert("xss")</script><p>Safe content</p>');
 // Returns: '<p>Safe content</p>'
 
 // XSS validation
@@ -519,12 +479,7 @@ const sanitized = sanitizeXSSInput('<div onclick="alert(1)">Click me</div>');
 #### File Security
 
 ```tsx
-import {
-  validateFileName,
-  validateFileSize,
-  validateMimeType,
-  getSafeFilename,
-} from "reynard-core";
+import { validateFileName, validateFileSize, validateMimeType, getSafeFilename } from "reynard-core";
 
 // File name validation
 const fileResult = validateFileName("document.pdf", {
@@ -634,9 +589,7 @@ import {
 const language = detectLanguageFromExtension("test.js"); // "javascript"
 
 // Detect language from content
-const contentLanguage = detectLanguageFromContent(
-  "def hello(): print('world')",
-); // "python"
+const contentLanguage = detectLanguageFromContent("def hello(): print('world')"); // "python"
 
 // Get comprehensive language info
 const info = getLanguageInfo("test.tsx");
@@ -653,45 +606,33 @@ const programmingLanguages = getLanguagesByCategory("programming");
 #### Async Utilities
 
 ```tsx
-import {
-  batchExecute,
-  mapWithConcurrency,
-  retryWithBackoff,
-  pollUntil,
-  sleep,
-  withTimeout,
-  delay,
-} from "reynard-core";
+import { batchExecute, mapWithConcurrency, retryWithBackoff, pollUntil, sleep, withTimeout, delay } from "reynard-core";
 
 // Batch execution
 const results = await batchExecute(
-  [
-    () => fetch("/api/users"),
-    () => fetch("/api/posts"),
-    () => fetch("/api/comments"),
-  ],
-  2,
+  [() => fetch("/api/users"), () => fetch("/api/posts"), () => fetch("/api/comments")],
+  2
 ); // Process 2 at a time
 
 // Concurrency control
 const processedData = await mapWithConcurrency(
   items,
-  async (item) => processItem(item),
-  5, // Max 5 concurrent operations
+  async item => processItem(item),
+  5 // Max 5 concurrent operations
 );
 
 // Retry with exponential backoff
 const result = await retryWithBackoff(
   () => riskyOperation(),
   3, // Max 3 retries
-  1000, // Base delay 1 second
+  1000 // Base delay 1 second
 );
 
 // Polling
 const data = await pollUntil(
   () => checkCondition(),
   1000, // Check every 1 second
-  30000, // Timeout after 30 seconds
+  30000 // Timeout after 30 seconds
 );
 
 // Sleep utility
@@ -701,7 +642,7 @@ await sleep(1000); // Wait 1 second
 const result = await withTimeout(
   fetch("/api/slow-endpoint"),
   5000, // 5 second timeout
-  "Request timed out",
+  "Request timed out"
 );
 
 // Delay with value

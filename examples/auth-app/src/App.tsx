@@ -22,8 +22,7 @@ const App: Component = () => {
             loginRedirectPath: "/dashboard",
           }}
           callbacks={{
-            onLoginSuccess: (user: any) =>
-              console.log("Welcome:", user.username),
+            onLoginSuccess: (user: any) => console.log("Welcome:", user.username),
             onLogout: () => console.log("Goodbye!"),
             onSessionExpired: () => console.log("Session expired"),
           }}

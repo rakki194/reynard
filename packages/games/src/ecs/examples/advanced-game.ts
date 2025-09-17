@@ -74,65 +74,23 @@ export class AdvancedECSGame {
   private setupComponentTypes(): void {
     const registry = this.world.getComponentRegistry();
 
-    this.positionType = registry.register(
-      "Position",
-      StorageType.Table,
-      () => new Position(0, 0),
-    );
-    this.velocityType = registry.register(
-      "Velocity",
-      StorageType.Table,
-      () => new Velocity(0, 0),
-    );
-    this.healthType = registry.register(
-      "Health",
-      StorageType.Table,
-      () => new Health(100, 100),
-    );
-    this.damageType = registry.register(
-      "Damage",
-      StorageType.Table,
-      () => new Damage(10),
-    );
-    this.playerType = registry.register(
-      "Player",
-      StorageType.Table,
-      () => new Player("Player1"),
-    );
-    this.enemyType = registry.register(
-      "Enemy",
-      StorageType.Table,
-      () => new Enemy("Basic"),
-    );
-    this.bulletType = registry.register(
-      "Bullet",
-      StorageType.Table,
-      () => new Bullet(300),
-    );
-    this.colorType = registry.register(
-      "Color",
-      StorageType.Table,
-      () => new Color(1, 1, 1),
-    );
-    this.sizeType = registry.register(
-      "Size",
-      StorageType.Table,
-      () => new Size(20, 20),
-    );
+    this.positionType = registry.register("Position", StorageType.Table, () => new Position(0, 0));
+    this.velocityType = registry.register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    this.healthType = registry.register("Health", StorageType.Table, () => new Health(100, 100));
+    this.damageType = registry.register("Damage", StorageType.Table, () => new Damage(10));
+    this.playerType = registry.register("Player", StorageType.Table, () => new Player("Player1"));
+    this.enemyType = registry.register("Enemy", StorageType.Table, () => new Enemy("Basic"));
+    this.bulletType = registry.register("Bullet", StorageType.Table, () => new Bullet(300));
+    this.colorType = registry.register("Color", StorageType.Table, () => new Color(1, 1, 1));
+    this.sizeType = registry.register("Size", StorageType.Table, () => new Size(20, 20));
   }
 
   private setupResourceTypes(): void {
     const registry = this.world.getResourceRegistry();
 
     this.gameTimeType = registry.register("GameTime", () => new GameTime(0, 0));
-    this.gameStateType = registry.register(
-      "GameState",
-      () => new GameState(0, 1),
-    );
-    this.inputStateType = registry.register(
-      "InputState",
-      () => new InputState(),
-    );
+    this.gameStateType = registry.register("GameState", () => new GameState(0, 1));
+    this.inputStateType = registry.register("InputState", () => new InputState());
     this.cameraType = registry.register("Camera", () => new Camera(0, 0, 1));
   }
 
@@ -143,7 +101,7 @@ export class AdvancedECSGame {
       createComponentHooks({
         onAdd: CommonHooks.logOnAdd(this.playerType),
         onRemove: CommonHooks.logOnRemove(this.playerType),
-      }),
+      })
     );
 
     this.hookRegistry.registerHooks(
@@ -151,18 +109,15 @@ export class AdvancedECSGame {
       createComponentHooks({
         onAdd: CommonHooks.logOnAdd(this.enemyType),
         onRemove: CommonHooks.logOnRemove(this.enemyType),
-      }),
+      })
     );
 
     // Add validation hooks
     this.hookRegistry.registerHooks(
       this.healthType,
       createComponentHooks({
-        onAdd: CommonHooks.validateOnAdd(
-          this.healthType,
-          (health) => health.current >= 0 && health.max > 0,
-        ),
-      }),
+        onAdd: CommonHooks.validateOnAdd(this.healthType, health => health.current >= 0 && health.max > 0),
+      })
     );
   }
 
@@ -176,7 +131,7 @@ export class AdvancedECSGame {
     this.world.addSystem(
       system("playerInput", this.playerInputSystem.bind(this))
         .runIf(Conditions.resourceExists(this.inputStateType))
-        .build(),
+        .build()
     );
 
     this.world.addSystem(
@@ -184,16 +139,14 @@ export class AdvancedECSGame {
         .runIf(
           ConditionCombinators.and(
             Conditions.resourceExists(this.inputStateType),
-            Conditions.anyEntityWith(this.playerType, this.positionType),
-          ),
+            Conditions.anyEntityWith(this.playerType, this.positionType)
+          )
         )
-        .build(),
+        .build()
     );
 
     this.world.addSystem(
-      system("movement", this.movementSystem.bind(this))
-        .runIf(Conditions.resourceExists(this.gameTimeType))
-        .build(),
+      system("movement", this.movementSystem.bind(this)).runIf(Conditions.resourceExists(this.gameTimeType)).build()
     );
 
     this.world.addSystem(
@@ -201,28 +154,26 @@ export class AdvancedECSGame {
         .runIf(
           ConditionCombinators.and(
             Conditions.anyEntityWith(this.enemyType),
-            Conditions.timePassed(0.5), // Run every 0.5 seconds
-          ),
+            Conditions.timePassed(0.5) // Run every 0.5 seconds
+          )
         )
-        .build(),
+        .build()
     );
 
     this.world.addSystem(
       system("collision", this.collisionSystem.bind(this))
         .runIf(Conditions.anyEntityWith(this.playerType, this.enemyType))
-        .build(),
+        .build()
     );
 
     this.world.addSystem(
       system("rendering", this.renderingSystem.bind(this))
         .runIf(Conditions.everyNFrames(1)) // Run every frame
-        .build(),
+        .build()
     );
 
     this.world.addSystem(
-      system("gameState", this.gameStateSystem.bind(this))
-        .runIf(Conditions.resourceExists(this.gameStateType))
-        .build(),
+      system("gameState", this.gameStateSystem.bind(this)).runIf(Conditions.resourceExists(this.gameStateType)).build()
     );
 
     // Create main schedule
@@ -230,47 +181,36 @@ export class AdvancedECSGame {
     mainSchedule.addSystem(
       system("playerInput", this.playerInputSystem.bind(this))
         .runIf(Conditions.resourceExists(this.inputStateType))
-        .build(),
+        .build()
     );
     mainSchedule.addSystem(
       system("shooting", this.shootingSystem.bind(this))
         .runIf(
           ConditionCombinators.and(
             Conditions.resourceExists(this.inputStateType),
-            Conditions.anyEntityWith(this.playerType, this.positionType),
-          ),
+            Conditions.anyEntityWith(this.playerType, this.positionType)
+          )
         )
-        .build(),
+        .build()
     );
     mainSchedule.addSystem(
-      system("movement", this.movementSystem.bind(this))
-        .runIf(Conditions.resourceExists(this.gameTimeType))
-        .build(),
+      system("movement", this.movementSystem.bind(this)).runIf(Conditions.resourceExists(this.gameTimeType)).build()
     );
     mainSchedule.addSystem(
       system("enemyAI", this.enemyAISystem.bind(this))
-        .runIf(
-          ConditionCombinators.and(
-            Conditions.anyEntityWith(this.enemyType),
-            Conditions.timePassed(0.5),
-          ),
-        )
-        .build(),
+        .runIf(ConditionCombinators.and(Conditions.anyEntityWith(this.enemyType), Conditions.timePassed(0.5)))
+        .build()
     );
     mainSchedule.addSystem(
       system("collision", this.collisionSystem.bind(this))
         .runIf(Conditions.anyEntityWith(this.playerType, this.enemyType))
-        .build(),
+        .build()
     );
     mainSchedule.addSystem(
-      system("rendering", this.renderingSystem.bind(this))
-        .runIf(Conditions.everyNFrames(1))
-        .build(),
+      system("rendering", this.renderingSystem.bind(this)).runIf(Conditions.everyNFrames(1)).build()
     );
     mainSchedule.addSystem(
-      system("gameState", this.gameStateSystem.bind(this))
-        .runIf(Conditions.resourceExists(this.gameStateType))
-        .build(),
+      system("gameState", this.gameStateSystem.bind(this)).runIf(Conditions.resourceExists(this.gameStateType)).build()
     );
   }
 
@@ -282,7 +222,7 @@ export class AdvancedECSGame {
       new Health(100, 100),
       new Player("Player1"),
       new Color(0, 0, 1), // Blue
-      new Size(30, 30),
+      new Size(30, 30)
     );
 
     // Create some enemies
@@ -293,7 +233,7 @@ export class AdvancedECSGame {
         new Health(50, 50),
         new Enemy("Basic"),
         new Color(1, 0, 0), // Red
-        new Size(25, 25),
+        new Size(25, 25)
       );
     }
 
@@ -309,7 +249,7 @@ export class AdvancedECSGame {
    */
   start(): void {
     this.lastTime = performance.now();
-    this.gameLoop = requestAnimationFrame((time) => this.update(time));
+    this.gameLoop = requestAnimationFrame(time => this.update(time));
   }
 
   /**
@@ -340,7 +280,7 @@ export class AdvancedECSGame {
     this.world.runSchedule("main");
 
     // Continue the game loop
-    this.gameLoop = requestAnimationFrame((time) => this.update(time));
+    this.gameLoop = requestAnimationFrame(time => this.update(time));
   }
 
   /**
@@ -393,7 +333,7 @@ export class AdvancedECSGame {
           new Velocity(0, -bulletSpeed),
           new Bullet(bulletSpeed),
           new Color(1, 1, 0), // Yellow
-          new Size(5, 10),
+          new Size(5, 10)
         );
       }
     });
@@ -419,11 +359,7 @@ export class AdvancedECSGame {
    * Enemy AI system with conditions.
    */
   private enemyAISystem(world: any): void {
-    const query = world.query(
-      this.enemyType,
-      this.positionType,
-      this.velocityType,
-    );
+    const query = world.query(this.enemyType, this.positionType, this.velocityType);
     const speed = 100; // pixels per second
 
     query.forEach((entity: any, enemy: any, position: any, velocity: any) => {
@@ -514,7 +450,7 @@ export class AdvancedECSGame {
     console.log("Rendering entities:");
     query.forEach((entity: any, position: any, color: any) => {
       console.log(
-        `Entity ${entity.index}: pos(${position.x}, ${position.y}), color(${color.r}, ${color.g}, ${color.b})`,
+        `Entity ${entity.index}: pos(${position.x}, ${position.y}), color(${color.r}, ${color.g}, ${color.b})`
       );
     });
   }
@@ -594,7 +530,7 @@ export class AdvancedECSGame {
       new Health(50, 50),
       new Enemy("Basic"),
       new Color(1, 0, 0), // Red
-      new Size(25, 25),
+      new Size(25, 25)
     );
   }
 }

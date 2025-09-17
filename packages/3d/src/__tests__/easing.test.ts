@@ -1,11 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  Easing,
-  applyEasing,
-  interpolate,
-  interpolateVector3,
-  interpolateColor,
-} from "../easing";
+import { Easing, applyEasing, interpolate, interpolateVector3, interpolateColor } from "../easing";
 
 describe("Easing Functions", () => {
   describe("Easing", () => {
@@ -97,9 +91,7 @@ describe("Easing Functions", () => {
       const end: [number, number, number] = [10, 20, 30];
 
       expect(interpolateVector3(start, end, 0, "linear")).toEqual([0, 0, 0]);
-      expect(interpolateVector3(start, end, 0.5, "linear")).toEqual([
-        5, 10, 15,
-      ]);
+      expect(interpolateVector3(start, end, 0.5, "linear")).toEqual([5, 10, 15]);
       expect(interpolateVector3(start, end, 1, "linear")).toEqual([10, 20, 30]);
     });
 
@@ -120,9 +112,7 @@ describe("Easing Functions", () => {
       const end: [number, number, number] = [1, 1, 1];
 
       expect(interpolateColor(start, end, 0, "linear")).toEqual([0, 0, 0]);
-      expect(interpolateColor(start, end, 0.5, "linear")).toEqual([
-        0.5, 0.5, 0.5,
-      ]);
+      expect(interpolateColor(start, end, 0.5, "linear")).toEqual([0.5, 0.5, 0.5]);
       expect(interpolateColor(start, end, 1, "linear")).toEqual([1, 1, 1]);
     });
 

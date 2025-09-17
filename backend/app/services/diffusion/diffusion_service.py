@@ -7,7 +7,8 @@ with streaming support, device management, and automatic fallback.
 
 import logging
 import time
-from typing import Any, AsyncIterable, Dict, List, Optional
+from collections.abc import AsyncIterable
+from typing import Any
 
 from .models import (
     DiffusionConfig,
@@ -25,10 +26,10 @@ class DiffusionLLMService:
     """Main service for diffusion-based text generation."""
 
     def __init__(self):
-        self._config: Optional[DiffusionConfig] = None
-        self._model_manager: Optional[DiffusionModelManager] = None
-        self._device_manager: Optional[DeviceManager] = None
-        self._stats: Dict[str, Any] = {
+        self._config: DiffusionConfig | None = None
+        self._model_manager: DiffusionModelManager | None = None
+        self._device_manager: DeviceManager | None = None
+        self._stats: dict[str, Any] = {
             "total_requests": 0,
             "successful_requests": 0,
             "failed_requests": 0,
@@ -39,7 +40,7 @@ class DiffusionLLMService:
         }
         self._enabled = False
 
-    async def initialize(self, config: Dict[str, Any]) -> bool:
+    async def initialize(self, config: dict[str, Any]) -> bool:
         """Initialize the diffusion service."""
         try:
             self._config = DiffusionConfig(**config.get("diffusion", {}))
@@ -191,21 +192,21 @@ class DiffusionLLMService:
                 timestamp=time.time(),
             )
 
-    async def get_available_models(self) -> List[DiffusionModelInfo]:
+    async def get_available_models(self) -> list[DiffusionModelInfo]:
         """Get list of available models."""
         if not self._enabled or not self._model_manager:
             return []
 
         return await self._model_manager.get_available_models()
 
-    async def get_config(self) -> Dict[str, Any]:
+    async def get_config(self) -> dict[str, Any]:
         """Get current configuration."""
         if not self._config:
             return {}
 
         return self._config.model_dump()
 
-    async def update_config(self, config: Dict[str, Any]) -> bool:
+    async def update_config(self, config: dict[str, Any]) -> bool:
         """Update configuration."""
         try:
             self._config = DiffusionConfig(**config)
@@ -303,9 +304,9 @@ class DiffusionModelManager:
 
     async def get_model(self, model_id: str):
         """Get a model by ID."""
-        return None
+        return
 
-    async def get_available_models(self) -> List[DiffusionModelInfo]:
+    async def get_available_models(self) -> list[DiffusionModelInfo]:
         """Get available models."""
         return []
 

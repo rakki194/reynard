@@ -7,11 +7,7 @@
  * @module algorithms/aabbBatchCollision
  */
 
-import type {
-  AABB,
-  AABBSpatialHashConfig,
-  CollisionResult,
-} from "./aabb-types";
+import type { AABB, AABBSpatialHashConfig, CollisionResult } from "./aabb-types";
 import { SpatialHash } from "./aabb-spatial-hash";
 import { checkCollision } from "./aabb-collision";
 
@@ -24,7 +20,7 @@ export function batchCollisionDetection(
     maxDistance?: number;
     includeSelf?: boolean;
     spatialHash?: AABBSpatialHashConfig;
-  } = {},
+  } = {}
 ): Array<{ index1: number; index2: number; result: CollisionResult }> {
   const { maxDistance, includeSelf = false, spatialHash } = options;
   const collisions: Array<{
@@ -41,10 +37,7 @@ export function batchCollisionDetection(
     for (let j = includeSelf ? i : i + 1; j < aabbs.length; j++) {
       const result = checkCollision(aabbs[i], aabbs[j]);
 
-      if (
-        result.colliding &&
-        (!maxDistance || result.distance <= maxDistance)
-      ) {
+      if (result.colliding && (!maxDistance || result.distance <= maxDistance)) {
         collisions.push({
           index1: i,
           index2: j,
@@ -66,7 +59,7 @@ export function batchCollisionWithSpatialHash(
     maxDistance?: number;
     includeSelf?: boolean;
     spatialHash?: AABBSpatialHashConfig;
-  },
+  }
 ): Array<{ index1: number; index2: number; result: CollisionResult }> {
   const { maxDistance, includeSelf = false, spatialHash } = options;
   const collisions: Array<{
@@ -95,10 +88,7 @@ export function batchCollisionWithSpatialHash(
 
       const result = checkCollision(aabbs[i], aabbs[j]);
 
-      if (
-        result.colliding &&
-        (!maxDistance || result.distance <= maxDistance)
-      ) {
+      if (result.colliding && (!maxDistance || result.distance <= maxDistance)) {
         collisions.push({
           index1: i,
           index2: j,

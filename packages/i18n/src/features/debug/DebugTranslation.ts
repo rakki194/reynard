@@ -4,18 +4,14 @@
  * Enhanced translation function with debugging capabilities.
  */
 
-import type {
-  LanguageCode,
-  Translations,
-  TranslationParams,
-} from "../../types";
+import type { LanguageCode, Translations, TranslationParams } from "../../types";
 import { getTranslationValue } from "../../utils";
 import { usedKeys, missingKeys } from "./DebugStats";
 
 export const createDebugTranslationFunction = (
   baseTranslations: () => Translations,
   locale: () => LanguageCode,
-  enableDebug: boolean = false,
+  enableDebug: boolean = false
 ) => {
   return (key: string, params?: TranslationParams): string => {
     if (enableDebug) {
@@ -27,14 +23,12 @@ export const createDebugTranslationFunction = (
         baseTranslations() as unknown as Record<string, unknown>,
         key,
         params,
-        locale(),
+        locale()
       );
 
       if (!result && enableDebug) {
         missingKeys.add(key);
-        console.warn(
-          `Missing translation for key: ${key} in locale: ${locale()}`,
-        );
+        console.warn(`Missing translation for key: ${key} in locale: ${locale()}`);
       }
 
       return result || key;
@@ -48,9 +42,7 @@ export const createDebugTranslationFunction = (
 };
 
 // Template translator for template literals
-export const createTemplateTranslator = (
-  t: (key: string, params?: TranslationParams) => string,
-) => {
+export const createTemplateTranslator = (t: (key: string, params?: TranslationParams) => string) => {
   return (template: TemplateStringsArray, ...values: any[]) => {
     const key = template.join("${}");
     const params = values.reduce((acc, val, idx) => {
@@ -65,7 +57,7 @@ export const createTemplateTranslator = (
 export const createDebugPluralTranslator = (
   t: (key: string, params?: TranslationParams) => string,
   locale: () => LanguageCode,
-  enableDebug: boolean = false,
+  enableDebug: boolean = false
 ) => {
   return (key: string, count: number, params?: TranslationParams): string => {
     if (enableDebug) {
@@ -78,19 +70,12 @@ export const createDebugPluralTranslator = (
 
       if (!result && enableDebug) {
         missingKeys.add(pluralKey);
-        console.warn(
-          `Missing plural translation for key: ${pluralKey} in locale: ${locale()}`,
-        );
+        console.warn(`Missing plural translation for key: ${pluralKey} in locale: ${locale()}`);
       }
 
       // Debug logging in development mode
-      if (
-        typeof process !== "undefined" &&
-        process.env.NODE_ENV === "development"
-      ) {
-        console.debug(
-          `Plural translation: ${key} with count ${count} -> ${result || `${count} items`}`,
-        );
+      if (typeof process !== "undefined" && process.env.NODE_ENV === "development") {
+        console.debug(`Plural translation: ${key} with count ${count} -> ${result || `${count} items`}`);
       }
 
       return result || `${count} items`;

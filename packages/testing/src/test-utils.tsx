@@ -7,15 +7,7 @@
  */
 
 import { cleanup, render, waitFor } from "@solidjs/testing-library";
-import {
-  Component,
-  createComponent,
-  createContext,
-  createEffect,
-  createSignal,
-  JSX,
-  useContext,
-} from "solid-js";
+import { Component, createComponent, createContext, createEffect, createSignal, JSX, useContext } from "solid-js";
 import { afterEach, beforeEach, expect, vi } from "vitest";
 
 // ============================================================================
@@ -151,7 +143,7 @@ export interface ComponentTestOptions {
  */
 export async function testComponentRendering<T extends Component<any>>(
   Component: T,
-  options: ComponentTestOptions = {},
+  options: ComponentTestOptions = {}
 ): Promise<ReturnType<typeof render>> {
   const { props = {}, wrapper, providers = [] } = options;
 
@@ -195,7 +187,7 @@ export async function testComponentRendering<T extends Component<any>>(
 export async function testComponentWithSignals<T extends Component<any>>(
   Component: T,
   signalUpdates: Array<{ signal: () => any; value: any }>,
-  options: ComponentTestOptions = {},
+  options: ComponentTestOptions = {}
 ): Promise<ReturnType<typeof render>> {
   const renderResult = await testComponentRendering(Component, options);
 
@@ -216,7 +208,7 @@ export async function testComponentWithSignals<T extends Component<any>>(
 export async function testComponentErrorHandling<T extends Component<any>>(
   Component: T,
   errorTrigger: () => void,
-  options: ComponentTestOptions = {},
+  options: ComponentTestOptions = {}
 ): Promise<ReturnType<typeof render>> {
   const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
@@ -250,10 +242,7 @@ export interface APITestOptions {
 /**
  * Test API client with standard setup and mock response handling
  */
-export async function testAPIClient(
-  apiCall: () => Promise<any>,
-  options: APITestOptions = {},
-) {
+export async function testAPIClient(apiCall: () => Promise<any>, options: APITestOptions = {}) {
   const {
     baseURL = "http://localhost:8000",
     timeout = 5000,
@@ -289,7 +278,7 @@ export async function testAPIClient(
 export async function testAPIErrorHandling(
   apiCall: () => Promise<any>,
   expectedError: string | RegExp,
-  options: APITestOptions = {},
+  options: APITestOptions = {}
 ) {
   const { mockError = new Error("Network error") } = options;
 
@@ -303,11 +292,7 @@ export async function testAPIErrorHandling(
 /**
  * Test API retry logic
  */
-export async function testAPIRetry(
-  apiCall: () => Promise<any>,
-  retryCount: number = 3,
-  options: APITestOptions = {},
-) {
+export async function testAPIRetry(apiCall: () => Promise<any>, retryCount: number = 3, options: APITestOptions = {}) {
   const { mockError = new Error("Network error") } = options;
 
   // Mock fetch to fail multiple times then succeed
@@ -344,12 +329,12 @@ export interface ValidationTestOptions {
  */
 export function testValidation(
   validator: (value: any) => { isValid: boolean; error?: string },
-  options: ValidationTestOptions = {},
+  options: ValidationTestOptions = {}
 ) {
   const { validValues = [], invalidValues = [], errorMessages = [] } = options;
 
   // Test valid values
-  validValues.forEach((value) => {
+  validValues.forEach(value => {
     const result = validator(value);
     expect(result.isValid).toBe(true);
     expect(result.error).toBeUndefined();
@@ -371,9 +356,9 @@ export function testValidation(
 export function testValidationWithError(
   validator: (value: any) => void,
   invalidValues: any[],
-  expectedError?: string | RegExp,
+  expectedError?: string | RegExp
 ) {
-  invalidValues.forEach((value) => {
+  invalidValues.forEach(value => {
     if (expectedError) {
       expect(() => validator(value)).toThrow(expectedError);
     } else {
@@ -395,10 +380,7 @@ export interface PerformanceTestOptions {
 /**
  * Test function performance
  */
-export async function testPerformance(
-  fn: () => void | Promise<void>,
-  options: PerformanceTestOptions = {},
-) {
+export async function testPerformance(fn: () => void | Promise<void>, options: PerformanceTestOptions = {}) {
   const { iterations = 1000, timeout = 5000, threshold = 100 } = options;
 
   const start = performance.now();
@@ -422,10 +404,7 @@ export async function testPerformance(
 /**
  * Test memory usage
  */
-export async function testMemoryUsage(
-  fn: () => void | Promise<void>,
-  options: PerformanceTestOptions = {},
-) {
+export async function testMemoryUsage(fn: () => void | Promise<void>, options: PerformanceTestOptions = {}) {
   const { iterations = 100, timeout = 5000 } = options;
 
   // Force garbage collection if available
@@ -463,7 +442,7 @@ export async function testMemoryUsage(
  * Create mock function with comprehensive mock methods
  */
 export function createMockFunction<T extends (...args: any[]) => any>(
-  implementation?: T,
+  implementation?: T
 ): T & {
   mockResolvedValue: (value: any) => void;
   mockRejectedValue: (error: any) => void;
@@ -490,7 +469,7 @@ export function createMockFunction<T extends (...args: any[]) => any>(
  * Create a mock function with additional properties for testing
  */
 export function createMockFn<T extends (...args: any[]) => any>(
-  implementation?: T,
+  implementation?: T
 ): T & { mockClear: () => void; mockReset: () => void } {
   const mockFn = vi.fn(implementation) as any;
   // vi.fn() already provides mockClear and mockReset methods
@@ -501,7 +480,7 @@ export function createMockFn<T extends (...args: any[]) => any>(
  * Create a mock object with all methods mocked
  */
 export function createMockObject<T extends Record<string, unknown>>(
-  methods: (keyof T)[],
+  methods: (keyof T)[]
 ): {
   [K in keyof T]: T[K] extends (...args: any[]) => any
     ? T[K] & {
@@ -530,7 +509,7 @@ export function createMockObject<T extends Record<string, unknown>>(
 export async function waitForCondition(
   condition: () => boolean,
   timeout: number = 5000,
-  interval: number = 100,
+  interval: number = 100
 ): Promise<void> {
   const start = Date.now();
 
@@ -538,7 +517,7 @@ export async function waitForCondition(
     if (condition()) {
       return;
     }
-    await new Promise((resolve) => setTimeout(resolve, interval));
+    await new Promise(resolve => setTimeout(resolve, interval));
   }
 
   throw new Error(`Condition not met within ${timeout}ms`);
@@ -547,10 +526,7 @@ export async function waitForCondition(
 /**
  * Create test data factory
  */
-export function createTestDataFactory<T>(
-  defaultData: T,
-  overrides: Partial<T> = {},
-): T {
+export function createTestDataFactory<T>(defaultData: T, overrides: Partial<T> = {}): T {
   return { ...defaultData, ...overrides };
 }
 
@@ -579,7 +555,7 @@ export function createTestEffect(fn: () => void) {
  */
 const TestAppContext = createContext<any>();
 
-const TestAppProvider: Component<{ children: JSX.Element }> = (props) => {
+const TestAppProvider: Component<{ children: JSX.Element }> = props => {
   // Create a mock app context that provides all the necessary properties
   const mockContext = {
     prevRoute: undefined,
@@ -660,9 +636,9 @@ export function useTestAppContext() {
 export function renderWithTheme(
   ui: () => JSX.Element,
   theme: any = { name: "light", colors: {} },
-  options?: Omit<Parameters<typeof render>[1], "wrapper">,
+  options?: Omit<Parameters<typeof render>[1], "wrapper">
 ): ReturnType<typeof render> {
-  const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
+  const ThemeProvider: Component<{ children: JSX.Element }> = props => {
     return createComponent(() => props.children, { theme });
   };
 
@@ -675,9 +651,9 @@ export function renderWithTheme(
 export function renderWithRouter(
   ui: () => JSX.Element,
   initialUrl: string = "/",
-  options?: Omit<Parameters<typeof render>[1], "wrapper">,
+  options?: Omit<Parameters<typeof render>[1], "wrapper">
 ): ReturnType<typeof render> {
-  const RouterProvider: Component<{ children: JSX.Element }> = (props) => {
+  const RouterProvider: Component<{ children: JSX.Element }> = props => {
     // Mock router context
     const routerContext = {
       location: {
@@ -708,7 +684,7 @@ export function renderWithRouter(
  */
 export function renderWithAppContext(
   ui: () => JSX.Element,
-  options?: Omit<Parameters<typeof render>[1], "wrapper">,
+  options?: Omit<Parameters<typeof render>[1], "wrapper">
 ): ReturnType<typeof render> {
   return render(() => <TestAppProvider>{ui()}</TestAppProvider>, options);
 }
@@ -719,9 +695,9 @@ export function renderWithAppContext(
 export function renderWithProviders(
   ui: () => JSX.Element,
   providers: Component<any>[] = [],
-  options?: Omit<Parameters<typeof render>[1], "wrapper">,
+  options?: Omit<Parameters<typeof render>[1], "wrapper">
 ): ReturnType<typeof render> {
-  const Wrapper: Component<{ children: JSX.Element }> = (props) => {
+  const Wrapper: Component<{ children: JSX.Element }> = props => {
     return providers.reduceRight((element, Provider) => {
       return <Provider>{element}</Provider>;
     }, props.children);

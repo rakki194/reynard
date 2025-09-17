@@ -3,7 +3,7 @@
 Setup script for reynard-agent-naming service.
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="reynard-agent-naming",
@@ -25,6 +25,3 @@ setup(
         ],
     },
 )
-
-
-

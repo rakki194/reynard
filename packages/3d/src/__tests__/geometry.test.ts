@@ -105,11 +105,7 @@ describe("Geometry Utilities", () => {
 
   describe("Bounding Box Operations", () => {
     it("creates a bounding box from points", () => {
-      const points = [
-        createVector3(0, 0, 0),
-        createVector3(1, 2, 3),
-        createVector3(-1, -2, -3),
-      ];
+      const points = [createVector3(0, 0, 0), createVector3(1, 2, 3), createVector3(-1, -2, -3)];
       const box = createBoundingBox(points);
       expect(box.min).toEqual({ x: -1, y: -2, z: -3 });
       expect(box.max).toEqual({ x: 1, y: 2, z: 3 });
@@ -215,7 +211,7 @@ describe("Geometry Utilities", () => {
       expect(points).toHaveLength(10);
 
       // Check that all points are within the sphere radius
-      points.forEach((point) => {
+      points.forEach(point => {
         const distance = distanceVector3(point, center);
         expect(distance).toBeLessThanOrEqual(5);
       });
@@ -227,7 +223,7 @@ describe("Geometry Utilities", () => {
       expect(points).toHaveLength(5);
 
       // Check that all points are within the cube bounds
-      points.forEach((point) => {
+      points.forEach(point => {
         expect(point.x).toBeGreaterThanOrEqual(-5);
         expect(point.x).toBeLessThanOrEqual(5);
         expect(point.y).toBeGreaterThanOrEqual(-5);

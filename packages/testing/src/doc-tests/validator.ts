@@ -56,11 +56,8 @@ export function validateDocExamples(docPath: string): ValidationResult {
         valid++;
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      errors.push(
-        `Example ${index + 1}: ${errorMessage}\nCode: ${example.code.substring(0, 200)}...`,
-      );
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      errors.push(`Example ${index + 1}: ${errorMessage}\nCode: ${example.code.substring(0, 200)}...`);
       invalid++;
     }
   });
@@ -77,15 +74,11 @@ export function generateDocTestReport(docPath: string): string {
 
   const typeStats = examples.reduce(
     (acc, example) => {
-      const type = example.isComponent
-        ? "Component"
-        : example.isTypeScript
-          ? "TypeScript"
-          : "JavaScript";
+      const type = example.isComponent ? "Component" : example.isTypeScript ? "TypeScript" : "JavaScript";
       acc[type] = (acc[type] || 0) + 1;
       return acc;
     },
-    {} as Record<string, number>,
+    {} as Record<string, number>
   );
 
   const typeStatsText = Object.entries(typeStats)
@@ -105,7 +98,7 @@ export function generateDocTestReport(docPath: string): string {
 ${typeStatsText}
 
 ## Issues Found
-${validation.errors.length > 0 ? validation.errors.map((error) => `- ${error}`).join("\n") : "No issues found"}
+${validation.errors.length > 0 ? validation.errors.map(error => `- ${error}`).join("\n") : "No issues found"}
 
 ## Recommendations
 ${

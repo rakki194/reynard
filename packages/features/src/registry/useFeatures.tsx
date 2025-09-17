@@ -33,11 +33,7 @@ export interface FeatureProviderProps {
 export function FeatureProvider(props: FeatureProviderProps) {
   // eslint-disable-next-line solid/reactivity
   const context = createFeatureContext(props.config);
-  return (
-    <FeatureContextProvider.Provider value={context}>
-      {props.children}
-    </FeatureContextProvider.Provider>
-  );
+  return <FeatureContextProvider.Provider value={context}>{props.children}</FeatureContextProvider.Provider>;
 }
 
 /**

@@ -5,16 +5,17 @@ This module tests the EmbeddingVisualizationService class and its methods
 for dimensionality reduction, quality analysis, and caching functionality.
 """
 
-import pytest
-import numpy as np
-from unittest.mock import AsyncMock, MagicMock, patch
 from datetime import datetime, timedelta
+from unittest.mock import MagicMock, patch
+
+import numpy as np
+import pytest
 
 from app.services.embedding_visualization_service import (
-    EmbeddingVisualizationService,
-    EmbeddingStats,
+    EmbeddingQualityMetrics,
     EmbeddingReductionResult,
-    EmbeddingQualityMetrics
+    EmbeddingStats,
+    EmbeddingVisualizationService,
 )
 
 
@@ -34,16 +35,16 @@ class TestEmbeddingVisualizationService:
     def test_service_initialization(self, service):
         """Test service initialization."""
         assert service is not None
-        assert hasattr(service, 'cache')
-        assert hasattr(service, 'cache_ttl')
+        assert hasattr(service, "cache")
+        assert hasattr(service, "cache_ttl")
         assert service.cache_ttl == 3600
 
     @pytest.mark.asyncio
     async def test_get_embedding_stats_success(self, service, sample_embeddings):
         """Test successful embedding statistics retrieval."""
-        with patch.object(service, '_load_embeddings', return_value=sample_embeddings):
+        with patch.object(service, "_load_embeddings", return_value=sample_embeddings):
             stats = await service.get_embedding_stats()
-            
+
             assert isinstance(stats, EmbeddingStats)
             assert stats.total_embeddings == 100
             assert stats.embedding_dimension == 512
@@ -56,9 +57,9 @@ class TestEmbeddingVisualizationService:
     @pytest.mark.asyncio
     async def test_get_embedding_stats_no_embeddings(self, service):
         """Test embedding statistics with no embeddings."""
-        with patch.object(service, '_load_embeddings', return_value=np.array([])):
+        with patch.object(service, "_load_embeddings", return_value=np.array([])):
             stats = await service.get_embedding_stats()
-            
+
             assert isinstance(stats, EmbeddingStats)
             assert stats.total_embeddings == 0
             assert stats.embedding_dimension == 0
@@ -71,21 +72,22 @@ class TestEmbeddingVisualizationService:
     @pytest.mark.asyncio
     async def test_perform_reduction_pca_success(self, service, sample_embeddings):
         """Test successful PCA reduction."""
-        with patch.object(service, '_load_embeddings', return_value=sample_embeddings):
-            with patch('app.services.embedding_visualization_service.get_dimensionality_reducer') as mock_get_reducer:
+        with patch.object(service, "_load_embeddings", return_value=sample_embeddings):
+            with patch(
+                "app.services.embedding_visualization_service.get_dimensionality_reducer"
+            ) as mock_get_reducer:
                 mock_reducer = MagicMock()
                 mock_reducer.reduce.return_value = (
                     np.random.rand(100, 2),
                     [0.8, 0.2],
-                    {"n_components": 2}
+                    {"n_components": 2},
                 )
                 mock_get_reducer.return_value = mock_reducer
-                
+
                 result = await service.perform_reduction(
-                    method="pca",
-                    parameters={"n_components": 2}
+                    method="pca", parameters={"n_components": 2}
                 )
-                
+
                 assert isinstance(result, EmbeddingReductionResult)
                 assert result.success is True
                 assert result.method == "pca"
@@ -97,12 +99,11 @@ class TestEmbeddingVisualizationService:
     @pytest.mark.asyncio
     async def test_perform_reduction_invalid_method(self, service, sample_embeddings):
         """Test reduction with invalid method."""
-        with patch.object(service, '_load_embeddings', return_value=sample_embeddings):
+        with patch.object(service, "_load_embeddings", return_value=sample_embeddings):
             result = await service.perform_reduction(
-                method="invalid_method",
-                parameters={}
+                method="invalid_method", parameters={}
             )
-            
+
             assert isinstance(result, EmbeddingReductionResult)
             assert result.success is False
             assert result.method == "invalid_method"
@@ -111,12 +112,11 @@ class TestEmbeddingVisualizationService:
     @pytest.mark.asyncio
     async def test_perform_reduction_no_embeddings(self, service):
         """Test reduction with no embeddings."""
-        with patch.object(service, '_load_embeddings', return_value=np.array([])):
+        with patch.object(service, "_load_embeddings", return_value=np.array([])):
             result = await service.perform_reduction(
-                method="pca",
-                parameters={"n_components": 2}
+                method="pca", parameters={"n_components": 2}
             )
-            
+
             assert isinstance(result, EmbeddingReductionResult)
             assert result.success is False
             assert "No embeddings found" in result.error
@@ -128,11 +128,11 @@ class TestEmbeddingVisualizationService:
             [1.0, 2.0, 3.0],
             [1.1, 2.1, 3.1],
             [4.0, 5.0, 6.0],
-            [4.1, 5.1, 6.1]
+            [4.1, 5.1, 6.1],
         ]
-        
+
         quality = await service.analyze_embedding_quality(embeddings)
-        
+
         assert isinstance(quality, EmbeddingQualityMetrics)
         assert 0 <= quality.overall_score <= 1
         assert 0 <= quality.coherence_score <= 1
@@ -146,7 +146,7 @@ class TestEmbeddingVisualizationService:
     async def test_analyze_embedding_quality_empty(self, service):
         """Test embedding quality analysis with empty embeddings."""
         quality = await service.analyze_embedding_quality([])
-        
+
         assert isinstance(quality, EmbeddingQualityMetrics)
         assert quality.overall_score == 0.0
         assert quality.coherence_score == 0.0
@@ -158,12 +158,12 @@ class TestEmbeddingVisualizationService:
     async def test_get_available_methods(self, service):
         """Test getting available reduction methods."""
         methods = await service.get_available_methods()
-        
+
         assert isinstance(methods, dict)
         assert "pca" in methods
         assert "tsne" in methods
         assert "umap" in methods
-        
+
         # Check that each method has parameter information
         for method_name, method_info in methods.items():
             assert "parameters" in method_info
@@ -179,7 +179,7 @@ class TestEmbeddingVisualizationService:
             "parameters": {"n_components": 2},
             "metadata": {"samples": 2},
             "timestamp": datetime.now() - timedelta(hours=1),
-            "ttl": 3600
+            "ttl": 3600,
         }
         service.cache["test_key_2"] = {
             "transformed_data": [[5.0, 6.0], [7.0, 8.0]],
@@ -187,11 +187,11 @@ class TestEmbeddingVisualizationService:
             "parameters": {"n_components": 2},
             "metadata": {"samples": 2},
             "timestamp": datetime.now() - timedelta(minutes=30),
-            "ttl": 3600
+            "ttl": 3600,
         }
-        
+
         stats = await service.get_cache_stats()
-        
+
         assert isinstance(stats, dict)
         assert stats["total_entries"] == 2
         assert stats["total_size_bytes"] > 0
@@ -204,7 +204,7 @@ class TestEmbeddingVisualizationService:
     async def test_get_cache_stats_empty(self, service):
         """Test getting cache statistics with empty cache."""
         stats = await service.get_cache_stats()
-        
+
         assert isinstance(stats, dict)
         assert stats["total_entries"] == 0
         assert stats["total_size_bytes"] == 0
@@ -222,7 +222,7 @@ class TestEmbeddingVisualizationService:
             "parameters": {"n_components": 2},
             "metadata": {"samples": 2},
             "timestamp": datetime.now(),
-            "ttl": 3600
+            "ttl": 3600,
         }
         service.cache["test_key_2"] = {
             "transformed_data": [[5.0, 6.0], [7.0, 8.0]],
@@ -230,13 +230,13 @@ class TestEmbeddingVisualizationService:
             "parameters": {"n_components": 2},
             "metadata": {"samples": 2},
             "timestamp": datetime.now(),
-            "ttl": 3600
+            "ttl": 3600,
         }
-        
+
         assert len(service.cache) == 2
-        
+
         result = await service.clear_cache()
-        
+
         assert isinstance(result, dict)
         assert result["cleared_entries"] == 2
         assert len(service.cache) == 0
@@ -245,7 +245,7 @@ class TestEmbeddingVisualizationService:
     async def test_clear_cache_empty(self, service):
         """Test clearing empty cache."""
         result = await service.clear_cache()
-        
+
         assert isinstance(result, dict)
         assert result["cleared_entries"] == 0
 
@@ -258,11 +258,11 @@ class TestEmbeddingVisualizationService:
             "parameters": {"n_components": 2},
             "metadata": {"samples": 1},
             "timestamp": datetime.now() - timedelta(minutes=30),
-            "ttl": 3600
+            "ttl": 3600,
         }
-        
+
         assert service._is_cache_valid(valid_entry)
-        
+
         # Test expired cache entry
         expired_entry = {
             "transformed_data": [[1.0, 2.0]],
@@ -270,37 +270,44 @@ class TestEmbeddingVisualizationService:
             "parameters": {"n_components": 2},
             "metadata": {"samples": 1},
             "timestamp": datetime.now() - timedelta(hours=2),
-            "ttl": 3600
+            "ttl": 3600,
         }
-        
+
         assert not service._is_cache_valid(expired_entry)
 
     def test_cache_key_generation(self, service):
         """Test cache key generation."""
-        key1 = service._generate_cache_key("pca", {"category": "text"}, {"n_components": 2}, 1000, 42)
-        key2 = service._generate_cache_key("pca", {"category": "text"}, {"n_components": 2}, 1000, 42)
-        key3 = service._generate_cache_key("tsne", {"category": "text"}, {"n_components": 2}, 1000, 42)
-        
+        key1 = service._generate_cache_key(
+            "pca", {"category": "text"}, {"n_components": 2}, 1000, 42
+        )
+        key2 = service._generate_cache_key(
+            "pca", {"category": "text"}, {"n_components": 2}, 1000, 42
+        )
+        key3 = service._generate_cache_key(
+            "tsne", {"category": "text"}, {"n_components": 2}, 1000, 42
+        )
+
         # Same parameters should generate same key
         assert key1 == key2
-        
+
         # Different method should generate different key
         assert key1 != key3
 
     @pytest.mark.asyncio
     async def test_perform_reduction_error_handling(self, service, sample_embeddings):
         """Test error handling in perform_reduction."""
-        with patch.object(service, '_load_embeddings', return_value=sample_embeddings):
-            with patch('app.services.embedding_visualization_service.get_dimensionality_reducer') as mock_get_reducer:
+        with patch.object(service, "_load_embeddings", return_value=sample_embeddings):
+            with patch(
+                "app.services.embedding_visualization_service.get_dimensionality_reducer"
+            ) as mock_get_reducer:
                 mock_reducer = MagicMock()
                 mock_reducer.reduce.side_effect = Exception("Test error")
                 mock_get_reducer.return_value = mock_reducer
-                
+
                 result = await service.perform_reduction(
-                    method="pca",
-                    parameters={"n_components": 2}
+                    method="pca", parameters={"n_components": 2}
                 )
-                
+
                 assert isinstance(result, EmbeddingReductionResult)
                 assert result.success is False
                 assert "Test error" in result.error

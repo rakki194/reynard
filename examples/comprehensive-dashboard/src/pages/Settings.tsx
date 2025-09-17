@@ -11,9 +11,7 @@ const Settings: Component = () => {
     <div class="settings-page">
       <div class="settings-page__header">
         <h1 class="settings-page__title">{t("settings.title")}</h1>
-        <p class="settings-page__description">
-          Customize your dashboard experience and preferences.
-        </p>
+        <p class="settings-page__description">Customize your dashboard experience and preferences.</p>
       </div>
 
       <Card class="settings-page__card">

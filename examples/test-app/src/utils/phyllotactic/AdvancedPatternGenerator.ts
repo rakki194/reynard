@@ -80,17 +80,12 @@ export class AdvancedPatternGenerator {
     for (let i = 0; i < this.config.pointCount; i++) {
       // ROTASE galactic spiral equation
       const galacticIndex = this.generateFibonacciSibling(i);
-      const radius =
-        this.config.baseRadius *
-        Math.sqrt(galacticIndex) *
-        this.config.galacticSpiralFactor;
+      const radius = this.config.baseRadius * Math.sqrt(galacticIndex) * this.config.galacticSpiralFactor;
       const angle = galacticIndex * goldenAngle;
 
       // Apply galactic spiral transformation
-      const galacticAngle =
-        angle + galacticIndex * 0.1 * this.config.galacticSpiralFactor;
-      const galacticRadius =
-        radius * (1 + Math.sin(galacticIndex * 0.05) * 0.1);
+      const galacticAngle = angle + galacticIndex * 0.1 * this.config.galacticSpiralFactor;
+      const galacticRadius = radius * (1 + Math.sin(galacticIndex * 0.05) * 0.1);
 
       const x = this.config.centerX + Math.cos(galacticAngle) * galacticRadius;
       const y = this.config.centerY + Math.sin(galacticAngle) * galacticRadius;
@@ -121,8 +116,7 @@ export class AdvancedPatternGenerator {
 
     for (let i = 0; i < this.config.pointCount; i++) {
       // Bernoulli spiral lattice equation
-      const latticeIndex =
-        i * this.config.latticeDensity + this.config.latticeOffset;
+      const latticeIndex = i * this.config.latticeDensity + this.config.latticeOffset;
       const radius = this.config.baseRadius * Math.sqrt(latticeIndex);
       const angle = latticeIndex * goldenAngle;
 
@@ -157,15 +151,13 @@ export class AdvancedPatternGenerator {
     const goldenAngle = (GOLDEN_ANGLE * Math.PI) / 180;
 
     for (let i = 0; i < this.config.pointCount; i++) {
-      const radius =
-        this.config.baseRadius * Math.sqrt(i) * this.config.growthFactor;
+      const radius = this.config.baseRadius * Math.sqrt(i) * this.config.growthFactor;
       let angle = i * goldenAngle;
 
       // Apply morphing if enabled
       if (this.config.enableMorphing) {
         const morphingPhase = this.calculateMorphingPhase(i);
-        angle +=
-          Math.sin(morphingPhase * Math.PI * 2) * this.config.morphingIntensity;
+        angle += Math.sin(morphingPhase * Math.PI * 2) * this.config.morphingIntensity;
       }
 
       const x = this.config.centerX + Math.cos(angle) * radius;
@@ -276,10 +268,8 @@ export class AdvancedPatternGenerator {
     renderingCost: number;
     memoryUsage: number;
   } {
-    const complexity =
-      this.config.pointCount * (this.config.enableMorphing ? 2 : 1);
-    const renderingCost =
-      complexity * (this.config.enableColorHarmonics ? 1.5 : 1);
+    const complexity = this.config.pointCount * (this.config.enableMorphing ? 2 : 1);
+    const renderingCost = complexity * (this.config.enableColorHarmonics ? 1.5 : 1);
     const memoryUsage = this.config.pointCount * 64; // Approximate bytes per point
 
     return {

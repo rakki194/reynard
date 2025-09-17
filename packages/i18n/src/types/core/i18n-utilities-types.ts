@@ -78,10 +78,7 @@ export interface IntlFormatter {
   /** Update configuration */
   updateConfig: (config: Partial<IntlConfig>) => void;
   /** Format translation with parameters */
-  formatTranslation: (
-    translation: string,
-    params?: TranslationParams,
-  ) => string;
+  formatTranslation: (translation: string, params?: TranslationParams) => string;
 }
 
 /**
@@ -91,10 +88,7 @@ export interface IntlFormatter {
  * @param params - Optional parameters for template substitution
  * @returns The translated string with parameters substituted
  */
-export type TemplateTranslator = (
-  key: string,
-  params?: TranslationParams,
-) => string;
+export type TemplateTranslator = (key: string, params?: TranslationParams) => string;
 
 /**
  * Function type for plural-aware translation
@@ -103,10 +97,7 @@ export type TemplateTranslator = (
  * @param params - Optional parameters including count for plural rules
  * @returns The translated string with appropriate plural form
  */
-export type PluralTranslator = (
-  key: string,
-  params?: TranslationParams,
-) => string;
+export type PluralTranslator = (key: string, params?: TranslationParams) => string;
 
 /**
  * Debugging utilities for the i18n system
@@ -194,12 +185,7 @@ export interface TranslationManager {
   /** Get current translation manager configuration */
   getConfig: () => Record<string, unknown>;
   /** Set a translation value with author attribution */
-  setTranslation: (
-    locale: string,
-    key: string,
-    value: string,
-    author: string,
-  ) => void;
+  setTranslation: (locale: string, key: string, value: string, author: string) => void;
   /** Get a translation value for a specific locale and key */
   getTranslation: (locale: string, key: string) => string;
   /** Get the complete change history for all translations */
@@ -216,11 +202,7 @@ export interface TranslationManager {
   /** Export all translations for a specific locale */
   exportTranslations: (locale: string) => Record<string, unknown>;
   /** Import translations for a locale with author attribution */
-  importTranslations: (
-    locale: string,
-    data: Record<string, unknown>,
-    author: string,
-  ) => void;
+  importTranslations: (locale: string, data: Record<string, unknown>, author: string) => void;
 }
 
 /**

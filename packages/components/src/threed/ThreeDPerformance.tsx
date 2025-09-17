@@ -12,16 +12,10 @@ interface ThreeDPerformanceProps {
   pointCount: number;
 }
 
-export const ThreeDPerformance: Component<ThreeDPerformanceProps> = (props) => {
+export const ThreeDPerformance: Component<ThreeDPerformanceProps> = props => {
   // Initialize visualization engine for OKLCH colors
   const visualization = useVisualizationEngine({
-    theme: props.theme as
-      | "light"
-      | "dark"
-      | "gray"
-      | "banana"
-      | "strawberry"
-      | "peanut",
+    theme: props.theme as "light" | "dark" | "gray" | "banana" | "strawberry" | "peanut",
     useOKLCH: true,
   });
 
@@ -55,9 +49,7 @@ export const ThreeDPerformance: Component<ThreeDPerformanceProps> = (props) => {
             </div>
             <div class="stat-item">
               <span class="stat-label">Memory:</span>
-              <span class="stat-value">
-                {visualization.getMemoryUsage().toFixed(1)}MB
-              </span>
+              <span class="stat-value">{visualization.getMemoryUsage().toFixed(1)}MB</span>
             </div>
             <div class="stat-item">
               <span class="stat-label">GPU:</span>
@@ -74,7 +66,7 @@ export const ThreeDPerformance: Component<ThreeDPerformanceProps> = (props) => {
                 {(color, index) => (
                   <div
                     class="color-swatch"
-                    ref={(el) => {
+                    ref={el => {
                       if (el) colorSwatchRefs[index()] = el;
                     }}
                   />

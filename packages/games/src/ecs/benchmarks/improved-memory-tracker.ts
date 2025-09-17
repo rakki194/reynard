@@ -112,9 +112,7 @@ export class EnhancedMemoryTracker {
       this.totalFreed += Math.abs(memoryDelta);
 
       if (this.config.enableDetailedLogging) {
-        console.log(
-          `🗑️  Garbage collection detected: ${this.formatBytes(Math.abs(memoryDelta))} freed`,
-        );
+        console.log(`🗑️  Garbage collection detected: ${this.formatBytes(Math.abs(memoryDelta))} freed`);
       }
     } else if (memoryDelta > 0) {
       this.totalAllocated += memoryDelta;
@@ -127,8 +125,7 @@ export class EnhancedMemoryTracker {
 
     // Apply smoothing to reduce noise
     this.smoothedMemory =
-      this.smoothedMemory * (1 - this.config.smoothingFactor) +
-      this.currentMemory * this.config.smoothingFactor;
+      this.smoothedMemory * (1 - this.config.smoothingFactor) + this.currentMemory * this.config.smoothingFactor;
 
     // Keep memory history for analysis
     this.memoryHistory.push(this.currentMemory);
@@ -160,9 +157,7 @@ export class EnhancedMemoryTracker {
       currentMemory: this.currentMemory,
       peakMemory: this.peakMemory,
       memoryDelta,
-      memoryDeltaMB: this.config.handleNegativeMemory
-        ? Math.max(0, memoryDeltaMB)
-        : memoryDeltaMB,
+      memoryDeltaMB: this.config.handleNegativeMemory ? Math.max(0, memoryDeltaMB) : memoryDeltaMB,
       gcEvents: this.gcEvents,
       totalAllocated: this.totalAllocated,
       totalFreed: this.totalFreed,
@@ -229,23 +224,14 @@ export class EnhancedMemoryTracker {
     }
 
     const trackingTimeSeconds = (performance.now() - this.startTime) / 1000;
-    const allocationRate =
-      this.totalAllocated / (1024 * 1024) / trackingTimeSeconds;
+    const allocationRate = this.totalAllocated / (1024 * 1024) / trackingTimeSeconds;
 
-    const gcEfficiency =
-      this.totalAllocated > 0
-        ? (this.totalFreed / this.totalAllocated) * 100
-        : 0;
+    const gcEfficiency = this.totalAllocated > 0 ? (this.totalFreed / this.totalAllocated) * 100 : 0;
 
     // Calculate memory stability (coefficient of variation)
-    const mean =
-      this.memoryHistory.reduce((sum, val) => sum + val, 0) /
-      this.memoryHistory.length;
+    const mean = this.memoryHistory.reduce((sum, val) => sum + val, 0) / this.memoryHistory.length;
     const variance =
-      this.memoryHistory.reduce(
-        (sum, val) => sum + Math.pow(val - mean, 2),
-        0,
-      ) / this.memoryHistory.length;
+      this.memoryHistory.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / this.memoryHistory.length;
     const stdDev = Math.sqrt(variance);
     const memoryStability = mean > 0 ? (stdDev / mean) * 100 : 0;
 
@@ -275,9 +261,7 @@ export class EnhancedMemoryTracker {
         console.log("🗑️  Forced garbage collection");
       }
     } else {
-      console.warn(
-        "⚠️  Garbage collection not available (use --expose-gc flag)",
-      );
+      console.warn("⚠️  Garbage collection not available (use --expose-gc flag)");
     }
   }
 
@@ -296,9 +280,7 @@ export class EnhancedMemoryTracker {
     console.log(`  Initial: ${this.formatBytes(stats.initialMemory)}`);
     console.log(`  Current: ${this.formatBytes(stats.currentMemory)}`);
     console.log(`  Peak: ${this.formatBytes(stats.peakMemory)}`);
-    console.log(
-      `  Delta: ${stats.memoryDeltaMB > 0 ? "+" : ""}${stats.memoryDeltaMB.toFixed(2)} MB`,
-    );
+    console.log(`  Delta: ${stats.memoryDeltaMB > 0 ? "+" : ""}${stats.memoryDeltaMB.toFixed(2)} MB`);
     console.log("");
 
     console.log("Allocation Statistics:");
@@ -307,13 +289,9 @@ export class EnhancedMemoryTracker {
     console.log(`  Net Allocation: ${this.formatBytes(stats.netAllocation)}`);
 
     const efficiency = this.getMemoryEfficiency();
-    console.log(
-      `  Allocation Rate: ${efficiency.allocationRate.toFixed(2)} MB/s`,
-    );
+    console.log(`  Allocation Rate: ${efficiency.allocationRate.toFixed(2)} MB/s`);
     console.log(`  GC Efficiency: ${efficiency.gcEfficiency.toFixed(1)}%`);
-    console.log(
-      `  Memory Stability: ${efficiency.memoryStability.toFixed(1)}%`,
-    );
+    console.log(`  Memory Stability: ${efficiency.memoryStability.toFixed(1)}%`);
   }
 
   /**
@@ -333,9 +311,7 @@ export class EnhancedMemoryTracker {
 /**
  * Creates an enhanced memory tracker.
  */
-export function createEnhancedMemoryTracker(
-  config?: Partial<EnhancedMemoryConfig>,
-): EnhancedMemoryTracker {
+export function createEnhancedMemoryTracker(config?: Partial<EnhancedMemoryConfig>): EnhancedMemoryTracker {
   return new EnhancedMemoryTracker(config);
 }
 

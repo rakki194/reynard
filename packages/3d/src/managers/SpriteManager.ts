@@ -18,7 +18,7 @@ export class SpriteManager {
     config: EmbeddingRenderingConfig,
     scene: any,
     onHover: (pointId: string) => void,
-    onLeave: () => void,
+    onLeave: () => void
   ): Promise<SpriteLike[]> {
     const { Sprite, SpriteMaterial, TextureLoader } = this.threeJS;
     const sprites: SpriteLike[] = [];
@@ -46,11 +46,7 @@ export class SpriteManager {
 
       // Create sprite
       const sprite = new Sprite(material) as ThreeJSSpriteLike;
-      sprite.position.set(
-        point.position[0],
-        point.position[1],
-        point.position[2],
-      );
+      sprite.position.set(point.position[0], point.position[1], point.position[2]);
       sprite.scale.setScalar(config.thumbnailSize);
       sprite.userData = {
         type: "thumbnail",
@@ -72,7 +68,7 @@ export class SpriteManager {
   async createTextSprites(
     points: EmbeddingPoint[],
     config: EmbeddingRenderingConfig,
-    scene: any,
+    scene: any
   ): Promise<SpriteLike[]> {
     const { Sprite, SpriteMaterial, CanvasTexture } = this.threeJS;
     const sprites: SpriteLike[] = [];
@@ -107,11 +103,7 @@ export class SpriteManager {
       });
 
       const sprite = new Sprite(material) as ThreeJSSpriteLike;
-      sprite.position.set(
-        point.position[0],
-        point.position[1],
-        point.position[2],
-      );
+      sprite.position.set(point.position[0], point.position[1], point.position[2]);
       sprite.position.y += 0.5; // Offset above point
       sprite.scale.setScalar(config.textSpriteSize);
       sprite.userData = {
@@ -128,7 +120,7 @@ export class SpriteManager {
   }
 
   disposeSprites(sprites: SpriteLike[], scene: any): void {
-    sprites.forEach((sprite) => {
+    sprites.forEach(sprite => {
       scene.remove(sprite);
       if (sprite.material?.dispose) sprite.material.dispose();
     });

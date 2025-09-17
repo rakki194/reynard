@@ -69,10 +69,10 @@ export interface UserUpdate {
     profilePictureUrl?: string | null;
     /**
      * 
-     * @type {{ [key: string]: any; }}
+     * @type {object}
      * @memberof UserUpdate
      */
-    metadata?: { [key: string]: any; } | null;
+    metadata?: object | null;
 }
 
 

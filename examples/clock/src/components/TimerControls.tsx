@@ -17,15 +17,11 @@ interface TimerControlsProps {
   onReset: () => void;
 }
 
-export const TimerControls: Component<TimerControlsProps> = (props) => {
+export const TimerControls: Component<TimerControlsProps> = props => {
   return (
     <div class="timer-controls">
       <Show when={props.state === "stopped"}>
-        <Button
-          onClick={props.onStart}
-          class="btn btn-success"
-          disabled={isTimeZero(props.time)}
-        >
+        <Button onClick={props.onStart} class="btn btn-success" disabled={isTimeZero(props.time)}>
           ▶️ Start
         </Button>
       </Show>
@@ -48,11 +44,7 @@ export const TimerControls: Component<TimerControlsProps> = (props) => {
         </Button>
       </Show>
 
-      <Button
-        onClick={props.onReset}
-        class="btn btn-secondary"
-        disabled={props.state === "running"}
-      >
+      <Button onClick={props.onReset} class="btn btn-secondary" disabled={props.state === "running"}>
         🔄 Reset
       </Button>
     </div>

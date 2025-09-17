@@ -16,7 +16,7 @@ export function createShikiState() {
   });
 
   const updateState = (updates: Partial<ShikiState>) => {
-    setState((prev) => ({ ...prev, ...updates }));
+    setState(prev => ({ ...prev, ...updates }));
   };
 
   const setHighlighter = (highlighter: any) => {

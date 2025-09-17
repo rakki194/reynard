@@ -30,22 +30,7 @@ const HUNGARIAN_NUMBERS: { [key: number]: string } = {
   1000000000: "milliárd",
 };
 
-const VOWELS = new Set([
-  "a",
-  "á",
-  "e",
-  "é",
-  "i",
-  "í",
-  "o",
-  "ó",
-  "ö",
-  "ő",
-  "u",
-  "ú",
-  "ü",
-  "ű",
-]);
+const VOWELS = new Set(["a", "á", "e", "é", "i", "í", "o", "ó", "ö", "ő", "u", "ú", "ü", "ű"]);
 
 /**
  * Converts a number to its Hungarian word representation
@@ -53,8 +38,7 @@ const VOWELS = new Set([
 function convertNumberToHungarianWord(num: number): string {
   // Handle special cases first
   if (num === 0) return HUNGARIAN_NUMBERS[0];
-  if (Math.abs(num) in HUNGARIAN_NUMBERS)
-    return HUNGARIAN_NUMBERS[Math.abs(num)];
+  if (Math.abs(num) in HUNGARIAN_NUMBERS) return HUNGARIAN_NUMBERS[Math.abs(num)];
 
   // Handle negative numbers
   if (num < 0) return `mínusz ${convertNumberToHungarianWord(Math.abs(num))}`;
@@ -65,7 +49,7 @@ function convertNumberToHungarianWord(num: number): string {
     const intWord = convertNumberToHungarianWord(parseInt(intPart));
     const decWord = decPart
       .split("")
-      .map((d) => HUNGARIAN_NUMBERS[parseInt(d)])
+      .map(d => HUNGARIAN_NUMBERS[parseInt(d)])
       .join(" ");
     return `${intWord} egész ${decWord}`;
   }
@@ -96,8 +80,7 @@ function convertNumberToHungarianWord(num: number): string {
     } else {
       const tens = Math.floor(n / 10) * 10;
       const ones = n % 10;
-      result +=
-        HUNGARIAN_NUMBERS[tens] + (ones > 0 ? HUNGARIAN_NUMBERS[ones] : "");
+      result += HUNGARIAN_NUMBERS[tens] + (ones > 0 ? HUNGARIAN_NUMBERS[ones] : "");
     }
   }
 
@@ -160,11 +143,7 @@ export function getHungarianArticle(word: string | number): "a" | "az" {
  * -ba/-be (into)
  * etc.
  */
-export function getHungarianSuffix(
-  word: string,
-  backSuffix: string,
-  frontSuffix: string,
-): string {
+export function getHungarianSuffix(word: string, backSuffix: string, frontSuffix: string): string {
   // Define vowel groups
   const backVowels = ["a", "á", "o", "ó", "u", "ú"];
   const frontVowels = ["e", "é", "i", "í", "ö", "ő", "ü", "ű"];

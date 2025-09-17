@@ -34,26 +34,17 @@ export interface DebounceOptions {
   readonly maxWait?: number;
 }
 
-export interface FunctionSignature<
-  TArgs extends readonly unknown[] = readonly unknown[],
-  TReturn = unknown,
-> {
+export interface FunctionSignature<TArgs extends readonly unknown[] = readonly unknown[], TReturn = unknown> {
   (...args: TArgs): TReturn;
 }
 
-export interface ThrottledFunction<
-  TArgs extends readonly unknown[] = readonly unknown[],
-  TReturn = unknown,
-> {
+export interface ThrottledFunction<TArgs extends readonly unknown[] = readonly unknown[], TReturn = unknown> {
   (...args: TArgs): TReturn | undefined;
   cancel: () => void;
   flush: () => TReturn | undefined;
 }
 
-export interface DebouncedFunction<
-  TArgs extends readonly unknown[] = readonly unknown[],
-  TReturn = unknown,
-> {
+export interface DebouncedFunction<TArgs extends readonly unknown[] = readonly unknown[], TReturn = unknown> {
   (...args: TArgs): TReturn | undefined;
   cancel: () => void;
   flush: () => TReturn | undefined;

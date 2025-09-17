@@ -7,17 +7,10 @@ with external NLWeb services through the bridge endpoints.
 
 import json
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import aiohttp
 
-from .base import (
-    BaseTool,
-    ParameterType,
-    ToolExecutionContext,
-    ToolParameter,
-    ToolResult,
-)
 from .decorators import tool
 
 logger = logging.getLogger(__name__)
@@ -60,8 +53,8 @@ def get_service_manager():
     },
 )
 async def nlweb_ask_tool(
-    query: str, context: Dict[str, Any] = None, site: str = ""
-) -> Dict[str, Any]:
+    query: str, context: dict[str, Any] = None, site: str = ""
+) -> dict[str, Any]:
     """Ask a question to an external NLWeb service."""
     try:
         service_manager = get_service_manager()
@@ -137,7 +130,7 @@ async def nlweb_ask_tool(
 
     except Exception as e:
         logger.error(f"Error in nlweb.ask tool: {e}")
-        return {"success": False, "error": f"Tool execution failed: {str(e)}"}
+        return {"success": False, "error": f"Tool execution failed: {e!s}"}
 
 
 @tool(
@@ -148,7 +141,7 @@ async def nlweb_ask_tool(
     required_permission="read",
     parameters={},
 )
-async def nlweb_list_sites_tool() -> Dict[str, Any]:
+async def nlweb_list_sites_tool() -> dict[str, Any]:
     """List available NLWeb sites."""
     try:
         service_manager = get_service_manager()
@@ -195,7 +188,7 @@ async def nlweb_list_sites_tool() -> Dict[str, Any]:
 
     except Exception as e:
         logger.error(f"Error in nlweb.list_sites tool: {e}")
-        return {"success": False, "error": f"Tool execution failed: {str(e)}"}
+        return {"success": False, "error": f"Tool execution failed: {e!s}"}
 
 
 @tool(
@@ -226,8 +219,8 @@ async def nlweb_list_sites_tool() -> Dict[str, Any]:
     },
 )
 async def nlweb_mcp_tool(
-    method: str, params: Dict[str, Any] = None, id: str = "1"
-) -> Dict[str, Any]:
+    method: str, params: dict[str, Any] = None, id: str = "1"
+) -> dict[str, Any]:
     """Execute a JSON-RPC call to the NLWeb MCP endpoint."""
     try:
         service_manager = get_service_manager()
@@ -275,7 +268,7 @@ async def nlweb_mcp_tool(
 
     except Exception as e:
         logger.error(f"Error in nlweb.mcp tool: {e}")
-        return {"success": False, "error": f"Tool execution failed: {str(e)}"}
+        return {"success": False, "error": f"Tool execution failed: {e!s}"}
 
 
 @tool(
@@ -301,8 +294,8 @@ async def nlweb_mcp_tool(
     },
 )
 async def nlweb_suggest_tool(
-    query: str, context: Dict[str, Any] = None
-) -> Dict[str, Any]:
+    query: str, context: dict[str, Any] = None
+) -> dict[str, Any]:
     """Get tool suggestions from the embedded NLWeb router."""
     try:
         service_manager = get_service_manager()
@@ -328,4 +321,4 @@ async def nlweb_suggest_tool(
 
     except Exception as e:
         logger.error(f"Error in nlweb.suggest tool: {e}")
-        return {"success": False, "error": f"Tool execution failed: {str(e)}"}
+        return {"success": False, "error": f"Tool execution failed: {e!s}"}

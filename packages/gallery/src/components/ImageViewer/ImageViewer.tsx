@@ -9,7 +9,7 @@ import type { ImageViewerProps } from "./types";
 import { useImageViewer } from "./composables";
 import { ImageViewerCore } from "./components";
 
-export const ImageViewer: Component<ImageViewerProps> = (props) => {
+export const ImageViewer: Component<ImageViewerProps> = props => {
   const [local] = splitProps(props, [
     "src",
     "alt",
@@ -33,7 +33,7 @@ export const ImageViewer: Component<ImageViewerProps> = (props) => {
   const { config, state, events, imageClasses } = useImageViewer(
     local,
     () => containerRef,
-    () => imageRef,
+    () => imageRef
   );
 
   return (

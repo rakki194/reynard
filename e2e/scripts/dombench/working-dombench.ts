@@ -453,4 +453,3 @@ export async function runWorkingDOMBench(): Promise<void> {
 if (import.meta.url === `file://${process.argv[1]}`) {
   runWorkingDOMBench().catch(console.error);
 }
-

@@ -12,18 +12,9 @@ import {
   NLWebPerformanceStats,
 } from "../types/index.js";
 import { NLWebToolRegistry } from "./NLWebToolRegistry.js";
-import {
-  createNLWebRouterCache,
-  NLWebRouterCache,
-} from "./NLWebRouterCache.js";
-import {
-  createNLWebRouterSuggest,
-  NLWebRouterSuggest,
-} from "./NLWebRouterSuggest.js";
-import {
-  createNLWebRouterScoring,
-  NLWebRouterScoring,
-} from "./NLWebRouterScoring.js";
+import { createNLWebRouterCache, NLWebRouterCache } from "./NLWebRouterCache.js";
+import { createNLWebRouterSuggest, NLWebRouterSuggest } from "./NLWebRouterSuggest.js";
+import { createNLWebRouterScoring, NLWebRouterScoring } from "./NLWebRouterScoring.js";
 
 export interface NLWebRouterConfig {
   /** Cache TTL in milliseconds */
@@ -85,15 +76,13 @@ export class NLWebRouter {
   /**
    * Get tool suggestions based on query
    */
-  async suggest(
-    request: NLWebSuggestionRequest,
-  ): Promise<NLWebSuggestionResponse> {
+  async suggest(request: NLWebSuggestionRequest): Promise<NLWebSuggestionResponse> {
     return this.suggestHandler.processSuggestion(
       request,
       this.cache,
       this.toolRegistry,
       this.performanceStats,
-      this.emitEvent.bind(this),
+      this.emitEvent.bind(this)
     );
   }
 
@@ -141,7 +130,7 @@ export class NLWebRouter {
   private emitEvent(type: string, data: unknown): void {
     const listeners = this.eventListeners.get(type);
     if (listeners) {
-      listeners.forEach((listener) => listener(data));
+      listeners.forEach(listener => listener(data));
     }
   }
 

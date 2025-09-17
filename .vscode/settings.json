@@ -20,22 +20,18 @@
     "editor.insertSpaces": true
   },
 
-  "ruff.importStrategy": "fromEnvironment",
-  "ruff.lint.enable": true,
-  "ruff.organizeImports": true,
-
-  "mypy-type-checker.importStrategy": "fromEnvironment",
   "mypy-type-checker.args": ["--config-file=${workspaceFolder}/pyproject.toml"],
 
   // Pylint Configuration
   "pylint.importStrategy": "fromEnvironment",
   "pylint.args": ["--rcfile=${workspaceFolder}/pyproject.toml"],
-  "pylint.path": ["${workspaceFolder}/scripts"],
-
-  "vitest.maximumConfigs": 20,
-  "vitest.workspaceConfig": "./vitest.workspace.ts",
-  "vitest.enable": true,
-  "vitest.rootConfig": "./vitest.workspace.ts",
+  "pylint.path": [
+    "${workspaceFolder}/scripts",
+    "${workspaceFolder}/services/agent-naming",
+    "${workspaceFolder}/services/ecs-world",
+    "${workspaceFolder}/services/gatekeeper",
+    "${workspaceFolder}/services/mcp-server"
+  ],
 
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -206,23 +202,6 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
 
-  "files.associations": {
-    "*.py": "python",
-    "pyproject.toml": "toml",
-    "*.toml": "toml",
-    "*.tsx": "typescriptreact",
-    "*.jsx": "javascriptreact",
-    "*.yml": "yaml",
-    "*.yaml": "yaml",
-    "*.sh": "shellscript",
-    "*.bash": "bash",
-    "*.zsh": "shellscript",
-    "Dockerfile": "dockerfile",
-    "*.dockerfile": "dockerfile",
-    "*.md": "markdown",
-    "*.mdc": "markdown"
-  },
-
   "files.exclude": {
     "**/__pycache__": true,
     "**/*.pyc": true,
@@ -254,15 +233,9 @@
     "**/htmlcov": true
   },
 
-  "terminal.integrated.env.linux": {
-    "PYTHONPATH": "${workspaceFolder}/backend:${workspaceFolder}/fenrir:${workspaceFolder}/libraries:${workspaceFolder}/scripts"
-  },
-
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false,
   "python.testing.pytestArgs": ["backend/tests"],
-
-  "git.ignoreLimitWarning": true,
 
   "eslint.enable": true,
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
@@ -279,13 +252,6 @@
     "MD041": false
   },
 
-  // Enable Markdown All in One extension for proper ToC handling
-  "markdown.extension.toc.updateOnSave": true,
-  "markdown.extension.toc.levels": "1..6",
-  "markdown.extension.toc.orderedList": false,
-  "markdown.extension.toc.plaintext": false,
-  "markdown.extension.toc.omittedFromToc": {},
-
   "shellcheck.enable": true,
   "shellcheck.executablePath": "shellcheck",
   "shellcheck.run": "onSave",
@@ -293,8 +259,6 @@
   // Enable auto-save for markdown files to trigger validation
   "files.autoSave": "onFocusChange",
   "files.autoSaveDelay": 1000,
-
-  "task.autoDetect": "on",
 
   "files.watcherExclude": {
     "**/node_modules/**": true,
@@ -306,10 +270,5 @@
 
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,
-  "typescript.updateImportsOnFileMove.enabled": "always",
-
-  "emmet.includeLanguages": {
-    "typescript": "html",
-    "typescriptreact": "html"
-  }
+  "typescript.updateImportsOnFileMove.enabled": "always"
 }

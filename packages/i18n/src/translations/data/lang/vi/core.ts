@@ -75,35 +75,24 @@ export const coreTranslations = {
   // Xác thực mật khẩu
   password: {
     "must-be-at-least-8-characters-long": "Mật khẩu phải có ít nhất 8 ký tự",
-    "must-contain-at-least-one-uppercase-letter":
-      "Mật khẩu phải chứa ít nhất một chữ hoa",
-    "must-contain-at-least-one-lowercase-letter":
-      "Mật khẩu phải chứa ít nhất một chữ thường",
+    "must-contain-at-least-one-uppercase-letter": "Mật khẩu phải chứa ít nhất một chữ hoa",
+    "must-contain-at-least-one-lowercase-letter": "Mật khẩu phải chứa ít nhất một chữ thường",
     "must-contain-at-least-one-number": "Mật khẩu phải chứa ít nhất một số",
-    "must-contain-at-least-one-special-character":
-      "Mật khẩu phải chứa ít nhất một ký tự đặc biệt",
+    "must-contain-at-least-one-special-character": "Mật khẩu phải chứa ít nhất một ký tự đặc biệt",
   },
 
   // Xác thực bảo mật
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Phải bao gồm ít nhất một loại ký tự",
-    "input-contains-potentially-dangerous-html":
-      "Đầu vào chứa HTML có thể nguy hiểm",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Đầu vào chứa các mẫu SQL có thể nguy hiểm",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Đầu vào chứa các mẫu XSS có thể nguy hiểm",
-    "input-contains-path-traversal-patterns":
-      "Đầu vào chứa các mẫu duyệt đường dẫn",
-    "input-contains-windows-reserved-names":
-      "Đầu vào chứa tên dành riêng của Windows",
-    "input-contains-executable-file-extensions":
-      "Đầu vào chứa phần mở rộng tệp thực thi",
+    "at-least-one-character-type-must-be-included": "Phải bao gồm ít nhất một loại ký tự",
+    "input-contains-potentially-dangerous-html": "Đầu vào chứa HTML có thể nguy hiểm",
+    "input-contains-potentially-dangerous-sql-patterns": "Đầu vào chứa các mẫu SQL có thể nguy hiểm",
+    "input-contains-potentially-dangerous-xss-patterns": "Đầu vào chứa các mẫu XSS có thể nguy hiểm",
+    "input-contains-path-traversal-patterns": "Đầu vào chứa các mẫu duyệt đường dẫn",
+    "input-contains-windows-reserved-names": "Đầu vào chứa tên dành riêng của Windows",
+    "input-contains-executable-file-extensions": "Đầu vào chứa phần mở rộng tệp thực thi",
     "input-contains-null-bytes": "Đầu vào chứa byte null",
     "input-contains-hidden-files": "Đầu vào chứa tệp ẩn",
-    "input-contains-javascript-file-extensions":
-      "Đầu vào chứa phần mở rộng tệp JavaScript",
+    "input-contains-javascript-file-extensions": "Đầu vào chứa phần mở rộng tệp JavaScript",
   },
 
   // Hoạt động bất đồng bộ
@@ -131,8 +120,7 @@ export const coreTranslations = {
   // Lưu trữ và tuần tự hóa
   storage: {
     "potentially-dangerous-json-detected": "Phát hiện JSON có thể nguy hiểm",
-    "failed-to-parse-json-from-localstorage":
-      "Không thể phân tích JSON từ localStorage:",
+    "failed-to-parse-json-from-localstorage": "Không thể phân tích JSON từ localStorage:",
     "error-parsing-storage-event": "Lỗi phân tích sự kiện lưu trữ cho khóa",
   },
 
@@ -170,8 +158,7 @@ export const coreTranslations = {
   // Kiểm tra tích hợp
   integration: {
     "session-and-api-key-generation": "Tạo phiên và khóa API",
-    "authentication-and-input-validation-integration":
-      "Tích hợp xác thực và xác thực đầu vào",
+    "authentication-and-input-validation-integration": "Tích hợp xác thực và xác thực đầu vào",
     "performance-and-security-integration": "Tích hợp hiệu suất và bảo mật",
   },
 };

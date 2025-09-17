@@ -7,12 +7,7 @@
  */
 
 import { createSignal, onCleanup } from "solid-js";
-import type {
-  AnimationConfig,
-  AnimationState,
-  AnimationCallbacks,
-  PerformanceStats,
-} from "./AnimationTypes";
+import type { AnimationConfig, AnimationState, AnimationCallbacks, PerformanceStats } from "./AnimationTypes";
 
 export function createAnimationCore(initialConfig: AnimationConfig) {
   let config = { ...initialConfig }; // Make config mutable
@@ -53,7 +48,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     // Safety check: prevent infinite loops
     if (!animationId) {
       console.warn("🦊 AnimationCore: Animation ID is undefined, stopping");
-      setAnimationState((prev) => ({ ...prev, isRunning: false }));
+      setAnimationState(prev => ({ ...prev, isRunning: false }));
       return;
     }
 
@@ -77,9 +72,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     // Safety check: prevent runaway animations
     if (frameCount > maxFramesPerSecond) {
-      console.warn(
-        "🦊 AnimationCore: Frame count exceeded safety limit, stopping animation",
-      );
+      console.warn("🦊 AnimationCore: Frame count exceeded safety limit, stopping animation");
       stop();
       return;
     }
@@ -131,7 +124,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     const renderTime = performance.now() - renderStartTime;
 
     // Update state
-    setAnimationState((prev) => ({
+    setAnimationState(prev => ({
       ...prev,
       frameCount: prev.frameCount + 1,
       lastFrameTime: currentTime,
@@ -160,15 +153,13 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
   const start = (newCallbacks: AnimationCallbacks = {}) => {
     // Safety check: prevent starting if already running
     if (animationState().isRunning) {
-      console.warn(
-        "🦊 AnimationCore: Animation already running, ignoring start request",
-      );
+      console.warn("🦊 AnimationCore: Animation already running, ignoring start request");
       return;
     }
 
     callbacks = { ...callbacks, ...newCallbacks };
 
-    setAnimationState((prev) => ({
+    setAnimationState(prev => ({
       ...prev,
       isRunning: true,
       lastFrameTime: performance.now(),
@@ -179,9 +170,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     // Set safety timeout to prevent runaway animations
     safetyTimeout = window.setTimeout(() => {
-      console.warn(
-        "🦊 AnimationCore: Safety timeout reached, stopping animation",
-      );
+      console.warn("🦊 AnimationCore: Safety timeout reached, stopping animation");
       stop();
     }, 30000); // 30 second safety timeout
 
@@ -203,7 +192,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
       safetyTimeout = undefined;
     }
 
-    setAnimationState((prev) => ({
+    setAnimationState(prev => ({
       ...prev,
       isRunning: false,
     }));

@@ -39,15 +39,9 @@ function MyComponent() {
 
   return (
     <div>
-      <button onClick={() => notify("Success!", "success")}>
-        Show Notification
-      </button>
+      <button onClick={() => notify("Success!", "success")}>Show Notification</button>
       <p>Count: {count()}</p>
-      <input
-        value={searchTerm()}
-        onInput={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search..."
-      />
+      <input value={searchTerm()} onInput={e => setSearchTerm(e.target.value)} placeholder="Search..." />
     </div>
   );
 }
@@ -127,11 +121,7 @@ function MyApp() {
         </Button>
       </Card>
 
-      <Modal
-        open={isModalOpen()}
-        onClose={() => setIsModalOpen(false)}
-        title="Example Modal"
-      >
+      <Modal open={isModalOpen()} onClose={() => setIsModalOpen(false)} title="Example Modal">
         <p>Modal content goes here</p>
       </Modal>
 
@@ -197,8 +187,8 @@ function ChatApp() {
           enableTools: true,
           showTimestamps: true,
         }}
-        onMessageSent={(message) => console.log("Sent:", message)}
-        onMessageReceived={(message) => console.log("Received:", message)}
+        onMessageSent={message => console.log("Sent:", message)}
+        onMessageReceived={message => console.log("Received:", message)}
       />
 
       <P2PChatContainer
@@ -250,8 +240,8 @@ function RAGApp() {
         maxResults: 20,
         similarityThreshold: 0.7,
       }}
-      onSearch={(query) => console.log("Searching:", query)}
-      onResultClick={(result) => console.log("Selected:", result)}
+      onSearch={query => console.log("Searching:", query)}
+      onResultClick={result => console.log("Selected:", result)}
     />
   );
 }
@@ -287,12 +277,7 @@ comprehensive security features.
 #### Auth Example Usage
 
 ```tsx
-import {
-  AuthProvider,
-  LoginForm,
-  RegisterForm,
-  useAuthContext,
-} from "reynard-auth";
+import { AuthProvider, LoginForm, RegisterForm, useAuthContext } from "reynard-auth";
 
 function App() {
   return (
@@ -394,7 +379,7 @@ function Dashboard() {
         data={performanceData}
         autoScroll
         maxDataPoints={50}
-        valueFormatter={(value) => `${value}%`}
+        valueFormatter={value => `${value}%`}
       />
     </div>
   );
@@ -449,9 +434,9 @@ function FileManager() {
   return (
     <Gallery
       data={galleryData()}
-      onFileSelect={(file) => console.log("Selected:", file)}
-      onFolderNavigate={(path) => console.log("Navigate to:", path)}
-      onFileUpload={(files) => console.log("Upload:", files)}
+      onFileSelect={file => console.log("Selected:", file)}
+      onFolderNavigate={path => console.log("Navigate to:", path)}
+      onFileUpload={files => console.log("Upload:", files)}
       showUpload={true}
       showBreadcrumbs={true}
       enableDragAndDrop={true}
@@ -528,12 +513,7 @@ const settingsSchema = {
 function App() {
   return (
     <SettingsProvider config={{ schema: settingsSchema }}>
-      <SettingsPanel
-        title="Application Settings"
-        showSearch={true}
-        showCategories={true}
-        showImportExport={true}
-      />
+      <SettingsPanel title="Application Settings" showSearch={true} showCategories={true} showImportExport={true} />
     </SettingsProvider>
   );
 }
@@ -628,11 +608,7 @@ Advanced file processing pipeline with thumbnail generation, metadata extraction
 #### File Processing Example Usage
 
 ```tsx
-import {
-  ThumbnailGenerator,
-  MetadataExtractor,
-  useFileProcessing,
-} from "reynard-file-processing";
+import { ThumbnailGenerator, MetadataExtractor, useFileProcessing } from "reynard-file-processing";
 
 function FileProcessor() {
   const { generateThumbnail, extractMetadata } = useFileProcessing();
@@ -652,9 +628,7 @@ function FileProcessor() {
     console.log("Metadata:", metadata);
   };
 
-  return (
-    <input type="file" onChange={(e) => handleFileUpload(e.target.files[0])} />
-  );
+  return <input type="file" onChange={e => handleFileUpload(e.target.files[0])} />;
 }
 ```
 
@@ -704,11 +678,7 @@ The annotating system consists of multiple specialized packages:
 #### Annotating Example Usage
 
 ```tsx
-import {
-  createUnifiedAnnotationManager,
-  PRODUCTION_CONFIG,
-  type CaptionTask,
-} from "reynard-annotating";
+import { createUnifiedAnnotationManager, PRODUCTION_CONFIG, type CaptionTask } from "reynard-annotating";
 
 function CaptionGenerator() {
   const [manager, setManager] = createSignal(null);
@@ -727,7 +697,7 @@ function CaptionGenerator() {
 
     // Generate captions using different generators
     const results = await Promise.all(
-      images.map(async (image) => {
+      images.map(async image => {
         const task: CaptionTask = {
           imagePath: image.name,
           generatorName: "jtp2",
@@ -735,7 +705,7 @@ function CaptionGenerator() {
         };
 
         return await service.generateCaption(task);
-      }),
+      })
     );
 
     return results;
@@ -743,12 +713,7 @@ function CaptionGenerator() {
 
   return (
     <div>
-      <input
-        type="file"
-        multiple
-        accept="image/*"
-        onChange={(e) => generateCaptions(Array.from(e.target.files))}
-      />
+      <input type="file" multiple accept="image/*" onChange={e => generateCaptions(Array.from(e.target.files))} />
     </div>
   );
 }
@@ -787,11 +752,7 @@ sophisticated overlay effects based on Yipyap's BoundingBoxEditor implementation
 #### Floating Panel Example Usage
 
 ```tsx
-import {
-  FloatingPanelOverlay,
-  FloatingPanel,
-  useOverlayManager,
-} from "reynard-floating-panel";
+import { FloatingPanelOverlay, FloatingPanel, useOverlayManager } from "reynard-floating-panel";
 import type { FloatingPanel as FloatingPanelType } from "reynard-floating-panel";
 
 function MyApp() {
@@ -830,22 +791,14 @@ function MyApp() {
 
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-      <button onClick={() => overlayManager.toggleOverlay()}>
-        Toggle Overlay
-      </button>
+      <button onClick={() => overlayManager.toggleOverlay()}>Toggle Overlay</button>
 
       <FloatingPanelOverlay
         isActive={overlayManager.isActive()}
         transitionPhase={overlayManager.overlayState().transitionPhase}
       >
-        {panels.map((panel) => (
-          <FloatingPanel
-            key={panel.id}
-            id={panel.id}
-            position={panel.position}
-            size={panel.size}
-            config={panel.config}
-          >
+        {panels.map(panel => (
+          <FloatingPanel key={panel.id} id={panel.id} position={panel.position} size={panel.size} config={panel.config}>
             {panel.content}
           </FloatingPanel>
         ))}
@@ -917,12 +870,7 @@ function CaptionEditor() {
 
   return (
     <div>
-      <CaptionInput
-        value={caption()}
-        onInput={setCaption}
-        captionType="CAPTION"
-        placeholder="Enter your caption..."
-      />
+      <CaptionInput value={caption()} onInput={setCaption} captionType="CAPTION" placeholder="Enter your caption..." />
 
       <TagBubble
         tags={tags()}
@@ -979,9 +927,7 @@ function CompleteCaptionWorkflow() {
       setEditedCaption(caption);
 
       // Extract tags from generated caption
-      const extractedTags = caption
-        .split(/[,\s]+/)
-        .filter((tag) => tag.length > 2);
+      const extractedTags = caption.split(/[,\s]+/).filter(tag => tag.length > 2);
       setTags(extractedTags);
 
       notify("Caption generated successfully!", "success");
@@ -1010,21 +956,13 @@ function CompleteCaptionWorkflow() {
 
       {/* Image Upload */}
       <div style="margin-bottom: 1rem;">
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files?.[0] || null)}
-        />
+        <input type="file" accept="image/*" onChange={e => setImage(e.target.files?.[0] || null)} />
         {image() && <p>Selected: {image()!.name}</p>}
       </div>
 
       {/* AI Generation */}
       <div style="margin-bottom: 1rem;">
-        <Button
-          onClick={generateCaption}
-          disabled={!image() || isGenerating()}
-          loading={isGenerating()}
-        >
+        <Button onClick={generateCaption} disabled={!image() || isGenerating()} loading={isGenerating()}>
           {isGenerating() ? "Generating..." : "Generate Caption with AI"}
         </Button>
       </div>
@@ -1033,9 +971,7 @@ function CompleteCaptionWorkflow() {
       {generatedCaption() && (
         <div style="margin-bottom: 1rem; padding: 1rem; background: var(--secondary-bg); border-radius: 6px;">
           <h4>AI Generated Caption:</h4>
-          <p style="font-style: italic; color: var(--text-secondary);">
-            {generatedCaption()}
-          </p>
+          <p style="font-style: italic; color: var(--text-secondary);">{generatedCaption()}</p>
         </div>
       )}
 
@@ -1055,14 +991,7 @@ function CompleteCaptionWorkflow() {
         <TagBubble
           tags={tags()}
           onTagsChange={setTags}
-          suggestions={[
-            "portrait",
-            "landscape",
-            "abstract",
-            "nature",
-            "art",
-            "photography",
-          ]}
+          suggestions={["portrait", "landscape", "abstract", "nature", "art", "photography"]}
           maxTags={15}
           label="Tags"
         />
@@ -1080,11 +1009,7 @@ function CompleteCaptionWorkflow() {
       />
 
       {/* Save Button */}
-      <Button
-        onClick={saveCaption}
-        disabled={!editedCaption().trim()}
-        variant="primary"
-      >
+      <Button onClick={saveCaption} disabled={!editedCaption().trim()} variant="primary">
         Save Caption
       </Button>
     </Card>

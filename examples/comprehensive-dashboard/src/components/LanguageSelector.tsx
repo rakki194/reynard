@@ -5,7 +5,7 @@ import { Select } from "reynard-components";
 const LanguageSelector: Component = () => {
   const { locale, setLocale, languages } = useI18n();
 
-  const languageOptions = languages.map((l) => ({
+  const languageOptions = languages.map(l => ({
     value: l.code,
     label: l.name,
   }));

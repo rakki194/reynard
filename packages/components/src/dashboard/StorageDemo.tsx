@@ -11,12 +11,9 @@ export const StorageDemo: Component = () => {
   const { notify } = useNotifications();
 
   // LocalStorage demo
-  const [userName, setUserName, removeUserName] = useLocalStorage(
-    "reynard-demo-username",
-    {
-      defaultValue: "",
-    },
-  );
+  const [userName, setUserName, removeUserName] = useLocalStorage("reynard-demo-username", {
+    defaultValue: "",
+  });
 
   const handleSaveName = () => {
     if (userName().trim()) {
@@ -52,7 +49,7 @@ export const StorageDemo: Component = () => {
             type="text"
             placeholder="Enter your name"
             value={userName()}
-            onInput={(e) => setUserName(e.target.value)}
+            onInput={e => setUserName(e.target.value)}
             class="input"
           />
           <button class="button button--small" onClick={handleSaveName}>

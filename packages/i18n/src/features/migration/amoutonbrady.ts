@@ -4,11 +4,7 @@
  * Migration utilities for amoutonbrady i18n library.
  */
 
-import type {
-  MigrationOptions,
-  MigrationResult,
-  MigrationStatistics,
-} from "./types";
+import type { MigrationOptions, MigrationResult, MigrationStatistics } from "./types";
 import type { Translations } from "../../types";
 
 /**
@@ -18,7 +14,7 @@ function processNestedTranslations(
   nestedValue: Record<string, unknown>,
   key: string,
   statistics: MigrationStatistics,
-  warnings: string[],
+  warnings: string[]
 ): Record<string, string> {
   const nestedTranslations: Record<string, string> = {};
 
@@ -38,10 +34,7 @@ function processNestedTranslations(
 /**
  * Migrate from amoutonbrady
  */
-export function migrateFromAmoutonbrady(
-  sourceTranslations: unknown,
-  _options: MigrationOptions,
-): MigrationResult {
+export function migrateFromAmoutonbrady(sourceTranslations: unknown, _options: MigrationOptions): MigrationResult {
   const warnings: string[] = [];
   const errors: string[] = [];
   const statistics: MigrationStatistics = {
@@ -66,7 +59,7 @@ export function migrateFromAmoutonbrady(
           value as Record<string, unknown>,
           key,
           statistics,
-          warnings,
+          warnings
         );
       } else {
         warnings.push(`Skipping non-string value for key: ${key}`);
@@ -82,9 +75,7 @@ export function migrateFromAmoutonbrady(
       statistics,
     };
   } catch (error) {
-    errors.push(
-      `Migration failed: ${error instanceof Error ? error.message : String(error)}`,
-    );
+    errors.push(`Migration failed: ${error instanceof Error ? error.message : String(error)}`);
     return {
       success: false,
       migratedTranslations: {} as Translations,

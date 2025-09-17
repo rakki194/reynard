@@ -5,14 +5,7 @@
  * following Reynard modular architecture patterns.
  */
 
-import type { 
-  RAGResult, 
-  RAGDocument, 
-  RAGStats, 
-  RAGQueryResponse,
-  RAGQueryHit,
-  RAGModality 
-} from "../types";
+import type { RAGResult, RAGDocument, RAGStats, RAGQueryResponse, RAGQueryHit, RAGModality } from "../types";
 
 /**
  * RAG State interface representing the state returned by useRAGSearchState
@@ -50,11 +43,7 @@ export interface RAGState {
   // Operations
   loadDocuments: () => Promise<void>;
   loadStats: () => Promise<void>;
-  uploadFile: (
-    file: File,
-    basePath: string,
-    onUpload?: (result: any) => void,
-  ) => Promise<void>;
+  uploadFile: (file: File, basePath: string, onUpload?: (result: any) => void) => Promise<void>;
   deleteDocument: (documentId: string) => Promise<void>;
   search: (query: string) => Promise<void>;
 
@@ -77,7 +66,7 @@ export interface RAGHandlers {
   handleAdvancedSearch?: (query: string) => Promise<void>;
   handleOpenFileModal?: (filePath: string, fileName: string, fileContent: string) => void;
   handleOpenImageModal?: (imagePath: string, imageId: string, score: number) => void;
-  
+
   // Advanced state (from RAGSearch component)
   enhancedResults?: RAGQueryHit[];
   modality?: RAGModality;

@@ -5,9 +5,6 @@
 for creating devious attack vectors.
 """
 
-from .payload_generator import PayloadGenerator, PayloadCategory
+from .payload_generator import PayloadCategory, PayloadGenerator
 
-__all__ = [
-    "PayloadGenerator",
-    "PayloadCategory"
-]
+__all__ = ["PayloadCategory", "PayloadGenerator"]

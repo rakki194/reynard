@@ -6,19 +6,13 @@
  */
 
 import { VideoMetadata } from "../../types";
-import {
-  BaseMetadataExtractor,
-  MetadataExtractionOptions,
-} from "./BaseMetadataExtractor";
+import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
 
 export class VideoMetadataExtractor extends BaseMetadataExtractor {
   /**
    * Extract metadata from video files
    */
-  async extractMetadata(
-    file: File | string,
-    options?: Partial<MetadataExtractionOptions>,
-  ): Promise<VideoMetadata> {
+  async extractMetadata(file: File | string, options?: Partial<MetadataExtractionOptions>): Promise<VideoMetadata> {
     const mergedOptions = { ...this.options, ...options };
     const video = await this.loadVideo(file);
     const basicInfo = await this.getBasicFileInfo(file);

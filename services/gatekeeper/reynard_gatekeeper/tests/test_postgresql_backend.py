@@ -178,7 +178,9 @@ class TestPostgreSQLBackend:
                 )
                 mock_users.append(mock_user)
 
-            mock_db.query.return_value.offset.return_value.limit.return_value.all.return_value = mock_users
+            mock_db.query.return_value.offset.return_value.limit.return_value.all.return_value = (
+                mock_users
+            )
 
             # Test listing users
             users = await backend.list_users(skip=0, limit=10)

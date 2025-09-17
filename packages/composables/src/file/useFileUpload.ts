@@ -8,10 +8,7 @@ export interface FileUploadOptions {
   onSuccess?: (response: any) => void;
   onError?: (error: Error) => void;
   uploadUrl?: string;
-  authFetch?: (
-    input: RequestInfo | URL,
-    init?: RequestInit,
-  ) => Promise<Response>;
+  authFetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 }
 
 export interface UploadProgress {
@@ -39,9 +36,7 @@ export function useFileUpload(options: FileUploadOptions = {}) {
     authFetch = fetch,
   } = options;
 
-  const [uploadProgress, setUploadProgress] = createSignal<UploadProgress[]>(
-    [],
-  );
+  const [uploadProgress, setUploadProgress] = createSignal<UploadProgress[]>([]);
   const [isUploading, setIsUploading] = createSignal(false);
 
   // Validate file
@@ -76,7 +71,7 @@ export function useFileUpload(options: FileUploadOptions = {}) {
       status: "uploading",
     };
 
-    setUploadProgress((prev) => [...prev, progress]);
+    setUploadProgress(prev => [...prev, progress]);
 
     try {
       const response = await authFetch(uploadUrl, {
@@ -85,33 +80,22 @@ export function useFileUpload(options: FileUploadOptions = {}) {
       });
 
       if (!response.ok) {
-        throw new Error(
-          `Upload failed: ${response.status} ${response.statusText}`,
-        );
+        throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
       }
 
       const result = await response.json();
 
-      setUploadProgress((prev) =>
-        prev.map((p) =>
-          p.file === file
-            ? { ...p, progress: 100, status: "completed" as const }
-            : p,
-        ),
+      setUploadProgress(prev =>
+        prev.map(p => (p.file === file ? { ...p, progress: 100, status: "completed" as const } : p))
       );
 
       onSuccess?.(result);
       return result;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Upload failed";
+      const errorMessage = error instanceof Error ? error.message : "Upload failed";
 
-      setUploadProgress((prev) =>
-        prev.map((p) =>
-          p.file === file
-            ? { ...p, status: "error" as const, error: errorMessage }
-            : p,
-        ),
+      setUploadProgress(prev =>
+        prev.map(p => (p.file === file ? { ...p, status: "error" as const, error: errorMessage } : p))
       );
 
       onError?.(error instanceof Error ? error : new Error(errorMessage));
@@ -131,9 +115,7 @@ export function useFileUpload(options: FileUploadOptions = {}) {
     setUploadProgress([]);
 
     try {
-      const results = await Promise.all(
-        fileArray.map((file) => uploadFile(file)),
-      );
+      const results = await Promise.all(fileArray.map(file => uploadFile(file)));
 
       return results;
     } finally {
@@ -148,7 +130,7 @@ export function useFileUpload(options: FileUploadOptions = {}) {
 
   // Remove specific file from progress
   const removeFromProgress = (file: File) => {
-    setUploadProgress((prev) => prev.filter((p) => p.file !== file));
+    setUploadProgress(prev => prev.filter(p => p.file !== file));
   };
 
   return {

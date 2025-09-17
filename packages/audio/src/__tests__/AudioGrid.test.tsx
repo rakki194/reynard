@@ -12,9 +12,7 @@ import { AudioGrid } from "../../AudioGrid";
 // Mock the file processing dependencies
 vi.mock("reynard-file-processing", () => ({
   AudioThumbnailGenerator: vi.fn().mockImplementation(() => ({
-    generateThumbnail: vi
-      .fn()
-      .mockResolvedValue("data:image/webp;base64,mock-thumbnail"),
+    generateThumbnail: vi.fn().mockResolvedValue("data:image/webp;base64,mock-thumbnail"),
   })),
   AudioMetadataExtractor: vi.fn().mockImplementation(() => ({
     extractMetadata: vi.fn().mockResolvedValue({
@@ -34,9 +32,7 @@ vi.mock("../AudioPlayer", () => ({
 
 // Mock the AudioWaveformVisualizer component
 vi.mock("../AudioWaveformVisualizer", () => ({
-  AudioWaveformVisualizer: (props: any) => (
-    <div data-testid="audio-waveform-visualizer" {...props} />
-  ),
+  AudioWaveformVisualizer: (props: any) => <div data-testid="audio-waveform-visualizer" {...props} />,
 }));
 
 describe("AudioGrid", () => {
@@ -82,27 +78,21 @@ describe("AudioGrid", () => {
     });
 
     it("should render with custom class", () => {
-      render(() => (
-        <AudioGrid initialFiles={mockAudioFiles} class="custom-grid" />
-      ));
+      render(() => <AudioGrid initialFiles={mockAudioFiles} class="custom-grid" />);
 
       const grid = screen.getByRole("generic");
       expect(grid).toHaveClass("audio-grid", "custom-grid");
     });
 
     it("should show metadata when enabled", () => {
-      render(() => (
-        <AudioGrid initialFiles={mockAudioFiles} showMetadata={true} />
-      ));
+      render(() => <AudioGrid initialFiles={mockAudioFiles} showMetadata={true} />);
 
       expect(screen.getByText("3:00")).toBeInTheDocument(); // 180 seconds
       expect(screen.getByText("4:00")).toBeInTheDocument(); // 240 seconds
     });
 
     it("should not show metadata when disabled", () => {
-      render(() => (
-        <AudioGrid initialFiles={mockAudioFiles} showMetadata={false} />
-      ));
+      render(() => <AudioGrid initialFiles={mockAudioFiles} showMetadata={false} />);
 
       expect(screen.queryByText("3:00")).not.toBeInTheDocument();
       expect(screen.queryByText("4:00")).not.toBeInTheDocument();
@@ -112,9 +102,7 @@ describe("AudioGrid", () => {
   describe("File Selection", () => {
     it("should select file when clicked", () => {
       const onFileSelect = vi.fn();
-      render(() => (
-        <AudioGrid initialFiles={mockAudioFiles} onFileSelect={onFileSelect} />
-      ));
+      render(() => <AudioGrid initialFiles={mockAudioFiles} onFileSelect={onFileSelect} />);
 
       const fileItem = screen.getByText("song1.mp3");
       fireEvent.click(fileItem);
@@ -128,9 +116,7 @@ describe("AudioGrid", () => {
       const fileItem = screen.getByText("song1.mp3");
       fireEvent.click(fileItem);
 
-      expect(fileItem.closest(".audio-file-card")).toHaveClass(
-        "audio-file-card--selected",
-      );
+      expect(fileItem.closest(".audio-file-card")).toHaveClass("audio-file-card--selected");
     });
 
     it("should deselect file when clicked again", () => {
@@ -140,18 +126,14 @@ describe("AudioGrid", () => {
       fireEvent.click(fileItem);
       fireEvent.click(fileItem);
 
-      expect(fileItem.closest(".audio-file-card")).not.toHaveClass(
-        "audio-file-card--selected",
-      );
+      expect(fileItem.closest(".audio-file-card")).not.toHaveClass("audio-file-card--selected");
     });
   });
 
   describe("File Removal", () => {
     it("should remove file when remove button is clicked", () => {
       const onFileRemove = vi.fn();
-      render(() => (
-        <AudioGrid initialFiles={mockAudioFiles} onFileRemove={onFileRemove} />
-      ));
+      render(() => <AudioGrid initialFiles={mockAudioFiles} onFileRemove={onFileRemove} />);
 
       const removeButton = screen.getAllByRole("button", {
         name: /remove/i,
@@ -176,12 +158,7 @@ describe("AudioGrid", () => {
   describe("Audio Analysis", () => {
     it("should trigger analysis when analyze button is clicked", () => {
       const onAnalyzeAudio = vi.fn();
-      render(() => (
-        <AudioGrid
-          initialFiles={mockAudioFiles}
-          onAnalyzeAudio={onAnalyzeAudio}
-        />
-      ));
+      render(() => <AudioGrid initialFiles={mockAudioFiles} onAnalyzeAudio={onAnalyzeAudio} />);
 
       const analyzeButton = screen.getAllByRole("button", {
         name: /analyze/i,
@@ -192,22 +169,18 @@ describe("AudioGrid", () => {
     });
 
     it("should show analyzing state", () => {
-      render(() => (
-        <AudioGrid initialFiles={mockAudioFiles} isAnalyzing={true} />
-      ));
+      render(() => <AudioGrid initialFiles={mockAudioFiles} isAnalyzing={true} />);
 
       expect(screen.getByText(/analyzing/i)).toBeInTheDocument();
     });
 
     it("should disable analyze buttons when analyzing", () => {
-      render(() => (
-        <AudioGrid initialFiles={mockAudioFiles} isAnalyzing={true} />
-      ));
+      render(() => <AudioGrid initialFiles={mockAudioFiles} isAnalyzing={true} />);
 
       const analyzeButtons = screen.getAllByRole("button", {
         name: /analyze/i,
       });
-      analyzeButtons.forEach((button) => {
+      analyzeButtons.forEach(button => {
         expect(button).toBeDisabled();
       });
     });
@@ -268,31 +241,21 @@ describe("AudioGrid", () => {
     it("should have proper ARIA labels", () => {
       render(() => <AudioGrid initialFiles={mockAudioFiles} />);
 
-      expect(screen.getByRole("generic")).toHaveAttribute(
-        "aria-label",
-        "Audio file grid",
-      );
+      expect(screen.getByRole("generic")).toHaveAttribute("aria-label", "Audio file grid");
     });
 
     it("should support keyboard navigation", () => {
       render(() => <AudioGrid initialFiles={mockAudioFiles} />);
 
       const fileItem = screen.getByText("song1.mp3");
-      expect(fileItem.closest(".audio-file-card")).toHaveAttribute(
-        "tabindex",
-        "0",
-      );
+      expect(fileItem.closest(".audio-file-card")).toHaveAttribute("tabindex", "0");
     });
 
     it("should have proper button labels", () => {
       render(() => <AudioGrid initialFiles={mockAudioFiles} />);
 
-      expect(
-        screen.getAllByRole("button", { name: /remove/i })[0],
-      ).toBeInTheDocument();
-      expect(
-        screen.getAllByRole("button", { name: /analyze/i })[0],
-      ).toBeInTheDocument();
+      expect(screen.getAllByRole("button", { name: /remove/i })[0]).toBeInTheDocument();
+      expect(screen.getAllByRole("button", { name: /analyze/i })[0]).toBeInTheDocument();
     });
   });
 });

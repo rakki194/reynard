@@ -7,11 +7,7 @@
 
 import { readFileSync, readdirSync, statSync } from "fs";
 import { join, extname } from "path";
-import {
-  runI18nTests,
-  generateI18nReport,
-  type I18nTestConfig,
-} from "./i18n-testing.js";
+import { runI18nTests, generateI18nReport, type I18nTestConfig } from "./i18n-testing.js";
 
 // Configuration
 const DEFAULT_CONFIG: I18nTestConfig = {
@@ -34,15 +30,7 @@ const DEFAULT_CONFIG: I18nTestConfig = {
 const CHECKED_EXTENSIONS = [".tsx", ".jsx", ".ts", ".js"];
 
 // Directories to ignore
-const IGNORE_DIRS = [
-  "node_modules",
-  ".git",
-  "dist",
-  "build",
-  "coverage",
-  "__tests__",
-  "test",
-];
+const IGNORE_DIRS = ["node_modules", ".git", "dist", "build", "coverage", "__tests__", "test"];
 
 /**
  * Main function
@@ -62,7 +50,7 @@ async function main() {
     // Exit with error code if issues found
     const hasErrors =
       result.hardcodedStrings.length > 0 ||
-      result.translationValidation.some((v) => v.missingKeys.length > 0) ||
+      result.translationValidation.some(v => v.missingKeys.length > 0) ||
       result.rtlIssues.length > 0;
 
     if (hasErrors) {

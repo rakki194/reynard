@@ -100,22 +100,11 @@ describe("Performance Types", () => {
     });
 
     it("should allow all warning types", () => {
-      const types: PerformanceWarning["type"][] = [
-        "memory",
-        "css",
-        "dom",
-        "rendering",
-        "freeze",
-      ];
-      const severities: PerformanceWarning["severity"][] = [
-        "low",
-        "medium",
-        "high",
-        "critical",
-      ];
+      const types: PerformanceWarning["type"][] = ["memory", "css", "dom", "rendering", "freeze"];
+      const severities: PerformanceWarning["severity"][] = ["low", "medium", "high", "critical"];
 
-      types.forEach((type) => {
-        severities.forEach((severity) => {
+      types.forEach(type => {
+        severities.forEach(severity => {
           const warning: PerformanceWarning = {
             type,
             severity,
@@ -255,10 +244,7 @@ describe("Performance Types", () => {
         return metrics.duration + metrics.memoryDelta;
       }
 
-      function checkBudget(
-        budget: PerformanceBudget,
-        metrics: PerformanceMetrics,
-      ): boolean {
+      function checkBudget(budget: PerformanceBudget, metrics: PerformanceMetrics): boolean {
         return metrics.duration <= budget.maxDuration;
       }
 

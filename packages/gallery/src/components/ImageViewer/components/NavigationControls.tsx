@@ -7,9 +7,7 @@ import { Component } from "solid-js";
 import { Button } from "reynard-components";
 import type { NavigationControlsProps } from "../types";
 
-export const NavigationControls: Component<NavigationControlsProps> = (
-  props,
-) => {
+export const NavigationControls: Component<NavigationControlsProps> = props => {
   return (
     <div class="reynard-image-viewer__nav-controls">
       <Button size="sm" variant="ghost" onClick={props.onReset}>

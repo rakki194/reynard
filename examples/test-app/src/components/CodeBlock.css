@@ -29,8 +29,7 @@
 
 .code-block {
   position: relative;
-  font-family:
-    "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "Courier New", monospace;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "Courier New", monospace;
   font-size: 0.875rem;
   line-height: 1.5;
   color: var(--color-text);
@@ -246,27 +245,15 @@
 }
 
 /* Ensure line numbers are visible in strawberry theme */
-[data-theme="strawberry"]
-  .code-block.with-line-numbers
-  .highlighted-code
-  :global(.line::before) {
+[data-theme="strawberry"] .code-block.with-line-numbers .highlighted-code :global(.line::before) {
   color: #e91e63;
   opacity: 0.6;
 }
 
 /* Ensure line numbers are visible in dark themes */
-[data-theme="dark"]
-  .code-block.with-line-numbers
-  .highlighted-code
-  :global(.line::before),
-[data-theme="gray"]
-  .code-block.with-line-numbers
-  .highlighted-code
-  :global(.line::before),
-[data-theme="strawberry"]
-  .code-block.with-line-numbers
-  .highlighted-code
-  :global(.line::before) {
+[data-theme="dark"] .code-block.with-line-numbers .highlighted-code :global(.line::before),
+[data-theme="gray"] .code-block.with-line-numbers .highlighted-code :global(.line::before),
+[data-theme="strawberry"] .code-block.with-line-numbers .highlighted-code :global(.line::before) {
   color: #999;
   opacity: 0.8;
 }

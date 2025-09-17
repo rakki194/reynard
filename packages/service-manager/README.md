@@ -21,12 +21,7 @@ npm install reynard-service-manager
 ## Quick Start
 
 ```typescript
-import {
-  ServiceManager,
-  BaseService,
-  ServiceStatus,
-  ServiceHealth,
-} from "reynard-service-manager";
+import { ServiceManager, BaseService, ServiceStatus, ServiceHealth } from "reynard-service-manager";
 
 // Create a custom service
 class MyService extends BaseService {
@@ -155,7 +150,7 @@ enum ServiceHealth {
 ### Event Handling
 
 ```typescript
-serviceManager.addEventListener((event) => {
+serviceManager.addEventListener(event => {
   console.log("Service event:", event);
 });
 ```

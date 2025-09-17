@@ -9,11 +9,7 @@ import type { AnimationConfig } from "./AnimationConfig.js";
 /**
  * Calculate stagger delay for a given index
  */
-export function calculateStaggerDelay(
-  index: number,
-  totalItems: number,
-  config: AnimationConfig,
-): number {
+export function calculateStaggerDelay(index: number, totalItems: number, config: AnimationConfig): number {
   const { baseDelay, staggerStep, maxDelay, direction } = config;
 
   let delay = baseDelay;

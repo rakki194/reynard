@@ -57,9 +57,7 @@ export const DOMAIN_SPECIFIC_PATTERNS = {
 /**
  * Create ignore patterns for a specific domain
  */
-export function createIgnorePatterns(
-  domain?: keyof typeof DOMAIN_SPECIFIC_PATTERNS,
-): string[] {
+export function createIgnorePatterns(domain?: keyof typeof DOMAIN_SPECIFIC_PATTERNS): string[] {
   const patterns = [...BASE_IGNORE_PATTERNS];
 
   if (domain && DOMAIN_SPECIFIC_PATTERNS[domain]) {

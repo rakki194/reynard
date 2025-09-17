@@ -6,11 +6,7 @@
 
 import { Component, createSignal } from "solid-js";
 import { Button } from "reynard-components";
-import {
-  AIGalleryGrid,
-  type FileItem,
-  type FolderItem,
-} from "reynard-gallery-ai";
+import { AIGalleryGrid, type FileItem, type FolderItem } from "reynard-gallery-ai";
 import { useNotifications } from "reynard-core";
 import type { UseAppStateReturn } from "../composables/useAppState";
 import type { UseWorkflowReturn } from "../composables/useWorkflow";
@@ -21,10 +17,7 @@ interface AIGalleryTabProps {
   workflow: UseWorkflowReturn;
   onBatchProcess: () => void;
   selectedItems: FileItem[];
-  onSelectionChange: (
-    item: FileItem | FolderItem,
-    mode: "single" | "add" | "range",
-  ) => void;
+  onSelectionChange: (item: FileItem | FolderItem, mode: "single" | "add" | "range") => void;
   onItemClick: (item: FileItem | FolderItem) => void;
   onItemDoubleClick: (item: FileItem | FolderItem) => void;
   onContextMenu: (item: FileItem | FolderItem, x: number, y: number) => void;
@@ -48,7 +41,7 @@ const convertToFileItem = (image: ImageItem): FileItem => ({
   },
 });
 
-export const AIGalleryTab: Component<AIGalleryTabProps> = (props) => {
+export const AIGalleryTab: Component<AIGalleryTabProps> = props => {
   const { notify } = useNotifications();
 
   // Convert images to file items
@@ -61,9 +54,7 @@ export const AIGalleryTab: Component<AIGalleryTabProps> = (props) => {
           <label>AI Model:</label>
           <select
             value={props.appState.selectedModel()}
-            onChange={(e) =>
-              props.appState.setSelectedModel(e.currentTarget.value)
-            }
+            onChange={e => props.appState.setSelectedModel(e.currentTarget.value)}
             disabled={props.appState.isGenerating()}
             title="Select AI model for caption generation"
           >
@@ -77,9 +68,7 @@ export const AIGalleryTab: Component<AIGalleryTabProps> = (props) => {
         <div class="control-group">
           <Button
             onClick={props.onBatchProcess}
-            disabled={
-              props.selectedItems.length === 0 || props.appState.isGenerating()
-            }
+            disabled={props.selectedItems.length === 0 || props.appState.isGenerating()}
             variant="primary"
           >
             🤖 Batch Process ({props.selectedItems.length})

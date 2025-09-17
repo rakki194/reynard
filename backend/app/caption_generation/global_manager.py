@@ -5,13 +5,11 @@ This module provides a singleton pattern for the captioner manager,
 ensuring a single instance is used throughout the application.
 """
 
-from typing import Optional
-
 from .plugin import CaptionerPlugin
 from .plugin_manager import CaptionerManager
 
 # Global manager instance
-_captioner_manager: Optional[CaptionerManager] = None
+_captioner_manager: CaptionerManager | None = None
 
 
 def get_captioner_manager() -> CaptionerManager:

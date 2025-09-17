@@ -3,12 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  HTTPClient,
-  HTTPClientConfig,
-  UploadOptions,
-  mockFetch,
-} from "../http-client-setup";
+import { HTTPClient, HTTPClientConfig, UploadOptions, mockFetch } from "../http-client-setup";
 
 describe("HTTPClient Upload Methods", () => {
   let httpClient: HTTPClient;
@@ -61,7 +56,7 @@ describe("HTTPClient Upload Methods", () => {
           "X-Custom": "value",
           Authorization: "Bearer test-key",
         }),
-      }),
+      })
     );
 
     expect(result).toEqual({
@@ -125,9 +120,7 @@ describe("HTTPClient Upload Methods", () => {
       formData,
     };
 
-    await expect(httpClient.upload(options)).rejects.toThrow(
-      "HTTP 413: Payload Too Large",
-    );
+    await expect(httpClient.upload(options)).rejects.toThrow("HTTP 413: Payload Too Large");
   });
 
   it("should use custom headers for upload", async () => {
@@ -158,7 +151,7 @@ describe("HTTPClient Upload Methods", () => {
         headers: expect.objectContaining({
           "X-Upload-Type": "custom",
         }),
-      }),
+      })
     );
   });
 });

@@ -24,17 +24,13 @@ export function useSceneManagement(config: SceneManagementConfig) {
 
     // Remove thumbnail sprites
     if (pointCloudRenderer()) {
-      pointCloudRenderer()
-        .spriteManager()
-        .disposeSprites(thumbnailSprites(), config.scene);
+      pointCloudRenderer().spriteManager().disposeSprites(thumbnailSprites(), config.scene);
     }
     setThumbnailSprites([]);
 
     // Remove text sprites
     if (pointCloudRenderer()) {
-      pointCloudRenderer()
-        .spriteManager()
-        .disposeSprites(textSprites(), config.scene);
+      pointCloudRenderer().spriteManager().disposeSprites(textSprites(), config.scene);
     }
     setTextSprites([]);
   };
@@ -44,9 +40,7 @@ export function useSceneManagement(config: SceneManagementConfig) {
 
     try {
       // Import and initialize point cloud renderer
-      const { usePointCloudInitialization } = await import(
-        "./usePointCloudInitialization"
-      );
+      const { usePointCloudInitialization } = await import("./usePointCloudInitialization");
       const initialization = usePointCloudInitialization();
 
       const renderer = await initialization.initializeRenderer(
@@ -55,7 +49,7 @@ export function useSceneManagement(config: SceneManagementConfig) {
         config.renderer,
         config.points,
         config.config,
-        config.onPointSelect,
+        config.onPointSelect
       );
 
       setPointCloudRenderer(renderer);

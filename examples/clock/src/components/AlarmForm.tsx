@@ -10,7 +10,7 @@ interface AlarmFormProps {
   onAddAlarm: (time: string, label: string) => void;
 }
 
-export const AlarmForm: Component<AlarmFormProps> = (props) => {
+export const AlarmForm: Component<AlarmFormProps> = props => {
   const [newAlarmTime, setNewAlarmTime] = createSignal("07:00");
   const [newAlarmLabel, setNewAlarmLabel] = createSignal("");
 
@@ -29,7 +29,7 @@ export const AlarmForm: Component<AlarmFormProps> = (props) => {
         <input
           type="time"
           value={newAlarmTime()}
-          onInput={(e) => setNewAlarmTime(e.currentTarget.value)}
+          onInput={e => setNewAlarmTime(e.currentTarget.value)}
           title="Select alarm time"
         />
       </div>
@@ -40,7 +40,7 @@ export const AlarmForm: Component<AlarmFormProps> = (props) => {
           type="text"
           placeholder="Wake up, Meeting, etc."
           value={newAlarmLabel()}
-          onInput={(e) => setNewAlarmLabel(e.currentTarget.value)}
+          onInput={e => setNewAlarmLabel(e.currentTarget.value)}
         />
       </div>
 

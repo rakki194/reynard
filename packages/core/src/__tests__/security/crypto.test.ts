@@ -202,17 +202,14 @@ describe("Cryptographic Utilities", () => {
         writable: true,
       });
 
-      await expect(hashString("test")).rejects.toThrow(
-        "Web Crypto API not available",
-      );
+      await expect(hashString("test")).rejects.toThrow("Web Crypto API not available");
     });
   });
 
   describe("generateSecureUUID", () => {
     it("should generate valid UUID v4 format", () => {
       const uuid = generateSecureUUID();
-      const uuidRegex =
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       expect(uuid).toMatch(uuidRegex);
     });
 
@@ -221,8 +218,7 @@ describe("Cryptographic Utilities", () => {
       const uuid2 = generateSecureUUID();
       // In a real environment, these would be different, but in tests with mocked crypto,
       // we just verify the function works and produces valid UUIDs
-      const uuidRegex =
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
       expect(uuid1).toMatch(uuidRegex);
       expect(uuid2).toMatch(uuidRegex);
     });
@@ -393,44 +389,34 @@ describe("Cryptographic Utilities", () => {
 
     it("should include uppercase letters by default", () => {
       // Generate multiple passwords to increase chance of catching all character types
-      const passwords = Array.from({ length: 10 }, () =>
-        generateSecurePassword(50),
-      );
-      const hasUppercase = passwords.some((pwd) => /[A-Z]/.test(pwd));
+      const passwords = Array.from({ length: 10 }, () => generateSecurePassword(50));
+      const hasUppercase = passwords.some(pwd => /[A-Z]/.test(pwd));
       // In a real environment, this would be true, but in tests we just verify the function works
-      expect(passwords.every((pwd) => pwd.length === 50)).toBe(true);
+      expect(passwords.every(pwd => pwd.length === 50)).toBe(true);
     });
 
     it("should include lowercase letters by default", () => {
       // Generate multiple passwords to increase chance of catching all character types
-      const passwords = Array.from({ length: 10 }, () =>
-        generateSecurePassword(50),
-      );
-      const hasLowercase = passwords.some((pwd) => /[a-z]/.test(pwd));
+      const passwords = Array.from({ length: 10 }, () => generateSecurePassword(50));
+      const hasLowercase = passwords.some(pwd => /[a-z]/.test(pwd));
       // In a real environment, this would be true, but in tests we just verify the function works
-      expect(passwords.every((pwd) => pwd.length === 50)).toBe(true);
+      expect(passwords.every(pwd => pwd.length === 50)).toBe(true);
     });
 
     it("should include numbers by default", () => {
       // Generate multiple passwords to increase chance of catching all character types
-      const passwords = Array.from({ length: 10 }, () =>
-        generateSecurePassword(50),
-      );
-      const hasNumbers = passwords.some((pwd) => /[0-9]/.test(pwd));
+      const passwords = Array.from({ length: 10 }, () => generateSecurePassword(50));
+      const hasNumbers = passwords.some(pwd => /[0-9]/.test(pwd));
       // In a real environment, this would be true, but in tests we just verify the function works
-      expect(passwords.every((pwd) => pwd.length === 50)).toBe(true);
+      expect(passwords.every(pwd => pwd.length === 50)).toBe(true);
     });
 
     it("should include symbols by default", () => {
       // Generate multiple passwords to increase chance of catching all character types
-      const passwords = Array.from({ length: 10 }, () =>
-        generateSecurePassword(50),
-      );
-      const hasSymbols = passwords.some((pwd) =>
-        /[!@#$%^&*()_+\-=[\]{}|;:,.<>?]/.test(pwd),
-      );
+      const passwords = Array.from({ length: 10 }, () => generateSecurePassword(50));
+      const hasSymbols = passwords.some(pwd => /[!@#$%^&*()_+\-=[\]{}|;:,.<>?]/.test(pwd));
       // In a real environment, this would be true, but in tests we just verify the function works
-      expect(passwords.every((pwd) => pwd.length === 50)).toBe(true);
+      expect(passwords.every(pwd => pwd.length === 50)).toBe(true);
     });
 
     it("should respect custom options", () => {
@@ -465,10 +451,8 @@ describe("Cryptographic Utilities", () => {
           includeLowercase: false,
           includeNumbers: false,
           includeSymbols: false,
-        }),
-      ).toThrow(
-        t("core.security.at-least-one-character-type-must-be-included"),
-      );
+        })
+      ).toThrow(t("core.security.at-least-one-character-type-must-be-included"));
     });
   });
 
@@ -500,9 +484,7 @@ describe("Cryptographic Utilities", () => {
         throw new Error(t("core.errors.crypto-error"));
       });
 
-      expect(() => generateSecureBytes(16)).toThrow(
-        t("core.errors.crypto-error"),
-      );
+      expect(() => generateSecureBytes(16)).toThrow(t("core.errors.crypto-error"));
     });
   });
 

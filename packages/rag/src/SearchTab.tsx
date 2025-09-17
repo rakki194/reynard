@@ -45,10 +45,7 @@ export function SearchTab(props: SearchTabProps) {
       </Card>
 
       <Show when={hasResults()}>
-        <ResultsList
-          results={props.results}
-          onResultClick={props.onResultClick}
-        />
+        <ResultsList results={props.results} onResultClick={props.onResultClick} />
       </Show>
     </div>
   );

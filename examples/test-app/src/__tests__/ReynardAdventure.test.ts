@@ -6,21 +6,12 @@ describe("Reynard Tutorial Validation", () => {
     // Function to validate tutorial data
     const validateTutorialData = (tutorialData: any[]) => {
       const errors: string[] = [];
-      const requiredFields = [
-        "id",
-        "title",
-        "description",
-        "content",
-        "estimatedTime",
-        "difficulty",
-      ];
+      const requiredFields = ["id", "title", "description", "content", "estimatedTime", "difficulty"];
 
       for (const [index, section] of tutorialData.entries()) {
         for (const field of requiredFields) {
           if (!(field in section)) {
-            errors.push(
-              `Section ${index} (${section.id || "unknown"}) is missing required field "${field}"`,
-            );
+            errors.push(`Section ${index} (${section.id || "unknown"}) is missing required field "${field}"`);
           }
         }
 
@@ -31,7 +22,7 @@ describe("Reynard Tutorial Validation", () => {
             for (const field of contentRequiredFields) {
               if (!(field in content)) {
                 errors.push(
-                  `Section ${index} (${section.id}) content ${contentIndex} is missing required field "${field}"`,
+                  `Section ${index} (${section.id}) content ${contentIndex} is missing required field "${field}"`
                 );
               }
             }
@@ -40,7 +31,7 @@ describe("Reynard Tutorial Validation", () => {
             const validTypes = ["text", "code", "example", "exercise"];
             if (content.type && !validTypes.includes(content.type)) {
               errors.push(
-                `Section ${index} (${section.id}) content ${contentIndex} has invalid type "${content.type}"`,
+                `Section ${index} (${section.id}) content ${contentIndex} has invalid type "${content.type}"`
               );
             }
           }
@@ -48,13 +39,8 @@ describe("Reynard Tutorial Validation", () => {
 
         // Validate difficulty
         const validDifficulties = ["beginner", "intermediate", "advanced"];
-        if (
-          section.difficulty &&
-          !validDifficulties.includes(section.difficulty)
-        ) {
-          errors.push(
-            `Section ${index} (${section.id}) has invalid difficulty "${section.difficulty}"`,
-          );
+        if (section.difficulty && !validDifficulties.includes(section.difficulty)) {
+          errors.push(`Section ${index} (${section.id}) has invalid difficulty "${section.difficulty}"`);
         }
       }
 
@@ -105,15 +91,13 @@ describe("Reynard Tutorial Validation", () => {
   it("should validate that all tutorial sections have proper prerequisites", () => {
     const validatePrerequisites = (tutorialData: any[]) => {
       const errors: string[] = [];
-      const sectionIds = new Set(tutorialData.map((section) => section.id));
+      const sectionIds = new Set(tutorialData.map(section => section.id));
 
       for (const [index, section] of tutorialData.entries()) {
         if (section.prerequisites && Array.isArray(section.prerequisites)) {
           for (const prereq of section.prerequisites) {
             if (!sectionIds.has(prereq)) {
-              errors.push(
-                `Section ${index} (${section.id}) has prerequisite "${prereq}" that does not exist`,
-              );
+              errors.push(`Section ${index} (${section.id}) has prerequisite "${prereq}" that does not exist`);
             }
           }
         }
@@ -142,34 +126,24 @@ describe("Reynard Tutorial Validation", () => {
           for (const [contentIndex, content] of section.content.entries()) {
             // Validate content has required fields
             if (!content.type) {
-              errors.push(
-                `Section ${sectionIndex} (${section.id}) content ${contentIndex} missing type`,
-              );
+              errors.push(`Section ${sectionIndex} (${section.id}) content ${contentIndex} missing type`);
             }
             if (!content.content) {
-              errors.push(
-                `Section ${sectionIndex} (${section.id}) content ${contentIndex} missing content`,
-              );
+              errors.push(`Section ${sectionIndex} (${section.id}) content ${contentIndex} missing content`);
             }
 
             // Validate code content has language
             if (content.type === "code" && !content.language) {
-              errors.push(
-                `Section ${sectionIndex} (${section.id}) code content ${contentIndex} missing language`,
-              );
+              errors.push(`Section ${sectionIndex} (${section.id}) code content ${contentIndex} missing language`);
             }
 
             // Validate content is not empty
             if (content.content && content.content.trim().length === 0) {
-              errors.push(
-                `Section ${sectionIndex} (${section.id}) content ${contentIndex} is empty`,
-              );
+              errors.push(`Section ${sectionIndex} (${section.id}) content ${contentIndex} is empty`);
             }
           }
         } else {
-          errors.push(
-            `Section ${sectionIndex} (${section.id}) has no content or content is not an array`,
-          );
+          errors.push(`Section ${sectionIndex} (${section.id}) has no content or content is not an array`);
         }
       }
 
@@ -194,12 +168,10 @@ describe("Reynard Tutorial Validation", () => {
       for (const [index, section] of tutorialData.entries()) {
         if (section.estimatedTime) {
           // Check if estimated time follows expected format (e.g., "10 minutes", "30 minutes")
-          const timeMatch = section.estimatedTime.match(
-            /(\d+)\s*(minute|hour)s?/i,
-          );
+          const timeMatch = section.estimatedTime.match(/(\d+)\s*(minute|hour)s?/i);
           if (!timeMatch) {
             errors.push(
-              `Section ${index} (${section.id}) has invalid estimated time format: "${section.estimatedTime}"`,
+              `Section ${index} (${section.id}) has invalid estimated time format: "${section.estimatedTime}"`
             );
           } else {
             const timeValue = parseInt(timeMatch[1]);
@@ -207,22 +179,13 @@ describe("Reynard Tutorial Validation", () => {
 
             // Reasonable time limits
             if (timeUnit === "minute" && (timeValue < 1 || timeValue > 120)) {
-              errors.push(
-                `Section ${index} (${section.id}) has unreasonable estimated time: ${timeValue} minutes`,
-              );
-            } else if (
-              timeUnit === "hour" &&
-              (timeValue < 1 || timeValue > 4)
-            ) {
-              errors.push(
-                `Section ${index} (${section.id}) has unreasonable estimated time: ${timeValue} hours`,
-              );
+              errors.push(`Section ${index} (${section.id}) has unreasonable estimated time: ${timeValue} minutes`);
+            } else if (timeUnit === "hour" && (timeValue < 1 || timeValue > 4)) {
+              errors.push(`Section ${index} (${section.id}) has unreasonable estimated time: ${timeValue} hours`);
             }
           }
         } else {
-          errors.push(
-            `Section ${index} (${section.id}) is missing estimated time`,
-          );
+          errors.push(`Section ${index} (${section.id}) is missing estimated time`);
         }
       }
 
@@ -243,14 +206,12 @@ describe("Reynard Tutorial Validation", () => {
   it("should validate that tutorial has proper progression from beginner to advanced", () => {
     const validateProgression = (tutorialData: any[]) => {
       const errors: string[] = [];
-      const difficulties = tutorialData.map((section) => section.difficulty);
+      const difficulties = tutorialData.map(section => section.difficulty);
 
       // Check that we have at least some beginner sections
-      const beginnerCount = difficulties.filter((d) => d === "beginner").length;
-      const intermediateCount = difficulties.filter(
-        (d) => d === "intermediate",
-      ).length;
-      const advancedCount = difficulties.filter((d) => d === "advanced").length;
+      const beginnerCount = difficulties.filter(d => d === "beginner").length;
+      const intermediateCount = difficulties.filter(d => d === "intermediate").length;
+      const advancedCount = difficulties.filter(d => d === "advanced").length;
 
       if (beginnerCount === 0) {
         errors.push("No beginner sections found");
@@ -260,16 +221,11 @@ describe("Reynard Tutorial Validation", () => {
       // In a full tutorial, we'd want intermediate and advanced sections too
       if (intermediateCount === 0 && advancedCount === 0 && beginnerCount > 0) {
         // This is acceptable for a basic tutorial
-        console.log(
-          "Tutorial currently only has beginner sections - this is acceptable for basic setup",
-        );
+        console.log("Tutorial currently only has beginner sections - this is acceptable for basic setup");
       }
 
       // Check that first section is beginner
-      if (
-        tutorialData.length > 0 &&
-        tutorialData[0].difficulty !== "beginner"
-      ) {
+      if (tutorialData.length > 0 && tutorialData[0].difficulty !== "beginner") {
         errors.push("First section should be beginner level");
       }
 

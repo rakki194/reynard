@@ -21,8 +21,7 @@ export function useChartState(config: ChartStateConfig) {
   const [chartOptions, setChartOptions] = createSignal<any>(null);
 
   console.log("🦊 useChartState: Initialized with config", config);
-  const [updateInterval, setUpdateInterval] =
-    createSignal<NodeJS.Timeout | null>(null);
+  const [updateInterval, setUpdateInterval] = createSignal<NodeJS.Timeout | null>(null);
   const [chartInstance, setChartInstance] = createSignal<any>(null);
 
   const updateChart = (setupData: () => void) => {

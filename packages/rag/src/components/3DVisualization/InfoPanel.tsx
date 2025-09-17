@@ -1,6 +1,6 @@
 /**
  * Info Panel Component
- * 
+ *
  * Displays metadata about the current visualization state
  */
 
@@ -13,7 +13,7 @@ interface InfoPanelProps {
   pointsCount: number;
 }
 
-export const InfoPanel: Component<InfoPanelProps> = (props) => {
+export const InfoPanel: Component<InfoPanelProps> = props => {
   return (
     <div class="rag-3d-info">
       <div class="info-item">

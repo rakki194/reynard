@@ -10,7 +10,7 @@ interface CounterProps {
   setCount: (value: number) => void;
 }
 
-export const Counter: Component<CounterProps> = (props) => {
+export const Counter: Component<CounterProps> = props => {
   const increment = () => {
     props.setCount(props.count + 1);
   };

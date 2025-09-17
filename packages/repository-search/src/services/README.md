@@ -65,10 +65,10 @@ catch (error) {
 // After: Intelligent error handling with context
 catch (error) {
   const duration = Date.now() - startTime;
-  this.logger.error('Vector search failed', error as Error, { 
-    query: query.substring(0, 100), 
+  this.logger.error('Vector search failed', error as Error, {
+    query: query.substring(0, 100),
     duration,
-    strategy: this.name 
+    strategy: this.name
   });
   throw error;
 }
@@ -92,10 +92,10 @@ const validatedOptions = SearchValidator.validateVectorSearchOptions(options);
 console.log(`Vector search completed in ${searchTime}ms, found ${results.length} results`);
 
 // After: Structured logging with context
-this.logger.info('Vector search completed', { 
-  duration, 
+this.logger.info("Vector search completed", {
+  duration,
   resultCount: results.length,
-  strategy: this.name 
+  strategy: this.name,
 });
 ```
 
@@ -150,11 +150,11 @@ const strategies = manager.getAvailableStrategies();
 // ['vector', 'hybrid', 'keyword']
 
 // Intelligent search with full validation and error handling
-const results = await manager.vectorSearch("machine learning", { 
+const results = await manager.vectorSearch("machine learning", {
   topK: 10,
   similarityThreshold: 0.8,
   includeMetadata: true,
-  rerank: true
+  rerank: true,
 });
 ```
 
@@ -212,7 +212,7 @@ const manager = new SearchOperationsManager(
 ### Silent Logger for Tests
 
 ```typescript
-import { SilentLogger } from './types/Logger';
+import { SilentLogger } from "./types/Logger";
 
 const manager = new SearchOperationsManager(
   // ... other dependencies
@@ -223,7 +223,7 @@ const manager = new SearchOperationsManager(
 ### Validation Testing
 
 ```typescript
-import { SearchValidator } from './validation/SearchValidation';
+import { SearchValidator } from "./validation/SearchValidation";
 
 // Test validation
 expect(() => SearchValidator.validateQuery("")).toThrow(SearchValidationError);

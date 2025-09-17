@@ -3,24 +3,14 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  validateFileName,
-  validateFileSize,
-  validateMimeType,
-} from "../../validation.js";
+import { validateFileName, validateFileSize, validateMimeType } from "../../validation.js";
 
 describe("File Name Validation", () => {
   describe("validateFileName", () => {
     it("should validate correct file names", () => {
-      const validNames = [
-        "document.pdf",
-        "image.jpg",
-        "script.js",
-        "data.json",
-        "readme.txt",
-      ];
+      const validNames = ["document.pdf", "image.jpg", "script.js", "data.json", "readme.txt"];
 
-      validNames.forEach((name) => {
+      validNames.forEach(name => {
         const result = validateFileName(name);
         expect(result.isValid).toBe(true);
         expect(result.sanitized).toBe(name);
@@ -36,7 +26,7 @@ describe("File Name Validation", () => {
         "..%5c..%5cwindows%5csystem32",
       ];
 
-      traversalNames.forEach((name) => {
+      traversalNames.forEach(name => {
         const result = validateFileName(name);
         expect(result.isValid).toBe(false);
       });
@@ -52,23 +42,16 @@ describe("File Name Validation", () => {
         'file"name".txt',
       ];
 
-      invalidNames.forEach((name) => {
+      invalidNames.forEach(name => {
         const result = validateFileName(name);
         expect(result.isValid).toBe(false);
       });
     });
 
     it("should reject Windows reserved names", () => {
-      const reservedNames = [
-        "CON.txt",
-        "PRN.txt",
-        "AUX.txt",
-        "NUL.txt",
-        "COM1.txt",
-        "LPT1.txt",
-      ];
+      const reservedNames = ["CON.txt", "PRN.txt", "AUX.txt", "NUL.txt", "COM1.txt", "LPT1.txt"];
 
-      reservedNames.forEach((name) => {
+      reservedNames.forEach(name => {
         const result = validateFileName(name);
         expect(result.isValid).toBe(false);
       });
@@ -77,22 +60,16 @@ describe("File Name Validation", () => {
     it("should reject hidden files", () => {
       const hiddenNames = [".hidden.txt", ".env", ".gitignore", "..hidden.txt"];
 
-      hiddenNames.forEach((name) => {
+      hiddenNames.forEach(name => {
         const result = validateFileName(name);
         expect(result.isValid).toBe(false);
       });
     });
 
     it("should reject executable files", () => {
-      const executableNames = [
-        "malware.exe",
-        "script.bat",
-        "program.com",
-        "screensaver.scr",
-        "installer.msi",
-      ];
+      const executableNames = ["malware.exe", "script.bat", "program.com", "screensaver.scr", "installer.msi"];
 
-      executableNames.forEach((name) => {
+      executableNames.forEach(name => {
         const result = validateFileName(name);
         expect(result.isValid).toBe(false);
       });

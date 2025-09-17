@@ -13,7 +13,7 @@ export async function makeNLWebRequest<T>(
   endpoint: string,
   baseUrl: string,
   requestTimeout: number,
-  options: RequestInit = {},
+  options: RequestInit = {}
 ): Promise<T> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), requestTimeout);
@@ -44,10 +44,6 @@ export async function makeNLWebRequest<T>(
 /**
  * Handle API error
  */
-export function handleAPIError(
-  state: NLWebState,
-  error: unknown,
-  defaultMessage: string,
-): void {
+export function handleAPIError(state: NLWebState, error: unknown, defaultMessage: string): void {
   state.setError(error instanceof Error ? error.message : defaultMessage);
 }

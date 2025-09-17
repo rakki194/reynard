@@ -78,7 +78,7 @@ render(
       <App />
     </Router>
   ),
-  document.getElementById("root")!,
+  document.getElementById("root")!
 );
 ```
 
@@ -89,7 +89,7 @@ render(
 import { Router } from "@solidjs/router";
 import { routes } from "./router";
 
-const Layout: ParentComponent = (props) => {
+const Layout: ParentComponent = props => {
   return (
     <AppProvider>
       <CaptionerProvider>
@@ -124,7 +124,7 @@ render(
       <Route path="/" component={Home} />
     </Router>
   ),
-  document.getElementById("app"),
+  document.getElementById("app")
 );
 ```
 
@@ -203,9 +203,7 @@ import { NotFound } from "./pages/not_found";
 const GalleryPage = lazy(() => import("./pages/Gallery"));
 const LoginPage = lazy(() => import("./components/Auth/Login"));
 const RegisterPage = lazy(() => import("./components/Auth/Register"));
-const UserEngagementPage = lazy(
-  () => import("./components/Auth/UserEngagement"),
-);
+const UserEngagementPage = lazy(() => import("./components/Auth/UserEngagement"));
 const TextViewerPage = lazy(() => import("./pages/TextViewer"));
 const RAGPage = lazy(() => import("./pages/RAG"));
 
@@ -303,17 +301,11 @@ import { lazy } from "solid-js";
 const GalleryPage = lazy(() => import("./pages/Gallery"));
 const LoginPage = lazy(() => import("./components/Auth/Login"));
 const RegisterPage = lazy(() => import("./components/Auth/Register"));
-const UserEngagementPage = lazy(
-  () => import("./components/Auth/UserEngagement"),
-);
+const UserEngagementPage = lazy(() => import("./components/Auth/UserEngagement"));
 const TextViewerPage = lazy(() => import("./pages/TextViewer"));
 const RAGPage = lazy(() => import("./pages/RAG"));
-const EmbeddingParameterControlsDemoPage = lazy(
-  () => import("./components/UI/EmbeddingParameterControlsDemo"),
-);
-const EmbeddingVisualizationExportDemoPage = lazy(
-  () => import("./components/UI/EmbeddingVisualizationExportDemo"),
-);
+const EmbeddingParameterControlsDemoPage = lazy(() => import("./components/UI/EmbeddingParameterControlsDemo"));
+const EmbeddingVisualizationExportDemoPage = lazy(() => import("./components/UI/EmbeddingVisualizationExportDemo"));
 ```
 
 ### Error Handling for Lazy Components
@@ -332,14 +324,14 @@ const LazyComponent = lazy(() =>
         <p>Please refresh the page or try again later.</p>
       </div>
     ),
-  })),
+  }))
 );
 
 // Usage with error boundary
 const App = () => (
   <Router>
     <ErrorBoundary
-      fallback={(err) => (
+      fallback={err => (
         <div class="route-error">
           <h2>Route Error</h2>
           <p>{err.message}</p>
@@ -416,11 +408,7 @@ function Navbar() {
       <A href="/" end={true}>
         Home
       </A>
-      <A
-        href="/login"
-        activeClass="text-blue-900"
-        inactiveClass="text-blue-500"
-      >
+      <A href="/login" activeClass="text-blue-900" inactiveClass="text-blue-500">
         Login
       </A>
     </nav>
@@ -446,7 +434,7 @@ form submissions, and conditional navigation.
 ```tsx
 import { useNavigate } from "@solidjs/router";
 
-export const VideoGrid: Component<VideoGridProps> = (props) => {
+export const VideoGrid: Component<VideoGridProps> = props => {
   const navigate = useNavigate();
 
   const handleVideoClick = (video: VideoItem) => {
@@ -457,7 +445,7 @@ export const VideoGrid: Component<VideoGridProps> = (props) => {
   return (
     <div class="video-grid">
       <For each={videos()}>
-        {(video) => (
+        {video => (
           <div class="video-item" onClick={() => handleVideoClick(video)}>
             {video.title}
           </div>
@@ -611,7 +599,7 @@ export const SearchPage: Component = () => {
       <div class="search-container">
         <input
           value={searchQuery()}
-          onInput={(e) => handleSearch(e.target.value)}
+          onInput={e => handleSearch(e.target.value)}
           placeholder="Search documentation..."
           class="search-input"
         />
@@ -619,7 +607,7 @@ export const SearchPage: Component = () => {
         {isSearching() && <div>Searching...</div>}
 
         <For each={searchResults()}>
-          {(result) => (
+          {result => (
             <div class="search-result">
               <h3>{result.title}</h3>
               <p>{result.excerpt}</p>
@@ -703,14 +691,14 @@ const LazyComponent = lazy(() =>
         <button onClick={() => window.location.reload()}>Retry</button>
       </div>
     ),
-  })),
+  }))
 );
 
 // Usage with error boundary
 const App = () => (
   <Router>
     <ErrorBoundary
-      fallback={(err) => (
+      fallback={err => (
         <div class="route-error">
           <h2>Route Error</h2>
           <p>{err.message}</p>
@@ -770,13 +758,11 @@ import { ErrorBoundary } from "solid-js";
 const App = () => (
   <Router>
     <ErrorBoundary
-      fallback={(err) => (
+      fallback={err => (
         <div class="route-error-boundary">
           <h2>Something went wrong</h2>
           <p>Error: {err.message}</p>
-          <button onClick={() => (window.location.href = "/")}>
-            Return to Home
-          </button>
+          <button onClick={() => (window.location.href = "/")}>Return to Home</button>
         </div>
       )}
     >
@@ -825,9 +811,7 @@ const App = () => (
 
 ```tsx
 // Error recovery with retry mechanism
-const ErrorRecovery: Component<{ error: Error; onRetry: () => void }> = (
-  props,
-) => {
+const ErrorRecovery: Component<{ error: Error; onRetry: () => void }> = props => {
   return (
     <div class="error-recovery">
       <h2>An error occurred</h2>
@@ -843,11 +827,7 @@ const ErrorRecovery: Component<{ error: Error; onRetry: () => void }> = (
 // Usage in error boundary
 const App = () => (
   <Router>
-    <ErrorBoundary
-      fallback={(err) => (
-        <ErrorRecovery error={err} onRetry={() => window.location.reload()} />
-      )}
-    >
+    <ErrorBoundary fallback={err => <ErrorRecovery error={err} onRetry={() => window.location.reload()} />}>
       <Route path="/" component={Home} />
     </ErrorBoundary>
   </Router>
@@ -1120,11 +1100,7 @@ real-world problems encountered in production applications.
 import { Router } from "@solidjs/router";
 
 // Enable debug mode in development
-const App = () => (
-  <Router debug={process.env.NODE_ENV === "development"}>
-    {/* Your routes */}
-  </Router>
-);
+const App = () => <Router debug={process.env.NODE_ENV === "development"}>{/* Your routes */}</Router>;
 ```
 
 **Advanced Debugging Techniques:**
@@ -1152,9 +1128,7 @@ const DebugNavigation: Component = () => {
     navigate(path);
   };
 
-  return (
-    <button onClick={() => debugNavigate("/debug")}>Debug Navigation</button>
-  );
+  return <button onClick={() => debugNavigate("/debug")}>Debug Navigation</button>;
 };
 ```
 
@@ -1172,7 +1146,7 @@ const PerformanceMonitor: Component = () => {
 
     return () => {
       const end = performance.now();
-      setLoadTimes((prev) => ({
+      setLoadTimes(prev => ({
         ...prev,
         [routeName]: end - start,
       }));

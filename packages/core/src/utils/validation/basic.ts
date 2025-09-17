@@ -30,8 +30,7 @@ export function isValidHexColor(color: string): boolean {
  */
 export function isValidIPAddress(ip: string): boolean {
   // IPv4 pattern
-  const ipv4Regex =
-    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
   // IPv6 pattern (simplified)
   const ipv6Regex = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
@@ -52,7 +51,7 @@ export function isInRange(value: number, min: number, max: number): boolean {
 export function isValidLength(
   str: string,
   minLength: number = 0,
-  maxLength: number = Number.MAX_SAFE_INTEGER,
+  maxLength: number = Number.MAX_SAFE_INTEGER
 ): boolean {
   return str.length >= minLength && str.length <= maxLength;
 }

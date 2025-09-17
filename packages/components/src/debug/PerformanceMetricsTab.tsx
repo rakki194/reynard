@@ -3,15 +3,7 @@
  * Metrics tab for performance dashboard
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button } from "../primitives";
 
 export interface PerformanceMetricsTabProps {
@@ -29,9 +21,7 @@ export interface PerformanceMetricsTabProps {
   refreshInterval?: number;
 }
 
-export const PerformanceMetricsTab: Component<PerformanceMetricsTabProps> = (
-  props,
-) => {
+export const PerformanceMetricsTab: Component<PerformanceMetricsTabProps> = props => {
   const [selectedMetric, setSelectedMetric] = createSignal<string>("frameRate");
   const [timeRange, setTimeRange] = createSignal<string>("5m");
   const [isRefreshing, setIsRefreshing] = createSignal(false);
@@ -145,11 +135,7 @@ export const PerformanceMetricsTab: Component<PerformanceMetricsTabProps> = (
         </div>
 
         <div class="metrics-panel-actions">
-          <Button
-            variant="secondary"
-            onClick={updateMetrics}
-            disabled={isRefreshing()}
-          >
+          <Button variant="secondary" onClick={updateMetrics} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -162,27 +148,15 @@ export const PerformanceMetricsTab: Component<PerformanceMetricsTabProps> = (
       <div class="metrics-controls">
         <div class="control-group">
           <label>Metric:</label>
-          <select
-            value={selectedMetric()}
-            onChange={(e) => setSelectedMetric(e.currentTarget.value)}
-          >
-            <For each={availableMetrics}>
-              {(metric) => (
-                <option value={metric}>{getMetricLabel(metric)}</option>
-              )}
-            </For>
+          <select value={selectedMetric()} onChange={e => setSelectedMetric(e.currentTarget.value)}>
+            <For each={availableMetrics}>{metric => <option value={metric}>{getMetricLabel(metric)}</option>}</For>
           </select>
         </div>
 
         <div class="control-group">
           <label>Time Range:</label>
-          <select
-            value={timeRange()}
-            onChange={(e) => setTimeRange(e.currentTarget.value)}
-          >
-            <For each={timeRanges}>
-              {(range) => <option value={range}>{range}</option>}
-            </For>
+          <select value={timeRange()} onChange={e => setTimeRange(e.currentTarget.value)}>
+            <For each={timeRanges}>{range => <option value={range}>{range}</option>}</For>
           </select>
         </div>
       </div>
@@ -217,9 +191,7 @@ export const PerformanceMetricsTab: Component<PerformanceMetricsTabProps> = (
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">
-          Last updated: {lastUpdate()!.toLocaleString()}
-        </div>
+        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
       </Show>
     </div>
   );

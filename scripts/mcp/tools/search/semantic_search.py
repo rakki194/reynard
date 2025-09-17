@@ -11,8 +11,6 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from .ignore_config import should_ignore_path, filter_paths
-
 logger = logging.getLogger(__name__)
 
 
@@ -40,19 +38,21 @@ class SemanticSearchEngine:
         try:
             # Try to import and initialize RAG service
             from services.semantic_search_service import SemanticSearchService
-        
+
             self._rag_service = SemanticSearchService(self.project_root)
             self._initialized = await self._rag_service.initialize()
-        
+
             if self._initialized:
                 logger.info("Semantic search service initialized successfully")
             else:
                 logger.warning("Semantic search service initialization failed")
-            
+
             return self._initialized
-        
+
         except ImportError:
-            logger.warning("Semantic search service not available - RAG backend not found")
+            logger.warning(
+                "Semantic search service not available - RAG backend not found"
+            )
             return False
         except Exception as e:
             logger.error(f"Error initializing semantic search service: {e}")
@@ -224,8 +224,9 @@ class SemanticSearchEngine:
 
             # Traditional text search
             from .file_search import FileSearchEngine
+
             file_engine = FileSearchEngine(self.project_root)
-        
+
             text_result = await file_engine.search_content(
                 query=query,
                 file_types=file_types,
@@ -286,7 +287,9 @@ class SemanticSearchEngine:
         seen_files: set[str],
     ) -> None:
         """Add semantic search results to combined list."""
-        if "semantic_search" not in results or not results["semantic_search"].get("success"):
+        if "semantic_search" not in results or not results["semantic_search"].get(
+            "success"
+        ):
             return
 
         for item in results["semantic_search"].get("results", []):
@@ -309,13 +312,19 @@ class SemanticSearchEngine:
         for match in results["text_search"].get("matches", []):
             file_path = match.get("file_path", "")
             if file_path and file_path not in seen_files:
-                combined.append({
-                    "file_path": file_path,
-                    "score": 0.5,  # Lower score for text search
-                    "match_type": "text",
-                    "source": "text",
-                    "content": match.get("content", ""),
-                    "line_number": match.get("line_number"),
-                    "snippet": match.get("content", "")[:100] if match.get("content") else "",
-                })
+                combined.append(
+                    {
+                        "file_path": file_path,
+                        "score": 0.5,  # Lower score for text search
+                        "match_type": "text",
+                        "source": "text",
+                        "content": match.get("content", ""),
+                        "line_number": match.get("line_number"),
+                        "snippet": (
+                            match.get("content", "")[:100]
+                            if match.get("content")
+                            else ""
+                        ),
+                    }
+                )
                 seen_files.add(file_path)

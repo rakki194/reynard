@@ -161,8 +161,7 @@ export const en = {
     },
     drawer: {
       title: "Example Drawer",
-      content:
-        "This is a drawer component. It can contain forms, menus, or any other content.",
+      content: "This is a drawer component. It can contain forms, menus, or any other content.",
       show: "Show",
       notification: "Showing {type} notification from drawer",
     },

@@ -59,7 +59,9 @@ class TestExecutionCoverage(FenrirTestBase):
                 mock_response.headers = {"Access-Control-Allow-Origin": "*"}
                 mock_response.text = "test response"
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call the main execution method
                 results = cors_exploit.run_exploit()
@@ -108,7 +110,9 @@ class TestExecutionCoverage(FenrirTestBase):
                 mock_response.status_code = 200
                 mock_response.text = "test response"
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call the main execution method
                 results = secret_key_attack.run_exploit()
@@ -157,7 +161,9 @@ class TestExecutionCoverage(FenrirTestBase):
                 mock_response.status_code = 200
                 mock_response.text = "test response"
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call the main execution method
                 results = comprehensive_fuzzer.run_exploit()
@@ -206,7 +212,9 @@ class TestExecutionCoverage(FenrirTestBase):
                 mock_response.status_code = 200
                 mock_response.text = "test response"
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call the main execution method
                 results = blind_injection.run_exploit()
@@ -255,7 +263,9 @@ class TestExecutionCoverage(FenrirTestBase):
                 mock_response.status_code = 200
                 mock_response.text = "test response"
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call the main execution method
                 results = double_encoded.run_exploit()
@@ -304,7 +314,9 @@ class TestExecutionCoverage(FenrirTestBase):
                 mock_response.status_code = 200
                 mock_response.text = "test response"
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call the main execution method
                 results = rate_limit_exploit.run_exploit()
@@ -370,7 +382,9 @@ class TestExecutionCoverage(FenrirTestBase):
                 mock_response.text = "test response"
                 mock_response.headers = {}
 
-                mock_client.return_value.__aenter__.return_value.request.return_value = mock_response
+                mock_client.return_value.__aenter__.return_value.request.return_value = (
+                    mock_response
+                )
 
                 # Call run_exploit on all exploits
                 for exploit in exploits:

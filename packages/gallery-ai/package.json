@@ -26,11 +26,7 @@
     },
     "./src/styles/ai-gallery.css": "./src/styles/ai-gallery.css"
   },
-  "files": [
-    "dist/**/*",
-    "src/styles/**/*",
-    "README.md"
-  ],
+  "files": ["dist/**/*", "src/styles/**/*", "README.md"],
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",

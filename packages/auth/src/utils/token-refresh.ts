@@ -4,13 +4,7 @@
  */
 
 import { createEffect } from "solid-js";
-import type {
-  AuthState,
-  AuthConfiguration,
-  AuthCallbacks,
-  AuthTokens,
-  User,
-} from "../types";
+import type { AuthState, AuthConfiguration, AuthCallbacks, AuthTokens, User } from "../types";
 import { TokenManager, decodeToken, getUserFromToken } from "./token-utils";
 import { retryWithBackoff } from "./password-utils";
 import { parseApiResponse } from "./api-utils";
@@ -30,7 +24,7 @@ export const createTokenRefreshManager = (
   authState: () => AuthState,
   updateAuthState: (updates: Partial<AuthState>) => void,
   callbacks: AuthCallbacks,
-  logout: () => Promise<void>,
+  logout: () => Promise<void>
 ): TokenRefreshManager => {
   let refreshTimer: number | null = null;
 

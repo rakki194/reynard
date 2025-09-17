@@ -12,7 +12,7 @@ interface CollectibleCube {
   points: number;
 }
 
-export const CubeCollectorGame: Component<CubeCollectorGameProps> = (props) => {
+export const CubeCollectorGame: Component<CubeCollectorGameProps> = props => {
   const [score, setScore] = createSignal(0);
   const [cubes, setCubes] = createSignal<CollectibleCube[]>([]);
   const [gameStarted, setGameStarted] = createSignal(false);
@@ -26,12 +26,7 @@ export const CubeCollectorGame: Component<CubeCollectorGameProps> = (props) => {
   let raycaster: any;
   let mouse: any;
 
-  const setupGameScene = async (
-    _scene: any,
-    _camera: any,
-    _renderer: any,
-    controls: any,
-  ) => {
+  const setupGameScene = async (_scene: any, _camera: any, _renderer: any, controls: any) => {
     scene = _scene;
     camera = _camera;
     renderer = _renderer;
@@ -79,11 +74,7 @@ export const CubeCollectorGame: Component<CubeCollectorGameProps> = (props) => {
       });
 
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(
-        (Math.random() - 0.5) * 15,
-        Math.random() * 2 + 0.5,
-        (Math.random() - 0.5) * 15,
-      );
+      mesh.position.set((Math.random() - 0.5) * 15, Math.random() * 2 + 0.5, (Math.random() - 0.5) * 15);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
 
@@ -114,20 +105,18 @@ export const CubeCollectorGame: Component<CubeCollectorGameProps> = (props) => {
     // Calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObjects(
       cubes()
-        .filter((cube) => !cube.collected)
-        .map((cube) => cube.mesh),
+        .filter(cube => !cube.collected)
+        .map(cube => cube.mesh)
     );
 
     if (intersects.length > 0) {
       const clickedMesh = intersects[0].object;
-      const cube = cubes().find((c) => c.mesh === clickedMesh);
+      const cube = cubes().find(c => c.mesh === clickedMesh);
 
       if (cube && !cube.collected) {
         // Collect the cube
         scene.remove(clickedMesh);
-        setCubes((prev) =>
-          prev.map((c) => (c.id === cube.id ? { ...c, collected: true } : c)),
-        );
+        setCubes(prev => prev.map(c => (c.id === cube.id ? { ...c, collected: true } : c)));
 
         // Update score
         const newScore = score() + cube.points;
@@ -135,12 +124,10 @@ export const CubeCollectorGame: Component<CubeCollectorGameProps> = (props) => {
         props.onScoreUpdate(newScore);
 
         // Check if all cubes collected
-        if (cubes().filter((c) => !c.collected).length === 1) {
+        if (cubes().filter(c => !c.collected).length === 1) {
           // Game won!
           setTimeout(() => {
-            alert(
-              `🎉 Congratulations! You collected all cubes! Final Score: ${newScore}`,
-            );
+            alert(`🎉 Congratulations! You collected all cubes! Final Score: ${newScore}`);
           }, 100);
         }
       }
@@ -151,7 +138,7 @@ export const CubeCollectorGame: Component<CubeCollectorGameProps> = (props) => {
     if (!gameStarted()) return;
 
     // Animate remaining cubes
-    cubes().forEach((cube) => {
+    cubes().forEach(cube => {
       if (!cube.collected) {
         cube.mesh.rotation.x += 0.01;
         cube.mesh.rotation.y += 0.01;
@@ -160,7 +147,7 @@ export const CubeCollectorGame: Component<CubeCollectorGameProps> = (props) => {
     });
 
     // Update timer
-    setTimeLeft((prev) => {
+    setTimeLeft(prev => {
       if (prev <= 0) {
         alert(`⏰ Time's up! Final Score: ${score()}`);
         return 0;
@@ -193,18 +180,13 @@ export const CubeCollectorGame: Component<CubeCollectorGameProps> = (props) => {
         </div>
         <div class="hud-item">
           <span class="hud-label">Cubes:</span>
-          <span class="hud-value">
-            {cubes().filter((c) => !c.collected).length}/10
-          </span>
+          <span class="hud-value">{cubes().filter(c => !c.collected).length}/10</span>
         </div>
       </div>
 
       <div class="game-instructions">
         <h3>🎲 Cube Collector</h3>
-        <p>
-          Click on the colorful cubes to collect them! Each cube is worth
-          different points.
-        </p>
+        <p>Click on the colorful cubes to collect them! Each cube is worth different points.</p>
         <p>Collect all 10 cubes before time runs out!</p>
       </div>
 

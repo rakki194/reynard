@@ -1,7 +1,7 @@
 import { vi } from "vitest";
 
 // Mock Chart.js with comprehensive exports
-vi.mock("chart.js", async (importOriginal) => {
+vi.mock("chart.js", async importOriginal => {
   const actual = await importOriginal();
   return {
     ...actual,
@@ -106,8 +106,7 @@ expect.extend({
     const pass = value ? actualValue === value : actualValue !== null;
     return {
       pass,
-      message: () =>
-        `expected ${received} to have attribute ${attribute}${value ? ` with value ${value}` : ""}`,
+      message: () => `expected ${received} to have attribute ${attribute}${value ? ` with value ${value}` : ""}`,
     };
   },
   toHaveStyle(received, style) {
@@ -122,8 +121,7 @@ expect.extend({
     const pass = actualValue === value;
     return {
       pass,
-      message: () =>
-        `expected ${received} to have style ${style}, but got ${property}: ${actualValue}`,
+      message: () => `expected ${received} to have style ${style}, but got ${property}: ${actualValue}`,
     };
   },
 });

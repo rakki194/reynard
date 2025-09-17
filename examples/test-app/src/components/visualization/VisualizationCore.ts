@@ -83,11 +83,7 @@ export class VisualizationCore {
   /**
    * Calculate color for a specific data point
    */
-  private calculatePointColor(
-    point: DataPoint,
-    index: number,
-    allPoints: DataPoint[],
-  ): OKLCHColor {
+  private calculatePointColor(point: DataPoint, index: number, allPoints: DataPoint[]): OKLCHColor {
     const { baseHue, saturation, lightness } = this.config;
 
     switch (this.config.colorMapping) {
@@ -111,11 +107,8 @@ export class VisualizationCore {
   /**
    * Value-based color mapping
    */
-  private getValueBasedColor(
-    point: DataPoint,
-    allPoints: DataPoint[],
-  ): OKLCHColor {
-    const values = allPoints.map((p) => p.value);
+  private getValueBasedColor(point: DataPoint, allPoints: DataPoint[]): OKLCHColor {
+    const values = allPoints.map(p => p.value);
     const minValue = Math.min(...values);
     const maxValue = Math.max(...values);
     const normalizedValue = (point.value - minValue) / (maxValue - minValue);
@@ -157,22 +150,11 @@ export class VisualizationCore {
   /**
    * Gradient-based color mapping
    */
-  private getGradientBasedColor(
-    point: DataPoint,
-    allPoints: DataPoint[],
-  ): OKLCHColor {
-    const centerX =
-      allPoints.reduce((sum, p) => sum + p.x, 0) / allPoints.length;
-    const centerY =
-      allPoints.reduce((sum, p) => sum + p.y, 0) / allPoints.length;
-    const distance = Math.sqrt(
-      (point.x - centerX) ** 2 + (point.y - centerY) ** 2,
-    );
-    const maxDistance = Math.max(
-      ...allPoints.map((p) =>
-        Math.sqrt((p.x - centerX) ** 2 + (p.y - centerY) ** 2),
-      ),
-    );
+  private getGradientBasedColor(point: DataPoint, allPoints: DataPoint[]): OKLCHColor {
+    const centerX = allPoints.reduce((sum, p) => sum + p.x, 0) / allPoints.length;
+    const centerY = allPoints.reduce((sum, p) => sum + p.y, 0) / allPoints.length;
+    const distance = Math.sqrt((point.x - centerX) ** 2 + (point.y - centerY) ** 2);
+    const maxDistance = Math.max(...allPoints.map(p => Math.sqrt((p.x - centerX) ** 2 + (p.y - centerY) ** 2)));
     const normalizedDistance = distance / maxDistance;
 
     return {
@@ -186,7 +168,7 @@ export class VisualizationCore {
    * Calculate intensity for visual effects
    */
   private calculateIntensity(point: DataPoint, allPoints: DataPoint[]): number {
-    const values = allPoints.map((p) => p.value);
+    const values = allPoints.map(p => p.value);
     const minValue = Math.min(...values);
     const maxValue = Math.max(...values);
     return (point.value - minValue) / (maxValue - minValue);

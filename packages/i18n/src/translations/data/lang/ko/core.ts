@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // 비밀번호 유효성 검사
   password: {
-    "must-be-at-least-8-characters-long":
-      "비밀번호는 최소 8자 이상이어야 합니다",
-    "must-contain-at-least-one-uppercase-letter":
-      "비밀번호는 최소 하나의 대문자를 포함해야 합니다",
-    "must-contain-at-least-one-lowercase-letter":
-      "비밀번호는 최소 하나의 소문자를 포함해야 합니다",
-    "must-contain-at-least-one-number":
-      "비밀번호는 최소 하나의 숫자를 포함해야 합니다",
-    "must-contain-at-least-one-special-character":
-      "비밀번호는 최소 하나의 특수 문자를 포함해야 합니다",
+    "must-be-at-least-8-characters-long": "비밀번호는 최소 8자 이상이어야 합니다",
+    "must-contain-at-least-one-uppercase-letter": "비밀번호는 최소 하나의 대문자를 포함해야 합니다",
+    "must-contain-at-least-one-lowercase-letter": "비밀번호는 최소 하나의 소문자를 포함해야 합니다",
+    "must-contain-at-least-one-number": "비밀번호는 최소 하나의 숫자를 포함해야 합니다",
+    "must-contain-at-least-one-special-character": "비밀번호는 최소 하나의 특수 문자를 포함해야 합니다",
   },
 
   // 보안 유효성 검사
   security: {
-    "at-least-one-character-type-must-be-included":
-      "최소 하나의 문자 유형이 포함되어야 합니다",
-    "input-contains-potentially-dangerous-html":
-      "입력에 잠재적으로 위험한 HTML이 포함되어 있습니다",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "입력에 잠재적으로 위험한 SQL 패턴이 포함되어 있습니다",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "입력에 잠재적으로 위험한 XSS 패턴이 포함되어 있습니다",
-    "input-contains-path-traversal-patterns":
-      "입력에 경로 순회 패턴이 포함되어 있습니다",
-    "input-contains-windows-reserved-names":
-      "입력에 Windows 예약 이름이 포함되어 있습니다",
-    "input-contains-executable-file-extensions":
-      "입력에 실행 가능한 파일 확장자가 포함되어 있습니다",
+    "at-least-one-character-type-must-be-included": "최소 하나의 문자 유형이 포함되어야 합니다",
+    "input-contains-potentially-dangerous-html": "입력에 잠재적으로 위험한 HTML이 포함되어 있습니다",
+    "input-contains-potentially-dangerous-sql-patterns": "입력에 잠재적으로 위험한 SQL 패턴이 포함되어 있습니다",
+    "input-contains-potentially-dangerous-xss-patterns": "입력에 잠재적으로 위험한 XSS 패턴이 포함되어 있습니다",
+    "input-contains-path-traversal-patterns": "입력에 경로 순회 패턴이 포함되어 있습니다",
+    "input-contains-windows-reserved-names": "입력에 Windows 예약 이름이 포함되어 있습니다",
+    "input-contains-executable-file-extensions": "입력에 실행 가능한 파일 확장자가 포함되어 있습니다",
     "input-contains-null-bytes": "입력에 null 바이트가 포함되어 있습니다",
     "input-contains-hidden-files": "입력에 숨겨진 파일이 포함되어 있습니다",
-    "input-contains-javascript-file-extensions":
-      "입력에 JavaScript 파일 확장자가 포함되어 있습니다",
+    "input-contains-javascript-file-extensions": "입력에 JavaScript 파일 확장자가 포함되어 있습니다",
   },
 
   // 비동기 작업
@@ -133,8 +120,7 @@ export const coreTranslations = {
   // 저장소 및 직렬화
   storage: {
     "potentially-dangerous-json-detected": "잠재적으로 위험한 JSON이 감지됨",
-    "failed-to-parse-json-from-localstorage":
-      "localStorage에서 JSON 파싱 실패:",
+    "failed-to-parse-json-from-localstorage": "localStorage에서 JSON 파싱 실패:",
     "error-parsing-storage-event": "키에 대한 저장소 이벤트 파싱 오류",
   },
 
@@ -172,8 +158,7 @@ export const coreTranslations = {
   // 통합 테스트
   integration: {
     "session-and-api-key-generation": "세션 및 API 키 생성",
-    "authentication-and-input-validation-integration":
-      "인증 및 입력 유효성 검사 통합",
+    "authentication-and-input-validation-integration": "인증 및 입력 유효성 검사 통합",
     "performance-and-security-integration": "성능 및 보안 통합",
   },
 };

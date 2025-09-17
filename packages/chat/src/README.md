@@ -52,8 +52,8 @@ function App() {
         enableTools: true,
         showTimestamps: true,
       }}
-      onMessageSent={(message) => console.log("Sent:", message)}
-      onMessageReceived={(message) => console.log("Received:", message)}
+      onMessageSent={message => console.log("Sent:", message)}
+      onMessageReceived={message => console.log("Received:", message)}
     />
   );
 }
@@ -62,12 +62,7 @@ function App() {
 ### Advanced Usage with Custom Components
 
 ```tsx
-import {
-  ChatContainer,
-  ChatMessage,
-  MessageInput,
-  useChat,
-} from "reynard-components";
+import { ChatContainer, ChatMessage, MessageInput, useChat } from "reynard-components";
 
 function CustomChatApp() {
   const chat = useChat({
@@ -93,7 +88,7 @@ function CustomChatApp() {
     <div class="custom-chat">
       <div class="messages">
         <For each={chat.messages()}>
-          {(message) => (
+          {message => (
             <ChatMessage
               message={message}
               showTimestamp={true}
@@ -146,9 +141,9 @@ The main orchestrator component that provides a complete chat experience.
       },
     },
   ]}
-  onMessageSent={(message) => console.log("Sent:", message)}
-  onMessageReceived={(message) => console.log("Received:", message)}
-  onError={(error) => console.error("Chat error:", error)}
+  onMessageSent={message => console.log("Sent:", message)}
+  onMessageReceived={message => console.log("Received:", message)}
+  onError={error => console.error("Chat error:", error)}
   onStreamingStart={() => console.log("Streaming started")}
   onStreamingEnd={() => console.log("Streaming ended")}
 />
@@ -186,8 +181,8 @@ Advanced input component with smart features.
   maxLength={4000}
   showCounter={true}
   variant="default" // 'default' | 'compact'
-  onSubmit={(content) => sendMessage(content)}
-  onChange={(content) => setDraft(content)}
+  onSubmit={content => sendMessage(content)}
+  onChange={content => setDraft(content)}
   submitButton={<CustomButton />}
 />
 ```
@@ -344,7 +339,7 @@ app.post("/api/chat", async (req, res) => {
     `data: ${JSON.stringify({
       type: "thinking",
       content: "Let me think about this...",
-    })}\n\n`,
+    })}\n\n`
   );
 
   // Send content chunks
@@ -353,7 +348,7 @@ app.post("/api/chat", async (req, res) => {
       `data: ${JSON.stringify({
         type: "content",
         content: chunk,
-      })}\n\n`,
+      })}\n\n`
     );
   }
 
@@ -362,7 +357,7 @@ app.post("/api/chat", async (req, res) => {
     `data: ${JSON.stringify({
       type: "complete",
       done: true,
-    })}\n\n`,
+    })}\n\n`
   );
 
   res.end();
@@ -374,12 +369,12 @@ app.post("/api/chat", async (req, res) => {
 ```javascript
 // Tool execution example
 const tools = {
-  calculator: async (args) => {
+  calculator: async args => {
     const result = eval(args.expression); // Don't use eval in production!
     return { result, type: "number" };
   },
 
-  search: async (args) => {
+  search: async args => {
     const results = await searchAPI(args.query);
     return { results, type: "search_results" };
   },
@@ -395,7 +390,7 @@ res.write(
       parameters: { expression: "2 + 2" },
       status: "running",
     },
-  })}\n\n`,
+  })}\n\n`
 );
 
 // After execution
@@ -408,7 +403,7 @@ res.write(
       status: "completed",
       result: 4,
     },
-  })}\n\n`,
+  })}\n\n`
 );
 ```
 
@@ -435,9 +430,7 @@ import { ChatContainer } from "reynard-components";
 test("sends message correctly", async () => {
   const onMessageSent = vi.fn();
 
-  render(() => (
-    <ChatContainer endpoint="/api/chat" onMessageSent={onMessageSent} />
-  ));
+  render(() => <ChatContainer endpoint="/api/chat" onMessageSent={onMessageSent} />);
 
   const input = screen.getByLabelText("Message input");
   const sendButton = screen.getByRole("button", { name: /send/i });
@@ -449,7 +442,7 @@ test("sends message correctly", async () => {
     expect.objectContaining({
       content: "Hello!",
       role: "user",
-    }),
+    })
   );
 });
 ```
@@ -481,9 +474,9 @@ const chat = useChat({
 ```tsx
 // Lazy load chat components
 const ChatContainer = lazy(() =>
-  import("reynard-components").then((m) => ({
+  import("reynard-components").then(m => ({
     default: m.ChatContainer,
-  })),
+  }))
 );
 
 function App() {
@@ -514,9 +507,7 @@ const CustomMessageRenderer = (props: { message: CustomMessage }) => {
     <div class={`message priority-${props.message.customData?.priority}`}>
       <ChatMessage message={props.message} />
       <div class="tags">
-        <For each={props.message.customData?.tags}>
-          {(tag) => <span class="tag">{tag}</span>}
-        </For>
+        <For each={props.message.customData?.tags}>{tag => <span class="tag">{tag}</span>}</For>
       </div>
     </div>
   );

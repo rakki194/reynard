@@ -10,7 +10,7 @@ import { MarkdownRenderer } from "./MarkdownRenderer";
 import type { P2PMessageProps } from "../types/p2p";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
-export const P2PMessage: Component<P2PMessageProps> = (props) => {
+export const P2PMessage: Component<P2PMessageProps> = props => {
   const [showReactions, setShowReactions] = createSignal(false);
   const [showMoreActions, setShowMoreActions] = createSignal(false);
 
@@ -58,7 +58,7 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
     const reactions = props.message.reactions || [];
     const counts = new Map<string, number>();
 
-    reactions.forEach((reaction) => {
+    reactions.forEach(reaction => {
       counts.set(reaction.emoji, reaction.count);
     });
 
@@ -90,20 +90,15 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
       <Show when={props.message.replyTo}>
         <div class="reynard-p2p-message__reply-indicator">
           <span class="reynard-p2p-message__reply-line" />
-          <span class="reynard-p2p-message__reply-text">
-            Replying to a message
-          </span>
+          <span class="reynard-p2p-message__reply-text">Replying to a message</span>
         </div>
       </Show>
 
       <div class="reynard-p2p-message__container">
         {/* Avatar (for others' messages) */}
-        <Show
-          when={props.showAvatar && !isOwnMessage() && props.message.sender}
-        >
+        <Show when={props.showAvatar && !isOwnMessage() && props.message.sender}>
           <div class="reynard-p2p-message__avatar">
-            {props.message.sender!.avatar ||
-              props.message.sender!.name.charAt(0)}
+            {props.message.sender!.avatar || props.message.sender!.name.charAt(0)}
           </div>
         </Show>
 
@@ -111,9 +106,7 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
           {/* Message header */}
           <Show when={props.showSender && !isOwnMessage()}>
             <div class="reynard-p2p-message__header">
-              <span class="reynard-p2p-message__sender">
-                {props.message.sender?.name || "Unknown User"}
-              </span>
+              <span class="reynard-p2p-message__sender">{props.message.sender?.name || "Unknown User"}</span>
               <Show when={props.showTimestamp}>
                 <time
                   class="reynard-p2p-message__timestamp"
@@ -141,15 +134,10 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
             </Show>
 
             {/* File attachments */}
-            <Show
-              when={
-                props.message.attachments &&
-                props.message.attachments.length > 0
-              }
-            >
+            <Show when={props.message.attachments && props.message.attachments.length > 0}>
               <div class="reynard-p2p-message__attachments">
                 <For each={props.message.attachments}>
-                  {(attachment) => (
+                  {attachment => (
                     <div class="reynard-p2p-message__attachment">
                       <Show
                         when={attachment.type.startsWith("image/")}
@@ -157,16 +145,12 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
                           <div class="reynard-p2p-message__file">
                             <div class="reynard-p2p-message__file-icon">📎</div>
                             <div class="reynard-p2p-message__file-info">
-                              <div class="reynard-p2p-message__file-name">
-                                {attachment.name}
-                              </div>
+                              <div class="reynard-p2p-message__file-name">{attachment.name}</div>
                               <div class="reynard-p2p-message__file-size">
                                 {(attachment.size / 1024 / 1024).toFixed(1)} MB
                               </div>
                             </div>
-                            <Show
-                              when={attachment.uploadStatus === "uploading"}
-                            >
+                            <Show when={attachment.uploadStatus === "uploading"}>
                               <div class="reynard-p2p-message__upload-progress">
                                 <div
                                   class={`reynard-p2p-message__upload-bar ${getProgressClass(attachment.uploadProgress || 0)}`}
@@ -239,21 +223,9 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
             {/* Quick reactions */}
             <Show when={showReactions()}>
               <div class="reynard-p2p-message__quick-reactions">
-                <For
-                  each={[
-                    "thumbs-up",
-                    "heart",
-                    "emoji-laugh",
-                    "emoji-surprised",
-                    "emoji-sad",
-                    "emoji-angry",
-                  ]}
-                >
-                  {(reaction) => (
-                    <button
-                      class="reynard-p2p-message__quick-reaction"
-                      onClick={() => handleQuickReaction(reaction)}
-                    >
+                <For each={["thumbs-up", "heart", "emoji-laugh", "emoji-surprised", "emoji-sad", "emoji-angry"]}>
+                  {reaction => (
+                    <button class="reynard-p2p-message__quick-reaction" onClick={() => handleQuickReaction(reaction)}>
                       {/* TODO: Fix icon rendering */}
                       <span>{reaction}</span>
                     </button>
@@ -274,9 +246,7 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
                   <button onClick={() => handleAction("unpin")}>Unpin</button>
                 </Show>
                 <Show when={!props.message.isPinned}>
-                  <button onClick={() => handleAction("pin")}>
-                    Pin message
-                  </button>
+                  <button onClick={() => handleAction("pin")}>Pin message</button>
                 </Show>
               </div>
             </Show>
@@ -289,16 +259,9 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
               <div class="reynard-p2p-message__reactions">
                 <For each={getReactionCounts()}>
                   {([emoji, count]) => (
-                    <button
-                      class="reynard-p2p-message__reaction"
-                      onClick={() => handleQuickReaction(emoji)}
-                    >
-                      <span class="reynard-p2p-message__reaction-emoji">
-                        {emoji}
-                      </span>
-                      <span class="reynard-p2p-message__reaction-count">
-                        {count}
-                      </span>
+                    <button class="reynard-p2p-message__reaction" onClick={() => handleQuickReaction(emoji)}>
+                      <span class="reynard-p2p-message__reaction-emoji">{emoji}</span>
+                      <span class="reynard-p2p-message__reaction-count">{count}</span>
                     </button>
                   )}
                 </For>
@@ -325,16 +288,10 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
                 </span>
               </Show>
 
-              <Show
-                when={
-                  props.showReadReceipts &&
-                  props.message.readBy &&
-                  props.message.readBy.length > 0
-                }
-              >
+              <Show when={props.showReadReceipts && props.message.readBy && props.message.readBy.length > 0}>
                 <div class="reynard-p2p-message__read-receipts">
                   <For each={props.message.readBy?.slice(0, 3) || []}>
-                    {(receipt) => (
+                    {receipt => (
                       <div
                         class="reynard-p2p-message__read-receipt"
                         title={`Read by ${receipt.user.name} at ${new Date(receipt.readAt).toLocaleString()}`}
@@ -343,14 +300,8 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
                       </div>
                     )}
                   </For>
-                  <Show
-                    when={
-                      props.message.readBy && props.message.readBy.length > 3
-                    }
-                  >
-                    <span class="reynard-p2p-message__read-count">
-                      +{(props.message.readBy?.length || 0) - 3}
-                    </span>
+                  <Show when={props.message.readBy && props.message.readBy.length > 3}>
+                    <span class="reynard-p2p-message__read-count">+{(props.message.readBy?.length || 0) - 3}</span>
                   </Show>
                 </div>
               </Show>
@@ -358,35 +309,19 @@ export const P2PMessage: Component<P2PMessageProps> = (props) => {
           </div>
 
           {/* Edit indicator */}
-          <Show
-            when={
-              props.message.editHistory && props.message.editHistory.length > 0
-            }
-          >
+          <Show when={props.message.editHistory && props.message.editHistory.length > 0}>
             <div class="reynard-p2p-message__edited">
-              <span class="reynard-p2p-message__edited-indicator">
-                (edited)
-              </span>
+              <span class="reynard-p2p-message__edited-indicator">(edited)</span>
             </div>
           </Show>
 
           {/* Priority indicator */}
-          <Show
-            when={props.message.priority && props.message.priority !== "normal"}
-          >
-            <div
-              class={`reynard-p2p-message__priority reynard-p2p-message__priority--${props.message.priority}`}
-            >
+          <Show when={props.message.priority && props.message.priority !== "normal"}>
+            <div class={`reynard-p2p-message__priority reynard-p2p-message__priority--${props.message.priority}`}>
               <span class="reynard-p2p-message__priority-icon">
-                {props.message.priority === "urgent"
-                  ? "🚨"
-                  : props.message.priority === "high"
-                    ? "❗"
-                    : ""}
+                {props.message.priority === "urgent" ? "🚨" : props.message.priority === "high" ? "❗" : ""}
               </span>
-              <span class="reynard-p2p-message__priority-text">
-                {props.message.priority?.toUpperCase()}
-              </span>
+              <span class="reynard-p2p-message__priority-text">{props.message.priority?.toUpperCase()}</span>
             </div>
           </Show>
         </div>

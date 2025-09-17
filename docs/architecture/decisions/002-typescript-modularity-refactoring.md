@@ -101,10 +101,7 @@ packages/composables/src/ai/
 
 ```typescript
 // Correct approach (2025 best practice)
-const query = async (
-  params: RAGQueryParams,
-  signal?: globalThis.AbortSignal,
-): Promise<RAGQueryResponse<TExtra>> => {
+const query = async (params: RAGQueryParams, signal?: globalThis.AbortSignal): Promise<RAGQueryResponse<TExtra>> => {
   // Implementation with full type safety
 };
 ```
@@ -138,13 +135,10 @@ export interface RAGClientOptions {
 Each module exports a factory function for clean instantiation:
 
 ```typescript
-export function createRAGQueryClient(
-  authFetch: RAGClientOptions["authFetch"],
-  queryUrl: string,
-) {
+export function createRAGQueryClient(authFetch: RAGClientOptions["authFetch"], queryUrl: string) {
   const query = async <TExtra = Record<string, unknown>>(
     params: RAGQueryParams,
-    signal?: globalThis.AbortSignal,
+    signal?: globalThis.AbortSignal
   ): Promise<RAGQueryResponse<TExtra>> => {
     // Focused implementation
   };

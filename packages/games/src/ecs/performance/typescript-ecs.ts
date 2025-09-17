@@ -39,8 +39,7 @@ export class TypeScriptECS implements UnifiedECS {
   public readonly isWASMActive: boolean = false;
   public readonly performanceMode: "typescript" = "typescript";
 
-  private systemFunctions: Array<{ fn: (world: World) => void; name: string }> =
-    [];
+  private systemFunctions: Array<{ fn: (world: World) => void; name: string }> = [];
   private performanceStartTime: number = 0;
   private systemExecutionTimes: number[] = [];
   private entityCount: number = 0;
@@ -54,9 +53,7 @@ export class TypeScriptECS implements UnifiedECS {
     if (config.maxEntities) {
       // Note: The actual world implementation would need to support maxEntities
       // This is a placeholder for the configuration
-      console.log(
-        `🦦> TypeScript ECS configured for max ${config.maxEntities} entities`,
-      );
+      console.log(`🦦> TypeScript ECS configured for max ${config.maxEntities} entities`);
     }
 
     if (config.enableMetrics) {
@@ -135,10 +132,7 @@ export class TypeScriptECS implements UnifiedECS {
   /**
    * Remove components from an entity.
    */
-  remove<T extends Component[]>(
-    entity: Entity,
-    ...componentTypes: any[]
-  ): void {
+  remove<T extends Component[]>(entity: Entity, ...componentTypes: any[]): void {
     this.world.remove(entity, ...componentTypes);
     // Note: Component count tracking would require additional world methods
     this.updateMetrics();
@@ -271,12 +265,8 @@ export class TypeScriptECS implements UnifiedECS {
     this.metrics.componentCount = this.componentCount;
 
     if (this.systemExecutionTimes.length > 0) {
-      const totalTime = this.systemExecutionTimes.reduce(
-        (sum, time) => sum + time,
-        0,
-      );
-      this.metrics.averageSystemTime =
-        totalTime / this.systemExecutionTimes.length;
+      const totalTime = this.systemExecutionTimes.reduce((sum, time) => sum + time, 0);
+      this.metrics.averageSystemTime = totalTime / this.systemExecutionTimes.length;
     }
 
     // Update memory usage if available (browser-specific)
@@ -302,8 +292,6 @@ export class TypeScriptECS implements UnifiedECS {
  * });
  * ```
  */
-export async function createTypeScriptECS(
-  config: ECSConfig = {},
-): Promise<TypeScriptECS> {
+export async function createTypeScriptECS(config: ECSConfig = {}): Promise<TypeScriptECS> {
   return new TypeScriptECS(config);
 }

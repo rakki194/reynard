@@ -12,7 +12,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 logger = logging.getLogger("uvicorn")
 
@@ -52,12 +52,12 @@ class ToolParameter:
     description: str
     required: bool = True
     default: Any = None
-    min_value: Optional[Union[int, float]] = None
-    max_value: Optional[Union[int, float]] = None
-    min_length: Optional[int] = None
-    max_length: Optional[int] = None
-    choices: Optional[List[Any]] = None
-    pattern: Optional[str] = None
+    min_value: int | float | None = None
+    max_value: int | float | None = None
+    min_length: int | None = None
+    max_length: int | None = None
+    choices: list[Any] | None = None
+    pattern: str | None = None
 
     def __post_init__(self):
         """Validate parameter definition."""
@@ -66,7 +66,7 @@ class ToolParameter:
                 f"Optional parameter '{self.name}' must have a default value"
             )
 
-    def validate(self, value: Any) -> tuple[bool, Optional[str]]:
+    def validate(self, value: Any) -> tuple[bool, str | None]:
         """
         Validate a parameter value against this parameter definition.
 
@@ -84,15 +84,15 @@ class ToolParameter:
         # Type validation
         if self.type == ParameterType.STRING and not isinstance(value, str):
             return False, f"Parameter '{self.name}' must be a string"
-        elif self.type == ParameterType.INTEGER and not isinstance(value, int):
+        if self.type == ParameterType.INTEGER and not isinstance(value, int):
             return False, f"Parameter '{self.name}' must be an integer"
-        elif self.type == ParameterType.FLOAT and not isinstance(value, (int, float)):
+        if self.type == ParameterType.FLOAT and not isinstance(value, (int, float)):
             return False, f"Parameter '{self.name}' must be a number"
-        elif self.type == ParameterType.BOOLEAN and not isinstance(value, bool):
+        if self.type == ParameterType.BOOLEAN and not isinstance(value, bool):
             return False, f"Parameter '{self.name}' must be a boolean"
-        elif self.type == ParameterType.ARRAY and not isinstance(value, list):
+        if self.type == ParameterType.ARRAY and not isinstance(value, list):
             return False, f"Parameter '{self.name}' must be an array"
-        elif self.type == ParameterType.OBJECT and not isinstance(value, dict):
+        if self.type == ParameterType.OBJECT and not isinstance(value, dict):
             return False, f"Parameter '{self.name}' must be an object"
 
         # Range validation for numeric types
@@ -145,16 +145,16 @@ class ToolResult:
 
     success: bool
     data: Any = None
-    error: Optional[str] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    execution_time: Optional[float] = None
+    error: str | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+    execution_time: float | None = None
 
     @classmethod
     def success_result(
         cls,
         data: Any,
-        metadata: Optional[Dict[str, Any]] = None,
-        execution_time: Optional[float] = None,
+        metadata: dict[str, Any] | None = None,
+        execution_time: float | None = None,
     ) -> "ToolResult":
         """Create a successful result."""
         return cls(
@@ -168,8 +168,8 @@ class ToolResult:
     def error_result(
         cls,
         error: str,
-        metadata: Optional[Dict[str, Any]] = None,
-        execution_time: Optional[float] = None,
+        metadata: dict[str, Any] | None = None,
+        execution_time: float | None = None,
     ) -> "ToolResult":
         """Create an error result."""
         return cls(
@@ -179,7 +179,7 @@ class ToolResult:
             execution_time=execution_time,
         )
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert result to dictionary for API responses."""
         result = {"success": self.success, "metadata": self.metadata}
 
@@ -212,10 +212,10 @@ class ToolExecutionContext:
 
     user_id: str
     user_role: str = "user"
-    session_id: Optional[str] = None
-    request_id: Optional[str] = None
-    working_directory: Optional[str] = None
-    environment: Dict[str, str] = field(default_factory=dict)
+    session_id: str | None = None
+    request_id: str | None = None
+    working_directory: str | None = None
+    environment: dict[str, str] = field(default_factory=dict)
     timeout: float = 30.0
     dry_run: bool = False
 
@@ -241,12 +241,12 @@ class BaseTool(ABC):
     """
 
     def __init__(self):
-        self._name: Optional[str] = None
-        self._description: Optional[str] = None
-        self._parameters: List[ToolParameter] = []
+        self._name: str | None = None
+        self._description: str | None = None
+        self._parameters: list[ToolParameter] = []
         self._required_permission: str = "execute"
         self._category: str = "general"
-        self._tags: List[str] = []
+        self._tags: list[str] = []
         self._timeout: float = 30.0
 
     @property
@@ -263,7 +263,7 @@ class BaseTool(ABC):
 
     @property
     @abstractmethod
-    def parameters(self) -> List[ToolParameter]:
+    def parameters(self) -> list[ToolParameter]:
         """List of tool parameters."""
         pass
 
@@ -278,7 +278,7 @@ class BaseTool(ABC):
         return self._category
 
     @property
-    def tags(self) -> List[str]:
+    def tags(self) -> list[str]:
         """Tool tags for searchability."""
         return self._tags
 
@@ -287,7 +287,7 @@ class BaseTool(ABC):
         """Default timeout for tool execution."""
         return self._timeout
 
-    def validate_parameters(self, params: Dict[str, Any]) -> Dict[str, str]:
+    def validate_parameters(self, params: dict[str, Any]) -> dict[str, str]:
         """
         Validate tool parameters.
 
@@ -353,7 +353,7 @@ class BaseTool(ABC):
 
         return errors
 
-    def prepare_parameters(self, params: Dict[str, Any]) -> Dict[str, Any]:
+    def prepare_parameters(self, params: dict[str, Any]) -> dict[str, Any]:
         """
         Prepare parameters by adding defaults for missing optional parameters.
 
@@ -404,12 +404,12 @@ class BaseTool(ABC):
             return await asyncio.wait_for(
                 self.execute(context, **params), timeout=timeout
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             from .exceptions import ToolTimeoutError
 
             raise ToolTimeoutError(self.name, timeout)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert tool definition to dictionary for API responses."""
         return {
             "name": self.name,

@@ -33,11 +33,7 @@ export class ADRGenerator {
     }
 
     const adrId = await this.getNextADRId();
-    const adrContent = await this.generateADRContent(
-      adrId,
-      suggestion,
-      template,
-    );
+    const adrContent = await this.generateADRContent(adrId, suggestion, template);
 
     const fileName = `${adrId.toString().padStart(3, "0")}-${this.sanitizeTitle(suggestion.title)}.md`;
     const filePath = join(this.adrDirectory, fileName);
@@ -65,10 +61,7 @@ export class ADRGenerator {
         const filePath = await this.generateADRFromSuggestion(suggestion);
         generatedFiles.push(filePath);
       } catch (error) {
-        console.error(
-          `❌ Failed to generate ADR for ${suggestion.title}:`,
-          error,
-        );
+        console.error(`❌ Failed to generate ADR for ${suggestion.title}:`, error);
       }
     }
 
@@ -78,11 +71,7 @@ export class ADRGenerator {
   /**
    * Generate ADR content from template and suggestion
    */
-  private async generateADRContent(
-    adrId: number,
-    suggestion: ADRSuggestion,
-    template: ADRTemplate,
-  ): Promise<string> {
+  private async generateADRContent(adrId: number, suggestion: ADRSuggestion, template: ADRTemplate): Promise<string> {
     const date = new Date().toISOString().split("T")[0];
 
     let content = `# ADR-${adrId.toString().padStart(3, "0")}: ${suggestion.title}\n\n`;
@@ -148,17 +137,17 @@ export class ADRGenerator {
   private async getNextADRId(): Promise<number> {
     try {
       const files = await readdir(this.adrDirectory);
-      const adrFiles = files.filter((file) => file.match(/^\d{3}-.*\.md$/));
+      const adrFiles = files.filter(file => file.match(/^\d{3}-.*\.md$/));
 
       if (adrFiles.length === 0) {
         return 1;
       }
 
       const maxId = Math.max(
-        ...adrFiles.map((file) => {
+        ...adrFiles.map(file => {
           const match = file.match(/^(\d{3})-/);
           return match ? parseInt(match[1], 10) : 0;
-        }),
+        })
       );
 
       return maxId + 1;
@@ -228,11 +217,7 @@ export class ADRGenerator {
         "Architecture Patterns",
         "Implementation Plan",
       ],
-      requiredFields: [
-        "scalabilityRequirements",
-        "growthProjections",
-        "scalingStrategy",
-      ],
+      requiredFields: ["scalabilityRequirements", "growthProjections", "scalingStrategy"],
       optionalFields: ["costOptimization", "monitoring"],
     });
 
@@ -256,13 +241,7 @@ export class ADRGenerator {
     this.templates.set("general", {
       name: "General ADR Template",
       category: "general",
-      sections: [
-        "Context",
-        "Decision",
-        "Consequences",
-        "Implementation Plan",
-        "Review and Updates",
-      ],
+      sections: ["Context", "Decision", "Consequences", "Implementation Plan", "Review and Updates"],
       requiredFields: ["context", "decision", "consequences"],
       optionalFields: ["implementation", "review"],
     });
@@ -286,9 +265,6 @@ export class ADRGenerator {
    * Add custom template
    */
   addTemplate(template: ADRTemplate): void {
-    this.templates.set(
-      template.name.toLowerCase().replace(/\s+/g, "-"),
-      template,
-    );
+    this.templates.set(template.name.toLowerCase().replace(/\s+/g, "-"), template);
   }
 }

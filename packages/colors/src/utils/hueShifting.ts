@@ -13,10 +13,7 @@ import { clampToGamut, handleEdgeCases } from "./colorConversion";
  * @param deltaH - Hue shift amount in degrees
  * @returns Shifted OKLCH color with same L and C
  */
-export function pureHueShift(
-  baseColor: OKLCHColor,
-  deltaH: number,
-): OKLCHColor {
+export function pureHueShift(baseColor: OKLCHColor, deltaH: number): OKLCHColor {
   const shifted = {
     l: baseColor.l, // PRESERVE lightness
     c: baseColor.c, // PRESERVE chroma
@@ -34,11 +31,7 @@ export function pureHueShift(
  * @param hueRange - Total hue range to cover (degrees)
  * @returns Array of OKLCH colors with pure hue shifts
  */
-export function generateHueShiftRamp(
-  baseColor: OKLCHColor,
-  stops: number = 5,
-  hueRange: number = 60,
-): OKLCHColor[] {
+export function generateHueShiftRamp(baseColor: OKLCHColor, stops: number = 5, hueRange: number = 60): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const hueStep = hueRange / (stops - 1);
 
@@ -66,11 +59,7 @@ export function createComplementaryPair(baseColor: OKLCHColor): OKLCHColor[] {
  * @returns Array with three colors 120° apart
  */
 export function createTriadicSet(baseColor: OKLCHColor): OKLCHColor[] {
-  return [
-    baseColor,
-    pureHueShift(baseColor, 120),
-    pureHueShift(baseColor, 240),
-  ];
+  return [baseColor, pureHueShift(baseColor, 120), pureHueShift(baseColor, 240)];
 }
 
 /**
@@ -79,12 +68,7 @@ export function createTriadicSet(baseColor: OKLCHColor): OKLCHColor[] {
  * @returns Array with four colors 90° apart
  */
 export function createTetradicSet(baseColor: OKLCHColor): OKLCHColor[] {
-  return [
-    baseColor,
-    pureHueShift(baseColor, 90),
-    pureHueShift(baseColor, 180),
-    pureHueShift(baseColor, 270),
-  ];
+  return [baseColor, pureHueShift(baseColor, 90), pureHueShift(baseColor, 180), pureHueShift(baseColor, 270)];
 }
 
 /**
@@ -94,11 +78,7 @@ export function createTetradicSet(baseColor: OKLCHColor): OKLCHColor[] {
  * @param spread - Total hue spread in degrees
  * @returns Array of analogous colors
  */
-export function createAnalogousSet(
-  baseColor: OKLCHColor,
-  count: number = 5,
-  spread: number = 60,
-): OKLCHColor[] {
+export function createAnalogousSet(baseColor: OKLCHColor, count: number = 5, spread: number = 60): OKLCHColor[] {
   const colors: OKLCHColor[] = [];
   const step = spread / (count - 1);
   const startOffset = -spread / 2;
@@ -121,7 +101,7 @@ export function createAnalogousSet(
 export function perceptualHueShift(
   baseColor: OKLCHColor,
   deltaH: number,
-  preserveRelationships: boolean = true,
+  preserveRelationships: boolean = true
 ): OKLCHColor {
   if (!preserveRelationships) {
     return pureHueShift(baseColor, deltaH);
@@ -142,11 +122,8 @@ export function perceptualHueShift(
  * @param deltaH - Hue shift amount in degrees
  * @returns Array of shifted OKLCH colors
  */
-export function batchHueShift(
-  colors: OKLCHColor[],
-  deltaH: number,
-): OKLCHColor[] {
-  return colors.map((color) => pureHueShift(color, deltaH));
+export function batchHueShift(colors: OKLCHColor[], deltaH: number): OKLCHColor[] {
+  return colors.map(color => pureHueShift(color, deltaH));
 }
 
 /**
@@ -161,7 +138,7 @@ export function easedHueShift(
   baseColor: OKLCHColor,
   deltaH: number,
   progress: number,
-  easingFunction: (t: number) => number = (t: number) => t,
+  easingFunction: (t: number) => number = (t: number) => t
 ): OKLCHColor {
   const easedProgress = easingFunction(progress);
   const actualDeltaH = deltaH * easedProgress;

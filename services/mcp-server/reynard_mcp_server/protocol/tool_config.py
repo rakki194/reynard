@@ -7,7 +7,6 @@ Configuration definitions for MCP tool routing.
 Follows the 100-line axiom and modular architecture principles.
 """
 
-from typing import Dict, Set
 
 from .tool_registry import ToolExecutionType
 
@@ -148,7 +147,11 @@ ECS_AGENT_TOOLS: set[str] = {
 # Tool execution type mapping
 TOOL_EXECUTION_TYPES: dict[str, ToolExecutionType] = {
     # Async tools
-    **{tool: ToolExecutionType.ASYNC for tool in AGENT_TOOLS if tool in ["agent_startup_sequence"]},
+    **{
+        tool: ToolExecutionType.ASYNC
+        for tool in AGENT_TOOLS
+        if tool in ["agent_startup_sequence"]
+    },
     **dict.fromkeys(LINTING_TOOLS, ToolExecutionType.ASYNC),
     **{
         tool: ToolExecutionType.ASYNC
@@ -169,7 +172,11 @@ TOOL_EXECUTION_TYPES: dict[str, ToolExecutionType] = {
     **dict.fromkeys(IMAGE_VIEWER_TOOLS, ToolExecutionType.ASYNC),
     **dict.fromkeys(PLAYWRIGHT_TOOLS, ToolExecutionType.SYNC),
     # Sync tools
-    **{tool: ToolExecutionType.SYNC for tool in AGENT_TOOLS if tool != "agent_startup_sequence"},
+    **{
+        tool: ToolExecutionType.SYNC
+        for tool in AGENT_TOOLS
+        if tool != "agent_startup_sequence"
+    },
     **dict.fromkeys(BM25_SEARCH_TOOLS, ToolExecutionType.SYNC),
     **dict.fromkeys(ENHANCED_BM25_SEARCH_TOOLS, ToolExecutionType.SYNC),
     **dict.fromkeys(UTILITY_TOOLS, ToolExecutionType.SYNC),

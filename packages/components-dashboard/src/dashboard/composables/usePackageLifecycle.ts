@@ -4,11 +4,7 @@
  */
 
 import { createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import type {
-  PackageLifecycleInfo,
-  LifecycleSummary,
-  PackageLifecycleState,
-} from "../types/PackageLifecycleTypes";
+import type { PackageLifecycleInfo, LifecycleSummary, PackageLifecycleState } from "../types/PackageLifecycleTypes";
 
 export function usePackageLifecycle(refreshInterval?: number) {
   const [state, setState] = createSignal<PackageLifecycleState>({
@@ -31,11 +27,11 @@ export function usePackageLifecycle(refreshInterval?: number) {
   let refreshTimer: ReturnType<typeof setInterval> | null = null;
 
   const refreshLifecycleData = async () => {
-    setState((prev) => ({ ...prev, isRefreshing: true }));
+    setState(prev => ({ ...prev, isRefreshing: true }));
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       const mockPackages: PackageLifecycleInfo[] = [
         {
@@ -55,23 +51,15 @@ export function usePackageLifecycle(refreshInterval?: number) {
 
       const summary: LifecycleSummary = {
         totalPackages: mockPackages.length,
-        loadedPackages: mockPackages.filter((p) => p.status === "loaded")
-          .length,
-        unloadedPackages: mockPackages.filter((p) => p.status === "unloaded")
-          .length,
-        loadingPackages: mockPackages.filter((p) => p.status === "loading")
-          .length,
-        errorPackages: mockPackages.filter((p) => p.status === "error").length,
-        totalMemoryUsage: mockPackages.reduce(
-          (sum, p) => sum + p.memoryUsage,
-          0,
-        ),
-        averageLoadTime:
-          mockPackages.reduce((sum, p) => sum + p.loadTime, 0) /
-          mockPackages.length,
+        loadedPackages: mockPackages.filter(p => p.status === "loaded").length,
+        unloadedPackages: mockPackages.filter(p => p.status === "unloaded").length,
+        loadingPackages: mockPackages.filter(p => p.status === "loading").length,
+        errorPackages: mockPackages.filter(p => p.status === "error").length,
+        totalMemoryUsage: mockPackages.reduce((sum, p) => sum + p.memoryUsage, 0),
+        averageLoadTime: mockPackages.reduce((sum, p) => sum + p.loadTime, 0) / mockPackages.length,
       };
 
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
         packages: mockPackages,
         summary,
@@ -80,25 +68,23 @@ export function usePackageLifecycle(refreshInterval?: number) {
       }));
     } catch (error) {
       console.error("Failed to refresh lifecycle data:", error);
-      setState((prev) => ({ ...prev, isRefreshing: false }));
+      setState(prev => ({ ...prev, isRefreshing: false }));
     }
   };
 
   const loadPackage = async (packageName: string) => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
-      packages: prev.packages.map((pkg) =>
-        pkg.name === packageName ? { ...pkg, status: "loading" as const } : pkg,
-      ),
+      packages: prev.packages.map(pkg => (pkg.name === packageName ? { ...pkg, status: "loading" as const } : pkg)),
     }));
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
-        packages: prev.packages.map((pkg) =>
+        packages: prev.packages.map(pkg =>
           pkg.name === packageName
             ? {
                 ...pkg,
@@ -106,42 +92,38 @@ export function usePackageLifecycle(refreshInterval?: number) {
                 lastLoaded: new Date(),
                 loadCount: pkg.loadCount + 1,
               }
-            : pkg,
+            : pkg
         ),
       }));
     } catch (error) {
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
-        packages: prev.packages.map((pkg) =>
+        packages: prev.packages.map(pkg =>
           pkg.name === packageName
             ? {
                 ...pkg,
                 status: "error" as const,
                 error: (error as Error).message,
               }
-            : pkg,
+            : pkg
         ),
       }));
     }
   };
 
   const unloadPackage = async (packageName: string) => {
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
-      packages: prev.packages.map((pkg) =>
-        pkg.name === packageName
-          ? { ...pkg, status: "unloading" as const }
-          : pkg,
-      ),
+      packages: prev.packages.map(pkg => (pkg.name === packageName ? { ...pkg, status: "unloading" as const } : pkg)),
     }));
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
-        packages: prev.packages.map((pkg) =>
+        packages: prev.packages.map(pkg =>
           pkg.name === packageName
             ? {
                 ...pkg,
@@ -149,20 +131,20 @@ export function usePackageLifecycle(refreshInterval?: number) {
                 lastUnloaded: new Date(),
                 memoryUsage: 0,
               }
-            : pkg,
+            : pkg
         ),
       }));
     } catch (error) {
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
-        packages: prev.packages.map((pkg) =>
+        packages: prev.packages.map(pkg =>
           pkg.name === packageName
             ? {
                 ...pkg,
                 status: "error" as const,
                 error: (error as Error).message,
               }
-            : pkg,
+            : pkg
         ),
       }));
     }
@@ -174,11 +156,11 @@ export function usePackageLifecycle(refreshInterval?: number) {
   };
 
   const setSearchQuery = (query: string) => {
-    setState((prev) => ({ ...prev, searchQuery: query }));
+    setState(prev => ({ ...prev, searchQuery: query }));
   };
 
   const setSelectedStatus = (status: string) => {
-    setState((prev) => ({ ...prev, selectedStatus: status }));
+    setState(prev => ({ ...prev, selectedStatus: status }));
   };
 
   onMount(() => {

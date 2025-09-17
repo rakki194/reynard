@@ -14,19 +14,15 @@ export class BatchProcessor {
   async processBatch(
     images: ImageItem[],
     generatorName: string,
-    onProgress: (progress: BatchProgress) => void,
+    onProgress: (progress: BatchProgress) => void
   ): Promise<CaptionResult[]> {
-    const imagesToProcess = images.filter((img) => !img.caption);
+    const imagesToProcess = images.filter(img => !img.caption);
     const results: CaptionResult[] = [];
     let completed = 0;
 
     for (const img of imagesToProcess) {
       try {
-        const result = await this.apiService.generateCaption(
-          img.file,
-          generatorName,
-          { threshold: 0.2 },
-        );
+        const result = await this.apiService.generateCaption(img.file, generatorName, { threshold: 0.2 });
         results.push(result);
       } catch (error) {
         results.push({
@@ -52,16 +48,11 @@ export class BatchProcessor {
   /**
    * Update images with batch processing results
    */
-  updateImagesWithResults(
-    images: ImageItem[],
-    results: CaptionResult[],
-    generatorName: string,
-  ): ImageItem[] {
-    return images.map((img) => {
-      const result = results.find((r) => r.image_path === img.name);
+  updateImagesWithResults(images: ImageItem[], results: CaptionResult[], generatorName: string): ImageItem[] {
+    return images.map(img => {
+      const result = results.find(r => r.image_path === img.name);
       if (result && result.success) {
-        const extractedTags =
-          result.caption?.split(/[,\s]+/).filter((tag) => tag.length > 2) || [];
+        const extractedTags = result.caption?.split(/[,\s]+/).filter(tag => tag.length > 2) || [];
         return {
           ...img,
           caption: result.caption,
@@ -78,6 +69,6 @@ export class BatchProcessor {
    * Get success count from results
    */
   getSuccessCount(results: CaptionResult[]): number {
-    return results.filter((r) => r.success).length;
+    return results.filter(r => r.success).length;
   }
 }

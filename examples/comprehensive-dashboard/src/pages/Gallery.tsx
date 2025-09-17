@@ -2,11 +2,7 @@ import { createSignal, createMemo, For } from "solid-js";
 import { Gallery as GalleryComponent } from "reynard-gallery";
 import { Card, Button } from "reynard-components";
 import { useI18n } from "reynard-i18n";
-import type {
-  GalleryData,
-  GalleryCallbacks,
-  ContextMenuAction,
-} from "reynard-gallery";
+import type { GalleryData, GalleryCallbacks, ContextMenuAction } from "reynard-gallery";
 import "./Gallery.css";
 
 export function Gallery() {
@@ -148,7 +144,7 @@ export function Gallery() {
           createFolder: true,
         },
       },
-    }),
+    })
   );
 
   // Gallery configuration (commented out for now, can be used later)
@@ -191,7 +187,7 @@ export function Gallery() {
       id: "download",
       label: "Download",
       icon: "download",
-      handler: (items) => {
+      handler: items => {
         console.log("Downloading items:", items);
         // Implement download logic
       },
@@ -200,7 +196,7 @@ export function Gallery() {
       id: "share",
       label: "Share",
       icon: "share",
-      handler: (items) => {
+      handler: items => {
         console.log("Sharing items:", items);
         // Implement share logic
       },
@@ -210,7 +206,7 @@ export function Gallery() {
       label: "Delete",
       icon: "trash",
       destructive: true,
-      handler: (items) => {
+      handler: items => {
         console.log("Deleting items:", items);
         // Implement delete logic
       },
@@ -219,10 +215,10 @@ export function Gallery() {
 
   // Gallery callbacks
   const galleryCallbacks: GalleryCallbacks = {
-    onSelectionChange: (items) => {
+    onSelectionChange: items => {
       console.log("Selection changed:", items.length, "items selected");
     },
-    onItemOpen: (item) => {
+    onItemOpen: item => {
       console.log("Opening item:", item.name);
       if (item.type === "folder") {
         // Navigate to folder
@@ -233,7 +229,7 @@ export function Gallery() {
         console.log("Opening file:", item.name, "of type:", item.type);
       }
     },
-    onItemDoubleClick: (item) => {
+    onItemDoubleClick: item => {
       console.log("Double-clicked item:", item.name);
       // Handle double-click (same as single click for now)
       if (item.type === "folder") {
@@ -241,21 +237,21 @@ export function Gallery() {
         setCurrentPath(newPath);
       }
     },
-    onNavigate: (path) => {
+    onNavigate: path => {
       console.log("Navigating to path:", path);
       const pathParts = path.split("/").filter(Boolean);
       setCurrentPath(pathParts);
     },
-    onUploadStart: (files) => {
+    onUploadStart: files => {
       console.log("Upload started:", files.length, "files");
     },
-    onUploadProgress: (progress) => {
+    onUploadProgress: progress => {
       console.log("Upload progress:", progress);
     },
-    onUploadComplete: (results) => {
+    onUploadComplete: results => {
       console.log("Upload completed:", results);
     },
-    onDelete: (items) => {
+    onDelete: items => {
       console.log("Deleting items:", items);
     },
     onMove: (_items, destination) => {
@@ -279,16 +275,13 @@ export function Gallery() {
 
     return {
       totalItems: items.length,
-      images: items.filter((item) => item.type === "image").length,
-      videos: items.filter((item) => item.type === "video").length,
-      audio: items.filter((item) => item.type === "audio").length,
-      documents: items.filter((item) => item.type === "text").length,
-      folders: items.filter((item) => item.type === "folder").length,
-      totalSize: items.reduce(
-        (sum, item) => sum + (item.type === "folder" ? 0 : item.size),
-        0,
-      ),
-      favorites: items.filter((item) => item.favorited).length,
+      images: items.filter(item => item.type === "image").length,
+      videos: items.filter(item => item.type === "video").length,
+      audio: items.filter(item => item.type === "audio").length,
+      documents: items.filter(item => item.type === "text").length,
+      folders: items.filter(item => item.type === "folder").length,
+      totalSize: items.reduce((sum, item) => sum + (item.type === "folder" ? 0 : item.size), 0),
+      favorites: items.filter(item => item.favorited).length,
     };
   });
 
@@ -315,22 +308,13 @@ export function Gallery() {
       <div class="gallery-header">
         <h1 class="gallery-title">{t("gallery.title") || "Gallery"}</h1>
         <div class="gallery-actions">
-          <Button
-            variant="secondary"
-            onClick={() => handleViewModeChange("grid")}
-          >
+          <Button variant="secondary" onClick={() => handleViewModeChange("grid")}>
             Grid View
           </Button>
-          <Button
-            variant="secondary"
-            onClick={() => handleViewModeChange("list")}
-          >
+          <Button variant="secondary" onClick={() => handleViewModeChange("list")}>
             List View
           </Button>
-          <Button
-            variant="primary"
-            onClick={() => document.getElementById("file-input")?.click()}
-          >
+          <Button variant="primary" onClick={() => document.getElementById("file-input")?.click()}>
             Upload Files
           </Button>
           <input
@@ -340,7 +324,7 @@ export function Gallery() {
             multiple
             accept="image/*,video/*,audio/*,text/*,application/*"
             aria-label="Select files to upload"
-            onChange={(e) => {
+            onChange={e => {
               const files = Array.from(e.target.files || []);
               if (files.length > 0) {
                 handleFileUpload(files);
@@ -416,9 +400,7 @@ export function Gallery() {
           <div class="stat-card">
             <div class="stat-icon stat-icon--size">💾</div>
             <div class="stat-content">
-              <div class="stat-value">
-                {Math.round((stats().totalSize / 1024 / 1024) * 100) / 100}MB
-              </div>
+              <div class="stat-value">{Math.round((stats().totalSize / 1024 / 1024) * 100) / 100}MB</div>
               <div class="stat-label">Total Size</div>
             </div>
           </div>

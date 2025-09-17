@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Test Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .component-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .component-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Reynard Component Test Page</h1>
+        <p>This page is used for testing Reynard components in E2E tests.</p>
+        
+        <!-- Component test areas will be dynamically populated -->
+        <div id="component-test-area"></div>
+    </div>
+
+    <script type="module">
+        // Global test utilities
+        window.createTestComponent = function(componentName, props = {}) {
+            const container = document.getElementById('component-test-area');
+            const section = document.createElement('div');
+            section.className = 'component-section';
+            section.innerHTML = `
+                <h3>${componentName}</h3>
+                <div id="${componentName.toLowerCase().replace(/\s+/g, '-')}-container"></div>
+            `;
+            container.appendChild(section);
+            return section.querySelector(`#${componentName.toLowerCase().replace(/\s+/g, '-')}-container`);
+        };
+
+        // Mock SolidJS for testing
+        window.mockSolidJS = {
+            render: function(component, container) {
+                if (typeof component === 'function') {
+                    const result = component();
+                    if (result && result.innerHTML) {
+                        container.innerHTML = result.innerHTML;
+                    } else if (result && result.textContent) {
+                        container.textContent = result.textContent;
+                    } else if (typeof result === 'string') {
+                        container.innerHTML = result;
+                    }
+                } else if (typeof component === 'string') {
+                    container.innerHTML = component;
+                }
+            },
+            createSignal: function(initialValue) {
+                let value = initialValue;
+                return [
+                    () => value,
+                    (newValue) => { value = newValue; }
+                ];
+            },
+            createEffect: function(fn) {
+                fn();
+            },
+            onMount: function(fn) {
+                fn();
+            },
+            onCleanup: function(fn) {
+                // Store cleanup function
+                return fn;
+            }
+        };
+
+        // Mock Chart.js for chart components
+        window.Chart = function(ctx, config) {
+            return {
+                destroy: () => {},
+                update: () => {},
+                render: () => {},
+                resize: () => {}
+            };
+        };
+        window.Chart.register = () => {};
+
+        // Mock ResizeObserver
+        window.ResizeObserver = class {
+            constructor(callback) {
+                this.callback = callback;
+            }
+            observe() {}
+            unobserve() {}
+            disconnect() {}
+        };
+
+        // Mock IntersectionObserver
+        window.IntersectionObserver = class {
+            constructor(callback) {
+                this.callback = callback;
+            }
+            observe() {}
+            unobserve() {}
+            disconnect() {}
+        };
+
+        // Mock performance API
+        window.performance = {
+            now: () => Date.now(),
+            mark: () => {},
+            measure: () => {},
+            getEntriesByType: () => [],
+            getEntriesByName: () => []
+        };
+
+        console.log('Component test page loaded successfully');
+    </script>
+</body>
+</html>

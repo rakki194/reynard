@@ -30,8 +30,7 @@ export const esTranslations = {
   // Features list
   featuresList: {
     languages: "37 idiomas con cobertura integral",
-    pluralization:
-      "Reglas avanzadas de pluralización (árabe, ruso, polaco, etc.)",
+    pluralization: "Reglas avanzadas de pluralización (árabe, ruso, polaco, etc.)",
     rtlSupport: "Soporte RTL para árabe y hebreo",
     typeSafe: "Traducciones con verificación de tipos y autocompletado",
     dynamicLoading: "Carga dinámica para rendimiento óptimo",

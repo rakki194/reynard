@@ -105,7 +105,7 @@ export const mockFetch = vi.fn((_url?: string) =>
     arrayBuffer: vi.fn().mockResolvedValue(new ArrayBuffer(0)),
     formData: vi.fn().mockResolvedValue({}),
     clone: vi.fn().mockReturnThis(),
-  }),
+  })
 );
 
 /**
@@ -174,7 +174,7 @@ export const mockEventSource = vi.fn().mockImplementation(() => {
  */
 export const mockCrypto = {
   randomUUID: vi.fn().mockReturnValue("00000000-0000-4000-8000-000000000000"),
-  getRandomValues: vi.fn().mockImplementation((array) => {
+  getRandomValues: vi.fn().mockImplementation(array => {
     for (let i = 0; i < array.length; i++) {
       array[i] = Math.floor(Math.random() * 256);
     }
@@ -202,87 +202,82 @@ export const mockPerformance = {
 /**
  * Mock URL
  */
-export const mockURL = vi
-  .fn()
-  .mockImplementation((url: string, base?: string) => {
-    // Simple URL parsing without circular dependencies
-    let fullUrl = url;
-    if (base && !url.startsWith("http") && !url.startsWith("//")) {
-      // Parse base URL manually to avoid circular dependency
-      const baseMatch = base.match(/^(https?:)\/\/([^\/]+)/) || [];
-      const baseOrigin = baseMatch[0] || "http://localhost";
-      fullUrl = baseOrigin + (url.startsWith("/") ? "" : "/") + url;
-    }
+export const mockURL = vi.fn().mockImplementation((url: string, base?: string) => {
+  // Simple URL parsing without circular dependencies
+  let fullUrl = url;
+  if (base && !url.startsWith("http") && !url.startsWith("//")) {
+    // Parse base URL manually to avoid circular dependency
+    const baseMatch = base.match(/^(https?:)\/\/([^\/]+)/) || [];
+    const baseOrigin = baseMatch[0] || "http://localhost";
+    fullUrl = baseOrigin + (url.startsWith("/") ? "" : "/") + url;
+  }
 
-    // Parse URL parts
-    const match =
-      fullUrl.match(/^(https?:)\/\/([^\/]+)(\/[^?]*)?(\?[^#]*)?(#.*)?$/) || [];
-    const protocol = match[1] || "http:";
-    const host = match[2] || "localhost";
-    const pathname = match[3] || "/";
-    const search = match[4] || "";
-    const hash = match[5] || "";
+  // Parse URL parts
+  const match = fullUrl.match(/^(https?:)\/\/([^\/]+)(\/[^?]*)?(\?[^#]*)?(#.*)?$/) || [];
+  const protocol = match[1] || "http:";
+  const host = match[2] || "localhost";
+  const pathname = match[3] || "/";
+  const search = match[4] || "";
+  const hash = match[5] || "";
 
-    const urlObj = {
-      href: fullUrl,
-      origin: `${protocol}//${host}`,
-      protocol,
-      host,
-      hostname: host.split(":")[0],
-      port: host.includes(":") ? host.split(":")[1] : "",
-      pathname,
-      search,
-      hash,
-      searchParams: mockURLSearchParams(search.slice(1)),
-    };
-    return urlObj;
-  });
+  const urlObj = {
+    href: fullUrl,
+    origin: `${protocol}//${host}`,
+    protocol,
+    host,
+    hostname: host.split(":")[0],
+    port: host.includes(":") ? host.split(":")[1] : "",
+    pathname,
+    search,
+    hash,
+    searchParams: mockURLSearchParams(search.slice(1)),
+  };
+  return urlObj;
+});
 
 /**
  * Mock URLSearchParams
  */
-export const mockURLSearchParams = vi
-  .fn()
-  .mockImplementation((init?: string | string[][] | Record<string, string>) => {
-    // Create a simple mock URLSearchParams object to avoid circular references
-    const params = new Map<string, string>();
-    if (typeof init === "string") {
-      // Simple parsing for test purposes
-      init.split("&").forEach((pair) => {
-        const [key, value] = pair.split("=");
-        if (key) params.set(key, value || "");
-      });
-    } else if (Array.isArray(init)) {
-      init.forEach(([key, value]) => {
-        if (key) params.set(key, value || "");
-      });
-    } else if (init && typeof init === "object") {
-      Object.entries(init).forEach(([key, value]) => {
-        params.set(key, value);
-      });
-    }
+export const mockURLSearchParams = vi.fn().mockImplementation((init?: string | string[][] | Record<string, string>) => {
+  // Create a simple mock URLSearchParams object to avoid circular references
+  const params = new Map<string, string>();
+  if (typeof init === "string") {
+    // Simple parsing for test purposes
+    init.split("&").forEach(pair => {
+      const [key, value] = pair.split("=");
+      if (key) params.set(key, value || "");
+    });
+  } else if (Array.isArray(init)) {
+    init.forEach(([key, value]) => {
+      if (key) params.set(key, value || "");
+    });
+  } else if (init && typeof init === "object") {
+    Object.entries(init).forEach(([key, value]) => {
+      params.set(key, value);
+    });
+  }
 
-    return {
-      get: (name: string) => params.get(name) || null,
-      set: (name: string, value: string) => params.set(name, value),
-      has: (name: string) => params.has(name),
-      delete: (name: string) => params.delete(name),
-      append: (name: string, value: string) => {
-        const existing = params.get(name);
-        params.set(name, existing ? `${existing},${value}` : value);
-      },
-      toString: () =>
-        Array.from(params.entries())
-          .map(([k, v]) => `${k}=${v}`)
-          .join("&"),
-      entries: () => params.entries(),
-      keys: () => params.keys(),
-      values: () => params.values(),
-      forEach: (callback: (value: string, key: string) => void) => {
-        params.forEach(callback);
-      },
-    };
-  });
+  return {
+    get: (name: string) => params.get(name) || null,
+    set: (name: string, value: string) => params.set(name, value),
+    has: (name: string) => params.has(name),
+    delete: (name: string) => params.delete(name),
+    append: (name: string, value: string) => {
+      const existing = params.get(name);
+      params.set(name, existing ? `${existing},${value}` : value);
+    },
+    toString: () =>
+      Array.from(params.entries())
+        .map(([k, v]) => `${k}=${v}`)
+        .join("&"),
+    entries: () => params.entries(),
+    keys: () => params.keys(),
+    values: () => params.values(),
+    forEach: (callback: (value: string, key: string) => void) => {
+      params.forEach(callback);
+    },
+  };
+});
 
 /**
  * Mock FormData
@@ -315,26 +310,19 @@ export const mockHeaders = vi.fn().mockImplementation((init?: HeadersInit) => {
     } else if (init instanceof Map) {
       init.forEach((value, key) => headers.set(key.toLowerCase(), value));
     } else {
-      Object.entries(init).forEach(([key, value]) =>
-        headers.set(key.toLowerCase(), value),
-      );
+      Object.entries(init).forEach(([key, value]) => headers.set(key.toLowerCase(), value));
     }
   }
 
   return {
     append: vi.fn((name: string, value: string) => {
       const existing = headers.get(name.toLowerCase());
-      headers.set(
-        name.toLowerCase(),
-        existing ? `${existing}, ${value}` : value,
-      );
+      headers.set(name.toLowerCase(), existing ? `${existing}, ${value}` : value);
     }),
     delete: vi.fn((name: string) => headers.delete(name.toLowerCase())),
     get: vi.fn((name: string) => headers.get(name.toLowerCase()) || null),
     has: vi.fn((name: string) => headers.has(name.toLowerCase())),
-    set: vi.fn((name: string, value: string) =>
-      headers.set(name.toLowerCase(), value),
-    ),
+    set: vi.fn((name: string, value: string) => headers.set(name.toLowerCase(), value)),
     entries: vi.fn(() => headers.entries()),
     keys: vi.fn(() => headers.keys()),
     values: vi.fn(() => headers.values()),

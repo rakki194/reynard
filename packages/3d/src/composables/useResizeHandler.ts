@@ -5,10 +5,7 @@ export interface ResizeHandlerOptions {
   debounceMs?: number;
 }
 
-export function useResizeHandler(
-  containerRef: () => HTMLDivElement | undefined,
-  options: ResizeHandlerOptions,
-) {
+export function useResizeHandler(containerRef: () => HTMLDivElement | undefined, options: ResizeHandlerOptions) {
   const { onResize, debounceMs = 100 } = options;
   let resizeTimeout: number | null = null;
 

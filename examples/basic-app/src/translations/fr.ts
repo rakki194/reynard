@@ -5,8 +5,7 @@
 export const fr = {
   app: {
     title: "Liste de Tâches",
-    subtitle:
-      "Une application simple de tâches construite avec le framework Reynard",
+    subtitle: "Une application simple de tâches construite avec le framework Reynard",
   },
   todo: {
     placeholder: "Que devez-vous faire ?",

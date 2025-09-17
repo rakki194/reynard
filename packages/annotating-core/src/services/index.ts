@@ -5,14 +5,8 @@
  */
 
 // Backend services
-export {
-  BackendAnnotationService,
-  createBackendAnnotationService,
-} from "./BackendAnnotationService.js";
-export {
-  BackendAnnotationManager,
-  createBackendAnnotationManager,
-} from "./BackendAnnotationManager.js";
+export { BackendAnnotationService, createBackendAnnotationService } from "./BackendAnnotationService.js";
+export { BackendAnnotationManager, createBackendAnnotationManager } from "./BackendAnnotationManager.js";
 
 // Supporting modules
 export { SimpleEventManager } from "./EventManager.js";

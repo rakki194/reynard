@@ -4,7 +4,4 @@
  */
 
 export { useFileUpload, type UseFileUploadOptions } from "./useFileUpload";
-export {
-  useGalleryState,
-  type UseGalleryStateOptions,
-} from "./useGalleryState";
+export { useGalleryState, type UseGalleryStateOptions } from "./useGalleryState";

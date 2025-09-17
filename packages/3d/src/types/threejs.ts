@@ -108,14 +108,8 @@ export interface IntersectionLike {
 export interface ThreeJSInterface {
   BufferGeometry: new () => BufferGeometryLike;
   InstancedBufferGeometry: new () => InstancedBufferGeometryLike;
-  Float32BufferAttribute: new (
-    array: Float32Array,
-    itemSize: number,
-  ) => unknown;
-  InstancedBufferAttribute: new (
-    array: Float32Array,
-    itemSize: number,
-  ) => unknown;
+  Float32BufferAttribute: new (array: Float32Array, itemSize: number) => unknown;
+  InstancedBufferAttribute: new (array: Float32Array, itemSize: number) => unknown;
   PointsMaterial: new (options?: Record<string, unknown>) => MaterialLike;
   SpriteMaterial: new (options?: Record<string, unknown>) => MaterialLike;
   Raycaster: new () => RaycasterLike;

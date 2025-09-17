@@ -4,11 +4,7 @@
  * Now using OKLCH color space from reynard-colors for better perceptual uniformity
  */
 
-import {
-  createTagColorGenerator,
-  formatOKLCH,
-  type OKLCHColor,
-} from "reynard-colors";
+import { createTagColorGenerator, formatOKLCH, type OKLCHColor } from "reynard-colors";
 import { themes } from "./themes";
 import type { ThemeName } from "./types";
 
@@ -134,9 +130,7 @@ export function generateThemeCSS(themeName: ThemeName): string {
 
   // Color variables
   Object.entries(theme.colors).forEach(([key, value]) => {
-    cssVars.push(
-      `  --color-${key.replace(/([A-Z])/g, "-$1").toLowerCase()}: ${value};`,
-    );
+    cssVars.push(`  --color-${key.replace(/([A-Z])/g, "-$1").toLowerCase()}: ${value};`);
   });
 
   // Animation variables

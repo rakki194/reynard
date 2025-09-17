@@ -17,10 +17,7 @@ export { useReynardMonaco } from "./composables/useReynardMonaco";
 export { useLanguageDetection } from "./composables/useLanguageDetection";
 
 // Services
-export {
-  LanguageDetectionService,
-  languageDetectionService,
-} from "./services/LanguageDetectionService";
+export { LanguageDetectionService, languageDetectionService } from "./services/LanguageDetectionService";
 
 // Utils
 export {
@@ -44,11 +41,7 @@ export {
 } from "./utils/themeMapping";
 
 // Custom Monaco themes
-export {
-  getCustomMonacoTheme,
-  registerCustomMonacoTheme,
-  getMonacoThemeName,
-} from "./utils/customThemes";
+export { getCustomMonacoTheme, registerCustomMonacoTheme, getMonacoThemeName } from "./utils/customThemes";
 
 // Types
 export type {
@@ -67,10 +60,7 @@ export type {
 } from "./types";
 
 // Reynard Monaco types
-export type {
-  ReynardMonacoOptions,
-  ReynardMonacoState,
-} from "./composables/useReynardMonaco";
+export type { ReynardMonacoOptions, ReynardMonacoState } from "./composables/useReynardMonaco";
 
 // Styles
 import "./components/CodeEditor.css";

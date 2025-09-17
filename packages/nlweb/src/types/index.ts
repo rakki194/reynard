@@ -5,11 +5,7 @@
  */
 
 // Tool types
-export type {
-  NLWebTool,
-  NLWebToolParameter,
-  NLWebToolRegistry,
-} from "./NLWebTool.js";
+export type { NLWebTool, NLWebToolParameter, NLWebToolRegistry } from "./NLWebTool.js";
 
 // Suggestion types
 export type {
@@ -20,16 +16,7 @@ export type {
 } from "./NLWebSuggestion.js";
 
 // Health types
-export type {
-  NLWebHealthStatus,
-  NLWebPerformanceStats,
-  NLWebConfiguration,
-} from "./NLWebHealth.js";
+export type { NLWebHealthStatus, NLWebPerformanceStats, NLWebConfiguration } from "./NLWebHealth.js";
 
 // Service types
-export type {
-  NLWebService,
-  NLWebRouter,
-  NLWebEventListener,
-  NLWebEventEmitter,
-} from "./NLWebService.js";
+export type { NLWebService, NLWebRouter, NLWebEventListener, NLWebEventEmitter } from "./NLWebService.js";

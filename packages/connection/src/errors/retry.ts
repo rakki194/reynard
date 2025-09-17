@@ -52,9 +52,7 @@ export const exponentialBackoffStrategy: RetryConfig = {
   jitter: true,
   retryCondition: (error: unknown) => {
     return (
-      isNetworkError(error) ||
-      isTimeoutError(error) ||
-      (isReynardError(error) && error.code === "RATE_LIMIT_ERROR")
+      isNetworkError(error) || isTimeoutError(error) || (isReynardError(error) && error.code === "RATE_LIMIT_ERROR")
     );
   },
 };
@@ -98,9 +96,7 @@ export const aggressiveRetryStrategy: RetryConfig = {
   jitter: true,
   retryCondition: (error: unknown) => {
     return (
-      isNetworkError(error) ||
-      isTimeoutError(error) ||
-      (isReynardError(error) && error.code === "RATE_LIMIT_ERROR")
+      isNetworkError(error) || isTimeoutError(error) || (isReynardError(error) && error.code === "RATE_LIMIT_ERROR")
     );
   },
 };
@@ -128,7 +124,7 @@ export const conservativeRetryStrategy: RetryConfig = {
  */
 export async function retry<T>(
   fn: () => Promise<T>,
-  config: RetryConfig = exponentialBackoffStrategy,
+  config: RetryConfig = exponentialBackoffStrategy
 ): Promise<RetryResult<T>> {
   const startTime = Date.now();
   let lastError: ReynardError;
@@ -150,17 +146,12 @@ export async function retry<T>(
     } catch (error) {
       lastError = isReynardError(error)
         ? error
-        : new ReynardError(
-            error instanceof Error ? error.message : "Unknown error",
-            "RETRY_ERROR",
-            { source: "retry" },
-          );
+        : new ReynardError(error instanceof Error ? error.message : "Unknown error", "RETRY_ERROR", {
+            source: "retry",
+          });
 
       // Check if we should retry
-      if (
-        attempt < config.maxRetries &&
-        config.retryCondition(lastError, attempt)
-      ) {
+      if (attempt < config.maxRetries && config.retryCondition(lastError, attempt)) {
         const delay = calculateDelay(attempt, config);
         await sleep(delay);
         continue;
@@ -187,7 +178,7 @@ export async function retry<T>(
 export async function retryWithExponentialBackoff<T>(
   fn: () => Promise<T>,
   maxRetries: number = 3,
-  baseDelay: number = 1000,
+  baseDelay: number = 1000
 ): Promise<T> {
   const result = await retry(fn, {
     ...exponentialBackoffStrategy,
@@ -208,7 +199,7 @@ export async function retryWithExponentialBackoff<T>(
 export async function retryWithLinearBackoff<T>(
   fn: () => Promise<T>,
   maxRetries: number = 3,
-  baseDelay: number = 1000,
+  baseDelay: number = 1000
 ): Promise<T> {
   const result = await retry(fn, {
     ...linearBackoffStrategy,
@@ -229,7 +220,7 @@ export async function retryWithLinearBackoff<T>(
 export async function retryWithFixedDelay<T>(
   fn: () => Promise<T>,
   maxRetries: number = 3,
-  delay: number = 2000,
+  delay: number = 2000
 ): Promise<T> {
   const result = await retry(fn, {
     ...fixedDelayStrategy,
@@ -271,7 +262,7 @@ export function calculateDelay(attempt: number, config: RetryConfig): number {
  * Sleep for specified milliseconds
  */
 export function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
@@ -311,7 +302,7 @@ export function isRetryableError(error: unknown): boolean {
  */
 export function createRetryCondition(
   errorTypes: string[],
-  statusCodes?: number[],
+  statusCodes?: number[]
 ): (error: unknown, attempt: number) => boolean {
   return (error: unknown, attempt: number) => {
     if (isReynardError(error)) {
@@ -321,11 +312,7 @@ export function createRetryCondition(
       }
 
       // Check status code if available
-      if (
-        statusCodes &&
-        "status" in error.context &&
-        typeof error.context.status === "number"
-      ) {
+      if (statusCodes && "status" in error.context && typeof error.context.status === "number") {
         return statusCodes.includes(error.context.status);
       }
     }
@@ -337,30 +324,21 @@ export function createRetryCondition(
 /**
  * Create retry condition for network errors only
  */
-export function createNetworkRetryCondition(): (
-  error: unknown,
-  attempt: number,
-) => boolean {
+export function createNetworkRetryCondition(): (error: unknown, attempt: number) => boolean {
   return (error: unknown) => isNetworkError(error);
 }
 
 /**
  * Create retry condition for timeout errors only
  */
-export function createTimeoutRetryCondition(): (
-  error: unknown,
-  attempt: number,
-) => boolean {
+export function createTimeoutRetryCondition(): (error: unknown, attempt: number) => boolean {
   return (error: unknown) => isTimeoutError(error);
 }
 
 /**
  * Create retry condition for rate limit errors only
  */
-export function createRateLimitRetryCondition(): (
-  error: unknown,
-  attempt: number,
-) => boolean {
+export function createRateLimitRetryCondition(): (error: unknown, attempt: number) => boolean {
   return (error: unknown) => isRateLimitError(error);
 }
 
@@ -372,7 +350,7 @@ export function createRateLimitRetryCondition(): (
  * Decorator for retrying async functions
  */
 export function withRetry<T extends (...args: any[]) => Promise<any>>(
-  config: RetryConfig = exponentialBackoffStrategy,
+  config: RetryConfig = exponentialBackoffStrategy
 ): (fn: T) => T {
   return (fn: T) => {
     return (async (...args: Parameters<T>) => {
@@ -390,9 +368,10 @@ export function withRetry<T extends (...args: any[]) => Promise<any>>(
 /**
  * Decorator for retrying with exponential backoff
  */
-export function withExponentialBackoff<
-  T extends (...args: any[]) => Promise<any>,
->(maxRetries: number = 3, baseDelay: number = 1000): (fn: T) => T {
+export function withExponentialBackoff<T extends (...args: any[]) => Promise<any>>(
+  maxRetries: number = 3,
+  baseDelay: number = 1000
+): (fn: T) => T {
   return withRetry({
     ...exponentialBackoffStrategy,
     maxRetries,
@@ -405,7 +384,7 @@ export function withExponentialBackoff<
  */
 export function withLinearBackoff<T extends (...args: any[]) => Promise<any>>(
   maxRetries: number = 3,
-  baseDelay: number = 1000,
+  baseDelay: number = 1000
 ): (fn: T) => T {
   return withRetry({
     ...linearBackoffStrategy,
@@ -419,7 +398,7 @@ export function withLinearBackoff<T extends (...args: any[]) => Promise<any>>(
  */
 export function withFixedDelay<T extends (...args: any[]) => Promise<any>>(
   maxRetries: number = 3,
-  delay: number = 2000,
+  delay: number = 2000
 ): (fn: T) => T {
   return withRetry({
     ...fixedDelayStrategy,
@@ -450,11 +429,7 @@ export class RetryMonitor {
     retryReasons: {},
   };
 
-  recordAttempt(
-    success: boolean,
-    retryReason?: string,
-    duration?: number,
-  ): void {
+  recordAttempt(success: boolean, retryReason?: string, duration?: number): void {
     this.metrics.totalAttempts++;
 
     if (success) {
@@ -464,14 +439,11 @@ export class RetryMonitor {
     }
 
     if (retryReason) {
-      this.metrics.retryReasons[retryReason] =
-        (this.metrics.retryReasons[retryReason] || 0) + 1;
+      this.metrics.retryReasons[retryReason] = (this.metrics.retryReasons[retryReason] || 0) + 1;
     }
 
     if (duration !== undefined) {
-      const totalTime =
-        this.metrics.averageRetryTime * (this.metrics.totalAttempts - 1) +
-        duration;
+      const totalTime = this.metrics.averageRetryTime * (this.metrics.totalAttempts - 1) + duration;
       this.metrics.averageRetryTime = totalTime / this.metrics.totalAttempts;
     }
   }

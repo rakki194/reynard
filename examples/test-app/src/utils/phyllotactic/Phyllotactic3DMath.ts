@@ -4,22 +4,14 @@
  */
 
 import { GOLDEN_ANGLE } from "../phyllotactic-constants";
-import type {
-  Phyllotactic3DConfig,
-  RotationState,
-} from "./Phyllotactic3DConfig";
+import type { Phyllotactic3DConfig, RotationState } from "./Phyllotactic3DConfig";
 
 export class Phyllotactic3DMath {
   /**
    * Project 2D spiral to sphere surface
    * Inspired by spherical phyllotaxis research
    */
-  static projectToSphere(
-    x: number,
-    y: number,
-    z: number,
-    sphereRadius: number,
-  ): { x: number; y: number; z: number } {
+  static projectToSphere(x: number, y: number, z: number, sphereRadius: number): { x: number; y: number; z: number } {
     const distance = Math.sqrt(x * x + y * y + z * z);
     const scale = sphereRadius / distance;
 
@@ -33,12 +25,7 @@ export class Phyllotactic3DMath {
   /**
    * Apply 3D rotation transformation
    */
-  static applyRotation(
-    x: number,
-    y: number,
-    z: number,
-    rotation: RotationState,
-  ): { x: number; y: number; z: number } {
+  static applyRotation(x: number, y: number, z: number, rotation: RotationState): { x: number; y: number; z: number } {
     // Rotation around X axis
     const cosX = Math.cos(rotation.x);
     const sinX = Math.sin(rotation.x);
@@ -67,16 +54,12 @@ export class Phyllotactic3DMath {
   static calculate3DStroboscopicIntensity(
     _index: number,
     rotation: RotationState,
-    config: Phyllotactic3DConfig,
+    config: Phyllotactic3DConfig
   ): number {
     if (!config.enableStroboscopic3D) return 0;
 
     const goldenAngle = (GOLDEN_ANGLE * Math.PI) / 180;
-    const totalRotation = Math.sqrt(
-      rotation.x * rotation.x +
-        rotation.y * rotation.y +
-        rotation.z * rotation.z,
-    );
+    const totalRotation = Math.sqrt(rotation.x * rotation.x + rotation.y * rotation.y + rotation.z * rotation.z);
 
     const stroboscopicPhase = (totalRotation / goldenAngle) % 1;
     const intensity = Math.abs(Math.sin(stroboscopicPhase * Math.PI * 2));
@@ -89,7 +72,7 @@ export class Phyllotactic3DMath {
    */
   static generate3DSpiralCoordinates(
     index: number,
-    config: Phyllotactic3DConfig,
+    config: Phyllotactic3DConfig
   ): { x: number; y: number; z: number; radius: number; angle: number } {
     const goldenAngle = (GOLDEN_ANGLE * Math.PI) / 180;
 
@@ -104,12 +87,7 @@ export class Phyllotactic3DMath {
 
     // Apply spherical projection if enabled
     if (config.enableSphericalProjection) {
-      const sphericalCoords = this.projectToSphere(
-        x,
-        y,
-        z,
-        config.sphereRadius,
-      );
+      const sphericalCoords = this.projectToSphere(x, y, z, config.sphereRadius);
       x = sphericalCoords.x;
       y = sphericalCoords.y;
       z = sphericalCoords.z;
@@ -124,7 +102,7 @@ export class Phyllotactic3DMath {
   static updateRotation(
     currentRotation: RotationState,
     config: Phyllotactic3DConfig,
-    deltaTime: number,
+    deltaTime: number
   ): RotationState {
     return {
       x: currentRotation.x + config.rotationSpeedX * deltaTime,

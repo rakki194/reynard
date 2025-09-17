@@ -6,10 +6,7 @@
 /**
  * Get the correct Spanish plural form based on quantity
  */
-export function getSpanishPlural(
-  count: number,
-  forms: { singular: string; plural: string },
-): string {
+export function getSpanishPlural(count: number, forms: { singular: string; plural: string }): string {
   // Handle negative numbers and decimals by using absolute value and truncating
   const n = Math.abs(Math.trunc(count));
 

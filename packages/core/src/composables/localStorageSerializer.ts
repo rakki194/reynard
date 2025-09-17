@@ -11,13 +11,7 @@ export interface Serializer<T = unknown> {
 }
 
 // Type for JSON-serializable values
-export type JsonValue =
-  | string
-  | number
-  | boolean
-  | null
-  | JsonValue[]
-  | { [key: string]: JsonValue };
+export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
 // Safe JSON parser that prevents XSS attacks
 const safeJsonParse = <T = unknown>(value: string): T => {
@@ -29,11 +23,7 @@ const safeJsonParse = <T = unknown>(value: string): T => {
     }
 
     // Check for dangerous patterns
-    if (
-      value.includes("__proto__") ||
-      value.includes("constructor") ||
-      value.includes("prototype")
-    ) {
+    if (value.includes("__proto__") || value.includes("constructor") || value.includes("prototype")) {
       throw new Error(t("core.errors.dangerousJson"));
     }
 

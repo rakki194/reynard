@@ -12,7 +12,7 @@ interface MazeCell {
   visited: boolean;
 }
 
-export const MazeExplorerGame: Component<MazeExplorerGameProps> = (props) => {
+export const MazeExplorerGame: Component<MazeExplorerGameProps> = props => {
   const [score, setScore] = createSignal(0);
   const [gameStarted, setGameStarted] = createSignal(false);
   const [playerPosition, setPlayerPosition] = createSignal({ x: 0, z: 0 });
@@ -28,12 +28,7 @@ export const MazeExplorerGame: Component<MazeExplorerGameProps> = (props) => {
   let player: any;
   let mazeMeshes: any[] = [];
 
-  const setupGameScene = async (
-    _scene: any,
-    _camera: any,
-    _renderer: any,
-    _controls: any,
-  ) => {
+  const setupGameScene = async (_scene: any, _camera: any, _renderer: any, _controls: any) => {
     scene = _scene;
     camera = _camera;
     renderer = _renderer;
@@ -41,15 +36,7 @@ export const MazeExplorerGame: Component<MazeExplorerGameProps> = (props) => {
 
     // Lazy load Three.js
     const THREE = (await import("three")) as any;
-    const {
-      BoxGeometry,
-      MeshStandardMaterial,
-      Mesh,
-      AmbientLight,
-      DirectionalLight,
-      PointLight,
-      Fog,
-    } = THREE;
+    const { BoxGeometry, MeshStandardMaterial, Mesh, AmbientLight, DirectionalLight, PointLight, Fog } = THREE;
 
     // Setup maze environment
     scene.fog = new Fog(0x222222, 1, 50);
@@ -127,19 +114,14 @@ export const MazeExplorerGame: Component<MazeExplorerGameProps> = (props) => {
     setMaze(newMaze);
   };
 
-  const getUnvisitedNeighbors = (
-    cell: MazeCell,
-    maze: MazeCell[][],
-  ): MazeCell[] => {
+  const getUnvisitedNeighbors = (cell: MazeCell, maze: MazeCell[][]): MazeCell[] => {
     const neighbors: MazeCell[] = [];
     const { x, z } = cell;
 
     if (x > 0 && !maze[x - 1][z].visited) neighbors.push(maze[x - 1][z]);
-    if (x < maze.length - 1 && !maze[x + 1][z].visited)
-      neighbors.push(maze[x + 1][z]);
+    if (x < maze.length - 1 && !maze[x + 1][z].visited) neighbors.push(maze[x + 1][z]);
     if (z > 0 && !maze[x][z - 1].visited) neighbors.push(maze[x][z - 1]);
-    if (z < maze[0].length - 1 && !maze[x][z + 1].visited)
-      neighbors.push(maze[x][z + 1]);
+    if (z < maze[0].length - 1 && !maze[x][z + 1].visited) neighbors.push(maze[x][z + 1]);
 
     return neighbors;
   };
@@ -165,7 +147,7 @@ export const MazeExplorerGame: Component<MazeExplorerGameProps> = (props) => {
 
   const renderMaze = (THREE: any) => {
     // Clear existing maze
-    mazeMeshes.forEach((mesh) => scene.remove(mesh));
+    mazeMeshes.forEach(mesh => scene.remove(mesh));
     mazeMeshes = [];
 
     const wallGeometry = new BoxGeometry(1, 2, 0.1);
@@ -190,8 +172,8 @@ export const MazeExplorerGame: Component<MazeExplorerGameProps> = (props) => {
     });
 
     // Render floor and walls
-    maze().forEach((row) => {
-      row.forEach((cell) => {
+    maze().forEach(row => {
+      row.forEach(cell => {
         const x = cell.x - mazeSize() / 2;
         const z = cell.z - mazeSize() / 2;
 
@@ -267,9 +249,7 @@ export const MazeExplorerGame: Component<MazeExplorerGameProps> = (props) => {
     if (x < 0 || x >= mazeSize() || z < 0 || z >= mazeSize()) return false;
 
     const currentCell =
-      maze()[Math.floor(playerPosition().x + mazeSize() / 2)][
-        Math.floor(playerPosition().z + mazeSize() / 2)
-      ];
+      maze()[Math.floor(playerPosition().x + mazeSize() / 2)][Math.floor(playerPosition().z + mazeSize() / 2)];
     const targetCell = maze()[x][z];
 
     // Check if there's a wall between current and target position
@@ -320,11 +300,7 @@ export const MazeExplorerGame: Component<MazeExplorerGameProps> = (props) => {
       controls.target.set(newX, 1.6, newZ - 1);
 
       // Check if reached exit
-      if (
-        targetGridX === mazeSize() - 1 &&
-        targetGridZ === mazeSize() - 1 &&
-        !exitFound()
-      ) {
+      if (targetGridX === mazeSize() - 1 && targetGridZ === mazeSize() - 1 && !exitFound()) {
         setExitFound(true);
         const newScore = score() + 1000;
         setScore(newScore);
@@ -352,15 +328,12 @@ export const MazeExplorerGame: Component<MazeExplorerGameProps> = (props) => {
         <div class="hud-item">
           <span class="hud-label">Position:</span>
           <span class="hud-value">
-            ({Math.floor(playerPosition().x + mazeSize() / 2)},{" "}
-            {Math.floor(playerPosition().z + mazeSize() / 2)})
+            ({Math.floor(playerPosition().x + mazeSize() / 2)}, {Math.floor(playerPosition().z + mazeSize() / 2)})
           </span>
         </div>
         <div class="hud-item">
           <span class="hud-label">Status:</span>
-          <span class="hud-value">
-            {exitFound() ? "Exit Found!" : "Exploring..."}
-          </span>
+          <span class="hud-value">{exitFound() ? "Exit Found!" : "Exploring..."}</span>
         </div>
       </div>
 

@@ -10,12 +10,8 @@ export const ThemeToggle: Component = () => {
 
   return (
     <button class="theme-toggle" onClick={toggleTheme}>
-      <span class="theme-icon">
-        {themeContext.theme === "light" ? "🌙" : "☀️"}
-      </span>
-      <span class="theme-text">
-        {themeContext.theme === "light" ? "Dark" : "Light"} Mode
-      </span>
+      <span class="theme-icon">{themeContext.theme === "light" ? "🌙" : "☀️"}</span>
+      <span class="theme-text">{themeContext.theme === "light" ? "Dark" : "Light"} Mode</span>
     </button>
   );
 };

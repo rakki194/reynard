@@ -16,16 +16,12 @@ export interface TextFileCardProps {
   showMetadata?: boolean;
 }
 
-export const TextFileCard: Component<TextFileCardProps> = (props) => {
+export const TextFileCard: Component<TextFileCardProps> = props => {
   const extension = getFileExtension(props.file.name);
   const icon = getFileIcon(extension);
 
   return (
-    <div
-      class="text-file-card"
-      classList={{ selected: props.isSelected }}
-      onClick={props.onSelect}
-    >
+    <div class="text-file-card" classList={{ selected: props.isSelected }} onClick={props.onSelect}>
       <div class="text-file-icon">
         <span class="file-icon">{icon}</span>
         <span class="file-extension">{extension}</span>
@@ -35,9 +31,7 @@ export const TextFileCard: Component<TextFileCardProps> = (props) => {
         <h4 class="text-file-name" title={props.file.name}>
           {props.file.name}
         </h4>
-        <div class="text-file-size">
-          {(props.file.size / 1024).toFixed(2)} KB
-        </div>
+        <div class="text-file-size">{(props.file.size / 1024).toFixed(2)} KB</div>
 
         <Show when={props.showMetadata && props.file.metadata}>
           <div class="text-file-metadata">
@@ -63,7 +57,7 @@ export const TextFileCard: Component<TextFileCardProps> = (props) => {
 
       <button
         class="remove-button"
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
           props.onRemove();
         }}

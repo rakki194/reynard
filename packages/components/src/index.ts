@@ -14,13 +14,7 @@ export * from "./navigation";
 
 // Export composite components
 export { Modal, type ModalProps } from "./Modal";
-export {
-  TabPanel,
-  Tabs,
-  type TabItem,
-  type TabPanelProps,
-  type TabsProps,
-} from "./Tabs";
+export { TabPanel, Tabs, type TabItem, type TabPanelProps, type TabsProps } from "./Tabs";
 
 // Export icons
 export * from "./icons";

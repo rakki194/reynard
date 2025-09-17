@@ -29,30 +29,20 @@ export interface FileControlsProps {
   onDownload: () => void;
 }
 
-export const FileControls: Component<FileControlsProps> = (props) => {
+export const FileControls: Component<FileControlsProps> = props => {
   return (
     <div class="file-controls">
-      <Button
-        variant="secondary"
-        size="small"
-        onClick={props.onToggleLineNumbers}
-        icon={getIcon("list")}
-      >
+      <Button variant="secondary" size="small" onClick={props.onToggleLineNumbers} icon={getIcon("list")}>
         {props.showLineNumbers ? "Hide" : "Show"} Line Numbers
       </Button>
 
-      <Button
-        variant="secondary"
-        size="small"
-        onClick={props.onToggleWrapLines}
-        icon={getIcon("text-wrap")}
-      >
+      <Button variant="secondary" size="small" onClick={props.onToggleWrapLines} icon={getIcon("text-wrap")}>
         {props.wrapLines ? "Unwrap" : "Wrap"} Lines
       </Button>
 
       <Select
         value={props.fontSize}
-        onChange={(value) => props.onFontSizeChange(Number(value))}
+        onChange={value => props.onFontSizeChange(Number(value))}
         options={[
           { value: 12, label: "12px" },
           { value: 14, label: "14px" },
@@ -63,21 +53,11 @@ export const FileControls: Component<FileControlsProps> = (props) => {
         size="small"
       />
 
-      <Button
-        variant="secondary"
-        size="small"
-        onClick={props.onCopy}
-        icon={getIcon("copy")}
-      >
+      <Button variant="secondary" size="small" onClick={props.onCopy} icon={getIcon("copy")}>
         Copy
       </Button>
 
-      <Button
-        variant="secondary"
-        size="small"
-        onClick={props.onDownload}
-        icon={getIcon("download")}
-      >
+      <Button variant="secondary" size="small" onClick={props.onDownload} icon={getIcon("download")}>
         Download
       </Button>
     </div>

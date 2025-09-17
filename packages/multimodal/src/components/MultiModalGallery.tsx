@@ -11,7 +11,7 @@ import { useFileHandling } from "../composables/useFileHandling";
 import { useFileUpload } from "../composables/useFileUpload";
 import { MultiModalGalleryView } from "./MultiModalGalleryView";
 
-export const MultiModalGallery: Component<MultiModalGalleryProps> = (props) => {
+export const MultiModalGallery: Component<MultiModalGalleryProps> = props => {
   // Use composables for state management
   const {
     setFiles,
@@ -31,7 +31,7 @@ export const MultiModalGallery: Component<MultiModalGalleryProps> = (props) => {
     props.defaultView || "grid",
     props.onFileSelect,
     props.onFileRemove,
-    props.onFileModify,
+    props.onFileModify
   );
 
   const { isLoading, error, handleFileUpload } = useFileUpload();

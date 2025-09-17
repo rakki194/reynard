@@ -41,17 +41,11 @@ export function createNumberFormatter(config: IntlConfig) {
       return formatter.format(value);
     },
     formatInteger: (value: number) => {
-      const formatter = new Intl.NumberFormat(
-        config.locale,
-        defaultFormattingPresets.number.integer,
-      );
+      const formatter = new Intl.NumberFormat(config.locale, defaultFormattingPresets.number.integer);
       return formatter.format(value);
     },
     formatDecimal: (value: number) => {
-      const formatter = new Intl.NumberFormat(
-        config.locale,
-        defaultFormattingPresets.number.decimal,
-      );
+      const formatter = new Intl.NumberFormat(config.locale, defaultFormattingPresets.number.decimal);
       return formatter.format(value);
     },
     formatCurrency: (value: number, currency?: string) => {
@@ -61,17 +55,11 @@ export function createNumberFormatter(config: IntlConfig) {
       return formatter.format(value);
     },
     formatPercent: (value: number) => {
-      const formatter = new Intl.NumberFormat(
-        config.locale,
-        defaultFormattingPresets.number.percent,
-      );
+      const formatter = new Intl.NumberFormat(config.locale, defaultFormattingPresets.number.percent);
       return formatter.format(value);
     },
     formatCompact: (value: number) => {
-      const formatter = new Intl.NumberFormat(
-        config.locale,
-        defaultFormattingPresets.number.compact,
-      );
+      const formatter = new Intl.NumberFormat(config.locale, defaultFormattingPresets.number.compact);
       return formatter.format(value);
     },
   };

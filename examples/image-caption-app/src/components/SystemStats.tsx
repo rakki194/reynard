@@ -10,7 +10,7 @@ interface SystemStatsProps {
   systemStats: any;
 }
 
-export const SystemStats: Component<SystemStatsProps> = (props) => {
+export const SystemStats: Component<SystemStatsProps> = props => {
   return (
     <div class="system-stats">
       <Card class="overview-stats" padding="lg">
@@ -26,9 +26,7 @@ export const SystemStats: Component<SystemStatsProps> = (props) => {
           </div>
           <div class="stat-card">
             <h4>System Health</h4>
-            <p
-              class={`stat-value ${props.systemStats?.isHealthy ? "healthy" : "unhealthy"}`}
-            >
+            <p class={`stat-value ${props.systemStats?.isHealthy ? "healthy" : "unhealthy"}`}>
               {props.systemStats?.isHealthy ? "✅ Healthy" : "❌ Unhealthy"}
             </p>
           </div>
@@ -43,22 +41,16 @@ export const SystemStats: Component<SystemStatsProps> = (props) => {
         <h3>Model Statistics</h3>
         <div class="models-stats">
           <For each={props.systemStats?.generators || []}>
-            {(generator) => (
+            {generator => (
               <div class="model-stat-item">
                 <div class="model-header">
                   <h4>{generator.name}</h4>
                   <div class="model-status">
-                    <span
-                      class={`status-badge ${generator.isLoaded ? "loaded" : "unloaded"}`}
-                    >
+                    <span class={`status-badge ${generator.isLoaded ? "loaded" : "unloaded"}`}>
                       {generator.isLoaded ? "Loaded" : "Unloaded"}
                     </span>
-                    <span
-                      class={`status-badge ${generator.healthStatus?.isHealthy ? "healthy" : "unhealthy"}`}
-                    >
-                      {generator.healthStatus?.isHealthy
-                        ? "Healthy"
-                        : "Unhealthy"}
+                    <span class={`status-badge ${generator.healthStatus?.isHealthy ? "healthy" : "unhealthy"}`}>
+                      {generator.healthStatus?.isHealthy ? "Healthy" : "Unhealthy"}
                     </span>
                   </div>
                 </div>
@@ -74,9 +66,7 @@ export const SystemStats: Component<SystemStatsProps> = (props) => {
                       <span>
                         {generator.usageStats.totalRequests > 0
                           ? Math.round(
-                              (generator.usageStats.successfulRequests /
-                                generator.usageStats.totalRequests) *
-                                100,
+                              (generator.usageStats.successfulRequests / generator.usageStats.totalRequests) * 100
                             )
                           : 0}
                         %
@@ -84,10 +74,7 @@ export const SystemStats: Component<SystemStatsProps> = (props) => {
                     </div>
                     <div class="usage-item">
                       <span>Avg Processing Time:</span>
-                      <span>
-                        {generator.usageStats.averageProcessingTime?.toFixed(2)}
-                        s
-                      </span>
+                      <span>{generator.usageStats.averageProcessingTime?.toFixed(2)}s</span>
                     </div>
                   </div>
                 )}

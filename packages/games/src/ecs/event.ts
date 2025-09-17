@@ -50,14 +50,14 @@ export class Events<T = unknown> {
    * Sends multiple events.
    */
   sendBatch(events: T[]): EventId[] {
-    return events.map((event) => this.send(event));
+    return events.map(event => this.send(event));
   }
 
   /**
    * Gets an event by ID.
    */
   getEvent(id: number): [T, EventId] | undefined {
-    const instance = this.events.find((e) => e.id === id);
+    const instance = this.events.find(e => e.id === id);
     return instance ? [instance.event, createEventId(instance.id)] : undefined;
   }
 
@@ -79,7 +79,7 @@ export class Events<T = unknown> {
    * Drains all events and returns them.
    */
   drain(): T[] {
-    const events = this.events.map((instance) => instance.event);
+    const events = this.events.map(instance => instance.event);
     this.events.length = 0;
     return events;
   }
@@ -108,7 +108,7 @@ export class EventReaderImpl<T = unknown> implements EventReader<T> {
     const newEvents = allEvents.slice(this.lastReadIndex);
     this.lastReadIndex = allEvents.length;
 
-    return newEvents.map((instance) => ({
+    return newEvents.map(instance => ({
       data: instance.event,
       timestamp: instance.timestamp,
     }));

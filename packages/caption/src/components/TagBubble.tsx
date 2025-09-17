@@ -4,24 +4,13 @@
  * A component that renders an individual tag with editing and navigation capabilities.
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-  Show,
-  For,
-} from "solid-js";
+import { Component, createSignal, createEffect, onMount, onCleanup, Show, For } from "solid-js";
 import { TagBubbleProps } from "../types/index.js";
 import { useTagAutocomplete } from "../utils/tagAutocomplete.js";
-import {
-  createTagColorGenerator,
-  type TagColorOptions,
-} from "../utils/tagColors.js";
+import { createTagColorGenerator, type TagColorOptions } from "../utils/tagColors.js";
 import "./TagBubble.css";
 
-export const TagBubble: Component<TagBubbleProps> = (props) => {
+export const TagBubble: Component<TagBubbleProps> = props => {
   const [isEditing, setIsEditing] = createSignal(false);
   const [isHovered, setIsHovered] = createSignal(false);
   const [isFocused, setIsFocused] = createSignal(false);
@@ -45,10 +34,7 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
   // Set CSS custom properties for dynamic styling with OKLCH support
   createEffect(() => {
     if (tagBubbleRef) {
-      tagBubbleRef.style.setProperty(
-        "--tag-background-color",
-        tagColor.background,
-      );
+      tagBubbleRef.style.setProperty("--tag-background-color", tagColor.background);
       tagBubbleRef.style.setProperty("--tag-text-color", tagColor.text);
       tagBubbleRef.style.setProperty("--tag-border-color", tagColor.border);
 
@@ -318,12 +304,7 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
       </Show>
 
       <Show when={isOpen() && suggestions().length > 0}>
-        <div
-          ref={suggestionsList}
-          class="tag-suggestions"
-          role="listbox"
-          aria-label="Tag suggestions"
-        >
+        <div ref={suggestionsList} class="tag-suggestions" role="listbox" aria-label="Tag suggestions">
           <For each={suggestions()}>
             {(suggestion, index) => (
               <div
@@ -333,9 +314,7 @@ export const TagBubble: Component<TagBubbleProps> = (props) => {
                 }}
                 onClick={() => handleSuggestionClick(suggestion)}
                 role="option"
-                attr:aria-selected={
-                  index() === selectedIndex() ? "true" : "false"
-                }
+                attr:aria-selected={index() === selectedIndex() ? "true" : "false"}
               >
                 {suggestion}
               </div>

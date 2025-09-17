@@ -12,12 +12,7 @@ export { ITestUserData, TestUserData } from "./user-data";
 export { IApiResponse, MockApiResponses } from "./mock-api-responses";
 
 // Test Scenarios Module
-export {
-  IAuthFlowScenario,
-  ISecurityTestScenario,
-  IEdgeCaseScenario,
-  TestScenarios,
-} from "./test-scenarios";
+export { IAuthFlowScenario, ISecurityTestScenario, IEdgeCaseScenario, TestScenarios } from "./test-scenarios";
 
 // Environment Configuration Module
 export { IEnvironmentConfig, TestEnvironmentConfig } from "./test-environment-config";

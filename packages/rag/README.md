@@ -52,8 +52,8 @@ function App() {
         showMetadata: true,
         maxResults: 20,
       }}
-      onSearch={(query) => console.log("Searching:", query)}
-      onResultClick={(result) => console.log("Selected:", result)}
+      onSearch={query => console.log("Searching:", query)}
+      onResultClick={result => console.log("Selected:", result)}
     />
   );
 }

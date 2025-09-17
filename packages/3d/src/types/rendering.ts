@@ -15,17 +15,10 @@ export const RENDERING_UTILS = {
   applyColorMapping: (_points: EmbeddingPoint[], _colorMapping: string) => {
     // Implementation will be in the actual utility file
   },
-  applySizeMapping: (
-    _points: EmbeddingPoint[],
-    _sizeMapping: string,
-    _baseSize: number,
-  ) => {
+  applySizeMapping: (_points: EmbeddingPoint[], _sizeMapping: string, _baseSize: number) => {
     // Implementation will be in the actual utility file
   },
-  filterPoints: (
-    _points: EmbeddingPoint[],
-    _config: EmbeddingRenderingConfig,
-  ) => {
+  filterPoints: (_points: EmbeddingPoint[], _config: EmbeddingRenderingConfig) => {
     // Implementation will be in the actual utility file
     return [] as EmbeddingPoint[];
   },

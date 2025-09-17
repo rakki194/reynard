@@ -12,14 +12,11 @@ import { DataTableBody } from "./DataTableBody";
 import { DataTablePagination } from "./DataTablePagination";
 import { useDataTableSetup } from "./useDataTableSetup";
 
-export const DataTable: Component<DataTableProps> = (props) => {
+export const DataTable: Component<DataTableProps> = props => {
   const { local, others, handlers, data } = useDataTableSetup(props);
 
   return (
-    <div
-      class={getTableClasses(local.loading ?? false, local.class)}
-      {...others}
-    >
+    <div class={getTableClasses(local.loading ?? false, local.class)} {...others}>
       <div class="reynard-data-table__wrapper">
         <table class="reynard-data-table__table">
           <DataTableHeader

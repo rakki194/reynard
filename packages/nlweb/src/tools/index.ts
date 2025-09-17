@@ -15,9 +15,4 @@ import { fileTools } from "./file-tools.js";
 import { aiTools } from "./ai-tools.js";
 import { batchTools } from "./batch-tools.js";
 
-export const allDefaultTools = [
-  ...gitTools,
-  ...fileTools,
-  ...aiTools,
-  ...batchTools,
-];
+export const allDefaultTools = [...gitTools, ...fileTools, ...aiTools, ...batchTools];

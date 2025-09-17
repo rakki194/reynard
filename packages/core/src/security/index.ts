@@ -74,14 +74,7 @@ export const DEFAULT_SECURITY_CONFIG: SecurityConfig = {
   },
   fileUpload: {
     maxSize: 10 * 1024 * 1024, // 10MB
-    allowedTypes: [
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-      "application/pdf",
-      "text/plain",
-    ],
+    allowedTypes: ["image/jpeg", "image/png", "image/gif", "image/webp", "application/pdf", "text/plain"],
     scanForMalware: false, // Would require backend integration
   },
 };
@@ -115,10 +108,6 @@ export const DEVELOPMENT_SECURITY_CONFIG: SecurityConfig = {
 /**
  * Get security configuration based on environment
  */
-export function getSecurityConfig(
-  environment: "development" | "production" = "production",
-): SecurityConfig {
-  return environment === "development"
-    ? DEVELOPMENT_SECURITY_CONFIG
-    : DEFAULT_SECURITY_CONFIG;
+export function getSecurityConfig(environment: "development" | "production" = "production"): SecurityConfig {
+  return environment === "development" ? DEVELOPMENT_SECURITY_CONFIG : DEFAULT_SECURITY_CONFIG;
 }

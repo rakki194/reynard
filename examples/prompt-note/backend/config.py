@@ -4,7 +4,6 @@ Handles environment-based configuration for uvicorn and application settings
 """
 
 import os
-from typing import List, Optional
 
 
 class UvicornConfig:
@@ -20,7 +19,7 @@ class UvicornConfig:
         self.access_log = os.getenv("UVICORN_ACCESS_LOG", "true").lower() == "true"
         self.use_colors = os.getenv("UVICORN_USE_COLORS", "true").lower() == "true"
 
-    def _parse_reload_dirs(self) -> List[str]:
+    def _parse_reload_dirs(self) -> list[str]:
         """Parse reload directories from environment variable"""
         dirs = os.getenv("UVICORN_RELOAD_DIRS", ".")
         return [d.strip() for d in dirs.split(",") if d.strip()]
@@ -79,7 +78,7 @@ class AppConfig:
         self.cors_origins = self._parse_cors_origins()
         self.rate_limit = int(os.getenv("RATE_LIMIT", "100"))  # requests per minute
 
-    def _parse_cors_origins(self) -> List[str]:
+    def _parse_cors_origins(self) -> list[str]:
         """Parse CORS origins from environment variable"""
         origins = os.getenv(
             "CORS_ORIGINS", "http://localhost:3000,http://localhost:5173"

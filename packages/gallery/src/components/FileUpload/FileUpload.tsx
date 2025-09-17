@@ -46,22 +46,10 @@ function createFileUploadComponent(props: FileUploadProps) {
   ]);
 
   // Composables
-  const {
-    uploadItems,
-    isUploading,
-    addFiles,
-    startUpload,
-    removeFile,
-    clearFiles,
-  } = useFileUpload(local);
-  const { isDragOver, handleDragOver, handleDragLeave, handleDrop } =
-    useDragDrop(local, addFiles);
+  const { uploadItems, isUploading, addFiles, startUpload, removeFile, clearFiles } = useFileUpload(local);
+  const { isDragOver, handleDragOver, handleDragLeave, handleDrop } = useDragDrop(local, addFiles);
   const { validateFiles } = useFileValidation(local);
-  const { handleFileInput, handleDropWithValidation } = useFileUploadHandlers(
-    validateFiles,
-    addFiles,
-    handleDrop,
-  );
+  const { handleFileInput, handleDropWithValidation } = useFileUploadHandlers(validateFiles, addFiles, handleDrop);
 
   return {
     local,
@@ -78,7 +66,7 @@ function createFileUploadComponent(props: FileUploadProps) {
   };
 }
 
-export const FileUpload: Component<FileUploadProps> = (props) => {
+export const FileUpload: Component<FileUploadProps> = props => {
   const {
     local,
     uploadItems,

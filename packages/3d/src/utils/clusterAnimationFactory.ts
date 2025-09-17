@@ -16,23 +16,10 @@ export interface CreateClusterAnimationOptions {
 /**
  * Create a cluster animation instance
  */
-export function createClusterAnimationInstance(
-  options: CreateClusterAnimationOptions,
-): ClusterAnimation {
-  const {
-    clusterId,
-    points,
-    center,
-    expansionRadius = 2,
-    duration = 800,
-    easing = "easeOutElastic",
-  } = options;
+export function createClusterAnimationInstance(options: CreateClusterAnimationOptions): ClusterAnimation {
+  const { clusterId, points, center, expansionRadius = 2, duration = 800, easing = "easeOutElastic" } = options;
 
-  const animations = createClusterPointAnimations(
-    points,
-    center,
-    expansionRadius,
-  );
+  const animations = createClusterPointAnimations(points, center, expansionRadius);
 
   return {
     clusterId,

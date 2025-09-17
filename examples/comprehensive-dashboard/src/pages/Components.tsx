@@ -1,13 +1,6 @@
 import { createSignal, For, Show } from "solid-js";
 import { Grid, DataTable, Drawer, NavMenu, Breadcrumb } from "reynard-ui";
-import {
-  Card,
-  Modal,
-  Tabs,
-  Button,
-  TextField,
-  Select,
-} from "reynard-components";
+import { Card, Modal, Tabs, Button, TextField, Select } from "reynard-components";
 import { useI18n } from "reynard-i18n";
 import { useNotifications } from "reynard-core";
 
@@ -93,9 +86,7 @@ export function Components() {
       cell: (value: unknown) => (
         <span
           class={`px-2 py-1 rounded-full text-xs ${
-            value === "Active"
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
+            value === "Active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
           }`}
         >
           {value as string}
@@ -161,20 +152,13 @@ export function Components() {
 
       <Card>
         <div class="p-6">
-          <Tabs
-            items={tabItems}
-            activeTab={activeTab()}
-            onTabChange={setActiveTab}
-            variant="pills"
-          />
+          <Tabs items={tabItems} activeTab={activeTab()} onTabChange={setActiveTab} variant="pills" />
 
           <div class="mt-6">
             <Show when={activeTab() === "primitives"}>
               <div class="space-y-8">
                 <div>
-                  <h2 class="text-lg font-semibold mb-4">
-                    {t("components.primitives.buttons.title")}
-                  </h2>
+                  <h2 class="text-lg font-semibold mb-4">{t("components.primitives.buttons.title")}</h2>
                   <div class="flex flex-wrap gap-4">
                     <Button
                       variant="primary"
@@ -183,7 +167,7 @@ export function Components() {
                           t("components.primitives.buttons.clicked", {
                             variant: "Primary",
                           }),
-                          "success",
+                          "success"
                         )
                       }
                     >
@@ -196,7 +180,7 @@ export function Components() {
                           t("components.primitives.buttons.clicked", {
                             variant: "Secondary",
                           }),
-                          "info",
+                          "info"
                         )
                       }
                     >
@@ -209,7 +193,7 @@ export function Components() {
                           t("components.primitives.buttons.clicked", {
                             variant: "Tertiary",
                           }),
-                          "info",
+                          "info"
                         )
                       }
                     >
@@ -222,7 +206,7 @@ export function Components() {
                           t("components.primitives.buttons.clicked", {
                             variant: "Ghost",
                           }),
-                          "info",
+                          "info"
                         )
                       }
                     >
@@ -235,7 +219,7 @@ export function Components() {
                           t("components.primitives.buttons.clicked", {
                             variant: "Danger",
                           }),
-                          "warning",
+                          "warning"
                         )
                       }
                     >
@@ -257,36 +241,28 @@ export function Components() {
                 </div>
 
                 <div>
-                  <h2 class="text-lg font-semibold mb-4">
-                    {t("components.primitives.inputs.title")}
-                  </h2>
+                  <h2 class="text-lg font-semibold mb-4">{t("components.primitives.inputs.title")}</h2>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
                     <TextField
                       label={t("components.primitives.inputs.text")}
-                      placeholder={t(
-                        "components.primitives.inputs.textPlaceholder",
-                      )}
+                      placeholder={t("components.primitives.inputs.textPlaceholder")}
                       value={inputValue()}
-                      onInput={(e) => setInputValue(e.target.value)}
+                      onInput={e => setInputValue(e.target.value)}
                     />
                     <TextField
                       label={t("components.primitives.inputs.password")}
                       type="password"
-                      placeholder={t(
-                        "components.primitives.inputs.passwordPlaceholder",
-                      )}
+                      placeholder={t("components.primitives.inputs.passwordPlaceholder")}
                     />
                     <TextField
                       label={t("components.primitives.inputs.email")}
                       type="email"
-                      placeholder={t(
-                        "components.primitives.inputs.emailPlaceholder",
-                      )}
+                      placeholder={t("components.primitives.inputs.emailPlaceholder")}
                     />
                     <Select
                       label={t("components.primitives.inputs.select")}
                       value={selectValue()}
-                      onInput={(e) => setSelectValue(e.target.value)}
+                      onInput={e => setSelectValue(e.target.value)}
                       options={[
                         {
                           value: "option1",
@@ -306,38 +282,24 @@ export function Components() {
                 </div>
 
                 <div>
-                  <h2 class="text-lg font-semibold mb-4">
-                    {t("components.primitives.cards.title")}
-                  </h2>
+                  <h2 class="text-lg font-semibold mb-4">{t("components.primitives.cards.title")}</h2>
                   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Card>
                       <div class="p-4">
-                        <h3 class="font-semibold">
-                          {t("components.primitives.cards.simple")}
-                        </h3>
-                        <p class="text-sm text-gray-600 mt-2">
-                          {t("components.primitives.cards.simpleDesc")}
-                        </p>
+                        <h3 class="font-semibold">{t("components.primitives.cards.simple")}</h3>
+                        <p class="text-sm text-gray-600 mt-2">{t("components.primitives.cards.simpleDesc")}</p>
                       </div>
                     </Card>
                     <Card variant="elevated">
                       <div class="p-4">
-                        <h3 class="font-semibold">
-                          {t("components.primitives.cards.elevated")}
-                        </h3>
-                        <p class="text-sm text-gray-600 mt-2">
-                          {t("components.primitives.cards.elevatedDesc")}
-                        </p>
+                        <h3 class="font-semibold">{t("components.primitives.cards.elevated")}</h3>
+                        <p class="text-sm text-gray-600 mt-2">{t("components.primitives.cards.elevatedDesc")}</p>
                       </div>
                     </Card>
                     <Card variant="outlined">
                       <div class="p-4">
-                        <h3 class="font-semibold">
-                          {t("components.primitives.cards.outlined")}
-                        </h3>
-                        <p class="text-sm text-gray-600 mt-2">
-                          {t("components.primitives.cards.outlinedDesc")}
-                        </p>
+                        <h3 class="font-semibold">{t("components.primitives.cards.outlined")}</h3>
+                        <p class="text-sm text-gray-600 mt-2">{t("components.primitives.cards.outlinedDesc")}</p>
                       </div>
                     </Card>
                   </div>
@@ -348,52 +310,36 @@ export function Components() {
             <Show when={activeTab() === "layout"}>
               <div class="space-y-8">
                 <div>
-                  <h2 class="text-lg font-semibold mb-4">
-                    {t("components.layout.grid.title")}
-                  </h2>
+                  <h2 class="text-lg font-semibold mb-4">{t("components.layout.grid.title")}</h2>
                   <Grid columns={3} gap="md">
                     <Card>
                       <div class="p-4 text-center">
                         <div class="text-2xl mb-2">📊</div>
-                        <div class="font-medium">
-                          {t("components.layout.grid.item1")}
-                        </div>
+                        <div class="font-medium">{t("components.layout.grid.item1")}</div>
                       </div>
                     </Card>
                     <Card>
                       <div class="p-4 text-center">
                         <div class="text-2xl mb-2">👥</div>
-                        <div class="font-medium">
-                          {t("components.layout.grid.item2")}
-                        </div>
+                        <div class="font-medium">{t("components.layout.grid.item2")}</div>
                       </div>
                     </Card>
                     <Card>
                       <div class="p-4 text-center">
                         <div class="text-2xl mb-2">⚙️</div>
-                        <div class="font-medium">
-                          {t("components.layout.grid.item3")}
-                        </div>
+                        <div class="font-medium">{t("components.layout.grid.item3")}</div>
                       </div>
                     </Card>
                   </Grid>
                 </div>
 
                 <div>
-                  <h2 class="text-lg font-semibold mb-4">
-                    {t("components.layout.modals.title")}
-                  </h2>
+                  <h2 class="text-lg font-semibold mb-4">{t("components.layout.modals.title")}</h2>
                   <div class="space-x-4">
-                    <Button
-                      variant="primary"
-                      onClick={() => setIsModalOpen(true)}
-                    >
+                    <Button variant="primary" onClick={() => setIsModalOpen(true)}>
                       {t("components.layout.modals.open")}
                     </Button>
-                    <Button
-                      variant="secondary"
-                      onClick={() => setIsDrawerOpen(true)}
-                    >
+                    <Button variant="secondary" onClick={() => setIsDrawerOpen(true)}>
                       {t("components.layout.modals.openDrawer")}
                     </Button>
                   </div>
@@ -404,9 +350,7 @@ export function Components() {
             <Show when={activeTab() === "data"}>
               <div class="space-y-8">
                 <div>
-                  <h2 class="text-lg font-semibold mb-4">
-                    {t("components.data.table.title")}
-                  </h2>
+                  <h2 class="text-lg font-semibold mb-4">{t("components.data.table.title")}</h2>
                   <DataTable
                     data={tableData}
                     columns={tableColumns}
@@ -415,7 +359,7 @@ export function Components() {
                         t("components.data.table.rowClicked", {
                           name: (row as TableRow).name,
                         }),
-                        "info",
+                        "info"
                       )
                     }
                   />
@@ -426,18 +370,16 @@ export function Components() {
             <Show when={activeTab() === "navigation"}>
               <div class="space-y-8">
                 <div>
-                  <h2 class="text-lg font-semibold mb-4">
-                    {t("components.navigation.menu.title")}
-                  </h2>
+                  <h2 class="text-lg font-semibold mb-4">{t("components.navigation.menu.title")}</h2>
                   <div class="max-w-xs">
                     <NavMenu
                       items={navMenuItems}
-                      onItemClick={(item) =>
+                      onItemClick={item =>
                         notify(
                           t("components.navigation.menu.clicked", {
                             label: item.label,
                           }),
-                          "info",
+                          "info"
                         )
                       }
                     />
@@ -445,17 +387,15 @@ export function Components() {
                 </div>
 
                 <div>
-                  <h2 class="text-lg font-semibold mb-4">
-                    {t("components.navigation.breadcrumb.title")}
-                  </h2>
+                  <h2 class="text-lg font-semibold mb-4">{t("components.navigation.breadcrumb.title")}</h2>
                   <Breadcrumb
                     items={breadcrumbItems}
-                    onItemClick={(item) =>
+                    onItemClick={item =>
                       notify(
                         t("components.navigation.breadcrumb.clicked", {
                           label: item.label,
                         }),
-                        "info",
+                        "info"
                       )
                     }
                   />
@@ -467,11 +407,7 @@ export function Components() {
       </Card>
 
       {/* Modal */}
-      <Modal
-        open={isModalOpen()}
-        onClose={() => setIsModalOpen(false)}
-        title={t("components.modal.title")}
-      >
+      <Modal open={isModalOpen()} onClose={() => setIsModalOpen(false)} title={t("components.modal.title")}>
         <div class="space-y-4">
           <p>{t("components.modal.content")}</p>
           <div class="flex justify-end space-x-2">
@@ -502,7 +438,7 @@ export function Components() {
           <p>{t("components.drawer.content")}</p>
           <div class="space-y-3">
             <For each={["info", "warning", "success", "error"] as const}>
-              {(type) => (
+              {type => (
                 <Button
                   variant="secondary"
                   class="w-full"

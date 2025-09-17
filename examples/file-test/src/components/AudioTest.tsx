@@ -96,29 +96,19 @@ export default function AudioTest(props: AudioTestProps) {
       )}
 
       {selectedFile() && (
-        <button
-          class="upload-button upload-button-margin"
-          onClick={generateThumbnail}
-          disabled={isProcessing()}
-        >
+        <button class="upload-button upload-button-margin" onClick={generateThumbnail} disabled={isProcessing()}>
           {isProcessing() ? "Generating..." : "Generate Waveform Thumbnail"}
         </button>
       )}
 
-      {processingTime() > 0 && (
-        <div class="processing-time">Processing time: {processingTime()}ms</div>
-      )}
+      {processingTime() > 0 && <div class="processing-time">Processing time: {processingTime()}ms</div>}
 
       {error() && <div class="processing-status error">Error: {error()}</div>}
 
       {thumbnailUrl() && (
         <div>
           <h4>Generated Waveform Thumbnail:</h4>
-          <img
-            src={thumbnailUrl()}
-            alt="Audio waveform thumbnail"
-            class="audio-thumbnail"
-          />
+          <img src={thumbnailUrl()} alt="Audio waveform thumbnail" class="audio-thumbnail" />
         </div>
       )}
 
@@ -127,15 +117,12 @@ export default function AudioTest(props: AudioTestProps) {
         <ol>
           <li>Select an audio file (MP3, WAV, etc.)</li>
           <li>Click "Generate Waveform Thumbnail"</li>
-          <li>
-            The thumbnail will show a waveform visualization based on the actual
-            audio data
-          </li>
+          <li>The thumbnail will show a waveform visualization based on the actual audio data</li>
           <li>Try different audio files to see how the waveform changes</li>
         </ol>
         <p>
-          <strong>Note:</strong> The waveform is generated using the Web Audio
-          API to analyze real audio data, not random patterns.
+          <strong>Note:</strong> The waveform is generated using the Web Audio API to analyze real audio data, not
+          random patterns.
         </p>
       </div>
     </div>

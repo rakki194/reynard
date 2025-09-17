@@ -24,17 +24,12 @@ export interface EmbeddingReductionActions {
   performReduction: () => Promise<void>;
 }
 
-export function useEmbeddingReduction(): EmbeddingReductionState &
-  EmbeddingReductionActions {
+export function useEmbeddingReduction(): EmbeddingReductionState & EmbeddingReductionActions {
   const embeddingViz = useEmbeddingVisualization();
 
   // State
-  const [reductionMethod, setReductionMethod] = createSignal<
-    "pca" | "tsne" | "umap"
-  >("pca");
-  const [reductionParams, setReductionParams] = createSignal<
-    Record<string, unknown>
-  >({});
+  const [reductionMethod, setReductionMethod] = createSignal<"pca" | "tsne" | "umap">("pca");
+  const [reductionParams, setReductionParams] = createSignal<Record<string, unknown>>({});
   const [maxSamples, setMaxSamples] = createSignal(1000);
   const [reductionResult, setReductionResult] = createSignal<unknown>(null);
   const [isLoading, setIsLoading] = createSignal(false);
@@ -72,7 +67,7 @@ export function useEmbeddingReduction(): EmbeddingReductionState &
 
   // Update reduction parameters
   const updateReductionParams = (key: string, value: unknown) => {
-    setReductionParams((prev) => ({
+    setReductionParams(prev => ({
       ...prev,
       [key]: value,
     }));

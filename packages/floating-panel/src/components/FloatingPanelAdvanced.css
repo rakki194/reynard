@@ -11,8 +11,7 @@
   border-radius: var(--radius-lg, 12px);
   box-shadow: var(--elevation-2, 0 2px 4px oklch(0% 0 0 / 0.16));
   overflow: hidden;
-  transition: box-shadow var(--duration-base, 200ms)
-    var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  transition: box-shadow var(--duration-base, 200ms) var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
   color: var(--color-text, oklch(15% 0.01 0));
 }
 
@@ -109,8 +108,7 @@
   border-radius: var(--radius-sm, 4px);
   cursor: pointer;
   color: var(--color-text-secondary, oklch(30% 0.01 0));
-  transition: all var(--duration-fast, 120ms)
-    var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
+  transition: all var(--duration-fast, 120ms) var(--easing-standard, cubic-bezier(0.2, 0, 0, 1));
 }
 
 .panel-control-btn:hover {
@@ -187,11 +185,7 @@
 }
 
 .floating-panel-advanced.theme-warning .panel-header {
-  background: color-mix(
-    in oklch,
-    var(--color-warning, oklch(75% 0.2 80)) 10%,
-    var(--color-surface, oklch(95% 0.02 0))
-  );
+  background: color-mix(in oklch, var(--color-warning, oklch(75% 0.2 80)) 10%, var(--color-surface, oklch(95% 0.02 0)));
   border-bottom-color: var(--color-warning, oklch(75% 0.2 80));
 }
 
@@ -200,11 +194,7 @@
 }
 
 .floating-panel-advanced.theme-info .panel-header {
-  background: color-mix(
-    in oklch,
-    var(--color-info, oklch(65% 0.2 200)) 10%,
-    var(--color-surface, oklch(95% 0.02 0))
-  );
+  background: color-mix(in oklch, var(--color-info, oklch(65% 0.2 200)) 10%, var(--color-surface, oklch(95% 0.02 0)));
   border-bottom-color: var(--color-info, oklch(65% 0.2 200));
 }
 

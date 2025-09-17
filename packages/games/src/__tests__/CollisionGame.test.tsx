@@ -85,7 +85,7 @@ describe("CollisionGame", () => {
         // Statistics should update (exact values depend on implementation)
         expect(screen.getByText(/Total Collisions:/)).toBeInTheDocument();
       },
-      { timeout: 2000 },
+      { timeout: 2000 }
     );
   });
 

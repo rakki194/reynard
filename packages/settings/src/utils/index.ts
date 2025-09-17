@@ -3,11 +3,7 @@
  * Helper functions for validation, migration, and settings management
  */
 
-import type {
-  SettingCondition,
-  SettingDefinition,
-  SettingsSchema,
-} from "../types";
+import type { SettingCondition, SettingDefinition, SettingsSchema } from "../types";
 
 // Re-export consolidated validation utilities from reynard-connection
 export {
@@ -35,10 +31,7 @@ export {
 /**
  * Validate a single setting value using the consolidated validation system
  */
-export function validateSetting(
-  definition: SettingDefinition,
-  value: any,
-): ValidationResult {
+export function validateSetting(definition: SettingDefinition, value: any): ValidationResult {
   const { validation, type, required } = definition;
 
   // Create validation schema from setting definition
@@ -61,10 +54,7 @@ export function validateSetting(
 /**
  * Validate multiple settings at once
  */
-export function validateSettings(
-  settings: Record<string, any>,
-  schema: SettingsSchema,
-): MultiValidationResult {
+export function validateSettings(settings: Record<string, any>, schema: SettingsSchema): MultiValidationResult {
   const results: Record<string, ValidationResult> = {};
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -102,7 +92,7 @@ export function validateSettings(
 export function migrateSettings(
   settings: Record<string, any>,
   fromVersion: string,
-  toVersion: string,
+  toVersion: string
 ): Record<string, any> {
   // This would contain migration logic for different versions
   // For now, return settings as-is
@@ -112,9 +102,7 @@ export function migrateSettings(
 /**
  * Validate settings schema
  */
-export function validateSettingsSchema(
-  schema: SettingsSchema,
-): ValidationResult {
+export function validateSettingsSchema(schema: SettingsSchema): ValidationResult {
   const errors: string[] = [];
 
   for (const [key, definition] of Object.entries(schema)) {
@@ -129,11 +117,7 @@ export function validateSettingsSchema(
     if (definition.validation) {
       const { minLength, maxLength, min, max } = definition.validation;
 
-      if (
-        minLength !== undefined &&
-        maxLength !== undefined &&
-        minLength > maxLength
-      ) {
+      if (minLength !== undefined && maxLength !== undefined && minLength > maxLength) {
         errors.push(`Setting '${key}' has invalid length constraints`);
       }
 
@@ -157,10 +141,7 @@ export function validateSettingsSchema(
 /**
  * Evaluate setting conditions
  */
-export function evaluateCondition(
-  condition: SettingCondition,
-  settings: Record<string, any>,
-): boolean {
+export function evaluateCondition(condition: SettingCondition, settings: Record<string, any>): boolean {
   const { key, operator, value } = condition;
 
   const fieldValue = settings[key];
@@ -186,26 +167,18 @@ export function evaluateCondition(
 /**
  * Check if a setting should be visible based on conditions
  */
-export function isSettingVisible(
-  definition: SettingDefinition,
-  settings: Record<string, any>,
-): boolean {
+export function isSettingVisible(definition: SettingDefinition, settings: Record<string, any>): boolean {
   if (!definition.conditions || definition.conditions.length === 0) {
     return true;
   }
 
-  return definition.conditions.every((condition) =>
-    evaluateCondition(condition, settings),
-  );
+  return definition.conditions.every(condition => evaluateCondition(condition, settings));
 }
 
 /**
  * Check if a setting should be enabled based on conditions
  */
-export function isSettingEnabled(
-  definition: SettingDefinition,
-  settings: Record<string, any>,
-): boolean {
+export function isSettingEnabled(definition: SettingDefinition, settings: Record<string, any>): boolean {
   if (!definition.condition) {
     return true;
   }
@@ -220,9 +193,7 @@ export function isSettingEnabled(
 /**
  * Get default values for all settings in a schema
  */
-export function getDefaultSettings(
-  schema: SettingsSchema,
-): Record<string, any> {
+export function getDefaultSettings(schema: SettingsSchema): Record<string, any> {
   const defaults: Record<string, any> = {};
 
   for (const [key, definition] of Object.entries(schema)) {
@@ -237,10 +208,7 @@ export function getDefaultSettings(
 /**
  * Merge settings with defaults
  */
-export function mergeWithDefaults(
-  settings: Record<string, any>,
-  schema: SettingsSchema,
-): Record<string, any> {
+export function mergeWithDefaults(settings: Record<string, any>, schema: SettingsSchema): Record<string, any> {
   const defaults = getDefaultSettings(schema);
   return { ...defaults, ...settings };
 }
@@ -263,9 +231,7 @@ export function deserializeSettings(data: string): Record<string, any> {
   try {
     return JSON.parse(data);
   } catch (error) {
-    throw new Error(
-      `Failed to deserialize settings: ${error instanceof Error ? error.message : "Unknown error"}`,
-    );
+    throw new Error(`Failed to deserialize settings: ${error instanceof Error ? error.message : "Unknown error"}`);
   }
 }
 
@@ -289,8 +255,7 @@ export const SettingValidationSchemas = {
     minLength: 8,
     maxLength: 128,
     pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-    errorMessage:
-      "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
+    errorMessage: "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
   },
 
   url: {
@@ -312,8 +277,7 @@ export const SettingValidationSchemas = {
     minLength: 2,
     maxLength: 5,
     pattern: /^[a-z]{2}(-[A-Z]{2})?$/,
-    errorMessage:
-      "Language must be a valid locale code (e.g., 'en' or 'en-US')",
+    errorMessage: "Language must be a valid locale code (e.g., 'en' or 'en-US')",
   },
 
   port: {

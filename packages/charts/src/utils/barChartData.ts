@@ -16,9 +16,7 @@ export interface BarChartDataOptions {
   datasets: Dataset[];
 }
 
-export const processBarChartData = (
-  options: BarChartDataOptions,
-): BarChartData | null => {
+export const processBarChartData = (options: BarChartDataOptions): BarChartData | null => {
   if (!options.labels || !options.datasets) {
     return null;
   }

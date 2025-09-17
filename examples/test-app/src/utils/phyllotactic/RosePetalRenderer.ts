@@ -25,7 +25,7 @@ export class RosePetalRenderer {
     const sortedPetals = [...petals].sort((a, b) => a.radius - b.radius);
 
     // Render each petal
-    sortedPetals.forEach((petal) => {
+    sortedPetals.forEach(petal => {
       if (petal.opacity <= 0) return;
       this.renderPetal(petal);
     });
@@ -97,47 +97,15 @@ export class RosePetalRenderer {
   /**
    * Draw closed petal (bud phase)
    */
-  private drawClosedPetal(
-    petal: RosePetal,
-    width: number,
-    height: number,
-  ): void {
+  private drawClosedPetal(petal: RosePetal, width: number, height: number): void {
     this.ctx.beginPath();
 
     // Create closed bud shape
     this.ctx.moveTo(0, -height * 0.2);
-    this.ctx.bezierCurveTo(
-      width * 0.2,
-      -height * 0.3,
-      width * 0.3,
-      -height * 0.1,
-      width * 0.1,
-      0,
-    );
-    this.ctx.bezierCurveTo(
-      width * 0.2,
-      height * 0.1,
-      width * 0.1,
-      height * 0.2,
-      0,
-      height * 0.1,
-    );
-    this.ctx.bezierCurveTo(
-      -width * 0.1,
-      height * 0.2,
-      -width * 0.2,
-      height * 0.1,
-      -width * 0.1,
-      0,
-    );
-    this.ctx.bezierCurveTo(
-      -width * 0.3,
-      -height * 0.1,
-      -width * 0.2,
-      -height * 0.3,
-      0,
-      -height * 0.2,
-    );
+    this.ctx.bezierCurveTo(width * 0.2, -height * 0.3, width * 0.3, -height * 0.1, width * 0.1, 0);
+    this.ctx.bezierCurveTo(width * 0.2, height * 0.1, width * 0.1, height * 0.2, 0, height * 0.1);
+    this.ctx.bezierCurveTo(-width * 0.1, height * 0.2, -width * 0.2, height * 0.1, -width * 0.1, 0);
+    this.ctx.bezierCurveTo(-width * 0.3, -height * 0.1, -width * 0.2, -height * 0.3, 0, -height * 0.2);
 
     this.ctx.closePath();
     this.ctx.fill();
@@ -146,11 +114,7 @@ export class RosePetalRenderer {
   /**
    * Draw petal with separated lobes (natural growth)
    */
-  private drawPetalWithLobes(
-    petal: RosePetal,
-    width: number,
-    height: number,
-  ): void {
+  private drawPetalWithLobes(petal: RosePetal, width: number, height: number): void {
     const lobeSeparation = petal.lobeSeparation;
     const separationWidth = width * 0.1 * lobeSeparation;
 
@@ -165,7 +129,7 @@ export class RosePetalRenderer {
       -width * 0.5 + separationWidth,
       -height * 0.2,
       -width * 0.2 + separationWidth,
-      0,
+      0
     );
 
     // Left lobe right side
@@ -175,7 +139,7 @@ export class RosePetalRenderer {
       -width * 0.3 + separationWidth,
       height * 0.4,
       -width * 0.1 + separationWidth,
-      height * 0.6,
+      height * 0.6
     );
 
     // Left lobe bottom curve
@@ -185,7 +149,7 @@ export class RosePetalRenderer {
       -separationWidth,
       height * 0.4,
       -separationWidth,
-      height * 0.2,
+      height * 0.2
     );
 
     // Left lobe left side
@@ -195,7 +159,7 @@ export class RosePetalRenderer {
       -width * 0.5 + separationWidth,
       -height * 0.2,
       -width * 0.3 + separationWidth,
-      -height * 0.5,
+      -height * 0.5
     );
 
     this.ctx.closePath();
@@ -212,7 +176,7 @@ export class RosePetalRenderer {
       width * 0.5 - separationWidth,
       -height * 0.2,
       width * 0.2 - separationWidth,
-      0,
+      0
     );
 
     // Right lobe left side
@@ -222,18 +186,11 @@ export class RosePetalRenderer {
       width * 0.3 - separationWidth,
       height * 0.4,
       width * 0.1 - separationWidth,
-      height * 0.6,
+      height * 0.6
     );
 
     // Right lobe bottom curve
-    this.ctx.bezierCurveTo(
-      separationWidth,
-      height * 0.6,
-      separationWidth,
-      height * 0.4,
-      separationWidth,
-      height * 0.2,
-    );
+    this.ctx.bezierCurveTo(separationWidth, height * 0.6, separationWidth, height * 0.4, separationWidth, height * 0.2);
 
     // Right lobe right side
     this.ctx.bezierCurveTo(
@@ -242,7 +199,7 @@ export class RosePetalRenderer {
       width * 0.5 - separationWidth,
       -height * 0.2,
       width * 0.3 - separationWidth,
-      -height * 0.5,
+      -height * 0.5
     );
 
     this.ctx.closePath();
@@ -311,20 +268,12 @@ export class RosePetalRenderer {
   /**
    * Draw growth phase indicator
    */
-  drawGrowthPhaseIndicator(
-    growthPhase: string,
-    petalCount: number,
-    fps: number,
-  ): void {
+  drawGrowthPhaseIndicator(growthPhase: string, petalCount: number, fps: number): void {
     this.ctx.save();
     this.ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
     this.ctx.font = "bold 18px Arial";
     this.ctx.textAlign = "left";
-    this.ctx.fillText(
-      `🌹 Rose Growth: ${growthPhase.charAt(0).toUpperCase() + growthPhase.slice(1)}`,
-      20,
-      30,
-    );
+    this.ctx.fillText(`🌹 Rose Growth: ${growthPhase.charAt(0).toUpperCase() + growthPhase.slice(1)}`, 20, 30);
 
     this.ctx.font = "14px Arial";
     this.ctx.fillText(`${petalCount} petals`, 20, 50);

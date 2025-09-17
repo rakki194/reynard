@@ -27,12 +27,7 @@ export interface P2PChatState extends Omit<ChatState, "messages"> {
   typingIndicators: Record<string, TypingIndicator[]>;
   /** Connection to P2P service */
   p2pConnection: {
-    status:
-      | "disconnected"
-      | "connecting"
-      | "connected"
-      | "reconnecting"
-      | "error";
+    status: "disconnected" | "connecting" | "connected" | "reconnecting" | "error";
     lastConnected?: number;
     reconnectAttempts: number;
     protocol?: "websocket" | "webrtc" | "sse";
@@ -93,12 +88,7 @@ export interface UseP2PChatReturn {
   typingIndicators: () => Record<string, TypingIndicator[]>;
   /** Connection to P2P service */
   p2pConnection: () => {
-    status:
-      | "disconnected"
-      | "connecting"
-      | "connected"
-      | "reconnecting"
-      | "error";
+    status: "disconnected" | "connecting" | "connected" | "reconnecting" | "error";
     lastConnected?: number;
     reconnectAttempts: number;
     protocol?: "websocket" | "webrtc" | "sse";

@@ -11,7 +11,7 @@ persist across application restarts.
 
 ### 1. PostgreSQL Backend for Gatekeeper
 
-**File**: `libraries/gatekeeper/gatekeeper/backends/postgresql.py`
+**File**: `services/gatekeeper/gatekeeper/backends/postgresql.py`
 
 - **Complete UserBackend Implementation**: Full implementation of all required
   methods from the abstract base class
@@ -81,7 +81,7 @@ persist across application restarts.
 
 ### 6. Testing
 
-**File**: `libraries/gatekeeper/tests/test_postgresql_backend.py`
+**File**: `services/gatekeeper/tests/test_postgresql_backend.py`
 
 - **Comprehensive Test Suite**: Tests for all backend methods
 - **Mock-based Testing**: Uses mocks to avoid requiring actual database
@@ -89,7 +89,7 @@ persist across application restarts.
 
 ### 7. Examples
 
-**File**: `libraries/gatekeeper/examples/postgresql_usage.py`
+**File**: `services/gatekeeper/examples/postgresql_usage.py`
 
 - **Working Example**: Complete demonstration of PostgreSQL backend usage
 - **Real-world Scenarios**: Shows common authentication workflows

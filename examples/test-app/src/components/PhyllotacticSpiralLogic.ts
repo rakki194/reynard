@@ -46,10 +46,7 @@ export class PhyllotacticSpiralLogic {
   private config: GameConfig;
 
   constructor(config: GameConfig) {
-    console.log(
-      "🦊 PhyllotacticSpiralLogic: Constructor called with config",
-      config,
-    );
+    console.log("🦊 PhyllotacticSpiralLogic: Constructor called with config", config);
     this.config = config;
   }
 
@@ -65,10 +62,7 @@ export class PhyllotacticSpiralLogic {
 
     const color = generateGoldenColor(index, colorConfig);
     const oklchString = `oklch(${color.lightness * 100}% ${color.saturation * 100}% ${color.hue})`;
-    console.log(
-      `🦊 PhyllotacticSpiralLogic: Generated color for index ${index}`,
-      { colorConfig, color, oklchString },
-    );
+    console.log(`🦊 PhyllotacticSpiralLogic: Generated color for index ${index}`, { colorConfig, color, oklchString });
     return oklchString;
   }
 
@@ -122,15 +116,9 @@ export class PhyllotacticSpiralLogic {
   /**
    * Update spiral points with new rotation
    */
-  updateSpiralPoints(
-    points: SpiralPoint[],
-    rotationAngle: number,
-  ): SpiralPoint[] {
+  updateSpiralPoints(points: SpiralPoint[], rotationAngle: number): SpiralPoint[] {
     return points.map((point, index) => {
-      const newPosition = this.calculateSpiralPointPosition(
-        index,
-        rotationAngle,
-      );
+      const newPosition = this.calculateSpiralPointPosition(index, rotationAngle);
       return {
         ...point,
         x: newPosition.x,
@@ -158,14 +146,11 @@ export class PhyllotacticSpiralLogic {
       newConfig.step !== undefined;
 
     if (needsRegeneration) {
-      console.log(
-        "🦊 PhyllotacticSpiralLogic: Config changed, regenerating spiral",
-        {
-          oldConfig,
-          newConfig: this.config,
-          changedParams: Object.keys(newConfig),
-        },
-      );
+      console.log("🦊 PhyllotacticSpiralLogic: Config changed, regenerating spiral", {
+        oldConfig,
+        newConfig: this.config,
+        changedParams: Object.keys(newConfig),
+      });
       // The spiral will be regenerated when initializeSpiral is called
     }
   }

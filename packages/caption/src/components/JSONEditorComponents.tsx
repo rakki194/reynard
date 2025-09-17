@@ -18,7 +18,7 @@ export const EditorHeader: Component<{
   isValid: () => boolean;
   validationMarkers: () => ValidationMarker[];
   onFormat: () => void;
-}> = (props) => (
+}> = props => (
   <div class="editor-header">
     <div class="editor-info">
       <span class="editor-title">{props.title || "JSON Editor"}</span>
@@ -51,7 +51,7 @@ export const EditorHeader: Component<{
 // Error details component
 export const ErrorDetails: Component<{
   validationMarkers: () => ValidationMarker[];
-}> = (props) => (
+}> = props => (
   <Show when={props.validationMarkers().length > 0}>
     <div class="error-details">
       <div class="error-header">Validation Errors:</div>

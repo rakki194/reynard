@@ -24,9 +24,7 @@ export class ECSSystemSetup implements SystemSetup {
     console.log("Initializing ECS systems...");
 
     // Register systems
-    this.reynardWorld.addSystem(
-      ECSSystems.createPositionUpdateSystem().build(),
-    );
+    this.reynardWorld.addSystem(ECSSystems.createPositionUpdateSystem().build());
     this.reynardWorld.addSystem(ECSSystems.createCollisionSystem().build());
     this.reynardWorld.addSystem(ECSSystems.createSpatialQuerySystem().build());
 
@@ -45,7 +43,7 @@ export class ECSSystemSetup implements SystemSetup {
         { ...data.position, __component: true as const },
         { ...data.velocity, __component: true as const },
         { ...data.acceleration, __component: true as const },
-        { ...data.mass, __component: true as const },
+        { ...data.mass, __component: true as const }
       );
     }
   }

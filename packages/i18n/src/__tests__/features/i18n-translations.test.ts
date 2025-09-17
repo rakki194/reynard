@@ -15,8 +15,7 @@ const mockTranslations = {
     welcome: "Welcome, {name}!",
     itemCount: "You have {count} items",
     dynamic: (params: TranslationParams) => `Hello ${params.name}`,
-    complex: (params: TranslationParams) =>
-      `User ${params.name} has ${params.count} items in ${params.category}`,
+    complex: (params: TranslationParams) => `User ${params.name} has ${params.count} items in ${params.category}`,
   },
   templates: {
     greeting: "Hello {name}, you have {count} items",
@@ -68,15 +67,11 @@ describe("Translation Logic", () => {
     });
 
     it("should handle multiple parameters", () => {
-      expect(i18n.t("templates.greeting", { name: "Alice", count: 3 })).toBe(
-        "Hello Alice, you have 3 items",
-      );
+      expect(i18n.t("templates.greeting", { name: "Alice", count: 3 })).toBe("Hello Alice, you have 3 items");
     });
 
     it("should handle nested parameter access", () => {
-      expect(i18n.t("templates.nested", { level: 2, value: "test" })).toBe(
-        "Level 2 with test",
-      );
+      expect(i18n.t("templates.nested", { level: 2, value: "test" })).toBe("Level 2 with test");
     });
   });
 
@@ -90,8 +85,7 @@ describe("Translation Logic", () => {
         ...mockTranslations,
         common: {
           ...mockTranslations.common,
-          complex: (params: TranslationParams) =>
-            `User ${params.name} has ${params.count} items in ${params.category}`,
+          complex: (params: TranslationParams) => `User ${params.name} has ${params.count} items in ${params.category}`,
         },
       };
 
@@ -101,7 +95,7 @@ describe("Translation Logic", () => {
           name: "Bob",
           count: 7,
           category: "electronics",
-        }),
+        })
       ).toBe("User Bob has 7 items in electronics");
     });
   });
@@ -124,9 +118,7 @@ describe("Translation Logic", () => {
         dynamic: (params: TranslationParams) => `Hello ${params.name}`,
       };
 
-      expect(getTranslationValue(obj, "dynamic", { name: "World" })).toBe(
-        "Hello World",
-      );
+      expect(getTranslationValue(obj, "dynamic", { name: "World" })).toBe("Hello World");
     });
 
     it("should interpolate parameters in strings", () => {
@@ -134,16 +126,12 @@ describe("Translation Logic", () => {
         template: "Hello {name}, you have {count} items",
       };
 
-      expect(
-        getTranslationValue(obj, "template", { name: "John", count: 5 }),
-      ).toBe("Hello John, you have 5 items");
+      expect(getTranslationValue(obj, "template", { name: "John", count: 5 })).toBe("Hello John, you have 5 items");
     });
 
     it("should return key if value not found", () => {
       const obj = {};
-      expect(getTranslationValue(obj, "nonexistent.key")).toBe(
-        "nonexistent.key",
-      );
+      expect(getTranslationValue(obj, "nonexistent.key")).toBe("nonexistent.key");
     });
 
     it("should handle empty objects", () => {
@@ -172,21 +160,17 @@ describe("Translation Logic", () => {
           id: 123,
           count: 5,
           amount: 99.99,
-        }),
+        })
       ).toBe("User Alice (ID: 123) has 5 items worth $99.99");
     });
 
     it("should handle special characters in parameters", () => {
-      expect(i18n.t("common.welcome", { name: "José & María" })).toBe(
-        "Welcome, José & María!",
-      );
+      expect(i18n.t("common.welcome", { name: "José & María" })).toBe("Welcome, José & María!");
     });
 
     it("should handle numeric parameters", () => {
       expect(i18n.t("common.itemCount", { count: 0 })).toBe("You have 0 items");
-      expect(i18n.t("common.itemCount", { count: -1 })).toBe(
-        "You have -1 items",
-      );
+      expect(i18n.t("common.itemCount", { count: -1 })).toBe("You have -1 items");
     });
   });
 });

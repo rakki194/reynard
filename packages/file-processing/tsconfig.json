@@ -26,12 +26,5 @@
     }
   },
   "include": ["src"],
-  "exclude": [
-    "dist",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/test-setup.ts"
-  ]
+  "exclude": ["dist", "**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx", "**/test-setup.ts"]
 }

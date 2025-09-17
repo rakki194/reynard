@@ -360,16 +360,12 @@ const rag = useRAG();
 const app = useAppContext();
 const group = "rag-ingest";
 app.notify("Starting ingest…", "info", group, "spinner", 0);
-await rag.ingestDocuments(
-  [{ source: "manual", content: "Some text" }],
-  "mxbai-embed-large",
-  (evt) => {
-    const processed = evt.processed ?? 0;
-    const total = evt.total ?? 0;
-    const pct = total > 0 ? Math.round((processed / total) * 100) : undefined;
-    app.notify(`Ingest ${processed}/${total}`, "info", group, "spinner", pct);
-  },
-);
+await rag.ingestDocuments([{ source: "manual", content: "Some text" }], "mxbai-embed-large", evt => {
+  const processed = evt.processed ?? 0;
+  const total = evt.total ?? 0;
+  const pct = total > 0 ? Math.round((processed / total) * 100) : undefined;
+  app.notify(`Ingest ${processed}/${total}`, "info", group, "spinner", pct);
+});
 app.notify("Ingest complete", "success", group);
 ```
 

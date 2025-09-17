@@ -42,12 +42,7 @@ const sampleBarData = {
         "rgba(255, 205, 86, 0.8)",
         "rgba(75, 192, 192, 0.8)",
       ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 205, 86, 1)",
-        "rgba(75, 192, 192, 1)",
-      ],
+      borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)", "rgba(255, 205, 86, 1)", "rgba(75, 192, 192, 1)"],
       borderWidth: 1,
     },
   ],
@@ -66,14 +61,7 @@ const translationExamples = [
 
 const qualityLevels = ["excellent", "good", "fair", "poor"] as const;
 
-const statisticsLabels = [
-  "mean",
-  "median",
-  "mode",
-  "standardDeviation",
-  "variance",
-  "range",
-];
+const statisticsLabels = ["mean", "median", "mode", "standardDeviation", "variance", "range"];
 
 export const ChartsI18nDemo: Component = () => {
   const [selectedChartType, setSelectedChartType] = createSignal("line");
@@ -86,10 +74,7 @@ export const ChartsI18nDemo: Component = () => {
         <p>Demonstrating the new optional i18n system for the charts package</p>
 
         <div class="i18n-status">
-          <button
-            class="info-button"
-            onClick={() => setShowI18nInfo(!showI18nInfo())}
-          >
+          <button class="info-button" onClick={() => setShowI18nInfo(!showI18nInfo())}>
             {showI18nInfo() ? "Hide" : "Show"} i18n Status
           </button>
 
@@ -97,16 +82,13 @@ export const ChartsI18nDemo: Component = () => {
             <div class="i18n-info">
               <h3>i18n System Status</h3>
               <p>
-                <strong>i18n Available:</strong>{" "}
-                {isI18nAvailable() ? "Yes" : "No"}
+                <strong>i18n Available:</strong> {isI18nAvailable() ? "Yes" : "No"}
               </p>
               <p>
-                <strong>i18n Module:</strong>{" "}
-                {getI18nModule() ? "Loaded" : "Not Available"}
+                <strong>i18n Module:</strong> {getI18nModule() ? "Loaded" : "Not Available"}
               </p>
               <p>
-                <strong>Fallback Mode:</strong>{" "}
-                {!isI18nAvailable() ? "Active" : "Inactive"}
+                <strong>Fallback Mode:</strong> {!isI18nAvailable() ? "Active" : "Inactive"}
               </p>
             </div>
           </Show>
@@ -119,7 +101,7 @@ export const ChartsI18nDemo: Component = () => {
           <h2>Translation Function Demo</h2>
           <div class="translation-grid">
             <For each={translationExamples}>
-              {(example) => (
+              {example => (
                 <div class="translation-item">
                   <strong>{example.label}:</strong> {t(example.key)}
                 </div>
@@ -133,7 +115,7 @@ export const ChartsI18nDemo: Component = () => {
           <h2>Chart Type Names</h2>
           <div class="chart-types">
             <For each={chartTypes}>
-              {(type) => (
+              {type => (
                 <div class="chart-type-item">
                   <strong>{type}:</strong> {getChartTypeName(type)}
                 </div>
@@ -147,7 +129,7 @@ export const ChartsI18nDemo: Component = () => {
           <h2>Quality Assessments</h2>
           <div class="quality-assessments">
             <For each={qualityLevels}>
-              {(quality) => (
+              {quality => (
                 <div class={`quality-item ${quality}`}>
                   <strong>{quality}:</strong> {getQualityText(quality)}
                 </div>
@@ -161,7 +143,7 @@ export const ChartsI18nDemo: Component = () => {
           <h2>Statistics Labels</h2>
           <div class="statistics-labels">
             <For each={statisticsLabels}>
-              {(stat) => (
+              {stat => (
                 <div class="stat-item">
                   <strong>{stat}:</strong> {getStatisticsLabel(stat)}
                 </div>
@@ -175,16 +157,8 @@ export const ChartsI18nDemo: Component = () => {
           <h2>Interactive Chart Demo</h2>
           <div class="chart-controls">
             <label for="chart-type">Select Chart Type:</label>
-            <select
-              id="chart-type"
-              value={selectedChartType()}
-              onChange={(e) => setSelectedChartType(e.target.value)}
-            >
-              <For each={chartTypes}>
-                {(type) => (
-                  <option value={type}>{getChartTypeName(type)}</option>
-                )}
-              </For>
+            <select id="chart-type" value={selectedChartType()} onChange={e => setSelectedChartType(e.target.value)}>
+              <For each={chartTypes}>{type => <option value={type}>{getChartTypeName(type)}</option>}</For>
             </select>
           </div>
 

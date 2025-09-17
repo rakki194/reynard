@@ -63,7 +63,7 @@ export class ReynardError extends Error {
     code: string,
     context: BaseErrorContext = { timestamp: Date.now(), source: "unknown" },
     originalError?: Error,
-    retryable: boolean = false,
+    retryable: boolean = false
   ) {
     super(message);
     this.name = "ReynardError";
@@ -91,68 +91,42 @@ export class ReynardError extends Error {
 }
 
 export class ValidationError extends ReynardError {
-  constructor(
-    message: string,
-    context: ValidationErrorContext,
-    originalError?: Error,
-  ) {
+  constructor(message: string, context: ValidationErrorContext, originalError?: Error) {
     super(message, "VALIDATION_ERROR", context, originalError, false);
     this.name = "ValidationError";
   }
 }
 
 export class NetworkError extends ReynardError {
-  constructor(
-    message: string,
-    context: NetworkErrorContext,
-    originalError?: Error,
-    retryable: boolean = true,
-  ) {
+  constructor(message: string, context: NetworkErrorContext, originalError?: Error, retryable: boolean = true) {
     super(message, "NETWORK_ERROR", context, originalError, retryable);
     this.name = "NetworkError";
   }
 }
 
 export class AuthenticationError extends ReynardError {
-  constructor(
-    message: string,
-    context: AuthenticationErrorContext,
-    originalError?: Error,
-  ) {
+  constructor(message: string, context: AuthenticationErrorContext, originalError?: Error) {
     super(message, "AUTHENTICATION_ERROR", context, originalError, false);
     this.name = "AuthenticationError";
   }
 }
 
 export class ProcessingError extends ReynardError {
-  constructor(
-    message: string,
-    context: ProcessingErrorContext,
-    originalError?: Error,
-    retryable: boolean = true,
-  ) {
+  constructor(message: string, context: ProcessingErrorContext, originalError?: Error, retryable: boolean = true) {
     super(message, "PROCESSING_ERROR", context, originalError, retryable);
     this.name = "ProcessingError";
   }
 }
 
 export class TimeoutError extends ReynardError {
-  constructor(
-    message: string,
-    context: BaseErrorContext,
-    originalError?: Error,
-  ) {
+  constructor(message: string, context: BaseErrorContext, originalError?: Error) {
     super(message, "TIMEOUT_ERROR", context, originalError, true);
     this.name = "TimeoutError";
   }
 }
 
 export class RateLimitError extends ReynardError {
-  constructor(
-    message: string,
-    context: BaseErrorContext,
-    originalError?: Error,
-  ) {
+  constructor(message: string, context: BaseErrorContext, originalError?: Error) {
     super(message, "RATE_LIMIT_ERROR", context, originalError, true);
     this.name = "RateLimitError";
   }
@@ -195,16 +169,12 @@ export class ErrorHandler {
     fn: () => Promise<T>,
     errorMessage: string,
     context: BaseErrorContext,
-    options: ErrorHandlerOptions = {},
+    options: ErrorHandlerOptions = {}
   ): Promise<T> {
     try {
       return await fn();
     } catch (error) {
-      const reynardError = this.createError(
-        errorMessage,
-        error as Error,
-        context,
-      );
+      const reynardError = this.createError(errorMessage, error as Error, context);
       this.handleError(reynardError, options);
       throw reynardError;
     }
@@ -216,15 +186,14 @@ export class ErrorHandler {
   async retry<T>(
     fn: () => Promise<T>,
     options: RetryOptions = {},
-    context: BaseErrorContext = { timestamp: Date.now(), source: "retry" },
+    context: BaseErrorContext = { timestamp: Date.now(), source: "retry" }
   ): Promise<T> {
     const {
       maxRetries = 3,
       baseDelay = 1000,
       maxDelay = 10000,
       backoffMultiplier = 2,
-      retryCondition = (error) =>
-        error instanceof ReynardError && error.retryable,
+      retryCondition = error => error instanceof ReynardError && error.retryable,
     } = options;
 
     let lastError: Error;
@@ -242,18 +211,14 @@ export class ErrorHandler {
             {
               ...context,
               metadata: { ...context.metadata, retryCount: attempt },
-            },
+            }
           );
           throw reynardError;
         }
 
         // Exponential backoff with jitter
-        const delay = Math.min(
-          baseDelay * Math.pow(backoffMultiplier, attempt) +
-            Math.random() * 1000,
-          maxDelay,
-        );
-        await new Promise((resolve) => setTimeout(resolve, delay));
+        const delay = Math.min(baseDelay * Math.pow(backoffMultiplier, attempt) + Math.random() * 1000, maxDelay);
+        await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
 
@@ -269,33 +234,19 @@ export class ErrorHandler {
     context: BaseErrorContext = {
       timestamp: Date.now(),
       source: "error-handler",
-    },
+    }
   ): ReynardError {
     if (originalError instanceof ReynardError) {
       return originalError;
     }
 
     // Determine error type based on original error
-    if (
-      originalError?.name === "ValidationError" ||
-      originalError?.message.includes("validation")
-    ) {
-      return new ValidationError(
-        message,
-        context as ValidationErrorContext,
-        originalError,
-      );
+    if (originalError?.name === "ValidationError" || originalError?.message.includes("validation")) {
+      return new ValidationError(message, context as ValidationErrorContext, originalError);
     }
 
-    if (
-      originalError?.name === "TypeError" &&
-      originalError?.message.includes("fetch")
-    ) {
-      return new NetworkError(
-        message,
-        context as NetworkErrorContext,
-        originalError,
-      );
+    if (originalError?.name === "TypeError" && originalError?.message.includes("fetch")) {
+      return new NetworkError(message, context as NetworkErrorContext, originalError);
     }
 
     if (originalError?.name === "AbortError") {
@@ -362,10 +313,10 @@ export class ErrorHandler {
         acc[error.code] = (acc[error.code] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>,
+      {} as Record<string, number>
     );
 
-    const retryable = errors.filter((e) => e.retryable).length;
+    const retryable = errors.filter(e => e.retryable).length;
     const nonRetryable = total - retryable;
 
     return {
@@ -397,37 +348,21 @@ export const errorHandler = ErrorHandler.getInstance();
 /**
  * Wrap async function with error handling
  */
-export async function wrapAsync<T>(
-  fn: () => Promise<T>,
-  errorMessage: string,
-  context?: BaseErrorContext,
-): Promise<T> {
-  return errorHandler.wrapAsync(
-    fn,
-    errorMessage,
-    context || { timestamp: Date.now(), source: "wrap-async" },
-  );
+export async function wrapAsync<T>(fn: () => Promise<T>, errorMessage: string, context?: BaseErrorContext): Promise<T> {
+  return errorHandler.wrapAsync(fn, errorMessage, context || { timestamp: Date.now(), source: "wrap-async" });
 }
 
 /**
  * Retry operation with exponential backoff
  */
-export async function retry<T>(
-  fn: () => Promise<T>,
-  options?: RetryOptions,
-  context?: BaseErrorContext,
-): Promise<T> {
+export async function retry<T>(fn: () => Promise<T>, options?: RetryOptions, context?: BaseErrorContext): Promise<T> {
   return errorHandler.retry(fn, options, context);
 }
 
 /**
  * Create standardized error
  */
-export function createError(
-  message: string,
-  originalError?: Error,
-  context?: BaseErrorContext,
-): ReynardError {
+export function createError(message: string, originalError?: Error, context?: BaseErrorContext): ReynardError {
   return errorHandler.createError(message, originalError, context);
 }
 
@@ -440,15 +375,9 @@ export function isRetryableError(error: Error): boolean {
   }
 
   // Check for common retryable error patterns
-  const retryablePatterns = [
-    /network/i,
-    /timeout/i,
-    /connection/i,
-    /temporary/i,
-    /rate.?limit/i,
-  ];
+  const retryablePatterns = [/network/i, /timeout/i, /connection/i, /temporary/i, /rate.?limit/i];
 
-  return retryablePatterns.some((pattern) => pattern.test(error.message));
+  return retryablePatterns.some(pattern => pattern.test(error.message));
 }
 
 /**

@@ -1,14 +1,7 @@
 // Movement and physics systems
 
 import { World } from "../../types";
-import {
-  GameTime,
-  GameTimeType,
-  Position,
-  PositionType,
-  Velocity,
-  VelocityType,
-} from "../components";
+import { GameTime, GameTimeType, Position, PositionType, Velocity, VelocityType } from "../components";
 
 /**
  * Movement system - updates entity positions based on velocity.

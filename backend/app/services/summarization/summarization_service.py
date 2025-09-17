@@ -7,17 +7,16 @@ and specialized summarizers.
 """
 
 import logging
-import time
-from typing import Dict, List, Optional, Any, AsyncGenerator
-from pathlib import Path
+from collections.abc import AsyncGenerator
+from typing import Any
 
-from .manager import SummarizationManager
-from .ollama_summarizer import OllamaSummarizer
 from .article_summarizer import ArticleSummarizer
+from .base import ContentType, SummarizationOptions, SummaryLevel
 from .code_summarizer import CodeSummarizer
 from .document_summarizer import DocumentSummarizer
+from .manager import SummarizationManager
+from .ollama_summarizer import OllamaSummarizer
 from .technical_summarizer import TechnicalSummarizer
-from .base import SummarizationOptions, ContentType, SummaryLevel
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +24,7 @@ logger = logging.getLogger(__name__)
 class SummarizationService:
     """
     Main summarization service that orchestrates all summarization operations.
-    
+
     This service provides a unified interface for text summarization,
     integrating with the existing Ollama service and providing specialized
     summarizers for different content types.
@@ -51,7 +50,9 @@ class SummarizationService:
         """
         try:
             if not self.ollama_service:
-                logger.warning("⚠️ Ollama service not available - summarization will be limited")
+                logger.warning(
+                    "⚠️ Ollama service not available - summarization will be limited"
+                )
                 return False
 
             # Register summarizers
@@ -63,9 +64,8 @@ class SummarizationService:
                 self._initialized = True
                 logger.info("✅ SummarizationService initialized successfully")
                 return True
-            else:
-                logger.error("❌ Failed to initialize SummarizationManager")
-                return False
+            logger.error("❌ Failed to initialize SummarizationManager")
+            return False
 
         except Exception as e:
             logger.error(f"Failed to initialize SummarizationService: {e}")
@@ -102,13 +102,13 @@ class SummarizationService:
         text: str,
         content_type: str = "general",
         summary_level: str = "detailed",
-        max_length: Optional[int] = None,
+        max_length: int | None = None,
         include_outline: bool = False,
         include_highlights: bool = False,
-        model: Optional[str] = None,
+        model: str | None = None,
         temperature: float = 0.3,
         top_p: float = 0.9,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Summarize text with specified options.
 
@@ -172,13 +172,13 @@ class SummarizationService:
         text: str,
         content_type: str = "general",
         summary_level: str = "detailed",
-        max_length: Optional[int] = None,
+        max_length: int | None = None,
         include_outline: bool = False,
         include_highlights: bool = False,
-        model: Optional[str] = None,
+        model: str | None = None,
         temperature: float = 0.3,
         top_p: float = 0.9,
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+    ) -> AsyncGenerator[dict[str, Any]]:
         """
         Stream text summarization with progress updates.
 
@@ -229,9 +229,9 @@ class SummarizationService:
 
     async def summarize_batch(
         self,
-        requests: List[Dict[str, Any]],
+        requests: list[dict[str, Any]],
         enable_streaming: bool = False,
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+    ) -> AsyncGenerator[dict[str, Any]]:
         """
         Process a batch of summarization requests.
 
@@ -281,7 +281,7 @@ class SummarizationService:
             logger.error(f"Content type detection failed: {e}")
             return "general"
 
-    def get_available_models(self) -> List[str]:
+    def get_available_models(self) -> list[str]:
         """
         Get list of available models for summarization.
 
@@ -299,7 +299,7 @@ class SummarizationService:
             logger.error(f"Failed to get available models: {e}")
             return []
 
-    def get_supported_content_types(self) -> Dict[str, List[str]]:
+    def get_supported_content_types(self) -> dict[str, list[str]]:
         """
         Get supported content types and their summarizers.
 
@@ -319,7 +319,7 @@ class SummarizationService:
             logger.error(f"Failed to get supported content types: {e}")
             return {}
 
-    def get_supported_summary_levels(self) -> List[str]:
+    def get_supported_summary_levels(self) -> list[str]:
         """
         Get supported summary levels.
 
@@ -328,7 +328,7 @@ class SummarizationService:
         """
         return [level.value for level in SummaryLevel]
 
-    def get_performance_stats(self) -> Dict[str, Any]:
+    def get_performance_stats(self) -> dict[str, Any]:
         """
         Get performance statistics.
 
@@ -353,7 +353,7 @@ class SummarizationService:
         """
         return self._initialized and self.manager.is_available()
 
-    async def health_check(self) -> Dict[str, Any]:
+    async def health_check(self) -> dict[str, Any]:
         """
         Perform health check on the service.
 
@@ -369,7 +369,7 @@ class SummarizationService:
                     "details": {
                         "initialized": False,
                         "ollama_available": self.ollama_service is not None,
-                    }
+                    },
                 }
 
             # Check if manager is available
@@ -381,7 +381,7 @@ class SummarizationService:
                         "initialized": True,
                         "manager_available": False,
                         "available_summarizers": [],
-                    }
+                    },
                 }
 
             # Get available summarizers
@@ -396,17 +396,17 @@ class SummarizationService:
                     "available_summarizers": available_summarizers,
                     "supported_content_types": self.get_supported_content_types(),
                     "performance_stats": self.get_performance_stats(),
-                }
+                },
             }
 
         except Exception as e:
             logger.error(f"Health check failed: {e}")
             return {
                 "status": "unhealthy",
-                "message": f"Health check failed: {str(e)}",
+                "message": f"Health check failed: {e!s}",
                 "details": {
                     "error": str(e),
-                }
+                },
             }
 
     async def cleanup(self) -> None:
@@ -414,7 +414,7 @@ class SummarizationService:
         try:
             if self.manager:
                 await self.manager.cleanup()
-            
+
             self._initialized = False
             logger.info("SummarizationService cleaned up")
 
@@ -423,7 +423,7 @@ class SummarizationService:
 
 
 # Global service instance
-_summarization_service: Optional[SummarizationService] = None
+_summarization_service: SummarizationService | None = None
 
 
 def get_summarization_service() -> SummarizationService:

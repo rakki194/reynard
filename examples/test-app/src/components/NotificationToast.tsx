@@ -13,7 +13,7 @@ export function NotificationToast() {
   return (
     <div class="notification-toast-container">
       <For each={notifications()}>
-        {(notification) => (
+        {notification => (
           <div
             class={`notification-toast notification-toast--${notification.type}`}
             onClick={() => removeNotification(notification.id)}
@@ -57,13 +57,11 @@ export function NotificationToast() {
               )}
             </div>
             <div class="notification-toast__content">
-              <div class="notification-toast__message">
-                {notification.message}
-              </div>
+              <div class="notification-toast__message">{notification.message}</div>
             </div>
             <button
               class="notification-toast__close"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 removeNotification(notification.id);
               }}

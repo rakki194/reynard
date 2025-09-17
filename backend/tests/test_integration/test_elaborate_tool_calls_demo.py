@@ -11,7 +11,7 @@ import asyncio
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 # Add the backend app to the path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "app"))
@@ -29,38 +29,38 @@ from app.services.nlweb.nlweb_tool_registry import NLWebToolRegistry
 
 class ElaborateToolCallsDemo:
     """Demo class for elaborate tool calling patterns."""
-    
+
     def __init__(self):
         self.registry = NLWebToolRegistry()
         self.service = None
-        
+
     async def setup(self):
         """Set up the demo environment."""
         print("🦊> Setting up Elaborate Tool Calls Demo")
         print("=" * 60)
-        
+
         # Create configuration
         config = NLWebConfiguration(
             enabled=True,
             base_url="http://localhost:3001",
             suggest_timeout_s=3.0,
-            cache_ttl_s=20.0
+            cache_ttl_s=20.0,
         )
-        
+
         # Create service
         self.service = NLWebService(config)
         await self.service.initialize()
-        
+
         # Register elaborate tools
         await self._register_elaborate_tools()
-        
+
         print("✅ Demo setup completed!")
         print()
-    
+
     async def _register_elaborate_tools(self):
         """Register elaborate tools for demonstration."""
         print("🦦> Registering elaborate tools...")
-        
+
         # File Operations Tool
         file_ops_tool = NLWebTool(
             name="file_operations",
@@ -75,19 +75,19 @@ class ElaborateToolCallsDemo:
                     type="string",
                     description="Type of file operation to perform",
                     required=True,
-                    constraints={"enum": ["list", "search", "analyze", "compare"]}
+                    constraints={"enum": ["list", "search", "analyze", "compare"]},
                 ),
                 NLWebToolParameter(
                     name="path",
                     type="string",
                     description="Directory or file path to operate on",
-                    required=True
+                    required=True,
                 ),
                 NLWebToolParameter(
                     name="pattern",
                     type="string",
                     description="File pattern or search query (optional)",
-                    required=False
+                    required=False,
                 ),
                 NLWebToolParameter(
                     name="options",
@@ -98,19 +98,19 @@ class ElaborateToolCallsDemo:
                         "recursive": False,
                         "include_hidden": False,
                         "sort_by": "name",
-                        "max_results": 100
-                    }
-                )
+                        "max_results": 100,
+                    },
+                ),
             ],
             examples=[
                 "analyze all Python files in the project",
                 "search for TODO comments recursively",
                 "compare file sizes between directories",
-                "list files modified in the last week"
+                "list files modified in the last week",
             ],
-            priority=90
+            priority=90,
         )
-        
+
         # Code Analysis Tool
         code_analysis_tool = NLWebTool(
             name="code_analysis",
@@ -124,14 +124,24 @@ class ElaborateToolCallsDemo:
                     name="file_path",
                     type="string",
                     description="Path to the code file to analyze",
-                    required=True
+                    required=True,
                 ),
                 NLWebToolParameter(
                     name="analysis_type",
                     type="array",
                     description="Types of analysis to perform",
                     required=True,
-                    constraints={"items": {"enum": ["complexity", "patterns", "quality", "security", "performance"]}}
+                    constraints={
+                        "items": {
+                            "enum": [
+                                "complexity",
+                                "patterns",
+                                "quality",
+                                "security",
+                                "performance",
+                            ]
+                        }
+                    },
                 ),
                 NLWebToolParameter(
                     name="language",
@@ -139,7 +149,16 @@ class ElaborateToolCallsDemo:
                     description="Programming language (auto-detect if not specified)",
                     required=False,
                     default="auto",
-                    constraints={"enum": ["python", "javascript", "typescript", "java", "cpp", "auto"]}
+                    constraints={
+                        "enum": [
+                            "python",
+                            "javascript",
+                            "typescript",
+                            "java",
+                            "cpp",
+                            "auto",
+                        ]
+                    },
                 ),
                 NLWebToolParameter(
                     name="output_format",
@@ -147,18 +166,18 @@ class ElaborateToolCallsDemo:
                     description="Format of the analysis output",
                     required=False,
                     default="summary",
-                    constraints={"enum": ["summary", "detailed", "json"]}
-                )
+                    constraints={"enum": ["summary", "detailed", "json"]},
+                ),
             ],
             examples=[
                 "analyze code complexity and quality",
                 "find security vulnerabilities",
                 "measure performance bottlenecks",
-                "detect code patterns and anti-patterns"
+                "detect code patterns and anti-patterns",
             ],
-            priority=85
+            priority=85,
         )
-        
+
         # Web Search Tool
         web_search_tool = NLWebTool(
             name="web_search",
@@ -172,7 +191,7 @@ class ElaborateToolCallsDemo:
                     name="query",
                     type="string",
                     description="Search query",
-                    required=True
+                    required=True,
                 ),
                 NLWebToolParameter(
                     name="search_type",
@@ -180,7 +199,9 @@ class ElaborateToolCallsDemo:
                     description="Type of search to perform",
                     required=False,
                     default="general",
-                    constraints={"enum": ["general", "academic", "news", "images", "videos"]}
+                    constraints={
+                        "enum": ["general", "academic", "news", "images", "videos"]
+                    },
                 ),
                 NLWebToolParameter(
                     name="filters",
@@ -190,8 +211,8 @@ class ElaborateToolCallsDemo:
                     default={
                         "date_range": "all",
                         "language": "en",
-                        "exclude_sites": []
-                    }
+                        "exclude_sites": [],
+                    },
                 ),
                 NLWebToolParameter(
                     name="max_results",
@@ -199,18 +220,18 @@ class ElaborateToolCallsDemo:
                     description="Maximum number of results to return",
                     required=False,
                     default=10,
-                    constraints={"minimum": 1, "maximum": 50}
-                )
+                    constraints={"minimum": 1, "maximum": 50},
+                ),
             ],
             examples=[
                 "search for latest Python best practices",
                 "find security vulnerabilities in web apps",
                 "research machine learning algorithms",
-                "look up API documentation"
+                "look up API documentation",
             ],
-            priority=80
+            priority=80,
         )
-        
+
         # Data Processing Tool
         data_processing_tool = NLWebTool(
             name="data_processing",
@@ -224,13 +245,13 @@ class ElaborateToolCallsDemo:
                     name="data_source",
                     type="string",
                     description="Path to data file or data source identifier",
-                    required=True
+                    required=True,
                 ),
                 NLWebToolParameter(
                     name="operations",
                     type="array",
                     description="List of data processing operations to perform",
-                    required=True
+                    required=True,
                 ),
                 NLWebToolParameter(
                     name="output_format",
@@ -238,42 +259,42 @@ class ElaborateToolCallsDemo:
                     description="Format of the processed data output",
                     required=False,
                     default="table",
-                    constraints={"enum": ["table", "json", "csv", "chart"]}
-                )
+                    constraints={"enum": ["table", "json", "csv", "chart"]},
+                ),
             ],
             examples=[
                 "analyze security scan results",
                 "process code quality metrics",
                 "create data visualizations",
-                "perform statistical analysis"
+                "perform statistical analysis",
             ],
-            priority=75
+            priority=75,
         )
-        
+
         # Register all tools
         self.registry.register_tool(file_ops_tool)
         self.registry.register_tool(code_analysis_tool)
         self.registry.register_tool(web_search_tool)
         self.registry.register_tool(data_processing_tool)
-        
+
         print(f"  ✅ Registered {len(self.registry.get_all_tools())} elaborate tools")
         print(f"  📁 Categories: {', '.join(self.registry.get_categories())}")
         print(f"  🏷️  Tags: {', '.join(sorted(self.registry.get_tags()))}")
-    
+
     async def demo_complex_query_analysis(self):
         """Demonstrate complex query analysis and tool suggestion."""
         print("🦦> Demo: Complex Query Analysis")
         print("-" * 40)
-        
+
         complex_queries = [
             "analyze my Python project for code quality and security issues, then research the latest best practices and create a comprehensive report",
             "help me improve the performance of my web application by analyzing the code, searching for optimization techniques, and processing performance metrics",
-            "I need to audit my codebase for security vulnerabilities, research current threat patterns, and generate a security dashboard with recommendations"
+            "I need to audit my codebase for security vulnerabilities, research current threat patterns, and generate a security dashboard with recommendations",
         ]
-        
+
         for i, query in enumerate(complex_queries, 1):
             print(f"\n📝 Query {i}: {query}")
-            
+
             # Create suggestion request
             request = NLWebSuggestionRequest(
                 query=query,
@@ -283,30 +304,32 @@ class ElaborateToolCallsDemo:
                     user_preferences={
                         "analysis_depth": "comprehensive",
                         "include_security": True,
-                        "output_format": "detailed"
-                    }
+                        "output_format": "detailed",
+                    },
                 ),
                 max_suggestions=3,
                 min_score=80.0,
-                include_reasoning=True
+                include_reasoning=True,
             )
-            
+
             # Get suggestions (mocked for demo)
             suggestions = await self._mock_suggest_tools(request)
-            
+
             print(f"  🎯 Found {len(suggestions)} tool suggestions:")
             for j, suggestion in enumerate(suggestions, 1):
-                tool = suggestion['tool']
-                tool_name = tool.name if hasattr(tool, 'name') else tool['name']
+                tool = suggestion["tool"]
+                tool_name = tool.name if hasattr(tool, "name") else tool["name"]
                 print(f"    {j}. {tool_name} (Score: {suggestion['score']:.1f})")
                 print(f"       📋 {suggestion['reasoning']}")
-                print(f"       ⚙️  Parameters: {json.dumps(suggestion['parameters'], indent=8)}")
-    
+                print(
+                    f"       ⚙️  Parameters: {json.dumps(suggestion['parameters'], indent=8)}"
+                )
+
     async def demo_multi_tool_workflow(self):
         """Demonstrate multi-tool workflow execution."""
         print("\n🦦> Demo: Multi-Tool Workflow Execution")
         print("-" * 40)
-        
+
         workflow_steps = [
             {
                 "step": 1,
@@ -316,8 +339,8 @@ class ElaborateToolCallsDemo:
                     "query": "Python web application security best practices 2025",
                     "search_type": "academic",
                     "filters": {"date_range": "year", "language": "en"},
-                    "max_results": 15
-                }
+                    "max_results": 15,
+                },
             },
             {
                 "step": 2,
@@ -330,9 +353,9 @@ class ElaborateToolCallsDemo:
                         "recursive": True,
                         "include_hidden": False,
                         "sort_by": "modified",
-                        "max_results": 50
-                    }
-                }
+                        "max_results": 50,
+                    },
+                },
             },
             {
                 "step": 3,
@@ -342,8 +365,8 @@ class ElaborateToolCallsDemo:
                     "file_path": "/home/user/project/src/auth.py",
                     "analysis_type": ["security", "quality"],
                     "language": "python",
-                    "output_format": "detailed"
-                }
+                    "output_format": "detailed",
+                },
             },
             {
                 "step": 4,
@@ -356,41 +379,41 @@ class ElaborateToolCallsDemo:
                             "type": "analyze",
                             "parameters": {
                                 "analysis_type": "security_metrics",
-                                "thresholds": {"critical": 0, "high": 5, "medium": 10}
-                            }
+                                "thresholds": {"critical": 0, "high": 5, "medium": 10},
+                            },
                         },
                         {
                             "type": "visualize",
                             "parameters": {
                                 "chart_type": "security_dashboard",
-                                "include_trends": True
-                            }
-                        }
+                                "include_trends": True,
+                            },
+                        },
                     ],
-                    "output_format": "chart"
-                }
-            }
+                    "output_format": "chart",
+                },
+            },
         ]
-        
+
         print("🔄 Executing multi-tool workflow:")
         for step in workflow_steps:
             print(f"\n  Step {step['step']}: {step['tool']}")
             print(f"    📋 {step['description']}")
             print(f"    ⚙️  Parameters: {json.dumps(step['parameters'], indent=6)}")
-            
+
             # Simulate tool execution
             await asyncio.sleep(0.5)  # Simulate processing time
-            print(f"    ✅ Completed successfully")
-        
+            print("    ✅ Completed successfully")
+
         print(f"\n🎉 Workflow completed with {len(workflow_steps)} steps!")
-    
+
     async def demo_streaming_tool_execution(self):
         """Demonstrate streaming tool execution with real-time updates."""
         print("\n🦦> Demo: Streaming Tool Execution")
         print("-" * 40)
-        
+
         print("🔄 Starting streaming tool execution...")
-        
+
         # Simulate streaming response
         async def simulate_streaming_execution():
             steps = [
@@ -399,143 +422,150 @@ class ElaborateToolCallsDemo:
                 ("Analyzing project structure...", 0.5),
                 ("Performing code analysis...", 0.7),
                 ("Processing results...", 0.9),
-                ("Generating final report...", 1.0)
+                ("Generating final report...", 1.0),
             ]
-            
+
             for message, progress in steps:
                 print(f"  📊 {message} ({progress*100:.0f}%)")
                 await asyncio.sleep(0.3)  # Simulate processing time
-        
+
         await simulate_streaming_execution()
         print("  ✅ Streaming execution completed!")
-    
+
     async def demo_error_handling_and_recovery(self):
         """Demonstrate error handling and recovery in tool calls."""
         print("\n🦦> Demo: Error Handling and Recovery")
         print("-" * 40)
-        
+
         error_scenarios = [
             {
                 "scenario": "Invalid file path",
                 "error": "Path '/nonexistent/path' does not exist",
                 "recovery": "Fallback to current directory",
-                "success": True
+                "success": True,
             },
             {
                 "scenario": "Network timeout",
                 "error": "Web search request timed out",
                 "recovery": "Retry with reduced scope",
-                "success": True
+                "success": True,
             },
             {
                 "scenario": "Tool execution failure",
                 "error": "Code analysis tool crashed",
                 "recovery": "Use alternative analysis method",
-                "success": True
-            }
+                "success": True,
+            },
         ]
-        
+
         for scenario in error_scenarios:
             print(f"\n  🚨 Scenario: {scenario['scenario']}")
             print(f"    ❌ Error: {scenario['error']}")
             print(f"    🔄 Recovery: {scenario['recovery']}")
             print(f"    ✅ Success: {scenario['success']}")
             await asyncio.sleep(0.2)
-        
+
         print("\n  🎯 All error scenarios handled gracefully!")
-    
+
     async def demo_tool_parameter_validation(self):
         """Demonstrate sophisticated tool parameter validation."""
         print("\n🦦> Demo: Tool Parameter Validation")
         print("-" * 40)
-        
+
         validation_tests = [
             {
                 "tool": "file_operations",
                 "parameters": {
                     "operation": "analyze",
                     "path": "/valid/path",
-                    "options": {
-                        "recursive": True,
-                        "max_results": 50
-                    }
+                    "options": {"recursive": True, "max_results": 50},
                 },
-                "valid": True
+                "valid": True,
             },
             {
                 "tool": "code_analysis",
                 "parameters": {
                     "file_path": "/valid/file.py",
                     "analysis_type": ["security", "quality"],
-                    "language": "python"
+                    "language": "python",
                 },
-                "valid": True
+                "valid": True,
             },
             {
                 "tool": "web_search",
                 "parameters": {
                     "query": "test query",
-                    "max_results": 100  # Invalid: exceeds maximum
+                    "max_results": 100,  # Invalid: exceeds maximum
                 },
-                "valid": False
-            }
+                "valid": False,
+            },
         ]
-        
+
         for test in validation_tests:
             print(f"\n  🔍 Testing {test['tool']}:")
             print(f"    📋 Parameters: {json.dumps(test['parameters'], indent=6)}")
-            
+
             # Simulate validation
-            if test['valid']:
-                print(f"    ✅ Validation passed")
+            if test["valid"]:
+                print("    ✅ Validation passed")
             else:
-                print(f"    ❌ Validation failed - parameter constraints violated")
-                print(f"    🔧 Suggested fix: Adjust parameter values to meet constraints")
-    
-    async def _mock_suggest_tools(self, request: NLWebSuggestionRequest) -> List[Dict[str, Any]]:
+                print("    ❌ Validation failed - parameter constraints violated")
+                print(
+                    "    🔧 Suggested fix: Adjust parameter values to meet constraints"
+                )
+
+    async def _mock_suggest_tools(
+        self, request: NLWebSuggestionRequest
+    ) -> list[dict[str, Any]]:
         """Mock tool suggestions for demo purposes."""
         # This would normally call the actual service
         # For demo, we'll return mock suggestions based on the query
-        
+
         suggestions = []
-        
+
         if "security" in request.query.lower():
-            suggestions.append({
-                "tool": self.registry.get_tool("web_search"),
-                "score": 92.0,
-                "parameters": {
-                    "query": "security best practices 2025",
-                    "search_type": "academic",
-                    "max_results": 15
-                },
-                "reasoning": "Query mentions security - suggesting web search for latest practices"
-            })
-            
-            suggestions.append({
-                "tool": self.registry.get_tool("code_analysis"),
-                "score": 88.0,
-                "parameters": {
-                    "file_path": "/home/user/project/src/main.py",
-                    "analysis_type": ["security", "quality"],
-                    "output_format": "detailed"
-                },
-                "reasoning": "Security analysis requires code examination"
-            })
-        
+            suggestions.append(
+                {
+                    "tool": self.registry.get_tool("web_search"),
+                    "score": 92.0,
+                    "parameters": {
+                        "query": "security best practices 2025",
+                        "search_type": "academic",
+                        "max_results": 15,
+                    },
+                    "reasoning": "Query mentions security - suggesting web search for latest practices",
+                }
+            )
+
+            suggestions.append(
+                {
+                    "tool": self.registry.get_tool("code_analysis"),
+                    "score": 88.0,
+                    "parameters": {
+                        "file_path": "/home/user/project/src/main.py",
+                        "analysis_type": ["security", "quality"],
+                        "output_format": "detailed",
+                    },
+                    "reasoning": "Security analysis requires code examination",
+                }
+            )
+
         if "analyze" in request.query.lower():
-            suggestions.append({
-                "tool": self.registry.get_tool("file_operations"),
-                "score": 85.0,
-                "parameters": {
-                    "operation": "analyze",
-                    "path": request.context.current_path or "/home/user/project",
-                    "options": {"recursive": True, "max_results": 50}
-                },
-                "reasoning": "Analysis request suggests file operations tool"
-            })
-        
-        return suggestions[:request.max_suggestions or 3]
-    
+            suggestions.append(
+                {
+                    "tool": self.registry.get_tool("file_operations"),
+                    "score": 85.0,
+                    "parameters": {
+                        "operation": "analyze",
+                        "path": request.context.current_path or "/home/user/project",
+                        "options": {"recursive": True, "max_results": 50},
+                    },
+                    "reasoning": "Analysis request suggests file operations tool",
+                }
+            )
+
+        return suggestions[: request.max_suggestions or 3]
+
     async def run_demo(self):
         """Run the complete elaborate tool calls demo."""
         print("🦊> Elaborate NLWeb Tool Calls Demo")
@@ -543,7 +573,7 @@ class ElaborateToolCallsDemo:
         print("Demonstrating 2025 best practices for advanced tool calling")
         print("with Ollama integration, streaming responses, and complex workflows.")
         print()
-        
+
         try:
             await self.setup()
             await self.demo_complex_query_analysis()
@@ -551,7 +581,7 @@ class ElaborateToolCallsDemo:
             await self.demo_streaming_tool_execution()
             await self.demo_error_handling_and_recovery()
             await self.demo_tool_parameter_validation()
-            
+
             print("\n🎉 Elaborate Tool Calls Demo Completed Successfully!")
             print("=" * 60)
             print("Key Features Demonstrated:")
@@ -564,10 +594,11 @@ class ElaborateToolCallsDemo:
             print()
             print("💡 This demonstrates the power of NLWeb + Ollama integration")
             print("   for building sophisticated AI-powered applications!")
-            
+
         except Exception as e:
             print(f"❌ Demo failed with error: {e}")
             import traceback
+
             traceback.print_exc()
 
 

@@ -43,8 +43,4 @@ export interface WDv3Config extends BaseGeneratorConfig {
 }
 
 // Union type for all generator configurations
-export type GeneratorConfig =
-  | JoyCaptionConfig
-  | Florence2Config
-  | JTP2Config
-  | WDv3Config;
+export type GeneratorConfig = JoyCaptionConfig | Florence2Config | JTP2Config | WDv3Config;

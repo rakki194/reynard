@@ -33,7 +33,7 @@ export function registerChartComponents(): void {
     Tooltip,
     Legend,
     Filler,
-    ...registerables,
+    ...registerables
   );
 }
 

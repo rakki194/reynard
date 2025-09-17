@@ -116,9 +116,7 @@ describe("PerformanceBenchmark Class", () => {
     const budget = { maxDuration: 100 };
     await benchmark.run(slowOperation, 1, budget);
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "Performance budget exceeded: 200ms > 100ms",
-    );
+    expect(consoleSpy).toHaveBeenCalledWith("Performance budget exceeded: 200ms > 100ms");
 
     consoleSpy.mockRestore();
   });
@@ -134,9 +132,7 @@ describe("PerformanceBenchmark Class", () => {
       .mockReturnValueOnce(0) // start
       .mockReturnValueOnce(100); // end
 
-    await expect(benchmark.run(failingOperation, 1)).rejects.toThrow(
-      "Test error",
-    );
+    await expect(benchmark.run(failingOperation, 1)).rejects.toThrow("Test error");
   });
 
   it("should measure memory usage", async () => {

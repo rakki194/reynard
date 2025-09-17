@@ -183,12 +183,7 @@ interface Data<T = Record<string, unknown>> {
 ```typescript
 // ✅ Type guard for unknown data
 function isUserData(data: unknown): data is { name: string; email: string } {
-  return (
-    typeof data === "object" &&
-    data !== null &&
-    "name" in data &&
-    "email" in data
-  );
+  return typeof data === "object" && data !== null && "name" in data && "email" in data;
 }
 ```
 
@@ -395,13 +390,10 @@ export function useRAG() {
 **Pattern**: Use factory functions for clean module instantiation.
 
 ```typescript
-export function createRAGQueryClient(
-  authFetch: RAGClientOptions["authFetch"],
-  queryUrl: string,
-) {
+export function createRAGQueryClient(authFetch: RAGClientOptions["authFetch"], queryUrl: string) {
   const query = async <TExtra = Record<string, unknown>>(
     params: RAGQueryParams,
-    signal?: globalThis.AbortSignal,
+    signal?: globalThis.AbortSignal
   ): Promise<RAGQueryResponse<TExtra>> => {
     // Implementation
   };
@@ -489,13 +481,10 @@ Use `globalThis.AbortSignal` to explicitly reference the global AbortSignal inte
 
 ```typescript
 // Correct approach
-export function createRAGQueryClient(
-  authFetch: RAGClientOptions["authFetch"],
-  queryUrl: string,
-) {
+export function createRAGQueryClient(authFetch: RAGClientOptions["authFetch"], queryUrl: string) {
   const query = async <TExtra = Record<string, unknown>>(
     params: RAGQueryParams,
-    signal?: globalThis.AbortSignal, // Proper type reference
+    signal?: globalThis.AbortSignal // Proper type reference
   ): Promise<RAGQueryResponse<TExtra>> => {
     const res = await authFetch(queryUrl, {
       method: "POST",
@@ -589,13 +578,7 @@ signal: signal as any; // Bypasses type checking
 
 ```typescript
 // Before
-import {
-  Accessor,
-  createResource,
-  createSignal,
-  createEffect,
-  onCleanup,
-} from "solid-js";
+import { Accessor, createResource, createSignal, createEffect, onCleanup } from "solid-js";
 
 // After
 import { Accessor, createResource } from "solid-js";

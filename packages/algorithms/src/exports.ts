@@ -9,10 +9,7 @@
 
 // Union-Find data structure
 export { UnionFind } from "./union-find/union-find-core";
-export type {
-  UnionFindStats,
-  UnionFindNode,
-} from "./union-find/union-find-types";
+export type { UnionFindStats, UnionFindNode } from "./union-find/union-find-types";
 
 // Spatial Hash data structure
 export { SpatialHash } from "./spatial-hash/spatial-hash-core";
@@ -30,12 +27,7 @@ export type {
 // Geometry types and operations
 export type { Point } from "./geometry/shapes/point-algorithms";
 export type { Vector } from "./geometry/vectors/vector-algorithms";
-export type {
-  Line,
-  Rectangle,
-  Circle,
-  Polygon,
-} from "./geometry/shapes/shapes";
+export type { Line, Rectangle, Circle, Polygon } from "./geometry/shapes/shapes";
 export type { Transform } from "./geometry/transformations/transformation-algorithms";
 
 // Geometry operation classes
@@ -54,11 +46,7 @@ export { TransformOps } from "./geometry/transformations/transformation-algorith
 // Performance monitoring and optimization
 export { PerformanceTimer } from "./performance/timer";
 export { MemoryMonitor, MemoryLeakDetector } from "./performance/memory";
-export {
-  PerformanceBenchmark,
-  measureAsync,
-  measureSync,
-} from "./performance/benchmark";
+export { PerformanceBenchmark, measureAsync, measureSync } from "./performance/benchmark";
 export { FrameRateMonitor } from "./performance/framerate";
 export { throttle, debounce } from "./performance/throttle";
 export { PerformanceBudgetChecker } from "./performance/budget";
@@ -68,11 +56,7 @@ export { PerformanceBudgetChecker } from "./performance/budget";
 // ============================================================================
 
 // Collision detection types and functions
-export type {
-  AABB,
-  CollisionPair,
-  CollisionResult,
-} from "./geometry/collision/aabb-types";
+export type { AABB, CollisionPair, CollisionResult } from "./geometry/collision/aabb-types";
 export {
   checkCollision,
   batchCollisionDetection,

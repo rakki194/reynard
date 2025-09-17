@@ -9,8 +9,8 @@ error handling, and model loading coordination.
 import asyncio
 import importlib
 import logging
-from typing import Any, Dict, Optional
 from concurrent.futures import ThreadPoolExecutor
+from typing import Any
 
 from .base import CaptionGenerator, ModelCategory
 
@@ -34,19 +34,19 @@ class CaptionerPlugin:
     """
 
     def __init__(
-        self, name: str, module_path: str, config: Optional[Dict[str, Any]] = None
+        self, name: str, module_path: str, config: dict[str, Any] | None = None
     ):
         self.name = name
         self.module_path = module_path
         self.config = config or {}
-        self._instance: Optional[CaptionGenerator] = None
-        self._available: Optional[bool] = None
+        self._instance: CaptionGenerator | None = None
+        self._available: bool | None = None
         self._loading_lock = asyncio.Lock()
         self._executor = ThreadPoolExecutor(
             max_workers=1, thread_name_prefix=f"captioner-{name}"
         )
 
-    def get_instance(self) -> Optional[CaptionGenerator]:
+    def get_instance(self) -> CaptionGenerator | None:
         """
         Get or create the captioner instance.
 
@@ -69,7 +69,7 @@ class CaptionerPlugin:
                     return None
 
                 # Create the generator instance
-                generator_factory = getattr(module, "get_generator")
+                generator_factory = module.get_generator
                 self._instance = generator_factory(self.config)
 
                 # Verify it's a valid CaptionGenerator
@@ -190,7 +190,7 @@ class CaptionerPlugin:
             return instance.model_category
         return ModelCategory.HEAVY
 
-    def get_info(self) -> Dict[str, Any]:
+    def get_info(self) -> dict[str, Any]:
         """
         Get comprehensive information about this plugin.
 

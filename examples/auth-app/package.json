@@ -25,14 +25,7 @@
     "vite": "7.1.5",
     "vite-plugin-solid": "2.11.8"
   },
-  "keywords": [
-    "reynard",
-    "solidjs",
-    "authentication",
-    "gatekeeper",
-    "postgresql",
-    "jwt"
-  ],
+  "keywords": ["reynard", "solidjs", "authentication", "gatekeeper", "postgresql", "jwt"],
   "author": "Reynard Framework",
   "license": "MIT"
 }

@@ -4,15 +4,13 @@ Thread Pool Executor Types for Reynard Backend
 Type definitions and enums for the thread pool executor system.
 """
 
-import asyncio
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Set
 
 
 class ExecutorState(Enum):
     """Executor state enumeration."""
-    
+
     IDLE = "idle"
     RUNNING = "running"
     SHUTTING_DOWN = "shutting_down"
@@ -22,7 +20,7 @@ class ExecutorState(Enum):
 @dataclass
 class ExecutorConfig:
     """Configuration for the thread pool executor."""
-    
+
     max_workers: int = 4
     enable_performance_monitoring: bool = True
     auto_cleanup: bool = True
@@ -34,7 +32,7 @@ class ExecutorConfig:
 @dataclass
 class ExecutorStats:
     """Statistics for the executor."""
-    
+
     active_tasks: int = 0
     completed_tasks: int = 0
     failed_tasks: int = 0
@@ -47,7 +45,7 @@ class ExecutorStats:
 @dataclass
 class TaskInfo:
     """Information about a running task."""
-    
+
     task_id: str
     function_name: str
     start_time: float

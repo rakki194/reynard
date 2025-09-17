@@ -6,12 +6,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  isImageFile,
-  getImageDimensions,
-  resizeImage,
-  compressImage,
-} from "../../imageUtils";
+import { isImageFile, getImageDimensions, resizeImage, compressImage } from "../../imageUtils";
 
 describe("imageUtils", () => {
   describe("isImageFile", () => {
@@ -27,7 +22,7 @@ describe("imageUtils", () => {
         new File([], "test.tiff", { type: "image/tiff" }),
       ];
 
-      imageFiles.forEach((file) => {
+      imageFiles.forEach(file => {
         expect(isImageFile(file)).toBe(true);
       });
     });
@@ -40,7 +35,7 @@ describe("imageUtils", () => {
         new File([], "test.pdf", { type: "application/pdf" }),
       ];
 
-      nonImageFiles.forEach((file) => {
+      nonImageFiles.forEach(file => {
         expect(isImageFile(file)).toBe(false);
       });
     });
@@ -52,7 +47,7 @@ describe("imageUtils", () => {
         new File([], "test.GIF", { type: "image/gif" }),
       ];
 
-      caseVariations.forEach((file) => {
+      caseVariations.forEach(file => {
         expect(isImageFile(file)).toBe(true);
       });
     });
@@ -133,7 +128,7 @@ describe("imageUtils", () => {
         getContext: vi.fn(() => ({
           drawImage: vi.fn(),
         })),
-        toBlob: vi.fn((callback) => {
+        toBlob: vi.fn(callback => {
           const blob = new Blob(["resized"], { type: "image/jpeg" });
           callback(blob);
         }),
@@ -175,7 +170,7 @@ describe("imageUtils", () => {
         getContext: vi.fn(() => ({
           drawImage: vi.fn(),
         })),
-        toBlob: vi.fn((callback) => {
+        toBlob: vi.fn(callback => {
           const blob = new Blob(["resized"], { type: "image/jpeg" });
           callback(blob);
         }),
@@ -218,7 +213,7 @@ describe("imageUtils", () => {
         getContext: vi.fn(() => ({
           drawImage: vi.fn(),
         })),
-        toBlob: vi.fn((callback) => {
+        toBlob: vi.fn(callback => {
           const blob = new Blob(["compressed"], { type: "image/jpeg" });
           callback(blob);
         }),

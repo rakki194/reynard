@@ -506,10 +506,7 @@ SUMMARIZATION_PREFERENCE_STORAGE_PATH=cache/summarization/preferences
            }
          },
          "healthCheck": {
-           "command": [
-             "CMD-SHELL",
-             "curl -f http://localhost:8080/api/health || exit 1"
-           ],
+           "command": ["CMD-SHELL", "curl -f http://localhost:8080/api/health || exit 1"],
            "interval": 15,
            "timeout": 5,
            "retries": 3,

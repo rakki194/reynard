@@ -96,9 +96,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       expect(Array.isArray(collisions)).toBe(true);
 
       // Memory pool should have been used
-      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(
-        initialStats.totalAllocations,
-      );
+      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(initialStats.totalAllocations);
     });
 
     it("should handle overlapping AABBs in naive execution", () => {
@@ -276,12 +274,8 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
 
       const finalStats = adapter.getPerformanceStats();
 
-      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(
-        initialStats.totalQueries,
-      );
-      expect(finalStats.algorithmUsage.naive).toBeGreaterThanOrEqual(
-        initialStats.algorithmUsage.naive,
-      );
+      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(initialStats.totalQueries);
+      expect(finalStats.algorithmUsage.naive).toBeGreaterThanOrEqual(initialStats.algorithmUsage.naive);
     });
 
     it("should record performance metrics for spatial algorithm", () => {
@@ -298,12 +292,8 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
 
       const finalStats = adapter.getPerformanceStats();
 
-      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(
-        initialStats.totalQueries,
-      );
-      expect(finalStats.algorithmUsage.spatial).toBeGreaterThanOrEqual(
-        initialStats.algorithmUsage.spatial,
-      );
+      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(initialStats.totalQueries);
+      expect(finalStats.algorithmUsage.spatial).toBeGreaterThanOrEqual(initialStats.algorithmUsage.spatial);
     });
 
     it("should record performance metrics for optimized algorithm", () => {
@@ -320,12 +310,8 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
 
       const finalStats = adapter.getPerformanceStats();
 
-      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(
-        initialStats.totalQueries,
-      );
-      expect(finalStats.algorithmUsage.optimized).toBeGreaterThanOrEqual(
-        initialStats.algorithmUsage.optimized,
-      );
+      expect(finalStats.totalQueries).toBeGreaterThanOrEqual(initialStats.totalQueries);
+      expect(finalStats.algorithmUsage.optimized).toBeGreaterThanOrEqual(initialStats.algorithmUsage.optimized);
     });
 
     it("should update memory pool stats", () => {
@@ -343,9 +329,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       const finalStats = adapter.getPerformanceStats();
 
       expect(finalStats.memoryPoolStats).toBeDefined();
-      expect(
-        finalStats.memoryPoolStats.totalAllocations,
-      ).toBeGreaterThanOrEqual(0);
+      expect(finalStats.memoryPoolStats.totalAllocations).toBeGreaterThanOrEqual(0);
     });
   });
 
@@ -438,9 +422,7 @@ describe("Optimized Collision Adapter Extended Coverage", () => {
       expect(Array.isArray(collisions)).toBe(true);
 
       // Memory pool should have been used
-      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(
-        initialStats.totalAllocations,
-      );
+      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(initialStats.totalAllocations);
     });
 
     it("should handle memory pool cleanup after errors", () => {

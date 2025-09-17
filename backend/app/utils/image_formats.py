@@ -4,9 +4,8 @@ Enhanced Image Format Support for Reynard Backend
 Format detection and validation utilities with runtime plugin detection.
 """
 
-from pathlib import Path
-from typing import Optional, Set
 import logging
+from pathlib import Path
 
 from .image_types import ImageFormat
 
@@ -43,7 +42,7 @@ class ImageFormatSupport:
         try:
             # Try to get the global service instance directly
             from app.services.image_processing_service import _global_image_service
-            
+
             if _global_image_service is None:
                 logger.debug("No global service instance available, using fallback")
                 # Fallback to plugin formats as unsupported
@@ -80,7 +79,7 @@ class ImageFormatSupport:
             cls.SUPPORTED_FORMATS.update(cls.PLUGIN_FORMATS)
 
     @classmethod
-    def get_supported_formats(cls) -> Set[str]:
+    def get_supported_formats(cls) -> set[str]:
         """Get supported image file extensions with runtime plugin detection."""
         # Update plugin support before returning
         cls.update_plugin_support()
@@ -99,7 +98,7 @@ class ImageFormatSupport:
         return format_info.supported if format_info else False
 
     @classmethod
-    def get_format_info(cls, extension: str) -> Optional[ImageFormat]:
+    def get_format_info(cls, extension: str) -> ImageFormat | None:
         """Get format information for an extension with runtime detection."""
         normalized_ext = extension.lower()
 
@@ -128,7 +127,7 @@ class ImageFormatSupport:
         return path.suffix.lower()
 
     @classmethod
-    def get_mime_type(cls, extension: str) -> Optional[str]:
+    def get_mime_type(cls, extension: str) -> str | None:
         """Get MIME type for file extension."""
         format_info = cls.SUPPORTED_FORMATS.get(extension.lower())
         return format_info.mime_type if format_info else None

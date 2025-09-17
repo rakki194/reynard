@@ -9,10 +9,7 @@
 ```typescript
 // tests/modules/notifications.test.ts
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import {
-  createNotificationsModule,
-  type NotificationsModule,
-} from "../../src/modules/notifications";
+import { createNotificationsModule, type NotificationsModule } from "../../src/modules/notifications";
 
 describe("NotificationsModule", () => {
   let notifications: NotificationsModule;
@@ -138,16 +135,14 @@ describe("NotificationsModule", () => {
       notifications.notify("Message 2", "info", { group: "group2" });
       notifications.notify("Message 3", "info", { group: "group1" });
 
-      const group1Notifications =
-        notifications.getNotificationsByGroup("group1");
+      const group1Notifications = notifications.getNotificationsByGroup("group1");
 
       expect(group1Notifications).toHaveLength(2);
-      expect(group1Notifications.every((n) => n.group === "group1")).toBe(true);
+      expect(group1Notifications.every(n => n.group === "group1")).toBe(true);
     });
 
     it("should return empty array for non-existent group", () => {
-      const notifications =
-        notifications.getNotificationsByGroup("non-existent");
+      const notifications = notifications.getNotificationsByGroup("non-existent");
       expect(notifications).toHaveLength(0);
     });
   });
@@ -191,10 +186,7 @@ describe("NotificationsModule", () => {
 ```typescript
 // tests/modules/connection-manager.test.ts
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import {
-  createConnectionManager,
-  type ConnectionManager,
-} from "../../src/modules/connection-manager";
+import { createConnectionManager, type ConnectionManager } from "../../src/modules/connection-manager";
 
 describe("ConnectionManager", () => {
   let connectionManager: ConnectionManager;
@@ -216,7 +208,7 @@ describe("ConnectionManager", () => {
           autoReconnect: false,
           reconnectInterval: 1000,
         },
-        "http",
+        "http"
       );
 
       expect(connection).toMatchObject({
@@ -242,7 +234,7 @@ describe("ConnectionManager", () => {
           autoReconnect: true,
           reconnectInterval: 1000,
         },
-        "http",
+        "http"
       );
 
       expect(connectionManager.connect).toHaveBeenCalledWith("test-conn");
@@ -261,7 +253,7 @@ describe("ConnectionManager", () => {
           autoReconnect: false,
           reconnectInterval: 1000,
         },
-        "http",
+        "http"
       );
 
       expect(connectionManager.connections).toHaveLength(1);
@@ -272,9 +264,7 @@ describe("ConnectionManager", () => {
     });
 
     it("should not throw when removing non-existent connection", async () => {
-      await expect(
-        connectionManager.removeConnection("non-existent"),
-      ).resolves.not.toThrow();
+      await expect(connectionManager.removeConnection("non-existent")).resolves.not.toThrow();
     });
   });
 
@@ -290,7 +280,7 @@ describe("ConnectionManager", () => {
           autoReconnect: false,
           reconnectInterval: 1000,
         },
-        "http",
+        "http"
       );
 
       const connection = connectionManager.getConnection("test-conn");
@@ -317,7 +307,7 @@ describe("ConnectionManager", () => {
           autoReconnect: false,
           reconnectInterval: 1000,
         },
-        "http",
+        "http"
       );
 
       const connection = connectionManager.getConnection("test-conn");
@@ -344,7 +334,7 @@ describe("ConnectionManager", () => {
           autoReconnect: false,
           reconnectInterval: 1000,
         },
-        "http",
+        "http"
       );
 
       await connectionManager.connect("test-conn");
@@ -367,7 +357,7 @@ describe("ConnectionManager", () => {
           autoReconnect: false,
           reconnectInterval: 1000,
         },
-        "http",
+        "http"
       );
 
       await connectionManager.addConnection(
@@ -380,7 +370,7 @@ describe("ConnectionManager", () => {
           autoReconnect: false,
           reconnectInterval: 1000,
         },
-        "websocket",
+        "websocket"
       );
 
       await connectionManager.connect("conn1");
@@ -554,9 +544,7 @@ describe("EventBus", () => {
 
   describe("error handling", () => {
     it("should handle listener errors gracefully", () => {
-      const consoleSpy = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
       const errorCallback = vi.fn(() => {
         throw new Error("Listener error");
       });
@@ -567,10 +555,7 @@ describe("EventBus", () => {
 
       eventBus.emit("test:event", { message: "Hello" });
 
-      expect(consoleSpy).toHaveBeenCalledWith(
-        "Error in event listener for test:event:",
-        expect.any(Error),
-      );
+      expect(consoleSpy).toHaveBeenCalledWith("Error in event listener for test:event:", expect.any(Error));
       expect(normalCallback).toHaveBeenCalledWith({ message: "Hello" });
 
       consoleSpy.mockRestore();
@@ -604,11 +589,11 @@ describe("Module Integration", () => {
 
   it("should integrate notifications with connection manager", async () => {
     // Set up integration
-    eventBus.on("connection:error", (data) => {
+    eventBus.on("connection:error", data => {
       notifications.notify(`Connection error: ${data.error}`, "error");
     });
 
-    eventBus.on("connection:connected", (data) => {
+    eventBus.on("connection:connected", data => {
       notifications.notify(`Connected to ${data.host}`, "success");
     });
 
@@ -629,7 +614,7 @@ describe("Module Integration", () => {
 
   it("should handle connection lifecycle with notifications", async () => {
     // Mock connection manager methods
-    vi.spyOn(connectionManager, "connect").mockImplementation(async (id) => {
+    vi.spyOn(connectionManager, "connect").mockImplementation(async id => {
       const connection = connectionManager.getConnection(id);
       if (connection) {
         connection.status = "connected";
@@ -641,7 +626,7 @@ describe("Module Integration", () => {
       }
     });
 
-    vi.spyOn(connectionManager, "disconnect").mockImplementation(async (id) => {
+    vi.spyOn(connectionManager, "disconnect").mockImplementation(async id => {
       const connection = connectionManager.getConnection(id);
       if (connection) {
         connection.status = "disconnected";
@@ -650,11 +635,11 @@ describe("Module Integration", () => {
     });
 
     // Set up event handlers
-    eventBus.on("connection:connected", (data) => {
+    eventBus.on("connection:connected", data => {
       notifications.notify(`Connected to ${data.host}`, "success");
     });
 
-    eventBus.on("connection:disconnected", (data) => {
+    eventBus.on("connection:disconnected", data => {
       notifications.notify("Connection lost", "warning");
     });
 
@@ -669,7 +654,7 @@ describe("Module Integration", () => {
         autoReconnect: false,
         reconnectInterval: 1000,
       },
-      "http",
+      "http"
     );
 
     await connectionManager.connect("test-conn");
@@ -737,10 +722,7 @@ describe("Module Performance", () => {
 
       // Add 100 notifications
       for (let i = 0; i < 100; i++) {
-        const id = notifications.notify(
-          `Batch ${batch} - Message ${i}`,
-          "info",
-        );
+        const id = notifications.notify(`Batch ${batch} - Message ${i}`, "info");
         ids.push(id);
       }
 
@@ -781,9 +763,7 @@ export const createMockConnection = (overrides: Partial<Connection> = {}) => ({
   ...overrides,
 });
 
-export const createMockNotification = (
-  overrides: Partial<Notification> = {},
-) => ({
+export const createMockNotification = (overrides: Partial<Notification> = {}) => ({
   id: "mock-notification",
   message: "Mock message",
   type: "info" as const,
@@ -791,8 +771,7 @@ export const createMockNotification = (
   ...overrides,
 });
 
-export const waitForAsync = (ms: number = 0) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+export const waitForAsync = (ms: number = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const createMockEventBus = () => {
   const listeners = new Map();
@@ -803,8 +782,7 @@ export const createMockEventBus = () => {
         listeners.set(event, []);
       }
       listeners.get(event).push(callback);
-      return () =>
-        listeners.get(event).splice(listeners.get(event).indexOf(callback), 1);
+      return () => listeners.get(event).splice(listeners.get(event).indexOf(callback), 1);
     }),
     emit: vi.fn((event: string, data: any) => {
       const eventListeners = listeners.get(event) || [];
@@ -820,18 +798,13 @@ export const createMockEventBus = () => {
     once: vi.fn((event: string, callback: Function) => {
       const onceCallback = (data: any) => {
         callback(data);
-        listeners
-          .get(event)
-          .splice(listeners.get(event).indexOf(onceCallback), 1);
+        listeners.get(event).splice(listeners.get(event).indexOf(onceCallback), 1);
       };
       if (!listeners.has(event)) {
         listeners.set(event, []);
       }
       listeners.get(event).push(onceCallback);
-      return () =>
-        listeners
-          .get(event)
-          .splice(listeners.get(event).indexOf(onceCallback), 1);
+      return () => listeners.get(event).splice(listeners.get(event).indexOf(onceCallback), 1);
     }),
     clear: vi.fn((event?: string) => {
       if (event) {
@@ -845,7 +818,7 @@ export const createMockEventBus = () => {
         return listeners.get(event)?.length || 0;
       }
       let total = 0;
-      listeners.forEach((list) => (total += list.length));
+      listeners.forEach(list => (total += list.length));
       return total;
     }),
   };

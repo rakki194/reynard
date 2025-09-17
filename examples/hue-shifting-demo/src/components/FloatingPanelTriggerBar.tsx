@@ -8,17 +8,13 @@ interface FloatingPanelTriggerBarProps {
     canvasSize: boolean;
     materialControls: boolean;
   };
-  onTogglePanel: (
-    panelName: keyof FloatingPanelTriggerBarProps["panelStates"],
-  ) => void;
+  onTogglePanel: (panelName: keyof FloatingPanelTriggerBarProps["panelStates"]) => void;
   onShowAllPanels: () => void;
   onHideAllPanels: () => void;
   isAnyPanelVisible: boolean;
 }
 
-export const FloatingPanelTriggerBar: Component<
-  FloatingPanelTriggerBarProps
-> = (props) => {
+export const FloatingPanelTriggerBar: Component<FloatingPanelTriggerBarProps> = props => {
   return (
     <div class="floating-panel-trigger-bar">
       <div class="trigger-buttons">
@@ -58,22 +54,10 @@ export const FloatingPanelTriggerBar: Component<
       <div class="panel-actions">
         <button
           class="action-button"
-          onClick={
-            props.isAnyPanelVisible
-              ? props.onHideAllPanels
-              : props.onShowAllPanels
-          }
-          title={
-            props.isAnyPanelVisible ? "Hide All Panels" : "Show All Panels"
-          }
+          onClick={props.isAnyPanelVisible ? props.onHideAllPanels : props.onShowAllPanels}
+          title={props.isAnyPanelVisible ? "Hide All Panels" : "Show All Panels"}
         >
-          <span
-            innerHTML={
-              props.isAnyPanelVisible
-                ? allIcons["eye-off"].svg
-                : allIcons.eye.svg
-            }
-          ></span>
+          <span innerHTML={props.isAnyPanelVisible ? allIcons["eye-off"].svg : allIcons.eye.svg}></span>
         </button>
       </div>
     </div>

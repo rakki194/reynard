@@ -22,15 +22,11 @@ export class BenchmarkResultsFormatter {
 
       console.log(`\n${simd.name}`);
       console.log("-".repeat(50));
+      console.log(`WebAssembly SIMD: ${simd.totalTime.toFixed(2)}ms (${simd.operationsPerSecond.toFixed(0)} ops/sec)`);
       console.log(
-        `WebAssembly SIMD: ${simd.totalTime.toFixed(2)}ms (${simd.operationsPerSecond.toFixed(0)} ops/sec)`,
+        `Reynard ECS:      ${reynard.totalTime.toFixed(2)}ms (${reynard.operationsPerSecond.toFixed(0)} ops/sec)`
       );
-      console.log(
-        `Reynard ECS:      ${reynard.totalTime.toFixed(2)}ms (${reynard.operationsPerSecond.toFixed(0)} ops/sec)`,
-      );
-      console.log(
-        `Speedup:          ${speedup.toFixed(2)}x ${speedup > 1 ? "🚀" : "🐌"}`,
-      );
+      console.log(`Speedup:          ${speedup.toFixed(2)}x ${speedup > 1 ? "🚀" : "🐌"}`);
     }
   }
 
@@ -52,8 +48,7 @@ export class BenchmarkResultsFormatter {
       speedups.push(speedup);
     }
 
-    const averageSpeedup =
-      speedups.reduce((sum, speedup) => sum + speedup, 0) / speedups.length;
+    const averageSpeedup = speedups.reduce((sum, speedup) => sum + speedup, 0) / speedups.length;
     const bestSpeedup = Math.max(...speedups);
     const worstSpeedup = Math.min(...speedups);
 
@@ -77,7 +72,7 @@ export class BenchmarkResultsFormatter {
         timestamp: new Date().toISOString(),
       },
       null,
-      2,
+      2
     );
   }
 }

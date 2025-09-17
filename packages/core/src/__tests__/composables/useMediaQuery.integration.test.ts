@@ -5,11 +5,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { createRoot } from "solid-js";
 import { useMediaQuery } from "../../useMediaQuery";
-import {
-  createMockMediaQuery,
-  setupMatchMediaMock,
-  cleanupMatchMediaMock,
-} from "../media-query-test-setup";
+import { createMockMediaQuery, setupMatchMediaMock, cleanupMatchMediaMock } from "../media-query-test-setup";
 
 describe("useMediaQuery Integration", () => {
   let mockMatchMedia: ReturnType<typeof setupMatchMediaMock>;
@@ -41,7 +37,7 @@ describe("useMediaQuery Integration", () => {
       const mockMediaQuery = createMockMediaQuery(false);
       mockMatchMedia.mockReturnValue(mockMediaQuery);
 
-      createRoot((dispose) => {
+      createRoot(dispose => {
         useMediaQuery("(max-width: 768px)");
         dispose();
       });
@@ -69,9 +65,7 @@ describe("useMediaQuery Integration", () => {
 
       createRoot(() => {
         const mobile = useMediaQuery("(max-width: 768px)");
-        const tablet = useMediaQuery(
-          "(min-width: 769px) and (max-width: 1024px)",
-        );
+        const tablet = useMediaQuery("(min-width: 769px) and (max-width: 1024px)");
         const desktop = useMediaQuery("(min-width: 1025px)");
 
         expect(typeof mobile).toBe("function");

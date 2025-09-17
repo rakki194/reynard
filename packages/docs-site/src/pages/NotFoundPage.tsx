@@ -16,17 +16,12 @@ export const NotFoundPage: Component = () => {
           <div class="docs-404-content">
             <h1 class="docs-404-title">404</h1>
             <h2 class="docs-404-subtitle">Page Not Found</h2>
-            <p class="docs-404-description">
-              The page you're looking for doesn't exist or has been moved.
-            </p>
+            <p class="docs-404-description">The page you're looking for doesn't exist or has been moved.</p>
             <div class="docs-404-actions">
               <a href="/" class="docs-404-button docs-404-button--primary">
                 Go Home
               </a>
-              <a
-                href="/search"
-                class="docs-404-button docs-404-button--secondary"
-              >
+              <a href="/search" class="docs-404-button docs-404-button--secondary">
                 Search Documentation
               </a>
             </div>

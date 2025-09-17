@@ -37,10 +37,7 @@ describe("TransformOps - Apply Operations", () => {
     });
 
     it("should apply combined transform to point", () => {
-      const transform = TransformOps.combine(
-        TransformOps.translate(5, 10),
-        TransformOps.scale(2, 2),
-      );
+      const transform = TransformOps.combine(TransformOps.translate(5, 10), TransformOps.scale(2, 2));
       const point = { x: 10, y: 20 };
       const result = TransformOps.applyToPoint(transform, point);
 
@@ -48,10 +45,7 @@ describe("TransformOps - Apply Operations", () => {
     });
 
     it("should handle point at origin", () => {
-      const transform = TransformOps.combine(
-        TransformOps.rotate(Math.PI / 4),
-        TransformOps.scale(2, 2),
-      );
+      const transform = TransformOps.combine(TransformOps.rotate(Math.PI / 4), TransformOps.scale(2, 2));
       const point = { x: 0, y: 0 };
       const result = TransformOps.applyToPoint(transform, point);
 
@@ -97,10 +91,7 @@ describe("TransformOps - Apply Operations", () => {
     });
 
     it("should apply combined transform to rectangle", () => {
-      const transform = TransformOps.combine(
-        TransformOps.translate(5, 10),
-        TransformOps.scale(2, 2),
-      );
+      const transform = TransformOps.combine(TransformOps.translate(5, 10), TransformOps.scale(2, 2));
       const rect = { x: 10, y: 20, width: 30, height: 40 };
       const result = TransformOps.applyToRectangle(transform, rect);
 

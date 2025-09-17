@@ -13,16 +13,10 @@ const ThemeSelector: Component = () => {
       <select
         id="theme-select"
         value={themeContext.theme}
-        onChange={(e) =>
-          themeContext.setTheme(e.currentTarget.value as ThemeName)
-        }
+        onChange={e => themeContext.setTheme(e.currentTarget.value as ThemeName)}
         class="select"
       >
-        <For each={availableThemes}>
-          {(themeName) => (
-            <option value={themeName}>{t(`themes.${themeName}`)}</option>
-          )}
-        </For>
+        <For each={availableThemes}>{themeName => <option value={themeName}>{t(`themes.${themeName}`)}</option>}</For>
       </select>
     </div>
   );

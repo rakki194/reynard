@@ -40,9 +40,7 @@ const getIcon = (name: string) => {
 
 export function RAGSearch(props: RAGSearchProps) {
   // Use component composable for initialization and state management
-  const { ragState, handlers, activeTab, setActiveTab } = useRAGSearchComponent(
-    { props },
-  );
+  const { ragState, handlers, activeTab, setActiveTab } = useRAGSearchComponent({ props });
 
   // Advanced features state
   const [modality, setModality] = createSignal<RAGModality>("docs");
@@ -63,23 +61,18 @@ export function RAGSearch(props: RAGSearchProps) {
     score: 0,
   });
 
-  const [threeDModalState, setThreeDModalState] =
-    createSignal<ThreeDModalState>({
-      isOpen: false,
-      searchQuery: "",
-      searchResults: [],
-    });
+  const [threeDModalState, setThreeDModalState] = createSignal<ThreeDModalState>({
+    isOpen: false,
+    searchQuery: "",
+    searchResults: [],
+  });
 
   // Search history state
-  const [searchHistory, setSearchHistory] = createSignal<SearchHistoryItem[]>(
-    [],
-  );
+  const [searchHistory, setSearchHistory] = createSignal<SearchHistoryItem[]>([]);
 
   // Enhanced search results with advanced features
   const [enhancedResults, setEnhancedResults] = createSignal<RAGQueryHit[]>([]);
-  const [queryEmbedding, setQueryEmbedding] = createSignal<
-    number[] | undefined
-  >();
+  const [queryEmbedding, setQueryEmbedding] = createSignal<number[] | undefined>();
 
   // Get tab configuration
   const tabItems = createRAGTabConfig(!!props.showSearchHistory);
@@ -103,7 +96,7 @@ export function RAGSearch(props: RAGSearchProps) {
         topScore: results.length > 0 ? results[0].score : 0,
       };
 
-      setSearchHistory((prev) => [historyItem, ...prev.slice(0, 49)]); // Keep last 50 items
+      setSearchHistory(prev => [historyItem, ...prev.slice(0, 49)]); // Keep last 50 items
 
       // Extract query embedding if available
       if (results.length > 0 && results[0].embedding_vector) {
@@ -115,19 +108,12 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   // Mock search function (replace with actual API call)
-  const performRAGSearch = async (
-    query: string,
-    modality: RAGModality,
-    topK: number,
-  ): Promise<RAGQueryHit[]> => {
+  const performRAGSearch = async (query: string, modality: RAGModality, topK: number): Promise<RAGQueryHit[]> => {
     // This would be replaced with actual API call
     return Array.from({ length: Math.min(topK, 10) }, (_, i) => ({
       id: `result-${i}`,
       score: Math.random() * 0.4 + 0.6, // 0.6-1.0
-      embedding_vector: Array.from(
-        { length: 384 },
-        () => Math.random() * 2 - 1,
-      ),
+      embedding_vector: Array.from({ length: 384 }, () => Math.random() * 2 - 1),
       file_path: modality === "docs" ? `/path/to/document-${i}.txt` : undefined,
       image_path: modality === "images" ? `/path/to/image-${i}.jpg` : undefined,
       image_id: modality === "images" ? `image-${i}` : undefined,
@@ -144,7 +130,7 @@ export function RAGSearch(props: RAGSearchProps) {
     fileName: string,
     fileContent: string,
     chunkIndex?: number,
-    chunkText?: string,
+    chunkText?: string
   ) => {
     setFileModalState({
       isOpen: true,
@@ -157,14 +143,14 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   const handleCloseFileModal = () => {
-    setFileModalState((prev) => ({ ...prev, isOpen: false }));
+    setFileModalState(prev => ({ ...prev, isOpen: false }));
   };
 
   const handleOpenImageModal = (
     imagePath: string,
     imageId: string,
     score: number,
-    metadata?: Record<string, unknown>,
+    metadata?: Record<string, unknown>
   ) => {
     setImageModalState({
       isOpen: true,
@@ -176,7 +162,7 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   const handleCloseImageModal = () => {
-    setImageModalState((prev) => ({ ...prev, isOpen: false }));
+    setImageModalState(prev => ({ ...prev, isOpen: false }));
   };
 
   const handleOpen3DModal = () => {
@@ -189,7 +175,7 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   const handleClose3DModal = () => {
-    setThreeDModalState((prev) => ({ ...prev, isOpen: false }));
+    setThreeDModalState(prev => ({ ...prev, isOpen: false }));
   };
 
   // Search history handlers
@@ -204,7 +190,7 @@ export function RAGSearch(props: RAGSearchProps) {
   };
 
   const handleRemoveHistoryItem = (id: string) => {
-    setSearchHistory((prev) => prev.filter((item) => item.id !== id));
+    setSearchHistory(prev => prev.filter(item => item.id !== id));
   };
 
   // Sync search query with suggestions
@@ -223,7 +209,7 @@ export function RAGSearch(props: RAGSearchProps) {
             placeholder="Search documents, images, code, or captions..."
             value={ragState.query()}
             onChange={ragState.setQuery}
-            onKeyPress={(e) => {
+            onKeyPress={e => {
               if (e.key === "Enter") {
                 handleAdvancedSearch(ragState.query());
               }
@@ -243,7 +229,7 @@ export function RAGSearch(props: RAGSearchProps) {
         <div class="search-options">
           <Select
             value={modality()}
-            onChange={(value) => setModality(value as RAGModality)}
+            onChange={value => setModality(value as RAGModality)}
             options={[
               { value: "docs", label: "Documents" },
               { value: "images", label: "Images" },
@@ -255,7 +241,7 @@ export function RAGSearch(props: RAGSearchProps) {
 
           <Select
             value={topK()}
-            onChange={(value) => setTopK(Number(value))}
+            onChange={value => setTopK(Number(value))}
             options={[
               { value: 10, label: "10 results" },
               { value: 20, label: "20 results" },
@@ -268,9 +254,7 @@ export function RAGSearch(props: RAGSearchProps) {
 
         {/* Advanced Feature Buttons */}
         <div class="advanced-features">
-          <Show
-            when={props.show3DVisualization && enhancedResults().length > 0}
-          >
+          <Show when={props.show3DVisualization && enhancedResults().length > 0}>
             <Button variant="secondary" onClick={handleOpen3DModal}>
               3D Visualization
             </Button>
@@ -285,13 +269,7 @@ export function RAGSearch(props: RAGSearchProps) {
       </div>
 
       {/* Main Tabs */}
-      <Tabs
-        items={tabItems}
-        activeTab={activeTab()}
-        onTabChange={setActiveTab}
-        variant="default"
-        fullWidth
-      >
+      <Tabs items={tabItems} activeTab={activeTab()} onTabChange={setActiveTab} variant="default" fullWidth>
         <RAGTabPanels
           activeTab={activeTab()}
           ragState={ragState}

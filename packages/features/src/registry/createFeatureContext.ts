@@ -15,7 +15,7 @@ function createAvailableFeaturesMemo(manager: FeatureManager) {
   return createMemo(() => {
     const statuses = manager.getAllFeatureStatuses();
     const allFeatures = manager.registry.getAll();
-    return allFeatures.filter((feature) => {
+    return allFeatures.filter(feature => {
       const status = statuses[feature.id];
       return status?.available ?? false;
     });
@@ -29,7 +29,7 @@ function createDegradedFeaturesMemo(manager: FeatureManager) {
   return createMemo(() => {
     const statuses = manager.getAllFeatureStatuses();
     const allFeatures = manager.registry.getAll();
-    return allFeatures.filter((feature) => {
+    return allFeatures.filter(feature => {
       const status = statuses[feature.id];
       return status?.degraded ?? false;
     });
@@ -43,8 +43,8 @@ function createFeatureSummaryMemo(manager: FeatureManager) {
   return createMemo(() => {
     const statuses = manager.getAllFeatureStatuses();
     const total = Object.keys(statuses).length;
-    const available = Object.values(statuses).filter((s) => s.available).length;
-    const degraded = Object.values(statuses).filter((s) => s.degraded).length;
+    const available = Object.values(statuses).filter(s => s.available).length;
+    const degraded = Object.values(statuses).filter(s => s.degraded).length;
     const unavailable = total - available - degraded;
     return {
       total,
@@ -77,12 +77,10 @@ export function createFeatureContext(config: FeatureConfig): FeatureContext {
       const status = manager.getFeatureStatus(featureId);
       return status?.degraded ?? false;
     },
-    getFeatureStatus: (featureId: string) =>
-      manager.getFeatureStatus(featureId),
+    getFeatureStatus: (featureId: string) => manager.getFeatureStatus(featureId),
     configureFeature: (featureId: string, config: Record<string, unknown>) =>
       manager.setFeatureConfig(featureId, config),
-    getFeatureConfig: (featureId: string) =>
-      manager.getFeatureConfig(featureId),
+    getFeatureConfig: (featureId: string) => manager.getFeatureConfig(featureId),
     refreshFeatureStatuses: () => manager.refreshFeatureStatuses(),
   };
 }

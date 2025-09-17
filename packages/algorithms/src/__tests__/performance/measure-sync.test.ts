@@ -37,10 +37,7 @@ describe("measureSync Function", () => {
     expect(result.result).toBe("sync result");
     expect(result.metrics).toBeDefined();
     expect(result.metrics.iterations).toBe(1);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "Performance measurement for test operation:",
-      expect.any(Object),
-    );
+    expect(consoleSpy).toHaveBeenCalledWith("Performance measurement for test operation:", expect.any(Object));
 
     consoleSpy.mockRestore();
   });
@@ -86,8 +83,6 @@ describe("measureSync Function", () => {
       .mockReturnValueOnce(0) // start
       .mockReturnValueOnce(50); // end
 
-    await expect(measureSync(failingSyncOperation)).rejects.toThrow(
-      "Sync error",
-    );
+    await expect(measureSync(failingSyncOperation)).rejects.toThrow("Sync error");
   });
 });

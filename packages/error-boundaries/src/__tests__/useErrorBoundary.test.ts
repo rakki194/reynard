@@ -56,16 +56,12 @@ describe("useErrorBoundary", () => {
 
     expect(result.current.error()).toBe(error);
     expect(result.current.errorContext()).toBeDefined();
-    expect(result.current.errorContext()?.componentStack).toEqual([
-      "TestComponent",
-    ]);
+    expect(result.current.errorContext()?.componentStack).toEqual(["TestComponent"]);
     expect(onError).toHaveBeenCalledWith(error, expect.any(Object));
   });
 
   it("should generate recovery actions from strategies", () => {
-    const { result } = renderHook(() =>
-      useErrorBoundary({ recoveryStrategies: [mockRecoveryStrategy] }),
-    );
+    const { result } = renderHook(() => useErrorBoundary({ recoveryStrategies: [mockRecoveryStrategy] }));
 
     const error = new Error("Test error");
     const errorInfo = { componentStack: "TestComponent" };
@@ -132,7 +128,7 @@ describe("useErrorBoundary", () => {
       useErrorBoundary({
         recoveryStrategies: [mockRecoveryStrategy],
         onRecovery,
-      }),
+      })
     );
 
     const error = new Error("Test error");
@@ -165,9 +161,7 @@ describe("useErrorBoundary", () => {
       }),
     };
 
-    const { result } = renderHook(() =>
-      useErrorBoundary({ recoveryStrategies: [failingStrategy] }),
-    );
+    const { result } = renderHook(() => useErrorBoundary({ recoveryStrategies: [failingStrategy] }));
 
     const error = new Error("Test error");
     const errorInfo = { componentStack: "TestComponent" };
@@ -218,14 +212,10 @@ describe("useErrorBoundary", () => {
   it("should handle recovery execution error", async () => {
     const errorStrategy = {
       ...mockRecoveryStrategy,
-      recover: vi
-        .fn()
-        .mockRejectedValue(new Error("Strategy execution failed")),
+      recover: vi.fn().mockRejectedValue(new Error("Strategy execution failed")),
     };
 
-    const { result } = renderHook(() =>
-      useErrorBoundary({ recoveryStrategies: [errorStrategy] }),
-    );
+    const { result } = renderHook(() => useErrorBoundary({ recoveryStrategies: [errorStrategy] }));
 
     const error = new Error("Test error");
     const errorInfo = { componentStack: "TestComponent" };
@@ -275,22 +265,20 @@ describe("useErrorBoundary", () => {
       ...mockRecoveryStrategy,
       recover: vi.fn().mockImplementation(
         () =>
-          new Promise((resolve) =>
+          new Promise(resolve =>
             setTimeout(
               () =>
                 resolve({
                   success: true,
                   action: "retry" as any,
                 }),
-              100,
-            ),
-          ),
+              100
+            )
+          )
       ),
     };
 
-    const { result } = renderHook(() =>
-      useErrorBoundary({ recoveryStrategies: [slowStrategy] }),
-    );
+    const { result } = renderHook(() => useErrorBoundary({ recoveryStrategies: [slowStrategy] }));
 
     const error = new Error("Test error");
     const errorInfo = { componentStack: "TestComponent" };
@@ -319,9 +307,7 @@ describe("useErrorBoundary", () => {
 
   it("should handle global errors when isolate is true", () => {
     const onError = vi.fn();
-    const { result } = renderHook(() =>
-      useErrorBoundary({ isolate: true, onError }),
-    );
+    const { result } = renderHook(() => useErrorBoundary({ isolate: true, onError }));
 
     // Simulate global error
     const errorEvent = new ErrorEvent("error", {
@@ -340,9 +326,7 @@ describe("useErrorBoundary", () => {
 
   it("should handle unhandled promise rejections when isolate is true", () => {
     const onError = vi.fn();
-    const { result } = renderHook(() =>
-      useErrorBoundary({ isolate: true, onError }),
-    );
+    const { result } = renderHook(() => useErrorBoundary({ isolate: true, onError }));
 
     // Simulate unhandled promise rejection
     const rejectionEvent = new PromiseRejectionEvent("unhandledrejection", {
@@ -359,9 +343,7 @@ describe("useErrorBoundary", () => {
 
   it("should not handle global errors when isolate is false", () => {
     const onError = vi.fn();
-    const { result } = renderHook(() =>
-      useErrorBoundary({ isolate: false, onError }),
-    );
+    const { result } = renderHook(() => useErrorBoundary({ isolate: false, onError }));
 
     // Simulate global error
     const errorEvent = new ErrorEvent("error", {

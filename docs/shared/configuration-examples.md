@@ -242,11 +242,7 @@ provides predictable dependency resolution.
 
 ```json
 {
-  "extends": [
-    "eslint:recommended",
-    "@typescript-eslint/recommended",
-    "plugin:solid/recommended"
-  ],
+  "extends": ["eslint:recommended", "@typescript-eslint/recommended", "plugin:solid/recommended"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "solid"],
   "rules": {

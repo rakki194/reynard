@@ -28,9 +28,7 @@
       "types": "./dist/utils/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
@@ -40,14 +38,7 @@
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "color",
-    "oklch",
-    "oklab",
-    "generation",
-    "palette",
-    "theme"
-  ],
+  "keywords": ["color", "oklch", "oklab", "generation", "palette", "theme"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {

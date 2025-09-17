@@ -73,8 +73,7 @@ export interface TypeSafetyReport {
 
 export class TypeSafetyCompliance {
   private readonly codebasePath: string;
-  private readonly violationCache: Map<string, TypeSafetyViolation[]> =
-    new Map();
+  private readonly violationCache: Map<string, TypeSafetyViolation[]> = new Map();
   private readonly coverageCache: Map<string, TypeCoverage> = new Map();
   private readonly strictModeRules = {
     noImplicitAny: true,
@@ -117,25 +116,16 @@ export class TypeSafetyCompliance {
     const strictModeCompliance = await this.checkStrictModeCompliance();
 
     // Generate comprehensive report
-    const report = this.generateTypeSafetyReport(
-      files,
-      violations,
-      typeCoverageByFile,
-      strictModeCompliance,
-    );
+    const report = this.generateTypeSafetyReport(files, violations, typeCoverageByFile, strictModeCompliance);
 
-    console.log(
-      `✅ Type safety analysis complete: ${report.overallTypeSafety.toFixed(1)}% type safety`,
-    );
+    console.log(`✅ Type safety analysis complete: ${report.overallTypeSafety.toFixed(1)}% type safety`);
     return report;
   }
 
   /**
    * Analyze type safety for a specific file
    */
-  async analyzeFileTypeSafety(
-    filePath: string,
-  ): Promise<TypeSafetyViolation[]> {
+  async analyzeFileTypeSafety(filePath: string): Promise<TypeSafetyViolation[]> {
     try {
       const content = await readFile(filePath, "utf-8");
       const violations: TypeSafetyViolation[] = [];
@@ -161,10 +151,7 @@ export class TypeSafetyCompliance {
       violations.push(...implicitAnyViolations);
 
       // Check for strict mode violations
-      const strictViolations = this.detectStrictModeViolations(
-        content,
-        filePath,
-      );
+      const strictViolations = this.detectStrictModeViolations(content, filePath);
       violations.push(...strictViolations);
 
       return violations;
@@ -225,10 +212,7 @@ export class TypeSafetyCompliance {
         }
       }
 
-      const coveragePercentage =
-        totalExpressions > 0
-          ? (typedExpressions / totalExpressions) * 100
-          : 100;
+      const coveragePercentage = totalExpressions > 0 ? (typedExpressions / totalExpressions) * 100 : 100;
 
       return {
         filePath,
@@ -313,17 +297,13 @@ export class TypeSafetyCompliance {
     }> = [];
 
     for (const [filePath, violations] of this.violationCache) {
-      const criticalViolations = violations.filter(
-        (v) => v.severity === "critical",
-      );
+      const criticalViolations = violations.filter(v => v.severity === "critical");
       if (criticalViolations.length > 0) {
         criticalFiles.push({ filePath, violations: criticalViolations });
       }
     }
 
-    return criticalFiles.sort(
-      (a, b) => b.violations.length - a.violations.length,
-    );
+    return criticalFiles.sort((a, b) => b.violations.length - a.violations.length);
   }
 
   /**
@@ -334,16 +314,12 @@ export class TypeSafetyCompliance {
     const coverage = this.coverageCache.get(filePath);
     const suggestions: string[] = [];
 
-    if (
-      violations.length === 0 &&
-      coverage &&
-      coverage.coveragePercentage >= 95
-    ) {
+    if (violations.length === 0 && coverage && coverage.coveragePercentage >= 95) {
       suggestions.push("✅ File has excellent type safety");
       return suggestions;
     }
 
-    const violationTypes = new Set(violations.map((v) => v.type));
+    const violationTypes = new Set(violations.map(v => v.type));
 
     if (violationTypes.has("any-usage")) {
       suggestions.push("🚫 Replace `any` types with specific types");
@@ -354,15 +330,11 @@ export class TypeSafetyCompliance {
     }
 
     if (violationTypes.has("type-assertion")) {
-      suggestions.push(
-        "⚠️ Minimize type assertions and use type guards instead",
-      );
+      suggestions.push("⚠️ Minimize type assertions and use type guards instead");
     }
 
     if (violationTypes.has("non-null-assertion")) {
-      suggestions.push(
-        "❗ Avoid non-null assertions and handle null cases properly",
-      );
+      suggestions.push("❗ Avoid non-null assertions and handle null cases properly");
     }
 
     if (violationTypes.has("implicit-any")) {
@@ -370,9 +342,7 @@ export class TypeSafetyCompliance {
     }
 
     if (coverage && coverage.coveragePercentage < 90) {
-      suggestions.push(
-        `📊 Improve type coverage (current: ${coverage.coveragePercentage.toFixed(1)}%)`,
-      );
+      suggestions.push(`📊 Improve type coverage (current: ${coverage.coveragePercentage.toFixed(1)}%)`);
     }
 
     return suggestions;
@@ -390,11 +360,7 @@ export class TypeSafetyCompliance {
           const fullPath = join(dir, entry.name);
 
           if (entry.isDirectory()) {
-            if (
-              !["node_modules", ".git", "dist", "build", "coverage"].includes(
-                entry.name,
-              )
-            ) {
+            if (!["node_modules", ".git", "dist", "build", "coverage"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
@@ -413,10 +379,7 @@ export class TypeSafetyCompliance {
     return files;
   }
 
-  private detectAnyUsage(
-    content: string,
-    filePath: string,
-  ): TypeSafetyViolation[] {
+  private detectAnyUsage(content: string, filePath: string): TypeSafetyViolation[] {
     const violations: TypeSafetyViolation[] = [];
     const lines = content.split("\n");
 
@@ -434,8 +397,7 @@ export class TypeSafetyCompliance {
           lineNumber: i + 1,
           description: "Explicit `any` type usage detected",
           codeSnippet: line.trim(),
-          suggestion:
-            "Replace with specific type or use `unknown` for truly unknown types",
+          suggestion: "Replace with specific type or use `unknown` for truly unknown types",
           impact: {
             typeSafety: 0.9,
             maintainability: 0.7,
@@ -449,10 +411,7 @@ export class TypeSafetyCompliance {
     return violations;
   }
 
-  private detectUnknownUsage(
-    content: string,
-    filePath: string,
-  ): TypeSafetyViolation[] {
+  private detectUnknownUsage(content: string, filePath: string): TypeSafetyViolation[] {
     const violations: TypeSafetyViolation[] = [];
     const lines = content.split("\n");
 
@@ -486,10 +445,7 @@ export class TypeSafetyCompliance {
     return violations;
   }
 
-  private detectTypeAssertions(
-    content: string,
-    filePath: string,
-  ): TypeSafetyViolation[] {
+  private detectTypeAssertions(content: string, filePath: string): TypeSafetyViolation[] {
     const violations: TypeSafetyViolation[] = [];
     const lines = content.split("\n");
 
@@ -507,8 +463,7 @@ export class TypeSafetyCompliance {
           lineNumber: i + 1,
           description: "Type assertion detected",
           codeSnippet: line.trim(),
-          suggestion:
-            "Use type guards or proper type narrowing instead of assertions",
+          suggestion: "Use type guards or proper type narrowing instead of assertions",
           impact: {
             typeSafety: 0.7,
             maintainability: 0.6,
@@ -522,10 +477,7 @@ export class TypeSafetyCompliance {
     return violations;
   }
 
-  private detectNonNullAssertions(
-    content: string,
-    filePath: string,
-  ): TypeSafetyViolation[] {
+  private detectNonNullAssertions(content: string, filePath: string): TypeSafetyViolation[] {
     const violations: TypeSafetyViolation[] = [];
     const lines = content.split("\n");
 
@@ -543,8 +495,7 @@ export class TypeSafetyCompliance {
           lineNumber: i + 1,
           description: "Non-null assertion operator (!) detected",
           codeSnippet: line.trim(),
-          suggestion:
-            "Handle null/undefined cases properly instead of using assertions",
+          suggestion: "Handle null/undefined cases properly instead of using assertions",
           impact: {
             typeSafety: 0.8,
             maintainability: 0.5,
@@ -558,10 +509,7 @@ export class TypeSafetyCompliance {
     return violations;
   }
 
-  private detectImplicitAny(
-    content: string,
-    filePath: string,
-  ): TypeSafetyViolation[] {
+  private detectImplicitAny(content: string, filePath: string): TypeSafetyViolation[] {
     const violations: TypeSafetyViolation[] = [];
     const lines = content.split("\n");
 
@@ -605,8 +553,7 @@ export class TypeSafetyCompliance {
             lineNumber: i + 1,
             description: "Arrow function parameters without explicit types",
             codeSnippet: line.trim(),
-            suggestion:
-              "Add explicit type annotations to arrow function parameters",
+            suggestion: "Add explicit type annotations to arrow function parameters",
             impact: {
               typeSafety: 0.8,
               maintainability: 0.7,
@@ -621,10 +568,7 @@ export class TypeSafetyCompliance {
     return violations;
   }
 
-  private detectStrictModeViolations(
-    content: string,
-    filePath: string,
-  ): TypeSafetyViolation[] {
+  private detectStrictModeViolations(content: string, filePath: string): TypeSafetyViolation[] {
     const violations: TypeSafetyViolation[] = [];
     const lines = content.split("\n");
 
@@ -675,9 +619,7 @@ export class TypeSafetyCompliance {
     return violations;
   }
 
-  private async checkStrictModeCompliance(): Promise<
-    TypeSafetyReport["strictModeCompliance"]
-  > {
+  private async checkStrictModeCompliance(): Promise<TypeSafetyReport["strictModeCompliance"]> {
     try {
       const tsconfigPath = join(this.codebasePath, "tsconfig.json");
       const tsconfigContent = await readFile(tsconfigPath, "utf-8");
@@ -711,34 +653,25 @@ export class TypeSafetyCompliance {
     files: string[],
     violations: TypeSafetyViolation[],
     typeCoverageByFile: Map<string, TypeCoverage>,
-    strictModeCompliance: TypeSafetyReport["strictModeCompliance"],
+    strictModeCompliance: TypeSafetyReport["strictModeCompliance"]
   ): TypeSafetyReport {
     const totalFiles = files.length;
-    const typeSafeFiles = files.filter((file) =>
-      this.isFileTypeSafe(file),
-    ).length;
-    const overallTypeSafety =
-      files.reduce((sum, file) => sum + this.getFileTypeSafetyScore(file), 0) /
-      totalFiles;
+    const typeSafeFiles = files.filter(file => this.isFileTypeSafe(file)).length;
+    const overallTypeSafety = files.reduce((sum, file) => sum + this.getFileTypeSafetyScore(file), 0) / totalFiles;
 
     // Group violations by type and severity
     const violationsByType: Record<string, number> = {};
     const violationsBySeverity: Record<string, number> = {};
 
     for (const violation of violations) {
-      violationsByType[violation.type] =
-        (violationsByType[violation.type] || 0) + 1;
-      violationsBySeverity[violation.severity] =
-        (violationsBySeverity[violation.severity] || 0) + 1;
+      violationsByType[violation.type] = (violationsByType[violation.type] || 0) + 1;
+      violationsBySeverity[violation.severity] = (violationsBySeverity[violation.severity] || 0) + 1;
     }
 
     // Calculate overall type coverage
     const coverageValues = Array.from(typeCoverageByFile.values());
     const overallCoverage =
-      coverageValues.reduce(
-        (sum, coverage) => sum + coverage.coveragePercentage,
-        0,
-      ) / coverageValues.length;
+      coverageValues.reduce((sum, coverage) => sum + coverage.coveragePercentage, 0) / coverageValues.length;
     const averageCoverage = overallCoverage;
 
     // Get top violations
@@ -750,11 +683,7 @@ export class TypeSafetyCompliance {
       .slice(0, 10);
 
     // Generate recommendations
-    const recommendations = this.generateGlobalRecommendations(
-      violations,
-      typeCoverageByFile,
-      strictModeCompliance,
-    );
+    const recommendations = this.generateGlobalRecommendations(violations, typeCoverageByFile, strictModeCompliance);
 
     return {
       overallTypeSafety,
@@ -776,28 +705,22 @@ export class TypeSafetyCompliance {
   private generateGlobalRecommendations(
     violations: TypeSafetyViolation[],
     typeCoverageByFile: Map<string, TypeCoverage>,
-    strictModeCompliance: TypeSafetyReport["strictModeCompliance"],
+    strictModeCompliance: TypeSafetyReport["strictModeCompliance"]
   ): TypeSafetyReport["recommendations"] {
     const immediate: string[] = [];
     const shortTerm: string[] = [];
     const longTerm: string[] = [];
 
-    const criticalViolations = violations.filter(
-      (v) => v.severity === "critical",
-    );
-    const highViolations = violations.filter((v) => v.severity === "high");
-    const violationTypes = new Set(violations.map((v) => v.type));
+    const criticalViolations = violations.filter(v => v.severity === "critical");
+    const highViolations = violations.filter(v => v.severity === "high");
+    const violationTypes = new Set(violations.map(v => v.type));
 
     if (criticalViolations.length > 0) {
-      immediate.push(
-        `🚨 Address ${criticalViolations.length} critical type safety violations`,
-      );
+      immediate.push(`🚨 Address ${criticalViolations.length} critical type safety violations`);
     }
 
     if (highViolations.length > 0) {
-      immediate.push(
-        `⚠️ Fix ${highViolations.length} high-severity type safety violations`,
-      );
+      immediate.push(`⚠️ Fix ${highViolations.length} high-severity type safety violations`);
     }
 
     if (violationTypes.has("any-usage")) {
@@ -832,11 +755,8 @@ export class TypeSafetyCompliance {
   }
 
   // Helper methods
-  private extractExpressions(
-    line: string,
-  ): Array<{ text: string; type: string; column: number }> {
-    const expressions: Array<{ text: string; type: string; column: number }> =
-      [];
+  private extractExpressions(line: string): Array<{ text: string; type: string; column: number }> {
+    const expressions: Array<{ text: string; type: string; column: number }> = [];
 
     // Simple expression extraction (in a real implementation, would use TypeScript compiler API)
     const variableMatches = line.matchAll(/(\w+)\s*[:=]/g);
@@ -852,11 +772,7 @@ export class TypeSafetyCompliance {
   }
 
   private hasTypeGuard(line: string): boolean {
-    return (
-      line.includes("typeof") ||
-      line.includes("instanceof") ||
-      line.includes("in ")
-    );
+    return line.includes("typeof") || line.includes("instanceof") || line.includes("in ");
   }
 
   private hasExplicitTypes(params: string): boolean {
@@ -865,26 +781,15 @@ export class TypeSafetyCompliance {
 
   private hasUnusedVariable(line: string): boolean {
     // Simplified check - in real implementation, would use TypeScript compiler
-    return (
-      line.includes("const ") &&
-      line.includes("= ") &&
-      !line.includes("console.log")
-    );
+    return line.includes("const ") && line.includes("= ") && !line.includes("console.log");
   }
 
   private hasMissingReturn(line: string): boolean {
     // Simplified check - in real implementation, would analyze function body
-    return (
-      line.includes("function") &&
-      !line.includes("void") &&
-      !line.includes("return")
-    );
+    return line.includes("function") && !line.includes("void") && !line.includes("return");
   }
 
-  private getAnyUsageSeverity(
-    line: string,
-    index: number,
-  ): "low" | "medium" | "high" | "critical" {
+  private getAnyUsageSeverity(line: string, index: number): "low" | "medium" | "high" | "critical" {
     // Determine severity based on context
     if (line.includes("// TODO") || line.includes("// FIXME")) {
       return "medium";
@@ -895,18 +800,14 @@ export class TypeSafetyCompliance {
     return "critical";
   }
 
-  private getTypeAssertionSeverity(
-    line: string,
-  ): "low" | "medium" | "high" | "critical" {
+  private getTypeAssertionSeverity(line: string): "low" | "medium" | "high" | "critical" {
     if (line.includes("as HTMLElement") || line.includes("as Element")) {
       return "medium";
     }
     return "high";
   }
 
-  private getNonNullAssertionSeverity(
-    line: string,
-  ): "low" | "medium" | "high" | "critical" {
+  private getNonNullAssertionSeverity(line: string): "low" | "medium" | "high" | "critical" {
     if (line.includes("!.")) {
       return "medium";
     }

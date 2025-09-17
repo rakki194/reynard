@@ -15,7 +15,7 @@ export interface StatusProps {
   enablePerformanceOptimization: () => boolean;
 }
 
-export const EnhancedStatus: Component<StatusProps> = (props) => {
+export const EnhancedStatus: Component<StatusProps> = props => {
   return (
     <Card class="status-panel">
       <h3>System Status</h3>
@@ -34,9 +34,7 @@ export const EnhancedStatus: Component<StatusProps> = (props) => {
         </div>
         <div class="status-item">
           <span class="status-label">Stroboscopic:</span>
-          <span
-            class={`status-value ${props.stroboscopicState()?.isStroboscopic ? "active" : "inactive"}`}
-          >
+          <span class={`status-value ${props.stroboscopicState()?.isStroboscopic ? "active" : "inactive"}`}>
             {props.stroboscopicState()?.isStroboscopic ? "Active" : "Inactive"}
           </span>
         </div>
@@ -46,9 +44,7 @@ export const EnhancedStatus: Component<StatusProps> = (props) => {
         </div>
         <div class="status-item">
           <span class="status-label">Performance:</span>
-          <span
-            class={`status-value ${props.enablePerformanceOptimization() ? "optimized" : "normal"}`}
-          >
+          <span class={`status-value ${props.enablePerformanceOptimization() ? "optimized" : "normal"}`}>
             {props.enablePerformanceOptimization() ? "Optimized" : "Normal"}
           </span>
         </div>

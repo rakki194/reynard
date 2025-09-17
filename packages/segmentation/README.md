@@ -43,13 +43,11 @@ function MySegmentationApp() {
         allowPolygonCreation: true,
       }}
       events={{
-        onSegmentationCreate: (segmentation) => {
-          setSegmentations((prev) => [...prev, segmentation]);
+        onSegmentationCreate: segmentation => {
+          setSegmentations(prev => [...prev, segmentation]);
         },
-        onSegmentationUpdate: (segmentation) => {
-          setSegmentations((prev) =>
-            prev.map((s) => (s.id === segmentation.id ? segmentation : s)),
-          );
+        onSegmentationUpdate: segmentation => {
+          setSegmentations(prev => prev.map(s => (s.id === segmentation.id ? segmentation : s)));
         },
       }}
     />
@@ -133,10 +131,7 @@ const customConfig = {
 ### Service Integration
 
 ```tsx
-import {
-  SegmentationManager,
-  initializeSegmentationManager,
-} from "reynard-segmentation";
+import { SegmentationManager, initializeSegmentationManager } from "reynard-segmentation";
 
 // Initialize the segmentation manager
 const manager = await initializeSegmentationManager();
@@ -162,18 +157,9 @@ console.log("Generated segmentation:", result.segmentation);
 import { SegmentationExportFormat } from "reynard-segmentation";
 
 // Export to different formats
-const cocoData = manager.exportSegmentation(
-  segmentation,
-  SegmentationExportFormat.COCO,
-);
-const yoloData = manager.exportSegmentation(
-  segmentation,
-  SegmentationExportFormat.YOLO,
-);
-const reynardData = manager.exportSegmentation(
-  segmentation,
-  SegmentationExportFormat.REYNARD,
-);
+const cocoData = manager.exportSegmentation(segmentation, SegmentationExportFormat.COCO);
+const yoloData = manager.exportSegmentation(segmentation, SegmentationExportFormat.YOLO);
+const reynardData = manager.exportSegmentation(segmentation, SegmentationExportFormat.REYNARD);
 
 // Import segmentation data
 const importedSegmentation = manager.importSegmentation(cocoData);

@@ -29,12 +29,14 @@ services/
 ## 🚀 **Quick Start**
 
 ### 1. Complete Setup
+
 ```bash
 # From the Reynard root directory
 ./setup-dev.sh
 ```
 
 ### 2. Using Makefile
+
 ```bash
 # Complete development setup
 make -f Makefile.dev setup
@@ -54,6 +56,7 @@ make -f Makefile.dev lint
 ```
 
 ### 3. Manual Installation
+
 ```bash
 # Activate virtual environment
 source venv/bin/activate
@@ -68,24 +71,28 @@ cd services/mcp-server && pip install -e .
 ## 📦 **Service Details**
 
 ### 🦊 Agent Naming (`reynard-agent-naming`)
+
 - **Purpose**: Agent naming system with animal spirit themes
 - **Package**: `reynard_agent_naming`
 - **Dependencies**: None (pure Python)
 - **Usage**: `from reynard_agent_naming import AgentNameManager`
 
 ### 🌍 ECS World (`reynard-ecs-world`)
+
 - **Purpose**: ECS World simulation system for agent management
 - **Package**: `reynard_ecs_world`
 - **Dependencies**: pydantic, asyncio, typing-extensions
 - **Usage**: `from reynard_ecs_world import AgentWorld`
 
 ### 🛡️ Gatekeeper (`reynard-gatekeeper`)
+
 - **Purpose**: Authentication and authorization system
 - **Package**: `reynard_gatekeeper`
 - **Dependencies**: fastapi, pydantic, python-jose, argon2-cffi
 - **Usage**: `from reynard_gatekeeper import AuthManager`
 
 ### 🔧 MCP Server (`reynard-mcp-server`)
+
 - **Purpose**: MCP server with comprehensive development tools
 - **Package**: `reynard_mcp_server`
 - **Dependencies**: All other services + aiohttp, PyJWT
@@ -94,26 +101,31 @@ cd services/mcp-server && pip install -e .
 ## 🔄 **Development Workflow**
 
 ### 1. **Setup Environment**
+
 ```bash
 ./setup-dev.sh
 ```
 
 ### 2. **Make Changes**
+
 - Edit code in any service
 - Services are installed in development mode, so changes are immediately available
 
 ### 3. **Test Changes**
+
 ```bash
 make -f Makefile.dev test
 ```
 
 ### 4. **Format and Lint**
+
 ```bash
 make -f Makefile.dev format
 make -f Makefile.dev lint
 ```
 
 ### 5. **Run Services**
+
 ```bash
 # MCP Server
 make -f Makefile.dev mcp-server
@@ -140,10 +152,12 @@ cd services/mcp-server && python -m pytest tests/
 ## 📋 **Dependencies**
 
 ### Root Dependencies
+
 - All tooling (black, isort, mypy, ruff, pytest)
 - Development utilities
 
 ### Service Dependencies
+
 - **agent-naming**: None (pure Python)
 - **ecs-world**: pydantic, asyncio, typing-extensions
 - **gatekeeper**: fastapi, pydantic, python-jose, argon2-cffi
@@ -152,11 +166,13 @@ cd services/mcp-server && python -m pytest tests/
 ## 🔧 **Configuration**
 
 ### Virtual Environment
+
 - **Location**: `venv/` in project root
 - **Activation**: `source venv/bin/activate`
 - **Python Version**: 3.8+
 
 ### Package Installation
+
 - All services installed in **editable mode** (`-e`)
 - Changes to source code are immediately available
 - No need to reinstall after code changes
@@ -164,6 +180,7 @@ cd services/mcp-server && python -m pytest tests/
 ## 🚨 **Troubleshooting**
 
 ### Import Errors
+
 ```bash
 # Reinstall services
 make -f Makefile.dev services-install
@@ -173,6 +190,7 @@ python -c "from reynard_agent_naming import AgentNameManager; print('OK')"
 ```
 
 ### Virtual Environment Issues
+
 ```bash
 # Recreate virtual environment
 rm -rf venv
@@ -180,6 +198,7 @@ rm -rf venv
 ```
 
 ### Dependency Conflicts
+
 ```bash
 # Clean and reinstall
 make -f Makefile.dev clean
@@ -189,21 +208,25 @@ make -f Makefile.dev clean
 ## 🎯 **Benefits of This Architecture**
 
 ### ✅ **Proper Package Management**
+
 - No more `sys.path` manipulation
 - Clean, explicit dependencies
 - Proper Python package structure
 
 ### ✅ **Development Efficiency**
+
 - Editable installations
 - Immediate code changes
 - Proper dependency resolution
 
 ### ✅ **Maintainability**
+
 - Clear service boundaries
 - Independent versioning
 - Easy to add new services
 
 ### ✅ **Production Ready**
+
 - Proper package metadata
 - Build system integration
 - Distribution ready
@@ -218,6 +241,4 @@ make -f Makefile.dev clean
 
 ---
 
-🦊 *whiskers twitch with satisfaction* This architecture provides the foundation for scalable, maintainable development while preserving the Reynard way of excellence!
-
-
+🦊 _whiskers twitch with satisfaction_ This architecture provides the foundation for scalable, maintainable development while preserving the Reynard way of excellence!

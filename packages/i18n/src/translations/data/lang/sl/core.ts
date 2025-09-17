@@ -75,36 +75,24 @@ export const coreTranslations = {
   // Validacija gesla
   password: {
     "must-be-at-least-8-characters-long": "Geslo mora imeti vsaj 8 znakov",
-    "must-contain-at-least-one-uppercase-letter":
-      "Geslo mora vsebovati vsaj eno veliko črko",
-    "must-contain-at-least-one-lowercase-letter":
-      "Geslo mora vsebovati vsaj eno malo črko",
-    "must-contain-at-least-one-number":
-      "Geslo mora vsebovati vsaj eno številko",
-    "must-contain-at-least-one-special-character":
-      "Geslo mora vsebovati vsaj en poseben znak",
+    "must-contain-at-least-one-uppercase-letter": "Geslo mora vsebovati vsaj eno veliko črko",
+    "must-contain-at-least-one-lowercase-letter": "Geslo mora vsebovati vsaj eno malo črko",
+    "must-contain-at-least-one-number": "Geslo mora vsebovati vsaj eno številko",
+    "must-contain-at-least-one-special-character": "Geslo mora vsebovati vsaj en poseben znak",
   },
 
   // Validacija varnosti
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Vključen mora biti vsaj en tip znaka",
-    "input-contains-potentially-dangerous-html":
-      "Vnos vsebuje potencialno nevaren HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Vnos vsebuje potencialno nevarne SQL vzorce",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Vnos vsebuje potencialno nevarne XSS vzorce",
-    "input-contains-path-traversal-patterns":
-      "Vnos vsebuje vzorce prečkanja poti",
-    "input-contains-windows-reserved-names":
-      "Vnos vsebuje rezervirana imena Windows",
-    "input-contains-executable-file-extensions":
-      "Vnos vsebuje razširitve izvršljivih datotek",
+    "at-least-one-character-type-must-be-included": "Vključen mora biti vsaj en tip znaka",
+    "input-contains-potentially-dangerous-html": "Vnos vsebuje potencialno nevaren HTML",
+    "input-contains-potentially-dangerous-sql-patterns": "Vnos vsebuje potencialno nevarne SQL vzorce",
+    "input-contains-potentially-dangerous-xss-patterns": "Vnos vsebuje potencialno nevarne XSS vzorce",
+    "input-contains-path-traversal-patterns": "Vnos vsebuje vzorce prečkanja poti",
+    "input-contains-windows-reserved-names": "Vnos vsebuje rezervirana imena Windows",
+    "input-contains-executable-file-extensions": "Vnos vsebuje razširitve izvršljivih datotek",
     "input-contains-null-bytes": "Vnos vsebuje null bajte",
     "input-contains-hidden-files": "Vnos vsebuje skrite datoteke",
-    "input-contains-javascript-file-extensions":
-      "Vnos vsebuje razširitve JavaScript datotek",
+    "input-contains-javascript-file-extensions": "Vnos vsebuje razširitve JavaScript datotek",
   },
 
   // Asinhrone operacije
@@ -132,10 +120,8 @@ export const coreTranslations = {
   // Shranjevanje in serializacija
   storage: {
     "potentially-dangerous-json-detected": "Zaznan potencialno nevaren JSON",
-    "failed-to-parse-json-from-localstorage":
-      "Razčlenjevanje JSON iz localStorage ni uspelo:",
-    "error-parsing-storage-event":
-      "Napaka pri razčlenjevanju dogodka shranjevanja za ključ",
+    "failed-to-parse-json-from-localstorage": "Razčlenjevanje JSON iz localStorage ni uspelo:",
+    "error-parsing-storage-event": "Napaka pri razčlenjevanju dogodka shranjevanja za ključ",
   },
 
   // Test in razvoj
@@ -172,9 +158,7 @@ export const coreTranslations = {
   // Integracijski testi
   integration: {
     "session-and-api-key-generation": "Generiranje seje in API ključa",
-    "authentication-and-input-validation-integration":
-      "Integracija avtentifikacije in validacije vnosa",
-    "performance-and-security-integration":
-      "Integracija zmogljivosti in varnosti",
+    "authentication-and-input-validation-integration": "Integracija avtentifikacije in validacije vnosa",
+    "performance-and-security-integration": "Integracija zmogljivosti in varnosti",
   },
 };

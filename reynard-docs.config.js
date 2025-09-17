@@ -222,8 +222,7 @@ export default {
     backgroundColor: "#ffffff",
     textColor: "#1f2937",
     accentColor: "#f59e0b",
-    fontFamily:
-      'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   },
 
   // Navigation configuration

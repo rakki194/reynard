@@ -206,9 +206,7 @@ export class ImageFormatUtils {
    * @param extension - File extension
    * @returns Format information or undefined
    */
-  static async getFormatInfo(
-    extension: string,
-  ): Promise<ImageFormatInfo | undefined> {
+  static async getFormatInfo(extension: string): Promise<ImageFormatInfo | undefined> {
     const normalizedExt = extension.toLowerCase();
 
     // For plugin formats, check runtime availability
@@ -234,9 +232,7 @@ export class ImageFormatUtils {
       await this.updatePluginSupport();
     }
 
-    return Object.keys(SUPPORTED_IMAGE_FORMATS).some((ext) =>
-      path.endsWith(ext),
-    );
+    return Object.keys(SUPPORTED_IMAGE_FORMATS).some(ext => path.endsWith(ext));
   }
 
   /**
@@ -267,9 +263,7 @@ export class ImageFormatUtils {
    * @returns True if the format requires plugins
    */
   static requiresPlugin(extension: string): boolean {
-    return (
-      SUPPORTED_IMAGE_FORMATS[extension.toLowerCase()]?.requiresPlugin ?? false
-    );
+    return SUPPORTED_IMAGE_FORMATS[extension.toLowerCase()]?.requiresPlugin ?? false;
   }
 
   /**
@@ -298,9 +292,7 @@ export class ImageFormatUtils {
    * @returns Array of supported format information
    */
   static getSupportedFormatsInfo(): ImageFormatInfo[] {
-    return Object.values(SUPPORTED_IMAGE_FORMATS).filter(
-      (format) => format.supported,
-    );
+    return Object.values(SUPPORTED_IMAGE_FORMATS).filter(format => format.supported);
   }
 
   /**
@@ -311,14 +303,8 @@ export class ImageFormatUtils {
    * @param suffix - Optional suffix to add
    * @returns Generated filename
    */
-  static generateFilename(
-    baseName: string,
-    extension: string,
-    suffix?: string,
-  ): string {
-    const normalizedExt = extension.startsWith(".")
-      ? extension
-      : `.${extension}`;
+  static generateFilename(baseName: string, extension: string, suffix?: string): string {
+    const normalizedExt = extension.startsWith(".") ? extension : `.${extension}`;
     const suffixPart = suffix ? `_${suffix}` : "";
     return `${baseName}${suffixPart}${normalizedExt}`;
   }

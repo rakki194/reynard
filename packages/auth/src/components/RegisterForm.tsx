@@ -3,14 +3,8 @@
  * Complete registration form with validation and password strength checking
  */
 
-import {
-  Component,
-  createSignal,
-  createMemo,
-  Show,
-  splitProps,
-} from "solid-js";
-import { Button, Toggle } from "reynard-components";;
+import { Component, createSignal, createMemo, Show, splitProps } from "solid-js";
+import { Button, Toggle } from "reynard-components";
 import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
 import type { RegisterData } from "../types";
 import { validateEmail, validateUsername } from "../utils";
@@ -53,7 +47,7 @@ const defaultProps = {
   showLoginLink: true,
 };
 
-export const RegisterForm: Component<RegisterFormProps> = (props) => {
+export const RegisterForm: Component<RegisterFormProps> = props => {
   const merged = { ...defaultProps, ...props };
   const [local, others] = splitProps(merged, [
     "loading",
@@ -95,16 +89,14 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
   const emailError = createMemo(() => {
     const value = email().trim();
     if (local.requireEmail && !value) return "Email is required";
-    if (value && !validateEmail(value))
-      return "Please enter a valid email address";
+    if (value && !validateEmail(value)) return "Please enter a valid email address";
     return null;
   });
 
   const fullNameError = createMemo(() => {
     const value = fullName().trim();
     if (local.requireFullName && !value) return "Full name is required";
-    if (value && value.length < 2)
-      return "Full name must be at least 2 characters";
+    if (value && value.length < 2) return "Full name must be at least 2 characters";
     return null;
   });
 
@@ -180,40 +172,31 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
           {/* Header */}
           <div class="register-form__header">
             <h1 class="register-form__title">Create Account</h1>
-            <p class="register-form__subtitle">
-              Join us today! Please fill in the details below.
-            </p>
+            <p class="register-form__subtitle">Join us today! Please fill in the details below.</p>
           </div>
 
           {/* Success Message */}
           <Show when={local.successMessage}>
-            <div class="register-form__message register-form__message--success">
-              {local.successMessage}
-            </div>
+            <div class="register-form__message register-form__message--success">{local.successMessage}</div>
           </Show>
 
           {/* Error Message */}
           <Show when={local.error}>
-            <div class="register-form__message register-form__message--error">
-              {local.error}
-            </div>
+            <div class="register-form__message register-form__message--error">{local.error}</div>
           </Show>
 
           {/* Full Name Field */}
           <Show when={local.requireFullName || fullName()}>
             <div class="register-form__field">
               <label for="fullName" class="register-form__label">
-                Full Name{" "}
-                {local.requireFullName && (
-                  <span class="register-form__required">*</span>
-                )}
+                Full Name {local.requireFullName && <span class="register-form__required">*</span>}
               </label>
               <input
                 id="fullName"
                 type="text"
                 class={`register-form__input ${fullNameError() ? "register-form__input--error" : ""}`}
                 value={fullName()}
-                onInput={(e) => setFullName(e.target.value)}
+                onInput={e => setFullName(e.target.value)}
                 placeholder="Enter your full name"
                 disabled={local.loading}
                 autocomplete="name"
@@ -234,7 +217,7 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
               type="text"
               class={`register-form__input ${usernameError() ? "register-form__input--error" : ""}`}
               value={username()}
-              onInput={(e) => setUsername(e.target.value)}
+              onInput={e => setUsername(e.target.value)}
               placeholder="Choose a username"
               disabled={local.loading}
               autocomplete="username"
@@ -249,17 +232,14 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
           <Show when={local.requireEmail || email()}>
             <div class="register-form__field">
               <label for="email" class="register-form__label">
-                Email Address{" "}
-                {local.requireEmail && (
-                  <span class="register-form__required">*</span>
-                )}
+                Email Address {local.requireEmail && <span class="register-form__required">*</span>}
               </label>
               <input
                 id="email"
                 type="email"
                 class={`register-form__input ${emailError() ? "register-form__input--error" : ""}`}
                 value={email()}
-                onInput={(e) => setEmail(e.target.value)}
+                onInput={e => setEmail(e.target.value)}
                 placeholder="Enter your email address"
                 disabled={local.loading}
                 autocomplete="email"
@@ -281,7 +261,7 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
                 type={showPassword() ? "text" : "password"}
                 class={`register-form__input ${passwordError() ? "register-form__input--error" : ""}`}
                 value={password()}
-                onInput={(e) => setPassword(e.target.value)}
+                onInput={e => setPassword(e.target.value)}
                 placeholder="Create a strong password"
                 disabled={local.loading}
                 autocomplete="new-password"
@@ -324,7 +304,7 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
                 type={showConfirmPassword() ? "text" : "password"}
                 class={`register-form__input ${confirmPasswordError() ? "register-form__input--error" : ""}`}
                 value={confirmPassword()}
-                onInput={(e) => setConfirmPassword(e.target.value)}
+                onInput={e => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your password"
                 disabled={local.loading}
                 autocomplete="new-password"
@@ -335,9 +315,7 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
                 class="register-form__password-toggle"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword())}
                 disabled={local.loading}
-                aria-label={
-                  showConfirmPassword() ? "Hide password" : "Show password"
-                }
+                aria-label={showConfirmPassword() ? "Hide password" : "Show password"}
               >
                 {showConfirmPassword() ? "👁️‍🗨️" : "👁️"}
               </button>
@@ -354,18 +332,14 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
                 <Toggle
                   size="sm"
                   checked={acceptTerms()}
-                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  onChange={e => setAcceptTerms(e.target.checked)}
                   disabled={local.loading}
                   required
                 />
                 <span class="register-form__checkbox-mark"></span>
                 <span class="register-form__checkbox-label">
                   I agree to the{" "}
-                  <button
-                    type="button"
-                    class="register-form__link"
-                    onClick={local.onTermsClick}
-                  >
+                  <button type="button" class="register-form__link" onClick={local.onTermsClick}>
                     Terms of Service
                   </button>
                 </span>
@@ -380,18 +354,14 @@ export const RegisterForm: Component<RegisterFormProps> = (props) => {
                 <Toggle
                   size="sm"
                   checked={local.acceptPrivacy}
-                  onChange={(e) => setAcceptPrivacy(e.target.checked)}
+                  onChange={e => setAcceptPrivacy(e.target.checked)}
                   disabled={local.loading}
                   required
                 />
                 <span class="register-form__checkbox-mark"></span>
                 <span class="register-form__checkbox-label">
                   I agree to the{" "}
-                  <button
-                    type="button"
-                    class="register-form__link"
-                    onClick={local.onPrivacyClick}
-                  >
+                  <button type="button" class="register-form__link" onClick={local.onPrivacyClick}>
                     Privacy Policy
                   </button>
                 </span>

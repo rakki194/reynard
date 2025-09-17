@@ -127,12 +127,7 @@ export interface PointCloudSettings {
   enableCulling?: boolean;
   lodDistance?: number;
   lodLevels?: number;
-  colorMapping?:
-    | "similarity"
-    | "cluster"
-    | "importance"
-    | "confidence"
-    | "custom";
+  colorMapping?: "similarity" | "cluster" | "importance" | "confidence" | "custom";
   sizeMapping?: "importance" | "confidence" | "uniform";
   enableHighlighting?: boolean;
   highlightColor?: [number, number, number];
@@ -326,12 +321,7 @@ export interface ThreeJSVisualizationProps {
   maxDistance?: number;
   maxPolarAngle?: number;
   className?: string;
-  onSceneReady?: (
-    scene: any,
-    camera: any,
-    renderer: any,
-    controls: any,
-  ) => void;
+  onSceneReady?: (scene: any, camera: any, renderer: any, controls: any) => void;
   onRender?: (scene: any, camera: any, renderer: any, controls: any) => void;
   onControlsChange?: (event: any) => void;
   enableCameraAnimations?: boolean;
@@ -339,8 +329,7 @@ export interface ThreeJSVisualizationProps {
   onCameraAnimationEnd?: () => void;
 }
 
-export interface PointCloudVisualizationProps
-  extends ThreeJSVisualizationProps {
+export interface PointCloudVisualizationProps extends ThreeJSVisualizationProps {
   points: Point3D[];
   settings?: PointCloudSettings;
   animationSettings?: AnimationSettings;

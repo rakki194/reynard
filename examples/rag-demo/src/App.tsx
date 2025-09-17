@@ -53,12 +53,8 @@ interface _RAGStats {
 }
 
 const RAGDemoApp: Component = () => {
-  const [selectedResult, setSelectedResult] = createSignal<RAGResult | null>(
-    null,
-  );
-  const [apiStatus, setApiStatus] = createSignal<
-    "checking" | "connected" | "error"
-  >("checking");
+  const [selectedResult, setSelectedResult] = createSignal<RAGResult | null>(null);
+  const [apiStatus, setApiStatus] = createSignal<"checking" | "connected" | "error">("checking");
   const [apiError, setApiError] = createSignal<string | null>(null);
   const { theme: _theme } = useTheme();
 
@@ -117,16 +113,12 @@ const RAGDemoApp: Component = () => {
             <div class="header-icon">{getIcon("server")}</div>
             <h1>RAG Demo</h1>
           </div>
-          <p class="header-subtitle">
-            Retrieval-Augmented Generation with EmbeddingGemma
-          </p>
+          <p class="header-subtitle">Retrieval-Augmented Generation with EmbeddingGemma</p>
 
           {/* API Status */}
           <div class="api-status">
             <div class={`status-indicator ${getStatusColor()}`} />
-            <span class={`status-text ${getStatusColor()}`}>
-              API: {getStatusText()}
-            </span>
+            <span class={`status-text ${getStatusColor()}`}>API: {getStatusText()}</span>
           </div>
 
           <Show when={apiStatus() === "error"}>
@@ -146,10 +138,7 @@ const RAGDemoApp: Component = () => {
             <div class="feature-content">
               <div class="feature-icon brain-icon">{getIcon("server")}</div>
               <h3>EmbeddingGemma</h3>
-              <p>
-                Google's 300M parameter embedding model for state-of-the-art
-                semantic search
-              </p>
+              <p>Google's 300M parameter embedding model for state-of-the-art semantic search</p>
             </div>
           </Card>
 
@@ -157,10 +146,7 @@ const RAGDemoApp: Component = () => {
             <div class="feature-content">
               <div class="feature-icon database-icon">{getIcon("server")}</div>
               <h3>Vector Database</h3>
-              <p>
-                Integrated with PawPrint's existing vector storage and
-                similarity search
-              </p>
+              <p>Integrated with PawPrint's existing vector storage and similarity search</p>
             </div>
           </Card>
 
@@ -168,10 +154,7 @@ const RAGDemoApp: Component = () => {
             <div class="feature-content">
               <div class="feature-icon code-icon">{getIcon("server")}</div>
               <h3>CodeWolf Integration</h3>
-              <p>
-                Enhanced code understanding with semantic code search and
-                analysis
-              </p>
+              <p>Enhanced code understanding with semantic code search and analysis</p>
             </div>
           </Card>
         </div>
@@ -207,9 +190,7 @@ const RAGDemoApp: Component = () => {
                 <div class="result-details">
                   <div class="detail-item">
                     <div class="detail-label">Similarity Score</div>
-                    <div class="similarity-badge">
-                      {(selectedResult()!.similarity_score * 100).toFixed(1)}%
-                    </div>
+                    <div class="similarity-badge">{(selectedResult()!.similarity_score * 100).toFixed(1)}%</div>
                   </div>
 
                   <div class="detail-item">
@@ -219,9 +200,7 @@ const RAGDemoApp: Component = () => {
 
                   <div class="detail-item">
                     <div class="detail-label">Document Source</div>
-                    <div class="source-code">
-                      {selectedResult()!.metadata.document_source || "Unknown"}
-                    </div>
+                    <div class="source-code">{selectedResult()!.metadata.document_source || "Unknown"}</div>
                   </div>
 
                   <div class="detail-item">
@@ -231,9 +210,7 @@ const RAGDemoApp: Component = () => {
 
                   <div class="detail-item">
                     <div class="detail-label">Embedding Model</div>
-                    <div class="model-name">
-                      {selectedResult()!.metadata.embedding_model || "Unknown"}
-                    </div>
+                    <div class="model-name">{selectedResult()!.metadata.embedding_model || "Unknown"}</div>
                   </div>
                 </div>
               </Card>
@@ -251,9 +228,7 @@ const RAGDemoApp: Component = () => {
                   variant="secondary"
                   fullWidth
                   leftIcon={getIcon("open")}
-                  onClick={() =>
-                    window.open("http://localhost:8000/docs", "_blank")
-                  }
+                  onClick={() => window.open("http://localhost:8000/docs", "_blank")}
                 >
                   API Documentation
                 </Button>
@@ -262,12 +237,7 @@ const RAGDemoApp: Component = () => {
                   variant="secondary"
                   fullWidth
                   leftIcon={getIcon("settings")}
-                  onClick={() =>
-                    window.open(
-                      "http://localhost:8000/api/rag/health",
-                      "_blank",
-                    )
-                  }
+                  onClick={() => window.open("http://localhost:8000/api/rag/health", "_blank")}
                 >
                   Health Check
                 </Button>
@@ -276,9 +246,7 @@ const RAGDemoApp: Component = () => {
                   variant="secondary"
                   fullWidth
                   leftIcon={getIcon("open")}
-                  onClick={() =>
-                    window.open("https://github.com/ollama/ollama", "_blank")
-                  }
+                  onClick={() => window.open("https://github.com/ollama/ollama", "_blank")}
                 >
                   Ollama Setup
                 </Button>
@@ -304,9 +272,7 @@ const RAGDemoApp: Component = () => {
                   <div class="step-number">2</div>
                   <div class="step-content">
                     <div class="step-title">Pull EmbeddingGemma</div>
-                    <div class="step-description">
-                      Run: ollama pull embeddinggemma:latest
-                    </div>
+                    <div class="step-description">Run: ollama pull embeddinggemma:latest</div>
                   </div>
                 </div>
 
@@ -322,9 +288,7 @@ const RAGDemoApp: Component = () => {
                   <div class="step-number">4</div>
                   <div class="step-content">
                     <div class="step-title">Upload & Search</div>
-                    <div class="step-description">
-                      Upload documents and start searching!
-                    </div>
+                    <div class="step-description">Upload documents and start searching!</div>
                   </div>
                 </div>
               </div>
@@ -336,8 +300,7 @@ const RAGDemoApp: Component = () => {
       {/* Footer */}
       <footer class="app-footer">
         <p>
-          Built with <span class="heart">♥</span> using Reynard, SolidJS, and
-          EmbeddingGemma
+          Built with <span class="heart">♥</span> using Reynard, SolidJS, and EmbeddingGemma
         </p>
       </footer>
     </div>

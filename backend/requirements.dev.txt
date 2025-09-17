@@ -1,39 +1,70 @@
-# Development dependencies for Reynard Backend
-# Generated from pyproject.toml for compatibility
+# Development, Testing, and RAG Embeddings Optimization Dependencies for Reynard Backend
+# Combined and updated from pyproject.toml for compatibility
 
-# Test dependencies
+# --- Testing dependencies ---
 pytest
 pytest-asyncio
-pytest-cov
 pytest-mock
-pytest-xdist
+pytest-cov
 httpx
-factory-boy
-faker
-freezegun
+fastapi[all]
+uvicorn[standard]
 responses
-
-# Development tools
+freezegun
+factory-boy
 black
 isort
 flake8
 mypy
+pytest-xdist  # Parallel test execution
+pytest-benchmark  # Performance testing
+
+# --- Additional tools and utilities ---
+faker
 pylint
 pre-commit
-
-# Security and code quality tools
 bandit
 safety
-
-# Additional testing utilities
-pytest-benchmark
 pytest-html
 pytest-json-report
-
-# Documentation
 sphinx
 sphinx-rtd-theme
-
-# Type checking and imports
 types-requests
 types-python-dateutil
+
+# --- RAG Embeddings Optimization Dependencies ---
+
+# Phase 1: Immediate optimizations
+
+# Model-specific tokenization
+tiktoken
+
+# System resource monitoring
+psutil
+
+# Performance monitoring and metrics
+prometheus-client
+
+# Statistical analysis for performance metrics
+numpy
+
+# Optional: Advanced tokenization (if needed for specific models)
+# sentencepiece
+
+# Phase 2: Enhanced chunking (future)
+# tree-sitter
+# tree-sitter-python
+# tree-sitter-typescript
+# tree-sitter-javascript
+
+# Phase 2: Hybrid search (future)
+# rank-bm25
+# scikit-learn
+
+# Phase 3: Multi-modal embeddings (future)
+# transformers
+# torch
+# pillow
+
+# Phase 3: Quality monitoring (future)
+# matplotlib

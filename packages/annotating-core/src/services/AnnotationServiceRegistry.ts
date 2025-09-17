@@ -5,12 +5,7 @@
  * that integrates with the ai-shared ServiceRegistry for lifecycle management.
  */
 
-import {
-  ServiceRegistry,
-  getServiceRegistry,
-  BaseAIService,
-  ServiceConfig,
-} from "reynard-ai-shared";
+import { ServiceRegistry, getServiceRegistry, BaseAIService, ServiceConfig } from "reynard-ai-shared";
 import {
   AISharedBackendAnnotationService,
   AISharedBackendAnnotationServiceConfig,
@@ -21,8 +16,7 @@ import {
  */
 export class AnnotationServiceRegistry {
   private serviceRegistry: ServiceRegistry;
-  private annotationServices: Map<string, AISharedBackendAnnotationService> =
-    new Map();
+  private annotationServices: Map<string, AISharedBackendAnnotationService> = new Map();
 
   constructor(serviceRegistry?: ServiceRegistry) {
     this.serviceRegistry = serviceRegistry || getServiceRegistry();
@@ -33,7 +27,7 @@ export class AnnotationServiceRegistry {
    */
   registerAnnotationService(
     name: string,
-    config: AISharedBackendAnnotationServiceConfig,
+    config: AISharedBackendAnnotationServiceConfig
   ): AISharedBackendAnnotationService {
     const service = new AISharedBackendAnnotationService(config);
 
@@ -49,9 +43,7 @@ export class AnnotationServiceRegistry {
   /**
    * Get an annotation service by name
    */
-  getAnnotationService(
-    name: string,
-  ): AISharedBackendAnnotationService | undefined {
+  getAnnotationService(name: string): AISharedBackendAnnotationService | undefined {
     return this.annotationServices.get(name);
   }
 
@@ -91,16 +83,13 @@ export class AnnotationServiceRegistry {
    */
   async startAllAnnotationServices(): Promise<void> {
     const services = this.getAllAnnotationServices();
-    const startPromises = services.map(async (service) => {
+    const startPromises = services.map(async service => {
       try {
         if (!service.isInitialized) {
           await service.start();
         }
       } catch (error) {
-        console.error(
-          `Failed to start annotation service ${service.name}:`,
-          error,
-        );
+        console.error(`Failed to start annotation service ${service.name}:`, error);
       }
     });
 
@@ -112,16 +101,13 @@ export class AnnotationServiceRegistry {
    */
   async stopAllAnnotationServices(): Promise<void> {
     const services = this.getAllAnnotationServices();
-    const stopPromises = services.map(async (service) => {
+    const stopPromises = services.map(async service => {
       try {
         if (service.isInitialized) {
           await service.stop();
         }
       } catch (error) {
-        console.error(
-          `Failed to stop annotation service ${service.name}:`,
-          error,
-        );
+        console.error(`Failed to stop annotation service ${service.name}:`, error);
       }
     });
 
@@ -193,7 +179,7 @@ export function resetAnnotationServiceRegistry(): void {
  */
 export function createDefaultAnnotationService(
   baseUrl: string = "http://localhost:8000",
-  name: string = "default-annotation-service",
+  name: string = "default-annotation-service"
 ): AISharedBackendAnnotationService {
   const registry = getAnnotationServiceRegistry();
 

@@ -6,7 +6,7 @@ interface StatusSectionProps {
   currentTime: Date;
 }
 
-const StatusSection: Component<StatusSectionProps> = (props) => {
+const StatusSection: Component<StatusSectionProps> = props => {
   const { t, locale, isRTL } = useI18n();
   const themeContext = useTheme();
 
@@ -22,13 +22,10 @@ const StatusSection: Component<StatusSectionProps> = (props) => {
         </div>
         <div class="status-item">
           <strong>{getDemoTranslation(locale, "rtl")}:</strong>{" "}
-          {isRTL
-            ? getDemoTranslation(locale, "yes")
-            : getDemoTranslation(locale, "no")}
+          {isRTL ? getDemoTranslation(locale, "yes") : getDemoTranslation(locale, "no")}
         </div>
         <div class="status-item">
-          <strong>{t("core.dateTime.now")}:</strong>{" "}
-          {props.currentTime.toLocaleString()}
+          <strong>{t("core.dateTime.now")}:</strong> {props.currentTime.toLocaleString()}
         </div>
       </div>
     </div>

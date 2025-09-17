@@ -5,15 +5,7 @@
  * room management, user lists, typing indicators, and file sharing.
  */
 
-import {
-  Component,
-  Show,
-  For,
-  createEffect,
-  createSignal,
-  onCleanup,
-  createMemo,
-} from "solid-js";
+import { Component, Show, For, createEffect, createSignal, onCleanup, createMemo } from "solid-js";
 import { useP2PChat } from "../composables/useP2PChat";
 import { MessageInput } from "./MessageInput";
 import { RoomList } from "./RoomList";
@@ -21,11 +13,9 @@ import { UserList } from "./UserList";
 import { P2PMessage } from "./P2PMessage";
 import type { P2PChatContainerProps } from "../types/p2p";
 
-export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
+export const P2PChatContainer: Component<P2PChatContainerProps> = props => {
   const [sidebarOpen, setSidebarOpen] = createSignal(true);
-  const [userListOpen, setUserListOpen] = createSignal(
-    props.ui?.showUserList ?? true,
-  );
+  const [userListOpen, setUserListOpen] = createSignal(props.ui?.showUserList ?? true);
   const [searchQuery, setSearchQuery] = createSignal("");
 
   let messagesContainerRef: HTMLDivElement | undefined;
@@ -117,9 +107,8 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
     return p2pChat
       .rooms()
       .filter(
-        (room) =>
-          room.name.toLowerCase().includes(query) ||
-          room.participants.some((p) => p.name.toLowerCase().includes(query)),
+        room =>
+          room.name.toLowerCase().includes(query) || room.participants.some(p => p.name.toLowerCase().includes(query))
       );
   });
 
@@ -135,9 +124,7 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
     if (!room) return [];
 
     const indicators = p2pChat.typingIndicators()[room.id] || [];
-    return indicators
-      .filter((t) => t.user.id !== props.currentUser.id)
-      .map((t) => t.user);
+    return indicators.filter(t => t.user.id !== props.currentUser.id).map(t => t.user);
   });
 
   // Connection status display
@@ -167,20 +154,14 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
   });
 
   return (
-    <div
-      class={`reynard-p2p-chat-container ${props.ui?.compact ? "reynard-p2p-chat-container--compact" : ""}`}
-    >
+    <div class={`reynard-p2p-chat-container ${props.ui?.compact ? "reynard-p2p-chat-container--compact" : ""}`}>
       {/* Sidebar */}
       <Show when={sidebarOpen() && (props.ui?.showRoomList ?? true)}>
         <div class="reynard-p2p-chat-sidebar">
           {/* Connection Status */}
           <div class="reynard-p2p-chat-status">
-            <span class="reynard-p2p-chat-status__indicator">
-              {getConnectionStatus().icon}
-            </span>
-            <span class="reynard-p2p-chat-status__text">
-              {getConnectionStatus().text}
-            </span>
+            <span class="reynard-p2p-chat-status__indicator">{getConnectionStatus().icon}</span>
+            <span class="reynard-p2p-chat-status__text">{getConnectionStatus().text}</span>
             <button
               class="reynard-p2p-chat-status__toggle"
               onClick={() => setSidebarOpen(!sidebarOpen())}
@@ -223,12 +204,8 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
             </Show>
 
             <div class="reynard-p2p-chat-header__info">
-              <h2 class="reynard-p2p-chat-header__title">
-                {p2pChat.activeRoom()!.name}
-              </h2>
-              <span class="reynard-p2p-chat-header__participants">
-                {currentRoomParticipants().length} participants
-              </span>
+              <h2 class="reynard-p2p-chat-header__title">{p2pChat.activeRoom()!.name}</h2>
+              <span class="reynard-p2p-chat-header__participants">{currentRoomParticipants().length} participants</span>
             </div>
 
             <div class="reynard-p2p-chat-header__actions">
@@ -252,19 +229,13 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
             fallback={
               <div class="reynard-p2p-chat-empty">
                 <div class="reynard-p2p-chat-empty__icon">💬</div>
-                <div class="reynard-p2p-chat-empty__text">
-                  Select a room to start chatting
-                </div>
+                <div class="reynard-p2p-chat-empty__text">Select a room to start chatting</div>
               </div>
             }
           >
-            <div
-              ref={messagesContainerRef}
-              class="reynard-p2p-chat-messages"
-              onScroll={handleScroll}
-            >
+            <div ref={messagesContainerRef} class="reynard-p2p-chat-messages" onScroll={handleScroll}>
               <For each={p2pChat.messages()}>
-                {(message) => (
+                {message => (
                   <P2PMessage
                     message={message}
                     currentUser={props.currentUser}
@@ -277,7 +248,7 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
                       console.log("Message action:", action, msg);
                       // Handle message actions (edit, delete, reply, etc.)
                     }}
-                    onReaction={(emoji) => {
+                    onReaction={emoji => {
                       if (props.config?.enableReactions) {
                         p2pChat.actions.reactToMessage(message.id, emoji);
                       }
@@ -291,11 +262,7 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
                 <div class="reynard-p2p-chat-typing">
                   <div class="reynard-p2p-chat-typing__avatars">
                     <For each={typingUsers()}>
-                      {(user) => (
-                        <div class="reynard-p2p-chat-typing__avatar">
-                          {user.avatar || user.name.charAt(0)}
-                        </div>
-                      )}
+                      {user => <div class="reynard-p2p-chat-typing__avatar">{user.avatar || user.name.charAt(0)}</div>}
                     </For>
                   </div>
                   <div class="reynard-p2p-chat-typing__text">
@@ -330,18 +297,12 @@ export const P2PChatContainer: Component<P2PChatContainerProps> = (props) => {
       </div>
 
       {/* User List */}
-      <Show
-        when={
-          userListOpen() &&
-          p2pChat.activeRoom() &&
-          (props.ui?.showUserList ?? true)
-        }
-      >
+      <Show when={userListOpen() && p2pChat.activeRoom() && (props.ui?.showUserList ?? true)}>
         <div class="reynard-p2p-chat-userlist">
           <UserList
             users={currentRoomParticipants()}
             currentUser={props.currentUser}
-            onUserSelect={(user) => {
+            onUserSelect={user => {
               console.log("User selected:", user);
               // TODO: Handle user selection (profile, DM, etc.)
             }}

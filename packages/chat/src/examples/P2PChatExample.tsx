@@ -40,11 +40,9 @@ export const BasicP2PChat: Component = () => {
           showRoomList: true,
           compact: false,
         }}
-        onRoomJoined={(room) => console.log("Joined room:", room.name)}
-        onMessageReceived={(message) =>
-          console.log("New message:", message.content)
-        }
-        onError={(error) => console.error("Chat error:", error)}
+        onRoomJoined={room => console.log("Joined room:", room.name)}
+        onMessageReceived={message => console.log("New message:", message.content)}
+        onError={error => console.error("Chat error:", error)}
       />
     </div>
   );
@@ -52,9 +50,7 @@ export const BasicP2PChat: Component = () => {
 
 // Example: Side-by-side Assistant and P2P Chat
 export const DualChatExample: Component = () => {
-  const [activeTab, setActiveTab] = createSignal<"assistant" | "p2p">(
-    "assistant",
-  );
+  const [activeTab, setActiveTab] = createSignal<"assistant" | "p2p">("assistant");
 
   const currentUser: ChatUser = {
     id: "user-123",
@@ -133,11 +129,9 @@ export const CustomP2PChat: Component = () => {
   };
 
   const handleCreateDirectMessage = async (userId: string) => {
-    const room = await p2pChat.actions.createRoom(
-      `DM with ${userId}`,
-      "direct",
-      [{ id: userId, name: "Other User", status: "online" }],
-    );
+    const room = await p2pChat.actions.createRoom(`DM with ${userId}`, "direct", [
+      { id: userId, name: "Other User", status: "online" },
+    ]);
     p2pChat.actions.switchRoom(room.id);
   };
 
@@ -148,24 +142,19 @@ export const CustomP2PChat: Component = () => {
         <h3>Rooms ({p2pChat.rooms().length})</h3>
         <div>
           <For each={p2pChat.rooms()}>
-            {(room) => (
+            {room => (
               <div
                 class={`p2p-room-item ${p2pChat.activeRoom()?.id === room.id ? "p2p-room-item-active" : "p2p-room-item-inactive"}`}
                 onClick={() => p2pChat.actions.switchRoom(room.id)}
               >
                 <strong>{room.name}</strong>
-                {room.unreadCount && room.unreadCount > 0 && (
-                  <span class="p2p-unread-badge">{room.unreadCount}</span>
-                )}
+                {room.unreadCount && room.unreadCount > 0 && <span class="p2p-unread-badge">{room.unreadCount}</span>}
               </div>
             )}
           </For>
         </div>
 
-        <button
-          onClick={() => handleCreateDirectMessage("other-user-id")}
-          class="p2p-start-dm-button"
-        >
+        <button onClick={() => handleCreateDirectMessage("other-user-id")} class="p2p-start-dm-button">
           Start DM
         </button>
       </div>
@@ -175,17 +164,13 @@ export const CustomP2PChat: Component = () => {
         {/* Messages */}
         <div class="p2p-messages-container">
           <For each={p2pChat.messages()}>
-            {(message) => (
+            {message => (
               <div
                 class={`p2p-message ${message.sender?.id === currentUser.id ? "p2p-message-own" : "p2p-message-other"}`}
               >
-                <div class="p2p-message-sender">
-                  {message.sender?.name || "Unknown"}
-                </div>
+                <div class="p2p-message-sender">{message.sender?.name || "Unknown"}</div>
                 <div>{message.content}</div>
-                <div class="p2p-message-timestamp">
-                  {new Date(message.timestamp).toLocaleTimeString()}
-                </div>
+                <div class="p2p-message-timestamp">{new Date(message.timestamp).toLocaleTimeString()}</div>
               </div>
             )}
           </For>
@@ -197,7 +182,7 @@ export const CustomP2PChat: Component = () => {
             type="text"
             placeholder="Type a message..."
             class="p2p-message-input"
-            onKeyDown={(e) => {
+            onKeyDown={e => {
               if (e.key === "Enter") {
                 const target = e.target as HTMLInputElement;
                 if (target.value.trim()) {
@@ -249,7 +234,7 @@ export const RealtimeFeaturesDemo: Component = () => {
           class="p2p-demo-select"
           aria-label="Select user status"
           value={currentUser.status}
-          onChange={(e) => {
+          onChange={e => {
             const newStatus = e.target.value as ChatUser["status"];
             p2pChat.actions.updateUserStatusViaWebSocket(newStatus);
           }}
@@ -287,15 +272,12 @@ export const RealtimeFeaturesDemo: Component = () => {
           type="file"
           class="p2p-demo-file-input"
           aria-label="Select file to upload"
-          onChange={async (e) => {
+          onChange={async e => {
             const file = e.target.files?.[0];
             const activeRoom = p2pChat.activeRoom();
             if (file && activeRoom) {
               try {
-                const attachment = await p2pChat.actions.uploadFile(
-                  file,
-                  activeRoom.id,
-                );
+                const attachment = await p2pChat.actions.uploadFile(file, activeRoom.id);
                 console.log("File uploaded:", attachment);
               } catch (error) {
                 console.error("Upload failed:", error);
@@ -312,7 +294,7 @@ export const RealtimeFeaturesDemo: Component = () => {
           type="text"
           placeholder="Search messages..."
           class="p2p-demo-input"
-          onInput={async (e) => {
+          onInput={async e => {
             const query = e.target.value;
             if (query.length > 2) {
               const results = await p2pChat.actions.searchMessages(query);

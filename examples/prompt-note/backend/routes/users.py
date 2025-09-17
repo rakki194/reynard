@@ -4,11 +4,11 @@ Provides user CRUD operations and management endpoints
 """
 
 import time
-from typing import Any, Dict, List, Optional
 
 from database import DatabaseService
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr
+
 from services import CacheService
 
 router = APIRouter()
@@ -19,14 +19,14 @@ class UserCreate(BaseModel):
 
     username: str
     email: EmailStr
-    full_name: Optional[str] = None
+    full_name: str | None = None
 
 
 class UserUpdate(BaseModel):
     """User update model"""
 
-    email: Optional[EmailStr] = None
-    full_name: Optional[str] = None
+    email: EmailStr | None = None
+    full_name: str | None = None
 
 
 class UserResponse(BaseModel):
@@ -35,9 +35,9 @@ class UserResponse(BaseModel):
     id: int
     username: str
     email: str
-    full_name: Optional[str] = None
+    full_name: str | None = None
     created_at: float
-    last_login: Optional[float] = None
+    last_login: float | None = None
 
 
 class UserStats(BaseModel):
@@ -46,7 +46,7 @@ class UserStats(BaseModel):
     total_users: int
     active_users: int
     new_users_today: int
-    last_activity: Optional[float] = None
+    last_activity: float | None = None
 
 
 # Dependency functions (will be overridden in main.py)
@@ -77,7 +77,7 @@ def get_current_user_id(authorization: str) -> int:
     return 1
 
 
-@router.get("/", response_model=List[UserResponse])
+@router.get("/", response_model=list[UserResponse])
 async def list_users(
     skip: int = 0,
     limit: int = 100,

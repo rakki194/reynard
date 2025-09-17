@@ -20,10 +20,7 @@ export const Clock: Component = () => {
     <div class="clock-container">
       <Card class="clock-card">
         <div class="clock-toggle-container">
-          <Button
-            onClick={() => setShowAnalog(!showAnalog())}
-            class="btn btn-secondary"
-          >
+          <Button onClick={() => setShowAnalog(!showAnalog())} class="btn btn-secondary">
             {showAnalog() ? "Show Digital" : "Show Analog"}
           </Button>
         </div>

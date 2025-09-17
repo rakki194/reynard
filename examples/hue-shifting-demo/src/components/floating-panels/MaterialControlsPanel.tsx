@@ -13,9 +13,7 @@ interface MaterialControlsPanelProps {
   onHide?: () => void;
 }
 
-export const MaterialControlsPanel: Component<MaterialControlsPanelProps> = (
-  props,
-) => {
+export const MaterialControlsPanel: Component<MaterialControlsPanelProps> = props => {
   return (
     <FloatingPanelAdvanced
       id="material-controls-panel"

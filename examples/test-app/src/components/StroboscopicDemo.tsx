@@ -18,8 +18,7 @@ export const StroboscopicDemo: Component = () => {
   const [rotationSpeed, setRotationSpeed] = createSignal(1.0);
   const [frameRate, setFrameRate] = createSignal(60);
   const [enableMorphing, setEnableMorphing] = createSignal(true);
-  const [enableTemporalAliasing, setEnableTemporalAliasing] =
-    createSignal(true);
+  const [enableTemporalAliasing, setEnableTemporalAliasing] = createSignal(true);
   const [stroboscopicState, setStroboscopicState] = createSignal<any>(null);
   const [performanceMetrics, setPerformanceMetrics] = createSignal<any>(null);
 
@@ -115,8 +114,7 @@ export const StroboscopicDemo: Component = () => {
     currentAngle += (rotationSpeed() * deltaTime) / 16.67;
 
     // Apply stroboscopic effects
-    const stroboscopicState =
-      stroboscopicEngine.calculateStroboscopicEffect(deltaTime);
+    const stroboscopicState = stroboscopicEngine.calculateStroboscopicEffect(deltaTime);
     setStroboscopicState(stroboscopicState);
 
     // Transform points
@@ -128,7 +126,7 @@ export const StroboscopicDemo: Component = () => {
     }
 
     // Rotate points
-    const rotatedPoints = transformedPoints.map((point) => {
+    const rotatedPoints = transformedPoints.map(point => {
       const cos = Math.cos(currentAngle);
       const sin = Math.sin(currentAngle);
       const dx = point.x - 400;
@@ -181,9 +179,7 @@ export const StroboscopicDemo: Component = () => {
   // Lifecycle
   onMount(() => {
     console.log("🦊 StroboscopicDemo: onMount - setting up canvas");
-    canvas = document.getElementById(
-      "stroboscopic-canvas",
-    ) as HTMLCanvasElement;
+    canvas = document.getElementById("stroboscopic-canvas") as HTMLCanvasElement;
     if (canvas) {
       ctx = canvas.getContext("2d")!;
       canvas.width = 800;
@@ -213,11 +209,7 @@ export const StroboscopicDemo: Component = () => {
             <h3>Animation Controls</h3>
 
             <div class="control-group">
-              <Button
-                variant={isRunning() ? "danger" : "primary"}
-                onClick={toggleAnimation}
-                class="control-button"
-              >
+              <Button variant={isRunning() ? "danger" : "primary"} onClick={toggleAnimation} class="control-button">
                 {isRunning() ? "⏹️ Stop" : "▶️ Start"}
               </Button>
             </div>
@@ -256,7 +248,7 @@ export const StroboscopicDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={enableMorphing()}
-                onChange={(e) => setEnableMorphing(e.currentTarget.checked)}
+                onChange={e => setEnableMorphing(e.currentTarget.checked)}
               />
               <label>Enable Morphing Effects</label>
             </div>
@@ -265,9 +257,7 @@ export const StroboscopicDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={enableTemporalAliasing()}
-                onChange={(e) =>
-                  setEnableTemporalAliasing(e.currentTarget.checked)
-                }
+                onChange={e => setEnableTemporalAliasing(e.currentTarget.checked)}
               />
               <label>Enable Temporal Aliasing</label>
             </div>
@@ -278,30 +268,21 @@ export const StroboscopicDemo: Component = () => {
             <div class="status-info">
               <div class="status-item">
                 <span class="status-label">Active:</span>
-                <span
-                  class={`status-value ${stroboscopicState()?.isStroboscopic ? "active" : "inactive"}`}
-                >
+                <span class={`status-value ${stroboscopicState()?.isStroboscopic ? "active" : "inactive"}`}>
                   {stroboscopicState()?.isStroboscopic ? "Yes" : "No"}
                 </span>
               </div>
               <div class="status-item">
                 <span class="status-label">Motion:</span>
-                <span class="status-value">
-                  {stroboscopicState()?.apparentMotion || "None"}
-                </span>
+                <span class="status-value">{stroboscopicState()?.apparentMotion || "None"}</span>
               </div>
               <div class="status-item">
                 <span class="status-label">Phase:</span>
-                <span class="status-value">
-                  {stroboscopicState()?.stroboscopicPhase?.toFixed(3) ||
-                    "0.000"}
-                </span>
+                <span class="status-value">{stroboscopicState()?.stroboscopicPhase?.toFixed(3) || "0.000"}</span>
               </div>
               <div class="status-item">
                 <span class="status-label">Intensity:</span>
-                <span class="status-value">
-                  {stroboscopicState()?.temporalAliasing?.toFixed(3) || "0.000"}
-                </span>
+                <span class="status-value">{stroboscopicState()?.temporalAliasing?.toFixed(3) || "0.000"}</span>
               </div>
             </div>
           </Card>
@@ -311,21 +292,15 @@ export const StroboscopicDemo: Component = () => {
             <div class="performance-info">
               <div class="performance-item">
                 <span class="performance-label">FPS:</span>
-                <span class="performance-value">
-                  {performanceMetrics()?.currentFPS?.toFixed(1) || "0.0"}
-                </span>
+                <span class="performance-value">{performanceMetrics()?.currentFPS?.toFixed(1) || "0.0"}</span>
               </div>
               <div class="performance-item">
                 <span class="performance-label">Frame Time:</span>
-                <span class="performance-value">
-                  {performanceMetrics()?.frameTime?.toFixed(2) || "0.00"}ms
-                </span>
+                <span class="performance-value">{performanceMetrics()?.frameTime?.toFixed(2) || "0.00"}ms</span>
               </div>
               <div class="performance-item">
                 <span class="performance-label">Render Time:</span>
-                <span class="performance-value">
-                  {performanceMetrics()?.renderTime?.toFixed(2) || "0.00"}ms
-                </span>
+                <span class="performance-value">{performanceMetrics()?.renderTime?.toFixed(2) || "0.00"}ms</span>
               </div>
             </div>
           </Card>
@@ -349,20 +324,16 @@ export const StroboscopicDemo: Component = () => {
           <h3>Research-Based Features</h3>
           <ul>
             <li>
-              <strong>Temporal Aliasing:</strong> Mathematical model for
-              stroboscopic effects
+              <strong>Temporal Aliasing:</strong> Mathematical model for stroboscopic effects
             </li>
             <li>
-              <strong>Morphing Effects:</strong> Advanced pattern
-              transformations
+              <strong>Morphing Effects:</strong> Advanced pattern transformations
             </li>
             <li>
-              <strong>Golden Angle Sync:</strong> 137.5° synchronization for
-              optimal effects
+              <strong>Golden Angle Sync:</strong> 137.5° synchronization for optimal effects
             </li>
             <li>
-              <strong>Performance Monitoring:</strong> Real-time metrics and
-              optimization
+              <strong>Performance Monitoring:</strong> Real-time metrics and optimization
             </li>
           </ul>
         </Card>

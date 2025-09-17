@@ -9,8 +9,8 @@ methods when more advanced ones fail.
 import logging
 from typing import Any
 
-from .base_scraper import BaseScraper
 from ..models import ScrapingResult, ScrapingType
+from .base_scraper import BaseScraper
 
 
 class EnhancedContentExtractor(BaseScraper):
@@ -42,35 +42,42 @@ class EnhancedContentExtractor(BaseScraper):
 
         try:
             from .twitter_scraper import TwitterScraper
+
             self.scrapers["twitter"] = TwitterScraper(self.logger)
         except ImportError:
             self.logger.warning("Twitter scraper not available")
 
         try:
             from .wikipedia_scraper import WikipediaScraper
+
             self.scrapers["wikipedia"] = WikipediaScraper(self.logger)
         except ImportError:
             self.logger.warning("Wikipedia scraper not available")
 
         try:
             from .hackernews_scraper import HackerNewsScraper
+
             self.scrapers["hackernews"] = HackerNewsScraper(self.logger)
         except ImportError:
             self.logger.warning("HackerNews scraper not available")
 
         try:
             from .github_scraper import GitHubScraper
+
             self.scrapers["github"] = GitHubScraper(self.logger)
         except ImportError:
             self.logger.warning("GitHub scraper not available")
 
         try:
             from .general_scraper import GeneralScraper
+
             self.scrapers["general"] = GeneralScraper(self.logger)
         except ImportError:
             self.logger.warning("General scraper not available")
 
-        self.logger.info(f"Initialized {len(self.scrapers)} scrapers: {list(self.scrapers.keys())}")
+        self.logger.info(
+            f"Initialized {len(self.scrapers)} scrapers: {list(self.scrapers.keys())}"
+        )
 
     async def can_handle_url(self, url: str) -> bool:
         """Check if this extractor can handle the given URL."""
@@ -98,7 +105,9 @@ class EnhancedContentExtractor(BaseScraper):
 
                     # If we got good content, return it
                     if result.quality["score"] > 0.3:
-                        result.metadata["extraction_method"] = f"enhanced_{scraper_name}"
+                        result.metadata["extraction_method"] = (
+                            f"enhanced_{scraper_name}"
+                        )
                         return result
 
             # Fallback to general scraper
@@ -169,7 +178,8 @@ class EnhancedContentExtractor(BaseScraper):
             if content_text:
                 # Remove excessive whitespace
                 import re
-                content_text = re.sub(r'\n\s*\n', '\n\n', content_text)
+
+                content_text = re.sub(r"\n\s*\n", "\n\n", content_text)
                 content_text = content_text.strip()
 
             return ScrapingResult(
@@ -222,12 +232,10 @@ class EnhancedContentExtractor(BaseScraper):
                 result = await scraper.scrape_content(url)
                 result.metadata["extraction_method"] = f"enhanced_{method}"
                 return result
-            else:
-                self.logger.warning(f"Scraper {method} cannot handle URL: {url}")
-                return await self._fallback_extraction(url)
-        else:
-            self.logger.warning(f"Unknown extraction method: {method}")
+            self.logger.warning(f"Scraper {method} cannot handle URL: {url}")
             return await self._fallback_extraction(url)
+        self.logger.warning(f"Unknown extraction method: {method}")
+        return await self._fallback_extraction(url)
 
     def get_available_methods(self) -> list[str]:
         """Get list of available extraction methods."""
@@ -243,11 +251,10 @@ class EnhancedContentExtractor(BaseScraper):
                 "supported_domains": scraper.supported_domains,
                 "available": True,
             }
-        else:
-            return {
-                "name": method,
-                "available": False,
-            }
+        return {
+            "name": method,
+            "available": False,
+        }
 
     async def test_extraction_methods(self, url: str) -> dict[str, ScrapingResult]:
         """

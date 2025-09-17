@@ -29,9 +29,7 @@ describe("Service Mappings", () => {
 
   it("should map feature service names to actual service names", () => {
     // Test some known mappings
-    expect(getActualServiceName("FileProcessingService")).toBe(
-      "file-processing",
-    );
+    expect(getActualServiceName("FileProcessingService")).toBe("file-processing");
     expect(getActualServiceName("AuthService")).toBe("auth");
     expect(getActualServiceName("AnnotationService")).toBe("annotation");
     expect(getActualServiceName("ServiceManager")).toBe("service-manager");
@@ -39,9 +37,7 @@ describe("Service Mappings", () => {
 
   it("should map actual service names to feature service names", () => {
     // Test reverse mappings
-    expect(getFeatureServiceName("file-processing")).toBe(
-      "FileProcessingService",
-    );
+    expect(getFeatureServiceName("file-processing")).toBe("FileProcessingService");
     expect(getFeatureServiceName("auth")).toBe("AuthService");
     expect(getFeatureServiceName("annotation")).toBe("AnnotationService");
     expect(getFeatureServiceName("service-manager")).toBe("ServiceManager");

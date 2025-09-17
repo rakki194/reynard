@@ -21,7 +21,7 @@ export function generateSecureBytes(length: number): Uint8Array {
  */
 export function generateSecureString(
   length: number = 32,
-  charset: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  charset: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 ): string {
   if (charset.length === 0) {
     return ""; // Return empty string for empty charset
@@ -51,7 +51,7 @@ export function generateSecureString(
  */
 export function generateSecureHex(length: number = 32): string {
   const bytes = generateSecureBytes(Math.ceil(length / 2));
-  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0"))
+  return Array.from(bytes, byte => byte.toString(16).padStart(2, "0"))
     .join("")
     .substring(0, length);
 }

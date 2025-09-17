@@ -242,9 +242,7 @@ describe("useGalleryState", () => {
 
   describe("State Persistence", () => {
     it("should persist state to localStorage when enabled", () => {
-      const { result } = renderHook(() =>
-        useGalleryState({ persistState: true, storageKey: "test-gallery" }),
-      );
+      const { result } = renderHook(() => useGalleryState({ persistState: true, storageKey: "test-gallery" }));
 
       act(() => {
         result.current.setViewMode("list");
@@ -253,16 +251,16 @@ describe("useGalleryState", () => {
 
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         "test-gallery-viewConfig",
-        JSON.stringify({ mode: "list" }),
+        JSON.stringify({ mode: "list" })
       );
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         "test-gallery-sortConfig",
-        JSON.stringify({ by: "size", order: "desc" }),
+        JSON.stringify({ by: "size", order: "desc" })
       );
     });
 
     it("should load persisted state on initialization", () => {
-      localStorageMock.getItem.mockImplementation((key) => {
+      localStorageMock.getItem.mockImplementation(key => {
         if (key === "test-gallery-viewConfig") {
           return JSON.stringify({ mode: "list" });
         }
@@ -272,9 +270,7 @@ describe("useGalleryState", () => {
         return null;
       });
 
-      const { result } = renderHook(() =>
-        useGalleryState({ persistState: true, storageKey: "test-gallery" }),
-      );
+      const { result } = renderHook(() => useGalleryState({ persistState: true, storageKey: "test-gallery" }));
 
       expect(result.current.viewMode()).toBe("list");
       expect(result.current.sortBy()).toBe("size");
@@ -286,9 +282,7 @@ describe("useGalleryState", () => {
         throw new Error("localStorage error");
       });
 
-      const { result } = renderHook(() =>
-        useGalleryState({ persistState: true }),
-      );
+      const { result } = renderHook(() => useGalleryState({ persistState: true }));
 
       // Should fall back to default values
       expect(result.current.viewMode()).toBe("grid");
@@ -296,9 +290,7 @@ describe("useGalleryState", () => {
     });
 
     it("should not persist state when disabled", () => {
-      const { result } = renderHook(() =>
-        useGalleryState({ persistState: false }),
-      );
+      const { result } = renderHook(() => useGalleryState({ persistState: false }));
 
       act(() => {
         result.current.setViewMode("list");

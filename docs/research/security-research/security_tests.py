@@ -26,11 +26,10 @@ def test_unauthenticated_access(url, method="GET", data=None):
                 f"    [OK] Access to {url} is restricted as expected (Status {response.status_code})."
             )
             return True
-        else:
-            print(
-                f"    [FAIL] Unexpected status code {response.status_code}. Unauthenticated access might be possible."
-            )
-            return False
+        print(
+            f"    [FAIL] Unexpected status code {response.status_code}. Unauthenticated access might be possible."
+        )
+        return False
     except requests.exceptions.RequestException as e:
         print(f"    [ERROR] An error occurred: {e}")
         return False

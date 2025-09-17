@@ -4,16 +4,9 @@
  * Suggestion logic for the NLWeb router.
  */
 
-import {
-  NLWebSuggestionRequest,
-  NLWebSuggestionResponse,
-} from "../types/index.js";
+import { NLWebSuggestionRequest, NLWebSuggestionResponse } from "../types/index.js";
 import { NLWebRouterCache } from "./NLWebRouterCache.js";
-import {
-  SuggestContext,
-  checkCache,
-  generateSuggestion,
-} from "./NLWebRouterSuggestCore.js";
+import { SuggestContext, checkCache, generateSuggestion } from "./NLWebRouterSuggestCore.js";
 
 export interface NLWebRouterSuggest {
   processSuggestion: (
@@ -21,7 +14,7 @@ export interface NLWebRouterSuggest {
     cache: NLWebRouterCache,
     toolRegistry: unknown,
     performanceStats: unknown,
-    emitEvent: (type: string, data: unknown) => void,
+    emitEvent: (type: string, data: unknown) => void
   ) => Promise<NLWebSuggestionResponse>;
 }
 
@@ -34,7 +27,7 @@ export function createNLWebRouterSuggest(): NLWebRouterSuggest {
     cache: NLWebRouterCache,
     toolRegistry: unknown,
     performanceStats: unknown,
-    emitEvent: (type: string, data: unknown) => void,
+    emitEvent: (type: string, data: unknown) => void
   ): Promise<NLWebSuggestionResponse> => {
     const context: SuggestContext = {
       request,
@@ -58,9 +51,7 @@ export function createNLWebRouterSuggest(): NLWebRouterSuggest {
         error: error instanceof Error ? error.message : String(error),
       });
 
-      throw new Error(
-        `Failed to process query: ${error instanceof Error ? error.message : String(error)}`,
-      );
+      throw new Error(`Failed to process query: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 

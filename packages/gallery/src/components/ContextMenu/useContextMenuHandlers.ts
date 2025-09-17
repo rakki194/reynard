@@ -42,10 +42,9 @@ export const useContextMenuHandlers = ({
 
     if (item.submenu) {
       // Toggle submenu
-      setState((prev) => ({
+      setState(prev => ({
         ...prev,
-        submenuOpen:
-          prev.submenuOpen === prev.selectedIndex ? null : prev.selectedIndex,
+        submenuOpen: prev.submenuOpen === prev.selectedIndex ? null : prev.selectedIndex,
       }));
     } else {
       // Execute action and close menu
@@ -55,14 +54,14 @@ export const useContextMenuHandlers = ({
   };
 
   const handleItemMouseEnter = (index: number) => {
-    setState((prev) => ({ ...prev, selectedIndex: index }));
+    setState(prev => ({ ...prev, selectedIndex: index }));
 
     // Auto-open submenu on hover
     const item = items[index];
     if (item?.submenu) {
-      setState((prev) => ({ ...prev, submenuOpen: index }));
+      setState(prev => ({ ...prev, submenuOpen: index }));
     } else {
-      setState((prev) => ({ ...prev, submenuOpen: null }));
+      setState(prev => ({ ...prev, submenuOpen: null }));
     }
   };
 

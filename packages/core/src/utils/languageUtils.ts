@@ -28,10 +28,7 @@ export {
 } from "./language-detection.js";
 
 // Import for internal use
-import {
-  detectLanguageFromExtension,
-  detectLanguageFromContent,
-} from "./language-detection.js";
+import { detectLanguageFromExtension, detectLanguageFromContent } from "./language-detection.js";
 
 // Legacy exports for backward compatibility
 export { getLanguageInfo as detectLanguage } from "./language-detection.js";

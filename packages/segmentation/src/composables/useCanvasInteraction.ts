@@ -7,10 +7,7 @@
 
 import { createSignal, onCleanup } from "solid-js";
 import { PointOps, type Point, type Polygon } from "reynard-algorithms";
-import {
-  SegmentationEditorConfig,
-  SegmentationEditorState,
-} from "../types/index.js";
+import { SegmentationEditorConfig, SegmentationEditorState } from "../types/index.js";
 
 export interface UseCanvasInteractionOptions {
   canvas: () => HTMLCanvasElement | undefined;
@@ -37,9 +34,7 @@ export interface UseCanvasInteractionReturn {
 /**
  * Canvas interaction composable with robust event handling
  */
-export function useCanvasInteraction(
-  options: UseCanvasInteractionOptions,
-): UseCanvasInteractionReturn {
+export function useCanvasInteraction(options: UseCanvasInteractionOptions): UseCanvasInteractionReturn {
   const [isDragging, setIsDragging] = createSignal(false);
   const [lastMousePosition, setLastMousePosition] = createSignal<Point>({
     x: 0,
@@ -159,17 +154,11 @@ export function useCanvasInteraction(
         const newPolygon = [...currentPolygon(), worldPos];
         setCurrentPolygon(newPolygon);
         options.onPolygonUpdate?.(newPolygon);
-      } else if (
-        options.state.isEditing &&
-        options.state.selectedSegmentation
-      ) {
+      } else if (options.state.isEditing && options.state.selectedSegmentation) {
         // Handle editing existing polygon
         const newPolygon = [...currentPolygon(), worldPos];
         setCurrentPolygon(newPolygon);
-        options.onPolygonUpdate?.(
-          newPolygon,
-          options.state.selectedSegmentation,
-        );
+        options.onPolygonUpdate?.(newPolygon, options.state.selectedSegmentation);
       } else {
         // Handle selection
         setIsDragging(true);
@@ -245,8 +234,7 @@ export function useCanvasInteraction(
       const touch1 = event.touches[0];
       const touch2 = event.touches[1];
       const distance = Math.sqrt(
-        Math.pow(touch2.clientX - touch1.clientX, 2) +
-          Math.pow(touch2.clientY - touch1.clientY, 2),
+        Math.pow(touch2.clientX - touch1.clientX, 2) + Math.pow(touch2.clientY - touch1.clientY, 2)
       );
       setLastTouchDistance(distance);
     }
@@ -271,17 +259,13 @@ export function useCanvasInteraction(
       const touch2 = event.touches[1];
 
       const distance = Math.sqrt(
-        Math.pow(touch2.clientX - touch1.clientX, 2) +
-          Math.pow(touch2.clientY - touch1.clientY, 2),
+        Math.pow(touch2.clientX - touch1.clientX, 2) + Math.pow(touch2.clientY - touch1.clientY, 2)
       );
 
       const lastDistance = lastTouchDistance();
       if (lastDistance > 0) {
         const zoomFactor = distance / lastDistance;
-        const newZoom = Math.max(
-          0.1,
-          Math.min(5, options.state.zoom * zoomFactor),
-        );
+        const newZoom = Math.max(0.1, Math.min(5, options.state.zoom * zoomFactor));
         options.onZoomChange?.(newZoom);
       }
 

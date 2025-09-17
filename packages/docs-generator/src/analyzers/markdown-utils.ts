@@ -8,10 +8,7 @@ export const isMarkdownFile = (fileName: string): boolean => {
   return fileName.endsWith(".md") || fileName.endsWith(".mdx");
 };
 
-export const generateSlugFromPath = (
-  rootPath: string,
-  filePath: string,
-): string => {
+export const generateSlugFromPath = (rootPath: string, filePath: string): string => {
   const relativePath = path.relative(rootPath, filePath);
   const pathWithoutExt = relativePath.replace(/\.(md|mdx)$/, "");
   return pathWithoutExt
@@ -37,11 +34,8 @@ export const extractTitleFromContent = (content: string): string | null => {
   return null;
 };
 
-export const shouldExcludeDirectory = (
-  dirName: string,
-  excludePatterns: string[],
-): boolean => {
-  return excludePatterns.some((pattern) => {
+export const shouldExcludeDirectory = (dirName: string, excludePatterns: string[]): boolean => {
+  return excludePatterns.some(pattern => {
     if (pattern.includes("**")) {
       return dirName.includes(pattern.replace("**/", "").replace("/**", ""));
     }

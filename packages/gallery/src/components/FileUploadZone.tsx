@@ -3,14 +3,7 @@
  * Drag and drop file upload area with progress tracking
  */
 
-import {
-  Component,
-  Show,
-  For,
-  createSignal,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, Show, For, createSignal, onMount, onCleanup } from "solid-js";
 import { Button } from "reynard-components";
 import type { UploadProgress, UploadConfiguration } from "../types";
 import { formatFileSize } from "../utils";
@@ -33,7 +26,7 @@ export interface FileUploadZoneProps {
   class?: string;
 }
 
-export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
+export const FileUploadZone: Component<FileUploadZoneProps> = props => {
   let fileInputRef: HTMLInputElement | undefined;
   let dropZoneRef: HTMLDivElement | undefined;
 
@@ -56,9 +49,7 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
     event.stopPropagation();
 
     if (event.dataTransfer?.items) {
-      const hasFiles = Array.from(event.dataTransfer.items).some(
-        (item) => item.kind === "file",
-      );
+      const hasFiles = Array.from(event.dataTransfer.items).some(item => item.kind === "file");
       if (hasFiles) {
         setIsDragOver(true);
       }
@@ -138,10 +129,7 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
   // Get progress bar width class
   const getProgressWidthClass = (progress: number): string => {
     // Round to nearest 10% and clamp between 0-100
-    const roundedProgress = Math.min(
-      100,
-      Math.max(0, Math.round(progress / 10) * 10),
-    );
+    const roundedProgress = Math.min(100, Math.max(0, Math.round(progress / 10) * 10));
     return `upload-item__progress-bar--width-${roundedProgress}`;
   };
 
@@ -157,33 +145,23 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
         </h4>
 
         <For each={props.uploads}>
-          {(upload) => (
+          {upload => (
             <div class="upload-item" data-status={upload.status}>
               <div class="upload-item__info">
                 <span class="upload-item__name" title={upload.file.name}>
                   {upload.file.name}
                 </span>
-                <span class="upload-item__size">
-                  {formatFileSize(upload.file.size)}
-                </span>
+                <span class="upload-item__size">{formatFileSize(upload.file.size)}</span>
               </div>
 
               <div class="upload-item__progress">
-                <div
-                  class={`upload-item__progress-bar ${getProgressWidthClass(upload.progress)}`}
-                />
-                <span class="upload-item__progress-text">
-                  {upload.progress}%
-                </span>
+                <div class={`upload-item__progress-bar ${getProgressWidthClass(upload.progress)}`} />
+                <span class="upload-item__progress-text">{upload.progress}%</span>
               </div>
 
               <div class="upload-item__actions">
                 <Show when={upload.status === "uploading"}>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => props.onCancelUpload?.(upload.id)}
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => props.onCancelUpload?.(upload.id)}>
                     Cancel
                   </Button>
                 </Show>
@@ -201,12 +179,8 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
 
               <Show when={upload.speed && upload.timeRemaining}>
                 <div class="upload-item__stats">
-                  <span class="upload-item__speed">
-                    {formatFileSize(upload.speed!)}/s
-                  </span>
-                  <span class="upload-item__time">
-                    {Math.round(upload.timeRemaining!)}s remaining
-                  </span>
+                  <span class="upload-item__speed">{formatFileSize(upload.speed!)}/s</span>
+                  <span class="upload-item__time">{Math.round(upload.timeRemaining!)}s remaining</span>
                 </div>
               </Show>
             </div>
@@ -217,11 +191,7 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
   };
 
   return (
-    <div
-      ref={dropZoneRef}
-      class={getUploadZoneClasses()}
-      aria-label="Upload files"
-    >
+    <div ref={dropZoneRef} class={getUploadZoneClasses()} aria-label="Upload files">
       <input
         ref={fileInputRef}
         type="file"
@@ -247,14 +217,8 @@ export const FileUploadZone: Component<FileUploadZoneProps> = (props) => {
             <Show when={!isDragOver()}>
               <h3>Upload Files</h3>
               <p>
-                <Show when={props.enableDragDrop}>
-                  Drag and drop files here or{" "}
-                </Show>
-                <button
-                  type="button"
-                  class="file-upload-zone__browse-button"
-                  onClick={() => fileInputRef?.click()}
-                >
+                <Show when={props.enableDragDrop}>Drag and drop files here or </Show>
+                <button type="button" class="file-upload-zone__browse-button" onClick={() => fileInputRef?.click()}>
                   browse files
                 </button>
               </p>

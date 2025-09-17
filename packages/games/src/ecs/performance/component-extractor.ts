@@ -29,12 +29,7 @@ import { Component } from "../types";
  * Type guard to check if an object is a valid component.
  */
 function isComponent(obj: unknown): obj is Component {
-  return (
-    obj !== null &&
-    typeof obj === "object" &&
-    "__component" in obj &&
-    (obj as Component).__component === true
-  );
+  return obj !== null && typeof obj === "object" && "__component" in obj && (obj as Component).__component === true;
 }
 
 /**
@@ -68,9 +63,7 @@ function isVelocityComponent(component: Component): component is Velocity {
 /**
  * Type guard to check if a component is an Acceleration component.
  */
-function isAccelerationComponent(
-  component: Component,
-): component is Acceleration {
+function isAccelerationComponent(component: Component): component is Acceleration {
   return (
     component instanceof Acceleration ||
     (component.constructor.name === "Acceleration" &&
@@ -87,9 +80,7 @@ function isAccelerationComponent(
 function isMassComponent(component: Component): component is Mass {
   return (
     component instanceof Mass ||
-    (component.constructor.name === "Mass" &&
-      "mass" in component &&
-      typeof (component as Mass).mass === "number")
+    (component.constructor.name === "Mass" && "mass" in component && typeof (component as Mass).mass === "number")
   );
 }
 
@@ -127,9 +118,7 @@ export class ComponentExtractor {
   /**
    * Extract acceleration data from components.
    */
-  extractAcceleration(
-    components: Component[],
-  ): { ax: number; ay: number } | null {
+  extractAcceleration(components: Component[]): { ax: number; ay: number } | null {
     for (const component of components) {
       if (isComponent(component) && isAccelerationComponent(component)) {
         return { ax: component.ax, ay: component.ay };

@@ -30,8 +30,7 @@ export const jaTranslations = {
   // Features list
   featuresList: {
     languages: "37言語の包括的カバレッジ",
-    pluralization:
-      "高度な複数形ルール（アラビア語、ロシア語、ポーランド語など）",
+    pluralization: "高度な複数形ルール（アラビア語、ロシア語、ポーランド語など）",
     rtlSupport: "アラビア語とヘブライ語のRTLサポート",
     typeSafe: "型安全な翻訳とオートコンプリート",
     dynamicLoading: "最適なパフォーマンスのための動的読み込み",

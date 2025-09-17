@@ -63,7 +63,7 @@ export class DependencyChecker {
       "?",
       "/",
     ];
-    if (invalidChars.some((char) => moduleName.includes(char))) {
+    if (invalidChars.some(char => moduleName.includes(char))) {
       return false;
     }
 
@@ -183,9 +183,7 @@ export class DependencyChecker {
    * @param generatorType - Type of generator (jtp2, florence2, etc.)
    * @returns Result for generator-specific dependencies
    */
-  static checkGeneratorDependencies(
-    generatorType: string,
-  ): DependencyCheckResult {
+  static checkGeneratorDependencies(generatorType: string): DependencyCheckResult {
     const dependencies: Record<string, string[]> = {
       jtp2: ["torch", "timm", "safetensors", "PIL"],
       florence2: ["torch", "transformers", "PIL"],
@@ -207,9 +205,7 @@ export class DependencyChecker {
     const result = this.checkDependencies(requiredDeps);
 
     if (!result.allAvailable) {
-      throw new Error(
-        `Missing required dependencies: ${result.missingDependencies.join(", ")}`,
-      );
+      throw new Error(`Missing required dependencies: ${result.missingDependencies.join(", ")}`);
     }
   }
 }

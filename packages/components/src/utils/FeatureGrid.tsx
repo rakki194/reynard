@@ -16,29 +16,18 @@ export const FeatureGrid: Component = () => {
   const [count, setCount] = createSignal(0);
 
   const handleWelcome = () => {
-    notify(
-      `Welcome to Reynard! Current theme: ${themeContext.theme}`,
-      "success",
-    );
+    notify(`Welcome to Reynard! Current theme: ${themeContext.theme}`, "success");
   };
 
   return (
     <div class="feature-grid">
-      <FeatureCard
-        icon="palette"
-        title="Theme System"
-        description="8 built-in themes with reactive state management"
-      >
+      <FeatureCard icon="palette" title="Theme System" description="8 built-in themes with reactive state management">
         <p>
           Current theme: <strong>{themeContext.theme}</strong>
         </p>
       </FeatureCard>
 
-      <FeatureCard
-        icon="alert"
-        title="Notifications"
-        description="Toast notifications with auto-dismiss and grouping"
-      >
+      <FeatureCard icon="alert" title="Notifications" description="Toast notifications with auto-dismiss and grouping">
         <NotificationDemo />
       </FeatureCard>
 
@@ -50,11 +39,7 @@ export const FeatureGrid: Component = () => {
         <Counter count={count()} setCount={setCount} />
       </FeatureCard>
 
-      <FeatureCard
-        icon="rocket"
-        title="Performance"
-        description="Optimized builds with lazy loading and tree shaking"
-      >
+      <FeatureCard icon="rocket" title="Performance" description="Optimized builds with lazy loading and tree shaking">
         <button class="button" onClick={handleWelcome}>
           Test Performance
         </button>

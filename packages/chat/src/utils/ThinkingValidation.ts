@@ -11,7 +11,7 @@ export class ThinkingValidation {
   public static validateThinkingSections(
     inThinking: boolean,
     thinkingSections: string[],
-    addWarning: (message: string) => void,
+    addWarning: (message: string) => void
   ): boolean {
     if (inThinking) {
       addWarning("Unclosed thinking section detected");

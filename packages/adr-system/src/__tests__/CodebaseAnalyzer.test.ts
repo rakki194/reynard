@@ -25,7 +25,7 @@ describe("CodebaseAnalyzer", () => {
           this.service = new Service();
         }
       }
-    `,
+    `
     );
 
     await writeFile(
@@ -36,7 +36,7 @@ describe("CodebaseAnalyzer", () => {
           return '<button>Click me</button>';
         }
       }
-    `,
+    `
     );
 
     await writeFile(
@@ -82,7 +82,7 @@ describe("CodebaseAnalyzer", () => {
         private async fetchSocial(id: string) { return { id, friends: [] }; }
         private async fetchSecurity(id: string) { return { id, level: 'high' }; }
       }
-    `,
+    `
     );
 
     await writeFile(
@@ -93,7 +93,7 @@ describe("CodebaseAnalyzer", () => {
           react: "^18.0.0",
           typescript: "^5.0.0",
         },
-      }),
+      })
     );
   };
 
@@ -137,9 +137,7 @@ describe("CodebaseAnalyzer", () => {
     expect(Array.isArray(analysis.suggestions)).toBe(true);
 
     // Should suggest performance ADR for large files
-    const performanceSuggestions = analysis.suggestions.filter(
-      (s) => s.category === "performance",
-    );
+    const performanceSuggestions = analysis.suggestions.filter(s => s.category === "performance");
     expect(performanceSuggestions.length).toBeGreaterThan(0);
   });
 
@@ -157,11 +155,7 @@ describe("CodebaseAnalyzer", () => {
 
     expect(analysis.dependencies.internalDependencies).toBeDefined();
     expect(analysis.dependencies.externalDependencies).toBeDefined();
-    expect(Array.isArray(analysis.dependencies.circularDependencies)).toBe(
-      true,
-    );
-    expect(Array.isArray(analysis.dependencies.criticalDependencies)).toBe(
-      true,
-    );
+    expect(Array.isArray(analysis.dependencies.circularDependencies)).toBe(true);
+    expect(Array.isArray(analysis.dependencies.criticalDependencies)).toBe(true);
   });
 });

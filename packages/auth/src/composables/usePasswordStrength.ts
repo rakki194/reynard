@@ -33,16 +33,8 @@ export interface UsePasswordStrengthOptions {
   minScore?: number;
 }
 
-export function usePasswordStrength(
-  password: () => string,
-  options: UsePasswordStrengthOptions = {},
-) {
-  const {
-    useAdvanced = true,
-    customDictionary = [],
-    userInputs = [],
-    minScore = 2,
-  } = options;
+export function usePasswordStrength(password: () => string, options: UsePasswordStrengthOptions = {}) {
+  const { useAdvanced = true, customDictionary = [], userInputs = [], minScore = 2 } = options;
 
   // Password strength analysis
   const strength = createMemo((): PasswordStrength => {
@@ -147,7 +139,7 @@ export function usePasswordStrength(
   // Requirements summary
   const requirementsSummary = createMemo(() => {
     const reqs = requirements();
-    const met = reqs.filter((r) => r.met).length;
+    const met = reqs.filter(r => r.met).length;
     const total = reqs.length;
 
     return {
@@ -184,7 +176,7 @@ export function usePasswordStrength(
 function analyzeWithZxcvbn(
   password: string,
   userInputs: string[] = [],
-  customDictionary: string[] = [],
+  customDictionary: string[] = []
 ): PasswordStrength {
   try {
     const result = zxcvbn(password, [...userInputs, ...customDictionary]);
@@ -197,20 +189,12 @@ function analyzeWithZxcvbn(
     return {
       score: result.score,
       isValid: result.score >= 2,
-      feedback: getFeedbackMessage(
-        result.score,
-        result.feedback.warning || undefined,
-      ),
+      feedback: getFeedbackMessage(result.score, result.feedback.warning || undefined),
       suggestions: suggestions.filter(Boolean),
-      crackTime: formatCrackTime(
-        result.crackTimesDisplay.offlineSlowHashing1e4PerSecond,
-      ),
+      crackTime: formatCrackTime(result.crackTimesDisplay.offlineSlowHashing1e4PerSecond),
     };
   } catch (error) {
-    console.warn(
-      "zxcvbn analysis failed, falling back to basic analysis:",
-      error,
-    );
+    console.warn("zxcvbn analysis failed, falling back to basic analysis:", error);
     return basicStrength(password);
   }
 }

@@ -12,13 +12,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: [
-        "solid-js",
-        "solid-js/web",
-        "solid-js/store",
-        "monaco-editor",
-        "@monaco-editor/loader",
-      ],
+      external: ["solid-js", "solid-js/web", "solid-js/store", "monaco-editor", "@monaco-editor/loader"],
       output: {
         globals: {
           "solid-js": "SolidJS",

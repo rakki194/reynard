@@ -3,15 +3,7 @@
  * Advanced real-time chart with live data streaming and performance optimization
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-  Show,
-  splitProps,
-} from "solid-js";
+import { Component, createSignal, createEffect, onMount, onCleanup, Show, splitProps } from "solid-js";
 import { Chart } from "./Chart";
 import { useVisualizationEngine } from "../core/VisualizationEngine";
 import { ChartConfig, Dataset, ChartType, ReynardTheme } from "../types";
@@ -95,7 +87,7 @@ const defaultProps = {
   enablePerformanceMonitoring: true,
 };
 
-export const RealTimeChart: Component<RealTimeChartProps> = (props) => {
+export const RealTimeChart: Component<RealTimeChartProps> = props => {
   const [local, others] = splitProps(props, [
     "type",
     "data",
@@ -122,9 +114,7 @@ export const RealTimeChart: Component<RealTimeChartProps> = (props) => {
     labels: string[];
     datasets: Dataset[];
   } | null>(null);
-  const [updateTimer, setUpdateTimer] = createSignal<NodeJS.Timeout | null>(
-    null,
-  );
+  const [updateTimer, setUpdateTimer] = createSignal<NodeJS.Timeout | null>(null);
   const [websocket, setWebsocket] = createSignal<WebSocket | null>(null);
 
   // Initialize visualization engine
@@ -170,20 +160,16 @@ export const RealTimeChart: Component<RealTimeChartProps> = (props) => {
     }
 
     // Sort data by timestamp
-    const sortedData = [...local.data].sort(
-      (a, b) => a.timestamp - b.timestamp,
-    );
+    const sortedData = [...local.data].sort((a, b) => a.timestamp - b.timestamp);
 
     // Apply time range filter
     const now = Date.now();
     const filteredData = local.timeRange
-      ? sortedData.filter((point) => now - point.timestamp <= local.timeRange!)
+      ? sortedData.filter(point => now - point.timestamp <= local.timeRange!)
       : sortedData;
 
     // Limit data points for performance
-    const limitedData = local.maxDataPoints
-      ? filteredData.slice(-local.maxDataPoints!)
-      : filteredData;
+    const limitedData = local.maxDataPoints ? filteredData.slice(-local.maxDataPoints!) : filteredData;
 
     // Aggregate data if needed
     const aggregatedData = local.aggregationInterval
@@ -191,16 +177,13 @@ export const RealTimeChart: Component<RealTimeChartProps> = (props) => {
       : limitedData;
 
     // Convert to chart format
-    const labels = aggregatedData.map(
-      (point) => point.label || new Date(point.timestamp).toLocaleTimeString(),
-    );
+    const labels = aggregatedData.map(point => point.label || new Date(point.timestamp).toLocaleTimeString());
 
-    const values = aggregatedData.map((point) => point.value);
+    const values = aggregatedData.map(point => point.value);
 
     // Generate colors using visualization engine
     const colors = visualization.generateColors(1);
-    const backgroundColor =
-      colors[0]?.replace("1)", "0.6)") || "rgba(54, 162, 235, 0.6)";
+    const backgroundColor = colors[0]?.replace("1)", "0.6)") || "rgba(54, 162, 235, 0.6)";
     const borderColor = colors[0] || "rgba(54, 162, 235, 1)";
 
     const datasets: Dataset[] = [
@@ -224,16 +207,10 @@ export const RealTimeChart: Component<RealTimeChartProps> = (props) => {
     setProcessedData({ labels, datasets });
   };
 
-  const aggregateData = (
-    data: RealTimeDataPoint[],
-    interval: number,
-  ): RealTimeDataPoint[] => {
+  const aggregateData = (data: RealTimeDataPoint[], interval: number): RealTimeDataPoint[] => {
     if (data.length === 0) return [];
 
-    const aggregated = new Map<
-      number,
-      { sum: number; count: number; timestamp: number }
-    >();
+    const aggregated = new Map<number, { sum: number; count: number; timestamp: number }>();
 
     for (const point of data) {
       const intervalStart = Math.floor(point.timestamp / interval) * interval;
@@ -275,7 +252,7 @@ export const RealTimeChart: Component<RealTimeChartProps> = (props) => {
       const ws = local.streaming.websocket;
       setWebsocket(ws);
 
-      ws.onmessage = (event) => {
+      ws.onmessage = event => {
         try {
           const data = JSON.parse(event.data);
           const newPoint = local.streaming?.parser
@@ -295,7 +272,7 @@ export const RealTimeChart: Component<RealTimeChartProps> = (props) => {
         }
       };
 
-      ws.onerror = (error) => {
+      ws.onerror = error => {
         console.error("WebSocket error:", error);
       };
 
@@ -319,9 +296,7 @@ export const RealTimeChart: Component<RealTimeChartProps> = (props) => {
           }}
         >
           <div class="loading-spinner"></div>
-          <span style={{ "margin-left": "10px" }}>
-            Loading real-time data...
-          </span>
+          <span style={{ "margin-left": "10px" }}>Loading real-time data...</span>
         </div>
       </Show>
 
@@ -365,9 +340,7 @@ export const RealTimeChart: Component<RealTimeChartProps> = (props) => {
             position: "absolute",
             top: "5px",
             left: "5px",
-            background: websocket()
-              ? "rgba(0, 255, 0, 0.8)"
-              : "rgba(255, 0, 0, 0.8)",
+            background: websocket() ? "rgba(0, 255, 0, 0.8)" : "rgba(255, 0, 0, 0.8)",
             color: "white",
             padding: "2px 6px",
             "border-radius": "3px",

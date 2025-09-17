@@ -8,15 +8,10 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardSettings",
-      fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
+      fileName: format => (format === "es" ? "index.js" : `index.${format}`),
     },
     rollupOptions: {
-      external: [
-        "solid-js",
-        "solid-js/web",
-        "reynard-core",
-        "reynard-components",
-      ],
+      external: ["solid-js", "solid-js/web", "reynard-core", "reynard-components"],
       output: {
         globals: {
           "solid-js": "solid",

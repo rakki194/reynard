@@ -43,9 +43,7 @@ async function testBenchmarks(): Promise<void> {
     // Test entity creation benchmark
     console.log("\n🦊> Testing entity creation benchmark...");
     const entityResults = await runner.benchmarkEntityCreation();
-    console.log(
-      `✅ Entity creation benchmark completed: ${entityResults.length} results`,
-    );
+    console.log(`✅ Entity creation benchmark completed: ${entityResults.length} results`);
 
     // Test query benchmark
     console.log("\n🦦> Testing query benchmark...");
@@ -55,40 +53,25 @@ async function testBenchmarks(): Promise<void> {
     // Test system execution benchmark
     console.log("\n🐺> Testing system execution benchmark...");
     const systemResults = await runner.benchmarkSystemExecution();
-    console.log(
-      `✅ System execution benchmark completed: ${systemResults.length} results`,
-    );
+    console.log(`✅ System execution benchmark completed: ${systemResults.length} results`);
 
     // Test resource access benchmark
     console.log("\n📦> Testing resource access benchmark...");
     const resourceResults = await runner.benchmarkResourceAccess();
-    console.log(
-      `✅ Resource access benchmark completed: ${resourceResults.length} results`,
-    );
+    console.log(`✅ Resource access benchmark completed: ${resourceResults.length} results`);
 
     // Print summary
-    const allResults = [
-      ...entityResults,
-      ...queryResults,
-      ...systemResults,
-      ...resourceResults,
-    ];
+    const allResults = [...entityResults, ...queryResults, ...systemResults, ...resourceResults];
     console.log("\n📊 Test Summary:");
     console.log(`  Total benchmarks run: ${allResults.length}`);
     console.log(
-      `  Average time: ${(allResults.reduce((sum, r) => sum + r.averageTimeUs, 0) / allResults.length).toFixed(2)}μs`,
+      `  Average time: ${(allResults.reduce((sum, r) => sum + r.averageTimeUs, 0) / allResults.length).toFixed(2)}μs`
     );
-    console.log(
-      `  Fastest operation: ${Math.min(...allResults.map((r) => r.averageTimeUs)).toFixed(2)}μs`,
-    );
-    console.log(
-      `  Slowest operation: ${Math.max(...allResults.map((r) => r.averageTimeUs)).toFixed(2)}μs`,
-    );
+    console.log(`  Fastest operation: ${Math.min(...allResults.map(r => r.averageTimeUs)).toFixed(2)}μs`);
+    console.log(`  Slowest operation: ${Math.max(...allResults.map(r => r.averageTimeUs)).toFixed(2)}μs`);
 
     console.log("\n🎉 All benchmark tests passed successfully!");
-    console.log(
-      "🚀 The benchmark suite is ready for full performance testing!",
-    );
+    console.log("🚀 The benchmark suite is ready for full performance testing!");
   } catch (error) {
     console.error("❌ Benchmark test failed:", error);
     process.exit(1);
@@ -97,7 +80,7 @@ async function testBenchmarks(): Promise<void> {
 
 // Run the test if this script is executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  testBenchmarks().catch((error) => {
+  testBenchmarks().catch(error => {
     console.error("❌ Fatal error:", error);
     process.exit(1);
   });

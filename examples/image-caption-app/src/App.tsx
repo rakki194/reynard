@@ -5,11 +5,7 @@
 
 import { Component, createResource } from "solid-js";
 import { ReynardProvider, useTheme } from "reynard-themes";
-import {
-  NotificationsProvider,
-  useNotifications,
-  createNotificationsModule,
-} from "reynard-core";
+import { NotificationsProvider, useNotifications, createNotificationsModule } from "reynard-core";
 import { ThemeToggle } from "./components/ThemeToggle";
 // import { LanguageSelector } from "./components/LanguageSelector";
 import { AppContent } from "./components/AppContent";
@@ -63,11 +59,7 @@ const App: Component = () => {
         </div>
       </header>
 
-      <AIAppContent
-        appState={appState}
-        workflow={workflow}
-        handlers={handlers}
-      />
+      <AIAppContent appState={appState} workflow={workflow} handlers={handlers} />
     </div>
   );
 };

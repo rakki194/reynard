@@ -15,7 +15,7 @@ import { FloatingPanelHeader } from "./FloatingPanelHeader";
 import type { FloatingPanelProps } from "../types";
 import "./FloatingPanel.css";
 
-const FloatingPanelContent: Component<FloatingPanelProps> = (props) => {
+const FloatingPanelContent: Component<FloatingPanelProps> = props => {
   const [panelRef, setPanelRef] = createSignal<HTMLElement>();
   const config = usePanelConfig(props.config);
 
@@ -23,7 +23,7 @@ const FloatingPanelContent: Component<FloatingPanelProps> = (props) => {
     initialPosition: props.position,
     enabled: config.draggable,
     onDragStart: () => props.onShow?.(),
-    onDrag: (position) => props.onDrag?.(position),
+    onDrag: position => props.onDrag?.(position),
     onDragEnd: () => props.onHide?.(),
     constraints: {
       minWidth: 200,
@@ -58,11 +58,7 @@ const FloatingPanelContent: Component<FloatingPanelProps> = (props) => {
     >
       <div class="floating-panel-content">
         {(config.draggable || config.closable) && (
-          <FloatingPanelHeader
-            id={props.id}
-            config={config}
-            onHide={props.onHide}
-          />
+          <FloatingPanelHeader id={props.id} config={config} onHide={props.onHide} />
         )}
         <div class="floating-panel-body">{props.children}</div>
       </div>
@@ -71,6 +67,6 @@ const FloatingPanelContent: Component<FloatingPanelProps> = (props) => {
   );
 };
 
-export const FloatingPanel: Component<FloatingPanelProps> = (props) => {
+export const FloatingPanel: Component<FloatingPanelProps> = props => {
   return <FloatingPanelContent {...props} />;
 };

@@ -1,10 +1,4 @@
-import {
-  Component,
-  createSignal,
-  createEffect,
-  createMemo,
-  Show,
-} from "solid-js";
+import { Component, createSignal, createEffect, createMemo, Show } from "solid-js";
 import { getIcon } from "reynard-fluent-icons";
 import "./Notification.css";
 
@@ -19,7 +13,7 @@ export interface NotificationProps {
   onClose?: () => void;
 }
 
-export const Notification: Component<NotificationProps> = (props) => {
+export const Notification: Component<NotificationProps> = props => {
   const [isVisible, setIsVisible] = createSignal(true);
   const [isExiting, setIsExiting] = createSignal(false);
   const [isHovered, setIsHovered] = createSignal(false);
@@ -88,7 +82,7 @@ export const Notification: Component<NotificationProps> = (props) => {
       "props.icon:",
       props.icon,
       "props.duration:",
-      props.duration,
+      props.duration
     );
 
     // Use custom duration if provided, otherwise use default behavior
@@ -97,11 +91,7 @@ export const Notification: Component<NotificationProps> = (props) => {
     // Auto-dismiss after duration for notifications that should auto-dismiss
     // Only start timer if not hovering and duration > 0
     if (duration > 0 && !isHovered()) {
-      console.log(
-        "[Notification] Setting auto-dismiss timer for",
-        duration,
-        "ms",
-      );
+      console.log("[Notification] Setting auto-dismiss timer for", duration, "ms");
       timeout = setTimeout(handleClose, duration);
     } else {
       console.log(
@@ -109,7 +99,7 @@ export const Notification: Component<NotificationProps> = (props) => {
         duration,
         ", hovering:",
         isHovered(),
-        ")",
+        ")"
       );
     }
   };
@@ -131,10 +121,7 @@ export const Notification: Component<NotificationProps> = (props) => {
   // Set progress bar width
   createEffect(() => {
     if (progressBarRef && props.progress !== undefined) {
-      progressBarRef.style.setProperty(
-        "--progress-width",
-        `${props.progress}%`,
-      );
+      progressBarRef.style.setProperty("--progress-width", `${props.progress}%`);
     }
   });
 
@@ -165,11 +152,7 @@ export const Notification: Component<NotificationProps> = (props) => {
           </Show>
         </div>
 
-        <button
-          class="notification__close"
-          onClick={handleClose}
-          aria-label="Close notification"
-        >
+        <button class="notification__close" onClick={handleClose} aria-label="Close notification">
           ×
         </button>
       </div>

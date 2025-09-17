@@ -10,12 +10,10 @@ import type { SpellEffect } from "./SpellEffectTypes";
 
 interface SpellCasterCanvasProps {
   activeSpells: SpellEffect[];
-  onAnimationEngineReady: (
-    engine: ReturnType<typeof createAnimationEngine>,
-  ) => void;
+  onAnimationEngineReady: (engine: ReturnType<typeof createAnimationEngine>) => void;
 }
 
-export const SpellCasterCanvas: Component<SpellCasterCanvasProps> = (props) => {
+export const SpellCasterCanvas: Component<SpellCasterCanvasProps> = props => {
   console.log("🦊 SpellCasterCanvas: Component initializing with props", {
     activeSpellsCount: props.activeSpells.length,
   });
@@ -25,9 +23,7 @@ export const SpellCasterCanvas: Component<SpellCasterCanvasProps> = (props) => {
 
   // Create animation engine
   onMount(() => {
-    console.log(
-      "🦊 SpellCasterCanvas: onMount - setting up canvas and animation",
-    );
+    console.log("🦊 SpellCasterCanvas: onMount - setting up canvas and animation");
     if (canvasRef) {
       console.log("🦊 SpellCasterCanvas: Creating spell renderer");
       spellRenderer = new SpellRenderer(canvasRef);
@@ -40,9 +36,7 @@ export const SpellCasterCanvas: Component<SpellCasterCanvasProps> = (props) => {
       });
 
       // Notify parent that animation engine is ready
-      console.log(
-        "🦊 SpellCasterCanvas: Notifying parent that animation engine is ready",
-      );
+      console.log("🦊 SpellCasterCanvas: Notifying parent that animation engine is ready");
       props.onAnimationEngineReady(animationEngine);
 
       // Start animation loop immediately
@@ -93,11 +87,7 @@ export const SpellCasterCanvas: Component<SpellCasterCanvasProps> = (props) => {
       <div class="spell-overlay">
         <div class="spell-stats">
           <span>Active Spells: {props.activeSpells.length}</span>
-          <span>
-            FPS:{" "}
-            {animationEngine?.getPerformanceStats().currentFPS.toFixed(1) ||
-              "0"}
-          </span>
+          <span>FPS: {animationEngine?.getPerformanceStats().currentFPS.toFixed(1) || "0"}</span>
         </div>
       </div>
     </div>

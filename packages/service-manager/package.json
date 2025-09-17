@@ -24,9 +24,7 @@
       "import": "./dist/managers/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
@@ -37,14 +35,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "service",
-    "management",
-    "lifecycle",
-    "dependencies",
-    "health",
-    "monitoring"
-  ],
+  "keywords": ["service", "management", "lifecycle", "dependencies", "health", "monitoring"],
   "dependencies": {
     "reynard-core": "workspace:*",
     "reynard-features": "workspace:*"

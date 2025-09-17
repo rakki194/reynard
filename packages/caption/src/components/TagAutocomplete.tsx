@@ -12,16 +12,7 @@
  * - Integration with existing tag systems
  */
 
-import {
-  Component,
-  createSignal,
-  createMemo,
-  createEffect,
-  onMount,
-  onCleanup,
-  For,
-  Show,
-} from "solid-js";
+import { Component, createSignal, createMemo, createEffect, onMount, onCleanup, For, Show } from "solid-js";
 
 export interface TagSuggestion {
   text: string;
@@ -59,7 +50,7 @@ export interface TagAutocompleteProps {
   className?: string;
 }
 
-export const TagAutocomplete: Component<TagAutocompleteProps> = (props) => {
+export const TagAutocomplete: Component<TagAutocompleteProps> = props => {
   const [query, setQuery] = createSignal(props.value);
   const [suggestions, setSuggestions] = createSignal<TagSuggestion[]>([]);
   const [selectedIndex, setSelectedIndex] = createSignal(-1);
@@ -75,9 +66,7 @@ export const TagAutocomplete: Component<TagAutocompleteProps> = (props) => {
   const hasSuggestions = createMemo(() => suggestions().length > 0);
   const selectedSuggestion = createMemo(() => {
     const index = selectedIndex();
-    return index >= 0 && index < suggestions().length
-      ? suggestions()[index]
-      : null;
+    return index >= 0 && index < suggestions().length ? suggestions()[index] : null;
   });
 
   // Debounced search function
@@ -105,7 +94,7 @@ export const TagAutocomplete: Component<TagAutocompleteProps> = (props) => {
     try {
       const endpoint = props.apiEndpoint || "/api/tags/autocomplete";
       const response = await fetch(
-        `${endpoint}?q=${encodeURIComponent(searchQuery)}&limit=${props.maxSuggestions || 10}`,
+        `${endpoint}?q=${encodeURIComponent(searchQuery)}&limit=${props.maxSuggestions || 10}`
       );
 
       if (!response.ok) {
@@ -124,9 +113,7 @@ export const TagAutocomplete: Component<TagAutocompleteProps> = (props) => {
       }
     } catch (err) {
       console.error("Failed to fetch tag suggestions:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to fetch suggestions",
-      );
+      setError(err instanceof Error ? err.message : "Failed to fetch suggestions");
       setSuggestions([]);
       setIsOpen(false);
     } finally {
@@ -160,16 +147,12 @@ export const TagAutocomplete: Component<TagAutocompleteProps> = (props) => {
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        setSelectedIndex((prev) =>
-          prev < suggestions().length - 1 ? prev + 1 : 0,
-        );
+        setSelectedIndex(prev => (prev < suggestions().length - 1 ? prev + 1 : 0));
         break;
 
       case "ArrowUp":
         e.preventDefault();
-        setSelectedIndex((prev) =>
-          prev > 0 ? prev - 1 : suggestions().length - 1,
-        );
+        setSelectedIndex(prev => (prev > 0 ? prev - 1 : suggestions().length - 1));
         break;
 
       case "Enter":
@@ -310,9 +293,7 @@ export const TagAutocomplete: Component<TagAutocompleteProps> = (props) => {
                     <span class="suggestion-text">{suggestion.text}</span>
 
                     <Show when={props.showCategories && suggestion.category}>
-                      <span class="suggestion-category">
-                        {suggestion.category}
-                      </span>
+                      <span class="suggestion-category">{suggestion.category}</span>
                     </Show>
 
                     <Show when={props.showCounts && suggestion.count}>
@@ -324,16 +305,8 @@ export const TagAutocomplete: Component<TagAutocompleteProps> = (props) => {
             </For>
           </Show>
 
-          <Show
-            when={
-              !hasSuggestions() &&
-              !error() &&
-              query().length >= (props.minCharacters || 2)
-            }
-          >
-            <div class="no-suggestions">
-              No suggestions found for "{query()}"
-            </div>
+          <Show when={!hasSuggestions() && !error() && query().length >= (props.minCharacters || 2)}>
+            <div class="no-suggestions">No suggestions found for "{query()}"</div>
           </Show>
         </div>
       </Show>

@@ -12,31 +12,21 @@ export class ComponentHookRegistry {
   /**
    * Registers hooks for a component type.
    */
-  registerHooks<T extends Component>(
-    componentType: ComponentType<T>,
-    hooks: ComponentHooks,
-  ): void {
+  registerHooks<T extends Component>(componentType: ComponentType<T>, hooks: ComponentHooks): void {
     this.hooks.set(componentType.id, hooks);
   }
 
   /**
    * Gets hooks for a component type.
    */
-  getHooks<T extends Component>(
-    componentType: ComponentType<T>,
-  ): ComponentHooks | undefined {
+  getHooks<T extends Component>(componentType: ComponentType<T>): ComponentHooks | undefined {
     return this.hooks.get(componentType.id);
   }
 
   /**
    * Executes the onAdd hook for a component.
    */
-  executeOnAdd<T extends Component>(
-    world: World,
-    entity: Entity,
-    componentType: ComponentType<T>,
-    component: T,
-  ): void {
+  executeOnAdd<T extends Component>(world: World, entity: Entity, componentType: ComponentType<T>, component: T): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onAdd) {
       hooks.onAdd(world, entity, component);
@@ -50,7 +40,7 @@ export class ComponentHookRegistry {
     world: World,
     entity: Entity,
     componentType: ComponentType<T>,
-    component: T,
+    component: T
   ): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onInsert) {
@@ -66,7 +56,7 @@ export class ComponentHookRegistry {
     entity: Entity,
     componentType: ComponentType<T>,
     _oldComponent: T,
-    newComponent: T,
+    newComponent: T
   ): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onReplace) {
@@ -81,7 +71,7 @@ export class ComponentHookRegistry {
     world: World,
     entity: Entity,
     componentType: ComponentType<T>,
-    component: T,
+    component: T
   ): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onRemove) {
@@ -96,7 +86,7 @@ export class ComponentHookRegistry {
     world: World,
     entity: Entity,
     componentType: ComponentType<T>,
-    component: T,
+    component: T
   ): void {
     const hooks = this.getHooks(componentType);
     if (hooks?.onDespawn) {

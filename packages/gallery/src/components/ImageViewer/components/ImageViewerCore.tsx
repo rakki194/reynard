@@ -16,7 +16,7 @@ export interface ImageViewerCoreProps extends ImageViewerProps {
   imageRef: HTMLImageElement | undefined;
 }
 
-export const ImageViewerCore: Component<ImageViewerCoreProps> = (props) => {
+export const ImageViewerCore: Component<ImageViewerCoreProps> = props => {
   return (
     <div
       class={`reynard-image-viewer ${props.class || ""}`}
@@ -28,13 +28,7 @@ export const ImageViewerCore: Component<ImageViewerCoreProps> = (props) => {
       onMouseLeave={props.events.handleMouseUp}
     >
       {/* Image */}
-      <img
-        ref={props.imageRef}
-        src={props.src}
-        alt={props.alt || ""}
-        class={props.imageClasses()}
-        draggable={false}
-      />
+      <img ref={props.imageRef} src={props.src} alt={props.alt || ""} class={props.imageClasses()} draggable={false} />
 
       {/* Zoom Controls */}
       <Show when={props.config.showZoomControls}>
@@ -49,17 +43,11 @@ export const ImageViewerCore: Component<ImageViewerCoreProps> = (props) => {
 
       {/* Navigation Controls */}
       <Show when={props.config.showNavigationControls}>
-        <NavigationControls
-          onReset={props.events.handleReset}
-          onFitToView={props.events.handleFitToView}
-        />
+        <NavigationControls onReset={props.events.handleReset} onFitToView={props.events.handleFitToView} />
       </Show>
 
       {/* Instructions */}
-      <Instructions
-        enableZoom={props.config.enableZoom}
-        enablePan={props.config.enablePan}
-      />
+      <Instructions enableZoom={props.config.enableZoom} enablePan={props.config.enablePan} />
     </div>
   );
 };

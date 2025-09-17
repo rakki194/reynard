@@ -7,13 +7,7 @@ import { useNotifications } from "reynard-core";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import type { ThemeName } from "reynard-themes";
 import { getAvailableThemes, useTheme } from "reynard-themes";
-import {
-  Component,
-  createEffect,
-  createMemo,
-  createSignal,
-  For,
-} from "solid-js";
+import { Component, createEffect, createMemo, createSignal, For } from "solid-js";
 
 export const AppHeader: Component = () => {
   // Use createMemo to defer context access and handle errors gracefully
@@ -65,11 +59,7 @@ export const AppHeader: Component = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
-    if (
-      sectionId === "oklch-showcase" ||
-      sectionId === "charts-showcase" ||
-      sectionId === "threed-showcase"
-    ) {
+    if (sectionId === "oklch-showcase" || sectionId === "charts-showcase" || sectionId === "threed-showcase") {
       // Navigate to dedicated showcase pages
       window.location.hash = sectionId;
       setIsMenuOpen(false);
@@ -103,18 +93,11 @@ export const AppHeader: Component = () => {
         </div>
 
         <nav class="header-nav">
-          <button
-            class="nav-toggle"
-            onClick={() => setIsMenuOpen(!isMenuOpen())}
-            aria-label="Toggle navigation menu"
-          >
+          <button class="nav-toggle" onClick={() => setIsMenuOpen(!isMenuOpen())} aria-label="Toggle navigation menu">
             {fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu") && (
               <span
                 // eslint-disable-next-line solid/no-innerhtml
-                innerHTML={
-                  fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu")
-                    ?.outerHTML
-                }
+                innerHTML={fluentIconsPackage.getIcon(isMenuOpen() ? "dismiss" : "menu")?.outerHTML}
               />
             )}
           </button>
@@ -123,10 +106,7 @@ export const AppHeader: Component = () => {
             <button class="nav-link" onClick={() => scrollToSection("hero")}>
               Home
             </button>
-            <button
-              class="nav-link"
-              onClick={() => scrollToSection("dashboard")}
-            >
+            <button class="nav-link" onClick={() => scrollToSection("dashboard")}>
               Dashboard
             </button>
             <button class="nav-link" onClick={() => scrollToSection("icons")}>
@@ -135,28 +115,16 @@ export const AppHeader: Component = () => {
             <button class="nav-link" onClick={() => scrollToSection("themes")}>
               Themes
             </button>
-            <button
-              class="nav-link"
-              onClick={() => scrollToSection("oklch-demo")}
-            >
+            <button class="nav-link" onClick={() => scrollToSection("oklch-demo")}>
               OKLCH Colors
             </button>
-            <button
-              class="nav-link"
-              onClick={() => scrollToSection("oklch-showcase")}
-            >
+            <button class="nav-link" onClick={() => scrollToSection("oklch-showcase")}>
               OKLCH Showcase
             </button>
-            <button
-              class="nav-link"
-              onClick={() => scrollToSection("charts-showcase")}
-            >
+            <button class="nav-link" onClick={() => scrollToSection("charts-showcase")}>
               Charts Showcase
             </button>
-            <button
-              class="nav-link"
-              onClick={() => scrollToSection("threed-showcase")}
-            >
+            <button class="nav-link" onClick={() => scrollToSection("threed-showcase")}>
               3D Showcase
             </button>
             <button
@@ -168,10 +136,7 @@ export const AppHeader: Component = () => {
             >
               🦊 Rogue-like Game
             </button>
-            <button
-              class="nav-link"
-              onClick={() => scrollToSection("playground")}
-            >
+            <button class="nav-link" onClick={() => scrollToSection("playground")}>
               Playground
             </button>
           </div>
@@ -181,16 +146,12 @@ export const AppHeader: Component = () => {
           <div class="theme-quick-select">
             <select
               value={themeContext().theme}
-              onChange={(e) => handleThemeChange(e.target.value)}
+              onChange={e => handleThemeChange(e.target.value)}
               class="theme-select"
               title="Quick theme switch"
             >
               <For each={availableThemes}>
-                {(themeConfig) => (
-                  <option value={themeConfig.name}>
-                    {themeConfig.displayName}
-                  </option>
-                )}
+                {themeConfig => <option value={themeConfig.name}>{themeConfig.displayName}</option>}
               </For>
             </select>
           </div>

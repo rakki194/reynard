@@ -15,10 +15,7 @@
     "./styles": "./dist/styles.css",
     "./dist/styles.css": "./dist/styles.css"
   },
-  "files": [
-    "dist/**/*",
-    "README.md"
-  ],
+  "files": ["dist/**/*", "README.md"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly && (mv dist/rag.css dist/styles.css 2>/dev/null || mv dist/asset dist/styles.css 2>/dev/null || true)",
@@ -29,15 +26,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "solidjs",
-    "rag",
-    "retrieval",
-    "search",
-    "embeddings",
-    "ai",
-    "ui"
-  ],
+  "keywords": ["solidjs", "rag", "retrieval", "search", "embeddings", "ai", "ui"],
   "dependencies": {
     "solid-js": "1.9.9",
     "reynard-api-client": "workspace:*",

@@ -14,9 +14,7 @@ const FeaturesSection: Component = () => {
         <li>✅ {getDemoTranslation(locale, "featuresList.rtlSupport")}</li>
         <li>✅ {getDemoTranslation(locale, "featuresList.typeSafe")}</li>
         <li>✅ {getDemoTranslation(locale, "featuresList.dynamicLoading")}</li>
-        <li>
-          ✅ {getDemoTranslation(locale, "featuresList.culturalAdaptations")}
-        </li>
+        <li>✅ {getDemoTranslation(locale, "featuresList.culturalAdaptations")}</li>
         <li>✅ {getDemoTranslation(locale, "featuresList.packageSpecific")}</li>
         <li>✅ {getDemoTranslation(locale, "featuresList.fallbackSystem")}</li>
       </ul>

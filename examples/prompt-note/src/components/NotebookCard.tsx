@@ -22,7 +22,7 @@ interface NotebookCardProps {
   onClick: () => void;
 }
 
-const NotebookCard: Component<NotebookCardProps> = (props) => {
+const NotebookCard: Component<NotebookCardProps> = props => {
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat("en-US", {
       month: "short",
@@ -32,24 +32,14 @@ const NotebookCard: Component<NotebookCardProps> = (props) => {
   };
 
   return (
-    <Card
-      class="notebook-card"
-      onClick={props.onClick}
-      interactive
-      padding="lg"
-    >
+    <Card class="notebook-card" onClick={props.onClick} interactive padding="lg">
       <div class="notebook-header">
-        <div
-          class="notebook-color"
-          style={{ "background-color": props.notebook.color }}
-        />
+        <div class="notebook-color" style={{ "background-color": props.notebook.color }} />
         <div class="notebook-info">
           <h3 class="notebook-title">{props.notebook.title}</h3>
           <div class="notebook-meta">
             <span class="page-count">{props.notebook.pageCount} pages</span>
-            <span class="visibility">
-              {props.notebook.isPublic ? "🌐 Public" : "🔒 Private"}
-            </span>
+            <span class="visibility">{props.notebook.isPublic ? "🌐 Public" : "🔒 Private"}</span>
           </div>
         </div>
       </div>
@@ -59,9 +49,7 @@ const NotebookCard: Component<NotebookCardProps> = (props) => {
       </Show>
 
       <div class="notebook-footer">
-        <span class="last-updated">
-          Updated {formatDate(props.notebook.updatedAt)}
-        </span>
+        <span class="last-updated">Updated {formatDate(props.notebook.updatedAt)}</span>
       </div>
     </Card>
   );

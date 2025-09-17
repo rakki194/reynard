@@ -4,11 +4,7 @@
  * A basic event emitter implementation for NLWeb service events.
  */
 
-import type {
-  NLWebEvent,
-  NLWebEventEmitter,
-  NLWebEventListener,
-} from "../types/index.js";
+import type { NLWebEvent, NLWebEventEmitter, NLWebEventListener } from "../types/index.js";
 
 /**
  * Create a simple event emitter implementation

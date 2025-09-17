@@ -95,8 +95,7 @@ function App() {
               <header class="app-header">
                 <h1 class="app-title">Reynard Test Application</h1>
                 <p class="app-description">
-                  Comprehensive demonstration of Reynard framework features,
-                  components, and utilities.
+                  Comprehensive demonstration of Reynard framework features, components, and utilities.
                 </p>
               </header>
 
@@ -165,10 +164,7 @@ function App() {
                     <PerformanceDemo />
                   </TabPanel>
 
-                  <TabPanel
-                    tabId="enhanced-integration"
-                    activeTab={activeTab()}
-                  >
+                  <TabPanel tabId="enhanced-integration" activeTab={activeTab()}>
                     <EnhancedIntegrationDemo />
                   </TabPanel>
 

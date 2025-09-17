@@ -14,17 +14,17 @@ class TestPasswordHashing:
         """Test that password hashing generates a valid hash."""
         password = "testpassword123"
         hashed = get_password_hash(password)
-        
+
         # Hash should be a string
         assert isinstance(hashed, str)
-        
+
         # Hash should be in Argon2 format (starts with $argon2id$)
         assert hashed.startswith("$argon2id$")
-        
+
         # Should contain version, memory, time, parallelism, salt, and hash
         parts = hashed.split("$")
         assert len(parts) >= 6  # $argon2id$v=19$m=131072,t=3,p=2$salt$hash
-        
+
         # Should be a valid Argon2 hash format
         assert parts[1] == "argon2id"
         assert parts[2].startswith("v=")
@@ -36,7 +36,7 @@ class TestPasswordHashing:
         password = "testpassword123"
         hash1 = get_password_hash(password)
         hash2 = get_password_hash(password)
-        
+
         # Hashes should be different due to random salt
         assert hash1 != hash2
 
@@ -44,7 +44,7 @@ class TestPasswordHashing:
         """Test successful password verification."""
         password = "testpassword123"
         hashed = get_password_hash(password)
-        
+
         # Correct password should verify successfully
         assert verify_password(password, hashed) is True
 
@@ -53,6 +53,6 @@ class TestPasswordHashing:
         password = "testpassword123"
         wrong_password = "wrongpassword456"
         hashed = get_password_hash(password)
-        
+
         # Wrong password should fail verification
         assert verify_password(wrong_password, hashed) is False

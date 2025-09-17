@@ -10,10 +10,7 @@
  * - Few (2-19): cărți
  * - Many (20+): de cărți
  */
-export function getRomanianPlural(
-  count: number,
-  forms: { one: string; few: string; many: string },
-): string {
+export function getRomanianPlural(count: number, forms: { one: string; few: string; many: string }): string {
   const absCount = Math.abs(count);
 
   // Handle zero

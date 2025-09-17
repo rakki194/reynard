@@ -37,11 +37,7 @@ The Gallery is a core feature of Reynard that requires careful attention to acce
 - Image Grid Items:
 
   ```tsx
-  <div
-    role="gridcell"
-    aria-label={`Image: ${title}`}
-    aria-selected={isSelected}
-  >
+  <div role="gridcell" aria-label={`Image: ${title}`} aria-selected={isSelected}>
     <img alt={title} src={thumbnailUrl} />
   </div>
   ```
@@ -61,10 +57,7 @@ The Image Viewer needs clear labeling for its controls and interactive elements:
 - Zoom Controls:
 
   ```tsx
-  <button
-    aria-label={`Zoom ${isZoomedIn ? "out" : "in"}`}
-    aria-pressed={isZoomedIn}
-  >
+  <button aria-label={`Zoom ${isZoomedIn ? "out" : "in"}`} aria-pressed={isZoomedIn}>
     <ZoomIcon />
   </button>
   ```
@@ -86,12 +79,7 @@ Settings panels require clear labeling to ensure users understand configuration 
   ```tsx
   <div role="radiogroup" aria-label="Theme selection">
     <label>
-      <input
-        type="radio"
-        name="theme"
-        value="light"
-        aria-checked={currentTheme === "light"}
-      />
+      <input type="radio" name="theme" value="light" aria-checked={currentTheme === "light"} />
       Light Theme
     </label>
   </div>
@@ -101,11 +89,7 @@ Settings panels require clear labeling to ensure users understand configuration 
 
   ```tsx
   <label class="toggle">
-    <input
-      type="checkbox"
-      aria-label="Enable minimap"
-      checked={minimapEnabled}
-    />
+    <input type="checkbox" aria-label="Enable minimap" checked={minimapEnabled} />
     Show Minimap
   </label>
   ```
@@ -117,11 +101,7 @@ The Upload Overlay needs clear status and instruction communication:
 - Drop Zone:
 
   ```tsx
-  <div
-    role="region"
-    aria-label="File upload area"
-    aria-describedby="upload-instructions"
-  >
+  <div role="region" aria-label="File upload area" aria-describedby="upload-instructions">
     <p id="upload-instructions">Drop images here or click to select</p>
   </div>
   ```
@@ -197,11 +177,7 @@ Use these tools in the Reynard development workflow:
 ### Modal Dialogs
 
 ```tsx
-<div
-  role="dialog"
-  aria-labelledby="dialog-title"
-  aria-describedby="dialog-desc"
->
+<div role="dialog" aria-labelledby="dialog-title" aria-describedby="dialog-desc">
   <h2 id="dialog-title">Confirm Action</h2>
   <p id="dialog-desc">Are you sure you want to delete these items?</p>
 </div>

@@ -1,6 +1,6 @@
 /**
  * 🐺 Penetration Test Configuration
- * 
+ *
  * *snarls with precision* Centralized configuration for all penetration testing
  * modules in the Reynard security testing suite.
  */
@@ -83,9 +83,7 @@ export const createDefaultConfig = (): PenetrationTestConfig => ({
 /**
  * Determine severity based on vulnerability count
  */
-export function determineSeverity(
-  count: number,
-): "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" {
+export function determineSeverity(count: number): "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" {
   if (count >= 5) return "CRITICAL";
   if (count >= 3) return "HIGH";
   if (count >= 1) return "MEDIUM";
@@ -101,4 +99,3 @@ export function determineSecurityRating(count: number): string {
   if (count >= 1) return "MEDIUM RISK - Some vulnerabilities found";
   return "SECURE - No vulnerabilities found";
 }
-

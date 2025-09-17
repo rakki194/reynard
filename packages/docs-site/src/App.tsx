@@ -86,9 +86,9 @@ const App: Component = () => {
     return (
       <div class="docs-sidebar-content">
         <DocsNav
-          items={sections.map((section) => ({
+          items={sections.map(section => ({
             label: section.title,
-            children: section.pages.map((page) => ({
+            children: section.pages.map(page => ({
               label: page.title,
               href: `/${page.slug}`,
             })),
@@ -138,9 +138,7 @@ const App: Component = () => {
             actions={headerActions()}
           />
         }
-        sidebar={
-          <DocsSidebar title="Documentation">{sidebarContent()}</DocsSidebar>
-        }
+        sidebar={<DocsSidebar title="Documentation">{sidebarContent()}</DocsSidebar>}
         footer={
           <DocsFooter>
             <div class="docs-footer-content">
@@ -170,13 +168,7 @@ const App: Component = () => {
         onSearch={handleSearch}
         results={searchResults()}
         onResultClick={handleSearchResultClick}
-        suggestions={[
-          "Getting Started",
-          "API Reference",
-          "Components",
-          "Themes",
-          "Examples",
-        ]}
+        suggestions={["Getting Started", "API Reference", "Components", "Themes", "Examples"]}
       />
     </Router>
   );

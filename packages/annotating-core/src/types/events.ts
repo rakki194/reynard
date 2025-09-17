@@ -15,11 +15,7 @@ export interface AnnotationEvent {
 }
 
 export interface ModelEvent extends AnnotationEvent {
-  type:
-    | "model_loaded"
-    | "model_unloaded"
-    | "model_error"
-    | "model_health_check";
+  type: "model_loaded" | "model_unloaded" | "model_error" | "model_health_check";
   data: {
     modelName: string;
     status: ModelStatus;

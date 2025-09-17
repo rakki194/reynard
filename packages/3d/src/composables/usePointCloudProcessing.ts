@@ -11,20 +11,13 @@ export function usePointCloudProcessing(
   settings: () => PointCloudSettings,
   maxPoints: () => number,
   pointSize: () => number,
-  processPointsWithSearchIntegration: (points: Point3D[]) => Point3D[],
+  processPointsWithSearchIntegration: (points: Point3D[]) => Point3D[]
 ) {
   // Process points with color, size, and search integration
   const processedPoints = createMemo(() => {
     const pointData = points().slice(0, maxPoints());
-    const coloredPoints = calculatePointColors(
-      pointData,
-      settings().colorMapping || "similarity",
-    );
-    const sizedPoints = calculatePointSizes(
-      coloredPoints,
-      settings().sizeMapping || "uniform",
-      pointSize(),
-    );
+    const coloredPoints = calculatePointColors(pointData, settings().colorMapping || "similarity");
+    const sizedPoints = calculatePointSizes(coloredPoints, settings().sizeMapping || "uniform", pointSize());
     return processPointsWithSearchIntegration(sizedPoints);
   });
 

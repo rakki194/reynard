@@ -8,16 +8,7 @@
  * @returns True if file is an image
  */
 export function isImageFile(file: File): boolean {
-  const imageExtensions = [
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".gif",
-    ".webp",
-    ".bmp",
-    ".tiff",
-    ".svg",
-  ];
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".tiff", ".svg"];
   return imageExtensions.includes(getFileExtension(file.name));
 }
 

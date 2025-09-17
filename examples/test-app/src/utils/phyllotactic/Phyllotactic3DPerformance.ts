@@ -3,24 +3,18 @@
  * Performance metrics and optimization utilities for 3D phyllotactic systems
  */
 
-import type {
-  Phyllotactic3DConfig,
-  PerformanceMetrics,
-} from "./Phyllotactic3DConfig";
+import type { Phyllotactic3DConfig, PerformanceMetrics } from "./Phyllotactic3DConfig";
 
 export class Phyllotactic3DPerformance {
   /**
    * Calculate 3D performance metrics
    */
-  static calculate3DPerformanceMetrics(
-    config: Phyllotactic3DConfig,
-  ): PerformanceMetrics {
+  static calculate3DPerformanceMetrics(config: Phyllotactic3DConfig): PerformanceMetrics {
     const baseComplexity = config.pointCount * 3; // 3D coordinates
     const stroboscopicOverhead = config.enableStroboscopic3D ? 1.2 : 1.0;
     const sphericalOverhead = config.enableSphericalProjection ? 1.3 : 1.0;
 
-    const complexity =
-      baseComplexity * stroboscopicOverhead * sphericalOverhead;
+    const complexity = baseComplexity * stroboscopicOverhead * sphericalOverhead;
     const renderingCost = complexity * 1.5; // 3D rendering is more expensive
     const memoryUsage = config.pointCount * 96; // 3D points use more memory
 
@@ -77,7 +71,7 @@ export class Phyllotactic3DPerformance {
    */
   static optimizeForPerformance(
     config: Phyllotactic3DConfig,
-    targetFrameRate: number = 30,
+    targetFrameRate: number = 30
   ): Partial<Phyllotactic3DConfig> {
     const currentFrameRate = this.estimateFrameRate(config);
 
@@ -90,9 +84,7 @@ export class Phyllotactic3DPerformance {
 
     // Reduce point count if needed
     if (optimizationFactor < 0.8) {
-      optimizedConfig.pointCount = Math.floor(
-        config.pointCount * optimizationFactor,
-      );
+      optimizedConfig.pointCount = Math.floor(config.pointCount * optimizationFactor);
     }
 
     // Disable expensive features if needed
@@ -110,10 +102,7 @@ export class Phyllotactic3DPerformance {
   /**
    * Calculate LOD (Level of Detail) based on distance
    */
-  static calculateLOD(
-    distance: number,
-    maxDistance: number = 1000,
-  ): { pointCount: number; detailLevel: number } {
+  static calculateLOD(distance: number, maxDistance: number = 1000): { pointCount: number; detailLevel: number } {
     const normalizedDistance = Math.min(1, distance / maxDistance);
     const detailLevel = 1 - normalizedDistance;
 
@@ -135,7 +124,7 @@ export class Phyllotactic3DPerformance {
     metrics: PerformanceMetrics;
     frameRate: number;
   }> {
-    return configs.map((config) => ({
+    return configs.map(config => ({
       config,
       metrics: this.calculate3DPerformanceMetrics(config),
       frameRate: this.estimateFrameRate(config),

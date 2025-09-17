@@ -7,16 +7,9 @@
 import { createSignal, onMount, onCleanup, createEffect } from "solid-js";
 import type { BoundingBox, ImageInfo, EditorConfig } from "../types";
 import type { Setter } from "solid-js";
-import {
-  createCanvas,
-  addBoundingBoxesToCanvas,
-  cleanupCanvas,
-} from "../utils/canvasSetup";
+import { createCanvas, addBoundingBoxesToCanvas, cleanupCanvas } from "../utils/canvasSetup";
 import { setupCanvasEventHandlers } from "../handlers/canvasEventHandlers";
-import {
-  displayToImageCoords,
-  clampBoundingBoxToImage,
-} from "../utils/coordinateTransform";
+import { displayToImageCoords, clampBoundingBoxToImage } from "../utils/coordinateTransform";
 import * as fabric from "fabric";
 
 export interface CanvasSetupConfig {
@@ -74,14 +67,8 @@ export const useCanvasSetup = (config: CanvasSetupConfig) => {
       setStartPoint: config.setStartPoint,
       selectedLabelClass: config.selectedLabelClass,
       displayToImageCoords: (x, y) =>
-        displayToImageCoords(
-          { x, y },
-          config.imageInfo,
-          config.containerWidth,
-          config.containerHeight,
-        ),
-      clampBoundingBoxToImage: (box) =>
-        clampBoundingBoxToImage(box, config.imageInfo),
+        displayToImageCoords({ x, y }, config.imageInfo, config.containerWidth, config.containerHeight),
+      clampBoundingBoxToImage: box => clampBoundingBoxToImage(box, config.imageInfo),
     });
 
     // Add initial bounding boxes

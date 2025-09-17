@@ -11,28 +11,21 @@ import type { SpatialDataType } from "../types/spatial-types";
 /**
  * Utility function to create a spatial hash optimized for a specific use case
  */
-export function createOptimizedSpatialHash<
-  T extends SpatialDataType = SpatialDataType,
->(
+export function createOptimizedSpatialHash<T extends SpatialDataType = SpatialDataType>(
   objects: Array<SpatialObject<T>>,
   options: {
     targetCellSize?: number;
     maxObjectsPerCell?: number;
-  } = {},
+  } = {}
 ): SpatialHash<T> {
   const { targetCellSize, maxObjectsPerCell = 50 } = options;
 
   // Calculate optimal cell size based on object distribution
   let optimalCellSize = targetCellSize || 100;
   if (objects.length > 0) {
-    const avgWidth =
-      objects.reduce((sum, obj) => sum + (obj.width || 0), 0) / objects.length;
-    const avgHeight =
-      objects.reduce((sum, obj) => sum + (obj.height || 0), 0) / objects.length;
-    optimalCellSize = Math.max(
-      50,
-      Math.min(200, Math.sqrt(avgWidth * avgHeight) * 2),
-    );
+    const avgWidth = objects.reduce((sum, obj) => sum + (obj.width || 0), 0) / objects.length;
+    const avgHeight = objects.reduce((sum, obj) => sum + (obj.height || 0), 0) / objects.length;
+    optimalCellSize = Math.max(50, Math.min(200, Math.sqrt(avgWidth * avgHeight) * 2));
   }
 
   const hash = new SpatialHash<T>({
@@ -52,15 +45,11 @@ export function createOptimizedSpatialHash<
 /**
  * Calculate optimal cell size based on object distribution
  */
-export function calculateOptimalCellSize(
-  objects: Array<SpatialObject>,
-): number {
+export function calculateOptimalCellSize(objects: Array<SpatialObject>): number {
   if (objects.length === 0) return 100;
 
-  const avgWidth =
-    objects.reduce((sum, obj) => sum + (obj.width || 0), 0) / objects.length;
-  const avgHeight =
-    objects.reduce((sum, obj) => sum + (obj.height || 0), 0) / objects.length;
+  const avgWidth = objects.reduce((sum, obj) => sum + (obj.width || 0), 0) / objects.length;
+  const avgHeight = objects.reduce((sum, obj) => sum + (obj.height || 0), 0) / objects.length;
 
   return Math.max(50, Math.min(200, Math.sqrt(avgWidth * avgHeight) * 2));
 }
@@ -68,11 +57,7 @@ export function calculateOptimalCellSize(
 /**
  * Estimate memory usage for spatial hash data structures
  */
-export function estimateMemoryUsage(
-  cellCount: number,
-  objectCount: number,
-  objectToCellCount: number,
-): number {
+export function estimateMemoryUsage(cellCount: number, objectCount: number, objectToCellCount: number): number {
   let usage = 0;
 
   // Estimate Map overhead

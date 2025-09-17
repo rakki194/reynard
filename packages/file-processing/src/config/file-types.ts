@@ -13,12 +13,7 @@ import { TEXT_EXTENSIONS } from "./text-types";
 import { CODE_EXTENSIONS } from "./code-types";
 import { DOCUMENT_EXTENSIONS } from "./document-types";
 import { ARCHIVE_EXTENSIONS } from "./archive-types";
-import {
-  LORA_EXTENSIONS,
-  OCR_EXTENSIONS,
-  CAPTION_EXTENSIONS,
-  METADATA_EXTENSIONS,
-} from "./special-types";
+import { LORA_EXTENSIONS, OCR_EXTENSIONS, CAPTION_EXTENSIONS, METADATA_EXTENSIONS } from "./special-types";
 
 // Import modular functions for re-export
 import "./file-type-info";
@@ -45,9 +40,5 @@ export {
 // Re-export modular functions
 export { getFileTypeInfo } from "./file-type-info";
 export { getMimeType } from "./mime-type-resolver";
-export {
-  isSupportedExtension,
-  getAllSupportedExtensions,
-  getFileCategory,
-} from "./file-type-utils";
+export { isSupportedExtension, getAllSupportedExtensions, getFileCategory } from "./file-type-utils";
 export { DEFAULT_PROCESSING_CONFIG } from "./processing-config";

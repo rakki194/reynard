@@ -21,7 +21,7 @@ export class SimpleEventManager {
   }
 
   emitEvent(event: AnyAnnotationEvent): void {
-    this.listeners.forEach((listener) => {
+    this.listeners.forEach(listener => {
       try {
         listener(event);
       } catch (error) {

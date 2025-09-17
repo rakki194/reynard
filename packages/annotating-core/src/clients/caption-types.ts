@@ -8,11 +8,7 @@
 // Import types from specialized modules
 import type { JsonSchema } from "./json-schema-types";
 import type { GeneratorConfig } from "./generator-config-types";
-import type {
-  HealthDetails,
-  QueueStatus,
-  UsageStats,
-} from "./monitoring-types";
+import type { HealthDetails, QueueStatus, UsageStats } from "./monitoring-types";
 
 // Re-export types from specialized modules
 export type { JsonSchema, JsonSchemaProperty } from "./json-schema-types";

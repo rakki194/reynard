@@ -102,11 +102,9 @@ export class ErrorReporter {
 
     const reynardError = isReynardError(error)
       ? error
-      : new ReynardError(
-          error instanceof Error ? error.message : "Unknown error",
-          "UNKNOWN_ERROR",
-          { source: "error-reporter" },
-        );
+      : new ReynardError(error instanceof Error ? error.message : "Unknown error", "UNKNOWN_ERROR", {
+          source: "error-reporter",
+        });
 
     // Apply filters
     const filterResult = this.applyFilters(reynardError);
@@ -178,19 +176,13 @@ export class ErrorReporter {
     const topErrors = aggregations
       .sort((a, b) => b.count - a.count)
       .slice(0, 10)
-      .map((agg) => ({ code: agg.errorCode, count: agg.count }));
+      .map(agg => ({ code: agg.errorCode, count: agg.count }));
 
     return {
       totalErrors,
       uniqueErrors,
       topErrors,
-      errorRate:
-        totalErrors /
-        Math.max(
-          1,
-          Date.now() -
-            Math.min(...aggregations.map((agg) => agg.firstOccurrence)),
-        ),
+      errorRate: totalErrors / Math.max(1, Date.now() - Math.min(...aggregations.map(agg => agg.firstOccurrence))),
     };
   }
 
@@ -220,10 +212,7 @@ export class ErrorReporter {
   // Private Methods
   // ============================================================================
 
-  private createErrorReport(
-    error: ReynardError,
-    metadata?: Record<string, unknown>,
-  ): ErrorReport {
+  private createErrorReport(error: ReynardError, metadata?: Record<string, unknown>): ErrorReport {
     const report: ErrorReport = {
       id: crypto.randomUUID(),
       timestamp: Date.now(),
@@ -311,9 +300,7 @@ export class ErrorReporter {
     });
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to send error reports: ${response.status} ${response.statusText}`,
-      );
+      throw new Error(`Failed to send error reports: ${response.status} ${response.statusText}`);
     }
   }
 
@@ -334,7 +321,7 @@ export class ErrorReporter {
 export function createErrorCodeFilter(
   codes: string[],
   action: "include" | "exclude" | "sample" = "exclude",
-  sampleRate?: number,
+  sampleRate?: number
 ): ErrorFilter {
   return {
     name: `error-code-${action}`,
@@ -350,7 +337,7 @@ export function createErrorCodeFilter(
 export function createErrorSourceFilter(
   sources: string[],
   action: "include" | "exclude" | "sample" = "exclude",
-  sampleRate?: number,
+  sampleRate?: number
 ): ErrorFilter {
   return {
     name: `error-source-${action}`,
@@ -365,7 +352,7 @@ export function createErrorSourceFilter(
  */
 export function createValidationErrorFilter(
   action: "include" | "exclude" | "sample" = "exclude",
-  sampleRate?: number,
+  sampleRate?: number
 ): ErrorFilter {
   return {
     name: "validation-error-filter",
@@ -380,7 +367,7 @@ export function createValidationErrorFilter(
  */
 export function createNetworkErrorFilter(
   action: "include" | "exclude" | "sample" = "sample",
-  sampleRate = 0.1,
+  sampleRate = 0.1
 ): ErrorFilter {
   return {
     name: "network-error-filter",
@@ -404,28 +391,20 @@ export const globalErrorReporter = new ErrorReporter({
   includeStackTraces: true,
   includeUserInfo: true,
   includeEnvironmentInfo: true,
-  filters: [
-    createValidationErrorFilter("exclude"),
-    createNetworkErrorFilter("sample", 0.1),
-  ],
+  filters: [createValidationErrorFilter("exclude"), createNetworkErrorFilter("sample", 0.1)],
 });
 
 /**
  * Report an error using the global reporter
  */
-export function reportError(
-  error: unknown,
-  metadata?: Record<string, unknown>,
-): void {
+export function reportError(error: unknown, metadata?: Record<string, unknown>): void {
   globalErrorReporter.report(error, metadata);
 }
 
 /**
  * Set up global error reporting
  */
-export function setupGlobalErrorReporting(
-  config: Partial<ErrorReportingConfig> = {},
-): void {
+export function setupGlobalErrorReporting(config: Partial<ErrorReportingConfig> = {}): void {
   globalErrorReporter.updateConfig(config);
 }
 
@@ -436,17 +415,12 @@ export function setupGlobalErrorReporting(
 /**
  * Create error report from any error
  */
-export function createErrorReport(
-  error: unknown,
-  metadata?: Record<string, unknown>,
-): ErrorReport {
+export function createErrorReport(error: unknown, metadata?: Record<string, unknown>): ErrorReport {
   const reynardError = isReynardError(error)
     ? error
-    : new ReynardError(
-        error instanceof Error ? error.message : "Unknown error",
-        "UNKNOWN_ERROR",
-        { source: "error-reporter" },
-      );
+    : new ReynardError(error instanceof Error ? error.message : "Unknown error", "UNKNOWN_ERROR", {
+        source: "error-reporter",
+      });
 
   return {
     id: crypto.randomUUID(),

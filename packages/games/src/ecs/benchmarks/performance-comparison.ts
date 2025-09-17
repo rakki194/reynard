@@ -160,10 +160,8 @@ async function runPerformanceComparison(): Promise<void> {
     const queryResults = await runner.benchmarkQueries();
 
     // Extract performance metrics for 100,000 entities
-    const entity100k = entityResults.find((r) => r.entityCount === 100000);
-    const query100k = queryResults.find(
-      (r) => r.entityCount === 100000 && r.operation === "query(Position)",
-    );
+    const entity100k = entityResults.find(r => r.entityCount === 100000);
+    const query100k = queryResults.find(r => r.entityCount === 100000 && r.operation === "query(Position)");
 
     if (!entity100k || !query100k) {
       console.error("❌ Could not find 100k entity benchmark results");
@@ -182,11 +180,9 @@ async function runPerformanceComparison(): Promise<void> {
     };
 
     console.log("📊 Your ECS Performance:");
+    console.log(`   Entity Creation (100k): ${yourECSMetrics.entityCreation.timePerEntityUs.toFixed(2)}μs per entity`);
     console.log(
-      `   Entity Creation (100k): ${yourECSMetrics.entityCreation.timePerEntityUs.toFixed(2)}μs per entity`,
-    );
-    console.log(
-      `   Query Performance (100k): ${yourECSMetrics.queryPerformance.timePerQueryUs.toFixed(2)}μs per query`,
+      `   Query Performance (100k): ${yourECSMetrics.queryPerformance.timePerQueryUs.toFixed(2)}μs per query`
     );
     console.log("");
 
@@ -198,20 +194,14 @@ async function runPerformanceComparison(): Promise<void> {
 
     for (const benchmark of INDUSTRY_BENCHMARKS) {
       // Convert industry benchmarks to comparable units
-      const industryEntityTimeUs =
-        benchmark.entityCreation.timePerEntityNs / 1000; // ns to μs
+      const industryEntityTimeUs = benchmark.entityCreation.timePerEntityNs / 1000; // ns to μs
       const industryQueryTimeUs = benchmark.queryPerformance.timePerQueryUs;
 
-      const entityRatio =
-        yourECSMetrics.entityCreation.timePerEntityUs / industryEntityTimeUs;
-      const queryRatio =
-        yourECSMetrics.queryPerformance.timePerQueryUs / industryQueryTimeUs;
+      const entityRatio = yourECSMetrics.entityCreation.timePerEntityUs / industryEntityTimeUs;
+      const queryRatio = yourECSMetrics.queryPerformance.timePerQueryUs / industryQueryTimeUs;
 
       // Calculate overall score (lower ratio = better performance)
-      const overallScore = Math.max(
-        0,
-        100 - ((entityRatio + queryRatio) / 2) * 50,
-      );
+      const overallScore = Math.max(0, 100 - ((entityRatio + queryRatio) / 2) * 50);
 
       const comparison: ComparisonResult = {
         benchmark,
@@ -227,100 +217,64 @@ async function runPerformanceComparison(): Promise<void> {
 
       // Print comparison
       console.log(`\n${benchmark.name} (${benchmark.language}):`);
-      console.log(
-        `   Entity Creation: ${entityRatio.toFixed(2)}x ${entityRatio > 1 ? "slower" : "faster"}`,
-      );
-      console.log(
-        `   Query Performance: ${queryRatio.toFixed(2)}x ${queryRatio > 1 ? "slower" : "faster"}`,
-      );
+      console.log(`   Entity Creation: ${entityRatio.toFixed(2)}x ${entityRatio > 1 ? "slower" : "faster"}`);
+      console.log(`   Query Performance: ${queryRatio.toFixed(2)}x ${queryRatio > 1 ? "slower" : "faster"}`);
       console.log(`   Overall Score: ${overallScore.toFixed(1)}/100`);
       console.log(`   Notes: ${benchmark.notes}`);
     }
 
     // Find best and worst comparisons
     const bestComparison = comparisons.reduce((best, current) =>
-      current.comparison.overallScore > best.comparison.overallScore
-        ? current
-        : best,
+      current.comparison.overallScore > best.comparison.overallScore ? current : best
     );
     const worstComparison = comparisons.reduce((worst, current) =>
-      current.comparison.overallScore < worst.comparison.overallScore
-        ? current
-        : worst,
+      current.comparison.overallScore < worst.comparison.overallScore ? current : worst
     );
 
     console.log("\n🎯 Performance Analysis:");
     console.log("=".repeat(70));
     console.log(
-      `🏆 Best Match: ${bestComparison.benchmark.name} (${bestComparison.comparison.overallScore.toFixed(1)}/100)`,
+      `🏆 Best Match: ${bestComparison.benchmark.name} (${bestComparison.comparison.overallScore.toFixed(1)}/100)`
     );
     console.log(
-      `📉 Biggest Gap: ${worstComparison.benchmark.name} (${worstComparison.comparison.overallScore.toFixed(1)}/100)`,
+      `📉 Biggest Gap: ${worstComparison.benchmark.name} (${worstComparison.comparison.overallScore.toFixed(1)}/100)`
     );
 
     // Calculate average performance
     const avgEntityRatio =
-      comparisons.reduce(
-        (sum, c) => sum + c.comparison.entityCreationRatio,
-        0,
-      ) / comparisons.length;
+      comparisons.reduce((sum, c) => sum + c.comparison.entityCreationRatio, 0) / comparisons.length;
     const avgQueryRatio =
-      comparisons.reduce(
-        (sum, c) => sum + c.comparison.queryPerformanceRatio,
-        0,
-      ) / comparisons.length;
-    const avgScore =
-      comparisons.reduce((sum, c) => sum + c.comparison.overallScore, 0) /
-      comparisons.length;
+      comparisons.reduce((sum, c) => sum + c.comparison.queryPerformanceRatio, 0) / comparisons.length;
+    const avgScore = comparisons.reduce((sum, c) => sum + c.comparison.overallScore, 0) / comparisons.length;
 
     console.log(`\n📊 Average Performance:`);
-    console.log(
-      `   Entity Creation: ${avgEntityRatio.toFixed(2)}x industry average`,
-    );
-    console.log(
-      `   Query Performance: ${avgQueryRatio.toFixed(2)}x industry average`,
-    );
+    console.log(`   Entity Creation: ${avgEntityRatio.toFixed(2)}x industry average`);
+    console.log(`   Query Performance: ${avgQueryRatio.toFixed(2)}x industry average`);
     console.log(`   Overall Score: ${avgScore.toFixed(1)}/100`);
 
     // Performance recommendations
     console.log("\n💡 Optimization Recommendations:");
     if (avgEntityRatio > 2) {
-      console.log(
-        "   🔧 Entity creation is slower than industry average - consider optimizing entity allocation",
-      );
+      console.log("   🔧 Entity creation is slower than industry average - consider optimizing entity allocation");
     }
     if (avgQueryRatio > 2) {
-      console.log(
-        "   🔧 Query performance is slower than industry average - consider optimizing component storage",
-      );
+      console.log("   🔧 Query performance is slower than industry average - consider optimizing component storage");
     }
     if (avgScore > 80) {
-      console.log(
-        "   🎉 Excellent performance! Your ECS is competitive with industry leaders",
-      );
+      console.log("   🎉 Excellent performance! Your ECS is competitive with industry leaders");
     } else if (avgScore > 60) {
       console.log("   👍 Good performance with room for optimization");
     } else {
-      console.log(
-        "   ⚠️  Performance needs improvement - consider architectural changes",
-      );
+      console.log("   ⚠️  Performance needs improvement - consider architectural changes");
     }
 
     // Language-specific insights
-    const jsBenchmarks = comparisons.filter(
-      (c) => c.benchmark.language === "JavaScript",
-    );
+    const jsBenchmarks = comparisons.filter(c => c.benchmark.language === "JavaScript");
     if (jsBenchmarks.length > 0) {
-      const jsAvgScore =
-        jsBenchmarks.reduce((sum, c) => sum + c.comparison.overallScore, 0) /
-        jsBenchmarks.length;
-      console.log(
-        `\n🌐 JavaScript ECS Comparison: ${jsAvgScore.toFixed(1)}/100 average`,
-      );
+      const jsAvgScore = jsBenchmarks.reduce((sum, c) => sum + c.comparison.overallScore, 0) / jsBenchmarks.length;
+      console.log(`\n🌐 JavaScript ECS Comparison: ${jsAvgScore.toFixed(1)}/100 average`);
       if (jsAvgScore > 70) {
-        console.log(
-          "   🚀 Your ECS performs well among JavaScript implementations!",
-        );
+        console.log("   🚀 Your ECS performs well among JavaScript implementations!");
       }
     }
   } catch (error) {
@@ -330,7 +284,7 @@ async function runPerformanceComparison(): Promise<void> {
 
 // Run the comparison if this script is executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  runPerformanceComparison().catch((error) => {
+  runPerformanceComparison().catch(error => {
     console.error("❌ Fatal error:", error);
     process.exit(1);
   });

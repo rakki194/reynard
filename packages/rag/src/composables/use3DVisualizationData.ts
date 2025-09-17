@@ -1,6 +1,6 @@
 /**
  * 3D Visualization Data Composable
- * 
+ *
  * Manages embedding data transformation, dimensionality reduction,
  * and point cloud generation for 3D visualization.
  */
@@ -44,11 +44,7 @@ export function use3DVisualizationData(
       return {
         id: `point-${index}`,
         position: [point[0], point[1], point[2]] as [number, number, number],
-        color: [colorIntensity, 1 - colorIntensity, 0.5] as [
-          number,
-          number,
-          number,
-        ],
+        color: [colorIntensity, 1 - colorIntensity, 0.5] as [number, number, number],
         size: pointSize(),
         metadata: {
           score,
@@ -63,14 +59,10 @@ export function use3DVisualizationData(
   // Mock dimensionality reduction function (replace with actual implementation)
   const performDimensionalityReduction = async (
     embeddings: number[][],
-    method: "tsne" | "umap" | "pca",
+    method: "tsne" | "umap" | "pca"
   ): Promise<number[][]> => {
     // This is a mock implementation - replace with actual dimensionality reduction
-    return embeddings.map((_, index) => [
-      Math.random() * 10 - 5,
-      Math.random() * 10 - 5,
-      Math.random() * 10 - 5,
-    ]);
+    return embeddings.map((_, index) => [Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5]);
   };
 
   // Load embedding data and perform dimensionality reduction
@@ -83,7 +75,7 @@ export function use3DVisualizationData(
     try {
       // Extract embeddings from search results
       const embeddings = searchResults()
-        .map((result) => result.embedding_vector)
+        .map(result => result.embedding_vector)
         .filter((embedding): embedding is number[] => embedding !== undefined);
 
       if (embeddings.length === 0) {
@@ -97,19 +89,12 @@ export function use3DVisualizationData(
 
       // Perform dimensionality reduction
       const method = reductionMethod();
-      const reducedData = await performDimensionalityReduction(
-        embeddings,
-        method,
-      );
+      const reducedData = await performDimensionalityReduction(embeddings, method);
 
       setTransformedData(reducedData);
-      setOriginalIndices(
-        Array.from({ length: reducedData.length }, (_, i) => i),
-      );
+      setOriginalIndices(Array.from({ length: reducedData.length }, (_, i) => i));
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to load embedding data",
-      );
+      setError(err instanceof Error ? err.message : "Failed to load embedding data");
     } finally {
       setIsLoading(false);
     }
@@ -121,10 +106,10 @@ export function use3DVisualizationData(
     originalIndices,
     isLoading,
     error,
-    
+
     // Computed
     embeddingPoints,
-    
+
     // Actions
     loadEmbeddingData,
   };

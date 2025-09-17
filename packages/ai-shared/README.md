@@ -42,11 +42,7 @@ npm install reynard-ai-shared
 ### Basic Service Implementation
 
 ```typescript
-import {
-  BaseAIService,
-  ServiceConfig,
-  ServiceHealthInfo,
-} from "reynard-ai-shared";
+import { BaseAIService, ServiceConfig, ServiceHealthInfo } from "reynard-ai-shared";
 
 class MyAIService extends BaseAIService {
   constructor() {
@@ -96,26 +92,14 @@ await service.start();
 ### Basic Model Implementation
 
 ```typescript
-import {
-  BaseModel,
-  ModelType,
-  ModelInfo,
-  ModelConfig,
-} from "reynard-ai-shared";
+import { BaseModel, ModelType, ModelInfo, ModelConfig } from "reynard-ai-shared";
 
 class MyAIModel extends BaseModel {
   constructor() {
-    super(
-      "my-ai-model",
-      "My AI Model",
-      ModelType.CAPTION,
-      "1.0.0",
-      "A sample AI model for caption generation",
-      {
-        threshold: { type: "number", min: 0, max: 1, default: 0.5 },
-        maxLength: { type: "number", min: 1, max: 512, default: 256 },
-      },
-    );
+    super("my-ai-model", "My AI Model", ModelType.CAPTION, "1.0.0", "A sample AI model for caption generation", {
+      threshold: { type: "number", min: 0, max: 1, default: 0.5 },
+      maxLength: { type: "number", min: 1, max: 512, default: 256 },
+    });
   }
 
   async load(config?: ModelConfig): Promise<void> {
@@ -168,13 +152,7 @@ await model.loadModel({ threshold: 0.7 });
 ### Using Utilities
 
 ```typescript
-import {
-  ValidationUtils,
-  PerformanceMonitor,
-  ErrorUtils,
-  DataUtils,
-  ProgressTracker,
-} from "reynard-ai-shared";
+import { ValidationUtils, PerformanceMonitor, ErrorUtils, DataUtils, ProgressTracker } from "reynard-ai-shared";
 
 // Validation
 const result = ValidationUtils.validateValue("test@example.com", {
@@ -195,7 +173,7 @@ const result = await ErrorUtils.retry(
     return await fetchData();
   },
   3, // max retries
-  1000, // base delay
+  1000 // base delay
 );
 
 // Data processing

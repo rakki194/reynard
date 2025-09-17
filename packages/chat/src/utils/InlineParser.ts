@@ -47,7 +47,7 @@ export class InlineParser extends BaseMarkdownParser {
     this.incrementLine();
 
     // Set line number for all processors
-    Object.values(this.processors).forEach((processor) => {
+    Object.values(this.processors).forEach(processor => {
       processor.setLineNumber(this.state.currentLine);
     });
 
@@ -64,7 +64,7 @@ export class InlineParser extends BaseMarkdownParser {
           type: "paragraph",
           content: processedLine,
           line: this.state.currentLine,
-        }),
+        })
       );
       return true;
     }

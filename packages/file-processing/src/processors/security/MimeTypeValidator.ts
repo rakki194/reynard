@@ -32,15 +32,7 @@ export class MimeTypeValidator {
     ".dmg",
   ];
 
-  private static readonly COMPRESSED_EXTENSIONS = [
-    ".zip",
-    ".rar",
-    ".7z",
-    ".tar",
-    ".gz",
-    ".bz2",
-    ".xz",
-  ];
+  private static readonly COMPRESSED_EXTENSIONS = [".zip", ".rar", ".7z", ".tar", ".gz", ".bz2", ".xz"];
 
   /**
    * Check if MIME type matches extension

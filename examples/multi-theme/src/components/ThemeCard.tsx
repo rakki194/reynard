@@ -13,7 +13,7 @@ interface ThemeCardProps {
   onSelect: () => void;
 }
 
-export const ThemeCard: Component<ThemeCardProps> = (props) => {
+export const ThemeCard: Component<ThemeCardProps> = props => {
   const getThemeIcon = () => {
     switch (props.name) {
       case "light":
@@ -34,46 +34,21 @@ export const ThemeCard: Component<ThemeCardProps> = (props) => {
   const getThemeColors = () => {
     // These are the colors from each theme for preview
     const colors: Record<string, string[]> = {
-      light: [
-        "hsl(270deg 60% 60%)",
-        "hsl(220deg 20% 95%)",
-        "hsl(240deg 15% 12%)",
-      ],
-      dark: [
-        "hsl(270deg 60% 70%)",
-        "hsl(220deg 15% 8%)",
-        "hsl(220deg 20% 95%)",
-      ],
-      banana: [
-        "hsl(45deg 100% 45%)",
-        "hsl(50deg 40% 95%)",
-        "hsl(30deg 15% 15%)",
-      ],
-      strawberry: [
-        "hsl(350deg 70% 55%)",
-        "hsl(350deg 30% 95%)",
-        "hsl(350deg 15% 15%)",
-      ],
-      peanut: [
-        "hsl(30deg 60% 50%)",
-        "hsl(35deg 25% 93%)",
-        "hsl(25deg 15% 15%)",
-      ],
+      light: ["hsl(270deg 60% 60%)", "hsl(220deg 20% 95%)", "hsl(240deg 15% 12%)"],
+      dark: ["hsl(270deg 60% 70%)", "hsl(220deg 15% 8%)", "hsl(220deg 20% 95%)"],
+      banana: ["hsl(45deg 100% 45%)", "hsl(50deg 40% 95%)", "hsl(30deg 15% 15%)"],
+      strawberry: ["hsl(350deg 70% 55%)", "hsl(350deg 30% 95%)", "hsl(350deg 15% 15%)"],
+      peanut: ["hsl(30deg 60% 50%)", "hsl(35deg 25% 93%)", "hsl(25deg 15% 15%)"],
     };
     return colors[props.name] || ["#666", "#eee", "#333"];
   };
 
   return (
-    <div
-      class={`theme-card ${props.isActive ? "active" : ""}`}
-      onClick={props.onSelect}
-    >
+    <div class={`theme-card ${props.isActive ? "active" : ""}`} onClick={props.onSelect}>
       <div class="theme-header">
         <span class="theme-icon">
           {fluentIconsPackage.getIcon(getThemeIcon()) && (
-            <div
-              innerHTML={fluentIconsPackage.getIcon(getThemeIcon())?.outerHTML}
-            />
+            <div innerHTML={fluentIconsPackage.getIcon(getThemeIcon())?.outerHTML} />
           )}
         </span>
         <h3 class="theme-name">{props.name}</h3>
@@ -84,11 +59,7 @@ export const ThemeCard: Component<ThemeCardProps> = (props) => {
 
       <div class="color-swatches">
         {getThemeColors().map((color, index) => (
-          <div
-            class="color-swatch"
-            style={{ "background-color": color }}
-            title={`Color ${index + 1}`}
-          ></div>
+          <div class="color-swatch" style={{ "background-color": color }} title={`Color ${index + 1}`}></div>
         ))}
       </div>
 

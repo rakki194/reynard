@@ -29,10 +29,7 @@ const StatsPanel: Component = () => {
   const getProgressToNextLevel = () => {
     const currentLevelXP = stats.level * 200;
     const nextLevelXP = (stats.level + 1) * 200;
-    const progress =
-      ((stats.experiencePoints - currentLevelXP) /
-        (nextLevelXP - currentLevelXP)) *
-      100;
+    const progress = ((stats.experiencePoints - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
     return Math.min(100, Math.max(0, progress));
   };
 
@@ -46,10 +43,7 @@ const StatsPanel: Component = () => {
           <span class="xp-count">{stats.experiencePoints} XP</span>
         </div>
         <div class="progress-bar">
-          <div
-            class="progress-fill"
-            style={{ width: `${getProgressToNextLevel()}%` }}
-          />
+          <div class="progress-fill" style={{ width: `${getProgressToNextLevel()}%` }} />
         </div>
         <div class="next-level">
           {Math.round(getProgressToNextLevel())}% to Level {stats.level + 1}

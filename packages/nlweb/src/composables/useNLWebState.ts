@@ -5,12 +5,7 @@
  */
 
 import { createSignal } from "solid-js";
-import {
-  NLWebSuggestionResponse,
-  NLWebHealthStatus,
-  NLWebConfiguration,
-  NLWebTool,
-} from "../types/index.js";
+import { NLWebSuggestionResponse, NLWebHealthStatus, NLWebConfiguration, NLWebTool } from "../types/index.js";
 
 export interface NLWebState {
   suggestions: () => NLWebSuggestionResponse | null;
@@ -31,11 +26,9 @@ export interface NLWebState {
  * Create NLWeb state signals
  */
 export function createNLWebState(): NLWebState {
-  const [suggestions, setSuggestions] =
-    createSignal<NLWebSuggestionResponse | null>(null);
+  const [suggestions, setSuggestions] = createSignal<NLWebSuggestionResponse | null>(null);
   const [health, setHealth] = createSignal<NLWebHealthStatus | null>(null);
-  const [configuration, setConfiguration] =
-    createSignal<NLWebConfiguration | null>(null);
+  const [configuration, setConfiguration] = createSignal<NLWebConfiguration | null>(null);
   const [tools, setTools] = createSignal<NLWebTool[]>([]);
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);

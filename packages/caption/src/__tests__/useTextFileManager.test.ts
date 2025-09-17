@@ -144,10 +144,9 @@ describe("useTextFileManager", () => {
         modifiedAt: new Date(),
       };
 
-      const { setSelectedFile, handleFileRemove, selectedFile } =
-        useTextFileManager({
-          initialFiles: [file],
-        });
+      const { setSelectedFile, handleFileRemove, selectedFile } = useTextFileManager({
+        initialFiles: [file],
+      });
 
       setSelectedFile(file);
       expect(selectedFile()).toBe(file);

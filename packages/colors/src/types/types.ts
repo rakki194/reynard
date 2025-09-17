@@ -18,13 +18,7 @@ export interface OKLCHColor {
 /**
  * Theme names for color generation
  */
-export type ThemeName =
-  | "dark"
-  | "light"
-  | "gray"
-  | "banana"
-  | "strawberry"
-  | "peanut";
+export type ThemeName = "dark" | "light" | "gray" | "banana" | "strawberry" | "peanut";
 
 /**
  * Represents a content modality (image, video, text, audio, etc.)
@@ -104,8 +98,7 @@ export type ModalityId = (typeof MODALITY_IDS)[keyof typeof MODALITY_IDS];
 /**
  * Type for functionality ID
  */
-export type FunctionalityId =
-  (typeof FUNCTIONALITY_IDS)[keyof typeof FUNCTIONALITY_IDS];
+export type FunctionalityId = (typeof FUNCTIONALITY_IDS)[keyof typeof FUNCTIONALITY_IDS];
 
 // Media item interfaces have been moved to their respective packages:
 // - AudioItem -> reynard-audio

@@ -30,7 +30,7 @@ export const useShiki = (options: ShikiOptions = {}): UseShikiReturn => {
     stateManager.state,
     stateManager.setHighlighter,
     stateManager.setError,
-    stateManager.setLoading,
+    stateManager.setLoading
   );
 
   // Initialize on mount

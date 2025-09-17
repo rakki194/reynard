@@ -3,21 +3,11 @@
  * Comprehensive error boundary with recovery and reporting capabilities
  */
 
-import {
-  Component,
-  createSignal,
-  createMemo,
-  Show,
-  onCleanup,
-  JSX,
-} from "solid-js";
+import { Component, createSignal, createMemo, Show, onCleanup, JSX } from "solid-js";
 import { ErrorBoundaryConfig } from "../types/ErrorTypes";
 import { RecoveryAction } from "../types/RecoveryTypes";
 import { createErrorContext } from "../utils/ErrorAnalyzer";
-import {
-  getApplicableStrategies,
-  executeRecoveryStrategy,
-} from "../utils/RecoveryStrategies";
+import { getApplicableStrategies, executeRecoveryStrategy } from "../utils/RecoveryStrategies";
 import { createErrorReport } from "../utils/ErrorSerializer";
 import { ErrorFallback } from "./ErrorFallback";
 
@@ -29,9 +19,7 @@ interface ErrorBoundaryState {
   lastRecoveryAttempt?: number;
 }
 
-export const ErrorBoundary: Component<
-  ErrorBoundaryConfig & { children: JSX.Element }
-> = (props) => {
+export const ErrorBoundary: Component<ErrorBoundaryConfig & { children: JSX.Element }> = props => {
   const [state, setState] = createSignal<ErrorBoundaryState>({
     error: null,
     errorInfo: null,
@@ -55,14 +43,10 @@ export const ErrorBoundary: Component<
     const context = createErrorContext(error, errorInfo);
 
     // Get applicable recovery strategies
-    const strategies = getApplicableStrategies(
-      error,
-      context,
-      props.recoveryStrategies,
-    );
+    const strategies = getApplicableStrategies(error, context, props.recoveryStrategies);
 
     // Convert strategies to recovery actions
-    const recoveryActions: RecoveryAction[] = strategies.map((strategy) => ({
+    const recoveryActions: RecoveryAction[] = strategies.map(strategy => ({
       id: strategy.id,
       name: strategy.name,
       description: strategy.description,
@@ -117,7 +101,7 @@ export const ErrorBoundary: Component<
     const currentState = state();
     if (!currentState.error || !errorContext()) return;
 
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       isRecovering: true,
       lastRecoveryAttempt: Date.now(),
@@ -125,19 +109,13 @@ export const ErrorBoundary: Component<
 
     try {
       // Find the strategy for this action
-      const strategy = props.recoveryStrategies?.find(
-        (s) => s.id === action.id,
-      );
+      const strategy = props.recoveryStrategies?.find(s => s.id === action.id);
       if (!strategy) {
         throw new Error(`Recovery strategy not found: ${action.id}`);
       }
 
       // Execute the recovery strategy
-      const result = await executeRecoveryStrategy(
-        strategy,
-        currentState.error,
-        errorContext()!,
-      );
+      const result = await executeRecoveryStrategy(strategy, currentState.error, errorContext()!);
 
       if (result.success) {
         // Call user recovery handler
@@ -152,7 +130,7 @@ export const ErrorBoundary: Component<
     } catch (recoveryError) {
       console.error("Recovery execution failed:", recoveryError);
     } finally {
-      setState((prev) => ({ ...prev, isRecovering: false }));
+      setState(prev => ({ ...prev, isRecovering: false }));
     }
   };
 
@@ -209,10 +187,7 @@ export const ErrorBoundary: Component<
 
     onCleanup(() => {
       window.removeEventListener("error", handleGlobalError);
-      window.removeEventListener(
-        "unhandledrejection",
-        handleUnhandledRejection,
-      );
+      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
     });
   }
 
@@ -236,7 +211,7 @@ export const ErrorBoundary: Component<
 // HOC for wrapping components with error boundary
 export const withErrorBoundary = <P extends object>(
   Component: Component<P>,
-  errorBoundaryProps?: Partial<ErrorBoundaryConfig>,
+  errorBoundaryProps?: Partial<ErrorBoundaryConfig>
 ) => {
   return (props: P) => (
     <ErrorBoundary {...errorBoundaryProps}>

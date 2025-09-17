@@ -26,12 +26,6 @@
     }
   },
   "include": ["src"],
-  "exclude": [
-    "dist",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.test.js",
-    "**/*.test.jsx"
-  ],
+  "exclude": ["dist", "**/*.test.ts", "**/*.test.tsx", "**/*.test.js", "**/*.test.jsx"],
   "references": []
 }

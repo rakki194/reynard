@@ -5,11 +5,12 @@ Provides singleton ECS world service integration with the Reynard backend.
 """
 
 import logging
-from typing import Dict, Any, List
 from pathlib import Path
+from typing import Any
 
 from fastapi import FastAPI
-from reynard_ecs_world import AgentWorld, get_world_instance, set_world_instance
+
+from reynard_ecs_world import AgentWorld, set_world_instance
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +18,7 @@ logger = logging.getLogger(__name__)
 class ECSWorldService:
     """
     ECS World service for FastAPI backend integration.
-    
+
     Provides singleton access to the ECS world and manages its lifecycle
     within the FastAPI application.
     """
@@ -25,7 +26,7 @@ class ECSWorldService:
     def __init__(self, data_dir: Path | None = None):
         """
         Initialize the ECS world service.
-        
+
         Args:
             data_dir: Directory for persistent data storage
         """
@@ -37,18 +38,18 @@ class ECSWorldService:
         """Initialize the ECS world on application startup."""
         try:
             logger.info("🌍 Initializing ECS World Service")
-            
+
             # Create the world instance
             self._world = AgentWorld(data_dir=self.data_dir)
-            
+
             # Set as singleton
             set_world_instance(self._world)
-            
+
             # Start the world simulation
             await self._world.start_global_breeding()
-            
+
             logger.info("✅ ECS World Service initialized successfully")
-            
+
         except Exception as e:
             logger.error(f"❌ Failed to initialize ECS World Service: {e}")
             raise
@@ -67,10 +68,10 @@ class ECSWorldService:
     def get_world(self) -> AgentWorld:
         """
         Get the ECS world instance.
-        
+
         Returns:
             The AgentWorld instance
-            
+
         Raises:
             RuntimeError: If the world is not initialized
         """
@@ -78,10 +79,10 @@ class ECSWorldService:
             raise RuntimeError("ECS World Service not initialized")
         return self._world
 
-    def get_world_status(self) -> Dict[str, Any]:
+    def get_world_status(self) -> dict[str, Any]:
         """
         Get the current world status.
-        
+
         Returns:
             Dictionary containing world status information
         """
@@ -93,7 +94,7 @@ class ECSWorldService:
                 "agent_count": 0,
                 "mature_agents": 0,
             }
-        
+
         return {
             "status": "active",
             "entity_count": self._world.get_entity_count(),
@@ -110,7 +111,7 @@ _ecs_service: ECSWorldService | None = None
 def get_ecs_service() -> ECSWorldService:
     """
     Get the singleton ECS world service.
-    
+
     Returns:
         The ECSWorldService instance
     """
@@ -123,7 +124,7 @@ def get_ecs_service() -> ECSWorldService:
 def get_ecs_world() -> AgentWorld:
     """
     Get the ECS world instance from the service.
-    
+
     Returns:
         The AgentWorld instance
     """
@@ -133,10 +134,10 @@ def get_ecs_world() -> AgentWorld:
 def register_ecs_service(app: FastAPI) -> None:
     """
     Register the ECS world service with the FastAPI application.
-    
+
     Note: This function is deprecated in favor of lifespan manager integration.
     The ECS service should be registered through the service registry in lifespan_manager.py.
-    
+
     Args:
         app: The FastAPI application instance
     """

@@ -29,13 +29,13 @@ export interface SystemApiInterface {
      * @throws {RequiredError}
      * @memberof SystemApiInterface
      */
-    getConfigurationApiConfigGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>>;
+    getConfigurationApiConfigGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
 
     /**
      * Retrieve current application configuration (development environment only).  This endpoint provides access to the current application configuration including environment settings, debug flags, and service-specific configurations. Access is restricted to development environments for security purposes.  Returns:     dict: Application configuration containing:         - environment: Current deployment environment         - debug: Debug mode status         - services: Service-specific configuration details including:             - enabled: Service activation status             - timeout: Service timeout configurations  Raises:     HTTPException: 404 Not Found if accessed in production environment.
      * Get Configuration
      */
-    getConfigurationApiConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }>;
+    getConfigurationApiConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 
 }
 
@@ -48,7 +48,7 @@ export class SystemApi extends runtime.BaseAPI implements SystemApiInterface {
      * Retrieve current application configuration (development environment only).  This endpoint provides access to the current application configuration including environment settings, debug flags, and service-specific configurations. Access is restricted to development environments for security purposes.  Returns:     dict: Application configuration containing:         - environment: Current deployment environment         - debug: Debug mode status         - services: Service-specific configuration details including:             - enabled: Service activation status             - timeout: Service timeout configurations  Raises:     HTTPException: 404 Not Found if accessed in production environment.
      * Get Configuration
      */
-    async getConfigurationApiConfigGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
+    async getConfigurationApiConfigGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -70,7 +70,7 @@ export class SystemApi extends runtime.BaseAPI implements SystemApiInterface {
      * Retrieve current application configuration (development environment only).  This endpoint provides access to the current application configuration including environment settings, debug flags, and service-specific configurations. Access is restricted to development environments for security purposes.  Returns:     dict: Application configuration containing:         - environment: Current deployment environment         - debug: Debug mode status         - services: Service-specific configuration details including:             - enabled: Service activation status             - timeout: Service timeout configurations  Raises:     HTTPException: 404 Not Found if accessed in production environment.
      * Get Configuration
      */
-    async getConfigurationApiConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
+    async getConfigurationApiConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
         const response = await this.getConfigurationApiConfigGetRaw(initOverrides);
         return await response.value();
     }

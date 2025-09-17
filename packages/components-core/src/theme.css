@@ -34,11 +34,7 @@
   --danger: var(--color-error, oklch(55% 0.25 20));
 
   /* Status Background Colors - Use centralized theme variables */
-  --error-bg: color-mix(
-    in oklch,
-    var(--color-error, oklch(55% 0.25 20)) 10%,
-    var(--color-surface, oklch(98% 0.01 0))
-  );
+  --error-bg: color-mix(in oklch, var(--color-error, oklch(55% 0.25 20)) 10%, var(--color-surface, oklch(98% 0.01 0)));
   --error-text: var(--color-error, oklch(55% 0.25 20));
   --success-bg: color-mix(
     in oklch,
@@ -46,11 +42,7 @@
     var(--color-surface, oklch(98% 0.01 0))
   );
   --success-text: var(--color-success, oklch(60% 0.2 140));
-  --info-bg: color-mix(
-    in oklch,
-    var(--color-info, oklch(65% 0.2 200)) 10%,
-    var(--color-surface, oklch(98% 0.01 0))
-  );
+  --info-bg: color-mix(in oklch, var(--color-info, oklch(65% 0.2 200)) 10%, var(--color-surface, oklch(98% 0.01 0)));
   --info-text: var(--color-info, oklch(65% 0.2 200));
   --warning-bg: color-mix(
     in oklch,
@@ -94,11 +86,8 @@
      Typography
      ========================================================================== */
 
-  --font-family-sans:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-family-mono:
-    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
-    monospace;
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
 
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;

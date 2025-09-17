@@ -23,7 +23,7 @@ function _checkPathTraversal(filename: string): boolean {
     /\.\.%255C/gi,
   ];
 
-  return pathTraversalPatterns.some((pattern) => pattern.test(filename));
+  return pathTraversalPatterns.some(pattern => pattern.test(filename));
 }
 
 /**
@@ -158,10 +158,7 @@ export function validateFileName(filename: string): {
 /**
  * Validate file extension
  */
-export function validateFileExtension(
-  filename: string,
-  allowedExtensions: string[],
-): boolean {
+export function validateFileExtension(filename: string, allowedExtensions: string[]): boolean {
   if (!filename || !allowedExtensions || allowedExtensions.length === 0) {
     return false;
   }
@@ -173,10 +170,7 @@ export function validateFileExtension(
 /**
  * Validate file type by extension (alias for validateFileExtension)
  */
-export function isValidFileType(
-  filename: string,
-  allowedTypes: string[],
-): boolean {
+export function isValidFileType(filename: string, allowedTypes: string[]): boolean {
   return validateFileExtension(filename, allowedTypes);
 }
 

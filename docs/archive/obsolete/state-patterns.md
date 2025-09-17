@@ -31,11 +31,7 @@ Use ARIA attributes for states that have accessibility implications:
 
 ```tsx
 // ✅ Good: Using ARIA for semantic states
-<button
-  aria-expanded={isExpanded()}
-  aria-pressed={isPressed()}
-  aria-selected={isSelected()}
->
+<button aria-expanded={isExpanded()} aria-pressed={isPressed()} aria-selected={isSelected()}>
   Toggle
 </button>
 ```
@@ -338,8 +334,7 @@ details[open] .content {
 ```css
 /* State transitions with reduced motion support */
 .button {
-  transition: background-color var(--transition-duration)
-    var(--transition-timing);
+  transition: background-color var(--transition-duration) var(--transition-timing);
 }
 
 @media (prefers-reduced-motion: reduce) {

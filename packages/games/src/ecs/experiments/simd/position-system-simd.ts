@@ -22,14 +22,9 @@ export class PositionSystemSIMD {
       console.log("Initializing SIMD Position System...");
 
       this.wasmSystem = await this.wasmLoader.initializeWasm(this.maxEntities);
-      console.log(
-        `SIMD System initialized with ${this.maxEntities} max entities`,
-      );
+      console.log(`SIMD System initialized with ${this.maxEntities} max entities`);
     } catch (error) {
-      console.warn(
-        "Failed to initialize WASM SIMD, falling back to mock:",
-        error,
-      );
+      console.warn("Failed to initialize WASM SIMD, falling back to mock:", error);
       this.useMock = true;
     }
 
@@ -40,7 +35,7 @@ export class PositionSystemSIMD {
     position: { x: number; y: number },
     velocity: { vx: number; vy: number },
     acceleration: { ax: number; ay: number },
-    mass: { mass: number },
+    mass: { mass: number }
   ): void {
     if (this.useMock) {
       this.mockSystem.addEntity(position, velocity, acceleration, mass);
@@ -52,7 +47,7 @@ export class PositionSystemSIMD {
         velocity.vy,
         acceleration.ax,
         acceleration.ay,
-        mass.mass,
+        mass.mass
       );
     }
   }

@@ -17,7 +17,7 @@ export function createMonacoShikiState(options: MonacoShikiOptions = {}) {
   });
 
   const updateState = (updates: Partial<MonacoShikiState>) => {
-    setState((prev) => ({ ...prev, ...updates }));
+    setState(prev => ({ ...prev, ...updates }));
   };
 
   const setShikiEnabled = (enabled: boolean) => {

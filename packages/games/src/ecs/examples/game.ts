@@ -1,14 +1,6 @@
 // Complete ECS game example
 
-import {
-  ComponentType,
-  createWorld,
-  ResourceType,
-  schedule,
-  StorageType,
-  system,
-  systemSet,
-} from "../index";
+import { ComponentType, createWorld, ResourceType, schedule, StorageType, system, systemSet } from "../index";
 
 import {
   Bullet,
@@ -74,65 +66,23 @@ export class ECSGame {
   private setupComponentTypes(): void {
     const registry = this.world.getComponentRegistry();
 
-    this.positionType = registry.register(
-      "Position",
-      StorageType.Table,
-      () => new Position(0, 0),
-    );
-    this.velocityType = registry.register(
-      "Velocity",
-      StorageType.Table,
-      () => new Velocity(0, 0),
-    );
-    this.healthType = registry.register(
-      "Health",
-      StorageType.Table,
-      () => new Health(100, 100),
-    );
-    this.damageType = registry.register(
-      "Damage",
-      StorageType.Table,
-      () => new Damage(10),
-    );
-    this.playerType = registry.register(
-      "Player",
-      StorageType.Table,
-      () => new Player("Player1"),
-    );
-    this.enemyType = registry.register(
-      "Enemy",
-      StorageType.Table,
-      () => new Enemy("Basic"),
-    );
-    this.bulletType = registry.register(
-      "Bullet",
-      StorageType.Table,
-      () => new Bullet(300),
-    );
-    this.colorType = registry.register(
-      "Color",
-      StorageType.Table,
-      () => new Color(1, 1, 1),
-    );
-    this.sizeType = registry.register(
-      "Size",
-      StorageType.Table,
-      () => new Size(20, 20),
-    );
+    this.positionType = registry.register("Position", StorageType.Table, () => new Position(0, 0));
+    this.velocityType = registry.register("Velocity", StorageType.Table, () => new Velocity(0, 0));
+    this.healthType = registry.register("Health", StorageType.Table, () => new Health(100, 100));
+    this.damageType = registry.register("Damage", StorageType.Table, () => new Damage(10));
+    this.playerType = registry.register("Player", StorageType.Table, () => new Player("Player1"));
+    this.enemyType = registry.register("Enemy", StorageType.Table, () => new Enemy("Basic"));
+    this.bulletType = registry.register("Bullet", StorageType.Table, () => new Bullet(300));
+    this.colorType = registry.register("Color", StorageType.Table, () => new Color(1, 1, 1));
+    this.sizeType = registry.register("Size", StorageType.Table, () => new Size(20, 20));
   }
 
   private setupResourceTypes(): void {
     const registry = this.world.getResourceRegistry();
 
     this.gameTimeType = registry.register("GameTime", () => new GameTime(0, 0));
-    this.gameStateType = registry.register(
-      "GameState",
-      () => new GameState(0, 1),
-    );
-    this.inputStateType = registry.register(
-      "InputState",
-      () => new InputState(),
-    );
+    this.gameStateType = registry.register("GameState", () => new GameState(0, 1));
+    this.inputStateType = registry.register("InputState", () => new InputState());
     this.cameraType = registry.register("Camera", () => new Camera(0, 0, 1));
   }
 
@@ -144,13 +94,7 @@ export class ECSGame {
 
     // Add systems to sets
     inputSet.add("playerInput").add("shooting");
-    updateSet
-      .add("movement")
-      .add("lifetime")
-      .add("damage")
-      .add("enemyAI")
-      .add("collision")
-      .add("gameState");
+    updateSet.add("movement").add("lifetime").add("damage").add("enemyAI").add("collision").add("gameState");
     renderSet.add("rendering");
 
     // Create and add systems
@@ -185,7 +129,7 @@ export class ECSGame {
       new Health(100, 100),
       new Player("Player1"),
       new Color(0, 0, 1), // Blue
-      new Size(30, 30),
+      new Size(30, 30)
     );
 
     // Create some enemies
@@ -196,7 +140,7 @@ export class ECSGame {
         new Health(50, 50),
         new Enemy("Basic"),
         new Color(1, 0, 0), // Red
-        new Size(25, 25),
+        new Size(25, 25)
       );
     }
 
@@ -212,7 +156,7 @@ export class ECSGame {
    */
   start(): void {
     this.lastTime = performance.now();
-    this.gameLoop = requestAnimationFrame((time) => this.update(time));
+    this.gameLoop = requestAnimationFrame(time => this.update(time));
   }
 
   /**
@@ -243,7 +187,7 @@ export class ECSGame {
     this.world.runSchedule("main");
 
     // Continue the game loop
-    this.gameLoop = requestAnimationFrame((time) => this.update(time));
+    this.gameLoop = requestAnimationFrame(time => this.update(time));
   }
 
   /**
@@ -298,7 +242,7 @@ export class ECSGame {
       new Health(50, 50),
       new Enemy("Basic"),
       new Color(1, 0, 0), // Red
-      new Size(25, 25),
+      new Size(25, 25)
     );
   }
 }

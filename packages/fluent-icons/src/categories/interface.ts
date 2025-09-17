@@ -54,8 +54,7 @@ export const interfaceIcons = {
       name: "settings",
       tags: ["interface", "configuration", "preferences"],
       description: "Settings icon",
-      caption:
-        "A gear icon for accessing application settings, configuration, or preferences",
+      caption: "A gear icon for accessing application settings, configuration, or preferences",
       keywords: ["settings", "configuration", "preferences", "gear"],
     },
   },
@@ -65,8 +64,7 @@ export const interfaceIcons = {
       name: "search",
       tags: ["interface", "search", "find"],
       description: "Search icon",
-      caption:
-        "A magnifying glass icon for searching, finding, or looking up content",
+      caption: "A magnifying glass icon for searching, finding, or looking up content",
       keywords: ["search", "find", "magnifying glass", "lookup"],
     },
   },
@@ -76,8 +74,7 @@ export const interfaceIcons = {
       name: "filter",
       tags: ["interface", "filter", "sort"],
       description: "Filter icon",
-      caption:
-        "A funnel icon for filtering, sorting, or refining content and data",
+      caption: "A funnel icon for filtering, sorting, or refining content and data",
       keywords: ["filter", "sort", "funnel", "refine"],
     },
   },
@@ -87,8 +84,7 @@ export const interfaceIcons = {
       name: "grid",
       tags: ["interface", "layout", "view"],
       description: "Grid icon",
-      caption:
-        "A grid layout icon for displaying content in a structured grid format",
+      caption: "A grid layout icon for displaying content in a structured grid format",
       keywords: ["grid", "layout", "view", "squares"],
     },
   },
@@ -98,8 +94,7 @@ export const interfaceIcons = {
       name: "list",
       tags: ["interface", "layout", "view"],
       description: "List icon",
-      caption:
-        "A list layout icon for displaying content in a vertical list format",
+      caption: "A list layout icon for displaying content in a vertical list format",
       keywords: ["list", "layout", "view", "lines"],
     },
   },
@@ -119,8 +114,7 @@ export const interfaceIcons = {
       name: "eye-off",
       tags: ["interface", "visibility", "hide"],
       description: "Eye off icon",
-      caption:
-        "An eye with slash icon for hiding, concealing, or making content invisible",
+      caption: "An eye with slash icon for hiding, concealing, or making content invisible",
       keywords: ["eye", "off", "hide", "invisible"],
     },
   },
@@ -130,8 +124,7 @@ export const interfaceIcons = {
       name: "bounding-box",
       tags: ["interface", "selection", "box"],
       description: "Bounding box icon",
-      caption:
-        "A rectangular bounding box icon for selecting or highlighting content areas",
+      caption: "A rectangular bounding box icon for selecting or highlighting content areas",
       keywords: ["bounding", "box", "selection", "rectangle"],
     },
   },
@@ -141,8 +134,7 @@ export const interfaceIcons = {
       name: "layer",
       tags: ["interface", "layers", "stack"],
       description: "Layer icon",
-      caption:
-        "A layer stack icon for managing layered content or overlapping elements",
+      caption: "A layer stack icon for managing layered content or overlapping elements",
       keywords: ["layer", "layers", "stack", "overlay"],
     },
   },
@@ -152,8 +144,7 @@ export const interfaceIcons = {
       name: "window-brush",
       tags: ["interface", "window", "brush"],
       description: "Window brush icon",
-      caption:
-        "A window with brush icon for painting, drawing, or creative tools",
+      caption: "A window with brush icon for painting, drawing, or creative tools",
       keywords: ["window", "brush", "paint", "tool"],
     },
   },
@@ -163,8 +154,7 @@ export const interfaceIcons = {
       name: "dashboard",
       tags: ["interface", "dashboard", "overview"],
       description: "Dashboard icon",
-      caption:
-        "A dashboard icon with grid dots for accessing the main overview or control panel",
+      caption: "A dashboard icon with grid dots for accessing the main overview or control panel",
       keywords: ["dashboard", "overview", "grid", "dots"],
     },
   },
@@ -174,8 +164,7 @@ export const interfaceIcons = {
       name: "chat",
       tags: ["interface", "chat", "communication"],
       description: "Chat icon",
-      caption:
-        "A chat bubble icon for messaging, communication, or conversation features",
+      caption: "A chat bubble icon for messaging, communication, or conversation features",
       keywords: ["chat", "message", "communication", "bubble"],
     },
   },
@@ -185,8 +174,7 @@ export const interfaceIcons = {
       name: "chart",
       tags: ["interface", "chart", "data"],
       description: "Chart icon",
-      caption:
-        "A multiple chart icon for displaying data visualization, graphs, or analytics",
+      caption: "A multiple chart icon for displaying data visualization, graphs, or analytics",
       keywords: ["chart", "graph", "data", "multiple"],
     },
   },
@@ -196,8 +184,7 @@ export const interfaceIcons = {
       name: "table",
       tags: ["interface", "table", "data"],
       description: "Table icon",
-      caption:
-        "A table icon for displaying structured data in rows and columns",
+      caption: "A table icon for displaying structured data in rows and columns",
       keywords: ["table", "data", "grid", "rows"],
     },
   },
@@ -207,8 +194,7 @@ export const interfaceIcons = {
       name: "model",
       tags: ["interface", "model", "data"],
       description: "Model icon",
-      caption:
-        "A multiple table icon for representing data models or complex data structures",
+      caption: "A multiple table icon for representing data models or complex data structures",
       keywords: ["model", "data", "table", "multiple"],
     },
   },
@@ -228,8 +214,7 @@ export const interfaceIcons = {
       name: "open",
       tags: ["interface", "open", "external"],
       description: "Open icon",
-      caption:
-        "An open external link icon for opening content in new windows or external applications",
+      caption: "An open external link icon for opening content in new windows or external applications",
       keywords: ["open", "external", "link", "arrow"],
     },
   },
@@ -239,8 +224,7 @@ export const interfaceIcons = {
       name: "3d",
       tags: ["interface", "3d", "space"],
       description: "3D space icon",
-      caption:
-        "A 3D space icon representing three-dimensional content, modeling, or spatial visualization",
+      caption: "A 3D space icon representing three-dimensional content, modeling, or spatial visualization",
       keywords: ["3d", "space", "dimension", "cube"],
     },
   },
@@ -250,8 +234,7 @@ export const interfaceIcons = {
       name: "flow",
       tags: ["interface", "flow", "process"],
       description: "Flow icon",
-      caption:
-        "A flow diagram icon for representing processes, workflows, or data flow",
+      caption: "A flow diagram icon for representing processes, workflows, or data flow",
       keywords: ["flow", "process", "workflow", "diagram"],
     },
   },
@@ -261,8 +244,7 @@ export const interfaceIcons = {
       name: "server",
       tags: ["interface", "server", "backend"],
       description: "Server icon",
-      caption:
-        "A server icon representing backend infrastructure, hosting, or computing resources",
+      caption: "A server icon representing backend infrastructure, hosting, or computing resources",
       keywords: ["server", "backend", "computer", "host"],
     },
   },
@@ -272,8 +254,7 @@ export const interfaceIcons = {
       name: "service-bell",
       tags: ["interface", "notification", "bell"],
       description: "Service bell icon",
-      caption:
-        "A service bell icon for notifications, alerts, or customer service features",
+      caption: "A service bell icon for notifications, alerts, or customer service features",
       keywords: ["service", "bell", "notification", "alert"],
     },
   },
@@ -283,8 +264,7 @@ export const interfaceIcons = {
       name: "megaphone",
       tags: ["interface", "announcement", "speaker"],
       description: "Megaphone icon",
-      caption:
-        "A megaphone icon for announcements, broadcasting, or public communication",
+      caption: "A megaphone icon for announcements, broadcasting, or public communication",
       keywords: ["megaphone", "announcement", "speaker", "broadcast"],
     },
   },
@@ -295,8 +275,7 @@ export const interfaceIcons = {
       name: "thumbs-up",
       tags: ["interface", "reaction", "like", "positive"],
       description: "Thumbs up icon",
-      caption:
-        "A thumbs up icon for positive reactions, approval, or liking content",
+      caption: "A thumbs up icon for positive reactions, approval, or liking content",
       keywords: ["thumbs", "up", "like", "positive", "approve", "good"],
     },
   },
@@ -306,17 +285,8 @@ export const interfaceIcons = {
       name: "thumbs-up-filled",
       tags: ["interface", "reaction", "like", "positive"],
       description: "Thumbs up filled icon",
-      caption:
-        "A filled thumbs up icon for active positive reactions or selected approval",
-      keywords: [
-        "thumbs",
-        "up",
-        "like",
-        "positive",
-        "approve",
-        "good",
-        "filled",
-      ],
+      caption: "A filled thumbs up icon for active positive reactions or selected approval",
+      keywords: ["thumbs", "up", "like", "positive", "approve", "good", "filled"],
     },
   },
   "thumbs-down": {
@@ -325,8 +295,7 @@ export const interfaceIcons = {
       name: "thumbs-down",
       tags: ["interface", "reaction", "dislike", "negative"],
       description: "Thumbs down icon",
-      caption:
-        "A thumbs down icon for negative reactions, disapproval, or disliking content",
+      caption: "A thumbs down icon for negative reactions, disapproval, or disliking content",
       keywords: ["thumbs", "down", "dislike", "negative", "disapprove", "bad"],
     },
   },
@@ -336,17 +305,8 @@ export const interfaceIcons = {
       name: "thumbs-down-filled",
       tags: ["interface", "reaction", "dislike", "negative"],
       description: "Thumbs down filled icon",
-      caption:
-        "A filled thumbs down icon for active negative reactions or selected disapproval",
-      keywords: [
-        "thumbs",
-        "down",
-        "dislike",
-        "negative",
-        "disapprove",
-        "bad",
-        "filled",
-      ],
+      caption: "A filled thumbs down icon for active negative reactions or selected disapproval",
+      keywords: ["thumbs", "down", "dislike", "negative", "disapprove", "bad", "filled"],
     },
   },
   heart: {
@@ -355,8 +315,7 @@ export const interfaceIcons = {
       name: "heart",
       tags: ["interface", "reaction", "love", "favorite"],
       description: "Heart icon",
-      caption:
-        "A heart icon for love, favorites, emotional reactions, or affection",
+      caption: "A heart icon for love, favorites, emotional reactions, or affection",
       keywords: ["heart", "love", "favorite", "like", "emotion"],
     },
   },
@@ -366,8 +325,7 @@ export const interfaceIcons = {
       name: "heart-filled",
       tags: ["interface", "reaction", "love", "favorite"],
       description: "Heart filled icon",
-      caption:
-        "A filled heart icon for active love, favorites, or selected emotional reactions",
+      caption: "A filled heart icon for active love, favorites, or selected emotional reactions",
       keywords: ["heart", "love", "favorite", "like", "emotion", "filled"],
     },
   },
@@ -377,8 +335,7 @@ export const interfaceIcons = {
       name: "heart-color",
       tags: ["interface", "reaction", "love", "favorite"],
       description: "Heart color icon",
-      caption:
-        "A colored heart icon for vibrant love, favorites, or emotional reactions",
+      caption: "A colored heart icon for vibrant love, favorites, or emotional reactions",
       keywords: ["heart", "love", "favorite", "like", "emotion", "color"],
     },
   },
@@ -388,8 +345,7 @@ export const interfaceIcons = {
       name: "emoji-laugh",
       tags: ["interface", "reaction", "emoji", "laugh", "happy"],
       description: "Laughing emoji icon",
-      caption:
-        "A laughing emoji icon for expressing joy, humor, or positive reactions",
+      caption: "A laughing emoji icon for expressing joy, humor, or positive reactions",
       keywords: ["emoji", "laugh", "laughing", "happy", "joy", "funny"],
     },
   },
@@ -399,17 +355,8 @@ export const interfaceIcons = {
       name: "emoji-laugh-filled",
       tags: ["interface", "reaction", "emoji", "laugh", "happy"],
       description: "Laughing emoji filled icon",
-      caption:
-        "A filled laughing emoji icon for active joy, humor, or selected positive reactions",
-      keywords: [
-        "emoji",
-        "laugh",
-        "laughing",
-        "happy",
-        "joy",
-        "funny",
-        "filled",
-      ],
+      caption: "A filled laughing emoji icon for active joy, humor, or selected positive reactions",
+      keywords: ["emoji", "laugh", "laughing", "happy", "joy", "funny", "filled"],
     },
   },
   "emoji-surprised": {
@@ -418,8 +365,7 @@ export const interfaceIcons = {
       name: "emoji-surprised",
       tags: ["interface", "reaction", "emoji", "surprised", "shock"],
       description: "Surprised emoji icon",
-      caption:
-        "A surprised emoji icon for expressing shock, amazement, or astonishment",
+      caption: "A surprised emoji icon for expressing shock, amazement, or astonishment",
       keywords: ["emoji", "surprised", "shock", "wow", "amazed", "astonished"],
     },
   },
@@ -429,17 +375,8 @@ export const interfaceIcons = {
       name: "emoji-surprised-filled",
       tags: ["interface", "reaction", "emoji", "surprised", "shock"],
       description: "Surprised emoji filled icon",
-      caption:
-        "A filled surprised emoji icon for active shock, amazement, or selected reactions",
-      keywords: [
-        "emoji",
-        "surprised",
-        "shock",
-        "wow",
-        "amazed",
-        "astonished",
-        "filled",
-      ],
+      caption: "A filled surprised emoji icon for active shock, amazement, or selected reactions",
+      keywords: ["emoji", "surprised", "shock", "wow", "amazed", "astonished", "filled"],
     },
   },
   "emoji-sad": {
@@ -448,8 +385,7 @@ export const interfaceIcons = {
       name: "emoji-sad",
       tags: ["interface", "reaction", "emoji", "sad", "unhappy"],
       description: "Sad emoji icon",
-      caption:
-        "A sad emoji icon for expressing sadness, disappointment, or negative emotions",
+      caption: "A sad emoji icon for expressing sadness, disappointment, or negative emotions",
       keywords: ["emoji", "sad", "unhappy", "cry", "depressed", "down"],
     },
   },
@@ -459,17 +395,8 @@ export const interfaceIcons = {
       name: "emoji-sad-filled",
       tags: ["interface", "reaction", "emoji", "sad", "unhappy"],
       description: "Sad emoji filled icon",
-      caption:
-        "A filled sad emoji icon for active sadness, disappointment, or selected negative reactions",
-      keywords: [
-        "emoji",
-        "sad",
-        "unhappy",
-        "cry",
-        "depressed",
-        "down",
-        "filled",
-      ],
+      caption: "A filled sad emoji icon for active sadness, disappointment, or selected negative reactions",
+      keywords: ["emoji", "sad", "unhappy", "cry", "depressed", "down", "filled"],
     },
   },
   "emoji-angry": {
@@ -488,8 +415,7 @@ export const interfaceIcons = {
       name: "emoji-angry-filled",
       tags: ["interface", "reaction", "emoji", "angry", "mad"],
       description: "Angry emoji filled icon",
-      caption:
-        "A filled angry emoji icon for active anger, frustration, or selected negative reactions",
+      caption: "A filled angry emoji icon for active anger, frustration, or selected negative reactions",
       keywords: ["emoji", "angry", "mad", "furious", "rage", "upset", "filled"],
     },
   },
@@ -499,17 +425,8 @@ export const interfaceIcons = {
       name: "party-popper",
       tags: ["interface", "reaction", "emoji", "celebration", "party"],
       description: "Party popper emoji icon",
-      caption:
-        "A party popper emoji icon for celebrations, fun, or festive reactions",
-      keywords: [
-        "emoji",
-        "party",
-        "popper",
-        "celebration",
-        "sparkle",
-        "confetti",
-        "fun",
-      ],
+      caption: "A party popper emoji icon for celebrations, fun, or festive reactions",
+      keywords: ["emoji", "party", "popper", "celebration", "sparkle", "confetti", "fun"],
     },
   },
   "party-popper-filled": {
@@ -518,18 +435,8 @@ export const interfaceIcons = {
       name: "party-popper-filled",
       tags: ["interface", "reaction", "emoji", "celebration", "party"],
       description: "Party popper emoji filled icon",
-      caption:
-        "A filled party popper emoji icon for active celebrations or selected festive reactions",
-      keywords: [
-        "emoji",
-        "party",
-        "popper",
-        "celebration",
-        "sparkle",
-        "confetti",
-        "fun",
-        "filled",
-      ],
+      caption: "A filled party popper emoji icon for active celebrations or selected festive reactions",
+      keywords: ["emoji", "party", "popper", "celebration", "sparkle", "confetti", "fun", "filled"],
     },
   },
   emoji: {
@@ -538,8 +445,7 @@ export const interfaceIcons = {
       name: "emoji",
       tags: ["interface", "reaction", "emoji", "general"],
       description: "Generic emoji icon",
-      caption:
-        "A generic emoji icon for general emotional expressions or reactions",
+      caption: "A generic emoji icon for general emotional expressions or reactions",
       keywords: ["emoji", "emoticon", "expression", "face", "general"],
     },
   },
@@ -549,16 +455,8 @@ export const interfaceIcons = {
       name: "emoji-filled",
       tags: ["interface", "reaction", "emoji", "general"],
       description: "Generic emoji filled icon",
-      caption:
-        "A filled generic emoji icon for active emotional expressions or selected reactions",
-      keywords: [
-        "emoji",
-        "emoticon",
-        "expression",
-        "face",
-        "general",
-        "filled",
-      ],
+      caption: "A filled generic emoji icon for active emotional expressions or selected reactions",
+      keywords: ["emoji", "emoticon", "expression", "face", "general", "filled"],
     },
   },
 } as const;

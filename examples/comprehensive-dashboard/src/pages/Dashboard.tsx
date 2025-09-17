@@ -33,11 +33,7 @@ const generateMockData = () => ({
     datasets: [
       {
         data: [300, 500, 200],
-        backgroundColor: [
-          "var(--color-primary)",
-          "var(--color-secondary)",
-          "var(--color-warning)",
-        ],
+        backgroundColor: ["var(--color-primary)", "var(--color-secondary)", "var(--color-warning)"],
       },
     ],
   },
@@ -57,13 +53,11 @@ const Dashboard: Component = () => {
   // Simulate real-time updates
   createEffect(() => {
     const interval = setInterval(() => {
-      setStats((prev) => ({
+      setStats(prev => ({
         totalUsers: prev.totalUsers + Math.floor(Math.random() * 3),
         activeUsers: prev.activeUsers + Math.floor(Math.random() * 2) - 1,
         revenue: prev.revenue + Math.floor(Math.random() * 100),
-        conversionRate: Number(
-          (prev.conversionRate + (Math.random() - 0.5) * 0.1).toFixed(1),
-        ),
+        conversionRate: Number((prev.conversionRate + (Math.random() - 0.5) * 0.1).toFixed(1)),
       }));
     }, 5000);
 
@@ -88,11 +82,7 @@ const Dashboard: Component = () => {
     <div class="dashboard">
       <div class="dashboard__header">
         <h1 class="dashboard__title">{t("dashboard.welcome")}</h1>
-        <Button
-          variant="primary"
-          onClick={refreshData}
-          leftIcon={<span>🔄</span>}
-        >
+        <Button variant="primary" onClick={refreshData} leftIcon={<span>🔄</span>}>
           {t("common.refresh")}
         </Button>
       </div>
@@ -142,21 +132,13 @@ const Dashboard: Component = () => {
         <GridItem>
           <Card class="dashboard__chart-card">
             <h3>{t("analytics.visitors")}</h3>
-            <LineChart
-              labels={data().visitors.labels}
-              datasets={data().visitors.datasets}
-              height={300}
-            />
+            <LineChart labels={data().visitors.labels} datasets={data().visitors.datasets} height={300} />
           </Card>
         </GridItem>
         <GridItem>
           <Card class="dashboard__chart-card">
             <h3>{t("analytics.revenue")}</h3>
-            <BarChart
-              labels={data().revenue.labels}
-              datasets={data().revenue.datasets}
-              height={300}
-            />
+            <BarChart labels={data().revenue.labels} datasets={data().revenue.datasets} height={300} />
           </Card>
         </GridItem>
       </Grid>
@@ -168,11 +150,9 @@ const Dashboard: Component = () => {
             <h3>{t("dashboard.recentActivity")}</h3>
             <div class="dashboard__activity-list">
               <For each={recentActivities}>
-                {(activity) => (
+                {activity => (
                   <div class="dashboard__activity-item">
-                    <div class="dashboard__activity-avatar">
-                      {activity.user.charAt(0)}
-                    </div>
+                    <div class="dashboard__activity-avatar">{activity.user.charAt(0)}</div>
                     <div class="dashboard__activity-content">
                       <p>
                         <strong>{activity.user}</strong> {activity.action}
@@ -188,11 +168,7 @@ const Dashboard: Component = () => {
         <GridItem>
           <Card class="dashboard__chart-card">
             <h3>User Distribution</h3>
-            <PieChart
-              data={data().userTypes.datasets[0].data}
-              labels={data().userTypes.labels}
-              height={250}
-            />
+            <PieChart data={data().userTypes.datasets[0].data} labels={data().userTypes.labels} height={250} />
           </Card>
         </GridItem>
       </Grid>

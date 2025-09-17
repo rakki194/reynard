@@ -113,6 +113,30 @@ fenrir = [
     "responses",
 ]
 
+# RAG Embeddings Optimization dependencies
+rag = [
+    # Phase 1: Immediate optimizations
+    "tiktoken",          # Model-specific tokenization
+    "psutil",            # System resource monitoring
+    "prometheus-client", # Performance monitoring and metrics
+    "numpy",             # Statistical analysis for performance metrics
+    # Note: Phase 2 and 3 dependencies are commented out for future implementation
+    # Phase 2: Enhanced chunking (future)
+    # "tree-sitter",
+    # "tree-sitter-python",
+    # "tree-sitter-typescript",
+    # "tree-sitter-javascript",
+    # Phase 2: Hybrid search (future)
+    # "rank-bm25",
+    # "scikit-learn",
+    # Phase 3: Multi-modal embeddings (future)
+    # "transformers",
+    # "torch",
+    # "pillow",
+    # Phase 3: Quality monitoring (future)
+    # "matplotlib",
+]
+
 # Testing dependencies
 test = [
     "pytest",
@@ -129,7 +153,7 @@ test = [
 
 # All development tools
 dev = [
-    "reynard-monorepo[backend,gatekeeper,fenrir,test]",
+    "reynard-monorepo[backend,gatekeeper,fenrir,rag,test]",
     "black",
     "isort",
     "mypy",
@@ -181,9 +205,13 @@ known_first_party = [
     "gatekeeper",
     "beacon",
     "fenrir",
-    "app",             # backend app module
-    "validation",      # validation scripts
-    "reynard_scripts", # scripts package
+    "app",                  # backend app module
+    "validation",           # validation scripts
+    "reynard_scripts",      # scripts package
+    "reynard_agent_naming", # agent naming service
+    "reynard_ecs_world",    # ecs world service
+    "reynard_gatekeeper",   # gatekeeper service
+    "reynard_mcp_server",   # mcp server service
 ]
 known_third_party = [
     "fastapi",
@@ -212,6 +240,7 @@ skip_glob = [
 ]
 
 [tool.mypy]
+cache_dir = "/tmp/mypy_cache"
 python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
@@ -226,7 +255,7 @@ warn_no_return = true
 warn_unreachable = true
 strict_equality = true
 show_error_codes = true
-mypy_path = "scripts"
+mypy_path = "scripts:services/agent-naming:services/ecs-world:services/gatekeeper:services/mcp-server"
 
 # Module-specific overrides for external libraries
 [[tool.mypy.overrides]]
@@ -263,7 +292,13 @@ ignore_missing_imports = true
 [tool.ruff]
 target-version = "py313"
 line-length = 88
-src = ["scripts"]
+src = [
+    "scripts",
+    "services/agent-naming",
+    "services/ecs-world",
+    "services/gatekeeper",
+    "services/mcp-server",
+]
 select = [
     "E",    # pycodestyle errors
     "W",    # pycodestyle warnings
@@ -329,10 +364,14 @@ known-first-party = [
     "app",
     "validation",
     "reynard_scripts",
+    "reynard_agent_naming",
+    "reynard_ecs_world",
+    "reynard_gatekeeper",
+    "reynard_mcp_server",
 ]
 
 [tool.pylint.master]
-init-hook = "import sys; import os; sys.path.append('scripts'); venv_path = os.path.expanduser('~/venv/lib/python3.13/site-packages'); sys.path.insert(0, venv_path)"
+init-hook = "import sys; import os; sys.path.append('scripts'); sys.path.append('services/agent-naming'); sys.path.append('services/ecs-world'); sys.path.append('services/gatekeeper'); sys.path.append('services/mcp-server'); venv_path = os.path.expanduser('~/venv/lib/python3.13/site-packages'); sys.path.insert(0, venv_path)"
 max-module-lines = 250
 
 [tool.pylint.format]
@@ -405,7 +444,14 @@ markers = [
 asyncio_mode = "auto"
 
 [tool.coverage.run]
-source = ["backend/app", "libraries/gatekeeper/gatekeeper", "fenrir"]
+source = [
+    "backend/app",
+    "services/gatekeeper/reynard_gatekeeper",
+    "services/agent-naming/reynard_agent_naming",
+    "services/ecs-world/reynard_ecs_world",
+    "services/mcp-server/reynard_mcp_server",
+    "fenrir",
+]
 omit = [
     "*/tests/*",
     "*/test_*",

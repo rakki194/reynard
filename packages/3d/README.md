@@ -65,13 +65,7 @@ function My3DScene() {
   };
 
   return (
-    <ThreeJSVisualization
-      width={800}
-      height={600}
-      onSceneReady={setupScene}
-      enableDamping={true}
-      autoRotate={true}
-    />
+    <ThreeJSVisualization width={800} height={600} onSceneReady={setupScene} enableDamping={true} autoRotate={true} />
   );
 }
 ```
@@ -107,7 +101,7 @@ function MyPointCloud() {
       onPointClick={(point, event) => {
         console.log("Clicked point:", point);
       }}
-      onSelectionChange={(selected) => {
+      onSelectionChange={selected => {
         console.log("Selected points:", selected);
       }}
     />
@@ -130,7 +124,7 @@ function Custom3DComponent() {
   const pointCloud = usePointCloud(
     () => myPoints,
     () => ({ colorMapping: "cluster" }),
-    () => ({ enableSearchIntegration: true }),
+    () => ({ enableSearchIntegration: true })
   );
 
   // Use the composables to build custom 3D experiences

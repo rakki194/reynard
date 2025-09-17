@@ -79,7 +79,7 @@ export class UnionFind {
 
   clone(): UnionFind {
     const clone = new UnionFind(this.nodes.length);
-    clone.nodes = this.nodes.map((node) => ({ ...node }));
+    clone.nodes = this.nodes.map(node => ({ ...node }));
     clone.stats = { ...this.stats };
     clone.setOps = new UnionFindSetOperations(clone.nodes, clone.stats);
     return clone;

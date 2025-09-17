@@ -10,9 +10,7 @@ describe("UnionFindGame", () => {
   it("renders the game component", () => {
     render(() => <UnionFindGame />);
 
-    expect(
-      screen.getByText("🎯 Match-3 Union-Find Puzzle"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("🎯 Match-3 Union-Find Puzzle")).toBeInTheDocument();
     expect(screen.getByText("Score: 0")).toBeInTheDocument();
     expect(screen.getByText("Moves: 0")).toBeInTheDocument();
   });
@@ -117,9 +115,7 @@ describe("UnionFindGame", () => {
 
     render(() => <UnionFindGame config={customConfig} />);
 
-    expect(
-      screen.getByText("🎯 Match-3 Union-Find Puzzle"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("🎯 Match-3 Union-Find Puzzle")).toBeInTheDocument();
   });
 
   it("handles keyboard events", () => {

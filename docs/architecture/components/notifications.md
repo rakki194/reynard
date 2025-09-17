@@ -153,17 +153,12 @@ per-item subgroups:
 
 ```typescript
 const group = `diffusion-generate-${Date.now()}`;
-notify(
-  t("notifications.generatingCaption") || "Generating...",
-  "info",
-  group,
-  "spinner",
-);
+notify(t("notifications.generatingCaption") || "Generating...", "info", group, "spinner");
 
 await llm.generateStream(request, {
-  onStep: (_i, text) => setOutput((prev) => prev + text),
-  onComplete: async (final) => {
-    setOutput((p) => (p || "") + final);
+  onStep: (_i, text) => setOutput(prev => prev + text),
+  onComplete: async final => {
+    setOutput(p => (p || "") + final);
     try {
       await navigator.clipboard?.writeText(final);
       notify("Generation complete (copied)", "success", group);
@@ -171,7 +166,7 @@ await llm.generateStream(request, {
       notify("Generation complete", "success", group);
     }
   },
-  onError: (message) => notify(message || "Generation failed", "error", group),
+  onError: message => notify(message || "Generation failed", "error", group),
 });
 
 // Batch mode example
@@ -192,12 +187,7 @@ queries:
 
 ```typescript
 // Router selection notifications (optional)
-notify(
-  "Analyzing query for tool suggestions...",
-  "info",
-  "nlweb-router",
-  "info",
-);
+notify("Analyzing query for tool suggestions...", "info", "nlweb-router", "info");
 
 // Tool execution notifications
 notify("Executing git status...", "info", "nlweb-tools", "info");
@@ -305,26 +295,15 @@ const rag = useRAG();
 const group = "rag-ingest";
 app.notify("Starting ingest…", "info", group, "spinner", 0);
 
-await rag.ingestDocuments(
-  [{ source: "manual", content: "Some text" }],
-  "mxbai-embed-large",
-  (evt) => {
-    const processed = evt.processed ?? 0;
-    const total = evt.total ?? 0;
-    const percent =
-      total > 0 ? Math.round((processed / total) * 100) : undefined;
-    app.notify(
-      `Ingest ${processed}/${total}`,
-      "info",
-      group,
-      "spinner",
-      percent,
-    );
-    if (evt.type === "error") {
-      app.notify(evt.error || "Ingest error", "error", group);
-    }
-  },
-);
+await rag.ingestDocuments([{ source: "manual", content: "Some text" }], "mxbai-embed-large", evt => {
+  const processed = evt.processed ?? 0;
+  const total = evt.total ?? 0;
+  const percent = total > 0 ? Math.round((processed / total) * 100) : undefined;
+  app.notify(`Ingest ${processed}/${total}`, "info", group, "spinner", percent);
+  if (evt.type === "error") {
+    app.notify(evt.error || "Ingest error", "error", group);
+  }
+});
 
 app.notify("Ingest complete", "success", group);
 ```
@@ -402,10 +381,7 @@ export const createNotification = (notification: NotificationProps) => {
 };
 
 // Updating notifications
-export const updateNotification = (
-  id: string,
-  updates: Partial<NotificationProps>,
-) => {
+export const updateNotification = (id: string, updates: Partial<NotificationProps>) => {
   const notification = notifications.get(id);
   if (notification) {
     notifications.set(id, { ...notification, ...updates });

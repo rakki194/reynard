@@ -7,14 +7,10 @@ import type { FileUploadItem } from "../types";
 import type { UploadState } from "./useUploadState";
 
 export function createUpdateItemFunction(
-  setUploadItems: (
-    items: FileUploadItem[] | ((prev: FileUploadItem[]) => FileUploadItem[]),
-  ) => void,
+  setUploadItems: (items: FileUploadItem[] | ((prev: FileUploadItem[]) => FileUploadItem[])) => void
 ) {
   return (id: string, updates: Partial<FileUploadItem>) => {
-    setUploadItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, ...updates } : item)),
-    );
+    setUploadItems(prev => prev.map(item => (item.id === id ? { ...item, ...updates } : item)));
   };
 }
 
@@ -28,17 +24,17 @@ export function createFileUploadActions(
     startUpload: (
       items: FileUploadItem[],
       updateItem: (id: string, updates: Partial<FileUploadItem>) => void,
-      setIsUploading: (uploading: boolean) => void,
+      setIsUploading: (uploading: boolean) => void
     ) => Promise<void>;
     retryFailedUploads: (items: FileUploadItem[]) => FileUploadItem[];
   },
   state: UploadState,
   updateItem: (id: string, updates: Partial<FileUploadItem>) => void,
-  props: { autoUpload?: boolean; uploadUrl?: string },
+  props: { autoUpload?: boolean; uploadUrl?: string }
 ) {
   const addFiles = (files: File[]) => {
     const newItems = fileOps.addFiles(files);
-    state.setUploadItems((prev) => [...prev, ...newItems]);
+    state.setUploadItems(prev => [...prev, ...newItems]);
 
     if (props.autoUpload && props.uploadUrl) {
       startUpload(newItems);
@@ -50,7 +46,7 @@ export function createFileUploadActions(
   };
 
   const removeFile = (id: string) => {
-    state.setUploadItems((prev) => fileOps.removeFile(id, prev));
+    state.setUploadItems(prev => fileOps.removeFile(id, prev));
   };
 
   const clearFiles = () => {

@@ -5,24 +5,12 @@
  * Provides a more flexible alternative to XML-based tool configuration.
  */
 
-import type {
-  NLWebTool,
-  NLWebToolRegistry as INLWebToolRegistry,
-} from "../types/index.js";
+import type { NLWebTool, NLWebToolRegistry as INLWebToolRegistry } from "../types/index.js";
 import { validateTool } from "./tool-validator.js";
 import { getContextualTools } from "./context-matcher.js";
-import {
-  searchTools,
-  getToolsByTags,
-  getToolsByCategory,
-} from "./tool-searcher.js";
+import { searchTools, getToolsByTags, getToolsByCategory } from "./tool-searcher.js";
 import { calculateToolStats } from "./tool-stats.js";
-import {
-  addToCategoryIndex,
-  addToTagIndex,
-  removeFromCategoryIndex,
-  removeFromTagIndex,
-} from "./tool-index.js";
+import { addToCategoryIndex, addToTagIndex, removeFromCategoryIndex, removeFromTagIndex } from "./tool-index.js";
 
 export class NLWebToolRegistry implements INLWebToolRegistry {
   private tools = new Map<string, NLWebTool>();
@@ -109,11 +97,7 @@ export class NLWebToolRegistry implements INLWebToolRegistry {
     toolsByCategory: Record<string, number>;
     toolsByTag: Record<string, number>;
   } {
-    return calculateToolStats(
-      this.getAllTools(),
-      this.toolsByCategory,
-      this.toolsByTag,
-    );
+    return calculateToolStats(this.getAllTools(), this.toolsByCategory, this.toolsByTag);
   }
 
   /**

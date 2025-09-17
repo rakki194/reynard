@@ -10,9 +10,7 @@ import { createEffect, onCleanup } from "solid-js";
 import type { FloatingPanelOverlayProps } from "../types";
 import "./FloatingPanelOverlay.css";
 
-export const FloatingPanelOverlay: Component<FloatingPanelOverlayProps> = (
-  props,
-) => {
+export const FloatingPanelOverlay: Component<FloatingPanelOverlayProps> = props => {
   // Handle transition phase changes
   createEffect(() => {
     const phase = props.transitionPhase;

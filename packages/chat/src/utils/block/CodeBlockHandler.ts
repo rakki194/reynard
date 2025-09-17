@@ -12,11 +12,7 @@ export class CodeBlockHandler {
   /**
    * Handle code block parsing
    */
-  static handleCodeBlock(
-    line: string,
-    state: StreamingParserState,
-    addNode: (node: any) => void,
-  ): boolean {
+  static handleCodeBlock(line: string, state: StreamingParserState, addNode: (node: any) => void): boolean {
     // Start of code block
     const startMatch = matches(line, MARKDOWN_PATTERNS.codeBlock);
     if (startMatch) {

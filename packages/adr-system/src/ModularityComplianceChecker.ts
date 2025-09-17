@@ -108,9 +108,7 @@ export class ModularityComplianceChecker {
     // Generate comprehensive report
     const report = this.generateModularityReport(analyses);
 
-    console.log(
-      `✅ Modularity compliance check complete: ${report.overallCompliance.toFixed(1)}% compliance`,
-    );
+    console.log(`✅ Modularity compliance check complete: ${report.overallCompliance.toFixed(1)}% compliance`);
     return report;
   }
 
@@ -123,16 +121,9 @@ export class ModularityComplianceChecker {
       const stats = await stat(filePath);
 
       const metrics = this.calculateMetrics(content, filePath);
-      const violations = await this.detectViolations(
-        filePath,
-        content,
-        metrics,
-      );
+      const violations = await this.detectViolations(filePath, content, metrics);
       const recommendations = this.generateRecommendations(violations, metrics);
-      const complianceScore = this.calculateComplianceScore(
-        violations,
-        metrics,
-      );
+      const complianceScore = this.calculateComplianceScore(violations, metrics);
 
       return {
         filePath,
@@ -190,17 +181,13 @@ export class ModularityComplianceChecker {
     }> = [];
 
     for (const [filePath, analysis] of this.analysisCache) {
-      const criticalViolations = analysis.violations.filter(
-        (v) => v.severity === "critical",
-      );
+      const criticalViolations = analysis.violations.filter(v => v.severity === "critical");
       if (criticalViolations.length > 0) {
         criticalFiles.push({ filePath, violations: criticalViolations });
       }
     }
 
-    return criticalFiles.sort(
-      (a, b) => b.violations.length - a.violations.length,
-    );
+    return criticalFiles.sort((a, b) => b.violations.length - a.violations.length);
   }
 
   /**
@@ -214,29 +201,19 @@ export class ModularityComplianceChecker {
 
     // File size violations
     if (analysis.metrics.linesOfCode > this.thresholds.maxFileLines) {
-      suggestions.push(
-        `Split file into smaller modules (current: ${analysis.metrics.linesOfCode} lines)`,
-      );
-      suggestions.push(
-        "Consider extracting related functionality into separate files",
-      );
+      suggestions.push(`Split file into smaller modules (current: ${analysis.metrics.linesOfCode} lines)`);
+      suggestions.push("Consider extracting related functionality into separate files");
     }
 
     // Function length violations
-    const longFunctions = analysis.violations.filter(
-      (v) => v.type === "function-length",
-    );
+    const longFunctions = analysis.violations.filter(v => v.type === "function-length");
     if (longFunctions.length > 0) {
-      suggestions.push(
-        `Refactor ${longFunctions.length} long functions into smaller, focused functions`,
-      );
+      suggestions.push(`Refactor ${longFunctions.length} long functions into smaller, focused functions`);
     }
 
     // Complexity violations
     if (analysis.metrics.complexity > this.thresholds.maxComplexity) {
-      suggestions.push(
-        "Reduce cyclomatic complexity by simplifying control flow",
-      );
+      suggestions.push("Reduce cyclomatic complexity by simplifying control flow");
       suggestions.push("Extract complex logic into separate utility functions");
     }
 
@@ -248,12 +225,8 @@ export class ModularityComplianceChecker {
 
     // Cohesion violations
     if (analysis.metrics.cohesion < this.thresholds.minCohesion) {
-      suggestions.push(
-        "Improve module cohesion by grouping related functionality",
-      );
-      suggestions.push(
-        "Consider splitting unrelated concerns into separate modules",
-      );
+      suggestions.push("Improve module cohesion by grouping related functionality");
+      suggestions.push("Consider splitting unrelated concerns into separate modules");
     }
 
     return suggestions;
@@ -271,16 +244,7 @@ export class ModularityComplianceChecker {
           const fullPath = join(dir, entry.name);
 
           if (entry.isDirectory()) {
-            if (
-              ![
-                "node_modules",
-                ".git",
-                "dist",
-                "build",
-                "coverage",
-                "__tests__",
-              ].includes(entry.name)
-            ) {
+            if (!["node_modules", ".git", "dist", "build", "coverage", "__tests__"].includes(entry.name)) {
               await scanDirectory(fullPath);
             }
           } else if (entry.isFile()) {
@@ -309,14 +273,9 @@ export class ModularityComplianceChecker {
     return content;
   }
 
-  private calculateMetrics(
-    content: string,
-    filePath: string,
-  ): ModuleAnalysis["metrics"] {
+  private calculateMetrics(content: string, filePath: string): ModuleAnalysis["metrics"] {
     const lines = content.split("\n");
-    const linesOfCode = lines.filter(
-      (line) => line.trim() && !line.trim().startsWith("//"),
-    ).length;
+    const linesOfCode = lines.filter(line => line.trim() && !line.trim().startsWith("//")).length;
 
     const functions = this.countFunctions(content);
     const classes = this.countClasses(content);
@@ -341,7 +300,7 @@ export class ModularityComplianceChecker {
   private async detectViolations(
     filePath: string,
     content: string,
-    metrics: ModuleAnalysis["metrics"],
+    metrics: ModuleAnalysis["metrics"]
   ): Promise<ModularityViolation[]> {
     const violations: ModularityViolation[] = [];
 
@@ -450,10 +409,7 @@ export class ModularityComplianceChecker {
     return violations;
   }
 
-  private generateRecommendations(
-    violations: ModularityViolation[],
-    metrics: ModuleAnalysis["metrics"],
-  ): string[] {
+  private generateRecommendations(violations: ModularityViolation[], metrics: ModuleAnalysis["metrics"]): string[] {
     const recommendations: string[] = [];
 
     if (violations.length === 0) {
@@ -461,48 +417,34 @@ export class ModularityComplianceChecker {
       return recommendations;
     }
 
-    const criticalViolations = violations.filter(
-      (v) => v.severity === "critical",
-    );
-    const highViolations = violations.filter((v) => v.severity === "high");
+    const criticalViolations = violations.filter(v => v.severity === "critical");
+    const highViolations = violations.filter(v => v.severity === "high");
 
     if (criticalViolations.length > 0) {
-      recommendations.push(
-        `🚨 Address ${criticalViolations.length} critical violations immediately`,
-      );
+      recommendations.push(`🚨 Address ${criticalViolations.length} critical violations immediately`);
     }
 
     if (highViolations.length > 0) {
-      recommendations.push(
-        `⚠️ Fix ${highViolations.length} high-severity violations`,
-      );
+      recommendations.push(`⚠️ Fix ${highViolations.length} high-severity violations`);
     }
 
     // Specific recommendations based on violation types
-    const violationTypes = new Set(violations.map((v) => v.type));
+    const violationTypes = new Set(violations.map(v => v.type));
 
     if (violationTypes.has("file-size")) {
-      recommendations.push(
-        "📄 Split large files into smaller, focused modules",
-      );
+      recommendations.push("📄 Split large files into smaller, focused modules");
     }
 
     if (violationTypes.has("function-length")) {
-      recommendations.push(
-        "🔧 Refactor long functions into smaller, focused functions",
-      );
+      recommendations.push("🔧 Refactor long functions into smaller, focused functions");
     }
 
     if (violationTypes.has("module-cohesion")) {
-      recommendations.push(
-        "🧩 Improve module cohesion by grouping related functionality",
-      );
+      recommendations.push("🧩 Improve module cohesion by grouping related functionality");
     }
 
     if (violationTypes.has("coupling")) {
-      recommendations.push(
-        "🔗 Reduce coupling through dependency injection and interfaces",
-      );
+      recommendations.push("🔗 Reduce coupling through dependency injection and interfaces");
     }
 
     if (violationTypes.has("separation-of-concerns")) {
@@ -512,10 +454,7 @@ export class ModularityComplianceChecker {
     return recommendations;
   }
 
-  private calculateComplianceScore(
-    violations: ModularityViolation[],
-    metrics: ModuleAnalysis["metrics"],
-  ): number {
+  private calculateComplianceScore(violations: ModularityViolation[], metrics: ModuleAnalysis["metrics"]): number {
     if (violations.length === 0) return 100;
 
     let penalty = 0;
@@ -539,16 +478,9 @@ export class ModularityComplianceChecker {
     return Math.max(0, 100 - penalty);
   }
 
-  private generateModularityReport(
-    analyses: ModuleAnalysis[],
-  ): ModularityReport {
-    const totalViolations = analyses.reduce(
-      (sum, analysis) => sum + analysis.violations.length,
-      0,
-    );
-    const overallCompliance =
-      analyses.reduce((sum, analysis) => sum + analysis.complianceScore, 0) /
-      analyses.length;
+  private generateModularityReport(analyses: ModuleAnalysis[]): ModularityReport {
+    const totalViolations = analyses.reduce((sum, analysis) => sum + analysis.violations.length, 0);
+    const overallCompliance = analyses.reduce((sum, analysis) => sum + analysis.complianceScore, 0) / analyses.length;
 
     // Group violations by type and severity
     const violationsByType: Record<string, number> = {};
@@ -556,19 +488,17 @@ export class ModularityComplianceChecker {
 
     for (const analysis of analyses) {
       for (const violation of analysis.violations) {
-        violationsByType[violation.type] =
-          (violationsByType[violation.type] || 0) + 1;
-        violationsBySeverity[violation.severity] =
-          (violationsBySeverity[violation.severity] || 0) + 1;
+        violationsByType[violation.type] = (violationsByType[violation.type] || 0) + 1;
+        violationsBySeverity[violation.severity] = (violationsBySeverity[violation.severity] || 0) + 1;
       }
     }
 
     // Get top violating files
     const topViolatingFiles = analyses
-      .filter((analysis) => analysis.violations.length > 0)
+      .filter(analysis => analysis.violations.length > 0)
       .sort((a, b) => b.violations.length - a.violations.length)
       .slice(0, 10)
-      .map((analysis) => ({
+      .map(analysis => ({
         filePath: analysis.filePath,
         violationCount: analysis.violations.length,
         complianceScore: analysis.complianceScore,
@@ -579,13 +509,9 @@ export class ModularityComplianceChecker {
 
     // Calculate metrics
     const metrics = {
-      averageFileSize:
-        analyses.reduce((sum, a) => sum + a.metrics.linesOfCode, 0) /
-        analyses.length,
+      averageFileSize: analyses.reduce((sum, a) => sum + a.metrics.linesOfCode, 0) / analyses.length,
       averageFunctionLength: this.calculateAverageFunctionLength(analyses),
-      averageComplexity:
-        analyses.reduce((sum, a) => sum + a.metrics.complexity, 0) /
-        analyses.length,
+      averageComplexity: analyses.reduce((sum, a) => sum + a.metrics.complexity, 0) / analyses.length,
       modularityIndex: this.calculateModularityIndex(analyses),
     };
 
@@ -600,41 +526,25 @@ export class ModularityComplianceChecker {
     };
   }
 
-  private generateGlobalRecommendations(
-    analyses: ModuleAnalysis[],
-  ): ModularityReport["recommendations"] {
+  private generateGlobalRecommendations(analyses: ModuleAnalysis[]): ModularityReport["recommendations"] {
     const immediate: string[] = [];
     const shortTerm: string[] = [];
     const longTerm: string[] = [];
 
-    const criticalFiles = analyses.filter((a) =>
-      a.violations.some((v) => v.severity === "critical"),
-    );
-    const highViolationFiles = analyses.filter((a) =>
-      a.violations.some((v) => v.severity === "high"),
-    );
+    const criticalFiles = analyses.filter(a => a.violations.some(v => v.severity === "critical"));
+    const highViolationFiles = analyses.filter(a => a.violations.some(v => v.severity === "high"));
 
     if (criticalFiles.length > 0) {
-      immediate.push(
-        `🚨 Address ${criticalFiles.length} files with critical violations`,
-      );
+      immediate.push(`🚨 Address ${criticalFiles.length} files with critical violations`);
     }
 
     if (highViolationFiles.length > 0) {
-      immediate.push(
-        `⚠️ Fix ${highViolationFiles.length} files with high-severity violations`,
-      );
+      immediate.push(`⚠️ Fix ${highViolationFiles.length} files with high-severity violations`);
     }
 
-    shortTerm.push(
-      "🔧 Implement automated modularity checking in CI/CD pipeline",
-    );
-    shortTerm.push(
-      "📚 Create modularity guidelines and best practices documentation",
-    );
-    shortTerm.push(
-      "🎓 Conduct team training on modular architecture principles",
-    );
+    shortTerm.push("🔧 Implement automated modularity checking in CI/CD pipeline");
+    shortTerm.push("📚 Create modularity guidelines and best practices documentation");
+    shortTerm.push("🎓 Conduct team training on modular architecture principles");
 
     longTerm.push("🏗️ Establish modularity metrics and KPIs");
     longTerm.push("📊 Implement continuous modularity monitoring");
@@ -672,9 +582,7 @@ export class ModularityComplianceChecker {
   }
 
   private countImports(content: string): number {
-    const importMatches = content.match(
-      /import\s+.*?\s+from\s+['"][^'"]+['"]/g,
-    );
+    const importMatches = content.match(/import\s+.*?\s+from\s+['"][^'"]+['"]/g);
     return importMatches ? importMatches.length : 0;
   }
 
@@ -686,16 +594,11 @@ export class ModularityComplianceChecker {
       const trimmedLine = line.trim();
 
       // Count control structures
-      if (trimmedLine.includes("if") || trimmedLine.includes("else"))
-        complexity++;
-      if (trimmedLine.includes("for") || trimmedLine.includes("while"))
-        complexity++;
-      if (trimmedLine.includes("switch") || trimmedLine.includes("case"))
-        complexity++;
-      if (trimmedLine.includes("try") || trimmedLine.includes("catch"))
-        complexity++;
-      if (trimmedLine.includes("&&") || trimmedLine.includes("||"))
-        complexity++;
+      if (trimmedLine.includes("if") || trimmedLine.includes("else")) complexity++;
+      if (trimmedLine.includes("for") || trimmedLine.includes("while")) complexity++;
+      if (trimmedLine.includes("switch") || trimmedLine.includes("case")) complexity++;
+      if (trimmedLine.includes("try") || trimmedLine.includes("catch")) complexity++;
+      if (trimmedLine.includes("&&") || trimmedLine.includes("||")) complexity++;
     }
 
     return complexity;
@@ -724,9 +627,7 @@ export class ModularityComplianceChecker {
     return imports + exports;
   }
 
-  private findLongFunctions(
-    content: string,
-  ): Array<{ line: number; lines: number }> {
+  private findLongFunctions(content: string): Array<{ line: number; lines: number }> {
     const functions: Array<{ line: number; lines: number }> = [];
     const lines = content.split("\n");
 
@@ -737,11 +638,7 @@ export class ModularityComplianceChecker {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
 
-      if (
-        line.includes("function") ||
-        line.includes("=>") ||
-        line.includes("class")
-      ) {
+      if (line.includes("function") || line.includes("=>") || line.includes("class")) {
         inFunction = true;
         functionStart = i;
         braceCount = 0;
@@ -767,7 +664,7 @@ export class ModularityComplianceChecker {
   private findRelatedFunctions(content: string): number {
     // Simplified related function detection based on naming patterns
     const functions = this.findFunctions(content);
-    const functionNames = functions.map((f) => f.name || "");
+    const functionNames = functions.map(f => f.name || "");
 
     let relatedCount = 0;
     const nameGroups = new Map<string, number>();
@@ -786,9 +683,7 @@ export class ModularityComplianceChecker {
     return relatedCount;
   }
 
-  private findFunctions(
-    content: string,
-  ): Array<{ name?: string; line: number; lines: number }> {
+  private findFunctions(content: string): Array<{ name?: string; line: number; lines: number }> {
     const functions: Array<{ name?: string; line: number; lines: number }> = [];
     const lines = content.split("\n");
 
@@ -800,11 +695,7 @@ export class ModularityComplianceChecker {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
 
-      if (
-        line.includes("function") ||
-        line.includes("=>") ||
-        line.includes("class")
-      ) {
+      if (line.includes("function") || line.includes("=>") || line.includes("class")) {
         inFunction = true;
         functionStart = i;
         functionName = this.extractFunctionName(line);
@@ -881,45 +772,35 @@ export class ModularityComplianceChecker {
     };
   }
 
-  private getFileSizeSeverity(
-    lines: number,
-  ): "low" | "medium" | "high" | "critical" {
+  private getFileSizeSeverity(lines: number): "low" | "medium" | "high" | "critical" {
     if (lines > 500) return "critical";
     if (lines > 300) return "high";
     if (lines > 200) return "medium";
     return "low";
   }
 
-  private getFunctionLengthSeverity(
-    lines: number,
-  ): "low" | "medium" | "high" | "critical" {
+  private getFunctionLengthSeverity(lines: number): "low" | "medium" | "high" | "critical" {
     if (lines > 100) return "critical";
     if (lines > 75) return "high";
     if (lines > 60) return "medium";
     return "low";
   }
 
-  private getComplexitySeverity(
-    complexity: number,
-  ): "low" | "medium" | "high" | "critical" {
+  private getComplexitySeverity(complexity: number): "low" | "medium" | "high" | "critical" {
     if (complexity > 25) return "critical";
     if (complexity > 20) return "high";
     if (complexity > 15) return "medium";
     return "low";
   }
 
-  private getCouplingSeverity(
-    coupling: number,
-  ): "low" | "medium" | "high" | "critical" {
+  private getCouplingSeverity(coupling: number): "low" | "medium" | "high" | "critical" {
     if (coupling > 20) return "critical";
     if (coupling > 15) return "high";
     if (coupling > 10) return "medium";
     return "low";
   }
 
-  private getCohesionSeverity(
-    cohesion: number,
-  ): "low" | "medium" | "high" | "critical" {
+  private getCohesionSeverity(cohesion: number): "low" | "medium" | "high" | "critical" {
     if (cohesion < 0.3) return "critical";
     if (cohesion < 0.5) return "high";
     if (cohesion < 0.7) return "medium";

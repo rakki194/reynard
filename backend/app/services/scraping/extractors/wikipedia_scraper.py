@@ -411,9 +411,11 @@ class WikipediaScraper(BaseScraper):
             return ScrapingResult(
                 url=url,
                 title=title_text,
-                content=content_text[:1000] + "..."
-                if len(content_text) > 1000
-                else content_text,
+                content=(
+                    content_text[:1000] + "..."
+                    if len(content_text) > 1000
+                    else content_text
+                ),
                 metadata={
                     "source": "wikipedia",
                     "extraction_method": "fallback",

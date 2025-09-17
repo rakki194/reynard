@@ -3,21 +3,9 @@
  * Context provider for authentication state and methods
  */
 
-import {
-  Component,
-  createContext,
-  useContext,
-  ParentComponent,
-  createEffect,
-} from "solid-js";
+import { Component, createContext, useContext, ParentComponent, createEffect } from "solid-js";
 import { useAuth } from "../composables/useAuth";
-import type {
-  AuthState,
-  LoginCredentials,
-  RegisterData,
-  PasswordChangeData,
-  User,
-} from "../types";
+import type { AuthState, LoginCredentials, RegisterData, PasswordChangeData, User } from "../types";
 import type { UseAuthOptions } from "../composables/useAuth";
 
 export interface AuthContextValue {
@@ -47,13 +35,7 @@ export interface AuthContextValue {
       body?: string | FormData | URLSearchParams | ReadableStream | null;
       credentials?: "omit" | "same-origin" | "include";
       mode?: "cors" | "no-cors" | "same-origin";
-      cache?:
-        | "default"
-        | "no-store"
-        | "reload"
-        | "no-cache"
-        | "force-cache"
-        | "only-if-cached";
+      cache?: "default" | "no-store" | "reload" | "no-cache" | "force-cache" | "only-if-cached";
       redirect?: "follow" | "error" | "manual";
       referrer?: string;
       referrerPolicy?:
@@ -68,7 +50,7 @@ export interface AuthContextValue {
       integrity?: string;
       keepalive?: boolean;
       signal?: AbortSignal | null;
-    },
+    }
   ) => Promise<Response>;
 }
 
@@ -85,14 +67,8 @@ export interface AuthProviderProps extends UseAuthOptions {
   loginPath?: string;
 }
 
-export const AuthProvider: ParentComponent<AuthProviderProps> = (props) => {
-  const {
-    children,
-    fallback: Fallback,
-    requireAuth = false,
-    loginPath = "/login",
-    ...authOptions
-  } = props;
+export const AuthProvider: ParentComponent<AuthProviderProps> = props => {
+  const { children, fallback: Fallback, requireAuth = false, loginPath = "/login", ...authOptions } = props;
 
   const auth = useAuth({
     ...authOptions,
@@ -137,9 +113,7 @@ export const AuthProvider: ParentComponent<AuthProviderProps> = (props) => {
     return <Fallback />;
   }
 
-  return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
 
 /**
@@ -161,7 +135,7 @@ export function withAuth<T extends Record<string, any>>(
   options: {
     fallback?: Component;
     redirectTo?: string;
-  } = {},
+  } = {}
 ): Component<T> {
   return (props: T) => {
     const auth = useAuthContext();

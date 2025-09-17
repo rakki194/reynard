@@ -34,14 +34,10 @@ export interface DependencyConflict {
   resolution: "manual" | "automatic" | "none";
 }
 
-export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
-  props,
-) => {
+export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = props => {
   const [dependencies, setDependencies] = createSignal<PackageDependency[]>([]);
   const [conflicts, setConflicts] = createSignal<DependencyConflict[]>([]);
-  const [selectedPackage, setSelectedPackage] = createSignal<string | null>(
-    null,
-  );
+  const [selectedPackage, setSelectedPackage] = createSignal<string | null>(null);
   const [isResolving, setIsResolving] = createSignal(false);
 
   onMount(() => {
@@ -132,8 +128,7 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
           package1: "scikit-learn",
           package2: "sklearn",
           conflictType: "version",
-          description:
-            "Both packages provide the same functionality but with different APIs",
+          description: "Both packages provide the same functionality but with different APIs",
           resolution: "manual",
         },
       ];
@@ -152,23 +147,18 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
       console.log(`Resolving conflict between ${package1} and ${package2}`);
 
       // Simulate conflict resolution
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Update dependencies to reflect resolution
-      setDependencies((prev) =>
-        prev.map((dep) =>
-          dep.name === package1 || dep.name === package2
-            ? { ...dep, status: "resolved" as const, conflicts: [] }
-            : dep,
-        ),
+      setDependencies(prev =>
+        prev.map(dep =>
+          dep.name === package1 || dep.name === package2 ? { ...dep, status: "resolved" as const, conflicts: [] } : dep
+        )
       );
 
       // Remove resolved conflict
-      setConflicts((prev) =>
-        prev.filter(
-          (conflict) =>
-            !(conflict.package1 === package1 && conflict.package2 === package2),
-        ),
+      setConflicts(prev =>
+        prev.filter(conflict => !(conflict.package1 === package1 && conflict.package2 === package2))
       );
     } catch (error) {
       console.error("Failed to resolve conflict:", error);
@@ -184,15 +174,11 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
       console.log("Auto-resolving all conflicts");
 
       // Simulate auto-resolution
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       // Update all conflicts to resolved
-      setDependencies((prev) =>
-        prev.map((dep) =>
-          dep.status === "conflict"
-            ? { ...dep, status: "resolved" as const, conflicts: [] }
-            : dep,
-        ),
+      setDependencies(prev =>
+        prev.map(dep => (dep.status === "conflict" ? { ...dep, status: "resolved" as const, conflicts: [] } : dep))
       );
 
       // Clear all conflicts
@@ -278,10 +264,7 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
     if (selectedPackage()) {
       const selected = selectedPackage()!;
       return deps.filter(
-        (dep) =>
-          dep.name === selected ||
-          dep.dependencies.includes(selected) ||
-          dep.dependents.includes(selected),
+        dep => dep.name === selected || dep.dependencies.includes(selected) || dep.dependents.includes(selected)
       );
     }
     return deps;
@@ -303,11 +286,7 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
 
         <div class="dependency-graph-actions">
           <Show when={conflicts().length > 0}>
-            <Button
-              variant="primary"
-              onClick={handleAutoResolveAll}
-              disabled={isResolving()}
-            >
+            <Button variant="primary" onClick={handleAutoResolveAll} disabled={isResolving()}>
               <Show when={isResolving()} fallback="Auto-Resolve All">
                 <span class="spinner"></span>
                 Resolving...
@@ -329,52 +308,37 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
         </div>
         <div class="summary-item">
           <span class="label">Resolved:</span>
-          <span class="value success">
-            {dependencies().filter((d) => d.status === "resolved").length}
-          </span>
+          <span class="value success">{dependencies().filter(d => d.status === "resolved").length}</span>
         </div>
         <div class="summary-item">
           <span class="label">Conflicts:</span>
-          <span class="value error">
-            {dependencies().filter((d) => d.status === "conflict").length}
-          </span>
+          <span class="value error">{dependencies().filter(d => d.status === "conflict").length}</span>
         </div>
         <div class="summary-item">
           <span class="label">Missing:</span>
-          <span class="value error">
-            {dependencies().filter((d) => d.status === "missing").length}
-          </span>
+          <span class="value error">{dependencies().filter(d => d.status === "missing").length}</span>
         </div>
       </div>
 
       {/* Package Filter */}
       <div class="package-filter">
-        <select
-          value={selectedPackage() || ""}
-          onChange={(e) => setSelectedPackage(e.currentTarget.value || null)}
-        >
+        <select value={selectedPackage() || ""} onChange={e => setSelectedPackage(e.currentTarget.value || null)}>
           <option value="">All Packages</option>
-          <For each={dependencies()}>
-            {(dep) => <option value={dep.name}>{dep.name}</option>}
-          </For>
+          <For each={dependencies()}>{dep => <option value={dep.name}>{dep.name}</option>}</For>
         </select>
       </div>
 
       {/* Dependencies List */}
       <div class="dependencies-list">
         <For each={filteredDependencies()}>
-          {(dep) => (
+          {dep => (
             <div class="dependency-item">
               <div class="dependency-header">
                 <div class="dependency-info">
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={
-                        fluentIconsPackage.getIcon(
-                          getDependencyStatusIcon(dep.status),
-                        )?.outerHTML || ""
-                      }
+                      innerHTML={fluentIconsPackage.getIcon(getDependencyStatusIcon(dep.status))?.outerHTML || ""}
                     />
                   </span>
 
@@ -385,10 +349,7 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
                 </div>
 
                 <div class="dependency-status">
-                  <span
-                    class="status-badge"
-                    classList={{ [getDependencyStatusColor(dep.status)]: true }}
-                  >
+                  <span class="status-badge" classList={{ [getDependencyStatusColor(dep.status)]: true }}>
                     {dep.status}
                   </span>
 
@@ -432,7 +393,7 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
           <h4>Dependency Conflicts</h4>
           <div class="conflicts-list">
             <For each={conflicts()}>
-              {(conflict) => (
+              {conflict => (
                 <div class="conflict-item">
                   <div class="conflict-header">
                     <div class="conflict-info">
@@ -440,9 +401,7 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
                         <div
                           // eslint-disable-next-line solid/no-innerhtml
                           innerHTML={
-                            fluentIconsPackage.getIcon(
-                              getConflictTypeIcon(conflict.conflictType),
-                            )?.outerHTML || ""
+                            fluentIconsPackage.getIcon(getConflictTypeIcon(conflict.conflictType))?.outerHTML || ""
                           }
                         />
                       </span>
@@ -451,9 +410,7 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
                         <span class="conflict-packages">
                           {conflict.package1} ↔ {conflict.package2}
                         </span>
-                        <span class="conflict-type">
-                          {conflict.conflictType}
-                        </span>
+                        <span class="conflict-type">{conflict.conflictType}</span>
                       </div>
                     </div>
 
@@ -474,21 +431,12 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
                     <span class="value">{conflict.description}</span>
                   </div>
 
-                  <Show
-                    when={
-                      props.showResolution && conflict.resolution === "manual"
-                    }
-                  >
+                  <Show when={props.showResolution && conflict.resolution === "manual"}>
                     <div class="conflict-actions">
                       <Button
                         variant="primary"
                         size="sm"
-                        onClick={() =>
-                          handleResolveConflict(
-                            conflict.package1,
-                            conflict.package2,
-                          )
-                        }
+                        onClick={() => handleResolveConflict(conflict.package1, conflict.package2)}
                         disabled={isResolving()}
                       >
                         Resolve Conflict
@@ -508,9 +456,7 @@ export const PackageDependencyGraph: Component<PackageDependencyGraphProps> = (
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon("checkmark-circle")?.outerHTML || ""
-              }
+              innerHTML={fluentIconsPackage.getIcon("checkmark-circle")?.outerHTML || ""}
             />
           </span>
           <span>No dependency conflicts detected</span>

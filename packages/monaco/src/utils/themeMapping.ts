@@ -82,12 +82,7 @@ export const getShikiThemeFromReynard = (reynardTheme: ThemeName): string => {
  * @returns True if the theme is dark, false otherwise
  */
 export const isReynardThemeDark = (reynardTheme: ThemeName): boolean => {
-  const darkThemes: ThemeName[] = [
-    "dark",
-    "gray",
-    "peanut",
-    "high-contrast-black",
-  ];
+  const darkThemes: ThemeName[] = ["dark", "gray", "peanut", "high-contrast-black"];
   return darkThemes.includes(reynardTheme);
 };
 

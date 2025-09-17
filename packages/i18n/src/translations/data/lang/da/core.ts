@@ -75,36 +75,24 @@ export const coreTranslations = {
   // Adgangskode validering
   password: {
     "must-be-at-least-8-characters-long": "Adgangskode skal være mindst 8 tegn",
-    "must-contain-at-least-one-uppercase-letter":
-      "Adgangskode skal indeholde mindst ét stort bogstav",
-    "must-contain-at-least-one-lowercase-letter":
-      "Adgangskode skal indeholde mindst ét lille bogstav",
-    "must-contain-at-least-one-number":
-      "Adgangskode skal indeholde mindst ét tal",
-    "must-contain-at-least-one-special-character":
-      "Adgangskode skal indeholde mindst ét specialtegn",
+    "must-contain-at-least-one-uppercase-letter": "Adgangskode skal indeholde mindst ét stort bogstav",
+    "must-contain-at-least-one-lowercase-letter": "Adgangskode skal indeholde mindst ét lille bogstav",
+    "must-contain-at-least-one-number": "Adgangskode skal indeholde mindst ét tal",
+    "must-contain-at-least-one-special-character": "Adgangskode skal indeholde mindst ét specialtegn",
   },
 
   // Sikkerhedsvalidering
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Mindst én tegn type skal inkluderes",
-    "input-contains-potentially-dangerous-html":
-      "Input indeholder potentielt farlig HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Input indeholder potentielt farlige SQL mønstre",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Input indeholder potentielt farlige XSS mønstre",
-    "input-contains-path-traversal-patterns":
-      "Input indeholder sti gennemgang mønstre",
-    "input-contains-windows-reserved-names":
-      "Input indeholder Windows reserverede navne",
-    "input-contains-executable-file-extensions":
-      "Input indeholder eksekverbare fil udvidelser",
+    "at-least-one-character-type-must-be-included": "Mindst én tegn type skal inkluderes",
+    "input-contains-potentially-dangerous-html": "Input indeholder potentielt farlig HTML",
+    "input-contains-potentially-dangerous-sql-patterns": "Input indeholder potentielt farlige SQL mønstre",
+    "input-contains-potentially-dangerous-xss-patterns": "Input indeholder potentielt farlige XSS mønstre",
+    "input-contains-path-traversal-patterns": "Input indeholder sti gennemgang mønstre",
+    "input-contains-windows-reserved-names": "Input indeholder Windows reserverede navne",
+    "input-contains-executable-file-extensions": "Input indeholder eksekverbare fil udvidelser",
     "input-contains-null-bytes": "Input indeholder null bytes",
     "input-contains-hidden-files": "Input indeholder skjulte filer",
-    "input-contains-javascript-file-extensions":
-      "Input indeholder JavaScript fil udvidelser",
+    "input-contains-javascript-file-extensions": "Input indeholder JavaScript fil udvidelser",
   },
 
   // Asynkrone operationer
@@ -132,8 +120,7 @@ export const coreTranslations = {
   // Lager og serialisering
   storage: {
     "potentially-dangerous-json-detected": "Potentielt farlig JSON detekteret",
-    "failed-to-parse-json-from-localstorage":
-      "Kunne ikke parse JSON fra localStorage:",
+    "failed-to-parse-json-from-localstorage": "Kunne ikke parse JSON fra localStorage:",
     "error-parsing-storage-event": "Fejl ved parsing af lager event for nøgle",
   },
 
@@ -171,8 +158,7 @@ export const coreTranslations = {
   // Integrationstests
   integration: {
     "session-and-api-key-generation": "Session og API nøgle generering",
-    "authentication-and-input-validation-integration":
-      "Autentificering og input validering integration",
+    "authentication-and-input-validation-integration": "Autentificering og input validering integration",
     "performance-and-security-integration": "Ydeevne og sikkerhed integration",
   },
 };

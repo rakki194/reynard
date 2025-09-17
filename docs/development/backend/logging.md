@@ -74,10 +74,7 @@ try {
   // code that might throw an error
   throw new Error("Example error");
 } catch (error) {
-  logger.error(
-    "Error occurred",
-    error instanceof Error ? error : new Error(String(error)),
-  );
+  logger.error("Error occurred", error instanceof Error ? error : new Error(String(error)));
 }
 ```
 

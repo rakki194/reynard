@@ -25,10 +25,7 @@
  * @since 1.0.0
  */
 
-import {
-  WASMDetector as IWASMDetector,
-  WASMSIMDCapabilities,
-} from "./ecs-interface";
+import { WASMDetector as IWASMDetector, WASMSIMDCapabilities } from "./ecs-interface";
 
 /**
  * WASM SIMD Detection and Capability System.
@@ -260,9 +257,7 @@ export class WASMDetector implements IWASMDetector {
   }> {
     try {
       // Import the benchmark system
-      const benchmarkModule = await import(
-        "../experiments/simd/position-benchmark.js"
-      );
+      const benchmarkModule = await import("../experiments/simd/position-benchmark.js");
       const { PositionBenchmark } = benchmarkModule;
 
       // Run a quick benchmark
@@ -270,8 +265,7 @@ export class WASMDetector implements IWASMDetector {
       await benchmark.initialize();
 
       const results = await benchmark.benchmarkPositionUpdates(100, 100);
-      const positionUpdateSpeedup =
-        results.nonSimd.totalTime / results.simd.totalTime;
+      const positionUpdateSpeedup = results.nonSimd.totalTime / results.simd.totalTime;
 
       // For now, assume similar speedups for other operations
       // In a full implementation, you'd benchmark each operation separately
@@ -329,10 +323,8 @@ export class WASMDetector implements IWASMDetector {
       environment: {
         hasWebAssembly: typeof WebAssembly !== "undefined",
         hasSIMD: this.isWASMSupported(),
-        userAgent:
-          typeof navigator !== "undefined" ? navigator.userAgent : "unknown",
-        platform:
-          typeof navigator !== "undefined" ? navigator.platform : "unknown",
+        userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "unknown",
+        platform: typeof navigator !== "undefined" ? navigator.platform : "unknown",
       },
       wasm: {
         isSupported: this.isWASMSupported(),

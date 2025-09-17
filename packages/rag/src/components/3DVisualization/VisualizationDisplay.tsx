@@ -1,6 +1,6 @@
 /**
  * Visualization Display Component
- * 
+ *
  * Renders the 3D point cloud visualization and related UI elements
  */
 
@@ -18,7 +18,7 @@ interface VisualizationDisplayProps {
   onRetry: () => void;
 }
 
-export const VisualizationDisplay: Component<VisualizationDisplayProps> = (props) => {
+export const VisualizationDisplay: Component<VisualizationDisplayProps> = props => {
   return (
     <div class="rag-3d-visualization">
       <Show when={props.isLoading}>

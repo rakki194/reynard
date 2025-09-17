@@ -6,10 +6,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { DocEngineConfig, DocPage } from "../types.js";
 
-export async function writeOutput(
-  config: any,
-  docConfig: DocEngineConfig,
-): Promise<void> {
+export async function writeOutput(config: any, docConfig: DocEngineConfig): Promise<void> {
   const outputPath = path.join(config.rootPath, config.outputPath);
   await fs.mkdir(outputPath, { recursive: true });
 
@@ -38,10 +35,7 @@ export async function writeOutput(
   await copyAssets(outputPath);
 }
 
-export async function generateHtmlPage(
-  page: DocPage,
-  config: DocEngineConfig,
-): Promise<string> {
+export async function generateHtmlPage(page: DocPage, config: DocEngineConfig): Promise<string> {
   const { marked } = await import("marked");
   const hljs = await import("highlight.js");
 
@@ -88,10 +82,7 @@ export async function generateHtmlPage(
 </html>`;
 }
 
-export async function generateApiHtml(
-  apiDocs: any[],
-  config: DocEngineConfig,
-): Promise<string> {
+export async function generateApiHtml(apiDocs: any[], config: DocEngineConfig): Promise<string> {
   const apiGroups = new Map<string, any[]>();
   for (const api of apiDocs) {
     const packageName = api.source?.file?.split("/")?.[2] || "Unknown";
@@ -136,8 +127,7 @@ export async function generateApiHtml(
 
 export function generateApiItemHtml(api: any): string {
   let html = `<div class="api-item"><h4 id="${api.name}">${api.name}</h4><div class="api-type">Type: <code>${api.type}</code></div>`;
-  if (api.description)
-    html += `<div class="api-description">${api.description}</div>`;
+  if (api.description) html += `<div class="api-description">${api.description}</div>`;
   if (api.parameters && api.parameters.length > 0) {
     html += `<div class="api-parameters"><h5>Parameters</h5><table><thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead><tbody>`;
     for (const param of api.parameters) {
@@ -149,8 +139,7 @@ export function generateApiItemHtml(api: any): string {
     html += `<div class="api-returns"><h5>Returns</h5><code>${api.returns.type}</code> - ${api.returns.description}</div>`;
   if (api.examples && api.examples.length > 0) {
     html += `<div class="api-examples"><h5>Examples</h5>`;
-    for (const example of api.examples)
-      html += `<pre><code class="language-typescript">${example}</code></pre>`;
+    for (const example of api.examples) html += `<pre><code class="language-typescript">${example}</code></pre>`;
     html += `</div>`;
   }
   if (api.deprecated)
@@ -159,15 +148,12 @@ export function generateApiItemHtml(api: any): string {
   return html;
 }
 
-export async function generateIndexHtml(
-  config: DocEngineConfig,
-): Promise<string> {
+export async function generateIndexHtml(config: DocEngineConfig): Promise<string> {
   let packagesHtml = "";
   if (config.sections && config.sections.length > 0) {
     for (const section of config.sections as any[]) {
       packagesHtml += `<h2>${section.title}</h2><ul>`;
-      for (const page of section.pages)
-        packagesHtml += `<li><a href="pages/${page.slug}.html">${page.title}</a></li>`;
+      for (const page of section.pages) packagesHtml += `<li><a href="pages/${page.slug}.html">${page.title}</a></li>`;
       packagesHtml += `</ul>`;
     }
   }

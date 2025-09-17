@@ -19,12 +19,10 @@ export interface RAG3DVisualizationModalProps {
   queryEmbedding?: number[];
 }
 
-export const RAG3DVisualizationModal: Component<
-  RAG3DVisualizationModalProps
-> = (props) => {
+export const RAG3DVisualizationModal: Component<RAG3DVisualizationModalProps> = props => {
   // Use parameter management composable
   const params = use3DVisualizationParams();
-  
+
   // Use visualization data composable
   const visualizationData = use3DVisualizationData(
     () => props.searchResults,

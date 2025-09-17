@@ -6,8 +6,8 @@ combining the best of Yipyap's plugin management with Reynard's clean architectu
 """
 
 import logging
-from typing import Dict, Any, List, Set, Optional
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from typing import Any
 
 logger = logging.getLogger("uvicorn")
 
@@ -25,17 +25,17 @@ class ImageProcessingService:
         """Initialize the image processing service."""
         self._pillow_jxl_available = False
         self._pillow_avif_available = False
-        self._supported_formats: Set[str] = set()
-        self._format_info: Dict[str, Dict[str, Any]] = {}
+        self._supported_formats: set[str] = set()
+        self._format_info: dict[str, dict[str, Any]] = {}
         self._initialized = False
-        self._startup_time: Optional[datetime] = None
-        self._last_health_check: Optional[datetime] = None
+        self._startup_time: datetime | None = None
+        self._last_health_check: datetime | None = None
 
     async def initialize(self) -> bool:
         """Initialize the image processing service with plugin detection."""
         try:
             logger.info("Initializing enhanced image processing service")
-            self._startup_time = datetime.now(timezone.utc)
+            self._startup_time = datetime.now(UTC)
 
             # Try to load pillow-jxl plugin with multiple fallback strategies
             await self._load_pillow_jxl_plugin()
@@ -133,10 +133,9 @@ class ImageProcessingService:
     async def health_check(self) -> bool:
         """Perform health check for the image processing service."""
         try:
-            self._last_health_check = datetime.now(timezone.utc)
+            self._last_health_check = datetime.now(UTC)
 
             # Basic health check - verify PIL is still available
-            from PIL import Image
 
             # Re-check plugin availability
             await self._verify_plugin_availability()
@@ -176,7 +175,7 @@ class ImageProcessingService:
                 self._pillow_avif_available = False
                 self._initialize_supported_formats()
 
-    def get_info(self) -> Dict[str, Any]:
+    def get_info(self) -> dict[str, Any]:
         """Get comprehensive service information."""
         return {
             "name": "image_processing",
@@ -201,15 +200,15 @@ class ImageProcessingService:
         """Check if AVIF format is supported."""
         return self._pillow_avif_available
 
-    def get_supported_formats(self) -> Set[str]:
+    def get_supported_formats(self) -> set[str]:
         """Get set of supported image formats."""
         return self._supported_formats.copy()
 
-    def get_format_info(self) -> Dict[str, Dict[str, Any]]:
+    def get_format_info(self) -> dict[str, dict[str, Any]]:
         """Get detailed information about supported formats."""
         return self._format_info.copy()
 
-    def get_supported_formats_for_inference(self) -> List[str]:
+    def get_supported_formats_for_inference(self) -> list[str]:
         """Get all supported image formats for inference scripts."""
         formats = [
             "image/jpeg",
@@ -350,7 +349,7 @@ class ImageProcessingService:
 
 
 # Global image processing service instance
-_global_image_service: Optional[ImageProcessingService] = None
+_global_image_service: ImageProcessingService | None = None
 
 
 async def get_image_processing_service() -> ImageProcessingService:

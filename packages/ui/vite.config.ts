@@ -8,15 +8,10 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardUI",
-      fileName: (format) => (format === "es" ? "index.js" : `index.${format}`),
+      fileName: format => (format === "es" ? "index.js" : `index.${format}`),
     },
     rollupOptions: {
-      external: [
-        "solid-js",
-        "solid-js/web",
-        "reynard-core",
-        "reynard-components",
-      ],
+      external: ["solid-js", "solid-js/web", "reynard-core", "reynard-components"],
       output: {
         globals: {
           "solid-js": "solid",
@@ -24,7 +19,7 @@ export default defineConfig({
           "reynard-core": "ReynardCore",
           "reynard-components": "ReynardComponents",
         },
-        assetFileNames: (assetInfo) => {
+        assetFileNames: assetInfo => {
           // Ensure consistent CSS naming - always use styles.css
           if (assetInfo.name && assetInfo.name.includes("css")) {
             return "styles.css";

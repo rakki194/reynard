@@ -8,12 +8,9 @@ import type { BoundingBox } from "../types";
 import type { CanvasEventHandlersConfig } from "./canvasEventHandlers";
 import * as fabric from "fabric";
 
-export function setupObjectHandlers(
-  canvas: fabric.Canvas,
-  config: CanvasEventHandlersConfig,
-) {
+export function setupObjectHandlers(canvas: fabric.Canvas, config: CanvasEventHandlersConfig) {
   // Object selection
-  canvas.on("selection:created", (event) => {
+  canvas.on("selection:created", event => {
     const activeObject = event.selected?.[0];
     if (activeObject && (activeObject as any).data?.boxId) {
       const boxId = (activeObject as any).data.boxId;
@@ -23,7 +20,7 @@ export function setupObjectHandlers(
   });
 
   // Object modification
-  canvas.on("object:modified", (event) => {
+  canvas.on("object:modified", event => {
     const object = event.target;
     if (object && (object as any).data?.boxId) {
       const boxId = (object as any).data.boxId;
@@ -49,7 +46,7 @@ export function setupObjectHandlers(
   canvas.on("key:down" as any, (event: any) => {
     if (event.e.key === "Delete" || event.e.key === "Backspace") {
       const activeObjects = canvas.getActiveObjects();
-      activeObjects.forEach((obj) => {
+      activeObjects.forEach(obj => {
         if ((obj as any).data?.boxId) {
           const boxId = (obj as any).data.boxId;
           config.boundingBoxes.removeBox(boxId);

@@ -13,10 +13,7 @@
     },
     "./styles": "./dist/styles.css"
   },
-  "files": [
-    "dist",
-    "README.md"
-  ],
+  "files": ["dist", "README.md"],
   "scripts": {
     "build": "vite build && pnpm run build:types",
     "build:types": "rm -f tsconfig.tsbuildinfo && tsc --build tsconfig.declarations.json --force",
@@ -27,14 +24,7 @@
     "lint": "eslint src",
     "type-check": "tsc --noEmit"
   },
-  "keywords": [
-    "monaco",
-    "code-editor",
-    "text-editor",
-    "syntax-highlighting",
-    "reynard",
-    "solidjs"
-  ],
+  "keywords": ["monaco", "code-editor", "text-editor", "syntax-highlighting", "reynard", "solidjs"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {
@@ -52,7 +42,7 @@
     "vite-plugin-solid": "2.11.8",
     "vitest": "3.2.4",
     "@vitest/ui": "3.2.4",
-    "eslint": "8.57.1"
+    "eslint": "9.35.0"
   },
   "peerDependencies": {
     "solid-js": "1.9.9"

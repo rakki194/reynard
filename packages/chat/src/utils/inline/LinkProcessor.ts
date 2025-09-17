@@ -19,7 +19,7 @@ export class LinkProcessor extends InlineProcessor {
             content: "",
             url: url.trim(),
             text: text.trim(),
-          }),
+          })
         );
         return `<a href="${url}">${text}</a>`;
       }
@@ -35,7 +35,7 @@ export class LinkProcessor extends InlineProcessor {
             content: "",
             url: url.trim(),
             text: url.trim(),
-          }),
+          })
         );
         return `<a href="${url}">${url}</a>`;
       }

@@ -42,27 +42,11 @@ export class TagColorGenerator {
 
     return {
       background: this.oklchToCSS(baseColor.l, baseColor.c, baseColor.h),
-      text: this.oklchToCSS(
-        Math.max(0, baseColor.l - 40),
-        Math.min(0.3, baseColor.c + 0.1),
-        baseColor.h,
-      ),
+      text: this.oklchToCSS(Math.max(0, baseColor.l - 40), Math.min(0.3, baseColor.c + 0.1), baseColor.h),
       border: this.oklchToCSS(baseColor.l - 10, baseColor.c, baseColor.h),
-      hover: this.oklchToCSS(
-        Math.min(100, baseColor.l + 5),
-        baseColor.c,
-        baseColor.h,
-      ),
-      active: this.oklchToCSS(
-        Math.max(0, baseColor.l - 5),
-        baseColor.c,
-        baseColor.h,
-      ),
-      focus: this.oklchToCSS(
-        baseColor.l,
-        Math.min(0.4, baseColor.c + 0.15),
-        baseColor.h,
-      ),
+      hover: this.oklchToCSS(Math.min(100, baseColor.l + 5), baseColor.c, baseColor.h),
+      active: this.oklchToCSS(Math.max(0, baseColor.l - 5), baseColor.c, baseColor.h),
+      focus: this.oklchToCSS(baseColor.l, Math.min(0.4, baseColor.c + 0.15), baseColor.h),
     };
   }
 
@@ -77,9 +61,7 @@ export class TagColorGenerator {
     let leastUsedCount = Infinity;
 
     for (let i = 0; i < this.baseHues.length; i++) {
-      const count = Array.from(this.usedColors.values()).filter(
-        (v) => v === i,
-      ).length;
+      const count = Array.from(this.usedColors.values()).filter(v => v === i).length;
       if (count < leastUsedCount) {
         leastUsedCount = count;
         leastUsedIndex = i;
@@ -90,11 +72,7 @@ export class TagColorGenerator {
     return this.baseHues[leastUsedIndex];
   }
 
-  private generateOKLCHColor(
-    hue: number,
-    intensity: number,
-    variant: string,
-  ): OKLCHColor {
+  private generateOKLCHColor(hue: number, intensity: number, variant: string): OKLCHColor {
     const baseLightness = 70;
     const baseChroma = 0.15;
 
@@ -126,35 +104,15 @@ export class TagColorGenerator {
 
   getColorByIndex(index: number, options: TagColorOptions = {}): TagColor {
     const hue = this.baseHues[index % this.baseHues.length];
-    const baseColor = this.generateOKLCHColor(
-      hue,
-      options.intensity || 1.0,
-      options.variant || "default",
-    );
+    const baseColor = this.generateOKLCHColor(hue, options.intensity || 1.0, options.variant || "default");
 
     return {
       background: this.oklchToCSS(baseColor.l, baseColor.c, baseColor.h),
-      text: this.oklchToCSS(
-        Math.max(0, baseColor.l - 40),
-        Math.min(0.3, baseColor.c + 0.1),
-        baseColor.h,
-      ),
+      text: this.oklchToCSS(Math.max(0, baseColor.l - 40), Math.min(0.3, baseColor.c + 0.1), baseColor.h),
       border: this.oklchToCSS(baseColor.l - 10, baseColor.c, baseColor.h),
-      hover: this.oklchToCSS(
-        Math.min(100, baseColor.l + 5),
-        baseColor.c,
-        baseColor.h,
-      ),
-      active: this.oklchToCSS(
-        Math.max(0, baseColor.l - 5),
-        baseColor.c,
-        baseColor.h,
-      ),
-      focus: this.oklchToCSS(
-        baseColor.l,
-        Math.min(0.4, baseColor.c + 0.15),
-        baseColor.h,
-      ),
+      hover: this.oklchToCSS(Math.min(100, baseColor.l + 5), baseColor.c, baseColor.h),
+      active: this.oklchToCSS(Math.max(0, baseColor.l - 5), baseColor.c, baseColor.h),
+      focus: this.oklchToCSS(baseColor.l, Math.min(0.4, baseColor.c + 0.15), baseColor.h),
     };
   }
 

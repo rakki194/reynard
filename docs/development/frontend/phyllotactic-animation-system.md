@@ -225,19 +225,13 @@ function calculateStroboscopicEffect(deltaTime: number) {
   const angularVelocity = rotationSpeed * (Math.PI / 180);
   const anglePerFrame = angularVelocity * frameTime;
 
-  const stroboscopicPhase =
-    (anglePerFrame / ((GOLDEN_ANGLE * Math.PI) / 180)) % 1;
-  const isStroboscopic =
-    Math.abs(stroboscopicPhase - 0.5) < stroboscopicThreshold;
+  const stroboscopicPhase = (anglePerFrame / ((GOLDEN_ANGLE * Math.PI) / 180)) % 1;
+  const isStroboscopic = Math.abs(stroboscopicPhase - 0.5) < stroboscopicThreshold;
 
   return {
     isStroboscopic,
     stroboscopicPhase,
-    apparentMotion: isStroboscopic
-      ? stroboscopicPhase > 0.5
-        ? "growing"
-        : "shrinking"
-      : "frozen",
+    apparentMotion: isStroboscopic ? (stroboscopicPhase > 0.5 ? "growing" : "shrinking") : "frozen",
     temporalAliasing: Math.sin(stroboscopicPhase * Math.PI * 2) * 0.5 + 0.5,
   };
 }

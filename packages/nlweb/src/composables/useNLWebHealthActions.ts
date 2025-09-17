@@ -11,18 +11,10 @@ import { makeNLWebRequest, handleAPIError } from "./useNLWebRequest.js";
 /**
  * Create health action
  */
-export function createHealthAction(
-  state: NLWebState,
-  baseUrl: string,
-  requestTimeout: number,
-): () => Promise<void> {
+export function createHealthAction(state: NLWebState, baseUrl: string, requestTimeout: number): () => Promise<void> {
   return async (): Promise<void> => {
     try {
-      const response = await makeNLWebRequest<NLWebHealthStatus>(
-        "/health",
-        baseUrl,
-        requestTimeout,
-      );
+      const response = await makeNLWebRequest<NLWebHealthStatus>("/health", baseUrl, requestTimeout);
       state.setHealth(response);
     } catch (error) {
       handleAPIError(state, error, "Failed to get health status");
@@ -36,7 +28,7 @@ export function createHealthAction(
 export function createConfigurationAction(
   state: NLWebState,
   baseUrl: string,
-  requestTimeout: number,
+  requestTimeout: number
 ): () => Promise<void> {
   return async (): Promise<void> => {
     try {

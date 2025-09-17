@@ -13,17 +13,10 @@ export const findTypeScriptFiles = async (dir: string): Promise<string[]> => {
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
 
-      if (
-        entry.isDirectory() &&
-        !entry.name.startsWith(".") &&
-        entry.name !== "node_modules"
-      ) {
+      if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
         const subFiles = await findTypeScriptFiles(fullPath);
         files.push(...subFiles);
-      } else if (
-        entry.isFile() &&
-        (entry.name.endsWith(".ts") || entry.name.endsWith(".tsx"))
-      ) {
+      } else if (entry.isFile() && (entry.name.endsWith(".ts") || entry.name.endsWith(".tsx"))) {
         files.push(fullPath);
       }
     }

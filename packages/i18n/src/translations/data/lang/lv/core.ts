@@ -75,35 +75,24 @@ export const coreTranslations = {
   // Paroles validācija
   password: {
     "must-be-at-least-8-characters-long": "Parolei jābūt vismaz 8 rakstzīmēm",
-    "must-contain-at-least-one-uppercase-letter":
-      "Parolei jāsatur vismaz viens lielais burts",
-    "must-contain-at-least-one-lowercase-letter":
-      "Parolei jāsatur vismaz viens mazais burts",
+    "must-contain-at-least-one-uppercase-letter": "Parolei jāsatur vismaz viens lielais burts",
+    "must-contain-at-least-one-lowercase-letter": "Parolei jāsatur vismaz viens mazais burts",
     "must-contain-at-least-one-number": "Parolei jāsatur vismaz viens cipars",
-    "must-contain-at-least-one-special-character":
-      "Parolei jāsatur vismaz viens speciāls rakstzīme",
+    "must-contain-at-least-one-special-character": "Parolei jāsatur vismaz viens speciāls rakstzīme",
   },
 
   // Drošības validācija
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Jāiekļauj vismaz viens rakstzīmes tips",
-    "input-contains-potentially-dangerous-html":
-      "Ievade satur potenciāli bīstamu HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Ievade satur potenciāli bīstamus SQL modeļus",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Ievade satur potenciāli bīstamus XSS modeļus",
-    "input-contains-path-traversal-patterns":
-      "Ievade satur ceļa šķērsošanas modeļus",
-    "input-contains-windows-reserved-names":
-      "Ievade satur Windows rezervētos nosaukumus",
-    "input-contains-executable-file-extensions":
-      "Ievade satur izpildāmo failu paplašinājumus",
+    "at-least-one-character-type-must-be-included": "Jāiekļauj vismaz viens rakstzīmes tips",
+    "input-contains-potentially-dangerous-html": "Ievade satur potenciāli bīstamu HTML",
+    "input-contains-potentially-dangerous-sql-patterns": "Ievade satur potenciāli bīstamus SQL modeļus",
+    "input-contains-potentially-dangerous-xss-patterns": "Ievade satur potenciāli bīstamus XSS modeļus",
+    "input-contains-path-traversal-patterns": "Ievade satur ceļa šķērsošanas modeļus",
+    "input-contains-windows-reserved-names": "Ievade satur Windows rezervētos nosaukumus",
+    "input-contains-executable-file-extensions": "Ievade satur izpildāmo failu paplašinājumus",
     "input-contains-null-bytes": "Ievade satur null baitus",
     "input-contains-hidden-files": "Ievade satur paslēptus failus",
-    "input-contains-javascript-file-extensions":
-      "Ievade satur JavaScript failu paplašinājumus",
+    "input-contains-javascript-file-extensions": "Ievade satur JavaScript failu paplašinājumus",
   },
 
   // Asinhronās operācijas
@@ -131,10 +120,8 @@ export const coreTranslations = {
   // Glabāšana un serializācija
   storage: {
     "potentially-dangerous-json-detected": "Atklāts potenciāli bīstams JSON",
-    "failed-to-parse-json-from-localstorage":
-      "Neizdevās parsēt JSON no localStorage:",
-    "error-parsing-storage-event":
-      "Kļūda parsējot glabāšanas notikumu atslēgai",
+    "failed-to-parse-json-from-localstorage": "Neizdevās parsēt JSON no localStorage:",
+    "error-parsing-storage-event": "Kļūda parsējot glabāšanas notikumu atslēgai",
   },
 
   // Tests un izstrāde
@@ -171,9 +158,7 @@ export const coreTranslations = {
   // Integrācijas testi
   integration: {
     "session-and-api-key-generation": "Sesijas un API atslēgas ģenerēšana",
-    "authentication-and-input-validation-integration":
-      "Autentifikācijas un ievades validācijas integrācija",
-    "performance-and-security-integration":
-      "Veiktspējas un drošības integrācija",
+    "authentication-and-input-validation-integration": "Autentifikācijas un ievades validācijas integrācija",
+    "performance-and-security-integration": "Veiktspējas un drošības integrācija",
   },
 };

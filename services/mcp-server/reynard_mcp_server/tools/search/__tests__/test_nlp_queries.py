@@ -6,25 +6,25 @@ Tests for NLP Query Processing
 Test natural language query processing and ripgrep syntax construction.
 """
 
-import pytest
-import tempfile
 import shutil
+import tempfile
 from pathlib import Path
-from unittest.mock import Mock, patch, AsyncMock
+from unittest.mock import Mock, patch
+
+import pytest
+
 from ..search_tools import SearchTools
-from ..bm25_search import BM25SearchEngine
-from ..ripgrep_search import RipgrepSearchEngine
 
 
 class TestNLPQueryProcessing:
     """Test natural language query processing capabilities."""
-    
+
     @pytest.fixture
     def temp_project(self):
         """Create a comprehensive temporary project structure for testing."""
         temp_dir = tempfile.mkdtemp()
         project_path = Path(temp_dir)
-        
+
         # Create project structure
         (project_path / "src").mkdir()
         (project_path / "src" / "api").mkdir()
@@ -38,9 +38,10 @@ class TestNLPQueryProcessing:
         (project_path / "scripts").mkdir()
         (project_path / "config").mkdir()
         (project_path / "migrations").mkdir()
-        
+
         # Create backend API files
-        (project_path / "src" / "api" / "users.py").write_text("""
+        (project_path / "src" / "api" / "users.py").write_text(
+            """
 from flask import Blueprint, request, jsonify
 from src.models.user import User
 from src.services.user_service import UserService
@@ -85,9 +86,11 @@ def get_user(user_id):
     except Exception as e:
         logger.error(f"Error getting user {user_id}: {e}")
         return jsonify({'error': 'Internal server error'}), 500
-""")
-        
-        (project_path / "src" / "api" / "auth.py").write_text("""
+"""
+        )
+
+        (project_path / "src" / "api" / "auth.py").write_text(
+            """
 from flask import Blueprint, request, jsonify
 from src.services.auth_service import AuthService
 from src.utils.jwt import generate_token, verify_token
@@ -121,10 +124,12 @@ def logout():
     except Exception as e:
         logger.error(f"Error during logout: {e}")
         return jsonify({'error': 'Logout failed'}), 500
-""")
-        
+"""
+        )
+
         # Create model files
-        (project_path / "src" / "models" / "user.py").write_text("""
+        (project_path / "src" / "models" / "user.py").write_text(
+            """
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
@@ -169,9 +174,11 @@ class User(Base):
     
     def __repr__(self):
         return f'<User {self.username}>'
-""")
-        
-        (project_path / "src" / "models" / "database.py").write_text("""
+"""
+        )
+
+        (project_path / "src" / "models" / "database.py").write_text(
+            """
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -206,10 +213,12 @@ class Database:
 
 # Global database instance
 db = Database()
-""")
-        
+"""
+        )
+
         # Create service files
-        (project_path / "src" / "services" / "user_service.py").write_text("""
+        (project_path / "src" / "services" / "user_service.py").write_text(
+            """
 from src.models.user import User
 from src.models.database import db
 from sqlalchemy.exc import IntegrityError
@@ -292,9 +301,11 @@ class UserService:
             return True
         finally:
             session.close()
-""")
-        
-        (project_path / "src" / "services" / "auth_service.py").write_text("""
+"""
+        )
+
+        (project_path / "src" / "services" / "auth_service.py").write_text(
+            """
 from src.models.user import User
 from src.models.database import db
 import logging
@@ -326,10 +337,12 @@ class AuthService:
             return user
         finally:
             session.close()
-""")
-        
+"""
+        )
+
         # Create utility files
-        (project_path / "src" / "utils" / "auth.py").write_text("""
+        (project_path / "src" / "utils" / "auth.py").write_text(
+            """
 from functools import wraps
 from flask import request, jsonify
 from src.services.auth_service import AuthService
@@ -354,9 +367,11 @@ def require_auth(f):
         
         return f(*args, **kwargs)
     return decorated_function
-""")
-        
-        (project_path / "src" / "utils" / "jwt.py").write_text("""
+"""
+        )
+
+        (project_path / "src" / "utils" / "jwt.py").write_text(
+            """
 import jwt
 import datetime
 from flask import current_app
@@ -389,10 +404,12 @@ def verify_token(token):
     except jwt.InvalidTokenError:
         logger.error("Invalid token")
         return None
-""")
-        
+"""
+        )
+
         # Create test files
-        (project_path / "tests" / "unit" / "test_user_service.py").write_text("""
+        (project_path / "tests" / "unit" / "test_user_service.py").write_text(
+            """
 import pytest
 from src.services.user_service import UserService
 from src.models.user import User
@@ -438,9 +455,11 @@ class TestUserService:
             
             user = UserService.create_user(user_data)
             assert user is not None
-""")
-        
-        (project_path / "tests" / "integration" / "test_api.py").write_text("""
+"""
+        )
+
+        (project_path / "tests" / "integration" / "test_api.py").write_text(
+            """
 import pytest
 from src.api.users import users_bp
 from src.api.auth import auth_bp
@@ -480,10 +499,12 @@ def test_login_endpoint(app):
             'password': 'password123'
         })
         assert response.status_code == 500  # Database not connected
-""")
-        
+"""
+        )
+
         # Create configuration files
-        (project_path / "config" / "database.py").write_text("""
+        (project_path / "config" / "database.py").write_text(
+            """
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -513,9 +534,11 @@ class DatabaseConfig:
 
 # Global database config
 db_config = DatabaseConfig()
-""")
-        
-        (project_path / "config" / "app.py").write_text("""
+"""
+        )
+
+        (project_path / "config" / "app.py").write_text(
+            """
 import os
 from flask import Flask
 from src.api.users import users_bp
@@ -538,10 +561,12 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix='/api')
     
     return app
-""")
-        
+"""
+        )
+
         # Create migration files
-        (project_path / "migrations" / "001_create_users_table.py").write_text("""
+        (project_path / "migrations" / "001_create_users_table.py").write_text(
+            """
 from sqlalchemy import create_engine, text
 import os
 
@@ -572,10 +597,12 @@ def downgrade():
     with engine.connect() as conn:
         conn.execute(text('DROP TABLE IF EXISTS users'))
         conn.commit()
-""")
-        
+"""
+        )
+
         # Create documentation
-        (project_path / "docs" / "API.md").write_text("""
+        (project_path / "docs" / "API.md").write_text(
+            """
 # API Documentation
 
 ## Authentication
@@ -600,8 +627,9 @@ All API endpoints require authentication via JWT token in the Authorization head
 ## Error Handling
 
 All endpoints return JSON responses with appropriate HTTP status codes.
-""")
-        
+"""
+        )
+
         # Create ignored directories
         (project_path / "__pycache__").mkdir()
         (project_path / "__pycache__" / "main.pyc").write_text("compiled")
@@ -609,16 +637,16 @@ All endpoints return JSON responses with appropriate HTTP status codes.
         (project_path / ".git" / "config").write_text("[core]")
         (project_path / "venv").mkdir()
         (project_path / "node_modules").mkdir()
-        
+
         yield project_path
-        
+
         # Cleanup
         shutil.rmtree(temp_dir)
-    
+
     def test_backend_analysis_nlp_query(self, temp_project):
         """Test natural language query about backend analysis."""
         search_tools = SearchTools()
-        
+
         # Test various NLP queries about the backend
         nlp_queries = [
             "What is the backend look like?",
@@ -637,22 +665,20 @@ All endpoints return JSON responses with appropriate HTTP status codes.
             "Show me the configuration files",
             "How are migrations handled?",
         ]
-        
+
         for query in nlp_queries:
             result = search_tools.search_enhanced(
-                query=query,
-                project_root=str(temp_project),
-                top_k=10
+                query=query, project_root=str(temp_project), top_k=10
             )
-            
+
             assert "results" in result
             assert "query" in result
             assert "total_results" in result
             assert "search_time" in result
-            
+
             # Should return some results for each query
             assert result["total_results"] >= 0
-            
+
             # Should not find files in ignored directories
             results = result["results"]
             file_paths = [r.get("file_path", "") for r in results]
@@ -660,225 +686,175 @@ All endpoints return JSON responses with appropriate HTTP status codes.
             assert not any(".git" in path for path in file_paths)
             assert not any("venv" in path for path in file_paths)
             assert not any("node_modules" in path for path in file_paths)
-    
+
     def test_specific_backend_queries(self, temp_project):
         """Test specific backend-related queries."""
         search_tools = SearchTools()
-        
+
         # Test API-related queries
         api_result = search_tools.search_enhanced(
-            query="API endpoints and routes",
-            project_root=str(temp_project),
-            top_k=5
+            query="API endpoints and routes", project_root=str(temp_project), top_k=5
         )
-        
+
         assert api_result["total_results"] > 0
         file_paths = [r.get("file_path", "") for r in api_result["results"]]
         assert any("users.py" in path for path in file_paths)
         assert any("auth.py" in path for path in file_paths)
-        
+
         # Test database-related queries
         db_result = search_tools.search_enhanced(
             query="database models and configuration",
             project_root=str(temp_project),
-            top_k=5
+            top_k=5,
         )
-        
+
         assert db_result["total_results"] > 0
         file_paths = [r.get("file_path", "") for r in db_result["results"]]
         assert any("user.py" in path for path in file_paths)
         assert any("database.py" in path for path in file_paths)
-        
+
         # Test authentication-related queries
         auth_result = search_tools.search_enhanced(
             query="authentication and authorization",
             project_root=str(temp_project),
-            top_k=5
+            top_k=5,
         )
-        
+
         assert auth_result["total_results"] > 0
         file_paths = [r.get("file_path", "") for r in auth_result["results"]]
         assert any("auth.py" in path for path in file_paths)
         assert any("jwt.py" in path for path in file_paths)
-        
+
         # Test service-related queries
         service_result = search_tools.search_enhanced(
-            query="business logic and services",
-            project_root=str(temp_project),
-            top_k=5
+            query="business logic and services", project_root=str(temp_project), top_k=5
         )
-        
+
         assert service_result["total_results"] > 0
         file_paths = [r.get("file_path", "") for r in service_result["results"]]
         assert any("user_service.py" in path for path in file_paths)
         assert any("auth_service.py" in path for path in file_paths)
-        
+
         # Test test-related queries
         test_result = search_tools.search_enhanced(
-            query="test files and testing",
-            project_root=str(temp_project),
-            top_k=5
+            query="test files and testing", project_root=str(temp_project), top_k=5
         )
-        
+
         assert test_result["total_results"] > 0
         file_paths = [r.get("file_path", "") for r in test_result["results"]]
         assert any("test_user_service.py" in path for path in file_paths)
         assert any("test_api.py" in path for path in file_paths)
-    
+
     def test_ripgrep_syntax_construction(self, temp_project):
         """Test that ripgrep syntax is constructed correctly for various queries."""
         search_tools = SearchTools()
-        
+
         # Test different types of searches
         test_cases = [
-            {
-                "query": "def ",
-                "file_types": [".py"],
-                "expected_pattern": "def "
-            },
-            {
-                "query": "class ",
-                "file_types": [".py"],
-                "expected_pattern": "class "
-            },
-            {
-                "query": "import ",
-                "file_types": [".py"],
-                "expected_pattern": "import "
-            },
+            {"query": "def ", "file_types": [".py"], "expected_pattern": "def "},
+            {"query": "class ", "file_types": [".py"], "expected_pattern": "class "},
+            {"query": "import ", "file_types": [".py"], "expected_pattern": "import "},
             {
                 "query": "@app.route",
                 "file_types": [".py"],
-                "expected_pattern": "@app.route"
+                "expected_pattern": "@app.route",
             },
-            {
-                "query": "TODO",
-                "file_types": None,
-                "expected_pattern": "TODO"
-            },
-            {
-                "query": "FIXME",
-                "file_types": None,
-                "expected_pattern": "FIXME"
-            },
+            {"query": "TODO", "file_types": None, "expected_pattern": "TODO"},
+            {"query": "FIXME", "file_types": None, "expected_pattern": "FIXME"},
         ]
-        
+
         for test_case in test_cases:
-            with patch('subprocess.run') as mock_subprocess:
+            with patch("subprocess.run") as mock_subprocess:
                 mock_subprocess.return_value = Mock(
-                    returncode=0,
-                    stdout=b"test.py:1:test content\n",
-                    stderr=b""
+                    returncode=0, stdout=b"test.py:1:test content\n", stderr=b""
                 )
-                
+
                 result = search_tools.search_content(
                     query=test_case["query"],
                     file_types=test_case["file_types"],
-                    directories=[str(temp_project)]
+                    directories=[str(temp_project)],
                 )
-                
+
                 # Verify subprocess was called
                 mock_subprocess.assert_called_once()
                 call_args = mock_subprocess.call_args
-                
+
                 # Should include ripgrep command
                 assert "rg" in call_args[0][0]
-                
+
                 # Should include the query pattern
                 assert test_case["expected_pattern"] in call_args[0][0]
-                
+
                 # Should include file type filter if specified
                 if test_case["file_types"]:
                     assert "--type" in call_args[0][0] or "--glob" in call_args[0][0]
-    
+
     def test_code_pattern_search_syntax(self, temp_project):
         """Test that code pattern search syntax is constructed correctly."""
         search_tools = SearchTools()
-        
+
         # Test different code patterns
         test_cases = [
-            {
-                "pattern_type": "function",
-                "language": "py",
-                "expected_pattern": "def "
-            },
-            {
-                "pattern_type": "class",
-                "language": "py",
-                "expected_pattern": "class "
-            },
-            {
-                "pattern_type": "import",
-                "language": "py",
-                "expected_pattern": "import "
-            },
-            {
-                "pattern_type": "todo",
-                "language": "py",
-                "expected_pattern": "TODO"
-            },
-            {
-                "pattern_type": "fixme",
-                "language": "py",
-                "expected_pattern": "FIXME"
-            },
+            {"pattern_type": "function", "language": "py", "expected_pattern": "def "},
+            {"pattern_type": "class", "language": "py", "expected_pattern": "class "},
+            {"pattern_type": "import", "language": "py", "expected_pattern": "import "},
+            {"pattern_type": "todo", "language": "py", "expected_pattern": "TODO"},
+            {"pattern_type": "fixme", "language": "py", "expected_pattern": "FIXME"},
         ]
-        
+
         for test_case in test_cases:
-            with patch('subprocess.run') as mock_subprocess:
+            with patch("subprocess.run") as mock_subprocess:
                 mock_subprocess.return_value = Mock(
-                    returncode=0,
-                    stdout=b"test.py:1:test content\n",
-                    stderr=b""
+                    returncode=0, stdout=b"test.py:1:test content\n", stderr=b""
                 )
-                
+
                 result = search_tools.search_code_patterns(
                     pattern_type=test_case["pattern_type"],
                     language=test_case["language"],
-                    directories=[str(temp_project)]
+                    directories=[str(temp_project)],
                 )
-                
+
                 # Verify subprocess was called
                 mock_subprocess.assert_called_once()
                 call_args = mock_subprocess.call_args
-                
+
                 # Should include ripgrep command
                 assert "rg" in call_args[0][0]
-                
+
                 # Should include the expected pattern
                 assert test_case["expected_pattern"] in call_args[0][0]
-    
+
     def test_ignore_system_integration(self, temp_project):
         """Test that the ignore system works correctly with all search tools."""
         search_tools = SearchTools()
-        
+
         # Test that ignored directories are not searched
         ignored_dirs = ["__pycache__", ".git", "venv", "node_modules"]
-        
+
         for ignored_dir in ignored_dirs:
             # Create a file in the ignored directory
             ignored_file = temp_project / ignored_dir / "test_file.py"
             ignored_file.parent.mkdir(exist_ok=True)
             ignored_file.write_text("print('This should be ignored')")
-            
+
             # Search for the content
             result = search_tools.search_content(
-                query="This should be ignored",
-                directories=[str(temp_project)]
+                query="This should be ignored", directories=[str(temp_project)]
             )
-            
+
             # Should not find the file in ignored directory
             results = result["results"]
             file_paths = [r.get("file_path", "") for r in results]
             assert not any(ignored_dir in path for path in file_paths)
-    
+
     def test_performance_with_large_project(self, temp_project):
         """Test search performance with a larger project structure."""
         search_tools = SearchTools()
-        
+
         # Create more files to simulate a larger project
         for i in range(50):
-            (temp_project / "src" / f"module_{i}.py").write_text(f"""
+            (temp_project / "src" / f"module_{i}.py").write_text(
+                f"""
 def function_{i}():
     '''Function {i} for testing.'''
     return {i}
@@ -887,27 +863,27 @@ class Class{i}:
     '''Class {i} for testing.'''
     def __init__(self):
         self.value = {i}
-""")
-        
+"""
+            )
+
         # Test search performance
         import time
+
         start_time = time.time()
-        
+
         result = search_tools.search_enhanced(
-            query="function definition",
-            project_root=str(temp_project),
-            top_k=20
+            query="function definition", project_root=str(temp_project), top_k=20
         )
-        
+
         end_time = time.time()
         search_time = end_time - start_time
-        
+
         # Should complete within reasonable time (less than 5 seconds)
         assert search_time < 5.0
-        
+
         # Should find results
         assert result["total_results"] > 0
-        
+
         # Should not find files in ignored directories
         results = result["results"]
         file_paths = [r.get("file_path", "") for r in results]
@@ -915,4 +891,3 @@ class Class{i}:
         assert not any(".git" in path for path in file_paths)
         assert not any("venv" in path for path in file_paths)
         assert not any("node_modules" in path for path in file_paths)
-

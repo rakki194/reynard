@@ -44,12 +44,10 @@ interface ErrorReport {
   resolved: boolean;
 }
 
-const AnalyticsDashboard: Component<AnalyticsProps> = (props) => {
+const AnalyticsDashboard: Component<AnalyticsProps> = props => {
   const [loading, setLoading] = createSignal(false);
   const [errorReports, setErrorReports] = createSignal<ErrorReport[]>([]);
-  const [_recoveryStats, setRecoveryStats] = createSignal<AnalyticsData | null>(
-    null,
-  );
+  const [_recoveryStats, setRecoveryStats] = createSignal<AnalyticsData | null>(null);
 
   createEffect(() => {
     if (props.analytics) {
@@ -61,7 +59,7 @@ const AnalyticsDashboard: Component<AnalyticsProps> = (props) => {
     setLoading(true);
     try {
       // Simulate loading error reports
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Mock error reports data
       const mockReports: ErrorReport[] = [
@@ -148,16 +146,9 @@ const AnalyticsDashboard: Component<AnalyticsProps> = (props) => {
         <Database size={32} />
         <div>
           <h2>Error Analytics Dashboard</h2>
-          <p>
-            Real-time error monitoring, recovery statistics, and performance
-            metrics
-          </p>
+          <p>Real-time error monitoring, recovery statistics, and performance metrics</p>
         </div>
-        <button
-          class="btn btn-primary"
-          onClick={refreshAnalytics}
-          disabled={loading()}
-        >
+        <button class="btn btn-primary" onClick={refreshAnalytics} disabled={loading()}>
           <Refresh size={16} />
           Refresh
         </button>
@@ -184,9 +175,7 @@ const AnalyticsDashboard: Component<AnalyticsProps> = (props) => {
           </div>
           <div class="analytics-card">
             <h4>Avg Recovery Time</h4>
-            <div class="value">
-              {(props.analytics?.average_recovery_time || 0).toFixed(2)}s
-            </div>
+            <div class="value">{(props.analytics?.average_recovery_time || 0).toFixed(2)}s</div>
           </div>
         </div>
       </Show>
@@ -242,28 +231,21 @@ const AnalyticsDashboard: Component<AnalyticsProps> = (props) => {
           <Show when={!loading() && errorReports().length > 0}>
             <div class="error-reports-list">
               <For each={errorReports()}>
-                {(report) => (
+                {report => (
                   <div class="error-report-card">
                     <div class="error-report-header">
                       <div class="error-report-info">
                         {getCategoryIcon(report.category)}
                         <strong>{report.type}</strong>
-                        <div
-                          class={`severity-indicator severity-${report.severity}`}
-                        />
+                        <div class={`severity-indicator severity-${report.severity}`} />
                       </div>
                       <div class="error-report-meta">
                         {report.resolved ? (
-                          <CheckmarkCircle
-                            size={16}
-                            style={{ color: "#10b981" }}
-                          />
+                          <CheckmarkCircle size={16} style={{ color: "#10b981" }} />
                         ) : (
                           <XCircle size={16} style={{ color: "#ef4444" }} />
                         )}
-                        <span class="error-report-timestamp">
-                          {new Date(report.timestamp).toLocaleTimeString()}
-                        </span>
+                        <span class="error-report-timestamp">{new Date(report.timestamp).toLocaleTimeString()}</span>
                       </div>
                     </div>
                     <p class="error-report-message">{report.message}</p>
@@ -276,10 +258,7 @@ const AnalyticsDashboard: Component<AnalyticsProps> = (props) => {
           <Show when={!loading() && errorReports().length === 0}>
             <div class="status-message status-info">
               <Info size={16} />
-              <span>
-                No error reports available. Try triggering some errors in the
-                Error Demos section.
-              </span>
+              <span>No error reports available. Try triggering some errors in the Error Demos section.</span>
             </div>
           </Show>
         </div>
@@ -292,34 +271,23 @@ const AnalyticsDashboard: Component<AnalyticsProps> = (props) => {
           <div class="analytics-card">
             <h4>Error Rate</h4>
             <div class="value performance-error-rate">
-              {props.analytics?.error_rate
-                ? (props.analytics.error_rate * 100).toFixed(2)
-                : 0}
-              %
+              {props.analytics?.error_rate ? (props.analytics.error_rate * 100).toFixed(2) : 0}%
             </div>
           </div>
           <div class="analytics-card">
             <h4>Recovery Success</h4>
             <div class="value performance-success-rate">
-              {props.analytics?.success_rate
-                ? Math.round(props.analytics.success_rate * 100)
-                : 0}
-              %
+              {props.analytics?.success_rate ? Math.round(props.analytics.success_rate * 100) : 0}%
             </div>
           </div>
           <div class="analytics-card">
             <h4>Avg Response Time</h4>
-            <div class="value">
-              {(props.analytics?.average_recovery_time || 0).toFixed(2)}s
-            </div>
+            <div class="value">{(props.analytics?.average_recovery_time || 0).toFixed(2)}s</div>
           </div>
           <div class="analytics-card">
             <h4>System Uptime</h4>
             <div class="value performance-uptime">
-              {props.analytics?.uptime
-                ? Math.round(props.analytics.uptime / 3600)
-                : 0}
-              h
+              {props.analytics?.uptime ? Math.round(props.analytics.uptime / 3600) : 0}h
             </div>
           </div>
         </div>

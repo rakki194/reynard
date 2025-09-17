@@ -97,14 +97,14 @@ function CustomChat() {
   return (
     <div>
       <h2>Rooms ({p2pChat.rooms().length})</h2>
-      {p2pChat.rooms().map((room) => (
+      {p2pChat.rooms().map(room => (
         <div key={room.id} onClick={() => p2pChat.actions.switchRoom(room.id)}>
           {room.name}
         </div>
       ))}
 
       <div>
-        {p2pChat.messages().map((message) => (
+        {p2pChat.messages().map(message => (
           <div key={message.id}>
             <strong>{message.sender?.name}:</strong> {message.content}
           </div>

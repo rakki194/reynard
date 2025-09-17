@@ -58,7 +58,7 @@ export class SessionStorageAdapter implements StorageAdapter {
     try {
       const targetPrefix = this.prefix + (prefix || "");
       const keys = this.keys(prefix);
-      keys.forEach((key) => sessionStorage.removeItem(targetPrefix + key));
+      keys.forEach(key => sessionStorage.removeItem(targetPrefix + key));
     } catch (error) {
       console.error("SessionStorage clear error:", error);
     }

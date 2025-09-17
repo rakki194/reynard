@@ -4,14 +4,13 @@ Reproduction Component
 Agent reproduction capabilities and preferences component.
 """
 
-from typing import List
 from ..core.component import Component
 
 
 class ReproductionComponent(Component):
     """
     Agent reproduction capabilities and preferences.
-    
+
     Tracks the agent's ability to reproduce, cooldown periods,
     offspring count, and mating preferences.
     """
@@ -24,13 +23,13 @@ class ReproductionComponent(Component):
         self.max_cooldown = 30.0  # Time between reproductions
         self.offspring_count = 0
         self.max_offspring = 5
-        self.preferred_mates: List[str] = []
+        self.preferred_mates: list[str] = []
         self.compatibility_threshold = 0.6
 
     def can_mate(self) -> bool:
         """
         Check if the agent can currently mate.
-        
+
         Returns:
             True if the agent can mate, False otherwise
         """
@@ -43,12 +42,14 @@ class ReproductionComponent(Component):
     def update_cooldown(self, delta_time: float) -> None:
         """
         Update the reproduction cooldown.
-        
+
         Args:
             delta_time: Time elapsed since last update
         """
         if self.reproduction_cooldown > 0.0:
-            self.reproduction_cooldown = max(0.0, self.reproduction_cooldown - delta_time)
+            self.reproduction_cooldown = max(
+                0.0, self.reproduction_cooldown - delta_time
+            )
 
     def add_offspring(self) -> None:
         """Increment the offspring count."""
@@ -57,7 +58,7 @@ class ReproductionComponent(Component):
     def has_reached_offspring_limit(self) -> bool:
         """
         Check if the agent has reached the maximum offspring limit.
-        
+
         Returns:
             True if at the limit, False otherwise
         """

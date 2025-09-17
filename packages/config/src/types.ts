@@ -201,10 +201,7 @@ export interface ConfigManager {
 
 export interface ConfigValidator {
   validate(config: Partial<ReynardConfig>): ValidationResult;
-  validateSection<K extends keyof ReynardConfig>(
-    section: K,
-    config: ReynardConfig[K],
-  ): ValidationResult;
+  validateSection<K extends keyof ReynardConfig>(section: K, config: ReynardConfig[K]): ValidationResult;
 }
 
 export interface ValidationResult {

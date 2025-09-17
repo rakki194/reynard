@@ -7,7 +7,6 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
-
 from services.version_service import VersionService
 
 
@@ -124,11 +123,11 @@ class TestVersionService:
         """Test getting all versions successfully."""
         service = VersionService(project_root=temp_dir)
 
-        with patch.object(
-            service, "get_python_version", return_value="3.13.7"
-        ), patch.object(
-            service, "get_node_version", return_value="v24.7.0"
-        ), patch.object(service, "get_typescript_version", return_value="5.9.2"):
+        with (
+            patch.object(service, "get_python_version", return_value="3.13.7"),
+            patch.object(service, "get_node_version", return_value="v24.7.0"),
+            patch.object(service, "get_typescript_version", return_value="5.9.2"),
+        ):
             versions = await service.get_versions()
 
             assert versions["python"] == "3.13.7"
@@ -140,11 +139,13 @@ class TestVersionService:
         """Test getting versions with mixed success/failure."""
         service = VersionService(project_root=temp_dir)
 
-        with patch.object(
-            service, "get_python_version", return_value="3.13.7"
-        ), patch.object(
-            service, "get_node_version", return_value=service.NOT_AVAILABLE
-        ), patch.object(service, "get_typescript_version", return_value="5.9.2"):
+        with (
+            patch.object(service, "get_python_version", return_value="3.13.7"),
+            patch.object(
+                service, "get_node_version", return_value=service.NOT_AVAILABLE
+            ),
+            patch.object(service, "get_typescript_version", return_value="5.9.2"),
+        ):
             versions = await service.get_versions()
 
             assert versions["python"] == "3.13.7"
@@ -156,12 +157,16 @@ class TestVersionService:
         """Test getting versions when all commands fail."""
         service = VersionService(project_root=temp_dir)
 
-        with patch.object(
-            service, "get_python_version", return_value=service.NOT_AVAILABLE
-        ), patch.object(
-            service, "get_node_version", return_value=service.NOT_AVAILABLE
-        ), patch.object(
-            service, "get_typescript_version", return_value=service.NOT_AVAILABLE
+        with (
+            patch.object(
+                service, "get_python_version", return_value=service.NOT_AVAILABLE
+            ),
+            patch.object(
+                service, "get_node_version", return_value=service.NOT_AVAILABLE
+            ),
+            patch.object(
+                service, "get_typescript_version", return_value=service.NOT_AVAILABLE
+            ),
         ):
             versions = await service.get_versions()
 
@@ -214,4 +219,3 @@ class TestVersionService:
 
         version = service._format_version_output("\n", "python")
         assert version == service.NOT_AVAILABLE
-

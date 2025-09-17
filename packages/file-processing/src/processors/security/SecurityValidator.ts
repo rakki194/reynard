@@ -72,9 +72,7 @@ export class SecurityValidator {
   /**
    * Validate compressed files for zip bombs
    */
-  private async validateCompressedFile(
-    file: File,
-  ): Promise<SecurityValidationResult> {
+  private async validateCompressedFile(file: File): Promise<SecurityValidationResult> {
     // Basic validation - in a real implementation, you'd want to:
     // 1. Check compression ratio
     // 2. Validate file structure

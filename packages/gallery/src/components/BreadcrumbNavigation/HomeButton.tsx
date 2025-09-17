@@ -10,7 +10,7 @@ export interface HomeButtonProps {
   onHomeClick: () => void;
 }
 
-export const HomeButton: Component<HomeButtonProps> = (props) => {
+export const HomeButton: Component<HomeButtonProps> = props => {
   return (
     <li class="reynard-breadcrumb-navigation__item">
       <Button

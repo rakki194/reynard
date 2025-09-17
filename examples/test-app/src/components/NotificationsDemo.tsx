@@ -8,27 +8,20 @@ export function NotificationsDemo() {
   let notificationsModule;
   try {
     notificationsModule = useNotifications();
-    console.log(
-      "NotificationsDemo: useNotifications() successful",
-      notificationsModule,
-    );
+    console.log("NotificationsDemo: useNotifications() successful", notificationsModule);
   } catch (error) {
     console.error("NotificationsDemo: useNotifications() failed", error);
     return (
       <div class="notifications-demo">
         <Card class="demo-section">
           <h3>Notification System Error</h3>
-          <p>
-            Failed to initialize notifications:{" "}
-            {error instanceof Error ? error.message : String(error)}
-          </p>
+          <p>Failed to initialize notifications: {error instanceof Error ? error.message : String(error)}</p>
         </Card>
       </div>
     );
   }
 
-  const { notify, notifications, removeNotification, clearNotifications } =
-    notificationsModule;
+  const { notify, notifications, removeNotification, clearNotifications } = notificationsModule;
   const [autoClose, setAutoClose] = createSignal(true);
   const [duration, setDuration] = createSignal(5000);
 
@@ -60,16 +53,11 @@ export function NotificationsDemo() {
 
   const showNotification = (type: "success" | "error" | "warning" | "info") => {
     console.log("NotificationsDemo: showNotification called with type", type);
-    const config = notificationTypes.find((n) => n.type === type);
+    const config = notificationTypes.find(n => n.type === type);
     if (config) {
-      console.log(
-        "NotificationsDemo: Calling notify with",
-        config.message,
-        type,
-        {
-          duration: autoClose() ? duration() : 0,
-        },
-      );
+      console.log("NotificationsDemo: Calling notify with", config.message, type, {
+        duration: autoClose() ? duration() : 0,
+      });
       try {
         const id = notify(config.message, type, {
           duration: autoClose() ? duration() : 0,
@@ -89,40 +77,27 @@ export function NotificationsDemo() {
       "info",
       {
         duration: autoClose() ? duration() : 0,
-      },
+      }
     );
   };
 
   const showPersistentNotification = () => {
-    notify(
-      "This notification will not auto-close and must be dismissed manually.",
-      "warning",
-      {
-        duration: 0,
-      },
-    );
+    notify("This notification will not auto-close and must be dismissed manually.", "warning", {
+      duration: 0,
+    });
   };
 
   const showMultipleNotifications = () => {
     notify("First notification", "info", { duration: 2000 });
-    setTimeout(
-      () => notify("Second notification", "success", { duration: 2000 }),
-      500,
-    );
-    setTimeout(
-      () => notify("Third notification", "warning", { duration: 2000 }),
-      1000,
-    );
+    setTimeout(() => notify("Second notification", "success", { duration: 2000 }), 500);
+    setTimeout(() => notify("Third notification", "warning", { duration: 2000 }), 1000);
   };
 
   const testSimpleNotification = () => {
     console.log("NotificationsDemo: Testing simple notification");
     try {
       const id = notify("Test notification", "info");
-      console.log(
-        "NotificationsDemo: Simple notification created with id:",
-        id,
-      );
+      console.log("NotificationsDemo: Simple notification created with id:", id);
     } catch (error) {
       console.error("NotificationsDemo: Simple notification failed:", error);
     }
@@ -132,16 +107,13 @@ export function NotificationsDemo() {
     <div class="notifications-demo">
       <Card class="demo-section">
         <h3>Notification System</h3>
-        <p>
-          Demonstrates the comprehensive notification system with different
-          types and configurations.
-        </p>
+        <p>Demonstrates the comprehensive notification system with different types and configurations.</p>
 
         <div class="demo-subsection">
           <h4>Notification Types</h4>
           <div class="notification-buttons">
             <For each={notificationTypes}>
-              {(config) => (
+              {config => (
                 <Button
                   variant={
                     config.type === "error"
@@ -181,11 +153,7 @@ export function NotificationsDemo() {
           <h4>Notification Settings</h4>
           <div class="notification-settings">
             <label class="setting-item">
-              <input
-                type="checkbox"
-                checked={autoClose()}
-                onChange={(e) => setAutoClose(e.currentTarget.checked)}
-              />
+              <input type="checkbox" checked={autoClose()} onChange={e => setAutoClose(e.currentTarget.checked)} />
               Auto-close notifications
             </label>
             <div class="setting-item">
@@ -197,9 +165,7 @@ export function NotificationsDemo() {
                 max="10000"
                 step="500"
                 value={duration()}
-                onInput={(e: any) =>
-                  setDuration(parseInt(e.currentTarget.value))
-                }
+                onInput={(e: any) => setDuration(parseInt(e.currentTarget.value))}
                 disabled={!autoClose()}
                 aria-label="Notification duration in milliseconds"
               />
@@ -214,41 +180,26 @@ export function NotificationsDemo() {
         <p>Shows all currently active notifications with management options.</p>
 
         <div class="notifications-controls">
-          <Button
-            onClick={() => clearNotifications()}
-            variant="danger"
-            disabled={notifications.length === 0}
-          >
+          <Button onClick={() => clearNotifications()} variant="danger" disabled={notifications.length === 0}>
             Clear All ({notifications.length})
           </Button>
         </div>
 
         <div class="notifications-list">
           <For each={notifications}>
-            {(notification) => {
-              console.log(
-                "NotificationsDemo: Rendering notification",
-                notification,
-              );
+            {notification => {
+              console.log("NotificationsDemo: Rendering notification", notification);
               return (
-                <div
-                  class={`notification-item notification-item--${notification.type}`}
-                >
+                <div class={`notification-item notification-item--${notification.type}`}>
                   <div class="notification-content">
                     <div class="notification-header">
-                      <span class="notification-type">
-                        {notification.type.toUpperCase()}
-                      </span>
+                      <span class="notification-type">{notification.type.toUpperCase()}</span>
                       <span class="notification-timestamp">
                         {new Date(notification.timestamp).toLocaleTimeString()}
                       </span>
                     </div>
-                    <div class="notification-message">
-                      {notification.message}
-                    </div>
-                    {notification.duration === 0 && (
-                      <div class="notification-persistent">Persistent</div>
-                    )}
+                    <div class="notification-message">{notification.message}</div>
+                    {notification.duration === 0 && <div class="notification-persistent">Persistent</div>}
                   </div>
                   <Button
                     size="sm"
@@ -279,10 +230,7 @@ export function NotificationsDemo() {
         <div class="features-list">
           <div class="feature-item">
             <h4>🎯 Multiple Types</h4>
-            <p>
-              Success, error, warning, and info notifications with distinct
-              styling.
-            </p>
+            <p>Success, error, warning, and info notifications with distinct styling.</p>
           </div>
 
           <div class="feature-item">

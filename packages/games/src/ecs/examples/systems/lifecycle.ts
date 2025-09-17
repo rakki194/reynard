@@ -1,16 +1,7 @@
 // Lifecycle and damage systems
 
 import { World } from "../../types";
-import {
-  Health,
-  Damage,
-  Lifetime,
-  GameTime,
-  HealthType,
-  DamageType,
-  LifetimeType,
-  GameTimeType,
-} from "../components";
+import { Health, Damage, Lifetime, GameTime, HealthType, DamageType, LifetimeType, GameTimeType } from "../components";
 
 /**
  * Lifetime system - removes entities when their lifetime expires.

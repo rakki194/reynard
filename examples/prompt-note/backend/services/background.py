@@ -6,8 +6,7 @@ Handles background tasks with reload optimization
 import asyncio
 import os
 import time
-from datetime import datetime
-from typing import Any, Dict, Optional, Set
+from typing import Any
 
 # Detect reload mode
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
@@ -17,7 +16,7 @@ class BackgroundService:
     """Background service for handling long-running tasks"""
 
     def __init__(self):
-        self.tasks: Set[asyncio.Task] = set()
+        self.tasks: set[asyncio.Task] = set()
         self.is_running = False
         self.stats = {
             "tasks_started": 0,
@@ -25,7 +24,7 @@ class BackgroundService:
             "tasks_failed": 0,
             "uptime": 0,
         }
-        self.start_time: Optional[float] = None
+        self.start_time: float | None = None
 
     async def start(self):
         """Start background service"""
@@ -179,7 +178,7 @@ class BackgroundService:
         print(f"[INFO] Added background task: {name}")
         return task
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         """Get background service statistics"""
         uptime = 0
         if self.start_time:

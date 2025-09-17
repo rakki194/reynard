@@ -15,12 +15,7 @@ import { Rectangle } from "./shapes";
  */
 export class RectangleAdvanced {
   static intersects(a: Rectangle, b: Rectangle): boolean {
-    return (
-      a.x < b.x + b.width &&
-      a.x + a.width > b.x &&
-      a.y < b.y + b.height &&
-      a.y + a.height > b.y
-    );
+    return a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
   }
 
   static intersection(a: Rectangle, b: Rectangle): Rectangle | null {
@@ -61,10 +56,7 @@ export class RectangleAdvanced {
     };
   }
 
-  static translate(
-    rect: Rectangle,
-    offset: import("../vectors/vector-algorithms").Vector,
-  ): Rectangle {
+  static translate(rect: Rectangle, offset: import("../vectors/vector-algorithms").Vector): Rectangle {
     return {
       x: rect.x + offset.x,
       y: rect.y + offset.y,

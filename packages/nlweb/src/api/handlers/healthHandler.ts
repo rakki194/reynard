@@ -4,22 +4,14 @@
  * Handles health check requests for the NLWeb API.
  */
 
-import type {
-  NLWebAPIRequest,
-  NLWebAPIResponse,
-  NLWebAPIHandler,
-} from "../types.js";
+import type { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
 import type { NLWebService } from "../../types/index.js";
 import { getCORSHeaders } from "../utils.js";
 
 /**
  * Create health handler
  */
-export function createHealthHandler(
-  service: NLWebService,
-  basePath: string,
-  enableCORS: boolean,
-): NLWebAPIHandler {
+export function createHealthHandler(service: NLWebService, basePath: string, enableCORS: boolean): NLWebAPIHandler {
   return async (_req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {
       const healthStatus = await service.getHealthStatus();
@@ -43,11 +35,7 @@ export function createHealthHandler(
 /**
  * Create status handler
  */
-export function createStatusHandler(
-  service: NLWebService,
-  basePath: string,
-  enableCORS: boolean,
-): NLWebAPIHandler {
+export function createStatusHandler(service: NLWebService, basePath: string, enableCORS: boolean): NLWebAPIHandler {
   return async (_req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {
       const healthStatus = await service.getHealthStatus();
@@ -80,7 +68,7 @@ export function createStatusHandler(
 export function createForceHealthCheckHandler(
   service: NLWebService,
   basePath: string,
-  enableCORS: boolean,
+  enableCORS: boolean
 ): NLWebAPIHandler {
   return async (_req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {

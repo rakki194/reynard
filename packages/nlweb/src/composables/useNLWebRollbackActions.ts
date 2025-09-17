@@ -18,7 +18,7 @@ export interface NLWebRollbackActions {
 export function createNLWebRollbackActions(
   state: NLWebState,
   baseUrl: string,
-  requestTimeout: number,
+  requestTimeout: number
 ): NLWebRollbackActions {
   const enableRollback = async (): Promise<void> => {
     try {

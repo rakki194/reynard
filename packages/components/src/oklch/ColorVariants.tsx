@@ -11,7 +11,7 @@ interface ColorVariantsProps {
   selectedColor: string;
 }
 
-export const ColorVariants: Component<ColorVariantsProps> = (props) => {
+export const ColorVariants: Component<ColorVariantsProps> = props => {
   const themeColors = useThemeColors();
 
   return (
@@ -21,12 +21,9 @@ export const ColorVariants: Component<ColorVariantsProps> = (props) => {
         <div class="variant-item">
           <div
             class="variant-swatch"
-            ref={(el) => {
+            ref={el => {
               if (el) {
-                el.style.setProperty(
-                  "--dynamic-bg-color",
-                  themeColors.getColor(props.selectedColor),
-                );
+                el.style.setProperty("--dynamic-bg-color", themeColors.getColor(props.selectedColor));
               }
             }}
           />
@@ -35,12 +32,9 @@ export const ColorVariants: Component<ColorVariantsProps> = (props) => {
         <div class="variant-item">
           <div
             class="variant-swatch"
-            ref={(el) => {
+            ref={el => {
               if (el) {
-                el.style.setProperty(
-                  "--dynamic-bg-color",
-                  themeColors.getColorVariant(props.selectedColor, "lighter"),
-                );
+                el.style.setProperty("--dynamic-bg-color", themeColors.getColorVariant(props.selectedColor, "lighter"));
               }
             }}
           />
@@ -49,12 +43,9 @@ export const ColorVariants: Component<ColorVariantsProps> = (props) => {
         <div class="variant-item">
           <div
             class="variant-swatch"
-            ref={(el) => {
+            ref={el => {
               if (el) {
-                el.style.setProperty(
-                  "--dynamic-bg-color",
-                  themeColors.getColorVariant(props.selectedColor, "darker"),
-                );
+                el.style.setProperty("--dynamic-bg-color", themeColors.getColorVariant(props.selectedColor, "darker"));
               }
             }}
           />
@@ -63,12 +54,9 @@ export const ColorVariants: Component<ColorVariantsProps> = (props) => {
         <div class="variant-item">
           <div
             class="variant-swatch"
-            ref={(el) => {
+            ref={el => {
               if (el) {
-                el.style.setProperty(
-                  "--dynamic-bg-color",
-                  themeColors.getColorVariant(props.selectedColor, "hover"),
-                );
+                el.style.setProperty("--dynamic-bg-color", themeColors.getColorVariant(props.selectedColor, "hover"));
               }
             }}
           />
@@ -77,12 +65,9 @@ export const ColorVariants: Component<ColorVariantsProps> = (props) => {
         <div class="variant-item">
           <div
             class="variant-swatch"
-            ref={(el) => {
+            ref={el => {
               if (el) {
-                el.style.setProperty(
-                  "--dynamic-bg-color",
-                  themeColors.getColorVariant(props.selectedColor, "active"),
-                );
+                el.style.setProperty("--dynamic-bg-color", themeColors.getColorVariant(props.selectedColor, "active"));
               }
             }}
           />

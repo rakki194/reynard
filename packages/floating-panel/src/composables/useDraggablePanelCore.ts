@@ -5,11 +5,7 @@
  */
 
 import { createSignal, Accessor } from "solid-js";
-import type {
-  PanelPosition,
-  PanelConstraints,
-  PanelSnapPoints,
-} from "../types.js";
+import type { PanelPosition, PanelConstraints, PanelSnapPoints } from "../types.js";
 
 export interface DraggablePanelCore {
   position: ReturnType<typeof createSignal<PanelPosition>>;
@@ -37,7 +33,7 @@ export function createDraggablePanelCore(
   constraints?: PanelConstraints,
   snapPoints?: PanelSnapPoints,
   dragHandle?: string,
-  enabled = true,
+  enabled = true
 ): DraggablePanelCore {
   const position = createSignal<PanelPosition>(initialPosition);
   const dragState = createSignal({

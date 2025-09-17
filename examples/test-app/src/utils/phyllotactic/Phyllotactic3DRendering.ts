@@ -102,12 +102,10 @@ export class Phyllotactic3DRendering {
     x: number,
     y: number,
     z: number,
-    lightSource: { x: number; y: number; z: number } = { x: 0, y: 0, z: 100 },
+    lightSource: { x: number; y: number; z: number } = { x: 0, y: 0, z: 100 }
   ): number {
     const distance = Math.sqrt(
-      Math.pow(x - lightSource.x, 2) +
-        Math.pow(y - lightSource.y, 2) +
-        Math.pow(z - lightSource.z, 2),
+      Math.pow(x - lightSource.x, 2) + Math.pow(y - lightSource.y, 2) + Math.pow(z - lightSource.z, 2)
     );
 
     // Inverse square law for lighting

@@ -22,10 +22,7 @@ export class TokenManager {
     this.refreshTokenKey = refreshTokenKey;
   }
 
-  static getInstance(
-    tokenKey?: string,
-    refreshTokenKey?: string,
-  ): TokenManager {
+  static getInstance(tokenKey?: string, refreshTokenKey?: string): TokenManager {
     if (!TokenManager.instance) {
       TokenManager.instance = new TokenManager(tokenKey, refreshTokenKey);
     }
@@ -281,9 +278,7 @@ export function isTokenExpired(token: string): boolean {
 /**
  * Get user information from token
  */
-export function getUserFromToken(
-  token: string,
-): { username?: string; role?: string } | null {
+export function getUserFromToken(token: string): { username?: string; role?: string } | null {
   try {
     const decoded = jwtDecode<DecodedToken>(token);
     return {
@@ -298,10 +293,7 @@ export function getUserFromToken(
 /**
  * Check if token has required role
  */
-export function hasRequiredRole(
-  token: string,
-  requiredRole: UserRole,
-): boolean {
+export function hasRequiredRole(token: string, requiredRole: UserRole): boolean {
   try {
     const decoded = jwtDecode<DecodedToken>(token);
     return decoded.role === requiredRole;
@@ -313,10 +305,7 @@ export function hasRequiredRole(
 /**
  * Check if token has any of the required roles
  */
-export function hasAnyRequiredRole(
-  token: string,
-  requiredRoles: UserRole[],
-): boolean {
+export function hasAnyRequiredRole(token: string, requiredRoles: UserRole[]): boolean {
   try {
     const decoded = jwtDecode<DecodedToken>(token);
     return requiredRoles.includes(decoded.role as UserRole);

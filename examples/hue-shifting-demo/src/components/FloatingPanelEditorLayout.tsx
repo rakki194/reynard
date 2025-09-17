@@ -3,12 +3,7 @@ import { FloatingPanelOverlay } from "reynard-floating-panel";
 import { PixelCanvas } from "./PixelCanvas";
 import { FloatingPanelTriggerBar } from "./FloatingPanelTriggerBar";
 import { FloatingPanelDebugger } from "./FloatingPanelDebugger";
-import {
-  ColorPickerPanel,
-  ToolControlsPanel,
-  CanvasSizePanel,
-  MaterialControlsPanel,
-} from "./floating-panels";
+import { ColorPickerPanel, ToolControlsPanel, CanvasSizePanel, MaterialControlsPanel } from "./floating-panels";
 import { useFloatingPanels } from "../composables/useFloatingPanels";
 import { allIcons } from "reynard-fluent-icons";
 import type { OKLCHColor } from "reynard-colors";
@@ -37,9 +32,7 @@ interface FloatingPanelEditorLayoutProps {
   onClearCanvas: () => void;
 }
 
-export const FloatingPanelEditorLayout: Component<
-  FloatingPanelEditorLayoutProps
-> = (props) => {
+export const FloatingPanelEditorLayout: Component<FloatingPanelEditorLayoutProps> = props => {
   const floatingPanels = useFloatingPanels();
 
   return (
@@ -48,10 +41,7 @@ export const FloatingPanelEditorLayout: Component<
 
       <header class="editor-header">
         <h2>Interactive Pixel Art Editor</h2>
-        <p>
-          Create pixel art with real-time OKLCH hue shifting. Use the floating
-          panels to access tools and controls.
-        </p>
+        <p>Create pixel art with real-time OKLCH hue shifting. Use the floating panels to access tools and controls.</p>
 
         <div class="editor-actions">
           <button class="clear-button" onClick={props.onClearCanvas}>

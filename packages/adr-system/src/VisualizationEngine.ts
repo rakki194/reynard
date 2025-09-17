@@ -5,12 +5,7 @@
  * including interactive graphs, network diagrams, and relationship maps.
  */
 
-import {
-  KnowledgeNode,
-  KnowledgeEdge,
-  GraphPath,
-  GraphMetrics,
-} from "./KnowledgeGraph";
+import { KnowledgeNode, KnowledgeEdge, GraphPath, GraphMetrics } from "./KnowledgeGraph";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 
@@ -61,7 +56,7 @@ export class ADRVisualizationEngine {
   async generateInteractiveVisualization(
     nodes: KnowledgeNode[],
     edges: KnowledgeEdge[],
-    outputPath: string,
+    outputPath: string
   ): Promise<VisualizationOutput> {
     const html = this.createInteractiveHTML(nodes, edges);
 
@@ -85,7 +80,7 @@ export class ADRVisualizationEngine {
   async generateSVGVisualization(
     nodes: KnowledgeNode[],
     edges: KnowledgeEdge[],
-    outputPath: string,
+    outputPath: string
   ): Promise<VisualizationOutput> {
     const svg = this.createSVG(nodes, edges);
 
@@ -106,10 +101,7 @@ export class ADRVisualizationEngine {
   /**
    * Generate Mermaid diagram
    */
-  generateMermaidDiagram(
-    nodes: KnowledgeNode[],
-    edges: KnowledgeEdge[],
-  ): string {
+  generateMermaidDiagram(nodes: KnowledgeNode[], edges: KnowledgeEdge[]): string {
     let mermaid = "graph TD\n";
 
     // Add nodes
@@ -136,12 +128,9 @@ export class ADRVisualizationEngine {
   /**
    * Generate relationship matrix
    */
-  generateRelationshipMatrix(
-    nodes: KnowledgeNode[],
-    edges: KnowledgeEdge[],
-  ): string {
+  generateRelationshipMatrix(nodes: KnowledgeNode[], edges: KnowledgeEdge[]): string {
     const matrix: string[][] = [];
-    const nodeIds = nodes.map((n) => n.id);
+    const nodeIds = nodes.map(n => n.id);
 
     // Initialize matrix
     matrix.push(["", ...nodeIds]);
@@ -150,9 +139,7 @@ export class ADRVisualizationEngine {
       const row = [sourceNode.label];
 
       for (const targetNode of nodes) {
-        const edge = edges.find(
-          (e) => e.source === sourceNode.id && e.target === targetNode.id,
-        );
+        const edge = edges.find(e => e.source === sourceNode.id && e.target === targetNode.id);
         if (edge) {
           row.push(edge.type);
         } else {
@@ -228,11 +215,8 @@ export class ADRVisualizationEngine {
   /**
    * Create interactive HTML visualization
    */
-  private createInteractiveHTML(
-    nodes: KnowledgeNode[],
-    edges: KnowledgeEdge[],
-  ): string {
-    const nodeData = nodes.map((node) => ({
+  private createInteractiveHTML(nodes: KnowledgeNode[], edges: KnowledgeEdge[]): string {
+    const nodeData = nodes.map(node => ({
       id: node.id,
       label: node.label,
       type: node.type,
@@ -240,7 +224,7 @@ export class ADRVisualizationEngine {
       metadata: node.metadata,
     }));
 
-    const edgeData = edges.map((edge) => ({
+    const edgeData = edges.map(edge => ({
       id: edge.id,
       source: edge.source,
       target: edge.target,
@@ -633,8 +617,8 @@ export class ADRVisualizationEngine {
 
     // Add edges
     for (const edge of edges) {
-      const sourceNode = nodes.find((n) => n.id === edge.source);
-      const targetNode = nodes.find((n) => n.id === edge.target);
+      const sourceNode = nodes.find(n => n.id === edge.source);
+      const targetNode = nodes.find(n => n.id === edge.target);
 
       if (sourceNode && targetNode) {
         const x1 = this.getNodeX(sourceNode, nodes, width);
@@ -685,10 +669,7 @@ export class ADRVisualizationEngine {
     return edge.type.replace("_", " ");
   }
 
-  private calculateAverageDegree(
-    nodes: KnowledgeNode[],
-    edges: KnowledgeEdge[],
-  ): number {
+  private calculateAverageDegree(nodes: KnowledgeNode[], edges: KnowledgeEdge[]): number {
     const degreeMap = new Map<string, number>();
 
     for (const node of nodes) {
@@ -700,27 +681,16 @@ export class ADRVisualizationEngine {
       degreeMap.set(edge.target, (degreeMap.get(edge.target) || 0) + 1);
     }
 
-    const totalDegree = Array.from(degreeMap.values()).reduce(
-      (sum, degree) => sum + degree,
-      0,
-    );
+    const totalDegree = Array.from(degreeMap.values()).reduce((sum, degree) => sum + degree, 0);
     return totalDegree / nodes.length;
   }
 
-  private getNodeX(
-    node: KnowledgeNode,
-    allNodes: KnowledgeNode[],
-    width: number,
-  ): number {
+  private getNodeX(node: KnowledgeNode, allNodes: KnowledgeNode[], width: number): number {
     const index = allNodes.indexOf(node);
     return (index / allNodes.length) * width;
   }
 
-  private getNodeY(
-    node: KnowledgeNode,
-    allNodes: KnowledgeNode[],
-    height: number,
-  ): number {
+  private getNodeY(node: KnowledgeNode, allNodes: KnowledgeNode[], height: number): number {
     const index = allNodes.indexOf(node);
     return (index / allNodes.length) * height;
   }

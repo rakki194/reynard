@@ -25,28 +25,19 @@ export class PerformanceBudgetChecker {
     const violations = [];
 
     if (metrics.duration > budget.maxDuration) {
-      violations.push(
-        `Duration: ${metrics.duration}ms > ${budget.maxDuration}ms`,
-      );
+      violations.push(`Duration: ${metrics.duration}ms > ${budget.maxDuration}ms`);
     }
 
     if (metrics.memoryDelta > budget.maxMemoryUsage) {
-      violations.push(
-        `Memory: ${metrics.memoryDelta} bytes > ${budget.maxMemoryUsage} bytes`,
-      );
+      violations.push(`Memory: ${metrics.memoryDelta} bytes > ${budget.maxMemoryUsage} bytes`);
     }
 
     if (metrics.iterations > budget.maxIterations) {
-      violations.push(
-        `Iterations: ${metrics.iterations} > ${budget.maxIterations}`,
-      );
+      violations.push(`Iterations: ${metrics.iterations} > ${budget.maxIterations}`);
     }
 
     if (violations.length > 0) {
-      console.warn(
-        `Performance budget violation for ${name}:`,
-        violations.join(", "),
-      );
+      console.warn(`Performance budget violation for ${name}:`, violations.join(", "));
       return false;
     }
 

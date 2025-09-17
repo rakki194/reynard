@@ -9,10 +9,7 @@ import type { PixelSprite } from "./sprite-renderer";
 /**
  * Create a sprite from a 2D array of color indices
  */
-export function createSprite(
-  pixels: number[][],
-  palette: OKLCHColor[],
-): PixelSprite {
+export function createSprite(pixels: number[][], palette: OKLCHColor[]): PixelSprite {
   return {
     width: pixels[0]?.length || 0,
     height: pixels.length,
@@ -24,11 +21,7 @@ export function createSprite(
 /**
  * Create a simple colored rectangle sprite
  */
-export function createRectSprite(
-  width: number,
-  height: number,
-  color: OKLCHColor,
-): PixelSprite {
+export function createRectSprite(width: number, height: number, color: OKLCHColor): PixelSprite {
   const pixels: number[][] = [];
 
   for (let row = 0; row < height; row++) {
@@ -55,7 +48,7 @@ export function createCheckerboardSprite(
   height: number,
   color1: OKLCHColor,
   color2: OKLCHColor,
-  checkerSize: number = 1,
+  checkerSize: number = 1
 ): PixelSprite {
   const pixels: number[][] = [];
 
@@ -81,11 +74,7 @@ export function createCheckerboardSprite(
 /**
  * Create a circle sprite
  */
-export function createCircleSprite(
-  radius: number,
-  color: OKLCHColor,
-  fillColor?: OKLCHColor,
-): PixelSprite {
+export function createCircleSprite(radius: number, color: OKLCHColor, fillColor?: OKLCHColor): PixelSprite {
   const size = radius * 2 + 1;
   const pixels: number[][] = [];
 
@@ -121,13 +110,7 @@ export function createCircleSprite(
 /**
  * Create a line sprite
  */
-export function createLineSprite(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  color: OKLCHColor,
-): PixelSprite {
+export function createLineSprite(x1: number, y1: number, x2: number, y2: number, color: OKLCHColor): PixelSprite {
   const width = Math.max(x1, x2) + 1;
   const height = Math.max(y1, y2) + 1;
   const pixels: number[][] = [];

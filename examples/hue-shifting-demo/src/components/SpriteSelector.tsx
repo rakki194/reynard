@@ -6,7 +6,7 @@ interface SpriteSelectorProps {
   onSpriteChange: (sprite: string) => void;
 }
 
-export const SpriteSelector: Component<SpriteSelectorProps> = (props) => {
+export const SpriteSelector: Component<SpriteSelectorProps> = props => {
   return (
     <div class="sprite-selector">
       <h4>Sprite Type</h4>

@@ -27,9 +27,7 @@ export class VideoThumbnailGenerator {
   private videoLoader: VideoLoader;
   private canvasRenderer: VideoCanvasRenderer;
 
-  constructor(
-    private options: VideoThumbnailGeneratorOptions = { size: [200, 200] },
-  ) {
+  constructor(private options: VideoThumbnailGeneratorOptions = { size: [200, 200] }) {
     this.options = {
       format: "webp",
       quality: 85,
@@ -51,23 +49,16 @@ export class VideoThumbnailGenerator {
   /**
    * Generate thumbnail for video files
    */
-  async generateThumbnail(
-    file: File | string,
-    options?: Partial<ThumbnailOptions>,
-  ): Promise<ProcessingResult<Blob>> {
+  async generateThumbnail(file: File | string, options?: Partial<ThumbnailOptions>): Promise<ProcessingResult<Blob>> {
     const startTime = Date.now();
     const mergedOptions = { ...this.options, ...options };
 
     try {
       // Load video and get metadata
-      const { video, duration, width, height } =
-        await this.videoLoader.loadVideo(file);
+      const { video, duration, width, height } = await this.videoLoader.loadVideo(file);
 
       // Calculate capture time and seek to it
-      const captureTime = VideoDimensions.calculateCaptureTime(
-        duration,
-        mergedOptions.captureTime,
-      );
+      const captureTime = VideoDimensions.calculateCaptureTime(duration, mergedOptions.captureTime);
       video.currentTime = captureTime;
       await this.videoLoader.waitForVideoSeek(video);
 
@@ -78,15 +69,11 @@ export class VideoThumbnailGenerator {
         height,
         targetWidth,
         targetHeight,
-        mergedOptions.maintainAspectRatio,
+        mergedOptions.maintainAspectRatio
       );
 
       // Render to canvas and convert to blob
-      const blob = await this.canvasRenderer.renderVideoFrame(
-        video,
-        dimensions,
-        mergedOptions,
-      );
+      const blob = await this.canvasRenderer.renderVideoFrame(video, dimensions, mergedOptions);
 
       return {
         success: true,
@@ -97,10 +84,7 @@ export class VideoThumbnailGenerator {
     } catch (error) {
       return {
         success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to generate video thumbnail",
+        error: error instanceof Error ? error.message : "Failed to generate video thumbnail",
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };

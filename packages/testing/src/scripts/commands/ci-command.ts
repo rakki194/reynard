@@ -26,17 +26,13 @@ const handleCICommand = async (options: CICommandOptions): Promise<void> => {
 
     // Check hardcoded strings
     if (options.failOnHardcoded && result.summary.totalHardcodedStrings > 0) {
-      console.log(
-        `❌ Found ${result.summary.totalHardcodedStrings} hardcoded strings`,
-      );
+      console.log(`❌ Found ${result.summary.totalHardcodedStrings} hardcoded strings`);
       failed = true;
     }
 
     // Check missing translations
     if (options.failOnMissing && result.summary.totalMissingTranslations > 0) {
-      console.log(
-        `❌ Found ${result.summary.totalMissingTranslations} missing translations`,
-      );
+      console.log(`❌ Found ${result.summary.totalMissingTranslations} missing translations`);
       failed = true;
     }
 
@@ -49,9 +45,7 @@ const handleCICommand = async (options: CICommandOptions): Promise<void> => {
     // Check coverage
     const coverageThreshold = parseInt(options.coverageThreshold || "80");
     if (result.summary.averageCoverage < coverageThreshold) {
-      console.log(
-        `❌ Coverage ${result.summary.averageCoverage.toFixed(1)}% is below threshold ${coverageThreshold}%`,
-      );
+      console.log(`❌ Coverage ${result.summary.averageCoverage.toFixed(1)}% is below threshold ${coverageThreshold}%`);
       failed = true;
     }
 
@@ -76,11 +70,7 @@ export const createCICommand = (): Command => {
     .option("--fail-on-hardcoded", "Fail on hardcoded strings", true)
     .option("--fail-on-missing", "Fail on missing translations", true)
     .option("--fail-on-rtl", "Fail on RTL issues", false)
-    .option(
-      "--coverage-threshold <threshold>",
-      "Coverage threshold percentage",
-      "80",
-    )
+    .option("--coverage-threshold <threshold>", "Coverage threshold percentage", "80")
     .action(handleCICommand);
 
   return command;

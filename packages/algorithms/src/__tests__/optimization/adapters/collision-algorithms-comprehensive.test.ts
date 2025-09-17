@@ -287,9 +287,7 @@ describe("Collision Algorithms Comprehensive Coverage", () => {
       expect(Array.isArray(collisions)).toBe(true);
 
       // Memory pool should have been used
-      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(
-        initialStats.totalAllocations,
-      );
+      expect(finalStats.totalAllocations).toBeGreaterThanOrEqual(initialStats.totalAllocations);
     });
 
     it("should handle memory pool cleanup after errors", () => {

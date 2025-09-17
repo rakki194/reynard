@@ -22,16 +22,14 @@ const RecentNotes: Component = () => {
       title: "Meeting Notes - Q1 Planning",
       notebookTitle: "Work Projects",
       updatedAt: new Date("2024-01-20T10:30:00"),
-      preview:
-        "Discussed Q1 objectives and key deliverables for the upcoming quarter...",
+      preview: "Discussed Q1 objectives and key deliverables for the upcoming quarter...",
     },
     {
       id: "2",
       title: "JavaScript Learning Path",
       notebookTitle: "Learning Resources",
       updatedAt: new Date("2024-01-19T15:45:00"),
-      preview:
-        "Advanced JavaScript concepts including closures, prototypes, and async programming...",
+      preview: "Advanced JavaScript concepts including closures, prototypes, and async programming...",
     },
     {
       id: "3",
@@ -44,9 +42,7 @@ const RecentNotes: Component = () => {
 
   const formatRelativeTime = (date: Date) => {
     const now = new Date();
-    const diffInHours = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60 * 60),
-    );
+    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
 
     if (diffInHours < 1) return "Just now";
     if (diffInHours < 24) return `${diffInHours}h ago`;
@@ -59,13 +55,11 @@ const RecentNotes: Component = () => {
       <h3>🕒 Recent Notes</h3>
       <div class="notes-list">
         <For each={recentNotes}>
-          {(note) => (
+          {note => (
             <Card class="note-item" padding="md" interactive>
               <div class="note-header">
                 <h4 class="note-title">{note.title}</h4>
-                <span class="note-time">
-                  {formatRelativeTime(note.updatedAt)}
-                </span>
+                <span class="note-time">{formatRelativeTime(note.updatedAt)}</span>
               </div>
               <p class="note-notebook">{note.notebookTitle}</p>
               <p class="note-preview">{note.preview}</p>

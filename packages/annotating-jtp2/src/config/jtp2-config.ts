@@ -66,8 +66,7 @@ export const JTP2_DEFAULT_CONFIG = {
 
 export const JTP2_METADATA = {
   name: "jtp2",
-  description:
-    "Joint Tagger Project PILOT2 - Specialized for furry artwork tagging",
+  description: "Joint Tagger Project PILOT2 - Specialized for furry artwork tagging",
   version: "1.0.0",
   caption_type: "tags",
   model_category: "lightweight",

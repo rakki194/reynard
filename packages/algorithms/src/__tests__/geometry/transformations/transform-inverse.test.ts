@@ -70,7 +70,7 @@ describe("TransformOps - Inverse Operations", () => {
       const transform = TransformOps.combine(
         TransformOps.translate(5, 10),
         TransformOps.scale(2, 3),
-        TransformOps.rotate(Math.PI / 6),
+        TransformOps.rotate(Math.PI / 6)
       );
       const inverse = TransformOps.inverse(transform);
       const identity = TransformOps.combine(transform, inverse);

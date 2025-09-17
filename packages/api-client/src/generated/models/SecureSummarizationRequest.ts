@@ -13,6 +13,21 @@
  */
 
 import { mapValues } from '../runtime';
+import type { Model } from './Model';
+import {
+    ModelFromJSON,
+    ModelFromJSONTyped,
+    ModelToJSON,
+    ModelToJSONTyped,
+} from './Model';
+import type { MaxLength } from './MaxLength';
+import {
+    MaxLengthFromJSON,
+    MaxLengthFromJSONTyped,
+    MaxLengthToJSON,
+    MaxLengthToJSONTyped,
+} from './MaxLength';
+
 /**
  * Secure summarization request model.
  * @export
@@ -40,16 +55,16 @@ export interface SecureSummarizationRequest {
     summaryLevel?: string;
     /**
      * 
-     * @type {number}
+     * @type {MaxLength}
      * @memberof SecureSummarizationRequest
      */
-    maxLength?: number | null;
+    maxLength?: MaxLength;
     /**
      * 
-     * @type {string}
+     * @type {Model}
      * @memberof SecureSummarizationRequest
      */
-    model?: string | null;
+    model?: Model;
 }
 
 /**
@@ -74,8 +89,8 @@ export function SecureSummarizationRequestFromJSONTyped(json: any, ignoreDiscrim
         'text': json['text'],
         'contentType': json['content_type'] == null ? undefined : json['content_type'],
         'summaryLevel': json['summary_level'] == null ? undefined : json['summary_level'],
-        'maxLength': json['max_length'] == null ? undefined : json['max_length'],
-        'model': json['model'] == null ? undefined : json['model'],
+        'maxLength': json['max_length'] == null ? undefined : MaxLengthFromJSON(json['max_length']),
+        'model': json['model'] == null ? undefined : ModelFromJSON(json['model']),
     };
 }
 
@@ -94,8 +109,8 @@ export function SecureSummarizationRequestToJSONTyped(value?: SecureSummarizatio
         'text': value['text'],
         'content_type': value['contentType'],
         'summary_level': value['summaryLevel'],
-        'max_length': value['maxLength'],
-        'model': value['model'],
+        'max_length': MaxLengthToJSON(value['maxLength']),
+        'model': ModelToJSON(value['model']),
     };
 }
 

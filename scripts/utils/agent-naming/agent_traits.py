@@ -138,7 +138,9 @@ class AgentTraits:
 
         # Mutate physical traits (rare)
         if random.random() < mutation_rate * 0.5:  # nosec B311
-            trait_to_mutate = random.choice(list(mutated["physical"].keys()))  # nosec B311
+            trait_to_mutate = random.choice(
+                list(mutated["physical"].keys())
+            )  # nosec B311
             options = self.physical_traits[trait_to_mutate]
             mutated["physical"][trait_to_mutate] = random.choice(options)  # nosec B311
 

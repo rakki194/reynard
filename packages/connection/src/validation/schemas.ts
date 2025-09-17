@@ -23,8 +23,7 @@ export const passwordSchema: ValidationSchema = {
   minLength: 8,
   maxLength: 128,
   pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-  errorMessage:
-    "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
+  errorMessage: "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
 };
 
 export const usernameSchema: ValidationSchema = {
@@ -33,8 +32,7 @@ export const usernameSchema: ValidationSchema = {
   minLength: 3,
   maxLength: 30,
   pattern: /^[a-zA-Z0-9_-]+$/,
-  errorMessage:
-    "Username must be 3-30 characters with only letters, numbers, underscores, and hyphens",
+  errorMessage: "Username must be 3-30 characters with only letters, numbers, underscores, and hyphens",
 };
 
 export const urlSchema: ValidationSchema = {
@@ -59,8 +57,7 @@ export const apiKeySchema: ValidationSchema = {
   minLength: 10,
   maxLength: 256,
   pattern: /^[a-zA-Z0-9_-]+$/,
-  errorMessage:
-    "API key must be 10-256 characters with only letters, numbers, underscores, and hyphens",
+  errorMessage: "API key must be 10-256 characters with only letters, numbers, underscores, and hyphens",
 };
 
 export const tokenSchema: ValidationSchema = {
@@ -87,8 +84,7 @@ export const fileNameSchema: ValidationSchema = {
 export const mimeTypeSchema: ValidationSchema = {
   type: "string",
   required: true,
-  pattern:
-    /^[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*\/[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*$/,
+  pattern: /^[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*\/[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*$/,
   errorMessage: "Must be a valid MIME type",
 };
 
@@ -138,8 +134,7 @@ export const modelNameSchema: ValidationSchema = {
   minLength: 1,
   maxLength: 100,
   pattern: /^[a-zA-Z0-9._-]+$/,
-  errorMessage:
-    "Model name must be 1-100 characters with only letters, numbers, dots, underscores, and hyphens",
+  errorMessage: "Model name must be 1-100 characters with only letters, numbers, dots, underscores, and hyphens",
 };
 
 export const promptSchema: ValidationSchema = {
@@ -189,8 +184,7 @@ export const languageSchema: ValidationSchema = {
 export const colorSchema: ValidationSchema = {
   type: "string",
   required: true,
-  pattern:
-    /^#[0-9A-Fa-f]{6}$|^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$|^hsl\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*\)$/,
+  pattern: /^#[0-9A-Fa-f]{6}$|^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$|^hsl\(\s*\d+\s*,\s*\d+%\s*,\s*\d+%\s*\)$/,
   errorMessage: "Color must be a valid hex, RGB, or HSL color",
 };
 
@@ -201,10 +195,7 @@ export const colorSchema: ValidationSchema = {
 /**
  * Create a schema with custom error message
  */
-export function createSchema(
-  baseSchema: ValidationSchema,
-  customErrorMessage?: string,
-): ValidationSchema {
+export function createSchema(baseSchema: ValidationSchema, customErrorMessage?: string): ValidationSchema {
   return {
     ...baseSchema,
     errorMessage: customErrorMessage || baseSchema.errorMessage,
@@ -234,11 +225,7 @@ export function makeRequired(schema: ValidationSchema): ValidationSchema {
 /**
  * Create a schema with custom length constraints
  */
-export function withLength(
-  schema: ValidationSchema,
-  minLength?: number,
-  maxLength?: number,
-): ValidationSchema {
+export function withLength(schema: ValidationSchema, minLength?: number, maxLength?: number): ValidationSchema {
   return {
     ...schema,
     minLength,
@@ -249,11 +236,7 @@ export function withLength(
 /**
  * Create a schema with custom numeric constraints
  */
-export function withRange(
-  schema: ValidationSchema,
-  min?: number,
-  max?: number,
-): ValidationSchema {
+export function withRange(schema: ValidationSchema, min?: number, max?: number): ValidationSchema {
   return {
     ...schema,
     min,

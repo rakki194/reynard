@@ -20,7 +20,7 @@ export function createNLWebHealthChecks(
   state: NLWebState,
   actions: NLWebActions,
   enableHealthChecks: boolean,
-  healthCheckInterval: number,
+  healthCheckInterval: number
 ): NLWebHealthChecks {
   let healthCheckTimer: number | null = null;
 

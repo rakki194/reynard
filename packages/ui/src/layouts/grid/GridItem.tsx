@@ -5,12 +5,9 @@
 
 import { Component, splitProps } from "solid-js";
 import type { GridItemProps } from "./types";
-import {
-  generateGridItemSpanClasses,
-  generateGridItemPositionClasses,
-} from "./utils";
+import { generateGridItemSpanClasses, generateGridItemPositionClasses } from "./utils";
 
-export const GridItem: Component<GridItemProps> = (props) => {
+export const GridItem: Component<GridItemProps> = props => {
   const [local, others] = splitProps(props, [
     "colSpan",
     "rowSpan",
@@ -30,13 +27,7 @@ export const GridItem: Component<GridItemProps> = (props) => {
 
     // Add positioning classes
     classes.push(
-      ...generateGridItemPositionClasses(
-        local.rowSpan,
-        local.colStart,
-        local.colEnd,
-        local.rowStart,
-        local.rowEnd,
-      ),
+      ...generateGridItemPositionClasses(local.rowSpan, local.colStart, local.colEnd, local.rowStart, local.rowEnd)
     );
 
     if (local.class) classes.push(local.class);

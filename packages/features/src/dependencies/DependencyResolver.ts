@@ -5,10 +5,7 @@
  */
 
 import type { FeatureDefinition } from "../core/types.js";
-import {
-  createDependencyResolverCore,
-  DependencyResolverCore,
-} from "./DependencyResolverCore.js";
+import { createDependencyResolverCore, DependencyResolverCore } from "./DependencyResolverCore.js";
 import { getDependencyStats } from "./DependencyResolverStats.js";
 
 /**
@@ -94,15 +91,12 @@ export class DependencyResolver {
     const resolutionOrder: string[] = [];
 
     // Build dependency graph
-    features.forEach((feature) => {
-      dependencyGraph.set(
-        feature.id,
-        (feature.dependencies || []).map((dep) => dep.services).flat(),
-      );
+    features.forEach(feature => {
+      dependencyGraph.set(feature.id, (feature.dependencies || []).map(dep => dep.services).flat());
     });
 
     // Resolve dependencies
-    features.forEach((feature) => {
+    features.forEach(feature => {
       const missingDependencies = this.getMissingDependencies(feature);
       if (missingDependencies.length === 0) {
         resolvable.push(feature);
@@ -130,8 +124,8 @@ export class DependencyResolver {
     const missing: string[] = [];
 
     if (feature.dependencies) {
-      feature.dependencies.forEach((dep) => {
-        dep.services.forEach((service) => {
+      feature.dependencies.forEach(dep => {
+        dep.services.forEach(service => {
           if (!this.isServiceAvailable(service)) {
             missing.push(service);
           }

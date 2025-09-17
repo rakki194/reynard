@@ -5,11 +5,7 @@
  */
 
 import { Component, For } from "solid-js";
-import type {
-  MediaType,
-  GalleryView,
-  FileCounts,
-} from "../types/MultiModalTypes";
+import type { MediaType, GalleryView, FileCounts } from "../types/MultiModalTypes";
 
 interface MultiModalGalleryHeaderProps {
   fileCounts: FileCounts;
@@ -21,9 +17,7 @@ interface MultiModalGalleryHeaderProps {
   isLoading: boolean;
 }
 
-export const MultiModalGalleryHeader: Component<
-  MultiModalGalleryHeaderProps
-> = (props) => {
+export const MultiModalGalleryHeader: Component<MultiModalGalleryHeaderProps> = props => {
   return (
     <div class="gallery-header">
       <div class="gallery-title">

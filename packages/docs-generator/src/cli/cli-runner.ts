@@ -36,15 +36,13 @@ export class ReynardDocsCLI {
 
       // Load configuration
       console.log(`📋 Loading configuration from: ${options.configPath}`);
-      const config = await this.configLoader.loadConfiguration(
-        options.configPath,
-      );
+      const config = await this.configLoader.loadConfiguration(options.configPath);
 
       // Validate configuration
       const validation = validateConfig(config);
       if (!validation.isValid) {
         console.error("❌ Configuration validation failed:");
-        validation.errors.forEach((error) => console.error(`  - ${error}`));
+        validation.errors.forEach(error => console.error(`  - ${error}`));
         process.exit(1);
       }
       console.log("✅ Configuration validated");

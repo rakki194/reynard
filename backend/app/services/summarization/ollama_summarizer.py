@@ -8,9 +8,16 @@ for text summarization with different content types and summary levels.
 import logging
 import time
 import uuid
-from typing import Dict, List, Optional, Any, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Any
 
-from .base import BaseSummarizer, SummarizationResult, SummarizationOptions, ContentType, SummaryLevel
+from .base import (
+    BaseSummarizer,
+    ContentType,
+    SummarizationOptions,
+    SummarizationResult,
+    SummaryLevel,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +25,7 @@ logger = logging.getLogger(__name__)
 class OllamaSummarizer(BaseSummarizer):
     """
     Ollama-based summarizer that integrates with Reynard's Ollama service.
-    
+
     This summarizer uses the existing Ollama service to generate summaries
     for different content types with specialized prompts and configurations.
     """
@@ -38,7 +45,7 @@ class OllamaSummarizer(BaseSummarizer):
                 ContentType.DOCUMENT,
                 ContentType.TECHNICAL,
                 ContentType.GENERAL,
-            ]
+            ],
         )
         self.ollama_service = ollama_service
         self._default_model = "llama3.2:3b"  # Default model for summarization
@@ -56,7 +63,7 @@ class OllamaSummarizer(BaseSummarizer):
                 return False
 
             # Check if Ollama service is available
-            if not hasattr(self.ollama_service, 'chat_stream'):
+            if not hasattr(self.ollama_service, "chat_stream"):
                 logger.error("Ollama service does not support chat_stream")
                 return False
 
@@ -96,7 +103,7 @@ class OllamaSummarizer(BaseSummarizer):
         try:
             # Generate summary using Ollama
             summary_text = await self._generate_summary(text, options)
-            
+
             processing_time = time.time() - start_time
 
             # Create result
@@ -115,18 +122,20 @@ class OllamaSummarizer(BaseSummarizer):
                     "model_used": options.model or self._default_model,
                     "temperature": options.temperature,
                     "top_p": options.top_p,
-                }
+                },
             )
 
             # Add optional fields based on options
             if options.include_outline:
                 result.outline = await self._extract_outline(summary_text)
-            
+
             if options.include_highlights:
                 result.highlights = await self._extract_highlights(text, summary_text)
 
             # Calculate quality score
-            result.quality_score = await self._calculate_quality_score(text, summary_text)
+            result.quality_score = await self._calculate_quality_score(
+                text, summary_text
+            )
 
             return result
 
@@ -136,7 +145,7 @@ class OllamaSummarizer(BaseSummarizer):
 
     async def summarize_stream(
         self, text: str, options: SummarizationOptions
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+    ) -> AsyncGenerator[dict[str, Any]]:
         """
         Stream summarization progress and results.
 
@@ -156,7 +165,7 @@ class OllamaSummarizer(BaseSummarizer):
 
         if not await self.validate_text(text):
             yield {
-                "event": "error", 
+                "event": "error",
                 "data": {"message": "Invalid text for summarization"},
             }
             return
@@ -231,7 +240,7 @@ class OllamaSummarizer(BaseSummarizer):
         # Prepare messages for Ollama
         messages = [
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
+            {"role": "user", "content": user_prompt},
         ]
 
         model = options.model or self._default_model
@@ -244,7 +253,7 @@ class OllamaSummarizer(BaseSummarizer):
             system_prompt=system_prompt,
             temperature=options.temperature,
             top_p=options.top_p,
-            stream=True
+            stream=True,
         ):
             if event.type == "token":
                 summary_text += event.data
@@ -255,7 +264,7 @@ class OllamaSummarizer(BaseSummarizer):
 
     async def _generate_summary_stream(
         self, text: str, options: SummarizationOptions
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+    ) -> AsyncGenerator[dict[str, Any]]:
         """
         Generate summary with streaming support.
 
@@ -278,13 +287,13 @@ class OllamaSummarizer(BaseSummarizer):
             system_prompt=system_prompt,
             temperature=options.temperature,
             top_p=options.top_p,
-            stream=True
+            stream=True,
         ):
             yield {
                 "type": event.type,
                 "data": event.data,
                 "timestamp": event.timestamp,
-                "metadata": event.metadata
+                "metadata": event.metadata,
             }
 
     def _get_prompts(self, text: str, options: SummarizationOptions) -> tuple[str, str]:
@@ -321,8 +330,12 @@ class OllamaSummarizer(BaseSummarizer):
         }
 
         # Build system prompt
-        system_prompt += f"\n\nContent Type: {content_instructions.get(options.content_type, '')}"
-        system_prompt += f"\nSummary Level: {level_instructions.get(options.summary_level, '')}"
+        system_prompt += (
+            f"\n\nContent Type: {content_instructions.get(options.content_type, '')}"
+        )
+        system_prompt += (
+            f"\nSummary Level: {level_instructions.get(options.summary_level, '')}"
+        )
 
         if options.include_outline:
             system_prompt += "\nInclude a structured outline with key points."
@@ -331,14 +344,18 @@ class OllamaSummarizer(BaseSummarizer):
             system_prompt += "\nInclude important highlights and key quotes."
 
         # User prompt
-        user_prompt = f"Please summarize the following {options.content_type.value}:\n\n{text}"
+        user_prompt = (
+            f"Please summarize the following {options.content_type.value}:\n\n{text}"
+        )
 
         if options.max_length:
-            user_prompt += f"\n\nTarget length: approximately {options.max_length} words."
+            user_prompt += (
+                f"\n\nTarget length: approximately {options.max_length} words."
+            )
 
         return system_prompt, user_prompt
 
-    async def _extract_outline(self, summary: str) -> List[str]:
+    async def _extract_outline(self, summary: str) -> list[str]:
         """
         Extract outline points from summary.
 
@@ -349,17 +366,20 @@ class OllamaSummarizer(BaseSummarizer):
             List of outline points
         """
         # Simple outline extraction - split by sentences and filter
-        sentences = summary.split('.')
+        sentences = summary.split(".")
         outline = []
-        
+
         for sentence in sentences:
             sentence = sentence.strip()
-            if len(sentence) > 20 and any(keyword in sentence.lower() for keyword in ['key', 'main', 'important', 'primary', 'major']):
+            if len(sentence) > 20 and any(
+                keyword in sentence.lower()
+                for keyword in ["key", "main", "important", "primary", "major"]
+            ):
                 outline.append(sentence)
-        
+
         return outline[:5]  # Limit to 5 points
 
-    async def _extract_highlights(self, original_text: str, summary: str) -> List[str]:
+    async def _extract_highlights(self, original_text: str, summary: str) -> list[str]:
         """
         Extract highlights from original text based on summary.
 
@@ -372,9 +392,9 @@ class OllamaSummarizer(BaseSummarizer):
         """
         # Simple highlight extraction - find sentences that contain key terms from summary
         summary_words = set(summary.lower().split())
-        sentences = original_text.split('.')
+        sentences = original_text.split(".")
         highlights = []
-        
+
         for sentence in sentences:
             sentence = sentence.strip()
             if len(sentence) > 30:
@@ -382,7 +402,7 @@ class OllamaSummarizer(BaseSummarizer):
                 overlap = len(summary_words.intersection(sentence_words))
                 if overlap >= 3:  # At least 3 words overlap
                     highlights.append(sentence)
-        
+
         return highlights[:3]  # Limit to 3 highlights
 
     async def _calculate_quality_score(self, original_text: str, summary: str) -> float:
@@ -399,15 +419,23 @@ class OllamaSummarizer(BaseSummarizer):
         # Simple quality scoring based on length ratio and word overlap
         original_words = set(original_text.lower().split())
         summary_words = set(summary.lower().split())
-        
+
         # Word overlap ratio
-        overlap_ratio = len(original_words.intersection(summary_words)) / len(original_words) if original_words else 0
-        
+        overlap_ratio = (
+            len(original_words.intersection(summary_words)) / len(original_words)
+            if original_words
+            else 0
+        )
+
         # Length appropriateness (summary should be 10-30% of original)
-        length_ratio = len(summary.split()) / len(original_text.split()) if original_text.split() else 0
+        length_ratio = (
+            len(summary.split()) / len(original_text.split())
+            if original_text.split()
+            else 0
+        )
         length_score = 1.0 - abs(length_ratio - 0.2) / 0.2  # Optimal at 20%
         length_score = max(0.0, min(1.0, length_score))
-        
+
         # Combine scores
-        quality_score = (overlap_ratio * 0.6 + length_score * 0.4)
+        quality_score = overlap_ratio * 0.6 + length_score * 0.4
         return min(1.0, max(0.0, quality_score))

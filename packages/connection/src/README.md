@@ -259,7 +259,7 @@ const wsConfig = {
 const manager = new ConnectionManager();
 const ws = new WebSocketConnection(wsConfig);
 
-manager.addEventHandler((evt) => {
+manager.addEventHandler(evt => {
   // route to telemetry/console/notification system
   if (evt.severity === "error") console.warn("connection error", evt);
 });
@@ -291,7 +291,7 @@ const pool = new WebSocketConnectionPool(
     healthCheckInterval: 30,
     cleanupInterval: 60,
   },
-  wsConfig,
+  wsConfig
 );
 
 await pool.start();

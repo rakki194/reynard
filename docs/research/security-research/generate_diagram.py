@@ -57,7 +57,7 @@ def main():
             print(
                 f"Then run: mmdc -i {args.output} -o {args.output.replace('.mmd', '.svg')}"
             )
-        except IOError as e:
+        except OSError as e:
             print(f"Error saving file {args.output}: {e}", file=sys.stderr)
             sys.exit(1)
     else:

@@ -18,33 +18,22 @@ export type { EnhancedI18nOptions };
 
 // Base module creation
 export function createBaseI18nModule(options: unknown) {
-  const {
-    initialTranslations,
+  const { initialTranslations, enableDebug, enablePerformanceMonitoring, intlConfig, usedNamespaces, preloadLocales } =
+    parseI18nOptions(options);
+
+  const [locale, setLocaleSignal] = createSignal<LanguageCode>("en");
+  const [translations, setTranslationsSignal] = createSignal<Translations>(
+    (initialTranslations as Translations) || ({} as Translations)
+  );
+
+  const translationEngine = createTranslationEngine(locale, translations, setTranslationsSignal, {
     enableDebug,
     enablePerformanceMonitoring,
     intlConfig,
     usedNamespaces,
     preloadLocales,
-  } = parseI18nOptions(options);
-
-  const [locale, setLocaleSignal] = createSignal<LanguageCode>("en");
-  const [translations, setTranslationsSignal] = createSignal<Translations>(
-    (initialTranslations as Translations) || ({} as Translations),
-  );
-
-  const translationEngine = createTranslationEngine(
-    locale,
-    translations,
-    setTranslationsSignal,
-    {
-      enableDebug,
-      enablePerformanceMonitoring,
-      intlConfig,
-      usedNamespaces,
-      preloadLocales,
-      initialTranslations,
-    },
-  );
+    initialTranslations,
+  });
 
   const setLocale = createLocaleManager(setLocaleSignal, translationEngine);
 

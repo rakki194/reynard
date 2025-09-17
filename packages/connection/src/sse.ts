@@ -60,9 +60,7 @@ export class SSEConnection extends BaseConnection {
     try {
       const ok = (await this.isConnected()) || (await this.connect());
       const rt = performance.now() - start;
-      (this as any).setHealth?.(
-        ok ? ConnectionHealth.HEALTHY : ConnectionHealth.UNHEALTHY,
-      );
+      (this as any).setHealth?.(ok ? ConnectionHealth.HEALTHY : ConnectionHealth.UNHEALTHY);
       return {
         connectionId: this.connectionId,
         timestamp: Date.now(),
@@ -88,7 +86,7 @@ export class SSEConnection extends BaseConnection {
 
   protected async receiveImpl(): Promise<unknown> {
     if (!this.es) return null;
-    return await new Promise<unknown>((resolve) => {
+    return await new Promise<unknown>(resolve => {
       const onMessage = (ev: MessageEvent) => {
         this.es?.removeEventListener("message", onMessage as any);
         try {

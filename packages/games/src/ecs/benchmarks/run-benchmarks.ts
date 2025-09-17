@@ -107,8 +107,8 @@ function parseArgs(): BenchmarkArgs {
 function parseEntityCounts(entitiesStr: string): number[] {
   return entitiesStr
     .split(",")
-    .map((s) => parseInt(s.trim(), 10))
-    .filter((n) => !isNaN(n));
+    .map(s => parseInt(s.trim(), 10))
+    .filter(n => !isNaN(n));
 }
 
 /**
@@ -173,10 +173,7 @@ Benchmark Categories:
 /**
  * Runs benchmarks based on the specified category.
  */
-async function runBenchmarkCategory(
-  category: string,
-  config: Partial<BenchmarkConfig>,
-): Promise<BenchmarkResult[]> {
+async function runBenchmarkCategory(category: string, config: Partial<BenchmarkConfig>): Promise<BenchmarkResult[]> {
   switch (category.toLowerCase()) {
     case "entity":
       console.log("🦊> Running Entity Benchmarks...");
@@ -232,9 +229,7 @@ function printResults(results: BenchmarkResult[]): void {
       const entities = result.entityCount.toLocaleString().padStart(8);
       const avgTime = result.averageTimeUs.toFixed(2).padStart(12);
       const opsPerSec = result.operationsPerSecond.toFixed(0).padStart(10);
-      const memory = result.memoryUsageMB
-        ? result.memoryUsageMB.toFixed(2).padStart(10)
-        : "N/A".padStart(10);
+      const memory = result.memoryUsageMB ? result.memoryUsageMB.toFixed(2).padStart(10) : "N/A".padStart(10);
 
       console.log(`  ${entities}  ${avgTime}  ${opsPerSec}  ${memory}`);
     }
@@ -242,14 +237,10 @@ function printResults(results: BenchmarkResult[]): void {
 
   // Performance summary
   console.log("\n⚡ Performance Summary:");
-  const avgTime =
-    results.reduce((sum, r) => sum + r.averageTimeUs, 0) / results.length;
-  const maxTime = Math.max(...results.map((r) => r.averageTimeUs));
-  const minTime = Math.min(...results.map((r) => r.averageTimeUs));
-  const totalMemory = results.reduce(
-    (sum, r) => sum + (r.memoryUsageMB || 0),
-    0,
-  );
+  const avgTime = results.reduce((sum, r) => sum + r.averageTimeUs, 0) / results.length;
+  const maxTime = Math.max(...results.map(r => r.averageTimeUs));
+  const minTime = Math.min(...results.map(r => r.averageTimeUs));
+  const totalMemory = results.reduce((sum, r) => sum + (r.memoryUsageMB || 0), 0);
 
   console.log(`  Average Time: ${avgTime.toFixed(2)}μs`);
   console.log(`  Fastest: ${minTime.toFixed(2)}μs`);
@@ -276,9 +267,7 @@ async function main(): Promise<void> {
   console.log(`Category: ${category}`);
   console.log(`Entity Counts: ${config.entityCounts?.join(", ") || "default"}`);
   console.log(`Iterations: ${config.iterations || "default"}`);
-  console.log(
-    `Memory Tracking: ${config.enableMemoryTracking ? "enabled" : "disabled"}`,
-  );
+  console.log(`Memory Tracking: ${config.enableMemoryTracking ? "enabled" : "disabled"}`);
   console.log("");
 
   try {
@@ -288,9 +277,7 @@ async function main(): Promise<void> {
 
     printResults(results);
 
-    console.log(
-      `\n⏱️  Total benchmark time: ${(endTime - startTime).toFixed(2)}ms`,
-    );
+    console.log(`\n⏱️  Total benchmark time: ${(endTime - startTime).toFixed(2)}ms`);
 
     // Export results if requested
     if (args.export) {
@@ -309,7 +296,7 @@ async function main(): Promise<void> {
 
 // Run the main function if this script is executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main().catch((error) => {
+  main().catch(error => {
     console.error("❌ Fatal error:", error);
     process.exit(1);
   });

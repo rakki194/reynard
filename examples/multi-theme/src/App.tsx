@@ -18,9 +18,7 @@ import { ThemeComparison } from "./components/ThemeComparison";
 import "./styles.css";
 
 const ThemeGallery: Component = () => {
-  const [activeView, setActiveView] = createSignal<
-    "gallery" | "showcase" | "comparison"
-  >("gallery");
+  const [activeView, setActiveView] = createSignal<"gallery" | "showcase" | "comparison">("gallery");
   const { theme, themes, setTheme } = useTheme();
   const { notify } = useNotifications();
 
@@ -74,7 +72,7 @@ const ThemeGallery: Component = () => {
         {activeView() === "gallery" && (
           <div class="themes-grid">
             <For each={themes}>
-              {(themeName) => (
+              {themeName => (
                 <ThemeCard
                   name={themeName}
                   description={getThemeDescription(themeName)}
@@ -93,8 +91,7 @@ const ThemeGallery: Component = () => {
 
       <footer class="gallery-footer">
         <p>
-          Current theme: <strong>{theme()}</strong> •{themes.length} themes
-          available • Built with Reynard framework
+          Current theme: <strong>{theme()}</strong> •{themes.length} themes available • Built with Reynard framework
         </p>
       </footer>
     </div>

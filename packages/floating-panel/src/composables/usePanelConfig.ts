@@ -6,9 +6,7 @@
 
 import type { PanelConfig } from "../types";
 
-export const usePanelConfig = (
-  userConfig?: PanelConfig,
-): Required<PanelConfig> => {
+export const usePanelConfig = (userConfig?: PanelConfig): Required<PanelConfig> => {
   return {
     draggable: true,
     resizable: false,

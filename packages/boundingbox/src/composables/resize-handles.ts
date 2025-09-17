@@ -33,9 +33,7 @@ export interface HandleGenerationOptions {
  * });
  * ```
  */
-export function generateResizeHandles(
-  options: HandleGenerationOptions = {},
-): ResizeHandle[] {
+export function generateResizeHandles(options: HandleGenerationOptions = {}): ResizeHandle[] {
   const {
     minWidth = 10,
     minHeight = 10,
@@ -56,7 +54,7 @@ export function generateResizeHandles(
         maxWidth,
         maxHeight,
         maintainAspectRatio: enableProportionalResizing,
-      }),
+      })
     );
   }
 
@@ -67,7 +65,7 @@ export function generateResizeHandles(
         minHeight,
         maxWidth,
         maxHeight,
-      }),
+      })
     );
   }
 
@@ -156,11 +154,8 @@ function generateEdgeHandles(constraints: {
  * @param id - The handle ID to find
  * @returns The handle if found, undefined otherwise
  */
-export function findResizeHandle(
-  handles: ResizeHandle[],
-  id: string,
-): ResizeHandle | undefined {
-  return handles.find((handle) => handle.id === id);
+export function findResizeHandle(handles: ResizeHandle[], id: string): ResizeHandle | undefined {
+  return handles.find(handle => handle.id === id);
 }
 
 /**
@@ -170,17 +165,12 @@ export function findResizeHandle(
  * @param aspectRatio - The aspect ratio to apply
  * @returns Updated handle with aspect ratio constraint
  */
-export function updateHandleWithAspectRatio(
-  handle: ResizeHandle,
-  aspectRatio: number,
-): ResizeHandle {
+export function updateHandleWithAspectRatio(handle: ResizeHandle, aspectRatio: number): ResizeHandle {
   return {
     ...handle,
     constraints: {
       ...handle.constraints,
-      aspectRatio: handle.constraints.maintainAspectRatio
-        ? aspectRatio
-        : undefined,
+      aspectRatio: handle.constraints.maintainAspectRatio ? aspectRatio : undefined,
     },
   };
 }

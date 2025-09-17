@@ -9,14 +9,11 @@ import { useDraggableResizable } from "../composables/useDraggableResizable.js";
 import type { FloatingPanelProps } from "../types.js";
 import { useI18n } from "reynard-i18n";
 import { createAdvancedConfig } from "./advanced/FloatingPanelAdvancedConfig.js";
-import {
-  createAdvancedState,
-  createAdvancedConstraints,
-} from "./advanced/FloatingPanelAdvancedState.js";
+import { createAdvancedState, createAdvancedConstraints } from "./advanced/FloatingPanelAdvancedState.js";
 import { createAdvancedHandlers } from "./advanced/FloatingPanelAdvancedHandlers.js";
 import "./FloatingPanelAdvanced.css";
 
-export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
+export const FloatingPanelAdvanced: Component<FloatingPanelProps> = props => {
   const { t } = useI18n();
   console.log("🦦> FloatingPanelAdvanced rendering for panel:", props.id);
 
@@ -40,15 +37,9 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
   createEffect(() => {
     const element = panel.ref();
     if (element) {
-      element.style.setProperty(
-        "--animation-duration",
-        `${config.animationDuration}ms`,
-      );
+      element.style.setProperty("--animation-duration", `${config.animationDuration}ms`);
       element.style.setProperty("--animation-easing", config.animationEasing);
-      element.style.setProperty(
-        "--animation-delay",
-        `${config.animationDelay}ms`,
-      );
+      element.style.setProperty("--animation-delay", `${config.animationDelay}ms`);
     }
   });
 
@@ -70,17 +61,11 @@ export const FloatingPanelAdvanced: Component<FloatingPanelProps> = (props) => {
         <div class="floating-panel-header">
           <div class="floating-panel-drag-handle">
             <span>{getIcon("GripVertical")}</span>
-            <h3 class="floating-panel-title">
-              {props.title || `Panel ${props.id}`}
-            </h3>
+            <h3 class="floating-panel-title">{props.title || `Panel ${props.id}`}</h3>
           </div>
           <div class="floating-panel-controls">
             {config.closable && (
-              <button
-                class="floating-panel-control-btn"
-                onClick={handlers.handleHide}
-                title={t("floatingPanel.close")}
-              >
+              <button class="floating-panel-control-btn" onClick={handlers.handleHide} title={t("floatingPanel.close")}>
                 {getIcon("Dismiss")}
               </button>
             )}

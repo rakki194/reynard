@@ -85,11 +85,9 @@ export class NodeMemoryTracker {
 
     if (this.config.enableDetailedLogging) {
       console.log("🔍 Memory tracking started");
+      console.log(`   Initial RSS: ${this.formatBytes(this.initialMemory.rss)}`);
       console.log(
-        `   Initial RSS: ${this.formatBytes(this.initialMemory.rss)}`,
-      );
-      console.log(
-        `   Initial Heap: ${this.formatBytes(this.initialMemory.heapUsed)}/${this.formatBytes(this.initialMemory.heapTotal)}`,
+        `   Initial Heap: ${this.formatBytes(this.initialMemory.heapUsed)}/${this.formatBytes(this.initialMemory.heapTotal)}`
       );
     }
   }
@@ -122,12 +120,7 @@ export class NodeMemoryTracker {
    * Stops memory tracking and returns final statistics.
    */
   stop(): MemoryStats {
-    if (
-      !this.isTracking ||
-      !this.initialMemory ||
-      !this.currentMemory ||
-      !this.peakMemory
-    ) {
+    if (!this.isTracking || !this.initialMemory || !this.currentMemory || !this.peakMemory) {
       throw new Error("Memory tracking not started");
     }
 
@@ -140,8 +133,7 @@ export class NodeMemoryTracker {
       heapTotal: this.currentMemory.heapTotal - this.initialMemory.heapTotal,
       heapUsed: this.currentMemory.heapUsed - this.initialMemory.heapUsed,
       external: this.currentMemory.external - this.initialMemory.external,
-      arrayBuffers:
-        this.currentMemory.arrayBuffers - this.initialMemory.arrayBuffers,
+      arrayBuffers: this.currentMemory.arrayBuffers - this.initialMemory.arrayBuffers,
     };
 
     const memoryDeltaMB: NodeMemoryUsage = {
@@ -213,12 +205,8 @@ export class NodeMemoryTracker {
     const deltaMB = delta / (1024 * 1024);
 
     console.log(`📊 Memory Update #${this.sampleCount}:`);
-    console.log(
-      `   Heap Delta: ${deltaMB > 0 ? "+" : ""}${deltaMB.toFixed(2)} MB`,
-    );
-    console.log(
-      `   Current Heap: ${this.formatBytes(this.currentMemory.heapUsed)}`,
-    );
+    console.log(`   Heap Delta: ${deltaMB > 0 ? "+" : ""}${deltaMB.toFixed(2)} MB`);
+    console.log(`   Current Heap: ${this.formatBytes(this.currentMemory.heapUsed)}`);
   }
 
   /**
@@ -232,26 +220,22 @@ export class NodeMemoryTracker {
     console.log("");
 
     console.log("Memory Delta:");
+    console.log(`  RSS: ${stats.memoryDeltaMB.rss > 0 ? "+" : ""}${stats.memoryDeltaMB.rss.toFixed(2)} MB`);
     console.log(
-      `  RSS: ${stats.memoryDeltaMB.rss > 0 ? "+" : ""}${stats.memoryDeltaMB.rss.toFixed(2)} MB`,
+      `  Heap Used: ${stats.memoryDeltaMB.heapUsed > 0 ? "+" : ""}${stats.memoryDeltaMB.heapUsed.toFixed(2)} MB`
     );
     console.log(
-      `  Heap Used: ${stats.memoryDeltaMB.heapUsed > 0 ? "+" : ""}${stats.memoryDeltaMB.heapUsed.toFixed(2)} MB`,
+      `  Heap Total: ${stats.memoryDeltaMB.heapTotal > 0 ? "+" : ""}${stats.memoryDeltaMB.heapTotal.toFixed(2)} MB`
     );
     console.log(
-      `  Heap Total: ${stats.memoryDeltaMB.heapTotal > 0 ? "+" : ""}${stats.memoryDeltaMB.heapTotal.toFixed(2)} MB`,
-    );
-    console.log(
-      `  External: ${stats.memoryDeltaMB.external > 0 ? "+" : ""}${stats.memoryDeltaMB.external.toFixed(2)} MB`,
+      `  External: ${stats.memoryDeltaMB.external > 0 ? "+" : ""}${stats.memoryDeltaMB.external.toFixed(2)} MB`
     );
     console.log("");
 
     console.log("Peak Memory:");
     console.log(`  RSS: ${this.formatBytes(stats.peakMemory.rss)}`);
     console.log(`  Heap Used: ${this.formatBytes(stats.peakMemory.heapUsed)}`);
-    console.log(
-      `  Heap Total: ${this.formatBytes(stats.peakMemory.heapTotal)}`,
-    );
+    console.log(`  Heap Total: ${this.formatBytes(stats.peakMemory.heapTotal)}`);
 
     if (this.gcStats.length > 0) {
       console.log(`\nGarbage Collection Events: ${this.gcStats.length}`);
@@ -278,9 +262,7 @@ export class NodeMemoryTracker {
    */
   getMemoryUsageMB(): number {
     if (!this.currentMemory || !this.initialMemory) return 0;
-    const usage =
-      (this.currentMemory.heapUsed - this.initialMemory.heapUsed) /
-      (1024 * 1024);
+    const usage = (this.currentMemory.heapUsed - this.initialMemory.heapUsed) / (1024 * 1024);
     // Ensure we never return negative values (garbage collection can cause this)
     return Math.max(0, usage);
   }
@@ -290,8 +272,7 @@ export class NodeMemoryTracker {
    */
   getPeakMemoryUsageMB(): number {
     if (!this.peakMemory || !this.initialMemory) return 0;
-    const usage =
-      (this.peakMemory.heapUsed - this.initialMemory.heapUsed) / (1024 * 1024);
+    const usage = (this.peakMemory.heapUsed - this.initialMemory.heapUsed) / (1024 * 1024);
     // Ensure we never return negative values
     return Math.max(0, usage);
   }
@@ -313,9 +294,7 @@ export class NodeMemoryTracker {
         console.log("🗑️  Forced garbage collection");
       }
     } else {
-      console.warn(
-        "⚠️  Garbage collection not available (use --expose-gc flag)",
-      );
+      console.warn("⚠️  Garbage collection not available (use --expose-gc flag)");
     }
   }
 
@@ -330,9 +309,7 @@ export class NodeMemoryTracker {
 /**
  * Creates a new Node.js memory tracker.
  */
-export function createNodeMemoryTracker(
-  config?: Partial<MemoryTrackerConfig>,
-): NodeMemoryTracker {
+export function createNodeMemoryTracker(config?: Partial<MemoryTrackerConfig>): NodeMemoryTracker {
   return new NodeMemoryTracker(config);
 }
 

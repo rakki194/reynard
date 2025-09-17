@@ -54,7 +54,7 @@ describe("i18n testing utilities", () => {
 
       expect(results).toHaveLength(3);
       // Check that all expected strings are found (order may vary)
-      const texts = results.map((r) => r.text);
+      const texts = results.map(r => r.text);
       expect(texts).toContain("Enter your name");
       expect(texts).toContain("Profile picture");
       expect(texts).toContain("placeholder");
@@ -116,12 +116,12 @@ describe("i18n testing utilities", () => {
       expect(results).toHaveLength(2);
 
       // Check that results exist for each locale
-      const locales = results.map((r) => r.locale);
+      const locales = results.map(r => r.locale);
       expect(locales).toContain("en");
       expect(locales).toContain("es");
 
       // Check that each result has the expected structure
-      results.forEach((result) => {
+      results.forEach(result => {
         expect(result).toHaveProperty("missingKeys");
         expect(result).toHaveProperty("unusedKeys");
         expect(result).toHaveProperty("incompleteTranslations");
@@ -136,7 +136,7 @@ describe("i18n testing utilities", () => {
       expect(results).toHaveLength(2);
 
       // Check that each result has the expected structure
-      results.forEach((result) => {
+      results.forEach(result => {
         expect(result).toHaveProperty("unusedKeys");
         expect(Array.isArray(result.unusedKeys)).toBe(true);
       });
@@ -149,7 +149,7 @@ describe("i18n testing utilities", () => {
       expect(results).toHaveLength(2);
 
       // Check that each result has the expected structure
-      results.forEach((result) => {
+      results.forEach(result => {
         expect(result).toHaveProperty("incompleteTranslations");
         expect(Array.isArray(result.incompleteTranslations)).toBe(true);
       });
@@ -192,9 +192,7 @@ describe("i18n testing utilities", () => {
       const endTime = performance.now();
 
       expect(result.performanceMetrics.loadTime).toBeGreaterThan(0);
-      expect(result.performanceMetrics.loadTime).toBeLessThan(
-        endTime - startTime + 100,
-      );
+      expect(result.performanceMetrics.loadTime).toBeLessThan(endTime - startTime + 100);
     });
   });
 

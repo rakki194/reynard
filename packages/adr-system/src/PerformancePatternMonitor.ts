@@ -84,10 +84,7 @@ export class PerformancePatternMonitor extends EventEmitter {
   private readonly metricHistory: Map<string, PerformanceMetric[]> = new Map();
   private readonly activeAlerts: Map<string, PerformanceAlert> = new Map();
   private readonly baselines: Map<string, PerformanceBaseline> = new Map();
-  private readonly alertThresholds: Map<
-    string,
-    { warning: number; critical: number }
-  > = new Map();
+  private readonly alertThresholds: Map<string, { warning: number; critical: number }> = new Map();
   private monitoringActive: boolean = false;
   private monitoringTimer?: NodeJS.Timeout;
 
@@ -169,13 +166,9 @@ export class PerformancePatternMonitor extends EventEmitter {
   /**
    * Get performance metrics for a specific time range
    */
-  getMetricsInRange(
-    metricName: string,
-    startDate: Date,
-    endDate: Date,
-  ): PerformanceMetric[] {
+  getMetricsInRange(metricName: string, startDate: Date, endDate: Date): PerformanceMetric[] {
     const history = this.metricHistory.get(metricName) || [];
-    return history.filter((metric) => {
+    return history.filter(metric => {
       const metricDate = new Date(metric.timestamp);
       return metricDate >= startDate && metricDate <= endDate;
     });
@@ -185,9 +178,7 @@ export class PerformancePatternMonitor extends EventEmitter {
    * Get active performance alerts
    */
   getActiveAlerts(): PerformanceAlert[] {
-    return Array.from(this.activeAlerts.values()).filter(
-      (alert) => !alert.resolved,
-    );
+    return Array.from(this.activeAlerts.values()).filter(alert => !alert.resolved);
   }
 
   /**
@@ -211,11 +202,7 @@ export class PerformancePatternMonitor extends EventEmitter {
   /**
    * Set performance alert threshold
    */
-  setAlertThreshold(
-    metricName: string,
-    warning: number,
-    critical: number,
-  ): void {
+  setAlertThreshold(metricName: string, warning: number, critical: number): void {
     this.alertThresholds.set(metricName, { warning, critical });
   }
 
@@ -229,8 +216,7 @@ export class PerformancePatternMonitor extends EventEmitter {
     if (existing) {
       // Update existing baseline
       const newSampleSize = existing.sampleSize + 1;
-      const newMean =
-        (existing.baselineValue * existing.sampleSize + value) / newSampleSize;
+      const newMean = (existing.baselineValue * existing.sampleSize + value) / newSampleSize;
 
       // Calculate new standard deviation
       const variance =
@@ -263,10 +249,7 @@ export class PerformancePatternMonitor extends EventEmitter {
   /**
    * Detect performance regression
    */
-  detectPerformanceRegression(
-    metricName: string,
-    currentValue: number,
-  ): boolean {
+  detectPerformanceRegression(metricName: string, currentValue: number): boolean {
     const baseline = this.baselines.get(metricName);
     if (!baseline) return false;
 
@@ -288,8 +271,7 @@ export class PerformancePatternMonitor extends EventEmitter {
     console.log("🐺 Performing initial performance analysis...");
 
     try {
-      const performanceReport =
-        await this.performanceDetector.analyzePerformancePatterns();
+      const performanceReport = await this.performanceDetector.analyzePerformancePatterns();
 
       // Create initial metrics
       await this.createInitialMetrics(performanceReport);
@@ -370,8 +352,7 @@ export class PerformancePatternMonitor extends EventEmitter {
 
     try {
       // Analyze CPU-intensive operations
-      const performanceReport =
-        await this.performanceDetector.analyzePerformancePatterns();
+      const performanceReport = await this.performanceDetector.analyzePerformancePatterns();
 
       // Calculate CPU performance score
       const cpuScore = this.calculateCPUScore(performanceReport);
@@ -394,8 +375,7 @@ export class PerformancePatternMonitor extends EventEmitter {
       });
 
       // Count CPU-intensive operations
-      const cpuIntensiveOps =
-        performanceReport.issuesByType["inefficient-algorithm"] || 0;
+      const cpuIntensiveOps = performanceReport.issuesByType["inefficient-algorithm"] || 0;
 
       metrics.push({
         name: "cpu-intensive-operations",
@@ -425,8 +405,7 @@ export class PerformancePatternMonitor extends EventEmitter {
 
     try {
       // Analyze memory usage patterns
-      const performanceReport =
-        await this.performanceDetector.analyzePerformancePatterns();
+      const performanceReport = await this.performanceDetector.analyzePerformancePatterns();
 
       // Calculate memory performance score
       const memoryScore = this.calculateMemoryScore(performanceReport);
@@ -479,8 +458,7 @@ export class PerformancePatternMonitor extends EventEmitter {
 
     try {
       // Analyze I/O performance
-      const performanceReport =
-        await this.performanceDetector.analyzePerformancePatterns();
+      const performanceReport = await this.performanceDetector.analyzePerformancePatterns();
 
       // Calculate I/O performance score
       const ioScore = this.calculateIOScore(performanceReport);
@@ -518,8 +496,7 @@ export class PerformancePatternMonitor extends EventEmitter {
         trend: this.calculateTrend("synchronous-io-operations", syncIOOps),
         metadata: {
           description: "Number of synchronous I/O operations detected",
-          impact:
-            "Synchronous I/O can block the event loop and degrade performance",
+          impact: "Synchronous I/O can block the event loop and degrade performance",
         },
       });
     } catch (error) {
@@ -567,8 +544,7 @@ export class PerformancePatternMonitor extends EventEmitter {
         trend: this.calculateTrend("network-throughput", networkThroughput),
         metadata: {
           description: "Network throughput",
-          impact:
-            "Low throughput can cause slow data transfer and poor user experience",
+          impact: "Low throughput can cause slow data transfer and poor user experience",
         },
       });
     } catch (error) {
@@ -599,8 +575,7 @@ export class PerformancePatternMonitor extends EventEmitter {
         trend: this.calculateTrend("database-query-time", dbQueryTime),
         metadata: {
           description: "Average database query time",
-          impact:
-            "Slow queries affect application performance and user experience",
+          impact: "Slow queries affect application performance and user experience",
         },
       });
 
@@ -614,14 +589,10 @@ export class PerformancePatternMonitor extends EventEmitter {
           warning: 80,
           critical: 95,
         },
-        trend: this.calculateTrend(
-          "database-connection-pool",
-          dbConnectionPool,
-        ),
+        trend: this.calculateTrend("database-connection-pool", dbConnectionPool),
         metadata: {
           description: "Database connection pool utilization",
-          impact:
-            "High utilization can cause connection timeouts and performance issues",
+          impact: "High utilization can cause connection timeouts and performance issues",
         },
       });
     } catch (error) {
@@ -669,8 +640,7 @@ export class PerformancePatternMonitor extends EventEmitter {
         trend: this.calculateTrend("frame-rate", frameRate),
         metadata: {
           description: "Average frame rate",
-          impact:
-            "Low frame rate causes choppy animations and poor user experience",
+          impact: "Low frame rate causes choppy animations and poor user experience",
         },
       });
     } catch (error) {
@@ -680,9 +650,7 @@ export class PerformancePatternMonitor extends EventEmitter {
     return metrics;
   }
 
-  private async checkThresholdViolations(
-    metrics: PerformanceMetric[],
-  ): Promise<void> {
+  private async checkThresholdViolations(metrics: PerformanceMetric[]): Promise<void> {
     for (const metric of metrics) {
       const threshold = this.alertThresholds.get(metric.name);
       if (!threshold) continue;
@@ -707,18 +675,9 @@ export class PerformancePatternMonitor extends EventEmitter {
           metric,
           data: { threshold, currentValue: metric.value },
           actions: {
-            immediate: [
-              "Investigate the performance issue",
-              "Check system resources",
-            ],
-            shortTerm: [
-              "Optimize the problematic code",
-              "Add performance monitoring",
-            ],
-            longTerm: [
-              "Implement performance testing",
-              "Set up continuous monitoring",
-            ],
+            immediate: ["Investigate the performance issue", "Check system resources"],
+            shortTerm: ["Optimize the problematic code", "Add performance monitoring"],
+            longTerm: ["Implement performance testing", "Set up continuous monitoring"],
           },
           resolved: false,
         };
@@ -729,9 +688,7 @@ export class PerformancePatternMonitor extends EventEmitter {
     }
   }
 
-  private async checkPerformanceRegressions(
-    metrics: PerformanceMetric[],
-  ): Promise<void> {
+  private async checkPerformanceRegressions(metrics: PerformanceMetric[]): Promise<void> {
     for (const metric of metrics) {
       if (this.detectPerformanceRegression(metric.name, metric.value)) {
         const alert: PerformanceAlert = {
@@ -748,18 +705,9 @@ export class PerformancePatternMonitor extends EventEmitter {
             currentValue: metric.value,
           },
           actions: {
-            immediate: [
-              "Investigate recent changes",
-              "Check for performance regressions",
-            ],
-            shortTerm: [
-              "Revert problematic changes",
-              "Optimize performance bottlenecks",
-            ],
-            longTerm: [
-              "Implement performance regression testing",
-              "Add performance benchmarks",
-            ],
+            immediate: ["Investigate recent changes", "Check for performance regressions"],
+            shortTerm: ["Revert problematic changes", "Optimize performance bottlenecks"],
+            longTerm: ["Implement performance regression testing", "Add performance benchmarks"],
           },
           resolved: false,
         };
@@ -770,16 +718,12 @@ export class PerformancePatternMonitor extends EventEmitter {
     }
   }
 
-  private calculateTrend(
-    metricName: string,
-    currentValue: number,
-  ): "improving" | "declining" | "stable" {
+  private calculateTrend(metricName: string, currentValue: number): "improving" | "declining" | "stable" {
     const history = this.metricHistory.get(metricName) || [];
     if (history.length < 2) return "stable";
 
     const recent = history.slice(-5); // Last 5 measurements
-    const average =
-      recent.reduce((sum, metric) => sum + metric.value, 0) / recent.length;
+    const average = recent.reduce((sum, metric) => sum + metric.value, 0) / recent.length;
 
     const difference = currentValue - average;
     const threshold = 5; // 5% change threshold
@@ -802,7 +746,7 @@ export class PerformancePatternMonitor extends EventEmitter {
     // Calculate trends for each category
     for (const [metricName, history] of this.metricHistory) {
       const recentHistory = history.slice(-24); // Last 24 measurements
-      const values = recentHistory.map((metric) => metric.value);
+      const values = recentHistory.map(metric => metric.value);
 
       if (metricName.includes("cpu")) {
         trends.cpu.push(...values);
@@ -824,7 +768,7 @@ export class PerformancePatternMonitor extends EventEmitter {
 
   private getTopIssues(): PerformanceAlert[] {
     return Array.from(this.activeAlerts.values())
-      .filter((alert) => !alert.resolved)
+      .filter(alert => !alert.resolved)
       .sort((a, b) => {
         const severityOrder = { critical: 4, high: 3, medium: 2, low: 1 };
         return severityOrder[b.severity] - severityOrder[a.severity];
@@ -837,18 +781,12 @@ export class PerformancePatternMonitor extends EventEmitter {
     const activeAlerts = this.getActiveAlerts();
 
     if (activeAlerts.length > 0) {
-      recommendations.push(
-        `🚨 Address ${activeAlerts.length} active performance alerts`,
-      );
+      recommendations.push(`🚨 Address ${activeAlerts.length} active performance alerts`);
     }
 
-    const criticalAlerts = activeAlerts.filter(
-      (alert) => alert.severity === "critical",
-    ).length;
+    const criticalAlerts = activeAlerts.filter(alert => alert.severity === "critical").length;
     if (criticalAlerts > 0) {
-      recommendations.push(
-        `⚠️ Fix ${criticalAlerts} critical performance issues`,
-      );
+      recommendations.push(`⚠️ Fix ${criticalAlerts} critical performance issues`);
     }
 
     recommendations.push("📊 Monitor performance trends and patterns");
@@ -908,8 +846,7 @@ export class PerformancePatternMonitor extends EventEmitter {
   // Helper methods for metric calculation
   private calculateCPUScore(performanceReport: any): number {
     const totalIssues = performanceReport.totalIssues || 0;
-    const cpuIssues =
-      performanceReport.issuesByType["inefficient-algorithm"] || 0;
+    const cpuIssues = performanceReport.issuesByType["inefficient-algorithm"] || 0;
     return Math.max(0, 100 - cpuIssues * 10 - totalIssues * 2);
   }
 

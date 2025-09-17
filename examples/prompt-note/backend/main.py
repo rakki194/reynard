@@ -4,34 +4,27 @@ Reynard Basic Backend Example
 Modular FastAPI server demonstrating uvicorn reload best practices
 """
 
-import asyncio
 import os
 import time
 from contextlib import asynccontextmanager
-from typing import Any, Dict, Optional
 
 from config import UvicornConfig
 from database import DatabaseService
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from gatekeeper_config import (
     close_auth_manager,
-    get_auth_manager,
     initialize_auth_manager,
 )
 from logging_config import (
     get_app_logger,
-    get_database_logger,
-    get_route_logger,
-    get_service_logger,
     setup_logging,
 )
-from pydantic import BaseModel
-from routes import health, users, notebooks, notes
-from services import BackgroundService, CacheService
+from routes import health, notebooks, notes, users
 
 from gatekeeper.api.dependencies import set_auth_manager
 from gatekeeper.api.routes import create_auth_router
+from services import BackgroundService, CacheService
 
 # Setup professional logging first
 setup_logging()
@@ -41,9 +34,9 @@ logger = get_app_logger()
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
 
 # Global services
-database_service: Optional[DatabaseService] = None
-cache_service: Optional[CacheService] = None
-background_service: Optional[BackgroundService] = None
+database_service: DatabaseService | None = None
+cache_service: CacheService | None = None
+background_service: BackgroundService | None = None
 
 
 @asynccontextmanager
@@ -255,5 +248,5 @@ if __name__ == "__main__":
         log_level=config.log_level,
         access_log=config.access_log,
         use_colors=config.use_colors,
-        log_config="log_conf.yaml" if os.path.exists("log_conf.yaml") else None
+        log_config="log_conf.yaml" if os.path.exists("log_conf.yaml") else None,
     )

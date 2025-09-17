@@ -185,21 +185,31 @@ class ChangelogScanner:
 
         # Organize results
         self.results = {
-            "monoliths": results[0]
-            if not isinstance(results[0], Exception)
-            else {"error": str(results[0])},
-            "development_tools": results[1]
-            if not isinstance(results[1], Exception)
-            else {"error": str(results[1])},
-            "mcp_tools": results[2]
-            if not isinstance(results[2], Exception)
-            else {"error": str(results[2])},
-            "validation_tools": results[3]
-            if not isinstance(results[3], Exception)
-            else {"error": str(results[3])},
-            "code_metrics": results[4]
-            if not isinstance(results[4], Exception)
-            else {"error": str(results[4])},
+            "monoliths": (
+                results[0]
+                if not isinstance(results[0], Exception)
+                else {"error": str(results[0])}
+            ),
+            "development_tools": (
+                results[1]
+                if not isinstance(results[1], Exception)
+                else {"error": str(results[1])}
+            ),
+            "mcp_tools": (
+                results[2]
+                if not isinstance(results[2], Exception)
+                else {"error": str(results[2])}
+            ),
+            "validation_tools": (
+                results[3]
+                if not isinstance(results[3], Exception)
+                else {"error": str(results[3])}
+            ),
+            "code_metrics": (
+                results[4]
+                if not isinstance(results[4], Exception)
+                else {"error": str(results[4])}
+            ),
         }
 
         return self.results

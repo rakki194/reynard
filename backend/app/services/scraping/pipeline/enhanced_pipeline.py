@@ -6,13 +6,13 @@ through multiple stages including cleaning, deduplication, quality scoring,
 and categorization.
 """
 
-import logging
 import hashlib
+import logging
 import re
-from typing import Any
 from datetime import datetime
+from typing import Any
 
-from ..models import ScrapingResult, ScrapingPipelineStage
+from ..models import ScrapingResult
 
 
 class EnhancedContentPipeline:
@@ -76,7 +76,9 @@ class EnhancedContentPipeline:
 
             # Update category statistics
             category = result.metadata.get("category", "unknown")
-            self.processing_stats["categories"][category] = self.processing_stats["categories"].get(category, 0) + 1
+            self.processing_stats["categories"][category] = (
+                self.processing_stats["categories"].get(category, 0) + 1
+            )
 
             self.logger.info(f"Content processing completed for {result.url}")
             return result
@@ -92,34 +94,34 @@ class EnhancedContentPipeline:
             content = result.content
 
             # Remove HTML tags if present
-            content = re.sub(r'<[^>]+>', '', content)
+            content = re.sub(r"<[^>]+>", "", content)
 
             # Remove excessive whitespace
-            content = re.sub(r'\s+', ' ', content)
+            content = re.sub(r"\s+", " ", content)
 
             # Remove common unwanted patterns
             unwanted_patterns = [
-                r'Advertisement',
-                r'Subscribe to.*?newsletter',
-                r'Follow us on.*?social media',
-                r'Share this.*?article',
-                r'Read more.*?stories',
-                r'Related.*?articles',
-                r'You may also like',
-                r'Recommended for you',
-                r'Sponsored content',
-                r'This content is sponsored',
+                r"Advertisement",
+                r"Subscribe to.*?newsletter",
+                r"Follow us on.*?social media",
+                r"Share this.*?article",
+                r"Read more.*?stories",
+                r"Related.*?articles",
+                r"You may also like",
+                r"Recommended for you",
+                r"Sponsored content",
+                r"This content is sponsored",
             ]
 
             for pattern in unwanted_patterns:
-                content = re.sub(pattern, '', content, flags=re.IGNORECASE)
+                content = re.sub(pattern, "", content, flags=re.IGNORECASE)
 
             # Remove URLs (but keep the original URL in metadata)
-            content = re.sub(r'https?://[^\s]+', '', content)
+            content = re.sub(r"https?://[^\s]+", "", content)
 
             # Clean up title
             title = result.title
-            title = re.sub(r'\s+', ' ', title)
+            title = re.sub(r"\s+", " ", title)
             title = title.strip()
 
             # Update result
@@ -147,7 +149,9 @@ class EnhancedContentPipeline:
             if content_hash in self.content_fingerprints:
                 result.metadata["is_duplicate"] = True
                 result.metadata["duplicate_hash"] = content_hash
-                result.quality["score"] = result.quality.get("score", 0) * 0.5  # Reduce quality for duplicates
+                result.quality["score"] = (
+                    result.quality.get("score", 0) * 0.5
+                )  # Reduce quality for duplicates
                 self.logger.info(f"Duplicate content detected for {result.url}")
             else:
                 result.metadata["is_duplicate"] = False
@@ -167,8 +171,8 @@ class EnhancedContentPipeline:
         fingerprint_data = f"{result.title}|{result.content}"
 
         # Normalize for fingerprinting
-        fingerprint_data = re.sub(r'\s+', ' ', fingerprint_data.lower())
-        fingerprint_data = re.sub(r'[^\w\s]', '', fingerprint_data)
+        fingerprint_data = re.sub(r"\s+", " ", fingerprint_data.lower())
+        fingerprint_data = re.sub(r"[^\w\s]", "", fingerprint_data)
 
         # Create hash
         return hashlib.md5(fingerprint_data.encode()).hexdigest()
@@ -216,7 +220,7 @@ class EnhancedContentPipeline:
             quality_factors["metadata_completeness_score"] = metadata_score
 
             # Readability factor (simple word/sentence ratio)
-            sentences = re.split(r'[.!?]+', result.content)
+            sentences = re.split(r"[.!?]+", result.content)
             words = result.content.split()
 
             if len(sentences) > 0 and len(words) > 0:
@@ -240,7 +244,9 @@ class EnhancedContentPipeline:
 
             # Weight the scores
             weights = [0.3, 0.2, 0.2, 0.3]
-            overall_score = sum(score * weight for score, weight in zip(scores, weights))
+            overall_score = sum(
+                score * weight for score, weight in zip(scores, weights, strict=False)
+            )
 
             # Apply duplicate penalty
             if result.metadata.get("is_duplicate"):
@@ -264,7 +270,10 @@ class EnhancedContentPipeline:
 
             # Analyze URL for category hints
             url = result.url.lower()
-            if any(domain in url for domain in ["github.com", "gitlab.com", "bitbucket.org"]):
+            if any(
+                domain in url
+                for domain in ["github.com", "gitlab.com", "bitbucket.org"]
+            ):
                 category = "development"
                 confidence = 0.9
             elif any(domain in url for domain in ["wikipedia.org", "wikimedia.org"]):
@@ -276,7 +285,9 @@ class EnhancedContentPipeline:
             elif any(domain in url for domain in ["news.ycombinator.com"]):
                 category = "tech_news"
                 confidence = 0.8
-            elif any(domain in url for domain in ["stackoverflow.com", "stackexchange.com"]):
+            elif any(
+                domain in url for domain in ["stackoverflow.com", "stackexchange.com"]
+            ):
                 category = "programming_qa"
                 confidence = 0.9
 
@@ -285,21 +296,44 @@ class EnhancedContentPipeline:
             title = result.title.lower()
 
             # Programming/Development keywords
-            dev_keywords = ["code", "programming", "software", "development", "api", "function", "class", "variable"]
+            dev_keywords = [
+                "code",
+                "programming",
+                "software",
+                "development",
+                "api",
+                "function",
+                "class",
+                "variable",
+            ]
             if any(keyword in content or keyword in title for keyword in dev_keywords):
                 if category == "general":
                     category = "development"
                     confidence = 0.7
 
             # News keywords
-            news_keywords = ["news", "breaking", "report", "announces", "launches", "releases"]
+            news_keywords = [
+                "news",
+                "breaking",
+                "report",
+                "announces",
+                "launches",
+                "releases",
+            ]
             if any(keyword in content or keyword in title for keyword in news_keywords):
                 if category == "general":
                     category = "news"
                     confidence = 0.7
 
             # Technical keywords
-            tech_keywords = ["technology", "tech", "innovation", "startup", "ai", "machine learning"]
+            tech_keywords = [
+                "technology",
+                "tech",
+                "innovation",
+                "startup",
+                "ai",
+                "machine learning",
+            ]
             if any(keyword in content or keyword in title for keyword in tech_keywords):
                 if category == "general":
                     category = "technology"
@@ -324,7 +358,7 @@ class EnhancedContentPipeline:
             # Add content statistics
             result.metadata["word_count"] = len(result.content.split())
             result.metadata["character_count"] = len(result.content)
-            result.metadata["sentence_count"] = len(re.split(r'[.!?]+', result.content))
+            result.metadata["sentence_count"] = len(re.split(r"[.!?]+", result.content))
 
             # Add processing pipeline information
             result.metadata["pipeline_version"] = "1.0"
@@ -333,7 +367,7 @@ class EnhancedContentPipeline:
                 "deduplication",
                 "quality_assessment",
                 "categorization",
-                "enrichment"
+                "enrichment",
             ]
 
             # Add quality summary
@@ -362,7 +396,8 @@ class EnhancedContentPipeline:
             "total_processed": self.processing_stats["total_processed"],
             "duplicates_found": self.processing_stats["duplicates_found"],
             "duplicate_rate": (
-                self.processing_stats["duplicates_found"] / max(self.processing_stats["total_processed"], 1)
+                self.processing_stats["duplicates_found"]
+                / max(self.processing_stats["total_processed"], 1)
             ),
             "categories": self.processing_stats["categories"],
             "unique_content_fingerprints": len(self.content_fingerprints),
@@ -374,7 +409,9 @@ class EnhancedContentPipeline:
                 "min_quality": min(quality_scores),
                 "max_quality": max(quality_scores),
                 "high_quality_count": len([s for s in quality_scores if s >= 0.8]),
-                "medium_quality_count": len([s for s in quality_scores if 0.6 <= s < 0.8]),
+                "medium_quality_count": len(
+                    [s for s in quality_scores if 0.6 <= s < 0.8]
+                ),
                 "low_quality_count": len([s for s in quality_scores if s < 0.6]),
             }
 

@@ -16,8 +16,7 @@ export const animalIcons = {
       name: "cat",
       tags: ["animal", "pet", "feline"],
       description: "Cat icon",
-      caption:
-        "A cat icon representing feline pets, animals, or cat-related features",
+      caption: "A cat icon representing feline pets, animals, or cat-related features",
       keywords: ["cat", "feline", "pet", "animal"],
     },
   },
@@ -27,8 +26,7 @@ export const animalIcons = {
       name: "dog",
       tags: ["animal", "pet", "canine"],
       description: "Dog icon",
-      caption:
-        "A dog icon representing canine pets, animals, or dog-related features",
+      caption: "A dog icon representing canine pets, animals, or dog-related features",
       keywords: ["dog", "canine", "pet", "animal"],
     },
   },
@@ -38,8 +36,7 @@ export const animalIcons = {
       name: "turtle",
       tags: ["animal", "reptile", "slow"],
       description: "Turtle icon",
-      caption:
-        "A turtle icon representing reptiles, slow processes, or turtle-related features",
+      caption: "A turtle icon representing reptiles, slow processes, or turtle-related features",
       keywords: ["turtle", "reptile", "slow", "animal"],
     },
   },
@@ -49,8 +46,7 @@ export const animalIcons = {
       name: "paw-print",
       tags: ["animal", "paw", "print"],
       description: "Paw print icon",
-      caption:
-        "A paw print icon representing animal footprints, pet-related features, or animal tracking",
+      caption: "A paw print icon representing animal footprints, pet-related features, or animal tracking",
       keywords: ["paw", "print", "animal", "footprint"],
     },
   },

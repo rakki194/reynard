@@ -30,7 +30,7 @@ interface GamificationPanelProps {
   user: User | null;
 }
 
-const GamificationPanel: Component<GamificationPanelProps> = (props) => {
+const GamificationPanel: Component<GamificationPanelProps> = props => {
   const [activeTab, setActiveTab] = createSignal("achievements");
 
   // Mock achievements data
@@ -103,7 +103,7 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
             <h3>Your Achievements</h3>
             <div class="achievements-grid">
               <For each={mockAchievements}>
-                {(achievement) => (
+                {achievement => (
                   <Card
                     class="achievement-card"
                     style={{
@@ -115,22 +115,14 @@ const GamificationPanel: Component<GamificationPanelProps> = (props) => {
                       <span class="achievement-icon">{achievement.icon}</span>
                       <div class="achievement-info">
                         <h4 class="achievement-name">{achievement.name}</h4>
-                        <span
-                          class="achievement-rarity"
-                          style={{ color: getRarityColor(achievement.rarity) }}
-                        >
+                        <span class="achievement-rarity" style={{ color: getRarityColor(achievement.rarity) }}>
                           {achievement.rarity.toUpperCase()}
                         </span>
                       </div>
                     </div>
-                    <p class="achievement-description">
-                      {achievement.description}
-                    </p>
+                    <p class="achievement-description">{achievement.description}</p>
                     <div class="achievement-date">
-                      Earned{" "}
-                      {achievement.unlockedAt
-                        ? formatDate(achievement.unlockedAt)
-                        : "Not earned yet"}
+                      Earned {achievement.unlockedAt ? formatDate(achievement.unlockedAt) : "Not earned yet"}
                     </div>
                   </Card>
                 )}

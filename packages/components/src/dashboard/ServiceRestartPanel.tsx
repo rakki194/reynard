@@ -25,14 +25,10 @@ export interface ServiceInfo {
   restartCount: number;
 }
 
-export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
-  props,
-) => {
+export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = props => {
   const [selectedServices, setSelectedServices] = createSignal<string[]>([]);
   const [isRestarting, setIsRestarting] = createSignal(false);
-  const [restartProgress, setRestartProgress] = createSignal<
-    Record<string, number>
-  >({});
+  const [restartProgress, setRestartProgress] = createSignal<Record<string, number>>({});
 
   // Mock service data
   const [services] = createSignal<ServiceInfo[]>([
@@ -73,9 +69,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
   const filteredServices = () => {
     const serviceList = services();
     if (props.showFailedOnly) {
-      return serviceList.filter(
-        (s) => s.status === "failed" || s.health === "unhealthy",
-      );
+      return serviceList.filter(s => s.status === "failed" || s.health === "unhealthy");
     }
     return serviceList;
   };
@@ -83,7 +77,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
   const handleServiceSelect = (serviceName: string) => {
     const selected = selectedServices();
     if (selected.includes(serviceName)) {
-      setSelectedServices(selected.filter((name) => name !== serviceName));
+      setSelectedServices(selected.filter(name => name !== serviceName));
     } else {
       setSelectedServices([...selected, serviceName]);
     }
@@ -96,7 +90,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
     if (selected.length === filtered.length) {
       setSelectedServices([]);
     } else {
-      setSelectedServices(filtered.map((s) => s.name));
+      setSelectedServices(filtered.map(s => s.name));
     }
   };
 
@@ -107,7 +101,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
     // Simulate restart progress
     for (let i = 0; i <= 100; i += 10) {
       setRestartProgress({ [serviceName]: i });
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, 200));
     }
 
     // Clear progress after completion
@@ -124,12 +118,12 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
     setIsRestarting(true);
 
     for (const serviceName of selected) {
-      setRestartProgress((prev) => ({ ...prev, [serviceName]: 0 }));
+      setRestartProgress(prev => ({ ...prev, [serviceName]: 0 }));
 
       // Simulate restart progress
       for (let i = 0; i <= 100; i += 10) {
-        setRestartProgress((prev) => ({ ...prev, [serviceName]: i }));
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        setRestartProgress(prev => ({ ...prev, [serviceName]: i }));
+        await new Promise(resolve => setTimeout(resolve, 100));
       }
     }
 
@@ -143,10 +137,8 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
 
   const getStatusIcon = (service: ServiceInfo) => {
     if (service.status === "failed") return "dismiss-circle";
-    if (service.status === "running" && service.health === "healthy")
-      return "checkmark-circle";
-    if (service.status === "running" && service.health === "degraded")
-      return "warning";
+    if (service.status === "running" && service.health === "healthy") return "checkmark-circle";
+    if (service.status === "running" && service.health === "degraded") return "warning";
     if (service.status === "starting") return "spinner";
     if (service.status === "stopping") return "warning";
     return "info";
@@ -154,10 +146,8 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
 
   const getStatusColor = (service: ServiceInfo) => {
     if (service.status === "failed") return "error";
-    if (service.status === "running" && service.health === "healthy")
-      return "success";
-    if (service.status === "running" && service.health === "degraded")
-      return "warning";
+    if (service.status === "running" && service.health === "healthy") return "success";
+    if (service.status === "running" && service.health === "degraded") return "warning";
     if (service.status === "starting") return "info";
     if (service.status === "stopping") return "warning";
     return "neutral";
@@ -171,9 +161,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
           <span class="icon">
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={
-                fluentIconsPackage.getIcon("arrow-clockwise")?.outerHTML || ""
-              }
+              innerHTML={fluentIconsPackage.getIcon("arrow-clockwise")?.outerHTML || ""}
             />
           </span>
           <h3>Service Restart</h3>
@@ -181,11 +169,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
 
         <div class="restart-panel-actions">
           <Show when={props.showBulkActions && selectedServices().length > 0}>
-            <Button
-              variant="primary"
-              onClick={handleBulkRestart}
-              disabled={isRestarting()}
-            >
+            <Button variant="primary" onClick={handleBulkRestart} disabled={isRestarting()}>
               Restart Selected ({selectedServices().length})
             </Button>
           </Show>
@@ -196,9 +180,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
       <Show when={props.showBulkActions}>
         <div class="bulk-actions">
           <Button variant="secondary" size="sm" onClick={handleSelectAll}>
-            {selectedServices().length === filteredServices().length
-              ? "Deselect All"
-              : "Select All"}
+            {selectedServices().length === filteredServices().length ? "Deselect All" : "Select All"}
           </Button>
         </div>
       </Show>
@@ -206,7 +188,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
       {/* Services List */}
       <div class="restart-services-list">
         <For each={filteredServices()}>
-          {(service) => (
+          {service => (
             <div class="restart-service-item">
               <div class="service-header">
                 <div class="service-info">
@@ -223,19 +205,13 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={
-                        fluentIconsPackage.getIcon(getStatusIcon(service))
-                          ?.outerHTML || ""
-                      }
+                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(service))?.outerHTML || ""}
                     />
                   </span>
 
                   <span class="service-name">{service.name}</span>
 
-                  <span
-                    class="status-badge"
-                    classList={{ [getStatusColor(service)]: true }}
-                  >
+                  <span class="status-badge" classList={{ [getStatusColor(service)]: true }}>
                     {service.status}
                   </span>
                 </div>
@@ -264,9 +240,7 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
                 <Show when={service.lastRestart}>
                   <div class="detail-item">
                     <span class="label">Last Restart:</span>
-                    <span class="value">
-                      {service.lastRestart!.toLocaleString()}
-                    </span>
+                    <span class="value">{service.lastRestart!.toLocaleString()}</span>
                   </div>
                 </Show>
 
@@ -280,14 +254,9 @@ export const ServiceRestartPanel: Component<ServiceRestartPanelProps> = (
               <Show when={restartProgress()[service.name] !== undefined}>
                 <div class="restart-progress">
                   <div class="progress-bar">
-                    <div
-                      class="progress-fill"
-                      data-progress={restartProgress()[service.name]}
-                    />
+                    <div class="progress-fill" data-progress={restartProgress()[service.name]} />
                   </div>
-                  <span class="progress-text">
-                    {restartProgress()[service.name]}%
-                  </span>
+                  <span class="progress-text">{restartProgress()[service.name]}%</span>
                 </div>
               </Show>
             </div>

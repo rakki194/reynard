@@ -13,9 +13,7 @@ export class ReadmeProcessor {
     const lines = readme.split("\n");
     const hasMultipleSections = (readme.match(/^## /gm) || []).length >= 3;
     const hasCodeBlocks = (readme.match(/```/g) || []).length >= 2;
-    const hasExamples =
-      readme.toLowerCase().includes("example") ||
-      readme.toLowerCase().includes("quick start");
+    const hasExamples = readme.toLowerCase().includes("example") || readme.toLowerCase().includes("quick start");
     const isLongEnough = lines.length >= 50;
 
     return hasMultipleSections && hasCodeBlocks && hasExamples && isLongEnough;
@@ -41,11 +39,7 @@ export class ReadmeProcessor {
       }
 
       // Check for next heading at same or higher level
-      if (
-        inQuickStart &&
-        trimmed.match(/^#+\s/) &&
-        trimmed.match(/^#+/)![0].length <= headingLevel
-      ) {
+      if (inQuickStart && trimmed.match(/^#+\s/) && trimmed.match(/^#+/)![0].length <= headingLevel) {
         break;
       }
 

@@ -19,23 +19,17 @@ export interface DataTableBodyProps<T = unknown> {
   onRowClick?: (row: T, index: number) => void;
 }
 
-export const DataTableBody: Component<DataTableBodyProps> = (props) => {
-  const visibleColumns = () =>
-    props.columns.filter((col) => col.visible !== false);
+export const DataTableBody: Component<DataTableBodyProps> = props => {
+  const visibleColumns = () => props.columns.filter(col => col.visible !== false);
 
-  const columnCount = () =>
-    visibleColumns().length + (props.selectable ? 1 : 0);
+  const columnCount = () => visibleColumns().length + (props.selectable ? 1 : 0);
 
   return (
     <tbody class="reynard-data-table__body">
       <Show
         when={!props.loading && props.data.length > 0}
         fallback={
-          <DataTableEmptyState
-            loading={props.loading}
-            emptyMessage={props.emptyMessage}
-            columnCount={columnCount()}
-          />
+          <DataTableEmptyState loading={props.loading} emptyMessage={props.emptyMessage} columnCount={columnCount()} />
         }
       >
         <For each={props.data}>

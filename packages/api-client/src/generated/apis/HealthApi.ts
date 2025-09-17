@@ -29,13 +29,13 @@ export interface HealthApiInterface {
      * @throws {RequiredError}
      * @memberof HealthApiInterface
      */
-    detailedHealthCheckApiHealthDetailedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>>;
+    detailedHealthCheckApiHealthDetailedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
 
     /**
      * Detailed health check endpoint with comprehensive service diagnostics.  This endpoint provides in-depth health information for all registered services, including startup times, last health check timestamps, error details, and service-specific operational metrics for advanced monitoring and debugging.  Returns:     dict: Detailed health information containing:         - timestamp: Current UTC timestamp         - environment: Deployment environment         - services: Detailed service information including:             - status: Current service status             - startup_time: Service initialization duration             - last_health_check: Timestamp of last health check             - error: Any error messages or exceptions
      * Detailed Health Check
      */
-    detailedHealthCheckApiHealthDetailedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }>;
+    detailedHealthCheckApiHealthDetailedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 
     /**
      * Comprehensive health check endpoint for system monitoring.  This endpoint provides real-time health status for all registered services, including individual service health checks, overall system status, and detailed service information for monitoring and alerting systems.  Returns:     JSONResponse: Health status response with:         - status: Overall system health (healthy/unhealthy)         - timestamp: Current UTC timestamp         - environment: Deployment environment         - version: API version         - services: Individual service health status and operational state  Status Codes:     200: All services are healthy and operational     503: One or more critical services are unhealthy or unavailable
@@ -63,7 +63,7 @@ export class HealthApi extends runtime.BaseAPI implements HealthApiInterface {
      * Detailed health check endpoint with comprehensive service diagnostics.  This endpoint provides in-depth health information for all registered services, including startup times, last health check timestamps, error details, and service-specific operational metrics for advanced monitoring and debugging.  Returns:     dict: Detailed health information containing:         - timestamp: Current UTC timestamp         - environment: Deployment environment         - services: Detailed service information including:             - status: Current service status             - startup_time: Service initialization duration             - last_health_check: Timestamp of last health check             - error: Any error messages or exceptions
      * Detailed Health Check
      */
-    async detailedHealthCheckApiHealthDetailedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
+    async detailedHealthCheckApiHealthDetailedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -85,7 +85,7 @@ export class HealthApi extends runtime.BaseAPI implements HealthApiInterface {
      * Detailed health check endpoint with comprehensive service diagnostics.  This endpoint provides in-depth health information for all registered services, including startup times, last health check timestamps, error details, and service-specific operational metrics for advanced monitoring and debugging.  Returns:     dict: Detailed health information containing:         - timestamp: Current UTC timestamp         - environment: Deployment environment         - services: Detailed service information including:             - status: Current service status             - startup_time: Service initialization duration             - last_health_check: Timestamp of last health check             - error: Any error messages or exceptions
      * Detailed Health Check
      */
-    async detailedHealthCheckApiHealthDetailedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
+    async detailedHealthCheckApiHealthDetailedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
         const response = await this.detailedHealthCheckApiHealthDetailedGetRaw(initOverrides);
         return await response.value();
     }

@@ -35,7 +35,7 @@ export function sanitizeInput(input: string): string {
       .replace(/[<>'"&]/g, "")
       // Remove control characters (except newlines and tabs)
       .split("")
-      .filter((char) => {
+      .filter(char => {
         const code = char.charCodeAt(0);
         return code >= 32 || code === 9 || code === 10 || code === 13;
       })
@@ -53,14 +53,11 @@ export function generateSecureString(length: number = 32): string {
   if (typeof crypto !== "undefined" && crypto.getRandomValues) {
     const array = new Uint8Array(length);
     crypto.getRandomValues(array);
-    return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join(
-      "",
-    );
+    return Array.from(array, byte => byte.toString(16).padStart(2, "0")).join("");
   }
 
   // Fallback to Math.random (less secure but functional)
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -78,10 +75,7 @@ export function generateCSRFToken(): string {
 /**
  * Validate CSRF token
  */
-export function validateCSRFToken(
-  token: string,
-  expectedToken: string,
-): boolean {
+export function validateCSRFToken(token: string, expectedToken: string): boolean {
   if (!token || !expectedToken) {
     return false;
   }
@@ -122,7 +116,7 @@ export class RateLimiter {
     }
 
     const requests = this.requests.get(identifier)!;
-    const recentRequests = requests.filter((time) => time > windowStart);
+    const recentRequests = requests.filter(time => time > windowStart);
 
     if (recentRequests.length >= this.maxRequests) {
       return false;
@@ -138,7 +132,7 @@ export class RateLimiter {
     const windowStart = now - this.windowMs;
 
     for (const [identifier, requests] of this.requests.entries()) {
-      const recentRequests = requests.filter((time) => time > windowStart);
+      const recentRequests = requests.filter(time => time > windowStart);
       if (recentRequests.length === 0) {
         this.requests.delete(identifier);
       } else {

@@ -47,8 +47,7 @@ export const threeDTranslations = {
   featuresDemonstrated: "Features Demonstrated",
   smoothCameraControlsWithDamping: "Smooth camera controls with damping",
   enhancedLightingSystemWithShadows: "Enhanced lighting system with shadows",
-  responsiveCanvasWithDevicePixelRatio:
-    "Responsive canvas with device pixel ratio",
+  responsiveCanvasWithDevicePixelRatio: "Responsive canvas with device pixel ratio",
   realTimeCameraPositionTracking: "Real-time camera position tracking",
   performanceOptimizedRendering: "Performance optimized rendering",
 };

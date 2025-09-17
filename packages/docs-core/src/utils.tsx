@@ -43,7 +43,7 @@ export function generateTableOfContents(
     id: string;
     text: string;
     level: number;
-  }>,
+  }>
 ): Array<{
   id: string;
   text: string;
@@ -153,13 +153,10 @@ export function filterPages(
     category?: string;
     tags?: string[];
     search?: string;
-  },
+  }
 ): DocPage[] {
-  return pages.filter((page) => {
-    if (
-      criteria.published !== undefined &&
-      page.published !== criteria.published
-    ) {
+  return pages.filter(page => {
+    if (criteria.published !== undefined && page.published !== criteria.published) {
       return false;
     }
 
@@ -169,9 +166,7 @@ export function filterPages(
 
     if (criteria.tags && criteria.tags.length > 0) {
       const pageTags = page.metadata.tags || [];
-      const hasMatchingTag = criteria.tags.some((tag) =>
-        pageTags.includes(tag),
-      );
+      const hasMatchingTag = criteria.tags.some(tag => pageTags.includes(tag));
       if (!hasMatchingTag) {
         return false;
       }
@@ -179,12 +174,7 @@ export function filterPages(
 
     if (criteria.search) {
       const searchTerm = criteria.search.toLowerCase();
-      const searchableText = [
-        page.title,
-        page.metadata.description || "",
-        page.content,
-        ...(page.metadata.tags || []),
-      ]
+      const searchableText = [page.title, page.metadata.description || "", page.content, ...(page.metadata.tags || [])]
         .join(" ")
         .toLowerCase();
 
@@ -323,12 +313,12 @@ export function sanitizeHtml(html: string): string {
 
   // Remove script tags and dangerous attributes
   const scripts = doc.querySelectorAll("script");
-  scripts.forEach((script) => script.remove());
+  scripts.forEach(script => script.remove());
 
   const dangerousElements = doc.querySelectorAll("*");
-  dangerousElements.forEach((element) => {
+  dangerousElements.forEach(element => {
     // Remove dangerous attributes
-    Array.from(element.attributes).forEach((attr) => {
+    Array.from(element.attributes).forEach(attr => {
       if (attr.name.startsWith("on") || attr.name === "javascript:") {
         element.removeAttribute(attr.name);
       }
@@ -341,10 +331,7 @@ export function sanitizeHtml(html: string): string {
 /**
  * Deep merge objects
  */
-export function deepMerge<T extends Record<string, any>>(
-  target: T,
-  source: Partial<T>,
-): T {
+export function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
   const result = { ...target };
 
   for (const key in source) {
@@ -373,10 +360,7 @@ export function deepMerge<T extends Record<string, any>>(
 /**
  * Debounce function
  */
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number,
-): (...args: Parameters<T>) => void {
+export function debounce<T extends (...args: any[]) => any>(func: T, wait: number): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout;
 
   return (...args: Parameters<T>) => {
@@ -388,10 +372,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function
  */
-export function throttle<T extends (...args: any[]) => any>(
-  func: T,
-  limit: number,
-): (...args: Parameters<T>) => void {
+export function throttle<T extends (...args: any[]) => any>(func: T, limit: number): (...args: Parameters<T>) => void {
   let inThrottle: boolean;
 
   return (...args: Parameters<T>) => {

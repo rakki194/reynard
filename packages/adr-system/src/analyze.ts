@@ -17,29 +17,19 @@ const program = new Command();
 
 program
   .name("adr-analyze")
-  .description(
-    "Reynard ADR System - Intelligent Architecture Decision Record Analysis",
-  )
+  .description("Reynard ADR System - Intelligent Architecture Decision Record Analysis")
   .version("1.0.0");
 
 program
   .command("analyze")
   .description("Analyze codebase and generate ADR suggestions")
   .option("-p, --path <path>", "Path to codebase root", ".")
-  .option(
-    "-o, --output <path>",
-    "Output directory for ADRs",
-    "./docs/architecture/decisions",
-  )
-  .option(
-    "-t, --templates <path>",
-    "Templates directory",
-    "./docs/architecture/decisions/templates",
-  )
+  .option("-o, --output <path>", "Output directory for ADRs", "./docs/architecture/decisions")
+  .option("-t, --templates <path>", "Templates directory", "./docs/architecture/decisions/templates")
   .option("--generate", "Generate ADRs from suggestions")
   .option("--validate", "Validate existing ADRs")
   .option("--relationships", "Analyze ADR relationships")
-  .action(async (options) => {
+  .action(async options => {
     console.log("🦊 Reynard ADR System - Starting Analysis");
     console.log("==========================================");
 
@@ -49,37 +39,23 @@ program
 
       console.log("\n📊 Codebase Metrics:");
       console.log(`  Total Files: ${analysis.metrics.totalFiles}`);
-      console.log(
-        `  Total Lines: ${analysis.metrics.totalLines.toLocaleString()}`,
-      );
-      console.log(
-        `  Average File Size: ${analysis.metrics.averageFileSize.toFixed(1)} lines`,
-      );
-      console.log(
-        `  Complexity Score: ${analysis.metrics.complexityScore.toFixed(1)}`,
-      );
+      console.log(`  Total Lines: ${analysis.metrics.totalLines.toLocaleString()}`);
+      console.log(`  Average File Size: ${analysis.metrics.averageFileSize.toFixed(1)} lines`);
+      console.log(`  Complexity Score: ${analysis.metrics.complexityScore.toFixed(1)}`);
 
       console.log("\n🏗️ Architecture Patterns:");
       for (const pattern of analysis.patterns) {
-        console.log(
-          `  ${pattern.type}: ${(pattern.confidence * 100).toFixed(1)}% confidence`,
-        );
+        console.log(`  ${pattern.type}: ${(pattern.confidence * 100).toFixed(1)}% confidence`);
       }
 
       console.log("\n📈 Code Quality:");
-      console.log(
-        `  Test Coverage: ${analysis.quality.testCoverage.toFixed(1)}%`,
-      );
-      console.log(
-        `  Documentation Coverage: ${analysis.quality.documentationCoverage.toFixed(1)}%`,
-      );
+      console.log(`  Test Coverage: ${analysis.quality.testCoverage.toFixed(1)}%`);
+      console.log(`  Documentation Coverage: ${analysis.quality.documentationCoverage.toFixed(1)}%`);
       console.log(`  Code Smells: ${analysis.quality.codeSmells.length}`);
 
       console.log("\n💡 ADR Suggestions:");
       for (const suggestion of analysis.suggestions) {
-        console.log(
-          `  [${suggestion.priority.toUpperCase()}] ${suggestion.title}`,
-        );
+        console.log(`  [${suggestion.priority.toUpperCase()}] ${suggestion.title}`);
         console.log(`    Category: ${suggestion.category}`);
         console.log(`    Impact: ${suggestion.estimatedImpact}`);
         console.log(`    Evidence: ${suggestion.evidence.length} items`);
@@ -89,9 +65,7 @@ program
       if (options.generate && analysis.suggestions.length > 0) {
         console.log("🦊 Generating ADRs from suggestions...");
         const generator = new ADRGenerator(options.output, options.templates);
-        const generatedFiles = await generator.generateMultipleADRs(
-          analysis.suggestions,
-        );
+        const generatedFiles = await generator.generateMultipleADRs(analysis.suggestions);
 
         console.log(`✅ Generated ${generatedFiles.length} ADR files:`);
         for (const file of generatedFiles) {
@@ -145,9 +119,7 @@ program
 
         console.log(`Found ${relationships.length} relationships:`);
         for (const rel of relationships) {
-          console.log(
-            `  ${rel.source} -> ${rel.target} (${rel.type}, strength: ${rel.strength})`,
-          );
+          console.log(`  ${rel.source} -> ${rel.target} (${rel.type}, strength: ${rel.strength})`);
         }
 
         const cycles = mapper.detectCircularDependencies();
@@ -169,12 +141,8 @@ program
 program
   .command("validate")
   .description("Validate existing ADRs")
-  .option(
-    "-p, --path <path>",
-    "Path to ADR directory",
-    "./docs/architecture/decisions",
-  )
-  .action(async (options) => {
+  .option("-p, --path <path>", "Path to ADR directory", "./docs/architecture/decisions")
+  .action(async options => {
     console.log("🔍 Validating ADRs...");
 
     try {
@@ -222,12 +190,8 @@ program
 program
   .command("relationships")
   .description("Analyze ADR relationships")
-  .option(
-    "-p, --path <path>",
-    "Path to ADR directory",
-    "./docs/architecture/decisions",
-  )
-  .action(async (options) => {
+  .option("-p, --path <path>", "Path to ADR directory", "./docs/architecture/decisions")
+  .action(async options => {
     console.log("🔗 Analyzing ADR relationships...");
 
     try {
@@ -236,9 +200,7 @@ program
 
       console.log(`Found ${relationships.length} relationships:`);
       for (const rel of relationships) {
-        console.log(
-          `  ${rel.source} -> ${rel.target} (${rel.type}, strength: ${rel.strength})`,
-        );
+        console.log(`  ${rel.source} -> ${rel.target} (${rel.type}, strength: ${rel.strength})`);
       }
 
       const cycles = mapper.detectCircularDependencies();

@@ -4,7 +4,6 @@ Reynard Auth App Backend
 FastAPI server with Gatekeeper authentication integration
 """
 
-import asyncio
 import os
 import sys
 from contextlib import asynccontextmanager
@@ -15,7 +14,6 @@ sys.path.insert(
     0, str(Path(__file__).parent.parent.parent / "libraries" / "gatekeeper")
 )
 
-from typing import Optional
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,7 +26,6 @@ from gatekeeper import (
     UserCreate,
     UserPublic,
     UserRole,
-    UserUpdate,
 )
 from gatekeeper.backends.postgresql import PostgreSQLBackend
 
@@ -46,7 +43,7 @@ TOKEN_CONFIG = TokenConfig(
 )
 
 # Global auth manager
-auth_manager: Optional[AuthManager] = None
+auth_manager: AuthManager | None = None
 
 
 @asynccontextmanager
@@ -112,7 +109,7 @@ class RegisterRequest(BaseModel):
     username: str
     password: str
     email: str
-    full_name: Optional[str] = None
+    full_name: str | None = None
     role: str = "regular"
 
 

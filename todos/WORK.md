@@ -109,10 +109,7 @@ export class PostProcessor {
 }
 
 export class PerformanceMonitor {
-  static trackModelPerformance(
-    modelName: string,
-    operation: string,
-  ): PerformanceTracker;
+  static trackModelPerformance(modelName: string, operation: string): PerformanceTracker;
   static getMemoryUsage(): MemoryInfo;
   static getGPUInfo(): GPUInfo;
 }
@@ -237,23 +234,14 @@ export class JoyCaptionGenerator extends BaseCaptionGenerator {
 export class OllamaService extends BaseAIService {
   async listModels(): Promise<OllamaModel[]>;
   async pullModel(modelName: string): Promise<void>;
-  async chatWithModel(
-    model: string,
-    messages: Message[],
-  ): Promise<ChatResponse>;
-  async streamChat(
-    model: string,
-    messages: Message[],
-  ): Promise<AsyncIterable<string>>;
+  async chatWithModel(model: string, messages: Message[]): Promise<ChatResponse>;
+  async streamChat(model: string, messages: Message[]): Promise<AsyncIterable<string>>;
   async deleteModel(modelName: string): Promise<void>;
 }
 
 export class OllamaAssistant {
   async chat(prompt: string, context?: ChatContext): Promise<string>;
-  async streamChat(
-    prompt: string,
-    context?: ChatContext,
-  ): Promise<AsyncIterable<string>>;
+  async streamChat(prompt: string, context?: ChatContext): Promise<AsyncIterable<string>>;
   async getContext(path: string): Promise<ChatContext>;
 }
 ```
@@ -324,26 +312,14 @@ _XP Reward: 400 points per package_
 ```typescript
 // Diffusion LLM models
 export class DreamOnModel extends BaseModel {
-  async generateText(
-    prompt: string,
-    options: GenerationOptions,
-  ): Promise<GenerationResult>;
+  async generateText(prompt: string, options: GenerationOptions): Promise<GenerationResult>;
   async infillText(text: string, mask: string): Promise<string>;
-  async generateStreaming(
-    prompt: string,
-    options: GenerationOptions,
-  ): Promise<AsyncIterable<string>>;
+  async generateStreaming(prompt: string, options: GenerationOptions): Promise<AsyncIterable<string>>;
 }
 
 export class LLaDAModel extends BaseModel {
-  async generateStreaming(
-    prompt: string,
-    options: GenerationOptions,
-  ): Promise<AsyncIterable<string>>;
-  async generateBatch(
-    prompts: string[],
-    options: GenerationOptions,
-  ): Promise<GenerationResult[]>;
+  async generateStreaming(prompt: string, options: GenerationOptions): Promise<AsyncIterable<string>>;
+  async generateBatch(prompts: string[], options: GenerationOptions): Promise<GenerationResult[]>;
 }
 ```
 
@@ -372,23 +348,14 @@ export class LLaDAModel extends BaseModel {
 // TTS service
 export class TTSService extends BaseAIService {
   async generateSpeech(text: string, options: TTSOptions): Promise<AudioBuffer>;
-  async batchGenerate(
-    texts: string[],
-    options: TTSOptions,
-  ): Promise<AudioBuffer[]>;
+  async batchGenerate(texts: string[], options: TTSOptions): Promise<AudioBuffer[]>;
   async getAvailableVoices(): Promise<Voice[]>;
   async getVoiceInfo(voiceId: string): Promise<VoiceInfo>;
 }
 
 export class KokoroTTSService extends TTSService {
-  async generateSpeech(
-    text: string,
-    options: KokoroOptions,
-  ): Promise<AudioBuffer>;
-  async generateWithEmotion(
-    text: string,
-    emotion: Emotion,
-  ): Promise<AudioBuffer>;
+  async generateSpeech(text: string, options: KokoroOptions): Promise<AudioBuffer>;
+  async generateWithEmotion(text: string, emotion: Emotion): Promise<AudioBuffer>;
 }
 ```
 
@@ -425,11 +392,7 @@ export class ComfyService extends BaseAIService {
 
 export class WorkflowBuilder {
   createTextToImage(prompt: string, options: TextToImageOptions): Workflow;
-  createImageToImage(
-    image: string,
-    prompt: string,
-    options: ImageToImageOptions,
-  ): Workflow;
+  createImageToImage(image: string, prompt: string, options: ImageToImageOptions): Workflow;
   createUpscale(image: string, options: UpscaleOptions): Workflow;
 }
 ```
@@ -501,18 +464,9 @@ export class ContentProcessor {
 ```typescript
 // Summarization service
 export class SummarizationService extends BaseAIService {
-  async summarizeText(
-    text: string,
-    options: SummarizationOptions,
-  ): Promise<Summary>;
-  async summarizeDocument(
-    document: Document,
-    options: SummarizationOptions,
-  ): Promise<Summary>;
-  async summarizeBatch(
-    texts: string[],
-    options: SummarizationOptions,
-  ): Promise<Summary[]>;
+  async summarizeText(text: string, options: SummarizationOptions): Promise<Summary>;
+  async summarizeDocument(document: Document, options: SummarizationOptions): Promise<Summary>;
+  async summarizeBatch(texts: string[], options: SummarizationOptions): Promise<Summary[]>;
   async getSummaryTypes(): Promise<SummaryType[]>;
 }
 

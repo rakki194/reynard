@@ -15,7 +15,7 @@ export interface FileContentDisplayProps {
   fontSize: number;
 }
 
-export const FileContentDisplay: Component<FileContentDisplayProps> = (props) => {
+export const FileContentDisplay: Component<FileContentDisplayProps> = props => {
   const getFileExtension = () => {
     return props.fileName.split(".").pop()?.toLowerCase() || "txt";
   };
@@ -31,23 +31,14 @@ export const FileContentDisplay: Component<FileContentDisplayProps> = (props) =>
       >
         <Show when={props.showLineNumbers}>
           <div class="line-numbers">
-            <For
-              each={Array.from(
-                { length: props.fileContent.split("\n").length },
-                (_, i) => i + 1,
-              )}
-            >
-              {(lineNumber) => <div class="line-number">{lineNumber}</div>}
+            <For each={Array.from({ length: props.fileContent.split("\n").length }, (_, i) => i + 1)}>
+              {lineNumber => <div class="line-number">{lineNumber}</div>}
             </For>
           </div>
         </Show>
 
         <div class="file-text">
-          <pre
-            class={`language-${getLanguageFromExtension(getFileExtension())}`}
-          >
-            {props.fileContent}
-          </pre>
+          <pre class={`language-${getLanguageFromExtension(getFileExtension())}`}>{props.fileContent}</pre>
         </div>
       </div>
     </div>

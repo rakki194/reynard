@@ -84,14 +84,7 @@ class EmbeddingVisualizationService:
 import { EmbeddingVisualizationDashboard } from "reynard-charts";
 
 export const MyComponent = () => {
-  return (
-    <EmbeddingVisualizationDashboard
-      isVisible={true}
-      width={1200}
-      height={800}
-      theme="dark"
-    />
-  );
+  return <EmbeddingVisualizationDashboard isVisible={true} width={1200} height={800} theme="dark" />;
 };
 ```
 
@@ -159,7 +152,7 @@ export const MyComponent = () => {
   };
 
   // Analyze quality
-  const analyzeQuality = async (embeddings) => {
+  const analyzeQuality = async embeddings => {
     const quality = await embeddingViz.analyzeQuality(embeddings);
   };
 

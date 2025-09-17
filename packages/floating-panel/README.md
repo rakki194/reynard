@@ -28,11 +28,7 @@ npm install reynard-floating-panel solid-js
 ### Basic Usage
 
 ```tsx
-import {
-  FloatingPanelOverlay,
-  FloatingPanel,
-  useOverlayManager,
-} from "reynard-floating-panel";
+import { FloatingPanelOverlay, FloatingPanel, useOverlayManager } from "reynard-floating-panel";
 import type { FloatingPanel as FloatingPanelType } from "reynard-floating-panel";
 
 function MyApp() {
@@ -71,22 +67,14 @@ function MyApp() {
 
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-      <button onClick={() => overlayManager.toggleOverlay()}>
-        Toggle Overlay
-      </button>
+      <button onClick={() => overlayManager.toggleOverlay()}>Toggle Overlay</button>
 
       <FloatingPanelOverlay
         isActive={overlayManager.isActive()}
         transitionPhase={overlayManager.overlayState().transitionPhase}
       >
-        {panels.map((panel) => (
-          <FloatingPanel
-            key={panel.id}
-            id={panel.id}
-            position={panel.position}
-            size={panel.size}
-            config={panel.config}
-          >
+        {panels.map(panel => (
+          <FloatingPanel key={panel.id} id={panel.id} position={panel.position} size={panel.size} config={panel.config}>
             {panel.content}
           </FloatingPanel>
         ))}

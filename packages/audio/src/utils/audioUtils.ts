@@ -8,16 +8,7 @@
  * @returns True if file is an audio file
  */
 export function isAudioFile(file: File): boolean {
-  const audioExtensions = [
-    ".mp3",
-    ".wav",
-    ".flac",
-    ".aac",
-    ".ogg",
-    ".m4a",
-    ".wma",
-    ".opus",
-  ];
+  const audioExtensions = [".mp3", ".wav", ".flac", ".aac", ".ogg", ".m4a", ".wma", ".opus"];
   return audioExtensions.includes(getFileExtension(file.name));
 }
 

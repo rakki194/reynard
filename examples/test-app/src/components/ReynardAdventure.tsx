@@ -156,18 +156,14 @@ export default function ReynardTutorial() {
     currentTab: 0,
   });
 
-  const currentSection = () =>
-    tutorialData.find((s) => s.id === tutorialState().currentSection);
-  const currentContent = () =>
-    currentSection()?.content[tutorialState().currentTab] || null;
+  const currentSection = () => tutorialData.find(s => s.id === tutorialState().currentSection);
+  const currentContent = () => currentSection()?.content[tutorialState().currentTab] || null;
 
   const nextSection = () => {
-    const currentIndex = tutorialData.findIndex(
-      (s) => s.id === tutorialState().currentSection,
-    );
+    const currentIndex = tutorialData.findIndex(s => s.id === tutorialState().currentSection);
     if (currentIndex < tutorialData.length - 1) {
       const nextId = tutorialData[currentIndex + 1].id;
-      setTutorialState((prev) => ({
+      setTutorialState(prev => ({
         ...prev,
         currentSection: nextId,
         currentTab: 0,
@@ -176,12 +172,10 @@ export default function ReynardTutorial() {
   };
 
   const prevSection = () => {
-    const currentIndex = tutorialData.findIndex(
-      (s) => s.id === tutorialState().currentSection,
-    );
+    const currentIndex = tutorialData.findIndex(s => s.id === tutorialState().currentSection);
     if (currentIndex > 0) {
       const prevId = tutorialData[currentIndex - 1].id;
-      setTutorialState((prev) => ({
+      setTutorialState(prev => ({
         ...prev,
         currentSection: prevId,
         currentTab: 0,
@@ -190,7 +184,7 @@ export default function ReynardTutorial() {
   };
 
   const completeSection = () => {
-    setTutorialState((prev) => ({
+    setTutorialState(prev => ({
       ...prev,
       completedSections: [...prev.completedSections, prev.currentSection],
     }));
@@ -211,8 +205,7 @@ export default function ReynardTutorial() {
             ></div>
           </div>
           <span class="progress-text">
-            {tutorialState().completedSections.length} / {tutorialData.length}{" "}
-            sections completed
+            {tutorialState().completedSections.length} / {tutorialData.length} sections completed
           </span>
         </div>
 
@@ -220,15 +213,11 @@ export default function ReynardTutorial() {
           <For each={tutorialData}>
             {(section, index) => (
               <div
-                class={`tutorial-section-item ${
-                  section.id === tutorialState().currentSection ? "active" : ""
-                } ${
-                  tutorialState().completedSections.includes(section.id)
-                    ? "completed"
-                    : ""
+                class={`tutorial-section-item ${section.id === tutorialState().currentSection ? "active" : ""} ${
+                  tutorialState().completedSections.includes(section.id) ? "completed" : ""
                 }`}
                 onClick={() =>
-                  setTutorialState((prev) => ({
+                  setTutorialState(prev => ({
                     ...prev,
                     currentSection: section.id,
                     currentTab: 0,
@@ -240,9 +229,7 @@ export default function ReynardTutorial() {
                   <div class="section-title">{section.title}</div>
                   <div class="section-meta">
                     <span class="section-time">{section.estimatedTime}</span>
-                    <span class={`section-difficulty ${section.difficulty}`}>
-                      {section.difficulty}
-                    </span>
+                    <span class={`section-difficulty ${section.difficulty}`}>{section.difficulty}</span>
                   </div>
                 </div>
               </div>
@@ -257,27 +244,16 @@ export default function ReynardTutorial() {
             <div class="tutorial-header">
               <h1 class="tutorial-title">{currentSection()?.title}</h1>
               <div class="tutorial-meta">
-                <span class="tutorial-time">
-                  {currentSection()?.estimatedTime}
-                </span>
-                <span
-                  class={`tutorial-difficulty ${currentSection()?.difficulty}`}
-                >
+                <span class="tutorial-time">{currentSection()?.estimatedTime}</span>
+                <span class={`tutorial-difficulty ${currentSection()?.difficulty}`}>
                   {currentSection()?.difficulty}
                 </span>
               </div>
             </div>
 
-            <div class="tutorial-description">
-              {currentSection()?.description}
-            </div>
+            <div class="tutorial-description">{currentSection()?.description}</div>
 
-            <Show
-              when={
-                currentSection()?.content &&
-                currentSection()!.content.length > 1
-              }
-            >
+            <Show when={currentSection()?.content && currentSection()!.content.length > 1}>
               <Tabs
                 items={currentSection()!.content.map((content, index) => ({
                   id: `step-${index}`,
@@ -285,23 +261,17 @@ export default function ReynardTutorial() {
                   disabled: false,
                 }))}
                 activeTab={`step-${tutorialState().currentTab}`}
-                onTabChange={(tabId) => {
+                onTabChange={tabId => {
                   const index = parseInt(tabId.replace("step-", ""));
-                  setTutorialState((prev) => ({ ...prev, currentTab: index }));
+                  setTutorialState(prev => ({ ...prev, currentTab: index }));
                 }}
               >
                 <For each={currentSection()?.content}>
                   {(content, index) => (
-                    <TabPanel
-                      tabId={`step-${index()}`}
-                      activeTab={`step-${tutorialState().currentTab}`}
-                    >
+                    <TabPanel tabId={`step-${index()}`} activeTab={`step-${tutorialState().currentTab}`}>
                       <div class="tutorial-step">
                         <Show when={content.type === "text"}>
-                          <div
-                            class="tutorial-text"
-                            innerHTML={formatMarkdown(content.content)}
-                          ></div>
+                          <div class="tutorial-text" innerHTML={formatMarkdown(content.content)}></div>
                         </Show>
 
                         <Show when={content.type === "code"}>
@@ -321,18 +291,10 @@ export default function ReynardTutorial() {
               </Tabs>
             </Show>
 
-            <Show
-              when={
-                currentSection()?.content &&
-                currentSection()!.content.length === 1
-              }
-            >
+            <Show when={currentSection()?.content && currentSection()!.content.length === 1}>
               <div class="tutorial-step">
                 <Show when={currentContent()?.type === "text"}>
-                  <div
-                    class="tutorial-text"
-                    innerHTML={formatMarkdown(currentContent()?.content || "")}
-                  ></div>
+                  <div class="tutorial-text" innerHTML={formatMarkdown(currentContent()?.content || "")}></div>
                 </Show>
 
                 <Show when={currentContent()?.type === "code"}>
@@ -341,16 +303,12 @@ export default function ReynardTutorial() {
                       <h4 class="code-title">{currentContent()?.title}</h4>
                     </Show>
                     <pre class="code-block">
-                      <code
-                        class={`language-${currentContent()?.language || "text"}`}
-                      >
+                      <code class={`language-${currentContent()?.language || "text"}`}>
                         {currentContent()?.content}
                       </code>
                     </pre>
                     <Show when={currentContent()?.explanation}>
-                      <div class="code-explanation">
-                        {currentContent()?.explanation}
-                      </div>
+                      <div class="code-explanation">{currentContent()?.explanation}</div>
                     </Show>
                   </div>
                 </Show>
@@ -362,11 +320,7 @@ export default function ReynardTutorial() {
                 <Button
                   variant="secondary"
                   onClick={prevSection}
-                  disabled={
-                    tutorialData.findIndex(
-                      (s) => s.id === tutorialState().currentSection,
-                    ) === 0
-                  }
+                  disabled={tutorialData.findIndex(s => s.id === tutorialState().currentSection) === 0}
                 >
                   Previous Section
                 </Button>
@@ -375,10 +329,7 @@ export default function ReynardTutorial() {
                   variant="primary"
                   onClick={nextSection}
                   disabled={
-                    tutorialData.findIndex(
-                      (s) => s.id === tutorialState().currentSection,
-                    ) ===
-                    tutorialData.length - 1
+                    tutorialData.findIndex(s => s.id === tutorialState().currentSection) === tutorialData.length - 1
                   }
                 >
                   Next Section
@@ -389,9 +340,7 @@ export default function ReynardTutorial() {
                 <Button
                   variant="ghost"
                   onClick={completeSection}
-                  disabled={tutorialState().completedSections.includes(
-                    tutorialState().currentSection,
-                  )}
+                  disabled={tutorialState().completedSections.includes(tutorialState().currentSection)}
                 >
                   Mark Complete
                 </Button>

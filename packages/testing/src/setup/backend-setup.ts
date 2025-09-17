@@ -76,10 +76,7 @@ export function setupBackendTest(port: number = 3000) {
   });
 
   // Helper function to make API requests
-  const apiRequest = async (
-    endpoint: string,
-    options: RequestInit = {},
-  ): Promise<Response> => {
+  const apiRequest = async (endpoint: string, options: RequestInit = {}): Promise<Response> => {
     const url = `http://localhost:${port}/api${endpoint}`;
     return fetch(url, {
       headers: {

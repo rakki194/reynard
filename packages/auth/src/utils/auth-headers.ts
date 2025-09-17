@@ -14,9 +14,7 @@ export interface HeaderConfig {
 /**
  * Builds headers for authenticated requests
  */
-export const buildAuthHeaders = (
-  config: HeaderConfig,
-): Record<string, string> => {
+export const buildAuthHeaders = (config: HeaderConfig): Record<string, string> => {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(config.options.headers as Record<string, string>),

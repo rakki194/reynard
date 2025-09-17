@@ -4,56 +4,25 @@
 import { createSignal, createMemo } from "solid-js";
 import type { Point3D, SearchIntegrationSettings } from "../types";
 
-export function usePointCloudSearchIntegration(
-  searchIntegration: () => SearchIntegrationSettings = () => ({}),
-) {
+export function usePointCloudSearchIntegration(searchIntegration: () => SearchIntegrationSettings = () => ({})) {
   // Search integration settings
-  const enableSearchIntegration = createMemo(
-    () => searchIntegration().enableSearchIntegration ?? false,
-  );
-  const searchQueryEmbedding = createMemo(
-    () => searchIntegration().searchQueryEmbedding,
-  );
-  const searchResults = createMemo(
-    () => searchIntegration().searchResults || [],
-  );
-  const reductionMethod = createMemo(
-    () => searchIntegration().reductionMethod || "tsne",
-  );
-  const transformedData = createMemo(
-    () => searchIntegration().transformedData || [],
-  );
-  const originalIndices = createMemo(
-    () => searchIntegration().originalIndices || [],
-  );
-  const highlightQueryPoint = createMemo(
-    () => searchIntegration().highlightQueryPoint ?? true,
-  );
-  const showSimilarityPaths = createMemo(
-    () => searchIntegration().showSimilarityPaths ?? true,
-  );
-  const showSimilarityRadius = createMemo(
-    () => searchIntegration().showSimilarityRadius ?? true,
-  );
-  const radiusThreshold = createMemo(
-    () => searchIntegration().radiusThreshold || 0.8,
-  );
-  const maxPathLength = createMemo(
-    () => searchIntegration().maxPathLength || 5,
-  );
-  const queryPointColor = createMemo(
-    () => searchIntegration().queryPointColor || [1, 0, 0],
-  );
-  const pathColor = createMemo(
-    () => searchIntegration().pathColor || [0, 1, 1],
-  );
-  const radiusColor = createMemo(
-    () => searchIntegration().radiusColor || [1, 0, 1],
-  );
+  const enableSearchIntegration = createMemo(() => searchIntegration().enableSearchIntegration ?? false);
+  const searchQueryEmbedding = createMemo(() => searchIntegration().searchQueryEmbedding);
+  const searchResults = createMemo(() => searchIntegration().searchResults || []);
+  const reductionMethod = createMemo(() => searchIntegration().reductionMethod || "tsne");
+  const transformedData = createMemo(() => searchIntegration().transformedData || []);
+  const originalIndices = createMemo(() => searchIntegration().originalIndices || []);
+  const highlightQueryPoint = createMemo(() => searchIntegration().highlightQueryPoint ?? true);
+  const showSimilarityPaths = createMemo(() => searchIntegration().showSimilarityPaths ?? true);
+  const showSimilarityRadius = createMemo(() => searchIntegration().showSimilarityRadius ?? true);
+  const radiusThreshold = createMemo(() => searchIntegration().radiusThreshold || 0.8);
+  const maxPathLength = createMemo(() => searchIntegration().maxPathLength || 5);
+  const queryPointColor = createMemo(() => searchIntegration().queryPointColor || [1, 0, 0]);
+  const pathColor = createMemo(() => searchIntegration().pathColor || [0, 1, 1]);
+  const radiusColor = createMemo(() => searchIntegration().radiusColor || [1, 0, 1]);
 
   // Search integration state
-  const [searchIntegrationData, setSearchIntegrationData] =
-    createSignal<unknown>(null);
+  const [searchIntegrationData, setSearchIntegrationData] = createSignal<unknown>(null);
   const [queryPointMesh, setQueryPointMesh] = createSignal<unknown>(null);
   const [pathMeshes, setPathMeshes] = createSignal<unknown[]>([]);
   const [radiusMesh, setRadiusMesh] = createSignal<unknown>(null);
@@ -69,13 +38,12 @@ export function usePointCloudSearchIntegration(
     }
 
     // Apply search integration highlighting
-    return points.map((point) => {
+    return points.map(point => {
       const highlightedPoint = { ...point };
 
       // Check if point is in highlighted results
       const isHighlighted = (searchData as any).highlighted_results?.some(
-        (result: { original_index: string | number }) =>
-          result.original_index === point.id,
+        (result: { original_index: string | number }) => result.original_index === point.id
       );
 
       if (isHighlighted) {

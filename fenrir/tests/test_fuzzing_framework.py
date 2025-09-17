@@ -32,9 +32,9 @@ class TestFuzzingFramework(FenrirTestBase):
 
             # Test SQL injection payloads
             sql_payloads = composables.get_sql_injection_payloads()
-            assert len(sql_payloads.payloads) > 0, (
-                "Should generate SQL injection payloads"
-            )
+            assert (
+                len(sql_payloads.payloads) > 0
+            ), "Should generate SQL injection payloads"
 
             # Test XSS payloads
             xss_payloads = composables.get_xss_payloads()
@@ -42,15 +42,15 @@ class TestFuzzingFramework(FenrirTestBase):
 
             # Test path traversal payloads
             path_payloads = composables.get_path_traversal_payloads()
-            assert len(path_payloads.payloads) > 0, (
-                "Should generate path traversal payloads"
-            )
+            assert (
+                len(path_payloads.payloads) > 0
+            ), "Should generate path traversal payloads"
 
             # Test command injection payloads
             cmd_payloads = composables.get_command_injection_payloads()
-            assert len(cmd_payloads.payloads) > 0, (
-                "Should generate command injection payloads"
-            )
+            assert (
+                len(cmd_payloads.payloads) > 0
+            ), "Should generate command injection payloads"
 
             response_time = time.time() - start_time
 

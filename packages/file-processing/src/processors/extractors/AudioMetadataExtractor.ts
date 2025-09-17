@@ -6,19 +6,13 @@
  */
 
 import { AudioMetadata } from "../../types";
-import {
-  BaseMetadataExtractor,
-  MetadataExtractionOptions,
-} from "./BaseMetadataExtractor";
+import { BaseMetadataExtractor, MetadataExtractionOptions } from "./BaseMetadataExtractor";
 
 export class AudioMetadataExtractor extends BaseMetadataExtractor {
   /**
    * Extract metadata from audio files
    */
-  async extractMetadata(
-    file: File | string,
-    options?: Partial<MetadataExtractionOptions>,
-  ): Promise<AudioMetadata> {
+  async extractMetadata(file: File | string, options?: Partial<MetadataExtractionOptions>): Promise<AudioMetadata> {
     const audio = await this.loadAudio(file);
     const basicInfo = await this.getBasicFileInfo(file);
 

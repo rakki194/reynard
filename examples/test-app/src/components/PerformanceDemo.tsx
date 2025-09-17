@@ -102,8 +102,7 @@ export const PerformanceDemo: Component = () => {
       const size = point.size || 2;
       // const alpha = 0.8;
 
-      ctx.fillStyle =
-        (point as any).color || `hsl(${(index * 137.5) % 360}, 70%, 60%)`;
+      ctx.fillStyle = (point as any).color || `hsl(${(index * 137.5) % 360}, 70%, 60%)`;
 
       ctx.beginPath();
       ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
@@ -115,11 +114,7 @@ export const PerformanceDemo: Component = () => {
     ctx.font = "16px Arial";
     ctx.fillText(`Original: ${points.length} points`, 20, 30);
     ctx.fillText(`Rendered: ${lodPoints.length} points`, 20, 50);
-    ctx.fillText(
-      `Culling: ${((1 - lodPoints.length / points.length) * 100).toFixed(1)}%`,
-      20,
-      70,
-    );
+    ctx.fillText(`Culling: ${((1 - lodPoints.length / points.length) * 100).toFixed(1)}%`, 20, 70);
   };
 
   // Animation loop
@@ -134,7 +129,7 @@ export const PerformanceDemo: Component = () => {
     }
 
     // Rotate points
-    const rotatedPoints = allPoints.map((point) => {
+    const rotatedPoints = allPoints.map(point => {
       const centerX = 400;
       const centerY = 300;
       const angle = deltaTime * 0.001;
@@ -162,12 +157,7 @@ export const PerformanceDemo: Component = () => {
     const renderTime = performance.now() - renderStartTime;
     const updateTime = performance.now() - updateStartTime;
 
-    performanceEngine.updateMetrics(
-      frameTime,
-      renderTime,
-      updateTime,
-      rotatedPoints.length,
-    );
+    performanceEngine.updateMetrics(frameTime, renderTime, updateTime, rotatedPoints.length);
 
     setPerformanceMetrics(performanceEngine.getMetrics());
     setQualityLevel(performanceEngine.getCurrentQualityLevel());
@@ -242,9 +232,7 @@ export const PerformanceDemo: Component = () => {
     <div class="performance-demo">
       <div class="demo-header">
         <h2>🦊 Performance Optimization Demo</h2>
-        <p>
-          Demonstrates adaptive quality, spatial culling, and LOD optimization
-        </p>
+        <p>Demonstrates adaptive quality, spatial culling, and LOD optimization</p>
       </div>
 
       <div class="demo-content">
@@ -286,9 +274,7 @@ export const PerformanceDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={enableAdaptiveQuality()}
-                onChange={(e) =>
-                  setEnableAdaptiveQuality(e.currentTarget.checked)
-                }
+                onChange={e => setEnableAdaptiveQuality(e.currentTarget.checked)}
               />
               <label>Enable Adaptive Quality</label>
             </div>
@@ -297,19 +283,13 @@ export const PerformanceDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={enableSpatialCulling()}
-                onChange={(e) =>
-                  setEnableSpatialCulling(e.currentTarget.checked)
-                }
+                onChange={e => setEnableSpatialCulling(e.currentTarget.checked)}
               />
               <label>Enable Spatial Culling</label>
             </div>
 
             <div class="control-group">
-              <input
-                type="checkbox"
-                checked={enableLOD()}
-                onChange={(e) => setEnableLOD(e.currentTarget.checked)}
-              />
+              <input type="checkbox" checked={enableLOD()} onChange={e => setEnableLOD(e.currentTarget.checked)} />
               <label>Enable Level of Detail</label>
             </div>
 
@@ -317,7 +297,7 @@ export const PerformanceDemo: Component = () => {
               <input
                 type="checkbox"
                 checked={enableBatching()}
-                onChange={(e) => setEnableBatching(e.currentTarget.checked)}
+                onChange={e => setEnableBatching(e.currentTarget.checked)}
               />
               <label>Enable Batching</label>
             </div>
@@ -337,11 +317,7 @@ export const PerformanceDemo: Component = () => {
             </div>
 
             <div class="control-group">
-              <Button
-                variant={isRunning() ? "danger" : "primary"}
-                onClick={toggleAnimation}
-                class="control-button"
-              >
+              <Button variant={isRunning() ? "danger" : "primary"} onClick={toggleAnimation} class="control-button">
                 {isRunning() ? "⏹️ Stop Animation" : "▶️ Start Animation"}
               </Button>
             </div>
@@ -353,39 +329,19 @@ export const PerformanceDemo: Component = () => {
             <div class="control-group">
               <label>Force Quality Level</label>
               <div class="quality-buttons">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => forceQualityLevel(0)}
-                >
+                <Button variant="secondary" size="sm" onClick={() => forceQualityLevel(0)}>
                   Ultra High
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => forceQualityLevel(1)}
-                >
+                <Button variant="secondary" size="sm" onClick={() => forceQualityLevel(1)}>
                   High
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => forceQualityLevel(2)}
-                >
+                <Button variant="secondary" size="sm" onClick={() => forceQualityLevel(2)}>
                   Medium
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => forceQualityLevel(3)}
-                >
+                <Button variant="secondary" size="sm" onClick={() => forceQualityLevel(3)}>
                   Low
                 </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => forceQualityLevel(4)}
-                >
+                <Button variant="secondary" size="sm" onClick={() => forceQualityLevel(4)}>
                   Minimal
                 </Button>
               </div>
@@ -398,21 +354,15 @@ export const PerformanceDemo: Component = () => {
               </div>
               <div class="quality-item">
                 <span class="quality-label">Description:</span>
-                <span class="quality-value">
-                  {qualityLevel()?.description || "Ultra High Quality"}
-                </span>
+                <span class="quality-value">{qualityLevel()?.description || "Ultra High Quality"}</span>
               </div>
               <div class="quality-item">
                 <span class="quality-label">Point Count:</span>
-                <span class="quality-value">
-                  {qualityLevel()?.pointCount || maxPoints()}
-                </span>
+                <span class="quality-value">{qualityLevel()?.pointCount || maxPoints()}</span>
               </div>
               <div class="quality-item">
                 <span class="quality-label">Update Frequency:</span>
-                <span class="quality-value">
-                  {qualityLevel()?.updateFrequency || 1}
-                </span>
+                <span class="quality-value">{qualityLevel()?.updateFrequency || 1}</span>
               </div>
             </div>
           </Card>
@@ -422,45 +372,31 @@ export const PerformanceDemo: Component = () => {
             <div class="metrics-info">
               <div class="metrics-item">
                 <span class="metrics-label">FPS:</span>
-                <span class="metrics-value">
-                  {performanceMetrics()?.currentFPS?.toFixed(1) || "0.0"}
-                </span>
+                <span class="metrics-value">{performanceMetrics()?.currentFPS?.toFixed(1) || "0.0"}</span>
               </div>
               <div class="metrics-item">
                 <span class="metrics-label">Average FPS:</span>
-                <span class="metrics-value">
-                  {performanceMetrics()?.averageFPS?.toFixed(1) || "0.0"}
-                </span>
+                <span class="metrics-value">{performanceMetrics()?.averageFPS?.toFixed(1) || "0.0"}</span>
               </div>
               <div class="metrics-item">
                 <span class="metrics-label">Frame Time:</span>
-                <span class="metrics-value">
-                  {performanceMetrics()?.frameTime?.toFixed(2) || "0.00"}ms
-                </span>
+                <span class="metrics-value">{performanceMetrics()?.frameTime?.toFixed(2) || "0.00"}ms</span>
               </div>
               <div class="metrics-item">
                 <span class="metrics-label">Render Time:</span>
-                <span class="metrics-value">
-                  {performanceMetrics()?.renderTime?.toFixed(2) || "0.00"}ms
-                </span>
+                <span class="metrics-value">{performanceMetrics()?.renderTime?.toFixed(2) || "0.00"}ms</span>
               </div>
               <div class="metrics-item">
                 <span class="metrics-label">Update Time:</span>
-                <span class="metrics-value">
-                  {performanceMetrics()?.updateTime?.toFixed(2) || "0.00"}ms
-                </span>
+                <span class="metrics-value">{performanceMetrics()?.updateTime?.toFixed(2) || "0.00"}ms</span>
               </div>
               <div class="metrics-item">
                 <span class="metrics-label">Memory Usage:</span>
-                <span class="metrics-value">
-                  {performanceMetrics()?.memoryUsage?.toFixed(1) || "0.0"}MB
-                </span>
+                <span class="metrics-value">{performanceMetrics()?.memoryUsage?.toFixed(1) || "0.0"}MB</span>
               </div>
               <div class="metrics-item">
                 <span class="metrics-label">Throttled:</span>
-                <span
-                  class={`metrics-value ${performanceMetrics()?.isThrottled ? "throttled" : "normal"}`}
-                >
+                <span class={`metrics-value ${performanceMetrics()?.isThrottled ? "throttled" : "normal"}`}>
                   {performanceMetrics()?.isThrottled ? "Yes" : "No"}
                 </span>
               </div>
@@ -489,31 +425,19 @@ export const PerformanceDemo: Component = () => {
           <div class="optimization-descriptions">
             <div class="optimization-description">
               <h4>Adaptive Quality</h4>
-              <p>
-                Automatically adjusts quality level based on performance to
-                maintain target FPS.
-              </p>
+              <p>Automatically adjusts quality level based on performance to maintain target FPS.</p>
             </div>
             <div class="optimization-description">
               <h4>Spatial Culling</h4>
-              <p>
-                Reduces rendered points by culling objects outside the viewport
-                or at distance.
-              </p>
+              <p>Reduces rendered points by culling objects outside the viewport or at distance.</p>
             </div>
             <div class="optimization-description">
               <h4>Level of Detail (LOD)</h4>
-              <p>
-                Reduces detail for distant objects to improve performance
-                without visual impact.
-              </p>
+              <p>Reduces detail for distant objects to improve performance without visual impact.</p>
             </div>
             <div class="optimization-description">
               <h4>Update Throttling</h4>
-              <p>
-                Skips updates when performance is poor to maintain smooth
-                rendering.
-              </p>
+              <p>Skips updates when performance is poor to maintain smooth rendering.</p>
             </div>
           </div>
         </Card>

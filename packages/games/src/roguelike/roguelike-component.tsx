@@ -1,12 +1,6 @@
 // SolidJS component for the rogue-like game
 
-import {
-  Component,
-  createEffect,
-  createSignal,
-  onCleanup,
-  onMount,
-} from "solid-js";
+import { Component, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { RoguelikeGame } from "./roguelike-game";
 import { useI18n } from "reynard-i18n";
 
@@ -16,9 +10,7 @@ interface RoguelikeGameProps {
   className?: string;
 }
 
-export const RoguelikeGameComponent: Component<RoguelikeGameProps> = (
-  props,
-) => {
+export const RoguelikeGameComponent: Component<RoguelikeGameProps> = props => {
   const { t } = useI18n();
   let canvasRef: HTMLCanvasElement | undefined;
   let game: RoguelikeGame | null = null;
@@ -118,9 +110,7 @@ export const RoguelikeGameComponent: Component<RoguelikeGameProps> = (
                         game.start();
                         setIsLoading(false);
                       } catch (err) {
-                        setError(
-                          err instanceof Error ? err.message : "Unknown error",
-                        );
+                        setError(err instanceof Error ? err.message : "Unknown error");
                         setIsLoading(false);
                       }
                     }
@@ -160,24 +150,19 @@ export const RoguelikeGameComponent: Component<RoguelikeGameProps> = (
           <h3>{t("games.features")}</h3>
           <ul>
             <li>
-              🦊 <strong>{t("games.ecsArchitecture")}</strong> -{" "}
-              {t("games.builtWithReynardsECS")}
+              🦊 <strong>{t("games.ecsArchitecture")}</strong> - {t("games.builtWithReynardsECS")}
             </li>
             <li>
-              🏰 <strong>{t("games.proceduralGeneration")}</strong> -{" "}
-              {t("games.eachDungeonUniquelyGenerated")}
+              🏰 <strong>{t("games.proceduralGeneration")}</strong> - {t("games.eachDungeonUniquelyGenerated")}
             </li>
             <li>
-              👁️ <strong>{t("games.lineOfSight")}</strong> -{" "}
-              {t("games.realisticVisionAndExplorationMechanics")}
+              👁️ <strong>{t("games.lineOfSight")}</strong> - {t("games.realisticVisionAndExplorationMechanics")}
             </li>
             <li>
-              🤖 <strong>{t("games.aiEnemies")}</strong> -{" "}
-              {t("games.differentEnemyTypesWithUniqueBehaviors")}
+              🤖 <strong>{t("games.aiEnemies")}</strong> - {t("games.differentEnemyTypesWithUniqueBehaviors")}
             </li>
             <li>
-              🎨 <strong>{t("games.pixelArt")}</strong> -{" "}
-              {t("games.retroStyleRenderingWithCrispPixels")}
+              🎨 <strong>{t("games.pixelArt")}</strong> - {t("games.retroStyleRenderingWithCrispPixels")}
             </li>
           </ul>
         </div>

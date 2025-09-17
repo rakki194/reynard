@@ -2,13 +2,7 @@ import { createResource } from "solid-js";
 import { createRAGClient } from "./rag-client";
 
 // Import types
-import type {
-  RAGClientOptions,
-  RAGConfig,
-  RAGIndexingStatus,
-  RAGMetrics,
-  RAGQueryParams,
-} from "./rag-types";
+import type { RAGClientOptions, RAGConfig, RAGIndexingStatus, RAGMetrics, RAGQueryParams } from "./rag-types";
 
 // Re-export all types
 export * from "./rag-types";
@@ -26,14 +20,11 @@ export function useRAG(options: RAGClientOptions) {
   const client = createRAGClient(options);
 
   // Create reactive resources for config and status
-  const [config, { refetch: refetchConfig }] = createResource<RAGConfig>(() =>
-    client.getConfig(),
+  const [config, { refetch: refetchConfig }] = createResource<RAGConfig>(() => client.getConfig());
+  const [indexingStatus, { refetch: refetchIndexingStatus }] = createResource<RAGIndexingStatus>(() =>
+    client.getIndexingStatus()
   );
-  const [indexingStatus, { refetch: refetchIndexingStatus }] =
-    createResource<RAGIndexingStatus>(() => client.getIndexingStatus());
-  const [metrics, { refetch: refetchMetrics }] = createResource<RAGMetrics>(
-    () => client.getMetrics(),
-  );
+  const [metrics, { refetch: refetchMetrics }] = createResource<RAGMetrics>(() => client.getMetrics());
 
   return {
     ...client,

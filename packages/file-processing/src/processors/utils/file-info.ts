@@ -16,9 +16,7 @@ export interface FileInfo {
 /**
  * Get file information from File object or URL string
  */
-export async function getFileInfo(
-  file: File | string,
-): Promise<ProcessingResult<FileInfo>> {
+export async function getFileInfo(file: File | string): Promise<ProcessingResult<FileInfo>> {
   try {
     if (typeof file === "string") {
       // URL case - we can't get size without fetching
@@ -59,7 +57,5 @@ export async function getFileInfo(
  */
 export function getFileExtension(filename: string): string {
   const lastDotIndex = filename.lastIndexOf(".");
-  return lastDotIndex !== -1
-    ? filename.substring(lastDotIndex).toLowerCase()
-    : "";
+  return lastDotIndex !== -1 ? filename.substring(lastDotIndex).toLowerCase() : "";
 }

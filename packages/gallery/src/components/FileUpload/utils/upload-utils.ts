@@ -12,7 +12,7 @@ export async function uploadFile(
   file: File,
   uploadUrl: string,
   headers: Record<string, string> = {},
-  onProgress?: (progress: UploadProgress) => void,
+  onProgress?: (progress: UploadProgress) => void
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -20,7 +20,7 @@ export async function uploadFile(
     formData.append("file", file);
 
     // Set up progress tracking
-    xhr.upload.addEventListener("progress", (event) => {
+    xhr.upload.addEventListener("progress", event => {
       if (event.lengthComputable && onProgress) {
         const progress: UploadProgress = {
           loaded: event.loaded,
@@ -67,11 +67,11 @@ export async function uploadFilesSequentially(
   files: File[],
   uploadUrl: string,
   headers: Record<string, string> = {},
-  onProgress?: (fileIndex: number, progress: UploadProgress) => void,
+  onProgress?: (fileIndex: number, progress: UploadProgress) => void
 ): Promise<void> {
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
-    await uploadFile(file, uploadUrl, headers, (progress) => {
+    await uploadFile(file, uploadUrl, headers, progress => {
       onProgress?.(i, progress);
     });
   }
@@ -84,12 +84,12 @@ export async function uploadFilesParallel(
   files: File[],
   uploadUrl: string,
   headers: Record<string, string> = {},
-  onProgress?: (fileIndex: number, progress: UploadProgress) => void,
+  onProgress?: (fileIndex: number, progress: UploadProgress) => void
 ): Promise<void> {
   const uploadPromises = files.map((file, index) =>
-    uploadFile(file, uploadUrl, headers, (progress) => {
+    uploadFile(file, uploadUrl, headers, progress => {
       onProgress?.(index, progress);
-    }),
+    })
   );
 
   await Promise.all(uploadPromises);

@@ -14,9 +14,7 @@ export interface ServiceManagementSettingsProps {
   class?: string;
 }
 
-export const ServiceManagementSettings: Component<
-  ServiceManagementSettingsProps
-> = (props) => {
+export const ServiceManagementSettings: Component<ServiceManagementSettingsProps> = props => {
   const settings = props.settings || useSettings();
   const [isLoading, setIsLoading] = createSignal(false);
   const [isSaving, setIsSaving] = createSignal(false);
@@ -42,25 +40,13 @@ export const ServiceManagementSettings: Component<
     setIsLoading(true);
     try {
       setAutoRefresh(settings.getSetting("services.auto_refresh") || true);
-      setRefreshInterval(
-        settings.getSetting("services.refresh_interval") || 5000,
-      );
-      setEnableHealthChecks(
-        settings.getSetting("services.enable_health_checks") || true,
-      );
-      setHealthCheckInterval(
-        settings.getSetting("services.health_check_interval") || 30000,
-      );
-      setEnableAutoRestart(
-        settings.getSetting("services.enable_auto_restart") || false,
-      );
+      setRefreshInterval(settings.getSetting("services.refresh_interval") || 5000);
+      setEnableHealthChecks(settings.getSetting("services.enable_health_checks") || true);
+      setHealthCheckInterval(settings.getSetting("services.health_check_interval") || 30000);
+      setEnableAutoRestart(settings.getSetting("services.enable_auto_restart") || false);
       setRestartDelay(settings.getSetting("services.restart_delay") || 5000);
-      setMaxRestartAttempts(
-        settings.getSetting("services.max_restart_attempts") || 3,
-      );
-      setEnableNotifications(
-        settings.getSetting("services.enable_notifications") || true,
-      );
+      setMaxRestartAttempts(settings.getSetting("services.max_restart_attempts") || 3);
+      setEnableNotifications(settings.getSetting("services.enable_notifications") || true);
       setEnableLogging(settings.getSetting("services.enable_logging") || true);
       setLogLevel(settings.getSetting("services.log_level") || "info");
     } catch (error) {
@@ -75,27 +61,12 @@ export const ServiceManagementSettings: Component<
     try {
       await settings.setSetting("services.auto_refresh", autoRefresh());
       await settings.setSetting("services.refresh_interval", refreshInterval());
-      await settings.setSetting(
-        "services.enable_health_checks",
-        enableHealthChecks(),
-      );
-      await settings.setSetting(
-        "services.health_check_interval",
-        healthCheckInterval(),
-      );
-      await settings.setSetting(
-        "services.enable_auto_restart",
-        enableAutoRestart(),
-      );
+      await settings.setSetting("services.enable_health_checks", enableHealthChecks());
+      await settings.setSetting("services.health_check_interval", healthCheckInterval());
+      await settings.setSetting("services.enable_auto_restart", enableAutoRestart());
       await settings.setSetting("services.restart_delay", restartDelay());
-      await settings.setSetting(
-        "services.max_restart_attempts",
-        maxRestartAttempts(),
-      );
-      await settings.setSetting(
-        "services.enable_notifications",
-        enableNotifications(),
-      );
+      await settings.setSetting("services.max_restart_attempts", maxRestartAttempts());
+      await settings.setSetting("services.enable_notifications", enableNotifications());
       await settings.setSetting("services.enable_logging", enableLogging());
       await settings.setSetting("services.log_level", logLevel());
 
@@ -118,23 +89,17 @@ export const ServiceManagementSettings: Component<
     <div class={`service-management-settings ${props.class || ""}`}>
       <div class="settings-section">
         <h3>Service Management</h3>
-        <p class="settings-description">
-          Configure service monitoring, health checks, and management settings.
-        </p>
+        <p class="settings-description">Configure service monitoring, health checks, and management settings.</p>
 
         <Show when={isLoading()}>
-          <div class="loading-state">
-            Loading service management configuration...
-          </div>
+          <div class="loading-state">Loading service management configuration...</div>
         </Show>
 
         <Show when={!isLoading()}>
           {/* Monitoring Settings */}
           <div class="setting-group">
             <h4>Monitoring Settings</h4>
-            <p class="setting-description">
-              Configure service monitoring and status updates.
-            </p>
+            <p class="setting-description">Configure service monitoring and status updates.</p>
 
             <div class="setting-row">
               <Button
@@ -150,9 +115,7 @@ export const ServiceManagementSettings: Component<
                 label="Refresh Interval (ms)"
                 type="number"
                 value={refreshInterval()}
-                onChange={(value) =>
-                  setRefreshInterval(parseInt(value) || 5000)
-                }
+                onChange={value => setRefreshInterval(parseInt(value) || 5000)}
                 helperText="How often to refresh service status (in milliseconds)"
                 disabled={!autoRefresh()}
               />
@@ -172,9 +135,7 @@ export const ServiceManagementSettings: Component<
                 label="Health Check Interval (ms)"
                 type="number"
                 value={healthCheckInterval()}
-                onChange={(value) =>
-                  setHealthCheckInterval(parseInt(value) || 30000)
-                }
+                onChange={value => setHealthCheckInterval(parseInt(value) || 30000)}
                 helperText="How often to perform health checks (in milliseconds)"
                 disabled={!enableHealthChecks()}
               />
@@ -184,9 +145,7 @@ export const ServiceManagementSettings: Component<
           {/* Auto-restart Settings */}
           <div class="setting-group">
             <h4>Auto-restart Settings</h4>
-            <p class="setting-description">
-              Configure automatic service restart behavior.
-            </p>
+            <p class="setting-description">Configure automatic service restart behavior.</p>
 
             <div class="setting-row">
               <Button
@@ -203,9 +162,7 @@ export const ServiceManagementSettings: Component<
                   label="Restart Delay (ms)"
                   type="number"
                   value={restartDelay()}
-                  onChange={(e) =>
-                    setRestartDelay(parseInt(e.target.value) || 5000)
-                  }
+                  onChange={e => setRestartDelay(parseInt(e.target.value) || 5000)}
                   helperText="Delay before attempting to restart a failed service"
                 />
               </div>
@@ -215,9 +172,7 @@ export const ServiceManagementSettings: Component<
                   label="Max Restart Attempts"
                   type="number"
                   value={maxRestartAttempts()}
-                  onChange={(value) =>
-                    setMaxRestartAttempts(parseInt(value) || 3)
-                  }
+                  onChange={value => setMaxRestartAttempts(parseInt(value) || 3)}
                   helperText="Maximum number of restart attempts before giving up"
                 />
               </div>
@@ -227,9 +182,7 @@ export const ServiceManagementSettings: Component<
           {/* Notification Settings */}
           <div class="setting-group">
             <h4>Notification Settings</h4>
-            <p class="setting-description">
-              Configure service status notifications.
-            </p>
+            <p class="setting-description">Configure service status notifications.</p>
 
             <div class="setting-row">
               <Button
@@ -244,9 +197,7 @@ export const ServiceManagementSettings: Component<
           {/* Logging Settings */}
           <div class="setting-group">
             <h4>Logging Settings</h4>
-            <p class="setting-description">
-              Configure service management logging.
-            </p>
+            <p class="setting-description">Configure service management logging.</p>
 
             <div class="setting-row">
               <Button
@@ -274,9 +225,7 @@ export const ServiceManagementSettings: Component<
             <div class="config-summary">
               <div class="config-item">
                 <span class="config-label">Auto-refresh:</span>
-                <span class="config-value">
-                  {autoRefresh() ? "Enabled" : "Disabled"}
-                </span>
+                <span class="config-value">{autoRefresh() ? "Enabled" : "Disabled"}</span>
               </div>
               <div class="config-item">
                 <span class="config-label">Refresh Interval:</span>
@@ -284,9 +233,7 @@ export const ServiceManagementSettings: Component<
               </div>
               <div class="config-item">
                 <span class="config-label">Health Checks:</span>
-                <span class="config-value">
-                  {enableHealthChecks() ? "Enabled" : "Disabled"}
-                </span>
+                <span class="config-value">{enableHealthChecks() ? "Enabled" : "Disabled"}</span>
               </div>
               <div class="config-item">
                 <span class="config-label">Health Check Interval:</span>
@@ -294,9 +241,7 @@ export const ServiceManagementSettings: Component<
               </div>
               <div class="config-item">
                 <span class="config-label">Auto-restart:</span>
-                <span class="config-value">
-                  {enableAutoRestart() ? "Enabled" : "Disabled"}
-                </span>
+                <span class="config-value">{enableAutoRestart() ? "Enabled" : "Disabled"}</span>
               </div>
               <div class="config-item">
                 <span class="config-label">Max Restart Attempts:</span>
@@ -304,15 +249,11 @@ export const ServiceManagementSettings: Component<
               </div>
               <div class="config-item">
                 <span class="config-label">Notifications:</span>
-                <span class="config-value">
-                  {enableNotifications() ? "Enabled" : "Disabled"}
-                </span>
+                <span class="config-value">{enableNotifications() ? "Enabled" : "Disabled"}</span>
               </div>
               <div class="config-item">
                 <span class="config-label">Logging:</span>
-                <span class="config-value">
-                  {enableLogging() ? "Enabled" : "Disabled"}
-                </span>
+                <span class="config-value">{enableLogging() ? "Enabled" : "Disabled"}</span>
               </div>
               <div class="config-item">
                 <span class="config-label">Log Level:</span>
@@ -323,12 +264,7 @@ export const ServiceManagementSettings: Component<
 
           {/* Actions */}
           <div class="settings-actions">
-            <Button
-              variant="primary"
-              onClick={saveServiceSettings}
-              loading={isSaving()}
-              disabled={isSaving()}
-            >
+            <Button variant="primary" onClick={saveServiceSettings} loading={isSaving()} disabled={isSaving()}>
               Save Service Settings
             </Button>
           </div>

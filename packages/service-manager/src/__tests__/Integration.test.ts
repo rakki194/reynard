@@ -5,12 +5,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import {
-  ServiceManager,
-  BaseService,
-  ServiceStatus,
-  ServiceHealth,
-} from "../../../index.js";
+import { ServiceManager, BaseService, ServiceStatus, ServiceHealth } from "../../../index.js";
 import { FeatureManager, COMMON_FEATURES } from "reynard-features";
 import { FeatureServiceBridge } from "../../FeatureServiceBridge.js";
 
@@ -27,7 +22,7 @@ class MockFileProcessingService extends BaseService {
 
   async initialize(): Promise<void> {
     // Simulate quick initialization
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise(resolve => setTimeout(resolve, 10));
   }
 
   async shutdown(): Promise<void> {
@@ -50,7 +45,7 @@ class MockAuthService extends BaseService {
   }
 
   async initialize(): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise(resolve => setTimeout(resolve, 10));
   }
 
   async shutdown(): Promise<void> {
@@ -177,8 +172,7 @@ describe("Service-Feature Integration", () => {
     bridge.forceSync();
 
     // Check that the feature manager has been updated
-    const fileManagementFeature =
-      featureManager.getFeatureStatus("file-management");
+    const fileManagementFeature = featureManager.getFeatureStatus("file-management");
     expect(fileManagementFeature?.available).toBe(false); // Service not started
   });
 });

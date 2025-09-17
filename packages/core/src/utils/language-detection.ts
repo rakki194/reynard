@@ -53,9 +53,7 @@ const SPECIAL_FILENAME_MAP: Record<string, LanguageInfo> = {
 /**
  * Detect language from file extension
  */
-export function detectLanguageFromExtension(
-  filename: string,
-): LanguageDetectionResult {
+export function detectLanguageFromExtension(filename: string): LanguageDetectionResult {
   if (!filename || typeof filename !== "string") {
     return { language: null, confidence: 0, method: "fallback" };
   }
@@ -87,9 +85,7 @@ export function detectLanguageFromExtension(
 /**
  * Detect language from file content (basic heuristics)
  */
-export function detectLanguageFromContent(
-  content: string,
-): LanguageDetectionResult {
+export function detectLanguageFromContent(content: string): LanguageDetectionResult {
   if (!content || typeof content !== "string") {
     return { language: null, confidence: 0, method: "fallback" };
   }
@@ -142,15 +138,9 @@ export function detectLanguageFromContent(
 
   // Check for CSS
   if (content.includes("{") && content.includes("}") && content.includes(":")) {
-    const cssPatterns = [
-      /@import\s+/,
-      /@media\s+/,
-      /@keyframes\s+/,
-      /\.\w+\s*{/,
-      /#\w+\s*{/,
-    ];
+    const cssPatterns = [/@import\s+/, /@media\s+/, /@keyframes\s+/, /\.\w+\s*{/, /#\w+\s*{/];
 
-    if (cssPatterns.some((pattern) => pattern.test(content))) {
+    if (cssPatterns.some(pattern => pattern.test(content))) {
       return {
         language: WEB_LANGUAGES.css,
         confidence: 0.7,
@@ -160,11 +150,7 @@ export function detectLanguageFromContent(
   }
 
   // Check for JavaScript/TypeScript
-  if (
-    content.includes("function") ||
-    content.includes("const") ||
-    content.includes("let")
-  ) {
+  if (content.includes("function") || content.includes("const") || content.includes("let")) {
     if (content.includes("interface") || content.includes("type ")) {
       return {
         language: WEB_LANGUAGES.ts,
@@ -186,10 +172,7 @@ export function detectLanguageFromContent(
 /**
  * Get language info for a file
  */
-export function getLanguageInfo(
-  filename: string,
-  content?: string,
-): LanguageDetectionResult {
+export function getLanguageInfo(filename: string, content?: string): LanguageDetectionResult {
   // Try extension first
   const extensionResult = detectLanguageFromExtension(filename);
   if (extensionResult.language) {
@@ -217,10 +200,6 @@ export function getAllLanguages(): LanguageInfo[] {
 /**
  * Get languages by category
  */
-export function getLanguagesByCategory(
-  category: LanguageInfo["category"],
-): LanguageInfo[] {
-  return Object.values(LANGUAGE_MAP).filter(
-    (lang) => lang.category === category,
-  );
+export function getLanguagesByCategory(category: LanguageInfo["category"]): LanguageInfo[] {
+  return Object.values(LANGUAGE_MAP).filter(lang => lang.category === category);
 }

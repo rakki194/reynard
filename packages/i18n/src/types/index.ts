@@ -52,10 +52,7 @@ export type {
 export type { SettingsTranslations } from "../translations/types/settings-translations";
 
 // Import types needed for the main Translations interface
-import type {
-  CommonTranslations,
-  ThemeTranslations,
-} from "./core/common-types";
+import type { CommonTranslations, ThemeTranslations } from "./core/common-types";
 import type {
   CoreTranslations,
   ComponentTranslations,
@@ -85,11 +82,7 @@ export interface Translations {
 }
 
 // Import additional types for I18nModule
-import type {
-  LanguageCode,
-  Language,
-  TranslationFunction,
-} from "./core/common-types";
+import type { LanguageCode, Language, TranslationFunction } from "./core/common-types";
 
 // Enhanced I18n module interface with proper Translations type
 export interface I18nModule {

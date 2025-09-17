@@ -21,3 +21,8 @@ aiohttp
 pgvector
 argon2-cffi
 cryptography
+sentence-transformers
+transformers
+torch
+rank-bm25
+numpy

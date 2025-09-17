@@ -135,9 +135,7 @@ export function setupAITest() {
   };
 
   // Mock HTMLCanvasElement
-  global.HTMLCanvasElement = vi
-    .fn()
-    .mockImplementation(() => mockCanvas) as any;
+  global.HTMLCanvasElement = vi.fn().mockImplementation(() => mockCanvas) as any;
 
   // Mock Web Workers for AI processing
   global.Worker = vi.fn().mockImplementation(() => ({

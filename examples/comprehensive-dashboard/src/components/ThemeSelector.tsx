@@ -6,7 +6,7 @@ const ThemeSelector: Component = () => {
   const { theme, setTheme } = useTheme();
   const availableThemes = getAvailableThemes();
 
-  const themeOptions = availableThemes.map((themeConfig) => ({
+  const themeOptions = availableThemes.map(themeConfig => ({
     value: themeConfig.name,
     label: themeConfig.displayName,
   }));

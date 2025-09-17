@@ -44,7 +44,7 @@ export const ColorPicker: Component = () => {
           <input
             type="color"
             value={favoriteColor()}
-            onInput={(e) => handleColorChange(e.target.value)}
+            onInput={e => handleColorChange(e.target.value)}
             class="color-picker"
             title="Choose your favorite color"
           />

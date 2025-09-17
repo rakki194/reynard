@@ -36,24 +36,16 @@ interface Phyllotactic3DDemoLayoutProps {
     updateConfig: () => void;
     generate3DPattern: () => void;
     toggleAnimation: () => void;
-    handleCanvasReady: (
-      canvas: HTMLCanvasElement,
-      ctx: CanvasRenderingContext2D,
-    ) => void;
+    handleCanvasReady: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => void;
   };
 }
 
-export const Phyllotactic3DDemoLayout: Component<
-  Phyllotactic3DDemoLayoutProps
-> = (props) => {
+export const Phyllotactic3DDemoLayout: Component<Phyllotactic3DDemoLayoutProps> = props => {
   return (
     <div class="phyllotactic-3d-demo">
       <div class="demo-header">
         <h2>🦊 3D Phyllotactic System</h2>
-        <p>
-          Demonstrates 3D phyllotactic structures with rotation and stroboscopic
-          effects
-        </p>
+        <p>Demonstrates 3D phyllotactic structures with rotation and stroboscopic effects</p>
       </div>
 
       <div class="demo-content">
@@ -68,9 +60,7 @@ export const Phyllotactic3DDemoLayout: Component<
             spiralPitch={props.demo.spiralPitch}
             setSpiralPitch={props.demo.setSpiralPitch}
             enableSphericalProjection={props.demo.enableSphericalProjection}
-            setEnableSphericalProjection={
-              props.demo.setEnableSphericalProjection
-            }
+            setEnableSphericalProjection={props.demo.setEnableSphericalProjection}
             enableStroboscopic3D={props.demo.enableStroboscopic3D}
             setEnableStroboscopic3D={props.demo.setEnableStroboscopic3D}
             onConfigUpdate={props.demo.updateConfig}
@@ -89,9 +79,7 @@ export const Phyllotactic3DDemoLayout: Component<
             onToggleAnimation={props.demo.toggleAnimation}
           />
 
-          <Phyllotactic3DPerformancePanel
-            performanceMetrics={props.demo.performanceMetrics}
-          />
+          <Phyllotactic3DPerformancePanel performanceMetrics={props.demo.performanceMetrics} />
         </div>
 
         <div class="demo-visualization">

@@ -23,10 +23,7 @@ export function generateCSRFToken(): string {
 /**
  * Validate CSRF token with constant-time comparison
  */
-export function validateCSRFToken(
-  token: string,
-  expectedToken: string,
-): boolean {
+export function validateCSRFToken(token: string, expectedToken: string): boolean {
   if (!token && !expectedToken) {
     return true; // Both empty strings are equal
   }

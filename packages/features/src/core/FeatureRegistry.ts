@@ -4,14 +4,8 @@
  * Main feature registry implementation.
  */
 
-import type {
-  FeatureDefinition,
-  FeatureRegistry as IFeatureRegistry,
-} from "./types.js";
-import {
-  createFeatureRegistryCore,
-  FeatureRegistryCore,
-} from "./FeatureRegistryCore.js";
+import type { FeatureDefinition, FeatureRegistry as IFeatureRegistry } from "./types.js";
+import { createFeatureRegistryCore, FeatureRegistryCore } from "./FeatureRegistryCore.js";
 import {
   registerFeature,
   unregisterFeature,
@@ -86,7 +80,7 @@ export class FeatureRegistry implements IFeatureRegistry {
    */
   public getByPriority(priority: string): FeatureDefinition[] {
     const allFeatures = this.getAll();
-    return allFeatures.filter((feature) => feature.priority === priority);
+    return allFeatures.filter(feature => feature.priority === priority);
   }
 
   /**
@@ -94,9 +88,7 @@ export class FeatureRegistry implements IFeatureRegistry {
    */
   public getByTag(tag: string): FeatureDefinition[] {
     const allFeatures = this.getAll();
-    return allFeatures.filter(
-      (feature) => feature.tags?.includes(tag) ?? false,
-    );
+    return allFeatures.filter(feature => feature.tags?.includes(tag) ?? false);
   }
 
   /**
@@ -136,9 +128,9 @@ export class FeatureRegistry implements IFeatureRegistry {
    */
   public getStats() {
     const features = this.getAll();
-    const enabled = features.filter((f) => f.enabled).length;
-    const disabled = features.filter((f) => !f.enabled).length;
-    const categories = new Set(features.map((f) => f.category)).size;
+    const enabled = features.filter(f => f.enabled).length;
+    const disabled = features.filter(f => !f.enabled).length;
+    const categories = new Set(features.map(f => f.category)).size;
 
     return {
       total: features.length,

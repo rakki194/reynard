@@ -11,7 +11,7 @@ interface GameContainerProps {
   onBackToMenu: () => void;
 }
 
-export const GameContainer: Component<GameContainerProps> = (props) => {
+export const GameContainer: Component<GameContainerProps> = props => {
   return (
     <div class="game-container">
       <div class="game-header">

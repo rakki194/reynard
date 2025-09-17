@@ -55,13 +55,12 @@ async function validateTargetEnvironment(): Promise<void> {
   console.log("🎯 Validating target environment...");
 
   const backendUrl = process.env.BACKEND_URL || "http://localhost:8000";
-  const frontendUrl =
-    process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
+  const frontendUrl = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
 
   try {
     // Test backend connectivity
     const { stdout: backendTest } = await execAsync(
-      `curl -s -o /dev/null -w "%{http_code}" "${backendUrl}/health" || echo "000"`,
+      `curl -s -o /dev/null -w "%{http_code}" "${backendUrl}/health" || echo "000"`
     );
     if (backendTest.trim() === "200") {
       console.log("✅ Backend is accessible");
@@ -71,7 +70,7 @@ async function validateTargetEnvironment(): Promise<void> {
 
     // Test frontend connectivity
     const { stdout: frontendTest } = await execAsync(
-      `curl -s -o /dev/null -w "%{http_code}" "${frontendUrl}" || echo "000"`,
+      `curl -s -o /dev/null -w "%{http_code}" "${frontendUrl}" || echo "000"`
     );
     if (frontendTest.trim() === "200") {
       console.log("✅ Frontend is accessible");

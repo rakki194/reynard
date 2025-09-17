@@ -52,7 +52,7 @@ export function useThreeJSInitialization(props: ThreeJSVisualizationProps) {
         sceneComposable.renderer(),
         props.onControlsChange ? () => props.onControlsChange?.({}) : undefined,
         props.onCameraAnimationStart,
-        props.onCameraAnimationEnd,
+        props.onCameraAnimationEnd
       );
 
       // Create clock for animations
@@ -61,9 +61,7 @@ export function useThreeJSInitialization(props: ThreeJSVisualizationProps) {
       setIsLoading(false);
     } catch (err) {
       console.error("Failed to initialize Three.js scene:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to initialize 3D scene",
-      );
+      setError(err instanceof Error ? err.message : "Failed to initialize 3D scene");
       setIsLoading(false);
     }
   };

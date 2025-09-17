@@ -25,7 +25,7 @@ export class QueryStateManager {
    */
   getOrCreateQueryState<T extends Component[]>(
     componentTypes: ComponentType<T[number]>[],
-    filter: QueryFilter,
+    filter: QueryFilter
   ): QueryState<T> {
     const key = this.getQueryKey(componentTypes, filter);
 
@@ -47,10 +47,7 @@ export class QueryStateManager {
   /**
    * Updates a query state with new results.
    */
-  updateQueryState<T extends Component[]>(
-    state: QueryState<T>,
-    results: Entity[],
-  ): void {
+  updateQueryState<T extends Component[]>(state: QueryState<T>, results: Entity[]): void {
     state.cachedResults.length = 0;
     state.cachedResults.push(...results);
     state.lastUpdate = Date.now();
@@ -106,12 +103,9 @@ export class QueryStateManager {
   /**
    * Creates a query key for caching.
    */
-  private getQueryKey<T extends Component[]>(
-    componentTypes: ComponentType<T[number]>[],
-    filter: QueryFilter,
-  ): string {
+  private getQueryKey<T extends Component[]>(componentTypes: ComponentType<T[number]>[], filter: QueryFilter): string {
     const componentIds = componentTypes
-      .map((ct) => ct.id)
+      .map(ct => ct.id)
       .sort()
       .join(",");
     const filterKey = this.getFilterKey(filter);
@@ -127,36 +121,36 @@ export class QueryStateManager {
     if (filter.with) {
       parts.push(
         `with:${filter.with
-          .map((ct) => ct.id)
+          .map(ct => ct.id)
           .sort()
-          .join(",")}`,
+          .join(",")}`
       );
     }
 
     if (filter.without) {
       parts.push(
         `without:${filter.without
-          .map((ct) => ct.id)
+          .map(ct => ct.id)
           .sort()
-          .join(",")}`,
+          .join(",")}`
       );
     }
 
     if (filter.added) {
       parts.push(
         `added:${filter.added
-          .map((ct) => ct.id)
+          .map(ct => ct.id)
           .sort()
-          .join(",")}`,
+          .join(",")}`
       );
     }
 
     if (filter.changed) {
       parts.push(
         `changed:${filter.changed
-          .map((ct) => ct.id)
+          .map(ct => ct.id)
           .sort()
-          .join(",")}`,
+          .join(",")}`
       );
     }
 
@@ -174,9 +168,7 @@ export class QueryStateBuilder<T extends Component[]> {
   /**
    * Adds a component type to the query.
    */
-  with<U extends Component>(
-    componentType: ComponentType<U>,
-  ): QueryStateBuilder<[...T, U]> {
+  with<U extends Component>(componentType: ComponentType<U>): QueryStateBuilder<[...T, U]> {
     this.componentTypes.push(componentType as ComponentType<T[number]>);
     return this as unknown as QueryStateBuilder<[...T, U]>;
   }
@@ -193,10 +185,7 @@ export class QueryStateBuilder<T extends Component[]> {
    * Builds the query state.
    */
   build(manager: QueryStateManager): QueryState<T> {
-    return manager.getOrCreateQueryState(
-      this.componentTypes as ComponentType<T[number]>[],
-      this.filter,
-    );
+    return manager.getOrCreateQueryState(this.componentTypes as ComponentType<T[number]>[], this.filter);
   }
 }
 

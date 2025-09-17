@@ -247,7 +247,7 @@ describe("FrameRateMonitor", () => {
   describe("integration", () => {
     it("should work end-to-end with mocked animation frames", () => {
       let frameCallback: (() => void) | null = null;
-      mockRequestAnimationFrame.mockImplementation((callback) => {
+      mockRequestAnimationFrame.mockImplementation(callback => {
         frameCallback = callback;
         return 1;
       });

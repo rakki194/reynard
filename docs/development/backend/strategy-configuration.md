@@ -97,13 +97,7 @@ Get the current status of the strategy configuration system.
       "global_default_strategy": "lazy"
     },
     "available_strategies": ["eager", "lazy", "preload", "on_demand"],
-    "configuration_types": [
-      "global",
-      "package_specific",
-      "user_preference",
-      "auto_optimized",
-      "a_b_test"
-    ],
+    "configuration_types": ["global", "package_specific", "user_preference", "auto_optimized", "a_b_test"],
     "system_status": "active"
   }
 }

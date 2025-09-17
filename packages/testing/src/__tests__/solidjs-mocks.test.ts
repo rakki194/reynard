@@ -1,9 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import {
-  mockRouter,
-  mockContext,
-  createMockSolidResource,
-} from "../mocks/solidjs-mocks.js";
+import { mockRouter, mockContext, createMockSolidResource } from "../mocks/solidjs-mocks.js";
 
 describe("SolidJS Mocks", () => {
   beforeEach(() => {

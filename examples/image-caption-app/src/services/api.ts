@@ -40,7 +40,7 @@ export class CaptionApiService {
   async generateCaption(
     file: File,
     generatorName: string,
-    config: Record<string, any> = { threshold: 0.2, max_tags: 15 },
+    config: Record<string, any> = { threshold: 0.2, max_tags: 15 }
   ): Promise<CaptionResult> {
     const formData = new FormData();
     formData.append("file", file);
@@ -66,7 +66,7 @@ export class CaptionApiService {
   async batchGenerateCaptions(
     files: File[],
     generatorName: string,
-    config: Record<string, any> = { threshold: 0.2 },
+    config: Record<string, any> = { threshold: 0.2 }
   ): Promise<CaptionResult[]> {
     const results: CaptionResult[] = [];
 

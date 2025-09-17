@@ -17,15 +17,7 @@ export function ComponentsDemo() {
     { value: "option4", label: "Option 4" },
   ];
 
-  const buttonVariants = [
-    "primary",
-    "secondary",
-    "tertiary",
-    "ghost",
-    "danger",
-    "success",
-    "warning",
-  ] as const;
+  const buttonVariants = ["primary", "secondary", "tertiary", "ghost", "danger", "success", "warning"] as const;
 
   const buttonSizes = ["sm", "md", "lg"] as const;
 
@@ -46,11 +38,7 @@ export function ComponentsDemo() {
           <h4>Variants</h4>
           <div class="button-grid">
             <For each={buttonVariants}>
-              {(variant) => (
-                <Button variant={variant}>
-                  {variant.charAt(0).toUpperCase() + variant.slice(1)}
-                </Button>
-              )}
+              {variant => <Button variant={variant}>{variant.charAt(0).toUpperCase() + variant.slice(1)}</Button>}
             </For>
           </div>
         </div>
@@ -58,11 +46,7 @@ export function ComponentsDemo() {
         <div class="demo-subsection">
           <h4>Sizes</h4>
           <div class="button-grid">
-            <For each={buttonSizes}>
-              {(size) => (
-                <Button size={size}>{size.toUpperCase()} Button</Button>
-              )}
-            </For>
+            <For each={buttonSizes}>{size => <Button size={size}>{size.toUpperCase()} Button</Button>}</For>
           </div>
         </div>
 
@@ -91,11 +75,9 @@ export function ComponentsDemo() {
 
         <div class="card-grid">
           <For each={cardVariants}>
-            {(variant) => (
+            {variant => (
               <Card variant={variant} padding="md">
-                <h4>
-                  {variant.charAt(0).toUpperCase() + variant.slice(1)} Card
-                </h4>
+                <h4>{variant.charAt(0).toUpperCase() + variant.slice(1)} Card</h4>
                 <p>This is a {variant} card variant with medium padding.</p>
               </Card>
             )}
@@ -138,7 +120,7 @@ export function ComponentsDemo() {
             label="Basic Text Field"
             placeholder="Enter some text..."
             value={textValue()}
-            onInput={(e) => setTextValue(e.currentTarget.value)}
+            onInput={e => setTextValue(e.currentTarget.value)}
           />
 
           <TextField
@@ -180,11 +162,7 @@ export function ComponentsDemo() {
             }
           />
 
-          <TextField
-            label="Full Width"
-            placeholder="This field takes full width"
-            fullWidth
-          />
+          <TextField label="Full Width" placeholder="This field takes full width" fullWidth />
         </div>
       </Card>
 
@@ -198,7 +176,7 @@ export function ComponentsDemo() {
             placeholder="Choose an option..."
             options={selectOptions}
             value={selectValue()}
-            onChange={(e) => setSelectValue(e.currentTarget.value)}
+            onChange={e => setSelectValue(e.currentTarget.value)}
           />
 
           <Select
@@ -217,12 +195,7 @@ export function ComponentsDemo() {
             errorMessage="Please select a valid option"
           />
 
-          <Select
-            label="Loading State"
-            placeholder="Loading options..."
-            options={selectOptions}
-            loading
-          />
+          <Select label="Loading State" placeholder="Loading options..." options={selectOptions} loading />
 
           <Select
             label="With Icon"
@@ -252,12 +225,7 @@ export function ComponentsDemo() {
           </Button>
         </div>
 
-        <Modal
-          open={showModal()}
-          onClose={() => setShowModal(false)}
-          title="Demo Modal"
-          size="lg"
-        >
+        <Modal open={showModal()} onClose={() => setShowModal(false)} title="Demo Modal" size="lg">
           <div class="modal-content">
             <p>This is a demonstration of the Modal component.</p>
             <p>

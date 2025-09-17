@@ -57,12 +57,8 @@ describe("Color Utilities", () => {
       const darkResult = computeTagBackground("dark", "test");
 
       // Extract lightness values
-      const lightL = parseFloat(
-        lightResult.match(/oklch\(([\d.]+)%/)?.[1] || "0",
-      );
-      const darkL = parseFloat(
-        darkResult.match(/oklch\(([\d.]+)%/)?.[1] || "0",
-      );
+      const lightL = parseFloat(lightResult.match(/oklch\(([\d.]+)%/)?.[1] || "0");
+      const darkL = parseFloat(darkResult.match(/oklch\(([\d.]+)%/)?.[1] || "0");
 
       expect(darkL).toBeLessThan(lightL);
     });
@@ -87,16 +83,9 @@ describe("Color Utilities", () => {
 
   describe("computeHoverStyles", () => {
     it("should return valid hover styles for all themes", () => {
-      const themes: ThemeName[] = [
-        "dark",
-        "light",
-        "gray",
-        "banana",
-        "strawberry",
-        "peanut",
-      ];
+      const themes: ThemeName[] = ["dark", "light", "gray", "banana", "strawberry", "peanut"];
 
-      themes.forEach((theme) => {
+      themes.forEach(theme => {
         const styles = computeHoverStyles(theme);
         expect(styles).toHaveProperty("filter");
         expect(styles).toHaveProperty("transform");
@@ -106,16 +95,9 @@ describe("Color Utilities", () => {
 
   describe("computeAnimation", () => {
     it("should return valid animation names for all themes", () => {
-      const themes: ThemeName[] = [
-        "dark",
-        "light",
-        "gray",
-        "banana",
-        "strawberry",
-        "peanut",
-      ];
+      const themes: ThemeName[] = ["dark", "light", "gray", "banana", "strawberry", "peanut"];
 
-      themes.forEach((theme) => {
+      themes.forEach(theme => {
         const animation = computeAnimation(theme);
         expect(typeof animation).toBe("string");
         expect(animation.length).toBeGreaterThan(0);
@@ -167,7 +149,7 @@ describe("Color Utilities", () => {
 
     it("should generate valid OKLCH color strings", () => {
       const palette = generateColorPalette(3);
-      palette.forEach((color) => {
+      palette.forEach(color => {
         expect(color).toMatch(/^oklch\([\d.]+% [\d.]+ [\d.]+\)$/);
       });
     });

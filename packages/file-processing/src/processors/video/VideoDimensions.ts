@@ -20,7 +20,7 @@ export class VideoDimensions {
     sourceHeight: number,
     targetWidth: number,
     targetHeight: number,
-    maintainAspectRatio: boolean = true,
+    maintainAspectRatio: boolean = true
   ): DimensionResult {
     if (!maintainAspectRatio) {
       return {

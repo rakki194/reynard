@@ -4,10 +4,7 @@
  * Event handlers for draggable panels.
  */
 
-import type {
-  PanelPosition,
-  DraggablePanelCore,
-} from "./useDraggablePanelCore.js";
+import type { PanelPosition, DraggablePanelCore } from "./useDraggablePanelCore.js";
 import { createPointerDownHandler } from "./useDraggablePanelPointerDown.js";
 import { createPointerMoveHandler } from "./useDraggablePanelPointerMove.js";
 
@@ -24,14 +21,14 @@ export function createDraggablePanelHandlers(
   core: DraggablePanelCore,
   onDragStart?: (position: PanelPosition) => void,
   onDrag?: (position: PanelPosition) => void,
-  onDragEnd?: (position: PanelPosition) => void,
+  onDragEnd?: (position: PanelPosition) => void
 ): DraggablePanelHandlers {
   const pointerDownHandler = createPointerDownHandler(core, onDragStart);
   const pointerMoveHandler = createPointerMoveHandler(onDrag);
 
   const handlePointerUp = () => {
     const [, setDragState] = core.dragState;
-    setDragState((prev) => ({ ...prev, isDragging: false }));
+    setDragState(prev => ({ ...prev, isDragging: false }));
     onDragEnd?.(core.position[0]());
   };
 

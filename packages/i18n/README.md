@@ -319,11 +319,7 @@ getTurkishPlural("ev", forms); // "kitapler" (front vowel)
 #### Dynamic Translation Loading
 
 ```typescript
-import {
-  loadTranslations,
-  loadNamespace,
-  createOptimizedLoader,
-} from "reynard-i18n";
+import { loadTranslations, loadNamespace, createOptimizedLoader } from "reynard-i18n";
 
 // Load specific locale with caching
 const englishTranslations = await loadTranslations("en", true);
@@ -339,11 +335,7 @@ const optimizedTranslations = await loader.loadFull("en");
 #### Cache Management
 
 ```typescript
-import {
-  clearTranslationCache,
-  getCacheStats,
-  preloadTranslations,
-} from "reynard-i18n";
+import { clearTranslationCache, getCacheStats, preloadTranslations } from "reynard-i18n";
 
 // Clear cache for specific locale or all locales
 clearTranslationCache("en"); // Clear specific locale

@@ -11,7 +11,7 @@ interface EventLogProps {
   events: AnyAnnotationEvent[];
 }
 
-export const EventLog: Component<EventLogProps> = (props) => {
+export const EventLog: Component<EventLogProps> = props => {
   const getEventIcon = (eventType: string) => {
     if (eventType.includes("model_")) return "🤖";
     if (eventType.includes("caption_")) return "📝";
@@ -20,12 +20,9 @@ export const EventLog: Component<EventLogProps> = (props) => {
   };
 
   const getEventColor = (eventType: string) => {
-    if (eventType.includes("error") || eventType.includes("failed"))
-      return "error";
-    if (eventType.includes("completed") || eventType.includes("success"))
-      return "success";
-    if (eventType.includes("started") || eventType.includes("loading"))
-      return "info";
+    if (eventType.includes("error") || eventType.includes("failed")) return "error";
+    if (eventType.includes("completed") || eventType.includes("success")) return "success";
+    if (eventType.includes("started") || eventType.includes("loading")) return "info";
     return "default";
   };
 
@@ -40,17 +37,12 @@ export const EventLog: Component<EventLogProps> = (props) => {
         {props.events.length > 0 ? (
           <For each={props.events}>
             {(event, index) => (
-              <Card
-                class={`event-item ${getEventColor(event.type)}`}
-                padding="md"
-              >
+              <Card class={`event-item ${getEventColor(event.type)}`} padding="md">
                 <div class="event-header">
                   <div class="event-icon">{getEventIcon(event.type)}</div>
                   <div class="event-info">
                     <h4 class="event-type">{event.type}</h4>
-                    <span class="event-time">
-                      {new Date(event.timestamp).toLocaleString()}
-                    </span>
+                    <span class="event-time">{new Date(event.timestamp).toLocaleString()}</span>
                   </div>
                 </div>
 

@@ -14,22 +14,12 @@ const defaultProps = {
   enableKeyboard: true,
 };
 
-export const ContextMenu: Component<ContextMenuProps> = (props) => {
+export const ContextMenu: Component<ContextMenuProps> = props => {
   const merged = { ...defaultProps, ...props };
-  const [local] = splitProps(merged, [
-    "visible",
-    "x",
-    "y",
-    "items",
-    "showIcons",
-    "enableKeyboard",
-    "onClose",
-    "class",
-  ]);
+  const [local] = splitProps(merged, ["visible", "x", "y", "items", "showIcons", "enableKeyboard", "onClose", "class"]);
 
   // Main composable
-  const { state, handleItemClick, handleItemMouseEnter, handleItemMouseLeave } =
-    useContextMenu(local);
+  const { state, handleItemClick, handleItemMouseEnter, handleItemMouseLeave } = useContextMenu(local);
 
   // Refs
   let menuRef: HTMLDivElement | undefined;

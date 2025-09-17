@@ -19,20 +19,16 @@ export const createListCommand = (): Command => {
     .action((options: ListCommandOptions) => {
       console.log("🦊 Reynard Package i18n Configuration\n");
 
-      const packages = options.enabledOnly
-        ? getEnabledPackages()
-        : getEnabledPackages();
+      const packages = options.enabledOnly ? getEnabledPackages() : getEnabledPackages();
 
-      packages.forEach((pkg) => {
+      packages.forEach(pkg => {
         const status = pkg.enabled ? "✅" : "❌";
         console.log(`${status} ${pkg.name}`);
         console.log(`   Path: ${pkg.path}`);
         console.log(`   Enabled: ${pkg.enabled}`);
         if (pkg.enabled) {
           console.log(`   Namespaces: ${pkg.namespaces.join(", ")}`);
-          console.log(
-            `   Fail on hardcoded strings: ${pkg.failOnHardcodedStrings}`,
-          );
+          console.log(`   Fail on hardcoded strings: ${pkg.failOnHardcodedStrings}`);
           console.log(`   Validate completeness: ${pkg.validateCompleteness}`);
           console.log(`   Test RTL: ${pkg.testRTL}`);
         }
@@ -40,9 +36,7 @@ export const createListCommand = (): Command => {
       });
 
       console.log(`Total packages: ${packages.length}`);
-      console.log(
-        `Enabled packages: ${packages.filter((p) => p.enabled).length}`,
-      );
+      console.log(`Enabled packages: ${packages.filter(p => p.enabled).length}`);
     });
 
   return command;

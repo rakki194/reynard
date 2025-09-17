@@ -117,7 +117,7 @@ function MyComponent() {
 }
 \`\`\`
 `,
-  "markdown",
+  "markdown"
 );
 
 console.log(page.title); // "My Page"
@@ -136,11 +136,11 @@ function CustomDocRenderer(props) {
         content={props.content}
         metadata={props.metadata}
         type={props.type}
-        onNavigate={(path) => {
+        onNavigate={path => {
           // Handle navigation
           console.log("Navigate to:", path);
         }}
-        onCodeRun={(code) => {
+        onCodeRun={code => {
           // Handle code execution
           console.log("Run code:", code);
         }}
@@ -179,7 +179,7 @@ function ExamplePage() {
   return (
     <CodeExampleRenderer
       example={example}
-      onRun={(code) => {
+      onRun={code => {
         // Execute the code
         eval(code);
       }}
@@ -256,11 +256,11 @@ import { DocPlugin } from "reynard-docs-core";
 const customPlugin: DocPlugin = {
   name: "custom-plugin",
   version: "1.0.0",
-  install: (engine) => {
+  install: engine => {
     // Add custom functionality
     console.log("Custom plugin installed!");
   },
-  uninstall: (engine) => {
+  uninstall: engine => {
     // Cleanup
     console.log("Custom plugin uninstalled!");
   },

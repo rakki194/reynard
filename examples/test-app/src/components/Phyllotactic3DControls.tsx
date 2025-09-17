@@ -22,9 +22,7 @@ interface Phyllotactic3DControlsProps {
   onConfigUpdate: () => void;
 }
 
-export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (
-  props,
-) => {
+export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = props => {
   const handleSliderChange = (setter: (value: number) => void) => (e: any) => {
     setter(parseFloat(e.currentTarget.value));
     props.onConfigUpdate();
@@ -58,13 +56,7 @@ export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (
 
       <div class="control-group">
         <label>Height: {props.height()}</label>
-        <Slider
-          min={50}
-          max={300}
-          step={10}
-          value={props.height()}
-          onChange={handleSliderChange(props.setHeight)}
-        />
+        <Slider min={50} max={300} step={10} value={props.height()} onChange={handleSliderChange(props.setHeight)} />
       </div>
 
       <div class="control-group">
@@ -82,7 +74,7 @@ export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (
         <input
           type="checkbox"
           checked={props.enableSphericalProjection()}
-          onChange={(e) => {
+          onChange={e => {
             props.setEnableSphericalProjection(e.currentTarget.checked);
             props.onConfigUpdate();
           }}
@@ -94,7 +86,7 @@ export const Phyllotactic3DControls: Component<Phyllotactic3DControlsProps> = (
         <input
           type="checkbox"
           checked={props.enableStroboscopic3D()}
-          onChange={(e) => {
+          onChange={e => {
             props.setEnableStroboscopic3D(e.currentTarget.checked);
             props.onConfigUpdate();
           }}

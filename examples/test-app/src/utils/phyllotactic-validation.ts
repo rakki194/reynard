@@ -15,7 +15,7 @@ import type { SpiralConfig } from "./spiral-calculations";
 export function calculateStroboscopicEffect(
   rotationSpeed: number,
   _frameRate: number = 60,
-  goldenAngle: number = GOLDEN_ANGLE,
+  goldenAngle: number = GOLDEN_ANGLE
 ): {
   isStroboscopic: boolean;
   stroboscopicPhase: number;
@@ -85,7 +85,7 @@ export function validatePhyllotacticConfig(config: SpiralConfig): {
  */
 export function calculatePerformanceMetrics(
   pointCount: number,
-  frameRate: number = 60,
+  frameRate: number = 60
 ): {
   pointsPerFrame: number;
   estimatedFPS: number;

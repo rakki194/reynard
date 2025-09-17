@@ -41,9 +41,7 @@ export class EnhancedRenderer {
 
     // Sort by depth for 3D
     if (config.mode === "3d") {
-      optimizedPoints = [...optimizedPoints].sort(
-        (a, b) => (b.z || 0) - (a.z || 0),
-      );
+      optimizedPoints = [...optimizedPoints].sort((a, b) => (b.z || 0) - (a.z || 0));
     }
 
     this.renderOptimizedPoints(optimizedPoints, config);
@@ -81,26 +79,20 @@ export class EnhancedRenderer {
 
     if (projectedSize < 0.5) return;
 
-    this.ctx.fillStyle =
-      point.color || `hsl(${(index * 137.5) % 360}, 70%, 60%)`;
+    this.ctx.fillStyle = point.color || `hsl(${(index * 137.5) % 360}, 70%, 60%)`;
     this.ctx.beginPath();
     this.ctx.arc(projectedX, projectedY, projectedSize, 0, Math.PI * 2);
     this.ctx.fill();
   }
 
   private render2DPoint(point: any, size: number, index: number) {
-    this.ctx.fillStyle =
-      point.color || `hsl(${(index * 137.5) % 360}, 70%, 60%)`;
+    this.ctx.fillStyle = point.color || `hsl(${(index * 137.5) % 360}, 70%, 60%)`;
     this.ctx.beginPath();
     this.ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
     this.ctx.fill();
   }
 
-  private drawInfoOverlay(
-    originalPoints: any[],
-    optimizedPoints: any[],
-    config: RenderConfig,
-  ) {
+  private drawInfoOverlay(originalPoints: any[], optimizedPoints: any[], config: RenderConfig) {
     this.ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
     this.ctx.font = "16px Arial";
     this.ctx.fillText(`${config.mode.toUpperCase()} PATTERN`, 20, 30);

@@ -11,16 +11,8 @@ export interface BaseEvent3D {
 // Global type declarations for browser APIs
 declare global {
   interface EventTarget {
-    addEventListener(
-      type: string,
-      listener: any,
-      options?: boolean | any,
-    ): void;
-    removeEventListener(
-      type: string,
-      listener: any,
-      options?: boolean | any,
-    ): void;
+    addEventListener(type: string, listener: any, options?: boolean | any): void;
+    removeEventListener(type: string, listener: any, options?: boolean | any): void;
     dispatchEvent(event: Event): boolean;
   }
 }
@@ -150,12 +142,7 @@ export interface PointCloudSettings {
   enableCulling?: boolean;
   lodDistance?: number;
   lodLevels?: number;
-  colorMapping?:
-    | "similarity"
-    | "cluster"
-    | "importance"
-    | "confidence"
-    | "custom";
+  colorMapping?: "similarity" | "cluster" | "importance" | "confidence" | "custom";
   sizeMapping?: "importance" | "confidence" | "uniform";
   enableHighlighting?: boolean;
   highlightColor?: [number, number, number];
@@ -341,35 +328,21 @@ export interface ThreeJSVisualizationProps {
   maxDistance?: number;
   maxPolarAngle?: number;
   className?: string;
-  onSceneReady?: (
-    scene: unknown,
-    camera: unknown,
-    renderer: unknown,
-    controls: unknown,
-  ) => void;
-  onRender?: (
-    scene: unknown,
-    camera: unknown,
-    renderer: unknown,
-    controls: unknown,
-  ) => void;
+  onSceneReady?: (scene: unknown, camera: unknown, renderer: unknown, controls: unknown) => void;
+  onRender?: (scene: unknown, camera: unknown, renderer: unknown, controls: unknown) => void;
   onControlsChange?: (event: unknown) => void;
   enableCameraAnimations?: boolean;
   onCameraAnimationStart?: () => void;
   onCameraAnimationEnd?: () => void;
 }
 
-export interface PointCloudVisualizationProps
-  extends ThreeJSVisualizationProps {
+export interface PointCloudVisualizationProps extends ThreeJSVisualizationProps {
   points: Point3D[];
   settings?: PointCloudSettings;
   animationSettings?: AnimationSettings;
   searchIntegration?: SearchIntegrationSettings;
   onPointClick?: (point: Point3D, event: MouseEvent3D | TouchEvent3D) => void;
-  onPointHover?: (
-    point: Point3D | null,
-    event: MouseEvent3D | TouchEvent3D,
-  ) => void;
+  onPointHover?: (point: Point3D | null, event: MouseEvent3D | TouchEvent3D) => void;
   onSelectionChange?: (selectedPoints: Point3D[]) => void;
   onSearchIntegrationReady?: (data: unknown) => void;
 }

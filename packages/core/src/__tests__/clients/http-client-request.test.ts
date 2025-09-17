@@ -3,12 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  HTTPClient,
-  HTTPClientConfig,
-  RequestOptions,
-  mockFetch,
-} from "../http-client-setup";
+import { HTTPClient, HTTPClientConfig, RequestOptions, mockFetch } from "../http-client-setup";
 import { t } from "../../../utils/optional-i18n";
 
 describe("HTTPClient Request Methods", () => {
@@ -62,7 +57,7 @@ describe("HTTPClient Request Methods", () => {
             "X-Custom": "value",
             Authorization: "Bearer test-key",
           }),
-        }),
+        })
       );
 
       expect(result).toEqual({
@@ -97,7 +92,7 @@ describe("HTTPClient Request Methods", () => {
         "https://api.example.com/test",
         expect.not.objectContaining({
           body: expect.any(String),
-        }),
+        })
       );
     });
   });
@@ -127,7 +122,7 @@ describe("HTTPClient Request Methods", () => {
         expect.objectContaining({
           method: "POST",
           body: JSON.stringify({ name: "test" }),
-        }),
+        })
       );
 
       expect(result).toEqual({
@@ -150,9 +145,7 @@ describe("HTTPClient Request Methods", () => {
         timeout: 1000,
       };
 
-      await expect(httpClient.request(options)).rejects.toThrow(
-        "Request timeout",
-      );
+      await expect(httpClient.request(options)).rejects.toThrow("Request timeout");
     });
 
     it("should handle HTTP error responses", async () => {
@@ -170,9 +163,7 @@ describe("HTTPClient Request Methods", () => {
         endpoint: "/nonexistent",
       };
 
-      await expect(httpClient.request(options)).rejects.toThrow(
-        "HTTP 404: Not Found",
-      );
+      await expect(httpClient.request(options)).rejects.toThrow("HTTP 404: Not Found");
     });
   });
 });

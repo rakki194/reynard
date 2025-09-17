@@ -25,9 +25,7 @@ export interface ThreeJSInitializerResult {
   pointCloud3D: PointCloud3D;
 }
 
-export async function initializeThreeJS(
-  config: ThreeJSInitializerConfig,
-): Promise<ThreeJSInitializerResult> {
+export async function initializeThreeJS(config: ThreeJSInitializerConfig): Promise<ThreeJSInitializerResult> {
   const { width, height, backgroundColor, container } = config;
 
   // Use Reynard 3D composable for Three.js setup

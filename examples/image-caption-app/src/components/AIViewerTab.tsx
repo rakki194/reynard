@@ -32,7 +32,7 @@ const convertToFileItem = (image: ImageItem): FileItem => ({
   },
 });
 
-export const AIViewerTab: Component<AIViewerTabProps> = (props) => {
+export const AIViewerTab: Component<AIViewerTabProps> = props => {
   const { notify } = useNotifications();
 
   return (

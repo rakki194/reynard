@@ -42,11 +42,7 @@ async function generateSecurityReport(): Promise<void> {
 
       const report = generateReportContent(results);
 
-      const reportPath = path.join(
-        process.cwd(),
-        "penetration-results",
-        "security-report.md",
-      );
+      const reportPath = path.join(process.cwd(), "penetration-results", "security-report.md");
       fs.writeFileSync(reportPath, report);
 
       console.log("✅ Security report generated");
@@ -65,14 +61,14 @@ async function generateSecurityReport(): Promise<void> {
 function generateReportContent(results: any): string {
   const timestamp = new Date().toISOString();
   const targetUrl = process.env.BACKEND_URL || "http://localhost:8000";
-  
+
   const testStats = analyzeTestResults(results);
-  
+
   return buildSecurityReport({
     timestamp,
     targetUrl,
     testStats,
-    results
+    results,
   });
 }
 
@@ -84,14 +80,19 @@ function analyzeTestResults(results: any) {
   const passedTests = results.suites?.filter((suite: any) => suite.ok).length || 0;
   const failedTests = totalTests - passedTests;
   const totalVulnerabilities = 0; // Placeholder - would need actual parsing
-  
+
   return { totalTests, passedTests, failedTests, totalVulnerabilities };
 }
 
 /**
  * Build the complete security report
  */
-function buildSecurityReport({ timestamp, targetUrl, testStats, results }: {
+function buildSecurityReport({
+  timestamp,
+  targetUrl,
+  testStats,
+  results,
+}: {
   timestamp: string;
   targetUrl: string;
   testStats: any;
@@ -104,10 +105,10 @@ function buildSecurityReport({ timestamp, targetUrl, testStats, results }: {
     generateSecurityAssessment(testStats.totalVulnerabilities),
     generateRecommendations(testStats.totalVulnerabilities),
     generateTestDetails(results),
-    generateMethodology(targetUrl)
+    generateMethodology(targetUrl),
   ];
-  
-  return sections.join('\n\n');
+
+  return sections.join("\n\n");
 }
 
 /**
@@ -261,9 +262,7 @@ async function cleanupTemporaryFiles(): Promise<void> {
   try {
     // Remove temporary Python files
     await execAsync('find . -name "*.pyc" -delete');
-    await execAsync(
-      'find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true',
-    );
+    await execAsync('find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true');
 
     // Remove temporary test files
     await execAsync("rm -f /tmp/fenrir_*.json 2>/dev/null || true");
@@ -285,9 +284,7 @@ async function archiveResults(): Promise<void> {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     const archiveName = `penetration-results-${timestamp}.tar.gz`;
 
-    await execAsync(
-      `tar -czf ${archiveName} penetration-results/ 2>/dev/null || true`,
-    );
+    await execAsync(`tar -czf ${archiveName} penetration-results/ 2>/dev/null || true`);
 
     if (fs.existsSync(archiveName)) {
       console.log(`✅ Results archived: ${archiveName}`);

@@ -46,31 +46,15 @@ export class PixelArtRenderer {
    */
   drawPixel(x: number, y: number, color: OKLCHColor): void {
     this.ctx.fillStyle = this.oklchToCanvasColor(color);
-    this.ctx.fillRect(
-      x * this.pixelSize,
-      y * this.pixelSize,
-      this.pixelSize,
-      this.pixelSize,
-    );
+    this.ctx.fillRect(x * this.pixelSize, y * this.pixelSize, this.pixelSize, this.pixelSize);
   }
 
   /**
    * Draw a rectangle with OKLCH color
    */
-  drawRect(
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    color: OKLCHColor,
-  ): void {
+  drawRect(x: number, y: number, width: number, height: number, color: OKLCHColor): void {
     this.ctx.fillStyle = this.oklchToCanvasColor(color);
-    this.ctx.fillRect(
-      x * this.pixelSize,
-      y * this.pixelSize,
-      width * this.pixelSize,
-      height * this.pixelSize,
-    );
+    this.ctx.fillRect(x * this.pixelSize, y * this.pixelSize, width * this.pixelSize, height * this.pixelSize);
   }
 
   /**

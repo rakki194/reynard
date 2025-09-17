@@ -21,8 +21,7 @@ export interface DataProcessorConfig {
  * Process datasets with enhanced color generation
  */
 export function processDatasets(config: DataProcessorConfig): Dataset[] {
-  const { datasets, useOKLCH, colorTheme, colorGenerator, visualization } =
-    config;
+  const { datasets, useOKLCH, colorTheme, colorGenerator, visualization } = config;
 
   return datasets.map((dataset, index) => {
     let backgroundColor: string;
@@ -36,8 +35,7 @@ export function processDatasets(config: DataProcessorConfig): Dataset[] {
     } else if (useOKLCH) {
       // Use OKLCH color generation from visualization engine
       const colors = visualization.generateColors(datasets.length);
-      backgroundColor =
-        colors[index]?.replace("1)", "0.6)") || `rgba(54, 162, 235, 0.6)`;
+      backgroundColor = colors[index]?.replace("1)", "0.6)") || `rgba(54, 162, 235, 0.6)`;
       borderColor = colors[index] || "rgba(54, 162, 235, 1)";
     } else {
       // Use default colors
@@ -49,9 +47,7 @@ export function processDatasets(config: DataProcessorConfig): Dataset[] {
         "rgba(153, 102, 255, 1)",
         "rgba(255, 159, 64, 1)",
       ];
-      backgroundColor =
-        defaultColors[index]?.replace("1)", "0.6)") ||
-        `rgba(54, 162, 235, 0.6)`;
+      backgroundColor = defaultColors[index]?.replace("1)", "0.6)") || `rgba(54, 162, 235, 0.6)`;
       borderColor = defaultColors[index] || "rgba(54, 162, 235, 1)";
     }
 
@@ -84,11 +80,7 @@ export function createChartData(labels: string[], datasets: Dataset[]) {
 /**
  * Update chart data incrementally for real-time updates
  */
-export function updateChartDataIncremental(
-  chart: any,
-  labels: string[],
-  datasets: Dataset[],
-) {
+export function updateChartDataIncremental(chart: any, labels: string[], datasets: Dataset[]) {
   // Update labels directly
   if (labels && labels.length > 0) {
     chart.data.labels = [...labels];

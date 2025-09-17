@@ -29,9 +29,7 @@ describe("StreamingMarkdownParser", () => {
     });
 
     it("should parse paragraphs correctly", () => {
-      const result = parseMarkdown(
-        "This is a paragraph.\n\nThis is another paragraph.",
-      );
+      const result = parseMarkdown("This is a paragraph.\n\nThis is another paragraph.");
 
       expect(result.nodes).toHaveLength(2);
       expect(result.nodes[0].type).toBe("paragraph");
@@ -88,14 +86,11 @@ describe("StreamingMarkdownParser", () => {
 
       expect(result.nodes).toHaveLength(1);
       expect(result.nodes[0].type).toBe("blockquote");
-      expect(result.nodes[0].content).toBe(
-        "This is a blockquote\nwith multiple lines",
-      );
+      expect(result.nodes[0].content).toBe("This is a blockquote\nwith multiple lines");
     });
 
     it("should parse tables correctly", () => {
-      const content =
-        "| Header 1 | Header 2 |\n|----------|----------|\n| Cell 1   | Cell 2   |";
+      const content = "| Header 1 | Header 2 |\n|----------|----------|\n| Cell 1   | Cell 2   |";
       const result = parseMarkdown(content);
 
       expect(result.nodes).toHaveLength(1);
@@ -117,8 +112,7 @@ describe("StreamingMarkdownParser", () => {
 
   describe("Thinking Section Parsing", () => {
     it("should parse thinking sections correctly", () => {
-      const content =
-        "<think>\nThis is thinking content\n</think>\n\nThis is regular content.";
+      const content = "<think>\nThis is thinking content\n</think>\n\nThis is regular content.";
       const result = parseMarkdown(content);
 
       expect(result.hasThinking).toBe(true);
@@ -139,8 +133,7 @@ describe("StreamingMarkdownParser", () => {
     });
 
     it("should handle multiple thinking sections", () => {
-      const content =
-        "<think>First thought</think>\n\nContent here.\n\n<think>Second thought</think>";
+      const content = "<think>First thought</think>\n\nContent here.\n\n<think>Second thought</think>";
       const result = parseMarkdown(content);
 
       expect(result.thinking).toHaveLength(2);
@@ -162,11 +155,7 @@ describe("StreamingMarkdownParser", () => {
 
   describe("Streaming Functionality", () => {
     it("should handle streaming chunks correctly", () => {
-      const chunks = [
-        "# Heading\n\nPara",
-        "graph content\n\n- List ",
-        "item 1\n- List item 2",
-      ];
+      const chunks = ["# Heading\n\nPara", "graph content\n\n- List ", "item 1\n- List item 2"];
 
       let result;
       for (const chunk of chunks) {
@@ -181,10 +170,7 @@ describe("StreamingMarkdownParser", () => {
     });
 
     it("should handle streaming thinking sections", () => {
-      const chunks = [
-        "<think>\nThinking",
-        " content here\n</think>\n\nRegular content",
-      ];
+      const chunks = ["<think>\nThinking", " content here\n</think>\n\nRegular content"];
 
       let result;
       for (const chunk of chunks) {
@@ -235,7 +221,7 @@ describe("StreamingMarkdownParser", () => {
       const result = parseMarkdown(content);
 
       expect(result.html).toContain(
-        '<a href="https://example.com" target="_blank" rel="noopener noreferrer">Link text</a>',
+        '<a href="https://example.com" target="_blank" rel="noopener noreferrer">Link text</a>'
       );
     });
 
@@ -259,8 +245,7 @@ describe("StreamingMarkdownParser", () => {
     });
 
     it("should continue parsing after errors", () => {
-      const content =
-        "# Good heading\n```\nBad code block\n\n## Another heading";
+      const content = "# Good heading\n```\nBad code block\n\n## Another heading";
       const result = parseMarkdown(content);
 
       expect(result.nodes.length).toBeGreaterThan(1);
@@ -311,14 +296,11 @@ describe("StreamingMarkdownParser", () => {
     });
 
     it("should generate semantic HTML", () => {
-      const content =
-        "# Title\n\nParagraph with **bold** text.\n\n- List item\n\n> Quote";
+      const content = "# Title\n\nParagraph with **bold** text.\n\n- List item\n\n> Quote";
       const result = parseMarkdown(content);
 
       expect(result.html).toContain("<h1>Title</h1>");
-      expect(result.html).toContain(
-        "<p>Paragraph with <strong>bold</strong> text.</p>",
-      );
+      expect(result.html).toContain("<p>Paragraph with <strong>bold</strong> text.</p>");
       expect(result.html).toContain("<ul><li>List item</li></ul>");
       expect(result.html).toContain("<blockquote>Quote</blockquote>");
     });

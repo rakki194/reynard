@@ -76,12 +76,7 @@ function AuthContent() {
 
                 <Show
                   when={authMode() === "login"}
-                  fallback={
-                    <RegisterForm
-                      onRegister={handleRegister}
-                      loading={isLoading()}
-                    />
-                  }
+                  fallback={<RegisterForm onRegister={handleRegister} loading={isLoading()} />}
                 >
                   <LoginForm onLogin={handleLogin} loading={isLoading()} />
                 </Show>
@@ -93,15 +88,11 @@ function AuthContent() {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
             <div class="p-6">
-              <h2 class="text-lg font-semibold mb-4">
-                {t("auth.profile.title")}
-              </h2>
+              <h2 class="text-lg font-semibold mb-4">{t("auth.profile.title")}</h2>
               <div class="space-y-3">
                 <div>
                   <span class="font-medium">{t("auth.profile.name")}:</span>
-                  <span class="ml-2">
-                    {user()?.fullName || user()?.username || "N/A"}
-                  </span>
+                  <span class="ml-2">{user()?.fullName || user()?.username || "N/A"}</span>
                 </div>
                 <div>
                   <span class="font-medium">{t("auth.profile.email")}:</span>
@@ -114,9 +105,7 @@ function AuthContent() {
                 <div>
                   <span class="font-medium">{t("auth.profile.joinDate")}:</span>
                   <span class="ml-2">
-                    {user()?.createdAt
-                      ? new Date(user()!.createdAt).toLocaleDateString()
-                      : "N/A"}
+                    {user()?.createdAt ? new Date(user()!.createdAt).toLocaleDateString() : "N/A"}
                   </span>
                 </div>
               </div>
@@ -125,38 +114,22 @@ function AuthContent() {
 
           <Card>
             <div class="p-6">
-              <h2 class="text-lg font-semibold mb-4">
-                {t("auth.session.title")}
-              </h2>
+              <h2 class="text-lg font-semibold mb-4">{t("auth.session.title")}</h2>
               <div class="space-y-3">
                 <div>
                   <span class="font-medium">{t("auth.session.status")}:</span>
-                  <span class="ml-2 text-green-600">
-                    {t("auth.session.active")}
-                  </span>
+                  <span class="ml-2 text-green-600">{t("auth.session.active")}</span>
                 </div>
                 <div>
-                  <span class="font-medium">
-                    {t("auth.session.lastLogin")}:
-                  </span>
-                  <span class="ml-2">
-                    {user()?.lastLogin?.toLocaleString() || "N/A"}
-                  </span>
+                  <span class="font-medium">{t("auth.session.lastLogin")}:</span>
+                  <span class="ml-2">{user()?.lastLogin?.toLocaleString() || "N/A"}</span>
                 </div>
                 <div>
-                  <span class="font-medium">
-                    {t("auth.session.tokenExpiry")}:
-                  </span>
-                  <span class="ml-2">
-                    {user()?.lastLogin?.toLocaleString() || "N/A"}
-                  </span>
+                  <span class="font-medium">{t("auth.session.tokenExpiry")}:</span>
+                  <span class="ml-2">{user()?.lastLogin?.toLocaleString() || "N/A"}</span>
                 </div>
                 <div class="pt-4">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => notify(t("auth.session.refreshed"), "info")}
-                  >
+                  <Button variant="secondary" size="sm" onClick={() => notify(t("auth.session.refreshed"), "info")}>
                     {t("auth.session.refreshToken")}
                   </Button>
                 </div>
@@ -167,36 +140,23 @@ function AuthContent() {
 
         <Card>
           <div class="p-6">
-            <h2 class="text-lg font-semibold mb-4">
-              {t("auth.security.title")}
-            </h2>
+            <h2 class="text-lg font-semibold mb-4">{t("auth.security.title")}</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div class="text-center">
                 <div class="text-2xl font-bold text-green-600">✓</div>
-                <div class="text-sm font-medium">
-                  {t("auth.security.emailVerified")}
-                </div>
+                <div class="text-sm font-medium">{t("auth.security.emailVerified")}</div>
               </div>
               <div class="text-center">
                 <div class="text-2xl font-bold text-blue-600">🔒</div>
-                <div class="text-sm font-medium">
-                  {t("auth.security.strongPassword")}
-                </div>
+                <div class="text-sm font-medium">{t("auth.security.strongPassword")}</div>
               </div>
               <div class="text-center">
                 <div class="text-2xl font-bold text-yellow-600">⚠️</div>
-                <div class="text-sm font-medium">
-                  {t("auth.security.twoFactorDisabled")}
-                </div>
+                <div class="text-sm font-medium">{t("auth.security.twoFactorDisabled")}</div>
               </div>
             </div>
             <div class="flex justify-center mt-6">
-              <Button
-                variant="primary"
-                onClick={() =>
-                  notify(t("auth.security.settingsOpened"), "info")
-                }
-              >
+              <Button variant="primary" onClick={() => notify(t("auth.security.settingsOpened"), "info")}>
                 {t("auth.security.manageSettings")}
               </Button>
             </div>

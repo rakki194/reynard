@@ -48,12 +48,7 @@ export class SpriteRenderer {
   /**
    * Draw a sprite with custom palette (for hue shifting effects)
    */
-  drawSpriteWithPalette(
-    sprite: PixelSprite,
-    x: number,
-    y: number,
-    customPalette: OKLCHColor[],
-  ): void {
+  drawSpriteWithPalette(sprite: PixelSprite, x: number, y: number, customPalette: OKLCHColor[]): void {
     for (let row = 0; row < sprite.height; row++) {
       for (let col = 0; col < sprite.width; col++) {
         const pixelValue = sprite.pixels[row][col];
@@ -72,14 +67,8 @@ export class SpriteRenderer {
   /**
    * Draw a sprite with hue shifting applied
    */
-  drawSpriteWithHueShift(
-    sprite: PixelSprite,
-    x: number,
-    y: number,
-    hueShift: number,
-    intensity: number = 1.0,
-  ): void {
-    const shiftedPalette = sprite.palette.map((color) => ({
+  drawSpriteWithHueShift(sprite: PixelSprite, x: number, y: number, hueShift: number, intensity: number = 1.0): void {
+    const shiftedPalette = sprite.palette.map(color => ({
       l: color.l,
       c: color.c,
       h: (color.h + hueShift * intensity + 360) % 360,

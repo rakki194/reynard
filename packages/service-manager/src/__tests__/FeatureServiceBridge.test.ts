@@ -5,12 +5,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import {
-  ServiceManager,
-  BaseService,
-  ServiceStatus,
-  ServiceHealth,
-} from "../../../index.js";
+import { ServiceManager, BaseService, ServiceStatus, ServiceHealth } from "../../../index.js";
 import { FeatureManager, COMMON_FEATURES } from "reynard-features";
 import { FeatureServiceBridge } from "../../FeatureServiceBridge.js";
 
@@ -30,7 +25,7 @@ class MockService extends BaseService {
 
   async initialize(): Promise<void> {
     // Simulate quick initialization
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise(resolve => setTimeout(resolve, 10));
     this._mockStatus = ServiceStatus.RUNNING;
     this._mockHealth = ServiceHealth.HEALTHY;
   }

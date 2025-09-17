@@ -59,7 +59,9 @@ class FoundationStyleGenerator(NameGenerator):
 
         base_name = self._get_random_spirit_name(spirit)
         suffix = random.choice(self.foundation_suffixes.get_suffixes())  # nosec B311
-        generation = random.choice(self.generation_numbers.get_numbers(spirit))  # nosec B311
+        generation = random.choice(
+            self.generation_numbers.get_numbers(spirit)
+        )  # nosec B311
 
         return f"{base_name}-{suffix}-{generation}"
 
@@ -97,7 +99,9 @@ class HybridStyleGenerator(NameGenerator):
 
         base_name = self._get_random_spirit_name(spirit)
         reference = random.choice(self.mythological_refs.get_references())  # nosec B311
-        designation = random.choice(self.special_designations.get_designations())  # nosec B311
+        designation = random.choice(
+            self.special_designations.get_designations()
+        )  # nosec B311
 
         return f"{base_name}-{reference}-{designation}"
 
@@ -155,8 +159,12 @@ class ScientificStyleGenerator(NameGenerator):
         # Note: spirit parameter is kept for API consistency but not used in scientific style
         _ = spirit  # Suppress unused parameter warning
 
-        scientific_prefix = random.choice(self.scientific_prefixes.get_prefixes())  # nosec B311
-        scientific_suffix = random.choice(self.scientific_suffixes.get_suffixes())  # nosec B311
+        scientific_prefix = random.choice(
+            self.scientific_prefixes.get_prefixes()
+        )  # nosec B311
+        scientific_suffix = random.choice(
+            self.scientific_suffixes.get_suffixes()
+        )  # nosec B311
         classification = random.choice(
             self.scientific_classifications.get_classifications()
         )  # nosec B311

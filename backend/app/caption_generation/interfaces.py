@@ -6,8 +6,9 @@ This module defines the abstract interfaces that all caption generators must imp
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-from .types import CaptionType, ModelCategory
+from typing import Any
+
+from .types import CaptionType
 
 
 class CaptionGenerator(ABC):
@@ -92,7 +93,7 @@ class CaptionGenerator(ABC):
 
     @property
     @abstractmethod
-    def config_schema(self) -> Dict[str, Any]:
+    def config_schema(self) -> dict[str, Any]:
         """
         JSON Schema for configuration options.
 

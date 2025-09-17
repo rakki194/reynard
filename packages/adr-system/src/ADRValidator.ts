@@ -62,9 +62,7 @@ export class ADRValidator {
 
     try {
       const files = await readdir(this.adrDirectory);
-      const adrFiles = files.filter(
-        (file) => file.endsWith(".md") && file.match(/^\d{3}-/),
-      );
+      const adrFiles = files.filter(file => file.endsWith(".md") && file.match(/^\d{3}-/));
 
       for (const file of adrFiles) {
         const filePath = join(this.adrDirectory, file);
@@ -95,11 +93,7 @@ export class ADRValidator {
       if (trimmedLine.startsWith("## ")) {
         // Save previous section
         if (currentSection && sectionContent.length > 0) {
-          this.setSectionContent(
-            adr,
-            currentSection,
-            sectionContent.join("\n"),
-          );
+          this.setSectionContent(adr, currentSection, sectionContent.join("\n"));
         }
 
         currentSection = trimmedLine.substring(3).toLowerCase();
@@ -120,11 +114,7 @@ export class ADRValidator {
   /**
    * Set section content in ADR object
    */
-  private setSectionContent(
-    adr: Partial<ADRDocument>,
-    section: string,
-    content: string,
-  ): void {
+  private setSectionContent(adr: Partial<ADRDocument>, section: string, content: string): void {
     switch (section) {
       case "status":
         adr.status = this.extractStatus(content);
@@ -151,15 +141,7 @@ export class ADRValidator {
     const statusMatch = content.match(/\*\*(.*?)\*\*/);
     if (statusMatch) {
       const status = statusMatch[1].toLowerCase();
-      if (
-        [
-          "proposed",
-          "accepted",
-          "rejected",
-          "superseded",
-          "deprecated",
-        ].includes(status)
-      ) {
+      if (["proposed", "accepted", "rejected", "superseded", "deprecated"].includes(status)) {
         return status as ADRStatus;
       }
     }
@@ -194,12 +176,7 @@ export class ADRValidator {
         const warnings: string[] = [];
         const suggestions: string[] = [];
 
-        const requiredSections = [
-          "status",
-          "context",
-          "decision",
-          "consequences",
-        ];
+        const requiredSections = ["status", "context", "decision", "consequences"];
 
         for (const section of requiredSections) {
           if (!content.toLowerCase().includes(`## ${section}`)) {
@@ -221,10 +198,7 @@ export class ADRValidator {
 
         if (!adr.status) {
           errors.push("ADR must have a status");
-        } else if (
-          adr.status === "proposed" &&
-          content.includes("[To be filled")
-        ) {
+        } else if (adr.status === "proposed" && content.includes("[To be filled")) {
           warnings.push("Proposed ADR contains placeholder text");
         }
 
@@ -241,27 +215,18 @@ export class ADRValidator {
         const suggestions: string[] = [];
 
         // Check for placeholder text
-        if (
-          content.includes("[To be filled") ||
-          content.includes("[To be defined")
-        ) {
-          warnings.push(
-            "ADR contains placeholder text that should be completed",
-          );
+        if (content.includes("[To be filled") || content.includes("[To be defined")) {
+          warnings.push("ADR contains placeholder text that should be completed");
         }
 
         // Check for minimum content length
         if (content.length < 500) {
-          warnings.push(
-            "ADR appears to be too short - consider adding more detail",
-          );
+          warnings.push("ADR appears to be too short - consider adding more detail");
         }
 
         // Check for TODO items
         if (content.includes("- [ ]")) {
-          suggestions.push(
-            "ADR contains TODO items - consider completing them",
-          );
+          suggestions.push("ADR contains TODO items - consider completing them");
         }
 
         return { errors, warnings, suggestions };
@@ -296,13 +261,8 @@ export class ADRValidator {
         const warnings: string[] = [];
         const suggestions: string[] = [];
 
-        if (
-          !content.includes("### Positive") ||
-          !content.includes("### Negative")
-        ) {
-          errors.push(
-            "Consequences section must include both positive and negative outcomes",
-          );
+        if (!content.includes("### Positive") || !content.includes("### Negative")) {
+          errors.push("Consequences section must include both positive and negative outcomes");
         }
 
         if (!content.includes("### Risks and Mitigations")) {
@@ -325,10 +285,7 @@ export class ADRValidator {
           warnings.push("Consider adding an implementation plan section");
         }
 
-        if (
-          content.includes("## Implementation Plan") &&
-          !content.includes("- [ ]")
-        ) {
+        if (content.includes("## Implementation Plan") && !content.includes("- [ ]")) {
           suggestions.push("Implementation plan should include specific tasks");
         }
 
@@ -348,13 +305,8 @@ export class ADRValidator {
           warnings.push("Consider adding a review and updates section");
         }
 
-        if (
-          content.includes("## Review and Updates") &&
-          !content.includes("**Review Date**")
-        ) {
-          suggestions.push(
-            "Review section should include a specific review date",
-          );
+        if (content.includes("## Review and Updates") && !content.includes("**Review Date**")) {
+          suggestions.push("Review section should include a specific review date");
         }
 
         return { errors, warnings, suggestions };
@@ -367,7 +319,7 @@ interface ValidationRule {
   name: string;
   validate: (
     adr: Partial<ADRDocument>,
-    content: string,
+    content: string
   ) => {
     errors: string[];
     warnings: string[];

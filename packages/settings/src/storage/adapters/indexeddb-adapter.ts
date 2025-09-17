@@ -11,11 +11,7 @@ export class IndexedDBAdapter implements StorageAdapter {
   private prefix: string;
   private db: IDBDatabase | null = null;
 
-  constructor(
-    dbName = "reynard_settings",
-    storeName = "settings",
-    prefix = "",
-  ) {
+  constructor(dbName = "reynard_settings", storeName = "settings", prefix = "") {
     this.dbName = dbName;
     this.storeName = storeName;
     this.prefix = prefix;
@@ -42,7 +38,7 @@ export class IndexedDBAdapter implements StorageAdapter {
         resolve(this.db);
       };
 
-      request.onupgradeneeded = (event) => {
+      request.onupgradeneeded = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains(this.storeName)) {
           db.createObjectStore(this.storeName);
@@ -119,7 +115,7 @@ export class IndexedDBAdapter implements StorageAdapter {
           return;
         }
 
-        keys.forEach((key) => {
+        keys.forEach(key => {
           const request = store.delete(targetPrefix + key);
           request.onerror = () => reject(request.error);
           request.onsuccess = () => {
@@ -145,8 +141,8 @@ export class IndexedDBAdapter implements StorageAdapter {
         request.onsuccess = () => {
           const targetPrefix = this.prefix + (prefix || "");
           const keys = (request.result as string[])
-            .filter((key) => key.startsWith(targetPrefix))
-            .map((key) => key.substring(this.prefix.length));
+            .filter(key => key.startsWith(targetPrefix))
+            .map(key => key.substring(this.prefix.length));
           resolve(keys);
         };
       });

@@ -3,21 +3,10 @@
  * Built with Reynard framework featuring gamification, real-time collaboration, and AI-powered features
  */
 
-import {
-  Component,
-  createSignal,
-  For,
-  createResource,
-  Show,
-  createEffect,
-} from "solid-js";
+import { Component, createSignal, For, createResource, Show, createEffect } from "solid-js";
 import { Router, Route, Navigate } from "@solidjs/router";
 import { ReynardProvider, useTheme } from "reynard-themes";
-import {
-  NotificationsProvider,
-  useNotifications,
-  createNotificationsModule,
-} from "reynard-core";
+import { NotificationsProvider, useNotifications, createNotificationsModule } from "reynard-core";
 import { AuthProvider, useAuth } from "reynard-auth";
 import { Button, Modal, Tabs, TabPanel, Card } from "reynard-components";
 import { CodeEditor } from "reynard-monaco";
@@ -83,9 +72,7 @@ export type { User, Achievement, Notebook, Note };
 const App: Component = () => {
   const [user, setUser] = createSignal<User | null>(null);
   const [notebooks, setNotebooks] = createSignal<Notebook[]>([]);
-  const [currentNotebook, setCurrentNotebook] = createSignal<Notebook | null>(
-    null,
-  );
+  const [currentNotebook, setCurrentNotebook] = createSignal<Notebook | null>(null);
   const [currentNote, setCurrentNote] = createSignal<Note | null>(null);
   const [showGamification, setShowGamification] = createSignal(false);
 
@@ -98,7 +85,7 @@ const App: Component = () => {
       notify("Logged out successfully", "info");
     },
     notify: (message, type) => notify(message, type),
-    navigate: (path) => (window.location.href = path),
+    navigate: path => (window.location.href = path),
   });
 
   // Load user data when authenticated
@@ -130,11 +117,7 @@ const App: Component = () => {
   };
 
   // Create new notebook
-  const createNotebook = async (
-    title: string,
-    description?: string,
-    color = "#0078D4",
-  ) => {
+  const createNotebook = async (title: string, description?: string, color = "#0078D4") => {
     try {
       const response = await authFetch("/api/notebooks", {
         method: "POST",
@@ -144,7 +127,7 @@ const App: Component = () => {
 
       if (response.ok) {
         const newNotebook = await response.json();
-        setNotebooks((prev) => [...prev, newNotebook]);
+        setNotebooks(prev => [...prev, newNotebook]);
         notify("Notebook created successfully!", "success");
         return newNotebook;
       }
@@ -155,11 +138,7 @@ const App: Component = () => {
   };
 
   // Create new note
-  const createNote = async (
-    notebookId: string,
-    title: string,
-    content = "",
-  ) => {
+  const createNote = async (notebookId: string, title: string, content = "") => {
     try {
       const response = await authFetch("/api/notes", {
         method: "POST",
@@ -193,11 +172,7 @@ const App: Component = () => {
                     <span class="user-xp">{user()!.experiencePoints} XP</span>
                   </div>
                 </Show>
-                <Button
-                  onClick={() => setShowGamification(!showGamification())}
-                  variant="secondary"
-                  size="sm"
-                >
+                <Button onClick={() => setShowGamification(!showGamification())} variant="secondary" size="sm">
                   🏆 Achievements
                 </Button>
                 <ThemeToggle />

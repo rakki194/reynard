@@ -12,7 +12,7 @@ interface ToolControlsPanelProps {
   onHide?: () => void;
 }
 
-export const ToolControlsPanel: Component<ToolControlsPanelProps> = (props) => {
+export const ToolControlsPanel: Component<ToolControlsPanelProps> = props => {
   return (
     <FloatingPanelAdvanced
       id="tool-controls-panel"
@@ -33,10 +33,7 @@ export const ToolControlsPanel: Component<ToolControlsPanelProps> = (props) => {
       <div class="floating-panel-body">
         <h3>Drawing Tools</h3>
         <p>Select your drawing tool</p>
-        <ToolControls
-          selectedTool={props.selectedTool}
-          onToolChange={props.onToolChange}
-        />
+        <ToolControls selectedTool={props.selectedTool} onToolChange={props.onToolChange} />
       </div>
     </FloatingPanelAdvanced>
   );

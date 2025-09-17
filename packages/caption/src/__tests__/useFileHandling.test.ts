@@ -6,15 +6,11 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { useFileHandling } from "../../useFileHandling";
-import type {
-  MultiModalFile,
-  MediaType,
-  GalleryView,
-} from "../../../types/MultiModalTypes";
+import type { MultiModalFile, MediaType, GalleryView } from "../../../types/MultiModalTypes";
 
 // Mock the file processing utilities
 vi.mock("../../utils/FileProcessingUtils", () => ({
-  calculateFileCounts: vi.fn((files) => {
+  calculateFileCounts: vi.fn(files => {
     if (!files || files.length === 0) {
       return {
         all: 0,
@@ -53,14 +49,7 @@ describe("useFileHandling", () => {
 
   describe("Initialization", () => {
     it("should initialize with default values", () => {
-      const {
-        files,
-        selectedFile,
-        currentView,
-        filterType,
-        filteredFiles,
-        fileCounts,
-      } = useFileHandling();
+      const { files, selectedFile, currentView, filterType, filteredFiles, fileCounts } = useFileHandling();
 
       expect(files()).toEqual([]);
       expect(selectedFile()).toBe(null);
@@ -96,7 +85,7 @@ describe("useFileHandling", () => {
         "list",
         mockOnFileSelect,
         mockOnFileRemove,
-        mockOnFileModify,
+        mockOnFileModify
       );
 
       expect(files()).toEqual(initialFiles);
@@ -141,7 +130,7 @@ describe("useFileHandling", () => {
       ];
 
       setFiles(initialFiles);
-      setFiles((prev) => [
+      setFiles(prev => [
         ...prev,
         {
           id: "2",
@@ -179,11 +168,7 @@ describe("useFileHandling", () => {
     });
 
     it("should handle file selection with callback", () => {
-      const { handleFileSelect } = useFileHandling(
-        [],
-        "grid",
-        mockOnFileSelect,
-      );
+      const { handleFileSelect } = useFileHandling([], "grid", mockOnFileSelect);
       const file: MultiModalFile = {
         id: "1",
         name: "test.jpg",
@@ -237,8 +222,7 @@ describe("useFileHandling", () => {
         },
       ];
 
-      const { setFiles, filterType, setFilterType, filteredFiles } =
-        useFileHandling();
+      const { setFiles, filterType, setFilterType, filteredFiles } = useFileHandling();
       setFiles(files);
 
       // Test all filter
@@ -318,11 +302,7 @@ describe("useFileHandling", () => {
         },
       ];
 
-      const {
-        setFiles,
-        handleFileRemove,
-        files: getFiles,
-      } = useFileHandling([], "grid", undefined, mockOnFileRemove);
+      const { setFiles, handleFileRemove, files: getFiles } = useFileHandling([], "grid", undefined, mockOnFileRemove);
       setFiles(files);
 
       handleFileRemove("1");
@@ -343,8 +323,7 @@ describe("useFileHandling", () => {
         modifiedAt: new Date(),
       };
 
-      const { setFiles, setSelectedFile, handleFileRemove, selectedFile } =
-        useFileHandling([file]);
+      const { setFiles, setSelectedFile, handleFileRemove, selectedFile } = useFileHandling([file]);
 
       setSelectedFile(file);
       expect(selectedFile()).toBe(file);
@@ -370,7 +349,7 @@ describe("useFileHandling", () => {
         "grid",
         undefined,
         undefined,
-        mockOnFileModify,
+        mockOnFileModify
       );
       const newContent = { caption: "New caption" };
 

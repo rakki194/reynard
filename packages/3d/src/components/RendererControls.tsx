@@ -6,7 +6,7 @@ interface RendererControlsProps {
   onConfigChange: (newConfig: EmbeddingRenderingConfig) => void;
 }
 
-export const RendererControls: Component<RendererControlsProps> = (props) => {
+export const RendererControls: Component<RendererControlsProps> = props => {
   const updateConfiguration = (updates: Partial<EmbeddingRenderingConfig>) => {
     const newConfig = { ...props.config, ...updates };
     props.onConfigChange(newConfig);

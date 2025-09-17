@@ -60,9 +60,7 @@ export interface HTTPMiddleware {
   /**
    * Process request before sending
    */
-  request?: (
-    config: HTTPRequestOptions,
-  ) => HTTPRequestOptions | Promise<HTTPRequestOptions>;
+  request?: (config: HTTPRequestOptions) => HTTPRequestOptions | Promise<HTTPRequestOptions>;
 
   /**
    * Process response after receiving
@@ -77,11 +75,7 @@ export interface HTTPMiddleware {
   /**
    * Process request completion (success or error)
    */
-  complete?: (
-    config: HTTPRequestOptions,
-    response?: HTTPResponse,
-    error?: HTTPError,
-  ) => void | Promise<void>;
+  complete?: (config: HTTPRequestOptions, response?: HTTPResponse, error?: HTTPError) => void | Promise<void>;
 }
 
 export interface HTTPMiddlewareContext {
@@ -158,9 +152,7 @@ export interface RequestMetrics {
 // ============================================================================
 
 export interface HTTPInterceptor {
-  request?: (
-    config: HTTPRequestOptions,
-  ) => HTTPRequestOptions | Promise<HTTPRequestOptions>;
+  request?: (config: HTTPRequestOptions) => HTTPRequestOptions | Promise<HTTPRequestOptions>;
   response?: (response: HTTPResponse) => HTTPResponse | Promise<HTTPResponse>;
   error?: (error: HTTPError) => HTTPError | Promise<HTTPError>;
 }

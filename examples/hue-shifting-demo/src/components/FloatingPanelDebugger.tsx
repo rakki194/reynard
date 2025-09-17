@@ -23,9 +23,7 @@ export const FloatingPanelDebugger: Component = () => {
     return (
       <button
         onClick={() => {
-          console.log(
-            "🦦> Debug panels button clicked, setting visible to true",
-          );
+          console.log("🦦> Debug panels button clicked, setting visible to true");
           setIsVisible(true);
         }}
         style={{
@@ -95,8 +93,7 @@ export const FloatingPanelDebugger: Component = () => {
       </div>
 
       <div style={{ "margin-bottom": "8px" }}>
-        <strong>Any Panel Visible:</strong>{" "}
-        {floatingPanels.isAnyPanelVisible() ? "✅ Yes" : "❌ No"}
+        <strong>Any Panel Visible:</strong> {floatingPanels.isAnyPanelVisible() ? "✅ Yes" : "❌ No"}
       </div>
 
       <div style={{ "margin-bottom": "8px" }}>
@@ -111,15 +108,10 @@ export const FloatingPanelDebugger: Component = () => {
           onClick={() => {
             console.log("🦦> Debug: Show Color button clicked");
             floatingPanels.showPanel("colorPicker");
-            console.log(
-              "🦦> Debug: Panel states after show color:",
-              floatingPanels.panelStates(),
-            );
+            console.log("🦦> Debug: Panel states after show color:", floatingPanels.panelStates());
           }}
           style={{
-            background: floatingPanels.panelStates().colorPicker
-              ? "#00ff00"
-              : "#333",
+            background: floatingPanels.panelStates().colorPicker ? "#00ff00" : "#333",
             color: "white",
             border: "none",
             padding: "4px 8px",
@@ -133,9 +125,7 @@ export const FloatingPanelDebugger: Component = () => {
         <button
           onClick={() => floatingPanels.showPanel("toolControls")}
           style={{
-            background: floatingPanels.panelStates().toolControls
-              ? "#00ff00"
-              : "#333",
+            background: floatingPanels.panelStates().toolControls ? "#00ff00" : "#333",
             color: "white",
             border: "none",
             padding: "4px 8px",
@@ -149,9 +139,7 @@ export const FloatingPanelDebugger: Component = () => {
         <button
           onClick={() => floatingPanels.showPanel("canvasSize")}
           style={{
-            background: floatingPanels.panelStates().canvasSize
-              ? "#00ff00"
-              : "#333",
+            background: floatingPanels.panelStates().canvasSize ? "#00ff00" : "#333",
             color: "white",
             border: "none",
             padding: "4px 8px",
@@ -165,9 +153,7 @@ export const FloatingPanelDebugger: Component = () => {
         <button
           onClick={() => floatingPanels.showPanel("materialControls")}
           style={{
-            background: floatingPanels.panelStates().materialControls
-              ? "#00ff00"
-              : "#333",
+            background: floatingPanels.panelStates().materialControls ? "#00ff00" : "#333",
             color: "white",
             border: "none",
             padding: "4px 8px",

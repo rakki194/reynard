@@ -10,15 +10,10 @@ interface Phyllotactic3DCanvasProps {
   currentPoints: () => any[];
   height: () => number;
   spiralPitch: () => number;
-  onCanvasReady: (
-    canvas: HTMLCanvasElement,
-    ctx: CanvasRenderingContext2D,
-  ) => void;
+  onCanvasReady: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => void;
 }
 
-export const Phyllotactic3DCanvas: Component<Phyllotactic3DCanvasProps> = (
-  props,
-) => {
+export const Phyllotactic3DCanvas: Component<Phyllotactic3DCanvasProps> = props => {
   let canvas: HTMLCanvasElement | undefined;
 
   onMount(() => {

@@ -13,9 +13,7 @@ export interface PasteHandler {
 /**
  * Creates paste event handler for file upload
  */
-export function createPasteHandler(
-  onFilesDropped: (files: File[]) => void,
-): PasteHandler {
+export function createPasteHandler(onFilesDropped: (files: File[]) => void): PasteHandler {
   /**
    * Handle paste events for file uploads
    */
@@ -50,9 +48,7 @@ export function createPasteHandler(
 /**
  * Composable for managing paste event listeners
  */
-export function createPasteHandlerWithCleanup(
-  onFilesDropped: (files: File[]) => void,
-) {
+export function createPasteHandlerWithCleanup(onFilesDropped: (files: File[]) => void) {
   const pasteHandler = createPasteHandler(onFilesDropped);
 
   // Set up event listeners on mount

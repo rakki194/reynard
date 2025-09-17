@@ -16,7 +16,7 @@ export interface ProcessingOptions {
   [key: string]: unknown;
 }
 
-export type FileType = "markdown" | "python" | "typescript" | "javascript";
+export type FileType = "markdown" | "python" | "typescript" | "javascript" | "json" | "yaml" | "css" | "html";
 export type Priority = "low" | "normal" | "high";
 
 export interface QueueStatus {

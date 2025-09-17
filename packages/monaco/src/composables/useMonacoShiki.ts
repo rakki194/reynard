@@ -15,11 +15,7 @@ import type { MonacoShikiOptions } from "../types";
 
 export interface UseMonacoShikiReturn {
   state: () => any;
-  highlightCode: (
-    code: string,
-    lang?: string,
-    theme?: string,
-  ) => Promise<string>;
+  highlightCode: (code: string, lang?: string, theme?: string) => Promise<string>;
   syncThemes: (monacoTheme: string, shikiTheme: string) => void;
   updateLanguage: (lang: string) => void;
   updateTheme: (theme: string) => void;
@@ -29,18 +25,12 @@ export interface UseMonacoShikiReturn {
   currentLang: () => string;
 }
 
-export const useMonacoShiki = (
-  options: MonacoShikiOptions = {},
-): UseMonacoShikiReturn => {
+export const useMonacoShiki = (options: MonacoShikiOptions = {}): UseMonacoShikiReturn => {
   // Create core state
   const stateManager = createMonacoShikiState(options);
 
   // Create operations
-  const operations = createMonacoShikiOperations(
-    stateManager.state,
-    stateManager.updateState,
-    options,
-  );
+  const operations = createMonacoShikiOperations(stateManager.state, stateManager.updateState, options);
 
   // Initialize Shiki (currently unused but kept for future integration)
   // const _shiki = useShiki({
@@ -63,11 +53,7 @@ export const useMonacoShiki = (
   });
 
   // Enhanced highlight function
-  const highlightCode = async (
-    code: string,
-    lang?: string,
-    theme?: string,
-  ): Promise<string> => {
+  const highlightCode = async (code: string, lang?: string, theme?: string): Promise<string> => {
     const currentState = stateManager.state();
     const targetLang = lang || currentState.currentLang;
     const targetTheme = theme || currentState.currentTheme;

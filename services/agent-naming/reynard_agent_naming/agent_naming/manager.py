@@ -9,10 +9,10 @@ Follows the 100-line axiom and modular architecture principles.
 import json
 import logging
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from .generator import ReynardRobotNamer
-from .types import AnimalSpirit, NamingStyle, NamingConfig
+from .types import AnimalSpirit, NamingConfig, NamingStyle
 
 logger = logging.getLogger(__name__)
 

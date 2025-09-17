@@ -12,7 +12,7 @@ import { UnionFindNode, UnionFindStats } from "./union-find-types";
 export class UnionFindSetOperations {
   constructor(
     private nodes: UnionFindNode[],
-    private stats: { compressionCount: number; unionCount: number },
+    private stats: { compressionCount: number; unionCount: number }
   ) {}
 
   /**
@@ -31,9 +31,7 @@ export class UnionFindSetOperations {
    */
   getSetSize(x: number): number {
     const root = this.find(x);
-    return this.nodes.filter(
-      (node) => this.find(this.nodes.indexOf(node)) === root,
-    ).length;
+    return this.nodes.filter(node => this.find(this.nodes.indexOf(node)) === root).length;
   }
 
   /**
@@ -41,9 +39,7 @@ export class UnionFindSetOperations {
    */
   getSetMembers(x: number): number[] {
     const root = this.find(x);
-    return this.nodes
-      .map((_, index) => index)
-      .filter((index) => this.find(index) === root);
+    return this.nodes.map((_, index) => index).filter(index => this.find(index) === root);
   }
 
   /**

@@ -30,16 +30,12 @@ export interface EmbeddingDashboardActions {
   setMaxSamples: (samples: number) => void;
 }
 
-export function useEmbeddingDashboard(
-  isVisible?: () => boolean,
-): EmbeddingDashboardState & EmbeddingDashboardActions {
+export function useEmbeddingDashboard(isVisible?: () => boolean): EmbeddingDashboardState & EmbeddingDashboardActions {
   const dataLoader = useEmbeddingDataLoader();
   const reduction = useEmbeddingReduction();
 
   // State
-  const [activeTab, setActiveTab] = createSignal<
-    "distribution" | "pca" | "quality" | "3d"
-  >("distribution");
+  const [activeTab, setActiveTab] = createSignal<"distribution" | "pca" | "quality" | "3d">("distribution");
 
   // Load embedding data when component mounts
   createEffect(() => {

@@ -38,9 +38,7 @@ export interface I18nCIResult {
 /**
  * Run i18n checks in CI environment
  */
-export async function runI18nCIChecks(
-  config: I18nCIConfig,
-): Promise<I18nCIResult> {
+export async function runI18nCIChecks(config: I18nCIConfig): Promise<I18nCIResult> {
   const startTime = Date.now();
   const result: I18nCIResult = {
     success: true,
@@ -75,9 +73,7 @@ export async function runI18nCIChecks(
       result.missingTranslations = translationResult.missingCount;
 
       if (translationResult.missingCount > 0) {
-        result.errors.push(
-          `Found ${translationResult.missingCount} missing translations`,
-        );
+        result.errors.push(`Found ${translationResult.missingCount} missing translations`);
         result.success = false;
       }
     }
@@ -101,9 +97,7 @@ export async function runI18nCIChecks(
       result.coverage = coverageResult.percentage;
 
       if (coverageResult.percentage < 80) {
-        result.warnings.push(
-          `i18n coverage is below 80% (${coverageResult.percentage}%)`,
-        );
+        result.warnings.push(`i18n coverage is below 80% (${coverageResult.percentage}%)`);
       }
     }
 
@@ -123,9 +117,7 @@ export async function runI18nCIChecks(
     }
   } catch (error) {
     result.success = false;
-    result.errors.push(
-      `CI check failed: ${error instanceof Error ? error.message : String(error)}`,
-    );
+    result.errors.push(`CI check failed: ${error instanceof Error ? error.message : String(error)}`);
     console.error("❌ i18n CI checks failed:", error);
   }
 
@@ -135,9 +127,7 @@ export async function runI18nCIChecks(
 /**
  * Check for hardcoded strings using ESLint
  */
-async function checkHardcodedStrings(
-  packages: string[],
-): Promise<{ count: number; details: string[] }> {
+async function checkHardcodedStrings(packages: string[]): Promise<{ count: number; details: string[] }> {
   try {
     // Run ESLint with i18n rules
     const command = `npx eslint ${packages.join(" ")} --ext .ts,.tsx,.js,.jsx --rule '@reynard/i18n/no-hardcoded-strings: error' --format json`;
@@ -149,15 +139,9 @@ async function checkHardcodedStrings(
     }
 
     const results = JSON.parse(output);
-    const count = results.reduce(
-      (sum: number, file: any) => sum + file.messages.length,
-      0,
-    );
+    const count = results.reduce((sum: number, file: any) => sum + file.messages.length, 0);
     const details = results.flatMap((file: any) =>
-      file.messages.map(
-        (msg: any) =>
-          `${file.filePath}:${msg.line}:${msg.column} - ${msg.message}`,
-      ),
+      file.messages.map((msg: any) => `${file.filePath}:${msg.line}:${msg.column} - ${msg.message}`)
     );
 
     return { count, details };
@@ -173,9 +157,7 @@ async function checkHardcodedStrings(
 /**
  * Validate translations using the i18n package
  */
-async function validateTranslations(
-  locales: string[],
-): Promise<{ missingCount: number; details: string[] }> {
+async function validateTranslations(locales: string[]): Promise<{ missingCount: number; details: string[] }> {
   try {
     // This would integrate with the actual i18n validation
     const command = `npx vitest run packages/i18n/src/__tests__/translation-validation.test.ts --reporter=json`;
@@ -189,7 +171,7 @@ async function validateTranslations(
     const results = JSON.parse(output);
     const missingCount = results.testResults.reduce(
       (sum: number, test: any) => sum + (test.status === "failed" ? 1 : 0),
-      0,
+      0
     );
 
     return { missingCount, details: [] };
@@ -202,9 +184,7 @@ async function validateTranslations(
 /**
  * Check RTL support
  */
-async function checkRTLSupport(
-  locales: string[],
-): Promise<{ issueCount: number; details: string[] }> {
+async function checkRTLSupport(locales: string[]): Promise<{ issueCount: number; details: string[] }> {
   const rtlLocales = ["ar", "he", "fa", "ur"];
   const rtlIssues: string[] = [];
 

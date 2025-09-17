@@ -13,7 +13,7 @@ import {
   generateMinWidthClasses,
 } from "./utils";
 
-export const Grid: Component<GridProps> = (props) => {
+export const Grid: Component<GridProps> = props => {
   const [local, others] = splitProps(props, [
     "columns",
     "gap",
@@ -45,9 +45,7 @@ export const Grid: Component<GridProps> = (props) => {
     classes.push(...generateAutoFlowClasses(local.autoFlow));
 
     // Add min column width classes for auto-fit
-    classes.push(
-      ...generateMinWidthClasses(local.autoFit, local.minColumnWidth),
-    );
+    classes.push(...generateMinWidthClasses(local.autoFit, local.minColumnWidth));
 
     if (local.class) classes.push(local.class);
     return classes.join(" ");

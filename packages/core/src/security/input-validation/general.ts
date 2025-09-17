@@ -21,7 +21,7 @@ export function validateInput(
     allowXSS?: boolean;
     allowSpecialChars?: boolean;
     pattern?: RegExp;
-  } = {},
+  } = {}
 ): {
   isValid: boolean;
   sanitized?: string;

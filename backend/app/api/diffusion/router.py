@@ -3,8 +3,9 @@ Main router for Diffusion-LLM API endpoints.
 """
 
 from fastapi import APIRouter
-from .endpoints import router as endpoints_router
+
 from .admin import router as admin_router
+from .endpoints import router as endpoints_router
 
 router = APIRouter(prefix="/api/diffusion", tags=["diffusion"])
 

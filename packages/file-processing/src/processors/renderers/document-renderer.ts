@@ -17,7 +17,7 @@ export function drawDocumentIcon(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
-  options: DocumentRenderOptions = {},
+  options: DocumentRenderOptions = {}
 ): void {
   const size = Math.min(width, height) * 0.6;
   const x = (width - size) / 2;
@@ -51,12 +51,7 @@ export function drawDocumentIcon(
 /**
  * Draw text lines on document
  */
-function drawTextLines(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  size: number,
-): void {
+function drawTextLines(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
   ctx.fillStyle = "white";
   const lineHeight = size * 0.08;
   const lineSpacing = size * 0.12;
@@ -76,7 +71,7 @@ function drawDocumentTypeIndicator(
   x: number,
   y: number,
   size: number,
-  documentType: string,
+  documentType: string
 ): void {
   // Draw small indicator in top-right corner
   const indicatorSize = size * 0.15;

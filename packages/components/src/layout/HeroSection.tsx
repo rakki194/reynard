@@ -3,13 +3,7 @@
  * Modern hero section showcasing Reynard's capabilities
  */
 
-import {
-  Component,
-  createSignal,
-  createEffect,
-  For,
-  createMemo,
-} from "solid-js";
+import { Component, createSignal, createEffect, For, createMemo } from "solid-js";
 import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 import { useNotifications } from "reynard-core";
 import { fluentIconsPackage } from "reynard-fluent-icons";
@@ -78,26 +72,18 @@ export const HeroSection: Component = () => {
   // Auto-rotate demos
   createEffect(() => {
     const interval = setInterval(() => {
-      setCurrentDemo((prev) => (prev + 1) % demos.length);
+      setCurrentDemo(prev => (prev + 1) % demos.length);
     }, 3000);
 
     return () => clearInterval(interval);
   });
 
   const handleGetStarted = () => {
-    notify()(
-      "Welcome to Reynard! Let's build something amazing together! 🦊",
-      "success",
-    );
+    notify()("Welcome to Reynard! Let's build something amazing together! 🦊", "success");
   };
 
   const handleThemePreview = (themeName: string) => {
-    console.log(
-      "HeroSection - Switching theme from",
-      themeContext().theme,
-      "to",
-      themeName,
-    );
+    console.log("HeroSection - Switching theme from", themeContext().theme, "to", themeName);
     themeContext().setTheme(themeName as ThemeName);
     notify()(`Switched to ${themeName} theme!`, "info");
   };
@@ -111,12 +97,7 @@ export const HeroSection: Component = () => {
   // Helper function to check if a theme is active
   const isActiveTheme = (themeName: string) => {
     const isActive = themeContext().theme === themeName;
-    console.log(
-      `HeroSection - isActiveTheme(${themeName}):`,
-      isActive,
-      "current theme:",
-      themeContext().theme,
-    );
+    console.log(`HeroSection - isActiveTheme(${themeName}):`, isActive, "current theme:", themeContext().theme);
     return isActive;
   };
 
@@ -136,8 +117,8 @@ export const HeroSection: Component = () => {
             Reynard Framework
           </h1>
           <p class="hero-subtitle">
-            A cunning SolidJS framework for modern web applications. Built with
-            modularity, performance, and developer experience in mind.
+            A cunning SolidJS framework for modern web applications. Built with modularity, performance, and developer
+            experience in mind.
           </p>
           <div class="hero-actions">
             <button class="button button--primary" onClick={handleGetStarted}>
@@ -176,10 +157,7 @@ export const HeroSection: Component = () => {
                 {fluentIconsPackage.getIcon(demos[currentDemo()].icon) && (
                   <div
                     // eslint-disable-next-line solid/no-innerhtml
-                    innerHTML={
-                      fluentIconsPackage.getIcon(demos[currentDemo()].icon)
-                        ?.outerHTML
-                    }
+                    innerHTML={fluentIconsPackage.getIcon(demos[currentDemo()].icon)?.outerHTML}
                   />
                 )}
               </div>
@@ -193,33 +171,19 @@ export const HeroSection: Component = () => {
         <h3>Try Different Themes</h3>
         <div class="theme-preview-grid">
           <For each={availableThemes}>
-            {(themeConfig) => (
+            {themeConfig => (
               <button
                 class={`theme-preview ${isActiveTheme(themeConfig.name) ? "active" : ""}`}
                 onClick={() => handleThemePreview(themeConfig.name)}
                 title={`Switch to ${themeConfig.displayName}`}
               >
                 <div class="theme-preview-colors">
-                  <div
-                    class="color-swatch"
-                    style={`background: ${themeConfig.colors.primary}`}
-                  />
-                  <div
-                    class="color-swatch"
-                    style={`background: ${themeConfig.colors.accent}`}
-                  />
-                  <div
-                    class="color-swatch"
-                    style={`background: ${themeConfig.colors.background}`}
-                  />
-                  <div
-                    class="color-swatch"
-                    style={`background: ${themeConfig.colors.surface}`}
-                  />
+                  <div class="color-swatch" style={`background: ${themeConfig.colors.primary}`} />
+                  <div class="color-swatch" style={`background: ${themeConfig.colors.accent}`} />
+                  <div class="color-swatch" style={`background: ${themeConfig.colors.background}`} />
+                  <div class="color-swatch" style={`background: ${themeConfig.colors.surface}`} />
                 </div>
-                <span class="theme-preview-name">
-                  {themeConfig.displayName}
-                </span>
+                <span class="theme-preview-name">{themeConfig.displayName}</span>
               </button>
             )}
           </For>

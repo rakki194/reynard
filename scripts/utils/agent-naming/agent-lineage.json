@@ -24,9 +24,7 @@
     },
     "lineage": {
       "parents": [],
-      "children": [
-        "offspring1"
-      ],
+      "children": ["offspring1"],
       "ancestors": [],
       "descendants": []
     },
@@ -58,9 +56,7 @@
     },
     "lineage": {
       "parents": [],
-      "children": [
-        "offspring1"
-      ],
+      "children": ["offspring1"],
       "ancestors": [],
       "descendants": []
     },
@@ -71,15 +67,9 @@
     "agent_id": "offspring1",
     "generation": 2,
     "lineage": {
-      "parents": [
-        "parent1",
-        "parent2"
-      ],
+      "parents": ["parent1", "parent2"],
       "children": [],
-      "ancestors": [
-        "parent2",
-        "parent1"
-      ],
+      "ancestors": ["parent2", "parent1"],
       "descendants": []
     },
     "traits": {

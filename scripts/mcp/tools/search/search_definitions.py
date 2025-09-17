@@ -16,35 +16,32 @@ BM25_SEARCH_DEFINITION: Dict[str, Any] = {
     "inputSchema": {
         "type": "object",
         "properties": {
-            "query": {
-                "type": "string",
-                "description": "Search query string"
-            },
+            "query": {"type": "string", "description": "Search query string"},
             "top_k": {
                 "type": "integer",
                 "description": "Maximum number of results to return",
-                "default": 20
+                "default": 20,
             },
             "expand_query": {
                 "type": "boolean",
                 "description": "Whether to expand query with synonyms",
-                "default": True
+                "default": True,
             },
             "file_types": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "File extensions to search in (e.g., ['.py', '.ts'])",
-                "default": None
+                "default": None,
             },
             "directories": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "Directories to search in",
-                "default": None
-            }
+                "default": None,
+            },
         },
-        "required": ["query"]
-    }
+        "required": ["query"],
+    },
 }
 
 NEEDLE_IN_HAYSTACK_DEFINITION: Dict[str, Any] = {
@@ -55,38 +52,38 @@ NEEDLE_IN_HAYSTACK_DEFINITION: Dict[str, Any] = {
         "properties": {
             "needle": {
                 "type": "string",
-                "description": "String or pattern to search for"
+                "description": "String or pattern to search for",
             },
             "project_root": {
                 "type": "string",
                 "description": "Root directory to search in",
-                "default": None
+                "default": None,
             },
             "top_k": {
                 "type": "integer",
                 "description": "Maximum number of results to return",
-                "default": 20
+                "default": 20,
             },
             "expand_query": {
                 "type": "boolean",
                 "description": "Whether to expand query with synonyms",
-                "default": True
+                "default": True,
             },
             "file_types": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "File extensions to search in",
-                "default": None
+                "default": None,
             },
             "directories": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "Directories to search in",
-                "default": None
-            }
+                "default": None,
+            },
         },
-        "required": ["needle"]
-    }
+        "required": ["needle"],
+    },
 }
 
 # File Search Tools
@@ -98,26 +95,26 @@ SEARCH_FILES_DEFINITION: Dict[str, Any] = {
         "properties": {
             "pattern": {
                 "type": "string",
-                "description": "File name pattern to search for"
+                "description": "File name pattern to search for",
             },
             "directory": {
                 "type": "string",
                 "description": "Directory to search in",
-                "default": None
+                "default": None,
             },
             "recursive": {
                 "type": "boolean",
                 "description": "Whether to search recursively",
-                "default": True
+                "default": True,
             },
             "include_hidden": {
                 "type": "boolean",
                 "description": "Whether to include hidden files",
-                "default": False
-            }
+                "default": False,
+            },
         },
-        "required": ["pattern"]
-    }
+        "required": ["pattern"],
+    },
 }
 
 LIST_FILES_DEFINITION: Dict[str, Any] = {
@@ -129,20 +126,20 @@ LIST_FILES_DEFINITION: Dict[str, Any] = {
             "directory": {
                 "type": "string",
                 "description": "Directory to list files from",
-                "default": None
+                "default": None,
             },
             "pattern": {
                 "type": "string",
                 "description": "File pattern to filter by",
-                "default": None
+                "default": None,
             },
             "include_hidden": {
                 "type": "boolean",
                 "description": "Whether to include hidden files",
-                "default": False
-            }
-        }
-    }
+                "default": False,
+            },
+        },
+    },
 }
 
 SEARCH_CONTENT_DEFINITION: Dict[str, Any] = {
@@ -151,45 +148,42 @@ SEARCH_CONTENT_DEFINITION: Dict[str, Any] = {
     "inputSchema": {
         "type": "object",
         "properties": {
-            "query": {
-                "type": "string",
-                "description": "Text to search for"
-            },
+            "query": {"type": "string", "description": "Text to search for"},
             "file_types": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "File extensions to search in",
-                "default": None
+                "default": None,
             },
             "directories": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "Directories to search in",
-                "default": None
+                "default": None,
             },
             "case_sensitive": {
                 "type": "boolean",
                 "description": "Whether search is case sensitive",
-                "default": False
+                "default": False,
             },
             "whole_word": {
                 "type": "boolean",
                 "description": "Whether to match whole words only",
-                "default": False
+                "default": False,
             },
             "max_count": {
                 "type": "integer",
                 "description": "Maximum number of matches to return",
-                "default": None
+                "default": None,
             },
             "context_lines": {
                 "type": "integer",
                 "description": "Number of context lines to include",
-                "default": 0
-            }
+                "default": 0,
+            },
         },
-        "required": ["query"]
-    }
+        "required": ["query"],
+    },
 }
 
 SEARCH_CODE_PATTERNS_DEFINITION: Dict[str, Any] = {
@@ -201,33 +195,33 @@ SEARCH_CODE_PATTERNS_DEFINITION: Dict[str, Any] = {
             "pattern_type": {
                 "type": "string",
                 "description": "Type of pattern to search for",
-                "enum": ["function", "class", "import", "todo", "fixme", "comment"]
+                "enum": ["function", "class", "import", "todo", "fixme", "comment"],
             },
             "language": {
                 "type": "string",
                 "description": "Programming language",
-                "default": "py"
+                "default": "py",
             },
             "name": {
                 "type": "string",
                 "description": "Specific name to search for",
-                "default": None
+                "default": None,
             },
             "file_types": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "File extensions to search in",
-                "default": None
+                "default": None,
             },
             "directories": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "Directories to search in",
-                "default": None
-            }
+                "default": None,
+            },
         },
-        "required": ["pattern_type"]
-    }
+        "required": ["pattern_type"],
+    },
 }
 
 # Semantic Search Tools
@@ -239,44 +233,44 @@ SEMANTIC_SEARCH_DEFINITION: Dict[str, Any] = {
         "properties": {
             "query": {
                 "type": "string",
-                "description": "Search query for semantic understanding"
+                "description": "Search query for semantic understanding",
             },
             "search_type": {
                 "type": "string",
                 "description": "Type of search to perform",
                 "enum": ["hybrid", "vector", "text", "code", "context"],
-                "default": "hybrid"
+                "default": "hybrid",
             },
             "file_types": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "File extensions to search in",
-                "default": None
+                "default": None,
             },
             "directories": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "Directories to search in",
-                "default": None
+                "default": None,
             },
             "top_k": {
                 "type": "integer",
                 "description": "Maximum number of results to return",
-                "default": 20
+                "default": 20,
             },
             "similarity_threshold": {
                 "type": "number",
                 "description": "Minimum similarity score for results",
-                "default": 0.7
+                "default": 0.7,
             },
             "model": {
                 "type": "string",
                 "description": "Embedding model to use",
-                "default": None
-            }
+                "default": None,
+            },
         },
-        "required": ["query"]
-    }
+        "required": ["query"],
+    },
 }
 
 HYBRID_SEARCH_DEFINITION: Dict[str, Any] = {
@@ -285,30 +279,27 @@ HYBRID_SEARCH_DEFINITION: Dict[str, Any] = {
     "inputSchema": {
         "type": "object",
         "properties": {
-            "query": {
-                "type": "string",
-                "description": "Search query"
-            },
+            "query": {"type": "string", "description": "Search query"},
             "file_types": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "File extensions to search in",
-                "default": None
+                "default": None,
             },
             "directories": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "Directories to search in",
-                "default": None
+                "default": None,
             },
             "max_results": {
                 "type": "integer",
                 "description": "Maximum number of results to return",
-                "default": 50
-            }
+                "default": 50,
+            },
         },
-        "required": ["query"]
-    }
+        "required": ["query"],
+    },
 }
 
 EMBED_TEXT_DEFINITION: Dict[str, Any] = {
@@ -317,18 +308,15 @@ EMBED_TEXT_DEFINITION: Dict[str, Any] = {
     "inputSchema": {
         "type": "object",
         "properties": {
-            "text": {
-                "type": "string",
-                "description": "Text to embed"
-            },
+            "text": {"type": "string", "description": "Text to embed"},
             "model": {
                 "type": "string",
                 "description": "Embedding model to use",
-                "default": None
-            }
+                "default": None,
+            },
         },
-        "required": ["text"]
-    }
+        "required": ["text"],
+    },
 }
 
 INDEX_DOCUMENTS_DEFINITION: Dict[str, Any] = {
@@ -340,26 +328,26 @@ INDEX_DOCUMENTS_DEFINITION: Dict[str, Any] = {
             "file_paths": {
                 "type": "array",
                 "items": {"type": "string"},
-                "description": "List of file paths to index"
+                "description": "List of file paths to index",
             },
             "model": {
                 "type": "string",
                 "description": "Embedding model to use",
-                "default": None
+                "default": None,
             },
             "chunk_size": {
                 "type": "integer",
                 "description": "Size of text chunks for indexing",
-                "default": 512
+                "default": 512,
             },
             "overlap": {
                 "type": "integer",
                 "description": "Overlap between chunks",
-                "default": 50
-            }
+                "default": 50,
+            },
         },
-        "required": ["file_paths"]
-    }
+        "required": ["file_paths"],
+    },
 }
 
 # Enhanced Search Tools
@@ -371,48 +359,48 @@ SEARCH_ENHANCED_DEFINITION: Dict[str, Any] = {
         "properties": {
             "query": {
                 "type": "string",
-                "description": "The search query or pattern to find in the codebase"
+                "description": "The search query or pattern to find in the codebase",
             },
             "project_root": {
                 "type": "string",
                 "description": "Root directory of the project to search",
-                "default": None
+                "default": None,
             },
             "top_k": {
                 "type": "integer",
                 "description": "Number of top results to return",
-                "default": 20
+                "default": 20,
             },
             "expand_query": {
                 "type": "boolean",
                 "description": "Whether to expand query with synonyms and related terms",
-                "default": True
+                "default": True,
             },
             "file_types": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "Filter results by file types",
-                "default": None
+                "default": None,
             },
             "directories": {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "Filter results by directories",
-                "default": None
+                "default": None,
             },
             "include_agent_context": {
                 "type": "boolean",
                 "description": "Include ECS agent spatial context in search results",
-                "default": False
+                "default": False,
             },
             "agent_id": {
                 "type": "string",
                 "description": "Agent ID to include spatial context for",
-                "default": None
-            }
+                "default": None,
+            },
         },
-        "required": ["query"]
-    }
+        "required": ["query"],
+    },
 }
 
 # Utility Tools
@@ -424,34 +412,28 @@ GET_QUERY_SUGGESTIONS_DEFINITION: Dict[str, Any] = {
         "properties": {
             "query": {
                 "type": "string",
-                "description": "Base query to get suggestions for"
+                "description": "Base query to get suggestions for",
             },
             "max_suggestions": {
                 "type": "integer",
                 "description": "Maximum number of suggestions to return",
-                "default": 5
-            }
+                "default": 5,
+            },
         },
-        "required": ["query"]
-    }
+        "required": ["query"],
+    },
 }
 
 GET_SEARCH_ANALYTICS_DEFINITION: Dict[str, Any] = {
     "name": "get_search_analytics",
     "description": "Get search analytics and statistics",
-    "inputSchema": {
-        "type": "object",
-        "properties": {}
-    }
+    "inputSchema": {"type": "object", "properties": {}},
 }
 
 CLEAR_SEARCH_CACHE_DEFINITION: Dict[str, Any] = {
     "name": "clear_search_cache",
     "description": "Clear the search cache",
-    "inputSchema": {
-        "type": "object",
-        "properties": {}
-    }
+    "inputSchema": {"type": "object", "properties": {}},
 }
 
 REINDEX_PROJECT_DEFINITION: Dict[str, Any] = {
@@ -463,10 +445,10 @@ REINDEX_PROJECT_DEFINITION: Dict[str, Any] = {
             "project_root": {
                 "type": "string",
                 "description": "Root directory of the project to reindex",
-                "default": None
+                "default": None,
             }
-        }
-    }
+        },
+    },
 }
 
 # All search tool definitions

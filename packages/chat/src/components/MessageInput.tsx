@@ -12,7 +12,7 @@
 import { Component, createSignal, createEffect, onMount } from "solid-js";
 import type { MessageInputProps } from "../types";
 
-export const MessageInput: Component<MessageInputProps> = (props) => {
+export const MessageInput: Component<MessageInputProps> = props => {
   const [value, setValue] = createSignal("");
   const [isFocused, setIsFocused] = createSignal(false);
   let textareaRef: HTMLTextAreaElement | undefined;
@@ -111,9 +111,7 @@ export const MessageInput: Component<MessageInputProps> = (props) => {
     const streaming = props.isStreaming ? `${base}--streaming` : "";
     const multiline = props.multiline ? `${base}--multiline` : "";
 
-    return [base, variant, focused, disabled, streaming, multiline]
-      .filter(Boolean)
-      .join(" ");
+    return [base, variant, focused, disabled, streaming, multiline].filter(Boolean).join(" ");
   };
 
   // Focus textarea on mount if not disabled
@@ -156,14 +154,8 @@ export const MessageInput: Component<MessageInputProps> = (props) => {
             {props.showCounter && getCharacterInfo() && (
               <div
                 class={`reynard-message-input__counter ${
-                  getCharacterInfo()!.isNearLimit
-                    ? "reynard-message-input__counter--warning"
-                    : ""
-                } ${
-                  getCharacterInfo()!.isOverLimit
-                    ? "reynard-message-input__counter--error"
-                    : ""
-                }`}
+                  getCharacterInfo()!.isNearLimit ? "reynard-message-input__counter--warning" : ""
+                } ${getCharacterInfo()!.isOverLimit ? "reynard-message-input__counter--error" : ""}`}
               >
                 {getCharacterInfo()!.current}
                 {props.maxLength && ` / ${props.maxLength}`}
@@ -175,10 +167,7 @@ export const MessageInput: Component<MessageInputProps> = (props) => {
         {/* Submit Button */}
         <div class="reynard-message-input__actions">
           {props.submitButton ? (
-            <div
-              class="reynard-message-input__custom-submit"
-              onClick={handleSubmit}
-            >
+            <div class="reynard-message-input__custom-submit" onClick={handleSubmit}>
               {props.submitButton}
             </div>
           ) : (
@@ -186,11 +175,7 @@ export const MessageInput: Component<MessageInputProps> = (props) => {
               type="button"
               class="reynard-message-input__submit"
               disabled={
-                !value().trim() ||
-                props.disabled ||
-                props.isStreaming ||
-                getCharacterInfo()?.isOverLimit ||
-                false
+                !value().trim() || props.disabled || props.isStreaming || getCharacterInfo()?.isOverLimit || false
               }
               onClick={handleSubmit}
               aria-label="Send message"
@@ -209,12 +194,7 @@ export const MessageInput: Component<MessageInputProps> = (props) => {
                   <div class="reynard-message-input__spinner-dot"></div>
                 </div>
               ) : (
-                <svg
-                  class="reynard-message-input__send-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
+                <svg class="reynard-message-input__send-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path d="m22 2-7 20-4-9-9-4 20-7z" />
                 </svg>
               )}
@@ -226,13 +206,9 @@ export const MessageInput: Component<MessageInputProps> = (props) => {
       {/* Help Text */}
       <div class="reynard-message-input__help">
         {props.multiline ? (
-          <span class="reynard-message-input__shortcut">
-            Press Enter for new line, Ctrl+Enter to send
-          </span>
+          <span class="reynard-message-input__shortcut">Press Enter for new line, Ctrl+Enter to send</span>
         ) : (
-          <span class="reynard-message-input__shortcut">
-            Press Enter to send
-          </span>
+          <span class="reynard-message-input__shortcut">Press Enter to send</span>
         )}
       </div>
     </div>

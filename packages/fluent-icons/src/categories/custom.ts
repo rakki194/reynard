@@ -22,8 +22,7 @@ export const customIcons = {
       name: "peanut",
       tags: ["custom", "food", "theme"],
       description: "Peanut icon",
-      caption:
-        "A peanut icon representing food, nuts, or peanut-themed content",
+      caption: "A peanut icon representing food, nuts, or peanut-themed content",
       keywords: ["peanut", "food", "nut", "theme"],
     },
   },
@@ -33,8 +32,7 @@ export const customIcons = {
       name: "banana",
       tags: ["custom", "food", "theme"],
       description: "Banana icon",
-      caption:
-        "A banana icon representing food, fruits, or banana-themed content",
+      caption: "A banana icon representing food, fruits, or banana-themed content",
       keywords: ["banana", "food", "fruit", "theme"],
     },
   },
@@ -44,8 +42,7 @@ export const customIcons = {
       name: "yipyap",
       tags: ["custom", "brand", "logo"],
       description: "YipYap favicon/logo",
-      caption:
-        "The YipYap brand logo and favicon representing the YipYap project or brand identity",
+      caption: "The YipYap brand logo and favicon representing the YipYap project or brand identity",
       keywords: ["yipyap", "logo", "brand", "favicon"],
     },
   },
@@ -55,8 +52,7 @@ export const customIcons = {
       name: "delete-dataset",
       tags: ["custom", "action", "data"],
       description: "Delete dataset icon",
-      caption:
-        "A custom delete dataset icon for removing or deleting data collections",
+      caption: "A custom delete dataset icon for removing or deleting data collections",
       keywords: ["delete", "dataset", "data", "remove"],
     },
   },
@@ -66,8 +62,7 @@ export const customIcons = {
       name: "trash",
       tags: ["custom", "action", "delete"],
       description: "Trash icon",
-      caption:
-        "A custom trash icon for deleting, removing, or discarding items",
+      caption: "A custom trash icon for deleting, removing, or discarding items",
       keywords: ["trash", "delete", "remove", "garbage"],
     },
   },
@@ -77,8 +72,7 @@ export const customIcons = {
       name: "delete-folder",
       tags: ["custom", "action", "folder"],
       description: "Delete folder icon",
-      caption:
-        "A custom delete folder icon for removing or deleting directories and folders",
+      caption: "A custom delete folder icon for removing or deleting directories and folders",
       keywords: ["delete", "folder", "remove", "directory"],
     },
   },
@@ -88,8 +82,7 @@ export const customIcons = {
       name: "strawberry",
       tags: ["custom", "food", "theme"],
       description: "Strawberry icon",
-      caption:
-        "A strawberry icon representing food, fruits, or strawberry-themed content",
+      caption: "A strawberry icon representing food, fruits, or strawberry-themed content",
       keywords: ["strawberry", "food", "fruit", "theme"],
     },
   },
@@ -99,8 +92,7 @@ export const customIcons = {
       name: "red-strawberry",
       tags: ["custom", "food", "theme"],
       description: "Red strawberry icon",
-      caption:
-        "A red strawberry icon representing ripe fruit, food, or red-themed content",
+      caption: "A red strawberry icon representing ripe fruit, food, or red-themed content",
       keywords: ["strawberry", "red", "food", "fruit", "theme"],
     },
   },
@@ -110,8 +102,7 @@ export const customIcons = {
       name: "ghost",
       tags: ["custom", "character", "spooky"],
       description: "Ghost icon",
-      caption:
-        "A ghost icon representing spooky characters, Halloween themes, or supernatural content",
+      caption: "A ghost icon representing spooky characters, Halloween themes, or supernatural content",
       keywords: ["ghost", "spooky", "character", "halloween"],
     },
   },
@@ -121,8 +112,7 @@ export const customIcons = {
       name: "wd",
       tags: ["custom", "brand", "model"],
       description: "WD (Waifu Diffusion) icon",
-      caption:
-        "A WD (Waifu Diffusion) model icon representing AI art generation or machine learning models",
+      caption: "A WD (Waifu Diffusion) model icon representing AI art generation or machine learning models",
       keywords: ["wd", "waifu", "diffusion", "model", "ai"],
     },
   },
@@ -132,8 +122,7 @@ export const customIcons = {
       name: "golden",
       tags: ["custom", "color", "premium"],
       description: "Golden icon",
-      caption:
-        "A golden icon representing premium features, luxury, or gold-colored themes",
+      caption: "A golden icon representing premium features, luxury, or gold-colored themes",
       keywords: ["golden", "gold", "premium", "color"],
     },
   },
@@ -143,8 +132,7 @@ export const customIcons = {
       name: "blood-splatter",
       tags: ["custom", "effect", "gore"],
       description: "Blood splatter icon",
-      caption:
-        "A blood splatter icon representing gore effects, violence, or dramatic visual elements",
+      caption: "A blood splatter icon representing gore effects, violence, or dramatic visual elements",
       keywords: ["blood", "splatter", "gore", "effect"],
     },
   },

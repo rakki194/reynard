@@ -9,15 +9,10 @@ export default defineConfig({
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardChat",
       formats: ["es", "cjs"],
-      fileName: (format) => `index.${format === "es" ? "js" : format}`,
+      fileName: format => `index.${format === "es" ? "js" : format}`,
     },
     rollupOptions: {
-      external: [
-        "solid-js",
-        "solid-js/web",
-        "reynard-core",
-        "reynard-fluent-icons",
-      ],
+      external: ["solid-js", "solid-js/web", "reynard-core", "reynard-fluent-icons"],
       output: {
         globals: {
           "solid-js": "solid",
@@ -25,7 +20,7 @@ export default defineConfig({
           "reynard-core": "ReynardCore",
           "reynard-fluent-icons": "ReynardFluentIcons",
         },
-        assetFileNames: (assetInfo) => {
+        assetFileNames: assetInfo => {
           const assetName = (assetInfo as { fileName?: string }).fileName;
           if (assetName === "style.css") {
             return "styles.css";

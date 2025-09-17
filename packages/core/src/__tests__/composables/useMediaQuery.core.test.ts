@@ -5,12 +5,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createRoot } from "solid-js";
 import { useMediaQuery } from "../../useMediaQuery";
-import {
-  createMockMediaQuery,
-  setupMatchMediaMock,
-  cleanupMatchMediaMock,
-  mockSSR,
-} from "../media-query-test-setup";
+import { createMockMediaQuery, setupMatchMediaMock, cleanupMatchMediaMock, mockSSR } from "../media-query-test-setup";
 
 describe("useMediaQuery Core", () => {
   let mockMatchMedia: ReturnType<typeof setupMatchMediaMock>;

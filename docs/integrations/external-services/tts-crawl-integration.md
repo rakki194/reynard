@@ -437,7 +437,7 @@ const jobId = await crawlUrl("https://example.com/article");
 const status = await getCrawlStatus(jobId);
 
 // Stream progress
-const unsubscribe = streamCrawl(jobId, (event) => {
+const unsubscribe = streamCrawl(jobId, event => {
   console.log(event);
 });
 ```

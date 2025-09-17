@@ -76,9 +76,7 @@ export class RosePetalGrowthSystem {
 
       for (let i = 0; i < newPetalCount; i++) {
         const shape = this.factory.determinePetalShape(currentPetalCount + i);
-        this.petals.push(
-          this.factory.createPetal(currentPetalCount + i, shape),
-        );
+        this.petals.push(this.factory.createPetal(currentPetalCount + i, shape));
       }
     }
   }

@@ -88,10 +88,8 @@ Detects hardcoded strings in source code.
 
 ```typescript
 const results = detectHardcodedStrings("Component.tsx", sourceCode, config);
-results.forEach((result) => {
-  console.log(
-    `${result.file}:${result.line}:${result.column} - "${result.text}"`,
-  );
+results.forEach(result => {
+  console.log(`${result.file}:${result.line}:${result.column} - "${result.text}"`);
   console.log(`Suggestion: ${result.suggestion}`);
 });
 ```
@@ -110,7 +108,7 @@ Validates translation completeness across locales.
 
 ```typescript
 const results = await validateTranslations(config);
-results.forEach((result) => {
+results.forEach(result => {
   console.log(`Locale: ${result.locale}`);
   console.log(`Missing keys: ${result.missingKeys.length}`);
   console.log(`Unused keys: ${result.unusedKeys.length}`);
@@ -198,11 +196,7 @@ import { detectHardcodedStrings } from "reynard-testing";
 describe("Component i18n", () => {
   it("should not have hardcoded strings", () => {
     const componentCode = fs.readFileSync("Component.tsx", "utf8");
-    const results = detectHardcodedStrings(
-      "Component.tsx",
-      componentCode,
-      config,
-    );
+    const results = detectHardcodedStrings("Component.tsx", componentCode, config);
 
     expect(results).toHaveLength(0);
   });
@@ -218,7 +212,7 @@ describe("Translation completeness", () => {
   it("should have complete translations", async () => {
     const results = await validateTranslations(config);
 
-    results.forEach((result) => {
+    results.forEach(result => {
       expect(result.missingKeys).toHaveLength(0);
       expect(result.incompleteTranslations).toHaveLength(0);
     });
@@ -236,9 +230,7 @@ describe("i18n performance", () => {
     const result = await runI18nTests(config);
 
     expect(result.performanceMetrics.loadTime).toBeLessThan(1000);
-    expect(result.performanceMetrics.memoryUsage).toBeLessThan(
-      50 * 1024 * 1024,
-    ); // 50MB
+    expect(result.performanceMetrics.memoryUsage).toBeLessThan(50 * 1024 * 1024); // 50MB
   });
 });
 ```

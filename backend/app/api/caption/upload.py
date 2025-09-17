@@ -6,9 +6,8 @@ with proper file handling and cleanup.
 """
 
 import logging
-from typing import Optional
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from .models import CaptionResponse
 from .service import get_caption_api_service
@@ -22,9 +21,9 @@ router = APIRouter(prefix="/caption", tags=["caption-upload"])
 async def upload_and_generate_caption(
     file: UploadFile = File(...),
     generator_name: str = Form(...),
-    config: Optional[str] = Form(None),
+    config: str | None = Form(None),
     force: bool = Form(False),
-    post_process: bool = Form(True)
+    post_process: bool = Form(True),
 ):
     """Upload an image and generate a caption for it."""
     try:
@@ -34,7 +33,7 @@ async def upload_and_generate_caption(
             generator_name=generator_name,
             config=config,
             force=force,
-            post_process=post_process
+            post_process=post_process,
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -88,17 +88,13 @@ export class HTTPClient {
 
     try {
       const response = await fetch(url, requestOptions);
-      
+
       if (!response.ok) {
-        throw new HTTPError(
-          `HTTP ${response.status}: ${response.statusText}`,
-          response.status,
-          response.statusText
-        );
+        throw new HTTPError(`HTTP ${response.status}: ${response.statusText}`, response.status, response.statusText);
       }
 
       const data = await response.json();
-      
+
       return {
         data,
         status: response.status,
@@ -109,11 +105,7 @@ export class HTTPClient {
       if (error instanceof HTTPError) {
         throw error;
       }
-      throw new HTTPError(
-        error instanceof Error ? error.message : "Unknown error",
-        0,
-        "Network Error"
-      );
+      throw new HTTPError(error instanceof Error ? error.message : "Unknown error", 0, "Network Error");
     }
   }
 
@@ -132,15 +124,15 @@ export class HTTPClient {
 
   updateConfig(updates: Partial<HTTPClientConfig>): void {
     this.config = { ...this.config, ...updates };
-    
+
     if (updates.headers) {
       this.baseHeaders = { ...this.baseHeaders, ...updates.headers };
     }
-    
+
     if (updates.apiKey) {
       this.baseHeaders["Authorization"] = `Bearer ${updates.apiKey}`;
     }
-    
+
     if (updates.authToken) {
       this.baseHeaders["Authorization"] = `Bearer ${updates.authToken}`;
     }

@@ -20,7 +20,7 @@ export interface SearchHistoryFiltersProps {
   onSortOrderChange: (value: "asc" | "desc") => void;
 }
 
-export const SearchHistoryFilters: Component<SearchHistoryFiltersProps> = (props) => {
+export const SearchHistoryFilters: Component<SearchHistoryFiltersProps> = props => {
   return (
     <div class="history-filters">
       <TextField

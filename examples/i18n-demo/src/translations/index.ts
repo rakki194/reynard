@@ -17,7 +17,7 @@ export type DemoFeaturesKey = keyof typeof enTranslations.featuresList;
 // Helper function to get demo translation
 export function getDemoTranslation(
   locale: string,
-  key: DemoTranslationKey | `featuresList.${DemoFeaturesKey}`,
+  key: DemoTranslationKey | `featuresList.${DemoFeaturesKey}`
 ): string {
   const lang = (demoTranslations as any)[locale] || demoTranslations.en;
 

@@ -51,8 +51,11 @@ export function extractLoadedModels(health: SystemHealth): ModelInfo[] {
  * Create model status map
  */
 export function createModelStatusMap(models: ModelInfo[]): Record<string, ModelInfo> {
-  return models.reduce((map, model) => {
-    map[model.name] = model;
-    return map;
-  }, {} as Record<string, ModelInfo>);
+  return models.reduce(
+    (map, model) => {
+      map[model.name] = model;
+      return map;
+    },
+    {} as Record<string, ModelInfo>
+  );
 }

@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       name: "ReynardFluentIcons",
-      fileName: (format) => {
+      fileName: format => {
         if (format === "es") return "index.js";
         if (format === "cjs") return "index.cjs";
         return `index.${format}`;

@@ -28,13 +28,12 @@ function randomUUIDSafe(): string {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const nodeCrypto = require("crypto");
-    if (typeof nodeCrypto?.randomUUID === "function")
-      return nodeCrypto.randomUUID();
+    if (typeof nodeCrypto?.randomUUID === "function") return nodeCrypto.randomUUID();
   } catch {
     // ignore
   }
   // RFC4122 v4-ish polyfill fallback
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
     const r = (Math.random() * 16) | 0;
     const v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
@@ -120,7 +119,7 @@ export abstract class BaseConnection {
     eventType: string,
     data?: Record<string, unknown>,
     severity: "info" | "warning" | "error" = "info",
-    message?: string,
+    message?: string
   ) {
     const evt: ConnectionEvent = {
       eventId: randomUUIDSafe(),
@@ -185,9 +184,7 @@ export abstract class BaseConnection {
       this.errorCount += 1;
     }
     this.metrics.errorRate =
-      this.metrics.totalRequests > 0
-        ? (this.metrics.errorCount / this.metrics.totalRequests) * 100
-        : 0;
+      this.metrics.totalRequests > 0 ? (this.metrics.errorCount / this.metrics.totalRequests) * 100 : 0;
     this.metrics.lastRequestTime = now;
 
     // Approx throughput: assume at least 1 req per second if active
@@ -206,21 +203,13 @@ export abstract class BaseConnection {
     const message = error instanceof Error ? error.message : String(error);
     this.lastError = message;
     this.updatedAt = nowMs();
-    this.emitEvent(
-      "error",
-      { error: message, context, error_type: (error as any)?.name ?? "Error" },
-      "error",
-      message,
-    );
+    this.emitEvent("error", { error: message, context, error_type: (error as any)?.name ?? "Error" }, "error", message);
 
     // Circuit breaker
     if (this.config.circuitBreakerEnabled) {
       this.cbFailures += 1;
       this.cbLastFailure = nowMs();
-      if (
-        this.cbFailures >= (this.config.circuitBreakerThreshold ?? 5) &&
-        this.cbState === "closed"
-      ) {
+      if (this.cbFailures >= (this.config.circuitBreakerThreshold ?? 5) && this.cbState === "closed") {
         this.cbState = "open";
       }
     }
@@ -230,9 +219,7 @@ export abstract class BaseConnection {
     if (!this.config.circuitBreakerEnabled) return true;
     if (this.cbState === "open") {
       const timeoutSec = this.config.circuitBreakerTimeout ?? 60;
-      const elapsedSec = this.cbLastFailure
-        ? (nowMs() - this.cbLastFailure) / 1000
-        : 0;
+      const elapsedSec = this.cbLastFailure ? (nowMs() - this.cbLastFailure) / 1000 : 0;
       if (elapsedSec >= timeoutSec) {
         this.cbState = "half-open";
         return true;
@@ -264,7 +251,7 @@ export abstract class BaseConnection {
     try {
       await this.disconnect();
       const delay = (this.config.retryDelay ?? 1) * 1000;
-      await new Promise((r) => setTimeout(r, delay));
+      await new Promise(r => setTimeout(r, delay));
       return await this.connect();
     } catch (e) {
       this.handleError(e, "reconnect");

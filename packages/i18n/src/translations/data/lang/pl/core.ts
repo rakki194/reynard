@@ -74,38 +74,25 @@ export const coreTranslations = {
 
   // Walidacja hasła
   password: {
-    "must-be-at-least-8-characters-long":
-      "Hasło musi mieć co najmniej 8 znaków",
-    "must-contain-at-least-one-uppercase-letter":
-      "Hasło musi zawierać co najmniej jedną wielką literę",
-    "must-contain-at-least-one-lowercase-letter":
-      "Hasło musi zawierać co najmniej jedną małą literę",
-    "must-contain-at-least-one-number":
-      "Hasło musi zawierać co najmniej jedną cyfrę",
-    "must-contain-at-least-one-special-character":
-      "Hasło musi zawierać co najmniej jeden znak specjalny",
+    "must-be-at-least-8-characters-long": "Hasło musi mieć co najmniej 8 znaków",
+    "must-contain-at-least-one-uppercase-letter": "Hasło musi zawierać co najmniej jedną wielką literę",
+    "must-contain-at-least-one-lowercase-letter": "Hasło musi zawierać co najmniej jedną małą literę",
+    "must-contain-at-least-one-number": "Hasło musi zawierać co najmniej jedną cyfrę",
+    "must-contain-at-least-one-special-character": "Hasło musi zawierać co najmniej jeden znak specjalny",
   },
 
   // Walidacja bezpieczeństwa
   security: {
-    "at-least-one-character-type-must-be-included":
-      "Musi być uwzględniony co najmniej jeden typ znaku",
-    "input-contains-potentially-dangerous-html":
-      "Wejście zawiera potencjalnie niebezpieczny HTML",
-    "input-contains-potentially-dangerous-sql-patterns":
-      "Wejście zawiera potencjalnie niebezpieczne wzorce SQL",
-    "input-contains-potentially-dangerous-xss-patterns":
-      "Wejście zawiera potencjalnie niebezpieczne wzorce XSS",
-    "input-contains-path-traversal-patterns":
-      "Wejście zawiera wzorce przechodzenia ścieżki",
-    "input-contains-windows-reserved-names":
-      "Wejście zawiera zarezerwowane nazwy Windows",
-    "input-contains-executable-file-extensions":
-      "Wejście zawiera rozszerzenia plików wykonywalnych",
+    "at-least-one-character-type-must-be-included": "Musi być uwzględniony co najmniej jeden typ znaku",
+    "input-contains-potentially-dangerous-html": "Wejście zawiera potencjalnie niebezpieczny HTML",
+    "input-contains-potentially-dangerous-sql-patterns": "Wejście zawiera potencjalnie niebezpieczne wzorce SQL",
+    "input-contains-potentially-dangerous-xss-patterns": "Wejście zawiera potencjalnie niebezpieczne wzorce XSS",
+    "input-contains-path-traversal-patterns": "Wejście zawiera wzorce przechodzenia ścieżki",
+    "input-contains-windows-reserved-names": "Wejście zawiera zarezerwowane nazwy Windows",
+    "input-contains-executable-file-extensions": "Wejście zawiera rozszerzenia plików wykonywalnych",
     "input-contains-null-bytes": "Wejście zawiera bajty null",
     "input-contains-hidden-files": "Wejście zawiera ukryte pliki",
-    "input-contains-javascript-file-extensions":
-      "Wejście zawiera rozszerzenia plików JavaScript",
+    "input-contains-javascript-file-extensions": "Wejście zawiera rozszerzenia plików JavaScript",
   },
 
   // Operacje asynchroniczne
@@ -118,8 +105,7 @@ export const coreTranslations = {
     "persistent-failure": "Trwała awaria",
     "function-failed": "Funkcja nie powiodła się",
     "mapper-failed": "Mapper nie powiódł się",
-    "concurrency-must-be-greater-than-0":
-      "Współbieżność musi być większa niż 0",
+    "concurrency-must-be-greater-than-0": "Współbieżność musi być większa niż 0",
     "polling-timeout-reached": "Osiągnięto limit czasu sondowania",
   },
 
@@ -133,12 +119,9 @@ export const coreTranslations = {
 
   // Przechowywanie i serializacja
   storage: {
-    "potentially-dangerous-json-detected":
-      "Wykryto potencjalnie niebezpieczny JSON",
-    "failed-to-parse-json-from-localstorage":
-      "Nie udało się sparsować JSON z localStorage:",
-    "error-parsing-storage-event":
-      "Błąd parsowania zdarzenia przechowywania dla klucza",
+    "potentially-dangerous-json-detected": "Wykryto potencjalnie niebezpieczny JSON",
+    "failed-to-parse-json-from-localstorage": "Nie udało się sparsować JSON z localStorage:",
+    "error-parsing-storage-event": "Błąd parsowania zdarzenia przechowywania dla klucza",
   },
 
   // Test i rozwój
@@ -175,9 +158,7 @@ export const coreTranslations = {
   // Testy integracyjne
   integration: {
     "session-and-api-key-generation": "Generowanie sesji i klucza API",
-    "authentication-and-input-validation-integration":
-      "Integracja uwierzytelniania i walidacji wejścia",
-    "performance-and-security-integration":
-      "Integracja wydajności i bezpieczeństwa",
+    "authentication-and-input-validation-integration": "Integracja uwierzytelniania i walidacji wejścia",
+    "performance-and-security-integration": "Integracja wydajności i bezpieczeństwa",
   },
 };

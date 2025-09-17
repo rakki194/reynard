@@ -6,12 +6,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  isVideoFile,
-  getVideoDuration,
-  formatVideoDuration,
-  getVideoThumbnail,
-} from "../../videoUtils";
+import { isVideoFile, getVideoDuration, formatVideoDuration, getVideoThumbnail } from "../../videoUtils";
 
 describe("videoUtils", () => {
   describe("isVideoFile", () => {
@@ -26,7 +21,7 @@ describe("videoUtils", () => {
         new File([], "test.wmv", { type: "video/x-ms-wmv" }),
       ];
 
-      videoFiles.forEach((file) => {
+      videoFiles.forEach(file => {
         expect(isVideoFile(file)).toBe(true);
       });
     });
@@ -39,7 +34,7 @@ describe("videoUtils", () => {
         new File([], "test.pdf", { type: "application/pdf" }),
       ];
 
-      nonVideoFiles.forEach((file) => {
+      nonVideoFiles.forEach(file => {
         expect(isVideoFile(file)).toBe(false);
       });
     });
@@ -51,7 +46,7 @@ describe("videoUtils", () => {
         new File([], "test.MOV", { type: "video/quicktime" }),
       ];
 
-      caseVariations.forEach((file) => {
+      caseVariations.forEach(file => {
         expect(isVideoFile(file)).toBe(true);
       });
     });
@@ -168,9 +163,7 @@ describe("videoUtils", () => {
         getContext: vi.fn(() => ({
           drawImage: vi.fn(),
         })),
-        toDataURL: vi
-          .fn()
-          .mockReturnValue("data:image/jpeg;base64,mock-thumbnail"),
+        toDataURL: vi.fn().mockReturnValue("data:image/jpeg;base64,mock-thumbnail"),
       };
 
       // Mock URL.createObjectURL
@@ -239,9 +232,7 @@ describe("videoUtils", () => {
         getContext: vi.fn(() => ({
           drawImage: vi.fn(),
         })),
-        toDataURL: vi
-          .fn()
-          .mockReturnValue("data:image/jpeg;base64,mock-thumbnail"),
+        toDataURL: vi.fn().mockReturnValue("data:image/jpeg;base64,mock-thumbnail"),
       };
 
       const mockCreateObjectURL = vi.fn().mockReturnValue("blob:mock-url");

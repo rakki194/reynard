@@ -7,10 +7,7 @@
 
 import { ThumbnailOptions, ProcessingResult } from "../types";
 import { ImageLoader } from "./utils/image-loader";
-import {
-  ImageCanvas,
-  ImageThumbnailGeneratorOptions,
-} from "./utils/image-canvas";
+import { ImageCanvas, ImageThumbnailGeneratorOptions } from "./utils/image-canvas";
 
 export type { ImageThumbnailGeneratorOptions };
 
@@ -18,9 +15,7 @@ export class ImageThumbnailGenerator {
   private imageLoader = new ImageLoader();
   private imageCanvas = new ImageCanvas();
 
-  constructor(
-    private options: ImageThumbnailGeneratorOptions = { size: [200, 200] },
-  ) {
+  constructor(private options: ImageThumbnailGeneratorOptions = { size: [200, 200] }) {
     this.options = {
       format: "webp",
       quality: 85,
@@ -38,10 +33,7 @@ export class ImageThumbnailGenerator {
   /**
    * Generate thumbnail for image files
    */
-  async generateThumbnail(
-    file: File | string,
-    options?: Partial<ThumbnailOptions>,
-  ): Promise<ProcessingResult<Blob>> {
+  async generateThumbnail(file: File | string, options?: Partial<ThumbnailOptions>): Promise<ProcessingResult<Blob>> {
     const startTime = Date.now();
     const mergedOptions = { ...this.options, ...options };
 
@@ -65,7 +57,7 @@ export class ImageThumbnailGenerator {
         image.naturalHeight,
         targetWidth,
         targetHeight,
-        mergedOptions.maintainAspectRatio,
+        mergedOptions.maintainAspectRatio
       );
 
       // Center the image
@@ -87,10 +79,7 @@ export class ImageThumbnailGenerator {
     } catch (error) {
       return {
         success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to generate image thumbnail",
+        error: error instanceof Error ? error.message : "Failed to generate image thumbnail",
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };

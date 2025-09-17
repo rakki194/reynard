@@ -169,11 +169,7 @@ const adapter = new OptimizedCollisionAdapter({
 ### Union-Find Algorithm
 
 ```typescript
-import {
-  UnionFind,
-  detectCycle,
-  findConnectedComponents,
-} from "reynard-algorithms";
+import { UnionFind, detectCycle, findConnectedComponents } from "reynard-algorithms";
 
 const uf = new UnionFind(10);
 uf.union(0, 1);
@@ -196,11 +192,7 @@ const components = findConnectedComponents([
 ### AABB Collision Detection
 
 ```typescript
-import {
-  checkCollision,
-  batchCollisionDetection,
-  AABB,
-} from "reynard-algorithms";
+import { checkCollision, batchCollisionDetection, AABB } from "reynard-algorithms";
 
 const aabb1: AABB = { x: 0, y: 0, width: 100, height: 100 };
 const aabb2: AABB = { x: 50, y: 50, width: 100, height: 100 };
@@ -376,10 +368,7 @@ const polygonArea = PolygonOps.area(polygon); // 100
 const contains = PolygonOps.contains(polygon, { x: 5, y: 5 }); // true
 
 // Transform operations
-const transform = TransformOps.combine(
-  TransformOps.translate(10, 20),
-  TransformOps.scale(2, 2),
-);
+const transform = TransformOps.combine(TransformOps.translate(10, 20), TransformOps.scale(2, 2));
 const transformedPoint = TransformOps.applyToPoint(transform, point1);
 ```
 

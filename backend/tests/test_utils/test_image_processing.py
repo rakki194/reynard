@@ -1,7 +1,5 @@
 """Tests for the image_processing module."""
 
-import pytest
-
 from app.utils.image_processing import ImageProcessing
 from app.utils.image_types import ImageTransform
 
@@ -56,7 +54,9 @@ class TestImageProcessing:
         # Width-based: 50x100 (diff: |100-30| = 70)
         # Height-based: 15x30 (diff: |15-50| = 35)
         # Height-based is better, so should return (15, 30)
-        result = ImageProcessing.calculate_resize_dimensions(100, 200, target_width=50, target_height=30)
+        result = ImageProcessing.calculate_resize_dimensions(
+            100, 200, target_width=50, target_height=30
+        )
         assert result == (15, 30)
 
     def test_calculate_resize_dimensions_both_targets_height_based(self):
@@ -66,7 +66,9 @@ class TestImageProcessing:
         # Width-based: 50x25 (diff: |25-30| = 5)
         # Height-based: 60x30 (diff: |60-50| = 10)
         # Width-based is better, so should return (50, 25)
-        result = ImageProcessing.calculate_resize_dimensions(200, 100, target_width=50, target_height=30)
+        result = ImageProcessing.calculate_resize_dimensions(
+            200, 100, target_width=50, target_height=30
+        )
         assert result == (50, 25)
 
     def test_calculate_best_fit_dimensions_width_based(self):
@@ -108,83 +110,68 @@ class TestImageProcessing:
     def test_get_default_normalization_imagenet(self):
         """Test get_default_normalization for ImageNet model."""
         result = ImageProcessing.get_default_normalization("imagenet")
-        expected = {
-            'mean': [0.485, 0.456, 0.406],
-            'std': [0.229, 0.224, 0.225]
-        }
+        expected = {"mean": [0.485, 0.456, 0.406], "std": [0.229, 0.224, 0.225]}
         assert result == expected
 
     def test_get_default_normalization_imagenet_case_insensitive(self):
         """Test get_default_normalization for ImageNet model with different case."""
         result = ImageProcessing.get_default_normalization("IMAGENET")
-        expected = {
-            'mean': [0.485, 0.456, 0.406],
-            'std': [0.229, 0.224, 0.225]
-        }
+        expected = {"mean": [0.485, 0.456, 0.406], "std": [0.229, 0.224, 0.225]}
         assert result == expected
 
     def test_get_default_normalization_clip(self):
         """Test get_default_normalization for CLIP model."""
         result = ImageProcessing.get_default_normalization("clip")
         expected = {
-            'mean': [0.48145466, 0.4578275, 0.40821073],
-            'std': [0.26862954, 0.26130258, 0.27577711]
+            "mean": [0.48145466, 0.4578275, 0.40821073],
+            "std": [0.26862954, 0.26130258, 0.27577711],
         }
         assert result == expected
 
     def test_get_default_normalization_siglip(self):
         """Test get_default_normalization for SigLIP model."""
         result = ImageProcessing.get_default_normalization("siglip")
-        expected = {
-            'mean': [0.5, 0.5, 0.5],
-            'std': [0.5, 0.5, 0.5]
-        }
+        expected = {"mean": [0.5, 0.5, 0.5], "std": [0.5, 0.5, 0.5]}
         assert result == expected
 
     def test_get_default_normalization_unknown_model(self):
         """Test get_default_normalization for unknown model."""
         result = ImageProcessing.get_default_normalization("unknown_model")
-        expected = {
-            'mean': [0.5, 0.5, 0.5],
-            'std': [0.5, 0.5, 0.5]
-        }
+        expected = {"mean": [0.5, 0.5, 0.5], "std": [0.5, 0.5, 0.5]}
         assert result == expected
 
     def test_create_transform_full_config(self):
         """Test create_transform with full configuration."""
         config = {
-            'resize': (100, 200),
-            'crop': (10, 10, 50, 50),
-            'normalize': {'mean': [0.5], 'std': [0.5]},
-            'convert': 'RGB'
+            "resize": (100, 200),
+            "crop": (10, 10, 50, 50),
+            "normalize": {"mean": [0.5], "std": [0.5]},
+            "convert": "RGB",
         }
         result = ImageProcessing.create_transform(config)
-        
+
         assert isinstance(result, ImageTransform)
         assert result.resize == (100, 200)
         assert result.crop == (10, 10, 50, 50)
-        assert result.normalize == {'mean': [0.5], 'std': [0.5]}
-        assert result.convert == 'RGB'
+        assert result.normalize == {"mean": [0.5], "std": [0.5]}
+        assert result.convert == "RGB"
 
     def test_create_transform_partial_config(self):
         """Test create_transform with partial configuration."""
-        config = {
-            'resize': (100, 200),
-            'convert': 'RGB'
-        }
+        config = {"resize": (100, 200), "convert": "RGB"}
         result = ImageProcessing.create_transform(config)
-        
+
         assert isinstance(result, ImageTransform)
         assert result.resize == (100, 200)
         assert result.crop is None
         assert result.normalize is None
-        assert result.convert == 'RGB'
+        assert result.convert == "RGB"
 
     def test_create_transform_empty_config(self):
         """Test create_transform with empty configuration."""
         config = {}
         result = ImageProcessing.create_transform(config)
-        
+
         assert isinstance(result, ImageTransform)
         assert result.resize is None
         assert result.crop is None

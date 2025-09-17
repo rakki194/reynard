@@ -122,15 +122,7 @@ export interface ChatRequest {
 
 export interface StreamChunk {
   /** Chunk type */
-  type:
-    | "start"
-    | "thinking"
-    | "content"
-    | "tool_call"
-    | "tool_progress"
-    | "tool_result"
-    | "complete"
-    | "error";
+  type: "start" | "thinking" | "content" | "tool_call" | "tool_progress" | "tool_result" | "complete" | "error";
   /** Content for this chunk */
   content?: string;
   /** Complete response so far */

@@ -3,11 +3,7 @@
  */
 
 import { createSignal, createResource } from "solid-js";
-import type {
-  UserLogin,
-  UserCreate,
-  UserResponse,
-} from "../generated/index.js";
+import type { UserLogin, UserCreate, UserResponse } from "../generated/index.js";
 
 export interface UseAuthOptions {
   basePath?: string;

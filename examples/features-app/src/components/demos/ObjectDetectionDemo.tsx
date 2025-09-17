@@ -13,7 +13,7 @@ export default function ObjectDetectionDemo() {
     "object-detection",
     <div class="demo-content unavailable">
       <p>Object detection is currently unavailable</p>
-    </div>,
+    </div>
   );
 
   const status = useFeatureStatus("object-detection");
@@ -25,9 +25,7 @@ export default function ObjectDetectionDemo() {
     // Simulate detection process
     setTimeout(() => {
       const mockObjects = ["person", "car", "tree", "building", "dog"];
-      const randomObjects = mockObjects
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * 3) + 1);
+      const randomObjects = mockObjects.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1);
       setDetectedObjects(randomObjects);
       setIsDetecting(false);
     }, 2000);
@@ -42,19 +40,11 @@ export default function ObjectDetectionDemo() {
         <div class="demo-content">
           <p>Object detection is fully available</p>
 
-          {status()?.degraded && (
-            <div class="status-message warning">⚠️ {status()?.message}</div>
-          )}
+          {status()?.degraded && <div class="status-message warning">⚠️ {status()?.message}</div>}
 
           <div style={{ "margin-top": "var(--spacing)" }}>
-            <button
-              class="btn"
-              onClick={simulateDetection}
-              disabled={isDetecting()}
-            >
-              {isDetecting()
-                ? "Detecting Objects..."
-                : "Simulate Object Detection"}
+            <button class="btn" onClick={simulateDetection} disabled={isDetecting()}>
+              {isDetecting() ? "Detecting Objects..." : "Simulate Object Detection"}
             </button>
 
             {isDetecting() && (
@@ -105,7 +95,7 @@ export default function ObjectDetectionDemo() {
                     "margin-top": "calc(var(--spacing) / 2)",
                   }}
                 >
-                  {detectedObjects().map((object) => (
+                  {detectedObjects().map(object => (
                     <span
                       style={{
                         background: "var(--accent)",

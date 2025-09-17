@@ -8,22 +8,14 @@ import { NLWebTool, NLWebContext } from "../types/index.js";
 import { ToolScore, scoreTool } from "./NLWebRouterScoringCore.js";
 
 export interface NLWebRouterScoring {
-  scoreTools: (
-    query: string,
-    tools: NLWebTool[],
-    context: NLWebContext,
-  ) => Promise<ToolScore[]>;
+  scoreTools: (query: string, tools: NLWebTool[], context: NLWebContext) => Promise<ToolScore[]>;
 }
 
 /**
  * Create NLWeb router scoring
  */
 export function createNLWebRouterScoring(): NLWebRouterScoring {
-  const scoreTools = async (
-    query: string,
-    tools: NLWebTool[],
-    context: NLWebContext,
-  ): Promise<ToolScore[]> => {
+  const scoreTools = async (query: string, tools: NLWebTool[], context: NLWebContext): Promise<ToolScore[]> => {
     const results: ToolScore[] = [];
 
     for (const tool of tools) {

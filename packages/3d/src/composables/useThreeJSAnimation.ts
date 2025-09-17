@@ -17,7 +17,7 @@ export function useThreeJSAnimation() {
     camera: any,
     renderer: any,
     controls: any,
-    onRender?: (scene: any, camera: any, renderer: any, controls: any) => void,
+    onRender?: (scene: any, camera: any, renderer: any, controls: any) => void
   ) => {
     const animate = () => {
       const currentScene = scene();
@@ -26,14 +26,7 @@ export function useThreeJSAnimation() {
       const currentControls = controls();
       const currentClock = clock();
 
-      if (
-        !currentScene ||
-        !currentCamera ||
-        !currentRenderer ||
-        !currentControls ||
-        !currentClock
-      )
-        return;
+      if (!currentScene || !currentCamera || !currentRenderer || !currentControls || !currentClock) return;
 
       const _deltaTime = currentClock.getDelta();
 
@@ -56,12 +49,7 @@ export function useThreeJSAnimation() {
     animate();
   };
 
-  const handleResize = (
-    container: HTMLDivElement,
-    camera: any,
-    renderer: any,
-    controls: any,
-  ) => {
+  const handleResize = (container: HTMLDivElement, camera: any, renderer: any, controls: any) => {
     let resizeTimeout: number | null = null;
 
     return () => {

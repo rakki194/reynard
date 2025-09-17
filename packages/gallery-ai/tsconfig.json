@@ -13,14 +13,7 @@
     "jsxImportSource": "solid-js"
   },
   "include": ["src/**/*", "src/jsx.d.ts"],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.spec.ts",
-    "**/*.spec.tsx"
-  ],
+  "exclude": ["dist", "node_modules", "**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
   "references": [
     { "path": "../core" },
     { "path": "../components" },

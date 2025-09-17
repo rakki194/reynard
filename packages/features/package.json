@@ -44,15 +44,7 @@
     "lint": "eslint src",
     "clean": "rm -rf dist .turbo node_modules"
   },
-  "keywords": [
-    "reynard",
-    "features",
-    "feature-system",
-    "dependencies",
-    "capabilities",
-    "solidjs",
-    "monorepo"
-  ],
+  "keywords": ["reynard", "features", "feature-system", "dependencies", "capabilities", "solidjs", "monorepo"],
   "author": "Kade",
   "license": "MIT",
   "dependencies": {
@@ -79,7 +71,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "dist"
-  ]
+  "files": ["dist"]
 }

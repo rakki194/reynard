@@ -28,11 +28,7 @@ export const ComponentPlayground: Component = () => {
       <PlaygroundHeader />
 
       <div class="playground-container">
-        <PlaygroundTabs
-          tabs={tabs}
-          activeTab={activeTab()}
-          onTabChange={setActiveTab}
-        />
+        <PlaygroundTabs tabs={tabs} activeTab={activeTab()} onTabChange={setActiveTab} />
 
         <div class="playground-content">
           {activeTab() === "notifications" && <NotificationControls />}

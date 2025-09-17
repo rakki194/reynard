@@ -46,9 +46,9 @@ function MyApp() {
     <div>
       <ComfyHealthStatus showDetails={true} />
       <ComfyText2ImgForm
-        onGenerate={(promptId) => console.log("Started:", promptId)}
-        onComplete={(result) => console.log("Completed:", result)}
-        onError={(error) => console.error("Failed:", error)}
+        onGenerate={promptId => console.log("Started:", promptId)}
+        onComplete={result => console.log("Completed:", result)}
+        onError={error => console.error("Failed:", error)}
       />
     </div>
   );
@@ -106,7 +106,7 @@ const result = await service.queueWorkflow({
 });
 
 // Stream status updates
-const cleanup = service.streamStatus(result.promptId, (event) => {
+const cleanup = service.streamStatus(result.promptId, event => {
   console.log("Status update:", event);
   if (event.type === "status" && event.data?.status === "completed") {
     cleanup(); // Stop streaming
@@ -249,7 +249,7 @@ if (comfy.error()) {
 
 // Handle errors in callbacks
 <ComfyText2ImgForm
-  onError={(error) => {
+  onError={error => {
     // Handle generation error
     showNotification(`Generation failed: ${error}`, "error");
   }}

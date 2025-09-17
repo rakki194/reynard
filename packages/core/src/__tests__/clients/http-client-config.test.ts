@@ -80,7 +80,7 @@ describe("HTTPClient Configuration Management", () => {
     expect((httpClient as any).baseHeaders).toEqual(
       expect.objectContaining({
         Authorization: "Bearer new-key",
-      }),
+      })
     );
   });
 
@@ -90,7 +90,7 @@ describe("HTTPClient Configuration Management", () => {
     expect((httpClient as any).baseHeaders).toEqual(
       expect.objectContaining({
         "X-Updated": "updated-value",
-      }),
+      })
     );
   });
 });

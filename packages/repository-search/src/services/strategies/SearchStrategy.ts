@@ -24,7 +24,7 @@ export interface SearchStrategyResult {
  * Vector Search Strategy
  */
 export class VectorSearchStrategy implements SearchStrategy {
-  readonly name = 'vector';
+  readonly name = "vector";
 
   constructor(
     private vectorSearchComposable: any, // Will be properly typed when we refactor the composables
@@ -33,10 +33,10 @@ export class VectorSearchStrategy implements SearchStrategy {
 
   async search(query: string, options: Partial<VectorSearchOptions>, logger: Logger): Promise<SearchResult[]> {
     const startTime = Date.now();
-    
+
     try {
-      logger.info('Starting vector search', { query: query.substring(0, 100), options });
-      
+      logger.info("Starting vector search", { query: query.substring(0, 100), options });
+
       const results = await this.vectorSearchComposable.search(query, options, {
         info: (msg: string) => logger.info(msg, { strategy: this.name }),
         error: (msg: string, error?: unknown) => logger.error(msg, error as Error, { strategy: this.name }),
@@ -44,19 +44,19 @@ export class VectorSearchStrategy implements SearchStrategy {
       });
 
       const duration = Date.now() - startTime;
-      logger.info('Vector search completed', { 
-        duration, 
+      logger.info("Vector search completed", {
+        duration,
         resultCount: results.length,
-        strategy: this.name 
+        strategy: this.name,
       });
 
       return results;
     } catch (error) {
       const duration = Date.now() - startTime;
-      logger.error('Vector search failed', error as Error, { 
-        query: query.substring(0, 100), 
+      logger.error("Vector search failed", error as Error, {
+        query: query.substring(0, 100),
         duration,
-        strategy: this.name 
+        strategy: this.name,
       });
       throw error;
     }
@@ -67,7 +67,7 @@ export class VectorSearchStrategy implements SearchStrategy {
  * Hybrid Search Strategy
  */
 export class HybridSearchStrategy implements SearchStrategy {
-  readonly name = 'hybrid';
+  readonly name = "hybrid";
 
   constructor(
     private hybridSearchComposable: any, // Will be properly typed when we refactor the composables
@@ -76,10 +76,10 @@ export class HybridSearchStrategy implements SearchStrategy {
 
   async search(query: string, options: Partial<HybridSearchOptions>, logger: Logger): Promise<SearchResult[]> {
     const startTime = Date.now();
-    
+
     try {
-      logger.info('Starting hybrid search', { query: query.substring(0, 100), options });
-      
+      logger.info("Starting hybrid search", { query: query.substring(0, 100), options });
+
       const results = await this.hybridSearchComposable.search(query, options, {
         info: (msg: string) => logger.info(msg, { strategy: this.name }),
         error: (msg: string, error?: unknown) => logger.error(msg, error as Error, { strategy: this.name }),
@@ -87,19 +87,19 @@ export class HybridSearchStrategy implements SearchStrategy {
       });
 
       const duration = Date.now() - startTime;
-      logger.info('Hybrid search completed', { 
-        duration, 
+      logger.info("Hybrid search completed", {
+        duration,
         resultCount: results.length,
-        strategy: this.name 
+        strategy: this.name,
       });
 
       return results;
     } catch (error) {
       const duration = Date.now() - startTime;
-      logger.error('Hybrid search failed', error as Error, { 
-        query: query.substring(0, 100), 
+      logger.error("Hybrid search failed", error as Error, {
+        query: query.substring(0, 100),
         duration,
-        strategy: this.name 
+        strategy: this.name,
       });
       throw error;
     }
@@ -110,41 +110,39 @@ export class HybridSearchStrategy implements SearchStrategy {
  * Keyword Search Strategy
  */
 export class KeywordSearchStrategy implements SearchStrategy {
-  readonly name = 'keyword';
+  readonly name = "keyword";
 
-  constructor(
-    private searchConfig: any
-  ) {}
+  constructor(private searchConfig: any) {}
 
   async search(query: string, options: Partial<SearchOptions>, logger: Logger): Promise<SearchResult[]> {
     const startTime = Date.now();
-    
+
     try {
-      logger.info('Starting keyword search', { query: query.substring(0, 100), options });
-      
+      logger.info("Starting keyword search", { query: query.substring(0, 100), options });
+
       // TODO: Implement actual keyword search logic
       // This would typically involve:
       // 1. Query parsing and tokenization
       // 2. Full-text search against indexed content
       // 3. Result scoring and ranking
       // 4. Metadata enrichment
-      
+
       const results: SearchResult[] = [];
-      
+
       const duration = Date.now() - startTime;
-      logger.info('Keyword search completed', { 
-        duration, 
+      logger.info("Keyword search completed", {
+        duration,
         resultCount: results.length,
-        strategy: this.name 
+        strategy: this.name,
       });
 
       return results;
     } catch (error) {
       const duration = Date.now() - startTime;
-      logger.error('Keyword search failed', error as Error, { 
-        query: query.substring(0, 100), 
+      logger.error("Keyword search failed", error as Error, {
+        query: query.substring(0, 100),
         duration,
-        strategy: this.name 
+        strategy: this.name,
       });
       throw error;
     }
@@ -157,14 +155,10 @@ export class KeywordSearchStrategy implements SearchStrategy {
 export class SearchStrategyFactory {
   private strategies: Map<string, SearchStrategy> = new Map();
 
-  constructor(
-    vectorSearchComposable: any,
-    hybridSearchComposable: any,
-    searchConfig: any
-  ) {
-    this.strategies.set('vector', new VectorSearchStrategy(vectorSearchComposable, searchConfig));
-    this.strategies.set('hybrid', new HybridSearchStrategy(hybridSearchComposable, searchConfig));
-    this.strategies.set('keyword', new KeywordSearchStrategy(searchConfig));
+  constructor(vectorSearchComposable: any, hybridSearchComposable: any, searchConfig: any) {
+    this.strategies.set("vector", new VectorSearchStrategy(vectorSearchComposable, searchConfig));
+    this.strategies.set("hybrid", new HybridSearchStrategy(hybridSearchComposable, searchConfig));
+    this.strategies.set("keyword", new KeywordSearchStrategy(searchConfig));
   }
 
   getStrategy(strategyName: string): SearchStrategy {

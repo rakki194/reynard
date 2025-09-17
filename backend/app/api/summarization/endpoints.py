@@ -3,22 +3,22 @@ API endpoints for summarization service.
 """
 
 import logging
-from typing import Dict, Any
-from fastapi import APIRouter, HTTPException, Depends
+
+from fastapi import APIRouter, HTTPException
 from sse_starlette import EventSourceResponse
 
+from ...services.summarization.summarization_service import get_summarization_service
 from .models import (
-    SummarizationRequest,
-    SummarizationResponse,
     BatchSummarizationRequest,
     ContentTypeDetectionRequest,
     ContentTypeDetectionResponse,
+    HealthCheckResponse,
     SummarizationConfigRequest,
     SummarizationConfigResponse,
+    SummarizationRequest,
+    SummarizationResponse,
     SummarizationStatsResponse,
-    HealthCheckResponse,
 )
-from ...services.summarization.summarization_service import get_summarization_service
 
 logger = logging.getLogger(__name__)
 
@@ -28,9 +28,9 @@ router = APIRouter()
 def get_summarization_service():
     """Get the summarization service instance."""
     # This would be injected via dependency injection in a real implementation
-    from ...services.summarization.summarization_service import SummarizationService
     from ...services.ollama.ollama_service import get_ollama_service
-    
+    from ...services.summarization.summarization_service import SummarizationService
+
     ollama_service = get_ollama_service()
     service = SummarizationService(ollama_service)
     return service
@@ -40,17 +40,16 @@ def get_summarization_service():
 async def summarize_text(request: SummarizationRequest):
     """
     Summarize text with specified options.
-    
+
     This endpoint provides text summarization with support for different
     content types, summary levels, and customization options.
     """
     try:
         service = get_summarization_service()
-        
+
         if not service.is_available():
             raise HTTPException(
-                status_code=503,
-                detail="Summarization service is not available"
+                status_code=503, detail="Summarization service is not available"
             )
 
         # Perform summarization
@@ -72,24 +71,23 @@ async def summarize_text(request: SummarizationRequest):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Summarization failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Summarization failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Summarization failed: {e!s}")
 
 
 @router.post("/summarize/stream")
 async def summarize_text_stream(request: SummarizationRequest):
     """
     Stream text summarization with progress updates.
-    
+
     This endpoint provides real-time streaming of summarization progress
     using Server-Sent Events (SSE).
     """
     try:
         service = get_summarization_service()
-        
+
         if not service.is_available():
             raise HTTPException(
-                status_code=503,
-                detail="Summarization service is not available"
+                status_code=503, detail="Summarization service is not available"
             )
 
         async def event_generator():
@@ -115,27 +113,29 @@ async def summarize_text_stream(request: SummarizationRequest):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Streaming summarization failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Streaming summarization failed: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Streaming summarization failed: {e!s}"
+        )
 
 
 @router.post("/summarize/batch")
 async def summarize_batch(request: BatchSummarizationRequest):
     """
     Process a batch of summarization requests.
-    
+
     This endpoint allows processing multiple summarization requests
     in a single call with optional streaming support.
     """
     try:
         service = get_summarization_service()
-        
+
         if not service.is_available():
             raise HTTPException(
-                status_code=503,
-                detail="Summarization service is not available"
+                status_code=503, detail="Summarization service is not available"
             )
 
         if request.enable_streaming:
+
             async def event_generator():
                 async for event in service.summarize_batch(
                     requests=request.requests,
@@ -147,48 +147,48 @@ async def summarize_batch(request: BatchSummarizationRequest):
                     }
 
             return EventSourceResponse(event_generator())
-        else:
-            # Process batch without streaming
-            results = []
-            async for event in service.summarize_batch(
-                requests=request.requests,
-                enable_streaming=False,
-            ):
-                if event.get("event") == "request_complete":
-                    results.append(event.get("data", {}))
+        # Process batch without streaming
+        results = []
+        async for event in service.summarize_batch(
+            requests=request.requests,
+            enable_streaming=False,
+        ):
+            if event.get("event") == "request_complete":
+                results.append(event.get("data", {}))
 
-            return {
-                "success": True,
-                "results": results,
-                "total_processed": len(results),
-            }
+        return {
+            "success": True,
+            "results": results,
+            "total_processed": len(results),
+        }
 
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Batch summarization failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Batch summarization failed: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Batch summarization failed: {e!s}"
+        )
 
 
 @router.post("/detect-content-type", response_model=ContentTypeDetectionResponse)
 async def detect_content_type(request: ContentTypeDetectionRequest):
     """
     Automatically detect the content type of text.
-    
+
     This endpoint analyzes text and determines the most appropriate
     content type for summarization.
     """
     try:
         service = get_summarization_service()
-        
+
         if not service.is_available():
             raise HTTPException(
-                status_code=503,
-                detail="Summarization service is not available"
+                status_code=503, detail="Summarization service is not available"
             )
 
         content_type = await service.detect_content_type(request.text)
-        
+
         return ContentTypeDetectionResponse(
             content_type=content_type,
             confidence=0.8,  # Placeholder confidence score
@@ -198,27 +198,28 @@ async def detect_content_type(request: ContentTypeDetectionRequest):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Content type detection failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Content type detection failed: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Content type detection failed: {e!s}"
+        )
 
 
 @router.get("/models")
 async def get_available_models():
     """
     Get list of available models for summarization.
-    
+
     Returns the list of models that can be used for text summarization.
     """
     try:
         service = get_summarization_service()
-        
+
         if not service.is_available():
             raise HTTPException(
-                status_code=503,
-                detail="Summarization service is not available"
+                status_code=503, detail="Summarization service is not available"
             )
 
         models = service.get_available_models()
-        
+
         return {
             "success": True,
             "models": models,
@@ -227,29 +228,30 @@ async def get_available_models():
 
     except Exception as e:
         logger.error(f"Failed to get available models: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get available models: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get available models: {e!s}"
+        )
 
 
 @router.get("/content-types")
 async def get_supported_content_types():
     """
     Get supported content types and their summarizers.
-    
+
     Returns information about which content types are supported
     and which summarizers handle each type.
     """
     try:
         service = get_summarization_service()
-        
+
         if not service.is_available():
             raise HTTPException(
-                status_code=503,
-                detail="Summarization service is not available"
+                status_code=503, detail="Summarization service is not available"
             )
 
         content_types = service.get_supported_content_types()
         summary_levels = service.get_supported_summary_levels()
-        
+
         return {
             "success": True,
             "content_types": content_types,
@@ -258,29 +260,30 @@ async def get_supported_content_types():
 
     except Exception as e:
         logger.error(f"Failed to get supported content types: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get supported content types: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get supported content types: {e!s}"
+        )
 
 
 @router.get("/stats", response_model=SummarizationStatsResponse)
 async def get_performance_stats():
     """
     Get performance statistics for the summarization service.
-    
+
     Returns detailed statistics about service usage, performance,
     and available capabilities.
     """
     try:
         service = get_summarization_service()
-        
+
         if not service.is_available():
             raise HTTPException(
-                status_code=503,
-                detail="Summarization service is not available"
+                status_code=503, detail="Summarization service is not available"
             )
 
         stats = service.get_performance_stats()
         content_types = service.get_supported_content_types()
-        
+
         return SummarizationStatsResponse(
             total_requests=stats.get("total_requests", 0),
             cache_hits=stats.get("cache_hits", 0),
@@ -294,22 +297,24 @@ async def get_performance_stats():
 
     except Exception as e:
         logger.error(f"Failed to get performance stats: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get performance stats: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get performance stats: {e!s}"
+        )
 
 
 @router.get("/health", response_model=HealthCheckResponse)
 async def health_check():
     """
     Perform health check on the summarization service.
-    
+
     Returns the current health status and detailed information
     about service availability and configuration.
     """
     try:
         service = get_summarization_service()
-        
+
         health_info = await service.health_check()
-        
+
         return HealthCheckResponse(
             status=health_info["status"],
             message=health_info["message"],
@@ -321,7 +326,7 @@ async def health_check():
         logger.error(f"Health check failed: {e}")
         return HealthCheckResponse(
             status="unhealthy",
-            message=f"Health check failed: {str(e)}",
+            message=f"Health check failed: {e!s}",
             details={"error": str(e)},
             timestamp="",
         )
@@ -331,17 +336,16 @@ async def health_check():
 async def update_config(request: SummarizationConfigRequest):
     """
     Update summarization service configuration.
-    
+
     Allows updating various configuration parameters for the
     summarization service.
     """
     try:
         service = get_summarization_service()
-        
+
         if not service.is_available():
             raise HTTPException(
-                status_code=503,
-                detail="Summarization service is not available"
+                status_code=503, detail="Summarization service is not available"
             )
 
         # For now, just return current config
@@ -353,7 +357,7 @@ async def update_config(request: SummarizationConfigRequest):
             "max_text_length": 100000,
             "enable_caching": True,
         }
-        
+
         return SummarizationConfigResponse(
             success=True,
             message="Configuration updated successfully",
@@ -362,24 +366,25 @@ async def update_config(request: SummarizationConfigRequest):
 
     except Exception as e:
         logger.error(f"Failed to update configuration: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to update configuration: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to update configuration: {e!s}"
+        )
 
 
 @router.get("/config", response_model=SummarizationConfigResponse)
 async def get_config():
     """
     Get current summarization service configuration.
-    
+
     Returns the current configuration parameters for the
     summarization service.
     """
     try:
         service = get_summarization_service()
-        
+
         if not service.is_available():
             raise HTTPException(
-                status_code=503,
-                detail="Summarization service is not available"
+                status_code=503, detail="Summarization service is not available"
             )
 
         current_config = {
@@ -389,7 +394,7 @@ async def get_config():
             "max_text_length": 100000,
             "enable_caching": True,
         }
-        
+
         return SummarizationConfigResponse(
             success=True,
             message="Configuration retrieved successfully",
@@ -398,4 +403,6 @@ async def get_config():
 
     except Exception as e:
         logger.error(f"Failed to get configuration: {e}")
-        raise HTTPException(status_code=500, detail=f"Failed to get configuration: {str(e)}")
+        raise HTTPException(
+            status_code=500, detail=f"Failed to get configuration: {e!s}"
+        )

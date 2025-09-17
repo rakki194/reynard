@@ -76,4 +76,3 @@ def get_mermaid_tool_definitions() -> dict[str, dict[str, Any]]:
             "inputSchema": {"type": "object", "properties": {}},
         },
     }
-

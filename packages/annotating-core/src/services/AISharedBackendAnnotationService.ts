@@ -14,19 +14,10 @@ import {
   ServiceStatus,
   ServiceError,
 } from "reynard-ai-shared";
-import {
-  BackendAnnotationService,
-  BackendAnnotationServiceConfig,
-} from "./BackendAnnotationService.js";
-import {
-  CaptionTask,
-  CaptionResult,
-  AnnotationProgress,
-} from "../types/index.js";
+import { BackendAnnotationService, BackendAnnotationServiceConfig } from "./BackendAnnotationService.js";
+import { CaptionTask, CaptionResult, AnnotationProgress } from "../types/index.js";
 
-export interface AISharedBackendAnnotationServiceConfig
-  extends ServiceConfig,
-    BackendAnnotationServiceConfig {}
+export interface AISharedBackendAnnotationServiceConfig extends ServiceConfig, BackendAnnotationServiceConfig {}
 
 /**
  * Backend annotation service that integrates with ai-shared lifecycle management
@@ -56,13 +47,10 @@ export class AISharedBackendAnnotationService extends BaseAIService {
       this.lastBackendError = undefined;
     } catch (error) {
       this.isBackendConnected = false;
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
-      throw new ServiceError(
-        `Failed to initialize backend annotation service: ${this.lastBackendError}`,
-        this.name,
-        { error },
-      );
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
+      throw new ServiceError(`Failed to initialize backend annotation service: ${this.lastBackendError}`, this.name, {
+        error,
+      });
     }
   }
 
@@ -92,8 +80,7 @@ export class AISharedBackendAnnotationService extends BaseAIService {
         },
       };
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       this.lastBackendError = errorMessage;
 
       return {
@@ -122,14 +109,9 @@ export class AISharedBackendAnnotationService extends BaseAIService {
       this.isBackendConnected = false;
       this.lastBackendError = undefined;
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       this.lastBackendError = errorMessage;
-      throw new ServiceError(
-        `Failed to shutdown backend annotation service: ${errorMessage}`,
-        this.name,
-        { error },
-      );
+      throw new ServiceError(`Failed to shutdown backend annotation service: ${errorMessage}`, this.name, { error });
     }
   }
 
@@ -142,18 +124,13 @@ export class AISharedBackendAnnotationService extends BaseAIService {
    */
   async generateCaption(task: CaptionTask): Promise<CaptionResult> {
     if (!this.isBackendConnected) {
-      throw new ServiceError(
-        "Backend annotation service is not connected",
-        this.name,
-        { task },
-      );
+      throw new ServiceError("Backend annotation service is not connected", this.name, { task });
     }
 
     try {
       return await this.backendService.generateCaption(task);
     } catch (error) {
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
       throw error;
     }
   }
@@ -163,24 +140,16 @@ export class AISharedBackendAnnotationService extends BaseAIService {
    */
   async generateBatchCaptions(
     tasks: CaptionTask[],
-    progressCallback?: (progress: AnnotationProgress) => void,
+    progressCallback?: (progress: AnnotationProgress) => void
   ): Promise<CaptionResult[]> {
     if (!this.isBackendConnected) {
-      throw new ServiceError(
-        "Backend annotation service is not connected",
-        this.name,
-        { taskCount: tasks.length },
-      );
+      throw new ServiceError("Backend annotation service is not connected", this.name, { taskCount: tasks.length });
     }
 
     try {
-      return await this.backendService.generateBatchCaptions(
-        tasks,
-        progressCallback,
-      );
+      return await this.backendService.generateBatchCaptions(tasks, progressCallback);
     } catch (error) {
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
       throw error;
     }
   }
@@ -196,8 +165,7 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return await this.backendService.getAvailableGenerators();
     } catch (error) {
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
       return [];
     }
   }
@@ -213,8 +181,7 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return this.backendService.getGenerator(name);
     } catch (error) {
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
       return undefined;
     }
   }
@@ -230,8 +197,7 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return this.backendService.isGeneratorAvailable(name);
     } catch (error) {
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
       return false;
     }
   }
@@ -241,18 +207,13 @@ export class AISharedBackendAnnotationService extends BaseAIService {
    */
   async preloadModel(name: string): Promise<void> {
     if (!this.isBackendConnected) {
-      throw new ServiceError(
-        "Backend annotation service is not connected",
-        this.name,
-        { modelName: name },
-      );
+      throw new ServiceError("Backend annotation service is not connected", this.name, { modelName: name });
     }
 
     try {
       await this.backendService.preloadModel(name);
     } catch (error) {
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
       throw error;
     }
   }
@@ -262,18 +223,13 @@ export class AISharedBackendAnnotationService extends BaseAIService {
    */
   async unloadModel(name: string): Promise<void> {
     if (!this.isBackendConnected) {
-      throw new ServiceError(
-        "Backend annotation service is not connected",
-        this.name,
-        { modelName: name },
-      );
+      throw new ServiceError("Backend annotation service is not connected", this.name, { modelName: name });
     }
 
     try {
       await this.backendService.unloadModel(name);
     } catch (error) {
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
       throw error;
     }
   }
@@ -289,8 +245,7 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return this.backendService.getModelUsageStats(name);
     } catch (error) {
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
       return null;
     }
   }
@@ -310,8 +265,7 @@ export class AISharedBackendAnnotationService extends BaseAIService {
     try {
       return this.backendService.getHealthStatus();
     } catch (error) {
-      this.lastBackendError =
-        error instanceof Error ? error.message : String(error);
+      this.lastBackendError = error instanceof Error ? error.message : String(error);
       return {
         isHealthy: false,
         lastCheck: new Date(),

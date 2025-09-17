@@ -6,10 +6,7 @@
  */
 
 import { Component, createSignal, createEffect, For, Show } from "solid-js";
-import {
-  ImageThumbnailGenerator,
-  ImageMetadataExtractor,
-} from "reynard-file-processing";
+import { ImageThumbnailGenerator, ImageMetadataExtractor } from "reynard-file-processing";
 import { ImageFile, ImageMetadata } from "./types/ImageTypes";
 import { useI18n } from "reynard-i18n";
 
@@ -32,11 +29,9 @@ export interface ImageGridProps {
   class?: string;
 }
 
-export const ImageGrid: Component<ImageGridProps> = (props) => {
+export const ImageGrid: Component<ImageGridProps> = props => {
   const { t } = useI18n();
-  const [imageFiles, setImageFiles] = createSignal<ImageFile[]>(
-    props.initialFiles || [],
-  );
+  const [imageFiles, setImageFiles] = createSignal<ImageFile[]>(props.initialFiles || []);
   const [selectedFile, setSelectedFile] = createSignal<ImageFile | null>(null);
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
@@ -59,7 +54,7 @@ export const ImageGrid: Component<ImageGridProps> = (props) => {
 
   // Handle file removal
   const handleFileRemove = (fileId: string) => {
-    setImageFiles((prev) => prev.filter((f) => f.id !== fileId));
+    setImageFiles(prev => prev.filter(f => f.id !== fileId));
     if (selectedFile()?.id === fileId) {
       setSelectedFile(null);
     }
@@ -80,9 +75,7 @@ export const ImageGrid: Component<ImageGridProps> = (props) => {
       // Generate thumbnail using existing infrastructure
       const thumbnailResult = await thumbnailGenerator.generateThumbnail(file);
       if (!thumbnailResult.success) {
-        throw new Error(
-          thumbnailResult.error || t("image.failedToGenerateThumbnail"),
-        );
+        throw new Error(thumbnailResult.error || t("image.failedToGenerateThumbnail"));
       }
 
       // Extract metadata using existing infrastructure
@@ -101,8 +94,7 @@ export const ImageGrid: Component<ImageGridProps> = (props) => {
 
       return imageFile;
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Failed to process image file";
+      const errorMessage = err instanceof Error ? err.message : "Failed to process image file";
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -121,11 +113,9 @@ export const ImageGrid: Component<ImageGridProps> = (props) => {
     const filesToProcess = Array.from(files).slice(0, maxFiles);
 
     try {
-      const processedFiles = await Promise.all(
-        filesToProcess.map(processImageFile),
-      );
+      const processedFiles = await Promise.all(filesToProcess.map(processImageFile));
 
-      setImageFiles((prev) => [...prev, ...processedFiles]);
+      setImageFiles(prev => [...prev, ...processedFiles]);
     } catch (err) {
       console.error(t("image.failedToProcessImageFiles"), err);
     }
@@ -166,7 +156,7 @@ export const ImageGrid: Component<ImageGridProps> = (props) => {
       {/* Images Grid */}
       <div class="images-grid">
         <For each={imageFiles()}>
-          {(file) => (
+          {file => (
             <ImageFileCard
               file={file}
               isSelected={selectedFile()?.id === file.id}
@@ -204,7 +194,7 @@ interface ImageFileCardProps {
   isGenerating?: boolean;
 }
 
-const ImageFileCard: Component<ImageFileCardProps> = (props) => {
+const ImageFileCard: Component<ImageFileCardProps> = props => {
   const [thumbnailUrl, setThumbnailUrl] = createSignal<string | null>(null);
 
   // Create thumbnail URL
@@ -217,25 +207,16 @@ const ImageFileCard: Component<ImageFileCardProps> = (props) => {
   });
 
   return (
-    <div
-      class="image-file-card"
-      classList={{ selected: props.isSelected }}
-      onClick={props.onSelect}
-    >
+    <div class="image-file-card" classList={{ selected: props.isSelected }} onClick={props.onSelect}>
       <div class="image-thumbnail">
-        <Show
-          when={thumbnailUrl()}
-          fallback={
-            <div class="thumbnail-placeholder">{t("image.imageIcon")}</div>
-          }
-        >
+        <Show when={thumbnailUrl()} fallback={<div class="thumbnail-placeholder">{t("image.imageIcon")}</div>}>
           <img src={thumbnailUrl()!} alt={props.file.name} />
         </Show>
         <div class="image-overlay">
           <div class="image-actions">
             <button
               class="action-button generate-button"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 props.onGenerateCaption();
               }}
@@ -245,7 +226,7 @@ const ImageFileCard: Component<ImageFileCardProps> = (props) => {
             </button>
             <button
               class="action-button remove-button"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 props.onRemove();
               }}
@@ -260,9 +241,7 @@ const ImageFileCard: Component<ImageFileCardProps> = (props) => {
         <h4 class="image-name" title={props.file.name}>
           {props.file.name}
         </h4>
-        <div class="image-size">
-          {(props.file.size / (1024 * 1024)).toFixed(2)} MB
-        </div>
+        <div class="image-size">{(props.file.size / (1024 * 1024)).toFixed(2)} MB</div>
 
         <Show when={props.showMetadata && props.file.metadata}>
           <div class="image-metadata">
@@ -295,7 +274,7 @@ interface ImageViewerProps {
   isGenerating?: boolean;
 }
 
-const ImageViewer: Component<ImageViewerProps> = (props) => {
+const ImageViewer: Component<ImageViewerProps> = props => {
   return (
     <div class="image-viewer-modal">
       <div class="image-viewer-content">
@@ -306,24 +285,14 @@ const ImageViewer: Component<ImageViewerProps> = (props) => {
         <div class="image-viewer-header">
           <h2>{props.file.name}</h2>
           <div class="image-viewer-actions">
-            <button
-              class="generate-caption-button"
-              onClick={props.onGenerateCaption}
-              disabled={props.isGenerating}
-            >
-              {props.isGenerating
-                ? "⏳ Generating Caption..."
-                : "🤖 Generate Caption"}
+            <button class="generate-caption-button" onClick={props.onGenerateCaption} disabled={props.isGenerating}>
+              {props.isGenerating ? "⏳ Generating Caption..." : "🤖 Generate Caption"}
             </button>
           </div>
         </div>
 
         <div class="image-viewer-body">
-          <img
-            src={props.file.url}
-            alt={props.file.name}
-            class="viewer-image"
-          />
+          <img src={props.file.url} alt={props.file.name} class="viewer-image" />
 
           <Show when={props.file.metadata}>
             <div class="image-metadata-panel">
@@ -345,9 +314,7 @@ const ImageViewer: Component<ImageViewerProps> = (props) => {
                 </div>
                 <div class="metadata-item">
                   <span class="label">File Size:</span>
-                  <span class="value">
-                    {(props.file.size / (1024 * 1024)).toFixed(2)} MB
-                  </span>
+                  <span class="value">{(props.file.size / (1024 * 1024)).toFixed(2)} MB</span>
                 </div>
               </div>
             </div>

@@ -58,7 +58,7 @@ export interface I18nTestResult {
 export function detectHardcodedStrings(
   filePath: string,
   content: string,
-  config: I18nTestConfig,
+  config: I18nTestConfig
 ): HardcodedStringResult[] {
   const results: HardcodedStringResult[] = [];
   const lines = content.split("\n");
@@ -87,11 +87,7 @@ export function detectHardcodedStrings(
 
   lines.forEach((line, lineIndex) => {
     // Skip comments and imports
-    if (
-      line.trim().startsWith("//") ||
-      line.trim().startsWith("/*") ||
-      line.trim().startsWith("import")
-    ) {
+    if (line.trim().startsWith("//") || line.trim().startsWith("/*") || line.trim().startsWith("import")) {
       return;
     }
 
@@ -153,12 +149,7 @@ export function detectHardcodedStrings(
     }
 
     // Skip lines with variable assignments or function calls
-    if (
-      line.includes("=") &&
-      (line.includes("const ") ||
-        line.includes("let ") ||
-        line.includes("var "))
-    ) {
+    if (line.includes("=") && (line.includes("const ") || line.includes("let ") || line.includes("var "))) {
       return;
     }
 
@@ -168,11 +159,7 @@ export function detectHardcodedStrings(
         const text = match[1] || match[2];
 
         // Skip if matches ignore patterns
-        if (
-          config.ignorePatterns.some((pattern) =>
-            text.match(new RegExp(pattern)),
-          )
-        ) {
+        if (config.ignorePatterns.some(pattern => text.match(new RegExp(pattern)))) {
           continue;
         }
 
@@ -316,7 +303,7 @@ function isTechnicalTerm(text: string): boolean {
   // Check for file extensions or technical suffixes
   if (
     /\.(js|ts|tsx|jsx|css|scss|sass|less|json|md|txt|yml|yaml|xml|html|svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot)$/i.test(
-      text,
+      text
     )
   ) {
     return true;
@@ -338,9 +325,7 @@ function isTechnicalTerm(text: string): boolean {
 /**
  * Validate translation completeness across locales
  */
-export async function validateTranslations(
-  config: I18nTestConfig,
-): Promise<TranslationValidationResult[]> {
+export async function validateTranslations(config: I18nTestConfig): Promise<TranslationValidationResult[]> {
   const results: TranslationValidationResult[] = [];
 
   for (const locale of config.locales) {
@@ -362,10 +347,7 @@ export async function validateTranslations(
         pluralizationIssues,
       });
     } catch (error) {
-      console.error(
-        `Failed to validate translations for locale ${locale}:`,
-        error,
-      );
+      console.error(`Failed to validate translations for locale ${locale}:`, error);
     }
   }
 
@@ -375,9 +357,7 @@ export async function validateTranslations(
 /**
  * Load translations for a locale (placeholder implementation)
  */
-async function loadTranslations(
-  locale: string,
-): Promise<Record<string, unknown>> {
+async function loadTranslations(locale: string): Promise<Record<string, unknown>> {
   // This would integrate with the actual reynard-i18n package
   try {
     const module = await import(`reynard-i18n/src/lang/${locale}/common.ts`);
@@ -390,10 +370,7 @@ async function loadTranslations(
 /**
  * Find missing translation keys
  */
-function findMissingKeys(
-  reference: Record<string, unknown>,
-  target: Record<string, unknown>,
-): string[] {
+function findMissingKeys(reference: Record<string, unknown>, target: Record<string, unknown>): string[] {
   const missing: string[] = [];
 
   function compareObjects(ref: unknown, tar: unknown, path: string = "") {
@@ -419,10 +396,7 @@ function findMissingKeys(
 /**
  * Find unused translation keys
  */
-function findUnusedKeys(
-  reference: Record<string, unknown>,
-  target: Record<string, unknown>,
-): string[] {
+function findUnusedKeys(reference: Record<string, unknown>, target: Record<string, unknown>): string[] {
   const unused: string[] = [];
 
   function findUnusedInObject(ref: unknown, tar: unknown, path: string = "") {
@@ -448,9 +422,7 @@ function findUnusedKeys(
 /**
  * Find incomplete translations (empty or placeholder values)
  */
-function findIncompleteTranslations(
-  translations: Record<string, unknown>,
-): string[] {
+function findIncompleteTranslations(translations: Record<string, unknown>): string[] {
   const incomplete: string[] = [];
 
   function checkObject(obj: unknown, path: string = "") {
@@ -461,12 +433,7 @@ function findIncompleteTranslations(
         checkObject((obj as any)[key], currentPath);
       } else if (typeof (obj as any)[key] === "string") {
         const value = (obj as any)[key];
-        if (
-          !value ||
-          value.trim() === "" ||
-          value.includes("TODO") ||
-          value.includes("FIXME")
-        ) {
+        if (!value || value.trim() === "" || value.includes("TODO") || value.includes("FIXME")) {
           incomplete.push(currentPath);
         }
       }
@@ -480,10 +447,7 @@ function findIncompleteTranslations(
 /**
  * Validate pluralization rules
  */
-function validatePluralization(
-  translations: Record<string, unknown>,
-  locale: string,
-): string[] {
+function validatePluralization(translations: Record<string, unknown>, locale: string): string[] {
   const issues: string[] = [];
 
   // This would integrate with the actual pluralization system
@@ -497,10 +461,7 @@ function validatePluralization(
         checkPluralization(obj[key], currentPath);
       } else if (typeof obj[key] === "string") {
         const value = obj[key];
-        if (
-          value.includes("{count}") &&
-          !hasProperPluralForms(obj, key, pluralizationRules)
-        ) {
+        if (value.includes("{count}") && !hasProperPluralForms(obj, key, pluralizationRules)) {
           issues.push(currentPath);
         }
       }
@@ -531,7 +492,7 @@ function getPluralizationRules(locale: string): string[] {
  */
 function hasProperPluralForms(obj: any, key: string, rules: string[]): boolean {
   // Check if all required plural forms exist
-  return rules.every((rule) => obj[`${key}_${rule}`] !== undefined);
+  return rules.every(rule => obj[`${key}_${rule}`] !== undefined);
 }
 
 /**
@@ -542,9 +503,7 @@ export function testRTLSupport(config: I18nTestConfig): string[] {
   const rtlLocales = ["ar", "he", "fa", "ur"];
 
   // Only report RTL issues if we're actually testing RTL locales
-  const testedRTLLocales = config.locales.filter((locale) =>
-    rtlLocales.includes(locale),
-  );
+  const testedRTLLocales = config.locales.filter(locale => rtlLocales.includes(locale));
 
   if (testedRTLLocales.length > 0) {
     // Check if RTL support is properly configured
@@ -568,7 +527,7 @@ export function testRTLSupport(config: I18nTestConfig): string[] {
  */
 async function scanPackageForHardcodedStrings(
   packagePath: string,
-  config: I18nTestConfig,
+  config: I18nTestConfig
 ): Promise<HardcodedStringResult[]> {
   const results: HardcodedStringResult[] = [];
   const srcPath = join(packagePath, "src");
@@ -608,16 +567,7 @@ function getAllFiles(dirPath: string, extensions: string[]): string[] {
 
         if (stat.isDirectory()) {
           // Skip node_modules, dist, build, etc.
-          if (
-            ![
-              "node_modules",
-              "dist",
-              "build",
-              "coverage",
-              "__tests__",
-              "test",
-            ].includes(item)
-          ) {
+          if (!["node_modules", "dist", "build", "coverage", "__tests__", "test"].includes(item)) {
             scanDirectory(fullPath);
           }
         } else if (stat.isFile()) {
@@ -639,9 +589,7 @@ function getAllFiles(dirPath: string, extensions: string[]): string[] {
 /**
  * Run comprehensive i18n tests
  */
-export async function runI18nTests(
-  config: I18nTestConfig,
-): Promise<I18nTestResult> {
+export async function runI18nTests(config: I18nTestConfig): Promise<I18nTestResult> {
   const startTime = performance.now();
 
   const hardcodedStrings: HardcodedStringResult[] = [];
@@ -649,10 +597,7 @@ export async function runI18nTests(
   // Scan files for hardcoded strings if enabled
   if (config.checkHardcodedStrings) {
     for (const packagePath of config.packages) {
-      const packageHardcodedStrings = await scanPackageForHardcodedStrings(
-        packagePath,
-        config,
-      );
+      const packageHardcodedStrings = await scanPackageForHardcodedStrings(packagePath, config);
       hardcodedStrings.push(...packageHardcodedStrings);
     }
   }
@@ -682,7 +627,7 @@ export function generateI18nReport(result: I18nTestResult): string {
   // Hardcoded strings section
   if (result.hardcodedStrings.length > 0) {
     report += "## Hardcoded Strings Found\n\n";
-    result.hardcodedStrings.forEach((item) => {
+    result.hardcodedStrings.forEach(item => {
       report += `- **${item.file}:${item.line}:${item.column}** - "${item.text}"\n`;
       if (item.suggestion) {
         report += `  - Suggestion: ${item.suggestion}\n`;
@@ -694,12 +639,12 @@ export function generateI18nReport(result: I18nTestResult): string {
   // Translation validation section
   if (result.translationValidation.length > 0) {
     report += "## Translation Validation\n\n";
-    result.translationValidation.forEach((validation) => {
+    result.translationValidation.forEach(validation => {
       report += `### ${validation.locale}\n\n`;
 
       if (validation.missingKeys.length > 0) {
         report += `**Missing Keys (${validation.missingKeys.length}):**\n`;
-        validation.missingKeys.forEach((key) => {
+        validation.missingKeys.forEach(key => {
           report += `- ${key}\n`;
         });
         report += "\n";
@@ -707,7 +652,7 @@ export function generateI18nReport(result: I18nTestResult): string {
 
       if (validation.unusedKeys.length > 0) {
         report += `**Unused Keys (${validation.unusedKeys.length}):**\n`;
-        validation.unusedKeys.forEach((key) => {
+        validation.unusedKeys.forEach(key => {
           report += `- ${key}\n`;
         });
         report += "\n";
@@ -715,7 +660,7 @@ export function generateI18nReport(result: I18nTestResult): string {
 
       if (validation.incompleteTranslations.length > 0) {
         report += `**Incomplete Translations (${validation.incompleteTranslations.length}):**\n`;
-        validation.incompleteTranslations.forEach((key) => {
+        validation.incompleteTranslations.forEach(key => {
           report += `- ${key}\n`;
         });
         report += "\n";
@@ -726,7 +671,7 @@ export function generateI18nReport(result: I18nTestResult): string {
   // RTL issues section
   if (result.rtlIssues.length > 0) {
     report += "## RTL Issues\n\n";
-    result.rtlIssues.forEach((issue) => {
+    result.rtlIssues.forEach(issue => {
       report += `- ${issue}\n`;
     });
     report += "\n";

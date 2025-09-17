@@ -38,7 +38,7 @@ describe("Throttle Extended Coverage", () => {
       expect(result2).toBeUndefined();
       expect(mockFn).not.toHaveBeenCalled();
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(mockFn).toHaveBeenCalledWith("arg2");
       expect(mockFn).toHaveBeenCalledTimes(1);
@@ -53,13 +53,13 @@ describe("Throttle Extended Coverage", () => {
       });
 
       throttled("arg1");
-      await new Promise((resolve) => setTimeout(resolve, 30));
+      await new Promise(resolve => setTimeout(resolve, 30));
       throttled("arg2");
 
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
 
-      await new Promise((resolve) => setTimeout(resolve, 20)); // Total 50ms, should trigger maxWait
+      await new Promise(resolve => setTimeout(resolve, 20)); // Total 50ms, should trigger maxWait
 
       expect(mockFn).toHaveBeenCalledWith("arg2");
       expect(mockFn).toHaveBeenCalledTimes(2);
@@ -75,7 +75,7 @@ describe("Throttle Extended Coverage", () => {
       throttled("arg1");
       throttled.cancel();
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(mockFn).not.toHaveBeenCalled();
     });
@@ -127,7 +127,7 @@ describe("Throttle Extended Coverage", () => {
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(mockFn).toHaveBeenCalledWith("arg3");
       expect(mockFn).toHaveBeenCalledTimes(2);
@@ -177,7 +177,7 @@ describe("Throttle Extended Coverage", () => {
       expect(result2).toBeUndefined();
       expect(mockFn).not.toHaveBeenCalled();
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(mockFn).toHaveBeenCalledWith("arg2");
       expect(mockFn).toHaveBeenCalledTimes(1);
@@ -192,13 +192,13 @@ describe("Throttle Extended Coverage", () => {
       });
 
       debounced("arg1");
-      await new Promise((resolve) => setTimeout(resolve, 30));
+      await new Promise(resolve => setTimeout(resolve, 30));
       debounced("arg2");
 
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
 
-      await new Promise((resolve) => setTimeout(resolve, 20)); // Total 50ms, should trigger maxWait
+      await new Promise(resolve => setTimeout(resolve, 20)); // Total 50ms, should trigger maxWait
 
       expect(mockFn).toHaveBeenCalledWith("arg2");
       expect(mockFn).toHaveBeenCalledTimes(2);
@@ -214,7 +214,7 @@ describe("Throttle Extended Coverage", () => {
       debounced("arg1");
       debounced.cancel();
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(mockFn).not.toHaveBeenCalled();
     });
@@ -266,7 +266,7 @@ describe("Throttle Extended Coverage", () => {
       expect(mockFn).toHaveBeenCalledWith("arg1");
       expect(mockFn).toHaveBeenCalledTimes(1);
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       expect(mockFn).toHaveBeenCalledWith("arg3");
       expect(mockFn).toHaveBeenCalledTimes(2);
@@ -301,16 +301,16 @@ describe("Throttle Extended Coverage", () => {
       expect(mockFn).toHaveBeenCalledTimes(1);
 
       // Rapid calls within wait period
-      await new Promise((resolve) => setTimeout(resolve, 50));
+      await new Promise(resolve => setTimeout(resolve, 50));
       debounced("arg2");
-      await new Promise((resolve) => setTimeout(resolve, 30));
+      await new Promise(resolve => setTimeout(resolve, 30));
       debounced("arg3");
 
       // Should not execute yet
       expect(mockFn).toHaveBeenCalledTimes(1);
 
       // Advance to trigger maxWait
-      await new Promise((resolve) => setTimeout(resolve, 70)); // Total 150ms
+      await new Promise(resolve => setTimeout(resolve, 70)); // Total 150ms
       expect(mockFn).toHaveBeenCalledWith("arg3");
       expect(mockFn).toHaveBeenCalledTimes(2);
     });

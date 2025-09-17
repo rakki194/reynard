@@ -53,7 +53,7 @@ export function startResizeOperation(
   boxId: string,
   handle: ResizeHandle,
   startDimensions: ResizeDimensions,
-  callbacks: ResizeCallbacks,
+  callbacks: ResizeCallbacks
 ): ResizeState {
   // Calculate aspect ratio if proportional resizing is enabled
   const aspectRatio = startDimensions.width / startDimensions.height;
@@ -82,17 +82,14 @@ export function startResizeOperation(
 export function updateResizeOperation(
   newDimensions: ResizeDimensions,
   currentState: ResizeState,
-  _callbacks: ResizeCallbacks,
+  _callbacks: ResizeCallbacks
 ): ResizeState {
   if (!currentState.isResizing || !currentState.activeHandle) {
     return currentState;
   }
 
   // Apply constraints
-  const constrainedDimensions = applyResizeConstraints(
-    newDimensions,
-    currentState.activeHandle.constraints,
-  );
+  const constrainedDimensions = applyResizeConstraints(newDimensions, currentState.activeHandle.constraints);
 
   return {
     ...currentState,
@@ -111,14 +108,13 @@ export function updateResizeOperation(
 export function endResizeOperation(
   currentState: ResizeState,
   boxId: string,
-  callbacks: ResizeCallbacks,
+  callbacks: ResizeCallbacks
 ): { state: ResizeState; finalDimensions: ResizeDimensions | null } {
   if (!currentState.isResizing) {
     return { state: currentState, finalDimensions: null };
   }
 
-  const finalDimensions =
-    currentState.currentDimensions || currentState.startDimensions;
+  const finalDimensions = currentState.currentDimensions || currentState.startDimensions;
 
   if (finalDimensions) {
     callbacks.onResizeEnd?.(boxId, finalDimensions);
@@ -139,7 +135,7 @@ export function endResizeOperation(
 export function cancelResizeOperation(
   currentState: ResizeState,
   boxId: string,
-  callbacks: ResizeCallbacks,
+  callbacks: ResizeCallbacks
 ): ResizeState {
   const newState = createInitialResizeState();
 

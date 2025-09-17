@@ -7,7 +7,7 @@ including discovery, loading, and lifecycle management.
 
 import asyncio
 import logging
-from typing import Any, Dict, Optional, Set
+from typing import Any
 
 from .base import CaptionGenerator
 from .plugin import CaptionerPlugin
@@ -25,11 +25,11 @@ class CaptionerManager:
     """
 
     def __init__(self):
-        self._plugins: Dict[str, CaptionerPlugin] = {}
-        self._loaded_models: Set[str] = set()
-        self._loading_locks: Dict[str, asyncio.Lock] = {}
+        self._plugins: dict[str, CaptionerPlugin] = {}
+        self._loaded_models: set[str] = set()
+        self._loading_locks: dict[str, asyncio.Lock] = {}
 
-    def discover_plugins(self) -> Dict[str, CaptionerPlugin]:
+    def discover_plugins(self) -> dict[str, CaptionerPlugin]:
         """
         Discover all available captioner plugins.
 
@@ -45,7 +45,7 @@ class CaptionerManager:
         self._plugins = plugins
         return plugins
 
-    def get_available_captioners(self) -> Dict[str, Dict[str, Any]]:
+    def get_available_captioners(self) -> dict[str, dict[str, Any]]:
         """
         Get information about all available captioners.
 
@@ -54,7 +54,7 @@ class CaptionerManager:
         """
         return {name: plugin.get_info() for name, plugin in self._plugins.items()}
 
-    def get_captioner(self, name: str) -> Optional[CaptionGenerator]:
+    def get_captioner(self, name: str) -> CaptionGenerator | None:
         """
         Get a specific captioner instance.
 
@@ -120,7 +120,7 @@ class CaptionerManager:
             self._loaded_models.discard(name)
         return success
 
-    def get_loaded_models(self) -> Set[str]:
+    def get_loaded_models(self) -> set[str]:
         """
         Get the set of currently loaded model names.
 

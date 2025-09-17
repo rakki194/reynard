@@ -19,11 +19,7 @@
   "bin": {
     "reynard-docs": "./bin/reynard-docs"
   },
-  "files": [
-    "dist",
-    "bin",
-    "loader.mjs"
-  ],
+  "files": ["dist", "bin", "loader.mjs"],
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
@@ -34,13 +30,7 @@
     "generate": "node --loader ./loader.mjs dist/cli/index.js",
     "generate:watch": "node --loader ./loader.mjs dist/cli/index.js --watch"
   },
-  "keywords": [
-    "documentation",
-    "generator",
-    "automation",
-    "reynard",
-    "typescript"
-  ],
+  "keywords": ["documentation", "generator", "automation", "reynard", "typescript"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {

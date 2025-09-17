@@ -1,6 +1,6 @@
 /**
  * Embedding Information Component
- * 
+ *
  * Displays embedding vector information and statistics
  */
 
@@ -25,11 +25,9 @@ export interface EmbeddingInfoProps {
   onCopyVector: () => void;
 }
 
-export const EmbeddingInfo: Component<EmbeddingInfoProps> = (props) => {
+export const EmbeddingInfo: Component<EmbeddingInfoProps> = props => {
   const calculateMagnitude = (vector: number[]): number => {
-    return Math.sqrt(
-      vector.reduce((sum, val) => sum + val * val, 0)
-    );
+    return Math.sqrt(vector.reduce((sum, val) => sum + val * val, 0));
   };
 
   return (
@@ -37,27 +35,18 @@ export const EmbeddingInfo: Component<EmbeddingInfoProps> = (props) => {
       <Card className="embedding-card">
         <div class="card-header">
           <h4>Embedding Vector</h4>
-          <Button
-            variant="ghost"
-            size="small"
-            onClick={props.onToggle}
-            icon={getIcon("close")}
-          />
+          <Button variant="ghost" size="small" onClick={props.onToggle} icon={getIcon("close")} />
         </div>
         <div class="embedding-content">
           <div class="embedding-stats">
             <div class="stat-item">
               <span class="stat-label">Dimensions:</span>
-              <span class="stat-value">
-                {props.embeddingVector?.length}
-              </span>
+              <span class="stat-value">{props.embeddingVector?.length}</span>
             </div>
             <div class="stat-item">
               <span class="stat-label">Magnitude:</span>
               <span class="stat-value">
-                {props.embeddingVector
-                  ? calculateMagnitude(props.embeddingVector).toFixed(4)
-                  : "N/A"}
+                {props.embeddingVector ? calculateMagnitude(props.embeddingVector).toFixed(4) : "N/A"}
               </span>
             </div>
           </div>
@@ -66,23 +55,14 @@ export const EmbeddingInfo: Component<EmbeddingInfoProps> = (props) => {
             <div class="preview-label">First 10 dimensions:</div>
             <div class="preview-values">
               {props.embeddingVector?.slice(0, 10).map((val, index) => (
-                <span
-                  class="dimension-value"
-                  title={`Dimension ${index + 1}: ${val.toFixed(6)}`}
-                >
+                <span class="dimension-value" title={`Dimension ${index + 1}: ${val.toFixed(6)}`}>
                   {val.toFixed(3)}
                 </span>
               ))}
             </div>
           </div>
 
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={props.onCopyVector}
-            icon={getIcon("copy")}
-            fullWidth
-          >
+          <Button variant="secondary" size="small" onClick={props.onCopyVector} icon={getIcon("copy")} fullWidth>
             Copy Vector
           </Button>
         </div>

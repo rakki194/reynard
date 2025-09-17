@@ -3,12 +3,7 @@
  * Translation management, analytics, and production-ready enterprise functionality
  */
 
-import type {
-  LanguageCode,
-  TranslationFunction,
-  TranslationParams,
-  I18nModule,
-} from "../../types";
+import type { LanguageCode, TranslationFunction, TranslationParams, I18nModule } from "../../types";
 
 // Module factory
 import { createBaseI18nModule } from "../../core/providers/module-factory";
@@ -48,11 +43,8 @@ export interface AnalyticsI18nModule extends I18nModule {
 }
 
 // Analytics i18n module creation with all features
-export function createAnalyticsI18nModule(
-  options: unknown = {},
-): AnalyticsI18nModule {
-  const { locale, setLocale, translations, translationEngine } =
-    createBaseI18nModule(options);
+export function createAnalyticsI18nModule(options: unknown = {}): AnalyticsI18nModule {
+  const { locale, setLocale, translations, translationEngine } = createBaseI18nModule(options);
 
   // Initialize analytics features
   const translationManager = new TranslationManager({

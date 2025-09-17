@@ -29,14 +29,7 @@
     "vite": "7.1.5",
     "vite-plugin-solid": "2.11.8"
   },
-  "keywords": [
-    "reynard",
-    "solidjs",
-    "clock",
-    "timer",
-    "alarm",
-    "countdown"
-  ],
+  "keywords": ["reynard", "solidjs", "clock", "timer", "alarm", "countdown"],
   "author": "Reynard Framework",
   "license": "MIT"
 }

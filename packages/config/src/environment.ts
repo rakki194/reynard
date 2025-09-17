@@ -56,9 +56,7 @@ export class EnvironmentManager {
     // In Vite, environment variables are available in import.meta.env
     // Fall back to process.env for Node.js environments
     const env =
-      typeof import.meta !== "undefined" && (import.meta as any)?.env
-        ? (import.meta as any).env
-        : process.env;
+      typeof import.meta !== "undefined" && (import.meta as any)?.env ? (import.meta as any).env : process.env;
 
     return {
       NODE_ENV: env.NODE_ENV || ENVIRONMENT.DEVELOPMENT,
@@ -70,8 +68,7 @@ export class EnvironmentManager {
       VITE_LOG_LEVEL: env.VITE_LOG_LEVEL,
       VITE_ENABLE_ANALYTICS: env.VITE_ENABLE_ANALYTICS,
       VITE_ENABLE_ERROR_REPORTING: env.VITE_ENABLE_ERROR_REPORTING,
-      VITE_ENABLE_PERFORMANCE_MONITORING:
-        env.VITE_ENABLE_PERFORMANCE_MONITORING,
+      VITE_ENABLE_PERFORMANCE_MONITORING: env.VITE_ENABLE_PERFORMANCE_MONITORING,
       VITE_AUTH_DOMAIN: env.VITE_AUTH_DOMAIN,
       VITE_AUTH_CLIENT_ID: env.VITE_AUTH_CLIENT_ID,
       VITE_AUTH_REDIRECT_URI: env.VITE_AUTH_REDIRECT_URI,
@@ -178,7 +175,7 @@ export class EnvironmentManager {
     ];
 
     const publicConfig: Partial<EnvironmentConfig> = {};
-    publicKeys.forEach((key) => {
+    publicKeys.forEach(key => {
       if (this.config[key] !== undefined) {
         publicConfig[key] = this.config[key];
       }
@@ -193,16 +190,14 @@ export class EnvironmentManager {
   validateRequired(required: (keyof EnvironmentConfig)[]): void {
     const missing: string[] = [];
 
-    required.forEach((key) => {
+    required.forEach(key => {
       if (!this.config[key]) {
         missing.push(key);
       }
     });
 
     if (missing.length > 0) {
-      throw new Error(
-        `Missing required environment variables: ${missing.join(", ")}`,
-      );
+      throw new Error(`Missing required environment variables: ${missing.join(", ")}`);
     }
   }
 }
@@ -226,30 +221,21 @@ export function getEnv(key: keyof EnvironmentConfig): string | undefined {
 /**
  * Get environment variable with default
  */
-export function getEnvWithDefault(
-  key: keyof EnvironmentConfig,
-  defaultValue: string,
-): string {
+export function getEnvWithDefault(key: keyof EnvironmentConfig, defaultValue: string): string {
   return env.getWithDefault(key, defaultValue);
 }
 
 /**
  * Get boolean environment variable
  */
-export function getEnvBoolean(
-  key: keyof EnvironmentConfig,
-  defaultValue = false,
-): boolean {
+export function getEnvBoolean(key: keyof EnvironmentConfig, defaultValue = false): boolean {
   return env.getBoolean(key, defaultValue);
 }
 
 /**
  * Get number environment variable
  */
-export function getEnvNumber(
-  key: keyof EnvironmentConfig,
-  defaultValue = 0,
-): number {
+export function getEnvNumber(key: keyof EnvironmentConfig, defaultValue = 0): number {
   return env.getNumber(key, defaultValue);
 }
 
@@ -333,7 +319,6 @@ export const ENVIRONMENT_CONFIGS = {
 export function getEnvironmentConfig() {
   const currentEnv = env.get("NODE_ENV") || ENVIRONMENT.DEVELOPMENT;
   return (
-    ENVIRONMENT_CONFIGS[currentEnv as keyof typeof ENVIRONMENT_CONFIGS] ||
-    ENVIRONMENT_CONFIGS[ENVIRONMENT.DEVELOPMENT]
+    ENVIRONMENT_CONFIGS[currentEnv as keyof typeof ENVIRONMENT_CONFIGS] || ENVIRONMENT_CONFIGS[ENVIRONMENT.DEVELOPMENT]
   );
 }

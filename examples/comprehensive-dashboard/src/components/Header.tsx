@@ -12,7 +12,7 @@ interface HeaderProps {
   sidebarCollapsed: boolean;
 }
 
-const Header: Component<HeaderProps> = (props) => {
+const Header: Component<HeaderProps> = props => {
   const { t } = useI18n();
   // const { theme } = useTheme();
   const { user, logout } = useAuth();
@@ -55,12 +55,7 @@ const Header: Component<HeaderProps> = (props) => {
 
           <div class="header__user">
             <span class="header__username">{user()?.username || "Guest"}</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleLogout}
-              title={t("auth.logout")}
-            >
+            <Button variant="ghost" size="sm" onClick={handleLogout} title={t("auth.logout")}>
               🚪
             </Button>
           </div>

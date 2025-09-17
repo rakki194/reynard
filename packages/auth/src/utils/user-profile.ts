@@ -19,12 +19,12 @@ export const createUserProfileManager = (
   config: AuthConfiguration,
   authState: () => AuthState,
   updateAuthState: (updates: Partial<AuthState>) => void,
-  authFetch: ReturnType<typeof import("./api-utils").createAuthFetch>,
+  authFetch: ReturnType<typeof import("./api-utils").createAuthFetch>
 ): UserProfileManager => {
   // Get current user profile
   const userProfile = createResource(
     () => authState().isAuthenticated,
-    async (isAuthenticated) => {
+    async isAuthenticated => {
       if (!isAuthenticated) return null;
 
       try {
@@ -41,7 +41,7 @@ export const createUserProfileManager = (
         console.error("Failed to fetch user profile:", error);
         return null;
       }
-    },
+    }
   );
 
   // Update user profile
@@ -70,8 +70,7 @@ export const createUserProfileManager = (
         throw new Error(errorMessage);
       }
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Profile update failed";
+      const errorMessage = error instanceof Error ? error.message : "Profile update failed";
       updateAuthState({
         isLoading: false,
         error: errorMessage,

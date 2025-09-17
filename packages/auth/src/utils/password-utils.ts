@@ -70,7 +70,7 @@ export function calculatePasswordStrength(password: string): PasswordStrength {
 export async function retryWithBackoff<T>(
   fn: () => Promise<T>,
   maxRetries: number = 3,
-  baseDelay: number = 1000,
+  baseDelay: number = 1000
 ): Promise<T> {
   let lastError: Error;
 
@@ -86,7 +86,7 @@ export async function retryWithBackoff<T>(
 
       // Exponential backoff with jitter
       const delay = baseDelay * Math.pow(2, attempt) + Math.random() * 1000;
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
 

@@ -168,9 +168,11 @@ Edit `.vscode/settings.json` to customize:
    **Solution**: Create a virtual environment or install dependencies globally
 
 3. **inotifywait Not Found**
+
    ```
    ❌ inotifywait not found. Please install inotify-tools
    ```
+
    **Solution**: Install inotify-tools for your system
 
 ### Debug Mode

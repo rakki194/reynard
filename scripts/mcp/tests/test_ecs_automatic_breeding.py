@@ -19,6 +19,8 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from agent_naming import AgentNameManager
+
 from reynard_ecs_world import (
     AgentComponent,
     LifecycleComponent,
@@ -27,7 +29,6 @@ from reynard_ecs_world import (
     ReproductionSystem,
     WorldSimulation,
 )
-from agent_naming import AgentNameManager
 
 
 class TestECSAutomaticBreeding:

@@ -7,15 +7,12 @@ Endpoints for document ingestion and indexing operations.
 import logging
 from collections.abc import AsyncGenerator
 
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse
 
+from ...security.mcp_auth import MCPTokenData, require_rag_ingest
 from .models import RAGIngestRequest, RAGIngestResponse
 from .service import get_rag_service
-from ...security.mcp_auth import (
-    require_rag_ingest,
-    MCPTokenData
-)
 
 logger = logging.getLogger("uvicorn")
 
@@ -24,8 +21,7 @@ router = APIRouter(tags=["rag"])
 
 @router.post("/ingest", response_model=RAGIngestResponse)
 async def ingest_documents(
-    request: RAGIngestRequest,
-    mcp_client: MCPTokenData = Depends(require_rag_ingest)
+    request: RAGIngestRequest, mcp_client: MCPTokenData = Depends(require_rag_ingest)
 ):
     """Ingest documents into the RAG system."""
     try:
@@ -47,8 +43,7 @@ async def ingest_documents(
 
 @router.post("/ingest/stream")
 async def ingest_documents_stream(
-    request: RAGIngestRequest,
-    mcp_client: MCPTokenData = Depends(require_rag_ingest)
+    request: RAGIngestRequest, mcp_client: MCPTokenData = Depends(require_rag_ingest)
 ):
     """Stream document ingestion progress."""
     try:

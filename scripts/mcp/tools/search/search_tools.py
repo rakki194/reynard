@@ -16,6 +16,8 @@ import logging
 from pathlib import Path
 from typing import Any, Dict
 
+from services.search_service import SearchService
+
 from .bm25_search import (
     clear_search_cache,
     get_query_suggestions,
@@ -51,15 +53,16 @@ class SearchTools:
         self.file_engine = FileSearchEngine(project_root)
         self.ripgrep_engine = RipgrepSearchEngine(project_root)
         self.semantic_engine = SemanticSearchEngine(project_root)
+        self.search_service = SearchService(project_root)
 
     def _format_result(self, result: dict[str, Any], operation: str) -> dict[str, Any]:
         """Format tool result for MCP response."""
         success = result.get("success", False)
         status = "✅ SUCCESS" if success else "❌ FAILED"
-    
+
         # Format output text
         output_lines = [f"{status} - {operation}"]
-    
+
         if "results" in result:
             results = result["results"]
             if isinstance(results, list) and results:
@@ -69,15 +72,17 @@ class SearchTools:
                     line_number = item.get("line_number", "")
                     content = item.get("content", "")[:80]
                     score = item.get("score", 0.0)
-                
-                    output_lines.append(f"  {i}. {file_path}:{line_number} (score: {score:.2f})")
+
+                    output_lines.append(
+                        f"  {i}. {file_path}:{line_number} (score: {score:.2f})"
+                    )
                     if content:
                         output_lines.append(f"     {content}...")
                 if len(results) > 10:
                     output_lines.append(f"  ... and {len(results) - 10} more results")
             else:
                 output_lines.append("No results found")
-    
+
         elif "files" in result:
             files = result["files"]
             output_lines.append(f"\n📁 Found {len(files)} files:")
@@ -85,7 +90,7 @@ class SearchTools:
                 output_lines.append(f"  • {file_path}")
             if len(files) > 10:
                 output_lines.append(f"  ... and {len(files) - 10} more")
-    
+
         elif "matches" in result:
             matches = result["matches"]
             output_lines.append(f"\n🔍 Found {len(matches)} matches:")
@@ -93,14 +98,14 @@ class SearchTools:
                 output_lines.append(f"  • {match}")
             if len(matches) > 5:
                 output_lines.append(f"  ... and {len(matches) - 5} more")
-    
+
         if result.get("error"):
             output_lines.append(f"\n⚠️ Error: {result['error']}")
-    
+
         if result.get("search_strategies"):
             strategies = result["search_strategies"]
             output_lines.append(f"\n🎯 Search strategies used: {', '.join(strategies)}")
-    
+
         return {
             "success": success,
             "output": "\n".join(output_lines),
@@ -201,9 +206,7 @@ class SearchTools:
                 include_hidden=include_hidden,
             )
 
-            return self._format_result(
-                {"success": True, "files": files}, "File Search"
-            )
+            return self._format_result({"success": True, "files": files}, "File Search")
 
         except Exception as e:
             logger.exception("Error searching files")
@@ -235,9 +238,7 @@ class SearchTools:
                 include_hidden=include_hidden,
             )
 
-            return self._format_result(
-                {"success": True, "files": files}, "List Files"
-            )
+            return self._format_result({"success": True, "files": files}, "List Files")
 
         except Exception as e:
             logger.exception("Error listing files")
@@ -353,6 +354,21 @@ class SearchTools:
             Search results with semantic relevance scores
         """
         try:
+            # Try search service first
+            result = await self.search_service.semantic_search(
+                query=query,
+                search_type=search_type,
+                file_types=file_types,
+                directories=directories,
+                top_k=top_k,
+                similarity_threshold=similarity_threshold,
+                model=model,
+            )
+
+            if result.get("success"):
+                return self._format_result(result, "Semantic Search")
+
+            # Fallback to original semantic engine
             result = await self.semantic_engine.semantic_search(
                 query=query,
                 search_type=search_type,
@@ -455,9 +471,13 @@ class SearchTools:
                     "summary": {
                         "total_files_indexed": stats.get("corpus_size", 0),
                         "avg_document_length": stats.get("avg_document_length", 0),
-                        "total_searches": stats.get("search_stats", {}).get("total_searches", 0),
+                        "total_searches": stats.get("search_stats", {}).get(
+                            "total_searches", 0
+                        ),
                         "cache_hit_rate": self._calculate_cache_hit_rate(stats),
-                        "avg_search_time": stats.get("search_stats", {}).get("avg_search_time", 0),
+                        "avg_search_time": stats.get("search_stats", {}).get(
+                            "avg_search_time", 0
+                        ),
                     },
                 },
                 "Search Analytics",
@@ -524,6 +544,224 @@ class SearchTools:
             return 0.0
 
         return round((cache_hits / total_searches) * 100, 2)
+
+    async def search_smart(
+        self,
+        query: str,
+        project_root: str | None = None,
+        top_k: int = 20,
+        expand_query: bool = True,
+        file_types: list[str] | None = None,
+        directories: list[str] | None = None,
+        include_agent_context: bool = False,
+        agent_id: str | None = None,
+    ) -> dict[str, Any]:
+        """
+        Smart search using the FastAPI backend.
+
+        Args:
+            query: The search query or pattern to find in the codebase
+            project_root: Root directory of the project to search
+            top_k: Number of top results to return
+            expand_query: Whether to expand query with synonyms and related terms
+            file_types: Filter results by file types
+            directories: Filter results by directories
+            include_agent_context: Include ECS agent spatial context in search results
+            agent_id: Agent ID to include spatial context for
+
+        Returns:
+            Smart search results with metadata
+        """
+        try:
+            # Use the search service for smart search
+            result = await self.search_service.smart_search(
+                query=query,
+                file_types=file_types,
+                directories=directories,
+                max_results=top_k,
+            )
+
+            # Add ECS agent context if requested
+            agent_context = None
+            if include_agent_context and agent_id:
+                agent_context = self._get_agent_spatial_context(agent_id)
+
+            return self._format_result(
+                {
+                    "success": result.get("success", False),
+                    "results": result.get("results", []),
+                    "total_found": result.get("total_results", 0),
+                    "search_query": query,
+                    "search_params": {
+                        "expand_query": expand_query,
+                        "file_types": file_types,
+                        "directories": directories,
+                        "top_k": top_k,
+                        "include_agent_context": include_agent_context,
+                    },
+                    "agent_context": agent_context,
+                    "search_time": result.get("search_time", 0),
+                    "search_strategies": result.get("search_strategies", []),
+                },
+                "Smart Search",
+            )
+
+        except Exception as e:
+            logger.exception("Error in enhanced search")
+            return self._format_result(
+                {"success": False, "error": str(e)}, "Smart Search"
+            )
+
+    async def index_codebase(
+        self,
+        project_root: str | None = None,
+        file_types: list[str] | None = None,
+        directories: list[str] | None = None,
+        force_reindex: bool = False,
+        chunk_size: int = 512,
+        overlap: int = 50,
+    ) -> dict[str, Any]:
+        """
+        Index the codebase using the FastAPI backend.
+
+        Args:
+            project_root: Root directory of the project to index
+            file_types: File types to index
+            directories: Directories to index
+            force_reindex: Force reindexing of existing files
+            chunk_size: Text chunk size for indexing
+            overlap: Overlap between chunks
+
+        Returns:
+            Indexing result with statistics
+        """
+        try:
+            result = await self.search_service.index_codebase(
+                project_root=project_root,
+                file_types=file_types,
+                directories=directories,
+                force_reindex=force_reindex,
+                chunk_size=chunk_size,
+                overlap=overlap,
+            )
+
+            return self._format_result(
+                {
+                    "success": result.get("success", False),
+                    "indexed_files": result.get("indexed_files", 0),
+                    "total_chunks": result.get("total_chunks", 0),
+                    "index_time": result.get("index_time", 0),
+                    "model_used": result.get("model_used", "unknown"),
+                },
+                "Codebase Indexing",
+            )
+
+        except Exception as e:
+            logger.exception("Error indexing codebase")
+            return self._format_result(
+                {"success": False, "error": str(e)}, "Codebase Indexing"
+            )
+
+    async def get_search_stats_new(self) -> dict[str, Any]:
+        """
+        Get comprehensive search statistics from the backend.
+
+        Returns:
+            Search statistics and performance metrics
+        """
+        try:
+            result = await self.search_service.get_search_stats()
+
+            if result.get("success"):
+                stats = result.get("stats", {})
+                return self._format_result(
+                    {
+                        "success": True,
+                        "analytics": stats,
+                        "summary": {
+                            "total_files_indexed": stats.get("total_files_indexed", 0),
+                            "total_chunks": stats.get("total_chunks", 0),
+                            "index_size_mb": stats.get("index_size_mb", 0.0),
+                            "last_indexed": stats.get("last_indexed"),
+                            "search_count": stats.get("search_count", 0),
+                            "avg_search_time": stats.get("avg_search_time", 0.0),
+                            "cache_hit_rate": stats.get("cache_hit_rate", 0.0),
+                        },
+                    },
+                    "Search Analytics",
+                )
+            else:
+                return self._format_result(
+                    {"success": False, "error": result.get("error", "Unknown error")},
+                    "Search Analytics",
+                )
+
+        except Exception as e:
+            logger.exception("Error getting enhanced search analytics")
+            return self._format_result(
+                {"success": False, "error": str(e)}, "Search Analytics"
+            )
+
+    async def get_query_suggestions_new(
+        self, query: str, max_suggestions: int = 5
+    ) -> dict[str, Any]:
+        """
+        Get intelligent query suggestions from the backend.
+
+        Args:
+            query: The query to get suggestions for
+            max_suggestions: Maximum number of suggestions to return
+
+        Returns:
+            List of query suggestions
+        """
+        try:
+            result = await self.search_service.get_query_suggestions(
+                query=query, max_suggestions=max_suggestions
+            )
+
+            return self._format_result(
+                {
+                    "success": result.get("success", False),
+                    "query": query,
+                    "suggestions": result.get("suggestions", []),
+                    "total_suggestions": len(result.get("suggestions", [])),
+                },
+                "Query Suggestions",
+            )
+
+        except Exception as e:
+            logger.exception("Error getting enhanced query suggestions")
+            return self._format_result(
+                {"success": False, "error": str(e)}, "Query Suggestions"
+            )
+
+    async def search_health_check(self) -> dict[str, Any]:
+        """
+        Check the health of the search service.
+
+        Returns:
+            Backend health status
+        """
+        try:
+            result = await self.search_service.health_check()
+
+            return self._format_result(
+                {
+                    "success": result.get("success", False),
+                    "status": result.get("status", "unknown"),
+                    "service": result.get("service", "search"),
+                    "indexed_files": result.get("indexed_files", "0"),
+                    "total_chunks": result.get("total_chunks", "0"),
+                },
+                "Search Health Check",
+            )
+
+        except Exception as e:
+            logger.exception("Error checking search backend health")
+            return self._format_result(
+                {"success": False, "error": str(e)}, "Search Health Check"
+            )
 
     def _get_agent_spatial_context(self, agent_id: str) -> Dict[str, Any] | None:
         """Get spatial context for an agent from ECS system."""

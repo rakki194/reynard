@@ -10,8 +10,7 @@ import { AlarmForm } from "./AlarmForm";
 import { AlarmList } from "./AlarmList";
 
 export const Alarm: Component = () => {
-  const { alarms, currentTime, addAlarm, deleteAlarm, toggleAlarm } =
-    useAlarms();
+  const { alarms, currentTime, addAlarm, deleteAlarm, toggleAlarm } = useAlarms();
 
   return (
     <div class="alarm-container">
@@ -19,11 +18,7 @@ export const Alarm: Component = () => {
         <h2 class="alarm-current-time">Current Time: {currentTime()}</h2>
 
         <AlarmForm onAddAlarm={addAlarm} />
-        <AlarmList
-          alarms={alarms()}
-          onToggleAlarm={toggleAlarm}
-          onDeleteAlarm={deleteAlarm}
-        />
+        <AlarmList alarms={alarms()} onToggleAlarm={toggleAlarm} onDeleteAlarm={deleteAlarm} />
       </Card>
     </div>
   );

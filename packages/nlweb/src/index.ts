@@ -8,11 +8,7 @@
 export * from "./types/index.js";
 
 // Export service classes
-export {
-  NLWebService,
-  createDefaultNLWebConfiguration,
-  SimpleEventEmitter,
-} from "./service/NLWebService.js";
+export { NLWebService, createDefaultNLWebConfiguration, SimpleEventEmitter } from "./service/NLWebService.js";
 export { NLWebRouter } from "./router/NLWebRouter.js";
 export { NLWebToolRegistry } from "./router/NLWebToolRegistry.js";
 

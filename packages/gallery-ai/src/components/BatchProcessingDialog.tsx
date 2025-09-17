@@ -5,21 +5,10 @@
  * Provides a user-friendly interface for processing multiple images.
  */
 
-import {
-  Component,
-  Show,
-  For,
-  createSignal,
-  createEffect,
-  onMount,
-} from "solid-js";
+import { Component, Show, For, createSignal, createEffect, onMount } from "solid-js";
 import { Button } from "reynard-components";
 import { useAIGalleryContext } from "../composables/useGalleryAI";
-import type {
-  FileItem,
-  AnnotationProgress,
-  GalleryCaptionResult,
-} from "../types";
+import type { FileItem, AnnotationProgress, GalleryCaptionResult } from "../types";
 
 export interface BatchProcessingDialogProps {
   /** Whether the dialog is visible */
@@ -40,9 +29,7 @@ export interface BatchProcessingDialogProps {
   class?: string;
 }
 
-export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
-  props,
-) => {
+export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = props => {
   const ai = useAIGalleryContext();
   const [selectedGenerator, setSelectedGenerator] = createSignal<string>("");
   const [isProcessing, setIsProcessing] = createSignal(false);
@@ -76,16 +63,12 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
     setShowResults(false);
 
     try {
-      const batchResults = await ai.batchAnnotate(
-        props.items,
-        selectedGenerator(),
-      );
+      const batchResults = await ai.batchAnnotate(props.items, selectedGenerator());
       setResults(batchResults);
       setShowResults(true);
       props.onComplete?.(batchResults);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Batch processing failed";
+      const errorMessage = err instanceof Error ? err.message : "Batch processing failed";
       setError(errorMessage);
       props.onError?.(errorMessage);
     } finally {
@@ -98,9 +81,7 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
   const handleClose = () => {
     if (isProcessing()) {
       // Ask for confirmation if processing is in progress
-      if (
-        confirm("Processing is in progress. Are you sure you want to close?")
-      ) {
+      if (confirm("Processing is in progress. Are you sure you want to close?")) {
         setIsProcessing(false);
         setProgress(null);
         props.onClose();
@@ -129,28 +110,21 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
 
   // Get success count
   const getSuccessCount = (): number => {
-    return results().filter((result) => result.success).length;
+    return results().filter(result => result.success).length;
   };
 
   // Get failure count
   const getFailureCount = (): number => {
-    return results().filter((result) => !result.success).length;
+    return results().filter(result => !result.success).length;
   };
 
   return (
     <Show when={props.visible}>
       <div class="batch-processing-dialog-overlay" onClick={handleClose}>
-        <div
-          class={`batch-processing-dialog ${props.class || ""}`}
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div class={`batch-processing-dialog ${props.class || ""}`} onClick={e => e.stopPropagation()}>
           <div class="batch-processing-dialog__header">
             <h2 class="batch-processing-dialog__title">Batch Processing</h2>
-            <button
-              class="batch-processing-dialog__close"
-              onClick={handleClose}
-              disabled={isProcessing()}
-            >
+            <button class="batch-processing-dialog__close" onClick={handleClose} disabled={isProcessing()}>
               ×
             </button>
           </div>
@@ -160,29 +134,19 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
             <Show when={!isProcessing() && !showResults()}>
               <div class="batch-processing-dialog__config">
                 <div class="batch-processing-dialog__info">
-                  <p class="batch-processing-dialog__item-count">
-                    Processing {props.items.length} items
-                  </p>
+                  <p class="batch-processing-dialog__item-count">Processing {props.items.length} items</p>
                 </div>
 
                 <div class="batch-processing-dialog__generator-selector">
-                  <label class="batch-processing-dialog__label">
-                    Generator:
-                  </label>
+                  <label class="batch-processing-dialog__label">Generator:</label>
                   <select
                     value={selectedGenerator()}
-                    onChange={(e) =>
-                      setSelectedGenerator(e.currentTarget.value)
-                    }
+                    onChange={e => setSelectedGenerator(e.currentTarget.value)}
                     class="batch-processing-dialog__select"
                     title="Select caption generator for batch processing"
                   >
                     <For each={props.availableGenerators}>
-                      {(generator) => (
-                        <option value={generator}>
-                          {getGeneratorDisplayName(generator)}
-                        </option>
-                      )}
+                      {generator => <option value={generator}>{getGeneratorDisplayName(generator)}</option>}
                     </For>
                   </select>
                 </div>
@@ -196,11 +160,7 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
                   >
                     Start Processing
                   </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={handleClose}
-                    class="batch-processing-dialog__cancel-btn"
-                  >
+                  <Button variant="ghost" onClick={handleClose} class="batch-processing-dialog__cancel-btn">
                     Cancel
                   </Button>
                 </div>
@@ -211,9 +171,7 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
             <Show when={isProcessing()}>
               <div class="batch-processing-dialog__processing">
                 <div class="batch-processing-dialog__status">
-                  <span class="batch-processing-dialog__status-text">
-                    {getStatusText()}
-                  </span>
+                  <span class="batch-processing-dialog__status-text">{getStatusText()}</span>
                 </div>
 
                 <Show when={progress()}>
@@ -225,17 +183,13 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
                         style={`--progress-width: ${progress()!.percentage}%`}
                       />
                     </div>
-                    <span class="batch-processing-dialog__progress-text">
-                      {progress()!.percentage.toFixed(1)}%
-                    </span>
+                    <span class="batch-processing-dialog__progress-text">{progress()!.percentage.toFixed(1)}%</span>
                   </div>
                 </Show>
 
                 <div class="batch-processing-dialog__current-item">
                   <Show when={progress()?.current}>
-                    <span class="batch-processing-dialog__current-text">
-                      Current: {progress()!.current}
-                    </span>
+                    <span class="batch-processing-dialog__current-text">Current: {progress()!.current}</span>
                   </Show>
                 </div>
               </div>
@@ -245,52 +199,32 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
             <Show when={showResults()}>
               <div class="batch-processing-dialog__results">
                 <div class="batch-processing-dialog__summary">
-                  <h3 class="batch-processing-dialog__summary-title">
-                    Processing Complete
-                  </h3>
+                  <h3 class="batch-processing-dialog__summary-title">Processing Complete</h3>
                   <div class="batch-processing-dialog__summary-stats">
                     <div class="batch-processing-dialog__stat">
-                      <span class="batch-processing-dialog__stat-label">
-                        Total:
-                      </span>
-                      <span class="batch-processing-dialog__stat-value">
-                        {results().length}
-                      </span>
+                      <span class="batch-processing-dialog__stat-label">Total:</span>
+                      <span class="batch-processing-dialog__stat-value">{results().length}</span>
                     </div>
                     <div class="batch-processing-dialog__stat batch-processing-dialog__stat--success">
-                      <span class="batch-processing-dialog__stat-label">
-                        Success:
-                      </span>
-                      <span class="batch-processing-dialog__stat-value">
-                        {getSuccessCount()}
-                      </span>
+                      <span class="batch-processing-dialog__stat-label">Success:</span>
+                      <span class="batch-processing-dialog__stat-value">{getSuccessCount()}</span>
                     </div>
                     <div class="batch-processing-dialog__stat batch-processing-dialog__stat--error">
-                      <span class="batch-processing-dialog__stat-label">
-                        Failed:
-                      </span>
-                      <span class="batch-processing-dialog__stat-value">
-                        {getFailureCount()}
-                      </span>
+                      <span class="batch-processing-dialog__stat-label">Failed:</span>
+                      <span class="batch-processing-dialog__stat-value">{getFailureCount()}</span>
                     </div>
                   </div>
                 </div>
 
                 <Show when={getFailureCount() > 0}>
                   <div class="batch-processing-dialog__failures">
-                    <h4 class="batch-processing-dialog__failures-title">
-                      Failed Items:
-                    </h4>
+                    <h4 class="batch-processing-dialog__failures-title">Failed Items:</h4>
                     <div class="batch-processing-dialog__failures-list">
-                      <For each={results().filter((result) => !result.success)}>
-                        {(result) => (
+                      <For each={results().filter(result => !result.success)}>
+                        {result => (
                           <div class="batch-processing-dialog__failure-item">
-                            <span class="batch-processing-dialog__failure-name">
-                              {result.imagePath}
-                            </span>
-                            <span class="batch-processing-dialog__failure-error">
-                              {result.error}
-                            </span>
+                            <span class="batch-processing-dialog__failure-name">{result.imagePath}</span>
+                            <span class="batch-processing-dialog__failure-error">{result.error}</span>
                           </div>
                         )}
                       </For>
@@ -299,11 +233,7 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
                 </Show>
 
                 <div class="batch-processing-dialog__actions">
-                  <Button
-                    variant="primary"
-                    onClick={handleClose}
-                    class="batch-processing-dialog__done-btn"
-                  >
+                  <Button variant="primary" onClick={handleClose} class="batch-processing-dialog__done-btn">
                     Done
                   </Button>
                 </div>
@@ -314,9 +244,7 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
             <Show when={error()}>
               <div class="batch-processing-dialog__error">
                 <div class="batch-processing-dialog__error-icon">❌</div>
-                <div class="batch-processing-dialog__error-message">
-                  {error()}
-                </div>
+                <div class="batch-processing-dialog__error-message">{error()}</div>
                 <div class="batch-processing-dialog__actions">
                   <Button
                     variant="primary"
@@ -328,11 +256,7 @@ export const BatchProcessingDialog: Component<BatchProcessingDialogProps> = (
                   >
                     Try Again
                   </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={handleClose}
-                    class="batch-processing-dialog__cancel-btn"
-                  >
+                  <Button variant="ghost" onClick={handleClose} class="batch-processing-dialog__cancel-btn">
                     Close
                   </Button>
                 </div>

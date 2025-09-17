@@ -16,10 +16,7 @@ export const getCellValue = (row: unknown, column: Column): unknown => {
   return undefined;
 };
 
-export const getTableClasses = (
-  loading: boolean,
-  customClass?: string,
-): string => {
+export const getTableClasses = (loading: boolean, customClass?: string): string => {
   const classes = ["reynard-data-table"];
   if (loading) classes.push("reynard-data-table--loading");
   if (customClass) classes.push(customClass);
@@ -29,7 +26,7 @@ export const getTableClasses = (
 export const getSortIcon = (
   column: Column,
   sortColumn: string | null,
-  sortDirection: SortDirection,
+  sortDirection: SortDirection
 ): JSX.Element | null => {
   if (!column.sortable) return null;
 
@@ -44,9 +41,7 @@ export const getSortIcon = (
         viewBox="0 0 12 12"
         fill="currentColor"
         class={`reynard-data-table__sort-svg ${
-          isActive
-            ? "reynard-data-table__sort-svg--active"
-            : "reynard-data-table__sort-svg--inactive"
+          isActive ? "reynard-data-table__sort-svg--active" : "reynard-data-table__sort-svg--inactive"
         } ${direction === "desc" ? "reynard-data-table__sort-svg--desc" : ""}`}
       >
         <path d="M6 1l4 4H8v5H4V5H2z" />
@@ -59,11 +54,11 @@ export const sortData = <T,>(
   data: T[],
   columns: Column<T>[],
   sortColumn: string | null,
-  sortDirection: SortDirection,
+  sortDirection: SortDirection
 ): T[] => {
   if (!sortColumn || !sortDirection) return data;
 
-  const column = columns.find((col) => col.id === sortColumn);
+  const column = columns.find(col => col.id === sortColumn);
   if (!column) return data;
 
   return [...data].sort((a, b) => {
@@ -108,12 +103,7 @@ export const sortData = <T,>(
   });
 };
 
-export const paginateData = <T,>(
-  data: T[],
-  page: number,
-  pageSize: number,
-  showPagination: boolean,
-): T[] => {
+export const paginateData = <T,>(data: T[], page: number, pageSize: number, showPagination: boolean): T[] => {
   if (!showPagination) return data;
   const start = (page - 1) * pageSize;
   const end = start + pageSize;

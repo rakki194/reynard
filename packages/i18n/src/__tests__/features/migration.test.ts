@@ -38,23 +38,11 @@ describe("Migration Tools", () => {
       expect(result.errors).toHaveLength(0);
       expect(result.warnings.length).toBeGreaterThan(0); // Should warn about unknown.key
 
-      expect(result.migratedTranslations.common).toHaveProperty(
-        "language",
-        "Language",
-      );
+      expect(result.migratedTranslations.common).toHaveProperty("language", "Language");
       expect(result.migratedTranslations.common).toHaveProperty("save", "Save");
-      expect(result.migratedTranslations.themes).toHaveProperty(
-        "dark",
-        "Dark Theme",
-      );
-      expect(result.migratedTranslations.core).toHaveProperty(
-        "loading",
-        "Loading...",
-      );
-      expect(result.migratedTranslations.components).toHaveProperty(
-        "button",
-        "Button",
-      );
+      expect(result.migratedTranslations.themes).toHaveProperty("dark", "Dark Theme");
+      expect(result.migratedTranslations.core).toHaveProperty("loading", "Loading...");
+      expect(result.migratedTranslations.components).toHaveProperty("button", "Button");
     });
 
     it("should handle migration errors gracefully", () => {
@@ -97,12 +85,8 @@ describe("Migration Tools", () => {
       expect(result.statistics.migratedKeys).toBe(5);
       expect(result.warnings.length).toBeGreaterThan(0); // Should warn about unknown namespace
 
-      expect(result.migratedTranslations.common).toEqual(
-        sourceTranslations.common,
-      );
-      expect(result.migratedTranslations.themes).toEqual(
-        sourceTranslations.themes,
-      );
+      expect(result.migratedTranslations.common).toEqual(sourceTranslations.common);
+      expect(result.migratedTranslations.themes).toEqual(sourceTranslations.themes);
     });
   });
 
@@ -125,12 +109,8 @@ describe("Migration Tools", () => {
 
       expect(result.success).toBe(true);
       expect(result.statistics.migratedKeys).toBe(2);
-      expect(result.migratedTranslations.common).toEqual(
-        sourceTranslations.common,
-      );
-      expect(result.migratedTranslations.themes).toEqual(
-        sourceTranslations.themes,
-      );
+      expect(result.migratedTranslations.common).toEqual(sourceTranslations.common);
+      expect(result.migratedTranslations.themes).toEqual(sourceTranslations.themes);
     });
   });
 
@@ -145,10 +125,7 @@ describe("Migration Tools", () => {
       });
 
       expect(result.success).toBe(true);
-      expect(result.migratedTranslations.common).toHaveProperty(
-        "hello",
-        "Hello",
-      );
+      expect(result.migratedTranslations.common).toHaveProperty("hello", "Hello");
     });
 
     it("should route to correct migration function for solid-primitives", () => {
@@ -231,11 +208,7 @@ describe("TranslationManager", () => {
         common: { hello: "Hello", goodbye: "Goodbye" },
       });
 
-      const success = manager.importTranslations(
-        "en",
-        jsonString,
-        "user@example.com",
-      );
+      const success = manager.importTranslations("en", jsonString, "user@example.com");
 
       expect(success).toBe(true);
       expect(manager.getTranslation("en", "common.hello")).toBe("Hello");
@@ -243,11 +216,7 @@ describe("TranslationManager", () => {
     });
 
     it("should handle invalid JSON import", () => {
-      const success = manager.importTranslations(
-        "en",
-        "invalid json",
-        "user@example.com",
-      );
+      const success = manager.importTranslations("en", "invalid json", "user@example.com");
 
       expect(success).toBe(false);
     });
@@ -307,9 +276,7 @@ describe("TranslationValidator", () => {
       const errors = defaultValidator.validate(incompleteTranslations);
 
       expect(errors.length).toBeGreaterThan(0);
-      expect(
-        errors.some((error) => error.includes("Missing required namespace")),
-      ).toBe(true);
+      expect(errors.some(error => error.includes("Missing required namespace"))).toBe(true);
     });
 
     it("should validate complete translations successfully", () => {
@@ -325,9 +292,7 @@ describe("TranslationValidator", () => {
       const errors = defaultValidator.validate(completeTranslations);
 
       // Should not have missing namespace errors
-      expect(
-        errors.some((error) => error.includes("Missing required namespace")),
-      ).toBe(false);
+      expect(errors.some(error => error.includes("Missing required namespace"))).toBe(false);
     });
 
     it("should detect empty values", () => {
@@ -342,7 +307,7 @@ describe("TranslationValidator", () => {
 
       const errors = defaultValidator.validate(translationsWithEmpty);
 
-      expect(errors.some((error) => error.includes("Empty value"))).toBe(true);
+      expect(errors.some(error => error.includes("Empty value"))).toBe(true);
     });
   });
 });
@@ -433,9 +398,7 @@ describe("TranslationAnalytics", () => {
 
       const stats = analytics.getUsageStats();
 
-      expect(stats.mostUsedKeys[0].count).toBeGreaterThanOrEqual(
-        stats.mostUsedKeys[1].count,
-      );
+      expect(stats.mostUsedKeys[0].count).toBeGreaterThanOrEqual(stats.mostUsedKeys[1].count);
     });
 
     it("should sort locale usage by count", () => {
@@ -445,9 +408,7 @@ describe("TranslationAnalytics", () => {
 
       const stats = analytics.getUsageStats();
 
-      expect(stats.localeUsage[0].count).toBeGreaterThanOrEqual(
-        stats.localeUsage[1].count,
-      );
+      expect(stats.localeUsage[0].count).toBeGreaterThanOrEqual(stats.localeUsage[1].count);
     });
   });
 });

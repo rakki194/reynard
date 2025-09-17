@@ -9,9 +9,9 @@ Follows the 140-line axiom and modular architecture principles.
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Awaitable, Callable, Dict, Set, Union
+from typing import Any, Awaitable, Callable, Dict
 
-from config.tool_config import ToolConfigManager, ToolCategory
+from config.tool_config import ToolConfigManager
 from services.tool_config_service import ToolConfigService
 
 
@@ -36,7 +36,11 @@ class ToolHandler:
 class ToolRegistry:
     """Centralized tool registry for routing with dynamic loading."""
 
-    def __init__(self, config_manager: ToolConfigManager = None, tool_config_service: ToolConfigService = None) -> None:
+    def __init__(
+        self,
+        config_manager: ToolConfigManager = None,
+        tool_config_service: ToolConfigService = None,
+    ) -> None:
         self._handlers: dict[str, ToolHandler] = {}
         self._category_tools: dict[str, set[str]] = {}
         self._config_manager = config_manager or ToolConfigManager()
@@ -55,7 +59,7 @@ class ToolRegistry:
         enabled = True
         if tool_name in self._config.tools:
             enabled = self._config.tools[tool_name].enabled
-        
+
         handler = ToolHandler(
             tool_name=tool_name,
             handler_method=handler_method,
@@ -74,11 +78,11 @@ class ToolRegistry:
         """Get handler for a tool."""
         if tool_name not in self._handlers:
             raise ValueError(f"Unknown tool: {tool_name}")
-        
+
         handler = self._handlers[tool_name]
         if not handler.enabled:
             raise ValueError(f"Tool {tool_name} is disabled")
-        
+
         return handler
 
     def get_tools_by_category(self, category: str) -> set[str]:
@@ -104,9 +108,11 @@ class ToolRegistry:
 
     def is_tool_enabled(self, tool_name: str) -> bool:
         """Check if a tool is enabled."""
-        return (tool_name in self._handlers and 
-                self._handlers[tool_name].enabled and
-                self._tool_config_service.is_tool_enabled(tool_name))
+        return (
+            tool_name in self._handlers
+            and self._handlers[tool_name].enabled
+            and self._tool_config_service.is_tool_enabled(tool_name)
+        )
 
     def enable_tool(self, tool_name: str) -> bool:
         """Enable a tool."""
@@ -127,7 +133,9 @@ class ToolRegistry:
         if tool_name in self._handlers:
             success = self._tool_config_service.toggle_tool(tool_name)
             if success:
-                self._handlers[tool_name].enabled = self._tool_config_service.is_tool_enabled(tool_name)
+                self._handlers[tool_name].enabled = (
+                    self._tool_config_service.is_tool_enabled(tool_name)
+                )
             return success
         return False
 
@@ -156,19 +164,19 @@ class ToolRegistry:
         # Update handler enabled states
         for tool_name, handler in self._handlers.items():
             handler.enabled = self._tool_config_service.is_tool_enabled(tool_name)
-    
+
     def get_tool_configs(self) -> Dict[str, Any]:
         """Get all tool configurations from the service."""
         return self._tool_config_service.get_all_tools()
-    
+
     def get_tool_stats(self) -> Dict[str, Any]:
         """Get tool statistics."""
         return self._tool_config_service.get_tool_stats()
-    
+
     def get_tools_by_category(self, category: str) -> Dict[str, Any]:
         """Get tools by category."""
         return self._tool_config_service.get_tools_by_category(category)
-    
+
     def update_tool_config(self, tool_name: str, config: Dict[str, Any]) -> bool:
         """Update tool configuration."""
         return self._tool_config_service.update_tool_config(tool_name, config)

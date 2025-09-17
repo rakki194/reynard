@@ -4,17 +4,17 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Any, Awaitable, Callable, Dict, Optional, TypeVar
+from collections.abc import Awaitable, Callable
+from typing import Any, TypeVar
 
 from .errors import CaptionError
-
 
 logger = logging.getLogger("uvicorn")
 
 T = TypeVar("T")
 
 
-class RetryConfig(Dict[str, Any]):
+class RetryConfig(dict[str, Any]):
     """Typed mapping for retry configuration."""
 
 
@@ -30,9 +30,9 @@ async def retry_with_backoff(
     operation: Callable[..., Awaitable[T]],
     operation_name: str,
     *,
-    config: Optional[RetryConfig] = None,
-    args: Optional[tuple] = None,
-    kwargs: Optional[dict] = None,
+    config: RetryConfig | None = None,
+    args: tuple | None = None,
+    kwargs: dict | None = None,
 ) -> T:
     """Run an async operation with retries and exponential backoff."""
 
@@ -43,7 +43,7 @@ async def retry_with_backoff(
     args = args or ()
     kwargs = kwargs or {}
 
-    last_exc: Optional[CaptionError] = None
+    last_exc: CaptionError | None = None
     for attempt in range(cfg["max_retries"] + 1):
         try:
             if attempt > 0:
@@ -66,7 +66,7 @@ async def retry_with_backoff(
 
         except Exception as e:  # Unexpected errors: treat as retryable
             last_exc = CaptionError(
-                f"Unexpected error in {operation_name}: {str(e)}",
+                f"Unexpected error in {operation_name}: {e!s}",
                 "unexpected",
                 retryable=True,
             )
@@ -78,5 +78,3 @@ async def retry_with_backoff(
     if last_exc is None:
         last_exc = CaptionError(f"All retries failed for {operation_name}")
     raise last_exc
-
-

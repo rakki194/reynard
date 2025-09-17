@@ -97,9 +97,7 @@ export function setupCanvasTest() {
     filter: "none",
   };
 
-  HTMLCanvasElement.prototype.getContext = vi.fn(
-    () => mockCanvasContext as any,
-  );
+  HTMLCanvasElement.prototype.getContext = vi.fn(() => mockCanvasContext as any);
 
   // Mock fabric.js
   vi.mock("fabric", () => ({
@@ -116,7 +114,7 @@ export function setupCanvasTest() {
         on: vi.fn((event, handler) => {
           eventHandlers.set(event, handler);
         }),
-        off: vi.fn((event) => {
+        off: vi.fn(event => {
           eventHandlers.delete(event);
         }),
         setActiveObject: vi.fn(),
@@ -142,7 +140,7 @@ export function setupCanvasTest() {
 
       return canvas;
     }),
-    Rect: vi.fn().mockImplementation((options) => {
+    Rect: vi.fn().mockImplementation(options => {
       const rect = {
         set: vi.fn(),
         setControlsVisibility: vi.fn(),
@@ -165,7 +163,7 @@ export function setupCanvasTest() {
       };
       return rect;
     }),
-    Circle: vi.fn().mockImplementation((options) => {
+    Circle: vi.fn().mockImplementation(options => {
       const circle = {
         set: vi.fn(),
         setControlsVisibility: vi.fn(),
@@ -187,7 +185,7 @@ export function setupCanvasTest() {
       };
       return circle;
     }),
-    Line: vi.fn().mockImplementation((options) => {
+    Line: vi.fn().mockImplementation(options => {
       const line = {
         set: vi.fn(),
         setControlsVisibility: vi.fn(),

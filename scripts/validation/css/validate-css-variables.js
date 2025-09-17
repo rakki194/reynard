@@ -26,20 +26,10 @@ const CONFIG = {
   scanDirs: ["packages", "examples", "templates", "src", "styles"],
 
   // Verbose mode - show all CSS files being processed
-  verbose:
-    process.argv.includes("--verbose") || process.argv.includes("--list-files"),
+  verbose: process.argv.includes("--verbose") || process.argv.includes("--list-files"),
 
   // Files to ignore
-  ignorePatterns: [
-    /node_modules/,
-    /dist/,
-    /build/,
-    /\.git/,
-    /__pycache__/,
-    /\.next/,
-    /coverage/,
-    /\.cache/,
-  ],
+  ignorePatterns: [/node_modules/, /dist/, /build/, /\.git/, /__pycache__/, /\.next/, /coverage/, /\.cache/],
 
   // Critical variables that must be consistent
   criticalVariables: [
@@ -59,15 +49,7 @@ const CONFIG = {
   ],
 
   // Theme-specific variables that should have different values per theme
-  themeVariables: [
-    "accent",
-    "bg-color",
-    "secondary-bg",
-    "card-bg",
-    "text-primary",
-    "text-secondary",
-    "border-color",
-  ],
+  themeVariables: ["accent", "bg-color", "secondary-bg", "card-bg", "text-primary", "text-secondary", "border-color"],
 };
 
 class CSSVariableValidator {
@@ -95,7 +77,7 @@ class CSSVariableValidator {
       console.log("🔍 Scanning for CSS files in Reynard projects...");
     }
 
-    const scanDirectory = (dir) => {
+    const scanDirectory = dir => {
       if (!fs.existsSync(dir)) return;
 
       const items = fs.readdirSync(dir);
@@ -112,29 +94,20 @@ class CSSVariableValidator {
 
         if (stat.isDirectory()) {
           // Skip ignored directories
-          if (
-            this.options.ignorePatterns.some((pattern) =>
-              pattern.test(fullPath),
-            )
-          ) {
+          if (this.options.ignorePatterns.some(pattern => pattern.test(fullPath))) {
             continue;
           }
 
           // Only scan configured directories
           const dirName = path.basename(fullPath);
-          if (
-            this.options.scanDirs.includes(dirName) ||
-            dirName.startsWith("reynard")
-          ) {
+          if (this.options.scanDirs.includes(dirName) || dirName.startsWith("reynard")) {
             scanDirectory(fullPath);
           } else {
             // Also scan subdirectories within configured directories
             // Check if any ancestor directory is in the configured scan directories
             const pathParts = fullPath.split(path.sep);
             const shouldScan = pathParts.some(
-              (part) =>
-                this.options.scanDirs.includes(part) ||
-                part.startsWith("reynard"),
+              part => this.options.scanDirs.includes(part) || part.startsWith("reynard")
             );
             if (shouldScan) {
               scanDirectory(fullPath);
@@ -142,11 +115,7 @@ class CSSVariableValidator {
           }
         } else if (item.endsWith(".css")) {
           // Only include CSS files that are not in ignored directories
-          if (
-            !this.options.ignorePatterns.some((pattern) =>
-              pattern.test(fullPath),
-            )
-          ) {
+          if (!this.options.ignorePatterns.some(pattern => pattern.test(fullPath))) {
             cssFiles.push(fullPath);
             if (this.options.verbose) {
               // Show relative path for better readability
@@ -165,17 +134,15 @@ class CSSVariableValidator {
       console.log(`  Total CSS files found: ${cssFiles.length}`);
 
       // Break down by project type
-      const reynardMain = cssFiles.filter(
-        (f) => f.includes("/reynard/") && !f.includes("/reynard-"),
-      );
-      const reynardApps = cssFiles.filter((f) => f.includes("/reynard-"));
+      const reynardMain = cssFiles.filter(f => f.includes("/reynard/") && !f.includes("/reynard-"));
+      const reynardApps = cssFiles.filter(f => f.includes("/reynard-"));
 
       console.log(`  Main reynard directory: ${reynardMain.length} files`);
       console.log(`  Reynard apps (reynard-*): ${reynardApps.length} files`);
 
       if (reynardMain.length > 0) {
         console.log(`\n📁 Main reynard directory files:`);
-        reynardMain.forEach((f) => {
+        reynardMain.forEach(f => {
           const relativePath = path.relative(rootDir, f);
           console.log(`    ${relativePath}`);
         });
@@ -183,7 +150,7 @@ class CSSVariableValidator {
 
       if (reynardApps.length > 0) {
         console.log(`\n📱 Reynard apps files:`);
-        reynardApps.forEach((f) => {
+        reynardApps.forEach(f => {
           const relativePath = path.relative(rootDir, f);
           console.log(`    ${relativePath}`);
         });
@@ -353,10 +320,7 @@ class CSSVariableValidator {
     for (const importInfo of imports) {
       if (fs.existsSync(importInfo.resolvedPath)) {
         try {
-          const importedVars = this.extractVariables(
-            importInfo.resolvedPath,
-            visitedFiles,
-          );
+          const importedVars = this.extractVariables(importInfo.resolvedPath, visitedFiles);
 
           // Add imported definitions with import context
           for (const def of importedVars.definitions) {
@@ -378,15 +342,11 @@ class CSSVariableValidator {
         } catch (error) {
           // Skip files that can't be read (permissions, etc.)
           if (this.options.verbose) {
-            console.log(
-              `  ⚠️  Could not read imported file: ${importInfo.resolvedPath}`,
-            );
+            console.log(`  ⚠️  Could not read imported file: ${importInfo.resolvedPath}`);
           }
         }
       } else if (this.options.verbose) {
-        console.log(
-          `  ⚠️  Imported file not found: ${importInfo.resolvedPath}`,
-        );
+        console.log(`  ⚠️  Imported file not found: ${importInfo.resolvedPath}`);
       }
     }
 
@@ -419,14 +379,9 @@ class CSSVariableValidator {
           const relativePath = path.relative(process.cwd(), file);
           console.log(`  📦 ${relativePath} imports:`);
           for (const imp of fileVars.imports) {
-            const importRelativePath = path.relative(
-              process.cwd(),
-              imp.resolvedPath,
-            );
+            const importRelativePath = path.relative(process.cwd(), imp.resolvedPath);
             const exists = fs.existsSync(imp.resolvedPath) ? "✅" : "❌";
-            console.log(
-              `    ${exists} ${imp.originalPath} → ${importRelativePath}`,
-            );
+            console.log(`    ${exists} ${imp.originalPath} → ${importRelativePath}`);
           }
         }
 
@@ -474,7 +429,7 @@ class CSSVariableValidator {
         this.variables.missing.push({
           variable: varName,
           usageCount: usages.length,
-          files: [...new Set(usages.map((u) => u.file))],
+          files: [...new Set(usages.map(u => u.file))],
         });
       }
     }
@@ -492,7 +447,7 @@ class CSSVariableValidator {
         this.variables.unused.push({
           variable: varName,
           definitionCount: definitions.length,
-          files: [...new Set(definitions.map((d) => d.file))],
+          files: [...new Set(definitions.map(d => d.file))],
         });
       }
     }
@@ -502,10 +457,7 @@ class CSSVariableValidator {
    * Find potential typos in variable names
    */
   findTypos() {
-    const allVars = new Set([
-      ...this.variables.definitions.keys(),
-      ...this.variables.usage.keys(),
-    ]);
+    const allVars = new Set([...this.variables.definitions.keys(), ...this.variables.usage.keys()]);
 
     for (const varName of allVars) {
       const issues = [];
@@ -540,17 +492,9 @@ class CSSVariableValidator {
    * Check if a variable is likely used by external tools
    */
   isLikelyExternalVariable(varName) {
-    const externalPatterns = [
-      /^z-/,
-      /^shadow-/,
-      /^transition-/,
-      /^animation-/,
-      /^font-/,
-      /^spacing-/,
-      /^breakpoint-/,
-    ];
+    const externalPatterns = [/^z-/, /^shadow-/, /^transition-/, /^animation-/, /^font-/, /^spacing-/, /^breakpoint-/];
 
-    return externalPatterns.some((pattern) => pattern.test(varName));
+    return externalPatterns.some(pattern => pattern.test(varName));
   }
 
   /**
@@ -564,27 +508,23 @@ class CSSVariableValidator {
     report.push("");
 
     // Summary
-    const totalDefinitions = Array.from(
-      this.variables.definitions.values(),
-    ).reduce((sum, defs) => sum + defs.length, 0);
-    const totalUsage = Array.from(this.variables.usage.values()).reduce(
-      (sum, usages) => sum + usages.length,
-      0,
+    const totalDefinitions = Array.from(this.variables.definitions.values()).reduce(
+      (sum, defs) => sum + defs.length,
+      0
     );
+    const totalUsage = Array.from(this.variables.usage.values()).reduce((sum, usages) => sum + usages.length, 0);
 
     // Count imported variables
     const importedDefinitions = Array.from(this.variables.definitions.values())
       .flat()
-      .filter((def) => def.importedFrom).length;
+      .filter(def => def.importedFrom).length;
     const importedUsage = Array.from(this.variables.usage.values())
       .flat()
-      .filter((usage) => usage.importedFrom).length;
+      .filter(usage => usage.importedFrom).length;
 
     report.push("## Summary");
     report.push(`- **Total Variable Definitions**: ${totalDefinitions}`);
-    report.push(
-      `  - Direct definitions: ${totalDefinitions - importedDefinitions}`,
-    );
+    report.push(`  - Direct definitions: ${totalDefinitions - importedDefinitions}`);
     report.push(`  - Imported definitions: ${importedDefinitions}`);
     report.push(`- **Total Variable Usage**: ${totalUsage}`);
     report.push(`  - Direct usage: ${totalUsage - importedUsage}`);
@@ -625,12 +565,10 @@ class CSSVariableValidator {
 
         // Show import context if available
         const usages = this.variables.usage.get(missing.variable) || [];
-        const importedUsages = usages.filter((usage) => usage.importedFrom);
+        const importedUsages = usages.filter(usage => usage.importedFrom);
         if (importedUsages.length > 0) {
           report.push(`- **Import Context**: Used in files that import from:`);
-          const importSources = [
-            ...new Set(importedUsages.map((u) => u.importedFrom)),
-          ];
+          const importSources = [...new Set(importedUsages.map(u => u.importedFrom))];
           for (const source of importSources) {
             const relativeSource = path.relative(process.cwd(), source);
             report.push(`  - ${relativeSource}`);
@@ -672,7 +610,7 @@ class CSSVariableValidator {
   hasErrors() {
     return (
       this.errors.length > 0 ||
-      this.variables.inconsistencies.some((i) => i.severity === "error") ||
+      this.variables.inconsistencies.some(i => i.severity === "error") ||
       this.variables.missing.length > 0
     );
   }
@@ -682,11 +620,7 @@ class CSSVariableValidator {
    */
   getExitCode() {
     if (this.hasErrors()) return 1;
-    if (
-      this.variables.inconsistencies.length > 0 ||
-      this.variables.typos.length > 0
-    )
-      return 2;
+    if (this.variables.inconsistencies.length > 0 || this.variables.typos.length > 0) return 2;
     return 0;
   }
 }

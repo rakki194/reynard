@@ -23,10 +23,7 @@ export function useAppHandlers(
   appState: UseAppStateReturn,
   workflow: UseWorkflowReturn,
   appLogic: AppLogicService,
-  notify: (
-    message: string,
-    type?: "error" | "success" | "info" | "warning",
-  ) => void,
+  notify: (message: string, type?: "error" | "success" | "info" | "warning") => void
 ): UseAppHandlersReturn {
   const updateSystemStats = async () => {
     try {
@@ -41,7 +38,7 @@ export function useAppHandlers(
 
   const handleFileUpload = (files: File[]) => {
     const newImages = appLogic.handleFileUpload(files);
-    appState.setImages((prev) => [...prev, ...newImages]);
+    appState.setImages(prev => [...prev, ...newImages]);
     notify(`Added ${files.length} image(s) to gallery`, "success");
   };
 
@@ -50,16 +47,11 @@ export function useAppHandlers(
     workflow.startWorkflow(image, true);
 
     try {
-      const result = await appLogic.generateCaption(
-        image,
-        appState.selectedModel(),
-      );
+      const result = await appLogic.generateCaption(image, appState.selectedModel());
 
       if (result.success) {
         const generatedCaption = result.caption || "No caption generated";
-        const extractedTags = generatedCaption
-          .split(/[,\s]+/)
-          .filter((tag: string) => tag.length > 2);
+        const extractedTags = generatedCaption.split(/[,\s]+/).filter((tag: string) => tag.length > 2);
 
         workflow.updateWorkflow({
           generatedCaption,
@@ -68,28 +60,20 @@ export function useAppHandlers(
           isGenerating: false,
         });
 
-        const updatedImages = appLogic.updateImageCaption(
-          appState.images(),
-          image.id,
-          generatedCaption,
-          extractedTags,
-        );
+        const updatedImages = appLogic.updateImageCaption(appState.images(), image.id, generatedCaption, extractedTags);
         appState.setImages(
-          updatedImages.map((img) =>
+          updatedImages.map(img =>
             img.id === image.id
               ? {
                   ...img,
                   generatedAt: new Date(),
                   model: appState.selectedModel(),
                 }
-              : img,
-          ),
+              : img
+          )
         );
 
-        notify(
-          `Caption generated successfully in ${result.processingTime?.toFixed(2)}s!`,
-          "success",
-        );
+        notify(`Caption generated successfully in ${result.processingTime?.toFixed(2)}s!`, "success");
       } else {
         notify(`Caption generation failed: ${result.error}`, "error");
       }
@@ -104,7 +88,7 @@ export function useAppHandlers(
   };
 
   const batchGenerateCaptions = async () => {
-    const imagesToProcess = appState.images().filter((img) => !img.caption);
+    const imagesToProcess = appState.images().filter(img => !img.caption);
     if (imagesToProcess.length === 0) {
       notify("No images need captioning", "info");
       return;
@@ -118,24 +102,15 @@ export function useAppHandlers(
     });
 
     try {
-      const results = await appLogic.processBatch(
-        imagesToProcess,
-        appState.selectedModel(),
-        (progress) => appState.setBatchProgress(progress),
+      const results = await appLogic.processBatch(imagesToProcess, appState.selectedModel(), progress =>
+        appState.setBatchProgress(progress)
       );
 
-      const updatedImages = appLogic.updateImagesWithResults(
-        appState.images(),
-        results,
-        appState.selectedModel(),
-      );
+      const updatedImages = appLogic.updateImagesWithResults(appState.images(), results, appState.selectedModel());
       appState.setImages(updatedImages);
 
       const successCount = appLogic.getSuccessCount(results);
-      notify(
-        `Batch processing completed: ${successCount}/${results.length} successful`,
-        "success",
-      );
+      notify(`Batch processing completed: ${successCount}/${results.length} successful`, "success");
     } catch (error) {
       notify("Batch processing failed", "error");
       console.error("Batch processing failed:", error);
@@ -154,7 +129,7 @@ export function useAppHandlers(
       appState.images(),
       currentWorkflow.image.id,
       currentWorkflow.editedCaption,
-      currentWorkflow.tags,
+      currentWorkflow.tags
     );
     appState.setImages(updatedImages);
 

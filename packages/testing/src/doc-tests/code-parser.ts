@@ -54,13 +54,8 @@ export function extractCodeExamples(docPath: string): CodeExample[] {
 
         if (codeBlockContent.length > 0) {
           const code = codeBlockContent.join("\n");
-          const isTypeScript = ["tsx", "ts", "typescript"].includes(
-            currentLanguage,
-          );
-          const isComponent =
-            code.includes("function") &&
-            code.includes("return") &&
-            code.includes("<");
+          const isTypeScript = ["tsx", "ts", "typescript"].includes(currentLanguage);
+          const isComponent = code.includes("function") && code.includes("return") && code.includes("<");
 
           examples.push({
             code,

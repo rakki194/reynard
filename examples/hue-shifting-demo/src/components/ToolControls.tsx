@@ -8,7 +8,7 @@ interface ToolControlsProps {
   onToolChange: (tool: DrawingTool) => void;
 }
 
-export const ToolControls: Component<ToolControlsProps> = (props) => {
+export const ToolControls: Component<ToolControlsProps> = props => {
   return (
     <section class="control-section">
       <h3>Tools</h3>

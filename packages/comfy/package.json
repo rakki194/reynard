@@ -24,13 +24,7 @@
   "devDependencies": {
     "typescript": "^5.0.0"
   },
-  "keywords": [
-    "comfyui",
-    "workflow",
-    "ai",
-    "image-generation",
-    "reynard"
-  ],
+  "keywords": ["comfyui", "workflow", "ai", "image-generation", "reynard"],
   "author": "Balazs Horvath",
   "license": "MIT"
 }

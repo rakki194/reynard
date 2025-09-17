@@ -7,7 +7,7 @@ import logging
 import logging.config
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 
 class LoggingConfig:
@@ -35,7 +35,7 @@ class LoggingConfig:
             log_dir = Path(self.log_file_path).parent
             log_dir.mkdir(exist_ok=True)
 
-    def get_programmatic_config(self) -> Dict[str, Any]:
+    def get_programmatic_config(self) -> dict[str, Any]:
         """Get programmatic logging configuration with environment variable support"""
         return {
             "version": 1,
@@ -128,7 +128,7 @@ class LoggingConfig:
                 # Use YAML configuration
                 import yaml
 
-                with open(self.yaml_config_path, "r") as f:
+                with open(self.yaml_config_path) as f:
                     config = yaml.safe_load(f)
 
                 # Override log levels with environment variables
@@ -152,7 +152,7 @@ class LoggingConfig:
                 datefmt="%Y-%m-%d %H:%M:%S",
             )
 
-    def _override_yaml_config(self, config: Dict[str, Any]) -> None:
+    def _override_yaml_config(self, config: dict[str, Any]) -> None:
         """Override YAML configuration with environment variables"""
         # Override root level
         if "root" in config:

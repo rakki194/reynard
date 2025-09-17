@@ -22,7 +22,7 @@ export default function App() {
       maintainAspectRatio: true,
       backgroundColor: "#ffffff",
       maxThumbnailSize: 10 * 1024 * 1024, // 10MB limit for testing
-    }),
+    })
   );
 
   const handleFilesSelected = async (files: FileList) => {
@@ -59,7 +59,7 @@ export default function App() {
       }
     }
 
-    setProcessedFiles((prev) => [...prev, ...newProcessedFiles]);
+    setProcessedFiles(prev => [...prev, ...newProcessedFiles]);
     setIsProcessing(false);
   };
 
@@ -76,35 +76,20 @@ export default function App() {
 
       <section class="test-section">
         <h2>File Upload & Thumbnail Generation</h2>
-        <FileUploader
-          onFilesSelected={handleFilesSelected}
-          disabled={isProcessing()}
-        />
+        <FileUploader onFilesSelected={handleFilesSelected} disabled={isProcessing()} />
 
-        {isProcessing() && (
-          <div class="processing-status loading">
-            Processing files... Please wait.
-          </div>
-        )}
+        {isProcessing() && <div class="processing-status loading">Processing files... Please wait.</div>}
 
         {processedFiles().length > 0 && (
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
               <h3>Processed Files ({processedFiles().length})</h3>
-              <button
-                class="upload-button"
-                onClick={clearFiles}
-                style="background: #dc3545;"
-              >
+              <button class="upload-button" onClick={clearFiles} style="background: #dc3545;">
                 Clear All
               </button>
             </div>
             <div class="file-list">
-              <For each={processedFiles()}>
-                {(processedFile) => (
-                  <ThumbnailViewer processedFile={processedFile} />
-                )}
-              </For>
+              <For each={processedFiles()}>{processedFile => <ThumbnailViewer processedFile={processedFile} />}</For>
             </div>
           </div>
         )}

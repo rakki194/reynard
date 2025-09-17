@@ -364,13 +364,7 @@ export const DEFAULT_VALIDATION_RULES: ValidationRules = {
   emailPattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 };
 
-export const PASSWORD_STRENGTH_LABELS = [
-  "Very Weak",
-  "Weak",
-  "Fair",
-  "Good",
-  "Strong",
-];
+export const PASSWORD_STRENGTH_LABELS = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
 
 export const PASSWORD_STRENGTH_COLORS = [
   "#dc2626", // red-600

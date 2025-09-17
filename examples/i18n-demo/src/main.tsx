@@ -10,5 +10,5 @@ render(
       <App />
     </ReynardProvider>
   ),
-  document.getElementById("root")!,
+  document.getElementById("root")!
 );

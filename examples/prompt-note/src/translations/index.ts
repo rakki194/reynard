@@ -16,9 +16,7 @@ export const translations: Record<string, Translations> = {
   fr,
 };
 
-export const loadTranslations = async (
-  locale: string,
-): Promise<Translations> => {
+export const loadTranslations = async (locale: string): Promise<Translations> => {
   // Return available translation or fallback to English
   return translations[locale] || translations.en;
 };

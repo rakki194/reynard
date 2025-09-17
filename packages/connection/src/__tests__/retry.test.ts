@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  ExponentialBackoffRetry,
-  LinearBackoffRetry,
-  JitterRetry,
-} from "../retry";
+import { ExponentialBackoffRetry, LinearBackoffRetry, JitterRetry } from "../retry";
 
 describe("Retry strategies", () => {
   it("ExponentialBackoffRetry retries and eventually succeeds", async () => {
@@ -23,7 +19,7 @@ describe("Retry strategies", () => {
     await expect(
       r.execute(async () => {
         throw new Error("nope");
-      }),
+      })
     ).rejects.toThrow("nope");
   });
 

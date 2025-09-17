@@ -18,7 +18,7 @@ describe("Icon Registry", () => {
   beforeEach(() => {
     // Clear registry before each test
     const packages = iconRegistry.getPackages();
-    packages.forEach((pkg) => {
+    packages.forEach(pkg => {
       iconRegistry.unregister(pkg.id);
     });
   });
@@ -113,9 +113,7 @@ describe("Icon Registry", () => {
       expect(results.length).toBeGreaterThan(0);
       // Results should be sorted by score (highest first)
       for (let i = 1; i < results.length; i++) {
-        expect(results[i - 1].score || 0).toBeGreaterThanOrEqual(
-          results[i].score || 0,
-        );
+        expect(results[i - 1].score || 0).toBeGreaterThanOrEqual(results[i].score || 0);
       }
     });
   });

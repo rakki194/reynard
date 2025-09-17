@@ -15,7 +15,7 @@ from ..config import get_config
 def setup_cors_middleware(app: FastAPI) -> None:
     """Setup CORS and trusted host middleware."""
     config = get_config()
-    
+
     # CORS middleware
     app.add_middleware(
         CORSMiddleware,
@@ -26,7 +26,7 @@ def setup_cors_middleware(app: FastAPI) -> None:
         expose_headers=config.CORS_EXPOSE_HEADERS,
         max_age=config.CORS_MAX_AGE,
     )
-    
+
     # Trusted host middleware
     app.add_middleware(
         TrustedHostMiddleware,

@@ -110,7 +110,7 @@ describe("useBoxResize", () => {
             ...handle.constraints,
             aspectRatio: expect.any(Number),
           }),
-        }),
+        })
       );
       expect(resizeEngine.isResizing()).toBe(true);
     });
@@ -140,7 +140,7 @@ describe("useBoxResize", () => {
           y: expect.any(Number),
           width: expect.any(Number),
           height: expect.any(Number),
-        }),
+        })
       );
     });
 
@@ -169,7 +169,7 @@ describe("useBoxResize", () => {
           y: expect.any(Number),
           width: expect.any(Number),
           height: expect.any(Number),
-        }),
+        })
       );
       expect(resizeEngine.isResizing()).toBe(false);
     });
@@ -258,7 +258,7 @@ describe("useBoxResize", () => {
       });
 
       const handles = resizeEngine.handles();
-      const seHandle = handles.find((h) => h.position === "bottom-right");
+      const seHandle = handles.find(h => h.position === "bottom-right");
       resizeEngine.startResize(mockBoundingBox.id, seHandle!, {
         x: 100,
         y: 100,
@@ -286,7 +286,7 @@ describe("useBoxResize", () => {
       });
 
       const handles = resizeEngine.handles();
-      const seHandle = handles.find((h) => h.position === "bottom-right");
+      const seHandle = handles.find(h => h.position === "bottom-right");
       resizeEngine.startResize(mockBoundingBox.id, seHandle!, {
         x: 100,
         y: 100,
@@ -300,8 +300,7 @@ describe("useBoxResize", () => {
 
       // Should maintain the original aspect ratio (200/150 = 1.33...)
       const aspectRatio = dimensions.width / dimensions.height;
-      const originalAspectRatio =
-        mockBoundingBox.width / mockBoundingBox.height;
+      const originalAspectRatio = mockBoundingBox.width / mockBoundingBox.height;
       expect(Math.abs(aspectRatio - originalAspectRatio)).toBeLessThan(0.1);
     });
 
@@ -316,7 +315,7 @@ describe("useBoxResize", () => {
       });
 
       const handles = resizeEngine.handles();
-      const seHandle = handles.find((h) => h.position === "bottom-right");
+      const seHandle = handles.find(h => h.position === "bottom-right");
       resizeEngine.startResize(mockBoundingBox.id, seHandle!, {
         x: 100,
         y: 100,
@@ -330,8 +329,7 @@ describe("useBoxResize", () => {
 
       // Should allow different aspect ratio
       const aspectRatio = dimensions.width / dimensions.height;
-      const originalAspectRatio =
-        mockBoundingBox.width / mockBoundingBox.height;
+      const originalAspectRatio = mockBoundingBox.width / mockBoundingBox.height;
       expect(Math.abs(aspectRatio - originalAspectRatio)).toBeGreaterThan(0.1);
     });
   });
@@ -350,14 +348,14 @@ describe("useBoxResize", () => {
 
       const handles = resizeEngine.handles();
       const cornerHandles = handles.filter(
-        (h) =>
+        h =>
           h.position === "top-left" ||
           h.position === "top-right" ||
           h.position === "bottom-left" ||
-          h.position === "bottom-right",
+          h.position === "bottom-right"
       );
 
-      cornerHandles.forEach((handle) => {
+      cornerHandles.forEach(handle => {
         resizeEngine.startResize(mockBoundingBox.id, handle, {
           x: 100,
           y: 100,
@@ -368,9 +366,7 @@ describe("useBoxResize", () => {
         resizeEngine.endResize();
       });
 
-      expect(mockCallbacks.onResizeMove).toHaveBeenCalledTimes(
-        cornerHandles.length,
-      );
+      expect(mockCallbacks.onResizeMove).toHaveBeenCalledTimes(cornerHandles.length);
     });
 
     it("should handle edge resize handles", () => {
@@ -386,14 +382,10 @@ describe("useBoxResize", () => {
 
       const handles = resizeEngine.handles();
       const edgeHandles = handles.filter(
-        (h) =>
-          h.position === "top" ||
-          h.position === "bottom" ||
-          h.position === "left" ||
-          h.position === "right",
+        h => h.position === "top" || h.position === "bottom" || h.position === "left" || h.position === "right"
       );
 
-      edgeHandles.forEach((handle) => {
+      edgeHandles.forEach(handle => {
         resizeEngine.startResize(mockBoundingBox.id, handle, {
           x: 100,
           y: 100,
@@ -404,9 +396,7 @@ describe("useBoxResize", () => {
         resizeEngine.endResize();
       });
 
-      expect(mockCallbacks.onResizeMove).toHaveBeenCalledTimes(
-        edgeHandles.length,
-      );
+      expect(mockCallbacks.onResizeMove).toHaveBeenCalledTimes(edgeHandles.length);
     });
   });
 
@@ -421,7 +411,7 @@ describe("useBoxResize", () => {
 
       expect(() => {
         const handles = resizeEngine.handles();
-        const seHandle = handles.find((h) => h.position === "bottom-right");
+        const seHandle = handles.find(h => h.position === "bottom-right");
         resizeEngine.startResize("invalid-id", seHandle!, {
           x: 100,
           y: 100,
@@ -494,7 +484,7 @@ describe("useBoxResize", () => {
       expect(resizeEngine.isResizing()).toBe(false);
 
       const handles = resizeEngine.handles();
-      const seHandle = handles.find((h) => h.position === "bottom-right");
+      const seHandle = handles.find(h => h.position === "bottom-right");
       resizeEngine.startResize(mockBoundingBox.id, seHandle!, {
         x: 100,
         y: 100,
@@ -516,7 +506,7 @@ describe("useBoxResize", () => {
       });
 
       const handles = resizeEngine.handles();
-      const seHandle = handles.find((h) => h.position === "bottom-right");
+      const seHandle = handles.find(h => h.position === "bottom-right");
       resizeEngine.startResize(mockBoundingBox.id, seHandle!, {
         x: 100,
         y: 100,

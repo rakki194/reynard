@@ -13,12 +13,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@solidjs/testing-library";
 import { BoundingBoxEditor } from "../components/BoundingBoxEditor";
-import type {
-  BoundingBox,
-  ImageInfo,
-  EditorConfig,
-  AnnotationEventHandlers,
-} from "../../types";
+import type { BoundingBox, ImageInfo, EditorConfig, AnnotationEventHandlers } from "../../types";
 
 // Mock data
 const mockImageInfo: ImageInfo = {
@@ -64,22 +59,13 @@ describe("BoundingBoxEditor Accessibility", () => {
   describe("ARIA Labels and Roles", () => {
     it("should have proper ARIA labels for form controls", () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
       // Label class select should have proper ARIA label
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
       expect(select).toBeInTheDocument();
-      expect(select).toHaveAttribute(
-        "aria-label",
-        "Select label class for new bounding boxes",
-      );
+      expect(select).toHaveAttribute("aria-label", "Select label class for new bounding boxes");
     });
 
     it("should have proper button labels", () => {
@@ -94,18 +80,12 @@ describe("BoundingBoxEditor Accessibility", () => {
 
       // All buttons should have accessible names
       expect(screen.getByRole("button", { name: /edit/i })).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: /delete/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
     });
 
     it("should have proper region roles", () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
       // Canvas container should be identifiable
@@ -133,9 +113,7 @@ describe("BoundingBoxEditor Accessibility", () => {
       expect(screen.getByText("(100, 100) 200×150")).toBeInTheDocument();
 
       // Box label should be clear
-      expect(
-        screen.getByText("person", { selector: ".box-label" }),
-      ).toBeInTheDocument();
+      expect(screen.getByText("person", { selector: ".box-label" })).toBeInTheDocument();
     });
   });
 
@@ -150,9 +128,7 @@ describe("BoundingBoxEditor Accessibility", () => {
         />
       ));
 
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
       const editButton = screen.getByRole("button", { name: /edit/i });
       const deleteButton = screen.getByRole("button", { name: /delete/i });
 
@@ -210,16 +186,10 @@ describe("BoundingBoxEditor Accessibility", () => {
 
     it("should support arrow keys for select element", async () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
       select.focus();
 
       // Test arrow key navigation
@@ -281,9 +251,7 @@ describe("BoundingBoxEditor Accessibility", () => {
 
       await waitFor(() => {
         // Edit button should be available again
-        expect(
-          screen.getByRole("button", { name: /edit/i }),
-        ).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /edit/i })).toBeInTheDocument();
       });
     });
 
@@ -300,9 +268,7 @@ describe("BoundingBoxEditor Accessibility", () => {
       ));
 
       // Edit button should not be present when disabled
-      expect(
-        screen.queryByRole("button", { name: /edit/i }),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /edit/i })).not.toBeInTheDocument();
     });
   });
 
@@ -321,9 +287,7 @@ describe("BoundingBoxEditor Accessibility", () => {
       expect(screen.getByText("Bounding Boxes (1)")).toBeInTheDocument();
 
       // Box details should be readable
-      expect(
-        screen.getByText("person", { selector: ".box-label" }),
-      ).toBeInTheDocument();
+      expect(screen.getByText("person", { selector: ".box-label" })).toBeInTheDocument();
       expect(screen.getByText("(100, 100) 200×150")).toBeInTheDocument();
     });
 
@@ -365,9 +329,7 @@ describe("BoundingBoxEditor Accessibility", () => {
       expect(deleteButton).toBeInTheDocument();
 
       // Buttons should be associated with their respective boxes
-      const boxItem = screen
-        .getByText("person", { selector: ".box-label" })
-        .closest(".box-item");
+      const boxItem = screen.getByText("person", { selector: ".box-label" }).closest(".box-item");
       expect(boxItem).toContainElement(editButton);
       expect(boxItem).toContainElement(deleteButton);
     });
@@ -407,9 +369,7 @@ describe("BoundingBoxEditor Accessibility", () => {
       ));
 
       // Selected box should have visual indication
-      const boxItem = screen
-        .getByText("person", { selector: ".box-label" })
-        .closest(".box-item");
+      const boxItem = screen.getByText("person", { selector: ".box-label" }).closest(".box-item");
       expect(boxItem).toHaveClass("selected");
 
       // Buttons should have hover states (tested via CSS)
@@ -429,9 +389,7 @@ describe("BoundingBoxEditor Accessibility", () => {
       ));
 
       // Elements should be styled for high contrast
-      const boxItem = screen
-        .getByText("person", { selector: ".box-label" })
-        .closest(".box-item");
+      const boxItem = screen.getByText("person", { selector: ".box-label" }).closest(".box-item");
       expect(boxItem).toHaveClass("box-item");
 
       // CSS should handle high contrast media queries
@@ -442,28 +400,18 @@ describe("BoundingBoxEditor Accessibility", () => {
   describe("WCAG Compliance", () => {
     it("should meet WCAG 2.1 AA standards for form controls", () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
       // Form control should have proper label
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
       expect(select).toBeInTheDocument();
       expect(select).toHaveAttribute("aria-label");
     });
 
     it("should provide alternative text for images", () => {
       render(() => (
-        <BoundingBoxEditor
-          imageInfo={mockImageInfo}
-          config={defaultConfig}
-          eventHandlers={mockEventHandlers}
-        />
+        <BoundingBoxEditor imageInfo={mockImageInfo} config={defaultConfig} eventHandlers={mockEventHandlers} />
       ));
 
       // Image info should include alt text
@@ -481,9 +429,7 @@ describe("BoundingBoxEditor Accessibility", () => {
       ));
 
       // All interactive elements should be keyboard accessible
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
       const editButton = screen.getByRole("button", { name: /edit/i });
       const deleteButton = screen.getByRole("button", { name: /delete/i });
 
@@ -534,9 +480,7 @@ describe("BoundingBoxEditor Accessibility", () => {
       // All text should be accessible to screen readers
       expect(screen.getByText("Label Class:")).toBeInTheDocument();
       expect(screen.getByText("Bounding Boxes (1)")).toBeInTheDocument();
-      expect(
-        screen.getByText("person", { selector: ".box-label" }),
-      ).toBeInTheDocument();
+      expect(screen.getByText("person", { selector: ".box-label" })).toBeInTheDocument();
     });
 
     it("should support voice control software", () => {
@@ -568,9 +512,7 @@ describe("BoundingBoxEditor Accessibility", () => {
       ));
 
       // All interactive elements should be focusable
-      const select = screen.getByLabelText(
-        "Select label class for new bounding boxes",
-      );
+      const select = screen.getByLabelText("Select label class for new bounding boxes");
       const editButton = screen.getByRole("button", { name: /edit/i });
       const deleteButton = screen.getByRole("button", { name: /delete/i });
 

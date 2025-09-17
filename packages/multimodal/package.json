@@ -23,9 +23,7 @@
       "import": "./dist/types/index.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite build --watch",
@@ -34,16 +32,7 @@
     "test:run": "vitest run",
     "type-check": "tsc --noEmit"
   },
-  "keywords": [
-    "reynard",
-    "multimodal",
-    "gallery",
-    "media",
-    "audio",
-    "video",
-    "image",
-    "unified"
-  ],
+  "keywords": ["reynard", "multimodal", "gallery", "media", "audio", "video", "image", "unified"],
   "author": "Reynard Framework",
   "license": "MIT",
   "dependencies": {

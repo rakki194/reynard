@@ -9,15 +9,11 @@ import { iconCategories, allIcons } from "reynard-fluent-icons";
 export const CategoryStats: Component = () => {
   const stats = createMemo(() => {
     const totalIcons = Object.keys(allIcons).length;
-    const categoryStats = Object.entries(iconCategories).map(
-      ([, category]) => ({
-        name: category.name,
-        count: Object.keys(category.icons).length,
-        percentage: Math.round(
-          (Object.keys(category.icons).length / totalIcons) * 100,
-        ),
-      }),
-    );
+    const categoryStats = Object.entries(iconCategories).map(([, category]) => ({
+      name: category.name,
+      count: Object.keys(category.icons).length,
+      percentage: Math.round((Object.keys(category.icons).length / totalIcons) * 100),
+    }));
 
     return {
       totalIcons,
@@ -44,17 +40,14 @@ export const CategoryStats: Component = () => {
       <div class="category-stats">
         <h3>Icons by Category</h3>
         <div class="stats-list">
-          {stats().categoryStats.map((stat) => (
+          {stats().categoryStats.map(stat => (
             <div class="stat-row">
               <div class="stat-info">
                 <span class="stat-name">{stat.name}</span>
                 <span class="stat-count">{stat.count} icons</span>
               </div>
               <div class="stat-bar">
-                <div
-                  class="stat-bar-fill"
-                  style={`width: ${stat.percentage}%`}
-                ></div>
+                <div class="stat-bar-fill" style={`width: ${stat.percentage}%`}></div>
               </div>
               <div class="stat-percentage">{stat.percentage}%</div>
             </div>

@@ -46,9 +46,7 @@ export class VideoLoader {
   /**
    * Create and configure video element
    */
-  private async createVideoElement(
-    file: File | string,
-  ): Promise<HTMLVideoElement> {
+  private async createVideoElement(file: File | string): Promise<HTMLVideoElement> {
     const video = document.createElement("video");
     video.crossOrigin = "anonymous";
     video.muted = true;
@@ -77,7 +75,7 @@ export class VideoLoader {
    * Wait for video to seek to the specified time
    */
   async waitForVideoSeek(video: HTMLVideoElement): Promise<void> {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(resolve => {
       const onSeeked = () => {
         video.removeEventListener("seeked", onSeeked);
         resolve();

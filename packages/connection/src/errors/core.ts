@@ -72,11 +72,7 @@ export class ReynardError extends Error {
   public readonly timestamp: number;
   public readonly stack?: string;
 
-  constructor(
-    message: string,
-    code: string,
-    context: Partial<BaseErrorContext> = {},
-  ) {
+  constructor(message: string, code: string, context: Partial<BaseErrorContext> = {}) {
     super(message);
     this.name = "ReynardError";
     this.code = code;
@@ -155,10 +151,7 @@ export class NetworkError extends ReynardError {
 export class AuthenticationError extends ReynardError {
   public readonly context: AuthenticationErrorContext;
 
-  constructor(
-    message: string,
-    context: Partial<AuthenticationErrorContext> = {},
-  ) {
+  constructor(message: string, context: Partial<AuthenticationErrorContext> = {}) {
     super(message, "AUTHENTICATION_ERROR", context);
     this.name = "AuthenticationError";
     this.context = {
@@ -175,10 +168,7 @@ export class AuthenticationError extends ReynardError {
 export class AuthorizationError extends ReynardError {
   public readonly context: AuthenticationErrorContext;
 
-  constructor(
-    message: string,
-    context: Partial<AuthenticationErrorContext> = {},
-  ) {
+  constructor(message: string, context: Partial<AuthenticationErrorContext> = {}) {
     super(message, "AUTHORIZATION_ERROR", context);
     this.name = "AuthorizationError";
     this.context = {
@@ -229,10 +219,7 @@ export class DatabaseError extends ReynardError {
 export class ConfigurationError extends ReynardError {
   public readonly context: ConfigurationErrorContext;
 
-  constructor(
-    message: string,
-    context: Partial<ConfigurationErrorContext> = {},
-  ) {
+  constructor(message: string, context: Partial<ConfigurationErrorContext> = {}) {
     super(message, "CONFIGURATION_ERROR", context);
     this.name = "ConfigurationError";
     this.context = {
@@ -267,11 +254,7 @@ export class RateLimitError extends ReynardError {
   public readonly context: BaseErrorContext;
   public readonly retryAfter?: number;
 
-  constructor(
-    message: string,
-    retryAfter?: number,
-    context: Partial<BaseErrorContext> = {},
-  ) {
+  constructor(message: string, retryAfter?: number, context: Partial<BaseErrorContext> = {}) {
     super(message, "RATE_LIMIT_ERROR", context);
     this.name = "RateLimitError";
     this.retryAfter = retryAfter;
@@ -294,7 +277,7 @@ export function createValidationError(
   message: string,
   field?: string,
   value?: unknown,
-  constraint?: string,
+  constraint?: string
 ): ValidationError {
   return new ValidationError(message, {
     field,
@@ -306,12 +289,7 @@ export function createValidationError(
 /**
  * Create a network error
  */
-export function createNetworkError(
-  message: string,
-  url?: string,
-  method?: string,
-  statusCode?: number,
-): NetworkError {
+export function createNetworkError(message: string, url?: string, method?: string, statusCode?: number): NetworkError {
   return new NetworkError(message, {
     url,
     method,
@@ -322,11 +300,7 @@ export function createNetworkError(
 /**
  * Create an authentication error
  */
-export function createAuthenticationError(
-  message: string,
-  tokenType?: string,
-  resource?: string,
-): AuthenticationError {
+export function createAuthenticationError(message: string, tokenType?: string, resource?: string): AuthenticationError {
   return new AuthenticationError(message, {
     tokenType,
     resource,
@@ -336,11 +310,7 @@ export function createAuthenticationError(
 /**
  * Create an authorization error
  */
-export function createAuthorizationError(
-  message: string,
-  permission?: string,
-  resource?: string,
-): AuthorizationError {
+export function createAuthorizationError(message: string, permission?: string, resource?: string): AuthorizationError {
   return new AuthorizationError(message, {
     permission,
     resource,
@@ -354,7 +324,7 @@ export function createProcessingError(
   message: string,
   operation?: string,
   stage?: string,
-  fileId?: string,
+  fileId?: string
 ): ProcessingError {
   return new ProcessingError(message, {
     operation,
@@ -370,7 +340,7 @@ export function createDatabaseError(
   message: string,
   table?: string,
   query?: string,
-  constraint?: string,
+  constraint?: string
 ): DatabaseError {
   return new DatabaseError(message, {
     table,
@@ -386,7 +356,7 @@ export function createConfigurationError(
   message: string,
   configKey?: string,
   configValue?: unknown,
-  expectedType?: string,
+  expectedType?: string
 ): ConfigurationError {
   return new ConfigurationError(message, {
     configKey,
@@ -398,10 +368,7 @@ export function createConfigurationError(
 /**
  * Create a timeout error
  */
-export function createTimeoutError(
-  message: string,
-  operation?: string,
-): TimeoutError {
+export function createTimeoutError(message: string, operation?: string): TimeoutError {
   return new TimeoutError(message, {
     operation,
   });
@@ -410,10 +377,7 @@ export function createTimeoutError(
 /**
  * Create a rate limit error
  */
-export function createRateLimitError(
-  message: string,
-  retryAfter?: number,
-): RateLimitError {
+export function createRateLimitError(message: string, retryAfter?: number): RateLimitError {
   return new RateLimitError(message, retryAfter);
 }
 
@@ -445,18 +409,14 @@ export function isNetworkError(error: unknown): error is NetworkError {
 /**
  * Check if error is an authentication error
  */
-export function isAuthenticationError(
-  error: unknown,
-): error is AuthenticationError {
+export function isAuthenticationError(error: unknown): error is AuthenticationError {
   return error instanceof AuthenticationError;
 }
 
 /**
  * Check if error is an authorization error
  */
-export function isAuthorizationError(
-  error: unknown,
-): error is AuthorizationError {
+export function isAuthorizationError(error: unknown): error is AuthorizationError {
   return error instanceof AuthorizationError;
 }
 
@@ -477,9 +437,7 @@ export function isDatabaseError(error: unknown): error is DatabaseError {
 /**
  * Check if error is a configuration error
  */
-export function isConfigurationError(
-  error: unknown,
-): error is ConfigurationError {
+export function isConfigurationError(error: unknown): error is ConfigurationError {
   return error instanceof ConfigurationError;
 }
 
@@ -545,10 +503,7 @@ export function getErrorContext(error: unknown): BaseErrorContext | null {
 /**
  * Convert any error to a Reynard error
  */
-export function toReynardError(
-  error: unknown,
-  source = "reynard",
-): ReynardError {
+export function toReynardError(error: unknown, source = "reynard"): ReynardError {
   if (isReynardError(error)) {
     return error;
   }

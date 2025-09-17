@@ -5,13 +5,7 @@
  * lifecycle management, health monitoring, and metadata handling.
  */
 
-import {
-  ServiceStatus,
-  ServiceHealth,
-  ServiceInfo,
-  ServiceHealthInfo,
-  ServiceConfig,
-} from "../types/index.js";
+import { ServiceStatus, ServiceHealth, ServiceInfo, ServiceHealthInfo, ServiceConfig } from "../types/index.js";
 
 export abstract class BaseService {
   protected _name: string;
@@ -165,8 +159,7 @@ export abstract class BaseService {
         this._lastHealthCheck = new Date();
       } catch (error) {
         this._health = ServiceHealth.UNHEALTHY;
-        this._lastError =
-          error instanceof Error ? error.message : String(error);
+        this._lastError = error instanceof Error ? error.message : String(error);
         this._lastHealthCheck = new Date();
       }
     }, 30000); // Check every 30 seconds
@@ -183,19 +176,13 @@ export abstract class BaseService {
   protected async verifyDependencies(): Promise<void> {
     // This should be implemented by the service manager
     // For now, we'll just log that dependencies should be verified
-    console.debug(
-      `Service ${this._name} dependencies should be verified:`,
-      this._dependencies,
-    );
+    console.debug(`Service ${this._name} dependencies should be verified:`, this._dependencies);
   }
 
   protected async verifyRequiredPackages(): Promise<void> {
     // This should be implemented by the service manager
     // For now, we'll just log that packages should be verified
-    console.debug(
-      `Service ${this._name} required packages should be verified:`,
-      this._requiredPackages,
-    );
+    console.debug(`Service ${this._name} required packages should be verified:`, this._requiredPackages);
   }
 
   // Utility methods

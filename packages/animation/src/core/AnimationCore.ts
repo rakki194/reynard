@@ -4,12 +4,7 @@
  */
 
 import { createSignal, onCleanup } from "solid-js";
-import type {
-  AnimationConfig,
-  AnimationState,
-  AnimationCallbacks,
-  PerformanceStats,
-} from "../types";
+import type { AnimationConfig, AnimationState, AnimationCallbacks, PerformanceStats } from "../types";
 
 export function createAnimationCore(initialConfig: AnimationConfig) {
   let config = { ...initialConfig };
@@ -50,7 +45,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     // Safety check: prevent infinite loops
     if (!animationId) {
       console.warn("🦊 AnimationCore: Animation ID is undefined, stopping");
-      setAnimationState((prev) => ({ ...prev, isRunning: false }));
+      setAnimationState(prev => ({ ...prev, isRunning: false }));
       return;
     }
 
@@ -74,9 +69,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     // Safety check: prevent runaway animations
     if (frameCount > maxFramesPerSecond) {
-      console.warn(
-        "🦊 AnimationCore: Frame count exceeded safety limit, stopping animation",
-      );
+      console.warn("🦊 AnimationCore: Frame count exceeded safety limit, stopping animation");
       stop();
       return;
     }
@@ -134,7 +127,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
     const renderTime = performance.now() - renderStartTime;
 
     // Update state
-    setAnimationState((prev) => ({
+    setAnimationState(prev => ({
       ...prev,
       frameCount: prev.frameCount + 1,
       lastFrameTime: currentTime,
@@ -161,9 +154,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
   const start = (newCallbacks: AnimationCallbacks) => {
     const state = animationState();
     if (state.isRunning) {
-      console.warn(
-        "🦊 AnimationCore: Animation already running, ignoring start request",
-      );
+      console.warn("🦊 AnimationCore: Animation already running, ignoring start request");
       return;
     }
 
@@ -171,13 +162,11 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
 
     // Set up safety timeout
     safetyTimeout = window.setTimeout(() => {
-      console.warn(
-        "🦊 AnimationCore: Safety timeout reached, stopping animation",
-      );
+      console.warn("🦊 AnimationCore: Safety timeout reached, stopping animation");
       stop();
     }, 30000); // 30 second safety timeout
 
-    setAnimationState((prev) => ({ ...prev, isRunning: true }));
+    setAnimationState(prev => ({ ...prev, isRunning: true }));
     animationId = window.requestAnimationFrame(animate);
     console.log("🦊 AnimationCore: Animation started with ID", animationId);
   };
@@ -196,7 +185,7 @@ export function createAnimationCore(initialConfig: AnimationConfig) {
       safetyTimeout = undefined;
     }
 
-    setAnimationState((prev) => ({
+    setAnimationState(prev => ({
       ...prev,
       isRunning: false,
     }));

@@ -18,7 +18,7 @@ export class FileProcessingEngine {
   constructor(
     securityValidator: SecurityValidator,
     fileTypeValidator: FileTypeValidator,
-    configManager: ConfigManager,
+    configManager: ConfigManager
   ) {
     this.securityValidator = securityValidator;
     this.fileTypeValidator = fileTypeValidator;
@@ -28,20 +28,14 @@ export class FileProcessingEngine {
   /**
    * Process a single file with security validation
    */
-  async processFile(
-    file: File | string,
-    options?: ProcessingOptions,
-  ): Promise<ProcessingResult> {
+  async processFile(file: File | string, options?: ProcessingOptions): Promise<ProcessingResult> {
     const startTime = Date.now();
 
     try {
       // Security validation
       const securityCheck = this.securityValidator.validateFileSecurity(file);
       if (!securityCheck.isValid) {
-        return this.createErrorResult(
-          "File security validation failed",
-          startTime,
-        );
+        return this.createErrorResult("File security validation failed", startTime);
       }
 
       // Validate file type
@@ -50,24 +44,16 @@ export class FileProcessingEngine {
       }
 
       // Check file size with additional security limits
-      const maxSize =
-        options?.maxFileSize || this.configManager.getMaxFileSize();
+      const maxSize = options?.maxFileSize || this.configManager.getMaxFileSize();
       if (typeof file !== "string" && file.size > maxSize) {
-        return this.createErrorResult(
-          "File size exceeds maximum allowed size",
-          startTime,
-        );
+        return this.createErrorResult("File size exceeds maximum allowed size", startTime);
       }
 
       // Additional security checks for file content
       if (typeof file !== "string") {
-        const contentCheck =
-          await this.securityValidator.validateFileContent(file);
+        const contentCheck = await this.securityValidator.validateFileContent(file);
         if (!contentCheck.isValid) {
-          return this.createErrorResult(
-            "File content validation failed",
-            startTime,
-          );
+          return this.createErrorResult("File content validation failed", startTime);
         }
       }
 
@@ -89,20 +75,14 @@ export class FileProcessingEngine {
         timestamp: new Date(),
       };
     } catch (error) {
-      return this.createErrorResult(
-        error instanceof Error ? error.message : "Unknown error occurred",
-        startTime,
-      );
+      return this.createErrorResult(error instanceof Error ? error.message : "Unknown error occurred", startTime);
     }
   }
 
   /**
    * Create error result
    */
-  private createErrorResult(
-    error: string,
-    startTime: number,
-  ): ProcessingResult {
+  private createErrorResult(error: string, startTime: number): ProcessingResult {
     return {
       success: false,
       error,

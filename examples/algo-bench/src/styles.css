@@ -29,11 +29,7 @@
 /* Base App Styles */
 .app {
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--secondary-color) 100%
-  );
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   color: var(--text-color);
   display: flex;
   flex-direction: column;
@@ -260,11 +256,7 @@
 }
 
 .play-button {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--secondary-color)
-  );
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -699,11 +691,7 @@
 }
 
 .run-button {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--secondary-color)
-  );
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -887,11 +875,7 @@
 
 .comparison-card.highlight {
   border-color: var(--accent-color);
-  background: linear-gradient(
-    135deg,
-    var(--surface-color),
-    rgba(240, 147, 251, 0.1)
-  );
+  background: linear-gradient(135deg, var(--surface-color), rgba(240, 147, 251, 0.1));
 }
 
 .comparison-card h3 {

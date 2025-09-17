@@ -14,7 +14,7 @@ import re
 from pathlib import Path
 from typing import Any, List
 
-from .ignore_config import should_ignore_path, filter_paths
+from .ignore_config import should_ignore_path
 
 logger = logging.getLogger(__name__)
 
@@ -118,7 +118,7 @@ class FileSearchEngine:
             # Skip ignored paths using centralized ignore system
             if should_ignore_path(item):
                 continue
-                
+
             if not include_hidden and item.name.startswith("."):
                 continue
 
@@ -157,16 +157,16 @@ class FileSearchEngine:
         """
         # Build grep command
         cmd = ["grep", "-r"]
-    
+
         if not case_sensitive:
             cmd.append("-i")
-    
+
         if whole_word:
             cmd.append("-w")
-    
+
         if max_count:
             cmd.extend(["-m", str(max_count)])
-    
+
         if context_lines > 0:
             cmd.extend(["-C", str(context_lines)])
 
@@ -176,15 +176,24 @@ class FileSearchEngine:
                 cmd.extend(["--include", f"*.{ext}"])
         else:
             # Default file types
-            cmd.extend([
-                "--include", "*.py",
-                "--include", "*.ts",
-                "--include", "*.js",
-                "--include", "*.tsx",
-                "--include", "*.jsx",
-                "--include", "*.md",
-                "--include", "*.txt",
-            ])
+            cmd.extend(
+                [
+                    "--include",
+                    "*.py",
+                    "--include",
+                    "*.ts",
+                    "--include",
+                    "*.js",
+                    "--include",
+                    "*.tsx",
+                    "--include",
+                    "*.jsx",
+                    "--include",
+                    "*.md",
+                    "--include",
+                    "*.txt",
+                ]
+            )
 
         # Add directory filters
         search_paths = [str(self.project_root)]
@@ -286,7 +295,9 @@ class FileSearchEngine:
         }
 
         if pattern_type not in patterns or language not in patterns[pattern_type]:
-            raise ValueError(f"Unsupported pattern type: {pattern_type} for language: {language}")
+            raise ValueError(
+                f"Unsupported pattern type: {pattern_type} for language: {language}"
+            )
 
         pattern = patterns[pattern_type][language]
         if name:

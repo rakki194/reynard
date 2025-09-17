@@ -13,10 +13,4 @@ export { formatDateTime } from "./date-time";
 export { formatNumber, formatCurrency, formatPercentage } from "./number";
 
 // String formatters
-export {
-  truncateText,
-  capitalize,
-  camelToKebab,
-  kebabToCamel,
-  pluralize,
-} from "./string";
+export { truncateText, capitalize, camelToKebab, kebabToCamel, pluralize } from "./string";

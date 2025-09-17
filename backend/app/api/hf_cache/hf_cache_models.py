@@ -4,13 +4,12 @@ HuggingFace Cache API Models for Reynard Backend
 Pydantic models for HF cache API endpoints.
 """
 
-from typing import Optional
 from pydantic import BaseModel, Field
 
 
 class HFCacheInfoResponse(BaseModel):
     model_config = {"protected_namespaces": ()}
-    
+
     cache_dir: str
     hub_dir: str
     size: int
@@ -22,8 +21,8 @@ class ModelCacheInfoResponse(BaseModel):
     cache_path: str
     snapshot_path: str
     is_cached: bool
-    size: Optional[int] = None
-    last_modified: Optional[str] = None
+    size: int | None = None
+    last_modified: str | None = None
 
 
 class ModelCacheRequest(BaseModel):

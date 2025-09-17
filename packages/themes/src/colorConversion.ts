@@ -29,9 +29,7 @@ export interface RGB {
  */
 function parseOKLCH(oklchString: string): OKLCH | null {
   // Match OKLCH format: oklch(lightness% chroma hue) - handle negative hue values
-  const match = oklchString.match(
-    /oklch\(\s*([0-9.]+)%?\s+([0-9.]+)\s+(-?[0-9.]+)\s*\)/i,
-  );
+  const match = oklchString.match(/oklch\(\s*([0-9.]+)%?\s+([0-9.]+)\s+(-?[0-9.]+)\s*\)/i);
   if (!match) {
     return null;
   }
@@ -60,9 +58,7 @@ function parseOKLCH(oklchString: string): OKLCH | null {
  * Apply gamma correction for sRGB
  */
 function gammaCorrect(value: number): number {
-  return value <= 0.0031308
-    ? 12.92 * value
-    : 1.055 * Math.pow(value, 1 / 2.4) - 0.055;
+  return value <= 0.0031308 ? 12.92 * value : 1.055 * Math.pow(value, 1 / 2.4) - 0.055;
 }
 
 /**
@@ -95,8 +91,7 @@ export function oklchToRgb(oklch: OKLCH): RGB {
   // Convert OKLAB to linear sRGB using the official conversion matrix
   const r_linear = l_linear + 0.3963377774 * a_linear + 0.2158037573 * b_linear;
   const g_linear = l_linear - 0.1055613458 * a_linear - 0.0638541728 * b_linear;
-  const b_linear_srgb =
-    l_linear - 0.0894841775 * a_linear - 1.291485548 * b_linear;
+  const b_linear_srgb = l_linear - 0.0894841775 * a_linear - 1.291485548 * b_linear;
 
   // Apply gamma correction to convert from linear sRGB to sRGB
   const r_gamma = gammaCorrect(r_linear);
@@ -156,10 +151,7 @@ export function oklchStringToRgb(oklchColor: string): string {
  * @param alpha - Alpha value (0-1)
  * @returns Validated OKLCH CSS string with alpha or fallback
  */
-export function oklchStringToCSSWithAlpha(
-  oklchColor: string,
-  alpha: number = 1,
-): string {
+export function oklchStringToCSSWithAlpha(oklchColor: string, alpha: number = 1): string {
   const oklch = parseOKLCH(oklchColor);
   if (!oklch) {
     // Fallback to a default color if parsing fails

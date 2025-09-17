@@ -1,9 +1,7 @@
 import type { Locale, Translations } from "reynard-core";
 
 // Translation loader that dynamically imports translation files
-export const loadTranslations = async (
-  locale: Locale,
-): Promise<Translations> => {
+export const loadTranslations = async (locale: Locale): Promise<Translations> => {
   try {
     // In a real app, these would be loaded from separate files or a translation service
     const translations: Record<string, Translations> = {

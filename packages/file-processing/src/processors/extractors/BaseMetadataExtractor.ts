@@ -36,10 +36,7 @@ export abstract class BaseMetadataExtractor {
   /**
    * Extract metadata from a file
    */
-  abstract extractMetadata(
-    file: File | string,
-    options?: Partial<MetadataExtractionOptions>,
-  ): Promise<FileMetadata>;
+  abstract extractMetadata(file: File | string, options?: Partial<MetadataExtractionOptions>): Promise<FileMetadata>;
 
   /**
    * Get basic file information
@@ -99,8 +96,7 @@ export abstract class BaseMetadataExtractor {
     } catch (error) {
       return {
         success: false,
-        error:
-          error instanceof Error ? error.message : "Failed to get file info",
+        error: error instanceof Error ? error.message : "Failed to get file info",
       };
     }
   }
@@ -110,9 +106,7 @@ export abstract class BaseMetadataExtractor {
    */
   protected getFileExtension(filename: string): string {
     const lastDotIndex = filename.lastIndexOf(".");
-    return lastDotIndex !== -1
-      ? filename.substring(lastDotIndex).toLowerCase()
-      : "";
+    return lastDotIndex !== -1 ? filename.substring(lastDotIndex).toLowerCase() : "";
   }
 
   /**

@@ -8,20 +8,13 @@
 import type { NLWebService } from "../types/index.js";
 import type { NLWebAPIHandler } from "./types.js";
 import { createSuggestHandler } from "./handlers/suggestHandler.js";
-import {
-  createHealthHandler,
-  createStatusHandler,
-  createForceHealthCheckHandler,
-} from "./handlers/healthHandler.js";
+import { createHealthHandler, createStatusHandler, createForceHealthCheckHandler } from "./handlers/healthHandler.js";
 import {
   createGetToolsHandler,
   createRegisterToolHandler,
   createUnregisterToolHandler,
 } from "./handlers/toolsHandler.js";
-import {
-  createPerformanceHandler,
-  createRollbackHandler,
-} from "./handlers/performanceHandler.js";
+import { createPerformanceHandler, createRollbackHandler } from "./handlers/performanceHandler.js";
 
 export interface NLWebAPIConfig {
   /** Base path for API endpoints */
@@ -42,29 +35,15 @@ function registerCoreHandlers(
   service: NLWebService,
   basePath: string,
   enableCORS: boolean,
-  enableLogging: boolean,
+  enableLogging: boolean
 ): void {
-  handlers[`POST ${basePath}/suggest`] = createSuggestHandler(
-    service,
-    basePath,
-    enableCORS,
-    enableLogging,
-  );
+  handlers[`POST ${basePath}/suggest`] = createSuggestHandler(service, basePath, enableCORS, enableLogging);
 
-  handlers[`GET ${basePath}/status`] = createStatusHandler(
-    service,
-    basePath,
-    enableCORS,
-  );
+  handlers[`GET ${basePath}/status`] = createStatusHandler(service, basePath, enableCORS);
 
-  handlers[`GET ${basePath}/health`] = createHealthHandler(
-    service,
-    basePath,
-    enableCORS,
-  );
+  handlers[`GET ${basePath}/health`] = createHealthHandler(service, basePath, enableCORS);
 
-  handlers[`POST ${basePath}/health/force-check`] =
-    createForceHealthCheckHandler(service, basePath, enableCORS);
+  handlers[`POST ${basePath}/health/force-check`] = createForceHealthCheckHandler(service, basePath, enableCORS);
 }
 
 /**
@@ -74,25 +53,13 @@ function registerToolHandlers(
   handlers: Record<string, NLWebAPIHandler>,
   service: NLWebService,
   basePath: string,
-  enableCORS: boolean,
+  enableCORS: boolean
 ): void {
-  handlers[`GET ${basePath}/tools`] = createGetToolsHandler(
-    service,
-    basePath,
-    enableCORS,
-  );
+  handlers[`GET ${basePath}/tools`] = createGetToolsHandler(service, basePath, enableCORS);
 
-  handlers[`POST ${basePath}/tools`] = createRegisterToolHandler(
-    service,
-    basePath,
-    enableCORS,
-  );
+  handlers[`POST ${basePath}/tools`] = createRegisterToolHandler(service, basePath, enableCORS);
 
-  handlers[`DELETE ${basePath}/tools/:name`] = createUnregisterToolHandler(
-    service,
-    basePath,
-    enableCORS,
-  );
+  handlers[`DELETE ${basePath}/tools/:name`] = createUnregisterToolHandler(service, basePath, enableCORS);
 }
 
 /**
@@ -102,34 +69,18 @@ function registerPerformanceHandlers(
   handlers: Record<string, NLWebAPIHandler>,
   service: NLWebService,
   basePath: string,
-  enableCORS: boolean,
+  enableCORS: boolean
 ): void {
-  handlers[`GET ${basePath}/performance`] = createPerformanceHandler(
-    service,
-    basePath,
-    enableCORS,
-  );
+  handlers[`GET ${basePath}/performance`] = createPerformanceHandler(service, basePath, enableCORS);
 
-  handlers[`POST ${basePath}/rollback`] = createRollbackHandler(
-    service,
-    basePath,
-    enableCORS,
-  );
+  handlers[`POST ${basePath}/rollback`] = createRollbackHandler(service, basePath, enableCORS);
 }
 
 /**
  * Create NLWeb API handlers
  */
-export function createNLWebAPI(
-  service: NLWebService,
-  config: NLWebAPIConfig = {},
-): Record<string, NLWebAPIHandler> {
-  const {
-    basePath = "/api/nlweb",
-    enableCORS = true,
-    auth: _auth,
-    enableLogging = true,
-  } = config;
+export function createNLWebAPI(service: NLWebService, config: NLWebAPIConfig = {}): Record<string, NLWebAPIHandler> {
+  const { basePath = "/api/nlweb", enableCORS = true, auth: _auth, enableLogging = true } = config;
 
   const handlers: Record<string, NLWebAPIHandler> = {};
 

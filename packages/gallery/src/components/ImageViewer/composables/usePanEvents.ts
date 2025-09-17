@@ -14,13 +14,13 @@ export interface UsePanEventsReturn {
 export const usePanEvents = (
   config: ImageViewerConfig,
   state: () => ImageViewerState,
-  setState: (updater: (prev: ImageViewerState) => ImageViewerState) => void,
+  setState: (updater: (prev: ImageViewerState) => ImageViewerState) => void
 ): UsePanEventsReturn => {
   const handleMouseDown = (event: MouseEvent) => {
     if (!config.enablePan) return;
 
     event.preventDefault();
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       isDragging: true,
       lastMousePos: { x: event.clientX, y: event.clientY },
@@ -34,7 +34,7 @@ export const usePanEvents = (
     const deltaX = event.clientX - state().lastMousePos.x;
     const deltaY = event.clientY - state().lastMousePos.y;
 
-    setState((prev) => ({
+    setState(prev => ({
       ...prev,
       panX: prev.panX + deltaX,
       panY: prev.panY + deltaY,
@@ -43,7 +43,7 @@ export const usePanEvents = (
   };
 
   const handleMouseUp = () => {
-    setState((prev) => ({ ...prev, isDragging: false }));
+    setState(prev => ({ ...prev, isDragging: false }));
   };
 
   return {

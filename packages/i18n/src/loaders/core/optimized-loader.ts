@@ -10,14 +10,9 @@ import { loadTranslationModuleCore } from "./LoaderCore";
 // Tree-shaking helper - only load used namespaces
 export const createOptimizedLoader = (usedNamespaces: string[]) => {
   return {
-    loadNamespace: async <T = unknown>(
-      locale: LanguageCode,
-      namespace: string,
-    ): Promise<T> => {
+    loadNamespace: async <T = unknown>(locale: LanguageCode, namespace: string): Promise<T> => {
       if (!usedNamespaces.includes(namespace)) {
-        console.warn(
-          `Namespace ${namespace} not in used namespaces list. Consider adding it to optimize bundle size.`,
-        );
+        console.warn(`Namespace ${namespace} not in used namespaces list. Consider adding it to optimize bundle size.`);
       }
       return loadNamespace<T>(locale, namespace);
     },
@@ -35,7 +30,7 @@ export const createOptimizedLoader = (usedNamespaces: string[]) => {
             chat: {},
             monaco: {},
           } as any,
-        }),
+        })
       ),
   };
 };

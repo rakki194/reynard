@@ -55,7 +55,7 @@ export class ServiceManager {
       service.name,
       service.dependencies,
       service.startupPriority,
-      service.requiredPackages,
+      service.requiredPackages
     );
 
     // Register in registry
@@ -130,9 +130,7 @@ export class ServiceManager {
       // Validate dependencies
       const dependencyErrors = this._dependencyGraph.validateDependencies();
       if (dependencyErrors.length > 0) {
-        throw new Error(
-          `Dependency validation failed: ${dependencyErrors.join(", ")}`,
-        );
+        throw new Error(`Dependency validation failed: ${dependencyErrors.join(", ")}`);
       }
 
       // Get startup order
@@ -152,9 +150,7 @@ export class ServiceManager {
 
       // Start services in parallel groups
       for (const group of parallelGroups) {
-        const groupPromises = group.map((serviceName) =>
-          this._startService(serviceName),
-        );
+        const groupPromises = group.map(serviceName => this._startService(serviceName));
         await Promise.all(groupPromises);
       }
 
@@ -253,10 +249,7 @@ export class ServiceManager {
     }
   }
 
-  private async _performServiceStartup(
-    name: string,
-    service: BaseService,
-  ): Promise<void> {
+  private async _performServiceStartup(name: string, service: BaseService): Promise<void> {
     try {
       this._emitEvent({
         type: "startup",

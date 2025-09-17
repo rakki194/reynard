@@ -6,21 +6,13 @@ import type { Point3D } from "../types";
 /**
  * Color mapping strategies for point clouds
  */
-export type ColorMappingStrategy =
-  | "similarity"
-  | "cluster"
-  | "importance"
-  | "confidence"
-  | "custom";
+export type ColorMappingStrategy = "similarity" | "cluster" | "importance" | "confidence" | "custom";
 
 /**
  * Calculate point colors based on different strategies
  */
-export function calculatePointColors(
-  points: Point3D[],
-  strategy: ColorMappingStrategy = "similarity",
-): Point3D[] {
-  return points.map((point) => {
+export function calculatePointColors(points: Point3D[], strategy: ColorMappingStrategy = "similarity"): Point3D[] {
+  return points.map(point => {
     let color: [number, number, number] = [1, 1, 1];
 
     switch (strategy) {
@@ -59,7 +51,7 @@ function calculateSimilarityColor(point: Point3D): [number, number, number] {
     const distance = Math.sqrt(
       Math.pow(point.position[0] - center[0], 2) +
         Math.pow(point.position[1] - center[1], 2) +
-        Math.pow(point.position[2] - center[2], 2),
+        Math.pow(point.position[2] - center[2], 2)
     );
     const normalizedDistance = Math.min(distance / 10, 1);
     return [normalizedDistance, 1 - normalizedDistance, 0.5];

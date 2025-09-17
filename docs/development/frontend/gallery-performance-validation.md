@@ -260,17 +260,14 @@ optimizer.updateThresholds({
 The performance score is calculated based on how well each metric performs against its threshold:
 
 ```typescript
-const calculateScore = (metrics) => {
+const calculateScore = metrics => {
   const scores = {
     navigation: Math.max(0, 100 - (metrics.navigationTime / threshold) * 100),
     selection: Math.max(0, 100 - (metrics.selectionTime / threshold) * 100),
     // ... other metrics
   };
 
-  return (
-    Object.values(scores).reduce((sum, score) => sum + score, 0) /
-    Object.keys(scores).length
-  );
+  return Object.values(scores).reduce((sum, score) => sum + score, 0) / Object.keys(scores).length;
 };
 ```
 
@@ -442,9 +439,7 @@ async function detectRegressions() {
   const benchmark = useGalleryPerformanceBenchmark();
   const report = await benchmark.runBenchmark(gallery);
 
-  const criticalIssues = report.warnings.filter(
-    (w) => w.severity === "critical",
-  );
+  const criticalIssues = report.warnings.filter(w => w.severity === "critical");
 
   if (criticalIssues.length > 0) {
     console.error("Performance regression detected:", criticalIssues);
@@ -452,10 +447,7 @@ async function detectRegressions() {
   }
 
   if (report.metrics.performanceScore < 80) {
-    console.warn(
-      "Performance score below threshold:",
-      report.metrics.performanceScore,
-    );
+    console.warn("Performance score below threshold:", report.metrics.performanceScore);
   }
 }
 

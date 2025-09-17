@@ -2,10 +2,7 @@
  * Tests for Native OKLCH CSS Functions
  */
 
-import {
-  oklchStringToCSS,
-  oklchStringToCSSWithAlpha,
-} from "../../colorConversion";
+import { oklchStringToCSS, oklchStringToCSSWithAlpha } from "../../colorConversion";
 
 describe("Native OKLCH CSS Functions", () => {
   describe("oklchStringToCSS", () => {

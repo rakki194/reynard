@@ -85,10 +85,10 @@ export interface UserPublic {
     updatedAt?: Date | null;
     /**
      * 
-     * @type {{ [key: string]: any; }}
+     * @type {object}
      * @memberof UserPublic
      */
-    metadata?: { [key: string]: any; };
+    metadata?: object;
 }
 
 

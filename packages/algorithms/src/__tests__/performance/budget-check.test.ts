@@ -57,7 +57,7 @@ describe("PerformanceBudgetChecker - Check", () => {
       expect(checker.checkBudget("test-budget", metrics)).toBe(false);
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         "Performance budget violation for test-budget:",
-        "Duration: 150ms > 100ms",
+        "Duration: 150ms > 100ms"
       );
     });
 
@@ -72,7 +72,7 @@ describe("PerformanceBudgetChecker - Check", () => {
       expect(checker.checkBudget("test-budget", metrics)).toBe(false);
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         "Performance budget violation for test-budget:",
-        "Memory: 2048 bytes > 1024 bytes",
+        "Memory: 2048 bytes > 1024 bytes"
       );
     });
 
@@ -84,7 +84,7 @@ describe("PerformanceBudgetChecker - Check", () => {
       expect(checker.checkBudget("test-budget", metrics)).toBe(false);
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         "Performance budget violation for test-budget:",
-        "Iterations: 1500 > 1000",
+        "Iterations: 1500 > 1000"
       );
     });
 
@@ -96,7 +96,7 @@ describe("PerformanceBudgetChecker - Check", () => {
       expect(checker.checkBudget("test-budget", metrics)).toBe(false);
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         "Performance budget violation for test-budget:",
-        "Duration: 150ms > 100ms, Memory: 2048 bytes > 1024 bytes, Iterations: 1500 > 1000",
+        "Duration: 150ms > 100ms, Memory: 2048 bytes > 1024 bytes, Iterations: 1500 > 1000"
       );
     });
 

@@ -16,7 +16,7 @@ export class MathProcessor extends InlineProcessor {
           type: "math",
           content: content.trim(),
           inline: true,
-        }),
+        })
       );
       return `<span class="math-inline">${content}</span>`;
     });

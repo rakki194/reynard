@@ -24,11 +24,7 @@ npm install reynard-nlweb
 ### Basic Usage
 
 ```typescript
-import {
-  NLWebService,
-  createDefaultNLWebConfiguration,
-  SimpleEventEmitter,
-} from "reynard-nlweb";
+import { NLWebService, createDefaultNLWebConfiguration, SimpleEventEmitter } from "reynard-nlweb";
 
 // Create configuration
 const config = createDefaultNLWebConfiguration();
@@ -133,9 +129,7 @@ class NLWebRouter {
   async initialize(): Promise<void>;
 
   // Get tool suggestions for a query
-  async suggest(
-    request: NLWebSuggestionRequest,
-  ): Promise<NLWebSuggestionResponse>;
+  async suggest(request: NLWebSuggestionRequest): Promise<NLWebSuggestionResponse>;
 
   // Get router health status
   async getHealthStatus(): Promise<NLWebHealthStatus>;

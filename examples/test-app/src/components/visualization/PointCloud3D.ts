@@ -45,13 +45,8 @@ export class PointCloud3D {
     }
 
     // Prevent creating multiple point clouds with the same data
-    if (
-      this.pointCloud &&
-      this.pointCloud.geometry.attributes.position.count === data.points.length
-    ) {
-      console.log(
-        "🦊 Point cloud already exists with same data, skipping creation",
-      );
+    if (this.pointCloud && this.pointCloud.geometry.attributes.position.count === data.points.length) {
+      console.log("🦊 Point cloud already exists with same data, skipping creation");
       return;
     }
 

@@ -11,13 +11,7 @@ import { ADRDocument, ADRRelationship } from "./types";
 
 export interface KnowledgeNode {
   id: string;
-  type:
-    | "adr"
-    | "pattern"
-    | "component"
-    | "dependency"
-    | "stakeholder"
-    | "technology";
+  type: "adr" | "pattern" | "component" | "dependency" | "stakeholder" | "technology";
   label: string;
   properties: Record<string, any>;
   metadata: {
@@ -32,14 +26,7 @@ export interface KnowledgeEdge {
   id: string;
   source: string;
   target: string;
-  type:
-    | "supersedes"
-    | "related"
-    | "conflicts"
-    | "depends_on"
-    | "implements"
-    | "influences"
-    | "constrains";
+  type: "supersedes" | "related" | "conflicts" | "depends_on" | "implements" | "influences" | "constrains";
   weight: number; // 0-1
   properties: Record<string, any>;
   metadata: {
@@ -118,9 +105,7 @@ export class ADRKnowledgeGraph {
     // Calculate graph metrics
     const metrics = this.calculateGraphMetrics();
 
-    console.log(
-      `✅ Knowledge Graph built: ${metrics.totalNodes} nodes, ${metrics.totalEdges} edges`,
-    );
+    console.log(`✅ Knowledge Graph built: ${metrics.totalNodes} nodes, ${metrics.totalEdges} edges`);
   }
 
   /**
@@ -143,8 +128,7 @@ export class ADRKnowledgeGraph {
     sourceNeighbors.add(edge.target);
     this.adjacencyList.set(edge.source, sourceNeighbors);
 
-    const targetNeighbors =
-      this.reverseAdjacencyList.get(edge.target) || new Set();
+    const targetNeighbors = this.reverseAdjacencyList.get(edge.target) || new Set();
     targetNeighbors.add(edge.source);
     this.reverseAdjacencyList.set(edge.target, targetNeighbors);
   }
@@ -161,31 +145,25 @@ export class ADRKnowledgeGraph {
 
     // Filter by node types
     if (query.nodeTypes && query.nodeTypes.length > 0) {
-      filteredNodes = filteredNodes.filter((node) =>
-        query.nodeTypes!.includes(node.type),
-      );
+      filteredNodes = filteredNodes.filter(node => query.nodeTypes!.includes(node.type));
     }
 
     // Filter by edge types
     if (query.edgeTypes && query.edgeTypes.length > 0) {
-      filteredEdges = filteredEdges.filter((edge) =>
-        query.edgeTypes!.includes(edge.type),
-      );
+      filteredEdges = filteredEdges.filter(edge => query.edgeTypes!.includes(edge.type));
     }
 
     // Filter by properties
     if (query.properties) {
-      filteredNodes = filteredNodes.filter((node) =>
-        Object.entries(query.properties!).every(
-          ([key, value]) => node.properties[key] === value,
-        ),
+      filteredNodes = filteredNodes.filter(node =>
+        Object.entries(query.properties!).every(([key, value]) => node.properties[key] === value)
       );
     }
 
     // Apply depth limit
     if (query.depth && query.depth > 0) {
       const reachableNodes = new Set<string>();
-      const startNodes = filteredNodes.map((n) => n.id);
+      const startNodes = filteredNodes.map(n => n.id);
 
       const dfs = (nodeId: string, currentDepth: number): void => {
         if (currentDepth >= query.depth!) return;
@@ -203,13 +181,8 @@ export class ADRKnowledgeGraph {
         dfs(startNode, 0);
       }
 
-      filteredNodes = filteredNodes.filter((node) =>
-        reachableNodes.has(node.id),
-      );
-      filteredEdges = filteredEdges.filter(
-        (edge) =>
-          reachableNodes.has(edge.source) && reachableNodes.has(edge.target),
-      );
+      filteredNodes = filteredNodes.filter(node => reachableNodes.has(node.id));
+      filteredEdges = filteredEdges.filter(edge => reachableNodes.has(edge.source) && reachableNodes.has(edge.target));
     }
 
     // Apply limit
@@ -237,7 +210,7 @@ export class ADRKnowledgeGraph {
       const { nodeId, path, weight } = queue.shift()!;
 
       if (nodeId === targetId) {
-        const nodes = path.map((id) => this.nodes.get(id)!);
+        const nodes = path.map(id => this.nodes.get(id)!);
         const edges: KnowledgeEdge[] = [];
 
         for (let i = 0; i < path.length - 1; i++) {
@@ -276,24 +249,14 @@ export class ADRKnowledgeGraph {
   /**
    * Find all paths between two nodes
    */
-  findAllPaths(
-    sourceId: string,
-    targetId: string,
-    maxDepth: number = 5,
-  ): GraphPath[] {
+  findAllPaths(sourceId: string, targetId: string, maxDepth: number = 5): GraphPath[] {
     const paths: GraphPath[] = [];
 
-    const dfs = (
-      currentId: string,
-      targetId: string,
-      path: string[],
-      visited: Set<string>,
-      depth: number,
-    ): void => {
+    const dfs = (currentId: string, targetId: string, path: string[], visited: Set<string>, depth: number): void => {
       if (depth > maxDepth) return;
 
       if (currentId === targetId) {
-        const nodes = path.map((id) => this.nodes.get(id)!);
+        const nodes = path.map(id => this.nodes.get(id)!);
         const edges: KnowledgeEdge[] = [];
         let totalWeight = 0;
 
@@ -374,13 +337,9 @@ export class ADRKnowledgeGraph {
       edgeTypes[edge.type] = (edgeTypes[edge.type] || 0) + 1;
     }
 
-    const totalDegree = Array.from(this.adjacencyList.values()).reduce(
-      (sum, neighbors) => sum + neighbors.size,
-      0,
-    );
+    const totalDegree = Array.from(this.adjacencyList.values()).reduce((sum, neighbors) => sum + neighbors.size, 0);
 
-    const averageDegree =
-      this.nodes.size > 0 ? totalDegree / this.nodes.size : 0;
+    const averageDegree = this.nodes.size > 0 ? totalDegree / this.nodes.size : 0;
 
     const clusteringCoefficient = this.calculateClusteringCoefficient();
     const connectedComponents = this.detectCommunities().size;
@@ -409,7 +368,7 @@ export class ADRKnowledgeGraph {
             metrics: this.calculateGraphMetrics(),
           },
           null,
-          2,
+          2
         );
 
       case "graphml":
@@ -662,10 +621,7 @@ export class ADRKnowledgeGraph {
     });
   }
 
-  private findEdge(
-    sourceId: string,
-    targetId: string,
-  ): KnowledgeEdge | undefined {
+  private findEdge(sourceId: string, targetId: string): KnowledgeEdge | undefined {
     for (const edge of this.edges.values()) {
       if (edge.source === sourceId && edge.target === targetId) {
         return edge;
@@ -696,8 +652,7 @@ export class ADRKnowledgeGraph {
       }
 
       const possibleTriangles = (neighbors.size * (neighbors.size - 1)) / 2;
-      const coefficient =
-        possibleTriangles > 0 ? triangles / possibleTriangles : 0;
+      const coefficient = possibleTriangles > 0 ? triangles / possibleTriangles : 0;
 
       totalCoefficient += coefficient;
       nodeCount++;

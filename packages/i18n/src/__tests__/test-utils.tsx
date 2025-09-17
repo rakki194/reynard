@@ -79,12 +79,8 @@ export const mockDebugger = () => {
       }),
       reset: vi.fn(),
     })),
-    createTemplateTranslator: vi
-      .fn()
-      .mockReturnValue(vi.fn().mockReturnValue("Hello World!")),
-    createDebugPluralTranslator: vi
-      .fn()
-      .mockReturnValue(vi.fn().mockReturnValue("1 item")),
+    createTemplateTranslator: vi.fn().mockReturnValue(vi.fn().mockReturnValue("Hello World!")),
+    createDebugPluralTranslator: vi.fn().mockReturnValue(vi.fn().mockReturnValue("1 item")),
   }));
 };
 
@@ -117,9 +113,7 @@ export const mockMigration = () => {
       getTranslation: vi.fn().mockReturnValue("Hello"),
       getTranslations: vi.fn().mockReturnValue({ common: { hello: "Hello" } }),
       getChangeHistory: vi.fn().mockReturnValue([]),
-      exportTranslations: vi
-        .fn()
-        .mockReturnValue('{"common":{"hello":"Hello"}}'),
+      exportTranslations: vi.fn().mockReturnValue('{"common":{"hello":"Hello"}}'),
       importTranslations: vi.fn().mockReturnValue(true),
     })),
     TranslationAnalytics: vi.fn().mockImplementation(() => ({

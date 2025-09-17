@@ -7,12 +7,7 @@
 
 import { createSignal } from "solid-js";
 import { BoundingBoxEditor } from "../src/components/BoundingBoxEditor";
-import type {
-  BoundingBox,
-  ImageInfo,
-  AnnotationEventHandlers,
-  Annotation,
-} from "../src/types";
+import type { BoundingBox, ImageInfo, AnnotationEventHandlers, Annotation } from "../src/types";
 import "./basic-usage.css";
 
 export function BasicUsageExample() {
@@ -51,12 +46,7 @@ export function BasicUsageExample() {
     onAnnotationCreate: (annotation: Annotation) => {
       console.log("Created annotation:", annotation);
       // Type guard to check if it's a bounding box
-      if (
-        "x" in annotation &&
-        "y" in annotation &&
-        "width" in annotation &&
-        "height" in annotation
-      ) {
+      if ("x" in annotation && "y" in annotation && "width" in annotation && "height" in annotation) {
         console.log("Created bounding box:", annotation as BoundingBox);
         // Here you would typically save to your backend
       }
@@ -65,12 +55,7 @@ export function BasicUsageExample() {
     onAnnotationUpdate: (id: string, annotation: Annotation) => {
       console.log("Updated annotation:", id, annotation);
       // Type guard to check if it's a bounding box
-      if (
-        "x" in annotation &&
-        "y" in annotation &&
-        "width" in annotation &&
-        "height" in annotation
-      ) {
+      if ("x" in annotation && "y" in annotation && "width" in annotation && "height" in annotation) {
         console.log("Updated bounding box:", id, annotation as BoundingBox);
         // Here you would typically update in your backend
       }
@@ -108,9 +93,8 @@ export function BasicUsageExample() {
 
       <div class="example-description">
         <p>
-          This example demonstrates the basic usage of the BoundingBoxEditor
-          component. You can create, edit, and delete bounding boxes by
-          interacting with the canvas.
+          This example demonstrates the basic usage of the BoundingBoxEditor component. You can create, edit, and delete
+          bounding boxes by interacting with the canvas.
         </p>
       </div>
 

@@ -31,7 +31,7 @@ export { setupAuthTestEnvironment } from "./auth-utility-helpers";
 
 /**
  * Main Authentication Test Helpers Class
- * 
+ *
  * This class combines all authentication testing functionality into a single
  * convenient interface while maintaining the modular architecture underneath.
  */
@@ -51,13 +51,9 @@ export class AuthTestHelpers {
     this.utilities = new AuthUtilityHelpers(page);
     this.formUtils = new AuthFormUtilities(page);
     this.elementVerification = new AuthElementVerification(page);
-    
+
     // Initialize scenarios with dependencies
-    this.scenarios = new AuthFlowScenarios(
-      this.core,
-      this.forms,
-      this.verification,
-    );
+    this.scenarios = new AuthFlowScenarios(this.core, this.forms, this.verification);
   }
 
   // Convenience methods that delegate to appropriate modules

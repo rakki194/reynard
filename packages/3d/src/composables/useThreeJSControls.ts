@@ -22,11 +22,9 @@ export function useThreeJSControls(config: ControlsConfig) {
     renderer: any,
     onControlsChange?: () => void,
     onCameraAnimationStart?: () => void,
-    onCameraAnimationEnd?: () => void,
+    onCameraAnimationEnd?: () => void
   ) => {
-    const { OrbitControls } = await import(
-      "three/examples/jsm/controls/OrbitControls.js"
-    );
+    const { OrbitControls } = await import("three/examples/jsm/controls/OrbitControls.js");
 
     const newControls = new OrbitControls(camera, renderer.domElement);
     newControls.enableDamping = config.enableDamping;
@@ -52,12 +50,7 @@ export function useThreeJSControls(config: ControlsConfig) {
 
     // Add camera animation methods
     if (config.enableCameraAnimations) {
-      addCameraAnimations(
-        newControls,
-        camera,
-        onCameraAnimationStart,
-        onCameraAnimationEnd,
-      );
+      addCameraAnimations(newControls, camera, onCameraAnimationStart, onCameraAnimationEnd);
     }
 
     // Handle controls change events
@@ -68,16 +61,11 @@ export function useThreeJSControls(config: ControlsConfig) {
     return newControls;
   };
 
-  const addCameraAnimations = (
-    controls: any,
-    camera: any,
-    onStart?: () => void,
-    onEnd?: () => void,
-  ) => {
+  const addCameraAnimations = (controls: any, camera: any, onStart?: () => void, onEnd?: () => void) => {
     controls.flyTo = (
       targetPosition: [number, number, number],
       targetLookAt: [number, number, number],
-      duration: number = 1500,
+      duration: number = 1500
     ) => {
       if (onStart) onStart();
 
@@ -94,22 +82,12 @@ export function useThreeJSControls(config: ControlsConfig) {
 
         // Use easeInOutCubic easing
         const easedProgress =
-          progress < 0.5
-            ? 4 * progress * progress * progress
-            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+          progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
         // Interpolate position and target
-        camera.position.lerpVectors(
-          startPosition,
-          new camera.position.constructor(...targetPosition),
-          easedProgress,
-        );
+        camera.position.lerpVectors(startPosition, new camera.position.constructor(...targetPosition), easedProgress);
 
-        controls.target.lerpVectors(
-          startTarget,
-          new controls.target.constructor(...targetLookAt),
-          easedProgress,
-        );
+        controls.target.lerpVectors(startTarget, new controls.target.constructor(...targetLookAt), easedProgress);
 
         if (progress < 1) {
           requestAnimationFrame(animate);

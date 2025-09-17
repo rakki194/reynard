@@ -3,12 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  createLazyExport,
-  getLazyExport,
-  clearExportRegistry,
-  mlPackages,
-} from "../package-export-registry";
+import { createLazyExport, getLazyExport, clearExportRegistry, mlPackages } from "../package-export-registry";
 import { LazyPackageExport } from "../lazy-package-export";
 
 // Test the actual implementation
@@ -44,11 +39,7 @@ describe("Package Export Registry", () => {
       const mockLoader = vi.fn();
       const validationLevel = "strict" as any;
 
-      const lazyExport = createLazyExport(
-        "test-package",
-        mockLoader,
-        validationLevel,
-      );
+      const lazyExport = createLazyExport("test-package", mockLoader, validationLevel);
 
       expect(lazyExport).toBeDefined();
       expect(lazyExport).toBeInstanceOf(LazyPackageExport);
@@ -114,7 +105,7 @@ describe("Package Export Registry", () => {
 
       expect(packageNames.length).toBeGreaterThan(0);
 
-      packageNames.forEach((packageName) => {
+      packageNames.forEach(packageName => {
         const config = mlPackages[packageName];
         expect(config).toBeDefined();
         expect(typeof config).toBe("function");

@@ -25,9 +25,7 @@ export const SpellCaster: Component = () => {
       <Card class="spell-caster-container">
         <div class="spell-caster-header">
           <h2>🦊 Mathematical Spell Caster</h2>
-          <p>
-            Cast spells using phyllotactic mathematics and OKLCH color magic
-          </p>
+          <p>Cast spells using phyllotactic mathematics and OKLCH color magic</p>
         </div>
 
         <div class="spell-caster-content">
@@ -44,9 +42,7 @@ export const SpellCaster: Component = () => {
             spellDuration={spellLogic.spellDuration()}
             onDurationChange={spellLogic.setSpellDuration}
             isCasting={spellLogic.isCasting()}
-            onCastSpell={() =>
-              spellLogic.castSpell(spellLogic.selectedSpellType())
-            }
+            onCastSpell={() => spellLogic.castSpell(spellLogic.selectedSpellType())}
             onClearAll={spellLogic.clearAllSpells}
           />
         </div>

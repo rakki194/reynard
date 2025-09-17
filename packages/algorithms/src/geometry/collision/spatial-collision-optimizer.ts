@@ -27,10 +27,7 @@ import {
 
 // Re-export types for external use
 export type { AABB, CollisionResult } from "./aabb-types";
-export type {
-  SpatialCollisionConfig,
-  SpatialCollisionStats,
-} from "./spatial-collision-stats";
+export type { SpatialCollisionConfig, SpatialCollisionStats } from "./spatial-collision-stats";
 
 export class SpatialCollisionOptimizer {
   private spatialHash: SpatialHash<CollisionObjectData>;
@@ -91,11 +88,7 @@ export class SpatialCollisionOptimizer {
    */
   private spatialCollisionDetection(aabbs: AABB[]): CollisionPair[] {
     this.stats.spatialQueries++;
-    return spatialCollisionDetection(
-      aabbs,
-      this.spatialHash,
-      this.collisionCache,
-    );
+    return spatialCollisionDetection(aabbs, this.spatialHash, this.collisionCache);
   }
 
   /**

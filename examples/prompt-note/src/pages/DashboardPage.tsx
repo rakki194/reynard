@@ -72,7 +72,7 @@ const DashboardPage: Component = () => {
     setIsCreatingNotebook(true);
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       const newNotebook: Notebook = {
         id: Date.now().toString(),
@@ -85,7 +85,7 @@ const DashboardPage: Component = () => {
         pageCount: 0,
       };
 
-      setNotebooks((prev) => [newNotebook, ...prev]);
+      setNotebooks(prev => [newNotebook, ...prev]);
       notify("Notebook created successfully!", "success");
     } catch (error) {
       notify("Failed to create notebook", "error");
@@ -106,11 +106,7 @@ const DashboardPage: Component = () => {
           <p>Organize your thoughts and collaborate with others</p>
         </div>
         <div class="header-actions">
-          <Button
-            onClick={handleCreateNotebook}
-            loading={isCreatingNotebook()}
-            variant="primary"
-          >
+          <Button onClick={handleCreateNotebook} loading={isCreatingNotebook()} variant="primary">
             ➕ New Notebook
           </Button>
         </div>
@@ -130,12 +126,7 @@ const DashboardPage: Component = () => {
             <TabPanel tabId="notebooks" activeTab={activeTab()}>
               <div class="notebooks-grid">
                 <For each={notebooks()}>
-                  {(notebook) => (
-                    <NotebookCard
-                      notebook={notebook}
-                      onClick={() => handleNotebookClick(notebook.id)}
-                    />
-                  )}
+                  {notebook => <NotebookCard notebook={notebook} onClick={() => handleNotebookClick(notebook.id)} />}
                 </For>
               </div>
             </TabPanel>

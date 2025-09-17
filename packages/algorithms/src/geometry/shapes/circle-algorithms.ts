@@ -27,10 +27,7 @@ export class CircleOps {
   }
 
   static containsPoint(circle: Circle, point: Point): boolean {
-    return (
-      PointOps.distanceSquared(circle.center, point) <=
-      circle.radius * circle.radius
-    );
+    return PointOps.distanceSquared(circle.center, point) <= circle.radius * circle.radius;
   }
 
   static intersects(a: Circle, b: Circle): boolean {
@@ -49,10 +46,7 @@ export class CircleOps {
     };
   }
 
-  static translate(
-    circle: Circle,
-    offset: import("../vectors/vector-algorithms").Vector,
-  ): Circle {
+  static translate(circle: Circle, offset: import("../vectors/vector-algorithms").Vector): Circle {
     return {
       center: PointOps.add(circle.center, offset),
       radius: circle.radius,

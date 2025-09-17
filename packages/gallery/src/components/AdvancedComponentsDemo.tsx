@@ -81,7 +81,7 @@ export const AdvancedComponentsDemo: Component = () => {
   };
 
   const handleContextMenuClose = () => {
-    setContextMenu((prev) => ({ ...prev, visible: false }));
+    setContextMenu(prev => ({ ...prev, visible: false }));
   };
 
   const handleFileUpload = (files: File[]) => {
@@ -175,7 +175,7 @@ export const AdvancedComponentsDemo: Component = () => {
               enablePan={true}
               showZoomControls={true}
               showNavigationControls={true}
-              onZoomChange={(zoom) => console.log("Zoom changed:", zoom)}
+              onZoomChange={zoom => console.log("Zoom changed:", zoom)}
               onPanChange={(x, y) => console.log("Pan changed:", x, y)}
             />
           </div>
@@ -192,14 +192,11 @@ export const AdvancedComponentsDemo: Component = () => {
               showCount={true}
               enableKeyboard={true}
               onSelectionChange={handleSelectionChange}
-              onModeChange={(mode) => console.log("Mode changed:", mode)}
+              onModeChange={mode => console.log("Mode changed:", mode)}
             />
             <div class="reynard-advanced-components-demo__selection-info">
               <p>Selected: {selectedItems().length} items</p>
-              <p>
-                Use Ctrl/Cmd + Click for multiple selection, Shift + Click for
-                range selection
-              </p>
+              <p>Use Ctrl/Cmd + Click for multiple selection, Shift + Click for range selection</p>
             </div>
           </div>
         </section>

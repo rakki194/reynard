@@ -38,17 +38,13 @@ export const useMediaQuery = (query: string) => {
  * Common breakpoint hooks
  */
 export const useIsMobile = () => useMediaQuery("(max-width: 768px)");
-export const useIsTablet = () =>
-  useMediaQuery("(min-width: 769px) and (max-width: 1024px)");
+export const useIsTablet = () => useMediaQuery("(min-width: 769px) and (max-width: 1024px)");
 export const useIsDesktop = () => useMediaQuery("(min-width: 1025px)");
 export const useIsLargeScreen = () => useMediaQuery("(min-width: 1440px)");
 
 /**
  * Preference-based hooks
  */
-export const usePrefersReducedMotion = () =>
-  useMediaQuery("(prefers-reduced-motion: reduce)");
-export const usePrefersDarkMode = () =>
-  useMediaQuery("(prefers-color-scheme: dark)");
-export const usePrefersHighContrast = () =>
-  useMediaQuery("(prefers-contrast: high)");
+export const usePrefersReducedMotion = () => useMediaQuery("(prefers-reduced-motion: reduce)");
+export const usePrefersDarkMode = () => useMediaQuery("(prefers-color-scheme: dark)");
+export const usePrefersHighContrast = () => useMediaQuery("(prefers-contrast: high)");

@@ -29,15 +29,13 @@ export const createThemeTags = (state: ThemeTagsState) => {
   ];
 
   // Get available themes from the themes package
-  const availableThemes = getAvailableThemes().map(
-    (theme) => theme.name as ThemeName,
-  );
+  const availableThemes = getAvailableThemes().map(theme => theme.name as ThemeName);
 
   // Generate theme-specific tag colors
   const themeTagColors = createMemo(() => {
-    return sampleTags.map((tag) => ({
+    return sampleTags.map(tag => ({
       tag,
-      colors: availableThemes.map((theme) => {
+      colors: availableThemes.map(theme => {
         const generator = createTagColorGenerator();
         return {
           theme,

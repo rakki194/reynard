@@ -54,7 +54,7 @@ export function runDocTests(config: DocTestConfig) {
               "beforeEach",
               "afterEach",
               setup,
-              testableCode,
+              testableCode
             );
 
             // Execute the test
@@ -69,7 +69,7 @@ export function runDocTests(config: DocTestConfig) {
               describe,
               it,
               beforeEach,
-              afterEach,
+              afterEach
             );
           } catch (error) {
             // Log the error but don't fail the test

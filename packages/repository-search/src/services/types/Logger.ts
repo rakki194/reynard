@@ -28,25 +28,25 @@ export interface LogContext {
 export class ConsoleLogger implements Logger {
   private formatMessage(level: string, message: string, context?: Record<string, unknown>): string {
     const timestamp = new Date().toISOString();
-    const contextStr = context ? ` ${JSON.stringify(context)}` : '';
+    const contextStr = context ? ` ${JSON.stringify(context)}` : "";
     return `[${timestamp}] ${level.toUpperCase()}: ${message}${contextStr}`;
   }
 
   info(message: string, context?: Record<string, unknown>): void {
-    console.log(this.formatMessage('info', message, context));
+    console.log(this.formatMessage("info", message, context));
   }
 
   warn(message: string, context?: Record<string, unknown>): void {
-    console.warn(this.formatMessage('warn', message, context));
+    console.warn(this.formatMessage("warn", message, context));
   }
 
   error(message: string, error?: Error, context?: Record<string, unknown>): void {
     const errorContext = error ? { ...context, error: error.message, stack: error.stack } : context;
-    console.error(this.formatMessage('error', message, errorContext));
+    console.error(this.formatMessage("error", message, errorContext));
   }
 
   debug(message: string, context?: Record<string, unknown>): void {
-    console.debug(this.formatMessage('debug', message, context));
+    console.debug(this.formatMessage("debug", message, context));
   }
 }
 

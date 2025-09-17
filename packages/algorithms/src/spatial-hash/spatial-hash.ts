@@ -22,8 +22,4 @@ export * from "./spatial-hash-types";
 export { SpatialHash } from "./spatial-hash-core";
 
 // Export utility functions
-export {
-  createOptimizedSpatialHash,
-  calculateOptimalCellSize,
-  estimateMemoryUsage,
-} from "./spatial-hash-utils";
+export { createOptimizedSpatialHash, calculateOptimalCellSize, estimateMemoryUsage } from "./spatial-hash-utils";

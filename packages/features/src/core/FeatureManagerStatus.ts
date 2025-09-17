@@ -10,10 +10,7 @@ import type { FeatureManagerCore } from "./FeatureManagerCore.js";
 /**
  * Get feature status
  */
-export function getFeatureStatus(
-  core: FeatureManagerCore,
-  featureId: string,
-): FeatureStatus {
+export function getFeatureStatus(core: FeatureManagerCore, featureId: string): FeatureStatus {
   const [statuses] = core.featureStatusesSignal;
   return statuses()[featureId] || "unknown";
 }
@@ -21,13 +18,9 @@ export function getFeatureStatus(
 /**
  * Set feature status
  */
-export function setFeatureStatus(
-  core: FeatureManagerCore,
-  featureId: string,
-  status: FeatureStatus,
-): void {
+export function setFeatureStatus(core: FeatureManagerCore, featureId: string, status: FeatureStatus): void {
   const [, setStatuses] = core.featureStatusesSignal;
-  setStatuses((prev) => ({
+  setStatuses(prev => ({
     ...prev,
     [featureId]: status,
   }));
@@ -36,9 +29,7 @@ export function setFeatureStatus(
 /**
  * Get all feature statuses
  */
-export function getAllFeatureStatuses(
-  core: FeatureManagerCore,
-): Record<string, FeatureStatus> {
+export function getAllFeatureStatuses(core: FeatureManagerCore): Record<string, FeatureStatus> {
   const [statuses] = core.featureStatusesSignal;
   return statuses();
 }

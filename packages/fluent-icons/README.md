@@ -130,8 +130,8 @@ import { registerIconPackage } from "reynard-fluent-icons";
 
 registerIconPackage({
   name: "custom-icons",
-  getIcon: (name) => customIcons[name],
-  getIconMetadata: (name) => customMetadata[name],
+  getIcon: name => customIcons[name],
+  getIconMetadata: name => customMetadata[name],
   getAllIcons: () => Object.keys(customIcons),
 });
 ```
@@ -191,11 +191,7 @@ appearance. This makes it easier for AI systems to select appropriate icons for 
 ### Using Captions
 
 ```tsx
-import {
-  getIcon,
-  getAllCaptions,
-  searchIconsByCaption,
-} from "reynard-fluent-icons";
+import { getIcon, getAllCaptions, searchIconsByCaption } from "reynard-fluent-icons";
 
 // Get an icon's caption
 const saveIcon = getIcon("save");
@@ -214,12 +210,7 @@ const results = searchIconsByCaption(allIcons, "save file");
 ### Caption Utilities
 
 ```tsx
-import {
-  generateCaption,
-  validateCaption,
-  suggestCaptionImprovements,
-  exportCaptions,
-} from "reynard-fluent-icons";
+import { generateCaption, validateCaption, suggestCaptionImprovements, exportCaptions } from "reynard-fluent-icons";
 
 // Generate a caption for an icon without one
 const caption = generateCaption(iconMetadata);
@@ -337,12 +328,7 @@ function IconButton({ icon, onClick, disabled }: IconButtonProps) {
   const metadata = getIconMetadata(icon);
 
   return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      title={metadata?.description}
-      class="icon-button"
-    >
+    <button onClick={onClick} disabled={disabled} title={metadata?.description} class="icon-button">
       <span innerHTML={iconSvg}></span>
     </button>
   );
@@ -391,7 +377,7 @@ function IconPicker() {
       return (
         name.toLowerCase().includes(term) ||
         metadata?.description?.toLowerCase().includes(term) ||
-        metadata?.tags?.some((tag) => tag.toLowerCase().includes(term))
+        metadata?.tags?.some(tag => tag.toLowerCase().includes(term))
       );
     });
   });
@@ -402,7 +388,7 @@ function IconPicker() {
         type="text"
         placeholder="Search icons..."
         value={searchTerm()}
-        onInput={(e) => setSearchTerm(e.target.value)}
+        onInput={e => setSearchTerm(e.target.value)}
       />
       <div class="icon-list">
         {filteredIcons().map(([name, svg]) => (

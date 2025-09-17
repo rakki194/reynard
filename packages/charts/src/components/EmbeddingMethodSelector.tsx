@@ -27,9 +27,7 @@ export interface EmbeddingMethodSelectorProps {
   onPerformReduction: () => void;
 }
 
-export const EmbeddingMethodSelector: Component<
-  EmbeddingMethodSelectorProps
-> = (props) => {
+export const EmbeddingMethodSelector: Component<EmbeddingMethodSelectorProps> = props => {
   if (!props.availableMethods) return null;
 
   return (
@@ -40,15 +38,11 @@ export const EmbeddingMethodSelector: Component<
           <label>Method:</label>
           <select
             value={props.reductionMethod}
-            onChange={(e) => props.onMethodChange(e.currentTarget.value)}
+            onChange={e => props.onMethodChange(e.currentTarget.value)}
             title="Select reduction method"
           >
             <For each={Object.keys(props.availableMethods.methods)}>
-              {(method) => (
-                <option value={method}>
-                  {props.availableMethods.methods[method].name}
-                </option>
-              )}
+              {method => <option value={method}>{props.availableMethods.methods[method].name}</option>}
             </For>
           </select>
         </div>
@@ -61,19 +55,13 @@ export const EmbeddingMethodSelector: Component<
             min="100"
             max="10000"
             step="100"
-            onChange={(e) =>
-              props.onMaxSamplesChange(parseInt(e.currentTarget.value))
-            }
+            onChange={e => props.onMaxSamplesChange(parseInt(e.currentTarget.value))}
             title="Maximum number of samples"
             placeholder="1000"
           />
         </div>
 
-        <button
-          class="reduce-button"
-          onClick={props.onPerformReduction}
-          disabled={props.isLoading}
-        >
+        <button class="reduce-button" onClick={props.onPerformReduction} disabled={props.isLoading}>
           {props.isLoading ? "Processing..." : "Perform Reduction"}
         </button>
       </div>
@@ -81,28 +69,17 @@ export const EmbeddingMethodSelector: Component<
       <Show when={props.availableMethods.methods[props.reductionMethod]}>
         <div class="method-parameters">
           <h4>Parameters</h4>
-          <For
-            each={Object.entries(
-              props.availableMethods.methods[props.reductionMethod].parameters,
-            )}
-          >
+          <For each={Object.entries(props.availableMethods.methods[props.reductionMethod].parameters)}>
             {([paramName, paramInfo]: [string, any]) => (
               <div class="parameter-control">
                 <label>{paramInfo.description}:</label>
                 <Show when={paramInfo.type === "integer"}>
                   <input
                     type="number"
-                    value={
-                      props.reductionParams[paramName] || paramInfo.default
-                    }
+                    value={props.reductionParams[paramName] || paramInfo.default}
                     min={paramInfo.min}
                     max={paramInfo.max}
-                    onChange={(e) =>
-                      props.onParameterUpdate(
-                        paramName,
-                        parseInt(e.currentTarget.value),
-                      )
-                    }
+                    onChange={e => props.onParameterUpdate(paramName, parseInt(e.currentTarget.value))}
                     title={`${paramInfo.description} (${paramInfo.min}-${paramInfo.max})`}
                     placeholder={paramInfo.default?.toString()}
                   />
@@ -111,17 +88,10 @@ export const EmbeddingMethodSelector: Component<
                   <input
                     type="number"
                     step="0.1"
-                    value={
-                      props.reductionParams[paramName] || paramInfo.default
-                    }
+                    value={props.reductionParams[paramName] || paramInfo.default}
                     min={paramInfo.min}
                     max={paramInfo.max}
-                    onChange={(e) =>
-                      props.onParameterUpdate(
-                        paramName,
-                        parseFloat(e.currentTarget.value),
-                      )
-                    }
+                    onChange={e => props.onParameterUpdate(paramName, parseFloat(e.currentTarget.value))}
                     title={`${paramInfo.description} (${paramInfo.min}-${paramInfo.max})`}
                     placeholder={paramInfo.default?.toString()}
                   />
@@ -129,33 +99,18 @@ export const EmbeddingMethodSelector: Component<
                 <Show when={paramInfo.type === "boolean"}>
                   <input
                     type="checkbox"
-                    checked={
-                      props.reductionParams[paramName] || paramInfo.default
-                    }
-                    onChange={(e) =>
-                      props.onParameterUpdate(
-                        paramName,
-                        e.currentTarget.checked,
-                      )
-                    }
+                    checked={props.reductionParams[paramName] || paramInfo.default}
+                    onChange={e => props.onParameterUpdate(paramName, e.currentTarget.checked)}
                     title={paramInfo.description}
                   />
                 </Show>
                 <Show when={paramInfo.type === "string" && paramInfo.options}>
                   <select
-                    value={
-                      props.reductionParams[paramName] || paramInfo.default
-                    }
-                    onChange={(e) =>
-                      props.onParameterUpdate(paramName, e.currentTarget.value)
-                    }
+                    value={props.reductionParams[paramName] || paramInfo.default}
+                    onChange={e => props.onParameterUpdate(paramName, e.currentTarget.value)}
                     title={paramInfo.description}
                   >
-                    <For each={paramInfo.options}>
-                      {(option: string) => (
-                        <option value={option}>{option}</option>
-                      )}
-                    </For>
+                    <For each={paramInfo.options}>{(option: string) => <option value={option}>{option}</option>}</For>
                   </select>
                 </Show>
               </div>

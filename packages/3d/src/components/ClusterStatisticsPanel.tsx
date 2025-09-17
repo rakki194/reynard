@@ -14,7 +14,7 @@ const ClusterStatItem: Component<{
   isHovered: boolean;
   isSelected: boolean;
   onSelect: () => void;
-}> = (props) => (
+}> = props => (
   <div
     class={`stat-item ${props.isHovered ? "hovered" : ""} ${props.isSelected ? "selected" : ""}`}
     onClick={() => props.onSelect()}
@@ -40,9 +40,7 @@ const ClusterStatItem: Component<{
   </div>
 );
 
-export const ClusterStatisticsPanel: Component<ClusterStatisticsPanelProps> = (
-  props,
-) => {
+export const ClusterStatisticsPanel: Component<ClusterStatisticsPanelProps> = props => {
   const [showStatistics, setShowStatistics] = createSignal(true);
 
   return (
@@ -52,7 +50,7 @@ export const ClusterStatisticsPanel: Component<ClusterStatisticsPanelProps> = (
           <h3>Cluster Statistics</h3>
           <div class="stats-grid">
             <For each={props.clusters}>
-              {(cluster) => (
+              {cluster => (
                 <ClusterStatItem
                   cluster={cluster}
                   isHovered={props.hoveredClusterId === cluster.id}
@@ -66,10 +64,7 @@ export const ClusterStatisticsPanel: Component<ClusterStatisticsPanelProps> = (
       </Show>
 
       <div class="cluster-controls">
-        <button
-          onClick={() => setShowStatistics(!showStatistics())}
-          class="toggle-stats"
-        >
+        <button onClick={() => setShowStatistics(!showStatistics())} class="toggle-stats">
           {showStatistics() ? "Hide" : "Show"} Statistics
         </button>
       </div>

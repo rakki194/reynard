@@ -31,11 +31,7 @@ export const batchTools: NLWebTool[] = [
         },
       },
     ],
-    examples: [
-      "batch process files",
-      "process multiple images",
-      "bulk operation",
-    ],
+    examples: ["batch process files", "process multiple images", "bulk operation"],
     enabled: true,
     priority: 60,
     timeout: 60000,

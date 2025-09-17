@@ -167,8 +167,8 @@ describe("Browser Mocks", () => {
   describe("Animation Mocks", () => {
     describe("mockRequestAnimationFrame", () => {
       it("should call callback asynchronously", async () => {
-        await new Promise<void>((resolve) => {
-          mockRequestAnimationFrame((timestamp) => {
+        await new Promise<void>(resolve => {
+          mockRequestAnimationFrame(timestamp => {
             expect(typeof timestamp).toBe("number");
             resolve();
           });
@@ -233,7 +233,7 @@ describe("Browser Mocks", () => {
       it("should simulate connection", async () => {
         const ws = new mockWebSocket();
 
-        await new Promise<void>((resolve) => {
+        await new Promise<void>(resolve => {
           ws.onopen = (event: Event) => {
             expect(ws.readyState).toBe(1); // OPEN
             expect(event.type).toBe("open");
@@ -257,7 +257,7 @@ describe("Browser Mocks", () => {
       it("should simulate connection", async () => {
         const es = new mockEventSource();
 
-        await new Promise<void>((resolve) => {
+        await new Promise<void>(resolve => {
           es.onopen = (event: Event) => {
             expect(es.readyState).toBe(1); // OPEN
             expect(event.type).toBe("open");
@@ -277,9 +277,7 @@ describe("Browser Mocks", () => {
       });
 
       it("should generate predictable UUID", () => {
-        expect(mockCrypto.randomUUID()).toBe(
-          "00000000-0000-4000-8000-000000000000",
-        );
+        expect(mockCrypto.randomUUID()).toBe("00000000-0000-4000-8000-000000000000");
       });
 
       it("should fill array with random values", () => {
@@ -552,9 +550,7 @@ describe("Browser Mocks", () => {
       });
 
       it("should provide global objects", () => {
-        expect(mockWindow.requestAnimationFrame).toBe(
-          mockRequestAnimationFrame,
-        );
+        expect(mockWindow.requestAnimationFrame).toBe(mockRequestAnimationFrame);
         expect(mockWindow.cancelAnimationFrame).toBe(mockCancelAnimationFrame);
         expect(mockWindow.fetch).toBe(mockFetch);
         expect(mockWindow.WebSocket).toBe(mockWebSocket);

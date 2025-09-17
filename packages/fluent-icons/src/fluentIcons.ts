@@ -66,9 +66,7 @@ export const fluentIconsPackage: IconPackage = {
     return {
       ...iconData.metadata,
       tags: iconData.metadata.tags ? [...iconData.metadata.tags] : undefined,
-      keywords: iconData.metadata.keywords
-        ? [...iconData.metadata.keywords]
-        : undefined,
+      keywords: iconData.metadata.keywords ? [...iconData.metadata.keywords] : undefined,
     };
   },
 };

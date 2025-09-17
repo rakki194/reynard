@@ -142,7 +142,7 @@ The error object has the following fields.
 | Field                | Description                                           | Example                                                          |
 | -------------------- | ----------------------------------------------------- | ---------------------------------------------------------------- |
 | `{{$err.Message}}`   | Body of error message                                 | `property "platform" is not defined in object type {os: string}` |
-| `{{$err.Snippet}}`   | Code snippet to indicate error position               | `node_version: 16.x\n          ^~~~~~~~~~~~~`          |
+| `{{$err.Snippet}}`   | Code snippet to indicate error position               | `node_version: 16.x\n          ^~~~~~~~~~~~~`                    |
 | `{{$err.Kind}}`      | Name of rule the error belongs to                     | `expression`                                                     |
 | `{{$err.Filepath}}`  | Canonical relative file path of the error position    | `.github/workflows/ci.yaml`                                      |
 | `{{$err.Line}}`      | Line number of the error position (1-based)           | `9`                                                              |
@@ -472,8 +472,7 @@ You can also see actionlint issues inline in VS Code via the [Trunk VS Code exte
 [re2]: https://golang.org/s/re2syntax
 [go-template]: https://pkg.go.dev/text/template
 [jsonl]: https://jsonlines.org/
-[ga-annotate-error]:
-https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#setting-an-error-message
+[ga-annotate-error]: https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#setting-an-error-message
 [sarif]: https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html
 [problem-matchers]: https://github.com/actions/toolkit/blob/master/docs/problem-matchers.md
 [super-linter]: https://github.com/github/super-linter

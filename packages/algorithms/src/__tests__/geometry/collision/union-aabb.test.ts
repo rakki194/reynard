@@ -3,12 +3,7 @@ import { unionAABB } from "../../../geometry/collision/aabb-operations";
 import type { AABB } from "../../aabb-types";
 
 // Helper function for creating AABB test objects
-const createAABB = (
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-): AABB => ({
+const createAABB = (x: number, y: number, width: number, height: number): AABB => ({
   x,
   y,
   width,

@@ -7,12 +7,12 @@
 import { Component } from "solid-js";
 import { Button, Card, Badge } from "reynard-components";
 import type { SearchHistoryItem, RAGModality } from "../types";
-import { 
-  getIcon, 
-  formatTimestamp, 
-  getModalityIcon, 
-  getModalityColor, 
-  getScoreColor 
+import {
+  getIcon,
+  formatTimestamp,
+  getModalityIcon,
+  getModalityColor,
+  getScoreColor,
 } from "../utils/searchHistoryUtils";
 
 export interface SearchHistoryItemProps {
@@ -21,7 +21,7 @@ export interface SearchHistoryItemProps {
   onRemoveItem: (id: string) => void;
 }
 
-export const SearchHistoryItem: Component<SearchHistoryItemProps> = (props) => {
+export const SearchHistoryItem: Component<SearchHistoryItemProps> = props => {
   return (
     <Card className="history-item">
       <div class="item-header">
@@ -37,9 +37,7 @@ export const SearchHistoryItem: Component<SearchHistoryItemProps> = (props) => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() =>
-              props.onSearchAgain(props.item.query, props.item.modality)
-            }
+            onClick={() => props.onSearchAgain(props.item.query, props.item.modality)}
             leftIcon={getIcon("search")}
           >
             Search Again
@@ -59,9 +57,7 @@ export const SearchHistoryItem: Component<SearchHistoryItemProps> = (props) => {
       <div class="item-meta">
         <div class="meta-item">
           <span class="meta-label">Time:</span>
-          <span class="meta-value">
-            {formatTimestamp(props.item.timestamp)}
-          </span>
+          <span class="meta-value">{formatTimestamp(props.item.timestamp)}</span>
         </div>
 
         <div class="meta-item">
@@ -71,9 +67,7 @@ export const SearchHistoryItem: Component<SearchHistoryItemProps> = (props) => {
 
         <div class="meta-item">
           <span class="meta-label">Top Score:</span>
-          <Badge variant={getScoreColor(props.item.topScore)}>
-            {(props.item.topScore * 100).toFixed(1)}%
-          </Badge>
+          <Badge variant={getScoreColor(props.item.topScore)}>{(props.item.topScore * 100).toFixed(1)}%</Badge>
         </div>
       </div>
     </Card>

@@ -21,7 +21,7 @@ export class ClusterRenderer {
 
   clearClusterVisualizations() {
     // Remove hull meshes
-    this.hullMeshes.forEach((mesh) => {
+    this.hullMeshes.forEach(mesh => {
       this.config.scene.remove(mesh);
       if (mesh.geometry) mesh.geometry.dispose();
       if (mesh.material) mesh.material.dispose();
@@ -29,24 +29,21 @@ export class ClusterRenderer {
     this.hullMeshes = [];
 
     // Remove text sprites
-    this.textSprites.forEach((sprite) => {
+    this.textSprites.forEach(sprite => {
       this.config.scene.remove(sprite);
       if (sprite.material) sprite.material.dispose();
     });
     this.textSprites = [];
   }
 
-  async renderClusters(
-    clusters: ClusterData[],
-    onHover?: (clusterId: string) => void,
-  ) {
+  async renderClusters(clusters: ClusterData[], onHover?: (clusterId: string) => void) {
     await this.initialize();
 
     // Clear existing cluster visualizations
     this.clearClusterVisualizations();
 
     // Create new cluster visualizations
-    clusters.forEach((cluster) => {
+    clusters.forEach(cluster => {
       this.createConvexHull(cluster, onHover);
       this.createClusterLabel(cluster);
     });
@@ -55,10 +52,7 @@ export class ClusterRenderer {
     this.config.renderer.render(this.config.scene, this.config.camera);
   }
 
-  private createConvexHull(
-    cluster: ClusterData,
-    onHover?: (clusterId: string) => void,
-  ) {
+  private createConvexHull(cluster: ClusterData, onHover?: (clusterId: string) => void) {
     if (!cluster.points || cluster.points.length < 3 || !this.THREE) return;
 
     // Create convex hull geometry

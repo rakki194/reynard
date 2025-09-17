@@ -2,14 +2,7 @@
  * @fileoverview Core type definitions for docs generator config
  */
 
-import {
-  DocTheme,
-  DocNavigation,
-  DocFooter,
-  DocSearchConfig,
-  DocAnalytics,
-  DocSocial,
-} from "./site";
+import { DocTheme, DocNavigation, DocFooter, DocSearchConfig, DocAnalytics, DocSocial } from "./site";
 
 // Re-exported in ./package
 

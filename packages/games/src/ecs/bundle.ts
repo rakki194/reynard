@@ -23,11 +23,7 @@ export interface BundleInfo {
 /**
  * Creates bundle info.
  */
-export function createBundleInfo(
-  id: number,
-  name: string,
-  componentTypes: ComponentType<Component>[],
-): BundleInfo {
+export function createBundleInfo(id: number, name: string, componentTypes: ComponentType<Component>[]): BundleInfo {
   return { id, name, componentTypes };
 }
 
@@ -42,10 +38,7 @@ export class BundleRegistry {
   /**
    * Registers a new bundle type.
    */
-  register(
-    name: string,
-    componentTypes: ComponentType<Component>[],
-  ): BundleInfo {
+  register(name: string, componentTypes: ComponentType<Component>[]): BundleInfo {
     if (this.bundles.has(name)) {
       throw new Error(`Bundle type '${name}' is already registered`);
     }
@@ -104,9 +97,7 @@ export function createBundle(components: Component[]): Bundle {
 /**
  * Helper function to create a bundle from component types with default values.
  */
-export function createBundleFromTypes(
-  componentTypes: ComponentType<Component>[],
-): Bundle {
-  const components = componentTypes.map((ct) => ct.create());
+export function createBundleFromTypes(componentTypes: ComponentType<Component>[]): Bundle {
+  const components = componentTypes.map(ct => ct.create());
   return createBundle(components);
 }

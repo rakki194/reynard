@@ -15,11 +15,7 @@ export interface ToolScore {
 /**
  * Score tool based on query
  */
-export function scoreTool(
-  tool: NLWebTool,
-  query: string,
-  context: NLWebContext,
-): ToolScore {
+export function scoreTool(tool: NLWebTool, query: string, context: NLWebContext): ToolScore {
   const normalizedQuery = query.toLowerCase();
   let score = 0;
   const reasoning: string[] = [];
@@ -37,9 +33,7 @@ export function scoreTool(
   // Description matching
   const descriptionWords = tool.description.toLowerCase().split(/\s+/);
   const queryWords = normalizedQuery.split(/\s+/);
-  const matchingWords = queryWords.filter((word) =>
-    descriptionWords.includes(word),
-  );
+  const matchingWords = queryWords.filter(word => descriptionWords.includes(word));
 
   if (matchingWords.length > 0) {
     score += matchingWords.length * 10;
@@ -48,9 +42,7 @@ export function scoreTool(
 
   // Tag matching
   if (tool.tags) {
-    const matchingTags = tool.tags.filter((tag) =>
-      normalizedQuery.includes(tag.toLowerCase()),
-    );
+    const matchingTags = tool.tags.filter(tag => normalizedQuery.includes(tag.toLowerCase()));
     if (matchingTags.length > 0) {
       score += matchingTags.length * 15;
       reasoning.push(`Tag matches: ${matchingTags.join(", ")}`);

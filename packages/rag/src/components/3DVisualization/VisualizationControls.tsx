@@ -1,6 +1,6 @@
 /**
  * Visualization Controls Component
- * 
+ *
  * Main control panel for 3D visualization settings
  */
 
@@ -8,11 +8,11 @@ import { Component, Show } from "solid-js";
 import { Button, Select, Slider, Toggle } from "reynard-components";
 import { getIcon as getIconFromRegistry } from "reynard-fluent-icons";
 import { ParameterPanels } from "./ParameterPanels";
-import type { 
-  TsneParams, 
-  UmapParams, 
+import type {
+  TsneParams,
+  UmapParams,
   PcaParams,
-  VisualizationSettings 
+  VisualizationSettings,
 } from "../../composables/use3DVisualizationParams";
 
 // Helper function to get icon as JSX element
@@ -30,7 +30,7 @@ interface VisualizationControlsProps {
   // Reduction method
   reductionMethod: "tsne" | "umap" | "pca";
   setReductionMethod: (method: "tsne" | "umap" | "pca") => void;
-  
+
   // Visualization settings
   settings: VisualizationSettings;
   setPointSize: (size: number) => void;
@@ -38,7 +38,7 @@ interface VisualizationControlsProps {
   setShowSimilarityPaths: (show: boolean) => void;
   setShowSimilarityRadius: (show: boolean) => void;
   setRadiusThreshold: (threshold: number) => void;
-  
+
   // Parameter controls
   showParameterControls: boolean;
   setShowParameterControls: (show: boolean) => void;
@@ -48,13 +48,13 @@ interface VisualizationControlsProps {
   setUmapParams: (updater: (prev: UmapParams) => UmapParams) => void;
   pcaParams: PcaParams;
   setPcaParams: (updater: (prev: PcaParams) => PcaParams) => void;
-  
+
   // Actions
   onRefresh: () => void;
   isLoading: boolean;
 }
 
-export const VisualizationControls: Component<VisualizationControlsProps> = (props) => {
+export const VisualizationControls: Component<VisualizationControlsProps> = props => {
   return (
     <>
       {/* Main Controls Panel */}
@@ -63,9 +63,7 @@ export const VisualizationControls: Component<VisualizationControlsProps> = (pro
           <label>Reduction Method</label>
           <Select
             value={props.reductionMethod}
-            onChange={(value) =>
-              props.setReductionMethod(value as "tsne" | "umap" | "pca")
-            }
+            onChange={value => props.setReductionMethod(value as "tsne" | "umap" | "pca")}
             options={[
               { value: "tsne", label: "t-SNE" },
               { value: "umap", label: "UMAP" },
@@ -76,13 +74,7 @@ export const VisualizationControls: Component<VisualizationControlsProps> = (pro
 
         <div class="control-group">
           <label>Point Size</label>
-          <Slider
-            value={props.settings.pointSize}
-            onChange={props.setPointSize}
-            min={1}
-            max={10}
-            step={0.5}
-          />
+          <Slider value={props.settings.pointSize} onChange={props.setPointSize} min={1} max={10} step={0.5} />
         </div>
 
         <div class="control-group">
@@ -90,7 +82,7 @@ export const VisualizationControls: Component<VisualizationControlsProps> = (pro
             <Toggle
               size="sm"
               checked={props.settings.enableHighlighting}
-              onChange={(e) => props.setEnableHighlighting(e.target.checked)}
+              onChange={e => props.setEnableHighlighting(e.target.checked)}
             />
             Enable Highlighting
           </label>
@@ -101,7 +93,7 @@ export const VisualizationControls: Component<VisualizationControlsProps> = (pro
             <Toggle
               size="sm"
               checked={props.settings.showSimilarityPaths}
-              onChange={(e) => props.setShowSimilarityPaths(e.target.checked)}
+              onChange={e => props.setShowSimilarityPaths(e.target.checked)}
             />
             Show Similarity Paths
           </label>
@@ -112,7 +104,7 @@ export const VisualizationControls: Component<VisualizationControlsProps> = (pro
             <Toggle
               size="sm"
               checked={props.settings.showSimilarityRadius}
-              onChange={(e) => props.setShowSimilarityRadius(e.target.checked)}
+              onChange={e => props.setShowSimilarityRadius(e.target.checked)}
             />
             Show Similarity Radius
           </label>
@@ -137,12 +129,7 @@ export const VisualizationControls: Component<VisualizationControlsProps> = (pro
           Advanced Parameters
         </Button>
 
-        <Button
-          variant="primary"
-          onClick={props.onRefresh}
-          disabled={props.isLoading}
-          icon={getIcon("refresh")}
-        >
+        <Button variant="primary" onClick={props.onRefresh} disabled={props.isLoading} icon={getIcon("refresh")}>
           {props.isLoading ? "Loading..." : "Refresh"}
         </Button>
       </div>

@@ -5,9 +5,10 @@ Management endpoint implementations for HF cache operations.
 """
 
 import logging
+
 from fastapi import APIRouter, HTTPException, status
 
-from app.utils.hf_cache import get_cache_size, clear_cache
+from app.utils.hf_cache import clear_cache, get_cache_size
 
 logger = logging.getLogger("uvicorn")
 
@@ -20,12 +21,12 @@ async def get_cache_size_endpoint():
     try:
         size = get_cache_size()
         return {"size_bytes": size, "size_mb": size / (1024 * 1024)}
-        
+
     except Exception as e:
         logger.error(f"Failed to get cache size: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get cache size: {str(e)}"
+            detail=f"Failed to get cache size: {e!s}",
         )
 
 
@@ -36,17 +37,16 @@ async def clear_cache_endpoint():
         success = clear_cache()
         if success:
             return {"success": True, "message": "Cache cleared successfully"}
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to clear cache"
-            )
-        
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to clear cache",
+        )
+
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Failed to clear cache: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to clear cache: {str(e)}"
+            detail=f"Failed to clear cache: {e!s}",
         )

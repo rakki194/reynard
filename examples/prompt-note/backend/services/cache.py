@@ -4,10 +4,9 @@ Handles caching operations with reload optimization
 """
 
 import asyncio
-import json
 import os
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional, Union
+from typing import Any
 
 # Detect reload mode
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
@@ -17,7 +16,7 @@ class CacheService:
     """Cache service with TTL support and reload optimization"""
 
     def __init__(self):
-        self.cache_store: Dict[str, Dict[str, Any]] = {}
+        self.cache_store: dict[str, dict[str, Any]] = {}
         self.is_initialized = False
         self.default_ttl = 3600  # 1 hour
         self.stats = {"hits": 0, "misses": 0, "sets": 0, "deletes": 0}
@@ -38,16 +37,14 @@ class CacheService:
 
         print("[OK] Cache service initialized")
 
-    def _is_expired(self, item: Dict[str, Any]) -> bool:
+    def _is_expired(self, item: dict[str, Any]) -> bool:
         """Check if a cache item is expired"""
         if "expires_at" not in item:
             return False
 
         return datetime.now() > item["expires_at"]
 
-    def _create_cache_item(
-        self, value: Any, ttl: Optional[int] = None
-    ) -> Dict[str, Any]:
+    def _create_cache_item(self, value: Any, ttl: int | None = None) -> dict[str, Any]:
         """Create a cache item with expiration"""
         ttl = ttl or self.default_ttl
         expires_at = datetime.now() + timedelta(seconds=ttl)
@@ -59,7 +56,7 @@ class CacheService:
             "ttl": ttl,
         }
 
-    async def get(self, key: str) -> Optional[Any]:
+    async def get(self, key: str) -> Any | None:
         """Get a value from cache"""
         if not self.is_initialized:
             return None
@@ -78,7 +75,7 @@ class CacheService:
         self.stats["hits"] += 1
         return item["value"]
 
-    async def set(self, key: str, value: Any, ttl: Optional[int] = None) -> bool:
+    async def set(self, key: str, value: Any, ttl: int | None = None) -> bool:
         """Set a value in cache"""
         if not self.is_initialized:
             return False
@@ -126,7 +123,7 @@ class CacheService:
 
         return True
 
-    async def get_ttl(self, key: str) -> Optional[int]:
+    async def get_ttl(self, key: str) -> int | None:
         """Get TTL for a key"""
         if not self.is_initialized:
             return None
@@ -192,7 +189,7 @@ class CacheService:
 
         print("[OK] Cache service closed")
 
-    def get_stats(self) -> Dict[str, Any]:
+    def get_stats(self) -> dict[str, Any]:
         """Get cache service statistics"""
         return {
             "initialized": self.is_initialized,

@@ -22,9 +22,9 @@ export function createAnimationLoop(
   duration: number,
   easing: EasingType,
   onUpdate: (progress: number) => void,
-  onComplete: () => void,
+  onComplete: () => void
 ): Promise<void> {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     const animate = (currentTime: number) => {
       const elapsed = currentTime - animationState.startTime;
       const progress = Math.min(elapsed / duration, 1);
@@ -53,9 +53,9 @@ export function createClusterAnimationLoop(
   duration: number,
   easing: EasingType,
   onUpdate: (progress: number) => void,
-  onComplete: () => void,
+  onComplete: () => void
 ): Promise<void> {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
@@ -82,9 +82,9 @@ export function createSimpleAnimationLoop(
   duration: number,
   easing: EasingType,
   onUpdate: (progress: number) => void,
-  onComplete?: () => void,
+  onComplete?: () => void
 ): Promise<void> {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     const startTime = performance.now();
 
     const animate = (currentTime: number) => {
@@ -114,7 +114,7 @@ export function createRepeatingAnimationLoop(
   easing: EasingType,
   onUpdate: (progress: number) => void,
   onCycleComplete?: () => void,
-  maxCycles?: number,
+  maxCycles?: number
 ): () => void {
   let cycleCount = 0;
   let isRunning = true;
@@ -152,9 +152,9 @@ export function createPingPongAnimationLoop(
   duration: number,
   easing: EasingType,
   onUpdate: (progress: number) => void,
-  onComplete?: () => void,
+  onComplete?: () => void
 ): Promise<void> {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     let isForward = true;
     let cycleCount = 0;
 

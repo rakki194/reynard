@@ -13,7 +13,7 @@ interface FeatureCardProps {
   children?: JSX.Element;
 }
 
-export const FeatureCard: Component<FeatureCardProps> = (props) => {
+export const FeatureCard: Component<FeatureCardProps> = props => {
   return (
     <div class="feature-card">
       <h3>

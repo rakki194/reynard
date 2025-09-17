@@ -111,9 +111,7 @@ export function P2PChatDemo() {
     },
   ]);
 
-  const [mockMessages, setMockMessages] = createSignal<
-    Record<string, MockMessage[]>
-  >({
+  const [mockMessages, setMockMessages] = createSignal<Record<string, MockMessage[]>>({
     general: [
       {
         id: "1",
@@ -146,8 +144,7 @@ export function P2PChatDemo() {
       {
         id: "3",
         role: "user",
-        content:
-          "I've been working on the **streaming markdown** implementation. It's coming along nicely!",
+        content: "I've been working on the **streaming markdown** implementation. It's coming along nicely!",
         roomId: "general",
         sender: {
           id: "charlie",
@@ -208,8 +205,7 @@ export function P2PChatDemo() {
       {
         id: "6",
         role: "user",
-        content:
-          "Sure! I'd be happy to help. What specific part are you working on?",
+        content: "Sure! I'd be happy to help. What specific part are you working on?",
         roomId: "direct-alice",
         sender: currentUser(),
         timestamp: Date.now() - 30000,
@@ -274,33 +270,30 @@ export function P2PChatDemo() {
       case "typing_start":
         if (message.roomId === activeRoom()) {
           const user = mockRooms()
-            .find((r) => r.id === message.roomId)
-            ?.participants.find((p) => p.id !== currentUser().id);
+            .find(r => r.id === message.roomId)
+            ?.participants.find(p => p.id !== currentUser().id);
           if (user) {
-            setTypingUsers((prev) => [
-              ...prev.filter((u) => u.id !== user.id),
-              user,
-            ]);
+            setTypingUsers(prev => [...prev.filter(u => u.id !== user.id), user]);
           }
         }
         break;
       case "typing_stop":
         if (message.roomId === activeRoom()) {
-          setTypingUsers((prev) => prev.filter((u) => u.id !== message.userId));
+          setTypingUsers(prev => prev.filter(u => u.id !== message.userId));
         }
         break;
     }
   };
 
   const addMockMessage = (roomId: string, message: MockMessage) => {
-    setMockMessages((prev) => ({
+    setMockMessages(prev => ({
       ...prev,
       [roomId]: [...(prev[roomId] || []), message],
     }));
 
     // Update room's last message
-    setMockRooms((prev) =>
-      prev.map((room) =>
+    setMockRooms(prev =>
+      prev.map(room =>
         room.id === roomId
           ? {
               ...room,
@@ -310,8 +303,8 @@ export function P2PChatDemo() {
                 sender: message.sender,
               },
             }
-          : room,
-      ),
+          : room
+      )
     );
   };
 
@@ -360,7 +353,7 @@ export function P2PChatDemo() {
           JSON.stringify({
             type: "typing_start",
             roomId: activeRoom(),
-          }),
+          })
         );
       }
 
@@ -379,7 +372,7 @@ export function P2PChatDemo() {
           JSON.stringify({
             type: "typing_stop",
             roomId: activeRoom(),
-          }),
+          })
         );
       }
       if (typingTimer) {
@@ -396,7 +389,7 @@ export function P2PChatDemo() {
         JSON.stringify({
           type: "join_room",
           roomId,
-        }),
+        })
       );
     }
   };
@@ -414,21 +407,13 @@ export function P2PChatDemo() {
     <div class="p2p-chat-demo">
       <Card class="demo-section">
         <h3>P2P Chat System</h3>
-        <p>
-          Demonstrates peer-to-peer messaging with room management, user lists,
-          and AI assistant integration.
-        </p>
+        <p>Demonstrates peer-to-peer messaging with room management, user lists, and AI assistant integration.</p>
 
         <div class="p2p-controls">
-          <Button
-            variant={isConnected() ? "danger" : "success"}
-            onClick={isConnected() ? disconnect : connect}
-          >
+          <Button variant={isConnected() ? "danger" : "success"} onClick={isConnected() ? disconnect : connect}>
             {isConnected() ? "Disconnect" : "Connect to Demo"}
           </Button>
-          <span class="connection-status">
-            Status: {isConnected() ? "🟢 Connected" : "🔴 Disconnected"}
-          </span>
+          <span class="connection-status">Status: {isConnected() ? "🟢 Connected" : "🔴 Disconnected"}</span>
         </div>
       </Card>
 
@@ -439,16 +424,14 @@ export function P2PChatDemo() {
             <h4>Rooms</h4>
             <div class="room-items">
               <For each={mockRooms()}>
-                {(room) => (
+                {room => (
                   <div
                     class={`room-item ${activeRoom() === room.id ? "active" : ""}`}
                     onClick={() => switchRoom(room.id)}
                   >
                     <div class="room-info">
                       <div class="room-name">{room.name}</div>
-                      <div class="room-participants">
-                        {room.participants.length} participants
-                      </div>
+                      <div class="room-participants">{room.participants.length} participants</div>
                     </div>
                     <Show when={room.unreadCount > 0}>
                       <div class="unread-badge">{room.unreadCount}</div>
@@ -462,29 +445,21 @@ export function P2PChatDemo() {
           {/* Chat Area */}
           <Card class="chat-area">
             <div class="chat-header">
-              <h4>{mockRooms().find((r) => r.id === activeRoom())?.name}</h4>
+              <h4>{mockRooms().find(r => r.id === activeRoom())?.name}</h4>
               <div class="participant-count">
-                {
-                  mockRooms().find((r) => r.id === activeRoom())?.participants
-                    .length
-                }{" "}
-                participants
+                {mockRooms().find(r => r.id === activeRoom())?.participants.length} participants
               </div>
             </div>
 
             <div class="messages-container">
               <For each={mockMessages()[activeRoom()] || []}>
-                {(message) => (
-                  <div
-                    class={`message ${message.sender.id === currentUser().id ? "own" : "other"}`}
-                  >
+                {message => (
+                  <div class={`message ${message.sender.id === currentUser().id ? "own" : "other"}`}>
                     <div class="message-avatar">
                       {typeof message.sender.avatar === "string" ? (
                         message.sender.avatar
                       ) : message.sender.avatar ? (
-                        <span
-                          innerHTML={message.sender.avatar.outerHTML}
-                        ></span>
+                        <span innerHTML={message.sender.avatar.outerHTML}></span>
                       ) : (
                         message.sender.name.charAt(0)
                       )}
@@ -492,9 +467,7 @@ export function P2PChatDemo() {
                     <div class="message-content">
                       <div class="message-header">
                         <span class="sender-name">{message.sender.name}</span>
-                        <span class="message-time">
-                          {new Date(message.timestamp).toLocaleTimeString()}
-                        </span>
+                        <span class="message-time">{new Date(message.timestamp).toLocaleTimeString()}</span>
                       </div>
                       <div class="message-text">
                         <MarkdownRenderer
@@ -504,12 +477,10 @@ export function P2PChatDemo() {
                           enableDiagrams={false}
                         />
                       </div>
-                      <Show
-                        when={message.reactions && message.reactions.length > 0}
-                      >
+                      <Show when={message.reactions && message.reactions.length > 0}>
                         <div class="message-reactions">
                           <For each={message.reactions}>
-                            {(reaction) => (
+                            {reaction => (
                               <span class="reaction">
                                 {reaction.emoji} {reaction.users.length}
                               </span>
@@ -527,7 +498,7 @@ export function P2PChatDemo() {
                 <div class="typing-indicator">
                   <div class="typing-avatars">
                     <For each={typingUsers()}>
-                      {(user) => (
+                      {user => (
                         <div class="typing-avatar">
                           {typeof user.avatar === "string" ? (
                             user.avatar
@@ -560,7 +531,7 @@ export function P2PChatDemo() {
                   type="text"
                   placeholder="Type a message..."
                   class="message-input"
-                  onInput={(e) => {
+                  onInput={e => {
                     const value = e.currentTarget.value;
                     if (value.trim()) {
                       startTyping();
@@ -568,7 +539,7 @@ export function P2PChatDemo() {
                       stopTyping();
                     }
                   }}
-                  onKeyPress={(e) => {
+                  onKeyPress={e => {
                     if (e.key === "Enter" && e.currentTarget.value.trim()) {
                       sendMessage(e.currentTarget.value);
                       e.currentTarget.value = "";
@@ -578,9 +549,7 @@ export function P2PChatDemo() {
                 />
                 <Button
                   onClick={() => {
-                    const input = document.querySelector(
-                      ".message-input",
-                    ) as HTMLInputElement;
+                    const input = document.querySelector(".message-input") as HTMLInputElement;
                     if (input?.value.trim()) {
                       sendMessage(input.value);
                       input.value = "";
@@ -598,13 +567,8 @@ export function P2PChatDemo() {
           <Card class="user-list">
             <h4>Participants</h4>
             <div class="user-items">
-              <For
-                each={
-                  mockRooms().find((r) => r.id === activeRoom())
-                    ?.participants || []
-                }
-              >
-                {(user) => (
+              <For each={mockRooms().find(r => r.id === activeRoom())?.participants || []}>
+                {user => (
                   <div class="user-item">
                     <div class="user-avatar">
                       {typeof user.avatar === "string" ? (

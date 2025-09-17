@@ -4,13 +4,7 @@
  * Configuration types for floating panels.
  */
 
-export type PanelTheme =
-  | "default"
-  | "accent"
-  | "warning"
-  | "error"
-  | "success"
-  | "info";
+export type PanelTheme = "default" | "accent" | "warning" | "error" | "success" | "info";
 
 export interface PanelConfig {
   draggable?: boolean;

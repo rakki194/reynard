@@ -143,11 +143,7 @@ Find compatible mates for an agent.
 ```json
 {
   "agent_id": "agent-001",
-  "compatible_mates": [
-    "agent-002",
-    "agent-003",
-    "agent-004"
-  ]
+  "compatible_mates": ["agent-002", "agent-003", "agent-004"]
 }
 ```
 
@@ -325,4 +321,4 @@ The ECS API follows semantic versioning:
 
 ---
 
-*This API documentation is part of the Reynard framework's single authoritative ECS World architecture.*
+_This API documentation is part of the Reynard framework's single authoritative ECS World architecture._

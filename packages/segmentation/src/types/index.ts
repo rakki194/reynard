@@ -268,20 +268,14 @@ export interface SegmentationService {
   /** Generate multiple segmentations */
   generateBatchSegmentations(
     tasks: SegmentationTask[],
-    progressCallback?: (progress: number) => void,
+    progressCallback?: (progress: number) => void
   ): Promise<SegmentationResult[]>;
   /** Refine existing segmentation */
-  refineSegmentation(
-    segmentation: SegmentationData,
-    options?: SegmentationOptions,
-  ): Promise<SegmentationResult>;
+  refineSegmentation(segmentation: SegmentationData, options?: SegmentationOptions): Promise<SegmentationResult>;
   /** Validate segmentation geometry */
   validateSegmentation(segmentation: SegmentationData): boolean;
   /** Export segmentation data */
-  exportSegmentation(
-    segmentation: SegmentationData,
-    format: SegmentationExportFormat,
-  ): SegmentationExportData;
+  exportSegmentation(segmentation: SegmentationData, format: SegmentationExportFormat): SegmentationExportData;
   /** Import segmentation data */
   importSegmentation(data: SegmentationExportData): SegmentationData;
 }

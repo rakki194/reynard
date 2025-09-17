@@ -10,9 +10,8 @@ The random choices are used purely for creative name generation, not for securit
 """
 
 import random  # nosec B311 - Used for non-cryptographic name generation
-from typing import List, Optional, Dict, Set
 
-from .types import AnimalSpirit, NamingStyle, AgentName, NamingConfig
+from .types import AgentName, AnimalSpirit, NamingConfig, NamingStyle
 
 
 class ReynardRobotNamer:
@@ -30,58 +29,236 @@ class ReynardRobotNamer:
             # Canines and Foxes
             "fox": [
                 # Scientific and Latin
-                "Vulpine", "Vulpes", "Fennec", "Arctic", "Kit", "Swift", "Cunning",
+                "Vulpine",
+                "Vulpes",
+                "Fennec",
+                "Arctic",
+                "Kit",
+                "Swift",
+                "Cunning",
                 # Mythological and Cultural
-                "Reynard", "Kitsune", "Vixen", "Trickster", "Sly", "Wily", "Guile",
-                "Slick", "Rascal", "Bandit", "Mischief", "Zorro", "Sage", "Clever",
-                "Wit", "Crafty", "Shrewd", "Astute", "Sharp", "Bright", "Quick",
+                "Reynard",
+                "Kitsune",
+                "Vixen",
+                "Trickster",
+                "Sly",
+                "Wily",
+                "Guile",
+                "Slick",
+                "Rascal",
+                "Bandit",
+                "Mischief",
+                "Zorro",
+                "Sage",
+                "Clever",
+                "Wit",
+                "Crafty",
+                "Shrewd",
+                "Astute",
+                "Sharp",
+                "Bright",
+                "Quick",
                 # Color and Appearance
-                "Rusty", "Amber", "Crimson", "Scarlet", "Copper", "Ginger", "Auburn",
-                "Flame", "Ember", "Blaze", "Fire", "Sunset", "Autumn", "Maple",
+                "Rusty",
+                "Amber",
+                "Crimson",
+                "Scarlet",
+                "Copper",
+                "Ginger",
+                "Auburn",
+                "Flame",
+                "Ember",
+                "Blaze",
+                "Fire",
+                "Sunset",
+                "Autumn",
+                "Maple",
                 # Nature and Environment
-                "Forest", "Woodland", "Meadow", "Prairie", "Desert", "Tundra", "Taiga",
-                "Steppe", "Savanna", "Brush", "Thicket", "Grove", "Copse", "Glade",
+                "Forest",
+                "Woodland",
+                "Meadow",
+                "Prairie",
+                "Desert",
+                "Tundra",
+                "Taiga",
+                "Steppe",
+                "Savanna",
+                "Brush",
+                "Thicket",
+                "Grove",
+                "Copse",
+                "Glade",
                 # Personality and Traits
-                "Foxy", "Sneaky", "Elusive", "Graceful", "Agile", "Nimble", "Fleet",
-                "Spry", "Lithe", "Supple", "Elegant", "Refined", "Sophisticated",
-                "Charming", "Enchanting", "Alluring", "Captivating", "Mesmerizing",
+                "Foxy",
+                "Sneaky",
+                "Elusive",
+                "Graceful",
+                "Agile",
+                "Nimble",
+                "Fleet",
+                "Spry",
+                "Lithe",
+                "Supple",
+                "Elegant",
+                "Refined",
+                "Sophisticated",
+                "Charming",
+                "Enchanting",
+                "Alluring",
+                "Captivating",
+                "Mesmerizing",
             ],
             "wolf": [
                 # Scientific and Latin
-                "Lupus", "Canis", "Lycan", "Lobo", "Lupin",
+                "Lupus",
+                "Canis",
+                "Lycan",
+                "Lobo",
+                "Lupin",
                 # Mythological and Cultural
-                "Fenrir", "Amaruq", "Phelan", "Conan", "Ragnar", "Akela", "Anuk",
+                "Fenrir",
+                "Amaruq",
+                "Phelan",
+                "Conan",
+                "Ragnar",
+                "Akela",
+                "Anuk",
                 # Pack and Hierarchy
-                "Alpha", "Beta", "Gamma", "Pack", "Leader", "Chief", "Captain",
-                "Commander", "General", "Marshal", "Patriarch", "Matriarch", "Elder",
+                "Alpha",
+                "Beta",
+                "Gamma",
+                "Pack",
+                "Leader",
+                "Chief",
+                "Captain",
+                "Commander",
+                "General",
+                "Marshal",
+                "Patriarch",
+                "Matriarch",
+                "Elder",
                 # Hunting and Predator
-                "Hunter", "Predator", "Stalker", "Tracker", "Scout", "Sentinel",
-                "Guardian", "Protector", "Defender", "Warrior", "Fighter", "Champion",
+                "Hunter",
+                "Predator",
+                "Stalker",
+                "Tracker",
+                "Scout",
+                "Sentinel",
+                "Guardian",
+                "Protector",
+                "Defender",
+                "Warrior",
+                "Fighter",
+                "Champion",
                 # Nature and Environment
-                "Shadow", "Storm", "Midnight", "Blaze", "Fang", "Claw", "Tooth",
-                "Timber", "Ash", "River", "Stone", "Forest", "Mountain", "Valley",
+                "Shadow",
+                "Storm",
+                "Midnight",
+                "Blaze",
+                "Fang",
+                "Claw",
+                "Tooth",
+                "Timber",
+                "Ash",
+                "River",
+                "Stone",
+                "Forest",
+                "Mountain",
+                "Valley",
                 # Personality and Traits
-                "Fierce", "Wild", "Free", "Proud", "Noble", "Majestic", "Regal",
-                "Royal", "Imperial", "Sovereign", "Dominant", "Powerful", "Strong",
-                "Mighty", "Brave", "Bold", "Courageous", "Fearless", "Valiant",
-                "Loyal", "Faithful", "Devoted", "Steadfast", "Resolute", "Determined",
+                "Fierce",
+                "Wild",
+                "Free",
+                "Proud",
+                "Noble",
+                "Majestic",
+                "Regal",
+                "Royal",
+                "Imperial",
+                "Sovereign",
+                "Dominant",
+                "Powerful",
+                "Strong",
+                "Mighty",
+                "Brave",
+                "Bold",
+                "Courageous",
+                "Fearless",
+                "Valiant",
+                "Loyal",
+                "Faithful",
+                "Devoted",
+                "Steadfast",
+                "Resolute",
+                "Determined",
             ],
             "otter": [
                 # Scientific and Latin
-                "Lutra", "Enhydra", "Pteronura", "Aonyx", "Lontra",
+                "Lutra",
+                "Enhydra",
+                "Pteronura",
+                "Aonyx",
+                "Lontra",
                 # Literature and Media
-                "Tarka", "Emmet", "Ollie", "Ottilie", "Otis", "Otty",
+                "Tarka",
+                "Emmet",
+                "Ollie",
+                "Ottilie",
+                "Otis",
+                "Otty",
                 # Playful and Cute
-                "Bubbles", "Squirt", "Nibbles", "Puddle", "Wiggles", "Splash",
-                "Ripple", "Pebbles", "Snickers", "Cuddles", "Snuggles", "Whiskers",
+                "Bubbles",
+                "Squirt",
+                "Nibbles",
+                "Puddle",
+                "Wiggles",
+                "Splash",
+                "Ripple",
+                "Pebbles",
+                "Snickers",
+                "Cuddles",
+                "Snuggles",
+                "Whiskers",
                 # Water and Aquatic
-                "River", "Sea", "Brook", "Marina", "Aqua", "Wave", "Current",
-                "Tide", "Flow", "Creek", "Stream", "Rapids", "Falls", "Cascade",
+                "River",
+                "Sea",
+                "Brook",
+                "Marina",
+                "Aqua",
+                "Wave",
+                "Current",
+                "Tide",
+                "Flow",
+                "Creek",
+                "Stream",
+                "Rapids",
+                "Falls",
+                "Cascade",
                 # Personality and Traits
-                "Playful", "Joyful", "Cheerful", "Merry", "Happy", "Jolly",
-                "Lively", "Vibrant", "Energetic", "Spirited", "Bubbly", "Effervescent",
-                "Animated", "Dynamic", "Active", "Agile", "Nimble", "Graceful",
-                "Sleek", "Smooth", "Fluid", "Elegant", "Charming", "Endearing",
+                "Playful",
+                "Joyful",
+                "Cheerful",
+                "Merry",
+                "Happy",
+                "Jolly",
+                "Lively",
+                "Vibrant",
+                "Energetic",
+                "Spirited",
+                "Bubbly",
+                "Effervescent",
+                "Animated",
+                "Dynamic",
+                "Active",
+                "Agile",
+                "Nimble",
+                "Graceful",
+                "Sleek",
+                "Smooth",
+                "Fluid",
+                "Elegant",
+                "Charming",
+                "Endearing",
             ],
             # Add more spirits as needed - keeping this concise for now
             "dragon": ["Draco", "Wyrm", "Serpent", "Ancient", "Elder", "Primordial"],
@@ -95,59 +272,199 @@ class ReynardRobotNamer:
         """Load naming style components."""
         # Foundation-style suffixes (strategic, intellectual, leadership)
         self.foundation_suffixes = [
-            "Prime", "Sage", "Oracle", "Prophet", "Architect", "Strategist", "Analyst",
-            "Coordinator", "Director", "Commander", "Advisor", "Counselor", "Planner",
-            "Designer", "Engineer", "Scientist", "Scholar", "Philosopher", "Theorist",
-            "Visionary", "Master", "Grandmaster", "Elder", "Wise", "Keeper", "Guardian",
+            "Prime",
+            "Sage",
+            "Oracle",
+            "Prophet",
+            "Architect",
+            "Strategist",
+            "Analyst",
+            "Coordinator",
+            "Director",
+            "Commander",
+            "Advisor",
+            "Counselor",
+            "Planner",
+            "Designer",
+            "Engineer",
+            "Scientist",
+            "Scholar",
+            "Philosopher",
+            "Theorist",
+            "Visionary",
+            "Master",
+            "Grandmaster",
+            "Elder",
+            "Wise",
+            "Keeper",
+            "Guardian",
         ]
 
         # Exo-style suffixes (combat, technical, operational)
         self.exo_suffixes = [
-            "Strike", "Guard", "Sentinel", "Hunter", "Scout", "Ranger", "Protocol",
-            "System", "Core", "Unit", "Frame", "Chassis", "Interface", "Matrix",
-            "Network", "Circuit", "Node", "Module", "Component", "Assembly", "Structure",
+            "Strike",
+            "Guard",
+            "Sentinel",
+            "Hunter",
+            "Scout",
+            "Ranger",
+            "Protocol",
+            "System",
+            "Core",
+            "Unit",
+            "Frame",
+            "Chassis",
+            "Interface",
+            "Matrix",
+            "Network",
+            "Circuit",
+            "Node",
+            "Module",
+            "Component",
+            "Assembly",
+            "Structure",
         ]
 
         # Cyberpunk-style prefixes and suffixes
         self.cyberpunk_prefixes = [
-            "Cyber", "Neo", "Mega", "Ultra", "Hyper", "Super", "Meta", "Quantum",
-            "Neural", "Digital", "Virtual", "Synthetic", "Artificial", "Bio", "Nano",
+            "Cyber",
+            "Neo",
+            "Mega",
+            "Ultra",
+            "Hyper",
+            "Super",
+            "Meta",
+            "Quantum",
+            "Neural",
+            "Digital",
+            "Virtual",
+            "Synthetic",
+            "Artificial",
+            "Bio",
+            "Nano",
         ]
 
         self.cyberpunk_suffixes = [
-            "Nexus", "Grid", "Web", "Net", "Link", "Chain", "Ring", "Sphere",
-            "Core", "Heart", "Soul", "Spirit", "Essence", "Force", "Power", "Energy",
+            "Nexus",
+            "Grid",
+            "Web",
+            "Net",
+            "Link",
+            "Chain",
+            "Ring",
+            "Sphere",
+            "Core",
+            "Heart",
+            "Soul",
+            "Spirit",
+            "Essence",
+            "Force",
+            "Power",
+            "Energy",
         ]
 
         # Mythological references
         self.mythological_references = [
-            "Atlas", "Prometheus", "Vulcan", "Minerva", "Apollo", "Artemis", "Odysseus",
-            "Achilles", "Hector", "Perseus", "Theseus", "Orion", "Hercules", "Jason",
-            "Odin", "Thor", "Loki", "Freyja", "Freyr", "Tyr", "Heimdall", "Baldr",
-            "Ra", "Anubis", "Horus", "Isis", "Osiris", "Set", "Thoth", "Bastet",
+            "Atlas",
+            "Prometheus",
+            "Vulcan",
+            "Minerva",
+            "Apollo",
+            "Artemis",
+            "Odysseus",
+            "Achilles",
+            "Hector",
+            "Perseus",
+            "Theseus",
+            "Orion",
+            "Hercules",
+            "Jason",
+            "Odin",
+            "Thor",
+            "Loki",
+            "Freyja",
+            "Freyr",
+            "Tyr",
+            "Heimdall",
+            "Baldr",
+            "Ra",
+            "Anubis",
+            "Horus",
+            "Isis",
+            "Osiris",
+            "Set",
+            "Thoth",
+            "Bastet",
         ]
 
         # Scientific naming conventions
         self.scientific_prefixes = [
-            "Panthera", "Canis", "Felis", "Ursus", "Elephas", "Loxodonta", "Balaena",
-            "Megaptera", "Physeter", "Orcinus", "Delphinus", "Tursiops", "Carcharodon",
+            "Panthera",
+            "Canis",
+            "Felis",
+            "Ursus",
+            "Elephas",
+            "Loxodonta",
+            "Balaena",
+            "Megaptera",
+            "Physeter",
+            "Orcinus",
+            "Delphinus",
+            "Tursiops",
+            "Carcharodon",
         ]
 
         self.scientific_suffixes = [
-            "Leo", "Tigris", "Pardus", "Onca", "Jubatus", "Melanoleuca", "Acutorostrata",
-            "Novaeangliae", "Macrocephalus", "Orca", "Truncatus", "Aduncus", "Carcharias",
+            "Leo",
+            "Tigris",
+            "Pardus",
+            "Onca",
+            "Jubatus",
+            "Melanoleuca",
+            "Acutorostrata",
+            "Novaeangliae",
+            "Macrocephalus",
+            "Orca",
+            "Truncatus",
+            "Aduncus",
+            "Carcharias",
         ]
 
         # Hybrid-style references
         self.hybrid_references = [
-            "Atlas", "Prometheus", "Vulcan", "Minerva", "Apollo", "Artemis", "Odysseus",
-            "Nexus", "Quantum", "Neural", "Cyber", "Digital", "Binary", "Odin", "Thor",
+            "Atlas",
+            "Prometheus",
+            "Vulcan",
+            "Minerva",
+            "Apollo",
+            "Artemis",
+            "Odysseus",
+            "Nexus",
+            "Quantum",
+            "Neural",
+            "Cyber",
+            "Digital",
+            "Binary",
+            "Odin",
+            "Thor",
         ]
 
         # Special designations
         self.special_designations = [
-            "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Prime",
-            "Ultra", "Mega", "Super", "Hyper", "Meta", "Neo",
+            "Alpha",
+            "Beta",
+            "Gamma",
+            "Delta",
+            "Epsilon",
+            "Zeta",
+            "Eta",
+            "Prime",
+            "Ultra",
+            "Mega",
+            "Super",
+            "Hyper",
+            "Meta",
+            "Neo",
         ]
 
     def _load_generation_numbers(self) -> None:
@@ -163,10 +480,14 @@ class ReynardRobotNamer:
             "tiger": [9, 18, 27, 36, 45, 54, 63],  # Stripe pattern sequences
         }
 
-    def generate_foundation_style(self, spirit: AnimalSpirit | None = None) -> AgentName:
+    def generate_foundation_style(
+        self, spirit: AnimalSpirit | None = None
+    ) -> AgentName:
         """Generate Foundation-style names: [Spirit] + [Suffix] + [Generation]"""
         if not spirit:
-            spirit = AnimalSpirit(random.choice(list(self.animal_spirits.keys())))  # nosec B311
+            spirit = AnimalSpirit(
+                random.choice(list(self.animal_spirits.keys()))
+            )  # nosec B311
 
         spirit_key = spirit.value
         if spirit_key not in self.animal_spirits:
@@ -174,7 +495,9 @@ class ReynardRobotNamer:
 
         base_name = random.choice(self.animal_spirits[spirit_key])  # nosec B311
         suffix = random.choice(self.foundation_suffixes)  # nosec B311
-        generation = random.choice(self.generation_numbers.get(spirit_key, [1, 2, 3, 4, 5]))  # nosec B311
+        generation = random.choice(
+            self.generation_numbers.get(spirit_key, [1, 2, 3, 4, 5])
+        )  # nosec B311
 
         name = f"{base_name}-{suffix}-{generation}"
         components = [base_name, suffix, str(generation)]
@@ -190,7 +513,9 @@ class ReynardRobotNamer:
     def generate_exo_style(self, spirit: AnimalSpirit | None = None) -> AgentName:
         """Generate Exo-style names: [Spirit] + [Suffix] + [Model]"""
         if not spirit:
-            spirit = AnimalSpirit(random.choice(list(self.animal_spirits.keys())))  # nosec B311
+            spirit = AnimalSpirit(
+                random.choice(list(self.animal_spirits.keys()))
+            )  # nosec B311
 
         spirit_key = spirit.value
         if spirit_key not in self.animal_spirits:
@@ -198,7 +523,9 @@ class ReynardRobotNamer:
 
         base_name = random.choice(self.animal_spirits[spirit_key])  # nosec B311
         suffix = random.choice(self.exo_suffixes)  # nosec B311
-        model = random.choice(self.generation_numbers.get(spirit_key, [1, 2, 3, 4, 5]))  # nosec B311
+        model = random.choice(
+            self.generation_numbers.get(spirit_key, [1, 2, 3, 4, 5])
+        )  # nosec B311
 
         name = f"{base_name}-{suffix}-{model}"
         components = [base_name, suffix, str(model)]
@@ -214,7 +541,9 @@ class ReynardRobotNamer:
     def generate_cyberpunk_style(self, spirit: AnimalSpirit | None = None) -> AgentName:
         """Generate Cyberpunk-style names: [Tech Prefix] + [Animal Spirit] + [Cyber Suffix]"""
         if not spirit:
-            spirit = AnimalSpirit(random.choice(list(self.animal_spirits.keys())))  # nosec B311
+            spirit = AnimalSpirit(
+                random.choice(list(self.animal_spirits.keys()))
+            )  # nosec B311
 
         spirit_key = spirit.value
         if spirit_key not in self.animal_spirits:
@@ -234,10 +563,14 @@ class ReynardRobotNamer:
             components=components,
         )
 
-    def generate_mythological_style(self, spirit: AnimalSpirit | None = None) -> AgentName:
+    def generate_mythological_style(
+        self, spirit: AnimalSpirit | None = None
+    ) -> AgentName:
         """Generate Mythological-style names: [Mythological Reference] + [Animal Spirit] + [Divine Suffix]"""
         if not spirit:
-            spirit = AnimalSpirit(random.choice(list(self.animal_spirits.keys())))  # nosec B311
+            spirit = AnimalSpirit(
+                random.choice(list(self.animal_spirits.keys()))
+            )  # nosec B311
 
         spirit_key = spirit.value
         if spirit_key not in self.animal_spirits:
@@ -245,10 +578,23 @@ class ReynardRobotNamer:
 
         myth_ref = random.choice(self.mythological_references)  # nosec B311
         base_name = random.choice(self.animal_spirits[spirit_key])  # nosec B311
-        divine_suffix = random.choice([  # nosec B311
-            "Divine", "Sacred", "Holy", "Blessed", "Chosen", "Anointed", "Consecrated",
-            "Hallowed", "Revered", "Venerated", "Exalted", "Transcendent", "Eternal",
-        ])
+        divine_suffix = random.choice(
+            [  # nosec B311
+                "Divine",
+                "Sacred",
+                "Holy",
+                "Blessed",
+                "Chosen",
+                "Anointed",
+                "Consecrated",
+                "Hallowed",
+                "Revered",
+                "Venerated",
+                "Exalted",
+                "Transcendent",
+                "Eternal",
+            ]
+        )
 
         name = f"{myth_ref}-{base_name}-{divine_suffix}"
         components = [myth_ref, base_name, divine_suffix]
@@ -260,17 +606,34 @@ class ReynardRobotNamer:
             components=components,
         )
 
-    def generate_scientific_style(self, spirit: AnimalSpirit | None = None) -> AgentName:
+    def generate_scientific_style(
+        self, spirit: AnimalSpirit | None = None
+    ) -> AgentName:
         """Generate Scientific-style names: [Scientific Name] + [Technical Suffix] + [Classification]"""
         # Note: spirit parameter is kept for API consistency but not used in scientific style
         _ = spirit  # Suppress unused parameter warning
 
         scientific_prefix = random.choice(self.scientific_prefixes)  # nosec B311
         scientific_suffix = random.choice(self.scientific_suffixes)  # nosec B311
-        classification = random.choice([  # nosec B311
-            "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta",
-            "Prime", "Secondary", "Tertiary", "Type-A", "Type-B", "Class-1", "Class-2",
-        ])
+        classification = random.choice(
+            [  # nosec B311
+                "Alpha",
+                "Beta",
+                "Gamma",
+                "Delta",
+                "Epsilon",
+                "Zeta",
+                "Eta",
+                "Theta",
+                "Prime",
+                "Secondary",
+                "Tertiary",
+                "Type-A",
+                "Type-B",
+                "Class-1",
+                "Class-2",
+            ]
+        )
 
         name = f"{scientific_prefix}-{scientific_suffix}-{classification}"
         components = [scientific_prefix, scientific_suffix, classification]
@@ -285,7 +648,9 @@ class ReynardRobotNamer:
     def generate_hybrid_style(self, spirit: AnimalSpirit | None = None) -> AgentName:
         """Generate Hybrid-style names: [Spirit] + [Reference] + [Designation]"""
         if not spirit:
-            spirit = AnimalSpirit(random.choice(list(self.animal_spirits.keys())))  # nosec B311
+            spirit = AnimalSpirit(
+                random.choice(list(self.animal_spirits.keys()))
+            )  # nosec B311
 
         spirit_key = spirit.value
         if spirit_key not in self.animal_spirits:
@@ -350,7 +715,7 @@ class ReynardRobotNamer:
         while len(results) < config.count and attempts < max_attempts:
             attempts += 1
             agent_name = self.generate_single_name(config)
-            
+
             if agent_name.name not in names and agent_name.name.strip():
                 names.add(agent_name.name)
                 results.append(agent_name)
@@ -360,12 +725,14 @@ class ReynardRobotNamer:
             fallback_name = f"Agent-{len(results) + 1}"
             if fallback_name not in names:
                 names.add(fallback_name)
-                results.append(AgentName(
-                    name=fallback_name,
-                    spirit=AnimalSpirit.FOX,
-                    style=NamingStyle.FOUNDATION,
-                    components=["Agent"],
-                ))
+                results.append(
+                    AgentName(
+                        name=fallback_name,
+                        spirit=AnimalSpirit.FOX,
+                        style=NamingStyle.FOUNDATION,
+                        components=["Agent"],
+                    )
+                )
 
         return results
 

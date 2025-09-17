@@ -18,7 +18,7 @@ interface AppContentProps {
   handlers: UseAppHandlersReturn;
 }
 
-export const AppContent: Component<AppContentProps> = (props) => {
+export const AppContent: Component<AppContentProps> = props => {
   return (
     <main class="app-main">
       <Tabs
@@ -36,31 +36,22 @@ export const AppContent: Component<AppContentProps> = (props) => {
             <div class="gallery-controls">
               <select
                 value={props.appState.selectedModel()}
-                onChange={(e) =>
-                  props.appState.setSelectedModel(e.currentTarget.value)
-                }
+                onChange={e => props.appState.setSelectedModel(e.currentTarget.value)}
                 disabled={props.appState.isGenerating()}
                 title="Select AI model for caption generation"
               >
                 <option value="jtp2">JTP2 (Furry Tags)</option>
-                <option value="joycaption">
-                  JoyCaption (Detailed Captions)
-                </option>
+                <option value="joycaption">JoyCaption (Detailed Captions)</option>
                 <option value="florence2">Florence2 (General Purpose)</option>
                 <option value="wdv3">WDv3 (Anime Tags)</option>
               </select>
 
               <Button
                 onClick={props.handlers.batchGenerateCaptions}
-                disabled={
-                  props.appState.isGenerating() ||
-                  props.appState.images().every((img) => img.caption)
-                }
+                disabled={props.appState.isGenerating() || props.appState.images().every(img => img.caption)}
                 variant="primary"
               >
-                {props.appState.isGenerating()
-                  ? "Generating..."
-                  : "Batch Generate All"}
+                {props.appState.isGenerating() ? "Generating..." : "Batch Generate All"}
               </Button>
             </div>
 
@@ -76,12 +67,9 @@ export const AppContent: Component<AppContentProps> = (props) => {
                   />
                 </div>
                 <p>
-                  {props.appState.batchProgress()!.completed}/
-                  {props.appState.batchProgress()!.total} images
+                  {props.appState.batchProgress()!.completed}/{props.appState.batchProgress()!.total} images
                 </p>
-                {props.appState.batchProgress()?.current && (
-                  <p>Current: {props.appState.batchProgress()?.current}</p>
-                )}
+                {props.appState.batchProgress()?.current && <p>Current: {props.appState.batchProgress()?.current}</p>}
               </div>
             )}
 
@@ -113,31 +101,21 @@ export const AppContent: Component<AppContentProps> = (props) => {
               <div class="stats-grid">
                 <div class="stat-card">
                   <h4>Total Processed</h4>
-                  <p class="stat-value">
-                    {props.appState.systemStats()!.totalProcessed || 0}
-                  </p>
+                  <p class="stat-value">{props.appState.systemStats()!.totalProcessed || 0}</p>
                 </div>
                 <div class="stat-card">
                   <h4>Loaded Models</h4>
-                  <p class="stat-value">
-                    {props.appState.systemStats()!.loadedModels}
-                  </p>
+                  <p class="stat-value">{props.appState.systemStats()!.loadedModels}</p>
                 </div>
                 <div class="stat-card">
                   <h4>System Health</h4>
-                  <p
-                    class={`stat-value ${props.appState.systemStats()!.isHealthy ? "healthy" : "unhealthy"}`}
-                  >
-                    {props.appState.systemStats()!.isHealthy
-                      ? "✅ Healthy"
-                      : "❌ Unhealthy"}
+                  <p class={`stat-value ${props.appState.systemStats()!.isHealthy ? "healthy" : "unhealthy"}`}>
+                    {props.appState.systemStats()!.isHealthy ? "✅ Healthy" : "❌ Unhealthy"}
                   </p>
                 </div>
                 <div class="stat-card">
                   <h4>Active Tasks</h4>
-                  <p class="stat-value">
-                    {props.appState.systemStats()!.activeTasks || 0}
-                  </p>
+                  <p class="stat-value">{props.appState.systemStats()!.activeTasks || 0}</p>
                 </div>
               </div>
             ) : (
@@ -151,15 +129,10 @@ export const AppContent: Component<AppContentProps> = (props) => {
             <CaptionEditor
               image={props.appState.selectedImage()!}
               onEdit={() => {
-                props.workflow.startWorkflow(
-                  props.appState.selectedImage()!,
-                  false,
-                );
+                props.workflow.startWorkflow(props.appState.selectedImage()!, false);
                 props.appState.setIsModalOpen(true);
               }}
-              onGenerate={() =>
-                props.handlers.generateCaption(props.appState.selectedImage()!)
-              }
+              onGenerate={() => props.handlers.generateCaption(props.appState.selectedImage()!)}
             />
           </Show>
         </TabPanel>
@@ -171,18 +144,14 @@ export const AppContent: Component<AppContentProps> = (props) => {
         workflow={props.workflow.workflow()}
         onClose={() => props.appState.setIsModalOpen(false)}
         onSave={props.handlers.saveCaption}
-        onCaptionChange={(caption) =>
-          props.workflow.updateWorkflow({ editedCaption: caption })
-        }
+        onCaptionChange={caption => props.workflow.updateWorkflow({ editedCaption: caption })}
         onTagEdit={(index, newTag) => {
           const newTags = [...props.workflow.workflow()!.tags];
           newTags[index] = newTag;
           props.workflow.updateWorkflow({ tags: newTags });
         }}
-        onTagRemove={(index) => {
-          const newTags = props.workflow
-            .workflow()!
-            .tags.filter((_, i) => i !== index);
+        onTagRemove={index => {
+          const newTags = props.workflow.workflow()!.tags.filter((_, i) => i !== index);
           props.workflow.updateWorkflow({ tags: newTags });
         }}
       />

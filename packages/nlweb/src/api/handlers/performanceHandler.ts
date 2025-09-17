@@ -4,11 +4,7 @@
  * Handles performance monitoring requests for the NLWeb API.
  */
 
-import type {
-  NLWebAPIRequest,
-  NLWebAPIResponse,
-  NLWebAPIHandler,
-} from "../types.js";
+import type { NLWebAPIRequest, NLWebAPIResponse, NLWebAPIHandler } from "../types.js";
 import { NLWebService } from "../../types/index.js";
 import { getCORSHeaders } from "../utils.js";
 
@@ -18,7 +14,7 @@ import { getCORSHeaders } from "../utils.js";
 export function createPerformanceHandler(
   service: NLWebService,
   basePath: string,
-  enableCORS: boolean,
+  enableCORS: boolean
 ): NLWebAPIHandler {
   return async (_req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {
@@ -43,11 +39,7 @@ export function createPerformanceHandler(
 /**
  * Create rollback handler
  */
-export function createRollbackHandler(
-  service: NLWebService,
-  basePath: string,
-  enableCORS: boolean,
-): NLWebAPIHandler {
+export function createRollbackHandler(service: NLWebService, basePath: string, enableCORS: boolean): NLWebAPIHandler {
   return async (req: NLWebAPIRequest): Promise<NLWebAPIResponse> => {
     try {
       if (!req.body || typeof req.body.enable !== "boolean") {

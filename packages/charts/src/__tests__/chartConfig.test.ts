@@ -1,10 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  registerChartComponents,
-  isChartRegistered,
-  defaultChartProps,
-  chartPropsToSplit,
-} from "../utils/chartConfig";
+import { registerChartComponents, isChartRegistered, defaultChartProps, chartPropsToSplit } from "../utils/chartConfig";
 import { Chart } from "chart.js";
 
 // Mock Chart.js
@@ -53,7 +48,7 @@ describe("Chart Configuration", () => {
         "Legend",
         "Filler",
         "registerable1",
-        "registerable2",
+        "registerable2"
       );
     });
 
@@ -132,7 +127,7 @@ describe("Chart Configuration", () => {
         "enablePerformanceMonitoring",
       ];
 
-      requiredProps.forEach((prop) => {
+      requiredProps.forEach(prop => {
         expect(defaultChartProps).toHaveProperty(prop);
       });
     });
@@ -158,7 +153,7 @@ describe("Chart Configuration", () => {
         "yAxisLabel",
       ];
 
-      expectedProps.forEach((prop) => {
+      expectedProps.forEach(prop => {
         expect(chartPropsToSplit).toContain(prop);
       });
     });

@@ -6,10 +6,7 @@
 import type { EngineConfig } from "./useEnhancedEngines";
 import type { EngineInstances } from "./engineFactory";
 
-export const updateEngineConfigs = (
-  engines: EngineInstances,
-  config: EngineConfig,
-): void => {
+export const updateEngineConfigs = (engines: EngineInstances, config: EngineConfig): void => {
   console.log("🦊 ConfigManager: Updating engine configurations");
 
   engines.stroboscopicEngine.updateConfig({

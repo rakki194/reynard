@@ -14,25 +14,17 @@ import { makeNLWebRequest, handleAPIError } from "./useNLWebRequest.js";
 export function createSuggestionsAction(
   state: NLWebState,
   baseUrl: string,
-  requestTimeout: number,
+  requestTimeout: number
 ): (query: string, context?: Record<string, unknown>) => Promise<void> {
-  return async (
-    query: string,
-    context: Record<string, unknown> = {},
-  ): Promise<void> => {
+  return async (query: string, context: Record<string, unknown> = {}): Promise<void> => {
     try {
       state.setLoading(true);
       state.setError(null);
 
-      const response = await makeNLWebRequest<NLWebSuggestionResponse>(
-        "/suggest",
-        baseUrl,
-        requestTimeout,
-        {
-          method: "POST",
-          body: JSON.stringify({ query, context }),
-        },
-      );
+      const response = await makeNLWebRequest<NLWebSuggestionResponse>("/suggest", baseUrl, requestTimeout, {
+        method: "POST",
+        body: JSON.stringify({ query, context }),
+      });
 
       state.setSuggestions(response);
     } catch (error) {

@@ -18,17 +18,11 @@ export function createOverlayHandlers(eventHandlers: PanelEventHandlers = {}) {
     eventHandlers.onPanelHide?.(panel);
   };
 
-  const handlePanelDrag = (
-    panel: FloatingPanel,
-    position: { top: number; left: number },
-  ) => {
+  const handlePanelDrag = (panel: FloatingPanel, position: { top: number; left: number }) => {
     eventHandlers.onPanelDrag?.(panel, position);
   };
 
-  const handlePanelResize = (
-    panel: FloatingPanel,
-    size: { width: number; height: number },
-  ) => {
+  const handlePanelResize = (panel: FloatingPanel, size: { width: number; height: number }) => {
     eventHandlers.onPanelResize?.(panel, size);
   };
 

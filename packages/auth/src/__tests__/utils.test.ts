@@ -47,7 +47,7 @@ describe("Password Validation - Special Characters", () => {
       "?",
     ];
 
-    specialCharacters.forEach((char) => {
+    specialCharacters.forEach(char => {
       it(`should accept password with special character: ${char}`, () => {
         const result = validatePassword(char, specialCharRules);
         expect(result.isValid).toBe(true);
@@ -178,9 +178,7 @@ describe("Password Validation - Special Characters", () => {
         minLength: 8,
       });
       expect(result.isValid).toBe(false);
-      expect(result.suggestions).toContain(
-        "Password must contain at least one special character",
-      );
+      expect(result.suggestions).toContain("Password must contain at least one special character");
     });
 
     it("should fail when only special character requirement is enabled but not met", () => {
@@ -193,9 +191,7 @@ describe("Password Validation - Special Characters", () => {
         requireNumber: false,
       });
       expect(result.isValid).toBe(false);
-      expect(result.suggestions).toContain(
-        "Password must contain at least one special character",
-      );
+      expect(result.suggestions).toContain("Password must contain at least one special character");
     });
   });
 });

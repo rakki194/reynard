@@ -6,14 +6,7 @@ export interface LanguageInfo {
   monacoLanguage: string;
   displayName: string;
   isCode: boolean;
-  category:
-    | "web"
-    | "programming"
-    | "data"
-    | "config"
-    | "shell"
-    | "markup"
-    | "other";
+  category: "web" | "programming" | "data" | "config" | "shell" | "markup" | "other";
 }
 
 export interface FileTypeInfo {

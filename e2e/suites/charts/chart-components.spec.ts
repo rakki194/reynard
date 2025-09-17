@@ -1,14 +1,12 @@
 /**
  * Chart Components E2E Tests
  *
- * Comprehensive E2E tests for Reynard chart components including:
+ * E2E tests for Reynard chart components including:
  * - BarChart rendering and interactions
- * - LineChart rendering and interactions  
+ * - LineChart rendering and interactions
  * - PieChart rendering and interactions
  * - TimeSeriesChart rendering and interactions
  * - Chart accessibility and responsiveness
- *
- * @author 🦊 The Cunning Fox
  */
 
 import { test, expect, Page } from "@playwright/test";
@@ -256,14 +254,14 @@ test.describe("Chart Components E2E Tests", () => {
   test.describe("BarChart Component", () => {
     test("should render bar chart with data", async ({ page }) => {
       await createChartTestPage(page, "bar", mockBarChartData);
-      
+
       // Wait for chart to render
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       // Verify chart canvas is present and visible
       const canvas = page.locator('[data-testid="chart-canvas"]');
       await expect(canvas).toBeVisible();
-      
+
       // Verify chart info is displayed
       const info = page.locator('[data-testid="chart-info"]');
       await expect(info).toContainText("Chart Type: bar");
@@ -274,11 +272,11 @@ test.describe("Chart Components E2E Tests", () => {
     test("should render horizontal bar chart", async ({ page }) => {
       const horizontalData = {
         ...mockBarChartData,
-        options: { indexAxis: 'y' }
+        options: { indexAxis: "y" },
       };
-      
+
       await createChartTestPage(page, "bar", horizontalData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
       await expect(page.locator('[data-testid="chart-canvas"]')).toBeVisible();
     });
@@ -293,13 +291,13 @@ test.describe("Chart Components E2E Tests", () => {
             data: [8, 12, 2, 3, 1],
             backgroundColor: "rgba(255, 99, 132, 0.6)",
             borderColor: "rgba(255, 99, 132, 1)",
-          }
+          },
         ],
-        options: { scales: { x: { stacked: true }, y: { stacked: true } } }
+        options: { scales: { x: { stacked: true }, y: { stacked: true } } },
       };
-      
+
       await createChartTestPage(page, "bar", stackedData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
       await expect(page.locator('[data-testid="chart-canvas"]')).toBeVisible();
     });
@@ -315,14 +313,14 @@ test.describe("Chart Components E2E Tests", () => {
         </body>
         </html>
       `);
-      
+
       await expect(page.locator('[data-testid="chart-loading"]')).toBeVisible();
       await expect(page.locator('[data-testid="chart-loading"]')).toContainText("Loading chart...");
     });
 
     test("should show empty state", async ({ page }) => {
       await createChartTestPage(page, "bar", { labels: [], datasets: [] });
-      
+
       await expect(page.locator('[data-testid="chart-empty"]')).toBeVisible();
       await expect(page.locator('[data-testid="chart-empty"]')).toContainText("No data available");
     });
@@ -338,7 +336,7 @@ test.describe("Chart Components E2E Tests", () => {
         </body>
         </html>
       `);
-      
+
       await expect(page.locator('[data-testid="chart-error"]')).toBeVisible();
       await expect(page.locator('[data-testid="chart-error"]')).toContainText("Error loading chart");
     });
@@ -347,12 +345,12 @@ test.describe("Chart Components E2E Tests", () => {
   test.describe("LineChart Component", () => {
     test("should render line chart with data", async ({ page }) => {
       await createChartTestPage(page, "line", mockLineChartData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       const canvas = page.locator('[data-testid="chart-canvas"]');
       await expect(canvas).toBeVisible();
-      
+
       const info = page.locator('[data-testid="chart-info"]');
       await expect(info).toContainText("Chart Type: line");
       await expect(info).toContainText("Data Points: 4");
@@ -361,14 +359,16 @@ test.describe("Chart Components E2E Tests", () => {
     test("should render stepped line chart", async ({ page }) => {
       const steppedData = {
         ...mockLineChartData,
-        datasets: [{
-          ...mockLineChartData.datasets[0],
-          stepped: true
-        }]
+        datasets: [
+          {
+            ...mockLineChartData.datasets[0],
+            stepped: true,
+          },
+        ],
       };
-      
+
       await createChartTestPage(page, "line", steppedData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
       await expect(page.locator('[data-testid="chart-canvas"]')).toBeVisible();
     });
@@ -383,12 +383,12 @@ test.describe("Chart Components E2E Tests", () => {
             data: [20, 25, 15, 30],
             backgroundColor: "rgba(255, 206, 86, 0.6)",
             borderColor: "rgba(255, 206, 86, 1)",
-          }
-        ]
+          },
+        ],
       };
-      
+
       await createChartTestPage(page, "line", multiDatasetData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
       await expect(page.locator('[data-testid="chart-info"]')).toContainText("Datasets: 2");
     });
@@ -397,12 +397,12 @@ test.describe("Chart Components E2E Tests", () => {
   test.describe("PieChart Component", () => {
     test("should render pie chart with data", async ({ page }) => {
       await createChartTestPage(page, "pie", mockPieChartData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       const canvas = page.locator('[data-testid="chart-canvas"]');
       await expect(canvas).toBeVisible();
-      
+
       const info = page.locator('[data-testid="chart-info"]');
       await expect(info).toContainText("Chart Type: pie");
       await expect(info).toContainText("Data Points: 3");
@@ -410,9 +410,9 @@ test.describe("Chart Components E2E Tests", () => {
 
     test("should render doughnut chart", async ({ page }) => {
       await createChartTestPage(page, "doughnut", mockPieChartData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       const info = page.locator('[data-testid="chart-info"]');
       await expect(info).toContainText("Chart Type: doughnut");
     });
@@ -420,11 +420,11 @@ test.describe("Chart Components E2E Tests", () => {
     test("should handle single data point", async ({ page }) => {
       const singleDataPoint = {
         labels: ["Single"],
-        data: [100]
+        data: [100],
       };
-      
+
       await createChartTestPage(page, "pie", singleDataPoint);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
       await expect(page.locator('[data-testid="chart-info"]')).toContainText("Data Points: 1");
     });
@@ -432,11 +432,11 @@ test.describe("Chart Components E2E Tests", () => {
     test("should handle zero values", async ({ page }) => {
       const zeroData = {
         labels: ["Zero", "Non-zero"],
-        data: [0, 100]
+        data: [0, 100],
       };
-      
+
       await createChartTestPage(page, "pie", zeroData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
       await expect(page.locator('[data-testid="chart-canvas"]')).toBeVisible();
     });
@@ -446,37 +446,41 @@ test.describe("Chart Components E2E Tests", () => {
     test("should render time series chart with data", async ({ page }) => {
       await createChartTestPage(page, "line", {
         labels: mockTimeSeriesData.map(d => new Date(d.timestamp).toLocaleDateString()),
-        datasets: [{
-          label: "Time Series",
-          data: mockTimeSeriesData.map(d => d.value),
-          backgroundColor: "rgba(153, 102, 255, 0.6)",
-          borderColor: "rgba(153, 102, 255, 1)",
-        }]
+        datasets: [
+          {
+            label: "Time Series",
+            data: mockTimeSeriesData.map(d => d.value),
+            backgroundColor: "rgba(153, 102, 255, 0.6)",
+            borderColor: "rgba(153, 102, 255, 1)",
+          },
+        ],
       });
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       const canvas = page.locator('[data-testid="chart-canvas"]');
       await expect(canvas).toBeVisible();
-      
+
       const info = page.locator('[data-testid="chart-info"]');
       await expect(info).toContainText("Data Points: 4");
     });
 
     test("should handle large datasets", async ({ page }) => {
       const largeData = Array.from({ length: 100 }, (_, i) => ({
-        timestamp: Date.now() + (i * 86400000), // Daily intervals
-        value: Math.random() * 100
+        timestamp: Date.now() + i * 86400000, // Daily intervals
+        value: Math.random() * 100,
       }));
-      
+
       await createChartTestPage(page, "line", {
         labels: largeData.map(d => new Date(d.timestamp).toLocaleDateString()),
-        datasets: [{
-          label: "Large Dataset",
-          data: largeData.map(d => d.value),
-        }]
+        datasets: [
+          {
+            label: "Large Dataset",
+            data: largeData.map(d => d.value),
+          },
+        ],
       });
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
       await expect(page.locator('[data-testid="chart-info"]')).toContainText("Data Points: 100");
     });
@@ -488,15 +492,17 @@ test.describe("Chart Components E2E Tests", () => {
         { timestamp: 1641168000000, value: 8 },
         { timestamp: 1641081600000, value: 15 },
       ];
-      
+
       await createChartTestPage(page, "line", {
         labels: unsortedData.map(d => new Date(d.timestamp).toLocaleDateString()),
-        datasets: [{
-          label: "Unsorted Data",
-          data: unsortedData.map(d => d.value),
-        }]
+        datasets: [
+          {
+            label: "Unsorted Data",
+            data: unsortedData.map(d => d.value),
+          },
+        ],
       });
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
       await expect(page.locator('[data-testid="chart-canvas"]')).toBeVisible();
     });
@@ -505,28 +511,28 @@ test.describe("Chart Components E2E Tests", () => {
   test.describe("Chart Accessibility", () => {
     test("should have proper ARIA labels", async ({ page }) => {
       await createChartTestPage(page, "bar", mockBarChartData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       // Check if canvas has proper accessibility attributes
       const canvas = page.locator('[data-testid="chart-canvas"]');
       await expect(canvas).toBeVisible();
-      
+
       // Verify chart title is present
-      await expect(page.locator('h1')).toContainText("BarChart Test");
+      await expect(page.locator("h1")).toContainText("BarChart Test");
     });
 
     test("should be keyboard navigable", async ({ page }) => {
       await createChartTestPage(page, "bar", mockBarChartData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       // Test keyboard navigation
-      await page.keyboard.press('Tab');
-      await page.keyboard.press('Tab');
-      
+      await page.keyboard.press("Tab");
+      await page.keyboard.press("Tab");
+
       // Verify focus is on chart container
-      const chartContainer = page.locator('.chart-container');
+      const chartContainer = page.locator(".chart-container");
       await expect(chartContainer).toBeVisible();
     });
   });
@@ -534,17 +540,17 @@ test.describe("Chart Components E2E Tests", () => {
   test.describe("Chart Responsiveness", () => {
     test("should adapt to different screen sizes", async ({ page }) => {
       await createChartTestPage(page, "bar", mockBarChartData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       // Test desktop size
       await page.setViewportSize({ width: 1200, height: 800 });
       await expect(page.locator('[data-testid="chart-canvas"]')).toBeVisible();
-      
+
       // Test tablet size
       await page.setViewportSize({ width: 768, height: 1024 });
       await expect(page.locator('[data-testid="chart-canvas"]')).toBeVisible();
-      
+
       // Test mobile size
       await page.setViewportSize({ width: 375, height: 667 });
       await expect(page.locator('[data-testid="chart-canvas"]')).toBeVisible();
@@ -552,12 +558,12 @@ test.describe("Chart Components E2E Tests", () => {
 
     test("should maintain aspect ratio", async ({ page }) => {
       await createChartTestPage(page, "pie", mockPieChartData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       const canvas = page.locator('[data-testid="chart-canvas"]');
       await expect(canvas).toBeVisible();
-      
+
       // Verify canvas has proper dimensions
       const boundingBox = await canvas.boundingBox();
       expect(boundingBox).toBeTruthy();
@@ -569,54 +575,58 @@ test.describe("Chart Components E2E Tests", () => {
   test.describe("Chart Performance", () => {
     test("should render quickly with large datasets", async ({ page }) => {
       const startTime = Date.now();
-      
+
       const largeData = Array.from({ length: 1000 }, (_, i) => ({
-        timestamp: Date.now() + (i * 3600000), // Hourly intervals
-        value: Math.random() * 100
+        timestamp: Date.now() + i * 3600000, // Hourly intervals
+        value: Math.random() * 100,
       }));
-      
+
       await createChartTestPage(page, "line", {
         labels: largeData.map(d => new Date(d.timestamp).toLocaleDateString()),
-        datasets: [{
-          label: "Performance Test",
-          data: largeData.map(d => d.value),
-        }]
+        datasets: [
+          {
+            label: "Performance Test",
+            data: largeData.map(d => d.value),
+          },
+        ],
       });
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       const endTime = Date.now();
       const renderTime = endTime - startTime;
-      
+
       // Should render within 5 seconds
       expect(renderTime).toBeLessThan(5000);
     });
 
     test("should handle rapid data updates", async ({ page }) => {
       await createChartTestPage(page, "bar", mockBarChartData);
-      
+
       await page.waitForSelector('[data-testid="chart-canvas"]', { state: "visible" });
-      
+
       // Simulate rapid data updates
       for (let i = 0; i < 5; i++) {
         const updatedData = {
           ...mockBarChartData,
-          datasets: [{
-            ...mockBarChartData.datasets[0],
-            data: mockBarChartData.datasets[0].data.map(val => val + i)
-          }]
+          datasets: [
+            {
+              ...mockBarChartData.datasets[0],
+              data: mockBarChartData.datasets[0].data.map(val => val + i),
+            },
+          ],
         };
-        
-        await page.evaluate((data) => {
+
+        await page.evaluate(data => {
           if (window.testChart) {
             window.testChart.data = data;
             window.testChart.render();
           }
         }, updatedData);
-        
+
         await page.waitForTimeout(100);
       }
-      
+
       await expect(page.locator('[data-testid="chart-canvas"]')).toBeVisible();
     });
   });

@@ -24,7 +24,7 @@ export class ImageCanvas {
     sourceHeight: number,
     targetWidth: number,
     targetHeight: number,
-    maintainAspectRatio: boolean = true,
+    maintainAspectRatio: boolean = true
   ): { width: number; height: number } {
     if (!maintainAspectRatio) {
       return { width: targetWidth, height: targetHeight };
@@ -61,13 +61,10 @@ export class ImageCanvas {
   /**
    * Convert canvas to blob
    */
-  async canvasToBlob(
-    canvas: HTMLCanvasElement,
-    options: ImageThumbnailGeneratorOptions,
-  ): Promise<Blob> {
+  async canvasToBlob(canvas: HTMLCanvasElement, options: ImageThumbnailGeneratorOptions): Promise<Blob> {
     return new Promise((resolve, reject) => {
       canvas.toBlob(
-        (blob) => {
+        blob => {
           if (blob) {
             resolve(blob);
           } else {
@@ -75,7 +72,7 @@ export class ImageCanvas {
           }
         },
         `image/${options.format}`,
-        (options.quality || 85) / 100,
+        (options.quality || 85) / 100
       );
     });
   }

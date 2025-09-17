@@ -14,7 +14,7 @@ export interface ThemeColor {
  * Get color palette for a specific theme
  */
 export const getThemeColors = (themeName: string): ThemeColor[] => {
-  const themeConfig = getAvailableThemes().find((t) => t.name === themeName);
+  const themeConfig = getAvailableThemes().find(t => t.name === themeName);
   if (!themeConfig) return [];
 
   return [
@@ -42,9 +42,6 @@ export const getThemeColors = (themeName: string): ThemeColor[] => {
 /**
  * Get current theme name (preview or active)
  */
-export const getCurrentTheme = (
-  previewTheme: string | null,
-  activeTheme: string,
-): string => {
+export const getCurrentTheme = (previewTheme: string | null, activeTheme: string): string => {
   return previewTheme || activeTheme;
 };

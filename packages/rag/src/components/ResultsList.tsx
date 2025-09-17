@@ -14,31 +14,20 @@ export interface ResultsListProps {
   onResultClick: (result: RAGResult) => void;
 }
 
-export const ResultsList: Component<ResultsListProps> = (props) => {
+export const ResultsList: Component<ResultsListProps> = props => {
   return (
     <div class="results-list">
       <For each={props.results}>
-        {(result) => (
-          <Card
-            variant="elevated"
-            padding="md"
-            interactive
-            onClick={() => props.onResultClick(result)}
-          >
+        {result => (
+          <Card variant="elevated" padding="md" interactive onClick={() => props.onResultClick(result)}>
             <div class="result-item">
               <div class="result-header">
                 <div class="result-badges">
                   <span class="rank-badge">#{result.rank}</span>
-                  <span class="model-badge">
-                    {result.metadata.embedding_model || "unknown"}
-                  </span>
-                  <span class="source-badge">
-                    {result.metadata.document_source || "Unknown source"}
-                  </span>
+                  <span class="model-badge">{result.metadata.embedding_model || "unknown"}</span>
+                  <span class="source-badge">{result.metadata.document_source || "Unknown source"}</span>
                 </div>
-                <span class="similarity-score">
-                  {(result.similarity_score * 100).toFixed(1)}%
-                </span>
+                <span class="similarity-score">{(result.similarity_score * 100).toFixed(1)}%</span>
               </div>
 
               <p class="result-text">{result.text}</p>

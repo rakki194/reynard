@@ -127,10 +127,7 @@ export class BackendAnnotationManager {
     return generateFurryTags(this, imagePath, config);
   }
 
-  async generateDetailedCaption(
-    imagePath: string,
-    config?: Record<string, unknown>,
-  ) {
+  async generateDetailedCaption(imagePath: string, config?: Record<string, unknown>) {
     return generateDetailedCaption(this, imagePath, config);
   }
 
@@ -138,10 +135,7 @@ export class BackendAnnotationManager {
     return generateAnimeTags(this, imagePath, config);
   }
 
-  async generateGeneralCaption(
-    imagePath: string,
-    config?: Record<string, unknown>,
-  ) {
+  async generateGeneralCaption(imagePath: string, config?: Record<string, unknown>) {
     return generateGeneralCaption(this, imagePath, config);
   }
 }
@@ -149,8 +143,6 @@ export class BackendAnnotationManager {
 /**
  * Create a backend annotation manager
  */
-export function createAnnotationManager(
-  config: BackendAnnotationManagerConfig,
-): BackendAnnotationManager {
+export function createAnnotationManager(config: BackendAnnotationManagerConfig): BackendAnnotationManager {
   return new BackendAnnotationManager(config);
 }

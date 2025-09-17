@@ -7,7 +7,7 @@ export interface MockPositionSystemInterface {
     position: { x: number; y: number },
     velocity: { vx: number; vy: number },
     acceleration: { ax: number; ay: number },
-    mass: { mass: number },
+    mass: { mass: number }
   ): void;
   updatePositions(deltaTime: number): void;
   detectCollisions(radius: number): number[];
@@ -29,7 +29,7 @@ export class MockPositionSystem implements MockPositionSystemInterface {
     position: { x: number; y: number },
     velocity: { vx: number; vy: number },
     acceleration: { ax: number; ay: number },
-    mass: { mass: number },
+    mass: { mass: number }
   ): void {
     if (this.entityCount >= this.maxEntities) return;
 

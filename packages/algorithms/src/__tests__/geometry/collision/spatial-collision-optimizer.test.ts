@@ -5,10 +5,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import {
-  SpatialCollisionOptimizer,
-  AABB,
-} from "../../../geometry/collision/spatial-collision-optimizer";
+import { SpatialCollisionOptimizer, AABB } from "../../../geometry/collision/spatial-collision-optimizer";
 
 describe("SpatialCollisionOptimizer", () => {
   let optimizer: SpatialCollisionOptimizer;
@@ -98,9 +95,7 @@ describe("SpatialCollisionOptimizer", () => {
     expect(stats.totalQueries).toBe(1);
     expect(stats.objectsProcessed).toBe(2);
     // averageQueryTime might be NaN if no queries were timed, which is acceptable
-    expect(isNaN(stats.averageQueryTime) || stats.averageQueryTime >= 0).toBe(
-      true,
-    );
+    expect(isNaN(stats.averageQueryTime) || stats.averageQueryTime >= 0).toBe(true);
   });
 
   it("should clear cache", () => {

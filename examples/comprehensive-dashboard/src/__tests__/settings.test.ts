@@ -274,23 +274,18 @@ describe("Settings API", () => {
     });
 
     it("should handle concurrent settings updates", async () => {
-      const updates = [
-        { theme: "dark" },
-        { language: "fr" },
-        { notifications: false },
-        { autoSave: false },
-      ];
+      const updates = [{ theme: "dark" }, { language: "fr" }, { notifications: false }, { autoSave: false }];
 
-      const updatePromises = updates.map((settings) =>
+      const updatePromises = updates.map(settings =>
         apiRequest("/settings", {
           method: "PUT",
           body: JSON.stringify({ settings }),
-        }),
+        })
       );
 
       const responses = await Promise.all(updatePromises);
 
-      responses.forEach((response) => {
+      responses.forEach(response => {
         expect(response.status).toBe(200);
       });
 

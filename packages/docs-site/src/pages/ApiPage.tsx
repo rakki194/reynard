@@ -4,13 +4,7 @@
 
 import { Component, createSignal, onMount } from "solid-js";
 import { useParams } from "solid-router";
-import {
-  DocsPage,
-  DocsSection,
-  DocsBreadcrumbs,
-  DocsTabs,
-  DocsTabPanel,
-} from "reynard-docs-components";
+import { DocsPage, DocsSection, DocsBreadcrumbs, DocsTabs, DocsTabPanel } from "reynard-docs-components";
 import { ApiDocRenderer } from "reynard-docs-core";
 
 /**
@@ -25,9 +19,7 @@ export const ApiPage: Component = () => {
   onMount(async () => {
     try {
       const packageName = params.package;
-      const response = await fetch(
-        `/docs-generated/pages/${packageName}-api.json`,
-      );
+      const response = await fetch(`/docs-generated/pages/${packageName}-api.json`);
 
       if (response.ok) {
         const data = await response.json();
@@ -76,9 +68,7 @@ export const ApiPage: Component = () => {
       <DocsPage>
         <div class="docs-error">
           <h1>API Documentation Not Found</h1>
-          <p>
-            The API documentation for "{params.package}" could not be found.
-          </p>
+          <p>The API documentation for "{params.package}" could not be found.</p>
           <a href={`/packages/${params.package}`} class="docs-error-link">
             ← Back to Package
           </a>
@@ -99,19 +89,11 @@ export const ApiPage: Component = () => {
       </DocsSection>
 
       <DocsSection>
-        <DocsTabs
-          tabs={tabs()}
-          activeTab={activeTab()}
-          onTabChange={setActiveTab}
-        />
+        <DocsTabs tabs={tabs()} activeTab={activeTab()} onTabChange={setActiveTab} />
 
         <DocsTabPanel tabId="overview" activeTab={activeTab()}>
           <div class="docs-api-overview">
-            <DocRenderer
-              content={apiInfo.content}
-              metadata={apiInfo.metadata}
-              type={apiInfo.type}
-            />
+            <DocRenderer content={apiInfo.content} metadata={apiInfo.metadata} type={apiInfo.type} />
           </div>
         </DocsTabPanel>
 

@@ -18,12 +18,7 @@ export class DependencyGraph implements IDependencyGraph {
   private _startupOrder: string[] = [];
   private _parallelGroups: string[][] = [];
 
-  addService(
-    name: string,
-    dependencies: string[],
-    startupPriority: number,
-    requiredPackages: string[] = [],
-  ): void {
+  addService(name: string, dependencies: string[], startupPriority: number, requiredPackages: string[] = []): void {
     this._services.set(name, {
       name,
       dependencies,
@@ -55,7 +50,7 @@ export class DependencyGraph implements IDependencyGraph {
   }
 
   getParallelGroups(): string[][] {
-    return this._parallelGroups.map((group) => [...group]);
+    return this._parallelGroups.map(group => [...group]);
   }
 
   validateDependencies(): string[] {
@@ -89,16 +84,9 @@ export class DependencyGraph implements IDependencyGraph {
     return dependents;
   }
 
-  private _validateService(
-    serviceName: string,
-    visited: Set<string>,
-    visiting: Set<string>,
-    errors: string[],
-  ): void {
+  private _validateService(serviceName: string, visited: Set<string>, visiting: Set<string>, errors: string[]): void {
     if (visiting.has(serviceName)) {
-      errors.push(
-        `Circular dependency detected involving service: ${serviceName}`,
-      );
+      errors.push(`Circular dependency detected involving service: ${serviceName}`);
       return;
     }
 
@@ -118,9 +106,7 @@ export class DependencyGraph implements IDependencyGraph {
     // Validate dependencies exist
     for (const dep of service.dependencies) {
       if (!this._services.has(dep)) {
-        errors.push(
-          `Service ${serviceName} depends on non-existent service: ${dep}`,
-        );
+        errors.push(`Service ${serviceName} depends on non-existent service: ${dep}`);
       } else {
         this._validateService(dep, visited, visiting, errors);
       }
@@ -136,9 +122,7 @@ export class DependencyGraph implements IDependencyGraph {
     const order: string[] = [];
 
     // Topological sort with priority consideration
-    const services = Array.from(this._services.values()).sort(
-      (a, b) => a.startupPriority - b.startupPriority,
-    );
+    const services = Array.from(this._services.values()).sort((a, b) => a.startupPriority - b.startupPriority);
 
     for (const service of services) {
       if (!visited.has(service.name)) {
@@ -150,16 +134,9 @@ export class DependencyGraph implements IDependencyGraph {
     this._calculateParallelGroups();
   }
 
-  private _visitService(
-    serviceName: string,
-    visited: Set<string>,
-    visiting: Set<string>,
-    order: string[],
-  ): void {
+  private _visitService(serviceName: string, visited: Set<string>, visiting: Set<string>, order: string[]): void {
     if (visiting.has(serviceName)) {
-      throw new Error(
-        `Circular dependency detected involving service: ${serviceName}`,
-      );
+      throw new Error(`Circular dependency detected involving service: ${serviceName}`);
     }
 
     if (visited.has(serviceName)) {

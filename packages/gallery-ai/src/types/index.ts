@@ -216,10 +216,7 @@ export interface AIGalleryCallbacks {
   onCaptionGenerationStart?: (item: FileItem, generator: string) => void;
 
   /** Called when caption generation completes */
-  onCaptionGenerationComplete?: (
-    item: FileItem,
-    result: GalleryCaptionResult,
-  ) => void;
+  onCaptionGenerationComplete?: (item: FileItem, result: GalleryCaptionResult) => void;
 
   /** Called when caption generation fails */
   onCaptionGenerationError?: (item: FileItem, error: string) => void;
@@ -314,10 +311,7 @@ export interface AIGalleryGridProps {
   /** Event handlers */
   onItemClick?: (item: FileItem | FolderItem) => void;
   onItemDoubleClick?: (item: FileItem | FolderItem) => void;
-  onSelectionChange?: (
-    item: FileItem | FolderItem,
-    mode: "single" | "add" | "range",
-  ) => void;
+  onSelectionChange?: (item: FileItem | FolderItem, mode: "single" | "add" | "range") => void;
   onContextMenu?: (item: FileItem | FolderItem, x: number, y: number) => void;
 }
 
@@ -401,16 +395,10 @@ export interface UseGalleryAIReturn {
   aiState: () => AIGalleryState;
 
   /** Generate caption for single item */
-  generateCaption: (
-    item: FileItem,
-    generator: string,
-  ) => Promise<GalleryCaptionResult>;
+  generateCaption: (item: FileItem, generator: string) => Promise<GalleryCaptionResult>;
 
   /** Batch annotate multiple items */
-  batchAnnotate: (
-    items: FileItem[],
-    generator: string,
-  ) => Promise<GalleryCaptionResult[]>;
+  batchAnnotate: (items: FileItem[], generator: string) => Promise<GalleryCaptionResult[]>;
 
   /** Update AI configuration */
   updateAIConfig: (config: Partial<AIGalleryConfig>) => void;

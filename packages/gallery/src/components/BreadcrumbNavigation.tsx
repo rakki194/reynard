@@ -18,9 +18,7 @@ export interface BreadcrumbNavigationProps {
   class?: string;
 }
 
-export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
-  props,
-) => {
+export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = props => {
   const handleNavigate = (path: string): void => {
     props.onNavigate?.(path);
   };
@@ -38,10 +36,7 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
   };
 
   return (
-    <nav
-      class={`breadcrumb-navigation ${props.class || ""}`}
-      aria-label="Folder navigation"
-    >
+    <nav class={`breadcrumb-navigation ${props.class || ""}`} aria-label="Folder navigation">
       <div class="breadcrumb-navigation__container">
         <Show when={props.showUpButton}>
           <Button
@@ -60,17 +55,12 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
         <ol class="breadcrumb-navigation__list" role="list">
           <For each={props.breadcrumbs}>
             {(breadcrumb, index) => {
-              const isLast = createMemo(
-                () => index() === props.breadcrumbs.length - 1,
-              );
+              const isLast = createMemo(() => index() === props.breadcrumbs.length - 1);
 
               return (
                 <li class="breadcrumb-navigation__item" role="listitem">
                   <Show when={index() > 0}>
-                    <span
-                      class="breadcrumb-navigation__separator"
-                      aria-hidden="true"
-                    >
+                    <span class="breadcrumb-navigation__separator" aria-hidden="true">
                       /
                     </span>
                   </Show>
@@ -87,10 +77,7 @@ export const BreadcrumbNavigation: Component<BreadcrumbNavigationProps> = (
                   </Show>
 
                   <Show when={!breadcrumb.clickable || isLast()}>
-                    <span
-                      class="breadcrumb-navigation__current"
-                      aria-current={isLast() ? "page" : undefined}
-                    >
+                    <span class="breadcrumb-navigation__current" aria-current={isLast() ? "page" : undefined}>
                       {breadcrumb.label}
                     </span>
                   </Show>

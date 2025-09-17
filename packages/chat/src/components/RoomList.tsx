@@ -8,7 +8,7 @@
 import { Component, Show, For, createSignal } from "solid-js";
 import type { RoomListProps } from "../types/p2p";
 
-export const RoomList: Component<RoomListProps> = (props) => {
+export const RoomList: Component<RoomListProps> = props => {
   const [showCreateForm, setShowCreateForm] = createSignal(false);
   const [newRoomName, setNewRoomName] = createSignal("");
 
@@ -69,9 +69,7 @@ export const RoomList: Component<RoomListProps> = (props) => {
   };
 
   return (
-    <div
-      class={`reynard-room-list ${props.compact ? "reynard-room-list--compact" : ""}`}
-    >
+    <div class={`reynard-room-list ${props.compact ? "reynard-room-list--compact" : ""}`}>
       {/* Header */}
       <div class="reynard-room-list__header">
         <h3 class="reynard-room-list__title">Rooms</h3>
@@ -91,7 +89,7 @@ export const RoomList: Component<RoomListProps> = (props) => {
           class="reynard-room-list__search-input"
           placeholder="Search rooms..."
           value={props.searchQuery || ""}
-          onInput={(e) => props.onSearch?.(e.currentTarget.value)}
+          onInput={e => props.onSearch?.(e.currentTarget.value)}
         />
       </div>
 
@@ -103,8 +101,8 @@ export const RoomList: Component<RoomListProps> = (props) => {
             class="reynard-room-list__create-input"
             placeholder="Room name..."
             value={newRoomName()}
-            onInput={(e) => setNewRoomName(e.currentTarget.value)}
-            onKeyDown={(e) => {
+            onInput={e => setNewRoomName(e.currentTarget.value)}
+            onKeyDown={e => {
               if (e.key === "Enter") {
                 handleCreateRoom();
               } else if (e.key === "Escape") {
@@ -145,37 +143,25 @@ export const RoomList: Component<RoomListProps> = (props) => {
           }
         >
           <For each={props.rooms}>
-            {(room) => (
+            {room => (
               <div
                 class={`reynard-room-list__item ${
-                  props.activeRoom?.id === room.id
-                    ? "reynard-room-list__item--active"
-                    : ""
+                  props.activeRoom?.id === room.id ? "reynard-room-list__item--active" : ""
                 }`}
                 onClick={() => props.onRoomSelect?.(room)}
               >
                 {/* Room Avatar/Icon */}
                 <div class="reynard-room-list__item-avatar">
                   <Show
-                    when={
-                      room.type === "direct" && room.participants.length === 2
-                    }
-                    fallback={
-                      <span class="reynard-room-list__item-icon">
-                        {getRoomIcon(room.type)}
-                      </span>
-                    }
+                    when={room.type === "direct" && room.participants.length === 2}
+                    fallback={<span class="reynard-room-list__item-icon">{getRoomIcon(room.type)}</span>}
                   >
                     {/* Direct message - show other user's avatar */}
                     {(() => {
-                      const otherUser = room.participants.find(
-                        (p) => p.id !== props.currentUser.id,
-                      );
+                      const otherUser = room.participants.find(p => p.id !== props.currentUser.id);
                       return (
                         <span class="reynard-room-list__item-user-avatar">
-                          {otherUser?.avatar ||
-                            otherUser?.name.charAt(0) ||
-                            "?"}
+                          {otherUser?.avatar || otherUser?.name.charAt(0) || "?"}
                         </span>
                       );
                     })()}
@@ -186,43 +172,29 @@ export const RoomList: Component<RoomListProps> = (props) => {
                 <div class="reynard-room-list__item-content">
                   <div class="reynard-room-list__item-header">
                     <h4 class="reynard-room-list__item-name">
-                      <Show
-                        when={
-                          room.type === "direct" &&
-                          room.participants.length === 2
-                        }
-                        fallback={room.name}
-                      >
+                      <Show when={room.type === "direct" && room.participants.length === 2} fallback={room.name}>
                         {/* Direct message - show other user's name */}
                         {(() => {
-                          const otherUser = room.participants.find(
-                            (p) => p.id !== props.currentUser.id,
-                          );
+                          const otherUser = room.participants.find(p => p.id !== props.currentUser.id);
                           return otherUser?.name || "Unknown User";
                         })()}
                       </Show>
                     </h4>
 
                     <Show when={room.lastMessage}>
-                      <time class="reynard-room-list__item-time">
-                        {formatLastTime(room.lastMessage!.timestamp)}
-                      </time>
+                      <time class="reynard-room-list__item-time">{formatLastTime(room.lastMessage!.timestamp)}</time>
                     </Show>
                   </div>
 
                   <Show when={!props.compact}>
                     <div class="reynard-room-list__item-footer">
-                      <div class="reynard-room-list__item-preview">
-                        {formatLastMessage(room)}
-                      </div>
+                      <div class="reynard-room-list__item-preview">{formatLastMessage(room)}</div>
 
                       <div class="reynard-room-list__item-indicators">
                         {/* Unread count */}
                         <Show when={room.unreadCount && room.unreadCount > 0}>
                           <span class="reynard-room-list__item-unread">
-                            {room.unreadCount && room.unreadCount > 99
-                              ? "99+"
-                              : room.unreadCount}
+                            {room.unreadCount && room.unreadCount > 99 ? "99+" : room.unreadCount}
                           </span>
                         </Show>
 
@@ -234,14 +206,10 @@ export const RoomList: Component<RoomListProps> = (props) => {
                         {/* Online indicator for direct messages */}
                         <Show when={room.type === "direct"}>
                           {(() => {
-                            const otherUser = room.participants.find(
-                              (p) => p.id !== props.currentUser.id,
-                            );
+                            const otherUser = room.participants.find(p => p.id !== props.currentUser.id);
                             return (
                               <Show when={otherUser?.status === "online"}>
-                                <span class="reynard-room-list__item-online">
-                                  🟢
-                                </span>
+                                <span class="reynard-room-list__item-online">🟢</span>
                               </Show>
                             );
                           })()}
@@ -270,12 +238,8 @@ export const RoomList: Component<RoomListProps> = (props) => {
             {props.currentUser.avatar || props.currentUser.name.charAt(0)}
           </div>
           <div class="reynard-room-list__user-details">
-            <div class="reynard-room-list__user-name">
-              {props.currentUser.name}
-            </div>
-            <div
-              class={`reynard-room-list__user-status reynard-room-list__user-status--${props.currentUser.status}`}
-            >
+            <div class="reynard-room-list__user-name">{props.currentUser.name}</div>
+            <div class={`reynard-room-list__user-status reynard-room-list__user-status--${props.currentUser.status}`}>
               {props.currentUser.status}
             </div>
           </div>

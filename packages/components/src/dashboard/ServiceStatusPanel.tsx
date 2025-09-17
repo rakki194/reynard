@@ -3,15 +3,7 @@
  * Detailed service status panel with actions, progress, dependencies, and metrics
  */
 
-import {
-  Component,
-  For,
-  Show,
-  createSignal,
-  createEffect,
-  onMount,
-  onCleanup,
-} from "solid-js";
+import { Component, For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
 import { Button } from "../primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { ServiceHealthIndicator } from "./ServiceHealthIndicator";
@@ -55,17 +47,11 @@ export interface ServiceSummary {
   successRate?: number;
 }
 
-export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
-  props,
-) => {
-  const [selectedService, setSelectedService] = createSignal<string | null>(
-    null,
-  );
+export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = props => {
+  const [selectedService, setSelectedService] = createSignal<string | null>(null);
   const [showMetrics, setShowMetrics] = createSignal(false);
   const [isRefreshing, setIsRefreshing] = createSignal(false);
-  const [services, setServices] = createSignal<Record<string, ServiceStatus>>(
-    {},
-  );
+  const [services, setServices] = createSignal<Record<string, ServiceStatus>>({});
   const [summary, setSummary] = createSignal<ServiceSummary>({
     totalServices: 0,
     runningServices: 0,
@@ -222,23 +208,16 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
       const serviceList = Object.values(mockServices);
       const mockSummary: ServiceSummary = {
         totalServices: serviceList.length,
-        runningServices: serviceList.filter((s) => s.status === "running")
-          .length,
-        healthyServices: serviceList.filter((s) => s.health === "healthy")
-          .length,
-        failedServices: serviceList.filter((s) => s.status === "failed").length,
-        successRate:
-          (serviceList.filter((s) => s.status === "running").length /
-            serviceList.length) *
-          100,
+        runningServices: serviceList.filter(s => s.status === "running").length,
+        healthyServices: serviceList.filter(s => s.health === "healthy").length,
+        failedServices: serviceList.filter(s => s.status === "failed").length,
+        successRate: (serviceList.filter(s => s.status === "running").length / serviceList.length) * 100,
       };
 
       setSummary(mockSummary);
       setLastUpdate(new Date());
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to load service data",
-      );
+      setError(err instanceof Error ? err.message : "Failed to load service data");
     } finally {
       setIsRefreshing(false);
       setIsLoading(false);
@@ -319,8 +298,7 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
 
   const getStatusIcon = (service: ServiceStatus) => {
     if (service.status === "failed") return "dismiss-circle";
-    if (service.status === "running" && service.isHealthy)
-      return "checkmark-circle";
+    if (service.status === "running" && service.isHealthy) return "checkmark-circle";
     if (service.status === "running" && !service.isHealthy) return "warning";
     if (service.status === "starting") return "spinner";
     if (service.status === "stopping") return "warning";
@@ -355,12 +333,7 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
             <ServiceLoadingProgress />
           </Show>
 
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={handleRefresh}
-            disabled={isRefreshing()}
-          >
+          <Button variant="secondary" size="sm" onClick={handleRefresh} disabled={isRefreshing()}>
             <Show when={isRefreshing()} fallback="Refresh">
               <span class="spinner"></span>
               Refreshing...
@@ -368,11 +341,7 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
           </Button>
 
           <Show when={props.showMetrics}>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => setShowMetrics(!showMetrics())}
-            >
+            <Button variant="secondary" size="sm" onClick={() => setShowMetrics(!showMetrics())}>
               {showMetrics() ? "Hide Metrics" : "Show Metrics"}
             </Button>
           </Show>
@@ -433,39 +402,28 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
                   <span class="icon">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={
-                        fluentIconsPackage.getIcon(getStatusIcon(service))
-                          ?.outerHTML || ""
-                      }
+                      innerHTML={fluentIconsPackage.getIcon(getStatusIcon(service))?.outerHTML || ""}
                     />
                   </span>
                   <span class="service-name">{serviceName}</span>
                   <ServiceHealthIndicator health={service.health} />
                   <Show when={service.connection_state}>
-                    <span
-                      class="connection-state-badge"
-                      classList={{ [String(service.connection_state)]: true }}
-                    >
+                    <span class="connection-state-badge" classList={{ [String(service.connection_state)]: true }}>
                       {service.connection_state}
                     </span>
                   </Show>
                 </div>
 
                 <div class="service-status">
-                  <span
-                    class="status-badge"
-                    classList={{ [service.status]: true }}
-                  >
+                  <span class="status-badge" classList={{ [service.status]: true }}>
                     {service.status}
                   </span>
 
-                  <Show
-                    when={props.showActions && service.status === "running"}
-                  >
+                  <Show when={props.showActions && service.status === "running"}>
                     <Button
                       variant="secondary"
                       size="sm"
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         handleRestartService(serviceName);
                       }}
@@ -477,9 +435,7 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
               </div>
 
               {/* Service Details */}
-              <Show
-                when={props.showDetails && selectedService() === serviceName}
-              >
+              <Show when={props.showDetails && selectedService() === serviceName}>
                 <div class="service-details">
                   <Show when={service.message}>
                     <div class="detail-item">
@@ -491,9 +447,7 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
                   <Show when={service.lastCheck}>
                     <div class="detail-item">
                       <span class="label">Last Check:</span>
-                      <span class="value">
-                        {service.lastCheck!.toLocaleString()}
-                      </span>
+                      <span class="value">{service.lastCheck!.toLocaleString()}</span>
                     </div>
                   </Show>
 
@@ -515,18 +469,14 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
                     <Show when={service.memoryUsage !== undefined}>
                       <div class="detail-item">
                         <span class="label">Memory:</span>
-                        <span class="value">
-                          {formatMemoryUsage(service.memoryUsage)}
-                        </span>
+                        <span class="value">{formatMemoryUsage(service.memoryUsage)}</span>
                       </div>
                     </Show>
 
                     <Show when={service.cpuUsage !== undefined}>
                       <div class="detail-item">
                         <span class="label">CPU:</span>
-                        <span class="value">
-                          {service.cpuUsage?.toFixed(1)}%
-                        </span>
+                        <span class="value">{service.cpuUsage?.toFixed(1)}%</span>
                       </div>
                     </Show>
                   </Show>
@@ -557,9 +507,7 @@ export const ServiceStatusPanel: Component<ServiceStatusPanelProps> = (
 
       {/* Last Update */}
       <Show when={lastUpdate()}>
-        <div class="last-update">
-          Last updated: {lastUpdate()!.toLocaleString()}
-        </div>
+        <div class="last-update">Last updated: {lastUpdate()!.toLocaleString()}</div>
       </Show>
     </div>
   );

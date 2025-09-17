@@ -25,9 +25,7 @@ export interface DocumentThumbnailGeneratorOptions extends ThumbnailOptions {
 export class DocumentThumbnailGenerator {
   private canvas: HTMLCanvasElement | null = null;
 
-  constructor(
-    private options: DocumentThumbnailGeneratorOptions = { size: [200, 200] },
-  ) {
+  constructor(private options: DocumentThumbnailGeneratorOptions = { size: [200, 200] }) {
     this.options = {
       format: "webp",
       quality: 85,
@@ -46,10 +44,7 @@ export class DocumentThumbnailGenerator {
   /**
    * Generate thumbnail for document files
    */
-  async generateThumbnail(
-    file: File | string,
-    options?: Partial<ThumbnailOptions>,
-  ): Promise<ProcessingResult<Blob>> {
+  async generateThumbnail(file: File | string, options?: Partial<ThumbnailOptions>): Promise<ProcessingResult<Blob>> {
     const startTime = Date.now();
     const mergedOptions = { ...this.options, ...options };
 
@@ -63,12 +58,7 @@ export class DocumentThumbnailGenerator {
       canvas.height = targetHeight;
 
       // Clear canvas and set background
-      clearCanvas(
-        ctx,
-        targetWidth,
-        targetHeight,
-        mergedOptions.backgroundColor,
-      );
+      clearCanvas(ctx, targetWidth, targetHeight, mergedOptions.backgroundColor);
 
       // Draw document icon based on file type
       drawDocumentIcon(ctx, targetWidth, targetHeight, {
@@ -90,10 +80,7 @@ export class DocumentThumbnailGenerator {
     } catch (error) {
       return {
         success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to generate document thumbnail",
+        error: error instanceof Error ? error.message : "Failed to generate document thumbnail",
         duration: Date.now() - startTime,
         timestamp: new Date(),
       };

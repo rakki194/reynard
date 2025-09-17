@@ -5,10 +5,7 @@ import { ConnectionType } from "../types";
 describe("HTTPConnection", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    if (
-      !(globalThis as any).crypto ||
-      typeof (globalThis as any).crypto.randomUUID !== "function"
-    ) {
+    if (!(globalThis as any).crypto || typeof (globalThis as any).crypto.randomUUID !== "function") {
       (globalThis as any).crypto = {
         randomUUID: vi.fn(() => "00000000-0000-4000-8000-000000000000"),
       } as any;

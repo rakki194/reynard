@@ -6,9 +6,8 @@ caption generation system health and performance.
 """
 
 import logging
-from typing import Optional
 
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 from .service import get_caption_api_service
@@ -50,8 +49,8 @@ async def get_model_usage_stats(model_name: str):
         stats = service.get_model_usage_stats(model_name)
         if stats is None:
             raise HTTPException(
-                status_code=404, 
-                detail=f"No usage statistics found for model '{model_name}'"
+                status_code=404,
+                detail=f"No usage statistics found for model '{model_name}'",
             )
         return JSONResponse(content=stats)
     except HTTPException:

@@ -45,7 +45,7 @@ export const MATERIAL_PATTERNS = {
 export function materialHueShift(
   baseColor: OKLCHColor,
   material: keyof typeof MATERIAL_PATTERNS,
-  intensity: number = 1.0,
+  intensity: number = 1.0
 ): { shadow: OKLCHColor; base: OKLCHColor; highlight: OKLCHColor } {
   const pattern = MATERIAL_PATTERNS[material];
   const { l, c, h } = baseColor;
@@ -75,7 +75,7 @@ export function materialHueShift(
  * @returns Material pattern configuration
  */
 export function getMaterialPattern(
-  material: keyof typeof MATERIAL_PATTERNS,
+  material: keyof typeof MATERIAL_PATTERNS
 ): (typeof MATERIAL_PATTERNS)[keyof typeof MATERIAL_PATTERNS] {
   return MATERIAL_PATTERNS[material];
 }
@@ -85,9 +85,7 @@ export function getMaterialPattern(
  * @param material - Material type to check
  * @returns True if material is supported
  */
-export function isSupportedMaterial(
-  material: string,
-): material is keyof typeof MATERIAL_PATTERNS {
+export function isSupportedMaterial(material: string): material is keyof typeof MATERIAL_PATTERNS {
   return material in MATERIAL_PATTERNS;
 }
 

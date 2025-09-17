@@ -8,17 +8,14 @@ import type { FileUploadProps } from "../types";
 import { createDragHandlers } from "./drag-handlers";
 import { createPasteHandlerWithCleanup } from "./paste-handler";
 
-export function useDragDrop(
-  props: FileUploadProps,
-  onFilesDropped: (files: File[]) => void,
-) {
+export function useDragDrop(props: FileUploadProps, onFilesDropped: (files: File[]) => void) {
   const [isDragOver, setIsDragOver] = createSignal(false);
 
   // Create drag event handlers
   const dragHandlers = createDragHandlers(props, setIsDragOver, onFilesDropped);
 
   // Set up paste event handling
-  createPasteHandlerWithCleanup((files) => {
+  createPasteHandlerWithCleanup(files => {
     onFilesDropped(files);
     props.onFilesDropped?.(files);
   });
