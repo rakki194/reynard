@@ -1,12 +1,9 @@
 /**
- * Search Service
- *
- * Advanced search service providing vector similarity search, hybrid search,
- * and multimodal content discovery across the unified repository.
+ * Search Service - Advanced search service for vector similarity, hybrid search, and multimodal content discovery.
  */
 
 import { BaseAIService, ServiceStatus, ServiceHealth } from "reynard-ai-shared";
-import type { ServiceHealthInfo, ServiceConfig } from "reynard-ai-shared";
+import type { ServiceHealthInfo } from "reynard-ai-shared";
 import type { ModalityType, SearchOptions, SearchResult } from "../types";
 import { RepositoryError } from "../types";
 import { EmbeddingService } from "./EmbeddingService";
@@ -47,6 +44,7 @@ export class SearchService extends BaseAIService {
       autoStart: true,
       config: searchConfig,
     });
+    this.searchConfig = searchConfig;
   }
 
   async initialize(): Promise<void> {
@@ -60,7 +58,7 @@ export class SearchService extends BaseAIService {
       await this.embeddingService.initialize();
 
       // Initialize composables
-      this.searchCache = new SearchCache(this._metadata.cacheSize as number);
+      this.searchCache = new SearchCache(this.searchConfig.cacheSize);
       this.metrics = new SearchMetricsTracker();
       this.vectorSearchComposable = new VectorSearchComposable(this.embeddingService);
       this.hybridSearchComposable = new HybridSearchComposable(this.vectorSearchComposable);
@@ -70,7 +68,7 @@ export class SearchService extends BaseAIService {
         this.vectorSearchComposable,
         this.hybridSearchComposable,
         this.embeddingService,
-        this._metadata as SearchConfig
+        this.searchConfig
       );
 
       // Service is now initialized (handled by BaseAIService)
@@ -113,86 +111,34 @@ export class SearchService extends BaseAIService {
     };
   }
 
-  /**
-   * Perform vector similarity search
-   */
   async vectorSearch(query: string, options: Partial<VectorSearchOptions> = {}): Promise<SearchResult[]> {
-    this.ensureInitialized();
+    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.vectorSearch(query, options);
   }
-
-  /**
-   * Perform hybrid search combining vector and keyword search
-   */
   async hybridSearch(query: string, options: Partial<HybridSearchOptions> = {}): Promise<SearchResult[]> {
-    this.ensureInitialized();
+    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.hybridSearch(query, options);
   }
-
-  /**
-   * Perform keyword search
-   */
   async keywordSearch(query: string, options: SearchOptions = {}): Promise<SearchResult[]> {
-    this.ensureInitialized();
+    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.keywordSearch(query, options);
   }
-
-  /**
-   * Search across multiple modalities
-   */
-  async multimodalSearch(
-    query: string,
-    modalities: ModalityType[],
-    options: SearchOptions = {}
-  ): Promise<Record<ModalityType, SearchResult[]>> {
-    this.ensureInitialized();
+  async multimodalSearch(query: string, modalities: ModalityType[], options: SearchOptions = {}): Promise<Record<ModalityType, SearchResult[]>> {
+    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.multimodalSearch(query, modalities, options);
   }
-
-  /**
-   * Find similar files based on a reference file
-   */
   async findSimilarFiles(fileId: string, modality: ModalityType, options: SearchOptions = {}): Promise<SearchResult[]> {
-    this.ensureInitialized();
+    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.findSimilarFiles(fileId, modality, options);
   }
-
-  /**
-   * Get search suggestions based on query
-   */
   async getSearchSuggestions(query: string, limit: number = 10): Promise<string[]> {
-    this.ensureInitialized();
+    if (!this.isInitialized) throw new RepositoryError("SearchService not initialized", "SEARCH_SERVICE_NOT_INITIALIZED");
     return this.searchOperations.getSearchSuggestions(query, limit);
   }
-
-  /**
-   * Get search analytics and metrics
-   */
   getSearchMetrics(): SearchMetrics {
-    return this.metrics.getMetrics();
+    return this.searchOperations.getSearchMetrics();
   }
-
-  /**
-   * Clear search cache
-   */
   clearSearchCache(): void {
-    this.searchCache.clear();
-    console.log("Search cache cleared");
-  }
-
-  // ============================================================================
-  // Private Methods
-  // ============================================================================
-
-  /**
-   * Ensure service is initialized
-   */
-  private ensureInitialized(): void {
-    if (!this.isInitialized) {
-      throw new RepositoryError(
-        "SearchService not initialized. Call initialize() first.",
-        "SEARCH_SERVICE_NOT_INITIALIZED"
-      );
-    }
+    this.searchOperations.clearSearchCache();
   }
 }

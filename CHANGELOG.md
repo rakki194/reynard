@@ -22,6 +22,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 
+## [0.8.2] - 2025-09-17
+
+**🧹 MAJOR REPOSITORY CLEANUP**: This release represents a comprehensive cleanup and refactoring effort, removing over 247,000 lines of generated TypeScript declaration files and build artifacts to streamline the codebase.
+
+### Added
+
+- **Repository Search Service Enhancements**: Improved SearchOperations.ts with better error handling and performance optimizations
+- **Enhanced Search Types**: Updated SearchTypes.ts with improved type definitions and validation
+- **Search Operations Manager**: Added new SearchOperationsManager.ts for better search orchestration
+- **Search Strategies**: Implemented new search strategies directory with specialized search implementations
+- **Search Validation**: Added comprehensive validation layer for search operations
+- **Logger Service**: Enhanced Logger.ts with improved logging capabilities and structured output
+
+### Changed
+
+- **Repository Search Architecture**: Refactored SearchService.ts and CoreSearchService.ts for better modularity
+- **Hybrid Search Implementation**: Updated HybridSearch.ts with improved search algorithms
+- **Search Cache Optimization**: Enhanced SearchCache.ts with better caching strategies
+- **Vector Search Improvements**: Updated VectorSearch.ts with performance optimizations
+- **Package Configuration Updates**: Updated package.json files for components-themes and queue-watcher packages
+
+### Removed
+
+- **TypeScript Declaration Files**: Removed over 3,500 generated .d.ts files across all packages to reduce repository bloat
+- **Build Artifacts**: Cleaned up generated build files and compilation outputs
+- **Redundant Configuration Files**: Removed duplicate vite.config.js and vitest.config.js files
+- **Generated Test Files**: Cleaned up auto-generated test setup files
+- **Legacy Build Scripts**: Removed outdated build and compilation scripts
+- **Unused Package Files**: Removed unused package files and redundant exports
+
+### Fixed
+
+- **Repository Structure**: Streamlined package structure by removing build artifacts
+- **Build Performance**: Improved build times by removing unnecessary generated files
+- **Repository Size**: Significantly reduced repository size and clone time
+- **Development Workflow**: Cleaned up development environment by removing generated files from version control
+
+
 ## [0.8.1] - 2025-09-17
 
 **⚠️ REFACTORING SNAPSHOT**: This release represents a major refactoring state with extensive TypeScript compilation outputs and cleanup. The project is in a transitional state during architectural improvements.

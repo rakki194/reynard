@@ -1,1 +1,0 @@
-export { CollisionGame } from "./CollisionGame";

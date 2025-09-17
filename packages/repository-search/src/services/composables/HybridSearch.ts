@@ -22,7 +22,7 @@ export class HybridSearchComposable {
   async search(
     query: string,
     options: HybridSearchOptions,
-    logger: { info: (msg: string) => void; error: (msg: string, error?: unknown) => void }
+    logger: { info: (msg: string) => void; error: (msg: string, error?: unknown) => void; warn: (msg: string, error?: unknown) => void }
   ): Promise<SearchResult[]> {
     try {
       // Perform both vector and keyword search in parallel
@@ -52,7 +52,7 @@ export class HybridSearchComposable {
   private async keywordSearch(
     query: string,
     _options: SearchOptions,
-    logger: { info: (msg: string) => void; error: (msg: string, error?: unknown) => void }
+    logger: { info: (msg: string) => void; error: (msg: string, error?: unknown) => void; warn: (msg: string, error?: unknown) => void }
   ): Promise<SearchResult[]> {
     try {
       // This would typically query a full-text search index
@@ -80,26 +80,23 @@ export class HybridSearchComposable {
     // Add vector results with vector weight
     vectorResults.forEach(result => {
       const weightedScore = result.score * options.vectorWeight;
-      combinedMap.set(result.fileId, {
+      combinedMap.set(result.file, {
         ...result,
         score: weightedScore,
-        searchType: "hybrid",
       });
     });
 
     // Add keyword results with keyword weight
     keywordResults.forEach(result => {
-      const existing = combinedMap.get(result.fileId);
+      const existing = combinedMap.get(result.file);
       if (existing) {
         // Combine scores
         existing.score += result.score * options.keywordWeight;
-        existing.searchType = "hybrid";
       } else {
         // Add new result
-        combinedMap.set(result.fileId, {
+        combinedMap.set(result.file, {
           ...result,
           score: result.score * options.keywordWeight,
-          searchType: "hybrid",
         });
       }
     });

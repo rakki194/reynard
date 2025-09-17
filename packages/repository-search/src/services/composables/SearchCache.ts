@@ -5,7 +5,8 @@
  * and TTL support for optimal performance.
  */
 
-import type { SearchResult, SearchCacheEntry } from "../types/SearchTypes";
+import type { SearchResult } from "../../types";
+import type { SearchCacheEntry } from "../types/SearchTypes";
 
 export class SearchCache {
   private cache: Map<string, SearchCacheEntry> = new Map();

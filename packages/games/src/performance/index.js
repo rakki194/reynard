@@ -1,1 +1,0 @@
-export { PerformanceDemo } from "./PerformanceDemo";

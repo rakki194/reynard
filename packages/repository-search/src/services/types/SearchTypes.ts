@@ -7,6 +7,8 @@
 
 import type { ModalityType, SearchOptions, SearchResult, VectorEmbedding } from "../../types";
 
+export type { SearchResult };
+
 export interface VectorSearchOptions {
   topK: number;
   similarityThreshold: number;

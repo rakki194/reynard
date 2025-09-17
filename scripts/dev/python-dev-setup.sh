@@ -46,7 +46,7 @@ echo "Running isort import sorting..."
 isort --check-only .
 
 echo "Running mypy type checking..."
-mypy backend/app libraries/gatekeeper/gatekeeper fenrir
+mypy backend/app services/gatekeeper/reynard_gatekeeper fenrir
 
 echo "Running ruff linter..."
 ruff check .
@@ -54,7 +54,7 @@ ruff check .
 print_status $GREEN "✅ All linting checks passed!"
 
 print_status $BLUE "🔒 Running security checks..."
-bandit -r backend/app libraries/gatekeeper/gatekeeper fenrir
+bandit -r backend/app services/gatekeeper/reynard_gatekeeper fenrir
 safety check
 
 print_status $GREEN "✅ Security checks passed!"

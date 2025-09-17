@@ -44,6 +44,7 @@ export class CoreSearchService {
       const results = await this.vectorSearchComposable.search(query, options as VectorSearchOptions, {
         info: (msg: string) => console.log(msg),
         error: (msg: string, error?: unknown) => console.error(msg, error),
+        warn: (msg: string, error?: unknown) => console.warn(msg, error),
       });
 
       const searchTime = this.metrics.endTimer("vector-search", results.length);
@@ -83,6 +84,7 @@ export class CoreSearchService {
       const results = await this.hybridSearchComposable.search(query, options as HybridSearchOptions, {
         info: (msg: string) => console.log(msg),
         error: (msg: string, error?: unknown) => console.error(msg, error),
+        warn: (msg: string, error?: unknown) => console.warn(msg, error),
       });
 
       const searchTime = this.metrics.endTimer("hybrid-search", results.length);

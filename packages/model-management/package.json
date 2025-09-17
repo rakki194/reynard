@@ -39,7 +39,7 @@
     "test:ui": "vitest --ui",
     "typecheck": "tsc --noEmit",
     "clean": "pnpm clean:all",
-    "clean:all": "rm -rf dist && rm -f tsconfig.tsbuildinfo && find . -name '*.js' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.js.map' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts.map' -not -path './node_modules/*' -not -path './dist/*' -delete",
+    "clean:all": "rm -rf dist && rm -f *.tsbuildinfo && find . -name '*.js' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.js.map' -not -path './node_modules/*' -not -path './dist/*' -delete && find . -name '*.d.ts.map' -not -path './node_modules/*' -not -path './dist/*' -delete",
     "clean:build": "rm -rf dist && rm -f tsconfig.tsbuildinfo",
     "prebuild": "pnpm clean:build"
   },

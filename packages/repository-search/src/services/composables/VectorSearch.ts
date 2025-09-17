@@ -22,7 +22,7 @@ export class VectorSearchComposable {
   async search(
     query: string,
     options: VectorSearchOptions,
-    logger: { info: (msg: string) => void; error: (msg: string, error?: unknown) => void }
+    logger: { info: (msg: string) => void; error: (msg: string, error?: unknown) => void; warn: (msg: string, error?: unknown) => void }
   ): Promise<SearchResult[]> {
     try {
       // Generate query embedding
@@ -53,7 +53,7 @@ export class VectorSearchComposable {
     try {
       const embeddingResult = await this.embeddingService.generateEmbedding({
         fileId: `query:${Date.now()}`,
-        modality: modality || "text",
+        modality: modality || ("text" as ModalityType),
         content: query,
       });
 

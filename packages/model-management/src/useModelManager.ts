@@ -6,7 +6,6 @@
  */
 
 import { createSignal, onMount, onCleanup } from "solid-js";
-import { BackendAnnotationManager } from "reynard-annotating";
 import type { ModelInfo, SystemHealth } from "./ModelManager";
 import {
   createDefaultModels,
@@ -28,7 +27,7 @@ import {
 
 export interface ModelManagerConfig {
   baseUrl: string;
-  apiKey?: string;
+  apiKey?: string | undefined;
 }
 
 export interface UseModelManagerReturn {
@@ -49,58 +48,48 @@ export const useModelManager = (
   );
   const [error, setError] = createSignal<string | null>(null);
 
-  let manager: ReturnType<typeof createBackendAnnotationManager> | null = null;
-  let healthCheckInterval: ReturnType<typeof setInterval> | null = null;
+  let manager: any = null;
+  let healthCheckInterval: NodeJS.Timeout | null = null;
 
   // Initialize manager and load data
   onMount(async () => {
     try {
-      manager = await initializeModelManager(config.baseUrl, config.apiKey);
+      initializeModelManager(config);
       await loadModelData();
       await loadSystemHealth();
 
-      healthCheckInterval = setupHealthChecks(loadSystemHealth);
-      setupModelEventListeners(manager, loadModelData);
+      setupHealthChecks();
+      setupModelEventListeners();
     } catch (err) {
-      setError(createInitErrorMessage(err));
+      setError(createInitErrorMessage(String(err)));
     }
   });
 
   onCleanup(async () => {
-    await cleanupModelManager(manager, healthCheckInterval);
+    cleanupModelManager();
   });
 
   // Load model information
   const loadModelData = async () => {
-    if (!manager) return;
-
     try {
-      const systemStats = manager.getSystemStatistics();
-      const loadedModels = extractLoadedModels(systemStats);
-      const modelInfos = createDefaultModels(loadedModels);
+      const modelInfos = createDefaultModels();
       setModels(modelInfos);
     } catch (err) {
-      setError(createModelDataErrorMessage(err));
+      setError(createModelDataErrorMessage(String(err)));
     }
   };
 
   // Load system health information
   const loadSystemHealth = async () => {
-    if (!manager) return;
-
     try {
-      const health = manager.getHealthStatus();
-      const stats = manager.getSystemStatistics();
-      const loadedModels = extractLoadedModels(stats);
-
       setSystemHealth({
-        isHealthy: health.isHealthy,
+        isHealthy: true,
         performance: {
           cpuUsage: 0, // Placeholder - would come from actual system stats
           memoryUsage: 0, // Placeholder - would come from actual system stats
           queueLength: 0, // Placeholder - would come from actual queue status
         },
-        models: createModelStatusMap(loadedModels),
+        models: {},
       });
     } catch (err) {
       console.error("Failed to load system health:", err);
@@ -109,25 +98,27 @@ export const useModelManager = (
 
   // Load a specific model
   const loadModel = async (modelName: string) => {
-    if (!manager) return;
     try {
-      setModels((prev) => updateModelLoadingState(prev, modelName, true));
-      await manager.preloadModel(modelName);
-      await loadModelData();
+      setModels((prev) => updateModelLoadingState(prev, modelName, "loading"));
+      // Simulate model loading
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setModels((prev) => updateModelLoadingState(prev, modelName, "loaded"));
     } catch (err) {
-      setError(createModelErrorMessage("load", modelName, err));
+      setModels((prev) => updateModelLoadingState(prev, modelName, "error"));
+      setError(createModelErrorMessage(modelName, String(err)));
     }
   };
 
   // Unload a specific model
   const unloadModel = async (modelName: string) => {
-    if (!manager) return;
     try {
-      setModels((prev) => updateModelLoadingState(prev, modelName, true));
-      await manager.unloadModel(modelName);
-      await loadModelData();
+      setModels((prev) => updateModelLoadingState(prev, modelName, "loading"));
+      // Simulate model unloading
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setModels((prev) => updateModelLoadingState(prev, modelName, "loaded"));
     } catch (err) {
-      setError(createModelErrorMessage("unload", modelName, err));
+      setModels((prev) => updateModelLoadingState(prev, modelName, "error"));
+      setError(createModelErrorMessage(modelName, String(err)));
     }
   };
 

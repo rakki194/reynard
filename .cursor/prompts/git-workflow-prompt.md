@@ -431,7 +431,7 @@ git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION
 
 $(grep -A 50 "## \[$NEW_VERSION\]" CHANGELOG.md | head -n -1 | tail -n +2)
 
-Full changelog: https://github.com/your-org/reynard/compare/v$PREVIOUS_VERSION...v$NEW_VERSION"
+Full changelog: https://github.com/rakki194/reynard/compare/v$PREVIOUS_VERSION...v$NEW_VERSION"
 
 # Step 4: Push tags to remote
 git push origin "v$NEW_VERSION"
@@ -503,7 +503,7 @@ git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION
 
 $RELEASE_NOTES
 
-Full changelog: https://github.com/your-org/reynard/compare/$PREVIOUS_VERSION...v$NEW_VERSION"
+Full changelog: https://github.com/rakki194/reynard/compare/$PREVIOUS_VERSION...v$NEW_VERSION"
 
 # Step 11: Push commits and tags to remote
 git push origin main
@@ -706,7 +706,7 @@ git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION
 
 $RELEASE_NOTES
 
-Full changelog: https://github.com/your-org/reynard/compare/$PREVIOUS_VERSION...v$NEW_VERSION"
+Full changelog: https://github.com/rakki194/reynard/compare/$PREVIOUS_VERSION...v$NEW_VERSION"
 
 echo "🏷️  Created Git tag: v$NEW_VERSION"
 

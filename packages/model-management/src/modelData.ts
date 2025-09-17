@@ -31,7 +31,20 @@ export function createDefaultModels(): ModelInfo[] {
  * Extract loaded models from system health
  */
 export function extractLoadedModels(health: SystemHealth): ModelInfo[] {
-  return health.models || [];
+  // Convert the boolean map to ModelInfo array
+  return Object.keys(health.models || {}).map(name => ({
+    name,
+    displayName: name,
+    description: `Model: ${name}`,
+    isLoaded: health.models![name] || false,
+    isLoading: false,
+    healthStatus: "healthy" as const,
+    usageStats: {
+      totalRequests: 0,
+      successfulRequests: 0,
+      averageProcessingTime: 0,
+    },
+  }));
 }
 
 /**

@@ -43,7 +43,7 @@ dependencies = [
     "pgvector",
     "argon2-cffi",
     "cryptography",
-    "gatekeeper @ file://../libraries/gatekeeper",
+    "reynard-gatekeeper @ file://../services/gatekeeper",
     "reynard-ecs-world @ file://../packages/ecs-world",
 ]
 
