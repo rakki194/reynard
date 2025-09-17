@@ -15,54 +15,60 @@
  * @interface TTSSynthesisResponse
  */
 export interface TTSSynthesisResponse {
-    /**
-     * Whether synthesis was successful
-     * @type {boolean}
-     * @memberof TTSSynthesisResponse
-     */
-    success: boolean;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSSynthesisResponse
-     */
-    audioPath?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSSynthesisResponse
-     */
-    audioUrl?: string | null;
-    /**
-     *
-     * @type {number}
-     * @memberof TTSSynthesisResponse
-     */
-    duration?: number | null;
-    /**
-     * Backend that was used
-     * @type {string}
-     * @memberof TTSSynthesisResponse
-     */
-    backendUsed: string;
-    /**
-     * Processing time in seconds
-     * @type {number}
-     * @memberof TTSSynthesisResponse
-     */
-    processingTime: number;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSSynthesisResponse
-     */
-    error?: string | null;
+  /**
+   * Whether synthesis was successful
+   * @type {boolean}
+   * @memberof TTSSynthesisResponse
+   */
+  success: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSSynthesisResponse
+   */
+  audioPath?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSSynthesisResponse
+   */
+  audioUrl?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof TTSSynthesisResponse
+   */
+  duration?: number | null;
+  /**
+   * Backend that was used
+   * @type {string}
+   * @memberof TTSSynthesisResponse
+   */
+  backendUsed: string;
+  /**
+   * Processing time in seconds
+   * @type {number}
+   * @memberof TTSSynthesisResponse
+   */
+  processingTime: number;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSSynthesisResponse
+   */
+  error?: string | null;
 }
 /**
  * Check if a given object implements the TTSSynthesisResponse interface.
  */
 export declare function instanceOfTTSSynthesisResponse(value: object): value is TTSSynthesisResponse;
 export declare function TTSSynthesisResponseFromJSON(json: any): TTSSynthesisResponse;
-export declare function TTSSynthesisResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSSynthesisResponse;
+export declare function TTSSynthesisResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): TTSSynthesisResponse;
 export declare function TTSSynthesisResponseToJSON(json: any): TTSSynthesisResponse;
-export declare function TTSSynthesisResponseToJSONTyped(value?: TTSSynthesisResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function TTSSynthesisResponseToJSONTyped(
+  value?: TTSSynthesisResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

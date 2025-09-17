@@ -23,7 +23,7 @@ test.describe("Gallery E2E Tests (Simple)", () => {
         </div>
       </div>
     `);
-    
+
     await expect(page.locator("#gallery-container")).toBeVisible();
     await expect(page.locator('img[alt="Image 1"]')).toBeVisible();
     await expect(page.locator('img[alt="Image 2"]')).toBeVisible();
@@ -39,13 +39,13 @@ test.describe("Gallery E2E Tests (Simple)", () => {
         </div>
       </div>
     `);
-    
+
     const image1 = page.locator('img[data-id="1"]');
     const image2 = page.locator('img[data-id="2"]');
-    
+
     await expect(image1).toBeVisible();
     await expect(image2).toBeVisible();
-    
+
     // Test image clicks
     await image1.click();
     await image2.click();
@@ -60,13 +60,13 @@ test.describe("Gallery E2E Tests (Simple)", () => {
         </div>
       </div>
     `);
-    
+
     const gallery = page.locator('[role="region"][aria-label="Image gallery"]');
     await expect(gallery).toBeVisible();
-    
+
     const grid = page.locator('[role="grid"]');
     await expect(grid).toBeVisible();
-    
+
     // Check for descriptive alt text
     await expect(page.locator('img[alt="Beautiful landscape with mountains"]')).toBeVisible();
     await expect(page.locator('img[alt="Ocean view at sunset"]')).toBeVisible();

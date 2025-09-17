@@ -9,37 +9,37 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { RAGIngestItem } from './RAGIngestItem';
+import type { RAGIngestItem } from "./RAGIngestItem";
 /**
  * Request model for document ingestion.
  * @export
  * @interface RAGIngestRequest
  */
 export interface RAGIngestRequest {
-    /**
-     * Documents to ingest
-     * @type {Array<RAGIngestItem>}
-     * @memberof RAGIngestRequest
-     */
-    items: Array<RAGIngestItem>;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGIngestRequest
-     */
-    model?: string | null;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGIngestRequest
-     */
-    batchSize?: number | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof RAGIngestRequest
-     */
-    forceReindex?: boolean | null;
+  /**
+   * Documents to ingest
+   * @type {Array<RAGIngestItem>}
+   * @memberof RAGIngestRequest
+   */
+  items: Array<RAGIngestItem>;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGIngestRequest
+   */
+  model?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGIngestRequest
+   */
+  batchSize?: number | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RAGIngestRequest
+   */
+  forceReindex?: boolean | null;
 }
 /**
  * Check if a given object implements the RAGIngestRequest interface.
@@ -48,4 +48,7 @@ export declare function instanceOfRAGIngestRequest(value: object): value is RAGI
 export declare function RAGIngestRequestFromJSON(json: any): RAGIngestRequest;
 export declare function RAGIngestRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGIngestRequest;
 export declare function RAGIngestRequestToJSON(json: any): RAGIngestRequest;
-export declare function RAGIngestRequestToJSONTyped(value?: RAGIngestRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function RAGIngestRequestToJSONTyped(
+  value?: RAGIngestRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

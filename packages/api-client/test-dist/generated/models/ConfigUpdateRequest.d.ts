@@ -15,36 +15,36 @@
  * @interface ConfigUpdateRequest
  */
 export interface ConfigUpdateRequest {
-    /**
-     *
-     * @type {boolean}
-     * @memberof ConfigUpdateRequest
-     */
-    enablePerformanceMonitoring?: boolean | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ConfigUpdateRequest
-     */
-    autoCleanup?: boolean | null;
-    /**
-     *
-     * @type {string}
-     * @memberof ConfigUpdateRequest
-     */
-    defaultValidationLevel?: string | null;
-    /**
-     *
-     * @type {number}
-     * @memberof ConfigUpdateRequest
-     */
-    maxConcurrentLoads?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof ConfigUpdateRequest
-     */
-    memoryThreshold?: number | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ConfigUpdateRequest
+   */
+  enablePerformanceMonitoring?: boolean | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ConfigUpdateRequest
+   */
+  autoCleanup?: boolean | null;
+  /**
+   *
+   * @type {string}
+   * @memberof ConfigUpdateRequest
+   */
+  defaultValidationLevel?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof ConfigUpdateRequest
+   */
+  maxConcurrentLoads?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof ConfigUpdateRequest
+   */
+  memoryThreshold?: number | null;
 }
 /**
  * Check if a given object implements the ConfigUpdateRequest interface.
@@ -53,4 +53,7 @@ export declare function instanceOfConfigUpdateRequest(value: object): value is C
 export declare function ConfigUpdateRequestFromJSON(json: any): ConfigUpdateRequest;
 export declare function ConfigUpdateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ConfigUpdateRequest;
 export declare function ConfigUpdateRequestToJSON(json: any): ConfigUpdateRequest;
-export declare function ConfigUpdateRequestToJSONTyped(value?: ConfigUpdateRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function ConfigUpdateRequestToJSONTyped(
+  value?: ConfigUpdateRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

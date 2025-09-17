@@ -22,38 +22,37 @@ exports.OffspringCreateRequestToJSONTyped = OffspringCreateRequestToJSONTyped;
  * Check if a given object implements the OffspringCreateRequest interface.
  */
 function instanceOfOffspringCreateRequest(value) {
-    if (!('parent1Id' in value) || value['parent1Id'] === undefined)
-        return false;
-    if (!('parent2Id' in value) || value['parent2Id'] === undefined)
-        return false;
-    if (!('offspringId' in value) || value['offspringId'] === undefined)
-        return false;
-    return true;
+  if (!("parent1Id" in value) || value["parent1Id"] === undefined) return false;
+  if (!("parent2Id" in value) || value["parent2Id"] === undefined) return false;
+  if (!("offspringId" in value) || value["offspringId"] === undefined) return false;
+  return true;
 }
 function OffspringCreateRequestFromJSON(json) {
-    return OffspringCreateRequestFromJSONTyped(json, false);
+  return OffspringCreateRequestFromJSONTyped(json, false);
 }
 function OffspringCreateRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'parent1Id': json['parent1_id'],
-        'parent2Id': json['parent2_id'],
-        'offspringId': json['offspring_id'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    parent1Id: json["parent1_id"],
+    parent2Id: json["parent2_id"],
+    offspringId: json["offspring_id"],
+  };
 }
 function OffspringCreateRequestToJSON(json) {
-    return OffspringCreateRequestToJSONTyped(json, false);
+  return OffspringCreateRequestToJSONTyped(json, false);
 }
 function OffspringCreateRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'parent1_id': value['parent1Id'],
-        'parent2_id': value['parent2Id'],
-        'offspring_id': value['offspringId'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    parent1_id: value["parent1Id"],
+    parent2_id: value["parent2Id"],
+    offspring_id: value["offspringId"],
+  };
 }

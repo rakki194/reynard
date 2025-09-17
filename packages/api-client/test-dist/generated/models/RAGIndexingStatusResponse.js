@@ -22,34 +22,36 @@ exports.RAGIndexingStatusResponseToJSONTyped = RAGIndexingStatusResponseToJSONTy
  * Check if a given object implements the RAGIndexingStatusResponse interface.
  */
 function instanceOfRAGIndexingStatusResponse(value) {
-    return true;
+  return true;
 }
 function RAGIndexingStatusResponseFromJSON(json) {
-    return RAGIndexingStatusResponseFromJSONTyped(json, false);
+  return RAGIndexingStatusResponseFromJSONTyped(json, false);
 }
 function RAGIndexingStatusResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'queueDepth': json['queue_depth'] == null ? undefined : json['queue_depth'],
-        'inFlight': json['in_flight'] == null ? undefined : json['in_flight'],
-        'processingRate': json['processing_rate'] == null ? undefined : json['processing_rate'],
-        'estimatedCompletion': json['estimated_completion'] == null ? undefined : json['estimated_completion'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    queueDepth: json["queue_depth"] == null ? undefined : json["queue_depth"],
+    inFlight: json["in_flight"] == null ? undefined : json["in_flight"],
+    processingRate: json["processing_rate"] == null ? undefined : json["processing_rate"],
+    estimatedCompletion: json["estimated_completion"] == null ? undefined : json["estimated_completion"],
+  };
 }
 function RAGIndexingStatusResponseToJSON(json) {
-    return RAGIndexingStatusResponseToJSONTyped(json, false);
+  return RAGIndexingStatusResponseToJSONTyped(json, false);
 }
 function RAGIndexingStatusResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'queue_depth': value['queueDepth'],
-        'in_flight': value['inFlight'],
-        'processing_rate': value['processingRate'],
-        'estimated_completion': value['estimatedCompletion'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    queue_depth: value["queueDepth"],
+    in_flight: value["inFlight"],
+    processing_rate: value["processingRate"],
+    estimated_completion: value["estimatedCompletion"],
+  };
 }

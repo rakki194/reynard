@@ -15,24 +15,30 @@
  * @interface NLWebRollbackRequest
  */
 export interface NLWebRollbackRequest {
-    /**
-     * Whether to enable rollback
-     * @type {boolean}
-     * @memberof NLWebRollbackRequest
-     */
-    enable: boolean;
-    /**
-     * Reason for rollback action
-     * @type {string}
-     * @memberof NLWebRollbackRequest
-     */
-    reason?: string;
+  /**
+   * Whether to enable rollback
+   * @type {boolean}
+   * @memberof NLWebRollbackRequest
+   */
+  enable: boolean;
+  /**
+   * Reason for rollback action
+   * @type {string}
+   * @memberof NLWebRollbackRequest
+   */
+  reason?: string;
 }
 /**
  * Check if a given object implements the NLWebRollbackRequest interface.
  */
 export declare function instanceOfNLWebRollbackRequest(value: object): value is NLWebRollbackRequest;
 export declare function NLWebRollbackRequestFromJSON(json: any): NLWebRollbackRequest;
-export declare function NLWebRollbackRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebRollbackRequest;
+export declare function NLWebRollbackRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): NLWebRollbackRequest;
 export declare function NLWebRollbackRequestToJSON(json: any): NLWebRollbackRequest;
-export declare function NLWebRollbackRequestToJSONTyped(value?: NLWebRollbackRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function NLWebRollbackRequestToJSONTyped(
+  value?: NLWebRollbackRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -30,25 +30,25 @@ pnpm add reynard-project-architecture
 ## Quick Start
 
 ```typescript
-import { 
+import {
   REYNARD_ARCHITECTURE,
   getWatchableDirectories,
   getBuildableDirectories,
   queryDirectories,
-  shouldIncludeFile
-} from 'reynard-project-architecture';
+  shouldIncludeFile,
+} from "reynard-project-architecture";
 
 // Get all watchable directories
 const watchableDirs = getWatchableDirectories();
-console.log('Watchable directories:', watchableDirs);
+console.log("Watchable directories:", watchableDirs);
 
 // Query directories by category
-const sourceDirs = queryDirectories({ category: 'source' });
-console.log('Source directories:', sourceDirs.directories);
+const sourceDirs = queryDirectories({ category: "source" });
+console.log("Source directories:", sourceDirs.directories);
 
 // Check if a file should be included
-const shouldInclude = shouldIncludeFile('packages/components/src/Button.tsx');
-console.log('Should include file:', shouldInclude);
+const shouldInclude = shouldIncludeFile("packages/components/src/Button.tsx");
+console.log("Should include file:", shouldInclude);
 ```
 
 ## Architecture Definition
@@ -97,7 +97,7 @@ Each directory definition includes:
 The main architecture definition object containing all directory definitions and global configuration.
 
 ```typescript
-import { REYNARD_ARCHITECTURE } from 'reynard-project-architecture';
+import { REYNARD_ARCHITECTURE } from "reynard-project-architecture";
 
 console.log(REYNARD_ARCHITECTURE.name); // "Reynard"
 console.log(REYNARD_ARCHITECTURE.directories.length); // 17
@@ -106,27 +106,24 @@ console.log(REYNARD_ARCHITECTURE.directories.length); // 17
 #### Directory Filter Functions
 
 ```typescript
-import { 
+import {
   getWatchableDirectories,
   getBuildableDirectories,
   getTestableDirectories,
   getLintableDirectories,
-  getDocumentableDirectories
-} from 'reynard-project-architecture';
+  getDocumentableDirectories,
+} from "reynard-project-architecture";
 
 // Get directories by operational type
 const watchable = getWatchableDirectories(); // ["packages", "backend", "docs", ...]
 const buildable = getBuildableDirectories(); // ["packages", "backend", "examples", ...]
-const testable = getTestableDirectories();   // ["packages", "backend", "e2e", ...]
+const testable = getTestableDirectories(); // ["packages", "backend", "e2e", ...]
 ```
 
 #### Global Patterns
 
 ```typescript
-import { 
-  getGlobalExcludePatterns,
-  getGlobalIncludePatterns 
-} from 'reynard-project-architecture';
+import { getGlobalExcludePatterns, getGlobalIncludePatterns } from "reynard-project-architecture";
 
 const excludePatterns = getGlobalExcludePatterns(); // ["**/node_modules/**", "**/dist/**", ...]
 const includePatterns = getGlobalIncludePatterns(); // ["**/*.ts", "**/*.py", ...]
@@ -137,78 +134,75 @@ const includePatterns = getGlobalIncludePatterns(); // ["**/*.ts", "**/*.py", ..
 #### Directory Queries
 
 ```typescript
-import { queryDirectories, getDirectoryPaths } from 'reynard-project-architecture';
+import { queryDirectories, getDirectoryPaths } from "reynard-project-architecture";
 
 // Query with multiple filters
 const result = queryDirectories({
-  category: 'source',
-  importance: 'critical',
-  watchable: true
+  category: "source",
+  importance: "critical",
+  watchable: true,
 });
 
 console.log(result.directories); // Matching directories
-console.log(result.count);       // Number of matches
+console.log(result.count); // Number of matches
 console.log(result.executionTime); // Query execution time
 
 // Get just the paths
-const paths = getDirectoryPaths({ category: 'source' });
+const paths = getDirectoryPaths({ category: "source" });
 ```
 
 #### Directory Information
 
 ```typescript
-import { 
+import {
   getDirectoryDefinition,
   getDirectoryDefinitionByPath,
   getDirectoriesByCategory,
   getDirectoriesByImportance,
-  getRelatedDirectories
-} from 'reynard-project-architecture';
+  getRelatedDirectories,
+} from "reynard-project-architecture";
 
 // Get directory by name
-const packages = getDirectoryDefinition('packages');
+const packages = getDirectoryDefinition("packages");
 console.log(packages?.description); // "Main source code packages..."
 
 // Get directory by path
-const backend = getDirectoryDefinitionByPath('backend');
+const backend = getDirectoryDefinitionByPath("backend");
 
 // Get directories by category
-const sourceDirs = getDirectoriesByCategory('source');
-const criticalDirs = getDirectoriesByImportance('critical');
+const sourceDirs = getDirectoriesByCategory("source");
+const criticalDirs = getDirectoriesByImportance("critical");
 
 // Get related directories
-const relatedToPackages = getRelatedDirectories('packages');
+const relatedToPackages = getRelatedDirectories("packages");
 ```
 
 #### File Pattern Matching
 
 ```typescript
-import { 
+import {
   shouldExcludeFile,
   shouldIncludeFile,
   getFileTypeFromExtension,
-  getDirectoryForFilePath
-} from 'reynard-project-architecture';
+  getDirectoryForFilePath,
+} from "reynard-project-architecture";
 
 // Check file inclusion/exclusion
-const shouldExclude = shouldExcludeFile('node_modules/react/index.js'); // true
-const shouldInclude = shouldIncludeFile('packages/components/src/Button.tsx'); // true
+const shouldExclude = shouldExcludeFile("node_modules/react/index.js"); // true
+const shouldInclude = shouldIncludeFile("packages/components/src/Button.tsx"); // true
 
 // Get file type from extension
-const fileType = getFileTypeFromExtension('Button.tsx'); // "typescript"
+const fileType = getFileTypeFromExtension("Button.tsx"); // "typescript"
 
 // Get directory for file path
-const directory = getDirectoryForFilePath('packages/components/src/Button.tsx');
+const directory = getDirectoryForFilePath("packages/components/src/Button.tsx");
 console.log(directory?.name); // "packages"
 ```
 
 #### Project Validation
 
 ```typescript
-import { 
-  validateProjectStructure,
-  generateProjectStructureReport
-} from 'reynard-project-architecture';
+import { validateProjectStructure, generateProjectStructureReport } from "reynard-project-architecture";
 
 // Validate project structure
 const validation = validateProjectStructure();
@@ -223,11 +217,11 @@ console.log(report); // Markdown-formatted report
 ### VS Code Integration
 
 ```typescript
-import { 
+import {
   generateVSCodeTasksConfig,
   generateVSCodeWorkspaceConfig,
-  generateQueueWatcherTask
-} from 'reynard-project-architecture';
+  generateQueueWatcherTask,
+} from "reynard-project-architecture";
 
 // Generate complete VS Code tasks configuration
 const tasksConfig = generateVSCodeTasksConfig();
@@ -244,14 +238,14 @@ const watcherTask = generateQueueWatcherTask();
 Here's a comprehensive example demonstrating the package's capabilities:
 
 ```typescript
-import { 
+import {
   REYNARD_ARCHITECTURE,
   getWatchableDirectories,
   queryDirectories,
   shouldIncludeFile,
   getDirectoryDefinition,
-  validateProjectStructure
-} from 'reynard-project-architecture';
+  validateProjectStructure,
+} from "reynard-project-architecture";
 
 // 1. Basic architecture information
 console.log(`Project: ${REYNARD_ARCHITECTURE.name}`);
@@ -259,30 +253,30 @@ console.log(`Total directories: ${REYNARD_ARCHITECTURE.directories.length}`);
 
 // 2. Get watchable directories for file watchers
 const watchableDirs = getWatchableDirectories();
-console.log('Watchable directories:', watchableDirs);
+console.log("Watchable directories:", watchableDirs);
 
 // 3. Query critical source directories
-const criticalSource = queryDirectories({ 
-  category: 'source', 
-  importance: 'critical' 
+const criticalSource = queryDirectories({
+  category: "source",
+  importance: "critical",
 });
-console.log('Critical source directories:', criticalSource.directories);
+console.log("Critical source directories:", criticalSource.directories);
 
 // 4. Check file patterns
 const testFiles = [
-  'packages/components/src/Button.tsx',
-  'node_modules/react/index.js',
-  'dist/build.js',
-  'docs/README.md'
+  "packages/components/src/Button.tsx",
+  "node_modules/react/index.js",
+  "dist/build.js",
+  "docs/README.md",
 ];
 
 testFiles.forEach(file => {
   const shouldInclude = shouldIncludeFile(file);
-  console.log(`${file}: ${shouldInclude ? 'Include' : 'Exclude'}`);
+  console.log(`${file}: ${shouldInclude ? "Include" : "Exclude"}`);
 });
 
 // 5. Get directory information
-const packages = getDirectoryDefinition('packages');
+const packages = getDirectoryDefinition("packages");
 if (packages) {
   console.log(`Packages directory: ${packages.description}`);
   console.log(`Relationships: ${packages.relationships.length}`);
@@ -371,17 +365,17 @@ The package supports various configuration options for queries:
 
 ```typescript
 interface PathResolutionOptions {
-  absolute?: boolean;           // Resolve to absolute paths
-  includeOptional?: boolean;    // Include optional directories
-  includeGenerated?: boolean;   // Include generated directories
-  includeThirdParty?: boolean;  // Include third-party directories
+  absolute?: boolean; // Resolve to absolute paths
+  includeOptional?: boolean; // Include optional directories
+  includeGenerated?: boolean; // Include generated directories
+  includeThirdParty?: boolean; // Include third-party directories
   category?: DirectoryCategory; // Filter by category
   importance?: ImportanceLevel; // Filter by importance
-  watchable?: boolean;          // Filter by watchable flag
-  buildable?: boolean;          // Filter by buildable flag
-  testable?: boolean;           // Filter by testable flag
-  lintable?: boolean;           // Filter by lintable flag
-  documentable?: boolean;       // Filter by documentable flag
+  watchable?: boolean; // Filter by watchable flag
+  buildable?: boolean; // Filter by buildable flag
+  testable?: boolean; // Filter by testable flag
+  lintable?: boolean; // Filter by lintable flag
+  documentable?: boolean; // Filter by documentable flag
 }
 ```
 
@@ -451,4 +445,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-*🦊 Part of the Reynard Framework - Cunning agile development tools*
+_🦊 Part of the Reynard Framework - Cunning agile development tools_

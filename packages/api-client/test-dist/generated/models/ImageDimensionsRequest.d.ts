@@ -15,24 +15,30 @@
  * @interface ImageDimensionsRequest
  */
 export interface ImageDimensionsRequest {
-    /**
-     * Image width
-     * @type {number}
-     * @memberof ImageDimensionsRequest
-     */
-    width: number;
-    /**
-     * Image height
-     * @type {number}
-     * @memberof ImageDimensionsRequest
-     */
-    height: number;
+  /**
+   * Image width
+   * @type {number}
+   * @memberof ImageDimensionsRequest
+   */
+  width: number;
+  /**
+   * Image height
+   * @type {number}
+   * @memberof ImageDimensionsRequest
+   */
+  height: number;
 }
 /**
  * Check if a given object implements the ImageDimensionsRequest interface.
  */
 export declare function instanceOfImageDimensionsRequest(value: object): value is ImageDimensionsRequest;
 export declare function ImageDimensionsRequestFromJSON(json: any): ImageDimensionsRequest;
-export declare function ImageDimensionsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageDimensionsRequest;
+export declare function ImageDimensionsRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ImageDimensionsRequest;
 export declare function ImageDimensionsRequestToJSON(json: any): ImageDimensionsRequest;
-export declare function ImageDimensionsRequestToJSONTyped(value?: ImageDimensionsRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function ImageDimensionsRequestToJSONTyped(
+  value?: ImageDimensionsRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

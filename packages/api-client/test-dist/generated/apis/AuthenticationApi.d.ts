@@ -9,44 +9,44 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
-import type { TokenResponse, UserCreate, UserPublic, UserUpdate } from '../models/index';
+import * as runtime from "../runtime";
+import type { TokenResponse, UserCreate, UserPublic, UserUpdate } from "../models/index";
 export interface ChangePasswordApiAuthChangePasswordPostRequest {
-    currentPassword: string;
-    newPassword: string;
+  currentPassword: string;
+  newPassword: string;
 }
 export interface DeleteUserApiAuthUsersUsernameDeleteRequest {
-    username: string;
+  username: string;
 }
 export interface GetUserApiAuthUsersUsernameGetRequest {
-    username: string;
+  username: string;
 }
 export interface LoginApiAuthLoginPostRequest {
-    username: string;
-    password: string;
-    grantType?: string | null;
-    scope?: string;
-    clientId?: string | null;
-    clientSecret?: string | null;
+  username: string;
+  password: string;
+  grantType?: string | null;
+  scope?: string;
+  clientId?: string | null;
+  clientSecret?: string | null;
 }
 export interface LogoutApiAuthLogoutPostRequest {
-    token: string;
+  token: string;
 }
 export interface RefreshTokensApiAuthRefreshPostRequest {
-    refreshToken: string;
+  refreshToken: string;
 }
 export interface RegisterApiAuthRegisterPostRequest {
-    userCreate: UserCreate;
+  userCreate: UserCreate;
 }
 export interface RevokeUserTokensApiAuthUsersUsernameRevokeTokensPostRequest {
-    username: string;
+  username: string;
 }
 export interface UpdateCurrentUserApiAuthMePutRequest {
-    userUpdate: UserUpdate;
+  userUpdate: UserUpdate;
 }
 export interface UpdateUserApiAuthUsersUsernamePutRequest {
-    username: string;
-    userUpdate: UserUpdate;
+  username: string;
+  userUpdate: UserUpdate;
 }
 /**
  * AuthenticationApi - interface
@@ -55,388 +55,540 @@ export interface UpdateUserApiAuthUsersUsernamePutRequest {
  * @interface AuthenticationApiInterface
  */
 export interface AuthenticationApiInterface {
-    /**
-     * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
-     * @summary Change Password
-     * @param {string} currentPassword
-     * @param {string} newPassword
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    changePasswordApiAuthChangePasswordPostRaw(requestParameters: ChangePasswordApiAuthChangePasswordPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
-     * Change Password
-     */
-    changePasswordApiAuthChangePasswordPost(requestParameters: ChangePasswordApiAuthChangePasswordPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * @summary Cleanup Expired Tokens
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    cleanupExpiredTokensApiAuthCleanupPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Cleanup Expired Tokens
-     */
-    cleanupExpiredTokensApiAuthCleanupPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
-     * @summary Delete User
-     * @param {string} username
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    deleteUserApiAuthUsersUsernameDeleteRaw(requestParameters: DeleteUserApiAuthUsersUsernameDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
-     * Delete User
-     */
-    deleteUserApiAuthUsersUsernameDelete(requestParameters: DeleteUserApiAuthUsersUsernameDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
-     * @summary Get Auth Stats
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    getAuthStatsApiAuthStatsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
-     * Get Auth Stats
-     */
-    getAuthStatsApiAuthStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
-     * @summary Get Current User Info
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    getCurrentUserInfoApiAuthMeGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
-     * Get Current User Info
-     */
-    getCurrentUserInfoApiAuthMeGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
-    /**
-     * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
-     * @summary Get User
-     * @param {string} username
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    getUserApiAuthUsersUsernameGetRaw(requestParameters: GetUserApiAuthUsersUsernameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
-     * Get User
-     */
-    getUserApiAuthUsersUsernameGet(requestParameters: GetUserApiAuthUsersUsernameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
-    /**
-     * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
-     * @summary List Users
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    listUsersApiAuthUsersGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserPublic>>>;
-    /**
-     * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
-     * List Users
-     */
-    listUsersApiAuthUsersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserPublic>>;
-    /**
-     * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
-     * @summary Login
-     * @param {string} username
-     * @param {string} password
-     * @param {string} [grantType]
-     * @param {string} [scope]
-     * @param {string} [clientId]
-     * @param {string} [clientSecret]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    loginApiAuthLoginPostRaw(requestParameters: LoginApiAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TokenResponse>>;
-    /**
-     * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
-     * Login
-     */
-    loginApiAuthLoginPost(requestParameters: LoginApiAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TokenResponse>;
-    /**
-     * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * @summary Logout
-     * @param {string} token
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    logoutApiAuthLogoutPostRaw(requestParameters: LogoutApiAuthLogoutPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Logout
-     */
-    logoutApiAuthLogoutPost(requestParameters: LogoutApiAuthLogoutPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
-     * @summary Refresh Tokens
-     * @param {string} refreshToken
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    refreshTokensApiAuthRefreshPostRaw(requestParameters: RefreshTokensApiAuthRefreshPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TokenResponse>>;
-    /**
-     * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
-     * Refresh Tokens
-     */
-    refreshTokensApiAuthRefreshPost(requestParameters: RefreshTokensApiAuthRefreshPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TokenResponse>;
-    /**
-     * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
-     * @summary Register
-     * @param {UserCreate} userCreate
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    registerApiAuthRegisterPostRaw(requestParameters: RegisterApiAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
-     * Register
-     */
-    registerApiAuthRegisterPost(requestParameters: RegisterApiAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
-    /**
-     * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * @summary Revoke User Tokens
-     * @param {string} username
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    revokeUserTokensApiAuthUsersUsernameRevokeTokensPostRaw(requestParameters: RevokeUserTokensApiAuthUsersUsernameRevokeTokensPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Revoke User Tokens
-     */
-    revokeUserTokensApiAuthUsersUsernameRevokeTokensPost(requestParameters: RevokeUserTokensApiAuthUsersUsernameRevokeTokensPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
-     * @summary Update Current User
-     * @param {UserUpdate} userUpdate
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    updateCurrentUserApiAuthMePutRaw(requestParameters: UpdateCurrentUserApiAuthMePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
-     * Update Current User
-     */
-    updateCurrentUserApiAuthMePut(requestParameters: UpdateCurrentUserApiAuthMePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
-    /**
-     * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
-     * @summary Update User
-     * @param {string} username
-     * @param {UserUpdate} userUpdate
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuthenticationApiInterface
-     */
-    updateUserApiAuthUsersUsernamePutRaw(requestParameters: UpdateUserApiAuthUsersUsernamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
-     * Update User
-     */
-    updateUserApiAuthUsersUsernamePut(requestParameters: UpdateUserApiAuthUsersUsernamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
+  /**
+   * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
+   * @summary Change Password
+   * @param {string} currentPassword
+   * @param {string} newPassword
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  changePasswordApiAuthChangePasswordPostRaw(
+    requestParameters: ChangePasswordApiAuthChangePasswordPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
+   * Change Password
+   */
+  changePasswordApiAuthChangePasswordPost(
+    requestParameters: ChangePasswordApiAuthChangePasswordPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * @summary Cleanup Expired Tokens
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  cleanupExpiredTokensApiAuthCleanupPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Cleanup Expired Tokens
+   */
+  cleanupExpiredTokensApiAuthCleanupPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
+   * @summary Delete User
+   * @param {string} username
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  deleteUserApiAuthUsersUsernameDeleteRaw(
+    requestParameters: DeleteUserApiAuthUsersUsernameDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
+   * Delete User
+   */
+  deleteUserApiAuthUsersUsernameDelete(
+    requestParameters: DeleteUserApiAuthUsersUsernameDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
+   * @summary Get Auth Stats
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  getAuthStatsApiAuthStatsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
+   * Get Auth Stats
+   */
+  getAuthStatsApiAuthStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
+   * @summary Get Current User Info
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  getCurrentUserInfoApiAuthMeGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
+   * Get Current User Info
+   */
+  getCurrentUserInfoApiAuthMeGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
+  /**
+   * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
+   * @summary Get User
+   * @param {string} username
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  getUserApiAuthUsersUsernameGetRaw(
+    requestParameters: GetUserApiAuthUsersUsernameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
+   * Get User
+   */
+  getUserApiAuthUsersUsernameGet(
+    requestParameters: GetUserApiAuthUsersUsernameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<UserPublic>;
+  /**
+   * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
+   * @summary List Users
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  listUsersApiAuthUsersGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<UserPublic>>>;
+  /**
+   * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
+   * List Users
+   */
+  listUsersApiAuthUsersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserPublic>>;
+  /**
+   * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
+   * @summary Login
+   * @param {string} username
+   * @param {string} password
+   * @param {string} [grantType]
+   * @param {string} [scope]
+   * @param {string} [clientId]
+   * @param {string} [clientSecret]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  loginApiAuthLoginPostRaw(
+    requestParameters: LoginApiAuthLoginPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<TokenResponse>>;
+  /**
+   * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
+   * Login
+   */
+  loginApiAuthLoginPost(
+    requestParameters: LoginApiAuthLoginPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<TokenResponse>;
+  /**
+   * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * @summary Logout
+   * @param {string} token
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  logoutApiAuthLogoutPostRaw(
+    requestParameters: LogoutApiAuthLogoutPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Logout
+   */
+  logoutApiAuthLogoutPost(
+    requestParameters: LogoutApiAuthLogoutPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
+   * @summary Refresh Tokens
+   * @param {string} refreshToken
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  refreshTokensApiAuthRefreshPostRaw(
+    requestParameters: RefreshTokensApiAuthRefreshPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<TokenResponse>>;
+  /**
+   * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
+   * Refresh Tokens
+   */
+  refreshTokensApiAuthRefreshPost(
+    requestParameters: RefreshTokensApiAuthRefreshPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<TokenResponse>;
+  /**
+   * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
+   * @summary Register
+   * @param {UserCreate} userCreate
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  registerApiAuthRegisterPostRaw(
+    requestParameters: RegisterApiAuthRegisterPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
+   * Register
+   */
+  registerApiAuthRegisterPost(
+    requestParameters: RegisterApiAuthRegisterPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<UserPublic>;
+  /**
+   * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * @summary Revoke User Tokens
+   * @param {string} username
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  revokeUserTokensApiAuthUsersUsernameRevokeTokensPostRaw(
+    requestParameters: RevokeUserTokensApiAuthUsersUsernameRevokeTokensPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Revoke User Tokens
+   */
+  revokeUserTokensApiAuthUsersUsernameRevokeTokensPost(
+    requestParameters: RevokeUserTokensApiAuthUsersUsernameRevokeTokensPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
+   * @summary Update Current User
+   * @param {UserUpdate} userUpdate
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  updateCurrentUserApiAuthMePutRaw(
+    requestParameters: UpdateCurrentUserApiAuthMePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
+   * Update Current User
+   */
+  updateCurrentUserApiAuthMePut(
+    requestParameters: UpdateCurrentUserApiAuthMePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<UserPublic>;
+  /**
+   * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
+   * @summary Update User
+   * @param {string} username
+   * @param {UserUpdate} userUpdate
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof AuthenticationApiInterface
+   */
+  updateUserApiAuthUsersUsernamePutRaw(
+    requestParameters: UpdateUserApiAuthUsersUsernamePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
+   * Update User
+   */
+  updateUserApiAuthUsersUsernamePut(
+    requestParameters: UpdateUserApiAuthUsersUsernamePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<UserPublic>;
 }
 /**
  *
  */
 export declare class AuthenticationApi extends runtime.BaseAPI implements AuthenticationApiInterface {
-    /**
-     * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
-     * Change Password
-     */
-    changePasswordApiAuthChangePasswordPostRaw(requestParameters: ChangePasswordApiAuthChangePasswordPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
-     * Change Password
-     */
-    changePasswordApiAuthChangePasswordPost(requestParameters: ChangePasswordApiAuthChangePasswordPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Cleanup Expired Tokens
-     */
-    cleanupExpiredTokensApiAuthCleanupPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Cleanup Expired Tokens
-     */
-    cleanupExpiredTokensApiAuthCleanupPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
-     * Delete User
-     */
-    deleteUserApiAuthUsersUsernameDeleteRaw(requestParameters: DeleteUserApiAuthUsersUsernameDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
-     * Delete User
-     */
-    deleteUserApiAuthUsersUsernameDelete(requestParameters: DeleteUserApiAuthUsersUsernameDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
-     * Get Auth Stats
-     */
-    getAuthStatsApiAuthStatsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
-     * Get Auth Stats
-     */
-    getAuthStatsApiAuthStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
-     * Get Current User Info
-     */
-    getCurrentUserInfoApiAuthMeGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
-     * Get Current User Info
-     */
-    getCurrentUserInfoApiAuthMeGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
-    /**
-     * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
-     * Get User
-     */
-    getUserApiAuthUsersUsernameGetRaw(requestParameters: GetUserApiAuthUsersUsernameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
-     * Get User
-     */
-    getUserApiAuthUsersUsernameGet(requestParameters: GetUserApiAuthUsersUsernameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
-    /**
-     * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
-     * List Users
-     */
-    listUsersApiAuthUsersGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<UserPublic>>>;
-    /**
-     * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
-     * List Users
-     */
-    listUsersApiAuthUsersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserPublic>>;
-    /**
-     * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
-     * Login
-     */
-    loginApiAuthLoginPostRaw(requestParameters: LoginApiAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TokenResponse>>;
-    /**
-     * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
-     * Login
-     */
-    loginApiAuthLoginPost(requestParameters: LoginApiAuthLoginPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TokenResponse>;
-    /**
-     * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Logout
-     */
-    logoutApiAuthLogoutPostRaw(requestParameters: LogoutApiAuthLogoutPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Logout
-     */
-    logoutApiAuthLogoutPost(requestParameters: LogoutApiAuthLogoutPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
-     * Refresh Tokens
-     */
-    refreshTokensApiAuthRefreshPostRaw(requestParameters: RefreshTokensApiAuthRefreshPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TokenResponse>>;
-    /**
-     * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
-     * Refresh Tokens
-     */
-    refreshTokensApiAuthRefreshPost(requestParameters: RefreshTokensApiAuthRefreshPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TokenResponse>;
-    /**
-     * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
-     * Register
-     */
-    registerApiAuthRegisterPostRaw(requestParameters: RegisterApiAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
-     * Register
-     */
-    registerApiAuthRegisterPost(requestParameters: RegisterApiAuthRegisterPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
-    /**
-     * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Revoke User Tokens
-     */
-    revokeUserTokensApiAuthUsersUsernameRevokeTokensPostRaw(requestParameters: RevokeUserTokensApiAuthUsersUsernameRevokeTokensPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: string | null;
-    }>>;
-    /**
-     * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Revoke User Tokens
-     */
-    revokeUserTokensApiAuthUsersUsernameRevokeTokensPost(requestParameters: RevokeUserTokensApiAuthUsersUsernameRevokeTokensPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: string | null;
-    }>;
-    /**
-     * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
-     * Update Current User
-     */
-    updateCurrentUserApiAuthMePutRaw(requestParameters: UpdateCurrentUserApiAuthMePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
-     * Update Current User
-     */
-    updateCurrentUserApiAuthMePut(requestParameters: UpdateCurrentUserApiAuthMePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
-    /**
-     * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
-     * Update User
-     */
-    updateUserApiAuthUsersUsernamePutRaw(requestParameters: UpdateUserApiAuthUsersUsernamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserPublic>>;
-    /**
-     * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
-     * Update User
-     */
-    updateUserApiAuthUsersUsernamePut(requestParameters: UpdateUserApiAuthUsersUsernamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
+  /**
+   * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
+   * Change Password
+   */
+  changePasswordApiAuthChangePasswordPostRaw(
+    requestParameters: ChangePasswordApiAuthChangePasswordPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
+   * Change Password
+   */
+  changePasswordApiAuthChangePasswordPost(
+    requestParameters: ChangePasswordApiAuthChangePasswordPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Cleanup Expired Tokens
+   */
+  cleanupExpiredTokensApiAuthCleanupPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Cleanup Expired Tokens
+   */
+  cleanupExpiredTokensApiAuthCleanupPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
+   * Delete User
+   */
+  deleteUserApiAuthUsersUsernameDeleteRaw(
+    requestParameters: DeleteUserApiAuthUsersUsernameDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
+   * Delete User
+   */
+  deleteUserApiAuthUsersUsernameDelete(
+    requestParameters: DeleteUserApiAuthUsersUsernameDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
+   * Get Auth Stats
+   */
+  getAuthStatsApiAuthStatsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
+   * Get Auth Stats
+   */
+  getAuthStatsApiAuthStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
+   * Get Current User Info
+   */
+  getCurrentUserInfoApiAuthMeGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
+   * Get Current User Info
+   */
+  getCurrentUserInfoApiAuthMeGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserPublic>;
+  /**
+   * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
+   * Get User
+   */
+  getUserApiAuthUsersUsernameGetRaw(
+    requestParameters: GetUserApiAuthUsersUsernameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
+   * Get User
+   */
+  getUserApiAuthUsersUsernameGet(
+    requestParameters: GetUserApiAuthUsersUsernameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<UserPublic>;
+  /**
+   * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
+   * List Users
+   */
+  listUsersApiAuthUsersGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<UserPublic>>>;
+  /**
+   * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
+   * List Users
+   */
+  listUsersApiAuthUsersGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<UserPublic>>;
+  /**
+   * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
+   * Login
+   */
+  loginApiAuthLoginPostRaw(
+    requestParameters: LoginApiAuthLoginPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<TokenResponse>>;
+  /**
+   * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
+   * Login
+   */
+  loginApiAuthLoginPost(
+    requestParameters: LoginApiAuthLoginPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<TokenResponse>;
+  /**
+   * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Logout
+   */
+  logoutApiAuthLogoutPostRaw(
+    requestParameters: LogoutApiAuthLogoutPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Logout
+   */
+  logoutApiAuthLogoutPost(
+    requestParameters: LogoutApiAuthLogoutPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
+   * Refresh Tokens
+   */
+  refreshTokensApiAuthRefreshPostRaw(
+    requestParameters: RefreshTokensApiAuthRefreshPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<TokenResponse>>;
+  /**
+   * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
+   * Refresh Tokens
+   */
+  refreshTokensApiAuthRefreshPost(
+    requestParameters: RefreshTokensApiAuthRefreshPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<TokenResponse>;
+  /**
+   * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
+   * Register
+   */
+  registerApiAuthRegisterPostRaw(
+    requestParameters: RegisterApiAuthRegisterPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
+   * Register
+   */
+  registerApiAuthRegisterPost(
+    requestParameters: RegisterApiAuthRegisterPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<UserPublic>;
+  /**
+   * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Revoke User Tokens
+   */
+  revokeUserTokensApiAuthUsersUsernameRevokeTokensPostRaw(
+    requestParameters: RevokeUserTokensApiAuthUsersUsernameRevokeTokensPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: string | null;
+    }>
+  >;
+  /**
+   * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Revoke User Tokens
+   */
+  revokeUserTokensApiAuthUsersUsernameRevokeTokensPost(
+    requestParameters: RevokeUserTokensApiAuthUsersUsernameRevokeTokensPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: string | null;
+  }>;
+  /**
+   * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
+   * Update Current User
+   */
+  updateCurrentUserApiAuthMePutRaw(
+    requestParameters: UpdateCurrentUserApiAuthMePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
+   * Update Current User
+   */
+  updateCurrentUserApiAuthMePut(
+    requestParameters: UpdateCurrentUserApiAuthMePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<UserPublic>;
+  /**
+   * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
+   * Update User
+   */
+  updateUserApiAuthUsersUsernamePutRaw(
+    requestParameters: UpdateUserApiAuthUsersUsernamePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<UserPublic>>;
+  /**
+   * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
+   * Update User
+   */
+  updateUserApiAuthUsersUsernamePut(
+    requestParameters: UpdateUserApiAuthUsersUsernamePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<UserPublic>;
 }

@@ -22,48 +22,49 @@ exports.SyntaxSearchRequestToJSONTyped = SyntaxSearchRequestToJSONTyped;
  * Check if a given object implements the SyntaxSearchRequest interface.
  */
 function instanceOfSyntaxSearchRequest(value) {
-    if (!('query' in value) || value['query'] === undefined)
-        return false;
-    return true;
+  if (!("query" in value) || value["query"] === undefined) return false;
+  return true;
 }
 function SyntaxSearchRequestFromJSON(json) {
-    return SyntaxSearchRequestFromJSONTyped(json, false);
+  return SyntaxSearchRequestFromJSONTyped(json, false);
 }
 function SyntaxSearchRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'query': json['query'],
-        'maxResults': json['max_results'] == null ? undefined : json['max_results'],
-        'fileTypes': json['file_types'] == null ? undefined : json['file_types'],
-        'directories': json['directories'] == null ? undefined : json['directories'],
-        'caseSensitive': json['case_sensitive'] == null ? undefined : json['case_sensitive'],
-        'wholeWord': json['whole_word'] == null ? undefined : json['whole_word'],
-        'contextLines': json['context_lines'] == null ? undefined : json['context_lines'],
-        'patternType': json['pattern_type'] == null ? undefined : json['pattern_type'],
-        'language': json['language'] == null ? undefined : json['language'],
-        'expandQuery': json['expand_query'] == null ? undefined : json['expand_query'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    query: json["query"],
+    maxResults: json["max_results"] == null ? undefined : json["max_results"],
+    fileTypes: json["file_types"] == null ? undefined : json["file_types"],
+    directories: json["directories"] == null ? undefined : json["directories"],
+    caseSensitive: json["case_sensitive"] == null ? undefined : json["case_sensitive"],
+    wholeWord: json["whole_word"] == null ? undefined : json["whole_word"],
+    contextLines: json["context_lines"] == null ? undefined : json["context_lines"],
+    patternType: json["pattern_type"] == null ? undefined : json["pattern_type"],
+    language: json["language"] == null ? undefined : json["language"],
+    expandQuery: json["expand_query"] == null ? undefined : json["expand_query"],
+  };
 }
 function SyntaxSearchRequestToJSON(json) {
-    return SyntaxSearchRequestToJSONTyped(json, false);
+  return SyntaxSearchRequestToJSONTyped(json, false);
 }
 function SyntaxSearchRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'query': value['query'],
-        'max_results': value['maxResults'],
-        'file_types': value['fileTypes'],
-        'directories': value['directories'],
-        'case_sensitive': value['caseSensitive'],
-        'whole_word': value['wholeWord'],
-        'context_lines': value['contextLines'],
-        'pattern_type': value['patternType'],
-        'language': value['language'],
-        'expand_query': value['expandQuery'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    query: value["query"],
+    max_results: value["maxResults"],
+    file_types: value["fileTypes"],
+    directories: value["directories"],
+    case_sensitive: value["caseSensitive"],
+    whole_word: value["wholeWord"],
+    context_lines: value["contextLines"],
+    pattern_type: value["patternType"],
+    language: value["language"],
+    expand_query: value["expandQuery"],
+  };
 }

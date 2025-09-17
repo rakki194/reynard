@@ -9,51 +9,57 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { Model } from './Model';
-import type { MaxLength } from './MaxLength';
+import type { Model } from "./Model";
+import type { MaxLength } from "./MaxLength";
 /**
  * Secure summarization request model.
  * @export
  * @interface SecureSummarizationRequest
  */
 export interface SecureSummarizationRequest {
-    [key: string]: any | any;
-    /**
-     * Text to summarize
-     * @type {string}
-     * @memberof SecureSummarizationRequest
-     */
-    text: string;
-    /**
-     * Type of content
-     * @type {string}
-     * @memberof SecureSummarizationRequest
-     */
-    contentType?: string;
-    /**
-     * Level of detail for summary
-     * @type {string}
-     * @memberof SecureSummarizationRequest
-     */
-    summaryLevel?: string;
-    /**
-     *
-     * @type {MaxLength}
-     * @memberof SecureSummarizationRequest
-     */
-    maxLength?: MaxLength;
-    /**
-     *
-     * @type {Model}
-     * @memberof SecureSummarizationRequest
-     */
-    model?: Model;
+  [key: string]: any | any;
+  /**
+   * Text to summarize
+   * @type {string}
+   * @memberof SecureSummarizationRequest
+   */
+  text: string;
+  /**
+   * Type of content
+   * @type {string}
+   * @memberof SecureSummarizationRequest
+   */
+  contentType?: string;
+  /**
+   * Level of detail for summary
+   * @type {string}
+   * @memberof SecureSummarizationRequest
+   */
+  summaryLevel?: string;
+  /**
+   *
+   * @type {MaxLength}
+   * @memberof SecureSummarizationRequest
+   */
+  maxLength?: MaxLength;
+  /**
+   *
+   * @type {Model}
+   * @memberof SecureSummarizationRequest
+   */
+  model?: Model;
 }
 /**
  * Check if a given object implements the SecureSummarizationRequest interface.
  */
 export declare function instanceOfSecureSummarizationRequest(value: object): value is SecureSummarizationRequest;
 export declare function SecureSummarizationRequestFromJSON(json: any): SecureSummarizationRequest;
-export declare function SecureSummarizationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SecureSummarizationRequest;
+export declare function SecureSummarizationRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): SecureSummarizationRequest;
 export declare function SecureSummarizationRequestToJSON(json: any): SecureSummarizationRequest;
-export declare function SecureSummarizationRequestToJSONTyped(value?: SecureSummarizationRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function SecureSummarizationRequestToJSONTyped(
+  value?: SecureSummarizationRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

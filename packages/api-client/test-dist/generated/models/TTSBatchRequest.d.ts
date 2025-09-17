@@ -15,48 +15,48 @@
  * @interface TTSBatchRequest
  */
 export interface TTSBatchRequest {
-    /**
-     * List of texts to synthesize
-     * @type {Array<string>}
-     * @memberof TTSBatchRequest
-     */
-    texts: Array<string>;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSBatchRequest
-     */
-    backend?: string | null;
-    /**
-     * Voice to use for synthesis
-     * @type {string}
-     * @memberof TTSBatchRequest
-     */
-    voice?: string;
-    /**
-     * Speech speed multiplier
-     * @type {number}
-     * @memberof TTSBatchRequest
-     */
-    speed?: number;
-    /**
-     * Language code
-     * @type {string}
-     * @memberof TTSBatchRequest
-     */
-    lang?: string;
-    /**
-     * Convert output to OGG format
-     * @type {boolean}
-     * @memberof TTSBatchRequest
-     */
-    toOgg?: boolean;
-    /**
-     * Convert output to Opus format
-     * @type {boolean}
-     * @memberof TTSBatchRequest
-     */
-    toOpus?: boolean;
+  /**
+   * List of texts to synthesize
+   * @type {Array<string>}
+   * @memberof TTSBatchRequest
+   */
+  texts: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSBatchRequest
+   */
+  backend?: string | null;
+  /**
+   * Voice to use for synthesis
+   * @type {string}
+   * @memberof TTSBatchRequest
+   */
+  voice?: string;
+  /**
+   * Speech speed multiplier
+   * @type {number}
+   * @memberof TTSBatchRequest
+   */
+  speed?: number;
+  /**
+   * Language code
+   * @type {string}
+   * @memberof TTSBatchRequest
+   */
+  lang?: string;
+  /**
+   * Convert output to OGG format
+   * @type {boolean}
+   * @memberof TTSBatchRequest
+   */
+  toOgg?: boolean;
+  /**
+   * Convert output to Opus format
+   * @type {boolean}
+   * @memberof TTSBatchRequest
+   */
+  toOpus?: boolean;
 }
 /**
  * Check if a given object implements the TTSBatchRequest interface.

@@ -9,49 +9,55 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { NLWebSuggestion } from './NLWebSuggestion';
+import type { NLWebSuggestion } from "./NLWebSuggestion";
 /**
  * Response containing tool suggestions.
  * @export
  * @interface NLWebSuggestionResponse
  */
 export interface NLWebSuggestionResponse {
-    /**
-     * List of tool suggestions
-     * @type {Array<NLWebSuggestion>}
-     * @memberof NLWebSuggestionResponse
-     */
-    suggestions: Array<NLWebSuggestion>;
-    /**
-     * Original query
-     * @type {string}
-     * @memberof NLWebSuggestionResponse
-     */
-    query: string;
-    /**
-     * Processing time in milliseconds
-     * @type {number}
-     * @memberof NLWebSuggestionResponse
-     */
-    processingTimeMs: number;
-    /**
-     * Whether this was served from cache
-     * @type {boolean}
-     * @memberof NLWebSuggestionResponse
-     */
-    cacheHit?: boolean;
-    /**
-     * Total number of tools considered
-     * @type {number}
-     * @memberof NLWebSuggestionResponse
-     */
-    totalToolsConsidered: number;
+  /**
+   * List of tool suggestions
+   * @type {Array<NLWebSuggestion>}
+   * @memberof NLWebSuggestionResponse
+   */
+  suggestions: Array<NLWebSuggestion>;
+  /**
+   * Original query
+   * @type {string}
+   * @memberof NLWebSuggestionResponse
+   */
+  query: string;
+  /**
+   * Processing time in milliseconds
+   * @type {number}
+   * @memberof NLWebSuggestionResponse
+   */
+  processingTimeMs: number;
+  /**
+   * Whether this was served from cache
+   * @type {boolean}
+   * @memberof NLWebSuggestionResponse
+   */
+  cacheHit?: boolean;
+  /**
+   * Total number of tools considered
+   * @type {number}
+   * @memberof NLWebSuggestionResponse
+   */
+  totalToolsConsidered: number;
 }
 /**
  * Check if a given object implements the NLWebSuggestionResponse interface.
  */
 export declare function instanceOfNLWebSuggestionResponse(value: object): value is NLWebSuggestionResponse;
 export declare function NLWebSuggestionResponseFromJSON(json: any): NLWebSuggestionResponse;
-export declare function NLWebSuggestionResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebSuggestionResponse;
+export declare function NLWebSuggestionResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): NLWebSuggestionResponse;
 export declare function NLWebSuggestionResponseToJSON(json: any): NLWebSuggestionResponse;
-export declare function NLWebSuggestionResponseToJSONTyped(value?: NLWebSuggestionResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function NLWebSuggestionResponseToJSONTyped(
+  value?: NLWebSuggestionResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

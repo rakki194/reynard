@@ -22,28 +22,30 @@ exports.ModelLoadRequestToJSONTyped = ModelLoadRequestToJSONTyped;
  * Check if a given object implements the ModelLoadRequest interface.
  */
 function instanceOfModelLoadRequest(value) {
-    return true;
+  return true;
 }
 function ModelLoadRequestFromJSON(json) {
-    return ModelLoadRequestFromJSONTyped(json, false);
+  return ModelLoadRequestFromJSONTyped(json, false);
 }
 function ModelLoadRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'config': json['config'] == null ? undefined : json['config'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    config: json["config"] == null ? undefined : json["config"],
+  };
 }
 function ModelLoadRequestToJSON(json) {
-    return ModelLoadRequestToJSONTyped(json, false);
+  return ModelLoadRequestToJSONTyped(json, false);
 }
 function ModelLoadRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'config': value['config'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    config: value["config"],
+  };
 }

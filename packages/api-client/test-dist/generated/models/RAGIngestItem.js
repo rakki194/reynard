@@ -22,32 +22,33 @@ exports.RAGIngestItemToJSONTyped = RAGIngestItemToJSONTyped;
  * Check if a given object implements the RAGIngestItem interface.
  */
 function instanceOfRAGIngestItem(value) {
-    if (!('content' in value) || value['content'] === undefined)
-        return false;
-    return true;
+  if (!("content" in value) || value["content"] === undefined) return false;
+  return true;
 }
 function RAGIngestItemFromJSON(json) {
-    return RAGIngestItemFromJSONTyped(json, false);
+  return RAGIngestItemFromJSONTyped(json, false);
 }
 function RAGIngestItemFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'source': json['source'] == null ? undefined : json['source'],
-        'content': json['content'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    source: json["source"] == null ? undefined : json["source"],
+    content: json["content"],
+  };
 }
 function RAGIngestItemToJSON(json) {
-    return RAGIngestItemToJSONTyped(json, false);
+  return RAGIngestItemToJSONTyped(json, false);
 }
 function RAGIngestItemToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'source': value['source'],
-        'content': value['content'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    source: value["source"],
+    content: value["content"],
+  };
 }

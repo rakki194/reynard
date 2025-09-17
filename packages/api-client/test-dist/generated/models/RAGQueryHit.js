@@ -23,68 +23,69 @@ var Id_1 = require("./Id");
  * Check if a given object implements the RAGQueryHit interface.
  */
 function instanceOfRAGQueryHit(value) {
-    if (!('score' in value) || value['score'] === undefined)
-        return false;
-    return true;
+  if (!("score" in value) || value["score"] === undefined) return false;
+  return true;
 }
 function RAGQueryHitFromJSON(json) {
-    return RAGQueryHitFromJSONTyped(json, false);
+  return RAGQueryHitFromJSONTyped(json, false);
 }
 function RAGQueryHitFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'id': json['id'] == null ? undefined : (0, Id_1.IdFromJSON)(json['id']),
-        'score': json['score'],
-        'highlights': json['highlights'] == null ? undefined : json['highlights'],
-        'extra': json['extra'] == null ? undefined : json['extra'],
-        'filePath': json['file_path'] == null ? undefined : json['file_path'],
-        'fileContent': json['file_content'] == null ? undefined : json['file_content'],
-        'fileMetadata': json['file_metadata'] == null ? undefined : json['file_metadata'],
-        'chunkIndex': json['chunk_index'] == null ? undefined : json['chunk_index'],
-        'chunkText': json['chunk_text'] == null ? undefined : json['chunk_text'],
-        'chunkTokens': json['chunk_tokens'] == null ? undefined : json['chunk_tokens'],
-        'chunkMetadata': json['chunk_metadata'] == null ? undefined : json['chunk_metadata'],
-        'imagePath': json['image_path'] == null ? undefined : json['image_path'],
-        'imageId': json['image_id'] == null ? undefined : json['image_id'],
-        'thumbnailPath': json['thumbnail_path'] == null ? undefined : json['thumbnail_path'],
-        'previewPath': json['preview_path'] == null ? undefined : json['preview_path'],
-        'imageMetadata': json['image_metadata'] == null ? undefined : json['image_metadata'],
-        'imageDimensions': json['image_dimensions'] == null ? undefined : json['image_dimensions'],
-        'imageSize': json['image_size'] == null ? undefined : json['image_size'],
-        'imageFormat': json['image_format'] == null ? undefined : json['image_format'],
-        'embeddingVector': json['embedding_vector'] == null ? undefined : json['embedding_vector'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    id: json["id"] == null ? undefined : (0, Id_1.IdFromJSON)(json["id"]),
+    score: json["score"],
+    highlights: json["highlights"] == null ? undefined : json["highlights"],
+    extra: json["extra"] == null ? undefined : json["extra"],
+    filePath: json["file_path"] == null ? undefined : json["file_path"],
+    fileContent: json["file_content"] == null ? undefined : json["file_content"],
+    fileMetadata: json["file_metadata"] == null ? undefined : json["file_metadata"],
+    chunkIndex: json["chunk_index"] == null ? undefined : json["chunk_index"],
+    chunkText: json["chunk_text"] == null ? undefined : json["chunk_text"],
+    chunkTokens: json["chunk_tokens"] == null ? undefined : json["chunk_tokens"],
+    chunkMetadata: json["chunk_metadata"] == null ? undefined : json["chunk_metadata"],
+    imagePath: json["image_path"] == null ? undefined : json["image_path"],
+    imageId: json["image_id"] == null ? undefined : json["image_id"],
+    thumbnailPath: json["thumbnail_path"] == null ? undefined : json["thumbnail_path"],
+    previewPath: json["preview_path"] == null ? undefined : json["preview_path"],
+    imageMetadata: json["image_metadata"] == null ? undefined : json["image_metadata"],
+    imageDimensions: json["image_dimensions"] == null ? undefined : json["image_dimensions"],
+    imageSize: json["image_size"] == null ? undefined : json["image_size"],
+    imageFormat: json["image_format"] == null ? undefined : json["image_format"],
+    embeddingVector: json["embedding_vector"] == null ? undefined : json["embedding_vector"],
+  };
 }
 function RAGQueryHitToJSON(json) {
-    return RAGQueryHitToJSONTyped(json, false);
+  return RAGQueryHitToJSONTyped(json, false);
 }
 function RAGQueryHitToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'id': (0, Id_1.IdToJSON)(value['id']),
-        'score': value['score'],
-        'highlights': value['highlights'],
-        'extra': value['extra'],
-        'file_path': value['filePath'],
-        'file_content': value['fileContent'],
-        'file_metadata': value['fileMetadata'],
-        'chunk_index': value['chunkIndex'],
-        'chunk_text': value['chunkText'],
-        'chunk_tokens': value['chunkTokens'],
-        'chunk_metadata': value['chunkMetadata'],
-        'image_path': value['imagePath'],
-        'image_id': value['imageId'],
-        'thumbnail_path': value['thumbnailPath'],
-        'preview_path': value['previewPath'],
-        'image_metadata': value['imageMetadata'],
-        'image_dimensions': value['imageDimensions'],
-        'image_size': value['imageSize'],
-        'image_format': value['imageFormat'],
-        'embedding_vector': value['embeddingVector'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    id: (0, Id_1.IdToJSON)(value["id"]),
+    score: value["score"],
+    highlights: value["highlights"],
+    extra: value["extra"],
+    file_path: value["filePath"],
+    file_content: value["fileContent"],
+    file_metadata: value["fileMetadata"],
+    chunk_index: value["chunkIndex"],
+    chunk_text: value["chunkText"],
+    chunk_tokens: value["chunkTokens"],
+    chunk_metadata: value["chunkMetadata"],
+    image_path: value["imagePath"],
+    image_id: value["imageId"],
+    thumbnail_path: value["thumbnailPath"],
+    preview_path: value["previewPath"],
+    image_metadata: value["imageMetadata"],
+    image_dimensions: value["imageDimensions"],
+    image_size: value["imageSize"],
+    image_format: value["imageFormat"],
+    embedding_vector: value["embeddingVector"],
+  };
 }

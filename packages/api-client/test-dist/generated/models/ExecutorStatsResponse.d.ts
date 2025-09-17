@@ -15,54 +15,60 @@
  * @interface ExecutorStatsResponse
  */
 export interface ExecutorStatsResponse {
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorStatsResponse
-     */
-    activeTasks: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorStatsResponse
-     */
-    completedTasks: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorStatsResponse
-     */
-    failedTasks: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorStatsResponse
-     */
-    averageExecutionTime: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorStatsResponse
-     */
-    totalExecutionTime: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorStatsResponse
-     */
-    maxConcurrentTasks: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorStatsResponse
-     */
-    currentConcurrentTasks: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorStatsResponse
+   */
+  activeTasks: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorStatsResponse
+   */
+  completedTasks: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorStatsResponse
+   */
+  failedTasks: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorStatsResponse
+   */
+  averageExecutionTime: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorStatsResponse
+   */
+  totalExecutionTime: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorStatsResponse
+   */
+  maxConcurrentTasks: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorStatsResponse
+   */
+  currentConcurrentTasks: number;
 }
 /**
  * Check if a given object implements the ExecutorStatsResponse interface.
  */
 export declare function instanceOfExecutorStatsResponse(value: object): value is ExecutorStatsResponse;
 export declare function ExecutorStatsResponseFromJSON(json: any): ExecutorStatsResponse;
-export declare function ExecutorStatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExecutorStatsResponse;
+export declare function ExecutorStatsResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ExecutorStatsResponse;
 export declare function ExecutorStatsResponseToJSON(json: any): ExecutorStatsResponse;
-export declare function ExecutorStatsResponseToJSONTyped(value?: ExecutorStatsResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ExecutorStatsResponseToJSONTyped(
+  value?: ExecutorStatsResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

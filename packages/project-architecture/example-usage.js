@@ -2,11 +2,11 @@
 
 /**
  * 🦊 Reynard Project Architecture - Example Usage
- * 
+ *
  * This script demonstrates the various capabilities of the project-architecture package.
  */
 
-import { 
+import {
   REYNARD_ARCHITECTURE,
   getWatchableDirectories,
   getBuildableDirectories,
@@ -14,7 +14,7 @@ import {
   getLintableDirectories,
   getDocumentableDirectories,
   getGlobalExcludePatterns,
-  getGlobalIncludePatterns
+  getGlobalIncludePatterns,
 } from "./dist/index.js";
 
 import {
@@ -30,7 +30,7 @@ import {
   getFileTypeFromExtension,
   getDirectoryForFilePath,
   validateProjectStructure,
-  generateProjectStructureReport
+  generateProjectStructureReport,
 } from "./dist/index.js";
 
 console.log("🦊 Reynard Project Architecture - Example Usage\n");
@@ -76,9 +76,9 @@ console.log();
 // 6. Directory Queries
 console.log("=== 6. Directory Queries ===");
 console.log("Critical source directories:");
-const criticalSource = queryDirectories({ 
-  category: "source", 
-  importance: "critical" 
+const criticalSource = queryDirectories({
+  category: "source",
+  importance: "critical",
 });
 criticalSource.directories.forEach(dir => {
   console.log(`  - ${dir.name}: ${dir.description}`);
@@ -93,7 +93,7 @@ const testFiles = [
   "dist/build.js",
   "docs/README.md",
   "backend/app/main.py",
-  "coverage/lcov-report/index.html"
+  "coverage/lcov-report/index.html",
 ];
 
 testFiles.forEach(file => {
@@ -101,10 +101,10 @@ testFiles.forEach(file => {
   const shouldInclude = shouldIncludeFile(file);
   const fileType = getFileTypeFromExtension(file);
   const directory = getDirectoryForFilePath(file);
-  
+
   console.log(`File: ${file}`);
   console.log(`  Type: ${fileType}`);
-  console.log(`  Directory: ${directory?.name || 'Unknown'}`);
+  console.log(`  Directory: ${directory?.name || "Unknown"}`);
   console.log(`  Should Exclude: ${shouldExclude}`);
   console.log(`  Should Include: ${shouldInclude}`);
   console.log();

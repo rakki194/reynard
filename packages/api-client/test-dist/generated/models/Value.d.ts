@@ -14,8 +14,7 @@
  * @export
  * @interface Value
  */
-export interface Value {
-}
+export interface Value {}
 /**
  * Check if a given object implements the Value interface.
  */

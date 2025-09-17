@@ -22,32 +22,33 @@ exports.BatchSummarizationRequestToJSONTyped = BatchSummarizationRequestToJSONTy
  * Check if a given object implements the BatchSummarizationRequest interface.
  */
 function instanceOfBatchSummarizationRequest(value) {
-    if (!('requests' in value) || value['requests'] === undefined)
-        return false;
-    return true;
+  if (!("requests" in value) || value["requests"] === undefined) return false;
+  return true;
 }
 function BatchSummarizationRequestFromJSON(json) {
-    return BatchSummarizationRequestFromJSONTyped(json, false);
+  return BatchSummarizationRequestFromJSONTyped(json, false);
 }
 function BatchSummarizationRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'requests': json['requests'],
-        'enableStreaming': json['enable_streaming'] == null ? undefined : json['enable_streaming'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    requests: json["requests"],
+    enableStreaming: json["enable_streaming"] == null ? undefined : json["enable_streaming"],
+  };
 }
 function BatchSummarizationRequestToJSON(json) {
-    return BatchSummarizationRequestToJSONTyped(json, false);
+  return BatchSummarizationRequestToJSONTyped(json, false);
 }
 function BatchSummarizationRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'requests': value['requests'],
-        'enable_streaming': value['enableStreaming'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    requests: value["requests"],
+    enable_streaming: value["enableStreaming"],
+  };
 }

@@ -2,11 +2,11 @@
 
 /**
  * 🦊 Reynard Project Architecture - Basic Usage Example
- * 
+ *
  * This script demonstrates the core capabilities of the project-architecture package.
  */
 
-import { 
+import {
   REYNARD_ARCHITECTURE,
   getWatchableDirectories,
   getBuildableDirectories,
@@ -14,7 +14,7 @@ import {
   queryDirectories,
   shouldIncludeFile,
   getDirectoryDefinition,
-  validateProjectStructure
+  validateProjectStructure,
 } from "../dist/index.js";
 
 console.log("🦊 Reynard Project Architecture - Basic Usage Example\n");
@@ -49,9 +49,9 @@ console.log();
 
 // 5. Query critical source directories
 console.log("=== 5. Critical Source Directories ===");
-const criticalSource = queryDirectories({ 
-  category: 'source', 
-  importance: 'critical' 
+const criticalSource = queryDirectories({
+  category: "source",
+  importance: "critical",
 });
 console.log(`Found ${criticalSource.directories.length} critical source directories:`);
 criticalSource.directories.forEach(dir => {
@@ -62,28 +62,28 @@ console.log();
 // 6. Check file patterns
 console.log("=== 6. File Pattern Matching ===");
 const testFiles = [
-  'packages/components/src/Button.tsx',
-  'node_modules/react/index.js',
-  'dist/build.js',
-  'docs/README.md',
-  'backend/app/main.py'
+  "packages/components/src/Button.tsx",
+  "node_modules/react/index.js",
+  "dist/build.js",
+  "docs/README.md",
+  "backend/app/main.py",
 ];
 
 testFiles.forEach(file => {
   const shouldInclude = shouldIncludeFile(file);
-  console.log(`${file}: ${shouldInclude ? '✅ Include' : '❌ Exclude'}`);
+  console.log(`${file}: ${shouldInclude ? "✅ Include" : "❌ Exclude"}`);
 });
 console.log();
 
 // 7. Get directory information
 console.log("=== 7. Directory Information ===");
-const packages = getDirectoryDefinition('packages');
+const packages = getDirectoryDefinition("packages");
 if (packages) {
   console.log(`Packages Directory:`);
   console.log(`  Description: ${packages.description}`);
   console.log(`  Category: ${packages.category}`);
   console.log(`  Importance: ${packages.importance}`);
-  console.log(`  File Types: ${packages.fileTypes.join(', ')}`);
+  console.log(`  File Types: ${packages.fileTypes.join(", ")}`);
   console.log(`  Relationships: ${packages.relationships.length}`);
   packages.relationships.forEach(rel => {
     console.log(`    - ${rel.directory} (${rel.type}): ${rel.description}`);
@@ -94,7 +94,7 @@ console.log();
 // 8. Validate project structure
 console.log("=== 8. Project Structure Validation ===");
 const validation = validateProjectStructure();
-console.log(`Project Structure Valid: ${validation.valid ? '✅' : '❌'}`);
+console.log(`Project Structure Valid: ${validation.valid ? "✅" : "❌"}`);
 if (!validation.valid) {
   console.log("Issues found:");
   validation.errors.forEach(error => console.log(`  - ${error}`));

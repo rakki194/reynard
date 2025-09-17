@@ -5,11 +5,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  shouldExcludeFile,
-  shouldIncludeFile,
-  queryDirectories
-} from "../utils.js";
+import { shouldExcludeFile, shouldIncludeFile, queryDirectories } from "../utils.js";
 
 describe("Pattern Matching", () => {
   it("should exclude files correctly", () => {
@@ -50,23 +46,23 @@ describe("Query System", () => {
     const result = queryDirectories({
       category: "source",
       importance: "critical",
-      watchable: true
+      watchable: true,
     });
-    
+
     expect(result.directories.length).toBeGreaterThan(0);
-    expect(result.directories.every(dir => 
-      dir.category === "source" && 
-      dir.importance === "critical" && 
-      dir.watchable === true
-    )).toBe(true);
+    expect(
+      result.directories.every(
+        dir => dir.category === "source" && dir.importance === "critical" && dir.watchable === true
+      )
+    ).toBe(true);
   });
 
   it("should handle empty query results", () => {
     const result = queryDirectories({
       category: "nonexistent",
-      importance: "critical"
+      importance: "critical",
     });
-    
+
     expect(result.directories.length).toBe(0);
     expect(result.count).toBe(0);
   });
@@ -77,4 +73,3 @@ describe("Query System", () => {
     expect(typeof result.executionTime).toBe("number");
   });
 });
-

@@ -22,42 +22,40 @@ exports.MCPStatsResponseToJSONTyped = MCPStatsResponseToJSONTyped;
  * Check if a given object implements the MCPStatsResponse interface.
  */
 function instanceOfMCPStatsResponse(value) {
-    if (!('totalClients' in value) || value['totalClients'] === undefined)
-        return false;
-    if (!('activeClients' in value) || value['activeClients'] === undefined)
-        return false;
-    if (!('clientTypes' in value) || value['clientTypes'] === undefined)
-        return false;
-    if (!('permissions' in value) || value['permissions'] === undefined)
-        return false;
-    return true;
+  if (!("totalClients" in value) || value["totalClients"] === undefined) return false;
+  if (!("activeClients" in value) || value["activeClients"] === undefined) return false;
+  if (!("clientTypes" in value) || value["clientTypes"] === undefined) return false;
+  if (!("permissions" in value) || value["permissions"] === undefined) return false;
+  return true;
 }
 function MCPStatsResponseFromJSON(json) {
-    return MCPStatsResponseFromJSONTyped(json, false);
+  return MCPStatsResponseFromJSONTyped(json, false);
 }
 function MCPStatsResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'totalClients': json['total_clients'],
-        'activeClients': json['active_clients'],
-        'clientTypes': json['client_types'],
-        'permissions': json['permissions'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    totalClients: json["total_clients"],
+    activeClients: json["active_clients"],
+    clientTypes: json["client_types"],
+    permissions: json["permissions"],
+  };
 }
 function MCPStatsResponseToJSON(json) {
-    return MCPStatsResponseToJSONTyped(json, false);
+  return MCPStatsResponseToJSONTyped(json, false);
 }
 function MCPStatsResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'total_clients': value['totalClients'],
-        'active_clients': value['activeClients'],
-        'client_types': value['clientTypes'],
-        'permissions': value['permissions'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    total_clients: value["totalClients"],
+    active_clients: value["activeClients"],
+    client_types: value["clientTypes"],
+    permissions: value["permissions"],
+  };
 }

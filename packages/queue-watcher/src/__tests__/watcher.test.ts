@@ -13,8 +13,8 @@ import { setupFileWatchers, setupStatusReporting } from "../watcher.js";
 vi.mock("fs", () => ({
   default: {
     existsSync: vi.fn(),
-    watch: vi.fn()
-  }
+    watch: vi.fn(),
+  },
 }));
 
 // Mock queue manager
@@ -24,16 +24,16 @@ vi.mock("../queue-manager.js", () => ({
     getStatus: vi.fn(() => ({
       totalQueues: 5,
       processingFiles: ["test.ts"],
-      isProcessing: true
-    }))
-  }
+      isProcessing: true,
+    })),
+  },
 }));
 
 // Mock processors
 vi.mock("../processors.js", () => ({
   Processors: {
-    waitForStable: vi.fn()
-  }
+    waitForStable: vi.fn(),
+  },
 }));
 
 describe("Watcher Core", () => {
@@ -58,11 +58,11 @@ describe("Watcher Core", () => {
 
       // Should call fs.watch for each watchable directory
       expect(mockWatch).toHaveBeenCalled();
-      
+
       // Check that it was called with recursive: true
       const calls = mockWatch.mock.calls;
       expect(calls.length).toBeGreaterThan(0);
-      
+
       for (const call of calls) {
         expect(call[1]).toEqual({ recursive: true });
       }
@@ -101,14 +101,14 @@ describe("Watcher Core", () => {
 
       // Get the callback function
       const watchCallback = mockWatch.mock.calls[0][2];
-      
+
       // Simulate a file change
       watchCallback("change", "test.ts");
-      
+
       // Should not process if file doesn't exist
       (fs.existsSync as any).mockReturnValue(false);
       watchCallback("change", "nonexistent.ts");
-      
+
       // Should process if file exists
       (fs.existsSync as any).mockReturnValue(true);
       watchCallback("change", "existing.ts");
@@ -122,10 +122,10 @@ describe("Watcher Core", () => {
       setupFileWatchers();
 
       const watchCallback = mockWatch.mock.calls[0][2];
-      
+
       // Should ignore rename events
       watchCallback("rename", "test.ts");
-      
+
       // Should ignore other events
       watchCallback("delete", "test.ts");
     });
@@ -134,33 +134,31 @@ describe("Watcher Core", () => {
   describe("setupStatusReporting", () => {
     it("should set up status reporting interval", () => {
       const mockSetInterval = vi.spyOn(global, "setInterval");
-      
+
       setupStatusReporting();
-      
+
       expect(mockSetInterval).toHaveBeenCalledWith(
         expect.any(Function),
         10000 // 10 seconds
       );
-      
+
       mockSetInterval.mockRestore();
     });
 
     it("should report queue status", () => {
       const mockSetInterval = vi.spyOn(global, "setInterval");
-      
+
       setupStatusReporting();
-      
+
       // Get the callback function
       const intervalCallback = mockSetInterval.mock.calls[0][0];
-      
+
       // Call the callback
       intervalCallback();
-      
+
       // Should log status
-      expect(console.log).toHaveBeenCalledWith(
-        expect.stringContaining("📊 Queue Status:")
-      );
-      
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining("📊 Queue Status:"));
+
       mockSetInterval.mockRestore();
     });
   });

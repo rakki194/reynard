@@ -266,4 +266,4 @@ For issues or questions about the Enhanced Search API:
 
 ---
 
-*This search system represents a significant advancement in code exploration capabilities, providing developers with powerful tools to understand and navigate complex codebases efficiently.*
+_This search system represents a significant advancement in code exploration capabilities, providing developers with powerful tools to understand and navigate complex codebases efficiently._

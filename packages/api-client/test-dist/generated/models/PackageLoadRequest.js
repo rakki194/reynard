@@ -22,30 +22,31 @@ exports.PackageLoadRequestToJSONTyped = PackageLoadRequestToJSONTyped;
  * Check if a given object implements the PackageLoadRequest interface.
  */
 function instanceOfPackageLoadRequest(value) {
-    if (!('packageName' in value) || value['packageName'] === undefined)
-        return false;
-    return true;
+  if (!("packageName" in value) || value["packageName"] === undefined) return false;
+  return true;
 }
 function PackageLoadRequestFromJSON(json) {
-    return PackageLoadRequestFromJSONTyped(json, false);
+  return PackageLoadRequestFromJSONTyped(json, false);
 }
 function PackageLoadRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'packageName': json['package_name'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    packageName: json["package_name"],
+  };
 }
 function PackageLoadRequestToJSON(json) {
-    return PackageLoadRequestToJSONTyped(json, false);
+  return PackageLoadRequestToJSONTyped(json, false);
 }
 function PackageLoadRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'package_name': value['packageName'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    package_name: value["packageName"],
+  };
 }

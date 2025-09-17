@@ -15,48 +15,54 @@
  * @interface LazyLoadingStatusResponse
  */
 export interface LazyLoadingStatusResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof LazyLoadingStatusResponse
-     */
-    systemStatus: string;
-    /**
-     *
-     * @type {string}
-     * @memberof LazyLoadingStatusResponse
-     */
-    timestamp: string;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof LazyLoadingStatusResponse
-     */
-    loadedPackages: Array<string>;
-    /**
-     *
-     * @type {number}
-     * @memberof LazyLoadingStatusResponse
-     */
-    totalPackages: number;
-    /**
-     *
-     * @type {object}
-     * @memberof LazyLoadingStatusResponse
-     */
-    memoryUsage: object;
-    /**
-     *
-     * @type {object}
-     * @memberof LazyLoadingStatusResponse
-     */
-    performance: object;
+  /**
+   *
+   * @type {string}
+   * @memberof LazyLoadingStatusResponse
+   */
+  systemStatus: string;
+  /**
+   *
+   * @type {string}
+   * @memberof LazyLoadingStatusResponse
+   */
+  timestamp: string;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof LazyLoadingStatusResponse
+   */
+  loadedPackages: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof LazyLoadingStatusResponse
+   */
+  totalPackages: number;
+  /**
+   *
+   * @type {object}
+   * @memberof LazyLoadingStatusResponse
+   */
+  memoryUsage: object;
+  /**
+   *
+   * @type {object}
+   * @memberof LazyLoadingStatusResponse
+   */
+  performance: object;
 }
 /**
  * Check if a given object implements the LazyLoadingStatusResponse interface.
  */
 export declare function instanceOfLazyLoadingStatusResponse(value: object): value is LazyLoadingStatusResponse;
 export declare function LazyLoadingStatusResponseFromJSON(json: any): LazyLoadingStatusResponse;
-export declare function LazyLoadingStatusResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): LazyLoadingStatusResponse;
+export declare function LazyLoadingStatusResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): LazyLoadingStatusResponse;
 export declare function LazyLoadingStatusResponseToJSON(json: any): LazyLoadingStatusResponse;
-export declare function LazyLoadingStatusResponseToJSONTyped(value?: LazyLoadingStatusResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function LazyLoadingStatusResponseToJSONTyped(
+  value?: LazyLoadingStatusResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

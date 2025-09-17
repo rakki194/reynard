@@ -23,38 +23,38 @@ var UserRole_1 = require("./UserRole");
  * Check if a given object implements the UserCreate interface.
  */
 function instanceOfUserCreate(value) {
-    if (!('username' in value) || value['username'] === undefined)
-        return false;
-    if (!('password' in value) || value['password'] === undefined)
-        return false;
-    return true;
+  if (!("username" in value) || value["username"] === undefined) return false;
+  if (!("password" in value) || value["password"] === undefined) return false;
+  return true;
 }
 function UserCreateFromJSON(json) {
-    return UserCreateFromJSONTyped(json, false);
+  return UserCreateFromJSONTyped(json, false);
 }
 function UserCreateFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'username': json['username'],
-        'password': json['password'],
-        'email': json['email'] == null ? undefined : json['email'],
-        'role': json['role'] == null ? undefined : (0, UserRole_1.UserRoleFromJSON)(json['role']),
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    username: json["username"],
+    password: json["password"],
+    email: json["email"] == null ? undefined : json["email"],
+    role: json["role"] == null ? undefined : (0, UserRole_1.UserRoleFromJSON)(json["role"]),
+  };
 }
 function UserCreateToJSON(json) {
-    return UserCreateToJSONTyped(json, false);
+  return UserCreateToJSONTyped(json, false);
 }
 function UserCreateToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'username': value['username'],
-        'password': value['password'],
-        'email': value['email'],
-        'role': (0, UserRole_1.UserRoleToJSON)(value['role']),
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    username: value["username"],
+    password: value["password"],
+    email: value["email"],
+    role: (0, UserRole_1.UserRoleToJSON)(value["role"]),
+  };
 }

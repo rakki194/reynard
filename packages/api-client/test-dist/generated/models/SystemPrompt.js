@@ -22,18 +22,20 @@ exports.SystemPromptToJSONTyped = SystemPromptToJSONTyped;
  * Check if a given object implements the SystemPrompt interface.
  */
 function instanceOfSystemPrompt(value) {
-    return true;
+  return true;
 }
 function SystemPromptFromJSON(json) {
-    return SystemPromptFromJSONTyped(json, false);
+  return SystemPromptFromJSONTyped(json, false);
 }
 function SystemPromptFromJSONTyped(json, ignoreDiscriminator) {
-    return json;
+  return json;
 }
 function SystemPromptToJSON(json) {
-    return SystemPromptToJSONTyped(json, false);
+  return SystemPromptToJSONTyped(json, false);
 }
 function SystemPromptToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    return value;
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  return value;
 }

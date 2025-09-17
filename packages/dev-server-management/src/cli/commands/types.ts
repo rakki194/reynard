@@ -1,6 +1,6 @@
 /**
  * 🦊 Dev Server Management CLI - Command Types
- * 
+ *
  * Shared types and interfaces for CLI commands.
  */
 

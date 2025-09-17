@@ -1,4 +1,4 @@
-# 🦊 Reynard Dev Server Modernization - Gamified TODO
+# 🦊 Dev Server Management Modernization - Gamified TODO
 
 _Strategic fox development with bonus points and achievements!_
 
@@ -61,7 +61,7 @@ Transform the current development server management system into a modern, modula
 
 #### 🏗️ Task 1.2: Type System Architecture (75 points)
 
-- [ ] Create `packages/reynard-dev-server/src/types/` directory
+- [ ] Create `packages/dev-server-management/src/types/` directory
 - [ ] Define core interfaces (`ProjectConfig`, `ServerStatus`, etc.)
 - [ ] Implement type-safe configuration schemas
 - [ ] Create error types and exception classes

@@ -15,66 +15,72 @@
  * @interface SummarizationRequest
  */
 export interface SummarizationRequest {
-    /**
-     * Text to summarize
-     * @type {string}
-     * @memberof SummarizationRequest
-     */
-    text: string;
-    /**
-     * Type of content
-     * @type {string}
-     * @memberof SummarizationRequest
-     */
-    contentType?: string;
-    /**
-     * Level of detail for summary
-     * @type {string}
-     * @memberof SummarizationRequest
-     */
-    summaryLevel?: string;
-    /**
-     *
-     * @type {number}
-     * @memberof SummarizationRequest
-     */
-    maxLength?: number | null;
-    /**
-     * Whether to include structured outline
-     * @type {boolean}
-     * @memberof SummarizationRequest
-     */
-    includeOutline?: boolean;
-    /**
-     * Whether to include important highlights
-     * @type {boolean}
-     * @memberof SummarizationRequest
-     */
-    includeHighlights?: boolean;
-    /**
-     *
-     * @type {string}
-     * @memberof SummarizationRequest
-     */
-    model?: string | null;
-    /**
-     * Temperature for text generation
-     * @type {number}
-     * @memberof SummarizationRequest
-     */
-    temperature?: number;
-    /**
-     * Top-p for text generation
-     * @type {number}
-     * @memberof SummarizationRequest
-     */
-    topP?: number;
+  /**
+   * Text to summarize
+   * @type {string}
+   * @memberof SummarizationRequest
+   */
+  text: string;
+  /**
+   * Type of content
+   * @type {string}
+   * @memberof SummarizationRequest
+   */
+  contentType?: string;
+  /**
+   * Level of detail for summary
+   * @type {string}
+   * @memberof SummarizationRequest
+   */
+  summaryLevel?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof SummarizationRequest
+   */
+  maxLength?: number | null;
+  /**
+   * Whether to include structured outline
+   * @type {boolean}
+   * @memberof SummarizationRequest
+   */
+  includeOutline?: boolean;
+  /**
+   * Whether to include important highlights
+   * @type {boolean}
+   * @memberof SummarizationRequest
+   */
+  includeHighlights?: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof SummarizationRequest
+   */
+  model?: string | null;
+  /**
+   * Temperature for text generation
+   * @type {number}
+   * @memberof SummarizationRequest
+   */
+  temperature?: number;
+  /**
+   * Top-p for text generation
+   * @type {number}
+   * @memberof SummarizationRequest
+   */
+  topP?: number;
 }
 /**
  * Check if a given object implements the SummarizationRequest interface.
  */
 export declare function instanceOfSummarizationRequest(value: object): value is SummarizationRequest;
 export declare function SummarizationRequestFromJSON(json: any): SummarizationRequest;
-export declare function SummarizationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SummarizationRequest;
+export declare function SummarizationRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): SummarizationRequest;
 export declare function SummarizationRequestToJSON(json: any): SummarizationRequest;
-export declare function SummarizationRequestToJSONTyped(value?: SummarizationRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function SummarizationRequestToJSONTyped(
+  value?: SummarizationRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

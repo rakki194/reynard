@@ -15,18 +15,18 @@
  * @interface ComfyQueueRequest
  */
 export interface ComfyQueueRequest {
-    /**
-     * ComfyUI workflow definition
-     * @type {object}
-     * @memberof ComfyQueueRequest
-     */
-    workflow: object;
-    /**
-     *
-     * @type {string}
-     * @memberof ComfyQueueRequest
-     */
-    clientId?: string | null;
+  /**
+   * ComfyUI workflow definition
+   * @type {object}
+   * @memberof ComfyQueueRequest
+   */
+  workflow: object;
+  /**
+   *
+   * @type {string}
+   * @memberof ComfyQueueRequest
+   */
+  clientId?: string | null;
 }
 /**
  * Check if a given object implements the ComfyQueueRequest interface.
@@ -35,4 +35,7 @@ export declare function instanceOfComfyQueueRequest(value: object): value is Com
 export declare function ComfyQueueRequestFromJSON(json: any): ComfyQueueRequest;
 export declare function ComfyQueueRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ComfyQueueRequest;
 export declare function ComfyQueueRequestToJSON(json: any): ComfyQueueRequest;
-export declare function ComfyQueueRequestToJSONTyped(value?: ComfyQueueRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function ComfyQueueRequestToJSONTyped(
+  value?: ComfyQueueRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

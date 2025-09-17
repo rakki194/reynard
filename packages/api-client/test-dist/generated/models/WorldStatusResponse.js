@@ -22,38 +22,39 @@ exports.WorldStatusResponseToJSONTyped = WorldStatusResponseToJSONTyped;
  * Check if a given object implements the WorldStatusResponse interface.
  */
 function instanceOfWorldStatusResponse(value) {
-    if (!('status' in value) || value['status'] === undefined)
-        return false;
-    return true;
+  if (!("status" in value) || value["status"] === undefined) return false;
+  return true;
 }
 function WorldStatusResponseFromJSON(json) {
-    return WorldStatusResponseFromJSONTyped(json, false);
+  return WorldStatusResponseFromJSONTyped(json, false);
 }
 function WorldStatusResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'status': json['status'],
-        'entityCount': json['entity_count'] == null ? undefined : json['entity_count'],
-        'systemCount': json['system_count'] == null ? undefined : json['system_count'],
-        'agentCount': json['agent_count'] == null ? undefined : json['agent_count'],
-        'matureAgents': json['mature_agents'] == null ? undefined : json['mature_agents'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    status: json["status"],
+    entityCount: json["entity_count"] == null ? undefined : json["entity_count"],
+    systemCount: json["system_count"] == null ? undefined : json["system_count"],
+    agentCount: json["agent_count"] == null ? undefined : json["agent_count"],
+    matureAgents: json["mature_agents"] == null ? undefined : json["mature_agents"],
+  };
 }
 function WorldStatusResponseToJSON(json) {
-    return WorldStatusResponseToJSONTyped(json, false);
+  return WorldStatusResponseToJSONTyped(json, false);
 }
 function WorldStatusResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'status': value['status'],
-        'entity_count': value['entityCount'],
-        'system_count': value['systemCount'],
-        'agent_count': value['agentCount'],
-        'mature_agents': value['matureAgents'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    status: value["status"],
+    entity_count: value["entityCount"],
+    system_count: value["systemCount"],
+    agent_count: value["agentCount"],
+    mature_agents: value["matureAgents"],
+  };
 }

@@ -15,18 +15,18 @@
  * @interface RAGConfigResponse
  */
 export interface RAGConfigResponse {
-    /**
-     * Current configuration
-     * @type {object}
-     * @memberof RAGConfigResponse
-     */
-    config: object;
-    /**
-     * Whether configuration was updated
-     * @type {boolean}
-     * @memberof RAGConfigResponse
-     */
-    updated?: boolean;
+  /**
+   * Current configuration
+   * @type {object}
+   * @memberof RAGConfigResponse
+   */
+  config: object;
+  /**
+   * Whether configuration was updated
+   * @type {boolean}
+   * @memberof RAGConfigResponse
+   */
+  updated?: boolean;
 }
 /**
  * Check if a given object implements the RAGConfigResponse interface.
@@ -35,4 +35,7 @@ export declare function instanceOfRAGConfigResponse(value: object): value is RAG
 export declare function RAGConfigResponseFromJSON(json: any): RAGConfigResponse;
 export declare function RAGConfigResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGConfigResponse;
 export declare function RAGConfigResponseToJSON(json: any): RAGConfigResponse;
-export declare function RAGConfigResponseToJSONTyped(value?: RAGConfigResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function RAGConfigResponseToJSONTyped(
+  value?: RAGConfigResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

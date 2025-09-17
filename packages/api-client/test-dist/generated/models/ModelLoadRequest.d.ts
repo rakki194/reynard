@@ -15,12 +15,12 @@
  * @interface ModelLoadRequest
  */
 export interface ModelLoadRequest {
-    /**
-     *
-     * @type {object}
-     * @memberof ModelLoadRequest
-     */
-    config?: object | null;
+  /**
+   *
+   * @type {object}
+   * @memberof ModelLoadRequest
+   */
+  config?: object | null;
 }
 /**
  * Check if a given object implements the ModelLoadRequest interface.
@@ -29,4 +29,7 @@ export declare function instanceOfModelLoadRequest(value: object): value is Mode
 export declare function ModelLoadRequestFromJSON(json: any): ModelLoadRequest;
 export declare function ModelLoadRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ModelLoadRequest;
 export declare function ModelLoadRequestToJSON(json: any): ModelLoadRequest;
-export declare function ModelLoadRequestToJSONTyped(value?: ModelLoadRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function ModelLoadRequestToJSONTyped(
+  value?: ModelLoadRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

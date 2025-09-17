@@ -52,8 +52,8 @@ import {
   CommitMessageGenerator,
   ChangelogManager,
   VersionManager,
-  GitWorkflowOrchestrator
-} from 'reynard-git-automation';
+  GitWorkflowOrchestrator,
+} from "reynard-git-automation";
 
 // Detect junk files
 const detector = new JunkFileDetector();
@@ -71,14 +71,14 @@ const commitMessage = generator.generateCommitMessage(analysis);
 const orchestrator = new GitWorkflowOrchestrator();
 const result = await orchestrator.executeWorkflow({
   autoConfirm: true,
-  dryRun: false
+  dryRun: false,
 });
 ```
 
 ### MCP Integration
 
 ```typescript
-import { MCPGitAutomationTools } from 'reynard-git-automation/mcp-tools';
+import { MCPGitAutomationTools } from "reynard-git-automation/mcp-tools";
 
 const tools = new MCPGitAutomationTools();
 
@@ -87,12 +87,12 @@ const status = await tools.getWorkflowStatus();
 
 // Execute workflow
 const result = await tools.executeWorkflow({
-  autoConfirm: true
+  autoConfirm: true,
 });
 
 // Manage versions
 const currentVersion = await tools.getCurrentVersion();
-const nextVersion = tools.calculateNextVersion(currentVersion, 'minor');
+const nextVersion = tools.calculateNextVersion(currentVersion, "minor");
 await tools.updateVersion(nextVersion);
 ```
 
@@ -153,7 +153,7 @@ Generates conventional commit messages from change analysis:
 const generator = new CommitMessageGenerator();
 const commitMessage = generator.generateCommitMessage(analysis, {
   includeBody: true,
-  includeFooter: true
+  includeFooter: true,
 });
 
 // Display generated message
@@ -176,10 +176,10 @@ Manages CHANGELOG.md with proper structure and version promotion:
 const manager = new ChangelogManager();
 
 // Promote unreleased changes to versioned release
-await manager.promoteUnreleasedToRelease('1.2.0', '2025-01-15');
+await manager.promoteUnreleasedToRelease("1.2.0", "2025-01-15");
 
 // Add new entry to unreleased section
-await manager.addUnreleasedEntry('added', 'New feature for better performance');
+await manager.addUnreleasedEntry("added", "New feature for better performance");
 
 // Validate changelog structure
 const validation = await manager.validateChangelog();
@@ -204,13 +204,13 @@ const manager = new VersionManager();
 const currentVersion = await manager.getCurrentVersion();
 
 // Calculate next version
-const nextVersion = manager.calculateNextVersion(currentVersion, 'minor');
+const nextVersion = manager.calculateNextVersion(currentVersion, "minor");
 
 // Update version
 await manager.updateVersion(nextVersion);
 
 // Create and push Git tag
-await manager.createGitTag(nextVersion, 'Release notes');
+await manager.createGitTag(nextVersion, "Release notes");
 await manager.pushGitTag(nextVersion);
 ```
 
@@ -237,7 +237,7 @@ const result = await orchestrator.executeWorkflow({
   skipChangelogUpdate: false,
   skipGitTag: false,
   dryRun: false,
-  autoConfirm: false
+  autoConfirm: false,
 });
 
 // Display workflow summary
@@ -391,16 +391,16 @@ The Git automation tools are designed to integrate with the Reynard MCP server:
 
 ```typescript
 // In your MCP server
-import { MCPGitAutomationTools } from 'reynard-git-automation/mcp-tools';
+import { MCPGitAutomationTools } from "reynard-git-automation/mcp-tools";
 
 const gitTools = new MCPGitAutomationTools();
 
 // Register MCP tools
-mcpServer.registerTool('git_workflow', async () => {
+mcpServer.registerTool("git_workflow", async () => {
   return await gitTools.executeWorkflow({ autoConfirm: true });
 });
 
-mcpServer.registerTool('git_analyze', async () => {
+mcpServer.registerTool("git_analyze", async () => {
   return await gitTools.analyzeChanges();
 });
 ```
@@ -461,10 +461,10 @@ Always wrap operations in try-catch blocks:
 try {
   const result = await orchestrator.executeWorkflow();
   if (!result.success) {
-    console.error('Workflow failed:', result.errors);
+    console.error("Workflow failed:", result.errors);
   }
 } catch (error) {
-  console.error('Unexpected error:', error);
+  console.error("Unexpected error:", error);
 }
 ```
 
@@ -484,7 +484,7 @@ Use the commit message generator with custom options:
 const commitMessage = generator.generateCommitMessage(analysis, {
   includeBody: true,
   includeFooter: true,
-  maxBodyLength: 200
+  maxBodyLength: 200,
 });
 ```
 
@@ -495,7 +495,7 @@ Always validate changelog and versions before operations:
 ```typescript
 const changelogValidation = await changelogManager.validateChangelog();
 if (!changelogValidation.valid) {
-  throw new Error('Invalid changelog structure');
+  throw new Error("Invalid changelog structure");
 }
 ```
 
@@ -565,4 +565,4 @@ MIT License - see LICENSE file for details.
 
 ---
 
-*Built with the cunning of a fox, the thoroughness of an otter, and the determination of a wolf.* 🦊🦦🐺
+_Built with the cunning of a fox, the thoroughness of an otter, and the determination of a wolf._ 🦊🦦🐺

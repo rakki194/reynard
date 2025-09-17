@@ -22,42 +22,40 @@ exports.HealthCheckResponseToJSONTyped = HealthCheckResponseToJSONTyped;
  * Check if a given object implements the HealthCheckResponse interface.
  */
 function instanceOfHealthCheckResponse(value) {
-    if (!('status' in value) || value['status'] === undefined)
-        return false;
-    if (!('message' in value) || value['message'] === undefined)
-        return false;
-    if (!('details' in value) || value['details'] === undefined)
-        return false;
-    if (!('timestamp' in value) || value['timestamp'] === undefined)
-        return false;
-    return true;
+  if (!("status" in value) || value["status"] === undefined) return false;
+  if (!("message" in value) || value["message"] === undefined) return false;
+  if (!("details" in value) || value["details"] === undefined) return false;
+  if (!("timestamp" in value) || value["timestamp"] === undefined) return false;
+  return true;
 }
 function HealthCheckResponseFromJSON(json) {
-    return HealthCheckResponseFromJSONTyped(json, false);
+  return HealthCheckResponseFromJSONTyped(json, false);
 }
 function HealthCheckResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'status': json['status'],
-        'message': json['message'],
-        'details': json['details'],
-        'timestamp': json['timestamp'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    status: json["status"],
+    message: json["message"],
+    details: json["details"],
+    timestamp: json["timestamp"],
+  };
 }
 function HealthCheckResponseToJSON(json) {
-    return HealthCheckResponseToJSONTyped(json, false);
+  return HealthCheckResponseToJSONTyped(json, false);
 }
 function HealthCheckResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'status': value['status'],
-        'message': value['message'],
-        'details': value['details'],
-        'timestamp': value['timestamp'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    status: value["status"],
+    message: value["message"],
+    details: value["details"],
+    timestamp: value["timestamp"],
+  };
 }

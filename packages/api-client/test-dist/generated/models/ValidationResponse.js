@@ -22,32 +22,33 @@ exports.ValidationResponseToJSONTyped = ValidationResponseToJSONTyped;
  * Check if a given object implements the ValidationResponse interface.
  */
 function instanceOfValidationResponse(value) {
-    if (!('valid' in value) || value['valid'] === undefined)
-        return false;
-    return true;
+  if (!("valid" in value) || value["valid"] === undefined) return false;
+  return true;
 }
 function ValidationResponseFromJSON(json) {
-    return ValidationResponseFromJSONTyped(json, false);
+  return ValidationResponseFromJSONTyped(json, false);
 }
 function ValidationResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'valid': json['valid'],
-        'message': json['message'] == null ? undefined : json['message'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    valid: json["valid"],
+    message: json["message"] == null ? undefined : json["message"],
+  };
 }
 function ValidationResponseToJSON(json) {
-    return ValidationResponseToJSONTyped(json, false);
+  return ValidationResponseToJSONTyped(json, false);
 }
 function ValidationResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'valid': value['valid'],
-        'message': value['message'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    valid: value["valid"],
+    message: value["message"],
+  };
 }

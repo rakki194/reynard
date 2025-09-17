@@ -15,48 +15,48 @@
  * @interface RAGStatsResponse
  */
 export interface RAGStatsResponse {
-    /**
-     * Total number of documents
-     * @type {number}
-     * @memberof RAGStatsResponse
-     */
-    totalDocuments?: number;
-    /**
-     * Total number of chunks
-     * @type {number}
-     * @memberof RAGStatsResponse
-     */
-    totalChunks?: number;
-    /**
-     * Number of chunks with embeddings
-     * @type {number}
-     * @memberof RAGStatsResponse
-     */
-    chunksWithEmbeddings?: number;
-    /**
-     * Embedding coverage percentage
-     * @type {number}
-     * @memberof RAGStatsResponse
-     */
-    embeddingCoverage?: number;
-    /**
-     * Default embedding model
-     * @type {string}
-     * @memberof RAGStatsResponse
-     */
-    defaultModel?: string;
-    /**
-     * Whether vector database is enabled
-     * @type {boolean}
-     * @memberof RAGStatsResponse
-     */
-    vectorDbEnabled?: boolean;
-    /**
-     * Cache size in bytes
-     * @type {number}
-     * @memberof RAGStatsResponse
-     */
-    cacheSize?: number;
+  /**
+   * Total number of documents
+   * @type {number}
+   * @memberof RAGStatsResponse
+   */
+  totalDocuments?: number;
+  /**
+   * Total number of chunks
+   * @type {number}
+   * @memberof RAGStatsResponse
+   */
+  totalChunks?: number;
+  /**
+   * Number of chunks with embeddings
+   * @type {number}
+   * @memberof RAGStatsResponse
+   */
+  chunksWithEmbeddings?: number;
+  /**
+   * Embedding coverage percentage
+   * @type {number}
+   * @memberof RAGStatsResponse
+   */
+  embeddingCoverage?: number;
+  /**
+   * Default embedding model
+   * @type {string}
+   * @memberof RAGStatsResponse
+   */
+  defaultModel?: string;
+  /**
+   * Whether vector database is enabled
+   * @type {boolean}
+   * @memberof RAGStatsResponse
+   */
+  vectorDbEnabled?: boolean;
+  /**
+   * Cache size in bytes
+   * @type {number}
+   * @memberof RAGStatsResponse
+   */
+  cacheSize?: number;
 }
 /**
  * Check if a given object implements the RAGStatsResponse interface.
@@ -65,4 +65,7 @@ export declare function instanceOfRAGStatsResponse(value: object): value is RAGS
 export declare function RAGStatsResponseFromJSON(json: any): RAGStatsResponse;
 export declare function RAGStatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGStatsResponse;
 export declare function RAGStatsResponseToJSON(json: any): RAGStatsResponse;
-export declare function RAGStatsResponseToJSONTyped(value?: RAGStatsResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function RAGStatsResponseToJSONTyped(
+  value?: RAGStatsResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

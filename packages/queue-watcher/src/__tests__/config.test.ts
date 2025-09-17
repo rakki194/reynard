@@ -5,17 +5,13 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { 
-  WATCH_DIRECTORIES, 
-  EXCLUDE_PATTERNS, 
-  DEFAULT_CONFIG 
-} from "../config.js";
+import { WATCH_DIRECTORIES, EXCLUDE_PATTERNS, DEFAULT_CONFIG } from "../config.js";
 
 describe("Queue Watcher Configuration", () => {
   it("should have watchable directories", () => {
     expect(WATCH_DIRECTORIES).toBeInstanceOf(Array);
     expect(WATCH_DIRECTORIES.length).toBeGreaterThan(0);
-    
+
     // Should include key directories
     expect(WATCH_DIRECTORIES).toContain("packages");
     expect(WATCH_DIRECTORIES).toContain("backend");
@@ -30,7 +26,7 @@ describe("Queue Watcher Configuration", () => {
   it("should have exclude patterns", () => {
     expect(EXCLUDE_PATTERNS).toBeInstanceOf(Array);
     expect(EXCLUDE_PATTERNS.length).toBeGreaterThan(0);
-    
+
     // Should have common exclude patterns (test that patterns exist, not specific matching)
     expect(EXCLUDE_PATTERNS.every(pattern => pattern instanceof RegExp)).toBe(true);
   });
@@ -46,7 +42,7 @@ describe("Queue Watcher Configuration", () => {
   it("should have consistent directory counts", () => {
     expect(WATCH_DIRECTORIES.length).toBe(15); // Based on current architecture
     expect(EXCLUDE_PATTERNS.length).toBe(30); // Based on current patterns
-    
+
     // Check for unique directories (should be 15 unique, 16 total with duplicate)
     const uniqueDirectories = new Set(WATCH_DIRECTORIES);
     expect(uniqueDirectories.size).toBe(15);
@@ -60,12 +56,23 @@ describe("Queue Watcher Configuration", () => {
 
   it("should include all important project directories", () => {
     const expectedDirs = [
-      "packages", "backend", "services", "docs", 
-      ".cursor/docs", ".cursor/prompts", ".cursor/rules",
-      "examples", "templates", "e2e", "scripts", 
-      "nginx", "todos", "data", "fenrir"
+      "packages",
+      "backend",
+      "services",
+      "docs",
+      ".cursor/docs",
+      ".cursor/prompts",
+      ".cursor/rules",
+      "examples",
+      "templates",
+      "e2e",
+      "scripts",
+      "nginx",
+      "todos",
+      "data",
+      "fenrir",
     ];
-    
+
     for (const dir of expectedDirs) {
       expect(WATCH_DIRECTORIES).toContain(dir);
     }
@@ -84,7 +91,7 @@ describe("Queue Watcher Configuration", () => {
   it("should have exclude patterns for common build artifacts", () => {
     // Test that we have patterns for common build artifacts (don't test specific matching)
     const patternStrings = EXCLUDE_PATTERNS.map(pattern => pattern.toString());
-    
+
     expect(patternStrings.some(p => p.includes("node_modules"))).toBe(true);
     expect(patternStrings.some(p => p.includes("dist"))).toBe(true);
     expect(patternStrings.some(p => p.includes("build"))).toBe(true);
@@ -95,9 +102,9 @@ describe("Queue Watcher Configuration", () => {
       "packages/components/src/Button.tsx",
       "backend/app/main.py",
       "docs/README.md",
-      "examples/dashboard/src/App.tsx"
+      "examples/dashboard/src/App.tsx",
     ];
-    
+
     for (const path of testPaths) {
       const shouldExclude = EXCLUDE_PATTERNS.some(pattern => pattern.test(path));
       expect(shouldExclude).toBe(false);

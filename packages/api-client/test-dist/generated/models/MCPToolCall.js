@@ -22,32 +22,33 @@ exports.MCPToolCallToJSONTyped = MCPToolCallToJSONTyped;
  * Check if a given object implements the MCPToolCall interface.
  */
 function instanceOfMCPToolCall(value) {
-    if (!('method' in value) || value['method'] === undefined)
-        return false;
-    return true;
+  if (!("method" in value) || value["method"] === undefined) return false;
+  return true;
 }
 function MCPToolCallFromJSON(json) {
-    return MCPToolCallFromJSONTyped(json, false);
+  return MCPToolCallFromJSONTyped(json, false);
 }
 function MCPToolCallFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'method': json['method'],
-        'params': json['params'] == null ? undefined : json['params'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    method: json["method"],
+    params: json["params"] == null ? undefined : json["params"],
+  };
 }
 function MCPToolCallToJSON(json) {
-    return MCPToolCallToJSONTyped(json, false);
+  return MCPToolCallToJSONTyped(json, false);
 }
 function MCPToolCallToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'method': value['method'],
-        'params': value['params'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    method: value["method"],
+    params: value["params"],
+  };
 }

@@ -23,44 +23,42 @@ var NLWebSuggestion_1 = require("./NLWebSuggestion");
  * Check if a given object implements the NLWebSuggestionResponse interface.
  */
 function instanceOfNLWebSuggestionResponse(value) {
-    if (!('suggestions' in value) || value['suggestions'] === undefined)
-        return false;
-    if (!('query' in value) || value['query'] === undefined)
-        return false;
-    if (!('processingTimeMs' in value) || value['processingTimeMs'] === undefined)
-        return false;
-    if (!('totalToolsConsidered' in value) || value['totalToolsConsidered'] === undefined)
-        return false;
-    return true;
+  if (!("suggestions" in value) || value["suggestions"] === undefined) return false;
+  if (!("query" in value) || value["query"] === undefined) return false;
+  if (!("processingTimeMs" in value) || value["processingTimeMs"] === undefined) return false;
+  if (!("totalToolsConsidered" in value) || value["totalToolsConsidered"] === undefined) return false;
+  return true;
 }
 function NLWebSuggestionResponseFromJSON(json) {
-    return NLWebSuggestionResponseFromJSONTyped(json, false);
+  return NLWebSuggestionResponseFromJSONTyped(json, false);
 }
 function NLWebSuggestionResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'suggestions': (json['suggestions'].map(NLWebSuggestion_1.NLWebSuggestionFromJSON)),
-        'query': json['query'],
-        'processingTimeMs': json['processing_time_ms'],
-        'cacheHit': json['cache_hit'] == null ? undefined : json['cache_hit'],
-        'totalToolsConsidered': json['total_tools_considered'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    suggestions: json["suggestions"].map(NLWebSuggestion_1.NLWebSuggestionFromJSON),
+    query: json["query"],
+    processingTimeMs: json["processing_time_ms"],
+    cacheHit: json["cache_hit"] == null ? undefined : json["cache_hit"],
+    totalToolsConsidered: json["total_tools_considered"],
+  };
 }
 function NLWebSuggestionResponseToJSON(json) {
-    return NLWebSuggestionResponseToJSONTyped(json, false);
+  return NLWebSuggestionResponseToJSONTyped(json, false);
 }
 function NLWebSuggestionResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'suggestions': (value['suggestions'].map(NLWebSuggestion_1.NLWebSuggestionToJSON)),
-        'query': value['query'],
-        'processing_time_ms': value['processingTimeMs'],
-        'cache_hit': value['cacheHit'],
-        'total_tools_considered': value['totalToolsConsidered'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    suggestions: value["suggestions"].map(NLWebSuggestion_1.NLWebSuggestionToJSON),
+    query: value["query"],
+    processing_time_ms: value["processingTimeMs"],
+    cache_hit: value["cacheHit"],
+    total_tools_considered: value["totalToolsConsidered"],
+  };
 }

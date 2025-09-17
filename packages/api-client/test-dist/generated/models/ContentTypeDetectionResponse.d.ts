@@ -15,24 +15,30 @@
  * @interface ContentTypeDetectionResponse
  */
 export interface ContentTypeDetectionResponse {
-    /**
-     * Detected content type
-     * @type {string}
-     * @memberof ContentTypeDetectionResponse
-     */
-    contentType: string;
-    /**
-     * Confidence score for detection
-     * @type {number}
-     * @memberof ContentTypeDetectionResponse
-     */
-    confidence?: number;
+  /**
+   * Detected content type
+   * @type {string}
+   * @memberof ContentTypeDetectionResponse
+   */
+  contentType: string;
+  /**
+   * Confidence score for detection
+   * @type {number}
+   * @memberof ContentTypeDetectionResponse
+   */
+  confidence?: number;
 }
 /**
  * Check if a given object implements the ContentTypeDetectionResponse interface.
  */
 export declare function instanceOfContentTypeDetectionResponse(value: object): value is ContentTypeDetectionResponse;
 export declare function ContentTypeDetectionResponseFromJSON(json: any): ContentTypeDetectionResponse;
-export declare function ContentTypeDetectionResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ContentTypeDetectionResponse;
+export declare function ContentTypeDetectionResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ContentTypeDetectionResponse;
 export declare function ContentTypeDetectionResponseToJSON(json: any): ContentTypeDetectionResponse;
-export declare function ContentTypeDetectionResponseToJSONTyped(value?: ContentTypeDetectionResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ContentTypeDetectionResponseToJSONTyped(
+  value?: ContentTypeDetectionResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

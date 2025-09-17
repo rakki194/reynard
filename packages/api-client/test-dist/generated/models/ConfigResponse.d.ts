@@ -15,36 +15,36 @@
  * @interface ConfigResponse
  */
 export interface ConfigResponse {
-    /**
-     *
-     * @type {boolean}
-     * @memberof ConfigResponse
-     */
-    enablePerformanceMonitoring: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ConfigResponse
-     */
-    autoCleanup: boolean;
-    /**
-     *
-     * @type {string}
-     * @memberof ConfigResponse
-     */
-    defaultValidationLevel: string;
-    /**
-     *
-     * @type {number}
-     * @memberof ConfigResponse
-     */
-    maxConcurrentLoads: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ConfigResponse
-     */
-    memoryThreshold: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ConfigResponse
+   */
+  enablePerformanceMonitoring: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ConfigResponse
+   */
+  autoCleanup: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof ConfigResponse
+   */
+  defaultValidationLevel: string;
+  /**
+   *
+   * @type {number}
+   * @memberof ConfigResponse
+   */
+  maxConcurrentLoads: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ConfigResponse
+   */
+  memoryThreshold: number;
 }
 /**
  * Check if a given object implements the ConfigResponse interface.

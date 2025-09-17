@@ -15,48 +15,48 @@
  * @interface SearchRequest
  */
 export interface SearchRequest {
-    /**
-     * Search query
-     * @type {string}
-     * @memberof SearchRequest
-     */
-    query: string;
-    /**
-     * Maximum results to return
-     * @type {number}
-     * @memberof SearchRequest
-     */
-    maxResults?: number;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof SearchRequest
-     */
-    fileTypes?: Array<string> | null;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof SearchRequest
-     */
-    directories?: Array<string> | null;
-    /**
-     * Case-sensitive search
-     * @type {boolean}
-     * @memberof SearchRequest
-     */
-    caseSensitive?: boolean;
-    /**
-     * Match whole words only
-     * @type {boolean}
-     * @memberof SearchRequest
-     */
-    wholeWord?: boolean;
-    /**
-     * Context lines around matches
-     * @type {number}
-     * @memberof SearchRequest
-     */
-    contextLines?: number;
+  /**
+   * Search query
+   * @type {string}
+   * @memberof SearchRequest
+   */
+  query: string;
+  /**
+   * Maximum results to return
+   * @type {number}
+   * @memberof SearchRequest
+   */
+  maxResults?: number;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof SearchRequest
+   */
+  fileTypes?: Array<string> | null;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof SearchRequest
+   */
+  directories?: Array<string> | null;
+  /**
+   * Case-sensitive search
+   * @type {boolean}
+   * @memberof SearchRequest
+   */
+  caseSensitive?: boolean;
+  /**
+   * Match whole words only
+   * @type {boolean}
+   * @memberof SearchRequest
+   */
+  wholeWord?: boolean;
+  /**
+   * Context lines around matches
+   * @type {number}
+   * @memberof SearchRequest
+   */
+  contextLines?: number;
 }
 /**
  * Check if a given object implements the SearchRequest interface.

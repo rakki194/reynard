@@ -15,30 +15,36 @@
  * @interface TaskExecutionRequest
  */
 export interface TaskExecutionRequest {
-    /**
-     * Name of the function to execute
-     * @type {string}
-     * @memberof TaskExecutionRequest
-     */
-    functionName: string;
-    /**
-     *
-     * @type {number}
-     * @memberof TaskExecutionRequest
-     */
-    timeout?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof TaskExecutionRequest
-     */
-    retries?: number | null;
+  /**
+   * Name of the function to execute
+   * @type {string}
+   * @memberof TaskExecutionRequest
+   */
+  functionName: string;
+  /**
+   *
+   * @type {number}
+   * @memberof TaskExecutionRequest
+   */
+  timeout?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof TaskExecutionRequest
+   */
+  retries?: number | null;
 }
 /**
  * Check if a given object implements the TaskExecutionRequest interface.
  */
 export declare function instanceOfTaskExecutionRequest(value: object): value is TaskExecutionRequest;
 export declare function TaskExecutionRequestFromJSON(json: any): TaskExecutionRequest;
-export declare function TaskExecutionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskExecutionRequest;
+export declare function TaskExecutionRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): TaskExecutionRequest;
 export declare function TaskExecutionRequestToJSON(json: any): TaskExecutionRequest;
-export declare function TaskExecutionRequestToJSONTyped(value?: TaskExecutionRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function TaskExecutionRequestToJSONTyped(
+  value?: TaskExecutionRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

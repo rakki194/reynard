@@ -2,22 +2,22 @@
 
 /**
  * 🦊 Reynard Project Architecture - VS Code Integration Example
- * 
+ *
  * This script demonstrates VS Code task generation using the project architecture.
  */
 
-import { 
+import {
   generateVSCodeTasksConfig,
   generateVSCodeWorkspaceConfig,
   generateQueueWatcherTask,
   generateAutoStartQueueWatcherTask,
   generateBuildTasks,
   generateTestTasks,
-  generateLintTasks
+  generateLintTasks,
 } from "./dist/index.js";
 
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 console.log("🦊 Reynard Project Architecture - VS Code Integration Example\n");
 
@@ -47,7 +47,7 @@ const watcherTask = generateQueueWatcherTask();
 console.log("Queue Watcher Task:");
 console.log(`  Label: ${watcherTask.label}`);
 console.log(`  Command: ${watcherTask.command}`);
-console.log(`  Args: ${watcherTask.args.join(' ')}`);
+console.log(`  Args: ${watcherTask.args.join(" ")}`);
 console.log(`  Is Background: ${watcherTask.isBackground}`);
 console.log();
 
@@ -84,7 +84,7 @@ console.log();
 
 // 4. Write configuration files (optional)
 console.log("=== 4. Writing Configuration Files ===");
-const outputDir = './vscode-output';
+const outputDir = "./vscode-output";
 
 // Create output directory
 if (!fs.existsSync(outputDir)) {
@@ -92,17 +92,17 @@ if (!fs.existsSync(outputDir)) {
 }
 
 // Write tasks.json
-const tasksPath = path.join(outputDir, 'tasks.json');
+const tasksPath = path.join(outputDir, "tasks.json");
 fs.writeFileSync(tasksPath, JSON.stringify(tasksConfig, null, 2));
 console.log(`✅ Written tasks.json to ${tasksPath}`);
 
 // Write workspace configuration
-const workspacePath = path.join(outputDir, 'reynard.code-workspace');
+const workspacePath = path.join(outputDir, "reynard.code-workspace");
 fs.writeFileSync(workspacePath, JSON.stringify(workspaceConfig, null, 2));
 console.log(`✅ Written workspace config to ${workspacePath}`);
 
 // Write individual task files
-const watcherTaskPath = path.join(outputDir, 'queue-watcher-task.json');
+const watcherTaskPath = path.join(outputDir, "queue-watcher-task.json");
 fs.writeFileSync(watcherTaskPath, JSON.stringify(watcherTask, null, 2));
 console.log(`✅ Written queue watcher task to ${watcherTaskPath}`);
 

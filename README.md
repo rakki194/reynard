@@ -171,7 +171,6 @@ function App() {
 - **[🏗️ Architecture Patterns](./docs/architecture/modularity-patterns.md)** - Modularity patterns and refactoring strategies
 - **[🤝 Contributing](./CONTRIBUTING.md)** - How to contribute to Reynard
 - **[🔒 Security Testing](./fenrir/README.md)** - FENRIR security testing framework
-- **[🐍 Python Development](./docs/python-development-setup.md)** - Backend development setup
 
 ## ✨ Key Features
 

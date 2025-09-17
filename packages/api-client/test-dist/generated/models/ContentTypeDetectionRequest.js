@@ -22,30 +22,31 @@ exports.ContentTypeDetectionRequestToJSONTyped = ContentTypeDetectionRequestToJS
  * Check if a given object implements the ContentTypeDetectionRequest interface.
  */
 function instanceOfContentTypeDetectionRequest(value) {
-    if (!('text' in value) || value['text'] === undefined)
-        return false;
-    return true;
+  if (!("text" in value) || value["text"] === undefined) return false;
+  return true;
 }
 function ContentTypeDetectionRequestFromJSON(json) {
-    return ContentTypeDetectionRequestFromJSONTyped(json, false);
+  return ContentTypeDetectionRequestFromJSONTyped(json, false);
 }
 function ContentTypeDetectionRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'text': json['text'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    text: json["text"],
+  };
 }
 function ContentTypeDetectionRequestToJSON(json) {
-    return ContentTypeDetectionRequestToJSONTyped(json, false);
+  return ContentTypeDetectionRequestToJSONTyped(json, false);
 }
 function ContentTypeDetectionRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'text': value['text'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    text: value["text"],
+  };
 }

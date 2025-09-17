@@ -15,66 +15,66 @@
  * @interface OllamaStats
  */
 export interface OllamaStats {
-    /**
-     * Total chat requests
-     * @type {number}
-     * @memberof OllamaStats
-     */
-    totalRequests: number;
-    /**
-     * Successful chat requests
-     * @type {number}
-     * @memberof OllamaStats
-     */
-    successfulRequests: number;
-    /**
-     * Failed chat requests
-     * @type {number}
-     * @memberof OllamaStats
-     */
-    failedRequests: number;
-    /**
-     * Average processing time in seconds
-     * @type {number}
-     * @memberof OllamaStats
-     */
-    averageProcessingTime: number;
-    /**
-     * Total tokens generated
-     * @type {number}
-     * @memberof OllamaStats
-     */
-    totalTokensGenerated: number;
-    /**
-     * Model usage statistics
-     * @type {{ [key: string]: number; }}
-     * @memberof OllamaStats
-     */
-    modelUsage: {
-        [key: string]: number;
-    };
-    /**
-     * Assistant usage statistics
-     * @type {{ [key: string]: number; }}
-     * @memberof OllamaStats
-     */
-    assistantUsage: {
-        [key: string]: number;
-    };
-    /**
-     * Tools usage statistics
-     * @type {{ [key: string]: number; }}
-     * @memberof OllamaStats
-     */
-    toolsUsage: {
-        [key: string]: number;
-    };
-    /**
-     * Error rate percentage
-     * @type {number}
-     * @memberof OllamaStats
-     */
-    errorRate: number;
+  /**
+   * Total chat requests
+   * @type {number}
+   * @memberof OllamaStats
+   */
+  totalRequests: number;
+  /**
+   * Successful chat requests
+   * @type {number}
+   * @memberof OllamaStats
+   */
+  successfulRequests: number;
+  /**
+   * Failed chat requests
+   * @type {number}
+   * @memberof OllamaStats
+   */
+  failedRequests: number;
+  /**
+   * Average processing time in seconds
+   * @type {number}
+   * @memberof OllamaStats
+   */
+  averageProcessingTime: number;
+  /**
+   * Total tokens generated
+   * @type {number}
+   * @memberof OllamaStats
+   */
+  totalTokensGenerated: number;
+  /**
+   * Model usage statistics
+   * @type {{ [key: string]: number; }}
+   * @memberof OllamaStats
+   */
+  modelUsage: {
+    [key: string]: number;
+  };
+  /**
+   * Assistant usage statistics
+   * @type {{ [key: string]: number; }}
+   * @memberof OllamaStats
+   */
+  assistantUsage: {
+    [key: string]: number;
+  };
+  /**
+   * Tools usage statistics
+   * @type {{ [key: string]: number; }}
+   * @memberof OllamaStats
+   */
+  toolsUsage: {
+    [key: string]: number;
+  };
+  /**
+   * Error rate percentage
+   * @type {number}
+   * @memberof OllamaStats
+   */
+  errorRate: number;
 }
 /**
  * Check if a given object implements the OllamaStats interface.

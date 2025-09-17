@@ -15,30 +15,30 @@
  * @interface ImageFormatResponse
  */
 export interface ImageFormatResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof ImageFormatResponse
-     */
-    extension: string;
-    /**
-     *
-     * @type {string}
-     * @memberof ImageFormatResponse
-     */
-    mimeType: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ImageFormatResponse
-     */
-    supported: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ImageFormatResponse
-     */
-    requiresPlugin?: boolean | null;
+  /**
+   *
+   * @type {string}
+   * @memberof ImageFormatResponse
+   */
+  extension: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ImageFormatResponse
+   */
+  mimeType: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ImageFormatResponse
+   */
+  supported: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ImageFormatResponse
+   */
+  requiresPlugin?: boolean | null;
 }
 /**
  * Check if a given object implements the ImageFormatResponse interface.
@@ -47,4 +47,7 @@ export declare function instanceOfImageFormatResponse(value: object): value is I
 export declare function ImageFormatResponseFromJSON(json: any): ImageFormatResponse;
 export declare function ImageFormatResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageFormatResponse;
 export declare function ImageFormatResponseToJSON(json: any): ImageFormatResponse;
-export declare function ImageFormatResponseToJSONTyped(value?: ImageFormatResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ImageFormatResponseToJSONTyped(
+  value?: ImageFormatResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -22,34 +22,34 @@ exports.NLWebSitesResponseToJSONTyped = NLWebSitesResponseToJSONTyped;
  * Check if a given object implements the NLWebSitesResponse interface.
  */
 function instanceOfNLWebSitesResponse(value) {
-    if (!('sites' in value) || value['sites'] === undefined)
-        return false;
-    if (!('totalSites' in value) || value['totalSites'] === undefined)
-        return false;
-    return true;
+  if (!("sites" in value) || value["sites"] === undefined) return false;
+  if (!("totalSites" in value) || value["totalSites"] === undefined) return false;
+  return true;
 }
 function NLWebSitesResponseFromJSON(json) {
-    return NLWebSitesResponseFromJSONTyped(json, false);
+  return NLWebSitesResponseFromJSONTyped(json, false);
 }
 function NLWebSitesResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'sites': json['sites'],
-        'totalSites': json['total_sites'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    sites: json["sites"],
+    totalSites: json["total_sites"],
+  };
 }
 function NLWebSitesResponseToJSON(json) {
-    return NLWebSitesResponseToJSONTyped(json, false);
+  return NLWebSitesResponseToJSONTyped(json, false);
 }
 function NLWebSitesResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'sites': value['sites'],
-        'total_sites': value['totalSites'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    sites: value["sites"],
+    total_sites: value["totalSites"],
+  };
 }

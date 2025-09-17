@@ -15,60 +15,66 @@
  * @interface OllamaAssistantRequest
  */
 export interface OllamaAssistantRequest {
-    /**
-     * User message
-     * @type {string}
-     * @memberof OllamaAssistantRequest
-     */
-    message: string;
-    /**
-     * Assistant type (reynard, codewolf)
-     * @type {string}
-     * @memberof OllamaAssistantRequest
-     */
-    assistantType?: string;
-    /**
-     * Ollama model to use
-     * @type {string}
-     * @memberof OllamaAssistantRequest
-     */
-    model?: string;
-    /**
-     * Sampling temperature
-     * @type {number}
-     * @memberof OllamaAssistantRequest
-     */
-    temperature?: number;
-    /**
-     * Maximum tokens to generate
-     * @type {number}
-     * @memberof OllamaAssistantRequest
-     */
-    maxTokens?: number;
-    /**
-     * Enable streaming response
-     * @type {boolean}
-     * @memberof OllamaAssistantRequest
-     */
-    stream?: boolean;
-    /**
-     *
-     * @type {object}
-     * @memberof OllamaAssistantRequest
-     */
-    context?: object | null;
-    /**
-     * Enable tool calling
-     * @type {boolean}
-     * @memberof OllamaAssistantRequest
-     */
-    toolsEnabled?: boolean;
+  /**
+   * User message
+   * @type {string}
+   * @memberof OllamaAssistantRequest
+   */
+  message: string;
+  /**
+   * Assistant type (reynard, codewolf)
+   * @type {string}
+   * @memberof OllamaAssistantRequest
+   */
+  assistantType?: string;
+  /**
+   * Ollama model to use
+   * @type {string}
+   * @memberof OllamaAssistantRequest
+   */
+  model?: string;
+  /**
+   * Sampling temperature
+   * @type {number}
+   * @memberof OllamaAssistantRequest
+   */
+  temperature?: number;
+  /**
+   * Maximum tokens to generate
+   * @type {number}
+   * @memberof OllamaAssistantRequest
+   */
+  maxTokens?: number;
+  /**
+   * Enable streaming response
+   * @type {boolean}
+   * @memberof OllamaAssistantRequest
+   */
+  stream?: boolean;
+  /**
+   *
+   * @type {object}
+   * @memberof OllamaAssistantRequest
+   */
+  context?: object | null;
+  /**
+   * Enable tool calling
+   * @type {boolean}
+   * @memberof OllamaAssistantRequest
+   */
+  toolsEnabled?: boolean;
 }
 /**
  * Check if a given object implements the OllamaAssistantRequest interface.
  */
 export declare function instanceOfOllamaAssistantRequest(value: object): value is OllamaAssistantRequest;
 export declare function OllamaAssistantRequestFromJSON(json: any): OllamaAssistantRequest;
-export declare function OllamaAssistantRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): OllamaAssistantRequest;
+export declare function OllamaAssistantRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OllamaAssistantRequest;
 export declare function OllamaAssistantRequestToJSON(json: any): OllamaAssistantRequest;
-export declare function OllamaAssistantRequestToJSONTyped(value?: OllamaAssistantRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function OllamaAssistantRequestToJSONTyped(
+  value?: OllamaAssistantRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -23,38 +23,39 @@ var NLWebContext_1 = require("./NLWebContext");
  * Check if a given object implements the NLWebSuggestionRequest interface.
  */
 function instanceOfNLWebSuggestionRequest(value) {
-    if (!('query' in value) || value['query'] === undefined)
-        return false;
-    return true;
+  if (!("query" in value) || value["query"] === undefined) return false;
+  return true;
 }
 function NLWebSuggestionRequestFromJSON(json) {
-    return NLWebSuggestionRequestFromJSONTyped(json, false);
+  return NLWebSuggestionRequestFromJSONTyped(json, false);
 }
 function NLWebSuggestionRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'query': json['query'],
-        'context': json['context'] == null ? undefined : (0, NLWebContext_1.NLWebContextFromJSON)(json['context']),
-        'maxSuggestions': json['max_suggestions'] == null ? undefined : json['max_suggestions'],
-        'minScore': json['min_score'] == null ? undefined : json['min_score'],
-        'includeReasoning': json['include_reasoning'] == null ? undefined : json['include_reasoning'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    query: json["query"],
+    context: json["context"] == null ? undefined : (0, NLWebContext_1.NLWebContextFromJSON)(json["context"]),
+    maxSuggestions: json["max_suggestions"] == null ? undefined : json["max_suggestions"],
+    minScore: json["min_score"] == null ? undefined : json["min_score"],
+    includeReasoning: json["include_reasoning"] == null ? undefined : json["include_reasoning"],
+  };
 }
 function NLWebSuggestionRequestToJSON(json) {
-    return NLWebSuggestionRequestToJSONTyped(json, false);
+  return NLWebSuggestionRequestToJSONTyped(json, false);
 }
 function NLWebSuggestionRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'query': value['query'],
-        'context': (0, NLWebContext_1.NLWebContextToJSON)(value['context']),
-        'max_suggestions': value['maxSuggestions'],
-        'min_score': value['minScore'],
-        'include_reasoning': value['includeReasoning'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    query: value["query"],
+    context: (0, NLWebContext_1.NLWebContextToJSON)(value["context"]),
+    max_suggestions: value["maxSuggestions"],
+    min_score: value["minScore"],
+    include_reasoning: value["includeReasoning"],
+  };
 }

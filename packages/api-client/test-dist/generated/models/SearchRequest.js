@@ -22,42 +22,43 @@ exports.SearchRequestToJSONTyped = SearchRequestToJSONTyped;
  * Check if a given object implements the SearchRequest interface.
  */
 function instanceOfSearchRequest(value) {
-    if (!('query' in value) || value['query'] === undefined)
-        return false;
-    return true;
+  if (!("query" in value) || value["query"] === undefined) return false;
+  return true;
 }
 function SearchRequestFromJSON(json) {
-    return SearchRequestFromJSONTyped(json, false);
+  return SearchRequestFromJSONTyped(json, false);
 }
 function SearchRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'query': json['query'],
-        'maxResults': json['max_results'] == null ? undefined : json['max_results'],
-        'fileTypes': json['file_types'] == null ? undefined : json['file_types'],
-        'directories': json['directories'] == null ? undefined : json['directories'],
-        'caseSensitive': json['case_sensitive'] == null ? undefined : json['case_sensitive'],
-        'wholeWord': json['whole_word'] == null ? undefined : json['whole_word'],
-        'contextLines': json['context_lines'] == null ? undefined : json['context_lines'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    query: json["query"],
+    maxResults: json["max_results"] == null ? undefined : json["max_results"],
+    fileTypes: json["file_types"] == null ? undefined : json["file_types"],
+    directories: json["directories"] == null ? undefined : json["directories"],
+    caseSensitive: json["case_sensitive"] == null ? undefined : json["case_sensitive"],
+    wholeWord: json["whole_word"] == null ? undefined : json["whole_word"],
+    contextLines: json["context_lines"] == null ? undefined : json["context_lines"],
+  };
 }
 function SearchRequestToJSON(json) {
-    return SearchRequestToJSONTyped(json, false);
+  return SearchRequestToJSONTyped(json, false);
 }
 function SearchRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'query': value['query'],
-        'max_results': value['maxResults'],
-        'file_types': value['fileTypes'],
-        'directories': value['directories'],
-        'case_sensitive': value['caseSensitive'],
-        'whole_word': value['wholeWord'],
-        'context_lines': value['contextLines'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    query: value["query"],
+    max_results: value["maxResults"],
+    file_types: value["fileTypes"],
+    directories: value["directories"],
+    case_sensitive: value["caseSensitive"],
+    whole_word: value["wholeWord"],
+    context_lines: value["contextLines"],
+  };
 }

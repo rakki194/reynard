@@ -22,32 +22,33 @@ exports.LazyExportRequestToJSONTyped = LazyExportRequestToJSONTyped;
  * Check if a given object implements the LazyExportRequest interface.
  */
 function instanceOfLazyExportRequest(value) {
-    if (!('packageName' in value) || value['packageName'] === undefined)
-        return false;
-    return true;
+  if (!("packageName" in value) || value["packageName"] === undefined) return false;
+  return true;
 }
 function LazyExportRequestFromJSON(json) {
-    return LazyExportRequestFromJSONTyped(json, false);
+  return LazyExportRequestFromJSONTyped(json, false);
 }
 function LazyExportRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'packageName': json['package_name'],
-        'validationLevel': json['validation_level'] == null ? undefined : json['validation_level'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    packageName: json["package_name"],
+    validationLevel: json["validation_level"] == null ? undefined : json["validation_level"],
+  };
 }
 function LazyExportRequestToJSON(json) {
-    return LazyExportRequestToJSONTyped(json, false);
+  return LazyExportRequestToJSONTyped(json, false);
 }
 function LazyExportRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'package_name': value['packageName'],
-        'validation_level': value['validationLevel'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    package_name: value["packageName"],
+    validation_level: value["validationLevel"],
+  };
 }

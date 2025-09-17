@@ -50,7 +50,7 @@ function getJunkPatterns(): RegExp[] {
     /\.env$/,
     /\.env\..*$/,
     /\.git/,
-    /\.vscode/
+    /\.vscode/,
   ];
 }
 
@@ -99,17 +99,17 @@ export function shouldExcludeFile(filePath: string): boolean {
  * @returns True if the file was recently processed
  */
 export function wasRecentlyProcessed(
-  filePath: string, 
-  recentlyProcessed: Map<string, number>, 
+  filePath: string,
+  recentlyProcessed: Map<string, number>,
   cooldown: number
 ): boolean {
   const now = Date.now();
   const lastProcessed = recentlyProcessed.get(filePath);
-  
-  if (lastProcessed && (now - lastProcessed) < cooldown) {
+
+  if (lastProcessed && now - lastProcessed < cooldown) {
     return true;
   }
-  
+
   recentlyProcessed.set(filePath, now);
   return false;
 }
@@ -121,29 +121,29 @@ export function wasRecentlyProcessed(
  */
 export function getFileType(filePath: string): string | null {
   const ext = path.extname(filePath).toLowerCase();
-  
+
   switch (ext) {
-    case '.md':
-    case '.mdx':
-      return 'markdown';
-    case '.ts':
-    case '.tsx':
-      return 'typescript';
-    case '.js':
-    case '.jsx':
-      return 'javascript';
-    case '.py':
-      return 'python';
-    case '.json':
-      return 'json';
-    case '.yaml':
-    case '.yml':
-      return 'yaml';
-    case '.css':
-      return 'css';
-    case '.html':
-    case '.htm':
-      return 'html';
+    case ".md":
+    case ".mdx":
+      return "markdown";
+    case ".ts":
+    case ".tsx":
+      return "typescript";
+    case ".js":
+    case ".jsx":
+      return "javascript";
+    case ".py":
+      return "python";
+    case ".json":
+      return "json";
+    case ".yaml":
+    case ".yml":
+      return "yaml";
+    case ".css":
+      return "css";
+    case ".html":
+    case ".htm":
+      return "html";
     default:
       return null;
   }

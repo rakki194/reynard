@@ -15,30 +15,30 @@
  * @interface PackageLoadResponse
  */
 export interface PackageLoadResponse {
-    /**
-     *
-     * @type {boolean}
-     * @memberof PackageLoadResponse
-     */
-    success: boolean;
-    /**
-     *
-     * @type {string}
-     * @memberof PackageLoadResponse
-     */
-    packageName: string;
-    /**
-     *
-     * @type {number}
-     * @memberof PackageLoadResponse
-     */
-    loadTime?: number | null;
-    /**
-     *
-     * @type {string}
-     * @memberof PackageLoadResponse
-     */
-    error?: string | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PackageLoadResponse
+   */
+  success: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof PackageLoadResponse
+   */
+  packageName: string;
+  /**
+   *
+   * @type {number}
+   * @memberof PackageLoadResponse
+   */
+  loadTime?: number | null;
+  /**
+   *
+   * @type {string}
+   * @memberof PackageLoadResponse
+   */
+  error?: string | null;
 }
 /**
  * Check if a given object implements the PackageLoadResponse interface.
@@ -47,4 +47,7 @@ export declare function instanceOfPackageLoadResponse(value: object): value is P
 export declare function PackageLoadResponseFromJSON(json: any): PackageLoadResponse;
 export declare function PackageLoadResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): PackageLoadResponse;
 export declare function PackageLoadResponseToJSON(json: any): PackageLoadResponse;
-export declare function PackageLoadResponseToJSONTyped(value?: PackageLoadResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function PackageLoadResponseToJSONTyped(
+  value?: PackageLoadResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

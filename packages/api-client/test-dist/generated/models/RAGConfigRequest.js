@@ -22,30 +22,31 @@ exports.RAGConfigRequestToJSONTyped = RAGConfigRequestToJSONTyped;
  * Check if a given object implements the RAGConfigRequest interface.
  */
 function instanceOfRAGConfigRequest(value) {
-    if (!('config' in value) || value['config'] === undefined)
-        return false;
-    return true;
+  if (!("config" in value) || value["config"] === undefined) return false;
+  return true;
 }
 function RAGConfigRequestFromJSON(json) {
-    return RAGConfigRequestFromJSONTyped(json, false);
+  return RAGConfigRequestFromJSONTyped(json, false);
 }
 function RAGConfigRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'config': json['config'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    config: json["config"],
+  };
 }
 function RAGConfigRequestToJSON(json) {
-    return RAGConfigRequestToJSONTyped(json, false);
+  return RAGConfigRequestToJSONTyped(json, false);
 }
 function RAGConfigRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'config': value['config'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    config: value["config"],
+  };
 }

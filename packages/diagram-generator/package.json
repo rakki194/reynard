@@ -27,14 +27,7 @@
     "generate:dependencies": "node dist/cli/generate-dependencies.js",
     "demo": "tsx demo.ts"
   },
-  "keywords": [
-    "diagram",
-    "mermaid",
-    "visualization",
-    "architecture",
-    "documentation",
-    "reynard"
-  ],
+  "keywords": ["diagram", "mermaid", "visualization", "architecture", "documentation", "reynard"],
   "author": "Balazs Horvath",
   "license": "MIT",
   "dependencies": {

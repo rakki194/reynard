@@ -15,12 +15,12 @@
  * @interface RAGConfigRequest
  */
 export interface RAGConfigRequest {
-    /**
-     * Configuration updates
-     * @type {object}
-     * @memberof RAGConfigRequest
-     */
-    config: object;
+  /**
+   * Configuration updates
+   * @type {object}
+   * @memberof RAGConfigRequest
+   */
+  config: object;
 }
 /**
  * Check if a given object implements the RAGConfigRequest interface.
@@ -29,4 +29,7 @@ export declare function instanceOfRAGConfigRequest(value: object): value is RAGC
 export declare function RAGConfigRequestFromJSON(json: any): RAGConfigRequest;
 export declare function RAGConfigRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGConfigRequest;
 export declare function RAGConfigRequestToJSON(json: any): RAGConfigRequest;
-export declare function RAGConfigRequestToJSONTyped(value?: RAGConfigRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function RAGConfigRequestToJSONTyped(
+  value?: RAGConfigRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

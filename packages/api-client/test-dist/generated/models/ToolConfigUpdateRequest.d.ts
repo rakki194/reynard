@@ -15,30 +15,36 @@
  * @interface ToolConfigUpdateRequest
  */
 export interface ToolConfigUpdateRequest {
-    /**
-     * Name of the tool to update
-     * @type {string}
-     * @memberof ToolConfigUpdateRequest
-     */
-    toolName: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ToolConfigUpdateRequest
-     */
-    enabled?: boolean | null;
-    /**
-     *
-     * @type {object}
-     * @memberof ToolConfigUpdateRequest
-     */
-    config?: object | null;
+  /**
+   * Name of the tool to update
+   * @type {string}
+   * @memberof ToolConfigUpdateRequest
+   */
+  toolName: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ToolConfigUpdateRequest
+   */
+  enabled?: boolean | null;
+  /**
+   *
+   * @type {object}
+   * @memberof ToolConfigUpdateRequest
+   */
+  config?: object | null;
 }
 /**
  * Check if a given object implements the ToolConfigUpdateRequest interface.
  */
 export declare function instanceOfToolConfigUpdateRequest(value: object): value is ToolConfigUpdateRequest;
 export declare function ToolConfigUpdateRequestFromJSON(json: any): ToolConfigUpdateRequest;
-export declare function ToolConfigUpdateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ToolConfigUpdateRequest;
+export declare function ToolConfigUpdateRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ToolConfigUpdateRequest;
 export declare function ToolConfigUpdateRequestToJSON(json: any): ToolConfigUpdateRequest;
-export declare function ToolConfigUpdateRequestToJSONTyped(value?: ToolConfigUpdateRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function ToolConfigUpdateRequestToJSONTyped(
+  value?: ToolConfigUpdateRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

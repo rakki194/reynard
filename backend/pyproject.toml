@@ -51,25 +51,26 @@ dependencies = [
 # RAG Embeddings Optimization dependencies
 rag = [
     # Phase 1: Immediate optimizations
-    "tiktoken",           # Model-specific tokenization
     "psutil",             # System resource monitoring
     "prometheus-client",  # Performance monitoring and metrics
-    # Note: numpy is already in main dependencies
-    # Note: Phase 2 and 3 dependencies are commented out for future implementation
-    # Phase 2: Enhanced chunking (future)
-    # "tree-sitter",
-    # "tree-sitter-python", 
-    # "tree-sitter-typescript",
-    # "tree-sitter-javascript",
-    # Phase 2: Hybrid search (future)
-    # "rank-bm25",
-    # "scikit-learn",
-    # Phase 3: Multi-modal embeddings (future)
-    # "transformers",
-    # "torch",  # Already in main dependencies
-    # "pillow",  # Already in main dependencies
-    # Phase 3: Quality monitoring (future)
-    # "matplotlib",
+    "tree-sitter",        # AST-aware code chunking
+    "tree-sitter-python",
+    "tree-sitter-typescript", 
+    "tree-sitter-javascript",
+    "tree-sitter-java",
+    "tree-sitter-cpp",
+    "rank-bm25",        # Hybrid search and ranking
+    "scikit-learn",
+    "scipy", # Statistical analysis for model evaluation
+    # Phase 3: Multi-modal embeddings
+    "transformers",
+    # Phase 3: Quality monitoring
+    "matplotlib",
+    "seaborn",
+    "pandas",
+    "PyJWT",
+    "mkdocs",
+    "mkdocs-material",
 ]
 
 test = [

@@ -24,42 +24,40 @@ var ToolConfigResponse_1 = require("./ToolConfigResponse");
  * Check if a given object implements the ToolConfigListResponse interface.
  */
 function instanceOfToolConfigListResponse(value) {
-    if (!('tools' in value) || value['tools'] === undefined)
-        return false;
-    if (!('totalTools' in value) || value['totalTools'] === undefined)
-        return false;
-    if (!('enabledTools' in value) || value['enabledTools'] === undefined)
-        return false;
-    if (!('disabledTools' in value) || value['disabledTools'] === undefined)
-        return false;
-    return true;
+  if (!("tools" in value) || value["tools"] === undefined) return false;
+  if (!("totalTools" in value) || value["totalTools"] === undefined) return false;
+  if (!("enabledTools" in value) || value["enabledTools"] === undefined) return false;
+  if (!("disabledTools" in value) || value["disabledTools"] === undefined) return false;
+  return true;
 }
 function ToolConfigListResponseFromJSON(json) {
-    return ToolConfigListResponseFromJSONTyped(json, false);
+  return ToolConfigListResponseFromJSONTyped(json, false);
 }
 function ToolConfigListResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'tools': ((0, runtime_1.mapValues)(json['tools'], ToolConfigResponse_1.ToolConfigResponseFromJSON)),
-        'totalTools': json['total_tools'],
-        'enabledTools': json['enabled_tools'],
-        'disabledTools': json['disabled_tools'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    tools: (0, runtime_1.mapValues)(json["tools"], ToolConfigResponse_1.ToolConfigResponseFromJSON),
+    totalTools: json["total_tools"],
+    enabledTools: json["enabled_tools"],
+    disabledTools: json["disabled_tools"],
+  };
 }
 function ToolConfigListResponseToJSON(json) {
-    return ToolConfigListResponseToJSONTyped(json, false);
+  return ToolConfigListResponseToJSONTyped(json, false);
 }
 function ToolConfigListResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'tools': ((0, runtime_1.mapValues)(value['tools'], ToolConfigResponse_1.ToolConfigResponseToJSON)),
-        'total_tools': value['totalTools'],
-        'enabled_tools': value['enabledTools'],
-        'disabled_tools': value['disabledTools'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    tools: (0, runtime_1.mapValues)(value["tools"], ToolConfigResponse_1.ToolConfigResponseToJSON),
+    total_tools: value["totalTools"],
+    enabled_tools: value["enabledTools"],
+    disabled_tools: value["disabledTools"],
+  };
 }

@@ -9,135 +9,135 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { Id } from './Id';
+import type { Id } from "./Id";
 /**
  * Individual search result hit.
  * @export
  * @interface RAGQueryHit
  */
 export interface RAGQueryHit {
-    /**
-     *
-     * @type {Id}
-     * @memberof RAGQueryHit
-     */
-    id?: Id | null;
-    /**
-     * Similarity score
-     * @type {number}
-     * @memberof RAGQueryHit
-     */
-    score: number;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof RAGQueryHit
-     */
-    highlights?: Array<string> | null;
-    /**
-     *
-     * @type {object}
-     * @memberof RAGQueryHit
-     */
-    extra?: object | null;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGQueryHit
-     */
-    filePath?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGQueryHit
-     */
-    fileContent?: string | null;
-    /**
-     *
-     * @type {object}
-     * @memberof RAGQueryHit
-     */
-    fileMetadata?: object | null;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGQueryHit
-     */
-    chunkIndex?: number | null;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGQueryHit
-     */
-    chunkText?: string | null;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGQueryHit
-     */
-    chunkTokens?: number | null;
-    /**
-     *
-     * @type {object}
-     * @memberof RAGQueryHit
-     */
-    chunkMetadata?: object | null;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGQueryHit
-     */
-    imagePath?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGQueryHit
-     */
-    imageId?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGQueryHit
-     */
-    thumbnailPath?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGQueryHit
-     */
-    previewPath?: string | null;
-    /**
-     *
-     * @type {object}
-     * @memberof RAGQueryHit
-     */
-    imageMetadata?: object | null;
-    /**
-     *
-     * @type {{ [key: string]: number; }}
-     * @memberof RAGQueryHit
-     */
-    imageDimensions?: {
-        [key: string]: number;
-    } | null;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGQueryHit
-     */
-    imageSize?: number | null;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGQueryHit
-     */
-    imageFormat?: string | null;
-    /**
-     *
-     * @type {Array<number>}
-     * @memberof RAGQueryHit
-     */
-    embeddingVector?: Array<number> | null;
+  /**
+   *
+   * @type {Id}
+   * @memberof RAGQueryHit
+   */
+  id?: Id | null;
+  /**
+   * Similarity score
+   * @type {number}
+   * @memberof RAGQueryHit
+   */
+  score: number;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof RAGQueryHit
+   */
+  highlights?: Array<string> | null;
+  /**
+   *
+   * @type {object}
+   * @memberof RAGQueryHit
+   */
+  extra?: object | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGQueryHit
+   */
+  filePath?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGQueryHit
+   */
+  fileContent?: string | null;
+  /**
+   *
+   * @type {object}
+   * @memberof RAGQueryHit
+   */
+  fileMetadata?: object | null;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGQueryHit
+   */
+  chunkIndex?: number | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGQueryHit
+   */
+  chunkText?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGQueryHit
+   */
+  chunkTokens?: number | null;
+  /**
+   *
+   * @type {object}
+   * @memberof RAGQueryHit
+   */
+  chunkMetadata?: object | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGQueryHit
+   */
+  imagePath?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGQueryHit
+   */
+  imageId?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGQueryHit
+   */
+  thumbnailPath?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGQueryHit
+   */
+  previewPath?: string | null;
+  /**
+   *
+   * @type {object}
+   * @memberof RAGQueryHit
+   */
+  imageMetadata?: object | null;
+  /**
+   *
+   * @type {{ [key: string]: number; }}
+   * @memberof RAGQueryHit
+   */
+  imageDimensions?: {
+    [key: string]: number;
+  } | null;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGQueryHit
+   */
+  imageSize?: number | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGQueryHit
+   */
+  imageFormat?: string | null;
+  /**
+   *
+   * @type {Array<number>}
+   * @memberof RAGQueryHit
+   */
+  embeddingVector?: Array<number> | null;
 }
 /**
  * Check if a given object implements the RAGQueryHit interface.

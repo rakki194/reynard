@@ -15,42 +15,42 @@
  * @interface TaskInfoResponse
  */
 export interface TaskInfoResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof TaskInfoResponse
-     */
-    taskId: string;
-    /**
-     *
-     * @type {string}
-     * @memberof TaskInfoResponse
-     */
-    functionName: string;
-    /**
-     *
-     * @type {number}
-     * @memberof TaskInfoResponse
-     */
-    startTime: number;
-    /**
-     *
-     * @type {number}
-     * @memberof TaskInfoResponse
-     */
-    timeout: number;
-    /**
-     *
-     * @type {number}
-     * @memberof TaskInfoResponse
-     */
-    retryCount: number;
-    /**
-     *
-     * @type {number}
-     * @memberof TaskInfoResponse
-     */
-    maxRetries: number;
+  /**
+   *
+   * @type {string}
+   * @memberof TaskInfoResponse
+   */
+  taskId: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TaskInfoResponse
+   */
+  functionName: string;
+  /**
+   *
+   * @type {number}
+   * @memberof TaskInfoResponse
+   */
+  startTime: number;
+  /**
+   *
+   * @type {number}
+   * @memberof TaskInfoResponse
+   */
+  timeout: number;
+  /**
+   *
+   * @type {number}
+   * @memberof TaskInfoResponse
+   */
+  retryCount: number;
+  /**
+   *
+   * @type {number}
+   * @memberof TaskInfoResponse
+   */
+  maxRetries: number;
 }
 /**
  * Check if a given object implements the TaskInfoResponse interface.
@@ -59,4 +59,7 @@ export declare function instanceOfTaskInfoResponse(value: object): value is Task
 export declare function TaskInfoResponseFromJSON(json: any): TaskInfoResponse;
 export declare function TaskInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskInfoResponse;
 export declare function TaskInfoResponseToJSON(json: any): TaskInfoResponse;
-export declare function TaskInfoResponseToJSONTyped(value?: TaskInfoResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function TaskInfoResponseToJSONTyped(
+  value?: TaskInfoResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -22,34 +22,34 @@ exports.ImageDimensionsRequestToJSONTyped = ImageDimensionsRequestToJSONTyped;
  * Check if a given object implements the ImageDimensionsRequest interface.
  */
 function instanceOfImageDimensionsRequest(value) {
-    if (!('width' in value) || value['width'] === undefined)
-        return false;
-    if (!('height' in value) || value['height'] === undefined)
-        return false;
-    return true;
+  if (!("width" in value) || value["width"] === undefined) return false;
+  if (!("height" in value) || value["height"] === undefined) return false;
+  return true;
 }
 function ImageDimensionsRequestFromJSON(json) {
-    return ImageDimensionsRequestFromJSONTyped(json, false);
+  return ImageDimensionsRequestFromJSONTyped(json, false);
 }
 function ImageDimensionsRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'width': json['width'],
-        'height': json['height'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    width: json["width"],
+    height: json["height"],
+  };
 }
 function ImageDimensionsRequestToJSON(json) {
-    return ImageDimensionsRequestToJSONTyped(json, false);
+  return ImageDimensionsRequestToJSONTyped(json, false);
 }
 function ImageDimensionsRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'width': value['width'],
-        'height': value['height'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    width: value["width"],
+    height: value["height"],
+  };
 }

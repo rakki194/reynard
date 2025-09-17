@@ -15,36 +15,36 @@
  * @interface CaptionRequest
  */
 export interface CaptionRequest {
-    /**
-     * Path to the image file
-     * @type {string}
-     * @memberof CaptionRequest
-     */
-    imagePath: string;
-    /**
-     * Name of the caption generator
-     * @type {string}
-     * @memberof CaptionRequest
-     */
-    generatorName: string;
-    /**
-     *
-     * @type {object}
-     * @memberof CaptionRequest
-     */
-    config?: object | null;
-    /**
-     * Force regeneration even if caption exists
-     * @type {boolean}
-     * @memberof CaptionRequest
-     */
-    force?: boolean;
-    /**
-     * Apply post-processing to caption
-     * @type {boolean}
-     * @memberof CaptionRequest
-     */
-    postProcess?: boolean;
+  /**
+   * Path to the image file
+   * @type {string}
+   * @memberof CaptionRequest
+   */
+  imagePath: string;
+  /**
+   * Name of the caption generator
+   * @type {string}
+   * @memberof CaptionRequest
+   */
+  generatorName: string;
+  /**
+   *
+   * @type {object}
+   * @memberof CaptionRequest
+   */
+  config?: object | null;
+  /**
+   * Force regeneration even if caption exists
+   * @type {boolean}
+   * @memberof CaptionRequest
+   */
+  force?: boolean;
+  /**
+   * Apply post-processing to caption
+   * @type {boolean}
+   * @memberof CaptionRequest
+   */
+  postProcess?: boolean;
 }
 /**
  * Check if a given object implements the CaptionRequest interface.

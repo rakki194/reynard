@@ -15,36 +15,36 @@
  * @interface AgentResponse
  */
 export interface AgentResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof AgentResponse
-     */
-    agentId: string;
-    /**
-     *
-     * @type {string}
-     * @memberof AgentResponse
-     */
-    name: string;
-    /**
-     *
-     * @type {string}
-     * @memberof AgentResponse
-     */
-    spirit: string;
-    /**
-     *
-     * @type {string}
-     * @memberof AgentResponse
-     */
-    style: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof AgentResponse
-     */
-    active: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentResponse
+   */
+  agentId: string;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentResponse
+   */
+  name: string;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentResponse
+   */
+  spirit: string;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentResponse
+   */
+  style: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof AgentResponse
+   */
+  active: boolean;
 }
 /**
  * Check if a given object implements the AgentResponse interface.

@@ -22,30 +22,31 @@ exports.ImageValidationRequestToJSONTyped = ImageValidationRequestToJSONTyped;
  * Check if a given object implements the ImageValidationRequest interface.
  */
 function instanceOfImageValidationRequest(value) {
-    if (!('filePath' in value) || value['filePath'] === undefined)
-        return false;
-    return true;
+  if (!("filePath" in value) || value["filePath"] === undefined) return false;
+  return true;
 }
 function ImageValidationRequestFromJSON(json) {
-    return ImageValidationRequestFromJSONTyped(json, false);
+  return ImageValidationRequestFromJSONTyped(json, false);
 }
 function ImageValidationRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'filePath': json['file_path'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    filePath: json["file_path"],
+  };
 }
 function ImageValidationRequestToJSON(json) {
-    return ImageValidationRequestToJSONTyped(json, false);
+  return ImageValidationRequestToJSONTyped(json, false);
 }
 function ImageValidationRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'file_path': value['filePath'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    file_path: value["filePath"],
+  };
 }

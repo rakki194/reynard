@@ -37,7 +37,6 @@ types-python-dateutil
 # Phase 1: Immediate optimizations
 
 # Model-specific tokenization
-tiktoken
 
 # System resource monitoring
 psutil

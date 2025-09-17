@@ -37,34 +37,34 @@ function processFile(filePath: string, excludePatterns: RegExp[], cooldown: numb
   let fileType: FileType | null = null;
 
   switch (ext) {
-    case '.md':
-    case '.mdx':
-      fileType = 'markdown';
+    case ".md":
+    case ".mdx":
+      fileType = "markdown";
       break;
-    case '.ts':
-    case '.tsx':
-      fileType = 'typescript';
+    case ".ts":
+    case ".tsx":
+      fileType = "typescript";
       break;
-    case '.js':
-    case '.jsx':
-      fileType = 'javascript';
+    case ".js":
+    case ".jsx":
+      fileType = "javascript";
       break;
-    case '.py':
-      fileType = 'python';
+    case ".py":
+      fileType = "python";
       break;
-    case '.json':
-      fileType = 'json';
+    case ".json":
+      fileType = "json";
       break;
-    case '.yaml':
-    case '.yml':
-      fileType = 'yaml';
+    case ".yaml":
+    case ".yml":
+      fileType = "yaml";
       break;
-    case '.css':
-      fileType = 'css';
+    case ".css":
+      fileType = "css";
       break;
-    case '.html':
-    case '.htm':
-      fileType = 'html';
+    case ".html":
+    case ".htm":
+      fileType = "html";
       break;
     default:
       console.log(`⏭️  Skipping unsupported file type: ${filePath}`);
@@ -114,30 +114,33 @@ function setupFileWatchers(watchDirectories: string[], excludePatterns: RegExp[]
 function setupStatusReporting(interval: number): void {
   setInterval(() => {
     const status = queueManager.getStatus();
-    console.log(`📊 Queue Status: ${status.totalQueues} total queues, ${status.processingFiles.length} processing, processing: ${status.isProcessing}`);
+    console.log(
+      `📊 Queue Status: ${status.totalQueues} total queues, ${status.processingFiles.length} processing, processing: ${status.isProcessing}`
+    );
   }, interval);
 }
 
 // CLI setup
-program
-  .name('reynard-queue-watcher')
-  .description('🦊 Reynard Queue-Based File Watcher')
-  .version('1.0.0');
+program.name("reynard-queue-watcher").description("🦊 Reynard Queue-Based File Watcher").version("1.0.0");
 
 program
-  .option('-d, --directories <dirs...>', 'Directories to watch', DEFAULT_CONFIG.watchDirectories)
-  .option('-c, --cooldown <ms>', 'Processing cooldown in milliseconds', DEFAULT_CONFIG.processingCooldown.toString())
-  .option('-i, --interval <ms>', 'Status report interval in milliseconds', DEFAULT_CONFIG.statusReportInterval.toString())
-  .action((options) => {
+  .option("-d, --directories <dirs...>", "Directories to watch", DEFAULT_CONFIG.watchDirectories)
+  .option("-c, --cooldown <ms>", "Processing cooldown in milliseconds", DEFAULT_CONFIG.processingCooldown.toString())
+  .option(
+    "-i, --interval <ms>",
+    "Status report interval in milliseconds",
+    DEFAULT_CONFIG.statusReportInterval.toString()
+  )
+  .action(options => {
     const config = {
       watchDirectories: options.directories,
       excludePatterns: DEFAULT_CONFIG.excludePatterns,
       processingCooldown: parseInt(options.cooldown),
-      statusReportInterval: parseInt(options.interval)
+      statusReportInterval: parseInt(options.interval),
     };
 
     console.log("🦊 Starting Reynard Queue Watcher...");
-    console.log(`📁 Watching directories: ${config.watchDirectories.join(', ')}`);
+    console.log(`📁 Watching directories: ${config.watchDirectories.join(", ")}`);
     console.log(`⏱️  Processing cooldown: ${config.processingCooldown}ms`);
     console.log(`📊 Status interval: ${config.statusReportInterval}ms`);
 
@@ -150,12 +153,12 @@ program
     console.log("✅ Queue watcher is running. Press Ctrl+C to stop.");
 
     // Handle graceful shutdown
-    process.on('SIGINT', () => {
+    process.on("SIGINT", () => {
       console.log("\n🛑 Shutting down queue watcher...");
       process.exit(0);
     });
 
-    process.on('SIGTERM', () => {
+    process.on("SIGTERM", () => {
       console.log("\n🛑 Shutting down queue watcher...");
       process.exit(0);
     });

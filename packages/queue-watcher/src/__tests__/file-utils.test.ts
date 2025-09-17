@@ -5,11 +5,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { 
-  shouldExcludeFile, 
-  wasRecentlyProcessed, 
-  getFileType 
-} from "../file-utils.js";
+import { shouldExcludeFile, wasRecentlyProcessed, getFileType } from "../file-utils.js";
 
 describe("File Utils", () => {
   describe("shouldExcludeFile", () => {
@@ -59,10 +55,10 @@ describe("File Utils", () => {
       const recentlyProcessed = new Map<string, number>();
       const filePath = "test/file.ts";
       const cooldown = 1000; // 1 second
-      
+
       // First call should not be recent
       expect(wasRecentlyProcessed(filePath, recentlyProcessed, cooldown)).toBe(false);
-      
+
       // Second call should be recent
       expect(wasRecentlyProcessed(filePath, recentlyProcessed, cooldown)).toBe(true);
     });
@@ -71,23 +67,23 @@ describe("File Utils", () => {
       const recentlyProcessed = new Map<string, number>();
       const filePath = "test/file.ts";
       const cooldown = 100; // 100ms
-      
+
       // First call
       expect(wasRecentlyProcessed(filePath, recentlyProcessed, cooldown)).toBe(false);
-      
+
       // Wait a bit (simulate with mock)
       const originalNow = Date.now;
       Date.now = () => originalNow() + 50; // 50ms later
-      
+
       // Should still be recent
       expect(wasRecentlyProcessed(filePath, recentlyProcessed, cooldown)).toBe(true);
-      
+
       // Wait longer
       Date.now = () => originalNow() + 150; // 150ms later
-      
+
       // Should not be recent anymore
       expect(wasRecentlyProcessed(filePath, recentlyProcessed, cooldown)).toBe(false);
-      
+
       // Restore Date.now
       Date.now = originalNow;
     });
@@ -95,14 +91,14 @@ describe("File Utils", () => {
     it("should handle multiple files independently", () => {
       const recentlyProcessed = new Map<string, number>();
       const cooldown = 1000;
-      
+
       const file1 = "test/file1.ts";
       const file2 = "test/file2.ts";
-      
+
       // Process file1
       expect(wasRecentlyProcessed(file1, recentlyProcessed, cooldown)).toBe(false);
       expect(wasRecentlyProcessed(file1, recentlyProcessed, cooldown)).toBe(true);
-      
+
       // Process file2 (should not be affected by file1)
       expect(wasRecentlyProcessed(file2, recentlyProcessed, cooldown)).toBe(false);
       expect(wasRecentlyProcessed(file2, recentlyProcessed, cooldown)).toBe(true);

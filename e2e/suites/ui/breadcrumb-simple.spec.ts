@@ -26,7 +26,7 @@ test.describe("Breadcrumb Component E2E Tests (Simple)", () => {
         </nav>
       </div>
     `);
-    
+
     await expect(page.locator("#breadcrumb-container")).toBeVisible();
     await expect(page.locator("#breadcrumb-container")).toContainText("Home");
     await expect(page.locator("#breadcrumb-container")).toContainText("Products");
@@ -46,12 +46,12 @@ test.describe("Breadcrumb Component E2E Tests (Simple)", () => {
         </nav>
       </div>
     `);
-    
+
     // Check that links are clickable
     const homeLink = page.locator('a[href="/"]');
     await expect(homeLink).toBeVisible();
     await expect(homeLink).toContainText("Home");
-    
+
     const productsLink = page.locator('a[href="/products"]');
     await expect(productsLink).toBeVisible();
     await expect(productsLink).toContainText("Products");
@@ -68,11 +68,11 @@ test.describe("Breadcrumb Component E2E Tests (Simple)", () => {
         </nav>
       </div>
     `);
-    
+
     // Check accessibility attributes
     const nav = page.locator('nav[aria-label="Breadcrumb"]');
     await expect(nav).toBeVisible();
-    
+
     const currentPage = page.locator('li[aria-current="page"]');
     await expect(currentPage).toBeVisible();
     await expect(currentPage).toContainText("Current Page");

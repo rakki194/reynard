@@ -15,54 +15,54 @@
  * @interface TTSConfigRequest
  */
 export interface TTSConfigRequest {
-    /**
-     *
-     * @type {string}
-     * @memberof TTSConfigRequest
-     */
-    defaultBackend?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSConfigRequest
-     */
-    defaultVoice?: string | null;
-    /**
-     *
-     * @type {number}
-     * @memberof TTSConfigRequest
-     */
-    defaultSpeed?: number | null;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSConfigRequest
-     */
-    defaultLanguage?: string | null;
-    /**
-     *
-     * @type {number}
-     * @memberof TTSConfigRequest
-     */
-    maxTextLength?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof TTSConfigRequest
-     */
-    chunkSize?: number | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof TTSConfigRequest
-     */
-    enableAudioProcessing?: boolean | null;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSConfigRequest
-     */
-    outputDirectory?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSConfigRequest
+   */
+  defaultBackend?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSConfigRequest
+   */
+  defaultVoice?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof TTSConfigRequest
+   */
+  defaultSpeed?: number | null;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSConfigRequest
+   */
+  defaultLanguage?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof TTSConfigRequest
+   */
+  maxTextLength?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof TTSConfigRequest
+   */
+  chunkSize?: number | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TTSConfigRequest
+   */
+  enableAudioProcessing?: boolean | null;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSConfigRequest
+   */
+  outputDirectory?: string | null;
 }
 /**
  * Check if a given object implements the TTSConfigRequest interface.
@@ -71,4 +71,7 @@ export declare function instanceOfTTSConfigRequest(value: object): value is TTSC
 export declare function TTSConfigRequestFromJSON(json: any): TTSConfigRequest;
 export declare function TTSConfigRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSConfigRequest;
 export declare function TTSConfigRequestToJSON(json: any): TTSConfigRequest;
-export declare function TTSConfigRequestToJSONTyped(value?: TTSConfigRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function TTSConfigRequestToJSONTyped(
+  value?: TTSConfigRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -22,18 +22,20 @@ exports.ModelToJSONTyped = ModelToJSONTyped;
  * Check if a given object implements the Model interface.
  */
 function instanceOfModel(value) {
-    return true;
+  return true;
 }
 function ModelFromJSON(json) {
-    return ModelFromJSONTyped(json, false);
+  return ModelFromJSONTyped(json, false);
 }
 function ModelFromJSONTyped(json, ignoreDiscriminator) {
-    return json;
+  return json;
 }
 function ModelToJSON(json) {
-    return ModelToJSONTyped(json, false);
+  return ModelToJSONTyped(json, false);
 }
 function ModelToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    return value;
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  return value;
 }

@@ -15,66 +15,66 @@
  * @interface HybridSearchRequest
  */
 export interface HybridSearchRequest {
-    /**
-     * Search query
-     * @type {string}
-     * @memberof HybridSearchRequest
-     */
-    query: string;
-    /**
-     * Maximum results to return
-     * @type {number}
-     * @memberof HybridSearchRequest
-     */
-    maxResults?: number;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof HybridSearchRequest
-     */
-    fileTypes?: Array<string> | null;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof HybridSearchRequest
-     */
-    directories?: Array<string> | null;
-    /**
-     * Case-sensitive search
-     * @type {boolean}
-     * @memberof HybridSearchRequest
-     */
-    caseSensitive?: boolean;
-    /**
-     * Match whole words only
-     * @type {boolean}
-     * @memberof HybridSearchRequest
-     */
-    wholeWord?: boolean;
-    /**
-     * Context lines around matches
-     * @type {number}
-     * @memberof HybridSearchRequest
-     */
-    contextLines?: number;
-    /**
-     * Weight for semantic results
-     * @type {number}
-     * @memberof HybridSearchRequest
-     */
-    semanticWeight?: number;
-    /**
-     * Weight for syntax results
-     * @type {number}
-     * @memberof HybridSearchRequest
-     */
-    syntaxWeight?: number;
-    /**
-     * Minimum similarity score
-     * @type {number}
-     * @memberof HybridSearchRequest
-     */
-    similarityThreshold?: number;
+  /**
+   * Search query
+   * @type {string}
+   * @memberof HybridSearchRequest
+   */
+  query: string;
+  /**
+   * Maximum results to return
+   * @type {number}
+   * @memberof HybridSearchRequest
+   */
+  maxResults?: number;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof HybridSearchRequest
+   */
+  fileTypes?: Array<string> | null;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof HybridSearchRequest
+   */
+  directories?: Array<string> | null;
+  /**
+   * Case-sensitive search
+   * @type {boolean}
+   * @memberof HybridSearchRequest
+   */
+  caseSensitive?: boolean;
+  /**
+   * Match whole words only
+   * @type {boolean}
+   * @memberof HybridSearchRequest
+   */
+  wholeWord?: boolean;
+  /**
+   * Context lines around matches
+   * @type {number}
+   * @memberof HybridSearchRequest
+   */
+  contextLines?: number;
+  /**
+   * Weight for semantic results
+   * @type {number}
+   * @memberof HybridSearchRequest
+   */
+  semanticWeight?: number;
+  /**
+   * Weight for syntax results
+   * @type {number}
+   * @memberof HybridSearchRequest
+   */
+  syntaxWeight?: number;
+  /**
+   * Minimum similarity score
+   * @type {number}
+   * @memberof HybridSearchRequest
+   */
+  similarityThreshold?: number;
 }
 /**
  * Check if a given object implements the HybridSearchRequest interface.
@@ -83,4 +83,7 @@ export declare function instanceOfHybridSearchRequest(value: object): value is H
 export declare function HybridSearchRequestFromJSON(json: any): HybridSearchRequest;
 export declare function HybridSearchRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): HybridSearchRequest;
 export declare function HybridSearchRequestToJSON(json: any): HybridSearchRequest;
-export declare function HybridSearchRequestToJSONTyped(value?: HybridSearchRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function HybridSearchRequestToJSONTyped(
+  value?: HybridSearchRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -15,62 +15,68 @@
  * @interface SummarizationStatsResponse
  */
 export interface SummarizationStatsResponse {
-    /**
-     * Total number of requests processed
-     * @type {number}
-     * @memberof SummarizationStatsResponse
-     */
-    totalRequests: number;
-    /**
-     * Number of cache hits
-     * @type {number}
-     * @memberof SummarizationStatsResponse
-     */
-    cacheHits: number;
-    /**
-     * Number of cache misses
-     * @type {number}
-     * @memberof SummarizationStatsResponse
-     */
-    cacheMisses: number;
-    /**
-     * Cache hit rate
-     * @type {number}
-     * @memberof SummarizationStatsResponse
-     */
-    cacheHitRate: number;
-    /**
-     * Average processing time
-     * @type {number}
-     * @memberof SummarizationStatsResponse
-     */
-    averageProcessingTime: number;
-    /**
-     * Total processing time
-     * @type {number}
-     * @memberof SummarizationStatsResponse
-     */
-    totalProcessingTime: number;
-    /**
-     * Available summarizers
-     * @type {Array<string>}
-     * @memberof SummarizationStatsResponse
-     */
-    availableSummarizers: Array<string>;
-    /**
-     * Supported content types and their summarizers
-     * @type {{ [key: string]: Array<string>; }}
-     * @memberof SummarizationStatsResponse
-     */
-    supportedContentTypes: {
-        [key: string]: Array<string>;
-    };
+  /**
+   * Total number of requests processed
+   * @type {number}
+   * @memberof SummarizationStatsResponse
+   */
+  totalRequests: number;
+  /**
+   * Number of cache hits
+   * @type {number}
+   * @memberof SummarizationStatsResponse
+   */
+  cacheHits: number;
+  /**
+   * Number of cache misses
+   * @type {number}
+   * @memberof SummarizationStatsResponse
+   */
+  cacheMisses: number;
+  /**
+   * Cache hit rate
+   * @type {number}
+   * @memberof SummarizationStatsResponse
+   */
+  cacheHitRate: number;
+  /**
+   * Average processing time
+   * @type {number}
+   * @memberof SummarizationStatsResponse
+   */
+  averageProcessingTime: number;
+  /**
+   * Total processing time
+   * @type {number}
+   * @memberof SummarizationStatsResponse
+   */
+  totalProcessingTime: number;
+  /**
+   * Available summarizers
+   * @type {Array<string>}
+   * @memberof SummarizationStatsResponse
+   */
+  availableSummarizers: Array<string>;
+  /**
+   * Supported content types and their summarizers
+   * @type {{ [key: string]: Array<string>; }}
+   * @memberof SummarizationStatsResponse
+   */
+  supportedContentTypes: {
+    [key: string]: Array<string>;
+  };
 }
 /**
  * Check if a given object implements the SummarizationStatsResponse interface.
  */
 export declare function instanceOfSummarizationStatsResponse(value: object): value is SummarizationStatsResponse;
 export declare function SummarizationStatsResponseFromJSON(json: any): SummarizationStatsResponse;
-export declare function SummarizationStatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): SummarizationStatsResponse;
+export declare function SummarizationStatsResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): SummarizationStatsResponse;
 export declare function SummarizationStatsResponseToJSON(json: any): SummarizationStatsResponse;
-export declare function SummarizationStatsResponseToJSONTyped(value?: SummarizationStatsResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function SummarizationStatsResponseToJSONTyped(
+  value?: SummarizationStatsResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

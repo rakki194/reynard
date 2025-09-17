@@ -25,7 +25,7 @@ test.describe("Union Find Game E2E Tests", () => {
         ), document.getElementById("game-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#game-container")).toBeVisible();
     await expect(page.locator("#game-container canvas")).toBeVisible();
   });
@@ -42,10 +42,10 @@ test.describe("Union Find Game E2E Tests", () => {
         ), document.getElementById("game-container"));
       </script>
     `);
-    
+
     const canvas = page.locator("#game-container canvas");
     await expect(canvas).toBeVisible();
-    
+
     // Simulate game interactions
     await canvas.click({ position: { x: 100, y: 100 } });
     await canvas.click({ position: { x: 200, y: 200 } });

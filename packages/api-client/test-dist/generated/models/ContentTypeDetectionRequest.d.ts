@@ -15,18 +15,24 @@
  * @interface ContentTypeDetectionRequest
  */
 export interface ContentTypeDetectionRequest {
-    /**
-     * Text to analyze
-     * @type {string}
-     * @memberof ContentTypeDetectionRequest
-     */
-    text: string;
+  /**
+   * Text to analyze
+   * @type {string}
+   * @memberof ContentTypeDetectionRequest
+   */
+  text: string;
 }
 /**
  * Check if a given object implements the ContentTypeDetectionRequest interface.
  */
 export declare function instanceOfContentTypeDetectionRequest(value: object): value is ContentTypeDetectionRequest;
 export declare function ContentTypeDetectionRequestFromJSON(json: any): ContentTypeDetectionRequest;
-export declare function ContentTypeDetectionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ContentTypeDetectionRequest;
+export declare function ContentTypeDetectionRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ContentTypeDetectionRequest;
 export declare function ContentTypeDetectionRequestToJSON(json: any): ContentTypeDetectionRequest;
-export declare function ContentTypeDetectionRequestToJSONTyped(value?: ContentTypeDetectionRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function ContentTypeDetectionRequestToJSONTyped(
+  value?: ContentTypeDetectionRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

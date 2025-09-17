@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { UserRole } from './UserRole';
+import type { UserRole } from "./UserRole";
 /**
  * User model for update requests.
  *
@@ -26,42 +26,42 @@ import type { UserRole } from './UserRole';
  * @interface UserUpdate
  */
 export interface UserUpdate {
-    /**
-     *
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    username?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    email?: string | null;
-    /**
-     *
-     * @type {UserRole}
-     * @memberof UserUpdate
-     */
-    role?: UserRole | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof UserUpdate
-     */
-    isActive?: boolean | null;
-    /**
-     *
-     * @type {string}
-     * @memberof UserUpdate
-     */
-    profilePictureUrl?: string | null;
-    /**
-     *
-     * @type {object}
-     * @memberof UserUpdate
-     */
-    metadata?: object | null;
+  /**
+   *
+   * @type {string}
+   * @memberof UserUpdate
+   */
+  username?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof UserUpdate
+   */
+  email?: string | null;
+  /**
+   *
+   * @type {UserRole}
+   * @memberof UserUpdate
+   */
+  role?: UserRole | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof UserUpdate
+   */
+  isActive?: boolean | null;
+  /**
+   *
+   * @type {string}
+   * @memberof UserUpdate
+   */
+  profilePictureUrl?: string | null;
+  /**
+   *
+   * @type {object}
+   * @memberof UserUpdate
+   */
+  metadata?: object | null;
 }
 /**
  * Check if a given object implements the UserUpdate interface.

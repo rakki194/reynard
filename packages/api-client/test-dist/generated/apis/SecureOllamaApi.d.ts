@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
-import type { SecureChatRequest } from '../models/index';
+import * as runtime from "../runtime";
+import type { SecureChatRequest } from "../models/index";
 export interface SecureChatApiSecureOllamaChatPostRequest {
-    secureChatRequest: SecureChatRequest;
+  secureChatRequest: SecureChatRequest;
 }
 /**
  * SecureOllamaApi - interface
@@ -21,79 +21,99 @@ export interface SecureChatApiSecureOllamaChatPostRequest {
  * @interface SecureOllamaApiInterface
  */
 export interface SecureOllamaApiInterface {
-    /**
-     * Secure chat endpoint with input validation and authentication.
-     * @summary Secure Chat
-     * @param {SecureChatRequest} secureChatRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SecureOllamaApiInterface
-     */
-    secureChatApiSecureOllamaChatPostRaw(requestParameters: SecureChatApiSecureOllamaChatPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Secure chat endpoint with input validation and authentication.
-     * Secure Chat
-     */
-    secureChatApiSecureOllamaChatPost(requestParameters: SecureChatApiSecureOllamaChatPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Secure config endpoint with authentication.
-     * @summary Secure Get Config
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SecureOllamaApiInterface
-     */
-    secureGetConfigApiSecureOllamaConfigGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Secure config endpoint with authentication.
-     * Secure Get Config
-     */
-    secureGetConfigApiSecureOllamaConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Secure models endpoint with authentication.
-     * @summary Secure Get Models
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SecureOllamaApiInterface
-     */
-    secureGetModelsApiSecureOllamaModelsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Secure models endpoint with authentication.
-     * Secure Get Models
-     */
-    secureGetModelsApiSecureOllamaModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Secure chat endpoint with input validation and authentication.
+   * @summary Secure Chat
+   * @param {SecureChatRequest} secureChatRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SecureOllamaApiInterface
+   */
+  secureChatApiSecureOllamaChatPostRaw(
+    requestParameters: SecureChatApiSecureOllamaChatPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Secure chat endpoint with input validation and authentication.
+   * Secure Chat
+   */
+  secureChatApiSecureOllamaChatPost(
+    requestParameters: SecureChatApiSecureOllamaChatPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
+  /**
+   * Secure config endpoint with authentication.
+   * @summary Secure Get Config
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SecureOllamaApiInterface
+   */
+  secureGetConfigApiSecureOllamaConfigGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Secure config endpoint with authentication.
+   * Secure Get Config
+   */
+  secureGetConfigApiSecureOllamaConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Secure models endpoint with authentication.
+   * @summary Secure Get Models
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SecureOllamaApiInterface
+   */
+  secureGetModelsApiSecureOllamaModelsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Secure models endpoint with authentication.
+   * Secure Get Models
+   */
+  secureGetModelsApiSecureOllamaModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 }
 /**
  *
  */
 export declare class SecureOllamaApi extends runtime.BaseAPI implements SecureOllamaApiInterface {
-    /**
-     * Secure chat endpoint with input validation and authentication.
-     * Secure Chat
-     */
-    secureChatApiSecureOllamaChatPostRaw(requestParameters: SecureChatApiSecureOllamaChatPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Secure chat endpoint with input validation and authentication.
-     * Secure Chat
-     */
-    secureChatApiSecureOllamaChatPost(requestParameters: SecureChatApiSecureOllamaChatPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Secure config endpoint with authentication.
-     * Secure Get Config
-     */
-    secureGetConfigApiSecureOllamaConfigGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Secure config endpoint with authentication.
-     * Secure Get Config
-     */
-    secureGetConfigApiSecureOllamaConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Secure models endpoint with authentication.
-     * Secure Get Models
-     */
-    secureGetModelsApiSecureOllamaModelsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Secure models endpoint with authentication.
-     * Secure Get Models
-     */
-    secureGetModelsApiSecureOllamaModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Secure chat endpoint with input validation and authentication.
+   * Secure Chat
+   */
+  secureChatApiSecureOllamaChatPostRaw(
+    requestParameters: SecureChatApiSecureOllamaChatPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Secure chat endpoint with input validation and authentication.
+   * Secure Chat
+   */
+  secureChatApiSecureOllamaChatPost(
+    requestParameters: SecureChatApiSecureOllamaChatPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
+  /**
+   * Secure config endpoint with authentication.
+   * Secure Get Config
+   */
+  secureGetConfigApiSecureOllamaConfigGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Secure config endpoint with authentication.
+   * Secure Get Config
+   */
+  secureGetConfigApiSecureOllamaConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Secure models endpoint with authentication.
+   * Secure Get Models
+   */
+  secureGetModelsApiSecureOllamaModelsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Secure models endpoint with authentication.
+   * Secure Get Models
+   */
+  secureGetModelsApiSecureOllamaModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 }

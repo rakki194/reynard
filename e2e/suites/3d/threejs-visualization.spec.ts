@@ -25,7 +25,7 @@ test.describe("ThreeJS Visualization E2E Tests", () => {
         ), document.getElementById("threejs-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#threejs-container")).toBeVisible();
     await expect(page.locator("#threejs-container canvas")).toBeVisible();
   });

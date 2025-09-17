@@ -22,42 +22,44 @@ exports.TTSConfigRequestToJSONTyped = TTSConfigRequestToJSONTyped;
  * Check if a given object implements the TTSConfigRequest interface.
  */
 function instanceOfTTSConfigRequest(value) {
-    return true;
+  return true;
 }
 function TTSConfigRequestFromJSON(json) {
-    return TTSConfigRequestFromJSONTyped(json, false);
+  return TTSConfigRequestFromJSONTyped(json, false);
 }
 function TTSConfigRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'defaultBackend': json['default_backend'] == null ? undefined : json['default_backend'],
-        'defaultVoice': json['default_voice'] == null ? undefined : json['default_voice'],
-        'defaultSpeed': json['default_speed'] == null ? undefined : json['default_speed'],
-        'defaultLanguage': json['default_language'] == null ? undefined : json['default_language'],
-        'maxTextLength': json['max_text_length'] == null ? undefined : json['max_text_length'],
-        'chunkSize': json['chunk_size'] == null ? undefined : json['chunk_size'],
-        'enableAudioProcessing': json['enable_audio_processing'] == null ? undefined : json['enable_audio_processing'],
-        'outputDirectory': json['output_directory'] == null ? undefined : json['output_directory'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    defaultBackend: json["default_backend"] == null ? undefined : json["default_backend"],
+    defaultVoice: json["default_voice"] == null ? undefined : json["default_voice"],
+    defaultSpeed: json["default_speed"] == null ? undefined : json["default_speed"],
+    defaultLanguage: json["default_language"] == null ? undefined : json["default_language"],
+    maxTextLength: json["max_text_length"] == null ? undefined : json["max_text_length"],
+    chunkSize: json["chunk_size"] == null ? undefined : json["chunk_size"],
+    enableAudioProcessing: json["enable_audio_processing"] == null ? undefined : json["enable_audio_processing"],
+    outputDirectory: json["output_directory"] == null ? undefined : json["output_directory"],
+  };
 }
 function TTSConfigRequestToJSON(json) {
-    return TTSConfigRequestToJSONTyped(json, false);
+  return TTSConfigRequestToJSONTyped(json, false);
 }
 function TTSConfigRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'default_backend': value['defaultBackend'],
-        'default_voice': value['defaultVoice'],
-        'default_speed': value['defaultSpeed'],
-        'default_language': value['defaultLanguage'],
-        'max_text_length': value['maxTextLength'],
-        'chunk_size': value['chunkSize'],
-        'enable_audio_processing': value['enableAudioProcessing'],
-        'output_directory': value['outputDirectory'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    default_backend: value["defaultBackend"],
+    default_voice: value["defaultVoice"],
+    default_speed: value["defaultSpeed"],
+    default_language: value["defaultLanguage"],
+    max_text_length: value["maxTextLength"],
+    chunk_size: value["chunkSize"],
+    enable_audio_processing: value["enableAudioProcessing"],
+    output_directory: value["outputDirectory"],
+  };
 }

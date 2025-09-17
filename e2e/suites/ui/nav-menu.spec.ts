@@ -31,7 +31,7 @@ test.describe("Navigation Menu E2E Tests", () => {
         ), document.getElementById("nav-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#nav-container")).toBeVisible();
     await expect(page.locator("#nav-container")).toContainText("Home");
     await expect(page.locator("#nav-container")).toContainText("About");
@@ -55,11 +55,11 @@ test.describe("Navigation Menu E2E Tests", () => {
         ), document.getElementById("nav-container"));
       </script>
     `);
-    
+
     const homeLink = page.locator('a[href="/"]');
     await expect(homeLink).toBeVisible();
     await expect(homeLink).toContainText("Home");
-    
+
     const aboutLink = page.locator('a[href="/about"]');
     await expect(aboutLink).toBeVisible();
     await expect(aboutLink).toContainText("About");

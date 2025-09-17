@@ -29,9 +29,9 @@ test.describe("File Upload E2E Tests", () => {
         ), document.getElementById("upload-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#upload-container")).toBeVisible();
-    
+
     // Check for file input
     const fileInput = page.locator('input[type="file"]');
     await expect(fileInput).toBeVisible();
@@ -54,12 +54,12 @@ test.describe("File Upload E2E Tests", () => {
         ), document.getElementById("upload-container"));
       </script>
     `);
-    
+
     const fileInput = page.locator('input[type="file"]');
     await expect(fileInput).toBeVisible();
-    
+
     // Check for upload button or drop zone
-    const uploadButton = page.locator('button').or(page.locator('[data-testid="upload-button"]'));
+    const uploadButton = page.locator("button").or(page.locator('[data-testid="upload-button"]'));
     if (await uploadButton.isVisible()) {
       await expect(uploadButton).toBeVisible();
     }
@@ -82,11 +82,11 @@ test.describe("File Upload E2E Tests", () => {
         ), document.getElementById("upload-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#upload-container")).toBeVisible();
-    
+
     // Check for drag and drop area
-    const dropZone = page.locator('[data-testid="drop-zone"]').or(page.locator('.drop-zone'));
+    const dropZone = page.locator('[data-testid="drop-zone"]').or(page.locator(".drop-zone"));
     if (await dropZone.isVisible()) {
       await expect(dropZone).toBeVisible();
     }

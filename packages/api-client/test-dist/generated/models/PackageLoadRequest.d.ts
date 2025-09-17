@@ -15,12 +15,12 @@
  * @interface PackageLoadRequest
  */
 export interface PackageLoadRequest {
-    /**
-     * Name of the package to load
-     * @type {string}
-     * @memberof PackageLoadRequest
-     */
-    packageName: string;
+  /**
+   * Name of the package to load
+   * @type {string}
+   * @memberof PackageLoadRequest
+   */
+  packageName: string;
 }
 /**
  * Check if a given object implements the PackageLoadRequest interface.
@@ -29,4 +29,7 @@ export declare function instanceOfPackageLoadRequest(value: object): value is Pa
 export declare function PackageLoadRequestFromJSON(json: any): PackageLoadRequest;
 export declare function PackageLoadRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PackageLoadRequest;
 export declare function PackageLoadRequestToJSON(json: any): PackageLoadRequest;
-export declare function PackageLoadRequestToJSONTyped(value?: PackageLoadRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function PackageLoadRequestToJSONTyped(
+  value?: PackageLoadRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -1,24 +1,24 @@
 /**
- * 🦊 Reynard Dev Server Manager
- * 
+ * 🦊 Dev Server Management Manager
+ *
  * Main orchestrator that integrates all components for comprehensive
  * development server management. Leverages existing Reynard patterns.
  */
 
-import { EventEmitter } from 'node:events';
-import { ConfigManager } from './ConfigManager.js';
-import { PortManager } from './PortManager.js';
-import { ProcessManager } from './ProcessManager.js';
-import { HealthChecker } from './HealthChecker.js';
-import type { 
+import { EventEmitter } from "node:events";
+import { ConfigManager } from "./ConfigManager.js";
+import { PortManager } from "./PortManager.js";
+import { ProcessManager } from "./ProcessManager.js";
+import { HealthChecker } from "./HealthChecker.js";
+import type {
   DevServerManager as IDevServerManager,
   ServerInfo,
   ProjectConfig,
   HealthStatus,
   DevServerEvent,
-  DevServerEventType
-} from '../types/index.js';
-import { ProjectNotFoundError } from '../types/index.js';
+  DevServerEventType,
+} from "../types/index.js";
+import { ProjectNotFoundError } from "../types/index.js";
 
 // ============================================================================
 // Dev Server Manager Class
@@ -37,7 +37,7 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
     this.portManager = new PortManager();
     this.processManager = new ProcessManager();
     this.healthChecker = new HealthChecker();
-    
+
     this.setupEventHandlers();
   }
 
@@ -52,16 +52,16 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
     try {
       // Load configuration
       const config = await this.configManager.loadConfig();
-      
+
       // Set up port ranges from configuration
       for (const [category, range] of Object.entries(config.portRanges)) {
         this.portManager.setPortRange(category as any, range);
       }
 
       this.isInitialized = true;
-      this.emit('initialized', { config });
+      this.emit("initialized", { config });
     } catch (error) {
-      this.emit('initializationError', { error });
+      this.emit("initializationError", { error });
       throw error;
     }
   }
@@ -71,21 +71,17 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
    */
   async start(project: string): Promise<void> {
     await this.ensureInitialized();
-    
+
     const config = this.configManager.getProject(project);
     if (!config) {
       throw new ProjectNotFoundError(project);
     }
 
     try {
-      this.emitEvent('server_starting', project);
+      this.emitEvent("server_starting", project);
 
       // Allocate port
-      const portAllocation = await this.portManager.allocatePort(
-        project, 
-        config.port, 
-        config.category
-      );
+      const portAllocation = await this.portManager.allocatePort(project, config.port, config.category);
 
       // Update config with allocated port
       const updatedConfig = { ...config, port: portAllocation.allocated };
@@ -93,29 +89,24 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
 
       // Start process
       const processOptions = {
-        command: updatedConfig.command || 'pnpm',
-        args: updatedConfig.args || ['run', 'dev'],
+        command: updatedConfig.command || "pnpm",
+        args: updatedConfig.args || ["run", "dev"],
         cwd: updatedConfig.cwd,
         env: updatedConfig.env,
         timeout: updatedConfig.startupTimeout || 30000,
       };
 
-      const processInfo = await this.processManager.startProcess(
-        project, 
-        updatedConfig, 
-        processOptions
-      );
+      const processInfo = await this.processManager.startProcess(project, updatedConfig, processOptions);
 
       // Start health checking
       this.healthChecker.startHealthCheck(project, updatedConfig);
 
-      this.emitEvent('server_started', project, { 
+      this.emitEvent("server_started", project, {
         port: portAllocation.allocated,
-        processInfo 
+        processInfo,
       });
-
     } catch (error) {
-      this.emitEvent('server_error', project, { error });
+      this.emitEvent("server_error", project, { error });
       throw error;
     }
   }
@@ -125,14 +116,14 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
    */
   async stop(project: string): Promise<void> {
     await this.ensureInitialized();
-    
+
     const config = this.configManager.getProject(project);
     if (!config) {
       throw new ProjectNotFoundError(project);
     }
 
     try {
-      this.emitEvent('server_stopping', project);
+      this.emitEvent("server_stopping", project);
 
       // Stop health checking
       this.healthChecker.stopHealthCheck(project);
@@ -143,10 +134,9 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
       // Release port
       this.portManager.releasePort(config.port);
 
-      this.emitEvent('server_stopped', project);
-
+      this.emitEvent("server_stopped", project);
     } catch (error) {
-      this.emitEvent('server_error', project, { error });
+      this.emitEvent("server_error", project, { error });
       throw error;
     }
   }
@@ -156,7 +146,7 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
    */
   async restart(project: string): Promise<void> {
     await this.ensureInitialized();
-    
+
     const config = this.configManager.getProject(project);
     if (!config) {
       throw new ProjectNotFoundError(project);
@@ -165,15 +155,14 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
     try {
       // Stop the server
       await this.stop(project);
-      
+
       // Wait a bit before restarting
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Start the server
       await this.start(project);
-
     } catch (error) {
-      this.emitEvent('server_error', project, { error });
+      this.emitEvent("server_error", project, { error });
       throw error;
     }
   }
@@ -183,7 +172,7 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
    */
   async status(project?: string): Promise<ServerInfo[]> {
     await this.ensureInitialized();
-    
+
     if (project) {
       const config = this.configManager.getProject(project);
       if (!config) {
@@ -193,21 +182,23 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
       const processInfo = this.processManager.getProcess(project);
       const healthStatus = this.healthChecker.getHealthStatus(project);
 
-      return [{
-        name: project,
-        status: processInfo?.status || 'stopped',
-        health: healthStatus?.health || 'unknown',
-        port: config.port,
-        pid: processInfo?.pid,
-        startTime: processInfo?.startTime,
-        lastHealthCheck: healthStatus?.lastCheck,
-        lastError: processInfo?.lastError || healthStatus?.error,
-        metadata: {
-          category: config.category,
-          autoReload: config.autoReload,
-          hotReload: config.hotReload,
+      return [
+        {
+          name: project,
+          status: processInfo?.status || "stopped",
+          health: healthStatus?.health || "unknown",
+          port: config.port,
+          pid: processInfo?.pid,
+          startTime: processInfo?.startTime,
+          lastHealthCheck: healthStatus?.lastCheck,
+          lastError: processInfo?.lastError || healthStatus?.error,
+          metadata: {
+            category: config.category,
+            autoReload: config.autoReload,
+            hotReload: config.hotReload,
+          },
         },
-      }];
+      ];
     }
 
     // Return status for all projects
@@ -220,8 +211,8 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
 
       statuses.push({
         name,
-        status: processInfo?.status || 'stopped',
-        health: healthStatus?.health || 'unknown',
+        status: processInfo?.status || "stopped",
+        health: healthStatus?.health || "unknown",
         port: config.port,
         pid: processInfo?.pid,
         startTime: processInfo?.startTime,
@@ -251,7 +242,7 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
    */
   async health(project?: string): Promise<HealthStatus[]> {
     await this.ensureInitialized();
-    
+
     if (project) {
       const healthStatus = this.healthChecker.getHealthStatus(project);
       return healthStatus ? [healthStatus] : [];
@@ -265,21 +256,20 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
    */
   async startMultiple(projects: string[]): Promise<void> {
     await this.ensureInitialized();
-    
+
     // Start servers in parallel, but respect dependencies
     const startedProjects = new Set<string>();
     const remainingProjects = [...projects];
 
     while (remainingProjects.length > 0) {
       const batch: string[] = [];
-      
+
       for (const project of remainingProjects) {
         const config = this.configManager.getProject(project);
         if (!config) continue;
 
         // Check if all dependencies are started
-        const dependenciesMet = !config.dependencies || 
-          config.dependencies.every(dep => startedProjects.has(dep));
+        const dependenciesMet = !config.dependencies || config.dependencies.every(dep => startedProjects.has(dep));
 
         if (dependenciesMet) {
           batch.push(project);
@@ -287,17 +277,15 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
       }
 
       if (batch.length === 0) {
-        throw new Error('Circular dependency detected or missing dependencies');
+        throw new Error("Circular dependency detected or missing dependencies");
       }
 
       // Start batch in parallel
       await Promise.all(batch.map(project => this.start(project)));
-      
+
       // Update tracking
       batch.forEach(project => startedProjects.add(project));
-      remainingProjects.splice(0, remainingProjects.length, 
-        ...remainingProjects.filter(p => !batch.includes(p))
-      );
+      remainingProjects.splice(0, remainingProjects.length, ...remainingProjects.filter(p => !batch.includes(p)));
     }
   }
 
@@ -306,13 +294,13 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
    */
   async stopAll(): Promise<void> {
     await this.ensureInitialized();
-    
+
     // Stop all health checks
     this.healthChecker.stopAllHealthChecks();
-    
+
     // Stop all processes
     await this.processManager.killAllProcesses();
-    
+
     // Release all ports
     const allocatedPorts = this.portManager.getAllocatedPorts();
     for (const port of allocatedPorts.keys()) {
@@ -325,7 +313,7 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
    */
   async reloadConfig(): Promise<void> {
     await this.configManager.loadConfig();
-    this.emitEvent('config_loaded', 'system');
+    this.emitEvent("config_loaded", "system");
   }
 
   /**
@@ -333,29 +321,29 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
    */
   private setupEventHandlers(): void {
     // Process manager events
-    this.processManager.on('processStarted', ({ project, processInfo }) => {
-      this.emitEvent('server_started', project, { processInfo });
+    this.processManager.on("processStarted", ({ project, processInfo }) => {
+      this.emitEvent("server_started", project, { processInfo });
     });
 
-    this.processManager.on('processStopped', ({ project, processInfo }) => {
-      this.emitEvent('server_stopped', project, { processInfo });
+    this.processManager.on("processStopped", ({ project, processInfo }) => {
+      this.emitEvent("server_stopped", project, { processInfo });
     });
 
-    this.processManager.on('processError', ({ project, error }) => {
-      this.emitEvent('server_error', project, { error });
+    this.processManager.on("processError", ({ project, error }) => {
+      this.emitEvent("server_error", project, { error });
     });
 
     // Health checker events
-    this.healthChecker.on('healthCheckStarted', ({ project }) => {
-      this.emitEvent('health_check_started', project);
+    this.healthChecker.on("healthCheckStarted", ({ project }) => {
+      this.emitEvent("health_check_started", project);
     });
 
-    this.healthChecker.on('healthCheckCompleted', ({ project, result }) => {
-      this.emitEvent('health_check_completed', project, { result });
+    this.healthChecker.on("healthCheckCompleted", ({ project, result }) => {
+      this.emitEvent("health_check_completed", project, { result });
     });
 
-    this.healthChecker.on('healthCheckFailed', ({ project, error }) => {
-      this.emitEvent('health_check_failed', project, { error });
+    this.healthChecker.on("healthCheckFailed", ({ project, error }) => {
+      this.emitEvent("health_check_failed", project, { error });
     });
   }
 
@@ -369,8 +357,8 @@ export class DevServerManager extends EventEmitter implements IDevServerManager 
       timestamp: new Date(),
       data,
     };
-    
-    this.emit('event', event);
+
+    this.emit("event", event);
     this.emit(type, event);
   }
 

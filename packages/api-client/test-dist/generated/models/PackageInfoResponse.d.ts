@@ -15,54 +15,54 @@
  * @interface PackageInfoResponse
  */
 export interface PackageInfoResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof PackageInfoResponse
-     */
-    name: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof PackageInfoResponse
-     */
-    isLoaded: boolean;
-    /**
-     *
-     * @type {number}
-     * @memberof PackageInfoResponse
-     */
-    loadTime?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof PackageInfoResponse
-     */
-    memoryUsage?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof PackageInfoResponse
-     */
-    accessCount: number;
-    /**
-     *
-     * @type {number}
-     * @memberof PackageInfoResponse
-     */
-    lastAccess?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof PackageInfoResponse
-     */
-    errorCount: number;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof PackageInfoResponse
-     */
-    dependencies: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof PackageInfoResponse
+   */
+  name: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PackageInfoResponse
+   */
+  isLoaded: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof PackageInfoResponse
+   */
+  loadTime?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof PackageInfoResponse
+   */
+  memoryUsage?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof PackageInfoResponse
+   */
+  accessCount: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PackageInfoResponse
+   */
+  lastAccess?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof PackageInfoResponse
+   */
+  errorCount: number;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof PackageInfoResponse
+   */
+  dependencies: Array<string>;
 }
 /**
  * Check if a given object implements the PackageInfoResponse interface.
@@ -71,4 +71,7 @@ export declare function instanceOfPackageInfoResponse(value: object): value is P
 export declare function PackageInfoResponseFromJSON(json: any): PackageInfoResponse;
 export declare function PackageInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): PackageInfoResponse;
 export declare function PackageInfoResponseToJSON(json: any): PackageInfoResponse;
-export declare function PackageInfoResponseToJSONTyped(value?: PackageInfoResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function PackageInfoResponseToJSONTyped(
+  value?: PackageInfoResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

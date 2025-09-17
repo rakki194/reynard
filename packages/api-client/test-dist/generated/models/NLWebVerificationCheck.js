@@ -23,46 +23,43 @@ var Value_1 = require("./Value");
  * Check if a given object implements the NLWebVerificationCheck interface.
  */
 function instanceOfNLWebVerificationCheck(value) {
-    if (!('name' in value) || value['name'] === undefined)
-        return false;
-    if (!('description' in value) || value['description'] === undefined)
-        return false;
-    if (!('status' in value) || value['status'] === undefined)
-        return false;
-    if (!('value' in value) || value['value'] === undefined)
-        return false;
-    if (!('threshold' in value) || value['threshold'] === undefined)
-        return false;
-    return true;
+  if (!("name" in value) || value["name"] === undefined) return false;
+  if (!("description" in value) || value["description"] === undefined) return false;
+  if (!("status" in value) || value["status"] === undefined) return false;
+  if (!("value" in value) || value["value"] === undefined) return false;
+  if (!("threshold" in value) || value["threshold"] === undefined) return false;
+  return true;
 }
 function NLWebVerificationCheckFromJSON(json) {
-    return NLWebVerificationCheckFromJSONTyped(json, false);
+  return NLWebVerificationCheckFromJSONTyped(json, false);
 }
 function NLWebVerificationCheckFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'name': json['name'],
-        'description': json['description'],
-        'status': json['status'],
-        'value': (0, Value_1.ValueFromJSON)(json['value']),
-        'threshold': json['threshold'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json["name"],
+    description: json["description"],
+    status: json["status"],
+    value: (0, Value_1.ValueFromJSON)(json["value"]),
+    threshold: json["threshold"],
+  };
 }
 function NLWebVerificationCheckToJSON(json) {
-    return NLWebVerificationCheckToJSONTyped(json, false);
+  return NLWebVerificationCheckToJSONTyped(json, false);
 }
 function NLWebVerificationCheckToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'name': value['name'],
-        'description': value['description'],
-        'status': value['status'],
-        'value': (0, Value_1.ValueToJSON)(value['value']),
-        'threshold': value['threshold'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value["name"],
+    description: value["description"],
+    status: value["status"],
+    value: (0, Value_1.ValueToJSON)(value["value"]),
+    threshold: value["threshold"],
+  };
 }

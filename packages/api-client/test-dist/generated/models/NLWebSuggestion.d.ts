@@ -9,43 +9,43 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { NLWebTool } from './NLWebTool';
+import type { NLWebTool } from "./NLWebTool";
 /**
  * Tool suggestion with confidence scoring.
  * @export
  * @interface NLWebSuggestion
  */
 export interface NLWebSuggestion {
-    /**
-     * Tool that was suggested
-     * @type {NLWebTool}
-     * @memberof NLWebSuggestion
-     */
-    tool: NLWebTool;
-    /**
-     * Confidence score (0-100)
-     * @type {number}
-     * @memberof NLWebSuggestion
-     */
-    score: number;
-    /**
-     * Suggested parameters for the tool
-     * @type {object}
-     * @memberof NLWebSuggestion
-     */
-    parameters?: object;
-    /**
-     * Reasoning for why this tool was suggested
-     * @type {string}
-     * @memberof NLWebSuggestion
-     */
-    reasoning: string;
-    /**
-     * Parameter hints for better execution
-     * @type {object}
-     * @memberof NLWebSuggestion
-     */
-    parameterHints?: object;
+  /**
+   * Tool that was suggested
+   * @type {NLWebTool}
+   * @memberof NLWebSuggestion
+   */
+  tool: NLWebTool;
+  /**
+   * Confidence score (0-100)
+   * @type {number}
+   * @memberof NLWebSuggestion
+   */
+  score: number;
+  /**
+   * Suggested parameters for the tool
+   * @type {object}
+   * @memberof NLWebSuggestion
+   */
+  parameters?: object;
+  /**
+   * Reasoning for why this tool was suggested
+   * @type {string}
+   * @memberof NLWebSuggestion
+   */
+  reasoning: string;
+  /**
+   * Parameter hints for better execution
+   * @type {object}
+   * @memberof NLWebSuggestion
+   */
+  parameterHints?: object;
 }
 /**
  * Check if a given object implements the NLWebSuggestion interface.

@@ -1,6 +1,6 @@
 # 🦊 Dev Server Management
 
-*Modern development server management for the Reynard ecosystem*
+_Modern development server management for the Reynard ecosystem_
 
 A sophisticated, type-safe development server management system that provides intelligent port allocation, process orchestration, health monitoring, and seamless integration with the Reynard ecosystem.
 
@@ -25,21 +25,21 @@ pnpm add dev-server-management
 ### Basic Usage
 
 ```typescript
-import { DevServerManager } from 'dev-server-management';
+import { DevServerManager } from "dev-server-management";
 
 // Create and initialize the manager
-const manager = new DevServerManager('dev-server.config.json');
+const manager = new DevServerManager("dev-server.config.json");
 await manager.initialize();
 
 // Start a development server
-await manager.start('my-project');
+await manager.start("my-project");
 
 // Check status
-const status = await manager.status('my-project');
+const status = await manager.status("my-project");
 console.log(status);
 
 // Stop the server
-await manager.stop('my-project');
+await manager.stop("my-project");
 ```
 
 ### CLI Usage
@@ -140,23 +140,23 @@ dev-server stop-all
 ```typescript
 class DevServerManager {
   // Lifecycle
-  initialize(): Promise<void>
-  cleanup(): Promise<void>
-  
+  initialize(): Promise<void>;
+  cleanup(): Promise<void>;
+
   // Server management
-  start(project: string): Promise<void>
-  stop(project: string): Promise<void>
-  restart(project: string): Promise<void>
-  startMultiple(projects: string[]): Promise<void>
-  stopAll(): Promise<void>
-  
+  start(project: string): Promise<void>;
+  stop(project: string): Promise<void>;
+  restart(project: string): Promise<void>;
+  startMultiple(projects: string[]): Promise<void>;
+  stopAll(): Promise<void>;
+
   // Status and monitoring
-  status(project?: string): Promise<ServerInfo[]>
-  health(project?: string): Promise<HealthStatus[]>
-  list(): Promise<ProjectConfig[]>
-  
+  status(project?: string): Promise<ServerInfo[]>;
+  health(project?: string): Promise<HealthStatus[]>;
+  list(): Promise<ProjectConfig[]>;
+
   // Configuration
-  reloadConfig(): Promise<void>
+  reloadConfig(): Promise<void>;
 }
 ```
 
@@ -164,11 +164,11 @@ class DevServerManager {
 
 ```typescript
 // Listen for events
-manager.on('server_started', (event) => {
+manager.on("server_started", event => {
   console.log(`Server ${event.project} started on port ${event.data.port}`);
 });
 
-manager.on('health_check_failed', (event) => {
+manager.on("health_check_failed", event => {
   console.log(`Health check failed for ${event.project}: ${event.data.error}`);
 });
 ```
@@ -181,19 +181,19 @@ manager.on('health_check_failed', (event) => {
 // HTTP health check
 const config = {
   healthCheck: {
-    endpoint: 'http://localhost:3000/health',
+    endpoint: "http://localhost:3000/health",
     timeout: 5000,
-    expectedResponse: 'OK'
-  }
+    expectedResponse: "OK",
+  },
 };
 
 // Command-based health check
 const config = {
   healthCheck: {
-    command: 'curl -f http://localhost:3000/health',
+    command: "curl -f http://localhost:3000/health",
     timeout: 5000,
-    expectedResponse: /OK/
-  }
+    expectedResponse: /OK/,
+  },
 };
 ```
 
@@ -201,8 +201,8 @@ const config = {
 
 ```typescript
 const config = {
-  name: 'frontend',
-  dependencies: ['backend', 'database'],
+  name: "frontend",
+  dependencies: ["backend", "database"],
   // ... other config
 };
 ```
@@ -210,15 +210,15 @@ const config = {
 ### Event Handling
 
 ```typescript
-manager.on('event', (event) => {
+manager.on("event", event => {
   switch (event.type) {
-    case 'server_started':
+    case "server_started":
       console.log(`✅ ${event.project} started`);
       break;
-    case 'server_error':
+    case "server_error":
       console.log(`❌ ${event.project} error: ${event.data.error}`);
       break;
-    case 'health_check_failed':
+    case "health_check_failed":
       console.log(`🏥 ${event.project} health check failed`);
       break;
   }
@@ -243,10 +243,10 @@ pnpm test:watch
 The package includes migration utilities to transition from the existing shell-based system:
 
 ```typescript
-import { ConfigManager } from 'dev-server-management';
+import { ConfigManager } from "dev-server-management";
 
 const configManager = new ConfigManager();
-await configManager.migrateFromOldFormat('old-dev-server-config.json');
+await configManager.migrateFromOldFormat("old-dev-server-config.json");
 ```
 
 ## 🤝 Contributing
@@ -267,4 +267,4 @@ This package is part of the Reynard ecosystem. Learn more at [reynard.dev](https
 
 ---
 
-*Built with the cunning precision of a fox* 🦊
+_Built with the cunning precision of a fox_ 🦊

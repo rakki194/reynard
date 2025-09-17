@@ -18,11 +18,8 @@ describe("Queue Watcher Integration", () => {
     });
 
     it("should have proper directory coverage", () => {
-      const expectedDirs = [
-        "packages", "backend", "services", "docs",
-        "examples", "templates", "e2e", "scripts"
-      ];
-      
+      const expectedDirs = ["packages", "backend", "services", "docs", "examples", "templates", "e2e", "scripts"];
+
       for (const dir of expectedDirs) {
         expect(DEFAULT_CONFIG.watchDirectories).toContain(dir);
       }
@@ -39,15 +36,15 @@ describe("Queue Watcher Integration", () => {
     it("should handle file processing workflow", () => {
       const recentlyProcessed = new Map<string, number>();
       const cooldown = 1000;
-      
+
       const testFile = "packages/components/src/Button.tsx";
-      
+
       // Should not be excluded
       expect(shouldExcludeFile(testFile)).toBe(false);
-      
+
       // Should not be recently processed initially
       expect(wasRecentlyProcessed(testFile, recentlyProcessed, cooldown)).toBe(false);
-      
+
       // Should be recently processed after first call
       expect(wasRecentlyProcessed(testFile, recentlyProcessed, cooldown)).toBe(true);
     });
@@ -57,9 +54,9 @@ describe("Queue Watcher Integration", () => {
         "packages/components/src/Button.tsx",
         "backend/app/main.py",
         "docs/README.md",
-        "examples/dashboard/src/App.tsx"
+        "examples/dashboard/src/App.tsx",
       ];
-      
+
       for (const file of testFiles) {
         expect(shouldExcludeFile(file)).toBe(false);
       }
@@ -70,9 +67,9 @@ describe("Queue Watcher Integration", () => {
         "packages/components/dist/index.js",
         "backend/app/__pycache__/main.pyc",
         "build/output.js",
-        "coverage/lcov-report/index.html"
+        "coverage/lcov-report/index.html",
       ];
-      
+
       for (const file of testFiles) {
         // Test that the function can handle these files without errors
         expect(() => shouldExcludeFile(file)).not.toThrow();
@@ -85,19 +82,19 @@ describe("Queue Watcher Integration", () => {
     it("should handle large numbers of files efficiently", () => {
       const recentlyProcessed = new Map<string, number>();
       const cooldown = 1000;
-      
+
       const startTime = Date.now();
-      
+
       // Process many files
       for (let i = 0; i < 1000; i++) {
         const file = `packages/component-${i}/src/index.ts`;
         shouldExcludeFile(file);
         wasRecentlyProcessed(file, recentlyProcessed, cooldown);
       }
-      
+
       const endTime = Date.now();
       const duration = endTime - startTime;
-      
+
       // Should complete within reasonable time (less than 1 second)
       expect(duration).toBeLessThan(1000);
     });
@@ -105,20 +102,20 @@ describe("Queue Watcher Integration", () => {
     it("should handle concurrent file processing", () => {
       const recentlyProcessed = new Map<string, number>();
       const cooldown = 100;
-      
+
       const files = [
         "packages/components/src/Button.tsx",
         "packages/components/src/Input.tsx",
-        "packages/components/src/Modal.tsx"
+        "packages/components/src/Modal.tsx",
       ];
-      
+
       // Process files concurrently
       const results = files.map(file => ({
         file,
         excluded: shouldExcludeFile(file),
-        recent: wasRecentlyProcessed(file, recentlyProcessed, cooldown)
+        recent: wasRecentlyProcessed(file, recentlyProcessed, cooldown),
       }));
-      
+
       // All should be processed correctly
       expect(results).toHaveLength(3);
       expect(results.every(r => !r.excluded)).toBe(true);
@@ -128,18 +125,8 @@ describe("Queue Watcher Integration", () => {
 
   describe("Error Handling Integration", () => {
     it("should handle malformed file paths", () => {
-      const malformedPaths = [
-        "",
-        ".",
-        "..",
-        "/",
-        "//",
-        "\\",
-        "C:\\Windows\\Path",
-        "path/with/../..",
-        "path/with/./."
-      ];
-      
+      const malformedPaths = ["", ".", "..", "/", "//", "\\", "C:\\Windows\\Path", "path/with/../..", "path/with/./."];
+
       for (const path of malformedPaths) {
         // Should not throw errors
         expect(() => shouldExcludeFile(path)).not.toThrow();
@@ -153,9 +140,9 @@ describe("Queue Watcher Integration", () => {
         "packages/component-with-dashes/src/index.ts",
         "packages/component_with_underscores/src/index.ts",
         "packages/component.with.dots/src/index.ts",
-        "packages/component@with@symbols/src/index.ts"
+        "packages/component@with@symbols/src/index.ts",
       ];
-      
+
       for (const path of specialPaths) {
         expect(() => shouldExcludeFile(path)).not.toThrow();
         expect(() => wasRecentlyProcessed(path, new Map(), 1000)).not.toThrow();
@@ -171,9 +158,7 @@ describe("Queue Watcher Integration", () => {
 
     it("should have valid status report interval", () => {
       expect(DEFAULT_CONFIG.statusReportInterval).toBeGreaterThan(0);
-      expect(DEFAULT_CONFIG.statusReportInterval).toBeGreaterThanOrEqual(
-        DEFAULT_CONFIG.processingCooldown
-      );
+      expect(DEFAULT_CONFIG.statusReportInterval).toBeGreaterThanOrEqual(DEFAULT_CONFIG.processingCooldown);
     });
 
     it("should have unique watch directories", () => {

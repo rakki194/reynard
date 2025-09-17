@@ -32,7 +32,7 @@ test.describe("Chat Message E2E Tests", () => {
         ), document.getElementById("chat-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#chat-container")).toBeVisible();
     await expect(page.locator("#chat-container")).toContainText("Hello, how are you?");
   });
@@ -66,7 +66,7 @@ test.describe("Chat Message E2E Tests", () => {
         ), document.getElementById("chat-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#chat-container")).toBeVisible();
     await expect(page.locator("#chat-container")).toContainText("User message");
     await expect(page.locator("#chat-container")).toContainText("Bot response");

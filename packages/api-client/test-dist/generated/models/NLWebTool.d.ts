@@ -9,79 +9,79 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { NLWebToolParameter } from './NLWebToolParameter';
+import type { NLWebToolParameter } from "./NLWebToolParameter";
 /**
  * NLWeb tool definition.
  * @export
  * @interface NLWebTool
  */
 export interface NLWebTool {
-    /**
-     * Unique identifier for the tool
-     * @type {string}
-     * @memberof NLWebTool
-     */
-    name: string;
-    /**
-     * Human-readable description of what the tool does
-     * @type {string}
-     * @memberof NLWebTool
-     */
-    description: string;
-    /**
-     * Category for grouping tools
-     * @type {string}
-     * @memberof NLWebTool
-     */
-    category: string;
-    /**
-     * Tags for search and filtering
-     * @type {Array<string>}
-     * @memberof NLWebTool
-     */
-    tags?: Array<string>;
-    /**
-     * Tool execution path or endpoint
-     * @type {string}
-     * @memberof NLWebTool
-     */
-    path: string;
-    /**
-     * HTTP method for tool execution
-     * @type {string}
-     * @memberof NLWebTool
-     */
-    method?: string;
-    /**
-     * Required parameters
-     * @type {Array<NLWebToolParameter>}
-     * @memberof NLWebTool
-     */
-    parameters?: Array<NLWebToolParameter>;
-    /**
-     * Example usage prompts
-     * @type {Array<string>}
-     * @memberof NLWebTool
-     */
-    examples?: Array<string>;
-    /**
-     * Whether the tool is currently enabled
-     * @type {boolean}
-     * @memberof NLWebTool
-     */
-    enabled?: boolean;
-    /**
-     * Priority for tool selection (higher = more likely to be selected)
-     * @type {number}
-     * @memberof NLWebTool
-     */
-    priority?: number;
-    /**
-     * Execution timeout in milliseconds
-     * @type {number}
-     * @memberof NLWebTool
-     */
-    timeout?: number;
+  /**
+   * Unique identifier for the tool
+   * @type {string}
+   * @memberof NLWebTool
+   */
+  name: string;
+  /**
+   * Human-readable description of what the tool does
+   * @type {string}
+   * @memberof NLWebTool
+   */
+  description: string;
+  /**
+   * Category for grouping tools
+   * @type {string}
+   * @memberof NLWebTool
+   */
+  category: string;
+  /**
+   * Tags for search and filtering
+   * @type {Array<string>}
+   * @memberof NLWebTool
+   */
+  tags?: Array<string>;
+  /**
+   * Tool execution path or endpoint
+   * @type {string}
+   * @memberof NLWebTool
+   */
+  path: string;
+  /**
+   * HTTP method for tool execution
+   * @type {string}
+   * @memberof NLWebTool
+   */
+  method?: string;
+  /**
+   * Required parameters
+   * @type {Array<NLWebToolParameter>}
+   * @memberof NLWebTool
+   */
+  parameters?: Array<NLWebToolParameter>;
+  /**
+   * Example usage prompts
+   * @type {Array<string>}
+   * @memberof NLWebTool
+   */
+  examples?: Array<string>;
+  /**
+   * Whether the tool is currently enabled
+   * @type {boolean}
+   * @memberof NLWebTool
+   */
+  enabled?: boolean;
+  /**
+   * Priority for tool selection (higher = more likely to be selected)
+   * @type {number}
+   * @memberof NLWebTool
+   */
+  priority?: number;
+  /**
+   * Execution timeout in milliseconds
+   * @type {number}
+   * @memberof NLWebTool
+   */
+  timeout?: number;
 }
 /**
  * Check if a given object implements the NLWebTool interface.

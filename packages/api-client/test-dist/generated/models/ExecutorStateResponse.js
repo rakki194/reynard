@@ -22,34 +22,34 @@ exports.ExecutorStateResponseToJSONTyped = ExecutorStateResponseToJSONTyped;
  * Check if a given object implements the ExecutorStateResponse interface.
  */
 function instanceOfExecutorStateResponse(value) {
-    if (!('state' in value) || value['state'] === undefined)
-        return false;
-    if (!('initialized' in value) || value['initialized'] === undefined)
-        return false;
-    return true;
+  if (!("state" in value) || value["state"] === undefined) return false;
+  if (!("initialized" in value) || value["initialized"] === undefined) return false;
+  return true;
 }
 function ExecutorStateResponseFromJSON(json) {
-    return ExecutorStateResponseFromJSONTyped(json, false);
+  return ExecutorStateResponseFromJSONTyped(json, false);
 }
 function ExecutorStateResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'state': json['state'],
-        'initialized': json['initialized'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    state: json["state"],
+    initialized: json["initialized"],
+  };
 }
 function ExecutorStateResponseToJSON(json) {
-    return ExecutorStateResponseToJSONTyped(json, false);
+  return ExecutorStateResponseToJSONTyped(json, false);
 }
 function ExecutorStateResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'state': value['state'],
-        'initialized': value['initialized'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    state: value["state"],
+    initialized: value["initialized"],
+  };
 }

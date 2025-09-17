@@ -15,72 +15,78 @@
  * @interface OllamaAssistantResponse
  */
 export interface OllamaAssistantResponse {
-    /**
-     * Whether assistant response was successful
-     * @type {boolean}
-     * @memberof OllamaAssistantResponse
-     */
-    success: boolean;
-    /**
-     * Assistant response
-     * @type {string}
-     * @memberof OllamaAssistantResponse
-     */
-    response?: string;
-    /**
-     * Assistant type used
-     * @type {string}
-     * @memberof OllamaAssistantResponse
-     */
-    assistantType: string;
-    /**
-     * Model used for generation
-     * @type {string}
-     * @memberof OllamaAssistantResponse
-     */
-    model: string;
-    /**
-     * Processing time in seconds
-     * @type {number}
-     * @memberof OllamaAssistantResponse
-     */
-    processingTime: number;
-    /**
-     * Number of tokens generated
-     * @type {number}
-     * @memberof OllamaAssistantResponse
-     */
-    tokensGenerated?: number;
-    /**
-     * Tools used during conversation
-     * @type {Array<string>}
-     * @memberof OllamaAssistantResponse
-     */
-    toolsUsed?: Array<string>;
-    /**
-     * Tool calls made by the assistant
-     * @type {Array<object>}
-     * @memberof OllamaAssistantResponse
-     */
-    toolCalls?: Array<object>;
-    /**
-     *
-     * @type {string}
-     * @memberof OllamaAssistantResponse
-     */
-    reasoning?: string | null;
-    /**
-     * Additional metadata
-     * @type {object}
-     * @memberof OllamaAssistantResponse
-     */
-    metadata?: object;
+  /**
+   * Whether assistant response was successful
+   * @type {boolean}
+   * @memberof OllamaAssistantResponse
+   */
+  success: boolean;
+  /**
+   * Assistant response
+   * @type {string}
+   * @memberof OllamaAssistantResponse
+   */
+  response?: string;
+  /**
+   * Assistant type used
+   * @type {string}
+   * @memberof OllamaAssistantResponse
+   */
+  assistantType: string;
+  /**
+   * Model used for generation
+   * @type {string}
+   * @memberof OllamaAssistantResponse
+   */
+  model: string;
+  /**
+   * Processing time in seconds
+   * @type {number}
+   * @memberof OllamaAssistantResponse
+   */
+  processingTime: number;
+  /**
+   * Number of tokens generated
+   * @type {number}
+   * @memberof OllamaAssistantResponse
+   */
+  tokensGenerated?: number;
+  /**
+   * Tools used during conversation
+   * @type {Array<string>}
+   * @memberof OllamaAssistantResponse
+   */
+  toolsUsed?: Array<string>;
+  /**
+   * Tool calls made by the assistant
+   * @type {Array<object>}
+   * @memberof OllamaAssistantResponse
+   */
+  toolCalls?: Array<object>;
+  /**
+   *
+   * @type {string}
+   * @memberof OllamaAssistantResponse
+   */
+  reasoning?: string | null;
+  /**
+   * Additional metadata
+   * @type {object}
+   * @memberof OllamaAssistantResponse
+   */
+  metadata?: object;
 }
 /**
  * Check if a given object implements the OllamaAssistantResponse interface.
  */
 export declare function instanceOfOllamaAssistantResponse(value: object): value is OllamaAssistantResponse;
 export declare function OllamaAssistantResponseFromJSON(json: any): OllamaAssistantResponse;
-export declare function OllamaAssistantResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): OllamaAssistantResponse;
+export declare function OllamaAssistantResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OllamaAssistantResponse;
 export declare function OllamaAssistantResponseToJSON(json: any): OllamaAssistantResponse;
-export declare function OllamaAssistantResponseToJSONTyped(value?: OllamaAssistantResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function OllamaAssistantResponseToJSONTyped(
+  value?: OllamaAssistantResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

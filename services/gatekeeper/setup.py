@@ -8,7 +8,7 @@ from setuptools import find_packages, setup
 setup(
     name="reynard-gatekeeper",
     version="0.1.0",
-    packages=find_packages(),
+    packages=find_packages(where="reynard_gatekeeper"),
     package_dir={"": "reynard_gatekeeper"},
     python_requires=">=3.8",
     install_requires=[

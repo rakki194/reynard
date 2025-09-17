@@ -22,44 +22,45 @@ exports.OllamaAssistantRequestToJSONTyped = OllamaAssistantRequestToJSONTyped;
  * Check if a given object implements the OllamaAssistantRequest interface.
  */
 function instanceOfOllamaAssistantRequest(value) {
-    if (!('message' in value) || value['message'] === undefined)
-        return false;
-    return true;
+  if (!("message" in value) || value["message"] === undefined) return false;
+  return true;
 }
 function OllamaAssistantRequestFromJSON(json) {
-    return OllamaAssistantRequestFromJSONTyped(json, false);
+  return OllamaAssistantRequestFromJSONTyped(json, false);
 }
 function OllamaAssistantRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'message': json['message'],
-        'assistantType': json['assistant_type'] == null ? undefined : json['assistant_type'],
-        'model': json['model'] == null ? undefined : json['model'],
-        'temperature': json['temperature'] == null ? undefined : json['temperature'],
-        'maxTokens': json['max_tokens'] == null ? undefined : json['max_tokens'],
-        'stream': json['stream'] == null ? undefined : json['stream'],
-        'context': json['context'] == null ? undefined : json['context'],
-        'toolsEnabled': json['tools_enabled'] == null ? undefined : json['tools_enabled'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    message: json["message"],
+    assistantType: json["assistant_type"] == null ? undefined : json["assistant_type"],
+    model: json["model"] == null ? undefined : json["model"],
+    temperature: json["temperature"] == null ? undefined : json["temperature"],
+    maxTokens: json["max_tokens"] == null ? undefined : json["max_tokens"],
+    stream: json["stream"] == null ? undefined : json["stream"],
+    context: json["context"] == null ? undefined : json["context"],
+    toolsEnabled: json["tools_enabled"] == null ? undefined : json["tools_enabled"],
+  };
 }
 function OllamaAssistantRequestToJSON(json) {
-    return OllamaAssistantRequestToJSONTyped(json, false);
+  return OllamaAssistantRequestToJSONTyped(json, false);
 }
 function OllamaAssistantRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'message': value['message'],
-        'assistant_type': value['assistantType'],
-        'model': value['model'],
-        'temperature': value['temperature'],
-        'max_tokens': value['maxTokens'],
-        'stream': value['stream'],
-        'context': value['context'],
-        'tools_enabled': value['toolsEnabled'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    message: value["message"],
+    assistant_type: value["assistantType"],
+    model: value["model"],
+    temperature: value["temperature"],
+    max_tokens: value["maxTokens"],
+    stream: value["stream"],
+    context: value["context"],
+    tools_enabled: value["toolsEnabled"],
+  };
 }

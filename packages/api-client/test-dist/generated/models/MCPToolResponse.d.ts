@@ -15,24 +15,24 @@
  * @interface MCPToolResponse
  */
 export interface MCPToolResponse {
-    /**
-     * True if the tool call was successful
-     * @type {boolean}
-     * @memberof MCPToolResponse
-     */
-    success: boolean;
-    /**
-     *
-     * @type {object}
-     * @memberof MCPToolResponse
-     */
-    result?: object | null;
-    /**
-     *
-     * @type {string}
-     * @memberof MCPToolResponse
-     */
-    error?: string | null;
+  /**
+   * True if the tool call was successful
+   * @type {boolean}
+   * @memberof MCPToolResponse
+   */
+  success: boolean;
+  /**
+   *
+   * @type {object}
+   * @memberof MCPToolResponse
+   */
+  result?: object | null;
+  /**
+   *
+   * @type {string}
+   * @memberof MCPToolResponse
+   */
+  error?: string | null;
 }
 /**
  * Check if a given object implements the MCPToolResponse interface.

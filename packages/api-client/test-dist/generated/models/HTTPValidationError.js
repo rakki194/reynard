@@ -23,28 +23,30 @@ var ValidationError_1 = require("./ValidationError");
  * Check if a given object implements the HTTPValidationError interface.
  */
 function instanceOfHTTPValidationError(value) {
-    return true;
+  return true;
 }
 function HTTPValidationErrorFromJSON(json) {
-    return HTTPValidationErrorFromJSONTyped(json, false);
+  return HTTPValidationErrorFromJSONTyped(json, false);
 }
 function HTTPValidationErrorFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'detail': json['detail'] == null ? undefined : (json['detail'].map(ValidationError_1.ValidationErrorFromJSON)),
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    detail: json["detail"] == null ? undefined : json["detail"].map(ValidationError_1.ValidationErrorFromJSON),
+  };
 }
 function HTTPValidationErrorToJSON(json) {
-    return HTTPValidationErrorToJSONTyped(json, false);
+  return HTTPValidationErrorToJSONTyped(json, false);
 }
 function HTTPValidationErrorToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'detail': value['detail'] == null ? undefined : (value['detail'].map(ValidationError_1.ValidationErrorToJSON)),
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    detail: value["detail"] == null ? undefined : value["detail"].map(ValidationError_1.ValidationErrorToJSON),
+  };
 }

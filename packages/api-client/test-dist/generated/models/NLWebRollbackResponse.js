@@ -22,42 +22,40 @@ exports.NLWebRollbackResponseToJSONTyped = NLWebRollbackResponseToJSONTyped;
  * Check if a given object implements the NLWebRollbackResponse interface.
  */
 function instanceOfNLWebRollbackResponse(value) {
-    if (!('success' in value) || value['success'] === undefined)
-        return false;
-    if (!('rollbackEnabled' in value) || value['rollbackEnabled'] === undefined)
-        return false;
-    if (!('reason' in value) || value['reason'] === undefined)
-        return false;
-    if (!('timestamp' in value) || value['timestamp'] === undefined)
-        return false;
-    return true;
+  if (!("success" in value) || value["success"] === undefined) return false;
+  if (!("rollbackEnabled" in value) || value["rollbackEnabled"] === undefined) return false;
+  if (!("reason" in value) || value["reason"] === undefined) return false;
+  if (!("timestamp" in value) || value["timestamp"] === undefined) return false;
+  return true;
 }
 function NLWebRollbackResponseFromJSON(json) {
-    return NLWebRollbackResponseFromJSONTyped(json, false);
+  return NLWebRollbackResponseFromJSONTyped(json, false);
 }
 function NLWebRollbackResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'success': json['success'],
-        'rollbackEnabled': json['rollback_enabled'],
-        'reason': json['reason'],
-        'timestamp': (new Date(json['timestamp'])),
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    success: json["success"],
+    rollbackEnabled: json["rollback_enabled"],
+    reason: json["reason"],
+    timestamp: new Date(json["timestamp"]),
+  };
 }
 function NLWebRollbackResponseToJSON(json) {
-    return NLWebRollbackResponseToJSONTyped(json, false);
+  return NLWebRollbackResponseToJSONTyped(json, false);
 }
 function NLWebRollbackResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'success': value['success'],
-        'rollback_enabled': value['rollbackEnabled'],
-        'reason': value['reason'],
-        'timestamp': ((value['timestamp']).toISOString()),
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    success: value["success"],
+    rollback_enabled: value["rollbackEnabled"],
+    reason: value["reason"],
+    timestamp: value["timestamp"].toISOString(),
+  };
 }

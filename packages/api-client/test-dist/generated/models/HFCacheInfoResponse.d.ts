@@ -15,30 +15,30 @@
  * @interface HFCacheInfoResponse
  */
 export interface HFCacheInfoResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof HFCacheInfoResponse
-     */
-    cacheDir: string;
-    /**
-     *
-     * @type {string}
-     * @memberof HFCacheInfoResponse
-     */
-    hubDir: string;
-    /**
-     *
-     * @type {number}
-     * @memberof HFCacheInfoResponse
-     */
-    size: number;
-    /**
-     *
-     * @type {number}
-     * @memberof HFCacheInfoResponse
-     */
-    modelCount: number;
+  /**
+   *
+   * @type {string}
+   * @memberof HFCacheInfoResponse
+   */
+  cacheDir: string;
+  /**
+   *
+   * @type {string}
+   * @memberof HFCacheInfoResponse
+   */
+  hubDir: string;
+  /**
+   *
+   * @type {number}
+   * @memberof HFCacheInfoResponse
+   */
+  size: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HFCacheInfoResponse
+   */
+  modelCount: number;
 }
 /**
  * Check if a given object implements the HFCacheInfoResponse interface.
@@ -47,4 +47,7 @@ export declare function instanceOfHFCacheInfoResponse(value: object): value is H
 export declare function HFCacheInfoResponseFromJSON(json: any): HFCacheInfoResponse;
 export declare function HFCacheInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): HFCacheInfoResponse;
 export declare function HFCacheInfoResponseToJSON(json: any): HFCacheInfoResponse;
-export declare function HFCacheInfoResponseToJSONTyped(value?: HFCacheInfoResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function HFCacheInfoResponseToJSONTyped(
+  value?: HFCacheInfoResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

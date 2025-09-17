@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
-import type { CaptionResponse } from '../models/index';
+import * as runtime from "../runtime";
+import type { CaptionResponse } from "../models/index";
 export interface UploadAndGenerateCaptionApiCaptionUploadPostRequest {
-    file: Blob;
-    generatorName: string;
-    config?: string | null;
-    force?: boolean;
-    postProcess?: boolean;
+  file: Blob;
+  generatorName: string;
+  config?: string | null;
+  force?: boolean;
+  postProcess?: boolean;
 }
 /**
  * CaptionUploadApi - interface
@@ -25,37 +25,49 @@ export interface UploadAndGenerateCaptionApiCaptionUploadPostRequest {
  * @interface CaptionUploadApiInterface
  */
 export interface CaptionUploadApiInterface {
-    /**
-     * Upload an image and generate a caption for it.
-     * @summary Upload And Generate Caption
-     * @param {Blob} file
-     * @param {string} generatorName
-     * @param {string} [config]
-     * @param {boolean} [force]
-     * @param {boolean} [postProcess]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaptionUploadApiInterface
-     */
-    uploadAndGenerateCaptionApiCaptionUploadPostRaw(requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CaptionResponse>>;
-    /**
-     * Upload an image and generate a caption for it.
-     * Upload And Generate Caption
-     */
-    uploadAndGenerateCaptionApiCaptionUploadPost(requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CaptionResponse>;
+  /**
+   * Upload an image and generate a caption for it.
+   * @summary Upload And Generate Caption
+   * @param {Blob} file
+   * @param {string} generatorName
+   * @param {string} [config]
+   * @param {boolean} [force]
+   * @param {boolean} [postProcess]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CaptionUploadApiInterface
+   */
+  uploadAndGenerateCaptionApiCaptionUploadPostRaw(
+    requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<CaptionResponse>>;
+  /**
+   * Upload an image and generate a caption for it.
+   * Upload And Generate Caption
+   */
+  uploadAndGenerateCaptionApiCaptionUploadPost(
+    requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<CaptionResponse>;
 }
 /**
  *
  */
 export declare class CaptionUploadApi extends runtime.BaseAPI implements CaptionUploadApiInterface {
-    /**
-     * Upload an image and generate a caption for it.
-     * Upload And Generate Caption
-     */
-    uploadAndGenerateCaptionApiCaptionUploadPostRaw(requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CaptionResponse>>;
-    /**
-     * Upload an image and generate a caption for it.
-     * Upload And Generate Caption
-     */
-    uploadAndGenerateCaptionApiCaptionUploadPost(requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CaptionResponse>;
+  /**
+   * Upload an image and generate a caption for it.
+   * Upload And Generate Caption
+   */
+  uploadAndGenerateCaptionApiCaptionUploadPostRaw(
+    requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<CaptionResponse>>;
+  /**
+   * Upload an image and generate a caption for it.
+   * Upload And Generate Caption
+   */
+  uploadAndGenerateCaptionApiCaptionUploadPost(
+    requestParameters: UploadAndGenerateCaptionApiCaptionUploadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<CaptionResponse>;
 }

@@ -50,7 +50,7 @@ describe("File Exclusion Patterns", () => {
     { path: "/home/user/project/file.swp", shouldExclude: true },
     { path: "/home/user/project/file.swo", shouldExclude: true },
     { path: "/home/user/project/file~", shouldExclude: true },
-    
+
     // Should NOT be excluded
     { path: "/home/user/project/src/main.ts", shouldExclude: false },
     { path: "/home/user/project/src/components/Button.tsx", shouldExclude: false },
@@ -67,7 +67,7 @@ describe("File Exclusion Patterns", () => {
   ];
 
   testCases.forEach(({ path, shouldExclude }) => {
-    test(`should ${shouldExclude ? 'exclude' : 'not exclude'} ${path}`, () => {
+    test(`should ${shouldExclude ? "exclude" : "not exclude"} ${path}`, () => {
       const result = shouldExcludeFile(path);
       expect(result).toBe(shouldExclude);
     });

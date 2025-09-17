@@ -1,7 +1,7 @@
 """
-ModelEvaluator: A/B testing framework for embedding models with retrieval accuracy benchmarks.
+Model Evaluator: A/B testing framework for embedding models with retrieval accuracy benchmarks.
 
-Responsibilities:
+This service provides:
 - Evaluate different embedding models on code search benchmarks
 - Measure retrieval accuracy, latency, and memory usage
 - Generate performance reports and recommendations
@@ -12,10 +12,8 @@ Responsibilities:
 import asyncio
 import logging
 import time
-from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass
-from pathlib import Path
-import json
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger("uvicorn")
 
@@ -45,9 +43,9 @@ class TestQuery:
 class ModelEvaluator:
     """A/B testing framework for embedding models."""
 
-    def __init__(self, embedding_service, vector_db_service):
+    def __init__(self, embedding_service, vector_store_service):
         self.embedding_service = embedding_service
-        self.vector_db_service = vector_db_service
+        self.vector_store_service = vector_store_service
         self.test_queries: List[TestQuery] = []
         self.evaluation_results: List[EvaluationMetrics] = []
         
@@ -192,7 +190,7 @@ class ModelEvaluator:
                 )
                 
                 # Perform similarity search
-                results = await self.vector_db_service.similarity_search(
+                results = await self.vector_store_service.similarity_search(
                     query_embedding, limit=10
                 )
                 
@@ -361,32 +359,6 @@ class ModelEvaluator:
         report.append(f"- **Test Queries**: {len(self.test_queries)}")
         
         return "\n".join(report)
-
-    def save_evaluation_results(self, results: Dict[str, EvaluationMetrics], filepath: str) -> None:
-        """Save evaluation results to JSON file."""
-        data = {
-            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-            "models_evaluated": len(results),
-            "test_queries": len(self.test_queries),
-            "results": {}
-        }
-        
-        for model, metrics in results.items():
-            data["results"][model] = {
-                "model_name": metrics.model_name,
-                "retrieval_accuracy": metrics.retrieval_accuracy,
-                "latency_ms": metrics.latency_ms,
-                "memory_usage_mb": metrics.memory_usage_mb,
-                "code_specificity": metrics.code_specificity,
-                "throughput_per_second": metrics.throughput_per_second,
-                "error_rate": metrics.error_rate,
-                "timestamp": metrics.timestamp
-            }
-        
-        with open(filepath, 'w') as f:
-            json.dump(data, f, indent=2)
-        
-        logger.info(f"Evaluation results saved to {filepath}")
 
     def get_evaluation_stats(self) -> Dict[str, Any]:
         """Get evaluation statistics."""

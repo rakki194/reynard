@@ -25,7 +25,7 @@ test.describe("Audio Player E2E Tests", () => {
         ), document.getElementById("audio-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#audio-container")).toBeVisible();
     await expect(page.locator("audio")).toBeVisible();
   });
@@ -42,7 +42,7 @@ test.describe("Audio Player E2E Tests", () => {
         ), document.getElementById("audio-container"));
       </script>
     `);
-    
+
     const playButton = page.locator('[data-testid="play-button"]').or(page.locator('button[aria-label="Play"]'));
     if (await playButton.isVisible()) {
       await playButton.click();

@@ -22,38 +22,38 @@ exports.ResizeDimensionsRequestToJSONTyped = ResizeDimensionsRequestToJSONTyped;
  * Check if a given object implements the ResizeDimensionsRequest interface.
  */
 function instanceOfResizeDimensionsRequest(value) {
-    if (!('originalWidth' in value) || value['originalWidth'] === undefined)
-        return false;
-    if (!('originalHeight' in value) || value['originalHeight'] === undefined)
-        return false;
-    return true;
+  if (!("originalWidth" in value) || value["originalWidth"] === undefined) return false;
+  if (!("originalHeight" in value) || value["originalHeight"] === undefined) return false;
+  return true;
 }
 function ResizeDimensionsRequestFromJSON(json) {
-    return ResizeDimensionsRequestFromJSONTyped(json, false);
+  return ResizeDimensionsRequestFromJSONTyped(json, false);
 }
 function ResizeDimensionsRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'originalWidth': json['original_width'],
-        'originalHeight': json['original_height'],
-        'targetWidth': json['target_width'] == null ? undefined : json['target_width'],
-        'targetHeight': json['target_height'] == null ? undefined : json['target_height'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    originalWidth: json["original_width"],
+    originalHeight: json["original_height"],
+    targetWidth: json["target_width"] == null ? undefined : json["target_width"],
+    targetHeight: json["target_height"] == null ? undefined : json["target_height"],
+  };
 }
 function ResizeDimensionsRequestToJSON(json) {
-    return ResizeDimensionsRequestToJSONTyped(json, false);
+  return ResizeDimensionsRequestToJSONTyped(json, false);
 }
 function ResizeDimensionsRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'original_width': value['originalWidth'],
-        'original_height': value['originalHeight'],
-        'target_width': value['targetWidth'],
-        'target_height': value['targetHeight'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    original_width: value["originalWidth"],
+    original_height: value["originalHeight"],
+    target_width: value["targetWidth"],
+    target_height: value["targetHeight"],
+  };
 }

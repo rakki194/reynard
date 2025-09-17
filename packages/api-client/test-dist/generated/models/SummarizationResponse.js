@@ -22,40 +22,40 @@ exports.SummarizationResponseToJSONTyped = SummarizationResponseToJSONTyped;
  * Check if a given object implements the SummarizationResponse interface.
  */
 function instanceOfSummarizationResponse(value) {
-    if (!('success' in value) || value['success'] === undefined)
-        return false;
-    if (!('processingTime' in value) || value['processingTime'] === undefined)
-        return false;
-    return true;
+  if (!("success" in value) || value["success"] === undefined) return false;
+  if (!("processingTime" in value) || value["processingTime"] === undefined) return false;
+  return true;
 }
 function SummarizationResponseFromJSON(json) {
-    return SummarizationResponseFromJSONTyped(json, false);
+  return SummarizationResponseFromJSONTyped(json, false);
 }
 function SummarizationResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'success': json['success'],
-        'result': json['result'] == null ? undefined : json['result'],
-        'error': json['error'] == null ? undefined : json['error'],
-        'processingTime': json['processing_time'],
-        'modelUsed': json['model_used'] == null ? undefined : json['model_used'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    success: json["success"],
+    result: json["result"] == null ? undefined : json["result"],
+    error: json["error"] == null ? undefined : json["error"],
+    processingTime: json["processing_time"],
+    modelUsed: json["model_used"] == null ? undefined : json["model_used"],
+  };
 }
 function SummarizationResponseToJSON(json) {
-    return SummarizationResponseToJSONTyped(json, false);
+  return SummarizationResponseToJSONTyped(json, false);
 }
 function SummarizationResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'success': value['success'],
-        'result': value['result'],
-        'error': value['error'],
-        'processing_time': value['processingTime'],
-        'model_used': value['modelUsed'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    success: value["success"],
+    result: value["result"],
+    error: value["error"],
+    processing_time: value["processingTime"],
+    model_used: value["modelUsed"],
+  };
 }

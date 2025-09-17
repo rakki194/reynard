@@ -22,50 +22,49 @@ exports.CaptionResponseToJSONTyped = CaptionResponseToJSONTyped;
  * Check if a given object implements the CaptionResponse interface.
  */
 function instanceOfCaptionResponse(value) {
-    if (!('success' in value) || value['success'] === undefined)
-        return false;
-    if (!('imagePath' in value) || value['imagePath'] === undefined)
-        return false;
-    if (!('generatorName' in value) || value['generatorName'] === undefined)
-        return false;
-    return true;
+  if (!("success" in value) || value["success"] === undefined) return false;
+  if (!("imagePath" in value) || value["imagePath"] === undefined) return false;
+  if (!("generatorName" in value) || value["generatorName"] === undefined) return false;
+  return true;
 }
 function CaptionResponseFromJSON(json) {
-    return CaptionResponseFromJSONTyped(json, false);
+  return CaptionResponseFromJSONTyped(json, false);
 }
 function CaptionResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'success': json['success'],
-        'imagePath': json['image_path'],
-        'generatorName': json['generator_name'],
-        'caption': json['caption'] == null ? undefined : json['caption'],
-        'error': json['error'] == null ? undefined : json['error'],
-        'errorType': json['error_type'] == null ? undefined : json['error_type'],
-        'retryable': json['retryable'] == null ? undefined : json['retryable'],
-        'processingTime': json['processing_time'] == null ? undefined : json['processing_time'],
-        'captionType': json['caption_type'] == null ? undefined : json['caption_type'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    success: json["success"],
+    imagePath: json["image_path"],
+    generatorName: json["generator_name"],
+    caption: json["caption"] == null ? undefined : json["caption"],
+    error: json["error"] == null ? undefined : json["error"],
+    errorType: json["error_type"] == null ? undefined : json["error_type"],
+    retryable: json["retryable"] == null ? undefined : json["retryable"],
+    processingTime: json["processing_time"] == null ? undefined : json["processing_time"],
+    captionType: json["caption_type"] == null ? undefined : json["caption_type"],
+  };
 }
 function CaptionResponseToJSON(json) {
-    return CaptionResponseToJSONTyped(json, false);
+  return CaptionResponseToJSONTyped(json, false);
 }
 function CaptionResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'success': value['success'],
-        'image_path': value['imagePath'],
-        'generator_name': value['generatorName'],
-        'caption': value['caption'],
-        'error': value['error'],
-        'error_type': value['errorType'],
-        'retryable': value['retryable'],
-        'processing_time': value['processingTime'],
-        'caption_type': value['captionType'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    success: value["success"],
+    image_path: value["imagePath"],
+    generator_name: value["generatorName"],
+    caption: value["caption"],
+    error: value["error"],
+    error_type: value["errorType"],
+    retryable: value["retryable"],
+    processing_time: value["processingTime"],
+    caption_type: value["captionType"],
+  };
 }

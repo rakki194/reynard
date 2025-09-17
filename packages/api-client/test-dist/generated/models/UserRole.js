@@ -29,29 +29,29 @@ exports.UserRoleToJSONTyped = UserRoleToJSONTyped;
  * @export
  */
 exports.UserRole = {
-    Admin: 'admin',
-    Regular: 'regular',
-    Guest: 'guest'
+  Admin: "admin",
+  Regular: "regular",
+  Guest: "guest",
 };
 function instanceOfUserRole(value) {
-    for (var key in exports.UserRole) {
-        if (Object.prototype.hasOwnProperty.call(exports.UserRole, key)) {
-            if (exports.UserRole[key] === value) {
-                return true;
-            }
-        }
+  for (var key in exports.UserRole) {
+    if (Object.prototype.hasOwnProperty.call(exports.UserRole, key)) {
+      if (exports.UserRole[key] === value) {
+        return true;
+      }
     }
-    return false;
+  }
+  return false;
 }
 function UserRoleFromJSON(json) {
-    return UserRoleFromJSONTyped(json, false);
+  return UserRoleFromJSONTyped(json, false);
 }
 function UserRoleFromJSONTyped(json, ignoreDiscriminator) {
-    return json;
+  return json;
 }
 function UserRoleToJSON(value) {
-    return value;
+  return value;
 }
 function UserRoleToJSONTyped(value, ignoreDiscriminator) {
-    return value;
+  return value;
 }

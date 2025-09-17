@@ -14,8 +14,7 @@
  * @export
  * @interface SystemPrompt
  */
-export interface SystemPrompt {
-}
+export interface SystemPrompt {}
 /**
  * Check if a given object implements the SystemPrompt interface.
  */

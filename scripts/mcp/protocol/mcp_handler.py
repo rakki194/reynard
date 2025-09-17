@@ -36,7 +36,11 @@ class MCPHandler:
             "id": request_id,
             "result": {
                 "protocolVersion": "2024-11-05",
-                "capabilities": {"tools": {}},
+                "capabilities": {
+                    "tools": {
+                        "listChanged": True
+                    }
+                },
                 "serverInfo": {
                     "name": "reynard-linting-server",
                     "version": "2.0.0",

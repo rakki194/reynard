@@ -15,48 +15,48 @@
  * @interface MCPClientResponse
  */
 export interface MCPClientResponse {
-    /**
-     * Client identifier
-     * @type {string}
-     * @memberof MCPClientResponse
-     */
-    clientId: string;
-    /**
-     * Client type
-     * @type {string}
-     * @memberof MCPClientResponse
-     */
-    clientType: string;
-    /**
-     * Client name
-     * @type {string}
-     * @memberof MCPClientResponse
-     */
-    name: string;
-    /**
-     * Granted permissions
-     * @type {Array<string>}
-     * @memberof MCPClientResponse
-     */
-    permissions: Array<string>;
-    /**
-     * Whether client is active
-     * @type {boolean}
-     * @memberof MCPClientResponse
-     */
-    isActive: boolean;
-    /**
-     * Creation timestamp
-     * @type {string}
-     * @memberof MCPClientResponse
-     */
-    createdAt: string;
-    /**
-     *
-     * @type {string}
-     * @memberof MCPClientResponse
-     */
-    lastUsed?: string | null;
+  /**
+   * Client identifier
+   * @type {string}
+   * @memberof MCPClientResponse
+   */
+  clientId: string;
+  /**
+   * Client type
+   * @type {string}
+   * @memberof MCPClientResponse
+   */
+  clientType: string;
+  /**
+   * Client name
+   * @type {string}
+   * @memberof MCPClientResponse
+   */
+  name: string;
+  /**
+   * Granted permissions
+   * @type {Array<string>}
+   * @memberof MCPClientResponse
+   */
+  permissions: Array<string>;
+  /**
+   * Whether client is active
+   * @type {boolean}
+   * @memberof MCPClientResponse
+   */
+  isActive: boolean;
+  /**
+   * Creation timestamp
+   * @type {string}
+   * @memberof MCPClientResponse
+   */
+  createdAt: string;
+  /**
+   *
+   * @type {string}
+   * @memberof MCPClientResponse
+   */
+  lastUsed?: string | null;
 }
 /**
  * Check if a given object implements the MCPClientResponse interface.
@@ -65,4 +65,7 @@ export declare function instanceOfMCPClientResponse(value: object): value is MCP
 export declare function MCPClientResponseFromJSON(json: any): MCPClientResponse;
 export declare function MCPClientResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): MCPClientResponse;
 export declare function MCPClientResponseToJSON(json: any): MCPClientResponse;
-export declare function MCPClientResponseToJSONTyped(value?: MCPClientResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function MCPClientResponseToJSONTyped(
+  value?: MCPClientResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

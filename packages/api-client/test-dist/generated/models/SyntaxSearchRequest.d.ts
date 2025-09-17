@@ -15,66 +15,66 @@
  * @interface SyntaxSearchRequest
  */
 export interface SyntaxSearchRequest {
-    /**
-     * Search query
-     * @type {string}
-     * @memberof SyntaxSearchRequest
-     */
-    query: string;
-    /**
-     * Maximum results to return
-     * @type {number}
-     * @memberof SyntaxSearchRequest
-     */
-    maxResults?: number;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof SyntaxSearchRequest
-     */
-    fileTypes?: Array<string> | null;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof SyntaxSearchRequest
-     */
-    directories?: Array<string> | null;
-    /**
-     * Case-sensitive search
-     * @type {boolean}
-     * @memberof SyntaxSearchRequest
-     */
-    caseSensitive?: boolean;
-    /**
-     * Match whole words only
-     * @type {boolean}
-     * @memberof SyntaxSearchRequest
-     */
-    wholeWord?: boolean;
-    /**
-     * Context lines around matches
-     * @type {number}
-     * @memberof SyntaxSearchRequest
-     */
-    contextLines?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof SyntaxSearchRequest
-     */
-    patternType?: string | null;
-    /**
-     * Programming language
-     * @type {string}
-     * @memberof SyntaxSearchRequest
-     */
-    language?: string;
-    /**
-     * Expand query with synonyms
-     * @type {boolean}
-     * @memberof SyntaxSearchRequest
-     */
-    expandQuery?: boolean;
+  /**
+   * Search query
+   * @type {string}
+   * @memberof SyntaxSearchRequest
+   */
+  query: string;
+  /**
+   * Maximum results to return
+   * @type {number}
+   * @memberof SyntaxSearchRequest
+   */
+  maxResults?: number;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof SyntaxSearchRequest
+   */
+  fileTypes?: Array<string> | null;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof SyntaxSearchRequest
+   */
+  directories?: Array<string> | null;
+  /**
+   * Case-sensitive search
+   * @type {boolean}
+   * @memberof SyntaxSearchRequest
+   */
+  caseSensitive?: boolean;
+  /**
+   * Match whole words only
+   * @type {boolean}
+   * @memberof SyntaxSearchRequest
+   */
+  wholeWord?: boolean;
+  /**
+   * Context lines around matches
+   * @type {number}
+   * @memberof SyntaxSearchRequest
+   */
+  contextLines?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof SyntaxSearchRequest
+   */
+  patternType?: string | null;
+  /**
+   * Programming language
+   * @type {string}
+   * @memberof SyntaxSearchRequest
+   */
+  language?: string;
+  /**
+   * Expand query with synonyms
+   * @type {boolean}
+   * @memberof SyntaxSearchRequest
+   */
+  expandQuery?: boolean;
 }
 /**
  * Check if a given object implements the SyntaxSearchRequest interface.
@@ -83,4 +83,7 @@ export declare function instanceOfSyntaxSearchRequest(value: object): value is S
 export declare function SyntaxSearchRequestFromJSON(json: any): SyntaxSearchRequest;
 export declare function SyntaxSearchRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SyntaxSearchRequest;
 export declare function SyntaxSearchRequestToJSON(json: any): SyntaxSearchRequest;
-export declare function SyntaxSearchRequestToJSONTyped(value?: SyntaxSearchRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function SyntaxSearchRequestToJSONTyped(
+  value?: SyntaxSearchRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

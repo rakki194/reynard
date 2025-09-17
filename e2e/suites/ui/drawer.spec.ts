@@ -30,7 +30,7 @@ test.describe("Drawer Component E2E Tests", () => {
         ), document.getElementById("drawer-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#drawer-container")).toBeVisible();
     await expect(page.locator("#drawer-container")).toContainText("Drawer Content");
   });
@@ -52,7 +52,7 @@ test.describe("Drawer Component E2E Tests", () => {
         ), document.getElementById("drawer-container"));
       </script>
     `);
-    
+
     // Find and click close button
     const closeButton = page.locator('[data-testid="drawer-close"]').or(page.locator('button[aria-label="Close"]'));
     if (await closeButton.isVisible()) {

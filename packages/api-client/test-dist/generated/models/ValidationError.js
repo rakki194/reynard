@@ -23,38 +23,37 @@ var ValidationErrorLocInner_1 = require("./ValidationErrorLocInner");
  * Check if a given object implements the ValidationError interface.
  */
 function instanceOfValidationError(value) {
-    if (!('loc' in value) || value['loc'] === undefined)
-        return false;
-    if (!('msg' in value) || value['msg'] === undefined)
-        return false;
-    if (!('type' in value) || value['type'] === undefined)
-        return false;
-    return true;
+  if (!("loc" in value) || value["loc"] === undefined) return false;
+  if (!("msg" in value) || value["msg"] === undefined) return false;
+  if (!("type" in value) || value["type"] === undefined) return false;
+  return true;
 }
 function ValidationErrorFromJSON(json) {
-    return ValidationErrorFromJSONTyped(json, false);
+  return ValidationErrorFromJSONTyped(json, false);
 }
 function ValidationErrorFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'loc': (json['loc'].map(ValidationErrorLocInner_1.ValidationErrorLocInnerFromJSON)),
-        'msg': json['msg'],
-        'type': json['type'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    loc: json["loc"].map(ValidationErrorLocInner_1.ValidationErrorLocInnerFromJSON),
+    msg: json["msg"],
+    type: json["type"],
+  };
 }
 function ValidationErrorToJSON(json) {
-    return ValidationErrorToJSONTyped(json, false);
+  return ValidationErrorToJSONTyped(json, false);
 }
 function ValidationErrorToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'loc': (value['loc'].map(ValidationErrorLocInner_1.ValidationErrorLocInnerToJSON)),
-        'msg': value['msg'],
-        'type': value['type'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    loc: value["loc"].map(ValidationErrorLocInner_1.ValidationErrorLocInnerToJSON),
+    msg: value["msg"],
+    type: value["type"],
+  };
 }

@@ -15,48 +15,54 @@
  * @interface ModelCacheInfoResponse
  */
 export interface ModelCacheInfoResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof ModelCacheInfoResponse
-     */
-    repoId: string;
-    /**
-     *
-     * @type {string}
-     * @memberof ModelCacheInfoResponse
-     */
-    cachePath: string;
-    /**
-     *
-     * @type {string}
-     * @memberof ModelCacheInfoResponse
-     */
-    snapshotPath: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ModelCacheInfoResponse
-     */
-    isCached: boolean;
-    /**
-     *
-     * @type {number}
-     * @memberof ModelCacheInfoResponse
-     */
-    size?: number | null;
-    /**
-     *
-     * @type {string}
-     * @memberof ModelCacheInfoResponse
-     */
-    lastModified?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelCacheInfoResponse
+   */
+  repoId: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelCacheInfoResponse
+   */
+  cachePath: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelCacheInfoResponse
+   */
+  snapshotPath: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ModelCacheInfoResponse
+   */
+  isCached: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof ModelCacheInfoResponse
+   */
+  size?: number | null;
+  /**
+   *
+   * @type {string}
+   * @memberof ModelCacheInfoResponse
+   */
+  lastModified?: string | null;
 }
 /**
  * Check if a given object implements the ModelCacheInfoResponse interface.
  */
 export declare function instanceOfModelCacheInfoResponse(value: object): value is ModelCacheInfoResponse;
 export declare function ModelCacheInfoResponseFromJSON(json: any): ModelCacheInfoResponse;
-export declare function ModelCacheInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ModelCacheInfoResponse;
+export declare function ModelCacheInfoResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ModelCacheInfoResponse;
 export declare function ModelCacheInfoResponseToJSON(json: any): ModelCacheInfoResponse;
-export declare function ModelCacheInfoResponseToJSONTyped(value?: ModelCacheInfoResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ModelCacheInfoResponseToJSONTyped(
+  value?: ModelCacheInfoResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

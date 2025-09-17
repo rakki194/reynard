@@ -9,43 +9,49 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { NLWebVerificationCheck } from './NLWebVerificationCheck';
+import type { NLWebVerificationCheck } from "./NLWebVerificationCheck";
 /**
  * Verification checklist response.
  * @export
  * @interface NLWebVerificationResponse
  */
 export interface NLWebVerificationResponse {
-    /**
-     * Whether NLWeb service is available
-     * @type {boolean}
-     * @memberof NLWebVerificationResponse
-     */
-    serviceAvailable: boolean;
-    /**
-     * Whether configuration is loaded
-     * @type {boolean}
-     * @memberof NLWebVerificationResponse
-     */
-    configLoaded: boolean;
-    /**
-     * List of verification checks
-     * @type {Array<NLWebVerificationCheck>}
-     * @memberof NLWebVerificationResponse
-     */
-    checks?: Array<NLWebVerificationCheck>;
-    /**
-     * Overall verification status
-     * @type {string}
-     * @memberof NLWebVerificationResponse
-     */
-    overallStatus: string;
+  /**
+   * Whether NLWeb service is available
+   * @type {boolean}
+   * @memberof NLWebVerificationResponse
+   */
+  serviceAvailable: boolean;
+  /**
+   * Whether configuration is loaded
+   * @type {boolean}
+   * @memberof NLWebVerificationResponse
+   */
+  configLoaded: boolean;
+  /**
+   * List of verification checks
+   * @type {Array<NLWebVerificationCheck>}
+   * @memberof NLWebVerificationResponse
+   */
+  checks?: Array<NLWebVerificationCheck>;
+  /**
+   * Overall verification status
+   * @type {string}
+   * @memberof NLWebVerificationResponse
+   */
+  overallStatus: string;
 }
 /**
  * Check if a given object implements the NLWebVerificationResponse interface.
  */
 export declare function instanceOfNLWebVerificationResponse(value: object): value is NLWebVerificationResponse;
 export declare function NLWebVerificationResponseFromJSON(json: any): NLWebVerificationResponse;
-export declare function NLWebVerificationResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebVerificationResponse;
+export declare function NLWebVerificationResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): NLWebVerificationResponse;
 export declare function NLWebVerificationResponseToJSON(json: any): NLWebVerificationResponse;
-export declare function NLWebVerificationResponseToJSONTyped(value?: NLWebVerificationResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function NLWebVerificationResponseToJSONTyped(
+  value?: NLWebVerificationResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

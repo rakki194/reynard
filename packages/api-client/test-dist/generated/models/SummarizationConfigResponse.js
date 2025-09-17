@@ -22,38 +22,37 @@ exports.SummarizationConfigResponseToJSONTyped = SummarizationConfigResponseToJS
  * Check if a given object implements the SummarizationConfigResponse interface.
  */
 function instanceOfSummarizationConfigResponse(value) {
-    if (!('success' in value) || value['success'] === undefined)
-        return false;
-    if (!('message' in value) || value['message'] === undefined)
-        return false;
-    if (!('config' in value) || value['config'] === undefined)
-        return false;
-    return true;
+  if (!("success" in value) || value["success"] === undefined) return false;
+  if (!("message" in value) || value["message"] === undefined) return false;
+  if (!("config" in value) || value["config"] === undefined) return false;
+  return true;
 }
 function SummarizationConfigResponseFromJSON(json) {
-    return SummarizationConfigResponseFromJSONTyped(json, false);
+  return SummarizationConfigResponseFromJSONTyped(json, false);
 }
 function SummarizationConfigResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'success': json['success'],
-        'message': json['message'],
-        'config': json['config'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    success: json["success"],
+    message: json["message"],
+    config: json["config"],
+  };
 }
 function SummarizationConfigResponseToJSON(json) {
-    return SummarizationConfigResponseToJSONTyped(json, false);
+  return SummarizationConfigResponseToJSONTyped(json, false);
 }
 function SummarizationConfigResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'success': value['success'],
-        'message': value['message'],
-        'config': value['config'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    success: value["success"],
+    message: value["message"],
+    config: value["config"],
+  };
 }

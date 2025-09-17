@@ -16,7 +16,7 @@ import {
   getFileTypeFromExtension,
   getDirectoryForFilePath,
   validateProjectStructure,
-  generateProjectStructureReport
+  generateProjectStructureReport,
 } from "../utils.js";
 
 describe("Directory Utilities", () => {
@@ -62,7 +62,7 @@ describe("Directory Utilities", () => {
     const relatedToPackages = getRelatedDirectories("packages");
     expect(relatedToPackages).toBeInstanceOf(Array);
     expect(relatedToPackages.length).toBeGreaterThan(0);
-    
+
     const examplesRelated = relatedToPackages.find(dir => dir.name === "examples");
     expect(examplesRelated).toBeDefined();
   });
@@ -81,11 +81,11 @@ describe("Directory Utilities", () => {
     const packagesDir = getDirectoryForFilePath("packages/components/src/index.ts");
     expect(packagesDir).toBeDefined();
     expect(packagesDir?.name).toBe("packages");
-    
+
     const backendDir = getDirectoryForFilePath("backend/app/main.py");
     expect(backendDir).toBeDefined();
     expect(backendDir?.name).toBe("backend");
-    
+
     const docsDir = getDirectoryForFilePath("docs/README.md");
     expect(docsDir).toBeDefined();
     expect(docsDir?.name).toBe("docs");
@@ -113,11 +113,11 @@ describe("Directory Categories and Relationships", () => {
     const sourceDirs = getDirectoriesByCategory("source");
     const docDirs = getDirectoriesByCategory("documentation");
     const configDirs = getDirectoriesByCategory("configuration");
-    
+
     expect(sourceDirs.length).toBeGreaterThan(0);
     expect(docDirs.length).toBeGreaterThan(0);
     expect(configDirs.length).toBeGreaterThan(0);
-    
+
     expect(sourceDirs.every(dir => dir.category === "source")).toBe(true);
     expect(docDirs.every(dir => dir.category === "documentation")).toBe(true);
     expect(configDirs.every(dir => dir.category === "configuration")).toBe(true);
@@ -127,11 +127,11 @@ describe("Directory Categories and Relationships", () => {
     const criticalDirs = getDirectoriesByImportance("critical");
     const importantDirs = getDirectoriesByImportance("important");
     const optionalDirs = getDirectoriesByImportance("optional");
-    
+
     expect(criticalDirs.length).toBeGreaterThan(0);
     expect(importantDirs.length).toBeGreaterThan(0);
     expect(optionalDirs.length).toBeGreaterThan(0);
-    
+
     expect(criticalDirs.every(dir => dir.importance === "critical")).toBe(true);
     expect(importantDirs.every(dir => dir.importance === "important")).toBe(true);
     expect(optionalDirs.every(dir => dir.importance === "optional")).toBe(true);
@@ -142,7 +142,7 @@ describe("Directory Categories and Relationships", () => {
     expect(packages).toBeDefined();
     expect(packages?.relationships).toBeInstanceOf(Array);
     expect(packages?.relationships.length).toBeGreaterThan(0);
-    
+
     const examplesRel = packages?.relationships.find(rel => rel.directory === "examples");
     expect(examplesRel).toBeDefined();
     expect(examplesRel?.type).toBe("sibling");

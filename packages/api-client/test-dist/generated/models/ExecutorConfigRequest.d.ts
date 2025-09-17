@@ -15,48 +15,54 @@
  * @interface ExecutorConfigRequest
  */
 export interface ExecutorConfigRequest {
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorConfigRequest
-     */
-    maxWorkers?: number | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ExecutorConfigRequest
-     */
-    enablePerformanceMonitoring?: boolean | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ExecutorConfigRequest
-     */
-    autoCleanup?: boolean | null;
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorConfigRequest
-     */
-    defaultTimeout?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorConfigRequest
-     */
-    maxRetries?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof ExecutorConfigRequest
-     */
-    retryDelay?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorConfigRequest
+   */
+  maxWorkers?: number | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ExecutorConfigRequest
+   */
+  enablePerformanceMonitoring?: boolean | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ExecutorConfigRequest
+   */
+  autoCleanup?: boolean | null;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorConfigRequest
+   */
+  defaultTimeout?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorConfigRequest
+   */
+  maxRetries?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof ExecutorConfigRequest
+   */
+  retryDelay?: number | null;
 }
 /**
  * Check if a given object implements the ExecutorConfigRequest interface.
  */
 export declare function instanceOfExecutorConfigRequest(value: object): value is ExecutorConfigRequest;
 export declare function ExecutorConfigRequestFromJSON(json: any): ExecutorConfigRequest;
-export declare function ExecutorConfigRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExecutorConfigRequest;
+export declare function ExecutorConfigRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ExecutorConfigRequest;
 export declare function ExecutorConfigRequestToJSON(json: any): ExecutorConfigRequest;
-export declare function ExecutorConfigRequestToJSONTyped(value?: ExecutorConfigRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function ExecutorConfigRequestToJSONTyped(
+  value?: ExecutorConfigRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

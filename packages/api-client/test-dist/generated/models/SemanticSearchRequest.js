@@ -22,48 +22,49 @@ exports.SemanticSearchRequestToJSONTyped = SemanticSearchRequestToJSONTyped;
  * Check if a given object implements the SemanticSearchRequest interface.
  */
 function instanceOfSemanticSearchRequest(value) {
-    if (!('query' in value) || value['query'] === undefined)
-        return false;
-    return true;
+  if (!("query" in value) || value["query"] === undefined) return false;
+  return true;
 }
 function SemanticSearchRequestFromJSON(json) {
-    return SemanticSearchRequestFromJSONTyped(json, false);
+  return SemanticSearchRequestFromJSONTyped(json, false);
 }
 function SemanticSearchRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'query': json['query'],
-        'maxResults': json['max_results'] == null ? undefined : json['max_results'],
-        'fileTypes': json['file_types'] == null ? undefined : json['file_types'],
-        'directories': json['directories'] == null ? undefined : json['directories'],
-        'caseSensitive': json['case_sensitive'] == null ? undefined : json['case_sensitive'],
-        'wholeWord': json['whole_word'] == null ? undefined : json['whole_word'],
-        'contextLines': json['context_lines'] == null ? undefined : json['context_lines'],
-        'similarityThreshold': json['similarity_threshold'] == null ? undefined : json['similarity_threshold'],
-        'model': json['model'] == null ? undefined : json['model'],
-        'searchType': json['search_type'] == null ? undefined : json['search_type'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    query: json["query"],
+    maxResults: json["max_results"] == null ? undefined : json["max_results"],
+    fileTypes: json["file_types"] == null ? undefined : json["file_types"],
+    directories: json["directories"] == null ? undefined : json["directories"],
+    caseSensitive: json["case_sensitive"] == null ? undefined : json["case_sensitive"],
+    wholeWord: json["whole_word"] == null ? undefined : json["whole_word"],
+    contextLines: json["context_lines"] == null ? undefined : json["context_lines"],
+    similarityThreshold: json["similarity_threshold"] == null ? undefined : json["similarity_threshold"],
+    model: json["model"] == null ? undefined : json["model"],
+    searchType: json["search_type"] == null ? undefined : json["search_type"],
+  };
 }
 function SemanticSearchRequestToJSON(json) {
-    return SemanticSearchRequestToJSONTyped(json, false);
+  return SemanticSearchRequestToJSONTyped(json, false);
 }
 function SemanticSearchRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'query': value['query'],
-        'max_results': value['maxResults'],
-        'file_types': value['fileTypes'],
-        'directories': value['directories'],
-        'case_sensitive': value['caseSensitive'],
-        'whole_word': value['wholeWord'],
-        'context_lines': value['contextLines'],
-        'similarity_threshold': value['similarityThreshold'],
-        'model': value['model'],
-        'search_type': value['searchType'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    query: value["query"],
+    max_results: value["maxResults"],
+    file_types: value["fileTypes"],
+    directories: value["directories"],
+    case_sensitive: value["caseSensitive"],
+    whole_word: value["wholeWord"],
+    context_lines: value["contextLines"],
+    similarity_threshold: value["similarityThreshold"],
+    model: value["model"],
+    search_type: value["searchType"],
+  };
 }

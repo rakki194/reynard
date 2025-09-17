@@ -22,34 +22,34 @@ exports.ResizeDimensionsResponseToJSONTyped = ResizeDimensionsResponseToJSONType
  * Check if a given object implements the ResizeDimensionsResponse interface.
  */
 function instanceOfResizeDimensionsResponse(value) {
-    if (!('width' in value) || value['width'] === undefined)
-        return false;
-    if (!('height' in value) || value['height'] === undefined)
-        return false;
-    return true;
+  if (!("width" in value) || value["width"] === undefined) return false;
+  if (!("height" in value) || value["height"] === undefined) return false;
+  return true;
 }
 function ResizeDimensionsResponseFromJSON(json) {
-    return ResizeDimensionsResponseFromJSONTyped(json, false);
+  return ResizeDimensionsResponseFromJSONTyped(json, false);
 }
 function ResizeDimensionsResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'width': json['width'],
-        'height': json['height'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    width: json["width"],
+    height: json["height"],
+  };
 }
 function ResizeDimensionsResponseToJSON(json) {
-    return ResizeDimensionsResponseToJSONTyped(json, false);
+  return ResizeDimensionsResponseToJSONTyped(json, false);
 }
 function ResizeDimensionsResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'width': value['width'],
-        'height': value['height'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    width: value["width"],
+    height: value["height"],
+  };
 }

@@ -22,50 +22,46 @@ exports.TaskInfoResponseToJSONTyped = TaskInfoResponseToJSONTyped;
  * Check if a given object implements the TaskInfoResponse interface.
  */
 function instanceOfTaskInfoResponse(value) {
-    if (!('taskId' in value) || value['taskId'] === undefined)
-        return false;
-    if (!('functionName' in value) || value['functionName'] === undefined)
-        return false;
-    if (!('startTime' in value) || value['startTime'] === undefined)
-        return false;
-    if (!('timeout' in value) || value['timeout'] === undefined)
-        return false;
-    if (!('retryCount' in value) || value['retryCount'] === undefined)
-        return false;
-    if (!('maxRetries' in value) || value['maxRetries'] === undefined)
-        return false;
-    return true;
+  if (!("taskId" in value) || value["taskId"] === undefined) return false;
+  if (!("functionName" in value) || value["functionName"] === undefined) return false;
+  if (!("startTime" in value) || value["startTime"] === undefined) return false;
+  if (!("timeout" in value) || value["timeout"] === undefined) return false;
+  if (!("retryCount" in value) || value["retryCount"] === undefined) return false;
+  if (!("maxRetries" in value) || value["maxRetries"] === undefined) return false;
+  return true;
 }
 function TaskInfoResponseFromJSON(json) {
-    return TaskInfoResponseFromJSONTyped(json, false);
+  return TaskInfoResponseFromJSONTyped(json, false);
 }
 function TaskInfoResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'taskId': json['task_id'],
-        'functionName': json['function_name'],
-        'startTime': json['start_time'],
-        'timeout': json['timeout'],
-        'retryCount': json['retry_count'],
-        'maxRetries': json['max_retries'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    taskId: json["task_id"],
+    functionName: json["function_name"],
+    startTime: json["start_time"],
+    timeout: json["timeout"],
+    retryCount: json["retry_count"],
+    maxRetries: json["max_retries"],
+  };
 }
 function TaskInfoResponseToJSON(json) {
-    return TaskInfoResponseToJSONTyped(json, false);
+  return TaskInfoResponseToJSONTyped(json, false);
 }
 function TaskInfoResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'task_id': value['taskId'],
-        'function_name': value['functionName'],
-        'start_time': value['startTime'],
-        'timeout': value['timeout'],
-        'retry_count': value['retryCount'],
-        'max_retries': value['maxRetries'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    task_id: value["taskId"],
+    function_name: value["functionName"],
+    start_time: value["startTime"],
+    timeout: value["timeout"],
+    retry_count: value["retryCount"],
+    max_retries: value["maxRetries"],
+  };
 }

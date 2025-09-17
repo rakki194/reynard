@@ -15,30 +15,30 @@
  * @interface AgentCreateRequest
  */
 export interface AgentCreateRequest {
-    /**
-     *
-     * @type {string}
-     * @memberof AgentCreateRequest
-     */
-    agentId: string;
-    /**
-     *
-     * @type {string}
-     * @memberof AgentCreateRequest
-     */
-    spirit?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof AgentCreateRequest
-     */
-    style?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof AgentCreateRequest
-     */
-    name?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentCreateRequest
+   */
+  agentId: string;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentCreateRequest
+   */
+  spirit?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentCreateRequest
+   */
+  style?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof AgentCreateRequest
+   */
+  name?: string | null;
 }
 /**
  * Check if a given object implements the AgentCreateRequest interface.
@@ -47,4 +47,7 @@ export declare function instanceOfAgentCreateRequest(value: object): value is Ag
 export declare function AgentCreateRequestFromJSON(json: any): AgentCreateRequest;
 export declare function AgentCreateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): AgentCreateRequest;
 export declare function AgentCreateRequestToJSON(json: any): AgentCreateRequest;
-export declare function AgentCreateRequestToJSONTyped(value?: AgentCreateRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function AgentCreateRequestToJSONTyped(
+  value?: AgentCreateRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

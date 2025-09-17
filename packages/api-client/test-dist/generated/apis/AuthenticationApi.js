@@ -12,57 +12,156 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-var __extends = (this && this.__extends) || (function () {
+var __extends =
+  (this && this.__extends) ||
+  (function () {
     var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
+      extendStatics =
+        Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array &&
+          function (d, b) {
+            d.__proto__ = b;
+          }) ||
+        function (d, b) {
+          for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+        };
+      return extendStatics(d, b);
     };
     return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+      if (typeof b !== "function" && b !== null)
+        throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+      extendStatics(d, b);
+      function __() {
+        this.constructor = d;
+      }
+      d.prototype = b === null ? Object.create(b) : ((__.prototype = b.prototype), new __());
     };
-})();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+  })();
+var __awaiter =
+  (this && this.__awaiter) ||
+  function (thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P
+        ? value
+        : new P(function (resolve) {
+            resolve(value);
+          });
     }
-};
+    return new (P || (P = Promise))(function (resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator["throw"](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+var __generator =
+  (this && this.__generator) ||
+  function (thisArg, body) {
+    var _ = {
+        label: 0,
+        sent: function () {
+          if (t[0] & 1) throw t[1];
+          return t[1];
+        },
+        trys: [],
+        ops: [],
+      },
+      f,
+      y,
+      t,
+      g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return (
+      (g.next = verb(0)),
+      (g["throw"] = verb(1)),
+      (g["return"] = verb(2)),
+      typeof Symbol === "function" &&
+        (g[Symbol.iterator] = function () {
+          return this;
+        }),
+      g
+    );
+    function verb(n) {
+      return function (v) {
+        return step([n, v]);
+      };
+    }
+    function step(op) {
+      if (f) throw new TypeError("Generator is already executing.");
+      while ((g && ((g = 0), op[0] && (_ = 0)), _))
+        try {
+          if (
+            ((f = 1),
+            y &&
+              (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) &&
+              !(t = t.call(y, op[1])).done)
+          )
+            return t;
+          if (((y = 0), t)) op = [op[0] & 2, t.value];
+          switch (op[0]) {
+            case 0:
+            case 1:
+              t = op;
+              break;
+            case 4:
+              _.label++;
+              return { value: op[1], done: false };
+            case 5:
+              _.label++;
+              y = op[1];
+              op = [0];
+              continue;
+            case 7:
+              op = _.ops.pop();
+              _.trys.pop();
+              continue;
+            default:
+              if (!((t = _.trys), (t = t.length > 0 && t[t.length - 1])) && (op[0] === 6 || op[0] === 2)) {
+                _ = 0;
+                continue;
+              }
+              if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) {
+                _.label = op[1];
+                break;
+              }
+              if (op[0] === 6 && _.label < t[1]) {
+                _.label = t[1];
+                t = op;
+                break;
+              }
+              if (t && _.label < t[2]) {
+                _.label = t[2];
+                _.ops.push(op);
+                break;
+              }
+              if (t[2]) _.ops.pop();
+              _.trys.pop();
+              continue;
+          }
+          op = body.call(thisArg, _);
+        } catch (e) {
+          op = [6, e];
+          y = 0;
+        } finally {
+          f = t = 0;
+        }
+      if (op[0] & 5) throw op[1];
+      return { value: op[0] ? op[1] : void 0, done: true };
+    }
+  };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthenticationApi = void 0;
 var runtime = require("../runtime");
@@ -71,817 +170,1026 @@ var index_1 = require("../models/index");
  *
  */
 var AuthenticationApi = /** @class */ (function (_super) {
-    __extends(AuthenticationApi, _super);
-    function AuthenticationApi() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    /**
-     * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
-     * Change Password
-     */
-    AuthenticationApi.prototype.changePasswordApiAuthChangePasswordPostRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        if (requestParameters['currentPassword'] == null) {
-                            throw new runtime.RequiredError('currentPassword', 'Required parameter "currentPassword" was null or undefined when calling changePasswordApiAuthChangePasswordPost().');
-                        }
-                        if (requestParameters['newPassword'] == null) {
-                            throw new runtime.RequiredError('newPassword', 'Required parameter "newPassword" was null or undefined when calling changePasswordApiAuthChangePasswordPost().');
-                        }
-                        queryParameters = {};
-                        if (requestParameters['currentPassword'] != null) {
-                            queryParameters['current_password'] = requestParameters['currentPassword'];
-                        }
-                        if (requestParameters['newPassword'] != null) {
-                            queryParameters['new_password'] = requestParameters['newPassword'];
-                        }
-                        headerParameters = {};
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/change-password";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'POST',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response)];
-                }
-            });
-        });
-    };
-    /**
-     * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
-     * Change Password
-     */
-    AuthenticationApi.prototype.changePasswordApiAuthChangePasswordPost = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.changePasswordApiAuthChangePasswordPostRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Cleanup Expired Tokens
-     */
-    AuthenticationApi.prototype.cleanupExpiredTokensApiAuthCleanupPostRaw = function (initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        queryParameters = {};
-                        headerParameters = {};
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/cleanup";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'POST',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response)];
-                }
-            });
-        });
-    };
-    /**
-     * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Cleanup Expired Tokens
-     */
-    AuthenticationApi.prototype.cleanupExpiredTokensApiAuthCleanupPost = function (initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.cleanupExpiredTokensApiAuthCleanupPostRaw(initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
-     * Delete User
-     */
-    AuthenticationApi.prototype.deleteUserApiAuthUsersUsernameDeleteRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        if (requestParameters['username'] == null) {
-                            throw new runtime.RequiredError('username', 'Required parameter "username" was null or undefined when calling deleteUserApiAuthUsersUsernameDelete().');
-                        }
-                        queryParameters = {};
-                        headerParameters = {};
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/users/{username}";
-                        urlPath = urlPath.replace("{".concat("username", "}"), encodeURIComponent(String(requestParameters['username'])));
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'DELETE',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response)];
-                }
-            });
-        });
-    };
-    /**
-     * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
-     * Delete User
-     */
-    AuthenticationApi.prototype.deleteUserApiAuthUsersUsernameDelete = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.deleteUserApiAuthUsersUsernameDeleteRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
-     * Get Auth Stats
-     */
-    AuthenticationApi.prototype.getAuthStatsApiAuthStatsGetRaw = function (initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        queryParameters = {};
-                        headerParameters = {};
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/stats";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'GET',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response)];
-                }
-            });
-        });
-    };
-    /**
-     * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
-     * Get Auth Stats
-     */
-    AuthenticationApi.prototype.getAuthStatsApiAuthStatsGet = function (initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getAuthStatsApiAuthStatsGetRaw(initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
-     * Get Current User Info
-     */
-    AuthenticationApi.prototype.getCurrentUserInfoApiAuthMeGetRaw = function (initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        queryParameters = {};
-                        headerParameters = {};
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/me";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'GET',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response, function (jsonValue) { return (0, index_1.UserPublicFromJSON)(jsonValue); })];
-                }
-            });
-        });
-    };
-    /**
-     * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
-     * Get Current User Info
-     */
-    AuthenticationApi.prototype.getCurrentUserInfoApiAuthMeGet = function (initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getCurrentUserInfoApiAuthMeGetRaw(initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
-     * Get User
-     */
-    AuthenticationApi.prototype.getUserApiAuthUsersUsernameGetRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        if (requestParameters['username'] == null) {
-                            throw new runtime.RequiredError('username', 'Required parameter "username" was null or undefined when calling getUserApiAuthUsersUsernameGet().');
-                        }
-                        queryParameters = {};
-                        headerParameters = {};
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/users/{username}";
-                        urlPath = urlPath.replace("{".concat("username", "}"), encodeURIComponent(String(requestParameters['username'])));
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'GET',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response, function (jsonValue) { return (0, index_1.UserPublicFromJSON)(jsonValue); })];
-                }
-            });
-        });
-    };
-    /**
-     * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
-     * Get User
-     */
-    AuthenticationApi.prototype.getUserApiAuthUsersUsernameGet = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getUserApiAuthUsersUsernameGetRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
-     * List Users
-     */
-    AuthenticationApi.prototype.listUsersApiAuthUsersGetRaw = function (initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        queryParameters = {};
-                        headerParameters = {};
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/users";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'GET',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response, function (jsonValue) { return jsonValue.map(index_1.UserPublicFromJSON); })];
-                }
-            });
-        });
-    };
-    /**
-     * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
-     * List Users
-     */
-    AuthenticationApi.prototype.listUsersApiAuthUsersGet = function (initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.listUsersApiAuthUsersGetRaw(initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
-     * Login
-     */
-    AuthenticationApi.prototype.loginApiAuthLoginPostRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, consumes, canConsumeForm, formParams, useForm, urlPath, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (requestParameters['username'] == null) {
-                            throw new runtime.RequiredError('username', 'Required parameter "username" was null or undefined when calling loginApiAuthLoginPost().');
-                        }
-                        if (requestParameters['password'] == null) {
-                            throw new runtime.RequiredError('password', 'Required parameter "password" was null or undefined when calling loginApiAuthLoginPost().');
-                        }
-                        queryParameters = {};
-                        headerParameters = {};
-                        consumes = [
-                            { contentType: 'application/x-www-form-urlencoded' },
-                        ];
-                        canConsumeForm = runtime.canConsumeForm(consumes);
-                        useForm = false;
-                        if (useForm) {
-                            formParams = new FormData();
-                        }
-                        else {
-                            formParams = new URLSearchParams();
-                        }
-                        if (requestParameters['grantType'] != null) {
-                            formParams.append('grant_type', requestParameters['grantType']);
-                        }
-                        if (requestParameters['username'] != null) {
-                            formParams.append('username', requestParameters['username']);
-                        }
-                        if (requestParameters['password'] != null) {
-                            formParams.append('password', requestParameters['password']);
-                        }
-                        if (requestParameters['scope'] != null) {
-                            formParams.append('scope', requestParameters['scope']);
-                        }
-                        if (requestParameters['clientId'] != null) {
-                            formParams.append('client_id', requestParameters['clientId']);
-                        }
-                        if (requestParameters['clientSecret'] != null) {
-                            formParams.append('client_secret', requestParameters['clientSecret']);
-                        }
-                        urlPath = "/api/auth/login";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'POST',
-                                headers: headerParameters,
-                                query: queryParameters,
-                                body: formParams,
-                            }, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response, function (jsonValue) { return (0, index_1.TokenResponseFromJSON)(jsonValue); })];
-                }
-            });
-        });
-    };
-    /**
-     * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
-     * Login
-     */
-    AuthenticationApi.prototype.loginApiAuthLoginPost = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.loginApiAuthLoginPostRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Logout
-     */
-    AuthenticationApi.prototype.logoutApiAuthLogoutPostRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, urlPath, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (requestParameters['token'] == null) {
-                            throw new runtime.RequiredError('token', 'Required parameter "token" was null or undefined when calling logoutApiAuthLogoutPost().');
-                        }
-                        queryParameters = {};
-                        if (requestParameters['token'] != null) {
-                            queryParameters['token'] = requestParameters['token'];
-                        }
-                        headerParameters = {};
-                        urlPath = "/api/auth/logout";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'POST',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response)];
-                }
-            });
-        });
-    };
-    /**
-     * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Logout
-     */
-    AuthenticationApi.prototype.logoutApiAuthLogoutPost = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.logoutApiAuthLogoutPostRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
-     * Refresh Tokens
-     */
-    AuthenticationApi.prototype.refreshTokensApiAuthRefreshPostRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, urlPath, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (requestParameters['refreshToken'] == null) {
-                            throw new runtime.RequiredError('refreshToken', 'Required parameter "refreshToken" was null or undefined when calling refreshTokensApiAuthRefreshPost().');
-                        }
-                        queryParameters = {};
-                        if (requestParameters['refreshToken'] != null) {
-                            queryParameters['refresh_token'] = requestParameters['refreshToken'];
-                        }
-                        headerParameters = {};
-                        urlPath = "/api/auth/refresh";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'POST',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response, function (jsonValue) { return (0, index_1.TokenResponseFromJSON)(jsonValue); })];
-                }
-            });
-        });
-    };
-    /**
-     * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
-     * Refresh Tokens
-     */
-    AuthenticationApi.prototype.refreshTokensApiAuthRefreshPost = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.refreshTokensApiAuthRefreshPostRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
-     * Register
-     */
-    AuthenticationApi.prototype.registerApiAuthRegisterPostRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, urlPath, response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (requestParameters['userCreate'] == null) {
-                            throw new runtime.RequiredError('userCreate', 'Required parameter "userCreate" was null or undefined when calling registerApiAuthRegisterPost().');
-                        }
-                        queryParameters = {};
-                        headerParameters = {};
-                        headerParameters['Content-Type'] = 'application/json';
-                        urlPath = "/api/auth/register";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'POST',
-                                headers: headerParameters,
-                                query: queryParameters,
-                                body: (0, index_1.UserCreateToJSON)(requestParameters['userCreate']),
-                            }, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response, function (jsonValue) { return (0, index_1.UserPublicFromJSON)(jsonValue); })];
-                }
-            });
-        });
-    };
-    /**
-     * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
-     * Register
-     */
-    AuthenticationApi.prototype.registerApiAuthRegisterPost = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.registerApiAuthRegisterPostRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Revoke User Tokens
-     */
-    AuthenticationApi.prototype.revokeUserTokensApiAuthUsersUsernameRevokeTokensPostRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        if (requestParameters['username'] == null) {
-                            throw new runtime.RequiredError('username', 'Required parameter "username" was null or undefined when calling revokeUserTokensApiAuthUsersUsernameRevokeTokensPost().');
-                        }
-                        queryParameters = {};
-                        headerParameters = {};
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/users/{username}/revoke-tokens";
-                        urlPath = urlPath.replace("{".concat("username", "}"), encodeURIComponent(String(requestParameters['username'])));
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'POST',
-                                headers: headerParameters,
-                                query: queryParameters,
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response)];
-                }
-            });
-        });
-    };
-    /**
-     * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
-     * Revoke User Tokens
-     */
-    AuthenticationApi.prototype.revokeUserTokensApiAuthUsersUsernameRevokeTokensPost = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.revokeUserTokensApiAuthUsersUsernameRevokeTokensPostRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
-     * Update Current User
-     */
-    AuthenticationApi.prototype.updateCurrentUserApiAuthMePutRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        if (requestParameters['userUpdate'] == null) {
-                            throw new runtime.RequiredError('userUpdate', 'Required parameter "userUpdate" was null or undefined when calling updateCurrentUserApiAuthMePut().');
-                        }
-                        queryParameters = {};
-                        headerParameters = {};
-                        headerParameters['Content-Type'] = 'application/json';
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/me";
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'PUT',
-                                headers: headerParameters,
-                                query: queryParameters,
-                                body: (0, index_1.UserUpdateToJSON)(requestParameters['userUpdate']),
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response, function (jsonValue) { return (0, index_1.UserPublicFromJSON)(jsonValue); })];
-                }
-            });
-        });
-    };
-    /**
-     * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
-     * Update Current User
-     */
-    AuthenticationApi.prototype.updateCurrentUserApiAuthMePut = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.updateCurrentUserApiAuthMePutRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    /**
-     * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
-     * Update User
-     */
-    AuthenticationApi.prototype.updateUserApiAuthUsersUsernamePutRaw = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var queryParameters, headerParameters, _a, _b, urlPath, response;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        if (requestParameters['username'] == null) {
-                            throw new runtime.RequiredError('username', 'Required parameter "username" was null or undefined when calling updateUserApiAuthUsersUsernamePut().');
-                        }
-                        if (requestParameters['userUpdate'] == null) {
-                            throw new runtime.RequiredError('userUpdate', 'Required parameter "userUpdate" was null or undefined when calling updateUserApiAuthUsersUsernamePut().');
-                        }
-                        queryParameters = {};
-                        headerParameters = {};
-                        headerParameters['Content-Type'] = 'application/json';
-                        if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
-                        // oauth required
-                        _a = headerParameters;
-                        _b = "Authorization";
-                        return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
-                    case 1:
-                        // oauth required
-                        _a[_b] = _c.sent();
-                        _c.label = 2;
-                    case 2:
-                        urlPath = "/api/auth/users/{username}";
-                        urlPath = urlPath.replace("{".concat("username", "}"), encodeURIComponent(String(requestParameters['username'])));
-                        return [4 /*yield*/, this.request({
-                                path: urlPath,
-                                method: 'PUT',
-                                headers: headerParameters,
-                                query: queryParameters,
-                                body: (0, index_1.UserUpdateToJSON)(requestParameters['userUpdate']),
-                            }, initOverrides)];
-                    case 3:
-                        response = _c.sent();
-                        return [2 /*return*/, new runtime.JSONApiResponse(response, function (jsonValue) { return (0, index_1.UserPublicFromJSON)(jsonValue); })];
-                }
-            });
-        });
-    };
-    /**
-     * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
-     * Update User
-     */
-    AuthenticationApi.prototype.updateUserApiAuthUsersUsernamePut = function (requestParameters, initOverrides) {
-        return __awaiter(this, void 0, void 0, function () {
-            var response;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.updateUserApiAuthUsersUsernamePutRaw(requestParameters, initOverrides)];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.value()];
-                    case 2: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    return AuthenticationApi;
-}(runtime.BaseAPI));
+  __extends(AuthenticationApi, _super);
+  function AuthenticationApi() {
+    return (_super !== null && _super.apply(this, arguments)) || this;
+  }
+  /**
+   * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
+   * Change Password
+   */
+  AuthenticationApi.prototype.changePasswordApiAuthChangePasswordPostRaw = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            if (requestParameters["currentPassword"] == null) {
+              throw new runtime.RequiredError(
+                "currentPassword",
+                'Required parameter "currentPassword" was null or undefined when calling changePasswordApiAuthChangePasswordPost().'
+              );
+            }
+            if (requestParameters["newPassword"] == null) {
+              throw new runtime.RequiredError(
+                "newPassword",
+                'Required parameter "newPassword" was null or undefined when calling changePasswordApiAuthChangePasswordPost().'
+              );
+            }
+            queryParameters = {};
+            if (requestParameters["currentPassword"] != null) {
+              queryParameters["current_password"] = requestParameters["currentPassword"];
+            }
+            if (requestParameters["newPassword"] != null) {
+              queryParameters["new_password"] = requestParameters["newPassword"];
+            }
+            headerParameters = {};
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/change-password";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "POST",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [2 /*return*/, new runtime.JSONApiResponse(response)];
+        }
+      });
+    });
+  };
+  /**
+   * Change current user\'s password.  Args:     current_password: Current password     new_password: New password     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If password change fails
+   * Change Password
+   */
+  AuthenticationApi.prototype.changePasswordApiAuthChangePasswordPost = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.changePasswordApiAuthChangePasswordPostRaw(requestParameters, initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Cleanup Expired Tokens
+   */
+  AuthenticationApi.prototype.cleanupExpiredTokensApiAuthCleanupPostRaw = function (initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            queryParameters = {};
+            headerParameters = {};
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/cleanup";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "POST",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [2 /*return*/, new runtime.JSONApiResponse(response)];
+        }
+      });
+    });
+  };
+  /**
+   * Clean up expired tokens (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Cleanup Expired Tokens
+   */
+  AuthenticationApi.prototype.cleanupExpiredTokensApiAuthCleanupPost = function (initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.cleanupExpiredTokensApiAuthCleanupPostRaw(initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
+   * Delete User
+   */
+  AuthenticationApi.prototype.deleteUserApiAuthUsersUsernameDeleteRaw = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            if (requestParameters["username"] == null) {
+              throw new runtime.RequiredError(
+                "username",
+                'Required parameter "username" was null or undefined when calling deleteUserApiAuthUsersUsernameDelete().'
+              );
+            }
+            queryParameters = {};
+            headerParameters = {};
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/users/{username}";
+            urlPath = urlPath.replace(
+              "{".concat("username", "}"),
+              encodeURIComponent(String(requestParameters["username"]))
+            );
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "DELETE",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [2 /*return*/, new runtime.JSONApiResponse(response)];
+        }
+      });
+    });
+  };
+  /**
+   * Delete user by username (admin only).  Args:     username: Username to delete     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message  Raises:     HTTPException: If user not found or deletion fails
+   * Delete User
+   */
+  AuthenticationApi.prototype.deleteUserApiAuthUsersUsernameDelete = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.deleteUserApiAuthUsersUsernameDeleteRaw(requestParameters, initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
+   * Get Auth Stats
+   */
+  AuthenticationApi.prototype.getAuthStatsApiAuthStatsGetRaw = function (initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            queryParameters = {};
+            headerParameters = {};
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/stats";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "GET",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [2 /*return*/, new runtime.JSONApiResponse(response)];
+        }
+      });
+    });
+  };
+  /**
+   * Get authentication statistics (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Authentication statistics
+   * Get Auth Stats
+   */
+  AuthenticationApi.prototype.getAuthStatsApiAuthStatsGet = function (initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.getAuthStatsApiAuthStatsGetRaw(initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
+   * Get Current User Info
+   */
+  AuthenticationApi.prototype.getCurrentUserInfoApiAuthMeGetRaw = function (initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            queryParameters = {};
+            headerParameters = {};
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/me";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "GET",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [
+              2 /*return*/,
+              new runtime.JSONApiResponse(response, function (jsonValue) {
+                return (0, index_1.UserPublicFromJSON)(jsonValue);
+              }),
+            ];
+        }
+      });
+    });
+  };
+  /**
+   * Get current user information.  Args:     current_user: Current authenticated user  Returns:     UserPublic: Current user information
+   * Get Current User Info
+   */
+  AuthenticationApi.prototype.getCurrentUserInfoApiAuthMeGet = function (initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.getCurrentUserInfoApiAuthMeGetRaw(initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
+   * Get User
+   */
+  AuthenticationApi.prototype.getUserApiAuthUsersUsernameGetRaw = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            if (requestParameters["username"] == null) {
+              throw new runtime.RequiredError(
+                "username",
+                'Required parameter "username" was null or undefined when calling getUserApiAuthUsersUsernameGet().'
+              );
+            }
+            queryParameters = {};
+            headerParameters = {};
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/users/{username}";
+            urlPath = urlPath.replace(
+              "{".concat("username", "}"),
+              encodeURIComponent(String(requestParameters["username"]))
+            );
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "GET",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [
+              2 /*return*/,
+              new runtime.JSONApiResponse(response, function (jsonValue) {
+                return (0, index_1.UserPublicFromJSON)(jsonValue);
+              }),
+            ];
+        }
+      });
+    });
+  };
+  /**
+   * Get user by username (admin only).  Args:     username: Username to look up     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: User information  Raises:     HTTPException: If user not found
+   * Get User
+   */
+  AuthenticationApi.prototype.getUserApiAuthUsersUsernameGet = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.getUserApiAuthUsersUsernameGetRaw(requestParameters, initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
+   * List Users
+   */
+  AuthenticationApi.prototype.listUsersApiAuthUsersGetRaw = function (initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            queryParameters = {};
+            headerParameters = {};
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/users";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "GET",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [
+              2 /*return*/,
+              new runtime.JSONApiResponse(response, function (jsonValue) {
+                return jsonValue.map(index_1.UserPublicFromJSON);
+              }),
+            ];
+        }
+      });
+    });
+  };
+  /**
+   * List all users (admin only).  Args:     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     list[UserPublic]: List of all users
+   * List Users
+   */
+  AuthenticationApi.prototype.listUsersApiAuthUsersGet = function (initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.listUsersApiAuthUsersGetRaw(initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
+   * Login
+   */
+  AuthenticationApi.prototype.loginApiAuthLoginPostRaw = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, consumes, canConsumeForm, formParams, useForm, urlPath, response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            if (requestParameters["username"] == null) {
+              throw new runtime.RequiredError(
+                "username",
+                'Required parameter "username" was null or undefined when calling loginApiAuthLoginPost().'
+              );
+            }
+            if (requestParameters["password"] == null) {
+              throw new runtime.RequiredError(
+                "password",
+                'Required parameter "password" was null or undefined when calling loginApiAuthLoginPost().'
+              );
+            }
+            queryParameters = {};
+            headerParameters = {};
+            consumes = [{ contentType: "application/x-www-form-urlencoded" }];
+            canConsumeForm = runtime.canConsumeForm(consumes);
+            useForm = false;
+            if (useForm) {
+              formParams = new FormData();
+            } else {
+              formParams = new URLSearchParams();
+            }
+            if (requestParameters["grantType"] != null) {
+              formParams.append("grant_type", requestParameters["grantType"]);
+            }
+            if (requestParameters["username"] != null) {
+              formParams.append("username", requestParameters["username"]);
+            }
+            if (requestParameters["password"] != null) {
+              formParams.append("password", requestParameters["password"]);
+            }
+            if (requestParameters["scope"] != null) {
+              formParams.append("scope", requestParameters["scope"]);
+            }
+            if (requestParameters["clientId"] != null) {
+              formParams.append("client_id", requestParameters["clientId"]);
+            }
+            if (requestParameters["clientSecret"] != null) {
+              formParams.append("client_secret", requestParameters["clientSecret"]);
+            }
+            urlPath = "/api/auth/login";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "POST",
+                  headers: headerParameters,
+                  query: queryParameters,
+                  body: formParams,
+                },
+                initOverrides
+              ),
+            ];
+          case 1:
+            response = _a.sent();
+            return [
+              2 /*return*/,
+              new runtime.JSONApiResponse(response, function (jsonValue) {
+                return (0, index_1.TokenResponseFromJSON)(jsonValue);
+              }),
+            ];
+        }
+      });
+    });
+  };
+  /**
+   * Authenticate user and return access/refresh tokens.  Args:     form_data: OAuth2 form data containing username and password     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: Access and refresh tokens  Raises:     HTTPException: If authentication fails
+   * Login
+   */
+  AuthenticationApi.prototype.loginApiAuthLoginPost = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.loginApiAuthLoginPostRaw(requestParameters, initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Logout
+   */
+  AuthenticationApi.prototype.logoutApiAuthLogoutPostRaw = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, urlPath, response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            if (requestParameters["token"] == null) {
+              throw new runtime.RequiredError(
+                "token",
+                'Required parameter "token" was null or undefined when calling logoutApiAuthLogoutPost().'
+              );
+            }
+            queryParameters = {};
+            if (requestParameters["token"] != null) {
+              queryParameters["token"] = requestParameters["token"];
+            }
+            headerParameters = {};
+            urlPath = "/api/auth/logout";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "POST",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 1:
+            response = _a.sent();
+            return [2 /*return*/, new runtime.JSONApiResponse(response)];
+        }
+      });
+    });
+  };
+  /**
+   * Logout user by revoking their token.  Args:     token: The access token to revoke     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Logout
+   */
+  AuthenticationApi.prototype.logoutApiAuthLogoutPost = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.logoutApiAuthLogoutPostRaw(requestParameters, initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
+   * Refresh Tokens
+   */
+  AuthenticationApi.prototype.refreshTokensApiAuthRefreshPostRaw = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, urlPath, response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            if (requestParameters["refreshToken"] == null) {
+              throw new runtime.RequiredError(
+                "refreshToken",
+                'Required parameter "refreshToken" was null or undefined when calling refreshTokensApiAuthRefreshPost().'
+              );
+            }
+            queryParameters = {};
+            if (requestParameters["refreshToken"] != null) {
+              queryParameters["refresh_token"] = requestParameters["refreshToken"];
+            }
+            headerParameters = {};
+            urlPath = "/api/auth/refresh";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "POST",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 1:
+            response = _a.sent();
+            return [
+              2 /*return*/,
+              new runtime.JSONApiResponse(response, function (jsonValue) {
+                return (0, index_1.TokenResponseFromJSON)(jsonValue);
+              }),
+            ];
+        }
+      });
+    });
+  };
+  /**
+   * Refresh access token using a valid refresh token.  Args:     refresh_token: The refresh token     request: FastAPI request object for IP address extraction     auth_manager: Authentication manager instance  Returns:     TokenResponse: New access and refresh tokens  Raises:     HTTPException: If refresh token is invalid
+   * Refresh Tokens
+   */
+  AuthenticationApi.prototype.refreshTokensApiAuthRefreshPost = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.refreshTokensApiAuthRefreshPostRaw(requestParameters, initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
+   * Register
+   */
+  AuthenticationApi.prototype.registerApiAuthRegisterPostRaw = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, urlPath, response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            if (requestParameters["userCreate"] == null) {
+              throw new runtime.RequiredError(
+                "userCreate",
+                'Required parameter "userCreate" was null or undefined when calling registerApiAuthRegisterPost().'
+              );
+            }
+            queryParameters = {};
+            headerParameters = {};
+            headerParameters["Content-Type"] = "application/json";
+            urlPath = "/api/auth/register";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "POST",
+                  headers: headerParameters,
+                  query: queryParameters,
+                  body: (0, index_1.UserCreateToJSON)(requestParameters["userCreate"]),
+                },
+                initOverrides
+              ),
+            ];
+          case 1:
+            response = _a.sent();
+            return [
+              2 /*return*/,
+              new runtime.JSONApiResponse(response, function (jsonValue) {
+                return (0, index_1.UserPublicFromJSON)(jsonValue);
+              }),
+            ];
+        }
+      });
+    });
+  };
+  /**
+   * Register a new user.  Args:     user_data: User creation data     auth_manager: Authentication manager instance  Returns:     UserPublic: The created user (without sensitive data)  Raises:     HTTPException: If user creation fails
+   * Register
+   */
+  AuthenticationApi.prototype.registerApiAuthRegisterPost = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.registerApiAuthRegisterPostRaw(requestParameters, initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Revoke User Tokens
+   */
+  AuthenticationApi.prototype.revokeUserTokensApiAuthUsersUsernameRevokeTokensPostRaw = function (
+    requestParameters,
+    initOverrides
+  ) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            if (requestParameters["username"] == null) {
+              throw new runtime.RequiredError(
+                "username",
+                'Required parameter "username" was null or undefined when calling revokeUserTokensApiAuthUsersUsernameRevokeTokensPost().'
+              );
+            }
+            queryParameters = {};
+            headerParameters = {};
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/users/{username}/revoke-tokens";
+            urlPath = urlPath.replace(
+              "{".concat("username", "}"),
+              encodeURIComponent(String(requestParameters["username"]))
+            );
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "POST",
+                  headers: headerParameters,
+                  query: queryParameters,
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [2 /*return*/, new runtime.JSONApiResponse(response)];
+        }
+      });
+    });
+  };
+  /**
+   * Revoke all tokens for a user (admin only).  Args:     username: Username whose tokens should be revoked     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     dict: Success message
+   * Revoke User Tokens
+   */
+  AuthenticationApi.prototype.revokeUserTokensApiAuthUsersUsernameRevokeTokensPost = function (
+    requestParameters,
+    initOverrides
+  ) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [
+              4 /*yield*/,
+              this.revokeUserTokensApiAuthUsersUsernameRevokeTokensPostRaw(requestParameters, initOverrides),
+            ];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
+   * Update Current User
+   */
+  AuthenticationApi.prototype.updateCurrentUserApiAuthMePutRaw = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            if (requestParameters["userUpdate"] == null) {
+              throw new runtime.RequiredError(
+                "userUpdate",
+                'Required parameter "userUpdate" was null or undefined when calling updateCurrentUserApiAuthMePut().'
+              );
+            }
+            queryParameters = {};
+            headerParameters = {};
+            headerParameters["Content-Type"] = "application/json";
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/me";
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "PUT",
+                  headers: headerParameters,
+                  query: queryParameters,
+                  body: (0, index_1.UserUpdateToJSON)(requestParameters["userUpdate"]),
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [
+              2 /*return*/,
+              new runtime.JSONApiResponse(response, function (jsonValue) {
+                return (0, index_1.UserPublicFromJSON)(jsonValue);
+              }),
+            ];
+        }
+      });
+    });
+  };
+  /**
+   * Update current user information.  Args:     user_update: User update data     current_user: Current authenticated user     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information
+   * Update Current User
+   */
+  AuthenticationApi.prototype.updateCurrentUserApiAuthMePut = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.updateCurrentUserApiAuthMePutRaw(requestParameters, initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  /**
+   * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
+   * Update User
+   */
+  AuthenticationApi.prototype.updateUserApiAuthUsersUsernamePutRaw = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var queryParameters, headerParameters, _a, _b, urlPath, response;
+      return __generator(this, function (_c) {
+        switch (_c.label) {
+          case 0:
+            if (requestParameters["username"] == null) {
+              throw new runtime.RequiredError(
+                "username",
+                'Required parameter "username" was null or undefined when calling updateUserApiAuthUsersUsernamePut().'
+              );
+            }
+            if (requestParameters["userUpdate"] == null) {
+              throw new runtime.RequiredError(
+                "userUpdate",
+                'Required parameter "userUpdate" was null or undefined when calling updateUserApiAuthUsersUsernamePut().'
+              );
+            }
+            queryParameters = {};
+            headerParameters = {};
+            headerParameters["Content-Type"] = "application/json";
+            if (!(this.configuration && this.configuration.accessToken)) return [3 /*break*/, 2];
+            // oauth required
+            _a = headerParameters;
+            _b = "Authorization";
+            return [4 /*yield*/, this.configuration.accessToken("OAuth2PasswordBearer", [])];
+          case 1:
+            // oauth required
+            _a[_b] = _c.sent();
+            _c.label = 2;
+          case 2:
+            urlPath = "/api/auth/users/{username}";
+            urlPath = urlPath.replace(
+              "{".concat("username", "}"),
+              encodeURIComponent(String(requestParameters["username"]))
+            );
+            return [
+              4 /*yield*/,
+              this.request(
+                {
+                  path: urlPath,
+                  method: "PUT",
+                  headers: headerParameters,
+                  query: queryParameters,
+                  body: (0, index_1.UserUpdateToJSON)(requestParameters["userUpdate"]),
+                },
+                initOverrides
+              ),
+            ];
+          case 3:
+            response = _c.sent();
+            return [
+              2 /*return*/,
+              new runtime.JSONApiResponse(response, function (jsonValue) {
+                return (0, index_1.UserPublicFromJSON)(jsonValue);
+              }),
+            ];
+        }
+      });
+    });
+  };
+  /**
+   * Update user by username (admin only).  Args:     username: Username to update     user_update: User update data     current_user: Current authenticated user (must be admin)     auth_manager: Authentication manager instance  Returns:     UserPublic: Updated user information  Raises:     HTTPException: If user not found or update fails
+   * Update User
+   */
+  AuthenticationApi.prototype.updateUserApiAuthUsersUsernamePut = function (requestParameters, initOverrides) {
+    return __awaiter(this, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [4 /*yield*/, this.updateUserApiAuthUsersUsernamePutRaw(requestParameters, initOverrides)];
+          case 1:
+            response = _a.sent();
+            return [4 /*yield*/, response.value()];
+          case 2:
+            return [2 /*return*/, _a.sent()];
+        }
+      });
+    });
+  };
+  return AuthenticationApi;
+})(runtime.BaseAPI);
 exports.AuthenticationApi = AuthenticationApi;

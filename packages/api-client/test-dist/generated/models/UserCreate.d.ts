@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { UserRole } from './UserRole';
+import type { UserRole } from "./UserRole";
 /**
  * User model for registration requests.
  *
@@ -24,30 +24,30 @@ import type { UserRole } from './UserRole';
  * @interface UserCreate
  */
 export interface UserCreate {
-    /**
-     * Unique username for the user. Alphanumeric, underscores, and hyphens only.
-     * @type {string}
-     * @memberof UserCreate
-     */
-    username: string;
-    /**
-     * Plain text password for registration. Must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.
-     * @type {string}
-     * @memberof UserCreate
-     */
-    password: string;
-    /**
-     *
-     * @type {string}
-     * @memberof UserCreate
-     */
-    email?: string | null;
-    /**
-     *
-     * @type {UserRole}
-     * @memberof UserCreate
-     */
-    role?: UserRole;
+  /**
+   * Unique username for the user. Alphanumeric, underscores, and hyphens only.
+   * @type {string}
+   * @memberof UserCreate
+   */
+  username: string;
+  /**
+   * Plain text password for registration. Must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.
+   * @type {string}
+   * @memberof UserCreate
+   */
+  password: string;
+  /**
+   *
+   * @type {string}
+   * @memberof UserCreate
+   */
+  email?: string | null;
+  /**
+   *
+   * @type {UserRole}
+   * @memberof UserCreate
+   */
+  role?: UserRole;
 }
 /**
  * Check if a given object implements the UserCreate interface.

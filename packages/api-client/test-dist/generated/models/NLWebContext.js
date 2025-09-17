@@ -22,40 +22,42 @@ exports.NLWebContextToJSONTyped = NLWebContextToJSONTyped;
  * Check if a given object implements the NLWebContext interface.
  */
 function instanceOfNLWebContext(value) {
-    return true;
+  return true;
 }
 function NLWebContextFromJSON(json) {
-    return NLWebContextFromJSONTyped(json, false);
+  return NLWebContextFromJSONTyped(json, false);
 }
 function NLWebContextFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'currentPath': json['current_path'] == null ? undefined : json['current_path'],
-        'selectedItems': json['selected_items'] == null ? undefined : json['selected_items'],
-        'gitStatus': json['git_status'] == null ? undefined : json['git_status'],
-        'userPreferences': json['user_preferences'] == null ? undefined : json['user_preferences'],
-        'applicationState': json['application_state'] == null ? undefined : json['application_state'],
-        'userId': json['user_id'] == null ? undefined : json['user_id'],
-        'sessionId': json['session_id'] == null ? undefined : json['session_id'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    currentPath: json["current_path"] == null ? undefined : json["current_path"],
+    selectedItems: json["selected_items"] == null ? undefined : json["selected_items"],
+    gitStatus: json["git_status"] == null ? undefined : json["git_status"],
+    userPreferences: json["user_preferences"] == null ? undefined : json["user_preferences"],
+    applicationState: json["application_state"] == null ? undefined : json["application_state"],
+    userId: json["user_id"] == null ? undefined : json["user_id"],
+    sessionId: json["session_id"] == null ? undefined : json["session_id"],
+  };
 }
 function NLWebContextToJSON(json) {
-    return NLWebContextToJSONTyped(json, false);
+  return NLWebContextToJSONTyped(json, false);
 }
 function NLWebContextToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'current_path': value['currentPath'],
-        'selected_items': value['selectedItems'],
-        'git_status': value['gitStatus'],
-        'user_preferences': value['userPreferences'],
-        'application_state': value['applicationState'],
-        'user_id': value['userId'],
-        'session_id': value['sessionId'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    current_path: value["currentPath"],
+    selected_items: value["selectedItems"],
+    git_status: value["gitStatus"],
+    user_preferences: value["userPreferences"],
+    application_state: value["applicationState"],
+    user_id: value["userId"],
+    session_id: value["sessionId"],
+  };
 }

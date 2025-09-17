@@ -10,9 +10,9 @@ import time
 from unittest.mock import AsyncMock, MagicMock, patch
 from typing import List, Dict, Any
 
-from app.services.rag.ast_code_chunker import ASTCodeChunker
-from app.services.rag.model_evaluator import ModelEvaluator, TestQuery, EvaluationMetrics
-from app.services.rag.hybrid_search_engine import HybridSearchEngine, KeywordIndex
+from app.services.rag.core.indexing import ASTCodeChunker
+from app.services.rag.advanced.evaluation import ModelEvaluator, TestQuery, EvaluationMetrics
+from app.services.rag.core.search import SearchEngine
 
 
 class TestASTCodeChunker:

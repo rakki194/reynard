@@ -1,6 +1,6 @@
 /**
  * 🦊 MCP Git Automation Tools
- * 
+ *
  * MCP (Model Context Protocol) integration for Git automation tools.
  * Provides programmatic access to all Git workflow components.
  */
@@ -16,13 +16,13 @@ import {
   type ChangeAnalysisResult,
   type CommitMessage,
   type VersionInfo,
-  type WorkflowResult
-} from './index.js';
+  type WorkflowResult,
+} from "./index.js";
 
 export class MCPGitAutomationTools {
   private readonly workingDir: string;
 
-  constructor(workingDir: string = '.') {
+  constructor(workingDir: string = ".") {
     this.workingDir = workingDir;
   }
 
@@ -48,7 +48,7 @@ export class MCPGitAutomationTools {
   async generateCommitMessage(): Promise<CommitMessage> {
     const analyzer = new ChangeAnalyzer();
     const generator = new CommitMessageGenerator();
-    
+
     const analysis = await analyzer.analyzeChanges(this.workingDir);
     return generator.generateCommitMessage(analysis);
   }
@@ -64,7 +64,7 @@ export class MCPGitAutomationTools {
   /**
    * Calculate next version
    */
-  calculateNextVersion(currentVersion: string, bumpType: 'major' | 'minor' | 'patch'): string {
+  calculateNextVersion(currentVersion: string, bumpType: "major" | "minor" | "patch"): string {
     const manager = new VersionManager(this.workingDir);
     return manager.calculateNextVersion(currentVersion, bumpType);
   }
@@ -113,18 +113,20 @@ export class MCPGitAutomationTools {
   /**
    * Execute complete workflow
    */
-  async executeWorkflow(options: {
-    skipJunkDetection?: boolean;
-    skipChangeAnalysis?: boolean;
-    skipCommitGeneration?: boolean;
-    skipVersionBump?: boolean;
-    skipChangelogUpdate?: boolean;
-    skipGitTag?: boolean;
-    dryRun?: boolean;
-    autoConfirm?: boolean;
-    commitMessage?: string;
-    versionBumpType?: 'major' | 'minor' | 'patch';
-  } = {}): Promise<WorkflowResult> {
+  async executeWorkflow(
+    options: {
+      skipJunkDetection?: boolean;
+      skipChangeAnalysis?: boolean;
+      skipCommitGeneration?: boolean;
+      skipVersionBump?: boolean;
+      skipChangelogUpdate?: boolean;
+      skipGitTag?: boolean;
+      dryRun?: boolean;
+      autoConfirm?: boolean;
+      commitMessage?: string;
+      versionBumpType?: "major" | "minor" | "patch";
+    } = {}
+  ): Promise<WorkflowResult> {
     const orchestrator = new GitWorkflowOrchestrator(this.workingDir);
     return await orchestrator.executeWorkflow(options);
   }
@@ -154,7 +156,7 @@ export class MCPGitAutomationTools {
         hasStagedChanges: analysis.totalFiles > 0, // Simplified check
         currentVersion,
         latestTag,
-        changelogValid: changelogValidation.valid
+        changelogValid: changelogValidation.valid,
       };
     } catch (error) {
       throw new Error(`Failed to get workflow status: ${error}`);
@@ -164,13 +166,15 @@ export class MCPGitAutomationTools {
   /**
    * Get monorepo package versions
    */
-  async getMonorepoVersions(): Promise<Array<{
-    name: string;
-    currentVersion: string;
-    nextVersion: string;
-    bumpType: 'major' | 'minor' | 'patch';
-    path: string;
-  }>> {
+  async getMonorepoVersions(): Promise<
+    Array<{
+      name: string;
+      currentVersion: string;
+      nextVersion: string;
+      bumpType: "major" | "minor" | "patch";
+      path: string;
+    }>
+  > {
     const manager = new VersionManager(this.workingDir);
     return await manager.getMonorepoVersions();
   }
@@ -210,7 +214,10 @@ export class MCPGitAutomationTools {
   /**
    * Add entry to unreleased changelog
    */
-  async addUnreleasedEntry(type: 'added' | 'changed' | 'deprecated' | 'removed' | 'fixed' | 'security', description: string): Promise<void> {
+  async addUnreleasedEntry(
+    type: "added" | "changed" | "deprecated" | "removed" | "fixed" | "security",
+    description: string
+  ): Promise<void> {
     const manager = new ChangelogManager(this.workingDir);
     return await manager.addUnreleasedEntry(type, description);
   }
@@ -221,14 +228,14 @@ export class MCPGitAutomationTools {
   async readChangelog(): Promise<{
     header: string;
     unreleased: Array<{
-      type: 'added' | 'changed' | 'deprecated' | 'removed' | 'fixed' | 'security';
+      type: "added" | "changed" | "deprecated" | "removed" | "fixed" | "security";
       description: string;
     }>;
     releases: Array<{
       version: string;
       date: string;
       entries: Array<{
-        type: 'added' | 'changed' | 'deprecated' | 'removed' | 'fixed' | 'security';
+        type: "added" | "changed" | "deprecated" | "removed" | "fixed" | "security";
         description: string;
       }>;
     }>;
@@ -256,7 +263,7 @@ export class MCPGitAutomationTools {
   /**
    * Get version bump type between two versions
    */
-  getBumpType(fromVersion: string, toVersion: string): 'major' | 'minor' | 'patch' | null {
+  getBumpType(fromVersion: string, toVersion: string): "major" | "minor" | "patch" | null {
     const manager = new VersionManager(this.workingDir);
     return manager.getBumpType(fromVersion, toVersion);
   }

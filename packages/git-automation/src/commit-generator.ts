@@ -143,12 +143,12 @@ export class CommitMessageGenerator {
     // If multiple scopes, prioritize performance-related scopes
     if (scopes.size > 1) {
       const scopeArray = Array.from(scopes);
-      
+
       // Prioritize performance-related scopes
       if (scopeArray.includes("perf")) {
         return "perf";
       }
-      
+
       // Try to find a common parent
       const commonScope = this.findCommonScope(scopeArray);
       if (commonScope) {
@@ -184,7 +184,7 @@ export class CommitMessageGenerator {
     if (pathParts[0] === "frontend") {
       return "frontend";
     }
-    
+
     // Check for src-based scopes (more specific)
     if (pathParts[0] === "src" && pathParts.length > 1) {
       // Handle special cases for test files

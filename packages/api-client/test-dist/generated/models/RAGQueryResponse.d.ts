@@ -9,49 +9,49 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { RAGQueryHit } from './RAGQueryHit';
+import type { RAGQueryHit } from "./RAGQueryHit";
 /**
  * Response model for RAG search queries.
  * @export
  * @interface RAGQueryResponse
  */
 export interface RAGQueryResponse {
-    /**
-     * Search results
-     * @type {Array<RAGQueryHit>}
-     * @memberof RAGQueryResponse
-     */
-    hits: Array<RAGQueryHit>;
-    /**
-     * Total number of results
-     * @type {number}
-     * @memberof RAGQueryResponse
-     */
-    total: number;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGQueryResponse
-     */
-    queryTime?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGQueryResponse
-     */
-    embeddingTime?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGQueryResponse
-     */
-    searchTime?: number | null;
-    /**
-     *
-     * @type {object}
-     * @memberof RAGQueryResponse
-     */
-    metadata?: object | null;
+  /**
+   * Search results
+   * @type {Array<RAGQueryHit>}
+   * @memberof RAGQueryResponse
+   */
+  hits: Array<RAGQueryHit>;
+  /**
+   * Total number of results
+   * @type {number}
+   * @memberof RAGQueryResponse
+   */
+  total: number;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGQueryResponse
+   */
+  queryTime?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGQueryResponse
+   */
+  embeddingTime?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGQueryResponse
+   */
+  searchTime?: number | null;
+  /**
+   *
+   * @type {object}
+   * @memberof RAGQueryResponse
+   */
+  metadata?: object | null;
 }
 /**
  * Check if a given object implements the RAGQueryResponse interface.
@@ -60,4 +60,7 @@ export declare function instanceOfRAGQueryResponse(value: object): value is RAGQ
 export declare function RAGQueryResponseFromJSON(json: any): RAGQueryResponse;
 export declare function RAGQueryResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGQueryResponse;
 export declare function RAGQueryResponseToJSON(json: any): RAGQueryResponse;
-export declare function RAGQueryResponseToJSONTyped(value?: RAGQueryResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function RAGQueryResponseToJSONTyped(
+  value?: RAGQueryResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

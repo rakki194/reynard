@@ -22,44 +22,43 @@ exports.NLWebToolParameterToJSONTyped = NLWebToolParameterToJSONTyped;
  * Check if a given object implements the NLWebToolParameter interface.
  */
 function instanceOfNLWebToolParameter(value) {
-    if (!('name' in value) || value['name'] === undefined)
-        return false;
-    if (!('type' in value) || value['type'] === undefined)
-        return false;
-    if (!('description' in value) || value['description'] === undefined)
-        return false;
-    return true;
+  if (!("name" in value) || value["name"] === undefined) return false;
+  if (!("type" in value) || value["type"] === undefined) return false;
+  if (!("description" in value) || value["description"] === undefined) return false;
+  return true;
 }
 function NLWebToolParameterFromJSON(json) {
-    return NLWebToolParameterFromJSONTyped(json, false);
+  return NLWebToolParameterFromJSONTyped(json, false);
 }
 function NLWebToolParameterFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'name': json['name'],
-        'type': json['type'],
-        'description': json['description'],
-        'required': json['required'] == null ? undefined : json['required'],
-        '_default': json['default'] == null ? undefined : FromJSON(json['default']),
-        'constraints': json['constraints'] == null ? undefined : json['constraints'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json["name"],
+    type: json["type"],
+    description: json["description"],
+    required: json["required"] == null ? undefined : json["required"],
+    _default: json["default"] == null ? undefined : FromJSON(json["default"]),
+    constraints: json["constraints"] == null ? undefined : json["constraints"],
+  };
 }
 function NLWebToolParameterToJSON(json) {
-    return NLWebToolParameterToJSONTyped(json, false);
+  return NLWebToolParameterToJSONTyped(json, false);
 }
 function NLWebToolParameterToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'name': value['name'],
-        'type': value['type'],
-        'description': value['description'],
-        'required': value['required'],
-        'default': ToJSON(value['_default']),
-        'constraints': value['constraints'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value["name"],
+    type: value["type"],
+    description: value["description"],
+    required: value["required"],
+    default: ToJSON(value["_default"]),
+    constraints: value["constraints"],
+  };
 }

@@ -15,42 +15,42 @@
  * @interface NLWebToolParameter
  */
 export interface NLWebToolParameter {
-    /**
-     * Parameter name
-     * @type {string}
-     * @memberof NLWebToolParameter
-     */
-    name: string;
-    /**
-     * Parameter type (string, number, boolean, object, array)
-     * @type {string}
-     * @memberof NLWebToolParameter
-     */
-    type: string;
-    /**
-     * Human-readable description
-     * @type {string}
-     * @memberof NLWebToolParameter
-     */
-    description: string;
-    /**
-     * Whether the parameter is required
-     * @type {boolean}
-     * @memberof NLWebToolParameter
-     */
-    required?: boolean;
-    /**
-     * Default value if not provided
-     * @type {}
-     * @memberof NLWebToolParameter
-     */
-    _default?: null;
-    /**
-     *
-     * @type {object}
-     * @memberof NLWebToolParameter
-     */
-    constraints?: object | null;
+  /**
+   * Parameter name
+   * @type {string}
+   * @memberof NLWebToolParameter
+   */
+  name: string;
+  /**
+   * Parameter type (string, number, boolean, object, array)
+   * @type {string}
+   * @memberof NLWebToolParameter
+   */
+  type: string;
+  /**
+   * Human-readable description
+   * @type {string}
+   * @memberof NLWebToolParameter
+   */
+  description: string;
+  /**
+   * Whether the parameter is required
+   * @type {boolean}
+   * @memberof NLWebToolParameter
+   */
+  required?: boolean;
+  /**
+   * Default value if not provided
+   * @type {}
+   * @memberof NLWebToolParameter
+   */
+  _default?: null;
+  /**
+   *
+   * @type {object}
+   * @memberof NLWebToolParameter
+   */
+  constraints?: object | null;
 }
 /**
  * Check if a given object implements the NLWebToolParameter interface.
@@ -59,4 +59,7 @@ export declare function instanceOfNLWebToolParameter(value: object): value is NL
 export declare function NLWebToolParameterFromJSON(json: any): NLWebToolParameter;
 export declare function NLWebToolParameterFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebToolParameter;
 export declare function NLWebToolParameterToJSON(json: any): NLWebToolParameter;
-export declare function NLWebToolParameterToJSONTyped(value?: NLWebToolParameter | null, ignoreDiscriminator?: boolean): any;
+export declare function NLWebToolParameterToJSONTyped(
+  value?: NLWebToolParameter | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -165,8 +165,8 @@ Analyze a query to understand its intent and structure.
     "normalized_query": "find authentication function",
     "intent": "function_search",
     "entities": [
-      {"type": "code_concept", "value": "function", "confidence": 0.8},
-      {"type": "code_concept", "value": "auth", "confidence": 0.9}
+      { "type": "code_concept", "value": "function", "confidence": 0.8 },
+      { "type": "code_concept", "value": "auth", "confidence": 0.9 }
     ],
     "expanded_terms": ["find authentication function", "show auth function"],
     "search_strategy": "hybrid",
@@ -479,6 +479,4 @@ For issues or questions about the Natural Language Search System:
 
 ---
 
-*This natural language search system represents a significant advancement in code exploration capabilities, providing developers with intuitive tools to understand and navigate complex codebases using natural language queries.*
-
-
+_This natural language search system represents a significant advancement in code exploration capabilities, providing developers with intuitive tools to understand and navigate complex codebases using natural language queries._

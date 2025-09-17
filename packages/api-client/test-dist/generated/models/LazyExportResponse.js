@@ -22,38 +22,37 @@ exports.LazyExportResponseToJSONTyped = LazyExportResponseToJSONTyped;
  * Check if a given object implements the LazyExportResponse interface.
  */
 function instanceOfLazyExportResponse(value) {
-    if (!('packageName' in value) || value['packageName'] === undefined)
-        return false;
-    if (!('isLoaded' in value) || value['isLoaded'] === undefined)
-        return false;
-    if (!('metadata' in value) || value['metadata'] === undefined)
-        return false;
-    return true;
+  if (!("packageName" in value) || value["packageName"] === undefined) return false;
+  if (!("isLoaded" in value) || value["isLoaded"] === undefined) return false;
+  if (!("metadata" in value) || value["metadata"] === undefined) return false;
+  return true;
 }
 function LazyExportResponseFromJSON(json) {
-    return LazyExportResponseFromJSONTyped(json, false);
+  return LazyExportResponseFromJSONTyped(json, false);
 }
 function LazyExportResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'packageName': json['package_name'],
-        'isLoaded': json['is_loaded'],
-        'metadata': json['metadata'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    packageName: json["package_name"],
+    isLoaded: json["is_loaded"],
+    metadata: json["metadata"],
+  };
 }
 function LazyExportResponseToJSON(json) {
-    return LazyExportResponseToJSONTyped(json, false);
+  return LazyExportResponseToJSONTyped(json, false);
 }
 function LazyExportResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'package_name': value['packageName'],
-        'is_loaded': value['isLoaded'],
-        'metadata': value['metadata'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    package_name: value["packageName"],
+    is_loaded: value["isLoaded"],
+    metadata: value["metadata"],
+  };
 }

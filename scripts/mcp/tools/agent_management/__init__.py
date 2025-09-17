@@ -29,6 +29,9 @@ except ImportError:
     AgentTools = None
     get_agent_tool_definitions = None
 
+# Import from definitions module
+from .definitions import get_agent_tool_definitions
+
 __all__ = [
     "BaseAgentTools",
     "ECSAgentTools", 

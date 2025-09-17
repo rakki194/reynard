@@ -1,10 +1,10 @@
 /**
- * 🦊 Reynard Dev Server CLI Time Formatting Utilities
- * 
+ * 🦊 Dev Server Management CLI Time Formatting Utilities
+ *
  * Time-related formatting functions for CLI output.
  */
 
-import chalk from 'chalk';
+import chalk from "chalk";
 
 // ============================================================================
 // Duration Formatting
@@ -44,11 +44,14 @@ export function formatUptime(milliseconds: number): string {
   const duration = formatDuration(milliseconds);
 
   // Color code based on uptime
-  if (milliseconds < 60000) { // Less than 1 minute
+  if (milliseconds < 60000) {
+    // Less than 1 minute
     return chalk.yellow(duration);
-  } else if (milliseconds < 3600000) { // Less than 1 hour
+  } else if (milliseconds < 3600000) {
+    // Less than 1 hour
     return chalk.green(duration);
-  } else if (milliseconds < 86400000) { // Less than 1 day
+  } else if (milliseconds < 86400000) {
+    // Less than 1 day
     return chalk.blue(duration);
   } else {
     return chalk.magenta(duration);
@@ -64,11 +67,14 @@ export function formatTimestamp(timestamp: Date | string): string {
   const now = new Date();
   const diff = now.getTime() - date.getTime();
 
-  if (diff < 60000) { // Less than 1 minute
+  if (diff < 60000) {
+    // Less than 1 minute
     return chalk.green(`${Math.floor(diff / 1000)}s ago`);
-  } else if (diff < 3600000) { // Less than 1 hour
+  } else if (diff < 3600000) {
+    // Less than 1 hour
     return chalk.yellow(`${Math.floor(diff / 60000)}m ago`);
-  } else if (diff < 86400000) { // Less than 1 day
+  } else if (diff < 86400000) {
+    // Less than 1 day
     return chalk.blue(`${Math.floor(diff / 3600000)}h ago`);
   } else {
     return chalk.gray(date.toLocaleDateString());
@@ -81,20 +87,23 @@ export function formatRelativeTime(timestamp: Date | string): string {
   const diff = now.getTime() - date.getTime();
 
   if (diff < 0) {
-    return chalk.blue('in the future');
+    return chalk.blue("in the future");
   }
 
-  if (diff < 60000) { // Less than 1 minute
-    return chalk.green('just now');
-  } else if (diff < 3600000) { // Less than 1 hour
+  if (diff < 60000) {
+    // Less than 1 minute
+    return chalk.green("just now");
+  } else if (diff < 3600000) {
+    // Less than 1 hour
     const minutes = Math.floor(diff / 60000);
-    return chalk.yellow(`${minutes} minute${minutes !== 1 ? 's' : ''} ago`);
-  } else if (diff < 86400000) { // Less than 1 day
+    return chalk.yellow(`${minutes} minute${minutes !== 1 ? "s" : ""} ago`);
+  } else if (diff < 86400000) {
+    // Less than 1 day
     const hours = Math.floor(diff / 3600000);
-    return chalk.blue(`${hours} hour${hours !== 1 ? 's' : ''} ago`);
+    return chalk.blue(`${hours} hour${hours !== 1 ? "s" : ""} ago`);
   } else {
     const days = Math.floor(diff / 86400000);
-    return chalk.gray(`${days} day${days !== 1 ? 's' : ''} ago`);
+    return chalk.gray(`${days} day${days !== 1 ? "s" : ""} ago`);
   }
 }
 

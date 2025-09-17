@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      dev-server-management:
+        specifier: workspace:*
+        version: link:packages/dev-server-management
       reynard-3d:
         specifier: workspace:*
         version: link:packages/3d
@@ -2493,6 +2496,67 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(jsdom@26.1.0)
 
+  packages/dev-server-management:
+    dependencies:
+      chalk:
+        specifier: 5.6.2
+        version: 5.6.2
+      commander:
+        specifier: 14.0.1
+        version: 14.0.1
+      inquirer:
+        specifier: 12.9.6
+        version: 12.9.6(@types/node@24.5.1)
+      node-pty:
+        specifier: 1.0.0
+        version: 1.0.0
+      ora:
+        specifier: 9.0.0
+        version: 9.0.0
+      reynard-core:
+        specifier: workspace:*
+        version: link:../core
+      reynard-queue-watcher:
+        specifier: workspace:*
+        version: link:../queue-watcher
+      reynard-service-manager:
+        specifier: workspace:*
+        version: link:../service-manager
+      ws:
+        specifier: 8.18.3
+        version: 8.18.3
+      zod:
+        specifier: 4.1.9
+        version: 4.1.9
+    devDependencies:
+      '@types/inquirer':
+        specifier: 9.0.9
+        version: 9.0.9
+      '@types/node':
+        specifier: 24.5.1
+        version: 24.5.1
+      '@types/ws':
+        specifier: 8.18.1
+        version: 8.18.1
+      '@typescript-eslint/eslint-plugin':
+        specifier: 8.44.0
+        version: 8.44.0(@typescript-eslint/parser@8.44.0)(eslint@9.35.0)(typescript@5.9.2)
+      '@typescript-eslint/parser':
+        specifier: 8.44.0
+        version: 8.44.0(eslint@9.35.0)(typescript@5.9.2)
+      eslint:
+        specifier: 9.35.0
+        version: 9.35.0
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.5
+        version: 7.1.5(@types/node@24.5.1)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.5.1)
+
   packages/diagram-generator:
     dependencies:
       commander:
@@ -3738,67 +3802,6 @@ importers:
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.4.0)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(jsdom@26.1.0)
-
-  packages/reynard-dev-server:
-    dependencies:
-      chalk:
-        specifier: 5.6.2
-        version: 5.6.2
-      commander:
-        specifier: 14.0.1
-        version: 14.0.1
-      inquirer:
-        specifier: 12.9.6
-        version: 12.9.6(@types/node@24.5.1)
-      node-pty:
-        specifier: 1.0.0
-        version: 1.0.0
-      ora:
-        specifier: 9.0.0
-        version: 9.0.0
-      reynard-core:
-        specifier: workspace:*
-        version: link:../core
-      reynard-queue-watcher:
-        specifier: workspace:*
-        version: link:../queue-watcher
-      reynard-service-manager:
-        specifier: workspace:*
-        version: link:../service-manager
-      ws:
-        specifier: 8.18.3
-        version: 8.18.3
-      zod:
-        specifier: 4.1.9
-        version: 4.1.9
-    devDependencies:
-      '@types/inquirer':
-        specifier: 9.0.9
-        version: 9.0.9
-      '@types/node':
-        specifier: 24.5.1
-        version: 24.5.1
-      '@types/ws':
-        specifier: 8.18.1
-        version: 8.18.1
-      '@typescript-eslint/eslint-plugin':
-        specifier: 8.44.0
-        version: 8.44.0(@typescript-eslint/parser@8.44.0)(eslint@9.35.0)(typescript@5.9.2)
-      '@typescript-eslint/parser':
-        specifier: 8.44.0
-        version: 8.44.0(eslint@9.35.0)(typescript@5.9.2)
-      eslint:
-        specifier: 9.35.0
-        version: 9.35.0
-      typescript:
-        specifier: 5.9.2
-        version: 5.9.2
-      vite:
-        specifier: 7.1.5
-        version: 7.1.5(@types/node@24.5.1)
-      vitest:
-        specifier: 3.2.4
-        version: 3.2.4(@types/node@24.5.1)
 
   packages/scraping:
     dependencies:

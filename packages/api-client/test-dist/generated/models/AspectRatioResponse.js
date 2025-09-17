@@ -22,30 +22,31 @@ exports.AspectRatioResponseToJSONTyped = AspectRatioResponseToJSONTyped;
  * Check if a given object implements the AspectRatioResponse interface.
  */
 function instanceOfAspectRatioResponse(value) {
-    if (!('aspectRatio' in value) || value['aspectRatio'] === undefined)
-        return false;
-    return true;
+  if (!("aspectRatio" in value) || value["aspectRatio"] === undefined) return false;
+  return true;
 }
 function AspectRatioResponseFromJSON(json) {
-    return AspectRatioResponseFromJSONTyped(json, false);
+  return AspectRatioResponseFromJSONTyped(json, false);
 }
 function AspectRatioResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'aspectRatio': json['aspect_ratio'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    aspectRatio: json["aspect_ratio"],
+  };
 }
 function AspectRatioResponseToJSON(json) {
-    return AspectRatioResponseToJSONTyped(json, false);
+  return AspectRatioResponseToJSONTyped(json, false);
 }
 function AspectRatioResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'aspect_ratio': value['aspectRatio'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    aspect_ratio: value["aspectRatio"],
+  };
 }

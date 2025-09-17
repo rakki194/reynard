@@ -15,36 +15,36 @@
  * @interface WorldStatusResponse
  */
 export interface WorldStatusResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof WorldStatusResponse
-     */
-    status: string;
-    /**
-     *
-     * @type {number}
-     * @memberof WorldStatusResponse
-     */
-    entityCount?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof WorldStatusResponse
-     */
-    systemCount?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof WorldStatusResponse
-     */
-    agentCount?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof WorldStatusResponse
-     */
-    matureAgents?: number | null;
+  /**
+   *
+   * @type {string}
+   * @memberof WorldStatusResponse
+   */
+  status: string;
+  /**
+   *
+   * @type {number}
+   * @memberof WorldStatusResponse
+   */
+  entityCount?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof WorldStatusResponse
+   */
+  systemCount?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof WorldStatusResponse
+   */
+  agentCount?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof WorldStatusResponse
+   */
+  matureAgents?: number | null;
 }
 /**
  * Check if a given object implements the WorldStatusResponse interface.
@@ -53,4 +53,7 @@ export declare function instanceOfWorldStatusResponse(value: object): value is W
 export declare function WorldStatusResponseFromJSON(json: any): WorldStatusResponse;
 export declare function WorldStatusResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorldStatusResponse;
 export declare function WorldStatusResponseToJSON(json: any): WorldStatusResponse;
-export declare function WorldStatusResponseToJSONTyped(value?: WorldStatusResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function WorldStatusResponseToJSONTyped(
+  value?: WorldStatusResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

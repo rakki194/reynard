@@ -27,7 +27,7 @@ test.describe("Audio Player E2E Tests (Simple)", () => {
         </div>
       </div>
     `);
-    
+
     await expect(page.locator("#audio-container")).toBeVisible();
     await expect(page.locator("audio")).toBeVisible();
     await expect(page.locator('button[aria-label="Play"]')).toBeVisible();
@@ -47,13 +47,13 @@ test.describe("Audio Player E2E Tests (Simple)", () => {
         </div>
       </div>
     `);
-    
-    const playButton = page.locator('#play-btn');
-    const pauseButton = page.locator('#pause-btn');
-    
+
+    const playButton = page.locator("#play-btn");
+    const pauseButton = page.locator("#pause-btn");
+
     await expect(playButton).toBeVisible();
     await expect(pauseButton).toBeVisible();
-    
+
     // Test button clicks
     await playButton.click();
     await pauseButton.click();
@@ -71,10 +71,10 @@ test.describe("Audio Player E2E Tests (Simple)", () => {
         </div>
       </div>
     `);
-    
+
     const audio = page.locator('audio[aria-label="Audio player"]');
     await expect(audio).toBeVisible();
-    
+
     const controls = page.locator('[role="group"][aria-label="Audio controls"]');
     await expect(controls).toBeVisible();
   });

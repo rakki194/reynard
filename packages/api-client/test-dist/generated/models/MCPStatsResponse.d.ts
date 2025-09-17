@@ -15,32 +15,32 @@
  * @interface MCPStatsResponse
  */
 export interface MCPStatsResponse {
-    /**
-     * Total number of clients
-     * @type {number}
-     * @memberof MCPStatsResponse
-     */
-    totalClients: number;
-    /**
-     * Number of active clients
-     * @type {number}
-     * @memberof MCPStatsResponse
-     */
-    activeClients: number;
-    /**
-     * Count by client type
-     * @type {{ [key: string]: number; }}
-     * @memberof MCPStatsResponse
-     */
-    clientTypes: {
-        [key: string]: number;
-    };
-    /**
-     * All available permissions
-     * @type {Array<string>}
-     * @memberof MCPStatsResponse
-     */
-    permissions: Array<string>;
+  /**
+   * Total number of clients
+   * @type {number}
+   * @memberof MCPStatsResponse
+   */
+  totalClients: number;
+  /**
+   * Number of active clients
+   * @type {number}
+   * @memberof MCPStatsResponse
+   */
+  activeClients: number;
+  /**
+   * Count by client type
+   * @type {{ [key: string]: number; }}
+   * @memberof MCPStatsResponse
+   */
+  clientTypes: {
+    [key: string]: number;
+  };
+  /**
+   * All available permissions
+   * @type {Array<string>}
+   * @memberof MCPStatsResponse
+   */
+  permissions: Array<string>;
 }
 /**
  * Check if a given object implements the MCPStatsResponse interface.
@@ -49,4 +49,7 @@ export declare function instanceOfMCPStatsResponse(value: object): value is MCPS
 export declare function MCPStatsResponseFromJSON(json: any): MCPStatsResponse;
 export declare function MCPStatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): MCPStatsResponse;
 export declare function MCPStatsResponseToJSON(json: any): MCPStatsResponse;
-export declare function MCPStatsResponseToJSONTyped(value?: MCPStatsResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function MCPStatsResponseToJSONTyped(
+  value?: MCPStatsResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

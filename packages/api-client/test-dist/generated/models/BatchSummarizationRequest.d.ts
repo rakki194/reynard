@@ -15,24 +15,30 @@
  * @interface BatchSummarizationRequest
  */
 export interface BatchSummarizationRequest {
-    /**
-     * List of summarization requests
-     * @type {Array<object>}
-     * @memberof BatchSummarizationRequest
-     */
-    requests: Array<object>;
-    /**
-     * Whether to stream progress updates
-     * @type {boolean}
-     * @memberof BatchSummarizationRequest
-     */
-    enableStreaming?: boolean;
+  /**
+   * List of summarization requests
+   * @type {Array<object>}
+   * @memberof BatchSummarizationRequest
+   */
+  requests: Array<object>;
+  /**
+   * Whether to stream progress updates
+   * @type {boolean}
+   * @memberof BatchSummarizationRequest
+   */
+  enableStreaming?: boolean;
 }
 /**
  * Check if a given object implements the BatchSummarizationRequest interface.
  */
 export declare function instanceOfBatchSummarizationRequest(value: object): value is BatchSummarizationRequest;
 export declare function BatchSummarizationRequestFromJSON(json: any): BatchSummarizationRequest;
-export declare function BatchSummarizationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): BatchSummarizationRequest;
+export declare function BatchSummarizationRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): BatchSummarizationRequest;
 export declare function BatchSummarizationRequestToJSON(json: any): BatchSummarizationRequest;
-export declare function BatchSummarizationRequestToJSONTyped(value?: BatchSummarizationRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function BatchSummarizationRequestToJSONTyped(
+  value?: BatchSummarizationRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

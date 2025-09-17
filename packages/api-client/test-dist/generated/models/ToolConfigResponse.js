@@ -22,46 +22,44 @@ exports.ToolConfigResponseToJSONTyped = ToolConfigResponseToJSONTyped;
  * Check if a given object implements the ToolConfigResponse interface.
  */
 function instanceOfToolConfigResponse(value) {
-    if (!('name' in value) || value['name'] === undefined)
-        return false;
-    if (!('category' in value) || value['category'] === undefined)
-        return false;
-    if (!('enabled' in value) || value['enabled'] === undefined)
-        return false;
-    if (!('description' in value) || value['description'] === undefined)
-        return false;
-    return true;
+  if (!("name" in value) || value["name"] === undefined) return false;
+  if (!("category" in value) || value["category"] === undefined) return false;
+  if (!("enabled" in value) || value["enabled"] === undefined) return false;
+  if (!("description" in value) || value["description"] === undefined) return false;
+  return true;
 }
 function ToolConfigResponseFromJSON(json) {
-    return ToolConfigResponseFromJSONTyped(json, false);
+  return ToolConfigResponseFromJSONTyped(json, false);
 }
 function ToolConfigResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'name': json['name'],
-        'category': json['category'],
-        'enabled': json['enabled'],
-        'description': json['description'],
-        'dependencies': json['dependencies'] == null ? undefined : json['dependencies'],
-        'config': json['config'] == null ? undefined : json['config'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json["name"],
+    category: json["category"],
+    enabled: json["enabled"],
+    description: json["description"],
+    dependencies: json["dependencies"] == null ? undefined : json["dependencies"],
+    config: json["config"] == null ? undefined : json["config"],
+  };
 }
 function ToolConfigResponseToJSON(json) {
-    return ToolConfigResponseToJSONTyped(json, false);
+  return ToolConfigResponseToJSONTyped(json, false);
 }
 function ToolConfigResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'name': value['name'],
-        'category': value['category'],
-        'enabled': value['enabled'],
-        'description': value['description'],
-        'dependencies': value['dependencies'],
-        'config': value['config'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value["name"],
+    category: value["category"],
+    enabled: value["enabled"],
+    description: value["description"],
+    dependencies: value["dependencies"],
+    config: value["config"],
+  };
 }

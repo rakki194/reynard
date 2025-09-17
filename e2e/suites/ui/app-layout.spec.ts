@@ -28,7 +28,7 @@ test.describe("App Layout E2E Tests", () => {
         ), document.getElementById("app-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#app-container")).toBeVisible();
     await expect(page.locator("#app-container")).toContainText("App Header");
     await expect(page.locator("#app-container")).toContainText("Main Content");
@@ -49,13 +49,13 @@ test.describe("App Layout E2E Tests", () => {
         ), document.getElementById("app-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#app-container")).toBeVisible();
-    
+
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await expect(page.locator("#app-container")).toBeVisible();
-    
+
     // Test desktop viewport
     await page.setViewportSize({ width: 1024, height: 768 });
     await expect(page.locator("#app-container")).toBeVisible();

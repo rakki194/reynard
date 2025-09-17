@@ -22,34 +22,35 @@ exports.TaskExecutionRequestToJSONTyped = TaskExecutionRequestToJSONTyped;
  * Check if a given object implements the TaskExecutionRequest interface.
  */
 function instanceOfTaskExecutionRequest(value) {
-    if (!('functionName' in value) || value['functionName'] === undefined)
-        return false;
-    return true;
+  if (!("functionName" in value) || value["functionName"] === undefined) return false;
+  return true;
 }
 function TaskExecutionRequestFromJSON(json) {
-    return TaskExecutionRequestFromJSONTyped(json, false);
+  return TaskExecutionRequestFromJSONTyped(json, false);
 }
 function TaskExecutionRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'functionName': json['function_name'],
-        'timeout': json['timeout'] == null ? undefined : json['timeout'],
-        'retries': json['retries'] == null ? undefined : json['retries'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    functionName: json["function_name"],
+    timeout: json["timeout"] == null ? undefined : json["timeout"],
+    retries: json["retries"] == null ? undefined : json["retries"],
+  };
 }
 function TaskExecutionRequestToJSON(json) {
-    return TaskExecutionRequestToJSONTyped(json, false);
+  return TaskExecutionRequestToJSONTyped(json, false);
 }
 function TaskExecutionRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'function_name': value['functionName'],
-        'timeout': value['timeout'],
-        'retries': value['retries'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    function_name: value["functionName"],
+    timeout: value["timeout"],
+    retries: value["retries"],
+  };
 }

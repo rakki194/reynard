@@ -15,42 +15,48 @@
  * @interface SummarizationConfigRequest
  */
 export interface SummarizationConfigRequest {
-    /**
-     *
-     * @type {string}
-     * @memberof SummarizationConfigRequest
-     */
-    defaultModel?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof SummarizationConfigRequest
-     */
-    defaultContentType?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof SummarizationConfigRequest
-     */
-    defaultSummaryLevel?: string | null;
-    /**
-     *
-     * @type {number}
-     * @memberof SummarizationConfigRequest
-     */
-    maxTextLength?: number | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof SummarizationConfigRequest
-     */
-    enableCaching?: boolean | null;
+  /**
+   *
+   * @type {string}
+   * @memberof SummarizationConfigRequest
+   */
+  defaultModel?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof SummarizationConfigRequest
+   */
+  defaultContentType?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof SummarizationConfigRequest
+   */
+  defaultSummaryLevel?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof SummarizationConfigRequest
+   */
+  maxTextLength?: number | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof SummarizationConfigRequest
+   */
+  enableCaching?: boolean | null;
 }
 /**
  * Check if a given object implements the SummarizationConfigRequest interface.
  */
 export declare function instanceOfSummarizationConfigRequest(value: object): value is SummarizationConfigRequest;
 export declare function SummarizationConfigRequestFromJSON(json: any): SummarizationConfigRequest;
-export declare function SummarizationConfigRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SummarizationConfigRequest;
+export declare function SummarizationConfigRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): SummarizationConfigRequest;
 export declare function SummarizationConfigRequestToJSON(json: any): SummarizationConfigRequest;
-export declare function SummarizationConfigRequestToJSONTyped(value?: SummarizationConfigRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function SummarizationConfigRequestToJSONTyped(
+  value?: SummarizationConfigRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

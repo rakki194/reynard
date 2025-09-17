@@ -7,61 +7,61 @@
 /**
  * Directory category classification
  */
-export type DirectoryCategory = 
-  | "source"           // Source code directories
-  | "documentation"    // Documentation and guides
-  | "configuration"    // Configuration files and settings
-  | "build"           // Build artifacts and outputs
-  | "testing"         // Test files and test data
-  | "scripts"         // Automation and utility scripts
-  | "data"            // Data files and datasets
-  | "templates"       // Project templates and examples
-  | "services"        // Microservices and standalone services
-  | "third-party"     // External dependencies and third-party code
-  | "cache"           // Cache and temporary files
-  | "tools"           // Development tools and utilities;
+export type DirectoryCategory =
+  | "source" // Source code directories
+  | "documentation" // Documentation and guides
+  | "configuration" // Configuration files and settings
+  | "build" // Build artifacts and outputs
+  | "testing" // Test files and test data
+  | "scripts" // Automation and utility scripts
+  | "data" // Data files and datasets
+  | "templates" // Project templates and examples
+  | "services" // Microservices and standalone services
+  | "third-party" // External dependencies and third-party code
+  | "cache" // Cache and temporary files
+  | "tools"; // Development tools and utilities;
 
 /**
  * File type classification
  */
-export type FileType = 
-  | "typescript"      // TypeScript source files
-  | "javascript"      // JavaScript source files
-  | "python"          // Python source files
-  | "markdown"        // Markdown documentation
-  | "json"            // JSON configuration and data
-  | "yaml"            // YAML configuration
-  | "css"             // CSS stylesheets
-  | "html"            // HTML files
-  | "shell"           // Shell scripts
-  | "docker"          // Docker files
-  | "sql"             // SQL files
-  | "config"          // Configuration files
-  | "data"            // Data files
-  | "binary"          // Binary files
-  | "other";          // Other file types
+export type FileType =
+  | "typescript" // TypeScript source files
+  | "javascript" // JavaScript source files
+  | "python" // Python source files
+  | "markdown" // Markdown documentation
+  | "json" // JSON configuration and data
+  | "yaml" // YAML configuration
+  | "css" // CSS stylesheets
+  | "html" // HTML files
+  | "shell" // Shell scripts
+  | "docker" // Docker files
+  | "sql" // SQL files
+  | "config" // Configuration files
+  | "data" // Data files
+  | "binary" // Binary files
+  | "other"; // Other file types
 
 /**
  * Directory importance level
  */
-export type ImportanceLevel = 
-  | "critical"        // Essential for project operation
-  | "important"       // Important for development workflow
-  | "optional"        // Optional but useful
-  | "excluded";       // Should be excluded from most operations
+export type ImportanceLevel =
+  | "critical" // Essential for project operation
+  | "important" // Important for development workflow
+  | "optional" // Optional but useful
+  | "excluded"; // Should be excluded from most operations
 
 /**
  * Directory relationship type
  */
-export type RelationshipType = 
-  | "parent"          // Parent directory
-  | "child"           // Child directory
-  | "sibling"         // Sibling directory
-  | "dependency"      // Dependency relationship
-  | "generated"       // Generated from this directory
-  | "configures"      // Configures this directory
-  | "tests"           // Tests this directory
-  | "documents"       // Documents this directory;
+export type RelationshipType =
+  | "parent" // Parent directory
+  | "child" // Child directory
+  | "sibling" // Sibling directory
+  | "dependency" // Dependency relationship
+  | "generated" // Generated from this directory
+  | "configures" // Configures this directory
+  | "tests" // Tests this directory
+  | "documents"; // Documents this directory;
 
 /**
  * Directory definition

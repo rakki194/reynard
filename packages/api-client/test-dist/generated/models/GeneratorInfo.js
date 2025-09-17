@@ -22,62 +22,55 @@ exports.GeneratorInfoToJSONTyped = GeneratorInfoToJSONTyped;
  * Check if a given object implements the GeneratorInfo interface.
  */
 function instanceOfGeneratorInfo(value) {
-    if (!('name' in value) || value['name'] === undefined)
-        return false;
-    if (!('description' in value) || value['description'] === undefined)
-        return false;
-    if (!('version' in value) || value['version'] === undefined)
-        return false;
-    if (!('captionType' in value) || value['captionType'] === undefined)
-        return false;
-    if (!('isAvailable' in value) || value['isAvailable'] === undefined)
-        return false;
-    if (!('isLoaded' in value) || value['isLoaded'] === undefined)
-        return false;
-    if (!('configSchema' in value) || value['configSchema'] === undefined)
-        return false;
-    if (!('features' in value) || value['features'] === undefined)
-        return false;
-    if (!('modelCategory' in value) || value['modelCategory'] === undefined)
-        return false;
-    return true;
+  if (!("name" in value) || value["name"] === undefined) return false;
+  if (!("description" in value) || value["description"] === undefined) return false;
+  if (!("version" in value) || value["version"] === undefined) return false;
+  if (!("captionType" in value) || value["captionType"] === undefined) return false;
+  if (!("isAvailable" in value) || value["isAvailable"] === undefined) return false;
+  if (!("isLoaded" in value) || value["isLoaded"] === undefined) return false;
+  if (!("configSchema" in value) || value["configSchema"] === undefined) return false;
+  if (!("features" in value) || value["features"] === undefined) return false;
+  if (!("modelCategory" in value) || value["modelCategory"] === undefined) return false;
+  return true;
 }
 function GeneratorInfoFromJSON(json) {
-    return GeneratorInfoFromJSONTyped(json, false);
+  return GeneratorInfoFromJSONTyped(json, false);
 }
 function GeneratorInfoFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'name': json['name'],
-        'description': json['description'],
-        'version': json['version'],
-        'captionType': json['caption_type'],
-        'isAvailable': json['is_available'],
-        'isLoaded': json['is_loaded'],
-        'configSchema': json['config_schema'],
-        'features': json['features'],
-        'modelCategory': json['model_category'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json["name"],
+    description: json["description"],
+    version: json["version"],
+    captionType: json["caption_type"],
+    isAvailable: json["is_available"],
+    isLoaded: json["is_loaded"],
+    configSchema: json["config_schema"],
+    features: json["features"],
+    modelCategory: json["model_category"],
+  };
 }
 function GeneratorInfoToJSON(json) {
-    return GeneratorInfoToJSONTyped(json, false);
+  return GeneratorInfoToJSONTyped(json, false);
 }
 function GeneratorInfoToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'name': value['name'],
-        'description': value['description'],
-        'version': value['version'],
-        'caption_type': value['captionType'],
-        'is_available': value['isAvailable'],
-        'is_loaded': value['isLoaded'],
-        'config_schema': value['configSchema'],
-        'features': value['features'],
-        'model_category': value['modelCategory'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value["name"],
+    description: value["description"],
+    version: value["version"],
+    caption_type: value["captionType"],
+    is_available: value["isAvailable"],
+    is_loaded: value["isLoaded"],
+    config_schema: value["configSchema"],
+    features: value["features"],
+    model_category: value["modelCategory"],
+  };
 }

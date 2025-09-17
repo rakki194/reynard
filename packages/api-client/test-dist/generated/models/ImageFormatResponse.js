@@ -22,40 +22,39 @@ exports.ImageFormatResponseToJSONTyped = ImageFormatResponseToJSONTyped;
  * Check if a given object implements the ImageFormatResponse interface.
  */
 function instanceOfImageFormatResponse(value) {
-    if (!('extension' in value) || value['extension'] === undefined)
-        return false;
-    if (!('mimeType' in value) || value['mimeType'] === undefined)
-        return false;
-    if (!('supported' in value) || value['supported'] === undefined)
-        return false;
-    return true;
+  if (!("extension" in value) || value["extension"] === undefined) return false;
+  if (!("mimeType" in value) || value["mimeType"] === undefined) return false;
+  if (!("supported" in value) || value["supported"] === undefined) return false;
+  return true;
 }
 function ImageFormatResponseFromJSON(json) {
-    return ImageFormatResponseFromJSONTyped(json, false);
+  return ImageFormatResponseFromJSONTyped(json, false);
 }
 function ImageFormatResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'extension': json['extension'],
-        'mimeType': json['mime_type'],
-        'supported': json['supported'],
-        'requiresPlugin': json['requires_plugin'] == null ? undefined : json['requires_plugin'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    extension: json["extension"],
+    mimeType: json["mime_type"],
+    supported: json["supported"],
+    requiresPlugin: json["requires_plugin"] == null ? undefined : json["requires_plugin"],
+  };
 }
 function ImageFormatResponseToJSON(json) {
-    return ImageFormatResponseToJSONTyped(json, false);
+  return ImageFormatResponseToJSONTyped(json, false);
 }
 function ImageFormatResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'extension': value['extension'],
-        'mime_type': value['mimeType'],
-        'supported': value['supported'],
-        'requires_plugin': value['requiresPlugin'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    extension: value["extension"],
+    mime_type: value["mimeType"],
+    supported: value["supported"],
+    requires_plugin: value["requiresPlugin"],
+  };
 }

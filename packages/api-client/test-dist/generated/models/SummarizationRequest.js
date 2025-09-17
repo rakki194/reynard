@@ -22,46 +22,47 @@ exports.SummarizationRequestToJSONTyped = SummarizationRequestToJSONTyped;
  * Check if a given object implements the SummarizationRequest interface.
  */
 function instanceOfSummarizationRequest(value) {
-    if (!('text' in value) || value['text'] === undefined)
-        return false;
-    return true;
+  if (!("text" in value) || value["text"] === undefined) return false;
+  return true;
 }
 function SummarizationRequestFromJSON(json) {
-    return SummarizationRequestFromJSONTyped(json, false);
+  return SummarizationRequestFromJSONTyped(json, false);
 }
 function SummarizationRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'text': json['text'],
-        'contentType': json['content_type'] == null ? undefined : json['content_type'],
-        'summaryLevel': json['summary_level'] == null ? undefined : json['summary_level'],
-        'maxLength': json['max_length'] == null ? undefined : json['max_length'],
-        'includeOutline': json['include_outline'] == null ? undefined : json['include_outline'],
-        'includeHighlights': json['include_highlights'] == null ? undefined : json['include_highlights'],
-        'model': json['model'] == null ? undefined : json['model'],
-        'temperature': json['temperature'] == null ? undefined : json['temperature'],
-        'topP': json['top_p'] == null ? undefined : json['top_p'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    text: json["text"],
+    contentType: json["content_type"] == null ? undefined : json["content_type"],
+    summaryLevel: json["summary_level"] == null ? undefined : json["summary_level"],
+    maxLength: json["max_length"] == null ? undefined : json["max_length"],
+    includeOutline: json["include_outline"] == null ? undefined : json["include_outline"],
+    includeHighlights: json["include_highlights"] == null ? undefined : json["include_highlights"],
+    model: json["model"] == null ? undefined : json["model"],
+    temperature: json["temperature"] == null ? undefined : json["temperature"],
+    topP: json["top_p"] == null ? undefined : json["top_p"],
+  };
 }
 function SummarizationRequestToJSON(json) {
-    return SummarizationRequestToJSONTyped(json, false);
+  return SummarizationRequestToJSONTyped(json, false);
 }
 function SummarizationRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'text': value['text'],
-        'content_type': value['contentType'],
-        'summary_level': value['summaryLevel'],
-        'max_length': value['maxLength'],
-        'include_outline': value['includeOutline'],
-        'include_highlights': value['includeHighlights'],
-        'model': value['model'],
-        'temperature': value['temperature'],
-        'top_p': value['topP'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    text: value["text"],
+    content_type: value["contentType"],
+    summary_level: value["summaryLevel"],
+    max_length: value["maxLength"],
+    include_outline: value["includeOutline"],
+    include_highlights: value["includeHighlights"],
+    model: value["model"],
+    temperature: value["temperature"],
+    top_p: value["topP"],
+  };
 }

@@ -1,20 +1,20 @@
 """
-HybridSearchEngine: Advanced hybrid search combining semantic and keyword matching.
+Search Engine: Advanced search capabilities combining semantic and keyword matching.
 
-Responsibilities:
-- Combine semantic search with keyword-based BM25 scoring
-- Implement Reciprocal Rank Fusion (RRF) algorithm
-- Weighted fusion of search results
-- Keyword indexing and extraction
-- Performance optimization for large-scale search
+This service provides:
+- Semantic search using vector embeddings
+- Keyword-based search with BM25 scoring
+- Hybrid search with Reciprocal Rank Fusion (RRF)
+- Search result ranking and filtering
+- Performance optimization and caching
 """
 
 import asyncio
 import logging
 import re
 import time
-from typing import Any, Dict, List, Optional, Tuple
 from collections import defaultdict, Counter
+from typing import Any, Dict, List, Optional, Tuple
 import math
 
 logger = logging.getLogger("uvicorn")
@@ -68,7 +68,12 @@ class KeywordIndex:
         # Remove special characters and split
         tokens = re.findall(r'\b\w+\b', text)
         # Remove common stop words
-        stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should'}
+        stop_words = {
+            'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by',
+            'is', 'are', 'was', 'were', 'be', 'been', 'have', 'has', 'had', 'do', 'does', 'did',
+            'will', 'would', 'could', 'should', 'this', 'that', 'these', 'those', 'i', 'you', 'he',
+            'she', 'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them'
+        }
         return [token for token in tokens if token not in stop_words and len(token) > 2]
     
     def _build_bm25_index(self) -> None:
@@ -149,12 +154,12 @@ class KeywordIndex:
             return self.search_keywords(query, limit)
 
 
-class HybridSearchEngine:
-    """Advanced hybrid search combining semantic and keyword matching."""
+class SearchEngine:
+    """Advanced search engine combining semantic and keyword matching."""
 
-    def __init__(self, embedding_service, vector_db_service):
+    def __init__(self, embedding_service, vector_store_service):
         self.embedding_service = embedding_service
-        self.vector_db_service = vector_db_service
+        self.vector_store_service = vector_store_service
         self.keyword_index = KeywordIndex()
         
         # Configuration
@@ -171,11 +176,83 @@ class HybridSearchEngine:
             "average_fusion_time_ms": 0.0
         }
 
+    async def semantic_search(self, 
+                            query: str, 
+                            limit: int = 10,
+                            dataset_id: Optional[str] = None,
+                            similarity_threshold: float = 0.0) -> List[Dict[str, Any]]:
+        """Perform semantic search using embeddings."""
+        try:
+            start_time = time.time()
+            
+            # Generate query embedding
+            query_embedding = await self.embedding_service.embed_text(query)
+            
+            # Perform vector similarity search
+            results = await self.vector_store_service.similarity_search(
+                query_embedding, 
+                limit=limit,
+                dataset_id=dataset_id,
+                similarity_threshold=similarity_threshold
+            )
+            
+            # Format results
+            formatted_results = []
+            for result in results:
+                formatted_results.append({
+                    'content': result.get('text', ''),
+                    'score': result.get('similarity', 0.0),
+                    'type': 'semantic',
+                    'metadata': result.get('metadata', {}),
+                    'path': result.get('path', ''),
+                    'title': result.get('title', ''),
+                    'file_type': result.get('file_type', '')
+                })
+            
+            # Update stats
+            self.search_stats["semantic_searches"] += 1
+            
+            search_time = (time.time() - start_time) * 1000
+            logger.debug(f"Semantic search completed in {search_time:.2f}ms, found {len(formatted_results)} results")
+            
+            return formatted_results
+            
+        except Exception as e:
+            logger.error(f"Semantic search failed: {e}")
+            return []
+
+    async def keyword_search(self, 
+                           query: str, 
+                           limit: int = 10,
+                           use_bm25: bool = True) -> List[Dict[str, Any]]:
+        """Perform keyword-based search."""
+        try:
+            start_time = time.time()
+            
+            # Use BM25 if available, otherwise fallback to simple keyword matching
+            if use_bm25 and BM25_AVAILABLE:
+                results = self.keyword_index.search_bm25(query, limit)
+            else:
+                results = self.keyword_index.search_keywords(query, limit)
+            
+            # Update stats
+            self.search_stats["keyword_searches"] += 1
+            
+            search_time = (time.time() - start_time) * 1000
+            logger.debug(f"Keyword search completed in {search_time:.2f}ms, found {len(results)} results")
+            
+            return results
+            
+        except Exception as e:
+            logger.error(f"Keyword search failed: {e}")
+            return []
+
     async def hybrid_search(self, 
                           query: str, 
                           limit: int = 10,
                           semantic_weight: Optional[float] = None,
-                          keyword_weight: Optional[float] = None) -> List[Dict[str, Any]]:
+                          keyword_weight: Optional[float] = None,
+                          dataset_id: Optional[str] = None) -> List[Dict[str, Any]]:
         """Combine semantic and keyword search with weighted fusion."""
         
         if semantic_weight is None:
@@ -192,8 +269,8 @@ class HybridSearchEngine:
         start_time = time.time()
         
         # Parallel execution of both search types
-        semantic_task = self._semantic_search(query, limit * 2)
-        keyword_task = self._keyword_search(query, limit * 2)
+        semantic_task = self.semantic_search(query, limit * 2, dataset_id)
+        keyword_task = self.keyword_search(query, limit * 2)
         
         semantic_results, keyword_results = await asyncio.gather(
             semantic_task, keyword_task
@@ -209,44 +286,9 @@ class HybridSearchEngine:
         fusion_time = (time.time() - start_time) * 1000
         self._update_search_stats(fusion_time)
         
+        logger.debug(f"Hybrid search completed in {fusion_time:.2f}ms, found {len(fused_results)} results")
+        
         return fused_results
-
-    async def _semantic_search(self, query: str, limit: int) -> List[Dict[str, Any]]:
-        """Semantic search using embeddings."""
-        try:
-            query_embedding = await self.embedding_service.embed_text(query)
-            
-            results = await self.vector_db_service.similarity_search(
-                query_embedding, limit=limit
-            )
-            
-            self.search_stats["semantic_searches"] += 1
-            
-            return [{
-                'content': r.get('text', ''),
-                'score': r.get('similarity', 0.0),
-                'type': 'semantic',
-                'metadata': r.get('metadata', {})
-            } for r in results]
-        except Exception as e:
-            logger.error(f"Semantic search failed: {e}")
-            return []
-
-    async def _keyword_search(self, query: str, limit: int) -> List[Dict[str, Any]]:
-        """Keyword search using BM25-like scoring."""
-        try:
-            # Try BM25 first, fallback to simple keyword matching
-            if BM25_AVAILABLE and self.keyword_index.bm25_index:
-                results = self.keyword_index.search_bm25(query, limit)
-            else:
-                results = self.keyword_index.search_keywords(query, limit)
-            
-            self.search_stats["keyword_searches"] += 1
-            
-            return results
-        except Exception as e:
-            logger.error(f"Keyword search failed: {e}")
-            return []
 
     def _reciprocal_rank_fusion(self, 
                               semantic_results: List[Dict], 
@@ -347,6 +389,40 @@ class HybridSearchEngine:
         
         logger.info(f"Indexed {len(documents)} documents for keyword search")
 
+    async def search_with_filters(self,
+                                query: str,
+                                search_type: str = "hybrid",
+                                limit: int = 10,
+                                filters: Optional[Dict[str, Any]] = None) -> List[Dict[str, Any]]:
+        """Search with additional filters and options."""
+        
+        # Apply filters
+        dataset_id = filters.get('dataset_id') if filters else None
+        similarity_threshold = filters.get('similarity_threshold', 0.0) if filters else 0.0
+        file_types = filters.get('file_types') if filters else None
+        languages = filters.get('languages') if filters else None
+        
+        # Perform search based on type
+        if search_type == "semantic":
+            results = await self.semantic_search(
+                query, limit, dataset_id, similarity_threshold
+            )
+        elif search_type == "keyword":
+            results = await self.keyword_search(query, limit)
+        else:  # hybrid
+            results = await self.hybrid_search(
+                query, limit, dataset_id=dataset_id
+            )
+        
+        # Apply post-search filters
+        if file_types:
+            results = [r for r in results if r.get('file_type') in file_types]
+        
+        if languages:
+            results = [r for r in results if r.get('metadata', {}).get('language') in languages]
+        
+        return results
+
     def get_search_stats(self) -> Dict[str, Any]:
         """Get search engine statistics."""
         return {
@@ -356,7 +432,9 @@ class HybridSearchEngine:
             "bm25_available": self.keyword_index.bm25_index is not None,
             "default_semantic_weight": self.default_semantic_weight,
             "default_keyword_weight": self.default_keyword_weight,
-            "rrf_k": self.rrf_k
+            "rrf_k": self.rrf_k,
+            "bm25_available": BM25_AVAILABLE,
+            "sklearn_available": SKLEARN_AVAILABLE
         }
 
     def clear_index(self) -> None:
@@ -378,13 +456,13 @@ class HybridSearchEngine:
             # Test semantic search
             start_time = time.time()
             for _ in range(iterations):
-                await self._semantic_search(query, 10)
+                await self.semantic_search(query, 10)
             semantic_time = (time.time() - start_time) / iterations
             
             # Test keyword search
             start_time = time.time()
             for _ in range(iterations):
-                await self._keyword_search(query, 10)
+                await self.keyword_search(query, 10)
             keyword_time = (time.time() - start_time) / iterations
             
             # Test hybrid search

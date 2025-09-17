@@ -15,24 +15,30 @@
  * @interface ResizeDimensionsResponse
  */
 export interface ResizeDimensionsResponse {
-    /**
-     *
-     * @type {number}
-     * @memberof ResizeDimensionsResponse
-     */
-    width: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ResizeDimensionsResponse
-     */
-    height: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ResizeDimensionsResponse
+   */
+  width: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ResizeDimensionsResponse
+   */
+  height: number;
 }
 /**
  * Check if a given object implements the ResizeDimensionsResponse interface.
  */
 export declare function instanceOfResizeDimensionsResponse(value: object): value is ResizeDimensionsResponse;
 export declare function ResizeDimensionsResponseFromJSON(json: any): ResizeDimensionsResponse;
-export declare function ResizeDimensionsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResizeDimensionsResponse;
+export declare function ResizeDimensionsResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ResizeDimensionsResponse;
 export declare function ResizeDimensionsResponseToJSON(json: any): ResizeDimensionsResponse;
-export declare function ResizeDimensionsResponseToJSONTyped(value?: ResizeDimensionsResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ResizeDimensionsResponseToJSONTyped(
+  value?: ResizeDimensionsResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

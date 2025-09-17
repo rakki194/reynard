@@ -15,36 +15,42 @@
  * @interface RAGIndexingStatusResponse
  */
 export interface RAGIndexingStatusResponse {
-    /**
-     * Number of items in queue
-     * @type {number}
-     * @memberof RAGIndexingStatusResponse
-     */
-    queueDepth?: number;
-    /**
-     * Number of items being processed
-     * @type {number}
-     * @memberof RAGIndexingStatusResponse
-     */
-    inFlight?: number;
-    /**
-     * Items processed per second
-     * @type {number}
-     * @memberof RAGIndexingStatusResponse
-     */
-    processingRate?: number;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGIndexingStatusResponse
-     */
-    estimatedCompletion?: string | null;
+  /**
+   * Number of items in queue
+   * @type {number}
+   * @memberof RAGIndexingStatusResponse
+   */
+  queueDepth?: number;
+  /**
+   * Number of items being processed
+   * @type {number}
+   * @memberof RAGIndexingStatusResponse
+   */
+  inFlight?: number;
+  /**
+   * Items processed per second
+   * @type {number}
+   * @memberof RAGIndexingStatusResponse
+   */
+  processingRate?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGIndexingStatusResponse
+   */
+  estimatedCompletion?: string | null;
 }
 /**
  * Check if a given object implements the RAGIndexingStatusResponse interface.
  */
 export declare function instanceOfRAGIndexingStatusResponse(value: object): value is RAGIndexingStatusResponse;
 export declare function RAGIndexingStatusResponseFromJSON(json: any): RAGIndexingStatusResponse;
-export declare function RAGIndexingStatusResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGIndexingStatusResponse;
+export declare function RAGIndexingStatusResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): RAGIndexingStatusResponse;
 export declare function RAGIndexingStatusResponseToJSON(json: any): RAGIndexingStatusResponse;
-export declare function RAGIndexingStatusResponseToJSONTyped(value?: RAGIndexingStatusResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function RAGIndexingStatusResponseToJSONTyped(
+  value?: RAGIndexingStatusResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

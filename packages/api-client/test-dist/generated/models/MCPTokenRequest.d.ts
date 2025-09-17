@@ -15,18 +15,18 @@
  * @interface MCPTokenRequest
  */
 export interface MCPTokenRequest {
-    /**
-     * MCP client identifier
-     * @type {string}
-     * @memberof MCPTokenRequest
-     */
-    clientId: string;
-    /**
-     * Additional permissions
-     * @type {Array<string>}
-     * @memberof MCPTokenRequest
-     */
-    additionalPermissions?: Array<string>;
+  /**
+   * MCP client identifier
+   * @type {string}
+   * @memberof MCPTokenRequest
+   */
+  clientId: string;
+  /**
+   * Additional permissions
+   * @type {Array<string>}
+   * @memberof MCPTokenRequest
+   */
+  additionalPermissions?: Array<string>;
 }
 /**
  * Check if a given object implements the MCPTokenRequest interface.

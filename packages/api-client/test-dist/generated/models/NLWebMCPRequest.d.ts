@@ -15,24 +15,24 @@
  * @interface NLWebMCPRequest
  */
 export interface NLWebMCPRequest {
-    /**
-     * MCP method to call
-     * @type {string}
-     * @memberof NLWebMCPRequest
-     */
-    method: string;
-    /**
-     *
-     * @type {object}
-     * @memberof NLWebMCPRequest
-     */
-    params?: object | null;
-    /**
-     * Request ID for the MCP call
-     * @type {string}
-     * @memberof NLWebMCPRequest
-     */
-    id?: string;
+  /**
+   * MCP method to call
+   * @type {string}
+   * @memberof NLWebMCPRequest
+   */
+  method: string;
+  /**
+   *
+   * @type {object}
+   * @memberof NLWebMCPRequest
+   */
+  params?: object | null;
+  /**
+   * Request ID for the MCP call
+   * @type {string}
+   * @memberof NLWebMCPRequest
+   */
+  id?: string;
 }
 /**
  * Check if a given object implements the NLWebMCPRequest interface.

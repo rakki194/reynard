@@ -11,12 +11,12 @@
       "types": "./dist/index.d.ts"
     },
     "./cli": {
-      "import": "./dist/cli/index.js",
-      "types": "./dist/cli/index.d.ts"
+      "import": "./dist/cli.js",
+      "types": "./dist/cli.d.ts"
     }
   },
   "bin": {
-    "dev-server": "./dist/cli/index.js"
+    "dev-server": "./dist/cli.js"
   },
   "scripts": {
     "dev": "vite build --watch",
@@ -29,14 +29,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "keywords": [
-    "reynard",
-    "dev-server",
-    "development",
-    "monorepo",
-    "typescript",
-    "server-management"
-  ],
+  "keywords": ["reynard", "dev-server", "development", "monorepo", "typescript", "server-management"],
   "author": "Reynard Team",
   "license": "MIT",
   "dependencies": {

@@ -19,9 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.config import get_config
-from app.services.rag.codebase_indexer import CodebaseIndexer
-from app.services.rag.embedding_service import EmbeddingService
-from app.services.rag.vector_db_service import VectorDBService
+from app.services.rag import RAGService
 
 # Set up logging
 logging.basicConfig(

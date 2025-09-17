@@ -1,6 +1,6 @@
 /**
  * 🦊 Reynard Diagram Generator Types
- * 
+ *
  * Type definitions for the comprehensive diagram generation system.
  */
 
@@ -14,7 +14,7 @@ export interface DiagramGenerationConfig {
   /** Whether to generate high-resolution versions */
   generateHighRes: boolean;
   /** Theme for diagrams */
-  theme: 'neutral' | 'dark' | 'forest' | 'base';
+  theme: "neutral" | "dark" | "forest" | "base";
   /** Maximum diagram complexity before splitting */
   maxComplexity: number;
   /** Include file paths in diagrams */
@@ -66,19 +66,19 @@ export interface DiagramMetadata {
   dependencies: string[];
 }
 
-export type DiagramType = 
-  | 'architecture-overview'
-  | 'package-dependencies'
-  | 'component-relationships'
-  | 'file-structure'
-  | 'class-diagram'
-  | 'sequence-diagram'
-  | 'flowchart'
-  | 'entity-relationship'
-  | 'deployment-diagram'
-  | 'user-journey'
-  | 'data-flow'
-  | 'system-overview';
+export type DiagramType =
+  | "architecture-overview"
+  | "package-dependencies"
+  | "component-relationships"
+  | "file-structure"
+  | "class-diagram"
+  | "sequence-diagram"
+  | "flowchart"
+  | "entity-relationship"
+  | "deployment-diagram"
+  | "user-journey"
+  | "data-flow"
+  | "system-overview";
 
 export interface CodebaseAnalysis {
   /** Analyzed packages */
@@ -99,9 +99,21 @@ export interface PackageAnalysis {
   /** Package path */
   path: string;
   /** Package type */
-  type: 'source' | 'documentation' | 'configuration' | 'build' | 'testing' | 'scripts' | 'data' | 'templates' | 'services' | 'third-party' | 'cache' | 'tools';
+  type:
+    | "source"
+    | "documentation"
+    | "configuration"
+    | "build"
+    | "testing"
+    | "scripts"
+    | "data"
+    | "templates"
+    | "services"
+    | "third-party"
+    | "cache"
+    | "tools";
   /** Package importance */
-  importance: 'critical' | 'important' | 'optional' | 'excluded';
+  importance: "critical" | "important" | "optional" | "excluded";
   /** Package dependencies */
   dependencies: string[];
   /** Package exports */
@@ -116,7 +128,17 @@ export interface ComponentAnalysis {
   /** Component name */
   name: string;
   /** Component type */
-  type: 'class' | 'function' | 'interface' | 'type' | 'enum' | 'constant' | 'hook' | 'composable' | 'service' | 'utility';
+  type:
+    | "class"
+    | "function"
+    | "interface"
+    | "type"
+    | "enum"
+    | "constant"
+    | "hook"
+    | "composable"
+    | "service"
+    | "utility";
   /** Component file path */
   filePath: string;
   /** Component exports */
@@ -152,7 +174,7 @@ export interface DependencyAnalysis {
   /** Dependency name */
   name: string;
   /** Dependency type */
-  type: 'internal' | 'external' | 'peer' | 'dev';
+  type: "internal" | "external" | "peer" | "dev";
   /** Dependency version */
   version: string;
   /** Dependency usage count */
@@ -195,7 +217,7 @@ export interface RelationshipAnalysis {
   /** Target component */
   target: string;
   /** Relationship type */
-  type: 'imports' | 'exports' | 'extends' | 'implements' | 'uses' | 'depends' | 'configures' | 'tests' | 'documents';
+  type: "imports" | "exports" | "extends" | "implements" | "uses" | "depends" | "configures" | "tests" | "documents";
   /** Relationship strength */
   strength: number;
   /** Relationship description */
@@ -206,7 +228,7 @@ export interface ComponentRelationship {
   /** Related component */
   component: string;
   /** Relationship type */
-  type: 'imports' | 'exports' | 'extends' | 'implements' | 'uses' | 'depends' | 'configures' | 'tests' | 'documents';
+  type: "imports" | "exports" | "extends" | "implements" | "uses" | "depends" | "configures" | "tests" | "documents";
   /** Relationship strength */
   strength: number;
   /** Relationship description */

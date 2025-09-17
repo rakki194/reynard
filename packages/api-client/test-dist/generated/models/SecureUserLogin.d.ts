@@ -15,19 +15,19 @@
  * @interface SecureUserLogin
  */
 export interface SecureUserLogin {
-    [key: string]: any | any;
-    /**
-     * Username
-     * @type {string}
-     * @memberof SecureUserLogin
-     */
-    username: string;
-    /**
-     * Password
-     * @type {string}
-     * @memberof SecureUserLogin
-     */
-    password: string;
+  [key: string]: any | any;
+  /**
+   * Username
+   * @type {string}
+   * @memberof SecureUserLogin
+   */
+  username: string;
+  /**
+   * Password
+   * @type {string}
+   * @memberof SecureUserLogin
+   */
+  password: string;
 }
 /**
  * Check if a given object implements the SecureUserLogin interface.

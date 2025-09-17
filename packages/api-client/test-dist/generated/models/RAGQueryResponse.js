@@ -23,42 +23,42 @@ var RAGQueryHit_1 = require("./RAGQueryHit");
  * Check if a given object implements the RAGQueryResponse interface.
  */
 function instanceOfRAGQueryResponse(value) {
-    if (!('hits' in value) || value['hits'] === undefined)
-        return false;
-    if (!('total' in value) || value['total'] === undefined)
-        return false;
-    return true;
+  if (!("hits" in value) || value["hits"] === undefined) return false;
+  if (!("total" in value) || value["total"] === undefined) return false;
+  return true;
 }
 function RAGQueryResponseFromJSON(json) {
-    return RAGQueryResponseFromJSONTyped(json, false);
+  return RAGQueryResponseFromJSONTyped(json, false);
 }
 function RAGQueryResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'hits': (json['hits'].map(RAGQueryHit_1.RAGQueryHitFromJSON)),
-        'total': json['total'],
-        'queryTime': json['query_time'] == null ? undefined : json['query_time'],
-        'embeddingTime': json['embedding_time'] == null ? undefined : json['embedding_time'],
-        'searchTime': json['search_time'] == null ? undefined : json['search_time'],
-        'metadata': json['metadata'] == null ? undefined : json['metadata'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    hits: json["hits"].map(RAGQueryHit_1.RAGQueryHitFromJSON),
+    total: json["total"],
+    queryTime: json["query_time"] == null ? undefined : json["query_time"],
+    embeddingTime: json["embedding_time"] == null ? undefined : json["embedding_time"],
+    searchTime: json["search_time"] == null ? undefined : json["search_time"],
+    metadata: json["metadata"] == null ? undefined : json["metadata"],
+  };
 }
 function RAGQueryResponseToJSON(json) {
-    return RAGQueryResponseToJSONTyped(json, false);
+  return RAGQueryResponseToJSONTyped(json, false);
 }
 function RAGQueryResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'hits': (value['hits'].map(RAGQueryHit_1.RAGQueryHitToJSON)),
-        'total': value['total'],
-        'query_time': value['queryTime'],
-        'embedding_time': value['embeddingTime'],
-        'search_time': value['searchTime'],
-        'metadata': value['metadata'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    hits: value["hits"].map(RAGQueryHit_1.RAGQueryHitToJSON),
+    total: value["total"],
+    query_time: value["queryTime"],
+    embedding_time: value["embeddingTime"],
+    search_time: value["searchTime"],
+    metadata: value["metadata"],
+  };
 }

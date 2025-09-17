@@ -22,54 +22,56 @@ exports.NLWebPerformanceStatsToJSONTyped = NLWebPerformanceStatsToJSONTyped;
  * Check if a given object implements the NLWebPerformanceStats interface.
  */
 function instanceOfNLWebPerformanceStats(value) {
-    return true;
+  return true;
 }
 function NLWebPerformanceStatsFromJSON(json) {
-    return NLWebPerformanceStatsFromJSONTyped(json, false);
+  return NLWebPerformanceStatsFromJSONTyped(json, false);
 }
 function NLWebPerformanceStatsFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'totalRequests': json['total_requests'] == null ? undefined : json['total_requests'],
-        'successfulRequests': json['successful_requests'] == null ? undefined : json['successful_requests'],
-        'failedRequests': json['failed_requests'] == null ? undefined : json['failed_requests'],
-        'avgProcessingTimeMs': json['avg_processing_time_ms'] == null ? undefined : json['avg_processing_time_ms'],
-        'p95ProcessingTimeMs': json['p95_processing_time_ms'] == null ? undefined : json['p95_processing_time_ms'],
-        'p99ProcessingTimeMs': json['p99_processing_time_ms'] == null ? undefined : json['p99_processing_time_ms'],
-        'cacheHitRate': json['cache_hit_rate'] == null ? undefined : json['cache_hit_rate'],
-        'cacheHits': json['cache_hits'] == null ? undefined : json['cache_hits'],
-        'cacheMisses': json['cache_misses'] == null ? undefined : json['cache_misses'],
-        'cacheSize': json['cache_size'] == null ? undefined : json['cache_size'],
-        'maxCacheSize': json['max_cache_size'] == null ? undefined : json['max_cache_size'],
-        'rateLimitHits': json['rate_limit_hits'] == null ? undefined : json['rate_limit_hits'],
-        'staleServedCount': json['stale_served_count'] == null ? undefined : json['stale_served_count'],
-        'degradationEvents': json['degradation_events'] == null ? undefined : json['degradation_events'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    totalRequests: json["total_requests"] == null ? undefined : json["total_requests"],
+    successfulRequests: json["successful_requests"] == null ? undefined : json["successful_requests"],
+    failedRequests: json["failed_requests"] == null ? undefined : json["failed_requests"],
+    avgProcessingTimeMs: json["avg_processing_time_ms"] == null ? undefined : json["avg_processing_time_ms"],
+    p95ProcessingTimeMs: json["p95_processing_time_ms"] == null ? undefined : json["p95_processing_time_ms"],
+    p99ProcessingTimeMs: json["p99_processing_time_ms"] == null ? undefined : json["p99_processing_time_ms"],
+    cacheHitRate: json["cache_hit_rate"] == null ? undefined : json["cache_hit_rate"],
+    cacheHits: json["cache_hits"] == null ? undefined : json["cache_hits"],
+    cacheMisses: json["cache_misses"] == null ? undefined : json["cache_misses"],
+    cacheSize: json["cache_size"] == null ? undefined : json["cache_size"],
+    maxCacheSize: json["max_cache_size"] == null ? undefined : json["max_cache_size"],
+    rateLimitHits: json["rate_limit_hits"] == null ? undefined : json["rate_limit_hits"],
+    staleServedCount: json["stale_served_count"] == null ? undefined : json["stale_served_count"],
+    degradationEvents: json["degradation_events"] == null ? undefined : json["degradation_events"],
+  };
 }
 function NLWebPerformanceStatsToJSON(json) {
-    return NLWebPerformanceStatsToJSONTyped(json, false);
+  return NLWebPerformanceStatsToJSONTyped(json, false);
 }
 function NLWebPerformanceStatsToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'total_requests': value['totalRequests'],
-        'successful_requests': value['successfulRequests'],
-        'failed_requests': value['failedRequests'],
-        'avg_processing_time_ms': value['avgProcessingTimeMs'],
-        'p95_processing_time_ms': value['p95ProcessingTimeMs'],
-        'p99_processing_time_ms': value['p99ProcessingTimeMs'],
-        'cache_hit_rate': value['cacheHitRate'],
-        'cache_hits': value['cacheHits'],
-        'cache_misses': value['cacheMisses'],
-        'cache_size': value['cacheSize'],
-        'max_cache_size': value['maxCacheSize'],
-        'rate_limit_hits': value['rateLimitHits'],
-        'stale_served_count': value['staleServedCount'],
-        'degradation_events': value['degradationEvents'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    total_requests: value["totalRequests"],
+    successful_requests: value["successfulRequests"],
+    failed_requests: value["failedRequests"],
+    avg_processing_time_ms: value["avgProcessingTimeMs"],
+    p95_processing_time_ms: value["p95ProcessingTimeMs"],
+    p99_processing_time_ms: value["p99ProcessingTimeMs"],
+    cache_hit_rate: value["cacheHitRate"],
+    cache_hits: value["cacheHits"],
+    cache_misses: value["cacheMisses"],
+    cache_size: value["cacheSize"],
+    max_cache_size: value["maxCacheSize"],
+    rate_limit_hits: value["rateLimitHits"],
+    stale_served_count: value["staleServedCount"],
+    degradation_events: value["degradationEvents"],
+  };
 }

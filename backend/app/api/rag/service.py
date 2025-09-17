@@ -11,7 +11,7 @@ from collections.abc import AsyncGenerator
 from typing import Any
 
 from ...config.rag_config import get_rag_config
-from ...services.rag import EmbeddingIndexService, EmbeddingService, VectorDBService
+from ...services.rag import EmbeddingService, VectorStoreService, DocumentIndexer
 from .models import RAGIngestItem
 
 logger = logging.getLogger("uvicorn")
@@ -41,7 +41,7 @@ class RAGService:
             self._config = rag_config.to_dict()
 
             # Initialize vector database service
-            self._vector_db_service = VectorDBService()
+            self._vector_db_service = VectorStoreService()
             await self._vector_db_service.initialize(self._config)
 
             # Initialize embedding service
@@ -49,12 +49,11 @@ class RAGService:
             await self._embedding_service.initialize(self._config)
 
             # Initialize indexing service
-            self._indexing_service = EmbeddingIndexService()
+            self._indexing_service = DocumentIndexer()
             await self._indexing_service.initialize(
                 self._config,
                 self._vector_db_service,
-                self._embedding_service,
-                None,  # TODO: Add CLIP service later
+                self._embedding_service
             )
 
             self._initialized = True

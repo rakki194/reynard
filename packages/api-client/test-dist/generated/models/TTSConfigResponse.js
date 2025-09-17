@@ -23,62 +23,55 @@ var TTSBackendInfo_1 = require("./TTSBackendInfo");
  * Check if a given object implements the TTSConfigResponse interface.
  */
 function instanceOfTTSConfigResponse(value) {
-    if (!('defaultBackend' in value) || value['defaultBackend'] === undefined)
-        return false;
-    if (!('defaultVoice' in value) || value['defaultVoice'] === undefined)
-        return false;
-    if (!('defaultSpeed' in value) || value['defaultSpeed'] === undefined)
-        return false;
-    if (!('defaultLanguage' in value) || value['defaultLanguage'] === undefined)
-        return false;
-    if (!('maxTextLength' in value) || value['maxTextLength'] === undefined)
-        return false;
-    if (!('chunkSize' in value) || value['chunkSize'] === undefined)
-        return false;
-    if (!('enableAudioProcessing' in value) || value['enableAudioProcessing'] === undefined)
-        return false;
-    if (!('outputDirectory' in value) || value['outputDirectory'] === undefined)
-        return false;
-    if (!('backends' in value) || value['backends'] === undefined)
-        return false;
-    return true;
+  if (!("defaultBackend" in value) || value["defaultBackend"] === undefined) return false;
+  if (!("defaultVoice" in value) || value["defaultVoice"] === undefined) return false;
+  if (!("defaultSpeed" in value) || value["defaultSpeed"] === undefined) return false;
+  if (!("defaultLanguage" in value) || value["defaultLanguage"] === undefined) return false;
+  if (!("maxTextLength" in value) || value["maxTextLength"] === undefined) return false;
+  if (!("chunkSize" in value) || value["chunkSize"] === undefined) return false;
+  if (!("enableAudioProcessing" in value) || value["enableAudioProcessing"] === undefined) return false;
+  if (!("outputDirectory" in value) || value["outputDirectory"] === undefined) return false;
+  if (!("backends" in value) || value["backends"] === undefined) return false;
+  return true;
 }
 function TTSConfigResponseFromJSON(json) {
-    return TTSConfigResponseFromJSONTyped(json, false);
+  return TTSConfigResponseFromJSONTyped(json, false);
 }
 function TTSConfigResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'defaultBackend': json['default_backend'],
-        'defaultVoice': json['default_voice'],
-        'defaultSpeed': json['default_speed'],
-        'defaultLanguage': json['default_language'],
-        'maxTextLength': json['max_text_length'],
-        'chunkSize': json['chunk_size'],
-        'enableAudioProcessing': json['enable_audio_processing'],
-        'outputDirectory': json['output_directory'],
-        'backends': (json['backends'].map(TTSBackendInfo_1.TTSBackendInfoFromJSON)),
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    defaultBackend: json["default_backend"],
+    defaultVoice: json["default_voice"],
+    defaultSpeed: json["default_speed"],
+    defaultLanguage: json["default_language"],
+    maxTextLength: json["max_text_length"],
+    chunkSize: json["chunk_size"],
+    enableAudioProcessing: json["enable_audio_processing"],
+    outputDirectory: json["output_directory"],
+    backends: json["backends"].map(TTSBackendInfo_1.TTSBackendInfoFromJSON),
+  };
 }
 function TTSConfigResponseToJSON(json) {
-    return TTSConfigResponseToJSONTyped(json, false);
+  return TTSConfigResponseToJSONTyped(json, false);
 }
 function TTSConfigResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'default_backend': value['defaultBackend'],
-        'default_voice': value['defaultVoice'],
-        'default_speed': value['defaultSpeed'],
-        'default_language': value['defaultLanguage'],
-        'max_text_length': value['maxTextLength'],
-        'chunk_size': value['chunkSize'],
-        'enable_audio_processing': value['enableAudioProcessing'],
-        'output_directory': value['outputDirectory'],
-        'backends': (value['backends'].map(TTSBackendInfo_1.TTSBackendInfoToJSON)),
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    default_backend: value["defaultBackend"],
+    default_voice: value["defaultVoice"],
+    default_speed: value["defaultSpeed"],
+    default_language: value["defaultLanguage"],
+    max_text_length: value["maxTextLength"],
+    chunk_size: value["chunkSize"],
+    enable_audio_processing: value["enableAudioProcessing"],
+    output_directory: value["outputDirectory"],
+    backends: value["backends"].map(TTSBackendInfo_1.TTSBackendInfoToJSON),
+  };
 }

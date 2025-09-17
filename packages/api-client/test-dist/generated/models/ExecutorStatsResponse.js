@@ -22,54 +22,49 @@ exports.ExecutorStatsResponseToJSONTyped = ExecutorStatsResponseToJSONTyped;
  * Check if a given object implements the ExecutorStatsResponse interface.
  */
 function instanceOfExecutorStatsResponse(value) {
-    if (!('activeTasks' in value) || value['activeTasks'] === undefined)
-        return false;
-    if (!('completedTasks' in value) || value['completedTasks'] === undefined)
-        return false;
-    if (!('failedTasks' in value) || value['failedTasks'] === undefined)
-        return false;
-    if (!('averageExecutionTime' in value) || value['averageExecutionTime'] === undefined)
-        return false;
-    if (!('totalExecutionTime' in value) || value['totalExecutionTime'] === undefined)
-        return false;
-    if (!('maxConcurrentTasks' in value) || value['maxConcurrentTasks'] === undefined)
-        return false;
-    if (!('currentConcurrentTasks' in value) || value['currentConcurrentTasks'] === undefined)
-        return false;
-    return true;
+  if (!("activeTasks" in value) || value["activeTasks"] === undefined) return false;
+  if (!("completedTasks" in value) || value["completedTasks"] === undefined) return false;
+  if (!("failedTasks" in value) || value["failedTasks"] === undefined) return false;
+  if (!("averageExecutionTime" in value) || value["averageExecutionTime"] === undefined) return false;
+  if (!("totalExecutionTime" in value) || value["totalExecutionTime"] === undefined) return false;
+  if (!("maxConcurrentTasks" in value) || value["maxConcurrentTasks"] === undefined) return false;
+  if (!("currentConcurrentTasks" in value) || value["currentConcurrentTasks"] === undefined) return false;
+  return true;
 }
 function ExecutorStatsResponseFromJSON(json) {
-    return ExecutorStatsResponseFromJSONTyped(json, false);
+  return ExecutorStatsResponseFromJSONTyped(json, false);
 }
 function ExecutorStatsResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'activeTasks': json['active_tasks'],
-        'completedTasks': json['completed_tasks'],
-        'failedTasks': json['failed_tasks'],
-        'averageExecutionTime': json['average_execution_time'],
-        'totalExecutionTime': json['total_execution_time'],
-        'maxConcurrentTasks': json['max_concurrent_tasks'],
-        'currentConcurrentTasks': json['current_concurrent_tasks'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    activeTasks: json["active_tasks"],
+    completedTasks: json["completed_tasks"],
+    failedTasks: json["failed_tasks"],
+    averageExecutionTime: json["average_execution_time"],
+    totalExecutionTime: json["total_execution_time"],
+    maxConcurrentTasks: json["max_concurrent_tasks"],
+    currentConcurrentTasks: json["current_concurrent_tasks"],
+  };
 }
 function ExecutorStatsResponseToJSON(json) {
-    return ExecutorStatsResponseToJSONTyped(json, false);
+  return ExecutorStatsResponseToJSONTyped(json, false);
 }
 function ExecutorStatsResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'active_tasks': value['activeTasks'],
-        'completed_tasks': value['completedTasks'],
-        'failed_tasks': value['failedTasks'],
-        'average_execution_time': value['averageExecutionTime'],
-        'total_execution_time': value['totalExecutionTime'],
-        'max_concurrent_tasks': value['maxConcurrentTasks'],
-        'current_concurrent_tasks': value['currentConcurrentTasks'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    active_tasks: value["activeTasks"],
+    completed_tasks: value["completedTasks"],
+    failed_tasks: value["failedTasks"],
+    average_execution_time: value["averageExecutionTime"],
+    total_execution_time: value["totalExecutionTime"],
+    max_concurrent_tasks: value["maxConcurrentTasks"],
+    current_concurrent_tasks: value["currentConcurrentTasks"],
+  };
 }

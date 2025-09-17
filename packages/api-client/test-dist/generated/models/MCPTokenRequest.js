@@ -22,32 +22,33 @@ exports.MCPTokenRequestToJSONTyped = MCPTokenRequestToJSONTyped;
  * Check if a given object implements the MCPTokenRequest interface.
  */
 function instanceOfMCPTokenRequest(value) {
-    if (!('clientId' in value) || value['clientId'] === undefined)
-        return false;
-    return true;
+  if (!("clientId" in value) || value["clientId"] === undefined) return false;
+  return true;
 }
 function MCPTokenRequestFromJSON(json) {
-    return MCPTokenRequestFromJSONTyped(json, false);
+  return MCPTokenRequestFromJSONTyped(json, false);
 }
 function MCPTokenRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'clientId': json['client_id'],
-        'additionalPermissions': json['additional_permissions'] == null ? undefined : json['additional_permissions'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    clientId: json["client_id"],
+    additionalPermissions: json["additional_permissions"] == null ? undefined : json["additional_permissions"],
+  };
 }
 function MCPTokenRequestToJSON(json) {
-    return MCPTokenRequestToJSONTyped(json, false);
+  return MCPTokenRequestToJSONTyped(json, false);
 }
 function MCPTokenRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'client_id': value['clientId'],
-        'additional_permissions': value['additionalPermissions'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    client_id: value["clientId"],
+    additional_permissions: value["additionalPermissions"],
+  };
 }

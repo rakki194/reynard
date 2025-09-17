@@ -15,54 +15,54 @@
  * @interface OllamaChatResponse
  */
 export interface OllamaChatResponse {
-    /**
-     * Whether chat was successful
-     * @type {boolean}
-     * @memberof OllamaChatResponse
-     */
-    success: boolean;
-    /**
-     * Assistant response
-     * @type {string}
-     * @memberof OllamaChatResponse
-     */
-    response?: string;
-    /**
-     * Model used for generation
-     * @type {string}
-     * @memberof OllamaChatResponse
-     */
-    model: string;
-    /**
-     * Processing time in seconds
-     * @type {number}
-     * @memberof OllamaChatResponse
-     */
-    processingTime: number;
-    /**
-     * Number of tokens generated
-     * @type {number}
-     * @memberof OllamaChatResponse
-     */
-    tokensGenerated?: number;
-    /**
-     * Tools used during conversation
-     * @type {Array<string>}
-     * @memberof OllamaChatResponse
-     */
-    toolsUsed?: Array<string>;
-    /**
-     * Tool calls made by the model
-     * @type {Array<object>}
-     * @memberof OllamaChatResponse
-     */
-    toolCalls?: Array<object>;
-    /**
-     * Additional metadata
-     * @type {object}
-     * @memberof OllamaChatResponse
-     */
-    metadata?: object;
+  /**
+   * Whether chat was successful
+   * @type {boolean}
+   * @memberof OllamaChatResponse
+   */
+  success: boolean;
+  /**
+   * Assistant response
+   * @type {string}
+   * @memberof OllamaChatResponse
+   */
+  response?: string;
+  /**
+   * Model used for generation
+   * @type {string}
+   * @memberof OllamaChatResponse
+   */
+  model: string;
+  /**
+   * Processing time in seconds
+   * @type {number}
+   * @memberof OllamaChatResponse
+   */
+  processingTime: number;
+  /**
+   * Number of tokens generated
+   * @type {number}
+   * @memberof OllamaChatResponse
+   */
+  tokensGenerated?: number;
+  /**
+   * Tools used during conversation
+   * @type {Array<string>}
+   * @memberof OllamaChatResponse
+   */
+  toolsUsed?: Array<string>;
+  /**
+   * Tool calls made by the model
+   * @type {Array<object>}
+   * @memberof OllamaChatResponse
+   */
+  toolCalls?: Array<object>;
+  /**
+   * Additional metadata
+   * @type {object}
+   * @memberof OllamaChatResponse
+   */
+  metadata?: object;
 }
 /**
  * Check if a given object implements the OllamaChatResponse interface.
@@ -71,4 +71,7 @@ export declare function instanceOfOllamaChatResponse(value: object): value is Ol
 export declare function OllamaChatResponseFromJSON(json: any): OllamaChatResponse;
 export declare function OllamaChatResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): OllamaChatResponse;
 export declare function OllamaChatResponseToJSON(json: any): OllamaChatResponse;
-export declare function OllamaChatResponseToJSONTyped(value?: OllamaChatResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function OllamaChatResponseToJSONTyped(
+  value?: OllamaChatResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

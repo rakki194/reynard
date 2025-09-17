@@ -15,18 +15,18 @@
  * @interface MCPToolCall
  */
 export interface MCPToolCall {
-    /**
-     * Name of the MCP tool to call
-     * @type {string}
-     * @memberof MCPToolCall
-     */
-    method: string;
-    /**
-     * Arguments for the MCP tool
-     * @type {object}
-     * @memberof MCPToolCall
-     */
-    params?: object;
+  /**
+   * Name of the MCP tool to call
+   * @type {string}
+   * @memberof MCPToolCall
+   */
+  method: string;
+  /**
+   * Arguments for the MCP tool
+   * @type {object}
+   * @memberof MCPToolCall
+   */
+  params?: object;
 }
 /**
  * Check if a given object implements the MCPToolCall interface.

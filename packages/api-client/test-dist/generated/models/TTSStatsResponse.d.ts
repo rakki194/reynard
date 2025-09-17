@@ -15,58 +15,58 @@
  * @interface TTSStatsResponse
  */
 export interface TTSStatsResponse {
-    /**
-     * Total synthesis requests
-     * @type {number}
-     * @memberof TTSStatsResponse
-     */
-    totalSynthesisRequests: number;
-    /**
-     * Successful synthesis count
-     * @type {number}
-     * @memberof TTSStatsResponse
-     */
-    successfulSynthesis: number;
-    /**
-     * Failed synthesis count
-     * @type {number}
-     * @memberof TTSStatsResponse
-     */
-    failedSynthesis: number;
-    /**
-     * Average processing time
-     * @type {number}
-     * @memberof TTSStatsResponse
-     */
-    averageProcessingTime: number;
-    /**
-     * Total audio duration generated
-     * @type {number}
-     * @memberof TTSStatsResponse
-     */
-    totalAudioGenerated: number;
-    /**
-     * Backend usage statistics
-     * @type {{ [key: string]: number; }}
-     * @memberof TTSStatsResponse
-     */
-    backendUsage: {
-        [key: string]: number;
-    };
-    /**
-     * Voice usage statistics
-     * @type {{ [key: string]: number; }}
-     * @memberof TTSStatsResponse
-     */
-    voiceUsage: {
-        [key: string]: number;
-    };
-    /**
-     * Error rate percentage
-     * @type {number}
-     * @memberof TTSStatsResponse
-     */
-    errorRate: number;
+  /**
+   * Total synthesis requests
+   * @type {number}
+   * @memberof TTSStatsResponse
+   */
+  totalSynthesisRequests: number;
+  /**
+   * Successful synthesis count
+   * @type {number}
+   * @memberof TTSStatsResponse
+   */
+  successfulSynthesis: number;
+  /**
+   * Failed synthesis count
+   * @type {number}
+   * @memberof TTSStatsResponse
+   */
+  failedSynthesis: number;
+  /**
+   * Average processing time
+   * @type {number}
+   * @memberof TTSStatsResponse
+   */
+  averageProcessingTime: number;
+  /**
+   * Total audio duration generated
+   * @type {number}
+   * @memberof TTSStatsResponse
+   */
+  totalAudioGenerated: number;
+  /**
+   * Backend usage statistics
+   * @type {{ [key: string]: number; }}
+   * @memberof TTSStatsResponse
+   */
+  backendUsage: {
+    [key: string]: number;
+  };
+  /**
+   * Voice usage statistics
+   * @type {{ [key: string]: number; }}
+   * @memberof TTSStatsResponse
+   */
+  voiceUsage: {
+    [key: string]: number;
+  };
+  /**
+   * Error rate percentage
+   * @type {number}
+   * @memberof TTSStatsResponse
+   */
+  errorRate: number;
 }
 /**
  * Check if a given object implements the TTSStatsResponse interface.
@@ -75,4 +75,7 @@ export declare function instanceOfTTSStatsResponse(value: object): value is TTSS
 export declare function TTSStatsResponseFromJSON(json: any): TTSStatsResponse;
 export declare function TTSStatsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSStatsResponse;
 export declare function TTSStatsResponseToJSON(json: any): TTSStatsResponse;
-export declare function TTSStatsResponseToJSONTyped(value?: TTSStatsResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function TTSStatsResponseToJSONTyped(
+  value?: TTSStatsResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

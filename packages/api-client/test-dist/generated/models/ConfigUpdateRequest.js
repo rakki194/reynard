@@ -22,36 +22,39 @@ exports.ConfigUpdateRequestToJSONTyped = ConfigUpdateRequestToJSONTyped;
  * Check if a given object implements the ConfigUpdateRequest interface.
  */
 function instanceOfConfigUpdateRequest(value) {
-    return true;
+  return true;
 }
 function ConfigUpdateRequestFromJSON(json) {
-    return ConfigUpdateRequestFromJSONTyped(json, false);
+  return ConfigUpdateRequestFromJSONTyped(json, false);
 }
 function ConfigUpdateRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'enablePerformanceMonitoring': json['enable_performance_monitoring'] == null ? undefined : json['enable_performance_monitoring'],
-        'autoCleanup': json['auto_cleanup'] == null ? undefined : json['auto_cleanup'],
-        'defaultValidationLevel': json['default_validation_level'] == null ? undefined : json['default_validation_level'],
-        'maxConcurrentLoads': json['max_concurrent_loads'] == null ? undefined : json['max_concurrent_loads'],
-        'memoryThreshold': json['memory_threshold'] == null ? undefined : json['memory_threshold'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    enablePerformanceMonitoring:
+      json["enable_performance_monitoring"] == null ? undefined : json["enable_performance_monitoring"],
+    autoCleanup: json["auto_cleanup"] == null ? undefined : json["auto_cleanup"],
+    defaultValidationLevel: json["default_validation_level"] == null ? undefined : json["default_validation_level"],
+    maxConcurrentLoads: json["max_concurrent_loads"] == null ? undefined : json["max_concurrent_loads"],
+    memoryThreshold: json["memory_threshold"] == null ? undefined : json["memory_threshold"],
+  };
 }
 function ConfigUpdateRequestToJSON(json) {
-    return ConfigUpdateRequestToJSONTyped(json, false);
+  return ConfigUpdateRequestToJSONTyped(json, false);
 }
 function ConfigUpdateRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'enable_performance_monitoring': value['enablePerformanceMonitoring'],
-        'auto_cleanup': value['autoCleanup'],
-        'default_validation_level': value['defaultValidationLevel'],
-        'max_concurrent_loads': value['maxConcurrentLoads'],
-        'memory_threshold': value['memoryThreshold'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    enable_performance_monitoring: value["enablePerformanceMonitoring"],
+    auto_cleanup: value["autoCleanup"],
+    default_validation_level: value["defaultValidationLevel"],
+    max_concurrent_loads: value["maxConcurrentLoads"],
+    memory_threshold: value["memoryThreshold"],
+  };
 }

@@ -22,38 +22,40 @@ exports.IndexRequestToJSONTyped = IndexRequestToJSONTyped;
  * Check if a given object implements the IndexRequest interface.
  */
 function instanceOfIndexRequest(value) {
-    return true;
+  return true;
 }
 function IndexRequestFromJSON(json) {
-    return IndexRequestFromJSONTyped(json, false);
+  return IndexRequestFromJSONTyped(json, false);
 }
 function IndexRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'projectRoot': json['project_root'] == null ? undefined : json['project_root'],
-        'fileTypes': json['file_types'] == null ? undefined : json['file_types'],
-        'directories': json['directories'] == null ? undefined : json['directories'],
-        'forceReindex': json['force_reindex'] == null ? undefined : json['force_reindex'],
-        'chunkSize': json['chunk_size'] == null ? undefined : json['chunk_size'],
-        'overlap': json['overlap'] == null ? undefined : json['overlap'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    projectRoot: json["project_root"] == null ? undefined : json["project_root"],
+    fileTypes: json["file_types"] == null ? undefined : json["file_types"],
+    directories: json["directories"] == null ? undefined : json["directories"],
+    forceReindex: json["force_reindex"] == null ? undefined : json["force_reindex"],
+    chunkSize: json["chunk_size"] == null ? undefined : json["chunk_size"],
+    overlap: json["overlap"] == null ? undefined : json["overlap"],
+  };
 }
 function IndexRequestToJSON(json) {
-    return IndexRequestToJSONTyped(json, false);
+  return IndexRequestToJSONTyped(json, false);
 }
 function IndexRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'project_root': value['projectRoot'],
-        'file_types': value['fileTypes'],
-        'directories': value['directories'],
-        'force_reindex': value['forceReindex'],
-        'chunk_size': value['chunkSize'],
-        'overlap': value['overlap'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    project_root: value["projectRoot"],
+    file_types: value["fileTypes"],
+    directories: value["directories"],
+    force_reindex: value["forceReindex"],
+    chunk_size: value["chunkSize"],
+    overlap: value["overlap"],
+  };
 }

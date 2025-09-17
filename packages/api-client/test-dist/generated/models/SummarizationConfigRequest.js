@@ -22,36 +22,38 @@ exports.SummarizationConfigRequestToJSONTyped = SummarizationConfigRequestToJSON
  * Check if a given object implements the SummarizationConfigRequest interface.
  */
 function instanceOfSummarizationConfigRequest(value) {
-    return true;
+  return true;
 }
 function SummarizationConfigRequestFromJSON(json) {
-    return SummarizationConfigRequestFromJSONTyped(json, false);
+  return SummarizationConfigRequestFromJSONTyped(json, false);
 }
 function SummarizationConfigRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'defaultModel': json['default_model'] == null ? undefined : json['default_model'],
-        'defaultContentType': json['default_content_type'] == null ? undefined : json['default_content_type'],
-        'defaultSummaryLevel': json['default_summary_level'] == null ? undefined : json['default_summary_level'],
-        'maxTextLength': json['max_text_length'] == null ? undefined : json['max_text_length'],
-        'enableCaching': json['enable_caching'] == null ? undefined : json['enable_caching'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    defaultModel: json["default_model"] == null ? undefined : json["default_model"],
+    defaultContentType: json["default_content_type"] == null ? undefined : json["default_content_type"],
+    defaultSummaryLevel: json["default_summary_level"] == null ? undefined : json["default_summary_level"],
+    maxTextLength: json["max_text_length"] == null ? undefined : json["max_text_length"],
+    enableCaching: json["enable_caching"] == null ? undefined : json["enable_caching"],
+  };
 }
 function SummarizationConfigRequestToJSON(json) {
-    return SummarizationConfigRequestToJSONTyped(json, false);
+  return SummarizationConfigRequestToJSONTyped(json, false);
 }
 function SummarizationConfigRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'default_model': value['defaultModel'],
-        'default_content_type': value['defaultContentType'],
-        'default_summary_level': value['defaultSummaryLevel'],
-        'max_text_length': value['maxTextLength'],
-        'enable_caching': value['enableCaching'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    default_model: value["defaultModel"],
+    default_content_type: value["defaultContentType"],
+    default_summary_level: value["defaultSummaryLevel"],
+    max_text_length: value["maxTextLength"],
+    enable_caching: value["enableCaching"],
+  };
 }

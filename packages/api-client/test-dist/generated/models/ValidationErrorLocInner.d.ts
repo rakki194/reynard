@@ -14,13 +14,18 @@
  * @export
  * @interface ValidationErrorLocInner
  */
-export interface ValidationErrorLocInner {
-}
+export interface ValidationErrorLocInner {}
 /**
  * Check if a given object implements the ValidationErrorLocInner interface.
  */
 export declare function instanceOfValidationErrorLocInner(value: object): value is ValidationErrorLocInner;
 export declare function ValidationErrorLocInnerFromJSON(json: any): ValidationErrorLocInner;
-export declare function ValidationErrorLocInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidationErrorLocInner;
+export declare function ValidationErrorLocInnerFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ValidationErrorLocInner;
 export declare function ValidationErrorLocInnerToJSON(json: any): ValidationErrorLocInner;
-export declare function ValidationErrorLocInnerToJSONTyped(value?: ValidationErrorLocInner | null, ignoreDiscriminator?: boolean): any;
+export declare function ValidationErrorLocInnerToJSONTyped(
+  value?: ValidationErrorLocInner | null,
+  ignoreDiscriminator?: boolean
+): any;

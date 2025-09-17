@@ -22,42 +22,40 @@ exports.ImageProcessingServiceInfoResponseToJSONTyped = ImageProcessingServiceIn
  * Check if a given object implements the ImageProcessingServiceInfoResponse interface.
  */
 function instanceOfImageProcessingServiceInfoResponse(value) {
-    if (!('jxlSupported' in value) || value['jxlSupported'] === undefined)
-        return false;
-    if (!('avifSupported' in value) || value['avifSupported'] === undefined)
-        return false;
-    if (!('supportedFormats' in value) || value['supportedFormats'] === undefined)
-        return false;
-    if (!('totalFormats' in value) || value['totalFormats'] === undefined)
-        return false;
-    return true;
+  if (!("jxlSupported" in value) || value["jxlSupported"] === undefined) return false;
+  if (!("avifSupported" in value) || value["avifSupported"] === undefined) return false;
+  if (!("supportedFormats" in value) || value["supportedFormats"] === undefined) return false;
+  if (!("totalFormats" in value) || value["totalFormats"] === undefined) return false;
+  return true;
 }
 function ImageProcessingServiceInfoResponseFromJSON(json) {
-    return ImageProcessingServiceInfoResponseFromJSONTyped(json, false);
+  return ImageProcessingServiceInfoResponseFromJSONTyped(json, false);
 }
 function ImageProcessingServiceInfoResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'jxlSupported': json['jxl_supported'],
-        'avifSupported': json['avif_supported'],
-        'supportedFormats': json['supported_formats'],
-        'totalFormats': json['total_formats'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    jxlSupported: json["jxl_supported"],
+    avifSupported: json["avif_supported"],
+    supportedFormats: json["supported_formats"],
+    totalFormats: json["total_formats"],
+  };
 }
 function ImageProcessingServiceInfoResponseToJSON(json) {
-    return ImageProcessingServiceInfoResponseToJSONTyped(json, false);
+  return ImageProcessingServiceInfoResponseToJSONTyped(json, false);
 }
 function ImageProcessingServiceInfoResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'jxl_supported': value['jxlSupported'],
-        'avif_supported': value['avifSupported'],
-        'supported_formats': value['supportedFormats'],
-        'total_formats': value['totalFormats'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    jxl_supported: value["jxlSupported"],
+    avif_supported: value["avifSupported"],
+    supported_formats: value["supportedFormats"],
+    total_formats: value["totalFormats"],
+  };
 }

@@ -13,7 +13,7 @@ and architectural challenges encountered in production environments.
 
 ### 🐚 Shell Scripting & Bash
 
-#### 📚 [Shell Script Best Practices](./shell-script-best-practices.md)
+#### 📚 [Shell Script Best Practices](./shell-scripting/shell-script-best-practices.md)
 
 Essential patterns for maintainable, robust, and linter-compliant shell scripts
 
@@ -26,7 +26,7 @@ Essential patterns for maintainable, robust, and linter-compliant shell scripts
 - Output and logging
 - Script organization
 
-#### 🔍 [ShellCheck Rules Reference](./shellcheck-rules-reference.md)
+#### 🔍 [ShellCheck Rules Reference](./shell-scripting/shellcheck-rules-reference.md)
 
 Comprehensive guide to ShellCheck rules, their meanings, and solutions
 
@@ -40,7 +40,7 @@ Comprehensive guide to ShellCheck rules, their meanings, and solutions
 - Function rules
 - Best practices for rule management
 
-#### ⚠️ [Bash Error Handling Patterns](./bash-error-handling-patterns.md)
+#### ⚠️ [Bash Error Handling Patterns](./shell-scripting/bash-error-handling-patterns.md)
 
 Comprehensive guide to robust error handling in bash scripts
 
@@ -54,7 +54,7 @@ Comprehensive guide to robust error handling in bash scripts
 - Error recovery patterns
 - Testing error handling
 
-#### 🔄 [Command Substitution Best Practices](./command-substitution-best-practices.md)
+#### 🔄 [Command Substitution Best Practices](./shell-scripting/command-substitution-best-practices.md)
 
 Comprehensive guide to safe and efficient command substitution in bash
 
@@ -69,7 +69,7 @@ Comprehensive guide to safe and efficient command substitution in bash
 - Security considerations
 - Testing command substitution
 
-#### 🚀 [Shell Script Optimization Patterns](./shell-script-optimization-patterns.md)
+#### 🚀 [Shell Script Optimization Patterns](./shell-scripting/shell-script-optimization-patterns.md)
 
 Advanced patterns for high-performance, efficient shell scripts
 
@@ -84,7 +84,7 @@ Advanced patterns for high-performance, efficient shell scripts
 - Optimization best practices
 - Performance testing
 
-#### 📁 [Shell Command Failure Directory Display](./shell-command-failure-directory-display.md)
+#### 📁 [Shell Command Failure Directory Display](./shell-scripting/shell-command-failure-directory-display.md)
 
 Handling directory display and error states in shell commands
 
@@ -95,7 +95,7 @@ Handling directory display and error states in shell commands
 
 ### 🐍 Python Development
 
-#### 🚨 [Python Linter Warnings & Errors](./python-linter-warnings-errors.md)
+#### 🚨 [Python Linter Warnings & Errors](./python-development/python-linter-warnings-errors.md)
 
 Comprehensive guide to common Python linter warnings and errors with practical solutions
 
@@ -106,7 +106,7 @@ Comprehensive guide to common Python linter warnings and errors with practical s
 - Code structure improvements and unnecessary else blocks
 - Type safety enhancements and proper annotations
 
-#### 🔗 [Python Exception Chaining](./python-exception-chaining.md)
+#### 🔗 [Python Exception Chaining](./python-development/python-exception-chaining.md)
 
 Proper exception chaining with `raise ... from err` for better error context
 
@@ -115,7 +115,7 @@ Proper exception chaining with `raise ... from err` for better error context
 - Debugging improvements through proper chaining
 - Common anti-patterns and their solutions
 
-#### ⚠️ [Python Exception Handling Issues](./python-exception-handling-issues.md)
+#### ⚠️ [Python Exception Handling Issues](./python-development/python-exception-handling-issues.md)
 
 Comprehensive guide to robust exception handling in Python applications
 
@@ -125,7 +125,7 @@ Comprehensive guide to robust exception handling in Python applications
 - Retry mechanisms and circuit breaker patterns
 - Error recovery strategies and graceful degradation
 
-#### 📝 [Python Logging Best Practices](./python-logging-best-practices.md)
+#### 📝 [Python Logging Best Practices](./python-development/python-logging-best-practices.md)
 
 Professional logging implementation for Python applications
 
@@ -135,7 +135,7 @@ Professional logging implementation for Python applications
 - Security considerations and sensitive data handling
 - Integration with monitoring and alerting systems
 
-#### 🐛 [Python Logging Issues](./python-logging-issues.md)
+#### 🐛 [Python Logging Issues](./python-development/python-logging-issues.md)
 
 Common logging problems and their solutions
 
@@ -144,7 +144,7 @@ Common logging problems and their solutions
 - Log level configuration and debugging
 - Error handling in logging systems
 
-#### 🏗️ [Python Code Structure Issues](./python-code-structure-issues.md)
+#### 🏗️ [Python Code Structure Issues](./python-development/python-code-structure-issues.md)
 
 Improving code organization and maintainability
 
@@ -154,7 +154,7 @@ Improving code organization and maintainability
 - Command and query separation (CQRS)
 - Dependency injection patterns
 
-#### 🎯 [Python Type Annotation Issues](./python-type-annotation-issues.md)
+#### 🎯 [Python Type Annotation Issues](./python-development/python-type-annotation-issues.md)
 
 Modern type annotation practices and common problems
 
@@ -163,7 +163,7 @@ Modern type annotation practices and common problems
 - Union types and optional parameters
 - Type aliases and complex type definitions
 
-#### 🛡️ [Python Type Safety Issues](./python-type-safety-issues.md)
+#### 🛡️ [Python Type Safety Issues](./python-development/python-type-safety-issues.md)
 
 Enhancing code reliability through proper type checking
 
@@ -172,7 +172,7 @@ Enhancing code reliability through proper type checking
 - Generic types and type parameters
 - Type narrowing and guard clauses
 
-#### 📊 [Python Modern Type Annotations](./python-modern-type-annotations.md)
+#### 📊 [Python Modern Type Annotations](./python-development/python-modern-type-annotations.md)
 
 Current best practices for Python type annotations (Python 3.10+)
 
@@ -182,17 +182,7 @@ Current best practices for Python type annotations (Python 3.10+)
 - Protocol and structural typing
 - Generic type parameters and variance
 
-#### 🚀 [Performance Issues](./performance-issues.md)
-
-Optimizing Python code for better runtime performance and efficiency
-
-- Inefficient string operations and concatenation patterns
-- Unnecessary list comprehensions and generator alternatives
-- Dictionary operations and memory optimization
-- Algorithm complexity and Big O analysis
-- Profiling tools and performance measurement
-
-#### 🔧 [Python Casting Response JSON](./python-casting-respone.json.md)
+#### 🔧 [Python Casting Response JSON](./python-development/python-casting-respone.json.md)
 
 Handling JSON response casting and type conversion in Python
 
@@ -202,7 +192,7 @@ Handling JSON response casting and type conversion in Python
 
 ### 🏗️ Code Quality & Architecture
 
-#### 🎯 [Code Organization Issues](./code-organization-issues.md)
+#### 🎯 [Code Organization Issues](./code-quality/code-organization-issues.md)
 
 Structuring code for maintainability, readability, and scalability
 
@@ -212,7 +202,7 @@ Structuring code for maintainability, readability, and scalability
 - Domain-driven design and CQRS implementation
 - Dependency injection and interface segregation
 
-#### 🔄 [Code Structure Issues](./code-structure-issues.md)
+#### 🔄 [Code Structure Issues](./code-quality/code-structure-issues.md)
 
 Simplifying control flow and eliminating unnecessary complexity
 
@@ -221,7 +211,7 @@ Simplifying control flow and eliminating unnecessary complexity
 - Strategy patterns for complex business logic
 - Refactoring techniques and code simplification
 
-#### 🚨 [Error Handling Issues](./error-handling-issues.md)
+#### 🚨 [Error Handling Issues](./code-quality/error-handling-issues.md)
 
 Implementing robust error handling for reliable applications
 
@@ -231,7 +221,7 @@ Implementing robust error handling for reliable applications
 - Retry mechanisms and circuit breaker patterns
 - Error recovery strategies and graceful degradation
 
-#### 🎲 [Magic Numbers and Constants](./magic-numbers-and-constants.md)
+#### 🎲 [Magic Numbers and Constants](./code-quality/magic-numbers-and-constants.md)
 
 Eliminating hard-coded values for maintainable and self-documenting code
 
@@ -240,7 +230,7 @@ Eliminating hard-coded values for maintainable and self-documenting code
 - Enum-based constants and type safety
 - Best practices for constant organization
 
-#### 🗑️ [Unused Variables and Dead Code](./unused-variables-and-dead-code.md)
+#### 🗑️ [Unused Variables and Dead Code](./code-quality/unused-variables-and-dead-code.md)
 
 Eliminating dead code for cleaner, more maintainable applications
 
@@ -249,7 +239,7 @@ Eliminating dead code for cleaner, more maintainable applications
 - Redundant logic elimination
 - Code cleanup strategies and tools
 
-#### 🛡️ [Type Safety Issues](./type-safety-issues.md)
+#### 🛡️ [Type Safety Issues](./code-quality/type-safety-issues.md)
 
 Enhancing code reliability through proper type annotations and type checking
 
@@ -258,9 +248,19 @@ Enhancing code reliability through proper type annotations and type checking
 - Generic types and type parameters
 - Type narrowing and guard clauses
 
+#### 🚀 [Performance Issues](./code-quality/performance-issues.md)
+
+Optimizing code for better runtime performance and efficiency
+
+- Inefficient string operations and concatenation patterns
+- Unnecessary list comprehensions and generator alternatives
+- Dictionary operations and memory optimization
+- Algorithm complexity and Big O analysis
+- Profiling tools and performance measurement
+
 ### 🧪 Testing & Quality Assurance
 
-#### 🧪 [Testing and Quality Assurance](./testing-and-quality-assurance.md)
+#### 🧪 [Testing and Quality Assurance](./testing/testing-and-quality-assurance.md)
 
 Building reliable, maintainable applications through comprehensive testing
 
@@ -270,9 +270,19 @@ Building reliable, maintainable applications through comprehensive testing
 - Test coverage analysis and quality gates
 - Performance testing and benchmarking
 
+#### 📊 [Benchmark Testing Best Practices](./testing/benchmark-testing-best-practices.md)
+
+Comprehensive guide to performance testing and benchmarking strategies
+
+- Benchmark design and implementation patterns
+- Performance measurement and analysis techniques
+- Statistical significance and result interpretation
+- Continuous performance monitoring and regression detection
+- Tool selection and integration strategies
+
 ### 🔍 Code Analysis & Monolith Detection
 
-#### 🦊 [Monolith Detection Tools](./monolith-detection-tools.md)
+#### 🦊 [Monolith Detection Tools](./analysis-tools/monolith-detection-tools.md)
 
 Comprehensive codebase analysis and monolith detection system for the Reynard MCP server
 
@@ -283,7 +293,7 @@ Comprehensive codebase analysis and monolith detection system for the Reynard MC
 - Real-time codebase health monitoring
 - Refactoring recommendations and technical debt tracking
 
-#### 📋 [Monolith Detection Quick Reference](./monolith-detection-quick-reference.md)
+#### 📋 [Monolith Detection Quick Reference](./analysis-tools/monolith-detection-quick-reference.md)
 
 Quick reference guide for monolith detection tool usage
 
@@ -294,7 +304,7 @@ Quick reference guide for monolith detection tool usage
 
 ### 🎨 Frontend & UI
 
-#### 🎨 [Icon System Architecture](./icon-system-architecture.md)
+#### 🎨 [Icon System Architecture](./frontend/icon-system-architecture.md)
 
 Comprehensive analysis of icon system architecture and optimization
 
@@ -306,7 +316,7 @@ Comprehensive analysis of icon system architecture and optimization
 
 ### ⚡ Build Tools & Dependencies
 
-#### 🔧 [Vite 7 and SolidJS Compatibility Research](./vite-7-solidjs-compatibility-research.md)
+#### 🔧 [Vite 7 and SolidJS Compatibility Research](./build-tools/vite-7-solidjs-compatibility-research.md)
 
 Comprehensive research on Vite 7 and SolidJS compatibility issues
 
@@ -316,7 +326,7 @@ Comprehensive research on Vite 7 and SolidJS compatibility issues
 - Build tool compatibility matrix
 - Future compatibility roadmap
 
-#### 📦 [Peer Dependency Management Best Practices](./peer-dependency-management-best-practices.md)
+#### 📦 [Peer Dependency Management Best Practices](./build-tools/peer-dependency-management-best-practices.md)
 
 Best practices for managing peer dependency warnings and conflicts
 
@@ -326,7 +336,7 @@ Best practices for managing peer dependency warnings and conflicts
 - Monitoring and maintenance workflows
 - Emergency procedures and rollback strategies
 
-#### 🔄 [Vite and SolidJS Alternative Solutions](./vite-solidjs-alternative-solutions.md)
+#### 🔄 [Vite and SolidJS Alternative Solutions](./build-tools/vite-solidjs-alternative-solutions.md)
 
 Alternative approaches and workarounds for build tool compatibility
 
@@ -336,7 +346,7 @@ Alternative approaches and workarounds for build tool compatibility
 - Development workflow alternatives
 - Migration strategies and decision matrix
 
-#### 📈 [Dependency Update Strategy](./dependency-update-strategy.md)
+#### 📈 [Dependency Update Strategy](./build-tools/dependency-update-strategy.md)
 
 Systematic approach to dependency management in the Reynard monorepo
 
@@ -348,7 +358,7 @@ Systematic approach to dependency management in the Reynard monorepo
 
 ### ⚙️ Configuration & Tools
 
-#### ⚙️ [JavaScript Defining Node for ESLint](./javascript-defining-node-for-eslint.md)
+#### ⚙️ [JavaScript Defining Node for ESLint](./configuration/javascript-defining-node-for-eslint.md)
 
 Guide to configuring ESLint for Node.js environments
 
@@ -357,9 +367,54 @@ Guide to configuring ESLint for Node.js environments
 - Common Node.js globals and their usage
 - Best practices for ESLint configuration
 
+#### 🎭 [Playwright Animation Control](./configuration/playwright-animation-control.md)
+
+Advanced Playwright techniques for handling animations and dynamic content
+
+- Animation detection and control strategies
+- Wait strategies for dynamic content
+- Performance optimization for animated elements
+- Cross-browser animation handling
+
+#### 🔧 [Playwright Configuration Troubleshooting](./configuration/playwright-configuration-troubleshooting.md)
+
+Comprehensive troubleshooting guide for Playwright configuration issues
+
+- Common configuration problems and solutions
+- Environment-specific setup challenges
+- Browser compatibility and driver issues
+- Performance optimization and debugging
+
+#### 📝 [TypeScript Configuration Troubleshooting](./configuration/typescript-configuration-troubleshooting.md)
+
+Advanced TypeScript configuration and troubleshooting strategies
+
+- Complex tsconfig.json scenarios and solutions
+- Module resolution and path mapping issues
+- Build tool integration and compatibility
+- Performance optimization and compilation strategies
+
+#### 🎯 [VSCode Task Configuration Best Practices](./configuration/vscode-task-configuration-best-practices.md)
+
+Professional VSCode task configuration for development workflows
+
+- Task organization and structure patterns
+- Multi-platform task definitions
+- Integration with build systems and tools
+- Performance optimization and best practices
+
+#### 📊 [VSCode Workspace vs Tasks.json Comparison](./configuration/vscode-workspace-vs-tasks-json-comparison.md)
+
+Comprehensive comparison of VSCode workspace and tasks.json configuration approaches
+
+- Use case analysis and decision matrix
+- Configuration complexity and maintenance
+- Team collaboration and sharing strategies
+- Migration patterns and best practices
+
 ### 📋 Project Management
 
-#### 📋 [Project Management](./project-management.md)
+#### 📋 [Project Management](./project-management/project-management.md)
 
 Comprehensive project management guide for Reynard development
 
@@ -369,7 +424,7 @@ Comprehensive project management guide for Reynard development
 - CI/CD pipeline architecture and GitHub Actions workflows
 - Best practices for strategic planning and scope management
 
-#### 📊 [Project Management Summary](./project-management-summary.md)
+#### 📊 [Project Management Summary](./project-management/project-management-summary.md)
 
 Executive summary of project management practices and workflows
 
@@ -377,6 +432,127 @@ Executive summary of project management practices and workflows
 - Quality assurance standards and testing strategies
 - Documentation and communication protocols
 - Risk management and security considerations
+
+#### 🔄 [Git Workflow Automation Guide](./project-management/git-workflow-automation-guide.md)
+
+Advanced Git workflow automation and optimization strategies
+
+- Automated branch management and merging strategies
+- Commit message standardization and enforcement
+- Release automation and version management
+- Integration with CI/CD pipelines and quality gates
+
+#### 🚀 [v0.8.1 Release Journey](./project-management/v0.8.1-release-journey.md)
+
+Comprehensive case study of the v0.8.1 release process and lessons learned
+
+- Release planning and execution strategies
+- Quality assurance and testing methodologies
+- Risk management and mitigation approaches
+- Post-release analysis and continuous improvement
+
+#### 📈 [Workflow Updates Summary](./project-management/workflow-updates-summary.md)
+
+Summary of recent workflow improvements and optimization initiatives
+
+- Process improvements and efficiency gains
+- Tool integration and automation enhancements
+- Team collaboration and communication improvements
+- Performance metrics and success indicators
+
+### 📚 Guides
+
+#### 🔧 [Tool Development Guide](./guides/tool-development-guide.md)
+
+Comprehensive guide for developing and maintaining development tools in the Reynard ecosystem
+
+- Tool architecture and design patterns
+- Integration with existing workflows and systems
+- Testing and validation strategies
+- Documentation and maintenance best practices
+- Performance optimization and scalability considerations
+
+#### 🔄 [Duplicate Task Resolution Case Study](./guides/duplicate-task-resolution-case-study.md)
+
+Detailed case study of resolving duplicate task issues in development workflows
+
+- Problem identification and root cause analysis
+- Solution design and implementation strategies
+- Testing and validation approaches
+- Lessons learned and best practices
+- Prevention strategies and monitoring
+
+### 🖥️ System Administration
+
+#### 🦊 [Dust - Modern Disk Usage Analyzer](./system-administration/dust-disk-usage-analyzer.md)
+
+Modern, Rust-based alternative to traditional `du` command with intuitive visual interface
+
+- Color-coded visual representation of directory sizes
+- Fast Rust-based implementation optimized for modern systems
+- Interactive navigation and depth control
+- Advanced filtering and exclusion options
+- Performance optimization for large filesystems
+
+#### 📊 [Ncdu - NCurses Disk Usage Analyzer](./system-administration/ncdu-disk-usage-analyzer.md)
+
+Interactive disk usage analyzer with ncurses interface for comprehensive file management
+
+- Full-featured interactive interface with file deletion capabilities
+- Export/import functionality for scan results
+- Mature and reliable C-based implementation
+- Advanced filtering and performance options
+- Comprehensive troubleshooting and integration guides
+
+#### ⚡ [Gdu - Fast Go-based Disk Usage Analyzer](./system-administration/gdu-disk-usage-analyzer.md)
+
+Extremely fast, SSD-optimized disk usage analyzer written in Go
+
+- Optimized for modern SSD storage with efficient I/O patterns
+- Low memory footprint and streaming processing
+- Interactive terminal interface with file management
+- Performance benchmarking and optimization strategies
+- Advanced usage patterns for large filesystems
+
+#### ⏰ [Agedu - Time-based Disk Usage Analyzer](./system-administration/agedu-disk-usage-analyzer.md)
+
+Specialized tool for identifying unused files through access time analysis
+
+- Time-based analysis to find truly unused files
+- Web-based interface for detailed exploration
+- Export capabilities in multiple formats (CSV, JSON)
+- Trend analysis and historical comparison
+- Automated monitoring and cleanup strategies
+
+#### 🎨 [Diskonaut - Visual Disk Space Navigator](./system-administration/diskonaut-disk-usage-analyzer.md)
+
+Visual disk space navigator with intuitive interface and multiple view modes
+
+- Visual representation with tree, list, and bar chart views
+- Interactive navigation with file deletion capabilities
+- Rust-based implementation with modern interface design
+- Performance optimization for different filesystem types
+- Advanced visual features and customization options
+
+#### 🧹 [Arch Linux Disk Cleanup](./system-administration/arch-linux-disk-cleanup.md)
+
+Comprehensive disk cleanup strategies specifically for Arch Linux systems
+
+- Package management cleanup (orphaned packages, cache management)
+- System maintenance procedures and automated cleanup scripts
+- Integration with disk usage analysis tools
+- Performance monitoring and maintenance scheduling
+- Best practices for system optimization
+
+#### 📈 [Disk Usage Tools Comparison](./system-administration/disk-usage-tools-comparison.md)
+
+Comprehensive comparison guide for choosing the right disk usage analysis tool
+
+- Detailed feature comparison matrix with performance benchmarks
+- Use case recommendations and tool selection guide
+- Integration strategies and workflow optimization
+- Best practices for each tool with troubleshooting guides
+- Performance testing and benchmarking methodologies
 
 ## Quick Reference
 
@@ -609,78 +785,6 @@ When adding new shell scripts to the project:
 - [Pytest Documentation](https://docs.pytest.org/)
 - [Python Testing Best Practices](https://docs.python.org/3/library/unittest.html)
 - [Coverage.py](https://coverage.readthedocs.io/)
-
-### 🖥️ Disk Usage Analysis Tools
-
-#### 🦊 [Dust - Modern Disk Usage Analyzer](./dust-disk-usage-analyzer.md)
-
-Modern, Rust-based alternative to traditional `du` command with intuitive visual interface
-
-- Color-coded visual representation of directory sizes
-- Fast Rust-based implementation optimized for modern systems
-- Interactive navigation and depth control
-- Advanced filtering and exclusion options
-- Performance optimization for large filesystems
-
-#### 📊 [Ncdu - NCurses Disk Usage Analyzer](./ncdu-disk-usage-analyzer.md)
-
-Interactive disk usage analyzer with ncurses interface for comprehensive file management
-
-- Full-featured interactive interface with file deletion capabilities
-- Export/import functionality for scan results
-- Mature and reliable C-based implementation
-- Advanced filtering and performance options
-- Comprehensive troubleshooting and integration guides
-
-#### ⚡ [Gdu - Fast Go-based Disk Usage Analyzer](./gdu-disk-usage-analyzer.md)
-
-Extremely fast, SSD-optimized disk usage analyzer written in Go
-
-- Optimized for modern SSD storage with efficient I/O patterns
-- Low memory footprint and streaming processing
-- Interactive terminal interface with file management
-- Performance benchmarking and optimization strategies
-- Advanced usage patterns for large filesystems
-
-#### ⏰ [Agedu - Time-based Disk Usage Analyzer](./agedu-disk-usage-analyzer.md)
-
-Specialized tool for identifying unused files through access time analysis
-
-- Time-based analysis to find truly unused files
-- Web-based interface for detailed exploration
-- Export capabilities in multiple formats (CSV, JSON)
-- Trend analysis and historical comparison
-- Automated monitoring and cleanup strategies
-
-#### 🎨 [Diskonaut - Visual Disk Space Navigator](./diskonaut-disk-usage-analyzer.md)
-
-Visual disk space navigator with intuitive interface and multiple view modes
-
-- Visual representation with tree, list, and bar chart views
-- Interactive navigation with file deletion capabilities
-- Rust-based implementation with modern interface design
-- Performance optimization for different filesystem types
-- Advanced visual features and customization options
-
-#### 🧹 [Arch Linux Disk Cleanup](./arch-linux-disk-cleanup.md)
-
-Comprehensive disk cleanup strategies specifically for Arch Linux systems
-
-- Package management cleanup (orphaned packages, cache management)
-- System maintenance procedures and automated cleanup scripts
-- Integration with disk usage analysis tools
-- Performance monitoring and maintenance scheduling
-- Best practices for system optimization
-
-#### 📈 [Disk Usage Tools Comparison](./disk-usage-tools-comparison.md)
-
-Comprehensive comparison guide for choosing the right disk usage analysis tool
-
-- Detailed feature comparison matrix with performance benchmarks
-- Use case recommendations and tool selection guide
-- Integration strategies and workflow optimization
-- Best practices for each tool with troubleshooting guides
-- Performance testing and benchmarking methodologies
 
 ---
 

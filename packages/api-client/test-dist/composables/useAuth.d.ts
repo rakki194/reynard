@@ -3,18 +3,18 @@
  */
 import type { UserLogin, UserCreate } from "../generated/index.js";
 export interface UseAuthOptions {
-    basePath?: string;
+  basePath?: string;
 }
 export declare function useAuth(options?: UseAuthOptions): {
-    user: import("solid-js").Accessor<any>;
-    isAuthenticated: import("solid-js").Accessor<boolean>;
-    login: (credentials: UserLogin) => Promise<{
-        success: boolean;
-        user: any;
-    }>;
-    register: (data: UserCreate) => Promise<{
-        success: boolean;
-        user: any;
-    }>;
-    logout: () => Promise<void>;
+  user: import("solid-js").Accessor<any>;
+  isAuthenticated: import("solid-js").Accessor<boolean>;
+  login: (credentials: UserLogin) => Promise<{
+    success: boolean;
+    user: any;
+  }>;
+  register: (data: UserCreate) => Promise<{
+    success: boolean;
+    user: any;
+  }>;
+  logout: () => Promise<void>;
 };

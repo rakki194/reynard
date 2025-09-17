@@ -32,7 +32,7 @@ test.describe("Breadcrumb Component E2E Tests", () => {
         ), document.getElementById("breadcrumb-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#breadcrumb-container")).toBeVisible();
     await expect(page.locator("#breadcrumb-container")).toContainText("Home");
     await expect(page.locator("#breadcrumb-container")).toContainText("Products");
@@ -58,12 +58,12 @@ test.describe("Breadcrumb Component E2E Tests", () => {
         ), document.getElementById("breadcrumb-container"));
       </script>
     `);
-    
+
     // Check that links are clickable
     const homeLink = page.locator('a[href="/"]');
     await expect(homeLink).toBeVisible();
     await expect(homeLink).toContainText("Home");
-    
+
     const productsLink = page.locator('a[href="/products"]');
     await expect(productsLink).toBeVisible();
     await expect(productsLink).toContainText("Products");

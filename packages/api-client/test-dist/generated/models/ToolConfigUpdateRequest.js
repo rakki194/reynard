@@ -22,34 +22,35 @@ exports.ToolConfigUpdateRequestToJSONTyped = ToolConfigUpdateRequestToJSONTyped;
  * Check if a given object implements the ToolConfigUpdateRequest interface.
  */
 function instanceOfToolConfigUpdateRequest(value) {
-    if (!('toolName' in value) || value['toolName'] === undefined)
-        return false;
-    return true;
+  if (!("toolName" in value) || value["toolName"] === undefined) return false;
+  return true;
 }
 function ToolConfigUpdateRequestFromJSON(json) {
-    return ToolConfigUpdateRequestFromJSONTyped(json, false);
+  return ToolConfigUpdateRequestFromJSONTyped(json, false);
 }
 function ToolConfigUpdateRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'toolName': json['tool_name'],
-        'enabled': json['enabled'] == null ? undefined : json['enabled'],
-        'config': json['config'] == null ? undefined : json['config'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    toolName: json["tool_name"],
+    enabled: json["enabled"] == null ? undefined : json["enabled"],
+    config: json["config"] == null ? undefined : json["config"],
+  };
 }
 function ToolConfigUpdateRequestToJSON(json) {
-    return ToolConfigUpdateRequestToJSONTyped(json, false);
+  return ToolConfigUpdateRequestToJSONTyped(json, false);
 }
 function ToolConfigUpdateRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'tool_name': value['toolName'],
-        'enabled': value['enabled'],
-        'config': value['config'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    tool_name: value["toolName"],
+    enabled: value["enabled"],
+    config: value["config"],
+  };
 }

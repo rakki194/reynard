@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
-import type { MCPToolCall, MCPToolResponse } from '../models/index';
+import * as runtime from "../runtime";
+import type { MCPToolCall, MCPToolResponse } from "../models/index";
 export interface CallMcpToolApiMcpToolsCallPostRequest {
-    mCPToolCall: MCPToolCall;
+  mCPToolCall: MCPToolCall;
 }
 /**
  * McpToolsApi - interface
@@ -21,56 +21,72 @@ export interface CallMcpToolApiMcpToolsCallPostRequest {
  * @interface McpToolsApiInterface
  */
 export interface McpToolsApiInterface {
-    /**
-     * Call an MCP tool and return its result. This connects to an external MCP server running on localhost:8001.
-     * @summary Call Mcp Tool
-     * @param {MCPToolCall} mCPToolCall
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpToolsApiInterface
-     */
-    callMcpToolApiMcpToolsCallPostRaw(requestParameters: CallMcpToolApiMcpToolsCallPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MCPToolResponse>>;
-    /**
-     * Call an MCP tool and return its result. This connects to an external MCP server running on localhost:8001.
-     * Call Mcp Tool
-     */
-    callMcpToolApiMcpToolsCallPost(requestParameters: CallMcpToolApiMcpToolsCallPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPToolResponse>;
-    /**
-     * Check if the MCP server is accessible.
-     * @summary Mcp Health Check
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpToolsApiInterface
-     */
-    mcpHealthCheckApiMcpToolsHealthGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Check if the MCP server is accessible.
-     * Mcp Health Check
-     */
-    mcpHealthCheckApiMcpToolsHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Call an MCP tool and return its result. This connects to an external MCP server running on localhost:8001.
+   * @summary Call Mcp Tool
+   * @param {MCPToolCall} mCPToolCall
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpToolsApiInterface
+   */
+  callMcpToolApiMcpToolsCallPostRaw(
+    requestParameters: CallMcpToolApiMcpToolsCallPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<MCPToolResponse>>;
+  /**
+   * Call an MCP tool and return its result. This connects to an external MCP server running on localhost:8001.
+   * Call Mcp Tool
+   */
+  callMcpToolApiMcpToolsCallPost(
+    requestParameters: CallMcpToolApiMcpToolsCallPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<MCPToolResponse>;
+  /**
+   * Check if the MCP server is accessible.
+   * @summary Mcp Health Check
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpToolsApiInterface
+   */
+  mcpHealthCheckApiMcpToolsHealthGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Check if the MCP server is accessible.
+   * Mcp Health Check
+   */
+  mcpHealthCheckApiMcpToolsHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 }
 /**
  *
  */
 export declare class McpToolsApi extends runtime.BaseAPI implements McpToolsApiInterface {
-    /**
-     * Call an MCP tool and return its result. This connects to an external MCP server running on localhost:8001.
-     * Call Mcp Tool
-     */
-    callMcpToolApiMcpToolsCallPostRaw(requestParameters: CallMcpToolApiMcpToolsCallPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MCPToolResponse>>;
-    /**
-     * Call an MCP tool and return its result. This connects to an external MCP server running on localhost:8001.
-     * Call Mcp Tool
-     */
-    callMcpToolApiMcpToolsCallPost(requestParameters: CallMcpToolApiMcpToolsCallPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPToolResponse>;
-    /**
-     * Check if the MCP server is accessible.
-     * Mcp Health Check
-     */
-    mcpHealthCheckApiMcpToolsHealthGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Check if the MCP server is accessible.
-     * Mcp Health Check
-     */
-    mcpHealthCheckApiMcpToolsHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Call an MCP tool and return its result. This connects to an external MCP server running on localhost:8001.
+   * Call Mcp Tool
+   */
+  callMcpToolApiMcpToolsCallPostRaw(
+    requestParameters: CallMcpToolApiMcpToolsCallPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<MCPToolResponse>>;
+  /**
+   * Call an MCP tool and return its result. This connects to an external MCP server running on localhost:8001.
+   * Call Mcp Tool
+   */
+  callMcpToolApiMcpToolsCallPost(
+    requestParameters: CallMcpToolApiMcpToolsCallPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<MCPToolResponse>;
+  /**
+   * Check if the MCP server is accessible.
+   * Mcp Health Check
+   */
+  mcpHealthCheckApiMcpToolsHealthGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Check if the MCP server is accessible.
+   * Mcp Health Check
+   */
+  mcpHealthCheckApiMcpToolsHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 }

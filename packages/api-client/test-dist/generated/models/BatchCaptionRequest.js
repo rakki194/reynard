@@ -23,32 +23,33 @@ var CaptionRequest_1 = require("./CaptionRequest");
  * Check if a given object implements the BatchCaptionRequest interface.
  */
 function instanceOfBatchCaptionRequest(value) {
-    if (!('tasks' in value) || value['tasks'] === undefined)
-        return false;
-    return true;
+  if (!("tasks" in value) || value["tasks"] === undefined) return false;
+  return true;
 }
 function BatchCaptionRequestFromJSON(json) {
-    return BatchCaptionRequestFromJSONTyped(json, false);
+  return BatchCaptionRequestFromJSONTyped(json, false);
 }
 function BatchCaptionRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'tasks': (json['tasks'].map(CaptionRequest_1.CaptionRequestFromJSON)),
-        'maxConcurrent': json['max_concurrent'] == null ? undefined : json['max_concurrent'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    tasks: json["tasks"].map(CaptionRequest_1.CaptionRequestFromJSON),
+    maxConcurrent: json["max_concurrent"] == null ? undefined : json["max_concurrent"],
+  };
 }
 function BatchCaptionRequestToJSON(json) {
-    return BatchCaptionRequestToJSONTyped(json, false);
+  return BatchCaptionRequestToJSONTyped(json, false);
 }
 function BatchCaptionRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'tasks': (value['tasks'].map(CaptionRequest_1.CaptionRequestToJSON)),
-        'max_concurrent': value['maxConcurrent'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    tasks: value["tasks"].map(CaptionRequest_1.CaptionRequestToJSON),
+    max_concurrent: value["maxConcurrent"],
+  };
 }

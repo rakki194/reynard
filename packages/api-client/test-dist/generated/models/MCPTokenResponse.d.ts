@@ -15,30 +15,30 @@
  * @interface MCPTokenResponse
  */
 export interface MCPTokenResponse {
-    /**
-     * Generated JWT token
-     * @type {string}
-     * @memberof MCPTokenResponse
-     */
-    token: string;
-    /**
-     * Client identifier
-     * @type {string}
-     * @memberof MCPTokenResponse
-     */
-    clientId: string;
-    /**
-     * Granted permissions
-     * @type {Array<string>}
-     * @memberof MCPTokenResponse
-     */
-    permissions: Array<string>;
-    /**
-     * Token expiration timestamp
-     * @type {number}
-     * @memberof MCPTokenResponse
-     */
-    expiresAt: number;
+  /**
+   * Generated JWT token
+   * @type {string}
+   * @memberof MCPTokenResponse
+   */
+  token: string;
+  /**
+   * Client identifier
+   * @type {string}
+   * @memberof MCPTokenResponse
+   */
+  clientId: string;
+  /**
+   * Granted permissions
+   * @type {Array<string>}
+   * @memberof MCPTokenResponse
+   */
+  permissions: Array<string>;
+  /**
+   * Token expiration timestamp
+   * @type {number}
+   * @memberof MCPTokenResponse
+   */
+  expiresAt: number;
 }
 /**
  * Check if a given object implements the MCPTokenResponse interface.
@@ -47,4 +47,7 @@ export declare function instanceOfMCPTokenResponse(value: object): value is MCPT
 export declare function MCPTokenResponseFromJSON(json: any): MCPTokenResponse;
 export declare function MCPTokenResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): MCPTokenResponse;
 export declare function MCPTokenResponseToJSON(json: any): MCPTokenResponse;
-export declare function MCPTokenResponseToJSONTyped(value?: MCPTokenResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function MCPTokenResponseToJSONTyped(
+  value?: MCPTokenResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

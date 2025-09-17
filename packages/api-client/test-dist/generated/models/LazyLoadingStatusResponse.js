@@ -22,50 +22,46 @@ exports.LazyLoadingStatusResponseToJSONTyped = LazyLoadingStatusResponseToJSONTy
  * Check if a given object implements the LazyLoadingStatusResponse interface.
  */
 function instanceOfLazyLoadingStatusResponse(value) {
-    if (!('systemStatus' in value) || value['systemStatus'] === undefined)
-        return false;
-    if (!('timestamp' in value) || value['timestamp'] === undefined)
-        return false;
-    if (!('loadedPackages' in value) || value['loadedPackages'] === undefined)
-        return false;
-    if (!('totalPackages' in value) || value['totalPackages'] === undefined)
-        return false;
-    if (!('memoryUsage' in value) || value['memoryUsage'] === undefined)
-        return false;
-    if (!('performance' in value) || value['performance'] === undefined)
-        return false;
-    return true;
+  if (!("systemStatus" in value) || value["systemStatus"] === undefined) return false;
+  if (!("timestamp" in value) || value["timestamp"] === undefined) return false;
+  if (!("loadedPackages" in value) || value["loadedPackages"] === undefined) return false;
+  if (!("totalPackages" in value) || value["totalPackages"] === undefined) return false;
+  if (!("memoryUsage" in value) || value["memoryUsage"] === undefined) return false;
+  if (!("performance" in value) || value["performance"] === undefined) return false;
+  return true;
 }
 function LazyLoadingStatusResponseFromJSON(json) {
-    return LazyLoadingStatusResponseFromJSONTyped(json, false);
+  return LazyLoadingStatusResponseFromJSONTyped(json, false);
 }
 function LazyLoadingStatusResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'systemStatus': json['system_status'],
-        'timestamp': json['timestamp'],
-        'loadedPackages': json['loaded_packages'],
-        'totalPackages': json['total_packages'],
-        'memoryUsage': json['memory_usage'],
-        'performance': json['performance'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    systemStatus: json["system_status"],
+    timestamp: json["timestamp"],
+    loadedPackages: json["loaded_packages"],
+    totalPackages: json["total_packages"],
+    memoryUsage: json["memory_usage"],
+    performance: json["performance"],
+  };
 }
 function LazyLoadingStatusResponseToJSON(json) {
-    return LazyLoadingStatusResponseToJSONTyped(json, false);
+  return LazyLoadingStatusResponseToJSONTyped(json, false);
 }
 function LazyLoadingStatusResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'system_status': value['systemStatus'],
-        'timestamp': value['timestamp'],
-        'loaded_packages': value['loadedPackages'],
-        'total_packages': value['totalPackages'],
-        'memory_usage': value['memoryUsage'],
-        'performance': value['performance'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    system_status: value["systemStatus"],
+    timestamp: value["timestamp"],
+    loaded_packages: value["loadedPackages"],
+    total_packages: value["totalPackages"],
+    memory_usage: value["memoryUsage"],
+    performance: value["performance"],
+  };
 }

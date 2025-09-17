@@ -23,38 +23,39 @@ var NLWebContext_1 = require("./NLWebContext");
  * Check if a given object implements the NLWebAskRequest interface.
  */
 function instanceOfNLWebAskRequest(value) {
-    if (!('query' in value) || value['query'] === undefined)
-        return false;
-    return true;
+  if (!("query" in value) || value["query"] === undefined) return false;
+  return true;
 }
 function NLWebAskRequestFromJSON(json) {
-    return NLWebAskRequestFromJSONTyped(json, false);
+  return NLWebAskRequestFromJSONTyped(json, false);
 }
 function NLWebAskRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'query': json['query'],
-        'context': json['context'] == null ? undefined : (0, NLWebContext_1.NLWebContextFromJSON)(json['context']),
-        'stream': json['stream'] == null ? undefined : json['stream'],
-        'maxTokens': json['max_tokens'] == null ? undefined : json['max_tokens'],
-        'temperature': json['temperature'] == null ? undefined : json['temperature'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    query: json["query"],
+    context: json["context"] == null ? undefined : (0, NLWebContext_1.NLWebContextFromJSON)(json["context"]),
+    stream: json["stream"] == null ? undefined : json["stream"],
+    maxTokens: json["max_tokens"] == null ? undefined : json["max_tokens"],
+    temperature: json["temperature"] == null ? undefined : json["temperature"],
+  };
 }
 function NLWebAskRequestToJSON(json) {
-    return NLWebAskRequestToJSONTyped(json, false);
+  return NLWebAskRequestToJSONTyped(json, false);
 }
 function NLWebAskRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'query': value['query'],
-        'context': (0, NLWebContext_1.NLWebContextToJSON)(value['context']),
-        'stream': value['stream'],
-        'max_tokens': value['maxTokens'],
-        'temperature': value['temperature'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    query: value["query"],
+    context: (0, NLWebContext_1.NLWebContextToJSON)(value["context"]),
+    stream: value["stream"],
+    max_tokens: value["maxTokens"],
+    temperature: value["temperature"],
+  };
 }

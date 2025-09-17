@@ -1,13 +1,13 @@
 /**
- * 🦊 Reynard Dev Server CLI Table Utilities
- * 
+ * 🦊 Dev Server Management CLI Table Utilities
+ *
  * Rich terminal table formatting for CLI output.
  */
 
-import chalk from 'chalk';
-import type { ServerInfo, HealthStatus, ProjectConfig } from '../../types/index.js';
-import { formatStatus, formatHealth, formatCategory } from './status-format.js';
-import { formatUptime } from './time-format.js';
+import chalk from "chalk";
+import type { ServerInfo, HealthStatus, ProjectConfig } from "../../types/index.js";
+import { formatStatus, formatHealth, formatCategory } from "./status-format.js";
+import { formatUptime } from "./time-format.js";
 
 // ============================================================================
 // Table Column Definition
@@ -17,7 +17,7 @@ export interface TableColumn<T = any> {
   key: keyof T;
   header: string;
   width?: number;
-  align?: 'left' | 'center' | 'right';
+  align?: "left" | "center" | "right";
   formatter?: (value: any, row: T) => string;
 }
 
@@ -27,7 +27,7 @@ export interface TableColumn<T = any> {
 
 export function createTable<T>(data: T[], columns: TableColumn<T>[]): string {
   if (data.length === 0) {
-    return chalk.yellow('No data available');
+    return chalk.yellow("No data available");
   }
 
   // Calculate column widths
@@ -35,9 +35,7 @@ export function createTable<T>(data: T[], columns: TableColumn<T>[]): string {
     const headerWidth = col.header.length;
     const contentWidth = Math.max(
       ...data.map(row => {
-        const value = col.formatter 
-          ? col.formatter(row[col.key], row)
-          : String(row[col.key] || '');
+        const value = col.formatter ? col.formatter(row[col.key], row) : String(row[col.key] || "");
         return value.length;
       })
     );
@@ -50,28 +48,24 @@ export function createTable<T>(data: T[], columns: TableColumn<T>[]): string {
       const headerText = col.header.padEnd(widths[index]);
       return chalk.blue.bold(headerText);
     })
-    .join(' │ ');
+    .join(" │ ");
 
   // Create separator
-  const separator = widths
-    .map(width => '─'.repeat(width))
-    .join('─┼─');
+  const separator = widths.map(width => "─".repeat(width)).join("─┼─");
 
   // Create rows
   const rows = data.map(row => {
     return columns
       .map((col, index) => {
-        const value = col.formatter 
-          ? col.formatter(row[col.key], row)
-          : String(row[col.key] || '');
-        
-        const alignedValue = alignText(value, widths[index], col.align || 'left');
+        const value = col.formatter ? col.formatter(row[col.key], row) : String(row[col.key] || "");
+
+        const alignedValue = alignText(value, widths[index], col.align || "left");
         return alignedValue;
       })
-      .join(' │ ');
+      .join(" │ ");
   });
 
-  return [header, separator, ...rows].join('\n');
+  return [header, separator, ...rows].join("\n");
 }
 
 // ============================================================================
@@ -81,35 +75,35 @@ export function createTable<T>(data: T[], columns: TableColumn<T>[]): string {
 export function createStatusTable(servers: ServerInfo[]): string {
   const columns: TableColumn<ServerInfo>[] = [
     {
-      key: 'name',
-      header: 'Project',
-      formatter: (value) => chalk.cyan(value),
+      key: "name",
+      header: "Project",
+      formatter: value => chalk.cyan(value),
     },
     {
-      key: 'status',
-      header: 'Status',
-      formatter: (value) => formatStatus(value),
+      key: "status",
+      header: "Status",
+      formatter: value => formatStatus(value),
     },
     {
-      key: 'health',
-      header: 'Health',
-      formatter: (value) => formatHealth(value),
+      key: "health",
+      header: "Health",
+      formatter: value => formatHealth(value),
     },
     {
-      key: 'port',
-      header: 'Port',
-      formatter: (value) => chalk.yellow(value.toString()),
+      key: "port",
+      header: "Port",
+      formatter: value => chalk.yellow(value.toString()),
     },
     {
-      key: 'pid',
-      header: 'PID',
-      formatter: (value) => value ? chalk.gray(value.toString()) : chalk.gray('N/A'),
+      key: "pid",
+      header: "PID",
+      formatter: value => (value ? chalk.gray(value.toString()) : chalk.gray("N/A")),
     },
     {
-      key: 'startTime',
-      header: 'Uptime',
+      key: "startTime",
+      header: "Uptime",
       formatter: (value, row) => {
-        if (!value) return chalk.gray('N/A');
+        if (!value) return chalk.gray("N/A");
         const uptime = Date.now() - new Date(value).getTime();
         return formatUptime(uptime);
       },
@@ -126,26 +120,28 @@ export function createStatusTable(servers: ServerInfo[]): string {
 export function createHealthTable(healthStatuses: HealthStatus[]): string {
   const columns: TableColumn<HealthStatus>[] = [
     {
-      key: 'project',
-      header: 'Project',
-      formatter: (value) => chalk.cyan(value),
+      key: "project",
+      header: "Project",
+      formatter: value => chalk.cyan(value),
     },
     {
-      key: 'health',
-      header: 'Health',
-      formatter: (value) => formatHealth(value),
+      key: "health",
+      header: "Health",
+      formatter: value => formatHealth(value),
     },
     {
-      key: 'lastCheck',
-      header: 'Last Check',
-      formatter: (value) => {
+      key: "lastCheck",
+      header: "Last Check",
+      formatter: value => {
         const now = Date.now();
         const checkTime = new Date(value).getTime();
         const diff = now - checkTime;
-        
-        if (diff < 60000) { // Less than 1 minute
+
+        if (diff < 60000) {
+          // Less than 1 minute
           return chalk.green(`${Math.floor(diff / 1000)}s ago`);
-        } else if (diff < 3600000) { // Less than 1 hour
+        } else if (diff < 3600000) {
+          // Less than 1 hour
           return chalk.yellow(`${Math.floor(diff / 60000)}m ago`);
         } else {
           return chalk.red(`${Math.floor(diff / 3600000)}h ago`);
@@ -153,9 +149,9 @@ export function createHealthTable(healthStatuses: HealthStatus[]): string {
       },
     },
     {
-      key: 'checkDuration',
-      header: 'Duration',
-      formatter: (value) => {
+      key: "checkDuration",
+      header: "Duration",
+      formatter: value => {
         if (value < 1000) {
           return chalk.green(`${value}ms`);
         } else if (value < 5000) {
@@ -166,10 +162,10 @@ export function createHealthTable(healthStatuses: HealthStatus[]): string {
       },
     },
     {
-      key: 'responseTime',
-      header: 'Response',
-      formatter: (value) => {
-        if (!value) return chalk.gray('N/A');
+      key: "responseTime",
+      header: "Response",
+      formatter: value => {
+        if (!value) return chalk.gray("N/A");
         if (value < 100) {
           return chalk.green(`${value}ms`);
         } else if (value < 1000) {
@@ -180,9 +176,9 @@ export function createHealthTable(healthStatuses: HealthStatus[]): string {
       },
     },
     {
-      key: 'error',
-      header: 'Error',
-      formatter: (value) => value ? chalk.red(value) : chalk.gray('None'),
+      key: "error",
+      header: "Error",
+      formatter: value => (value ? chalk.red(value) : chalk.gray("None")),
     },
   ];
 
@@ -196,48 +192,47 @@ export function createHealthTable(healthStatuses: HealthStatus[]): string {
 export function createProjectTable(projects: ProjectConfig[]): string {
   const columns: TableColumn<ProjectConfig>[] = [
     {
-      key: 'name',
-      header: 'Project',
-      formatter: (value) => chalk.cyan(value),
+      key: "name",
+      header: "Project",
+      formatter: value => chalk.cyan(value),
     },
     {
-      key: 'port',
-      header: 'Port',
-      formatter: (value) => chalk.yellow(value.toString()),
+      key: "port",
+      header: "Port",
+      formatter: value => chalk.yellow(value.toString()),
     },
     {
-      key: 'category',
-      header: 'Category',
-      formatter: (value) => formatCategory(value),
+      key: "category",
+      header: "Category",
+      formatter: value => formatCategory(value),
     },
     {
-      key: 'description',
-      header: 'Description',
-      formatter: (value) => value || chalk.gray('No description'),
+      key: "description",
+      header: "Description",
+      formatter: value => value || chalk.gray("No description"),
     },
     {
-      key: 'autoReload',
-      header: 'Auto Reload',
-      formatter: (value) => value ? chalk.green('✅') : chalk.red('❌'),
+      key: "autoReload",
+      header: "Auto Reload",
+      formatter: value => (value ? chalk.green("✅") : chalk.red("❌")),
     },
     {
-      key: 'hotReload',
-      header: 'Hot Reload',
-      formatter: (value) => value ? chalk.green('✅') : chalk.red('❌'),
+      key: "hotReload",
+      header: "Hot Reload",
+      formatter: value => (value ? chalk.green("✅") : chalk.red("❌")),
     },
   ];
 
   return createTable(projects, columns);
 }
 
-
-function alignText(text: string, width: number, align: 'left' | 'center' | 'right'): string {
+function alignText(text: string, width: number, align: "left" | "center" | "right"): string {
   switch (align) {
-    case 'left':
+    case "left":
       return text.padEnd(width);
-    case 'center':
+    case "center":
       return text.padStart((width + text.length) / 2).padEnd(width);
-    case 'right':
+    case "right":
       return text.padStart(width);
     default:
       return text.padEnd(width);
@@ -249,36 +244,36 @@ function alignText(text: string, width: number, align: 'left' | 'center' | 'righ
 // ============================================================================
 
 export function createSummary(servers: ServerInfo[]): string {
-  const running = servers.filter(s => s.status === 'running').length;
+  const running = servers.filter(s => s.status === "running").length;
   const total = servers.length;
-  const healthy = servers.filter(s => s.health === 'healthy').length;
-  
+  const healthy = servers.filter(s => s.health === "healthy").length;
+
   const summary = [
-    chalk.blue('🦊 Reynard Dev Server Summary'),
-    '',
+    chalk.blue("🦊 Dev Server Management Summary"),
+    "",
     `Total Projects: ${chalk.yellow(total)}`,
     `Running: ${chalk.green(running)}`,
     `Healthy: ${chalk.green(healthy)}`,
-    `Unhealthy: ${chalk.red(servers.filter(s => s.health === 'unhealthy').length)}`,
+    `Unhealthy: ${chalk.red(servers.filter(s => s.health === "unhealthy").length)}`,
   ];
-  
-  return summary.join('\n');
+
+  return summary.join("\n");
 }
 
 export function createHealthSummary(healthStatuses: HealthStatus[]): string {
   const total = healthStatuses.length;
-  const healthy = healthStatuses.filter(h => h.health === 'healthy').length;
-  const unhealthy = healthStatuses.filter(h => h.health === 'unhealthy').length;
-  const unknown = healthStatuses.filter(h => h.health === 'unknown').length;
-  
+  const healthy = healthStatuses.filter(h => h.health === "healthy").length;
+  const unhealthy = healthStatuses.filter(h => h.health === "unhealthy").length;
+  const unknown = healthStatuses.filter(h => h.health === "unknown").length;
+
   const summary = [
-    chalk.blue('🦊 Health Status Summary'),
-    '',
+    chalk.blue("🦊 Health Status Summary"),
+    "",
     `Total: ${chalk.yellow(total)}`,
     `Healthy: ${chalk.green(healthy)}`,
     `Unhealthy: ${chalk.red(unhealthy)}`,
     `Unknown: ${chalk.gray(unknown)}`,
   ];
-  
-  return summary.join('\n');
+
+  return summary.join("\n");
 }

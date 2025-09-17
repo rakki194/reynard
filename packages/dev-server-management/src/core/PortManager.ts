@@ -1,19 +1,14 @@
 /**
- * 🦊 Reynard Dev Server Port Manager
- * 
+ * 🦊 Dev Server Management Port Manager
+ *
  * Intelligent port management with conflict detection and resolution.
  * Leverages existing Reynard patterns for consistent behavior.
  */
 
-import { exec } from 'node:child_process';
-import { promisify } from 'node:util';
-import type { 
-  PortInfo, 
-  PortAllocation, 
-  ProjectCategory,
-  PortRange 
-} from '../types/index.js';
-import { PortConflictError } from '../types/index.js';
+import { exec } from "node:child_process";
+import { promisify } from "node:util";
+import type { PortInfo, PortAllocation, ProjectCategory, PortRange } from "../types/index.js";
+import { PortConflictError } from "../types/index.js";
 
 const execAsync = promisify(exec);
 
@@ -33,11 +28,11 @@ export class PortManager {
    * Initialize default port ranges
    */
   private initializeDefaultRanges(): void {
-    this.portRanges.set('package', { start: 3000, end: 3009 });
-    this.portRanges.set('example', { start: 3010, end: 3019 });
-    this.portRanges.set('backend', { start: 8000, end: 8009 });
-    this.portRanges.set('e2e', { start: 3020, end: 3029 });
-    this.portRanges.set('template', { start: 3030, end: 3039 });
+    this.portRanges.set("package", { start: 3000, end: 3009 });
+    this.portRanges.set("example", { start: 3010, end: 3019 });
+    this.portRanges.set("backend", { start: 8000, end: 8009 });
+    this.portRanges.set("e2e", { start: 3020, end: 3029 });
+    this.portRanges.set("template", { start: 3030, end: 3039 });
   }
 
   /**
@@ -115,8 +110,8 @@ export class PortManager {
   async getPortInfo(port: number): Promise<PortInfo> {
     const inUse = await this.isPortInUse(port);
     const project = this.allocatedPorts.get(port);
-    
-    let process: PortInfo['process'];
+
+    let process: PortInfo["process"];
     if (inUse) {
       try {
         const processInfo = await this.getProcessUsingPort(port);
@@ -191,11 +186,11 @@ export class PortManager {
   /**
    * Get process information for a port
    */
-  async getProcessUsingPort(port: number): Promise<PortInfo['process']> {
+  async getProcessUsingPort(port: number): Promise<PortInfo["process"]> {
     try {
       const { stdout } = await execAsync(`lsof -ti :${port} -c`);
-      const lines = stdout.trim().split('\n');
-      
+      const lines = stdout.trim().split("\n");
+
       if (lines.length === 0) {
         return undefined;
       }
@@ -208,13 +203,13 @@ export class PortManager {
 
       // Get process name and command
       const { stdout: psOutput } = await execAsync(`ps -p ${pid} -o comm=,args=`);
-      const [name, ...args] = psOutput.trim().split(' ');
-      const command = args.join(' ');
+      const [name, ...args] = psOutput.trim().split(" ");
+      const command = args.join(" ");
 
       return {
         pid,
-        name: name || 'unknown',
-        command: command || 'unknown',
+        name: name || "unknown",
+        command: command || "unknown",
       };
     } catch (error) {
       return undefined;
@@ -319,21 +314,21 @@ export class PortManager {
     conflicts: Array<{
       port: number;
       project: string;
-      systemProcess?: PortInfo['process'];
+      systemProcess?: PortInfo["process"];
     }>;
     warnings: string[];
   }> {
     const conflicts: Array<{
       port: number;
       project: string;
-      systemProcess?: PortInfo['process'];
+      systemProcess?: PortInfo["process"];
     }> = [];
 
     const warnings: string[] = [];
 
     for (const [port, project] of this.allocatedPorts.entries()) {
       const portInfo = await this.getPortInfo(port);
-      
+
       if (portInfo.inUse && portInfo.process) {
         // Port is in use by system process
         conflicts.push({
@@ -350,7 +345,7 @@ export class PortManager {
       for (let j = i + 1; j < ranges.length; j++) {
         const [category1, range1] = ranges[i];
         const [category2, range2] = ranges[j];
-        
+
         if (this.rangesOverlap(range1, range2)) {
           warnings.push(`Port ranges for ${category1} and ${category2} overlap`);
         }
@@ -374,7 +369,7 @@ export class PortManager {
     if (this.allocatedPorts.has(port)) {
       return false;
     }
-    
+
     // Add to reserved ports for the appropriate category
     const category = this.getCategoryForPort(port);
     if (category) {
@@ -389,7 +384,7 @@ export class PortManager {
         }
       }
     }
-    
+
     return false;
   }
 

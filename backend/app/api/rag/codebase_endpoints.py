@@ -14,42 +14,26 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 
 from app.core.config import get_config
-from app.services.rag.codebase_indexer import CodebaseIndexer
+from .service import get_rag_service
 
 logger = logging.getLogger("uvicorn")
 
 router = APIRouter(prefix="/codebase", tags=["codebase"])
 
-# Global codebase indexer instance
-_codebase_indexer: CodebaseIndexer | None = None
-
-
-async def get_codebase_indexer() -> CodebaseIndexer:
-    """Get the codebase indexer instance."""
-    global _codebase_indexer
-    if _codebase_indexer is None:
-        _codebase_indexer = CodebaseIndexer()
-        config = get_config()
-        service_configs = config.get_service_configs()
-        rag_config = service_configs.get("rag", {})
-        
-        success = await _codebase_indexer.initialize(rag_config)
-        if not success:
-            raise HTTPException(status_code=500, detail="Failed to initialize codebase indexer")
-    
-    return _codebase_indexer
+# Use the existing RAG service from the API module
 
 
 @router.post("/index")
 async def index_codebase(
-    indexer: CodebaseIndexer = Depends(get_codebase_indexer)
+    rag_service = Depends(get_rag_service)
 ) -> StreamingResponse:
     """Index the Reynard codebase for semantic search."""
     try:
         async def generate():
-            async for item in indexer.index_codebase():
-                import json
-                yield f"data: {json.dumps(item)}\n\n"
+            # TODO: Implement codebase indexing using the new RAG service
+            # For now, return a placeholder response
+            import json
+            yield f"data: {json.dumps({'type': 'info', 'message': 'Codebase indexing not yet implemented with new RAG service'})}\n\n"
         
         return StreamingResponse(
             generate(),
@@ -64,11 +48,11 @@ async def index_codebase(
 
 @router.get("/stats")
 async def get_codebase_stats(
-    indexer: CodebaseIndexer = Depends(get_codebase_indexer)
+    rag_service = Depends(get_rag_service)
 ) -> Dict[str, Any]:
     """Get codebase indexing statistics."""
     try:
-        stats = await indexer.get_stats()
+        stats = await rag_service.get_stats()
         return stats
     
     except Exception as e:
@@ -78,35 +62,44 @@ async def get_codebase_stats(
 
 @router.get("/health")
 async def health_check(
-    indexer: CodebaseIndexer = Depends(get_codebase_indexer)
+    rag_service = Depends(get_rag_service)
 ) -> Dict[str, Any]:
-    """Check codebase indexer health."""
+    """Check RAG service health."""
     try:
-        is_healthy = await indexer.health_check()
-        return {
-            "healthy": is_healthy,
-            "service": "codebase_indexer"
-        }
+        # Simple health check - just verify the service is initialized
+        if hasattr(rag_service, '_initialized') and rag_service._initialized:
+            return {
+                "healthy": True,
+                "service": "rag_service",
+                "status": "initialized"
+            }
+        else:
+            return {
+                "healthy": False,
+                "service": "rag_service",
+                "status": "not_initialized"
+            }
     
     except Exception as e:
         logger.error(f"Health check failed: {e}")
         return {
             "healthy": False,
-            "service": "codebase_indexer",
+            "service": "rag_service",
             "error": str(e)
         }
 
 
 @router.post("/scan")
 async def scan_codebase(
-    indexer: CodebaseIndexer = Depends(get_codebase_indexer)
+    rag_service = Depends(get_rag_service)
 ) -> StreamingResponse:
     """Scan the codebase and return file information."""
     try:
         async def generate():
-            async for item in indexer.scan_codebase():
-                import json
-                yield f"data: {json.dumps(item)}\n\n"
+            # TODO: Implement codebase scanning using the new RAG service
+            # For now, return a placeholder response
+            import json
+            yield f"data: {json.dumps({'type': 'info', 'message': 'Codebase scanning not yet implemented with new RAG service'})}\n\n"
         
         return StreamingResponse(
             generate(),

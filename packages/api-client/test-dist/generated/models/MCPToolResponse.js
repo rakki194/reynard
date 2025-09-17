@@ -22,34 +22,35 @@ exports.MCPToolResponseToJSONTyped = MCPToolResponseToJSONTyped;
  * Check if a given object implements the MCPToolResponse interface.
  */
 function instanceOfMCPToolResponse(value) {
-    if (!('success' in value) || value['success'] === undefined)
-        return false;
-    return true;
+  if (!("success" in value) || value["success"] === undefined) return false;
+  return true;
 }
 function MCPToolResponseFromJSON(json) {
-    return MCPToolResponseFromJSONTyped(json, false);
+  return MCPToolResponseFromJSONTyped(json, false);
 }
 function MCPToolResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'success': json['success'],
-        'result': json['result'] == null ? undefined : json['result'],
-        'error': json['error'] == null ? undefined : json['error'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    success: json["success"],
+    result: json["result"] == null ? undefined : json["result"],
+    error: json["error"] == null ? undefined : json["error"],
+  };
 }
 function MCPToolResponseToJSON(json) {
-    return MCPToolResponseToJSONTyped(json, false);
+  return MCPToolResponseToJSONTyped(json, false);
 }
 function MCPToolResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'success': value['success'],
-        'result': value['result'],
-        'error': value['error'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    success: value["success"],
+    result: value["result"],
+    error: value["error"],
+  };
 }

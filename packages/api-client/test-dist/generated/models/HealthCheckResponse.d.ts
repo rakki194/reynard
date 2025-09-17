@@ -15,30 +15,30 @@
  * @interface HealthCheckResponse
  */
 export interface HealthCheckResponse {
-    /**
-     * Service status
-     * @type {string}
-     * @memberof HealthCheckResponse
-     */
-    status: string;
-    /**
-     * Status message
-     * @type {string}
-     * @memberof HealthCheckResponse
-     */
-    message: string;
-    /**
-     * Detailed status information
-     * @type {object}
-     * @memberof HealthCheckResponse
-     */
-    details: object;
-    /**
-     * Health check timestamp
-     * @type {string}
-     * @memberof HealthCheckResponse
-     */
-    timestamp: string;
+  /**
+   * Service status
+   * @type {string}
+   * @memberof HealthCheckResponse
+   */
+  status: string;
+  /**
+   * Status message
+   * @type {string}
+   * @memberof HealthCheckResponse
+   */
+  message: string;
+  /**
+   * Detailed status information
+   * @type {object}
+   * @memberof HealthCheckResponse
+   */
+  details: object;
+  /**
+   * Health check timestamp
+   * @type {string}
+   * @memberof HealthCheckResponse
+   */
+  timestamp: string;
 }
 /**
  * Check if a given object implements the HealthCheckResponse interface.
@@ -47,4 +47,7 @@ export declare function instanceOfHealthCheckResponse(value: object): value is H
 export declare function HealthCheckResponseFromJSON(json: any): HealthCheckResponse;
 export declare function HealthCheckResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): HealthCheckResponse;
 export declare function HealthCheckResponseToJSON(json: any): HealthCheckResponse;
-export declare function HealthCheckResponseToJSONTyped(value?: HealthCheckResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function HealthCheckResponseToJSONTyped(
+  value?: HealthCheckResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

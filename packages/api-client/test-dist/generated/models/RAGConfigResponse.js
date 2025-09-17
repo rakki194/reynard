@@ -22,32 +22,33 @@ exports.RAGConfigResponseToJSONTyped = RAGConfigResponseToJSONTyped;
  * Check if a given object implements the RAGConfigResponse interface.
  */
 function instanceOfRAGConfigResponse(value) {
-    if (!('config' in value) || value['config'] === undefined)
-        return false;
-    return true;
+  if (!("config" in value) || value["config"] === undefined) return false;
+  return true;
 }
 function RAGConfigResponseFromJSON(json) {
-    return RAGConfigResponseFromJSONTyped(json, false);
+  return RAGConfigResponseFromJSONTyped(json, false);
 }
 function RAGConfigResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'config': json['config'],
-        'updated': json['updated'] == null ? undefined : json['updated'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    config: json["config"],
+    updated: json["updated"] == null ? undefined : json["updated"],
+  };
 }
 function RAGConfigResponseToJSON(json) {
-    return RAGConfigResponseToJSONTyped(json, false);
+  return RAGConfigResponseToJSONTyped(json, false);
 }
 function RAGConfigResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'config': value['config'],
-        'updated': value['updated'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    config: value["config"],
+    updated: value["updated"],
+  };
 }

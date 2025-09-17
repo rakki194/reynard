@@ -15,42 +15,42 @@
  * @interface ToolConfigResponse
  */
 export interface ToolConfigResponse {
-    /**
-     * Tool name
-     * @type {string}
-     * @memberof ToolConfigResponse
-     */
-    name: string;
-    /**
-     * Tool category
-     * @type {string}
-     * @memberof ToolConfigResponse
-     */
-    category: string;
-    /**
-     * Whether tool is enabled
-     * @type {boolean}
-     * @memberof ToolConfigResponse
-     */
-    enabled: boolean;
-    /**
-     * Tool description
-     * @type {string}
-     * @memberof ToolConfigResponse
-     */
-    description: string;
-    /**
-     * Tool dependencies
-     * @type {Array<string>}
-     * @memberof ToolConfigResponse
-     */
-    dependencies?: Array<string>;
-    /**
-     * Tool configuration
-     * @type {object}
-     * @memberof ToolConfigResponse
-     */
-    config?: object;
+  /**
+   * Tool name
+   * @type {string}
+   * @memberof ToolConfigResponse
+   */
+  name: string;
+  /**
+   * Tool category
+   * @type {string}
+   * @memberof ToolConfigResponse
+   */
+  category: string;
+  /**
+   * Whether tool is enabled
+   * @type {boolean}
+   * @memberof ToolConfigResponse
+   */
+  enabled: boolean;
+  /**
+   * Tool description
+   * @type {string}
+   * @memberof ToolConfigResponse
+   */
+  description: string;
+  /**
+   * Tool dependencies
+   * @type {Array<string>}
+   * @memberof ToolConfigResponse
+   */
+  dependencies?: Array<string>;
+  /**
+   * Tool configuration
+   * @type {object}
+   * @memberof ToolConfigResponse
+   */
+  config?: object;
 }
 /**
  * Check if a given object implements the ToolConfigResponse interface.
@@ -59,4 +59,7 @@ export declare function instanceOfToolConfigResponse(value: object): value is To
 export declare function ToolConfigResponseFromJSON(json: any): ToolConfigResponse;
 export declare function ToolConfigResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ToolConfigResponse;
 export declare function ToolConfigResponseToJSON(json: any): ToolConfigResponse;
-export declare function ToolConfigResponseToJSONTyped(value?: ToolConfigResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ToolConfigResponseToJSONTyped(
+  value?: ToolConfigResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -15,36 +15,36 @@
  * @interface RAGQueryRequest
  */
 export interface RAGQueryRequest {
-    /**
-     * Search query
-     * @type {string}
-     * @memberof RAGQueryRequest
-     */
-    q: string;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGQueryRequest
-     */
-    modality?: string | null;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGQueryRequest
-     */
-    topK?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGQueryRequest
-     */
-    similarityThreshold?: number | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof RAGQueryRequest
-     */
-    enableReranking?: boolean | null;
+  /**
+   * Search query
+   * @type {string}
+   * @memberof RAGQueryRequest
+   */
+  q: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGQueryRequest
+   */
+  modality?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGQueryRequest
+   */
+  topK?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGQueryRequest
+   */
+  similarityThreshold?: number | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof RAGQueryRequest
+   */
+  enableReranking?: boolean | null;
 }
 /**
  * Check if a given object implements the RAGQueryRequest interface.

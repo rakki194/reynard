@@ -9,28 +9,28 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
-import type { AgentCreateRequest, AgentResponse, OffspringCreateRequest, WorldStatusResponse } from '../models/index';
+import * as runtime from "../runtime";
+import type { AgentCreateRequest, AgentResponse, OffspringCreateRequest, WorldStatusResponse } from "../models/index";
 export interface AnalyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRequest {
-    agent1Id: string;
-    agent2Id: string;
+  agent1Id: string;
+  agent2Id: string;
 }
 export interface CreateAgentApiEcsAgentsPostRequest {
-    agentCreateRequest: AgentCreateRequest;
+  agentCreateRequest: AgentCreateRequest;
 }
 export interface CreateOffspringApiEcsAgentsOffspringPostRequest {
-    offspringCreateRequest: OffspringCreateRequest;
+  offspringCreateRequest: OffspringCreateRequest;
 }
 export interface EnableBreedingApiEcsBreedingEnablePostRequest {
-    enabled?: boolean;
+  enabled?: boolean;
 }
 export interface FindCompatibleMatesApiEcsAgentsAgentIdMatesGetRequest {
-    agentId: string;
-    maxResults?: number;
+  agentId: string;
+  maxResults?: number;
 }
 export interface GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest {
-    agentId: string;
-    depth?: number;
+  agentId: string;
+  depth?: number;
 }
 /**
  * ECSWorldApi - interface
@@ -39,225 +39,313 @@ export interface GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest {
  * @interface ECSWorldApiInterface
  */
 export interface ECSWorldApiInterface {
-    /**
-     * Analyze genetic compatibility between two agents.
-     * @summary Analyze Compatibility
-     * @param {string} agent1Id
-     * @param {string} agent2Id
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ECSWorldApiInterface
-     */
-    analyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRaw(requestParameters: AnalyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Analyze genetic compatibility between two agents.
-     * Analyze Compatibility
-     */
-    analyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGet(requestParameters: AnalyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Create a new agent.
-     * @summary Create Agent
-     * @param {AgentCreateRequest} agentCreateRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ECSWorldApiInterface
-     */
-    createAgentApiEcsAgentsPostRaw(requestParameters: CreateAgentApiEcsAgentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AgentResponse>>;
-    /**
-     * Create a new agent.
-     * Create Agent
-     */
-    createAgentApiEcsAgentsPost(requestParameters: CreateAgentApiEcsAgentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AgentResponse>;
-    /**
-     * Create offspring from two parent agents.
-     * @summary Create Offspring
-     * @param {OffspringCreateRequest} offspringCreateRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ECSWorldApiInterface
-     */
-    createOffspringApiEcsAgentsOffspringPostRaw(requestParameters: CreateOffspringApiEcsAgentsOffspringPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AgentResponse>>;
-    /**
-     * Create offspring from two parent agents.
-     * Create Offspring
-     */
-    createOffspringApiEcsAgentsOffspringPost(requestParameters: CreateOffspringApiEcsAgentsOffspringPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AgentResponse>;
-    /**
-     * Enable or disable automatic breeding.
-     * @summary Enable Breeding
-     * @param {boolean} [enabled]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ECSWorldApiInterface
-     */
-    enableBreedingApiEcsBreedingEnablePostRaw(requestParameters: EnableBreedingApiEcsBreedingEnablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Enable or disable automatic breeding.
-     * Enable Breeding
-     */
-    enableBreedingApiEcsBreedingEnablePost(requestParameters: EnableBreedingApiEcsBreedingEnablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Find compatible mates for an agent.
-     * @summary Find Compatible Mates
-     * @param {string} agentId
-     * @param {number} [maxResults]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ECSWorldApiInterface
-     */
-    findCompatibleMatesApiEcsAgentsAgentIdMatesGetRaw(requestParameters: FindCompatibleMatesApiEcsAgentsAgentIdMatesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Find compatible mates for an agent.
-     * Find Compatible Mates
-     */
-    findCompatibleMatesApiEcsAgentsAgentIdMatesGet(requestParameters: FindCompatibleMatesApiEcsAgentsAgentIdMatesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Get agent family tree and lineage.
-     * @summary Get Agent Lineage
-     * @param {string} agentId
-     * @param {number} [depth]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ECSWorldApiInterface
-     */
-    getAgentLineageApiEcsAgentsAgentIdLineageGetRaw(requestParameters: GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Get agent family tree and lineage.
-     * Get Agent Lineage
-     */
-    getAgentLineageApiEcsAgentsAgentIdLineageGet(requestParameters: GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Get all agents in the world.
-     * @summary Get Agents
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ECSWorldApiInterface
-     */
-    getAgentsApiEcsAgentsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AgentResponse>>>;
-    /**
-     * Get all agents in the world.
-     * Get Agents
-     */
-    getAgentsApiEcsAgentsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AgentResponse>>;
-    /**
-     * Get breeding statistics.
-     * @summary Get Breeding Stats
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ECSWorldApiInterface
-     */
-    getBreedingStatsApiEcsBreedingStatsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Get breeding statistics.
-     * Get Breeding Stats
-     */
-    getBreedingStatsApiEcsBreedingStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Get the current ECS world status.
-     * @summary Get World Status
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ECSWorldApiInterface
-     */
-    getWorldStatusApiEcsStatusGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WorldStatusResponse>>;
-    /**
-     * Get the current ECS world status.
-     * Get World Status
-     */
-    getWorldStatusApiEcsStatusGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WorldStatusResponse>;
+  /**
+   * Analyze genetic compatibility between two agents.
+   * @summary Analyze Compatibility
+   * @param {string} agent1Id
+   * @param {string} agent2Id
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ECSWorldApiInterface
+   */
+  analyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRaw(
+    requestParameters: AnalyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Analyze genetic compatibility between two agents.
+   * Analyze Compatibility
+   */
+  analyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGet(
+    requestParameters: AnalyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Create a new agent.
+   * @summary Create Agent
+   * @param {AgentCreateRequest} agentCreateRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ECSWorldApiInterface
+   */
+  createAgentApiEcsAgentsPostRaw(
+    requestParameters: CreateAgentApiEcsAgentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<AgentResponse>>;
+  /**
+   * Create a new agent.
+   * Create Agent
+   */
+  createAgentApiEcsAgentsPost(
+    requestParameters: CreateAgentApiEcsAgentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<AgentResponse>;
+  /**
+   * Create offspring from two parent agents.
+   * @summary Create Offspring
+   * @param {OffspringCreateRequest} offspringCreateRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ECSWorldApiInterface
+   */
+  createOffspringApiEcsAgentsOffspringPostRaw(
+    requestParameters: CreateOffspringApiEcsAgentsOffspringPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<AgentResponse>>;
+  /**
+   * Create offspring from two parent agents.
+   * Create Offspring
+   */
+  createOffspringApiEcsAgentsOffspringPost(
+    requestParameters: CreateOffspringApiEcsAgentsOffspringPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<AgentResponse>;
+  /**
+   * Enable or disable automatic breeding.
+   * @summary Enable Breeding
+   * @param {boolean} [enabled]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ECSWorldApiInterface
+   */
+  enableBreedingApiEcsBreedingEnablePostRaw(
+    requestParameters: EnableBreedingApiEcsBreedingEnablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Enable or disable automatic breeding.
+   * Enable Breeding
+   */
+  enableBreedingApiEcsBreedingEnablePost(
+    requestParameters: EnableBreedingApiEcsBreedingEnablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Find compatible mates for an agent.
+   * @summary Find Compatible Mates
+   * @param {string} agentId
+   * @param {number} [maxResults]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ECSWorldApiInterface
+   */
+  findCompatibleMatesApiEcsAgentsAgentIdMatesGetRaw(
+    requestParameters: FindCompatibleMatesApiEcsAgentsAgentIdMatesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Find compatible mates for an agent.
+   * Find Compatible Mates
+   */
+  findCompatibleMatesApiEcsAgentsAgentIdMatesGet(
+    requestParameters: FindCompatibleMatesApiEcsAgentsAgentIdMatesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Get agent family tree and lineage.
+   * @summary Get Agent Lineage
+   * @param {string} agentId
+   * @param {number} [depth]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ECSWorldApiInterface
+   */
+  getAgentLineageApiEcsAgentsAgentIdLineageGetRaw(
+    requestParameters: GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Get agent family tree and lineage.
+   * Get Agent Lineage
+   */
+  getAgentLineageApiEcsAgentsAgentIdLineageGet(
+    requestParameters: GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Get all agents in the world.
+   * @summary Get Agents
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ECSWorldApiInterface
+   */
+  getAgentsApiEcsAgentsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<AgentResponse>>>;
+  /**
+   * Get all agents in the world.
+   * Get Agents
+   */
+  getAgentsApiEcsAgentsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AgentResponse>>;
+  /**
+   * Get breeding statistics.
+   * @summary Get Breeding Stats
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ECSWorldApiInterface
+   */
+  getBreedingStatsApiEcsBreedingStatsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Get breeding statistics.
+   * Get Breeding Stats
+   */
+  getBreedingStatsApiEcsBreedingStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Get the current ECS world status.
+   * @summary Get World Status
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof ECSWorldApiInterface
+   */
+  getWorldStatusApiEcsStatusGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<WorldStatusResponse>>;
+  /**
+   * Get the current ECS world status.
+   * Get World Status
+   */
+  getWorldStatusApiEcsStatusGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<WorldStatusResponse>;
 }
 /**
  *
  */
 export declare class ECSWorldApi extends runtime.BaseAPI implements ECSWorldApiInterface {
-    /**
-     * Analyze genetic compatibility between two agents.
-     * Analyze Compatibility
-     */
-    analyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRaw(requestParameters: AnalyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Analyze genetic compatibility between two agents.
-     * Analyze Compatibility
-     */
-    analyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGet(requestParameters: AnalyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Create a new agent.
-     * Create Agent
-     */
-    createAgentApiEcsAgentsPostRaw(requestParameters: CreateAgentApiEcsAgentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AgentResponse>>;
-    /**
-     * Create a new agent.
-     * Create Agent
-     */
-    createAgentApiEcsAgentsPost(requestParameters: CreateAgentApiEcsAgentsPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AgentResponse>;
-    /**
-     * Create offspring from two parent agents.
-     * Create Offspring
-     */
-    createOffspringApiEcsAgentsOffspringPostRaw(requestParameters: CreateOffspringApiEcsAgentsOffspringPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AgentResponse>>;
-    /**
-     * Create offspring from two parent agents.
-     * Create Offspring
-     */
-    createOffspringApiEcsAgentsOffspringPost(requestParameters: CreateOffspringApiEcsAgentsOffspringPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AgentResponse>;
-    /**
-     * Enable or disable automatic breeding.
-     * Enable Breeding
-     */
-    enableBreedingApiEcsBreedingEnablePostRaw(requestParameters: EnableBreedingApiEcsBreedingEnablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Enable or disable automatic breeding.
-     * Enable Breeding
-     */
-    enableBreedingApiEcsBreedingEnablePost(requestParameters?: EnableBreedingApiEcsBreedingEnablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Find compatible mates for an agent.
-     * Find Compatible Mates
-     */
-    findCompatibleMatesApiEcsAgentsAgentIdMatesGetRaw(requestParameters: FindCompatibleMatesApiEcsAgentsAgentIdMatesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Find compatible mates for an agent.
-     * Find Compatible Mates
-     */
-    findCompatibleMatesApiEcsAgentsAgentIdMatesGet(requestParameters: FindCompatibleMatesApiEcsAgentsAgentIdMatesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Get agent family tree and lineage.
-     * Get Agent Lineage
-     */
-    getAgentLineageApiEcsAgentsAgentIdLineageGetRaw(requestParameters: GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Get agent family tree and lineage.
-     * Get Agent Lineage
-     */
-    getAgentLineageApiEcsAgentsAgentIdLineageGet(requestParameters: GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Get all agents in the world.
-     * Get Agents
-     */
-    getAgentsApiEcsAgentsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AgentResponse>>>;
-    /**
-     * Get all agents in the world.
-     * Get Agents
-     */
-    getAgentsApiEcsAgentsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AgentResponse>>;
-    /**
-     * Get breeding statistics.
-     * Get Breeding Stats
-     */
-    getBreedingStatsApiEcsBreedingStatsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Get breeding statistics.
-     * Get Breeding Stats
-     */
-    getBreedingStatsApiEcsBreedingStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Get the current ECS world status.
-     * Get World Status
-     */
-    getWorldStatusApiEcsStatusGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WorldStatusResponse>>;
-    /**
-     * Get the current ECS world status.
-     * Get World Status
-     */
-    getWorldStatusApiEcsStatusGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WorldStatusResponse>;
+  /**
+   * Analyze genetic compatibility between two agents.
+   * Analyze Compatibility
+   */
+  analyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRaw(
+    requestParameters: AnalyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Analyze genetic compatibility between two agents.
+   * Analyze Compatibility
+   */
+  analyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGet(
+    requestParameters: AnalyzeCompatibilityApiEcsAgentsAgent1IdCompatibilityAgent2IdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Create a new agent.
+   * Create Agent
+   */
+  createAgentApiEcsAgentsPostRaw(
+    requestParameters: CreateAgentApiEcsAgentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<AgentResponse>>;
+  /**
+   * Create a new agent.
+   * Create Agent
+   */
+  createAgentApiEcsAgentsPost(
+    requestParameters: CreateAgentApiEcsAgentsPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<AgentResponse>;
+  /**
+   * Create offspring from two parent agents.
+   * Create Offspring
+   */
+  createOffspringApiEcsAgentsOffspringPostRaw(
+    requestParameters: CreateOffspringApiEcsAgentsOffspringPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<AgentResponse>>;
+  /**
+   * Create offspring from two parent agents.
+   * Create Offspring
+   */
+  createOffspringApiEcsAgentsOffspringPost(
+    requestParameters: CreateOffspringApiEcsAgentsOffspringPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<AgentResponse>;
+  /**
+   * Enable or disable automatic breeding.
+   * Enable Breeding
+   */
+  enableBreedingApiEcsBreedingEnablePostRaw(
+    requestParameters: EnableBreedingApiEcsBreedingEnablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Enable or disable automatic breeding.
+   * Enable Breeding
+   */
+  enableBreedingApiEcsBreedingEnablePost(
+    requestParameters?: EnableBreedingApiEcsBreedingEnablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Find compatible mates for an agent.
+   * Find Compatible Mates
+   */
+  findCompatibleMatesApiEcsAgentsAgentIdMatesGetRaw(
+    requestParameters: FindCompatibleMatesApiEcsAgentsAgentIdMatesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Find compatible mates for an agent.
+   * Find Compatible Mates
+   */
+  findCompatibleMatesApiEcsAgentsAgentIdMatesGet(
+    requestParameters: FindCompatibleMatesApiEcsAgentsAgentIdMatesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Get agent family tree and lineage.
+   * Get Agent Lineage
+   */
+  getAgentLineageApiEcsAgentsAgentIdLineageGetRaw(
+    requestParameters: GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Get agent family tree and lineage.
+   * Get Agent Lineage
+   */
+  getAgentLineageApiEcsAgentsAgentIdLineageGet(
+    requestParameters: GetAgentLineageApiEcsAgentsAgentIdLineageGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Get all agents in the world.
+   * Get Agents
+   */
+  getAgentsApiEcsAgentsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<AgentResponse>>>;
+  /**
+   * Get all agents in the world.
+   * Get Agents
+   */
+  getAgentsApiEcsAgentsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AgentResponse>>;
+  /**
+   * Get breeding statistics.
+   * Get Breeding Stats
+   */
+  getBreedingStatsApiEcsBreedingStatsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Get breeding statistics.
+   * Get Breeding Stats
+   */
+  getBreedingStatsApiEcsBreedingStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Get the current ECS world status.
+   * Get World Status
+   */
+  getWorldStatusApiEcsStatusGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<WorldStatusResponse>>;
+  /**
+   * Get the current ECS world status.
+   * Get World Status
+   */
+  getWorldStatusApiEcsStatusGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<WorldStatusResponse>;
 }

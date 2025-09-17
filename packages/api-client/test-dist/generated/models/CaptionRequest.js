@@ -22,40 +22,40 @@ exports.CaptionRequestToJSONTyped = CaptionRequestToJSONTyped;
  * Check if a given object implements the CaptionRequest interface.
  */
 function instanceOfCaptionRequest(value) {
-    if (!('imagePath' in value) || value['imagePath'] === undefined)
-        return false;
-    if (!('generatorName' in value) || value['generatorName'] === undefined)
-        return false;
-    return true;
+  if (!("imagePath" in value) || value["imagePath"] === undefined) return false;
+  if (!("generatorName" in value) || value["generatorName"] === undefined) return false;
+  return true;
 }
 function CaptionRequestFromJSON(json) {
-    return CaptionRequestFromJSONTyped(json, false);
+  return CaptionRequestFromJSONTyped(json, false);
 }
 function CaptionRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'imagePath': json['image_path'],
-        'generatorName': json['generator_name'],
-        'config': json['config'] == null ? undefined : json['config'],
-        'force': json['force'] == null ? undefined : json['force'],
-        'postProcess': json['post_process'] == null ? undefined : json['post_process'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    imagePath: json["image_path"],
+    generatorName: json["generator_name"],
+    config: json["config"] == null ? undefined : json["config"],
+    force: json["force"] == null ? undefined : json["force"],
+    postProcess: json["post_process"] == null ? undefined : json["post_process"],
+  };
 }
 function CaptionRequestToJSON(json) {
-    return CaptionRequestToJSONTyped(json, false);
+  return CaptionRequestToJSONTyped(json, false);
 }
 function CaptionRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'image_path': value['imagePath'],
-        'generator_name': value['generatorName'],
-        'config': value['config'],
-        'force': value['force'],
-        'post_process': value['postProcess'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    image_path: value["imagePath"],
+    generator_name: value["generatorName"],
+    config: value["config"],
+    force: value["force"],
+    post_process: value["postProcess"],
+  };
 }

@@ -6,7 +6,7 @@
  */
 
 // Core architecture definition
-export { 
+export {
   REYNARD_ARCHITECTURE,
   getWatchableDirectories,
   getBuildableDirectories,
@@ -14,7 +14,7 @@ export {
   getLintableDirectories,
   getDocumentableDirectories,
   getGlobalExcludePatterns,
-  getGlobalIncludePatterns
+  getGlobalIncludePatterns,
 } from "./architecture.js";
 
 // Utility functions
@@ -33,7 +33,7 @@ export {
   getFileTypeFromExtension,
   getDirectoryForFilePath,
   validateProjectStructure,
-  generateProjectStructureReport
+  generateProjectStructureReport,
 } from "./utils.js";
 
 // VS Code integration
@@ -44,7 +44,7 @@ export {
   generateAutoStartQueueWatcherTask,
   generateBuildTasks,
   generateTestTasks,
-  generateLintTasks
+  generateLintTasks,
 } from "./vscode-generator.js";
 
 // Type definitions
@@ -57,5 +57,5 @@ export type {
   DirectoryRelationship,
   ProjectArchitecture,
   PathResolutionOptions,
-  DirectoryQueryResult
+  DirectoryQueryResult,
 } from "./types.js";

@@ -15,42 +15,42 @@
  * @interface IndexRequest
  */
 export interface IndexRequest {
-    /**
-     *
-     * @type {string}
-     * @memberof IndexRequest
-     */
-    projectRoot?: string | null;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRequest
-     */
-    fileTypes?: Array<string> | null;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof IndexRequest
-     */
-    directories?: Array<string> | null;
-    /**
-     * Force reindexing of existing files
-     * @type {boolean}
-     * @memberof IndexRequest
-     */
-    forceReindex?: boolean;
-    /**
-     * Text chunk size for indexing
-     * @type {number}
-     * @memberof IndexRequest
-     */
-    chunkSize?: number;
-    /**
-     * Overlap between chunks
-     * @type {number}
-     * @memberof IndexRequest
-     */
-    overlap?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof IndexRequest
+   */
+  projectRoot?: string | null;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRequest
+   */
+  fileTypes?: Array<string> | null;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof IndexRequest
+   */
+  directories?: Array<string> | null;
+  /**
+   * Force reindexing of existing files
+   * @type {boolean}
+   * @memberof IndexRequest
+   */
+  forceReindex?: boolean;
+  /**
+   * Text chunk size for indexing
+   * @type {number}
+   * @memberof IndexRequest
+   */
+  chunkSize?: number;
+  /**
+   * Overlap between chunks
+   * @type {number}
+   * @memberof IndexRequest
+   */
+  overlap?: number;
 }
 /**
  * Check if a given object implements the IndexRequest interface.

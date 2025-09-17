@@ -22,18 +22,20 @@ exports.MaxTokensToJSONTyped = MaxTokensToJSONTyped;
  * Check if a given object implements the MaxTokens interface.
  */
 function instanceOfMaxTokens(value) {
-    return true;
+  return true;
 }
 function MaxTokensFromJSON(json) {
-    return MaxTokensFromJSONTyped(json, false);
+  return MaxTokensFromJSONTyped(json, false);
 }
 function MaxTokensFromJSONTyped(json, ignoreDiscriminator) {
-    return json;
+  return json;
 }
 function MaxTokensToJSON(json) {
-    return MaxTokensToJSONTyped(json, false);
+  return MaxTokensToJSONTyped(json, false);
 }
 function MaxTokensToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    return value;
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  return value;
 }

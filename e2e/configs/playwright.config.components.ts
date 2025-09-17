@@ -10,7 +10,7 @@ export default defineConfig({
   testDir: "../suites",
   testMatch: [
     "ui/*.spec.ts",
-    "audio/*.spec.ts", 
+    "audio/*.spec.ts",
     "gallery/*.spec.ts",
     "3d/*.spec.ts",
     "boundingbox/*.spec.ts",
@@ -26,7 +26,10 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
 
-  reporter: [["html", { open: "never" }], ["json", { outputFile: "component-tests-results.json" }]],
+  reporter: [
+    ["html", { open: "never" }],
+    ["json", { outputFile: "component-tests-results.json" }],
+  ],
 
   use: {
     baseURL: "http://localhost:3000",

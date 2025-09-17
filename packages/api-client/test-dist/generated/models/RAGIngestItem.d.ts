@@ -15,18 +15,18 @@
  * @interface RAGIngestItem
  */
 export interface RAGIngestItem {
-    /**
-     *
-     * @type {string}
-     * @memberof RAGIngestItem
-     */
-    source?: string | null;
-    /**
-     * Document content
-     * @type {string}
-     * @memberof RAGIngestItem
-     */
-    content: string;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGIngestItem
+   */
+  source?: string | null;
+  /**
+   * Document content
+   * @type {string}
+   * @memberof RAGIngestItem
+   */
+  content: string;
 }
 /**
  * Check if a given object implements the RAGIngestItem interface.

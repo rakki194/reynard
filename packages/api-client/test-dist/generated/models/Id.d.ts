@@ -14,8 +14,7 @@
  * @export
  * @interface Id
  */
-export interface Id {
-}
+export interface Id {}
 /**
  * Check if a given object implements the Id interface.
  */

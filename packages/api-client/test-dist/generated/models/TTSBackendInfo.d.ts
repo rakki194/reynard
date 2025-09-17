@@ -9,49 +9,49 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { TTSVoiceInfo } from './TTSVoiceInfo';
+import type { TTSVoiceInfo } from "./TTSVoiceInfo";
 /**
  * Model for backend information.
  * @export
  * @interface TTSBackendInfo
  */
 export interface TTSBackendInfo {
-    /**
-     * Backend name
-     * @type {string}
-     * @memberof TTSBackendInfo
-     */
-    name: string;
-    /**
-     * Whether backend is enabled
-     * @type {boolean}
-     * @memberof TTSBackendInfo
-     */
-    enabled: boolean;
-    /**
-     * Whether backend is available
-     * @type {boolean}
-     * @memberof TTSBackendInfo
-     */
-    available: boolean;
-    /**
-     * Available voices
-     * @type {Array<TTSVoiceInfo>}
-     * @memberof TTSBackendInfo
-     */
-    voices: Array<TTSVoiceInfo>;
-    /**
-     * Supported languages
-     * @type {Array<string>}
-     * @memberof TTSBackendInfo
-     */
-    supportedLanguages: Array<string>;
-    /**
-     * Supported output formats
-     * @type {Array<string>}
-     * @memberof TTSBackendInfo
-     */
-    supportedFormats: Array<string>;
+  /**
+   * Backend name
+   * @type {string}
+   * @memberof TTSBackendInfo
+   */
+  name: string;
+  /**
+   * Whether backend is enabled
+   * @type {boolean}
+   * @memberof TTSBackendInfo
+   */
+  enabled: boolean;
+  /**
+   * Whether backend is available
+   * @type {boolean}
+   * @memberof TTSBackendInfo
+   */
+  available: boolean;
+  /**
+   * Available voices
+   * @type {Array<TTSVoiceInfo>}
+   * @memberof TTSBackendInfo
+   */
+  voices: Array<TTSVoiceInfo>;
+  /**
+   * Supported languages
+   * @type {Array<string>}
+   * @memberof TTSBackendInfo
+   */
+  supportedLanguages: Array<string>;
+  /**
+   * Supported output formats
+   * @type {Array<string>}
+   * @memberof TTSBackendInfo
+   */
+  supportedFormats: Array<string>;
 }
 /**
  * Check if a given object implements the TTSBackendInfo interface.

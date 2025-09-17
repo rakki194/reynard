@@ -15,18 +15,24 @@
  * @interface ImageValidationRequest
  */
 export interface ImageValidationRequest {
-    /**
-     * Path to the image file
-     * @type {string}
-     * @memberof ImageValidationRequest
-     */
-    filePath: string;
+  /**
+   * Path to the image file
+   * @type {string}
+   * @memberof ImageValidationRequest
+   */
+  filePath: string;
 }
 /**
  * Check if a given object implements the ImageValidationRequest interface.
  */
 export declare function instanceOfImageValidationRequest(value: object): value is ImageValidationRequest;
 export declare function ImageValidationRequestFromJSON(json: any): ImageValidationRequest;
-export declare function ImageValidationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageValidationRequest;
+export declare function ImageValidationRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ImageValidationRequest;
 export declare function ImageValidationRequestToJSON(json: any): ImageValidationRequest;
-export declare function ImageValidationRequestToJSONTyped(value?: ImageValidationRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function ImageValidationRequestToJSONTyped(
+  value?: ImageValidationRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -15,12 +15,12 @@
  * @interface AspectRatioResponse
  */
 export interface AspectRatioResponse {
-    /**
-     *
-     * @type {number}
-     * @memberof AspectRatioResponse
-     */
-    aspectRatio: number;
+  /**
+   *
+   * @type {number}
+   * @memberof AspectRatioResponse
+   */
+  aspectRatio: number;
 }
 /**
  * Check if a given object implements the AspectRatioResponse interface.
@@ -29,4 +29,7 @@ export declare function instanceOfAspectRatioResponse(value: object): value is A
 export declare function AspectRatioResponseFromJSON(json: any): AspectRatioResponse;
 export declare function AspectRatioResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AspectRatioResponse;
 export declare function AspectRatioResponseToJSON(json: any): AspectRatioResponse;
-export declare function AspectRatioResponseToJSONTyped(value?: AspectRatioResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function AspectRatioResponseToJSONTyped(
+  value?: AspectRatioResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

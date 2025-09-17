@@ -22,34 +22,35 @@ exports.NLWebMCPRequestToJSONTyped = NLWebMCPRequestToJSONTyped;
  * Check if a given object implements the NLWebMCPRequest interface.
  */
 function instanceOfNLWebMCPRequest(value) {
-    if (!('method' in value) || value['method'] === undefined)
-        return false;
-    return true;
+  if (!("method" in value) || value["method"] === undefined) return false;
+  return true;
 }
 function NLWebMCPRequestFromJSON(json) {
-    return NLWebMCPRequestFromJSONTyped(json, false);
+  return NLWebMCPRequestFromJSONTyped(json, false);
 }
 function NLWebMCPRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'method': json['method'],
-        'params': json['params'] == null ? undefined : json['params'],
-        'id': json['id'] == null ? undefined : json['id'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    method: json["method"],
+    params: json["params"] == null ? undefined : json["params"],
+    id: json["id"] == null ? undefined : json["id"],
+  };
 }
 function NLWebMCPRequestToJSON(json) {
-    return NLWebMCPRequestToJSONTyped(json, false);
+  return NLWebMCPRequestToJSONTyped(json, false);
 }
 function NLWebMCPRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'method': value['method'],
-        'params': value['params'],
-        'id': value['id'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    method: value["method"],
+    params: value["params"],
+    id: value["id"],
+  };
 }

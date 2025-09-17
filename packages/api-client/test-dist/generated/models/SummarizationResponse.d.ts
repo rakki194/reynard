@@ -15,42 +15,48 @@
  * @interface SummarizationResponse
  */
 export interface SummarizationResponse {
-    /**
-     * Whether summarization was successful
-     * @type {boolean}
-     * @memberof SummarizationResponse
-     */
-    success: boolean;
-    /**
-     *
-     * @type {object}
-     * @memberof SummarizationResponse
-     */
-    result?: object | null;
-    /**
-     *
-     * @type {string}
-     * @memberof SummarizationResponse
-     */
-    error?: string | null;
-    /**
-     * Processing time in seconds
-     * @type {number}
-     * @memberof SummarizationResponse
-     */
-    processingTime: number;
-    /**
-     *
-     * @type {string}
-     * @memberof SummarizationResponse
-     */
-    modelUsed?: string | null;
+  /**
+   * Whether summarization was successful
+   * @type {boolean}
+   * @memberof SummarizationResponse
+   */
+  success: boolean;
+  /**
+   *
+   * @type {object}
+   * @memberof SummarizationResponse
+   */
+  result?: object | null;
+  /**
+   *
+   * @type {string}
+   * @memberof SummarizationResponse
+   */
+  error?: string | null;
+  /**
+   * Processing time in seconds
+   * @type {number}
+   * @memberof SummarizationResponse
+   */
+  processingTime: number;
+  /**
+   *
+   * @type {string}
+   * @memberof SummarizationResponse
+   */
+  modelUsed?: string | null;
 }
 /**
  * Check if a given object implements the SummarizationResponse interface.
  */
 export declare function instanceOfSummarizationResponse(value: object): value is SummarizationResponse;
 export declare function SummarizationResponseFromJSON(json: any): SummarizationResponse;
-export declare function SummarizationResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): SummarizationResponse;
+export declare function SummarizationResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): SummarizationResponse;
 export declare function SummarizationResponseToJSON(json: any): SummarizationResponse;
-export declare function SummarizationResponseToJSONTyped(value?: SummarizationResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function SummarizationResponseToJSONTyped(
+  value?: SummarizationResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

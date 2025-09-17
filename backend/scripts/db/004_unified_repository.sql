@@ -129,7 +129,11 @@ CREATE TABLE IF NOT EXISTS embeddings (
     quality_score DECIMAL(3,2) DEFAULT 0.0 CHECK (quality_score >= 0.0 AND quality_score <= 1.0),
     processing_time DECIMAL(10,6), -- in seconds
     parameters JSONB DEFAULT '{}',
+    metadata JSONB DEFAULT '{}', -- Additional metadata for compatibility with vector store
+    chunk_index INTEGER, -- For text chunking compatibility
+    chunk_text TEXT, -- For text chunking compatibility
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
     -- Ensure one embedding per file per model
     UNIQUE(file_id, modality, model_id)
@@ -234,32 +238,33 @@ CREATE INDEX IF NOT EXISTS idx_embeddings_file_id ON embeddings(file_id);
 CREATE INDEX IF NOT EXISTS idx_embeddings_modality ON embeddings(modality);
 CREATE INDEX IF NOT EXISTS idx_embeddings_model_id ON embeddings(model_id);
 CREATE INDEX IF NOT EXISTS idx_embeddings_quality ON embeddings(quality_score);
+CREATE INDEX IF NOT EXISTS idx_embeddings_metadata ON embeddings USING GIN(metadata);
 
 -- HNSW vector indexes for similarity search
 CREATE INDEX IF NOT EXISTS idx_embeddings_text_hnsw
 ON embeddings USING hnsw (embedding vector_cosine_ops)
-WHERE modality = 'text'
-WITH (m=16, ef_construction=200);
+WITH (m=16, ef_construction=200)
+WHERE modality = 'text';
 
 CREATE INDEX IF NOT EXISTS idx_embeddings_image_hnsw
 ON embeddings USING hnsw (embedding vector_cosine_ops)
-WHERE modality = 'image'
-WITH (m=16, ef_construction=200);
+WITH (m=16, ef_construction=200)
+WHERE modality = 'image';
 
 CREATE INDEX IF NOT EXISTS idx_embeddings_audio_hnsw
 ON embeddings USING hnsw (embedding vector_cosine_ops)
-WHERE modality = 'audio'
-WITH (m=16, ef_construction=200);
+WITH (m=16, ef_construction=200)
+WHERE modality = 'audio';
 
 CREATE INDEX IF NOT EXISTS idx_embeddings_data_hnsw
 ON embeddings USING hnsw (embedding vector_cosine_ops)
-WHERE modality = 'data'
-WITH (m=16, ef_construction=200);
+WITH (m=16, ef_construction=200)
+WHERE modality = 'data';
 
 CREATE INDEX IF NOT EXISTS idx_embeddings_multimodal_hnsw
 ON embeddings USING hnsw (embedding vector_cosine_ops)
-WHERE modality = 'multimodal'
-WITH (m=16, ef_construction=200);
+WITH (m=16, ef_construction=200)
+WHERE modality = 'multimodal';
 
 -- Search history indexes
 CREATE INDEX IF NOT EXISTS idx_search_history_user_id ON search_history(user_id);
@@ -334,6 +339,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trigger_update_dataset_statistics ON files;
 CREATE TRIGGER trigger_update_dataset_statistics
     AFTER INSERT OR UPDATE OR DELETE ON files
     FOR EACH ROW EXECUTE FUNCTION update_dataset_statistics();
@@ -347,6 +353,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trigger_update_file_timestamp ON files;
 CREATE TRIGGER trigger_update_file_timestamp
     BEFORE UPDATE ON files
     FOR EACH ROW EXECUTE FUNCTION update_file_timestamp();

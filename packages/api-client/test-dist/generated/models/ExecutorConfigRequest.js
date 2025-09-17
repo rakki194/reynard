@@ -22,38 +22,41 @@ exports.ExecutorConfigRequestToJSONTyped = ExecutorConfigRequestToJSONTyped;
  * Check if a given object implements the ExecutorConfigRequest interface.
  */
 function instanceOfExecutorConfigRequest(value) {
-    return true;
+  return true;
 }
 function ExecutorConfigRequestFromJSON(json) {
-    return ExecutorConfigRequestFromJSONTyped(json, false);
+  return ExecutorConfigRequestFromJSONTyped(json, false);
 }
 function ExecutorConfigRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'maxWorkers': json['max_workers'] == null ? undefined : json['max_workers'],
-        'enablePerformanceMonitoring': json['enable_performance_monitoring'] == null ? undefined : json['enable_performance_monitoring'],
-        'autoCleanup': json['auto_cleanup'] == null ? undefined : json['auto_cleanup'],
-        'defaultTimeout': json['default_timeout'] == null ? undefined : json['default_timeout'],
-        'maxRetries': json['max_retries'] == null ? undefined : json['max_retries'],
-        'retryDelay': json['retry_delay'] == null ? undefined : json['retry_delay'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    maxWorkers: json["max_workers"] == null ? undefined : json["max_workers"],
+    enablePerformanceMonitoring:
+      json["enable_performance_monitoring"] == null ? undefined : json["enable_performance_monitoring"],
+    autoCleanup: json["auto_cleanup"] == null ? undefined : json["auto_cleanup"],
+    defaultTimeout: json["default_timeout"] == null ? undefined : json["default_timeout"],
+    maxRetries: json["max_retries"] == null ? undefined : json["max_retries"],
+    retryDelay: json["retry_delay"] == null ? undefined : json["retry_delay"],
+  };
 }
 function ExecutorConfigRequestToJSON(json) {
-    return ExecutorConfigRequestToJSONTyped(json, false);
+  return ExecutorConfigRequestToJSONTyped(json, false);
 }
 function ExecutorConfigRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'max_workers': value['maxWorkers'],
-        'enable_performance_monitoring': value['enablePerformanceMonitoring'],
-        'auto_cleanup': value['autoCleanup'],
-        'default_timeout': value['defaultTimeout'],
-        'max_retries': value['maxRetries'],
-        'retry_delay': value['retryDelay'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    max_workers: value["maxWorkers"],
+    enable_performance_monitoring: value["enablePerformanceMonitoring"],
+    auto_cleanup: value["autoCleanup"],
+    default_timeout: value["defaultTimeout"],
+    max_retries: value["maxRetries"],
+    retry_delay: value["retryDelay"],
+  };
 }

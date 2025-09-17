@@ -22,42 +22,40 @@ exports.HFCacheInfoResponseToJSONTyped = HFCacheInfoResponseToJSONTyped;
  * Check if a given object implements the HFCacheInfoResponse interface.
  */
 function instanceOfHFCacheInfoResponse(value) {
-    if (!('cacheDir' in value) || value['cacheDir'] === undefined)
-        return false;
-    if (!('hubDir' in value) || value['hubDir'] === undefined)
-        return false;
-    if (!('size' in value) || value['size'] === undefined)
-        return false;
-    if (!('modelCount' in value) || value['modelCount'] === undefined)
-        return false;
-    return true;
+  if (!("cacheDir" in value) || value["cacheDir"] === undefined) return false;
+  if (!("hubDir" in value) || value["hubDir"] === undefined) return false;
+  if (!("size" in value) || value["size"] === undefined) return false;
+  if (!("modelCount" in value) || value["modelCount"] === undefined) return false;
+  return true;
 }
 function HFCacheInfoResponseFromJSON(json) {
-    return HFCacheInfoResponseFromJSONTyped(json, false);
+  return HFCacheInfoResponseFromJSONTyped(json, false);
 }
 function HFCacheInfoResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'cacheDir': json['cache_dir'],
-        'hubDir': json['hub_dir'],
-        'size': json['size'],
-        'modelCount': json['model_count'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    cacheDir: json["cache_dir"],
+    hubDir: json["hub_dir"],
+    size: json["size"],
+    modelCount: json["model_count"],
+  };
 }
 function HFCacheInfoResponseToJSON(json) {
-    return HFCacheInfoResponseToJSONTyped(json, false);
+  return HFCacheInfoResponseToJSONTyped(json, false);
 }
 function HFCacheInfoResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'cache_dir': value['cacheDir'],
-        'hub_dir': value['hubDir'],
-        'size': value['size'],
-        'model_count': value['modelCount'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    cache_dir: value["cacheDir"],
+    hub_dir: value["hubDir"],
+    size: value["size"],
+    model_count: value["modelCount"],
+  };
 }

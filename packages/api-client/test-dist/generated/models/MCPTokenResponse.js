@@ -22,42 +22,40 @@ exports.MCPTokenResponseToJSONTyped = MCPTokenResponseToJSONTyped;
  * Check if a given object implements the MCPTokenResponse interface.
  */
 function instanceOfMCPTokenResponse(value) {
-    if (!('token' in value) || value['token'] === undefined)
-        return false;
-    if (!('clientId' in value) || value['clientId'] === undefined)
-        return false;
-    if (!('permissions' in value) || value['permissions'] === undefined)
-        return false;
-    if (!('expiresAt' in value) || value['expiresAt'] === undefined)
-        return false;
-    return true;
+  if (!("token" in value) || value["token"] === undefined) return false;
+  if (!("clientId" in value) || value["clientId"] === undefined) return false;
+  if (!("permissions" in value) || value["permissions"] === undefined) return false;
+  if (!("expiresAt" in value) || value["expiresAt"] === undefined) return false;
+  return true;
 }
 function MCPTokenResponseFromJSON(json) {
-    return MCPTokenResponseFromJSONTyped(json, false);
+  return MCPTokenResponseFromJSONTyped(json, false);
 }
 function MCPTokenResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'token': json['token'],
-        'clientId': json['client_id'],
-        'permissions': json['permissions'],
-        'expiresAt': json['expires_at'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    token: json["token"],
+    clientId: json["client_id"],
+    permissions: json["permissions"],
+    expiresAt: json["expires_at"],
+  };
 }
 function MCPTokenResponseToJSON(json) {
-    return MCPTokenResponseToJSONTyped(json, false);
+  return MCPTokenResponseToJSONTyped(json, false);
 }
 function MCPTokenResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'token': value['token'],
-        'client_id': value['clientId'],
-        'permissions': value['permissions'],
-        'expires_at': value['expiresAt'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    token: value["token"],
+    client_id: value["clientId"],
+    permissions: value["permissions"],
+    expires_at: value["expiresAt"],
+  };
 }

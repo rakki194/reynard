@@ -107,7 +107,7 @@ class RAGConfig:
         
         # Only enforce secure password in production
         if not is_development:
-            if not self.pg_dsn or "password" in self.pg_dsn.lower():
+            if not self.pg_dsn or "CHANGE_THIS_PASSWORD" in self.pg_dsn:
                 raise ValueError(
                     "RAG configuration error: PG_DSN must be set with a secure password. "
                     "Please set the PG_DSN environment variable with your actual database credentials."

@@ -22,36 +22,37 @@ exports.AgentCreateRequestToJSONTyped = AgentCreateRequestToJSONTyped;
  * Check if a given object implements the AgentCreateRequest interface.
  */
 function instanceOfAgentCreateRequest(value) {
-    if (!('agentId' in value) || value['agentId'] === undefined)
-        return false;
-    return true;
+  if (!("agentId" in value) || value["agentId"] === undefined) return false;
+  return true;
 }
 function AgentCreateRequestFromJSON(json) {
-    return AgentCreateRequestFromJSONTyped(json, false);
+  return AgentCreateRequestFromJSONTyped(json, false);
 }
 function AgentCreateRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'agentId': json['agent_id'],
-        'spirit': json['spirit'] == null ? undefined : json['spirit'],
-        'style': json['style'] == null ? undefined : json['style'],
-        'name': json['name'] == null ? undefined : json['name'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    agentId: json["agent_id"],
+    spirit: json["spirit"] == null ? undefined : json["spirit"],
+    style: json["style"] == null ? undefined : json["style"],
+    name: json["name"] == null ? undefined : json["name"],
+  };
 }
 function AgentCreateRequestToJSON(json) {
-    return AgentCreateRequestToJSONTyped(json, false);
+  return AgentCreateRequestToJSONTyped(json, false);
 }
 function AgentCreateRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'agent_id': value['agentId'],
-        'spirit': value['spirit'],
-        'style': value['style'],
-        'name': value['name'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    agent_id: value["agentId"],
+    spirit: value["spirit"],
+    style: value["style"],
+    name: value["name"],
+  };
 }

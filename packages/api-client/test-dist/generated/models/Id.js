@@ -22,18 +22,20 @@ exports.IdToJSONTyped = IdToJSONTyped;
  * Check if a given object implements the Id interface.
  */
 function instanceOfId(value) {
-    return true;
+  return true;
 }
 function IdFromJSON(json) {
-    return IdFromJSONTyped(json, false);
+  return IdFromJSONTyped(json, false);
 }
 function IdFromJSONTyped(json, ignoreDiscriminator) {
-    return json;
+  return json;
 }
 function IdToJSON(json) {
-    return IdToJSONTyped(json, false);
+  return IdToJSONTyped(json, false);
 }
 function IdToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    return value;
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  return value;
 }

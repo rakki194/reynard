@@ -9,7 +9,14 @@ Follows the 140-line axiom and modular architecture principles.
 
 from typing import Any
 
-from reynard_agent_naming.agent_naming import AgentNameManager
+import sys
+from pathlib import Path
+
+# Add the agent naming package to the path
+agent_naming_path = Path(__file__).parent.parent.parent.parent.parent / "services" / "agent-naming" / "reynard_agent_naming"
+sys.path.insert(0, str(agent_naming_path))
+
+from agent_naming import AgentNameManager
 
 
 class BreedingAgentTools:

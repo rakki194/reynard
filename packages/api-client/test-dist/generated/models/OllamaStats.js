@@ -22,62 +22,55 @@ exports.OllamaStatsToJSONTyped = OllamaStatsToJSONTyped;
  * Check if a given object implements the OllamaStats interface.
  */
 function instanceOfOllamaStats(value) {
-    if (!('totalRequests' in value) || value['totalRequests'] === undefined)
-        return false;
-    if (!('successfulRequests' in value) || value['successfulRequests'] === undefined)
-        return false;
-    if (!('failedRequests' in value) || value['failedRequests'] === undefined)
-        return false;
-    if (!('averageProcessingTime' in value) || value['averageProcessingTime'] === undefined)
-        return false;
-    if (!('totalTokensGenerated' in value) || value['totalTokensGenerated'] === undefined)
-        return false;
-    if (!('modelUsage' in value) || value['modelUsage'] === undefined)
-        return false;
-    if (!('assistantUsage' in value) || value['assistantUsage'] === undefined)
-        return false;
-    if (!('toolsUsage' in value) || value['toolsUsage'] === undefined)
-        return false;
-    if (!('errorRate' in value) || value['errorRate'] === undefined)
-        return false;
-    return true;
+  if (!("totalRequests" in value) || value["totalRequests"] === undefined) return false;
+  if (!("successfulRequests" in value) || value["successfulRequests"] === undefined) return false;
+  if (!("failedRequests" in value) || value["failedRequests"] === undefined) return false;
+  if (!("averageProcessingTime" in value) || value["averageProcessingTime"] === undefined) return false;
+  if (!("totalTokensGenerated" in value) || value["totalTokensGenerated"] === undefined) return false;
+  if (!("modelUsage" in value) || value["modelUsage"] === undefined) return false;
+  if (!("assistantUsage" in value) || value["assistantUsage"] === undefined) return false;
+  if (!("toolsUsage" in value) || value["toolsUsage"] === undefined) return false;
+  if (!("errorRate" in value) || value["errorRate"] === undefined) return false;
+  return true;
 }
 function OllamaStatsFromJSON(json) {
-    return OllamaStatsFromJSONTyped(json, false);
+  return OllamaStatsFromJSONTyped(json, false);
 }
 function OllamaStatsFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'totalRequests': json['total_requests'],
-        'successfulRequests': json['successful_requests'],
-        'failedRequests': json['failed_requests'],
-        'averageProcessingTime': json['average_processing_time'],
-        'totalTokensGenerated': json['total_tokens_generated'],
-        'modelUsage': json['model_usage'],
-        'assistantUsage': json['assistant_usage'],
-        'toolsUsage': json['tools_usage'],
-        'errorRate': json['error_rate'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    totalRequests: json["total_requests"],
+    successfulRequests: json["successful_requests"],
+    failedRequests: json["failed_requests"],
+    averageProcessingTime: json["average_processing_time"],
+    totalTokensGenerated: json["total_tokens_generated"],
+    modelUsage: json["model_usage"],
+    assistantUsage: json["assistant_usage"],
+    toolsUsage: json["tools_usage"],
+    errorRate: json["error_rate"],
+  };
 }
 function OllamaStatsToJSON(json) {
-    return OllamaStatsToJSONTyped(json, false);
+  return OllamaStatsToJSONTyped(json, false);
 }
 function OllamaStatsToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'total_requests': value['totalRequests'],
-        'successful_requests': value['successfulRequests'],
-        'failed_requests': value['failedRequests'],
-        'average_processing_time': value['averageProcessingTime'],
-        'total_tokens_generated': value['totalTokensGenerated'],
-        'model_usage': value['modelUsage'],
-        'assistant_usage': value['assistantUsage'],
-        'tools_usage': value['toolsUsage'],
-        'error_rate': value['errorRate'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    total_requests: value["totalRequests"],
+    successful_requests: value["successfulRequests"],
+    failed_requests: value["failedRequests"],
+    average_processing_time: value["averageProcessingTime"],
+    total_tokens_generated: value["totalTokensGenerated"],
+    model_usage: value["modelUsage"],
+    assistant_usage: value["assistantUsage"],
+    tools_usage: value["toolsUsage"],
+    error_rate: value["errorRate"],
+  };
 }

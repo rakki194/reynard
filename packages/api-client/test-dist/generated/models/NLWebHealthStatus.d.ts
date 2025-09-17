@@ -15,66 +15,66 @@
  * @interface NLWebHealthStatus
  */
 export interface NLWebHealthStatus {
-    /**
-     * Overall health status (healthy, degraded, unhealthy)
-     * @type {string}
-     * @memberof NLWebHealthStatus
-     */
-    status: string;
-    /**
-     * Whether NLWeb is enabled
-     * @type {boolean}
-     * @memberof NLWebHealthStatus
-     */
-    enabled: boolean;
-    /**
-     * Connection state to external services
-     * @type {string}
-     * @memberof NLWebHealthStatus
-     */
-    connectionState: string;
-    /**
-     * Number of connection attempts
-     * @type {number}
-     * @memberof NLWebHealthStatus
-     */
-    connectionAttempts?: number;
-    /**
-     *
-     * @type {Date}
-     * @memberof NLWebHealthStatus
-     */
-    lastOkTimestamp?: Date | null;
-    /**
-     *
-     * @type {string}
-     * @memberof NLWebHealthStatus
-     */
-    baseUrl?: string | null;
-    /**
-     * Whether canary rollout is enabled
-     * @type {boolean}
-     * @memberof NLWebHealthStatus
-     */
-    canaryEnabled?: boolean;
-    /**
-     * Canary rollout percentage
-     * @type {number}
-     * @memberof NLWebHealthStatus
-     */
-    canaryPercentage?: number;
-    /**
-     * Whether emergency rollback is enabled
-     * @type {boolean}
-     * @memberof NLWebHealthStatus
-     */
-    rollbackEnabled?: boolean;
-    /**
-     * Whether performance monitoring is enabled
-     * @type {boolean}
-     * @memberof NLWebHealthStatus
-     */
-    performanceMonitoring?: boolean;
+  /**
+   * Overall health status (healthy, degraded, unhealthy)
+   * @type {string}
+   * @memberof NLWebHealthStatus
+   */
+  status: string;
+  /**
+   * Whether NLWeb is enabled
+   * @type {boolean}
+   * @memberof NLWebHealthStatus
+   */
+  enabled: boolean;
+  /**
+   * Connection state to external services
+   * @type {string}
+   * @memberof NLWebHealthStatus
+   */
+  connectionState: string;
+  /**
+   * Number of connection attempts
+   * @type {number}
+   * @memberof NLWebHealthStatus
+   */
+  connectionAttempts?: number;
+  /**
+   *
+   * @type {Date}
+   * @memberof NLWebHealthStatus
+   */
+  lastOkTimestamp?: Date | null;
+  /**
+   *
+   * @type {string}
+   * @memberof NLWebHealthStatus
+   */
+  baseUrl?: string | null;
+  /**
+   * Whether canary rollout is enabled
+   * @type {boolean}
+   * @memberof NLWebHealthStatus
+   */
+  canaryEnabled?: boolean;
+  /**
+   * Canary rollout percentage
+   * @type {number}
+   * @memberof NLWebHealthStatus
+   */
+  canaryPercentage?: number;
+  /**
+   * Whether emergency rollback is enabled
+   * @type {boolean}
+   * @memberof NLWebHealthStatus
+   */
+  rollbackEnabled?: boolean;
+  /**
+   * Whether performance monitoring is enabled
+   * @type {boolean}
+   * @memberof NLWebHealthStatus
+   */
+  performanceMonitoring?: boolean;
 }
 /**
  * Check if a given object implements the NLWebHealthStatus interface.
@@ -83,4 +83,7 @@ export declare function instanceOfNLWebHealthStatus(value: object): value is NLW
 export declare function NLWebHealthStatusFromJSON(json: any): NLWebHealthStatus;
 export declare function NLWebHealthStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebHealthStatus;
 export declare function NLWebHealthStatusToJSON(json: any): NLWebHealthStatus;
-export declare function NLWebHealthStatusToJSONTyped(value?: NLWebHealthStatus | null, ignoreDiscriminator?: boolean): any;
+export declare function NLWebHealthStatusToJSONTyped(
+  value?: NLWebHealthStatus | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -9,26 +9,26 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
-import type { ToolConfigListResponse, ToolConfigResponse, ToolConfigUpdateRequest } from '../models/index';
+import * as runtime from "../runtime";
+import type { ToolConfigListResponse, ToolConfigResponse, ToolConfigUpdateRequest } from "../models/index";
 export interface DisableToolApiMcpToolConfigToolNameDisablePostRequest {
-    toolName: string;
+  toolName: string;
 }
 export interface EnableToolApiMcpToolConfigToolNameEnablePostRequest {
-    toolName: string;
+  toolName: string;
 }
 export interface GetToolConfigurationApiMcpToolConfigToolNameGetRequest {
-    toolName: string;
+  toolName: string;
 }
 export interface GetToolsByCategoryApiMcpToolConfigCategoryCategoryGetRequest {
-    category: string;
+  category: string;
 }
 export interface ToggleToolApiMcpToolConfigToolNameTogglePostRequest {
-    toolName: string;
+  toolName: string;
 }
 export interface UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest {
-    toolName: string;
-    toolConfigUpdateRequest: ToolConfigUpdateRequest;
+  toolName: string;
+  toolConfigUpdateRequest: ToolConfigUpdateRequest;
 }
 /**
  * McpToolConfigApi - interface
@@ -37,185 +37,269 @@ export interface UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest {
  * @interface McpToolConfigApiInterface
  */
 export interface McpToolConfigApiInterface {
-    /**
-     * Disable a specific tool.  Disables the specified tool if it\'s currently enabled.
-     * @summary Disable Tool
-     * @param {string} toolName
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpToolConfigApiInterface
-     */
-    disableToolApiMcpToolConfigToolNameDisablePostRaw(requestParameters: DisableToolApiMcpToolConfigToolNameDisablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Disable a specific tool.  Disables the specified tool if it\'s currently enabled.
-     * Disable Tool
-     */
-    disableToolApiMcpToolConfigToolNameDisablePost(requestParameters: DisableToolApiMcpToolConfigToolNameDisablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
-    /**
-     * Enable a specific tool.  Enables the specified tool if it\'s currently disabled.
-     * @summary Enable Tool
-     * @param {string} toolName
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpToolConfigApiInterface
-     */
-    enableToolApiMcpToolConfigToolNameEnablePostRaw(requestParameters: EnableToolApiMcpToolConfigToolNameEnablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Enable a specific tool.  Enables the specified tool if it\'s currently disabled.
-     * Enable Tool
-     */
-    enableToolApiMcpToolConfigToolNameEnablePost(requestParameters: EnableToolApiMcpToolConfigToolNameEnablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
-    /**
-     * Get configuration for a specific tool.  Returns the configuration and status for the specified tool.
-     * @summary Get Tool Configuration
-     * @param {string} toolName
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpToolConfigApiInterface
-     */
-    getToolConfigurationApiMcpToolConfigToolNameGetRaw(requestParameters: GetToolConfigurationApiMcpToolConfigToolNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Get configuration for a specific tool.  Returns the configuration and status for the specified tool.
-     * Get Tool Configuration
-     */
-    getToolConfigurationApiMcpToolConfigToolNameGet(requestParameters: GetToolConfigurationApiMcpToolConfigToolNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
-    /**
-     * Get all tool configurations.  Returns the current state of all MCP tools including their enabled/disabled status.
-     * @summary Get Tool Configurations
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpToolConfigApiInterface
-     */
-    getToolConfigurationsApiMcpToolConfigGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigListResponse>>;
-    /**
-     * Get all tool configurations.  Returns the current state of all MCP tools including their enabled/disabled status.
-     * Get Tool Configurations
-     */
-    getToolConfigurationsApiMcpToolConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigListResponse>;
-    /**
-     * Get all tools in a specific category.  Returns all tools that belong to the specified category.
-     * @summary Get Tools By Category
-     * @param {string} category
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpToolConfigApiInterface
-     */
-    getToolsByCategoryApiMcpToolConfigCategoryCategoryGetRaw(requestParameters: GetToolsByCategoryApiMcpToolConfigCategoryCategoryGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: ToolConfigResponse;
-    }>>;
-    /**
-     * Get all tools in a specific category.  Returns all tools that belong to the specified category.
-     * Get Tools By Category
-     */
-    getToolsByCategoryApiMcpToolConfigCategoryCategoryGet(requestParameters: GetToolsByCategoryApiMcpToolConfigCategoryCategoryGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: ToolConfigResponse;
-    }>;
-    /**
-     * Toggle the enabled state of a tool.  Switches the enabled/disabled state of the specified tool.
-     * @summary Toggle Tool
-     * @param {string} toolName
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpToolConfigApiInterface
-     */
-    toggleToolApiMcpToolConfigToolNameTogglePostRaw(requestParameters: ToggleToolApiMcpToolConfigToolNameTogglePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Toggle the enabled state of a tool.  Switches the enabled/disabled state of the specified tool.
-     * Toggle Tool
-     */
-    toggleToolApiMcpToolConfigToolNameTogglePost(requestParameters: ToggleToolApiMcpToolConfigToolNameTogglePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
-    /**
-     * Update configuration for a specific tool.  Updates the enabled state and/or configuration for the specified tool.
-     * @summary Update Tool Configuration
-     * @param {string} toolName
-     * @param {ToolConfigUpdateRequest} toolConfigUpdateRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpToolConfigApiInterface
-     */
-    updateToolConfigurationApiMcpToolConfigToolNamePutRaw(requestParameters: UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Update configuration for a specific tool.  Updates the enabled state and/or configuration for the specified tool.
-     * Update Tool Configuration
-     */
-    updateToolConfigurationApiMcpToolConfigToolNamePut(requestParameters: UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
+  /**
+   * Disable a specific tool.  Disables the specified tool if it\'s currently enabled.
+   * @summary Disable Tool
+   * @param {string} toolName
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpToolConfigApiInterface
+   */
+  disableToolApiMcpToolConfigToolNameDisablePostRaw(
+    requestParameters: DisableToolApiMcpToolConfigToolNameDisablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Disable a specific tool.  Disables the specified tool if it\'s currently enabled.
+   * Disable Tool
+   */
+  disableToolApiMcpToolConfigToolNameDisablePost(
+    requestParameters: DisableToolApiMcpToolConfigToolNameDisablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
+  /**
+   * Enable a specific tool.  Enables the specified tool if it\'s currently disabled.
+   * @summary Enable Tool
+   * @param {string} toolName
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpToolConfigApiInterface
+   */
+  enableToolApiMcpToolConfigToolNameEnablePostRaw(
+    requestParameters: EnableToolApiMcpToolConfigToolNameEnablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Enable a specific tool.  Enables the specified tool if it\'s currently disabled.
+   * Enable Tool
+   */
+  enableToolApiMcpToolConfigToolNameEnablePost(
+    requestParameters: EnableToolApiMcpToolConfigToolNameEnablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
+  /**
+   * Get configuration for a specific tool.  Returns the configuration and status for the specified tool.
+   * @summary Get Tool Configuration
+   * @param {string} toolName
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpToolConfigApiInterface
+   */
+  getToolConfigurationApiMcpToolConfigToolNameGetRaw(
+    requestParameters: GetToolConfigurationApiMcpToolConfigToolNameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Get configuration for a specific tool.  Returns the configuration and status for the specified tool.
+   * Get Tool Configuration
+   */
+  getToolConfigurationApiMcpToolConfigToolNameGet(
+    requestParameters: GetToolConfigurationApiMcpToolConfigToolNameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
+  /**
+   * Get all tool configurations.  Returns the current state of all MCP tools including their enabled/disabled status.
+   * @summary Get Tool Configurations
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpToolConfigApiInterface
+   */
+  getToolConfigurationsApiMcpToolConfigGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigListResponse>>;
+  /**
+   * Get all tool configurations.  Returns the current state of all MCP tools including their enabled/disabled status.
+   * Get Tool Configurations
+   */
+  getToolConfigurationsApiMcpToolConfigGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigListResponse>;
+  /**
+   * Get all tools in a specific category.  Returns all tools that belong to the specified category.
+   * @summary Get Tools By Category
+   * @param {string} category
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpToolConfigApiInterface
+   */
+  getToolsByCategoryApiMcpToolConfigCategoryCategoryGetRaw(
+    requestParameters: GetToolsByCategoryApiMcpToolConfigCategoryCategoryGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: ToolConfigResponse;
+    }>
+  >;
+  /**
+   * Get all tools in a specific category.  Returns all tools that belong to the specified category.
+   * Get Tools By Category
+   */
+  getToolsByCategoryApiMcpToolConfigCategoryCategoryGet(
+    requestParameters: GetToolsByCategoryApiMcpToolConfigCategoryCategoryGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: ToolConfigResponse;
+  }>;
+  /**
+   * Toggle the enabled state of a tool.  Switches the enabled/disabled state of the specified tool.
+   * @summary Toggle Tool
+   * @param {string} toolName
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpToolConfigApiInterface
+   */
+  toggleToolApiMcpToolConfigToolNameTogglePostRaw(
+    requestParameters: ToggleToolApiMcpToolConfigToolNameTogglePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Toggle the enabled state of a tool.  Switches the enabled/disabled state of the specified tool.
+   * Toggle Tool
+   */
+  toggleToolApiMcpToolConfigToolNameTogglePost(
+    requestParameters: ToggleToolApiMcpToolConfigToolNameTogglePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
+  /**
+   * Update configuration for a specific tool.  Updates the enabled state and/or configuration for the specified tool.
+   * @summary Update Tool Configuration
+   * @param {string} toolName
+   * @param {ToolConfigUpdateRequest} toolConfigUpdateRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpToolConfigApiInterface
+   */
+  updateToolConfigurationApiMcpToolConfigToolNamePutRaw(
+    requestParameters: UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Update configuration for a specific tool.  Updates the enabled state and/or configuration for the specified tool.
+   * Update Tool Configuration
+   */
+  updateToolConfigurationApiMcpToolConfigToolNamePut(
+    requestParameters: UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
 }
 /**
  *
  */
 export declare class McpToolConfigApi extends runtime.BaseAPI implements McpToolConfigApiInterface {
-    /**
-     * Disable a specific tool.  Disables the specified tool if it\'s currently enabled.
-     * Disable Tool
-     */
-    disableToolApiMcpToolConfigToolNameDisablePostRaw(requestParameters: DisableToolApiMcpToolConfigToolNameDisablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Disable a specific tool.  Disables the specified tool if it\'s currently enabled.
-     * Disable Tool
-     */
-    disableToolApiMcpToolConfigToolNameDisablePost(requestParameters: DisableToolApiMcpToolConfigToolNameDisablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
-    /**
-     * Enable a specific tool.  Enables the specified tool if it\'s currently disabled.
-     * Enable Tool
-     */
-    enableToolApiMcpToolConfigToolNameEnablePostRaw(requestParameters: EnableToolApiMcpToolConfigToolNameEnablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Enable a specific tool.  Enables the specified tool if it\'s currently disabled.
-     * Enable Tool
-     */
-    enableToolApiMcpToolConfigToolNameEnablePost(requestParameters: EnableToolApiMcpToolConfigToolNameEnablePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
-    /**
-     * Get configuration for a specific tool.  Returns the configuration and status for the specified tool.
-     * Get Tool Configuration
-     */
-    getToolConfigurationApiMcpToolConfigToolNameGetRaw(requestParameters: GetToolConfigurationApiMcpToolConfigToolNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Get configuration for a specific tool.  Returns the configuration and status for the specified tool.
-     * Get Tool Configuration
-     */
-    getToolConfigurationApiMcpToolConfigToolNameGet(requestParameters: GetToolConfigurationApiMcpToolConfigToolNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
-    /**
-     * Get all tool configurations.  Returns the current state of all MCP tools including their enabled/disabled status.
-     * Get Tool Configurations
-     */
-    getToolConfigurationsApiMcpToolConfigGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigListResponse>>;
-    /**
-     * Get all tool configurations.  Returns the current state of all MCP tools including their enabled/disabled status.
-     * Get Tool Configurations
-     */
-    getToolConfigurationsApiMcpToolConfigGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigListResponse>;
-    /**
-     * Get all tools in a specific category.  Returns all tools that belong to the specified category.
-     * Get Tools By Category
-     */
-    getToolsByCategoryApiMcpToolConfigCategoryCategoryGetRaw(requestParameters: GetToolsByCategoryApiMcpToolConfigCategoryCategoryGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: ToolConfigResponse;
-    }>>;
-    /**
-     * Get all tools in a specific category.  Returns all tools that belong to the specified category.
-     * Get Tools By Category
-     */
-    getToolsByCategoryApiMcpToolConfigCategoryCategoryGet(requestParameters: GetToolsByCategoryApiMcpToolConfigCategoryCategoryGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: ToolConfigResponse;
-    }>;
-    /**
-     * Toggle the enabled state of a tool.  Switches the enabled/disabled state of the specified tool.
-     * Toggle Tool
-     */
-    toggleToolApiMcpToolConfigToolNameTogglePostRaw(requestParameters: ToggleToolApiMcpToolConfigToolNameTogglePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Toggle the enabled state of a tool.  Switches the enabled/disabled state of the specified tool.
-     * Toggle Tool
-     */
-    toggleToolApiMcpToolConfigToolNameTogglePost(requestParameters: ToggleToolApiMcpToolConfigToolNameTogglePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
-    /**
-     * Update configuration for a specific tool.  Updates the enabled state and/or configuration for the specified tool.
-     * Update Tool Configuration
-     */
-    updateToolConfigurationApiMcpToolConfigToolNamePutRaw(requestParameters: UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ToolConfigResponse>>;
-    /**
-     * Update configuration for a specific tool.  Updates the enabled state and/or configuration for the specified tool.
-     * Update Tool Configuration
-     */
-    updateToolConfigurationApiMcpToolConfigToolNamePut(requestParameters: UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ToolConfigResponse>;
+  /**
+   * Disable a specific tool.  Disables the specified tool if it\'s currently enabled.
+   * Disable Tool
+   */
+  disableToolApiMcpToolConfigToolNameDisablePostRaw(
+    requestParameters: DisableToolApiMcpToolConfigToolNameDisablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Disable a specific tool.  Disables the specified tool if it\'s currently enabled.
+   * Disable Tool
+   */
+  disableToolApiMcpToolConfigToolNameDisablePost(
+    requestParameters: DisableToolApiMcpToolConfigToolNameDisablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
+  /**
+   * Enable a specific tool.  Enables the specified tool if it\'s currently disabled.
+   * Enable Tool
+   */
+  enableToolApiMcpToolConfigToolNameEnablePostRaw(
+    requestParameters: EnableToolApiMcpToolConfigToolNameEnablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Enable a specific tool.  Enables the specified tool if it\'s currently disabled.
+   * Enable Tool
+   */
+  enableToolApiMcpToolConfigToolNameEnablePost(
+    requestParameters: EnableToolApiMcpToolConfigToolNameEnablePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
+  /**
+   * Get configuration for a specific tool.  Returns the configuration and status for the specified tool.
+   * Get Tool Configuration
+   */
+  getToolConfigurationApiMcpToolConfigToolNameGetRaw(
+    requestParameters: GetToolConfigurationApiMcpToolConfigToolNameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Get configuration for a specific tool.  Returns the configuration and status for the specified tool.
+   * Get Tool Configuration
+   */
+  getToolConfigurationApiMcpToolConfigToolNameGet(
+    requestParameters: GetToolConfigurationApiMcpToolConfigToolNameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
+  /**
+   * Get all tool configurations.  Returns the current state of all MCP tools including their enabled/disabled status.
+   * Get Tool Configurations
+   */
+  getToolConfigurationsApiMcpToolConfigGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigListResponse>>;
+  /**
+   * Get all tool configurations.  Returns the current state of all MCP tools including their enabled/disabled status.
+   * Get Tool Configurations
+   */
+  getToolConfigurationsApiMcpToolConfigGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigListResponse>;
+  /**
+   * Get all tools in a specific category.  Returns all tools that belong to the specified category.
+   * Get Tools By Category
+   */
+  getToolsByCategoryApiMcpToolConfigCategoryCategoryGetRaw(
+    requestParameters: GetToolsByCategoryApiMcpToolConfigCategoryCategoryGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<
+    runtime.ApiResponse<{
+      [key: string]: ToolConfigResponse;
+    }>
+  >;
+  /**
+   * Get all tools in a specific category.  Returns all tools that belong to the specified category.
+   * Get Tools By Category
+   */
+  getToolsByCategoryApiMcpToolConfigCategoryCategoryGet(
+    requestParameters: GetToolsByCategoryApiMcpToolConfigCategoryCategoryGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<{
+    [key: string]: ToolConfigResponse;
+  }>;
+  /**
+   * Toggle the enabled state of a tool.  Switches the enabled/disabled state of the specified tool.
+   * Toggle Tool
+   */
+  toggleToolApiMcpToolConfigToolNameTogglePostRaw(
+    requestParameters: ToggleToolApiMcpToolConfigToolNameTogglePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Toggle the enabled state of a tool.  Switches the enabled/disabled state of the specified tool.
+   * Toggle Tool
+   */
+  toggleToolApiMcpToolConfigToolNameTogglePost(
+    requestParameters: ToggleToolApiMcpToolConfigToolNameTogglePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
+  /**
+   * Update configuration for a specific tool.  Updates the enabled state and/or configuration for the specified tool.
+   * Update Tool Configuration
+   */
+  updateToolConfigurationApiMcpToolConfigToolNamePutRaw(
+    requestParameters: UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<ToolConfigResponse>>;
+  /**
+   * Update configuration for a specific tool.  Updates the enabled state and/or configuration for the specified tool.
+   * Update Tool Configuration
+   */
+  updateToolConfigurationApiMcpToolConfigToolNamePut(
+    requestParameters: UpdateToolConfigurationApiMcpToolConfigToolNamePutRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<ToolConfigResponse>;
 }

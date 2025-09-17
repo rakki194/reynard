@@ -23,40 +23,39 @@ var TTSSynthesisResponse_1 = require("./TTSSynthesisResponse");
  * Check if a given object implements the TTSBatchResponse interface.
  */
 function instanceOfTTSBatchResponse(value) {
-    if (!('success' in value) || value['success'] === undefined)
-        return false;
-    if (!('results' in value) || value['results'] === undefined)
-        return false;
-    if (!('totalProcessingTime' in value) || value['totalProcessingTime'] === undefined)
-        return false;
-    return true;
+  if (!("success" in value) || value["success"] === undefined) return false;
+  if (!("results" in value) || value["results"] === undefined) return false;
+  if (!("totalProcessingTime" in value) || value["totalProcessingTime"] === undefined) return false;
+  return true;
 }
 function TTSBatchResponseFromJSON(json) {
-    return TTSBatchResponseFromJSONTyped(json, false);
+  return TTSBatchResponseFromJSONTyped(json, false);
 }
 function TTSBatchResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'success': json['success'],
-        'results': (json['results'].map(TTSSynthesisResponse_1.TTSSynthesisResponseFromJSON)),
-        'totalProcessingTime': json['total_processing_time'],
-        'error': json['error'] == null ? undefined : json['error'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    success: json["success"],
+    results: json["results"].map(TTSSynthesisResponse_1.TTSSynthesisResponseFromJSON),
+    totalProcessingTime: json["total_processing_time"],
+    error: json["error"] == null ? undefined : json["error"],
+  };
 }
 function TTSBatchResponseToJSON(json) {
-    return TTSBatchResponseToJSONTyped(json, false);
+  return TTSBatchResponseToJSONTyped(json, false);
 }
 function TTSBatchResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'success': value['success'],
-        'results': (value['results'].map(TTSSynthesisResponse_1.TTSSynthesisResponseToJSON)),
-        'total_processing_time': value['totalProcessingTime'],
-        'error': value['error'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    success: value["success"],
+    results: value["results"].map(TTSSynthesisResponse_1.TTSSynthesisResponseToJSON),
+    total_processing_time: value["totalProcessingTime"],
+    error: value["error"],
+  };
 }

@@ -15,60 +15,60 @@
  * @interface CaptionResponse
  */
 export interface CaptionResponse {
-    /**
-     *
-     * @type {boolean}
-     * @memberof CaptionResponse
-     */
-    success: boolean;
-    /**
-     *
-     * @type {string}
-     * @memberof CaptionResponse
-     */
-    imagePath: string;
-    /**
-     *
-     * @type {string}
-     * @memberof CaptionResponse
-     */
-    generatorName: string;
-    /**
-     *
-     * @type {string}
-     * @memberof CaptionResponse
-     */
-    caption?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof CaptionResponse
-     */
-    error?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof CaptionResponse
-     */
-    errorType?: string | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof CaptionResponse
-     */
-    retryable?: boolean;
-    /**
-     *
-     * @type {number}
-     * @memberof CaptionResponse
-     */
-    processingTime?: number | null;
-    /**
-     *
-     * @type {string}
-     * @memberof CaptionResponse
-     */
-    captionType?: string | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CaptionResponse
+   */
+  success: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof CaptionResponse
+   */
+  imagePath: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CaptionResponse
+   */
+  generatorName: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CaptionResponse
+   */
+  caption?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof CaptionResponse
+   */
+  error?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof CaptionResponse
+   */
+  errorType?: string | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof CaptionResponse
+   */
+  retryable?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof CaptionResponse
+   */
+  processingTime?: number | null;
+  /**
+   *
+   * @type {string}
+   * @memberof CaptionResponse
+   */
+  captionType?: string | null;
 }
 /**
  * Check if a given object implements the CaptionResponse interface.

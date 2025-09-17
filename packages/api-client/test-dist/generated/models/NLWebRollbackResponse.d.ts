@@ -15,36 +15,42 @@
  * @interface NLWebRollbackResponse
  */
 export interface NLWebRollbackResponse {
-    /**
-     * Whether the rollback action was successful
-     * @type {boolean}
-     * @memberof NLWebRollbackResponse
-     */
-    success: boolean;
-    /**
-     * Current rollback state
-     * @type {boolean}
-     * @memberof NLWebRollbackResponse
-     */
-    rollbackEnabled: boolean;
-    /**
-     * Reason for the rollback action
-     * @type {string}
-     * @memberof NLWebRollbackResponse
-     */
-    reason: string;
-    /**
-     * Timestamp of the rollback action
-     * @type {Date}
-     * @memberof NLWebRollbackResponse
-     */
-    timestamp: Date;
+  /**
+   * Whether the rollback action was successful
+   * @type {boolean}
+   * @memberof NLWebRollbackResponse
+   */
+  success: boolean;
+  /**
+   * Current rollback state
+   * @type {boolean}
+   * @memberof NLWebRollbackResponse
+   */
+  rollbackEnabled: boolean;
+  /**
+   * Reason for the rollback action
+   * @type {string}
+   * @memberof NLWebRollbackResponse
+   */
+  reason: string;
+  /**
+   * Timestamp of the rollback action
+   * @type {Date}
+   * @memberof NLWebRollbackResponse
+   */
+  timestamp: Date;
 }
 /**
  * Check if a given object implements the NLWebRollbackResponse interface.
  */
 export declare function instanceOfNLWebRollbackResponse(value: object): value is NLWebRollbackResponse;
 export declare function NLWebRollbackResponseFromJSON(json: any): NLWebRollbackResponse;
-export declare function NLWebRollbackResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebRollbackResponse;
+export declare function NLWebRollbackResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): NLWebRollbackResponse;
 export declare function NLWebRollbackResponseToJSON(json: any): NLWebRollbackResponse;
-export declare function NLWebRollbackResponseToJSONTyped(value?: NLWebRollbackResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function NLWebRollbackResponseToJSONTyped(
+  value?: NLWebRollbackResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -12,31 +12,31 @@ DROP INDEX IF EXISTS idx_image_embeddings_hnsw;
 -- Create optimized HNSW indexes with conservative parameters
 -- m=32: Increased connectivity for better recall (2x memory usage)
 -- ef_construction=400: Higher quality index construction (2x build time)
--- ef_search=100: Optimized search performance
+-- Note: ef_search is a runtime parameter set via SET ef_search = 100;
 
 -- Document embeddings
 CREATE INDEX idx_document_embeddings_hnsw_v2
 ON rag_document_embeddings
 USING hnsw (embedding vector_cosine_ops)
-WITH (m=32, ef_construction=400, ef_search=100);
+WITH (m=32, ef_construction=400);
 
 -- Code embeddings (most critical for performance)
 CREATE INDEX idx_code_embeddings_hnsw_v2
 ON rag_code_embeddings
 USING hnsw (embedding vector_cosine_ops)
-WITH (m=32, ef_construction=400, ef_search=100);
+WITH (m=32, ef_construction=400);
 
 -- Caption embeddings
 CREATE INDEX idx_caption_embeddings_hnsw_v2
 ON rag_caption_embeddings
 USING hnsw (embedding vector_cosine_ops)
-WITH (m=32, ef_construction=400, ef_search=100);
+WITH (m=32, ef_construction=400);
 
 -- Image embeddings (CLIP - 768 dimensions)
 CREATE INDEX idx_image_embeddings_hnsw_v2
 ON rag_image_embeddings
 USING hnsw (embedding vector_cosine_ops)
-WITH (m=32, ef_construction=400, ef_search=100);
+WITH (m=32, ef_construction=400);
 
 -- Performance monitoring table for tracking optimization results
 CREATE TABLE IF NOT EXISTS rag_performance_metrics (
@@ -53,14 +53,14 @@ ON rag_performance_metrics(metric_name, timestamp);
 
 -- Insert initial optimization metrics
 INSERT INTO rag_performance_metrics (metric_name, metric_value, metadata) VALUES
-('hnsw_optimization_completed', 1.0, '{"phase": "conservative", "m": 32, "ef_construction": 400, "ef_search": 100}'),
+('hnsw_optimization_completed', 1.0, '{"phase": "conservative", "m": 32, "ef_construction": 400}'),
 ('index_memory_usage_estimate', 2.0, '{"description": "Estimated 2x memory usage increase"}'),
 ('expected_recall_improvement', 0.07, '{"description": "Expected 7% recall improvement (85% → 92%)"}'),
 ('expected_query_time_increase', 0.005, '{"description": "Expected 5ms query time increase"}');
 
 -- Add comments for documentation
-COMMENT ON INDEX idx_document_embeddings_hnsw_v2 IS 'Optimized HNSW index for document embeddings with m=32, ef_construction=400, ef_search=100';
-COMMENT ON INDEX idx_code_embeddings_hnsw_v2 IS 'Optimized HNSW index for code embeddings with m=32, ef_construction=400, ef_search=100';
-COMMENT ON INDEX idx_caption_embeddings_hnsw_v2 IS 'Optimized HNSW index for caption embeddings with m=32, ef_construction=400, ef_search=100';
-COMMENT ON INDEX idx_image_embeddings_hnsw_v2 IS 'Optimized HNSW index for image embeddings with m=32, ef_construction=400, ef_search=100';
+COMMENT ON INDEX idx_document_embeddings_hnsw_v2 IS 'Optimized HNSW index for document embeddings with m=32, ef_construction=400';
+COMMENT ON INDEX idx_code_embeddings_hnsw_v2 IS 'Optimized HNSW index for code embeddings with m=32, ef_construction=400';
+COMMENT ON INDEX idx_caption_embeddings_hnsw_v2 IS 'Optimized HNSW index for caption embeddings with m=32, ef_construction=400';
+COMMENT ON INDEX idx_image_embeddings_hnsw_v2 IS 'Optimized HNSW index for image embeddings with m=32, ef_construction=400';
 COMMENT ON TABLE rag_performance_metrics IS 'Performance metrics tracking for RAG system optimizations';

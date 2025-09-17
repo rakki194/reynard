@@ -15,18 +15,18 @@
  * @interface ValidationResponse
  */
 export interface ValidationResponse {
-    /**
-     *
-     * @type {boolean}
-     * @memberof ValidationResponse
-     */
-    valid: boolean;
-    /**
-     *
-     * @type {string}
-     * @memberof ValidationResponse
-     */
-    message?: string | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ValidationResponse
+   */
+  valid: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof ValidationResponse
+   */
+  message?: string | null;
 }
 /**
  * Check if a given object implements the ValidationResponse interface.
@@ -35,4 +35,7 @@ export declare function instanceOfValidationResponse(value: object): value is Va
 export declare function ValidationResponseFromJSON(json: any): ValidationResponse;
 export declare function ValidationResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidationResponse;
 export declare function ValidationResponseToJSON(json: any): ValidationResponse;
-export declare function ValidationResponseToJSONTyped(value?: ValidationResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ValidationResponseToJSONTyped(
+  value?: ValidationResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

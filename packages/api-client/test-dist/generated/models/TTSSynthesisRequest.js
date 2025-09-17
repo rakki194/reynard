@@ -22,42 +22,43 @@ exports.TTSSynthesisRequestToJSONTyped = TTSSynthesisRequestToJSONTyped;
  * Check if a given object implements the TTSSynthesisRequest interface.
  */
 function instanceOfTTSSynthesisRequest(value) {
-    if (!('text' in value) || value['text'] === undefined)
-        return false;
-    return true;
+  if (!("text" in value) || value["text"] === undefined) return false;
+  return true;
 }
 function TTSSynthesisRequestFromJSON(json) {
-    return TTSSynthesisRequestFromJSONTyped(json, false);
+  return TTSSynthesisRequestFromJSONTyped(json, false);
 }
 function TTSSynthesisRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'text': json['text'],
-        'backend': json['backend'] == null ? undefined : json['backend'],
-        'voice': json['voice'] == null ? undefined : json['voice'],
-        'speed': json['speed'] == null ? undefined : json['speed'],
-        'lang': json['lang'] == null ? undefined : json['lang'],
-        'toOgg': json['to_ogg'] == null ? undefined : json['to_ogg'],
-        'toOpus': json['to_opus'] == null ? undefined : json['to_opus'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    text: json["text"],
+    backend: json["backend"] == null ? undefined : json["backend"],
+    voice: json["voice"] == null ? undefined : json["voice"],
+    speed: json["speed"] == null ? undefined : json["speed"],
+    lang: json["lang"] == null ? undefined : json["lang"],
+    toOgg: json["to_ogg"] == null ? undefined : json["to_ogg"],
+    toOpus: json["to_opus"] == null ? undefined : json["to_opus"],
+  };
 }
 function TTSSynthesisRequestToJSON(json) {
-    return TTSSynthesisRequestToJSONTyped(json, false);
+  return TTSSynthesisRequestToJSONTyped(json, false);
 }
 function TTSSynthesisRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'text': value['text'],
-        'backend': value['backend'],
-        'voice': value['voice'],
-        'speed': value['speed'],
-        'lang': value['lang'],
-        'to_ogg': value['toOgg'],
-        'to_opus': value['toOpus'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    text: value["text"],
+    backend: value["backend"],
+    voice: value["voice"],
+    speed: value["speed"],
+    lang: value["lang"],
+    to_ogg: value["toOgg"],
+    to_opus: value["toOpus"],
+  };
 }

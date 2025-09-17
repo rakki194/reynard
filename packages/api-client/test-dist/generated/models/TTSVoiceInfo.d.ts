@@ -15,36 +15,36 @@
  * @interface TTSVoiceInfo
  */
 export interface TTSVoiceInfo {
-    /**
-     * Voice name
-     * @type {string}
-     * @memberof TTSVoiceInfo
-     */
-    name: string;
-    /**
-     * Language code
-     * @type {string}
-     * @memberof TTSVoiceInfo
-     */
-    language: string;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSVoiceInfo
-     */
-    gender?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSVoiceInfo
-     */
-    description?: string | null;
-    /**
-     * Whether voice is available
-     * @type {boolean}
-     * @memberof TTSVoiceInfo
-     */
-    available: boolean;
+  /**
+   * Voice name
+   * @type {string}
+   * @memberof TTSVoiceInfo
+   */
+  name: string;
+  /**
+   * Language code
+   * @type {string}
+   * @memberof TTSVoiceInfo
+   */
+  language: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSVoiceInfo
+   */
+  gender?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSVoiceInfo
+   */
+  description?: string | null;
+  /**
+   * Whether voice is available
+   * @type {boolean}
+   * @memberof TTSVoiceInfo
+   */
+  available: boolean;
 }
 /**
  * Check if a given object implements the TTSVoiceInfo interface.

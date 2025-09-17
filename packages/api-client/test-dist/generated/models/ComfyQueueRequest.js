@@ -22,32 +22,33 @@ exports.ComfyQueueRequestToJSONTyped = ComfyQueueRequestToJSONTyped;
  * Check if a given object implements the ComfyQueueRequest interface.
  */
 function instanceOfComfyQueueRequest(value) {
-    if (!('workflow' in value) || value['workflow'] === undefined)
-        return false;
-    return true;
+  if (!("workflow" in value) || value["workflow"] === undefined) return false;
+  return true;
 }
 function ComfyQueueRequestFromJSON(json) {
-    return ComfyQueueRequestFromJSONTyped(json, false);
+  return ComfyQueueRequestFromJSONTyped(json, false);
 }
 function ComfyQueueRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'workflow': json['workflow'],
-        'clientId': json['client_id'] == null ? undefined : json['client_id'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    workflow: json["workflow"],
+    clientId: json["client_id"] == null ? undefined : json["client_id"],
+  };
 }
 function ComfyQueueRequestToJSON(json) {
-    return ComfyQueueRequestToJSONTyped(json, false);
+  return ComfyQueueRequestToJSONTyped(json, false);
 }
 function ComfyQueueRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'workflow': value['workflow'],
-        'client_id': value['clientId'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    workflow: value["workflow"],
+    client_id: value["clientId"],
+  };
 }

@@ -22,38 +22,39 @@ exports.RAGQueryRequestToJSONTyped = RAGQueryRequestToJSONTyped;
  * Check if a given object implements the RAGQueryRequest interface.
  */
 function instanceOfRAGQueryRequest(value) {
-    if (!('q' in value) || value['q'] === undefined)
-        return false;
-    return true;
+  if (!("q" in value) || value["q"] === undefined) return false;
+  return true;
 }
 function RAGQueryRequestFromJSON(json) {
-    return RAGQueryRequestFromJSONTyped(json, false);
+  return RAGQueryRequestFromJSONTyped(json, false);
 }
 function RAGQueryRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'q': json['q'],
-        'modality': json['modality'] == null ? undefined : json['modality'],
-        'topK': json['top_k'] == null ? undefined : json['top_k'],
-        'similarityThreshold': json['similarity_threshold'] == null ? undefined : json['similarity_threshold'],
-        'enableReranking': json['enable_reranking'] == null ? undefined : json['enable_reranking'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    q: json["q"],
+    modality: json["modality"] == null ? undefined : json["modality"],
+    topK: json["top_k"] == null ? undefined : json["top_k"],
+    similarityThreshold: json["similarity_threshold"] == null ? undefined : json["similarity_threshold"],
+    enableReranking: json["enable_reranking"] == null ? undefined : json["enable_reranking"],
+  };
 }
 function RAGQueryRequestToJSON(json) {
-    return RAGQueryRequestToJSONTyped(json, false);
+  return RAGQueryRequestToJSONTyped(json, false);
 }
 function RAGQueryRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'q': value['q'],
-        'modality': value['modality'],
-        'top_k': value['topK'],
-        'similarity_threshold': value['similarityThreshold'],
-        'enable_reranking': value['enableReranking'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    q: value["q"],
+    modality: value["modality"],
+    top_k: value["topK"],
+    similarity_threshold: value["similarityThreshold"],
+    enable_reranking: value["enableReranking"],
+  };
 }

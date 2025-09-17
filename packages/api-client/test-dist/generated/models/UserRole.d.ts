@@ -19,11 +19,11 @@
  * @export
  */
 export declare const UserRole: {
-    readonly Admin: "admin";
-    readonly Regular: "regular";
-    readonly Guest: "guest";
+  readonly Admin: "admin";
+  readonly Regular: "regular";
+  readonly Guest: "guest";
 };
-export type UserRole = typeof UserRole[keyof typeof UserRole];
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 export declare function instanceOfUserRole(value: any): boolean;
 export declare function UserRoleFromJSON(json: any): UserRole;
 export declare function UserRoleFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserRole;

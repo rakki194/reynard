@@ -14,8 +14,7 @@
  * @export
  * @interface Model
  */
-export interface Model {
-}
+export interface Model {}
 /**
  * Check if a given object implements the Model interface.
  */

@@ -1,15 +1,11 @@
 /**
  * 🦊 Mermaid Renderer
- * 
+ *
  * Integrates with the existing MCP Mermaid service to render
  * Mermaid diagrams to SVG and PNG formats.
  */
 
-import type {
-  MermaidRenderer as IMermaidRenderer,
-  RenderConfig,
-  ValidationResult
-} from '../types.js';
+import type { MermaidRenderer as IMermaidRenderer, RenderConfig, ValidationResult } from "../types.js";
 
 export class MermaidRenderer implements IMermaidRenderer {
   private mcpService: any;
@@ -24,7 +20,7 @@ export class MermaidRenderer implements IMermaidRenderer {
       // For testing, always use fallback renderer
       this.mcpService = new FallbackMermaidRenderer();
     } catch (error) {
-      console.warn('⚠️ MCP Mermaid service not available, using fallback renderer');
+      console.warn("⚠️ MCP Mermaid service not available, using fallback renderer");
       this.mcpService = new FallbackMermaidRenderer();
     }
   }
@@ -42,7 +38,7 @@ export class MermaidRenderer implements IMermaidRenderer {
         return this.fallbackSvgRender(mermaidContent, config);
       }
     } catch (error) {
-      console.error('❌ Failed to render SVG:', error);
+      console.error("❌ Failed to render SVG:", error);
       return this.fallbackSvgRender(mermaidContent, config);
     }
   }
@@ -60,7 +56,7 @@ export class MermaidRenderer implements IMermaidRenderer {
         return this.fallbackPngRender(mermaidContent, config);
       }
     } catch (error) {
-      console.error('❌ Failed to render PNG:', error);
+      console.error("❌ Failed to render PNG:", error);
       return this.fallbackPngRender(mermaidContent, config);
     }
   }
@@ -70,10 +66,10 @@ export class MermaidRenderer implements IMermaidRenderer {
       scale: (config?.scale || 1) * 2,
       width: (config?.width || 1200) * 2,
       height: (config?.height || 800) * 2,
-      theme: config?.theme || 'neutral',
-      backgroundColor: config?.backgroundColor || 'white'
+      theme: config?.theme || "neutral",
+      backgroundColor: config?.backgroundColor || "white",
     };
-    
+
     return this.renderToPng(mermaidContent, highResConfig);
   }
 
@@ -89,7 +85,7 @@ export class MermaidRenderer implements IMermaidRenderer {
       return {
         valid: false,
         errors: [`Validation error: ${error}`],
-        warnings: []
+        warnings: [],
       };
     }
   }
@@ -98,7 +94,7 @@ export class MermaidRenderer implements IMermaidRenderer {
     // Fallback SVG rendering - returns a placeholder
     const width = config?.width || 1200;
     const height = config?.height || 800;
-    
+
     return `
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
         <rect width="100%" height="100%" fill="white" stroke="black" stroke-width="2"/>
@@ -106,7 +102,7 @@ export class MermaidRenderer implements IMermaidRenderer {
           Mermaid Diagram (Fallback Render)
         </text>
         <text x="50%" y="60%" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="gray">
-          ${mermaidContent.split('\n').slice(0, 3).join(' ')}...
+          ${mermaidContent.split("\n").slice(0, 3).join(" ")}...
         </text>
       </svg>
     `;
@@ -117,7 +113,7 @@ export class MermaidRenderer implements IMermaidRenderer {
     const svg = this.fallbackSvgRender(mermaidContent, config);
     // In a real implementation, you'd convert SVG to PNG
     // For now, return the SVG as base64
-    return Buffer.from(svg).toString('base64');
+    return Buffer.from(svg).toString("base64");
   }
 
   private fallbackValidate(mermaidContent: string): ValidationResult {
@@ -126,25 +122,25 @@ export class MermaidRenderer implements IMermaidRenderer {
 
     // Basic validation
     if (!mermaidContent.trim()) {
-      errors.push('Diagram content is empty');
+      errors.push("Diagram content is empty");
     }
 
     // Check for basic Mermaid syntax
-    if (!mermaidContent.includes('graph') && !mermaidContent.includes('flowchart')) {
-      warnings.push('No graph or flowchart declaration found');
+    if (!mermaidContent.includes("graph") && !mermaidContent.includes("flowchart")) {
+      warnings.push("No graph or flowchart declaration found");
     }
 
     // Check for balanced brackets
     const openBrackets = (mermaidContent.match(/\[/g) || []).length;
     const closeBrackets = (mermaidContent.match(/\]/g) || []).length;
     if (openBrackets !== closeBrackets) {
-      warnings.push('Unbalanced brackets detected');
+      warnings.push("Unbalanced brackets detected");
     }
 
     return {
       valid: errors.length === 0,
       errors,
-      warnings
+      warnings,
     };
   }
 }
@@ -156,18 +152,18 @@ class FallbackMermaidRenderer {
   async render_diagram_to_svg(content: string): Promise<[boolean, string, string]> {
     try {
       const svg = this.fallbackSvgRender(content);
-      return [true, svg, ''];
+      return [true, svg, ""];
     } catch (error) {
-      return [false, '', `Fallback render error: ${error}`];
+      return [false, "", `Fallback render error: ${error}`];
     }
   }
 
   async render_diagram_to_png(content: string): Promise<[boolean, string, string]> {
     try {
       const png = this.fallbackPngRender(content);
-      return [true, png, ''];
+      return [true, png, ""];
     } catch (error) {
-      return [false, '', `Fallback render error: ${error}`];
+      return [false, "", `Fallback render error: ${error}`];
     }
   }
 
@@ -179,7 +175,7 @@ class FallbackMermaidRenderer {
   private fallbackSvgRender(mermaidContent: string, config?: RenderConfig): string {
     const width = config?.width || 1200;
     const height = config?.height || 800;
-    
+
     return `
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
         <rect width="100%" height="100%" fill="white" stroke="black" stroke-width="2"/>
@@ -187,7 +183,7 @@ class FallbackMermaidRenderer {
           Mermaid Diagram (Fallback Render)
         </text>
         <text x="50%" y="60%" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="gray">
-          ${mermaidContent.split('\n').slice(0, 3).join(' ')}...
+          ${mermaidContent.split("\n").slice(0, 3).join(" ")}...
         </text>
       </svg>
     `;
@@ -195,7 +191,7 @@ class FallbackMermaidRenderer {
 
   private fallbackPngRender(mermaidContent: string, config?: RenderConfig): string {
     const svg = this.fallbackSvgRender(mermaidContent, config);
-    return Buffer.from(svg).toString('base64');
+    return Buffer.from(svg).toString("base64");
   }
 
   private fallbackValidate(mermaidContent: string): ValidationResult {
@@ -203,23 +199,23 @@ class FallbackMermaidRenderer {
     const warnings: string[] = [];
 
     if (!mermaidContent.trim()) {
-      errors.push('Diagram content is empty');
+      errors.push("Diagram content is empty");
     }
 
-    if (!mermaidContent.includes('graph') && !mermaidContent.includes('flowchart')) {
-      warnings.push('No graph or flowchart declaration found');
+    if (!mermaidContent.includes("graph") && !mermaidContent.includes("flowchart")) {
+      warnings.push("No graph or flowchart declaration found");
     }
 
     const openBrackets = (mermaidContent.match(/\[/g) || []).length;
     const closeBrackets = (mermaidContent.match(/\]/g) || []).length;
     if (openBrackets !== closeBrackets) {
-      warnings.push('Unbalanced brackets detected');
+      warnings.push("Unbalanced brackets detected");
     }
 
     return {
       valid: errors.length === 0,
       errors,
-      warnings
+      warnings,
     };
   }
 }

@@ -38,34 +38,34 @@ function processFile(filePath: string): void {
   let fileType: FileType | null = null;
 
   switch (ext) {
-    case '.md':
-    case '.mdx':
-      fileType = 'markdown';
+    case ".md":
+    case ".mdx":
+      fileType = "markdown";
       break;
-    case '.ts':
-    case '.tsx':
-      fileType = 'typescript';
+    case ".ts":
+    case ".tsx":
+      fileType = "typescript";
       break;
-    case '.js':
-    case '.jsx':
-      fileType = 'javascript';
+    case ".js":
+    case ".jsx":
+      fileType = "javascript";
       break;
-    case '.py':
-      fileType = 'python';
+    case ".py":
+      fileType = "python";
       break;
-    case '.json':
-      fileType = 'json';
+    case ".json":
+      fileType = "json";
       break;
-    case '.yaml':
-    case '.yml':
-      fileType = 'yaml';
+    case ".yaml":
+    case ".yml":
+      fileType = "yaml";
       break;
-    case '.css':
-      fileType = 'css';
+    case ".css":
+      fileType = "css";
       break;
-    case '.html':
-    case '.htm':
-      fileType = 'html';
+    case ".html":
+    case ".htm":
+      fileType = "html";
       break;
     default:
       console.log(`⏭️  Skipping unsupported file type: ${filePath}`);
@@ -115,6 +115,8 @@ export function setupFileWatchers(): void {
 export function setupStatusReporting(): void {
   setInterval(() => {
     const status = queueManager.getStatus();
-    console.log(`📊 Queue Status: ${status.totalQueues} total queues, ${status.processingFiles.length} processing, processing: ${status.isProcessing}`);
+    console.log(
+      `📊 Queue Status: ${status.totalQueues} total queues, ${status.processingFiles.length} processing, processing: ${status.isProcessing}`
+    );
   }, 10000); // Report every 10 seconds
 }

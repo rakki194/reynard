@@ -16,7 +16,7 @@ import pytest
 from app.api.search.enhanced_search_service import EnhancedSearchService
 from app.api.search.models import SearchResponse, SearchResult
 from app.api.search.natural_language_processor import NaturalLanguageProcessor
-from app.services.rag.embedding_service import EmbeddingService
+from app.services.rag import EmbeddingService
 
 
 class TestNaturalLanguageProcessor:

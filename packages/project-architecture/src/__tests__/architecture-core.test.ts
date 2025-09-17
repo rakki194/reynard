@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { 
+import {
   REYNARD_ARCHITECTURE,
   getWatchableDirectories,
   getBuildableDirectories,
@@ -13,7 +13,7 @@ import {
   getLintableDirectories,
   getDocumentableDirectories,
   getGlobalExcludePatterns,
-  getGlobalIncludePatterns
+  getGlobalIncludePatterns,
 } from "../architecture.js";
 
 describe("Project Architecture Core", () => {

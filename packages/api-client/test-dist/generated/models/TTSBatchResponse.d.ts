@@ -9,37 +9,37 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { TTSSynthesisResponse } from './TTSSynthesisResponse';
+import type { TTSSynthesisResponse } from "./TTSSynthesisResponse";
 /**
  * Response model for batch TTS synthesis.
  * @export
  * @interface TTSBatchResponse
  */
 export interface TTSBatchResponse {
-    /**
-     * Whether batch synthesis was successful
-     * @type {boolean}
-     * @memberof TTSBatchResponse
-     */
-    success: boolean;
-    /**
-     * Individual synthesis results
-     * @type {Array<TTSSynthesisResponse>}
-     * @memberof TTSBatchResponse
-     */
-    results: Array<TTSSynthesisResponse>;
-    /**
-     * Total processing time in seconds
-     * @type {number}
-     * @memberof TTSBatchResponse
-     */
-    totalProcessingTime: number;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSBatchResponse
-     */
-    error?: string | null;
+  /**
+   * Whether batch synthesis was successful
+   * @type {boolean}
+   * @memberof TTSBatchResponse
+   */
+  success: boolean;
+  /**
+   * Individual synthesis results
+   * @type {Array<TTSSynthesisResponse>}
+   * @memberof TTSBatchResponse
+   */
+  results: Array<TTSSynthesisResponse>;
+  /**
+   * Total processing time in seconds
+   * @type {number}
+   * @memberof TTSBatchResponse
+   */
+  totalProcessingTime: number;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSBatchResponse
+   */
+  error?: string | null;
 }
 /**
  * Check if a given object implements the TTSBatchResponse interface.
@@ -48,4 +48,7 @@ export declare function instanceOfTTSBatchResponse(value: object): value is TTSB
 export declare function TTSBatchResponseFromJSON(json: any): TTSBatchResponse;
 export declare function TTSBatchResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSBatchResponse;
 export declare function TTSBatchResponseToJSON(json: any): TTSBatchResponse;
-export declare function TTSBatchResponseToJSONTyped(value?: TTSBatchResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function TTSBatchResponseToJSONTyped(
+  value?: TTSBatchResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -30,7 +30,7 @@ test.describe("Gallery E2E Tests", () => {
         ), document.getElementById("gallery-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#gallery-container")).toBeVisible();
     await expect(page.locator("img[alt='Image 1']")).toBeVisible();
     await expect(page.locator("img[alt='Image 2']")).toBeVisible();

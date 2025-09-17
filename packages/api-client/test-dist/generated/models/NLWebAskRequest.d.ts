@@ -9,43 +9,43 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { NLWebContext } from './NLWebContext';
+import type { NLWebContext } from "./NLWebContext";
 /**
  * Request for NLWeb ask endpoint.
  * @export
  * @interface NLWebAskRequest
  */
 export interface NLWebAskRequest {
-    /**
-     * Natural language query
-     * @type {string}
-     * @memberof NLWebAskRequest
-     */
-    query: string;
-    /**
-     *
-     * @type {NLWebContext}
-     * @memberof NLWebAskRequest
-     */
-    context?: NLWebContext | null;
-    /**
-     * Whether to stream the response
-     * @type {boolean}
-     * @memberof NLWebAskRequest
-     */
-    stream?: boolean;
-    /**
-     *
-     * @type {number}
-     * @memberof NLWebAskRequest
-     */
-    maxTokens?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof NLWebAskRequest
-     */
-    temperature?: number | null;
+  /**
+   * Natural language query
+   * @type {string}
+   * @memberof NLWebAskRequest
+   */
+  query: string;
+  /**
+   *
+   * @type {NLWebContext}
+   * @memberof NLWebAskRequest
+   */
+  context?: NLWebContext | null;
+  /**
+   * Whether to stream the response
+   * @type {boolean}
+   * @memberof NLWebAskRequest
+   */
+  stream?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof NLWebAskRequest
+   */
+  maxTokens?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof NLWebAskRequest
+   */
+  temperature?: number | null;
 }
 /**
  * Check if a given object implements the NLWebAskRequest interface.

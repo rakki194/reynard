@@ -12,17 +12,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
+var __assign =
+  (this && this.__assign) ||
+  function () {
+    __assign =
+      Object.assign ||
+      function (t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
+          s = arguments[i];
+          for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
         }
         return t;
-    };
+      };
     return __assign.apply(this, arguments);
-};
+  };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.instanceOfSecureSummarizationRequest = instanceOfSecureSummarizationRequest;
 exports.SecureSummarizationRequestFromJSON = SecureSummarizationRequestFromJSON;
@@ -35,26 +38,39 @@ var MaxLength_1 = require("./MaxLength");
  * Check if a given object implements the SecureSummarizationRequest interface.
  */
 function instanceOfSecureSummarizationRequest(value) {
-    if (!('text' in value) || value['text'] === undefined)
-        return false;
-    return true;
+  if (!("text" in value) || value["text"] === undefined) return false;
+  return true;
 }
 function SecureSummarizationRequestFromJSON(json) {
-    return SecureSummarizationRequestFromJSONTyped(json, false);
+  return SecureSummarizationRequestFromJSONTyped(json, false);
 }
 function SecureSummarizationRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return __assign(__assign({}, json), { 'text': json['text'], 'contentType': json['content_type'] == null ? undefined : json['content_type'], 'summaryLevel': json['summary_level'] == null ? undefined : json['summary_level'], 'maxLength': json['max_length'] == null ? undefined : (0, MaxLength_1.MaxLengthFromJSON)(json['max_length']), 'model': json['model'] == null ? undefined : (0, Model_1.ModelFromJSON)(json['model']) });
+  if (json == null) {
+    return json;
+  }
+  return __assign(__assign({}, json), {
+    text: json["text"],
+    contentType: json["content_type"] == null ? undefined : json["content_type"],
+    summaryLevel: json["summary_level"] == null ? undefined : json["summary_level"],
+    maxLength: json["max_length"] == null ? undefined : (0, MaxLength_1.MaxLengthFromJSON)(json["max_length"]),
+    model: json["model"] == null ? undefined : (0, Model_1.ModelFromJSON)(json["model"]),
+  });
 }
 function SecureSummarizationRequestToJSON(json) {
-    return SecureSummarizationRequestToJSONTyped(json, false);
+  return SecureSummarizationRequestToJSONTyped(json, false);
 }
 function SecureSummarizationRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return __assign(__assign({}, value), { 'text': value['text'], 'content_type': value['contentType'], 'summary_level': value['summaryLevel'], 'max_length': (0, MaxLength_1.MaxLengthToJSON)(value['maxLength']), 'model': (0, Model_1.ModelToJSON)(value['model']) });
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return __assign(__assign({}, value), {
+    text: value["text"],
+    content_type: value["contentType"],
+    summary_level: value["summaryLevel"],
+    max_length: (0, MaxLength_1.MaxLengthToJSON)(value["maxLength"]),
+    model: (0, Model_1.ModelToJSON)(value["model"]),
+  });
 }

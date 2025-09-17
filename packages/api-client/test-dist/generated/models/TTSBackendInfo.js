@@ -23,50 +23,46 @@ var TTSVoiceInfo_1 = require("./TTSVoiceInfo");
  * Check if a given object implements the TTSBackendInfo interface.
  */
 function instanceOfTTSBackendInfo(value) {
-    if (!('name' in value) || value['name'] === undefined)
-        return false;
-    if (!('enabled' in value) || value['enabled'] === undefined)
-        return false;
-    if (!('available' in value) || value['available'] === undefined)
-        return false;
-    if (!('voices' in value) || value['voices'] === undefined)
-        return false;
-    if (!('supportedLanguages' in value) || value['supportedLanguages'] === undefined)
-        return false;
-    if (!('supportedFormats' in value) || value['supportedFormats'] === undefined)
-        return false;
-    return true;
+  if (!("name" in value) || value["name"] === undefined) return false;
+  if (!("enabled" in value) || value["enabled"] === undefined) return false;
+  if (!("available" in value) || value["available"] === undefined) return false;
+  if (!("voices" in value) || value["voices"] === undefined) return false;
+  if (!("supportedLanguages" in value) || value["supportedLanguages"] === undefined) return false;
+  if (!("supportedFormats" in value) || value["supportedFormats"] === undefined) return false;
+  return true;
 }
 function TTSBackendInfoFromJSON(json) {
-    return TTSBackendInfoFromJSONTyped(json, false);
+  return TTSBackendInfoFromJSONTyped(json, false);
 }
 function TTSBackendInfoFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'name': json['name'],
-        'enabled': json['enabled'],
-        'available': json['available'],
-        'voices': (json['voices'].map(TTSVoiceInfo_1.TTSVoiceInfoFromJSON)),
-        'supportedLanguages': json['supported_languages'],
-        'supportedFormats': json['supported_formats'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json["name"],
+    enabled: json["enabled"],
+    available: json["available"],
+    voices: json["voices"].map(TTSVoiceInfo_1.TTSVoiceInfoFromJSON),
+    supportedLanguages: json["supported_languages"],
+    supportedFormats: json["supported_formats"],
+  };
 }
 function TTSBackendInfoToJSON(json) {
-    return TTSBackendInfoToJSONTyped(json, false);
+  return TTSBackendInfoToJSONTyped(json, false);
 }
 function TTSBackendInfoToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'name': value['name'],
-        'enabled': value['enabled'],
-        'available': value['available'],
-        'voices': (value['voices'].map(TTSVoiceInfo_1.TTSVoiceInfoToJSON)),
-        'supported_languages': value['supportedLanguages'],
-        'supported_formats': value['supportedFormats'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value["name"],
+    enabled: value["enabled"],
+    available: value["available"],
+    voices: value["voices"].map(TTSVoiceInfo_1.TTSVoiceInfoToJSON),
+    supported_languages: value["supportedLanguages"],
+    supported_formats: value["supportedFormats"],
+  };
 }

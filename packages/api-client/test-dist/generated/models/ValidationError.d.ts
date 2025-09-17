@@ -9,31 +9,31 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { ValidationErrorLocInner } from './ValidationErrorLocInner';
+import type { ValidationErrorLocInner } from "./ValidationErrorLocInner";
 /**
  *
  * @export
  * @interface ValidationError
  */
 export interface ValidationError {
-    /**
-     *
-     * @type {Array<ValidationErrorLocInner>}
-     * @memberof ValidationError
-     */
-    loc: Array<ValidationErrorLocInner>;
-    /**
-     *
-     * @type {string}
-     * @memberof ValidationError
-     */
-    msg: string;
-    /**
-     *
-     * @type {string}
-     * @memberof ValidationError
-     */
-    type: string;
+  /**
+   *
+   * @type {Array<ValidationErrorLocInner>}
+   * @memberof ValidationError
+   */
+  loc: Array<ValidationErrorLocInner>;
+  /**
+   *
+   * @type {string}
+   * @memberof ValidationError
+   */
+  msg: string;
+  /**
+   *
+   * @type {string}
+   * @memberof ValidationError
+   */
+  type: string;
 }
 /**
  * Check if a given object implements the ValidationError interface.

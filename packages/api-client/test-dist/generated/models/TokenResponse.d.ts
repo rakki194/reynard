@@ -24,36 +24,36 @@
  * @interface TokenResponse
  */
 export interface TokenResponse {
-    /**
-     * JWT access token
-     * @type {string}
-     * @memberof TokenResponse
-     */
-    accessToken: string;
-    /**
-     * JWT refresh token
-     * @type {string}
-     * @memberof TokenResponse
-     */
-    refreshToken: string;
-    /**
-     * Token type
-     * @type {string}
-     * @memberof TokenResponse
-     */
-    tokenType?: string;
-    /**
-     * Access token expiration time in seconds
-     * @type {number}
-     * @memberof TokenResponse
-     */
-    expiresIn: number;
-    /**
-     * Refresh token expiration time in seconds
-     * @type {number}
-     * @memberof TokenResponse
-     */
-    refreshExpiresIn: number;
+  /**
+   * JWT access token
+   * @type {string}
+   * @memberof TokenResponse
+   */
+  accessToken: string;
+  /**
+   * JWT refresh token
+   * @type {string}
+   * @memberof TokenResponse
+   */
+  refreshToken: string;
+  /**
+   * Token type
+   * @type {string}
+   * @memberof TokenResponse
+   */
+  tokenType?: string;
+  /**
+   * Access token expiration time in seconds
+   * @type {number}
+   * @memberof TokenResponse
+   */
+  expiresIn: number;
+  /**
+   * Refresh token expiration time in seconds
+   * @type {number}
+   * @memberof TokenResponse
+   */
+  refreshExpiresIn: number;
 }
 /**
  * Check if a given object implements the TokenResponse interface.

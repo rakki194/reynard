@@ -15,31 +15,31 @@
  * @interface SecureUserCreate
  */
 export interface SecureUserCreate {
-    [key: string]: any | any;
-    /**
-     * Username
-     * @type {string}
-     * @memberof SecureUserCreate
-     */
-    username: string;
-    /**
-     * Email address
-     * @type {string}
-     * @memberof SecureUserCreate
-     */
-    email: string;
-    /**
-     * Password
-     * @type {string}
-     * @memberof SecureUserCreate
-     */
-    password: string;
-    /**
-     * Full name
-     * @type {string}
-     * @memberof SecureUserCreate
-     */
-    fullName: string;
+  [key: string]: any | any;
+  /**
+   * Username
+   * @type {string}
+   * @memberof SecureUserCreate
+   */
+  username: string;
+  /**
+   * Email address
+   * @type {string}
+   * @memberof SecureUserCreate
+   */
+  email: string;
+  /**
+   * Password
+   * @type {string}
+   * @memberof SecureUserCreate
+   */
+  password: string;
+  /**
+   * Full name
+   * @type {string}
+   * @memberof SecureUserCreate
+   */
+  fullName: string;
 }
 /**
  * Check if a given object implements the SecureUserCreate interface.
@@ -48,4 +48,7 @@ export declare function instanceOfSecureUserCreate(value: object): value is Secu
 export declare function SecureUserCreateFromJSON(json: any): SecureUserCreate;
 export declare function SecureUserCreateFromJSONTyped(json: any, ignoreDiscriminator: boolean): SecureUserCreate;
 export declare function SecureUserCreateToJSON(json: any): SecureUserCreate;
-export declare function SecureUserCreateToJSONTyped(value?: SecureUserCreate | null, ignoreDiscriminator?: boolean): any;
+export declare function SecureUserCreateToJSONTyped(
+  value?: SecureUserCreate | null,
+  ignoreDiscriminator?: boolean
+): any;

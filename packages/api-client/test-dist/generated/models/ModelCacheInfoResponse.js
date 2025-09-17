@@ -22,46 +22,44 @@ exports.ModelCacheInfoResponseToJSONTyped = ModelCacheInfoResponseToJSONTyped;
  * Check if a given object implements the ModelCacheInfoResponse interface.
  */
 function instanceOfModelCacheInfoResponse(value) {
-    if (!('repoId' in value) || value['repoId'] === undefined)
-        return false;
-    if (!('cachePath' in value) || value['cachePath'] === undefined)
-        return false;
-    if (!('snapshotPath' in value) || value['snapshotPath'] === undefined)
-        return false;
-    if (!('isCached' in value) || value['isCached'] === undefined)
-        return false;
-    return true;
+  if (!("repoId" in value) || value["repoId"] === undefined) return false;
+  if (!("cachePath" in value) || value["cachePath"] === undefined) return false;
+  if (!("snapshotPath" in value) || value["snapshotPath"] === undefined) return false;
+  if (!("isCached" in value) || value["isCached"] === undefined) return false;
+  return true;
 }
 function ModelCacheInfoResponseFromJSON(json) {
-    return ModelCacheInfoResponseFromJSONTyped(json, false);
+  return ModelCacheInfoResponseFromJSONTyped(json, false);
 }
 function ModelCacheInfoResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'repoId': json['repo_id'],
-        'cachePath': json['cache_path'],
-        'snapshotPath': json['snapshot_path'],
-        'isCached': json['is_cached'],
-        'size': json['size'] == null ? undefined : json['size'],
-        'lastModified': json['last_modified'] == null ? undefined : json['last_modified'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    repoId: json["repo_id"],
+    cachePath: json["cache_path"],
+    snapshotPath: json["snapshot_path"],
+    isCached: json["is_cached"],
+    size: json["size"] == null ? undefined : json["size"],
+    lastModified: json["last_modified"] == null ? undefined : json["last_modified"],
+  };
 }
 function ModelCacheInfoResponseToJSON(json) {
-    return ModelCacheInfoResponseToJSONTyped(json, false);
+  return ModelCacheInfoResponseToJSONTyped(json, false);
 }
 function ModelCacheInfoResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'repo_id': value['repoId'],
-        'cache_path': value['cachePath'],
-        'snapshot_path': value['snapshotPath'],
-        'is_cached': value['isCached'],
-        'size': value['size'],
-        'last_modified': value['lastModified'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    repo_id: value["repoId"],
+    cache_path: value["cachePath"],
+    snapshot_path: value["snapshotPath"],
+    is_cached: value["isCached"],
+    size: value["size"],
+    last_modified: value["lastModified"],
+  };
 }

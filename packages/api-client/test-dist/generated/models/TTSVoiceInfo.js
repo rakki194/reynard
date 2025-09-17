@@ -22,42 +22,41 @@ exports.TTSVoiceInfoToJSONTyped = TTSVoiceInfoToJSONTyped;
  * Check if a given object implements the TTSVoiceInfo interface.
  */
 function instanceOfTTSVoiceInfo(value) {
-    if (!('name' in value) || value['name'] === undefined)
-        return false;
-    if (!('language' in value) || value['language'] === undefined)
-        return false;
-    if (!('available' in value) || value['available'] === undefined)
-        return false;
-    return true;
+  if (!("name" in value) || value["name"] === undefined) return false;
+  if (!("language" in value) || value["language"] === undefined) return false;
+  if (!("available" in value) || value["available"] === undefined) return false;
+  return true;
 }
 function TTSVoiceInfoFromJSON(json) {
-    return TTSVoiceInfoFromJSONTyped(json, false);
+  return TTSVoiceInfoFromJSONTyped(json, false);
 }
 function TTSVoiceInfoFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'name': json['name'],
-        'language': json['language'],
-        'gender': json['gender'] == null ? undefined : json['gender'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'available': json['available'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json["name"],
+    language: json["language"],
+    gender: json["gender"] == null ? undefined : json["gender"],
+    description: json["description"] == null ? undefined : json["description"],
+    available: json["available"],
+  };
 }
 function TTSVoiceInfoToJSON(json) {
-    return TTSVoiceInfoToJSONTyped(json, false);
+  return TTSVoiceInfoToJSONTyped(json, false);
 }
 function TTSVoiceInfoToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'name': value['name'],
-        'language': value['language'],
-        'gender': value['gender'],
-        'description': value['description'],
-        'available': value['available'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value["name"],
+    language: value["language"],
+    gender: value["gender"],
+    description: value["description"],
+    available: value["available"],
+  };
 }

@@ -1,5 +1,5 @@
 /**
- * 🦊 Reynard Dev Server Type Definitions
+ * 🦊 Dev Server Management Type Definitions
  *
  * Comprehensive type definitions for the development server management system.
  * Leverages existing Reynard ecosystem patterns for consistency.
@@ -83,21 +83,9 @@ export interface ServerInfo {
   metadata?: Record<string, any>;
 }
 
-export enum ServerStatus {
-  STOPPED = "stopped",
-  STARTING = "starting",
-  RUNNING = "running",
-  STOPPING = "stopping",
-  ERROR = "error",
-  HEALTH_CHECK_FAILED = "health_check_failed",
-}
+export type ServerStatus = "stopped" | "starting" | "running" | "stopping" | "error" | "health_check_failed";
 
-export enum ServerHealth {
-  HEALTHY = "healthy",
-  DEGRADED = "degraded",
-  UNHEALTHY = "unhealthy",
-  UNKNOWN = "unknown",
-}
+export type ServerHealth = "healthy" | "degraded" | "unhealthy" | "unknown";
 
 // ============================================================================
 // Port Management Types
@@ -162,6 +150,8 @@ export interface ProcessInfo {
   exitCode?: number;
   /** Exit signal (if process was killed) */
   exitSignal?: string;
+  /** Last error message */
+  lastError?: string;
 }
 
 export interface ProcessOptions {
@@ -217,6 +207,8 @@ export interface HealthCheckResult {
   response?: any;
   /** HTTP status code (for HTTP checks) */
   statusCode?: number;
+  /** Response time (in milliseconds) */
+  responseTime?: number;
 }
 
 // ============================================================================

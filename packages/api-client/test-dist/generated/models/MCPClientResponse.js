@@ -22,52 +22,48 @@ exports.MCPClientResponseToJSONTyped = MCPClientResponseToJSONTyped;
  * Check if a given object implements the MCPClientResponse interface.
  */
 function instanceOfMCPClientResponse(value) {
-    if (!('clientId' in value) || value['clientId'] === undefined)
-        return false;
-    if (!('clientType' in value) || value['clientType'] === undefined)
-        return false;
-    if (!('name' in value) || value['name'] === undefined)
-        return false;
-    if (!('permissions' in value) || value['permissions'] === undefined)
-        return false;
-    if (!('isActive' in value) || value['isActive'] === undefined)
-        return false;
-    if (!('createdAt' in value) || value['createdAt'] === undefined)
-        return false;
-    return true;
+  if (!("clientId" in value) || value["clientId"] === undefined) return false;
+  if (!("clientType" in value) || value["clientType"] === undefined) return false;
+  if (!("name" in value) || value["name"] === undefined) return false;
+  if (!("permissions" in value) || value["permissions"] === undefined) return false;
+  if (!("isActive" in value) || value["isActive"] === undefined) return false;
+  if (!("createdAt" in value) || value["createdAt"] === undefined) return false;
+  return true;
 }
 function MCPClientResponseFromJSON(json) {
-    return MCPClientResponseFromJSONTyped(json, false);
+  return MCPClientResponseFromJSONTyped(json, false);
 }
 function MCPClientResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'clientId': json['client_id'],
-        'clientType': json['client_type'],
-        'name': json['name'],
-        'permissions': json['permissions'],
-        'isActive': json['is_active'],
-        'createdAt': json['created_at'],
-        'lastUsed': json['last_used'] == null ? undefined : json['last_used'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    clientId: json["client_id"],
+    clientType: json["client_type"],
+    name: json["name"],
+    permissions: json["permissions"],
+    isActive: json["is_active"],
+    createdAt: json["created_at"],
+    lastUsed: json["last_used"] == null ? undefined : json["last_used"],
+  };
 }
 function MCPClientResponseToJSON(json) {
-    return MCPClientResponseToJSONTyped(json, false);
+  return MCPClientResponseToJSONTyped(json, false);
 }
 function MCPClientResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'client_id': value['clientId'],
-        'client_type': value['clientType'],
-        'name': value['name'],
-        'permissions': value['permissions'],
-        'is_active': value['isActive'],
-        'created_at': value['createdAt'],
-        'last_used': value['lastUsed'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    client_id: value["clientId"],
+    client_type: value["clientType"],
+    name: value["name"],
+    permissions: value["permissions"],
+    is_active: value["isActive"],
+    created_at: value["createdAt"],
+    last_used: value["lastUsed"],
+  };
 }

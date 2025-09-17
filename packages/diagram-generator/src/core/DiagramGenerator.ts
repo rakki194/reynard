@@ -1,33 +1,33 @@
 /**
  * 🦊 Main Diagram Generator
- * 
+ *
  * Orchestrates the entire diagram generation process, coordinating
  * codebase analysis, diagram generation, and rendering.
  */
 
-import { CodebaseAnalyzer } from './CodebaseAnalyzer.js';
-import { MermaidRenderer } from './MermaidRenderer.js';
-import { DIAGRAM_GENERATORS } from '../generators/index.js';
+import { CodebaseAnalyzer } from "./CodebaseAnalyzer.js";
+import { MermaidRenderer } from "./MermaidRenderer.js";
+import { DIAGRAM_GENERATORS } from "../generators/index.js";
 import type {
   DiagramGenerationConfig,
   DiagramGenerationResult,
   DiagramOutput,
   GenerationError,
-  DiagramGenerator
-} from '../types.js';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+  DiagramGenerator,
+} from "../types.js";
+import { writeFile, mkdir } from "fs/promises";
+import { join } from "path";
 
 export class DiagramGeneratorMain {
   private analyzer: CodebaseAnalyzer;
   private renderer: MermaidRenderer;
   private generators: Map<string, DiagramGenerator>;
 
-  constructor(rootPath: string = '/home/kade/runeset/reynard') {
+  constructor(rootPath: string = "/home/kade/runeset/reynard") {
     this.analyzer = new CodebaseAnalyzer(rootPath);
     this.renderer = new MermaidRenderer();
     this.generators = new Map();
-    
+
     // Initialize generators
     for (const GeneratorClass of DIAGRAM_GENERATORS) {
       const generator = new GeneratorClass();
@@ -39,12 +39,12 @@ export class DiagramGeneratorMain {
    * Generate all diagrams for the project
    */
   async generateAll(config: DiagramGenerationConfig): Promise<DiagramGenerationResult> {
-    console.log('🦊 Starting comprehensive diagram generation...');
+    console.log("🦊 Starting comprehensive diagram generation...");
     const startTime = Date.now();
 
     try {
       // Analyze codebase
-      console.log('📊 Analyzing codebase...');
+      console.log("📊 Analyzing codebase...");
       const analysis = await this.analyzer.analyzeCodebase();
 
       // Ensure output directory exists
@@ -57,14 +57,14 @@ export class DiagramGeneratorMain {
       for (const [type, generator] of this.generators) {
         try {
           console.log(`🎨 Generating ${type} diagram...`);
-          
+
           if (!generator.validate(analysis)) {
             console.warn(`⚠️ Skipping ${type} - validation failed`);
             continue;
           }
 
           const diagram = await generator.generate(analysis, config);
-          
+
           // Render to different formats
           if (config.generateSvg) {
             diagram.svgContent = await this.renderer.renderToSvg(diagram.mermaidContent);
@@ -75,13 +75,13 @@ export class DiagramGeneratorMain {
           if (config.generatePng) {
             diagram.pngContent = await this.renderer.renderToPng(diagram.mermaidContent);
             diagram.outputPaths.png = join(config.outputDir, `${type}.png`);
-            await writeFile(diagram.outputPaths.png, diagram.pngContent, 'base64');
+            await writeFile(diagram.outputPaths.png, diagram.pngContent, "base64");
           }
 
           if (config.generateHighRes) {
             diagram.highResPngContent = await this.renderer.renderToHighResPng(diagram.mermaidContent);
             diagram.outputPaths.highResPng = join(config.outputDir, `${type}-high-res.png`);
-            await writeFile(diagram.outputPaths.highResPng, diagram.highResPngContent, 'base64');
+            await writeFile(diagram.outputPaths.highResPng, diagram.highResPngContent, "base64");
           }
 
           // Always save Mermaid source
@@ -90,14 +90,13 @@ export class DiagramGeneratorMain {
 
           diagrams.push(diagram);
           console.log(`✅ Generated ${type} diagram`);
-
         } catch (error) {
           console.error(`❌ Failed to generate ${type} diagram:`, error);
           errors.push({
-            type: 'generation_error',
+            type: "generation_error",
             message: `Failed to generate ${type} diagram: ${error}`,
             context: { diagramType: type, error: String(error) },
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
           });
         }
       }
@@ -115,13 +114,12 @@ export class DiagramGeneratorMain {
           successfulGenerations: diagrams.length,
           failedGenerations: errors.length,
           totalTime,
-          outputDirectory: config.outputDir
+          outputDirectory: config.outputDir,
         },
-        errors
+        errors,
       };
-
     } catch (error) {
-      console.error('❌ Diagram generation failed:', error);
+      console.error("❌ Diagram generation failed:", error);
       return {
         diagrams: [],
         summary: {
@@ -129,14 +127,16 @@ export class DiagramGeneratorMain {
           successfulGenerations: 0,
           failedGenerations: 1,
           totalTime: Date.now() - startTime,
-          outputDirectory: config.outputDir
+          outputDirectory: config.outputDir,
         },
-        errors: [{
-          type: 'fatal_error',
-          message: `Fatal error during diagram generation: ${error}`,
-          context: { error: String(error) },
-          timestamp: new Date().toISOString()
-        }]
+        errors: [
+          {
+            type: "fatal_error",
+            message: `Fatal error during diagram generation: ${error}`,
+            context: { error: String(error) },
+            timestamp: new Date().toISOString(),
+          },
+        ],
       };
     }
   }
@@ -144,17 +144,14 @@ export class DiagramGeneratorMain {
   /**
    * Generate a specific diagram type
    */
-  async generateDiagram(
-    diagramType: string, 
-    config: DiagramGenerationConfig
-  ): Promise<DiagramOutput | null> {
+  async generateDiagram(diagramType: string, config: DiagramGenerationConfig): Promise<DiagramOutput | null> {
     const generator = this.generators.get(diagramType);
     if (!generator) {
       throw new Error(`Unknown diagram type: ${diagramType}`);
     }
 
     const analysis = await this.analyzer.analyzeCodebase();
-    
+
     if (!generator.validate(analysis)) {
       throw new Error(`Validation failed for diagram type: ${diagramType}`);
     }
@@ -181,8 +178,8 @@ export class DiagramGeneratorMain {
    * Generate summary report
    */
   private async generateSummaryReport(
-    diagrams: DiagramOutput[], 
-    analysis: any, 
+    diagrams: DiagramOutput[],
+    analysis: any,
     config: DiagramGenerationConfig
   ): Promise<void> {
     const report = {
@@ -198,7 +195,7 @@ export class DiagramGeneratorMain {
         nodeCount: d.metadata.nodeCount,
         edgeCount: d.metadata.edgeCount,
         complexityScore: d.metadata.complexityScore,
-        outputPaths: d.outputPaths
+        outputPaths: d.outputPaths,
       })),
       analysis: {
         packages: analysis.packages.map((p: any) => ({
@@ -206,17 +203,17 @@ export class DiagramGeneratorMain {
           type: p.type,
           importance: p.importance,
           componentCount: p.components.length,
-          fileCount: p.files.length
+          fileCount: p.files.length,
         })),
         dependencies: analysis.dependencies.map((d: any) => ({
           name: d.name,
           type: d.type,
-          usageCount: d.usageCount
-        }))
-      }
+          usageCount: d.usageCount,
+        })),
+      },
     };
 
-    const reportPath = join(config.outputDir, 'generation-report.json');
+    const reportPath = join(config.outputDir, "generation-report.json");
     await writeFile(reportPath, JSON.stringify(report, null, 2));
     console.log(`📋 Generated summary report: ${reportPath}`);
   }
@@ -237,7 +234,7 @@ export class DiagramGeneratorMain {
 
     return {
       name: generator.name,
-      description: generator.description
+      description: generator.description,
     };
   }
 }

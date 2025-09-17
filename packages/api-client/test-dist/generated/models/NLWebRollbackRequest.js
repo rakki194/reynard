@@ -22,32 +22,33 @@ exports.NLWebRollbackRequestToJSONTyped = NLWebRollbackRequestToJSONTyped;
  * Check if a given object implements the NLWebRollbackRequest interface.
  */
 function instanceOfNLWebRollbackRequest(value) {
-    if (!('enable' in value) || value['enable'] === undefined)
-        return false;
-    return true;
+  if (!("enable" in value) || value["enable"] === undefined) return false;
+  return true;
 }
 function NLWebRollbackRequestFromJSON(json) {
-    return NLWebRollbackRequestFromJSONTyped(json, false);
+  return NLWebRollbackRequestFromJSONTyped(json, false);
 }
 function NLWebRollbackRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'enable': json['enable'],
-        'reason': json['reason'] == null ? undefined : json['reason'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    enable: json["enable"],
+    reason: json["reason"] == null ? undefined : json["reason"],
+  };
 }
 function NLWebRollbackRequestToJSON(json) {
-    return NLWebRollbackRequestToJSONTyped(json, false);
+  return NLWebRollbackRequestToJSONTyped(json, false);
 }
 function NLWebRollbackRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'enable': value['enable'],
-        'reason': value['reason'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    enable: value["enable"],
+    reason: value["reason"],
+  };
 }

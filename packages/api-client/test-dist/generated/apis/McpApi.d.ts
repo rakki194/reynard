@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
-import type { MCPClientResponse, MCPStatsResponse, MCPTokenRequest, MCPTokenResponse } from '../models/index';
+import * as runtime from "../runtime";
+import type { MCPClientResponse, MCPStatsResponse, MCPTokenRequest, MCPTokenResponse } from "../models/index";
 export interface GenerateMcpTokenApiMcpTokenPostRequest {
-    mCPTokenRequest: MCPTokenRequest;
+  mCPTokenRequest: MCPTokenRequest;
 }
 export interface GetMcpClientInfoApiMcpClientClientIdGetRequest {
-    clientId: string;
+  clientId: string;
 }
 /**
  * McpApi - interface
@@ -24,126 +24,166 @@ export interface GetMcpClientInfoApiMcpClientClientIdGetRequest {
  * @interface McpApiInterface
  */
 export interface McpApiInterface {
-    /**
-     * Generate a new MCP token for a client.  Requires mcp:admin permission.
-     * @summary Generate Mcp Token
-     * @param {MCPTokenRequest} mCPTokenRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpApiInterface
-     */
-    generateMcpTokenApiMcpTokenPostRaw(requestParameters: GenerateMcpTokenApiMcpTokenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MCPTokenResponse>>;
-    /**
-     * Generate a new MCP token for a client.  Requires mcp:admin permission.
-     * Generate Mcp Token
-     */
-    generateMcpTokenApiMcpTokenPost(requestParameters: GenerateMcpTokenApiMcpTokenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPTokenResponse>;
-    /**
-     * Get information about a specific MCP client.  Requires mcp:admin permission.
-     * @summary Get Mcp Client Info
-     * @param {string} clientId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpApiInterface
-     */
-    getMcpClientInfoApiMcpClientClientIdGetRaw(requestParameters: GetMcpClientInfoApiMcpClientClientIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MCPClientResponse>>;
-    /**
-     * Get information about a specific MCP client.  Requires mcp:admin permission.
-     * Get Mcp Client Info
-     */
-    getMcpClientInfoApiMcpClientClientIdGet(requestParameters: GetMcpClientInfoApiMcpClientClientIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPClientResponse>;
-    /**
-     * Get MCP system statistics.  Requires mcp:admin permission.
-     * @summary Get Mcp Stats
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpApiInterface
-     */
-    getMcpStatsApiMcpStatsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MCPStatsResponse>>;
-    /**
-     * Get MCP system statistics.  Requires mcp:admin permission.
-     * Get Mcp Stats
-     */
-    getMcpStatsApiMcpStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPStatsResponse>;
-    /**
-     * List all MCP clients.  Requires mcp:admin permission.
-     * @summary List Mcp Clients
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpApiInterface
-     */
-    listMcpClientsApiMcpClientsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<MCPClientResponse>>>;
-    /**
-     * List all MCP clients.  Requires mcp:admin permission.
-     * List Mcp Clients
-     */
-    listMcpClientsApiMcpClientsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<MCPClientResponse>>;
-    /**
-     * Validate current MCP token and return client information.  No special permissions required - just valid token.
-     * @summary Validate Mcp Token
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof McpApiInterface
-     */
-    validateMcpTokenApiMcpValidateGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Validate current MCP token and return client information.  No special permissions required - just valid token.
-     * Validate Mcp Token
-     */
-    validateMcpTokenApiMcpValidateGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Generate a new MCP token for a client.  Requires mcp:admin permission.
+   * @summary Generate Mcp Token
+   * @param {MCPTokenRequest} mCPTokenRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpApiInterface
+   */
+  generateMcpTokenApiMcpTokenPostRaw(
+    requestParameters: GenerateMcpTokenApiMcpTokenPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<MCPTokenResponse>>;
+  /**
+   * Generate a new MCP token for a client.  Requires mcp:admin permission.
+   * Generate Mcp Token
+   */
+  generateMcpTokenApiMcpTokenPost(
+    requestParameters: GenerateMcpTokenApiMcpTokenPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<MCPTokenResponse>;
+  /**
+   * Get information about a specific MCP client.  Requires mcp:admin permission.
+   * @summary Get Mcp Client Info
+   * @param {string} clientId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpApiInterface
+   */
+  getMcpClientInfoApiMcpClientClientIdGetRaw(
+    requestParameters: GetMcpClientInfoApiMcpClientClientIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<MCPClientResponse>>;
+  /**
+   * Get information about a specific MCP client.  Requires mcp:admin permission.
+   * Get Mcp Client Info
+   */
+  getMcpClientInfoApiMcpClientClientIdGet(
+    requestParameters: GetMcpClientInfoApiMcpClientClientIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<MCPClientResponse>;
+  /**
+   * Get MCP system statistics.  Requires mcp:admin permission.
+   * @summary Get Mcp Stats
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpApiInterface
+   */
+  getMcpStatsApiMcpStatsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<MCPStatsResponse>>;
+  /**
+   * Get MCP system statistics.  Requires mcp:admin permission.
+   * Get Mcp Stats
+   */
+  getMcpStatsApiMcpStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPStatsResponse>;
+  /**
+   * List all MCP clients.  Requires mcp:admin permission.
+   * @summary List Mcp Clients
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpApiInterface
+   */
+  listMcpClientsApiMcpClientsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<MCPClientResponse>>>;
+  /**
+   * List all MCP clients.  Requires mcp:admin permission.
+   * List Mcp Clients
+   */
+  listMcpClientsApiMcpClientsGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<MCPClientResponse>>;
+  /**
+   * Validate current MCP token and return client information.  No special permissions required - just valid token.
+   * @summary Validate Mcp Token
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof McpApiInterface
+   */
+  validateMcpTokenApiMcpValidateGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Validate current MCP token and return client information.  No special permissions required - just valid token.
+   * Validate Mcp Token
+   */
+  validateMcpTokenApiMcpValidateGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 }
 /**
  *
  */
 export declare class McpApi extends runtime.BaseAPI implements McpApiInterface {
-    /**
-     * Generate a new MCP token for a client.  Requires mcp:admin permission.
-     * Generate Mcp Token
-     */
-    generateMcpTokenApiMcpTokenPostRaw(requestParameters: GenerateMcpTokenApiMcpTokenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MCPTokenResponse>>;
-    /**
-     * Generate a new MCP token for a client.  Requires mcp:admin permission.
-     * Generate Mcp Token
-     */
-    generateMcpTokenApiMcpTokenPost(requestParameters: GenerateMcpTokenApiMcpTokenPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPTokenResponse>;
-    /**
-     * Get information about a specific MCP client.  Requires mcp:admin permission.
-     * Get Mcp Client Info
-     */
-    getMcpClientInfoApiMcpClientClientIdGetRaw(requestParameters: GetMcpClientInfoApiMcpClientClientIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MCPClientResponse>>;
-    /**
-     * Get information about a specific MCP client.  Requires mcp:admin permission.
-     * Get Mcp Client Info
-     */
-    getMcpClientInfoApiMcpClientClientIdGet(requestParameters: GetMcpClientInfoApiMcpClientClientIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPClientResponse>;
-    /**
-     * Get MCP system statistics.  Requires mcp:admin permission.
-     * Get Mcp Stats
-     */
-    getMcpStatsApiMcpStatsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MCPStatsResponse>>;
-    /**
-     * Get MCP system statistics.  Requires mcp:admin permission.
-     * Get Mcp Stats
-     */
-    getMcpStatsApiMcpStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPStatsResponse>;
-    /**
-     * List all MCP clients.  Requires mcp:admin permission.
-     * List Mcp Clients
-     */
-    listMcpClientsApiMcpClientsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<MCPClientResponse>>>;
-    /**
-     * List all MCP clients.  Requires mcp:admin permission.
-     * List Mcp Clients
-     */
-    listMcpClientsApiMcpClientsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<MCPClientResponse>>;
-    /**
-     * Validate current MCP token and return client information.  No special permissions required - just valid token.
-     * Validate Mcp Token
-     */
-    validateMcpTokenApiMcpValidateGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Validate current MCP token and return client information.  No special permissions required - just valid token.
-     * Validate Mcp Token
-     */
-    validateMcpTokenApiMcpValidateGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Generate a new MCP token for a client.  Requires mcp:admin permission.
+   * Generate Mcp Token
+   */
+  generateMcpTokenApiMcpTokenPostRaw(
+    requestParameters: GenerateMcpTokenApiMcpTokenPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<MCPTokenResponse>>;
+  /**
+   * Generate a new MCP token for a client.  Requires mcp:admin permission.
+   * Generate Mcp Token
+   */
+  generateMcpTokenApiMcpTokenPost(
+    requestParameters: GenerateMcpTokenApiMcpTokenPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<MCPTokenResponse>;
+  /**
+   * Get information about a specific MCP client.  Requires mcp:admin permission.
+   * Get Mcp Client Info
+   */
+  getMcpClientInfoApiMcpClientClientIdGetRaw(
+    requestParameters: GetMcpClientInfoApiMcpClientClientIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<MCPClientResponse>>;
+  /**
+   * Get information about a specific MCP client.  Requires mcp:admin permission.
+   * Get Mcp Client Info
+   */
+  getMcpClientInfoApiMcpClientClientIdGet(
+    requestParameters: GetMcpClientInfoApiMcpClientClientIdGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<MCPClientResponse>;
+  /**
+   * Get MCP system statistics.  Requires mcp:admin permission.
+   * Get Mcp Stats
+   */
+  getMcpStatsApiMcpStatsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<MCPStatsResponse>>;
+  /**
+   * Get MCP system statistics.  Requires mcp:admin permission.
+   * Get Mcp Stats
+   */
+  getMcpStatsApiMcpStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MCPStatsResponse>;
+  /**
+   * List all MCP clients.  Requires mcp:admin permission.
+   * List Mcp Clients
+   */
+  listMcpClientsApiMcpClientsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<MCPClientResponse>>>;
+  /**
+   * List all MCP clients.  Requires mcp:admin permission.
+   * List Mcp Clients
+   */
+  listMcpClientsApiMcpClientsGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<MCPClientResponse>>;
+  /**
+   * Validate current MCP token and return client information.  No special permissions required - just valid token.
+   * Validate Mcp Token
+   */
+  validateMcpTokenApiMcpValidateGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Validate current MCP token and return client information.  No special permissions required - just valid token.
+   * Validate Mcp Token
+   */
+  validateMcpTokenApiMcpValidateGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 }

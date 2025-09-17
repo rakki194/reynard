@@ -15,30 +15,36 @@
  * @interface SummarizationConfigResponse
  */
 export interface SummarizationConfigResponse {
-    /**
-     * Whether configuration was successful
-     * @type {boolean}
-     * @memberof SummarizationConfigResponse
-     */
-    success: boolean;
-    /**
-     * Configuration result message
-     * @type {string}
-     * @memberof SummarizationConfigResponse
-     */
-    message: string;
-    /**
-     * Current configuration
-     * @type {object}
-     * @memberof SummarizationConfigResponse
-     */
-    config: object;
+  /**
+   * Whether configuration was successful
+   * @type {boolean}
+   * @memberof SummarizationConfigResponse
+   */
+  success: boolean;
+  /**
+   * Configuration result message
+   * @type {string}
+   * @memberof SummarizationConfigResponse
+   */
+  message: string;
+  /**
+   * Current configuration
+   * @type {object}
+   * @memberof SummarizationConfigResponse
+   */
+  config: object;
 }
 /**
  * Check if a given object implements the SummarizationConfigResponse interface.
  */
 export declare function instanceOfSummarizationConfigResponse(value: object): value is SummarizationConfigResponse;
 export declare function SummarizationConfigResponseFromJSON(json: any): SummarizationConfigResponse;
-export declare function SummarizationConfigResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): SummarizationConfigResponse;
+export declare function SummarizationConfigResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): SummarizationConfigResponse;
 export declare function SummarizationConfigResponseToJSON(json: any): SummarizationConfigResponse;
-export declare function SummarizationConfigResponseToJSONTyped(value?: SummarizationConfigResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function SummarizationConfigResponseToJSONTyped(
+  value?: SummarizationConfigResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

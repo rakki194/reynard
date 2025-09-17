@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
-import type { SecureSummarizationRequest } from '../models/index';
+import * as runtime from "../runtime";
+import type { SecureSummarizationRequest } from "../models/index";
 export interface SecureSummarizeApiSecureSummarizationSummarizePostRequest {
-    secureSummarizationRequest: SecureSummarizationRequest;
+  secureSummarizationRequest: SecureSummarizationRequest;
 }
 /**
  * SecureSummarizationApi - interface
@@ -21,79 +21,107 @@ export interface SecureSummarizeApiSecureSummarizationSummarizePostRequest {
  * @interface SecureSummarizationApiInterface
  */
 export interface SecureSummarizationApiInterface {
-    /**
-     * Securely get supported content types.  This endpoint provides content type information without exposing sensitive details.  Args:     current_user: Current authenticated user  Returns:     Dict containing supported content types  Raises:     HTTPException: If content type retrieval fails
-     * @summary Secure Get Content Types
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SecureSummarizationApiInterface
-     */
-    secureGetContentTypesApiSecureSummarizationContentTypesGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Securely get supported content types.  This endpoint provides content type information without exposing sensitive details.  Args:     current_user: Current authenticated user  Returns:     Dict containing supported content types  Raises:     HTTPException: If content type retrieval fails
-     * Secure Get Content Types
-     */
-    secureGetContentTypesApiSecureSummarizationContentTypesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Securely get available summarization models.  This endpoint provides model information without exposing sensitive system details.  Args:     current_user: Current authenticated user  Returns:     Dict containing available models (sanitized)  Raises:     HTTPException: If model retrieval fails
-     * @summary Secure Get Models
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SecureSummarizationApiInterface
-     */
-    secureGetModelsApiSecureSummarizationModelsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Securely get available summarization models.  This endpoint provides model information without exposing sensitive system details.  Args:     current_user: Current authenticated user  Returns:     Dict containing available models (sanitized)  Raises:     HTTPException: If model retrieval fails
-     * Secure Get Models
-     */
-    secureGetModelsApiSecureSummarizationModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Securely process a summarization request with comprehensive input validation.  This endpoint prevents command injection, information disclosure, and other security vulnerabilities through comprehensive input validation and response sanitization.  Args:     request: Validated summarization request data     current_user: Current authenticated user  Returns:     Dict containing summarization response (sanitized)  Raises:     HTTPException: If summarization fails or security violation detected
-     * @summary Secure Summarize
-     * @param {SecureSummarizationRequest} secureSummarizationRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SecureSummarizationApiInterface
-     */
-    secureSummarizeApiSecureSummarizationSummarizePostRaw(requestParameters: SecureSummarizeApiSecureSummarizationSummarizePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Securely process a summarization request with comprehensive input validation.  This endpoint prevents command injection, information disclosure, and other security vulnerabilities through comprehensive input validation and response sanitization.  Args:     request: Validated summarization request data     current_user: Current authenticated user  Returns:     Dict containing summarization response (sanitized)  Raises:     HTTPException: If summarization fails or security violation detected
-     * Secure Summarize
-     */
-    secureSummarizeApiSecureSummarizationSummarizePost(requestParameters: SecureSummarizeApiSecureSummarizationSummarizePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Securely get supported content types.  This endpoint provides content type information without exposing sensitive details.  Args:     current_user: Current authenticated user  Returns:     Dict containing supported content types  Raises:     HTTPException: If content type retrieval fails
+   * @summary Secure Get Content Types
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SecureSummarizationApiInterface
+   */
+  secureGetContentTypesApiSecureSummarizationContentTypesGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Securely get supported content types.  This endpoint provides content type information without exposing sensitive details.  Args:     current_user: Current authenticated user  Returns:     Dict containing supported content types  Raises:     HTTPException: If content type retrieval fails
+   * Secure Get Content Types
+   */
+  secureGetContentTypesApiSecureSummarizationContentTypesGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
+  /**
+   * Securely get available summarization models.  This endpoint provides model information without exposing sensitive system details.  Args:     current_user: Current authenticated user  Returns:     Dict containing available models (sanitized)  Raises:     HTTPException: If model retrieval fails
+   * @summary Secure Get Models
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SecureSummarizationApiInterface
+   */
+  secureGetModelsApiSecureSummarizationModelsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Securely get available summarization models.  This endpoint provides model information without exposing sensitive system details.  Args:     current_user: Current authenticated user  Returns:     Dict containing available models (sanitized)  Raises:     HTTPException: If model retrieval fails
+   * Secure Get Models
+   */
+  secureGetModelsApiSecureSummarizationModelsGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
+  /**
+   * Securely process a summarization request with comprehensive input validation.  This endpoint prevents command injection, information disclosure, and other security vulnerabilities through comprehensive input validation and response sanitization.  Args:     request: Validated summarization request data     current_user: Current authenticated user  Returns:     Dict containing summarization response (sanitized)  Raises:     HTTPException: If summarization fails or security violation detected
+   * @summary Secure Summarize
+   * @param {SecureSummarizationRequest} secureSummarizationRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SecureSummarizationApiInterface
+   */
+  secureSummarizeApiSecureSummarizationSummarizePostRaw(
+    requestParameters: SecureSummarizeApiSecureSummarizationSummarizePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Securely process a summarization request with comprehensive input validation.  This endpoint prevents command injection, information disclosure, and other security vulnerabilities through comprehensive input validation and response sanitization.  Args:     request: Validated summarization request data     current_user: Current authenticated user  Returns:     Dict containing summarization response (sanitized)  Raises:     HTTPException: If summarization fails or security violation detected
+   * Secure Summarize
+   */
+  secureSummarizeApiSecureSummarizationSummarizePost(
+    requestParameters: SecureSummarizeApiSecureSummarizationSummarizePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
 }
 /**
  *
  */
 export declare class SecureSummarizationApi extends runtime.BaseAPI implements SecureSummarizationApiInterface {
-    /**
-     * Securely get supported content types.  This endpoint provides content type information without exposing sensitive details.  Args:     current_user: Current authenticated user  Returns:     Dict containing supported content types  Raises:     HTTPException: If content type retrieval fails
-     * Secure Get Content Types
-     */
-    secureGetContentTypesApiSecureSummarizationContentTypesGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Securely get supported content types.  This endpoint provides content type information without exposing sensitive details.  Args:     current_user: Current authenticated user  Returns:     Dict containing supported content types  Raises:     HTTPException: If content type retrieval fails
-     * Secure Get Content Types
-     */
-    secureGetContentTypesApiSecureSummarizationContentTypesGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Securely get available summarization models.  This endpoint provides model information without exposing sensitive system details.  Args:     current_user: Current authenticated user  Returns:     Dict containing available models (sanitized)  Raises:     HTTPException: If model retrieval fails
-     * Secure Get Models
-     */
-    secureGetModelsApiSecureSummarizationModelsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Securely get available summarization models.  This endpoint provides model information without exposing sensitive system details.  Args:     current_user: Current authenticated user  Returns:     Dict containing available models (sanitized)  Raises:     HTTPException: If model retrieval fails
-     * Secure Get Models
-     */
-    secureGetModelsApiSecureSummarizationModelsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Securely process a summarization request with comprehensive input validation.  This endpoint prevents command injection, information disclosure, and other security vulnerabilities through comprehensive input validation and response sanitization.  Args:     request: Validated summarization request data     current_user: Current authenticated user  Returns:     Dict containing summarization response (sanitized)  Raises:     HTTPException: If summarization fails or security violation detected
-     * Secure Summarize
-     */
-    secureSummarizeApiSecureSummarizationSummarizePostRaw(requestParameters: SecureSummarizeApiSecureSummarizationSummarizePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Securely process a summarization request with comprehensive input validation.  This endpoint prevents command injection, information disclosure, and other security vulnerabilities through comprehensive input validation and response sanitization.  Args:     request: Validated summarization request data     current_user: Current authenticated user  Returns:     Dict containing summarization response (sanitized)  Raises:     HTTPException: If summarization fails or security violation detected
-     * Secure Summarize
-     */
-    secureSummarizeApiSecureSummarizationSummarizePost(requestParameters: SecureSummarizeApiSecureSummarizationSummarizePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Securely get supported content types.  This endpoint provides content type information without exposing sensitive details.  Args:     current_user: Current authenticated user  Returns:     Dict containing supported content types  Raises:     HTTPException: If content type retrieval fails
+   * Secure Get Content Types
+   */
+  secureGetContentTypesApiSecureSummarizationContentTypesGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Securely get supported content types.  This endpoint provides content type information without exposing sensitive details.  Args:     current_user: Current authenticated user  Returns:     Dict containing supported content types  Raises:     HTTPException: If content type retrieval fails
+   * Secure Get Content Types
+   */
+  secureGetContentTypesApiSecureSummarizationContentTypesGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
+  /**
+   * Securely get available summarization models.  This endpoint provides model information without exposing sensitive system details.  Args:     current_user: Current authenticated user  Returns:     Dict containing available models (sanitized)  Raises:     HTTPException: If model retrieval fails
+   * Secure Get Models
+   */
+  secureGetModelsApiSecureSummarizationModelsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Securely get available summarization models.  This endpoint provides model information without exposing sensitive system details.  Args:     current_user: Current authenticated user  Returns:     Dict containing available models (sanitized)  Raises:     HTTPException: If model retrieval fails
+   * Secure Get Models
+   */
+  secureGetModelsApiSecureSummarizationModelsGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
+  /**
+   * Securely process a summarization request with comprehensive input validation.  This endpoint prevents command injection, information disclosure, and other security vulnerabilities through comprehensive input validation and response sanitization.  Args:     request: Validated summarization request data     current_user: Current authenticated user  Returns:     Dict containing summarization response (sanitized)  Raises:     HTTPException: If summarization fails or security violation detected
+   * Secure Summarize
+   */
+  secureSummarizeApiSecureSummarizationSummarizePostRaw(
+    requestParameters: SecureSummarizeApiSecureSummarizationSummarizePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Securely process a summarization request with comprehensive input validation.  This endpoint prevents command injection, information disclosure, and other security vulnerabilities through comprehensive input validation and response sanitization.  Args:     request: Validated summarization request data     current_user: Current authenticated user  Returns:     Dict containing summarization response (sanitized)  Raises:     HTTPException: If summarization fails or security violation detected
+   * Secure Summarize
+   */
+  secureSummarizeApiSecureSummarizationSummarizePost(
+    requestParameters: SecureSummarizeApiSecureSummarizationSummarizePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
 }

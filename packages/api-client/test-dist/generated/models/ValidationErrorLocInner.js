@@ -22,18 +22,20 @@ exports.ValidationErrorLocInnerToJSONTyped = ValidationErrorLocInnerToJSONTyped;
  * Check if a given object implements the ValidationErrorLocInner interface.
  */
 function instanceOfValidationErrorLocInner(value) {
-    return true;
+  return true;
 }
 function ValidationErrorLocInnerFromJSON(json) {
-    return ValidationErrorLocInnerFromJSONTyped(json, false);
+  return ValidationErrorLocInnerFromJSONTyped(json, false);
 }
 function ValidationErrorLocInnerFromJSONTyped(json, ignoreDiscriminator) {
-    return json;
+  return json;
 }
 function ValidationErrorLocInnerToJSON(json) {
-    return ValidationErrorLocInnerToJSONTyped(json, false);
+  return ValidationErrorLocInnerToJSONTyped(json, false);
 }
 function ValidationErrorLocInnerToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    return value;
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  return value;
 }

@@ -9,23 +9,29 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
-import type { BatchCaptionRequest, CaptionRequest, CaptionResponse, GeneratorInfo, ModelLoadRequest } from '../models/index';
+import * as runtime from "../runtime";
+import type {
+  BatchCaptionRequest,
+  CaptionRequest,
+  CaptionResponse,
+  GeneratorInfo,
+  ModelLoadRequest,
+} from "../models/index";
 export interface GenerateBatchCaptionsApiCaptionBatchPostRequest {
-    batchCaptionRequest: BatchCaptionRequest;
+  batchCaptionRequest: BatchCaptionRequest;
 }
 export interface GenerateCaptionApiCaptionGeneratePostRequest {
-    captionRequest: CaptionRequest;
+  captionRequest: CaptionRequest;
 }
 export interface GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest {
-    generatorName: string;
+  generatorName: string;
 }
 export interface LoadModelApiCaptionModelsModelNameLoadPostRequest {
-    modelName: string;
-    modelLoadRequest: ModelLoadRequest;
+  modelName: string;
+  modelLoadRequest: ModelLoadRequest;
 }
 export interface UnloadModelApiCaptionModelsModelNameUnloadPostRequest {
-    modelName: string;
+  modelName: string;
 }
 /**
  * CaptionApi - interface
@@ -34,184 +40,252 @@ export interface UnloadModelApiCaptionModelsModelNameUnloadPostRequest {
  * @interface CaptionApiInterface
  */
 export interface CaptionApiInterface {
-    /**
-     * Generate captions for multiple images in batch.
-     * @summary Generate Batch Captions
-     * @param {BatchCaptionRequest} batchCaptionRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaptionApiInterface
-     */
-    generateBatchCaptionsApiCaptionBatchPostRaw(requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<CaptionResponse>>>;
-    /**
-     * Generate captions for multiple images in batch.
-     * Generate Batch Captions
-     */
-    generateBatchCaptionsApiCaptionBatchPost(requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<CaptionResponse>>;
-    /**
-     * Generate a caption for a single image.
-     * @summary Generate Caption
-     * @param {CaptionRequest} captionRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaptionApiInterface
-     */
-    generateCaptionApiCaptionGeneratePostRaw(requestParameters: GenerateCaptionApiCaptionGeneratePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CaptionResponse>>;
-    /**
-     * Generate a caption for a single image.
-     * Generate Caption
-     */
-    generateCaptionApiCaptionGeneratePost(requestParameters: GenerateCaptionApiCaptionGeneratePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CaptionResponse>;
-    /**
-     * Get information about all available caption generators.
-     * @summary Get Available Generators
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaptionApiInterface
-     */
-    getAvailableGeneratorsApiCaptionGeneratorsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: GeneratorInfo;
-    }>>;
-    /**
-     * Get information about all available caption generators.
-     * Get Available Generators
-     */
-    getAvailableGeneratorsApiCaptionGeneratorsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: GeneratorInfo;
-    }>;
-    /**
-     * Get information about a specific caption generator.
-     * @summary Get Generator Info
-     * @param {string} generatorName
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaptionApiInterface
-     */
-    getGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRaw(requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GeneratorInfo>>;
-    /**
-     * Get information about a specific caption generator.
-     * Get Generator Info
-     */
-    getGeneratorInfoApiCaptionGeneratorsGeneratorNameGet(requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GeneratorInfo>;
-    /**
-     * Get list of currently loaded models.
-     * @summary Get Loaded Models
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaptionApiInterface
-     */
-    getLoadedModelsApiCaptionModelsLoadedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Get list of currently loaded models.
-     * Get Loaded Models
-     */
-    getLoadedModelsApiCaptionModelsLoadedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Load a specific caption model.
-     * @summary Load Model
-     * @param {string} modelName
-     * @param {ModelLoadRequest} modelLoadRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaptionApiInterface
-     */
-    loadModelApiCaptionModelsModelNameLoadPostRaw(requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Load a specific caption model.
-     * Load Model
-     */
-    loadModelApiCaptionModelsModelNameLoadPost(requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Unload a specific caption model.
-     * @summary Unload Model
-     * @param {string} modelName
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CaptionApiInterface
-     */
-    unloadModelApiCaptionModelsModelNameUnloadPostRaw(requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Unload a specific caption model.
-     * Unload Model
-     */
-    unloadModelApiCaptionModelsModelNameUnloadPost(requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Generate captions for multiple images in batch.
+   * @summary Generate Batch Captions
+   * @param {BatchCaptionRequest} batchCaptionRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CaptionApiInterface
+   */
+  generateBatchCaptionsApiCaptionBatchPostRaw(
+    requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<CaptionResponse>>>;
+  /**
+   * Generate captions for multiple images in batch.
+   * Generate Batch Captions
+   */
+  generateBatchCaptionsApiCaptionBatchPost(
+    requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<CaptionResponse>>;
+  /**
+   * Generate a caption for a single image.
+   * @summary Generate Caption
+   * @param {CaptionRequest} captionRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CaptionApiInterface
+   */
+  generateCaptionApiCaptionGeneratePostRaw(
+    requestParameters: GenerateCaptionApiCaptionGeneratePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<CaptionResponse>>;
+  /**
+   * Generate a caption for a single image.
+   * Generate Caption
+   */
+  generateCaptionApiCaptionGeneratePost(
+    requestParameters: GenerateCaptionApiCaptionGeneratePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<CaptionResponse>;
+  /**
+   * Get information about all available caption generators.
+   * @summary Get Available Generators
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CaptionApiInterface
+   */
+  getAvailableGeneratorsApiCaptionGeneratorsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<
+    runtime.ApiResponse<{
+      [key: string]: GeneratorInfo;
+    }>
+  >;
+  /**
+   * Get information about all available caption generators.
+   * Get Available Generators
+   */
+  getAvailableGeneratorsApiCaptionGeneratorsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
+    [key: string]: GeneratorInfo;
+  }>;
+  /**
+   * Get information about a specific caption generator.
+   * @summary Get Generator Info
+   * @param {string} generatorName
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CaptionApiInterface
+   */
+  getGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRaw(
+    requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<GeneratorInfo>>;
+  /**
+   * Get information about a specific caption generator.
+   * Get Generator Info
+   */
+  getGeneratorInfoApiCaptionGeneratorsGeneratorNameGet(
+    requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<GeneratorInfo>;
+  /**
+   * Get list of currently loaded models.
+   * @summary Get Loaded Models
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CaptionApiInterface
+   */
+  getLoadedModelsApiCaptionModelsLoadedGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Get list of currently loaded models.
+   * Get Loaded Models
+   */
+  getLoadedModelsApiCaptionModelsLoadedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Load a specific caption model.
+   * @summary Load Model
+   * @param {string} modelName
+   * @param {ModelLoadRequest} modelLoadRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CaptionApiInterface
+   */
+  loadModelApiCaptionModelsModelNameLoadPostRaw(
+    requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Load a specific caption model.
+   * Load Model
+   */
+  loadModelApiCaptionModelsModelNameLoadPost(
+    requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Unload a specific caption model.
+   * @summary Unload Model
+   * @param {string} modelName
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CaptionApiInterface
+   */
+  unloadModelApiCaptionModelsModelNameUnloadPostRaw(
+    requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Unload a specific caption model.
+   * Unload Model
+   */
+  unloadModelApiCaptionModelsModelNameUnloadPost(
+    requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
 }
 /**
  *
  */
 export declare class CaptionApi extends runtime.BaseAPI implements CaptionApiInterface {
-    /**
-     * Generate captions for multiple images in batch.
-     * Generate Batch Captions
-     */
-    generateBatchCaptionsApiCaptionBatchPostRaw(requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<CaptionResponse>>>;
-    /**
-     * Generate captions for multiple images in batch.
-     * Generate Batch Captions
-     */
-    generateBatchCaptionsApiCaptionBatchPost(requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<CaptionResponse>>;
-    /**
-     * Generate a caption for a single image.
-     * Generate Caption
-     */
-    generateCaptionApiCaptionGeneratePostRaw(requestParameters: GenerateCaptionApiCaptionGeneratePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CaptionResponse>>;
-    /**
-     * Generate a caption for a single image.
-     * Generate Caption
-     */
-    generateCaptionApiCaptionGeneratePost(requestParameters: GenerateCaptionApiCaptionGeneratePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CaptionResponse>;
-    /**
-     * Get information about all available caption generators.
-     * Get Available Generators
-     */
-    getAvailableGeneratorsApiCaptionGeneratorsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{
-        [key: string]: GeneratorInfo;
-    }>>;
-    /**
-     * Get information about all available caption generators.
-     * Get Available Generators
-     */
-    getAvailableGeneratorsApiCaptionGeneratorsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
-        [key: string]: GeneratorInfo;
-    }>;
-    /**
-     * Get information about a specific caption generator.
-     * Get Generator Info
-     */
-    getGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRaw(requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GeneratorInfo>>;
-    /**
-     * Get information about a specific caption generator.
-     * Get Generator Info
-     */
-    getGeneratorInfoApiCaptionGeneratorsGeneratorNameGet(requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GeneratorInfo>;
-    /**
-     * Get list of currently loaded models.
-     * Get Loaded Models
-     */
-    getLoadedModelsApiCaptionModelsLoadedGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Get list of currently loaded models.
-     * Get Loaded Models
-     */
-    getLoadedModelsApiCaptionModelsLoadedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Load a specific caption model.
-     * Load Model
-     */
-    loadModelApiCaptionModelsModelNameLoadPostRaw(requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Load a specific caption model.
-     * Load Model
-     */
-    loadModelApiCaptionModelsModelNameLoadPost(requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Unload a specific caption model.
-     * Unload Model
-     */
-    unloadModelApiCaptionModelsModelNameUnloadPostRaw(requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Unload a specific caption model.
-     * Unload Model
-     */
-    unloadModelApiCaptionModelsModelNameUnloadPost(requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Generate captions for multiple images in batch.
+   * Generate Batch Captions
+   */
+  generateBatchCaptionsApiCaptionBatchPostRaw(
+    requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<CaptionResponse>>>;
+  /**
+   * Generate captions for multiple images in batch.
+   * Generate Batch Captions
+   */
+  generateBatchCaptionsApiCaptionBatchPost(
+    requestParameters: GenerateBatchCaptionsApiCaptionBatchPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<CaptionResponse>>;
+  /**
+   * Generate a caption for a single image.
+   * Generate Caption
+   */
+  generateCaptionApiCaptionGeneratePostRaw(
+    requestParameters: GenerateCaptionApiCaptionGeneratePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<CaptionResponse>>;
+  /**
+   * Generate a caption for a single image.
+   * Generate Caption
+   */
+  generateCaptionApiCaptionGeneratePost(
+    requestParameters: GenerateCaptionApiCaptionGeneratePostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<CaptionResponse>;
+  /**
+   * Get information about all available caption generators.
+   * Get Available Generators
+   */
+  getAvailableGeneratorsApiCaptionGeneratorsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<
+    runtime.ApiResponse<{
+      [key: string]: GeneratorInfo;
+    }>
+  >;
+  /**
+   * Get information about all available caption generators.
+   * Get Available Generators
+   */
+  getAvailableGeneratorsApiCaptionGeneratorsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{
+    [key: string]: GeneratorInfo;
+  }>;
+  /**
+   * Get information about a specific caption generator.
+   * Get Generator Info
+   */
+  getGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRaw(
+    requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<GeneratorInfo>>;
+  /**
+   * Get information about a specific caption generator.
+   * Get Generator Info
+   */
+  getGeneratorInfoApiCaptionGeneratorsGeneratorNameGet(
+    requestParameters: GetGeneratorInfoApiCaptionGeneratorsGeneratorNameGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<GeneratorInfo>;
+  /**
+   * Get list of currently loaded models.
+   * Get Loaded Models
+   */
+  getLoadedModelsApiCaptionModelsLoadedGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Get list of currently loaded models.
+   * Get Loaded Models
+   */
+  getLoadedModelsApiCaptionModelsLoadedGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Load a specific caption model.
+   * Load Model
+   */
+  loadModelApiCaptionModelsModelNameLoadPostRaw(
+    requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Load a specific caption model.
+   * Load Model
+   */
+  loadModelApiCaptionModelsModelNameLoadPost(
+    requestParameters: LoadModelApiCaptionModelsModelNameLoadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
+  /**
+   * Unload a specific caption model.
+   * Unload Model
+   */
+  unloadModelApiCaptionModelsModelNameUnloadPostRaw(
+    requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Unload a specific caption model.
+   * Unload Model
+   */
+  unloadModelApiCaptionModelsModelNameUnloadPost(
+    requestParameters: UnloadModelApiCaptionModelsModelNameUnloadPostRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<any>;
 }

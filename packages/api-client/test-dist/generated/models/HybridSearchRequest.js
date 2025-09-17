@@ -22,48 +22,49 @@ exports.HybridSearchRequestToJSONTyped = HybridSearchRequestToJSONTyped;
  * Check if a given object implements the HybridSearchRequest interface.
  */
 function instanceOfHybridSearchRequest(value) {
-    if (!('query' in value) || value['query'] === undefined)
-        return false;
-    return true;
+  if (!("query" in value) || value["query"] === undefined) return false;
+  return true;
 }
 function HybridSearchRequestFromJSON(json) {
-    return HybridSearchRequestFromJSONTyped(json, false);
+  return HybridSearchRequestFromJSONTyped(json, false);
 }
 function HybridSearchRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'query': json['query'],
-        'maxResults': json['max_results'] == null ? undefined : json['max_results'],
-        'fileTypes': json['file_types'] == null ? undefined : json['file_types'],
-        'directories': json['directories'] == null ? undefined : json['directories'],
-        'caseSensitive': json['case_sensitive'] == null ? undefined : json['case_sensitive'],
-        'wholeWord': json['whole_word'] == null ? undefined : json['whole_word'],
-        'contextLines': json['context_lines'] == null ? undefined : json['context_lines'],
-        'semanticWeight': json['semantic_weight'] == null ? undefined : json['semantic_weight'],
-        'syntaxWeight': json['syntax_weight'] == null ? undefined : json['syntax_weight'],
-        'similarityThreshold': json['similarity_threshold'] == null ? undefined : json['similarity_threshold'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    query: json["query"],
+    maxResults: json["max_results"] == null ? undefined : json["max_results"],
+    fileTypes: json["file_types"] == null ? undefined : json["file_types"],
+    directories: json["directories"] == null ? undefined : json["directories"],
+    caseSensitive: json["case_sensitive"] == null ? undefined : json["case_sensitive"],
+    wholeWord: json["whole_word"] == null ? undefined : json["whole_word"],
+    contextLines: json["context_lines"] == null ? undefined : json["context_lines"],
+    semanticWeight: json["semantic_weight"] == null ? undefined : json["semantic_weight"],
+    syntaxWeight: json["syntax_weight"] == null ? undefined : json["syntax_weight"],
+    similarityThreshold: json["similarity_threshold"] == null ? undefined : json["similarity_threshold"],
+  };
 }
 function HybridSearchRequestToJSON(json) {
-    return HybridSearchRequestToJSONTyped(json, false);
+  return HybridSearchRequestToJSONTyped(json, false);
 }
 function HybridSearchRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'query': value['query'],
-        'max_results': value['maxResults'],
-        'file_types': value['fileTypes'],
-        'directories': value['directories'],
-        'case_sensitive': value['caseSensitive'],
-        'whole_word': value['wholeWord'],
-        'context_lines': value['contextLines'],
-        'semantic_weight': value['semanticWeight'],
-        'syntax_weight': value['syntaxWeight'],
-        'similarity_threshold': value['similarityThreshold'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    query: value["query"],
+    max_results: value["maxResults"],
+    file_types: value["fileTypes"],
+    directories: value["directories"],
+    case_sensitive: value["caseSensitive"],
+    whole_word: value["wholeWord"],
+    context_lines: value["contextLines"],
+    semantic_weight: value["semanticWeight"],
+    syntax_weight: value["syntaxWeight"],
+    similarity_threshold: value["similarityThreshold"],
+  };
 }

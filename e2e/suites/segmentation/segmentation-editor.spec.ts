@@ -29,7 +29,7 @@ test.describe("Segmentation Editor E2E Tests", () => {
         ), document.getElementById("segmentation-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#segmentation-container")).toBeVisible();
     await expect(page.locator("#segmentation-container canvas")).toBeVisible();
   });
@@ -50,14 +50,14 @@ test.describe("Segmentation Editor E2E Tests", () => {
         ), document.getElementById("segmentation-container"));
       </script>
     `);
-    
+
     const canvas = page.locator("#segmentation-container canvas");
     await expect(canvas).toBeVisible();
-    
+
     // Simulate drawing on the canvas
     await canvas.hover();
     await canvas.click({ position: { x: 100, y: 100 } });
-    
+
     // Check for segmentation tools/controls
     const toolsContainer = page.locator("#segmentation-container .tools");
     if (await toolsContainer.isVisible()) {

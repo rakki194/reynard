@@ -15,60 +15,60 @@
  * @interface GeneratorInfo
  */
 export interface GeneratorInfo {
-    /**
-     *
-     * @type {string}
-     * @memberof GeneratorInfo
-     */
-    name: string;
-    /**
-     *
-     * @type {string}
-     * @memberof GeneratorInfo
-     */
-    description: string;
-    /**
-     *
-     * @type {string}
-     * @memberof GeneratorInfo
-     */
-    version: string;
-    /**
-     *
-     * @type {string}
-     * @memberof GeneratorInfo
-     */
-    captionType: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof GeneratorInfo
-     */
-    isAvailable: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof GeneratorInfo
-     */
-    isLoaded: boolean;
-    /**
-     *
-     * @type {object}
-     * @memberof GeneratorInfo
-     */
-    configSchema: object;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof GeneratorInfo
-     */
-    features: Array<string>;
-    /**
-     *
-     * @type {string}
-     * @memberof GeneratorInfo
-     */
-    modelCategory: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GeneratorInfo
+   */
+  name: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GeneratorInfo
+   */
+  description: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GeneratorInfo
+   */
+  version: string;
+  /**
+   *
+   * @type {string}
+   * @memberof GeneratorInfo
+   */
+  captionType: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof GeneratorInfo
+   */
+  isAvailable: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof GeneratorInfo
+   */
+  isLoaded: boolean;
+  /**
+   *
+   * @type {object}
+   * @memberof GeneratorInfo
+   */
+  configSchema: object;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof GeneratorInfo
+   */
+  features: Array<string>;
+  /**
+   *
+   * @type {string}
+   * @memberof GeneratorInfo
+   */
+  modelCategory: string;
 }
 /**
  * Check if a given object implements the GeneratorInfo interface.

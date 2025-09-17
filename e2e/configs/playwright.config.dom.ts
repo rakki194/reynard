@@ -19,7 +19,10 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
 
-  reporter: [["html", { open: "never" }], ["json", { outputFile: "dom-assertions-results.json" }]],
+  reporter: [
+    ["html", { open: "never" }],
+    ["json", { outputFile: "dom-assertions-results.json" }],
+  ],
 
   use: {
     baseURL: "http://localhost:3000",

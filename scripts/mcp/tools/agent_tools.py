@@ -9,13 +9,20 @@ Follows the 140-line axiom and modular architecture principles.
 
 from typing import Any
 
-from reynard_agent_naming.agent_naming import AgentNameManager
+import sys
+from pathlib import Path
 
-from .agent_tools_base import BaseAgentTools
-from .agent_tools_ecs import ECSAgentTools
-from .agent_tools_persona import PersonaAgentTools
-from .agent_tools_breeding import BreedingAgentTools
-from .agent_tools_behavior import BehaviorAgentTools
+# Add the agent naming package to the path
+agent_naming_path = Path(__file__).parent.parent.parent / "services" / "agent-naming" / "reynard_agent_naming"
+sys.path.insert(0, str(agent_naming_path))
+
+from agent_naming import AgentNameManager
+
+from .agent_management.base import BaseAgentTools
+from .agent_management.ecs import ECSAgentTools
+from .agent_management.persona import PersonaAgentTools
+from .agent_management.breeding import BreedingAgentTools
+from .agent_management.behavior import BehaviorAgentTools
 
 
 class AgentTools:
@@ -103,6 +110,7 @@ class AgentTools:
         self, persona: dict, spirit: str, style: str
     ) -> str:
         """Generate behavioral instructions based on agent traits and characteristics."""
-        return self.behavior_tools.generate_behavioral_instructions(
+        result: str = self.behavior_tools.generate_behavioral_instructions(
             persona, spirit, style
         )
+        return result

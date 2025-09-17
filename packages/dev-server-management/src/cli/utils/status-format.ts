@@ -1,10 +1,10 @@
 /**
  * 🦊 Dev Server Management CLI Status Formatting Utilities
- * 
+ *
  * Status and health-related formatting functions for CLI output.
  */
 
-import chalk from 'chalk';
+import chalk from "chalk";
 
 // ============================================================================
 // Status Formatting
@@ -12,24 +12,24 @@ import chalk from 'chalk';
 
 export function formatStatus(status: string): string {
   switch (status.toLowerCase()) {
-    case 'running':
-    case 'active':
-    case 'healthy':
-      return chalk.green('✅ Running');
-    case 'starting':
-    case 'pending':
-      return chalk.yellow('🟡 Starting');
-    case 'stopping':
-      return chalk.yellow('🟡 Stopping');
-    case 'stopped':
-    case 'inactive':
-      return chalk.gray('⚫ Stopped');
-    case 'error':
-    case 'failed':
-    case 'unhealthy':
-      return chalk.red('❌ Error');
-    case 'warning':
-      return chalk.yellow('⚠️ Warning');
+    case "running":
+    case "active":
+    case "healthy":
+      return chalk.green("✅ Running");
+    case "starting":
+    case "pending":
+      return chalk.yellow("🟡 Starting");
+    case "stopping":
+      return chalk.yellow("🟡 Stopping");
+    case "stopped":
+    case "inactive":
+      return chalk.gray("⚫ Stopped");
+    case "error":
+    case "failed":
+    case "unhealthy":
+      return chalk.red("❌ Error");
+    case "warning":
+      return chalk.yellow("⚠️ Warning");
     default:
       return chalk.gray(`❓ ${status}`);
   }
@@ -37,14 +37,14 @@ export function formatStatus(status: string): string {
 
 export function formatHealth(health: string): string {
   switch (health.toLowerCase()) {
-    case 'healthy':
-      return chalk.green('💚 Healthy');
-    case 'degraded':
-      return chalk.yellow('💛 Degraded');
-    case 'unhealthy':
-      return chalk.red('❤️ Unhealthy');
-    case 'unknown':
-      return chalk.gray('❓ Unknown');
+    case "healthy":
+      return chalk.green("💚 Healthy");
+    case "degraded":
+      return chalk.yellow("💛 Degraded");
+    case "unhealthy":
+      return chalk.red("❤️ Unhealthy");
+    case "unknown":
+      return chalk.gray("❓ Unknown");
     default:
       return chalk.gray(`❓ ${health}`);
   }
@@ -87,11 +87,11 @@ export function formatErrorStack(error: Error): string {
     return formatError(error);
   }
 
-  const lines = error.stack.split('\n');
+  const lines = error.stack.split("\n");
   const firstLine = lines[0];
   const stackLines = lines.slice(1).map(line => chalk.gray(line));
 
-  return [chalk.red(firstLine), ...stackLines].join('\n');
+  return [chalk.red(firstLine), ...stackLines].join("\n");
 }
 
 // ============================================================================
@@ -100,18 +100,18 @@ export function formatErrorStack(error: Error): string {
 
 export function formatCategory(category: string): string {
   switch (category.toLowerCase()) {
-    case 'package':
-      return chalk.blue('📦 Package');
-    case 'example':
-      return chalk.green('📚 Example');
-    case 'backend':
-      return chalk.red('🔧 Backend');
-    case 'e2e':
-      return chalk.magenta('🧪 E2E');
-    case 'template':
-      return chalk.cyan('📋 Template');
+    case "package":
+      return chalk.blue("📦 Package");
+    case "example":
+      return chalk.green("📚 Example");
+    case "backend":
+      return chalk.red("🔧 Backend");
+    case "e2e":
+      return chalk.magenta("🧪 E2E");
+    case "template":
+      return chalk.cyan("📋 Template");
     default:
-      return chalk.gray('❓ Unknown');
+      return chalk.gray("❓ Unknown");
   }
 }
 
@@ -119,18 +119,18 @@ export function formatCategory(category: string): string {
 // Boolean Formatting
 // ============================================================================
 
-export function formatBoolean(value: boolean, trueText: string = '✅', falseText: string = '❌'): string {
+export function formatBoolean(value: boolean, trueText: string = "✅", falseText: string = "❌"): string {
   return value ? chalk.green(trueText) : chalk.red(falseText);
 }
 
 export function formatEnabled(value: boolean): string {
-  return formatBoolean(value, 'Enabled', 'Disabled');
+  return formatBoolean(value, "Enabled", "Disabled");
 }
 
 export function formatAutoReload(value: boolean): string {
-  return formatBoolean(value, '✅', '❌');
+  return formatBoolean(value, "✅", "❌");
 }
 
 export function formatHotReload(value: boolean): string {
-  return formatBoolean(value, '✅', '❌');
+  return formatBoolean(value, "✅", "❌");
 }

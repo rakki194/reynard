@@ -5,20 +5,18 @@
  * and syntactic pathing, relationships, and comprehensive documentation.
  */
 
-import type { 
-  ProjectArchitecture
-} from "./types.js";
+import type { ProjectArchitecture } from "./types.js";
 
 /**
  * Reynard Project Architecture Definition
- * 
+ *
  * This is the single source of truth for all project structure information.
  * All tools, watchers, and build systems should use this definition.
  */
 export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
   name: "Reynard",
   rootPath: "/home/kade/runeset/reynard",
-  
+
   directories: [
     // === SOURCE CODE DIRECTORIES ===
     {
@@ -36,15 +34,15 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       relationships: [
         { directory: "examples", type: "sibling", description: "Examples use packages" },
         { directory: "templates", type: "sibling", description: "Templates use packages" },
-        { directory: "e2e", type: "tests", description: "E2E tests test packages" }
+        { directory: "e2e", type: "tests", description: "E2E tests test packages" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md"],
       optional: false,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     {
       name: "backend",
       path: "backend",
@@ -59,15 +57,15 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "services", type: "sibling", description: "Related microservices" },
-        { directory: "scripts", type: "sibling", description: "Backend automation scripts" }
+        { directory: "scripts", type: "sibling", description: "Backend automation scripts" },
       ],
       excludePatterns: ["**/__pycache__/**", "**/venv/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.py", "**/*.json", "**/*.yaml", "**/*.yml", "**/*.md", "**/*.sql"],
       optional: false,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     {
       name: "services",
       path: "services",
@@ -82,15 +80,15 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "backend", type: "sibling", description: "Related backend services" },
-        { directory: "scripts", type: "sibling", description: "Service automation scripts" }
+        { directory: "scripts", type: "sibling", description: "Service automation scripts" },
       ],
       excludePatterns: ["**/__pycache__/**", "**/venv/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.py", "**/*.json", "**/*.yaml", "**/*.yml", "**/*.md"],
       optional: false,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     // === DOCUMENTATION DIRECTORIES ===
     {
       name: "docs",
@@ -106,15 +104,15 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "packages", type: "documents", description: "Documents package APIs" },
-        { directory: "backend", type: "documents", description: "Documents backend APIs" }
+        { directory: "backend", type: "documents", description: "Documents backend APIs" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.md", "**/*.mdx", "**/*.yaml", "**/*.yml", "**/*.json", "**/*.html"],
       optional: false,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     {
       name: ".cursor/docs",
       path: ".cursor/docs",
@@ -127,16 +125,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       testable: false,
       lintable: true,
       documentable: true,
-      relationships: [
-        { directory: "docs", type: "sibling", description: "IDE-specific documentation" }
-      ],
+      relationships: [{ directory: "docs", type: "sibling", description: "IDE-specific documentation" }],
       excludePatterns: [],
       includePatterns: ["**/*.md"],
       optional: true,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     {
       name: ".cursor/prompts",
       path: ".cursor/prompts",
@@ -149,16 +145,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       testable: false,
       lintable: true,
       documentable: false,
-      relationships: [
-        { directory: ".cursor/docs", type: "sibling", description: "IDE configuration" }
-      ],
+      relationships: [{ directory: ".cursor/docs", type: "sibling", description: "IDE configuration" }],
       excludePatterns: [],
       includePatterns: ["**/*.md"],
       optional: true,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     {
       name: ".cursor/rules",
       path: ".cursor/rules",
@@ -171,16 +165,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       testable: false,
       lintable: true,
       documentable: false,
-      relationships: [
-        { directory: ".cursor/prompts", type: "sibling", description: "IDE configuration" }
-      ],
+      relationships: [{ directory: ".cursor/prompts", type: "sibling", description: "IDE configuration" }],
       excludePatterns: [],
       includePatterns: ["**/*.md"],
       optional: true,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     // === TEMPLATES AND EXAMPLES ===
     {
       name: "examples",
@@ -196,15 +188,15 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "packages", type: "dependency", description: "Uses packages" },
-        { directory: "templates", type: "sibling", description: "Related templates" }
+        { directory: "templates", type: "sibling", description: "Related templates" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md", "**/*.css", "**/*.html"],
       optional: false,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     {
       name: "templates",
       path: "templates",
@@ -219,15 +211,15 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "packages", type: "dependency", description: "Uses packages" },
-        { directory: "examples", type: "sibling", description: "Related examples" }
+        { directory: "examples", type: "sibling", description: "Related examples" },
       ],
       excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json", "**/*.md", "**/*.css", "**/*.html"],
       optional: false,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     // === TESTING DIRECTORIES ===
     {
       name: "e2e",
@@ -243,15 +235,21 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "packages", type: "tests", description: "Tests packages" },
-        { directory: "examples", type: "tests", description: "Tests examples" }
+        { directory: "examples", type: "tests", description: "Tests examples" },
       ],
-      excludePatterns: ["**/node_modules/**", "**/dist/**", "**/build/**", "**/test-results/**", "**/playwright-report/**"],
+      excludePatterns: [
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/test-results/**",
+        "**/playwright-report/**",
+      ],
       includePatterns: ["**/*.ts", "**/*.js", "**/*.json", "**/*.md"],
       optional: false,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     // === AUTOMATION AND SCRIPTS ===
     {
       name: "scripts",
@@ -267,16 +265,15 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       documentable: true,
       relationships: [
         { directory: "backend", type: "sibling", description: "Backend automation" },
-        { directory: "services", type: "sibling", description: "Service automation" }
+        { directory: "services", type: "sibling", description: "Service automation" },
       ],
       excludePatterns: ["**/__pycache__/**", "**/venv/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.py", "**/*.sh", "**/*.js", "**/*.json", "**/*.md"],
       optional: false,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
-    
+
     // === DATA AND CONFIGURATION ===
     {
       name: "data",
@@ -290,16 +287,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       testable: false,
       lintable: false,
       documentable: true,
-      relationships: [
-        { directory: "backend", type: "dependency", description: "Backend data" }
-      ],
+      relationships: [{ directory: "backend", type: "dependency", description: "Backend data" }],
       excludePatterns: ["**/cache/**", "**/tmp/**"],
       includePatterns: ["**/*.json", "**/*.yaml", "**/*.yml", "**/*.sql", "**/*.csv", "**/*.tsv"],
       optional: true,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     {
       name: "todos",
       path: "todos",
@@ -317,9 +312,9 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       includePatterns: ["**/*.md"],
       optional: true,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     // === INFRASTRUCTURE ===
     {
       name: "nginx",
@@ -333,16 +328,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       testable: false,
       lintable: true,
       documentable: true,
-      relationships: [
-        { directory: "backend", type: "configures", description: "Configures backend" }
-      ],
+      relationships: [{ directory: "backend", type: "configures", description: "Configures backend" }],
       excludePatterns: [],
       includePatterns: ["**/*.conf", "**/*.sh", "**/*.md"],
       optional: true,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     {
       name: "fenrir",
       path: "fenrir",
@@ -355,16 +348,14 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       testable: true,
       lintable: true,
       documentable: true,
-      relationships: [
-        { directory: "scripts", type: "sibling", description: "Development tools" }
-      ],
+      relationships: [{ directory: "scripts", type: "sibling", description: "Development tools" }],
       excludePatterns: ["**/__pycache__/**", "**/venv/**", "**/dist/**", "**/build/**"],
       includePatterns: ["**/*.py", "**/*.json", "**/*.md"],
       optional: true,
       generated: false,
-      thirdParty: false
+      thirdParty: false,
     },
-    
+
     // === THIRD-PARTY CODE ===
     {
       name: "third_party",
@@ -383,10 +374,10 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
       includePatterns: [],
       optional: true,
       generated: false,
-      thirdParty: true
-    }
+      thirdParty: true,
+    },
   ],
-  
+
   // Global patterns
   globalExcludePatterns: [
     "**/node_modules/**",
@@ -418,12 +409,12 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
     "**/.env",
     "**/.env.*",
     "**/.git/**",
-    "**/.vscode/**"
+    "**/.vscode/**",
   ],
-  
+
   globalIncludePatterns: [
     "**/*.ts",
-    "**/*.tsx", 
+    "**/*.tsx",
     "**/*.js",
     "**/*.jsx",
     "**/*.py",
@@ -437,33 +428,33 @@ export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
     "**/*.htm",
     "**/*.sh",
     "**/*.sql",
-    "**/*.conf"
+    "**/*.conf",
   ],
-  
+
   // Default configurations
   defaultWatching: {
     enabled: true,
     recursive: true,
-    debounceMs: 2000
+    debounceMs: 2000,
   },
-  
+
   defaultBuild: {
     enabled: true,
     parallel: true,
-    maxConcurrency: 4
+    maxConcurrency: 4,
   },
-  
+
   defaultTesting: {
     enabled: true,
     framework: "vitest",
-    coverage: true
+    coverage: true,
   },
-  
+
   defaultLinting: {
     enabled: true,
     autoFix: true,
-    strict: true
-  }
+    strict: true,
+  },
 };
 
 /**

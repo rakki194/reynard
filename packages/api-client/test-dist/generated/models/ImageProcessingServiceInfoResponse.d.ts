@@ -15,36 +15,44 @@
  * @interface ImageProcessingServiceInfoResponse
  */
 export interface ImageProcessingServiceInfoResponse {
-    /**
-     *
-     * @type {boolean}
-     * @memberof ImageProcessingServiceInfoResponse
-     */
-    jxlSupported: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ImageProcessingServiceInfoResponse
-     */
-    avifSupported: boolean;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof ImageProcessingServiceInfoResponse
-     */
-    supportedFormats: Array<string>;
-    /**
-     *
-     * @type {number}
-     * @memberof ImageProcessingServiceInfoResponse
-     */
-    totalFormats: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ImageProcessingServiceInfoResponse
+   */
+  jxlSupported: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ImageProcessingServiceInfoResponse
+   */
+  avifSupported: boolean;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof ImageProcessingServiceInfoResponse
+   */
+  supportedFormats: Array<string>;
+  /**
+   *
+   * @type {number}
+   * @memberof ImageProcessingServiceInfoResponse
+   */
+  totalFormats: number;
 }
 /**
  * Check if a given object implements the ImageProcessingServiceInfoResponse interface.
  */
-export declare function instanceOfImageProcessingServiceInfoResponse(value: object): value is ImageProcessingServiceInfoResponse;
+export declare function instanceOfImageProcessingServiceInfoResponse(
+  value: object
+): value is ImageProcessingServiceInfoResponse;
 export declare function ImageProcessingServiceInfoResponseFromJSON(json: any): ImageProcessingServiceInfoResponse;
-export declare function ImageProcessingServiceInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImageProcessingServiceInfoResponse;
+export declare function ImageProcessingServiceInfoResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ImageProcessingServiceInfoResponse;
 export declare function ImageProcessingServiceInfoResponseToJSON(json: any): ImageProcessingServiceInfoResponse;
-export declare function ImageProcessingServiceInfoResponseToJSONTyped(value?: ImageProcessingServiceInfoResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ImageProcessingServiceInfoResponseToJSONTyped(
+  value?: ImageProcessingServiceInfoResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

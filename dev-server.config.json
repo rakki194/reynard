@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0",
+  "global": {
+    "defaultStartupTimeout": 30000,
+    "defaultShutdownTimeout": 10000,
+    "healthCheckInterval": 5000,
+    "autoRestart": true,
+    "maxRestartAttempts": 3,
+    "restartDelay": 1000
+  },
+  "projects": {},
+  "portRanges": {
+    "package": {
+      "start": 3000,
+      "end": 3009
+    },
+    "example": {
+      "start": 3010,
+      "end": 3019
+    },
+    "backend": {
+      "start": 8000,
+      "end": 8009
+    },
+    "e2e": {
+      "start": 3020,
+      "end": 3029
+    },
+    "template": {
+      "start": 3030,
+      "end": 3039
+    }
+  },
+  "healthCheck": {},
+  "logging": {
+    "level": "info",
+    "format": "colored"
+  }
+}

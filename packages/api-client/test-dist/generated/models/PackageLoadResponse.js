@@ -22,38 +22,38 @@ exports.PackageLoadResponseToJSONTyped = PackageLoadResponseToJSONTyped;
  * Check if a given object implements the PackageLoadResponse interface.
  */
 function instanceOfPackageLoadResponse(value) {
-    if (!('success' in value) || value['success'] === undefined)
-        return false;
-    if (!('packageName' in value) || value['packageName'] === undefined)
-        return false;
-    return true;
+  if (!("success" in value) || value["success"] === undefined) return false;
+  if (!("packageName" in value) || value["packageName"] === undefined) return false;
+  return true;
 }
 function PackageLoadResponseFromJSON(json) {
-    return PackageLoadResponseFromJSONTyped(json, false);
+  return PackageLoadResponseFromJSONTyped(json, false);
 }
 function PackageLoadResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'success': json['success'],
-        'packageName': json['package_name'],
-        'loadTime': json['load_time'] == null ? undefined : json['load_time'],
-        'error': json['error'] == null ? undefined : json['error'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    success: json["success"],
+    packageName: json["package_name"],
+    loadTime: json["load_time"] == null ? undefined : json["load_time"],
+    error: json["error"] == null ? undefined : json["error"],
+  };
 }
 function PackageLoadResponseToJSON(json) {
-    return PackageLoadResponseToJSONTyped(json, false);
+  return PackageLoadResponseToJSONTyped(json, false);
 }
 function PackageLoadResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'success': value['success'],
-        'package_name': value['packageName'],
-        'load_time': value['loadTime'],
-        'error': value['error'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    success: value["success"],
+    package_name: value["packageName"],
+    load_time: value["loadTime"],
+    error: value["error"],
+  };
 }

@@ -22,48 +22,47 @@ exports.OllamaChatResponseToJSONTyped = OllamaChatResponseToJSONTyped;
  * Check if a given object implements the OllamaChatResponse interface.
  */
 function instanceOfOllamaChatResponse(value) {
-    if (!('success' in value) || value['success'] === undefined)
-        return false;
-    if (!('model' in value) || value['model'] === undefined)
-        return false;
-    if (!('processingTime' in value) || value['processingTime'] === undefined)
-        return false;
-    return true;
+  if (!("success" in value) || value["success"] === undefined) return false;
+  if (!("model" in value) || value["model"] === undefined) return false;
+  if (!("processingTime" in value) || value["processingTime"] === undefined) return false;
+  return true;
 }
 function OllamaChatResponseFromJSON(json) {
-    return OllamaChatResponseFromJSONTyped(json, false);
+  return OllamaChatResponseFromJSONTyped(json, false);
 }
 function OllamaChatResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'success': json['success'],
-        'response': json['response'] == null ? undefined : json['response'],
-        'model': json['model'],
-        'processingTime': json['processing_time'],
-        'tokensGenerated': json['tokens_generated'] == null ? undefined : json['tokens_generated'],
-        'toolsUsed': json['tools_used'] == null ? undefined : json['tools_used'],
-        'toolCalls': json['tool_calls'] == null ? undefined : json['tool_calls'],
-        'metadata': json['metadata'] == null ? undefined : json['metadata'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    success: json["success"],
+    response: json["response"] == null ? undefined : json["response"],
+    model: json["model"],
+    processingTime: json["processing_time"],
+    tokensGenerated: json["tokens_generated"] == null ? undefined : json["tokens_generated"],
+    toolsUsed: json["tools_used"] == null ? undefined : json["tools_used"],
+    toolCalls: json["tool_calls"] == null ? undefined : json["tool_calls"],
+    metadata: json["metadata"] == null ? undefined : json["metadata"],
+  };
 }
 function OllamaChatResponseToJSON(json) {
-    return OllamaChatResponseToJSONTyped(json, false);
+  return OllamaChatResponseToJSONTyped(json, false);
 }
 function OllamaChatResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'success': value['success'],
-        'response': value['response'],
-        'model': value['model'],
-        'processing_time': value['processingTime'],
-        'tokens_generated': value['tokensGenerated'],
-        'tools_used': value['toolsUsed'],
-        'tool_calls': value['toolCalls'],
-        'metadata': value['metadata'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    success: value["success"],
+    response: value["response"],
+    model: value["model"],
+    processing_time: value["processingTime"],
+    tokens_generated: value["tokensGenerated"],
+    tools_used: value["toolsUsed"],
+    tool_calls: value["toolCalls"],
+    metadata: value["metadata"],
+  };
 }

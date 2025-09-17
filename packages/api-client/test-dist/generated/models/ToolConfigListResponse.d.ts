@@ -9,45 +9,51 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { ToolConfigResponse } from './ToolConfigResponse';
+import type { ToolConfigResponse } from "./ToolConfigResponse";
 /**
  * Response model for tool configuration list.
  * @export
  * @interface ToolConfigListResponse
  */
 export interface ToolConfigListResponse {
-    /**
-     * All tool configurations
-     * @type {{ [key: string]: ToolConfigResponse; }}
-     * @memberof ToolConfigListResponse
-     */
-    tools: {
-        [key: string]: ToolConfigResponse;
-    };
-    /**
-     * Total number of tools
-     * @type {number}
-     * @memberof ToolConfigListResponse
-     */
-    totalTools: number;
-    /**
-     * Number of enabled tools
-     * @type {number}
-     * @memberof ToolConfigListResponse
-     */
-    enabledTools: number;
-    /**
-     * Number of disabled tools
-     * @type {number}
-     * @memberof ToolConfigListResponse
-     */
-    disabledTools: number;
+  /**
+   * All tool configurations
+   * @type {{ [key: string]: ToolConfigResponse; }}
+   * @memberof ToolConfigListResponse
+   */
+  tools: {
+    [key: string]: ToolConfigResponse;
+  };
+  /**
+   * Total number of tools
+   * @type {number}
+   * @memberof ToolConfigListResponse
+   */
+  totalTools: number;
+  /**
+   * Number of enabled tools
+   * @type {number}
+   * @memberof ToolConfigListResponse
+   */
+  enabledTools: number;
+  /**
+   * Number of disabled tools
+   * @type {number}
+   * @memberof ToolConfigListResponse
+   */
+  disabledTools: number;
 }
 /**
  * Check if a given object implements the ToolConfigListResponse interface.
  */
 export declare function instanceOfToolConfigListResponse(value: object): value is ToolConfigListResponse;
 export declare function ToolConfigListResponseFromJSON(json: any): ToolConfigListResponse;
-export declare function ToolConfigListResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ToolConfigListResponse;
+export declare function ToolConfigListResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ToolConfigListResponse;
 export declare function ToolConfigListResponseToJSON(json: any): ToolConfigListResponse;
-export declare function ToolConfigListResponseToJSONTyped(value?: ToolConfigListResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ToolConfigListResponseToJSONTyped(
+  value?: ToolConfigListResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

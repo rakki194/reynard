@@ -22,18 +22,20 @@ exports.MaxLengthToJSONTyped = MaxLengthToJSONTyped;
  * Check if a given object implements the MaxLength interface.
  */
 function instanceOfMaxLength(value) {
-    return true;
+  return true;
 }
 function MaxLengthFromJSON(json) {
-    return MaxLengthFromJSONTyped(json, false);
+  return MaxLengthFromJSONTyped(json, false);
 }
 function MaxLengthFromJSONTyped(json, ignoreDiscriminator) {
-    return json;
+  return json;
 }
 function MaxLengthToJSON(json) {
-    return MaxLengthToJSONTyped(json, false);
+  return MaxLengthToJSONTyped(json, false);
 }
 function MaxLengthToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    return value;
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  return value;
 }

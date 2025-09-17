@@ -244,7 +244,10 @@ export class ChangeAnalyzer {
     if (
       file.includes("feature/") ||
       file.includes("feat/") ||
-      (file.includes("src/") && (file.includes("component") || file.includes("ui") || file.includes("widget")) && !file.includes("test") && !file.includes("spec"))
+      (file.includes("src/") &&
+        (file.includes("component") || file.includes("ui") || file.includes("widget")) &&
+        !file.includes("test") &&
+        !file.includes("spec"))
     ) {
       return { type: "feature", impact: "medium" };
     }
@@ -360,13 +363,7 @@ export class ChangeAnalyzer {
    * Detect breaking changes
    */
   private detectBreakingChanges(fileChanges: FileChange[]): boolean {
-    const breakingPatterns = [
-      /BREAKING CHANGE/i,
-      /feat!:/,
-      /fix!:/,
-      /api\//,
-      /schema\//,
-    ];
+    const breakingPatterns = [/BREAKING CHANGE/i, /feat!:/, /fix!:/, /api\//, /schema\//];
 
     for (const change of fileChanges) {
       for (const pattern of breakingPatterns) {

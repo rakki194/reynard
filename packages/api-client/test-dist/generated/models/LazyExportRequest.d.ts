@@ -15,18 +15,18 @@
  * @interface LazyExportRequest
  */
 export interface LazyExportRequest {
-    /**
-     * Name of the package to create lazy export for
-     * @type {string}
-     * @memberof LazyExportRequest
-     */
-    packageName: string;
-    /**
-     * Validation level for the export
-     * @type {string}
-     * @memberof LazyExportRequest
-     */
-    validationLevel?: string;
+  /**
+   * Name of the package to create lazy export for
+   * @type {string}
+   * @memberof LazyExportRequest
+   */
+  packageName: string;
+  /**
+   * Validation level for the export
+   * @type {string}
+   * @memberof LazyExportRequest
+   */
+  validationLevel?: string;
 }
 /**
  * Check if a given object implements the LazyExportRequest interface.
@@ -35,4 +35,7 @@ export declare function instanceOfLazyExportRequest(value: object): value is Laz
 export declare function LazyExportRequestFromJSON(json: any): LazyExportRequest;
 export declare function LazyExportRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): LazyExportRequest;
 export declare function LazyExportRequestToJSON(json: any): LazyExportRequest;
-export declare function LazyExportRequestToJSONTyped(value?: LazyExportRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function LazyExportRequestToJSONTyped(
+  value?: LazyExportRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

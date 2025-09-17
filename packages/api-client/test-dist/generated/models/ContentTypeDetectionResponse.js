@@ -22,32 +22,33 @@ exports.ContentTypeDetectionResponseToJSONTyped = ContentTypeDetectionResponseTo
  * Check if a given object implements the ContentTypeDetectionResponse interface.
  */
 function instanceOfContentTypeDetectionResponse(value) {
-    if (!('contentType' in value) || value['contentType'] === undefined)
-        return false;
-    return true;
+  if (!("contentType" in value) || value["contentType"] === undefined) return false;
+  return true;
 }
 function ContentTypeDetectionResponseFromJSON(json) {
-    return ContentTypeDetectionResponseFromJSONTyped(json, false);
+  return ContentTypeDetectionResponseFromJSONTyped(json, false);
 }
 function ContentTypeDetectionResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'contentType': json['content_type'],
-        'confidence': json['confidence'] == null ? undefined : json['confidence'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    contentType: json["content_type"],
+    confidence: json["confidence"] == null ? undefined : json["confidence"],
+  };
 }
 function ContentTypeDetectionResponseToJSON(json) {
-    return ContentTypeDetectionResponseToJSONTyped(json, false);
+  return ContentTypeDetectionResponseToJSONTyped(json, false);
 }
 function ContentTypeDetectionResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'content_type': value['contentType'],
-        'confidence': value['confidence'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    content_type: value["contentType"],
+    confidence: value["confidence"],
+  };
 }

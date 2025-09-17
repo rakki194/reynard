@@ -32,7 +32,7 @@ test.describe("Monaco Editor E2E Tests", () => {
         ), document.getElementById("monaco-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#monaco-container")).toBeVisible();
     // Monaco editor creates its own DOM structure
     await expect(page.locator("#monaco-container .monaco-editor")).toBeVisible();
@@ -55,13 +55,13 @@ test.describe("Monaco Editor E2E Tests", () => {
         ), document.getElementById("monaco-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#monaco-container")).toBeVisible();
-    
+
     // Monaco editor should be interactive
     const editor = page.locator("#monaco-container .monaco-editor");
     await expect(editor).toBeVisible();
-    
+
     // Click to focus the editor
     await editor.click();
   });

@@ -8,7 +8,7 @@ from setuptools import find_packages, setup
 setup(
     name="reynard-agent-naming",
     version="0.1.0",
-    packages=find_packages(),
+    packages=find_packages(where="reynard_agent_naming"),
     package_dir={"": "reynard_agent_naming"},
     python_requires=">=3.8",
     install_requires=[],

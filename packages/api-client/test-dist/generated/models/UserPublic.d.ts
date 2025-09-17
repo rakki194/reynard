@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { UserRole } from './UserRole';
+import type { UserRole } from "./UserRole";
 /**
  * Public User model, containing only non-sensitive information.
  *
@@ -18,66 +18,66 @@ import type { UserRole } from './UserRole';
  * @interface UserPublic
  */
 export interface UserPublic {
-    /**
-     *
-     * @type {string}
-     * @memberof UserPublic
-     */
-    id?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof UserPublic
-     */
-    username: string;
-    /**
-     *
-     * @type {UserRole}
-     * @memberof UserPublic
-     */
-    role: UserRole;
-    /**
-     *
-     * @type {string}
-     * @memberof UserPublic
-     */
-    email?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof UserPublic
-     */
-    profilePictureUrl?: string | null;
-    /**
-     *
-     * @type {number}
-     * @memberof UserPublic
-     */
-    yapcoinBalance?: number | null;
-    /**
-     *
-     * @type {boolean}
-     * @memberof UserPublic
-     */
-    isActive: boolean;
-    /**
-     *
-     * @type {Date}
-     * @memberof UserPublic
-     */
-    createdAt?: Date | null;
-    /**
-     *
-     * @type {Date}
-     * @memberof UserPublic
-     */
-    updatedAt?: Date | null;
-    /**
-     *
-     * @type {object}
-     * @memberof UserPublic
-     */
-    metadata?: object;
+  /**
+   *
+   * @type {string}
+   * @memberof UserPublic
+   */
+  id?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof UserPublic
+   */
+  username: string;
+  /**
+   *
+   * @type {UserRole}
+   * @memberof UserPublic
+   */
+  role: UserRole;
+  /**
+   *
+   * @type {string}
+   * @memberof UserPublic
+   */
+  email?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof UserPublic
+   */
+  profilePictureUrl?: string | null;
+  /**
+   *
+   * @type {number}
+   * @memberof UserPublic
+   */
+  yapcoinBalance?: number | null;
+  /**
+   *
+   * @type {boolean}
+   * @memberof UserPublic
+   */
+  isActive: boolean;
+  /**
+   *
+   * @type {Date}
+   * @memberof UserPublic
+   */
+  createdAt?: Date | null;
+  /**
+   *
+   * @type {Date}
+   * @memberof UserPublic
+   */
+  updatedAt?: Date | null;
+  /**
+   *
+   * @type {object}
+   * @memberof UserPublic
+   */
+  metadata?: object;
 }
 /**
  * Check if a given object implements the UserPublic interface.

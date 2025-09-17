@@ -9,46 +9,46 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { MaxTokens } from './MaxTokens';
-import type { Model } from './Model';
-import type { SystemPrompt } from './SystemPrompt';
+import type { MaxTokens } from "./MaxTokens";
+import type { Model } from "./Model";
+import type { SystemPrompt } from "./SystemPrompt";
 /**
  * Secure chat request model.
  * @export
  * @interface SecureChatRequest
  */
 export interface SecureChatRequest {
-    [key: string]: any | any;
-    /**
-     * Chat message
-     * @type {string}
-     * @memberof SecureChatRequest
-     */
-    message: string;
-    /**
-     *
-     * @type {Model}
-     * @memberof SecureChatRequest
-     */
-    model?: Model;
-    /**
-     *
-     * @type {SystemPrompt}
-     * @memberof SecureChatRequest
-     */
-    systemPrompt?: SystemPrompt;
-    /**
-     * Temperature
-     * @type {number}
-     * @memberof SecureChatRequest
-     */
-    temperature?: number;
-    /**
-     *
-     * @type {MaxTokens}
-     * @memberof SecureChatRequest
-     */
-    maxTokens?: MaxTokens;
+  [key: string]: any | any;
+  /**
+   * Chat message
+   * @type {string}
+   * @memberof SecureChatRequest
+   */
+  message: string;
+  /**
+   *
+   * @type {Model}
+   * @memberof SecureChatRequest
+   */
+  model?: Model;
+  /**
+   *
+   * @type {SystemPrompt}
+   * @memberof SecureChatRequest
+   */
+  systemPrompt?: SystemPrompt;
+  /**
+   * Temperature
+   * @type {number}
+   * @memberof SecureChatRequest
+   */
+  temperature?: number;
+  /**
+   *
+   * @type {MaxTokens}
+   * @memberof SecureChatRequest
+   */
+  maxTokens?: MaxTokens;
 }
 /**
  * Check if a given object implements the SecureChatRequest interface.
@@ -57,4 +57,7 @@ export declare function instanceOfSecureChatRequest(value: object): value is Sec
 export declare function SecureChatRequestFromJSON(json: any): SecureChatRequest;
 export declare function SecureChatRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SecureChatRequest;
 export declare function SecureChatRequestToJSON(json: any): SecureChatRequest;
-export declare function SecureChatRequestToJSONTyped(value?: SecureChatRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function SecureChatRequestToJSONTyped(
+  value?: SecureChatRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

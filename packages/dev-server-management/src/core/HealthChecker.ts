@@ -1,22 +1,22 @@
 /**
- * 🦊 Reynard Dev Server Health Checker
- * 
+ * 🦊 Dev Server Management Health Checker
+ *
  * Real-time health monitoring leveraging existing Reynard patterns.
  * Integrates with service-manager for consistent health monitoring.
  */
 
-import { EventEmitter } from 'node:events';
-import { fetch } from 'node:fetch';
-import { exec } from 'node:child_process';
-import { promisify } from 'node:util';
-import type { 
-  HealthStatus, 
-  HealthCheckResult, 
+import { EventEmitter } from "node:events";
+// Note: fetch is available globally in Node.js 18+
+import { exec } from "node:child_process";
+import { promisify } from "node:util";
+import type {
+  HealthStatus,
+  HealthCheckResult,
   HealthCheckConfig,
   ServerHealth,
-  ProjectConfig 
-} from '../types/index.js';
-import { HealthCheckError } from '../types/index.js';
+  ProjectConfig,
+} from "../types/index.js";
+import { HealthCheckError } from "../types/index.js";
 
 const execAsync = promisify(exec);
 
@@ -47,7 +47,7 @@ export class HealthChecker extends EventEmitter {
     }
 
     const healthConfig = { ...this.defaultConfig, ...config.healthCheck };
-    
+
     // Perform initial health check
     this.performHealthCheck(project, config, healthConfig);
 
@@ -68,7 +68,7 @@ export class HealthChecker extends EventEmitter {
       clearInterval(interval);
       this.healthCheckIntervals.delete(project);
     }
-    
+
     this.healthStatuses.delete(project);
   }
 
@@ -84,14 +84,18 @@ export class HealthChecker extends EventEmitter {
   /**
    * Perform a health check
    */
-  async performHealthCheck(project: string, config: ProjectConfig, healthConfig: HealthCheckConfig): Promise<HealthCheckResult> {
+  async performHealthCheck(
+    project: string,
+    config: ProjectConfig,
+    healthConfig: HealthCheckConfig
+  ): Promise<HealthCheckResult> {
     const startTime = Date.now();
-    
+
     try {
-      this.emit('healthCheckStarted', { project, config });
-      
+      this.emit("healthCheckStarted", { project, config });
+
       let result: HealthCheckResult;
-      
+
       if (healthConfig.endpoint) {
         result = await this.performHttpHealthCheck(healthConfig);
       } else if (healthConfig.command) {
@@ -116,33 +120,33 @@ export class HealthChecker extends EventEmitter {
       };
 
       this.healthStatuses.set(project, healthStatus);
-      
-      this.emit('healthCheckCompleted', { project, result, healthStatus });
-      
+
+      this.emit("healthCheckCompleted", { project, result, healthStatus });
+
       return result;
     } catch (error) {
       const duration = Date.now() - startTime;
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
       const result: HealthCheckResult = {
         success: false,
-        health: 'unhealthy',
+        health: "unhealthy",
         duration,
         error: errorMessage,
       };
 
       const healthStatus: HealthStatus = {
         project,
-        health: 'unhealthy',
+        health: "unhealthy",
         lastCheck: new Date(),
         checkDuration: duration,
         error: errorMessage,
       };
 
       this.healthStatuses.set(project, healthStatus);
-      
-      this.emit('healthCheckFailed', { project, error, healthStatus });
-      
+
+      this.emit("healthCheckFailed", { project, error, healthStatus });
+
       return result;
     }
   }
@@ -152,32 +156,32 @@ export class HealthChecker extends EventEmitter {
    */
   private async performHttpHealthCheck(healthConfig: HealthCheckConfig): Promise<HealthCheckResult> {
     if (!healthConfig.endpoint) {
-      throw new Error('HTTP health check requires an endpoint');
+      throw new Error("HTTP health check requires an endpoint");
     }
 
     const startTime = Date.now();
-    
+
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), healthConfig.timeout || 5000);
 
       const response = await fetch(healthConfig.endpoint, {
-        method: 'GET',
+        method: "GET",
         signal: controller.signal,
         headers: {
-          'User-Agent': 'Reynard-Dev-Server-Health-Check',
+          "User-Agent": "Reynard-Dev-Server-Health-Check",
         },
       });
 
       clearTimeout(timeoutId);
-      
+
       const responseTime = Date.now() - startTime;
       const responseText = await response.text();
-      
+
       // Check if response matches expected response
       let matchesExpected = true;
       if (healthConfig.expectedResponse) {
-        if (typeof healthConfig.expectedResponse === 'string') {
+        if (typeof healthConfig.expectedResponse === "string") {
           matchesExpected = responseText.includes(healthConfig.expectedResponse);
         } else {
           matchesExpected = healthConfig.expectedResponse.test(responseText);
@@ -185,10 +189,10 @@ export class HealthChecker extends EventEmitter {
       }
 
       const isHealthy = response.ok && matchesExpected;
-      
+
       return {
         success: isHealthy,
-        health: isHealthy ? 'healthy' : 'unhealthy',
+        health: isHealthy ? "healthy" : "unhealthy",
         duration: responseTime,
         response: responseText,
         responseTime,
@@ -197,7 +201,7 @@ export class HealthChecker extends EventEmitter {
       };
     } catch (error) {
       const responseTime = Date.now() - startTime;
-      throw new HealthCheckError('http', healthConfig.endpoint, error as Error);
+      throw new HealthCheckError("http", healthConfig.endpoint, error as Error);
     }
   }
 
@@ -206,22 +210,22 @@ export class HealthChecker extends EventEmitter {
    */
   private async performCommandHealthCheck(healthConfig: HealthCheckConfig): Promise<HealthCheckResult> {
     if (!healthConfig.command) {
-      throw new Error('Command health check requires a command');
+      throw new Error("Command health check requires a command");
     }
 
     const startTime = Date.now();
-    
+
     try {
       const { stdout, stderr } = await execAsync(healthConfig.command, {
         timeout: healthConfig.timeout || 5000,
       });
 
       const duration = Date.now() - startTime;
-      
+
       // Check if command output matches expected response
       let matchesExpected = true;
       if (healthConfig.expectedResponse) {
-        if (typeof healthConfig.expectedResponse === 'string') {
+        if (typeof healthConfig.expectedResponse === "string") {
           matchesExpected = stdout.includes(healthConfig.expectedResponse);
         } else {
           matchesExpected = healthConfig.expectedResponse.test(stdout);
@@ -229,17 +233,17 @@ export class HealthChecker extends EventEmitter {
       }
 
       const isHealthy = !stderr && matchesExpected;
-      
+
       return {
         success: isHealthy,
-        health: isHealthy ? 'healthy' : 'unhealthy',
+        health: isHealthy ? "healthy" : "unhealthy",
         duration,
         response: { stdout, stderr },
-        error: isHealthy ? undefined : stderr || 'Command output did not match expected response',
+        error: isHealthy ? undefined : stderr || "Command output did not match expected response",
       };
     } catch (error) {
       const duration = Date.now() - startTime;
-      throw new HealthCheckError('command', healthConfig.command, error as Error);
+      throw new HealthCheckError("command", healthConfig.command, error as Error);
     }
   }
 
@@ -248,22 +252,22 @@ export class HealthChecker extends EventEmitter {
    */
   private async performDefaultHealthCheck(config: ProjectConfig): Promise<HealthCheckResult> {
     const startTime = Date.now();
-    
+
     try {
       // Simple port check - try to connect to the port
       const isPortOpen = await this.checkPortOpen(config.port);
       const duration = Date.now() - startTime;
-      
+
       return {
         success: isPortOpen,
-        health: isPortOpen ? 'healthy' : 'unhealthy',
+        health: isPortOpen ? "healthy" : "unhealthy",
         duration,
         response: { port: config.port, open: isPortOpen },
         error: isPortOpen ? undefined : `Port ${config.port} is not accessible`,
       };
     } catch (error) {
       const duration = Date.now() - startTime;
-      throw new HealthCheckError('port', config.port.toString(), error as Error);
+      throw new HealthCheckError("port", config.port.toString(), error as Error);
     }
   }
 
@@ -271,22 +275,22 @@ export class HealthChecker extends EventEmitter {
    * Check if a port is open
    */
   private async checkPortOpen(port: number): Promise<boolean> {
-    return new Promise((resolve) => {
-      const net = require('node:net');
+    return new Promise(resolve => {
+      const net = require("node:net");
       const socket = new net.Socket();
-      
+
       const timeout = setTimeout(() => {
         socket.destroy();
         resolve(false);
       }, 1000);
 
-      socket.connect(port, 'localhost', () => {
+      socket.connect(port, "localhost", () => {
         clearTimeout(timeout);
         socket.destroy();
         resolve(true);
       });
 
-      socket.on('error', () => {
+      socket.on("error", () => {
         clearTimeout(timeout);
         resolve(false);
       });
@@ -326,7 +330,7 @@ export class HealthChecker extends EventEmitter {
     lastCheck: Date | null;
   } {
     const statuses = Array.from(this.healthStatuses.values());
-    
+
     let healthy = 0;
     let degraded = 0;
     let unhealthy = 0;
@@ -335,16 +339,16 @@ export class HealthChecker extends EventEmitter {
 
     for (const status of statuses) {
       switch (status.health) {
-        case 'healthy':
+        case "healthy":
           healthy++;
           break;
-        case 'degraded':
+        case "degraded":
           degraded++;
           break;
-        case 'unhealthy':
+        case "unhealthy":
           unhealthy++;
           break;
-        case 'unknown':
+        case "unknown":
           unknown++;
           break;
       }
@@ -381,7 +385,7 @@ export class HealthChecker extends EventEmitter {
       // Update the configuration and restart health checking
       // This would require storing the project config, which we don't currently do
       // For now, just emit an event
-      this.emit('healthCheckConfigUpdated', { project, config });
+      this.emit("healthCheckConfigUpdated", { project, config });
     }
   }
 
@@ -396,7 +400,7 @@ export class HealthChecker extends EventEmitter {
     lastCheckTime: Date | null;
   } {
     const statuses = Array.from(this.healthStatuses.values());
-    
+
     let totalChecks = 0;
     let successfulChecks = 0;
     let failedChecks = 0;
@@ -406,8 +410,8 @@ export class HealthChecker extends EventEmitter {
     for (const status of statuses) {
       totalChecks++;
       totalDuration += status.checkDuration;
-      
-      if (status.health === 'healthy') {
+
+      if (status.health === "healthy") {
         successfulChecks++;
       } else {
         failedChecks++;

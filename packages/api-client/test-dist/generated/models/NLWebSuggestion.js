@@ -23,42 +23,41 @@ var NLWebTool_1 = require("./NLWebTool");
  * Check if a given object implements the NLWebSuggestion interface.
  */
 function instanceOfNLWebSuggestion(value) {
-    if (!('tool' in value) || value['tool'] === undefined)
-        return false;
-    if (!('score' in value) || value['score'] === undefined)
-        return false;
-    if (!('reasoning' in value) || value['reasoning'] === undefined)
-        return false;
-    return true;
+  if (!("tool" in value) || value["tool"] === undefined) return false;
+  if (!("score" in value) || value["score"] === undefined) return false;
+  if (!("reasoning" in value) || value["reasoning"] === undefined) return false;
+  return true;
 }
 function NLWebSuggestionFromJSON(json) {
-    return NLWebSuggestionFromJSONTyped(json, false);
+  return NLWebSuggestionFromJSONTyped(json, false);
 }
 function NLWebSuggestionFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'tool': (0, NLWebTool_1.NLWebToolFromJSON)(json['tool']),
-        'score': json['score'],
-        'parameters': json['parameters'] == null ? undefined : json['parameters'],
-        'reasoning': json['reasoning'],
-        'parameterHints': json['parameter_hints'] == null ? undefined : json['parameter_hints'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    tool: (0, NLWebTool_1.NLWebToolFromJSON)(json["tool"]),
+    score: json["score"],
+    parameters: json["parameters"] == null ? undefined : json["parameters"],
+    reasoning: json["reasoning"],
+    parameterHints: json["parameter_hints"] == null ? undefined : json["parameter_hints"],
+  };
 }
 function NLWebSuggestionToJSON(json) {
-    return NLWebSuggestionToJSONTyped(json, false);
+  return NLWebSuggestionToJSONTyped(json, false);
 }
 function NLWebSuggestionToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'tool': (0, NLWebTool_1.NLWebToolToJSON)(value['tool']),
-        'score': value['score'],
-        'parameters': value['parameters'],
-        'reasoning': value['reasoning'],
-        'parameter_hints': value['parameterHints'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    tool: (0, NLWebTool_1.NLWebToolToJSON)(value["tool"]),
+    score: value["score"],
+    parameters: value["parameters"],
+    reasoning: value["reasoning"],
+    parameter_hints: value["parameterHints"],
+  };
 }

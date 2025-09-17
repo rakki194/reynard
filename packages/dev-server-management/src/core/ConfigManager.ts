@@ -1,28 +1,28 @@
 /**
- * 🦊 Reynard Dev Server Configuration Manager
- * 
+ * 🦊 Dev Server Management Configuration Manager
+ *
  * Type-safe configuration management leveraging existing Reynard patterns.
  * Extends the service-manager configuration patterns for dev server needs.
  */
 
-import { readFile, writeFile, access } from 'node:fs/promises';
-import { resolve, dirname } from 'node:path';
-import { z } from 'zod';
-import type { 
-  DevServerConfig, 
-  ProjectConfig, 
-  ProjectCategory, 
+import { readFile, writeFile, access } from "node:fs/promises";
+import { resolve, dirname } from "node:path";
+import { z } from "zod";
+import type {
+  DevServerConfig,
+  ProjectConfig,
+  ProjectCategory,
   ValidationResult,
   GlobalConfig,
   PortRange,
-  LoggingConfig
-} from '../types/index.js';
+  LoggingConfig,
+} from "../types/index.js";
 
 // ============================================================================
 // Configuration Schemas
 // ============================================================================
 
-const ProjectCategorySchema = z.enum(['package', 'example', 'backend', 'e2e', 'template']);
+const ProjectCategorySchema = z.enum(["package", "example", "backend", "e2e", "template"]);
 
 const HealthCheckConfigSchema = z.object({
   endpoint: z.string().url().optional(),
@@ -41,7 +41,7 @@ const ProjectConfigSchema = z.object({
   hotReload: z.boolean().default(true),
   dependencies: z.array(z.string()).optional(),
   healthCheck: HealthCheckConfigSchema.optional(),
-  env: z.record(z.string()).optional(),
+  env: z.record(z.string(), z.string()).optional(),
   cwd: z.string().optional(),
   command: z.string().optional(),
   args: z.array(z.string()).optional(),
@@ -55,31 +55,45 @@ const PortRangeSchema = z.object({
   reserved: z.array(z.number().int().positive()).optional(),
 });
 
-const LoggingConfigSchema = z.object({
-  level: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
-  format: z.enum(['json', 'text', 'colored']).default('colored'),
-  file: z.string().optional(),
-  maxFileSize: z.number().positive().optional(),
-  maxFiles: z.number().int().positive().optional(),
-});
+const LoggingConfigSchema = z
+  .object({
+    level: z.enum(["debug", "info", "warn", "error"]).default("info"),
+    format: z.enum(["json", "text", "colored"]).default("colored"),
+    file: z.string().optional(),
+    maxFileSize: z.number().positive().optional(),
+    maxFiles: z.number().int().positive().optional(),
+  })
+  .default({
+    level: "info",
+    format: "colored",
+  });
 
-const GlobalConfigSchema = z.object({
-  maxConcurrentServers: z.number().int().positive().optional(),
-  defaultStartupTimeout: z.number().positive().default(30000),
-  defaultShutdownTimeout: z.number().positive().default(10000),
-  healthCheckInterval: z.number().positive().default(5000),
-  autoRestart: z.boolean().default(true),
-  maxRestartAttempts: z.number().int().positive().default(3),
-  restartDelay: z.number().positive().default(1000),
-});
+const GlobalConfigSchema = z
+  .object({
+    maxConcurrentServers: z.number().int().positive().optional(),
+    defaultStartupTimeout: z.number().positive().default(30000),
+    defaultShutdownTimeout: z.number().positive().default(10000),
+    healthCheckInterval: z.number().positive().default(5000),
+    autoRestart: z.boolean().default(true),
+    maxRestartAttempts: z.number().int().positive().default(3),
+    restartDelay: z.number().positive().default(1000),
+  })
+  .default({
+    defaultStartupTimeout: 30000,
+    defaultShutdownTimeout: 10000,
+    healthCheckInterval: 5000,
+    autoRestart: true,
+    maxRestartAttempts: 3,
+    restartDelay: 1000,
+  });
 
 const DevServerConfigSchema = z.object({
-  version: z.string().default('1.0.0'),
-  global: GlobalConfigSchema.default({}),
+  version: z.string().default("1.0.0"),
+  global: GlobalConfigSchema,
   projects: z.record(z.string(), ProjectConfigSchema),
   portRanges: z.record(ProjectCategorySchema, PortRangeSchema),
   healthCheck: HealthCheckConfigSchema.optional(),
-  logging: LoggingConfigSchema.default({}),
+  logging: LoggingConfigSchema,
 });
 
 // ============================================================================
@@ -91,7 +105,7 @@ export class ConfigManager {
   private configPath: string;
   private watchers: Set<(config: DevServerConfig) => void> = new Set();
 
-  constructor(configPath: string = 'dev-server.config.json') {
+  constructor(configPath: string = "dev-server.config.json") {
     this.configPath = resolve(configPath);
   }
 
@@ -100,19 +114,19 @@ export class ConfigManager {
    */
   async loadConfig(): Promise<DevServerConfig> {
     try {
-      const configData = await readFile(this.configPath, 'utf-8');
+      const configData = await readFile(this.configPath, "utf-8");
       const rawConfig = JSON.parse(configData);
-      
+
       // Validate configuration
       const validationResult = this.validateConfig(rawConfig);
       if (!validationResult.isValid) {
-        throw new Error(`Configuration validation failed: ${validationResult.errors.join(', ')}`);
+        throw new Error(`Configuration validation failed: ${validationResult.errors.join(", ")}`);
       }
 
       this.config = rawConfig as DevServerConfig;
       return this.config;
     } catch (error) {
-      if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+      if (error instanceof Error && "code" in error && error.code === "ENOENT") {
         // Configuration file doesn't exist, create default
         this.config = this.createDefaultConfig();
         await this.saveConfig();
@@ -127,7 +141,7 @@ export class ConfigManager {
    */
   async saveConfig(): Promise<void> {
     if (!this.config) {
-      throw new Error('No configuration loaded');
+      throw new Error("No configuration loaded");
     }
 
     const configDir = dirname(this.configPath);
@@ -136,7 +150,7 @@ export class ConfigManager {
     });
 
     const configData = JSON.stringify(this.config, null, 2);
-    await writeFile(this.configPath, configData, 'utf-8');
+    await writeFile(this.configPath, configData, "utf-8");
 
     // Notify watchers
     this.notifyWatchers();
@@ -147,7 +161,7 @@ export class ConfigManager {
    */
   getProject(name: string): ProjectConfig | undefined {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     return this.config.projects[name];
   }
@@ -157,7 +171,7 @@ export class ConfigManager {
    */
   getAllProjects(): Record<string, ProjectConfig> {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     return this.config.projects;
   }
@@ -167,7 +181,7 @@ export class ConfigManager {
    */
   getProjectsByCategory(category: ProjectCategory): ProjectConfig[] {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     return Object.values(this.config.projects).filter(project => project.category === category);
   }
@@ -177,7 +191,7 @@ export class ConfigManager {
    */
   setProject(name: string, config: ProjectConfig): void {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     this.config.projects[name] = config;
   }
@@ -187,7 +201,7 @@ export class ConfigManager {
    */
   removeProject(name: string): boolean {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     return delete this.config.projects[name];
   }
@@ -197,7 +211,7 @@ export class ConfigManager {
    */
   getGlobalConfig(): GlobalConfig {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     return this.config.global;
   }
@@ -207,7 +221,7 @@ export class ConfigManager {
    */
   setGlobalConfig(config: Partial<GlobalConfig>): void {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     this.config.global = { ...this.config.global, ...config };
   }
@@ -217,7 +231,7 @@ export class ConfigManager {
    */
   getPortRange(category: ProjectCategory): PortRange | undefined {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     return this.config.portRanges[category];
   }
@@ -227,7 +241,7 @@ export class ConfigManager {
    */
   setPortRange(category: ProjectCategory, range: PortRange): void {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     this.config.portRanges[category] = range;
   }
@@ -237,7 +251,7 @@ export class ConfigManager {
    */
   getLoggingConfig(): LoggingConfig {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     return this.config.logging;
   }
@@ -247,7 +261,7 @@ export class ConfigManager {
    */
   setLoggingConfig(config: Partial<LoggingConfig>): void {
     if (!this.config) {
-      throw new Error('Configuration not loaded');
+      throw new Error("Configuration not loaded");
     }
     this.config.logging = { ...this.config.logging, ...config };
   }
@@ -267,13 +281,13 @@ export class ConfigManager {
       if (error instanceof z.ZodError) {
         return {
           isValid: false,
-          errors: error.errors.map(err => `${err.path.join('.')}: ${err.message}`),
+          errors: error.issues.map((err: any) => `${err.path.join(".")}: ${err.message}`),
           warnings: [],
         };
       }
       return {
         isValid: false,
-        errors: [error instanceof Error ? error.message : 'Unknown validation error'],
+        errors: [error instanceof Error ? error.message : "Unknown validation error"],
         warnings: [],
       };
     }
@@ -294,13 +308,13 @@ export class ConfigManager {
       if (error instanceof z.ZodError) {
         return {
           isValid: false,
-          errors: error.errors.map(err => `${err.path.join('.')}: ${err.message}`),
+          errors: error.issues.map((err: any) => `${err.path.join(".")}: ${err.message}`),
           warnings: [],
         };
       }
       return {
         isValid: false,
-        errors: [error instanceof Error ? error.message : 'Unknown validation error'],
+        errors: [error instanceof Error ? error.message : "Unknown validation error"],
         warnings: [],
       };
     }
@@ -351,7 +365,7 @@ export class ConfigManager {
    */
   private createDefaultConfig(): DevServerConfig {
     return {
-      version: '1.0.0',
+      version: "1.0.0",
       global: {
         defaultStartupTimeout: 30000,
         defaultShutdownTimeout: 10000,
@@ -368,9 +382,10 @@ export class ConfigManager {
         e2e: { start: 3020, end: 3029 },
         template: { start: 3030, end: 3039 },
       },
+      healthCheck: {},
       logging: {
-        level: 'info',
-        format: 'colored',
+        level: "info",
+        format: "colored",
       },
     };
   }
@@ -380,22 +395,22 @@ export class ConfigManager {
    */
   async migrateFromOldFormat(oldConfigPath: string): Promise<void> {
     try {
-      const oldConfigData = await readFile(oldConfigPath, 'utf-8');
+      const oldConfigData = await readFile(oldConfigPath, "utf-8");
       const oldConfig = JSON.parse(oldConfigData);
-      
+
       // Transform old config to new format
       const newConfig = this.transformOldConfig(oldConfig);
-      
+
       // Validate new config
       const validationResult = this.validateConfig(newConfig);
       if (!validationResult.isValid) {
-        throw new Error(`Migration validation failed: ${validationResult.errors.join(', ')}`);
+        throw new Error(`Migration validation failed: ${validationResult.errors.join(", ")}`);
       }
 
       this.config = newConfig;
       await this.saveConfig();
     } catch (error) {
-      throw new Error(`Failed to migrate configuration: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to migrate configuration: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   }
 
@@ -411,8 +426,8 @@ export class ConfigManager {
         projects[name] = {
           name,
           port: config.port,
-          description: config.description || '',
-          category: 'package',
+          description: config.description || "",
+          category: "package",
           autoReload: config.autoReload ?? true,
           hotReload: config.hotReload ?? true,
         };
@@ -425,8 +440,8 @@ export class ConfigManager {
         projects[name] = {
           name,
           port: config.port,
-          description: config.description || '',
-          category: 'example',
+          description: config.description || "",
+          category: "example",
           autoReload: config.autoReload ?? true,
           hotReload: config.hotReload ?? true,
         };
@@ -439,8 +454,8 @@ export class ConfigManager {
         projects[name] = {
           name,
           port: config.port,
-          description: config.description || '',
-          category: 'backend',
+          description: config.description || "",
+          category: "backend",
           autoReload: config.autoReload ?? true,
           hotReload: config.hotReload ?? false,
         };
@@ -453,8 +468,8 @@ export class ConfigManager {
         projects[name] = {
           name,
           port: config.port,
-          description: config.description || '',
-          category: 'e2e',
+          description: config.description || "",
+          category: "e2e",
           autoReload: config.autoReload ?? false,
           hotReload: config.hotReload ?? false,
         };
@@ -462,7 +477,7 @@ export class ConfigManager {
     }
 
     return {
-      version: '1.0.0',
+      version: "1.0.0",
       global: {
         defaultStartupTimeout: 30000,
         defaultShutdownTimeout: 10000,
@@ -479,9 +494,10 @@ export class ConfigManager {
         e2e: { start: 3020, end: 3029 },
         template: { start: 3030, end: 3039 },
       },
+      healthCheck: {},
       logging: {
-        level: 'info',
-        format: 'colored',
+        level: "info",
+        format: "colored",
       },
     };
   }

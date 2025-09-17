@@ -22,40 +22,40 @@ exports.RAGIngestResponseToJSONTyped = RAGIngestResponseToJSONTyped;
  * Check if a given object implements the RAGIngestResponse interface.
  */
 function instanceOfRAGIngestResponse(value) {
-    if (!('processed' in value) || value['processed'] === undefined)
-        return false;
-    if (!('total' in value) || value['total'] === undefined)
-        return false;
-    return true;
+  if (!("processed" in value) || value["processed"] === undefined) return false;
+  if (!("total" in value) || value["total"] === undefined) return false;
+  return true;
 }
 function RAGIngestResponseFromJSON(json) {
-    return RAGIngestResponseFromJSONTyped(json, false);
+  return RAGIngestResponseFromJSONTyped(json, false);
 }
 function RAGIngestResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'processed': json['processed'],
-        'total': json['total'],
-        'failures': json['failures'] == null ? undefined : json['failures'],
-        'processingTime': json['processing_time'] == null ? undefined : json['processing_time'],
-        'message': json['message'] == null ? undefined : json['message'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    processed: json["processed"],
+    total: json["total"],
+    failures: json["failures"] == null ? undefined : json["failures"],
+    processingTime: json["processing_time"] == null ? undefined : json["processing_time"],
+    message: json["message"] == null ? undefined : json["message"],
+  };
 }
 function RAGIngestResponseToJSON(json) {
-    return RAGIngestResponseToJSONTyped(json, false);
+  return RAGIngestResponseToJSONTyped(json, false);
 }
 function RAGIngestResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'processed': value['processed'],
-        'total': value['total'],
-        'failures': value['failures'],
-        'processing_time': value['processingTime'],
-        'message': value['message'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    processed: value["processed"],
+    total: value["total"],
+    failures: value["failures"],
+    processing_time: value["processingTime"],
+    message: value["message"],
+  };
 }

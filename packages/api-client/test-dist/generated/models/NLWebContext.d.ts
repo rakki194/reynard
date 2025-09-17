@@ -15,48 +15,48 @@
  * @interface NLWebContext
  */
 export interface NLWebContext {
-    /**
-     *
-     * @type {string}
-     * @memberof NLWebContext
-     */
-    currentPath?: string | null;
-    /**
-     *
-     * @type {Array<string>}
-     * @memberof NLWebContext
-     */
-    selectedItems?: Array<string> | null;
-    /**
-     *
-     * @type {object}
-     * @memberof NLWebContext
-     */
-    gitStatus?: object | null;
-    /**
-     *
-     * @type {object}
-     * @memberof NLWebContext
-     */
-    userPreferences?: object | null;
-    /**
-     *
-     * @type {object}
-     * @memberof NLWebContext
-     */
-    applicationState?: object | null;
-    /**
-     *
-     * @type {string}
-     * @memberof NLWebContext
-     */
-    userId?: string | null;
-    /**
-     *
-     * @type {string}
-     * @memberof NLWebContext
-     */
-    sessionId?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof NLWebContext
+   */
+  currentPath?: string | null;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof NLWebContext
+   */
+  selectedItems?: Array<string> | null;
+  /**
+   *
+   * @type {object}
+   * @memberof NLWebContext
+   */
+  gitStatus?: object | null;
+  /**
+   *
+   * @type {object}
+   * @memberof NLWebContext
+   */
+  userPreferences?: object | null;
+  /**
+   *
+   * @type {object}
+   * @memberof NLWebContext
+   */
+  applicationState?: object | null;
+  /**
+   *
+   * @type {string}
+   * @memberof NLWebContext
+   */
+  userId?: string | null;
+  /**
+   *
+   * @type {string}
+   * @memberof NLWebContext
+   */
+  sessionId?: string | null;
 }
 /**
  * Check if a given object implements the NLWebContext interface.

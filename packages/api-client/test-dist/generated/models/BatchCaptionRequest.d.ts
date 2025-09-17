@@ -9,25 +9,25 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import type { CaptionRequest } from './CaptionRequest';
+import type { CaptionRequest } from "./CaptionRequest";
 /**
  * Request model for batch caption generation.
  * @export
  * @interface BatchCaptionRequest
  */
 export interface BatchCaptionRequest {
-    /**
-     * List of caption generation tasks
-     * @type {Array<CaptionRequest>}
-     * @memberof BatchCaptionRequest
-     */
-    tasks: Array<CaptionRequest>;
-    /**
-     * Maximum number of concurrent operations
-     * @type {number}
-     * @memberof BatchCaptionRequest
-     */
-    maxConcurrent?: number;
+  /**
+   * List of caption generation tasks
+   * @type {Array<CaptionRequest>}
+   * @memberof BatchCaptionRequest
+   */
+  tasks: Array<CaptionRequest>;
+  /**
+   * Maximum number of concurrent operations
+   * @type {number}
+   * @memberof BatchCaptionRequest
+   */
+  maxConcurrent?: number;
 }
 /**
  * Check if a given object implements the BatchCaptionRequest interface.
@@ -36,4 +36,7 @@ export declare function instanceOfBatchCaptionRequest(value: object): value is B
 export declare function BatchCaptionRequestFromJSON(json: any): BatchCaptionRequest;
 export declare function BatchCaptionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): BatchCaptionRequest;
 export declare function BatchCaptionRequestToJSON(json: any): BatchCaptionRequest;
-export declare function BatchCaptionRequestToJSONTyped(value?: BatchCaptionRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function BatchCaptionRequestToJSONTyped(
+  value?: BatchCaptionRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

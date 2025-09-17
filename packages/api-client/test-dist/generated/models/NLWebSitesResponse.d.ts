@@ -15,18 +15,18 @@
  * @interface NLWebSitesResponse
  */
 export interface NLWebSitesResponse {
-    /**
-     * List of available sites
-     * @type {Array<object>}
-     * @memberof NLWebSitesResponse
-     */
-    sites: Array<object>;
-    /**
-     * Total number of sites
-     * @type {number}
-     * @memberof NLWebSitesResponse
-     */
-    totalSites: number;
+  /**
+   * List of available sites
+   * @type {Array<object>}
+   * @memberof NLWebSitesResponse
+   */
+  sites: Array<object>;
+  /**
+   * Total number of sites
+   * @type {number}
+   * @memberof NLWebSitesResponse
+   */
+  totalSites: number;
 }
 /**
  * Check if a given object implements the NLWebSitesResponse interface.
@@ -35,4 +35,7 @@ export declare function instanceOfNLWebSitesResponse(value: object): value is NL
 export declare function NLWebSitesResponseFromJSON(json: any): NLWebSitesResponse;
 export declare function NLWebSitesResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): NLWebSitesResponse;
 export declare function NLWebSitesResponseToJSON(json: any): NLWebSitesResponse;
-export declare function NLWebSitesResponseToJSONTyped(value?: NLWebSitesResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function NLWebSitesResponseToJSONTyped(
+  value?: NLWebSitesResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

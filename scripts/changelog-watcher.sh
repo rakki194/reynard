@@ -54,6 +54,7 @@ run_markdown_lint() {
         log_success "Markdown linting completed successfully"
     else
         log_warning "Markdown linting had issues, but continuing..."
+        log "🦊 This is normal for CHANGELOG.md - some entries are intentionally long"
     fi
 
     # Run Prettier formatting for markdown

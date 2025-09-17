@@ -29,7 +29,7 @@ test.describe("Bounding Box Editor E2E Tests", () => {
         ), document.getElementById("bbox-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#bbox-container")).toBeVisible();
     await expect(page.locator("#bbox-container canvas")).toBeVisible();
   });
@@ -50,10 +50,10 @@ test.describe("Bounding Box Editor E2E Tests", () => {
         ), document.getElementById("bbox-container"));
       </script>
     `);
-    
+
     const canvas = page.locator("#bbox-container canvas");
     await expect(canvas).toBeVisible();
-    
+
     // Simulate mouse events for bounding box creation
     await canvas.hover();
     await canvas.click({ position: { x: 100, y: 100 } });

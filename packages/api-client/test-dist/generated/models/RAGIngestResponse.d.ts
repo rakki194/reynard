@@ -15,36 +15,36 @@
  * @interface RAGIngestResponse
  */
 export interface RAGIngestResponse {
-    /**
-     * Number of documents processed
-     * @type {number}
-     * @memberof RAGIngestResponse
-     */
-    processed: number;
-    /**
-     * Total number of documents
-     * @type {number}
-     * @memberof RAGIngestResponse
-     */
-    total: number;
-    /**
-     * Number of failed documents
-     * @type {number}
-     * @memberof RAGIngestResponse
-     */
-    failures?: number;
-    /**
-     *
-     * @type {number}
-     * @memberof RAGIngestResponse
-     */
-    processingTime?: number | null;
-    /**
-     *
-     * @type {string}
-     * @memberof RAGIngestResponse
-     */
-    message?: string | null;
+  /**
+   * Number of documents processed
+   * @type {number}
+   * @memberof RAGIngestResponse
+   */
+  processed: number;
+  /**
+   * Total number of documents
+   * @type {number}
+   * @memberof RAGIngestResponse
+   */
+  total: number;
+  /**
+   * Number of failed documents
+   * @type {number}
+   * @memberof RAGIngestResponse
+   */
+  failures?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof RAGIngestResponse
+   */
+  processingTime?: number | null;
+  /**
+   *
+   * @type {string}
+   * @memberof RAGIngestResponse
+   */
+  message?: string | null;
 }
 /**
  * Check if a given object implements the RAGIngestResponse interface.
@@ -53,4 +53,7 @@ export declare function instanceOfRAGIngestResponse(value: object): value is RAG
 export declare function RAGIngestResponseFromJSON(json: any): RAGIngestResponse;
 export declare function RAGIngestResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RAGIngestResponse;
 export declare function RAGIngestResponseToJSON(json: any): RAGIngestResponse;
-export declare function RAGIngestResponseToJSONTyped(value?: RAGIngestResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function RAGIngestResponseToJSONTyped(
+  value?: RAGIngestResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

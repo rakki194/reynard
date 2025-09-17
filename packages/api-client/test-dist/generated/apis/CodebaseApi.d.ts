@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
+import * as runtime from "../runtime";
 /**
  * CodebaseApi - interface
  *
@@ -17,101 +17,121 @@ import * as runtime from '../runtime';
  * @interface CodebaseApiInterface
  */
 export interface CodebaseApiInterface {
-    /**
-     * Get codebase indexing statistics.
-     * @summary Get Codebase Stats
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CodebaseApiInterface
-     */
-    getCodebaseStatsApiRagApiRagCodebaseStatsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Get codebase indexing statistics.
-     * Get Codebase Stats
-     */
-    getCodebaseStatsApiRagApiRagCodebaseStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Check codebase indexer health.
-     * @summary Health Check
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CodebaseApiInterface
-     */
-    healthCheckApiRagApiRagCodebaseHealthGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Check codebase indexer health.
-     * Health Check
-     */
-    healthCheckApiRagApiRagCodebaseHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Index the Reynard codebase for semantic search.
-     * @summary Index Codebase
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CodebaseApiInterface
-     */
-    indexCodebaseApiRagApiRagCodebaseIndexPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Index the Reynard codebase for semantic search.
-     * Index Codebase
-     */
-    indexCodebaseApiRagApiRagCodebaseIndexPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Scan the codebase and return file information.
-     * @summary Scan Codebase
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CodebaseApiInterface
-     */
-    scanCodebaseApiRagApiRagCodebaseScanPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Scan the codebase and return file information.
-     * Scan Codebase
-     */
-    scanCodebaseApiRagApiRagCodebaseScanPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Get codebase indexing statistics.
+   * @summary Get Codebase Stats
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CodebaseApiInterface
+   */
+  getCodebaseStatsApiRagApiRagCodebaseStatsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Get codebase indexing statistics.
+   * Get Codebase Stats
+   */
+  getCodebaseStatsApiRagApiRagCodebaseStatsGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
+  /**
+   * Check codebase indexer health.
+   * @summary Health Check
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CodebaseApiInterface
+   */
+  healthCheckApiRagApiRagCodebaseHealthGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Check codebase indexer health.
+   * Health Check
+   */
+  healthCheckApiRagApiRagCodebaseHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Index the Reynard codebase for semantic search.
+   * @summary Index Codebase
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CodebaseApiInterface
+   */
+  indexCodebaseApiRagApiRagCodebaseIndexPostRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Index the Reynard codebase for semantic search.
+   * Index Codebase
+   */
+  indexCodebaseApiRagApiRagCodebaseIndexPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Scan the codebase and return file information.
+   * @summary Scan Codebase
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CodebaseApiInterface
+   */
+  scanCodebaseApiRagApiRagCodebaseScanPostRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Scan the codebase and return file information.
+   * Scan Codebase
+   */
+  scanCodebaseApiRagApiRagCodebaseScanPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 }
 /**
  *
  */
 export declare class CodebaseApi extends runtime.BaseAPI implements CodebaseApiInterface {
-    /**
-     * Get codebase indexing statistics.
-     * Get Codebase Stats
-     */
-    getCodebaseStatsApiRagApiRagCodebaseStatsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Get codebase indexing statistics.
-     * Get Codebase Stats
-     */
-    getCodebaseStatsApiRagApiRagCodebaseStatsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Check codebase indexer health.
-     * Health Check
-     */
-    healthCheckApiRagApiRagCodebaseHealthGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Check codebase indexer health.
-     * Health Check
-     */
-    healthCheckApiRagApiRagCodebaseHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
-    /**
-     * Index the Reynard codebase for semantic search.
-     * Index Codebase
-     */
-    indexCodebaseApiRagApiRagCodebaseIndexPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Index the Reynard codebase for semantic search.
-     * Index Codebase
-     */
-    indexCodebaseApiRagApiRagCodebaseIndexPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
-    /**
-     * Scan the codebase and return file information.
-     * Scan Codebase
-     */
-    scanCodebaseApiRagApiRagCodebaseScanPostRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<any>>;
-    /**
-     * Scan the codebase and return file information.
-     * Scan Codebase
-     */
-    scanCodebaseApiRagApiRagCodebaseScanPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Get codebase indexing statistics.
+   * Get Codebase Stats
+   */
+  getCodebaseStatsApiRagApiRagCodebaseStatsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Get codebase indexing statistics.
+   * Get Codebase Stats
+   */
+  getCodebaseStatsApiRagApiRagCodebaseStatsGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<object>;
+  /**
+   * Check codebase indexer health.
+   * Health Check
+   */
+  healthCheckApiRagApiRagCodebaseHealthGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Check codebase indexer health.
+   * Health Check
+   */
+  healthCheckApiRagApiRagCodebaseHealthGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Index the Reynard codebase for semantic search.
+   * Index Codebase
+   */
+  indexCodebaseApiRagApiRagCodebaseIndexPostRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Index the Reynard codebase for semantic search.
+   * Index Codebase
+   */
+  indexCodebaseApiRagApiRagCodebaseIndexPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
+  /**
+   * Scan the codebase and return file information.
+   * Scan Codebase
+   */
+  scanCodebaseApiRagApiRagCodebaseScanPostRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<any>>;
+  /**
+   * Scan the codebase and return file information.
+   * Scan Codebase
+   */
+  scanCodebaseApiRagApiRagCodebaseScanPost(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<any>;
 }

@@ -15,24 +15,24 @@
  * @interface LazyExportResponse
  */
 export interface LazyExportResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof LazyExportResponse
-     */
-    packageName: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof LazyExportResponse
-     */
-    isLoaded: boolean;
-    /**
-     *
-     * @type {object}
-     * @memberof LazyExportResponse
-     */
-    metadata: object;
+  /**
+   *
+   * @type {string}
+   * @memberof LazyExportResponse
+   */
+  packageName: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof LazyExportResponse
+   */
+  isLoaded: boolean;
+  /**
+   *
+   * @type {object}
+   * @memberof LazyExportResponse
+   */
+  metadata: object;
 }
 /**
  * Check if a given object implements the LazyExportResponse interface.
@@ -41,4 +41,7 @@ export declare function instanceOfLazyExportResponse(value: object): value is La
 export declare function LazyExportResponseFromJSON(json: any): LazyExportResponse;
 export declare function LazyExportResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): LazyExportResponse;
 export declare function LazyExportResponseToJSON(json: any): LazyExportResponse;
-export declare function LazyExportResponseToJSONTyped(value?: LazyExportResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function LazyExportResponseToJSONTyped(
+  value?: LazyExportResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -22,44 +22,42 @@ exports.TokenResponseToJSONTyped = TokenResponseToJSONTyped;
  * Check if a given object implements the TokenResponse interface.
  */
 function instanceOfTokenResponse(value) {
-    if (!('accessToken' in value) || value['accessToken'] === undefined)
-        return false;
-    if (!('refreshToken' in value) || value['refreshToken'] === undefined)
-        return false;
-    if (!('expiresIn' in value) || value['expiresIn'] === undefined)
-        return false;
-    if (!('refreshExpiresIn' in value) || value['refreshExpiresIn'] === undefined)
-        return false;
-    return true;
+  if (!("accessToken" in value) || value["accessToken"] === undefined) return false;
+  if (!("refreshToken" in value) || value["refreshToken"] === undefined) return false;
+  if (!("expiresIn" in value) || value["expiresIn"] === undefined) return false;
+  if (!("refreshExpiresIn" in value) || value["refreshExpiresIn"] === undefined) return false;
+  return true;
 }
 function TokenResponseFromJSON(json) {
-    return TokenResponseFromJSONTyped(json, false);
+  return TokenResponseFromJSONTyped(json, false);
 }
 function TokenResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'accessToken': json['access_token'],
-        'refreshToken': json['refresh_token'],
-        'tokenType': json['token_type'] == null ? undefined : json['token_type'],
-        'expiresIn': json['expires_in'],
-        'refreshExpiresIn': json['refresh_expires_in'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    accessToken: json["access_token"],
+    refreshToken: json["refresh_token"],
+    tokenType: json["token_type"] == null ? undefined : json["token_type"],
+    expiresIn: json["expires_in"],
+    refreshExpiresIn: json["refresh_expires_in"],
+  };
 }
 function TokenResponseToJSON(json) {
-    return TokenResponseToJSONTyped(json, false);
+  return TokenResponseToJSONTyped(json, false);
 }
 function TokenResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'access_token': value['accessToken'],
-        'refresh_token': value['refreshToken'],
-        'token_type': value['tokenType'],
-        'expires_in': value['expiresIn'],
-        'refresh_expires_in': value['refreshExpiresIn'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    access_token: value["accessToken"],
+    refresh_token: value["refreshToken"],
+    token_type: value["tokenType"],
+    expires_in: value["expiresIn"],
+    refresh_expires_in: value["refreshExpiresIn"],
+  };
 }

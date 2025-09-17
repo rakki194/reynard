@@ -34,7 +34,7 @@ test.describe("Monaco Diff Editor E2E Tests", () => {
         ), document.getElementById("monaco-diff-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#monaco-diff-container")).toBeVisible();
     // Monaco diff editor creates its own DOM structure
     await expect(page.locator("#monaco-diff-container .monaco-diff-editor")).toBeVisible();
@@ -61,9 +61,9 @@ test.describe("Monaco Diff Editor E2E Tests", () => {
         ), document.getElementById("monaco-diff-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#monaco-diff-container")).toBeVisible();
-    
+
     // Diff editor should show both versions
     const diffEditor = page.locator("#monaco-diff-container .monaco-diff-editor");
     await expect(diffEditor).toBeVisible();

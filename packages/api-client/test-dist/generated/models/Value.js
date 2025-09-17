@@ -22,18 +22,20 @@ exports.ValueToJSONTyped = ValueToJSONTyped;
  * Check if a given object implements the Value interface.
  */
 function instanceOfValue(value) {
-    return true;
+  return true;
 }
 function ValueFromJSON(json) {
-    return ValueFromJSONTyped(json, false);
+  return ValueFromJSONTyped(json, false);
 }
 function ValueFromJSONTyped(json, ignoreDiscriminator) {
-    return json;
+  return json;
 }
 function ValueToJSON(json) {
-    return ValueToJSONTyped(json, false);
+  return ValueToJSONTyped(json, false);
 }
 function ValueToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    return value;
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  return value;
 }

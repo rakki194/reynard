@@ -30,18 +30,18 @@ pnpm add reynard-diagram-generator
 ## Quick Start
 
 ```typescript
-import { generateAllDiagrams, createDiagramGenerator } from 'reynard-diagram-generator';
+import { generateAllDiagrams, createDiagramGenerator } from "reynard-diagram-generator";
 
 // Generate all diagrams with default configuration
 const result = await generateAllDiagrams();
 
 // Or with custom configuration
 const result = await generateAllDiagrams({
-  outputDir: './my-diagrams',
+  outputDir: "./my-diagrams",
   generateSvg: true,
   generatePng: true,
   generateHighRes: true,
-  theme: 'neutral'
+  theme: "neutral",
 });
 
 console.log(`Generated ${result.summary.totalDiagrams} diagrams`);
@@ -71,15 +71,15 @@ pnpm run generate:dependencies
 Main orchestrator for diagram generation.
 
 ```typescript
-import { DiagramGenerator } from 'reynard-diagram-generator';
+import { DiagramGenerator } from "reynard-diagram-generator";
 
-const generator = new DiagramGenerator('/path/to/reynard');
+const generator = new DiagramGenerator("/path/to/reynard");
 
 // Generate all diagrams
 const result = await generator.generateAll(config);
 
 // Generate specific diagram
-const diagram = await generator.generateDiagram('architecture-overview', config);
+const diagram = await generator.generateDiagram("architecture-overview", config);
 ```
 
 #### `CodebaseAnalyzer`
@@ -87,7 +87,7 @@ const diagram = await generator.generateDiagram('architecture-overview', config)
 Analyzes the Reynard codebase to extract components and relationships.
 
 ```typescript
-import { CodebaseAnalyzer } from 'reynard-diagram-generator';
+import { CodebaseAnalyzer } from "reynard-diagram-generator";
 
 const analyzer = new CodebaseAnalyzer();
 const analysis = await analyzer.analyzeCodebase();
@@ -101,7 +101,7 @@ console.log(`Found ${analysis.components.length} components`);
 Renders Mermaid diagrams to various formats using the MCP service.
 
 ```typescript
-import { MermaidRenderer } from 'reynard-diagram-generator';
+import { MermaidRenderer } from "reynard-diagram-generator";
 
 const renderer = new MermaidRenderer();
 
@@ -122,7 +122,7 @@ const validation = await renderer.validate(mermaidContent);
 Generates high-level architecture diagrams showing the overall project structure.
 
 ```typescript
-import { ArchitectureOverviewGenerator } from 'reynard-diagram-generator';
+import { ArchitectureOverviewGenerator } from "reynard-diagram-generator";
 
 const generator = new ArchitectureOverviewGenerator();
 const diagram = await generator.generate(analysis, config);
@@ -133,7 +133,7 @@ const diagram = await generator.generate(analysis, config);
 Creates detailed dependency relationship diagrams.
 
 ```typescript
-import { PackageDependenciesGenerator } from 'reynard-diagram-generator';
+import { PackageDependenciesGenerator } from "reynard-diagram-generator";
 
 const generator = new PackageDependenciesGenerator();
 const diagram = await generator.generate(analysis, config);
@@ -144,7 +144,7 @@ const diagram = await generator.generate(analysis, config);
 Maps component interactions and relationships.
 
 ```typescript
-import { ComponentRelationshipsGenerator } from 'reynard-diagram-generator';
+import { ComponentRelationshipsGenerator } from "reynard-diagram-generator";
 
 const generator = new ComponentRelationshipsGenerator();
 const diagram = await generator.generate(analysis, config);
@@ -155,7 +155,7 @@ const diagram = await generator.generate(analysis, config);
 Visualizes file and directory organization.
 
 ```typescript
-import { FileStructureGenerator } from 'reynard-diagram-generator';
+import { FileStructureGenerator } from "reynard-diagram-generator";
 
 const generator = new FileStructureGenerator();
 const diagram = await generator.generate(analysis, config);
@@ -176,7 +176,7 @@ interface DiagramGenerationConfig {
   /** Whether to generate high-resolution versions */
   generateHighRes: boolean;
   /** Theme for diagrams */
-  theme: 'neutral' | 'dark' | 'forest' | 'base';
+  theme: "neutral" | "dark" | "forest" | "base";
   /** Maximum diagram complexity before splitting */
   maxComplexity: number;
   /** Include file paths in diagrams */
@@ -192,15 +192,15 @@ interface DiagramGenerationConfig {
 
 ```typescript
 const DEFAULT_CONFIG = {
-  outputDir: './diagrams',
+  outputDir: "./diagrams",
   generateSvg: true,
   generatePng: true,
   generateHighRes: false,
-  theme: 'neutral',
+  theme: "neutral",
   maxComplexity: 50,
   includeFilePaths: true,
   includeRelationships: true,
-  includeMetadata: true
+  includeMetadata: true,
 };
 ```
 
@@ -239,7 +239,7 @@ const svg = await renderer.renderToSvg(mermaidContent);
 Leverages the `reynard-project-architecture` package for accurate project structure analysis:
 
 ```typescript
-import { REYNARD_ARCHITECTURE } from 'reynard-project-architecture';
+import { REYNARD_ARCHITECTURE } from "reynard-project-architecture";
 
 // Automatically uses the centralized architecture definition
 const analyzer = new CodebaseAnalyzer();
@@ -252,31 +252,31 @@ const analyzer = new CodebaseAnalyzer();
 Create custom diagram generators by implementing the `DiagramGenerator` interface:
 
 ```typescript
-import type { DiagramGenerator, CodebaseAnalysis, DiagramGenerationConfig } from 'reynard-diagram-generator';
+import type { DiagramGenerator, CodebaseAnalysis, DiagramGenerationConfig } from "reynard-diagram-generator";
 
 class CustomDiagramGenerator implements DiagramGenerator {
-  name = 'Custom Generator';
-  type = 'custom-diagram' as const;
-  description = 'Generates custom diagrams';
+  name = "Custom Generator";
+  type = "custom-diagram" as const;
+  description = "Generates custom diagrams";
 
   async generate(analysis: CodebaseAnalysis, config: DiagramGenerationConfig) {
     // Custom generation logic
     const mermaidContent = this.generateMermaidContent(analysis);
-    
+
     return {
       mermaidContent,
       metadata: {
         type: this.type,
-        title: 'Custom Diagram',
-        description: 'Custom diagram description',
+        title: "Custom Diagram",
+        description: "Custom diagram description",
         nodeCount: 0,
         edgeCount: 0,
         complexityScore: 0,
         generatedAt: new Date().toISOString(),
         sourceFiles: [],
-        dependencies: []
+        dependencies: [],
       },
-      outputPaths: {}
+      outputPaths: {},
     };
   }
 
@@ -292,8 +292,8 @@ Process multiple projects or configurations:
 
 ```typescript
 const configs = [
-  { outputDir: './docs/diagrams', theme: 'neutral' },
-  { outputDir: './presentation/diagrams', theme: 'dark', generateHighRes: true }
+  { outputDir: "./docs/diagrams", theme: "neutral" },
+  { outputDir: "./presentation/diagrams", theme: "dark", generateHighRes: true },
 ];
 
 for (const config of configs) {
@@ -352,4 +352,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-*🦊 Part of the Reynard Framework - Cunning agile development tools*
+_🦊 Part of the Reynard Framework - Cunning agile development tools_

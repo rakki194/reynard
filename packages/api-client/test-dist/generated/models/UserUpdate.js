@@ -23,38 +23,40 @@ var UserRole_1 = require("./UserRole");
  * Check if a given object implements the UserUpdate interface.
  */
 function instanceOfUserUpdate(value) {
-    return true;
+  return true;
 }
 function UserUpdateFromJSON(json) {
-    return UserUpdateFromJSONTyped(json, false);
+  return UserUpdateFromJSONTyped(json, false);
 }
 function UserUpdateFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'username': json['username'] == null ? undefined : json['username'],
-        'email': json['email'] == null ? undefined : json['email'],
-        'role': json['role'] == null ? undefined : (0, UserRole_1.UserRoleFromJSON)(json['role']),
-        'isActive': json['is_active'] == null ? undefined : json['is_active'],
-        'profilePictureUrl': json['profile_picture_url'] == null ? undefined : json['profile_picture_url'],
-        'metadata': json['metadata'] == null ? undefined : json['metadata'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    username: json["username"] == null ? undefined : json["username"],
+    email: json["email"] == null ? undefined : json["email"],
+    role: json["role"] == null ? undefined : (0, UserRole_1.UserRoleFromJSON)(json["role"]),
+    isActive: json["is_active"] == null ? undefined : json["is_active"],
+    profilePictureUrl: json["profile_picture_url"] == null ? undefined : json["profile_picture_url"],
+    metadata: json["metadata"] == null ? undefined : json["metadata"],
+  };
 }
 function UserUpdateToJSON(json) {
-    return UserUpdateToJSONTyped(json, false);
+  return UserUpdateToJSONTyped(json, false);
 }
 function UserUpdateToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'username': value['username'],
-        'email': value['email'],
-        'role': (0, UserRole_1.UserRoleToJSON)(value['role']),
-        'is_active': value['isActive'],
-        'profile_picture_url': value['profilePictureUrl'],
-        'metadata': value['metadata'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    username: value["username"],
+    email: value["email"],
+    role: (0, UserRole_1.UserRoleToJSON)(value["role"]),
+    is_active: value["isActive"],
+    profile_picture_url: value["profilePictureUrl"],
+    metadata: value["metadata"],
+  };
 }

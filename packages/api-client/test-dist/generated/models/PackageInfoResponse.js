@@ -22,52 +22,49 @@ exports.PackageInfoResponseToJSONTyped = PackageInfoResponseToJSONTyped;
  * Check if a given object implements the PackageInfoResponse interface.
  */
 function instanceOfPackageInfoResponse(value) {
-    if (!('name' in value) || value['name'] === undefined)
-        return false;
-    if (!('isLoaded' in value) || value['isLoaded'] === undefined)
-        return false;
-    if (!('accessCount' in value) || value['accessCount'] === undefined)
-        return false;
-    if (!('errorCount' in value) || value['errorCount'] === undefined)
-        return false;
-    if (!('dependencies' in value) || value['dependencies'] === undefined)
-        return false;
-    return true;
+  if (!("name" in value) || value["name"] === undefined) return false;
+  if (!("isLoaded" in value) || value["isLoaded"] === undefined) return false;
+  if (!("accessCount" in value) || value["accessCount"] === undefined) return false;
+  if (!("errorCount" in value) || value["errorCount"] === undefined) return false;
+  if (!("dependencies" in value) || value["dependencies"] === undefined) return false;
+  return true;
 }
 function PackageInfoResponseFromJSON(json) {
-    return PackageInfoResponseFromJSONTyped(json, false);
+  return PackageInfoResponseFromJSONTyped(json, false);
 }
 function PackageInfoResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'name': json['name'],
-        'isLoaded': json['is_loaded'],
-        'loadTime': json['load_time'] == null ? undefined : json['load_time'],
-        'memoryUsage': json['memory_usage'] == null ? undefined : json['memory_usage'],
-        'accessCount': json['access_count'],
-        'lastAccess': json['last_access'] == null ? undefined : json['last_access'],
-        'errorCount': json['error_count'],
-        'dependencies': json['dependencies'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    name: json["name"],
+    isLoaded: json["is_loaded"],
+    loadTime: json["load_time"] == null ? undefined : json["load_time"],
+    memoryUsage: json["memory_usage"] == null ? undefined : json["memory_usage"],
+    accessCount: json["access_count"],
+    lastAccess: json["last_access"] == null ? undefined : json["last_access"],
+    errorCount: json["error_count"],
+    dependencies: json["dependencies"],
+  };
 }
 function PackageInfoResponseToJSON(json) {
-    return PackageInfoResponseToJSONTyped(json, false);
+  return PackageInfoResponseToJSONTyped(json, false);
 }
 function PackageInfoResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'name': value['name'],
-        'is_loaded': value['isLoaded'],
-        'load_time': value['loadTime'],
-        'memory_usage': value['memoryUsage'],
-        'access_count': value['accessCount'],
-        'last_access': value['lastAccess'],
-        'error_count': value['errorCount'],
-        'dependencies': value['dependencies'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    name: value["name"],
+    is_loaded: value["isLoaded"],
+    load_time: value["loadTime"],
+    memory_usage: value["memoryUsage"],
+    access_count: value["accessCount"],
+    last_access: value["lastAccess"],
+    error_count: value["errorCount"],
+    dependencies: value["dependencies"],
+  };
 }

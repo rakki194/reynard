@@ -15,48 +15,48 @@
  * @interface TTSSynthesisRequest
  */
 export interface TTSSynthesisRequest {
-    /**
-     * Text to synthesize
-     * @type {string}
-     * @memberof TTSSynthesisRequest
-     */
-    text: string;
-    /**
-     *
-     * @type {string}
-     * @memberof TTSSynthesisRequest
-     */
-    backend?: string | null;
-    /**
-     * Voice to use for synthesis
-     * @type {string}
-     * @memberof TTSSynthesisRequest
-     */
-    voice?: string;
-    /**
-     * Speech speed multiplier
-     * @type {number}
-     * @memberof TTSSynthesisRequest
-     */
-    speed?: number;
-    /**
-     * Language code
-     * @type {string}
-     * @memberof TTSSynthesisRequest
-     */
-    lang?: string;
-    /**
-     * Convert output to OGG format
-     * @type {boolean}
-     * @memberof TTSSynthesisRequest
-     */
-    toOgg?: boolean;
-    /**
-     * Convert output to Opus format
-     * @type {boolean}
-     * @memberof TTSSynthesisRequest
-     */
-    toOpus?: boolean;
+  /**
+   * Text to synthesize
+   * @type {string}
+   * @memberof TTSSynthesisRequest
+   */
+  text: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TTSSynthesisRequest
+   */
+  backend?: string | null;
+  /**
+   * Voice to use for synthesis
+   * @type {string}
+   * @memberof TTSSynthesisRequest
+   */
+  voice?: string;
+  /**
+   * Speech speed multiplier
+   * @type {number}
+   * @memberof TTSSynthesisRequest
+   */
+  speed?: number;
+  /**
+   * Language code
+   * @type {string}
+   * @memberof TTSSynthesisRequest
+   */
+  lang?: string;
+  /**
+   * Convert output to OGG format
+   * @type {boolean}
+   * @memberof TTSSynthesisRequest
+   */
+  toOgg?: boolean;
+  /**
+   * Convert output to Opus format
+   * @type {boolean}
+   * @memberof TTSSynthesisRequest
+   */
+  toOpus?: boolean;
 }
 /**
  * Check if a given object implements the TTSSynthesisRequest interface.
@@ -65,4 +65,7 @@ export declare function instanceOfTTSSynthesisRequest(value: object): value is T
 export declare function TTSSynthesisRequestFromJSON(json: any): TTSSynthesisRequest;
 export declare function TTSSynthesisRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TTSSynthesisRequest;
 export declare function TTSSynthesisRequestToJSON(json: any): TTSSynthesisRequest;
-export declare function TTSSynthesisRequestToJSONTyped(value?: TTSSynthesisRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function TTSSynthesisRequestToJSONTyped(
+  value?: TTSSynthesisRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

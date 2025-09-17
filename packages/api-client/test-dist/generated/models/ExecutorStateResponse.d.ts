@@ -15,24 +15,30 @@
  * @interface ExecutorStateResponse
  */
 export interface ExecutorStateResponse {
-    /**
-     *
-     * @type {string}
-     * @memberof ExecutorStateResponse
-     */
-    state: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof ExecutorStateResponse
-     */
-    initialized: boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof ExecutorStateResponse
+   */
+  state: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof ExecutorStateResponse
+   */
+  initialized: boolean;
 }
 /**
  * Check if a given object implements the ExecutorStateResponse interface.
  */
 export declare function instanceOfExecutorStateResponse(value: object): value is ExecutorStateResponse;
 export declare function ExecutorStateResponseFromJSON(json: any): ExecutorStateResponse;
-export declare function ExecutorStateResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExecutorStateResponse;
+export declare function ExecutorStateResponseFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ExecutorStateResponse;
 export declare function ExecutorStateResponseToJSON(json: any): ExecutorStateResponse;
-export declare function ExecutorStateResponseToJSONTyped(value?: ExecutorStateResponse | null, ignoreDiscriminator?: boolean): any;
+export declare function ExecutorStateResponseToJSONTyped(
+  value?: ExecutorStateResponse | null,
+  ignoreDiscriminator?: boolean
+): any;

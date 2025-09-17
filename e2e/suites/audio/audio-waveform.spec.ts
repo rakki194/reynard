@@ -31,7 +31,7 @@ test.describe("Audio Waveform Visualizer E2E Tests", () => {
         ), document.getElementById("waveform-container"));
       </script>
     `);
-    
+
     await expect(page.locator("#waveform-container")).toBeVisible();
     await expect(page.locator("#waveform-container canvas")).toBeVisible();
   });
@@ -55,10 +55,10 @@ test.describe("Audio Waveform Visualizer E2E Tests", () => {
         ), document.getElementById("waveform-container"));
       </script>
     `);
-    
+
     const canvas = page.locator("#waveform-container canvas");
     await expect(canvas).toBeVisible();
-    
+
     // Simulate clicking on waveform
     await canvas.click({ position: { x: 300, y: 100 } });
   });

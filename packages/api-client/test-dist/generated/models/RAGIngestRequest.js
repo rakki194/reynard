@@ -23,36 +23,37 @@ var RAGIngestItem_1 = require("./RAGIngestItem");
  * Check if a given object implements the RAGIngestRequest interface.
  */
 function instanceOfRAGIngestRequest(value) {
-    if (!('items' in value) || value['items'] === undefined)
-        return false;
-    return true;
+  if (!("items" in value) || value["items"] === undefined) return false;
+  return true;
 }
 function RAGIngestRequestFromJSON(json) {
-    return RAGIngestRequestFromJSONTyped(json, false);
+  return RAGIngestRequestFromJSONTyped(json, false);
 }
 function RAGIngestRequestFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'items': (json['items'].map(RAGIngestItem_1.RAGIngestItemFromJSON)),
-        'model': json['model'] == null ? undefined : json['model'],
-        'batchSize': json['batch_size'] == null ? undefined : json['batch_size'],
-        'forceReindex': json['force_reindex'] == null ? undefined : json['force_reindex'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    items: json["items"].map(RAGIngestItem_1.RAGIngestItemFromJSON),
+    model: json["model"] == null ? undefined : json["model"],
+    batchSize: json["batch_size"] == null ? undefined : json["batch_size"],
+    forceReindex: json["force_reindex"] == null ? undefined : json["force_reindex"],
+  };
 }
 function RAGIngestRequestToJSON(json) {
-    return RAGIngestRequestToJSONTyped(json, false);
+  return RAGIngestRequestToJSONTyped(json, false);
 }
 function RAGIngestRequestToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'items': (value['items'].map(RAGIngestItem_1.RAGIngestItemToJSON)),
-        'model': value['model'],
-        'batch_size': value['batchSize'],
-        'force_reindex': value['forceReindex'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    items: value["items"].map(RAGIngestItem_1.RAGIngestItemToJSON),
+    model: value["model"],
+    batch_size: value["batchSize"],
+    force_reindex: value["forceReindex"],
+  };
 }

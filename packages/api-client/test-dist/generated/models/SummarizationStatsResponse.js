@@ -22,58 +22,52 @@ exports.SummarizationStatsResponseToJSONTyped = SummarizationStatsResponseToJSON
  * Check if a given object implements the SummarizationStatsResponse interface.
  */
 function instanceOfSummarizationStatsResponse(value) {
-    if (!('totalRequests' in value) || value['totalRequests'] === undefined)
-        return false;
-    if (!('cacheHits' in value) || value['cacheHits'] === undefined)
-        return false;
-    if (!('cacheMisses' in value) || value['cacheMisses'] === undefined)
-        return false;
-    if (!('cacheHitRate' in value) || value['cacheHitRate'] === undefined)
-        return false;
-    if (!('averageProcessingTime' in value) || value['averageProcessingTime'] === undefined)
-        return false;
-    if (!('totalProcessingTime' in value) || value['totalProcessingTime'] === undefined)
-        return false;
-    if (!('availableSummarizers' in value) || value['availableSummarizers'] === undefined)
-        return false;
-    if (!('supportedContentTypes' in value) || value['supportedContentTypes'] === undefined)
-        return false;
-    return true;
+  if (!("totalRequests" in value) || value["totalRequests"] === undefined) return false;
+  if (!("cacheHits" in value) || value["cacheHits"] === undefined) return false;
+  if (!("cacheMisses" in value) || value["cacheMisses"] === undefined) return false;
+  if (!("cacheHitRate" in value) || value["cacheHitRate"] === undefined) return false;
+  if (!("averageProcessingTime" in value) || value["averageProcessingTime"] === undefined) return false;
+  if (!("totalProcessingTime" in value) || value["totalProcessingTime"] === undefined) return false;
+  if (!("availableSummarizers" in value) || value["availableSummarizers"] === undefined) return false;
+  if (!("supportedContentTypes" in value) || value["supportedContentTypes"] === undefined) return false;
+  return true;
 }
 function SummarizationStatsResponseFromJSON(json) {
-    return SummarizationStatsResponseFromJSONTyped(json, false);
+  return SummarizationStatsResponseFromJSONTyped(json, false);
 }
 function SummarizationStatsResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'totalRequests': json['total_requests'],
-        'cacheHits': json['cache_hits'],
-        'cacheMisses': json['cache_misses'],
-        'cacheHitRate': json['cache_hit_rate'],
-        'averageProcessingTime': json['average_processing_time'],
-        'totalProcessingTime': json['total_processing_time'],
-        'availableSummarizers': json['available_summarizers'],
-        'supportedContentTypes': json['supported_content_types'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    totalRequests: json["total_requests"],
+    cacheHits: json["cache_hits"],
+    cacheMisses: json["cache_misses"],
+    cacheHitRate: json["cache_hit_rate"],
+    averageProcessingTime: json["average_processing_time"],
+    totalProcessingTime: json["total_processing_time"],
+    availableSummarizers: json["available_summarizers"],
+    supportedContentTypes: json["supported_content_types"],
+  };
 }
 function SummarizationStatsResponseToJSON(json) {
-    return SummarizationStatsResponseToJSONTyped(json, false);
+  return SummarizationStatsResponseToJSONTyped(json, false);
 }
 function SummarizationStatsResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'total_requests': value['totalRequests'],
-        'cache_hits': value['cacheHits'],
-        'cache_misses': value['cacheMisses'],
-        'cache_hit_rate': value['cacheHitRate'],
-        'average_processing_time': value['averageProcessingTime'],
-        'total_processing_time': value['totalProcessingTime'],
-        'available_summarizers': value['availableSummarizers'],
-        'supported_content_types': value['supportedContentTypes'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    total_requests: value["totalRequests"],
+    cache_hits: value["cacheHits"],
+    cache_misses: value["cacheMisses"],
+    cache_hit_rate: value["cacheHitRate"],
+    average_processing_time: value["averageProcessingTime"],
+    total_processing_time: value["totalProcessingTime"],
+    available_summarizers: value["availableSummarizers"],
+    supported_content_types: value["supportedContentTypes"],
+  };
 }

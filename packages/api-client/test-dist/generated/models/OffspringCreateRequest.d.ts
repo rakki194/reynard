@@ -15,30 +15,36 @@
  * @interface OffspringCreateRequest
  */
 export interface OffspringCreateRequest {
-    /**
-     *
-     * @type {string}
-     * @memberof OffspringCreateRequest
-     */
-    parent1Id: string;
-    /**
-     *
-     * @type {string}
-     * @memberof OffspringCreateRequest
-     */
-    parent2Id: string;
-    /**
-     *
-     * @type {string}
-     * @memberof OffspringCreateRequest
-     */
-    offspringId: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OffspringCreateRequest
+   */
+  parent1Id: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OffspringCreateRequest
+   */
+  parent2Id: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OffspringCreateRequest
+   */
+  offspringId: string;
 }
 /**
  * Check if a given object implements the OffspringCreateRequest interface.
  */
 export declare function instanceOfOffspringCreateRequest(value: object): value is OffspringCreateRequest;
 export declare function OffspringCreateRequestFromJSON(json: any): OffspringCreateRequest;
-export declare function OffspringCreateRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): OffspringCreateRequest;
+export declare function OffspringCreateRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): OffspringCreateRequest;
 export declare function OffspringCreateRequestToJSON(json: any): OffspringCreateRequest;
-export declare function OffspringCreateRequestToJSONTyped(value?: OffspringCreateRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function OffspringCreateRequestToJSONTyped(
+  value?: OffspringCreateRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

@@ -15,54 +15,54 @@
  * @interface OllamaChatRequest
  */
 export interface OllamaChatRequest {
-    /**
-     * User message
-     * @type {string}
-     * @memberof OllamaChatRequest
-     */
-    message: string;
-    /**
-     * Ollama model to use
-     * @type {string}
-     * @memberof OllamaChatRequest
-     */
-    model?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof OllamaChatRequest
-     */
-    systemPrompt?: string | null;
-    /**
-     * Sampling temperature
-     * @type {number}
-     * @memberof OllamaChatRequest
-     */
-    temperature?: number;
-    /**
-     * Maximum tokens to generate
-     * @type {number}
-     * @memberof OllamaChatRequest
-     */
-    maxTokens?: number;
-    /**
-     * Enable streaming response
-     * @type {boolean}
-     * @memberof OllamaChatRequest
-     */
-    stream?: boolean;
-    /**
-     *
-     * @type {Array<object>}
-     * @memberof OllamaChatRequest
-     */
-    tools?: Array<object> | null;
-    /**
-     *
-     * @type {object}
-     * @memberof OllamaChatRequest
-     */
-    context?: object | null;
+  /**
+   * User message
+   * @type {string}
+   * @memberof OllamaChatRequest
+   */
+  message: string;
+  /**
+   * Ollama model to use
+   * @type {string}
+   * @memberof OllamaChatRequest
+   */
+  model?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof OllamaChatRequest
+   */
+  systemPrompt?: string | null;
+  /**
+   * Sampling temperature
+   * @type {number}
+   * @memberof OllamaChatRequest
+   */
+  temperature?: number;
+  /**
+   * Maximum tokens to generate
+   * @type {number}
+   * @memberof OllamaChatRequest
+   */
+  maxTokens?: number;
+  /**
+   * Enable streaming response
+   * @type {boolean}
+   * @memberof OllamaChatRequest
+   */
+  stream?: boolean;
+  /**
+   *
+   * @type {Array<object>}
+   * @memberof OllamaChatRequest
+   */
+  tools?: Array<object> | null;
+  /**
+   *
+   * @type {object}
+   * @memberof OllamaChatRequest
+   */
+  context?: object | null;
 }
 /**
  * Check if a given object implements the OllamaChatRequest interface.
@@ -71,4 +71,7 @@ export declare function instanceOfOllamaChatRequest(value: object): value is Oll
 export declare function OllamaChatRequestFromJSON(json: any): OllamaChatRequest;
 export declare function OllamaChatRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): OllamaChatRequest;
 export declare function OllamaChatRequestToJSON(json: any): OllamaChatRequest;
-export declare function OllamaChatRequestToJSONTyped(value?: OllamaChatRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function OllamaChatRequestToJSONTyped(
+  value?: OllamaChatRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

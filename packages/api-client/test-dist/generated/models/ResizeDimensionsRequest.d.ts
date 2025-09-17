@@ -15,36 +15,42 @@
  * @interface ResizeDimensionsRequest
  */
 export interface ResizeDimensionsRequest {
-    /**
-     *
-     * @type {number}
-     * @memberof ResizeDimensionsRequest
-     */
-    originalWidth: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ResizeDimensionsRequest
-     */
-    originalHeight: number;
-    /**
-     *
-     * @type {number}
-     * @memberof ResizeDimensionsRequest
-     */
-    targetWidth?: number | null;
-    /**
-     *
-     * @type {number}
-     * @memberof ResizeDimensionsRequest
-     */
-    targetHeight?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof ResizeDimensionsRequest
+   */
+  originalWidth: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ResizeDimensionsRequest
+   */
+  originalHeight: number;
+  /**
+   *
+   * @type {number}
+   * @memberof ResizeDimensionsRequest
+   */
+  targetWidth?: number | null;
+  /**
+   *
+   * @type {number}
+   * @memberof ResizeDimensionsRequest
+   */
+  targetHeight?: number | null;
 }
 /**
  * Check if a given object implements the ResizeDimensionsRequest interface.
  */
 export declare function instanceOfResizeDimensionsRequest(value: object): value is ResizeDimensionsRequest;
 export declare function ResizeDimensionsRequestFromJSON(json: any): ResizeDimensionsRequest;
-export declare function ResizeDimensionsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResizeDimensionsRequest;
+export declare function ResizeDimensionsRequestFromJSONTyped(
+  json: any,
+  ignoreDiscriminator: boolean
+): ResizeDimensionsRequest;
 export declare function ResizeDimensionsRequestToJSON(json: any): ResizeDimensionsRequest;
-export declare function ResizeDimensionsRequestToJSONTyped(value?: ResizeDimensionsRequest | null, ignoreDiscriminator?: boolean): any;
+export declare function ResizeDimensionsRequestToJSONTyped(
+  value?: ResizeDimensionsRequest | null,
+  ignoreDiscriminator?: boolean
+): any;

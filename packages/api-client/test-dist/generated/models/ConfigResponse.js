@@ -22,46 +22,43 @@ exports.ConfigResponseToJSONTyped = ConfigResponseToJSONTyped;
  * Check if a given object implements the ConfigResponse interface.
  */
 function instanceOfConfigResponse(value) {
-    if (!('enablePerformanceMonitoring' in value) || value['enablePerformanceMonitoring'] === undefined)
-        return false;
-    if (!('autoCleanup' in value) || value['autoCleanup'] === undefined)
-        return false;
-    if (!('defaultValidationLevel' in value) || value['defaultValidationLevel'] === undefined)
-        return false;
-    if (!('maxConcurrentLoads' in value) || value['maxConcurrentLoads'] === undefined)
-        return false;
-    if (!('memoryThreshold' in value) || value['memoryThreshold'] === undefined)
-        return false;
-    return true;
+  if (!("enablePerformanceMonitoring" in value) || value["enablePerformanceMonitoring"] === undefined) return false;
+  if (!("autoCleanup" in value) || value["autoCleanup"] === undefined) return false;
+  if (!("defaultValidationLevel" in value) || value["defaultValidationLevel"] === undefined) return false;
+  if (!("maxConcurrentLoads" in value) || value["maxConcurrentLoads"] === undefined) return false;
+  if (!("memoryThreshold" in value) || value["memoryThreshold"] === undefined) return false;
+  return true;
 }
 function ConfigResponseFromJSON(json) {
-    return ConfigResponseFromJSONTyped(json, false);
+  return ConfigResponseFromJSONTyped(json, false);
 }
 function ConfigResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'enablePerformanceMonitoring': json['enable_performance_monitoring'],
-        'autoCleanup': json['auto_cleanup'],
-        'defaultValidationLevel': json['default_validation_level'],
-        'maxConcurrentLoads': json['max_concurrent_loads'],
-        'memoryThreshold': json['memory_threshold'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    enablePerformanceMonitoring: json["enable_performance_monitoring"],
+    autoCleanup: json["auto_cleanup"],
+    defaultValidationLevel: json["default_validation_level"],
+    maxConcurrentLoads: json["max_concurrent_loads"],
+    memoryThreshold: json["memory_threshold"],
+  };
 }
 function ConfigResponseToJSON(json) {
-    return ConfigResponseToJSONTyped(json, false);
+  return ConfigResponseToJSONTyped(json, false);
 }
 function ConfigResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'enable_performance_monitoring': value['enablePerformanceMonitoring'],
-        'auto_cleanup': value['autoCleanup'],
-        'default_validation_level': value['defaultValidationLevel'],
-        'max_concurrent_loads': value['maxConcurrentLoads'],
-        'memory_threshold': value['memoryThreshold'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    enable_performance_monitoring: value["enablePerformanceMonitoring"],
+    auto_cleanup: value["autoCleanup"],
+    default_validation_level: value["defaultValidationLevel"],
+    max_concurrent_loads: value["maxConcurrentLoads"],
+    memory_threshold: value["memoryThreshold"],
+  };
 }

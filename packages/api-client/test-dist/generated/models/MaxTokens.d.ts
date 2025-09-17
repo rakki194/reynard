@@ -14,8 +14,7 @@
  * @export
  * @interface MaxTokens
  */
-export interface MaxTokens {
-}
+export interface MaxTokens {}
 /**
  * Check if a given object implements the MaxTokens interface.
  */

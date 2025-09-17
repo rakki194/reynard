@@ -22,46 +22,45 @@ exports.TTSSynthesisResponseToJSONTyped = TTSSynthesisResponseToJSONTyped;
  * Check if a given object implements the TTSSynthesisResponse interface.
  */
 function instanceOfTTSSynthesisResponse(value) {
-    if (!('success' in value) || value['success'] === undefined)
-        return false;
-    if (!('backendUsed' in value) || value['backendUsed'] === undefined)
-        return false;
-    if (!('processingTime' in value) || value['processingTime'] === undefined)
-        return false;
-    return true;
+  if (!("success" in value) || value["success"] === undefined) return false;
+  if (!("backendUsed" in value) || value["backendUsed"] === undefined) return false;
+  if (!("processingTime" in value) || value["processingTime"] === undefined) return false;
+  return true;
 }
 function TTSSynthesisResponseFromJSON(json) {
-    return TTSSynthesisResponseFromJSONTyped(json, false);
+  return TTSSynthesisResponseFromJSONTyped(json, false);
 }
 function TTSSynthesisResponseFromJSONTyped(json, ignoreDiscriminator) {
-    if (json == null) {
-        return json;
-    }
-    return {
-        'success': json['success'],
-        'audioPath': json['audio_path'] == null ? undefined : json['audio_path'],
-        'audioUrl': json['audio_url'] == null ? undefined : json['audio_url'],
-        'duration': json['duration'] == null ? undefined : json['duration'],
-        'backendUsed': json['backend_used'],
-        'processingTime': json['processing_time'],
-        'error': json['error'] == null ? undefined : json['error'],
-    };
+  if (json == null) {
+    return json;
+  }
+  return {
+    success: json["success"],
+    audioPath: json["audio_path"] == null ? undefined : json["audio_path"],
+    audioUrl: json["audio_url"] == null ? undefined : json["audio_url"],
+    duration: json["duration"] == null ? undefined : json["duration"],
+    backendUsed: json["backend_used"],
+    processingTime: json["processing_time"],
+    error: json["error"] == null ? undefined : json["error"],
+  };
 }
 function TTSSynthesisResponseToJSON(json) {
-    return TTSSynthesisResponseToJSONTyped(json, false);
+  return TTSSynthesisResponseToJSONTyped(json, false);
 }
 function TTSSynthesisResponseToJSONTyped(value, ignoreDiscriminator) {
-    if (ignoreDiscriminator === void 0) { ignoreDiscriminator = false; }
-    if (value == null) {
-        return value;
-    }
-    return {
-        'success': value['success'],
-        'audio_path': value['audioPath'],
-        'audio_url': value['audioUrl'],
-        'duration': value['duration'],
-        'backend_used': value['backendUsed'],
-        'processing_time': value['processingTime'],
-        'error': value['error'],
-    };
+  if (ignoreDiscriminator === void 0) {
+    ignoreDiscriminator = false;
+  }
+  if (value == null) {
+    return value;
+  }
+  return {
+    success: value["success"],
+    audio_path: value["audioPath"],
+    audio_url: value["audioUrl"],
+    duration: value["duration"],
+    backend_used: value["backendUsed"],
+    processing_time: value["processingTime"],
+    error: value["error"],
+  };
 }

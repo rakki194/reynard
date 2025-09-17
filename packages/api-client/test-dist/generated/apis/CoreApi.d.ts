@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import * as runtime from '../runtime';
+import * as runtime from "../runtime";
 /**
  * CoreApi - interface
  *
@@ -17,32 +17,32 @@ import * as runtime from '../runtime';
  * @interface CoreApiInterface
  */
 export interface CoreApiInterface {
-    /**
-     * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
-     * @summary Root
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof CoreApiInterface
-     */
-    rootGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
-     * Root
-     */
-    rootGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
+   * @summary Root
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof CoreApiInterface
+   */
+  rootGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
+   * Root
+   */
+  rootGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 }
 /**
  *
  */
 export declare class CoreApi extends runtime.BaseAPI implements CoreApiInterface {
-    /**
-     * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
-     * Root
-     */
-    rootGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
-    /**
-     * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
-     * Root
-     */
-    rootGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
+  /**
+   * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
+   * Root
+   */
+  rootGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>>;
+  /**
+   * Root endpoint providing system information and API status.  This endpoint serves as the primary entry point for the Reynard API, providing essential system information including version details, environment status, and documentation access points.  Returns:     dict: System information containing:         - message: API status message         - version: Current API version         - environment: Deployment environment (development/production)         - timestamp: Current UTC timestamp         - docs_url: API documentation URL (if available)
+   * Root
+   */
+  rootGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object>;
 }

@@ -14,8 +14,7 @@
  * @export
  * @interface MaxLength
  */
-export interface MaxLength {
-}
+export interface MaxLength {}
 /**
  * Check if a given object implements the MaxLength interface.
  */
