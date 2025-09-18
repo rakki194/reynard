@@ -4,6 +4,7 @@
  */
 
 import type { editor } from "monaco-editor";
+import { useI18n } from "reynard-i18n";
 
 /**
  * Get custom Monaco theme definition for a Reynard theme
@@ -420,7 +421,8 @@ export const registerCustomMonacoTheme = (monaco: typeof import("monaco-editor")
     const themeName = `reynard-${reynardTheme}`;
     console.log("Defining Monaco theme:", themeName);
     monaco.editor.defineTheme(themeName, customTheme);
-    console.log("Theme defined successfully");
+    const { t } = useI18n();
+    console.log(t("monaco.status.themeDefinedSuccessfully"));
   } else {
     console.log("Cannot register theme:", {
       hasCustomTheme: !!customTheme,

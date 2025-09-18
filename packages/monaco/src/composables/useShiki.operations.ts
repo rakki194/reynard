@@ -48,14 +48,16 @@ export function createShikiOperations(
 
       setHighlighter(highlighter);
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Failed to initialize Shiki");
+      setError(error instanceof Error ? error.message : t("monaco.errors.failedToInitializeShiki"));
     }
   };
 
   const highlightCode = async (code: string, lang: string, theme: string): Promise<string> => {
+    const { t } = useI18n();
     const currentState = state();
+    
     if (!currentState.highlighter) {
-      throw new Error("Shiki highlighter not initialized");
+      throw new Error(t("monaco.errors.shikiHighlighterNotInitialized"));
     }
 
     try {
@@ -64,7 +66,7 @@ export function createShikiOperations(
         theme,
       });
     } catch (error) {
-      throw new Error(`Failed to highlight code: ${error instanceof Error ? error.message : "Unknown error"}`);
+      throw new Error(`${t("monaco.errors.failedToHighlightCode")}: ${error instanceof Error ? error.message : t("monaco.errors.unknownError")}`);
     }
   };
 

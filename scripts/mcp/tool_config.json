@@ -329,6 +329,30 @@
       "description": "Deep-dive analysis of a specific file's complexity metrics",
       "dependencies": [],
       "config": {}
+    },
+    "get_secret": {
+      "name": "get_secret",
+      "category": "utility",
+      "enabled": true,
+      "description": "Retrieve a user secret by name (e.g., GH_TOKEN for GitHub operations)",
+      "dependencies": [],
+      "config": {}
+    },
+    "list_available_secrets": {
+      "name": "list_available_secrets",
+      "category": "utility",
+      "enabled": true,
+      "description": "List all available secrets that agents can access",
+      "dependencies": [],
+      "config": {}
+    },
+    "validate_secret": {
+      "name": "validate_secret",
+      "category": "utility",
+      "enabled": true,
+      "description": "Validate that a secret is properly configured and accessible",
+      "dependencies": [],
+      "config": {}
     }
   }
 }

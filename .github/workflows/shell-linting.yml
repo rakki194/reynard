@@ -2,14 +2,14 @@ name: 🔍 Shell Script Linting
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
       - '**/*.sh'
       - '**/*.bash'
       - '**/*.zsh'
       - '.shellcheckrc'
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
       - '**/*.sh'
       - '**/*.bash'
@@ -24,173 +24,183 @@ jobs:
   shell-linting:
     name: 🔍 Shell Script Linting
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        
-    - name: 🔍 Run ShellCheck
-      run: |
-        echo "🔍 Running ShellCheck on all shell scripts..."
-        
-        # Find all shell scripts (excluding third_party and node_modules)
-        SHELL_FILES=$(find . -type f \( -name "*.sh" -o -name "*.bash" -o -name "*.zsh" \) \
-          -not -path "./node_modules/*" \
-          -not -path "./.git/*" \
-          -not -path "./venv/*" \
-          -not -path "./backend/venv/*" \
-          -not -path "./third_party/*" \
-          -not -path "./packages/*/node_modules/*" \
-          -not -path "./examples/*/node_modules/*" \
-          -not -path "./templates/*/node_modules/*")
-        
-        if [ -z "$SHELL_FILES" ]; then
-          echo "✅ No shell scripts found to lint"
-          exit 0
-        fi
-        
-        echo "📊 Found $(echo "${SHELL_FILES}" | wc -l) shell scripts to lint:"
-        echo "${SHELL_FILES}" | sed 's/^/  - /'
-        echo ""
-        
-        # Run ShellCheck on all files
-        echo "🔍 Running ShellCheck..."
-        if shellcheck --version; then
-          echo "✅ ShellCheck version: $(shellcheck --version | head -1)"
-        else
-          echo "❌ ShellCheck not found"
-          exit 1
-        fi
-        
-        # Run ShellCheck with configuration
-        if shellcheck --rcfile=.shellcheckrc ${SHELL_FILES}; then
-          echo "✅ All shell scripts passed ShellCheck validation!"
-        else
-          echo "❌ ShellCheck found issues in shell scripts"
-          exit 1
-        fi
-        
-    - name: 📊 Generate shell linting report
-      if: always()
-      run: |
-        echo "# 🔍 Shell Script Linting Report" > shell-linting-report.md
-        echo "" >> shell-linting-report.md
-        echo "## Shell Scripts Analyzed" >> shell-linting-report.md
-        echo "" >> shell-linting-report.md
-        
-        # Find all shell scripts
-        SHELL_FILES=$(find . -type f \( -name "*.sh" -o -name "*.bash" -o -name "*.zsh" \) \
-          -not -path "./node_modules/*" \
-          -not -path "./.git/*" \
-          -not -path "./venv/*" \
-          -not -path "./backend/venv/*" \
-          -not -path "./third_party/*" \
-          -not -path "./packages/*/node_modules/*" \
-          -not -path "./examples/*/node_modules/*" \
-          -not -path "./templates/*/node_modules/*")
-        
-        if [ -n "$SHELL_FILES" ]; then
-          echo "### Scripts Found ($(echo "$SHELL_FILES" | wc -l) total)" >> shell-linting-report.md
-          echo "" >> shell-linting-report.md
-          echo '```' >> shell-linting-report.md
-          echo "$SHELL_FILES" | sed 's|^\./||' >> shell-linting-report.md
-          echo '```' >> shell-linting-report.md
-          echo "" >> shell-linting-report.md
-          
-          echo "### Validation Results" >> shell-linting-report.md
-          echo "" >> shell-linting-report.md
-          
-          # Check each file individually
-          for script in $SHELL_FILES; do
-            script_name=$(basename "$script")
-            script_path=$(echo "$script" | sed 's|^\./||')
-            
-            echo "#### $script_name" >> shell-linting-report.md
-            echo "" >> shell-linting-report.md
-            echo "**Path:** \`$script_path\`" >> shell-linting-report.md
-            echo "" >> shell-linting-report.md
-            
-            if shellcheck --rcfile=.shellcheckrc "$script" > /dev/null 2>&1; then
-              echo "✅ **Status**: Valid" >> shell-linting-report.md
-            else
-              echo "❌ **Status**: Issues found" >> shell-linting-report.md
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Run ShellCheck
+        run: |
+          echo "🔍 Running ShellCheck on all shell scripts..."
+
+          # Find all shell scripts (excluding third_party and node_modules)
+          SHELL_FILES=$(find . -type f \( -name "*.sh" -o -name "*.bash" -o -name "*.zsh" \) \
+            -not -path "./node_modules/*" \
+            -not -path "./.git/*" \
+            -not -path "./venv/*" \
+            -not -path "./backend/venv/*" \
+            -not -path "./third_party/*" \
+            -not -path "./packages/*/node_modules/*" \
+            -not -path "./examples/*/node_modules/*" \
+            -not -path "./templates/*/node_modules/*")
+
+          if [ -z "$SHELL_FILES" ]; then
+            echo "✅ No shell scripts found to lint"
+            exit 0
+          fi
+
+          echo "📊 Found $(echo "${SHELL_FILES}" | wc -l) shell scripts to lint:"
+          printf '  - %s\n' ${SHELL_FILES}
+          echo ""
+
+          # Run ShellCheck on all files
+          echo "🔍 Running ShellCheck..."
+          if shellcheck --version; then
+            echo "✅ ShellCheck version: $(shellcheck --version | head -1)"
+          else
+            echo "❌ ShellCheck not found"
+            exit 1
+          fi
+
+          # Run ShellCheck with configuration
+          if shellcheck --rcfile=.shellcheckrc ${SHELL_FILES}; then
+            echo "✅ All shell scripts passed ShellCheck validation!"
+          else
+            echo "❌ ShellCheck found issues in shell scripts"
+            exit 1
+          fi
+
+      - name: 📊 Generate shell linting report
+        if: always()
+        run: |
+          {
+            echo "# 🔍 Shell Script Linting Report"
+            echo ""
+            echo "## Shell Scripts Analyzed"
+            echo ""
+          } > shell-linting-report.md
+
+          # Find all shell scripts
+          SHELL_FILES=$(find . -type f \( -name "*.sh" -o -name "*.bash" -o -name "*.zsh" \) \
+            -not -path "./node_modules/*" \
+            -not -path "./.git/*" \
+            -not -path "./venv/*" \
+            -not -path "./backend/venv/*" \
+            -not -path "./third_party/*" \
+            -not -path "./packages/*/node_modules/*" \
+            -not -path "./examples/*/node_modules/*" \
+            -not -path "./templates/*/node_modules/*")
+
+          if [ -n "$SHELL_FILES" ]; then
+            {
+              echo "### Scripts Found ($(echo "$SHELL_FILES" | wc -l) total)"
+              echo ""
+              echo '```'
+              printf '%s\n' ${SHELL_FILES} | sed 's|^\./||'
+              echo '```'
+              echo ""
+            } >> shell-linting-report.md
+
+            {
+              echo "### Validation Results"
+              echo ""
+            } >> shell-linting-report.md
+
+            # Check each file individually
+            for script in $SHELL_FILES; do
+              script_name=$(basename "$script")
+              script_path="${script#./}"
+
+              {
+                echo "#### $script_name"
+                echo ""
+                echo "**Path:** \`$script_path\`"
+                echo ""
+              } >> shell-linting-report.md
+
+              if shellcheck --rcfile=.shellcheckrc "$script" > /dev/null 2>&1; then
+                echo "✅ **Status**: Valid" >> shell-linting-report.md
+              else
+                {
+                  echo "❌ **Status**: Issues found"
+                  echo ""
+                  echo "**Issues:**"
+                  echo '```'
+                  shellcheck --rcfile=.shellcheckrc "$script" 2>&1 || true
+                  echo '```'
+                } >> shell-linting-report.md
+              fi
               echo "" >> shell-linting-report.md
-              echo "**Issues:**" >> shell-linting-report.md
-              echo '```' >> shell-linting-report.md
-              shellcheck --rcfile=.shellcheckrc "$script" >> shell-linting-report.md 2>&1 || true
-              echo '```' >> shell-linting-report.md
-            fi
-            echo "" >> shell-linting-report.md
-          done
-        else
-          echo "No shell scripts found in the repository." >> shell-linting-report.md
-        fi
-        
-    - name: 📤 Upload shell linting report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: shell-linting-report
-        path: shell-linting-report.md
-        retention-days: 30
-        
-    - name: 💬 Comment PR with results
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const fs = require('fs');
-          
-          try {
-            const reportPath = 'shell-linting-report.md';
-            let report = '';
-            
-            if (fs.existsSync(reportPath)) {
-              report = fs.readFileSync(reportPath, 'utf8');
-            } else {
-              report = `## 🔍 Shell Script Linting Results
-              
-              **Status:** ✅ All shell scripts validated successfully!
-              
-              *Detailed report available in the artifacts.*`;
+            done
+          else
+            echo "No shell scripts found in the repository." >> shell-linting-report.md
+          fi
+
+      - name: 📤 Upload shell linting report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shell-linting-report
+          path: shell-linting-report.md
+          retention-days: 30
+
+      - name: 💬 Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            try {
+              const reportPath = 'shell-linting-report.md';
+              let report = '';
+
+              if (fs.existsSync(reportPath)) {
+                report = fs.readFileSync(reportPath, 'utf8');
+              } else {
+                report = `## 🔍 Shell Script Linting Results
+
+                **Status:** ✅ All shell scripts validated successfully!
+
+                *Detailed report available in the artifacts.*`;
+              }
+
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: report
+              });
+            } catch (error) {
+              console.log('Could not create comment:', error);
             }
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: report
-            });
-          } catch (error) {
-            console.log('Could not create comment:', error);
-          }
 
   # Differential ShellCheck for PRs
   differential-shellcheck:
     name: 🔍 Differential ShellCheck
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    
+
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        
-    - name: 🔍 Differential ShellCheck
-      uses: redhat-plumbers-in-action/differential-shellcheck@v5
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        base: ${{ github.event.pull_request.base.sha }}
-        head: ${{ github.event.pull_request.head.sha }}
-        fail_on_error: true
-        exclude_patterns: |
-          third_party/**
-          node_modules/**
-          venv/**
-          backend/venv/**
-          packages/*/node_modules/**
-          examples/*/node_modules/**
-          templates/*/node_modules/**
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Differential ShellCheck
+        uses: redhat-plumbers-in-action/differential-shellcheck@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
+          fail_on_error: true
+          exclude_patterns: |
+            third_party/**
+            node_modules/**
+            venv/**
+            backend/venv/**
+            packages/*/node_modules/**
+            examples/*/node_modules/**
+            templates/*/node_modules/**

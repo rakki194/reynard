@@ -2,11 +2,11 @@ name: 🔍 Workflow Linting & Validation
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
       - '.github/workflows/**'
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     paths:
       - '.github/workflows/**'
   workflow_dispatch:
@@ -19,111 +19,111 @@ jobs:
   workflow-validation:
     name: 🔍 Workflow Validation
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: 📥 Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        
-    - name: 🏗️ Setup pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: ${{ env.PNPM_VERSION }}
-        
-    - name: 🟢 Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'pnpm'
-        
-    - name: 📦 Install dependencies
-      run: pnpm install --frozen-lockfile
-      
-    - name: 🔧 Install actionlint
-      run: |
-        echo "🔧 Installing actionlint..."
-        curl -sSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | bash
-        sudo mv actionlint /usr/local/bin/
-        actionlint --version
-        
-    - name: 🔍 Run actionlint
-      run: |
-        echo "🔍 Validating GitHub Actions workflows..."
-        actionlint .github/workflows/*.yml --ignore SC2086,SC2129,SC2001,SC2170
-        
-    - name: 🧪 Test workflow syntax
-      run: |
-        echo "🧪 Testing workflow syntax..."
-        for workflow in .github/workflows/*.yml; do
-          echo "Testing ${workflow}..."
-          actionlint "${workflow}" --format github
-        done
-        
-    - name: 📊 Generate workflow report
-      if: always()
-      run: |
-        {
-          echo "# 🔍 Workflow Validation Report"
-          echo ""
-          echo "## Validated Workflows"
-          echo ""
-        } > workflow-report.md
-        
-        for workflow in .github/workflows/*.yml; do
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🏗️ Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🔧 Install actionlint
+        run: |
+          echo "🔧 Installing actionlint..."
+          curl -sSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | bash
+          sudo mv actionlint /usr/local/bin/
+          actionlint --version
+
+      - name: 🔍 Run actionlint
+        run: |
+          echo "🔍 Validating GitHub Actions workflows..."
+          actionlint .github/workflows/*.yml
+
+      - name: 🧪 Test workflow syntax
+        run: |
+          echo "🧪 Testing workflow syntax..."
+          for workflow in .github/workflows/*.yml; do
+            echo "Testing ${workflow}..."
+            actionlint "${workflow}" --format github
+          done
+
+      - name: 📊 Generate workflow report
+        if: always()
+        run: |
           {
-            echo "### $(basename "$workflow")"
+            echo "# 🔍 Workflow Validation Report"
             echo ""
-            
-            if actionlint "$workflow" > /dev/null 2>&1; then
-              echo "✅ **Status**: Valid"
-            else
-              echo "❌ **Status**: Issues found"
+            echo "## Validated Workflows"
+            echo ""
+          } > workflow-report.md
+
+          for workflow in .github/workflows/*.yml; do
+            {
+              echo "### $(basename "$workflow")"
               echo ""
-              echo "**Issues:**"
-              echo '```'
-              actionlint "$workflow" 2>&1 || true
-              echo '```'
-            fi
-            echo ""
-          } >> workflow-report.md
-        done
-        
-    - name: 📤 Upload workflow report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: workflow-validation-report
-        path: workflow-report.md
-        retention-days: 30
-        
-    - name: 💬 Comment PR with results
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const fs = require('fs');
-          
-          try {
-            const reportPath = 'workflow-report.md';
-            let report = '';
-            
-            if (fs.existsSync(reportPath)) {
-              report = fs.readFileSync(reportPath, 'utf8');
-            } else {
-              report = `## 🔍 Workflow Validation Results
-              
-              **Status:** ✅ All workflows validated successfully!
-              
-              *Detailed report available in the artifacts.*`;
+
+              if actionlint "$workflow" > /dev/null 2>&1; then
+                echo "✅ **Status**: Valid"
+              else
+                echo "❌ **Status**: Issues found"
+                echo ""
+                echo "**Issues:**"
+                echo '```'
+                actionlint "$workflow" 2>&1 || true
+                echo '```'
+              fi
+              echo ""
+            } >> workflow-report.md
+          done
+
+      - name: 📤 Upload workflow report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workflow-validation-report
+          path: workflow-report.md
+          retention-days: 30
+
+      - name: 💬 Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            try {
+              const reportPath = 'workflow-report.md';
+              let report = '';
+
+              if (fs.existsSync(reportPath)) {
+                report = fs.readFileSync(reportPath, 'utf8');
+              } else {
+                report = `## 🔍 Workflow Validation Results
+
+                **Status:** ✅ All workflows validated successfully!
+
+                *Detailed report available in the artifacts.*`;
+              }
+
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: report
+              });
+            } catch (error) {
+              console.log('Could not create comment:', error);
             }
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: report
-            });
-          } catch (error) {
-            console.log('Could not create comment:', error);
-          }

@@ -1,4 +1,5 @@
 import type { NaturalLanguageDetectionResult } from "../types";
+import { useI18n } from "reynard-i18n";
 
 export type { NaturalLanguageDetectionResult };
 
@@ -46,12 +47,14 @@ export class LanguageDetectionService {
    * Detect natural language from text content
    */
   async detectNaturalLanguage(text: string): Promise<NaturalLanguageDetectionResult> {
+    const { t } = useI18n();
+    
     if (!this.isNaturalLanguageDetectionAvailable()) {
       return {
         success: false,
         naturalLanguage: "unknown",
         confidence: 0,
-        error: "Natural language detection not available",
+        error: t("monaco.errors.naturalLanguageDetectionNotAvailable"),
       };
     }
 
@@ -73,7 +76,7 @@ export class LanguageDetectionService {
         success: false,
         naturalLanguage: "unknown",
         confidence: 0,
-        error: error instanceof Error ? error.message : "Detection failed",
+        error: error instanceof Error ? error.message : t("monaco.errors.detectionFailed"),
       };
     }
   }

@@ -32,4 +32,35 @@ export const monacoTranslations = {
     minimap: "Minimap",
     lineNumbers: "Line Numbers",
   },
+  // Error messages
+  errors: {
+    couldNotInitializeMonaco: "Could not initialize Monaco",
+    naturalLanguageDetectionNotAvailable: "Natural language detection not available",
+    detectionFailed: "Detection failed",
+    failedToInitializeShiki: "Failed to initialize Shiki",
+    shikiHighlighterNotInitialized: "Shiki highlighter not initialized",
+    failedToHighlightCode: "Failed to highlight code",
+    unknownError: "Unknown error",
+  },
+  // Status messages
+  status: {
+    themeDefinedSuccessfully: "Theme defined successfully",
+    initializing: "Initializing...",
+    ready: "Ready",
+    loading: "Loading...",
+  },
+  // Language detection
+  languageDetection: {
+    detecting: "Detecting language...",
+    detected: "Language detected",
+    unknown: "Unknown language",
+    confidence: "Confidence",
+  },
+  // Editor features
+  features: {
+    syntaxHighlighting: "Syntax highlighting",
+    codeCompletion: "Code completion",
+    errorChecking: "Error checking",
+    formatting: "Code formatting",
+  },
 };

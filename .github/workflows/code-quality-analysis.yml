@@ -81,7 +81,7 @@ jobs:
 
           # Check exit code
           ANALYSIS_EXIT_CODE=$?
-          echo "analysis_exit_code=$ANALYSIS_EXIT_CODE" >> $GITHUB_OUTPUT
+          echo "analysis_exit_code=${ANALYSIS_EXIT_CODE}" >> "$GITHUB_OUTPUT"
 
           # Parse results for summary
           if [ -f "../../analysis-results.json" ]; then
@@ -90,10 +90,12 @@ jobs:
             CRITICAL_VULNERABILITIES=$(node -e "const data = require('../../analysis-results.json'); console.log(data.security?.summary?.criticalVulnerabilities || 0)")
             HIGH_VULNERABILITIES=$(node -e "const data = require('../../analysis-results.json'); console.log(data.security?.summary?.highVulnerabilities || 0)")
 
-            echo "issues_count=$ISSUES_COUNT" >> $GITHUB_OUTPUT
-            echo "vulnerabilities_count=$VULNERABILITIES_COUNT" >> $GITHUB_OUTPUT
-            echo "critical_vulnerabilities=$CRITICAL_VULNERABILITIES" >> $GITHUB_OUTPUT
-            echo "high_vulnerabilities=$HIGH_VULNERABILITIES" >> $GITHUB_OUTPUT
+            {
+              echo "issues_count=${ISSUES_COUNT}"
+              echo "vulnerabilities_count=${VULNERABILITIES_COUNT}"
+              echo "critical_vulnerabilities=${CRITICAL_VULNERABILITIES}"
+              echo "high_vulnerabilities=${HIGH_VULNERABILITIES}"
+            } >> "$GITHUB_OUTPUT"
           fi
 
       - name: 🐺 Run Security Analysis
@@ -109,7 +111,7 @@ jobs:
 
           # Check exit code
           SECURITY_EXIT_CODE=$?
-          echo "security_exit_code=$SECURITY_EXIT_CODE" >> $GITHUB_OUTPUT
+          echo "security_exit_code=${SECURITY_EXIT_CODE}" >> "$GITHUB_OUTPUT"
 
       - name: 🚪 Evaluate Quality Gates
         id: quality-gates
@@ -124,7 +126,7 @@ jobs:
 
           # Check exit code
           QUALITY_GATE_EXIT_CODE=$?
-          echo "quality_gate_exit_code=$QUALITY_GATE_EXIT_CODE" >> $GITHUB_OUTPUT
+          echo "quality_gate_exit_code=${QUALITY_GATE_EXIT_CODE}" >> "$GITHUB_OUTPUT"
 
       - name: 📊 Upload Analysis Results
         uses: actions/upload-artifact@v4
@@ -143,7 +145,7 @@ jobs:
           cat > quality-report.md << EOF
           # 🦊 Reynard Code Quality Analysis Report
 
-          **Analysis Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          **Analysis Date:** "$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
           **Environment:** ${{ github.event.inputs.environment || 'development' }}
           **Branch:** ${{ github.ref_name }}
           **Commit:** ${{ github.sha }}
@@ -252,18 +254,22 @@ jobs:
         if: always()
         run: |
           # Fail the workflow if there are critical security issues
-          if [ "${{ steps.analysis.outputs.critical_vulnerabilities }}" -gt 0 ]; then
+          CRITICAL_VULNS="${{ steps.analysis.outputs.critical_vulnerabilities }}"
+          HIGH_VULNS="${{ steps.analysis.outputs.high_vulnerabilities }}"
+          QUALITY_GATE_CODE="${{ steps.quality-gates.outputs.quality_gate_exit_code }}"
+          
+          if [ "${CRITICAL_VULNS:-0}" -gt 0 ]; then
             echo "❌ Critical vulnerabilities found. Failing workflow."
             exit 1
           fi
 
-          if [ "${{ steps.analysis.outputs.high_vulnerabilities }}" -gt 5 ]; then
+          if [ "${HIGH_VULNS:-0}" -gt 5 ]; then
             echo "❌ Too many high-severity vulnerabilities found. Failing workflow."
             exit 1
           fi
 
           # Fail if quality gates failed
-          if [ "${{ steps.quality-gates.outputs.quality_gate_exit_code }}" -ne 0 ]; then
+          if [ "${QUALITY_GATE_CODE:-0}" -ne 0 ]; then
             echo "❌ Quality gates failed. Failing workflow."
             exit 1
           fi
