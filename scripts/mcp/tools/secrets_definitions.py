@@ -16,7 +16,7 @@ def get_secrets_tool_definitions() -> dict[str, dict[str, Any]]:
         "get_secret": {
             "name": "get_secret",
             "description": "Retrieve a user secret by name (e.g., GH_TOKEN for GitHub operations)",
-            "parameters": {
+            "inputSchema": {
                 "type": "object",
                 "properties": {
                     "secret_name": {
@@ -36,7 +36,7 @@ def get_secrets_tool_definitions() -> dict[str, dict[str, Any]]:
         "list_available_secrets": {
             "name": "list_available_secrets",
             "description": "List all available secrets that agents can access",
-            "parameters": {
+            "inputSchema": {
                 "type": "object",
                 "properties": {
                     "include_descriptions": {
@@ -51,7 +51,7 @@ def get_secrets_tool_definitions() -> dict[str, dict[str, Any]]:
         "validate_secret": {
             "name": "validate_secret",
             "description": "Validate that a secret is properly configured and accessible",
-            "parameters": {
+            "inputSchema": {
                 "type": "object",
                 "properties": {
                     "secret_name": {

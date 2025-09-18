@@ -8,6 +8,7 @@
  */
 
 import type { AABB, CollisionPair } from "../../geometry/collision/aabb-types";
+import { useI18n } from "reynard-i18n";
 
 export interface WorkloadCharacteristics {
   objectCount: number;
@@ -189,7 +190,7 @@ export class AlgorithmSelector {
   /**
    * Select optimal collision detection algorithm
    */
-  private selectOptimalCollisionAlgorithm(analysis: WorkloadAnalysis): AlgorithmSelection {
+  private selectOptimalCollisionAlgorithm(analysis: WorkloadAnalysis, t?: (key: string) => string): AlgorithmSelection {
     const { complexity, memoryPressure, performanceProfile } = analysis;
     const { objectCount } = analysis.workload;
 
@@ -203,9 +204,9 @@ export class AlgorithmSelector {
           memoryUsage: objectCount * 16,
         },
         reasoning: [
-          "Small object count favors naive approach",
-          "PAW findings show naive is optimal for <100 objects",
-          "Minimal allocation overhead for small datasets",
+          t ? t("algorithms.algorithmSelection.smallObjectCount.favorsNaiveApproach") : "Small object count favors naive approach",
+          t ? t("algorithms.algorithmSelection.smallObjectCount.pawFindingsShowNaiveOptimal") : "PAW findings show naive is optimal for <100 objects",
+          t ? t("algorithms.algorithmSelection.smallObjectCount.minimalAllocationOverhead") : "Minimal allocation overhead for small datasets",
         ],
       };
     }
@@ -219,9 +220,9 @@ export class AlgorithmSelector {
           memoryUsage: objectCount * 32,
         },
         reasoning: [
-          "Medium object count benefits from spatial optimization",
-          "Spatial hashing reduces collision checks",
-          "Memory overhead acceptable for this size",
+          t ? t("algorithms.algorithmSelection.mediumObjectCount.benefitsFromSpatialOptimization") : "Medium object count benefits from spatial optimization",
+          t ? t("algorithms.algorithmSelection.mediumObjectCount.spatialHashingReducesCollisionChecks") : "Spatial hashing reduces collision checks",
+          t ? t("algorithms.algorithmSelection.mediumObjectCount.memoryOverheadAcceptable") : "Memory overhead acceptable for this size",
         ],
       };
     }
@@ -235,10 +236,10 @@ export class AlgorithmSelector {
         memoryUsage: objectCount * 16 + 1024,
       },
       reasoning: [
-        "Large object count requires optimization",
-        "Memory pooling eliminates allocation overhead",
-        "PAW findings show 99.91% allocation reduction",
-        "Best performance for >100 objects",
+        t ? t("algorithms.algorithmSelection.largeObjectCount.requiresOptimization") : "Large object count requires optimization",
+        t ? t("algorithms.algorithmSelection.largeObjectCount.memoryPoolingEliminatesAllocationOverhead") : "Memory pooling eliminates allocation overhead",
+        "PAW findings show 99.91% allocation reduction", // Keep this as it's a specific metric
+        t ? t("algorithms.algorithmSelection.largeObjectCount.bestPerformanceForOver100Objects") : "Best performance for >100 objects",
       ],
     };
   }
@@ -246,7 +247,7 @@ export class AlgorithmSelector {
   /**
    * Select optimal spatial algorithm
    */
-  private selectOptimalSpatialAlgorithm(analysis: WorkloadAnalysis): AlgorithmSelection {
+  private selectOptimalSpatialAlgorithm(analysis: WorkloadAnalysis, t?: (key: string) => string): AlgorithmSelection {
     const { complexity, memoryPressure } = analysis;
     const { objectCount, spatialDensity } = analysis.workload;
 
@@ -260,9 +261,9 @@ export class AlgorithmSelector {
           memoryUsage: objectCount * 32 + 1024,
         },
         reasoning: [
-          "High spatial density benefits from optimization",
-          "Memory pooling reduces allocation overhead",
-          "Spatial hashing effective for dense scenarios",
+          t ? t("algorithms.algorithmSelection.highSpatialDensity.benefitsFromOptimization") : "High spatial density benefits from optimization",
+          t ? t("algorithms.algorithmSelection.highSpatialDensity.memoryPoolingReducesAllocationOverhead") : "Memory pooling reduces allocation overhead",
+          t ? t("algorithms.algorithmSelection.highSpatialDensity.spatialHashingEffectiveForDenseScenarios") : "Spatial hashing effective for dense scenarios",
         ],
       };
     }
@@ -276,9 +277,9 @@ export class AlgorithmSelector {
         memoryUsage: objectCount * 32,
       },
       reasoning: [
-        "Low spatial density allows standard spatial hashing",
-        "Memory overhead acceptable for sparse scenarios",
-        "Good balance of performance and memory usage",
+        t ? t("algorithms.algorithmSelection.lowSpatialDensity.allowsStandardSpatialHashing") : "Low spatial density allows standard spatial hashing",
+        t ? t("algorithms.algorithmSelection.lowSpatialDensity.memoryOverheadAcceptableForSparseScenarios") : "Memory overhead acceptable for sparse scenarios",
+        t ? t("algorithms.algorithmSelection.lowSpatialDensity.goodBalanceOfPerformanceAndMemoryUsage") : "Good balance of performance and memory usage",
       ],
     };
   }

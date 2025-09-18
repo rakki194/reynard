@@ -15,6 +15,7 @@ import { chatTranslations } from "./chat";
 import { monacoTranslations } from "./monaco";
 import { captionTranslations } from "./caption";
 import { apiClientTranslations } from "./api-client";
+import { algorithmsTranslations } from "./algorithms";
 
 export default {
   common: commonTranslations,
@@ -28,4 +29,5 @@ export default {
   monaco: monacoTranslations,
   caption: captionTranslations,
   apiClient: apiClientTranslations,
+  algorithms: algorithmsTranslations,
 } as const satisfies Translations;

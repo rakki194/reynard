@@ -10,6 +10,7 @@
 import type { CollisionPair } from "../../geometry/collision/aabb-types";
 import { SpatialHash } from "../../spatial-hash/spatial-hash-core";
 import { UnionFind } from "../../union-find/union-find-core";
+import { useI18n } from "reynard-i18n";
 
 export interface MemoryPoolConfig {
   spatialHashPoolSize: number;
@@ -460,7 +461,7 @@ export class EnhancedMemoryPool {
   /**
    * Get optimization recommendations
    */
-  getOptimizationRecommendations(): OptimizationRecommendation[] {
+  getOptimizationRecommendations(t?: (key: string) => string): OptimizationRecommendation[] {
     const recommendations: OptimizationRecommendation[] = [];
 
     // Check pool hit rate
@@ -469,7 +470,7 @@ export class EnhancedMemoryPool {
         type: "pool_size",
         description: "Low pool hit rate detected. Consider increasing pool sizes.",
         impact: "high",
-        implementation: "Increase spatialHashPoolSize and collisionArrayPoolSize in config",
+        implementation: t ? t("algorithms.performanceOptimization.lowPoolHitRate.implementation") : "Increase spatialHashPoolSize and collisionArrayPoolSize in config",
       });
     }
 
@@ -479,7 +480,7 @@ export class EnhancedMemoryPool {
         type: "cleanup_interval",
         description: "High pool usage detected. Consider reducing cleanup interval.",
         impact: "medium",
-        implementation: "Reduce cleanupInterval in config",
+        implementation: t ? t("algorithms.performanceOptimization.highPoolUsage.implementation") : "Reduce cleanupInterval in config",
       });
     }
 
@@ -489,7 +490,7 @@ export class EnhancedMemoryPool {
         type: "object_lifecycle",
         description: "Allocation reduction below optimal. Check object lifecycle management.",
         impact: "high",
-        implementation: "Ensure proper returnToPool() calls and object reuse patterns",
+        implementation: t ? t("algorithms.performanceOptimization.allocationReductionBelowOptimal.implementation") : "Ensure proper returnToPool() calls and object reuse patterns",
       });
     }
 
