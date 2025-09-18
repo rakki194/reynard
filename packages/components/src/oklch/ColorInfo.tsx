@@ -4,6 +4,7 @@
  */
 
 import { Component } from "solid-js";
+import { useI18n } from "reynard-i18n";
 
 interface ColorInfoProps {
   color: string;
@@ -14,12 +15,15 @@ interface ColorInfoProps {
 }
 
 export const ColorInfo: Component<ColorInfoProps> = props => {
+  const { t } = useI18n();
+
   return (
     <div class="color-info">
-      <h3>{props.title || "Current Color"}</h3>
+      <h3>{props.title || t("components.colorPicker.currentColor")}</h3>
       <code>{props.color}</code>
       <p>
-        L: {props.lightness}% | C: {props.chroma.toFixed(2)} | H: {props.hue}°
+        {t("components.colorPicker.lightnessLabel")}: {props.lightness}% | {t("components.colorPicker.chromaLabel")}:{" "}
+        {props.chroma.toFixed(2)} | {t("components.colorPicker.hueLabel")}: {props.hue}°
       </p>
     </div>
   );

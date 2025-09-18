@@ -4,6 +4,7 @@
  */
 
 import { Component } from "solid-js";
+import { useI18n } from "reynard-i18n";
 import { Slider } from "../primitives/Slider";
 
 interface ColorControlsProps {
@@ -18,12 +19,16 @@ interface ColorControlsProps {
 }
 
 export const ColorControls: Component<ColorControlsProps> = props => {
+  const { t } = useI18n();
+
   return (
     <div class="color-controls-section">
-      <h2>Interactive Color Laboratory</h2>
+      <h2>{t("components.colorPicker.interactiveLaboratory")}</h2>
       <div class="controls-grid">
         <div class="control-group">
-          <label for="hue-slider">Hue: {props.selectedHue}°</label>
+          <label for="hue-slider">
+            {t("components.colorPicker.hue")}: {props.selectedHue}°
+          </label>
           <Slider
             id="hue-slider"
             min={0}
@@ -31,11 +36,13 @@ export const ColorControls: Component<ColorControlsProps> = props => {
             value={props.selectedHue}
             onChange={props.onHueChange}
             class="hue-slider"
-            aria-label="Hue control"
+            aria-label={t("components.colorPicker.hueControl")}
           />
         </div>
         <div class="control-group">
-          <label for="lightness-slider">Lightness: {props.selectedLightness}%</label>
+          <label for="lightness-slider">
+            {t("components.colorPicker.lightness")}: {props.selectedLightness}%
+          </label>
           <Slider
             id="lightness-slider"
             min={0}
@@ -43,11 +50,13 @@ export const ColorControls: Component<ColorControlsProps> = props => {
             value={props.selectedLightness}
             onChange={props.onLightnessChange}
             class="lightness-slider"
-            aria-label="Lightness control"
+            aria-label={t("components.colorPicker.lightnessControl")}
           />
         </div>
         <div class="control-group">
-          <label for="chroma-slider">Chroma: {props.selectedChroma.toFixed(2)}</label>
+          <label for="chroma-slider">
+            {t("components.colorPicker.chroma")}: {props.selectedChroma.toFixed(2)}
+          </label>
           <Slider
             id="chroma-slider"
             min={0}

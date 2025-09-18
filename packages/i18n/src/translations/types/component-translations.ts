@@ -24,4 +24,17 @@ export interface ComponentTranslations {
     show: string;
     hide: string;
   };
+  colorPicker: {
+    currentColor: string;
+    lightness: string;
+    chroma: string;
+    hue: string;
+    lightnessLabel: string;
+    chromaLabel: string;
+    hueLabel: string;
+    interactiveLaboratory: string;
+    hueControl: string;
+    lightnessControl: string;
+    chromaControl: string;
+  };
 }

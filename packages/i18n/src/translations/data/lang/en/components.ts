@@ -23,4 +23,17 @@ export const componentTranslations = {
     show: "Show tooltip",
     hide: "Hide tooltip",
   },
+  colorPicker: {
+    currentColor: "Current Color",
+    lightness: "Lightness",
+    chroma: "Chroma",
+    hue: "Hue",
+    lightnessLabel: "L",
+    chromaLabel: "C",
+    hueLabel: "H",
+    interactiveLaboratory: "Interactive Color Laboratory",
+    hueControl: "Hue control",
+    lightnessControl: "Lightness control",
+    chromaControl: "Chroma control",
+  },
 };

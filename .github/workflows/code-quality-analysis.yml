@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: 🐍 Setup Python
         uses: actions/setup-python@v4
@@ -320,7 +320,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: 🐍 Setup Python
         uses: actions/setup-python@v4
@@ -350,4 +350,3 @@ jobs:
           path: |
             safety-results.json
           retention-days: 30
-

@@ -30,6 +30,7 @@ export const DOMAIN_SPECIFIC_PATTERNS = {
   threeD: ["3d", "three", "webgl", "mesh", "model", "scene", "camera", "light"],
   games: ["game", "play", "score", "level", "player", "enemy"],
   i18n: ["locale", "translation", "i18n", "plural", "rtl", "ltr"],
+  colorPicker: ["oklch", "rgb", "hsl", "hex", "alpha", "opacity"],
   core: [
     "core",
     "base",
