@@ -8,8 +8,10 @@ export interface PhysicsObject {
   height: number;
   vx: number;
   vy: number;
+  mass: number;
   color: string;
   colliding: boolean;
+  isStatic: boolean;
 }
 
 export interface CollisionData {
@@ -23,7 +25,10 @@ export interface DemoStats {
   actualCollisions: number;
   fps: number;
   lastFrameTime: number;
+  totalEnergy?: number;
 }
+
+export type PhysicsStats = DemoStats;
 
 export interface AABBCollisionDemoProps {
   onStatsUpdate: (stats: () => DemoStats) => void;

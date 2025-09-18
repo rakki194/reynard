@@ -24,12 +24,14 @@ class ToolDefinition:
             "parameters": self.parameters
         }
 
+
 from .ecs_definitions import get_ecs_tool_definitions
 from .image_viewer_definitions import get_image_viewer_tool_definitions
 from .linting_definitions import get_linting_tool_definitions
 from .mermaid_definitions import get_mermaid_tool_definitions
 from .monolith_detection.definitions import get_monolith_detection_tool_definitions
 from .search.search_definitions import SEARCH_TOOL_DEFINITIONS
+from .secrets_definitions import get_secrets_tool_definitions
 from .version_vscode_definitions import get_version_vscode_tool_definitions
 from .vscode_tasks_definitions import get_vscode_tasks_tool_definitions
 
@@ -53,6 +55,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
     image_viewer_tools = get_image_viewer_tool_definitions()
     mermaid_tools = get_mermaid_tool_definitions()
     monolith_detection_tools = get_monolith_detection_tool_definitions()
+    secrets_tools = get_secrets_tool_definitions()
     vscode_tasks_tools = get_vscode_tasks_tool_definitions()
     ecs_tools = get_ecs_tool_definitions()
 
@@ -65,6 +68,7 @@ def get_tool_definitions() -> dict[str, dict[str, Any]]:
         **image_viewer_tools,
         **mermaid_tools,
         **monolith_detection_tools,
+        **secrets_tools,
         **vscode_tasks_tools,
         **ecs_tools,
     }

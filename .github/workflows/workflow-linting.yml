@@ -40,6 +40,13 @@ jobs:
     - name: 📦 Install dependencies
       run: pnpm install --frozen-lockfile
       
+    - name: 🔧 Install actionlint
+      run: |
+        echo "🔧 Installing actionlint..."
+        curl -sSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | bash
+        sudo mv actionlint /usr/local/bin/
+        actionlint --version
+        
     - name: 🔍 Run actionlint
       run: |
         echo "🔍 Validating GitHub Actions workflows..."

@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import { Component, For } from "solid-js";
 import type { DemoType } from "../App";
 
 interface DemoSelectorProps {
@@ -59,29 +59,29 @@ export const DemoSelector: Component<DemoSelectorProps> = props => {
       </div>
 
       <div class="demos-grid">
-        {demoOptions.map(demo => (
-          <div class="demo-card" onClick={() => props.onDemoSelect(demo.id)}>
-            <div class="demo-icon">{demo.icon}</div>
-            <div class="demo-content">
-              <h3>{demo.title}</h3>
-              <p class="demo-description">{demo.description}</p>
-              <div class="demo-meta">
-                <span class={`complexity complexity-${demo.complexity.toLowerCase()}`}>{demo.complexity}</span>
+        <For each={demoOptions}>
+          {demo => (
+            <div class="demo-card" onClick={() => props.onDemoSelect(demo.id)}>
+              <div class="demo-icon">{demo.icon}</div>
+              <div class="demo-content">
+                <h3>{demo.title}</h3>
+                <p class="demo-description">{demo.description}</p>
+                <div class="demo-meta">
+                  <span class={`complexity complexity-${demo.complexity.toLowerCase()}`}>{demo.complexity}</span>
+                </div>
+                <div class="demo-features">
+                  <For each={demo.features}>{feature => <span class="feature-tag">{feature}</span>}</For>
+                </div>
               </div>
-              <div class="demo-features">
-                {demo.features.map(feature => (
-                  <span class="feature-tag">{feature}</span>
-                ))}
+              <div class="demo-action">
+                <button class="run-button">
+                  Run Demo
+                  <span class="run-icon">🚀</span>
+                </button>
               </div>
             </div>
-            <div class="demo-action">
-              <button class="run-button">
-                Run Demo
-                <span class="run-icon">🚀</span>
-              </button>
-            </div>
-          </div>
-        ))}
+          )}
+        </For>
       </div>
     </div>
   );

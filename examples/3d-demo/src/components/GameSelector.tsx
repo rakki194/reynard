@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import { Component, For } from "solid-js";
 import type { GameType } from "../App";
 
 interface GameSelectorProps {
@@ -58,29 +58,29 @@ export const GameSelector: Component<GameSelectorProps> = props => {
       </div>
 
       <div class="games-grid">
-        {gameOptions.map(game => (
-          <div class="game-card" onClick={() => props.onGameSelect(game.id)}>
-            <div class="game-icon">{game.icon}</div>
-            <div class="game-content">
-              <h3>{game.title}</h3>
-              <p class="game-description">{game.description}</p>
-              <div class="game-meta">
-                <span class={`difficulty difficulty-${game.difficulty.toLowerCase()}`}>{game.difficulty}</span>
+        <For each={gameOptions}>
+          {game => (
+            <div class="game-card" onClick={() => props.onGameSelect(game.id)}>
+              <div class="game-icon">{game.icon}</div>
+              <div class="game-content">
+                <h3>{game.title}</h3>
+                <p class="game-description">{game.description}</p>
+                <div class="game-meta">
+                  <span class={`difficulty difficulty-${game.difficulty.toLowerCase()}`}>{game.difficulty}</span>
+                </div>
+                <div class="game-features">
+                  <For each={game.features}>{feature => <span class="feature-tag">{feature}</span>}</For>
+                </div>
               </div>
-              <div class="game-features">
-                {game.features.map(feature => (
-                  <span class="feature-tag">{feature}</span>
-                ))}
+              <div class="game-action">
+                <button class="play-button">
+                  Play Now
+                  <span class="play-icon">▶️</span>
+                </button>
               </div>
             </div>
-            <div class="game-action">
-              <button class="play-button">
-                Play Now
-                <span class="play-icon">▶️</span>
-              </button>
-            </div>
-          </div>
-        ))}
+          )}
+        </For>
       </div>
     </div>
   );

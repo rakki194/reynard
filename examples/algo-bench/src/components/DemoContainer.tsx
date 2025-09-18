@@ -1,4 +1,4 @@
-import { Component, createEffect, onCleanup } from "solid-js";
+import { Component } from "solid-js";
 import type { DemoType } from "../App";
 import { AABBCollisionDemo } from "../demos/AABBCollisionDemo";
 import { SpatialOptimizationDemo } from "../demos/SpatialOptimizationDemo";
@@ -7,7 +7,7 @@ import { InteractivePhysicsDemo } from "../demos/InteractivePhysicsDemo";
 
 interface DemoContainerProps {
   demo: DemoType;
-  onStatsUpdate: (stats: any) => void;
+  onStatsUpdate: (stats: unknown) => void;
   onBackToMenu: () => void;
 }
 
@@ -30,7 +30,7 @@ export const DemoContainer: Component<DemoContainerProps> = props => {
   return (
     <div class="demo-container">
       <div class="demo-header">
-        <button class="back-button" onClick={props.onBackToMenu}>
+        <button class="back-button" onClick={() => props.onBackToMenu()}>
           ← Back to Demos
         </button>
         <h2 class="demo-title">{props.demo.replace("-", " ").replace(/\b\w/g, l => l.toUpperCase())}</h2>

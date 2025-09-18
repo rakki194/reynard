@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { ChartsShowcaseSimple, AppFooter } from "reynard-components";
+import { ChartsDemo, AppFooter } from "reynard-components";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import "../styles/app.css";
 import "../styles/charts-showcase.css";
@@ -31,7 +31,7 @@ export const ChartsShowcasePage: Component = () => {
         </div>
       </header>
       <main class="showcase-main">
-        <ChartsShowcaseSimple />
+        <ChartsDemo />
       </main>
       <AppFooter />
     </div>

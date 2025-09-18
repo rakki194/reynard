@@ -258,7 +258,7 @@ jobs:
             -not -path "./venv/*" \
             -not -path "./backend/venv/*" \
             -not -path "./third_party/*" \
-            -exec shellcheck --rcfile=.shellcheckrc {} +
+            -exec shellcheck {} +
 
   # 🐺 Workflow Shell Script Validation
   workflow-shell-validation:
@@ -271,6 +271,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: 🏗️ Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
 
       - name: 🏗️ Setup Node.js
         uses: actions/setup-node@v4
@@ -422,15 +427,23 @@ jobs:
       - name: 🚪 Final validation gate
         run: |
           echo "🐺 Final gatekeeper validation..."
+          echo "Job results:"
+          echo "  Frontend Linting: ${{ needs.frontend-linting.result }}"
+          echo "  Backend Linting: ${{ needs.backend-linting.result }}"
+          echo "  Markdown Linting: ${{ needs.markdown-linting.result }}"
+          echo "  Security Scanning: ${{ needs.security-scanning.result }}"
+          echo "  Shell Linting: ${{ needs.shell-linting.result }}"
+          echo "  Workflow Shell Validation: ${{ needs.workflow-shell-validation.result }}"
+          echo "  Workflow Validation: ${{ needs.workflow-validation.result }}"
 
           # Check if any critical jobs failed
-          if [[ "${{ needs.frontend-linting.result }}" == "failure" ]] || [[ "${{ needs.backend-linting.result }}" == "failure" ]] || [[ "${{ needs.security-scanning.result }}" == "failure" ]] || [[ "${{ needs.workflow-shell-validation.result }}" == "failure" ]]; then
+          if [[ "${{ needs.frontend-linting.result }}" == "failure" ]] || [[ "${{ needs.backend-linting.result }}" == "failure" ]] || [[ "${{ needs.security-scanning.result }}" == "failure" ]] || [[ "${{ needs.workflow-shell-validation.result }}" == "failure" ]] || [[ "${{ needs.workflow-validation.result }}" == "failure" ]]; then
             echo "❌ Critical linting checks failed. Blocking merge."
             exit 1
           fi
 
           # Check if any jobs were cancelled
-          if [[ "${{ needs.frontend-linting.result }}" == "cancelled" ]] || [[ "${{ needs.backend-linting.result }}" == "cancelled" ]] || [[ "${{ needs.security-scanning.result }}" == "cancelled" ]] || [[ "${{ needs.workflow-shell-validation.result }}" == "cancelled" ]]; then
+          if [[ "${{ needs.frontend-linting.result }}" == "cancelled" ]] || [[ "${{ needs.backend-linting.result }}" == "cancelled" ]] || [[ "${{ needs.security-scanning.result }}" == "cancelled" ]] || [[ "${{ needs.workflow-shell-validation.result }}" == "cancelled" ]] || [[ "${{ needs.workflow-validation.result }}" == "cancelled" ]]; then
             echo "⚠️ Some linting checks were cancelled. Please re-run the workflow."
             exit 1
           fi

@@ -33,6 +33,7 @@ from tools import (
     get_mermaid_tools,
     get_monolith_detection_tools,
     get_search_tools,
+    get_secrets_tools,
     get_utility_tools,
     get_version_vscode_tools,
     get_vscode_tasks_tools,
@@ -72,6 +73,7 @@ class MCPServer:
         self.image_viewer_tools = get_image_viewer_tools()()
         self.mermaid_tools = get_mermaid_tools()()
         self.monolith_detection_tools = get_monolith_detection_tools()()
+        self.secrets_tools = get_secrets_tools()()
         self.playwright_tools = PlaywrightTools()
         self.vscode_tasks_tools = get_vscode_tasks_tools()()
         self.config_tools = get_config_tools()(self.tool_registry)
@@ -613,6 +615,26 @@ class MCPServer:
             self.git_automation_tools.get_workflow_status,
             ToolExecutionType.ASYNC,
             "git",
+        )
+
+        # Register secrets management tools
+        self.tool_registry.register_tool(
+            "get_secret",
+            self.secrets_tools.get_secret,
+            ToolExecutionType.SYNC,
+            "secrets",
+        )
+        self.tool_registry.register_tool(
+            "list_available_secrets",
+            self.secrets_tools.list_available_secrets,
+            ToolExecutionType.SYNC,
+            "secrets",
+        )
+        self.tool_registry.register_tool(
+            "validate_secret",
+            self.secrets_tools.validate_secret,
+            ToolExecutionType.SYNC,
+            "secrets",
         )
 
         logger.info(

@@ -15,7 +15,7 @@ export const GameContainer: Component<GameContainerProps> = props => {
   return (
     <div class="game-container">
       <div class="game-header">
-        <button class="back-button" onClick={props.onBackToMenu}>
+        <button class="back-button" onClick={() => props.onBackToMenu()}>
           ← Back to Menu
         </button>
         <div class="game-title">

@@ -22,17 +22,16 @@ export const DemoControls: Component<DemoControlsProps> = props => {
           min={5}
           max={100}
           value={props.objectCount}
-          onChange={e => props.onObjectCountChange(parseInt(e.currentTarget.value))}
-          title="Adjust the number of objects in the simulation"
+          onChange={value => props.onObjectCountChange(parseInt(value.toString()))}
         />
       </div>
 
       <div class="control-group">
-        <button class={`control-button ${props.isRunning ? "active" : ""}`} onClick={props.onToggleRunning}>
+        <button class={`control-button ${props.isRunning ? "active" : ""}`} onClick={() => props.onToggleRunning()}>
           {props.isRunning ? "⏸️ Pause" : "▶️ Start"}
         </button>
 
-        <button class="control-button" onClick={props.onReset}>
+        <button class="control-button" onClick={() => props.onReset()}>
           🔄 Reset
         </button>
       </div>

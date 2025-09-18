@@ -140,7 +140,7 @@ export const AABBCollisionDemo: Component<AABBCollisionDemoProps> = props => {
 
   // Handle stats updates in a tracked scope
   createEffect(() => {
-    props.onStatsUpdate(() => demo.physicsEngine.stats);
+    props.onStatsUpdate(() => demo.physicsEngine.stats());
   });
 
   // Create mouse handlers
