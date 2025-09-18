@@ -12,11 +12,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.8.6] - 2025-09-18
+
+### Added
+
+- **Git Workflow Automation**: Enhanced Git workflow prompt with comprehensive tracked junk file detection (Meadow-Philosopher-89)
+- **Delta Integration**: Improved diff visualization with Delta configuration for better code review (Meadow-Philosopher-89)
+- **Junk File Detection Script**: Added `scripts/detect-tracked-junk-files.sh` for Git-tracked file analysis (Meadow-Philosopher-89)
+- **ECS World Documentation**: Added comprehensive README for ECS World simulation system (Meadow-Philosopher-89)
+
+### Changed
+
+- **Git Workflow Prompt**: Completely refactored to focus on tracked files only, respecting .gitignore patterns
+- **Package Version Management**: Updated all package.json files across the monorepo
+- **VS Code Workspace**: Enhanced workspace configuration with improved project structure
+- **FeatureServiceBridge**: Improved integration and service management
 - **Package.json Test Script Paths**: Updated all 67 package.json files across packages and examples to use standardized vitest-global-queue.sh path, ensuring consistent queue management across the entire monorepo (Strategic-Spirit-69)
 
 ### Deprecated
 
 ### Removed
+
+- **Project Architecture Examples**: Cleaned up example files from project-architecture package for better maintainability
 
 ### Fixed
 
