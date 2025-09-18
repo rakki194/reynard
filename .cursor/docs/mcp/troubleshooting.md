@@ -1,339 +1,388 @@
-# MCP Server Troubleshooting Guide
+# MCP Troubleshooting Guide
 
 ## Overview
 
-This document covers common issues encountered when setting up and debugging MCP (Model Context Protocol) servers with Cursor IDE, based on real-world debugging experiences.
+This guide covers common issues encountered when developing and deploying MCP (Model Context Protocol) servers,
+particularly when integrating with Cursor IDE. Based on real-world troubleshooting experiences and web research.
 
 ## Common Issues and Solutions
 
-### 1. Tools Not Registering in Cursor (0 Tools Shown)
+### 1. Tools Not Appearing in Cursor
 
-**Symptoms:**
+#### Symptoms
 
-- MCP server starts successfully
-- Server responds to protocol requests correctly
-- Cursor shows "0 tools" or no tools available
-- Server logs show tools are registered and working
+- MCP server shows tools are registered
+- Cursor shows no tools or fewer tools than expected
+- Tools work when tested directly but not in Cursor
 
-**Root Causes:**
+#### Root Causes
 
-#### A. Incorrect Tool Schema Format
+1. **Schema Format Issues**: Using `parameters` instead of `inputSchema`
+2. **Connection Problems**: Cursor not properly connected to MCP server
+3. **Authentication Blocking**: Middleware blocking requests
+4. **Tool Configuration**: Tools disabled in `tool_config.json`
 
-**Problem:** Using `"parameters"` instead of `"inputSchema"` in tool definitions.
+#### Solutions
 
-**Solution:**
+##### Schema Format Fix
 
-```json
-// ❌ Incorrect format
+```python
+# ❌ Wrong - using 'parameters'
 {
-  "name": "my_tool",
-  "description": "My tool",
-  "parameters": {
+    "name": "tool_name",
+    "description": "Tool description",
+    "parameters": {  # Wrong property name
     "type": "object",
-    "properties": { ... }
-  }
+        "properties": {}
+    }
 }
 
-// ✅ Correct format
+# ✅ Correct - using 'inputSchema'
 {
-  "name": "my_tool",
-  "description": "My tool",
-  "inputSchema": {
+    "name": "tool_name",
+    "description": "Tool description",
+    "inputSchema": {  # Correct property name
     "type": "object",
-    "properties": { ... }
+        "properties": {}
   }
 }
 ```
 
-#### B. Agent Mode Requirement
+##### Connection Troubleshooting
 
-**Problem:** MCP tools only work in Cursor's Agent Mode (Composer), not in regular chat.
+1. **Restart Cursor's MCP Connection**:
+   - Command Palette: `Ctrl+Shift+P` (Linux/Windows) or `Cmd+Shift+P` (Mac)
+   - Search: "MCP" or "Restart MCP Server"
+   - Select: "MCP: Restart Server" or "MCP: Reload Configuration"
 
-**Solution:**
+2. **Restart Cursor Completely**:
+   - Close Cursor entirely
+   - Reopen Cursor
+   - MCP server should reconnect automatically
 
-- Use Cursor's Agent Mode/Composer feature
-- MCP tools are not available in standard chat interface
+3. **Check MCP Server Status**:
+   - Look for MCP server status in Cursor's bottom status bar
+   - Check for error messages in Cursor's developer console
 
-#### C. Tool Naming Issues
+##### Authentication Issues
 
-**Problem:** Tools with hyphens in names may be ignored by Cursor.
+```python
+# Check if authentication is blocking requests
+from middleware.auth_middleware import mcp_auth_middleware
 
-**Solution:**
+test_request = {
+    'method': 'tools/list',
+    'params': {},
+    'id': 1
+}
 
-- Use underscores instead of hyphens in tool names
-- Example: `my-cool-tool` → `my_cool_tool`
+token_payload = mcp_auth_middleware.authenticate_request(test_request)
+if token_payload is None:
+    print("❌ Authentication is blocking requests!")
+```
 
-### 2. MCP Server Startup Failures
+##### Tool Configuration Check
 
-**Symptoms:**
+```python
+# Verify tools are enabled in tool_config.json
+import json
+
+with open('tool_config.json', 'r') as f:
+    config = json.load(f)
+
+tools_config = config.get('tools', {})
+enabled_tools = [name for name, tool in tools_config.items()
+                if tool.get('enabled', False)]
+print(f'Enabled tools: {len(enabled_tools)}')
+```
+
+### 2. MCP Server Startup Issues
+
+#### Symptoms
 
 - Server fails to start
-- Import errors or missing dependencies
-- Process exits immediately
+- Import errors during startup
+- Missing dependencies
 
-**Common Causes:**
+#### Solutions
 
-#### A. Missing Imports
-
-**Problem:** Missing import statements in tool modules.
-
-**Example Error:**
-
-```
-NameError: name 'VersionService' is not defined
-```
-
-**Solution:**
-
-```python
-# Add missing imports
-from services.version_service import VersionService
-```
-
-#### B. Path Issues
-
-**Problem:** Python path not set correctly for MCP server.
-
-**Solution:**
+##### Virtual Environment Issues
 
 ```bash
-# Ensure PYTHONPATH includes MCP server directory
-PYTHONPATH='/path/to/mcp/server:$PYTHONPATH' python3 main.py
+# Ensure virtual environment is activated
+source ~/venv/bin/activate
+
+# Install missing dependencies
+pip install -r requirements.txt
+
+# Test server startup
+python3 main.py
 ```
 
-### 3. Protocol Communication Issues
-
-**Symptoms:**
-
-- Server starts but doesn't respond to requests
-- Timeout errors
-- Invalid JSON responses
-
-**Solutions:**
-
-#### A. Proper MCP Protocol Implementation
+##### Import Path Issues
 
 ```python
-# Ensure proper JSON-RPC 2.0 format
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "tools/list",
-  "params": {}
-}
+# Add MCP directory to Python path
+import sys
+sys.path.insert(0, '/path/to/mcp/directory')
+
+# Test imports
+from main import MCPServer
 ```
 
-#### B. Correct Capabilities Declaration
+##### Dependency Issues
+
+```bash
+# Check for missing packages
+python3 -c "import jwt, asyncio, json"
+
+# Install specific missing packages
+pip install PyJWT asyncio
+```
+
+### 3. Tool Registration Problems
+
+#### Symptoms
+
+- Tools not appearing in registry
+- "Tool not found" errors
+- Inconsistent tool counts
+
+#### Solutions
+
+##### Check Tool Registration
 
 ```python
-# Proper capabilities in initialize response
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "result": {
-    "protocolVersion": "2024-11-05",
-    "capabilities": {
-      "tools": {
-        "listChanged": True
-      }
-    },
-    "serverInfo": {
-      "name": "my-mcp-server",
-      "version": "1.0.0"
+# Verify tool registration
+server = MCPServer()
+all_tools = server.tool_registry.list_all_tools()
+print(f'Registered tools: {len(all_tools)}')
+
+# Check specific tools
+secrets_tools = [name for name in all_tools if 'secret' in name.lower()]
+print(f'Secrets tools: {secrets_tools}')
+```
+
+##### Verify Tool Definitions
+
+```python
+# Check tool definitions are loaded
+from tools.definitions import get_tool_definitions
+tool_defs = get_tool_definitions()
+print(f'Tool definitions: {len(tool_defs)}')
+
+# Check specific tool definition
+if 'get_secret' in tool_defs:
+    print("✅ get_secret definition found")
+else:
+    print("❌ get_secret definition missing")
+```
+
+### 4. Authentication and Authorization Issues
+
+#### Symptoms
+
+- "Authentication required" errors
+- "Access denied" messages
+- Tools work for some users but not others
+
+#### Solutions
+
+##### Check Authentication Requirements
+
+```python
+# Verify which tools require authentication
+def _requires_auth(self, tool_name: str) -> bool:
+    management_tools = {
+        "get_tool_configs",
+        "get_tool_status",
+        "enable_tool",
+        "disable_tool",
+        "toggle_tool",
+        "get_tools_by_category",
+        "update_tool_config",
+        "reload_config",
     }
-  }
-}
+    return tool_name in management_tools
 ```
 
-## Debugging Techniques
-
-### 1. Test MCP Server Independently
-
-Create a test script to verify server functionality:
+##### Bypass Authentication for Testing
 
 ```python
-#!/usr/bin/env python3
+# Temporarily disable authentication for testing
+# (Only for development, not production)
+class MCPAuthMiddleware:
+    def authenticate_request(self, request):
+        # Return a dummy token for testing
+        return {"user_id": "test", "permissions": ["*"]}
+```
+
+### 5. Performance and Resource Issues
+
+#### Symptoms
+
+- Slow tool responses
+- High memory usage
+- Server timeouts
+
+#### Solutions
+
+##### Optimize Tool Execution
+
+```python
+# Use async/await for I/O operations
+async def handle_tool_call(self, tool_name: str, arguments: dict):
+    # Use asyncio for concurrent operations
+    results = await asyncio.gather(*[
+        self.process_item(item) for item in items
+    ])
+    return results
+```
+
+##### Implement Caching
+
+```python
+# Cache expensive operations
+from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def expensive_operation(self, param: str):
+    # Expensive computation here
+    return result
+```
+
+##### Monitor Resource Usage
+
+```python
+import psutil
+import os
+
+def monitor_resources():
+    process = psutil.Process(os.getpid())
+    memory_info = process.memory_info()
+    cpu_percent = process.cpu_percent()
+
+    print(f"Memory: {memory_info.rss / 1024 / 1024:.2f} MB")
+    print(f"CPU: {cpu_percent:.2f}%")
+```
+
+## Diagnostic Commands
+
+### Server Health Check
+
+```bash
+# Check if MCP server is running
+ps aux | grep "python3 main.py" | grep -v grep
+
+# Test server connectivity
+curl -X POST http://localhost:3000/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"method": "tools/list", "params": {}, "id": 1}'
+```
+
+### Tool Testing
+
+```python
+# Test individual tools
 import asyncio
-import json
-import subprocess
+from main import MCPServer
 
-async def test_mcp_server():
-    # Start server process
-    process = await asyncio.create_subprocess_exec(
-        "python3", "main.py",
-        stdin=asyncio.subprocess.PIPE,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
-    )
-
-    # Test initialize
-    init_request = {
-        "jsonrpc": "2.0",
-        "id": 1,
-        "method": "initialize",
-        "params": {
-            "protocolVersion": "2024-11-05",
-            "capabilities": {},
-            "clientInfo": {"name": "test", "version": "1.0.0"}
-        }
-    }
-
-    process.stdin.write((json.dumps(init_request) + "\n").encode())
-    await process.stdin.drain()
-
-    # Read response
-    response_line = await asyncio.wait_for(process.stdout.readline(), timeout=10.0)
-    if response_line:
-        response = json.loads(response_line.decode().strip())
-        print("✅ Initialize successful!")
-        print("Capabilities:", response.get("result", {}).get("capabilities", {}))
+async def test_tool():
+    server = MCPServer()
 
     # Test tools/list
-    tools_request = {
-        "jsonrpc": "2.0",
-        "id": 2,
-        "method": "tools/list"
+    request = {
+        'method': 'tools/list',
+        'params': {},
+        'id': 1
     }
+    response = await server.handle_request(request)
+    print(f"Tools: {len(response['result']['tools'])}")
 
-    process.stdin.write((json.dumps(tools_request) + "\n").encode())
-    await process.stdin.drain()
+    # Test specific tool
+    request = {
+        'method': 'tools/call',
+        'params': {
+            'name': 'get_current_time',
+            'arguments': {}
+        },
+        'id': 2
+    }
+    response = await server.handle_request(request)
+    print(f"Response: {response}")
 
-    response_line = await asyncio.wait_for(process.stdout.readline(), timeout=10.0)
-    if response_line:
-        response = json.loads(response_line.decode().strip())
-        tools = response.get("result", {}).get("tools", [])
-        print(f"✅ Found {len(tools)} tools")
-
-    process.terminate()
-    await process.wait()
-
-if __name__ == "__main__":
-    asyncio.run(test_mcp_server())
+asyncio.run(test_tool())
 ```
 
-### 2. Check Tool Definitions
-
-Verify tool definitions are properly formatted:
+### Configuration Validation
 
 ```python
-from main import MCPServer
+# Validate tool configuration
 import json
 
-server = MCPServer()
-tools_list = server.mcp_handler.handle_tools_list(1)
-tools = tools_list.get('result', {}).get('tools', [])
+def validate_tool_config():
+    with open('tool_config.json', 'r') as f:
+        config = json.load(f)
 
-# Check for problematic tool names
-hyphen_tools = [tool for tool in tools if '-' in tool.get('name', '')]
-if hyphen_tools:
-    print("⚠️ Tools with hyphens found:")
-    for tool in hyphen_tools:
-        print(f"  - {tool['name']}")
+    # Check structure
+    assert 'tools' in config, "Missing 'tools' key"
+    assert 'version' in config, "Missing 'version' key"
 
-# Verify schema format
-for tool in tools:
-    if 'parameters' in tool:
-        print(f"❌ Tool {tool['name']} uses 'parameters' instead of 'inputSchema'")
-    elif 'inputSchema' in tool:
-        print(f"✅ Tool {tool['name']} uses correct 'inputSchema' format")
+    # Check each tool
+    for tool_name, tool_config in config['tools'].items():
+        assert 'enabled' in tool_config, f"Missing 'enabled' for {tool_name}"
+        assert 'category' in tool_config, f"Missing 'category' for {tool_name}"
+
+    print("✅ Tool configuration is valid")
+
+validate_tool_config()
 ```
 
-### 3. Monitor Cursor Logs
+## Prevention Strategies
 
-Check Cursor's MCP logs for errors:
+### 1. Schema Validation
 
-1. Open Cursor
-2. Go to `View` → `Output`
-3. Select "MCP Logs" from the dropdown
-4. Look for connection errors or authentication issues
+- Always use `inputSchema` instead of `parameters`
+- Validate schemas before deployment
+- Test tool definitions with MCP clients
 
-## Best Practices
+### 2. Configuration Management
 
-### 1. Tool Definition Standards
+- Keep `tool_config.json` in version control
+- Document tool categories and dependencies
+- Use consistent naming conventions
 
-```json
-{
-  "name": "tool_name_with_underscores",
-  "description": "Clear description of what the tool does",
-  "inputSchema": {
-    "type": "object",
-    "properties": {
-      "param_name": {
-        "type": "string",
-        "description": "Parameter description",
-        "default": "default_value"
-      }
-    },
-    "required": ["param_name"]
-  }
-}
-```
+### 3. Error Handling
 
-### 2. Error Handling
+- Implement comprehensive error handling
+- Log errors with context
+- Provide helpful error messages
 
-```python
-async def handle_tool_call(self, tool_name: str, arguments: dict, request_id: Any):
-    try:
-        # Tool execution logic
-        result = await self.execute_tool(tool_name, arguments)
-        return {
-            "jsonrpc": "2.0",
-            "id": request_id,
-            "result": {"content": [{"type": "text", "text": result}]}
-        }
-    except Exception as e:
-        return {
-            "jsonrpc": "2.0",
-            "id": request_id,
-            "error": {
-                "code": -32603,
-                "message": f"Tool execution failed: {str(e)}"
-            }
-        }
-```
+### 4. Testing
 
-### 3. Configuration Management
+- Test tools individually
+- Test MCP protocol compliance
+- Test with different clients (Cursor, CLI tools)
 
-```json
-{
-  "mcpServers": {
-    "my-server": {
-      "command": "bash",
-      "args": ["-c", "source ~/venv/bin/activate && cd /path/to/server && python3 main.py"],
-      "env": {
-        "PYTHONPATH": "/path/to/server"
-      }
-    }
-  }
-}
-```
+## Emergency Recovery
 
-## Common Error Messages
+### Quick Fixes
 
-### "0 tools registered"
+1. **Restart MCP Server**: `pkill -f "python3 main.py" && python3 main.py`
+2. **Reset Configuration**: Restore `tool_config.json` from backup
+3. **Clear Cache**: Remove any cached tool definitions
+4. **Reinstall Dependencies**: `pip install -r requirements.txt --force-reinstall`
 
-- Check tool schema format (`inputSchema` vs `parameters`)
-- Verify Agent Mode is enabled in Cursor
-- Check for tool naming issues (hyphens)
+### Full Recovery
 
-### "Server not responding"
-
-- Verify server is running
-- Check Python path configuration
-- Test server independently
-
-### "Invalid JSON"
-
-- Ensure proper JSON-RPC 2.0 format
-- Check for encoding issues
-- Validate request/response structure
+1. **Backup Current State**: Save logs and configuration
+2. **Restore from Git**: `git checkout HEAD -- tool_config.json`
+3. **Recreate Virtual Environment**: `rm -rf venv && python -m venv venv`
+4. **Reinstall Everything**: `pip install -r requirements.txt`
 
 ## Resources
 
-- [MCP Specification](https://spec.modelcontextprotocol.io/)
-- [Cursor MCP Documentation](https://docs.cursor.com/advanced/model-context-protocol)
-- [MCP Server Examples](https://github.com/modelcontextprotocol/servers)
-
-## Conclusion
-
-MCP server debugging requires attention to protocol compliance, proper schema formatting, and understanding Cursor's specific requirements. The most common issue is using incorrect tool definition schemas, followed by not using Agent Mode in Cursor.
+- [MCP Specification](https://modelcontextprotocol.io/docs)
+- [Cursor MCP Integration](https://cursor.sh/docs/mcp)
+- [JSON Schema Validation](https://json-schema.org/learn/)
+- [Python asyncio Documentation](https://docs.python.org/3/library/asyncio.html)

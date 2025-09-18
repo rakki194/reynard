@@ -61,11 +61,12 @@
   "dependencies": {
     "@solidjs/testing-library": "0.8.10",
     "@testing-library/user-event": "14.6.1",
-    "commander": "14.0.0",
+    "commander": "14.0.1",
+    "reynard-i18n": "workspace:*",
     "solid-js": "1.9.9"
   },
   "devDependencies": {
-    "@types/eslint": "^9.6.1",
+    "@types/eslint": "9.6.1",
     "@types/node": "24.4.0",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",

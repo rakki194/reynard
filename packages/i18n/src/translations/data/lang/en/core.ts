@@ -200,4 +200,30 @@ export const coreTranslations = {
     "authentication-and-input-validation-integration": "Authentication and Input Validation Integration",
     "performance-and-security-integration": "Performance and Security Integration",
   },
+
+  // Language detection
+  languageDetection: {
+    plainText: "Plain Text",
+    shell: "Shell",
+  },
+
+  // File types
+  fileTypes: {
+    packageJson: "Package.json",
+    dockerfile: "Dockerfile",
+    requirementsTxt: "Requirements.txt",
+    yarnLock: "Yarn.lock",
+    packageLockJson: "Package-lock.json",
+  },
+
+  // Language categories
+  categories: {
+    config: "Config",
+    code: "Code",
+    data: "Data",
+    documentation: "Documentation",
+    markup: "Markup",
+    style: "Style",
+    script: "Script",
+  },
 };

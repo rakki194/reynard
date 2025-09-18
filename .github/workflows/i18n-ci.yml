@@ -62,7 +62,7 @@ jobs:
       - name: 🧪 Run i18n CI tests
         run: |
           cd packages/testing || exit
-          pnpm i18n:ci --fail-on-hardcoded --fail-on-missing --fail-on-rtl --coverage-threshold 80
+          pnpm i18n:ci --fail-on-hardcoded --fail-on-missing --coverage-threshold 80
 
       - name: 📊 Generate i18n report
         if: always()

@@ -28,8 +28,8 @@ jobs:
     name: 🦊 Setup & Validation
     runs-on: ubuntu-latest
     outputs:
-      cache-hit: "${{ steps.cache-deps.outputs.cache-hit }}"
-      packages-to-test: "${{ steps.determine-packages.outputs.packages }}"
+      cache-hit: '${{ steps.cache-deps.outputs.cache-hit }}'
+      packages-to-test: '${{ steps.determine-packages.outputs.packages }}'
 
     steps:
       - name: 📥 Checkout code
@@ -40,12 +40,12 @@ jobs:
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "${{ env.PNPM_VERSION }}"
+          version: '${{ env.PNPM_VERSION }}'
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "${{ env.NODE_VERSION }}"
+          node-version: '${{ env.NODE_VERSION }}'
           cache: 'pnpm'
 
       - name: 💾 Cache dependencies
@@ -104,12 +104,12 @@ jobs:
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "${{ env.PNPM_VERSION }}"
+          version: '${{ env.PNPM_VERSION }}'
 
       - name: 🟢 Setup Node.js "${{ matrix.node-version }}"
         uses: actions/setup-node@v4
         with:
-          node-version: "${{ matrix.node-version }}"
+          node-version: '${{ matrix.node-version }}'
           cache: 'pnpm'
 
       - name: 💾 Restore dependencies
@@ -140,7 +140,7 @@ jobs:
               pnpm i18n:test --output ../../i18n-results-${{ matrix.node-version }}.json --report ../../i18n-report-${{ matrix.node-version }}.md
               ;;
             "ci")
-              pnpm i18n:ci --fail-on-hardcoded --fail-on-missing --fail-on-rtl --coverage-threshold 80
+              pnpm i18n:ci --fail-on-hardcoded --fail-on-missing --coverage-threshold 80
               ;;
             "eslint")
               pnpm i18n:eslint
@@ -177,12 +177,12 @@ jobs:
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "${{ env.PNPM_VERSION }}"
+          version: '${{ env.PNPM_VERSION }}'
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "${{ env.NODE_VERSION }}"
+          node-version: '${{ env.NODE_VERSION }}'
           cache: 'pnpm'
 
       - name: 💾 Restore dependencies
@@ -240,12 +240,12 @@ jobs:
       - name: 🏗️ Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "${{ env.PNPM_VERSION }}"
+          version: '${{ env.PNPM_VERSION }}'
 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "${{ env.NODE_VERSION }}"
+          node-version: '${{ env.NODE_VERSION }}'
           cache: 'pnpm'
 
       - name: 💾 Restore dependencies

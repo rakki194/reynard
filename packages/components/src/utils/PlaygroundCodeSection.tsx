@@ -5,6 +5,7 @@
 
 import { Component, createMemo } from "solid-js";
 import { useNotifications } from "reynard-core";
+import { useI18n } from "reynard-i18n";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { getCodeExample } from "./playgroundCodeExamples";
 
@@ -15,15 +16,17 @@ export interface PlaygroundCodeSectionProps {
 }
 
 export const PlaygroundCodeSection: Component<PlaygroundCodeSectionProps> = props => {
+  const { t } = useI18n();
+
   // Use createMemo to defer context access and handle errors gracefully
   const notifications = createMemo(() => {
     try {
       return useNotifications();
     } catch (error) {
-      console.error("PlaygroundCodeSection: Notifications context not available", error);
+      console.error(t("components.console.notificationsContextNotAvailable"), error);
       return {
         notify: (message: string, type?: string) => {
-          console.warn("Notifications context not available:", message, type);
+          console.warn(t("components.console.notificationsContextNotAvailableWarning"), message, type);
         },
       };
     }
@@ -33,7 +36,7 @@ export const PlaygroundCodeSection: Component<PlaygroundCodeSectionProps> = prop
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(getCodeExample(props.activeTab));
-    notify()("Code copied to clipboard!", "success");
+    notify()(t("components.playground.codeCopied"), "success");
   };
 
   return (
@@ -47,7 +50,7 @@ export const PlaygroundCodeSection: Component<PlaygroundCodeSectionProps> = prop
               innerHTML={fluentIconsPackage.getIcon(props.showCode ? "eye-off" : "eye")?.outerHTML}
             />
           )}
-          {props.showCode ? "Hide" : "Show"} Code
+          {props.showCode ? t("components.playground.hideCode") : t("components.playground.showCode")} Code
         </button>
       </div>
 

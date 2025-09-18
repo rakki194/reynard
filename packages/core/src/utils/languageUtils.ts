@@ -29,6 +29,7 @@ export {
 
 // Import for internal use
 import { detectLanguageFromExtension, detectLanguageFromContent } from "./language-detection.js";
+import { useI18n } from "reynard-i18n";
 
 // Legacy exports for backward compatibility
 export { getLanguageInfo as detectLanguage } from "./language-detection.js";
@@ -40,9 +41,9 @@ export function getMonacoLanguage(filename: string): string {
   return result.language?.monacoLanguage || "plaintext";
 }
 
-export function getLanguageDisplayName(filename: string): string {
+export function getLanguageDisplayName(filename: string, t?: (key: string) => string): string {
   const result = detectLanguageFromExtension(filename);
-  return result.language?.displayName || "Plain Text";
+  return result.language?.displayName || (t ? t("core.languageDetection.plainText") : "Plain Text");
 }
 
 export function isCodeFile(filename: string): boolean {

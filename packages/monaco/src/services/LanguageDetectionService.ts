@@ -73,7 +73,7 @@ export class LanguageDetectionService {
         success: false,
         naturalLanguage: "unknown",
         confidence: 0,
-        error: error instanceof Error ? error.message : (t ? t("monaco.errors.detectionFailed") : "Detection failed"),
+        error: error instanceof Error ? error.message : t ? t("monaco.errors.detectionFailed") : "Detection failed",
       };
     }
   }

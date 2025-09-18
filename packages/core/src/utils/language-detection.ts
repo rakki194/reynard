@@ -4,6 +4,7 @@
 
 import { LanguageInfo, LanguageDetectionResult } from "./language-types.js";
 import { WEB_LANGUAGES, PROGRAMMING_LANGUAGES } from "./language-mappings.js";
+import { useI18n } from "reynard-i18n";
 
 /**
  * Combined language mappings
@@ -20,31 +21,31 @@ const LANGUAGE_MAP: Record<string, LanguageInfo> = {
 const SPECIAL_FILENAME_MAP: Record<string, LanguageInfo> = {
   "package.json": {
     monacoLanguage: "json",
-    displayName: "Package.json",
+    displayName: "Package.json", // Will be replaced with translation
     isCode: true,
     category: "config",
   },
   Dockerfile: {
     monacoLanguage: "dockerfile",
-    displayName: "Dockerfile",
+    displayName: "Dockerfile", // Will be replaced with translation
     isCode: true,
     category: "config",
   },
   "requirements.txt": {
     monacoLanguage: "plaintext",
-    displayName: "Requirements.txt",
+    displayName: "Requirements.txt", // Will be replaced with translation
     isCode: false,
     category: "config",
   },
   "yarn.lock": {
     monacoLanguage: "plaintext",
-    displayName: "Yarn.lock",
+    displayName: "Yarn.lock", // Will be replaced with translation
     isCode: false,
     category: "config",
   },
   "package-lock.json": {
     monacoLanguage: "json",
-    displayName: "Package-lock.json",
+    displayName: "Package-lock.json", // Will be replaced with translation
     isCode: true,
     category: "config",
   },
@@ -85,7 +86,7 @@ export function detectLanguageFromExtension(filename: string): LanguageDetection
 /**
  * Detect language from file content (basic heuristics)
  */
-export function detectLanguageFromContent(content: string): LanguageDetectionResult {
+export function detectLanguageFromContent(content: string, t?: (key: string) => string): LanguageDetectionResult {
   if (!content || typeof content !== "string") {
     return { language: null, confidence: 0, method: "fallback" };
   }
@@ -117,7 +118,7 @@ export function detectLanguageFromContent(content: string): LanguageDetectionRes
       return {
         language: {
           monacoLanguage: "shell",
-          displayName: "Shell",
+          displayName: t ? t("core.languageDetection.shell") : "Shell",
           isCode: true,
           category: "shell",
         },

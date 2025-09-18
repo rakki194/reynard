@@ -1,382 +1,277 @@
-# MCP Tool Schema Format Guide
+# MCP Schema Format Reference
 
 ## Overview
 
-This document explains the correct format for MCP tool definitions, focusing on the critical difference between `parameters` and `inputSchema` that can cause tools to not register in Cursor.
+The Model Context Protocol (MCP) uses a specific schema format for defining tools. Understanding this format is crucial
+for developing MCP tools that work correctly with clients like Cursor.
 
-## Schema Format Requirements
+## Core Schema Structure
 
-### Correct Format: `inputSchema`
-
-The MCP specification requires tool definitions to use `inputSchema` for parameter definitions:
+### Tool Definition Format
 
 ```json
 {
-  "name": "my_tool",
-  "description": "Description of what the tool does",
+  "name": "tool_name",
+  "description": "Tool description",
   "inputSchema": {
     "type": "object",
     "properties": {
-      "param_name": {
+      "parameter_name": {
         "type": "string",
         "description": "Parameter description",
-        "default": "default_value"
+        "enum": ["value1", "value2"]
       }
     },
-    "required": ["param_name"]
+    "required": ["parameter_name"]
   }
 }
 ```
 
-### Incorrect Format: `parameters`
+### Key Schema Properties
 
-Using `parameters` instead of `inputSchema` will cause tools to not register in Cursor:
+#### Required Properties
 
-```json
-{
-  "name": "my_tool",
-  "description": "Description of what the tool does",
-  "parameters": {
-    // ❌ This is incorrect
-    "type": "object",
-    "properties": {
-      "param_name": {
-        "type": "string",
-        "description": "Parameter description"
-      }
-    }
-  }
-}
-```
+- **`name`**: Unique identifier for the tool
+- **`description`**: Human-readable description of what the tool does
+- **`inputSchema`**: JSON Schema defining the tool's parameters
 
-## Complete Tool Definition Example
+#### Input Schema Structure
 
-```json
-{
-  "name": "agent_startup_sequence",
-  "description": "Complete agent initialization with random spirit selection",
-  "inputSchema": {
-    "type": "object",
-    "properties": {
-      "agent_id": {
-        "type": "string",
-        "description": "Unique identifier for the agent",
-        "default": "current-session"
-      },
-      "preferred_style": {
-        "type": "string",
-        "description": "Preferred naming style",
-        "enum": ["foundation", "exo", "hybrid", "cyberpunk", "mythological", "scientific"],
-        "default": "foundation"
-      }
-    }
-  }
-}
-```
+- **`type`**: Must be `"object"` for tool parameters
+- **`properties`**: Object defining each parameter
+- **`required`**: Array of required parameter names
 
-## Parameter Types and Constraints
+#### Parameter Properties
 
-### String Parameters
+- **`type`**: Data type (`string`, `boolean`, `number`, `array`, `object`)
+- **`description`**: Parameter description
+- **`enum`**: Array of allowed values (optional)
+- **`default`**: Default value (optional)
+
+## Common Schema Patterns
+
+### Simple Tool (No Parameters)
 
 ```json
 {
-  "param_name": {
-    "type": "string",
-    "description": "A string parameter",
-    "default": "default_value",
-    "enum": ["option1", "option2", "option3"]
-  }
-}
-```
-
-### Integer Parameters
-
-```json
-{
-  "param_name": {
-    "type": "integer",
-    "description": "An integer parameter",
-    "default": 42,
-    "minimum": 0,
-    "maximum": 100
-  }
-}
-```
-
-### Boolean Parameters
-
-```json
-{
-  "param_name": {
-    "type": "boolean",
-    "description": "A boolean parameter",
-    "default": true
-  }
-}
-```
-
-### Array Parameters
-
-```json
-{
-  "param_name": {
-    "type": "array",
-    "description": "An array parameter",
-    "items": {
-      "type": "string"
-    },
-    "default": []
-  }
-}
-```
-
-### Object Parameters
-
-```json
-{
-  "param_name": {
-    "type": "object",
-    "description": "An object parameter",
-    "properties": {
-      "nested_prop": {
-        "type": "string",
-        "description": "Nested property"
-      }
-    }
-  }
-}
-```
-
-## Required vs Optional Parameters
-
-### Required Parameters
-
-```json
-{
-  "inputSchema": {
-    "type": "object",
-    "properties": {
-      "required_param": {
-        "type": "string",
-        "description": "This parameter is required"
-      },
-      "optional_param": {
-        "type": "string",
-        "description": "This parameter is optional"
-      }
-    },
-    "required": ["required_param"]
-  }
-}
-```
-
-### All Optional Parameters
-
-```json
-{
-  "inputSchema": {
-    "type": "object",
-    "properties": {
-      "param1": {
-        "type": "string",
-        "description": "Optional parameter 1"
-      },
-      "param2": {
-        "type": "string",
-        "description": "Optional parameter 2"
-      }
-    }
-  }
-}
-```
-
-## Tool Naming Conventions
-
-### Recommended Naming
-
-- Use underscores instead of hyphens: `my_tool_name`
-- Use descriptive names: `generate_agent_name`
-- Use consistent patterns: `get_*`, `set_*`, `list_*`, `create_*`
-
-### Examples
-
-```json
-// ✅ Good naming
-{
-  "name": "generate_agent_name",
   "name": "get_current_time",
-  "name": "list_agent_names",
-  "name": "create_ecs_agent"
-}
-
-// ❌ Avoid hyphens
-{
-  "name": "generate-agent-name",  // May cause issues
-  "name": "get-current-time",     // May cause issues
-}
-```
-
-## Validation and Testing
-
-### Schema Validation
-
-Use JSON Schema validation to ensure your tool definitions are correct:
-
-```python
-import jsonschema
-
-def validate_tool_definition(tool_def):
-    schema = {
-        "type": "object",
-        "required": ["name", "description", "inputSchema"],
-        "properties": {
-            "name": {"type": "string"},
-            "description": {"type": "string"},
-            "inputSchema": {
-                "type": "object",
-                "required": ["type"],
-                "properties": {
-                    "type": {"type": "string", "enum": ["object"]},
-                    "properties": {"type": "object"},
-                    "required": {"type": "array", "items": {"type": "string"}}
-                }
-            }
-        }
-    }
-
-    try:
-        jsonschema.validate(tool_def, schema)
-        return True
-    except jsonschema.ValidationError as e:
-        print(f"Validation error: {e}")
-        return False
-```
-
-### Testing Tool Definitions
-
-```python
-def test_tool_definitions():
-    from main import MCPServer
-
-    server = MCPServer()
-    tools_list = server.mcp_handler.handle_tools_list(1)
-    tools = tools_list.get('result', {}).get('tools', [])
-
-    for tool in tools:
-        # Check for correct schema format
-        if 'parameters' in tool:
-            print(f"❌ Tool {tool['name']} uses 'parameters' instead of 'inputSchema'")
-        elif 'inputSchema' not in tool:
-            print(f"❌ Tool {tool['name']} missing 'inputSchema'")
-        else:
-            print(f"✅ Tool {tool['name']} has correct schema format")
-
-        # Check for problematic naming
-        if '-' in tool.get('name', ''):
-            print(f"⚠️ Tool {tool['name']} contains hyphens")
-```
-
-## Common Mistakes
-
-### 1. Using `parameters` instead of `inputSchema`
-
-```json
-// ❌ Wrong
-"parameters": { ... }
-
-// ✅ Correct
-"inputSchema": { ... }
-```
-
-### 2. Missing required fields
-
-```json
-// ❌ Missing description
-{
-  "name": "my_tool",
-  "inputSchema": { ... }
-}
-
-// ✅ Complete
-{
-  "name": "my_tool",
-  "description": "What this tool does",
-  "inputSchema": { ... }
-}
-```
-
-### 3. Incorrect parameter types
-
-```json
-// ❌ Wrong type
-{
-  "param": {
-    "type": "string",
-    "default": 123  // String type with integer default
-  }
-}
-
-// ✅ Correct
-{
-  "param": {
-    "type": "string",
-    "default": "123"  // String type with string default
-  }
-}
-```
-
-## Migration Guide
-
-If you have existing tool definitions using `parameters`, here's how to migrate them:
-
-### Before (Incorrect)
-
-```json
-{
-  "name": "my_tool",
-  "description": "My tool",
-  "parameters": {
+  "description": "Get current date and time",
+  "inputSchema": {
     "type": "object",
-    "properties": {
-      "input": {
-        "type": "string",
-        "description": "Input parameter"
-      }
-    }
+    "properties": {}
   }
 }
 ```
 
-### After (Correct)
+### Tool with Required String Parameter
 
 ```json
 {
-  "name": "my_tool",
-  "description": "My tool",
+  "name": "get_secret",
+  "description": "Retrieve a user secret by name",
   "inputSchema": {
     "type": "object",
     "properties": {
-      "input": {
+      "secret_name": {
         "type": "string",
-        "description": "Input parameter"
+        "description": "Name of the secret to retrieve",
+        "enum": ["GH_TOKEN"]
       }
+    },
+    "required": ["secret_name"]
+  }
+}
+```
+
+### Tool with Optional Parameters
+
+```json
+{
+  "name": "list_available_secrets",
+  "description": "List all available secrets",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "include_descriptions": {
+        "type": "boolean",
+        "description": "Whether to include descriptions",
+        "default": true
+      }
+    },
+    "required": []
+  }
+}
+```
+
+### Tool with Multiple Parameters
+
+```json
+{
+  "name": "search_files",
+  "description": "Search for files by name pattern",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "pattern": {
+        "type": "string",
+        "description": "File name pattern to search for"
+      },
+      "directory": {
+        "type": "string",
+        "description": "Directory to search in",
+        "default": null
+      },
+      "recursive": {
+        "type": "boolean",
+        "description": "Whether to search recursively",
+        "default": true
+      }
+    },
+    "required": ["pattern"]
+  }
+}
+```
+
+## Schema Validation Rules
+
+### Required Fields
+
+1. **`name`**: Must be a valid identifier (alphanumeric + underscores)
+2. **`description`**: Must be a non-empty string
+3. **`inputSchema`**: Must be a valid JSON Schema object
+
+### Input Schema Requirements
+
+1. **`type`**: Must be exactly `"object"`
+2. **`properties`**: Must be an object (can be empty)
+3. **`required`**: Must be an array of strings (can be empty)
+
+### Parameter Validation
+
+1. **`type`**: Must be a valid JSON Schema type
+2. **`description`**: Should be descriptive and helpful
+3. **`enum`**: If provided, must be a non-empty array
+4. **`default`**: Must match the parameter type
+
+## Common Schema Mistakes
+
+### ❌ Wrong: Using `parameters` instead of `inputSchema`
+
+```json
+{
+  "name": "tool_name",
+  "description": "Tool description",
+  "parameters": {
+    // ❌ Wrong property name
+    "type": "object",
+    "properties": {}
+  }
+}
+```
+
+### ✅ Correct: Using `inputSchema`
+
+```json
+{
+  "name": "tool_name",
+  "description": "Tool description",
+  "inputSchema": {
+    // ✅ Correct property name
+    "type": "object",
+    "properties": {}
+  }
+}
+```
+
+### ❌ Wrong: Missing `type: "object"`
+
+```json
+{
+  "inputSchema": {
+    "properties": {
+      // ❌ Missing type
+      "param": { "type": "string" }
     }
   }
 }
 ```
 
-### Automated Migration Script
+### ✅ Correct: Including `type: "object"`
 
-```python
-def migrate_tool_definitions(tools_dict):
-    """Migrate tool definitions from 'parameters' to 'inputSchema'"""
-    for tool_name, tool_def in tools_dict.items():
-        if 'parameters' in tool_def:
-            tool_def['inputSchema'] = tool_def.pop('parameters')
-            print(f"Migrated tool: {tool_name}")
-    return tools_dict
+```json
+{
+  "inputSchema": {
+    "type": "object", // ✅ Required
+    "properties": {
+      "param": { "type": "string" }
+    }
+  }
+}
 ```
 
-## Conclusion
+## Schema Testing
 
-The correct use of `inputSchema` in MCP tool definitions is critical for proper tool registration in Cursor. Always use `inputSchema` instead of `parameters`, follow naming conventions, and validate your schemas before deployment.
+### Validation Checklist
+
+- [ ] Tool has `name`, `description`, and `inputSchema`
+- [ ] `inputSchema.type` is `"object"`
+- [ ] All parameters have valid types
+- [ ] Required parameters are listed in `required` array
+- [ ] Default values match parameter types
+- [ ] Enum values are valid for the parameter type
+
+### Testing Tools
+
+```python
+import json
+from jsonschema import validate, Draft7Validator
+
+def validate_tool_schema(tool_def):
+    """Validate a tool definition against MCP schema requirements."""
+    required_fields = ["name", "description", "inputSchema"]
+
+    # Check required fields
+    for field in required_fields:
+        if field not in tool_def:
+            return False, f"Missing required field: {field}"
+
+    # Check inputSchema structure
+    input_schema = tool_def["inputSchema"]
+    if input_schema.get("type") != "object":
+        return False, "inputSchema.type must be 'object'"
+
+    # Validate JSON Schema
+    try:
+        Draft7Validator.check_schema(input_schema)
+        return True, "Valid schema"
+    except Exception as e:
+        return False, f"Invalid JSON Schema: {e}"
+```
+
+## Best Practices
+
+### Naming Conventions
+
+- Use snake_case for tool names
+- Use descriptive, action-oriented names
+- Prefix related tools (e.g., `get_`, `list_`, `validate_`)
+
+### Parameter Design
+
+- Keep parameter names clear and consistent
+- Provide helpful descriptions
+- Use enums for limited value sets
+- Set sensible defaults for optional parameters
+
+### Documentation
+
+- Write clear, concise descriptions
+- Explain what the tool does, not how it works
+- Include usage examples in descriptions
+- Document any special requirements or limitations
+
+## References
+
+- [MCP Specification](https://modelcontextprotocol.io/docs)
+- [JSON Schema Draft 7](https://json-schema.org/draft/2019-09/schema)
+- [Cursor MCP Integration](https://cursor.sh/docs/mcp)

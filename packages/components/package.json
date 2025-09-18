@@ -51,6 +51,7 @@
     "reynard-colors": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
+    "reynard-i18n": "workspace:*",
     "reynard-themes": "workspace:*"
   },
   "devDependencies": {

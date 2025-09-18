@@ -470,7 +470,9 @@ export class EnhancedMemoryPool {
         type: "pool_size",
         description: "Low pool hit rate detected. Consider increasing pool sizes.",
         impact: "high",
-        implementation: t ? t("algorithms.performanceOptimization.lowPoolHitRate.implementation") : "Increase spatialHashPoolSize and collisionArrayPoolSize in config",
+        implementation: t
+          ? t("algorithms.performanceOptimization.lowPoolHitRate.implementation")
+          : "Increase spatialHashPoolSize and collisionArrayPoolSize in config",
       });
     }
 
@@ -480,7 +482,9 @@ export class EnhancedMemoryPool {
         type: "cleanup_interval",
         description: "High pool usage detected. Consider reducing cleanup interval.",
         impact: "medium",
-        implementation: t ? t("algorithms.performanceOptimization.highPoolUsage.implementation") : "Reduce cleanupInterval in config",
+        implementation: t
+          ? t("algorithms.performanceOptimization.highPoolUsage.implementation")
+          : "Reduce cleanupInterval in config",
       });
     }
 
@@ -490,7 +494,9 @@ export class EnhancedMemoryPool {
         type: "object_lifecycle",
         description: "Allocation reduction below optimal. Check object lifecycle management.",
         impact: "high",
-        implementation: t ? t("algorithms.performanceOptimization.allocationReductionBelowOptimal.implementation") : "Ensure proper returnToPool() calls and object reuse patterns",
+        implementation: t
+          ? t("algorithms.performanceOptimization.allocationReductionBelowOptimal.implementation")
+          : "Ensure proper returnToPool() calls and object reuse patterns",
       });
     }
 

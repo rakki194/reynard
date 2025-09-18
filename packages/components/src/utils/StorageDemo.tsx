@@ -5,17 +5,20 @@
 
 import { Component, createMemo } from "solid-js";
 import { useTheme } from "reynard-themes";
+import { useI18n } from "reynard-i18n";
 
 export const StorageDemo: Component = () => {
+  const { t } = useI18n();
+
   const themeContext = createMemo(() => {
     try {
       return useTheme();
     } catch (error) {
-      console.error("StorageDemo: Theme context not available", error);
+      console.error(t("components.storage.themeContextNotAvailable"), error);
       return {
         theme: "light",
         setTheme: (theme: string) => {
-          console.warn("Theme context not available, cannot set theme:", theme);
+          console.warn(t("components.console.themeContextNotAvailableWarning"), theme);
         },
         getTagStyle: () => ({}),
         isDark: false,

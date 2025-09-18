@@ -43,4 +43,24 @@ export const componentTranslations = {
     opacityControl: "Opacity control",
     animationSpeedControl: "Animation speed control",
   },
+
+  // Code playground
+  playground: {
+    showCode: "Show",
+    hideCode: "Hide",
+    codeCopied: "Code copied to clipboard!",
+  },
+
+  // Console messages
+  console: {
+    themeContextNotAvailable: "Theme context not available",
+    notificationsContextNotAvailable: "Notifications context not available",
+    themeContextNotAvailableWarning: "Theme context not available, cannot set theme:",
+    notificationsContextNotAvailableWarning: "Notifications context not available:",
+  },
+
+  // Storage demo
+  storage: {
+    themeContextNotAvailable: "StorageDemo: Theme context not available",
+  },
 };
