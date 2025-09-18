@@ -29,12 +29,18 @@ export interface ComponentTranslations {
     lightness: string;
     chroma: string;
     hue: string;
+    alpha: string;
+    opacity: string;
     lightnessLabel: string;
     chromaLabel: string;
     hueLabel: string;
+    alphaLabel: string;
+    opacityLabel: string;
     interactiveLaboratory: string;
     hueControl: string;
     lightnessControl: string;
     chromaControl: string;
+    alphaControl: string;
+    opacityControl: string;
   };
 }
