@@ -417,6 +417,7 @@ jobs:
         backend-linting,
         markdown-linting,
         security-scanning,
+        shell-linting,
         workflow-shell-validation,
         workflow-validation,
         results-aggregation,
