@@ -3,7 +3,7 @@
  * Translations for the Reynard Algorithms system
  */
 
-export const algorithms = {
+export const algorithmsTranslations = {
   // Algorithm selection recommendations
   algorithmSelection: {
     smallObjectCount: {
@@ -72,4 +72,4 @@ export const algorithms = {
   },
 } as const;
 
-export default algorithms;
+export default algorithmsTranslations;

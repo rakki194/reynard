@@ -7,7 +7,7 @@ import type { IntlConfig } from "../../intl/IntlConfig";
 export class IntlNumberFormatter {
   constructor(private config: IntlConfig) {}
 
-  format(value: number, preset?: string, options?: Intl.NumberFormatOptions): string {
+  format(value: number, options?: Intl.NumberFormatOptions): string {
     const formatter = new Intl.NumberFormat(this.config.locale, options);
     return formatter.format(value);
   }

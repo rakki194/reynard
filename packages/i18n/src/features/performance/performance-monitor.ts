@@ -22,8 +22,10 @@ export function createPerformanceMonitor(): I18nPerformanceMonitor {
     recordCacheMiss: () => {
       cacheMisses++;
     },
-    recordLoadTime: (time: number) => {
-      loadTimes.push(time);
+    recordLoadTime: (_namespace?: string, duration?: number) => {
+      if (duration !== undefined) {
+        loadTimes.push(duration);
+      }
     },
     getMetrics: () => ({
       translationCalls,

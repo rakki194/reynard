@@ -72,6 +72,8 @@ export interface IntlFormatter {
   /** Date formatting utilities */
   date: IntlDateFormatter;
   /** Relative time formatting utilities */
+  relative: IntlRelativeTimeFormatter;
+  /** Relative time formatting utilities */
   relativeTime: IntlRelativeTimeFormatter;
   /** Plural rules utilities */
   pluralRules: IntlPluralRules;

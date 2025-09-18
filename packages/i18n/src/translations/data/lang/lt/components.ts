@@ -1,26 +1,46 @@
 /**
- * Component English translations for Reynard framework
+ * Component Lithuanian translations for Reynard framework
  */
 
 export const componentTranslations = {
   modal: {
-    title: "Modal",
-    close: "Close",
-    confirm: "Confirm",
-    cancel: "Cancel",
+    title: "Modalinis",
+    close: "Uždaryti",
+    confirm: "Patvirtinti",
+    cancel: "Atšaukti",
   },
   tabs: {
-    next: "Next Tab",
-    previous: "Previous Tab",
+    next: "Kitas skirtukas",
+    previous: "Ankstesnis skirtukas",
   },
   dropdown: {
-    select: "Select",
-    clear: "Clear",
-    search: "Search",
-    noResults: "No results found",
+    select: "Pasirinkti",
+    clear: "Išvalyti",
+    search: "Ieškoti",
+    noResults: "Rezultatų nerasta",
   },
   tooltip: {
-    show: "Show tooltip",
-    hide: "Hide tooltip",
+    show: "Rodyti patarimą",
+    hide: "Slėpti patarimą",
+  },
+  colorPicker: {
+    currentColor: "Dabartinė spalva",
+    lightness: "Šviesumas",
+    chroma: "Chroma",
+    hue: "Atspalvis",
+    alpha: "Alfa",
+    opacity: "Nepermatomumas",
+    lightnessLabel: "L",
+    chromaLabel: "C",
+    hueLabel: "H",
+    alphaLabel: "A",
+    opacityLabel: "O",
+    interactiveLaboratory: "Interaktyvus spalvų laboratorija",
+    hueControl: "Atspalvio valdymas",
+    lightnessControl: "Šviesumo valdymas",
+    chromaControl: "Chroma valdymas",
+    alphaControl: "Alfa valdymas",
+    opacityControl: "Nepermatomumo valdymas",
+    animationSpeedControl: "Animacijos greičio valdymas",
   },
 };

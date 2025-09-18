@@ -6,10 +6,30 @@ the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## [Unreleased]
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+
+## [0.8.5] - 2025-09-18
+
+### Added
+
+- **Complete i18n Package TypeScript Compilation Fix**: Successfully resolved ALL TypeScript compilation errors in the i18n package including missing colorPicker translations across 37 language files, duplicate identifier issues, missing export members, interface mismatches, and IntlFormatter class compatibility issues (Strategic-Spirit-69)
+- **Comprehensive ColorPicker Translation Implementation**: Added complete colorPicker translation objects to all 37 language files including currentColor, lightness, chroma, hue, alpha, opacity, and control labels with proper localization for each language (Strategic-Spirit-69)
+- **IntlFormatter Interface Compatibility Resolution**: Fixed IntlFormatter interface mismatches by updating class implementations to match expected signatures, adding missing formatFromNow methods, and resolving config property requirements (Strategic-Spirit-69)
+- **Translation Type System Alignment**: Resolved type mismatches between translation interfaces and implementations by updating GalleryTranslations interface and ensuring consistency across all language files (Strategic-Spirit-69)
 - **Algorithm Selector Monolith Refactoring**: Successfully broke down 527-line algorithm-selector.ts monolith into 12 focused modules following 140-line axiom, creating modular architecture with separate concerns for types, workload analysis, algorithm selection, and performance tracking (Lycan-Advisor-32)
 - **Comprehensive GitHub Workflow Infrastructure Overhaul**: Completely resolved all 10 failing GitHub workflows through systematic fixes including actionlint installation, shellcheck configuration, pnpm setup, i18n testing, and comprehensive shellcheck warning resolution across all workflow files (Alluring-Architect-3)
 - **Advanced Shellcheck Warning Resolution**: Fixed ALL remaining shellcheck warnings across all workflow files including SC2086 (unquoted variables), SC2296 (parameter expansions), SC2164 (cd commands), SC2250 (variable braces), SC2292 (test syntax), and SC1130 (conditional spacing) (Alluring-Architect-3)

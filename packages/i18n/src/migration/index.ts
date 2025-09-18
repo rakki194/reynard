@@ -138,7 +138,7 @@ export function migrateTranslations(sourceLibraryOrConfig: string | any, config?
   }
 }
 
-export function validateMigration(translations: any) {
+export function validateMigration(_translations: any) {
   // Placeholder validation function
   return {
     isValid: true,

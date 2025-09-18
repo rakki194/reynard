@@ -27,7 +27,7 @@ export class IntlRelativeTimeFormatter {
     return formatter.format(value, unit);
   }
 
-  formatSmart(date: Date): string {
+  formatFromNow(date: Date): string {
     const now = new Date();
     const diff = date.getTime() - now.getTime();
     const seconds = Math.floor(diff / 1000);
@@ -43,5 +43,9 @@ export class IntlRelativeTimeFormatter {
     if (Math.abs(hours) >= 1) return formatter.format(hours, "hour");
     if (Math.abs(minutes) >= 1) return formatter.format(minutes, "minute");
     return formatter.format(seconds, "second");
+  }
+
+  formatSmart(date: Date): string {
+    return this.formatFromNow(date);
   }
 }

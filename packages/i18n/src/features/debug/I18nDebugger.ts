@@ -3,7 +3,7 @@
  * Comprehensive debugging and validation tools for internationalization
  */
 
-import type { LanguageCode, Translations } from "../../types";
+import type { Translations } from "../../types";
 import { validateTranslations, type ValidationResult } from "./Validation";
 import { createDebugStats, type DebugStats } from "./DebugStats";
 
@@ -17,7 +17,7 @@ export interface I18nDebuggerOptions {
 export class I18nDebugger {
   private usedKeys: Set<string> = new Set();
   private missingKeys: Set<string> = new Set();
-  private translations: Translations = {};
+  private translations: Translations = {} as Translations;
   private options: Required<I18nDebuggerOptions>;
 
   constructor(options: I18nDebuggerOptions = {}) {
@@ -88,11 +88,7 @@ export class I18nDebugger {
    * Get debug statistics
    */
   getStats(): DebugStats {
-    return createDebugStats({
-      usedKeys: Array.from(this.usedKeys),
-      missingKeys: Array.from(this.missingKeys),
-      totalTranslations: Object.keys(this.translations).length,
-    });
+    return createDebugStats();
   }
 
   /**
@@ -126,7 +122,7 @@ export class I18nDebugger {
   clear(): void {
     this.usedKeys.clear();
     this.missingKeys.clear();
-    this.translations = {};
+    this.translations = {} as Translations;
   }
 
   /**

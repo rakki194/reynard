@@ -3,50 +3,49 @@
  * Translations for the Reynard Gallery system
  */
 
-export const gallery = {
-  // Time labels
-  time: {
-    today: "Today",
-    yesterday: "Yesterday",
-    daysAgo: "{count} days ago",
-    weeksAgo: "{count} weeks ago",
-    monthsAgo: "{count} months ago",
-    yearsAgo: "{count} years ago",
+export const galleryTranslations = {
+  upload: {
+    title: "Upload Files",
+    dragDrop: "Drag and drop files here",
+    selectFiles: "Select Files",
+    progress: "Uploading...",
+    complete: "Upload Complete",
+    failed: "Upload Failed",
+    cancel: "Cancel",
   },
-
-  // Navigation
-  navigation: {
-    home: "Home",
-    back: "Back",
-    next: "Next",
-    previous: "Previous",
-  },
-
-  // File operations
-  fileOperations: {
-    upload: "Upload",
-    download: "Download",
+  file: {
+    name: "Name",
+    size: "Size",
+    date: "Date",
+    type: "Type",
+    actions: "Actions",
     delete: "Delete",
     rename: "Rename",
     move: "Move",
     copy: "Copy",
+    download: "Download",
   },
-
-  // Error messages
-  errors: {
-    networkErrorDuringUpload: "Network error during upload",
-    uploadFailed: "Upload failed",
-    fileNotFound: "File not found",
-    accessDenied: "Access denied",
+  folder: {
+    create: "Create Folder",
+    delete: "Delete Folder",
+    rename: "Rename Folder",
+    move: "Move Folder",
+    empty: "Empty Folder",
   },
-
-  // Status messages
-  status: {
-    uploading: "Uploading...",
-    processing: "Processing...",
-    complete: "Complete",
-    failed: "Failed",
+  view: {
+    grid: "Grid View",
+    list: "List View",
+    thumbnail: "Thumbnail View",
+    details: "Details View",
+  },
+  sort: {
+    name: "Name",
+    date: "Date",
+    size: "Size",
+    type: "Type",
+    ascending: "Ascending",
+    descending: "Descending",
   },
 } as const;
 
-export default gallery;
+export default galleryTranslations;

@@ -68,7 +68,10 @@ function initializeTranslationDependencies(
 ) {
   const { intlConfig: _intlConfig = {}, usedNamespaces = [], preloadLocales = [] } = options;
 
-  const intlFormatter = createIntlFormatter(_intlConfig);
+  const intlFormatter = createIntlFormatter({
+    locale: "en" as LanguageCode,
+    ..._intlConfig,
+  });
   const optimizedLoader = usedNamespaces.length > 0 ? createOptimizedLoader(usedNamespaces) : null;
 
   if (preloadLocales.length > 0) {

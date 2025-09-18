@@ -3,7 +3,7 @@
  * Modular translation system with comprehensive coverage
  */
 
-import type { Translations } from "../../../types";
+import type { Translations } from "../../../../types";
 import { commonTranslations } from "./common";
 import { themeTranslations } from "./themes";
 import { coreTranslations } from "./core";

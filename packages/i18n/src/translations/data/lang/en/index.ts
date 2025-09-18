@@ -18,7 +18,6 @@ import { apiClientTranslations } from "./api-client";
 import { algorithmsTranslations } from "./algorithms";
 import { testingTranslations } from "./testing";
 import { gamesTranslations } from "./games";
-import { coreTranslations } from "./core";
 
 export default {
   common: commonTranslations,

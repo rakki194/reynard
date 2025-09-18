@@ -3,7 +3,7 @@
  * Translations for the Reynard Caption system
  */
 
-export const caption = {
+export const captionTranslations = {
   // Error messages
   errors: {
     failedToProcessFile: "Failed to process file",
@@ -49,4 +49,4 @@ export const caption = {
   },
 } as const;
 
-export default caption;
+export default captionTranslations;

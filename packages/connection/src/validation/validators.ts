@@ -7,7 +7,6 @@
  */
 
 import { ValidationResult, ValidationUtils } from "./core";
-import { useI18n } from "reynard-i18n";
 
 // ============================================================================
 // Basic Field Validators
@@ -31,7 +30,11 @@ export function validateEmail(email: string, fieldName = "email", t?: (key: stri
 /**
  * Validate a password
  */
-export function validatePassword(password: string, fieldName = "password", t?: (key: string) => string): ValidationResult {
+export function validatePassword(
+  password: string,
+  fieldName = "password",
+  t?: (key: string) => string
+): ValidationResult {
   return ValidationUtils.validateValue(
     password,
     {
@@ -40,7 +43,9 @@ export function validatePassword(password: string, fieldName = "password", t?: (
       minLength: 8,
       maxLength: 128,
       pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-      errorMessage: t ? t("connection.validation.password.requirements") : "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
+      errorMessage: t
+        ? t("connection.validation.password.requirements")
+        : "Password must be 8-128 characters with uppercase, lowercase, number, and special character",
     },
     { fieldName }
   );
@@ -49,7 +54,11 @@ export function validatePassword(password: string, fieldName = "password", t?: (
 /**
  * Validate a username
  */
-export function validateUsername(username: string, fieldName = "username", t?: (key: string) => string): ValidationResult {
+export function validateUsername(
+  username: string,
+  fieldName = "username",
+  t?: (key: string) => string
+): ValidationResult {
   return ValidationUtils.validateValue(
     username,
     {
@@ -58,7 +67,9 @@ export function validateUsername(username: string, fieldName = "username", t?: (
       minLength: 3,
       maxLength: 30,
       pattern: /^[a-zA-Z0-9_-]+$/,
-      errorMessage: t ? t("connection.validation.username.requirements") : "Username must be 3-30 characters with only letters, numbers, underscores, and hyphens",
+      errorMessage: t
+        ? t("connection.validation.username.requirements")
+        : "Username must be 3-30 characters with only letters, numbers, underscores, and hyphens",
     },
     { fieldName }
   );
@@ -146,7 +157,11 @@ export function validateToken(token: string, fieldName = "token", t?: (key: stri
 /**
  * Validate a filename
  */
-export function validateFileName(fileName: string, fieldName = "fileName", t?: (key: string) => string): ValidationResult {
+export function validateFileName(
+  fileName: string,
+  fieldName = "fileName",
+  t?: (key: string) => string
+): ValidationResult {
   return ValidationUtils.validateValue(
     fileName,
     {
@@ -155,7 +170,9 @@ export function validateFileName(fileName: string, fieldName = "fileName", t?: (
       minLength: 1,
       maxLength: 255,
       pattern: /^[^<>:"/\\|?*\x00-\x1f]+$/,
-      errorMessage: t ? t("connection.validation.filename.invalidCharacters") : "Filename cannot contain invalid characters",
+      errorMessage: t
+        ? t("connection.validation.filename.invalidCharacters")
+        : "Filename cannot contain invalid characters",
     },
     { fieldName }
   );
@@ -164,7 +181,11 @@ export function validateFileName(fileName: string, fieldName = "fileName", t?: (
 /**
  * Validate a MIME type
  */
-export function validateMimeType(mimeType: string, fieldName = "mimeType", t?: (key: string) => string): ValidationResult {
+export function validateMimeType(
+  mimeType: string,
+  fieldName = "mimeType",
+  t?: (key: string) => string
+): ValidationResult {
   return ValidationUtils.validateValue(
     mimeType,
     {
@@ -260,7 +281,11 @@ export function validateRetryCount(retryCount: number, fieldName = "retryCount")
 /**
  * Validate a model name
  */
-export function validateModelName(modelName: string, fieldName = "modelName", t?: (key: string) => string): ValidationResult {
+export function validateModelName(
+  modelName: string,
+  fieldName = "modelName",
+  t?: (key: string) => string
+): ValidationResult {
   return ValidationUtils.validateValue(
     modelName,
     {
@@ -269,7 +294,9 @@ export function validateModelName(modelName: string, fieldName = "modelName", t?
       minLength: 1,
       maxLength: 100,
       pattern: /^[a-zA-Z0-9._-]+$/,
-      errorMessage: t ? t("connection.validation.modelName.requirements") : "Model name must be 1-100 characters with only letters, numbers, dots, underscores, and hyphens",
+      errorMessage: t
+        ? t("connection.validation.modelName.requirements")
+        : "Model name must be 1-100 characters with only letters, numbers, dots, underscores, and hyphens",
     },
     { fieldName }
   );
@@ -278,7 +305,7 @@ export function validateModelName(modelName: string, fieldName = "modelName", t?
 /**
  * Validate a prompt
  */
-export function validatePrompt(prompt: string, fieldName = "prompt"): ValidationResult {
+export function validatePrompt(prompt: string, fieldName = "prompt", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     prompt,
     {
@@ -286,7 +313,7 @@ export function validatePrompt(prompt: string, fieldName = "prompt"): Validation
       required: true,
       minLength: 1,
       maxLength: 10000,
-      errorMessage: "Prompt must be 1-10000 characters",
+      errorMessage: t ? t("connection.validation.prompt.length") : "Prompt must be 1-10000 characters",
     },
     { fieldName }
   );
@@ -333,14 +360,14 @@ export function validateMaxTokens(maxTokens: number, fieldName = "maxTokens"): V
 /**
  * Validate a theme
  */
-export function validateTheme(theme: string, fieldName = "theme"): ValidationResult {
+export function validateTheme(theme: string, fieldName = "theme", t?: (key: string) => string): ValidationResult {
   return ValidationUtils.validateValue(
     theme,
     {
       type: "string",
       required: true,
       enum: ["light", "dark", "auto"],
-      errorMessage: "Theme must be light, dark, or auto",
+      errorMessage: t ? t("connection.validation.theme.invalid") : "Theme must be light, dark, or auto",
     },
     { fieldName }
   );

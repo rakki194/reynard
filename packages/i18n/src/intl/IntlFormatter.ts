@@ -4,27 +4,19 @@
  */
 
 import type { IntlConfig } from "./IntlConfig";
-import { createNumberFormatter } from "./NumberFormatting";
-import { createDateFormatter } from "./DateFormatting";
-import { createRelativeFormatter } from "./RelativeFormatting";
+import { IntlNumberFormatter } from "../types/core/intl-number-formatter";
+import { IntlDateFormatter } from "../types/core/intl-date-formatter";
+import { IntlRelativeTimeFormatter } from "../types/core/intl-relative-time-formatter";
+import { IntlPluralRules } from "../types/core/intl-plural-rules";
 import type { IntlFormatter } from "../types";
 
 export function createIntlFormatter(config: IntlConfig): IntlFormatter {
-  const relativeFormatter = createRelativeFormatter(config);
-
   return {
-    number: createNumberFormatter(config),
-    date: createDateFormatter(config),
-    relative: relativeFormatter,
-    relativeTime: {
-      formatSmart: relativeFormatter.formatFromNow,
-    },
-    pluralRules: {
-      select: (count: number) => {
-        const formatter = new Intl.PluralRules(config.locale);
-        return formatter.select(count);
-      },
-    },
+    number: new IntlNumberFormatter(config),
+    date: new IntlDateFormatter(config),
+    relative: new IntlRelativeTimeFormatter(config),
+    relativeTime: new IntlRelativeTimeFormatter(config),
+    pluralRules: new IntlPluralRules(config),
     updateConfig: (newConfig: Partial<IntlConfig>) => {
       // Update the formatter with new config
       const updatedConfig = { ...config, ...newConfig };

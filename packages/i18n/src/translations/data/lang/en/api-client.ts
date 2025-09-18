@@ -3,7 +3,7 @@
  * Translations for the Reynard API client system
  */
 
-export const apiClient = {
+export const apiClientTranslations = {
   // Error messages
   errors: {
     apiError: "API Error",
@@ -41,4 +41,4 @@ export const apiClient = {
   },
 } as const;
 
-export default apiClient;
+export default apiClientTranslations;

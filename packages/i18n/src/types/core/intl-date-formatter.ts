@@ -7,7 +7,7 @@ import type { IntlConfig } from "../../intl/IntlConfig";
 export class IntlDateFormatter {
   constructor(private config: IntlConfig) {}
 
-  format(date: Date, preset?: string, options?: Intl.DateTimeFormatOptions): string {
+  format(date: Date, options?: Intl.DateTimeFormatOptions): string {
     const formatter = new Intl.DateTimeFormat(this.config.locale, {
       timeZone: this.config.timeZone,
       ...options,

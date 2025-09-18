@@ -3,7 +3,7 @@
  * Enterprise-grade translation management with history tracking and import/export
  */
 
-import type { LanguageCode, Translations, TranslationParams } from "../../types";
+import type { LanguageCode, Translations } from "../../types";
 
 export interface TranslationChange {
   id: string;
@@ -37,12 +37,7 @@ export class TranslationManager {
   /**
    * Set a translation for a specific locale and key
    */
-  setTranslation(
-    localeOrKey: LanguageCode | string,
-    keyOrValue: string,
-    valueOrLocale?: string | LanguageCode,
-    params?: TranslationParams
-  ): void {
+  setTranslation(localeOrKey: LanguageCode | string, keyOrValue: string, valueOrLocale?: string | LanguageCode): void {
     // Handle both signatures: setTranslation(key, value, locale) and setTranslation(locale, key, value)
     let locale: LanguageCode;
     let key: string;
@@ -68,7 +63,7 @@ export class TranslationManager {
     const oldValue = this.getTranslation(locale, key);
 
     if (!this.translations.has(locale)) {
-      this.translations.set(locale, {});
+      this.translations.set(locale, {} as Translations);
     }
 
     const localeTranslations = this.translations.get(locale)!;
@@ -121,7 +116,7 @@ export class TranslationManager {
    * Get all translations for a specific locale
    */
   getTranslations(locale: LanguageCode = this.options.locale): Translations {
-    return this.translations.get(locale) || {};
+    return this.translations.get(locale) || ({} as Translations);
   }
 
   /**
@@ -152,14 +147,12 @@ export class TranslationManager {
       // Handle different calling patterns
       let locale: LanguageCode;
       let jsonString: string;
-      let author: string | undefined;
       let shouldMerge: boolean;
 
       if (typeof localeOrJsonString === "string" && jsonStringOrAuthor && authorOrMerge) {
         // Called as importTranslations(locale, jsonString, author)
         locale = localeOrJsonString as LanguageCode;
         jsonString = jsonStringOrAuthor;
-        author = authorOrMerge as string;
         shouldMerge = merge;
       } else if (typeof localeOrJsonString === "string" && jsonStringOrAuthor) {
         // Called as importTranslations(jsonString, locale) or importTranslations(locale, jsonString)
@@ -178,7 +171,7 @@ export class TranslationManager {
         // Called as importTranslations(jsonStringOrObject, locale, merge)
         locale = this.options.locale;
         jsonString = localeOrJsonString as string;
-        shouldMerge = (jsonStringOrAuthor as boolean) ?? true;
+        shouldMerge = Boolean(jsonStringOrAuthor) ?? true;
       }
 
       const importedTranslations =
@@ -200,7 +193,6 @@ export class TranslationManager {
           key: "IMPORT",
           newValue: `Imported ${Object.keys(importedTranslations).length} translations`,
           action: "set",
-          author,
         });
       }
 

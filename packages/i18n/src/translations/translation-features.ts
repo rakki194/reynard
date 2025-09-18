@@ -8,7 +8,7 @@ import type { LanguageCode, TranslationFunction, TranslationParams } from "../ty
 /**
  * Creates a template translator for template literals
  */
-function createTemplateTranslator(t: TranslationFunction) {
+function createTemplateTranslator(_t: TranslationFunction) {
   return (template: TemplateStringsArray, ...values: any[]) => {
     // Simple template literal interpolation
     return template.reduce((result, string, i) => {
