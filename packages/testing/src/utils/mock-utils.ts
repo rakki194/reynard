@@ -1,4 +1,5 @@
 import { vi } from "vitest";
+import { useI18n } from "reynard-i18n";
 
 /**
  * Utility functions for creating and managing mocks in tests
@@ -193,7 +194,7 @@ export function createMockFileList(files: File[]): FileList {
 /**
  * Create a mock DataTransfer object
  */
-export function createMockDataTransfer(files: File[] = []): DataTransfer {
+export function createMockDataTransfer(files: File[] = [], t?: (key: string) => string): DataTransfer {
   return {
     dropEffect: "none",
     effectAllowed: "none",
@@ -214,7 +215,7 @@ export function createMockDataTransfer(files: File[] = []): DataTransfer {
       },
     },
     files: createMockFileList(files),
-    types: files.length > 0 ? ["Files"] : [],
+    types: files.length > 0 ? [t ? t("testing.mockUtils.files") : "Files"] : [],
     getData: vi.fn().mockReturnValue(""),
     setData: vi.fn(),
     clearData: vi.fn(),

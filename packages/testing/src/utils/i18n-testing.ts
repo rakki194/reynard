@@ -6,6 +6,7 @@
 import type { Component } from "solid-js";
 import { readFileSync, readdirSync, statSync } from "fs";
 import { join, extname } from "path";
+import { useI18n } from "reynard-i18n";
 
 // Types for i18n testing
 export interface I18nTestConfig {

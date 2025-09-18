@@ -32,4 +32,5 @@ export default {
   caption: captionTranslations,
   apiClient: apiClientTranslations,
   algorithms: algorithmsTranslations,
+  testing: testingTranslations,
 } as const satisfies Translations;

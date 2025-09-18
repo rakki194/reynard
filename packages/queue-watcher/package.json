@@ -54,14 +54,14 @@
     "reynard-project-architecture": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "24.4.0",
+    "@types/node": "24.5.2",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
     "happy-dom": "^18.0.1",
     "reynard-testing": "workspace:*",
     "tsx": "^4.0.0",
     "typescript": "5.9.2",
-    "vite": "7.1.5",
+    "vite": "7.1.6",
     "vitest": "3.2.4"
   },
   "engines": {
