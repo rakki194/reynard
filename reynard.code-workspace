@@ -1,6 +1,10 @@
 {
   "folders": [
     {
+      "name": "🗒️ Prompts",
+      "path": ".cursor/prompts",
+    },
+    {
       "name": "🦊 Reynard Root",
       "path": ".",
     },
@@ -46,7 +50,7 @@
     },
     {
       "name": "🌍 ECS World",
-      "path": "./packages/ecs-world",
+      "path": "./services/ecs-world",
     },
     {
       "name": "🔐 Gatekeeper",
@@ -65,10 +69,6 @@
       "path": "./packages/charts",
     },
     {
-      "name": "🎮 Games",
-      "path": "./packages/games",
-    },
-    {
       "name": "🌐 I18n",
       "path": "./packages/i18n",
     },
@@ -85,40 +85,416 @@
       "path": "./packages/games",
     },
     {
-      "name": "🎮 Games - ECS System",
+      "name": "🎮 ECS System",
       "path": "./packages/games/src/ecs",
     },
     {
-      "name": "🎮 Games - Collision Detection",
+      "name": "🎮 Collision Detection",
       "path": "./packages/games/src/collision",
     },
     {
-      "name": "🎮 Games - Roguelike Engine",
+      "name": "🎮 Roguelike Engine",
       "path": "./packages/games/src/roguelike",
     },
     {
-      "name": "🎮 Games - Geometry Demos",
+      "name": "🎮 Geometry Demos",
       "path": "./packages/games/src/geometry",
     },
     {
-      "name": "🎮 Games - Spatial Hash",
+      "name": "🎮 Spatial Hash",
       "path": "./packages/games/src/spatial-hash",
     },
     {
-      "name": "🎮 Games - Union Find",
+      "name": "🎮 Union Find",
       "path": "./packages/games/src/union-find",
     },
     {
-      "name": "🎮 Games - Performance Tools",
+      "name": "🎮 Performance Tools",
       "path": "./packages/games/src/performance",
     },
     {
-      "name": "🎮 Examples - 3D Demo Games",
+      "name": "🎮 Examples - 3D Demo",
       "path": "./examples/3d-demo/src/games",
     },
     {
-      "name": "🎮 Templates - Starter Games",
+      "name": "🎮 Templates - Starter",
       "path": "./templates/starter/src/pages",
+    },
+    {
+      "name": "🎮 Templates - Dashboard",
+      "path": "./templates/dashboard",
+    },
+    {
+      "name": "🎮 Templates - Portfolio",
+      "path": "./templates/portfolio",
+    },
+    {
+      "name": "🔒 Fenrir Security",
+      "path": "./packages/code-quality/src/security",
+    },
+    {
+      "name": "🔒 E2E Security Tests",
+      "path": "./e2e/modules/security",
+    },
+    {
+      "name": "📊 3D Graphics",
+      "path": "./packages/3d",
+    },
+    {
+      "name": "👾 ADR Generation",
+      "path": "./packages/adr-system",
+    },
+    {
+      "name": "🧮 Algorithms",
+      "path": "./packages/algorithms",
+    },
+    {
+      "name": "🎬 Animation",
+      "path": "./packages/animation",
+    },
+    {
+      "name": "📝 Annotating",
+      "path": "./packages/annotating",
+    },
+    {
+      "name": "📝 Annotating Core",
+      "path": "./packages/annotating-core",
+    },
+    {
+      "name": "📝 Annotating Florence2",
+      "path": "./packages/annotating-florence2",
+    },
+    {
+      "name": "📝 Annotating Joy",
+      "path": "./packages/annotating-joy",
+    },
+    {
+      "name": "📝 Annotating JTP2",
+      "path": "./packages/annotating-jtp2",
+    },
+    {
+      "name": "📝 Annotating WDV3",
+      "path": "./packages/annotating-wdv3",
+    },
+    {
+      "name": "🌐 API Client",
+      "path": "./packages/api-client",
+    },
+    {
+      "name": "🎵 Audio",
+      "path": "./packages/audio",
+    },
+    {
+      "name": "🔐 Auth",
+      "path": "./packages/auth",
+    },
+    {
+      "name": "📦 Bounding Box",
+      "path": "./packages/boundingbox",
+    },
+    {
+      "name": "📸 Caption",
+      "path": "./packages/caption",
+    },
+    {
+      "name": "📸 Caption Core",
+      "path": "./packages/caption-core",
+    },
+    {
+      "name": "📸 Caption Multimodal",
+      "path": "./packages/caption-multimodal",
+    },
+    {
+      "name": "📸 Caption UI",
+      "path": "./packages/caption-ui",
+    },
+    {
+      "name": "💬 Chat",
+      "path": "./packages/chat",
+    },
+    {
+      "name": "🔍 Code Quality",
+      "path": "./packages/code-quality",
+    },
+    {
+      "name": "🎨 Colors",
+      "path": "./packages/colors",
+    },
+    {
+      "name": "🎨 ComfyUI",
+      "path": "./packages/comfy",
+    },
+    {
+      "name": "🧩 Components",
+      "path": "./packages/components",
+    },
+    {
+      "name": "📊 Components Charts",
+      "path": "./packages/components-charts",
+    },
+    {
+      "name": "🧩 Components Dashboard",
+      "path": "./packages/components-dashboard",
+    },
+    {
+      "name": "🎨 Components Themes",
+      "path": "./packages/components-themes",
+    },
+    {
+      "name": "🔧 Composables",
+      "path": "./packages/composables",
+    },
+    {
+      "name": "⚙️ Config",
+      "path": "./packages/config",
+    },
+    {
+      "name": "🔗 Connection",
+      "path": "./packages/connection",
+    },
+    {
+      "name": "🏗️ Core",
+      "path": "./packages/core",
+    },
+    {
+      "name": "📊 Dashboard",
+      "path": "./packages/dashboard",
+    },
+    {
+      "name": "🖥️ Dev Server Management",
+      "path": "./packages/dev-server-management",
+    },
+    {
+      "name": "📊 Diagram Generator",
+      "path": "./packages/diagram-generator",
+    },
+    {
+      "name": "📚 Docs Components",
+      "path": "./packages/docs-components",
+    },
+    {
+      "name": "📚 Docs Core",
+      "path": "./packages/docs-core",
+    },
+    {
+      "name": "📚 Docs Generator",
+      "path": "./packages/docs-generator",
+    },
+    {
+      "name": "📚 Docs Site",
+      "path": "./packages/docs-site",
+    },
+    {
+      "name": "⚠️ Error Boundaries",
+      "path": "./packages/error-boundaries",
+    },
+    {
+      "name": "✨ Features",
+      "path": "./packages/features",
+    },
+    {
+      "name": "📁 File Processing",
+      "path": "./packages/file-processing",
+    },
+    {
+      "name": "🪟 Floating Panel",
+      "path": "./packages/floating-panel",
+    },
+    {
+      "name": "🎯 Fluent Icons",
+      "path": "./packages/fluent-icons",
+    },
+    {
+      "name": "🖼️ Gallery",
+      "path": "./packages/gallery",
+    },
+    {
+      "name": "🤖 Gallery AI",
+      "path": "./packages/gallery-ai",
+    },
+    {
+      "name": "📥 Gallery DL",
+      "path": "./packages/gallery-dl",
+    },
+    {
+      "name": "🔧 Git Automation",
+      "path": "./packages/git-automation",
+    },
+    {
+      "name": "🖼️ Image",
+      "path": "./packages/image",
+    },
+    {
+      "name": "🤖 Model Management",
+      "path": "./packages/model-management",
+    },
+    {
+      "name": "📝 Monaco",
+      "path": "./packages/monaco",
+    },
+    {
+      "name": "🎭 Multimodal",
+      "path": "./packages/multimodal",
+    },
+    {
+      "name": "🌐 NLWeb",
+      "path": "./packages/nlweb",
+    },
+    {
+      "name": "🏗️ Project Architecture",
+      "path": "./packages/project-architecture",
+    },
+    {
+      "name": "⏳ Queue Watcher",
+      "path": "./packages/queue-watcher",
+    },
+    {
+      "name": "🗄️ Repository Core",
+      "path": "./packages/repository-core",
+    },
+    {
+      "name": "🗄️ Repository Multimodal",
+      "path": "./packages/repository-multimodal",
+    },
+    {
+      "name": "🔍 Repository Search",
+      "path": "./packages/repository-search",
+    },
+    {
+      "name": "💾 Repository Storage",
+      "path": "./packages/repository-storage",
+    },
+    {
+      "name": "🕷️ Scraping",
+      "path": "./packages/scraping",
+    },
+    {
+      "name": "✂️ Segmentation",
+      "path": "./packages/segmentation",
+    },
+    {
+      "name": "⚙️ Service Manager",
+      "path": "./packages/service-manager",
+    },
+    {
+      "name": "⚙️ Settings",
+      "path": "./packages/settings",
+    },
+    {
+      "name": "🛠️ Tools",
+      "path": "./packages/tools",
+    },
+    {
+      "name": "🎨 Themes",
+      "path": "./packages/themes",
+    },
+    {
+      "name": "🖥️ UI",
+      "path": "./packages/ui",
+    },
+    {
+      "name": "🗄️ Unified Repository",
+      "path": "./packages/unified-repository",
+    },
+    {
+      "name": "✅ Validation",
+      "path": "./packages/validation",
+    },
+    {
+      "name": "🎥 Video",
+      "path": "./packages/video",
+    },
+    {
+      "name": "🤖 MCP Server Service",
+      "path": "./services/mcp-server",
+    },
+    {
+      "name": "📊 3D Demo Example",
+      "path": "./examples/3d-demo",
+    },
+    {
+      "name": "🧮 Algo Bench Example",
+      "path": "./examples/algo-bench",
+    },
+    {
+      "name": "🔐 Auth App Example",
+      "path": "./examples/auth-app",
+    },
+    {
+      "name": "🚀 Basic App Example",
+      "path": "./examples/basic-app",
+    },
+    {
+      "name": "🐍 Basic Backend Example",
+      "path": "./examples/basic-backend",
+    },
+    {
+      "name": "🕐 Clock Example",
+      "path": "./examples/clock",
+    },
+    {
+      "name": "🎨 Comfy Demo Example",
+      "path": "./examples/comfy-demo",
+    },
+    {
+      "name": "📊 Comprehensive Dashboard Example",
+      "path": "./examples/comprehensive-dashboard",
+    },
+    {
+      "name": "🌍 ECS Agent Tracker Example",
+      "path": "./examples/ecs-agent-tracker",
+    },
+    {
+      "name": "📊 Embedding Visualization Demo",
+      "path": "./examples/embedding-visualization-demo",
+    },
+    {
+      "name": "⚠️ Error Demo Example",
+      "path": "./examples/error-demo",
+    },
+    {
+      "name": "✨ Features App Example",
+      "path": "./examples/features-app",
+    },
+    {
+      "name": "📁 File Test Example",
+      "path": "./examples/file-test",
+    },
+    {
+      "name": "🎨 Hue Shifting Demo",
+      "path": "./examples/hue-shifting-demo",
+    },
+    {
+      "name": "🌐 I18n Demo Example",
+      "path": "./examples/i18n-demo",
+    },
+    {
+      "name": "🎯 Icons Demo Example",
+      "path": "./examples/icons-demo",
+    },
+    {
+      "name": "📸 Image Caption App Example",
+      "path": "./examples/image-caption-app",
+    },
+    {
+      "name": "🎨 Multi Theme Example",
+      "path": "./examples/multi-theme",
+    },
+    {
+      "name": "📝 Prompt Note Example",
+      "path": "./examples/prompt-note",
+    },
+    {
+      "name": "🔍 RAG Demo Example",
+      "path": "./examples/rag-demo",
+    },
+    {
+      "name": "🧪 Test App Example",
+      "path": "./examples/test-app",
+    },
+    {
+      "name": "📚 Tutorial App Example",
+      "path": "./examples/tutorial-app",
     },
   ],
   "settings": {

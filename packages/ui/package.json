@@ -20,7 +20,7 @@
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=ui-package ../../scripts/vitest-global-queue.sh run ui-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=ui-package ../../scripts/testing/vitest-global-queue.sh run ui-package",
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },

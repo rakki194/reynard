@@ -25,7 +25,7 @@
     "dev": "vite build --watch",
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly && (mv dist/components.css dist/styles.css 2>/dev/null || mv dist/asset dist/styles.css 2>/dev/null || true)",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=components-package ../../scripts/vitest-global-queue.sh run components-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=components-package ../../scripts/testing/vitest-global-queue.sh run components-package",
     "test:coverage": "vitest --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "test:docs": "vitest run --config vitest.docs.config.ts",

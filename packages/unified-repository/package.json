@@ -18,7 +18,7 @@
     "dev": "vite build --watch",
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=unified-repository-package ../../scripts/vitest-global-queue.sh run unified-repository-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=unified-repository-package ../../scripts/testing/vitest-global-queue.sh run unified-repository-package",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "test:docs": "vitest run --config vitest.docs.config.ts",

@@ -18,7 +18,7 @@
     "build": "tsc && vite build",
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=gallery-package ../../scripts/vitest-global-queue.sh run gallery-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=gallery-package ../../scripts/testing/vitest-global-queue.sh run gallery-package",
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },

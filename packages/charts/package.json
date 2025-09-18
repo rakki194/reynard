@@ -18,7 +18,7 @@
     "build": "vite build && node scripts/fix-solidjs-imports.js && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=charts-package ../../scripts/vitest-global-queue.sh run charts-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=charts-package ../../scripts/testing/vitest-global-queue.sh run charts-package",
     "test:coverage": "vitest --coverage",
     "test:ui": "vitest --ui"
   },

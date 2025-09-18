@@ -148,80 +148,76 @@ git diff --name-only | grep -E "(\.md$|\.test\.|\.spec\.|\.css$)"
 #### Junk File Detection and Analysis
 
 **CRITICAL** - Before proceeding with any Git workflow, perform comprehensive junk file detection to identify and
-discuss potential development artifacts that should not be committed to version control.
+discuss potential development artifacts that are currently tracked by Git but should not be committed to version control.
 
-**Python Development Artifacts:**
+**Git-Tracked Junk File Detection:**
+
+The key principle is to only check files that are currently tracked by Git, not all files in the working directory.
+This approach respects `.gitignore` patterns and focuses on actual source control issues.
+
+**Python Development Artifacts (Tracked Only):**
 
 ```bash
-# Python bytecode and cache files
-find . -name "*.pyc" -o -name "*.pyo" -o -name "__pycache__" -type d
-find . -name "*.pyd" -o -name "*.so" -o -name "*.egg-info" -type d
+# Check for Python bytecode and cache files that are tracked by Git
+git ls-files | grep -E "\.(pyc|pyo)$|__pycache__/"
+git ls-files | grep -E "\.(pyd|so)$|\.egg-info/"
 
-# Python virtual environments and build artifacts
-find . -name "venv" -o -name ".venv" -o -name "env" -o -name ".env" -type d
-find . -name "build" -o -name "dist" -o -name "*.egg" -type d
-find . -name ".pytest_cache" -o -name ".coverage" -o -name "htmlcov" -type d
+# Check for Python virtual environments and build artifacts that are tracked
+git ls-files | grep -E "(venv|\.venv|env|\.env|build|dist|\.egg)/"
+git ls-files | grep -E "(\.pytest_cache|\.coverage|htmlcov|\.tox)/"
 
-# Python IDE and editor files
-find . -name ".vscode" -o -name ".idea" -o -name "*.swp" -o -name "*.swo"
-find . -name ".ropeproject" -o -name ".mypy_cache" -o -name ".tox" -type d
+# Check for Python IDE and editor files that are tracked
+git ls-files | grep -E "(\.vscode|\.idea|\.swp|\.swo|\.ropeproject|\.mypy_cache)/"
 
-# Python temporary and log files
-find . -name "*.log" -o -name "*.tmp" -o -name "*.temp"
-find . -name ".DS_Store" -o -name "Thumbs.db"
+# Check for Python temporary and log files that are tracked
+git ls-files | grep -E "\.(log|tmp|temp)$|\.DS_Store|Thumbs\.db"
 ```
 
-**TypeScript/JavaScript Development Artifacts:**
+**TypeScript/JavaScript Development Artifacts (Tracked Only):**
 
 ```bash
-# TypeScript declaration files and build outputs
-find . -name "*.d.ts" -not -path "*/node_modules/*"
-find . -name "*.js.map" -o -name "*.d.ts.map"
-find . -name "dist" -o -name "build" -o -name "out" -type d
+# Check for TypeScript declaration files and build outputs that are tracked
+git ls-files | grep -E "\.d\.ts$|\.js\.map$|\.d\.ts\.map$"
+git ls-files | grep -E "(dist|build|out)/"
 
-# Node.js and npm artifacts
-find . -name "node_modules" -type d
-find . -name "package-lock.json" -o -name "yarn.lock" -o -name "pnpm-lock.yaml"
-find . -name ".npm" -o -name ".yarn" -o -name ".pnpm" -type d
+# Check for Node.js and npm artifacts that are tracked
+git ls-files | grep -E "node_modules/|package-lock\.json|yarn\.lock|pnpm-lock\.yaml"
+git ls-files | grep -E "(\.npm|\.yarn|\.pnpm)/"
 
-# TypeScript/JavaScript cache and temporary files
-find . -name ".tsbuildinfo" -o -name "*.tsbuildinfo"
-find . -name ".eslintcache" -o -name ".stylelintcache"
-find . -name "coverage" -o -name ".nyc_output" -type d
+# Check for TypeScript/JavaScript cache and temporary files that are tracked
+git ls-files | grep -E "\.tsbuildinfo$|\.eslintcache|\.stylelintcache"
+git ls-files | grep -E "(coverage|\.nyc_output)/"
 
-# Build tool artifacts
-find . -name ".vite" -o -name ".rollup.cache" -o -name ".turbo" -type d
-find . -name "*.bundle.js" -o -name "*.chunk.js" -o -name "*.vendor.js"
+# Check for build tool artifacts that are tracked
+git ls-files | grep -E "(\.vite|\.rollup\.cache|\.turbo)/"
+git ls-files | grep -E "\.(bundle|chunk|vendor)\.js$"
 ```
 
-**Reynard-Specific Artifacts:**
+**Reynard-Specific Artifacts (Tracked Only):**
 
 ```bash
-# Reynard monorepo specific patterns
-find . -name "*.generated.*" -o -name "*.auto.*"
-find . -name "temp" -o -name "tmp" -o -name ".temp" -type d
-find . -name "*.backup" -o -name "*.bak" -o -name "*.orig"
+# Check for Reynard monorepo specific patterns that are tracked
+git ls-files | grep -E "\.generated\.|\.auto\.|(temp|tmp|\.temp)/"
+git ls-files | grep -E "\.(backup|bak|orig)$"
 
-# MCP server artifacts
-find . -name "*.mcp.log" -o -name "mcp-*.json"
-find . -name ".mcp-cache" -o -name "mcp-temp" -type d
+# Check for MCP server artifacts that are tracked
+git ls-files | grep -E "\.mcp\.log$|mcp-.*\.json$|(\.mcp-cache|mcp-temp)/"
 
-# ECS World simulation artifacts
-find . -name "*.sim.log" -o -name "ecs-*.json"
-find . -name ".ecs-cache" -o -name "simulation-temp" -type d
+# Check for ECS World simulation artifacts that are tracked
+git ls-files | grep -E "\.sim\.log$|ecs-.*\.json$|(\.ecs-cache|simulation-temp)/"
 
-# Agent naming system artifacts
-find . -name "agent-names-*.json" -o -name ".agent-cache" -type d
-find . -name "*.agent.log" -o -name "agent-temp" -type d
+# Check for agent naming system artifacts that are tracked
+git ls-files | grep -E "agent-names-.*\.json$|(\.agent-cache|agent-temp)/"
+git ls-files | grep -E "\.agent\.log$"
 ```
 
 **Junk File Analysis Workflow:**
 
 ```bash
 #!/bin/bash
-# Comprehensive junk file detection script
+# Git-tracked junk file detection script
 
-echo "🔍 Scanning for potential junk files in Reynard monorepo..."
+echo "🔍 Scanning for potential junk files tracked by Git in Reynard monorepo..."
 
 # Create temporary files for analysis
 PYTHON_JUNK="/tmp/python-junk-files.txt"
@@ -229,40 +225,39 @@ TYPESCRIPT_JUNK="/tmp/typescript-junk-files.txt"
 REYNARD_JUNK="/tmp/reynard-junk-files.txt"
 ALL_JUNK="/tmp/all-junk-files.txt"
 
-# Detect Python artifacts
-echo "🐍 Detecting Python development artifacts..."
-find . -name "*.pyc" -o -name "*.pyo" -o -name "__pycache__" -type d \
-     -o -name "venv" -o -name ".venv" -o -name "env" -o -name ".env" -type d \
-     -o -name "build" -o -name "dist" -o -name "*.egg" -type d \
-     -o -name ".pytest_cache" -o -name ".coverage" -o -name "htmlcov" -type d \
-     -o -name ".vscode" -o -name ".idea" -o -name "*.swp" -o -name "*.swo" \
-     -o -name ".ropeproject" -o -name ".mypy_cache" -o -name ".tox" -type d \
-     -o -name "*.log" -o -name "*.tmp" -o -name "*.temp" \
-     -o -name ".DS_Store" -o -name "Thumbs.db" > "$PYTHON_JUNK"
+# Detect Python artifacts that are tracked by Git
+echo "🐍 Detecting Python development artifacts tracked by Git..."
+git ls-files | grep -E "\.(pyc|pyo)$|__pycache__/" > "$PYTHON_JUNK"
+git ls-files | grep -E "\.(pyd|so)$|\.egg-info/" >> "$PYTHON_JUNK"
+git ls-files | grep -E "(venv|\.venv|env|\.env|build|dist|\.egg)/" >> "$PYTHON_JUNK"
+git ls-files | grep -E "(\.pytest_cache|\.coverage|htmlcov|\.tox)/" >> "$PYTHON_JUNK"
+git ls-files | grep -E "(\.vscode|\.idea|\.swp|\.swo|\.ropeproject|\.mypy_cache)/" >> "$PYTHON_JUNK"
+git ls-files | grep -E "\.(log|tmp|temp)$|\.DS_Store|Thumbs\.db" >> "$PYTHON_JUNK"
 
-# Detect TypeScript/JavaScript artifacts
-echo "📦 Detecting TypeScript/JavaScript development artifacts..."
-find . -name "*.d.ts" -not -path "*/node_modules/*" \
-     -o -name "*.js.map" -o -name "*.d.ts.map" \
-     -o -name "dist" -o -name "build" -o -name "out" -type d \
-     -o -name "node_modules" -type d \
-     -o -name ".tsbuildinfo" -o -name "*.tsbuildinfo" \
-     -o -name ".eslintcache" -o -name ".stylelintcache" \
-     -o -name "coverage" -o -name ".nyc_output" -type d \
-     -o -name ".vite" -o -name ".rollup.cache" -o -name ".turbo" -type d \
-     -o -name "*.bundle.js" -o -name "*.chunk.js" -o -name "*.vendor.js" > "$TYPESCRIPT_JUNK"
+# Detect TypeScript/JavaScript artifacts that are tracked by Git
+echo "📦 Detecting TypeScript/JavaScript development artifacts tracked by Git..."
+git ls-files | grep -E "\.d\.ts$|\.js\.map$|\.d\.ts\.map$" > "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "(dist|build|out)/" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "node_modules/|package-lock\.json|yarn\.lock|pnpm-lock\.yaml" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "(\.npm|\.yarn|\.pnpm)/" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "\.tsbuildinfo$|\.eslintcache|\.stylelintcache" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "(coverage|\.nyc_output)/" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "(\.vite|\.rollup\.cache|\.turbo)/" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "\.(bundle|chunk|vendor)\.js$" >> "$TYPESCRIPT_JUNK"
 
-# Detect Reynard-specific artifacts
-echo "🦊 Detecting Reynard-specific artifacts..."
-find . -name "*.generated.*" -o -name "*.auto.*" \
-     -o -name "temp" -o -name "tmp" -o -name ".temp" -type d \
-     -o -name "*.backup" -o -name "*.bak" -o -name "*.orig" \
-     -o -name "*.mcp.log" -o -name "mcp-*.json" \
-     -o -name ".mcp-cache" -o -name "mcp-temp" -type d \
-     -o -name "*.sim.log" -o -name "ecs-*.json" \
-     -o -name ".ecs-cache" -o -name "simulation-temp" -type d \
-     -o -name "agent-names-*.json" -o -name ".agent-cache" -type d \
-     -o -name "*.agent.log" -o -name "agent-temp" -type d > "$REYNARD_JUNK"
+# Detect Reynard-specific artifacts that are tracked by Git
+echo "🦊 Detecting Reynard-specific artifacts tracked by Git..."
+git ls-files | grep -E "\.generated\.|\.auto\.|(temp|tmp|\.temp)/" > "$REYNARD_JUNK"
+git ls-files | grep -E "\.(backup|bak|orig)$" >> "$REYNARD_JUNK"
+git ls-files | grep -E "\.mcp\.log$|mcp-.*\.json$|(\.mcp-cache|mcp-temp)/" >> "$REYNARD_JUNK"
+git ls-files | grep -E "\.sim\.log$|ecs-.*\.json$|(\.ecs-cache|simulation-temp)/" >> "$REYNARD_JUNK"
+git ls-files | grep -E "agent-names-.*\.json$|(\.agent-cache|agent-temp)/" >> "$REYNARD_JUNK"
+git ls-files | grep -E "\.agent\.log$" >> "$REYNARD_JUNK"
+
+# Remove duplicates and sort
+sort -u "$PYTHON_JUNK" -o "$PYTHON_JUNK"
+sort -u "$TYPESCRIPT_JUNK" -o "$TYPESCRIPT_JUNK"
+sort -u "$REYNARD_JUNK" -o "$REYNARD_JUNK"
 
 # Combine all junk files
 cat "$PYTHON_JUNK" "$TYPESCRIPT_JUNK" "$REYNARD_JUNK" | sort -u > "$ALL_JUNK"
@@ -274,16 +269,16 @@ REYNARD_COUNT=$(wc -l < "$REYNARD_JUNK")
 TOTAL_COUNT=$(wc -l < "$ALL_JUNK")
 
 echo ""
-echo "📊 Junk File Detection Results:"
+echo "📊 Git-Tracked Junk File Detection Results:"
 echo "   🐍 Python artifacts: $PYTHON_COUNT files"
 echo "   📦 TypeScript/JS artifacts: $TYPESCRIPT_COUNT files"
 echo "   🦊 Reynard-specific artifacts: $REYNARD_COUNT files"
-echo "   📋 Total potential junk files: $TOTAL_COUNT files"
+echo "   📋 Total tracked junk files: $TOTAL_COUNT files"
 
 if [ "$TOTAL_COUNT" -gt 0 ]; then
     echo ""
-    echo "⚠️  POTENTIAL JUNK FILES DETECTED!"
-    echo "   Review the following files before proceeding with Git workflow:"
+    echo "⚠️  TRACKED JUNK FILES DETECTED!"
+    echo "   The following files are tracked by Git but appear to be development artifacts:"
     echo ""
     cat "$ALL_JUNK" | head -20
     if [ "$TOTAL_COUNT" -gt 20 ]; then
@@ -291,10 +286,11 @@ if [ "$TOTAL_COUNT" -gt 0 ]; then
     fi
     echo ""
     echo "🔧 Recommended actions:"
-    echo "   1. Review each file to determine if it should be committed"
-    echo "   2. Add appropriate patterns to .gitignore if needed"
-    echo "   3. Remove or clean up unnecessary files"
-    echo "   4. Re-run this detection after cleanup"
+    echo "   1. Review each file to determine if it should be removed from Git tracking"
+    echo "   2. Use 'git rm --cached <file>' to remove from tracking while keeping local copy"
+    echo "   3. Add appropriate patterns to .gitignore to prevent future tracking"
+    echo "   4. Commit the removal and .gitignore updates"
+    echo "   5. Re-run this detection after cleanup"
     echo ""
     echo "📁 Full list saved to: $ALL_JUNK"
 
@@ -304,7 +300,7 @@ if [ "$TOTAL_COUNT" -gt 0 ]; then
     exit 1
 else
     echo ""
-    echo "✅ No junk files detected! Repository is clean."
+    echo "✅ No tracked junk files detected! Git repository is clean."
 
     # Clean up temporary files
     rm -f "$PYTHON_JUNK" "$TYPESCRIPT_JUNK" "$REYNARD_JUNK" "$ALL_JUNK"
@@ -315,10 +311,10 @@ fi
 
 **User Interaction Protocol:**
 
-When junk files are detected, the workflow MUST:
+When tracked junk files are detected, the workflow MUST:
 
 1. **STOP** the Git workflow process
-2. **DISPLAY** a comprehensive report of detected junk files
+2. **DISPLAY** a comprehensive report of tracked junk files
 3. **WAIT** for user confirmation before proceeding
 4. **PROVIDE** recommendations for cleanup actions
 5. **ALLOW** user to review and decide on each file category
@@ -326,24 +322,24 @@ When junk files are detected, the workflow MUST:
 **Example User Interaction:**
 
 ```bash
-⚠️  POTENTIAL JUNK FILES DETECTED!
+⚠️  TRACKED JUNK FILES DETECTED!
 
 📊 Detection Results:
-   🐍 Python artifacts: 15 files
-   📦 TypeScript/JS artifacts: 8 files
-   🦊 Reynard-specific artifacts: 3 files
-   📋 Total potential junk files: 26 files
+   🐍 Python artifacts: 5 files
+   📦 TypeScript/JS artifacts: 3 files
+   🦊 Reynard-specific artifacts: 2 files
+   📋 Total tracked junk files: 10 files
 
 🔍 Sample detected files:
-   ./packages/core/__pycache__/
-   ./packages/rag/src/index.d.ts
-   ./backend/.pytest_cache/
-   ./services/mcp-server/mcp-temp/
-   ./packages/components/dist/
+   packages/core/src/__pycache__/module.pyc
+   packages/rag/src/index.d.ts
+   backend/tests/.pytest_cache/
+   services/mcp-server/agent-names-temp.json
+   packages/components/dist/bundle.js
 
 ❓ How would you like to proceed?
 
-1. Review and clean up junk files (RECOMMENDED)
+1. Remove tracked junk files from Git (RECOMMENDED)
 2. Add patterns to .gitignore and continue
 3. Force continue without cleanup (NOT RECOMMENDED)
 4. Exit workflow to handle manually
@@ -353,24 +349,25 @@ Please select an option (1-4): _
 
 **Integration with Git Workflow:**
 
-The junk file detection should be integrated as the **FIRST STEP** in the Git workflow automation script,
+The tracked junk file detection should be integrated as the **FIRST STEP** in the Git workflow automation script,
 before any analysis or commit operations:
 
 ```bash
 #!/bin/bash
-# Enhanced Git Workflow with Junk File Detection
+# Enhanced Git Workflow with Tracked Junk File Detection
 
-echo "🦦 Starting Reynard Git Workflow Automation with Junk File Detection..."
+echo "🦦 Starting Reynard Git Workflow Automation with Tracked Junk File Detection..."
 
-# Step 0: Junk file detection (MANDATORY FIRST STEP)
-echo "🔍 Performing junk file detection..."
-if ! ./scripts/detect-junk-files.sh; then
-    echo "❌ Junk files detected. Please clean up before proceeding."
-    echo "   Run: ./scripts/detect-junk-files.sh for detailed analysis"
+# Step 0: Tracked junk file detection (MANDATORY FIRST STEP)
+echo "🔍 Performing tracked junk file detection..."
+if ! ./scripts/detect-tracked-junk-files.sh; then
+    echo "❌ Tracked junk files detected. Please clean up before proceeding."
+    echo "   Run: ./scripts/detect-tracked-junk-files.sh for detailed analysis"
+    echo "   Use 'git rm --cached <file>' to remove files from tracking"
     exit 1
 fi
 
-echo "✅ Repository is clean. Proceeding with Git workflow..."
+echo "✅ Git repository is clean. Proceeding with Git workflow..."
 
 # Continue with existing workflow steps...
 ```
@@ -801,18 +798,19 @@ echo "✅ Successfully released v$NEW_VERSION with Git tag!"
 # Git Workflow Automation Script with Junk File Detection and Delta Enhancement
 set -e
 
-echo "🦦 Starting Reynard Git Workflow Automation with Junk File Detection and Delta..."
+echo "🦦 Starting Reynard Git Workflow Automation with Tracked Junk File Detection and Delta..."
 
-# Step 0: Junk file detection (MANDATORY FIRST STEP)
-echo "🔍 Performing comprehensive junk file detection..."
-if ! ./scripts/detect-junk-files.sh; then
-    echo "❌ Junk files detected. Please clean up before proceeding."
-    echo "   Run: ./scripts/detect-junk-files.sh for detailed analysis"
-    echo "   Or review the detected files and add appropriate .gitignore patterns"
+# Step 0: Tracked junk file detection (MANDATORY FIRST STEP)
+echo "🔍 Performing tracked junk file detection..."
+if ! ./scripts/detect-tracked-junk-files.sh; then
+    echo "❌ Tracked junk files detected. Please clean up before proceeding."
+    echo "   Run: ./scripts/detect-tracked-junk-files.sh for detailed analysis"
+    echo "   Use 'git rm --cached <file>' to remove files from tracking"
+    echo "   Add appropriate patterns to .gitignore to prevent future tracking"
     exit 1
 fi
 
-echo "✅ Repository is clean. Proceeding with Git workflow..."
+echo "✅ Git repository is clean. Proceeding with Git workflow..."
 
 # Verify delta is installed and configured
 if ! command -v delta &> /dev/null; then
@@ -946,19 +944,19 @@ git push origin "v$NEW_VERSION"
 echo "✅ Git workflow completed successfully with version v$NEW_VERSION and Git tag!"
 ```
 
-## Junk File Detection Script Setup
+## Tracked Junk File Detection Script Setup
 
-### CRITICAL - Before using the enhanced Git workflow, create the junk file detection script
+### CRITICAL - Before using the enhanced Git workflow, create the tracked junk file detection script
 
 ```bash
 #!/bin/bash
-# Create the junk file detection script
+# Create the tracked junk file detection script
 mkdir -p scripts
-cat > scripts/detect-junk-files.sh << 'EOF'
+cat > scripts/detect-tracked-junk-files.sh << 'EOF'
 #!/bin/bash
-# Comprehensive junk file detection script for Reynard monorepo
+# Git-tracked junk file detection script for Reynard monorepo
 
-echo "🔍 Scanning for potential junk files in Reynard monorepo..."
+echo "🔍 Scanning for potential junk files tracked by Git in Reynard monorepo..."
 
 # Create temporary files for analysis
 PYTHON_JUNK="/tmp/python-junk-files.txt"
@@ -966,40 +964,39 @@ TYPESCRIPT_JUNK="/tmp/typescript-junk-files.txt"
 REYNARD_JUNK="/tmp/reynard-junk-files.txt"
 ALL_JUNK="/tmp/all-junk-files.txt"
 
-# Detect Python artifacts
-echo "🐍 Detecting Python development artifacts..."
-find . -name "*.pyc" -o -name "*.pyo" -o -name "__pycache__" -type d \
-     -o -name "venv" -o -name ".venv" -o -name "env" -o -name ".env" -type d \
-     -o -name "build" -o -name "dist" -o -name "*.egg" -type d \
-     -o -name ".pytest_cache" -o -name ".coverage" -o -name "htmlcov" -type d \
-     -o -name ".vscode" -o -name ".idea" -o -name "*.swp" -o -name "*.swo" \
-     -o -name ".ropeproject" -o -name ".mypy_cache" -o -name ".tox" -type d \
-     -o -name "*.log" -o -name "*.tmp" -o -name "*.temp" \
-     -o -name ".DS_Store" -o -name "Thumbs.db" > "$PYTHON_JUNK"
+# Detect Python artifacts that are tracked by Git
+echo "🐍 Detecting Python development artifacts tracked by Git..."
+git ls-files | grep -E "\.(pyc|pyo)$|__pycache__/" > "$PYTHON_JUNK"
+git ls-files | grep -E "\.(pyd|so)$|\.egg-info/" >> "$PYTHON_JUNK"
+git ls-files | grep -E "(venv|\.venv|env|\.env|build|dist|\.egg)/" >> "$PYTHON_JUNK"
+git ls-files | grep -E "(\.pytest_cache|\.coverage|htmlcov|\.tox)/" >> "$PYTHON_JUNK"
+git ls-files | grep -E "(\.vscode|\.idea|\.swp|\.swo|\.ropeproject|\.mypy_cache)/" >> "$PYTHON_JUNK"
+git ls-files | grep -E "\.(log|tmp|temp)$|\.DS_Store|Thumbs\.db" >> "$PYTHON_JUNK"
 
-# Detect TypeScript/JavaScript artifacts
-echo "📦 Detecting TypeScript/JavaScript development artifacts..."
-find . -name "*.d.ts" -not -path "*/node_modules/*" \
-     -o -name "*.js.map" -o -name "*.d.ts.map" \
-     -o -name "dist" -o -name "build" -o -name "out" -type d \
-     -o -name "node_modules" -type d \
-     -o -name ".tsbuildinfo" -o -name "*.tsbuildinfo" \
-     -o -name ".eslintcache" -o -name ".stylelintcache" \
-     -o -name "coverage" -o -name ".nyc_output" -type d \
-     -o -name ".vite" -o -name ".rollup.cache" -o -name ".turbo" -type d \
-     -o -name "*.bundle.js" -o -name "*.chunk.js" -o -name "*.vendor.js" > "$TYPESCRIPT_JUNK"
+# Detect TypeScript/JavaScript artifacts that are tracked by Git
+echo "📦 Detecting TypeScript/JavaScript development artifacts tracked by Git..."
+git ls-files | grep -E "\.d\.ts$|\.js\.map$|\.d\.ts\.map$" > "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "(dist|build|out)/" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "node_modules/|package-lock\.json|yarn\.lock|pnpm-lock\.yaml" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "(\.npm|\.yarn|\.pnpm)/" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "\.tsbuildinfo$|\.eslintcache|\.stylelintcache" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "(coverage|\.nyc_output)/" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "(\.vite|\.rollup\.cache|\.turbo)/" >> "$TYPESCRIPT_JUNK"
+git ls-files | grep -E "\.(bundle|chunk|vendor)\.js$" >> "$TYPESCRIPT_JUNK"
 
-# Detect Reynard-specific artifacts
-echo "🦊 Detecting Reynard-specific artifacts..."
-find . -name "*.generated.*" -o -name "*.auto.*" \
-     -o -name "temp" -o -name "tmp" -o -name ".temp" -type d \
-     -o -name "*.backup" -o -name "*.bak" -o -name "*.orig" \
-     -o -name "*.mcp.log" -o -name "mcp-*.json" \
-     -o -name ".mcp-cache" -o -name "mcp-temp" -type d \
-     -o -name "*.sim.log" -o -name "ecs-*.json" \
-     -o -name ".ecs-cache" -o -name "simulation-temp" -type d \
-     -o -name "agent-names-*.json" -o -name ".agent-cache" -type d \
-     -o -name "*.agent.log" -o -name "agent-temp" -type d > "$REYNARD_JUNK"
+# Detect Reynard-specific artifacts that are tracked by Git
+echo "🦊 Detecting Reynard-specific artifacts tracked by Git..."
+git ls-files | grep -E "\.generated\.|\.auto\.|(temp|tmp|\.temp)/" > "$REYNARD_JUNK"
+git ls-files | grep -E "\.(backup|bak|orig)$" >> "$REYNARD_JUNK"
+git ls-files | grep -E "\.mcp\.log$|mcp-.*\.json$|(\.mcp-cache|mcp-temp)/" >> "$REYNARD_JUNK"
+git ls-files | grep -E "\.sim\.log$|ecs-.*\.json$|(\.ecs-cache|simulation-temp)/" >> "$REYNARD_JUNK"
+git ls-files | grep -E "agent-names-.*\.json$|(\.agent-cache|agent-temp)/" >> "$REYNARD_JUNK"
+git ls-files | grep -E "\.agent\.log$" >> "$REYNARD_JUNK"
+
+# Remove duplicates and sort
+sort -u "$PYTHON_JUNK" -o "$PYTHON_JUNK"
+sort -u "$TYPESCRIPT_JUNK" -o "$TYPESCRIPT_JUNK"
+sort -u "$REYNARD_JUNK" -o "$REYNARD_JUNK"
 
 # Combine all junk files
 cat "$PYTHON_JUNK" "$TYPESCRIPT_JUNK" "$REYNARD_JUNK" | sort -u > "$ALL_JUNK"
@@ -1011,16 +1008,16 @@ REYNARD_COUNT=$(wc -l < "$REYNARD_JUNK")
 TOTAL_COUNT=$(wc -l < "$ALL_JUNK")
 
 echo ""
-echo "📊 Junk File Detection Results:"
+echo "📊 Git-Tracked Junk File Detection Results:"
 echo "   🐍 Python artifacts: $PYTHON_COUNT files"
 echo "   📦 TypeScript/JS artifacts: $TYPESCRIPT_COUNT files"
 echo "   🦊 Reynard-specific artifacts: $REYNARD_COUNT files"
-echo "   📋 Total potential junk files: $TOTAL_COUNT files"
+echo "   📋 Total tracked junk files: $TOTAL_COUNT files"
 
 if [ "$TOTAL_COUNT" -gt 0 ]; then
     echo ""
-    echo "⚠️  POTENTIAL JUNK FILES DETECTED!"
-    echo "   Review the following files before proceeding with Git workflow:"
+    echo "⚠️  TRACKED JUNK FILES DETECTED!"
+    echo "   The following files are tracked by Git but appear to be development artifacts:"
     echo ""
     cat "$ALL_JUNK" | head -20
     if [ "$TOTAL_COUNT" -gt 20 ]; then
@@ -1028,10 +1025,11 @@ if [ "$TOTAL_COUNT" -gt 0 ]; then
     fi
     echo ""
     echo "🔧 Recommended actions:"
-    echo "   1. Review each file to determine if it should be committed"
-    echo "   2. Add appropriate patterns to .gitignore if needed"
-    echo "   3. Remove or clean up unnecessary files"
-    echo "   4. Re-run this detection after cleanup"
+    echo "   1. Review each file to determine if it should be removed from Git tracking"
+    echo "   2. Use 'git rm --cached <file>' to remove from tracking while keeping local copy"
+    echo "   3. Add appropriate patterns to .gitignore to prevent future tracking"
+    echo "   4. Commit the removal and .gitignore updates"
+    echo "   5. Re-run this detection after cleanup"
     echo ""
     echo "📁 Full list saved to: $ALL_JUNK"
 
@@ -1041,7 +1039,7 @@ if [ "$TOTAL_COUNT" -gt 0 ]; then
     exit 1
 else
     echo ""
-    echo "✅ No junk files detected! Repository is clean."
+    echo "✅ No tracked junk files detected! Git repository is clean."
 
     # Clean up temporary files
     rm -f "$PYTHON_JUNK" "$TYPESCRIPT_JUNK" "$REYNARD_JUNK" "$ALL_JUNK"
@@ -1051,17 +1049,17 @@ fi
 EOF
 
 # Make the script executable
-chmod +x scripts/detect-junk-files.sh
+chmod +x scripts/detect-tracked-junk-files.sh
 
-echo "✅ Junk file detection script created at scripts/detect-junk-files.sh"
-echo "   Run: ./scripts/detect-junk-files.sh to test the detection"
+echo "✅ Tracked junk file detection script created at scripts/detect-tracked-junk-files.sh"
+echo "   Run: ./scripts/detect-tracked-junk-files.sh to test the detection"
 ```
 
 ## Quality Assurance Checklist
 
 ### Pre-Commit Validation
 
-- [ ] **Junk file detection completed** - No Python/TypeScript development artifacts detected
+- [ ] **Tracked junk file detection completed** - No Python/TypeScript development artifacts tracked by Git
 - [ ] All changes analyzed and categorized
 - [ ] Commit message follows conventional format
 - [ ] Version bump type determined (major/minor/patch)
@@ -1468,7 +1466,7 @@ echo "   Review and customize patterns as needed for your specific workflow"
 
 The workflow is successful when:
 
-1. ✅ **Junk file detection completed** - No Python/TypeScript development artifacts detected
+1. ✅ **Tracked junk file detection completed** - No Python/TypeScript development artifacts tracked by Git
 2. ✅ All changes are properly analyzed and categorized
 3. ✅ Commit message accurately describes the changes
 4. ✅ Version bump type determined correctly (major/minor/patch)
@@ -1488,18 +1486,18 @@ The workflow is successful when:
 ./git-workflow-automation.sh
 
 # Expected output:
-🦦 Starting Reynard Git Workflow Automation with Junk File Detection and Delta...
-🔍 Performing comprehensive junk file detection...
-🐍 Detecting Python development artifacts...
-📦 Detecting TypeScript/JavaScript development artifacts...
-🦊 Detecting Reynard-specific artifacts...
-📊 Junk File Detection Results:
+🦦 Starting Reynard Git Workflow Automation with Tracked Junk File Detection and Delta...
+🔍 Performing tracked junk file detection...
+🐍 Detecting Python development artifacts tracked by Git...
+📦 Detecting TypeScript/JavaScript development artifacts tracked by Git...
+🦊 Detecting Reynard-specific artifacts tracked by Git...
+📊 Git-Tracked Junk File Detection Results:
    🐍 Python artifacts: 0 files
    📦 TypeScript/JS artifacts: 0 files
    🦊 Reynard-specific artifacts: 0 files
-   📋 Total potential junk files: 0 files
-✅ No junk files detected! Repository is clean.
-✅ Repository is clean. Proceeding with Git workflow...
+   📋 Total tracked junk files: 0 files
+✅ No tracked junk files detected! Git repository is clean.
+✅ Git repository is clean. Proceeding with Git workflow...
 📊 Analyzing source code changes with delta...
 🔍 Performing semantic change analysis...
 🛡️  Analyzing security and impact...
@@ -1522,4 +1520,5 @@ The workflow is successful when:
 
 _This prompt provides a comprehensive framework for automating Git workflows in the Reynard monorepo, ensuring_
 _consistent, high-quality commits with proper CHANGELOG.md version management, semantic versioning, Git tagging,_
-_and proactive junk file detection to maintain repository cleanliness and prevent development artifact accumulation._
+_and proactive tracked junk file detection to maintain repository cleanliness and prevent development artifact accumulation_
+_in Git source control._

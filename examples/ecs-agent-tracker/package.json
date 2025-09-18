@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=ecs-agent-tracker ../../scripts/vitest-global-queue.sh run ecs-agent-tracker"
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=ecs-agent-tracker ../../scripts/testing/vitest-global-queue.sh run ecs-agent-tracker"
   },
   "dependencies": {
     "@solidjs/router": "^0.15.3",

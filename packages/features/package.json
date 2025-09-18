@@ -37,7 +37,7 @@
     "dev": "vite build --watch",
     "build": "tsc --build",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=features-package ../../scripts/vitest-global-queue.sh run features-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=features-package ../../scripts/testing/vitest-global-queue.sh run features-package",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "typecheck": "tsc --noEmit",

@@ -16,7 +16,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "test": "source ../../vitest.env.global && ../../scripts/vitest-global-queue.sh run segmentation",
+    "test": "source ../../vitest.env.global && ../../scripts/testing/vitest-global-queue.sh run segmentation",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",

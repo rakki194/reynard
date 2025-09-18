@@ -30,7 +30,7 @@
     "dev": "vite build --watch",
     "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=scraping-package ../../scripts/vitest-global-queue.sh run scraping-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=scraping-package ../../scripts/testing/vitest-global-queue.sh run scraping-package",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "test:docs": "vitest run --config vitest.docs.config.ts",

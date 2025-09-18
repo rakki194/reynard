@@ -33,7 +33,7 @@
     "dev": "vite build --watch",
     "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
-    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=gallery-dl-package ../../scripts/vitest-global-queue.sh run gallery-dl-package",
+    "test": "source ../../vitest.env.global && VITEST_AGENT_ID=gallery-dl-package ../../scripts/testing/vitest-global-queue.sh run gallery-dl-package",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage --reporter=verbose",
     "typecheck": "tsc --noEmit",

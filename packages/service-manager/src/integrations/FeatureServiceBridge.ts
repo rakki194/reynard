@@ -28,6 +28,7 @@ export class FeatureServiceBridge {
   private featureManager: FeatureManager;
   private autoSync: boolean;
   private serviceNameMapping: Record<string, string>;
+  private serviceAvailabilityCache: Map<string, boolean>;
   private eventHandler: ServiceEventHandler;
   private isInitialized = false;
 
@@ -36,6 +37,7 @@ export class FeatureServiceBridge {
     this.featureManager = config.featureManager;
     this.autoSync = config.autoSync ?? true;
     this.serviceNameMapping = config.serviceNameMapping ?? {};
+    this.serviceAvailabilityCache = new Map<string, boolean>();
 
     // Create event handler for service status changes
     this.eventHandler = (event: ServiceEvent) => {
@@ -104,14 +106,11 @@ export class FeatureServiceBridge {
   private updateServiceAvailability(serviceName: string, available: boolean): void {
     const mappedName = this.mapServiceName(serviceName);
 
-    // Update the service checker in feature manager
-    this.featureManager.updateServiceChecker((name: string) => {
-      if (name === mappedName) {
-        return available;
-      }
-      // For other services, use existing logic
-      return this.getServiceAvailability(name);
-    });
+    // Update the service availability cache
+    this.serviceAvailabilityCache.set(mappedName, available);
+
+    // Refresh feature statuses to reflect the change
+    this.featureManager.refreshFeatureStatuses();
   }
 
   /**
@@ -130,10 +129,15 @@ export class FeatureServiceBridge {
   private syncAllServiceStatuses(): void {
     const services = this.serviceManager.getServices();
 
-    // Create a comprehensive service checker
-    this.featureManager.updateServiceChecker((serviceName: string) => {
-      return this.getServiceAvailability(serviceName);
+    // Update service availability cache for all services
+    services.forEach(service => {
+      const mappedName = this.mapServiceName(service.name);
+      const isAvailable = this.getServiceAvailability(service.name);
+      this.serviceAvailabilityCache.set(mappedName, isAvailable);
     });
+
+    // Refresh feature statuses to reflect all changes
+    this.featureManager.refreshFeatureStatuses();
   }
 
   /**

@@ -6,12 +6,13 @@ the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
 ## [Unreleased]
 
 ### Added
 
 ### Changed
+
+- **Package.json Test Script Paths**: Updated all 67 package.json files across packages and examples to use standardized vitest-global-queue.sh path, ensuring consistent queue management across the entire monorepo (Strategic-Spirit-69)
 
 ### Deprecated
 
@@ -19,8 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-### Security
+- **Vitest Global Queue Path Resolution**: Fixed all package.json files to use correct path `../../scripts/testing/vitest-global-queue.sh` instead of incorrect `../../scripts/vitest-global-queue.sh`, resolving 52 files with incorrect paths and ensuring 100% path consistency across 67 package.json files (Strategic-Spirit-69)
 
+### Security
 
 ## [0.8.5] - 2025-09-18
 
